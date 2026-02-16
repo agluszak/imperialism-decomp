@@ -1,0 +1,8 @@
+Data
+backups
+
+# Live Ghidra project storage (binary DB; not suitable for normal git history)
+imperialism-decomp.gpr
+imperialism-decomp.rep/
+*.lock
+*.lock~

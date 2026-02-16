@@ -42,6 +42,22 @@ Date: 2026-02-15
 | 9930 | Rancher recruit icon | Code-confirmed + User-confirmed | `push 0x26ca` @ `0x00478195` |
 | 9936 | Driller recruit icon | Code-confirmed + User-confirmed | `push 0x26d0` @ `0x00477b4b` |
 
+### University control-tag binding (code-confirmed)
+
+| Control tag | Bitmap ID | Unit |
+|---|---:|---|
+| `civ0` | 9920 | Miner |
+| `civ1` | 9922 | Prospector |
+| `civ2` | 9924 | Farmer |
+| `civ3` | 9926 | Forester |
+| `civ4` | 9928 | Engineer |
+| `civ5` | 9930 | Rancher |
+| `civ8` | 9936 | Driller |
+
+Notes:
+- Baseline available in gameplay: Miner, Prospector, Farmer, Engineer.
+- Tech-gated in gameplay: Forester, Rancher, Driller.
+
 ## Commodity Icons (700-722)
 
 | Bitmap ID | Commodity | Status |
@@ -123,3 +139,22 @@ Date: 2026-02-15
 | 557 | Port alone (connected) | User-confirmed | user note |
 | 578 | Port unconnected | User-confirmed | user note |
 | 579 | Depot + port (unconnected) | User-confirmed | user note |
+
+## Civilian Command Buttons / Tooltips (Map UI)
+
+| Bitmap ID | Meaning | Status | Source |
+|---:|---|---|---|
+| 1199 | Next Unit | Code-confirmed + User-confirmed | BuildMainMapAndCityCommandControls constants + user note |
+| 1203 | No orders this turn | Code-confirmed + User-confirmed | BuildMainMapAndCityCommandControls constants + user note |
+| 1209 | Disband Civilian | Code-confirmed + User-confirmed | BuildMainMapAndCityCommandControls constants + user note |
+| 1210 | Disband Civilian (clicked) | User-confirmed | user gameplay note |
+| 1211 | Sleep (do nothing every turn until clicked) | Code-confirmed + User-confirmed | BuildMainMapAndCityCommandControls constants + user note |
+| 1212 | Sleep (clicked) | User-confirmed | user gameplay note |
+
+## Civilian Report Dialog (Map)
+
+| Bitmap ID | Meaning | Status | Source |
+|---:|---|---|---|
+| 3012 | Civilian Report dialog background | User-confirmed | user gameplay note |
+| 3013 | Rescind Orders button (clicked state) | User-confirmed | user gameplay note |
+| 3014 | Confirm Orders button (clicked state) | User-confirmed | user gameplay note |

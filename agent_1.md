@@ -1,0 +1,506 @@
+# Agent 1 Working Notes (Trade Screen Dehardcoding)
+
+Last updated: 2026-02-16 (late evening)
+
+## Current Goal
+Reverse engineer and dehardcode the Imperialism trade screen bitmap usage, then persist verified mappings and evidence into Neo4j.
+
+## Confirmed Bitmap IDs (from user + code)
+- 2101 (`0x835`): trade background (pre-oil)
+- 2102 (`0x836`): trade background (post-oil)
+- 2111 (`0x83f`) / 2125 (`0x84d`): Bid pressed/unpressed pair
+- 2113 (`0x841`) / 2127 (`0x84f`): Offer pressed/unpressed pair
+- 2121 (`0x849`) / 2123 (`0x84b`): decrease/increase offer arrow base states set in trade setup
+- 2112 (`0x840`) / 2126 (`0x84e`): bid secondary state pair
+- 2114 (`0x842`) / 2128 (`0x850`): offer secondary state pair
+- 2120 (`0x848`): additional trade control bitmap assigned in setup path
+
+## Confirmed Function-Level Findings
+- `InitializeTradeScreenBitmapControls` (`0x004601b0`, renamed from `FUN_004601b0`): main trade screen setup; confirmed literal bitmap pushes into picture setter (`CALL [vtable+0x1c8]`) for:
+  - `0x840`, `0x842`, `0x848`, `0x849`, `0x84b`, `0x84e`, `0x850`
+  - plus previously confirmed `0x835`, `0x836`, `0x841`
+- `SetTradeBidControlBitmapState` (`0x00587bb0`): toggles `2111/2125`.
+- `SetTradeOfferControlBitmapState` (`0x00587dd0`): toggles `2113/2127`.
+- `IsTradeBidControlActionable` (`0x00587980`): checks bid bitmap states.
+- `IsTradeOfferControlActionable` (`0x00587a10`): checks offer bitmap states.
+- `SetTradeBidSecondaryBitmapState` (`0x00587aa0`): toggles `2112/2126`.
+- `SetTradeOfferSecondaryBitmapState` (`0x00588030`): toggles `2114/2128`.
+- `FUN_004ccf30`: contains `0x84c` in assert path (not a direct bitmap assignment).
+- `DispatchTurnEventPacketThroughDialogFactory` (`0x0048cfd0`) and `FUN_00598a50`: contain `PUSH 0x846` as assert line numbers, not bitmap assignments.
+- `SetPressedStateAdjustPictureBitmapByOne` (`0x00571620`, newly created/renamed): pressed-state handler that updates control state flag and calls picture setter with bitmap ID `+1` (pressed) or `-1` (released) from current ID at offset `+0x84`.
+- Vtable trace: class built via `thunk_FUN_00583b50` (`0x00404331 -> 0x00583b50`, vtable `0x663540`) has slot `+0x1c0 = 0x004080d0 -> 0x00571620`, linking trade arrow controls to this `+/-1` bitmap derivation logic.
+- Practical tag mapping in `InitializeTradeScreenBitmapControls`: `left -> 0x849 (2121)`, `rght -> 0x84b (2123)`, `gree -> 0x848 (2120)`; pressed arrow variants are derived by the `+/-1` handler.
+- Trade sell-control panel function cluster renamed and verified:
+  - `CreateTradeSellControlPanel` (`0x00587010`)
+  - `ConstructTradeSellControlPanel` (`0x005870b0`)
+  - `DestroyTradeSellControlPanel` (`0x005870e0`)
+  - `InitializeTradeSellControlState` (`0x00587130`)
+  - `HandleTradeSellControlCommand` (`0x005873e0`)
+  - `IsTradeSellControlAtMinimum` (`0x00587900`)
+  - `GetTradeSellControlValue` (`0x00587950`)
+- `HandleTradeSellControlCommand` handles sell-quantity and arrow flow using control tags:
+  - `Sell` (`0x53656c6c`)
+  - ` bar` (`0x62617220`)
+  - `left` (`0x6c656674`)
+  - `rght` (`0x72676874`)
+  - `gree` (`0x67726565`)
+- Created/renamed thunk wrappers and linked to the sell-control panel vtable:
+  - `thunk_HandleTradeSellControlCommand` (`0x00403e22`)
+  - `thunk_InitializeTradeSellControlState` (`0x00407e7d`)
+  - `thunk_IsTradeSellControlAtMinimum` (`0x0040486d`)
+  - `thunk_GetTradeSellControlValue` (`0x00405a97`)
+- Vtable slot map for sell-control panel class (`0x00665a70`):
+  - `+0x3c -> 0x00403e22 -> 0x005873e0`
+  - `+0xdc -> 0x00407e7d -> 0x00587130`
+  - `+0x1cc -> 0x0040486d -> 0x00587900`
+  - `+0x1d4 -> 0x00405a97 -> 0x00587950`
+- Additional selection/dispatch path findings:
+  - `UpdateTradeResourceSelectionByIndex` (`0x00586170`, renamed from `FUN_00586170`) iterates resource controls and broadcasts command `0x1f` (selected) / `0x20` (unselected) via virtual slot `+0x3c`.
+  - `thunk_DispatchPanelControlEvent` (`0x004023ab`) maps event classes `0x1f`, `0x20`, `0x21` to virtual slot `+0x1c0`.
+  - This bridges selection events directly into per-class bitmap-state handlers; for compatible classes this includes `SetPressedStateAdjustPictureBitmapByOne` (`0x00571620`) with bitmap `+/-1` behavior.
+  - `HandleTradeMoveControlAdjustment` (`0x00586e70`, renamed from `FUN_00586e70`) handles move-control increment/decrement (`0x64`/`0x65`) and then forwards into `thunk_DispatchPanelControlEvent`.
+- Trade move-control cluster mapped and renamed (all in `0x00588xxx` region):
+  - `InitializeTradeMoveAndBarControls` (`0x00586d60`)
+  - `ClampAndApplyTradeMoveValue` (`0x00588950`)
+  - `UpdateTradeMoveControlsFromDrag` (`0x00588c60`)
+  - `HandleTradeMoveStepCommand` (`0x00588ff0`)
+  - `UpdateTradeMoveControlsFromScaledDrag` (`0x005899f0`)
+  - `HandleTradeMovePageStepCommand` (`0x00589da0`)
+  - `RefreshTradeMoveBarAndTurnControl` (`0x0058a690`)
+  - `HandleTradeMoveArrowControlEvent` (`0x0058a940`)
+  - Common behavior: tag-based lookup of `move`/`avai`/`bar`/`left`/`rght`/`Sell` controls and callback updates through host `+0x1d0`.
+- Trade move control panel constructor families mapped:
+  - `CreateTradeMoveControlPanelBasic` (`0x00586c40`) / `ConstructTradeMoveControlPanelBasic` (`0x00586ce0`) -> vtable `0x00665838`
+  - `CreateTradeMoveStepControlPanel` (`0x00588a30`) / `ConstructTradeMoveStepControlPanel` (`0x00588af0`) -> vtable `0x00665ed0`
+  - `CreateTradeMoveScaledControlPanel` (`0x00589660`) / `ConstructTradeMoveScaledControlPanel` (`0x00589720`) -> vtable `0x00666318`
+  - `CreateTradeMoveArrowControlPanel` (`0x0058a4d0`) / `ConstructTradeMoveArrowControlPanel` (`0x0058a590`) -> vtable `0x00666760`
+- Added thunk wrappers for move cluster entry points:
+  - `thunk_ClampAndApplyTradeMoveValue` (`0x00402df6`)
+  - `thunk_UpdateTradeMoveControlsFromDrag` (`0x00405af6`)
+  - `thunk_HandleTradeMoveStepCommand` (`0x0040611d`)
+  - `thunk_UpdateTradeMoveControlsFromScaledDrag` (`0x00404d04`)
+  - `thunk_HandleTradeMovePageStepCommand` (`0x004091ce`)
+  - `thunk_RefreshTradeMoveBarAndTurnControl` (`0x004058a8`)
+  - `thunk_HandleTradeMoveArrowControlEvent` (`0x00406965`)
+  - `thunk_ConstructTradeMoveStepControlPanel` (`0x00401d11`)
+  - `thunk_ConstructTradeMoveScaledControlPanel` (`0x00404c3c`)
+- Vtable confirmation for control class at `0x006611e0`:
+  - `+0xa4 -> thunk_FUN_0048b1c0` (sets internal field and optionally refreshes)
+  - `+0xa8 -> thunk_FUN_0048b070` (sets value and optionally refreshes)
+  - `+0x1c0 -> thunk_SetControlStateFlagAndMaybeRefresh` (`0x0040516e -> 0x0048e810`)
+  - `+0x1c8 -> thunk_SetPictureResourceIdAndRefresh` (`0x00408454 -> 0x0048f570`)
+- Orphan decode note:
+  - Created `FUN_005663c0` from undecoded bytes due `0x843` pattern hit; decomp shows compare/draw helper with no current xrefs, not immediately useful for trade-screen bitmap mapping.
+
+## Open Questions / Hypotheses
+- Confirmed: pressed arrow states are framework-derived (`2121 -> 2122`, `2123 -> 2124`) via `+/-1` logic in `0x00571620`.
+- `2118` classified as assert-line literal only (not mapped to bitmap assignment path).
+- Remaining unresolved direct hardcoded IDs in trade context: `2115`, `2116`, `2117`, `2119`.
+- New constraint: `0x848` (`2120`) controls in `InitializeTradeScreenBitmapControls` are created through `0x0040123f` (`vtable 0x6611e0`) whose `+0x1c0` handler is non-toggle; this weakens the simple `2120 -> 2119` derivation hypothesis for that path.
+- Additional false-positive note: raw `0x845` hits (`2117`) at `0x0055188E`/`0x0055234E` resolve to mid-instruction bytes, not direct bitmap-assignment instructions.
+- Opcode-boundary scan update:
+  - No `PUSH imm32` sites for `2115/2116/2117/2119` (`68 43/44/45/47 08 00 00`).
+  - `2118` (`0x846`) appears as `PUSH 0x846` only at `0x0048d031` and `0x00598ae3` in assert/failure paths.
+  - Raw dword hits for `0x844` and `0x846` are non-instruction-byte matches in tested locations.
+- New directional hypothesis:
+  - Unresolved trade IDs (`2115/2116/2117/2119`) are more likely to come from non-literal base bitmap states inside controls reached through the `0x1f/0x20 -> +0x1c0` dispatch path than from direct hardcoded literals.
+  - The `0x006611e0` class path uses generic state setters and direct picture setter (`+0x1c8`), but current mapped callsites still do not expose direct literals for `2115/2116/2117/2119`.
+
+## TODO
+- [x] Re-decompile `0x004601b0` attempt (decompiler still times out); switched to disassembly-context workflow.
+- [x] Trace literal hits for `0x844/0x845/0x846/0x847/0x84c` and classify.
+- [x] Persist newly confirmed function↔bitmap mapping and evidence/claims in Neo4j.
+- [x] Update Neo4j research tasks with latest arrow-state tracing status.
+- [x] Identify concrete runtime path that selects pressed arrow variants (`2122`, `2124`).
+- [x] Verify pressed-state selection is generic control behavior (`base_bitmap_id +/- 1`) in control-class method `0x00571620`.
+- [x] Continue naming/documenting nearby `FUN_00586xxx`/`FUN_00587xxx` small-view handlers to isolate trade screen control flow.
+- [ ] Find where/if `2115`, `2116`, `2117`, `2119` are consumed (table-driven path, alternate class, or dead resources).
+- [x] Run direct field write/compare opcode scan for unresolved IDs (`2115/2116/2117/2119`) against picture-id offset patterns (`+0x84`) and record evidence (no matches).
+- [x] Run opcode-boundary literal scan (`PUSH imm32`) for unresolved IDs and classify residual hits (`2118` remains assert-only).
+- [ ] Trace command IDs `0x64/0x65/0x67/0x68/0x69/0x6a` in `HandleTradeSellControlCommand` to caller event dispatch to support tag-command dehardcoding.
+- [x] Trace selection event bridge: `0x1f/0x20` (`UpdateTradeResourceSelectionByIndex`) -> `thunk_DispatchPanelControlEvent` -> virtual slot `+0x1c0`.
+- [ ] Enumerate concrete control instances/classes in the selection path and read their base bitmap IDs to test `2115/2116/2117/2119` coverage.
+- [x] Map and rename adjacent trade move-control cluster (`0x00588xxx`) and associated control tags.
+- [x] Map trade move control panel constructor families and vtable anchors (`0x665838`, `0x665ed0`, `0x666318`, `0x666760`).
+- [ ] Continue from `HandleTradeMoveArrowControlEvent`/`HandleTradeMoveStepCommand` callers to find where control base bitmap IDs are sourced at runtime.
+
+## Immediate Next Step
+Trace unresolved IDs `2115/2116/2117/2119` by enumerating control instances reached by `UpdateTradeResourceSelectionByIndex` and checking each class's `+0x1c0` state handler/base bitmap values.
+
+## Working Thread (Low-Hanging)
+- Try quickest derivation proofs first:
+  - If `0x848` controls are instantiated with the same class that uses `SetPressedStateAdjustPictureBitmapByOne` (`0x00571620`), then `0x847` (`2119`) can be explained as derived (`0x848 - 1`).
+  - Defer deep/class-wide renaming; only add names/comments when directly useful to close a bitmap mapping.
+  - Reuse confirmed tag mapping (`left/rght/gree`) to drive dehardcoding table extraction before chasing unresolved IDs.
+
+## Cross-Screen Pivot Notes (Diplomacy)
+- Diplomacy screen is partially identified at event/view level:
+  - `HandleTurnEvent7D8_ActivateDiplomacyMapView` (`0x005d8040`) is mapped as the primary diplomacy-map activation path.
+  - `HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary` (`0x005d83b0`) refreshes the shared order-summary controls.
+  - Event `0x0547` branch verifies `TDiplomacyMapView` and writes selected nation slot to `main + 0x90`.
+- Still missing:
+  - A trade-style, dedicated diplomacy bitmap initializer equivalent to `InitializeTradeScreenBitmapControls` has not been isolated/named yet.
+- New literal extraction (MCP script + disassembly-neighborhood pass):
+  - In both `0x005d8040` and `0x005d83b0`, the `curs` path calls vfunc `+0x204` with literal pair `0x2B67` (`11111`) and `0x2B6C` (`11116`).
+  - Additional nearby pair appears in summary/title path: `0x2B6B` (`11115`) with `0x2B6C` (`11116`) before helper setup and `+0x1c8`.
+  - Observed call-context constants:
+    - `0x2730` (localization group used with indexes `0x1E`, `0x1C`, `0x02`),
+    - `0x2735` (used with indexes `0x05`, `0x06`),
+    - tags `dipl`, `tran`, `Bpot`, `tool`, `main`, `curs`.
+  - Cross-function scan result:
+    - `+0x204` callsites repeatedly use `11111/11116` across many turn-event handlers (`0x005d73df`, `0x005d76d6`, `0x005d7d21`, `0x005d7ff9`, `0x005d80b1`, `0x005d843e`, `0x005d87f3`, `0x005d8a94`, `0x005d8e48`, `0x005da0be`, `0x005da1e3`, `0x005da3f9`, etc.), indicating shared event-UI cursor/resource range wiring.
+  - Correction (code-confirmed): these are not bitmap IDs.
+    - `SetCursorRangeAndRefreshMainPanel` (`0x005d7fc0`) explicitly calls `(*curs + 0x204)(0x2B6C, 0x2B67)`.
+    - `LoadTurnEventCursorTable` (`0x005d5100`) and `LoadTurnEventCursorByResourceIdOffset1000` (`0x005d5140`) load cursor handles via `LoadCursorA`.
+    - Classification for `11111/11115/11116`: cursor resource/range IDs (or cursor-table related selectors), pending final on-disk mapping.
+- Deeper tabsenu table inspection completed (new script + findings):
+  - Added reusable inspector: `scripts/inspect_tabsenu_tables.py`.
+  - Confirmed `NEWS.TAB` schema: `360 x 24-byte` big-endian records indexing into `NEWS.TEX` (`col1/col2/col3/col4` offset-span metadata, `col5=200` constant).
+  - Confirmed extensionless `tabsenu.gob_TABLE_S9..S15` files are plaintext command scripts (`tech/zone/army/...`) and correlate with binary `S*.SCN` tag counts.
+  - Confirmed `S*.SCN` as tag-driven binary command stream with fixed-size families (`tech=12`, `army/rela/ware/capa/emba=16`, `port/rail=8`, `ship/labo=20`, etc.).
+  - Confirmed `S*.MAP` has strong fixed-record stride signal: `309312 / 36 = 8592` records.
+  - Confirmed `TABLE_DATA/001..004.TAB` are compact byte-domain matrices (`0..4`), each `450` bytes.
+- Cursor-resource location confirmation (new extraction pass):
+  - No `CURSOR` / `GROUP_CURSOR` / `ICON` resource types are present in local `Data/*.gob` files.
+  - `Imperialism.exe` contains cursor resources:
+    - type `1` (`cursor`) ids `7..63`,
+    - type `12` (`group_cursor`) names `~C1000..~C1054` plus `227`.
+  - Extracted into workspace:
+    - `Data/extracted_cursors_exe/cursor` (`57` files),
+    - `Data/extracted_cursors_exe/group_cursor` (`56` files),
+    - `Data/extracted_cursors_exe/icon` (`6` files),
+    - `Data/extracted_cursors_exe/group_icon` (`3` files).
+  - This aligns with code path:
+    - `LoadTurnEventCursorTable` (`0x005d5100`) loading cursor ids `1000..1053`.
+  - Rename normalization completed:
+    - `Data/extracted_cursors_exe/cursor`: normalized to numeric-id filenames with `.cur` extension (`7.cur..63.cur`).
+    - `Data/extracted_cursors_exe/group_cursor`: normalized to numeric-id filenames with `.cur` extension (`1000.cur..1054.cur`, plus `227.cur`).
+  - Usability conversion completed:
+    - Added `scripts/build_cursor_pngs.py` to rebuild valid single-image `.cur` containers from raw `RT_CURSOR` blobs and export PNG previews.
+    - Generated outputs:
+      - `Data/extracted_cursors_exe/cursor_stdcur` + `Data/extracted_cursors_exe/cursor_png` (`57` each),
+      - `Data/extracted_cursors_exe/group_cursor_stdcur` + `Data/extracted_cursors_exe/group_cursor_png` (`57` each; group `1013` emits `1013_1`, `1013_2`).
+  - User semantic mapping ingested (2026-02-16):
+    - Wrote id-based cursor semantics (`48` entries) into Neo4j:
+      - `Cursor` nodes `cursor_exe_<raw_id>` for identified IDs (`8..59` subset),
+      - linked to EXE resources via new relationships to `Resource` nodes:
+        - `resource:exe:cursor:<id>` (`RT_CURSOR`)
+        - `resource:exe:group_cursor:<id>` (`RT_GROUP_CURSOR`)
+      - linked to screens:
+        - `screen_terrain_map` (`19`),
+        - `screen_tactical_battle` (`6`),
+        - `screen_diplomacy` (`23`).
+    - Added safety document: `cursor-semantics-exe.md`.
+    - Added pointer section in `cursor-resource-mapping.md` to semantic overlay file.
+  - Cursor usage in code/memory linked (2026-02-16):
+    - Added function nodes and links in Neo4j for runtime selection/setter paths:
+      - `0x00595810` `SetMappedCursorOrDefaultArrow`
+      - `0x005958b0` `UpdateMapCursorForTileAndAction`
+      - `0x005a8ca0` `SetMappedCursorOrDefaultArrowAlt`
+      - `0x005a8d40` `UpdateHexGridHoverCursorAndHighlight`
+      - `0x0048c250` `UpdateMapCursorFromSelectionContext`
+      - `0x005def70` `SetCursorFromResourceE4AndClampRange`
+      - plus diplomacy context handlers (`0x005d7fc0`, `0x005d8040`, `0x005d83b0`) and loaders (`0x005d5100`, `0x005d5140`).
+    - Added `Offset` node: `offset_ui_runtime_cursor_table_minus_f8c` (`g_pUiRuntimeContext - 0x0F8C`) with `READS_OFFSET` links from selector functions.
+    - Recorded known write sites for cursor table base region: `0x0049dbea`, `0x0049dc60`.
+    - Added safety document: `cursor-code-usage-sites.md`.
+  - Cursor-focused low-hanging renames applied in Ghidra (2026-02-16):
+    - Cursor/token helpers:
+      - `0x00495650` -> `IsPointInsideHitRegion`
+      - `0x005123e0` -> `ComputeStridedRecordAddress6C`
+      - `0x005a86d0` -> `ConvertScreenPointToHexGridCoordClamped`
+      - `0x005a0a90` -> `ResolveTacticalHoverCursorToken`
+    - QuickDraw helpers used in hover cursor rendering:
+      - `0x00494700` -> `BeginScopedMapQuickDrawContext`
+      - `0x004948b0` -> `EndScopedMapQuickDrawContext`
+      - `0x00495000` -> `SetQuickDrawFillColor`
+      - `0x00495070` -> `SetQuickDrawStrokeColor`
+      - `0x004953a0` -> `ResetQuickDrawStrokeState`
+      - `0x00495920` -> `ApplyHitRegionToClipState`
+      - `0x00495a30` -> `SnapshotHitRegionToClipCache`
+      - `0x00497320` -> `AcquireReusableQuickDrawSurface`
+      - `0x00497390` -> `ReleaseOrCacheQuickDrawSurface`
+      - `0x005a99e0` -> `DrawHexSelectionOutlineSegments`
+    - Data labels:
+      - `0x006a590c` -> `g_pCursorControlPanel`
+      - `0x0049dbea` -> `loc_WriteUiRuntimeCursorTableBase_A`
+      - `0x0049dc60` -> `loc_WriteUiRuntimeCursorTableBase_B`
+    - Synced these function names into Neo4j (`14` upserts).
+  - Cursor-focused low-hanging renames pass #2 (2026-02-16):
+    - Map/civilian cursor-token table helpers:
+      - `0x004a4930` -> `LookupMapCursorTokenByStateIndex`
+      - `0x004a4960` -> `ComputeMapCursorStateIndex`
+      - `0x004a4aa0` -> `LookupCivilianMapCursorTokenByStateIndex`
+      - `0x004d2930` -> `LookupCivilianTileOrderCursorTokenByActionIndex`
+    - QuickDraw fill helper:
+      - `0x004950f0` -> `SetQuickDrawFillColorFromPaletteIndex`
+    - Forced redecompilation confirmed these names propagate into:
+      - `UpdateMapCursorForTileAndAction` (`0x005958b0`)
+      - `UpdateHexGridHoverCursorAndHighlight` (`0x005a8d40`)
+    - Synced pass #2 names into Neo4j (`5` upserts).
+  - Cursor-focused low-hanging renames pass #3 (2026-02-16):
+    - Added civilian cursor state-index helper:
+      - `0x004a4c80` -> `ComputeCivilianMapCursorStateIndex`
+    - Added shared-string helper names used in cursor control path:
+      - `0x006057a7` -> `StringSharedRef_AssignFromPtr`
+      - `0x00492b70` -> `thunk_StringSharedRef_AssignFromPtr`
+    - Named remaining quickdraw assertion guards seen in cursor path:
+      - `0x00498b50` -> `AssertQuickDrawFlag6A1DC8NonZero`
+      - `0x00498b80` -> `AssertQuickDrawFlag6A1DCCNonZero`
+    - Forced redecompilation confirmed `UpdateMapCursorFromSelectionContext` now shows named helpers end-to-end.
+  - Cursor-focused low-hanging renames pass #4 (2026-02-16):
+    - Added tactical hover state-index helper:
+      - `0x005a05a0` -> `ComputeTacticalHoverCursorStateIndex`
+    - Forced redecompilation confirmed `ResolveTacticalHoverCursorToken` now shows:
+    - state-index computation (`ComputeTacticalHoverCursorStateIndex`),
+      - table mapping to cursor tokens.
+  - Cursor-focused low-hanging renames pass #5 (2026-02-16):
+    - Tactical hover/action dispatch helpers:
+      - `0x005a3370` -> `DispatchTacticalActionByHoverStateIndex`
+      - `0x00406cdf` -> `thunk_DispatchTacticalActionByHoverStateIndex`
+      - `0x005a3d30` -> `IsTacticalTargetTileReachableForAction`
+      - `0x00406b09` -> `thunk_IsTacticalTargetTileReachableForAction`
+    - Tactical packet helper used by state `6` dispatch:
+      - `0x005a0d60` -> `QueueTacticalEventPacket232A`
+      - `0x0040400c` -> `thunk_QueueTacticalEventPacket232A`
+    - Forced redecompilation confirmed `DispatchTacticalActionByHoverStateIndex` now references `thunk_QueueTacticalEventPacket232A`.
+    - Synced pass #5 names into Neo4j (`6` upserts).
+  - Cursor-focused low-hanging renames pass #6 (2026-02-16):
+    - Tactical ownership/neighbor helpers:
+      - `0x0059b010` -> `IsTacticalControllerOwnedByActiveNation`
+      - `0x004020c2` -> `thunk_IsTacticalControllerOwnedByActiveNation`
+      - `0x005a0420` -> `ComputeHexNeighborTileIndices`
+      - `0x004032ec` -> `thunk_ComputeHexNeighborTileIndices`
+    - Map/civilian movement-class helpers used by cursor-state logic:
+      - `0x00514290` -> `GetTileNormalizedMovementClassId`
+      - `0x00402b1c` -> `thunk_GetTileNormalizedMovementClassId`
+      - `0x00515e50` -> `TileHasMovementClassId`
+      - `0x00403d78` -> `thunk_TileHasMovementClassId`
+      - `0x005c3490` -> `GetUnitMovementClassId`
+      - `0x00407e64` -> `thunk_GetUnitMovementClassId`
+    - Additional turn-event helper in cursor-adjacent region:
+      - `0x005d5710` -> `UpdateTurnEventPaletteByCode`
+      - `0x00407ae5` -> `thunk_UpdateTurnEventPaletteByCode`
+    - Forced redecompilation confirms `ComputeTacticalHoverCursorStateIndex` and `ComputeCivilianMapCursorStateIndex` now read significantly clearer.
+    - Synced pass #6 names into Neo4j (`14` upserts, including packet helper pair for consistency).
+  - Cursor-focused low-hanging renames pass #7 (2026-02-16):
+    - Tactical helper for local hex-neighbor membership:
+      - `0x005a0550` -> `IsHexNeighborTileIndex`
+      - `0x00404c2d` -> `thunk_IsHexNeighborTileIndex`
+    - Tactical command-tag dispatcher:
+      - `0x005a0c50` -> `HandleTacticalBattleCommandTag`
+      - `0x00409002` -> `thunk_HandleTacticalBattleCommandTag`
+    - Command tags observed in dispatcher: `done`, `auto`, `retr`, `skip`, `targ`.
+    - Synced pass #7 names into Neo4j (`4` upserts).
+  - Cursor-focused low-hanging renames pass #8 (2026-02-16):
+    - Tactical unit-selection/turn-step helpers:
+      - `0x005a0ea0` -> `AdvanceToNextTacticalUnitTurnStep`
+      - `0x00404700` -> `thunk_AdvanceToNextTacticalUnitTurnStep`
+      - `0x005a1010` -> `SetCurrentTacticalUnitSelection`
+      - `0x00402cca` -> `thunk_SetCurrentTacticalUnitSelection`
+      - `0x005a10e0` -> `ProcessTacticalUnitState1TurnStep`
+      - `0x00407d3d` -> `thunk_ProcessTacticalUnitState1TurnStep`
+    - Tactical movement/reaction mini-cluster:
+      - `0x005a1520` -> `MoveTacticalUnitTowardTile`
+      - `0x00403fbc` -> `thunk_MoveTacticalUnitTowardTile`
+      - `0x005a16e0` -> `BuildPathToTargetByDistanceField`
+      - `0x0040833c` -> `thunk_BuildPathToTargetByDistanceField`
+      - `0x005a1910` -> `MoveTacticalUnitBetweenTiles`
+      - `0x00403134` -> `thunk_MoveTacticalUnitBetweenTiles`
+      - `0x005a1a20` -> `ResolveTacticalReactionChecksForTile`
+      - `0x00405ace` -> `thunk_ResolveTacticalReactionChecksForTile`
+      - `0x005a4460` -> `BuildTacticalDistanceFieldForSide`
+      - `0x00408a67` -> `thunk_BuildTacticalDistanceFieldForSide`
+    - Tactical UI follow-up helpers:
+      - `0x005a9b40` -> `UpdateTacticalActionControlBitmapForCurrentUnit`
+      - `0x004059e8` -> `thunk_UpdateTacticalActionControlBitmapForCurrentUnit`
+      - `0x005a8860` -> `InvalidateTacticalHexTileRect`
+      - `0x004029f5` -> `thunk_InvalidateTacticalHexTileRect`
+      - `0x005a9cc0` -> `TriggerTacticalUiUpdate2711`
+      - `0x004024d2` -> `thunk_TriggerTacticalUiUpdate2711`
+      - `0x005a9bb0` -> `SpawnTacticalUiMarkerAtUnitTile`
+      - `0x00405678` -> `thunk_SpawnTacticalUiMarkerAtUnitTile`
+    - Forced redecompilation now shows tactical turn-step flow with named pathing/movement/reaction helpers.
+    - Synced pass #8 names into Neo4j (`24` upserts).
+  - Cursor-focused low-hanging renames pass #9 (2026-02-16):
+    - Tactical command-tag handlers:
+      - `0x005a35a0` -> `HandleTacticalCommandTag_mine`
+      - `0x00402dfb` -> `thunk_HandleTacticalCommandTag_mine`
+      - `0x005a36d0` -> `HandleTacticalCommandTag_digg`
+      - `0x004052e0` -> `thunk_HandleTacticalCommandTag_digg`
+      - `0x005a38e0` -> `HandleTacticalCommandTag_raly`
+      - `0x004065af` -> `thunk_HandleTacticalCommandTag_raly`
+      - `0x005a3f10` -> `HandleTacticalCommandTag_targ`
+      - `0x00405b4b` -> `thunk_HandleTacticalCommandTag_targ`
+      - `0x005a4370` -> `HandleTacticalCommandTag_depl`
+      - `0x004015dc` -> `thunk_HandleTacticalCommandTag_depl`
+    - Saved `Imperialism.exe` after rename batch.
+    - Synced pass #9 names into Neo4j (`10` upserts).
+  - Cursor-focused low-hanging renames pass #10 (2026-02-16):
+    - Additional tactical command handlers from `HandleTacticalBattleCommandTag` (`done/retr/skip` path):
+      - `0x0059b040` -> `HandleTacticalCommandTag_skip`
+      - `0x0059fd10` -> `HandleTacticalCommandTag_retr`
+      - `0x0059af20` -> `SelectNextTacticalUnitForDoneCommand`
+      - `0x0059fe40` -> `ApplyTacticalDoneSelectionAndRefreshUi`
+    - Forced redecompilation of `0x005a0c50` now shows tag flow with named helpers:
+      - `done` -> `SelectNextTacticalUnitForDoneCommand` + `ApplyTacticalDoneSelectionAndRefreshUi`
+      - `retr` -> `HandleTacticalCommandTag_retr`
+      - `skip` -> `HandleTacticalCommandTag_skip`
+      - `targ` -> `HandleTacticalCommandTag_targ`
+    - Saved `Imperialism.exe` after this pass.
+    - Synced pass #10 names into Neo4j (`4` upserts).
+  - Cursor-focused low-hanging renames pass #11 (2026-02-16):
+    - Batched thunk wrappers for pass #10 tactical command helpers:
+      - `0x004055e2` -> `thunk_HandleTacticalCommandTag_skip`
+      - `0x004057f9` -> `thunk_HandleTacticalCommandTag_retr`
+      - `0x0040809e` -> `thunk_SelectNextTacticalUnitForDoneCommand`
+      - `0x00407333` -> `thunk_ApplyTacticalDoneSelectionAndRefreshUi`
+    - Scripted boundary check for `0x005a3529` shows this is currently an unmaterialized block between:
+      - previous function `DispatchTacticalActionByHoverStateIndex` (`0x005a3370`)
+      - next function `HandleTacticalCommandTag_mine` (`0x005a35a0`)
+      - block includes `mine` path instructions and a call through `0x004028c4` (thunk to `FUN_005a3c20`).
+    - Saved `Imperialism.exe` after this pass.
+    - Per user guidance, stop syncing low-level per-function renames to Neo4j; reserve Neo4j updates for high-level concepts only.
+  - Cursor-focused low-hanging renames pass #12 (2026-02-16):
+    - Shared tactical side-pool helper used by `mine` path:
+      - `0x005a3c20` -> `ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty`
+      - `0x004028c4` -> `thunk_ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty`
+    - Forced redecompilation of `HandleTacticalCommandTag_mine` confirms helper name propagation.
+    - Saved `Imperialism.exe` after this pass.
+  - Cursor-focused low-hanging renames pass #13 (2026-02-16):
+    - Localized UI prompt wrapper used across tactical/options flows:
+      - `0x005de990` -> `ShowLocalizedUiPromptByGroupAndIndex`
+      - `0x004075a9` -> `thunk_ShowLocalizedUiPromptByGroupAndIndex`
+    - Verified propagation in `HandleTacticalBattleCommandTag`:
+      - `retr` confirmation now calls `thunk_ShowLocalizedUiPromptByGroupAndIndex(0x273d,0x32,1,1)`.
+    - Saved `Imperialism.exe` after this pass.
+  - Cursor-focused low-hanging renames pass #14 (2026-02-16):
+    - Tactical turn-state finalizer and placement helper:
+      - `0x0059fdb0` -> `FinalizeTacticalTurnStateAndQueueEvent232A`
+      - `0x00401023` -> `thunk_FinalizeTacticalTurnStateAndQueueEvent232A`
+      - `0x005a55c0` -> `TryPlaceTacticalUnitOnTileAndAdvanceSelection`
+    - Forced redecompilation confirmed propagation in:
+      - `HandleTacticalCommandTag_retr` (`thunk_FinalizeTacticalTurnStateAndQueueEvent232A`)
+      - `TryPlaceTacticalUnitOnTileAndAdvanceSelection` (same finalizer in active-unit branch)
+    - Saved `Imperialism.exe` after this pass.
+  - Cursor-focused low-hanging renames pass #15 (2026-02-16):
+    - Hex-grid coordinate helper used by tactical combat resolution:
+      - `0x005a59a0` -> `ConvertHexTileIndexToRowAndDoubleColumn`
+      - `0x00407b44` -> `thunk_ConvertHexTileIndexToRowAndDoubleColumn`
+    - Forced redecompilation confirmed usage in tactical attack distance/chance path.
+    - Saved `Imperialism.exe` after this pass.
+  - Cursor-focused low-hanging renames pass #16 (2026-02-16):
+    - Tactical attack/damage pair:
+      - `0x005a5730` -> `ResolveTacticalAttackAgainstTileOccupant`
+      - `0x005a63c0` -> `ApplyTacticalDamageAndDeathState`
+      - `0x00406023` -> `thunk_ApplyTacticalDamageAndDeathState`
+    - Forced redecompilation confirmed attack flow now reads with named conversion + damage helpers.
+    - Saved `Imperialism.exe` after this pass.
+  - Signature/Variable cleanup pass #17 (2026-02-16):
+    - Added meaningful prototypes where behavior is clear:
+      - `ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint *outRow, int *outDoubleColumn)`
+      - `ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)`
+      - `ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)`
+      - `FinalizeTacticalTurnStateAndQueueEvent232A(void)` with `__thiscall`
+      - `TryPlaceTacticalUnitOnTileAndAdvanceSelection(int pUnit, int targetTileIndex)`
+      - `ResolveTacticalAttackAgainstTileOccupant(int pAttackerUnit, int targetTileIndex)`
+      - `ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)`
+    - Easy meaningful variable renames:
+      - `ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty`: `iVar1` -> `sideBandIndex`, `iVar2` -> `remainingPool`
+      - `ShowLocalizedUiPromptByGroupAndIndex`: `cVar1` -> `promptResult`
+    - Saved `Imperialism.exe` after this pass.
+  - Struct-first extraction pass #18 (2026-02-16):
+    - Created new tactical structs (identity-first, conservative field naming):
+      - `/TacticalBattleUnit` (size `0x40`) with validated fields:
+        - `tileIndex` (`+0x08`), `stateCode` (`+0x1C`), `ownerSideIndex` (`+0x20`),
+          plus conservative stat/flag placeholders used in attack/deploy code paths.
+      - `/TacticalBattleController` (size `0x58`) with validated fields:
+        - `activeSideIndex` (`+0x0C`), `phaseFlag` (`+0x10`), `pCurrentUnit` (`+0x1C`),
+          `pTileThreatOrMoveTable` (`+0x24`), `sideBandBaseIndex` (`+0x34`),
+          `isDeploymentPreviewDisabled` (`+0x49`), `sideResourcePool0` (`+0x54`),
+          plus conservative pointer/int placeholders.
+    - Applied struct usage where API support allowed:
+      - `TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit *pUnit, int targetTileIndex)`
+      - `ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit *pAttackerUnit, int targetTileIndex)`
+      - `HandleTacticalBattleCommandTag(int commandTag)` and related helpers normalized to `__thiscall`.
+    - Important API constraint:
+      - `this` auto-parameter typing cannot be changed via MCP (`set_parameter_type` endpoint missing; `set_local_variable_type` cannot retype auto `this` in ECX).
+      - Result: signatures still show `void * this`; local/explicit unit parameters are typed.
+    - Easy meaningful local typing/renaming in tactical core:
+      - `ResolveTacticalAttackAgainstTileOccupant`:
+        - locals now include `pController` (`TacticalBattleController *`),
+          `pDefenderUnit`/`pActiveUnit` (`TacticalBattleUnit *`),
+          `targetRow` (`float`), `targetDoubleColumn` (`int`), `attackerRow` (`uint`), `rangeChanceFactor` (`float`).
+      - `TryPlaceTacticalUnitOnTileAndAdvanceSelection`:
+        - `canPlace`, `targetRow`, `nextUnitSelection`, `pSideListCursor`.
+      - `ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty`:
+        - `sideBandIndex`, `remainingPool` typed as `int`.
+    - Saved `Imperialism.exe` after this pass.
+
+## Diplomacy Low-Hanging TODO
+- [x] Extract direct bitmap literals/tag wiring from `HandleTurnEvent7D8_ActivateDiplomacyMapView` and `0x005d83b0` summary handler.
+- [ ] Resolve exact meaning of cursor-range IDs `11111`, `11115`, `11116` (no longer treated as bitmaps).
+- [x] Extract `TABLE` resources from local `Data/tabsenu.gob` into workspace path `Data/extracted_tables/tabsenu` (43 files).
+- [x] Run deeper structural inspection over extracted table groups (`NEWS.TAB`, `NEWS.TEX`, `S*.SCN`, `S*.MAP`, `TABLE_DATA/*.TAB`) and document first schema pass.
+- [ ] Decode semantic meaning of `TABLE_DATA/001..004.TAB` cell values and select canonical dimensions (`30x15` vs `25x18`) with gameplay correlation.
+- [ ] Trace `BuildTurnEventDialogUiByCode` branch wiring for `0x7D8/0x7DE` and name the concrete diplomacy window constructor(s).
+- [ ] Ask user for semantic labels for extracted cursor IDs (`group_cursor -> cursor` table already generated).
+- [ ] Refine placeholder cursor labels with user confirmation:
+  - land military variants (`12/13/14`),
+  - navy variants (`19..24`),
+  - sapper variants (`30/31`).
+- [ ] Resolve exact per-ID dispatch branches (token source functions) for diplomacy grants/subsidies and tactical variants.
+- [x] Continue low-hanging cursor renames: inspect remaining `thunk_FUN_*` in `UpdateMapCursorFromSelectionContext` (`thunk_FUN_00492b70`, `thunk_FUN_00498b80`, `thunk_FUN_00498b50`) and rename only if behavior is provable.
+- [x] Continue low-hanging cursor renames in tactical/map movement dependency path (`0x0059b010`, `0x005a0420`, `0x00514290`, `0x00515e50`, `0x005c3490`) where behavior is provable.
+- [ ] Continue low-hanging cursor renames in map cursor resolver path around `thunk_GetMapContextActionLabelTokenByActionCode` and `thunk_ResolveCivilianTileSelectionOrReportActionCode` if helper internals can be named without speculation.
+- [ ] Consider renaming tactical range geometry helper `FUN_005a3a70` only after validating semantics across all callers.
+- [ ] Continue struct-first extraction by typing tactical `this` pointers in UI (manual Ghidra retype required for auto-parameter `this`) and then converting controller fields from placeholder names to semantic names.
+- [ ] Continue low-hanging renames in diplomacy-adjacent `0x005d44xx..0x005d47xx` wrappers only after proving concrete localization semantics.
+- [x] Continue low-hanging tactical renames around `FUN_005a0ea0`, `FUN_005a1010`, `FUN_005a10e0` once unit-cycle semantics are confirmed across callers.
+- [x] Continue low-hanging tactical renames around `FUN_005a3f10`, `FUN_005a36d0`, `FUN_005a1910` call-chain command handlers where tag intent is already known (`targ`, etc.).
+- [x] Recover Ghidra MCP connection and rerun pending tactical command-handler renames (`mine/digg/raly/targ/depl` cluster).
+
+## Ops Notes (2026-02-17)
+- [x] Local Python env setup with `uv` in repo:
+  - `.venv` recreated on CPython `3.12.12`.
+  - Installed: `pyhidra==1.3.0`, `jpype1==1.6.0`, `packaging==26.0`.
+- [x] Confirmed Ghidra install path from user:
+  - `/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC`
+- [x] Backed up Imperialism Ghidra project files:
+  - Source: `/home/andrzej.gluszak/code/personal/imperialism-decomp.gpr`
+  - Source: `/home/andrzej.gluszak/code/personal/imperialism-decomp.rep`
+  - Archive: `/home/andrzej.gluszak/code/personal/imperialism_knowledge/backups/imperialism-ghidra-20260217_002107.tar.gz`
+  - Checksum: `/home/andrzej.gluszak/code/personal/imperialism_knowledge/backups/imperialism-ghidra-20260217_002107.tar.gz.sha256`
+- [ ] Next: wire repo-local pyhidra launcher against `imperialism-decomp.gpr` + `Imperialism.exe` program and resume struct-mining without MCP.
+- pyghidra migration note (2026-02-17):
+  - Installed `pyghidra==3.0.2` in repo `.venv` (`jpype1==1.5.2`).
+  - `pyhidra==1.3.0` still importable, but prefer `pyghidra` going forward.
+  - Verified working open against existing project while GUI Ghidra is open:
+    - `pyghidra.start(install_dir=Path('/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC'))`
+    - `pyghidra.open_program(..., project_location='/home/andrzej.gluszak/code/personal', project_name='imperialism-decomp', program_name='Imperialism.exe', analyze=False, nested_project_location=False)`
+    - Result: opened program successfully (`Imperialism.exe`, image base `0x00400000`).
+  - Next default automation route: pyghidra scripts (avoid MCP dependency for heavy scans/renaming).
+- pyghidra API validation (non-deprecated path):
+  - `pyghidra.open_project('/home/andrzej.gluszak/code/personal', 'imperialism-decomp', create=False)`
+  - `with pyghidra.program_context(project, '/Imperialism.exe') as program:` opened successfully.
+- Project relocation (2026-02-17):
+  - Moved Ghidra Imperialism project files into repo root:
+    - `/home/andrzej.gluszak/code/personal/imperialism_knowledge/imperialism-decomp.gpr`
+    - `/home/andrzej.gluszak/code/personal/imperialism_knowledge/imperialism-decomp.rep`
+  - Old parent location no longer contains project files.
+  - TODO: use project location `/home/andrzej.gluszak/code/personal/imperialism_knowledge` for all `pyghidra.open_project(...)` calls.
+- Environment metadata (2026-02-17): added `/home/andrzej.gluszak/code/personal/imperialism_knowledge/pyproject.toml` with pinned deps from current `.venv` (`ghidra-stubs`, `java-stubs-converted-strings`, `jpype1`, `packaging`, `pyghidra`).
+- Git/LFS setup (2026-02-17):
+  - Installed `git-lfs` and ran `git lfs install`.
+  - Added LFS tracking rule: `*.gzf` in `.gitattributes`.
+  - Updated `.gitignore` to exclude live Ghidra project blobs:
+    - `imperialism-decomp.gpr`
+    - `imperialism-decomp.rep/`
+    - `*.lock`, `*.lock~`
+  - Created `exports/.gitkeep` for storing exported Ghidra snapshot artifacts under version control (with LFS for `.gzf`).
+- Git remote switch (2026-02-17): set `origin` to `git@github.com:agluszak/imperialism-decomp.git`.
+- `git ls-remote origin` returned no refs (likely empty/new remote repository) but command succeeded (remote reachable).
+- Snapshot export (2026-02-17): exported Ghidra snapshot via `pyghidra` + `GzfExporter`.
+  - File: `/home/andrzej.gluszak/code/personal/imperialism_knowledge/exports/Imperialism-20260217_003824.gzf`
+  - Checksum file: `/home/andrzej.gluszak/code/personal/imperialism_knowledge/exports/Imperialism-20260217_003824.gzf.sha256`
+  - Export path validated against project file `/Imperialism.exe`.

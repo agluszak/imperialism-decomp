@@ -1,0 +1,470 @@
+16000	Danger
+16001	Markes
+16002	Spotson
+16003	Yikes
+16004	Flushing
+16005	McGrath
+16006	Huddles
+16007	Grant
+16008	Lee
+16009	Pike
+16010	Blaise
+16011	Kay
+16012	Arthur
+16013	Alfred
+16014	Allen
+16015	Katz
+16016	Royston
+16017	Dullard
+16018	Samms
+16019	Beach
+16020	Richardson
+16021	Stout
+16022	Zenon
+16023	Young
+16024	Zeller
+16025	Woods
+16026	Zorbu
+16027	Taylor
+16028	Eldridge
+16029	Cleaver
+16030	Tang
+16031	Ming
+16032	Sung
+16033	Bernstein
+16034	Merl
+16035	Holzer
+16036	Bollinger
+16037	Gamoran
+16038	Sherin
+16039	Majeski
+16040	Faley
+16041	Conway
+16042	Heinonen
+16043	Ackerman
+16044	Wolff
+16045	LaSala
+16046	Waltman
+16047	Quatrano
+16048	Lopes
+16049	Bak
+16050	Basnayake
+16051	Namenuk
+16052	Hillegas
+16085	Dreadnought
+16086	Victory
+16087	Constitution
+16088	Constellation
+16089	Superb
+16090	Vanguard
+16091	Neptune
+16092	Colossus
+16093	Orion
+16094	Conqueror
+16095	Monarch
+16096	Emperor
+16097	Thunderer
+16098	Centurion
+16099	Nautilus
+16100	Warspite
+16101	Lion
+16102	Tiger
+16103	Valiant
+16104	Invincible
+16105	Atropos
+16106	Temeraire
+16107	Warrior
+16108	Courageous
+16109	Excalibur
+16110	Perseus
+16111	Heracles
+16112	Enterprise
+16113	Hornet
+16114	Wasp
+16115	Indomitable
+16116	Inflexible
+16117	Glory
+16118	Captain
+16119	Cyclops
+16120	Scorpion
+16121	Dolphin
+16122	Furious
+16123	Shark
+16124	Revenge
+16125	Jupiter
+16126	Redwing
+16127	Flower
+16128	Columbia
+16129	Terrible
+16130	Perilous
+16131	Rattler
+16132	Vixen
+16133	Wolf
+16134	Indefatigable
+16135	Splendid
+16136	Ogre
+16137	Meteor
+16138	Comet
+16139	Whale
+16140	Argus
+16141	Sea Lion
+16142	Walrus
+16143	Octopus
+16144	Dragon
+16145	Defender
+16146	Speedy
+16147	Leopard
+16148	Repulse
+16149	Judith
+16150	Golden Hind
+16151	Bounty
+16152	Achilles
+16153	Hector
+16154	Ajax
+16155	Ascendant
+16156	Cleopatra
+16157	Julius Caesar
+16158	Swordfish
+16159	Hammerhead
+16160	Ivory
+16161	Asta
+16162	Polar
+16163	Artic
+16164	Nuda
+16165	Bipsiger
+16166	Valsalva
+16167	Surf
+16168	Storm
+16169	Gale
+16170	Hurricane
+16171	Ironsides
+16172	Grasper
+16173	Nero
+16174	Caligula
+16175	Gripper
+16176	Claudius
+16177	Augustus
+16178	Octavian
+16179	Tiberius
+16180	Toadvine
+16181	Andromeda
+16182	Xanadu
+16183	Oberon
+16184	Ambit
+16185	Duchess
+16186	Duke
+16187	Surprise
+16188	Pegasus
+16189	Theseus
+16190	Romulus
+16191	Remus
+16192	Pecky
+16193	Snidely
+16194	Rachel
+16195	Brandonia
+16196	Carliana
+16197	Average
+16198	Nanday
+16199	Conure
+16200	Parrot
+16201	Plummage
+16202	Jenday
+16203	Gull
+16204	Pelican
+16205	Condor
+16206	Roland
+16207	Eclectus
+16208	Vampire
+16209	Beast
+16210	Phantom
+16211	Spirit
+16212	Defiant
+16213	Voyager
+16214	Intrepid
+16215	Mercury
+16216	Venus
+16217	Saturn
+16218	Pluto
+16219	Rebel
+16220	Endeavor
+16221	Stag
+16222	Buffalo
+16223	Peachy
+16224	Harrier
+16225	Stonewall
+16226	Legionaire
+16227	Bargeman
+16228	Salute
+16229	Musketeer
+16230	Moth
+16231	Mothball
+16232	Lioness
+16233	Tigress
+16234	Risk 
+16235	Brute
+16236	Brisk
+16237	Butterfly
+16238	Imperium
+16239	Spider
+16240	Insect
+16241	Aratinga
+16242	Anteater
+16243	Profiteer
+16244	Falcon
+16245	Hawk
+16246	Legend
+16247	Virago
+16248	Capricorn
+16249	Leo
+16250	Crab
+16251	Barracuda
+16252	Reliant
+16253	Quest
+16254	Trophy
+16255	Triumph
+16256	Pinnacle
+16257	Macaw
+16258	Albatross
+16259	Alligator
+16260	Crocadile
+16261	Manatee
+16262	Porpoise
+16263	Jester
+16264	Noble
+16265	Baron
+16266	Baroness
+16267	Knight
+16268	Gemini
+16269	Scout
+16270	Ionia
+16271	Saber
+16272	Sword
+16273	Lancer
+16274	Sea Urchin
+16275	Porcupine
+16276	Cobra
+16277	Constrictor
+16278	Python
+16279	Viking
+16280	Paradise
+16281	Tormentor
+16282	Mist
+16283	Active
+16284	Last Chance
+16285	Giant
+16286	Faithful
+16287	Grand
+16288	Fountain
+16289	Thistle
+16290	Cornucopia
+16291	Plentiful
+16292	William
+16293	Xena
+16294	Horrible
+16295	Prince
+16296	Princess
+16297	Muskrat
+16298	Hound
+16299	Nova
+16300	Galaxy
+16301	Pole Star
+16302	Antares
+16303	Betelguese
+16304	Rigel
+16305	Sirius
+16306	Pilot
+16307	Landfall
+16308	Squid
+16309	Lucky
+16310	Manta
+16311	Plucky
+16312	Pequod
+16313	Ocean
+16314	Seaspray
+16315	Select
+16316	Lilith
+16317	Rose
+16318	Karina
+16319	Royal Oak
+16320	Minotaur
+16321	Maria
+16322	Tracey
+16323	Andrea
+16324	King Arthur
+16325	Fortress
+16326	Sparrow
+16327	Thrush
+16328	Raven
+16329	Lively
+16330	Zelda
+16331	Rascal
+16332	Nemo
+16333	Frog
+16334	Viceroy
+16977	Winter
+16978	Spring
+16979	Summer
+16980	Fall
+17077	Cotton
+17078	Wool
+17079	Timber
+17080	Coal
+17081	Iron
+17082	Horses
+17083	Oil
+17084	Food
+17085	Fabric
+17086	Lumber
+17087	Paper
+17088	Steel
+17089	Fuel
+17090	Clothing
+17091	Furniture
+17092	Hardware
+17093	Arms
+17094	Grain
+17095	Fruit
+17096	Fish
+17097	Livestock
+17098	Gems
+17099	Gold
+17177	Scientists have discovered 
+17178	High Pressure Steam Engine
+17179	Seed Drill
+17180	Cotton Gin
+17181	Streamlined Hulls
+17182	Square-Set Timbering
+17183	Iron Railroad Bridge
+17184	Feed Grasses
+17185	Spinning Jenny
+17186	Paddlewheels
+17187	Steel Plows
+17188	Bessemer Converter
+17189	Compound Steam Engine
+17190	Rifled Artillery
+17191	Breech-Loading Rifles
+17192	Advanced Iron Working
+17193	Power Loom
+17194	Mechanical Reaper
+17195	Commercial Fertilizer
+17196	Oil Drilling
+17197	Barbed Wire
+17198	Steel Armor Plate
+17199	Large Artillery
+17200	Dynamite
+17201	Marine Engineering
+17202	Machine Guns
+17203	Chemistry
+17204	Improved Range-Finding
+17205	Internal Combustion
+17279	Alliances
+17280	Non-Aggression Pacts
+17281	Peace Treaty
+17282	Member
+17283	War
+17377	Member of our Empire
+17378	Ruler of our Empire
+17379	Alliance
+17380	Non-Aggression Pact
+17381	Peace
+17382	Member
+17383	War
+17477	Zimm
+17478	Kem
+17479	Patagon
+17480	Haxaco
+17481	Devron
+17482	Ordune
+17483	Deneb
+17484	Idolon
+17485	Kessel
+17486	Issa
+17487	Zinlu
+17488	Pram
+17489	Loke
+17490	Manx
+17491	Pont
+17492	Wodan
+17493	Zazi
+17494	Hurshen
+17495	Twelt
+17496	Dedge
+17497	Kathay
+17498	Bruhr
+17499	Sindel
+17577	None
+17578	Trader
+17579	Indiaman
+17580	Frigate
+17581	Ship-of-the-Line
+17582	Paddlewheeler
+17583	Clipper
+17584	Raider
+17585	Ironclad
+17586	Advanced Ironclad
+17587	Freighter
+17588	Armored Cruiser
+17589	Dreadnought
+17590	Battlecruiser
+17677	Minutemen
+17678	Skirmishers
+17679	Regulars
+17680	Grenadiers
+17681	Hussars
+17682	Cuirassiers
+17683	Light Artillery
+17684	Artillery
+17685	Militia
+17686	Sharpshooters
+17687	Rifle Infantry
+17688	Guards
+17689	Scouts
+17690	Carbine Cavalry
+17691	Field Artillery
+17692	Siege Artillery
+17693	Conscripts
+17694	Rangers
+17695	Infantry
+17696	Machine Gunners
+17697	Mech. Infantry
+17698	Armor
+17699	Mobile Artillery
+17700	Railroad Guns
+17701	Sappers
+17702	Combat Engineers
+17703	Saboteurs
+17704	General
+17705	General
+17706	General
+17777	Miner
+17778	Prospector
+17779	Farmer
+17780	Forester
+17781	Engineer
+17782	Rancher
+17783	Fisherman
+17784	Developer
+17785	Driller
+17877	Textile Mill
+17878	Clothing Factory
+17879	Steel Mill
+17880	Metalworks
+17881	Lumber Mill
+17882	Furniture Factory
+17883	Oil Refinery
+17884	Shipyard
+17885	Armory
+17886	Trade School
+17887	University
+17888	Power Plant
+17889	Food Processing
+17890	Warehouse
+17891	Railyard
+17892	Capitol
+17977	None
+17978	Traders
+17979	Indiamen
+17980	Frigates
+17981	Ships-of-the-Line
+17982	Paddlewheelers
+17983	Clippers
