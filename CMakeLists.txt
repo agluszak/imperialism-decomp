@@ -2,10 +2,29 @@ cmake_minimum_required(VERSION 3.20)
 
 project(imperialism LANGUAGES CXX)
 
+set(
+    IMPERIALISM_MATCH_FLAGS_CSV
+    ""
+    CACHE STRING
+    "Comma-separated extra MSVC compile flags for RelWithDebInfo matching experiments"
+)
+set(
+    IMPERIALISM_MATCH_LINK_FLAGS_CSV
+    ""
+    CACHE STRING
+    "Comma-separated extra MSVC linker flags for RelWithDebInfo matching experiments"
+)
+
 add_executable(Imperialism
     src/main.cpp
+    src/game/config.cpp
     src/game/list_utils.cpp
+    src/game/input_state.cpp
+    src/game/list_box.cpp
     src/game/mfc_helpers.cpp
+    src/game/object_pool.cpp
+    src/game/string_shared.cpp
+    src/game/sprite.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
     src/autogen/stubs.cpp
@@ -32,6 +51,24 @@ if(MSVC)
         /GR-
     )
     target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)
+
+    if(IMPERIALISM_MATCH_FLAGS_CSV)
+        string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_CSV}")
+        target_compile_options(
+            Imperialism
+            PRIVATE
+            $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_FLAGS}>
+        )
+    endif()
+
+    if(IMPERIALISM_MATCH_LINK_FLAGS_CSV)
+        string(REPLACE "," ";" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_CSV}")
+        target_link_options(
+            Imperialism
+            PRIVATE
+            $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_LINK_FLAGS}>
+        )
+    endif()
 else()
     target_compile_options(Imperialism PRIVATE -Wall -Wextra -Wpedantic)
 endif()

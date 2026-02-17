@@ -1851,14 +1851,6 @@ undefined4 thunk_HasActiveMapOrderEntryChildren(void)
   return 0;
 }
 
-// ghidra_name Config::InitDefaults
-// ghidra_proto undefined4 * __fastcall Config::InitDefaults(astruct_11 * this_obj)
-// FUNCTION: IMPERIALISM 0x00405529
-undefined4 Config_InitDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_HandleTurnEvent2103_RunNationStatusReportUpdate
 // ghidra_proto undefined thunk_HandleTurnEvent2103_RunNationStatusReportUpdate()
 // FUNCTION: IMPERIALISM 0x00405556
@@ -4511,14 +4503,6 @@ undefined4 PopUiResourcePoolNode_00479A80(void)
 // ghidra_proto undefined PushUiResourcePoolNode()
 // FUNCTION: IMPERIALISM 0x00479b00
 undefined4 PushUiResourcePoolNode(void)
-{
-  return 0;
-}
-
-// ghidra_name Sprite::CollectNonTransparentPixels
-// ghidra_proto int * __thiscall Sprite::CollectNonTransparentPixels(uint this_ptr)
-// FUNCTION: IMPERIALISM 0x0047c3d0
-undefined4 Sprite_CollectNonTransparentPixels(void)
 {
   return 0;
 }
@@ -8555,14 +8539,6 @@ undefined4 GetOrCreateMissionOrderEntryForNode(void)
   return 0;
 }
 
-// ghidra_name ObjectPool::RemoveNode
-// ghidra_proto void __thiscall ObjectPool::RemoveNode(int self)
-// FUNCTION: IMPERIALISM 0x00550ff0
-undefined4 ObjectPool_RemoveNode(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMapOrderActiveChildEntry
 // ghidra_proto void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
 // FUNCTION: IMPERIALISM 0x00551220
@@ -8999,14 +8975,6 @@ undefined4 BuildNationRankingRowsForNation(void)
 // ghidra_proto undefined GetShortAtOffset14OrInvalid()
 // FUNCTION: IMPERIALISM 0x0055f0b0
 undefined4 GetShortAtOffset14OrInvalid(void)
-{
-  return 0;
-}
-
-// ghidra_name InputState::HandleKeyDown
-// ghidra_proto void __thiscall InputState::HandleKeyDown(int key_id)
-// FUNCTION: IMPERIALISM 0x0055fc40
-undefined4 InputState_HandleKeyDown(void)
 {
   return 0;
 }
@@ -12379,70 +12347,6 @@ undefined4 PostCustomMessage36AAndNotifyThread(void)
   return 0;
 }
 
-// ghidra_name GetSharedEmptyStringRef
-// ghidra_proto undefined GetSharedEmptyStringRef()
-// FUNCTION: IMPERIALISM 0x00605791
-undefined4 GetSharedEmptyStringRef(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeSharedStringRefFromEmpty
-// ghidra_proto undefined InitializeSharedStringRefFromEmpty()
-// FUNCTION: IMPERIALISM 0x00605797
-undefined4 InitializeSharedStringRefFromEmpty(void)
-{
-  return 0;
-}
-
-// ghidra_name StringSharedRef_AssignFromPtr
-// ghidra_proto undefined StringSharedRef_AssignFromPtr()
-// FUNCTION: IMPERIALISM 0x006057a7
-undefined4 StringSharedRef_AssignFromPtr(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseSharedStringRefIfNotEmpty
-// ghidra_proto undefined ReleaseSharedStringRefIfNotEmpty()
-// FUNCTION: IMPERIALISM 0x006058e2
-undefined4 ReleaseSharedStringRefIfNotEmpty(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructSharedStringFromCStrOrResourceId
-// ghidra_proto undefined ConstructSharedStringFromCStrOrResourceId()
-// FUNCTION: IMPERIALISM 0x00605950
-undefined4 ConstructSharedStringFromCStrOrResourceId(void)
-{
-  return 0;
-}
-
-// ghidra_name StringShared::AssignFromPtr
-// ghidra_proto int * __thiscall StringShared::AssignFromPtr(int * dst_ref_ptr)
-// FUNCTION: IMPERIALISM 0x00605a29
-undefined4 StringShared_AssignFromPtr(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignStringSharedFromCStr
-// ghidra_proto undefined AssignStringSharedFromCStr()
-// FUNCTION: IMPERIALISM 0x00605cce
-undefined4 AssignStringSharedFromCStr(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignStringSharedFromRef
-// ghidra_proto undefined AssignStringSharedFromRef()
-// FUNCTION: IMPERIALISM 0x00605d0a
-undefined4 AssignStringSharedFromRef(void)
-{
-  return 0;
-}
-
 // ghidra_name InstallMfcThreadMessageHooks
 // ghidra_proto undefined InstallMfcThreadMessageHooks()
 // FUNCTION: IMPERIALISM 0x006061ff
@@ -12839,22 +12743,6 @@ undefined4 GetOrSetButtonCheckStateClamped(void)
 // ghidra_proto undefined GetOrSetRadioGroupCheckedIndex()
 // FUNCTION: IMPERIALISM 0x00618d61
 undefined4 GetOrSetRadioGroupCheckedIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name ListBox::AddOrUpdateItemData
-// ghidra_proto void __stdcall ListBox::AddOrUpdateItemData(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)
-// FUNCTION: IMPERIALISM 0x00618df2
-undefined4 ListBox_AddOrUpdateItemData(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectComboBoxItemByParam
-// ghidra_proto void __stdcall SelectComboBoxItemByParam(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)
-// FUNCTION: IMPERIALISM 0x00618e72
-undefined4 SelectComboBoxItemByParam(void)
 {
   return 0;
 }

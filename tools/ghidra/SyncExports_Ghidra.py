@@ -211,6 +211,18 @@ def clean_field(s):
     return " ".join(s.replace("|", " ").split())
 
 
+def clean_multiline_comment(value):
+    if value is None:
+        return ""
+    text = str(value).replace("\r\n", "\n").replace("\r", "\n")
+    lines = [line.rstrip() for line in text.split("\n")]
+    while lines and lines[0] == "":
+        lines = lines[1:]
+    while lines and lines[-1] == "":
+        lines = lines[:-1]
+    return "\n".join(lines)
+
+
 def export_reccmp_csv(out_path):
     fm = currentProgram.getFunctionManager()
     symtab = currentProgram.getSymbolTable()
@@ -321,6 +333,22 @@ def build_decomp_file_text(module_name, program_name, relpath, entries):
         out.append("// GHIDRA_FUNCTION {} 0x{:08X}\n".format(module_name, entry["address"]))
         out.append("// GHIDRA_NAME {}\n".format(entry["name"]))
         out.append("// GHIDRA_PROTO {}\n".format(entry["prototype"]))
+        if entry["comment"]:
+            out.append("// GHIDRA_COMMENT_BEGIN\n")
+            for line in entry["comment"].split("\n"):
+                if line:
+                    out.append("// GHIDRA_COMMENT {}\n".format(line))
+                else:
+                    out.append("// GHIDRA_COMMENT\n")
+            out.append("// GHIDRA_COMMENT_END\n")
+        if entry["repeatable_comment"]:
+            out.append("// GHIDRA_REPEATABLE_COMMENT_BEGIN\n")
+            for line in entry["repeatable_comment"].split("\n"):
+                if line:
+                    out.append("// GHIDRA_REPEATABLE_COMMENT {}\n".format(line))
+                else:
+                    out.append("// GHIDRA_REPEATABLE_COMMENT\n")
+            out.append("// GHIDRA_REPEATABLE_COMMENT_END\n")
         if entry["ok"]:
             out.append(entry["c"].rstrip())
             out.append("\n\n")
@@ -369,6 +397,8 @@ def export_decompiled_bodies(out_dir, max_functions_per_file):
         relpath = namespace_to_relpath(namespace_parts(func.getParentNamespace()))
         addr = func.getEntryPoint().getOffset()
         proto = clean_field(func.getPrototypeString(True, True))
+        comment = clean_multiline_comment(func.getComment())
+        repeatable_comment = clean_multiline_comment(func.getRepeatableComment())
 
         res = decomp.decompileFunction(func, DEFAULT_DECOMPILER_TIMEOUT_SECONDS, monitor)
         ok = False
@@ -392,6 +422,8 @@ def export_decompiled_bodies(out_dir, max_functions_per_file):
             "address": addr,
             "name": clean_field(name),
             "prototype": proto,
+            "comment": comment,
+            "repeatable_comment": repeatable_comment,
             "ok": ok,
             "c": decomp_c,
             "error": error,

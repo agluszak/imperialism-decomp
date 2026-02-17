@@ -40,6 +40,12 @@ Outputs:
 - `src/ghidra_autogen/*.cpp` (+ manifest/index)
 - `include/ghidra_autogen/*.h` (+ manifest/index)
 
+Function exports in `src/ghidra_autogen/*.cpp` include:
+
+- decompiler C output (or explicit decompilation-failed marker)
+- `GHIDRA_NAME` / `GHIDRA_PROTO`
+- `GHIDRA_COMMENT` and `GHIDRA_REPEATABLE_COMMENT` blocks from function comments
+
 If `config/name_overrides.csv` exists, `sync_exports.py` reapplies overrides after export to:
 
 - `config/symbols.csv`
