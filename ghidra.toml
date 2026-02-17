@@ -1,0 +1,7 @@
+[ghidra]
+version = "12.0.2"
+release = "PUBLIC"
+program_name = "Imperialism.exe"
+
+[exports]
+decomp_max_functions_per_file = 250

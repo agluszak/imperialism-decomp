@@ -1,77 +1,45 @@
-# Ghidra Export Scripts
+# Ghidra Sync
 
-These scripts are intended to keep naming progress out of the `.gpr` database and inside version control.
+This directory intentionally uses a single export entrypoint:
+
+- `sync_exports.py` (Python CLI, runs through `pyghidra`)
+- `SyncExports_Ghidra.py` (script executed inside Ghidra runtime)
 
 ## Version Pin
 
-This tooling is intentionally pinned to:
+The single source of truth is `ghidra.toml` in the repository root:
 
-- Ghidra `12.0.2 PUBLIC`
+- `[ghidra].version`
+- `[ghidra].release`
+- `[ghidra].program_name`
 
-Both Python scripts and the headless wrapper fail fast on any other Ghidra version.
+`sync_exports.py` validates both:
 
-## Scripts
+- local `pyghidra` version (`3.0.2`)
+- target Ghidra install version/release from `application.properties`
 
-- `ExportUserSymbols_GhidraImport.py`
-- `ExportReccmpCsv_SmartSizes.py`
-- `ExportDecompiledBodies_Split.py`
-- `ExportTypeHeaders_Split.py`
-- `export_from_ghidra_headless.py`
-
-## How To Use
-
-1. In Ghidra Script Manager, add this directory to your script paths.
-2. Open Imperialism program in your project.
-3. Run `ExportUserSymbols_GhidraImport.py` to produce a `.ghidra` symbols text file.
-4. Run `ExportReccmpCsv_SmartSizes.py` to produce `symbols.csv` for reccmp bootstrap.
-5. Commit both exports in git (for example under `config/`).
-
-Optional generated snapshots:
-
-6. Run `ExportDecompiledBodies_Split.py` and choose `src/ghidra_autogen`.
-7. Run `ExportTypeHeaders_Split.py` and choose `include/ghidra_autogen`.
-8. Commit generated files if you want rename/type changes diffable in git.
-
-Both Python scripts also accept one optional argument:
-
-- `arg[0]`: output file path
-
-If omitted, they show a save-file dialog.
-
-`ExportDecompiledBodies_Split.py` accepts:
-
-- `arg[0]`: output directory
-- `arg[1]` (optional): max functions per generated file (default `250`)
-
-## Headless Export
-
-Use `export_from_ghidra_headless.py` to regenerate both exports without GUI prompts.
-
-Example:
+## Usage
 
 ```bash
-uv run python tools/ghidra/export_from_ghidra_headless.py \
+uv run python tools/ghidra/sync_exports.py \
   --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
   --ghidra-project-dir /path/to/ghidra/projects \
   --ghidra-project-name imperialism-decomp \
   --ghidra-program-name Imperialism.exe \
-  --export-decompiled-bodies \
+  --output-dir config \
   --decomp-output-dir src/ghidra_autogen \
-  --decomp-max-functions-per-file 250 \
-  --export-type-headers \
-  --types-output-dir include/ghidra_autogen
+  --types-output-dir include/ghidra_autogen \
+  --decomp-max-functions-per-file 250
 ```
 
-Defaults:
+Outputs:
 
-- `OUTPUT_DIR=<repo>/config`
+- `config/symbols.ghidra.txt`
+- `config/symbols.csv`
+- `src/ghidra_autogen/*.cpp` (+ manifest/index)
+- `include/ghidra_autogen/*.h` (+ manifest/index)
 
 ## Notes
 
-- Both scripts export only `USER_DEFINED` symbols by default.
-- Names with whitespace are skipped to keep compatibility with common importers.
-- The reccmp CSV exporter emits function sizes in decimal bytes.
-- The reccmp CSV exporter includes an extra `prototype` column used by `tools/stubgen.py`.
-  `reccmp` ignores unknown CSV columns, so this remains compatible.
-- Decompiler snapshot output is split by namespace and fully regenerated each run.
-- Type header output is split by datatype category and fully regenerated each run.
+- Exported `ghidra_autogen` trees are regenerated and stale generated files are removed.
+- `src/ghidra_autogen` is snapshot/reference output; manual edits should go to non-autogen source files.

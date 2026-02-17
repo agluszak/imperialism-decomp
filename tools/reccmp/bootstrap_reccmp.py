@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bootstrap reccmp via uv + pyproject.toml."""
+"""Bootstrap reccmp in a dedicated virtualenv (.venv-reccmp)."""
 
 from __future__ import annotations
 
@@ -9,6 +9,9 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+RECCMP_VENV_DIR = ".venv-reccmp"
+RECCMP_GIT_SOURCE = "git+https://github.com/isledecomp/reccmp.git@master"
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,19 +28,43 @@ def run(cmd: list[str], cwd: Path) -> None:
     subprocess.run(cmd, check=True, cwd=cwd)
 
 
+def venv_bin_path(repo_root: Path, name: str) -> Path:
+    if sys.platform == "win32":
+        return repo_root / RECCMP_VENV_DIR / "Scripts" / f"{name}.exe"
+    return repo_root / RECCMP_VENV_DIR / "bin" / name
+
+
 def main() -> int:
     try:
         repo_root = Path(__file__).resolve().parents[2]
-        pyproject = repo_root / "pyproject.toml"
-        if not pyproject.is_file():
-            raise FileNotFoundError(f"Missing {pyproject}")
-
         uv = shutil.which("uv")
         if uv is None:
             raise RuntimeError("uv is not installed or not in PATH.")
 
         args = parse_args()
-        run([uv, "sync", "--group", "reccmp"], cwd=repo_root)
+        run([uv, "venv", RECCMP_VENV_DIR], cwd=repo_root)
+
+        venv_python = venv_bin_path(repo_root, "python")
+        if not venv_python.is_file():
+            raise FileNotFoundError(f"Missing Python in {RECCMP_VENV_DIR}: {venv_python}")
+
+        run(
+            [
+                uv,
+                "pip",
+                "install",
+                "--python",
+                str(venv_python),
+                RECCMP_GIT_SOURCE,
+            ],
+            cwd=repo_root,
+        )
+
+        reccmp_project = venv_bin_path(repo_root, "reccmp-project")
+        if not reccmp_project.is_file():
+            raise FileNotFoundError(
+                f"Missing reccmp-project in {RECCMP_VENV_DIR}: {reccmp_project}"
+            )
 
         if args.original_binary:
             original = Path(args.original_binary)
@@ -47,11 +74,7 @@ def main() -> int:
             if not project_yml.is_file():
                 run(
                     [
-                        uv,
-                        "run",
-                        "--group",
-                        "reccmp",
-                        "reccmp-project",
+                        str(reccmp_project),
                         "create",
                         "--originals",
                         str(original),
@@ -67,8 +90,8 @@ def main() -> int:
 
         print("Done.")
         print("Next:")
-        print("  uv run --group reccmp reccmp-project --help")
-        print("  uv run --group reccmp reccmp-reccmp --help")
+        print("  uv run python tools/reccmp/run_reccmp_tool.py reccmp-project --help")
+        print("  uv run python tools/reccmp/run_reccmp_tool.py reccmp-reccmp --help")
         return 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=sys.stderr)

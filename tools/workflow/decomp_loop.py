@@ -2,11 +2,10 @@
 """One-command decomp loop helper.
 
 Optional stages:
-1) export symbols from Ghidra
-2) optionally export split decompiler snapshot + type headers from Ghidra
-3) regenerate autogen stubs
-4) detect recompiled output for reccmp
-5) run reccmp compare
+1) sync exports from Ghidra
+2) regenerate autogen stubs
+3) detect recompiled output for reccmp
+4) run reccmp compare
 """
 
 from __future__ import annotations
@@ -23,12 +22,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ghidra-install-dir")
     parser.add_argument("--ghidra-project-dir")
     parser.add_argument("--ghidra-project-name")
-    parser.add_argument("--ghidra-program-name", default="Imperialism.exe")
+    parser.add_argument("--ghidra-program-name")
     parser.add_argument("--output-dir", default="config")
-    parser.add_argument("--export-ghidra-decompiled-bodies", action="store_true")
     parser.add_argument("--decomp-output-dir", default="src/ghidra_autogen")
     parser.add_argument("--decomp-max-functions-per-file", type=int, default=250)
-    parser.add_argument("--export-ghidra-type-headers", action="store_true")
     parser.add_argument("--types-output-dir", default="include/ghidra_autogen")
 
     parser.add_argument("--use-prototypes", action="store_true")
@@ -61,36 +58,24 @@ def main() -> int:
                 "uv",
                 "run",
                 "python",
-                "tools/ghidra/export_from_ghidra_headless.py",
+                "tools/ghidra/sync_exports.py",
                 "--ghidra-install-dir",
                 require(args.ghidra_install_dir, "--ghidra-install-dir"),
                 "--ghidra-project-dir",
                 require(args.ghidra_project_dir, "--ghidra-project-dir"),
                 "--ghidra-project-name",
                 require(args.ghidra_project_name, "--ghidra-project-name"),
-                "--ghidra-program-name",
-                args.ghidra_program_name,
                 "--output-dir",
                 args.output_dir,
+                "--decomp-output-dir",
+                args.decomp_output_dir,
+                "--types-output-dir",
+                args.types_output_dir,
+                "--decomp-max-functions-per-file",
+                str(args.decomp_max_functions_per_file),
             ]
-            if args.export_ghidra_decompiled_bodies:
-                ghidra_cmd.extend(
-                    [
-                        "--export-decompiled-bodies",
-                        "--decomp-output-dir",
-                        args.decomp_output_dir,
-                        "--decomp-max-functions-per-file",
-                        str(args.decomp_max_functions_per_file),
-                    ]
-                )
-            if args.export_ghidra_type_headers:
-                ghidra_cmd.extend(
-                    [
-                        "--export-type-headers",
-                        "--types-output-dir",
-                        args.types_output_dir,
-                    ]
-                )
+            if args.ghidra_program_name:
+                ghidra_cmd.extend(["--ghidra-program-name", args.ghidra_program_name])
             run(ghidra_cmd, cwd=repo_root)
 
         stubgen_cmd = [
@@ -111,14 +96,16 @@ def main() -> int:
                 [
                     "uv",
                     "run",
-                    "--group",
-                    "reccmp",
+                    "python",
+                    "tools/reccmp/run_reccmp_tool.py",
+                    "--cwd",
+                    str(build_dir),
                     "reccmp-project",
                     "detect",
                     "--what",
                     "recompiled",
                 ],
-                cwd=build_dir,
+                cwd=repo_root,
             )
 
         if args.compare_target:
@@ -126,13 +113,15 @@ def main() -> int:
                 [
                     "uv",
                     "run",
-                    "--group",
-                    "reccmp",
+                    "python",
+                    "tools/reccmp/run_reccmp_tool.py",
+                    "--cwd",
+                    str(build_dir),
                     "reccmp-reccmp",
                     "--target",
                     args.compare_target,
                 ],
-                cwd=build_dir,
+                cwd=repo_root,
             )
         return 0
     except Exception as exc:  # pragma: no cover - CLI error path

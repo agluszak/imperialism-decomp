@@ -30,8 +30,8 @@ Recommended local layout (ignored by git):
 
 ## Tooling
 
-- Ghidra `12.0.2 PUBLIC` for analysis (pinned for script compatibility)
-- Custom scripts in `tools/ghidra/` to export symbols from your project database
+- Ghidra `12.0.2 PUBLIC` for analysis (pinned in `ghidra.toml`)
+- Single `pyghidra` entrypoint (`tools/ghidra/sync_exports.py`) for export sync
 - Optional autogen snapshot export:
   - decompiled function bodies (`src/ghidra_autogen/`)
   - split local datatype headers (`include/ghidra_autogen/`)
@@ -41,25 +41,25 @@ Recommended local layout (ignored by git):
 
 ## Quick Start
 
-1. Run Ghidra script `tools/ghidra/ExportUserSymbols_GhidraImport.py`.
-2. Commit the exported `.ghidra` symbol text file (for re-import into clean projects).
-3. Run `tools/ghidra/ExportReccmpCsv_SmartSizes.py`.
-4. Commit the generated `symbols.csv` in `config/`.
-5. Start reconstructing code in `src/` and annotate functions with addresses.
-
-Headless one-shot export is also available:
+1. Set version pin once in `ghidra.toml` (already committed for `12.0.2 PUBLIC`).
+2. Run unified export sync:
 
 ```bash
-uv run python tools/ghidra/export_from_ghidra_headless.py \
+uv run python tools/ghidra/sync_exports.py \
   --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
   --ghidra-project-dir /path/to/project-parent \
   --ghidra-project-name imperialism-decomp \
   --ghidra-program-name Imperialism.exe \
-  --export-decompiled-bodies \
   --decomp-output-dir src/ghidra_autogen \
-  --export-type-headers \
-  --types-output-dir include/ghidra_autogen
+  --types-output-dir include/ghidra_autogen \
+  --decomp-max-functions-per-file 250
 ```
+
+3. Commit:
+   - `config/symbols.ghidra.txt`
+   - `config/symbols.csv`
+   - optionally `src/ghidra_autogen/*` and `include/ghidra_autogen/*`
+4. Start reconstructing code in `src/` and annotate functions with addresses.
 
 Generated snapshot files are overwritten on each export. Keep manual reconstruction work outside `src/ghidra_autogen/`.
 
@@ -137,11 +137,11 @@ If `ORIGINAL_BINARY` is provided, this bootstraps `reccmp-project.yml` and `recc
 
 Use `config/reccmp-project.yml.example` as a temporary starter only when you are not generating files through `reccmp-project`.
 
-Run reccmp tools through uv dependency group:
+Run reccmp tools from the dedicated reccmp venv:
 
 ```bash
-uv run --group reccmp reccmp-project --help
-uv run --group reccmp reccmp-reccmp --help
+uv run python tools/reccmp/run_reccmp_tool.py reccmp-project --help
+uv run python tools/reccmp/run_reccmp_tool.py reccmp-reccmp --help
 ```
 
 Generate/update autogen stubs from exported symbols:
@@ -157,15 +157,12 @@ uv run python tools/stubgen.py
 Recommended iteration cycle:
 
 1. Rename/type functions in Ghidra.
-2. Export with `tools/ghidra/export_from_ghidra_headless.py` or GUI scripts.
-3. Optionally regenerate decompiled snapshot + split type headers from Ghidra:
-   - `src/ghidra_autogen/*.cpp`
-   - `include/ghidra_autogen/*.h`
-4. Regenerate autogen stubs (`uv run python tools/stubgen.py`).
-5. Move one function from stubs into real source file and implement it.
-6. Change marker from `// STUB: IMPERIALISM 0x...` to `// FUNCTION: IMPERIALISM 0x...`.
-7. Keep functions in each translation unit sorted by original address.
-8. Build and compare with `uv run --group reccmp reccmp-reccmp --target IMPERIALISM`.
+2. Export with `tools/ghidra/sync_exports.py`.
+3. Regenerate autogen stubs (`uv run python tools/stubgen.py`).
+4. Move one function from stubs into real source file and implement it.
+5. Change marker from `// STUB: IMPERIALISM 0x...` to `// FUNCTION: IMPERIALISM 0x...`.
+6. Keep functions in each translation unit sorted by original address.
+7. Build and compare with `uv run python tools/reccmp/run_reccmp_tool.py --cwd build-msvc500 reccmp-reccmp --target IMPERIALISM`.
 
 One-command helper for the loop:
 
@@ -175,9 +172,7 @@ uv run python tools/workflow/decomp_loop.py \
   --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
   --ghidra-project-dir /path/to/ghidra/projects \
   --ghidra-project-name imperialism-decomp \
-  --export-ghidra-decompiled-bodies \
   --decomp-max-functions-per-file 250 \
-  --export-ghidra-type-headers \
   --detect-recompiled \
   --compare-target IMPERIALISM
 ```
@@ -198,7 +193,7 @@ include/ghidra_autogen/ generated split datatype headers (overwritten by export)
 config/                 symbol exports and reccmp config
 docker/                 reproducible old-MSVC build images
 tools/forensics/        binary fingerprint helpers
-tools/ghidra/           ghidra export/import helper scripts
+tools/ghidra/           unified ghidra sync/export scripts
 tools/reccmp/           reccmp bootstrap helpers
 tools/stubgen.py        autogen stubs generator
 tools/workflow/         decompilation iteration helpers
