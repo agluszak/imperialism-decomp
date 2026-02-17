@@ -1,0 +1,14 @@
+[project]
+name = "imperialism-decomp"
+version = "0.1.0"
+description = "Imperialism (1997) decompilation tooling"
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+reccmp = [
+    "reccmp @ git+https://github.com/isledecomp/reccmp.git@master",
+]
+
+[tool.uv]
+package = false

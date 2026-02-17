@@ -1,0 +1,21 @@
+# Prefer generating this file with:
+#   reccmp-project create --originals /absolute/path/to/Imperialism.exe --scm
+#
+# This static example follows the documented schema and can be used as a manual fallback.
+# Replace placeholder hash and paths before use.
+
+targets:
+  IMPERIALISM:
+    filename: Imperialism.exe
+    source-root: .
+    hash:
+      sha256: REPLACE_WITH_SHA256_OF_ORIGINAL
+    data-sources:
+      - config/symbols.csv
+    ghidra:
+      ignore-types: []
+      ignore-functions: []
+      name-substitutions: []
+      allow-hash-mismatch: false
+    report:
+      ignore-functions: []

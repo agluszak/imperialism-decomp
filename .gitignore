@@ -1,0 +1,33 @@
+# Local original game files
+orig/
+assets/
+
+# Build artifacts
+build/
+build-*/
+out/
+*.obj
+*.pdb
+*.ilk
+*.lib
+*.exp
+*.exe
+!tools/**/tests/*.exe
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# IDE/editor
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# User-specific reccmp config
+config/reccmp-project.yml
+reccmp-user.yml
+reccmp-build.yml
