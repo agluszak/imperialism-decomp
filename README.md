@@ -62,21 +62,42 @@ Example function annotation:
 
 ## Build
 
-For old Win32 games, matching often requires an old MSVC toolchain (for example, VC 4.x/5.x/6.x era). The exact Imperialism toolchain is tracked in `docs/toolchain.md`.
+For old Win32 games, matching requires an old MSVC toolchain. Based on current fingerprints, this project starts with VC5-style toolchains first and keeps VC4.2 as fallback (`docs/toolchain.md`).
 
-This repo currently includes a minimal bootstrap target:
+This repository includes bootstrap build plumbing:
 
 - `CMakeLists.txt`
 - `src/main.cpp`
+- `src/autogen/stubs.cpp` (generated)
+- `include/decomp_types.h`
 - output target name: `Imperialism`
 
-Example configure and build from an MSVC prompt:
+### Docker + Wine (Linux host, MSVC 5.0)
 
-```bat
-mkdir build
-cd build
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-nmake
+Build image:
+
+```bash
+docker build -t imperialism-msvc500 -f docker/msvc500/Dockerfile docker/msvc500
+```
+
+Build project:
+
+```bash
+mkdir -p build-msvc500
+docker run --rm \
+  -e CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo" \
+  -v "$PWD":/imperialism \
+  -v "$PWD/build-msvc500":/build \
+  imperialism-msvc500
+```
+
+See `docker/msvc500/README.md` for details.
+
+### Native CMake (non-matching bring-up)
+
+```bash
+cmake -S . -B build
+cmake --build build
 ```
 
 ## Compare with reccmp
@@ -106,6 +127,38 @@ uv run --group reccmp reccmp-project --help
 uv run --group reccmp reccmp-reccmp --help
 ```
 
+Generate/update autogen stubs from exported symbols:
+
+```bash
+uv run python tools/stubgen.py
+```
+
+`tools/stubgen.py` skips any function address already annotated in `src/**/*.cpp`, so implemented functions are not duplicated in `src/autogen/stubs.cpp`.
+
+## Tight Loop
+
+Recommended iteration cycle:
+
+1. Rename/type functions in Ghidra.
+2. Export with `tools/ghidra/export_from_ghidra_headless.py` or GUI scripts.
+3. Regenerate autogen stubs (`uv run python tools/stubgen.py`).
+4. Move one function from stubs into real source file and implement it.
+5. Change marker from `// STUB: IMPERIALISM 0x...` to `// FUNCTION: IMPERIALISM 0x...`.
+6. Keep functions in each translation unit sorted by original address.
+7. Build and compare with `uv run --group reccmp reccmp-reccmp --target IMPERIALISM`.
+
+One-command helper for the loop:
+
+```bash
+uv run python tools/workflow/decomp_loop.py \
+  --export-ghidra \
+  --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
+  --ghidra-project-dir /path/to/ghidra/projects \
+  --ghidra-project-name imperialism-decomp \
+  --detect-recompiled \
+  --compare-target IMPERIALISM
+```
+
 Rich-header sanity check helper:
 
 ```bash
@@ -118,8 +171,12 @@ uv run python tools/forensics/check_rich_header.py /absolute/path/to/Imperialism
 src/                    reconstructed code
 include/                headers and recovered types
 config/                 symbol exports and reccmp config
+docker/                 reproducible old-MSVC build images
+tools/forensics/        binary fingerprint helpers
 tools/ghidra/           ghidra export/import helper scripts
 tools/reccmp/           reccmp bootstrap helpers
+tools/stubgen.py        autogen stubs generator
+tools/workflow/         decompilation iteration helpers
 docs/                   methodology and toolchain notes
 ```
 

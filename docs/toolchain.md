@@ -43,8 +43,9 @@ Interpretation:
 
 ## Suggested Toolchain Order
 
-1. VC++ 5.0-era compiler/linker and VC++ 4.2-era compiler/linker (parallel early experiments)
-2. VC++ 6.0-era (only if matching evidence contradicts early fingerprints)
+1. VC++ 5.0-era compiler/linker (primary path)
+2. VC++ 4.2-era compiler/linker (fallback path)
+3. VC++ 6.0-era (only if matching evidence contradicts earlier fingerprints)
 
 ## Evidence To Collect
 
@@ -57,6 +58,7 @@ Interpretation:
 ## Practical Strategy
 
 1. Start with a modern-hosted old-compiler setup that can build 32-bit PE binaries.
+   Reference implementation in this repo: `docker/msvc500/`.
 2. Reconstruct a small set of functions and compare with `reccmp`.
 3. Iterate compiler flags before broad source reconstruction.
 4. Record every attempted compiler/version/flags set and observed matching deltas.

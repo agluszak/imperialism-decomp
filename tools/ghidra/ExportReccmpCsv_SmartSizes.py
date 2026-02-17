@@ -1,6 +1,6 @@
 #@category Imperialism
 # Export USER_DEFINED functions and globals to reccmp CSV (pipe-delimited):
-#   address|name|size|type
+#   address|name|size|type|prototype
 #
 # Supported runtime:
 # - Ghidra 12.0.2 PUBLIC only
@@ -78,8 +78,12 @@ def func_body_bytes(f):
     return total
 
 
+def clean_field(s):
+    return " ".join(s.replace("|", " ").split())
+
+
 rows = []
-rows.append("address|name|size|type")
+rows.append("address|name|size|type|prototype")
 
 # Functions
 funcs = []
@@ -102,12 +106,13 @@ while itf.hasNext() and not monitor.isCancelled():
     body = func_body_bytes(f)
     size = insn if insn > 0 else body
 
-    funcs.append((entry.getOffset(), name, size, insn, body))
+    proto = clean_field(f.getPrototypeString(True, True))
+    funcs.append((entry.getOffset(), name, size, insn, body, proto))
 
 funcs.sort(key=lambda t: t[0])
 
-for (addr, name, size, insn, body) in funcs:
-    rows.append("{:x}|{}|{}|function".format(addr, name, size))
+for (addr, name, size, insn, body, proto) in funcs:
+    rows.append("{:x}|{}|{}|function|{}".format(addr, name, size, proto))
 
 # Globals / labels (USER_DEFINED), size left blank.
 sym_it = symtab.getAllSymbols(True)
@@ -134,7 +139,7 @@ while sym_it.hasNext() and not monitor.isCancelled():
 
 globals_.sort(key=lambda t: t[0])
 for (addr, name) in globals_:
-    rows.append("{:x}|{}||global".format(addr, name))
+    rows.append("{:x}|{}||global|".format(addr, name))
 
 with open(out_path, "wb") as fd:
     fd.write(("\n".join(rows) + "\n").encode("utf-8"))

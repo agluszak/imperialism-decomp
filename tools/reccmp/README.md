@@ -25,3 +25,11 @@ After bootstrap:
 uv run --group reccmp reccmp-project --help
 uv run --group reccmp reccmp-reccmp --help
 ```
+
+Typical flow after building:
+
+```bash
+cd build-msvc500
+uv run --group reccmp reccmp-project detect --what recompiled
+uv run --group reccmp reccmp-reccmp --target IMPERIALISM
+```

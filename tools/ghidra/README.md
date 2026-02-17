@@ -53,3 +53,5 @@ Defaults:
 - Both scripts export only `USER_DEFINED` symbols by default.
 - Names with whitespace are skipped to keep compatibility with common importers.
 - The reccmp CSV exporter emits function sizes in decimal bytes.
+- The reccmp CSV exporter includes an extra `prototype` column used by `tools/stubgen.py`.
+  `reccmp` ignores unknown CSV columns, so this remains compatible.
