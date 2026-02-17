@@ -18,7 +18,7 @@ def configure_wine_env() -> None:
     reg_sets = [
         (
             "PATH",
-            r"C:\msvc\bin;C:\cmake\bin;C:\windows\system32",
+            r"C:\msvc\bin;C:\msvc\redist;C:\cmake\bin;C:\windows\system32",
         ),
         (
             "INCLUDE",

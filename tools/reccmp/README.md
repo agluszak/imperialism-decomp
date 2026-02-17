@@ -25,3 +25,17 @@ Typical flow after building:
 (cd build-msvc500 && uv run reccmp-project detect --what recompiled)
 (cd build-msvc500 && uv run reccmp-reccmp --target IMPERIALISM)
 ```
+
+## Progress stats script
+
+Use this to get one-line-direction deltas (better/worse/stalled) between runs:
+
+```bash
+uv run python tools/reccmp/progress_stats.py --target IMPERIALISM
+```
+
+If you already have `reccmp_roadmap.csv` and `reccmp_report.json` generated and only want to recompute/print:
+
+```bash
+uv run python tools/reccmp/progress_stats.py --target IMPERIALISM --no-run
+```
