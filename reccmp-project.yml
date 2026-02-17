@@ -1,0 +1,14 @@
+targets:
+  IMPERIALISM:
+    filename: Imperialism.exe
+    source_root: .
+    hash:
+      sha256: 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691
+    data_sources: []
+    ghidra:
+      ignore_types: []
+      ignore_functions: []
+      name_substitutions: []
+      allow_hash_mismatch: false
+    report:
+      ignore_functions: []

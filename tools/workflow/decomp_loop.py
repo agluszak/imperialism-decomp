@@ -96,16 +96,12 @@ def main() -> int:
                 [
                     "uv",
                     "run",
-                    "python",
-                    "tools/reccmp/run_reccmp_tool.py",
-                    "--cwd",
-                    str(build_dir),
                     "reccmp-project",
                     "detect",
                     "--what",
                     "recompiled",
                 ],
-                cwd=repo_root,
+                cwd=build_dir,
             )
 
         if args.compare_target:
@@ -113,15 +109,11 @@ def main() -> int:
                 [
                     "uv",
                     "run",
-                    "python",
-                    "tools/reccmp/run_reccmp_tool.py",
-                    "--cwd",
-                    str(build_dir),
                     "reccmp-reccmp",
                     "--target",
                     args.compare_target,
                 ],
-                cwd=repo_root,
+                cwd=build_dir,
             )
         return 0
     except Exception as exc:  # pragma: no cover - CLI error path

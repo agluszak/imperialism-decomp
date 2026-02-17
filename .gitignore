@@ -16,7 +16,6 @@ out/
 
 # Python
 .venv/
-.venv-reccmp/
 __pycache__/
 *.pyc
 

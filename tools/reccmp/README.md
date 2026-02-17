@@ -1,33 +1,27 @@
-# reccmp Bootstrap
+# reccmp Usage
 
-`reccmp` currently pins `pyghidra==2.2.0`, while this project venv uses `pyghidra==3.0.2`.
-To avoid version conflicts, `reccmp` is installed in a dedicated environment:
+`reccmp` is installed in the project environment from your fork via `pyproject.toml`.
+Use it directly with `uv run`.
 
-- `.venv-reccmp`
-
-## Bootstrap
+## Bootstrap project files
 
 ```bash
-uv run python tools/reccmp/bootstrap_reccmp.py
-```
-
-With original binary path (recommended for first setup):
-
-```bash
-uv run python tools/reccmp/bootstrap_reccmp.py \
-  --original-binary /absolute/path/to/Imperialism.exe
+uv run reccmp-project create \
+  --originals /absolute/path/to/Imperialism.exe \
+  --scm
 ```
 
 ## Run reccmp tools
 
 ```bash
-uv run python tools/reccmp/run_reccmp_tool.py reccmp-project --help
-uv run python tools/reccmp/run_reccmp_tool.py reccmp-reccmp --help
+uv run reccmp-project --help
+uv run reccmp-reccmp --help
+uv run reccmp-ghidra-import --help
 ```
 
 Typical flow after building:
 
 ```bash
-uv run python tools/reccmp/run_reccmp_tool.py --cwd build-msvc500 reccmp-project detect --what recompiled
-uv run python tools/reccmp/run_reccmp_tool.py --cwd build-msvc500 reccmp-reccmp --target IMPERIALISM
+(cd build-msvc500 && uv run reccmp-project detect --what recompiled)
+(cd build-msvc500 && uv run reccmp-reccmp --target IMPERIALISM)
 ```

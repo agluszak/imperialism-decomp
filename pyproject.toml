@@ -5,6 +5,7 @@ description = "Imperialism (1997) decompilation tooling"
 requires-python = ">=3.11"
 dependencies = [
     "pyghidra==3.0.2",
+    "reccmp @ git+https://github.com/agluszak/reccmp.git",
 ]
 
 [tool.uv]

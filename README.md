@@ -129,19 +129,21 @@ High-level workflow:
 Install/bootstrap helper:
 
 ```bash
-uv run python tools/reccmp/bootstrap_reccmp.py \
-  --original-binary /absolute/path/to/Imperialism.exe
+uv run reccmp-project create \
+  --originals /absolute/path/to/Imperialism.exe \
+  --scm
 ```
 
-If `ORIGINAL_BINARY` is provided, this bootstraps `reccmp-project.yml` and `reccmp-user.yml` via `reccmp-project create --scm`.
+This creates `reccmp-project.yml` and `reccmp-user.yml`.
 
-Use `config/reccmp-project.yml.example` as a temporary starter only when you are not generating files through `reccmp-project`.
+Use `config/reccmp-project.yml.example` only as a temporary starter when you are not generating files through `reccmp-project`.
 
-Run reccmp tools from the dedicated reccmp venv:
+Run reccmp tools directly from the project environment:
 
 ```bash
-uv run python tools/reccmp/run_reccmp_tool.py reccmp-project --help
-uv run python tools/reccmp/run_reccmp_tool.py reccmp-reccmp --help
+uv run reccmp-project --help
+uv run reccmp-reccmp --help
+uv run reccmp-ghidra-import --help
 ```
 
 Generate/update autogen stubs from exported symbols:
@@ -162,7 +164,9 @@ Recommended iteration cycle:
 4. Move one function from stubs into real source file and implement it.
 5. Change marker from `// STUB: IMPERIALISM 0x...` to `// FUNCTION: IMPERIALISM 0x...`.
 6. Keep functions in each translation unit sorted by original address.
-7. Build and compare with `uv run python tools/reccmp/run_reccmp_tool.py --cwd build-msvc500 reccmp-reccmp --target IMPERIALISM`.
+7. Build and compare with:
+   - `(cd build-msvc500 && uv run reccmp-project detect --what recompiled)`
+   - `(cd build-msvc500 && uv run reccmp-reccmp --target IMPERIALISM)`
 
 One-command helper for the loop:
 
@@ -194,7 +198,6 @@ config/                 symbol exports and reccmp config
 docker/                 reproducible old-MSVC build images
 tools/forensics/        binary fingerprint helpers
 tools/ghidra/           unified ghidra sync/export scripts
-tools/reccmp/           reccmp bootstrap helpers
 tools/stubgen.py        autogen stubs generator
 tools/workflow/         decompilation iteration helpers
 docs/                   methodology and toolchain notes
