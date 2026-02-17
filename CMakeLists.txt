@@ -4,6 +4,10 @@ project(imperialism LANGUAGES CXX)
 
 add_executable(Imperialism
     src/main.cpp
+    src/game/list_utils.cpp
+    src/game/mfc_helpers.cpp
+    src/game/thunks.cpp
+    src/game/noop_slots.cpp
     src/autogen/stubs.cpp
 )
 

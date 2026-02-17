@@ -3,7 +3,7 @@
 // Program: Imperialism.exe
 // Bucket: global_part008.cpp
 
-// FUNCTION: IMPERIALISM 0x005D4C10
+// GHIDRA_FUNCTION IMPERIALISM 0x005D4C10
 // GHIDRA_NAME: TryGetFileMetadataForPath
 // GHIDRA_PROTO: undefined TryGetFileMetadataForPath()
 
@@ -16,7 +16,7 @@ void TryGetFileMetadataForPath(undefined4 *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D4C40
+// GHIDRA_FUNCTION IMPERIALISM 0x005D4C40
 // GHIDRA_NAME: DeleteFileWithErrorReporting
 // GHIDRA_PROTO: undefined DeleteFileWithErrorReporting()
 
@@ -27,7 +27,7 @@ void DeleteFileWithErrorReporting(undefined4 *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5040
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5040
 // GHIDRA_NAME: GetTurnViewManagerClassNamePointer
 // GHIDRA_PROTO: undefined GetTurnViewManagerClassNamePointer()
 
@@ -39,7 +39,7 @@ undefined ** GetTurnViewManagerClassNamePointer(void)
   return &PTR_s_TViewMgr_0066f0b8;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5060
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5060
 // GHIDRA_NAME: ConstructGlobalTurnEventState
 // GHIDRA_PROTO: undefined ConstructGlobalTurnEventState()
 
@@ -62,7 +62,7 @@ void __fastcall ConstructGlobalTurnEventState(undefined4 *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D50B0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D50B0
 // GHIDRA_NAME: DestroyTurnEventState
 // GHIDRA_PROTO: undefined DestroyTurnEventState()
 
@@ -79,7 +79,7 @@ undefined4 __thiscall DestroyTurnEventState(undefined4 param_1,byte param_2)
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x005D50E0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D50E0
 // GHIDRA_NAME: SetTurnEventStateBaseVtable
 // GHIDRA_PROTO: undefined SetTurnEventStateBaseVtable()
 
@@ -92,7 +92,7 @@ void __fastcall SetTurnEventStateBaseVtable(undefined4 *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5100
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5100
 // GHIDRA_NAME: LoadTurnEventCursorTable
 // GHIDRA_PROTO: undefined LoadTurnEventCursorTable()
 
@@ -117,7 +117,7 @@ void __fastcall LoadTurnEventCursorTable(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5140
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5140
 // GHIDRA_NAME: LoadTurnEventCursorByResourceIdOffset1000
 // GHIDRA_PROTO: undefined LoadTurnEventCursorByResourceIdOffset1000()
 
@@ -150,7 +150,7 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short param_1)
   return pHVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x005D51E0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D51E0
 // GHIDRA_NAME: ReleaseTurnEventDialogIfPresent
 // GHIDRA_PROTO: undefined ReleaseTurnEventDialogIfPresent()
 
@@ -166,7 +166,7 @@ void __fastcall ReleaseTurnEventDialogIfPresent(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5200
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5200
 // GHIDRA_NAME: DeserializeTurnEventDispatchState
 // GHIDRA_PROTO: undefined DeserializeTurnEventDispatchState()
 
@@ -186,7 +186,7 @@ void __thiscall DeserializeTurnEventDispatchState(int param_1,undefined4 param_2
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5250
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5250
 // GHIDRA_NAME: SerializeTurnEventDispatchState
 // GHIDRA_PROTO: undefined SerializeTurnEventDispatchState()
 
@@ -199,7 +199,7 @@ void SerializeTurnEventDispatchState(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5270
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5270
 // GHIDRA_NAME: MapTurnEventCodeToPaletteIndex
 // GHIDRA_PROTO: undefined MapTurnEventCodeToPaletteIndex()
 
@@ -371,7 +371,7 @@ switchD_005d5297_caseD_3b:
   return 0x20;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5710
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5710
 // GHIDRA_NAME: UpdateTurnEventPaletteByCode
 // GHIDRA_PROTO: undefined UpdateTurnEventPaletteByCode()
 
@@ -389,7 +389,7 @@ void UpdateTurnEventPaletteByCode(undefined4 param_1,char param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5750
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5750
 // GHIDRA_NAME: ApplyTurnEventPaletteColorByEventCode
 // GHIDRA_PROTO: undefined ApplyTurnEventPaletteColorByEventCode()
 
@@ -405,7 +405,7 @@ void ApplyTurnEventPaletteColorByEventCode(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5780
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5780
 // GHIDRA_NAME: UpdatePaletteIndexFromTurnEventCode
 // GHIDRA_PROTO: undefined UpdatePaletteIndexFromTurnEventCode()
 
@@ -422,7 +422,7 @@ void UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D57B0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D57B0
 // GHIDRA_NAME: HandleTurnEventVtableSlot40RefreshGoldDialog
 // GHIDRA_PROTO: undefined HandleTurnEventVtableSlot40RefreshGoldDialog()
 
@@ -481,7 +481,7 @@ void HandleTurnEventVtableSlot40RefreshGoldDialog(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5960
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5960
 // GHIDRA_NAME: ClassifyTurnStateForOverlayMode
 // GHIDRA_PROTO: undefined ClassifyTurnStateForOverlayMode()
 
@@ -515,7 +515,7 @@ undefined4 ClassifyTurnStateForOverlayMode(void)
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005D5B00
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5B00
 // GHIDRA_NAME: DispatchLocalizedUiMessageWithTemplateA13A0
 // GHIDRA_PROTO: undefined DispatchLocalizedUiMessageWithTemplateA13A0()
 
@@ -561,7 +561,7 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005D5C40
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5C40
 // GHIDRA_NAME: DispatchLocalizedUiMessageWithTemplate
 // GHIDRA_PROTO: undefined DispatchLocalizedUiMessageWithTemplate()
 
@@ -607,7 +607,7 @@ DispatchLocalizedUiMessageWithTemplate
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6480
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6480
 // GHIDRA_NAME: BuildAndShowTurnOverlayByMode
 // GHIDRA_PROTO: undefined BuildAndShowTurnOverlayByMode()
 
@@ -747,7 +747,7 @@ void BuildAndShowTurnOverlayByMode(undefined4 param_1,int param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D69B0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D69B0
 // GHIDRA_NAME: ComputeTurnEventDialogPlacementByCode
 // GHIDRA_PROTO: undefined ComputeTurnEventDialogPlacementByCode()
 
@@ -815,7 +815,7 @@ LAB_005d6ac9:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6B70
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6B70
 // GHIDRA_NAME: RefreshMainViewNationIndicatorForCurrentTurnEvent
 // GHIDRA_PROTO: undefined RefreshMainViewNationIndicatorForCurrentTurnEvent()
 
@@ -846,7 +846,7 @@ void __fastcall RefreshMainViewNationIndicatorForCurrentTurnEvent(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6BF0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6BF0
 // GHIDRA_NAME: AddPendingTurnOverlayCode
 // GHIDRA_PROTO: undefined AddPendingTurnOverlayCode()
 
@@ -859,7 +859,7 @@ void __thiscall AddPendingTurnOverlayCode(int param_1,short param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6C10
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6C10
 // GHIDRA_NAME: GetPendingTurnOverlayCode
 // GHIDRA_PROTO: undefined GetPendingTurnOverlayCode()
 
@@ -871,7 +871,7 @@ undefined2 __fastcall GetPendingTurnOverlayCode(int param_1)
   return *(undefined2 *)(param_1 + 0xec);
 }
 
-// FUNCTION: IMPERIALISM 0x005D6C30
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6C30
 // GHIDRA_NAME: RefreshStrategicMapStatusIconsForActiveNation
 // GHIDRA_PROTO: undefined RefreshStrategicMapStatusIconsForActiveNation()
 
@@ -902,7 +902,7 @@ void __fastcall RefreshStrategicMapStatusIconsForActiveNation(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6CD0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6CD0
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlot70
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlot70()
 
@@ -932,7 +932,7 @@ void HandleTurnEventDialogFactorySlot70(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6D70
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6D70
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlot74
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlot74()
 
@@ -965,7 +965,7 @@ void HandleTurnEventDialogFactorySlot74(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6E30
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6E30
 // GHIDRA_NAME: NoOpTurnEventStateVtableSlot8C
 // GHIDRA_PROTO: undefined NoOpTurnEventStateVtableSlot8C()
 
@@ -977,7 +977,7 @@ void NoOpTurnEventStateVtableSlot8C(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6E50
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6E50
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlot78
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlot78()
 
@@ -1010,7 +1010,7 @@ void HandleTurnEventDialogFactorySlot78(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6F10
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6F10
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlot7C
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlot7C()
 
@@ -1043,7 +1043,7 @@ void HandleTurnEventDialogFactorySlot7C(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D6FD0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D6FD0
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlot80
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlot80()
 
@@ -1076,7 +1076,7 @@ void HandleTurnEventDialogFactorySlot80(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7090
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7090
 // GHIDRA_NAME: DispatchTurnEvent7D8AndUpdateMainViewSelection
 // GHIDRA_PROTO: undefined DispatchTurnEvent7D8AndUpdateMainViewSelection()
 
@@ -1100,7 +1100,7 @@ void __thiscall DispatchTurnEvent7D8AndUpdateMainViewSelection(int *param_1,unde
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7100
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7100
 // GHIDRA_NAME: DispatchTurnEvent7D8IfTurnFlowIdle
 // GHIDRA_PROTO: undefined DispatchTurnEvent7D8IfTurnFlowIdle()
 
@@ -1128,7 +1128,7 @@ undefined4 __thiscall DispatchTurnEvent7D8IfTurnFlowIdle(int *param_1,undefined4
   return uVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7190
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7190
 // GHIDRA_NAME: NoOpTurnEventStateVtableSlotD4
 // GHIDRA_PROTO: undefined NoOpTurnEventStateVtableSlotD4()
 
@@ -1140,7 +1140,7 @@ void NoOpTurnEventStateVtableSlotD4(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D71B0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D71B0
 // GHIDRA_NAME: InvokeMainWidgetMethod1CCWithArgs
 // GHIDRA_PROTO: undefined InvokeMainWidgetMethod1CCWithArgs()
 
@@ -1166,7 +1166,7 @@ void InvokeMainWidgetMethod1CCWithArgs
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7240
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7240
 // GHIDRA_NAME: DispatchGlobalTurnEventCode
 // GHIDRA_PROTO: undefined DispatchGlobalTurnEventCode()
 
@@ -1493,7 +1493,7 @@ LAB_005d79b8:
   goto switchD_005d7745_default;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7C40
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7C40
 // GHIDRA_NAME: DispatchTurnEvent3B8AndWaitForCompletion
 // GHIDRA_PROTO: undefined DispatchTurnEvent3B8AndWaitForCompletion()
 
@@ -1519,7 +1519,7 @@ void DispatchTurnEvent3B8AndWaitForCompletion(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7CB0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7CB0
 // GHIDRA_NAME: HandleTurnEvent7DB_SelectCityAndRefreshView
 // GHIDRA_PROTO: undefined HandleTurnEvent7DB_SelectCityAndRefreshView()
 
@@ -1642,7 +1642,7 @@ void HandleTurnEvent7DB_SelectCityAndRefreshView(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7F70
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7F70
 // GHIDRA_NAME: InvokeStrategicMapViewMethod5C
 // GHIDRA_PROTO: undefined InvokeStrategicMapViewMethod5C()
 
@@ -1657,7 +1657,7 @@ void InvokeStrategicMapViewMethod5C(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7F90
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7F90
 // GHIDRA_NAME: InvokeStrategicMapViewMethod60
 // GHIDRA_PROTO: undefined InvokeStrategicMapViewMethod60()
 
@@ -1670,7 +1670,7 @@ void InvokeStrategicMapViewMethod60(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D7FC0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D7FC0
 // GHIDRA_NAME: SetCursorRangeAndRefreshMainPanel
 // GHIDRA_PROTO: undefined SetCursorRangeAndRefreshMainPanel()
 
@@ -1693,7 +1693,7 @@ void SetCursorRangeAndRefreshMainPanel(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D8040
+// GHIDRA_FUNCTION IMPERIALISM 0x005D8040
 // GHIDRA_NAME: HandleTurnEvent7D8_ActivateDiplomacyMapView
 // GHIDRA_PROTO: undefined HandleTurnEvent7D8_ActivateDiplomacyMapView()
 
@@ -1815,7 +1815,7 @@ void HandleTurnEvent7D8_ActivateDiplomacyMapView(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D83B0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D83B0
 // GHIDRA_NAME: HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
 // GHIDRA_PROTO: undefined HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
 
@@ -1989,7 +1989,7 @@ void HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D8750
+// GHIDRA_FUNCTION IMPERIALISM 0x005D8750
 // GHIDRA_NAME: HandleTurnEvent8FC_RebuildPageTabsAndTitles
 // GHIDRA_PROTO: undefined HandleTurnEvent8FC_RebuildPageTabsAndTitles()
 
@@ -2057,7 +2057,7 @@ void HandleTurnEvent8FC_RebuildPageTabsAndTitles(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D8980
+// GHIDRA_FUNCTION IMPERIALISM 0x005D8980
 // GHIDRA_NAME: HandleTurnEventVtableSlot88BuildStatusText
 // GHIDRA_PROTO: undefined HandleTurnEventVtableSlot88BuildStatusText()
 
@@ -2176,7 +2176,7 @@ void HandleTurnEventVtableSlot88BuildStatusText(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D8C40
+// GHIDRA_FUNCTION IMPERIALISM 0x005D8C40
 // GHIDRA_NAME: HandleTurnEvent2103_RunNationStatusReportUpdate
 // GHIDRA_PROTO: undefined HandleTurnEvent2103_RunNationStatusReportUpdate()
 
@@ -2199,7 +2199,7 @@ void HandleTurnEvent2103_RunNationStatusReportUpdate(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D8CC0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D8CC0
 // GHIDRA_NAME: HandleTurnEventVtableSlotA0SyncStatusPanel
 // GHIDRA_PROTO: undefined HandleTurnEventVtableSlotA0SyncStatusPanel()
 
@@ -2252,7 +2252,7 @@ void HandleTurnEventVtableSlotA0SyncStatusPanel(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005D8DD0
+// GHIDRA_FUNCTION IMPERIALISM 0x005D8DD0
 // GHIDRA_NAME: HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
 // GHIDRA_PROTO: undefined HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor()
 
@@ -2777,7 +2777,7 @@ void HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DA040
+// GHIDRA_FUNCTION IMPERIALISM 0x005DA040
 // GHIDRA_NAME: HandleTurnEventVtableSlot60ActivateMainDialog
 // GHIDRA_PROTO: undefined HandleTurnEventVtableSlot60ActivateMainDialog()
 
@@ -2821,7 +2821,7 @@ void HandleTurnEventVtableSlot60ActivateMainDialog(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DA180
+// GHIDRA_FUNCTION IMPERIALISM 0x005DA180
 // GHIDRA_NAME: HandleTurnEvent2260_RefreshMainHudTitles
 // GHIDRA_PROTO: undefined HandleTurnEvent2260_RefreshMainHudTitles()
 
@@ -2895,7 +2895,7 @@ void HandleTurnEvent2260_RefreshMainHudTitles(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DA360
+// GHIDRA_FUNCTION IMPERIALISM 0x005DA360
 // GHIDRA_NAME: HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons
 // GHIDRA_PROTO: undefined HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
 
@@ -3301,7 +3301,7 @@ void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(void)
   MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 
-// FUNCTION: IMPERIALISM 0x005DB3B0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DB3B0
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotF4
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotF4()
 
@@ -3396,7 +3396,7 @@ LAB_005db4dd:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DB620
+// GHIDRA_FUNCTION IMPERIALISM 0x005DB620
 // GHIDRA_NAME: HandleTurnStateExitAndPostFollowupEventCode
 // GHIDRA_PROTO: undefined HandleTurnStateExitAndPostFollowupEventCode()
 
@@ -3438,7 +3438,7 @@ void __thiscall HandleTurnStateExitAndPostFollowupEventCode(int param_1,short pa
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DB780
+// GHIDRA_FUNCTION IMPERIALISM 0x005DB780
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotF8
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotF8()
 
@@ -3567,7 +3567,7 @@ void HandleTurnEventDialogFactorySlotF8(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DBD10
+// GHIDRA_FUNCTION IMPERIALISM 0x005DBD10
 // GHIDRA_NAME: NoOpTurnEventStateVtableSlotFC
 // GHIDRA_PROTO: undefined NoOpTurnEventStateVtableSlotFC()
 
@@ -3579,7 +3579,7 @@ void NoOpTurnEventStateVtableSlotFC(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DBD30
+// GHIDRA_FUNCTION IMPERIALISM 0x005DBD30
 // GHIDRA_NAME: HandleTurnEvent5DE_RefreshMainView
 // GHIDRA_PROTO: undefined HandleTurnEvent5DE_RefreshMainView()
 
@@ -3613,7 +3613,7 @@ void __fastcall HandleTurnEvent5DE_RefreshMainView(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC160
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC160
 // GHIDRA_NAME: InvokeStrategicMapViewMethod6C
 // GHIDRA_PROTO: undefined InvokeStrategicMapViewMethod6C()
 
@@ -3628,7 +3628,7 @@ void InvokeStrategicMapViewMethod6C(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC180
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC180
 // GHIDRA_NAME: InvokeStrategicMapViewMethod68
 // GHIDRA_PROTO: undefined InvokeStrategicMapViewMethod68()
 
@@ -3643,7 +3643,7 @@ void InvokeStrategicMapViewMethod68(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC1A0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC1A0
 // GHIDRA_NAME: InvokeStrategicMapViewMethod74
 // GHIDRA_PROTO: undefined InvokeStrategicMapViewMethod74()
 
@@ -3658,7 +3658,7 @@ void InvokeStrategicMapViewMethod74(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC1C0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC1C0
 // GHIDRA_NAME: InvokeStrategicMapViewMethod70
 // GHIDRA_PROTO: undefined InvokeStrategicMapViewMethod70()
 
@@ -3673,7 +3673,7 @@ void InvokeStrategicMapViewMethod70(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC1E0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC1E0
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotD0
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotD0()
 
@@ -3786,7 +3786,7 @@ void __fastcall HandleTurnEventDialogFactorySlotD0(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC430
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC430
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotB8
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotB8()
 
@@ -3833,7 +3833,7 @@ void HandleTurnEventDialogFactorySlotB8(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DC690
+// GHIDRA_FUNCTION IMPERIALISM 0x005DC690
 // GHIDRA_NAME: HandleTurnEventF3D_PopulateRecentTurnMessages
 // GHIDRA_PROTO: undefined HandleTurnEventF3D_PopulateRecentTurnMessages()
 
@@ -3965,7 +3965,7 @@ void HandleTurnEventF3D_PopulateRecentTurnMessages(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DCAA0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DCAA0
 // GHIDRA_NAME: HandleTurnEventVtableSlot2CInitializeHotKeyDialog
 // GHIDRA_PROTO: undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
 
@@ -4023,7 +4023,7 @@ void HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DCDF0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DCDF0
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotB4
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotB4()
 
@@ -4060,7 +4060,7 @@ bool __fastcall HandleTurnEventDialogFactorySlotB4(int *param_1)
   return iVar4 != 0x636e636c;
 }
 
-// FUNCTION: IMPERIALISM 0x005DCF20
+// GHIDRA_FUNCTION IMPERIALISM 0x005DCF20
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotD8
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotD8()
 
@@ -4101,7 +4101,7 @@ void __fastcall HandleTurnEventDialogFactorySlotD8(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DD0A0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD0A0
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotDC
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotDC()
 
@@ -4134,7 +4134,7 @@ undefined4 __fastcall HandleTurnEventDialogFactorySlotDC(int *param_1)
   return uVar4;
 }
 
-// FUNCTION: IMPERIALISM 0x005DD180
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD180
 // GHIDRA_NAME: HandleGlobalMapNationContextSelection
 // GHIDRA_PROTO: undefined HandleGlobalMapNationContextSelection()
 
@@ -4163,7 +4163,7 @@ void HandleGlobalMapNationContextSelection(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DD220
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD220
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotE4
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotE4()
 
@@ -4199,7 +4199,7 @@ void __fastcall HandleTurnEventDialogFactorySlotE4(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DD340
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD340
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotF0
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotF0()
 
@@ -4236,7 +4236,7 @@ int * __fastcall HandleTurnEventDialogFactorySlotF0(int *param_1)
   return piVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x005DD770
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD770
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotE8
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotE8()
 
@@ -4277,7 +4277,7 @@ void __fastcall HandleTurnEventDialogFactorySlotE8(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DD900
+// GHIDRA_FUNCTION IMPERIALISM 0x005DD900
 // GHIDRA_NAME: HandleTurnEventDialogFactorySlotEC
 // GHIDRA_PROTO: undefined HandleTurnEventDialogFactorySlotEC()
 
@@ -4315,7 +4315,7 @@ void __fastcall HandleTurnEventDialogFactorySlotEC(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DDD20
+// GHIDRA_FUNCTION IMPERIALISM 0x005DDD20
 // GHIDRA_NAME: ShowCivilianLedgerDialogAndSelectUnit
 // GHIDRA_PROTO: void ShowCivilianLedgerDialogAndSelectUnit(void)
 
@@ -4430,7 +4430,7 @@ void ShowCivilianLedgerDialogAndSelectUnit(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DE4F0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DE4F0
 // GHIDRA_NAME: ShowCivilianReportDialogAndReturnConfirm
 // GHIDRA_PROTO: bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)
 
@@ -4484,7 +4484,7 @@ bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int *pCivilianOrderEntr
   return dwSelectedControlTag == 0x6f6b6179;
 }
 
-// FUNCTION: IMPERIALISM 0x005DE990
+// GHIDRA_FUNCTION IMPERIALISM 0x005DE990
 // GHIDRA_NAME: ShowLocalizedUiPromptByGroupAndIndex
 // GHIDRA_PROTO: char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
 
@@ -4517,7 +4517,7 @@ char ShowLocalizedUiPromptByGroupAndIndex
   return promptResult;
 }
 
-// FUNCTION: IMPERIALISM 0x005DEE50
+// GHIDRA_FUNCTION IMPERIALISM 0x005DEE50
 // GHIDRA_NAME: InitializeDialogTemplateE0
 // GHIDRA_PROTO: undefined InitializeDialogTemplateE0()
 
@@ -4533,7 +4533,7 @@ undefined4 * __thiscall InitializeDialogTemplateE0(undefined4 *param_1,undefined
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x005DEF70
+// GHIDRA_FUNCTION IMPERIALISM 0x005DEF70
 // GHIDRA_NAME: SetCursorFromResourceE4AndClampRange
 // GHIDRA_PROTO: undefined SetCursorFromResourceE4AndClampRange()
 
@@ -4554,7 +4554,7 @@ undefined4 SetCursorFromResourceE4AndClampRange(void)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005DF280
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF280
 // GHIDRA_NAME: ConstructUiViewManager
 // GHIDRA_PROTO: void * __fastcall ConstructUiViewManager(void * pUiViewManager)
 
@@ -4579,7 +4579,7 @@ void * __fastcall ConstructUiViewManager(void *pUiViewManager)
   return pUiViewManager;
 }
 
-// FUNCTION: IMPERIALISM 0x005DF430
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF430
 // GHIDRA_NAME: LoadTableResourceStreamByName
 // GHIDRA_PROTO: undefined LoadTableResourceStreamByName()
 
@@ -4656,7 +4656,7 @@ int * LoadTableResourceStreamByName(LPCSTR param_1)
   return piVar4;
 }
 
-// FUNCTION: IMPERIALISM 0x005DF6D0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF6D0
 // GHIDRA_NAME: ReleaseResourceStreamIfNotNull
 // GHIDRA_PROTO: undefined ReleaseResourceStreamIfNotNull()
 
@@ -4669,7 +4669,7 @@ void ReleaseResourceStreamIfNotNull(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DF700
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF700
 // GHIDRA_NAME: ReadResourceStreamIntoBufferAndAdvance
 // GHIDRA_PROTO: undefined ReadResourceStreamIntoBufferAndAdvance()
 
@@ -4687,7 +4687,7 @@ ReadResourceStreamIntoBufferAndAdvance(int *param_1,undefined4 param_2,undefined
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005DF760
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF760
 // GHIDRA_NAME: GetResourceStreamSize
 // GHIDRA_PROTO: undefined GetResourceStreamSize()
 
@@ -4698,7 +4698,7 @@ void GetResourceStreamSize(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005DF8D0
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF8D0
 // GHIDRA_NAME: ReturnTrueStub
 // GHIDRA_PROTO: undefined ReturnTrueStub()
 
@@ -4708,7 +4708,7 @@ undefined4 ReturnTrueStub(void)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005DFD70
+// GHIDRA_FUNCTION IMPERIALISM 0x005DFD70
 // GHIDRA_NAME: BuildScenarioPathForModeAndIndex
 // GHIDRA_PROTO: undefined BuildScenarioPathForModeAndIndex()
 
@@ -4761,7 +4761,7 @@ LAB_005dfe2e:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E0030
+// GHIDRA_FUNCTION IMPERIALISM 0x005E0030
 // GHIDRA_NAME: ShowSavedStatusDialogAndReturnAccepted
 // GHIDRA_PROTO: undefined ShowSavedStatusDialogAndReturnAccepted()
 
@@ -4813,7 +4813,7 @@ undefined1 ShowSavedStatusDialogAndReturnAccepted(undefined4 param_1)
   return uVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x005E1BC0
+// GHIDRA_FUNCTION IMPERIALISM 0x005E1BC0
 // GHIDRA_NAME: InitializeDialogTemplate98WithSharedText
 // GHIDRA_PROTO: undefined InitializeDialogTemplate98WithSharedText()
 
@@ -4844,7 +4844,7 @@ InitializeDialogTemplate98WithSharedText(undefined4 *param_1,undefined4 param_2)
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E2B50
+// GHIDRA_FUNCTION IMPERIALISM 0x005E2B50
 // GHIDRA_NAME: NoOpJoinGameSelectionVtableSlotA
 // GHIDRA_PROTO: undefined NoOpJoinGameSelectionVtableSlotA()
 
@@ -4856,7 +4856,7 @@ void NoOpJoinGameSelectionVtableSlotA(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E2B70
+// GHIDRA_FUNCTION IMPERIALISM 0x005E2B70
 // GHIDRA_NAME: NoOpJoinGameSelectionVtableSlotB
 // GHIDRA_PROTO: undefined NoOpJoinGameSelectionVtableSlotB()
 
@@ -4868,7 +4868,7 @@ void NoOpJoinGameSelectionVtableSlotB(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E2BB0
+// GHIDRA_FUNCTION IMPERIALISM 0x005E2BB0
 // GHIDRA_NAME: ResetJoinableGameDescriptorBuffer
 // GHIDRA_PROTO: undefined ResetJoinableGameDescriptorBuffer()
 
@@ -4907,7 +4907,7 @@ void __fastcall ResetJoinableGameDescriptorBuffer(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E2C80
+// GHIDRA_FUNCTION IMPERIALISM 0x005E2C80
 // GHIDRA_NAME: InitializeJoinGameSelectionDialogState
 // GHIDRA_PROTO: undefined InitializeJoinGameSelectionDialogState()
 
@@ -4930,7 +4930,7 @@ void __fastcall InitializeJoinGameSelectionDialogState(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E2CF0
+// GHIDRA_FUNCTION IMPERIALISM 0x005E2CF0
 // GHIDRA_NAME: AppendJoinableGameDescriptorEntry
 // GHIDRA_PROTO: undefined AppendJoinableGameDescriptorEntry()
 
@@ -5042,7 +5042,7 @@ undefined4 AppendJoinableGameDescriptorEntry(uint param_1)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E30C0
+// GHIDRA_FUNCTION IMPERIALISM 0x005E30C0
 // GHIDRA_NAME: ShowJoinGameSelectionDialogAndCaptureChoice
 // GHIDRA_PROTO: undefined ShowJoinGameSelectionDialogAndCaptureChoice()
 
@@ -5133,7 +5133,7 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
   return iVar3 == 0x6f6b6179;
 }
 
-// FUNCTION: IMPERIALISM 0x005E3C20
+// GHIDRA_FUNCTION IMPERIALISM 0x005E3C20
 // GHIDRA_NAME: OpenJoinGameRuntimeSelectionAndStartSession
 // GHIDRA_PROTO: undefined OpenJoinGameRuntimeSelectionAndStartSession()
 
@@ -5169,7 +5169,7 @@ OpenJoinGameRuntimeSelectionAndStartSession(undefined4 param_1,int *param_2,char
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5661
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5661
 // GHIDRA_NAME: MoveListBoxEntryPreserveItemData
 // GHIDRA_PROTO: undefined MoveListBoxEntryPreserveItemData()
 
@@ -5199,7 +5199,7 @@ void MoveListBoxEntryPreserveItemData(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E56F2
+// GHIDRA_FUNCTION IMPERIALISM 0x005E56F2
 // GHIDRA_NAME: PaintListBoxItemFocusRect
 // GHIDRA_PROTO: undefined PaintListBoxItemFocusRect()
 
@@ -5245,7 +5245,7 @@ void PaintListBoxItemFocusRect(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5950
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5950
 // GHIDRA_NAME: SendControlMessage413WithModuleContext
 // GHIDRA_PROTO: undefined SendControlMessage413WithModuleContext()
 
@@ -5270,7 +5270,7 @@ SendControlMessage413WithModuleContext(int param_1,WPARAM param_2,undefined4 par
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E59E7
+// GHIDRA_FUNCTION IMPERIALISM 0x005E59E7
 // GHIDRA_NAME: SendControlMessage41CWithModuleHandle
 // GHIDRA_PROTO: undefined SendControlMessage41CWithModuleHandle()
 
@@ -5288,7 +5288,7 @@ void __thiscall SendControlMessage41CWithModuleHandle(int param_1,LPARAM param_2
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5AD2
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5AD2
 // GHIDRA_NAME: QueryControlMessages403And402
 // GHIDRA_PROTO: undefined QueryControlMessages403And402()
 
@@ -5325,7 +5325,7 @@ undefined4 QueryControlMessages403And402(void)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5C9C
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5C9C
 // GHIDRA_NAME: SendControlMessage101BWithOptions
 // GHIDRA_PROTO: undefined SendControlMessage101BWithOptions()
 
@@ -5357,7 +5357,7 @@ SendControlMessage101BWithOptions
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5CEF
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5CEF
 // GHIDRA_NAME: SendControlMessage1007WithPayload
 // GHIDRA_PROTO: undefined SendControlMessage1007WithPayload()
 
@@ -5390,7 +5390,7 @@ SendControlMessage1007WithPayload
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5DBF
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5DBF
 // GHIDRA_NAME: GetControlTextViaMessage102D
 // GHIDRA_PROTO: undefined GetControlTextViaMessage102D()
 
@@ -5432,7 +5432,7 @@ undefined4 GetControlTextViaMessage102D(void)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5E64
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5E64
 // GHIDRA_NAME: SendControlMessage102DWithPayload
 // GHIDRA_PROTO: undefined SendControlMessage102DWithPayload()
 
@@ -5456,7 +5456,7 @@ SendControlMessage102DWithPayload
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5EA9
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5EA9
 // GHIDRA_NAME: QueryControlMessage1005Mode04
 // GHIDRA_PROTO: undefined QueryControlMessage1005Mode04()
 
@@ -5476,7 +5476,7 @@ undefined4 __thiscall QueryControlMessage1005Mode04(int param_1,undefined4 param
   return local_c;
 }
 
-// FUNCTION: IMPERIALISM 0x005E5F1C
+// GHIDRA_FUNCTION IMPERIALISM 0x005E5F1C
 // GHIDRA_NAME: SendControlMessage1002AndMaybe1003
 // GHIDRA_PROTO: undefined SendControlMessage1002AndMaybe1003()
 
@@ -5497,7 +5497,7 @@ void __thiscall SendControlMessage1002AndMaybe1003(int param_1,WPARAM param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6076
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6076
 // GHIDRA_NAME: GetControlTextViaMessage110C
 // GHIDRA_PROTO: undefined GetControlTextViaMessage110C()
 
@@ -5539,7 +5539,7 @@ undefined4 GetControlTextViaMessage110C(void)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6116
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6116
 // GHIDRA_NAME: QueryControlMessage110CMode22
 // GHIDRA_PROTO: undefined QueryControlMessage110CMode22()
 
@@ -5566,7 +5566,7 @@ QueryControlMessage110CMode22
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6155
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6155
 // GHIDRA_NAME: QueryControlMessage110CMode08
 // GHIDRA_PROTO: undefined QueryControlMessage110CMode08()
 
@@ -5589,7 +5589,7 @@ QueryControlMessage110CMode08(int param_1,undefined4 param_2,undefined4 param_3)
   return local_24;
 }
 
-// FUNCTION: IMPERIALISM 0x005E618D
+// GHIDRA_FUNCTION IMPERIALISM 0x005E618D
 // GHIDRA_NAME: QueryControlMessage110CMode04
 // GHIDRA_PROTO: undefined QueryControlMessage110CMode04()
 
@@ -5608,7 +5608,7 @@ undefined4 __thiscall QueryControlMessage110CMode04(int param_1,undefined4 param
   return local_8;
 }
 
-// FUNCTION: IMPERIALISM 0x005E61BB
+// GHIDRA_FUNCTION IMPERIALISM 0x005E61BB
 // GHIDRA_NAME: QueryControlMessage110CMode40
 // GHIDRA_PROTO: undefined QueryControlMessage110CMode40()
 
@@ -5627,7 +5627,7 @@ undefined4 __thiscall QueryControlMessage110CMode40(int param_1,undefined4 param
   return local_c;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6237
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6237
 // GHIDRA_NAME: SendControlMessage1100WithPayload
 // GHIDRA_PROTO: undefined SendControlMessage1100WithPayload()
 
@@ -5663,7 +5663,7 @@ SendControlMessage1100WithPayload
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E62C1
+// GHIDRA_FUNCTION IMPERIALISM 0x005E62C1
 // GHIDRA_NAME: SendControlMessage1108AndMaybe1109
 // GHIDRA_PROTO: undefined SendControlMessage1108AndMaybe1109()
 
@@ -5684,7 +5684,7 @@ void __thiscall SendControlMessage1108AndMaybe1109(int param_1,WPARAM param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E64BE
+// GHIDRA_FUNCTION IMPERIALISM 0x005E64BE
 // GHIDRA_NAME: SendControlMessages407And408
 // GHIDRA_PROTO: undefined SendControlMessages407And408()
 
@@ -5697,7 +5697,7 @@ SendControlMessages407And408(int param_1,LPARAM param_2,LPARAM param_3,WPARAM pa
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6B22
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6B22
 // GHIDRA_NAME: SendControlMessage188
 // GHIDRA_PROTO: undefined SendControlMessage188()
 
@@ -5710,7 +5710,7 @@ void __fastcall SendControlMessage188(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E7980
+// GHIDRA_FUNCTION IMPERIALISM 0x005E7980
 // GHIDRA_NAME: CompareAnsiStringsWithMbcsAwareness
 // GHIDRA_PROTO: undefined CompareAnsiStringsWithMbcsAwareness()
 
@@ -5781,7 +5781,7 @@ int CompareAnsiStringsWithMbcsAwareness(byte *param_1,byte *param_2)
   return (1 - (uint)bVar6) - (uint)(bVar6 != 0);
 }
 
-// FUNCTION: IMPERIALISM 0x005E7A80
+// GHIDRA_FUNCTION IMPERIALISM 0x005E7A80
 // GHIDRA_NAME: SetGlobalCallback6A7FACAndReturnPrevious
 // GHIDRA_PROTO: undefined SetGlobalCallback6A7FACAndReturnPrevious()
 
@@ -5797,7 +5797,7 @@ undefined4 SetGlobalCallback6A7FACAndReturnPrevious(undefined4 param_1)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E7EC0
+// GHIDRA_FUNCTION IMPERIALISM 0x005E7EC0
 // GHIDRA_NAME: CallCallbackNTimes
 // GHIDRA_PROTO: void __stdcall CallCallbackNTimes(undefined4 unused_arg0, undefined4 unused_arg1, int repeat_count, undefined * callback)
 
@@ -5825,7 +5825,7 @@ void CallCallbackNTimes(undefined4 unused_arg0,undefined4 unused_arg1,int repeat
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E7F50
+// GHIDRA_FUNCTION IMPERIALISM 0x005E7F50
 // GHIDRA_NAME: FreeHeapBlockWithAllocatorTracking
 // GHIDRA_PROTO: undefined FreeHeapBlockWithAllocatorTracking()
 
@@ -5851,7 +5851,7 @@ void FreeHeapBlockWithAllocatorTracking(LPVOID param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E8C50
+// GHIDRA_FUNCTION IMPERIALISM 0x005E8C50
 // GHIDRA_NAME: CallCallbackRepeatedly
 // GHIDRA_PROTO: void __stdcall CallCallbackRepeatedly(undefined4 param_1, undefined4 param_2, int iteration_count, undefined * callback)
 
@@ -5880,7 +5880,7 @@ void CallCallbackRepeatedly
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E9010
+// GHIDRA_FUNCTION IMPERIALISM 0x005E9010
 // GHIDRA_NAME: CloseBufferedStreamAndReleaseResources
 // GHIDRA_PROTO: undefined CloseBufferedStreamAndReleaseResources()
 
@@ -5899,7 +5899,7 @@ undefined4 CloseBufferedStreamAndReleaseResources(int param_1)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E9100
+// GHIDRA_FUNCTION IMPERIALISM 0x005E9100
 // GHIDRA_NAME: OpenBufferedStreamWithMode40
 // GHIDRA_PROTO: undefined OpenBufferedStreamWithMode40()
 
@@ -5910,7 +5910,7 @@ void OpenBufferedStreamWithMode40(undefined4 param_1,undefined4 param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E9440
+// GHIDRA_FUNCTION IMPERIALISM 0x005E9440
 // GHIDRA_NAME: ReadBufferedStreamLocked
 // GHIDRA_PROTO: undefined ReadBufferedStreamLocked()
 
@@ -5927,7 +5927,7 @@ ReadBufferedStreamLocked
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005E9B90
+// GHIDRA_FUNCTION IMPERIALISM 0x005E9B90
 // GHIDRA_NAME: ExitProcessWithCrtCleanup
 // GHIDRA_PROTO: undefined ExitProcessWithCrtCleanup()
 
@@ -5940,7 +5940,7 @@ void ExitProcessWithCrtCleanup(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005E9BF0
+// GHIDRA_FUNCTION IMPERIALISM 0x005E9BF0
 // GHIDRA_NAME: RunCrtExitHandlersAndTerminate
 // GHIDRA_PROTO: undefined RunCrtExitHandlersAndTerminate()
 
@@ -5989,7 +5989,7 @@ void RunCrtExitHandlersAndTerminate(UINT param_1,int param_2,int param_3)
   ExitProcess(param_1);
 }
 
-// FUNCTION: IMPERIALISM 0x005EAEE0
+// GHIDRA_FUNCTION IMPERIALISM 0x005EAEE0
 // GHIDRA_NAME: SetMultiByteCodePageLocked
 // GHIDRA_PROTO: undefined SetMultiByteCodePageLocked()
 
@@ -6116,7 +6116,7 @@ undefined4 SetMultiByteCodePageLocked(undefined4 param_1)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005EB1F0
+// GHIDRA_FUNCTION IMPERIALISM 0x005EB1F0
 // GHIDRA_NAME: InitializeMultiByteCodePageFromLocale
 // GHIDRA_PROTO: undefined InitializeMultiByteCodePageFromLocale()
 
@@ -6130,7 +6130,7 @@ void InitializeMultiByteCodePageFromLocale(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005ED740
+// GHIDRA_FUNCTION IMPERIALISM 0x005ED740
 // GHIDRA_NAME: InitializeCrtThreadDataTls
 // GHIDRA_PROTO: undefined InitializeCrtThreadDataTls()
 
@@ -6163,7 +6163,7 @@ undefined4 InitializeCrtThreadDataTls(void)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005EDBC0
+// GHIDRA_FUNCTION IMPERIALISM 0x005EDBC0
 // GHIDRA_NAME: EnterStreamCriticalSection
 // GHIDRA_PROTO: undefined EnterStreamCriticalSection()
 
@@ -6178,7 +6178,7 @@ void EnterStreamCriticalSection(uint param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005EDC30
+// GHIDRA_FUNCTION IMPERIALISM 0x005EDC30
 // GHIDRA_NAME: LeaveStreamCriticalSection
 // GHIDRA_PROTO: undefined LeaveStreamCriticalSection()
 
@@ -6193,7 +6193,7 @@ void LeaveStreamCriticalSection(uint param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005EDE90
+// GHIDRA_FUNCTION IMPERIALISM 0x005EDE90
 // GHIDRA_NAME: InitializeCrtHeapSubsystem
 // GHIDRA_PROTO: undefined InitializeCrtHeapSubsystem()
 
@@ -6218,7 +6218,7 @@ undefined4 InitializeCrtHeapSubsystem(void)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005EDF40
+// GHIDRA_FUNCTION IMPERIALISM 0x005EDF40
 // GHIDRA_NAME: AllocateCrtHeapRegionDescriptor
 // GHIDRA_PROTO: undefined AllocateCrtHeapRegionDescriptor()
 
@@ -6296,7 +6296,7 @@ undefined ** AllocateCrtHeapRegionDescriptor(void)
   return (undefined **)0x0;
 }
 
-// FUNCTION: IMPERIALISM 0x005F1C70
+// GHIDRA_FUNCTION IMPERIALISM 0x005F1C70
 // GHIDRA_NAME: IsLeadByteInCurrentCodePage
 // GHIDRA_PROTO: undefined IsLeadByteInCurrentCodePage()
 
@@ -6310,7 +6310,7 @@ void IsLeadByteInCurrentCodePage(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005F1CE0
+// GHIDRA_FUNCTION IMPERIALISM 0x005F1CE0
 // GHIDRA_NAME: CheckMultibyteCharacterClass
 // GHIDRA_PROTO: undefined CheckMultibyteCharacterClass()
 
@@ -6331,7 +6331,7 @@ undefined4 CheckMultibyteCharacterClass(uint param_1,uint param_2,byte param_3)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005F1D20
+// GHIDRA_FUNCTION IMPERIALISM 0x005F1D20
 // GHIDRA_NAME: BuildEnvpArrayFromEnvironmentBlock
 // GHIDRA_PROTO: undefined BuildEnvpArrayFromEnvironmentBlock()
 
@@ -6432,7 +6432,7 @@ void BuildEnvpArrayFromEnvironmentBlock(void)
   } while( true );
 }
 
-// FUNCTION: IMPERIALISM 0x005F1E10
+// GHIDRA_FUNCTION IMPERIALISM 0x005F1E10
 // GHIDRA_NAME: BuildArgvFromCommandLine
 // GHIDRA_PROTO: undefined BuildArgvFromCommandLine()
 
@@ -6466,7 +6466,7 @@ void BuildArgvFromCommandLine(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005F22C0
+// GHIDRA_FUNCTION IMPERIALISM 0x005F22C0
 // GHIDRA_NAME: BuildAnsiEnvironmentBlockCopy
 // GHIDRA_PROTO: undefined BuildAnsiEnvironmentBlockCopy()
 
@@ -6574,7 +6574,7 @@ LPSTR BuildAnsiEnvironmentBlockCopy(void)
   return (LPSTR)0x0;
 }
 
-// FUNCTION: IMPERIALISM 0x005F2420
+// GHIDRA_FUNCTION IMPERIALISM 0x005F2420
 // GHIDRA_NAME: InitializeLowIoHandleTable
 // GHIDRA_PROTO: undefined InitializeLowIoHandleTable()
 
@@ -6696,7 +6696,7 @@ LAB_005f260e:
   } while( true );
 }
 
-// FUNCTION: IMPERIALISM 0x005FA7C2
+// GHIDRA_FUNCTION IMPERIALISM 0x005FA7C2
 // GHIDRA_NAME: CallMfcAppLifecycleEntry
 // GHIDRA_PROTO: undefined CallMfcAppLifecycleEntry()
 
@@ -6708,7 +6708,7 @@ void CallMfcAppLifecycleEntry
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAA44
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAA44
 // GHIDRA_NAME: AddTooltipToolInfo
 // GHIDRA_PROTO: undefined AddTooltipToolInfo()
 
@@ -6731,7 +6731,7 @@ AddTooltipToolInfo(int param_1,undefined4 param_2,undefined4 param_3,int param_4
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAA92
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAA92
 // GHIDRA_NAME: AddTooltipToolInfoWithId
 // GHIDRA_PROTO: undefined AddTooltipToolInfoWithId()
 
@@ -6760,7 +6760,7 @@ AddTooltipToolInfoWithId
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAAEC
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAAEC
 // GHIDRA_NAME: RemoveTooltipToolInfo
 // GHIDRA_PROTO: undefined RemoveTooltipToolInfo()
 
@@ -6776,7 +6776,7 @@ void __thiscall RemoveTooltipToolInfo(int param_1,undefined4 param_2,undefined4 
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAB1D
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAB1D
 // GHIDRA_NAME: GetTooltipToolText
 // GHIDRA_PROTO: undefined GetTooltipToolText()
 
@@ -6797,7 +6797,7 @@ GetTooltipToolText(int param_1,undefined4 param_2,undefined4 param_3,undefined4 
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAB68
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAB68
 // GHIDRA_NAME: GetTooltipToolInfo
 // GHIDRA_PROTO: undefined GetTooltipToolInfo()
 
@@ -6812,7 +6812,7 @@ void __thiscall GetTooltipToolInfo(int param_1,int param_2,undefined4 param_3,un
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAB9A
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAB9A
 // GHIDRA_NAME: QueryTooltipToolByWindowAndId
 // GHIDRA_PROTO: undefined QueryTooltipToolByWindowAndId()
 
@@ -6847,7 +6847,7 @@ QueryTooltipToolByWindowAndId
   return LVar1 != 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAC0D
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAC0D
 // GHIDRA_NAME: SetTooltipToolRect
 // GHIDRA_PROTO: undefined SetTooltipToolRect()
 
@@ -6866,7 +6866,7 @@ SetTooltipToolRect(int param_1,undefined4 param_2,undefined4 param_3,undefined4 
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAC4F
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAC4F
 // GHIDRA_NAME: HitTestTooltipToolInfo
 // GHIDRA_PROTO: undefined HitTestTooltipToolInfo()
 
@@ -6885,7 +6885,7 @@ HitTestTooltipToolInfo(int param_1,undefined4 param_2,undefined4 param_3,undefin
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FAD29
+// GHIDRA_FUNCTION IMPERIALISM 0x005FAD29
 // GHIDRA_NAME: EnableTooltipRelayTracking
 // GHIDRA_PROTO: undefined EnableTooltipRelayTracking()
 
@@ -6934,7 +6934,7 @@ undefined4 __thiscall EnableTooltipRelayTracking(int param_1,int param_2)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005FADDB
+// GHIDRA_FUNCTION IMPERIALISM 0x005FADDB
 // GHIDRA_NAME: RelayMouseEventToTooltipWindow
 // GHIDRA_PROTO: undefined RelayMouseEventToTooltipWindow()
 
@@ -7102,7 +7102,7 @@ LAB_005fb0c4:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FB0D5
+// GHIDRA_FUNCTION IMPERIALISM 0x005FB0D5
 // GHIDRA_NAME: UpdateTooltipRelayForMouseMessage
 // GHIDRA_PROTO: undefined UpdateTooltipRelayForMouseMessage()
 
@@ -7140,7 +7140,7 @@ void UpdateTooltipRelayForMouseMessage(int param_1,undefined4 *param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FF15E
+// GHIDRA_FUNCTION IMPERIALISM 0x005FF15E
 // GHIDRA_NAME: FormatStringWithVarArgsToSharedRef
 // GHIDRA_PROTO: undefined FormatStringWithVarArgsToSharedRef()
 
@@ -7151,7 +7151,7 @@ void FormatStringWithVarArgsToSharedRef(undefined4 param_1,undefined4 param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005FF46F
+// GHIDRA_FUNCTION IMPERIALISM 0x005FF46F
 // GHIDRA_NAME: InitializeFileDialogTemplateBaseState
 // GHIDRA_PROTO: undefined InitializeFileDialogTemplateBaseState()
 
@@ -7227,7 +7227,7 @@ LAB_005ff559:
   return extraout_ECX;
 }
 
-// FUNCTION: IMPERIALISM 0x005FF69E
+// GHIDRA_FUNCTION IMPERIALISM 0x005FF69E
 // GHIDRA_NAME: QueryParentWithMessages464And465OrFallback
 // GHIDRA_PROTO: undefined QueryParentWithMessages464And465OrFallback()
 
@@ -7286,7 +7286,7 @@ LAB_005ff774:
   return uVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x005FF7AC
+// GHIDRA_FUNCTION IMPERIALISM 0x005FF7AC
 // GHIDRA_NAME: QueryParentWithMessage464OrFallback
 // GHIDRA_PROTO: undefined QueryParentWithMessage464OrFallback()
 
@@ -7332,7 +7332,7 @@ LAB_005ff82f:
   return uVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x005FFC15
+// GHIDRA_FUNCTION IMPERIALISM 0x005FFC15
 // GHIDRA_NAME: QueryParentWithMessage466
 // GHIDRA_PROTO: undefined QueryParentWithMessage466()
 
@@ -7372,7 +7372,7 @@ undefined4 QueryParentWithMessage466(void)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x005FFD49
+// GHIDRA_FUNCTION IMPERIALISM 0x005FFD49
 // GHIDRA_NAME: DispatchNegativeCommandRangeToFrameHandlers
 // GHIDRA_PROTO: undefined DispatchNegativeCommandRangeToFrameHandlers()
 
@@ -7427,7 +7427,7 @@ DispatchNegativeCommandRangeToFrameHandlers
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x005FFEB1
+// GHIDRA_FUNCTION IMPERIALISM 0x005FFEB1
 // GHIDRA_NAME: HandleFileDialogCustomMessages
 // GHIDRA_PROTO: undefined HandleFileDialogCustomMessages()
 
@@ -7481,7 +7481,7 @@ undefined4 HandleFileDialogCustomMessages(HWND param_1,uint param_2,undefined4 p
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00601B74
+// GHIDRA_FUNCTION IMPERIALISM 0x00601B74
 // GHIDRA_NAME: AllocateAndLinkBlockHead
 // GHIDRA_PROTO: undefined AllocateAndLinkBlockHead()
 
@@ -7496,7 +7496,7 @@ void AllocateAndLinkBlockHead(undefined4 *param_1,int param_2,int param_3)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00601B94
+// GHIDRA_FUNCTION IMPERIALISM 0x00601B94
 // GHIDRA_NAME: FreeLinkedBlockChain
 // GHIDRA_PROTO: undefined FreeLinkedBlockChain()
 
@@ -7513,7 +7513,7 @@ void __fastcall FreeLinkedBlockChain(undefined4 *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00601BC1
+// GHIDRA_FUNCTION IMPERIALISM 0x00601BC1
 // GHIDRA_NAME: DestructCObArrayAndMaybeFree
 // GHIDRA_PROTO: undefined DestructCObArrayAndMaybeFree()
 
@@ -7527,7 +7527,7 @@ undefined4 __thiscall DestructCObArrayAndMaybeFree(undefined4 param_1,byte param
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x00601BDD
+// GHIDRA_FUNCTION IMPERIALISM 0x00601BDD
 // GHIDRA_NAME: DestructCObArray
 // GHIDRA_PROTO: undefined DestructCObArray()
 
@@ -7556,7 +7556,7 @@ void DestructCObArray(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00601C14
+// GHIDRA_FUNCTION IMPERIALISM 0x00601C14
 // GHIDRA_NAME: SetCObArraySize
 // GHIDRA_PROTO: undefined SetCObArraySize()
 
@@ -7624,7 +7624,7 @@ void __thiscall SetCObArraySize(int param_1,int param_2,int param_3)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00603516
+// GHIDRA_FUNCTION IMPERIALISM 0x00603516
 // GHIDRA_NAME: LookupHandleMapEntryByHwnd
 // GHIDRA_PROTO: undefined LookupHandleMapEntryByHwnd()
 
@@ -7648,7 +7648,7 @@ undefined4 __thiscall LookupHandleMapEntryByHwnd(int param_1,uint param_2)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00604B68
+// GHIDRA_FUNCTION IMPERIALISM 0x00604B68
 // GHIDRA_NAME: HandleDialogInitMessage
 // GHIDRA_PROTO: undefined HandleDialogInitMessage()
 
@@ -7677,7 +7677,7 @@ undefined4 HandleDialogInitMessage(undefined4 param_1,int param_2)
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x00604D42
+// GHIDRA_FUNCTION IMPERIALISM 0x00604D42
 // GHIDRA_NAME: CreateDialogFromResourceNameAndOwner
 // GHIDRA_PROTO: undefined CreateDialogFromResourceNameAndOwner()
 
@@ -7701,7 +7701,7 @@ void __thiscall CreateDialogFromResourceNameAndOwner(int param_1,LPCSTR param_2,
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00604DA4
+// GHIDRA_FUNCTION IMPERIALISM 0x00604DA4
 // GHIDRA_NAME: CreateDialogFromResourceHandle
 // GHIDRA_PROTO: undefined CreateDialogFromResourceHandle()
 
@@ -7715,7 +7715,7 @@ void CreateDialogFromResourceHandle(HGLOBAL param_1,undefined4 param_2,undefined
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00604DDD
+// GHIDRA_FUNCTION IMPERIALISM 0x00604DDD
 // GHIDRA_NAME: CreateDialogIndirectWithOwnerFallback
 // GHIDRA_PROTO: undefined CreateDialogIndirectWithOwnerFallback()
 
@@ -7737,7 +7737,7 @@ CreateDialogIndirectWithOwnerFallback
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00604E08
+// GHIDRA_FUNCTION IMPERIALISM 0x00604E08
 // GHIDRA_NAME: CreateDialogByResourceNameAndAttach
 // GHIDRA_PROTO: undefined CreateDialogByResourceNameAndAttach()
 
@@ -7762,7 +7762,7 @@ void CreateDialogByResourceNameAndAttach(LPCSTR param_1,undefined4 param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00604E4C
+// GHIDRA_FUNCTION IMPERIALISM 0x00604E4C
 // GHIDRA_NAME: CreateDialogIndirectWithDefaultModule
 // GHIDRA_PROTO: undefined CreateDialogIndirectWithDefaultModule()
 
@@ -7773,7 +7773,7 @@ void CreateDialogIndirectWithDefaultModule(undefined4 param_1,undefined4 param_2
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00604E5E
+// GHIDRA_FUNCTION IMPERIALISM 0x00604E5E
 // GHIDRA_NAME: CreateDialogIndirectAndAttach
 // GHIDRA_PROTO: undefined CreateDialogIndirectAndAttach()
 
@@ -7907,7 +7907,7 @@ LAB_0060506b:
   return bVar6;
 }
 
-// FUNCTION: IMPERIALISM 0x006050D0
+// GHIDRA_FUNCTION IMPERIALISM 0x006050D0
 // GHIDRA_NAME: InitializeDialogTemplateFromId
 // GHIDRA_PROTO: undefined InitializeDialogTemplateFromId()
 
@@ -7929,7 +7929,7 @@ InitializeDialogTemplateFromId(undefined4 *param_1,uint param_2,undefined4 param
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x00605144
+// GHIDRA_FUNCTION IMPERIALISM 0x00605144
 // GHIDRA_NAME: ResolveDialogOwnerWindowForModalCreate
 // GHIDRA_PROTO: undefined ResolveDialogOwnerWindowForModalCreate()
 
@@ -7952,7 +7952,7 @@ undefined4 __fastcall ResolveDialogOwnerWindowForModalCreate(int param_1)
   return uVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x0060517B
+// GHIDRA_FUNCTION IMPERIALISM 0x0060517B
 // GHIDRA_NAME: CleanupDialogModalCreateState
 // GHIDRA_PROTO: undefined CleanupDialogModalCreateState()
 
@@ -7973,7 +7973,7 @@ void __fastcall CleanupDialogModalCreateState(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006051B9
+// GHIDRA_FUNCTION IMPERIALISM 0x006051B9
 // GHIDRA_NAME: RunDialogModalFromTemplate
 // GHIDRA_PROTO: undefined RunDialogModalFromTemplate()
 
@@ -8074,7 +8074,7 @@ int RunDialogModalFromTemplate(void)
   return iVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x006055AE
+// GHIDRA_FUNCTION IMPERIALISM 0x006055AE
 // GHIDRA_NAME: RunImperialismThreadMainLoop
 // GHIDRA_PROTO: undefined RunImperialismThreadMainLoop()
 
@@ -8097,7 +8097,7 @@ void __fastcall RunImperialismThreadMainLoop(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006055D0
+// GHIDRA_FUNCTION IMPERIALISM 0x006055D0
 // GHIDRA_NAME: PostCustomMessage36AAndNotifyThread
 // GHIDRA_PROTO: undefined PostCustomMessage36AAndNotifyThread()
 
@@ -8117,7 +8117,7 @@ PostCustomMessage36AAndNotifyThread(int param_1,undefined4 param_2,undefined4 pa
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00605791
+// GHIDRA_FUNCTION IMPERIALISM 0x00605791
 // GHIDRA_NAME: GetSharedEmptyStringRef
 // GHIDRA_PROTO: undefined GetSharedEmptyStringRef()
 
@@ -8127,7 +8127,7 @@ undefined ** GetSharedEmptyStringRef(void)
   return &PTR_DAT_0069be0c;
 }
 
-// FUNCTION: IMPERIALISM 0x00605797
+// GHIDRA_FUNCTION IMPERIALISM 0x00605797
 // GHIDRA_NAME: InitializeSharedStringRefFromEmpty
 // GHIDRA_PROTO: undefined InitializeSharedStringRefFromEmpty()
 
@@ -8141,7 +8141,7 @@ undefined4 * __fastcall InitializeSharedStringRefFromEmpty(undefined4 *param_1)
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x006057A7
+// GHIDRA_FUNCTION IMPERIALISM 0x006057A7
 // GHIDRA_NAME: StringSharedRef_AssignFromPtr
 // GHIDRA_PROTO: undefined StringSharedRef_AssignFromPtr()
 
@@ -8164,7 +8164,7 @@ int * __thiscall StringSharedRef_AssignFromPtr(int *param_1,int *param_2)
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x006058E2
+// GHIDRA_FUNCTION IMPERIALISM 0x006058E2
 // GHIDRA_NAME: ReleaseSharedStringRefIfNotEmpty
 // GHIDRA_PROTO: undefined ReleaseSharedStringRefIfNotEmpty()
 
@@ -8182,7 +8182,7 @@ void __fastcall ReleaseSharedStringRefIfNotEmpty(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00605950
+// GHIDRA_FUNCTION IMPERIALISM 0x00605950
 // GHIDRA_NAME: ConstructSharedStringFromCStrOrResourceId
 // GHIDRA_PROTO: undefined ConstructSharedStringFromCStrOrResourceId()
 
@@ -8217,7 +8217,7 @@ LAB_0060598e:
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x00605A29
+// GHIDRA_FUNCTION IMPERIALISM 0x00605A29
 // GHIDRA_NAME: StringShared::AssignFromPtr
 // GHIDRA_PROTO: int * __thiscall StringShared::AssignFromPtr(int * dst_ref_ptr)
 
@@ -8244,7 +8244,7 @@ int * __thiscall StringShared__AssignFromPtr(void *this,int *dst_ref_ptr)
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x00605CCE
+// GHIDRA_FUNCTION IMPERIALISM 0x00605CCE
 // GHIDRA_NAME: AssignStringSharedFromCStr
 // GHIDRA_PROTO: undefined AssignStringSharedFromCStr()
 
@@ -8263,7 +8263,7 @@ undefined4 __thiscall AssignStringSharedFromCStr(undefined4 param_1,LPCSTR param
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x00605D0A
+// GHIDRA_FUNCTION IMPERIALISM 0x00605D0A
 // GHIDRA_NAME: AssignStringSharedFromRef
 // GHIDRA_PROTO: undefined AssignStringSharedFromRef()
 
@@ -8274,7 +8274,7 @@ undefined4 __thiscall AssignStringSharedFromRef(undefined4 param_1,int *param_2)
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x006061FF
+// GHIDRA_FUNCTION IMPERIALISM 0x006061FF
 // GHIDRA_NAME: InstallMfcThreadMessageHooks
 // GHIDRA_PROTO: undefined InstallMfcThreadMessageHooks()
 
@@ -8306,7 +8306,7 @@ void InstallMfcThreadMessageHooks(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006063CD
+// GHIDRA_FUNCTION IMPERIALISM 0x006063CD
 // GHIDRA_NAME: RunMfcThreadMessageLoopCore
 // GHIDRA_PROTO: undefined RunMfcThreadMessageLoopCore()
 
@@ -8357,7 +8357,7 @@ void __fastcall RunMfcThreadMessageLoopCore(int *param_1)
   } while( true );
 }
 
-// FUNCTION: IMPERIALISM 0x006067A2
+// GHIDRA_FUNCTION IMPERIALISM 0x006067A2
 // GHIDRA_NAME: HandleMessageFilterAndMaybeSendCommandE146
 // GHIDRA_PROTO: undefined HandleMessageFilterAndMaybeSendCommandE146()
 
@@ -8416,7 +8416,7 @@ LAB_0060685d:
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x0060694F
+// GHIDRA_FUNCTION IMPERIALISM 0x0060694F
 // GHIDRA_NAME: PumpMfcThreadMessageCore
 // GHIDRA_PROTO: undefined PumpMfcThreadMessageCore()
 
@@ -8448,7 +8448,7 @@ undefined4 __fastcall PumpMfcThreadMessageCore(int *param_1)
   return uVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x00606C67
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C67
 // GHIDRA_NAME: LockMfcTempMaps
 // GHIDRA_PROTO: undefined LockMfcTempMaps()
 
@@ -8465,7 +8465,7 @@ void LockMfcTempMaps(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00606C7C
+// GHIDRA_FUNCTION IMPERIALISM 0x00606C7C
 // GHIDRA_NAME: UnlockMfcTempMaps
 // GHIDRA_PROTO: undefined UnlockMfcTempMaps()
 
@@ -8482,7 +8482,7 @@ void UnlockMfcTempMaps(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00606DDD
+// GHIDRA_FUNCTION IMPERIALISM 0x00606DDD
 // GHIDRA_NAME: SetCommandCheckStateOnButtonOrMenu
 // GHIDRA_PROTO: undefined SetCommandCheckStateOnButtonOrMenu()
 
@@ -8504,7 +8504,7 @@ void __thiscall SetCommandCheckStateOnButtonOrMenu(int param_1,WPARAM param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00606F73
+// GHIDRA_FUNCTION IMPERIALISM 0x00606F73
 // GHIDRA_NAME: AllocateWithFallbackHandler
 // GHIDRA_PROTO: undefined AllocateWithFallbackHandler()
 
@@ -8534,7 +8534,7 @@ int AllocateWithFallbackHandler(undefined4 param_1)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00606FAF
+// GHIDRA_FUNCTION IMPERIALISM 0x00606FAF
 // GHIDRA_NAME: FreeHeapBufferIfNotNull
 // GHIDRA_PROTO: undefined FreeHeapBufferIfNotNull()
 
@@ -8545,7 +8545,7 @@ void FreeHeapBufferIfNotNull(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00606FC0
+// GHIDRA_FUNCTION IMPERIALISM 0x00606FC0
 // GHIDRA_NAME: IsNodePresentInLinkedListByNextPointer
 // GHIDRA_PROTO: undefined IsNodePresentInLinkedListByNextPointer()
 
@@ -8560,7 +8560,7 @@ void __thiscall IsNodePresentInLinkedListByNextPointer(undefined4 *param_1,undef
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00606FD2
+// GHIDRA_FUNCTION IMPERIALISM 0x00606FD2
 // GHIDRA_NAME: ReturnNodeIfPresentInLinkedListByNextPointer
 // GHIDRA_PROTO: undefined ReturnNodeIfPresentInLinkedListByNextPointer()
 
@@ -8578,7 +8578,7 @@ int ReturnNodeIfPresentInLinkedListByNextPointer(undefined4 param_1,int param_2)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0060734C
+// GHIDRA_FUNCTION IMPERIALISM 0x0060734C
 // GHIDRA_NAME: UpdateWindowStyleMaskedOrDelegate
 // GHIDRA_PROTO: undefined UpdateWindowStyleMaskedOrDelegate()
 
@@ -8599,7 +8599,7 @@ UpdateWindowStyleMaskedOrDelegate
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006073B4
+// GHIDRA_FUNCTION IMPERIALISM 0x006073B4
 // GHIDRA_NAME: SetWindowTextOrDelegateToOwner
 // GHIDRA_PROTO: undefined SetWindowTextOrDelegateToOwner()
 
@@ -8618,7 +8618,7 @@ void __thiscall SetWindowTextOrDelegateToOwner(int param_1,LPCSTR param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006074AA
+// GHIDRA_FUNCTION IMPERIALISM 0x006074AA
 // GHIDRA_NAME: SetWindowPosOrForwardToSite
 // GHIDRA_PROTO: undefined SetWindowPosOrForwardToSite()
 
@@ -8647,7 +8647,7 @@ SetWindowPosOrForwardToSite
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006074F9
+// GHIDRA_FUNCTION IMPERIALISM 0x006074F9
 // GHIDRA_NAME: ShowWindowOrForwardToSite
 // GHIDRA_PROTO: undefined ShowWindowOrForwardToSite()
 
@@ -8666,7 +8666,7 @@ void __thiscall ShowWindowOrForwardToSite(int param_1,int param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060785A
+// GHIDRA_FUNCTION IMPERIALISM 0x0060785A
 // GHIDRA_NAME: UpdateWindowLongMaskedAndRefresh
 // GHIDRA_PROTO: undefined UpdateWindowLongMaskedAndRefresh()
 
@@ -8695,7 +8695,7 @@ UpdateWindowLongMaskedAndRefresh(HWND param_1,int param_2,uint param_3,uint para
   return uVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x00607ABF
+// GHIDRA_FUNCTION IMPERIALISM 0x00607ABF
 // GHIDRA_NAME: GetOrCreateMfcHandleMap
 // GHIDRA_PROTO: undefined GetOrCreateMfcHandleMap()
 
@@ -8733,7 +8733,7 @@ undefined4 GetOrCreateMfcHandleMap(void)
   return uVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x00607BAC
+// GHIDRA_FUNCTION IMPERIALISM 0x00607BAC
 // GHIDRA_NAME: DetachWindowHandleFromMap
 // GHIDRA_PROTO: undefined DetachWindowHandleFromMap()
 

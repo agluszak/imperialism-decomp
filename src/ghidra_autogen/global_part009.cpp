@@ -3,7 +3,7 @@
 // Program: Imperialism.exe
 // Bucket: global_part009.cpp
 
-// FUNCTION: IMPERIALISM 0x00607D5D
+// GHIDRA_FUNCTION IMPERIALISM 0x00607D5D
 // GHIDRA_NAME: SendCustomMessage36EToActiveFrame
 // GHIDRA_PROTO: undefined SendCustomMessage36EToActiveFrame()
 
@@ -37,7 +37,7 @@ void SendCustomMessage36EToActiveFrame(int param_1,WPARAM param_2,int param_3)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00608040
+// GHIDRA_FUNCTION IMPERIALISM 0x00608040
 // GHIDRA_NAME: EnsureCreateWindowCbtHook
 // GHIDRA_PROTO: undefined EnsureCreateWindowCbtHook()
 
@@ -66,7 +66,7 @@ void EnsureCreateWindowCbtHook(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060808C
+// GHIDRA_FUNCTION IMPERIALISM 0x0060808C
 // GHIDRA_NAME: ReleaseCreateWindowCbtHook
 // GHIDRA_PROTO: undefined ReleaseCreateWindowCbtHook()
 
@@ -92,7 +92,7 @@ undefined4 ReleaseCreateWindowCbtHook(void)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x00608115
+// GHIDRA_FUNCTION IMPERIALISM 0x00608115
 // GHIDRA_NAME: CreateWindowExWithPreCreateHook
 // GHIDRA_PROTO: undefined CreateWindowExWithPreCreateHook()
 
@@ -155,7 +155,7 @@ CreateWindowExWithPreCreateHook
   return bVar4;
 }
 
-// FUNCTION: IMPERIALISM 0x006082F1
+// GHIDRA_FUNCTION IMPERIALISM 0x006082F1
 // GHIDRA_NAME: DestroyMfcWindowAndDetachThreadState
 // GHIDRA_PROTO: undefined DestroyMfcWindowAndDetachThreadState()
 
@@ -232,7 +232,7 @@ LAB_0060833c:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060841A
+// GHIDRA_FUNCTION IMPERIALISM 0x0060841A
 // GHIDRA_NAME: DestroyWindowOrForwardToSite
 // GHIDRA_PROTO: undefined DestroyWindowOrForwardToSite()
 
@@ -262,7 +262,7 @@ BOOL __fastcall DestroyWindowOrForwardToSite(int param_1)
   return BVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x00608467
+// GHIDRA_FUNCTION IMPERIALISM 0x00608467
 // GHIDRA_NAME: DispatchWindowMessageToPrevProcOrDefault
 // GHIDRA_PROTO: undefined DispatchWindowMessageToPrevProcOrDefault()
 
@@ -289,7 +289,7 @@ DispatchWindowMessageToPrevProcOrDefault(int *param_1,UINT param_2,WPARAM param_
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006084D1
+// GHIDRA_FUNCTION IMPERIALISM 0x006084D1
 // GHIDRA_NAME: DeactivateTooltipWindowAndHandleMouseUp
 // GHIDRA_PROTO: undefined DeactivateTooltipWindowAndHandleMouseUp()
 
@@ -326,7 +326,7 @@ void DeactivateTooltipWindowAndHandleMouseUp(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060852E
+// GHIDRA_FUNCTION IMPERIALISM 0x0060852E
 // GHIDRA_NAME: GetDialogControlIdAndFillCommandContext
 // GHIDRA_PROTO: undefined GetDialogControlIdAndFillCommandContext()
 
@@ -361,7 +361,7 @@ GetDialogControlIdAndFillCommandContext
   return uVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x00608892
+// GHIDRA_FUNCTION IMPERIALISM 0x00608892
 // GHIDRA_NAME: RegisterWindowClassIfNeeded
 // GHIDRA_PROTO: undefined RegisterWindowClassIfNeeded()
 
@@ -410,7 +410,7 @@ LAB_00608914:
   return uVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x00608A2B
+// GHIDRA_FUNCTION IMPERIALISM 0x00608A2B
 // GHIDRA_NAME: RunWinHelpAfterCancelModeBroadcast
 // GHIDRA_PROTO: undefined RunWinHelpAfterCancelModeBroadcast()
 
@@ -457,7 +457,7 @@ void RunWinHelpAfterCancelModeBroadcast(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006093F3
+// GHIDRA_FUNCTION IMPERIALISM 0x006093F3
 // GHIDRA_NAME: GetTopLevelFrameFromCandidate
 // GHIDRA_PROTO: undefined GetTopLevelFrameFromCandidate()
 
@@ -492,7 +492,7 @@ int * __fastcall GetTopLevelFrameFromCandidate(int *param_1)
   return (int *)0x0;
 }
 
-// FUNCTION: IMPERIALISM 0x00609550
+// GHIDRA_FUNCTION IMPERIALISM 0x00609550
 // GHIDRA_NAME: BroadcastMessageToChildWindowsRecursive
 // GHIDRA_PROTO: undefined BroadcastMessageToChildWindowsRecursive()
 
@@ -524,7 +524,7 @@ void BroadcastMessageToChildWindowsRecursive
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006097AE
+// GHIDRA_FUNCTION IMPERIALISM 0x006097AE
 // GHIDRA_NAME: ScrollWindowOrRepositionChildren
 // GHIDRA_PROTO: undefined ScrollWindowOrRepositionChildren()
 
@@ -558,7 +558,7 @@ ScrollWindowOrRepositionChildren(int param_1,int param_2,int param_3,RECT *param
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060986B
+// GHIDRA_FUNCTION IMPERIALISM 0x0060986B
 // GHIDRA_NAME: RepositionChildControlsByIdRange
 // GHIDRA_PROTO: undefined RepositionChildControlsByIdRange()
 
@@ -642,7 +642,7 @@ RepositionChildControlsByIdRange
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006099A5
+// GHIDRA_FUNCTION IMPERIALISM 0x006099A5
 // GHIDRA_NAME: SetChildWindowRectIfChanged
 // GHIDRA_PROTO: undefined SetChildWindowRectIfChanged()
 
@@ -681,7 +681,7 @@ void SetChildWindowRectIfChanged(int *param_1,HWND param_2,RECT *param_3)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00609A6A
+// GHIDRA_FUNCTION IMPERIALISM 0x00609A6A
 // GHIDRA_NAME: ForwardSystemCommandToActiveFramePreserveFocus
 // GHIDRA_PROTO: undefined ForwardSystemCommandToActiveFramePreserveFocus()
 
@@ -730,7 +730,7 @@ ForwardSystemCommandToActiveFramePreserveFocus(int param_1,uint param_2,int para
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x00609C37
+// GHIDRA_FUNCTION IMPERIALISM 0x00609C37
 // GHIDRA_NAME: DispatchReflectedControlMessageOrFallback
 // GHIDRA_PROTO: undefined DispatchReflectedControlMessageOrFallback()
 
@@ -757,7 +757,7 @@ DispatchReflectedControlMessageOrFallback
   return uVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x00609F56
+// GHIDRA_FUNCTION IMPERIALISM 0x00609F56
 // GHIDRA_NAME: SendCommandE146WhenNoModifiers
 // GHIDRA_PROTO: undefined SendCommandE146WhenNoModifiers()
 
@@ -783,7 +783,7 @@ undefined4 SendCommandE146WhenNoModifiers(void)
   return uVar4;
 }
 
-// FUNCTION: IMPERIALISM 0x0060A073
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A073
 // GHIDRA_NAME: DispatchPendingMessagesWithoutTranslate
 // GHIDRA_PROTO: undefined DispatchPendingMessagesWithoutTranslate()
 
@@ -805,7 +805,7 @@ void DispatchPendingMessagesWithoutTranslate(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060A27D
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A27D
 // GHIDRA_NAME: CenterWindowWithinOwnerOrWorkArea
 // GHIDRA_PROTO: undefined CenterWindowWithinOwnerOrWorkArea()
 
@@ -877,7 +877,7 @@ void __thiscall CenterWindowWithinOwnerOrWorkArea(int param_1,int param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060A4D5
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A4D5
 // GHIDRA_NAME: UpdateDialogChildCommandUiStates
 // GHIDRA_PROTO: undefined UpdateDialogChildCommandUiStates()
 
@@ -931,7 +931,7 @@ LAB_0060a59b:
   } while( true );
 }
 
-// FUNCTION: IMPERIALISM 0x0060A60A
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A60A
 // GHIDRA_NAME: RunModalLoopWithIdleMessages
 // GHIDRA_PROTO: undefined RunModalLoopWithIdleMessages()
 
@@ -1016,7 +1016,7 @@ LAB_0060a6ce:
   goto LAB_0060a65c;
 }
 
-// FUNCTION: IMPERIALISM 0x0060B12C
+// GHIDRA_FUNCTION IMPERIALISM 0x0060B12C
 // GHIDRA_NAME: DeleteFileOrReportLastError
 // GHIDRA_PROTO: undefined DeleteFileOrReportLastError()
 
@@ -1034,7 +1034,7 @@ void DeleteFileOrReportLastError(LPCSTR param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0060B9EA
+// GHIDRA_FUNCTION IMPERIALISM 0x0060B9EA
 // GHIDRA_NAME: QueryFileMetadataWithFindFirst
 // GHIDRA_PROTO: undefined QueryFileMetadataWithFindFirst()
 
@@ -1078,7 +1078,7 @@ undefined4 QueryFileMetadataWithFindFirst(LPCSTR param_1,int *param_2)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0060D3FC
+// GHIDRA_FUNCTION IMPERIALISM 0x0060D3FC
 // GHIDRA_NAME: DispatchMfcAppLifecycle
 // GHIDRA_PROTO: undefined DispatchMfcAppLifecycle()
 
@@ -1121,7 +1121,7 @@ DispatchMfcAppLifecycle(undefined4 param_1,undefined4 param_2,undefined4 param_3
   return uVar4;
 }
 
-// FUNCTION: IMPERIALISM 0x006106BD
+// GHIDRA_FUNCTION IMPERIALISM 0x006106BD
 // GHIDRA_NAME: ConstructImperialismSingleDocTemplate
 // GHIDRA_PROTO: undefined ConstructImperialismSingleDocTemplate()
 
@@ -1141,7 +1141,7 @@ ConstructImperialismSingleDocTemplate
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x0061419F
+// GHIDRA_FUNCTION IMPERIALISM 0x0061419F
 // GHIDRA_NAME: ActivateViewAndRefreshFrameStatus
 // GHIDRA_PROTO: undefined ActivateViewAndRefreshFrameStatus()
 
@@ -1187,7 +1187,7 @@ LAB_006141f0:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00614504
+// GHIDRA_FUNCTION IMPERIALISM 0x00614504
 // GHIDRA_NAME: HideFocusedComboDropDownUnlessWithin
 // GHIDRA_PROTO: undefined HideFocusedComboDropDownUnlessWithin()
 
@@ -1230,7 +1230,7 @@ void HideFocusedComboDropDownUnlessWithin(HWND param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00614790
+// GHIDRA_FUNCTION IMPERIALISM 0x00614790
 // GHIDRA_NAME: ConstructMfcSingleDocTemplateBase
 // GHIDRA_PROTO: undefined ConstructMfcSingleDocTemplateBase()
 
@@ -1311,7 +1311,7 @@ undefined4 * ConstructMfcSingleDocTemplateBase(void)
   return extraout_ECX;
 }
 
-// FUNCTION: IMPERIALISM 0x00614CFA
+// GHIDRA_FUNCTION IMPERIALISM 0x00614CFA
 // GHIDRA_NAME: GetMouseWheelScrollLines
 // GHIDRA_PROTO: undefined GetMouseWheelScrollLines()
 
@@ -1362,7 +1362,7 @@ LRESULT GetMouseWheelScrollLines(HKEY param_1)
   return DAT_006a7f80;
 }
 
-// FUNCTION: IMPERIALISM 0x00615778
+// GHIDRA_FUNCTION IMPERIALISM 0x00615778
 // GHIDRA_NAME: RecalculateScrollBarsAndLayout
 // GHIDRA_PROTO: undefined RecalculateScrollBarsAndLayout()
 
@@ -1453,7 +1453,7 @@ LAB_006158e6:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00615A34
+// GHIDRA_FUNCTION IMPERIALISM 0x00615A34
 // GHIDRA_NAME: HandleScrollWheelAndUpdateWindow
 // GHIDRA_PROTO: undefined HandleScrollWheelAndUpdateWindow()
 
@@ -1527,7 +1527,7 @@ LAB_00615b42:
   return iVar8;
 }
 
-// FUNCTION: IMPERIALISM 0x00615B58
+// GHIDRA_FUNCTION IMPERIALISM 0x00615B58
 // GHIDRA_NAME: ScrollByCommandAndUpdateWindow
 // GHIDRA_PROTO: undefined ScrollByCommandAndUpdateWindow()
 
@@ -1597,7 +1597,7 @@ ScrollByCommandAndUpdateWindow(int *param_1,undefined4 param_2,int param_3,int p
   return iVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x0061842F
+// GHIDRA_FUNCTION IMPERIALISM 0x0061842F
 // GHIDRA_NAME: DispatchOptionalHandlerAtOffset80Slot3C
 // GHIDRA_PROTO: undefined DispatchOptionalHandlerAtOffset80Slot3C()
 
@@ -1613,7 +1613,7 @@ void __fastcall DispatchOptionalHandlerAtOffset80Slot3C(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061878F
+// GHIDRA_FUNCTION IMPERIALISM 0x0061878F
 // GHIDRA_NAME: RegisterImperialismDocumentTemplate
 // GHIDRA_PROTO: undefined RegisterImperialismDocumentTemplate()
 
@@ -1648,7 +1648,7 @@ void RegisterImperialismDocumentTemplate(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618A0B
+// GHIDRA_FUNCTION IMPERIALISM 0x00618A0B
 // GHIDRA_NAME: SetFocusAndSelectAllIfRequested
 // GHIDRA_PROTO: undefined SetFocusAndSelectAllIfRequested()
 
@@ -1668,7 +1668,7 @@ void __fastcall SetFocusAndSelectAllIfRequested(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618D0F
+// GHIDRA_FUNCTION IMPERIALISM 0x00618D0F
 // GHIDRA_NAME: GetOrSetButtonCheckStateClamped
 // GHIDRA_PROTO: undefined GetOrSetButtonCheckStateClamped()
 
@@ -1692,7 +1692,7 @@ void GetOrSetButtonCheckStateClamped(int *param_1,undefined4 param_2,WPARAM *par
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618D61
+// GHIDRA_FUNCTION IMPERIALISM 0x00618D61
 // GHIDRA_NAME: GetOrSetRadioGroupCheckedIndex
 // GHIDRA_PROTO: undefined GetOrSetRadioGroupCheckedIndex()
 
@@ -1733,7 +1733,7 @@ void GetOrSetRadioGroupCheckedIndex(int *param_1,undefined4 param_2,int *param_3
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618DF2
+// GHIDRA_FUNCTION IMPERIALISM 0x00618DF2
 // GHIDRA_NAME: ListBox::AddOrUpdateItemData
 // GHIDRA_PROTO: void __stdcall ListBox::AddOrUpdateItemData(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)
 
@@ -1764,7 +1764,7 @@ void ListBox__AddOrUpdateItemData(astruct_1 *itemCountPtr,undefined4 controlId,L
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618E72
+// GHIDRA_FUNCTION IMPERIALISM 0x00618E72
 // GHIDRA_NAME: SelectComboBoxItemByParam
 // GHIDRA_PROTO: void __stdcall SelectComboBoxItemByParam(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)
 
@@ -1787,7 +1787,7 @@ void SelectComboBoxItemByParam(int *state_flag,undefined4 owner_id,LPARAM *lpara
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618EA6
+// GHIDRA_FUNCTION IMPERIALISM 0x00618EA6
 // GHIDRA_NAME: SelectListBoxStringExactIfPresent
 // GHIDRA_PROTO: undefined SelectListBoxStringExactIfPresent()
 
@@ -1804,7 +1804,7 @@ void SelectListBoxStringExactIfPresent(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618EC3
+// GHIDRA_FUNCTION IMPERIALISM 0x00618EC3
 // GHIDRA_NAME: SelectComboStringOrGetEditText
 // GHIDRA_PROTO: undefined SelectComboStringOrGetEditText()
 
@@ -1840,7 +1840,7 @@ void SelectComboStringOrGetEditText(int *param_1,undefined4 param_2,LPARAM *para
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618F43
+// GHIDRA_FUNCTION IMPERIALISM 0x00618F43
 // GHIDRA_NAME: SelectComboStringOrReadEditText
 // GHIDRA_PROTO: undefined SelectComboStringOrReadEditText()
 
@@ -1863,7 +1863,7 @@ void SelectComboStringOrReadEditText(int *param_1,undefined4 param_2,LPARAM *par
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618F94
+// GHIDRA_FUNCTION IMPERIALISM 0x00618F94
 // GHIDRA_NAME: GetOrSetListBoxCurrentSelection
 // GHIDRA_PROTO: undefined GetOrSetListBoxCurrentSelection()
 
@@ -1884,7 +1884,7 @@ void GetOrSetListBoxCurrentSelection(int *param_1,undefined4 param_2,WPARAM *par
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00618FD6
+// GHIDRA_FUNCTION IMPERIALISM 0x00618FD6
 // GHIDRA_NAME: GetOrSetComboBoxCurrentSelection
 // GHIDRA_PROTO: undefined GetOrSetComboBoxCurrentSelection()
 
@@ -1905,7 +1905,7 @@ void GetOrSetComboBoxCurrentSelection(int *param_1,undefined4 param_2,WPARAM *pa
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006191F9
+// GHIDRA_FUNCTION IMPERIALISM 0x006191F9
 // GHIDRA_NAME: ValidateNumericLimitAndApplyToEditControl
 // GHIDRA_PROTO: undefined ValidateNumericLimitAndApplyToEditControl()
 
@@ -1940,7 +1940,7 @@ void ValidateNumericLimitAndApplyToEditControl(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006193C5
+// GHIDRA_FUNCTION IMPERIALISM 0x006193C5
 // GHIDRA_NAME: DispatchContextMessage365OrSendCommandE147
 // GHIDRA_PROTO: undefined DispatchContextMessage365OrSendCommandE147()
 
@@ -1983,7 +1983,7 @@ void __fastcall DispatchContextMessage365OrSendCommandE147(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00619539
+// GHIDRA_FUNCTION IMPERIALISM 0x00619539
 // GHIDRA_NAME: EnterFrameContextHelpMode
 // GHIDRA_PROTO: undefined EnterFrameContextHelpMode()
 
@@ -2072,7 +2072,7 @@ LAB_00619662:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x006197F7
+// GHIDRA_FUNCTION IMPERIALISM 0x006197F7
 // GHIDRA_NAME: DispatchContextHelpTrackingMessage
 // GHIDRA_PROTO: undefined DispatchContextHelpTrackingMessage()
 
@@ -2170,7 +2170,7 @@ LAB_006199d4:
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x006199FD
+// GHIDRA_FUNCTION IMPERIALISM 0x006199FD
 // GHIDRA_NAME: QueryHelpTargetByPointMessage366
 // GHIDRA_PROTO: undefined QueryHelpTargetByPointMessage366()
 
@@ -2202,7 +2202,7 @@ LRESULT QueryHelpTargetByPointMessage366(HWND param_1,undefined2 param_2,undefin
   return LVar1;
 }
 
-// FUNCTION: IMPERIALISM 0x00619E4E
+// GHIDRA_FUNCTION IMPERIALISM 0x00619E4E
 // GHIDRA_NAME: PopulateListBoxFromLinkedItemCollection
 // GHIDRA_PROTO: undefined PopulateListBoxFromLinkedItemCollection()
 
@@ -2271,7 +2271,7 @@ LAB_00619f39:
   return uVar5;
 }
 
-// FUNCTION: IMPERIALISM 0x00619F0E
+// GHIDRA_FUNCTION IMPERIALISM 0x00619F0E
 // GHIDRA_NAME: SendMessage199Minus1AndRefreshSelection
 // GHIDRA_PROTO: undefined SendMessage199Minus1AndRefreshSelection()
 
@@ -2295,7 +2295,7 @@ void SendMessage199Minus1AndRefreshSelection(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00619F92
+// GHIDRA_FUNCTION IMPERIALISM 0x00619F92
 // GHIDRA_NAME: SendMessage199AndFinalizeSelection
 // GHIDRA_PROTO: undefined SendMessage199AndFinalizeSelection()
 
@@ -2316,7 +2316,7 @@ void SendMessage199AndFinalizeSelection(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00619FAA
+// GHIDRA_FUNCTION IMPERIALISM 0x00619FAA
 // GHIDRA_NAME: FlushPendingOrAppendDocTemplate
 // GHIDRA_PROTO: undefined FlushPendingOrAppendDocTemplate()
 
@@ -2357,7 +2357,7 @@ void __thiscall FlushPendingOrAppendDocTemplate(int *param_1,int *param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061A2EF
+// GHIDRA_FUNCTION IMPERIALISM 0x0061A2EF
 // GHIDRA_NAME: HandleShellDdeExecuteCommand
 // GHIDRA_PROTO: undefined HandleShellDdeExecuteCommand()
 
@@ -2589,7 +2589,7 @@ LAB_0061a8cc:
   return uVar6;
 }
 
-// FUNCTION: IMPERIALISM 0x0061A8DD
+// GHIDRA_FUNCTION IMPERIALISM 0x0061A8DD
 // GHIDRA_NAME: SelectEntryWithDialog7801AndInvokeHandler
 // GHIDRA_PROTO: undefined SelectEntryWithDialog7801AndInvokeHandler()
 
@@ -2633,7 +2633,7 @@ LAB_0061a962:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061CBA9
+// GHIDRA_FUNCTION IMPERIALISM 0x0061CBA9
 // GHIDRA_NAME: ToggleOverlappingWindowsVisibility
 // GHIDRA_PROTO: undefined ToggleOverlappingWindowsVisibility()
 
@@ -2671,7 +2671,7 @@ void __thiscall ToggleOverlappingWindowsVisibility(int param_1,int param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061CC4B
+// GHIDRA_FUNCTION IMPERIALISM 0x0061CC4B
 // GHIDRA_NAME: HandleFrameActivationStateTransition
 // GHIDRA_PROTO: undefined HandleFrameActivationStateTransition()
 
@@ -2712,7 +2712,7 @@ void __thiscall HandleFrameActivationStateTransition(int *param_1,int param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061CD09
+// GHIDRA_FUNCTION IMPERIALISM 0x0061CD09
 // GHIDRA_NAME: BroadcastFrameActivationState
 // GHIDRA_PROTO: undefined BroadcastFrameActivationState()
 
@@ -2753,7 +2753,7 @@ void __thiscall BroadcastFrameActivationState(int param_1,uint param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061CF4C
+// GHIDRA_FUNCTION IMPERIALISM 0x0061CF4C
 // GHIDRA_NAME: PostSetMessageStringE001AfterCommand
 // GHIDRA_PROTO: undefined PostSetMessageStringE001AfterCommand()
 
@@ -2780,7 +2780,7 @@ PostSetMessageStringE001AfterCommand(int *param_1,undefined4 param_2,undefined4 
   return 0xffffffff;
 }
 
-// FUNCTION: IMPERIALISM 0x0061D4B8
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D4B8
 // GHIDRA_NAME: SwitchActiveFrameAndNotifyHandlers
 // GHIDRA_PROTO: undefined SwitchActiveFrameAndNotifyHandlers()
 
@@ -2831,7 +2831,7 @@ SwitchActiveFrameAndNotifyHandlers(int *param_1,int param_2,int *param_3,int par
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061D5C3
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D5C3
 // GHIDRA_NAME: HandleSysCommandInContextHelpMode
 // GHIDRA_PROTO: undefined HandleSysCommandInContextHelpMode()
 
@@ -2867,7 +2867,7 @@ LAB_0061d5ef:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061D72A
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D72A
 // GHIDRA_NAME: ForwardDdeExecuteAtomsToWindow
 // GHIDRA_PROTO: undefined ForwardDdeExecuteAtomsToWindow()
 
@@ -2895,7 +2895,7 @@ undefined4 ForwardDdeExecuteAtomsToWindow(HWND param_1,undefined4 param_2)
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0061D7E5
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D7E5
 // GHIDRA_NAME: RepostDdeExecuteMessage3E4ToWindow
 // GHIDRA_PROTO: undefined RepostDdeExecuteMessage3E4ToWindow()
 
@@ -2926,7 +2926,7 @@ undefined4 __thiscall RepostDdeExecuteMessage3E4ToWindow(int param_1,HWND param_
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0061D89B
+// GHIDRA_FUNCTION IMPERIALISM 0x0061D89B
 // GHIDRA_NAME: GetObjectValueAtOffset98
 // GHIDRA_PROTO: undefined GetObjectValueAtOffset98()
 
@@ -2936,7 +2936,7 @@ undefined4 __fastcall GetObjectValueAtOffset98(int param_1)
   return *(undefined4 *)(param_1 + 0x98);
 }
 
-// FUNCTION: IMPERIALISM 0x0061DB87
+// GHIDRA_FUNCTION IMPERIALISM 0x0061DB87
 // GHIDRA_NAME: UpdateStatusBarMessageFromCommand
 // GHIDRA_PROTO: undefined UpdateStatusBarMessageFromCommand()
 
@@ -2993,7 +2993,7 @@ LAB_0061dc3f:
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061DE0A
+// GHIDRA_FUNCTION IMPERIALISM 0x0061DE0A
 // GHIDRA_NAME: SendSetMessageString362
 // GHIDRA_PROTO: undefined SendSetMessageString362()
 
@@ -3006,7 +3006,7 @@ void __thiscall SendSetMessageString362(int param_1,WPARAM param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061DF4C
+// GHIDRA_FUNCTION IMPERIALISM 0x0061DF4C
 // GHIDRA_NAME: ResetControlBarButtonAndForceNcRefresh
 // GHIDRA_PROTO: undefined ResetControlBarButtonAndForceNcRefresh()
 
@@ -3061,7 +3061,7 @@ undefined4 ResetControlBarButtonAndForceNcRefresh(void)
   return uVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x0061E1FE
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E1FE
 // GHIDRA_NAME: ToggleOverlappingWindowSetVisibility
 // GHIDRA_PROTO: undefined ToggleOverlappingWindowSetVisibility()
 
@@ -3156,7 +3156,7 @@ void __thiscall ToggleOverlappingWindowSetVisibility(int *param_1,int param_2,in
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061E42D
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E42D
 // GHIDRA_NAME: ApplyDeferredFrameUiStateAndRefresh
 // GHIDRA_PROTO: undefined ApplyDeferredFrameUiStateAndRefresh()
 
@@ -3183,7 +3183,7 @@ void __fastcall ApplyDeferredFrameUiStateAndRefresh(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061E63B
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E63B
 // GHIDRA_NAME: DispatchMouseWheelToFocusHierarchy
 // GHIDRA_PROTO: undefined DispatchMouseWheelToFocusHierarchy()
 
@@ -3236,7 +3236,7 @@ LRESULT __thiscall DispatchMouseWheelToFocusHierarchy(int param_1,int param_2,LR
   return param_3;
 }
 
-// FUNCTION: IMPERIALISM 0x0061E9BA
+// GHIDRA_FUNCTION IMPERIALISM 0x0061E9BA
 // GHIDRA_NAME: FetchListBoxItemTextIntoTempBuffer
 // GHIDRA_PROTO: undefined FetchListBoxItemTextIntoTempBuffer()
 
@@ -3253,7 +3253,7 @@ void __thiscall FetchListBoxItemTextIntoTempBuffer(int param_1,WPARAM param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061F45C
+// GHIDRA_FUNCTION IMPERIALISM 0x0061F45C
 // GHIDRA_NAME: SetMfcThreadStateFlagDword30
 // GHIDRA_PROTO: undefined SetMfcThreadStateFlagDword30()
 
@@ -3270,7 +3270,7 @@ void SetMfcThreadStateFlagDword30(undefined4 param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0061F46B
+// GHIDRA_FUNCTION IMPERIALISM 0x0061F46B
 // GHIDRA_NAME: GetMfcThreadStateFlagDword30
 // GHIDRA_PROTO: undefined GetMfcThreadStateFlagDword30()
 
@@ -3286,7 +3286,7 @@ undefined4 GetMfcThreadStateFlagDword30(void)
   return *(undefined4 *)(iVar1 + 0x30);
 }
 
-// FUNCTION: IMPERIALISM 0x00622572
+// GHIDRA_FUNCTION IMPERIALISM 0x00622572
 // GHIDRA_NAME: InitializeAppDocTemplateManagerAndFlushPending
 // GHIDRA_PROTO: undefined InitializeAppDocTemplateManagerAndFlushPending()
 
@@ -3313,7 +3313,7 @@ undefined4 __fastcall InitializeAppDocTemplateManagerAndFlushPending(int param_1
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x00622632
+// GHIDRA_FUNCTION IMPERIALISM 0x00622632
 // GHIDRA_NAME: ParseAndDispatchCommandLineArguments
 // GHIDRA_PROTO: undefined ParseAndDispatchCommandLineArguments()
 
@@ -3349,7 +3349,7 @@ void ParseAndDispatchCommandLineArguments(int *param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00622690
+// GHIDRA_FUNCTION IMPERIALISM 0x00622690
 // GHIDRA_NAME: ConstructCommandLineParseContext
 // GHIDRA_PROTO: undefined ConstructCommandLineParseContext()
 
@@ -3382,7 +3382,7 @@ undefined4 * ConstructCommandLineParseContext(void)
   return extraout_ECX;
 }
 
-// FUNCTION: IMPERIALISM 0x0062271B
+// GHIDRA_FUNCTION IMPERIALISM 0x0062271B
 // GHIDRA_NAME: DestructCommandLineParseContext
 // GHIDRA_PROTO: undefined DestructCommandLineParseContext()
 
@@ -3411,7 +3411,7 @@ void DestructCommandLineParseContext(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00622CB3
+// GHIDRA_FUNCTION IMPERIALISM 0x00622CB3
 // GHIDRA_NAME: DispatchUiStatePacketByOpcode
 // GHIDRA_PROTO: undefined DispatchUiStatePacketByOpcode()
 
@@ -3495,7 +3495,7 @@ LAB_00622de8:
   return uVar3;
 }
 
-// FUNCTION: IMPERIALISM 0x00622DFC
+// GHIDRA_FUNCTION IMPERIALISM 0x00622DFC
 // GHIDRA_NAME: CleanupUiPacketQueueAndRegistryBranch
 // GHIDRA_PROTO: undefined CleanupUiPacketQueueAndRegistryBranch()
 
@@ -3554,7 +3554,7 @@ undefined4 CleanupUiPacketQueueAndRegistryBranch(void)
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x00623050
+// GHIDRA_FUNCTION IMPERIALISM 0x00623050
 // GHIDRA_NAME: RunFileAssociationShellCommandCleanup
 // GHIDRA_PROTO: undefined RunFileAssociationShellCommandCleanup()
 
@@ -3565,7 +3565,7 @@ void RunFileAssociationShellCommandCleanup(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00623061
+// GHIDRA_FUNCTION IMPERIALISM 0x00623061
 // GHIDRA_NAME: UpdateAppInstallAndDataPaths
 // GHIDRA_PROTO: undefined UpdateAppInstallAndDataPaths()
 
@@ -3583,7 +3583,7 @@ void __thiscall UpdateAppInstallAndDataPaths(int param_1,undefined4 param_2)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00623886
+// GHIDRA_FUNCTION IMPERIALISM 0x00623886
 // GHIDRA_NAME: GetOrCreateMfcModuleThreadState
 // GHIDRA_PROTO: undefined GetOrCreateMfcModuleThreadState()
 
@@ -3602,7 +3602,7 @@ void GetOrCreateMfcModuleThreadState(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00624223
+// GHIDRA_FUNCTION IMPERIALISM 0x00624223
 // GHIDRA_NAME: InitializeMfcVersionAndCursorState
 // GHIDRA_PROTO: undefined InitializeMfcVersionAndCursorState()
 
@@ -3645,7 +3645,7 @@ int __fastcall InitializeMfcVersionAndCursorState(int param_1)
   return param_1;
 }
 
-// FUNCTION: IMPERIALISM 0x00624693
+// GHIDRA_FUNCTION IMPERIALISM 0x00624693
 // GHIDRA_NAME: ConstructDocTemplateManagerList
 // GHIDRA_PROTO: undefined ConstructDocTemplateManagerList()
 
@@ -3671,7 +3671,7 @@ undefined4 * ConstructDocTemplateManagerList(void)
   return extraout_ECX;
 }
 
-// FUNCTION: IMPERIALISM 0x006246E9
+// GHIDRA_FUNCTION IMPERIALISM 0x006246E9
 // GHIDRA_NAME: CleanupFileAssociationShellCommandRegistryEntries
 // GHIDRA_PROTO: undefined CleanupFileAssociationShellCommandRegistryEntries()
 
@@ -3786,7 +3786,7 @@ void CleanupFileAssociationShellCommandRegistryEntries(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00624E73
+// GHIDRA_FUNCTION IMPERIALISM 0x00624E73
 // GHIDRA_NAME: InitializeMfcAppStateFromEntryArgs
 // GHIDRA_PROTO: undefined InitializeMfcAppStateFromEntryArgs()
 
@@ -3824,7 +3824,7 @@ InitializeMfcAppStateFromEntryArgs
   return 1;
 }
 
-// FUNCTION: IMPERIALISM 0x00624ED6
+// GHIDRA_FUNCTION IMPERIALISM 0x00624ED6
 // GHIDRA_NAME: InitializeMfcAppPathResources
 // GHIDRA_PROTO: undefined InitializeMfcAppPathResources()
 
@@ -3883,7 +3883,7 @@ void __fastcall InitializeMfcAppPathResources(int param_1)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00624FF3
+// GHIDRA_FUNCTION IMPERIALISM 0x00624FF3
 // GHIDRA_NAME: CopyPathTailComponent
 // GHIDRA_PROTO: undefined CopyPathTailComponent()
 
@@ -3915,7 +3915,7 @@ int CopyPathTailComponent(char *param_1,LPSTR param_2,int param_3)
   return iVar2;
 }
 
-// FUNCTION: IMPERIALISM 0x00626C7D
+// GHIDRA_FUNCTION IMPERIALISM 0x00626C7D
 // GHIDRA_NAME: CleanupMfcAppStateAndHooks
 // GHIDRA_PROTO: undefined CleanupMfcAppStateAndHooks()
 
@@ -3970,7 +3970,7 @@ void CleanupMfcAppStateAndHooks(void)
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00707081
+// GHIDRA_FUNCTION IMPERIALISM 0x00707081
 // GHIDRA_NAME: InitializeWinmmImportBindings
 // GHIDRA_PROTO: undefined InitializeWinmmImportBindings()
 

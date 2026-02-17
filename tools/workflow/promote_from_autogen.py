@@ -34,9 +34,11 @@ def parse_hex_address(value: str) -> int:
 
 def annotation_re(module: str) -> re.Pattern[str]:
     return re.compile(
-        r"^\s*//\s*(?:FUNCTION|STUB)\s*:\s*"
+        r"^\s*//\s*(?:(?:FUNCTION|STUB)\s*:\s*"
         + re.escape(module)
-        + r"\s+(?:0x)?([0-9a-fA-F]+)\s*$",
+        + r"\s+|GHIDRA_FUNCTION\s+"
+        + re.escape(module)
+        + r"\s+)(?:0x)?([0-9a-fA-F]+)\s*$",
         re.MULTILINE,
     )
 

@@ -43,3 +43,4 @@ Outputs:
 
 - Exported `ghidra_autogen` trees are regenerated and stale generated files are removed.
 - `src/ghidra_autogen` is snapshot/reference output; manual edits should go to non-autogen source files.
+- `src/ghidra_autogen` uses `GHIDRA_FUNCTION` metadata comments (not `FUNCTION/STUB`) so reccmp annotations come only from compilable source files.

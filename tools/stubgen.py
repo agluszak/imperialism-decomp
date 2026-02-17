@@ -28,6 +28,12 @@ def parse_args() -> argparse.Namespace:
             "Disabled by default to keep generated code maximally buildable."
         ),
     )
+    parser.add_argument(
+        "--annotation-kind",
+        default="FUNCTION",
+        choices=("STUB", "FUNCTION"),
+        help="Annotation marker to emit for generated stubs.",
+    )
     return parser.parse_args()
 
 
@@ -148,11 +154,11 @@ def main() -> int:
         ident = dedupe_identifier(ident, address, seen_idents)
         signature = build_signature(ident, prototype, args.use_prototypes)
 
-        out.append("// STUB: {} 0x{:08X}\n".format(target, address))
         if name:
-            out.append("// ghidra: {}\n".format(name))
+            out.append("// ghidra_name {}\n".format(name))
         if prototype:
-            out.append("// prototype: {}\n".format(prototype))
+            out.append("// ghidra_proto {}\n".format(prototype))
+        out.append("// {}: {} 0x{:08x}\n".format(args.annotation_kind, target, address))
         out.append("{}\n".format(signature))
         out.append("{\n")
         if signature_returns_void(signature):

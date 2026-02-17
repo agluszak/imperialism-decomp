@@ -317,9 +317,10 @@ def build_decomp_file_text(module_name, program_name, relpath, entries):
     out.append("// Program: {}\n".format(program_name))
     out.append("// Bucket: {}\n\n".format(relpath))
     for entry in entries:
-        out.append("// FUNCTION: {} 0x{:08X}\n".format(module_name, entry["address"]))
-        out.append("// GHIDRA_NAME: {}\n".format(entry["name"]))
-        out.append("// GHIDRA_PROTO: {}\n".format(entry["prototype"]))
+        # Keep GHIDRA snapshot metadata in source but avoid reccmp marker syntax.
+        out.append("// GHIDRA_FUNCTION {} 0x{:08X}\n".format(module_name, entry["address"]))
+        out.append("// GHIDRA_NAME {}\n".format(entry["name"]))
+        out.append("// GHIDRA_PROTO {}\n".format(entry["prototype"]))
         if entry["ok"]:
             out.append(entry["c"].rstrip())
             out.append("\n\n")
