@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import os
+import re
 import sys
 import tomllib
 from pathlib import Path
@@ -13,6 +15,7 @@ import pyghidra
 
 REPO_CONFIG_PATH = "ghidra.toml"
 EXPECTED_PYGHIDRA_VERSION = "3.0.2"
+WS_RE = re.compile(r"\s")
 
 
 def parse_args() -> argparse.Namespace:
@@ -59,6 +62,11 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Maximum number of functions per generated decompiled .cpp file",
     )
+    parser.add_argument(
+        "--name-overrides",
+        default=os.getenv("NAME_OVERRIDES", str(repo_root / "config" / "name_overrides.csv")),
+        help="Optional pipe-delimited file: address|name|prototype",
+    )
     return parser.parse_args()
 
 
@@ -99,6 +107,140 @@ def read_ghidra_props(ghidra_install_dir: Path) -> tuple[str, str]:
     return version, release
 
 
+def clean_field(text: str) -> str:
+    return " ".join(text.replace("|", " ").split())
+
+
+def parse_override_rows(path: Path) -> dict[int, tuple[str, str]]:
+    if not path.is_file():
+        return {}
+    rows: dict[int, tuple[str, str]] = {}
+    with path.open("r", encoding="utf-8", newline="") as fd:
+        reader = csv.DictReader(fd, delimiter="|")
+        for row in reader:
+            addr_text = (row.get("address") or "").strip()
+            if not addr_text:
+                continue
+            addr = int(addr_text, 16)
+            name = clean_field((row.get("name") or "").strip())
+            proto = clean_field((row.get("prototype") or "").strip())
+            rows[addr] = (name, proto)
+    return rows
+
+
+def apply_overrides_to_symbols_csv(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
+    if not path.is_file() or not overrides:
+        return (0, 0)
+
+    with path.open("r", encoding="utf-8", newline="") as fd:
+        reader = csv.DictReader(fd, delimiter="|")
+        fieldnames = list(reader.fieldnames or [])
+        rows = list(reader)
+
+    renamed_count = 0
+    proto_count = 0
+    for row in rows:
+        row_type = (row.get("type") or "").strip().lower()
+        if row_type != "function":
+            continue
+        addr_text = (row.get("address") or "").strip()
+        if not addr_text:
+            continue
+        addr = int(addr_text, 16)
+        override = overrides.get(addr)
+        if override is None:
+            continue
+        if override[0] and row.get("name", "") != override[0]:
+            row["name"] = override[0]
+            renamed_count += 1
+        if "prototype" in row and override[1] and row.get("prototype", "") != override[1]:
+            row["prototype"] = override[1]
+            proto_count += 1
+
+    with path.open("w", encoding="utf-8", newline="") as fd:
+        writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|", lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+    return (renamed_count, proto_count)
+
+
+def apply_overrides_to_symbols_txt(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
+    if not path.is_file() or not overrides:
+        return (0, 0)
+
+    lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+    output: list[str] = []
+    renamed_count = 0
+    skipped_whitespace = 0
+
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            output.append(line)
+            continue
+        parts = stripped.split()
+        if len(parts) < 3:
+            output.append(line)
+            continue
+        name, addr_text, kind = parts[0], parts[1], parts[2]
+        if kind.lower() != "f":
+            output.append(line)
+            continue
+        try:
+            addr = int(addr_text, 16)
+        except ValueError:
+            output.append(line)
+            continue
+        override = overrides.get(addr)
+        if override is None or not override[0]:
+            output.append(line)
+            continue
+        new_name = override[0]
+        if WS_RE.search(new_name):
+            skipped_whitespace += 1
+            output.append(line)
+            continue
+        output.append(f"{new_name} {addr_text} {kind}")
+        if new_name != name:
+            renamed_count += 1
+
+    path.write_text("\n".join(output) + "\n", encoding="utf-8")
+    return (renamed_count, skipped_whitespace)
+
+
+def apply_overrides_to_index_csv(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
+    if not path.is_file() or not overrides:
+        return (0, 0)
+
+    with path.open("r", encoding="utf-8", newline="") as fd:
+        reader = csv.DictReader(fd, delimiter="|")
+        fieldnames = list(reader.fieldnames or [])
+        rows = list(reader)
+
+    renamed_count = 0
+    proto_count = 0
+    for row in rows:
+        addr_text = (row.get("address") or "").strip()
+        if not addr_text:
+            continue
+        addr = int(addr_text, 16)
+        override = overrides.get(addr)
+        if override is None:
+            continue
+        if override[0] and row.get("name", "") != override[0]:
+            row["name"] = override[0]
+            renamed_count += 1
+        if "prototype" in row and override[1] and row.get("prototype", "") != override[1]:
+            row["prototype"] = override[1]
+            proto_count += 1
+
+    with path.open("w", encoding="utf-8", newline="") as fd:
+        writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|", lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+    return (renamed_count, proto_count)
+
+
 def main() -> int:
     try:
         repo_root = Path(__file__).resolve().parents[2]
@@ -131,6 +273,7 @@ def main() -> int:
         output_dir = Path(args.output_dir).resolve()
         decomp_output_dir = Path(args.decomp_output_dir).resolve()
         types_output_dir = Path(args.types_output_dir).resolve()
+        name_overrides_path = Path(args.name_overrides).resolve()
         max_per_file = (
             args.decomp_max_functions_per_file
             if args.decomp_max_functions_per_file is not None
@@ -198,6 +341,32 @@ def main() -> int:
             if program is not None:
                 program.release(consumer)
             project.close()
+
+        overrides = parse_override_rows(name_overrides_path)
+        if overrides:
+            renamed_csv, proto_csv = apply_overrides_to_symbols_csv(symbols_csv, overrides)
+            renamed_txt, skipped_txt = apply_overrides_to_symbols_txt(symbols_txt, overrides)
+            renamed_idx, proto_idx = apply_overrides_to_index_csv(
+                decomp_output_dir / "index.csv", overrides
+            )
+            print(
+                "Applied name overrides from {}: csv names {}, csv prototypes {}, "
+                "symbols.txt names {}, index names {}, index prototypes {}{}".format(
+                    name_overrides_path,
+                    renamed_csv,
+                    proto_csv,
+                    renamed_txt,
+                    renamed_idx,
+                    proto_idx,
+                    (
+                        ", symbols.txt skipped (whitespace names) {}".format(skipped_txt)
+                        if skipped_txt
+                        else ""
+                    ),
+                )
+            )
+        else:
+            print(f"No name overrides applied (missing/empty): {name_overrides_path}")
 
         print("Done.")
         print(f"  {symbols_txt}")

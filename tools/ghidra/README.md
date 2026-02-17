@@ -29,7 +29,8 @@ uv run python tools/ghidra/sync_exports.py \
   --output-dir config \
   --decomp-output-dir src/ghidra_autogen \
   --types-output-dir include/ghidra_autogen \
-  --decomp-max-functions-per-file 250
+  --decomp-max-functions-per-file 250 \
+  --name-overrides config/name_overrides.csv
 ```
 
 Outputs:
@@ -38,6 +39,12 @@ Outputs:
 - `config/symbols.csv`
 - `src/ghidra_autogen/*.cpp` (+ manifest/index)
 - `include/ghidra_autogen/*.h` (+ manifest/index)
+
+If `config/name_overrides.csv` exists, `sync_exports.py` reapplies overrides after export to:
+
+- `config/symbols.csv`
+- `config/symbols.ghidra.txt` (function names only; whitespace names are skipped)
+- `src/ghidra_autogen/index.csv`
 
 ## Notes
 

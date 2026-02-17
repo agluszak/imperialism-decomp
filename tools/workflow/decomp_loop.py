@@ -27,6 +27,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--decomp-output-dir", default="src/ghidra_autogen")
     parser.add_argument("--decomp-max-functions-per-file", type=int, default=250)
     parser.add_argument("--types-output-dir", default="include/ghidra_autogen")
+    parser.add_argument("--name-overrides", default="config/name_overrides.csv")
 
     parser.add_argument("--use-prototypes", action="store_true")
     parser.add_argument("--stubgen-target", default="IMPERIALISM")
@@ -73,6 +74,8 @@ def main() -> int:
                 args.types_output_dir,
                 "--decomp-max-functions-per-file",
                 str(args.decomp_max_functions_per_file),
+                "--name-overrides",
+                args.name_overrides,
             ]
             if args.ghidra_program_name:
                 ghidra_cmd.extend(["--ghidra-program-name", args.ghidra_program_name])
@@ -85,6 +88,8 @@ def main() -> int:
             "tools/stubgen.py",
             "--target",
             args.stubgen_target,
+            "--name-overrides",
+            args.name_overrides,
         ]
         if args.use_prototypes:
             stubgen_cmd.append("--use-prototypes")

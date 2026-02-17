@@ -18,6 +18,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--symbols-csv", default="config/symbols.csv")
+    parser.add_argument(
+        "--name-overrides",
+        default="config/name_overrides.csv",
+        help="Optional pipe-delimited file: address|name|prototype",
+    )
     parser.add_argument("--output", default="src/autogen/stubs.cpp")
     parser.add_argument("--source-dir", default="src")
     parser.add_argument(
@@ -109,10 +114,28 @@ def parse_rows(csv_path: Path) -> list[dict[str, str]]:
         return list(reader)
 
 
+def parse_override_rows(csv_path: Path) -> dict[int, tuple[str, str]]:
+    if not csv_path.is_file():
+        return {}
+    with csv_path.open("r", encoding="utf-8", newline="") as fd:
+        reader = csv.DictReader(fd, delimiter="|")
+        rows: dict[int, tuple[str, str]] = {}
+        for row in reader:
+            addr_text = (row.get("address") or "").strip()
+            if not addr_text:
+                continue
+            addr = int(addr_text, 16)
+            name = " ".join((row.get("name") or "").replace("|", " ").split())
+            prototype = sanitize_prototype((row.get("prototype") or "").strip())
+            rows[addr] = (name, prototype)
+        return rows
+
+
 def main() -> int:
     args = parse_args()
     target = args.target
     csv_path = Path(args.symbols_csv)
+    overrides_path = Path(args.name_overrides)
     output_file = Path(args.output)
     source_dir = Path(args.source_dir)
 
@@ -123,6 +146,7 @@ def main() -> int:
         target=target, source_dir=source_dir, output_file=output_file
     )
     rows = parse_rows(csv_path)
+    overrides = parse_override_rows(overrides_path)
 
     function_rows: list[tuple[int, str, str]] = []
     for row in rows:
@@ -137,6 +161,12 @@ def main() -> int:
             continue
         name = (row.get("name") or "").strip()
         prototype = sanitize_prototype((row.get("prototype") or "").strip())
+        override = overrides.get(address)
+        if override is not None:
+            if override[0]:
+                name = override[0]
+            if override[1]:
+                prototype = override[1]
         function_rows.append((address, name, prototype))
 
     function_rows.sort(key=lambda r: r[0])
@@ -169,6 +199,8 @@ def main() -> int:
 
     output_file.write_text("".join(out), encoding="utf-8")
     print("Wrote {} ({} stubs)".format(output_file, len(function_rows)))
+    if overrides:
+        print("Applied {} name override(s)".format(len(overrides)))
     return 0
 
 
