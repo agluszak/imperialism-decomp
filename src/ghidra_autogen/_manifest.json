@@ -1,0 +1,17 @@
+{
+  "failed_count": 1,
+  "function_count": 1692,
+  "generated_cpp_files": [
+    "global_part001.cpp",
+    "global_part002.cpp",
+    "global_part003.cpp",
+    "global_part004.cpp",
+    "global_part005.cpp",
+    "global_part006.cpp",
+    "global_part007.cpp",
+    "global_part008.cpp",
+    "global_part009.cpp"
+  ],
+  "module": "IMPERIALISM",
+  "program": "Imperialism.exe"
+}

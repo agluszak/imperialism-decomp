@@ -32,6 +32,9 @@ Recommended local layout (ignored by git):
 
 - Ghidra `12.0.2 PUBLIC` for analysis (pinned for script compatibility)
 - Custom scripts in `tools/ghidra/` to export symbols from your project database
+- Optional autogen snapshot export:
+  - decompiled function bodies (`src/ghidra_autogen/`)
+  - split local datatype headers (`include/ghidra_autogen/`)
 - `reccmp` for build-vs-original comparison
 - CMake for build orchestration
 - `uv` + `pyproject.toml` for Python tooling and dependency management
@@ -51,7 +54,21 @@ uv run python tools/ghidra/export_from_ghidra_headless.py \
   --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
   --ghidra-project-dir /path/to/project-parent \
   --ghidra-project-name imperialism-decomp \
-  --ghidra-program-name Imperialism.exe
+  --ghidra-program-name Imperialism.exe \
+  --export-decompiled-bodies \
+  --decomp-output-dir src/ghidra_autogen \
+  --export-type-headers \
+  --types-output-dir include/ghidra_autogen
+```
+
+Generated snapshot files are overwritten on each export. Keep manual reconstruction work outside `src/ghidra_autogen/`.
+
+To start editing a function body, promote it into a manual file first:
+
+```bash
+uv run python tools/workflow/promote_from_autogen.py \
+  --address 0x00401000 \
+  --target-cpp src/game/bootstrap.cpp
 ```
 
 Example function annotation:
@@ -141,11 +158,14 @@ Recommended iteration cycle:
 
 1. Rename/type functions in Ghidra.
 2. Export with `tools/ghidra/export_from_ghidra_headless.py` or GUI scripts.
-3. Regenerate autogen stubs (`uv run python tools/stubgen.py`).
-4. Move one function from stubs into real source file and implement it.
-5. Change marker from `// STUB: IMPERIALISM 0x...` to `// FUNCTION: IMPERIALISM 0x...`.
-6. Keep functions in each translation unit sorted by original address.
-7. Build and compare with `uv run --group reccmp reccmp-reccmp --target IMPERIALISM`.
+3. Optionally regenerate decompiled snapshot + split type headers from Ghidra:
+   - `src/ghidra_autogen/*.cpp`
+   - `include/ghidra_autogen/*.h`
+4. Regenerate autogen stubs (`uv run python tools/stubgen.py`).
+5. Move one function from stubs into real source file and implement it.
+6. Change marker from `// STUB: IMPERIALISM 0x...` to `// FUNCTION: IMPERIALISM 0x...`.
+7. Keep functions in each translation unit sorted by original address.
+8. Build and compare with `uv run --group reccmp reccmp-reccmp --target IMPERIALISM`.
 
 One-command helper for the loop:
 
@@ -155,6 +175,9 @@ uv run python tools/workflow/decomp_loop.py \
   --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
   --ghidra-project-dir /path/to/ghidra/projects \
   --ghidra-project-name imperialism-decomp \
+  --export-ghidra-decompiled-bodies \
+  --decomp-max-functions-per-file 250 \
+  --export-ghidra-type-headers \
   --detect-recompiled \
   --compare-target IMPERIALISM
 ```
@@ -169,7 +192,9 @@ uv run python tools/forensics/check_rich_header.py /absolute/path/to/Imperialism
 
 ```text
 src/                    reconstructed code
+src/ghidra_autogen/     generated decompiler snapshot (overwritten by export)
 include/                headers and recovered types
+include/ghidra_autogen/ generated split datatype headers (overwritten by export)
 config/                 symbol exports and reccmp config
 docker/                 reproducible old-MSVC build images
 tools/forensics/        binary fingerprint helpers

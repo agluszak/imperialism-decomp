@@ -1,0 +1,13 @@
+{
+  "category_count": 5,
+  "generated_header_files": [
+    "DOS.h",
+    "Demangler.h",
+    "PE.h",
+    "all_types.h",
+    "auto_structs.h",
+    "root_types.h"
+  ],
+  "program": "Imperialism.exe",
+  "type_count": 84
+}

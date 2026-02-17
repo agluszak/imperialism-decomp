@@ -44,6 +44,32 @@ def parse_args() -> argparse.Namespace:
         default=os.getenv("OUTPUT_DIR", str(repo_root / "config")),
         help="Output directory for symbols.ghidra.txt and symbols.csv",
     )
+    parser.add_argument(
+        "--export-decompiled-bodies",
+        action="store_true",
+        help="Also export decompiled function bodies into split .cpp files.",
+    )
+    parser.add_argument(
+        "--decomp-output-dir",
+        default=os.getenv("DECOMP_OUTPUT_DIR", str(repo_root / "src" / "ghidra_autogen")),
+        help="Output directory for split decompiled function bodies.",
+    )
+    parser.add_argument(
+        "--decomp-max-functions-per-file",
+        default=int(os.getenv("DECOMP_MAX_FUNCTIONS_PER_FILE", "250")),
+        type=int,
+        help="Maximum number of functions per generated decompiled .cpp file.",
+    )
+    parser.add_argument(
+        "--export-type-headers",
+        action="store_true",
+        help="Also export split datatype headers.",
+    )
+    parser.add_argument(
+        "--types-output-dir",
+        default=os.getenv("TYPES_OUTPUT_DIR", str(repo_root / "include" / "ghidra_autogen")),
+        help="Output directory for split datatype headers.",
+    )
     return parser.parse_args()
 
 
@@ -92,7 +118,9 @@ def build_pyghidra_cmd(
     script_path: Path,
     post_script: str,
     output_file: Path,
+    script_args: list[str] | None = None,
 ) -> list[str]:
+    extra_args = script_args or []
     cmd = [
         str(pyghidra_run),
         "-H",
@@ -100,11 +128,13 @@ def build_pyghidra_cmd(
         project_name,
         "-process",
         program_name,
+        "-noanalysis",
         "-scriptPath",
         str(script_path),
         "-postScript",
         post_script,
         str(output_file),
+        *extra_args,
     ]
     if pyghidra_run.suffix.lower() == ".bat":
         return ["cmd", "/c", *cmd]
@@ -128,6 +158,7 @@ def run_export(
     script_dir: Path,
     post_script: str,
     output_file: Path,
+    script_args: list[str] | None = None,
 ) -> None:
     cmd = build_pyghidra_cmd(
         pyghidra_run=pyghidra_run,
@@ -137,6 +168,7 @@ def run_export(
         script_path=script_dir,
         post_script=post_script,
         output_file=output_file,
+        script_args=script_args,
     )
     env = build_pyghidra_env()
     subprocess.run(cmd, check=True, env=env)
@@ -169,6 +201,8 @@ def main() -> int:
         ghidra_project_name = require(args.ghidra_project_name, "--ghidra-project-name")
         ghidra_program_name = args.ghidra_program_name
         output_dir = Path(args.output_dir)
+        decomp_output_dir = Path(args.decomp_output_dir)
+        types_output_dir = Path(args.types_output_dir)
 
         actual_version, actual_release = read_ghidra_props(ghidra_install_dir)
         if (
@@ -209,9 +243,40 @@ def main() -> int:
             output_file=symbols_csv,
         )
 
+        if args.export_decompiled_bodies:
+            decomp_output_dir.mkdir(parents=True, exist_ok=True)
+            print(f"Exporting decompiled bodies to {decomp_output_dir}")
+            run_export(
+                pyghidra_run=pyghidra_run,
+                project_dir=ghidra_project_dir,
+                project_name=ghidra_project_name,
+                program_name=ghidra_program_name,
+                script_dir=script_dir,
+                post_script="ExportDecompiledBodies_Split.py",
+                output_file=decomp_output_dir,
+                script_args=[str(args.decomp_max_functions_per_file)],
+            )
+
+        if args.export_type_headers:
+            types_output_dir.mkdir(parents=True, exist_ok=True)
+            print(f"Exporting datatype headers to {types_output_dir}")
+            run_export(
+                pyghidra_run=pyghidra_run,
+                project_dir=ghidra_project_dir,
+                project_name=ghidra_project_name,
+                program_name=ghidra_program_name,
+                script_dir=script_dir,
+                post_script="ExportTypeHeaders_Split.py",
+                output_file=types_output_dir,
+            )
+
         print("Done.")
         print(f"  {symbols_txt}")
         print(f"  {symbols_csv}")
+        if args.export_decompiled_bodies:
+            print(f"  {decomp_output_dir}")
+        if args.export_type_headers:
+            print(f"  {types_output_dir}")
         return 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=sys.stderr)
