@@ -1,0 +1,103 @@
+{
+  "rows": [
+    {
+      "address": "0x0050a9f0",
+      "current_name": "Cluster_Vcall_00_04_2C_0050a9f0",
+      "vcall_count": 27,
+      "offsets": "0x0,0x4,0x2c",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_0050a9f0",
+      "top_callees": "thunk_FUN_00496270;thunk_FUN_004961b0;thunk_FUN_004962a0;thunk_FUN_004972c0;ResetQuickDrawStrokeState;thunk_FUN_004a1130;thunk_FUN_00495c40;thunk_FUN_00495c00",
+      "top_strings": "00408d37"
+    },
+    {
+      "address": "0x00533380",
+      "current_name": "Cluster_Vcall_48_4C_68_00533380",
+      "vcall_count": 27,
+      "offsets": "0x48,0x4c,0x68,0x78,0x7c,0x84,0x88,0x1a4",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_00533380",
+      "top_callees": "",
+      "top_strings": ""
+    },
+    {
+      "address": "0x00520670",
+      "current_name": "Cluster_Vcall_34_84_214_00520670",
+      "vcall_count": 26,
+      "offsets": "0x34,0x84,0x214,0x218,0x21c,0x220,0x224,0x228,0x22c,0x230",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_00520670",
+      "top_callees": "thunk_FUN_00495310",
+      "top_strings": "005206cb;005207ad"
+    },
+    {
+      "address": "0x00590cb0",
+      "current_name": "Cluster_Vcall_0C_84_C8_00590cb0",
+      "vcall_count": 25,
+      "offsets": "0xc,0x84,0xc8,0x1b4,0x1c4,0x1cc,0x1e0,0x1ec,0x1f8",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_00590cb0",
+      "top_callees": "InitializeSharedStringRefFromEmpty;thunk_FUN_00515ec0;scanBracketExpressions;FUN_00605cf5;FUN_00605b87;AssignStringSharedFromRef;ReleaseSharedStringRefIfNotEmpty;FormatStringWithVarArgsToSharedRef",
+      "top_strings": "0059114e"
+    },
+    {
+      "address": "0x004ec540",
+      "current_name": "Cluster_Vcall_14_1C_24_004ec540",
+      "vcall_count": 24,
+      "offsets": "0x14,0x1c,0x24,0x28,0x2c,0x30,0x38,0x3c,0x48,0x4c",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_004ec540",
+      "top_callees": "AllocateWithFallbackHandler;thunk_FUN_004c6740;FUN_00601f1d;MessageBoxA;thunk_FUN_00488610;thunk_FUN_004886d0;thunk_FUN_004886f0;FreeHeapBufferIfNotNull",
+      "top_strings": "00606fba;00403341;00405fe7;0040619a;002ac29e;Failure"
+    },
+    {
+      "address": "0x005b8080",
+      "current_name": "Cluster_Vcall_38_40_44_005b8080",
+      "vcall_count": 24,
+      "offsets": "0x38,0x40,0x44,0x64",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_005b8080",
+      "top_callees": "",
+      "top_strings": ""
+    },
+    {
+      "address": "0x004f1b70",
+      "current_name": "Cluster_Vcall_24_28_3C_004f1b70",
+      "vcall_count": 22,
+      "offsets": "0x24,0x28,0x3c,0x48,0x80,0x214,0x290,0x2a8",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_004f1b70",
+      "top_callees": "thunk_FUN_0055c9f0",
+      "top_strings": "004f1e34"
+    },
+    {
+      "address": "0x00531550",
+      "current_name": "Cluster_Vcall_48_4C_68_00531550",
+      "vcall_count": 21,
+      "offsets": "0x48,0x4c,0x68,0x78,0x84,0x88,0x1a4",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_00531550",
+      "top_callees": "",
+      "top_strings": ""
+    },
+    {
+      "address": "0x004d9c70",
+      "current_name": "Cluster_Vcall_14_1C_48_004d9c70",
+      "vcall_count": 20,
+      "offsets": "0x14,0x1c,0x48,0x4c,0x7c",
+      "domain": "Unknown",
+      "domain_score": 0,
+      "suggested_name": "Candidate_Unknown_004d9c70",
+      "top_callees": "thunk_FUN_004d6e60",
+      "top_strings": ""
+    }
+  ]
+}

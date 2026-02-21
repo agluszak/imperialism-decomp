@@ -1,0 +1,4 @@
+address,new_name,comment
+0x005edcc0,ConvertBrokenDownLocalTimeToEpochSeconds,Converts broken-down local date and time fields to epoch seconds with DST adjustment handling.
+0x005e7d60,ConvertFileTimeToLocalEpochSeconds,Converts FILETIME to local SYSTEMTIME and then to epoch seconds returning -1 on failure.
+0x005e8ee0,GetCurrentLocalEpochSecondsWithTimezoneCache,Reads current local/system time refreshes timezone and DST cache then returns current local epoch seconds.

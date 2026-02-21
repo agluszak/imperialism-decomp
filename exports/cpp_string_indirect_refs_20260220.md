@@ -1,0 +1,32 @@
+# .cpp Indirect (Pointer-Table) References
+
+- `D:\Ambit\Cross\USmallViews.cpp` @ `006992f0` ptr_sites=25 indirect_fn=0
+- `D:\Ambit\Cross\UViewMgr.cpp` @ `0069b6bc` ptr_sites=9 indirect_fn=0
+- `D:\Ambit\Cross\UTestDialogs.cpp` @ `0069a7f8` ptr_sites=8 indirect_fn=0
+- `D:\Ambit\Cross\UViewMgr.more.cpp` @ `0069b740` ptr_sites=7 indirect_fn=0
+- `D:\Ambit\Cross\UCityDialogs.cpp` @ `006962e8` ptr_sites=5 indirect_fn=0
+- `D:\Ambit\Cross\UDiplomacyViews.cpp` @ `00696ae0` ptr_sites=3 indirect_fn=0
+- `D:\Ambit\Cross\UCheaters.cpp` @ `00695a20` ptr_sites=3 indirect_fn=0
+- `D:\Ambit\Cross\UArmyMgr.cpp` @ `0069573c` ptr_sites=3 indirect_fn=0
+- `D:\Ambit\Cross\UCityMinister.cpp` @ `006964b0` ptr_sites=2 indirect_fn=0
+- `D:\Ambit\Cross\UMacViewMgr.cpp` @ `00696d68` ptr_sites=2 indirect_fn=0
+- `D:\Ambit\ResourceMgr.cpp` @ `006951d8` ptr_sites=2 indirect_fn=0
+- `D:\Ambit\Cross\UIcon.cpp` @ `00696cc8` ptr_sites=2 indirect_fn=0
+- `D:\Ambit\Cross\UMapDlog.cpp` @ `006973d0` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UDefenseMinister.cpp` @ `00696860` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UMultiplayerMgr.cpp` @ `00698040` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UCountryAuto.cpp` @ `006967ac` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UOptionViews.cpp` @ `00698730` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UTradeViews.cpp` @ `0069aa94` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UArmyViews.cpp` @ `00695858` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UTacPlayer.cpp` @ `00699d84` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\USuperMap.cpp` @ `0069943c` ptr_sites=1 indirect_fn=0
+- `D:\Ambit\Cross\UBattleReportViews.cpp` @ `00695978` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UMissionSubs.cpp` @ `00697be0` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UOceanViews.cpp` @ `00698650` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UNewspaper.cpp` @ `00698470` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UTacViews.cpp` @ `00699ff4` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UCountry.cpp` @ `00696728` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UHelpMgr.cpp` @ `00696c58` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UOcean.cpp` @ `006984cc` ptr_sites=0 indirect_fn=0
+- `D:\Ambit\Cross\UUnit.cpp` @ `0069aae0` ptr_sites=0 indirect_fn=0

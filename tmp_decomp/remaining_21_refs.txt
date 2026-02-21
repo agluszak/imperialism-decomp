@@ -1,0 +1,129 @@
+=== 0x0052e310 FUN_0052e310 ===
+calls:
+  - FUN_005e7fc0@005e7fc0
+
+=== 0x0052e350 FUN_0052e350 ===
+calls:
+  - thunk_FUN_0052e7b0@00402c5c
+  - thunk_TemporarilyClearAndRestoreUiInvalidationFlag@004057a4
+  - thunk_FUN_0052b3e0@0040100f
+  - CRect@00403797
+  - thunk_FUN_00562d90@0040547f
+  - thunk_FUN_00563330@0040165e
+  - thunk_FUN_0055f300@0040145b
+  - thunk_FUN_0052b460@00405b0a
+  - thunk_FUN_00563da0@00406c17
+  - thunk_FUN_00563220@00408f21
+symbols:
+  - g_pActiveMapContextState@006a3fbc
+  - s_D:\Ambit\Cross\UMapper.cpp_006976e4@006976e4
+
+=== 0x0052e7b0 FUN_0052e7b0 ===
+calls:
+  - FreeHeapBufferIfNotNull@00606faf
+  - AllocateWithFallbackHandler@00606f73
+  - MessageBoxA@EXTERNAL:00000146
+symbols:
+  - s_Failure_00694fd8@00694fd8
+  - s_Nil_Pointer_00694fc8@00694fc8
+  - PTR_MessageBoxA_006ab4f0@006ab4f0
+
+=== 0x0052e840 FUN_0052e840 ===
+
+=== 0x0052e890 FUN_0052e890 ===
+
+=== 0x0052e900 FUN_0052e900 ===
+
+=== 0x0052e990 FUN_0052e990 ===
+
+=== 0x0052f570 FUN_0052f570 ===
+calls:
+  - AllocateWithFallbackHandler@00606f73
+  - CObArray@00601baa
+  - thunk_UpsertPtrListRecordByComparator@004088a5
+  - thunk_GetPtrListEntryByOneBasedIndex@00409868
+  - thunk_ResetPtrListAndShrinkCapacity@00407da6
+symbols:
+  - PTR_thunk_GetTIndexAndRankListTypeName_00659c58@00659c58
+  - PTR_thunk_UpsertPtrListRecordByComparator_00659c90@00659c90
+  - PTR_thunk_GetPtrListEntryByOneBasedIndex_00659c84@00659c84
+  - PTR_thunk_ResetPtrListAndShrinkCapacity_00659c7c@00659c7c
+
+=== 0x0052f940 FUN_0052f940 ===
+
+=== 0x0052f9d0 FUN_0052f9d0 ===
+calls:
+  - GenerateThreadLocalRandom15@005e83f0
+symbols:
+  - g_pCityOrderCapabilityState@006a43d8
+  - g_pNationInteractionStateManager@006a43cc
+
+=== 0x0052fba0 FUN_0052fba0 ===
+symbols:
+  - g_pNationInteractionStateManager@006a43cc
+
+=== 0x0052fcc0 FUN_0052fcc0 ===
+
+=== 0x00531550 Cluster_Vcall_48_4C_68_00531550 ===
+symbols:
+  - g_pNationInteractionStateManager@006a43cc
+  - g_pDiplomacyTurnStateManager@006a43d0
+
+=== 0x00531e50 Cluster_UiPageGrid244C6888_00531e50 ===
+calls:
+  - AllocateWithFallbackHandler@00606f73
+  - CObArray@00601baa
+  - thunk_UpsertPtrListRecordByComparator@004088a5
+symbols:
+  - PTR_thunk_GetTSortByPriceListTypeName_00659ef0@00659ef0
+  - PTR_thunk_UpsertPtrListRecordByComparator_00659f28@00659f28
+  - g_pNationInteractionStateManager@006a43cc
+  - g_pDiplomacyTurnStateManager@006a43d0
+
+=== 0x00532c60 Cluster_UiPageGrid244C6888_00532c60 ===
+calls:
+  - AllocateWithFallbackHandler@00606f73
+  - CObArray@00601baa
+  - thunk_UpsertPtrListRecordByComparator@004088a5
+symbols:
+  - PTR_thunk_GetTSortByPriceListTypeName_00659ef0@00659ef0
+  - PTR_thunk_UpsertPtrListRecordByComparator_00659f28@00659f28
+  - g_pNationInteractionStateManager@006a43cc
+  - g_pDiplomacyTurnStateManager@006a43d0
+
+=== 0x00532f70 FUN_00532f70 ===
+calls:
+  - thunk_FUN_0052fba0@00403a80
+symbols:
+  - g_pNationInteractionStateManager@006a43cc
+
+=== 0x00533380 Cluster_Vcall_48_4C_68_00533380 ===
+symbols:
+  - g_pNationInteractionStateManager@006a43cc
+  - g_pDiplomacyTurnStateManager@006a43d0
+
+=== 0x00533b10 Cluster_UiPageGrid244C6888_00533b10 ===
+calls:
+  - AllocateWithFallbackHandler@00606f73
+  - CObArray@00601baa
+  - thunk_UpsertPtrListRecordByComparator@004088a5
+symbols:
+  - PTR_thunk_GetTSortByPriceListTypeName_00659ef0@00659ef0
+  - PTR_thunk_UpsertPtrListRecordByComparator_00659f28@00659f28
+  - g_pNationInteractionStateManager@006a43cc
+  - g_pDiplomacyTurnStateManager@006a43d0
+
+=== 0x00534190 Cluster_UiPageGrid244C6888_00534190 ===
+calls:
+  - AllocateWithFallbackHandler@00606f73
+  - CObArray@00601baa
+  - thunk_UpsertPtrListRecordByComparator@004088a5
+symbols:
+  - PTR_thunk_GetTSortByPriceListTypeName_00659ef0@00659ef0
+  - PTR_thunk_UpsertPtrListRecordByComparator_00659f28@00659f28
+  - g_pNationInteractionStateManager@006a43cc
+  - g_pDiplomacyTurnStateManager@006a43d0
+
+=== 0x00535520 FUN_00535520 ===
+
+=== 0x00535540 FUN_00535540 ===

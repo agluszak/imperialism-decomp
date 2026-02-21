@@ -1,0 +1,2 @@
+type_name,getter,desc,tname_addr,create,ctor,dtor,vtbl_addr,getter_name,create_name,ctor_name,dtor_name
+TProductionOrder,0x004b4ee0,0x0064f350,0x00695b18,,0x004b4f00,0x004b4f20,0x0064fa18,GetTProductionOrderClassNamePointer,GetCityBuildingProductionValueBySlot,FUN_004b4f00,FUN_004b4f20

@@ -1,0 +1,1077 @@
+{
+  "total_cpp_strings": 51,
+  "top_buckets": [
+    {
+      "bucket": "Ambit\\Cross\\UCityViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\McAppUI.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UDisplayMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\DirectPlay.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UMapper.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\IncludeView.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\McAppStream.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UMap.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\QuickDraw.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\WAssetMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\WNetMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UGameWindow.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\USetupScreens.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\DiplomacyDialogs.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UAmbit.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UCity.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UNavy.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\McWindow.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "d:\\Ambit\\MainFrm.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\Ambit.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\CDib.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UMapDlog.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UBattleReportViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UDefenseMinister.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UDiplomacyViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UMultiplayerMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UCityMinister.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UViewMgr.more.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UCityDialogs.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UCountryAuto.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UMissionSubs.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UOptionViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UTestDialogs.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UMacViewMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UOceanViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\USmallViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UTradeViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UArmyViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UNewspaper.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UTacPlayer.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UCheaters.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\USuperMap.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UTacViews.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UArmyMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UCountry.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UHelpMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UViewMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UOcean.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "D:\\Ambit\\ResourceMgr.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UIcon.cpp",
+      "count": 1
+    },
+    {
+      "bucket": "Ambit\\Cross\\UUnit.cpp",
+      "count": 1
+    }
+  ],
+  "rows": [
+    {
+      "address": "00696650",
+      "string": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UCityViews.cpp_00696650"
+      ],
+      "ref_count": 13,
+      "function_ref_count": 13,
+      "functions": [
+        {
+          "function": "UpdateUniversityCountControlAndRefreshView",
+          "entry": "004cb9cd",
+          "from": "004cb9cd",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityCountControlAndRefreshViewAlt",
+          "entry": "004cba03",
+          "from": "004cba03",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversitySpecialistCountControlAndRefreshView",
+          "entry": "004cf46f",
+          "from": "004cf46f",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversitySpecialistCountControlAndRefreshViewAlt",
+          "entry": "004cf4a5",
+          "from": "004cf4a5",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateCityViewCountControlAndRefreshSelection",
+          "entry": "004c8c09",
+          "from": "004c8c09",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateCityViewCountControlAndRefreshSelectionAlt",
+          "entry": "004c8c3f",
+          "from": "004c8c3f",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "DispatchCityViewSelectionChangeAndRefresh",
+          "entry": "004ccfa2",
+          "from": "004ccfa2",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStatePap1",
+          "entry": "004ce0be",
+          "from": "004ce0be",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStatePap2",
+          "entry": "004ce12c",
+          "from": "004ce12c",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateMon1",
+          "entry": "004ce19a",
+          "from": "004ce19a",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateMon2",
+          "entry": "004ce230",
+          "from": "004ce230",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateUntV",
+          "entry": "004ce2c8",
+          "from": "004ce2c8",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateTraV",
+          "entry": "004ce341",
+          "from": "004ce341",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "006950b0",
+      "string": "D:\\Ambit\\McAppUI.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\McAppUI.cpp_006950b0"
+      ],
+      "ref_count": 13,
+      "function_ref_count": 13,
+      "functions": [
+        {
+          "function": "FUN_00489f90",
+          "entry": "00489f90",
+          "from": "00489fc4",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048d8d0",
+          "entry": "0048d8d0",
+          "from": "0048d8de",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048e270",
+          "entry": "0048e270",
+          "from": "0048e27e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048ae60",
+          "entry": "0048ae60",
+          "from": "0048ae99",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048dce0",
+          "entry": "0048dce0",
+          "from": "0048dcee",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048dd50",
+          "entry": "0048dd50",
+          "from": "0048dd87",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048c750",
+          "entry": "0048c750",
+          "from": "0048c75e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048a7c0",
+          "entry": "0048a7c0",
+          "from": "0048a7d1",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048e1e0",
+          "entry": "0048e1e0",
+          "from": "0048e1ee",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048e240",
+          "entry": "0048e240",
+          "from": "0048e24e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048e210",
+          "entry": "0048e210",
+          "from": "0048e21e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048c7d0",
+          "entry": "0048c7d0",
+          "from": "0048c7e4",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0048c7a0",
+          "entry": "0048c7a0",
+          "from": "0048c7ae",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00696b44",
+      "string": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UDisplayMgr.cpp_00696b44"
+      ],
+      "ref_count": 5,
+      "function_ref_count": 4,
+      "functions": [
+        {
+          "function": "FUN_004fec50",
+          "entry": "004fec50",
+          "from": "004fec5e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_004ff1c0",
+          "entry": "004ff1c0",
+          "from": "004ff1ce",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_004fec20",
+          "entry": "004fec20",
+          "from": "004fec2e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_004fed70",
+          "entry": "004fed70",
+          "from": "004fed84",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694ce4",
+      "string": "D:\\Ambit\\DirectPlay.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\DirectPlay.cpp_00694ce4"
+      ],
+      "ref_count": 3,
+      "function_ref_count": 3,
+      "functions": [
+        {
+          "function": "FUN_0047fb50",
+          "entry": "0047fb50",
+          "from": "0047fb52",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0047fb20",
+          "entry": "0047fb20",
+          "from": "0047fb22",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "ReportDirectPlayAssertionStub",
+          "entry": "00480820",
+          "from": "00480825",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "006976e4",
+      "string": "D:\\Ambit\\Cross\\UMapper.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UMapper.cpp_006976e4"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "AssignCityRegionIdsFromOverlayScanlineIntersections",
+          "entry": "0052b9b0",
+          "from": "0052bc95",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "RebuildUMapperRouteRecordsAndActiveMapRects",
+          "entry": "0052e350",
+          "from": "0052e497",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694d10",
+      "string": "D:\\Ambit\\IncludeView.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\IncludeView.cpp_00694d10"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "FUN_004838b0",
+          "entry": "004838b0",
+          "from": "004838f2",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_004833b0",
+          "entry": "004833b0",
+          "from": "004833f7",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694fa8",
+      "string": "D:\\Ambit\\McAppStream.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\McAppStream.cpp_00694fa8"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "FUN_00488b10",
+          "entry": "00488b10",
+          "from": "00488b1e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_00488e00",
+          "entry": "00488e00",
+          "from": "00488e0e",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "006970ec",
+      "string": "D:\\Ambit\\Cross\\UMap.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UMap.cpp_006970ec"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "FUN_0050e901",
+          "entry": "0050e901",
+          "from": "0050e901",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_0050ea56",
+          "entry": "0050ea56",
+          "from": "0050ea56",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00695168",
+      "string": "D:\\Ambit\\QuickDraw.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\QuickDraw.cpp_00695168"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "AssertQuickDrawFlag6A1DC8NonZero",
+          "entry": "00498b50",
+          "from": "00498b5e",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "AssertQuickDrawFlag6A1DCCNonZero",
+          "entry": "00498b80",
+          "from": "00498b8e",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "0069b794",
+      "string": "D:\\Ambit\\WAssetMgr.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\WAssetMgr.cpp_0069b794"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "LoadTableResourceStreamByName",
+          "entry": "005df430",
+          "from": "005df562",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "FUN_005e0460",
+          "entry": "005e0460",
+          "from": "005e04d8",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "0069b8e4",
+      "string": "D:\\Ambit\\WNetMgr.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\WNetMgr.cpp_0069b8e4"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 2,
+      "functions": [
+        {
+          "function": "PopNextTurnEventPacketOrProcessSpecialQueueRecords",
+          "entry": "005e3f30",
+          "from": "005e4042",
+          "ref_type": "DATA"
+        },
+        {
+          "function": "ReportWNetManagerErrorCodeAndNotifyUi",
+          "entry": "005e34f0",
+          "from": "005e3878",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00696bc0",
+      "string": "D:\\Ambit\\Cross\\UGameWindow.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UGameWindow.cpp_00696bc0"
+      ],
+      "ref_count": 2,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "FUN_005003a0",
+          "entry": "005003a0",
+          "from": "005003af",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00698ab8",
+      "string": "D:\\Ambit\\Cross\\USetupScreens.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\USetupScreens.cpp_00698ab8"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "FUN_005769c0",
+          "entry": "005769c0",
+          "from": "005769d4",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694cc0",
+      "string": "D:\\Ambit\\DiplomacyDialogs.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\DiplomacyDialogs.cpp_00694cc0"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "FUN_0047f3e0",
+          "entry": "0047f3e0",
+          "from": "0047f3eb",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "0069527c",
+      "string": "D:\\Ambit\\Cross\\UAmbit.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UAmbit.cpp_0069527c"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "FUN_0049ee70",
+          "entry": "0049ee70",
+          "from": "0049ee7e",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00695f18",
+      "string": "D:\\Ambit\\Cross\\UCity.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UCity.cpp_00695f18"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "SanitizeCityCounterArray",
+          "entry": "004b4180",
+          "from": "004b41d3",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "006983c8",
+      "string": "D:\\Ambit\\Cross\\UNavy.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UNavy.cpp_006983c8"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "ApplyMapOrderTypeExecutionEffects",
+          "entry": "00556100",
+          "from": "00556136",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "006950d8",
+      "string": "D:\\Ambit\\McWindow.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\McWindow.cpp_006950d8"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "FUN_00493470",
+          "entry": "00493470",
+          "from": "00493533",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694e38",
+      "string": "d:\\Ambit\\MainFrm.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_d:\\Ambit\\MainFrm.cpp_00694e38"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog",
+          "entry": "004855b0",
+          "from": "0048578f",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694290",
+      "string": "D:\\Ambit\\Ambit.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Ambit.cpp_00694290"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "AssertAmbitSubsystemReadyOrFailWithBmp3B6",
+          "entry": "00414640",
+          "from": "0041464e",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "00694b9c",
+      "string": "D:\\Ambit\\CDib.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\CDib.cpp_00694b9c"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 1,
+      "functions": [
+        {
+          "function": "FUN_0047aa00",
+          "entry": "0047aa00",
+          "from": "0047aa15",
+          "ref_type": "DATA"
+        }
+      ]
+    },
+    {
+      "address": "006973d0",
+      "string": "D:\\Ambit\\Cross\\UMapDlog.cpp",
+      "block": ".data",
+      "symbol_names": [
+        "s_D:\\Ambit\\Cross\\UMapDlog.cpp_006973d0"
+      ],
+      "ref_count": 1,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00695978",
+      "string": "D:\\Ambit\\Cross\\UBattleReportViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00696860",
+      "string": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00696ae0",
+      "string": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00698040",
+      "string": "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "006964b0",
+      "string": "D:\\Ambit\\Cross\\UCityMinister.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069b740",
+      "string": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "006962e8",
+      "string": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "006967ac",
+      "string": "D:\\Ambit\\Cross\\UCountryAuto.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00697be0",
+      "string": "D:\\Ambit\\Cross\\UMissionSubs.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00698730",
+      "string": "D:\\Ambit\\Cross\\UOptionViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069a7f8",
+      "string": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00696d68",
+      "string": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00698650",
+      "string": "D:\\Ambit\\Cross\\UOceanViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "006992f0",
+      "string": "D:\\Ambit\\Cross\\USmallViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069aa94",
+      "string": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00695858",
+      "string": "D:\\Ambit\\Cross\\UArmyViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00698470",
+      "string": "D:\\Ambit\\Cross\\UNewspaper.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00699d84",
+      "string": "D:\\Ambit\\Cross\\UTacPlayer.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00695a20",
+      "string": "D:\\Ambit\\Cross\\UCheaters.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069943c",
+      "string": "D:\\Ambit\\Cross\\USuperMap.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00699ff4",
+      "string": "D:\\Ambit\\Cross\\UTacViews.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069573c",
+      "string": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00696728",
+      "string": "D:\\Ambit\\Cross\\UCountry.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00696c58",
+      "string": "D:\\Ambit\\Cross\\UHelpMgr.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069b6bc",
+      "string": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "006984cc",
+      "string": "D:\\Ambit\\Cross\\UOcean.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "006951d8",
+      "string": "D:\\Ambit\\ResourceMgr.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "00696cc8",
+      "string": "D:\\Ambit\\Cross\\UIcon.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    },
+    {
+      "address": "0069aae0",
+      "string": "D:\\Ambit\\Cross\\UUnit.cpp",
+      "block": ".data",
+      "symbol_names": [],
+      "ref_count": 0,
+      "function_ref_count": 0,
+      "functions": []
+    }
+  ]
+}

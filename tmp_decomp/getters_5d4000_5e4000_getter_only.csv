@@ -1,0 +1,5 @@
+type_name,getter,desc,tname_addr,create,ctor,dtor
+TModalMessageCommand,0x005dcdd0,0x0066f2a8,0x0069b724,,,
+TAssetMgr,0x005df260,0x0066f4c0,0x0069b774,,,
+TMovieView,0x005e2210,0x0066f6e8,0x0069b8ac,,,
+TNetMgr,0x005e33c0,0x0066f978,0x0069b8bc,,,

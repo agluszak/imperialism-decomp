@@ -1,0 +1,44 @@
+2026-02-20 14:48:43 INFO  (LoggingInitialization) Using log config file: jar:file:/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-02-20 14:48:43 INFO  (LoggingInitialization) Using log file: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/application.log  
+2026-02-20 14:48:43 INFO  (Preferences) Loading user preferences: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/preferences  
+2026-02-20 14:48:43 INFO  (ClassSearcher) Searching for classes...  
+2026-02-20 14:48:43 INFO  (LoggingInitialization) Using log config file: jar:file:/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-02-20 14:48:43 INFO  (LoggingInitialization) Using log file: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/application.log  
+2026-02-20 14:48:43 INFO  (Preferences) Loading user preferences: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/preferences  
+2026-02-20 14:48:43 INFO  (ClassSearcher) Searching for classes...  
+2026-02-20 14:48:44 INFO  (ClassSearcher) Class search complete (772 ms)  
+2026-02-20 14:48:44 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-02-20 14:48:44 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-02-20 14:48:44 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-02-20 14:48:44 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-02-20 14:48:44 DEBUG (DefaultProjectManager) No tools found; Installing default tools  
+2026-02-20 14:48:44 DEBUG (DefaultProjectManager) 	no recent project directories found  
+2026-02-20 14:48:44 INFO  (ClassSearcher) Class search complete (717 ms)  
+2026-02-20 14:48:44 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-02-20 14:48:44 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-02-20 14:48:44 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-02-20 14:48:44 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-02-20 14:48:44 DEBUG (DefaultProjectManager) No tools found; Installing default tools  
+2026-02-20 14:48:44 DEBUG (DefaultProjectManager) 	no recent project directories found  
+2026-02-20 14:48:58 INFO  (LoggingInitialization) Using log config file: jar:file:/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-02-20 14:48:58 INFO  (LoggingInitialization) Using log file: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/application.log  
+2026-02-20 14:48:58 INFO  (Preferences) Loading user preferences: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/preferences  
+2026-02-20 14:48:58 INFO  (ClassSearcher) Searching for classes...  
+2026-02-20 14:48:58 INFO  (LoggingInitialization) Using log config file: jar:file:/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-02-20 14:48:58 INFO  (LoggingInitialization) Using log file: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/application.log  
+2026-02-20 14:48:58 INFO  (Preferences) Loading user preferences: /home/agluszak/code/personal/imperialism_knowledge/.sandbox_home/.config/ghidra/ghidra_12.0.2_PUBLIC/preferences  
+2026-02-20 14:48:58 INFO  (ClassSearcher) Searching for classes...  
+2026-02-20 14:48:58 INFO  (ClassSearcher) Class search complete (731 ms)  
+2026-02-20 14:48:58 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-02-20 14:48:58 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-02-20 14:48:58 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-02-20 14:48:58 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-02-20 14:48:58 DEBUG (DefaultProjectManager) No tools found; Installing default tools  
+2026-02-20 14:48:58 DEBUG (DefaultProjectManager) 	no recent project directories found  
+2026-02-20 14:48:59 INFO  (DefaultProject) Opening project: /home/agluszak/code/personal/imperialism_knowledge/imperialism-decomp  
+2026-02-20 14:48:59 INFO  (ClassSearcher) Class search complete (747 ms)  
+2026-02-20 14:48:59 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-02-20 14:48:59 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-02-20 14:48:59 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-02-20 14:48:59 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-02-20 14:48:59 INFO  (DefaultProject) Opening project: /home/agluszak/code/personal/imperialism_knowledge/imperialism-decomp  

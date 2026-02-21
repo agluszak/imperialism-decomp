@@ -1,0 +1,354 @@
+{
+  "rows": [
+    {
+      "address": "0x0050a9f0",
+      "function": "Cluster_Vcall_00_04_2C_0050a9f0",
+      "vcall_count": 27,
+      "offsets": "0x0;0x4;0x2c",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x00533380",
+      "function": "Cluster_Vcall_48_4C_68_00533380",
+      "vcall_count": 27,
+      "offsets": "0x48;0x4c;0x68;0x78;0x7c;0x84;0x88;0x1a4",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x00520670",
+      "function": "Cluster_Vcall_34_84_214_00520670",
+      "vcall_count": 26,
+      "offsets": "0x34;0x84;0x214;0x218;0x21c;0x220;0x224;0x228;0x22c;0x230",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x00590cb0",
+      "function": "Cluster_Vcall_0C_84_C8_00590cb0",
+      "vcall_count": 25,
+      "offsets": "0xc;0x84;0xc8;0x1b4;0x1c4;0x1cc;0x1e0;0x1ec;0x1f8",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x004ec540",
+      "function": "Cluster_Vcall_14_1C_24_004ec540",
+      "vcall_count": 24,
+      "offsets": "0x14;0x1c;0x24;0x28;0x2c;0x30;0x38;0x3c;0x48;0x4c",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x005b8080",
+      "function": "Cluster_Vcall_38_40_44_005b8080",
+      "vcall_count": 24,
+      "offsets": "0x38;0x40;0x44;0x64",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x004f1b70",
+      "function": "Cluster_Vcall_24_28_3C_004f1b70",
+      "vcall_count": 22,
+      "offsets": "0x24;0x28;0x3c;0x48;0x80;0x214;0x290;0x2a8",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x00531550",
+      "function": "Cluster_Vcall_48_4C_68_00531550",
+      "vcall_count": 21,
+      "offsets": "0x48;0x4c;0x68;0x78;0x84;0x88;0x1a4",
+      "aliases": [],
+      "code_callers": [],
+      "data_refs": [],
+      "neighbor_samples": [],
+      "nearest_vtable_labels": []
+    },
+    {
+      "address": "0x004d9c70",
+      "function": "Cluster_Vcall_14_1C_48_004d9c70",
+      "vcall_count": 20,
+      "offsets": "0x14;0x1c;0x48;0x4c;0x7c",
+      "aliases": [
+        "Cluster_CityHint_004d9c70@00408143"
+      ],
+      "code_callers": [
+        {
+          "entry": "00408143",
+          "name": "Cluster_CityHint_004d9c70"
+        },
+        {
+          "entry": "004e73f0",
+          "name": "FUN_004e73f0"
+        },
+        {
+          "entry": "00541040",
+          "name": "FUN_00541040"
+        }
+      ],
+      "data_refs": [
+        "0065394c",
+        "0065b08c",
+        "0065b73c",
+        "0065ba94"
+      ],
+      "neighbor_samples": [
+        {
+          "data_ref": "0065394c",
+          "neighbors": [
+            {
+              "slot_delta": -3,
+              "ptr_value": "0x00407c57",
+              "function": "thunk_HandleTurnEventVtableSlot08ConditionalDispatch",
+              "entry": "00407c57"
+            },
+            {
+              "slot_delta": -2,
+              "ptr_value": "0x004010a0",
+              "function": "thunk_NoOpTurnEventStateVtableSlot0C",
+              "entry": "004010a0"
+            },
+            {
+              "slot_delta": -1,
+              "ptr_value": "0x00408625",
+              "function": "thunk_NoOpTurnEventStateVtableSlot10",
+              "entry": "00408625"
+            },
+            {
+              "slot_delta": 0,
+              "ptr_value": "0x00408143",
+              "function": "Cluster_CityHint_004d9c70",
+              "entry": "00408143"
+            },
+            {
+              "slot_delta": 1,
+              "ptr_value": "0x0040376a",
+              "function": "Cluster_CityHint_004d92e0",
+              "entry": "0040376a"
+            },
+            {
+              "slot_delta": 2,
+              "ptr_value": "0x00405de4",
+              "function": "thunk_FUN_004d9160",
+              "entry": "00405de4"
+            },
+            {
+              "slot_delta": 3,
+              "ptr_value": "0x00408684",
+              "function": "thunk_InvokeObjectVtableMethod24",
+              "entry": "00408684"
+            },
+            {
+              "slot_delta": 4,
+              "ptr_value": "0x00405c59",
+              "function": "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer",
+              "entry": "00405c59"
+            },
+            {
+              "slot_delta": 9,
+              "ptr_value": "0x00403995",
+              "function": "thunk_FUN_004d7ae0",
+              "entry": "00403995"
+            }
+          ]
+        },
+        {
+          "data_ref": "0065b08c",
+          "neighbors": [
+            {
+              "slot_delta": -3,
+              "ptr_value": "0x00407c57",
+              "function": "thunk_HandleTurnEventVtableSlot08ConditionalDispatch",
+              "entry": "00407c57"
+            },
+            {
+              "slot_delta": -2,
+              "ptr_value": "0x004010a0",
+              "function": "thunk_NoOpTurnEventStateVtableSlot0C",
+              "entry": "004010a0"
+            },
+            {
+              "slot_delta": -1,
+              "ptr_value": "0x00408625",
+              "function": "thunk_NoOpTurnEventStateVtableSlot10",
+              "entry": "00408625"
+            },
+            {
+              "slot_delta": 0,
+              "ptr_value": "0x00408143",
+              "function": "Cluster_CityHint_004d9c70",
+              "entry": "00408143"
+            },
+            {
+              "slot_delta": 1,
+              "ptr_value": "0x0040376a",
+              "function": "Cluster_CityHint_004d92e0",
+              "entry": "0040376a"
+            },
+            {
+              "slot_delta": 2,
+              "ptr_value": "0x00405de4",
+              "function": "thunk_FUN_004d9160",
+              "entry": "00405de4"
+            },
+            {
+              "slot_delta": 3,
+              "ptr_value": "0x00408684",
+              "function": "thunk_InvokeObjectVtableMethod24",
+              "entry": "00408684"
+            },
+            {
+              "slot_delta": 4,
+              "ptr_value": "0x00405c59",
+              "function": "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer",
+              "entry": "00405c59"
+            }
+          ]
+        },
+        {
+          "data_ref": "0065b73c",
+          "neighbors": [
+            {
+              "slot_delta": -3,
+              "ptr_value": "0x00407c57",
+              "function": "thunk_HandleTurnEventVtableSlot08ConditionalDispatch",
+              "entry": "00407c57"
+            },
+            {
+              "slot_delta": -2,
+              "ptr_value": "0x004010a0",
+              "function": "thunk_NoOpTurnEventStateVtableSlot0C",
+              "entry": "004010a0"
+            },
+            {
+              "slot_delta": -1,
+              "ptr_value": "0x00408625",
+              "function": "thunk_NoOpTurnEventStateVtableSlot10",
+              "entry": "00408625"
+            },
+            {
+              "slot_delta": 0,
+              "ptr_value": "0x00408143",
+              "function": "Cluster_CityHint_004d9c70",
+              "entry": "00408143"
+            },
+            {
+              "slot_delta": 1,
+              "ptr_value": "0x0040376a",
+              "function": "Cluster_CityHint_004d92e0",
+              "entry": "0040376a"
+            },
+            {
+              "slot_delta": 2,
+              "ptr_value": "0x00405de4",
+              "function": "thunk_FUN_004d9160",
+              "entry": "00405de4"
+            },
+            {
+              "slot_delta": 3,
+              "ptr_value": "0x00408684",
+              "function": "thunk_InvokeObjectVtableMethod24",
+              "entry": "00408684"
+            },
+            {
+              "slot_delta": 4,
+              "ptr_value": "0x00405c59",
+              "function": "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer",
+              "entry": "00405c59"
+            },
+            {
+              "slot_delta": 9,
+              "ptr_value": "0x00403995",
+              "function": "thunk_FUN_004d7ae0",
+              "entry": "00403995"
+            }
+          ]
+        },
+        {
+          "data_ref": "0065ba94",
+          "neighbors": [
+            {
+              "slot_delta": -3,
+              "ptr_value": "0x00407c57",
+              "function": "thunk_HandleTurnEventVtableSlot08ConditionalDispatch",
+              "entry": "00407c57"
+            },
+            {
+              "slot_delta": -2,
+              "ptr_value": "0x004010a0",
+              "function": "thunk_NoOpTurnEventStateVtableSlot0C",
+              "entry": "004010a0"
+            },
+            {
+              "slot_delta": -1,
+              "ptr_value": "0x00408625",
+              "function": "thunk_NoOpTurnEventStateVtableSlot10",
+              "entry": "00408625"
+            },
+            {
+              "slot_delta": 0,
+              "ptr_value": "0x00408143",
+              "function": "Cluster_CityHint_004d9c70",
+              "entry": "00408143"
+            },
+            {
+              "slot_delta": 1,
+              "ptr_value": "0x0040376a",
+              "function": "Cluster_CityHint_004d92e0",
+              "entry": "0040376a"
+            },
+            {
+              "slot_delta": 2,
+              "ptr_value": "0x00405de4",
+              "function": "thunk_FUN_004d9160",
+              "entry": "00405de4"
+            },
+            {
+              "slot_delta": 3,
+              "ptr_value": "0x00408684",
+              "function": "thunk_InvokeObjectVtableMethod24",
+              "entry": "00408684"
+            },
+            {
+              "slot_delta": 4,
+              "ptr_value": "0x00405c59",
+              "function": "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer",
+              "entry": "00405c59"
+            },
+            {
+              "slot_delta": 9,
+              "ptr_value": "0x00403995",
+              "function": "thunk_FUN_004d7ae0",
+              "entry": "00403995"
+            }
+          ]
+        }
+      ],
+      "nearest_vtable_labels": []
+    }
+  ]
+}

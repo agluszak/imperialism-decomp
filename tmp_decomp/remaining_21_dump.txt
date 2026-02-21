@@ -1,0 +1,565 @@
+=== 0x0052e310 FUN_0052e310 size=38 callers=1 ===
+callers: thunk_FUN_0052e310@004052cc
+
+void __thiscall FUN_0052e310(int param_1,int param_2)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = FUN_005e7fc0(*(undefined4 *)(param_1 + 4),param_2 * 0x18);
+  *(int *)(param_1 + 8) = param_2;
+  *(undefined4 *)(param_1 + 4) = uVar1;
+  return;
+}
+
+
+=== 0x0052e350 FUN_0052e350 size=881 callers=1 ===
+callers: thunk_FUN_0052e350@0040356c
+
+void __fastcall FUN_0052e350(int param_1)
+
+{
+  int iVar1;
+  undefined2 *puVar2;
+  undefined4 *puVar3;
+  short *psVar4;
+  undefined2 extraout_var;
+  int iVar5;
+  undefined4 uVar6;
+  undefined2 uVar8;
+  undefined2 extraout_var_00;
+  uint uVar7;
+  undefined2 extraout_var_01;
+  short sVar9;
+  int iVar10;
+  int iVar11;
+  uint uVar12;
+  bool bVar13;
+  int local_18;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  iVar10 = 0;
+  uVar12 = 0;
+  local_18 = 0;
+  if (DAT_006a390c != 0) {
+
+=== 0x0052e7b0 FUN_0052e7b0 size=86 callers=1 ===
+callers: thunk_FUN_0052e7b0@00402c5c
+
+void __thiscall FUN_0052e7b0(int param_1,short param_2)
+
+{
+  int iVar1;
+  
+  *(short *)(param_1 + 0xc) = param_2;
+  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0x10));
+  iVar1 = AllocateWithFallbackHandler((int)param_2 << 4);
+  if (iVar1 == 0) {
+    iVar1 = 0;
+  }
+  *(int *)(param_1 + 0x10) = iVar1;
+  if (iVar1 != 0) {
+    return;
+  }
+                    /* WARNING: Subroutine does not return */
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+}
+
+
+=== 0x0052e840 FUN_0052e840 size=52 callers=0 ===
+
+undefined4 __fastcall FUN_0052e840(int *param_1)
+
+{
+  int iVar1;
+  undefined1 uVar2;
+  
+  uVar2 = 0;
+  (**(code **)(*param_1 + 0x70))(0);
+  param_1 = param_1 + 4;
+  iVar1 = 0x195;
+  do {
+    if ((char)*param_1 == -1) {
+      *(char *)param_1 = 'd';
+      uVar2 = 1;
+    }
+    else if ((char)*param_1 == -9) {
+      *(char *)param_1 = -1;
+    }
+    param_1 = (int *)((int)param_1 + 1);
+    iVar1 = iVar1 + -1;
+  } while (iVar1 != 0);
+  return CONCAT31((int3)((uint)param_1 >> 8),uVar2);
+}
+
+
+=== 0x0052e890 FUN_0052e890 size=80 callers=0 ===
+
+void __thiscall FUN_0052e890(int *param_1,short param_2)
+
+{
+  int iVar1;
+  code *pcVar2;
+  undefined4 uVar3;
+  int iVar4;
+  int iVar5;
+  
+  iVar4 = (int)param_2;
+  iVar5 = 0;
+  iVar1 = *param_1;
+  *(undefined1 *)((int)param_1 + iVar4 + 0x10) = 0xf7;
+  _param_2 = 6;
+  pcVar2 = *(code **)(iVar1 + 0x74);
+  do {
+    uVar3 = (*pcVar2)(iVar4,iVar5);
+    if (((short)uVar3 != -1) && (*(char *)((short)uVar3 + 0x10 + (int)param_1) == -1)) {
+      (**(code **)(*param_1 + 0x70))(uVar3);
+    }
+    iVar5 = iVar5 + 1;
+    _param_2 = _param_2 + -1;
+  } while (_param_2 != 0);
+  return;
+}
+
+
+=== 0x0052e900 FUN_0052e900 size=105 callers=0 ===
+
+void __fastcall FUN_0052e900(int *param_1)
+
+{
+  int *piVar1;
+  code *pcVar2;
+  int iVar3;
+  int iVar4;
+  int *local_c;
+  int local_8;
+  int local_4;
+  
+  piVar1 = param_1 + 4;
+  local_8 = 0;
+  local_4 = 0x195;
+  local_c = piVar1;
+  do {
+    if ((char)*local_c == 'd') {
+      pcVar2 = *(code **)(*param_1 + 0x74);
+      iVar4 = local_8;
+      do {
+        iVar3 = (*pcVar2)(iVar4,4);
+        *(char *)(iVar4 + (int)piVar1) = *(char *)(iVar3 + (int)piVar1);
+        iVar4 = iVar3;
+      } while (*(char *)(iVar3 + (int)piVar1) != -1);
+    }
+    local_8 = local_8 + 1;
+    local_c = (int *)((int)local_c + 1);
+    local_4 = local_4 + -1;
+  } while (local_4 != 0);
+
+=== 0x0052e990 FUN_0052e990 size=33 callers=1 ===
+callers: thunk_FUN_0052e990@00402aef
+
+undefined4 __thiscall FUN_0052e990(int *param_1,int *param_2)
+
+{
+  if ((param_1[1] == param_2[1]) && (*param_1 == *param_2)) {
+    return 1;
+  }
+  return 0;
+}
+
+
+=== 0x0052f570 FUN_0052f570 size=339 callers=1 ===
+callers: thunk_FUN_0052f570@00402f36
+
+void __fastcall FUN_0052f570(int param_1)
+
+{
+  int iVar1;
+  code *pcVar2;
+  bool bVar3;
+  CObArray *this;
+  short *psVar4;
+  undefined2 *puVar5;
+  short *psVar6;
+  short sVar7;
+  undefined4 *unaff_FS_OFFSET;
+  int local_20;
+  short local_14;
+  short local_12;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006340da;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (CObArray *)AllocateWithFallbackHandler(0x18);
+  sVar7 = 0;
+  local_4 = 0;
+  if (this == (CObArray *)0x0) {
+    this = (CObArray *)0x0;
+  }
+
+=== 0x0052f940 FUN_0052f940 size=104 callers=0 ===
+
+void __fastcall FUN_0052f940(int *param_1)
+
+{
+  int iVar1;
+  char cVar2;
+  undefined2 extraout_var;
+  
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0x48))();
+  if ((short)param_1[6] < *(short *)((int)param_1 + 0x1a)) {
+    cVar2 = (**(code **)(iVar1 + 0x88))();
+    if (cVar2 == '\0') goto LAB_0052f978;
+  }
+  (**(code **)(**(int **)(param_1[1] + 0x98) + 0x68))((short)param_1[7]);
+  *(undefined2 *)(param_1 + 6) = 0;
+LAB_0052f978:
+  (**(code **)(iVar1 + 0x84))();
+  if ((short)param_1[4] != -10) {
+    (**(code **)(*(int *)param_1[1] + 0x1a4))(CONCAT22(extraout_var,(short)param_1[4]),0xffffffff);
+    *(undefined2 *)((int)param_1 + (short)param_1[4] * 2 + 0x1e) =
+         *(undefined2 *)((int)param_1 + 0x12);
+  }
+  return;
+}
+
+
+=== 0x0052f9d0 FUN_0052f9d0 size=358 callers=0 ===
+
+void __fastcall FUN_0052f9d0(int param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  int iVar4;
+  int local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  iVar2 = (int)*(short *)(*(int *)(param_1 + 4) + 0xc);
+  iVar4 = g_pCityOrderCapabilityState + iVar2;
+  local_18 = 0;
+  local_14 = 1;
+  local_10 = 2;
+  local_c = 3;
+  local_8 = 4;
+  local_1c = (*(char *)(iVar4 + 0x27b + iVar2 * 0x1c) == '\x02') + 5;
+  local_4 = 6;
+  if (local_1c != 0) {
+    puVar3 = &local_18;
+    do {
+      iVar2 = GenerateThreadLocalRandom15();
+      iVar4 = CONCAT22((short)((uint)iVar4 >> 0x10),*(undefined2 *)puVar3);
+
+=== 0x0052fba0 FUN_0052fba0 size=214 callers=1 ===
+callers: thunk_FUN_0052fba0@00403a80
+
+void __thiscall
+FUN_0052fba0(int param_1,undefined4 param_2,uint param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  short *psVar1;
+  ushort uVar2;
+  undefined *puVar3;
+  int iVar4;
+  short sVar5;
+  undefined4 uVar6;
+  uint uVar7;
+  undefined4 unaff_EBX;
+  undefined4 unaff_retaddr;
+  
+  sVar5 = (short)param_5;
+  uVar7 = param_3;
+  if (sVar5 == *(short *)(param_1 + 0x10)) {
+    if ((short)*(ushort *)(param_1 + 0x12) < (short)param_3) {
+      uVar7 = (uint)*(ushort *)(param_1 + 0x12);
+    }
+    sVar5 = (**(code **)(**(int **)(param_1 + 4) + 0x100))(param_5);
+    if (sVar5 < (short)uVar7) {
+      puVar3 = g_pNationInteractionStateManager->vftable;
+      iVar4 = (*(int **)(param_1 + 4))[3];
+      uVar6 = (**(code **)(**(int **)(param_1 + 4) + 0x100))(param_5,param_3,param_5,0,0);
+      (**(code **)(puVar3 + 0x60))((short)iVar4,unaff_EBX,uVar6);
+      return;
+    }
+  }
+
+=== 0x0052fcc0 FUN_0052fcc0 size=54 callers=0 ===
+
+void __fastcall FUN_0052fcc0(int param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  
+  *(undefined2 *)(param_1 + 0x12) = 0;
+  *(undefined2 *)(param_1 + 0x14) = 0;
+  *(undefined2 *)(param_1 + 0x10) = 0xfff6;
+  sVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x74))();
+  if (sVar1 == 0) {
+    *(short *)(param_1 + 0x18) = *(short *)(param_1 + 0x18) + 1;
+  }
+  puVar3 = (undefined4 *)(param_1 + 0x1e);
+  for (iVar2 = 8; iVar2 != 0; iVar2 = iVar2 + -1) {
+    *puVar3 = 0;
+    puVar3 = puVar3 + 1;
+  }
+  *(undefined2 *)puVar3 = 0;
+  return;
+}
+
+
+=== 0x00531550 Cluster_Vcall_48_4C_68_00531550 size=428 callers=0 ===
+
+void __fastcall Cluster_Vcall_48_4C_68_00531550(int *param_1)
+
+{
+  int *piVar1;
+  char cVar2;
+  short sVar3;
+  undefined2 extraout_var;
+  undefined4 uVar4;
+  int iVar5;
+  int *piVar6;
+  
+  iVar5 = *param_1;
+  (**(code **)(iVar5 + 0x48))();
+  if ((short)param_1[6] < *(short *)((int)param_1 + 0x1a)) {
+    cVar2 = (**(code **)(iVar5 + 0x88))();
+    if (cVar2 != '\0') goto LAB_00531570;
+  }
+  else {
+LAB_00531570:
+    (**(code **)(**(int **)(param_1[1] + 0x98) + 0x68))((short)param_1[7]);
+    *(undefined2 *)(param_1 + 6) = 0;
+  }
+  (**(code **)(iVar5 + 0x84))();
+  if ((short)param_1[4] != -10) {
+    (**(code **)(*(int *)param_1[1] + 0x1a4))(CONCAT22(extraout_var,(short)param_1[4]),0xffffffff);
+    *(undefined2 *)((int)param_1 + (short)param_1[4] * 2 + 0x1e) =
+         *(undefined2 *)((int)param_1 + 0x12);
+  }
+  piVar6 = param_1 + 0x10;
+
+=== 0x00531e50 Cluster_UiPageGrid244C6888_00531e50 size=656 callers=0 ===
+
+void __fastcall Cluster_UiPageGrid244C6888_00531e50(int *param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  code *pcVar3;
+  int iVar4;
+  char cVar5;
+  undefined2 uVar6;
+  short sVar7;
+  short sVar8;
+  undefined2 extraout_var;
+  short *psVar9;
+  int iVar10;
+  short sVar11;
+  int *piVar12;
+  int iVar13;
+  undefined4 *puVar14;
+  undefined4 *unaff_FS_OFFSET;
+  CObArray *pCStack_48;
+  undefined4 uStack_40;
+  undefined2 uStack_3c;
+  int iStack_38;
+  CObArray *pCStack_34;
+  undefined4 auStack_30 [6];
+  short sStack_16;
+  short sStack_14;
+  short sStack_12;
+  undefined2 uStack_10;
+
+=== 0x00532c60 Cluster_UiPageGrid244C6888_00532c60 size=611 callers=0 ===
+
+void __fastcall Cluster_UiPageGrid244C6888_00532c60(int *param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  code *pcVar3;
+  int iVar4;
+  char cVar5;
+  undefined2 uVar6;
+  short sVar7;
+  short sVar8;
+  undefined2 extraout_var;
+  short *psVar9;
+  int iVar10;
+  short sVar11;
+  int *piVar12;
+  int iVar13;
+  undefined4 *puVar14;
+  undefined4 *unaff_FS_OFFSET;
+  CObArray *pCStack_48;
+  undefined4 uStack_40;
+  undefined2 uStack_3c;
+  int iStack_38;
+  CObArray *pCStack_34;
+  undefined4 auStack_30 [6];
+  short sStack_16;
+  short sStack_14;
+  short sStack_12;
+  undefined2 uStack_10;
+
+=== 0x00532f70 FUN_00532f70 size=170 callers=0 ===
+
+void __thiscall
+FUN_00532f70(int param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  short sVar1;
+  int iVar2;
+  undefined4 unaff_retaddr;
+  
+  if (*(short *)(param_1 + 0x1e + (short)param_5 * 2) == 0) {
+    sVar1 = (short)(*(int **)(param_1 + 4))[0x29];
+    if (sVar1 < 0xc) {
+      iVar2 = 1;
+    }
+    else {
+      iVar2 = (0x18 < sVar1) + 2;
+    }
+    sVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x100))(param_5);
+    if (sVar1 < (short)iVar2) {
+      iVar2 = (**(code **)(**(int **)(param_1 + 4) + 0x100))(param_5);
+    }
+    if ((short)param_2 <= (short)iVar2) {
+      iVar2 = param_2;
+    }
+    (**(code **)(g_pNationInteractionStateManager->vftable + 0x60))
+              (CONCAT22((short)((uint)*(int *)(param_1 + 4) >> 0x10),
+                        *(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),unaff_retaddr,iVar2,param_3,
+               param_5,0,0);
+    return;
+  }
+
+=== 0x00533380 Cluster_Vcall_48_4C_68_00533380 size=587 callers=0 ===
+
+void __fastcall Cluster_Vcall_48_4C_68_00533380(int *param_1)
+
+{
+  char cVar1;
+  short sVar2;
+  short sVar3;
+  undefined2 extraout_var;
+  undefined4 uVar4;
+  int iVar5;
+  int iVar6;
+  undefined4 uVar7;
+  int *piVar8;
+  
+  iVar6 = *param_1;
+  sVar3 = *(short *)(param_1[1] + 0xa4);
+  (**(code **)(iVar6 + 0x48))();
+  if ((*(short *)((int)param_1 + 0x1a) <= (short)param_1[6]) ||
+     (cVar1 = (**(code **)(iVar6 + 0x88))(), cVar1 != '\0')) {
+    (**(code **)(**(int **)(param_1[1] + 0x98) + 0x68))
+              (CONCAT22((short)((uint)param_1[1] >> 0x10),(short)param_1[7]));
+    *(undefined2 *)(param_1 + 6) = 0;
+  }
+  (**(code **)(iVar6 + 0x84))();
+  if ((short)param_1[4] != -10) {
+    (**(code **)(*(int *)param_1[1] + 0x1a4))(CONCAT22(extraout_var,(short)param_1[4]),0xffffffff);
+    *(undefined2 *)((int)param_1 + (short)param_1[4] * 2 + 0x1e) =
+         *(undefined2 *)((int)param_1 + 0x12);
+  }
+  piVar8 = param_1 + 0x10;
+
+=== 0x00533b10 Cluster_UiPageGrid244C6888_00533b10 size=524 callers=0 ===
+
+void __fastcall Cluster_UiPageGrid244C6888_00533b10(int *param_1)
+
+{
+  code *pcVar1;
+  char cVar2;
+  undefined2 uVar3;
+  short sVar4;
+  undefined2 extraout_var;
+  undefined2 *puVar5;
+  undefined4 uVar6;
+  int iVar7;
+  int iVar8;
+  CObArray *pCVar9;
+  int *piVar10;
+  int *unaff_FS_OFFSET;
+  undefined4 uStack_20;
+  undefined2 uStack_1c;
+  int iStack_18;
+  int iStack_14;
+  CObArray *pCStack_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063420a;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  iVar8 = *param_1;
+
+=== 0x00534190 Cluster_UiPageGrid244C6888_00534190 size=559 callers=0 ===
+
+void __fastcall Cluster_UiPageGrid244C6888_00534190(int *param_1)
+
+{
+  code *pcVar1;
+  CObArray *pCVar2;
+  char cVar3;
+  undefined2 uVar4;
+  short sVar5;
+  short sVar6;
+  undefined2 extraout_var;
+  undefined2 *puVar7;
+  int iVar8;
+  int iVar9;
+  int iVar10;
+  int *piVar11;
+  undefined4 *unaff_FS_OFFSET;
+  CObArray *pCStack_20;
+  undefined4 uStack_1c;
+  undefined2 uStack_18;
+  int iStack_14;
+  CObArray *pCStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063422a;
+  *unaff_FS_OFFSET = &uStack_c;
+
+=== 0x00535520 FUN_00535520 size=3 callers=0 ===
+
+undefined4 FUN_00535520(void)
+
+{
+  return 0;
+}
+
+
+=== 0x00535540 FUN_00535540 size=3 callers=0 ===
+
+undefined4 __fastcall FUN_00535540(undefined4 param_1)
+
+{
+  return param_1;
+}
+

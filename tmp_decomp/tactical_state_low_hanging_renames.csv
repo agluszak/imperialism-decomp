@@ -1,0 +1,8 @@
+address,new_name,comment
+0x0059d530,SelectBestTacticalTileByWeightedHeuristics,Builds tactical distance context when needed, scores each candidate tile with weighted callbacks, stores per-tile score cache, and returns best tile index.
+0x004033e6,thunk_SelectBestTacticalTileByWeightedHeuristics,Direct thunk wrapper.
+0x005a3320,ClearTacticalTileStateRunByStride,Clears contiguous tactical tile-state entries by subtracting side stride and invalidates each touched hex rect.
+0x005a3190,MarkTacticalTileStateQueuedAndMaybeDispatchPacket,Marks a tactical tile-state slot as queued, updates unit field, invalidates tile, and conditionally queues packet 0x232A.
+0x005a3210,AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket,Walks prior tactical state slots by stride, toggles or clears state, invalidates tile, and conditionally queues packet 0x232A.
+0x005a6620,HandleActiveTacticalUnitReadyToggleOrAdvanceTurn,If the active unit is current context toggles ready UI states or advances to next tactical turn step.
+0x005a8be0,AdjustTacticalUnitVerticalOffsetAndRefreshMarker,Adjusts per-unit vertical offset by command step (4 or 8), updates sprite state, and respawns tactical marker.

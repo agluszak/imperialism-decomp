@@ -1,0 +1,10 @@
+address,current_name,vcall_count,offsets,domain,domain_score,suggested_name,top_callees,top_strings
+0x0050a9f0,Cluster_Vcall_00_04_2C_0050a9f0,27,"0x0,0x4,0x2c",Unknown,0,Candidate_Unknown_0050a9f0,thunk_FUN_00496270;thunk_FUN_004961b0;thunk_FUN_004962a0;thunk_FUN_004972c0;ResetQuickDrawStrokeState;thunk_FUN_004a1130;thunk_FUN_00495c40;thunk_FUN_00495c00,00408d37
+0x00533380,Cluster_Vcall_48_4C_68_00533380,27,"0x48,0x4c,0x68,0x78,0x7c,0x84,0x88,0x1a4",Unknown,0,Candidate_Unknown_00533380,,
+0x00520670,Cluster_Vcall_34_84_214_00520670,26,"0x34,0x84,0x214,0x218,0x21c,0x220,0x224,0x228,0x22c,0x230",Unknown,0,Candidate_Unknown_00520670,thunk_FUN_00495310,005206cb;005207ad
+0x00590cb0,Cluster_Vcall_0C_84_C8_00590cb0,25,"0xc,0x84,0xc8,0x1b4,0x1c4,0x1cc,0x1e0,0x1ec,0x1f8",Unknown,0,Candidate_Unknown_00590cb0,InitializeSharedStringRefFromEmpty;thunk_FUN_00515ec0;scanBracketExpressions;FUN_00605cf5;FUN_00605b87;AssignStringSharedFromRef;ReleaseSharedStringRefIfNotEmpty;FormatStringWithVarArgsToSharedRef,0059114e
+0x004ec540,Cluster_Vcall_14_1C_24_004ec540,24,"0x14,0x1c,0x24,0x28,0x2c,0x30,0x38,0x3c,0x48,0x4c",Unknown,0,Candidate_Unknown_004ec540,AllocateWithFallbackHandler;thunk_FUN_004c6740;FUN_00601f1d;MessageBoxA;thunk_FUN_00488610;thunk_FUN_004886d0;thunk_FUN_004886f0;FreeHeapBufferIfNotNull,00606fba;00403341;00405fe7;0040619a;002ac29e;Failure
+0x005b8080,Cluster_Vcall_38_40_44_005b8080,24,"0x38,0x40,0x44,0x64",Unknown,0,Candidate_Unknown_005b8080,,
+0x004f1b70,Cluster_Vcall_24_28_3C_004f1b70,22,"0x24,0x28,0x3c,0x48,0x80,0x214,0x290,0x2a8",Unknown,0,Candidate_Unknown_004f1b70,thunk_FUN_0055c9f0,004f1e34
+0x00531550,Cluster_Vcall_48_4C_68_00531550,21,"0x48,0x4c,0x68,0x78,0x84,0x88,0x1a4",Unknown,0,Candidate_Unknown_00531550,,
+0x004d9c70,Cluster_Vcall_14_1C_48_004d9c70,20,"0x14,0x1c,0x48,0x4c,0x7c",Unknown,0,Candidate_Unknown_004d9c70,thunk_FUN_004d6e60,

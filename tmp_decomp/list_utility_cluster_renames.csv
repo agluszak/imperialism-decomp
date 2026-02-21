@@ -1,0 +1,10 @@
+address,new_name,comment
+0x005e8c20,ProbeStackPagesForLargeFrameAllocation,Probes stack pages in 0x1000-byte steps before large stack allocation to ensure guard-page growth.
+0x00601faf,AllocateListNodeFromFreePoolAndLink,Allocates or reuses a list node from free pool sets prev and next links and initializes payload slot.
+0x00602004,RecycleListNodeToFreePoolAndMaybeRemoveAll,Pushes node into list free pool decrements active count and triggers RemoveAll when count reaches zero.
+0x006020b9,RemoveHeadNodeAndReturnPayload,Detaches head node from list recycles node and returns payload value.
+0x006020dd,RemoveTailNodeAndReturnPayload,Detaches tail node from list recycles node and returns payload value.
+0x006021d6,FindListNodeByKeyFromNodeOrHead,Finds first node matching key optionally starting from provided node or from list head.
+0x0060217d,RemoveListNodeAndRecycle,Unlinks specified node from doubly linked list and recycles node to free pool.
+0x00602101,InsertNodeBeforeAndSetPayload,Inserts node before target node or at head then assigns payload value.
+0x00602140,InsertNodeAfterAndSetPayload,Inserts node after target node or at tail then assigns payload value.

@@ -1,0 +1,745 @@
+{
+  "rows": [
+    {
+      "string_address": "006992f0",
+      "string": "D:\\Ambit\\Cross\\USmallViews.cpp",
+      "pointer_site_count": 25,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "00584388",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00584840",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00585088",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00585278",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005876a8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00587ad4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00587c68",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00588360",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00588f90",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00589d40",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "0058cae0",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "0058cd74",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "0058db20",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "0058ee2c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00591840",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592560",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592af4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592b8c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592c18",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592c80",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592d0c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592d6c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592df8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592e58",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00592ee4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "0069b6bc",
+      "string": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+      "pointer_site_count": 9,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "005d5bec",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005d5eec",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005d5fc0",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005d9268",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005da884",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dace4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dad4c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dad84",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dc594",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "0069a7f8",
+      "string": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+      "pointer_site_count": 8,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "005b2b90",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b34a4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b3638",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b3688",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b3810",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b4150",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b4314",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005b46f0",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "0069b740",
+      "string": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+      "pointer_site_count": 7,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "005dce28",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dcfac",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dd258",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dd2c8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005dd378",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005ddab8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "005ddda8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "006962e8",
+      "string": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+      "pointer_site_count": 5,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004bbdbc",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004bc240",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004bc35c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004bc3e8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004bd8f8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00696ae0",
+      "string": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
+      "pointer_site_count": 3,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004f2d44",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004f4694",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004f9098",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00695a20",
+      "string": "D:\\Ambit\\Cross\\UCheaters.cpp",
+      "pointer_site_count": 3,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004b1d68",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004b1dac",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004b1df4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "0069573c",
+      "string": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+      "pointer_site_count": 3,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004a2104",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004a33cc",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004a687c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "006964b0",
+      "string": "D:\\Ambit\\Cross\\UCityMinister.cpp",
+      "pointer_site_count": 2,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004c2300",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "004c23ac",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00696d68",
+      "string": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
+      "pointer_site_count": 2,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "0050b7d0",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "0050d5f4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "006951d8",
+      "string": "D:\\Ambit\\ResourceMgr.cpp",
+      "pointer_site_count": 2,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "0049aad0",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "0049abf8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00696cc8",
+      "string": "D:\\Ambit\\Cross\\UIcon.cpp",
+      "pointer_site_count": 2,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "00506d9c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        },
+        {
+          "pointer_address": "00506fc4",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "006973d0",
+      "string": "D:\\Ambit\\Cross\\UMapDlog.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "0051b33c",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00696860",
+      "string": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004ecc04",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00698040",
+      "string": "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "0054b2ac",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "006967ac",
+      "string": "D:\\Ambit\\Cross\\UCountryAuto.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004e85e0",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00698730",
+      "string": "D:\\Ambit\\Cross\\UOptionViews.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "0056c8ac",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "0069aa94",
+      "string": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "005beba8",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00695858",
+      "string": "D:\\Ambit\\Cross\\UArmyViews.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "004a9afc",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00699d84",
+      "string": "D:\\Ambit\\Cross\\UTacPlayer.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "0059b8ac",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "0069943c",
+      "string": "D:\\Ambit\\Cross\\USuperMap.cpp",
+      "pointer_site_count": 1,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": [
+        {
+          "pointer_address": "00599d40",
+          "block": ".text",
+          "ref_count": 0,
+          "refs": []
+        }
+      ]
+    },
+    {
+      "string_address": "00695978",
+      "string": "D:\\Ambit\\Cross\\UBattleReportViews.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "00697be0",
+      "string": "D:\\Ambit\\Cross\\UMissionSubs.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "00698650",
+      "string": "D:\\Ambit\\Cross\\UOceanViews.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "00698470",
+      "string": "D:\\Ambit\\Cross\\UNewspaper.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "00699ff4",
+      "string": "D:\\Ambit\\Cross\\UTacViews.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "00696728",
+      "string": "D:\\Ambit\\Cross\\UCountry.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "00696c58",
+      "string": "D:\\Ambit\\Cross\\UHelpMgr.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "006984cc",
+      "string": "D:\\Ambit\\Cross\\UOcean.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    },
+    {
+      "string_address": "0069aae0",
+      "string": "D:\\Ambit\\Cross\\UUnit.cpp",
+      "pointer_site_count": 0,
+      "indirect_function_count": 0,
+      "indirect_functions": [],
+      "pointer_sites": []
+    }
+  ]
+}

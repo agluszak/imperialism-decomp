@@ -1,0 +1,5 @@
+type_name,getter,desc,tname_addr,create,ctor,dtor,vtbl_addr,getter_name,create_name,ctor_name,dtor_name
+TProvinceDesirabilityList,0x004d6570,0x00653658,0x00696704,,,0x004d65c0,,GetTProvinceDesirabilityListClassNamePointer,FUN_004d6500,ConstructObArrayWithVtable653810,FUN_004d65c0
+TSortedByRelationshipList,0x004ee520,0x00654cb8,0x006968b8,,,0x004ee570,,GetTSortedByRelationshipListClassNamePointer,FUN_004ee4b0,ConstructObArrayWithVtable654D38,FUN_004ee570
+TFuzzySet,0x004ff6c0,0x00656958,0x00696b88,,0x004ff6e0,0x004ff700,0x006569c8,GetTFuzzySetClassNamePointer,FUN_004ff500,FUN_004ff6e0,FUN_004ff700
+TTown,0x005b6c40,0x0066d780,0x0069a8e0,,,0x005b6c80,,GetTTownClassNamePointer,FUN_005b6a80,ConstructFrogCityMarker,FUN_005b6c80

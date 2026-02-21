@@ -1,0 +1,3237 @@
+{
+  "count": 404,
+  "rows": [
+    {
+      "type": "T2PictToggleButton",
+      "str": "00699234",
+      "desc": "00662e78",
+      "fptr": "00408f03",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "T2PictureButton",
+      "str": "00698880",
+      "desc": "0065e568",
+      "fptr": "00408026",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAdmiral",
+      "str": "006980f4",
+      "desc": "0065c330",
+      "fptr": "00406875",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAdorner",
+      "str": "00695224",
+      "desc": "0064bd90",
+      "fptr": "00405524",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAlwaysPictureButton",
+      "str": "00698894",
+      "desc": "0065e550",
+      "fptr": "004036b1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAmbitApplication",
+      "str": "0069524c",
+      "desc": "0064c0b8",
+      "fptr": "00406ed8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAmbitFileBasedDocument",
+      "str": "00695230",
+      "desc": "0064c0d0",
+      "fptr": "00402932",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAmtBar",
+      "str": "00699164",
+      "desc": "00662f80",
+      "fptr": "004034ae",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAmtBarCluster",
+      "str": "00699180",
+      "desc": "00662f50",
+      "fptr": "00402851",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAnimation",
+      "str": "00695330",
+      "desc": "0064c1f0",
+      "fptr": "00402a54",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAnimator",
+      "str": "0069529c",
+      "desc": "0064c298",
+      "fptr": "00404d7c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TApplication",
+      "str": "00694ee0",
+      "desc": "00648af8",
+      "fptr": "00408be8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmoryView",
+      "str": "0069655c",
+      "desc": "00651338",
+      "fptr": "0040404d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmsForeignMinister",
+      "str": "0069776c",
+      "desc": "00659b28",
+      "fptr": "0040911f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyBattle",
+      "str": "00699dfc",
+      "desc": "00669e18",
+      "fptr": "00406eb0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyBoyView",
+      "str": "006958f4",
+      "desc": "0064dcb0",
+      "fptr": "004012fd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyCheckBox",
+      "str": "00695804",
+      "desc": "0064cb68",
+      "fptr": "00401b9a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyInfoView",
+      "str": "00698e94",
+      "desc": "00663148",
+      "fptr": "0040280b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyMgr",
+      "str": "00695730",
+      "desc": "0064c828",
+      "fptr": "0040410b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyMission",
+      "str": "00697b40",
+      "desc": "00697a28",
+      "fptr": "00407293",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyPlacard",
+      "str": "006990ac",
+      "desc": "00663088",
+      "fptr": "00407329",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyPlayer",
+      "str": "00699d60",
+      "desc": "00669488",
+      "fptr": "0040427d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyStack",
+      "str": "00695370",
+      "desc": "0064c840",
+      "fptr": "00406087",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyStackList",
+      "str": "0069535c",
+      "desc": "0064c858",
+      "fptr": "0040951b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyTacUnit",
+      "str": "00699dcc",
+      "desc": "00669e60",
+      "fptr": "00401cd5",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyToolbar",
+      "str": "00699068",
+      "desc": "006630d0",
+      "fptr": "00404336",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyUnitLine",
+      "str": "00695824",
+      "desc": "0064cb38",
+      "fptr": "004031c5",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArmyUnitView",
+      "str": "00695814",
+      "desc": "0064cb50",
+      "fptr": "00403f8f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TArrowsControl",
+      "str": "006992dc",
+      "desc": "00662db8",
+      "fptr": "00407b85",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAssetMgr",
+      "str": "0069b774",
+      "desc": "0066f4c0",
+      "fptr": "004078c9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAttackProvinceMission",
+      "str": "00697b24",
+      "desc": "00697a40",
+      "fptr": "004010dc",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAutoGreatPower",
+      "str": "00696798",
+      "desc": "00653f90",
+      "fptr": "004031b6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TAutomatedPlayDialog",
+      "str": "0069a734",
+      "desc": "0066b2c8",
+      "fptr": "00402833",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBackgroundPicture",
+      "str": "00698914",
+      "desc": "00660628",
+      "fptr": "00402aea",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBatRepDetLine",
+      "str": "00695898",
+      "desc": "0064dd28",
+      "fptr": "00402e41",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBattleDetailBook",
+      "str": "00695904",
+      "desc": "0064dc98",
+      "fptr": "00402982",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBattleReportView",
+      "str": "0069591c",
+      "desc": "0064dc80",
+      "fptr": "00402054",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBattleUnitsView",
+      "str": "00695884",
+      "desc": "0064dd40",
+      "fptr": "00402167",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBeachheadMission",
+      "str": "00697b88",
+      "desc": "006979e0",
+      "fptr": "00406d3e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBehavior",
+      "str": "00694f18",
+      "desc": "00648cf8",
+      "fptr": "0040101e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBillForeignMinister",
+      "str": "006977e0",
+      "desc": "00659ac8",
+      "fptr": "0040848b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBismarckMinister",
+      "str": "0069681c",
+      "desc": "00654868",
+      "fptr": "004043d6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBlockadePortMission",
+      "str": "00697b6c",
+      "desc": "006979f8",
+      "fptr": "004025b8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBook",
+      "str": "00698790",
+      "desc": "0065e170",
+      "fptr": "00401bdb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBoycottButton",
+      "str": "0069924c",
+      "desc": "00662e60",
+      "fptr": "00406505",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBuildingConstructionView",
+      "str": "006965ec",
+      "desc": "00651290",
+      "fptr": "004045cf",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBuildingExpansionView",
+      "str": "0069656c",
+      "desc": "00651320",
+      "fptr": "0040595c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBuildingView",
+      "str": "00696640",
+      "desc": "00651230",
+      "fptr": "004027ca",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TBullyMinister",
+      "str": "006967dc",
+      "desc": "006548b0",
+      "fptr": "00406f96",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TButton",
+      "str": "00695040",
+      "desc": "00649630",
+      "fptr": "00405cea",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCancelGameOptionsCommand",
+      "str": "00697c9c",
+      "desc": "0065bf60",
+      "fptr": "004096bf",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCapacityOrder",
+      "str": "00695a58",
+      "desc": "0064f440",
+      "fptr": "00408175",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCheater",
+      "str": "00695a0c",
+      "desc": "0064ebe0",
+      "fptr": "004047cd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCity",
+      "str": "00695b2c",
+      "desc": "0064f338",
+      "fptr": "004077de",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCityBarCluster",
+      "str": "006991bc",
+      "desc": "00662f08",
+      "fptr": "004030da",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCityInteriorMinister",
+      "str": "0069647c",
+      "desc": "006506c8",
+      "fptr": "0040689d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCityProductionView",
+      "str": "006962d0",
+      "desc": "0064fb60",
+      "fptr": "00407662",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCitySiteView",
+      "str": "00697334",
+      "desc": "006589e0",
+      "fptr": "00401a96",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCityTask",
+      "str": "0069a03c",
+      "desc": "0066a8c8",
+      "fptr": "00401b0e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivAnimation",
+      "str": "00695320",
+      "desc": "0064c208",
+      "fptr": "00403477",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivAnimation2",
+      "str": "0069530c",
+      "desc": "0064c220",
+      "fptr": "00407e05",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivDescription",
+      "str": "00699030",
+      "desc": "00663118",
+      "fptr": "00406997",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivMgr",
+      "str": "00696694",
+      "desc": "006531f8",
+      "fptr": "004088cd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivReport",
+      "str": "00698ea4",
+      "desc": "00663130",
+      "fptr": "004012da",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivToolbar",
+      "str": "00699044",
+      "desc": "00663100",
+      "fptr": "00404eda",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivUnit",
+      "str": "0069aacc",
+      "desc": "0066ed58",
+      "fptr": "00406a0f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCivilianButton",
+      "str": "006990d4",
+      "desc": "00663040",
+      "fptr": "00401d02",
+      "fptr_name": "thunk_FUN_0058b340",
+      "fn_refs": []
+    },
+    {
+      "type": "TClickZone",
+      "str": "006987bc",
+      "desc": "0065e658",
+      "fptr": "004069fb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TClientGreatPower",
+      "str": "00697c30",
+      "desc": "0065aff0",
+      "fptr": "00405a92",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCloseButton",
+      "str": "00699224",
+      "desc": "00662e90",
+      "fptr": "00406631",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCloseParentButton",
+      "str": "0069920c",
+      "desc": "00662ea8",
+      "fptr": "0040885f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TClosePicture",
+      "str": "00699194",
+      "desc": "00662f38",
+      "fptr": "004034fe",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCluster",
+      "str": "00694ff4",
+      "desc": "006496c0",
+      "fptr": "004061e5",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TColorFill",
+      "str": "00696b24",
+      "desc": "00656618",
+      "fptr": "00403297",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TColorKeyButton",
+      "str": "006987dc",
+      "desc": "0065e628",
+      "fptr": "004058b2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TColorKeyPicture",
+      "str": "00698900",
+      "desc": "00660640",
+      "fptr": "004071cb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCombatReportView",
+      "str": "00699078",
+      "desc": "006630b8",
+      "fptr": "00402905",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCommand",
+      "str": "00694f24",
+      "desc": "00648e08",
+      "fptr": "0040768a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCommandHandler",
+      "str": "00694ef0",
+      "desc": "00648ae0",
+      "fptr": "004070c2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCommodityLine",
+      "str": "0069a96c",
+      "desc": "0066dcc0",
+      "fptr": "00407874",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TControl",
+      "str": "00695058",
+      "desc": "00649600",
+      "fptr": "00405bfa",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TControlSeaZoneMission",
+      "str": "00697bb4",
+      "desc": "006979b0",
+      "fptr": "00402063",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCouncilPanelView",
+      "str": "0069692c",
+      "desc": "00654ff0",
+      "fptr": "00403558",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCouncilTickerAnimation",
+      "str": "006952d8",
+      "desc": "0064c250",
+      "fptr": "00407879",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCouncilView",
+      "str": "00696908",
+      "desc": "00655020",
+      "fptr": "00402ba3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCountingStream",
+      "str": "00694f78",
+      "desc": "006490f8",
+      "fptr": "00402fb8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCountry",
+      "str": "006966f8",
+      "desc": "00653670",
+      "fptr": "00403756",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCreditsPicture",
+      "str": "00698678",
+      "desc": "0065de88",
+      "fptr": "004098b3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCtlMgr",
+      "str": "0069504c",
+      "desc": "00649618",
+      "fptr": "0040743c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TCzechBox",
+      "str": "006987f0",
+      "desc": "0065e610",
+      "fptr": "00403391",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDealBookPicture",
+      "str": "0069aa64",
+      "desc": "0066dbb8",
+      "fptr": "0040191a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDealLine",
+      "str": "0069a980",
+      "desc": "0066dca8",
+      "fptr": "00407e37",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDealList",
+      "str": "0069a900",
+      "desc": "0066d888",
+      "fptr": "0040985e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDealTabControl",
+      "str": "0069aa50",
+      "desc": "0066dbd0",
+      "fptr": "00407f59",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDefendProvinceMission",
+      "str": "00697b08",
+      "desc": "00697a58",
+      "fptr": "00407950",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDefenderMinister",
+      "str": "006967f0",
+      "desc": "00654898",
+      "fptr": "00407306",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDefenseMinister",
+      "str": "0069684c",
+      "desc": "00654838",
+      "fptr": "00407adb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDefenseMinisterView",
+      "str": "00696a98",
+      "desc": "00654f00",
+      "fptr": "00406073",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDeluxeText",
+      "str": "0069a830",
+      "desc": "0066c450",
+      "fptr": "00405907",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDialogBehavior",
+      "str": "00694f04",
+      "desc": "00648d10",
+      "fptr": "00402ac7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDialogView",
+      "str": "00695214",
+      "desc": "0064bda8",
+      "fptr": "00407e55",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDipDlgCluster",
+      "str": "00699290",
+      "desc": "00662e18",
+      "fptr": "00406b18",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDiplomacyMapView",
+      "str": "00696a50",
+      "desc": "00654f48",
+      "fptr": "004070f9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDiplomacyMgr",
+      "str": "006968a8",
+      "desc": "00654cd0",
+      "fptr": "004052c2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDiplomatForeignMinister",
+      "str": "006977c0",
+      "desc": "00659ae0",
+      "fptr": "00402310",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDisappearingButton",
+      "str": "00698564",
+      "desc": "0065c8b0",
+      "fptr": "00406c30",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDisplayMgr",
+      "str": "00696b34",
+      "desc": "00656600",
+      "fptr": "00404b15",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDlgWindow",
+      "str": "00696ba0",
+      "desc": "00656a48",
+      "fptr": "00404cc8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDocument",
+      "str": "00694ea0",
+      "desc": "00648a20",
+      "fptr": "004059de",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDropShadowNumberText",
+      "str": "0069a868",
+      "desc": "0066c420",
+      "fptr": "00407063",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDropShadowText",
+      "str": "0069a884",
+      "desc": "0066c408",
+      "fptr": "0040622b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TDropShadowTextBehavior",
+      "str": "006959a8",
+      "desc": "0064ea78",
+      "fptr": "00402081",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TEditText",
+      "str": "00695010",
+      "desc": "00649690",
+      "fptr": "00407a9a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TEngineerDialog",
+      "str": "006964f4",
+      "desc": "00651350",
+      "fptr": "004016b3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TEscortMission",
+      "str": "00697ba0",
+      "desc": "006979c8",
+      "fptr": "00401000",
+      "fptr_name": "thunk_CreateTEscortMission",
+      "fn_refs": []
+    },
+    {
+      "type": "TEvenCityMinister",
+      "str": "00696368",
+      "desc": "00650710",
+      "fptr": "00408139",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TEvent",
+      "str": "006950a4",
+      "desc": "00649570",
+      "fptr": "004057c7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TEventHandler",
+      "str": "00695094",
+      "desc": "00649588",
+      "fptr": "00405e75",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TExpansionOrder",
+      "str": "00695a44",
+      "desc": "0064f458",
+      "fptr": "004058e4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFileBasedDocument",
+      "str": "00694e88",
+      "desc": "00648a38",
+      "fptr": "00406d7a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFileStream",
+      "str": "00694f8c",
+      "desc": "006490e0",
+      "fptr": "00404494",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFlagOptionsPicture",
+      "str": "006986d4",
+      "desc": "0065de10",
+      "fptr": "004024e1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFloatWindow",
+      "str": "00694fe4",
+      "desc": "006496d8",
+      "fptr": "00401b4a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFocusAnimation",
+      "str": "006952c4",
+      "desc": "0064c268",
+      "fptr": "004029e1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFoodProcessingOrder",
+      "str": "00695a90",
+      "desc": "0064f3f8",
+      "fptr": "0040885a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TForeignMinister",
+      "str": "00697828",
+      "desc": "00659a98",
+      "fptr": "00405b3c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TForeignMinisterView",
+      "str": "00696ab4",
+      "desc": "00654ee8",
+      "fptr": "0040969c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFrameRadioView",
+      "str": "006968e8",
+      "desc": "00655050",
+      "fptr": "00404953",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFuzzySet",
+      "str": "00696b88",
+      "desc": "00656958",
+      "fptr": "0040137f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TFuzzyVar",
+      "str": "00696b94",
+      "desc": "00656940",
+      "fptr": "004040de",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGPCheater",
+      "str": "006959ec",
+      "desc": "0064ec10",
+      "fptr": "00405d17",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGPTreatyDialog",
+      "str": "0069a768",
+      "desc": "0066b298",
+      "fptr": "00407185",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGWorldButton",
+      "str": "006987cc",
+      "desc": "0065e640",
+      "fptr": "004018b6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGWorldPartView",
+      "str": "0069594c",
+      "desc": "0064dc50",
+      "fptr": "00405042",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGWorldPeeker",
+      "str": "00696b14",
+      "desc": "00656630",
+      "fptr": "004050bf",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGameInfoPicture",
+      "str": "006986c0",
+      "desc": "0065de28",
+      "fptr": "00403896",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGamePreferencesPicture",
+      "str": "006986ec",
+      "desc": "0065ddf8",
+      "fptr": "00407748",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGameScorePicture",
+      "str": "00698988",
+      "desc": "00661a70",
+      "fptr": "00405b64",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGameSetupDialog",
+      "str": "0069a7e4",
+      "desc": "0066b220",
+      "fptr": "0040109b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGameSetupMultiplayerPicture",
+      "str": "00698a4c",
+      "desc": "00661998",
+      "fptr": "00405777",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGameSetupPicture",
+      "str": "00698a70",
+      "desc": "00661980",
+      "fptr": "00407897",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGameWindow",
+      "str": "00696bb0",
+      "desc": "00656a30",
+      "fptr": "00406267",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGarrisonView",
+      "str": "00695834",
+      "desc": "0064cb20",
+      "fptr": "00405132",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGrantsView",
+      "str": "00696a20",
+      "desc": "00654f90",
+      "fptr": "004057f4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TGreatPower",
+      "str": "006966e8",
+      "desc": "00653688",
+      "fptr": "00406b95",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THQButton",
+      "str": "006990c8",
+      "desc": "00663058",
+      "fptr": "004019d3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THandleStream",
+      "str": "00694f68",
+      "desc": "00649110",
+      "fptr": "00405731",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THelpMgr",
+      "str": "00696c4c",
+      "desc": "00656f68",
+      "fptr": "00408dc8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THelpPicture",
+      "str": "00696c3c",
+      "desc": "00656f80",
+      "fptr": "00408a6c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THelpWindow",
+      "str": "00696c2c",
+      "desc": "00656f98",
+      "fptr": "00406e6f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THighScoresPicture",
+      "str": "00698a88",
+      "desc": "00661968",
+      "fptr": "00407095",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THostGreatPower",
+      "str": "00697c48",
+      "desc": "0065afd8",
+      "fptr": "004059e3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "THotspotBehavior",
+      "str": "006959d8",
+      "desc": "0064ea48",
+      "fptr": "00409818",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIconBar",
+      "str": "00696cbc",
+      "desc": "00657970",
+      "fptr": "0040992b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIconSlider",
+      "str": "00696cac",
+      "desc": "00657988",
+      "fptr": "004030df",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIncludeView",
+      "str": "00695070",
+      "desc": "006495d0",
+      "fptr": "00401492",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIndexAndRankList",
+      "str": "00697740",
+      "desc": "00659b58",
+      "fptr": "00403427",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIndustryAmtBar",
+      "str": "0069913c",
+      "desc": "00662fb0",
+      "fptr": "00408e90",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIndustryCluster",
+      "str": "00699150",
+      "desc": "00662f98",
+      "fptr": "00402a18",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TIndustryView",
+      "str": "0069659c",
+      "desc": "006512f0",
+      "fptr": "004083be",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInfoBarBehavior",
+      "str": "006959c4",
+      "desc": "0064ea60",
+      "fptr": "0040989a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInfoBarPictureText",
+      "str": "0069a850",
+      "desc": "0066c438",
+      "fptr": "00406faa",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInfoBarText",
+      "str": "0069a840",
+      "desc": "0066c468",
+      "fptr": "00407c20",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInfoPanelView",
+      "str": "006969e4",
+      "desc": "00654fd8",
+      "fptr": "00402d7e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInteriorMinister",
+      "str": "00696498",
+      "desc": "006506b0",
+      "fptr": "00402464",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInteriorMinisterView",
+      "str": "00696a7c",
+      "desc": "00654f18",
+      "fptr": "004030bc",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInterruptusView",
+      "str": "006958ac",
+      "desc": "0064dd10",
+      "fptr": "0040459d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TInvadeMission",
+      "str": "00697af4",
+      "desc": "00697a70",
+      "fptr": "004024d7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TItemBoyView",
+      "str": "006958c0",
+      "desc": "0064dcf8",
+      "fptr": "00407789",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TItemOrder",
+      "str": "00695b08",
+      "desc": "0064f368",
+      "fptr": "00405349",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TJoinSelectorDialog",
+      "str": "006980a0",
+      "desc": "0065c198",
+      "fptr": "004012d0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLaborPool",
+      "str": "00695b34",
+      "desc": "0064f320",
+      "fptr": "00401325",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLandSaleEvent",
+      "str": "006966a0",
+      "desc": "006536d0",
+      "fptr": "0040600f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLanguageMgr",
+      "str": "00696ce8",
+      "desc": "00658560",
+      "fptr": "004078f1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLineData",
+      "str": "00698798",
+      "desc": "0065e158",
+      "fptr": "004073c9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TList",
+      "str": "00694f50",
+      "desc": "00648e80",
+      "fptr": "00409106",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLoadSavePicture",
+      "str": "006986ac",
+      "desc": "0065de40",
+      "fptr": "00407fcc",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLonelyTileView",
+      "str": "00696be8",
+      "desc": "00656fe0",
+      "fptr": "0040768f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TLoungeDialog",
+      "str": "006980b8",
+      "desc": "0065c180",
+      "fptr": "00402e0a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMacViewMgr",
+      "str": "00696d58",
+      "desc": "00658610",
+      "fptr": "00402aae",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMadnessButton",
+      "str": "0069808c",
+      "desc": "0065c1b0",
+      "fptr": "0040531c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapDialog",
+      "str": "00697370",
+      "desc": "00658998",
+      "fptr": "00402dbf",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapEditCluster",
+      "str": "0069a7d0",
+      "desc": "0066b238",
+      "fptr": "004017d0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapEditView",
+      "str": "00697300",
+      "desc": "006589f8",
+      "fptr": "004036a2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapKey",
+      "str": "006968fc",
+      "desc": "00655038",
+      "fptr": "0040104b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapMaker",
+      "str": "00697400",
+      "desc": "006598a8",
+      "fptr": "00403ca6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapMgr",
+      "str": "006970e0",
+      "desc": "00658788",
+      "fptr": "00403f3f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapPreviewView",
+      "str": "006989e8",
+      "desc": "006619f8",
+      "fptr": "004095ed",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapUberPicture",
+      "str": "006993fc",
+      "desc": "00668c40",
+      "fptr": "004033a0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMapUberUberPicture",
+      "str": "00699410",
+      "desc": "00668c28",
+      "fptr": "004074eb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMegaPicture",
+      "str": "006988f0",
+      "desc": "00660658",
+      "fptr": "00405317",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMerchantBoyView",
+      "str": "006958d0",
+      "desc": "0064dce0",
+      "fptr": "0040617c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMilitaryPageView",
+      "str": "00698638",
+      "desc": "0065c838",
+      "fptr": "004018f7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMilitaryUnit",
+      "str": "0069aabc",
+      "desc": "0066ed70",
+      "fptr": "00401d2f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniArmyLine",
+      "str": "006957e0",
+      "desc": "0064cb98",
+      "fptr": "00403cd3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniArmyView",
+      "str": "006957d0",
+      "desc": "0064cbb0",
+      "fptr": "00404d77",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniCivLine",
+      "str": "006957ac",
+      "desc": "0064cbe0",
+      "fptr": "004086a7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniCivView",
+      "str": "0069579c",
+      "desc": "0064cbf8",
+      "fptr": "00407261",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniMapView",
+      "str": "006993ec",
+      "desc": "00668c58",
+      "fptr": "00403aa8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniShipLine",
+      "str": "006984fc",
+      "desc": "0065c928",
+      "fptr": "00401703",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMiniShipView",
+      "str": "006984ec",
+      "desc": "0065c940",
+      "fptr": "0040882d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinister",
+      "str": "0069783c",
+      "desc": "00659a80",
+      "fptr": "0040193d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinisterView",
+      "str": "00696ad0",
+      "desc": "00654ed0",
+      "fptr": "00409a89",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinisterView",
+      "str": "00696ad0",
+      "desc": "00654ed0",
+      "fptr": "00409a89",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinor",
+      "str": "006966c8",
+      "desc": "006536a0",
+      "fptr": "00405bff",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinorRelationshipDialog",
+      "str": "0069a77c",
+      "desc": "0066b280",
+      "fptr": "004030fd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinorTradeBidsDialog",
+      "str": "0069a7b4",
+      "desc": "0066b250",
+      "fptr": "00403d2d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMinorTreatyDialog",
+      "str": "0069a750",
+      "desc": "0066b2b0",
+      "fptr": "00403b43",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMission",
+      "str": "00697864",
+      "desc": "00697848",
+      "fptr": "00405fbf",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TModalMessageCommand",
+      "str": "0069b724",
+      "desc": "0066f2a8",
+      "fptr": "00407928",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMovieView",
+      "str": "0069b8ac",
+      "desc": "0066f6e8",
+      "fptr": "004024af",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMultiMessagePicture",
+      "str": "00698070",
+      "desc": "0065c1c8",
+      "fptr": "0040116d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMultiplayerMgr",
+      "str": "00697c88",
+      "desc": "0065bf78",
+      "fptr": "004017d5",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMyNumberText",
+      "str": "0069a8d0",
+      "desc": "0066c3a8",
+      "fptr": "0040776b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TMyStaticText",
+      "str": "0069a898",
+      "desc": "0066c3f0",
+      "fptr": "004089fe",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNapoleonMinister",
+      "str": "00696834",
+      "desc": "00654850",
+      "fptr": "00406a8c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyAutoPlayer",
+      "str": "00699488",
+      "desc": "006694d0",
+      "fptr": "00406762",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyBattle",
+      "str": "00699dec",
+      "desc": "00669e30",
+      "fptr": "00403111",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyBoyView",
+      "str": "006958e4",
+      "desc": "0064dcc8",
+      "fptr": "004021fd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyHumanPlayer",
+      "str": "0069949c",
+      "desc": "006694b8",
+      "fptr": "00406a23",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyMgr",
+      "str": "006980d8",
+      "desc": "0065c360",
+      "fptr": "0040876f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyMission",
+      "str": "00697bd0",
+      "desc": "00697998",
+      "fptr": "00409020",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyPlayer",
+      "str": "006994b0",
+      "desc": "006694a0",
+      "fptr": "00404cff",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyRoster",
+      "str": "00698628",
+      "desc": "0065c850",
+      "fptr": "00404971",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyTacUnit",
+      "str": "00699dbc",
+      "desc": "00669e78",
+      "fptr": "0040949e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNavyToolbarCluster",
+      "str": "00698520",
+      "desc": "0065c8f8",
+      "fptr": "00408742",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNetGameSelectPicture",
+      "str": "00698a18",
+      "desc": "006619c8",
+      "fptr": "004041dd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNetMgr",
+      "str": "0069b8bc",
+      "desc": "0066f978",
+      "fptr": "0040394f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNetSelectPicture",
+      "str": "00698a34",
+      "desc": "006619b0",
+      "fptr": "00403021",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNewGameCommand",
+      "str": "00695264",
+      "desc": "0064c0a0",
+      "fptr": "004016ef",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNewTownView",
+      "str": "00695f40",
+      "desc": "0064fba8",
+      "fptr": "004086ed",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNewsMgr",
+      "str": "00698464",
+      "desc": "0065c530",
+      "fptr": "00404174",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNewspaperView",
+      "str": "00698450",
+      "desc": "0065c548",
+      "fptr": "0040536c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNextDiplomationCommand",
+      "str": "0069688c",
+      "desc": "00654ce8",
+      "fptr": "0040162c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNextMoveCommand",
+      "str": "00699da8",
+      "desc": "00669e90",
+      "fptr": "00406a41",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNextTradeCommand",
+      "str": "0069a8e8",
+      "desc": "0066d8a0",
+      "fptr": "00409110",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNoHilitePicture",
+      "str": "0069892c",
+      "desc": "00660610",
+      "fptr": "00405196",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNoHiliteText",
+      "str": "0069a820",
+      "desc": "0066c480",
+      "fptr": "00407dd3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNominationView",
+      "str": "00696918",
+      "desc": "00655008",
+      "fptr": "00401a9b",
+      "fptr_name": "thunk_ConstructPictureResourceEntry_Vtbl0063ed78",
+      "fn_refs": []
+    },
+    {
+      "type": "TNumberText",
+      "str": "00695000",
+      "desc": "006496a8",
+      "fptr": "00402176",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNumberedArrowButton",
+      "str": "00699090",
+      "desc": "006630a0",
+      "fptr": "0040501f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNumberedIcon",
+      "str": "00696c8c",
+      "desc": "006579b8",
+      "fptr": "0040808f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TNumberedItem",
+      "str": "00696c7c",
+      "desc": "006579d0",
+      "fptr": "00402ff4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TObject",
+      "str": "00694ed4",
+      "desc": "00694eb8",
+      "fptr": "00404683",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOceanDialog",
+      "str": "0069857c",
+      "desc": "0065c898",
+      "fptr": "00408760",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOffLimitsPicture",
+      "str": "006988d8",
+      "desc": "00660670",
+      "fptr": "00404ad9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOfferDeskPicture",
+      "str": "0069a98c",
+      "desc": "0066dc90",
+      "fptr": "004090e3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOffersPanelView",
+      "str": "006969f8",
+      "desc": "00654fc0",
+      "fptr": "00402cb6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOnOffRadioButton",
+      "str": "006987fc",
+      "desc": "0065e5f8",
+      "fptr": "004064d3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOneTimeAnimation",
+      "str": "006952f4",
+      "desc": "0064c238",
+      "fptr": "0040788d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOrItemOrder",
+      "str": "00695af8",
+      "desc": "0064f380",
+      "fptr": "00403e5e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOrderView",
+      "str": "00696c9c",
+      "desc": "006579a0",
+      "fptr": "0040425a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TOverlayRadioButton",
+      "str": "006965d4",
+      "desc": "006512a8",
+      "fptr": "00404304",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPageCorner",
+      "str": "00698780",
+      "desc": "0065e188",
+      "fptr": "00404be7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPageView",
+      "str": "00698774",
+      "desc": "0065e1a0",
+      "fptr": "0040673f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPanelView",
+      "str": "00696a40",
+      "desc": "00654f60",
+      "fptr": "004021e4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPicture",
+      "str": "0069502c",
+      "desc": "00649660",
+      "fptr": "00403ba2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPictureButton",
+      "str": "006988b0",
+      "desc": "0065e538",
+      "fptr": "0040649c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPictureLine",
+      "str": "00698764",
+      "desc": "0065e1b8",
+      "fptr": "00401ec9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPictureNumberText",
+      "str": "0069a8b8",
+      "desc": "0066c3c0",
+      "fptr": "00405083",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPictureRadioButton",
+      "str": "00698868",
+      "desc": "0065e580",
+      "fptr": "004051d7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPictureText",
+      "str": "0069a8a8",
+      "desc": "0066c3d8",
+      "fptr": "00407707",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPirateMinister",
+      "str": "00696808",
+      "desc": "00654880",
+      "fptr": "00402bf8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPlacard",
+      "str": "006990bc",
+      "desc": "00663070",
+      "fptr": "00404ef8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPlaceCityDialog",
+      "str": "006964e0",
+      "desc": "00651368",
+      "fptr": "00401c7b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPopGrowthOrder",
+      "str": "00695a7c",
+      "desc": "0064f410",
+      "fptr": "00409a93",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPopulationMgr",
+      "str": "00695ae4",
+      "desc": "0064f398",
+      "fptr": "004067fd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPortZone",
+      "str": "006984a8",
+      "desc": "0065c618",
+      "fptr": "0040598e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPoseMessageDialog",
+      "str": "00697c70",
+      "desc": "0065bf90",
+      "fptr": "00404255",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPowerPlantOrder",
+      "str": "00695aac",
+      "desc": "0064f3e0",
+      "fptr": "00402dab",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TProductionCluster",
+      "str": "006991a4",
+      "desc": "00662f20",
+      "fptr": "00406203",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TProductionOrder",
+      "str": "00695b18",
+      "desc": "0064f350",
+      "fptr": "00402036",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TProvinceDesirabilityList",
+      "str": "00696704",
+      "desc": "00653658",
+      "fptr": "004010b9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TProxyGreatPower",
+      "str": "00697c5c",
+      "desc": "0065afc0",
+      "fptr": "004043ef",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPtrList",
+      "str": "00694f30",
+      "desc": "00648eb0",
+      "fptr": "00402a59",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TPurchaseCluster",
+      "str": "006965ac",
+      "desc": "006512d8",
+      "fptr": "0040718f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TQueryFloater",
+      "str": "0069868c",
+      "desc": "0065de70",
+      "fptr": "0040466a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRadio",
+      "str": "00695038",
+      "desc": "00649648",
+      "fptr": "004033cd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRadioPictureButton",
+      "str": "00698814",
+      "desc": "0065e5e0",
+      "fptr": "004017b2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRadioText",
+      "str": "006989d8",
+      "desc": "00661a10",
+      "fptr": "00404e94",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRadioTextCluster",
+      "str": "006989c0",
+      "desc": "00661a28",
+      "fptr": "0040562d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRailAmtBar",
+      "str": "0069911c",
+      "desc": "00662fe0",
+      "fptr": "00407630",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRailCityMinister",
+      "str": "00696350",
+      "desc": "00650728",
+      "fptr": "00404340",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRailCluster",
+      "str": "0069912c",
+      "desc": "00662fc8",
+      "fptr": "004091d8",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRailheadDialog",
+      "str": "00695f64",
+      "desc": "0064fb78",
+      "fptr": "004057a9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRearFloatWindow",
+      "str": "00696a68",
+      "desc": "00654f30",
+      "fptr": "00401e0b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRelationshipDialog",
+      "str": "0069a79c",
+      "desc": "0066b268",
+      "fptr": "004048b3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRemoteGreatPower",
+      "str": "00697c18",
+      "desc": "0065b008",
+      "fptr": "00402a27",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRemoteMinor",
+      "str": "00697c08",
+      "desc": "0065b020",
+      "fptr": "00406b59",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TRightLeftView",
+      "str": "006992a4",
+      "desc": "00662e00",
+      "fptr": "00408a26",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScatteredShipsMission",
+      "str": "00697b50",
+      "desc": "00697a10",
+      "fptr": "00402f27",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScenarioChooser",
+      "str": "006989ac",
+      "desc": "00661a40",
+      "fptr": "0040483b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScoreGraph",
+      "str": "006968d8",
+      "desc": "00655068",
+      "fptr": "00402f8b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScrollBarView",
+      "str": "00698954",
+      "desc": "00661460",
+      "fptr": "00407a40",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScrollView",
+      "str": "00698968",
+      "desc": "00661448",
+      "fptr": "00401d6b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScroller",
+      "str": "00695080",
+      "desc": "006495b8",
+      "fptr": "00405f83",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TScrollerButton",
+      "str": "00698940",
+      "desc": "00661478",
+      "fptr": "00404ac0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSelectoText",
+      "str": "00698978",
+      "desc": "00661a88",
+      "fptr": "00406082",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSetupRandomMapPicture",
+      "str": "006989fc",
+      "desc": "006619e0",
+      "fptr": "00401c62",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShip",
+      "str": "00698100",
+      "desc": "0065c318",
+      "fptr": "00407a5e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipAmtBar",
+      "str": "006990f8",
+      "desc": "00663010",
+      "fptr": "0040436d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipBuilderCityMinister",
+      "str": "00696380",
+      "desc": "006506f8",
+      "fptr": "00402603",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipBuildingTask",
+      "str": "0069a024",
+      "desc": "0066a8e0",
+      "fptr": "00403abc",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipFractionCluster",
+      "str": "00698548",
+      "desc": "0065c8c8",
+      "fptr": "004054ac",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipLine",
+      "str": "0069861c",
+      "desc": "0065c868",
+      "fptr": "00409278",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipOrder",
+      "str": "00695a6c",
+      "desc": "0064f428",
+      "fptr": "00401a73",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipPlacard",
+      "str": "00698538",
+      "desc": "0065c8e0",
+      "fptr": "00403256",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipView",
+      "str": "0069858c",
+      "desc": "0065c880",
+      "fptr": "00402329",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipyardCluster",
+      "str": "00699108",
+      "desc": "00662ff8",
+      "fptr": "00401e83",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TShipyardView",
+      "str": "0069660c",
+      "desc": "00651278",
+      "fptr": "00401a64",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSidewaysArrow",
+      "str": "006992c8",
+      "desc": "00662dd0",
+      "fptr": "0040234c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSimMgr",
+      "str": "00698be0",
+      "desc": "00662960",
+      "fptr": "00404877",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSliderPicture",
+      "str": "006988c4",
+      "desc": "00660688",
+      "fptr": "004065d7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSortByPriceList",
+      "str": "00697758",
+      "desc": "00659b40",
+      "fptr": "00401e15",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSortedByRelationshipList",
+      "str": "006968b8",
+      "desc": "00654cb8",
+      "fptr": "00401532",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSortedList",
+      "str": "00694f58",
+      "desc": "00648e68",
+      "fptr": "00408ee0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSortedPtrList",
+      "str": "00694f3c",
+      "desc": "00648e98",
+      "fptr": "00404219",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSoundPlayer",
+      "str": "006993c4",
+      "desc": "00668a18",
+      "fptr": "00406780",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSpaceCommand",
+      "str": "00698aa0",
+      "desc": "00661950",
+      "fptr": "0040458e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSpecialQuitPicture",
+      "str": "0069a71c",
+      "desc": "0066b2e0",
+      "fptr": "0040708b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TStaticText",
+      "str": "0069501c",
+      "desc": "00649678",
+      "fptr": "004051f5",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TStatusButton",
+      "str": "006991d0",
+      "desc": "00662ef0",
+      "fptr": "004033d2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TStatusPicture",
+      "str": "006993d4",
+      "desc": "00668b90",
+      "fptr": "004080da",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSteelCityMinister",
+      "str": "006963a0",
+      "desc": "006506e0",
+      "fptr": "00407d01",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TStratReportView",
+      "str": "00699054",
+      "desc": "006630e8",
+      "fptr": "00405236",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TStream",
+      "str": "00694f9c",
+      "desc": "006490c8",
+      "fptr": "0040468d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSuperArmyRoster",
+      "str": "006957f0",
+      "desc": "0064cb80",
+      "fptr": "00406f37",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSuperCivRoster",
+      "str": "006957bc",
+      "desc": "0064cbc8",
+      "fptr": "0040456b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSuperNavyRoster",
+      "str": "0069850c",
+      "desc": "0065c910",
+      "fptr": "004035c1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TSwapperDaddyView",
+      "str": "00695960",
+      "desc": "0064dc38",
+      "fptr": "00402739",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTEView",
+      "str": "00694eac",
+      "desc": "00648a08",
+      "fptr": "004023e2",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacArmyView",
+      "str": "00699fcc",
+      "desc": "0066a298",
+      "fptr": "00406d75",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacMapUberPicture",
+      "str": "00699e68",
+      "desc": "0066a2e0",
+      "fptr": "00401c1c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacNavyToolbar",
+      "str": "00699e80",
+      "desc": "0066a2c8",
+      "fptr": "00407abd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalAdiosPicture",
+      "str": "00699e4c",
+      "desc": "0066a2f8",
+      "fptr": "00404a5c",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalBattle",
+      "str": "00699e0c",
+      "desc": "00669e00",
+      "fptr": "004049c1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalBattleView",
+      "str": "00699fdc",
+      "desc": "0066a280",
+      "fptr": "00406ce4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalHolaPicture",
+      "str": "00699e30",
+      "desc": "0066a310",
+      "fptr": "00406f28",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalPlayer",
+      "str": "00699d70",
+      "desc": "00669470",
+      "fptr": "00407900",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalToolbar",
+      "str": "00699fb8",
+      "desc": "0066a2b0",
+      "fptr": "00407e4b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTacticalUnit",
+      "str": "00699ddc",
+      "desc": "00669e48",
+      "fptr": "00407d51",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTask",
+      "str": "0069a048",
+      "desc": "0066a8b0",
+      "fptr": "00406c5d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTaskForce",
+      "str": "006980e4",
+      "desc": "0065c348",
+      "fptr": "00402a90",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTaskList",
+      "str": "0069a018",
+      "desc": "0066a8f8",
+      "fptr": "004062c1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTechCheater",
+      "str": "006959fc",
+      "desc": "0064ebf8",
+      "fptr": "00408ae9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTechHistoryView",
+      "str": "0069a6d4",
+      "desc": "0066ae58",
+      "fptr": "0040792d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTechItemLine",
+      "str": "0069a6f8",
+      "desc": "0066ae28",
+      "fptr": "004069bf",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTechItemView",
+      "str": "0069a6e8",
+      "desc": "0066ae40",
+      "fptr": "0040821f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTechMgr",
+      "str": "0069a6c8",
+      "desc": "0066ac98",
+      "fptr": "004097e6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTechStorePage",
+      "str": "0069a708",
+      "desc": "0066ae10",
+      "fptr": "00406bdb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTedForeignMinister",
+      "str": "006977fc",
+      "desc": "00659ab0",
+      "fptr": "004082ec",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTerrainHelpPicture",
+      "str": "00696bfc",
+      "desc": "00656fc8",
+      "fptr": "00401ca3",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTerrainHelpWindow",
+      "str": "00696c14",
+      "desc": "00656fb0",
+      "fptr": "004079e1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTerrainInfoDialog",
+      "str": "00697358",
+      "desc": "006589b0",
+      "fptr": "00404c69",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTextLine",
+      "str": "00698758",
+      "desc": "0065e1d0",
+      "fptr": "00402cd4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTextList",
+      "str": "006989a0",
+      "desc": "00661a58",
+      "fptr": "00406d11",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTextPictureButton",
+      "str": "006987a4",
+      "desc": "0065e670",
+      "fptr": "004018c5",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTextileForeignMinister",
+      "str": "006977a4",
+      "desc": "00659af8",
+      "fptr": "00405862",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TToggleButton",
+      "str": "00698858",
+      "desc": "0065e598",
+      "fptr": "00405425",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TToolBarCluster",
+      "str": "006991f8",
+      "desc": "00662ec0",
+      "fptr": "00409831",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTown",
+      "str": "0069a8e0",
+      "desc": "0066d780",
+      "fptr": "004010cd",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTownNameDialog",
+      "str": "00697344",
+      "desc": "006589c8",
+      "fptr": "00403026",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeBidNationLine",
+      "str": "0069a9d0",
+      "desc": "0066dc48",
+      "fptr": "004031d4",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeBidNationView",
+      "str": "0069a9b8",
+      "desc": "0066dc60",
+      "fptr": "00404110",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeBookView",
+      "str": "0069a9a4",
+      "desc": "0066dc78",
+      "fptr": "00404543",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeCluster",
+      "str": "00699170",
+      "desc": "00662f68",
+      "fptr": "004076cb",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeMgr",
+      "str": "0069a938",
+      "desc": "0066d870",
+      "fptr": "00405484",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeOfferNationLine",
+      "str": "0069aa1c",
+      "desc": "0066dc00",
+      "fptr": "00401a37",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeOfferNationView",
+      "str": "0069aa00",
+      "desc": "0066dc18",
+      "fptr": "00401d25",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeOrderPicture",
+      "str": "00699260",
+      "desc": "00662e48",
+      "fptr": "00409a66",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradePageBuyView",
+      "str": "0069a9e8",
+      "desc": "0066dc30",
+      "fptr": "00403a67",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradePageSellView",
+      "str": "0069aa38",
+      "desc": "0066dbe8",
+      "fptr": "00406d39",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradePanelView",
+      "str": "00696a0c",
+      "desc": "00654fa8",
+      "fptr": "00408a17",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradePolicyCluster",
+      "str": "00699278",
+      "desc": "00662e30",
+      "fptr": "00404f48",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeSchoolView",
+      "str": "00696588",
+      "desc": "00651308",
+      "fptr": "00404fd9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeScreenPicture",
+      "str": "0069aa78",
+      "desc": "0066dba0",
+      "fptr": "00408f49",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeTotalsLine",
+      "str": "0069a958",
+      "desc": "0066dcd8",
+      "fptr": "0040364d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTradeTotalsView",
+      "str": "0069a944",
+      "desc": "0066dcf0",
+      "fptr": "00401c9e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTraderAmtBar",
+      "str": "006990e8",
+      "desc": "00663028",
+      "fptr": "00402671",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTraderForeignMinister",
+      "str": "00697788",
+      "desc": "00659b10",
+      "fptr": "004089d1",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTrainingOrder",
+      "str": "00695ad0",
+      "desc": "0064f3b0",
+      "fptr": "0040935e",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTransFocusAnimation",
+      "str": "006952a8",
+      "desc": "0064c280",
+      "fptr": "00404dd6",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTransportPicture",
+      "str": "00698e7c",
+      "desc": "00663160",
+      "fptr": "00402716",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTransportView",
+      "str": "00695f50",
+      "desc": "0064fb90",
+      "fptr": "0040920a",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTreatiesView",
+      "str": "00696a30",
+      "desc": "00654f78",
+      "fptr": "00405858",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTurnStartEvent",
+      "str": "006966b4",
+      "desc": "006536b8",
+      "fptr": "0040542f",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TTwoPicSlider",
+      "str": "0069869c",
+      "desc": "0065de58",
+      "fptr": "004096ba",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUberCluster",
+      "str": "00698848",
+      "desc": "0065e5b0",
+      "fptr": "00406357",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUnit",
+      "str": "0069aad8",
+      "desc": "0066ed40",
+      "fptr": "00406bcc",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUnitOrder",
+      "str": "00695ac0",
+      "desc": "0064f3c8",
+      "fptr": "00401974",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUnitToolbarCluster",
+      "str": "006991e0",
+      "desc": "00662ed8",
+      "fptr": "004028ab",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUnitsView",
+      "str": "0069661c",
+      "desc": "00651260",
+      "fptr": "00405cf9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUniversityView",
+      "str": "006965c0",
+      "desc": "006512c0",
+      "fptr": "0040111d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUpDownPictureButton",
+      "str": "0069882c",
+      "desc": "0065e5c8",
+      "fptr": "004070a9",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TUpDownView",
+      "str": "006992b8",
+      "desc": "00662de8",
+      "fptr": "0040474b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TView",
+      "str": "0069508c",
+      "desc": "006495a0",
+      "fptr": "0040341d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TViewMgr",
+      "str": "0069b6a8",
+      "desc": "0066f0b8",
+      "fptr": "004081c0",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TWarehouseView",
+      "str": "0069662c",
+      "desc": "00651248",
+      "fptr": "00402540",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TWarningView",
+      "str": "00698e6c",
+      "desc": "00663178",
+      "fptr": "00405d08",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TWindow",
+      "str": "00695064",
+      "desc": "006495e8",
+      "fptr": "0040319d",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TWorldView",
+      "str": "00699428",
+      "desc": "00668c10",
+      "fptr": "004074d7",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "TZone",
+      "str": "006984c4",
+      "desc": "0065c600",
+      "fptr": "0040703b",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "Thursday",
+      "str": "00673970",
+      "desc": "0069c9f4",
+      "fptr": "00673958",
+      "fptr_name": null,
+      "fn_refs": []
+    },
+    {
+      "type": "Tuesday",
+      "str": "00673988",
+      "desc": "0069c9ec",
+      "fptr": "00673968",
+      "fptr_name": null,
+      "fn_refs": []
+    }
+  ]
+}

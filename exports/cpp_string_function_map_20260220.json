@@ -1,0 +1,1621 @@
+{
+  "file_ranked": [
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "function_count": 13,
+      "total_refs": 13,
+      "functions": [
+        {
+          "function": "UpdateUniversityCountControlAndRefreshView@004cb9cd",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityCountControlAndRefreshViewAlt@004cba03",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversitySpecialistCountControlAndRefreshView@004cf46f",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversitySpecialistCountControlAndRefreshViewAlt@004cf4a5",
+          "refs": 1
+        },
+        {
+          "function": "UpdateCityViewCountControlAndRefreshSelection@004c8c09",
+          "refs": 1
+        },
+        {
+          "function": "UpdateCityViewCountControlAndRefreshSelectionAlt@004c8c3f",
+          "refs": 1
+        },
+        {
+          "function": "DispatchCityViewSelectionChangeAndRefresh@004ccfa2",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStatePap1@004ce0be",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStatePap2@004ce12c",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateMon1@004ce19a",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateMon2@004ce230",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateUntV@004ce2c8",
+          "refs": 1
+        },
+        {
+          "function": "UpdateUniversityRequirementBadgeStateTraV@004ce341",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "function_count": 13,
+      "total_refs": 13,
+      "functions": [
+        {
+          "function": "FUN_00489f90@00489f90",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048d8d0@0048d8d0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048e270@0048e270",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048ae60@0048ae60",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048dce0@0048dce0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048dd50@0048dd50",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048c750@0048c750",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048a7c0@0048a7c0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048e1e0@0048e1e0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048e240@0048e240",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048e210@0048e210",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048c7d0@0048c7d0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0048c7a0@0048c7a0",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "function_count": 4,
+      "total_refs": 5,
+      "functions": [
+        {
+          "function": "FUN_004fed70@004fed70",
+          "refs": 2
+        },
+        {
+          "function": "FUN_004fec50@004fec50",
+          "refs": 1
+        },
+        {
+          "function": "FUN_004ff1c0@004ff1c0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_004fec20@004fec20",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\DirectPlay.cpp",
+      "function_count": 3,
+      "total_refs": 3,
+      "functions": [
+        {
+          "function": "FUN_0047fb50@0047fb50",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0047fb20@0047fb20",
+          "refs": 1
+        },
+        {
+          "function": "ReportDirectPlayAssertionStub@00480820",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMapper.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "AssignCityRegionIdsFromOverlayScanlineIntersections@0052b9b0",
+          "refs": 1
+        },
+        {
+          "function": "RebuildUMapperRouteRecordsAndActiveMapRects@0052e350",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\IncludeView.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "FUN_004838b0@004838b0",
+          "refs": 1
+        },
+        {
+          "function": "FUN_004833b0@004833b0",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\McAppStream.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "FUN_00488b10@00488b10",
+          "refs": 1
+        },
+        {
+          "function": "FUN_00488e00@00488e00",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMap.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "FUN_0050e901@0050e901",
+          "refs": 1
+        },
+        {
+          "function": "FUN_0050ea56@0050ea56",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\QuickDraw.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "AssertQuickDrawFlag6A1DC8NonZero@00498b50",
+          "refs": 1
+        },
+        {
+          "function": "AssertQuickDrawFlag6A1DCCNonZero@00498b80",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\WAssetMgr.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "LoadTableResourceStreamByName@005df430",
+          "refs": 1
+        },
+        {
+          "function": "FUN_005e0460@005e0460",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\WNetMgr.cpp",
+      "function_count": 2,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "PopNextTurnEventPacketOrProcessSpecialQueueRecords@005e3f30",
+          "refs": 1
+        },
+        {
+          "function": "ReportWNetManagerErrorCodeAndNotifyUi@005e34f0",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UGameWindow.cpp",
+      "function_count": 1,
+      "total_refs": 2,
+      "functions": [
+        {
+          "function": "FUN_005003a0@005003a0",
+          "refs": 2
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\USetupScreens.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "FUN_005769c0@005769c0",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\DiplomacyDialogs.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "FUN_0047f3e0@0047f3e0",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UAmbit.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "FUN_0049ee70@0049ee70",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCity.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "SanitizeCityCounterArray@004b4180",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UNavy.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "ApplyMapOrderTypeExecutionEffects@00556100",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\McWindow.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "FUN_00493470@00493470",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\MainFrm.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog@004855b0",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Ambit.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "AssertAmbitSubsystemReadyOrFailWithBmp3B6@00414640",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\CDib.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "FUN_0047aa00@0047aa00",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMapDlog.cpp",
+      "function_count": 1,
+      "total_refs": 1,
+      "functions": [
+        {
+          "function": "<no_function>",
+          "refs": 1
+        }
+      ]
+    }
+  ],
+  "function_ranked": [
+    {
+      "function": "FUN_004fed70@004fed70",
+      "file_count": 1,
+      "total_refs": 2,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+          "refs": 2
+        }
+      ]
+    },
+    {
+      "function": "FUN_005003a0@005003a0",
+      "file_count": 1,
+      "total_refs": 2,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UGameWindow.cpp",
+          "refs": 2
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityCountControlAndRefreshView@004cb9cd",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityCountControlAndRefreshViewAlt@004cba03",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversitySpecialistCountControlAndRefreshView@004cf46f",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversitySpecialistCountControlAndRefreshViewAlt@004cf4a5",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateCityViewCountControlAndRefreshSelection@004c8c09",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateCityViewCountControlAndRefreshSelectionAlt@004c8c3f",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "DispatchCityViewSelectionChangeAndRefresh@004ccfa2",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityRequirementBadgeStatePap1@004ce0be",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityRequirementBadgeStatePap2@004ce12c",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityRequirementBadgeStateMon1@004ce19a",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityRequirementBadgeStateMon2@004ce230",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityRequirementBadgeStateUntV@004ce2c8",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "UpdateUniversityRequirementBadgeStateTraV@004ce341",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_00489f90@00489f90",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048d8d0@0048d8d0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048e270@0048e270",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048ae60@0048ae60",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048dce0@0048dce0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048dd50@0048dd50",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048c750@0048c750",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048a7c0@0048a7c0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048e1e0@0048e1e0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048e240@0048e240",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048e210@0048e210",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048c7d0@0048c7d0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0048c7a0@0048c7a0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppUI.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_004fec50@004fec50",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_004ff1c0@004ff1c0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_004fec20@004fec20",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0047fb50@0047fb50",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\DirectPlay.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0047fb20@0047fb20",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\DirectPlay.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "ReportDirectPlayAssertionStub@00480820",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\DirectPlay.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "AssignCityRegionIdsFromOverlayScanlineIntersections@0052b9b0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UMapper.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "RebuildUMapperRouteRecordsAndActiveMapRects@0052e350",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UMapper.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_004838b0@004838b0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\IncludeView.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_004833b0@004833b0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\IncludeView.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_00488b10@00488b10",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppStream.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_00488e00@00488e00",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McAppStream.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0050e901@0050e901",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UMap.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0050ea56@0050ea56",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UMap.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "AssertQuickDrawFlag6A1DC8NonZero@00498b50",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\QuickDraw.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "AssertQuickDrawFlag6A1DCCNonZero@00498b80",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\QuickDraw.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "LoadTableResourceStreamByName@005df430",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\WAssetMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_005e0460@005e0460",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\WAssetMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "PopNextTurnEventPacketOrProcessSpecialQueueRecords@005e3f30",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\WNetMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "ReportWNetManagerErrorCodeAndNotifyUi@005e34f0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\WNetMgr.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_005769c0@005769c0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\USetupScreens.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0047f3e0@0047f3e0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\DiplomacyDialogs.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0049ee70@0049ee70",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UAmbit.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "SanitizeCityCounterArray@004b4180",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UCity.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "ApplyMapOrderTypeExecutionEffects@00556100",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Cross\\UNavy.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_00493470@00493470",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\McWindow.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog@004855b0",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\MainFrm.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "AssertAmbitSubsystemReadyOrFailWithBmp3B6@00414640",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\Ambit.cpp",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "function": "FUN_0047aa00@0047aa00",
+      "file_count": 1,
+      "total_refs": 1,
+      "files": [
+        {
+          "file": "D:\\Ambit\\CDib.cpp",
+          "refs": 1
+        }
+      ]
+    }
+  ],
+  "detailed_refs": [
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004cb9cd",
+      "function": "UpdateUniversityCountControlAndRefreshView",
+      "function_entry": "004cb9cd",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004cba03",
+      "function": "UpdateUniversityCountControlAndRefreshViewAlt",
+      "function_entry": "004cba03",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004cf46f",
+      "function": "UpdateUniversitySpecialistCountControlAndRefreshView",
+      "function_entry": "004cf46f",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004cf4a5",
+      "function": "UpdateUniversitySpecialistCountControlAndRefreshViewAlt",
+      "function_entry": "004cf4a5",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004c8c09",
+      "function": "UpdateCityViewCountControlAndRefreshSelection",
+      "function_entry": "004c8c09",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004c8c3f",
+      "function": "UpdateCityViewCountControlAndRefreshSelectionAlt",
+      "function_entry": "004c8c3f",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ccfa2",
+      "function": "DispatchCityViewSelectionChangeAndRefresh",
+      "function_entry": "004ccfa2",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ce0be",
+      "function": "UpdateUniversityRequirementBadgeStatePap1",
+      "function_entry": "004ce0be",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ce12c",
+      "function": "UpdateUniversityRequirementBadgeStatePap2",
+      "function_entry": "004ce12c",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ce19a",
+      "function": "UpdateUniversityRequirementBadgeStateMon1",
+      "function_entry": "004ce19a",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ce230",
+      "function": "UpdateUniversityRequirementBadgeStateMon2",
+      "function_entry": "004ce230",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ce2c8",
+      "function": "UpdateUniversityRequirementBadgeStateUntV",
+      "function_entry": "004ce2c8",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCityViews.cpp",
+      "string_address": "00696650",
+      "from": "004ce341",
+      "function": "UpdateUniversityRequirementBadgeStateTraV",
+      "function_entry": "004ce341",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696650",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "00489fc4",
+      "function": "FUN_00489f90",
+      "function_entry": "00489f90",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 338
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048d8de",
+      "function": "FUN_0048d8d0",
+      "function_entry": "0048d8d0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2358
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048e27e",
+      "function": "FUN_0048e270",
+      "function_entry": "0048e270",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2815
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048ae99",
+      "function": "FUN_0048ae60",
+      "function_entry": "0048ae60",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 338
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048dcee",
+      "function": "FUN_0048dce0",
+      "function_entry": "0048dce0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2554
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048dd87",
+      "function": "FUN_0048dd50",
+      "function_entry": "0048dd50",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2586
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048c75e",
+      "function": "FUN_0048c750",
+      "function_entry": "0048c750",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 1906
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048a7d1",
+      "function": "FUN_0048a7c0",
+      "function_entry": "0048a7c0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 751
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048e1ee",
+      "function": "FUN_0048e1e0",
+      "function_entry": "0048e1e0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2756
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048e24e",
+      "function": "FUN_0048e240",
+      "function_entry": "0048e240",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2798
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048e21e",
+      "function": "FUN_0048e210",
+      "function_entry": "0048e210",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 2777
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048c7e4",
+      "function": "FUN_0048c7d0",
+      "function_entry": "0048c7d0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 1922
+    },
+    {
+      "file": "D:\\Ambit\\McAppUI.cpp",
+      "string_address": "006950b0",
+      "from": "0048c7ae",
+      "function": "FUN_0048c7a0",
+      "function_entry": "0048c7a0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950b0",
+      "line_hint": 1914
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "string_address": "00696b44",
+      "from": "004fec5e",
+      "function": "FUN_004fec50",
+      "function_entry": "004fec50",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696b44",
+      "line_hint": 495
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "string_address": "00696b44",
+      "from": "004ff1ce",
+      "function": "FUN_004ff1c0",
+      "function_entry": "004ff1c0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696b44",
+      "line_hint": 730
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "string_address": "00696b44",
+      "from": "004fec2e",
+      "function": "FUN_004fec20",
+      "function_entry": "004fec20",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696b44",
+      "line_hint": 471
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "string_address": "00696b44",
+      "from": "004fed84",
+      "function": "FUN_004fed70",
+      "function_entry": "004fed70",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696b44",
+      "line_hint": 614
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
+      "string_address": "00696b44",
+      "from": "004fed99",
+      "function": "FUN_004fed70",
+      "function_entry": "004fed70",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696b44",
+      "line_hint": 616
+    },
+    {
+      "file": "D:\\Ambit\\DirectPlay.cpp",
+      "string_address": "00694ce4",
+      "from": "0047fb52",
+      "function": "FUN_0047fb50",
+      "function_entry": "0047fb50",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694ce4",
+      "line_hint": 118
+    },
+    {
+      "file": "D:\\Ambit\\DirectPlay.cpp",
+      "string_address": "00694ce4",
+      "from": "0047fb22",
+      "function": "FUN_0047fb20",
+      "function_entry": "0047fb20",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694ce4",
+      "line_hint": 111
+    },
+    {
+      "file": "D:\\Ambit\\DirectPlay.cpp",
+      "string_address": "00694ce4",
+      "from": "00480825",
+      "function": "ReportDirectPlayAssertionStub",
+      "function_entry": "00480820",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694ce4",
+      "line_hint": 435
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMapper.cpp",
+      "string_address": "006976e4",
+      "from": "0052bc95",
+      "function": "AssignCityRegionIdsFromOverlayScanlineIntersections",
+      "function_entry": "0052b9b0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6976e4",
+      "line_hint": 3489
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMapper.cpp",
+      "string_address": "006976e4",
+      "from": "0052e497",
+      "function": "RebuildUMapperRouteRecordsAndActiveMapRects",
+      "function_entry": "0052e350",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6976e4",
+      "line_hint": 4751
+    },
+    {
+      "file": "D:\\Ambit\\IncludeView.cpp",
+      "string_address": "00694d10",
+      "from": "004838f2",
+      "function": "FUN_004838b0",
+      "function_entry": "004838b0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694d10",
+      "line_hint": 695
+    },
+    {
+      "file": "D:\\Ambit\\IncludeView.cpp",
+      "string_address": "00694d10",
+      "from": "004833f7",
+      "function": "FUN_004833b0",
+      "function_entry": "004833b0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694d10",
+      "line_hint": 466
+    },
+    {
+      "file": "D:\\Ambit\\McAppStream.cpp",
+      "string_address": "00694fa8",
+      "from": "00488b1e",
+      "function": "FUN_00488b10",
+      "function_entry": "00488b10",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694fa8",
+      "line_hint": 304
+    },
+    {
+      "file": "D:\\Ambit\\McAppStream.cpp",
+      "string_address": "00694fa8",
+      "from": "00488e0e",
+      "function": "FUN_00488e00",
+      "function_entry": "00488e00",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694fa8",
+      "line_hint": 596
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMap.cpp",
+      "string_address": "006970ec",
+      "from": "0050e901",
+      "function": "FUN_0050e901",
+      "function_entry": "0050e901",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6970ec",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMap.cpp",
+      "string_address": "006970ec",
+      "from": "0050ea56",
+      "function": "FUN_0050ea56",
+      "function_entry": "0050ea56",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6970ec",
+      "line_hint": 48
+    },
+    {
+      "file": "D:\\Ambit\\QuickDraw.cpp",
+      "string_address": "00695168",
+      "from": "00498b5e",
+      "function": "AssertQuickDrawFlag6A1DC8NonZero",
+      "function_entry": "00498b50",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x695168",
+      "line_hint": 2436
+    },
+    {
+      "file": "D:\\Ambit\\QuickDraw.cpp",
+      "string_address": "00695168",
+      "from": "00498b8e",
+      "function": "AssertQuickDrawFlag6A1DCCNonZero",
+      "function_entry": "00498b80",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x695168",
+      "line_hint": 2440
+    },
+    {
+      "file": "D:\\Ambit\\WAssetMgr.cpp",
+      "string_address": "0069b794",
+      "from": "005df562",
+      "function": "LoadTableResourceStreamByName",
+      "function_entry": "005df430",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x69b794",
+      "line_hint": 206
+    },
+    {
+      "file": "D:\\Ambit\\WAssetMgr.cpp",
+      "string_address": "0069b794",
+      "from": "005e04d8",
+      "function": "FUN_005e0460",
+      "function_entry": "005e0460",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x69b794",
+      "line_hint": 611
+    },
+    {
+      "file": "D:\\Ambit\\WNetMgr.cpp",
+      "string_address": "0069b8e4",
+      "from": "005e4042",
+      "function": "PopNextTurnEventPacketOrProcessSpecialQueueRecords",
+      "function_entry": "005e3f30",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x69b8e4",
+      "line_hint": 758
+    },
+    {
+      "file": "D:\\Ambit\\WNetMgr.cpp",
+      "string_address": "0069b8e4",
+      "from": "005e3878",
+      "function": "ReportWNetManagerErrorCodeAndNotifyUi",
+      "function_entry": "005e34f0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x69b8e4",
+      "line_hint": 451
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UGameWindow.cpp",
+      "string_address": "00696bc0",
+      "from": "005003af",
+      "function": "FUN_005003a0",
+      "function_entry": "005003a0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696bc0",
+      "line_hint": 634
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UGameWindow.cpp",
+      "string_address": "00696bc0",
+      "from": "005003ce",
+      "function": "FUN_005003a0",
+      "function_entry": "005003a0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x696bc0",
+      "line_hint": 639
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\USetupScreens.cpp",
+      "string_address": "00698ab8",
+      "from": "005769d4",
+      "function": "FUN_005769c0",
+      "function_entry": "005769c0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x698ab8",
+      "line_hint": 742
+    },
+    {
+      "file": "D:\\Ambit\\DiplomacyDialogs.cpp",
+      "string_address": "00694cc0",
+      "from": "0047f3eb",
+      "function": "FUN_0047f3e0",
+      "function_entry": "0047f3e0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694cc0",
+      "line_hint": 61
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UAmbit.cpp",
+      "string_address": "0069527c",
+      "from": "0049ee7e",
+      "function": "FUN_0049ee70",
+      "function_entry": "0049ee70",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x69527c",
+      "line_hint": 1335
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UCity.cpp",
+      "string_address": "00695f18",
+      "from": "004b41d3",
+      "function": "SanitizeCityCounterArray",
+      "function_entry": "004b4180",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x695f18",
+      "line_hint": 1151
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UNavy.cpp",
+      "string_address": "006983c8",
+      "from": "00556136",
+      "function": "ApplyMapOrderTypeExecutionEffects",
+      "function_entry": "00556100",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6983c8",
+      "line_hint": 2936
+    },
+    {
+      "file": "D:\\Ambit\\McWindow.cpp",
+      "string_address": "006950d8",
+      "from": "00493533",
+      "function": "FUN_00493470",
+      "function_entry": "00493470",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6950d8",
+      "line_hint": 75
+    },
+    {
+      "file": "D:\\Ambit\\MainFrm.cpp",
+      "string_address": "00694e38",
+      "from": "0048578f",
+      "function": "TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog",
+      "function_entry": "004855b0",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694e38",
+      "line_hint": 622
+    },
+    {
+      "file": "D:\\Ambit\\Ambit.cpp",
+      "string_address": "00694290",
+      "from": "0041464e",
+      "function": "AssertAmbitSubsystemReadyOrFailWithBmp3B6",
+      "function_entry": "00414640",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694290",
+      "line_hint": 950
+    },
+    {
+      "file": "D:\\Ambit\\CDib.cpp",
+      "string_address": "00694b9c",
+      "from": "0047aa15",
+      "function": "FUN_0047aa00",
+      "function_entry": "0047aa00",
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x694b9c",
+      "line_hint": 233
+    },
+    {
+      "file": "D:\\Ambit\\Cross\\UMapDlog.cpp",
+      "string_address": "006973d0",
+      "from": "0051b836",
+      "function": "<no_function>",
+      "function_entry": null,
+      "ref_type": "DATA",
+      "instruction": "PUSH 0x6973d0",
+      "line_hint": 48
+    }
+  ]
+}

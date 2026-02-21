@@ -1,0 +1,5 @@
+type_name,getter,desc,tname_addr,create,ctor,dtor,getter_name,create_name,ctor_name,dtor_name
+TModalMessageCommand,0x005dcdd0,0x0066f2a8,0x0069b724,0x005dcd80,0x005dcdf0,0x005dcf20,FUN_005dcdd0,FUN_005dcd80,HandleTurnEventDialogFactorySlotB4,HandleTurnEventDialogFactorySlotD8
+TAssetMgr,0x005df260,0x0066f4c0,0x0069b774,0x005df1d0,0x005df280,0x005df300,FUN_005df260,FUN_005df1d0,ConstructUiViewManager,FUN_005df300
+TMovieView,0x005e2210,0x0066f6e8,0x0069b8ac,0x005e2100,0x005e2230,0x005e22f0,FUN_005e2210,FUN_005e2100,FUN_005e2230,FUN_005e22f0
+TNetMgr,0x005e33c0,0x0066f978,0x0069b8bc,0x005e3310,0x005e33e0,0x005e3400,FUN_005e33c0,FUN_005e3310,ConstructGlobalTurnEventQueueManager,FUN_005e3400

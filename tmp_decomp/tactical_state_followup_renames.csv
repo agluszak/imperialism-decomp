@@ -1,0 +1,5 @@
+address,new_name,comment
+0x0059d6e0,EvaluateBestTacticalTargetAndReturnActionScore,Scores candidate tiles for a unit via weighted heuristics/reachability checks, applies selected-target adjustment, and returns final action score.
+0x0059d940,CountReachableTacticalTargetsInSelectionList,Iterates current tactical unit list and counts entries with reachable target tiles.
+0x0059dd40,CountReachableCategory2TacticalTargetsInSelectionList,Counts reachable tactical targets restricted to category-code 2 entries.
+0x0059e3e0,UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket,Updates tactical auto-advance gating flags and may queue packet 0x232A when category transitions require dispatch.

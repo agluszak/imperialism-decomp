@@ -1,0 +1,8 @@
+address,new_name,comment
+0x0059e4f0,RunTacticalAutoTurnControllerForActiveUnit,Runs auto tactical-turn control for the active unit selecting target tiles and issuing follow-up command packets as needed.
+0x005a1ee0,EvaluateAndResolveTacticalActionAgainstTileOccupant,Evaluates tactical action outcome against a tile occupant including cost and resolution multipliers then applies resulting state updates.
+0x005a24a0,ApplyTacticalActionEffectsAndMaybeRemoveUnit,Applies tactical action effects with feedback SFX and removes defeated/finished unit entries when required.
+0x00402770,thunk_ApplyTacticalActionEffectsAndMaybeRemoveUnit,Direct thunk wrapper.
+0x005a34d0,ExecuteTacticalMineActionAndQueuePacket,Consumes tactical resources for mine action plays feedback and queues follow-up tactical event packet.
+0x005acf90,HandleArmyTacticalToolbarCommandTags,Handles tactical toolbar command tags for army battle view then dispatches panel event.
+0x005ad1b0,HandleNavyTacticalToolbarModeAndCommandTags,Handles naval tactical toolbar mode toggles and command tags then dispatches panel event.

@@ -1,0 +1,3 @@
+callee_addr,callee_name,total_calls,unique_callers,caller_names
+0x005e7e10,FUN_005e7e10,2,1,DestructTDiplomacyMapViewBaseState
+0x005e7920,FUN_005e7920,1,1,ResolveDiplomacyActionFromClickAndUpdateTarget

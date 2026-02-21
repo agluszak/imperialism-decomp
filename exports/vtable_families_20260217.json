@@ -1,0 +1,1300 @@
+{
+  "families": [
+    {
+      "family_id": "VF001",
+      "signature": [
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0",
+        "thunk_NoOpTurnEventStateVtableSlot10@00408625",
+        "thunk_HandleCityDialogNoOpSlot14@0040583a"
+      ],
+      "count": 82,
+      "members": [
+        {
+          "address": "0x0063f658",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00640068",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006404b8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00641398",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006417e8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006431b8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00643eb0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00644780",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00644978",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00644ba8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00645890",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00645ab8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00649860",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00649a70",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00649c68",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064a938",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064be30",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064d108",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064ddc8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064e000",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064e1f8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064e3f0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064e5e8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064e7e0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064ec68",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064ee60",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064f058",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064fe80",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00650080",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00650278",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00651460",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006516a8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006518f0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00651d90",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00652f60",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00655dc0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006563d8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00656750",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00657748",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00658d78",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00658fa8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065d288",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065d4b8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065e700",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065e930",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065eb68",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065f448",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006603b0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006606f0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00660920",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00660fb8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006611e8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006616f0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00663320",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00663548",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00664018",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006646b0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00665610",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00665cd0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00666118",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00666560",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006669a0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00666ba8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00667220",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00667d10",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00668130",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00668360",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066b388",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066b7a8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066b9a0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066bb98",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066bd90",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066bf88",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066c180",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066c4f8",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066c748",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066d040",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066dda0",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066e300",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066e538",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066e960",
+          "run_len": 30,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066f710",
+          "run_len": 30,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 30,
+      "min_run_len": 30
+    },
+    {
+      "family_id": "VF002",
+      "signature": [
+        "DispatchUiCommandToHandler@004041a6",
+        "thunk_ForwardCityDialogParamToChildSlot44@004069ec",
+        "thunk_ForwardCityDialogParamToChildSlot48@00401d61",
+        "thunk_CanHandleCityDialogActionFalse@004092c8"
+      ],
+      "count": 70,
+      "members": [
+        {
+          "address": "0x0063edb8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0063f468",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0063f8b8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0063fab0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0063fca8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0063fea0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00640b90",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006415f8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00641e30",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00642078",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006422a8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006424d0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00642930",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00642d98",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00642fc8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00643628",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00643858",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00643a80",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00643cb8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00644118",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00644dd8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00645468",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064cf00",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064d590",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064da10",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064fc60",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00651b70",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00652000",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00652250",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00652488",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006526d0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00655140",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00655348",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00655558",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00655760",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006561f0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006570c0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00657ef0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065ce68",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065d720",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065df38",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065edd8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065f018",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065f6b0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065f8e8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065fb20",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00661508",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00661b90",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00661dc0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00661ff0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00662458",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00663e20",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00664278",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006644b0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00664918",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00664b40",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00664d78",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00664fa8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00665408",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00666de8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00667020",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00667488",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006678e0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00667b10",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00667f40",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006685c8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006687f8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066a5e0",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066af48",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066b5b8",
+          "run_len": 16,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 16,
+      "min_run_len": 16
+    },
+    {
+      "family_id": "VF003",
+      "signature": [
+        "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer@00405c59",
+        "thunk_GetCityDialogFlagByte4@00404cfa",
+        "thunk_SetCityDialogFlagByte4@0040739c",
+        "thunk_GetCityDialogValueDwordC@00404d9f"
+      ],
+      "count": 33,
+      "members": [
+        {
+          "address": "0x0063eb24",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006406fc",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064118c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00641bf4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00642b3c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064432c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064a0bc",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064a2dc",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064a504",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064a72c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064ab7c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064b0e4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065db8c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065f234",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065ff84",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006601a4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00662664",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00663794",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006639b4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00663bd4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006651b4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066585c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00665a94",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00665ef4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066633c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00666784",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066769c",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00669194",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066c9b4",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066cbec",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066ce24",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066d2ac",
+          "run_len": 23,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066d524",
+          "run_len": 23,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 23,
+      "min_run_len": 23
+    },
+    {
+      "family_id": "VF004",
+      "signature": [
+        "thunk_CloneEngineerDialogStateToNewInstance@004082ce",
+        "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer@00405c59",
+        "thunk_GetCityDialogFlagByte4@00404cfa",
+        "thunk_SetCityDialogFlagByte4@0040739c"
+      ],
+      "count": 12,
+      "members": [
+        {
+          "address": "0x00640960",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00640d68",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00640f78",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006419f8",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00645cc8",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064cc90",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064d318",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0064d798",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065c9e0",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065cbf0",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065d930",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065e290",
+          "run_len": 24,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 24,
+      "min_run_len": 24
+    },
+    {
+      "family_id": "VF005",
+      "signature": [
+        "thunk_CloneCityDialogExtendedStateToNewInstance@0040844f",
+        "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer@00405c59",
+        "thunk_GetCityDialogFlagByte4@00404cfa",
+        "thunk_SetCityDialogFlagByte4@0040739c"
+      ],
+      "count": 9,
+      "members": [
+        {
+          "address": "0x0063f218",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00645670",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00657a48",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00657c80",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x006580d0",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00658310",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0065fd48",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00660b68",
+          "run_len": 24,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00660d98",
+          "run_len": 24,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 24,
+      "min_run_len": 24
+    },
+    {
+      "family_id": "VF006",
+      "signature": [
+        "thunk_AssertCityProductionGlobalStateInitialized@00401e2e",
+        "thunk_NoOpCityProductionDialogMethod@00406eb5",
+        "thunk_NoOpCityProductionDialogPictureHook@004068d4",
+        "thunk_SetCityProductionDialogPictureRectAndMaybeRefresh@00403c60"
+      ],
+      "count": 6,
+      "members": [
+        {
+          "address": "0x0063ea58",
+          "run_len": 17,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066c8e8",
+          "run_len": 17,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066d1e0",
+          "run_len": 17,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00652168",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x00652cb8",
+          "run_len": 16,
+          "block": ".rdata"
+        },
+        {
+          "address": "0x0066c698",
+          "run_len": 16,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 17,
+      "min_run_len": 16
+    },
+    {
+      "family_id": "VF007",
+      "signature": [
+        "thunk_GetTurnViewManagerClassNamePointer@00402e7d",
+        "thunk_DestroyTurnEventState@00403053",
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x0066f120",
+          "run_len": 65,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 65,
+      "min_run_len": 65
+    },
+    {
+      "family_id": "VF008",
+      "signature": [
+        "thunk_NumericEntryMethod_00406d0c@00406d0c",
+        "thunk_NumericEntryMethod_00409a39@00409a39",
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x0063e8b0",
+          "run_len": 32,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 32,
+      "min_run_len": 32
+    },
+    {
+      "family_id": "VF009",
+      "signature": [
+        "thunk_GetBuildingExpansionViewClassName@00401113",
+        "thunk_DestructBuildingExpansionViewAndMaybeFree@0040154b",
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x006528d8",
+          "run_len": 32,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 32,
+      "min_run_len": 32
+    },
+    {
+      "family_id": "VF010",
+      "signature": [
+        "thunk_GetArmoryViewClassName@00405853",
+        "thunk_DestructArmoryViewAndMaybeFree@004037fb",
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x00652b10",
+          "run_len": 32,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 32,
+      "min_run_len": 32
+    },
+    {
+      "family_id": "VF011",
+      "signature": [
+        "thunk_GetEngineerDialogClassName@00409016",
+        "thunk_DestructEngineerDialogAndMaybeFree@00409237",
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x00652d60",
+          "run_len": 32,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 32,
+      "min_run_len": 32
+    },
+    {
+      "family_id": "VF012",
+      "signature": [
+        "thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer@00405c59",
+        "thunk_NumericEntryMethod_00402a9a@00402a9a",
+        "thunk_NumericEntryMethod_00401b09@00401b09",
+        "thunk_GetCityDialogValueDwordC@00404d9f"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x0064adb4",
+          "run_len": 23,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 23,
+      "min_run_len": 23
+    },
+    {
+      "family_id": "VF013",
+      "signature": [
+        "DispatchUiCommandToHandler@004041a6",
+        "thunk_ForwardCityDialogParamToChildSlot44@004069ec",
+        "thunk_HandleScenarioSelectionKeyInput@00403b75",
+        "thunk_CanHandleCityDialogActionFalse@004092c8"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x00644580",
+          "run_len": 16,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 16,
+      "min_run_len": 16
+    },
+    {
+      "family_id": "VF014",
+      "signature": [
+        "GetCityTaskClassName@004068c0",
+        "thunk_FUN_005add40@004013e8",
+        "thunk_HandleTurnEventVtableSlot08ConditionalDispatch@00407c57",
+        "thunk_NoOpTurnEventStateVtableSlot0C@004010a0"
+      ],
+      "count": 1,
+      "members": [
+        {
+          "address": "0x0066a9a8",
+          "run_len": 16,
+          "block": ".rdata"
+        }
+      ],
+      "max_run_len": 16,
+      "min_run_len": 16
+    }
+  ]
+}

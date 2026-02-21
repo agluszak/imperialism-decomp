@@ -1,0 +1,4140 @@
+{
+  "count": 411,
+  "rows": [
+    {
+      "type_name": "Transport",
+      "str_addr": "00694b14",
+      "func_ref_count": 2,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "0046fd10",
+          "name": "BuildTurnEventDialogResourcesForEvent7DE"
+        },
+        {
+          "entry": "00592a70",
+          "name": "Cluster_UiControlA4A8_1C8_00592a70"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "Tuesday",
+      "str_addr": "00673988",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0069c9ec"
+      ]
+    },
+    {
+      "type_name": "TransportScreenView",
+      "str_addr": "00694d68",
+      "func_ref_count": 1,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "004851b0",
+          "name": "TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "TradeScreenView",
+      "str_addr": "00694dd4",
+      "func_ref_count": 1,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "004851b0",
+          "name": "TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "Trade",
+      "str_addr": "00699380",
+      "func_ref_count": 1,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "00592a70",
+          "name": "Cluster_UiControlA4A8_1C8_00592a70"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "ToolbarWindow32",
+      "str_addr": "00671080",
+      "func_ref_count": 1,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "005e58ab",
+          "name": "FUN_005e58ab"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "Thursday",
+      "str_addr": "00673970",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0069c9f4"
+      ]
+    },
+    {
+      "type_name": "TerrainMapView",
+      "str_addr": "00694d80",
+      "func_ref_count": 1,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "004851b0",
+          "name": "TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "TZone",
+      "str_addr": "006984c4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c600"
+      ]
+    },
+    {
+      "type_name": "TWorldView",
+      "str_addr": "00699428",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00668c10"
+      ]
+    },
+    {
+      "type_name": "TWindow",
+      "str_addr": "00695064",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006495e8"
+      ]
+    },
+    {
+      "type_name": "TWarningView",
+      "str_addr": "00698e6c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663178"
+      ]
+    },
+    {
+      "type_name": "TWarehouseView",
+      "str_addr": "0069662c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651248"
+      ]
+    },
+    {
+      "type_name": "TViewMgr",
+      "str_addr": "0069b6a8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066f0b8"
+      ]
+    },
+    {
+      "type_name": "TView",
+      "str_addr": "0069508c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006495a0"
+      ]
+    },
+    {
+      "type_name": "TUpDownView",
+      "str_addr": "006992b8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662de8"
+      ]
+    },
+    {
+      "type_name": "TUpDownPictureButton",
+      "str_addr": "0069882c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e5c8"
+      ]
+    },
+    {
+      "type_name": "TUniversityView",
+      "str_addr": "006965c0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006512c0"
+      ]
+    },
+    {
+      "type_name": "TUnitsView",
+      "str_addr": "0069661c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651260"
+      ]
+    },
+    {
+      "type_name": "TUnitToolbarCluster",
+      "str_addr": "006991e0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662ed8"
+      ]
+    },
+    {
+      "type_name": "TUnitOrder",
+      "str_addr": "00695ac0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f3c8"
+      ]
+    },
+    {
+      "type_name": "TUnit",
+      "str_addr": "0069aad8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ed40"
+      ]
+    },
+    {
+      "type_name": "TUberCluster",
+      "str_addr": "00698848",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e5b0"
+      ]
+    },
+    {
+      "type_name": "TTwoPicSlider",
+      "str_addr": "0069869c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065de58"
+      ]
+    },
+    {
+      "type_name": "TTurnStartEvent",
+      "str_addr": "006966b4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006536b8"
+      ]
+    },
+    {
+      "type_name": "TTreatiesView",
+      "str_addr": "00696a30",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f78"
+      ]
+    },
+    {
+      "type_name": "TTransportView",
+      "str_addr": "00695f50",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064fb90"
+      ]
+    },
+    {
+      "type_name": "TTransportPicture",
+      "str_addr": "00698e7c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663160"
+      ]
+    },
+    {
+      "type_name": "TTransFocusAnimation",
+      "str_addr": "006952a8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c280"
+      ]
+    },
+    {
+      "type_name": "TTrainingOrder",
+      "str_addr": "00695ad0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f3b0"
+      ]
+    },
+    {
+      "type_name": "TTraderForeignMinister",
+      "str_addr": "00697788",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659b10"
+      ]
+    },
+    {
+      "type_name": "TTraderAmtBar",
+      "str_addr": "006990e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663028"
+      ]
+    },
+    {
+      "type_name": "TTradeTotalsView",
+      "str_addr": "0069a944",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dcf0"
+      ]
+    },
+    {
+      "type_name": "TTradeTotalsLine",
+      "str_addr": "0069a958",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dcd8"
+      ]
+    },
+    {
+      "type_name": "TTradeScreenPicture",
+      "str_addr": "0069aa78",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dba0"
+      ]
+    },
+    {
+      "type_name": "TTradeSchoolView",
+      "str_addr": "00696588",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651308"
+      ]
+    },
+    {
+      "type_name": "TTradePolicyCluster",
+      "str_addr": "00699278",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e30"
+      ]
+    },
+    {
+      "type_name": "TTradePanelView",
+      "str_addr": "00696a0c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654fa8"
+      ]
+    },
+    {
+      "type_name": "TTradePageSellView",
+      "str_addr": "0069aa38",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dbe8"
+      ]
+    },
+    {
+      "type_name": "TTradePageBuyView",
+      "str_addr": "0069a9e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc30"
+      ]
+    },
+    {
+      "type_name": "TTradeOrderPicture",
+      "str_addr": "00699260",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e48"
+      ]
+    },
+    {
+      "type_name": "TTradeOfferNationView",
+      "str_addr": "0069aa00",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc18"
+      ]
+    },
+    {
+      "type_name": "TTradeOfferNationLine",
+      "str_addr": "0069aa1c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc00"
+      ]
+    },
+    {
+      "type_name": "TTradeMgr",
+      "str_addr": "0069a938",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066d870"
+      ]
+    },
+    {
+      "type_name": "TTradeCluster",
+      "str_addr": "00699170",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f68"
+      ]
+    },
+    {
+      "type_name": "TTradeBookView",
+      "str_addr": "0069a9a4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc78"
+      ]
+    },
+    {
+      "type_name": "TTradeBidNationView",
+      "str_addr": "0069a9b8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc60"
+      ]
+    },
+    {
+      "type_name": "TTradeBidNationLine",
+      "str_addr": "0069a9d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc48"
+      ]
+    },
+    {
+      "type_name": "TTownNameDialog",
+      "str_addr": "00697344",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006589c8"
+      ]
+    },
+    {
+      "type_name": "TTown",
+      "str_addr": "0069a8e0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066d780"
+      ]
+    },
+    {
+      "type_name": "TToolBarCluster",
+      "str_addr": "006991f8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662ec0"
+      ]
+    },
+    {
+      "type_name": "TToggleButton",
+      "str_addr": "00698858",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e598"
+      ]
+    },
+    {
+      "type_name": "TTextileForeignMinister",
+      "str_addr": "006977a4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659af8"
+      ]
+    },
+    {
+      "type_name": "TTextPictureButton",
+      "str_addr": "006987a4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e670"
+      ]
+    },
+    {
+      "type_name": "TTextList",
+      "str_addr": "006989a0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661a58"
+      ]
+    },
+    {
+      "type_name": "TTextLine",
+      "str_addr": "00698758",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e1d0"
+      ]
+    },
+    {
+      "type_name": "TTerrainInfoDialog",
+      "str_addr": "00697358",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006589b0"
+      ]
+    },
+    {
+      "type_name": "TTerrainHelpWindow",
+      "str_addr": "00696c14",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656fb0"
+      ]
+    },
+    {
+      "type_name": "TTerrainHelpPicture",
+      "str_addr": "00696bfc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656fc8"
+      ]
+    },
+    {
+      "type_name": "TTedForeignMinister",
+      "str_addr": "006977fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659ab0"
+      ]
+    },
+    {
+      "type_name": "TTechStorePage",
+      "str_addr": "0069a708",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ae10"
+      ]
+    },
+    {
+      "type_name": "TTechMgr",
+      "str_addr": "0069a6c8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ac98"
+      ]
+    },
+    {
+      "type_name": "TTechItemView",
+      "str_addr": "0069a6e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ae40"
+      ]
+    },
+    {
+      "type_name": "TTechItemLine",
+      "str_addr": "0069a6f8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ae28"
+      ]
+    },
+    {
+      "type_name": "TTechHistoryView",
+      "str_addr": "0069a6d4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ae58"
+      ]
+    },
+    {
+      "type_name": "TTechCheater",
+      "str_addr": "006959fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064ebf8"
+      ]
+    },
+    {
+      "type_name": "TTaskList",
+      "str_addr": "0069a018",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a8f8"
+      ]
+    },
+    {
+      "type_name": "TTaskForce",
+      "str_addr": "006980e4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c348"
+      ]
+    },
+    {
+      "type_name": "TTask",
+      "str_addr": "0069a048",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a8b0"
+      ]
+    },
+    {
+      "type_name": "TTacticalUnit",
+      "str_addr": "00699ddc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e48"
+      ]
+    },
+    {
+      "type_name": "TTacticalToolbar",
+      "str_addr": "00699fb8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a2b0"
+      ]
+    },
+    {
+      "type_name": "TTacticalPlayer",
+      "str_addr": "00699d70",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669470"
+      ]
+    },
+    {
+      "type_name": "TTacticalHolaPicture",
+      "str_addr": "00699e30",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a310"
+      ]
+    },
+    {
+      "type_name": "TTacticalBattleView",
+      "str_addr": "00699fdc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a280"
+      ]
+    },
+    {
+      "type_name": "TTacticalBattle",
+      "str_addr": "00699e0c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e00"
+      ]
+    },
+    {
+      "type_name": "TTacticalAdiosPicture",
+      "str_addr": "00699e4c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a2f8"
+      ]
+    },
+    {
+      "type_name": "TTacNavyToolbar",
+      "str_addr": "00699e80",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a2c8"
+      ]
+    },
+    {
+      "type_name": "TTacMapUberPicture",
+      "str_addr": "00699e68",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a2e0"
+      ]
+    },
+    {
+      "type_name": "TTacArmyView",
+      "str_addr": "00699fcc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a298"
+      ]
+    },
+    {
+      "type_name": "TTEView",
+      "str_addr": "00694eac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648a08"
+      ]
+    },
+    {
+      "type_name": "TSwapperDaddyView",
+      "str_addr": "00695960",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dc38"
+      ]
+    },
+    {
+      "type_name": "TSuperNavyRoster",
+      "str_addr": "0069850c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c910"
+      ]
+    },
+    {
+      "type_name": "TSuperCivRoster",
+      "str_addr": "006957bc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cbc8"
+      ]
+    },
+    {
+      "type_name": "TSuperArmyRoster",
+      "str_addr": "006957f0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cb80"
+      ]
+    },
+    {
+      "type_name": "TStream",
+      "str_addr": "00694f9c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006490c8"
+      ]
+    },
+    {
+      "type_name": "TStratReportView",
+      "str_addr": "00699054",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006630e8"
+      ]
+    },
+    {
+      "type_name": "TSteelCityMinister",
+      "str_addr": "006963a0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006506e0"
+      ]
+    },
+    {
+      "type_name": "TStatusPicture",
+      "str_addr": "006993d4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00668b90"
+      ]
+    },
+    {
+      "type_name": "TStatusButton",
+      "str_addr": "006991d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662ef0"
+      ]
+    },
+    {
+      "type_name": "TStaticText",
+      "str_addr": "0069501c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649678"
+      ]
+    },
+    {
+      "type_name": "TSpecialQuitPicture",
+      "str_addr": "0069a71c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b2e0"
+      ]
+    },
+    {
+      "type_name": "TSpaceCommand",
+      "str_addr": "00698aa0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661950"
+      ]
+    },
+    {
+      "type_name": "TSoundPlayer",
+      "str_addr": "006993c4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00668a18"
+      ]
+    },
+    {
+      "type_name": "TSortedPtrList",
+      "str_addr": "00694f3c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648e98"
+      ]
+    },
+    {
+      "type_name": "TSortedList",
+      "str_addr": "00694f58",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648e68"
+      ]
+    },
+    {
+      "type_name": "TSortedByRelationshipList",
+      "str_addr": "006968b8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654cb8"
+      ]
+    },
+    {
+      "type_name": "TSortByPriceList",
+      "str_addr": "00697758",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659b40"
+      ]
+    },
+    {
+      "type_name": "TSliderPicture",
+      "str_addr": "006988c4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00660688"
+      ]
+    },
+    {
+      "type_name": "TSimMgr",
+      "str_addr": "00698be0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662960"
+      ]
+    },
+    {
+      "type_name": "TSidewaysArrow",
+      "str_addr": "006992c8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662dd0"
+      ]
+    },
+    {
+      "type_name": "TShipyardView",
+      "str_addr": "0069660c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651278"
+      ]
+    },
+    {
+      "type_name": "TShipyardCluster",
+      "str_addr": "00699108",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662ff8"
+      ]
+    },
+    {
+      "type_name": "TShipView",
+      "str_addr": "0069858c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c880"
+      ]
+    },
+    {
+      "type_name": "TShipPlacard",
+      "str_addr": "00698538",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c8e0"
+      ]
+    },
+    {
+      "type_name": "TShipOrder",
+      "str_addr": "00695a6c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f428"
+      ]
+    },
+    {
+      "type_name": "TShipLine",
+      "str_addr": "0069861c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c868"
+      ]
+    },
+    {
+      "type_name": "TShipFractionCluster",
+      "str_addr": "00698548",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c8c8"
+      ]
+    },
+    {
+      "type_name": "TShipBuildingTask",
+      "str_addr": "0069a024",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a8e0"
+      ]
+    },
+    {
+      "type_name": "TShipBuilderCityMinister",
+      "str_addr": "00696380",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006506f8"
+      ]
+    },
+    {
+      "type_name": "TShipAmtBar",
+      "str_addr": "006990f8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663010"
+      ]
+    },
+    {
+      "type_name": "TShip",
+      "str_addr": "00698100",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c318"
+      ]
+    },
+    {
+      "type_name": "TSetupRandomMapPicture",
+      "str_addr": "006989fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006619e0"
+      ]
+    },
+    {
+      "type_name": "TSelectoText",
+      "str_addr": "00698978",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661a88"
+      ]
+    },
+    {
+      "type_name": "TScrollerButton",
+      "str_addr": "00698940",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661478"
+      ]
+    },
+    {
+      "type_name": "TScroller",
+      "str_addr": "00695080",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006495b8"
+      ]
+    },
+    {
+      "type_name": "TScrollView",
+      "str_addr": "00698968",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661448"
+      ]
+    },
+    {
+      "type_name": "TScrollBarView",
+      "str_addr": "00698954",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661460"
+      ]
+    },
+    {
+      "type_name": "TScoreGraph",
+      "str_addr": "006968d8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00655068"
+      ]
+    },
+    {
+      "type_name": "TScenarioChooser",
+      "str_addr": "006989ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661a40"
+      ]
+    },
+    {
+      "type_name": "TScatteredShipsMission",
+      "str_addr": "00697b50",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697a10"
+      ]
+    },
+    {
+      "type_name": "TRightLeftView",
+      "str_addr": "006992a4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e00"
+      ]
+    },
+    {
+      "type_name": "TRemoteMinor",
+      "str_addr": "00697c08",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065b020"
+      ]
+    },
+    {
+      "type_name": "TRemoteGreatPower",
+      "str_addr": "00697c18",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065b008"
+      ]
+    },
+    {
+      "type_name": "TRelationshipDialog",
+      "str_addr": "0069a79c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b268"
+      ]
+    },
+    {
+      "type_name": "TRearFloatWindow",
+      "str_addr": "00696a68",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f30"
+      ]
+    },
+    {
+      "type_name": "TRailheadDialog",
+      "str_addr": "00695f64",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064fb78"
+      ]
+    },
+    {
+      "type_name": "TRailCluster",
+      "str_addr": "0069912c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662fc8"
+      ]
+    },
+    {
+      "type_name": "TRailCityMinister",
+      "str_addr": "00696350",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00650728"
+      ]
+    },
+    {
+      "type_name": "TRailAmtBar",
+      "str_addr": "0069911c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662fe0"
+      ]
+    },
+    {
+      "type_name": "TRadioTextCluster",
+      "str_addr": "006989c0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661a28"
+      ]
+    },
+    {
+      "type_name": "TRadioText",
+      "str_addr": "006989d8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661a10"
+      ]
+    },
+    {
+      "type_name": "TRadioPictureButton",
+      "str_addr": "00698814",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e5e0"
+      ]
+    },
+    {
+      "type_name": "TRadio",
+      "str_addr": "00695038",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649648"
+      ]
+    },
+    {
+      "type_name": "TQueryFloater",
+      "str_addr": "0069868c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065de70"
+      ]
+    },
+    {
+      "type_name": "TPurchaseCluster",
+      "str_addr": "006965ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006512d8"
+      ]
+    },
+    {
+      "type_name": "TPtrList",
+      "str_addr": "00694f30",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648eb0"
+      ]
+    },
+    {
+      "type_name": "TProxyGreatPower",
+      "str_addr": "00697c5c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065afc0"
+      ]
+    },
+    {
+      "type_name": "TProvinceDesirabilityList",
+      "str_addr": "00696704",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00653658"
+      ]
+    },
+    {
+      "type_name": "TProductionOrder",
+      "str_addr": "00695b18",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f350"
+      ]
+    },
+    {
+      "type_name": "TProductionCluster",
+      "str_addr": "006991a4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f20"
+      ]
+    },
+    {
+      "type_name": "TPowerPlantOrder",
+      "str_addr": "00695aac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f3e0"
+      ]
+    },
+    {
+      "type_name": "TPoseMessageDialog",
+      "str_addr": "00697c70",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065bf90"
+      ]
+    },
+    {
+      "type_name": "TPortZone",
+      "str_addr": "006984a8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c618"
+      ]
+    },
+    {
+      "type_name": "TPopulationMgr",
+      "str_addr": "00695ae4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f398"
+      ]
+    },
+    {
+      "type_name": "TPopGrowthOrder",
+      "str_addr": "00695a7c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f410"
+      ]
+    },
+    {
+      "type_name": "TPlaceCityDialog",
+      "str_addr": "006964e0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651368"
+      ]
+    },
+    {
+      "type_name": "TPlacard",
+      "str_addr": "006990bc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663070"
+      ]
+    },
+    {
+      "type_name": "TPirateMinister",
+      "str_addr": "00696808",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654880"
+      ]
+    },
+    {
+      "type_name": "TPictureText",
+      "str_addr": "0069a8a8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c3d8"
+      ]
+    },
+    {
+      "type_name": "TPictureRadioButton",
+      "str_addr": "00698868",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e580"
+      ]
+    },
+    {
+      "type_name": "TPictureNumberText",
+      "str_addr": "0069a8b8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c3c0"
+      ]
+    },
+    {
+      "type_name": "TPictureLine",
+      "str_addr": "00698764",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e1b8"
+      ]
+    },
+    {
+      "type_name": "TPictureButton",
+      "str_addr": "006988b0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e538"
+      ]
+    },
+    {
+      "type_name": "TPicture",
+      "str_addr": "0069502c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649660"
+      ]
+    },
+    {
+      "type_name": "TPanelView",
+      "str_addr": "00696a40",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f60"
+      ]
+    },
+    {
+      "type_name": "TPageView",
+      "str_addr": "00698774",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e1a0"
+      ]
+    },
+    {
+      "type_name": "TPageCorner",
+      "str_addr": "00698780",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e188"
+      ]
+    },
+    {
+      "type_name": "TOverlayRadioButton",
+      "str_addr": "006965d4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006512a8"
+      ]
+    },
+    {
+      "type_name": "TOrderView",
+      "str_addr": "00696c9c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006579a0"
+      ]
+    },
+    {
+      "type_name": "TOrItemOrder",
+      "str_addr": "00695af8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f380"
+      ]
+    },
+    {
+      "type_name": "TOneTimeAnimation",
+      "str_addr": "006952f4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c238"
+      ]
+    },
+    {
+      "type_name": "TOnOffRadioButton",
+      "str_addr": "006987fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e5f8"
+      ]
+    },
+    {
+      "type_name": "TOffersPanelView",
+      "str_addr": "006969f8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654fc0"
+      ]
+    },
+    {
+      "type_name": "TOfferDeskPicture",
+      "str_addr": "0069a98c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dc90"
+      ]
+    },
+    {
+      "type_name": "TOffLimitsPicture",
+      "str_addr": "006988d8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00660670"
+      ]
+    },
+    {
+      "type_name": "TOceanDialog",
+      "str_addr": "0069857c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c898"
+      ]
+    },
+    {
+      "type_name": "TObject",
+      "str_addr": "00694ed4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00694eb8"
+      ]
+    },
+    {
+      "type_name": "TNumberedItem",
+      "str_addr": "00696c7c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006579d0"
+      ]
+    },
+    {
+      "type_name": "TNumberedIcon",
+      "str_addr": "00696c8c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006579b8"
+      ]
+    },
+    {
+      "type_name": "TNumberedArrowButton",
+      "str_addr": "00699090",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006630a0"
+      ]
+    },
+    {
+      "type_name": "TNumberText",
+      "str_addr": "00695000",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006496a8"
+      ]
+    },
+    {
+      "type_name": "TNominationView",
+      "str_addr": "00696918",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00655008"
+      ]
+    },
+    {
+      "type_name": "TNoHiliteText",
+      "str_addr": "0069a820",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c480"
+      ]
+    },
+    {
+      "type_name": "TNoHilitePicture",
+      "str_addr": "0069892c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00660610"
+      ]
+    },
+    {
+      "type_name": "TNextTradeCommand",
+      "str_addr": "0069a8e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066d8a0"
+      ]
+    },
+    {
+      "type_name": "TNextMoveCommand",
+      "str_addr": "00699da8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e90"
+      ]
+    },
+    {
+      "type_name": "TNextDiplomationCommand",
+      "str_addr": "0069688c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654ce8"
+      ]
+    },
+    {
+      "type_name": "TNewspaperView",
+      "str_addr": "00698450",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c548"
+      ]
+    },
+    {
+      "type_name": "TNewsMgr",
+      "str_addr": "00698464",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c530"
+      ]
+    },
+    {
+      "type_name": "TNewTownView",
+      "str_addr": "00695f40",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064fba8"
+      ]
+    },
+    {
+      "type_name": "TNewGameCommand",
+      "str_addr": "00695264",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c0a0"
+      ]
+    },
+    {
+      "type_name": "TNetSelectPicture",
+      "str_addr": "00698a34",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006619b0"
+      ]
+    },
+    {
+      "type_name": "TNetMgr",
+      "str_addr": "0069b8bc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066f978"
+      ]
+    },
+    {
+      "type_name": "TNetGameSelectPicture",
+      "str_addr": "00698a18",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006619c8"
+      ]
+    },
+    {
+      "type_name": "TNavyToolbarCluster",
+      "str_addr": "00698520",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c8f8"
+      ]
+    },
+    {
+      "type_name": "TNavyTacUnit",
+      "str_addr": "00699dbc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e78"
+      ]
+    },
+    {
+      "type_name": "TNavyRoster",
+      "str_addr": "00698628",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c850"
+      ]
+    },
+    {
+      "type_name": "TNavyPlayer",
+      "str_addr": "006994b0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006694a0"
+      ]
+    },
+    {
+      "type_name": "TNavyMission",
+      "str_addr": "00697bd0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697998"
+      ]
+    },
+    {
+      "type_name": "TNavyMgr",
+      "str_addr": "006980d8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c360"
+      ]
+    },
+    {
+      "type_name": "TNavyHumanPlayer",
+      "str_addr": "0069949c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006694b8"
+      ]
+    },
+    {
+      "type_name": "TNavyBoyView",
+      "str_addr": "006958e4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dcc8"
+      ]
+    },
+    {
+      "type_name": "TNavyBattle",
+      "str_addr": "00699dec",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e30"
+      ]
+    },
+    {
+      "type_name": "TNavyAutoPlayer",
+      "str_addr": "00699488",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006694d0"
+      ]
+    },
+    {
+      "type_name": "TNapoleonMinister",
+      "str_addr": "00696834",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654850"
+      ]
+    },
+    {
+      "type_name": "TMyStaticText",
+      "str_addr": "0069a898",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c3f0"
+      ]
+    },
+    {
+      "type_name": "TMyNumberText",
+      "str_addr": "0069a8d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c3a8"
+      ]
+    },
+    {
+      "type_name": "TMultiplayerMgr",
+      "str_addr": "00697c88",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065bf78"
+      ]
+    },
+    {
+      "type_name": "TMultiMessagePicture",
+      "str_addr": "00698070",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c1c8"
+      ]
+    },
+    {
+      "type_name": "TMovieView",
+      "str_addr": "0069b8ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066f6e8"
+      ]
+    },
+    {
+      "type_name": "TModalMessageCommand",
+      "str_addr": "0069b724",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066f2a8"
+      ]
+    },
+    {
+      "type_name": "TMission",
+      "str_addr": "00697864",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697848"
+      ]
+    },
+    {
+      "type_name": "TMinorTreatyDialog",
+      "str_addr": "0069a750",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b2b0"
+      ]
+    },
+    {
+      "type_name": "TMinorTradeBidsDialog",
+      "str_addr": "0069a7b4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b250"
+      ]
+    },
+    {
+      "type_name": "TMinorRelationshipDialog",
+      "str_addr": "0069a77c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b280"
+      ]
+    },
+    {
+      "type_name": "TMinor",
+      "str_addr": "006966c8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006536a0"
+      ]
+    },
+    {
+      "type_name": "TMinisterView",
+      "str_addr": "00696ad0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654ed0"
+      ]
+    },
+    {
+      "type_name": "TMinisterView",
+      "str_addr": "00696ad0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654ed0"
+      ]
+    },
+    {
+      "type_name": "TMinister",
+      "str_addr": "0069783c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659a80"
+      ]
+    },
+    {
+      "type_name": "TMiniShipView",
+      "str_addr": "006984ec",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c940"
+      ]
+    },
+    {
+      "type_name": "TMiniShipLine",
+      "str_addr": "006984fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c928"
+      ]
+    },
+    {
+      "type_name": "TMiniMapView",
+      "str_addr": "006993ec",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00668c58"
+      ]
+    },
+    {
+      "type_name": "TMiniCivView",
+      "str_addr": "0069579c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cbf8"
+      ]
+    },
+    {
+      "type_name": "TMiniCivLine",
+      "str_addr": "006957ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cbe0"
+      ]
+    },
+    {
+      "type_name": "TMiniArmyView",
+      "str_addr": "006957d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cbb0"
+      ]
+    },
+    {
+      "type_name": "TMiniArmyLine",
+      "str_addr": "006957e0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cb98"
+      ]
+    },
+    {
+      "type_name": "TMilitaryUnit",
+      "str_addr": "0069aabc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ed70"
+      ]
+    },
+    {
+      "type_name": "TMilitaryPageView",
+      "str_addr": "00698638",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c838"
+      ]
+    },
+    {
+      "type_name": "TMerchantBoyView",
+      "str_addr": "006958d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dce0"
+      ]
+    },
+    {
+      "type_name": "TMegaPicture",
+      "str_addr": "006988f0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00660658"
+      ]
+    },
+    {
+      "type_name": "TMapUberUberPicture",
+      "str_addr": "00699410",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00668c28"
+      ]
+    },
+    {
+      "type_name": "TMapUberPicture",
+      "str_addr": "006993fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00668c40"
+      ]
+    },
+    {
+      "type_name": "TMapPreviewView",
+      "str_addr": "006989e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006619f8"
+      ]
+    },
+    {
+      "type_name": "TMapMgr",
+      "str_addr": "006970e0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00658788"
+      ]
+    },
+    {
+      "type_name": "TMapMaker",
+      "str_addr": "00697400",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006598a8"
+      ]
+    },
+    {
+      "type_name": "TMapKey",
+      "str_addr": "006968fc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00655038"
+      ]
+    },
+    {
+      "type_name": "TMapEditView",
+      "str_addr": "00697300",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006589f8"
+      ]
+    },
+    {
+      "type_name": "TMapEditCluster",
+      "str_addr": "0069a7d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b238"
+      ]
+    },
+    {
+      "type_name": "TMapDialog",
+      "str_addr": "00697370",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00658998"
+      ]
+    },
+    {
+      "type_name": "TMadnessButton",
+      "str_addr": "0069808c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c1b0"
+      ]
+    },
+    {
+      "type_name": "TMacViewMgr",
+      "str_addr": "00696d58",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00658610"
+      ]
+    },
+    {
+      "type_name": "TLoungeDialog",
+      "str_addr": "006980b8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c180"
+      ]
+    },
+    {
+      "type_name": "TLonelyTileView",
+      "str_addr": "00696be8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656fe0"
+      ]
+    },
+    {
+      "type_name": "TLoadSavePicture",
+      "str_addr": "006986ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065de40"
+      ]
+    },
+    {
+      "type_name": "TList",
+      "str_addr": "00694f50",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648e80"
+      ]
+    },
+    {
+      "type_name": "TLineData",
+      "str_addr": "00698798",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e158"
+      ]
+    },
+    {
+      "type_name": "TLanguageMgr",
+      "str_addr": "00696ce8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00658560"
+      ]
+    },
+    {
+      "type_name": "TLandSaleEvent",
+      "str_addr": "006966a0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006536d0"
+      ]
+    },
+    {
+      "type_name": "TLaborPool",
+      "str_addr": "00695b34",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f320"
+      ]
+    },
+    {
+      "type_name": "TJoinSelectorDialog",
+      "str_addr": "006980a0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c198"
+      ]
+    },
+    {
+      "type_name": "TItemOrder",
+      "str_addr": "00695b08",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f368"
+      ]
+    },
+    {
+      "type_name": "TItemBoyView",
+      "str_addr": "006958c0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dcf8"
+      ]
+    },
+    {
+      "type_name": "TInvadeMission",
+      "str_addr": "00697af4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697a70"
+      ]
+    },
+    {
+      "type_name": "TInterruptusView",
+      "str_addr": "006958ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dd10"
+      ]
+    },
+    {
+      "type_name": "TInteriorMinisterView",
+      "str_addr": "00696a7c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f18"
+      ]
+    },
+    {
+      "type_name": "TInteriorMinister",
+      "str_addr": "00696498",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006506b0"
+      ]
+    },
+    {
+      "type_name": "TInfoPanelView",
+      "str_addr": "006969e4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654fd8"
+      ]
+    },
+    {
+      "type_name": "TInfoBarText",
+      "str_addr": "0069a840",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c468"
+      ]
+    },
+    {
+      "type_name": "TInfoBarPictureText",
+      "str_addr": "0069a850",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c438"
+      ]
+    },
+    {
+      "type_name": "TInfoBarBehavior",
+      "str_addr": "006959c4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064ea60"
+      ]
+    },
+    {
+      "type_name": "TIndustryView",
+      "str_addr": "0069659c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006512f0"
+      ]
+    },
+    {
+      "type_name": "TIndustryCluster",
+      "str_addr": "00699150",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f98"
+      ]
+    },
+    {
+      "type_name": "TIndustryAmtBar",
+      "str_addr": "0069913c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662fb0"
+      ]
+    },
+    {
+      "type_name": "TIndexAndRankList",
+      "str_addr": "00697740",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659b58"
+      ]
+    },
+    {
+      "type_name": "TIncludeView",
+      "str_addr": "00695070",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006495d0"
+      ]
+    },
+    {
+      "type_name": "TIconSlider",
+      "str_addr": "00696cac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00657988"
+      ]
+    },
+    {
+      "type_name": "TIconBar",
+      "str_addr": "00696cbc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00657970"
+      ]
+    },
+    {
+      "type_name": "THotspotBehavior",
+      "str_addr": "006959d8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064ea48"
+      ]
+    },
+    {
+      "type_name": "THostGreatPower",
+      "str_addr": "00697c48",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065afd8"
+      ]
+    },
+    {
+      "type_name": "THighScoresPicture",
+      "str_addr": "00698a88",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661968"
+      ]
+    },
+    {
+      "type_name": "THelpWindow",
+      "str_addr": "00696c2c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656f98"
+      ]
+    },
+    {
+      "type_name": "THelpPicture",
+      "str_addr": "00696c3c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656f80"
+      ]
+    },
+    {
+      "type_name": "THelpMgr",
+      "str_addr": "00696c4c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656f68"
+      ]
+    },
+    {
+      "type_name": "THandleStream",
+      "str_addr": "00694f68",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649110"
+      ]
+    },
+    {
+      "type_name": "THQButton",
+      "str_addr": "006990c8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663058"
+      ]
+    },
+    {
+      "type_name": "TGreatPower",
+      "str_addr": "006966e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00653688"
+      ]
+    },
+    {
+      "type_name": "TGrantsView",
+      "str_addr": "00696a20",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f90"
+      ]
+    },
+    {
+      "type_name": "TGarrisonView",
+      "str_addr": "00695834",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cb20"
+      ]
+    },
+    {
+      "type_name": "TGameWindow",
+      "str_addr": "00696bb0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656a30"
+      ]
+    },
+    {
+      "type_name": "TGameSetupPicture",
+      "str_addr": "00698a70",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661980"
+      ]
+    },
+    {
+      "type_name": "TGameSetupMultiplayerPicture",
+      "str_addr": "00698a4c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661998"
+      ]
+    },
+    {
+      "type_name": "TGameSetupDialog",
+      "str_addr": "0069a7e4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b220"
+      ]
+    },
+    {
+      "type_name": "TGameScorePicture",
+      "str_addr": "00698988",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00661a70"
+      ]
+    },
+    {
+      "type_name": "TGamePreferencesPicture",
+      "str_addr": "006986ec",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065ddf8"
+      ]
+    },
+    {
+      "type_name": "TGameInfoPicture",
+      "str_addr": "006986c0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065de28"
+      ]
+    },
+    {
+      "type_name": "TGWorldPeeker",
+      "str_addr": "00696b14",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656630"
+      ]
+    },
+    {
+      "type_name": "TGWorldPartView",
+      "str_addr": "0069594c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dc50"
+      ]
+    },
+    {
+      "type_name": "TGWorldButton",
+      "str_addr": "006987cc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e640"
+      ]
+    },
+    {
+      "type_name": "TGPTreatyDialog",
+      "str_addr": "0069a768",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b298"
+      ]
+    },
+    {
+      "type_name": "TGPCheater",
+      "str_addr": "006959ec",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064ec10"
+      ]
+    },
+    {
+      "type_name": "TFuzzyVar",
+      "str_addr": "00696b94",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656940"
+      ]
+    },
+    {
+      "type_name": "TFuzzySet",
+      "str_addr": "00696b88",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656958"
+      ]
+    },
+    {
+      "type_name": "TFrameRadioView",
+      "str_addr": "006968e8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00655050"
+      ]
+    },
+    {
+      "type_name": "TForeignMinisterView",
+      "str_addr": "00696ab4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654ee8"
+      ]
+    },
+    {
+      "type_name": "TForeignMinister",
+      "str_addr": "00697828",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659a98"
+      ]
+    },
+    {
+      "type_name": "TFoodProcessingOrder",
+      "str_addr": "00695a90",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f3f8"
+      ]
+    },
+    {
+      "type_name": "TFocusAnimation",
+      "str_addr": "006952c4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c268"
+      ]
+    },
+    {
+      "type_name": "TFloatWindow",
+      "str_addr": "00694fe4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006496d8"
+      ]
+    },
+    {
+      "type_name": "TFlagOptionsPicture",
+      "str_addr": "006986d4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065de10"
+      ]
+    },
+    {
+      "type_name": "TFileStream",
+      "str_addr": "00694f8c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006490e0"
+      ]
+    },
+    {
+      "type_name": "TFileBasedDocument",
+      "str_addr": "00694e88",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648a38"
+      ]
+    },
+    {
+      "type_name": "TExpansionOrder",
+      "str_addr": "00695a44",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f458"
+      ]
+    },
+    {
+      "type_name": "TEventHandler",
+      "str_addr": "00695094",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649588"
+      ]
+    },
+    {
+      "type_name": "TEvent",
+      "str_addr": "006950a4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649570"
+      ]
+    },
+    {
+      "type_name": "TEvenCityMinister",
+      "str_addr": "00696368",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00650710"
+      ]
+    },
+    {
+      "type_name": "TEscortMission",
+      "str_addr": "00697ba0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006979c8"
+      ]
+    },
+    {
+      "type_name": "TEngineerDialog",
+      "str_addr": "006964f4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651350"
+      ]
+    },
+    {
+      "type_name": "TEditText",
+      "str_addr": "00695010",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649690"
+      ]
+    },
+    {
+      "type_name": "TDropShadowTextBehavior",
+      "str_addr": "006959a8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064ea78"
+      ]
+    },
+    {
+      "type_name": "TDropShadowText",
+      "str_addr": "0069a884",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c408"
+      ]
+    },
+    {
+      "type_name": "TDropShadowNumberText",
+      "str_addr": "0069a868",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c420"
+      ]
+    },
+    {
+      "type_name": "TDocument",
+      "str_addr": "00694ea0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648a20"
+      ]
+    },
+    {
+      "type_name": "TDlgWindow",
+      "str_addr": "00696ba0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656a48"
+      ]
+    },
+    {
+      "type_name": "TDisplayMgr",
+      "str_addr": "00696b34",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656600"
+      ]
+    },
+    {
+      "type_name": "TDisappearingButton",
+      "str_addr": "00698564",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c8b0"
+      ]
+    },
+    {
+      "type_name": "TDiplomatForeignMinister",
+      "str_addr": "006977c0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659ae0"
+      ]
+    },
+    {
+      "type_name": "TDiplomacyMgr",
+      "str_addr": "006968a8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654cd0"
+      ]
+    },
+    {
+      "type_name": "TDiplomacyMapView",
+      "str_addr": "00696a50",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f48"
+      ]
+    },
+    {
+      "type_name": "TDipDlgCluster",
+      "str_addr": "00699290",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e18"
+      ]
+    },
+    {
+      "type_name": "TDialogView",
+      "str_addr": "00695214",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064bda8"
+      ]
+    },
+    {
+      "type_name": "TDialogBehavior",
+      "str_addr": "00694f04",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648d10"
+      ]
+    },
+    {
+      "type_name": "TDeluxeText",
+      "str_addr": "0069a830",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066c450"
+      ]
+    },
+    {
+      "type_name": "TDefenseMinisterView",
+      "str_addr": "00696a98",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654f00"
+      ]
+    },
+    {
+      "type_name": "TDefenseMinister",
+      "str_addr": "0069684c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654838"
+      ]
+    },
+    {
+      "type_name": "TDefenderMinister",
+      "str_addr": "006967f0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654898"
+      ]
+    },
+    {
+      "type_name": "TDefendProvinceMission",
+      "str_addr": "00697b08",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697a58"
+      ]
+    },
+    {
+      "type_name": "TDealTabControl",
+      "str_addr": "0069aa50",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dbd0"
+      ]
+    },
+    {
+      "type_name": "TDealList",
+      "str_addr": "0069a900",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066d888"
+      ]
+    },
+    {
+      "type_name": "TDealLine",
+      "str_addr": "0069a980",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dca8"
+      ]
+    },
+    {
+      "type_name": "TDealBookPicture",
+      "str_addr": "0069aa64",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dbb8"
+      ]
+    },
+    {
+      "type_name": "TCzechBox",
+      "str_addr": "006987f0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e610"
+      ]
+    },
+    {
+      "type_name": "TCtlMgr",
+      "str_addr": "0069504c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649618"
+      ]
+    },
+    {
+      "type_name": "TCreditsPicture",
+      "str_addr": "00698678",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065de88"
+      ]
+    },
+    {
+      "type_name": "TCountry",
+      "str_addr": "006966f8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00653670"
+      ]
+    },
+    {
+      "type_name": "TCountingStream",
+      "str_addr": "00694f78",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006490f8"
+      ]
+    },
+    {
+      "type_name": "TCouncilView",
+      "str_addr": "00696908",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00655020"
+      ]
+    },
+    {
+      "type_name": "TCouncilTickerAnimation",
+      "str_addr": "006952d8",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c250"
+      ]
+    },
+    {
+      "type_name": "TCouncilPanelView",
+      "str_addr": "0069692c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654ff0"
+      ]
+    },
+    {
+      "type_name": "TControlSeaZoneMission",
+      "str_addr": "00697bb4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006979b0"
+      ]
+    },
+    {
+      "type_name": "TControl",
+      "str_addr": "00695058",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649600"
+      ]
+    },
+    {
+      "type_name": "TCommodityLine",
+      "str_addr": "0069a96c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066dcc0"
+      ]
+    },
+    {
+      "type_name": "TCommandHandler",
+      "str_addr": "00694ef0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648ae0"
+      ]
+    },
+    {
+      "type_name": "TCommand",
+      "str_addr": "00694f24",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648e08"
+      ]
+    },
+    {
+      "type_name": "TCombatReportView",
+      "str_addr": "00699078",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006630b8"
+      ]
+    },
+    {
+      "type_name": "TColorKeyPicture",
+      "str_addr": "00698900",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00660640"
+      ]
+    },
+    {
+      "type_name": "TColorKeyButton",
+      "str_addr": "006987dc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e628"
+      ]
+    },
+    {
+      "type_name": "TColorFill",
+      "str_addr": "00696b24",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00656618"
+      ]
+    },
+    {
+      "type_name": "TCluster",
+      "str_addr": "00694ff4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006496c0"
+      ]
+    },
+    {
+      "type_name": "TClosePicture",
+      "str_addr": "00699194",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f38"
+      ]
+    },
+    {
+      "type_name": "TCloseParentButton",
+      "str_addr": "0069920c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662ea8"
+      ]
+    },
+    {
+      "type_name": "TCloseButton",
+      "str_addr": "00699224",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e90"
+      ]
+    },
+    {
+      "type_name": "TClientGreatPower",
+      "str_addr": "00697c30",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065aff0"
+      ]
+    },
+    {
+      "type_name": "TClickZone",
+      "str_addr": "006987bc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e658"
+      ]
+    },
+    {
+      "type_name": "TCivilianButton",
+      "str_addr": "006990d4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663040"
+      ]
+    },
+    {
+      "type_name": "TCivUnit",
+      "str_addr": "0069aacc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066ed58"
+      ]
+    },
+    {
+      "type_name": "TCivToolbar",
+      "str_addr": "00699044",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663100"
+      ]
+    },
+    {
+      "type_name": "TCivReport",
+      "str_addr": "00698ea4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663130"
+      ]
+    },
+    {
+      "type_name": "TCivMgr",
+      "str_addr": "00696694",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006531f8"
+      ]
+    },
+    {
+      "type_name": "TCivDescription",
+      "str_addr": "00699030",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663118"
+      ]
+    },
+    {
+      "type_name": "TCivAnimation2",
+      "str_addr": "0069530c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c220"
+      ]
+    },
+    {
+      "type_name": "TCivAnimation",
+      "str_addr": "00695320",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c208"
+      ]
+    },
+    {
+      "type_name": "TCityTask",
+      "str_addr": "0069a03c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066a8c8"
+      ]
+    },
+    {
+      "type_name": "TCitySiteView",
+      "str_addr": "00697334",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006589e0"
+      ]
+    },
+    {
+      "type_name": "TCityProductionView",
+      "str_addr": "006962d0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064fb60"
+      ]
+    },
+    {
+      "type_name": "TCityInteriorMinister",
+      "str_addr": "0069647c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006506c8"
+      ]
+    },
+    {
+      "type_name": "TCityBarCluster",
+      "str_addr": "006991bc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f08"
+      ]
+    },
+    {
+      "type_name": "TCity",
+      "str_addr": "00695b2c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f338"
+      ]
+    },
+    {
+      "type_name": "TCheater",
+      "str_addr": "00695a0c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064ebe0"
+      ]
+    },
+    {
+      "type_name": "TCapacityOrder",
+      "str_addr": "00695a58",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064f440"
+      ]
+    },
+    {
+      "type_name": "TCancelGameOptionsCommand",
+      "str_addr": "00697c9c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065bf60"
+      ]
+    },
+    {
+      "type_name": "TButton",
+      "str_addr": "00695040",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00649630"
+      ]
+    },
+    {
+      "type_name": "TBullyMinister",
+      "str_addr": "006967dc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006548b0"
+      ]
+    },
+    {
+      "type_name": "TBuildingView",
+      "str_addr": "00696640",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651230"
+      ]
+    },
+    {
+      "type_name": "TBuildingExpansionView",
+      "str_addr": "0069656c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651320"
+      ]
+    },
+    {
+      "type_name": "TBuildingConstructionView",
+      "str_addr": "006965ec",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651290"
+      ]
+    },
+    {
+      "type_name": "TBoycottButton",
+      "str_addr": "0069924c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e60"
+      ]
+    },
+    {
+      "type_name": "TBook",
+      "str_addr": "00698790",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e170"
+      ]
+    },
+    {
+      "type_name": "TBlockadePortMission",
+      "str_addr": "00697b6c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006979f8"
+      ]
+    },
+    {
+      "type_name": "TBismarckMinister",
+      "str_addr": "0069681c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00654868"
+      ]
+    },
+    {
+      "type_name": "TBillForeignMinister",
+      "str_addr": "006977e0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659ac8"
+      ]
+    },
+    {
+      "type_name": "TBehavior",
+      "str_addr": "00694f18",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648cf8"
+      ]
+    },
+    {
+      "type_name": "TBeachheadMission",
+      "str_addr": "00697b88",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006979e0"
+      ]
+    },
+    {
+      "type_name": "TBattleUnitsView",
+      "str_addr": "00695884",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dd40"
+      ]
+    },
+    {
+      "type_name": "TBattleReportView",
+      "str_addr": "0069591c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dc80"
+      ]
+    },
+    {
+      "type_name": "TBattleDetailBook",
+      "str_addr": "00695904",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dc98"
+      ]
+    },
+    {
+      "type_name": "TBatRepDetLine",
+      "str_addr": "00695898",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dd28"
+      ]
+    },
+    {
+      "type_name": "TBackgroundPicture",
+      "str_addr": "00698914",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00660628"
+      ]
+    },
+    {
+      "type_name": "TAutomatedPlayDialog",
+      "str_addr": "0069a734",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066b2c8"
+      ]
+    },
+    {
+      "type_name": "TAutoGreatPower",
+      "str_addr": "00696798",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00653f90"
+      ]
+    },
+    {
+      "type_name": "TAttackProvinceMission",
+      "str_addr": "00697b24",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697a40"
+      ]
+    },
+    {
+      "type_name": "TAssetMgr",
+      "str_addr": "0069b774",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0066f4c0"
+      ]
+    },
+    {
+      "type_name": "TArrowsControl",
+      "str_addr": "006992dc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662db8"
+      ]
+    },
+    {
+      "type_name": "TArmyUnitView",
+      "str_addr": "00695814",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cb50"
+      ]
+    },
+    {
+      "type_name": "TArmyUnitLine",
+      "str_addr": "00695824",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cb38"
+      ]
+    },
+    {
+      "type_name": "TArmyToolbar",
+      "str_addr": "00699068",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "006630d0"
+      ]
+    },
+    {
+      "type_name": "TArmyTacUnit",
+      "str_addr": "00699dcc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e60"
+      ]
+    },
+    {
+      "type_name": "TArmyStackList",
+      "str_addr": "0069535c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c858"
+      ]
+    },
+    {
+      "type_name": "TArmyStack",
+      "str_addr": "00695370",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c840"
+      ]
+    },
+    {
+      "type_name": "TArmyPlayer",
+      "str_addr": "00699d60",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669488"
+      ]
+    },
+    {
+      "type_name": "TArmyPlacard",
+      "str_addr": "006990ac",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663088"
+      ]
+    },
+    {
+      "type_name": "TArmyMission",
+      "str_addr": "00697b40",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00697a28"
+      ]
+    },
+    {
+      "type_name": "TArmyMgr",
+      "str_addr": "00695730",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c828"
+      ]
+    },
+    {
+      "type_name": "TArmyInfoView",
+      "str_addr": "00698e94",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00663148"
+      ]
+    },
+    {
+      "type_name": "TArmyCheckBox",
+      "str_addr": "00695804",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064cb68"
+      ]
+    },
+    {
+      "type_name": "TArmyBoyView",
+      "str_addr": "006958f4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064dcb0"
+      ]
+    },
+    {
+      "type_name": "TArmyBattle",
+      "str_addr": "00699dfc",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00669e18"
+      ]
+    },
+    {
+      "type_name": "TArmsForeignMinister",
+      "str_addr": "0069776c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00659b28"
+      ]
+    },
+    {
+      "type_name": "TArmoryView",
+      "str_addr": "0069655c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00651338"
+      ]
+    },
+    {
+      "type_name": "TApplication",
+      "str_addr": "00694ee0",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00648af8"
+      ]
+    },
+    {
+      "type_name": "TAnimator",
+      "str_addr": "0069529c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c298"
+      ]
+    },
+    {
+      "type_name": "TAnimation",
+      "str_addr": "00695330",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c1f0"
+      ]
+    },
+    {
+      "type_name": "TAmtBarCluster",
+      "str_addr": "00699180",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f50"
+      ]
+    },
+    {
+      "type_name": "TAmtBar",
+      "str_addr": "00699164",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662f80"
+      ]
+    },
+    {
+      "type_name": "TAmbitFileBasedDocument",
+      "str_addr": "00695230",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c0d0"
+      ]
+    },
+    {
+      "type_name": "TAmbitApplication",
+      "str_addr": "0069524c",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064c0b8"
+      ]
+    },
+    {
+      "type_name": "TAlwaysPictureButton",
+      "str_addr": "00698894",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e550"
+      ]
+    },
+    {
+      "type_name": "TAdorner",
+      "str_addr": "00695224",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0064bd90"
+      ]
+    },
+    {
+      "type_name": "TAdmiral",
+      "str_addr": "006980f4",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065c330"
+      ]
+    },
+    {
+      "type_name": "TABLE",
+      "str_addr": "0069b7b0",
+      "func_ref_count": 1,
+      "data_ref_count": 0,
+      "func_refs": [
+        {
+          "entry": "005df430",
+          "name": "LoadTableResourceStreamByName"
+        }
+      ],
+      "data_refs": []
+    },
+    {
+      "type_name": "T2PictureButton",
+      "str_addr": "00698880",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "0065e568"
+      ]
+    },
+    {
+      "type_name": "T2PictToggleButton",
+      "str_addr": "00699234",
+      "func_ref_count": 0,
+      "data_ref_count": 1,
+      "func_refs": [],
+      "data_refs": [
+        "00662e78"
+      ]
+    }
+  ]
+}

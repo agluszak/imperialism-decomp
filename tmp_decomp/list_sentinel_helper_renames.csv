@@ -1,0 +1,2 @@
+address,new_name,comment
+0x00601f1d,InitializeLinkedListSentinelNodeWithOwnerContext,Initializes a linked-list sentinel node clears node links assigns sentinel vtable and stores owner context pointer.

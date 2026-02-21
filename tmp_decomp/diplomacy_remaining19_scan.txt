@@ -1,0 +1,595 @@
+=== 0x00542b10 FUN_00542b10 size=152 ===
+xrefs: 00403f62 in <none>
+calls: StringSharedRef_AssignFromPtr@006057a7, thunk_FUN_005e0260@0040451b, ReleaseSharedStringRefIfNotEmpty@006058e2, thunk_FUN_0048a1b0@00407d83
+
+void __fastcall FUN_00542b10(int param_1)
+
+{
+  undefined4 unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  int local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00634898;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_10 = param_1;
+  StringSharedRef_AssignFromPtr(param_1 + 0xb0);
+  local_4 = 0;
+  thunk_FUN_005e0260(&local_10,s_PlayerName_0069801c);
+  local_4 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  (**(code **)(*DAT_006a1344 + 0xa4))(param_1,0);
+  g_pGameFlowState = 0;
+  (**(code **)(*DAT_006a6014 + 0x1c))();
+  DAT_006a6014 = (int *)0x0;
+  *(undefined4 *)(param_1 + 0x44) = 0;
+  thunk_FUN_0048a1b0();
+  *unaff_FS_OFFSET = unaff_ESI;
+
+=== 0x00544cd0 FUN_00544cd0 size=251 ===
+xrefs: 004059b1 in thunk_FUN_00544cd0@004059b1
+
+void __thiscall FUN_00544cd0(int param_1,undefined4 *param_2)
+
+{
+  ushort *puVar1;
+  ushort uVar2;
+  ushort *puVar3;
+  uint uVar4;
+  uint uVar5;
+  int iVar6;
+  undefined4 *puVar7;
+  
+  switch(*(undefined1 *)(param_1 + 0x21)) {
+  case 0:
+    uVar4 = *(int *)(param_1 + 0xc) - 0x24;
+    puVar7 = (undefined4 *)(param_1 + 0x24);
+    for (uVar5 = uVar4 >> 2; uVar5 != 0; uVar5 = uVar5 - 1) {
+      *param_2 = *puVar7;
+      puVar7 = puVar7 + 1;
+      param_2 = param_2 + 1;
+    }
+    for (uVar4 = uVar4 & 3; uVar4 != 0; uVar4 = uVar4 - 1) {
+      *(undefined1 *)param_2 = *(undefined1 *)puVar7;
+      puVar7 = (undefined4 *)((int)puVar7 + 1);
+      param_2 = (undefined4 *)((int)param_2 + 1);
+    }
+    return;
+  case 1:
+
+=== 0x00544e70 FUN_00544e70 size=138 ===
+xrefs: 00408341 in thunk_FUN_00544e70@00408341
+calls: thunk_FUN_005e39a0@00409412, thunk_FUN_005e0290@00402513, thunk_SetSelectedTextOptionByTag@00407c07
+
+undefined4 __thiscall FUN_00544e70(int param_1,int *param_2)
+
+{
+  char cVar1;
+  int *piVar2;
+  int iVar3;
+  int unaff_ESI;
+  undefined4 unaff_retaddr;
+  
+  piVar2 = param_2;
+  *(int **)(param_1 + 0x40) = param_2;
+  cVar1 = thunk_FUN_005e39a0(param_2);
+  if (cVar1 == '\0') {
+    return 0;
+  }
+  thunk_FUN_005e0290(&param_2,s_DefaultProtocol_0069802c,0x70726f30);
+  piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x70726f74);
+  iVar3 = *piVar2;
+  (**(code **)(iVar3 + 0xc))();
+  iVar3 = (**(code **)(iVar3 + 0x94))(unaff_retaddr);
+  if (iVar3 != 0) {
+    thunk_SetSelectedTextOptionByTag(piVar2,unaff_ESI,true);
+    return 1;
+  }
+  thunk_SetSelectedTextOptionByTag(piVar2,0x70726f30,true);
+  return 1;
+}
+
+=== 0x00545110 FUN_00545110 size=299 ===
+xrefs: 00408eb3 in thunk_FUN_00545110@00408eb3
+calls: thunk_FUN_005e34b0@00402afe, InitializeSharedStringRefFromEmpty@00605797, thunk_FUN_00508c50@00402a2c, StringShared::AssignFromPtr@00605a29, ReleaseSharedStringRefIfNotEmpty@006058e2, ConstructSharedStringFromCStrOrResourceId@00605950, thunk_FUN_005e3c00@004082d8
+
+undefined1 __thiscall FUN_00545110(int param_1,int *param_2)
+
+{
+  code *pcVar1;
+  int iVar2;
+  undefined1 uVar3;
+  int *piVar4;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00634998;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_FUN_005e34b0();
+  *(int **)(param_1 + 0x40) = param_2;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = 0;
+  pcVar1 = *(code **)(*param_2 + 0x94);
+  piVar4 = (int *)(*pcVar1)(0x6e616d65);
+  iVar2 = *piVar4;
+  (**(code **)(iVar2 + 0xc))();
+  piVar4 = (int *)thunk_FUN_00508c50(&stack0x00000000,param_1 + 0xb0);
+  puStack_8._0_1_ = 1;
+
+=== 0x005493c0 FUN_005493c0 size=185 ===
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_005493c0(undefined1 param_1,int param_2,int param_3,undefined2 param_4,undefined2 param_5)
+
+{
+  undefined4 local_28;
+  undefined4 local_24;
+  int local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined1 local_14;
+  undefined1 local_10;
+  int local_c;
+  int local_8;
+  undefined2 local_4;
+  undefined2 local_2;
+  
+  local_18 = 0x74696d65;
+  local_14 = thunk_GetActiveNationId();
+  local_10 = param_1;
+  local_8 = 0;
+  local_24 = 0;
+  local_28 = 0x11;
+  local_c = param_2;
+  local_1c = 0x28;
+  if (param_2 == 0) {
+    local_8 = *(int *)(g_pGlobalMapState + 0xc);
+  }
+  else if (param_2 == 1) {
+
+=== 0x005494b0 FUN_005494b0 size=107 ===
+xrefs: 00407f72 in thunk_FUN_005494b0@00407f72
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_005494b0(undefined2 param_1,undefined2 param_2)
+
+{
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 local_8;
+  undefined2 local_4;
+  undefined2 local_2;
+  
+  local_c = 0x74696d65;
+  local_8 = thunk_GetActiveNationId();
+  local_18 = 0;
+  local_4 = param_1;
+  local_14 = 0;
+  local_10 = 0x1c;
+  local_1c = 0x12;
+  local_2 = param_2;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,0);
+  return;
+}
+
+
+=== 0x00549540 FUN_00549540 size=126 ===
+xrefs: 004048d6 in thunk_FUN_00549540@004048d6
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_00549540(int param_1,undefined4 *param_2)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  undefined4 local_40;
+  undefined4 local_3c;
+  undefined4 local_38;
+  undefined4 local_34;
+  undefined4 local_30;
+  undefined1 local_2c;
+  undefined2 local_28;
+  undefined4 local_24 [9];
+  
+  local_30 = 0x74696d65;
+  local_2c = thunk_GetActiveNationId();
+  local_3c = 0;
+  local_40 = 0x13;
+  local_34 = 0x40;
+  local_38 = *(undefined4 *)(g_pGameFlowState + 0x48 + param_1 * 4);
+  local_28 = (undefined2)param_1;
+  puVar2 = local_24;
+  for (iVar1 = 9; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = *param_2;
+    param_2 = param_2 + 1;
+    puVar2 = puVar2 + 1;
+  }
+
+=== 0x005495e0 FUN_005495e0 size=118 ===
+xrefs: 00405bd7 in thunk_FUN_005495e0@00405bd7
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_005495e0(undefined2 param_1,undefined1 param_2,undefined1 param_3)
+
+{
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 local_8;
+  undefined2 local_4;
+  undefined1 local_2;
+  undefined1 local_1;
+  
+  local_c = 0x74696d65;
+  local_8 = thunk_GetActiveNationId();
+  local_4 = param_1;
+  local_18 = 0;
+  local_10 = 0x1c;
+  local_1c = 0x20;
+  local_2 = param_2;
+  local_1 = param_3;
+  local_14 = 0;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
+  return;
+}
+
+
+=== 0x00549680 FUN_00549680 size=116 ===
+xrefs: 004072ac in thunk_FUN_00549680@004072ac
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_00549680(undefined1 param_1,undefined1 param_2,undefined1 param_3)
+
+{
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 local_8;
+  undefined1 local_4;
+  undefined1 local_3;
+  undefined1 local_2;
+  
+  local_c = 0x74696d65;
+  local_8 = thunk_GetActiveNationId();
+  local_4 = param_1;
+  local_18 = 0;
+  local_10 = 0x1c;
+  local_1c = 0x21;
+  local_3 = param_2;
+  local_2 = param_3;
+  local_14 = 0;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
+  return;
+}
+
+
+=== 0x00549720 FUN_00549720 size=106 ===
+xrefs: 004070f4 in thunk_FUN_00549720@004070f4
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_00549720(undefined1 param_1,undefined2 param_2)
+
+{
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 local_8;
+  undefined1 local_4;
+  undefined2 local_2;
+  
+  local_c = 0x74696d65;
+  local_8 = thunk_GetActiveNationId();
+  local_18 = 0;
+  local_4 = param_1;
+  local_14 = 0;
+  local_10 = 0x1c;
+  local_1c = 0x22;
+  local_2 = param_2;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
+  return;
+}
+
+
+=== 0x005498d0 FUN_005498d0 size=164 ===
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_005498d0(undefined2 param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,
+                 undefined2 param_5,undefined4 param_6)
+
+{
+  undefined4 local_2c;
+  undefined4 local_28;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined1 local_18;
+  undefined2 local_14;
+  undefined2 local_10;
+  undefined2 local_e;
+  undefined2 local_c;
+  undefined2 local_a;
+  undefined2 local_8;
+  undefined4 local_4;
+  
+  local_1c = 0x74696d65;
+  local_18 = thunk_GetActiveNationId();
+  local_2c = 0x1b;
+  local_28 = 0;
+  local_20 = 0x2c;
+  local_14 = *(undefined2 *)(g_pGameFlowState + 0xf0);
+  local_24 = 0;
+  local_10 = param_1;
+  local_e = param_2;
+
+=== 0x005499b0 FUN_005499b0 size=174 ===
+xrefs: 004037c9 in thunk_FUN_005499b0@004037c9
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_005499b0(char param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,
+                 undefined2 param_5,undefined2 param_6,undefined2 param_7)
+
+{
+  undefined4 local_28;
+  undefined4 local_24;
+  int local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined1 local_14;
+  undefined2 local_10;
+  undefined2 local_c;
+  undefined2 local_a;
+  undefined2 local_8;
+  undefined2 local_6;
+  undefined2 local_4;
+  undefined2 local_2;
+  
+  local_18 = 0x74696d65;
+  local_14 = thunk_GetActiveNationId();
+  local_28 = 0x1c;
+  local_24 = 0;
+  local_1c = 0x28;
+  local_10 = *(undefined2 *)(g_pGameFlowState + 0xf0);
+  local_c = param_2;
+  local_a = param_3;
+  local_6 = param_6;
+
+=== 0x00549c60 FUN_00549c60 size=396 ===
+xrefs: 0040290f in thunk_FUN_00549c60@0040290f
+calls: thunk_GetActiveNationId@00403b16, SerializeNavyOrderListsByNation@00403940, thunk_FUN_0054a500@00409787, thunk_FUN_0054a5e0@00403e13
+
+void FUN_00549c60(int *param_1,int *param_2,short param_3)
+
+{
+  int *piVar1;
+  code *pcVar2;
+  int iVar3;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  int local_1c [5];
+  undefined1 local_8;
+  undefined2 local_4;
+  
+  local_1c[4] = 0x74696d65;
+  local_8 = thunk_GetActiveNationId();
+  local_1c[1] = 0;
+  local_1c[3] = 0x1c;
+  iVar3 = (int)param_3;
+  local_4 = *(undefined2 *)(g_pGameFlowState + 0xf0);
+  if ((iVar3 == -2) || (iVar3 == -3)) {
+    local_1c[2] = 0;
+  }
+  else if (iVar3 == -1) {
+    local_1c[2] = 0xffffffff;
+  }
+  else {
+    local_1c[2] = *(undefined4 *)(g_pGameFlowState + 0x48 + iVar3 * 4);
+  }
+
+=== 0x0054a500 FUN_0054a500 size=169 ===
+xrefs: 00409787 in thunk_FUN_0054a500@00409787
+calls: thunk_FUN_00487ef0@00401118, thunk_FUN_00487f20@00403620, thunk_FUN_00487f40@00406d20
+
+void FUN_0054a500(int *param_1,int param_2)
+
+{
+  code *pcVar1;
+  undefined4 uVar2;
+  int *piVar3;
+  int iVar4;
+  
+  iVar4 = *param_1;
+  pcVar1 = *(code **)(iVar4 + 0x7c);
+  (*pcVar1)((char)param_2 + 'a');
+  if ((&g_pTerrainTypeDescriptorTable)[param_2] == 0) {
+    (**(code **)(iVar4 + 0x88))(0);
+  }
+  else {
+    uVar2 = (**(code **)(**(int **)((&g_pTerrainTypeDescriptorTable)[param_2] + 0x44) + 0x48))();
+    (**(code **)(iVar4 + 0x88))(uVar2);
+    piVar3 = (int *)thunk_FUN_00487ef0();
+    iVar4 = thunk_FUN_00487f20();
+    if (iVar4 != 0) {
+      do {
+        (**(code **)(*piVar3 + 0x14))(param_1);
+        piVar3 = (int *)thunk_FUN_00487f40();
+        iVar4 = thunk_FUN_00487f20();
+      } while (iVar4 != 0);
+      (*pcVar1)(0x2e);
+      return;
+
+=== 0x0054a5e0 FUN_0054a5e0 size=177 ===
+xrefs: 00403e13 in thunk_FUN_0054a5e0@00403e13
+calls: thunk_FUN_00487ef0@00401118, thunk_FUN_00487f20@00403620, thunk_FUN_00487f40@00406d20
+
+void FUN_0054a5e0(int *param_1,int param_2)
+
+{
+  bool bVar1;
+  undefined4 uVar2;
+  int *piVar3;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  
+  iVar6 = 0;
+  piVar5 = &g_apNationStates;
+  do {
+    if ((param_2 == -1) || (param_2 == iVar6)) {
+      bVar1 = true;
+    }
+    else {
+      bVar1 = false;
+    }
+    if ((*piVar5 == 0) || (!bVar1)) {
+      (**(code **)(*param_1 + 0x88))(0);
+    }
+    else {
+      iVar4 = *param_1;
+      uVar2 = (**(code **)(**(int **)(*piVar5 + 0x89c) + 0x48))();
+      (**(code **)(iVar4 + 0x88))(uVar2);
+      piVar3 = (int *)thunk_FUN_00487ef0();
+
+=== 0x0054a6d0 FUN_0054a6d0 size=280 ===
+xrefs: 004091a1 in thunk_FUN_0054a6d0@004091a1
+calls: thunk_FUN_00487ef0@00401118, thunk_FUN_00487f20@00403620, thunk_FUN_00487f40@00406d20, AllocateWithFallbackHandler@00606f73, InitializeMilitaryUnitOrderObject@004054e3, InitializeMilitaryRecruitOrderState@00407a72
+
+void FUN_0054a6d0(int *param_1,int param_2)
+
+{
+  char cVar1;
+  short sVar2;
+  int *piVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634cba;
+  *unaff_FS_OFFSET = &uStack_c;
+  iVar5 = *param_1;
+  cVar1 = (**(code **)(iVar5 + 0x40))();
+  iVar6 = cVar1 + -0x61;
+  if ((param_2 == -1) || (param_2 == iVar6)) {
+    if ((&g_pTerrainTypeDescriptorTable)[iVar6] != 0) {
+      piVar3 = (int *)thunk_FUN_00487ef0();
+      iVar4 = thunk_FUN_00487f20();
+      while (iVar4 != 0) {
+        (**(code **)(*piVar3 + 0x30))();
+
+=== 0x0054a840 FUN_0054a840 size=310 ===
+xrefs: 0040196f in thunk_FUN_0054a840@0040196f
+calls: thunk_FUN_00487ef0@00401118, thunk_FUN_00487f20@00403620, thunk_FUN_00487f40@00406d20, AllocateWithFallbackHandler@00606f73, InitializeCivUnitOrderObject@00409985, InitializeCivWorkOrderState@00404b33
+
+void FUN_0054a840(int *param_1,int param_2)
+
+{
+  bool bVar1;
+  short sVar2;
+  int *piVar3;
+  int iVar4;
+  int iVar5;
+  int nOrderOwnerNationId;
+  undefined4 *unaff_FS_OFFSET;
+  int *local_20;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634cda;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  nOrderOwnerNationId = 0;
+  local_20 = &g_apNationStates;
+  do {
+    if ((param_2 == -1) || (param_2 == nOrderOwnerNationId)) {
+      bVar1 = true;
+    }
+    else {
+      bVar1 = false;
+
+=== 0x0054aa10 FUN_0054aa10 size=206 ===
+xrefs: 00405c2c in thunk_FUN_0054aa10@00405c2c
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_0054aa10(undefined4 *param_1,undefined1 param_2,undefined1 param_3)
+
+{
+  char cVar1;
+  uint uVar2;
+  uint uVar3;
+  char *pcVar4;
+  char *pcVar5;
+  undefined4 local_11c;
+  undefined4 local_118;
+  undefined4 local_114;
+  undefined4 local_110;
+  undefined4 local_10c;
+  undefined1 local_108;
+  char local_104 [256];
+  undefined1 local_4;
+  undefined1 local_3;
+  
+  local_10c = 0x74696d65;
+  local_108 = thunk_GetActiveNationId();
+  local_118 = 0;
+  local_11c = 0xc;
+  local_114 = 0;
+  local_4 = 0xff;
+  local_110 = 0x11c;
+  thunk_GetActiveNationId();
+  uVar2 = 0xffffffff;
+
+=== 0x0054d3d0 FUN_0054d3d0 size=207 ===
+calls: thunk_GetActiveNationId@00403b16, thunk_EnqueueOrSendTurnEventPacketToNation@00405a5b
+
+void FUN_0054d3d0(short param_1,int param_2)
+
+{
+  int iVar1;
+  short sVar2;
+  int iVar3;
+  undefined2 *puVar4;
+  undefined4 local_4c;
+  undefined4 local_48;
+  undefined4 local_44;
+  undefined4 local_40;
+  undefined4 local_3c;
+  undefined1 local_38;
+  undefined2 local_34;
+  short local_30;
+  undefined2 local_2e [23];
+  
+  local_3c = 0x74696d65;
+  local_38 = thunk_GetActiveNationId();
+  local_48 = 0;
+  local_40 = 0x4c;
+  local_4c = 0x2d;
+  local_34 = *(undefined2 *)(g_pGameFlowState + 0xf0);
+  if ((param_2 == -2) || (param_2 == -3)) {
+    local_44 = 0;
+  }
+  else if (param_2 == -1) {
