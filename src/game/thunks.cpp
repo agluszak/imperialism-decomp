@@ -4,13 +4,11 @@
 #include "decomp_types.h"
 
 undefined4 RefreshStrategicMapStatusIconsForActiveNation(void);
-undefined4 HandleTurnEventDialogFactorySlotDC(void);
 undefined4 HandleTurnEventDialogFactorySlotB4(void);
 undefined4 HandleTurnEventF3D_PopulateRecentTurnMessages(void);
 void thunk_HandleStartupCommand100(void);
 undefined4 DestructBuildingExpansionViewAndMaybeFree(void);
 undefined4 HandleTurnEventVtableSlot88BuildStatusText(void);
-undefined4 GetCivilianMapManagerTypeName(void);
 undefined4 HandleStartupCommand100(void);
 undefined4 SetNumericEntryCheckedState(void);
 undefined4 ApplyCityDialogMinisterValues(void);
@@ -18,6 +16,18 @@ undefined4 NoOpTurnEventStateVtableSlot8C(void);
 undefined4 ActivateCityProductionViewIfAllowed(void);
 undefined4 AssertCityProductionGlobalStateInitialized(void);
 undefined4 InvokeStrategicMapViewMethod5C(void);
+
+// These two targets are not yet exported as user-defined symbols from Ghidra.
+// Keep temporary local placeholders so thunk wrappers remain linkable.
+static undefined4 Missing_HandleTurnEventDialogFactorySlotDC(void)
+{
+  return 0;
+}
+
+static undefined4 Missing_GetCivilianMapManagerTypeName(void)
+{
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x00401064
 void thunk_RefreshStrategicMapStatusIconsForActiveNation(void)
@@ -36,7 +46,7 @@ void thunk_NoOpTurnEventStateVtableSlot0C(void)
 // FUNCTION: IMPERIALISM 0x004011a9
 void thunk_HandleTurnEventDialogFactorySlotDC(void)
 {
-  HandleTurnEventDialogFactorySlotDC();
+  Missing_HandleTurnEventDialogFactorySlotDC();
 }
 
 // FUNCTION: IMPERIALISM 0x00401244
@@ -72,7 +82,7 @@ void thunk_HandleTurnEventVtableSlot88BuildStatusText(void)
 // FUNCTION: IMPERIALISM 0x00401816
 void thunk_GetCivilianMapManagerTypeName(void)
 {
-  GetCivilianMapManagerTypeName();
+  Missing_GetCivilianMapManagerTypeName();
 }
 
 // FUNCTION: IMPERIALISM 0x004019fb

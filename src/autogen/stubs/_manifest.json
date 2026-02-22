@@ -1,0 +1,33 @@
+{
+  "chunk_count": 25,
+  "generated_cpp_files": [
+    "stubs_part001.cpp",
+    "stubs_part002.cpp",
+    "stubs_part003.cpp",
+    "stubs_part004.cpp",
+    "stubs_part005.cpp",
+    "stubs_part006.cpp",
+    "stubs_part007.cpp",
+    "stubs_part008.cpp",
+    "stubs_part009.cpp",
+    "stubs_part010.cpp",
+    "stubs_part011.cpp",
+    "stubs_part012.cpp",
+    "stubs_part013.cpp",
+    "stubs_part014.cpp",
+    "stubs_part015.cpp",
+    "stubs_part016.cpp",
+    "stubs_part017.cpp",
+    "stubs_part018.cpp",
+    "stubs_part019.cpp",
+    "stubs_part020.cpp",
+    "stubs_part021.cpp",
+    "stubs_part022.cpp",
+    "stubs_part023.cpp",
+    "stubs_part024.cpp",
+    "stubs_part025.cpp"
+  ],
+  "max_functions_per_file": 500,
+  "stub_count": 12182,
+  "target": "IMPERIALISM"
+}

@@ -27,8 +27,16 @@ add_executable(Imperialism
     src/game/sprite.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
-    src/autogen/stubs.cpp
 )
+
+file(
+    GLOB IMPERIALISM_AUTOGEN_STUB_SOURCES
+    CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/autogen/stubs/*.cpp"
+)
+if(IMPERIALISM_AUTOGEN_STUB_SOURCES)
+    target_sources(Imperialism PRIVATE ${IMPERIALISM_AUTOGEN_STUB_SOURCES})
+endif()
 
 if(WIN32)
     set_target_properties(Imperialism PROPERTIES WIN32_EXECUTABLE YES)
