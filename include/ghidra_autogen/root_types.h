@@ -12,6 +12,7 @@ typedef unsigned char    byte;
 typedef unsigned int    dword;
 typedef pointer32 ImageBaseOffset32;
 
+typedef int    sdword;
 typedef unsigned char    uchar;
 typedef unsigned int    uint;
 typedef unsigned long    ulong;
@@ -25,6 +26,16 @@ typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef short    wchar_t;
 typedef unsigned short    word;
+typedef struct CDocument CDocument, *PCDocument;
+
+struct CDocument { // PlaceHolder Class Structure
+};
+
+typedef struct CFileException CFileException, *PCFileException;
+
+struct CFileException { // PlaceHolder Class Structure
+};
+
 typedef struct CityDialogController CityDialogController, *PCityDialogController;
 
 struct CityDialogController {
@@ -116,6 +127,21 @@ union IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryUnion {
     struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct;
 };
 
+typedef struct LandSaleEvent LandSaleEvent, *PLandSaleEvent;
+
+struct LandSaleEvent { // PlaceHolder Class Structure
+};
+
+typedef struct T2PictToggleButton T2PictToggleButton, *PT2PictToggleButton;
+
+struct T2PictToggleButton { // PlaceHolder Class Structure
+};
+
+typedef struct T2PictureButton T2PictureButton, *PT2PictureButton;
+
+struct T2PictureButton { // PlaceHolder Class Structure
+};
+
 typedef struct TacticalBattleController TacticalBattleController, *PTacticalBattleController;
 
 typedef struct TacticalBattleUnit TacticalBattleUnit, *PTacticalBattleUnit;
@@ -169,10 +195,1165 @@ struct TacticalBattleUnit {
     int flagsOrMode;
 };
 
+typedef struct TacticalBattleView TacticalBattleView, *PTacticalBattleView;
+
+struct TacticalBattleView { // PlaceHolder Class Structure
+};
+
 typedef struct TacticalHexCoord TacticalHexCoord, *PTacticalHexCoord;
 
 struct TacticalHexCoord {
     uint row;
     int doubleColumn;
+};
+
+typedef struct TAdmiral TAdmiral, *PTAdmiral;
+
+struct TAdmiral { // PlaceHolder Class Structure
+};
+
+typedef struct TAlwaysPictureButton TAlwaysPictureButton, *PTAlwaysPictureButton;
+
+struct TAlwaysPictureButton { // PlaceHolder Class Structure
+};
+
+typedef struct TAmbitFileBasedDocument TAmbitFileBasedDocument, *PTAmbitFileBasedDocument;
+
+struct TAmbitFileBasedDocument { // PlaceHolder Class Structure
+};
+
+typedef struct TAmtBar TAmtBar, *PTAmtBar;
+
+struct TAmtBar { // PlaceHolder Class Structure
+};
+
+typedef struct TAnimator TAnimator, *PTAnimator;
+
+struct TAnimator { // PlaceHolder Class Structure
+};
+
+typedef struct TApplication TApplication, *PTApplication;
+
+struct TApplication { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyBattle TArmyBattle, *PTArmyBattle;
+
+struct TArmyBattle { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyInfoView TArmyInfoView, *PTArmyInfoView;
+
+struct TArmyInfoView { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyMgr TArmyMgr, *PTArmyMgr;
+
+struct TArmyMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyMission TArmyMission, *PTArmyMission;
+
+struct TArmyMission { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyPlacard TArmyPlacard, *PTArmyPlacard;
+
+struct TArmyPlacard { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyPlayer TArmyPlayer, *PTArmyPlayer;
+
+struct TArmyPlayer { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyStack TArmyStack, *PTArmyStack;
+
+struct TArmyStack { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyStackList TArmyStackList, *PTArmyStackList;
+
+struct TArmyStackList { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyTacUnit TArmyTacUnit, *PTArmyTacUnit;
+
+struct TArmyTacUnit { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyToolbar TArmyToolbar, *PTArmyToolbar;
+
+struct TArmyToolbar { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyUnitLine TArmyUnitLine, *PTArmyUnitLine;
+
+struct TArmyUnitLine { // PlaceHolder Class Structure
+};
+
+typedef struct TArmyUnitView TArmyUnitView, *PTArmyUnitView;
+
+struct TArmyUnitView { // PlaceHolder Class Structure
+};
+
+typedef struct TArrowsControl TArrowsControl, *PTArrowsControl;
+
+struct TArrowsControl { // PlaceHolder Class Structure
+};
+
+typedef struct TaskList TaskList, *PTaskList;
+
+struct TaskList { // PlaceHolder Class Structure
+};
+
+typedef struct TAssetMgr TAssetMgr, *PTAssetMgr;
+
+struct TAssetMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TAttackProvinceMission TAttackProvinceMission, *PTAttackProvinceMission;
+
+struct TAttackProvinceMission { // PlaceHolder Class Structure
+};
+
+typedef struct TAutoGreatPower TAutoGreatPower, *PTAutoGreatPower;
+
+struct TAutoGreatPower { // PlaceHolder Class Structure
+};
+
+typedef struct TBackgroundPicture TBackgroundPicture, *PTBackgroundPicture;
+
+struct TBackgroundPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TBeachheadMission TBeachheadMission, *PTBeachheadMission;
+
+struct TBeachheadMission { // PlaceHolder Class Structure
+};
+
+typedef struct TBehavior TBehavior, *PTBehavior;
+
+struct TBehavior { // PlaceHolder Class Structure
+};
+
+typedef struct TBismarckMinister TBismarckMinister, *PTBismarckMinister;
+
+struct TBismarckMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TBlockadePortMission TBlockadePortMission, *PTBlockadePortMission;
+
+struct TBlockadePortMission { // PlaceHolder Class Structure
+};
+
+typedef struct TBoycottButton TBoycottButton, *PTBoycottButton;
+
+struct TBoycottButton { // PlaceHolder Class Structure
+};
+
+typedef struct TBuildingConstructionView TBuildingConstructionView, *PTBuildingConstructionView;
+
+struct TBuildingConstructionView { // PlaceHolder Class Structure
+};
+
+typedef struct TBuildingView TBuildingView, *PTBuildingView;
+
+struct TBuildingView { // PlaceHolder Class Structure
+};
+
+typedef struct TBullyMinister TBullyMinister, *PTBullyMinister;
+
+struct TBullyMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TButton TButton, *PTButton;
+
+struct TButton { // PlaceHolder Class Structure
+};
+
+typedef struct TCityBarCluster TCityBarCluster, *PTCityBarCluster;
+
+struct TCityBarCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TCivAnimation TCivAnimation, *PTCivAnimation;
+
+struct TCivAnimation { // PlaceHolder Class Structure
+};
+
+typedef struct TCivDescription TCivDescription, *PTCivDescription;
+
+struct TCivDescription { // PlaceHolder Class Structure
+};
+
+typedef struct TCivilianButton TCivilianButton, *PTCivilianButton;
+
+struct TCivilianButton { // PlaceHolder Class Structure
+};
+
+typedef struct TCivMgr TCivMgr, *PTCivMgr;
+
+struct TCivMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TCivReport TCivReport, *PTCivReport;
+
+struct TCivReport { // PlaceHolder Class Structure
+};
+
+typedef struct TCivToolbar TCivToolbar, *PTCivToolbar;
+
+struct TCivToolbar { // PlaceHolder Class Structure
+};
+
+typedef struct TClickZone TClickZone, *PTClickZone;
+
+struct TClickZone { // PlaceHolder Class Structure
+};
+
+typedef struct TCloseButton TCloseButton, *PTCloseButton;
+
+struct TCloseButton { // PlaceHolder Class Structure
+};
+
+typedef struct TCloseParentButton TCloseParentButton, *PTCloseParentButton;
+
+struct TCloseParentButton { // PlaceHolder Class Structure
+};
+
+typedef struct TClosePicture TClosePicture, *PTClosePicture;
+
+struct TClosePicture { // PlaceHolder Class Structure
+};
+
+typedef struct TCluster TCluster, *PTCluster;
+
+struct TCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TColorKeyButton TColorKeyButton, *PTColorKeyButton;
+
+struct TColorKeyButton { // PlaceHolder Class Structure
+};
+
+typedef struct TColorKeyPicture TColorKeyPicture, *PTColorKeyPicture;
+
+struct TColorKeyPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TCombatReportView TCombatReportView, *PTCombatReportView;
+
+struct TCombatReportView { // PlaceHolder Class Structure
+};
+
+typedef struct TCommand TCommand, *PTCommand;
+
+struct TCommand { // PlaceHolder Class Structure
+};
+
+typedef struct TCommodityLine TCommodityLine, *PTCommodityLine;
+
+struct TCommodityLine { // PlaceHolder Class Structure
+};
+
+typedef struct TControl TControl, *PTControl;
+
+struct TControl { // PlaceHolder Class Structure
+};
+
+typedef struct TControlSeaZoneMission TControlSeaZoneMission, *PTControlSeaZoneMission;
+
+struct TControlSeaZoneMission { // PlaceHolder Class Structure
+};
+
+typedef struct TCountingStream TCountingStream, *PTCountingStream;
+
+struct TCountingStream { // PlaceHolder Class Structure
+};
+
+typedef struct TCountry TCountry, *PTCountry;
+
+struct TCountry { // PlaceHolder Class Structure
+};
+
+typedef struct TCtlMgr TCtlMgr, *PTCtlMgr;
+
+struct TCtlMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TCzechBox TCzechBox, *PTCzechBox;
+
+struct TCzechBox { // PlaceHolder Class Structure
+};
+
+typedef struct TDealBookPicture TDealBookPicture, *PTDealBookPicture;
+
+struct TDealBookPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TDealLine TDealLine, *PTDealLine;
+
+struct TDealLine { // PlaceHolder Class Structure
+};
+
+typedef struct TDealList TDealList, *PTDealList;
+
+struct TDealList { // PlaceHolder Class Structure
+};
+
+typedef struct TDealTabControl TDealTabControl, *PTDealTabControl;
+
+struct TDealTabControl { // PlaceHolder Class Structure
+};
+
+typedef struct TDefenderMinister TDefenderMinister, *PTDefenderMinister;
+
+struct TDefenderMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TDefendProvinceMission TDefendProvinceMission, *PTDefendProvinceMission;
+
+struct TDefendProvinceMission { // PlaceHolder Class Structure
+};
+
+typedef struct TDefenseMinister TDefenseMinister, *PTDefenseMinister;
+
+struct TDefenseMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TDefenseMinisterView TDefenseMinisterView, *PTDefenseMinisterView;
+
+struct TDefenseMinisterView { // PlaceHolder Class Structure
+};
+
+typedef struct TDialogBehavior TDialogBehavior, *PTDialogBehavior;
+
+struct TDialogBehavior { // PlaceHolder Class Structure
+};
+
+typedef struct TDialogView TDialogView, *PTDialogView;
+
+struct TDialogView { // PlaceHolder Class Structure
+};
+
+typedef struct TDipDlgCluster TDipDlgCluster, *PTDipDlgCluster;
+
+struct TDipDlgCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TDiplomacyMapView TDiplomacyMapView, *PTDiplomacyMapView;
+
+struct TDiplomacyMapView { // PlaceHolder Class Structure
+};
+
+typedef struct TDiplomacyMgr TDiplomacyMgr, *PTDiplomacyMgr;
+
+struct TDiplomacyMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TDisappearingButton TDisappearingButton, *PTDisappearingButton;
+
+struct TDisappearingButton { // PlaceHolder Class Structure
+};
+
+typedef struct TDisplayMgr TDisplayMgr, *PTDisplayMgr;
+
+struct TDisplayMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TDropShadowNumberText TDropShadowNumberText, *PTDropShadowNumberText;
+
+struct TDropShadowNumberText { // PlaceHolder Class Structure
+};
+
+typedef struct TDropShadowText TDropShadowText, *PTDropShadowText;
+
+struct TDropShadowText { // PlaceHolder Class Structure
+};
+
+typedef struct TDropShadowTextBehavior TDropShadowTextBehavior, *PTDropShadowTextBehavior;
+
+struct TDropShadowTextBehavior { // PlaceHolder Class Structure
+};
+
+typedef struct TEscortMission TEscortMission, *PTEscortMission;
+
+struct TEscortMission { // PlaceHolder Class Structure
+};
+
+typedef struct TEvenCityMinister TEvenCityMinister, *PTEvenCityMinister;
+
+struct TEvenCityMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TEventHandler TEventHandler, *PTEventHandler;
+
+struct TEventHandler { // PlaceHolder Class Structure
+};
+
+typedef struct TFileBasedDocument TFileBasedDocument, *PTFileBasedDocument;
+
+struct TFileBasedDocument { // PlaceHolder Class Structure
+};
+
+typedef struct TFileStream TFileStream, *PTFileStream;
+
+struct TFileStream { // PlaceHolder Class Structure
+};
+
+typedef struct TFloatWindow TFloatWindow, *PTFloatWindow;
+
+struct TFloatWindow { // PlaceHolder Class Structure
+};
+
+typedef struct TForeignMinisterView TForeignMinisterView, *PTForeignMinisterView;
+
+struct TForeignMinisterView { // PlaceHolder Class Structure
+};
+
+typedef struct TFuzzySet TFuzzySet, *PTFuzzySet;
+
+struct TFuzzySet { // PlaceHolder Class Structure
+};
+
+typedef struct TGameSetupMultiplayerPicture TGameSetupMultiplayerPicture, *PTGameSetupMultiplayerPicture;
+
+struct TGameSetupMultiplayerPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TGameSetupPicture TGameSetupPicture, *PTGameSetupPicture;
+
+struct TGameSetupPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TGarrisonView TGarrisonView, *PTGarrisonView;
+
+struct TGarrisonView { // PlaceHolder Class Structure
+};
+
+typedef struct TGreatPower TGreatPower, *PTGreatPower;
+
+struct TGreatPower { // PlaceHolder Class Structure
+};
+
+typedef struct TGWorldButton TGWorldButton, *PTGWorldButton;
+
+struct TGWorldButton { // PlaceHolder Class Structure
+};
+
+typedef struct THandleStream THandleStream, *PTHandleStream;
+
+struct THandleStream { // PlaceHolder Class Structure
+};
+
+typedef struct THelpMgr THelpMgr, *PTHelpMgr;
+
+struct THelpMgr { // PlaceHolder Class Structure
+};
+
+typedef struct THelpPicture THelpPicture, *PTHelpPicture;
+
+struct THelpPicture { // PlaceHolder Class Structure
+};
+
+typedef struct THelpWindow THelpWindow, *PTHelpWindow;
+
+struct THelpWindow { // PlaceHolder Class Structure
+};
+
+typedef struct THotspotBehavior THotspotBehavior, *PTHotspotBehavior;
+
+struct THotspotBehavior { // PlaceHolder Class Structure
+};
+
+typedef struct THQButton THQButton, *PTHQButton;
+
+struct THQButton { // PlaceHolder Class Structure
+};
+
+typedef struct TIconBar TIconBar, *PTIconBar;
+
+struct TIconBar { // PlaceHolder Class Structure
+};
+
+typedef struct TIconSlider TIconSlider, *PTIconSlider;
+
+struct TIconSlider { // PlaceHolder Class Structure
+};
+
+typedef struct TIncludeView TIncludeView, *PTIncludeView;
+
+struct TIncludeView { // PlaceHolder Class Structure
+};
+
+typedef struct TIndustryAmtBar TIndustryAmtBar, *PTIndustryAmtBar;
+
+struct TIndustryAmtBar { // PlaceHolder Class Structure
+};
+
+typedef struct TIndustryView TIndustryView, *PTIndustryView;
+
+struct TIndustryView { // PlaceHolder Class Structure
+};
+
+typedef struct TInfoBarBehavior TInfoBarBehavior, *PTInfoBarBehavior;
+
+struct TInfoBarBehavior { // PlaceHolder Class Structure
+};
+
+typedef struct TInteriorMinister TInteriorMinister, *PTInteriorMinister;
+
+struct TInteriorMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TInteriorMinisterView TInteriorMinisterView, *PTInteriorMinisterView;
+
+struct TInteriorMinisterView { // PlaceHolder Class Structure
+};
+
+typedef struct TInvadeMission TInvadeMission, *PTInvadeMission;
+
+struct TInvadeMission { // PlaceHolder Class Structure
+};
+
+typedef struct TLanguageMgr TLanguageMgr, *PTLanguageMgr;
+
+struct TLanguageMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TLineData TLineData, *PTLineData;
+
+struct TLineData { // PlaceHolder Class Structure
+};
+
+typedef struct TLoadSavePicture TLoadSavePicture, *PTLoadSavePicture;
+
+struct TLoadSavePicture { // PlaceHolder Class Structure
+};
+
+typedef struct TLonelyTileView TLonelyTileView, *PTLonelyTileView;
+
+struct TLonelyTileView { // PlaceHolder Class Structure
+};
+
+typedef struct TMapDialog TMapDialog, *PTMapDialog;
+
+struct TMapDialog { // PlaceHolder Class Structure
+};
+
+typedef struct TMapMaker TMapMaker, *PTMapMaker;
+
+struct TMapMaker { // PlaceHolder Class Structure
+};
+
+typedef struct TMapMgr TMapMgr, *PTMapMgr;
+
+struct TMapMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TMapPreviewView TMapPreviewView, *PTMapPreviewView;
+
+struct TMapPreviewView { // PlaceHolder Class Structure
+};
+
+typedef struct TMapUberPicture TMapUberPicture, *PTMapUberPicture;
+
+struct TMapUberPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TMegaPicture TMegaPicture, *PTMegaPicture;
+
+struct TMegaPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TMilitaryPageView TMilitaryPageView, *PTMilitaryPageView;
+
+struct TMilitaryPageView { // PlaceHolder Class Structure
+};
+
+typedef struct TMiniArmyLine TMiniArmyLine, *PTMiniArmyLine;
+
+struct TMiniArmyLine { // PlaceHolder Class Structure
+};
+
+typedef struct TMiniCivLine TMiniCivLine, *PTMiniCivLine;
+
+struct TMiniCivLine { // PlaceHolder Class Structure
+};
+
+typedef struct TMiniMapView TMiniMapView, *PTMiniMapView;
+
+struct TMiniMapView { // PlaceHolder Class Structure
+};
+
+typedef struct TMiniShipLine TMiniShipLine, *PTMiniShipLine;
+
+struct TMiniShipLine { // PlaceHolder Class Structure
+};
+
+typedef struct TMinor TMinor, *PTMinor;
+
+struct TMinor { // PlaceHolder Class Structure
+};
+
+typedef struct TMovieView TMovieView, *PTMovieView;
+
+struct TMovieView { // PlaceHolder Class Structure
+};
+
+typedef struct TMyNumberText TMyNumberText, *PTMyNumberText;
+
+struct TMyNumberText { // PlaceHolder Class Structure
+};
+
+typedef struct TMyStaticText TMyStaticText, *PTMyStaticText;
+
+struct TMyStaticText { // PlaceHolder Class Structure
+};
+
+typedef struct TNapoleonMinister TNapoleonMinister, *PTNapoleonMinister;
+
+struct TNapoleonMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TNavyHumanPlayer TNavyHumanPlayer, *PTNavyHumanPlayer;
+
+struct TNavyHumanPlayer { // PlaceHolder Class Structure
+};
+
+typedef struct TNavyMission TNavyMission, *PTNavyMission;
+
+struct TNavyMission { // PlaceHolder Class Structure
+};
+
+typedef struct TNavyPlayer TNavyPlayer, *PTNavyPlayer;
+
+struct TNavyPlayer { // PlaceHolder Class Structure
+};
+
+typedef struct TNavyRoster TNavyRoster, *PTNavyRoster;
+
+struct TNavyRoster { // PlaceHolder Class Structure
+};
+
+typedef struct TNavyToolbarCluster TNavyToolbarCluster, *PTNavyToolbarCluster;
+
+struct TNavyToolbarCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TNetGameSelectPicture TNetGameSelectPicture, *PTNetGameSelectPicture;
+
+struct TNetGameSelectPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TNetMgr TNetMgr, *PTNetMgr;
+
+struct TNetMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TNewGameCommand TNewGameCommand, *PTNewGameCommand;
+
+struct TNewGameCommand { // PlaceHolder Class Structure
+};
+
+typedef struct TNextMoveCommand TNextMoveCommand, *PTNextMoveCommand;
+
+struct TNextMoveCommand { // PlaceHolder Class Structure
+};
+
+typedef struct TNextTradeCommand TNextTradeCommand, *PTNextTradeCommand;
+
+struct TNextTradeCommand { // PlaceHolder Class Structure
+};
+
+typedef struct TNoHilitePicture TNoHilitePicture, *PTNoHilitePicture;
+
+struct TNoHilitePicture { // PlaceHolder Class Structure
+};
+
+typedef struct TNoHiliteText TNoHiliteText, *PTNoHiliteText;
+
+struct TNoHiliteText { // PlaceHolder Class Structure
+};
+
+typedef struct TNumberedArrowButton TNumberedArrowButton, *PTNumberedArrowButton;
+
+struct TNumberedArrowButton { // PlaceHolder Class Structure
+};
+
+typedef struct TNumberedIcon TNumberedIcon, *PTNumberedIcon;
+
+struct TNumberedIcon { // PlaceHolder Class Structure
+};
+
+typedef struct TNumberedItem TNumberedItem, *PTNumberedItem;
+
+struct TNumberedItem { // PlaceHolder Class Structure
+};
+
+typedef struct TNumberText TNumberText, *PTNumberText;
+
+struct TNumberText { // PlaceHolder Class Structure
+};
+
+typedef struct TOceanDialog TOceanDialog, *PTOceanDialog;
+
+struct TOceanDialog { // PlaceHolder Class Structure
+};
+
+typedef struct TOfferDeskPicture TOfferDeskPicture, *PTOfferDeskPicture;
+
+struct TOfferDeskPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TOffersPanelView TOffersPanelView, *PTOffersPanelView;
+
+struct TOffersPanelView { // PlaceHolder Class Structure
+};
+
+typedef struct TOffLimitsPicture TOffLimitsPicture, *PTOffLimitsPicture;
+
+struct TOffLimitsPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TOnOffRadioButton TOnOffRadioButton, *PTOnOffRadioButton;
+
+struct TOnOffRadioButton { // PlaceHolder Class Structure
+};
+
+typedef struct TOrderView TOrderView, *PTOrderView;
+
+struct TOrderView { // PlaceHolder Class Structure
+};
+
+typedef struct TPageView TPageView, *PTPageView;
+
+struct TPageView { // PlaceHolder Class Structure
+};
+
+typedef struct TPicture TPicture, *PTPicture;
+
+struct TPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TPictureButton TPictureButton, *PTPictureButton;
+
+struct TPictureButton { // PlaceHolder Class Structure
+};
+
+typedef struct TPictureNumberText TPictureNumberText, *PTPictureNumberText;
+
+struct TPictureNumberText { // PlaceHolder Class Structure
+};
+
+typedef struct TPictureRadioButton TPictureRadioButton, *PTPictureRadioButton;
+
+struct TPictureRadioButton { // PlaceHolder Class Structure
+};
+
+typedef struct TPictureText TPictureText, *PTPictureText;
+
+struct TPictureText { // PlaceHolder Class Structure
+};
+
+typedef struct TPirateMinister TPirateMinister, *PTPirateMinister;
+
+struct TPirateMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TPlacard TPlacard, *PTPlacard;
+
+struct TPlacard { // PlaceHolder Class Structure
+};
+
+typedef struct TPlaceCityDialog TPlaceCityDialog, *PTPlaceCityDialog;
+
+struct TPlaceCityDialog { // PlaceHolder Class Structure
+};
+
+typedef struct TProductionCluster TProductionCluster, *PTProductionCluster;
+
+struct TProductionCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TProductionOrder TProductionOrder, *PTProductionOrder;
+
+struct TProductionOrder { // PlaceHolder Class Structure
+};
+
+typedef struct TProvinceDesirabilityList TProvinceDesirabilityList, *PTProvinceDesirabilityList;
+
+struct TProvinceDesirabilityList { // PlaceHolder Class Structure
+};
+
+typedef struct TPurchaseCluster TPurchaseCluster, *PTPurchaseCluster;
+
+struct TPurchaseCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TQueryFloater TQueryFloater, *PTQueryFloater;
+
+struct TQueryFloater { // PlaceHolder Class Structure
+};
+
+typedef struct TradeScreenPicture TradeScreenPicture, *PTradeScreenPicture;
+
+struct TradeScreenPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TRadioPictureButton TRadioPictureButton, *PTRadioPictureButton;
+
+struct TRadioPictureButton { // PlaceHolder Class Structure
+};
+
+typedef struct TRadioTextCluster TRadioTextCluster, *PTRadioTextCluster;
+
+struct TRadioTextCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TRailAmtBar TRailAmtBar, *PTRailAmtBar;
+
+struct TRailAmtBar { // PlaceHolder Class Structure
+};
+
+typedef struct TRailCityMinister TRailCityMinister, *PTRailCityMinister;
+
+struct TRailCityMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TRailheadDialog TRailheadDialog, *PTRailheadDialog;
+
+struct TRailheadDialog { // PlaceHolder Class Structure
+};
+
+typedef struct TRearFloatWindow TRearFloatWindow, *PTRearFloatWindow;
+
+struct TRearFloatWindow { // PlaceHolder Class Structure
+};
+
+typedef struct TRightLeftView TRightLeftView, *PTRightLeftView;
+
+struct TRightLeftView { // PlaceHolder Class Structure
+};
+
+typedef struct TScatteredShipsMission TScatteredShipsMission, *PTScatteredShipsMission;
+
+struct TScatteredShipsMission { // PlaceHolder Class Structure
+};
+
+typedef struct TScrollerButton TScrollerButton, *PTScrollerButton;
+
+struct TScrollerButton { // PlaceHolder Class Structure
+};
+
+typedef struct TSetupRandomMapPicture TSetupRandomMapPicture, *PTSetupRandomMapPicture;
+
+struct TSetupRandomMapPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TShip TShip, *PTShip;
+
+struct TShip { // PlaceHolder Class Structure
+};
+
+typedef struct TShipAmtBar TShipAmtBar, *PTShipAmtBar;
+
+struct TShipAmtBar { // PlaceHolder Class Structure
+};
+
+typedef struct TShipBuilderCityMinister TShipBuilderCityMinister, *PTShipBuilderCityMinister;
+
+struct TShipBuilderCityMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TShipLine TShipLine, *PTShipLine;
+
+struct TShipLine { // PlaceHolder Class Structure
+};
+
+typedef struct TShipPlacard TShipPlacard, *PTShipPlacard;
+
+struct TShipPlacard { // PlaceHolder Class Structure
+};
+
+typedef struct TShipyardCluster TShipyardCluster, *PTShipyardCluster;
+
+struct TShipyardCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TShipyardView TShipyardView, *PTShipyardView;
+
+struct TShipyardView { // PlaceHolder Class Structure
+};
+
+typedef struct TSidewaysArrow TSidewaysArrow, *PTSidewaysArrow;
+
+struct TSidewaysArrow { // PlaceHolder Class Structure
+};
+
+typedef struct TSimMgr TSimMgr, *PTSimMgr;
+
+struct TSimMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TSliderPicture TSliderPicture, *PTSliderPicture;
+
+struct TSliderPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TSortedByRelationshipList TSortedByRelationshipList, *PTSortedByRelationshipList;
+
+struct TSortedByRelationshipList { // PlaceHolder Class Structure
+};
+
+typedef struct TSoundPlayer TSoundPlayer, *PTSoundPlayer;
+
+struct TSoundPlayer { // PlaceHolder Class Structure
+};
+
+typedef struct TStaticText TStaticText, *PTStaticText;
+
+struct TStaticText { // PlaceHolder Class Structure
+};
+
+typedef struct TStatusButton TStatusButton, *PTStatusButton;
+
+struct TStatusButton { // PlaceHolder Class Structure
+};
+
+typedef struct TStatusPicture TStatusPicture, *PTStatusPicture;
+
+struct TStatusPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TSteelCityMinister TSteelCityMinister, *PTSteelCityMinister;
+
+struct TSteelCityMinister { // PlaceHolder Class Structure
+};
+
+typedef struct TStratReportView TStratReportView, *PTStratReportView;
+
+struct TStratReportView { // PlaceHolder Class Structure
+};
+
+typedef struct TSuperArmyRoster TSuperArmyRoster, *PTSuperArmyRoster;
+
+struct TSuperArmyRoster { // PlaceHolder Class Structure
+};
+
+typedef struct TSuperCivRoster TSuperCivRoster, *PTSuperCivRoster;
+
+struct TSuperCivRoster { // PlaceHolder Class Structure
+};
+
+typedef struct TSuperNavyRoster TSuperNavyRoster, *PTSuperNavyRoster;
+
+struct TSuperNavyRoster { // PlaceHolder Class Structure
+};
+
+typedef struct TTacArmyView TTacArmyView, *PTTacArmyView;
+
+struct TTacArmyView { // PlaceHolder Class Structure
+};
+
+typedef struct TTacNavyToolbar TTacNavyToolbar, *PTTacNavyToolbar;
+
+struct TTacNavyToolbar { // PlaceHolder Class Structure
+};
+
+typedef struct TTacticalBattle TTacticalBattle, *PTTacticalBattle;
+
+struct TTacticalBattle { // PlaceHolder Class Structure
+};
+
+typedef struct TTechCheater TTechCheater, *PTTechCheater;
+
+struct TTechCheater { // PlaceHolder Class Structure
+};
+
+typedef struct TTechItemLine TTechItemLine, *PTTechItemLine;
+
+struct TTechItemLine { // PlaceHolder Class Structure
+};
+
+typedef struct TTechItemView TTechItemView, *PTTechItemView;
+
+struct TTechItemView { // PlaceHolder Class Structure
+};
+
+typedef struct TTechMgr TTechMgr, *PTTechMgr;
+
+struct TTechMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TTechStorePage TTechStorePage, *PTTechStorePage;
+
+struct TTechStorePage { // PlaceHolder Class Structure
+};
+
+typedef struct TTerrainHelpWindow TTerrainHelpWindow, *PTTerrainHelpWindow;
+
+struct TTerrainHelpWindow { // PlaceHolder Class Structure
+};
+
+typedef struct TTerrainInfoDialog TTerrainInfoDialog, *PTTerrainInfoDialog;
+
+struct TTerrainInfoDialog { // PlaceHolder Class Structure
+};
+
+typedef struct TTEView TTEView, *PTTEView;
+
+struct TTEView { // PlaceHolder Class Structure
+};
+
+typedef struct TTextLine TTextLine, *PTTextLine;
+
+struct TTextLine { // PlaceHolder Class Structure
+};
+
+typedef struct TTextPictureButton TTextPictureButton, *PTTextPictureButton;
+
+struct TTextPictureButton { // PlaceHolder Class Structure
+};
+
+typedef struct TToggleButton TToggleButton, *PTToggleButton;
+
+struct TToggleButton { // PlaceHolder Class Structure
+};
+
+typedef struct TToolBarCluster TToolBarCluster, *PTToolBarCluster;
+
+struct TToolBarCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TTown TTown, *PTTown;
+
+struct TTown { // PlaceHolder Class Structure
+};
+
+typedef struct TTownNameDialog TTownNameDialog, *PTTownNameDialog;
+
+struct TTownNameDialog { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeBidNationLine TTradeBidNationLine, *PTTradeBidNationLine;
+
+struct TTradeBidNationLine { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeMgr TTradeMgr, *PTTradeMgr;
+
+struct TTradeMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeOfferNationLine TTradeOfferNationLine, *PTTradeOfferNationLine;
+
+struct TTradeOfferNationLine { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeOrderPicture TTradeOrderPicture, *PTTradeOrderPicture;
+
+struct TTradeOrderPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TTradePageBuyView TTradePageBuyView, *PTTradePageBuyView;
+
+struct TTradePageBuyView { // PlaceHolder Class Structure
+};
+
+typedef struct TTradePageSellView TTradePageSellView, *PTTradePageSellView;
+
+struct TTradePageSellView { // PlaceHolder Class Structure
+};
+
+typedef struct TTradePolicyCluster TTradePolicyCluster, *PTTradePolicyCluster;
+
+struct TTradePolicyCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeSchoolView TTradeSchoolView, *PTTradeSchoolView;
+
+struct TTradeSchoolView { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeTotalsLine TTradeTotalsLine, *PTTradeTotalsLine;
+
+struct TTradeTotalsLine { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeTotalsView TTradeTotalsView, *PTTradeTotalsView;
+
+struct TTradeTotalsView { // PlaceHolder Class Structure
+};
+
+typedef struct TTransFocusAnimation TTransFocusAnimation, *PTTransFocusAnimation;
+
+struct TTransFocusAnimation { // PlaceHolder Class Structure
+};
+
+typedef struct TTransportPicture TTransportPicture, *PTTransportPicture;
+
+struct TTransportPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TUberCluster TUberCluster, *PTUberCluster;
+
+struct TUberCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TUnitsView TUnitsView, *PTUnitsView;
+
+struct TUnitsView { // PlaceHolder Class Structure
+};
+
+typedef struct TUnitToolbarCluster TUnitToolbarCluster, *PTUnitToolbarCluster;
+
+struct TUnitToolbarCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TUniversityView TUniversityView, *PTUniversityView;
+
+struct TUniversityView { // PlaceHolder Class Structure
+};
+
+typedef struct TUpDownPictureButton TUpDownPictureButton, *PTUpDownPictureButton;
+
+struct TUpDownPictureButton { // PlaceHolder Class Structure
+};
+
+typedef struct TUpDownView TUpDownView, *PTUpDownView;
+
+struct TUpDownView { // PlaceHolder Class Structure
+};
+
+typedef struct TView TView, *PTView;
+
+struct TView { // PlaceHolder Class Structure
+};
+
+typedef struct TWarehouseView TWarehouseView, *PTWarehouseView;
+
+struct TWarehouseView { // PlaceHolder Class Structure
+};
+
+typedef struct TWarningView TWarningView, *PTWarningView;
+
+struct TWarningView { // PlaceHolder Class Structure
+};
+
+typedef struct TWindow TWindow, *PTWindow;
+
+struct TWindow { // PlaceHolder Class Structure
+};
+
+typedef struct TWorldView TWorldView, *PTWorldView;
+
+struct TWorldView { // PlaceHolder Class Structure
+};
+
+typedef struct TZone TZone, *PTZone;
+
+struct TZone { // PlaceHolder Class Structure
 };
 
