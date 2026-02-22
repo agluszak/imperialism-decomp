@@ -14,7 +14,7 @@ from pathlib import Path
 from symbol_buckets import classify_name, parse_function_symbols, parse_reccmp_report
 
 
-DEFAULT_BUCKETS = ["crt_likely", "mfc_likely", "directx_audio_net_likely"]
+DEFAULT_BUCKETS = ["crt_likely", "mfc_likely", "directx_audio_net_likely", "wrapper_likely"]
 
 
 def parse_args() -> argparse.Namespace:
@@ -31,7 +31,7 @@ def parse_args() -> argparse.Namespace:
         "--include-bucket",
         action="append",
         default=[],
-        help="Bucket name to include (repeatable). Defaults to CRT/MFC/DirectX-audio-net buckets.",
+        help="Bucket name to include (repeatable). Defaults to CRT/MFC/DirectX-audio-net/wrapper buckets.",
     )
     parser.add_argument(
         "--exclude-bucket",

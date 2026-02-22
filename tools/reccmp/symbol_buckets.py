@@ -39,12 +39,19 @@ BUCKET_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
         ),
     ),
     (
-        "game_tclass",
-        re.compile(r"^T[A-Z][A-Za-z0-9_]*::"),
+        "wrapper_likely",
+        re.compile(
+            r"(WrapperFor_|Wrapper_|PassThrough|Passthrough|ForwardTo|Forwarder|Trampoline)",
+            re.IGNORECASE,
+        ),
     ),
     (
         "thunk",
-        re.compile(r"^thunk_"),
+        re.compile(r"(^|::)thunk_", re.IGNORECASE),
+    ),
+    (
+        "game_tclass",
+        re.compile(r"^T[A-Z][A-Za-z0-9_]*::"),
     ),
 ]
 
@@ -109,4 +116,3 @@ def parse_reccmp_report(path: Path) -> dict[int, float]:
         except ValueError:
             continue
     return out
-

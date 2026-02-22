@@ -40,6 +40,39 @@ If you already have `reccmp_roadmap.csv` and `reccmp_report.json` generated and 
 uv run python tools/reccmp/progress_stats.py --target IMPERIALISM --no-run
 ```
 
+## Core impact ranking
+
+Rank core work by `size * (1 - similarity)` while excluding known non-core buckets
+(CRT/MFC/DirectX/wrappers/thunks by default):
+
+```bash
+uv run python tools/reccmp/core_impact_ranking.py \
+  --target IMPERIALISM \
+  --top 50 \
+  --csv-out build-msvc500/core_impact.csv \
+  --json-out build-msvc500/core_impact.json
+```
+
+This also prints wrapper relabel candidates to keep library adapters out of core metrics.
+
+## Session loop (one command)
+
+Generate the working queue for the next coding session:
+
+```bash
+uv run python tools/reccmp/session_loop.py \
+  --target IMPERIALISM \
+  --pick 8 \
+  --top 50 \
+  --min-size 1
+```
+
+Outputs:
+
+- `build-msvc500/next_loop.md`
+- `build-msvc500/next_loop.json`
+- refreshed `build-msvc500/core_impact.{json,csv}`
+
 ## Flag Sweep
 
 Sweep candidate MSVC optimization profiles and score them with `reccmp`:

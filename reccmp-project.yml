@@ -207,6 +207,7 @@ targets:
       - GetOrCreateMfcHandleMap
       - GetOrCreateMfcModuleThreadState
       - GetOrCreatePerThreadTlsSlotObject
+      - HandleNationStateCommandX78AndForwardToChild
       - InitializeCrtGlobalCriticalSections
       - InitializeCrtHeapSubsystem
       - InitializeCrtThreadDataPrimaryFields
@@ -235,6 +236,7 @@ targets:
       - LockMfcTempMaps
       - MSVFW32.DLL::thunk_MCIWndCreateA
       - MapWin32ErrorToCrtErrno
+      - MoveWindowOrForwardToInPlaceSite
       - NoOpCrtThreadLifecycleHook
       - OpenFileHandleWithMfcFlags
       - OpenPaletteFileDialogAndLoadPaletteFromMmio
@@ -286,6 +288,8 @@ targets:
       - SetCrtSignalHandlerWithConsoleCtrlSetup
       - SetMciPlaybackRangeByTrackIndexAndDevice
       - SetTlsSlotValueWithExpansion
+      - SetWindowPosOrForwardToSite
+      - ShowWindowOrForwardToSite
       - T2PictToggleButton::DestructT2PictToggleButtonAndMaybeFree
       - T2PictToggleButton::thunk_DestructT2PictToggleButtonAndMaybeFree
       - T2PictureButton::DestructT2PictureButtonAndMaybeFree
@@ -297,12 +301,18 @@ targets:
       - TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree
       - TAmbitFileBasedDocument::thunk_DestructTAmbitFileBasedDocumentAndMaybeFree
       - TAmtBar::DestructTAmtBarAndMaybeFree
+      - TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610
       - TAmtBar::thunk_DestructTAmtBarAndMaybeFree
       - TAmtBar::thunk_DestructTIndustryClusterMaybeFree
+      - TAmtBar::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00588610_At00407d8d
       - TAmtBarCluster::DestructTAmtBarClusterMaybeFree
       - TAmtBarCluster::thunk_DestructTAmtBarClusterMaybeFree
       - TAnimator::DestructTAnimatorAndMaybeFree
+      - TAnimator::WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50
+      - TAnimator::WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10
       - TAnimator::thunk_DestructTAnimatorAndMaybeFree
+      - TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50
+      - TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10
       - TApplication::DestructTApplicationAndMaybeFree
       - TApplication::thunk_DestructTApplicationAndMaybeFree
       - TArmoryView::DestructArmoryViewAndMaybeFree
@@ -314,7 +324,9 @@ targets:
       - TArmyMgr::DestructTArmyMgrAndMaybeFree
       - TArmyMgr::thunk_DestructTArmyMgrAndMaybeFree
       - TArmyPlacard::DestructTArmyPlacardAndMaybeFree
+      - TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
       - TArmyPlacard::thunk_DestructTArmyPlacardAndMaybeFree
+      - TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50
       - TArmyPlayer::DestructTArmyPlayerAndMaybeFree
       - TArmyPlayer::thunk_DestructTArmyPlayerAndMaybeFree
       - TArmyStack::DestructTArmyStackAndMaybeFree
@@ -328,7 +340,9 @@ targets:
       - TArmyToolbar::DestructTArmyToolbarAndMaybeFree
       - TArmyToolbar::thunk_DestructTArmyToolbarAndMaybeFree
       - TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree
+      - TArmyUnitLine::WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
       - TArmyUnitLine::thunk_DestructTArmyUnitLineAndMaybeFree
+      - TArmyUnitLine::thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
       - TArmyUnitView::DestructTArmyUnitViewAndMaybeFree
       - TArmyUnitView::thunk_DestructTArmyUnitViewAndMaybeFree
       - TArrowsControl::DestructTArrowsControlAndMaybeFree
@@ -336,17 +350,26 @@ targets:
       - TAssetMgr::DestructTAssetMgrAndMaybeFree
       - TAssetMgr::thunk_DestructTAssetMgrAndMaybeFree
       - TAutoGreatPower::DestructTAutoGreatPowerAndMaybeFree
+      - TAutoGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0
+      - TAutoGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630
+      - TAutoGreatPower::WrapperFor_thunk_DispatchTaggedGameStateEvent1F20_At004e7510
       - TAutoGreatPower::thunk_DestructTAutoGreatPowerAndMaybeFree
+      - TAutoGreatPower::thunk_WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0
+      - TAutoGreatPower::thunk_WrapperFor_TGreatPower_VtblSlot32_At004e7630_At00409971
       - TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState
       - TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer
       - TAutomatedPlayDialog::thunk_Cluster_DispatchHint_005b46c0
       - TAutomatedPlayDialog::thunk_GetTAutomatedPlayDialogClassNamePointer
       - TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
+      - TBackgroundPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
       - TBackgroundPicture::thunk_DestructTBackgroundPictureAndMaybeFree
+      - TBackgroundPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
       - TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree
+      - TBattleDetailBook::thunk_WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90
       - TBattleReportView::DestructTBattleReportViewAndMaybeFree
       - TBattleReportView::WrapperFor_FreeHeapBufferIfNotNull_At004ac950
       - TBattleReportView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ac950
+      - TBattleReportView::thunk_WrapperFor_thunk_RemoveUiTransientRegistryObjectByTag_At004ad560
       - TBattleUnitsView::DestructTBattleUnitsViewAndMaybeFree
       - TBattleUnitsView::WrapperFor_FreeHeapBufferIfNotNull_At004affd0
       - TBattleUnitsView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004affd0
@@ -395,7 +418,9 @@ targets:
       - TCloseParentButton::DestructTCloseParentButtonAndMaybeFree
       - TCloseParentButton::thunk_DestructTCloseParentButtonAndMaybeFree
       - TClosePicture::DestructTClosePictureAndMaybeFree
+      - TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
       - TClosePicture::thunk_DestructTClosePictureAndMaybeFree
+      - TClosePicture::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
       - TCluster::DestructTClusterAndMaybeFree
       - TCluster::thunk_DestructTClusterAndMaybeFree
       - TColorFill::DestructTColorFillAndMaybeFree
@@ -414,12 +439,17 @@ targets:
       - TCouncilView::DestructTCouncilViewAndMaybeFree
       - TCountingStream::DestructTCountingStreamAndMaybeFree
       - TCountingStream::thunk_DestructTCountingStreamAndMaybeFree
+      - TCountingStream::thunk_WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390
       - TCountry::DestructTCountryAndMaybeFree
+      - TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
       - TCountry::thunk_DestructTCountryAndMaybeFree
+      - TCountry::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
       - TCtlMgr::DestructTCtlMgrAndMaybeFree
       - TCtlMgr::thunk_DestructTCtlMgrAndMaybeFree
       - TCzechBox::DestructTCzechBoxAndMaybeFree
+      - TCzechBox::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
       - TCzechBox::thunk_DestructTCzechBoxAndMaybeFree
+      - TCzechBox::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
       - TDealBookPicture::DestructTDealBookPictureAndMaybeFree
       - TDealBookPicture::thunk_DestructTDealBookPictureAndMaybeFree
       - TDealLine::DestructTDealLineAndMaybeFree
@@ -427,6 +457,7 @@ targets:
       - TDealList::DestructTDealListAndMaybeFree
       - TDealList::thunk_DestructTDealListAndMaybeFree
       - TDealTabControl::DestructTDealTabControlAndMaybeFree
+      - TDealTabControl::thunk_WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780
       - TDefenderMinister::DestructTDefenderMinisterAndMaybeFree
       - TDefenderMinister::thunk_DestructTDefenderMinisterAndMaybeFree
       - TDefenseMinister::DestructTDefenseMinisterAndMaybeFree
@@ -434,15 +465,22 @@ targets:
       - TDefenseMinisterView::DestructTDefenseMinisterViewAndMaybeFree
       - TDefenseMinisterView::thunk_DestructTDefenseMinisterViewAndMaybeFree
       - TDeluxeText::DestructTDeluxeTextAndMaybeFree
+      - TDeluxeText::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At005b6060_At00404df9
       - TDialogBehavior::DestructTDialogBehaviorAndMaybeFree
       - TDialogBehavior::thunk_DestructTDialogBehaviorAndMaybeFree
       - TDialogView::DestructTDialogViewAndMaybeFree
       - TDialogView::thunk_DestructTDialogViewAndMaybeFree
+      - TDialogView::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d880
       - TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree
       - TDipDlgCluster::thunk_DestructTDipDlgClusterAndMaybeFree
       - TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree
+      - TDiplomacyMapView::WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080
       - TDiplomacyMapView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0
+      - TDiplomacyMapView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004f3e60
+      - TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130
       - TDiplomacyMapView::thunk_DestructTDiplomacyMapViewAndMaybeFree
+      - TDiplomacyMapView::thunk_WrapperFor_ForwardCityDialogParamToChildSlot48_At004f7130
+      - TDiplomacyMapView::thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080
       - TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree
       - TDiplomacyMgr::thunk_DestructTDiplomacyMgrAndMaybeFree
       - TDisappearingButton::DestructTDisappearingButtonAndMaybeFree
@@ -459,6 +497,8 @@ targets:
       - TEditText::DestructTEditTextAndMaybeFree
       - TEngineerDialog::DestructEngineerDialogAndMaybeFree
       - TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree
+      - TEscortMission::ReturnEscortMissionArgPassthrough
+      - TEscortMission::thunk_ReturnEscortMissionArgPassthrough
       - TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree
       - TEvenCityMinister::thunk_DestructTEvenCityMinisterAndMaybeFree
       - TEventHandler::DestructTEventHandlerAndMaybeFree
@@ -468,7 +508,11 @@ targets:
       - TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
       - TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree
       - TFileStream::DestructTFileStreamAndMaybeFree
+      - TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
+      - TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
       - TFileStream::thunk_DestructTFileStreamAndMaybeFree
+      - TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300
+      - TFileStream::thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At004075c2
       - TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree
       - TFlagOptionsPicture::thunk_DestructTFlagOptionsPictureAndMaybeFree
       - TFloatWindow::DestructTFloatWindowAndMaybeFree
@@ -485,34 +529,60 @@ targets:
       - TGWorldButton::DestructTGWorldButtonAndMaybeFree
       - TGWorldButton::thunk_DestructTGWorldButtonAndMaybeFree
       - TGWorldPartView::DestructTGWorldPartViewAndMaybeFree
+      - TGWorldPartView::thunk_WrapperFor_AllocateWithFallbackHandler_At004ac920
       - TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree
       - TGameSetupMultiplayerPicture::DestructTGameSetupMultiplayerPictureAndMaybeFree
       - TGameSetupMultiplayerPicture::thunk_DestructTGameSetupMultiplayerPictureAndMaybeFree
       - TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree
+      - TGameSetupPicture::WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0
       - TGameSetupPicture::thunk_DestructTGameSetupPictureAndMaybeFree
+      - TGameSetupPicture::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0_At00405fb5
+      - TGameWindow::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004ffd40
+      - TGameWindow::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004ffd10
+      - TGameWindow::WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0
+      - TGameWindow::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004ffd40
+      - TGameWindow::thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004ffd10
+      - TGameWindow::thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0
       - TGarrisonView::DestructTGarrisonViewAndMaybeFree
       - TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree
       - TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf
       - TGreatPower::WrapperFor_FreeHeapBufferIfNotNull_At004d8c20
       - TGreatPower::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004d8c20
       - THQButton::DestructTHQButtonAndMaybeFree
+      - THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
+      - THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
       - THQButton::thunk_DestructTHQButtonAndMaybeFree
+      - THQButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
+      - THQButton::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0_At0040179e
       - THandleStream::DestructTHandleStreamAndMaybeFree
+      - THandleStream::WrapperFor_MoveMemoryOverlapSafe_At004897a0
       - THandleStream::thunk_DestructTHandleStreamAndMaybeFree
+      - THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0
       - THelpMgr::DestructTHelpMgrAndMaybeFree
+      - THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0
+      - THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50
       - THelpMgr::thunk_DestructTHelpMgrAndMaybeFree
+      - THelpMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0
+      - THelpMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At00500f50
       - THelpPicture::DestructTHelpPictureAndMaybeFree
       - THelpPicture::thunk_DestructTHelpPictureAndMaybeFree
       - THelpWindow::DestructTHelpWindowAndMaybeFree
+      - THelpWindow::WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
       - THelpWindow::thunk_DestructTHelpWindowAndMaybeFree
+      - THelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
       - THighScoresPicture::DestructTHighScoresPictureAndMaybeFree
       - THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree
+      - THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00
       - THotspotBehavior::thunk_DestructTHotspotBehaviorAndMaybeFree
+      - THotspotBehavior::thunk_WrapperFor_AllocateWithFallbackHandler_At004b0c00
       - TIconBar::DestructTIconBarAndMaybeFree
       - TIconBar::thunk_DestructTIconBarAndMaybeFree
       - TIconSlider::DestructTIconSliderAndMaybeFree
+      - TIconSlider::WrapperFor_TIconBar_VtblSlot68_At00506690
       - TIconSlider::thunk_DestructTIconSliderAndMaybeFree
+      - TIconSlider::thunk_WrapperFor_TIconBar_VtblSlot68_At00506690_At00407a3b
       - TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree
+      - TIdleMeAnimation::thunk_WrapperFor_thunk_RemoveUiTransientRegistryObjectByTag_At004aca60
       - TIncludeView::DestructTIncludeViewAndMaybeFree
       - TIncludeView::thunk_DestructTIncludeViewAndMaybeFree
       - TIndustryAmtBar::DestructTIndustryAmtBarAndMaybeFree
@@ -532,9 +602,13 @@ targets:
       - TInteriorMinister::DestructLinkedValueListMaybeFree
       - TInteriorMinister::DestructTInteriorMinisterAndMaybeFree
       - TInteriorMinister::FreeLinkedBlockChain
+      - TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
+      - TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
       - TInteriorMinister::thunk_DestroyLinkedValueListAndFreeSelf
       - TInteriorMinister::thunk_DestructLinkedValueListMaybeFree
       - TInteriorMinister::thunk_DestructTInteriorMinisterAndMaybeFree
+      - TInteriorMinister::thunk_WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
+      - TInteriorMinister::thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
       - TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree
       - TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree
       - TInterruptusView::DestructTInterruptusViewAndMaybeFree
@@ -551,9 +625,18 @@ targets:
       - TLonelyTileView::DestructTLonelyTileViewAndMaybeFree
       - TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree
       - TMacViewMgr::DestructTMacViewMgrAndMaybeFree
+      - TMacViewMgr::WrapperFor_CleanupDialogModalCreateState_At0049d510
+      - TMacViewMgr::WrapperFor_InvokeCurrentMessageFallbackHandler_At00485c00
+      - TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70
+      - TMacViewMgr::WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60
+      - TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110
+      - TMacViewMgr::WrapperFor_thunk_HandleStartupCommand100_At00484fb0
       - TMadnessButton::DestructTMadnessButtonAndMaybeFree
       - TMapDialog::DeleteRegionHandleFromClipState
       - TMapDialog::DestructTMapDialogAndMaybeFree
+      - TMapDialog::WrapperFor_SetQuickDrawFillColor_At0051e160
+      - TMapDialog::WrapperFor_thunk_ProjectTileIndexToWrappedScreenOffsetByScale_At0051aad0
+      - TMapDialog::WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70
       - TMapDialog::thunk_DestructTMapDialogAndMaybeFree
       - TMapEditCluster::DestructTMapEditClusterAndMaybeFree
       - TMapMaker::DeleteTMapMaker
@@ -563,12 +646,17 @@ targets:
       - TMapPreviewView::DestructTMapPreviewViewAndMaybeFree
       - TMapPreviewView::thunk_DestructTMapPreviewViewAndMaybeFree
       - TMapUberPicture::DestructTMapUberPictureAndMaybeFree
+      - TMapUberPicture::WrapperFor_GetActiveNationId_At00597600
+      - TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
       - TMapUberPicture::thunk_DestructTMapUberPictureAndMaybeFree
+      - TMapUberPicture::thunk_WrapperFor_GetActiveNationId_At00597600
+      - TMapUberPicture::thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
       - TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree
       - TMegaPicture::DestructTMegaPictureAndMaybeFree
       - TMegaPicture::thunk_DestructTMegaPictureAndMaybeFree
       - TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree
       - TMilitaryPageView::DestructTMilitaryPageViewAndMaybeFree
+      - TMilitaryPageView::WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0
       - TMilitaryPageView::thunk_DestructTMilitaryPageViewAndMaybeFree
       - TMiniArmyLine::DestructTMiniArmyLineAndMaybeFree
       - TMiniArmyLine::thunk_DestructTMiniArmyLineAndMaybeFree
@@ -601,6 +689,7 @@ targets:
       - TNavyPlayer::DestructTNavyPlayerAndMaybeFree
       - TNavyPlayer::thunk_DestructTNavyPlayerAndMaybeFree
       - TNavyRoster::DestructTNavyRosterAndMaybeFree
+      - TNavyRoster::WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0
       - TNavyRoster::thunk_DestructTNavyRosterAndMaybeFree
       - TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree
       - TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree
@@ -705,21 +794,34 @@ targets:
       - TObject::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004798f0
       - TObject::thunk_WrapperFor_FreeHeapBufferIfNotNull_At00479fb0
       - TOceanDialog::DestructTOceanDialogAndMaybeFree
+      - TOceanDialog::WrapperFor_InvalidateCityDialogRectRegion_At00566750
       - TOceanDialog::thunk_DestructTOceanDialogAndMaybeFree
+      - TOceanDialog::thunk_WrapperFor_InvalidateCityDialogRectRegion_At00566750
       - TOffLimitsPicture::DestructTOffLimitsPictureAndMaybeFree
+      - TOffLimitsPicture::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
       - TOffLimitsPicture::thunk_DestructTOffLimitsPictureAndMaybeFree
       - TOfferDeskPicture::DestructTOfferDeskPictureAndMaybeFree
       - TOfferDeskPicture::thunk_DestructTOfferDeskPictureAndMaybeFree
       - TOffersPanelView::DestructTOffersPanelViewAndMaybeFree
+      - TOffersPanelView::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004f9420
+      - TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+      - TOffersPanelView::WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At004f9300
       - TOffersPanelView::thunk_DestructTOffersPanelViewAndMaybeFree
+      - TOffersPanelView::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004f9420
+      - TOffersPanelView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+      - TOffersPanelView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At004f9300
       - TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree
+      - TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
       - TOnOffRadioButton::thunk_DestructTOnOffRadioButtonAndMaybeFree
+      - TOnOffRadioButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
       - TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree
       - TOrItemOrder::DestructTOrItemOrderAndMaybeFree
       - TOrderView::DestructTOrderViewAndMaybeFree
       - TOrderView::thunk_DestructTOrderViewAndMaybeFree
+      - TPageCorner::thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f850
       - TPageView::DestructTPageViewAndMaybeFree
       - TPageView::thunk_DestructTPageViewAndMaybeFree
+      - TPanelView::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At004f79e0_At0040118b
       - TPicture::DestructTPictureAndMaybeFree
       - TPicture::thunk_DestructTPictureAndMaybeFree
       - TPictureButton::DestructTPictureButtonAndMaybeFree
@@ -737,7 +839,9 @@ targets:
       - TPlacard::DestructTPlacardAndMaybeFree
       - TPlacard::thunk_DestructTPlacardAndMaybeFree
       - TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree
+      - TPlaceCityDialog::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
       - TPlaceCityDialog::thunk_DestructTPlaceCityDialogAndMaybeFree
+      - TPlaceCityDialog::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
       - TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree
       - TPopGrowthOrder::thunk_InitializePopGrowthOrderStateFromCity
       - TPopulationMgr::DestructTPopulationMgrAndMaybeFree
@@ -747,16 +851,28 @@ targets:
       - TProductionCluster::DestructTProductionClusterAndMaybeFree
       - TProductionCluster::thunk_DestructTProductionClusterAndMaybeFree
       - TProductionOrder::DestructTProductionOrderAndMaybeFree
+      - TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
+      - TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
       - TProductionOrder::thunk_DestructTProductionOrderAndMaybeFree
+      - TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
+      - TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
       - TProvinceDesirabilityList::DestructTProvinceDesirabilityListAndMaybeFree
       - TProvinceDesirabilityList::thunk_DestructTProvinceDesirabilityListAndMaybeFree
       - TPtrList::DestructTPtrListAndMaybeFree
+      - TPtrList::thunk_WrapperFor_AddHead_At004885d0
+      - TPtrList::thunk_WrapperFor_AddHead_At004885f0
       - TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree
+      - TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
       - TPurchaseCluster::thunk_DestructTPurchaseClusterAndMaybeFree
       - TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
       - TRadioPictureButton::thunk_DestructTRadioPictureButtonAndMaybeFree
+      - TRadioText::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579490_At0040351c
       - TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree
+      - TRadioTextCluster::WrapperFor_SetQuickDrawFillColor_At00579a60
+      - TRadioTextCluster::WrapperFor_thunk_NoOpUiLifecycleHook_At00579740
       - TRadioTextCluster::thunk_DestructTRadioTextClusterAndMaybeFree
+      - TRadioTextCluster::thunk_WrapperFor_SetQuickDrawFillColor_At00579a60
+      - TRadioTextCluster::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579740_At00408823
       - TRailAmtBar::DestructTRailAmtBarAndMaybeFree
       - TRailAmtBar::thunk_DestructTRailAmtBarAndMaybeFree
       - TRailCityMinister::DestructTRailCityMinisterAndMaybeFree
@@ -768,6 +884,8 @@ targets:
       - TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree
       - TRightLeftView::DestructTRightLeftViewAndMaybeFree
       - TRightLeftView::thunk_DestructTRightLeftViewAndMaybeFree
+      - TScatteredShipsMission::ReturnMissionArgPassthrough
+      - TScatteredShipsMission::thunk_ReturnMissionArgPassthrough
       - TScenarioChooser::DestructTScenarioChooserAndMaybeFree
       - TScrollBarView::DestructTScrollBarViewAndMaybeFree
       - TScrollBarView::thunk_DestructTScrollBarViewAndMaybeFree
@@ -797,15 +915,25 @@ targets:
       - TShipyardCluster::DestructTShipyardClusterMaybeFree
       - TShipyardCluster::thunk_DestructTShipyardClusterMaybeFree
       - TShipyardView::DestructTShipyardViewAndMaybeFree
+      - TShipyardView::WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
+      - TShipyardView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340
       - TShipyardView::thunk_DestructTShipyardViewAndMaybeFree
+      - TShipyardView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
+      - TShipyardView::thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340
       - TSidewaysArrow::DestructTSidewaysArrowAndMaybeFree
       - TSidewaysArrow::thunk_DestructTSidewaysArrowAndMaybeFree
       - TSimMgr::DestructTSimMgrAndMaybeFree
+      - TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230
       - TSimMgr::thunk_DestructTSimMgrAndMaybeFree
+      - TSimMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0057c230
       - TSliderPicture::DestructTSliderPictureAndMaybeFree
+      - TSliderPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
       - TSliderPicture::thunk_DestructTSliderPictureAndMaybeFree
+      - TSliderPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
       - TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree
+      - TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250
       - TSortedByRelationshipList::thunk_DestructTSortedByRelationshipListAndMaybeFree
+      - TSortedByRelationshipList::thunk_WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250
       - TSortedList::DestructTSortedListAndMaybeFree
       - TSoundPlayer::ConstructTSoundPlayerBaseState
       - TSoundPlayer::CreateTSoundPlayerInstance
@@ -850,13 +978,16 @@ targets:
       - TTechItemLine::DestructTTechItemLineAndMaybeFree
       - TTechItemLine::thunk_DestructTTechItemLineAndMaybeFree
       - TTechItemView::DestructTTechItemViewAndMaybeFree
+      - TTechItemView::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
       - TTechMgr::DestructTTechMgrAndMaybeFree
       - TTechMgr::thunk_DestructTTechMgrAndMaybeFree
       - TTechStorePage::DestructTTechStorePageAndMaybeFree
       - TTechStorePage::thunk_DestructTTechStorePageAndMaybeFree
       - TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree
       - TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
+      - TTerrainHelpWindow::WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
       - TTerrainHelpWindow::thunk_DestructTTerrainHelpWindowAndMaybeFree
+      - TTerrainHelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
       - TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree
       - TTerrainInfoDialog::thunk_DestructTTerrainInfoDialogAndMaybeFree
       - TTextLine::DestructTTextLineAndMaybeFree
@@ -870,7 +1001,11 @@ targets:
       - TToolBarCluster::thunk_DestructTToolBarClusterAndMaybeFree
       - TTooltipRelayWindowState::WrapperFor_GetOrCreateMfcModuleThreadState_At006084b2
       - TTown::DestructTTownAndMaybeFree
+      - TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
+      - TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
       - TTown::thunk_DestructTTownAndMaybeFree
+      - TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
+      - TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
       - TTownNameDialog::DestructTTownNameDialogAndMaybeFree
       - TTownNameDialog::thunk_DestructTTownNameDialogAndMaybeFree
       - TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
@@ -910,11 +1045,14 @@ targets:
       - TUnitOrder::DestructTUnitOrderAndMaybeFree
       - TUnitOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b6f90
       - TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
+      - TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
       - TUnitToolbarCluster::thunk_DestructTUnitToolbarClusterAndMaybeFree
       - TUnitsView::DestructTUnitsViewAndMaybeFree
       - TUnitsView::thunk_DestructTUnitsViewAndMaybeFree
       - TUniversityView::DestructTUniversityViewAndMaybeFree
+      - TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
       - TUniversityView::thunk_DestructTUniversityViewAndMaybeFree
+      - TUniversityView::thunk_WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
       - TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree
       - TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree
       - TUpDownView::DestructTUpDownViewAndMaybeFree
@@ -924,14 +1062,22 @@ targets:
       - TWarehouseView::DestructTWarehouseViewAndMaybeFree
       - TWarehouseView::thunk_DestructTWarehouseViewAndMaybeFree
       - TWarningView::DestructTWarningViewAndMaybeFree
+      - TWarningView::WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980
       - TWarningView::thunk_DestructTWarningViewAndMaybeFree
+      - TWarningView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980
       - TWindow::DestructTWindowAndMaybeFree
       - TWindow::thunk_DestructTWindowAndMaybeFree
       - TWorldView::DestructTWorldViewAndMaybeFree
       - TWorldView::thunk_DestructTWorldViewAndMaybeFree
       - TZone::FreeHeapBlockWithAllocatorTracking
       - TacticalBattleView::DestructTacticalBattleViewAndMaybeFree
+      - TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900
+      - TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
+      - TacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
       - TacticalBattleView::thunk_DestructTacticalBattleViewAndMaybeFree
+      - TacticalBattleView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At005a8900
+      - TacticalBattleView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
+      - TacticalBattleView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At005a9240
       - TaskList::DestructTaskListAndMaybeFree
       - TaskList::thunk_DestructTaskListAndMaybeFree
       - TerminateMfcApplicationState
@@ -943,7 +1089,109 @@ targets:
       - TrimHeapSubblockTailIfZeroFilled
       - UnlockMfcTempMaps
       - UpdateAllocatorRegionUsageOnFree
+      - WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e
+      - WrapperFor_AddHead_At0059afe0
+      - WrapperFor_AddTail_At00488610
+      - WrapperFor_AddTail_At00488630
+      - WrapperFor_AddTail_At00488650
+      - WrapperFor_AddTail_At00488690
+      - WrapperFor_AddTail_At00611810
       - WrapperFor_AfxDeleteObject_At00626c02
+      - WrapperFor_AfxTermLocalData_At005fa80b
+      - WrapperFor_AllocateAndLinkBlockHead_At00483ba0
+      - WrapperFor_AllocateAndLinkBlockHead_At00492a40
+      - WrapperFor_AllocateAndLinkBlockHead_At0049b720
+      - WrapperFor_AllocateAndLinkBlockHead_At0049b870
+      - WrapperFor_AllocateSharedStringBufferForLength_At006058b9
+      - WrapperFor_AllocateWithFallbackHandler_At00479e40
+      - WrapperFor_AllocateWithFallbackHandler_At00486320
+      - WrapperFor_AllocateWithFallbackHandler_At0048b810
+      - WrapperFor_AllocateWithFallbackHandler_At0049cc60
+      - WrapperFor_AllocateWithFallbackHandler_At004a03f0
+      - WrapperFor_AllocateWithFallbackHandler_At004a1130
+      - WrapperFor_AllocateWithFallbackHandler_At004a7b20
+      - WrapperFor_AllocateWithFallbackHandler_At004b5c00
+      - WrapperFor_AllocateWithFallbackHandler_At004ff7d0
+      - WrapperFor_AllocateWithFallbackHandler_At005082b0
+      - WrapperFor_AllocateWithFallbackHandler_At0050e8b0
+      - WrapperFor_AllocateWithFallbackHandler_At005963d0
+      - WrapperFor_AllocateWithFallbackHandler_At00596440
+      - WrapperFor_AllocateWithFallbackHandler_At005b9fd0
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492
+      - WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8
+      - WrapperFor_ApplyRectMarginsInPlace_At0048e980
+      - WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0
+      - WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0
+      - WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d
+      - WrapperFor_CDialog_At00413b80
+      - WrapperFor_CDialog_At00414070
+      - WrapperFor_CDialog_At00481160
+      - WrapperFor_CDialog_At00498d60
+      - WrapperFor_CException_At005e6e08
+      - WrapperFor_CException_At005e6e55
+      - WrapperFor_CException_At005e6fdf
+      - WrapperFor_CException_At005e702c
+      - WrapperFor_CWnd_At00493760
+      - WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950
+      - WrapperFor_CallSettingFrame_12_At005e7530
+      - WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150
+      - WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At0056ffe0
+      - WrapperFor_Cluster_MapTileHint_005740a0_At00574d10
+      - WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485
+      - WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e54a0
+      - WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e
+      - WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6
+      - WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e722f
+      - WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e
+      - WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006235bd
+      - WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006236f6
+      - WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866
+      - WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2
+      - WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990
+      - WrapperFor_ComputeOrderNodeDerivedScoreFromQuantityAndWord18_At005a6290
+      - WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570
+      - WrapperFor_ConstructCFileException_At00619aac
+      - WrapperFor_ConstructCFileException_At00619af8
+      - WrapperFor_ConstructObjectVtable00672c54Base_At00482950
+      - WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+      - WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d
+      - WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de
+      - WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060b266
+      - WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060b8e1
+      - WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
+      - WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
+      - WrapperFor_ConstructTPageViewBaseState_At00435590
+      - WrapperFor_ConstructTPageViewBaseState_At00435610
+      - WrapperFor_ConstructTPageViewBaseState_At004600c0
+      - WrapperFor_CopyCityDialogStateFromSource_At004918a0
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At00601e9f
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At0060586d
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At0060b03c
+      - WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80
+      - WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
+      - WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20
+      - WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a
+      - WrapperFor_DDX_Text_618cbd_At004818a0
+      - WrapperFor_DDX_Text_618cbd_At00482180
+      - WrapperFor_DDX_Text_618cbd_At005e1c90
+      - WrapperFor_DDX_Text_At0047d4e0
+      - WrapperFor_DDX_Text_At00481ca0
+      - WrapperFor_DDX_Text_At00481f30
       - WrapperFor_DeleteForeignMinisterAndReleaseOrderArray_At004becd0
       - WrapperFor_DeleteRegionHandleFromClipState_At0047cac0
       - WrapperFor_DeleteRegionHandleFromClipState_At0047cb60
@@ -953,8 +1201,52 @@ targets:
       - WrapperFor_DeleteRegionHandleFromClipState_At00494370
       - WrapperFor_DeleteRegionHandleFromClipState_At00495520
       - WrapperFor_DeleteRegionHandleFromClipState_At00498610
+      - WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004bf390
+      - WrapperFor_DestructCPtrListBaseState_At004888a0
+      - WrapperFor_DestructCPtrListBaseState_At004a84f0
+      - WrapperFor_DestructCPtrListBaseState_At005aec30
+      - WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed
+      - WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7
+      - WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee
+      - WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c
+      - WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784
+      - WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c
+      - WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930
+      - WrapperFor_EnsureMainFrameClassNameAssigned_At005def40
       - WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b
       - WrapperFor_EnsureMfcModuleThreadStateCreated_At00608762
+      - WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99
+      - WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605dec
+      - WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52
+      - WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64
+      - WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76
+      - WrapperFor_EnsureUniqueSharedStringBuffer_At00605e88
+      - WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1
+      - WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5
+      - WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
+      - WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310
+      - WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420
+      - WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0
+      - WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0
+      - WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60
+      - WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005e9cb0
+      - WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0
+      - WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005edc00
+      - WrapperFor_EstablishSehFrameProlog_At006069cb
+      - WrapperFor_EstablishSehFrameProlog_At00606ff2
+      - WrapperFor_EstablishSehFrameProlog_At00614aeb
+      - WrapperFor_EstablishSehFrameProlog_At00624325
+      - WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0
+      - WrapperFor_FindAncestorFrameFromWindowChain_At0061e762
+      - WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0
+      - WrapperFor_FindIndex_At004886f0
+      - WrapperFor_FindIndex_At00488840
+      - WrapperFor_FormatDualValuePromptAndSelectInputText_At00619053
+      - WrapperFor_FormatDualValuePromptAndSelectInputText_At00619116
+      - WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149
+      - WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175
+      - WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1
+      - WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd
       - WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750
       - WrapperFor_FreeHeapBlockWithAllocatorTracking_At005efe50
       - WrapperFor_FreeHeapBufferIfNotNull_At004010e6
@@ -1112,12 +1404,30 @@ targets:
       - WrapperFor_FreeLinkedBlockChain_At004bec40
       - WrapperFor_FreeLinkedBlockChain_At004c6ad0
       - WrapperFor_FreeLinkedBlockChain_At005e4580
+      - WrapperFor_GenerateThreadLocalRandom15_At004a7c60
+      - WrapperFor_GenerateThreadLocalRandom15_At004bf8a0
+      - WrapperFor_GenerateThreadLocalRandom15_At004d6630
+      - WrapperFor_GenerateThreadLocalRandom15_At004e7680
+      - WrapperFor_GenerateThreadLocalRandom15_At004ec450
+      - WrapperFor_GenerateThreadLocalRandom15_At004ff840
+      - WrapperFor_GetActiveNationId_At004b4940
+      - WrapperFor_GetActiveNationId_At0058b070
+      - WrapperFor_GetMenuHandleMapMaybeCreate_At0060d044
+      - WrapperFor_GetOrCreateCWndFromHandle_At00489bf0
+      - WrapperFor_GetOrCreateCWndFromHandle_At00607111
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f4eb0
       - WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20
+      - WrapperFor_GetOrCreateDcHandleMapForThreadState_At006126b2
+      - WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6a73
+      - WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4
+      - WrapperFor_GetOrCreateHandleMapObjectByHandle_At00403729
+      - WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0
+      - WrapperFor_GetOrCreateHandleMapObjectByHandle_At00612736
+      - WrapperFor_GetOrCreateImageListHandleMapForThreadState_At005e69a1
       - WrapperFor_GetOrCreateMfcHandleMap_At00607aab
       - WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0
       - WrapperFor_GetOrCreateMfcModuleThreadState_At00606c91
@@ -1131,7 +1441,81 @@ targets:
       - WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00607a4f
       - WrapperFor_GetOrCreatePerThreadTlsSlotObject_At006089ef
       - WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49
+      - WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0
+      - WrapperFor_GetProfileStringA_At00415540
+      - WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0
+      - WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320
+      - WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl
+      - WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90
+      - WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0
+      - WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
+      - WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
+      - WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
+      - WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+      - WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0
+      - WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
+      - WrapperFor_HandleCityDialogNoOpSlot14_At005ae9e0
+      - WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90
+      - WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
+      - WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
+      - WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+      - WrapperFor_HandleCityDialogNoOpSlot18_At0050e620
+      - WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
+      - WrapperFor_HandleCityDialogNoOpSlot18_At005aea70
+      - WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At005059d0
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At0056ae10
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850
+      - WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650
+      - WrapperFor_ImageList_Read_At005e6ad1
+      - WrapperFor_ImageList_Write_At005e6afe
+      - WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
+      - WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0
+      - WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970
+      - WrapperFor_InvalidateCityDialogRectRegion_At0048b250
+      - WrapperFor_InvalidateCityDialogRectRegion_At0048b860
+      - WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+      - WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
+      - WrapperFor_InvalidateCityDialogRectRegion_At00565fc0
+      - WrapperFor_InvalidateCityDialogRectRegion_At005acc90
+      - WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60
+      - WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80
+      - WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
+      - WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990
+      - WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00
+      - WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00
+      - WrapperFor_InvokeCurrentMessageFallbackHandler_At005fffe6
+      - WrapperFor_InvokeCurrentMessageFallbackHandler_At006082d3
+      - WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0
+      - WrapperFor_IsPointInsideHitRegion_At004bc870
+      - WrapperFor_IsPointInsideHitRegion_At004d59a0
+      - WrapperFor_IsPointInsideHitRegion_At0050d6c0
+      - WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0
+      - WrapperFor_IsWindowEnabledViaSiteOrHandle_At0061d58c
+      - WrapperFor_LeaveIndexedCriticalSection_At005e9cc0
+      - WrapperFor_LeaveIndexedCriticalSection_At005edc70
+      - WrapperFor_LookupCWndByHwndNoAttach_At00609b24
+      - WrapperFor_LookupHandleMapEntryByHwnd_At005e69cb
+      - WrapperFor_LookupHandleMapEntryByHwnd_At00607673
+      - WrapperFor_LookupHandleMapEntryWithCreate_At00497f90
+      - WrapperFor_LookupHandleMapEntryWithCreate_At00612931
+      - WrapperFor_LookupHandleMapEntryWithCreate_At00612984
+      - WrapperFor_LookupHandleMapEntryWithCreate_At006129d7
+      - WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330
+      - WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460
+      - WrapperFor_MoveMemoryOverlapSafe_At00489810
+      - WrapperFor_MoveMemoryOverlapSafe_At005ecc90
+      - WrapperFor_NoOpRuntimeCallback_00489a70_At00482c90
+      - WrapperFor_OnIdle_At004145f0
       - WrapperFor_OnNewDocument_At004797a0
+      - WrapperFor_Ordinal_4_At0047fb80
+      - WrapperFor_PaintListBoxItemFocusRect_At005e56cd
+      - WrapperFor_ParseUnsignedLongFromStringWithBase_At005eaa40
+      - WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d
+      - WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190
       - WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454
       - WrapperFor_RaiseMfcSehExceptionWithArgs_At00613c90
       - WrapperFor_RaiseMfcSehExceptionWithArgs_At006189dc
@@ -1145,11 +1529,172 @@ targets:
       - WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50
       - WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970
       - WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0
+      - WrapperFor_RefreshBackdropOnInputMessages_At00413a20
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d8c50
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e6bb0
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660
+      - WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0
+      - WrapperFor_RemoveAll_At006034cb
+      - WrapperFor_RemoveHandleMapEntryByKey_At005e68f1
+      - WrapperFor_RemoveHandleMapEntryByKey_At005e698b
+      - WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750
+      - WrapperFor_RemoveHeadNodeAndReturnPayload_At00610a5f
+      - WrapperFor_RemoveListNodeAndRecycle_At00488720
+      - WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650
+      - WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840
+      - WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9
+      - WrapperFor_RouteCommandByIdWithUiProbe_At00483e80
+      - WrapperFor_RouteCommandByIdWithUiProbe_At00493c30
+      - WrapperFor_RtlUnwind_At005e7470
+      - WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960
+      - WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0
+      - WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
+      - WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004bef60
+      - WrapperFor_SetCObArraySize_At00601de3
+      - WrapperFor_SetFocusViaSiteOrHandle_At00483720
+      - WrapperFor_SetFocusViaSiteOrHandle_At00613f39
+      - WrapperFor_SetMapperFlags_At006131cb
+      - WrapperFor_SetQuickDrawFillColor_At00523060
+      - WrapperFor_SetWindowPosOrForwardToSite_At00490e50
+      - WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0
+      - WrapperFor_ShowWindowOrForwardToSite_At0049bfd0
+      - WrapperFor_StringSharedRef_AssignFromPtr_At00492b70
+      - WrapperFor_StringShared_AssignFromPtr_At00490c70
+      - WrapperFor_StringShared_AssignFromPtr_At00570420
+      - WrapperFor_StringShared_AssignFromPtr_At00572710
+      - WrapperFor_StringShared_AssignFromPtr_At005ff36a
+      - WrapperFor_TGreatPower_VtblSlot07_At004e7230
+      - WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150
       - WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060aefd
       - WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b10a
       - WrapperFor_ThrowMfcCFileExceptionWithContext_At00619d11
       - WrapperFor_ThrowMfcResourceException_At00623baa
+      - WrapperFor_UpdateAppInstallAndDataPaths_At00623099
+      - WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380
+      - WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620
+      - WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220
+      - WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607380
+      - WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
+      - WrapperFor_UpdateWindowLongMaskedAndRefresh_At006078a9
+      - WrapperFor_WriteBytesToSerializedBuffer_At00489290
+      - WrapperFor_WriteProfileInt_At00403d23
+      - WrapperFor_WriteProfileInt_At00415510
+      - WrapperFor_WriteProfileInt_At005e02c0
+      - WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00611a9e
+      - WrapperFor_amsg_exit_At005f4b40
+      - WrapperFor_fpmath_At005e9b60
+      - WrapperFor_ftol_At005e5020
+      - WrapperFor_ftol_At005e5020_Impl
+      - WrapperFor_operator_At00489360
+      - WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0
+      - WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0
+      - WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
+      - WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
+      - WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0
+      - WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090
+      - WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650
+      - WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20
+      - WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
+      - WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50
+      - WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0
+      - WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
+      - WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
+      - WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
+      - WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
+      - WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
+      - WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
+      - WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
+      - WrapperFor_thunk_ConstructTMinister_At004be840
+      - WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610
+      - WrapperFor_thunk_ConstructUiResourceEntryBase_At0045aee0
+      - WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
+      - WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
+      - WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
+      - WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+      - WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
+      - WrapperFor_thunk_DispatchUiMouseMoveToChildren_At00490bc0
+      - WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
+      - WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
+      - WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At004c7180
+      - WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240
+      - WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At005be370
       - WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20
+      - WrapperFor_thunk_GenerateRandomMapAndRefreshSetupPreview_At005751f0
+      - WrapperFor_thunk_GetTickCountDiv16_At00486b10
+      - WrapperFor_thunk_GetTickCountDiv16_At0048a410
+      - WrapperFor_thunk_GetUnitMovementClassId_At004a4550
+      - WrapperFor_thunk_GetUnitMovementClassId_At00515d60
+      - WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180
+      - WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At005747c0
+      - WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004adc80
+      - WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
+      - WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0
+      - WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0
+      - WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70
+      - WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70
+      - WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070
+      - WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380
+      - WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
+      - WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850
+      - WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0
+      - WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0
+      - WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
+      - WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20
+      - WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0
+      - WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00
+      - WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0
+      - WrapperFor_thunk_NoOpUiLifecycleHook_At00574720
+      - WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
+      - WrapperFor_thunk_NoOpUiLifecycleHook_At005a84d0
+      - WrapperFor_thunk_NormalizeWrappedMapCoord108x60_At0051ace0
+      - WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0
+      - WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380
+      - WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0
+      - WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoLabels_At004adcb0
+      - WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0
+      - WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0
+      - WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00
+      - WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl
+      - WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190
+      - WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900
+      - WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl
+      - WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
+      - WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00
+      - WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0
+      - WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
+      - WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
+      - WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
+      - WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0
+      - WrapperFor_thunk_SetPictureResourceIdAndRefresh_At005060c0
+      - WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At005690d0
+      - WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150
+      - WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
+      - WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051c2a0
+      - WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760
+      - WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80
+      - WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0
+      - WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
+      - WrapperFor_thunk_ThunkTargetImpl_00493200_At005c3b40
+      - WrapperFor_thunk_ThunkTargetImpl_004946b0_At0048b7e0
+      - WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10
+      - WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
+      - WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040
       - WritePaletteChunkToMmioFromPaletteHandle
       - thunk_ApplyMciPlaybackRangeFromAudioManager
       - thunk_ClearAndFreeAllPtrListRecords
@@ -2513,6 +3058,7 @@ targets:
       - thunk_FreeTurnEventPacketBuffer
       - thunk_GetCityIndexFromCityStatePointer
       - thunk_GetNewsMgrEntryArrayBaseAtOffset2C
+      - thunk_HandleNationStateCommandX78AndForwardToChild
       - thunk_InitializeDirectSoundDeviceAndChannels
       - thunk_InitializeDirectSoundDeviceAndChannels_004061D1
       - thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2
@@ -2533,8 +3079,59 @@ targets:
       - thunk_SendMciStatusCommand814AndIgnoreFailure_At00407289
       - thunk_SerializeNewsMgrNoOpSlot14
       - thunk_SetMciPlaybackRangeByTrackIndexAndDevice
+      - thunk_WrapperFor_AddHead_At0059afe0
+      - thunk_WrapperFor_AddTail_At00488630
+      - thunk_WrapperFor_AddTail_At00488650
+      - thunk_WrapperFor_AddTail_At00488690
       - thunk_WrapperFor_AfxDeleteObject_At00626c02
+      - thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a
+      - thunk_WrapperFor_AllocateWithFallbackHandler_At00486320
+      - thunk_WrapperFor_AllocateWithFallbackHandler_At0048b810
+      - thunk_WrapperFor_AllocateWithFallbackHandler_At004a03f0
+      - thunk_WrapperFor_AllocateWithFallbackHandler_At0050e8b0
+      - thunk_WrapperFor_AllocateWithFallbackHandler_At005963d0
+      - thunk_WrapperFor_AllocateWithFallbackHandler_At00596440
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492
+      - thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8
+      - thunk_WrapperFor_ApplyRectMarginsInPlace_At0048e980
+      - thunk_WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150
+      - thunk_WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At0056ffe0
+      - thunk_WrapperFor_Cluster_MapTileHint_004a4550_At00515d60
+      - thunk_WrapperFor_Cluster_MapTileHint_005740a0_At00574d10
+      - thunk_WrapperFor_Cluster_MapTileHint_00578330_At005751f0
+      - thunk_WrapperFor_Cluster_TurnStateHint_00611443_At00479960
+      - thunk_WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990
+      - thunk_WrapperFor_ConstructTMinister_At004be840
+      - thunk_WrapperFor_CopyCityDialogStateFromSource_At004918a0
+      - thunk_WrapperFor_DDX_Text_At0047d4e0
+      - thunk_WrapperFor_DDX_Text_At004818a0
+      - thunk_WrapperFor_DDX_Text_At00481ca0
+      - thunk_WrapperFor_DDX_Text_At00481f30
+      - thunk_WrapperFor_DDX_Text_At00482180
+      - thunk_WrapperFor_DDX_Text_At005e1c90
       - thunk_WrapperFor_DeleteForeignMinisterAndReleaseOrderArray_At004becd0
+      - thunk_WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004bf390
+      - thunk_WrapperFor_EnsureMainFrameClassNameAssigned_At005def40
+      - thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
+      - thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310
+      - thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420
+      - thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0
+      - thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0
+      - thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60
+      - thunk_WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0_At00404f7a
+      - thunk_WrapperFor_FindIndex_At00488840_At004092f5
       - thunk_WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750
       - thunk_WrapperFor_FreeHeapBufferIfNotNull_At00413550
       - thunk_WrapperFor_FreeHeapBufferIfNotNull_At00413c00
@@ -2616,5 +3213,94 @@ targets:
       - thunk_WrapperFor_FreeLinkedBlockChain_At00415e70
       - thunk_WrapperFor_FreeLinkedBlockChain_At004925e0
       - thunk_WrapperFor_FreeLinkedBlockChain_At005e4580
+      - thunk_WrapperFor_GenerateThreadLocalRandom15_At004d6630
+      - thunk_WrapperFor_GetActiveNationId_At004b4940
+      - thunk_WrapperFor_GetActiveNationId_At0058b070
+      - thunk_WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0
+      - thunk_WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0050a180
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005ae9e0
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At0050e620
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005aea70
+      - thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At005059d0
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0056ae10
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850
+      - thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650
+      - thunk_WrapperFor_InitializeCityInteriorMinister_At004c5a70
+      - thunk_WrapperFor_InitializeCityInteriorMinister_At004c5d70
+      - thunk_WrapperFor_InitializeCityInteriorMinister_At004c6070
+      - thunk_WrapperFor_InitializeCityInteriorMinister_At004c6380
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At0048b250
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At0048b6d0
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At0048b860
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At00565fc0
+      - thunk_WrapperFor_InvalidateCityDialogRectRegion_At005acc90
+      - thunk_WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0
+      - thunk_WrapperFor_IsPointInsideHitRegion_At0050d6c0
+      - thunk_WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0
+      - thunk_WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330
+      - thunk_WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460
       - thunk_WrapperFor_OnNewDocument_At004797a0_At004036b6
+      - thunk_WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190
+      - thunk_WrapperFor_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0
+      - thunk_WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0
+      - thunk_WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750
+      - thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720
+      - thunk_WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
+      - thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004bef60
+      - thunk_WrapperFor_SetFocusViaSiteOrHandle_At00483720
+      - thunk_WrapperFor_SetWindowPosOrForwardToSite_At00490e50
+      - thunk_WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0
+      - thunk_WrapperFor_ShowWindowOrForwardToSite_At0049bfd0
+      - thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380_At00408e09
+      - thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620_At00405c63
+      - thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220_At00404345
+      - thunk_WrapperFor_UpdateTextEntrySharedStringIfChanged_At005b6480
+      - thunk_WrapperFor_WriteBytesToSerializedBuffer_At00489290_At00402c25
+      - thunk_WrapperFor_ftol_At005e5020
+      - thunk_WrapperFor_operator_At00489360_At004010d2
+      - thunk_WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0
+      - thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090
+      - thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650
+      - thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20
+      - thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At00490bc0
+      - thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004adc80_At004026f3
+      - thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9
+      - thunk_WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0
+      - thunk_WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0
+      - thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190
+      - thunk_WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900
+      - thunk_WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0_At00402c1b
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
+      - thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
+      - thunk_WrapperFor_thunk_SetPictureResourceIdAndRefresh_At005060c0
+      - thunk_WrapperFor_thunk_Target_00493200_At004038b4_At005c3b40
+      - thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760
+      - thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80
+      - thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0
+      - thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
       - thunk_WritePaletteChunkToMmioFromPaletteHandle

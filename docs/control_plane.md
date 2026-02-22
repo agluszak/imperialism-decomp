@@ -89,6 +89,11 @@ uv run python tools/reccmp/library_inventory.py --json-out build-msvc500/library
 uv run python tools/reccmp/generate_ignore_functions.py --target IMPERIALISM --apply
 ```
 
+### 7) Session queue generation
+```bash
+uv run python tools/reccmp/session_loop.py --target IMPERIALISM --pick 8 --top 50 --min-size 1
+```
+
 ## Known Pitfalls
 1. Ghidra decompiler output is generated on-demand; full sync re-decompiles functions.
 2. Single huge `stubs.cpp` breaks old MSVC linker/debug limits; use chunked stubs in `src/autogen/stubs/`.
