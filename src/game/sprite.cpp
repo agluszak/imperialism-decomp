@@ -7,7 +7,7 @@ typedef unsigned int uint;
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // FUNCTION: IMPERIALISM 0x0047c3d0
-int *Sprite__CollectNonTransparentPixels(void *self, uint this_ptr)
+int *Sprite__CollectNonTransparentPixels(void *this_obj, uint this_ptr)
 {
   byte bVar1;
   int scan_offset;
@@ -29,10 +29,10 @@ int *Sprite__CollectNonTransparentPixels(void *self, uint this_ptr)
   int pair_count;
   byte *row_ptr;
 
-  header_ptr = *(int *)((int)self + 0x10);
+  header_ptr = *(int *)((int)this_obj + 0x10);
   if (*(short *)(header_ptr + 0xe) != 1) {
     width = *(int *)(header_ptr + 4);
-    pixel_ptr = *(byte **)((int)self + 0xc);
+    pixel_ptr = *(byte **)((int)this_obj + 0xc);
     uVar6 = width + 3U & 0xfffffffc;
     if (this_ptr == 0xffffffff) {
       this_ptr = (uint)*pixel_ptr;
@@ -56,7 +56,7 @@ LAB_0047c603:
         out_iter = out_pairs + 2;
         row_ptr = pixel_ptr;
         do {
-          width = *(int *)(*(int *)((int)self + 0x10) + 8);
+          width = *(int *)(*(int *)((int)this_obj + 0x10) + 8);
           row_idx = width;
           if (width < 1) {
             row_idx = -width;
@@ -67,14 +67,14 @@ LAB_0047c603:
               out_iter = out_pairs + pair_count * 2;
               pixel_ptr = pixel_ptr + header_ptr * uVar6;
               do {
-                width = *(int *)(*(int *)((int)self + 0x10) + 4);
+                width = *(int *)(*(int *)((int)this_obj + 0x10) + 4);
                 do {
                   width = width + -1;
                   if (width < 0) {
                     goto LAB_0047c72a;
                   }
                 } while (pixel_ptr[width] == this_ptr);
-                row_stride = *(int *)(*(int *)((int)self + 0x10) + 8);
+                row_stride = *(int *)(*(int *)((int)this_obj + 0x10) + 8);
                 if (row_stride < 1) {
                   row_stride = -row_stride;
                 }
@@ -91,7 +91,7 @@ LAB_0047c72a:
             out_pairs[pair_count * 2 + 1] = out_pairs[3];
             return out_pairs;
           }
-          row_idx = *(int *)(*(int *)((int)self + 0x10) + 4);
+          row_idx = *(int *)(*(int *)((int)this_obj + 0x10) + 4);
           scan_offset = 0;
           if (0 < row_idx) {
             do {
@@ -135,7 +135,7 @@ LAB_0047c631:
   bit_row = 0;
   this_ptr = 0;
   scan_offset = (int)(width + 0x1f + (width + 0x1f >> 0x1f & 0x1fU)) >> 5;
-  row_stride = *(int *)((int)self + 0xc);
+  row_stride = *(int *)((int)this_obj + 0xc);
   col_idx = scan_offset * 0x20;
   row_idx = row_stride;
   while (true) {
@@ -172,7 +172,7 @@ LAB_0047c453:
   out_iter = out_pairs + 2;
 LAB_0047c48c:
   do {
-    row_idx = *(int *)(*(int *)((int)self + 0x10) + 8);
+    row_idx = *(int *)(*(int *)((int)this_obj + 0x10) + 8);
     bit_row = row_idx;
     if (row_idx < 1) {
       bit_row = -row_idx;
@@ -183,7 +183,7 @@ LAB_0047c48c:
         header_ptr = width * scan_offset * 4;
         out_iter = out_pairs + this_ptr * 2;
         do {
-          row_idx = *(int *)(*(int *)((int)self + 0x10) + 4);
+          row_idx = *(int *)(*(int *)((int)this_obj + 0x10) + 4);
           row_idx = ((int)(row_idx + (row_idx >> 0x1f & 7U)) >> 3) + -1;
           if (-1 < row_idx) {
 LAB_0047c55c:
@@ -195,7 +195,7 @@ LAB_0047c55c:
                  cVar9 = cVar9 << 1) {
               cVar10 = cVar10 + '\x01';
             }
-            col_idx = *(int *)(*(int *)((int)self + 0x10) + 8);
+            col_idx = *(int *)(*(int *)((int)this_obj + 0x10) + 8);
             if (col_idx < 1) {
               col_idx = -col_idx;
             }
@@ -213,7 +213,7 @@ LAB_0047c5a0:
       out_pairs[this_ptr * 2 + 1] = out_pairs[3];
       return out_pairs;
     }
-    bit_row = *(int *)(*(int *)((int)self + 0x10) + 4);
+    bit_row = *(int *)(*(int *)((int)this_obj + 0x10) + 4);
     byte_idx = 0;
     bit_row = (int)(bit_row + (bit_row >> 0x1f & 7U)) >> 3;
     if (0 < bit_row) {

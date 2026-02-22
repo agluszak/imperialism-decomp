@@ -22,5 +22,5 @@ public:
   char pad_dc[0x18];
   int field_f4;
 
-  int *InitDefaults();
+  int *__fastcall InitDefaults();
 };
