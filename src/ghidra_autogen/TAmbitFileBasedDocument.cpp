@@ -66,6 +66,46 @@ void TAmbitFileBasedDocument::thunk_AssertUAmbitLine1335(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407518
+// GHIDRA_NAME TAmbitFileBasedDocument::thunk_CreateAndQueueTurnEventPacketTagGWEN
+// GHIDRA_PROTO void __cdecl thunk_CreateAndQueueTurnEventPacketTagGWEN(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CreateAndQueueTurnEventPacketTagGWEN
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CreateAndQueueTurnEventPacketTagGWEN */
+
+void __cdecl TAmbitFileBasedDocument::thunk_CreateAndQueueTurnEventPacketTagGWEN(void)
+
+{
+  TCommand *this;
+  TCommand *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fdaa;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this = (TCommand *)AllocateWithFallbackHandler(0x18);
+  uStack_4 = 0;
+  if (this == (TCommand *)0x0) {
+    this_00 = (TCommand *)0x0;
+  }
+  else {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTNewGameCommandClassNamePointer_0064c130;
+    this_00 = this;
+  }
+  uStack_4 = 0xffffffff;
+  thunk_InitializeRangePairAndResetCursor(this_00,0x6e657767,(int)g_pGlobalUiRootController);
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this_00);
+  *unaff_FS_OFFSET = this;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00409A0C
 // GHIDRA_NAME TAmbitFileBasedDocument::thunk_DestructTAmbitFileBasedDocumentAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTAmbitFileBasedDocumentAndMaybeFree(byte freeSelfFlag)
@@ -99,8 +139,8 @@ TAmbitFileBasedDocument::thunk_DestructTAmbitFileBasedDocumentAndMaybeFree
 void __cdecl TAmbitFileBasedDocument::CreateAndQueueTurnEventPacketTagGWEN(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *this;
+  TCommand *this;
+  TCommand *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -110,20 +150,20 @@ void __cdecl TAmbitFileBasedDocument::CreateAndQueueTurnEventPacketTagGWEN(void)
   puStack_8 = &LAB_0062fdaa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
+  this = (TCommand *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  if (puVar1 == (undefined4 *)0x0) {
-    this = (undefined4 *)0x0;
+  if (this == (TCommand *)0x0) {
+    this_00 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar1 = &PTR_thunk_GetTNewGameCommandClassNamePointer_0064c130;
-    this = puVar1;
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTNewGameCommandClassNamePointer_0064c130;
+    this_00 = this;
   }
   local_4 = 0xffffffff;
-  thunk_InitializeRangePairAndResetCursor(this,0x6e657767,(int)g_pGlobalUiRootController);
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this);
-  *unaff_FS_OFFSET = puVar1;
+  thunk_InitializeRangePairAndResetCursor(this_00,0x6e657767,(int)g_pGlobalUiRootController);
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this_00);
+  *unaff_FS_OFFSET = this;
   return;
 }
 

@@ -3,6 +3,175 @@
 // Program: Imperialism.exe
 // Bucket: TMacViewMgr.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401654
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_0x0464
+// GHIDRA_PROTO void __stdcall TMacViewMgr_OnMsg_0x0464(int arg1, int arg2)
+
+void TMacViewMgr::TMacViewMgr_OnMsg_0x0464(int arg1,int arg2)
+
+{
+  thunk_HandleStartupCommand100();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401726
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_MSG_0311
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_MSG_0311()
+
+void __thiscall TMacViewMgr::TMacViewMgr_OnMsg_MSG_0311(int param_1,int param_2)
+
+{
+  HWND hWnd;
+  BOOL BVar1;
+  
+  if (param_2 != param_1) {
+    hWnd = (HWND)0x0;
+    if (param_2 != 0) {
+      hWnd = *(HWND *)(param_2 + 0x1c);
+    }
+    BVar1 = IsChild(*(HWND *)(param_1 + 0x1c),hWnd);
+    if (BVar1 == 0) {
+      TMacViewMgr_OnMsg_MSG_030F();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004019FB
+// GHIDRA_NAME TMacViewMgr::thunk_HandleStartupCommand100
+// GHIDRA_PROTO void __cdecl thunk_HandleStartupCommand100(void)
+
+void __cdecl TMacViewMgr::thunk_HandleStartupCommand100(void)
+
+{
+  HandleStartupCommand100();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402031
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_CHAR
+// GHIDRA_PROTO void __thiscall TMacViewMgr_OnMsg_WM_CHAR(TMacViewMgr * pThis)
+
+void __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_CHAR(TMacViewMgr *this,TMacViewMgr *pThis)
+
+{
+  TMacViewMgr *unaff_retaddr;
+  
+  InvokeCurrentMessageFallbackHandler(this,unaff_retaddr);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402103
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_8009
+// GHIDRA_PROTO undefined __thiscall TMacViewMgr_OnCommand_ID_8009(TMacViewMgr * thisObj)
+
+void __thiscall TMacViewMgr::TMacViewMgr_OnCommand_ID_8009(TMacViewMgr *this,TMacViewMgr *thisObj)
+
+{
+  undefined *extraout_EAX;
+  TMacViewMgr *unaff_ESI;
+  
+  thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState,unaff_ESI);
+  this->owned_iface_a = extraout_EAX;
+  TMacViewMgr_OnMsg_MSG_030F();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402AF9
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_PAINT
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_WM_PAINT()
+
+void __fastcall TMacViewMgr::TMacViewMgr_OnMsg_WM_PAINT(undefined4 param_1)
+
+{
+  CPaintDC aCStack_54 [84];
+  
+  ConstructCPaintDCFromViewHandle(param_1);
+  CPaintDC::~CPaintDC(aCStack_54);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402D92
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_800D
+// GHIDRA_PROTO void __cdecl TMacViewMgr_OnCommand_ID_800D(void)
+
+void __cdecl TMacViewMgr::TMacViewMgr_OnCommand_ID_800D(void)
+
+{
+  (**(code **)(*g_pUiRuntimeContext + 100))(0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402EA0
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND
+// GHIDRA_PROTO int __thiscall TMacViewMgr_OnMsg_WM_ERASEBKGND(TMacViewMgr * thisObj, pointer pDc)
+
+int __thiscall
+TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND(TMacViewMgr *this,TMacViewMgr *thisObj,undefined *pDc)
+
+{
+  undefined *extraout_EAX;
+  undefined *puVar1;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  TMacViewMgr *arg1;
+  int iVar3;
+  tagRECT tStack_1c;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e9da;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (this->default_dispatch_cmd == 0x100005f) {
+    if (this->owned_iface_b == (undefined *)0x0) {
+      iVar3 = AllocateWithFallbackHandler(0x38);
+      uStack_4 = 0;
+      if (iVar3 == 0) {
+        puVar1 = (undefined *)0x0;
+      }
+      else {
+        ConstructBitmapSurfaceStateAndResetResources();
+        puVar1 = extraout_EAX;
+      }
+      uStack_4 = 0xffffffff;
+      this->owned_iface_b = puVar1;
+      LoadBitmapResourceAndInitializeSurfaceState();
+    }
+    GetClientRect((HWND)this->hwnd,&tStack_1c);
+    iVar2 = (int)((tStack_1c.bottom - tStack_1c.top) +
+                 (tStack_1c.bottom - tStack_1c.top >> 0x1f & 0x7fU)) >> 7;
+    iVar3 = (int)((tStack_1c.right - tStack_1c.left) +
+                 (tStack_1c.right - tStack_1c.left >> 0x1f & 0x7fU)) >> 7;
+    thunk_SelectAndRealizeDibPalette();
+    if (-1 < iVar2) {
+      thisObj = (TMacViewMgr *)(iVar2 + 1);
+      do {
+        if (-1 < iVar3) {
+          iVar2 = iVar3 + 1;
+          do {
+            StretchDibitsFromStoredBitmapToHdc();
+            iVar2 = iVar2 + -1;
+          } while (iVar2 != 0);
+        }
+        thisObj = (TMacViewMgr *)((int)&thisObj[-1].init_flag + 3);
+      } while (thisObj != (TMacViewMgr *)0x0);
+    }
+    *unaff_FS_OFFSET = uStack_c;
+    return 1;
+  }
+  iVar3 = 0;
+  arg1 = thisObj;
+  thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState,thisObj);
+  WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930((int)arg1,iVar3);
+  GetClientRect((HWND)this->hwnd,&tStack_1c);
+  CDC::FillSolidRect((CDC *)thisObj,&tStack_1c,this->default_dispatch_cmd);
+  *unaff_FS_OFFSET = uStack_c;
+  return 1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004032CE
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_Slot01_Target
 // GHIDRA_PROTO undefined TMacViewMgr_Slot01_Target()
@@ -11,6 +180,275 @@ void TMacViewMgr::TMacViewMgr_Slot01_Target(void)
 
 {
   _scalar_deleting_destructor_();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403A53
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE
+// GHIDRA_PROTO int __thiscall TMacViewMgr_OnMsg_WM_CREATE(int param_1)
+
+int __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE(TMacViewMgr *this,int param_1)
+
+{
+  int iVar1;
+  undefined *extraout_EAX;
+  TMacViewMgr *unaff_ESI;
+  
+  this->owned_iface_a = (undefined *)0x0;
+  iVar1 = WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(param_1);
+  if (iVar1 == -1) {
+    return -1;
+  }
+  WrapperFor_AllocateWithFallbackHandler_At0049cc60(this);
+  thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState,unaff_ESI);
+  this->owned_iface_a = extraout_EAX;
+  TMacViewMgr_OnMsg_MSG_030F();
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403EC7
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_MSG_030F
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_MSG_030F()
+
+undefined4 __fastcall TMacViewMgr::TMacViewMgr_OnMsg_MSG_030F(int param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  UINT UVar3;
+  undefined4 *unaff_FS_OFFSET;
+  HDC pHStack_1c;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e8d8;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (*(int *)(param_1 + 0xbc) == 0) {
+    *unaff_FS_OFFSET = uStack_c;
+    return 0;
+  }
+  ConstructCClientDCFromViewHandle(param_1);
+  uStack_4 = 0;
+  iVar1 = WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00607a4f();
+  uVar2 = thunk_DispatchHandleMapLookupWithReadPtrProbe
+                    (*(undefined4 *)(param_1 + 0xbc),*(int *)(iVar1 + 4) == 0x311);
+  UVar3 = RealizePalette(pHStack_1c);
+  thunk_DispatchHandleMapLookupWithReadPtrProbe(uVar2,1);
+  uStack_4 = 0xffffffff;
+  if (UVar3 == 0) {
+    DestroyCClientDCAndReleaseHandle();
+    *unaff_FS_OFFSET = uStack_c;
+    return 0;
+  }
+  DestroyCClientDCAndReleaseHandle();
+  InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
+  *unaff_FS_OFFSET = uStack_c;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040406B
+// GHIDRA_NAME TMacViewMgr::thunk_TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog
+// GHIDRA_PROTO void __cdecl thunk_TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog */
+
+void __cdecl TMacViewMgr::thunk_TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
+
+{
+  int extraout_EAX;
+  LRESULT LVar1;
+  WPARAM wParam;
+  LRESULT LVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined **appuStack_f8 [25];
+  int iStack_94;
+  HWND pHStack_68;
+  undefined1 auStack_48 [28];
+  HWND pHStack_2c;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e91c;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_InitializeDialogTemplateC2WithTextState();
+  uStack_4 = 0;
+  thunk_PrepareAndCreateDialogFromTemplateResource();
+  SendControlMessages407And408(0,6,0);
+  SendMessageA(pHStack_68,0x405,1,(int)*(short *)((int)g_pUiRuntimeContext + 6));
+  SendMessageA(pHStack_2c,0x180,0,0x694e18);
+  SendMessageA(pHStack_2c,0x180,0,0x694e08);
+  SendMessageA(pHStack_2c,0x180,0,0x694df8);
+  SendMessageA(pHStack_2c,0x180,0,0x694de8);
+  SendMessageA(pHStack_2c,0x180,0,0x694dd4);
+  SendMessageA(pHStack_2c,0x180,0,0x694dbc);
+  SendMessageA(pHStack_2c,0x180,0,0x694da4);
+  SendMessageA(pHStack_2c,0x180,0,0x694d94);
+  SendMessageA(pHStack_2c,0x180,0,0x694d80);
+  SendMessageA(pHStack_2c,0x180,0,0x694d68);
+  SendMessageA(pHStack_2c,0x19a,0,0x3b8);
+  SendMessageA(pHStack_2c,0x19a,1,0x3b8);
+  SendMessageA(pHStack_2c,0x19a,2,0x7d8);
+  SendMessageA(pHStack_2c,0x19a,3,0x2134);
+  SendMessageA(pHStack_2c,0x19a,4,0x7d9);
+  SendMessageA(pHStack_2c,0x19a,5,0x7d8);
+  SendMessageA(pHStack_2c,0x19a,6,0x7db);
+  SendMessageA(pHStack_2c,0x19a,7,0x2260);
+  SendMessageA(pHStack_2c,0x19a,8,0x7dd);
+  SendMessageA(pHStack_2c,0x19a,9,0x7de);
+  SendMessageA(pHStack_2c,0x186,4,0);
+  TNewGameCommand::thunk_FinalizeModalDialogAndRestoreOwnerFocus((TNewGameCommand *)appuStack_f8);
+  if (extraout_EAX == 1) {
+    LVar1 = SendMessageA(pHStack_68,0x400,0,0);
+    wParam = SendMessageA(pHStack_2c,0x188,0,0);
+    LVar2 = SendMessageA(pHStack_2c,0x199,wParam,0);
+    (**(code **)(*g_pUiRuntimeContext + 0x4c))(LVar2,LVar1);
+  }
+  uStack_4 = 2;
+  Dtor_CListBox_FID_61e8cb(auStack_48);
+  uStack_4 = CONCAT31(uStack_4._1_3_,1);
+  FID_conflict__CHotKeyCtrl();
+  appuStack_f8[0] = &PTR_LAB_0063e5a0;
+  uStack_4 = 3;
+  if (iStack_94 != 0) {
+    WrapperFor_CleanupDialogModalCreateState_At0049d510();
+  }
+  uStack_4 = 0xffffffff;
+  CDialog::~CDialog((CDialog *)appuStack_f8);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404688
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_ACTIVATE
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_WM_ACTIVATE()
+
+void TMacViewMgr::TMacViewMgr_OnMsg_WM_ACTIVATE
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  SwitchActiveFrameAndNotifyHandlers(param_1,param_2,param_3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404AA7
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_Slot02_Target
+// GHIDRA_PROTO undefined TMacViewMgr_Slot02_Target()
+
+void TMacViewMgr::TMacViewMgr_Slot02_Target(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004051D2
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_8013
+// GHIDRA_PROTO undefined TMacViewMgr_OnCommand_ID_8013()
+
+void TMacViewMgr::TMacViewMgr_OnCommand_ID_8013(void)
+
+{
+  short extraout_AX;
+  int extraout_EAX;
+  void **ppvVar1;
+  WPARAM wParam;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_cc;
+  undefined4 uStack_c8;
+  LPARAM LStack_c4;
+  LPARAM LStack_c0;
+  undefined **appuStack_bc [25];
+  int iStack_58;
+  undefined1 auStack_48 [28];
+  HWND pHStack_2c;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int iStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  iStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e9a3;
+  *unaff_FS_OFFSET = &uStack_c;
+  while( true ) {
+    InitializeDialogTemplateD2WithTextState(0);
+    iStack_4 = 0;
+    thunk_PrepareAndCreateDialogFromTemplateResource();
+    wParam = 0;
+    ppvVar1 = g_apTerrainTypeDescriptorTable;
+    do {
+      InitializeSharedStringRefFromEmpty();
+      iStack_4._0_1_ = 1;
+      InitializeSharedStringRefFromEmpty();
+      iStack_4._0_1_ = 2;
+      FormatOverlayTerrainLabelText(&uStack_c8);
+      FormatStringWithVarArgsToSharedRef(&LStack_c0,s_Great_Power__2d___s_00694e70,wParam,uStack_c8)
+      ;
+      SendMessageA(pHStack_2c,0x180,0,LStack_c0);
+      SendMessageA(pHStack_2c,0x19a,wParam,wParam);
+      iStack_4._0_1_ = 1;
+      ReleaseSharedStringRefIfNotEmpty();
+      iStack_4 = (uint)iStack_4._1_3_ << 8;
+      ReleaseSharedStringRefIfNotEmpty();
+      ppvVar1 = ppvVar1 + 1;
+      wParam = wParam + 1;
+    } while ((int)ppvVar1 < 0x6a432c);
+    if ((int)wParam < 0x17) {
+      ppvVar1 = g_apTerrainTypeDescriptorTable + wParam;
+      do {
+        InitializeSharedStringRefFromEmpty();
+        iStack_4._0_1_ = 3;
+        InitializeSharedStringRefFromEmpty();
+        iStack_4._0_1_ = 4;
+        FormatOverlayTerrainLabelText(&uStack_cc);
+        FormatStringWithVarArgsToSharedRef
+                  (&LStack_c4,s_Minor_Nation__2d___s_00694e54,wParam,uStack_cc);
+        SendMessageA(pHStack_2c,0x180,0,LStack_c4);
+        SendMessageA(pHStack_2c,0x19a,wParam,wParam);
+        iStack_4._0_1_ = 3;
+        ReleaseSharedStringRefIfNotEmpty();
+        iStack_4 = (uint)iStack_4._1_3_ << 8;
+        ReleaseSharedStringRefIfNotEmpty();
+        ppvVar1 = ppvVar1 + 1;
+        wParam = wParam + 1;
+      } while ((int)ppvVar1 < 0x6a436c);
+    }
+    thunk_GetActiveNationId();
+    SendMessageA(pHStack_2c,0x182,(int)extraout_AX,0);
+    SendMessageA(pHStack_2c,0x186,0,0);
+    TNewGameCommand::thunk_FinalizeModalDialogAndRestoreOwnerFocus((TNewGameCommand *)appuStack_bc);
+    if (extraout_EAX != 1) break;
+    if (g_TMac_View_Mgr_Value_006A1838 == 0) {
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    }
+    iStack_4 = 7;
+    Dtor_CListBox_FID_61e8cb(auStack_48);
+    appuStack_bc[0] = &PTR_LAB_0063e5a0;
+    iStack_4 = 8;
+    if (iStack_58 != 0) {
+      WrapperFor_CleanupDialogModalCreateState_At0049d510();
+    }
+    iStack_4 = 0xffffffff;
+    CDialog::~CDialog((CDialog *)appuStack_bc);
+  }
+  PostCommand100ToMainWindow();
+  iStack_4 = 5;
+  Dtor_CListBox_FID_61e8cb(auStack_48);
+  appuStack_bc[0] = &PTR_LAB_0063e5a0;
+  iStack_4 = 6;
+  if (iStack_58 != 0) {
+    WrapperFor_CleanupDialogModalCreateState_At0049d510();
+  }
+  iStack_4 = 0xffffffff;
+  CDialog::~CDialog((CDialog *)appuStack_bc);
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
@@ -25,6 +463,21 @@ void * __thiscall TMacViewMgr::TMacViewMgr_Slot00_Target(TMacViewMgr *this)
   
   pvVar1 = GetTMacViewMgrRuntimeClass(this);
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406EBF
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_0x0BC0
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_0x0BC0()
+
+undefined4 TMacViewMgr::TMacViewMgr_OnMsg_0x0BC0(undefined4 param_1,int *param_2)
+
+{
+  int iVar1;
+  
+  iVar1 = *param_2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x28))();
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408003
@@ -86,6 +539,33 @@ void * __cdecl TMacViewMgr::thunk_GetTMacViewMgrClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00408CE7
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_ACTIVATEAPP
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_WM_ACTIVATEAPP()
+
+void __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ACTIVATEAPP(TMacViewMgr *param_1,int param_2)
+
+{
+  TMacViewMgr *unaff_ESI;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  int iStack_24;
+  undefined4 uStack_20;
+  undefined4 uStack_1c;
+  
+  InvokeCurrentMessageFallbackHandler(param_1,unaff_ESI);
+  uStack_2c = 0x2c;
+  GetWindowPlacementFromThisHwnd(param_1,&uStack_2c);
+  if ((param_2 == 0) && (iStack_24 != 2)) {
+    iStack_24 = 2;
+    uStack_1c = 0xfffffc18;
+    uStack_20 = 0xfffffc18;
+    uStack_28 = 3;
+    SetWindowPlacementFromThisHwnd(param_1,&uStack_2c);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040972D
 // GHIDRA_NAME TMacViewMgr::thunk_GetTMacViewMgrMessageMap
 // GHIDRA_PROTO void __cdecl thunk_GetTMacViewMgrMessageMap(void)
@@ -96,6 +576,21 @@ void * __cdecl TMacViewMgr::thunk_GetTMacViewMgrClassNamePointer(void)
 /* Single-JMP thunk to GetTMacViewMgrMessageMap */
 
 void __cdecl TMacViewMgr::thunk_GetTMacViewMgrMessageMap(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_Slot02_NoOpRet4
+// GHIDRA_PROTO undefined TMacViewMgr_Slot02_NoOpRet4()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single RET 4 stub used by TMacViewMgr slot-02 target path
+// GHIDRA_COMMENT_END
+
+/* Single RET 4 stub used by TMacViewMgr slot-02 target path */
+
+void TMacViewMgr::TMacViewMgr_Slot02_NoOpRet4(void)
 
 {
   return;
@@ -126,6 +621,34 @@ void __cdecl TMacViewMgr::GetTMacViewMgrMessageMap(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00484D00
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl
+// GHIDRA_PROTO int __thiscall TMacViewMgr_OnMsg_WM_CREATE_Impl(int param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT WM_CREATE implementation: resolve/create bitmap handle and dispatch MSG_030F
+// GHIDRA_COMMENT_END
+
+/* WM_CREATE implementation: resolve/create bitmap handle and dispatch MSG_030F */
+
+int __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl(TMacViewMgr *this,int param_1)
+
+{
+  int iVar1;
+  undefined *extraout_EAX;
+  TMacViewMgr *unaff_ESI;
+  
+  this->owned_iface_a = (undefined *)0x0;
+  iVar1 = WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(param_1);
+  if (iVar1 == -1) {
+    return -1;
+  }
+  WrapperFor_AllocateWithFallbackHandler_At0049cc60(this);
+  thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState,unaff_ESI);
+  this->owned_iface_a = extraout_EAX;
+  TMacViewMgr_OnMsg_MSG_030F();
+  return 0;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00484F70
 // GHIDRA_NAME TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70
 // GHIDRA_PROTO undefined WrapperFor_PreCreateWindow_61cdb3_At00484f70()
@@ -144,6 +667,465 @@ TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70(void *param_1,void *pa
   *(undefined4 *)((int)param_2 + 0x20) = 0x2000000;
   *(undefined4 *)((int)param_2 + 0x1c) = 0xfffffc18;
   PreCreateWindow_61cdb3(param_1,param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484FB0
+// GHIDRA_NAME TMacViewMgr::WrapperFor_thunk_HandleStartupCommand100_At00484fb0
+// GHIDRA_PROTO void __stdcall WrapperFor_thunk_HandleStartupCommand100_At00484fb0(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_HandleStartupCommand100; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_HandleStartupCommand100; instructions=4, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void TMacViewMgr::WrapperFor_thunk_HandleStartupCommand100_At00484fb0(int arg1,int arg2)
+
+{
+  thunk_HandleStartupCommand100();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484FF0
+// GHIDRA_NAME TMacViewMgr::TryRealizeViewPaletteAndInvalidateWindow
+// GHIDRA_PROTO undefined TryRealizeViewPaletteAndInvalidateWindow()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Creates CClientDC, realizes palette for view palette handle at +0xBC, invalidates window on success.
+// GHIDRA_COMMENT_END
+
+/* Creates CClientDC, realizes palette for view palette handle at +0xBC, invalidates window on
+   success. */
+
+undefined4 __fastcall TMacViewMgr::TryRealizeViewPaletteAndInvalidateWindow(int param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  UINT UVar3;
+  undefined4 *unaff_FS_OFFSET;
+  HDC pHStack_1c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e8d8;
+  *unaff_FS_OFFSET = &local_c;
+  if (*(int *)(param_1 + 0xbc) == 0) {
+    *unaff_FS_OFFSET = local_c;
+    return 0;
+  }
+  ConstructCClientDCFromViewHandle(param_1);
+  local_4 = 0;
+  iVar1 = WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00607a4f();
+  uVar2 = thunk_DispatchHandleMapLookupWithReadPtrProbe
+                    (*(undefined4 *)(param_1 + 0xbc),*(int *)(iVar1 + 4) == 0x311);
+  UVar3 = RealizePalette(pHStack_1c);
+  thunk_DispatchHandleMapLookupWithReadPtrProbe(uVar2,1);
+  local_4 = 0xffffffff;
+  if (UVar3 == 0) {
+    DestroyCClientDCAndReleaseHandle();
+    *unaff_FS_OFFSET = local_c;
+    return 0;
+  }
+  DestroyCClientDCAndReleaseHandle();
+  InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
+  *unaff_FS_OFFSET = local_c;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485110
+// GHIDRA_NAME TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110
+// GHIDRA_PROTO undefined WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around TMacViewMgr_OnMsg_MSG_030F; instructions=18, call_insns=2, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around TMacViewMgr_OnMsg_MSG_030F; instructions=18, call_insns=2,
+   internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110(int param_1,int param_2)
+
+{
+  HWND hWnd;
+  BOOL BVar1;
+  
+  if (param_2 != param_1) {
+    hWnd = (HWND)0x0;
+    if (param_2 != 0) {
+      hWnd = *(HWND *)(param_2 + 0x1c);
+    }
+    BVar1 = IsChild(*(HWND *)(param_1 + 0x1c),hWnd);
+    if (BVar1 == 0) {
+      TMacViewMgr_OnMsg_MSG_030F();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485180
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl
+// GHIDRA_PROTO undefined __thiscall TMacViewMgr_OnCommand_ID_8009_Impl(TMacViewMgr * thisObj)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Implementation behind command 0x8009: resets backdrop resource handle and triggers MSG_030F refresh path.
+// GHIDRA_COMMENT_END
+
+/* Implementation behind command 0x8009: resets backdrop resource handle and triggers MSG_030F
+   refresh path. */
+
+void __thiscall
+TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl(TMacViewMgr *this,TMacViewMgr *thisObj)
+
+{
+  undefined *extraout_EAX;
+  TMacViewMgr *unaff_ESI;
+  
+  thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState,unaff_ESI);
+  this->owned_iface_a = extraout_EAX;
+  TMacViewMgr_OnMsg_MSG_030F();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004851B0
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog
+// GHIDRA_PROTO void __cdecl TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Implementation behind command 0x800C: opens city view selection dialog and dispatches selected event code.
+// GHIDRA_COMMENT_END
+
+/* Implementation behind command 0x800C: opens city view selection dialog and dispatches selected
+   event code. */
+
+void __cdecl TMacViewMgr::TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
+
+{
+  int extraout_EAX;
+  LRESULT LVar1;
+  WPARAM wParam;
+  LRESULT LVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined **local_f8 [25];
+  int iStack_94;
+  HWND local_68;
+  undefined1 local_48 [28];
+  HWND local_2c;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e91c;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_InitializeDialogTemplateC2WithTextState();
+  local_4 = 0;
+  thunk_PrepareAndCreateDialogFromTemplateResource();
+  SendControlMessages407And408(0,6,0);
+  SendMessageA(local_68,0x405,1,(int)*(short *)((int)g_pUiRuntimeContext + 6));
+  SendMessageA(local_2c,0x180,0,0x694e18);
+  SendMessageA(local_2c,0x180,0,0x694e08);
+  SendMessageA(local_2c,0x180,0,0x694df8);
+  SendMessageA(local_2c,0x180,0,0x694de8);
+  SendMessageA(local_2c,0x180,0,0x694dd4);
+  SendMessageA(local_2c,0x180,0,0x694dbc);
+  SendMessageA(local_2c,0x180,0,0x694da4);
+  SendMessageA(local_2c,0x180,0,0x694d94);
+  SendMessageA(local_2c,0x180,0,0x694d80);
+  SendMessageA(local_2c,0x180,0,0x694d68);
+  SendMessageA(local_2c,0x19a,0,0x3b8);
+  SendMessageA(local_2c,0x19a,1,0x3b8);
+  SendMessageA(local_2c,0x19a,2,0x7d8);
+  SendMessageA(local_2c,0x19a,3,0x2134);
+  SendMessageA(local_2c,0x19a,4,0x7d9);
+  SendMessageA(local_2c,0x19a,5,0x7d8);
+  SendMessageA(local_2c,0x19a,6,0x7db);
+  SendMessageA(local_2c,0x19a,7,0x2260);
+  SendMessageA(local_2c,0x19a,8,0x7dd);
+  SendMessageA(local_2c,0x19a,9,0x7de);
+  SendMessageA(local_2c,0x186,4,0);
+  TNewGameCommand::thunk_FinalizeModalDialogAndRestoreOwnerFocus((TNewGameCommand *)local_f8);
+  if (extraout_EAX == 1) {
+    LVar1 = SendMessageA(local_68,0x400,0,0);
+    wParam = SendMessageA(local_2c,0x188,0,0);
+    LVar2 = SendMessageA(local_2c,0x199,wParam,0);
+    (**(code **)(*g_pUiRuntimeContext + 0x4c))(LVar2,LVar1);
+  }
+  local_4 = 2;
+  Dtor_CListBox_FID_61e8cb(local_48);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  FID_conflict__CHotKeyCtrl();
+  local_f8[0] = &PTR_LAB_0063e5a0;
+  local_4 = 3;
+  if (iStack_94 != 0) {
+    WrapperFor_CleanupDialogModalCreateState_At0049d510();
+  }
+  local_4 = 0xffffffff;
+  CDialog::~CDialog((CDialog *)local_f8);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485590
+// GHIDRA_NAME TMacViewMgr::SetUiRuntimeContextValue64ToZero
+// GHIDRA_PROTO void __cdecl SetUiRuntimeContextValue64ToZero(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Set UI runtime context vtable slot +0x64 value to zero
+// GHIDRA_COMMENT_END
+
+/* Set UI runtime context vtable slot +0x64 value to zero */
+
+void __cdecl TMacViewMgr::SetUiRuntimeContextValue64ToZero(void)
+
+{
+  (**(code **)(*g_pUiRuntimeContext + 100))(0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004855B0
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog
+// GHIDRA_PROTO undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Implementation behind command 0x8013: opens terrain/overlay selection dialog and posts command 100 after completion.
+// GHIDRA_COMMENT_END
+
+/* Implementation behind command 0x8013: opens terrain/overlay selection dialog and posts command
+   100 after completion. */
+
+void TMacViewMgr::TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
+
+{
+  short extraout_AX;
+  int extraout_EAX;
+  void **ppvVar1;
+  WPARAM wParam;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_cc;
+  undefined4 local_c8;
+  LPARAM local_c4;
+  LPARAM local_c0;
+  undefined **local_bc [25];
+  int local_58;
+  undefined1 local_48 [28];
+  HWND local_2c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e9a3;
+  *unaff_FS_OFFSET = &local_c;
+  while( true ) {
+    InitializeDialogTemplateD2WithTextState(0);
+    local_4 = 0;
+    thunk_PrepareAndCreateDialogFromTemplateResource();
+    wParam = 0;
+    ppvVar1 = g_apTerrainTypeDescriptorTable;
+    do {
+      InitializeSharedStringRefFromEmpty();
+      local_4._0_1_ = 1;
+      InitializeSharedStringRefFromEmpty();
+      local_4._0_1_ = 2;
+      FormatOverlayTerrainLabelText(&local_c8);
+      FormatStringWithVarArgsToSharedRef(&local_c0,s_Great_Power__2d___s_00694e70,wParam,local_c8);
+      SendMessageA(local_2c,0x180,0,local_c0);
+      SendMessageA(local_2c,0x19a,wParam,wParam);
+      local_4._0_1_ = 1;
+      ReleaseSharedStringRefIfNotEmpty();
+      local_4 = (uint)local_4._1_3_ << 8;
+      ReleaseSharedStringRefIfNotEmpty();
+      ppvVar1 = ppvVar1 + 1;
+      wParam = wParam + 1;
+    } while ((int)ppvVar1 < 0x6a432c);
+    if ((int)wParam < 0x17) {
+      ppvVar1 = g_apTerrainTypeDescriptorTable + wParam;
+      do {
+        InitializeSharedStringRefFromEmpty();
+        local_4._0_1_ = 3;
+        InitializeSharedStringRefFromEmpty();
+        local_4._0_1_ = 4;
+        FormatOverlayTerrainLabelText(&local_cc);
+        FormatStringWithVarArgsToSharedRef
+                  (&local_c4,s_Minor_Nation__2d___s_00694e54,wParam,local_cc);
+        SendMessageA(local_2c,0x180,0,local_c4);
+        SendMessageA(local_2c,0x19a,wParam,wParam);
+        local_4._0_1_ = 3;
+        ReleaseSharedStringRefIfNotEmpty();
+        local_4 = (uint)local_4._1_3_ << 8;
+        ReleaseSharedStringRefIfNotEmpty();
+        ppvVar1 = ppvVar1 + 1;
+        wParam = wParam + 1;
+      } while ((int)ppvVar1 < 0x6a436c);
+    }
+    thunk_GetActiveNationId();
+    SendMessageA(local_2c,0x182,(int)extraout_AX,0);
+    SendMessageA(local_2c,0x186,0,0);
+    TNewGameCommand::thunk_FinalizeModalDialogAndRestoreOwnerFocus((TNewGameCommand *)local_bc);
+    if (extraout_EAX != 1) break;
+    if (g_TMac_View_Mgr_Value_006A1838 == 0) {
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    }
+    local_4 = 7;
+    Dtor_CListBox_FID_61e8cb(local_48);
+    local_bc[0] = &PTR_LAB_0063e5a0;
+    local_4 = 8;
+    if (local_58 != 0) {
+      WrapperFor_CleanupDialogModalCreateState_At0049d510();
+    }
+    local_4 = 0xffffffff;
+    CDialog::~CDialog((CDialog *)local_bc);
+  }
+  PostCommand100ToMainWindow();
+  local_4 = 5;
+  Dtor_CListBox_FID_61e8cb(local_48);
+  local_bc[0] = &PTR_LAB_0063e5a0;
+  local_4 = 6;
+  if (local_58 != 0) {
+    WrapperFor_CleanupDialogModalCreateState_At0049d510();
+  }
+  local_4 = 0xffffffff;
+  CDialog::~CDialog((CDialog *)local_bc);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485960
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_0x0BC0_Impl
+// GHIDRA_PROTO undefined TMacViewMgr_OnMsg_0x0BC0_Impl()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Implementation behind custom message 0x0BC0: invokes object callbacks and returns 0.
+// GHIDRA_COMMENT_END
+
+/* Implementation behind custom message 0x0BC0: invokes object callbacks and returns 0. */
+
+undefined4 TMacViewMgr::TMacViewMgr_OnMsg_0x0BC0_Impl(undefined4 param_1,int *param_2)
+
+{
+  int iVar1;
+  
+  iVar1 = *param_2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x28))();
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004859D0
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl
+// GHIDRA_PROTO int __thiscall TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(TMacViewMgr * thisObj, pointer pDc)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Implementation behind WM_ERASEBKGND handler: paints tiled/solid backdrop depending on active style/resource mode.
+// GHIDRA_COMMENT_END
+
+/* Implementation behind WM_ERASEBKGND handler: paints tiled/solid backdrop depending on active
+   style/resource mode. */
+
+int __thiscall
+TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl
+          (TMacViewMgr *this,TMacViewMgr *thisObj,undefined *pDc)
+
+{
+  undefined *extraout_EAX;
+  undefined *puVar1;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  TMacViewMgr *arg1;
+  int iVar3;
+  tagRECT local_1c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062e9da;
+  *unaff_FS_OFFSET = &local_c;
+  if (this->default_dispatch_cmd == 0x100005f) {
+    if (this->owned_iface_b == (undefined *)0x0) {
+      iVar3 = AllocateWithFallbackHandler(0x38);
+      local_4 = 0;
+      if (iVar3 == 0) {
+        puVar1 = (undefined *)0x0;
+      }
+      else {
+        ConstructBitmapSurfaceStateAndResetResources();
+        puVar1 = extraout_EAX;
+      }
+      local_4 = 0xffffffff;
+      this->owned_iface_b = puVar1;
+      LoadBitmapResourceAndInitializeSurfaceState();
+    }
+    GetClientRect((HWND)this->hwnd,&local_1c);
+    iVar2 = (int)((local_1c.bottom - local_1c.top) +
+                 (local_1c.bottom - local_1c.top >> 0x1f & 0x7fU)) >> 7;
+    iVar3 = (int)((local_1c.right - local_1c.left) +
+                 (local_1c.right - local_1c.left >> 0x1f & 0x7fU)) >> 7;
+    thunk_SelectAndRealizeDibPalette();
+    if (-1 < iVar2) {
+      thisObj = (TMacViewMgr *)(iVar2 + 1);
+      do {
+        if (-1 < iVar3) {
+          iVar2 = iVar3 + 1;
+          do {
+            StretchDibitsFromStoredBitmapToHdc();
+            iVar2 = iVar2 + -1;
+          } while (iVar2 != 0);
+        }
+        thisObj = (TMacViewMgr *)((int)&thisObj[-1].init_flag + 3);
+      } while (thisObj != (TMacViewMgr *)0x0);
+    }
+    *unaff_FS_OFFSET = local_c;
+    return 1;
+  }
+  iVar3 = 0;
+  arg1 = thisObj;
+  thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState,thisObj);
+  WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930((int)arg1,iVar3);
+  GetClientRect((HWND)this->hwnd,&local_1c);
+  CDC::FillSolidRect((CDC *)thisObj,&local_1c,this->default_dispatch_cmd);
+  *unaff_FS_OFFSET = local_c;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485BD0
+// GHIDRA_NAME TMacViewMgr::ConstructAndDestroyCPaintDC_NoOpPaintHandler
+// GHIDRA_PROTO undefined ConstructAndDestroyCPaintDC_NoOpPaintHandler()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Paint handler stub that only scopes CPaintDC construction/destruction.
+// GHIDRA_COMMENT_END
+
+/* Paint handler stub that only scopes CPaintDC construction/destruction. */
+
+void __fastcall TMacViewMgr::ConstructAndDestroyCPaintDC_NoOpPaintHandler(undefined4 param_1)
+
+{
+  CPaintDC local_54 [84];
+  
+  ConstructCPaintDCFromViewHandle(param_1);
+  CPaintDC::~CPaintDC(local_54);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485C00
+// GHIDRA_NAME TMacViewMgr::WrapperFor_InvokeCurrentMessageFallbackHandler_At00485c00
+// GHIDRA_PROTO void __thiscall WrapperFor_InvokeCurrentMessageFallbackHandler_At00485c00(TMacViewMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around InvokeCurrentMessageFallbackHandler; instructions=2, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around InvokeCurrentMessageFallbackHandler; instructions=2,
+   call_insns=1, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TMacViewMgr::WrapperFor_InvokeCurrentMessageFallbackHandler_At00485c00
+          (TMacViewMgr *this,TMacViewMgr *pThis)
+
+{
+  TMacViewMgr *unaff_retaddr;
+  
+  InvokeCurrentMessageFallbackHandler(this,unaff_retaddr);
   return;
 }
 
@@ -170,6 +1152,175 @@ void TMacViewMgr::SendF1KeyDownToActiveMainWindow(int arg1,int arg2)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00485C60
+// GHIDRA_NAME TMacViewMgr::WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60
+// GHIDRA_PROTO undefined WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around SwitchActiveFrameAndNotifyHandlers; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around SwitchActiveFrameAndNotifyHandlers; instructions=8,
+   call_insns=1, internal_calls=1, unique_internal=1 */
+
+void TMacViewMgr::WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  SwitchActiveFrameAndNotifyHandlers(param_1,param_2,param_3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004995C0
+// GHIDRA_NAME TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6
+// GHIDRA_PROTO void __thiscall ResolveBmpResourceHandleWithDefault3B6(TMacViewMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resolves bitmap handle for a resource entry; when id is unset it loads default bitmap 0x3B6 from cache and manages reference-counted cache nodes.
+// GHIDRA_COMMENT_END
+
+/* Resolves bitmap handle for a resource entry; when id is unset it loads default bitmap 0x3B6 from
+   cache and manages reference-counted cache nodes. */
+
+void __thiscall
+TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(TMacViewMgr *this,TMacViewMgr *pThis)
+
+{
+  undefined4 *puVar1;
+  short *psVar2;
+  undefined *extraout_EAX;
+  undefined *puVar3;
+  undefined4 *puVar4;
+  int iVar5;
+  undefined4 *puVar6;
+  uint uVar7;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f9aa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  if (this->vftable == (undefined *)0x0) {
+    thunk_LoadBmpResourceByIdCached();
+    psVar2 = (short *)AllocateWithFallbackHandler(0xc);
+    local_4 = 0;
+    if (psVar2 == (short *)0x0) {
+      puVar3 = (undefined *)0x0;
+    }
+    else {
+      InitializePaletteHolderVtableAndReset();
+      puVar3 = extraout_EAX;
+    }
+    local_4 = 0xffffffff;
+    this->vftable = puVar3;
+    BuildPaletteFromBitmapColorTable();
+    if (*(int *)&this->field_0x8 != 0) {
+      for (puVar4 = *(undefined4 **)
+                     (*(int *)&this->field_0x8 +
+                     (int)(0x3b % (ulonglong)*(uint *)&this->field_0xc) * 4);
+          puVar4 != (undefined4 *)0x0; puVar4 = (undefined4 *)*puVar4) {
+        if (*(short *)(puVar4 + 2) == 0x3b6) goto LAB_0049964c;
+      }
+    }
+    puVar4 = (undefined4 *)0x0;
+LAB_0049964c:
+    if (puVar4 != (undefined4 *)0x0) {
+      psVar2 = (short *)puVar4[3];
+    }
+    iVar5 = *(int *)(psVar2 + 4);
+    *(int *)(psVar2 + 4) = iVar5 + -1;
+    if (iVar5 + -1 < 1) {
+      if (*(int **)(psVar2 + 2) != (int *)0x0) {
+        (**(code **)(**(int **)(psVar2 + 2) + 4))(1);
+      }
+      iVar5 = *(int *)&this->field_0x24;
+      if (iVar5 != 0) {
+        uVar7 = (*(uint *)(psVar2 + 2) >> 4) % *(uint *)&this->field_0x28;
+        puVar6 = *(undefined4 **)(iVar5 + uVar7 * 4);
+        puVar4 = (undefined4 *)(iVar5 + uVar7 * 4);
+        while (puVar1 = puVar6, puVar1 != (undefined4 *)0x0) {
+          if (puVar1[2] == *(uint *)(psVar2 + 2)) {
+            *puVar4 = *puVar1;
+            *puVar1 = *(undefined4 *)&this->field_0x30;
+            *(undefined4 **)&this->field_0x30 = puVar1;
+            iVar5 = *(int *)&this->field_0x2c + -1;
+            *(int *)&this->field_0x2c = iVar5;
+            if (iVar5 == 0) {
+              puVar4 = *(undefined4 **)&this->field_0x24;
+              if (puVar4 != (undefined4 *)0x0) {
+                puVar6 = puVar4;
+                for (iVar5 = *(int *)&this->field_0x28; iVar5 != 0; iVar5 = iVar5 + -1) {
+                  for (puVar1 = (undefined4 *)*puVar6; puVar1 != (undefined4 *)0x0;
+                      puVar1 = (undefined4 *)*puVar1) {
+                  }
+                  puVar6 = puVar6 + 1;
+                }
+              }
+              FreeHeapBufferIfNotNull(puVar4);
+              *(undefined4 *)&this->field_0x24 = 0;
+              *(undefined4 *)&this->field_0x2c = 0;
+              *(undefined4 *)&this->field_0x30 = 0;
+              TInteriorMinister::FreeLinkedBlockChain();
+              *(undefined4 *)&this->field_0x34 = 0;
+            }
+            break;
+          }
+          puVar4 = puVar1;
+          puVar6 = (undefined4 *)*puVar1;
+        }
+      }
+      iVar5 = *(int *)&this->field_0x8;
+      if (iVar5 != 0) {
+        uVar7 = ((uint)(int)*psVar2 >> 4) % *(uint *)&this->field_0xc;
+        puVar6 = *(undefined4 **)(iVar5 + uVar7 * 4);
+        puVar4 = (undefined4 *)(iVar5 + uVar7 * 4);
+        while (puVar1 = puVar6, puVar1 != (undefined4 *)0x0) {
+          if (*(short *)(puVar1 + 2) == *psVar2) {
+            *puVar4 = *puVar1;
+            *puVar1 = *(undefined4 *)&this->field_0x14;
+            *(undefined4 **)&this->field_0x14 = puVar1;
+            iVar5 = *(int *)&this->field_0x10 + -1;
+            *(int *)&this->field_0x10 = iVar5;
+            if (iVar5 == 0) {
+              ResolveBmpResourceHandleWithDefault3B6_Impl();
+            }
+            break;
+          }
+          puVar4 = puVar1;
+          puVar6 = (undefined4 *)*puVar1;
+        }
+      }
+      FreeHeapBufferIfNotNull(psVar2);
+    }
+  }
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D510
+// GHIDRA_NAME TMacViewMgr::WrapperFor_CleanupDialogModalCreateState_At0049d510
+// GHIDRA_PROTO undefined WrapperFor_CleanupDialogModalCreateState_At0049d510()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around CleanupDialogModalCreateState; instructions=14, call_insns=2, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around CleanupDialogModalCreateState; instructions=14, call_insns=2,
+   internal_calls=1, unique_internal=1 */
+
+void __fastcall TMacViewMgr::WrapperFor_CleanupDialogModalCreateState_At0049d510(int *param_1)
+
+{
+  if (param_1[0x17] != 0) {
+    (**(code **)(*param_1 + 0x60))();
+    CleanupDialogModalCreateState();
+    param_1[0x19] = 0;
+    param_1[0x18] = 0;
+    param_1[0x17] = 0;
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00509C00
 // GHIDRA_NAME TMacViewMgr::CreateTMacViewMgrInstance
 // GHIDRA_PROTO void * __cdecl CreateTMacViewMgrInstance(void)
@@ -182,7 +1333,7 @@ void TMacViewMgr::SendF1KeyDownToActiveMainWindow(int arg1,int arg2)
 void * __cdecl TMacViewMgr::CreateTMacViewMgrInstance(void)
 
 {
-  int iVar1;
+  void *this;
   void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -193,10 +1344,10 @@ void * __cdecl TMacViewMgr::CreateTMacViewMgrInstance(void)
   puStack_8 = &LAB_00633a6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0xd84);
+  this = (void *)AllocateWithFallbackHandler(0xd84);
   local_4 = 0;
-  if (iVar1 != 0) {
-    thunk_ConstructStrategicMapViewSystem();
+  if (this != (void *)0x0) {
+    thunk_ConstructStrategicMapViewSystem(this);
     *unaff_FS_OFFSET = local_c;
     return extraout_EAX;
   }
@@ -234,6 +1385,23 @@ uint __thiscall TMacViewMgr::DestructTMacViewMgrAndMaybeFree(TMacViewMgr *this,s
   return *(uint *)(&this->field_0x8 + arg1 * 4);
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005FFFFD
+// GHIDRA_NAME TMacViewMgr::thunk_InvokeCurrentMessageFallbackHandler
+// GHIDRA_PROTO void __thiscall thunk_InvokeCurrentMessageFallbackHandler(TMacViewMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InvokeCurrentMessageFallbackHandler
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InvokeCurrentMessageFallbackHandler */
+
+void __thiscall
+TMacViewMgr::thunk_InvokeCurrentMessageFallbackHandler(TMacViewMgr *this,TMacViewMgr *pThis)
+
+{
+  InvokeCurrentMessageFallbackHandler(this,pThis);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060507C
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_Slot47_Target
 // GHIDRA_PROTO undefined TMacViewMgr_Slot47_Target()
@@ -242,6 +1410,135 @@ undefined4 TMacViewMgr::TMacViewMgr_Slot47_Target(void)
 
 {
   return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607A84
+// GHIDRA_NAME TMacViewMgr::InvokeCurrentMessageFallbackHandler
+// GHIDRA_PROTO void __thiscall InvokeCurrentMessageFallbackHandler(TMacViewMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Invokes fallback message handler virtual using current thread-state message tuple.
+// GHIDRA_COMMENT_END
+
+/* Invokes fallback message handler virtual using current thread-state message tuple. */
+
+void __thiscall
+TMacViewMgr::InvokeCurrentMessageFallbackHandler(TMacViewMgr *this,TMacViewMgr *pThis)
+
+{
+  int iVar1;
+  
+  iVar1 = GetOrCreatePerThreadTlsSlotObject(CreateMfcModuleThreadState);
+  (**(code **)(this->vftable + 0xa8))
+            (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
+             *(undefined4 *)(iVar1 + 0x40));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607B57
+// GHIDRA_NAME TMacViewMgr::LookupCWndByHwndNoAttach
+// GHIDRA_PROTO undefined LookupCWndByHwndNoAttach()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Looks up CWnd by HWND in existing handle map without creating/attaching temporary wrappers.
+// GHIDRA_COMMENT_END
+
+/* Looks up CWnd by HWND in existing handle map without creating/attaching temporary wrappers. */
+
+undefined4 TMacViewMgr::LookupCWndByHwndNoAttach(undefined4 param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  
+  iVar1 = GetOrCreateMfcHandleMap(0);
+  uVar2 = 0;
+  if (iVar1 != 0) {
+    uVar2 = LookupHandleMapEntryByHwnd(param_1);
+  }
+  return uVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0060986B
+// GHIDRA_NAME TMacViewMgr::RepositionChildControlsByIdRange
+// GHIDRA_PROTO undefined RepositionChildControlsByIdRange()
+
+void __thiscall
+TMacViewMgr::RepositionChildControlsByIdRange
+          (int param_1,uint param_2,uint param_3,uint param_4,int param_5,LPRECT param_6,
+          int *param_7,int param_8)
+
+{
+  HWND pHVar1;
+  HWND hWnd;
+  uint uVar2;
+  int iVar3;
+  int *piVar4;
+  HDWP local_28;
+  tagRECT local_24;
+  LONG local_14;
+  LONG local_10;
+  int local_c;
+  HWND local_8;
+  
+  local_8 = (HWND)0x0;
+  local_c = param_8;
+  local_10 = 0;
+  local_14 = 0;
+  if (param_7 == (int *)0x0) {
+    GetClientRect(*(HWND *)(param_1 + 0x1c),&local_24);
+  }
+  else {
+    local_24.left = *param_7;
+    local_24.top = param_7[1];
+    local_24.right = param_7[2];
+    local_24.bottom = param_7[3];
+  }
+  if (param_5 == 1) {
+    local_28 = (HDWP)0x0;
+  }
+  else {
+    local_28 = BeginDeferWindowPos(8);
+  }
+  for (hWnd = GetTopWindow(*(HWND *)(param_1 + 0x1c)); hWnd != (HWND)0x0; hWnd = GetWindow(hWnd,2))
+  {
+    uVar2 = GetDlgCtrlID(hWnd);
+    uVar2 = uVar2 & 0xffff;
+    iVar3 = LookupCWndByHwndNoAttach(hWnd);
+    pHVar1 = hWnd;
+    if ((((uVar2 != param_4) && (pHVar1 = local_8, param_2 <= uVar2)) && (uVar2 <= param_3)) &&
+       (iVar3 != 0)) {
+      SendMessageA(hWnd,0x361,0,(LPARAM)&local_28);
+      pHVar1 = local_8;
+    }
+    local_8 = pHVar1;
+  }
+  if (param_5 == 1) {
+    if (param_8 == 0) {
+      param_6->right = local_14;
+      param_6->top = 0;
+      param_6->left = 0;
+      param_6->bottom = local_10;
+    }
+    else {
+      CopyRect(param_6,&local_24);
+    }
+  }
+  else {
+    if ((param_4 != 0) && (local_8 != (HWND)0x0)) {
+      piVar4 = (int *)TNewGameCommand::GetOrCreateCWndFromHandle(local_8);
+      if (param_5 == 2) {
+        local_24.left = local_24.left + param_6->left;
+        local_24.top = local_24.top + param_6->top;
+        local_24.right = local_24.right - param_6->right;
+        local_24.bottom = local_24.bottom - param_6->bottom;
+      }
+      (**(code **)(*piVar4 + 0x68))(&local_24,0);
+      SetChildWindowRectIfChanged(&local_28,local_8,&local_24);
+    }
+    if (local_28 != (HDWP)0x0) {
+      EndDeferWindowPos(local_28);
+    }
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A3F7
@@ -262,6 +1559,91 @@ undefined4 TMacViewMgr::TMacViewMgr_Slot46_Target(void)
 
 {
   return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613803
+// GHIDRA_NAME TMacViewMgr::DestroyCClientDCAndReleaseHandle
+// GHIDRA_PROTO undefined DestroyCClientDCAndReleaseHandle()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT CClientDC destructor (ReleaseDC path).
+// GHIDRA_COMMENT_END
+
+/* CClientDC destructor (ReleaseDC path). */
+
+void TMacViewMgr::DestroyCClientDCAndReleaseHandle(void)
+
+{
+  HDC hDC;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &g_vtbl_CClientDC;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  hDC = (HDC)DetachHdcFromDcWrapper();
+  ReleaseDC((HWND)extraout_ECX[4],hDC);
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  DestroyCDCAndDeleteOwnedHdc();
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00619467
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_E146
+// GHIDRA_PROTO undefined TMacViewMgr_OnCommand_ID_E146()
+
+void __fastcall TMacViewMgr::TMacViewMgr_OnCommand_ID_E146(int param_1)
+
+{
+  int iVar1;
+  
+  if (*(int *)(param_1 + 0x4c) == 0) {
+    DispatchContextMessage365OrSendCommandE147();
+  }
+  else if (*(int *)(param_1 + 0x4c) != 0x3f107) {
+    iVar1 = GetOrCreateMfcModuleThreadState();
+    (**(code **)(**(int **)(iVar1 + 4) + 0xa0))(*(undefined4 *)(param_1 + 0x4c),1);
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006194B1
+// GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_E143_E147
+// GHIDRA_PROTO undefined TMacViewMgr_OnCommand_ID_E143_E147()
+
+void TMacViewMgr::TMacViewMgr_OnCommand_ID_E143_E147(void)
+
+{
+  int iVar1;
+  
+  iVar1 = GetOrCreateMfcModuleThreadState();
+  (**(code **)(**(int **)(iVar1 + 4) + 0xa0))(0,0xb);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061C76D
+// GHIDRA_NAME TMacViewMgr::LoadAcceleratorTableFromResourceId
+// GHIDRA_PROTO undefined LoadAcceleratorTableFromResourceId()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Loads accelerator table handle from a resource ID for current module state (LoadAcceleratorsA wrapper).
+// GHIDRA_COMMENT_END
+
+/* Loads accelerator table handle from a resource ID for current module state (LoadAcceleratorsA
+   wrapper). */
+
+bool __thiscall TMacViewMgr::LoadAcceleratorTableFromResourceId(int param_1,LPCSTR param_2)
+
+{
+  int iVar1;
+  HACCEL pHVar2;
+  
+  iVar1 = GetOrCreateMfcModuleThreadState();
+  pHVar2 = LoadAcceleratorsA(*(HINSTANCE *)(iVar1 + 0xc),param_2);
+  *(HACCEL *)(param_1 + 0x48) = pHVar2;
+  return pHVar2 != (HACCEL)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C7B7
@@ -338,6 +1720,31 @@ TMacViewMgr::TMacViewMgr_Slot32_Target(TNewGameCommand *param_1,uint param_2,int
     iVar1 = 1;
   }
   return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061C9ED
+// GHIDRA_NAME TMacViewMgr::IsOwnerChainContainingWindow
+// GHIDRA_PROTO int IsOwnerChainContainingWindow(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Returns true when target window appears in owner-parent chain of candidate window.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+/* Returns true when target window appears in owner-parent chain of candidate window. */
+
+int TMacViewMgr::IsOwnerChainContainingWindow(void)
+
+{
+  HWND__ *in_stack_00000004;
+  HWND__ *in_stack_00000008;
+  
+  do {
+    if (in_stack_00000004 == in_stack_00000008) {
+      return 1;
+    }
+    in_stack_00000008 = AfxGetParentOwner(in_stack_00000008);
+  } while (in_stack_00000008 != (HWND__ *)0x0);
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061CA0D
@@ -444,6 +1851,48 @@ TMacViewMgr::ReleaseDeferredDisabledWindowsIfCounterZero(TMacViewMgr *this,TMacV
     }
     FreeHeapBufferIfNotNull(this->deferred_disabled_hwnd_list);
     this->deferred_disabled_hwnd_list = (undefined *)0x0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061CBA9
+// GHIDRA_NAME TMacViewMgr::ToggleOverlappingWindowsVisibility
+// GHIDRA_PROTO undefined ToggleOverlappingWindowsVisibility()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Toggles visibility of overlapping sibling windows based on ownership/overlap checks.
+// GHIDRA_COMMENT Hides matching windows on disable path and restores previously hidden ones on enable path.
+// GHIDRA_COMMENT_END
+
+/* Toggles visibility of overlapping sibling windows based on ownership/overlap checks.
+   Hides matching windows on disable path and restores previously hidden ones on enable path. */
+
+void __thiscall TMacViewMgr::ToggleOverlappingWindowsVisibility(int param_1,int param_2)
+
+{
+  HWND pHVar1;
+  int iVar2;
+  int iVar3;
+  uint uVar4;
+  UINT uCmd;
+  
+  uCmd = 5;
+  pHVar1 = GetDesktopWindow();
+  for (pHVar1 = GetWindow(pHVar1,uCmd); pHVar1 != (HWND)0x0; pHVar1 = GetWindow(pHVar1,2)) {
+    iVar2 = LookupCWndByHwndNoAttach(pHVar1);
+    if (((iVar2 != 0) && (*(HWND *)(param_1 + 0x1c) != pHVar1)) &&
+       (iVar3 = IsOwnerChainContainingWindow(), iVar3 != 0)) {
+      uVar4 = GetWindowLongA(pHVar1,-0x10);
+      if (param_2 == 0) {
+        if ((uVar4 & 0x18000000) == 0x10000000) {
+          ShowWindow(pHVar1,0);
+          *(uint *)(iVar2 + 0x24) = *(uint *)(iVar2 + 0x24) | 2;
+        }
+      }
+      else if (((uVar4 & 0x18000000) == 0) && ((*(byte *)(iVar2 + 0x24) & 2) != 0)) {
+        ShowWindow(pHVar1,4);
+        *(uint *)(iVar2 + 0x24) = *(uint *)(iVar2 + 0x24) & 0xfffffffd;
+      }
+    }
   }
   return;
 }

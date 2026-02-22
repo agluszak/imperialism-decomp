@@ -57,17 +57,17 @@ void * __cdecl TAmtBar::thunk_GetTAmtBarClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040611D
 // GHIDRA_NAME TAmtBar::thunk_HandleTradeMoveStepCommand
-// GHIDRA_PROTO void __cdecl thunk_HandleTradeMoveStepCommand(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeMoveStepCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeMoveStepCommand
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeMoveStepCommand */
 
-void __cdecl TAmtBar::thunk_HandleTradeMoveStepCommand(void)
+void __thiscall TAmtBar::thunk_HandleTradeMoveStepCommand(TAmtBar *this)
 
 {
-  HandleTradeMoveStepCommand();
+  HandleTradeMoveStepCommand(this);
   return;
 }
 
@@ -112,7 +112,7 @@ void TAmtBar::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00588610_At00407d8d(v
 void * __cdecl TAmtBar::CreateTAmtBarInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -122,17 +122,17 @@ void * __cdecl TAmtBar::CreateTAmtBarInstance(void)
   puStack_8 = &LAB_006378fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblTAmtBar;
-    *(undefined2 *)(puVar1 + 0x18) = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0;
-    *(undefined2 *)(puVar1 + 0x19) = 0;
-    *(undefined2 *)((int)puVar1 + 0x66) = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTAmtBar;
+    *(undefined2 *)(this + 0x60) = 0;
+    *(undefined2 *)(this + 0x62) = 0;
+    *(undefined2 *)(this + 100) = 0;
+    *(undefined2 *)(this + 0x66) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -160,7 +160,7 @@ void * __cdecl TAmtBar::GetTAmtBarClassNamePointer(void)
 void * __thiscall TAmtBar::ConstructTAmtBarBaseState(TAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTAmtBar;
   *(undefined2 *)(this + 0x60) = 0;
   *(undefined2 *)(this + 0x62) = 0;
@@ -202,19 +202,18 @@ void TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588FF0
 // GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
-// GHIDRA_PROTO void __cdecl HandleTradeMoveStepCommand(void)
+// GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
 
-void __cdecl TAmtBar::HandleTradeMoveStepCommand(void)
+void __thiscall TAmtBar::HandleTradeMoveStepCommand(TAmtBar *this)
 
 {
   int iVar1;
   int *piVar2;
   int iVar3;
-  int *in_ECX;
   int in_stack_00000004;
   
   if (in_stack_00000004 == 100) {
-    iVar1 = *in_ECX;
+    iVar1 = *(int *)this;
     piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
     if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -225,10 +224,10 @@ void __cdecl TAmtBar::HandleTradeMoveStepCommand(void)
     return;
   }
   if (in_stack_00000004 != 0x65) {
-    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment();
+    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
     return;
   }
-  iVar1 = *in_ECX;
+  iVar1 = *(int *)this;
   piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */

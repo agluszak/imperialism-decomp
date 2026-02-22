@@ -40,6 +40,63 @@ void * __cdecl TMovieView::thunk_GetTMovieViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00485990
+// GHIDRA_NAME TMovieView::SetFieldC0AndInvalidateWindowIfChanged
+// GHIDRA_PROTO void __thiscall SetFieldC0AndInvalidateWindowIfChanged(TMovieView * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Update field at +0xC0 and invalidate window only when value changes.
+// GHIDRA_COMMENT_END
+
+/* Update field at +0xC0 and invalidate window only when value changes. */
+
+void __thiscall
+TMovieView::SetFieldC0AndInvalidateWindowIfChanged(TMovieView *this,TMovieView *pThis)
+
+{
+  if (*(TMovieView **)(this + 0xc0) != pThis) {
+    *(TMovieView **)(this + 0xc0) = pThis;
+    InvalidateRect(*(HWND *)(this + 0x1c),(RECT *)0x0,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00593C10
+// GHIDRA_NAME TMovieView::HandleBlinkStateAndScheduleTimerTick
+// GHIDRA_PROTO void __thiscall HandleBlinkStateAndScheduleTimerTick(TMovieView * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handle blink/flash state transitions and schedule timer callback when active.
+// GHIDRA_COMMENT_END
+
+/* Handle blink/flash state transitions and schedule timer callback when active. */
+
+void __thiscall TMovieView::HandleBlinkStateAndScheduleTimerTick(TMovieView *this,TMovieView *pThis)
+
+{
+  int iVar1;
+  undefined4 extraout_EAX;
+  
+  iVar1 = (**(code **)(**(int **)(this + 0x6c) + 0x28))();
+  if (0 < iVar1) {
+    (**(code **)(**(int **)(this + 0x6c) + 0x30))();
+    (**(code **)(**(int **)(this + 0x70) + 0x30))();
+  }
+  if (this[0x78] != (TMovieView)0x0) {
+    if ((char)pThis != '\0') {
+      if (*(int *)(this + 0x7c) == 0) {
+        thunk_GetTickCountDiv16();
+        *(undefined4 *)(this + 0x7c) = extraout_EAX;
+        thunk_ScheduleTimerSlotCallbackWithInterval(0x406dd4,6,0);
+      }
+      this[0x80] = (TMovieView)0x1;
+      return;
+    }
+    ForwardMciCommand808ToDevice();
+    this[0x78] = (TMovieView)0x0;
+    *(undefined2 *)(this + 0x74) = 0;
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2100
 // GHIDRA_NAME TMovieView::CreateTMovieViewInstance
 // GHIDRA_PROTO void * __cdecl CreateTMovieViewInstance(void)
@@ -49,6 +106,7 @@ void * __cdecl TMovieView::CreateTMovieViewInstance(void)
 {
   undefined4 *puVar1;
   CWinThread *pCVar2;
+  TMovieView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -67,17 +125,17 @@ void * __cdecl TMovieView::CreateTMovieViewInstance(void)
   thunk_ConstructPictureResourceEntryBase();
   *puVar1 = &g_vtblTMovieView;
   local_4 = CONCAT31(local_4._1_3_,1);
-  (**(code **)(*g_pSfxPlaybackSystem + 0xa4))();
-  HandleBlinkStateAndScheduleTimerTick();
+  (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xa4))();
+  HandleBlinkStateAndScheduleTimerTick(g_pSfxPlaybackSystem,(TMovieView *)0x1);
   pCVar2 = AfxGetThread();
   if (pCVar2 != (CWinThread *)0x0) {
     pCVar2 = AfxGetThread();
-    (**(code **)(*(int *)pCVar2 + 0x7c))();
-    SetFieldC0AndInvalidateWindowIfChanged();
+    this = (TMovieView *)(**(code **)(*(int *)pCVar2 + 0x7c))();
+    SetFieldC0AndInvalidateWindowIfChanged(this,(TMovieView *)0x1000000);
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
-  SetFieldC0AndInvalidateWindowIfChanged();
+  SetFieldC0AndInvalidateWindowIfChanged((TMovieView *)0x0,(TMovieView *)0x1000000);
   *unaff_FS_OFFSET = local_c;
   return puVar1;
 }
@@ -105,6 +163,7 @@ void * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *this)
 
 {
   CWinThread *pCVar1;
+  TMovieView *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -117,14 +176,17 @@ void * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *this)
   thunk_ConstructPictureResourceEntryBase();
   *(undefined ***)this = &g_vtblTMovieView;
   local_4 = 0;
-  (**(code **)(*g_pSfxPlaybackSystem + 0xa4))();
-  HandleBlinkStateAndScheduleTimerTick();
+  (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xa4))();
+  HandleBlinkStateAndScheduleTimerTick(g_pSfxPlaybackSystem,(TMovieView *)0x1);
   pCVar1 = AfxGetThread();
-  if (pCVar1 != (CWinThread *)0x0) {
-    pCVar1 = AfxGetThread();
-    (**(code **)(*(int *)pCVar1 + 0x7c))();
+  if (pCVar1 == (CWinThread *)0x0) {
+    this_00 = (TMovieView *)0x0;
   }
-  SetFieldC0AndInvalidateWindowIfChanged();
+  else {
+    pCVar1 = AfxGetThread();
+    this_00 = (TMovieView *)(**(code **)(*(int *)pCVar1 + 0x7c))();
+  }
+  SetFieldC0AndInvalidateWindowIfChanged(this_00,(TMovieView *)0x1000000);
   *unaff_FS_OFFSET = uStack_c;
   return this;
 }

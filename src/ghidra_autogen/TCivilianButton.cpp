@@ -15,8 +15,8 @@
 void * __cdecl TCivilianButton::thunk_CreateTCivilianButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TRadioPictureButton *this;
+  TRadioPictureButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -26,17 +26,17 @@ void * __cdecl TCivilianButton::thunk_CreateTCivilianButtonInstance(void)
   puStack_8 = &LAB_00637afa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TRadioPictureButton *)AllocateWithFallbackHandler(0xa0);
   uStack_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry();
-    *puVar1 = &g_vtblTCivilianButton;
-    puVar1[0x18] = 0xc;
-    puVar2 = puVar1;
+  pTVar1 = (TRadioPictureButton *)0x0;
+  if (this != (TRadioPictureButton *)0x0) {
+    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(this);
+    *(undefined ***)this = &g_vtblTCivilianButton;
+    *(undefined4 *)(this + 0x60) = 0xc;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = uStack_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004028A6
@@ -83,8 +83,8 @@ void * __cdecl TCivilianButton::thunk_GetTCivilianButtonClassNamePointer(void)
 void * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TRadioPictureButton *this;
+  TRadioPictureButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -94,17 +94,17 @@ void * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
   puStack_8 = &LAB_00637afa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TRadioPictureButton *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry();
-    *puVar1 = &g_vtblTCivilianButton;
-    puVar1[0x18] = 0xc;
-    puVar2 = puVar1;
+  pTVar1 = (TRadioPictureButton *)0x0;
+  if (this != (TRadioPictureButton *)0x0) {
+    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(this);
+    *(undefined ***)this = &g_vtblTCivilianButton;
+    *(undefined4 *)(this + 0x60) = 0xc;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B3C0
@@ -129,7 +129,7 @@ void * __cdecl TCivilianButton::GetTCivilianButtonClassNamePointer(void)
 void * __thiscall TCivilianButton::ConstructTCivilianButtonBaseState(TCivilianButton *this)
 
 {
-  TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry();
+  TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry((TRadioPictureButton *)this);
   *(undefined ***)this = &g_vtblTCivilianButton;
   *(undefined4 *)(this + 0x60) = 0xc;
   return this;

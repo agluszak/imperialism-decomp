@@ -319,6 +319,30 @@ void __cdecl TViewMgr::thunk_HandleTurnEvent7DB_SelectCityAndRefreshView(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402F5E
+// GHIDRA_NAME TViewMgr::thunk_ConstructGlobalTurnEventState
+// GHIDRA_PROTO void __thiscall thunk_ConstructGlobalTurnEventState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructGlobalTurnEventState
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructGlobalTurnEventState */
+
+void __thiscall TViewMgr::thunk_ConstructGlobalTurnEventState(TViewMgr *this)
+
+{
+  this->pVtable = &g_vtblTViewMgr;
+  *(undefined2 *)&this->dwField_EC = 0;
+  *(undefined2 *)&this->dwField_04 = 0;
+  *(int *)&this->field_0x8 = g_dwTurnEventDispatchStateDefaultA;
+  this->dwField_0C = g_dwTurnEventDispatchStateDefaultB;
+  *(undefined1 *)&this->dwField_10 = 0;
+  this->dwField_F0 = 0;
+  this->dwField_F4 = 0;
+  *(undefined2 *)&this[1].pVtable = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00403053
 // GHIDRA_NAME TViewMgr::thunk_DestroyTurnEventState
 // GHIDRA_PROTO void __cdecl thunk_DestroyTurnEventState(void)
@@ -369,17 +393,17 @@ void __cdecl TViewMgr::thunk_HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403E81
 // GHIDRA_NAME TViewMgr::thunk_BuildAndShowTurnOverlayByMode
-// GHIDRA_PROTO void __cdecl thunk_BuildAndShowTurnOverlayByMode(void)
+// GHIDRA_PROTO void __thiscall thunk_BuildAndShowTurnOverlayByMode(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to BuildAndShowTurnOverlayByMode
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to BuildAndShowTurnOverlayByMode */
 
-void __cdecl TViewMgr::thunk_BuildAndShowTurnOverlayByMode(void)
+void __thiscall TViewMgr::thunk_BuildAndShowTurnOverlayByMode(TViewMgr *this,int arg1,int arg2)
 
 {
-  BuildAndShowTurnOverlayByMode();
+  BuildAndShowTurnOverlayByMode(this,arg1,arg2);
   return;
 }
 
@@ -473,17 +497,17 @@ void __cdecl TViewMgr::thunk_HandleTurnEvent2103_RunNationStatusReportUpdate(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004057CC
 // GHIDRA_NAME TViewMgr::thunk_AddPendingTurnOverlayCode
-// GHIDRA_PROTO void __thiscall thunk_AddPendingTurnOverlayCode(TViewMgr * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall thunk_AddPendingTurnOverlayCode(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to AddPendingTurnOverlayCode
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to AddPendingTurnOverlayCode */
 
-void __thiscall TViewMgr::thunk_AddPendingTurnOverlayCode(TViewMgr *this,TViewMgr *pThis,int arg1)
+void __thiscall TViewMgr::thunk_AddPendingTurnOverlayCode(TViewMgr *this,int arg1)
 
 {
-  *(short *)&this->dwField_EC = (short)this->dwField_EC + (short)pThis;
+  *(short *)&this->dwField_EC = (short)this->dwField_EC + (short)arg1;
   return;
 }
 
@@ -801,18 +825,17 @@ void __thiscall TViewMgr::thunk_HandleTurnEventDialogFactorySlotE8(TViewMgr *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407702
 // GHIDRA_NAME TViewMgr::thunk_DispatchGlobalTurnEventCode
-// GHIDRA_PROTO void __thiscall thunk_DispatchGlobalTurnEventCode(TViewMgr * pThis, int arg1, int arg2)
+// GHIDRA_PROTO void __thiscall thunk_DispatchGlobalTurnEventCode(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DispatchGlobalTurnEventCode
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DispatchGlobalTurnEventCode */
 
-void __thiscall
-TViewMgr::thunk_DispatchGlobalTurnEventCode(TViewMgr *this,TViewMgr *pThis,int arg1,int arg2)
+void __thiscall TViewMgr::thunk_DispatchGlobalTurnEventCode(TViewMgr *this,int arg1,int arg2)
 
 {
-  DispatchGlobalTurnEventCode(this,pThis,arg1,arg2);
+  DispatchGlobalTurnEventCode(this,arg1,arg2);
   return;
 }
 
@@ -834,18 +857,17 @@ void __cdecl TViewMgr::thunk_HandleTurnEvent7D8_ActivateDiplomacyMapView(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004079A0
 // GHIDRA_NAME TViewMgr::thunk_DispatchTurnEvent7D8IfTurnFlowIdle
-// GHIDRA_PROTO void __thiscall thunk_DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall thunk_DispatchTurnEvent7D8IfTurnFlowIdle(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DispatchTurnEvent7D8IfTurnFlowIdle
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DispatchTurnEvent7D8IfTurnFlowIdle */
 
-void __thiscall
-TViewMgr::thunk_DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr *this,TViewMgr *pThis,int arg1)
+void __thiscall TViewMgr::thunk_DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr *this,int arg1)
 
 {
-  DispatchTurnEvent7D8IfTurnFlowIdle(this,pThis,arg1);
+  DispatchTurnEvent7D8IfTurnFlowIdle(this,arg1);
   return;
 }
 
@@ -982,17 +1004,19 @@ void __cdecl TViewMgr::thunk_HandleTurnEvent2260_RefreshMainHudTitles(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408E27
 // GHIDRA_NAME TViewMgr::thunk_InvokeMainWidgetMethod1CCWithArgs
-// GHIDRA_PROTO void __cdecl thunk_InvokeMainWidgetMethod1CCWithArgs(void)
+// GHIDRA_PROTO void __thiscall thunk_InvokeMainWidgetMethod1CCWithArgs(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk for InvokeMainWidgetMethod1CCWithArgs.
 // GHIDRA_COMMENT_END
 
 /* Thunk for InvokeMainWidgetMethod1CCWithArgs. */
 
-void __cdecl TViewMgr::thunk_InvokeMainWidgetMethod1CCWithArgs(void)
+void __thiscall
+TViewMgr::thunk_InvokeMainWidgetMethod1CCWithArgs
+          (TViewMgr *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  InvokeMainWidgetMethod1CCWithArgs();
+  InvokeMainWidgetMethod1CCWithArgs(this,arg1,arg2,arg3,arg4);
   return;
 }
 
@@ -1164,6 +1188,22 @@ void TViewMgr::thunk_HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4
 
 {
   HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0057F4D0
+// GHIDRA_NAME TViewMgr::TestTurnFlowStatusFlagMask
+// GHIDRA_PROTO void __cdecl TestTurnFlowStatusFlagMask(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Tests status bitmask against turn-flow context field +0x3C; used to choose alternate UI label IDs in 0x7DE summary update handler.
+// GHIDRA_COMMENT_END
+
+/* Tests status bitmask against turn-flow context field +0x3C; used to choose alternate UI label IDs
+   in 0x7DE summary update handler. */
+
+void __cdecl TViewMgr::TestTurnFlowStatusFlagMask(void)
+
+{
   return;
 }
 
@@ -1516,7 +1556,7 @@ void __cdecl TViewMgr::ClassifyTurnStateForOverlayMode(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D6480
 // GHIDRA_NAME TViewMgr::BuildAndShowTurnOverlayByMode
-// GHIDRA_PROTO void __cdecl BuildAndShowTurnOverlayByMode(void)
+// GHIDRA_PROTO void __thiscall BuildAndShowTurnOverlayByMode(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds and shows turn overlay UI for a mode code. Resolves text/resource IDs by mode, formats strings, updates overlay resources, and commits UI state.
 // GHIDRA_COMMENT_END
@@ -1524,7 +1564,7 @@ void __cdecl TViewMgr::ClassifyTurnStateForOverlayMode(void)
 /* Builds and shows turn overlay UI for a mode code. Resolves text/resource IDs by mode, formats
    strings, updates overlay resources, and commits UI state. */
 
-void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
+void __thiscall TViewMgr::BuildAndShowTurnOverlayByMode(TViewMgr *this,int arg1,int arg2)
 
 {
   undefined1 uVar1;
@@ -1532,11 +1572,9 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
   short extraout_AX;
   short sVar3;
   undefined4 *unaff_FS_OFFSET;
-  void *in_stack_00000004;
-  int in_stack_00000008;
   undefined1 local_28 [4];
   char *local_24;
-  void *local_18;
+  TViewMgr *local_18;
   undefined4 local_14;
   int local_10;
   undefined4 uStack_c;
@@ -1547,6 +1585,7 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
   puStack_8 = &LAB_0063a098;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
+  local_18 = this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
@@ -1557,9 +1596,9 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
   local_4._0_1_ = 3;
   uVar1 = (undefined1)local_4;
   local_4._0_1_ = 3;
-  sVar3 = (short)in_stack_00000004;
-  switch(in_stack_00000004) {
-  case (void *)0x0:
+  sVar3 = (short)arg1;
+  switch(arg1) {
+  case 0:
     InitializeSharedStringRefFromEmpty();
     local_4 = CONCAT31(local_4._1_3_,4);
     (**(code **)(*g_pLocalizationTable + 0x84))();
@@ -1578,7 +1617,7 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
     local_4._0_1_ = 3;
     ReleaseSharedStringRefIfNotEmpty();
     break;
-  case (void *)0x1:
+  case 1:
     local_4._0_1_ = uVar1;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     thunk_GetActiveNationId();
@@ -1590,49 +1629,49 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
       sVar3 = (-(ushort)(sVar3 != 0x1d) & 0xfff0) + 0x2519;
     }
     break;
-  case (void *)0x2:
+  case 2:
     local_4._0_1_ = uVar1;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     sVar3 = 0x250a;
     break;
-  case (void *)0x3:
-  case (void *)0x4:
+  case 3:
+  case 4:
     local_4._0_1_ = uVar1;
     thunk_AssignSharedStringFromIndexedA8EntryNameField();
     (**(code **)(*g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,local_28,local_24);
     sVar3 = sVar3 + 0x2508;
     break;
-  case (void *)0x5:
-  case (void *)0xc:
+  case 5:
+  case 0xc:
     local_4._0_1_ = uVar1;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     sVar3 = sVar3 + 0x2508;
     break;
-  case (void *)0x6:
+  case 6:
     local_4._0_1_ = uVar1;
     thunk_LoadNationDisplayNameSharedRefFromField8();
     (**(code **)(*g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,local_28,local_24);
     sVar3 = 0x250e;
     break;
-  case (void *)0x7:
+  case 7:
     local_4._0_1_ = uVar1;
     (**(code **)(*g_pLocalizationTable + 0x84))();
-    sVar3 = (-(ushort)(in_stack_00000008 != -1) & 0xfff5) + 0x251a;
+    sVar3 = (-(ushort)(arg2 != -1) & 0xfff5) + 0x251a;
     break;
-  case (void *)0x8:
+  case 8:
     local_4._0_1_ = uVar1;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     sVar3 = 0x2510;
     break;
-  case (void *)0x9:
-  case (void *)0xb:
+  case 9:
+  case 0xb:
     local_4._0_1_ = uVar1;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     sVar3 = sVar3 + 0x2508;
     break;
-  case (void *)0xa:
+  case 10:
     local_4._0_1_ = uVar1;
     FormatOverlayTerrainLabelText();
     (**(code **)(*g_pLocalizationTable + 0x84))();
@@ -1640,7 +1679,7 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
     sVar3 = 0x2512;
     break;
   default:
-    sVar3 = (short)in_stack_00000008;
+    sVar3 = (short)arg2;
     local_4._0_1_ = uVar1;
   }
   local_10 = (int)sVar3;
@@ -1648,7 +1687,7 @@ void __cdecl TViewMgr::BuildAndShowTurnOverlayByMode(void)
   thunk_NoOpUiRuntimeCallback_005db2f0();
   NoOpRuntimeCallback_005d5d10();
   WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(PTR_g_szEmptyString_0066f050);
-  thunk_RunNationInfoModalAndReturnNonCancel(local_18,in_stack_00000004);
+  thunk_RunNationInfoModalAndReturnNonCancel(local_18,(void *)arg1);
   local_4._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
   local_4._0_1_ = 1;
@@ -1769,17 +1808,17 @@ void __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(TVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D6BF0
 // GHIDRA_NAME TViewMgr::AddPendingTurnOverlayCode
-// GHIDRA_PROTO void __thiscall AddPendingTurnOverlayCode(TViewMgr * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall AddPendingTurnOverlayCode(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Adds delta to pending overlay code field (this+0xEC).
 // GHIDRA_COMMENT_END
 
 /* Adds delta to pending overlay code field (this+0xEC). */
 
-void __thiscall TViewMgr::AddPendingTurnOverlayCode(TViewMgr *this,TViewMgr *pThis,int arg1)
+void __thiscall TViewMgr::AddPendingTurnOverlayCode(TViewMgr *this,int arg1)
 
 {
-  *(short *)&this->dwField_EC = (short)this->dwField_EC + (short)pThis;
+  *(short *)&this->dwField_EC = (short)this->dwField_EC + (short)arg1;
   return;
 }
 
@@ -2047,7 +2086,7 @@ void __thiscall TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection(TViewMg
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D7100
 // GHIDRA_NAME TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle
-// GHIDRA_PROTO void __thiscall DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall DispatchTurnEvent7D8IfTurnFlowIdle(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Guarded 0x7D8 dispatch path: exits early when turn-flow is busy, otherwise forwards event 0x7D8 and triggers main-view follow-up update.
 // GHIDRA_COMMENT_END
@@ -2055,8 +2094,7 @@ void __thiscall TViewMgr::DispatchTurnEvent7D8AndUpdateMainViewSelection(TViewMg
 /* Guarded 0x7D8 dispatch path: exits early when turn-flow is busy, otherwise forwards event 0x7D8
    and triggers main-view follow-up update. */
 
-void __thiscall
-TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr *this,TViewMgr *pThis,int arg1)
+void __thiscall TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr *this,int arg1)
 
 {
   char extraout_AL;
@@ -2069,11 +2107,11 @@ TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr *this,TViewMgr *pThis,int 
     return;
   }
   piVar1 = *(int **)((int)g_pDisplayManager + 4);
-  (**(code **)((int)this->pVtable + 0x4c))(0x7d8,pThis);
+  (**(code **)((int)this->pVtable + 0x4c))(0x7d8,arg1);
   piVar1 = (int *)(**(code **)(*piVar1 + 0x94))(0x6d61696e);
   (**(code **)(*piVar1 + 0xc))();
   WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040
-            ((int)pThis,unaff_EDI,unaff_retaddr,(int)pThis);
+            (arg1,unaff_EDI,unaff_retaddr,arg1);
   return;
 }
 
@@ -2094,7 +2132,7 @@ void __cdecl TViewMgr::NoOpTurnEventStateVtableSlotD4(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D71B0
 // GHIDRA_NAME TViewMgr::InvokeMainWidgetMethod1CCWithArgs
-// GHIDRA_PROTO void __cdecl InvokeMainWidgetMethod1CCWithArgs(void)
+// GHIDRA_PROTO void __thiscall InvokeMainWidgetMethod1CCWithArgs(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resolves MAIN widget from view manager resource tree and forwards caller arguments into widget virtual method +0x1CC.
 // GHIDRA_COMMENT_END
@@ -2102,16 +2140,13 @@ void __cdecl TViewMgr::NoOpTurnEventStateVtableSlotD4(void)
 /* Resolves MAIN widget from view manager resource tree and forwards caller arguments into widget
    virtual method +0x1CC. */
 
-void __cdecl TViewMgr::InvokeMainWidgetMethod1CCWithArgs(void)
+void __thiscall
+TViewMgr::InvokeMainWidgetMethod1CCWithArgs(TViewMgr *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   int iVar1;
   int *piVar2;
   undefined4 unaff_retaddr;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
   piVar2 = (int *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))(0x6d61696e);
   iVar1 = *piVar2;
@@ -2120,14 +2155,13 @@ void __cdecl TViewMgr::InvokeMainWidgetMethod1CCWithArgs(void)
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  (**(code **)(iVar1 + 0x1cc))
-            (unaff_retaddr,in_stack_00000004,in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+  (**(code **)(iVar1 + 0x1cc))(unaff_retaddr,arg1,arg2,arg3,arg4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D7240
 // GHIDRA_NAME TViewMgr::DispatchGlobalTurnEventCode
-// GHIDRA_PROTO void __thiscall DispatchGlobalTurnEventCode(TViewMgr * pThis, int arg1, int arg2)
+// GHIDRA_PROTO void __thiscall DispatchGlobalTurnEventCode(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Central turn-event dispatcher. Explicit switch handles common codes; default branch creates packet/callback dispatch that reaches registered UI builders (e.g., BuildTurnEventDialogUiByCode for 0x1036/0x104F/0x10CC).
 // GHIDRA_COMMENT_END
@@ -2136,8 +2170,7 @@ void __cdecl TViewMgr::InvokeMainWidgetMethod1CCWithArgs(void)
    packet/callback dispatch that reaches registered UI builders (e.g., BuildTurnEventDialogUiByCode
    for 0x1036/0x104F/0x10CC). */
 
-void __thiscall
-TViewMgr::DispatchGlobalTurnEventCode(TViewMgr *this,TViewMgr *pThis,int arg1,int arg2)
+void __thiscall TViewMgr::DispatchGlobalTurnEventCode(TViewMgr *this,int arg1,int arg2)
 
 {
   STurnEventFactoryPacket *pSourcePacket0C;
@@ -2147,6 +2180,7 @@ TViewMgr::DispatchGlobalTurnEventCode(TViewMgr *this,TViewMgr *pThis,int arg1,in
   char extraout_AL_00;
   int iVar3;
   int *piVar4;
+  TIncludeView *this_00;
   int *extraout_EAX;
   int *extraout_EAX_00;
   int extraout_EAX_01;
@@ -2159,16 +2193,16 @@ TViewMgr::DispatchGlobalTurnEventCode(TViewMgr *this,TViewMgr *pThis,int arg1,in
   undefined4 uVar7;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  TViewMgr *pTStack_4;
+  int iStack_4;
   
-  pTStack_4 = (TViewMgr *)0xffffffff;
+  iStack_4 = -1;
   puStack_8 = &LAB_0063a0c2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pSourcePacket0C = *(STurnEventFactoryPacket **)((int)g_pDisplayManager + 4);
   SetQuickDrawFillColor();
   SetQuickDrawStrokeColor();
-  sVar6 = (short)pThis;
+  sVar6 = (short)arg1;
   if (sVar6 == (short)this->dwField_04) goto switchD_005d72b4_default;
   switch(*(undefined2 *)(g_pLocalizationTable + 8)) {
   case 0x67:
@@ -2230,7 +2264,7 @@ switchD_005d72b4_default:
     goto LAB_005d79b8;
   }
   if (sVar6 == (short)this->dwField_04) {
-    sVar5 = (short)arg1;
+    sVar5 = (short)arg2;
     if (sVar5 != -1) {
       *(short *)((int)&this->dwField_04 + 2) = sVar5;
     }
@@ -2307,25 +2341,25 @@ switchD_005d72b4_default:
     (**(code **)(iVar3 + 0xc))();
     (**(code **)(iVar3 + 0xe4))();
     (**(code **)(iVar3 + 0x1c))();
-    pThis = pTStack_4;
+    arg1 = iStack_4;
   }
-  if ((short)pThis != 0x898) {
+  if ((short)arg1 != 0x898) {
     *(undefined2 *)((int)&this->dwField_04 + 2) = unaff_retaddr;
   }
-  iVar3 = AllocateWithFallbackHandler(0x74);
+  this_00 = (TIncludeView *)AllocateWithFallbackHandler(0x74);
   uStack_c = 0;
-  if (iVar3 == 0) {
+  if (this_00 == (TIncludeView *)0x0) {
     piVar4 = (int *)0x0;
   }
   else {
-    TIncludeView::thunk_ConstructTurnEventUiEntryBase();
+    TIncludeView::thunk_ConstructTurnEventUiEntryBase(this_00);
     piVar4 = extraout_EAX;
   }
   uStack_c = 0xffffffff;
   ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
   uStack_c = 1;
   thunk_BuildTurnEventFactoryPacket
-            (piVar4,0,pSourcePacket0C,(short)pTStack_4,(uint *)&stack0xffffffd8,
+            (piVar4,0,pSourcePacket0C,(short)iStack_4,(uint *)&stack0xffffffd8,
              (STSharedStringRef *)&stack0x00000000,1);
   uStack_c = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();

@@ -58,6 +58,58 @@ TCivToolbar::thunk_DestructTCivToolbarAndMaybeFree(TCivToolbar *this,byte freeSe
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2CF0
+// GHIDRA_NAME TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection
+// GHIDRA_PROTO void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int nCommandType)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Queues an immediate command code on the currently selected civilian and optionally cycles selection.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If a civilian order entry is selected, dispatch nCommandType through selected order vfunc +0x34.
+// GHIDRA_COMMENT 2. If map interaction context exists, cycle selection to the next valid unit immediately.
+// GHIDRA_COMMENT 3. Return after command dispatch/selection update.
+// GHIDRA_COMMENT Command Types:
+// GHIDRA_COMMENT - 2: Sleep (persists across rollover).
+// GHIDRA_COMMENT - 3: Next Unit marker (cleared at rollover).
+// GHIDRA_COMMENT - 4: No Orders This Turn marker (cleared at rollover).
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nCommandType: Immediate civilian command code.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - None.
+// GHIDRA_COMMENT_END
+
+/* Queues an immediate command code on the currently selected civilian and optionally cycles
+   selection.
+   Algorithm:
+   1. If a civilian order entry is selected, dispatch nCommandType through selected order vfunc
+   +0x34.
+   2. If map interaction context exists, cycle selection to the next valid unit immediately.
+   3. Return after command dispatch/selection update.
+   Command Types:
+   - 2: Sleep (persists across rollover).
+   - 3: Next Unit marker (cleared at rollover).
+   - 4: No Orders This Turn marker (cleared at rollover).
+   Parameters:
+   - nCommandType: Immediate civilian command code.
+   Returns:
+   - None. */
+
+void __thiscall
+TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection(TCivToolbar *this,int nCommandType)
+
+{
+  if (*(int **)(this + 4) != (int *)0x0) {
+                    /* Dispatches command code directly to selected civilian order entry vfunc
+                       +0x34. */
+    (**(code **)(**(int **)(this + 4) + 0x34))(nCommandType,0);
+  }
+  if (*(void **)(g_pUiRuntimeContext + 0xf0) != (void *)0x0) {
+                    /* Selection cycling occurs immediately when map interaction context is active.
+                        */
+    thunk_CycleMapInteractionSelectionAfterHandledClick(*(void **)(g_pUiRuntimeContext + 0xf0));
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EA00
 // GHIDRA_NAME TCivToolbar::CreateTCivToolbarInstance
 // GHIDRA_PROTO void * __cdecl CreateTCivToolbarInstance(void)
@@ -65,8 +117,8 @@ TCivToolbar::thunk_DestructTCivToolbarAndMaybeFree(TCivToolbar *this,byte freeSe
 void * __cdecl TCivToolbar::CreateTCivToolbarInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCluster *this;
+  TCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,16 +128,16 @@ void * __cdecl TCivToolbar::CreateTCivToolbarInstance(void)
   puStack_8 = &LAB_00637e5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
+  this = (TCluster *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &g_vtblTCivToolbar;
-    puVar2 = puVar1;
+  pTVar1 = (TCluster *)0x0;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    *(undefined ***)this = &g_vtblTCivToolbar;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EA80
@@ -110,7 +162,7 @@ void * __cdecl TCivToolbar::GetTCivToolbarClassNamePointer(void)
 void * __thiscall TCivToolbar::ConstructTCivToolbarBaseState(TCivToolbar *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   *(undefined ***)this = &g_vtblTCivToolbar;
   return this;
 }

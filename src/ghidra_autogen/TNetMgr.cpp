@@ -55,6 +55,22 @@ void TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402B71
+// GHIDRA_NAME TNetMgr::thunk_ConstructGlobalTurnEventQueueManager
+// GHIDRA_PROTO void __thiscall thunk_ConstructGlobalTurnEventQueueManager(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructGlobalTurnEventQueueManager
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructGlobalTurnEventQueueManager */
+
+void __thiscall TNetMgr::thunk_ConstructGlobalTurnEventQueueManager(TNetMgr *this)
+
+{
+  *(undefined ***)this = &g_vtblTNetMgr;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406CB2
 // GHIDRA_NAME TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
 // GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a30()
@@ -119,7 +135,7 @@ void * __cdecl TNetMgr::GetTNetMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33E0
 // GHIDRA_NAME TNetMgr::ConstructGlobalTurnEventQueueManager
-// GHIDRA_PROTO void __cdecl ConstructGlobalTurnEventQueueManager(void)
+// GHIDRA_PROTO void __thiscall ConstructGlobalTurnEventQueueManager(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Tiny constructor that assigns vtable for global turn-event queue manager object stored via DAT_006a6014.
 // GHIDRA_COMMENT_END
@@ -127,12 +143,10 @@ void * __cdecl TNetMgr::GetTNetMgrClassNamePointer(void)
 /* Tiny constructor that assigns vtable for global turn-event queue manager object stored via
    DAT_006a6014. */
 
-void __cdecl TNetMgr::ConstructGlobalTurnEventQueueManager(void)
+void __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &g_vtblTNetMgr;
+  *(undefined ***)this = &g_vtblTNetMgr;
   return;
 }
 

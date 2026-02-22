@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401FD7
 // GHIDRA_NAME TCivDescription::thunk_RefreshCivilianTargetLegendBySelectedClass
-// GHIDRA_PROTO void __cdecl thunk_RefreshCivilianTargetLegendBySelectedClass(void)
+// GHIDRA_PROTO void __thiscall thunk_RefreshCivilianTargetLegendBySelectedClass(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RefreshCivilianTargetLegendBySelectedClass
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RefreshCivilianTargetLegendBySelectedClass */
 
-void __cdecl TCivDescription::thunk_RefreshCivilianTargetLegendBySelectedClass(void)
+void __thiscall
+TCivDescription::thunk_RefreshCivilianTargetLegendBySelectedClass(TCivDescription *this)
 
 {
-  RefreshCivilianTargetLegendBySelectedClass();
+  RefreshCivilianTargetLegendBySelectedClass(this);
   return;
 }
 
@@ -126,17 +127,17 @@ TCivDescription::thunk_HandleCivDescriptionClickSelectTerrainEntry_At0040727f
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407DB5
 // GHIDRA_NAME TCivDescription::thunk_RenderCivilianTargetLegendVariantA
-// GHIDRA_PROTO void __cdecl thunk_RenderCivilianTargetLegendVariantA(void)
+// GHIDRA_PROTO void __thiscall thunk_RenderCivilianTargetLegendVariantA(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RenderCivilianTargetLegendVariantA
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RenderCivilianTargetLegendVariantA */
 
-void __cdecl TCivDescription::thunk_RenderCivilianTargetLegendVariantA(void)
+void __thiscall TCivDescription::thunk_RenderCivilianTargetLegendVariantA(TCivDescription *this)
 
 {
-  RenderCivilianTargetLegendVariantA();
+  RenderCivilianTargetLegendVariantA(this);
   return;
 }
 
@@ -181,11 +182,69 @@ void * __cdecl TCivDescription::thunk_GetTCivDescriptionClassNamePointer(void)
 void * __thiscall TCivDescription::ConstructTCivDescriptionBaseState(TCivDescription *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTCivDescription;
   *(undefined2 *)(this + 0x60) = 0xffff;
   this[0x6c] = (TCivDescription)0x0;
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054A9D0
+// GHIDRA_NAME TCivDescription::IsSpecialNationDialogModeActive
+// GHIDRA_PROTO bool __thiscall IsSpecialNationDialogModeActive(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Predicate used by nation-status dialog flows: true when context token at +0xD8 equals 0x676F696E and an active nation is available.
+// GHIDRA_COMMENT_END
+
+/* Predicate used by nation-status dialog flows: true when context token at +0xD8 equals 0x676F696E
+   and an active nation is available. */
+
+bool __thiscall TCivDescription::IsSpecialNationDialogModeActive(TCivDescription *this)
+
+{
+  short extraout_AX;
+  
+  if (*(int *)(this + 0xd8) == 0x676f696e) {
+    thunk_GetActiveNationId();
+    if (extraout_AX != -1) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054B8C0
+// GHIDRA_NAME TCivDescription::GetNationStatusCodeForSlotOrActiveNation
+// GHIDRA_PROTO void __cdecl GetNationStatusCodeForSlotOrActiveNation(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Returns status code from this+0xBC indexed by nation slot. Slot -1 resolves active nation and maps via g_pGameFlowState nation-slot array.
+// GHIDRA_COMMENT_END
+
+/* Returns status code from this+0xBC indexed by nation slot. Slot -1 resolves active nation and
+   maps via g_pGameFlowState nation-slot array. */
+
+void __cdecl TCivDescription::GetNationStatusCodeForSlotOrActiveNation(void)
+
+{
+  short extraout_AX;
+  int extraout_EAX;
+  int iVar1;
+  int *piVar2;
+  int in_stack_00000004;
+  
+  if ((in_stack_00000004 == -1) && (thunk_GetActiveNationId(), extraout_AX == -1)) {
+    thunk_GetSessionActiveNationId();
+    iVar1 = 0;
+    piVar2 = (int *)(g_pGameFlowState + 0x48);
+    do {
+      if (*piVar2 == extraout_EAX) {
+        return;
+      }
+      iVar1 = iVar1 + 1;
+      piVar2 = piVar2 + 1;
+    } while (iVar1 < 7);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D6F0
@@ -258,10 +317,10 @@ TCivDescription::RefreshNationStatusDialogRowsAndSummaryMessage(TCivDescription 
   do {
     pcVar2 = local_1c;
     iVar6 = 0;
-    if (*(int *)((int)g_pGameFlowState + local_24) == 0) {
+    if (*(int *)(g_pGameFlowState + local_24) == 0) {
       iVar6 = 2;
     }
-    else if (*(int *)((int)g_pGameFlowState + local_24) == -2) {
+    else if (*(int *)(g_pGameFlowState + local_24) == -2) {
       iVar6 = 3;
     }
     else {
@@ -338,7 +397,7 @@ TCivDescription::RefreshNationStatusDialogRowsAndSummaryMessage(TCivDescription 
   bVar3 = thunk_IsSpecialNationDialogModeActive(g_pGameFlowState);
   if (bVar3) {
     thunk_GetNationStatusCodeForSlotOrActiveNation();
-    if ((extraout_EAX_00 == 0x62757379) && (*(char *)((int)g_pGameFlowState + 0xf4) != '\0')) {
+    if ((extraout_EAX_00 == 0x62757379) && (g_pGameFlowState[0xf4] != (TCivDescription)0x0)) {
       if (*(short *)(this + 0x84) != 0x11f8) {
         (**(code **)(local_14 + 0x1c8))(0x11f8,1);
       }
@@ -358,6 +417,87 @@ TCivDescription::RefreshNationStatusDialogRowsAndSummaryMessage(TCivDescription 
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_18;
   return extraout_EAX_01 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054DFC0
+// GHIDRA_NAME TCivDescription::TryInvokeNationStateReplacementForSlot
+// GHIDRA_PROTO void __cdecl TryInvokeNationStateReplacementForSlot(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Gate/prompt wrapper that may invoke nation-state replacement flow for a slot depending on mode, key state, and confirmation path.
+// GHIDRA_COMMENT_END
+
+/* Gate/prompt wrapper that may invoke nation-state replacement flow for a slot depending on mode,
+   key state, and confirmation path. */
+
+void __cdecl TCivDescription::TryInvokeNationStateReplacementForSlot(void)
+
+{
+  int *piVar1;
+  TCivDescription *this;
+  bool bVar2;
+  char cVar3;
+  char extraout_AL;
+  ushort uVar4;
+  undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  char *pcStack_18;
+  undefined1 auStack_14 [4];
+  undefined1 *puStack_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int iStack_4;
+  
+  this = g_pGameFlowState;
+  local_c = *unaff_FS_OFFSET;
+  iStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634ee8;
+  *unaff_FS_OFFSET = &local_c;
+  bVar2 = thunk_IsSpecialNationDialogModeActive(this);
+  if (bVar2) {
+    piVar1 = g_apNationStates[in_stack_00000004];
+    if ((piVar1 != (int *)0x0) && ((char)piVar1[0x28] != '\0')) {
+      cVar3 = (**(code **)(*piVar1 + 0xa0))();
+      if (cVar3 != '\0') {
+        uVar4 = GetAsyncKeyState(0x11);
+        if ((uVar4 & 0x8000) == 0) {
+          TPoseMessageDialog::thunk_DispatchSimpleTurnEventEsopWithParam();
+          *unaff_FS_OFFSET = local_c;
+          return;
+        }
+        if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
+          InitializeSharedStringRefFromEmpty();
+          iStack_4 = 0;
+          InitializeSharedStringRefFromEmpty();
+          iStack_4._0_1_ = 1;
+          InitializeSharedStringRefFromEmpty();
+          iStack_4 = CONCAT31(iStack_4._1_3_,2);
+          FormatOverlayTerrainLabelText();
+          thunk_LoadUiStringResourceByGroupAndIndex();
+          scanBracketExpressions(g_pLocalizationTable,auStack_14,pcStack_18);
+          puStack_10 = &stack0xffffffd4;
+          thunk_AssignStringSharedRefAndReturnThis();
+          thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+          if (extraout_AL != '\0') {
+            thunk_DispatchTaggedGameStateEvent1F20();
+            thunk_ReplaceNationStateForSlotAndRefreshStatus(g_pGameFlowState,in_stack_00000004);
+          }
+          iStack_4._0_1_ = 1;
+          ReleaseSharedStringRefIfNotEmpty();
+          iStack_4 = (uint)iStack_4._1_3_ << 8;
+          ReleaseSharedStringRefIfNotEmpty();
+          iStack_4 = 0xffffffff;
+          ReleaseSharedStringRefIfNotEmpty();
+          *unaff_FS_OFFSET = local_c;
+          return;
+        }
+      }
+    }
+  }
+  else {
+    thunk_DispatchTextPairEvent8FromContext();
+  }
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E1F0
@@ -420,7 +560,7 @@ TCivDescription::HandleNationStatusDialogCommand
         bVar3 = false;
         iVar6 = 0x48;
         do {
-          iVar2 = *(int *)((int)g_pGameFlowState + iVar6);
+          iVar2 = *(int *)(g_pGameFlowState + iVar6);
           if ((iVar2 != 0) && (thunk_TouchSessionActiveNationId(), iVar2 != extraout_EAX_00)) {
             bVar3 = true;
           }
@@ -477,7 +617,7 @@ LAB_0054e36b:
 void * __cdecl TCivDescription::CreateTCivDescriptionInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -487,15 +627,15 @@ void * __cdecl TCivDescription::CreateTCivDescriptionInstance(void)
   puStack_8 = &LAB_00637e7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x170);
+  this = (TView *)AllocateWithFallbackHandler(0x170);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblTCivDescription;
-    *(undefined2 *)(puVar1 + 0x18) = 0xffff;
-    *(undefined1 *)(puVar1 + 0x1b) = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTCivDescription;
+    *(undefined2 *)(this + 0x60) = 0xffff;
+    this[0x6c] = (TView)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -599,7 +739,7 @@ TCivDescription::DestructTCivDescriptionAndMaybeFree(TCivDescription *this,void 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F550
 // GHIDRA_NAME TCivDescription::RefreshCivilianTargetLegendBySelectedClass
-// GHIDRA_PROTO void __cdecl RefreshCivilianTargetLegendBySelectedClass(void)
+// GHIDRA_PROTO void __thiscall RefreshCivilianTargetLegendBySelectedClass(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher, 7 Developer, 8 Driller.
 // GHIDRA_COMMENT
@@ -613,19 +753,18 @@ TCivDescription::DestructTCivDescriptionAndMaybeFree(TCivDescription *this,void 
    class 1 (Prospector), class 4 (Engineer), class 7 (Developer), with default renderer path for
    remaining classes. */
 
-void __cdecl TCivDescription::RefreshCivilianTargetLegendBySelectedClass(void)
+void __thiscall TCivDescription::RefreshCivilianTargetLegendBySelectedClass(TCivDescription *this)
 
 {
   short sVar1;
   short extraout_AX;
   ushort *puVar2;
   ushort *puVar3;
-  int *in_ECX;
-  int *piVar4;
-  void *this;
+  TCivDescription *pTVar4;
+  void *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000004;
-  int *local_14;
+  TCivDescription *local_14;
   undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -635,52 +774,53 @@ void __cdecl TCivDescription::RefreshCivilianTargetLegendBySelectedClass(void)
   puStack_8 = &LAB_00637e98;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_14 = in_ECX;
+  local_14 = this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  if ((char)in_ECX[0x1b] == '\0') {
+  if (this[0x6c] == (TCivDescription)0x0) {
     puVar2 = g_awCivilianLegendSelectionCountsBySlot;
-    piVar4 = in_ECX + 0x1c;
+    pTVar4 = this + 0x70;
     do {
       puVar3 = puVar2 + 1;
-      *piVar4 = 0;
-      piVar4[1] = 0;
-      piVar4[2] = 0;
-      piVar4[3] = 0;
+      *(undefined4 *)pTVar4 = 0;
+      *(undefined4 *)(pTVar4 + 4) = 0;
+      *(undefined4 *)(pTVar4 + 8) = 0;
+      *(undefined4 *)(pTVar4 + 0xc) = 0;
       *puVar2 = 0;
       puVar2 = puVar3;
-      piVar4 = piVar4 + 4;
+      pTVar4 = pTVar4 + 0x10;
     } while ((int)puVar3 < 0x6a44b0);
-    local_14[1] = 0;
-    in_ECX = local_14;
+    *(int *)(local_14 + 4) = 0;
+    this = local_14;
   }
-  sVar1 = (short)in_ECX[0x18];
+  sVar1 = *(short *)(this + 0x60);
   if (sVar1 == 1) {
-    (**(code **)(*in_ECX + 0x1a0))(in_stack_00000004);
+    (**(code **)(*(int *)this + 0x1a0))(in_stack_00000004);
   }
   else if (sVar1 == 4) {
-    (**(code **)(*in_ECX + 0x1a4))(in_stack_00000004);
+    (**(code **)(*(int *)this + 0x1a4))(in_stack_00000004);
   }
   else if (sVar1 != 7) {
-    (**(code **)(*in_ECX + 0x1a8))(in_stack_00000004);
+    (**(code **)(*(int *)this + 0x1a8))(in_stack_00000004);
   }
-  *(undefined1 *)(in_ECX + 0x1b) = 1;
-  if ((short)in_ECX[0x18] != -1) {
-    local_14 = (int *)0x0;
+  this[0x6c] = (TCivDescription)0x1;
+  if (*(short *)(this + 0x60) != -1) {
+    local_14 = (TCivDescription *)0x0;
     in_stack_00000004 = 0;
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
     thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&local_14);
     thunk_MapUiThemeCodeToStyleFlags(0x2b67,(int)&stack0x00000004);
     (**(code **)(*g_pLocalizationTable + 0x84))
-              (0x2718,CONCAT22((short)((uint)local_10 >> 0x10),(short)in_ECX[0x18]),local_10);
+              (0x2718,CONCAT22((short)((uint)local_10 >> 0x10),*(undefined2 *)(this + 0x60)),
+               local_10);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    sVar1 = (short)(in_ECX[0xd] / 2) - extraout_AX / 2;
+    sVar1 = (short)(*(int *)(this + 0x34) / 2) - extraout_AX / 2;
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar1 + 1,0x47);
     thunk_DrawTextWithCachedQuickDrawStyleState(local_10);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar1,0x46);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   }
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
@@ -690,7 +830,7 @@ void __cdecl TCivDescription::RefreshCivilianTargetLegendBySelectedClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F7B0
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantA
-// GHIDRA_PROTO void __cdecl RenderCivilianTargetLegendVariantA(void)
+// GHIDRA_PROTO void __thiscall RenderCivilianTargetLegendVariantA(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Legend renderer variant A used via vtable thunk slot in civilian target panel lane. Keeps behavior naming conservative until per-class call-site evidence is fully resolved.
 // GHIDRA_COMMENT_END
@@ -698,7 +838,7 @@ void __cdecl TCivDescription::RefreshCivilianTargetLegendBySelectedClass(void)
 /* Legend renderer variant A used via vtable thunk slot in civilian target panel lane. Keeps
    behavior naming conservative until per-class call-site evidence is fully resolved. */
 
-void __cdecl TCivDescription::RenderCivilianTargetLegendVariantA(void)
+void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescription *this)
 
 {
   short extraout_AX;
@@ -706,10 +846,9 @@ void __cdecl TCivDescription::RenderCivilianTargetLegendVariantA(void)
   short extraout_AX_01;
   short extraout_AX_02;
   short extraout_AX_03;
-  int in_ECX;
-  void *this;
   void *this_00;
   void *this_01;
+  void *this_02;
   short *psVar1;
   short sVar2;
   short sVar3;
@@ -790,19 +929,19 @@ void __cdecl TCivDescription::RenderCivilianTargetLegendVariantA(void)
   thunk_SetQuickDrawTextOriginWithContextOffset(0x28,0x90);
   thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffff7c);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x54,0x90);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this);
+  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   (**(code **)(*g_pLocalizationTable + 0x84))();
   (**(code **)(*g_pLocalizationTable + 0x74))();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x28,0xa8);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x54,0xa8);
   thunk_DrawTextWithCachedQuickDrawStyleState(&puStack_94);
   (**(code **)(*g_pLocalizationTable + 0x84))();
   sVar2 = 0xd4;
   thunk_MeasureTextExtentWithCachedQuickDrawStyle();
   thunk_SetQuickDrawTextOriginWithContextOffset
-            ((short)(*(int *)(in_ECX + 0x34) / 2) - extraout_AX_03 / 2,sVar2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+            ((short)(*(int *)(this + 0x34) / 2) - extraout_AX_03 / 2,sVar2);
+  thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   LStack_78 = 0x176;
   pLStack_90 = (LONG *)0xa;

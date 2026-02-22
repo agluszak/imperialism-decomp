@@ -3,6 +3,18 @@
 // Program: Imperialism.exe
 // Bucket: TNoHiliteText.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040320B
+// GHIDRA_NAME TNoHiliteText::thunk_ConstructUiStatusListTextEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiStatusListTextEntry(void)
+
+void __thiscall TNoHiliteText::thunk_ConstructUiStatusListTextEntry(TNoHiliteText *this)
+
+{
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  *(undefined ***)this = &g_vtblTNoHiliteText;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040628A
 // GHIDRA_NAME TNoHiliteText::thunk_GetTNoHiliteTextClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTNoHiliteTextClassNamePointer(void)
@@ -52,8 +64,8 @@ TNoHiliteText::thunk_DestructTNoHiliteTextAndMaybeFree(TNoHiliteText *this,byte 
 void * __cdecl TNoHiliteText::CreateTNoHiliteTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TStaticText *this;
+  TStaticText *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -63,16 +75,16 @@ void * __cdecl TNoHiliteText::CreateTNoHiliteTextInstance(void)
   puStack_8 = &LAB_0063905a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *puVar1 = &g_vtblTNoHiliteText;
-    puVar2 = puVar1;
+  pTVar1 = (TStaticText *)0x0;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTNoHiliteText;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B69E0
@@ -92,7 +104,7 @@ void * __cdecl TNoHiliteText::GetTNoHiliteTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6A00
 // GHIDRA_NAME TNoHiliteText::ConstructUiStatusListTextEntry
-// GHIDRA_PROTO void __cdecl ConstructUiStatusListTextEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructUiStatusListTextEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructs a status-list text entry used by turn-event status row builders and related list text panels.
 // GHIDRA_COMMENT
@@ -114,13 +126,11 @@ void * __cdecl TNoHiliteText::GetTNoHiliteTextClassNamePointer(void)
    Returns:
    - this pointer. */
 
-void __cdecl TNoHiliteText::ConstructUiStatusListTextEntry(void)
+void __thiscall TNoHiliteText::ConstructUiStatusListTextEntry(TNoHiliteText *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TStaticText::thunk_ConstructUiTextResourceEntryBase();
-  *in_ECX = &g_vtblTNoHiliteText;
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  *(undefined ***)this = &g_vtblTNoHiliteText;
   return;
 }
 

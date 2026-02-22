@@ -49,10 +49,10 @@ void * __cdecl TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer
 /* Allocates 0xBC-byte UiClickablePictureResourceEntry variant instance and runs constructor for
    vtable 0x643A40. */
 
-undefined4 * TOverlayRadioButton::AllocateUiClickablePictureResourceEntry_Vtbl643A40(void)
+TRadioPictureButton * TOverlayRadioButton::AllocateUiClickablePictureResourceEntry_Vtbl643A40(void)
 
 {
-  undefined4 *puVar1;
+  TRadioPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,17 +62,17 @@ undefined4 * TOverlayRadioButton::AllocateUiClickablePictureResourceEntry_Vtbl64
   puStack_8 = &LAB_0063179a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xbc);
+  this = (TRadioPictureButton *)AllocateWithFallbackHandler(0xbc);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry();
-    *puVar1 = &g_vtblUiClickablePictureResourceEntry_643A40;
-    puVar1[0x26] = 0;
+  if (this != (TRadioPictureButton *)0x0) {
+    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(this);
+    *(undefined ***)this = &g_vtblUiClickablePictureResourceEntry_643A40;
+    *(undefined4 *)(this + 0x98) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TRadioPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAAF0

@@ -41,6 +41,28 @@ void * __cdecl TRadioTextCluster::thunk_GetTRadioTextClusterClassNamePointer(voi
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040533A
+// GHIDRA_NAME TRadioTextCluster::thunk_ConstructUiGoldLabelResourceEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiGoldLabelResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiGoldLabelResourceEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiGoldLabelResourceEntry */
+
+void __thiscall TRadioTextCluster::thunk_ConstructUiGoldLabelResourceEntry(TRadioTextCluster *this)
+
+{
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  *(undefined ***)this = &g_vtblTRadioTextCluster;
+  *(undefined2 *)(this + 0x8c) = 0x4b;
+  *(undefined2 *)(this + 0x8e) = 0x49;
+  *(undefined2 *)(this + 0x90) = 0xffff;
+  *(undefined2 *)(this + 0x92) = 0;
+  *(undefined2 *)(this + 0x94) = 2;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E5F
 // GHIDRA_NAME TRadioTextCluster::thunk_WrapperFor_SetQuickDrawFillColor_At00579a60
 // GHIDRA_PROTO undefined thunk_WrapperFor_SetQuickDrawFillColor_At00579a60()
@@ -75,17 +97,18 @@ void TRadioTextCluster::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579740_At
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409520
 // GHIDRA_NAME TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch
-// GHIDRA_PROTO void __cdecl thunk_HandleSelectableTextOptionEventDispatch(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleSelectableTextOptionEventDispatch(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleSelectableTextOptionEventDispatch
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleSelectableTextOptionEventDispatch */
 
-void __cdecl TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch(void)
+void __thiscall
+TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch(TRadioTextCluster *this)
 
 {
-  HandleSelectableTextOptionEventDispatch();
+  HandleSelectableTextOptionEventDispatch(this);
   return;
 }
 
@@ -101,7 +124,7 @@ void __cdecl TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch(vo
 void * __cdecl TRadioTextCluster::CreateTRadioTextClusterInstance(void)
 
 {
-  undefined4 *puVar1;
+  TCluster *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -111,18 +134,18 @@ void * __cdecl TRadioTextCluster::CreateTRadioTextClusterInstance(void)
   puStack_8 = &LAB_00636aea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &g_vtblTRadioTextCluster;
-    *(undefined2 *)(puVar1 + 0x23) = 0x4b;
-    *(undefined2 *)((int)puVar1 + 0x8e) = 0x49;
-    *(undefined2 *)(puVar1 + 0x24) = 0xffff;
-    *(undefined2 *)((int)puVar1 + 0x92) = 0;
-    *(undefined2 *)(puVar1 + 0x25) = 2;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    *(undefined ***)this = &g_vtblTRadioTextCluster;
+    *(undefined2 *)(this + 0x8c) = 0x4b;
+    *(undefined2 *)(this + 0x8e) = 0x49;
+    *(undefined2 *)(this + 0x90) = 0xffff;
+    *(undefined2 *)(this + 0x92) = 0;
+    *(undefined2 *)(this + 0x94) = 2;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -145,7 +168,7 @@ void * __cdecl TRadioTextCluster::GetTRadioTextClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005796A0
 // GHIDRA_NAME TRadioTextCluster::ConstructUiGoldLabelResourceEntry
-// GHIDRA_PROTO void __cdecl ConstructUiGoldLabelResourceEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructUiGoldLabelResourceEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived UI resource constructor used in call paths that bind tag 'gold' and localized string setup; initializes label geometry/sentinel defaults.
 // GHIDRA_COMMENT_END
@@ -153,18 +176,16 @@ void * __cdecl TRadioTextCluster::GetTRadioTextClusterClassNamePointer(void)
 /* Derived UI resource constructor used in call paths that bind tag 'gold' and localized string
    setup; initializes label geometry/sentinel defaults. */
 
-void __cdecl TRadioTextCluster::ConstructUiGoldLabelResourceEntry(void)
+void __thiscall TRadioTextCluster::ConstructUiGoldLabelResourceEntry(TRadioTextCluster *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-  *in_ECX = &g_vtblTRadioTextCluster;
-  *(undefined2 *)(in_ECX + 0x23) = 0x4b;
-  *(undefined2 *)((int)in_ECX + 0x8e) = 0x49;
-  *(undefined2 *)(in_ECX + 0x24) = 0xffff;
-  *(undefined2 *)((int)in_ECX + 0x92) = 0;
-  *(undefined2 *)(in_ECX + 0x25) = 2;
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  *(undefined ***)this = &g_vtblTRadioTextCluster;
+  *(undefined2 *)(this + 0x8c) = 0x4b;
+  *(undefined2 *)(this + 0x8e) = 0x49;
+  *(undefined2 *)(this + 0x90) = 0xffff;
+  *(undefined2 *)(this + 0x92) = 0;
+  *(undefined2 *)(this + 0x94) = 2;
   return;
 }
 
@@ -203,7 +224,7 @@ void __fastcall TRadioTextCluster::WrapperFor_thunk_NoOpUiLifecycleHook_At005797
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579770
 // GHIDRA_NAME TRadioTextCluster::HandleSelectableTextOptionEventDispatch
-// GHIDRA_PROTO void __cdecl HandleSelectableTextOptionEventDispatch(void)
+// GHIDRA_PROTO void __thiscall HandleSelectableTextOptionEventDispatch(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Event-dispatch helper for selectable option controls.
 // GHIDRA_COMMENT
@@ -215,18 +236,17 @@ void __fastcall TRadioTextCluster::WrapperFor_thunk_NoOpUiLifecycleHook_At005797
    On event code 0x0D, synchronizes selected tag via SetSelectedTextOptionByTag, then forwards to
    shared panel control dispatcher. */
 
-void __cdecl TRadioTextCluster::HandleSelectableTextOptionEventDispatch(void)
+void __thiscall TRadioTextCluster::HandleSelectableTextOptionEventDispatch(TRadioTextCluster *this)
 
 {
-  void *in_ECX;
   int in_stack_00000004;
   void *in_stack_00000008;
   int in_stack_0000000c;
   
   if (in_stack_00000004 == 0xd) {
-    thunk_SetSelectedTextOptionByTag(in_ECX,*(int *)((int)in_stack_00000008 + 0x1c),true);
+    thunk_SetSelectedTextOptionByTag(this,*(int *)((int)in_stack_00000008 + 0x1c),true);
   }
-  thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 

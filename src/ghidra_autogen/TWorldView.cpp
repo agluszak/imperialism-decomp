@@ -58,7 +58,7 @@ void * __cdecl TWorldView::thunk_GetTWorldViewClassNamePointer(void)
 void * __cdecl TWorldView::CreateTWorldViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -68,18 +68,18 @@ void * __cdecl TWorldView::CreateTWorldViewInstance(void)
   puStack_8 = &LAB_006381ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x7c);
+  this = (TView *)AllocateWithFallbackHandler(0x7c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblTWorldView;
-    *(undefined2 *)(puVar1 + 0x1b) = 0;
-    *(undefined2 *)((int)puVar1 + 0x6e) = 0;
-    *(undefined2 *)(puVar1 + 0x1a) = 0;
-    *(undefined2 *)((int)puVar1 + 0x6a) = 0;
-    *(undefined2 *)((int)puVar1 + 0x7a) = 0xffff;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTWorldView;
+    *(undefined2 *)(this + 0x6c) = 0;
+    *(undefined2 *)(this + 0x6e) = 0;
+    *(undefined2 *)(this + 0x68) = 0;
+    *(undefined2 *)(this + 0x6a) = 0;
+    *(undefined2 *)(this + 0x7a) = 0xffff;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -107,7 +107,7 @@ void * __cdecl TWorldView::GetTWorldViewClassNamePointer(void)
 void * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTWorldView;
   *(undefined2 *)(this + 0x6c) = 0;
   *(undefined2 *)(this + 0x6e) = 0;

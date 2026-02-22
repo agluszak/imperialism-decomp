@@ -111,7 +111,7 @@ void * __cdecl TRadio::ConstructTRadioBaseState(void)
 
 {
   ushort uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -121,27 +121,27 @@ void * __cdecl TRadio::ConstructTRadioBaseState(void)
   puStack_8 = &LAB_0062ef7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (TView *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    puVar2[0x18] = 1;
-    *(undefined1 *)(puVar2 + 0x19) = 0;
-    puVar2[0x1a] = 0;
-    puVar2[0x1b] = 0;
-    puVar2[0x1c] = 0;
-    puVar2[0x1d] = 0;
-    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined4 *)(this + 0x60) = 1;
+    this[100] = (TView)0x0;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
+    *(undefined4 *)(this + 0x70) = 0;
+    *(undefined4 *)(this + 0x74) = 0;
+    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *(undefined2 *)(puVar2 + 0x21) = 0xffff;
-    puVar2[0x22] = 0;
-    *(ushort *)(puVar2 + 0x20) = uVar1;
-    puVar2[0x23] = 0;
-    *puVar2 = &g_vtblTRadio;
-    puVar2[0x18] = 10;
+    *(undefined2 *)(this + 0x84) = 0xffff;
+    *(undefined4 *)(this + 0x88) = 0;
+    *(ushort *)(this + 0x80) = uVar1;
+    *(undefined4 *)(this + 0x8c) = 0;
+    *(undefined ***)this = &g_vtblTRadio;
+    *(undefined4 *)(this + 0x60) = 10;
     *unaff_FS_OFFSET = local_c;
-    return puVar2;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

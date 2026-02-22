@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401505
 // GHIDRA_NAME TInvadeMission::thunk_CleanupTInvadeMissionAndReleaseOwnedOrders
-// GHIDRA_PROTO void __cdecl thunk_CleanupTInvadeMissionAndReleaseOwnedOrders(void)
+// GHIDRA_PROTO void __thiscall thunk_CleanupTInvadeMissionAndReleaseOwnedOrders(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to CleanupTInvadeMissionAndReleaseOwnedOrders
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to CleanupTInvadeMissionAndReleaseOwnedOrders */
 
-void __cdecl TInvadeMission::thunk_CleanupTInvadeMissionAndReleaseOwnedOrders(void)
+void __thiscall
+TInvadeMission::thunk_CleanupTInvadeMissionAndReleaseOwnedOrders(TInvadeMission *this)
 
 {
-  CleanupTInvadeMissionAndReleaseOwnedOrders();
+  CleanupTInvadeMissionAndReleaseOwnedOrders(this);
   return;
 }
 
@@ -71,12 +72,12 @@ TInvadeMission::thunk_RefreshInvadeMissionBeachheadNodeAndMaybeRepath(TInvadeMis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402CE3
 // GHIDRA_NAME TInvadeMission::thunk_ForwardInvadeMissionArgToBeachheadSlot90
-// GHIDRA_PROTO void __cdecl thunk_ForwardInvadeMissionArgToBeachheadSlot90(void)
+// GHIDRA_PROTO void __thiscall thunk_ForwardInvadeMissionArgToBeachheadSlot90(void)
 
-void __cdecl TInvadeMission::thunk_ForwardInvadeMissionArgToBeachheadSlot90(void)
+void __thiscall TInvadeMission::thunk_ForwardInvadeMissionArgToBeachheadSlot90(TInvadeMission *this)
 
 {
-  ForwardInvadeMissionArgToBeachheadSlot90();
+  ForwardInvadeMissionArgToBeachheadSlot90(this);
   return;
 }
 
@@ -140,50 +141,53 @@ bool TInvadeMission::thunk_ReturnFalseForInvadeMissionCapabilityFlag(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040443F
 // GHIDRA_NAME TInvadeMission::thunk_ComputeInvadeMissionWeightedScoreDelta
-// GHIDRA_PROTO void __cdecl thunk_ComputeInvadeMissionWeightedScoreDelta(void)
+// GHIDRA_PROTO void __thiscall thunk_ComputeInvadeMissionWeightedScoreDelta(void)
 
-void __cdecl TInvadeMission::thunk_ComputeInvadeMissionWeightedScoreDelta(void)
+void __thiscall TInvadeMission::thunk_ComputeInvadeMissionWeightedScoreDelta(TInvadeMission *this)
 
 {
-  ComputeInvadeMissionWeightedScoreDelta();
+  ComputeInvadeMissionWeightedScoreDelta(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404DB3
 // GHIDRA_NAME TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot8C
-// GHIDRA_PROTO void __cdecl thunk_ForwardInvadeMissionArgsToBeachheadSlot8C(void)
+// GHIDRA_PROTO void __thiscall thunk_ForwardInvadeMissionArgsToBeachheadSlot8C(void)
 
-void __cdecl TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot8C(void)
+void __thiscall
+TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot8C(TInvadeMission *this)
 
 {
-  ForwardInvadeMissionArgsToBeachheadSlot8C();
+  ForwardInvadeMissionArgsToBeachheadSlot8C(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405632
 // GHIDRA_NAME TInvadeMission::thunk_ComputeInvadeMissionBeachheadScoreIfEnabled
-// GHIDRA_PROTO void __cdecl thunk_ComputeInvadeMissionBeachheadScoreIfEnabled(void)
+// GHIDRA_PROTO void __thiscall thunk_ComputeInvadeMissionBeachheadScoreIfEnabled(void)
 
-void __cdecl TInvadeMission::thunk_ComputeInvadeMissionBeachheadScoreIfEnabled(void)
+void __thiscall
+TInvadeMission::thunk_ComputeInvadeMissionBeachheadScoreIfEnabled(TInvadeMission *this)
 
 {
-  ComputeInvadeMissionBeachheadScoreIfEnabled();
+  ComputeInvadeMissionBeachheadScoreIfEnabled(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C9F
 // GHIDRA_NAME TInvadeMission::thunk_BuildInvadeMissionUnitPriorityVectorAndScore
-// GHIDRA_PROTO void __cdecl thunk_BuildInvadeMissionUnitPriorityVectorAndScore(void)
+// GHIDRA_PROTO void __thiscall thunk_BuildInvadeMissionUnitPriorityVectorAndScore(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to BuildInvadeMissionUnitPriorityVectorAndScore
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to BuildInvadeMissionUnitPriorityVectorAndScore */
 
-void __cdecl TInvadeMission::thunk_BuildInvadeMissionUnitPriorityVectorAndScore(void)
+void __thiscall
+TInvadeMission::thunk_BuildInvadeMissionUnitPriorityVectorAndScore(TInvadeMission *this)
 
 {
-  BuildInvadeMissionUnitPriorityVectorAndScore();
+  BuildInvadeMissionUnitPriorityVectorAndScore(this);
   return;
 }
 
@@ -200,12 +204,12 @@ void __thiscall TInvadeMission::thunk_SerializeTInvadeMission(TInvadeMission *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004061F4
 // GHIDRA_NAME TInvadeMission::thunk_SetInvadeMissionBeachheadDisabledFlag
-// GHIDRA_PROTO void __cdecl thunk_SetInvadeMissionBeachheadDisabledFlag(void)
+// GHIDRA_PROTO void __thiscall thunk_SetInvadeMissionBeachheadDisabledFlag(void)
 
-void __cdecl TInvadeMission::thunk_SetInvadeMissionBeachheadDisabledFlag(void)
+void __thiscall TInvadeMission::thunk_SetInvadeMissionBeachheadDisabledFlag(TInvadeMission *this)
 
 {
-  SetInvadeMissionBeachheadDisabledFlag();
+  SetInvadeMissionBeachheadDisabledFlag(this);
   return;
 }
 
@@ -251,12 +255,13 @@ void __cdecl TInvadeMission::thunk_GetInvadeMissionBeachheadChild(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406A32
 // GHIDRA_NAME TInvadeMission::thunk_ComputeInvadeMissionCompositeScoreWithBeachhead
-// GHIDRA_PROTO void __cdecl thunk_ComputeInvadeMissionCompositeScoreWithBeachhead(void)
+// GHIDRA_PROTO void __thiscall thunk_ComputeInvadeMissionCompositeScoreWithBeachhead(void)
 
-void __cdecl TInvadeMission::thunk_ComputeInvadeMissionCompositeScoreWithBeachhead(void)
+void __thiscall
+TInvadeMission::thunk_ComputeInvadeMissionCompositeScoreWithBeachhead(TInvadeMission *this)
 
 {
-  ComputeInvadeMissionCompositeScoreWithBeachhead();
+  ComputeInvadeMissionCompositeScoreWithBeachhead(this);
   return;
 }
 
@@ -291,12 +296,13 @@ bool TInvadeMission::thunk_ReturnTrueForInvadeMissionCapabilityFlagAlt(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407667
 // GHIDRA_NAME TInvadeMission::thunk_ResetInvadeMissionTargetTerrainClassAndRefresh
-// GHIDRA_PROTO void __cdecl thunk_ResetInvadeMissionTargetTerrainClassAndRefresh(void)
+// GHIDRA_PROTO void __thiscall thunk_ResetInvadeMissionTargetTerrainClassAndRefresh(void)
 
-void __cdecl TInvadeMission::thunk_ResetInvadeMissionTargetTerrainClassAndRefresh(void)
+void __thiscall
+TInvadeMission::thunk_ResetInvadeMissionTargetTerrainClassAndRefresh(TInvadeMission *this)
 
 {
-  ResetInvadeMissionTargetTerrainClassAndRefresh();
+  ResetInvadeMissionTargetTerrainClassAndRefresh(this);
   return;
 }
 
@@ -318,14 +324,68 @@ bool TInvadeMission::thunk_ReturnTrueForInvadeMissionCapabilityFlag(void)
   return bVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408C7E
-// GHIDRA_NAME TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot84
-// GHIDRA_PROTO void __cdecl thunk_ForwardInvadeMissionArgsToBeachheadSlot84(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004082BF
+// GHIDRA_NAME TInvadeMission::thunk_ConstructTInvadeMissionWithOptionalBeachhead
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTInvadeMissionWithOptionalBeachhead(void)
 
-void __cdecl TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot84(void)
+void * __thiscall
+TInvadeMission::thunk_ConstructTInvadeMissionWithOptionalBeachhead(TInvadeMission *this)
 
 {
-  ForwardInvadeMissionArgsToBeachheadSlot84();
+  TMission *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  void *in_stack_00000004;
+  undefined2 in_stack_00000008;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006344d2;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  TArmyMission::thunk_ConstructTArmyMissionWithNodeKey((TArmyMission *)this);
+  *(undefined2 *)(this + 0x32) = 0xffff;
+  *(undefined2 *)(this + 0x30) = in_stack_00000008;
+  uStack_4 = 0;
+  *(undefined4 *)(this + 0x34) = 0;
+  *(undefined ***)this = &g_vtblTInvadeMission;
+  if (in_stack_00000004 != (void *)0x0) {
+    this_00 = (TMission *)AllocateWithFallbackHandler(0x40);
+    uStack_4 = CONCAT31(uStack_4._1_3_,1);
+    if (this_00 == (TMission *)0x0) {
+      this_00 = (TMission *)0x0;
+    }
+    else {
+      TMission::thunk_ConstructTMission(this_00);
+      this_00[5].pVtable = in_stack_00000004;
+      this_00[6].pVtable = (void *)0x0;
+      this_00[7].pVtable = (void *)0x0;
+      this_00[8].pVtable = (void *)0x0;
+      this_00[9].pVtable = (void *)0x0;
+      this_00[10].pVtable = (void *)0x0;
+      this_00[0xb].pVtable = (void *)0x0;
+      this_00[0xc].pVtable = (void *)0x0;
+      this_00[0xd].pVtable = (void *)0x0;
+      this_00[0xe].pVtable = (void *)0x0;
+      this_00[0xf].pVtable = this;
+      this_00->pVtable = &g_vtblTBeachheadMission;
+    }
+    *(TMission **)(this + 0x34) = this_00;
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408C7E
+// GHIDRA_NAME TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot84
+// GHIDRA_PROTO void __thiscall thunk_ForwardInvadeMissionArgsToBeachheadSlot84(void)
+
+void __thiscall
+TInvadeMission::thunk_ForwardInvadeMissionArgsToBeachheadSlot84(TInvadeMission *this)
+
+{
+  ForwardInvadeMissionArgsToBeachheadSlot84(this);
   return;
 }
 
@@ -426,61 +486,55 @@ bool TInvadeMission::ReturnTrueForInvadeMissionCapabilityFlagAlt(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F160
 // GHIDRA_NAME TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90
-// GHIDRA_PROTO void __cdecl ForwardInvadeMissionArgToBeachheadSlot90(void)
+// GHIDRA_PROTO void __thiscall ForwardInvadeMissionArgToBeachheadSlot90(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Forwards one-argument callback from invade mission to beachhead child vtable slot +0x90.
 // GHIDRA_COMMENT_END
 
 /* Forwards one-argument callback from invade mission to beachhead child vtable slot +0x90. */
 
-void __cdecl TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90(void)
+void __thiscall TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90(TInvadeMission *this)
 
 {
-  int in_ECX;
-  
-  (**(code **)(**(int **)(in_ECX + 0x34) + 0x90))();
+  (**(code **)(**(int **)(this + 0x34) + 0x90))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F190
 // GHIDRA_NAME TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84
-// GHIDRA_PROTO void __cdecl ForwardInvadeMissionArgsToBeachheadSlot84(void)
+// GHIDRA_PROTO void __thiscall ForwardInvadeMissionArgsToBeachheadSlot84(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Forwards two-argument callback from invade mission to beachhead child vtable slot +0x84.
 // GHIDRA_COMMENT_END
 
 /* Forwards two-argument callback from invade mission to beachhead child vtable slot +0x84. */
 
-void __cdecl TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84(void)
+void __thiscall TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84(TInvadeMission *this)
 
 {
-  int in_ECX;
-  
-  (**(code **)(**(int **)(in_ECX + 0x34) + 0x84))();
+  (**(code **)(**(int **)(this + 0x34) + 0x84))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F1C0
 // GHIDRA_NAME TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C
-// GHIDRA_PROTO void __cdecl ForwardInvadeMissionArgsToBeachheadSlot8C(void)
+// GHIDRA_PROTO void __thiscall ForwardInvadeMissionArgsToBeachheadSlot8C(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Forwards two-argument callback from invade mission to beachhead child vtable slot +0x8c.
 // GHIDRA_COMMENT_END
 
 /* Forwards two-argument callback from invade mission to beachhead child vtable slot +0x8c. */
 
-void __cdecl TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C(void)
+void __thiscall TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C(TInvadeMission *this)
 
 {
-  int in_ECX;
-  
-  (**(code **)(**(int **)(in_ECX + 0x34) + 0x8c))();
+  (**(code **)(**(int **)(this + 0x34) + 0x8c))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F1F0
 // GHIDRA_NAME TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead
-// GHIDRA_PROTO void __cdecl ComputeInvadeMissionCompositeScoreWithBeachhead(void)
+// GHIDRA_PROTO void __thiscall ComputeInvadeMissionCompositeScoreWithBeachhead(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes composite invade score as local dot-product term plus beachhead child score callback.
 // GHIDRA_COMMENT_END
@@ -488,27 +542,27 @@ void __cdecl TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C(void)
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Computes composite invade score as local dot-product term plus beachhead child score callback. */
 
-void __cdecl TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead(void)
+void __thiscall
+TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead(TInvadeMission *this)
 
 {
   float fVar1;
   float fVar2;
   float fVar3;
   int *piVar4;
-  int in_ECX;
-  float *pfVar5;
+  TInvadeMission *pTVar5;
   
   piVar4 = &g_Compute_Army_Mission_LookupTable_00697980;
-  pfVar5 = (float *)(in_ECX + 0x1c);
+  pTVar5 = this + 0x1c;
   fVar3 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
   do {
-    fVar1 = *pfVar5;
+    fVar1 = *(float *)pTVar5;
     fVar2 = (float)*piVar4;
     piVar4 = (int *)((float *)piVar4 + 1);
-    pfVar5 = pfVar5 + 1;
+    pTVar5 = pTVar5 + 4;
     fVar3 = fVar1 * fVar2 + fVar3;
   } while ((int)piVar4 < 0x697994);
-  (**(code **)(**(int **)(in_ECX + 0x34) + 0x6c))(fVar3);
+  (**(code **)(**(int **)(this + 0x34) + 0x6c))(fVar3);
   return;
 }
 
@@ -558,9 +612,9 @@ void * __cdecl TInvadeMission::GetTInvadeMissionClassNamePointer(void)
 void * __thiscall TInvadeMission::ConstructTInvadeMissionWithOptionalBeachhead(TInvadeMission *this)
 
 {
-  undefined4 *puVar1;
+  TMission *this_00;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
+  void *in_stack_00000004;
   undefined2 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -576,28 +630,28 @@ void * __thiscall TInvadeMission::ConstructTInvadeMissionWithOptionalBeachhead(T
   local_4 = 0;
   *(undefined4 *)(this + 0x34) = 0;
   *(undefined ***)this = &g_vtblTInvadeMission;
-  if (in_stack_00000004 != 0) {
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x40);
+  if (in_stack_00000004 != (void *)0x0) {
+    this_00 = (TMission *)AllocateWithFallbackHandler(0x40);
     local_4 = CONCAT31(local_4._1_3_,1);
-    if (puVar1 == (undefined4 *)0x0) {
-      puVar1 = (undefined4 *)0x0;
+    if (this_00 == (TMission *)0x0) {
+      this_00 = (TMission *)0x0;
     }
     else {
-      TMission::thunk_ConstructTMission();
-      puVar1[5] = in_stack_00000004;
-      puVar1[6] = 0;
-      puVar1[7] = 0;
-      puVar1[8] = 0;
-      puVar1[9] = 0;
-      puVar1[10] = 0;
-      puVar1[0xb] = 0;
-      puVar1[0xc] = 0;
-      puVar1[0xd] = 0;
-      puVar1[0xe] = 0;
-      puVar1[0xf] = this;
-      *puVar1 = &g_vtblTBeachheadMission;
+      TMission::thunk_ConstructTMission(this_00);
+      this_00[5].pVtable = in_stack_00000004;
+      this_00[6].pVtable = (void *)0x0;
+      this_00[7].pVtable = (void *)0x0;
+      this_00[8].pVtable = (void *)0x0;
+      this_00[9].pVtable = (void *)0x0;
+      this_00[10].pVtable = (void *)0x0;
+      this_00[0xb].pVtable = (void *)0x0;
+      this_00[0xc].pVtable = (void *)0x0;
+      this_00[0xd].pVtable = (void *)0x0;
+      this_00[0xe].pVtable = (void *)0x0;
+      this_00[0xf].pVtable = this;
+      this_00->pVtable = &g_vtblTBeachheadMission;
     }
-    *(undefined4 **)(this + 0x34) = puVar1;
+    *(TMission **)(this + 0x34) = this_00;
   }
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -627,7 +681,7 @@ void * __thiscall TInvadeMission::DestroyTInvadeMission(TInvadeMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F410
 // GHIDRA_NAME TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders
-// GHIDRA_PROTO void __cdecl CleanupTInvadeMissionAndReleaseOwnedOrders(void)
+// GHIDRA_PROTO void __thiscall CleanupTInvadeMissionAndReleaseOwnedOrders(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Invade mission cleanup path: releases linked mission-owner state, clears tracked child/context pointers, then destroys self.
 // GHIDRA_COMMENT_END
@@ -635,7 +689,7 @@ void * __thiscall TInvadeMission::DestroyTInvadeMission(TInvadeMission *this)
 /* Invade mission cleanup path: releases linked mission-owner state, clears tracked child/context
    pointers, then destroys self. */
 
-void __cdecl TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders(void)
+void __thiscall TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders(TInvadeMission *this)
 
 {
   int iVar1;
@@ -644,11 +698,10 @@ void __cdecl TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders(void)
   undefined3 extraout_var;
   int extraout_EAX_00;
   undefined3 extraout_var_00;
-  int *in_ECX;
   int iVar3;
   
-  (**(code **)(*(int *)in_ECX[0xd] + 0x1c))();
-  (**(code **)(*(int *)g_apNationStates[(short)in_ECX[1]] + 0xc))();
+  (**(code **)(**(int **)(this + 0x34) + 0x1c))();
+  (**(code **)(*(int *)g_apNationStates[*(short *)(this + 4)] + 0xc))();
   SetMapStateByteFlag970WithRuntimeGate();
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar2 = thunk_LinkedListCursorHasCurrent();
@@ -661,13 +714,13 @@ void __cdecl TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders(void)
     iVar1 = extraout_EAX_00;
     iVar3 = CONCAT31(extraout_var_00,bVar2);
   }
-  (**(code **)(*(int *)in_ECX[6] + 0x5c))();
-  if ((int *)in_ECX[6] != (int *)0x0) {
-    (**(code **)(*(int *)in_ECX[6] + 0x58))();
+  (**(code **)(**(int **)(this + 0x18) + 0x5c))();
+  if (*(int **)(this + 0x18) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x18) + 0x58))();
   }
-  in_ECX[6] = 0;
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  *(undefined4 *)(this + 0x18) = 0;
+  if (this != (TInvadeMission *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }
@@ -767,7 +820,8 @@ void __thiscall TInvadeMission::SetInvadeMissionKindTag2(TInvadeMission *this)
 void __thiscall TInvadeMission::UpdateInvadeMissionAndBeachheadChildState(TInvadeMission *this)
 
 {
-  TAttackProvinceMission::thunk_PopulateDefendProvinceMissionResourceWeightsFromTargetProvince();
+  TAttackProvinceMission::thunk_PopulateDefendProvinceMissionResourceWeightsFromTargetProvince
+            ((TAttackProvinceMission *)this);
   (**(code **)(**(int **)(this + 0x34) + 0x3c))();
   return;
 }
@@ -808,18 +862,18 @@ void __thiscall TInvadeMission::DeserializeTInvadeMission(TInvadeMission *this)
 
 {
   code *pcVar1;
-  int iVar2;
-  int *piVar3;
+  void *pvVar2;
+  TMission *pTVar3;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000004;
-  int *piStack_c;
+  TMission *pTStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
   
-  piStack_c = (int *)*unaff_FS_OFFSET;
+  pTStack_c = (TMission *)*unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006344fa;
-  *unaff_FS_OFFSET = &piStack_c;
+  *unaff_FS_OFFSET = &pTStack_c;
   thunk_DeserializeTArmyMission();
   pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
   (*pcVar1)(this + 0x30);
@@ -827,29 +881,29 @@ void __thiscall TInvadeMission::DeserializeTInvadeMission(TInvadeMission *this)
   if (*(int **)(this + 0x34) != (int *)0x0) {
     (**(code **)(**(int **)(this + 0x34) + 0x1c))();
   }
-  piVar3 = (int *)AllocateWithFallbackHandler(0x40);
-  piStack_c = piVar3;
-  if (piVar3 == (int *)0x0) {
-    piVar3 = (int *)0x0;
+  pTVar3 = (TMission *)AllocateWithFallbackHandler(0x40);
+  pTStack_c = pTVar3;
+  if (pTVar3 == (TMission *)0x0) {
+    pTVar3 = (TMission *)0x0;
   }
   else {
-    TMission::thunk_ConstructTMission();
-    piVar3[5] = 0;
-    piVar3[6] = 0;
-    piVar3[7] = 0;
-    piVar3[8] = 0;
-    piVar3[9] = 0;
-    piVar3[10] = 0;
-    piVar3[0xb] = 0;
-    piVar3[0xc] = 0;
-    piVar3[0xd] = 0;
-    piVar3[0xe] = 0;
-    piVar3[0xf] = (int)this;
-    *piVar3 = (int)&g_vtblTBeachheadMission;
+    TMission::thunk_ConstructTMission(pTVar3);
+    pTVar3[5].pVtable = (void *)0x0;
+    pTVar3[6].pVtable = (void *)0x0;
+    pTVar3[7].pVtable = (void *)0x0;
+    pTVar3[8].pVtable = (void *)0x0;
+    pTVar3[9].pVtable = (void *)0x0;
+    pTVar3[10].pVtable = (void *)0x0;
+    pTVar3[0xb].pVtable = (void *)0x0;
+    pTVar3[0xc].pVtable = (void *)0x0;
+    pTVar3[0xd].pVtable = (void *)0x0;
+    pTVar3[0xe].pVtable = (void *)0x0;
+    pTVar3[0xf].pVtable = this;
+    pTVar3->pVtable = &g_vtblTBeachheadMission;
   }
-  iVar2 = *piVar3;
-  *(int **)(this + 0x34) = piVar3;
-  (**(code **)(iVar2 + 0x18))();
+  pvVar2 = pTVar3->pVtable;
+  *(TMission **)(this + 0x34) = pTVar3;
+  (**(code **)((int)pvVar2 + 0x18))();
   *unaff_FS_OFFSET = 2;
   return;
 }
@@ -871,7 +925,8 @@ TInvadeMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath(TInvadeMission *
   (**(code **)(**(int **)(this + 0x34) + 0x44))();
   if ((*(byte *)(*(int *)(g_pGlobalMapState + 0x10) + 0xa1 + *(short *)(this + 0x30) * 0xa8) &
       '\x01' << ((byte)*(undefined2 *)(this + 4) & 0x1f)) != 0) {
-    TAttackProvinceMission::thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUnits();
+    TAttackProvinceMission::thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUnits
+              ((TAttackProvinceMission *)this);
   }
   return;
 }
@@ -915,7 +970,7 @@ bool TInvadeMission::ReturnTrueForInvadeMissionCapabilityFlag(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FAC0
 // GHIDRA_NAME TInvadeMission::ComputeInvadeMissionWeightedScoreDelta
-// GHIDRA_PROTO void __cdecl ComputeInvadeMissionWeightedScoreDelta(void)
+// GHIDRA_PROTO void __thiscall ComputeInvadeMissionWeightedScoreDelta(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes invade mission score delta; applies dampening factor when capability flag callback returns false.
 // GHIDRA_COMMENT_END
@@ -923,24 +978,23 @@ bool TInvadeMission::ReturnTrueForInvadeMissionCapabilityFlag(void)
 /* Computes invade mission score delta; applies dampening factor when capability flag callback
    returns false. */
 
-void __cdecl TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(void)
+void __thiscall TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(TInvadeMission *this)
 
 {
   char cVar1;
-  int *in_ECX;
   int in_stack_00000004;
   
-  if ((char)in_ECX[4] == '\0') {
-    if (*(int **)(in_stack_00000004 + 0x40) == in_ECX) {
-      (**(code **)(*in_ECX + 0x68))();
+  if (this[0x10] == (TInvadeMission)0x0) {
+    if (*(TInvadeMission **)(in_stack_00000004 + 0x40) == this) {
+      (**(code **)(*(int *)this + 0x68))();
       thunk_ComputeArmyMissionScoreDeltaWithScaledCandidateUnit();
     }
     else {
       thunk_ComputeArmyMissionScoreDeltaWithCandidateUnit();
-      (**(code **)(*in_ECX + 0x68))();
+      (**(code **)(*(int *)this + 0x68))();
     }
   }
-  cVar1 = (**(code **)(*in_ECX + 0x50))();
+  cVar1 = (**(code **)(*(int *)this + 0x50))();
   if (cVar1 != '\0') {
     return;
   }
@@ -949,7 +1003,7 @@ void __cdecl TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FB60
 // GHIDRA_NAME TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled
-// GHIDRA_PROTO void __cdecl ComputeInvadeMissionBeachheadScoreIfEnabled(void)
+// GHIDRA_PROTO void __thiscall ComputeInvadeMissionBeachheadScoreIfEnabled(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Returns beachhead child score via child vtable when invade mission is not disabled by local flag.
 // GHIDRA_COMMENT_END
@@ -957,35 +1011,32 @@ void __cdecl TInvadeMission::ComputeInvadeMissionWeightedScoreDelta(void)
 /* Returns beachhead child score via child vtable when invade mission is not disabled by local flag.
     */
 
-void __cdecl TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled(void)
+void __thiscall TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled(TInvadeMission *this)
 
 {
-  int in_ECX;
-  
-  if (*(char *)(in_ECX + 0x10) != '\0') {
+  if (this[0x10] != (TInvadeMission)0x0) {
     return;
   }
-  (**(code **)(**(int **)(in_ECX + 0x34) + 0x74))();
+  (**(code **)(**(int **)(this + 0x34) + 0x74))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FB90
 // GHIDRA_NAME TInvadeMission::SetInvadeMissionBeachheadDisabledFlag
-// GHIDRA_PROTO void __cdecl SetInvadeMissionBeachheadDisabledFlag(void)
+// GHIDRA_PROTO void __thiscall SetInvadeMissionBeachheadDisabledFlag(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sets invade disable flag and propagates the same state to beachhead child mission callback.
 // GHIDRA_COMMENT_END
 
 /* Sets invade disable flag and propagates the same state to beachhead child mission callback. */
 
-void __cdecl TInvadeMission::SetInvadeMissionBeachheadDisabledFlag(void)
+void __thiscall TInvadeMission::SetInvadeMissionBeachheadDisabledFlag(TInvadeMission *this)
 
 {
-  int in_ECX;
-  undefined1 in_stack_00000004;
+  TInvadeMission in_stack_00000004;
   
-  *(undefined1 *)(in_ECX + 0x10) = in_stack_00000004;
-  (**(code **)(**(int **)(in_ECX + 0x34) + 0x94))();
+  this[0x10] = in_stack_00000004;
+  (**(code **)(**(int **)(this + 0x34) + 0x94))();
   return;
 }
 
@@ -1018,7 +1069,7 @@ bool __thiscall TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead(TI
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FC10
 // GHIDRA_NAME TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore
-// GHIDRA_PROTO void __cdecl BuildInvadeMissionUnitPriorityVectorAndScore(void)
+// GHIDRA_PROTO void __thiscall BuildInvadeMissionUnitPriorityVectorAndScore(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds a 5-element unit-priority vector from linked unit list and forwards it to child mission scoring callback.
 // GHIDRA_COMMENT_END
@@ -1026,7 +1077,7 @@ bool __thiscall TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead(TI
 /* Builds a 5-element unit-priority vector from linked unit list and forwards it to child mission
    scoring callback. */
 
-void __cdecl TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore(void)
+void __thiscall TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore(TInvadeMission *this)
 
 {
   code *pcVar1;
@@ -1036,7 +1087,6 @@ void __cdecl TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore(void)
   int *extraout_EAX_00;
   undefined3 extraout_var_00;
   undefined4 uVar3;
-  int *in_ECX;
   int *piVar4;
   undefined4 *puVar5;
   undefined4 *in_stack_00000004;
@@ -1046,7 +1096,7 @@ void __cdecl TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore(void)
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar2 = thunk_LinkedListCursorHasCurrent();
   if (CONCAT31(extraout_var,bVar2) != 0) {
-    pcVar1 = *(code **)(*in_ECX + 0x9c);
+    pcVar1 = *(code **)(*(int *)this + 0x9c);
     piVar4 = extraout_EAX;
     do {
       (**(code **)(*piVar4 + 0xc))();
@@ -1068,7 +1118,7 @@ void __cdecl TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore(void)
     puVar5 = puVar5 + 1;
     local_28 = local_28 + -1;
   } while (local_28 != 0);
-  (**(code **)(*(int *)in_ECX[0xd] + 0x2c))(in_stack_00000004,in_stack_00000008);
+  (**(code **)(**(int **)(this + 0x34) + 0x2c))(in_stack_00000004,in_stack_00000008);
   return;
 }
 
@@ -1089,7 +1139,8 @@ bool __thiscall TInvadeMission::TryResolveInvadeMissionTargetTerrainClass(TInvad
   undefined2 uVar1;
   
   *(undefined2 *)(this + 0x14) = 0xffff;
-  TAttackProvinceMission::thunk_TryResolveAttackProvinceMissionTargetTerrainClass();
+  TAttackProvinceMission::thunk_TryResolveAttackProvinceMissionTargetTerrainClass
+            ((TAttackProvinceMission *)this);
   if (extraout_AL != '\0') {
     *(undefined2 *)(this + 0x14) = 0xffff;
     return false;
@@ -1101,20 +1152,19 @@ bool __thiscall TInvadeMission::TryResolveInvadeMissionTargetTerrainClass(TInvad
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FE10
 // GHIDRA_NAME TInvadeMission::ResetInvadeMissionTargetTerrainClassAndRefresh
-// GHIDRA_PROTO void __cdecl ResetInvadeMissionTargetTerrainClassAndRefresh(void)
+// GHIDRA_PROTO void __thiscall ResetInvadeMissionTargetTerrainClassAndRefresh(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Clears cached target terrain class and refreshes dependent invade mission path/state.
 // GHIDRA_COMMENT_END
 
 /* Clears cached target terrain class and refreshes dependent invade mission path/state. */
 
-void __cdecl TInvadeMission::ResetInvadeMissionTargetTerrainClassAndRefresh(void)
+void __thiscall TInvadeMission::ResetInvadeMissionTargetTerrainClassAndRefresh(TInvadeMission *this)
 
 {
-  int in_ECX;
-  
-  *(undefined2 *)(in_ECX + 0x14) = 0xffff;
-  TAttackProvinceMission::thunk_TryValidateOrRetargetDefendProvinceMissionTarget();
+  *(undefined2 *)(this + 0x14) = 0xffff;
+  TAttackProvinceMission::thunk_TryValidateOrRetargetDefendProvinceMissionTarget
+            ((TAttackProvinceMission *)this);
   return;
 }
 

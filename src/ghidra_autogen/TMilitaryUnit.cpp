@@ -3,6 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TMilitaryUnit.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405867
+// GHIDRA_NAME TMilitaryUnit::thunk_DestroyMilitaryUnitOrderObject
+// GHIDRA_PROTO void __cdecl thunk_DestroyMilitaryUnitOrderObject(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyMilitaryUnitOrderObject
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestroyMilitaryUnitOrderObject */
+
+void __cdecl TMilitaryUnit::thunk_DestroyMilitaryUnitOrderObject(void)
+
+{
+  DestroyMilitaryUnitOrderObject();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040794B
+// GHIDRA_NAME TMilitaryUnit::thunk_GetMilitaryUnitOrderTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetMilitaryUnitOrderTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetMilitaryUnitOrderTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetMilitaryUnitOrderTypeName */
+
+void * __cdecl TMilitaryUnit::thunk_GetMilitaryUnitOrderTypeName(void)
+
+{
+  return &g_pClassDescTMilitaryUnit;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2CB0
 // GHIDRA_NAME TMilitaryUnit::CreateTMilitaryUnitInstance
 // GHIDRA_PROTO void * __cdecl CreateTMilitaryUnitInstance(void)

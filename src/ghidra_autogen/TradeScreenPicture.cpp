@@ -76,6 +76,68 @@ TradeScreenPicture::thunk_ConstructTradeScreenPictureBaseState(TradeScreenPictur
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00494BF0
+// GHIDRA_NAME TradeScreenPicture::RenderTradeScreenCommoditySummaryRows_Impl
+// GHIDRA_PROTO void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00494bf0 with single named caller RenderTradeScreenCommoditySummaryRows@0x005ba7a0
+// GHIDRA_COMMENT_END
+
+/* [ThunkBridge] promoted from thunk_FUN_00494bf0 with single named caller
+   RenderTradeScreenCommoditySummaryRows@0x005ba7a0 */
+
+void __cdecl TradeScreenPicture::RenderTradeScreenCommoditySummaryRows_Impl(void)
+
+{
+  void *extraout_EAX;
+  undefined4 uVar1;
+  int *piVar2;
+  int *unaff_ESI;
+  undefined4 uVar3;
+  undefined4 unaff_retaddr;
+  short in_stack_0000000c;
+  
+  uVar3 = 0x920;
+  if (in_stack_0000000c != -2) {
+    if (in_stack_0000000c == -1) {
+      uVar3 = 0x922;
+    }
+    else if (in_stack_0000000c == 1) {
+      uVar3 = 0x921;
+    }
+  }
+  if ((g_bQuickDrawStyleDirty != 0) || (g_hQuickDrawCachedFontHandle == (void *)0x0)) {
+    if (g_hQuickDrawCachedFontHandle != (void *)0x0) {
+      (**(code **)(*(int *)g_hQuickDrawCachedFontHandle + 4))(1);
+    }
+    CreateFontFromPresetAndAttachRegionHandle();
+    g_bQuickDrawStyleDirty = 0;
+    g_hQuickDrawCachedFontHandle = extraout_EAX;
+  }
+  piVar2 = g_pQuickDrawActiveMemoryDc;
+  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  uVar1 = (**(code **)(*piVar2 + 0x30))(g_hQuickDrawCachedFontHandle);
+  piVar2 = g_pQuickDrawActiveMemoryDc;
+  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
+  SetBkModeOnPrimaryAndSecondaryDc(1);
+  piVar2 = g_pQuickDrawActiveMemoryDc;
+  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  (**(code **)(*piVar2 + 0x70))(*unaff_ESI,*(undefined4 *)(*unaff_ESI + -8),unaff_retaddr,uVar3);
+  piVar2 = g_pQuickDrawActiveMemoryDc;
+  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  (**(code **)(*piVar2 + 0x30))(uVar1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA680
 // GHIDRA_NAME TradeScreenPicture::CreateTradeScreenPictureInstance
 // GHIDRA_PROTO void * __cdecl CreateTradeScreenPictureInstance(void)

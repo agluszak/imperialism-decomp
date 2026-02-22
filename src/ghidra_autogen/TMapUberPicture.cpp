@@ -59,17 +59,19 @@ TMapUberPicture::thunk_InitializeMapOverlayDialogControlsAndSelectionState(TMapU
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E25
 // GHIDRA_NAME TMapUberPicture::thunk_HandleMapOverlayDialogCommandTagsAndForward
-// GHIDRA_PROTO void __stdcall thunk_HandleMapOverlayDialogCommandTagsAndForward(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleMapOverlayDialogCommandTagsAndForward(TMapUberPicture * pThis)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleMapOverlayDialogCommandTagsAndForward
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleMapOverlayDialogCommandTagsAndForward */
 
-void TMapUberPicture::thunk_HandleMapOverlayDialogCommandTagsAndForward(void)
+void __thiscall
+TMapUberPicture::thunk_HandleMapOverlayDialogCommandTagsAndForward
+          (TMapUberPicture *this,TMapUberPicture *pThis)
 
 {
-  HandleMapOverlayDialogCommandTagsAndForward();
+  HandleMapOverlayDialogCommandTagsAndForward(this,pThis);
   return;
 }
 
@@ -98,7 +100,7 @@ void * __thiscall TMapUberPicture::thunk_ConstructTMapUberPictureBaseState(TMapU
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C98
 // GHIDRA_NAME TMapUberPicture::thunk_WrapperFor_GetActiveNationId_At00597600
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_GetActiveNationId_At00597600(TMapUberPicture * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_GetActiveNationId_At00597600(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_GetActiveNationId_At00597600
 // GHIDRA_COMMENT_END
@@ -106,11 +108,10 @@ void * __thiscall TMapUberPicture::thunk_ConstructTMapUberPictureBaseState(TMapU
 /* Single-JMP thunk to WrapperFor_GetActiveNationId_At00597600 */
 
 void __thiscall
-TMapUberPicture::thunk_WrapperFor_GetActiveNationId_At00597600
-          (TMapUberPicture *this,TMapUberPicture *pThis,int arg1)
+TMapUberPicture::thunk_WrapperFor_GetActiveNationId_At00597600(TMapUberPicture *this,int arg1)
 
 {
-  WrapperFor_GetActiveNationId_At00597600(this,pThis,arg1);
+  WrapperFor_GetActiveNationId_At00597600(this,arg1);
   return;
 }
 
@@ -298,7 +299,7 @@ TMapUberPicture::InitializeMapOverlayDialogControlsAndSelectionState(TMapUberPic
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00597340
 // GHIDRA_NAME TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward
-// GHIDRA_PROTO void __stdcall HandleMapOverlayDialogCommandTagsAndForward(void)
+// GHIDRA_PROTO void __thiscall HandleMapOverlayDialogCommandTagsAndForward(TMapUberPicture * pThis)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles map-overlay dialog command tags (overlay mode toggles, cancel/send, owner reassignment keys), then forwards unresolved commands through shared city-dialog command routing.
 // GHIDRA_COMMENT_END
@@ -306,20 +307,21 @@ TMapUberPicture::InitializeMapOverlayDialogControlsAndSelectionState(TMapUberPic
 /* Handles map-overlay dialog command tags (overlay mode toggles, cancel/send, owner reassignment
    keys), then forwards unresolved commands through shared city-dialog command routing. */
 
-void TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward(void)
+void __thiscall
+TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward
+          (TMapUberPicture *this,TMapUberPicture *pThis)
 
 {
   uint uVar1;
   ushort uVar2;
   int unaff_ESI;
   int *unaff_FS_OFFSET;
-  int in_stack_00000004;
   int in_stack_00000008;
   undefined1 auStackY_30 [4];
   int *piStackY_2c;
   undefined4 uStackY_28;
   undefined4 uStackY_24;
-  int iStackY_20;
+  TMapUberPicture *pTStackY_20;
   undefined4 uStackY_1c;
   undefined1 *puVar3;
   int local_c;
@@ -330,7 +332,7 @@ void TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward(void)
   local_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_006383e8;
   *unaff_FS_OFFSET = (int)&local_c;
-  if (in_stack_00000004 == 10) {
+  if (pThis == (TMapUberPicture *)0xa) {
     uStackY_1c = 0x597370;
     uVar2 = GetAsyncKeyState(0x11);
     if (((uVar2 & 0x8000) != 0) &&
@@ -350,7 +352,7 @@ void TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward(void)
       }
       if (uVar1 == 0x5a6d496e) {
         uStackY_1c = 0x5973bd;
-        thunk_EnterMapInteractionOverlayMode();
+        thunk_EnterMapInteractionOverlayMode(this,in_stack_00000008);
         *unaff_FS_OFFSET = local_c;
         return;
       }
@@ -361,7 +363,7 @@ void TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward(void)
           InitializeSharedStringRefFromEmpty();
           puVar3 = &stack0x0000000c;
           uStackY_1c = 0x25;
-          iStackY_20 = 0x2742;
+          pTStackY_20 = (TMapUberPicture *)0x2742;
           local_4 = (undefined1 *)0x0;
           uStackY_24 = 0x5974a2;
           (**(code **)(*g_pLocalizationTable + 0x84))();
@@ -399,19 +401,19 @@ void TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward(void)
         goto LAB_00597559;
       }
     }
-    iStackY_20 = 10;
+    pTStackY_20 = (TMapUberPicture *)0xa;
   }
-  else if (in_stack_00000004 == 0xc) {
+  else if (pThis == (TMapUberPicture *)0xc) {
     if (((0x6167722f < *(uint *)(in_stack_00000008 + 0x1c)) &&
         (*(uint *)(in_stack_00000008 + 0x1c) < 0x61677233)) &&
        (*(int *)((int)g_pActiveMapOrderContext + 0x14) != 0)) {
       uStackY_1c = 0x59753d;
       thunk_SetTaskForceOwnerPointer();
     }
-    iStackY_20 = 0xc;
+    pTStackY_20 = (TMapUberPicture *)0xc;
   }
   else {
-    iStackY_20 = in_stack_00000004;
+    pTStackY_20 = pThis;
   }
   uStackY_24 = 0x597559;
   thunk_HandleCityDialogToggleCommandOrForward();
@@ -422,7 +424,7 @@ LAB_00597559:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00597600
 // GHIDRA_NAME TMapUberPicture::WrapperFor_GetActiveNationId_At00597600
-// GHIDRA_PROTO void __thiscall WrapperFor_GetActiveNationId_At00597600(TMapUberPicture * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall WrapperFor_GetActiveNationId_At00597600(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper with local state handling.
 // GHIDRA_COMMENT_END
@@ -430,8 +432,7 @@ LAB_00597559:
 /* Single-callee wrapper with local state handling. */
 
 void __thiscall
-TMapUberPicture::WrapperFor_GetActiveNationId_At00597600
-          (TMapUberPicture *this,TMapUberPicture *pThis,int arg1)
+TMapUberPicture::WrapperFor_GetActiveNationId_At00597600(TMapUberPicture *this,int arg1)
 
 {
   short sVar1;
@@ -440,7 +441,7 @@ TMapUberPicture::WrapperFor_GetActiveNationId_At00597600
   undefined4 uVar3;
   int iVar4;
   
-  if (pThis == (TMapUberPicture *)0x406) {
+  if (arg1 == 0x406) {
     sVar1 = *(short *)(this + 0x96);
     switch(sVar1) {
     case 0:
@@ -544,7 +545,7 @@ void __fastcall TMapUberPicture::SuperMap__CreateToolWindow(astruct_20 *this_obj
     child_ctrl = (astruct_21 *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)child_ctrl);
     child_ctrl->field0_0x0 = &g_vtblTMiniMapView;
     child_ctrl->field126_0x90 = 0;
     child_ctrl->field127_0x94 = (undefined *)0x0;

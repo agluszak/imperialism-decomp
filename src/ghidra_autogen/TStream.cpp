@@ -57,7 +57,7 @@ void * __cdecl TStream::thunk_GetTStreamClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488920
 // GHIDRA_NAME TStream::CreateTStreamInstance
-// GHIDRA_PROTO void __cdecl CreateTStreamInstance(void)
+// GHIDRA_PROTO void __thiscall CreateTStreamInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -65,10 +65,9 @@ void * __cdecl TStream::thunk_GetTStreamClassNamePointer(void)
 /* [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1,
    internal_calls=1, unique_internal=1 */
 
-void __cdecl TStream::CreateTStreamInstance(void)
+void __thiscall TStream::CreateTStreamInstance(TStream *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -78,8 +77,8 @@ void __cdecl TStream::CreateTStreamInstance(void)
   puStack_8 = &LAB_0062ebb8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  DestructCPtrListBaseState(in_ECX + 1);
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  DestructCPtrListBaseState(this + 1);
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

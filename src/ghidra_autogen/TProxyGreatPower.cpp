@@ -23,12 +23,11 @@ void * __cdecl TProxyGreatPower::thunk_GetTProxyGreatPowerClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040554C
 // GHIDRA_NAME TProxyGreatPower::thunk_DestructTProxyGreatPower
-// GHIDRA_PROTO void __cdecl thunk_DestructTProxyGreatPower(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTProxyGreatPower(void)
 
-void __cdecl TProxyGreatPower::thunk_DestructTProxyGreatPower(void)
+void __thiscall TProxyGreatPower::thunk_DestructTProxyGreatPower(TProxyGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -41,19 +40,18 @@ void __cdecl TProxyGreatPower::thunk_DestructTProxyGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00540970
 // GHIDRA_NAME TProxyGreatPower::DestructTProxyGreatPower
-// GHIDRA_PROTO void __cdecl DestructTProxyGreatPower(void)
+// GHIDRA_PROTO void __thiscall DestructTProxyGreatPower(void)
 
-void __cdecl TProxyGreatPower::DestructTProxyGreatPower(void)
+void __thiscall TProxyGreatPower::DestructTProxyGreatPower(TProxyGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -66,7 +64,7 @@ void __cdecl TProxyGreatPower::DestructTProxyGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

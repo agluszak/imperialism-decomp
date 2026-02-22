@@ -3,6 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TNewGameCommand.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004010A0
+// GHIDRA_NAME TNewGameCommand::thunk_NoOpUiVtableSlot0C
+// GHIDRA_PROTO void __cdecl thunk_NoOpUiVtableSlot0C(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk wrapper
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk wrapper */
+
+void __cdecl TNewGameCommand::thunk_NoOpUiVtableSlot0C(void)
+
+{
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00401B5E
 // GHIDRA_NAME TNewGameCommand::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004135f0
 // GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004135f0()
@@ -161,17 +176,62 @@ void * __cdecl TNewGameCommand::thunk_GetTNewGameCommandClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408373
 // GHIDRA_NAME TNewGameCommand::thunk_HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_PROTO void __cdecl thunk_HandleTurnEventViewportEdgeAutoScroll(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTurnEventViewportEdgeAutoScroll(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTurnEventViewportEdgeAutoScroll
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTurnEventViewportEdgeAutoScroll */
 
-void __cdecl TNewGameCommand::thunk_HandleTurnEventViewportEdgeAutoScroll(void)
+void __thiscall TNewGameCommand::thunk_HandleTurnEventViewportEdgeAutoScroll(TNewGameCommand *this)
 
 {
-  HandleTurnEventViewportEdgeAutoScroll();
+  HandleTurnEventViewportEdgeAutoScroll(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408625
+// GHIDRA_NAME TNewGameCommand::thunk_NoOpTurnEventStateVtableSlot10
+// GHIDRA_PROTO void __cdecl thunk_NoOpTurnEventStateVtableSlot10(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to NoOpTurnEventStateVtableSlot10
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to NoOpTurnEventStateVtableSlot10 */
+
+void __cdecl TNewGameCommand::thunk_NoOpTurnEventStateVtableSlot10(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
+// GHIDRA_NAME TNewGameCommand::NoOpUiVtableSlot0C
+// GHIDRA_PROTO void __cdecl NoOpUiVtableSlot0C(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Generic no-op virtual slot 0x0C handler reused across many UI vtables
+// GHIDRA_COMMENT_END
+
+/* Generic no-op virtual slot 0x0C handler reused across many UI vtables */
+
+void __cdecl TNewGameCommand::NoOpUiVtableSlot0C(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
+// GHIDRA_NAME TNewGameCommand::NoOpTurnEventStateVtableSlot10
+// GHIDRA_PROTO void __cdecl NoOpTurnEventStateVtableSlot10(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
+// GHIDRA_COMMENT_END
+
+/* No-op virtual slot stub (returns immediately). */
+
+void __cdecl TNewGameCommand::NoOpTurnEventStateVtableSlot10(void)
+
+{
   return;
 }
 
@@ -406,7 +466,7 @@ TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E320
 // GHIDRA_NAME TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_PROTO void __cdecl HandleTurnEventViewportEdgeAutoScroll(void)
+// GHIDRA_PROTO void __thiscall HandleTurnEventViewportEdgeAutoScroll(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise forwards to base handler.
 // GHIDRA_COMMENT_END
@@ -414,7 +474,7 @@ TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0
 /* Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise
    forwards to base handler. */
 
-void __cdecl TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(void)
+void __thiscall TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(TNewGameCommand *this)
 
 {
   short sVar1;
@@ -423,7 +483,6 @@ void __cdecl TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(void)
   int extraout_EAX;
   int extraout_EAX_00;
   int extraout_EAX_01;
-  int in_ECX;
   byte bVar4;
   int in_stack_00000004;
   int in_stack_00000008;
@@ -431,7 +490,7 @@ void __cdecl TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(void)
   int local_4;
   
   InvokeAfxThreadAndCallSecondaryRefresh();
-  if (((extraout_EAX == 0) && (*(int *)(in_ECX + 0x48) != 0)) &&
+  if (((extraout_EAX == 0) && (*(int *)(this + 0x48) != 0)) &&
      ((sVar1 = *(short *)(g_pUiRuntimeContext + 4), sVar1 == 0x7dd ||
       ((((sVar1 == 0x3b8 || (sVar1 == 0xed8)) || (sVar1 == 0xf3c)) || (sVar1 == 0x3c0)))))) {
     InvokeAfxThreadAndCallSecondaryRefresh();
@@ -461,7 +520,7 @@ void __cdecl TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(void)
             if ((extraout_EAX_01 < g_nViewportEdgeAutoScrollTickGate) ||
                (g_nViewportEdgeAutoScrollTickGate + 3 < extraout_EAX_01)) {
               g_nViewportEdgeAutoScrollTickGate = extraout_EAX_01;
-              (**(code **)(**(int **)(in_ECX + 0x48) + 0x1d0))(bVar4);
+              (**(code **)(**(int **)(this + 0x48) + 0x1d0))(bVar4);
               return;
             }
           }
@@ -612,7 +671,7 @@ TNewGameCommand::UpdateCursorHelperWindowVisibilityFromControllerState(int pCont
     iVar2 = ExecuteDlgInit_60a44b((void *)pController,*(void **)(pController + 0x4c));
   }
   if (iVar2 != 0) {
-    bVar1 = UpdateDataWithExchangeContext((void *)pController,0);
+    bVar1 = UpdateDataWithExchangeContext((TNewGameCommand *)pController,0);
     if (CONCAT31(extraout_var,bVar1) != 0) {
       iVar2 = WrapperFor_GetOrCreateCWndFromHandle_At00607111(0xe146);
       if (iVar2 != 0) {
@@ -787,6 +846,27 @@ TNewGameCommand::TMacViewMgr_Slot39_Target
 {
   (**(code **)(**(int **)(param_1 + 0x34) + 0x5c))(param_2,param_3,param_4);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607B2F
+// GHIDRA_NAME TNewGameCommand::GetOrCreateCWndFromHandle
+// GHIDRA_PROTO undefined GetOrCreateCWndFromHandle()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resolves/creates CWnd from HWND using the per-thread MFC handle map.
+// GHIDRA_COMMENT_END
+
+/* Resolves/creates CWnd from HWND using the per-thread MFC handle map. */
+
+CWnd * TNewGameCommand::GetOrCreateCWndFromHandle(void)
+
+{
+  CHandleMap *pCVar1;
+  CWnd *this;
+  
+  pCVar1 = (CHandleMap *)GetOrCreateMfcHandleMap(1);
+  this = (CWnd *)GetOrCreateHandleMapObjectByHandle();
+  CWnd::AttachControlSite(this,pCVar1);
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607BDA
@@ -1231,7 +1311,7 @@ LAB_00608d4a:
     uVar2 = puVar11[2];
     *(undefined1 *)(unaff_EBP + -4) = 1;
     *(undefined4 *)(unaff_EBP + -0x44) = uVar15;
-    iVar4 = LookupCWndByHwndNoAttach(uVar15);
+    iVar4 = TMacViewMgr::LookupCWndByHwndNoAttach(uVar15);
     if (iVar4 == 0) {
       if ((extraout_ECX[0xd] != 0) &&
          (iVar4 = LookupHandleMapEntryByHwnd(*(undefined4 *)(unaff_EBP + -0x44)), iVar4 != 0)) {
@@ -1565,6 +1645,44 @@ TNewGameCommand::DispatchReflectedControlMessageOrFallback
   return uVar2;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060A1C4
+// GHIDRA_NAME TNewGameCommand::UpdateDataWithExchangeContext
+// GHIDRA_PROTO bool __thiscall UpdateDataWithExchangeContext(int bSaveAndValidate)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT FID single-match UpdateData with CDataExchange path
+// GHIDRA_COMMENT_END
+
+/* FID single-match UpdateData with CDataExchange path */
+
+bool __thiscall
+TNewGameCommand::UpdateDataWithExchangeContext(TNewGameCommand *this,int bSaveAndValidate)
+
+{
+  undefined4 uVar1;
+  undefined4 uVar2;
+  int iVar3;
+  int *pDlgWnd;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffd0;
+  CDataExchange_ctor((void *)(unaff_EBP + -0x2c),pDlgWnd,*(int *)(unaff_EBP + 8));
+  iVar3 = EnsureMfcModuleThreadStateCreated();
+  *(undefined4 *)(unaff_EBP + 8) = 0;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  *(int *)(unaff_EBP + -0x14) = iVar3;
+  *(undefined4 *)(unaff_EBP + -0x18) = *(undefined4 *)(iVar3 + 0xb8);
+  *(int *)(iVar3 + 0xb8) = pDlgWnd[7];
+  (**(code **)(*pDlgWnd + 0x8c))(unaff_EBP + -0x2c);
+  *(undefined4 *)(unaff_EBP + 8) = 1;
+  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
+  *(undefined4 *)(iVar3 + 0xb8) = *(undefined4 *)(unaff_EBP + -0x18);
+  uVar2 = *(undefined4 *)(unaff_EBP + 8);
+  *unaff_FS_OFFSET = uVar1;
+  return SUB41(uVar2,0);
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A769
 // GHIDRA_NAME TNewGameCommand::TMacViewMgr_Slot30_Target
 // GHIDRA_PROTO undefined TMacViewMgr_Slot30_Target()
@@ -1586,6 +1704,24 @@ void __thiscall TNewGameCommand::TMacViewMgr_Slot31_Target(int param_1,undefined
   if ((*(uint *)(param_1 + 0x24) & 0x10) != 0) {
     *(uint *)(param_1 + 0x24) = *(uint *)(param_1 + 0x24) & 0xffffffef;
     PostMessageA(*(HWND *)(param_1 + 0x1c),0,0,0);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006245DF
+// GHIDRA_NAME TNewGameCommand::LeaveCriticalSectionByPoolIndex
+// GHIDRA_PROTO void __cdecl LeaveCriticalSectionByPoolIndex(int lockIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Leaves selected critical section by index when locking is enabled
+// GHIDRA_COMMENT_END
+
+/* Leaves selected critical section by index when locking is enabled */
+
+void __cdecl TNewGameCommand::LeaveCriticalSectionByPoolIndex(int lockIndex)
+
+{
+  if (g_bCriticalSectionPoolInitialized == 0) {
+    LeaveCriticalSection((LPCRITICAL_SECTION)(g_abCriticalSectionPoolEntries + lockIndex * 0x18));
   }
   return;
 }

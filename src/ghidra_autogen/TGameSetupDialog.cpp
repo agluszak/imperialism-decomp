@@ -48,8 +48,8 @@ void * __cdecl TGameSetupDialog::GetTGameSetupDialogClassNamePointer(void)
 void * __cdecl TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCluster *this;
+  TCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,15 +59,15 @@ void * __cdecl TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
   puStack_8 = &LAB_00638baa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &PTR_thunk_GetTMapEditClusterClassNamePointer_0066b578;
-    puVar2 = puVar1;
+  pTVar1 = (TCluster *)0x0;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    *(undefined ***)this = &PTR_thunk_GetTMapEditClusterClassNamePointer_0066b578;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 

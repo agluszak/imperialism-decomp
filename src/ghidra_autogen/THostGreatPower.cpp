@@ -5,12 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004011EA
 // GHIDRA_NAME THostGreatPower::thunk_DestructTHostGreatPower
-// GHIDRA_PROTO void __cdecl thunk_DestructTHostGreatPower(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTHostGreatPower(void)
 
-void __cdecl THostGreatPower::thunk_DestructTHostGreatPower(void)
+void __thiscall THostGreatPower::thunk_DestructTHostGreatPower(THostGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -23,7 +22,7 @@ void __cdecl THostGreatPower::thunk_DestructTHostGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -48,12 +47,11 @@ void * __cdecl THostGreatPower::thunk_GetTHostGreatPowerClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00540F70
 // GHIDRA_NAME THostGreatPower::DestructTHostGreatPower
-// GHIDRA_PROTO void __cdecl DestructTHostGreatPower(void)
+// GHIDRA_PROTO void __thiscall DestructTHostGreatPower(void)
 
-void __cdecl THostGreatPower::DestructTHostGreatPower(void)
+void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -66,7 +64,7 @@ void __cdecl THostGreatPower::DestructTHostGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

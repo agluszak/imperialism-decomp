@@ -36,7 +36,7 @@ undefined4 DestructTOffersPanelViewAndMaybeFree(void)
 }
 
 // ghidra_name TOffersPanelView::InitializeDiplomacyAcceptRejectControlsAndPrompts
-// ghidra_proto void __cdecl InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
+// ghidra_proto void __thiscall InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
 // FUNCTION: IMPERIALISM 0x004f8ff0
 undefined4 InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
 {
@@ -68,7 +68,7 @@ undefined4 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004f9420(void)
 }
 
 // ghidra_name TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
-// ghidra_proto void __cdecl RunDiplomacyNegotiationPopupAndAwaitResponse(void)
+// ghidra_proto void __thiscall RunDiplomacyNegotiationPopupAndAwaitResponse(void)
 // FUNCTION: IMPERIALISM 0x004f9450
 undefined4 RunDiplomacyNegotiationPopupAndAwaitResponse(void)
 {
@@ -108,7 +108,7 @@ undefined4 ConstructTInfoPanelViewBaseState(void)
 }
 
 // ghidra_name TInfoPanelView::DestructTInfoPanelViewAndMaybeFree
-// ghidra_proto void __cdecl DestructTInfoPanelViewAndMaybeFree(void)
+// ghidra_proto void __thiscall DestructTInfoPanelViewAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x004fa190
 undefined4 DestructTInfoPanelViewAndMaybeFree(void)
 {
@@ -156,7 +156,7 @@ undefined4 GetTCouncilPanelViewClassNamePointer(void)
 }
 
 // ghidra_name TCouncilPanelView::ConstructTCouncilPanelViewBaseState
-// ghidra_proto void __cdecl ConstructTCouncilPanelViewBaseState(void)
+// ghidra_proto void __thiscall ConstructTCouncilPanelViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x004fb030
 undefined4 ConstructTCouncilPanelViewBaseState(void)
 {
@@ -356,7 +356,7 @@ undefined4 ConstructTFrameRadioViewBaseState(void)
 }
 
 // ghidra_name TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+// ghidra_proto void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
 // FUNCTION: IMPERIALISM 0x004fe060
 undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
 {
@@ -412,7 +412,7 @@ undefined4 GetTDisplayMgrClassNamePointer(void)
 }
 
 // ghidra_name TDisplayMgr::InitializeMapTileRuntimeStateEntry
-// ghidra_proto void __cdecl InitializeMapTileRuntimeStateEntry(void)
+// ghidra_proto void __thiscall InitializeMapTileRuntimeStateEntry(void)
 // FUNCTION: IMPERIALISM 0x004fe7a0
 undefined4 InitializeMapTileRuntimeStateEntry(void)
 {
@@ -436,7 +436,7 @@ undefined4 DestructTDisplayMgrAndMaybeFree_Impl(void)
 }
 
 // ghidra_name TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize
-// ghidra_proto void __cdecl InitializeTurnOrderNavigationDialogByViewportSize(void)
+// ghidra_proto void __thiscall InitializeTurnOrderNavigationDialogByViewportSize(void)
 // FUNCTION: IMPERIALISM 0x004fe840
 undefined4 InitializeTurnOrderNavigationDialogByViewportSize(void)
 {
@@ -444,7 +444,7 @@ undefined4 InitializeTurnOrderNavigationDialogByViewportSize(void)
 }
 
 // ghidra_name TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
-// ghidra_proto void __cdecl ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
+// ghidra_proto void __thiscall ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
 // FUNCTION: IMPERIALISM 0x004fea60
 undefined4 ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
 {
@@ -540,7 +540,7 @@ undefined4 LoadMainViewClipSnapshotIntoQuickDrawState(void)
 }
 
 // ghidra_name TDisplayMgr::SetMapTileIconVariantTriplet
-// ghidra_proto void __cdecl SetMapTileIconVariantTriplet(void)
+// ghidra_proto void __thiscall SetMapTileIconVariantTriplet(void)
 // FUNCTION: IMPERIALISM 0x004fefc0
 undefined4 SetMapTileIconVariantTriplet(void)
 {
@@ -724,7 +724,7 @@ undefined4 GetTGameWindowClassNamePointer(void)
 }
 
 // ghidra_name TGameWindow::ConstructTurnOrderNavigationWindowEntryViewportAdaptive
-// ghidra_proto void __cdecl ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+// ghidra_proto void __thiscall ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
 // FUNCTION: IMPERIALISM 0x004ffc10
 undefined4 ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
 {
@@ -740,7 +740,7 @@ undefined4 DestroyTurnOrderNavigationWindowEntryViewportAdaptive(void)
 }
 
 // ghidra_name TGameWindow::WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0
-// ghidra_proto undefined WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
+// ghidra_proto undefined __thiscall WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
 // FUNCTION: IMPERIALISM 0x004ffcb0
 undefined4 WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
 {
@@ -764,7 +764,7 @@ undefined4 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004ffd40(void)
 }
 
 // ghidra_name TGameWindow::HandleTurnOrderNavigationCommand
-// ghidra_proto void __cdecl HandleTurnOrderNavigationCommand(void)
+// ghidra_proto void __thiscall HandleTurnOrderNavigationCommand(void)
 // FUNCTION: IMPERIALISM 0x004ffd70
 undefined4 HandleTurnOrderNavigationCommand(void)
 {
@@ -772,7 +772,7 @@ undefined4 HandleTurnOrderNavigationCommand(void)
 }
 
 // ghidra_name TGameWindow::UpdateTurnOrderNavigationWindowLayout
-// ghidra_proto void __cdecl UpdateTurnOrderNavigationWindowLayout(void)
+// ghidra_proto void __thiscall UpdateTurnOrderNavigationWindowLayout(void)
 // FUNCTION: IMPERIALISM 0x00500160
 undefined4 UpdateTurnOrderNavigationWindowLayout(void)
 {
@@ -780,7 +780,7 @@ undefined4 UpdateTurnOrderNavigationWindowLayout(void)
 }
 
 // ghidra_name TGameWindow::DestroyTurnOrderNavigationWindowAndResetManagerSlot
-// ghidra_proto void __cdecl DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
+// ghidra_proto void __thiscall DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
 // FUNCTION: IMPERIALISM 0x00500240
 undefined4 DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
 {
@@ -804,7 +804,7 @@ undefined4 GetTDlgWindowClassNamePointer(void)
 }
 
 // ghidra_name TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
-// ghidra_proto void __cdecl ConstructTurnEventWindowEntryStaticBackdrop(void)
+// ghidra_proto void __thiscall ConstructTurnEventWindowEntryStaticBackdrop(void)
 // FUNCTION: IMPERIALISM 0x00500320
 undefined4 ConstructTurnEventWindowEntryStaticBackdrop(void)
 {
@@ -1036,7 +1036,7 @@ undefined4 GetTHelpPictureClassNamePointer(void)
 }
 
 // ghidra_name THelpPicture::ConstructPictureResourceEntryType57080
-// ghidra_proto void __cdecl ConstructPictureResourceEntryType57080(void)
+// ghidra_proto void __thiscall ConstructPictureResourceEntryType57080(void)
 // FUNCTION: IMPERIALISM 0x00503c90
 undefined4 ConstructPictureResourceEntryType57080(void)
 {
@@ -1116,7 +1116,7 @@ undefined4 GetTHelpWindowClassNamePointer(void)
 }
 
 // ghidra_name THelpWindow::ConstructUiWindowResourceEntryType572C0
-// ghidra_proto void __cdecl ConstructUiWindowResourceEntryType572C0(void)
+// ghidra_proto void __thiscall ConstructUiWindowResourceEntryType572C0(void)
 // FUNCTION: IMPERIALISM 0x00504bf0
 undefined4 ConstructUiWindowResourceEntryType572C0(void)
 {
@@ -1732,7 +1732,7 @@ undefined4 GetTMacViewMgrClassNamePointer(void)
 }
 
 // ghidra_name ConstructStrategicMapViewSystem
-// ghidra_proto void __cdecl ConstructStrategicMapViewSystem(void)
+// ghidra_proto void __thiscall ConstructStrategicMapViewSystem(void)
 // FUNCTION: IMPERIALISM 0x00509ca0
 undefined4 ConstructStrategicMapViewSystem(void)
 {
@@ -2339,7 +2339,7 @@ undefined4 UpdateStrategicMapTileIconVariantState(void)
   return 0;
 }
 
-// ghidra_name TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
+// ghidra_name TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
 // ghidra_proto void __thiscall TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(void)
 // FUNCTION: IMPERIALISM 0x00511a70
 undefined4 TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(void)
@@ -2347,7 +2347,7 @@ undefined4 TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(void)
   return 0;
 }
 
-// ghidra_name TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
+// ghidra_name TMapMaker::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 // ghidra_proto void __fastcall TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(void * pMapGenRuntime)
 // FUNCTION: IMPERIALISM 0x00511e80
 undefined4 TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(void)
@@ -2371,7 +2371,7 @@ undefined4 ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void)
   return 0;
 }
 
-// ghidra_name TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+// ghidra_name TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
 // ghidra_proto bool __thiscall TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nTerrainTypeA, short nTerrainTypeB)
 // FUNCTION: IMPERIALISM 0x00511f30
 undefined4 TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(void)
@@ -2412,7 +2412,7 @@ undefined4 ComputeStridedRecordAddress6C(void)
 }
 
 // ghidra_name TMapMaker::ProjectTileIndexToWrappedScreenOffsetByScale
-// ghidra_proto void __cdecl ProjectTileIndexToWrappedScreenOffsetByScale(void)
+// ghidra_proto void __thiscall ProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3, int arg4, int arg5)
 // FUNCTION: IMPERIALISM 0x00512440
 undefined4 ProjectTileIndexToWrappedScreenOffsetByScale(void)
 {
@@ -2420,7 +2420,7 @@ undefined4 ProjectTileIndexToWrappedScreenOffsetByScale(void)
 }
 
 // ghidra_name TMapMaker::SplitTileIndexToRowAndColumn
-// ghidra_proto void __cdecl SplitTileIndexToRowAndColumn(void)
+// ghidra_proto void __thiscall SplitTileIndexToRowAndColumn(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x005125a0
 undefined4 SplitTileIndexToRowAndColumn(void)
 {
@@ -2467,7 +2467,7 @@ undefined4 ComputeHexNeighborTileIndices(void)
   return 0;
 }
 
-// ghidra_name GetWrappedHexNeighborTileIndexByDirection
+// ghidra_name TMapDialog::GetWrappedHexNeighborTileIndexByDirection
 // ghidra_proto void __cdecl GetWrappedHexNeighborTileIndexByDirection(void)
 // FUNCTION: IMPERIALISM 0x00512cc0
 undefined4 GetWrappedHexNeighborTileIndexByDirection(void)
@@ -2627,7 +2627,7 @@ undefined4 ApplyEngineerRailCostDeltaForConnectedTiles(void)
   return 0;
 }
 
-// ghidra_name ResolveRegionTileSubtypeCodeForTileIndex
+// ghidra_name TMapMaker::ResolveRegionTileSubtypeCodeForTileIndex
 // ghidra_proto short __thiscall ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex)
 // FUNCTION: IMPERIALISM 0x00514110
 undefined4 ResolveRegionTileSubtypeCodeForTileIndex(void)
@@ -2635,7 +2635,7 @@ undefined4 ResolveRegionTileSubtypeCodeForTileIndex(void)
   return 0;
 }
 
-// ghidra_name GetTileUnitEntryByOwner
+// ghidra_name TMapDialog::GetTileUnitEntryByOwner
 // ghidra_proto int * __thiscall GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)
 // FUNCTION: IMPERIALISM 0x00514250
 undefined4 GetTileUnitEntryByOwner(void)
@@ -2851,8 +2851,8 @@ undefined4 OrphanRetStub_00515de0(void)
   return 0;
 }
 
-// ghidra_name SetMapTileStateByteAndNotifyObserver
-// ghidra_proto void __cdecl SetMapTileStateByteAndNotifyObserver(void)
+// ghidra_name TZone::SetMapTileStateByteAndNotifyObserver
+// ghidra_proto void __thiscall SetMapTileStateByteAndNotifyObserver(TZone * pThis)
 // FUNCTION: IMPERIALISM 0x00515e00
 undefined4 SetMapTileStateByteAndNotifyObserver(void)
 {
@@ -3292,7 +3292,7 @@ undefined4 RenderStrategicTileSelectionAndNeighborHighlights(void)
 }
 
 // ghidra_name TMapDialog::DrawHexNeighborOutlineFromTileArray
-// ghidra_proto void __cdecl DrawHexNeighborOutlineFromTileArray(void)
+// ghidra_proto void __thiscall DrawHexNeighborOutlineFromTileArray(TMapDialog * pThis)
 // FUNCTION: IMPERIALISM 0x0051a2a0
 undefined4 DrawHexNeighborOutlineFromTileArray(void)
 {
@@ -3300,7 +3300,7 @@ undefined4 DrawHexNeighborOutlineFromTileArray(void)
 }
 
 // ghidra_name TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate
-// ghidra_proto void __thiscall UpdateMapDialogProjectedTileMarkerAndInvalidate(TMapDialog * pThis, int arg1)
+// ghidra_proto void __thiscall UpdateMapDialogProjectedTileMarkerAndInvalidate(int arg1)
 // FUNCTION: IMPERIALISM 0x0051a900
 undefined4 UpdateMapDialogProjectedTileMarkerAndInvalidate(void)
 {
@@ -3316,7 +3316,7 @@ undefined4 ComputeWrappedMapCellAndRegionBandFromScreenCoord(void)
 }
 
 // ghidra_name TMapDialog::WrapperFor_thunk_ProjectTileIndexToWrappedScreenOffsetByScale_At0051aad0
-// ghidra_proto void __thiscall WrapperFor_thunk_ProjectTileIndexToWrappedScreenOffsetByScale_At0051aad0(TMapDialog * pThis, int arg1)
+// ghidra_proto void __thiscall WrapperFor_thunk_ProjectTileIndexToWrappedScreenOffsetByScale_At0051aad0(int arg1)
 // FUNCTION: IMPERIALISM 0x0051aad0
 undefined4 WrapperFor_thunk_ProjectTileIndexToWrappedScreenOffsetByScale_At0051aad0(void)
 {
@@ -3332,7 +3332,7 @@ undefined4 ComputeMapDialogProjectedTileClipIntersection(void)
 }
 
 // ghidra_name TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate
-// ghidra_proto void __thiscall UpdateMapDialogTileRowColumnMarkerAndInvalidate(TMapDialog * pThis, int arg1)
+// ghidra_proto void __thiscall UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1)
 // FUNCTION: IMPERIALISM 0x0051ac40
 undefined4 UpdateMapDialogTileRowColumnMarkerAndInvalidate(void)
 {
@@ -3348,7 +3348,7 @@ undefined4 WrapperFor_thunk_NormalizeWrappedMapCoord108x60_At0051ace0(void)
 }
 
 // ghidra_name TMapDialog::WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70
-// ghidra_proto void __thiscall WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70(TMapDialog * pThis, int arg1)
+// ghidra_proto void __thiscall WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70(int arg1)
 // FUNCTION: IMPERIALISM 0x0051ad70
 undefined4 WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70(void)
 {
@@ -3699,7 +3699,7 @@ undefined4 RecomputeMapInteractionPreviewVerticalOffsetFromScale(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_SetQuickDrawFillColor_At0051e160
+// ghidra_name TMapDialog::WrapperFor_SetQuickDrawFillColor_At0051e160
 // ghidra_proto undefined WrapperFor_SetQuickDrawFillColor_At0051e160()
 // FUNCTION: IMPERIALISM 0x0051e160
 undefined4 WrapperFor_SetQuickDrawFillColor_At0051e160(void)
@@ -3724,7 +3724,7 @@ undefined4 OrphanLeaf_NoCall_Ins21_0051e1f0(void)
 }
 
 // ghidra_name TMapDialog::RenderMapInteractionPreviewSlotsAndTransientSprites
-// ghidra_proto void __thiscall RenderMapInteractionPreviewSlotsAndTransientSprites(TMapDialog * pThis, int arg1)
+// ghidra_proto void __thiscall RenderMapInteractionPreviewSlotsAndTransientSprites(int arg1)
 // FUNCTION: IMPERIALISM 0x0051e260
 undefined4 RenderMapInteractionPreviewSlotsAndTransientSprites(void)
 {
@@ -3732,7 +3732,7 @@ undefined4 RenderMapInteractionPreviewSlotsAndTransientSprites(void)
 }
 
 // ghidra_name TMapDialog::RenderStrategicMapTileCell
-// ghidra_proto void __thiscall RenderStrategicMapTileCell(TMapDialog * pThis, int arg1)
+// ghidra_proto void __thiscall RenderStrategicMapTileCell(int arg1)
 // FUNCTION: IMPERIALISM 0x0051eb40
 undefined4 RenderStrategicMapTileCell(void)
 {
@@ -3828,7 +3828,7 @@ undefined4 DrawMapDialogGuidePatternSetI_00521540(void)
 }
 
 // ghidra_name TMapDialog::DrawHexEdgeConnectionGlyphsByMask
-// ghidra_proto void __thiscall DrawHexEdgeConnectionGlyphsByMask(TMapDialog * pThis, int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto void __thiscall DrawHexEdgeConnectionGlyphsByMask(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00521680
 undefined4 DrawHexEdgeConnectionGlyphsByMask(void)
 {
@@ -3836,7 +3836,7 @@ undefined4 DrawHexEdgeConnectionGlyphsByMask(void)
 }
 
 // ghidra_name TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask
-// ghidra_proto void __thiscall EmitHexAdjacencyTransitionEventsByBitmask(TMapDialog * pThis, int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto void __thiscall EmitHexAdjacencyTransitionEventsByBitmask(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00521a40
 undefined4 EmitHexAdjacencyTransitionEventsByBitmask(void)
 {
@@ -3852,7 +3852,7 @@ undefined4 DrawMapDialogOwnershipMarkerForNation_00522000(void)
 }
 
 // ghidra_name TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints
-// ghidra_proto void __cdecl RenderMapDialogDiplomacyNeighborRelationHints(void)
+// ghidra_proto void __thiscall RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x005220f0
 undefined4 RenderMapDialogDiplomacyNeighborRelationHints(void)
 {
@@ -3868,7 +3868,7 @@ undefined4 DrawMapDialogWrappedTileConnectionMarker_00522c10(void)
 }
 
 // ghidra_name TMapDialog::DrawHexNeighborConnectionMask
-// ghidra_proto void __cdecl DrawHexNeighborConnectionMask(void)
+// ghidra_proto void __thiscall DrawHexNeighborConnectionMask(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00522cf0
 undefined4 DrawHexNeighborConnectionMask(void)
 {
@@ -3884,7 +3884,7 @@ undefined4 WrapperFor_SetQuickDrawFillColor_At00523060(void)
 }
 
 // ghidra_name TMapDialog::UpdateMapOrderEntryTilePreviewSlot
-// ghidra_proto void __thiscall UpdateMapOrderEntryTilePreviewSlot(TMapDialog * pThis, int arg1, int arg2, int arg3)
+// ghidra_proto void __thiscall UpdateMapOrderEntryTilePreviewSlot(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00523170
 undefined4 UpdateMapOrderEntryTilePreviewSlot(void)
 {
@@ -3892,7 +3892,7 @@ undefined4 UpdateMapOrderEntryTilePreviewSlot(void)
 }
 
 // ghidra_name TMapDialog::RenderMapOrderEntryTilePreview
-// ghidra_proto void __thiscall RenderMapOrderEntryTilePreview(TMapDialog * pThis, int arg1, int arg2, int arg3)
+// ghidra_proto void __thiscall RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00523640
 undefined4 RenderMapOrderEntryTilePreview(void)
 {
@@ -3988,7 +3988,7 @@ undefined4 OrphanLeaf_NoCall_Ins177_00524e70(void)
 }
 
 // ghidra_name TMapMaker::CopyDiamondMaskBlockKernel
-// ghidra_proto void __cdecl CopyDiamondMaskBlockKernel(void)
+// ghidra_proto void __thiscall CopyDiamondMaskBlockKernel(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005250a0
 undefined4 CopyDiamondMaskBlockKernel(void)
 {
@@ -3996,7 +3996,7 @@ undefined4 CopyDiamondMaskBlockKernel(void)
 }
 
 // ghidra_name TMapMaker::CopyDiagonalMaskNarrowingBlockKernel
-// ghidra_proto void __cdecl CopyDiagonalMaskNarrowingBlockKernel(void)
+// ghidra_proto void __thiscall CopyDiagonalMaskNarrowingBlockKernel(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005252d0
 undefined4 CopyDiagonalMaskNarrowingBlockKernel(void)
 {

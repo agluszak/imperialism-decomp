@@ -5,31 +5,31 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D47
 // GHIDRA_NAME TCouncilTickerAnimation::thunk_InitializeCouncilTickerAnimationState
-// GHIDRA_PROTO void __cdecl thunk_InitializeCouncilTickerAnimationState(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeCouncilTickerAnimationState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to InitializeCouncilTickerAnimationState.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to InitializeCouncilTickerAnimationState. */
 
-void __cdecl TCouncilTickerAnimation::thunk_InitializeCouncilTickerAnimationState(void)
+void __thiscall
+TCouncilTickerAnimation::thunk_InitializeCouncilTickerAnimationState(TCouncilTickerAnimation *this)
 
 {
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
+  void *in_stack_00000004;
+  void *in_stack_00000008;
   
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x1c) = 0;
-  *(undefined4 *)(in_ECX + 0x20) = 0;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x24) = 0;
-  *(undefined2 *)(in_ECX + 10) = 0;
-  *(undefined2 *)(in_ECX + 0xc) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  *(undefined4 *)(in_ECX + 0x28) = 0;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000008;
-  *(undefined4 *)(in_ECX + 0x18) = 0;
+  this[1].pVtable = in_stack_00000004;
+  this[7].pVtable = (void *)0x0;
+  this[8].pVtable = (void *)0x0;
+  *(undefined2 *)&this[2].pVtable = 0;
+  this[9].pVtable = (void *)0x0;
+  *(undefined2 *)((int)&this[2].pVtable + 2) = 0;
+  *(undefined2 *)&this[3].pVtable = 0;
+  this[4].pVtable = (void *)0x0;
+  this[10].pVtable = (void *)0x0;
+  this[5].pVtable = in_stack_00000008;
+  this[6].pVtable = (void *)0x0;
   return;
 }
 
@@ -106,31 +106,31 @@ void * __cdecl TCouncilTickerAnimation::GetTCouncilTickerAnimationClassNamePoint
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF90
 // GHIDRA_NAME TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-// GHIDRA_PROTO void __cdecl ConstructTCouncilTickerAnimationBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTCouncilTickerAnimationBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes ticker animation fields and resets frame/timer state.
 // GHIDRA_COMMENT_END
 
 /* Initializes ticker animation fields and resets frame/timer state. */
 
-void __cdecl TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(void)
+void __thiscall
+TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(TCouncilTickerAnimation *this)
 
 {
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
+  void *in_stack_00000004;
+  void *in_stack_00000008;
   
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x1c) = 0;
-  *(undefined4 *)(in_ECX + 0x20) = 0;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x24) = 0;
-  *(undefined2 *)(in_ECX + 10) = 0;
-  *(undefined2 *)(in_ECX + 0xc) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  *(undefined4 *)(in_ECX + 0x28) = 0;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000008;
-  *(undefined4 *)(in_ECX + 0x18) = 0;
+  this[1].pVtable = in_stack_00000004;
+  this[7].pVtable = (void *)0x0;
+  this[8].pVtable = (void *)0x0;
+  *(undefined2 *)&this[2].pVtable = 0;
+  this[9].pVtable = (void *)0x0;
+  *(undefined2 *)((int)&this[2].pVtable + 2) = 0;
+  *(undefined2 *)&this[3].pVtable = 0;
+  this[4].pVtable = (void *)0x0;
+  this[10].pVtable = (void *)0x0;
+  this[5].pVtable = in_stack_00000008;
+  this[6].pVtable = (void *)0x0;
   return;
 }
 

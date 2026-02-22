@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040269E
 // GHIDRA_NAME TMultiplayerMgr::thunk_InitializeNationStatusControlArraysFromProvider
-// GHIDRA_PROTO void __cdecl thunk_InitializeNationStatusControlArraysFromProvider(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeNationStatusControlArraysFromProvider(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeNationStatusControlArraysFromProvider
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeNationStatusControlArraysFromProvider */
 
-void __cdecl TMultiplayerMgr::thunk_InitializeNationStatusControlArraysFromProvider(void)
+void __thiscall
+TMultiplayerMgr::thunk_InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr *this)
 
 {
-  InitializeNationStatusControlArraysFromProvider();
+  InitializeNationStatusControlArraysFromProvider(this);
   return;
 }
 
@@ -28,6 +29,47 @@ void __cdecl TMultiplayerMgr::thunk_ShutdownRuntimeSelectionAndPersistPlayerName
 {
   ShutdownRuntimeSelectionAndPersistPlayerName();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405529
+// GHIDRA_NAME TMultiplayerMgr::Config::InitDefaults
+// GHIDRA_PROTO undefined4 * __fastcall Config::InitDefaults(astruct_11 * this_obj)
+
+undefined4 * __fastcall TMultiplayerMgr::Config__InitDefaults(astruct_11 *this_obj)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634793;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
+  uStack_4 = 0;
+  CallCallbackRepeatedly((int)&this_obj->field29_0x20,8,4,0x405209,0x40208b);
+  uStack_4._0_1_ = 1;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4._0_1_ = 2;
+  CallCallbackRepeatedly((int)&this_obj->field105_0x78,4,7,0x404642,0x405fa1);
+  uStack_4._0_1_ = 3;
+  CallCallbackRepeatedly((int)&this_obj->field130_0x94,4,7,0x404642,0x405fa1);
+  uStack_4._0_1_ = 4;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4._0_1_ = 5;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4 = CONCAT31(uStack_4._1_3_,6);
+  InitializeSharedStringRefFromEmpty();
+  this_obj->field0_0x0 = &g_vtblTMultiplayerMgr;
+  this_obj->field58_0x40 = 0;
+  this_obj->field99_0x6c = 0;
+  this_obj->field100_0x70 = 0;
+  this_obj->field195_0xd8 = 0x6e616461;
+  this_obj->field220_0xf4 = 0;
+  *unaff_FS_OFFSET = uStack_c;
+  return &this_obj->field0_0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405CB8
@@ -66,17 +108,18 @@ void * __cdecl TMultiplayerMgr::thunk_GetTMultiplayerMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B7B
 // GHIDRA_NAME TMultiplayerMgr::thunk_InitializeMultiplayerManagerForSessionContext
-// GHIDRA_PROTO void __cdecl thunk_InitializeMultiplayerManagerForSessionContext(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeMultiplayerManagerForSessionContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeMultiplayerManagerForSessionContext
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeMultiplayerManagerForSessionContext */
 
-void __cdecl TMultiplayerMgr::thunk_InitializeMultiplayerManagerForSessionContext(void)
+void __thiscall
+TMultiplayerMgr::thunk_InitializeMultiplayerManagerForSessionContext(TMultiplayerMgr *this)
 
 {
-  InitializeMultiplayerManagerForSessionContext();
+  InitializeMultiplayerManagerForSessionContext(this);
   return;
 }
 
@@ -98,18 +141,19 @@ void __cdecl TMultiplayerMgr::thunk_DeletingDestructMultiplayerManager(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408AD5
 // GHIDRA_NAME TMultiplayerMgr::thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-// GHIDRA_PROTO void __cdecl thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeNationStatusSlotsFromNationListAndEmitStartupEvents */
 
-void __cdecl
-TMultiplayerMgr::thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
+void __thiscall
+TMultiplayerMgr::thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
+          (TMultiplayerMgr *this)
 
 {
-  InitializeNationStatusSlotsFromNationListAndEmitStartupEvents();
+  InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(this);
   return;
 }
 
@@ -227,7 +271,7 @@ void __cdecl TMultiplayerMgr::DeletingDestructMultiplayerManager(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542900
 // GHIDRA_NAME TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
-// GHIDRA_PROTO void __cdecl InitializeMultiplayerManagerForSessionContext(void)
+// GHIDRA_PROTO void __thiscall InitializeMultiplayerManagerForSessionContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes multiplayer manager runtime context: binds session context, sets queue/state defaults, allocates global helper, and seeds player/game label strings.
 // GHIDRA_COMMENT_END
@@ -235,16 +279,16 @@ void __cdecl TMultiplayerMgr::DeletingDestructMultiplayerManager(void)
 /* Initializes multiplayer manager runtime context: binds session context, sets queue/state
    defaults, allocates global helper, and seeds player/game label strings. */
 
-void __cdecl TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(void)
+void __thiscall
+TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(TMultiplayerMgr *this)
 
 {
-  int *dst_ref_ptr;
+  uint *dst_ref_ptr;
   void *extraout_EAX;
-  int in_ECX;
   int iVar1;
-  void *this;
+  void *this_00;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
+  TNetMgr *in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -254,18 +298,18 @@ void __cdecl TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(void
   puStack_8 = &LAB_0063487a;
   *unaff_FS_OFFSET = &local_c;
   InitializePacketHeaderFields_Tag20202020();
-  *(int *)(in_ECX + 0x10) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x44) = 0;
-  *(undefined1 *)(in_ECX + 0xe4) = 0;
-  *(undefined1 *)(in_ECX + 0x68) = 1;
-  *(undefined1 *)(in_ECX + 0x69) = 1;
-  in_stack_00000004 = AllocateWithFallbackHandler(4);
+  this->dwField_10 = (uint)in_stack_00000004;
+  this->dwField_44 = 0;
+  *(undefined1 *)&this->dwField_E4 = 0;
+  this->bField_68 = 1;
+  this->bField_69 = 1;
+  in_stack_00000004 = (TNetMgr *)AllocateWithFallbackHandler(4);
   local_4 = 0;
-  if (in_stack_00000004 == 0) {
+  if (in_stack_00000004 == (TNetMgr *)0x0) {
     g_pGlobalTurnEventQueueManager = (void *)0x0;
   }
   else {
-    TNetMgr::thunk_ConstructGlobalTurnEventQueueManager();
+    TNetMgr::thunk_ConstructGlobalTurnEventQueueManager(in_stack_00000004);
     g_pGlobalTurnEventQueueManager = extraout_EAX;
   }
   local_4 = 0xffffffff;
@@ -273,32 +317,32 @@ void __cdecl TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(void
   InitializeSharedStringRefFromEmpty();
   local_4 = 1;
   thunk_LoadUiStringResourceByGroupAndIndex();
-  this = (void *)(in_ECX + 0x94);
+  this_00 = &this->field_0x94;
   iVar1 = 7;
   do {
-    *(undefined4 *)((int)this + -0x4c) = 0;
-    *(undefined4 *)((int)this + 0x28) = 0x756e6173;
-    StringShared__AssignFromPtr(this,&stack0x00000004);
+    *(undefined4 *)((int)this_00 + -0x4c) = 0;
+    *(undefined4 *)((int)this_00 + 0x28) = 0x756e6173;
+    StringShared__AssignFromPtr(this_00,(int *)&stack0x00000004);
     thunk_AssignStringSharedRefFromPointer();
-    this = (void *)((int)this + 4);
+    this_00 = (void *)((int)this_00 + 4);
     iVar1 = iVar1 + -1;
   } while (iVar1 != 0);
-  *(undefined4 *)(in_ECX + 100) = 0;
-  *(undefined4 *)(in_ECX + 0xec) = 0xffffffff;
-  *(undefined4 *)(in_ECX + 0xf0) = 0xffffffff;
+  *(undefined4 *)&this->field_0x64 = 0;
+  this->dwField_EC = 0xffffffff;
+  this->dwField_F0 = 0xffffffff;
   thunk_ResetTurnEventQueueRuntimeRecordBuffer();
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   InitializeSharedStringRefFromEmpty();
-  dst_ref_ptr = (int *)(in_ECX + 0xb0);
+  dst_ref_ptr = &this->dwField_B0;
   local_4 = 2;
   thunk_GenerateMappedFlavorTextByCurrentContextNation(dst_ref_ptr);
   thunk_LoadProfileStringAndAssignSharedRef_At00409610();
-  StringShared__AssignFromPtr(dst_ref_ptr,&stack0x00000004);
-  StringShared__AssignFromPtr((void *)(in_ECX + 0xb4),dst_ref_ptr);
-  thunk_GenerateMappedFlavorTextByCurrentContextNation((void *)(in_ECX + 0x74));
+  StringShared__AssignFromPtr(dst_ref_ptr,(int *)&stack0x00000004);
+  StringShared__AssignFromPtr(&this->field_0xb4,(int *)dst_ref_ptr);
+  thunk_GenerateMappedFlavorTextByCurrentContextNation(&this->dwField_74);
   thunk_LoadProfileStringAndAssignSharedRef_At00409610();
-  StringShared__AssignFromPtr((void *)(in_ECX + 0x74),&stack0x00000004);
+  StringShared__AssignFromPtr(&this->dwField_74,(int *)&stack0x00000004);
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_c;
@@ -341,7 +385,7 @@ void __fastcall TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName(in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542BE0
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-// GHIDRA_PROTO void __cdecl InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
+// GHIDRA_PROTO void __thiscall InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes per-nation status/id arrays from nation-state availability and eligibility checks, updates paired UI/control data via callback provider, and emits startup diplomacy turn events (including busy-status snapshot).
 // GHIDRA_COMMENT_END
@@ -350,34 +394,36 @@ void __fastcall TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName(in
    updates paired UI/control data via callback provider, and emits startup diplomacy turn events
    (including busy-status snapshot). */
 
-void __cdecl TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
+void __thiscall
+TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
+          (TMultiplayerMgr *this)
 
 {
   int *piVar1;
   code *pcVar2;
+  TMultiplayerMgr *pTVar3;
   char extraout_AL;
   undefined1 extraout_AL_00;
   undefined1 extraout_AL_01;
   short extraout_AX;
   short extraout_AX_00;
-  short sVar3;
+  short sVar4;
   short extraout_AX_01;
   short extraout_AX_02;
   undefined4 extraout_EAX;
-  int in_ECX;
-  int iVar4;
-  int *unaff_EBP;
   int iVar5;
+  int *unaff_EBP;
+  int iVar6;
   code *unaff_ESI;
-  undefined4 *puVar6;
-  code **ppcVar7;
+  uint *puVar7;
+  code **ppcVar8;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000004;
   undefined4 uStack_64;
   void **local_50;
   code *local_4c;
   int iStack_48;
-  int local_44;
+  TMultiplayerMgr *local_44;
   undefined4 uStack_30;
   undefined4 uStack_28;
   undefined4 uStack_c;
@@ -388,77 +434,78 @@ void __cdecl TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitSt
   puStack_8 = &LAB_006348b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_44 = in_ECX;
+  local_44 = this;
   thunk_HandleCityDialogNoOpSlot18();
   local_50 = g_apNationStates;
-  puVar6 = (undefined4 *)(in_ECX + 0xbc);
+  puVar7 = &this->dwField_BC;
   local_4c = *(code **)(*in_stack_00000004 + 0x3c);
   pcVar2 = *(code **)(*in_stack_00000004 + 0x70);
   do {
-    piVar1 = puVar6 + -0x1d;
+    piVar1 = (int *)(puVar7 + -0x1d);
     uStack_64 = 4;
     (*local_4c)(piVar1);
     if (*piVar1 == 0) {
-      *puVar6 = 0x756e6173;
+      *puVar7 = 0x756e6173;
     }
     else {
       *piVar1 = -2;
-      *puVar6 = 0x61776f6c;
+      *puVar7 = 0x61776f6c;
     }
     if (*unaff_EBP == 0) {
-      *puVar6 = 0x64656164;
+      *puVar7 = 0x64656164;
     }
     else {
       thunk_IsNationSlotEligibleForEventProcessing();
       if (extraout_AL == '\0') {
-        *puVar6 = 0x64656361;
+        *puVar7 = 0x64656361;
       }
     }
-    (*pcVar2)(puVar6 + -0x11,0x20);
-    (*pcVar2)(puVar6 + -10,0x20);
+    (*pcVar2)(puVar7 + -0x11,0x20);
+    (*pcVar2)(puVar7 + -10,0x20);
+    pTVar3 = local_44;
     local_50 = (void **)(unaff_EBP + 1);
-    puVar6 = puVar6 + 1;
+    puVar7 = puVar7 + 1;
   } while ((int)local_50 < 0x6a438c);
   uStack_64 = 0x20;
-  (*pcVar2)(local_44 + 0xb0);
+  (*pcVar2)(&local_44->dwField_B0);
   InitializeSharedStringRefFromEmpty();
   uStack_c = 0;
   (*pcVar2)(&local_50,0x20);
-  (*unaff_ESI)(local_44 + 100,4);
-  (*unaff_ESI)(local_44 + 0xe4,1);
+  (*unaff_ESI)(&pTVar3->field_0x64,4);
+  (*unaff_ESI)(&pTVar3->dwField_E4,1);
   (**(code **)(*(int *)g_pGlobalTurnEventQueueManager + 0x18))();
   thunk_GetSessionActiveNationId();
   thunk_GetActiveNationId();
-  *(undefined4 *)(local_44 + 0x48 + extraout_AX * 4) = extraout_EAX;
+  *(undefined4 *)(&pTVar3->field_0x48 + extraout_AX * 4) = extraout_EAX;
   thunk_GetActiveNationId();
-  sVar3 = (**(code **)(*g_pLocalizationTable + 0x3c))();
+  sVar4 = (**(code **)(*g_pLocalizationTable + 0x3c))();
   thunk_GetActiveNationId();
   local_50 = (void **)CONCAT31(local_50._1_3_,extraout_AL_00);
   uStack_64 = 0x1f;
   thunk_SetEventPayloadNationIdFromSlotIndexWithSentinelHandling();
   local_4c = (code *)0x7265706f;
-  iStack_48 = (int)extraout_AX_00 + sVar3 * 8;
+  iStack_48 = (int)extraout_AX_00 + sVar4 * 8;
   thunk_EnqueueOrSendTurnEventPacketToNation((int)&uStack_64,0);
   if (g_pLocalizationTable[0x11] == 1) {
-    *(undefined4 *)(local_44 + 0xd8) = 0x696e6974;
+    pTVar3->dwField_D8 = 0x696e6974;
     thunk_NoOpDialogModeTagChangedHook();
   }
   thunk_GetActiveNationId();
-  iVar5 = (int)extraout_AX_01;
-  if (iVar5 == -1) {
-    iVar5 = (int)*(char *)(local_44 + 0xdc);
+  iVar6 = (int)extraout_AX_01;
+  if (iVar6 == -1) {
+    iVar6 = (int)(char)pTVar3->dwField_DC;
   }
-  *(undefined4 *)(local_44 + 0xbc + iVar5 * 4) = 0x62757379;
+  (&pTVar3->dwField_BC)[iVar6] = 0x62757379;
   thunk_GetActiveNationId();
   uStack_64 = 0x25;
-  ppcVar7 = &local_4c;
-  for (iVar4 = 7; iVar4 != 0; iVar4 = iVar4 + -1) {
-    *ppcVar7 = (code *)0x756e6b6e;
-    ppcVar7 = ppcVar7 + 1;
+  ppcVar8 = &local_4c;
+  for (iVar5 = 7; iVar5 != 0; iVar5 = iVar5 + -1) {
+    *ppcVar8 = (code *)0x756e6b6e;
+    ppcVar8 = ppcVar8 + 1;
   }
-  (&local_4c)[iVar5] = (code *)0x62757379;
+  (&local_4c)[iVar6] = (code *)0x62757379;
   thunk_EnqueueOrSendTurnEventPacketToNation((int)&uStack_64,0);
-  *(undefined4 *)(local_44 + 0xd8) = 0x676f696e;
+  pTVar3->dwField_D8 = 0x676f696e;
   thunk_GetActiveNationId();
   thunk_GetActiveNationId();
   local_50 = (void **)CONCAT31(local_50._1_3_,extraout_AL_01);
@@ -474,7 +521,7 @@ void __cdecl TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitSt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542FF0
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider
-// GHIDRA_PROTO void __cdecl InitializeNationStatusControlArraysFromProvider(void)
+// GHIDRA_PROTO void __thiscall InitializeNationStatusControlArraysFromProvider(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Uses provider callbacks to initialize/reset nation status control arrays and publishes provider into global state callback slot (+0x14).
 // GHIDRA_COMMENT_END
@@ -482,33 +529,33 @@ void __cdecl TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitSt
 /* Uses provider callbacks to initialize/reset nation status control arrays and publishes provider
    into global state callback slot (+0x14). */
 
-void __cdecl TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(void)
+void __thiscall
+TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr *this)
 
 {
   int iVar1;
   code *pcVar2;
   code *pcVar3;
-  int in_ECX;
-  int iVar4;
+  undefined1 *puVar4;
   int *in_stack_00000004;
   
   thunk_HandleCityDialogNoOpSlot14();
   iVar1 = *in_stack_00000004;
-  iVar4 = in_ECX + 0x78;
+  puVar4 = &this->field_0x78;
   in_stack_00000004 = (int *)0x7;
   pcVar2 = *(code **)(iVar1 + 0x78);
   pcVar3 = *(code **)(iVar1 + 0xac);
   do {
-    (*pcVar2)(iVar4 + -0x30,4);
-    (*pcVar3)(iVar4);
-    (*pcVar3)(iVar4 + 0x1c);
-    iVar4 = iVar4 + 4;
+    (*pcVar2)(puVar4 + -0x30,4);
+    (*pcVar3)(puVar4);
+    (*pcVar3)(puVar4 + 0x1c);
+    puVar4 = puVar4 + 4;
     in_stack_00000004 = (int *)((int)in_stack_00000004 + -1);
   } while (in_stack_00000004 != (int *)0x0);
-  (*pcVar3)(in_ECX + 0xb0);
-  (*pcVar3)(in_ECX + 0x74);
-  (*pcVar2)(in_ECX + 100,4);
-  (*pcVar2)(in_ECX + 0xe4,1);
+  (*pcVar3)(&this->dwField_B0);
+  (*pcVar3)(&this->dwField_74);
+  (*pcVar2)(&this->field_0x64,4);
+  (*pcVar2)(&this->dwField_E4,1);
   (**(code **)(*(int *)g_pGlobalTurnEventQueueManager + 0x14))();
   return;
 }
@@ -525,15 +572,101 @@ void __cdecl TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(vo
 
 uint __thiscall
 TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue
-          (int param_1,undefined4 param_2)
+          (void *param_1,undefined4 param_2)
 
 {
   uint extraout_EAX;
   
-  if (*(int **)(param_1 + 0x44) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x44) + 0x4c))(param_2);
+  if (*(int **)((int)param_1 + 0x44) != (int *)0x0) {
+    (**(code **)(**(int **)((int)param_1 + 0x44) + 0x4c))(param_2);
   }
-  thunk_RouteAndProcessDiplomacyTurnStateEventQueue();
+  thunk_RouteAndProcessDiplomacyTurnStateEventQueue(param_1);
   return extraout_EAX & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E3D40
+// GHIDRA_NAME TMultiplayerMgr::EnqueueOrSendTurnEventPacketToNation
+// GHIDRA_PROTO void __cdecl EnqueueOrSendTurnEventPacketToNation(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Populates packet sender field, then either enqueues packet in deferred queue or sends immediately to target nation; on send failure reports network error and returns false.
+// GHIDRA_COMMENT_END
+
+/* Populates packet sender field, then either enqueues packet in deferred queue or sends immediately
+   to target nation; on send failure reports network error and returns false. */
+
+void __cdecl TMultiplayerMgr::EnqueueOrSendTurnEventPacketToNation(int arg1,int arg2)
+
+{
+  void *pvVar1;
+  undefined4 *puVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  int iVar5;
+  undefined4 *puVar6;
+  int extraout_EAX;
+  uint uVar7;
+  uint uVar8;
+  
+  *(int *)(arg1 + 4) = g_sessionActiveNationId;
+  iVar3 = *(int *)(arg1 + 8);
+  if (*(int *)(arg1 + 8) == -1) {
+    iVar3 = g_nDefaultTurnEventTargetNationId;
+  }
+  if (((char)arg2 != '\0') || (iVar3 == g_sessionActiveNationId)) {
+    puVar4 = GlobalAlloc(0,*(SIZE_T *)(arg1 + 0xc));
+    uVar8 = *(uint *)(arg1 + 0xc);
+    puVar6 = puVar4;
+    for (uVar7 = uVar8 >> 2; uVar7 != 0; uVar7 = uVar7 - 1) {
+      *puVar6 = *(undefined4 *)arg1;
+      arg1 = (int)(arg1 + 4);
+      puVar6 = puVar6 + 1;
+    }
+    for (uVar8 = uVar8 & 3; pvVar1 = g_pDeferredTurnEventPacketQueueTail, uVar8 != 0;
+        uVar8 = uVar8 - 1) {
+      *(undefined1 *)puVar6 = *(undefined1 *)arg1;
+      arg1 = (int)(arg1 + 1);
+      puVar6 = (undefined4 *)((int)puVar6 + 1);
+    }
+    puVar6 = g_pDeferredTurnEventPacketFreeNodeList;
+    if (g_pDeferredTurnEventPacketFreeNodeList == (void *)0x0) {
+      iVar5 = AllocateAndLinkBlockHead
+                        (&g_pDeferredTurnEventPacketNodeBlockChain,
+                         g_nDeferredTurnEventPacketNodesPerBlock,0xc);
+      puVar6 = g_pDeferredTurnEventPacketFreeNodeList;
+      puVar2 = (undefined4 *)(iVar5 + -8 + g_nDeferredTurnEventPacketNodesPerBlock * 0xc);
+      iVar5 = g_nDeferredTurnEventPacketNodesPerBlock;
+      if (-1 < g_nDeferredTurnEventPacketNodesPerBlock + -1) {
+        do {
+          puVar6 = puVar2;
+          *puVar6 = g_pDeferredTurnEventPacketFreeNodeList;
+          iVar5 = iVar5 + -1;
+          g_pDeferredTurnEventPacketFreeNodeList = puVar6;
+          puVar2 = puVar6 + -3;
+        } while (iVar5 != 0);
+      }
+    }
+    g_pDeferredTurnEventPacketFreeNodeList = (void *)*puVar6;
+    puVar6[1] = pvVar1;
+    *puVar6 = 0;
+    g_nDeferredTurnEventPacketQueueCount = g_nDeferredTurnEventPacketQueueCount + 1;
+    puVar6[2] = 0;
+    puVar6[2] = puVar4;
+    puVar4 = puVar6;
+    if (g_pDeferredTurnEventPacketQueueTail != (void *)0x0) {
+      *(undefined4 **)g_pDeferredTurnEventPacketQueueTail = puVar6;
+      puVar4 = g_pDeferredTurnEventPacketQueueHead;
+    }
+    g_pDeferredTurnEventPacketQueueHead = puVar4;
+    g_pDeferredTurnEventPacketQueueTail = puVar6;
+    if (iVar3 == g_sessionActiveNationId) {
+      return;
+    }
+  }
+  thunk_TrySendNetworkPacketViaManagerContext();
+  if (extraout_EAX != 0) {
+    return;
+  }
+  thunk_ReportWNetManagerErrorCodeAndNotifyUi();
+  return;
 }
 

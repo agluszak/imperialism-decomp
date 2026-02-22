@@ -34,6 +34,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--docker-image", default="imperialism-msvc500")
+    parser.add_argument(
+        "--docker-network",
+        default="none",
+        help="Docker network mode used for build container (default: none).",
+    )
     parser.add_argument("--build-root", default=str(repo_root / "build-flag-sweep"))
     parser.add_argument(
         "--profile",
@@ -138,6 +143,8 @@ def main() -> int:
                     "docker",
                     "run",
                     "--rm",
+                    "--network",
+                    args.docker_network,
                     "-e",
                     f"CMAKE_FLAGS={cmake_flags}",
                     "-v",

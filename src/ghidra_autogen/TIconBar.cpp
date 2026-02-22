@@ -90,8 +90,8 @@ void * __thiscall TIconBar::thunk_DestructTIconBarAndMaybeFree(TIconBar *this,by
 void * __cdecl TIconBar::CreateTIconBarInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -101,16 +101,16 @@ void * __cdecl TIconBar::CreateTIconBarInstance(void)
   puStack_8 = &LAB_0063376a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &g_vtblTIconBar;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &g_vtblTIconBar;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505FD0
@@ -135,7 +135,7 @@ void * __cdecl TIconBar::GetTIconBarClassNamePointer(void)
 void * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTIconBar;
   return this;
 }

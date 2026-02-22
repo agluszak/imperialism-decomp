@@ -5,17 +5,17 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401F91
 // GHIDRA_NAME TPurchaseCluster::thunk_Cluster_GameStateEventHint_004cc490
-// GHIDRA_PROTO void __cdecl thunk_Cluster_GameStateEventHint_004cc490(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_GameStateEventHint_004cc490(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_GameStateEventHint_004cc490
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_GameStateEventHint_004cc490 */
 
-void __cdecl TPurchaseCluster::thunk_Cluster_GameStateEventHint_004cc490(void)
+void __thiscall TPurchaseCluster::thunk_Cluster_GameStateEventHint_004cc490(TPurchaseCluster *this)
 
 {
-  WrapperFor_thunk_DispatchPanelControlEvent_At004cc490();
+  WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(this);
   return;
 }
 
@@ -97,7 +97,7 @@ void * __cdecl TPurchaseCluster::thunk_GetTPurchaseClusterClassNamePointer(void)
 void * __cdecl TPurchaseCluster::CreateTPurchaseClusterInstance(void)
 
 {
-  undefined4 *puVar1;
+  TCluster *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -107,14 +107,14 @@ void * __cdecl TPurchaseCluster::CreateTPurchaseClusterInstance(void)
   puStack_8 = &LAB_0063183a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
+  this = (TCluster *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &g_vtblTPurchaseCluster;
-    puVar1[0x22] = 0;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    *(undefined ***)this = &g_vtblTPurchaseCluster;
+    *(undefined4 *)(this + 0x88) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -142,7 +142,7 @@ void * __cdecl TPurchaseCluster::GetTPurchaseClusterClassNamePointer(void)
 void * __thiscall TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchaseCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   *(undefined ***)this = &g_vtblTPurchaseCluster;
   *(undefined4 *)(this + 0x88) = 0;
   return this;
@@ -165,7 +165,7 @@ TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree(TPurchaseCluster *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC490
 // GHIDRA_NAME TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
-// GHIDRA_PROTO void __cdecl WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=48, call_insns=5, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -173,12 +173,12 @@ TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree(TPurchaseCluster *this,by
 /* [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=48,
    call_insns=5, internal_calls=1, unique_internal=1 */
 
-void __cdecl TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(void)
+void __thiscall
+TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(TPurchaseCluster *this)
 
 {
   int iVar1;
   undefined2 extraout_var;
-  int *in_ECX;
   int iVar2;
   int iVar3;
   int in_stack_00000004;
@@ -187,23 +187,24 @@ void __cdecl TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004c
   
   if (in_stack_00000004 == 10) {
     if (*(int *)((int)in_stack_00000008 + 0x1c) == 0x6c61726f) {
-      iVar3 = *in_ECX;
-      iVar2 = *(int *)in_ECX[0x22];
+      iVar3 = *(int *)this;
+      iVar2 = **(int **)(this + 0x88);
       iVar1 = (**(code **)(iVar3 + 0x1d4))();
       iVar1 = iVar1 + -1;
     }
     else {
       if (*(int *)((int)in_stack_00000008 + 0x1c) != 0x7261726f) goto LAB_004cc4fb;
-      iVar3 = *in_ECX;
-      iVar2 = *(int *)in_ECX[0x22];
+      iVar3 = *(int *)this;
+      iVar2 = **(int **)(this + 0x88);
       iVar1 = (**(code **)(iVar3 + 0x1d4))();
       iVar1 = iVar1 + 1;
     }
     (**(code **)(iVar2 + 0x2c))(iVar1);
-    (**(code **)(iVar3 + 0x1d0))(CONCAT22(extraout_var,*(undefined2 *)(in_ECX[0x22] + 4)),1);
+    (**(code **)(iVar3 + 0x1d0))
+              (CONCAT22(extraout_var,*(undefined2 *)(*(int *)(this + 0x88) + 4)),1);
   }
 LAB_004cc4fb:
-  thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 

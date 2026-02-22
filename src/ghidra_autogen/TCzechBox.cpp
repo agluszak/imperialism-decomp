@@ -41,17 +41,18 @@ void * __thiscall TCzechBox::thunk_DestructTCzechBoxAndMaybeFree(TCzechBox *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404D40
 // GHIDRA_NAME TCzechBox::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0 */
 
-void __cdecl TCzechBox::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+void __thiscall
+TCzechBox::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(TCzechBox *this)
 
 {
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0();
+  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(this);
   return;
 }
 
@@ -147,21 +148,21 @@ void * __thiscall TCzechBox::DestructTCzechBoxAndMaybeFree(TCzechBox *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571CB0
 // GHIDRA_NAME TCzechBox::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
-// GHIDRA_PROTO void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
 // GHIDRA_COMMENT_END
 
 /* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
 
-void __cdecl TCzechBox::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+void __thiscall
+TCzechBox::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(TCzechBox *this)
 
 {
-  int *in_ECX;
   int in_stack_00000004;
   
   if (in_stack_00000004 == 0x21) {
-    (**(code **)(*in_ECX + 0x1dc))(1);
+    (**(code **)(*(int *)this + 0x1dc))(1);
   }
   thunk_HandleCityDialogToggleCommandOrForward();
   return;

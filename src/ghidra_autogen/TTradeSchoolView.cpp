@@ -46,7 +46,7 @@ void __cdecl TTradeSchoolView::thunk_DestructBuildingExpansionViewAndMaybeFree(v
 void * __thiscall TTradeSchoolView::thunk_ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined2 *)(this + 0xa4) = 0xffff;
   *(undefined4 *)(this + 0x94) = 0;
   *(undefined4 *)(this + 0xa0) = 0;
@@ -115,7 +115,7 @@ void __fastcall TTradeSchoolView::thunk_RefreshCityViewEquipmentSummary(int *pCi
 void * __cdecl TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -125,16 +125,16 @@ void * __cdecl TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
   puStack_8 = &LAB_006318fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa8);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    puVar1[0x28] = 0;
-    *(undefined2 *)(puVar1 + 0x29) = 0xffff;
-    *puVar1 = &g_vtblTTradeSchoolView;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined4 *)(this + 0xa0) = 0;
+    *(undefined2 *)(this + 0xa4) = 0xffff;
+    *(undefined ***)this = &g_vtblTTradeSchoolView;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -162,7 +162,7 @@ void * __cdecl TTradeSchoolView::GetTTradeSchoolViewClassNamePointer(void)
 void * __thiscall TTradeSchoolView::ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined2 *)(this + 0xa4) = 0xffff;
   *(undefined4 *)(this + 0x94) = 0;
   *(undefined4 *)(this + 0xa0) = 0;

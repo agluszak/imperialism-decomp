@@ -50,11 +50,11 @@ void * __cdecl TNextDiplomationCommand::thunk_GetTNextDiplomationCommandClassNam
 
 /* Allocates turn-event packet object and installs vtable at 0x00654e50. */
 
-undefined4 * TNextDiplomationCommand::CreateTurnEventPacket_Vtbl00654e50(void)
+TCommand * TNextDiplomationCommand::CreateTurnEventPacket_Vtbl00654e50(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCommand *this;
+  TCommand *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -64,16 +64,16 @@ undefined4 * TNextDiplomationCommand::CreateTurnEventPacket_Vtbl00654e50(void)
   puStack_8 = &LAB_006329ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
+  this = (TCommand *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar1 = &PTR_thunk_GetTNextDiplomationCommandClassNamePointer_00654e50;
-    puVar2 = puVar1;
+  pTVar1 = (TCommand *)0x0;
+  if (this != (TCommand *)0x0) {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTNextDiplomationCommandClassNamePointer_00654e50;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2910

@@ -85,7 +85,7 @@ void __fastcall TIndustryView::thunk_RefreshCityViewActionAvailability(int *pCit
 void * __thiscall TIndustryView::thunk_ConstructTIndustryViewBaseState(TIndustryView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTIndustryView;
   *(undefined4 *)(this + 0x94) = 0;
   *(undefined4 *)(this + 0xa0) = 0;
@@ -119,7 +119,7 @@ void * __thiscall TIndustryView::thunk_ConstructTIndustryViewBaseState(TIndustry
 int * __cdecl TIndustryView::CreateCityViewProductionDialogController(void)
 
 {
-  int *piVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -129,16 +129,16 @@ int * __cdecl TIndustryView::CreateCityViewProductionDialogController(void)
   puStack_8 = &LAB_0063185a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  piVar1 = (int *)AllocateWithFallbackHandler(0xa8);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
   local_4 = 0;
-  if (piVar1 != (int *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    piVar1[0x25] = 0;
-    *piVar1 = (int)&g_vtblTIndustryView;
-    piVar1[0x28] = 0;
-    *(undefined2 *)(piVar1 + 0x29) = 0xffff;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined ***)this = &g_vtblTIndustryView;
+    *(undefined4 *)(this + 0xa0) = 0;
+    *(undefined2 *)(this + 0xa4) = 0xffff;
     *unaff_FS_OFFSET = local_c;
-    return piVar1;
+    return (int *)this;
   }
   *unaff_FS_OFFSET = local_c;
   return (int *)0x0;
@@ -166,7 +166,7 @@ void * __cdecl TIndustryView::GetTIndustryViewClassNamePointer(void)
 void * __thiscall TIndustryView::ConstructTIndustryViewBaseState(TIndustryView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTIndustryView;
   *(undefined4 *)(this + 0x94) = 0;
   *(undefined4 *)(this + 0xa0) = 0;

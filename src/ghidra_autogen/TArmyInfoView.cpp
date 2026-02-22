@@ -59,17 +59,17 @@ void * __cdecl TArmyInfoView::thunk_GetTArmyInfoViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004091EC
 // GHIDRA_NAME TArmyInfoView::thunk_Cluster_MapHint_00591620
-// GHIDRA_PROTO void __cdecl thunk_Cluster_MapHint_00591620(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_MapHint_00591620(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_MapHint_00591620
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_MapHint_00591620 */
 
-void __cdecl TArmyInfoView::thunk_Cluster_MapHint_00591620(void)
+void __thiscall TArmyInfoView::thunk_Cluster_MapHint_00591620(TArmyInfoView *this)
 
 {
-  RefreshArmyInfoViewTextAndStyleDescriptors();
+  RefreshArmyInfoViewTextAndStyleDescriptors(this);
   return;
 }
 
@@ -147,7 +147,7 @@ TArmyInfoView::DestructTArmyInfoViewAndMaybeFree(TArmyInfoView *this,byte freeSe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591620
 // GHIDRA_NAME TArmyInfoView::RefreshArmyInfoViewTextAndStyleDescriptors
-// GHIDRA_PROTO void __cdecl RefreshArmyInfoViewTextAndStyleDescriptors(void)
+// GHIDRA_PROTO void __thiscall RefreshArmyInfoViewTextAndStyleDescriptors(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TArmyInfoView refresh pass composing localized movement/terrain text and applying text-style descriptors.
 // GHIDRA_COMMENT_END
@@ -155,13 +155,12 @@ TArmyInfoView::DestructTArmyInfoViewAndMaybeFree(TArmyInfoView *this,byte freeSe
 /* [ClassLane] TArmyInfoView refresh pass composing localized movement/terrain text and applying
    text-style descriptors. */
 
-void __cdecl TArmyInfoView::RefreshArmyInfoViewTextAndStyleDescriptors(void)
+void __thiscall TArmyInfoView::RefreshArmyInfoViewTextAndStyleDescriptors(TArmyInfoView *this)
 
 {
   short extraout_AX;
   short extraout_AX_00;
   int *piVar1;
-  int *in_ECX;
   int iVar2;
   int *unaff_FS_OFFSET;
   char *input_str;
@@ -238,7 +237,7 @@ void __cdecl TArmyInfoView::RefreshArmyInfoViewTextAndStyleDescriptors(void)
   thunk_InitializeUiTextStyleDescriptor();
   puStack_94 = (undefined *)0x59172a;
   thunk_InitializeUiTextStyleDescriptor();
-  local_68 = *(code **)(*in_ECX + 0x94);
+  local_68 = *(code **)(*(int *)this + 0x94);
   piVar1 = (int *)(*local_68)();
   if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */

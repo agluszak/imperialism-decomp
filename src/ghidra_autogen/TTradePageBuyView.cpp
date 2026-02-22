@@ -43,14 +43,15 @@ void * __cdecl TTradePageBuyView::thunk_GetTTradePageBuyViewClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408300
 // GHIDRA_NAME TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection
-// GHIDRA_PROTO void * __cdecl thunk_RefreshTradeBuyPageNationBidLinesForSelection(void)
+// GHIDRA_PROTO void * __thiscall thunk_RefreshTradeBuyPageNationBidLinesForSelection(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk wrapper for RefreshTradeBuyPageNationBidLinesForSelection.
 // GHIDRA_COMMENT_END
 
 /* Thunk wrapper for RefreshTradeBuyPageNationBidLinesForSelection. */
 
-void * __cdecl TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection(void)
+void * __thiscall
+TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection(TTradePageBuyView *this)
 
 {
   undefined *puVar1;
@@ -60,7 +61,6 @@ void * __cdecl TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSele
   short extraout_AX_00;
   void *pvVar4;
   TLineData *pTVar5;
-  int *in_ECX;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
   short in_stack_00000004;
@@ -80,9 +80,9 @@ void * __cdecl TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSele
   uStack_20 = 0xe0;
   uStack_1c = 0x24;
   pvStack_c = pvVar4;
-  if (in_stack_00000004 == (short)in_ECX[0x21]) goto LAB_005bd863;
-  iVar6 = *in_ECX;
-  *(short *)(in_ECX + 0x21) = in_stack_00000004;
+  if (in_stack_00000004 == *(short *)(this + 0x84)) goto LAB_005bd863;
+  iVar6 = *(int *)this;
+  *(short *)(this + 0x84) = in_stack_00000004;
   (**(code **)(iVar6 + 0x1b4))();
   if (in_stack_00000004 != -1) {
     puVar1 = g_pNationInteractionStateManager->vftable;
@@ -114,7 +114,7 @@ LAB_005bd73a:
       uStack_17 = 0;
       thunk_BuildUiTextStyleDescriptor();
       CopyTwoDwordsAndWordToObjectOffset14();
-      (**(code **)(*(int *)in_ECX[0x1f] + 0x30))(pvVar4);
+      (**(code **)(**(int **)(this + 0x7c) + 0x30))(pvVar4);
       do {
         cVar3 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x78))
                           ((int)in_stack_00000004,iVar6);
@@ -133,12 +133,12 @@ LAB_005bd73a:
           thunk_SetLineDataRowAndBounds(pTVar5,0,0,aiStack_28);
           *(short *)(pTVar5 + 0x12) = (short)iVar6;
           *(short *)(pTVar5 + 0x10) = in_stack_00000004;
-          (**(code **)(*(int *)in_ECX[0x1f] + 0x30))(pTVar5);
+          (**(code **)(**(int **)(this + 0x7c) + 0x30))(pTVar5);
         }
         iVar6 = iVar6 + 1;
       } while (iVar6 < 0x17);
     }
-    iVar6 = *in_ECX;
+    iVar6 = *(int *)this;
     (**(code **)(iVar6 + 0x1ac))();
     (**(code **)(iVar6 + 0x1b0))(1);
   }
@@ -201,7 +201,7 @@ void * __cdecl TTradePageBuyView::GetTTradePageBuyViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD690
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTTradePageBuyViewBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTTradePageBuyViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Rebuilds trade buy-page nation bid line list for selected nation and updates page view controls.
 // GHIDRA_COMMENT_END
@@ -209,7 +209,7 @@ void * __cdecl TTradePageBuyView::GetTTradePageBuyViewClassNamePointer(void)
 /* Rebuilds trade buy-page nation bid line list for selected nation and updates page view controls.
     */
 
-void * __cdecl TTradePageBuyView::ConstructTTradePageBuyViewBaseState(void)
+void * __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this)
 
 {
   undefined *puVar1;
@@ -219,7 +219,6 @@ void * __cdecl TTradePageBuyView::ConstructTTradePageBuyViewBaseState(void)
   short extraout_AX_00;
   void *pvVar4;
   TLineData *pTVar5;
-  int *in_ECX;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
   short in_stack_00000004;
@@ -239,9 +238,9 @@ void * __cdecl TTradePageBuyView::ConstructTTradePageBuyViewBaseState(void)
   local_20 = 0xe0;
   local_1c = 0x24;
   local_c = pvVar4;
-  if (in_stack_00000004 == (short)in_ECX[0x21]) goto LAB_005bd863;
-  iVar6 = *in_ECX;
-  *(short *)(in_ECX + 0x21) = in_stack_00000004;
+  if (in_stack_00000004 == *(short *)(this + 0x84)) goto LAB_005bd863;
+  iVar6 = *(int *)this;
+  *(short *)(this + 0x84) = in_stack_00000004;
   (**(code **)(iVar6 + 0x1b4))();
   if (in_stack_00000004 != -1) {
     puVar1 = g_pNationInteractionStateManager->vftable;
@@ -273,7 +272,7 @@ LAB_005bd73a:
       uStack_17 = 0;
       thunk_BuildUiTextStyleDescriptor();
       CopyTwoDwordsAndWordToObjectOffset14();
-      (**(code **)(*(int *)in_ECX[0x1f] + 0x30))(pvVar4);
+      (**(code **)(**(int **)(this + 0x7c) + 0x30))(pvVar4);
       do {
         cVar3 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x78))
                           ((int)in_stack_00000004,iVar6);
@@ -292,12 +291,12 @@ LAB_005bd73a:
           thunk_SetLineDataRowAndBounds(pTVar5,0,0,aiStack_28);
           *(short *)(pTVar5 + 0x12) = (short)iVar6;
           *(short *)(pTVar5 + 0x10) = in_stack_00000004;
-          (**(code **)(*(int *)in_ECX[0x1f] + 0x30))(pTVar5);
+          (**(code **)(**(int **)(this + 0x7c) + 0x30))(pTVar5);
         }
         iVar6 = iVar6 + 1;
       } while (iVar6 < 0x17);
     }
-    iVar6 = *in_ECX;
+    iVar6 = *(int *)this;
     (**(code **)(iVar6 + 0x1ac))();
     (**(code **)(iVar6 + 0x1b0))(1);
   }

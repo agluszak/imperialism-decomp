@@ -5,19 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404AFC
 // GHIDRA_NAME TBatRepDetLine::thunk_ConstructTBatRepDetLineBaseState
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTBatRepDetLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTBatRepDetLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTBatRepDetLineBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTBatRepDetLineBaseState */
 
-void * __cdecl TBatRepDetLine::thunk_ConstructTBatRepDetLineBaseState(void)
+void * __thiscall TBatRepDetLine::thunk_ConstructTBatRepDetLineBaseState(TBatRepDetLine *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTBatRepDetLineBaseState();
+  pvVar1 = ConstructTBatRepDetLineBaseState(this);
   return pvVar1;
 }
 
@@ -108,21 +108,20 @@ void * __cdecl TBatRepDetLine::GetTBatRepDetLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0040
 // GHIDRA_NAME TBatRepDetLine::ConstructTBatRepDetLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTBatRepDetLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTBatRepDetLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassQuad] ctor inferred for TBatRepDetLine from in-body g_vtblTBatRepDetLine assignment/use.
 // GHIDRA_COMMENT_END
 
 /* [ClassQuad] ctor inferred for TBatRepDetLine from in-body g_vtblTBatRepDetLine assignment/use. */
 
-void * __cdecl TBatRepDetLine::ConstructTBatRepDetLineBaseState(void)
+void * __thiscall TBatRepDetLine::ConstructTBatRepDetLineBaseState(TBatRepDetLine *this)
 
 {
-  undefined4 *puVar1;
-  int *piVar2;
+  TView *pTVar1;
+  TControl *pTVar2;
   void *extraout_EAX;
   void *pvVar3;
-  int in_ECX;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000004;
@@ -149,52 +148,52 @@ void * __cdecl TBatRepDetLine::ConstructTBatRepDetLineBaseState(void)
   puStack_8 = &LAB_00630ba0;
   *unaff_FS_OFFSET = &uStack_c;
   (**(code **)(*in_stack_00000004 + 0xc))();
-  pvVar3 = *(void **)(*(int *)(in_ECX + 0x14) + 0x28);
+  pvVar3 = *(void **)(this->dwField_14 + 0x28);
   if (pvVar3 < (void *)0x6974656e) {
     if (pvVar3 == (void *)0x6974656d) {
-      puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+      pTVar1 = (TView *)AllocateWithFallbackHandler(100);
       uStack_4 = 6;
-      if (puVar1 == (undefined4 *)0x0) {
+      if (pTVar1 == (TView *)0x0) {
 LAB_004b0206:
-        puVar1 = (undefined4 *)0x0;
+        pTVar1 = (TView *)0x0;
       }
       else {
-        TView::thunk_ConstructUiResourceEntryBase();
-        *puVar1 = &PTR_thunk_GetTItemBoyViewClassNamePointer_0064e5e0;
+        TView::thunk_ConstructUiResourceEntryBase(pTVar1);
+        *(undefined ***)pTVar1 = &PTR_thunk_GetTItemBoyViewClassNamePointer_0064e5e0;
       }
 LAB_004b0208:
       uStack_4 = 0xffffffff;
       thunk_InitializeUiResourceEntryFrameAndParent();
-      puVar1[0x18] = *(undefined4 *)(in_ECX + 0x14);
+      *(uint *)(pTVar1 + 0x60) = this->dwField_14;
       pvVar3 = extraout_EAX;
       goto LAB_004b04e9;
     }
     if (pvVar3 != (void *)0x61726d79) goto LAB_004b04e9;
     iVar4 = in_stack_00000004[0x21];
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+    pTVar1 = (TView *)AllocateWithFallbackHandler(100);
     uStack_4 = 0;
-    if (puVar1 == (undefined4 *)0x0) {
-      puVar1 = (undefined4 *)0x0;
+    if (pTVar1 == (TView *)0x0) {
+      pTVar1 = (TView *)0x0;
     }
     else {
-      TView::thunk_ConstructUiResourceEntryBase();
-      *puVar1 = &PTR_thunk_GetTArmyBoyViewClassNamePointer_0064dff8;
+      TView::thunk_ConstructUiResourceEntryBase(pTVar1);
+      *(undefined ***)pTVar1 = &PTR_thunk_GetTArmyBoyViewClassNamePointer_0064dff8;
     }
     uStack_4 = 0xffffffff;
     thunk_InitializeUiResourceEntryFrameAndParent();
-    puVar1[0x18] = *(undefined4 *)(in_ECX + 0x14);
-    piVar2 = (int *)AllocateWithFallbackHandler(0x94);
+    *(uint *)(pTVar1 + 0x60) = this->dwField_14;
+    pTVar2 = (TControl *)AllocateWithFallbackHandler(0x94);
     uStack_4 = 1;
-    if (piVar2 == (int *)0x0) {
-      piVar2 = (int *)0x0;
+    if (pTVar2 == (TControl *)0x0) {
+      pTVar2 = (TControl *)0x0;
     }
     else {
-      TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-      *piVar2 = (int)&PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-      piVar2[0x22] = 0;
-      piVar2[0x24] = 0;
-      piVar2[0x23] = 0;
-      *(undefined1 *)(piVar2 + 0x21) = 0;
+      TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
+      *(undefined ***)pTVar2 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
+      *(undefined4 *)(pTVar2 + 0x88) = 0;
+      *(undefined4 *)(pTVar2 + 0x90) = 0;
+      *(undefined4 *)(pTVar2 + 0x8c) = 0;
+      pTVar2[0x84] = (TControl)0x0;
     }
     uStack_58 = 0x40;
     uStack_54 = 0x31;
@@ -202,25 +201,25 @@ LAB_004b0208:
     uStack_4c = 0;
     uStack_4 = 0xffffffff;
     TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-              (puVar1,&uStack_50,&uStack_58,5,5,iVar4,(int)**(short **)(in_ECX + 0x14) << 7);
-    iVar4 = *piVar2;
+              (pTVar1,&uStack_50,&uStack_58,5,5,iVar4,(int)*(short *)this->dwField_14 << 7);
+    iVar4 = *(int *)pTVar2;
     (**(code **)(iVar4 + 0xa8))(0,0);
     uVar5 = 1;
   }
   else if (pvVar3 == (void *)0x6d657263) {
     iVar4 = in_stack_00000004[0x21];
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+    pTVar1 = (TView *)AllocateWithFallbackHandler(100);
     uStack_4 = 4;
-    if (puVar1 == (undefined4 *)0x0) {
-      puVar1 = (undefined4 *)0x0;
+    if (pTVar1 == (TView *)0x0) {
+      pTVar1 = (TView *)0x0;
     }
     else {
-      TView::thunk_ConstructUiResourceEntryBase();
-      *puVar1 = &PTR_thunk_GetTMerchantBoyViewClassNamePointer_0064e3e8;
+      TView::thunk_ConstructUiResourceEntryBase(pTVar1);
+      *(undefined ***)pTVar1 = &PTR_thunk_GetTMerchantBoyViewClassNamePointer_0064e3e8;
     }
     uStack_4 = 0xffffffff;
     thunk_InitializeUiResourceEntryFrameAndParent();
-    puVar1[0x18] = *(undefined4 *)(in_ECX + 0x14);
+    *(uint *)(pTVar1 + 0x60) = this->dwField_14;
     asStack_28[0] = 0;
     asStack_28[1] = 0;
     asStack_28[2] = 1;
@@ -235,18 +234,18 @@ LAB_004b0208:
     asStack_28[0xb] = 0;
     asStack_28[0xc] = 0;
     asStack_28[0xd] = 0;
-    piVar2 = (int *)AllocateWithFallbackHandler(0x94);
+    pTVar2 = (TControl *)AllocateWithFallbackHandler(0x94);
     uStack_4 = 5;
-    if (piVar2 == (int *)0x0) {
-      piVar2 = (int *)0x0;
+    if (pTVar2 == (TControl *)0x0) {
+      pTVar2 = (TControl *)0x0;
     }
     else {
-      TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-      *piVar2 = (int)&PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-      piVar2[0x22] = 0;
-      piVar2[0x24] = 0;
-      piVar2[0x23] = 0;
-      *(undefined1 *)(piVar2 + 0x21) = 0;
+      TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
+      *(undefined ***)pTVar2 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
+      *(undefined4 *)(pTVar2 + 0x88) = 0;
+      *(undefined4 *)(pTVar2 + 0x90) = 0;
+      *(undefined4 *)(pTVar2 + 0x8c) = 0;
+      pTVar2[0x84] = (TControl)0x0;
     }
     uStack_38 = 0x50;
     uStack_34 = 0x2d;
@@ -254,35 +253,35 @@ LAB_004b0208:
     uStack_2c = 0;
     uStack_4 = 0xffffffff;
     TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-              (puVar1,&uStack_30,&uStack_38,5,5,iVar4,asStack_28[**(short **)(in_ECX + 0x14)] * 0x50
-              );
-    iVar4 = *piVar2;
+              (pTVar1,&uStack_30,&uStack_38,5,5,iVar4,asStack_28[*(short *)this->dwField_14] * 0x50)
+    ;
+    iVar4 = *(int *)pTVar2;
     (**(code **)(iVar4 + 0xa8))(0,0);
     uVar5 = 0;
   }
   else {
     if (pvVar3 != (void *)0x6e617679) {
       if (pvVar3 != (void *)0x72757074) goto LAB_004b04e9;
-      puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+      pTVar1 = (TView *)AllocateWithFallbackHandler(100);
       uStack_4 = 7;
-      if (puVar1 == (undefined4 *)0x0) goto LAB_004b0206;
-      TView::thunk_ConstructUiResourceEntryBase();
-      *puVar1 = &g_vtblTBatRepDetLine;
+      if (pTVar1 == (TView *)0x0) goto LAB_004b0206;
+      TView::thunk_ConstructUiResourceEntryBase(pTVar1);
+      *(undefined ***)pTVar1 = &g_vtblTBatRepDetLine;
       goto LAB_004b0208;
     }
     iVar4 = in_stack_00000004[0x22];
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+    pTVar1 = (TView *)AllocateWithFallbackHandler(100);
     uStack_4 = 2;
-    if (puVar1 == (undefined4 *)0x0) {
-      puVar1 = (undefined4 *)0x0;
+    if (pTVar1 == (TView *)0x0) {
+      pTVar1 = (TView *)0x0;
     }
     else {
-      TView::thunk_ConstructUiResourceEntryBase();
-      *puVar1 = &PTR_thunk_GetTNavyBoyViewClassNamePointer_0064e1f0;
+      TView::thunk_ConstructUiResourceEntryBase(pTVar1);
+      *(undefined ***)pTVar1 = &PTR_thunk_GetTNavyBoyViewClassNamePointer_0064e1f0;
     }
     uStack_4 = 0xffffffff;
     thunk_InitializeUiResourceEntryFrameAndParent();
-    puVar1[0x18] = *(undefined4 *)(in_ECX + 0x14);
+    *(uint *)(pTVar1 + 0x60) = this->dwField_14;
     asStack_28[0] = 0;
     asStack_28[1] = 0;
     asStack_28[2] = 0;
@@ -297,18 +296,18 @@ LAB_004b0208:
     asStack_28[0xb] = 800;
     asStack_28[0xc] = 0x3c0;
     asStack_28[0xd] = 0x460;
-    piVar2 = (int *)AllocateWithFallbackHandler(0x94);
+    pTVar2 = (TControl *)AllocateWithFallbackHandler(0x94);
     uStack_4 = 3;
-    if (piVar2 == (int *)0x0) {
-      piVar2 = (int *)0x0;
+    if (pTVar2 == (TControl *)0x0) {
+      pTVar2 = (TControl *)0x0;
     }
     else {
-      TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-      *piVar2 = (int)&PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-      piVar2[0x22] = 0;
-      piVar2[0x24] = 0;
-      piVar2[0x23] = 0;
-      *(undefined1 *)(piVar2 + 0x21) = 0;
+      TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
+      *(undefined ***)pTVar2 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
+      *(undefined4 *)(pTVar2 + 0x88) = 0;
+      *(undefined4 *)(pTVar2 + 0x90) = 0;
+      *(undefined4 *)(pTVar2 + 0x8c) = 0;
+      pTVar2[0x84] = (TControl)0x0;
     }
     uStack_48 = 0x50;
     uStack_44 = 0x2d;
@@ -316,8 +315,8 @@ LAB_004b0208:
     uStack_3c = 0;
     uStack_4 = 0xffffffff;
     TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-              (puVar1,&uStack_40,&uStack_48,5,5,iVar4,(int)asStack_28[**(short **)(in_ECX + 0x14)]);
-    iVar4 = *piVar2;
+              (pTVar1,&uStack_40,&uStack_48,5,5,iVar4,(int)asStack_28[*(short *)this->dwField_14]);
+    iVar4 = *(int *)pTVar2;
     (**(code **)(iVar4 + 0xa8))(0,0);
     uVar5 = 1;
   }

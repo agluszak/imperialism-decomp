@@ -23,19 +23,20 @@ void * __cdecl TTradeOfferNationLine::thunk_GetTTradeOfferNationLineClassNamePoi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402121
 // GHIDRA_NAME TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTTradeOfferNationLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTTradeOfferNationLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeOfferNationLineBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTTradeOfferNationLineBaseState */
 
-void * __cdecl TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState(void)
+void * __thiscall
+TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState(TTradeOfferNationLine *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTTradeOfferNationLineBaseState();
+  pvVar1 = ConstructTTradeOfferNationLineBaseState(this);
   return pvVar1;
 }
 
@@ -106,19 +107,19 @@ void * __cdecl TTradeOfferNationLine::GetTTradeOfferNationLineClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD090
 // GHIDRA_NAME TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTTradeOfferNationLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTTradeOfferNationLineBaseState(void)
 
-void * __cdecl TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(void)
+void * __thiscall
+TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(TTradeOfferNationLine *this)
 
 {
   undefined2 uVar1;
   undefined2 uVar2;
   undefined *puVar3;
   short extraout_AX;
-  undefined4 *pControlObject;
+  TView *this_00;
   void *pvVar4;
   void *extraout_EAX;
-  int in_ECX;
   undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
@@ -129,26 +130,26 @@ void * __cdecl TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(vo
   puStack_8 = &LAB_0063935a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  pControlObject = (undefined4 *)AllocateWithFallbackHandler(100);
+  this_00 = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (pControlObject == (undefined4 *)0x0) {
-    pControlObject = (undefined4 *)0x0;
+  if (this_00 == (TView *)0x0) {
+    this_00 = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *pControlObject = &g_vtblTTradeOfferNationLine;
+    TView::thunk_ConstructUiResourceEntryBase(this_00);
+    *(undefined ***)this_00 = &g_vtblTTradeOfferNationLine;
   }
-  uVar1 = *(undefined2 *)(in_ECX + 0x10);
-  uVar2 = *(undefined2 *)(in_ECX + 0x12);
+  uVar1 = *(undefined2 *)(this + 0x10);
+  uVar2 = *(undefined2 *)(this + 0x12);
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined2 *)((int)pControlObject + 0x62) = uVar2;
-  *(undefined2 *)(pControlObject + 0x18) = uVar1;
+  *(undefined2 *)(this_00 + 0x62) = uVar2;
+  *(undefined2 *)(this_00 + 0x60) = uVar1;
   puVar3 = g_pNationInteractionStateManager->vftable;
   thunk_GetActiveNationId();
-  pvVar4 = (void *)(**(code **)(puVar3 + 0x78))((int)*(short *)(in_ECX + 0x10),(int)extraout_AX);
+  pvVar4 = (void *)(**(code **)(puVar3 + 0x78))((int)*(short *)(this + 0x10),(int)extraout_AX);
   if ((char)pvVar4 != '\0') {
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2740,3,pControlObject);
+    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2740,3,this_00);
     pvVar4 = extraout_EAX;
   }
   *unaff_FS_OFFSET = unaff_EBX;

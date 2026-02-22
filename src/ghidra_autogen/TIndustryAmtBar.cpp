@@ -103,7 +103,7 @@ void __cdecl TIndustryAmtBar::thunk_DestructTRailClusterMaybeFree(void)
 void * __thiscall TIndustryAmtBar::thunk_ConstructTIndustryAmtBarBaseState(TIndustryAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTIndustryAmtBar;
   *(undefined2 *)(this + 0x60) = 0;
   *(undefined2 *)(this + 0x62) = 0;
@@ -114,17 +114,17 @@ void * __thiscall TIndustryAmtBar::thunk_ConstructTIndustryAmtBarBaseState(TIndu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004091CE
 // GHIDRA_NAME TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand
-// GHIDRA_PROTO void __cdecl thunk_HandleTradeMovePageStepCommand(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeMovePageStepCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeMovePageStepCommand
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeMovePageStepCommand */
 
-void __cdecl TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand(void)
+void __thiscall TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand(TIndustryAmtBar *this)
 
 {
-  HandleTradeMovePageStepCommand();
+  HandleTradeMovePageStepCommand(this);
   return;
 }
 
@@ -135,7 +135,7 @@ void __cdecl TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand(void)
 void * __cdecl TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -145,17 +145,17 @@ void * __cdecl TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
   puStack_8 = &LAB_0063795a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *(undefined2 *)(puVar1 + 0x18) = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0;
-    *(undefined2 *)(puVar1 + 0x19) = 0;
-    *(undefined2 *)((int)puVar1 + 0x66) = 0;
-    *puVar1 = &g_vtblTIndustryAmtBar;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined2 *)(this + 0x60) = 0;
+    *(undefined2 *)(this + 0x62) = 0;
+    *(undefined2 *)(this + 100) = 0;
+    *(undefined2 *)(this + 0x66) = 0;
+    *(undefined ***)this = &g_vtblTIndustryAmtBar;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -183,7 +183,7 @@ void * __cdecl TIndustryAmtBar::GetTIndustryAmtBarClassNamePointer(void)
 void * __thiscall TIndustryAmtBar::ConstructTIndustryAmtBarBaseState(TIndustryAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTIndustryAmtBar;
   *(undefined2 *)(this + 0x60) = 0;
   *(undefined2 *)(this + 0x62) = 0;
@@ -258,7 +258,7 @@ TIndustryAmtBar::InitializeTradeBarsFromSelectedCommodityControl(TIndustryAmtBar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589DA0
 // GHIDRA_NAME TIndustryAmtBar::HandleTradeMovePageStepCommand
-// GHIDRA_PROTO void __cdecl HandleTradeMovePageStepCommand(void)
+// GHIDRA_PROTO void __thiscall HandleTradeMovePageStepCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Page-step command handler for move controls: +page (100) / -page (0x65) using step size this+0x8E, else delegates to HandleTradeMoveControlAdjustment.
 // GHIDRA_COMMENT_END
@@ -266,38 +266,37 @@ TIndustryAmtBar::InitializeTradeBarsFromSelectedCommodityControl(TIndustryAmtBar
 /* Page-step command handler for move controls: +page (100) / -page (0x65) using step size
    this+0x8E, else delegates to HandleTradeMoveControlAdjustment. */
 
-void __cdecl TIndustryAmtBar::HandleTradeMovePageStepCommand(void)
+void __thiscall TIndustryAmtBar::HandleTradeMovePageStepCommand(TIndustryAmtBar *this)
 
 {
   int iVar1;
   short sVar2;
   int *piVar3;
-  int *in_ECX;
   int in_stack_00000004;
   
   if (in_stack_00000004 == 100) {
-    iVar1 = *in_ECX;
+    iVar1 = *(int *)this;
     piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
     if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     sVar2 = (**(code **)(*piVar3 + 0x1e8))();
-    (**(code **)(iVar1 + 0x1d0))(*(short *)((int)in_ECX + 0x8e) + sVar2);
+    (**(code **)(iVar1 + 0x1d0))(*(short *)(this + 0x8e) + sVar2);
     return;
   }
   if (in_stack_00000004 != 0x65) {
-    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment();
+    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
     return;
   }
-  iVar1 = *in_ECX;
+  iVar1 = *(int *)this;
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   sVar2 = (**(code **)(*piVar3 + 0x1e8))();
-  (**(code **)(iVar1 + 0x1d0))(sVar2 - *(short *)((int)in_ECX + 0x8e));
+  (**(code **)(iVar1 + 0x1d0))(sVar2 - *(short *)(this + 0x8e));
   return;
 }
 

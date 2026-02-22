@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: THelpPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004019F6
+// GHIDRA_NAME THelpPicture::thunk_ConstructPictureResourceEntryType57080
+// GHIDRA_PROTO void __thiscall thunk_ConstructPictureResourceEntryType57080(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureResourceEntryType57080
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructPictureResourceEntryType57080 */
+
+void __thiscall THelpPicture::thunk_ConstructPictureResourceEntryType57080(THelpPicture *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined ***)this = &g_vtblTHelpPicture;
+  *(undefined4 *)(this + 0x90) = 0;
+  *(undefined4 *)(this + 0x94) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405984
 // GHIDRA_NAME THelpPicture::thunk_DestructTHelpPictureAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTHelpPictureAndMaybeFree(byte freeSelfFlag)
@@ -93,7 +112,7 @@ void * __cdecl THelpPicture::GetTHelpPictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503C90
 // GHIDRA_NAME THelpPicture::ConstructPictureResourceEntryType57080
-// GHIDRA_PROTO void __cdecl ConstructPictureResourceEntryType57080(void)
+// GHIDRA_PROTO void __thiscall ConstructPictureResourceEntryType57080(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin derived picture-entry constructor over ConstructPictureResourceEntryBase, installing vtable PTR_LAB_00657080 and clearing two dword fields.
 // GHIDRA_COMMENT_END
@@ -101,15 +120,13 @@ void * __cdecl THelpPicture::GetTHelpPictureClassNamePointer(void)
 /* Thin derived picture-entry constructor over ConstructPictureResourceEntryBase, installing vtable
    PTR_LAB_00657080 and clearing two dword fields. */
 
-void __cdecl THelpPicture::ConstructPictureResourceEntryType57080(void)
+void __thiscall THelpPicture::ConstructPictureResourceEntryType57080(THelpPicture *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *in_ECX = &g_vtblTHelpPicture;
-  in_ECX[0x24] = 0;
-  in_ECX[0x25] = 0;
+  *(undefined ***)this = &g_vtblTHelpPicture;
+  *(undefined4 *)(this + 0x90) = 0;
+  *(undefined4 *)(this + 0x94) = 0;
   return;
 }
 

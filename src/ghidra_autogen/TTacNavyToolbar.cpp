@@ -68,7 +68,7 @@ void __thiscall
 TTacNavyToolbar::ConstructTTacNavyToolbarBaseState(TTacNavyToolbar *this,int lifecycleContext)
 
 {
-  TTacticalToolbar::ConstructTTacticalToolbarBaseState();
+  TTacticalToolbar::ConstructTTacticalToolbarBaseState((TTacticalToolbar *)this);
   (**(code **)(*(int *)this + 0x1c8))(0x68756c6c);
   return;
 }

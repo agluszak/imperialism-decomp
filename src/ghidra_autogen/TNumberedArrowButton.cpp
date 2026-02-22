@@ -48,7 +48,7 @@ void * __cdecl TNumberedArrowButton::thunk_GetTNumberedArrowButtonClassNamePoint
 void * __cdecl TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,15 +58,15 @@ void * __cdecl TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
   puStack_8 = &LAB_00637bba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &g_vtblTNumberedArrowButton;
-    *(undefined2 *)(puVar1 + 0x21) = 0;
-    *(undefined2 *)((int)puVar1 + 0x86) = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTNumberedArrowButton;
+    *(undefined2 *)(this + 0x84) = 0;
+    *(undefined2 *)(this + 0x86) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -95,7 +95,7 @@ void * __thiscall
 TNumberedArrowButton::ConstructTNumberedArrowButtonBaseState(TNumberedArrowButton *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
   *(undefined ***)this = &g_vtblTNumberedArrowButton;
   *(undefined2 *)(this + 0x84) = 0;
   *(undefined2 *)(this + 0x86) = 0;

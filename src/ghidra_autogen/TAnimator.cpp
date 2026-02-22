@@ -40,17 +40,17 @@ void * __cdecl TAnimator::thunk_GetTAnimatorClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404561
 // GHIDRA_NAME TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// GHIDRA_PROTO void __cdecl thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
+// GHIDRA_PROTO void __thiscall thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ResetUiViewStateAndReleaseRuntimeSelectionOwner
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ResetUiViewStateAndReleaseRuntimeSelectionOwner */
 
-void __cdecl TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
+void __thiscall TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner(TAnimator *this)
 
 {
-  ResetUiViewStateAndReleaseRuntimeSelectionOwner();
+  ResetUiViewStateAndReleaseRuntimeSelectionOwner(this);
   return;
 }
 
@@ -173,7 +173,7 @@ void * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0DC0
 // GHIDRA_NAME TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// GHIDRA_PROTO void __cdecl ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
+// GHIDRA_PROTO void __thiscall ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resets UI view state for object, flushes child state at +0x24/+0x20, then releases runtime selection owner context.
 // GHIDRA_COMMENT_END
@@ -181,16 +181,14 @@ void * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,byte 
 /* Resets UI view state for object, flushes child state at +0x24/+0x20, then releases runtime
    selection owner context. */
 
-void __cdecl TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
+void __thiscall TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner(TAnimator *this)
 
 {
-  int in_ECX;
-  
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))();
-  if (*(int **)(in_ECX + 0x24) != (int *)0x0) {
-    (**(code **)(**(int **)(in_ECX + 0x24) + 0x58))();
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(this,0);
+  if (*(int **)(this + 0x24) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x24) + 0x58))();
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004010e6(in_ECX + 0x20);
+  WrapperFor_FreeHeapBufferIfNotNull_At004010e6(this + 0x20);
   thunk_ReleaseRuntimeSelectionOwnerAndDestroyObject();
   return;
 }

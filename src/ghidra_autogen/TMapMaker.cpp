@@ -3,6 +3,47 @@
 // Program: Imperialism.exe
 // Bucket: TMapMaker.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040100F
+// GHIDRA_NAME TMapMaker::thunk_ReserveOverlaySpanRecordArray18Capacity
+// GHIDRA_PROTO void __thiscall thunk_ReserveOverlaySpanRecordArray18Capacity(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ReserveOverlaySpanRecordArray18Capacity
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ReserveOverlaySpanRecordArray18Capacity */
+
+void __thiscall TMapMaker::thunk_ReserveOverlaySpanRecordArray18Capacity(TMapMaker *this,int arg1)
+
+{
+  void *pvVar1;
+  uint uVar2;
+  
+  uVar2 = arg1 * 2;
+  if (0x7fffffff < uVar2) {
+    uVar2 = 0x7fffffff;
+  }
+  pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+  if (pvVar1 == (void *)0x0) {
+    pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+    *(void **)(this + 4) = pvVar1;
+    *(int *)(this + 8) = arg1;
+    return;
+  }
+  *(void **)(this + 4) = pvVar1;
+  *(uint *)(this + 8) = uVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401087
+// GHIDRA_NAME TMapMaker::thunk_ComputeWrappedOverlayCoordDeltaMetric
+// GHIDRA_PROTO void __cdecl thunk_ComputeWrappedOverlayCoordDeltaMetric(void)
+
+void __cdecl TMapMaker::thunk_ComputeWrappedOverlayCoordDeltaMetric(void)
+
+{
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004010E1
 // GHIDRA_NAME TMapMaker::thunk_PropagateRouteNodeMarkersFromDeferredNodes
 // GHIDRA_PROTO void __cdecl thunk_PropagateRouteNodeMarkersFromDeferredNodes(void)
@@ -17,6 +58,46 @@ void __cdecl TMapMaker::thunk_PropagateRouteNodeMarkersFromDeferredNodes(void)
 {
   PropagateRouteNodeMarkersFromDeferredNodes();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401541
+// GHIDRA_NAME TMapMaker::thunk_WrapExtendedMapXCoordinateInPlace
+// GHIDRA_PROTO void __cdecl thunk_WrapExtendedMapXCoordinateInPlace(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapExtendedMapXCoordinateInPlace
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapExtendedMapXCoordinateInPlace */
+
+void __cdecl TMapMaker::thunk_WrapExtendedMapXCoordinateInPlace(int arg1)
+
+{
+  int iVar1;
+  
+  if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+    iVar1 = *(int *)arg1;
+    if (0xd7 < iVar1) {
+      *(int *)arg1 = iVar1 + -0xd8;
+      return;
+    }
+    if (iVar1 < 0) {
+      *(int *)arg1 = iVar1 + 0xd8;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040169F
+// GHIDRA_NAME TMapMaker::thunk_GetOverlaySpanRecordByIndex
+// GHIDRA_PROTO void * __thiscall thunk_GetOverlaySpanRecordByIndex(uint entryIndex)
+
+void * __thiscall TMapMaker::thunk_GetOverlaySpanRecordByIndex(TMapMaker *this,uint entryIndex)
+
+{
+  if (entryIndex < *(uint *)(this + 0xc)) {
+    return (void *)(*(int *)(this + 4) + entryIndex * 0x18);
+  }
+  return (void *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004017E4
@@ -35,6 +116,230 @@ void __cdecl TMapMaker::thunk_RebuildCoarseCellNeighborTransitionState(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401A55
+// GHIDRA_NAME TMapMaker::thunk_BuildOverlaySpanRecordsFromQuadBorderLinks
+// GHIDRA_PROTO void __cdecl thunk_BuildOverlaySpanRecordsFromQuadBorderLinks(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BuildOverlaySpanRecordsFromQuadBorderLinks
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Single-JMP thunk to BuildOverlaySpanRecordsFromQuadBorderLinks */
+
+void __cdecl TMapMaker::thunk_BuildOverlaySpanRecordsFromQuadBorderLinks(void)
+
+{
+  bool bVar1;
+  void *arg2;
+  void *arg1;
+  undefined4 *extraout_EAX;
+  undefined4 *puVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  uint entryIndex;
+  uint entryIndex_00;
+  uint arg1_00;
+  undefined4 *puVar6;
+  float10 extraout_ST0;
+  float10 extraout_ST0_00;
+  float10 extraout_ST0_01;
+  undefined4 auStackY_5c [4];
+  uint uStack_34;
+  uint uStack_2c;
+  TMapMaker aTStack_18 [24];
+  
+  if (g_pOverlaySpanRecordArray18Buffer != (TOverlaySpanRecord24 *)0x0) {
+    thunk_DetachAndResetOverlaySpanRecordArray18Buffer
+              ((TMapMaker *)&g_OverlaySpanRecordArray18State);
+    TZone::FreeHeapBlockWithAllocatorTracking();
+  }
+  entryIndex = 0;
+  if (_g_uOverlayQuadBorderLinkArray16Count != 0) {
+    do {
+      if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+        thunk_ReserveOverlayQuadRecordArrayCapacity
+                  ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
+      }
+      if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+        _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+      }
+      if (g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId == -1) {
+        entryIndex = entryIndex + 1;
+      }
+      else {
+        if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+          thunk_ReserveOverlayQuadRecordArrayCapacity
+                    ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
+        }
+        if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+          _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+        }
+        if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+          thunk_ReserveOverlayQuadRecordArrayCapacity
+                    ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
+        }
+        if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+          _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+        }
+        entryIndex_00 = entryIndex + 1;
+        uStack_34 = 0xffffffff;
+        uStack_2c = 0xffffffff;
+        if (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count) {
+          arg1_00 = entryIndex + 2;
+          iVar5 = entryIndex_00 * 0x10;
+          do {
+            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+              thunk_ReserveOverlayQuadRecordArrayCapacity
+                        ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
+            }
+            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+              _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+            }
+            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+              thunk_ReserveOverlayQuadRecordArrayCapacity
+                        ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,arg1_00);
+            }
+            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+              _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+            }
+            if ((g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeVertexA ==
+                 *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeVertexA + iVar5)) &&
+               (g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeVertexB ==
+                *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeVertexB + iVar5))) {
+              bVar1 = true;
+            }
+            else {
+              bVar1 = false;
+            }
+            if (bVar1) {
+              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+                thunk_ReserveOverlayQuadRecordArrayCapacity
+                          ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
+              }
+              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+                _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+              }
+              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+                thunk_ReserveOverlayQuadRecordArrayCapacity
+                          ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,arg1_00);
+              }
+              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+              }
+              iVar4 = ((*(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeDirection + iVar5
+                                ) - g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeDirection
+                       ) + 6) % 6;
+              if ((iVar4 < 2) || (4 < iVar4)) {
+                bVar1 = false;
+              }
+              else {
+                bVar1 = true;
+              }
+              if (bVar1) {
+                if (uStack_34 != 0xffffffff) {
+                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+                    thunk_ReserveOverlayQuadRecordArrayCapacity
+                              ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,arg1_00);
+                  }
+                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                    _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+                  }
+                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+                    thunk_ReserveOverlayQuadRecordArrayCapacity
+                              ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
+                  }
+                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+                    _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+                  }
+                  iVar4 = *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nQuadCellId + iVar5)
+                  ;
+                  iVar3 = g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId / 0xd8 -
+                          iVar4 / 0xd8;
+                  if (iVar3 < 0) {
+                    iVar3 = -iVar3;
+                  }
+                  iVar4 = ((g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId % 0xd8 -
+                           iVar4 % 0xd8) + 0xd8) % 0xd8;
+                  if (0x6c < iVar4) {
+                    iVar4 = 0xd7 - iVar4;
+                  }
+                  thunk_GetOrCreateOverlayQuadRecordByIndex
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,uStack_34);
+                  auStackY_5c[3] = 0x52cdc4;
+                  thunk_GetOrCreateOverlayQuadRecordByIndex
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
+                  thunk_ComputeWrappedOverlayCoordDeltaMetric();
+                  if (extraout_ST0 <= (float10)SQRT((float)(iVar4 * iVar4 * iVar3 * iVar3)))
+                  goto LAB_0052ce49;
+                }
+                uStack_34 = entryIndex_00;
+              }
+              else if (uStack_34 == 0xffffffff) {
+                if (uStack_2c != 0xffffffff) {
+                  thunk_GetOrCreateOverlayQuadRecordByIndex
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex_00);
+                  auStackY_5c[3] = 0x52ce0d;
+                  thunk_GetOrCreateOverlayQuadRecordByIndex
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
+                  thunk_ComputeWrappedOverlayCoordDeltaMetric();
+                  thunk_GetOrCreateOverlayQuadRecordByIndex
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,uStack_2c);
+                  auStackY_5c[3] = 0x52ce33;
+                  thunk_GetOrCreateOverlayQuadRecordByIndex
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
+                  thunk_ComputeWrappedOverlayCoordDeltaMetric();
+                  if (extraout_ST0_01 <= (float10)(float)extraout_ST0_00) goto LAB_0052ce49;
+                }
+                uStack_2c = entryIndex_00;
+              }
+            }
+LAB_0052ce49:
+            entryIndex_00 = entryIndex_00 + 1;
+            arg1_00 = arg1_00 + 1;
+            iVar5 = iVar5 + 0x10;
+          } while (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count);
+        }
+        if ((uStack_34 == 0xffffffff) && (uStack_34 = uStack_2c, uStack_2c == 0xffffffff)) {
+          puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
+          *puVar2 = 0xffffffff;
+          puVar2[2] = 0xffffffff;
+          puVar2[1] = 0xffffffff;
+        }
+        else {
+          arg2 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                           ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,uStack_34);
+          auStackY_5c[3] = 0x52ce9b;
+          arg1 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                           ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
+          auStackY_5c[3] = 0x52cea5;
+          thunk_InitializeOverlaySegmentFromTwoMapCoords(aTStack_18,(int)arg1,(int)arg2);
+          puVar2 = extraout_EAX;
+          puVar6 = auStackY_5c;
+          for (iVar5 = 6; iVar5 != 0; iVar5 = iVar5 + -1) {
+            *puVar6 = *puVar2;
+            puVar2 = puVar2 + 1;
+            puVar6 = puVar6 + 1;
+          }
+          (*(code *)*_g_OverlaySpanRecordArray18State)();
+          puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
+          *puVar2 = 0xffffffff;
+          puVar2[2] = 0xffffffff;
+          puVar2[1] = 0xffffffff;
+          puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,uStack_34);
+          *puVar2 = 0xffffffff;
+          puVar2[2] = 0xffffffff;
+          puVar2[1] = 0xffffffff;
+        }
+      }
+    } while (entryIndex < _g_uOverlayQuadBorderLinkArray16Count);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00401AC8
 // GHIDRA_NAME TMapMaker::thunk_RestoreFinePatternBandFromNeighborCell
 // GHIDRA_PROTO void __cdecl thunk_RestoreFinePatternBandFromNeighborCell(void)
@@ -43,6 +348,133 @@ void __cdecl TMapMaker::thunk_RestoreFinePatternBandFromNeighborCell(void)
 
 {
   RestoreFinePatternBandFromNeighborCell();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401ECE
+// GHIDRA_NAME TMapMaker::thunk_RandomizeRegionTemplateBanksForMismatchedNeighborClasses
+// GHIDRA_PROTO void __thiscall thunk_RandomizeRegionTemplateBanksForMismatchedNeighborClasses(int arg1, int arg2, int arg3, int arg4, int arg5)
+
+void __thiscall
+TMapMaker::thunk_RandomizeRegionTemplateBanksForMismatchedNeighborClasses
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4,int arg5)
+
+{
+  int iVar1;
+  uint uVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  undefined4 *puVar5;
+  
+  if ((short)arg3 != (short)arg2) {
+    iVar1 = (**(code **)(*(int *)this + 0x84))(arg1);
+    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
+    switch((g_uMapGenerationRngState >> 0xc & 0x7fff) % 5) {
+    default:
+      goto switchD_00529425_caseD_0;
+    case 1:
+    case 5:
+      iVar3 = 9;
+      puVar5 = (undefined4 *)(iVar1 + 0xfc0);
+      puVar4 = (undefined4 *)(iVar1 + 0xf9c);
+      break;
+    case 2:
+      puVar4 = (undefined4 *)(iVar1 + 0xfc0);
+      iVar3 = 9;
+      puVar5 = (undefined4 *)(iVar1 + 0xf9c);
+    }
+    for (; iVar3 != 0; iVar3 = iVar3 + -1) {
+      *puVar4 = *puVar5;
+      puVar5 = puVar5 + 1;
+      puVar4 = puVar4 + 1;
+    }
+switchD_00529425_caseD_0:
+    puVar4 = (undefined4 *)(iVar1 + 0x1ecc);
+    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
+    switch((g_uMapGenerationRngState >> 0xc & 0x7fff) % 5) {
+    default:
+      goto switchD_00529473_caseD_0;
+    case 1:
+      puVar5 = (undefined4 *)(iVar1 + 0x1ef0);
+      iVar3 = 9;
+      break;
+    case 2:
+    case 5:
+      iVar3 = 9;
+      puVar5 = puVar4;
+      puVar4 = (undefined4 *)(iVar1 + 0x1ef0);
+    }
+    for (; iVar3 != 0; iVar3 = iVar3 + -1) {
+      *puVar4 = *puVar5;
+      puVar5 = puVar5 + 1;
+      puVar4 = puVar4 + 1;
+    }
+  }
+switchD_00529473_caseD_0:
+  if ((short)arg4 != (short)arg2) {
+    iVar1 = (**(code **)(*(int *)this + 0x84))(arg1);
+    puVar4 = (undefined4 *)(iVar1 + 0x2d90);
+    uVar2 = g_uMapGenerationRngState * 0x15a4e35 + 1;
+    if ((uVar2 >> 0xc & 1) != 0) {
+      puVar4 = (undefined4 *)(iVar1 + 0x2db4);
+    }
+    g_uMapGenerationRngState = uVar2 * 0x15a4e35 + 1;
+    switch((g_uMapGenerationRngState >> 0xc & 0x7fff) % 7) {
+    case 0:
+    case 1:
+    case 3:
+    case 5:
+      puVar5 = puVar4 + 0x3cc;
+      iVar1 = 9;
+      break;
+    case 2:
+    case 4:
+    case 6:
+      iVar1 = 9;
+      puVar5 = puVar4;
+      puVar4 = puVar4 + 0x3cc;
+      break;
+    default:
+      goto switchD_005294f0_default;
+    }
+    for (; iVar1 != 0; iVar1 = iVar1 + -1) {
+      *puVar4 = *puVar5;
+      puVar5 = puVar5 + 1;
+      puVar4 = puVar4 + 1;
+    }
+  }
+switchD_005294f0_default:
+  if ((short)arg5 != (short)arg2) {
+    iVar1 = (**(code **)(*(int *)this + 0x84))(arg1);
+    puVar4 = (undefined4 *)(iVar1 + 0x2dd8);
+    uVar2 = g_uMapGenerationRngState * 0x15a4e35 + 1;
+    if ((uVar2 >> 0xc & 1) != 0) {
+      puVar4 = (undefined4 *)(iVar1 + 0x2dfc);
+    }
+    g_uMapGenerationRngState = uVar2 * 0x15a4e35 + 1;
+    switch((g_uMapGenerationRngState >> 0xc & 0x7fff) % 7) {
+    case 0:
+    case 1:
+    case 3:
+    case 5:
+      puVar5 = puVar4 + 0x3cc;
+      for (iVar1 = 9; iVar1 != 0; iVar1 = iVar1 + -1) {
+        *puVar4 = *puVar5;
+        puVar5 = puVar5 + 1;
+        puVar4 = puVar4 + 1;
+      }
+      return;
+    case 2:
+    case 4:
+    case 6:
+      puVar5 = puVar4 + 0x3cc;
+      for (iVar1 = 9; iVar1 != 0; iVar1 = iVar1 + -1) {
+        *puVar5 = *puVar4;
+        puVar4 = puVar4 + 1;
+        puVar5 = puVar5 + 1;
+      }
+    }
+  }
   return;
 }
 
@@ -91,6 +523,64 @@ void __fastcall TMapMaker::thunk_DestructTMapMaker(TMapMaker *pThis)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402275
+// GHIDRA_NAME TMapMaker::thunk_ConvertTileIndexToOverlayCoord216BySide
+// GHIDRA_PROTO void __cdecl thunk_ConvertTileIndexToOverlayCoord216BySide(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConvertTileIndexToOverlayCoord216BySide
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConvertTileIndexToOverlayCoord216BySide */
+
+void __cdecl TMapMaker::thunk_ConvertTileIndexToOverlayCoord216BySide(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402536
+// GHIDRA_NAME TMapMaker::thunk_ValidateAllColumnsHaveAssignedRegionClass
+// GHIDRA_PROTO void __thiscall thunk_ValidateAllColumnsHaveAssignedRegionClass(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ValidateAllColumnsHaveAssignedRegionClass
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ValidateAllColumnsHaveAssignedRegionClass */
+
+void __thiscall TMapMaker::thunk_ValidateAllColumnsHaveAssignedRegionClass(TMapMaker *this)
+
+{
+  bool bVar1;
+  int iVar2;
+  TMapMaker *pTVar3;
+  TMapMaker *pTVar4;
+  int iVar5;
+  
+  bVar1 = false;
+  iVar5 = 0;
+  pTVar4 = this + 0x10;
+  do {
+    if (bVar1) {
+      return;
+    }
+    iVar2 = 0;
+    pTVar3 = pTVar4;
+    do {
+      if (*pTVar3 != (TMapMaker)0xff) break;
+      iVar2 = iVar2 + 1;
+      pTVar3 = pTVar3 + 0x1b;
+    } while (iVar2 < 0xf);
+    if (iVar2 == 0xf) {
+      bVar1 = true;
+    }
+    iVar5 = iVar5 + 1;
+    pTVar4 = pTVar4 + 1;
+    if (0x1a < iVar5) {
+      return;
+    }
+  } while( true );
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040272F
 // GHIDRA_NAME TMapMaker::thunk_BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands
 // GHIDRA_PROTO void __cdecl thunk_BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands(void)
@@ -104,6 +594,40 @@ void __cdecl TMapMaker::thunk_BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands(
 
 {
   BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402A68
+// GHIDRA_NAME TMapMaker::thunk_GetCityRegionIdAtTileIndex
+// GHIDRA_PROTO int __thiscall thunk_GetCityRegionIdAtTileIndex(int tileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetCityRegionIdAtTileIndex
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetCityRegionIdAtTileIndex */
+
+int __thiscall TMapMaker::thunk_GetCityRegionIdAtTileIndex(TMapMaker *this,int tileIndex)
+
+{
+  char *pcVar1;
+  
+  if ((-1 < tileIndex) &&
+     (pcVar1 = (char *)(*(int *)(this + 8) + tileIndex * 0x24), *pcVar1 == '\x05')) {
+    return pcVar1[4] + -0x17;
+  }
+  return -1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402AA9
+// GHIDRA_NAME TMapMaker::thunk_SelectSpanEndpointXByThreshold
+// GHIDRA_PROTO void __thiscall thunk_SelectSpanEndpointXByThreshold(void)
+
+void __thiscall TMapMaker::thunk_SelectSpanEndpointXByThreshold(TMapMaker *this)
+
+{
+  if (*(ushort *)(this + 0x14) < 0x8fff) {
+    return;
+  }
   return;
 }
 
@@ -143,6 +667,75 @@ void __cdecl TMapMaker::thunk_CopyFinePatternFromNeighborCellByMode(void)
 
 {
   CopyFinePatternFromNeighborCellByMode();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004030E4
+// GHIDRA_NAME TMapMaker::thunk_InitializeOverlaySegmentFromTwoMapCoords
+// GHIDRA_PROTO void __thiscall thunk_InitializeOverlaySegmentFromTwoMapCoords(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InitializeOverlaySegmentFromTwoMapCoords
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InitializeOverlaySegmentFromTwoMapCoords */
+
+void __thiscall
+TMapMaker::thunk_InitializeOverlaySegmentFromTwoMapCoords(TMapMaker *this,int arg1,int arg2)
+
+{
+  TMapMaker TVar1;
+  undefined2 uVar2;
+  short sVar3;
+  int iVar4;
+  short sVar5;
+  short sVar6;
+  uint uVar7;
+  short sVar8;
+  int iVar9;
+  
+  *(undefined2 *)(this + 0x14) = 0;
+  iVar4 = *(int *)arg1;
+  *(int *)(this + 8) = iVar4;
+  *(undefined4 *)(this + 0xc) = *(undefined4 *)arg2;
+  iVar9 = *(int *)(this + 0xc);
+  sVar5 = (short)(iVar4 % 0xd8);
+  *(short *)this = sVar5;
+  sVar8 = ((short)(iVar4 / 0xd8) + (short)(iVar4 >> 0x1f)) -
+          (short)((longlong)iVar4 * 0x4bda12f7 >> 0x3f);
+  *(short *)(this + 2) = sVar8;
+  sVar3 = (short)(iVar9 % 0xd8);
+  *(short *)(this + 4) = sVar3;
+  sVar6 = ((short)(iVar9 / 0xd8) + (short)(iVar9 >> 0x1f)) -
+          (short)((longlong)iVar9 * 0x4bda12f7 >> 0x3f);
+  *(short *)(this + 6) = sVar6;
+  *(undefined2 *)(this + 0x10) = *(undefined2 *)(arg1 + 4);
+  *(undefined2 *)(this + 0x12) = *(undefined2 *)(arg1 + 8);
+  if ((sVar6 < sVar8) || ((sVar8 == sVar6 && (sVar3 < sVar5)))) {
+    TVar1 = this[2];
+    *(short *)(this + 2) = sVar6;
+    *(ushort *)(this + 6) = (ushort)(byte)TVar1;
+    TVar1 = *this;
+    *(short *)this = sVar3;
+    *(ushort *)(this + 4) = (ushort)(byte)TVar1;
+    *(int *)(this + 8) = (int)sVar3 + sVar6 * 0xd8;
+    *(int *)(this + 0xc) = (int)(short)(ushort)(byte)TVar1 + *(short *)(this + 6) * 0xd8;
+  }
+  iVar9 = (int)*(short *)this;
+  iVar4 = (int)*(short *)(this + 4);
+  uVar7 = iVar9 - iVar4 >> 0x1f;
+  TVar1 = (TMapMaker)(0x6c < (int)((iVar9 - iVar4 ^ uVar7) - uVar7));
+  this[0x16] = TVar1;
+  if (((bool)TVar1) && (*(short *)this < *(short *)(this + 4))) {
+    iVar4 = (iVar4 - iVar9) + -0xd8;
+    iVar9 = (int)*(short *)(this + 6) - (int)*(short *)(this + 2);
+  }
+  else {
+    iVar4 = iVar4 - iVar9;
+    iVar9 = (int)*(short *)(this + 6) - (int)*(short *)(this + 2);
+  }
+  fpatan((float10)iVar9,(float10)iVar4);
+  uVar2 = __ftol();
+  *(undefined2 *)(this + 0x14) = uVar2;
   return;
 }
 
@@ -189,9 +782,537 @@ void __thiscall TMapMaker::thunk_SmoothCityRegionOwnershipByNeighborSampling(TMa
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004037B0
+// GHIDRA_NAME TMapMaker::thunk_GenerateMapFromTuningStringAndApplyScenarioOverrides
+// GHIDRA_PROTO void __thiscall thunk_GenerateMapFromTuningStringAndApplyScenarioOverrides(int arg1, int arg2, int arg3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GenerateMapFromTuningStringAndApplyScenarioOverrides
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Single-JMP thunk to GenerateMapFromTuningStringAndApplyScenarioOverrides */
+
+void __thiscall
+TMapMaker::thunk_GenerateMapFromTuningStringAndApplyScenarioOverrides
+          (TMapMaker *this,int arg1,int arg2,int arg3)
+
+{
+  char cVar1;
+  char extraout_AL;
+  char extraout_AL_00;
+  char extraout_AL_01;
+  TMapMaker *pTVar2;
+  byte *pbVar3;
+  byte bVar4;
+  char *pcVar5;
+  char *pcVar6;
+  uint uVar7;
+  int iVar8;
+  TMapMaker *unaff_EBX;
+  int iVar9;
+  uint uVar10;
+  int iVar11;
+  bool bVar12;
+  
+  *(int *)(this + 8) = arg1;
+  iVar11 = 0x96;
+  iVar9 = 0xfa;
+  *(int *)(this + 0xc) = arg2;
+  _g_MapMakerGenerationState = 200;
+  g_nMapGenQuotaTokenM = 0x96;
+  _g_nMapGenQuotaTokenH = 0xfa;
+  _g_nMapGenQuotaTokenF = 0xfa;
+  _g_nMapGenQuotaTokenS = 0x96;
+  _g_nMapGenType3ExpansionAttempts = 10;
+  _g_nMapGenCityRegionSeedParamTokenC_A = 0xe;
+  _g_nMapGenCityRegionSeedParamTokenC_B = 8;
+  pcVar6 = *(char **)arg3;
+  bVar12 = false;
+  uVar10 = 1000;
+  cVar1 = *pcVar6;
+  while (cVar1 != '\0') {
+    pcVar5 = pcVar6;
+    if (bVar12) {
+LAB_00525acd:
+      switch(cVar1) {
+      case 'C':
+        _g_nMapGenCityRegionSeedParamTokenC_A = 10;
+        _g_nMapGenCityRegionSeedParamTokenC_B = 6;
+        break;
+      case 'D':
+        _g_MapMakerGenerationState = 300;
+        break;
+      case 'F':
+        iVar9 = 500;
+        _g_nMapGenQuotaTokenF = 500;
+        break;
+      case 'H':
+        _g_nMapGenQuotaTokenH = 500;
+        break;
+      case 'M':
+        g_nMapGenQuotaTokenM = 300;
+        break;
+      case 'P':
+        uVar10 = 0x2ee;
+        break;
+      case 'R':
+        _g_nMapGenType3ExpansionAttempts = 0x14;
+        break;
+      case 'S':
+        iVar11 = 300;
+        _g_nMapGenQuotaTokenS = 300;
+        break;
+      case 'c':
+        _g_nMapGenCityRegionSeedParamTokenC_A = 0x12;
+        _g_nMapGenCityRegionSeedParamTokenC_B = 10;
+        break;
+      case 'd':
+        _g_MapMakerGenerationState = 100;
+        break;
+      case 'f':
+        iVar9 = 100;
+        _g_nMapGenQuotaTokenF = 100;
+        break;
+      case 'h':
+        _g_nMapGenQuotaTokenH = 100;
+        break;
+      case 'm':
+        g_nMapGenQuotaTokenM = 100;
+        break;
+      case 'p':
+        uVar10 = 0x5dc;
+        break;
+      case 'r':
+        _g_nMapGenType3ExpansionAttempts = 5;
+        break;
+      case 's':
+        iVar11 = 100;
+        _g_nMapGenQuotaTokenS = 100;
+      }
+    }
+    else {
+      if (cVar1 == '@') {
+        cVar1 = pcVar6[1];
+        pcVar5 = pcVar6 + 1;
+        if (cVar1 == '^') {
+          cVar1 = pcVar6[2];
+          pcVar5 = pcVar6 + 2;
+          bVar12 = cVar1 == '>';
+        }
+      }
+      if (bVar12) goto LAB_00525acd;
+    }
+    pcVar6 = pcVar5 + 1;
+    cVar1 = pcVar5[1];
+  }
+  uVar7 = iVar11 + _g_nMapGenQuotaTokenH + iVar9 + _g_MapMakerGenerationState + g_nMapGenQuotaTokenM
+  ;
+  if (uVar7 != uVar10) {
+    _g_MapMakerGenerationState = (uVar10 * _g_MapMakerGenerationState) / uVar7;
+    g_nMapGenQuotaTokenM = (uVar10 * g_nMapGenQuotaTokenM) / uVar7;
+    _g_nMapGenQuotaTokenH = (uVar10 * _g_nMapGenQuotaTokenH) / uVar7;
+    _g_nMapGenQuotaTokenF =
+         (undefined4)((ulonglong)(uVar10 * iVar9) / (ulonglong)(longlong)(int)uVar7);
+    _g_nMapGenQuotaTokenS =
+         (undefined4)((ulonglong)(uVar10 * iVar11) / (ulonglong)(longlong)(int)uVar7);
+  }
+  g_uMapGenerationRngState = 0x6e616461;
+  pcVar6 = *(char **)arg3;
+  cVar1 = *pcVar6;
+  while (cVar1 != '\0') {
+    g_uMapGenerationRngState =
+         ((int)g_uMapGenerationRngState >> 0x10) + g_uMapGenerationRngState * 2 + (int)cVar1;
+    pcVar5 = pcVar6 + 1;
+    pcVar6 = pcVar6 + 1;
+    cVar1 = *pcVar5;
+  }
+  if (g_uMapGenerationRngState == 0) {
+    g_uMapGenerationRngState = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+  }
+  g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
+  g_uMapContextStatusRngState = g_uMapGenerationRngState >> 0xc & 0x7fff;
+  if (g_uMapContextStatusRngState == 0) {
+    g_uMapContextStatusRngState = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
+  }
+  iVar11 = *(int *)this;
+  do {
+    do {
+      if (g_pMapGenerationProgressContext != (void *)0x0) {
+        thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+      }
+      (**(code **)(iVar11 + 0x2c))();
+      cVar1 = (**(code **)(iVar11 + 0x68))();
+      if (cVar1 == '\0') {
+        thunk_ValidateAllColumnsHaveAssignedRegionClass(this);
+        if (extraout_AL == '\0') {
+          bVar12 = true;
+        }
+        else {
+          thunk_ValidateTerrainClassAdjacencyCoverageMask(this);
+          bVar12 = extraout_AL_00 == '\0';
+        }
+      }
+      else {
+        bVar12 = true;
+      }
+    } while (bVar12);
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    pTVar2 = this + 0x200;
+    iVar9 = 0x17;
+    do {
+      if (*(int *)pTVar2 == -1) {
+        iVar8 = *(int *)(this + 0x1fc);
+        *(int *)(this + 0x1fc) = iVar8 + 1;
+        *(int *)pTVar2 = iVar8 + 1;
+      }
+      pTVar2 = pTVar2 + 4;
+      iVar9 = iVar9 + -1;
+    } while (iVar9 != 0);
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    (**(code **)(iVar11 + 0x38))();
+    if ((g_pMapGenerationProgressContext != (void *)0x0) &&
+       (thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext),
+       g_pMapGenerationProgressContext != (void *)0x0)) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    (**(code **)(iVar11 + 0x78))();
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    (**(code **)(iVar11 + 0x3c))();
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    thunk_RotateMapColumnsByPeakCityTileDensity(this);
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    (**(code **)(iVar11 + 100))(0);
+    pbVar3 = *(byte **)arg2;
+    uVar10 = g_uMapGenerationRngState;
+    if (g_Generate_Map_Tuning_Value_006976D8 != 0) {
+      iVar9 = 0x6976d9 - (int)pbVar3;
+      bVar4 = g_Generate_Map_Tuning_Value_006976D8;
+      do {
+        if (bVar4 != *pbVar3) goto LAB_00525e16;
+        bVar4 = pbVar3[iVar9];
+        pbVar3 = pbVar3 + 1;
+      } while (bVar4 != 0);
+    }
+    if ((*pbVar3 == 0) || (*pbVar3 == 0x20)) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\x06';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00525e16:
+    pcVar6 = *(char **)arg2;
+    if (s_Congo_006976d0[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Congo_006976d0[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_00525e87;
+        cVar1 = pcVar6[(int)(s_Congo_006976d0 + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\x01';
+          pcVar6[0x13] = '\r';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00525e87:
+    pcVar6 = *(char **)arg2;
+    if (s_Mirkwood_006976c4[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Mirkwood_006976c4[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_00525f13;
+        cVar1 = pcVar6[(int)(s_Mirkwood_006976c4 + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\x01';
+          g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
+          pcVar6[0x13] = (~(byte)(g_uMapGenerationRngState >> 0xc) & 1) << 1 | 0xd;
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00525f13:
+    pcVar6 = *(char **)arg2;
+    pcVar5 = pcVar6;
+    if (s_Yucatan_006976b8[0] != '\0') {
+      cVar1 = s_Yucatan_006976b8[0];
+      do {
+        if (cVar1 != *pcVar5) goto LAB_00525f43;
+        cVar1 = pcVar5[(int)(s_Yucatan_006976b8 + (1 - (int)pcVar6))];
+        pcVar5 = pcVar5 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) {
+LAB_00525f6d:
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\x01';
+          pcVar6[0x13] = '\x0f';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+    else {
+LAB_00525f43:
+      if (s_Siberia_006976ac[0] != '\0') {
+        iVar9 = 1 - (int)pcVar6;
+        cVar1 = s_Siberia_006976ac[0];
+        do {
+          if (cVar1 != *pcVar6) goto LAB_00525fb0;
+          cVar1 = pcVar6[(int)(s_Siberia_006976ac + iVar9)];
+          pcVar6 = pcVar6 + 1;
+        } while (cVar1 != '\0');
+      }
+      if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) goto LAB_00525f6d;
+    }
+LAB_00525fb0:
+    pcVar6 = *(char **)arg2;
+    if (s_Antarctica_0069769c[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Antarctica_0069769c[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_00526021;
+        cVar1 = pcVar6[(int)(s_Antarctica_0069769c + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\x06';
+          pcVar6[0x13] = '\f';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00526021:
+    pcVar6 = *(char **)arg2;
+    if (s_Kansas_00697694[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Kansas_00697694[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_0052608e;
+        cVar1 = pcVar6[(int)(s_Kansas_00697694 + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\0';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_0052608e:
+    pbVar3 = *(byte **)arg2;
+    if (g_Generate_Map_Tuning_Value_0069768C != 0) {
+      iVar9 = 0x69768d - (int)pbVar3;
+      bVar4 = g_Generate_Map_Tuning_Value_0069768C;
+      do {
+        if (bVar4 != *pbVar3) goto LAB_005260fb;
+        bVar4 = pbVar3[iVar9];
+        pbVar3 = pbVar3 + 1;
+      } while (bVar4 != 0);
+    }
+    if ((*pbVar3 == 0) || (*pbVar3 == 0x20)) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 10 != 0)) {
+          *pcVar6 = '\a';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_005260fb:
+    pcVar6 = *(char **)arg2;
+    if (s_Everglades_0069767c[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Everglades_0069767c[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_00526168;
+        cVar1 = pcVar6[(int)(s_Everglades_0069767c + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 5 != 0)) {
+          *pcVar6 = '\x04';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00526168:
+    pcVar6 = *(char **)arg2;
+    if (s_Nepal_00697674[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Nepal_00697674[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_005261d5;
+        cVar1 = pcVar6[(int)(s_Nepal_00697674 + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 5 != 0)) {
+          *pcVar6 = '\x03';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_005261d5:
+    pcVar6 = *(char **)arg2;
+    if (s_Scotland_00697668[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Scotland_00697668[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_00526242;
+        cVar1 = pcVar6[(int)(s_Scotland_00697668 + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        if ((*pcVar6 != '\x05') &&
+           (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, uVar10 = g_uMapGenerationRngState,
+           (g_uMapGenerationRngState >> 0xc & 0x7fff) % 5 != 0)) {
+          *pcVar6 = '\x02';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_00526242:
+    pcVar6 = *(char **)arg2;
+    pTVar2 = this;
+    if (s_Eclectia_0069765c[0] != '\0') {
+      iVar9 = 1 - (int)pcVar6;
+      cVar1 = s_Eclectia_0069765c[0];
+      do {
+        if (cVar1 != *pcVar6) goto LAB_005262cf;
+        cVar1 = pcVar6[(int)(s_Eclectia_0069765c + iVar9)];
+        pcVar6 = pcVar6 + 1;
+      } while (cVar1 != '\0');
+    }
+    if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) {
+      pcVar6 = *(char **)(this + 8);
+      iVar9 = 0x1950;
+      do {
+        iVar8 = (int)pcVar6[4] % 7;
+        if (4 < iVar8) {
+          iVar8 = iVar8 + 1;
+        }
+        if (((*pcVar6 != '\x05') &&
+            (g_uMapGenerationRngState = uVar10 * 0x15a4e35 + 1, pTVar2 = unaff_EBX,
+            uVar10 = g_uMapGenerationRngState, (g_uMapGenerationRngState >> 0xc & 0x7fff) % 5 != 0))
+           && (*pcVar6 = (char)iVar8, uVar10 = g_uMapGenerationRngState, iVar8 == 1)) {
+          pcVar6[0x13] = '\x0f';
+          uVar10 = g_uMapGenerationRngState;
+        }
+        pcVar6 = pcVar6 + 0x24;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+LAB_005262cf:
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+    thunk_ValidateSeedCandidateExistsForEachTerrainClass(pTVar2);
+    if (extraout_AL_01 != '\0') {
+      if (g_pMapGenerationProgressContext != (void *)0x0) {
+        thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+      }
+      return;
+    }
+    (**(code **)(*g_pGlobalMapState + 0x28))();
+    if (g_pMapGenerationProgressContext != (void *)0x0) {
+      thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+    }
+  } while( true );
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004038B9
 // GHIDRA_NAME TMapMaker::thunk_AppendOverlayQuadRecord
-// GHIDRA_PROTO void __thiscall thunk_AppendOverlayQuadRecord(TMapMaker * pThis, int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_PROTO void __thiscall thunk_AppendOverlayQuadRecord(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to AppendOverlayQuadRecord
 // GHIDRA_COMMENT_END
@@ -199,11 +1320,10 @@ void __thiscall TMapMaker::thunk_SmoothCityRegionOwnershipByNeighborSampling(TMa
 /* Single-JMP thunk to AppendOverlayQuadRecord */
 
 void __thiscall
-TMapMaker::thunk_AppendOverlayQuadRecord
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2,int arg3,int arg4)
+TMapMaker::thunk_AppendOverlayQuadRecord(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  AppendOverlayQuadRecord(this,pThis,arg1,arg2,arg3,arg4);
+  AppendOverlayQuadRecord(this,arg1,arg2,arg3,arg4);
   return;
 }
 
@@ -216,6 +1336,36 @@ void __cdecl TMapMaker::thunk_TryAssignCellTypeWithDirectionalConstraints(void)
 {
   TryAssignCellTypeWithDirectionalConstraints();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404D45
+// GHIDRA_NAME TMapMaker::thunk_ValidateTerrainClassAdjacencyCoverageMask
+// GHIDRA_PROTO void __thiscall thunk_ValidateTerrainClassAdjacencyCoverageMask(void)
+
+void __thiscall TMapMaker::thunk_ValidateTerrainClassAdjacencyCoverageMask(TMapMaker *this)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  
+  iVar3 = 0x1b;
+  do {
+    if (this[iVar3 + 0x10] != (TMapMaker)0xff) {
+      iVar4 = 0;
+      pcVar1 = *(code **)(*(int *)this + 0x74);
+      do {
+        iVar2 = (*pcVar1)(iVar3,iVar4);
+        if (this[iVar2 + 0x10] == (TMapMaker)0xff) break;
+        iVar4 = iVar4 + 1;
+      } while (iVar4 < 6);
+    }
+    iVar3 = iVar3 + 1;
+    if (0x179 < iVar3) {
+      return;
+    }
+  } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404FDE
@@ -231,6 +1381,40 @@ void __cdecl TMapMaker::thunk_NormalizeRouteNodeMarkerValuesAndReportChanges(voi
 
 {
   NormalizeRouteNodeMarkerValuesAndReportChanges();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004056A5
+// GHIDRA_NAME TMapMaker::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
+// GHIDRA_PROTO void __thiscall thunk_ProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3, int arg4, int arg5)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ProjectTileIndexToWrappedScreenOffsetByScale
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ProjectTileIndexToWrappedScreenOffsetByScale */
+
+void __thiscall
+TMapMaker::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4,int arg5)
+
+{
+  uint uVar1;
+  short sVar2;
+  
+  uVar1 = (int)(short)arg1 / 0x6c;
+  *(short *)arg3 = (short)uVar1 * 0x40 - *(short *)(arg2 + 4);
+  sVar2 = (short)((int)(short)arg1 % 0x6c << 6) - *(short *)arg2;
+  *(short *)arg4 = sVar2;
+  if (((uVar1 & 1) != 0) && (*(short *)arg4 = sVar2 + 0x20, 0x1adf < (short)(sVar2 + 0x20))) {
+    *(short *)arg4 = sVar2 + -0x1ae0;
+  }
+  sVar2 = *(short *)arg4;
+  while (sVar2 < -0x40) {
+    *(short *)arg4 = *(short *)arg4 + 0x1b00;
+    sVar2 = *(short *)arg4;
+  }
+  *(short *)arg3 = *(short *)arg3 / (short)arg5;
+  *(short *)arg4 = *(short *)arg4 / (short)arg5;
   return;
 }
 
@@ -261,6 +1445,52 @@ void __cdecl TMapMaker::thunk_MergeCoarseRegionSetsAcrossNeighbors(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405B0A
+// GHIDRA_NAME TMapMaker::thunk_GetOrCreateOverlaySpanRecordArray18Entry
+// GHIDRA_PROTO void * __thiscall thunk_GetOrCreateOverlaySpanRecordArray18Entry(uint entryIndex)
+
+void * __thiscall
+TMapMaker::thunk_GetOrCreateOverlaySpanRecordArray18Entry(TMapMaker *this,uint entryIndex)
+
+{
+  void *pvVar1;
+  uint uVar2;
+  
+  if (*(uint *)(this + 8) <= entryIndex) {
+    uVar2 = (entryIndex + 1) * 2;
+    if (0x7fffffff < uVar2) {
+      uVar2 = 0x7fffffff;
+    }
+    pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+    if (pvVar1 == (void *)0x0) {
+      pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+      *(void **)(this + 4) = pvVar1;
+      *(uint *)(this + 8) = entryIndex + 1;
+    }
+    else {
+      *(void **)(this + 4) = pvVar1;
+      *(uint *)(this + 8) = uVar2;
+    }
+  }
+  if (*(uint *)(this + 0xc) <= entryIndex) {
+    *(uint *)(this + 0xc) = entryIndex + 1;
+  }
+  return (void *)(*(int *)(this + 4) + entryIndex * 0x18);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405CD1
+// GHIDRA_NAME TMapMaker::thunk_DetachAndResetOverlaySpanRecordArray18Buffer
+// GHIDRA_PROTO void __thiscall thunk_DetachAndResetOverlaySpanRecordArray18Buffer(void)
+
+void __thiscall TMapMaker::thunk_DetachAndResetOverlaySpanRecordArray18Buffer(TMapMaker *this)
+
+{
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F06
 // GHIDRA_NAME TMapMaker::thunk_GetNeighborIndexOnCoarseGrid27x15
 // GHIDRA_PROTO int __cdecl thunk_GetNeighborIndexOnCoarseGrid27x15(int coarseIndex, int directionIndex)
@@ -272,6 +1502,148 @@ int __cdecl TMapMaker::thunk_GetNeighborIndexOnCoarseGrid27x15(int coarseIndex,i
   
   iVar1 = GetNeighborIndexOnCoarseGrid27x15(coarseIndex,directionIndex);
   return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406091
+// GHIDRA_NAME TMapMaker::thunk_ValidateSeedCandidateExistsForEachTerrainClass
+// GHIDRA_PROTO void __thiscall thunk_ValidateSeedCandidateExistsForEachTerrainClass(void)
+
+void __thiscall TMapMaker::thunk_ValidateSeedCandidateExistsForEachTerrainClass(TMapMaker *this)
+
+{
+  char cVar1;
+  bool bVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  int iVar8;
+  int *piVar9;
+  int iVar10;
+  short sVar11;
+  short sVar12;
+  undefined4 *puVar13;
+  int aiStack_2b8 [113];
+  int iStack_e0;
+  int iStack_dc;
+  
+  puVar13 = (undefined4 *)&stack0xffffff48;
+  for (iVar7 = 0x17; iVar7 != 0; iVar7 = iVar7 + -1) {
+    *puVar13 = 0;
+    puVar13 = puVar13 + 1;
+  }
+  puVar13 = (undefined4 *)&stack0xffffffa4;
+  for (iVar7 = 0x17; iVar7 != 0; iVar7 = iVar7 + -1) {
+    *puVar13 = 0;
+    puVar13 = puVar13 + 1;
+  }
+  iStack_dc = 0;
+  iStack_e0 = 0;
+  do {
+    iVar7 = *(int *)(this + 8);
+    iVar3 = (int)*(char *)(iStack_e0 + 4 + iVar7);
+    if ((iVar3 < 0x17) && (-1 < iVar3)) {
+      iVar4 = iVar3 * 4;
+      if (*(int *)(&stack0xffffff48 + iVar4) == 0) {
+        bVar2 = false;
+        sVar12 = 0;
+        do {
+          iVar10 = (int)sVar12;
+          if ((iStack_dc / 0x6c & 1U) == 0) {
+            iVar5 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar10 * 4);
+          }
+          else {
+            iVar5 = (&g_Smooth_City_Region_LookupTable_00697480)[iVar10];
+          }
+          iVar5 = iStack_dc % 0x6c + iVar5;
+          iVar10 = iStack_dc / 0x6c + (&g_Smooth_City_Region_LookupTable_00697468)[iVar10];
+          if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+            if (iVar5 < 0) {
+              iVar5 = iVar5 + 0x6c;
+            }
+            else if (0x6b < iVar5) {
+              iVar5 = iVar5 + -0x6c;
+            }
+LAB_00526ab2:
+            if ((iVar10 < 0) || (0x3b < iVar10)) goto LAB_005268e7;
+            sVar11 = (short)iVar5 + (short)iVar10 * 0x6c;
+          }
+          else {
+            if ((-1 < iVar5) && (iVar5 < 0x6c)) goto LAB_00526ab2;
+LAB_005268e7:
+            sVar11 = -1;
+          }
+          if ((sVar11 != -1) && (iVar10 = (int)sVar11, *(char *)(iVar7 + iVar10 * 0x24) == '\x05'))
+          {
+            bVar2 = true;
+            iVar5 = 0;
+            do {
+              if ((iVar10 / 0x6c & 1U) == 0) {
+                iVar6 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar5);
+              }
+              else {
+                iVar6 = *(int *)((int)&g_Smooth_City_Region_LookupTable_00697480 + iVar5);
+              }
+              iVar6 = iVar10 % 0x6c + iVar6;
+              iVar8 = iVar10 / 0x6c +
+                      *(int *)((int)&g_Smooth_City_Region_LookupTable_00697468 + iVar5);
+              if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+                if (iVar6 < 0) {
+                  iVar6 = iVar6 + 0x6c;
+                }
+                else if (0x6b < iVar6) {
+                  iVar6 = iVar6 + -0x6c;
+                }
+LAB_0052696f:
+                if ((iVar8 < 0) || (0x3b < iVar8)) goto LAB_00526983;
+                iVar6 = iVar6 + iVar8 * 0x6c;
+              }
+              else {
+                if ((-1 < iVar6) && (iVar6 < 0x6c)) goto LAB_0052696f;
+LAB_00526983:
+                iVar6 = -1;
+              }
+              if (((iVar6 != -1) && (cVar1 = *(char *)(iVar7 + 4 + iVar6 * 0x24), cVar1 < '\x17'))
+                 && (cVar1 != iVar3)) {
+                bVar2 = false;
+                break;
+              }
+              iVar5 = iVar5 + 4;
+            } while (iVar5 < 0x15);
+            if (bVar2) {
+              if ((*(int *)(&stack0xffffffa4 + iVar4) == 0) ||
+                 (g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1,
+                 (g_uMapGenerationRngState >> 0xc & 0x7fff) % 5 == 3)) {
+                *(int *)(&stack0xffffffa4 + iVar4) = (int)sVar11;
+              }
+              break;
+            }
+          }
+          sVar12 = sVar12 + 1;
+        } while (sVar12 < 6);
+        if ((bVar2) &&
+           (((cVar1 = *(char *)(iStack_e0 + *(int *)(this + 8)), cVar1 == '\0' || (cVar1 == '\a'))
+            || ((cVar1 == '\x01' || (cVar1 == '\x06')))))) {
+          *(undefined4 *)(&stack0xffffff48 + iVar4) = 1;
+        }
+      }
+    }
+    iStack_e0 = iStack_e0 + 0x24;
+    iStack_dc = iStack_dc + 1;
+    if (0x38f3f < iStack_e0) {
+      iVar7 = 0;
+      piVar9 = (int *)&stack0xffffff48;
+      do {
+        if (*piVar9 == 0) {
+          return;
+        }
+        iVar7 = iVar7 + 1;
+        piVar9 = piVar9 + 1;
+      } while (iVar7 < 0x17);
+      return;
+    }
+  } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004060E6
@@ -326,6 +1698,44 @@ void __cdecl TMapMaker::thunk_SpreadType6CellsWithSecondaryNeighborPass(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004068D9
+// GHIDRA_NAME TMapMaker::thunk_EmitOverlaySegmentFromTileEdgeSorted
+// GHIDRA_PROTO void __thiscall thunk_EmitOverlaySegmentFromTileEdgeSorted(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EmitOverlaySegmentFromTileEdgeSorted
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Single-JMP thunk to EmitOverlaySegmentFromTileEdgeSorted */
+
+void __thiscall
+TMapMaker::thunk_EmitOverlaySegmentFromTileEdgeSorted
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  uint uVar1;
+  int iVar2;
+  int iVar3;
+  
+  uVar1 = arg1 / 0x6c;
+  iVar2 = (uVar1 & 1) + (arg1 % 0x6c) * 2;
+  iVar3 = iVar2;
+  if ((char)arg2 == '\0') {
+    iVar3 = iVar2 + 2;
+    uVar1 = uVar1 + 1;
+    if (0xd7 < iVar3) {
+      iVar3 = iVar2 + -0xd6;
+    }
+  }
+  iVar2 = arg4;
+  if (arg4 < arg3) {
+    iVar2 = arg3;
+    arg3 = arg4;
+  }
+  (*(code *)*_g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,arg3,iVar2);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406B72
 // GHIDRA_NAME TMapMaker::thunk_GetTMapMakerRuntimeClassDescriptor
 // GHIDRA_PROTO void * __cdecl thunk_GetTMapMakerRuntimeClassDescriptor(void)
@@ -344,16 +1754,226 @@ void * __cdecl TMapMaker::thunk_GetTMapMakerRuntimeClassDescriptor(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406E1F
-// GHIDRA_NAME TMapMaker::thunk_GenerateRandomCoarseGridCoord27x15
-// GHIDRA_PROTO void __thiscall thunk_GenerateRandomCoarseGridCoord27x15(TMapMaker * pThis, int arg1, int arg2)
+// GHIDRA_FUNCTION IMPERIALISM 0x00406C1C
+// GHIDRA_NAME TMapMaker::thunk_SplitTileIndexToRowAndColumn
+// GHIDRA_PROTO void __thiscall thunk_SplitTileIndexToRowAndColumn(int arg1, int arg2, int arg3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SplitTileIndexToRowAndColumn
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SplitTileIndexToRowAndColumn */
 
 void __thiscall
-TMapMaker::thunk_GenerateRandomCoarseGridCoord27x15
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2)
+TMapMaker::thunk_SplitTileIndexToRowAndColumn(TMapMaker *this,int arg1,int arg2,int arg3)
 
 {
-  TMapMaker_GenerateRandomCoarseGridCoord27x15(this,(uint *)pThis,(uint *)arg1);
+  *(short *)arg2 =
+       ((short)arg1 / 0x6c + ((short)arg1 >> 0xf)) -
+       (short)((longlong)(int)(short)arg1 * 0x4bda12f7 >> 0x3f);
+  *(short *)arg3 = (short)arg1 % 0x6c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406D4D
+// GHIDRA_NAME TMapMaker::thunk_RotateMapColumnsByPeakCityTileDensity
+// GHIDRA_PROTO void __thiscall thunk_RotateMapColumnsByPeakCityTileDensity(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RotateMapColumnsByPeakCityTileDensity
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RotateMapColumnsByPeakCityTileDensity */
+
+void __thiscall TMapMaker::thunk_RotateMapColumnsByPeakCityTileDensity(TMapMaker *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  undefined4 *puVar3;
+  char *pcVar4;
+  int iVar5;
+  int *piVar6;
+  int iVar7;
+  char *pcVar8;
+  undefined4 *puVar9;
+  int iVar10;
+  undefined4 *puVar11;
+  int iStack_20;
+  int iStack_1c;
+  int iStack_14;
+  int iStack_10;
+  int aiStack_c [3];
+  
+  iVar7 = 0;
+  iStack_10 = 0;
+  iStack_1c = -1;
+  iStack_14 = 0;
+  piVar6 = aiStack_c;
+  pcVar8 = (char *)(*(int *)(this + 8) + 0xea0);
+  iStack_20 = 3;
+  do {
+    iVar1 = 0;
+    iVar10 = 0x3c;
+    pcVar4 = pcVar8;
+    do {
+      if (*pcVar4 == '\x05') {
+        iVar1 = iVar1 + 1;
+      }
+      pcVar4 = pcVar4 + 0xf30;
+      iVar10 = iVar10 + -1;
+    } while (iVar10 != 0);
+    *piVar6 = iVar1;
+    iVar7 = iVar7 + iVar1;
+    pcVar8 = pcVar8 + 0x24;
+    piVar6 = piVar6 + 1;
+    iStack_20 = iStack_20 + -1;
+  } while (iStack_20 != 0);
+  iStack_20 = 0;
+  pcVar8 = *(char **)(this + 8);
+  do {
+    iVar10 = 0;
+    iVar1 = 0x3c;
+    pcVar4 = pcVar8;
+    do {
+      if (*pcVar4 == '\x05') {
+        iVar10 = iVar10 + 1;
+      }
+      pcVar4 = pcVar4 + 0xf30;
+      iVar1 = iVar1 + -1;
+    } while (iVar1 != 0);
+    iVar7 = iVar7 + iVar10;
+    if (iStack_1c < iVar7) {
+      iStack_14 = iStack_20;
+      iStack_1c = iVar7;
+    }
+    iVar1 = aiStack_c[iStack_10];
+    aiStack_c[iStack_10] = iVar10;
+    iVar7 = iVar7 - iVar1;
+    iStack_10 = iStack_10 + 1;
+    if (2 < iStack_10) {
+      iStack_10 = 0;
+    }
+    iStack_20 = iStack_20 + 1;
+    pcVar8 = pcVar8 + 0x24;
+  } while (iStack_20 < 0x6c);
+  iVar1 = 0;
+  pcVar8 = (char *)(*(int *)(this + 8) + iStack_14 * 0x24);
+  iVar7 = 0x3c;
+  do {
+    if (*pcVar8 == '\x05') {
+      iVar1 = iVar1 + 1;
+    }
+    pcVar8 = pcVar8 + 0xf30;
+    iVar7 = iVar7 + -1;
+  } while (iVar7 != 0);
+  if (iVar1 == 0) {
+    iVar7 = iStack_14 + -1;
+    if (iVar7 < 0) {
+      iVar7 = iStack_14 + 0x6b;
+    }
+    iStack_14 = iStack_14 + 1;
+    if (0x6b < iStack_14) {
+      iStack_14 = 0;
+    }
+    while( true ) {
+      iVar10 = 0;
+      pcVar8 = (char *)(*(int *)(this + 8) + iStack_14 * 0x24);
+      iVar1 = 0x3c;
+      do {
+        if (*pcVar8 == '\x05') {
+          iVar10 = iVar10 + 1;
+        }
+        pcVar8 = pcVar8 + 0xf30;
+        iVar1 = iVar1 + -1;
+      } while (iVar1 != 0);
+      if (iVar10 != 0) break;
+      iVar7 = iVar7 + -1;
+      if (iVar7 < 0) {
+        iVar7 = 0x6b;
+      }
+    }
+    while( true ) {
+      iVar10 = 0;
+      pcVar8 = (char *)(*(int *)(this + 8) + iStack_14 * 0x24);
+      iVar1 = 0x3c;
+      do {
+        if (*pcVar8 == '\x05') {
+          iVar10 = iVar10 + 1;
+        }
+        pcVar8 = pcVar8 + 0xf30;
+        iVar1 = iVar1 + -1;
+      } while (iVar1 != 0);
+      if (iVar10 != 0) break;
+      iStack_14 = iStack_14 + 1;
+      if (0x6b < iStack_14) {
+        iStack_14 = 0;
+      }
+    }
+    iVar7 = iVar7 + 1;
+    if (0x6b < iVar7) {
+      iVar7 = 0;
+    }
+    iVar1 = iStack_14 + -1;
+    if (iVar1 < 0) {
+      iVar1 = iStack_14 + 0x6b;
+    }
+    if (iVar1 < iVar7) {
+      iStack_14 = (iVar7 + 0x6c + iVar1) / 2;
+      if (0x6c < iStack_14) {
+        iStack_14 = iStack_14 + -0x6c;
+      }
+    }
+    else {
+      iStack_14 = (iVar1 + iVar7) / 2;
+    }
+  }
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x38f40);
+  if (puVar2 != (undefined4 *)0x0) {
+    iVar1 = 0;
+    iStack_20 = iStack_14 + 0x6b;
+    puVar3 = *(undefined4 **)(this + 8);
+    puVar9 = puVar2;
+    for (iVar7 = 0xe3d0; iVar7 != 0; iVar7 = iVar7 + -1) {
+      *puVar9 = *puVar3;
+      puVar3 = puVar3 + 1;
+      puVar9 = puVar9 + 1;
+    }
+    do {
+      iVar10 = 0x3c;
+      puVar3 = puVar2 + (iStack_20 % 0x6c) * 9;
+      iVar7 = iVar1;
+      do {
+        iVar10 = iVar10 + -1;
+        puVar9 = puVar3;
+        puVar11 = (undefined4 *)(iVar7 + *(int *)(this + 8));
+        for (iVar5 = 9; iVar5 != 0; iVar5 = iVar5 + -1) {
+          *puVar11 = *puVar9;
+          puVar9 = puVar9 + 1;
+          puVar11 = puVar11 + 1;
+        }
+        puVar3 = puVar3 + 0x3cc;
+        iVar7 = iVar7 + 0xf30;
+      } while (iVar10 != 0);
+      iVar1 = iVar1 + 0x24;
+      iStack_20 = iStack_20 + 1;
+    } while (iVar1 < 0xf30);
+    if (puVar2 != (undefined4 *)0x0) {
+      FreeHeapBufferIfNotNull(puVar2);
+    }
+    return;
+  }
+                    /* WARNING: Subroutine does not return */
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406E1F
+// GHIDRA_NAME TMapMaker::thunk_GenerateRandomCoarseGridCoord27x15
+// GHIDRA_PROTO void __thiscall thunk_GenerateRandomCoarseGridCoord27x15(int arg1, int arg2)
+
+void __thiscall
+TMapMaker::thunk_GenerateRandomCoarseGridCoord27x15(TMapMaker *this,int arg1,int arg2)
+
+{
+  TMapMaker_GenerateRandomCoarseGridCoord27x15(this,(uint *)arg1,(uint *)arg2);
   return;
 }
 
@@ -384,6 +2004,19 @@ void __cdecl TMapMaker::thunk_ValidateCoarseRegionMergeConsistency(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407A63
+// GHIDRA_NAME TMapMaker::thunk_DetachAndResetOverlayQuadRecordArrayBuffer
+// GHIDRA_PROTO void __thiscall thunk_DetachAndResetOverlayQuadRecordArrayBuffer(void)
+
+void __thiscall TMapMaker::thunk_DetachAndResetOverlayQuadRecordArrayBuffer(TMapMaker *this)
+
+{
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407DA1
 // GHIDRA_NAME TMapMaker::thunk_ReindexType5CellsAndRebuildRegionOverlays
 // GHIDRA_PROTO void __cdecl thunk_ReindexType5CellsAndRebuildRegionOverlays(void)
@@ -411,6 +2044,342 @@ void __cdecl TMapMaker::thunk_SpreadType6CellsAcrossCoarseRowSegments(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407EFA
+// GHIDRA_NAME TMapMaker::thunk_InitializeOverlaySpanRecordSorted
+// GHIDRA_PROTO void __thiscall thunk_InitializeOverlaySpanRecordSorted(int arg1, int arg2, int arg3, int arg4)
+
+void __thiscall
+TMapMaker::thunk_InitializeOverlaySpanRecordSorted
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  *(int *)this = arg1;
+  *(int *)(this + 0xc) = arg4;
+  *(int *)(this + 4) = arg2;
+  *(int *)(this + 8) = arg3;
+  if (arg3 < arg2) {
+    *(int *)(this + 4) = arg3;
+    *(int *)(this + 8) = arg2;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408152
+// GHIDRA_NAME TMapMaker::thunk_GenerateCityRegionIdsBySeedAndNeighborPropagation
+// GHIDRA_PROTO void __thiscall thunk_GenerateCityRegionIdsBySeedAndNeighborPropagation(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GenerateCityRegionIdsBySeedAndNeighborPropagation
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Single-JMP thunk to GenerateCityRegionIdsBySeedAndNeighborPropagation */
+
+void __thiscall TMapMaker::thunk_GenerateCityRegionIdsBySeedAndNeighborPropagation(TMapMaker *this)
+
+{
+  short sVar1;
+  short *psVar2;
+  int iVar3;
+  short *psVar4;
+  uint uVar5;
+  int iVar6;
+  int iVar7;
+  int iVar8;
+  short *psStack_28;
+  int iStack_24;
+  uint uStack_20;
+  int iStack_1c;
+  int iStack_c;
+  int iStack_8;
+  int iStack_4;
+  
+  psVar2 = (short *)AllocateWithFallbackHandler(0x32a0);
+  iVar3 = 0;
+  psVar4 = psVar2;
+  do {
+    sVar1 = (short)iVar3;
+    iVar3 = iVar3 + 1;
+    *psVar4 = (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + sVar1 * 0x24) == '\x05') - 2;
+    psVar4 = psVar4 + 1;
+  } while (iVar3 < 0x1950);
+  *(undefined4 *)(this + 0x2a4) = 0;
+  iStack_1c = 0;
+  if (0 < _g_nMapGenCityRegionSeedParamTokenC_A) {
+    iStack_24 = 0;
+    iVar3 = _g_nMapGenCityRegionSeedParamTokenC_B;
+    iVar8 = _g_nMapGenCityRegionSeedParamTokenC_A;
+    do {
+      uStack_20 = 0;
+      if (0 < iVar3) {
+        psStack_28 = (short *)0x0;
+        do {
+          uVar5 = g_uMapGenerationRngState * 0x15a4e35 + 1;
+          g_uMapGenerationRngState = uVar5 * 0x15a4e35 + 1;
+          iVar7 = iStack_24 / iVar8 + 2 + (uVar5 >> 0xc & 0x7fff) % 5;
+          iVar3 = (int)psStack_28 / iVar3 + 2 + (g_uMapGenerationRngState >> 0xc & 0x7fff) % 5;
+          if (((uStack_20 & 1) != 0) && (iVar7 = iVar7 + iVar8 / 2, 0x6b < iVar7)) {
+            iVar7 = iVar7 + -0x6c;
+          }
+          iStack_4 = 0;
+          iStack_c = 1;
+          iStack_8 = 0;
+          thunk_StepHexRowColByDirectionWithWrapRules();
+          thunk_StepHexRowColByDirectionWithWrapRules();
+          do {
+            if ((((iVar3 < 0) || (0x3b < iVar3)) || (iVar7 < 0)) || (0x6b < iVar7)) {
+              iVar8 = -1;
+            }
+            else {
+              iVar8 = iVar7 + iVar3 * 0x6c;
+            }
+            if ((iVar8 != -1) && (psVar2[iVar8] == -1)) {
+              psVar2[iVar8] = *(short *)(this + 0x2a4);
+              *(int *)(this + 0x2a4) = *(int *)(this + 0x2a4) + 1;
+              break;
+            }
+            iStack_4 = iStack_4 + 1;
+            if (iStack_c <= iStack_4) {
+              iStack_4 = 0;
+              iStack_8 = iStack_8 + 1;
+              if (5 < iStack_8) {
+                iStack_c = iStack_c + 1;
+                iStack_8 = 0;
+                thunk_StepHexRowColByDirectionWithWrapRules();
+              }
+            }
+            thunk_StepHexRowColByDirectionWithWrapRules();
+          } while (iStack_c < 3);
+          uStack_20 = uStack_20 + 1;
+          psStack_28 = (short *)((int)psStack_28 + 0x6c);
+          iVar3 = _g_nMapGenCityRegionSeedParamTokenC_B;
+          iVar8 = _g_nMapGenCityRegionSeedParamTokenC_A;
+        } while ((int)uStack_20 < _g_nMapGenCityRegionSeedParamTokenC_B);
+      }
+      iStack_1c = iStack_1c + 1;
+      iStack_24 = iStack_24 + 0x6c;
+    } while (iStack_1c < iVar8);
+  }
+  do {
+    iStack_24 = 0;
+    iVar3 = 0;
+    psStack_28 = psVar2;
+    do {
+      if (*psStack_28 == -1) {
+        iVar8 = 0;
+        do {
+          if ((iVar3 / 0x6c & 1U) == 0) {
+            iVar7 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar8);
+          }
+          else {
+            iVar7 = *(int *)((int)&g_Smooth_City_Region_LookupTable_00697480 + iVar8);
+          }
+          iVar7 = iVar3 % 0x6c + iVar7;
+          iVar6 = iVar3 / 0x6c + *(int *)((int)&g_Smooth_City_Region_LookupTable_00697468 + iVar8);
+          if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+            if (iVar7 < 0) {
+              iVar7 = iVar7 + 0x6c;
+            }
+            else if (0x6b < iVar7) {
+              iVar7 = iVar7 + -0x6c;
+            }
+LAB_0052a4ed:
+            if ((iVar6 < 0) || (0x3b < iVar6)) goto LAB_0052a421;
+            iVar7 = iVar7 + iVar6 * 0x6c;
+          }
+          else {
+            if ((-1 < iVar7) && (iVar7 < 0x6c)) goto LAB_0052a4ed;
+LAB_0052a421:
+            iVar7 = -1;
+          }
+          if (((iVar7 != -1) && (sVar1 = psVar2[iVar7], -1 < sVar1)) && (sVar1 < 0x400)) {
+            *psStack_28 = sVar1 + 0x400;
+            iStack_24 = iStack_24 + 1;
+          }
+          iVar8 = iVar8 + 4;
+        } while (iVar8 < 0x18);
+      }
+      iVar3 = iVar3 + 1;
+      psStack_28 = psStack_28 + 1;
+    } while (iVar3 < 0x1950);
+    iVar3 = 0x1950;
+    psVar4 = psVar2;
+    do {
+      if (0x3ff < *psVar4) {
+        *psVar4 = *psVar4 + -0x400;
+      }
+      psVar4 = psVar4 + 1;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+    if (iStack_24 < 1) {
+      iVar3 = 0;
+      psVar4 = psVar2;
+      do {
+        if (-1 < *psVar4) {
+          *(char *)(*(int *)(this + 8) + 4 + iVar3) = (char)*psVar4 + '\x17';
+        }
+        iVar3 = iVar3 + 0x24;
+        psVar4 = psVar4 + 1;
+      } while (iVar3 < 0x38f40);
+      FreeHeapBufferIfNotNull(psVar2);
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004084AE
+// GHIDRA_NAME TMapMaker::thunk_GetNeighborTileIndexOnMap108x60
+// GHIDRA_PROTO int __cdecl thunk_GetNeighborTileIndexOnMap108x60(int tileIndex, int directionIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetNeighborTileIndexOnMap108x60
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetNeighborTileIndexOnMap108x60 */
+
+int __cdecl TMapMaker::thunk_GetNeighborTileIndexOnMap108x60(int tileIndex,int directionIndex)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if ((tileIndex / 0x6c & 1U) == 0) {
+    iVar1 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + directionIndex * 4);
+  }
+  else {
+    iVar1 = (&g_Smooth_City_Region_LookupTable_00697480)[directionIndex];
+  }
+  iVar1 = tileIndex % 0x6c + iVar1;
+  iVar2 = tileIndex / 0x6c + (&g_Smooth_City_Region_LookupTable_00697468)[directionIndex];
+  if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+    if (iVar1 < 0) {
+      iVar1 = iVar1 + 0x6c;
+    }
+    else if (0x6b < iVar1) {
+      iVar1 = iVar1 + -0x6c;
+    }
+  }
+  else {
+    if (iVar1 < 0) {
+      return -1;
+    }
+    if (0x6b < iVar1) {
+      return -1;
+    }
+  }
+  if ((-1 < iVar2) && (iVar2 < 0x3c)) {
+    return iVar1 + iVar2 * 0x6c;
+  }
+  return -1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408CAB
+// GHIDRA_NAME TMapMaker::thunk_ExtractWrappedEndpointFromSpanRecordBySide
+// GHIDRA_PROTO void __thiscall thunk_ExtractWrappedEndpointFromSpanRecordBySide(int arg1, int arg2)
+
+void __thiscall
+TMapMaker::thunk_ExtractWrappedEndpointFromSpanRecordBySide(TMapMaker *this,int arg1,int arg2)
+
+{
+  short sVar1;
+  int iStack_8;
+  
+  if ((char)arg2 == '\0') {
+    iStack_8 = (int)*(short *)(this + 4);
+    sVar1 = *(short *)(this + 6);
+    if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+      if (iStack_8 < 0xd8) {
+        if (iStack_8 < 0) {
+          iStack_8 = iStack_8 + 0xd8;
+        }
+      }
+      else {
+        iStack_8 = iStack_8 + -0xd8;
+      }
+    }
+    *(int *)arg1 = iStack_8;
+    *(int *)(arg1 + 4) = (int)sVar1;
+    return;
+  }
+  iStack_8 = (int)*(short *)this;
+  sVar1 = *(short *)(this + 2);
+  if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+    if (0xd7 < iStack_8) {
+      *(int *)arg1 = iStack_8 + -0xd8;
+      *(int *)(arg1 + 4) = (int)sVar1;
+      return;
+    }
+    if (iStack_8 < 0) {
+      iStack_8 = iStack_8 + 0xd8;
+    }
+  }
+  *(int *)arg1 = iStack_8;
+  *(int *)(arg1 + 4) = (int)sVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00409408
+// GHIDRA_NAME TMapMaker::thunk_ReserveOverlayQuadRecordArrayCapacity
+// GHIDRA_PROTO void __thiscall thunk_ReserveOverlayQuadRecordArrayCapacity(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ReserveOverlayQuadRecordArrayCapacity
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ReserveOverlayQuadRecordArrayCapacity */
+
+void __thiscall TMapMaker::thunk_ReserveOverlayQuadRecordArrayCapacity(TMapMaker *this,int arg1)
+
+{
+  void *pvVar1;
+  uint uVar2;
+  
+  uVar2 = arg1 * 2;
+  if (0x7fffffff < uVar2) {
+    uVar2 = 0x7fffffff;
+  }
+  pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+  if (pvVar1 == (void *)0x0) {
+    pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+    *(void **)(this + 4) = pvVar1;
+    *(int *)(this + 8) = arg1;
+    return;
+  }
+  *(void **)(this + 4) = pvVar1;
+  *(uint *)(this + 8) = uVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040974B
+// GHIDRA_NAME TMapMaker::thunk_GetOrCreateOverlayQuadRecordByIndex
+// GHIDRA_PROTO void * __thiscall thunk_GetOrCreateOverlayQuadRecordByIndex(uint entryIndex)
+
+void * __thiscall
+TMapMaker::thunk_GetOrCreateOverlayQuadRecordByIndex(TMapMaker *this,uint entryIndex)
+
+{
+  void *pvVar1;
+  uint uVar2;
+  
+  if (*(uint *)(this + 8) <= entryIndex) {
+    uVar2 = (entryIndex + 1) * 2;
+    if (0x7fffffff < uVar2) {
+      uVar2 = 0x7fffffff;
+    }
+    pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+    if (pvVar1 == (void *)0x0) {
+      pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
+      *(void **)(this + 4) = pvVar1;
+      *(uint *)(this + 8) = entryIndex + 1;
+    }
+    else {
+      *(void **)(this + 4) = pvVar1;
+      *(uint *)(this + 8) = uVar2;
+    }
+  }
+  if (*(uint *)(this + 0xc) <= entryIndex) {
+    *(uint *)(this + 0xc) = entryIndex + 1;
+  }
+  return (void *)(*(int *)(this + 4) + entryIndex * 0x10);
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004098E0
 // GHIDRA_NAME TMapMaker::thunk_AppendSixDwordsToDynamicRecordArray
 // GHIDRA_PROTO void __cdecl thunk_AppendSixDwordsToDynamicRecordArray(void)
@@ -422,9 +2391,301 @@ void __cdecl TMapMaker::thunk_AppendSixDwordsToDynamicRecordArray(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00511A70
+// GHIDRA_NAME TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
+// GHIDRA_PROTO void __thiscall TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Mapgen pass: enforces subtype-3/4 assignments per region class using RNG fallback and subtype recomputation
+// GHIDRA_COMMENT_END
+
+/* Mapgen pass: enforces subtype-3/4 assignments per region class using RNG fallback and subtype
+   recomputation */
+
+void __thiscall
+TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMaker *this)
+
+{
+  short *psVar1;
+  char cVar2;
+  bool bVar3;
+  short sVar4;
+  char *pcVar5;
+  short *psVar6;
+  int iVar7;
+  short *psVar8;
+  int iVar9;
+  int iVar10;
+  int iVar11;
+  int iVar12;
+  int local_38;
+  short *local_34;
+  short local_30 [4];
+  short local_28;
+  
+  local_38 = 0;
+  do {
+    pcVar5 = *(char **)(this + 0x10);
+    iVar10 = 0;
+    iVar7 = 0x180;
+    do {
+      if (*pcVar5 == local_38) {
+        iVar10 = iVar10 + pcVar5[0x3a];
+      }
+      pcVar5 = pcVar5 + 0xa8;
+      iVar7 = iVar7 + -1;
+    } while (iVar7 != 0);
+    psVar6 = (short *)AllocateWithFallbackHandler(iVar10 * 2);
+    iVar7 = 0;
+    local_34 = psVar6;
+    do {
+      iVar12 = *(int *)(this + 0x10);
+      if ((*(char *)(iVar7 + iVar12) == local_38) &&
+         (iVar9 = 0, '\0' < *(char *)(iVar7 + 0x3a + iVar12))) {
+        iVar11 = iVar7 + 0x42;
+        do {
+          psVar8 = (short *)(iVar11 + iVar12);
+          iVar11 = iVar11 + 2;
+          *local_34 = *psVar8;
+          local_34 = local_34 + 1;
+          iVar12 = *(int *)(this + 0x10);
+          iVar9 = iVar9 + 1;
+        } while (iVar9 < *(char *)(iVar7 + 0x3a + iVar12));
+      }
+      iVar7 = iVar7 + 0xa8;
+    } while (iVar7 < 0xfc00);
+    psVar8 = local_30;
+    for (iVar7 = 0xb; iVar7 != 0; iVar7 = iVar7 + -1) {
+      psVar8[0] = 0;
+      psVar8[1] = 0;
+      psVar8 = psVar8 + 2;
+    }
+    *psVar8 = 0;
+    psVar8 = psVar6;
+    iVar7 = iVar10;
+    if (0 < iVar10) {
+      do {
+        iVar12 = 2;
+        pcVar5 = (char *)(*(int *)(this + 0xc) + 0x11 + *psVar8 * 0x24);
+        do {
+          if (*pcVar5 != -1) {
+            local_30[(short)*pcVar5] = local_30[(short)*pcVar5] + 1;
+          }
+          pcVar5 = pcVar5 + 1;
+          iVar12 = iVar12 + -1;
+        } while (iVar12 != 0);
+        iVar7 = iVar7 + -1;
+        psVar8 = psVar8 + 1;
+      } while (iVar7 != 0);
+    }
+    if (local_30[3] == 0) {
+      iVar7 = *(int *)(this + 0xc);
+      iVar12 = -1;
+      bVar3 = false;
+      psVar8 = psVar6 + -1;
+      do {
+        psVar1 = psVar8 + 1;
+        psVar8 = psVar8 + 1;
+        iVar12 = iVar12 + 1;
+        cVar2 = *(char *)(iVar7 + 0x13 + *psVar1 * 0x24);
+        iVar9 = iVar7 + *psVar1 * 0x24;
+        if (((cVar2 == '\t') && (*(char *)(iVar9 + 0x11) == -1)) ||
+           ((cVar2 == '\b' && (*(char *)(iVar9 + 0x11) == -1)))) {
+          bVar3 = true;
+        }
+      } while ((iVar12 < iVar10 + -1) && (!bVar3));
+      if (bVar3) {
+        *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar12] * 0x24) = 3;
+      }
+      else {
+        do {
+          do {
+            g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
+            iVar12 = (int)((longlong)(ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) %
+                          (longlong)iVar10);
+            cVar2 = *(char *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24);
+          } while (cVar2 == '\b');
+        } while (cVar2 == '\t');
+        *(undefined1 *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24) = 8;
+        *(undefined1 *)(*(int *)(this + 0xc) + 0x11 + psVar6[iVar12] * 0x24) = 3;
+      }
+      *(undefined1 *)(*(int *)(this + 0xc) + 0x12 + psVar6[iVar12] * 0x24) = 0xff;
+      sVar4 = thunk_ResolveRegionTileSubtypeCodeForTileIndex(this,psVar6[iVar12]);
+      *(char *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24) = (char)sVar4;
+    }
+    if (local_28 == 0) {
+      iVar7 = *(int *)(this + 0xc);
+      iVar12 = -1;
+      bVar3 = false;
+      psVar8 = psVar6 + -1;
+      do {
+        psVar1 = psVar8 + 1;
+        psVar8 = psVar8 + 1;
+        iVar12 = iVar12 + 1;
+        cVar2 = *(char *)(iVar7 + 0x13 + *psVar1 * 0x24);
+        iVar9 = iVar7 + *psVar1 * 0x24;
+        if (((cVar2 == '\t') && (*(char *)(iVar9 + 0x11) == -1)) ||
+           ((cVar2 == '\b' && (*(char *)(iVar9 + 0x11) == -1)))) {
+          bVar3 = true;
+        }
+      } while ((iVar12 < iVar10 + -1) && (!bVar3));
+      if (bVar3) {
+        if (cVar2 == '\t') {
+          *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar12] * 0x24) = 4;
+          *(undefined1 *)(*(int *)(this + 0xc) + 0x12 + psVar6[iVar12] * 0x24) = 0xff;
+          sVar4 = thunk_ResolveRegionTileSubtypeCodeForTileIndex(this,psVar6[iVar12]);
+          *(char *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24) = (char)sVar4;
+          goto LAB_00511d8b;
+        }
+        *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar12] * 0x24) = 4;
+      }
+      else {
+        do {
+          do {
+            g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
+            iVar12 = (int)((longlong)(ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) %
+                          (longlong)iVar10);
+            cVar2 = *(char *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24);
+          } while (cVar2 == '\b');
+        } while (cVar2 == '\t');
+        *(undefined1 *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24) = 8;
+        *(undefined1 *)(*(int *)(this + 0xc) + 0x11 + psVar6[iVar12] * 0x24) = 4;
+      }
+      *(undefined1 *)(*(int *)(this + 0xc) + 0x12 + psVar6[iVar12] * 0x24) = 0xff;
+      sVar4 = thunk_ResolveRegionTileSubtypeCodeForTileIndex(this,psVar6[iVar12]);
+      *(char *)(*(int *)(this + 0xc) + 0x13 + psVar6[iVar12] * 0x24) = (char)sVar4;
+    }
+LAB_00511d8b:
+    FreeHeapBufferIfNotNull(psVar6);
+    local_38 = local_38 + 1;
+    if (6 < local_38) {
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00511E80
+// GHIDRA_NAME TMapMaker::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
+// GHIDRA_PROTO void __fastcall TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(void * pMapGenRuntime)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Ensures mapdata stream/object is initialized once and optionally ticks UI runtime progress callback
+// GHIDRA_COMMENT_END
+
+/* Ensures mapdata stream/object is initialized once and optionally ticks UI runtime progress
+   callback */
+
+void __fastcall
+TMapMaker::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(void *pMapGenRuntime)
+
+{
+  if (*(char *)((int)pMapGenRuntime + 8) == '\0') {
+    *(undefined1 *)((int)pMapGenRuntime + 0x20) = 1;
+    (**(code **)(*(int *)pMapGenRuntime + 0x2c))(s_mapdata_0069723c,0);
+  }
+  if (*(char *)((int)pMapGenRuntime + 4) == '\0') {
+    (**(code **)(*g_pUiRuntimeContext + 0xc4))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00511F30
+// GHIDRA_NAME TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+// GHIDRA_PROTO bool __thiscall TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nTerrainTypeA, short nTerrainTypeB)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds claimed region-class mask for terrain type A and returns whether terrain type B can reach any claimed class
+// GHIDRA_COMMENT_END
+
+/* Builds claimed region-class mask for terrain type A and returns whether terrain type B can reach
+   any claimed class */
+
+bool __thiscall
+TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+          (TMapMaker *this,short nTerrainTypeA,short nTerrainTypeB)
+
+{
+  void *pvVar1;
+  int *piVar2;
+  char cVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  int iVar8;
+  
+  iVar6 = (int)nTerrainTypeA;
+  iVar7 = 1;
+  iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
+  if (0 < iVar4) {
+    do {
+      iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x24))
+                        (iVar7);
+      iVar7 = iVar7 + 1;
+      pvVar1 = g_apTerrainTypeDescriptorTable[iVar6];
+      (&stack0xffffffe4)[*(char *)(*(int *)(this + 0x10) + 0xa3 + iVar4 * 0xa8)] = 1;
+      iVar4 = (**(code **)(**(int **)((int)pvVar1 + 0x90) + 0x28))();
+    } while (iVar7 <= iVar4);
+  }
+  iVar4 = 0;
+  do {
+    piVar2 = *(int **)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c);
+    if ((piVar2 != (int *)0x0) && (cVar3 = (**(code **)(*piVar2 + 0x5c))(iVar6), cVar3 != '\0')) {
+      iVar8 = 1;
+      iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c) +
+                                     0x90) + 0x28))();
+      if (0 < iVar7) {
+        do {
+          iVar5 = (**(code **)(**(int **)(*(int *)((int)g_apTerrainTypeDescriptorTable +
+                                                  iVar4 + 0x1c) + 0x90) + 0x24))(iVar8);
+          iVar8 = iVar8 + 1;
+          iVar7 = *(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c);
+          (&stack0xffffffe4)[*(char *)(*(int *)(this + 0x10) + 0xa3 + iVar5 * 0xa8)] = 1;
+          iVar7 = (**(code **)(**(int **)(iVar7 + 0x90) + 0x28))();
+        } while (iVar8 <= iVar7);
+      }
+    }
+    iVar4 = iVar4 + 4;
+  } while (iVar4 < 0x40);
+  iVar6 = (int)nTerrainTypeB;
+  iVar7 = 1;
+  iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
+  if (0 < iVar4) {
+    do {
+      iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x24))
+                        (iVar7);
+      if ((&stack0xffffffe4)[*(char *)(*(int *)(this + 0x10) + 0xa3 + iVar4 * 0xa8)] != '\0') {
+        return true;
+      }
+      iVar7 = iVar7 + 1;
+      iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
+    } while (iVar7 <= iVar4);
+  }
+  iVar4 = 0;
+  do {
+    piVar2 = *(int **)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c);
+    if ((piVar2 != (int *)0x0) && (cVar3 = (**(code **)(*piVar2 + 0x5c))(iVar6), cVar3 != '\0')) {
+      iVar8 = 1;
+      iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c) +
+                                     0x90) + 0x28))();
+      if (0 < iVar7) {
+        do {
+          iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apTerrainTypeDescriptorTable +
+                                                  iVar4 + 0x1c) + 0x90) + 0x24))(iVar8);
+          if ((&stack0xffffffe4)[*(char *)(*(int *)(this + 0x10) + 0xa3 + iVar7 * 0xa8)] != '\0') {
+            return true;
+          }
+          iVar8 = iVar8 + 1;
+          iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c
+                                                  ) + 0x90) + 0x28))();
+        } while (iVar8 <= iVar7);
+      }
+    }
+    iVar4 = iVar4 + 4;
+  } while (iVar4 < 0x40);
+  return false;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00512440
 // GHIDRA_NAME TMapMaker::ProjectTileIndexToWrappedScreenOffsetByScale
-// GHIDRA_PROTO void __cdecl ProjectTileIndexToWrappedScreenOffsetByScale(void)
+// GHIDRA_PROTO void __thiscall ProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3, int arg4, int arg5)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Converts tile index to wrapped screen-space offsets relative to viewport origin, then applies caller-provided scale divisor.
 // GHIDRA_COMMENT_END
@@ -432,60 +2693,116 @@ void __cdecl TMapMaker::thunk_AppendSixDwordsToDynamicRecordArray(void)
 /* Converts tile index to wrapped screen-space offsets relative to viewport origin, then applies
    caller-provided scale divisor. */
 
-void __cdecl TMapMaker::ProjectTileIndexToWrappedScreenOffsetByScale(void)
+void __thiscall
+TMapMaker::ProjectTileIndexToWrappedScreenOffsetByScale
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4,int arg5)
 
 {
   uint uVar1;
   short sVar2;
-  short in_stack_00000004;
-  short *in_stack_00000008;
-  short *in_stack_0000000c;
-  short *in_stack_00000010;
-  short in_stack_00000014;
   
-  uVar1 = (int)in_stack_00000004 / 0x6c;
-  *in_stack_0000000c = (short)uVar1 * 0x40 - in_stack_00000008[2];
-  sVar2 = (short)((int)in_stack_00000004 % 0x6c << 6) - *in_stack_00000008;
-  *in_stack_00000010 = sVar2;
-  if (((uVar1 & 1) != 0) && (*in_stack_00000010 = sVar2 + 0x20, 0x1adf < (short)(sVar2 + 0x20))) {
-    *in_stack_00000010 = sVar2 + -0x1ae0;
+  uVar1 = (int)(short)arg1 / 0x6c;
+  *(short *)arg3 = (short)uVar1 * 0x40 - *(short *)(arg2 + 4);
+  sVar2 = (short)((int)(short)arg1 % 0x6c << 6) - *(short *)arg2;
+  *(short *)arg4 = sVar2;
+  if (((uVar1 & 1) != 0) && (*(short *)arg4 = sVar2 + 0x20, 0x1adf < (short)(sVar2 + 0x20))) {
+    *(short *)arg4 = sVar2 + -0x1ae0;
   }
-  sVar2 = *in_stack_00000010;
+  sVar2 = *(short *)arg4;
   while (sVar2 < -0x40) {
-    *in_stack_00000010 = *in_stack_00000010 + 0x1b00;
-    sVar2 = *in_stack_00000010;
+    *(short *)arg4 = *(short *)arg4 + 0x1b00;
+    sVar2 = *(short *)arg4;
   }
-  *in_stack_0000000c = *in_stack_0000000c / in_stack_00000014;
-  *in_stack_00000010 = *in_stack_00000010 / in_stack_00000014;
+  *(short *)arg3 = *(short *)arg3 / (short)arg5;
+  *(short *)arg4 = *(short *)arg4 / (short)arg5;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005125A0
 // GHIDRA_NAME TMapMaker::SplitTileIndexToRowAndColumn
-// GHIDRA_PROTO void __cdecl SplitTileIndexToRowAndColumn(void)
+// GHIDRA_PROTO void __thiscall SplitTileIndexToRowAndColumn(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Splits tile index on 108-wide map into row and column components.
 // GHIDRA_COMMENT_END
 
 /* Splits tile index on 108-wide map into row and column components. */
 
-void __cdecl TMapMaker::SplitTileIndexToRowAndColumn(void)
+void __thiscall TMapMaker::SplitTileIndexToRowAndColumn(TMapMaker *this,int arg1,int arg2,int arg3)
 
 {
-  short in_stack_00000004;
-  short *in_stack_00000008;
-  short *in_stack_0000000c;
-  
-  *in_stack_00000008 =
-       (in_stack_00000004 / 0x6c + (in_stack_00000004 >> 0xf)) -
-       (short)((longlong)(int)in_stack_00000004 * 0x4bda12f7 >> 0x3f);
-  *in_stack_0000000c = in_stack_00000004 % 0x6c;
+  *(short *)arg2 =
+       ((short)arg1 / 0x6c + ((short)arg1 >> 0xf)) -
+       (short)((longlong)(int)(short)arg1 * 0x4bda12f7 >> 0x3f);
+  *(short *)arg3 = (short)arg1 % 0x6c;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00514110
+// GHIDRA_NAME TMapMaker::ResolveRegionTileSubtypeCodeForTileIndex
+// GHIDRA_PROTO short __thiscall ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [MapGenRng] Resolves subtype code from tile class/state fields and latitude-band checks; returns compact subtype code used by mapgen assignment.
+// GHIDRA_COMMENT_END
+
+/* [MapGenRng] Resolves subtype code from tile class/state fields and latitude-band checks; returns
+   compact subtype code used by mapgen assignment. */
+
+short __thiscall
+TMapMaker::ResolveRegionTileSubtypeCodeForTileIndex(TMapMaker *this,short tileIndex)
+
+{
+  undefined1 *puVar1;
+  char cVar2;
+  short sVar3;
+  
+  puVar1 = (undefined1 *)(*(int *)(this + 0xc) + tileIndex * 0x24);
+  switch(*puVar1) {
+  case 0:
+    cVar2 = puVar1[0x11];
+    if (cVar2 == '\0') {
+      return 2;
+    }
+    if (cVar2 == '\x05') {
+      return 4;
+    }
+    if (cVar2 == '\x14') {
+      return 3;
+    }
+    return (-(ushort)((puVar1[0x1c] & 2) != 0) & 0xd) + 1;
+  case 1:
+    cVar2 = puVar1[0x13];
+    if (cVar2 == -1) {
+      return 0xd;
+    }
+    break;
+  case 2:
+    return (puVar1[0x11] != '\x01') + 7;
+  case 3:
+    return 9;
+  case 4:
+    return 10;
+  default:
+    return 0;
+  case 6:
+    cVar2 = puVar1[0x13];
+    if (cVar2 == -1) {
+      sVar3 = (tileIndex / 0x6c + (tileIndex >> 0xf)) -
+              (short)((longlong)(int)tileIndex * 0x4bda12f7 >> 0x3f);
+      if ((0xe < sVar3) && (sVar3 < 0x2e)) {
+        return 0xb;
+      }
+      return 0xc;
+    }
+    break;
+  case 7:
+    return (puVar1[0x11] != '\x11') + 5;
+  }
+  return (short)cVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005250A0
 // GHIDRA_NAME TMapMaker::CopyDiamondMaskBlockKernel
-// GHIDRA_PROTO void __cdecl CopyDiamondMaskBlockKernel(void)
+// GHIDRA_PROTO void __thiscall CopyDiamondMaskBlockKernel(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Block-copy kernel with per-row width/offset shaping used for diamond-like masked blits between strided buffers.
 // GHIDRA_COMMENT_END
@@ -493,7 +2810,8 @@ void __cdecl TMapMaker::SplitTileIndexToRowAndColumn(void)
 /* Block-copy kernel with per-row width/offset shaping used for diamond-like masked blits between
    strided buffers. */
 
-void __cdecl TMapMaker::CopyDiamondMaskBlockKernel(void)
+void __thiscall
+TMapMaker::CopyDiamondMaskBlockKernel(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   undefined4 uVar1;
@@ -505,17 +2823,13 @@ void __cdecl TMapMaker::CopyDiamondMaskBlockKernel(void)
   int iVar7;
   int iVar8;
   int iVar9;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  short in_stack_0000000c;
-  short in_stack_00000010;
   
-  iVar6 = (int)(short)((int)((int)in_stack_0000000c + ((int)in_stack_0000000c >> 0x1f & 3U)) >> 2);
+  iVar6 = (int)(short)((int)((int)(short)arg3 + ((int)(short)arg3 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar6 * 4;
-  iVar9 = (int)(short)((int)((int)in_stack_00000010 + ((int)in_stack_00000010 >> 0x1f & 3U)) >> 2);
-  puVar4 = (undefined4 *)(iVar6 * 0x80 + 0x20 + in_stack_00000004);
-  _in_stack_00000010 = 4;
-  puVar2 = (undefined4 *)(iVar9 * 0x80 + 0x20 + in_stack_00000008);
+  iVar9 = (int)(short)((int)((int)(short)arg4 + ((int)(short)arg4 >> 0x1f & 3U)) >> 2);
+  puVar4 = (undefined4 *)(iVar6 * 0x80 + 0x20 + arg1);
+  arg4 = 4;
+  puVar2 = (undefined4 *)(iVar9 * 0x80 + 0x20 + arg2);
   iVar6 = 0;
   iVar9 = iVar9 << 2;
   do {
@@ -642,14 +2956,14 @@ void __cdecl TMapMaker::CopyDiamondMaskBlockKernel(void)
     }
     puVar2 = (undefined4 *)((int)puVar2 + iVar9);
     puVar4 = (undefined4 *)((int)puVar4 + iVar8);
-    _in_stack_00000010 = _in_stack_00000010 + -1;
-  } while (_in_stack_00000010 != 0);
+    arg4 = arg4 + -1;
+  } while (arg4 != 0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005252D0
 // GHIDRA_NAME TMapMaker::CopyDiagonalMaskNarrowingBlockKernel
-// GHIDRA_PROTO void __cdecl CopyDiagonalMaskNarrowingBlockKernel(void)
+// GHIDRA_PROTO void __thiscall CopyDiagonalMaskNarrowingBlockKernel(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Block-copy kernel variant with narrowing row spans across successive bands (masked diagonal copy pattern).
 // GHIDRA_COMMENT_END
@@ -657,7 +2971,8 @@ void __cdecl TMapMaker::CopyDiamondMaskBlockKernel(void)
 /* Block-copy kernel variant with narrowing row spans across successive bands (masked diagonal copy
    pattern). */
 
-void __cdecl TMapMaker::CopyDiagonalMaskNarrowingBlockKernel(void)
+void __thiscall
+TMapMaker::CopyDiagonalMaskNarrowingBlockKernel(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   undefined4 uVar1;
@@ -668,19 +2983,15 @@ void __cdecl TMapMaker::CopyDiagonalMaskNarrowingBlockKernel(void)
   int iVar6;
   int iVar7;
   int iVar8;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  short in_stack_0000000c;
-  short in_stack_00000010;
   
-  iVar5 = (int)(short)((int)((int)in_stack_0000000c + ((int)in_stack_0000000c >> 0x1f & 3U)) >> 2);
-  iVar7 = (int)(short)((int)((int)in_stack_00000010 + ((int)in_stack_00000010 >> 0x1f & 3U)) >> 2);
+  iVar5 = (int)(short)((int)((int)(short)arg3 + ((int)(short)arg3 >> 0x1f & 3U)) >> 2);
+  iVar7 = (int)(short)((int)((int)(short)arg4 + ((int)(short)arg4 >> 0x1f & 3U)) >> 2);
   iVar8 = iVar7 * 4 + -0x20;
-  puVar3 = (undefined4 *)(iVar5 * 0x80 + in_stack_00000004);
-  puVar2 = (undefined4 *)(iVar7 * 0x80 + in_stack_00000008);
+  puVar3 = (undefined4 *)(iVar5 * 0x80 + arg1);
+  puVar2 = (undefined4 *)(iVar7 * 0x80 + arg2);
   iVar7 = 8;
   iVar5 = iVar5 * 4 + -0x20;
-  _in_stack_00000010 = 4;
+  arg4 = 4;
   do {
     iVar6 = iVar7;
     if (0 < iVar7) {
@@ -793,14 +3104,14 @@ void __cdecl TMapMaker::CopyDiagonalMaskNarrowingBlockKernel(void)
     puVar3 = (undefined4 *)((int)puVar4 + iVar5);
     *(undefined1 *)puVar2 = *(undefined1 *)puVar4;
     puVar2 = (undefined4 *)((int)puVar2 + iVar8);
-    _in_stack_00000010 = _in_stack_00000010 + -1;
-  } while (_in_stack_00000010 != 0);
+    arg4 = arg4 + -1;
+  } while (arg4 != 0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005254A0
 // GHIDRA_NAME TMapMaker::CopyDiagonalMaskWideningBlockKernel
-// GHIDRA_PROTO void __cdecl CopyDiagonalMaskWideningBlockKernel(void)
+// GHIDRA_PROTO void __thiscall CopyDiagonalMaskWideningBlockKernel(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Block-copy kernel variant with widening row spans across successive bands (masked diagonal copy pattern).
 // GHIDRA_COMMENT_END
@@ -808,7 +3119,8 @@ void __cdecl TMapMaker::CopyDiagonalMaskNarrowingBlockKernel(void)
 /* Block-copy kernel variant with widening row spans across successive bands (masked diagonal copy
    pattern). */
 
-void __cdecl TMapMaker::CopyDiagonalMaskWideningBlockKernel(void)
+void __thiscall
+TMapMaker::CopyDiagonalMaskWideningBlockKernel(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   undefined4 uVar1;
@@ -819,30 +3131,24 @@ void __cdecl TMapMaker::CopyDiagonalMaskWideningBlockKernel(void)
   int iVar6;
   int iVar7;
   int iVar8;
-  undefined4 *in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  short in_stack_0000000c;
-  short in_stack_00000010;
   
-  puVar5 = in_stack_00000004;
+  puVar5 = (undefined4 *)arg1;
   iVar7 = 4;
-  in_stack_00000004 = (undefined4 *)0x4;
+  arg1 = 4;
   do {
     iVar2 = iVar7;
     if (0 < iVar7) {
       do {
         uVar1 = *puVar5;
         puVar5 = puVar5 + 1;
-        *in_stack_00000008 = uVar1;
-        in_stack_00000008 = in_stack_00000008 + 1;
+        *(undefined4 *)arg2 = uVar1;
+        arg2 = arg2 + 4;
         iVar2 = iVar2 + -1;
       } while (iVar2 != 0);
     }
-    iVar8 = (short)((int)((int)in_stack_00000010 + ((int)in_stack_00000010 >> 0x1f & 3U)) >> 2) -
-            iVar7;
-    iVar6 = (short)((int)((int)in_stack_0000000c + ((int)in_stack_0000000c >> 0x1f & 3U)) >> 2) -
-            iVar7;
-    puVar3 = in_stack_00000008 + iVar8;
+    iVar8 = (short)((int)((int)(short)arg4 + ((int)(short)arg4 >> 0x1f & 3U)) >> 2) - iVar7;
+    iVar6 = (short)((int)((int)(short)arg3 + ((int)(short)arg3 >> 0x1f & 3U)) >> 2) - iVar7;
+    puVar3 = (undefined4 *)(arg2 + iVar8 * 4);
     puVar5 = puVar5 + iVar6;
     iVar2 = iVar7;
     if (0 < iVar7) {
@@ -938,17 +3244,17 @@ void __cdecl TMapMaker::CopyDiagonalMaskWideningBlockKernel(void)
     *(undefined1 *)puVar3 = *(undefined1 *)puVar5;
     *(undefined1 *)((int)puVar3 + 1) = *(undefined1 *)((int)puVar5 + 1);
     *(undefined1 *)((int)puVar3 + 2) = *(undefined1 *)((int)puVar5 + 2);
-    in_stack_00000008 = puVar3 + iVar8;
+    arg2 = (int)(puVar3 + iVar8);
     puVar5 = puVar5 + iVar6;
     iVar7 = iVar7 + 1;
-    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + -1);
-  } while (in_stack_00000004 != (undefined4 *)0x0);
+    arg1 = arg1 + -1;
+  } while (arg1 != 0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525670
 // GHIDRA_NAME TMapMaker::Copy64x64TileBlockWithStrideAdjustment
-// GHIDRA_PROTO void __cdecl Copy64x64TileBlockWithStrideAdjustment(void)
+// GHIDRA_PROTO void __thiscall Copy64x64TileBlockWithStrideAdjustment(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Copies a fixed 64x64 byte-equivalent tile block between strided buffers (row stride derived from source/dest pitch).
 // GHIDRA_COMMENT_END
@@ -956,24 +3262,22 @@ void __cdecl TMapMaker::CopyDiagonalMaskWideningBlockKernel(void)
 /* Copies a fixed 64x64 byte-equivalent tile block between strided buffers (row stride derived from
    source/dest pitch). */
 
-void __cdecl TMapMaker::Copy64x64TileBlockWithStrideAdjustment(void)
+void __thiscall
+TMapMaker::Copy64x64TileBlockWithStrideAdjustment
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   undefined4 *puVar1;
   int iVar2;
   int iVar3;
   undefined4 *puVar4;
-  undefined4 *in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  short in_stack_0000000c;
-  short in_stack_00000010;
   
   iVar3 = 0x40;
   do {
     iVar2 = 2;
     do {
-      puVar4 = in_stack_00000004;
-      puVar1 = in_stack_00000008;
+      puVar4 = (undefined4 *)arg1;
+      puVar1 = (undefined4 *)arg2;
       *puVar1 = *puVar4;
       puVar1[1] = puVar4[1];
       puVar1[2] = puVar4[2];
@@ -983,33 +3287,33 @@ void __cdecl TMapMaker::Copy64x64TileBlockWithStrideAdjustment(void)
       puVar1[6] = puVar4[6];
       puVar1[7] = puVar4[7];
       iVar2 = iVar2 + -1;
-      in_stack_00000008 = puVar1 + 8;
-      in_stack_00000004 = puVar4 + 8;
+      arg2 = (int)(puVar1 + 8);
+      arg1 = (int)(puVar4 + 8);
     } while (iVar2 != 0);
     iVar3 = iVar3 + -1;
-    in_stack_00000008 =
-         puVar1 + (short)((int)((int)in_stack_00000010 + ((int)in_stack_00000010 >> 0x1f & 3U)) >> 2
-                         ) + -8;
-    in_stack_00000004 =
-         puVar4 + (short)((int)((int)in_stack_0000000c + ((int)in_stack_0000000c >> 0x1f & 3U)) >> 2
-                         ) + -8;
+    arg2 = (int)(puVar1 + (short)((int)((int)(short)arg4 + ((int)(short)arg4 >> 0x1f & 3U)) >> 2) +
+                          -8);
+    arg1 = (int)(puVar4 + (short)((int)((int)(short)arg3 + ((int)(short)arg3 >> 0x1f & 3U)) >> 2) +
+                          -8);
   } while (iVar3 != 0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525730
 // GHIDRA_NAME TMapMaker::ForwardProjectTileIndexToWrappedScreenOffsetByScale
-// GHIDRA_PROTO void __cdecl ForwardProjectTileIndexToWrappedScreenOffsetByScale(void)
+// GHIDRA_PROTO void __thiscall ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3, int arg4, int arg5)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin wrapper forwarding to ProjectTileIndexToWrappedScreenOffsetByScale.
 // GHIDRA_COMMENT_END
 
 /* Thin wrapper forwarding to ProjectTileIndexToWrappedScreenOffsetByScale. */
 
-void __cdecl TMapMaker::ForwardProjectTileIndexToWrappedScreenOffsetByScale(void)
+void __thiscall
+TMapMaker::ForwardProjectTileIndexToWrappedScreenOffsetByScale
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4,int arg5)
 
 {
-  thunk_ProjectTileIndexToWrappedScreenOffsetByScale();
+  thunk_ProjectTileIndexToWrappedScreenOffsetByScale((TMapMaker *)arg1,arg1,arg2,arg3,arg4,arg5);
   return;
 }
 
@@ -1077,7 +3381,7 @@ void __fastcall TMapMaker::DestructTMapMaker(TMapMaker *pThis)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525A30
 // GHIDRA_NAME TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
-// GHIDRA_PROTO void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(TMapMaker * pThis, int arg1, int arg2, int arg3)
+// GHIDRA_PROTO void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Parses map tuning tokens from input string, runs generation passes until valid, recenters columns, then applies scenario-name terrain overrides.
 // GHIDRA_COMMENT_END
@@ -1088,7 +3392,7 @@ void __fastcall TMapMaker::DestructTMapMaker(TMapMaker *pThis)
 
 void __thiscall
 TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2,int arg3)
+          (TMapMaker *this,int arg1,int arg2,int arg3)
 
 {
   char cVar1;
@@ -1108,10 +3412,10 @@ TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
   int iVar11;
   bool bVar12;
   
-  *(TMapMaker **)(this + 8) = pThis;
+  *(int *)(this + 8) = arg1;
   iVar11 = 0x96;
   iVar9 = 0xfa;
-  *(int *)(this + 0xc) = arg1;
+  *(int *)(this + 0xc) = arg2;
   _g_MapMakerGenerationState = 200;
   g_nMapGenQuotaTokenM = 0x96;
   _g_nMapGenQuotaTokenH = 0xfa;
@@ -1120,7 +3424,7 @@ TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
   _g_nMapGenType3ExpansionAttempts = 10;
   _g_nMapGenCityRegionSeedParamTokenC_A = 0xe;
   _g_nMapGenCityRegionSeedParamTokenC_B = 8;
-  pcVar6 = *(char **)arg2;
+  pcVar6 = *(char **)arg3;
   bVar12 = false;
   uVar10 = 1000;
   cVar1 = *pcVar6;
@@ -1211,7 +3515,7 @@ LAB_00525acd:
          (undefined4)((ulonglong)(uVar10 * iVar11) / (ulonglong)(longlong)(int)uVar7);
   }
   g_uMapGenerationRngState = 0x6e616461;
-  pcVar6 = *(char **)arg2;
+  pcVar6 = *(char **)arg3;
   cVar1 = *pcVar6;
   while (cVar1 != '\0') {
     g_uMapGenerationRngState =
@@ -1286,7 +3590,7 @@ LAB_00525acd:
       thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
     }
     (**(code **)(iVar11 + 100))(0);
-    pbVar3 = *(byte **)arg1;
+    pbVar3 = *(byte **)arg2;
     uVar10 = g_uMapGenerationRngState;
     if (g_Generate_Map_Tuning_Value_006976D8 != 0) {
       iVar9 = 0x6976d9 - (int)pbVar3;
@@ -1312,7 +3616,7 @@ LAB_00525acd:
       } while (iVar9 != 0);
     }
 LAB_00525e16:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Congo_006976d0[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Congo_006976d0[0];
@@ -1338,7 +3642,7 @@ LAB_00525e16:
       } while (iVar9 != 0);
     }
 LAB_00525e87:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Mirkwood_006976c4[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Mirkwood_006976c4[0];
@@ -1365,7 +3669,7 @@ LAB_00525e87:
       } while (iVar9 != 0);
     }
 LAB_00525f13:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     pcVar5 = pcVar6;
     if (s_Yucatan_006976b8[0] != '\0') {
       cVar1 = s_Yucatan_006976b8[0];
@@ -1405,7 +3709,7 @@ LAB_00525f43:
       if ((*pcVar6 == '\0') || (*pcVar6 == ' ')) goto LAB_00525f6d;
     }
 LAB_00525fb0:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Antarctica_0069769c[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Antarctica_0069769c[0];
@@ -1431,7 +3735,7 @@ LAB_00525fb0:
       } while (iVar9 != 0);
     }
 LAB_00526021:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Kansas_00697694[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Kansas_00697694[0];
@@ -1456,7 +3760,7 @@ LAB_00526021:
       } while (iVar9 != 0);
     }
 LAB_0052608e:
-    pbVar3 = *(byte **)arg1;
+    pbVar3 = *(byte **)arg2;
     if (g_Generate_Map_Tuning_Value_0069768C != 0) {
       iVar9 = 0x69768d - (int)pbVar3;
       bVar4 = g_Generate_Map_Tuning_Value_0069768C;
@@ -1481,7 +3785,7 @@ LAB_0052608e:
       } while (iVar9 != 0);
     }
 LAB_005260fb:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Everglades_0069767c[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Everglades_0069767c[0];
@@ -1506,7 +3810,7 @@ LAB_005260fb:
       } while (iVar9 != 0);
     }
 LAB_00526168:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Nepal_00697674[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Nepal_00697674[0];
@@ -1531,7 +3835,7 @@ LAB_00526168:
       } while (iVar9 != 0);
     }
 LAB_005261d5:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     if (s_Scotland_00697668[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
       cVar1 = s_Scotland_00697668[0];
@@ -1556,7 +3860,7 @@ LAB_005261d5:
       } while (iVar9 != 0);
     }
 LAB_00526242:
-    pcVar6 = *(char **)arg1;
+    pcVar6 = *(char **)arg2;
     pTVar2 = this;
     if (s_Eclectia_0069765c[0] != '\0') {
       iVar9 = 1 - (int)pcVar6;
@@ -2378,7 +4682,7 @@ void __fastcall TMapMaker::GenerateCoarseAndFineRegionSeedMap(int *param_1)
                       (uVar11,(uVar4 & 0x7fff) % 0xc + 3,
                        (g_uMapGenerationRngState >> 0xc & 0x7fff) % 6);
   }
-  if (g_pMapGenerationProgressContext != (void *)0x0) {
+  if (g_pMapGenerationProgressContext != (TMapMaker *)0x0) {
     thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
   }
   pcStack_1c = (char *)param_1[2];
@@ -2440,7 +4744,7 @@ LAB_00527893:
       uVar12 = g_uMapGenerationRngState;
     }
   }
-  if (g_pMapGenerationProgressContext != (void *)0x0) {
+  if (g_pMapGenerationProgressContext != (TMapMaker *)0x0) {
     thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
   }
   iVar5 = *param_1;
@@ -2466,7 +4770,7 @@ LAB_00527893:
   do {
     do {
       if (iVar7 < 1) {
-        if (g_pMapGenerationProgressContext != (void *)0x0) {
+        if (g_pMapGenerationProgressContext != (TMapMaker *)0x0) {
           thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
         }
         pcVar10 = (char *)param_1[2];
@@ -3447,33 +5751,27 @@ void __fastcall TMapMaker::RebuildCoarseCellNeighborTransitionState(TMapMaker *p
 {
   int iVar1;
   code *pcVar2;
-  int iVar3;
   int unaff_EBP;
-  int unaff_EDI;
-  TMapMaker *pThis;
-  undefined2 uVar4;
+  int arg1;
   int iStack_10;
   int iStack_c;
   int iStack_8;
   
-  pThis = (TMapMaker *)0x0;
+  arg1 = 0;
   iVar1 = *(int *)param_1;
   pcVar2 = *(code **)(iVar1 + 0x74);
   do {
-    uVar4 = (undefined2)((uint)unaff_EDI >> 0x10);
-    unaff_EBP = CONCAT22((short)((uint)unaff_EBP >> 0x10),(short)(char)(pThis + 0x10)[(int)param_1])
-    ;
-    (*pcVar2)(pThis,0);
-    (*pcVar2)(pThis,5);
-    iVar3 = (*pcVar2)(pThis,1);
-    unaff_EDI = CONCAT22(uVar4,(short)(char)param_1[iVar3 + 0x10]);
-    (*pcVar2)(pThis,2);
-    (*pcVar2)(pThis,3);
-    (*pcVar2)(pThis,4);
+    unaff_EBP = CONCAT22((short)((uint)unaff_EBP >> 0x10),(short)(char)param_1[arg1 + 0x10]);
+    (*pcVar2)(arg1,0);
+    (*pcVar2)(arg1,5);
+    (*pcVar2)(arg1,1);
+    (*pcVar2)(arg1,2);
+    (*pcVar2)(arg1,3);
+    (*pcVar2)(arg1,4);
     thunk_RandomizeRegionTemplateBanksForMismatchedNeighborClasses
-              (param_1,pThis,unaff_EBP,iStack_8,iStack_c,iStack_10,unaff_EDI);
-    pThis = pThis + 1;
-  } while ((int)pThis < 0x17a);
+              (param_1,arg1,unaff_EBP,iStack_8,iStack_c,iStack_10);
+    arg1 = arg1 + 1;
+  } while (arg1 < 0x17a);
   if (g_pMapGenerationProgressContext != (void *)0x0) {
     thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
   }
@@ -3483,7 +5781,7 @@ void __fastcall TMapMaker::RebuildCoarseCellNeighborTransitionState(TMapMaker *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005293D0
 // GHIDRA_NAME TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
-// GHIDRA_PROTO void __thiscall RandomizeRegionTemplateBanksForMismatchedNeighborClasses(TMapMaker * pThis, int arg1, int arg2, int arg3, int arg4, int arg5)
+// GHIDRA_PROTO void __thiscall RandomizeRegionTemplateBanksForMismatchedNeighborClasses(int arg1, int arg2, int arg3, int arg4, int arg5)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT When neighbor class ids differ from the base class, randomly swaps 9-dword template banks used by region transition overlays.
 // GHIDRA_COMMENT_END
@@ -3493,7 +5791,7 @@ void __fastcall TMapMaker::RebuildCoarseCellNeighborTransitionState(TMapMaker *p
 
 void __thiscall
 TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2,int arg3,int arg4,int arg5)
+          (TMapMaker *this,int arg1,int arg2,int arg3,int arg4,int arg5)
 
 {
   int iVar1;
@@ -3502,8 +5800,8 @@ TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   undefined4 *puVar4;
   undefined4 *puVar5;
   
-  if ((short)arg2 != (short)arg1) {
-    iVar1 = (**(code **)(*(int *)this + 0x84))(pThis);
+  if ((short)arg3 != (short)arg2) {
+    iVar1 = (**(code **)(*(int *)this + 0x84))(arg1);
     g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
     switch((g_uMapGenerationRngState >> 0xc & 0x7fff) % 5) {
     default:
@@ -3547,8 +5845,8 @@ switchD_00529425_caseD_0:
     }
   }
 switchD_00529473_caseD_0:
-  if ((short)arg3 != (short)arg1) {
-    iVar1 = (**(code **)(*(int *)this + 0x84))(pThis);
+  if ((short)arg4 != (short)arg2) {
+    iVar1 = (**(code **)(*(int *)this + 0x84))(arg1);
     puVar4 = (undefined4 *)(iVar1 + 0x2d90);
     uVar2 = g_uMapGenerationRngState * 0x15a4e35 + 1;
     if ((uVar2 >> 0xc & 1) != 0) {
@@ -3580,8 +5878,8 @@ switchD_00529473_caseD_0:
     }
   }
 switchD_005294f0_default:
-  if ((short)arg4 != (short)arg1) {
-    iVar1 = (**(code **)(*(int *)this + 0x84))(pThis);
+  if ((short)arg5 != (short)arg2) {
+    iVar1 = (**(code **)(*(int *)this + 0x84))(arg1);
     puVar4 = (undefined4 *)(iVar1 + 0x2dd8);
     uVar2 = g_uMapGenerationRngState * 0x15a4e35 + 1;
     if ((uVar2 >> 0xc & 1) != 0) {
@@ -4465,7 +6763,7 @@ void __fastcall TMapMaker::RecomputeOverlaySegmentEndpointsAndAngle(byte *param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052B1E0
 // GHIDRA_NAME TMapMaker::InitializeOverlaySpanRecordSorted
-// GHIDRA_PROTO void __thiscall InitializeOverlaySpanRecordSorted(TMapMaker * pThis, int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_PROTO void __thiscall InitializeOverlaySpanRecordSorted(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes span record endpoints and stores sorted min/max bounds for the pair.
 // GHIDRA_COMMENT_END
@@ -4473,24 +6771,23 @@ void __fastcall TMapMaker::RecomputeOverlaySegmentEndpointsAndAngle(byte *param_
 /* Initializes span record endpoints and stores sorted min/max bounds for the pair. */
 
 void __thiscall
-TMapMaker::InitializeOverlaySpanRecordSorted
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2,int arg3,int arg4)
+TMapMaker::InitializeOverlaySpanRecordSorted(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  *(TMapMaker **)this = pThis;
-  *(int *)(this + 0xc) = arg3;
-  *(int *)(this + 4) = arg1;
-  *(int *)(this + 8) = arg2;
-  if (arg2 < arg1) {
-    *(int *)(this + 4) = arg2;
-    *(int *)(this + 8) = arg1;
+  *(int *)this = arg1;
+  *(int *)(this + 0xc) = arg4;
+  *(int *)(this + 4) = arg2;
+  *(int *)(this + 8) = arg3;
+  if (arg3 < arg2) {
+    *(int *)(this + 4) = arg3;
+    *(int *)(this + 8) = arg2;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052B220
 // GHIDRA_NAME TMapMaker::InitializeOverlaySegmentFromTwoMapCoords
-// GHIDRA_PROTO void __thiscall InitializeOverlaySegmentFromTwoMapCoords(TMapMaker * pThis, int arg1, int arg2)
+// GHIDRA_PROTO void __thiscall InitializeOverlaySegmentFromTwoMapCoords(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes overlay segment record from two map coordinates plus metadata, then computes wrap-aware direction/angle.
 // GHIDRA_COMMENT_END
@@ -4499,8 +6796,7 @@ TMapMaker::InitializeOverlaySpanRecordSorted
    wrap-aware direction/angle. */
 
 void __thiscall
-TMapMaker::InitializeOverlaySegmentFromTwoMapCoords
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2)
+TMapMaker::InitializeOverlaySegmentFromTwoMapCoords(TMapMaker *this,int arg1,int arg2)
 
 {
   TMapMaker TVar1;
@@ -4514,9 +6810,9 @@ TMapMaker::InitializeOverlaySegmentFromTwoMapCoords
   int iVar9;
   
   *(undefined2 *)(this + 0x14) = 0;
-  iVar4 = *(int *)pThis;
+  iVar4 = *(int *)arg1;
   *(int *)(this + 8) = iVar4;
-  *(undefined4 *)(this + 0xc) = *(undefined4 *)arg1;
+  *(undefined4 *)(this + 0xc) = *(undefined4 *)arg2;
   iVar9 = *(int *)(this + 0xc);
   sVar5 = (short)(iVar4 % 0xd8);
   *(short *)this = sVar5;
@@ -4528,8 +6824,8 @@ TMapMaker::InitializeOverlaySegmentFromTwoMapCoords
   sVar6 = ((short)(iVar9 / 0xd8) + (short)(iVar9 >> 0x1f)) -
           (short)((longlong)iVar9 * 0x4bda12f7 >> 0x3f);
   *(short *)(this + 6) = sVar6;
-  *(undefined2 *)(this + 0x10) = *(undefined2 *)(pThis + 4);
-  *(undefined2 *)(this + 0x12) = *(undefined2 *)(pThis + 8);
+  *(undefined2 *)(this + 0x10) = *(undefined2 *)(arg1 + 4);
+  *(undefined2 *)(this + 0x12) = *(undefined2 *)(arg1 + 8);
   if ((sVar6 < sVar8) || ((sVar8 == sVar6 && (sVar3 < sVar5)))) {
     TVar1 = this[2];
     *(short *)(this + 2) = sVar6;
@@ -4561,16 +6857,15 @@ TMapMaker::InitializeOverlaySegmentFromTwoMapCoords
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052B3E0
 // GHIDRA_NAME TMapMaker::ReserveOverlaySpanRecordArray18Capacity
-// GHIDRA_PROTO void __thiscall ReserveOverlaySpanRecordArray18Capacity(TMapMaker * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall ReserveOverlaySpanRecordArray18Capacity(int arg1)
 
-void __thiscall
-TMapMaker::ReserveOverlaySpanRecordArray18Capacity(TMapMaker *this,TMapMaker *pThis,int arg1)
+void __thiscall TMapMaker::ReserveOverlaySpanRecordArray18Capacity(TMapMaker *this,int arg1)
 
 {
   void *pvVar1;
   uint uVar2;
   
-  uVar2 = (int)pThis * 2;
+  uVar2 = arg1 * 2;
   if (0x7fffffff < uVar2) {
     uVar2 = 0x7fffffff;
   }
@@ -4578,7 +6873,7 @@ TMapMaker::ReserveOverlaySpanRecordArray18Capacity(TMapMaker *this,TMapMaker *pT
   if (pvVar1 == (void *)0x0) {
     pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
     *(void **)(this + 4) = pvVar1;
-    *(TMapMaker **)(this + 8) = pThis;
+    *(int *)(this + 8) = arg1;
     return;
   }
   *(void **)(this + 4) = pvVar1;
@@ -4687,7 +6982,7 @@ TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections(TMapMaker *this,v
   int local_14;
   undefined4 local_10;
   undefined4 local_c;
-  TMapMaker local_8 [8];
+  undefined1 local_8 [8];
   
   iVar9 = 0;
   iVar8 = 0;
@@ -4808,7 +7103,7 @@ LAB_0052bca9:
               thunk_WrapExtendedMapXCoordinateInPlace((int)&local_18);
               local_10 = *extraout_EAX_01;
               local_c = extraout_EAX_01[1];
-              thunk_ExtractWrappedEndpointFromSpanRecordBySide(local_60,local_8,0,(int)&local_10);
+              thunk_ExtractWrappedEndpointFromSpanRecordBySide(local_60,(int)local_8,0);
               thunk_AreRoutePointPairsEqual();
               if (extraout_EAX_02 == 0) {
                 if (_g_Assign_City_Region_Value_006A3910 == 0) {
@@ -4860,7 +7155,7 @@ LAB_0052bca9:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052BEF0
 // GHIDRA_NAME TMapMaker::ExtractWrappedEndpointFromSpanRecordBySide
-// GHIDRA_PROTO void __thiscall ExtractWrappedEndpointFromSpanRecordBySide(TMapMaker * pThis, int arg1, int arg2)
+// GHIDRA_PROTO void __thiscall ExtractWrappedEndpointFromSpanRecordBySide(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Extracts either start or end endpoint from span record and normalizes X in wrap mode.
 // GHIDRA_COMMENT_END
@@ -4868,14 +7163,13 @@ LAB_0052bca9:
 /* Extracts either start or end endpoint from span record and normalizes X in wrap mode. */
 
 void __thiscall
-TMapMaker::ExtractWrappedEndpointFromSpanRecordBySide
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2)
+TMapMaker::ExtractWrappedEndpointFromSpanRecordBySide(TMapMaker *this,int arg1,int arg2)
 
 {
   short sVar1;
   int local_8;
   
-  if ((char)arg1 == '\0') {
+  if ((char)arg2 == '\0') {
     local_8 = (int)*(short *)(this + 4);
     sVar1 = *(short *)(this + 6);
     if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
@@ -4888,24 +7182,24 @@ TMapMaker::ExtractWrappedEndpointFromSpanRecordBySide
         local_8 = local_8 + -0xd8;
       }
     }
-    *(int *)pThis = local_8;
-    *(int *)(pThis + 4) = (int)sVar1;
+    *(int *)arg1 = local_8;
+    *(int *)(arg1 + 4) = (int)sVar1;
     return;
   }
   local_8 = (int)*(short *)this;
   sVar1 = *(short *)(this + 2);
   if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
     if (0xd7 < local_8) {
-      *(int *)pThis = local_8 + -0xd8;
-      *(int *)(pThis + 4) = (int)sVar1;
+      *(int *)arg1 = local_8 + -0xd8;
+      *(int *)(arg1 + 4) = (int)sVar1;
       return;
     }
     if (local_8 < 0) {
       local_8 = local_8 + 0xd8;
     }
   }
-  *(int *)pThis = local_8;
-  *(int *)(pThis + 4) = (int)sVar1;
+  *(int *)arg1 = local_8;
+  *(int *)(arg1 + 4) = (int)sVar1;
   return;
 }
 
@@ -4937,7 +7231,7 @@ void * __thiscall TMapMaker::GetOverlaySpanRecordByIndex(TMapMaker *this,uint en
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052C0A0
 // GHIDRA_NAME TMapMaker::AppendOverlayQuadRecord
-// GHIDRA_PROTO void __thiscall AppendOverlayQuadRecord(TMapMaker * pThis, int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_PROTO void __thiscall AppendOverlayQuadRecord(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Appends one 4-dword (0x10-byte) quad record to a growable array.
 // GHIDRA_COMMENT_END
@@ -4945,14 +7239,13 @@ void * __thiscall TMapMaker::GetOverlaySpanRecordByIndex(TMapMaker *this,uint en
 /* Appends one 4-dword (0x10-byte) quad record to a growable array. */
 
 void __thiscall
-TMapMaker::AppendOverlayQuadRecord
-          (TMapMaker *this,TMapMaker *pThis,int arg1,int arg2,int arg3,int arg4)
+TMapMaker::AppendOverlayQuadRecord(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   uint uVar1;
   void *pvVar2;
   uint uVar3;
-  undefined4 *puVar4;
+  int *piVar4;
   
   uVar1 = *(uint *)(this + 0xc);
   if (*(uint *)(this + 8) <= uVar1) {
@@ -4974,11 +7267,11 @@ TMapMaker::AppendOverlayQuadRecord
   if (*(uint *)(this + 0xc) <= uVar1) {
     *(uint *)(this + 0xc) = uVar1 + 1;
   }
-  puVar4 = (undefined4 *)(uVar1 * 0x10 + *(int *)(this + 4));
-  *puVar4 = pThis;
-  puVar4[1] = arg1;
-  puVar4[2] = arg2;
-  puVar4[3] = arg3;
+  piVar4 = (int *)(uVar1 * 0x10 + *(int *)(this + 4));
+  *piVar4 = arg1;
+  piVar4[1] = arg2;
+  piVar4[2] = arg3;
+  piVar4[3] = arg4;
   return;
 }
 
@@ -5013,7 +7306,7 @@ void __thiscall TMapMaker::DetachAndResetOverlayQuadRecordArrayBuffer(TMapMaker 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052CA20
 // GHIDRA_NAME TMapMaker::EmitOverlaySegmentFromTileEdgeSorted
-// GHIDRA_PROTO void __cdecl EmitOverlaySegmentFromTileEdgeSorted(void)
+// GHIDRA_PROTO void __thiscall EmitOverlaySegmentFromTileEdgeSorted(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes overlay edge coordinate from tile+side and emits sorted segment bounds to renderer callback.
 // GHIDRA_COMMENT_END
@@ -5022,33 +7315,30 @@ void __thiscall TMapMaker::DetachAndResetOverlayQuadRecordArrayBuffer(TMapMaker 
 /* Computes overlay edge coordinate from tile+side and emits sorted segment bounds to renderer
    callback. */
 
-void __cdecl TMapMaker::EmitOverlaySegmentFromTileEdgeSorted(void)
+void __thiscall
+TMapMaker::EmitOverlaySegmentFromTileEdgeSorted(TMapMaker *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   uint uVar1;
   int iVar2;
   int iVar3;
-  int in_stack_00000004;
-  char in_stack_00000008;
-  int in_stack_0000000c;
-  int in_stack_00000010;
   
-  uVar1 = in_stack_00000004 / 0x6c;
-  iVar2 = (uVar1 & 1) + (in_stack_00000004 % 0x6c) * 2;
+  uVar1 = arg1 / 0x6c;
+  iVar2 = (uVar1 & 1) + (arg1 % 0x6c) * 2;
   iVar3 = iVar2;
-  if (in_stack_00000008 == '\0') {
+  if ((char)arg2 == '\0') {
     iVar3 = iVar2 + 2;
     uVar1 = uVar1 + 1;
     if (0xd7 < iVar3) {
       iVar3 = iVar2 + -0xd6;
     }
   }
-  iVar2 = in_stack_00000010;
-  if (in_stack_00000010 < in_stack_0000000c) {
-    iVar2 = in_stack_0000000c;
-    in_stack_0000000c = in_stack_00000010;
+  iVar2 = arg4;
+  if (arg4 < arg3) {
+    iVar2 = arg3;
+    arg3 = arg4;
   }
-  (*(code *)*_g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,in_stack_0000000c,iVar2);
+  (*(code *)*_g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,arg3,iVar2);
   return;
 }
 
@@ -5067,83 +7357,82 @@ void __cdecl TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks(void)
 
 {
   bool bVar1;
+  void *arg2;
   void *arg1;
   undefined4 *extraout_EAX;
   undefined4 *puVar2;
   int iVar3;
   int iVar4;
   int iVar5;
-  TMapMaker *entryIndex;
-  TMapMaker *pTVar6;
-  int unaff_EDI;
-  TMapMaker *pThis;
-  undefined4 *puVar7;
+  uint entryIndex;
+  uint entryIndex_00;
+  uint arg1_00;
+  undefined4 *puVar6;
   float10 extraout_ST0;
   float10 extraout_ST0_00;
   float10 extraout_ST0_01;
   undefined4 auStackY_5c [4];
-  TMapMaker *local_34;
-  TMapMaker *local_2c;
+  uint local_34;
+  uint local_2c;
   TMapMaker local_18 [24];
   
   if (g_pOverlaySpanRecordArray18Buffer != (TOverlaySpanRecord24 *)0x0) {
     thunk_DetachAndResetOverlaySpanRecordArray18Buffer
               ((TMapMaker *)&g_OverlaySpanRecordArray18State);
-    FreeHeapBlockWithAllocatorTracking();
+    TZone::FreeHeapBlockWithAllocatorTracking();
   }
-  entryIndex = (TMapMaker *)0x0;
-  if (_g_uOverlayQuadBorderLinkArray16Count != (TMapMaker *)0x0) {
+  entryIndex = 0;
+  if (_g_uOverlayQuadBorderLinkArray16Count != 0) {
     do {
       if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
         thunk_ReserveOverlayQuadRecordArrayCapacity
-                  ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1,unaff_EDI);
+                  ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
       }
       if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
         _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
       }
-      if (g_pOverlayQuadBorderLinkArray16Buffer[(int)entryIndex].nQuadCellId == -1) {
+      if (g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId == -1) {
         entryIndex = entryIndex + 1;
       }
       else {
         if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
           thunk_ReserveOverlayQuadRecordArrayCapacity
-                    ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1,unaff_EDI);
+                    ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
         }
         if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
           _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
         }
         if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
           thunk_ReserveOverlayQuadRecordArrayCapacity
-                    ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1,unaff_EDI);
+                    ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
         }
         if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
           _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
         }
-        pTVar6 = entryIndex + 1;
-        local_34 = (TMapMaker *)0xffffffff;
-        local_2c = (TMapMaker *)0xffffffff;
-        if (pTVar6 < _g_uOverlayQuadBorderLinkArray16Count) {
-          pThis = entryIndex + 2;
-          iVar5 = (int)pTVar6 * 0x10;
+        entryIndex_00 = entryIndex + 1;
+        local_34 = 0xffffffff;
+        local_2c = 0xffffffff;
+        if (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count) {
+          arg1_00 = entryIndex + 2;
+          iVar5 = entryIndex_00 * 0x10;
           do {
             if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
               thunk_ReserveOverlayQuadRecordArrayCapacity
-                        ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1,unaff_EDI)
-              ;
+                        ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
             }
             if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
               _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
             }
-            if (_g_uOverlayQuadBorderLinkArray16Capacity <= pTVar6) {
+            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
               thunk_ReserveOverlayQuadRecordArrayCapacity
-                        ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,pThis,unaff_EDI);
+                        ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,arg1_00);
             }
-            if (_g_uOverlayQuadBorderLinkArray16Count <= pTVar6) {
-              _g_uOverlayQuadBorderLinkArray16Count = pThis;
+            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+              _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
             }
-            if ((g_pOverlayQuadBorderLinkArray16Buffer[(int)entryIndex].nEdgeVertexA ==
+            if ((g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeVertexA ==
                  *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeVertexA + iVar5)) &&
-               (g_pOverlayQuadBorderLinkArray16Buffer[(int)entryIndex].nEdgeVertexB ==
+               (g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeVertexB ==
                 *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeVertexB + iVar5))) {
               bVar1 = true;
             }
@@ -5153,23 +7442,21 @@ void __cdecl TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks(void)
             if (bVar1) {
               if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
                 thunk_ReserveOverlayQuadRecordArrayCapacity
-                          ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1,
-                           unaff_EDI);
+                          ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
               }
               if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
                 _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
               }
-              if (_g_uOverlayQuadBorderLinkArray16Capacity <= pTVar6) {
+              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
                 thunk_ReserveOverlayQuadRecordArrayCapacity
-                          ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,pThis,unaff_EDI);
+                          ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,arg1_00);
               }
-              if (_g_uOverlayQuadBorderLinkArray16Count <= pTVar6) {
-                _g_uOverlayQuadBorderLinkArray16Count = pThis;
+              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
               }
               iVar4 = ((*(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeDirection + iVar5
-                                ) -
-                       g_pOverlayQuadBorderLinkArray16Buffer[(int)entryIndex].nEdgeDirection) + 6) %
-                      6;
+                                ) - g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeDirection
+                       ) + 6) % 6;
               if ((iVar4 < 2) || (4 < iVar4)) {
                 bVar1 = false;
               }
@@ -5177,101 +7464,99 @@ void __cdecl TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks(void)
                 bVar1 = true;
               }
               if (bVar1) {
-                if (local_34 != (TMapMaker *)0xffffffff) {
-                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= pTVar6) {
+                if (local_34 != 0xffffffff) {
+                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
                     thunk_ReserveOverlayQuadRecordArrayCapacity
-                              ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,pThis,unaff_EDI);
+                              ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,arg1_00);
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Count <= pTVar6) {
-                    _g_uOverlayQuadBorderLinkArray16Count = pThis;
+                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                    _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
                   }
                   if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
                     thunk_ReserveOverlayQuadRecordArrayCapacity
-                              ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1,
-                               unaff_EDI);
+                              ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
                   }
                   if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
                     _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
                   }
                   iVar4 = *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nQuadCellId + iVar5)
                   ;
-                  iVar3 = g_pOverlayQuadBorderLinkArray16Buffer[(int)entryIndex].nQuadCellId / 0xd8
-                          - iVar4 / 0xd8;
+                  iVar3 = g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId / 0xd8 -
+                          iVar4 / 0xd8;
                   if (iVar3 < 0) {
                     iVar3 = -iVar3;
                   }
-                  iVar4 = ((g_pOverlayQuadBorderLinkArray16Buffer[(int)entryIndex].nQuadCellId %
-                            0xd8 - iVar4 % 0xd8) + 0xd8) % 0xd8;
+                  iVar4 = ((g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId % 0xd8 -
+                           iVar4 % 0xd8) + 0xd8) % 0xd8;
                   if (0x6c < iVar4) {
                     iVar4 = 0xd7 - iVar4;
                   }
                   thunk_GetOrCreateOverlayQuadRecordByIndex
-                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)local_34);
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,local_34);
                   auStackY_5c[3] = 0x52cdc4;
                   thunk_GetOrCreateOverlayQuadRecordByIndex
-                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)entryIndex);
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
                   thunk_ComputeWrappedOverlayCoordDeltaMetric();
                   if (extraout_ST0 <= (float10)SQRT((float)(iVar4 * iVar4 * iVar3 * iVar3)))
                   goto LAB_0052ce49;
                 }
-                local_34 = pTVar6;
+                local_34 = entryIndex_00;
               }
-              else if (local_34 == (TMapMaker *)0xffffffff) {
-                if (local_2c != (TMapMaker *)0xffffffff) {
+              else if (local_34 == 0xffffffff) {
+                if (local_2c != 0xffffffff) {
                   thunk_GetOrCreateOverlayQuadRecordByIndex
-                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)pTVar6);
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex_00);
                   auStackY_5c[3] = 0x52ce0d;
                   thunk_GetOrCreateOverlayQuadRecordByIndex
-                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)entryIndex);
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
                   thunk_ComputeWrappedOverlayCoordDeltaMetric();
                   thunk_GetOrCreateOverlayQuadRecordByIndex
-                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)local_2c);
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,local_2c);
                   auStackY_5c[3] = 0x52ce33;
                   thunk_GetOrCreateOverlayQuadRecordByIndex
-                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)entryIndex);
+                            ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
                   thunk_ComputeWrappedOverlayCoordDeltaMetric();
                   if (extraout_ST0_01 <= (float10)(float)extraout_ST0_00) goto LAB_0052ce49;
                 }
-                local_2c = pTVar6;
+                local_2c = entryIndex_00;
               }
             }
 LAB_0052ce49:
-            pTVar6 = pTVar6 + 1;
-            pThis = pThis + 1;
+            entryIndex_00 = entryIndex_00 + 1;
+            arg1_00 = arg1_00 + 1;
             iVar5 = iVar5 + 0x10;
-          } while (pTVar6 < _g_uOverlayQuadBorderLinkArray16Count);
+          } while (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count);
         }
-        if ((local_34 == (TMapMaker *)0xffffffff) &&
-           (local_34 = local_2c, local_2c == (TMapMaker *)0xffffffff)) {
+        if ((local_34 == 0xffffffff) && (local_34 = local_2c, local_2c == 0xffffffff)) {
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
-                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)entryIndex);
+                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
           *puVar2 = 0xffffffff;
           puVar2[2] = 0xffffffff;
           puVar2[1] = 0xffffffff;
         }
         else {
-          arg1 = thunk_GetOrCreateOverlayQuadRecordByIndex
-                           ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)local_34);
+          arg2 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                           ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,local_34);
           auStackY_5c[3] = 0x52ce9b;
-          pTVar6 = thunk_GetOrCreateOverlayQuadRecordByIndex
-                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)entryIndex);
+          arg1 = thunk_GetOrCreateOverlayQuadRecordByIndex
+                           ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
           auStackY_5c[3] = 0x52cea5;
-          thunk_InitializeOverlaySegmentFromTwoMapCoords(local_18,pTVar6,(int)arg1,unaff_EDI);
+          thunk_InitializeOverlaySegmentFromTwoMapCoords(local_18,(int)arg1,(int)arg2);
           puVar2 = extraout_EAX;
-          puVar7 = auStackY_5c;
+          puVar6 = auStackY_5c;
           for (iVar5 = 6; iVar5 != 0; iVar5 = iVar5 + -1) {
-            *puVar7 = *puVar2;
+            *puVar6 = *puVar2;
             puVar2 = puVar2 + 1;
-            puVar7 = puVar7 + 1;
+            puVar6 = puVar6 + 1;
           }
           (*(code *)*_g_OverlaySpanRecordArray18State)();
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
-                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)entryIndex);
+                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,entryIndex);
           *puVar2 = 0xffffffff;
           puVar2[2] = 0xffffffff;
           puVar2[1] = 0xffffffff;
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
-                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,(uint)local_34);
+                             ((TMapMaker *)&g_OverlayQuadBorderLinkArray16State,local_34);
           *puVar2 = 0xffffffff;
           puVar2[2] = 0xffffffff;
           puVar2[1] = 0xffffffff;
@@ -5300,16 +7585,15 @@ void __cdecl TMapMaker::ComputeWrappedOverlayCoordDeltaMetric(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052D0D0
 // GHIDRA_NAME TMapMaker::ReserveOverlayQuadRecordArrayCapacity
-// GHIDRA_PROTO void __thiscall ReserveOverlayQuadRecordArrayCapacity(TMapMaker * pThis, int arg1)
+// GHIDRA_PROTO void __thiscall ReserveOverlayQuadRecordArrayCapacity(int arg1)
 
-void __thiscall
-TMapMaker::ReserveOverlayQuadRecordArrayCapacity(TMapMaker *this,TMapMaker *pThis,int arg1)
+void __thiscall TMapMaker::ReserveOverlayQuadRecordArrayCapacity(TMapMaker *this,int arg1)
 
 {
   void *pvVar1;
   uint uVar2;
   
-  uVar2 = (int)pThis * 2;
+  uVar2 = arg1 * 2;
   if (0x7fffffff < uVar2) {
     uVar2 = 0x7fffffff;
   }
@@ -5317,7 +7601,7 @@ TMapMaker::ReserveOverlayQuadRecordArrayCapacity(TMapMaker *this,TMapMaker *pThi
   if (pvVar1 == (void *)0x0) {
     pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
     *(void **)(this + 4) = pvVar1;
-    *(TMapMaker **)(this + 8) = pThis;
+    *(int *)(this + 8) = arg1;
     return;
   }
   *(void **)(this + 4) = pvVar1;
@@ -5603,6 +7887,121 @@ void __fastcall TMapMaker::PropagateRouteNodeMarkersFromDeferredNodes(int *param
     local_c = (int *)((int)local_c + 1);
     local_4 = local_4 + -1;
   } while (local_4 != 0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578680
+// GHIDRA_NAME TMapMaker::UpdateMapGenerationProgressSpinnerFrame
+// GHIDRA_PROTO void __thiscall UpdateMapGenerationProgressSpinnerFrame(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Advances map-generation progress frame index and updates the spinner control resource.
+// GHIDRA_COMMENT_END
+
+/* Advances map-generation progress frame index and updates the spinner control resource. */
+
+void __thiscall TMapMaker::UpdateMapGenerationProgressSpinnerFrame(TMapMaker *this)
+
+{
+  int iVar1;
+  uint extraout_EAX;
+  undefined4 extraout_EAX_00;
+  int *piVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_44;
+  undefined4 uStack_20;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00636a68;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStack_44 = 0x5786a2;
+  thunk_GetTickCountDiv16();
+  if (*(uint *)(this + 0x9c) < extraout_EAX) {
+    uStack_44 = 0x5786af;
+    thunk_GetTickCountDiv16();
+    iVar1 = *(int *)(this + 0xa0);
+    *(undefined4 *)(this + 0x9c) = extraout_EAX_00;
+    *(int *)(this + 0xa0) = iVar1 + 1;
+    if (0x17 < iVar1 + 1) {
+      *(undefined4 *)(this + 0xa0) = 0;
+    }
+  }
+  if (g_pMapGenerationProgressContext == (void *)0x0) {
+    *(undefined4 *)(this + 0xa0) = 0;
+  }
+  uStack_44 = 0x676c6f62;
+  piVar2 = (int *)(**(code **)(*(int *)this + 0x94))();
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x1c8))(*(short *)(this + 0xa0) + 0x11d0,0);
+  thunk_ConstructScopedMapQuickDrawContext();
+  (**(code **)(iVar1 + 0xf8))();
+  (**(code **)(iVar1 + 300))(&stack0xffffffc0);
+  (**(code **)(iVar1 + 0x110))(&uStack_44);
+  thunk_DestroyScopedMapQuickDrawContext();
+  *unaff_FS_OFFSET = uStack_20;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E8EE0
+// GHIDRA_NAME TMapMaker::GetCurrentLocalEpochSecondsWithTimezoneCache
+// GHIDRA_PROTO undefined GetCurrentLocalEpochSecondsWithTimezoneCache()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Reads current local/system time refreshes timezone and DST cache then returns current local epoch seconds.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Reads current local/system time refreshes timezone and DST cache then returns current local epoch
+   seconds. */
+
+void TMapMaker::GetCurrentLocalEpochSecondsWithTimezoneCache(undefined4 *param_1)
+
+{
+  DWORD DVar1;
+  undefined4 uVar2;
+  _SYSTEMTIME local_cc;
+  _SYSTEMTIME local_bc;
+  _TIME_ZONE_INFORMATION local_ac;
+  
+  GetLocalTime(&local_bc);
+  GetSystemTime(&local_cc);
+  if (local_cc.wMinute == g_Current_Local_Epoch_WordState_006A7FC2) {
+    if (local_cc.wHour == g_wRuntimeTimeCacheHour) {
+      if (local_cc.wDay == g_Current_Local_Epoch_WordState_006A7FBE) {
+        if (local_cc.wMonth == g_Current_Local_Epoch_WordState_006A7FBA) {
+          if (local_cc.wYear == g_wRuntimeTimeCacheYear) goto LAB_005e8faf;
+        }
+      }
+    }
+  }
+  DVar1 = GetTimeZoneInformation(&local_ac);
+  if (DVar1 == 0xffffffff) {
+    g_nRuntimeDstActiveCache = -1;
+  }
+  else if (((DVar1 == 2) && (local_ac.DaylightDate.wMonth != 0)) && (local_ac.DaylightBias != 0)) {
+    g_nRuntimeDstActiveCache = 1;
+  }
+  else {
+    g_nRuntimeDstActiveCache = 0;
+  }
+  g_wRuntimeTimeCacheYear = local_cc.wYear;
+  g_Current_Local_Epoch_WordState_006A7FBA = local_cc.wMonth;
+  _g_Current_Local_Epoch_State_006A7FBC = local_cc.wDayOfWeek;
+  g_Current_Local_Epoch_WordState_006A7FBE = local_cc.wDay;
+  g_wRuntimeTimeCacheHour = local_cc.wHour;
+  g_Current_Local_Epoch_WordState_006A7FC2 = local_cc.wMinute;
+  _g_Current_Local_Epoch_State_006A7FC4 = local_cc.wSecond;
+  g_Current_Local_Epoch_State_006A7FC4_2 = local_cc.wMilliseconds;
+LAB_005e8faf:
+  uVar2 = ConvertBrokenDownLocalTimeToEpochSeconds
+                    (local_bc.wYear,local_bc.wMonth,local_bc.wDay,local_bc.wHour,local_bc.wMinute,
+                     local_bc.wSecond,g_nRuntimeDstActiveCache);
+  if (param_1 != (undefined4 *)0x0) {
+    *param_1 = uVar2;
+  }
   return;
 }
 

@@ -47,7 +47,7 @@ void * __cdecl TUpDownView::thunk_GetTUpDownViewClassNamePointer(void)
 void * __cdecl TUpDownView::CreateTUpDownViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,14 +57,14 @@ void * __cdecl TUpDownView::CreateTUpDownViewInstance(void)
   puStack_8 = &LAB_0063756a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &g_vtblTUpDownView;
-    puVar1[0x21] = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTUpDownView;
+    *(undefined4 *)(this + 0x84) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -92,7 +92,7 @@ void * __cdecl TUpDownView::GetTUpDownViewClassNamePointer(void)
 void * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
   *(undefined ***)this = &g_vtblTUpDownView;
   *(undefined4 *)(this + 0x84) = 0;
   return this;

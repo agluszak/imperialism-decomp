@@ -85,7 +85,7 @@ void TInfoBarPictureText::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60(vo
 void * __cdecl TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TStaticText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -95,23 +95,23 @@ void * __cdecl TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
   puStack_8 = &LAB_00638efa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb4);
+  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x26) = 0;
-    *(undefined1 *)((int)puVar1 + 0x99) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
-    *(undefined1 *)(puVar1 + 0x27) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
-    puVar1[0x26] = 0;
-    *(undefined1 *)(puVar1 + 0x28) = 0;
-    *puVar1 = &PTR_thunk_GetTInfoBarPictureTextClassNamePointer_0066d288;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    this[0x98] = (TStaticText)0x0;
+    this[0x99] = (TStaticText)0x0;
+    this[0x9a] = (TStaticText)0x0;
+    this[0x9b] = (TStaticText)0x0;
+    this[0x9c] = (TStaticText)0x0;
+    this[0x9d] = (TStaticText)0x0;
+    this[0x9e] = (TStaticText)0x0;
+    this[0x9f] = (TStaticText)0x0;
+    *(undefined4 *)(this + 0x98) = 0;
+    this[0xa0] = (TStaticText)0x0;
+    *(undefined ***)this = &PTR_thunk_GetTInfoBarPictureTextClassNamePointer_0066d288;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

@@ -3,6 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TNewspaperView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004022BB
+// GHIDRA_NAME TNewspaperView::thunk_GetTNewspaperViewTypeNamePointer
+// GHIDRA_PROTO void * __cdecl thunk_GetTNewspaperViewTypeNamePointer(void)
+
+void * __cdecl TNewspaperView::thunk_GetTNewspaperViewTypeNamePointer(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTNewspaperViewClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D160
 // GHIDRA_NAME TNewspaperView::CreateTNewspaperView
 // GHIDRA_PROTO undefined CreateTNewspaperView()

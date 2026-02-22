@@ -41,6 +41,26 @@ void * __cdecl TColorKeyPicture::thunk_GetTColorKeyPictureClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00408EE5
+// GHIDRA_NAME TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48
+// GHIDRA_PROTO void __thiscall thunk_ConstructPictureResourceEntry_Vtbl00660b48(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureResourceEntry_Vtbl00660b48
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructPictureResourceEntry_Vtbl00660b48 */
+
+void __thiscall
+TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined ***)this = &g_vtblTColorKeyPicture;
+  this[0x90] = (TColorKeyPicture)0x0;
+  *(undefined4 *)(this + 0x94) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D20
 // GHIDRA_NAME TColorKeyPicture::CreateTColorKeyPictureInstance
 // GHIDRA_PROTO void * __cdecl CreateTColorKeyPictureInstance(void)
@@ -94,17 +114,15 @@ void * __cdecl TColorKeyPicture::GetTColorKeyPictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DE0
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_PROTO void __cdecl ConstructPictureResourceEntry_Vtbl00660b48(void)
+// GHIDRA_PROTO void __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
 
-void __cdecl TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(void)
+void __thiscall TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *in_ECX = &g_vtblTColorKeyPicture;
-  *(undefined1 *)(in_ECX + 0x24) = 0;
-  in_ECX[0x25] = 0;
+  *(undefined ***)this = &g_vtblTColorKeyPicture;
+  this[0x90] = (TColorKeyPicture)0x0;
+  *(undefined4 *)(this + 0x94) = 0;
   return;
 }
 

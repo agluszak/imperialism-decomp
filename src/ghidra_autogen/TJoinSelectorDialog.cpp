@@ -31,11 +31,11 @@ void * __cdecl TJoinSelectorDialog::thunk_GetTJoinSelectorDialogClassNamePointer
 /* Allocates 0x94-byte dialog object, runs picture-resource-entry ctor, and assigns
    TJoinSelectorDialog vtable. */
 
-undefined4 * TJoinSelectorDialog::AllocateAndConstructTJoinSelectorDialog(void)
+TNoHilitePicture * TJoinSelectorDialog::AllocateAndConstructTJoinSelectorDialog(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -45,16 +45,16 @@ undefined4 * TJoinSelectorDialog::AllocateAndConstructTJoinSelectorDialog(void)
   puStack_8 = &LAB_00634f2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &PTR_thunk_GetTJoinSelectorDialogClassNamePointer_006435e8;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &PTR_thunk_GetTJoinSelectorDialogClassNamePointer_006435e8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E710

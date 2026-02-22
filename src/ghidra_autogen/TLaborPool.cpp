@@ -23,21 +23,20 @@ void * __cdecl TLaborPool::thunk_GetTLaborPoolClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401A00
 // GHIDRA_NAME TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues
-// GHIDRA_PROTO void __cdecl thunk_RefreshLaborPoolOverlayResourceValues(void)
+// GHIDRA_PROTO void __thiscall thunk_RefreshLaborPoolOverlayResourceValues(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [Thunk] forwards to RefreshLaborPoolOverlayResourceValues.
 // GHIDRA_COMMENT_END
 
 /* [Thunk] forwards to RefreshLaborPoolOverlayResourceValues. */
 
-void __cdecl TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(void)
+void __thiscall TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(TLaborPool *this)
 
 {
   void *pvVar1;
   code *pcVar2;
   short sVar3;
   int *piVar4;
-  int *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   int in_stack_00000004;
   undefined4 uVar5;
@@ -52,7 +51,7 @@ void __cdecl TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(void)
   pvVar1 = g_apNationStates[in_stack_00000004];
   InitializeSharedStringRefFromEmpty();
   uStack_4 = 0;
-  pcVar2 = *(code **)(*in_ECX + 0x94);
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
   piVar4 = (int *)(*pcVar2)(0x6e616d65);
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -138,7 +137,7 @@ void * __thiscall TLaborPool::thunk_GetTLaborPoolRuntimeClass(TLaborPool *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1CB0
 // GHIDRA_NAME TLaborPool::CreateTLaborPoolInstance
-// GHIDRA_PROTO void __cdecl CreateTLaborPoolInstance(void)
+// GHIDRA_PROTO void __thiscall CreateTLaborPoolInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [LowHanging] TLaborPool method that resolves resource tags (name/trea/elas/crup/etc.) and writes current nation/labor values into overlay entries.
 // GHIDRA_COMMENT_END
@@ -146,14 +145,13 @@ void * __thiscall TLaborPool::thunk_GetTLaborPoolRuntimeClass(TLaborPool *this)
 /* [LowHanging] TLaborPool method that resolves resource tags (name/trea/elas/crup/etc.) and writes
    current nation/labor values into overlay entries. */
 
-void __cdecl TLaborPool::CreateTLaborPoolInstance(void)
+void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this)
 
 {
   void *pvVar1;
   code *pcVar2;
   short sVar3;
   int *piVar4;
-  int *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   int in_stack_00000004;
   undefined4 uVar5;
@@ -168,7 +166,7 @@ void __cdecl TLaborPool::CreateTLaborPoolInstance(void)
   pvVar1 = g_apNationStates[in_stack_00000004];
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  pcVar2 = *(code **)(*in_ECX + 0x94);
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
   piVar4 = (int *)(*pcVar2)(0x6e616d65);
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */

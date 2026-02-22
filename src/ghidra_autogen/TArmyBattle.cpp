@@ -47,19 +47,18 @@ void * __cdecl TArmyBattle::thunk_GetTArmyBattleClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F4E
 // GHIDRA_NAME TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTArmyBattleBaseStateImpl(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyBattleBaseStateImpl(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [CtorChain] Single-JMP thunk to ConstructTArmyBattleBaseStateImpl.
 // GHIDRA_COMMENT_END
 
 /* [CtorChain] Single-JMP thunk to ConstructTArmyBattleBaseStateImpl. */
 
-void * __cdecl TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(void)
+void * __thiscall TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(TArmyBattle *this)
 
 {
   undefined4 *puVar1;
   void *pvVar2;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -75,18 +74,18 @@ void * __cdecl TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(void)
     uStack_4 = 1;
     pvVar2 = (void *)InitializeLinkedListSentinelNodeWithOwnerContext(10);
     *puVar1 = &g_vtblTArmyBattle;
-    *(undefined4 **)(in_ECX + 0x20) = puVar1;
+    *(undefined4 **)(this + 0x20) = puVar1;
     *unaff_FS_OFFSET = uStack_c;
     return pvVar2;
   }
-  *(undefined4 *)(in_ECX + 0x20) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
   *unaff_FS_OFFSET = uStack_c;
   return (void *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F7F0
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO void * __cdecl ConstructTArmyBattleBaseStateImpl(void)
+// GHIDRA_PROTO void * __thiscall ConstructTArmyBattleBaseStateImpl(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [CtorChain] Real implementation behind 0x005a4770 -> 0x00408f4e thunk chain; allocates 0x20 bytes, installs g_vtblTArmyBattle, stores at this+0x20.
 // GHIDRA_COMMENT_END
@@ -94,12 +93,11 @@ void * __cdecl TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(void)
 /* [CtorChain] Real implementation behind 0x005a4770 -> 0x00408f4e thunk chain; allocates 0x20
    bytes, installs g_vtblTArmyBattle, stores at this+0x20. */
 
-void * __cdecl TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
+void * __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *this)
 
 {
   undefined4 *puVar1;
   void *pvVar2;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -115,11 +113,11 @@ void * __cdecl TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
     local_4 = 1;
     pvVar2 = (void *)InitializeLinkedListSentinelNodeWithOwnerContext(10);
     *puVar1 = &g_vtblTArmyBattle;
-    *(undefined4 **)(in_ECX + 0x20) = puVar1;
+    *(undefined4 **)(this + 0x20) = puVar1;
     *unaff_FS_OFFSET = local_c;
     return pvVar2;
   }
-  *(undefined4 *)(in_ECX + 0x20) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
 }
@@ -164,19 +162,18 @@ void * __cdecl TArmyBattle::GetTArmyBattleClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4770
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTArmyBattleBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTArmyBattleBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassQuad] ctor inferred for TArmyBattle from in-body g_vtblTArmyBattle assignment/use.
 // GHIDRA_COMMENT_END
 
 /* [ClassQuad] ctor inferred for TArmyBattle from in-body g_vtblTArmyBattle assignment/use. */
 
-void * __cdecl TArmyBattle::ConstructTArmyBattleBaseState(void)
+void * __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
 
 {
   undefined4 *puVar1;
   void *pvVar2;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -192,11 +189,11 @@ void * __cdecl TArmyBattle::ConstructTArmyBattleBaseState(void)
     uStack_4 = 1;
     pvVar2 = (void *)InitializeLinkedListSentinelNodeWithOwnerContext(10);
     *puVar1 = &g_vtblTArmyBattle;
-    *(undefined4 **)(in_ECX + 0x20) = puVar1;
+    *(undefined4 **)(this + 0x20) = puVar1;
     *unaff_FS_OFFSET = uStack_c;
     return pvVar2;
   }
-  *(undefined4 *)(in_ECX + 0x20) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
   *unaff_FS_OFFSET = uStack_c;
   return (void *)0x0;
 }

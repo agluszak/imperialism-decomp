@@ -38,6 +38,36 @@ void * __cdecl TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer(v
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040610E
+// GHIDRA_NAME TTextPictureButton::thunk_ConstructPictureScreenVariantEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructPictureScreenVariantEntry(void)
+
+void __thiscall
+TTextPictureButton::thunk_ConstructPictureScreenVariantEntry(TTextPictureButton *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00636518;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined ***)this = &g_vtblTUpDownPictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
+  uStack_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  *(undefined2 *)(this + 0x98) = 0;
+  *(undefined2 *)(this + 0x9a) = 0;
+  *(undefined2 *)(this + 0x9c) = 0;
+  *(undefined ***)this = &g_vtblTTextPictureButton;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004061CC
 // GHIDRA_NAME TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTTextPictureButtonAndMaybeFree(byte freeSelfFlag)
@@ -117,7 +147,7 @@ void * __cdecl TTextPictureButton::GetTTextPictureButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005725D0
 // GHIDRA_NAME TTextPictureButton::ConstructPictureScreenVariantEntry
-// GHIDRA_PROTO void __cdecl ConstructPictureScreenVariantEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructPictureScreenVariantEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor, medium)
 // GHIDRA_COMMENT_END
@@ -125,10 +155,9 @@ void * __cdecl TTextPictureButton::GetTTextPictureButtonClassNamePointer(void)
 /* [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor,
    medium) */
 
-void __cdecl TTextPictureButton::ConstructPictureScreenVariantEntry(void)
+void __thiscall TTextPictureButton::ConstructPictureScreenVariantEntry(TTextPictureButton *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -139,14 +168,14 @@ void __cdecl TTextPictureButton::ConstructPictureScreenVariantEntry(void)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   thunk_ConstructPictureResourceEntryBase();
-  *in_ECX = &g_vtblTUpDownPictureButton;
-  *(undefined2 *)((int)in_ECX + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblTUpDownPictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  *(undefined2 *)(in_ECX + 0x26) = 0;
-  *(undefined2 *)((int)in_ECX + 0x9a) = 0;
-  *(undefined2 *)(in_ECX + 0x27) = 0;
-  *in_ECX = &g_vtblTTextPictureButton;
+  *(undefined2 *)(this + 0x98) = 0;
+  *(undefined2 *)(this + 0x9a) = 0;
+  *(undefined2 *)(this + 0x9c) = 0;
+  *(undefined ***)this = &g_vtblTTextPictureButton;
   *unaff_FS_OFFSET = local_c;
   return;
 }

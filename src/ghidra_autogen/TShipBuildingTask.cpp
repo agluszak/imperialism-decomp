@@ -3,6 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TShipBuildingTask.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004054F2
+// GHIDRA_NAME TShipBuildingTask::thunk_GetShipBuildingTaskClassName
+// GHIDRA_PROTO void * __cdecl thunk_GetShipBuildingTaskClassName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetShipBuildingTaskClassName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetShipBuildingTaskClassName */
+
+void * __cdecl TShipBuildingTask::thunk_GetShipBuildingTaskClassName(void)
+
+{
+  return &g_pClassDescTShipBuildingTask;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE680
 // GHIDRA_NAME TShipBuildingTask::GetTShipBuildingTaskClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTShipBuildingTaskClassNamePointer(void)

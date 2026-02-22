@@ -26,6 +26,98 @@ void __cdecl CObArray::thunk_DestructCObArray(TIndexAndRankList *pThis)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004884F0
+// GHIDRA_NAME CObArray::thunk_DestructCObArray_004884F0
+// GHIDRA_PROTO void __cdecl thunk_DestructCObArray_004884F0(TIndexAndRankList * pThis)
+
+void __cdecl CObArray::thunk_DestructCObArray_004884F0(TIndexAndRankList *pThis)
+
+{
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &g_vtblTIndexAndRankList;
+  uVar1 = extraout_ECX[1];
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  FreeHeapBufferIfNotNull(uVar1);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D65F0
+// GHIDRA_NAME CObArray::thunk_DestructCObArray_004D65F0
+// GHIDRA_PROTO void __cdecl thunk_DestructCObArray_004D65F0(TIndexAndRankList * pThis)
+
+void __cdecl CObArray::thunk_DestructCObArray_004D65F0(TIndexAndRankList *pThis)
+
+{
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &g_vtblTIndexAndRankList;
+  uVar1 = extraout_ECX[1];
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  FreeHeapBufferIfNotNull(uVar1);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EE5A0
+// GHIDRA_NAME CObArray::thunk_DestructCObArray_004EE5A0
+// GHIDRA_PROTO void __cdecl thunk_DestructCObArray_004EE5A0(TIndexAndRankList * pThis)
+
+void __cdecl CObArray::thunk_DestructCObArray_004EE5A0(TIndexAndRankList *pThis)
+
+{
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &g_vtblTIndexAndRankList;
+  uVar1 = extraout_ECX[1];
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  FreeHeapBufferIfNotNull(uVar1);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BA220
+// GHIDRA_NAME CObArray::thunk_DestructCObArray_005BA220
+// GHIDRA_PROTO void __cdecl thunk_DestructCObArray_005BA220(TIndexAndRankList * pThis)
+
+void __cdecl CObArray::thunk_DestructCObArray_005BA220(TIndexAndRankList *pThis)
+
+{
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &g_vtblTIndexAndRankList;
+  uVar1 = extraout_ECX[1];
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  FreeHeapBufferIfNotNull(uVar1);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BAA
 // GHIDRA_NAME CObArray::CPtrArray_ctor
 // GHIDRA_PROTO void __thiscall CPtrArray_ctor(void)

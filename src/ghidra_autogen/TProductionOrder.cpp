@@ -41,35 +41,34 @@ void * __cdecl TProductionOrder::thunk_GetTProductionOrderClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403F49
 // GHIDRA_NAME TProductionOrder::thunk_InitializeBasicCityOrderContext
-// GHIDRA_PROTO void __cdecl thunk_InitializeBasicCityOrderContext(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeBasicCityOrderContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeBasicCityOrderContext
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeBasicCityOrderContext */
 
-void __cdecl TProductionOrder::thunk_InitializeBasicCityOrderContext(void)
+void __thiscall TProductionOrder::thunk_InitializeBasicCityOrderContext(TProductionOrder *this)
 
 {
-  int in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TProductionOrder *pTVar2;
   int in_stack_00000004;
   undefined2 in_stack_00000008;
   
-  *(int *)(in_ECX + 8) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0xc) = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)(in_ECX + 0x48) = in_stack_00000008;
-  *(undefined2 *)(in_ECX + 4) = 0;
-  puVar2 = (undefined4 *)(in_ECX + 0x10);
+  *(int *)(this + 8) = in_stack_00000004;
+  *(undefined4 *)(this + 0xc) = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(undefined2 *)(this + 0x48) = in_stack_00000008;
+  *(undefined2 *)(this + 4) = 0;
+  pTVar2 = this + 0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    *(undefined4 *)pTVar2 = 0;
+    pTVar2 = pTVar2 + 4;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined4 *)(in_ECX + 0x44) = 0;
-  *(undefined2 *)(in_ECX + 0x40) = 0;
-  *(undefined2 *)(in_ECX + 0x3e) = 0;
+  *(undefined2 *)pTVar2 = 0;
+  *(undefined4 *)(this + 0x44) = 0;
+  *(undefined2 *)(this + 0x40) = 0;
+  *(undefined2 *)(this + 0x3e) = 0;
   return;
 }
 
@@ -201,30 +200,29 @@ TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F70
 // GHIDRA_NAME TProductionOrder::InitializeBasicCityOrderContext
-// GHIDRA_PROTO void __cdecl InitializeBasicCityOrderContext(void)
+// GHIDRA_PROTO void __thiscall InitializeBasicCityOrderContext(void)
 
-void __cdecl TProductionOrder::InitializeBasicCityOrderContext(void)
+void __thiscall TProductionOrder::InitializeBasicCityOrderContext(TProductionOrder *this)
 
 {
-  int in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TProductionOrder *pTVar2;
   int in_stack_00000004;
   undefined2 in_stack_00000008;
   
-  *(int *)(in_ECX + 8) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0xc) = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)(in_ECX + 0x48) = in_stack_00000008;
-  *(undefined2 *)(in_ECX + 4) = 0;
-  puVar2 = (undefined4 *)(in_ECX + 0x10);
+  *(int *)(this + 8) = in_stack_00000004;
+  *(undefined4 *)(this + 0xc) = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(undefined2 *)(this + 0x48) = in_stack_00000008;
+  *(undefined2 *)(this + 4) = 0;
+  pTVar2 = this + 0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    *(undefined4 *)pTVar2 = 0;
+    pTVar2 = pTVar2 + 4;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined4 *)(in_ECX + 0x44) = 0;
-  *(undefined2 *)(in_ECX + 0x40) = 0;
-  *(undefined2 *)(in_ECX + 0x3e) = 0;
+  *(undefined2 *)pTVar2 = 0;
+  *(undefined4 *)(this + 0x44) = 0;
+  *(undefined2 *)(this + 0x40) = 0;
+  *(undefined2 *)(this + 0x3e) = 0;
   return;
 }
 

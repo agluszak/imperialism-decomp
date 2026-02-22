@@ -111,8 +111,8 @@ void * __cdecl TSpaceCommand::GetTSpaceCommandClassNamePointer(void)
 void * __cdecl TSpaceCommand::ConstructTSpaceCommandBaseState(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -122,16 +122,16 @@ void * __cdecl TSpaceCommand::ConstructTSpaceCommandBaseState(void)
   puStack_8 = &LAB_0063675a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1fc);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x1fc);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &g_vtblTSpaceCommand;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &g_vtblTSpaceCommand;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575770

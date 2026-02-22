@@ -19,6 +19,27 @@ void __thiscall TCommand::thunk_RunCommandModalLoopAndFinalizeState_At00401050(T
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403D5F
+// GHIDRA_NAME TCommand::thunk_ConstructTurnEventPacketBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructTurnEventPacketBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnEventPacketBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTurnEventPacketBase */
+
+void __thiscall TCommand::thunk_ConstructTurnEventPacketBase(TCommand *this)
+
+{
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined ***)this = &g_vtblTCommand;
+  *(undefined4 *)(this + 0x14) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404656
 // GHIDRA_NAME TCommand::thunk_GetTCommandClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTCommandClassNamePointer(void)
@@ -55,6 +76,23 @@ void * __thiscall TCommand::thunk_DestructTCommandAndMaybeFree(TCommand *this,by
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00484080
+// GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
+// GHIDRA_PROTO void __thiscall RunCommandModalLoopAndFinalizeState_Impl(TCommand * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00484080 with single named caller RunCommandModalLoopAndFinalizeState@0x00487660
+// GHIDRA_COMMENT_END
+
+/* [ThunkBridge] promoted from thunk_FUN_00484080 with single named caller
+   RunCommandModalLoopAndFinalizeState@0x00487660 */
+
+void __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,TCommand *pThis)
+
+{
+  *(uint *)(this + 0x90) = (uint)pThis & 0xff;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00487660
 // GHIDRA_NAME TCommand::CreateTCommandInstance
 // GHIDRA_PROTO void __thiscall CreateTCommandInstance(void)
@@ -67,12 +105,16 @@ void * __thiscall TCommand::thunk_DestructTCommandAndMaybeFree(TCommand *this,by
 void __thiscall TCommand::CreateTCommandInstance(TCommand *this)
 
 {
+  TCommand *this_00;
   int extraout_EAX;
   int *piVar1;
+  TCommand *this_01;
   BOOL unaff_EDI;
+  TCommand *pTVar2;
   
+  pTVar2 = (TCommand *)0x0;
   InvokeAfxThreadVslot7CAndGetValueAtOffset98();
-  RunCommandModalLoopAndFinalizeState_Impl();
+  RunCommandModalLoopAndFinalizeState_Impl(this_00,pTVar2);
   piVar1 = (int *)(**(code **)(**(int **)(this + 8) + 0x58))();
   (**(code **)(*piVar1 + 0x9c))();
   (**(code **)(**(int **)(this + 8) + 0x58))();
@@ -81,8 +123,9 @@ void __thiscall TCommand::CreateTCommandInstance(TCommand *this)
   EnableWindow((HWND)0x1,unaff_EDI);
   RunModalLoopWithIdleMessages(0);
   if (extraout_EAX != 0) {
+    pTVar2 = (TCommand *)0x1;
     InvokeAfxThreadVslot7CAndGetValueAtOffset98();
-    RunCommandModalLoopAndFinalizeState_Impl();
+    RunCommandModalLoopAndFinalizeState_Impl(this_01,pTVar2);
   }
   return;
 }
@@ -104,19 +147,17 @@ void * __cdecl TCommand::GetTCommandClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487820
 // GHIDRA_NAME TCommand::ConstructTurnEventPacketBase
-// GHIDRA_PROTO void __cdecl ConstructTurnEventPacketBase(void)
+// GHIDRA_PROTO void __thiscall ConstructTurnEventPacketBase(void)
 
-void __cdecl TCommand::ConstructTurnEventPacketBase(void)
+void __thiscall TCommand::ConstructTurnEventPacketBase(TCommand *this)
 
 {
-  undefined4 *in_ECX;
-  
-  in_ECX[1] = 0;
-  in_ECX[2] = 0;
-  in_ECX[3] = 0;
-  in_ECX[4] = 0;
-  *in_ECX = &g_vtblTCommand;
-  in_ECX[5] = 0;
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined4 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined ***)this = &g_vtblTCommand;
+  *(undefined4 *)(this + 0x14) = 0;
   return;
 }
 

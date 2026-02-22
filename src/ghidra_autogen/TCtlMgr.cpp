@@ -46,7 +46,7 @@ void * __cdecl TCtlMgr::thunk_GetTCtlMgrClassNamePointer(void)
 void * __cdecl TCtlMgr::CreateTCtlMgrInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -56,24 +56,24 @@ void * __cdecl TCtlMgr::CreateTCtlMgrInstance(void)
   puStack_8 = &LAB_0062ee92;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x19) = 0;
-    puVar1[0x18] = 1;
-    puVar1[0x1a] = 0;
-    puVar1[0x1b] = 0;
-    puVar1[0x1c] = 0;
-    puVar1[0x1d] = 0;
-    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    this[100] = (TView)0x0;
+    *(undefined4 *)(this + 0x60) = 1;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
+    *(undefined4 *)(this + 0x70) = 0;
+    *(undefined4 *)(this + 0x74) = 0;
+    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &g_vtblTButton;
+    *(undefined ***)this = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -106,7 +106,7 @@ void * __cdecl TCtlMgr::GetTCtlMgrClassNamePointer(void)
 void * __cdecl TCtlMgr::ConstructTCtlMgrBaseState(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -116,25 +116,25 @@ void * __cdecl TCtlMgr::ConstructTCtlMgrBaseState(void)
   puStack_8 = &LAB_0062eec2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x19) = 0;
-    puVar1[0x18] = 1;
-    puVar1[0x1a] = 0;
-    puVar1[0x1b] = 0;
-    puVar1[0x1c] = 0;
-    puVar1[0x1d] = 0;
-    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    this[100] = (TView)0x0;
+    *(undefined4 *)(this + 0x60) = 1;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
+    *(undefined4 *)(this + 0x70) = 0;
+    *(undefined4 *)(this + 0x74) = 0;
+    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &g_vtblTButton;
+    *(undefined ***)this = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *puVar1 = &g_vtblTCtlMgr;
+    *(undefined ***)this = &g_vtblTCtlMgr;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

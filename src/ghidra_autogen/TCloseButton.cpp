@@ -63,8 +63,8 @@ void * __cdecl TCloseButton::thunk_GetTCloseButtonClassNamePointer(void)
 void * __cdecl TCloseButton::CreateTCloseButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TPictureButton *this;
+  TPictureButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,16 +74,16 @@ void * __cdecl TCloseButton::CreateTCloseButtonInstance(void)
   puStack_8 = &LAB_0063764a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    *puVar1 = &g_vtblTCloseButton;
-    puVar2 = puVar1;
+  pTVar1 = (TPictureButton *)0x0;
+  if (this != (TPictureButton *)0x0) {
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    *(undefined ***)this = &g_vtblTCloseButton;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584AD0
@@ -108,7 +108,7 @@ void * __cdecl TCloseButton::GetTCloseButtonClassNamePointer(void)
 void * __thiscall TCloseButton::ConstructTCloseButtonBaseState(TCloseButton *this)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
+  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
   *(undefined ***)this = &g_vtblTCloseButton;
   return this;
 }

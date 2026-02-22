@@ -64,8 +64,8 @@ void * __cdecl TTerrainHelpWindow::thunk_GetTTerrainHelpWindowClassNamePointer(v
 void * __cdecl TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TFloatWindow *this;
+  TFloatWindow *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,16 +75,16 @@ void * __cdecl TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
   puStack_8 = &LAB_0063368a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TFloatWindow *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340();
-    *puVar1 = &g_vtblTTerrainHelpWindow;
-    puVar2 = puVar1;
+  pTVar1 = (TFloatWindow *)0x0;
+  if (this != (TFloatWindow *)0x0) {
+    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    *(undefined ***)this = &g_vtblTTerrainHelpWindow;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D20
@@ -109,7 +109,7 @@ void * __cdecl TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer(void)
 void * __thiscall TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *this)
 
 {
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340();
+  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
   *(undefined ***)this = &g_vtblTTerrainHelpWindow;
   return this;
 }

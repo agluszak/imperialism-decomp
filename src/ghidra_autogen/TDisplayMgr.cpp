@@ -14,35 +14,66 @@ void TDisplayMgr::thunk_AssertUDisplayMgrLine495(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401B45
+// GHIDRA_NAME TDisplayMgr::thunk_InitializeMapTileRuntimeStateEntry
+// GHIDRA_PROTO void __thiscall thunk_InitializeMapTileRuntimeStateEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InitializeMapTileRuntimeStateEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InitializeMapTileRuntimeStateEntry */
+
+void __thiscall TDisplayMgr::thunk_InitializeMapTileRuntimeStateEntry(TDisplayMgr *this)
+
+{
+  this[0x10] = (TDisplayMgr)0x0;
+  this[0x11] = (TDisplayMgr)0x0;
+  this[0x12] = (TDisplayMgr)0x0;
+  this[0x13] = (TDisplayMgr)0x0;
+  this[0x14] = (TDisplayMgr)0x0;
+  this[0x15] = (TDisplayMgr)0x0;
+  this[0x16] = (TDisplayMgr)0x0;
+  this[0x17] = (TDisplayMgr)0x0;
+  *(undefined ***)this = &g_vtblTDisplayMgr;
+  *(undefined2 *)(this + 8) = 8;
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined2 *)(this + 10) = 0;
+  this[0xc] = (TDisplayMgr)0x0;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00402437
 // GHIDRA_NAME TDisplayMgr::thunk_SetMapTileIconVariantTriplet
-// GHIDRA_PROTO void __cdecl thunk_SetMapTileIconVariantTriplet(void)
+// GHIDRA_PROTO void __thiscall thunk_SetMapTileIconVariantTriplet(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SetMapTileIconVariantTriplet
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SetMapTileIconVariantTriplet */
 
-void __cdecl TDisplayMgr::thunk_SetMapTileIconVariantTriplet(void)
+void __thiscall TDisplayMgr::thunk_SetMapTileIconVariantTriplet(TDisplayMgr *this)
 
 {
-  SetMapTileIconVariantTriplet();
+  SetMapTileIconVariantTriplet(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402CC0
 // GHIDRA_NAME TDisplayMgr::thunk_ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
-// GHIDRA_PROTO void __cdecl thunk_ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
+// GHIDRA_PROTO void __thiscall thunk_ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to ReleasePrimaryRenderSurfaceContextAndCloseOwnerView.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to ReleasePrimaryRenderSurfaceContextAndCloseOwnerView. */
 
-void __cdecl TDisplayMgr::thunk_ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
+void __thiscall
+TDisplayMgr::thunk_ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(TDisplayMgr *this)
 
 {
-  ReleasePrimaryRenderSurfaceContextAndCloseOwnerView();
+  ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(this);
   return;
 }
 
@@ -125,17 +156,18 @@ TDisplayMgr::thunk_LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004064DD
 // GHIDRA_NAME TDisplayMgr::thunk_InitializeTurnOrderNavigationDialogByViewportSize
-// GHIDRA_PROTO void __cdecl thunk_InitializeTurnOrderNavigationDialogByViewportSize(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeTurnOrderNavigationDialogByViewportSize(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeTurnOrderNavigationDialogByViewportSize
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeTurnOrderNavigationDialogByViewportSize */
 
-void __cdecl TDisplayMgr::thunk_InitializeTurnOrderNavigationDialogByViewportSize(void)
+void __thiscall
+TDisplayMgr::thunk_InitializeTurnOrderNavigationDialogByViewportSize(TDisplayMgr *this)
 
 {
-  InitializeTurnOrderNavigationDialogByViewportSize();
+  InitializeTurnOrderNavigationDialogByViewportSize(this);
   return;
 }
 
@@ -199,7 +231,7 @@ void * __cdecl TDisplayMgr::GetTDisplayMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE7A0
 // GHIDRA_NAME TDisplayMgr::InitializeMapTileRuntimeStateEntry
-// GHIDRA_PROTO void __cdecl InitializeMapTileRuntimeStateEntry(void)
+// GHIDRA_PROTO void __thiscall InitializeMapTileRuntimeStateEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes one map tile runtime-state entry with default icon/overlay bytes.
 // GHIDRA_COMMENT Key defaults:
@@ -214,26 +246,24 @@ void * __cdecl TDisplayMgr::GetTDisplayMgrClassNamePointer(void)
    - activity overlay byte (+0x18) set to 0xFF.
    Returns: void. */
 
-void __cdecl TDisplayMgr::InitializeMapTileRuntimeStateEntry(void)
+void __thiscall TDisplayMgr::InitializeMapTileRuntimeStateEntry(TDisplayMgr *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *(undefined1 *)(in_ECX + 4) = 0;
-  *(undefined1 *)((int)in_ECX + 0x11) = 0;
-  *(undefined1 *)((int)in_ECX + 0x12) = 0;
-  *(undefined1 *)((int)in_ECX + 0x13) = 0;
-  *(undefined1 *)(in_ECX + 5) = 0;
-  *(undefined1 *)((int)in_ECX + 0x15) = 0;
-  *(undefined1 *)((int)in_ECX + 0x16) = 0;
-  *(undefined1 *)((int)in_ECX + 0x17) = 0;
-  *in_ECX = &g_vtblTDisplayMgr;
-  *(undefined2 *)(in_ECX + 2) = 8;
-  in_ECX[1] = 0;
-  *(undefined2 *)((int)in_ECX + 10) = 0;
-  *(undefined1 *)(in_ECX + 3) = 0;
-  in_ECX[6] = 0;
-  in_ECX[8] = 0;
+  this[0x10] = (TDisplayMgr)0x0;
+  this[0x11] = (TDisplayMgr)0x0;
+  this[0x12] = (TDisplayMgr)0x0;
+  this[0x13] = (TDisplayMgr)0x0;
+  this[0x14] = (TDisplayMgr)0x0;
+  this[0x15] = (TDisplayMgr)0x0;
+  this[0x16] = (TDisplayMgr)0x0;
+  this[0x17] = (TDisplayMgr)0x0;
+  *(undefined ***)this = &g_vtblTDisplayMgr;
+  *(undefined2 *)(this + 8) = 8;
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined2 *)(this + 10) = 0;
+  this[0xc] = (TDisplayMgr)0x0;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
   return;
 }
 
@@ -253,7 +283,7 @@ void * __thiscall TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE840
 // GHIDRA_NAME TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize
-// GHIDRA_PROTO void __cdecl InitializeTurnOrderNavigationDialogByViewportSize(void)
+// GHIDRA_PROTO void __thiscall InitializeTurnOrderNavigationDialogByViewportSize(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes turn-order navigation dialog resources in UDisplayMgr and selects event code by viewport size: width<641 and height<481 -> 0x7D1, otherwise 0x7D2. Then requests dialog root from callback factory manager and stores it in manager state.
 // GHIDRA_COMMENT_END
@@ -262,7 +292,7 @@ void * __thiscall TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this
    viewport size: width<641 and height<481 -> 0x7D1, otherwise 0x7D2. Then requests dialog root from
    callback factory manager and stores it in manager state. */
 
-void __cdecl TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(void)
+void __thiscall TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(TDisplayMgr *this)
 
 {
   int iVar1;
@@ -270,8 +300,7 @@ void __cdecl TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(void
   int *extraout_EAX;
   undefined2 extraout_var;
   int iVar3;
-  int extraout_EAX_00;
-  int *in_ECX;
+  undefined4 extraout_EAX_00;
   LONG *unaff_FS_OFFSET;
   CObArray *local_20;
   tagRECT local_1c;
@@ -293,10 +322,10 @@ void __cdecl TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(void
     CObArray::CPtrArray_ctor(pCVar2);
     *(undefined ***)pCVar2 = &PTR_thunk_GetTPtrListClassName_00649068;
   }
-  in_ECX[8] = (int)pCVar2;
+  *(CObArray **)(this + 0x20) = pCVar2;
   *(undefined2 *)(pCVar2 + 0x14) = 4;
   local_4 = 0xffffffff;
-  *(undefined2 *)((int)in_ECX + 10) = 0;
+  *(undefined2 *)(this + 10) = 0;
   ConstructSharedStringFromCStrOrResourceId(s_Belwe_Bd_BT_00695150);
   local_4 = 1;
   StringShared__AssignFromPtr(&g_Turn_Order_Navigation_Value_006A30A4,(int *)&local_20);
@@ -317,22 +346,22 @@ void __cdecl TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(void
   iVar1 = *extraout_EAX;
   if ((*(int *)(iVar1 + 0xc) - *(int *)(iVar1 + 4) < 0x281) &&
      (*(int *)(iVar1 + 0x10) - *(int *)(iVar1 + 8) < 0x1e1)) {
-    *(undefined2 *)((int)in_ECX + 0xe) = 0x7d1;
+    *(undefined2 *)(this + 0xe) = 0x7d1;
   }
   else {
-    *(undefined2 *)((int)in_ECX + 0xe) = 0x7d2;
+    *(undefined2 *)(this + 0xe) = 0x7d2;
   }
-  iVar1 = *in_ECX;
+  iVar1 = *(int *)this;
   (**(code **)(iVar1 + 0x3c))(0);
   iVar3 = (**(code **)(*(int *)g_pTurnEventDialogFactoryRegistry + 0x28))
-                    (CONCAT22(extraout_var,*(undefined2 *)((int)in_ECX + 0xe)),0);
+                    (CONCAT22(extraout_var,*(undefined2 *)(this + 0xe)),0);
   if (iVar3 == 0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  in_ECX[1] = iVar3;
+  *(int *)(this + 4) = iVar3;
   InitializeTurnOrderNavigationDialogByViewportSize_Impl();
-  in_ECX[6] = extraout_EAX_00;
+  *(undefined4 *)(this + 0x18) = extraout_EAX_00;
   (**(code **)(iVar1 + 0x30))();
   *unaff_FS_OFFSET = local_1c.top;
   return;
@@ -340,7 +369,7 @@ void __cdecl TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(void
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEA60
 // GHIDRA_NAME TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
-// GHIDRA_PROTO void __cdecl ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
+// GHIDRA_PROTO void __thiscall ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Releases primary render surface context, clears global pointer, and closes owner view lifecycle.
 // GHIDRA_COMMENT_END
@@ -348,16 +377,14 @@ void __cdecl TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize(void
 /* Releases primary render surface context, clears global pointer, and closes owner view lifecycle.
     */
 
-void __cdecl TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
+void __thiscall TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(TDisplayMgr *this)
 
 {
-  int *in_ECX;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At00496420(g_pPrimaryRenderSurfaceContext);
   g_pPrimaryRenderSurfaceContext = (void *)0x0;
-  (**(code **)(*(int *)in_ECX[8] + 0x28))();
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  (**(code **)(**(int **)(this + 0x20) + 0x28))();
+  if (this != (TDisplayMgr *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }
@@ -555,7 +582,7 @@ TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,ushort
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEFC0
 // GHIDRA_NAME TDisplayMgr::SetMapTileIconVariantTriplet
-// GHIDRA_PROTO void __cdecl SetMapTileIconVariantTriplet(void)
+// GHIDRA_PROTO void __thiscall SetMapTileIconVariantTriplet(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sets tile icon variant triplet at tile-state offset +0x10..+0x12 from input profile bytes.
 // GHIDRA_COMMENT Calls icon-cache update helper after write.
@@ -566,15 +593,14 @@ TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,ushort
    Calls icon-cache update helper after write.
    Returns: void. */
 
-void __cdecl TDisplayMgr::SetMapTileIconVariantTriplet(void)
+void __thiscall TDisplayMgr::SetMapTileIconVariantTriplet(TDisplayMgr *this)
 
 {
-  int in_ECX;
-  undefined1 *in_stack_00000004;
+  TDisplayMgr *in_stack_00000004;
   
-  *(undefined1 *)(in_ECX + 0x10) = *in_stack_00000004;
-  *(undefined1 *)(in_ECX + 0x11) = in_stack_00000004[1];
-  *(undefined1 *)(in_ECX + 0x12) = in_stack_00000004[2];
+  this[0x10] = *in_stack_00000004;
+  this[0x11] = in_stack_00000004[1];
+  this[0x12] = in_stack_00000004[2];
   thunk_NoOpCallback_00498ca0();
   return;
 }

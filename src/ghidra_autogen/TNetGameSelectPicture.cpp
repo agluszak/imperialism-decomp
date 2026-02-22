@@ -5,18 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F29
 // GHIDRA_NAME TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-// GHIDRA_PROTO void __cdecl thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTNetGameSelectPictureCommandHostJoinCancelAndForward */
 
-void __cdecl
-TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
+void __thiscall
+TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
+          (TNetGameSelectPicture *this)
 
 {
-  HandleTNetGameSelectPictureCommandHostJoinCancelAndForward();
+  HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(this);
   return;
 }
 
@@ -130,7 +131,7 @@ void __cdecl TNetGameSelectPicture::InitializeRuntimeSelectionCredentialsFromPro
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576BC0
 // GHIDRA_NAME TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-// GHIDRA_PROTO void __cdecl HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
+// GHIDRA_PROTO void __thiscall HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles TNetGameSelectPicture command tags cncl/host/join, applies host/join selection flow, then forwards to shared city-dialog toggle handler.
 // GHIDRA_COMMENT_END
@@ -138,14 +139,15 @@ void __cdecl TNetGameSelectPicture::InitializeRuntimeSelectionCredentialsFromPro
 /* Handles TNetGameSelectPicture command tags cncl/host/join, applies host/join selection flow, then
    forwards to shared city-dialog toggle handler. */
 
-void __cdecl TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
+void __thiscall
+TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
+          (TNetGameSelectPicture *this)
 
 {
   int iVar1;
   code *pcVar2;
   int *piVar3;
   undefined4 uVar4;
-  int *in_ECX;
   int in_stack_00000004;
   int in_stack_00000008;
   
@@ -158,7 +160,7 @@ void __cdecl TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCa
       thunk_AssignStringAtB4FromB0AndResetState40();
     }
     else if (iVar1 == 0x6a6f696e) {
-      pcVar2 = *(code **)(*in_ECX + 0x94);
+      pcVar2 = *(code **)(*(int *)this + 0x94);
       piVar3 = (int *)(*pcVar2)(0x67616d65);
       iVar1 = *piVar3;
       (**(code **)(iVar1 + 0xc))();

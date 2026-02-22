@@ -16,7 +16,7 @@ void * __thiscall
 TBismarckMinister::thunk_ConstructTBismarckMinisterBaseState(TBismarckMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTBismarckMinister;
   *(undefined2 *)(this + 0xc) = 1;
   return this;
@@ -60,17 +60,18 @@ TBismarckMinister::thunk_DestructTBismarckMinisterAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407699
 // GHIDRA_NAME TBismarckMinister::thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5
-// GHIDRA_PROTO void __cdecl thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternB_Type2x2_Bonus5
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternB_Type2x2_Bonus5 */
 
-void __cdecl TBismarckMinister::thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
+void __thiscall
+TBismarckMinister::thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(TBismarckMinister *this)
 
 {
-  InitializeRecruitQueuePatternB_Type2x2_Bonus5();
+  InitializeRecruitQueuePatternB_Type2x2_Bonus5(this);
   return;
 }
 
@@ -133,7 +134,7 @@ void * __cdecl TBismarckMinister::GetTBismarckMinisterClassNamePointer(void)
 void * __thiscall TBismarckMinister::ConstructTBismarckMinisterBaseState(TBismarckMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTBismarckMinister;
   *(undefined2 *)(this + 0xc) = 1;
   return this;
@@ -156,7 +157,7 @@ TBismarckMinister::DestructTBismarckMinisterAndMaybeFree(TBismarckMinister *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED950
 // GHIDRA_NAME TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5
-// GHIDRA_PROTO void __cdecl InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
+// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes recruit queue preset B: two type-2 orders with additional post-setup +5 adjustment.
 // GHIDRA_COMMENT_END
@@ -164,11 +165,11 @@ TBismarckMinister::DestructTBismarckMinisterAndMaybeFree(TBismarckMinister *this
 /* Initializes recruit queue preset B: two type-2 orders with additional post-setup +5 adjustment.
     */
 
-void __cdecl TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
+void __thiscall
+TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5(TBismarckMinister *this)
 
 {
   int iVar1;
-  int in_ECX;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -190,7 +191,7 @@ void __cdecl TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5(vo
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x18) = *(short *)(in_ECX + 0x18) + 1;
+    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 5;

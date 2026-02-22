@@ -3,6 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TCityTask.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004068C0
+// GHIDRA_NAME TCityTask::thunk_GetCityTaskClassName
+// GHIDRA_PROTO void * __cdecl thunk_GetCityTaskClassName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetCityTaskClassName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetCityTaskClassName */
+
+void * __cdecl TCityTask::thunk_GetCityTaskClassName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTCityTaskClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD00
 // GHIDRA_NAME TCityTask::GetTCityTaskClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTCityTaskClassNamePointer(void)

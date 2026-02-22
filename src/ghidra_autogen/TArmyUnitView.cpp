@@ -3,6 +3,94 @@
 // Program: Imperialism.exe
 // Bucket: TArmyUnitView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403986
+// GHIDRA_NAME TArmyUnitView::thunk_HandleCrossUArmyViewsNameCommand
+// GHIDRA_PROTO void __cdecl thunk_HandleCrossUArmyViewsNameCommand(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleCrossUArmyViewsNameCommand
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleCrossUArmyViewsNameCommand */
+
+void __cdecl TArmyUnitView::thunk_HandleCrossUArmyViewsNameCommand(void)
+
+{
+  int iVar1;
+  code *pcVar2;
+  int iVar3;
+  int *piVar4;
+  int iVar5;
+  undefined2 in_CX;
+  int unaff_EBX;
+  undefined2 unaff_BP;
+  int unaff_ESI;
+  int unaff_EDI;
+  int *unaff_FS_OFFSET;
+  undefined *puStack_50;
+  int *piVar6;
+  int iVar7;
+  int iStack_28;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00630470;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  piVar4 = (int *)(**(code **)(*g_pUiViewManager + 0x28))();
+  if (piVar4 != (int *)0x0) {
+    InitializeSharedStringRefFromEmpty();
+    puStack_8 = (undefined1 *)0x0;
+    InitializeSharedStringRefFromEmpty();
+    puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
+    puStack_50 = (undefined *)0x4a9d41;
+    thunk_BuildUiTextStyleDescriptor();
+    iVar1 = *piVar4;
+    pcVar2 = *(code **)(iVar1 + 0x94);
+    piVar4 = (int *)(*pcVar2)();
+    (**(code **)(*piVar4 + 0xc))();
+    iVar7 = 1;
+    piVar6 = (int *)&DAT_00002746;
+    puStack_50 = (undefined *)0x4a9d71;
+    (**(code **)(*piVar4 + 0x1cc))();
+    puStack_50 = (undefined *)0x6e616d65;
+    piVar4[0x1e] = unaff_EBX;
+    piVar4[0x1f] = iStack_28;
+    *(undefined2 *)(piVar4 + 0x20) = in_CX;
+    piVar4 = (int *)(*pcVar2)();
+    iVar3 = *piVar4;
+    (**(code **)(iVar3 + 0xc))();
+    *(undefined2 *)(piVar4 + 0x27) = 0x18;
+    StringShared__AssignFromPtr(&stack0xffffffc0,(int *)(iRam00000e14 + 0x24));
+    (**(code **)(iVar3 + 0x1e0))(&stack0xffffffc0,1);
+    piVar4[0x1e] = unaff_EDI;
+    piVar4[0x1f] = unaff_ESI;
+    *(undefined2 *)(piVar4 + 0x20) = unaff_BP;
+    (**(code **)(iVar1 + 0x1a0))(1);
+    iVar5 = (**(code **)(iVar1 + 0x1b8))();
+    if (iVar5 != 0) {
+      *(undefined4 *)(iVar5 + 0x14) = 0x6f6b6179;
+    }
+    (**(code **)(iVar1 + 0x1ac))();
+    (**(code **)(iVar3 + 0x1dc))(&stack0xffffffbc);
+    StringShared__AssignFromPtr(&puStack_50,(int *)&stack0xffffffb8);
+    (**(code **)(iVar1 + 0xa0))();
+    (**(code **)(iVar1 + 0x1c))();
+    if (iVar7 != 0x636e636c) {
+      StringShared__AssignFromPtr((void *)(piVar6[0x18] + 0x24),(int *)&puStack_50);
+    }
+    (**(code **)(*piVar6 + 0xe4))();
+    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty();
+    *unaff_FS_OFFSET = unaff_ESI;
+    return;
+  }
+                    /* WARNING: Subroutine does not return */
+  puStack_50 = &UNK_004a9ce9;
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D4E
 // GHIDRA_NAME TArmyUnitView::thunk_GetTArmyUnitViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTArmyUnitViewClassNamePointer(void)
@@ -42,17 +130,17 @@ TArmyUnitView::thunk_DestructTArmyUnitViewAndMaybeFree(TArmyUnitView *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409903
 // GHIDRA_NAME TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch
-// GHIDRA_PROTO void __cdecl thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleCrossUArmyViewsCommandTagDispatch
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleCrossUArmyViewsCommandTagDispatch */
 
-void __cdecl TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
+void __thiscall TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch(TArmyUnitView *this)
 
 {
-  HandleCrossUArmyViewsCommandTagDispatch();
+  HandleCrossUArmyViewsCommandTagDispatch(this);
   return;
 }
 
@@ -63,8 +151,8 @@ void __cdecl TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
 void * __cdecl TArmyUnitView::CreateTArmyUnitViewInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,16 +162,16 @@ void * __cdecl TArmyUnitView::CreateTArmyUnitViewInstance(void)
   puStack_8 = &LAB_0063040a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblTArmyUnitView;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTArmyUnitView;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94C0
@@ -108,7 +196,7 @@ void * __cdecl TArmyUnitView::GetTArmyUnitViewClassNamePointer(void)
 void * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyUnitView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTArmyUnitView;
   return this;
 }
@@ -130,7 +218,7 @@ TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TArmyUnitView *this,byte freeSe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9990
 // GHIDRA_NAME TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
-// GHIDRA_PROTO void __cdecl HandleCrossUArmyViewsCommandTagDispatch(void)
+// GHIDRA_PROTO void __thiscall HandleCrossUArmyViewsCommandTagDispatch(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches Cross_UArmyViews command tags.
 // GHIDRA_COMMENT - Handles 'chec' by cycling/checking selected entry and then calling g_pUiRuntimeContext vfunc +0x48 with a computed state code.
@@ -151,7 +239,7 @@ TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TArmyUnitView *this,byte freeSe
    Note: this function updates turn-flow state via +0x48; it is not a direct +0x4C event-code
    dispatch producer. */
 
-void __cdecl TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch(void)
+void __thiscall TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch(TArmyUnitView *this)
 
 {
   int iVar1;
@@ -159,7 +247,6 @@ void __cdecl TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch(void)
   ushort uVar2;
   int *piVar3;
   undefined4 extraout_EAX;
-  int *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000008;
   undefined4 local_1c;
@@ -177,7 +264,7 @@ void __cdecl TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch(void)
   iVar1 = in_stack_00000008[7];
   if (iVar1 == 0x63686563) {
     uVar2 = GetAsyncKeyState(0x11);
-    piVar3 = (int *)in_ECX[0x18];
+    piVar3 = *(int **)(this + 0x60);
     if ((uVar2 & 0x8000) == 0) {
       if (piVar3[2] == 0) {
         (**(code **)(*piVar3 + 0x34))();
@@ -215,12 +302,12 @@ void __cdecl TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch(void)
     }
     else {
       (**(code **)(*in_stack_00000008 + 0xa4))();
-      piVar3 = (int *)(**(code **)(*in_ECX + 0x94))();
+      piVar3 = (int *)(**(code **)(*(int *)this + 0x94))();
       if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       }
-      piVar3[0x22] = (piVar3[0x23] + *(short *)(in_ECX[0x18] + 4) * 2) * 0x40;
+      piVar3[0x22] = (piVar3[0x23] + *(short *)(*(int *)(this + 0x60) + 4) * 2) * 0x40;
       (**(code **)(*piVar3 + 0xe4))();
       piVar3 = (int *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))();
       iVar1 = *piVar3;

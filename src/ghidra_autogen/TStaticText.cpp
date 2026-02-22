@@ -22,6 +22,59 @@ TStaticText::thunk_DestructTStaticTextAndMaybeFree(TStaticText *this,byte freeSe
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040541B
+// GHIDRA_NAME TStaticText::thunk_ConstructUiTextResourceEntryBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiTextResourceEntryBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiTextResourceEntryBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiTextResourceEntryBase */
+
+void __thiscall TStaticText::thunk_ConstructUiTextResourceEntryBase(TStaticText *this)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f023;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (TStaticText)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
+  uStack_4 = 0;
+  *(undefined4 *)(this + 0x84) = 0;
+  *(undefined4 *)(this + 0x88) = 0xffffffff;
+  *(undefined4 *)(this + 0x8c) = 0;
+  *(undefined2 *)(this + 0x90) = 0;
+  *(undefined ***)this = &g_vtblTStaticText;
+  *(undefined4 *)(this + 0x60) = 0xd;
+  iVar1 = AllocateWithFallbackHandler(4);
+  uStack_4 = CONCAT31(uStack_4._1_3_,1);
+  if (iVar1 == 0) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = InitializeSharedStringRefFromEmpty();
+  }
+  *(undefined4 *)(this + 0x84) = uVar2;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408A1C
 // GHIDRA_NAME TStaticText::thunk_GetTStaticTextClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTStaticTextClassNamePointer(void)
@@ -95,9 +148,9 @@ void __thiscall TStaticText::DestructTStaticTextCore(TStaticText *this)
 void * __cdecl TStaticText::CreateTStaticTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  int iVar2;
-  undefined4 uVar3;
+  TView *this;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -107,40 +160,40 @@ void * __cdecl TStaticText::CreateTStaticTextInstance(void)
   puStack_8 = &LAB_0062effd;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TView *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 == (undefined4 *)0x0) {
+  if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
     return (void *)0x0;
   }
-  TView::thunk_ConstructUiResourceEntryBase();
-  *(undefined1 *)(puVar1 + 0x19) = 0;
-  puVar1[0x18] = 1;
-  puVar1[0x1a] = 0;
-  puVar1[0x1b] = 0;
-  puVar1[0x1c] = 0;
-  puVar1[0x1d] = 0;
-  puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructUiResourceEntryBase(this);
+  this[100] = (TView)0x0;
+  *(undefined4 *)(this + 0x60) = 1;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
   local_4._0_1_ = 1;
-  puVar1[0x21] = 0;
-  puVar1[0x22] = 0xffffffff;
-  puVar1[0x23] = 0;
-  *(undefined2 *)(puVar1 + 0x24) = 0;
-  *puVar1 = &g_vtblTStaticText;
-  puVar1[0x18] = 0xd;
-  iVar2 = AllocateWithFallbackHandler(4);
+  *(undefined4 *)(this + 0x84) = 0;
+  *(undefined4 *)(this + 0x88) = 0xffffffff;
+  *(undefined4 *)(this + 0x8c) = 0;
+  *(undefined2 *)(this + 0x90) = 0;
+  *(undefined ***)this = &g_vtblTStaticText;
+  *(undefined4 *)(this + 0x60) = 0xd;
+  iVar1 = AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,2);
-  if (iVar2 != 0) {
-    uVar3 = InitializeSharedStringRefFromEmpty();
-    puVar1[0x21] = uVar3;
+  if (iVar1 != 0) {
+    uVar2 = InitializeSharedStringRefFromEmpty();
+    *(undefined4 *)(this + 0x84) = uVar2;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
-  puVar1[0x21] = 0;
+  *(undefined4 *)(this + 0x84) = 0;
   *unaff_FS_OFFSET = local_c;
-  return puVar1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F870
@@ -160,7 +213,7 @@ void * __cdecl TStaticText::GetTStaticTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F890
 // GHIDRA_NAME TStaticText::ConstructUiTextResourceEntryBase
-// GHIDRA_PROTO void __cdecl ConstructUiTextResourceEntryBase(void)
+// GHIDRA_PROTO void __thiscall ConstructUiTextResourceEntryBase(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for styled text UI resource entries.
 // GHIDRA_COMMENT
@@ -185,12 +238,11 @@ void * __cdecl TStaticText::GetTStaticTextClassNamePointer(void)
    Returns:
    - this pointer. */
 
-void __cdecl TStaticText::ConstructUiTextResourceEntryBase(void)
+void __thiscall TStaticText::ConstructUiTextResourceEntryBase(TStaticText *this)
 
 {
   int iVar1;
   undefined4 uVar2;
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -200,23 +252,23 @@ void __cdecl TStaticText::ConstructUiTextResourceEntryBase(void)
   puStack_8 = &LAB_0062f023;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructUiResourceEntryBase();
-  in_ECX[0x18] = 1;
-  *(undefined1 *)(in_ECX + 0x19) = 0;
-  in_ECX[0x1a] = 0;
-  in_ECX[0x1b] = 0;
-  in_ECX[0x1c] = 0;
-  in_ECX[0x1d] = 0;
-  in_ECX[0x1e] = g_nUiResourceEntryDefaultParam0;
-  in_ECX[0x1f] = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)(in_ECX + 0x20) = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (TStaticText)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
   local_4 = 0;
-  in_ECX[0x21] = 0;
-  in_ECX[0x22] = 0xffffffff;
-  in_ECX[0x23] = 0;
-  *(undefined2 *)(in_ECX + 0x24) = 0;
-  *in_ECX = &g_vtblTStaticText;
-  in_ECX[0x18] = 0xd;
+  *(undefined4 *)(this + 0x84) = 0;
+  *(undefined4 *)(this + 0x88) = 0xffffffff;
+  *(undefined4 *)(this + 0x8c) = 0;
+  *(undefined2 *)(this + 0x90) = 0;
+  *(undefined ***)this = &g_vtblTStaticText;
+  *(undefined4 *)(this + 0x60) = 0xd;
   iVar1 = AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,1);
   if (iVar1 == 0) {
@@ -225,7 +277,7 @@ void __cdecl TStaticText::ConstructUiTextResourceEntryBase(void)
   else {
     uVar2 = InitializeSharedStringRefFromEmpty();
   }
-  in_ECX[0x21] = uVar2;
+  *(undefined4 *)(this + 0x84) = uVar2;
   *unaff_FS_OFFSET = local_c;
   return;
 }

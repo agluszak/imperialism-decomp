@@ -15,7 +15,7 @@
 void * __thiscall TPirateMinister::thunk_ConstructTPirateMinisterBaseState(TPirateMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTPirateMinister;
   *(undefined2 *)(this + 0xc) = 2;
   return this;
@@ -23,17 +23,18 @@ void * __thiscall TPirateMinister::thunk_ConstructTPirateMinisterBaseState(TPira
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C7F
 // GHIDRA_NAME TPirateMinister::thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3
-// GHIDRA_PROTO void __cdecl thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternC_Mode2_Type2x3
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternC_Mode2_Type2x3 */
 
-void __cdecl TPirateMinister::thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
+void __thiscall
+TPirateMinister::thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this)
 
 {
-  InitializeRecruitQueuePatternC_Mode2_Type2x3();
+  InitializeRecruitQueuePatternC_Mode2_Type2x3(this);
   return;
 }
 
@@ -131,7 +132,7 @@ void * __cdecl TPirateMinister::GetTPirateMinisterClassNamePointer(void)
 void * __thiscall TPirateMinister::ConstructTPirateMinisterBaseState(TPirateMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTPirateMinister;
   *(undefined2 *)(this + 0xc) = 2;
   return this;
@@ -154,7 +155,7 @@ TPirateMinister::DestructTPirateMinisterAndMaybeFree(TPirateMinister *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDC40
 // GHIDRA_NAME TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3
-// GHIDRA_PROTO void __cdecl InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
+// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes recruit queue preset C: mode=2 with three type-2 orders and post-setup +2 adjustment.
 // GHIDRA_COMMENT_END
@@ -162,11 +163,10 @@ TPirateMinister::DestructTPirateMinisterAndMaybeFree(TPirateMinister *this,byte 
 /* Initializes recruit queue preset C: mode=2 with three type-2 orders and post-setup +2 adjustment.
     */
 
-void __cdecl TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
+void __thiscall TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this)
 
 {
   int iVar1;
-  int in_ECX;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -188,7 +188,7 @@ void __cdecl TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x18) = *(short *)(in_ECX + 0x18) + 1;
+    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 2;

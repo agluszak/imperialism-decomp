@@ -39,6 +39,50 @@ void * __thiscall TView::thunk_DestructTViewAndMaybeFree(TView *this,byte freeSe
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004064E2
+// GHIDRA_NAME TView::thunk_ConstructUiResourceEntryBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiResourceEntryBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiResourceEntryBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiResourceEntryBase */
+
+void __thiscall TView::thunk_ConstructUiResourceEntryBase(TView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  puStack_8 = &LAB_0062ebf8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 0x10) = 0x7fffffff;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined ***)this = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  uStack_4 = 0;
+  *(undefined4 *)(this + 0x3c) = 0;
+  *(undefined4 *)(this + 0x44) = 0;
+  *(undefined4 *)(this + 0x48) = 0;
+  this[0x4c] = (TView)0x1;
+  this[0x4d] = (TView)0x1;
+  *(undefined2 *)(this + 0x4e) = 0xffff;
+  *(undefined4 *)(this + 0x50) = 0;
+  *(undefined2 *)(this + 0x54) = 1;
+  InitializeSharedStringRefFromEmpty();
+  *(undefined4 *)(this + 0x5c) = 0;
+  *(undefined ***)this = &g_vtblTView;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A840
 // GHIDRA_NAME TView::CreateTViewInstance
 // GHIDRA_PROTO void * __cdecl CreateTViewInstance(void)
@@ -51,7 +95,7 @@ void * __thiscall TView::thunk_DestructTViewAndMaybeFree(TView *this,byte freeSe
 void * __cdecl TView::CreateTViewInstance(void)
 
 {
-  int iVar1;
+  TView *this;
   void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -62,10 +106,10 @@ void * __cdecl TView::CreateTViewInstance(void)
   puStack_8 = &LAB_0062ebda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  if (iVar1 != 0) {
-    thunk_ConstructUiResourceEntryBase();
+  if (this != (TView *)0x0) {
+    thunk_ConstructUiResourceEntryBase(this);
     *unaff_FS_OFFSET = local_c;
     return extraout_EAX;
   }
@@ -90,12 +134,11 @@ void * __cdecl TView::GetTViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A8E0
 // GHIDRA_NAME TView::ConstructUiResourceEntryBase
-// GHIDRA_PROTO void __cdecl ConstructUiResourceEntryBase(void)
+// GHIDRA_PROTO void __thiscall ConstructUiResourceEntryBase(void)
 
-void __cdecl TView::ConstructUiResourceEntryBase(void)
+void __thiscall TView::ConstructUiResourceEntryBase(TView *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -104,26 +147,26 @@ void __cdecl TView::ConstructUiResourceEntryBase(void)
   puStack_8 = &LAB_0062ebf8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  in_ECX[3] = 0;
-  in_ECX[4] = 0x7fffffff;
-  in_ECX[5] = 0;
-  in_ECX[6] = 0;
-  *in_ECX = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
-  in_ECX[8] = 0;
-  in_ECX[0xb] = 0;
-  in_ECX[0xc] = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 0x10) = 0x7fffffff;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined ***)this = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
   local_4 = 0;
-  in_ECX[0xf] = 0;
-  in_ECX[0x11] = 0;
-  in_ECX[0x12] = 0;
-  *(undefined1 *)(in_ECX + 0x13) = 1;
-  *(undefined1 *)((int)in_ECX + 0x4d) = 1;
-  *(undefined2 *)((int)in_ECX + 0x4e) = 0xffff;
-  in_ECX[0x14] = 0;
-  *(undefined2 *)(in_ECX + 0x15) = 1;
+  *(undefined4 *)(this + 0x3c) = 0;
+  *(undefined4 *)(this + 0x44) = 0;
+  *(undefined4 *)(this + 0x48) = 0;
+  this[0x4c] = (TView)0x1;
+  this[0x4d] = (TView)0x1;
+  *(undefined2 *)(this + 0x4e) = 0xffff;
+  *(undefined4 *)(this + 0x50) = 0;
+  *(undefined2 *)(this + 0x54) = 1;
   InitializeSharedStringRefFromEmpty();
-  in_ECX[0x17] = 0;
-  *in_ECX = &g_vtblTView;
+  *(undefined4 *)(this + 0x5c) = 0;
+  *(undefined ***)this = &g_vtblTView;
   *unaff_FS_OFFSET = local_c;
   return;
 }

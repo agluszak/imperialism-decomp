@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401CC1
 // GHIDRA_NAME TShipyardView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_InvalidateCityDialogRectRegion_At004c8a50 */
 
-void __cdecl TShipyardView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
+void __thiscall
+TShipyardView::thunk_WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(TShipyardView *this)
 
 {
-  WrapperFor_InvalidateCityDialogRectRegion_At004c8a50();
+  WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(this);
   return;
 }
 
@@ -145,7 +146,7 @@ void __thiscall TShipyardView::thunk_InitializeCityViewActionButtons(TShipyardVi
 void * __cdecl TShipyardView::CreateTShipyardViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -155,15 +156,15 @@ void * __cdecl TShipyardView::CreateTShipyardViewInstance(void)
   puStack_8 = &LAB_0063166a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xcc);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xcc);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    *puVar1 = &g_vtblTShipyardView;
-    puVar1[0x26] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined ***)this = &g_vtblTShipyardView;
+    *(undefined4 *)(this + 0x98) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -191,7 +192,7 @@ void * __cdecl TShipyardView::GetTShipyardViewClassNamePointer(void)
 void * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipyardView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTShipyardView;
   *(undefined4 *)(this + 0x94) = 0;
   *(undefined4 *)(this + 0x98) = 0;
@@ -426,23 +427,23 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8A50
 // GHIDRA_NAME TShipyardView::WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
-// GHIDRA_PROTO void __cdecl WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper for InvalidateCityDialogRectRegion.
 // GHIDRA_COMMENT_END
 
 /* Single-callee wrapper for InvalidateCityDialogRectRegion. */
 
-void __cdecl TShipyardView::WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
+void __thiscall
+TShipyardView::WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(TShipyardView *this)
 
 {
-  int in_ECX;
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
   
-  (**(code **)(**(int **)(in_ECX + 0x98) + 0x1dc))();
+  (**(code **)(**(int **)(this + 0x98) + 0x1dc))();
   uStack_10 = 0x16;
   uStack_c = 0xb4;
   uStack_8 = 0x124;

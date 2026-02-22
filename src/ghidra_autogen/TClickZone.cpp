@@ -21,6 +21,24 @@ void * __cdecl TClickZone::thunk_GetTClickZoneClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004038FF
+// GHIDRA_NAME TClickZone::thunk_ConstructUiCommandTagResourceEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiCommandTagResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiCommandTagResourceEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiCommandTagResourceEntry */
+
+void __thiscall TClickZone::thunk_ConstructUiCommandTagResourceEntry(TClickZone *this)
+
+{
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  *(undefined ***)this = &g_vtblTClickZone;
+  *(undefined2 *)(this + 0x84) = 7000;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408198
 // GHIDRA_NAME TClickZone::thunk_DestructTClickZoneAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTClickZoneAndMaybeFree(byte freeSelfFlag)
@@ -52,8 +70,8 @@ TClickZone::thunk_DestructTClickZoneAndMaybeFree(TClickZone *this,byte freeSelfF
 void * __cdecl TClickZone::CreateTClickZoneInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -63,17 +81,17 @@ void * __cdecl TClickZone::CreateTClickZoneInstance(void)
   puStack_8 = &LAB_006364ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &g_vtblTClickZone;
-    *(undefined2 *)(puVar1 + 0x21) = 7000;
-    puVar2 = puVar1;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTClickZone;
+    *(undefined2 *)(this + 0x84) = 7000;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005723F0
@@ -93,7 +111,7 @@ void * __cdecl TClickZone::GetTClickZoneClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572410
 // GHIDRA_NAME TClickZone::ConstructUiCommandTagResourceEntry
-// GHIDRA_PROTO void __cdecl ConstructUiCommandTagResourceEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructUiCommandTagResourceEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived command-tag UI entry over ConstructUiCommandTagResourceEntryBase; used by list/info/view/count style command-tag paths and sets +0x84 word to 7000.
 // GHIDRA_COMMENT_END
@@ -101,14 +119,12 @@ void * __cdecl TClickZone::GetTClickZoneClassNamePointer(void)
 /* Derived command-tag UI entry over ConstructUiCommandTagResourceEntryBase; used by
    list/info/view/count style command-tag paths and sets +0x84 word to 7000. */
 
-void __cdecl TClickZone::ConstructUiCommandTagResourceEntry(void)
+void __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZone *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-  *in_ECX = &g_vtblTClickZone;
-  *(undefined2 *)(in_ECX + 0x21) = 7000;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  *(undefined ***)this = &g_vtblTClickZone;
+  *(undefined2 *)(this + 0x84) = 7000;
   return;
 }
 

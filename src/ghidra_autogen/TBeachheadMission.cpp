@@ -5,17 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402A9F
 // GHIDRA_NAME TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext
-// GHIDRA_PROTO void __cdecl thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
+// GHIDRA_PROTO void __thiscall thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PopulateBeachheadMissionResourceWeightsFromNavyContext
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to PopulateBeachheadMissionResourceWeightsFromNavyContext */
 
-void __cdecl TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
+void __thiscall
+TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext
+          (TBeachheadMission *this)
 
 {
-  PopulateBeachheadMissionResourceWeightsFromNavyContext();
+  PopulateBeachheadMissionResourceWeightsFromNavyContext(this);
   return;
 }
 
@@ -147,10 +149,10 @@ TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady(TBeachhe
 /* Allocates and constructs TBeachheadMission object (0x40 bytes) and installs
    g_vtblTBeachheadMission. */
 
-undefined4 * TBeachheadMission::CreateTBeachheadMission(void)
+TMission * TBeachheadMission::CreateTBeachheadMission(void)
 
 {
-  undefined4 *puVar1;
+  TMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -160,27 +162,27 @@ undefined4 * TBeachheadMission::CreateTBeachheadMission(void)
   puStack_8 = &LAB_0063438a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x40);
+  this = (TMission *)AllocateWithFallbackHandler(0x40);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::thunk_ConstructTMission();
-    puVar1[5] = 0;
-    puVar1[6] = 0;
-    puVar1[7] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[10] = 0;
-    puVar1[0xb] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xe] = 0;
-    puVar1[0xf] = 0;
-    *puVar1 = &g_vtblTBeachheadMission;
+  if (this != (TMission *)0x0) {
+    TMission::thunk_ConstructTMission(this);
+    this[5].pVtable = (void *)0x0;
+    this[6].pVtable = (void *)0x0;
+    this[7].pVtable = (void *)0x0;
+    this[8].pVtable = (void *)0x0;
+    this[9].pVtable = (void *)0x0;
+    this[10].pVtable = (void *)0x0;
+    this[0xb].pVtable = (void *)0x0;
+    this[0xc].pVtable = (void *)0x0;
+    this[0xd].pVtable = (void *)0x0;
+    this[0xe].pVtable = (void *)0x0;
+    this[0xf].pVtable = (void *)0x0;
+    this->pVtable = &g_vtblTBeachheadMission;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A390
@@ -250,30 +252,30 @@ void * __cdecl TBeachheadMission::GetTBeachheadMissionClassNamePointer(void)
 /* Constructs TBeachheadMission fields from node/parent arguments and installs
    g_vtblTBeachheadMission. */
 
-undefined4 * __thiscall
+TMission * __thiscall
 TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
-          (undefined4 *param_1,undefined4 param_2,undefined4 param_3)
+          (TMission *param_1,void *param_2,void *param_3)
 
 {
-  TMission::thunk_ConstructTMission();
-  param_1[5] = param_2;
-  param_1[6] = 0;
-  param_1[7] = 0;
-  param_1[8] = 0;
-  param_1[9] = 0;
-  param_1[10] = 0;
-  param_1[0xb] = 0;
-  param_1[0xc] = 0;
-  param_1[0xd] = 0;
-  param_1[0xe] = 0;
-  param_1[0xf] = param_3;
-  *param_1 = &g_vtblTBeachheadMission;
+  TMission::thunk_ConstructTMission(param_1);
+  param_1[5].pVtable = param_2;
+  param_1[6].pVtable = (void *)0x0;
+  param_1[7].pVtable = (void *)0x0;
+  param_1[8].pVtable = (void *)0x0;
+  param_1[9].pVtable = (void *)0x0;
+  param_1[10].pVtable = (void *)0x0;
+  param_1[0xb].pVtable = (void *)0x0;
+  param_1[0xc].pVtable = (void *)0x0;
+  param_1[0xd].pVtable = (void *)0x0;
+  param_1[0xe].pVtable = (void *)0x0;
+  param_1[0xf].pVtable = param_3;
+  param_1->pVtable = &g_vtblTBeachheadMission;
   return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A500
 // GHIDRA_NAME TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext
-// GHIDRA_PROTO void __cdecl PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
+// GHIDRA_PROTO void __thiscall PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds beachhead mission resource-weight vector from navy order context and owner/ally scoring tables.
 // GHIDRA_COMMENT_END
@@ -282,7 +284,8 @@ TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
 /* Builds beachhead mission resource-weight vector from navy order context and owner/ally scoring
    tables. */
 
-void __cdecl TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
+void __thiscall
+TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(TBeachheadMission *this)
 
 {
   undefined2 uVar1;
@@ -296,16 +299,16 @@ void __cdecl TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyC
   uint uVar8;
   float *pfVar9;
   ushort *puVar10;
-  int in_ECX;
   int iVar11;
-  float10 fVar12;
+  TBeachheadMission *pTVar12;
+  float10 fVar13;
   float local_10 [4];
   
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
-  iVar11 = *(int *)(in_ECX + 0x14);
-  uVar1 = *(undefined2 *)(in_ECX + 4);
+  iVar11 = *(int *)(this + 0x14);
+  uVar1 = *(undefined2 *)(this + 4);
   local_10[3] = 0.0;
   for (pvVar7 = thunk_GetNavyPrimaryOrderListHead(); pvVar7 != (void *)0x0;
       pvVar7 = *(void **)((int)pvVar7 + 0x24)) {
@@ -355,20 +358,20 @@ void __cdecl TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyC
     fVar3 = _g_Populate_Beachhead_Mission_Value_0065AA24;
   }
   puVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  pfVar9 = (float *)(in_ECX + 0x2c);
+  pTVar12 = this + 0x2c;
   do {
     uVar2 = *puVar10;
     puVar10 = puVar10 + 1;
-    *pfVar9 = (float)(int)(short)uVar2 * fVar3 *
-              (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    pfVar9 = pfVar9 + 1;
+    *(float *)pTVar12 =
+         (float)(int)(short)uVar2 * fVar3 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    pTVar12 = pTVar12 + 4;
   } while ((int)puVar10 < 0x697960);
-  fVar12 = (float10)ComputeInvadeMissionPriorityScore();
+  fVar13 = (float10)ComputeInvadeMissionPriorityScore();
   pvVar7 = thunk_GetNavyContextPointerFromGlobalTableByIndex();
-  fVar3 = ((float)_g_Populate_Beachhead_Mission_Value_0065AA30 / (float)(int)pvVar7) * (float)fVar12
+  fVar3 = ((float)_g_Populate_Beachhead_Mission_Value_0065AA30 / (float)(int)pvVar7) * (float)fVar13
   ;
-  if (*(float *)(in_ECX + 0x38) < fVar3) {
-    *(float *)(in_ECX + 0x38) = fVar3;
+  if (*(float *)(this + 0x38) < fVar3) {
+    *(float *)(this + 0x38) = fVar3;
     return;
   }
   return;

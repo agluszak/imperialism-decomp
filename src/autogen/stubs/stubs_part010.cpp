@@ -68,7 +68,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004888f0(void)
 }
 
 // ghidra_name TStream::CreateTStreamInstance
-// ghidra_proto void __cdecl CreateTStreamInstance(void)
+// ghidra_proto void __thiscall CreateTStreamInstance(void)
 // FUNCTION: IMPERIALISM 0x00488920
 undefined4 CreateTStreamInstance(void)
 {
@@ -484,7 +484,7 @@ undefined4 WrapperFor_WriteBytesToSerializedBuffer_At00489290(void)
 }
 
 // ghidra_name TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
-// ghidra_proto void __cdecl WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
+// ghidra_proto void __thiscall WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
 // FUNCTION: IMPERIALISM 0x00489300
 undefined4 WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
 {
@@ -1084,7 +1084,7 @@ undefined4 GetTViewClassNamePointer(void)
 }
 
 // ghidra_name TView::ConstructUiResourceEntryBase
-// ghidra_proto void __cdecl ConstructUiResourceEntryBase(void)
+// ghidra_proto void __thiscall ConstructUiResourceEntryBase(void)
 // FUNCTION: IMPERIALISM 0x0048a8e0
 undefined4 ConstructUiResourceEntryBase(void)
 {
@@ -1660,7 +1660,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0048cad0(void)
 }
 
 // ghidra_name TScroller::CreateTScrollerInstance
-// ghidra_proto void __cdecl CreateTScrollerInstance(void)
+// ghidra_proto void __thiscall CreateTScrollerInstance(void)
 // FUNCTION: IMPERIALISM 0x0048cb00
 undefined4 CreateTScrollerInstance(void)
 {
@@ -1700,7 +1700,7 @@ undefined4 GetTIncludeViewClassNamePointer(void)
 }
 
 // ghidra_name TIncludeView::ConstructTurnEventUiEntryBase
-// ghidra_proto void __cdecl ConstructTurnEventUiEntryBase(void)
+// ghidra_proto void __thiscall ConstructTurnEventUiEntryBase(void)
 // FUNCTION: IMPERIALISM 0x0048cd70
 undefined4 ConstructTurnEventUiEntryBase(void)
 {
@@ -1772,7 +1772,7 @@ undefined4 thunk_WrapperFor_FreeLinkedBlockChain_At004925e0_0048D4E9(void)
 }
 
 // ghidra_name TWindow::ConstructUiWindowResourceEntryBase
-// ghidra_proto void __cdecl ConstructUiWindowResourceEntryBase(void)
+// ghidra_proto void __thiscall ConstructUiWindowResourceEntryBase(void)
 // FUNCTION: IMPERIALISM 0x0048d500
 undefined4 ConstructUiWindowResourceEntryBase(void)
 {
@@ -2020,7 +2020,7 @@ undefined4 GetTControlClassNamePointer(void)
 }
 
 // ghidra_name TControl::ConstructUiCommandTagResourceEntryBase
-// ghidra_proto void __cdecl ConstructUiCommandTagResourceEntryBase(void)
+// ghidra_proto void __thiscall ConstructUiCommandTagResourceEntryBase(void)
 // FUNCTION: IMPERIALISM 0x0048e520
 undefined4 ConstructUiCommandTagResourceEntryBase(void)
 {
@@ -2308,7 +2308,7 @@ undefined4 GetTStaticTextClassNamePointer(void)
 }
 
 // ghidra_name TStaticText::ConstructUiTextResourceEntryBase
-// ghidra_proto void __cdecl ConstructUiTextResourceEntryBase(void)
+// ghidra_proto void __thiscall ConstructUiTextResourceEntryBase(void)
 // FUNCTION: IMPERIALISM 0x0048f890
 undefined4 ConstructUiTextResourceEntryBase(void)
 {
@@ -2420,7 +2420,7 @@ undefined4 GetTEditTextClassNamePointer(void)
 }
 
 // ghidra_name TEditText::ConstructUiNumericTextEntryBase
-// ghidra_proto void __cdecl ConstructUiNumericTextEntryBase(void)
+// ghidra_proto void __thiscall ConstructUiNumericTextEntryBase(void)
 // FUNCTION: IMPERIALISM 0x004903a0
 undefined4 ConstructUiNumericTextEntryBase(void)
 {
@@ -2636,7 +2636,7 @@ undefined4 GetTClusterClassNamePointer(void)
 }
 
 // ghidra_name TCluster::ConstructUiResourceEntryType4B0C0
-// ghidra_proto void __cdecl ConstructUiResourceEntryType4B0C0(void)
+// ghidra_proto void __thiscall ConstructUiResourceEntryType4B0C0(void)
 // FUNCTION: IMPERIALISM 0x00491400
 undefined4 ConstructUiResourceEntryType4B0C0(void)
 {
@@ -2804,7 +2804,7 @@ undefined4 GetTFloatWindowClassNamePointer(void)
 }
 
 // ghidra_name TFloatWindow::ConstructUiWindowResourceEntryType4B340
-// ghidra_proto void __cdecl ConstructUiWindowResourceEntryType4B340(void)
+// ghidra_proto void __thiscall ConstructUiWindowResourceEntryType4B340(void)
 // FUNCTION: IMPERIALISM 0x00491fb0
 undefined4 ConstructUiWindowResourceEntryType4B340(void)
 {
@@ -3371,7 +3371,7 @@ undefined4 DrawTextWithCachedQuickDrawStyleState(void)
   return 0;
 }
 
-// ghidra_name RenderTradeScreenCommoditySummaryRows_Impl
+// ghidra_name TradeScreenPicture::RenderTradeScreenCommoditySummaryRows_Impl
 // ghidra_proto void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(void)
 // FUNCTION: IMPERIALISM 0x00494bf0
 undefined4 RenderTradeScreenCommoditySummaryRows_Impl(void)
@@ -3475,7 +3475,7 @@ undefined4 SetQuickDrawStyleWord_1D4E_AndMarkDirty(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty
+// ghidra_name TMapDialog::SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty
 // ghidra_proto void __cdecl SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB)
 // FUNCTION: IMPERIALISM 0x00495310
 undefined4 SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void)
@@ -3795,7 +3795,7 @@ undefined4 NoOpQuickDrawLifecycleHookB(void)
   return 0;
 }
 
-// ghidra_name GetSurfaceHeaderFromSurfaceObject
+// ghidra_name TMapDialog::GetSurfaceHeaderFromSurfaceObject
 // ghidra_proto int * __cdecl GetSurfaceHeaderFromSurfaceObject(int * pSurfaceObject)
 // FUNCTION: IMPERIALISM 0x00497300
 undefined4 GetSurfaceHeaderFromSurfaceObject(void)
@@ -3851,7 +3851,7 @@ undefined4 ResetClipRegionAndReadBoundingRect(void)
   return 0;
 }
 
-// ghidra_name FrameRegionOnHdcAndReleaseBrushState
+// ghidra_name TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState
 // ghidra_proto void __cdecl FrameRegionOnHdcAndReleaseBrushState(void)
 // FUNCTION: IMPERIALISM 0x00497860
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void)

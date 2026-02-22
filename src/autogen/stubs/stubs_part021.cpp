@@ -1251,8 +1251,8 @@ undefined4 WrapperFor_InvokeCurrentMessageFallbackHandler_At005fffe6(void)
   return 0;
 }
 
-// ghidra_name thunk_InvokeCurrentMessageFallbackHandler
-// ghidra_proto void __cdecl thunk_InvokeCurrentMessageFallbackHandler(void)
+// ghidra_name TMacViewMgr::thunk_InvokeCurrentMessageFallbackHandler
+// ghidra_proto void __thiscall thunk_InvokeCurrentMessageFallbackHandler(TMacViewMgr * pThis)
 // FUNCTION: IMPERIALISM 0x005ffffd
 undefined4 thunk_InvokeCurrentMessageFallbackHandler(void)
 {
@@ -1315,7 +1315,7 @@ undefined4 AllocateAndLinkBlockHead(void)
   return 0;
 }
 
-// ghidra_name FreeLinkedBlockChain
+// ghidra_name TInteriorMinister::FreeLinkedBlockChain
 // ghidra_proto undefined FreeLinkedBlockChain()
 // FUNCTION: IMPERIALISM 0x00601b94
 undefined4 FreeLinkedBlockChain(void)
@@ -2555,8 +2555,8 @@ undefined4 WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00607a4f(void)
   return 0;
 }
 
-// ghidra_name InvokeCurrentMessageFallbackHandler
-// ghidra_proto void __cdecl InvokeCurrentMessageFallbackHandler(void)
+// ghidra_name TMacViewMgr::InvokeCurrentMessageFallbackHandler
+// ghidra_proto void __thiscall InvokeCurrentMessageFallbackHandler(TMacViewMgr * pThis)
 // FUNCTION: IMPERIALISM 0x00607a84
 undefined4 InvokeCurrentMessageFallbackHandler(void)
 {
@@ -2579,7 +2579,7 @@ undefined4 GetOrCreateMfcHandleMap(void)
   return 0;
 }
 
-// ghidra_name GetOrCreateCWndFromHandle
+// ghidra_name TNewGameCommand::GetOrCreateCWndFromHandle
 // ghidra_proto undefined GetOrCreateCWndFromHandle()
 // FUNCTION: IMPERIALISM 0x00607b2f
 undefined4 GetOrCreateCWndFromHandle(void)
@@ -2587,7 +2587,7 @@ undefined4 GetOrCreateCWndFromHandle(void)
   return 0;
 }
 
-// ghidra_name LookupCWndByHwndNoAttach
+// ghidra_name TMacViewMgr::LookupCWndByHwndNoAttach
 // ghidra_proto undefined LookupCWndByHwndNoAttach()
 // FUNCTION: IMPERIALISM 0x00607b57
 undefined4 LookupCWndByHwndNoAttach(void)
@@ -3059,7 +3059,7 @@ undefined4 ScrollWindowOrRepositionChildren(void)
   return 0;
 }
 
-// ghidra_name RepositionChildControlsByIdRange
+// ghidra_name TMacViewMgr::RepositionChildControlsByIdRange
 // ghidra_proto undefined RepositionChildControlsByIdRange()
 // FUNCTION: IMPERIALISM 0x0060986b
 undefined4 RepositionChildControlsByIdRange(void)
@@ -3195,7 +3195,7 @@ undefined4 PrepareCtlColorTextAndBkColors(void)
   return 0;
 }
 
-// ghidra_name UpdateDataWithExchangeContext
+// ghidra_name TNewGameCommand::UpdateDataWithExchangeContext
 // ghidra_proto bool __thiscall UpdateDataWithExchangeContext(int bSaveAndValidate)
 // FUNCTION: IMPERIALISM 0x0060a1c4
 undefined4 UpdateDataWithExchangeContext(void)
@@ -3531,7 +3531,7 @@ undefined4 AfxComparePath(void)
   return 0;
 }
 
-// ghidra_name ExtractFileTitleOrPathTailComponent
+// ghidra_name CDocument::ExtractFileTitleOrPathTailComponent
 // ghidra_proto int __cdecl ExtractFileTitleOrPathTailComponent(char * sourcePath, char * outBuffer, uint outChars)
 // FUNCTION: IMPERIALISM 0x0060b72d
 undefined4 ExtractFileTitleOrPathTailComponent(void)

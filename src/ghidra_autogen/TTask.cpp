@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040311B
 // GHIDRA_NAME TTask::thunk_BuildTaskOverlayTerrainLabelFromTemplate
-// GHIDRA_PROTO void __cdecl thunk_BuildTaskOverlayTerrainLabelFromTemplate(void)
+// GHIDRA_PROTO void __thiscall thunk_BuildTaskOverlayTerrainLabelFromTemplate(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to BuildTaskOverlayTerrainLabelFromTemplate.
 // GHIDRA_COMMENT_END
@@ -13,13 +13,12 @@
 /* WARNING: Type propagation algorithm not settling */
 /* Thunk forwarding to BuildTaskOverlayTerrainLabelFromTemplate. */
 
-void __cdecl TTask::thunk_BuildTaskOverlayTerrainLabelFromTemplate(void)
+void __thiscall TTask::thunk_BuildTaskOverlayTerrainLabelFromTemplate(TTask *this)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  int *in_ECX;
   int *unaff_FS_OFFSET;
   int unaff_retaddr;
   int iVar4;
@@ -35,7 +34,7 @@ void __cdecl TTask::thunk_BuildTaskOverlayTerrainLabelFromTemplate(void)
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   aiStack_38[2] = 0x61636f61;
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)((int)this->pVtable + 0x94);
   aiStack_38[1] = 0x5ad78d;
   piVar3 = (int *)(*pcVar1)();
   iVar4 = *piVar3;
@@ -142,7 +141,7 @@ void TTask::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005adbb0(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD760
 // GHIDRA_NAME TTask::CreateTTaskInstance
-// GHIDRA_PROTO void __cdecl CreateTTaskInstance(void)
+// GHIDRA_PROTO void __thiscall CreateTTaskInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds task overlay label text using terrain/name token expansion and bracket parsing.
 // GHIDRA_COMMENT_END
@@ -150,13 +149,12 @@ void TTask::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005adbb0(void)
 /* WARNING: Type propagation algorithm not settling */
 /* Builds task overlay label text using terrain/name token expansion and bracket parsing. */
 
-void __cdecl TTask::CreateTTaskInstance(void)
+void __thiscall TTask::CreateTTaskInstance(TTask *this)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  int *in_ECX;
   int *unaff_FS_OFFSET;
   int unaff_retaddr;
   int iVar4;
@@ -172,7 +170,7 @@ void __cdecl TTask::CreateTTaskInstance(void)
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   aiStack_38[2] = 0x61636f61;
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)((int)this->pVtable + 0x94);
   aiStack_38[1] = 0x5ad78d;
   piVar3 = (int *)(*pcVar1)();
   iVar4 = *piVar3;

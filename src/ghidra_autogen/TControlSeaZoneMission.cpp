@@ -5,19 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004011C2
 // GHIDRA_NAME TControlSeaZoneMission::thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-// GHIDRA_PROTO void __cdecl thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
+// GHIDRA_PROTO void __thiscall thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure */
 
-void __cdecl
+void __thiscall
 TControlSeaZoneMission::thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-          (void)
+          (TControlSeaZoneMission *this)
 
 {
-  PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure();
+  PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(this);
   return;
 }
 
@@ -41,17 +41,18 @@ bool TControlSeaZoneMission::thunk_ReturnFalseForControlSeaZoneMissionCapability
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004027BB
 // GHIDRA_NAME TControlSeaZoneMission::thunk_ResolveAndQueuePortZoneMapOrder
-// GHIDRA_PROTO void __cdecl thunk_ResolveAndQueuePortZoneMapOrder(void)
+// GHIDRA_PROTO void __thiscall thunk_ResolveAndQueuePortZoneMapOrder(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ResolveAndQueuePortZoneMapOrder
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ResolveAndQueuePortZoneMapOrder */
 
-void __cdecl TControlSeaZoneMission::thunk_ResolveAndQueuePortZoneMapOrder(void)
+void __thiscall
+TControlSeaZoneMission::thunk_ResolveAndQueuePortZoneMapOrder(TControlSeaZoneMission *this)
 
 {
-  ResolveAndQueuePortZoneMapOrder();
+  ResolveAndQueuePortZoneMapOrder(this);
   return;
 }
 
@@ -171,7 +172,7 @@ TControlSeaZoneMission::DestroyTControlSeaZoneMission(TControlSeaZoneMission *th
 void * TControlSeaZoneMission::CreateTControlSeaZoneMission(void)
 
 {
-  undefined4 *puVar1;
+  TMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -181,23 +182,23 @@ void * TControlSeaZoneMission::CreateTControlSeaZoneMission(void)
   puStack_8 = &LAB_0063434a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)AllocateWithFallbackHandler(0x3c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::thunk_ConstructTMission();
-    puVar1[5] = 0;
-    puVar1[6] = 0;
-    puVar1[7] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[10] = 0;
-    puVar1[0xb] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xe] = 0;
-    *puVar1 = &g_vtblTControlSeaZoneMission;
+  if (this != (TMission *)0x0) {
+    TMission::thunk_ConstructTMission(this);
+    this[5].pVtable = (void *)0x0;
+    this[6].pVtable = (void *)0x0;
+    this[7].pVtable = (void *)0x0;
+    this[8].pVtable = (void *)0x0;
+    this[9].pVtable = (void *)0x0;
+    this[10].pVtable = (void *)0x0;
+    this[0xb].pVtable = (void *)0x0;
+    this[0xc].pVtable = (void *)0x0;
+    this[0xd].pVtable = (void *)0x0;
+    this[0xe].pVtable = (void *)0x0;
+    this->pVtable = &g_vtblTControlSeaZoneMission;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -220,7 +221,7 @@ void * __cdecl TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005393A0
 // GHIDRA_NAME TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-// GHIDRA_PROTO void __cdecl PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
+// GHIDRA_PROTO void __thiscall PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds ControlSeaZone mission category weights from allied navy primary-order distribution for mission target context.
 // GHIDRA_COMMENT_END
@@ -229,8 +230,9 @@ void * __cdecl TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer
 /* Builds ControlSeaZone mission category weights from allied navy primary-order distribution for
    mission target context. */
 
-void __cdecl
-TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
+void __thiscall
+TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
+          (TControlSeaZoneMission *this)
 
 {
   undefined2 uVar1;
@@ -244,15 +246,15 @@ TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNa
   uint uVar8;
   float *pfVar9;
   ushort *puVar10;
-  int in_ECX;
   int iVar11;
+  TControlSeaZoneMission *pTVar12;
   float local_10 [4];
   
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
-  iVar11 = *(int *)(in_ECX + 0x14);
-  uVar1 = *(undefined2 *)(in_ECX + 4);
+  iVar11 = *(int *)(this + 0x14);
+  uVar1 = *(undefined2 *)(this + 4);
   local_10[3] = 0.0;
   for (pvVar7 = thunk_GetNavyPrimaryOrderListHead(); pvVar7 != (void *)0x0;
       pvVar7 = *(void **)((int)pvVar7 + 0x24)) {
@@ -302,13 +304,13 @@ TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNa
     fVar3 = _g_Populate_Beachhead_Mission_Value_0065AA24;
   }
   puVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  pfVar9 = (float *)(in_ECX + 0x2c);
+  pTVar12 = this + 0x2c;
   do {
     uVar2 = *puVar10;
     puVar10 = puVar10 + 1;
-    *pfVar9 = (float)(int)(short)uVar2 * fVar3 *
-              (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    pfVar9 = pfVar9 + 1;
+    *(float *)pTVar12 =
+         (float)(int)(short)uVar2 * fVar3 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    pTVar12 = pTVar12 + 4;
   } while ((int)puVar10 < 0x697960);
   return;
 }
@@ -340,7 +342,7 @@ TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00539640
 // GHIDRA_NAME TControlSeaZoneMission::ResolveAndQueuePortZoneMapOrder
-// GHIDRA_PROTO void __cdecl ResolveAndQueuePortZoneMapOrder(void)
+// GHIDRA_PROTO void __thiscall ResolveAndQueuePortZoneMapOrder(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resolves a port-zone context command into a queued order type.
 // GHIDRA_COMMENT
@@ -374,14 +376,14 @@ TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
    Returns:
    - void. */
 
-void __cdecl TControlSeaZoneMission::ResolveAndQueuePortZoneMapOrder(void)
+void __thiscall
+TControlSeaZoneMission::ResolveAndQueuePortZoneMapOrder(TControlSeaZoneMission *this)
 
 {
   char cVar1;
   int extraout_EAX;
   void *pvVar2;
   int extraout_EAX_00;
-  int in_ECX;
   uint uVar3;
   int iVar4;
   void *in_stack_00000004;
@@ -393,7 +395,7 @@ void __cdecl TControlSeaZoneMission::ResolveAndQueuePortZoneMapOrder(void)
   local_8 = 0;
   do {
     cVar1 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x48))
-                      (iVar4,*(undefined2 *)(in_ECX + 4));
+                      (iVar4,*(undefined2 *)(this + 4));
     if (cVar1 != '\0') {
       uVar3 = uVar3 | 1 << ((byte)iVar4 & 0x1f);
       thunk_FindFirstPortZoneContextByNation();

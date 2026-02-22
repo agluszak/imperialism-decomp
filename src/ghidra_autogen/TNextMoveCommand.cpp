@@ -48,8 +48,8 @@ void * __cdecl TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer(void)
 void * __cdecl TNextMoveCommand::CreateTNextMoveCommandInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCommand *this;
+  TCommand *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,16 +59,16 @@ void * __cdecl TNextMoveCommand::CreateTNextMoveCommandInstance(void)
   puStack_8 = &LAB_0063873a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar1 = &g_vtblTNextMoveCommand;
-    puVar2 = puVar1;
+  pTVar1 = (TCommand *)0x0;
+  if (this != (TCommand *)0x0) {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &g_vtblTNextMoveCommand;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6540
@@ -93,7 +93,7 @@ void * __cdecl TNextMoveCommand::GetTNextMoveCommandClassNamePointer(void)
 void * __thiscall TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMoveCommand *this)
 
 {
-  TCommand::thunk_ConstructTurnEventPacketBase();
+  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
   *(undefined ***)this = &g_vtblTNextMoveCommand;
   return this;
 }

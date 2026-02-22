@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402CF7
 // GHIDRA_NAME TRailAmtBar::thunk_SelectTradeSummaryMetricByTagAndUpdateBarValues
-// GHIDRA_PROTO void __cdecl thunk_SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
+// GHIDRA_PROTO void __thiscall thunk_SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Direct JMP thunk to SelectTradeSummaryMetricByTagAndUpdateBarValues.
 // GHIDRA_COMMENT_END
 
 /* Direct JMP thunk to SelectTradeSummaryMetricByTagAndUpdateBarValues. */
 
-void __cdecl TRailAmtBar::thunk_SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
+void __thiscall
+TRailAmtBar::thunk_SelectTradeSummaryMetricByTagAndUpdateBarValues(TRailAmtBar *this)
 
 {
-  SelectTradeSummaryMetricByTagAndUpdateBarValues();
+  SelectTradeSummaryMetricByTagAndUpdateBarValues(this);
   return;
 }
 
@@ -68,7 +69,7 @@ TRailAmtBar::thunk_DestructTRailAmtBarAndMaybeFree(TRailAmtBar *this,byte freeSe
 void * __thiscall TRailAmtBar::thunk_ConstructTRailAmtBarBaseState(TRailAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTRailAmtBar;
   *(undefined2 *)(this + 0x60) = 0;
   *(undefined2 *)(this + 0x62) = 0;
@@ -84,7 +85,7 @@ void * __thiscall TRailAmtBar::thunk_ConstructTRailAmtBarBaseState(TRailAmtBar *
 void * __cdecl TRailAmtBar::CreateTRailAmtBarInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -94,17 +95,17 @@ void * __cdecl TRailAmtBar::CreateTRailAmtBarInstance(void)
   puStack_8 = &LAB_006379da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *(undefined2 *)(puVar1 + 0x18) = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0;
-    *(undefined2 *)(puVar1 + 0x19) = 0;
-    *(undefined2 *)((int)puVar1 + 0x66) = 0;
-    *puVar1 = &g_vtblTRailAmtBar;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined2 *)(this + 0x60) = 0;
+    *(undefined2 *)(this + 0x62) = 0;
+    *(undefined2 *)(this + 100) = 0;
+    *(undefined2 *)(this + 0x66) = 0;
+    *(undefined ***)this = &g_vtblTRailAmtBar;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -132,7 +133,7 @@ void * __cdecl TRailAmtBar::GetTRailAmtBarClassNamePointer(void)
 void * __thiscall TRailAmtBar::ConstructTRailAmtBarBaseState(TRailAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTRailAmtBar;
   *(undefined2 *)(this + 0x60) = 0;
   *(undefined2 *)(this + 0x62) = 0;
@@ -157,7 +158,7 @@ void * __thiscall TRailAmtBar::DestructTRailAmtBarAndMaybeFree(TRailAmtBar *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A020
 // GHIDRA_NAME TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues
-// GHIDRA_PROTO void __cdecl SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
+// GHIDRA_PROTO void __thiscall SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Maps selected summary tag (food popu prof powe rail airt) to nation metric entry then recomputes normalized/current bar values.
 // GHIDRA_COMMENT_END
@@ -165,7 +166,7 @@ void * __thiscall TRailAmtBar::DestructTRailAmtBarAndMaybeFree(TRailAmtBar *this
 /* Maps selected summary tag (food popu prof powe rail airt) to nation metric entry then recomputes
    normalized/current bar values. */
 
-void __cdecl TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
+void __thiscall TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues(TRailAmtBar *this)
 
 {
   uint uVar1;
@@ -175,7 +176,6 @@ void __cdecl TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
   short sVar4;
   short sVar5;
   undefined2 uVar6;
-  int in_ECX;
   int iVar7;
   int in_stack_00000004;
   
@@ -186,7 +186,7 @@ void __cdecl TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
   else {
     iVar7 = *(int *)((int)g_apNationStates[extraout_AX] + 0x894);
   }
-  uVar1 = *(uint *)(*(int *)(in_ECX + 0x20) + 0x1c);
+  uVar1 = *(uint *)(*(int *)(this + 0x20) + 0x1c);
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
       in_stack_00000004 = 0x3c;
@@ -210,7 +210,7 @@ void __cdecl TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
     in_stack_00000004 = 0x17;
   }
   piVar2 = *(int **)(iVar7 + 0xe4 + (short)in_stack_00000004 * 4);
-  *(int **)(in_ECX + 0x68) = piVar2;
+  *(int **)(this + 0x68) = piVar2;
   if ((in_stack_00000004 == 0x33) || (in_stack_00000004 == 7)) {
     iVar3 = *(int *)(*(int *)(iVar7 + 0x1d8) + 0x14);
     sVar4 = (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 +
@@ -223,20 +223,20 @@ void __cdecl TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
     uVar6 = 9999;
   }
   else {
-    sVar5 = (**(code **)(**(int **)(in_ECX + 0x68) + 0x30))();
-    uVar6 = (undefined2)(((int)sVar5 * *(int *)(in_ECX + 0x34)) / (int)sVar4);
+    sVar5 = (**(code **)(**(int **)(this + 0x68) + 0x30))();
+    uVar6 = (undefined2)(((int)sVar5 * *(int *)(this + 0x34)) / (int)sVar4);
   }
-  *(undefined2 *)(in_ECX + 0x62) = uVar6;
-  *(short *)(in_ECX + 100) = sVar4;
+  *(undefined2 *)(this + 0x62) = uVar6;
+  *(short *)(this + 100) = sVar4;
   if (sVar4 == 0) {
     uVar6 = 9999;
   }
   else {
     uVar6 = (undefined2)
-            ((*(int *)(in_ECX + 0x34) * (int)*(short *)(*(int *)(in_ECX + 0x68) + 4)) / (int)sVar4);
+            ((*(int *)(this + 0x34) * (int)*(short *)(*(int *)(this + 0x68) + 4)) / (int)sVar4);
   }
-  *(undefined2 *)(in_ECX + 0x60) = uVar6;
-  *(undefined2 *)(in_ECX + 0x66) = 0x3a;
+  *(undefined2 *)(this + 0x60) = uVar6;
+  *(undefined2 *)(this + 0x66) = 0x3a;
   thunk_NoOpUiLifecycleHook();
   return;
 }

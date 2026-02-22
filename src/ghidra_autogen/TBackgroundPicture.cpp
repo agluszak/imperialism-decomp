@@ -5,19 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401AFA
 // GHIDRA_NAME TBackgroundPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
+// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00572d00
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00572d00 */
 
-void TBackgroundPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-               (void)
+void __thiscall
+TBackgroundPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
+          (TBackgroundPicture *this)
 
 {
-  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00();
+  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(this);
   return;
 }
 
@@ -135,21 +135,20 @@ TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D00
 // GHIDRA_NAME TBackgroundPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
    instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
 
-void TBackgroundPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
+void __thiscall
+TBackgroundPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
+          (TBackgroundPicture *this)
 
 {
-  void *in_ECX;
-  
-  thunk_RenderHintHelperWithCtrlModifierOverlay(in_ECX);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
   return;
 }
 

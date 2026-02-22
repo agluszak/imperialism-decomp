@@ -23,12 +23,11 @@ void * __cdecl TRemoteGreatPower::thunk_GetTRemoteGreatPowerClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040978C
 // GHIDRA_NAME TRemoteGreatPower::thunk_DestructTRemoteGreatPower
-// GHIDRA_PROTO void __cdecl thunk_DestructTRemoteGreatPower(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTRemoteGreatPower(void)
 
-void __cdecl TRemoteGreatPower::thunk_DestructTRemoteGreatPower(void)
+void __thiscall TRemoteGreatPower::thunk_DestructTRemoteGreatPower(TRemoteGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -41,19 +40,18 @@ void __cdecl TRemoteGreatPower::thunk_DestructTRemoteGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541AB0
 // GHIDRA_NAME TRemoteGreatPower::DestructTRemoteGreatPower
-// GHIDRA_PROTO void __cdecl DestructTRemoteGreatPower(void)
+// GHIDRA_PROTO void __thiscall DestructTRemoteGreatPower(void)
 
-void __cdecl TRemoteGreatPower::DestructTRemoteGreatPower(void)
+void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -66,7 +64,7 @@ void __cdecl TRemoteGreatPower::DestructTRemoteGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

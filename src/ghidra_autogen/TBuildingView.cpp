@@ -47,7 +47,7 @@ void * __cdecl TBuildingView::thunk_GetTBuildingViewClassNamePointer(void)
 void * __cdecl TBuildingView::CreateTBuildingViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,14 +57,14 @@ void * __cdecl TBuildingView::CreateTBuildingViewInstance(void)
   puStack_8 = &LAB_0063154a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &g_vtblTBuildingView;
-    puVar1[0x25] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &g_vtblTBuildingView;
+    *(undefined4 *)(this + 0x94) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -92,7 +92,7 @@ void * __cdecl TBuildingView::GetTBuildingViewClassNamePointer(void)
 void * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuildingView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTBuildingView;
   *(undefined4 *)(this + 0x94) = 0;
   return this;

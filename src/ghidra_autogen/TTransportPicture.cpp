@@ -23,17 +23,17 @@ void * __cdecl TTransportPicture::thunk_GetTTransportPictureClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004024C8
 // GHIDRA_NAME TTransportPicture::thunk_Cluster_NationStateHint_005921c0
-// GHIDRA_PROTO void __cdecl thunk_Cluster_NationStateHint_005921c0(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_NationStateHint_005921c0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_NationStateHint_005921c0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_NationStateHint_005921c0 */
 
-void __cdecl TTransportPicture::thunk_Cluster_NationStateHint_005921c0(void)
+void __thiscall TTransportPicture::thunk_Cluster_NationStateHint_005921c0(TTransportPicture *this)
 
 {
-  RenderTransportPictureGaugeAndLabels();
+  RenderTransportPictureGaugeAndLabels(this);
   return;
 }
 
@@ -297,7 +297,7 @@ LAB_00592108:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005921C0
 // GHIDRA_NAME TTransportPicture::RenderTransportPictureGaugeAndLabels
-// GHIDRA_PROTO void __cdecl RenderTransportPictureGaugeAndLabels(void)
+// GHIDRA_PROTO void __thiscall RenderTransportPictureGaugeAndLabels(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TTransportPicture render/update path: computes gauge span, applies clip/fill, and formats transport label text with nation context.
 // GHIDRA_COMMENT_END
@@ -306,7 +306,7 @@ LAB_00592108:
 /* [ClassLane] TTransportPicture render/update path: computes gauge span, applies clip/fill, and
    formats transport label text with nation context. */
 
-void __cdecl TTransportPicture::RenderTransportPictureGaugeAndLabels(void)
+void __thiscall TTransportPicture::RenderTransportPictureGaugeAndLabels(TTransportPicture *this)
 
 {
   code *pcVar1;
@@ -317,7 +317,6 @@ void __cdecl TTransportPicture::RenderTransportPictureGaugeAndLabels(void)
   short extraout_AX;
   int iVar6;
   int *piVar7;
-  int *in_ECX;
   short sVar8;
   int iVar9;
   int *unaff_FS_OFFSET;
@@ -354,11 +353,11 @@ void __cdecl TTransportPicture::RenderTransportPictureGaugeAndLabels(void)
   InitializeSharedStringRefFromEmpty();
   local_4 = CONCAT31(local_4._1_3_,3);
   sVar8 = 0x61;
-  if (200 < in_ECX[9]) {
+  if (200 < *(int *)(this + 0x24)) {
     sVar8 = 0x5d;
   }
-  local_3c = (float)(int)*(short *)((int)in_ECX + 0x96);
-  fVar5 = (float)(int)(short)in_ECX[0x25];
+  local_3c = (float)(int)*(short *)(this + 0x96);
+  fVar5 = (float)(int)*(short *)(this + 0x94);
   fVar3 = _g_Render_Transport_Picture_Value_006631B8 / local_3c;
   fVar4 = _g_Render_Transport_Picture_Value_006631B8 - fVar3 * local_3c;
   if (fVar4 < fVar5) {
@@ -368,7 +367,7 @@ void __cdecl TTransportPicture::RenderTransportPictureGaugeAndLabels(void)
   }
   else {
     local_38 = (undefined1 *)
-               ((float)(int)(short)in_ECX[0x25] *
+               ((float)(int)*(short *)(this + 0x94) *
                (fVar3 - (float)_g_Render_Transport_Picture_Value_006631A0));
   }
   ApplyHitRegionToClipState();
@@ -386,8 +385,8 @@ void __cdecl TTransportPicture::RenderTransportPictureGaugeAndLabels(void)
   uStack_24 = 0x11;
   iStack_30 = iVar9;
   iStack_28 = iVar6;
-  if (in_ECX[7] == 0x746f7461) {
-    if (*(short *)((int)in_ECX + 0x96) == (short)in_ECX[0x25]) {
+  if (*(int *)(this + 0x1c) == 0x746f7461) {
+    if (*(short *)(this + 0x96) == *(short *)(this + 0x94)) {
       iVar6 = *g_pUiRuntimeContext;
       goto LAB_00592373;
     }
@@ -403,12 +402,12 @@ LAB_00592373:
   SnapshotHitRegionToClipCache();
   local_38 = &stack0xffffff9c;
   SetQuickDrawFillColor();
-  if (-1 < (short)in_ECX[0x26]) {
+  if (-1 < *(short *)(this + 0x98)) {
     iStack_34 = iVar9 + -1;
     iStack_2c = iVar9 + 0x72;
     iStack_30 = 0x12;
     iStack_28 = 0x14;
-    if ((short)in_ECX[0x25] < (short)in_ECX[0x26]) {
+    if (*(short *)(this + 0x94) < *(short *)(this + 0x98)) {
       (**(code **)(*g_pUiRuntimeContext + 0x34))();
     }
     else {
@@ -420,7 +419,7 @@ LAB_00592373:
     local_38 = &stack0xffffff9c;
     SetQuickDrawFillColor();
   }
-  local_38 = (undefined1 *)*in_ECX;
+  local_38 = *(undefined1 **)this;
   pcVar1 = *(code **)((int)local_38 + 0x94);
   piVar7 = (int *)(*pcVar1)();
   if (piVar7 == (int *)0x0) {
@@ -443,32 +442,32 @@ LAB_00592373:
   local_10 = CONCAT31(local_10._1_3_,3);
   ReleaseSharedStringRefIfNotEmpty();
   (**(code **)(*piVar7 + 0x1c8))();
-  if (*(short *)((int)in_ECX + 0x92) == 0x16) {
+  if (*(short *)(this + 0x92) == 0x16) {
     piVar7 = (int *)(*pcVar1)(0x76616c75);
     if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar6 = *g_pLocalizationTable;
-    iVar9 = (short)in_ECX[0x25] * 200;
+    iVar9 = *(short *)(this + 0x94) * 200;
   }
   else {
-    if (*(short *)((int)in_ECX + 0x92) != 0x15) goto LAB_005925fa;
+    if (*(short *)(this + 0x92) != 0x15) goto LAB_005925fa;
     piVar7 = (int *)(*pcVar1)(0x76616c75);
     if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar6 = *g_pLocalizationTable;
-    iVar9 = (short)in_ECX[0x25] * 500;
+    iVar9 = *(short *)(this + 0x94) * 500;
   }
   (**(code **)(iVar6 + 0x74))(iVar9,&stack0xffffff9c);
   (**(code **)(*piVar7 + 0x1c8))(&stack0xffffff94,1);
 LAB_005925fa:
-  if (in_ECX[7] != 0x746f7461) {
+  if (*(int *)(this + 0x1c) != 0x746f7461) {
     thunk_GetActiveNationId();
     pvVar2 = g_apNationStates[extraout_AX];
-    piVar7 = (int *)(**(code **)(*(int *)in_ECX[8] + 0x94))(0x746f7461);
+    piVar7 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x746f7461);
     if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

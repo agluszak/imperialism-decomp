@@ -47,7 +47,7 @@ TMiniMapView::thunk_DestructTMiniMapViewAndMaybeFree(TMiniMapView *this,byte fre
 void * __cdecl TMiniMapView::CreateTMiniMapViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,19 +57,19 @@ void * __cdecl TMiniMapView::CreateTMiniMapViewInstance(void)
   puStack_8 = &LAB_0063850a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &g_vtblTMiniMapView;
-    puVar1[0x24] = 0;
-    puVar1[0x25] = 0;
-    puVar1[0x22] = 0;
-    puVar1[0x23] = 0;
-    puVar1[0x26] = (int)g_wMiniMapViewHalfWidth;
-    puVar1[0x27] = 8;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTMiniMapView;
+    *(undefined4 *)(this + 0x90) = 0;
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined4 *)(this + 0x88) = 0;
+    *(undefined4 *)(this + 0x8c) = 0;
+    *(int *)(this + 0x98) = (int)g_wMiniMapViewHalfWidth;
+    *(undefined4 *)(this + 0x9c) = 8;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -97,7 +97,7 @@ void * __cdecl TMiniMapView::GetTMiniMapViewClassNamePointer(void)
 void * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
   *(undefined ***)this = &g_vtblTMiniMapView;
   *(undefined4 *)(this + 0x90) = 0;
   *(undefined4 *)(this + 0x94) = 0;

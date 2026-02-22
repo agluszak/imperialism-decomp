@@ -49,8 +49,8 @@ void TPageCorner::thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f85
 void * __cdecl TPageCorner::CreateTPageCornerInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TColorKeyPicture *this;
+  TColorKeyPicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -60,16 +60,16 @@ void * __cdecl TPageCorner::CreateTPageCornerInstance(void)
   puStack_8 = &LAB_0063621a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TColorKeyPicture *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48();
-    *puVar1 = &PTR_thunk_GetTPageCornerClassNamePointer_0063f1f8;
-    puVar2 = puVar1;
+  pTVar1 = (TColorKeyPicture *)0x0;
+  if (this != (TColorKeyPicture *)0x0) {
+    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(this);
+    *(undefined ***)this = &PTR_thunk_GetTPageCornerClassNamePointer_0063f1f8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F830

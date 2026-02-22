@@ -23,17 +23,18 @@ TDealBookPicture::thunk_UpdateDealBookResourceSelectionAndToggleControls
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004074C8
 // GHIDRA_NAME TDealBookPicture::thunk_BuildSelectedNationOrderCapabilityRows
-// GHIDRA_PROTO void __cdecl thunk_BuildSelectedNationOrderCapabilityRows(void)
+// GHIDRA_PROTO void __thiscall thunk_BuildSelectedNationOrderCapabilityRows(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to BuildSelectedNationOrderCapabilityRows
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to BuildSelectedNationOrderCapabilityRows */
 
-void __cdecl TDealBookPicture::thunk_BuildSelectedNationOrderCapabilityRows(void)
+void __thiscall
+TDealBookPicture::thunk_BuildSelectedNationOrderCapabilityRows(TDealBookPicture *this)
 
 {
-  BuildSelectedNationOrderCapabilityRows();
+  BuildSelectedNationOrderCapabilityRows(this);
   return;
 }
 
@@ -77,17 +78,17 @@ TDealBookPicture::thunk_DestructTDealBookPictureAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040909D
 // GHIDRA_NAME TDealBookPicture::thunk_Cluster_ArmyNavyHint_005bbc30
-// GHIDRA_PROTO void __cdecl thunk_Cluster_ArmyNavyHint_005bbc30(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_ArmyNavyHint_005bbc30(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_ArmyNavyHint_005bbc30
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_ArmyNavyHint_005bbc30 */
 
-void __cdecl TDealBookPicture::thunk_Cluster_ArmyNavyHint_005bbc30(void)
+void __thiscall TDealBookPicture::thunk_Cluster_ArmyNavyHint_005bbc30(TDealBookPicture *this)
 
 {
-  HandleDealBookTradeCommandAndRefreshNationLines();
+  HandleDealBookTradeCommandAndRefreshNationLines(this);
   return;
 }
 
@@ -292,11 +293,11 @@ TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BB2E0
 // GHIDRA_NAME TDealBookPicture::BuildSelectedNationOrderCapabilityRows
-// GHIDRA_PROTO void __cdecl BuildSelectedNationOrderCapabilityRows(void)
+// GHIDRA_PROTO void __thiscall BuildSelectedNationOrderCapabilityRows(void)
 
 /* WARNING: Type propagation algorithm not settling */
 
-void __cdecl TDealBookPicture::BuildSelectedNationOrderCapabilityRows(void)
+void __thiscall TDealBookPicture::BuildSelectedNationOrderCapabilityRows(TDealBookPicture *this)
 
 {
   short sVar1;
@@ -306,8 +307,7 @@ void __cdecl TDealBookPicture::BuildSelectedNationOrderCapabilityRows(void)
   int *dst_ref_ptr;
   undefined4 uVar5;
   int *piVar6;
-  int *in_ECX;
-  TLineData *this;
+  TLineData *this_00;
   undefined2 uVar7;
   int iVar8;
   int *unaff_FS_OFFSET;
@@ -342,28 +342,28 @@ void __cdecl TDealBookPicture::BuildSelectedNationOrderCapabilityRows(void)
   *unaff_FS_OFFSET = (int)&iStack_c;
   local_12 = 0;
   local_11 = 0;
-  *(undefined1 *)(in_ECX + 0x2c) = 1;
+  this[0xb0] = (TDealBookPicture)0x1;
   local_10 = 0;
   local_f = 0;
   iVar8 = 0;
   local_68[1] = 0;
   local_68[0] = 0;
-  if ((char)*(int *)((int)g_apNationStates[(short)in_ECX[0x24]] + 0x8fc) < '\x01') {
-    iVar2 = (**(code **)(*(int *)g_apNationStates[(short)in_ECX[0x24]] + 0x180))();
+  if ((char)*(int *)((int)g_apNationStates[*(short *)(this + 0x90)] + 0x8fc) < '\x01') {
+    iVar2 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x180))();
     if (iVar2 == 0) goto LAB_005bb355;
   }
-  *(undefined1 *)(in_ECX + 0x2c) = 0;
+  this[0xb0] = (TDealBookPicture)0x0;
 LAB_005bb355:
   do {
-    sVar1 = (**(code **)(*(int *)g_apNationStates[(short)in_ECX[0x24]] + 0x1b4))(iVar8);
+    sVar1 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x1b4))(iVar8);
     if (sVar1 != 0) {
-      *(undefined1 *)(in_ECX + 0x2c) = 0;
+      this[0xb0] = (TDealBookPicture)0x0;
       puVar9 = auStack_6c;
-      (**(code **)(*(int *)g_apNationStates[(short)in_ECX[0x24]] + 0x1bc))
+      (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x1bc))
                 (iVar8,1,auStack_6a,auStack_6c,puVar9,auStack_34);
       uVar7 = (undefined2)iVar8;
       if ((short)((uint)puVar9 >> 0x10) == 1) {
-        *(undefined1 *)(in_ECX + 0x2c) = 0;
+        this[0xb0] = (TDealBookPicture)0x0;
         pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
         aiStack_28[3] = 0;
         pTStack_50 = pTVar3;
@@ -379,7 +379,7 @@ LAB_005bb355:
         iStack_44 = 0x1e;
         thunk_SetLineDataRowAndBounds(pTVar3,0,0x1e,&iStack_48);
         *(undefined2 *)(pTVar3 + 0x10) = uVar7;
-        (**(code **)(*(int *)in_ECX[0x26] + 0x1a4))(pTVar3);
+        (**(code **)(**(int **)(this + 0x98) + 0x1a4))(pTVar3);
         iStack_48 = (int)sVar1;
         sVar1 = 1;
         do {
@@ -393,7 +393,7 @@ LAB_005bb355:
             TLineData::ConstructTLineDataBaseState(pTVar3);
             *(undefined ***)pTVar3 = &g_vtblTDealLine;
           }
-          iStack_44 = CONCAT22(iStack_44._2_2_,(short)in_ECX[0x24]);
+          iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)(this + 0x90));
           uStack_4 = 0xffffffff;
           aiStack_40[0] = 200;
           aiStack_40[1] = 0x1e;
@@ -401,14 +401,14 @@ LAB_005bb355:
           *(undefined2 *)(pTVar3 + 0x10) = uVar7;
           *(undefined2 *)(pTVar3 + 0x12) = (undefined2)iStack_44;
           *(short *)(pTVar3 + 0x14) = sVar1;
-          (**(code **)(*(int *)in_ECX[0x26] + 0x1a0))(pTVar3);
+          (**(code **)(**(int **)(this + 0x98) + 0x1a0))(pTVar3);
           sVar1 = sVar1 + 1;
           iStack_48 = iStack_48 + -1;
         } while (iStack_48 != 0);
         iStack_48 = 0;
       }
       else {
-        *(undefined1 *)(in_ECX + 0x2c) = 0;
+        this[0xb0] = (TDealBookPicture)0x0;
         pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
         aiStack_28[3] = 2;
         pTStack_50 = pTVar3;
@@ -424,7 +424,7 @@ LAB_005bb355:
         local_68[1] = 0x1e;
         thunk_SetLineDataRowAndBounds(pTVar3,0,0x1e,local_68);
         *(undefined2 *)(pTVar3 + 0x10) = uVar7;
-        (**(code **)(*(int *)in_ECX[0x27] + 0x1a4))(pTVar3);
+        (**(code **)(**(int **)(this + 0x9c) + 0x1a4))(pTVar3);
         iStack_48 = (int)sVar1;
         sVar1 = 1;
         do {
@@ -438,7 +438,7 @@ LAB_005bb355:
             TLineData::ConstructTLineDataBaseState(pTVar3);
             *(undefined ***)pTVar3 = &g_vtblTDealLine;
           }
-          iStack_44 = CONCAT22(iStack_44._2_2_,(short)in_ECX[0x24]);
+          iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)(this + 0x90));
           uStack_4 = 0xffffffff;
           pTStack_58 = (TLineData *)0xc8;
           uStack_54 = 0x1e;
@@ -446,7 +446,7 @@ LAB_005bb355:
           *(undefined2 *)(pTVar3 + 0x10) = uVar7;
           *(undefined2 *)(pTVar3 + 0x12) = (undefined2)iStack_44;
           *(short *)(pTVar3 + 0x14) = sVar1;
-          (**(code **)(*(int *)in_ECX[0x27] + 0x1a0))(pTVar3);
+          (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pTVar3);
           sVar1 = sVar1 + 1;
           iStack_48 = iStack_48 + -1;
         } while (iStack_48 != 0);
@@ -454,11 +454,11 @@ LAB_005bb355:
     }
     iVar8 = iVar8 + 1;
   } while ((short)iVar8 < 0x11);
-  iVar8 = (**(code **)(*(int *)g_apNationStates[(short)in_ECX[0x24]] + 0x17c))();
+  iVar8 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x17c))();
   if (iVar8 != 0) {
     InitializeSharedStringRefFromEmpty();
     uStack_4 = 4;
-    *(undefined1 *)(in_ECX + 0x2c) = 0;
+    this[0xb0] = (TDealBookPicture)0x0;
     pTStack_38 = (TLineData *)AllocateWithFallbackHandler(0x20);
     uStack_4._0_1_ = 5;
     if (pTStack_38 == (TLineData *)0x0) {
@@ -476,39 +476,39 @@ LAB_005bb355:
     thunk_BuildUiTextStyleDescriptor();
     CopyTwoDwordsAndWordToObjectOffset14();
     SetObjectField1EWord();
-    (**(code **)(*(int *)in_ECX[0x27] + 0x1a0))(pvVar4);
+    (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pvVar4);
     iStack_44 = 0;
     pTStack_50 = (TLineData *)0x0;
     do {
       iVar8 = iStack_44;
-      iVar2 = (**(code **)(*(int *)g_apNationStates[(short)in_ECX[0x24]] + 0x178))(iStack_44);
+      iVar2 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x178))(iStack_44);
       if (iVar2 != 0) {
         local_68[0] = local_68[0] + 1;
-        *(undefined1 *)(in_ECX + 0x2c) = 0;
+        this[0xb0] = (TDealBookPicture)0x0;
         pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
         uStack_4._0_1_ = 6;
         if (pTVar3 == (TLineData *)0x0) {
-          this = (TLineData *)0x0;
+          this_00 = (TLineData *)0x0;
           pTStack_58 = pTVar3;
         }
         else {
           pTStack_58 = pTVar3;
           TLineData::ConstructTLineDataBaseState(pTVar3);
           *(undefined ***)pTVar3 = &g_vtblTCommodityLine;
-          this = pTVar3;
+          this_00 = pTVar3;
         }
         uStack_4 = CONCAT31(uStack_4._1_3_,4);
         aiStack_28[0] = 200;
         aiStack_28[1] = 0x1e;
-        thunk_SetLineDataRowAndBounds(this,0,0x1e,aiStack_28);
-        *(short *)(this + 0x10) = (short)iVar8;
-        (**(code **)(*(int *)in_ECX[0x27] + 0x1a4))(this);
+        thunk_SetLineDataRowAndBounds(this_00,0,0x1e,aiStack_28);
+        *(short *)(this_00 + 0x10) = (short)iVar8;
+        (**(code **)(**(int **)(this + 0x9c) + 0x1a4))(this_00);
         sVar1 = 7;
         pTStack_58 = (TLineData *)0xa1;
         ppvStack_5c = g_apTerrainTypeDescriptorTable + 7;
         do {
           if ((*ppvStack_5c != (void *)0x0) &&
-             (iVar2 = *(int *)((int)g_apNationStates[(short)in_ECX[0x24]] +
+             (iVar2 = *(int *)((int)g_apNationStates[*(short *)(this + 0x90)] +
                               (int)(pTStack_50 + (int)pTStack_58) * 4 + -4), iVar2 != 0)) {
             InitializeSharedStringRefFromEmpty();
             uStack_4._0_1_ = 7;
@@ -540,7 +540,7 @@ LAB_005bb355:
             iStack_c = CONCAT31(iStack_c._1_3_,8);
             ReleaseSharedStringRefIfNotEmpty();
             WrapperFor_StringShared_AssignFromPtr_At00570420(auStack_6c);
-            (**(code **)(*(int *)in_ECX[0x27] + 0x1a0))(pvVar4);
+            (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pvVar4);
             uStack_4._0_1_ = 7;
             ReleaseSharedStringRefIfNotEmpty();
             uStack_4 = CONCAT31(uStack_4._1_3_,4);
@@ -568,22 +568,22 @@ LAB_005bb355:
     TLineData::ConstructTLineDataBaseState(pTVar3);
     *(undefined ***)pTVar3 = &g_vtblTTradeTotalsLine;
   }
-  iVar8 = in_ECX[0x24];
+  sVar1 = *(short *)(this + 0x90);
   uStack_4 = 0xffffffff;
   aiStack_28[2] = 200;
-  aiStack_28[3] = (('\0' < *(char *)((int)g_apNationStates[(short)iVar8] + 0x8fc)) + 4) * 0x1e;
+  aiStack_28[3] = (('\0' < *(char *)((int)g_apNationStates[sVar1] + 0x8fc)) + 4) * 0x1e;
   thunk_SetLineDataRowAndBounds(pTVar3,0,0,aiStack_28 + 2);
-  *(short *)(pTVar3 + 0x10) = (short)iVar8;
-  (**(code **)(*(int *)in_ECX[0x27] + 0x1a0))(pTVar3);
-  (**(code **)(*(int *)in_ECX[0x26] + 0x1ac))();
-  (**(code **)(*(int *)in_ECX[0x27] + 0x1ac))();
-  if (*(short *)(in_ECX[0x27] + 0x60) < *(short *)(in_ECX[0x26] + 0x60)) {
-    *(short *)((int)in_ECX + 0x92) = *(short *)(in_ECX[0x26] + 0x60) + -1;
+  *(short *)(pTVar3 + 0x10) = sVar1;
+  (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pTVar3);
+  (**(code **)(**(int **)(this + 0x98) + 0x1ac))();
+  (**(code **)(**(int **)(this + 0x9c) + 0x1ac))();
+  if (*(short *)(*(int *)(this + 0x9c) + 0x60) < *(short *)(*(int *)(this + 0x98) + 0x60)) {
+    *(short *)(this + 0x92) = *(short *)(*(int *)(this + 0x98) + 0x60) + -1;
   }
   else {
-    *(short *)((int)in_ECX + 0x92) = *(short *)(in_ECX[0x27] + 0x60) + -1;
+    *(short *)(this + 0x92) = *(short *)(*(int *)(this + 0x9c) + 0x60) + -1;
   }
-  piVar6 = (int *)(**(code **)(*in_ECX + 0x94))(0x74616273);
+  piVar6 = (int *)(**(code **)(*(int *)this + 0x94))(0x74616273);
   iVar8 = *piVar6;
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 0x1c4))(0x2266,*(undefined1 *)(g_pCityOrderCapabilityState + 0x193));
@@ -593,7 +593,7 @@ LAB_005bb355:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BBC30
 // GHIDRA_NAME TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
-// GHIDRA_PROTO void __cdecl HandleDealBookTradeCommandAndRefreshNationLines(void)
+// GHIDRA_PROTO void __thiscall HandleDealBookTradeCommandAndRefreshNationLines(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TDealBookPicture command handler/refresh path for trade sell/buy nation lines, mark toggles, and title updates.
 // GHIDRA_COMMENT_END
@@ -602,14 +602,14 @@ LAB_005bb355:
 /* [ClassLane] TDealBookPicture command handler/refresh path for trade sell/buy nation lines, mark
    toggles, and title updates. */
 
-void __cdecl TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines(void)
+void __thiscall
+TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines(TDealBookPicture *this)
 
 {
   code *pcVar1;
   char cVar2;
   int *piVar3;
   undefined4 uVar4;
-  int *in_ECX;
   int iVar5;
   LONG LVar6;
   char *unaff_EDI;
@@ -641,23 +641,24 @@ void __cdecl TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines(v
   if (in_stack_00000004 < 11000) {
     if (in_stack_00000004 == 10) {
       if ((iVar5 == 0x6c636f72) &&
-         (in_stack_00000008 = CONCAT22((short)((uint)in_stack_00000008 >> 0x10),(short)in_ECX[0x25])
-         , 0 < (short)in_ECX[0x25])) {
-        LStack_70 = CONCAT22(0x6c63,(short)in_ECX[0x24]);
+         (in_stack_00000008 =
+               CONCAT22((short)((uint)in_stack_00000008 >> 0x10),*(short *)(this + 0x94)),
+         0 < *(short *)(this + 0x94))) {
+        LStack_70 = CONCAT22(0x6c63,*(undefined2 *)(this + 0x90));
         pLStack_74 = (LONG *)(in_stack_00000008 + -1);
         iStack_78 = 0x5bbf66;
-        (**(code **)(*in_ECX + 0x1cc))();
+        (**(code **)(*(int *)this + 0x1cc))();
       }
-      else if ((iVar5 == 0x72636f72) && ((short)in_ECX[0x25] < *(short *)((int)in_ECX + 0x92))) {
-        LStack_70 = CONCAT22(0x7263,(short)in_ECX[0x24]);
-        pLStack_74 = (LONG *)(CONCAT22((short)((uint)in_stack_00000008 >> 0x10),(short)in_ECX[0x25])
-                             + 1);
+      else if ((iVar5 == 0x72636f72) && (*(short *)(this + 0x94) < *(short *)(this + 0x92))) {
+        LStack_70 = CONCAT22(0x7263,*(undefined2 *)(this + 0x90));
+        pLStack_74 = (LONG *)(CONCAT22((short)((uint)in_stack_00000008 >> 0x10),
+                                       *(short *)(this + 0x94)) + 1);
         iStack_78 = 0x5bbf94;
-        (**(code **)(*in_ECX + 0x1cc))();
+        (**(code **)(*(int *)this + 0x1cc))();
       }
-      else if ((iVar5 == 0x6d61726b) && (*(char *)((int)in_ECX + 0xb1) != '\0')) {
+      else if ((iVar5 == 0x6d61726b) && (this[0xb1] != (TDealBookPicture)0x0)) {
         LStack_70 = 0x5bbfaf;
-        thunk_RefreshTradeSelectionHeaderAndNationOfferBidLines(in_ECX);
+        thunk_RefreshTradeSelectionHeaderAndNationOfferBidLines(this);
       }
     }
   }
@@ -672,16 +673,18 @@ void __cdecl TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines(v
     pLStack_74 = (LONG *)0x5bbc9d;
     LStack_70 = LVar6;
     RStack_54.bottom = LVar6;
-    TTradePageSellView::thunk_RefreshTradeSellPageNationOfferLinesForSelection();
+    TTradePageSellView::thunk_RefreshTradeSellPageNationOfferLinesForSelection
+              (*(TTradePageSellView **)(this + 0xa4));
     pLStack_74 = (LONG *)0x5bbca9;
     LStack_70 = LVar6;
-    TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection();
-    if (*(char *)((int)in_ECX + 0xb1) == '\0') {
+    TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection
+              (*(TTradePageBuyView **)(this + 0xa0));
+    if (this[0xb1] == (TDealBookPicture)0x0) {
       LStack_70 = 0x5bbcba;
-      thunk_RefreshTradeSelectionHeaderAndNationOfferBidLines(in_ECX);
+      thunk_RefreshTradeSelectionHeaderAndNationOfferBidLines(this);
     }
     LStack_70 = 0x7469744c;
-    pcVar1 = *(code **)(*in_ECX + 0x94);
+    pcVar1 = *(code **)(*(int *)this + 0x94);
     pLStack_74 = (LONG *)0x5bbccb;
     piVar3 = (int *)(*pcVar1)();
     iVar5 = *piVar3;

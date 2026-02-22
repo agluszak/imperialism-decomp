@@ -16,7 +16,7 @@ void * __thiscall
 TDefenderMinister::thunk_ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTDefenderMinister;
   *(undefined2 *)(this + 0xc) = 3;
   return this;
@@ -42,17 +42,19 @@ void * __cdecl TDefenderMinister::thunk_GetTDefenderMinisterClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004072CA
 // GHIDRA_NAME TDefenderMinister::thunk_InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
-// GHIDRA_PROTO void __cdecl thunk_InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternD_Field64Mode1_Type2x3 */
 
-void __cdecl TDefenderMinister::thunk_InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
+void __thiscall
+TDefenderMinister::thunk_InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
+          (TDefenderMinister *this)
 
 {
-  InitializeRecruitQueuePatternD_Field64Mode1_Type2x3();
+  InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(this);
   return;
 }
 
@@ -130,7 +132,7 @@ void * __cdecl TDefenderMinister::GetTDefenderMinisterClassNamePointer(void)
 void * __thiscall TDefenderMinister::ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTDefenderMinister;
   *(undefined2 *)(this + 0xc) = 3;
   return this;
@@ -153,7 +155,7 @@ TDefenderMinister::DestructTDefenderMinisterAndMaybeFree(TDefenderMinister *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDF20
 // GHIDRA_NAME TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
-// GHIDRA_PROTO void __cdecl InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
+// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes recruit queue preset D: field64 mode=1 with three type-2 orders and post-setup +2 adjustment.
 // GHIDRA_COMMENT_END
@@ -161,11 +163,11 @@ TDefenderMinister::DestructTDefenderMinisterAndMaybeFree(TDefenderMinister *this
 /* Initializes recruit queue preset D: field64 mode=1 with three type-2 orders and post-setup +2
    adjustment. */
 
-void __cdecl TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
+void __thiscall
+TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(TDefenderMinister *this)
 
 {
   int iVar1;
-  int in_ECX;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -187,7 +189,7 @@ void __cdecl TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x18) = *(short *)(in_ECX + 0x18) + 1;
+    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 2;

@@ -31,11 +31,11 @@ void * __cdecl TLoungeDialog::thunk_GetTLoungeDialogClassNamePointer(void)
 /* Allocates 0x98-byte dialog object, runs picture-resource-entry ctor, and assigns TLoungeDialog
    vtable. */
 
-undefined4 * TLoungeDialog::AllocateAndConstructTLoungeDialog(void)
+TNoHilitePicture * TLoungeDialog::AllocateAndConstructTLoungeDialog(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -45,16 +45,16 @@ undefined4 * TLoungeDialog::AllocateAndConstructTLoungeDialog(void)
   puStack_8 = &LAB_00634e7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &PTR_thunk_GetTLoungeDialogClassNamePointer_006433b8;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &PTR_thunk_GetTLoungeDialogClassNamePointer_006433b8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D6D0

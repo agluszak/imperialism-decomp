@@ -75,17 +75,18 @@ void TFileStream::thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At00
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004092F0
 // GHIDRA_NAME TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0061225e_At00489300
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0061225e_At00489300 */
 
-void __cdecl TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(void)
+void __thiscall
+TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(TFileStream *this)
 
 {
-  WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300();
+  WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(this);
   return;
 }
 
@@ -186,7 +187,7 @@ TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489300
 // GHIDRA_NAME TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
-// GHIDRA_PROTO void __cdecl WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around ResolveOrInstantiateSerializedObjectReference; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -194,15 +195,15 @@ TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
 /* [WrapperShape] small wrapper around ResolveOrInstantiateSerializedObjectReference;
    instructions=8, call_insns=1, internal_calls=1, unique_internal=1 */
 
-void __cdecl TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
+void __thiscall
+TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(TFileStream *this)
 
 {
   void *pvVar1;
-  int in_ECX;
   undefined4 *in_stack_00000004;
   
   pvVar1 = ResolveOrInstantiateSerializedObjectReference
-                     (*(void **)(*(int *)(in_ECX + 4) + 4),(void *)0x0);
+                     (*(void **)(*(int *)(this + 4) + 4),(void *)0x0);
   *in_stack_00000004 = pvVar1;
   return;
 }

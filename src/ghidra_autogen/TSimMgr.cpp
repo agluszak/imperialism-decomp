@@ -53,17 +53,17 @@ void __cdecl TSimMgr::thunk_NoOpVirtualStub_0057c390(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D1A
 // GHIDRA_NAME TSimMgr::thunk_IncrementTurnFlowStateCounter2C
-// GHIDRA_PROTO void __cdecl thunk_IncrementTurnFlowStateCounter2C(void)
+// GHIDRA_PROTO void __thiscall thunk_IncrementTurnFlowStateCounter2C(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to IncrementTurnFlowStateCounter2C
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to IncrementTurnFlowStateCounter2C */
 
-void __cdecl TSimMgr::thunk_IncrementTurnFlowStateCounter2C(void)
+void __thiscall TSimMgr::thunk_IncrementTurnFlowStateCounter2C(TSimMgr *this)
 
 {
-  IncrementTurnFlowStateCounter2C();
+  IncrementTurnFlowStateCounter2C(this);
   return;
 }
 
@@ -85,49 +85,49 @@ void __fastcall TSimMgr::thunk_AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403EB8
 // GHIDRA_NAME TSimMgr::thunk_DestroyGlobalOrderManagersAndState
-// GHIDRA_PROTO void __cdecl thunk_DestroyGlobalOrderManagersAndState(void)
+// GHIDRA_PROTO void __thiscall thunk_DestroyGlobalOrderManagersAndState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyGlobalOrderManagersAndState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyGlobalOrderManagersAndState */
 
-void __cdecl TSimMgr::thunk_DestroyGlobalOrderManagersAndState(void)
+void __thiscall TSimMgr::thunk_DestroyGlobalOrderManagersAndState(TSimMgr *this)
 
 {
-  DestroyGlobalOrderManagersAndState();
+  DestroyGlobalOrderManagersAndState(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404138
 // GHIDRA_NAME TSimMgr::thunk_IsTurnFlowPhaseOutsideRange4To5
-// GHIDRA_PROTO void __cdecl thunk_IsTurnFlowPhaseOutsideRange4To5(void)
+// GHIDRA_PROTO void __thiscall thunk_IsTurnFlowPhaseOutsideRange4To5(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to IsTurnFlowPhaseOutsideRange4To5
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to IsTurnFlowPhaseOutsideRange4To5 */
 
-void __cdecl TSimMgr::thunk_IsTurnFlowPhaseOutsideRange4To5(void)
+void __thiscall TSimMgr::thunk_IsTurnFlowPhaseOutsideRange4To5(TSimMgr *this)
 
 {
-  IsTurnFlowPhaseOutsideRange4To5();
+  IsTurnFlowPhaseOutsideRange4To5(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040457A
 // GHIDRA_NAME TSimMgr::thunk_RebuildPrimaryNationStateForSlot
-// GHIDRA_PROTO void __cdecl thunk_RebuildPrimaryNationStateForSlot(void)
+// GHIDRA_PROTO void __thiscall thunk_RebuildPrimaryNationStateForSlot(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RebuildPrimaryNationStateForSlot
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RebuildPrimaryNationStateForSlot */
 
-void __cdecl TSimMgr::thunk_RebuildPrimaryNationStateForSlot(void)
+void __thiscall TSimMgr::thunk_RebuildPrimaryNationStateForSlot(TSimMgr *this)
 
 {
-  RebuildPrimaryNationStateForSlot();
+  RebuildPrimaryNationStateForSlot(this);
   return;
 }
 
@@ -200,33 +200,33 @@ void __cdecl TSimMgr::thunk_PostMainWindowCommand100ForTurnFlow(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040609B
 // GHIDRA_NAME TSimMgr::thunk_CopyScenarioNationSetupIntoFlowState
-// GHIDRA_PROTO void __cdecl thunk_CopyScenarioNationSetupIntoFlowState(void)
+// GHIDRA_PROTO void __thiscall thunk_CopyScenarioNationSetupIntoFlowState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to CopyScenarioNationSetupIntoFlowState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to CopyScenarioNationSetupIntoFlowState */
 
-void __cdecl TSimMgr::thunk_CopyScenarioNationSetupIntoFlowState(void)
+void __thiscall TSimMgr::thunk_CopyScenarioNationSetupIntoFlowState(TSimMgr *this)
 
 {
-  CopyScenarioNationSetupIntoFlowState();
+  CopyScenarioNationSetupIntoFlowState(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406451
 // GHIDRA_NAME TSimMgr::thunk_SetGlobalTurnStateCodeIfAllowed
-// GHIDRA_PROTO void __cdecl thunk_SetGlobalTurnStateCodeIfAllowed(void)
+// GHIDRA_PROTO void __thiscall thunk_SetGlobalTurnStateCodeIfAllowed(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SetGlobalTurnStateCodeIfAllowed
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SetGlobalTurnStateCodeIfAllowed */
 
-void __cdecl TSimMgr::thunk_SetGlobalTurnStateCodeIfAllowed(void)
+void __thiscall TSimMgr::thunk_SetGlobalTurnStateCodeIfAllowed(TSimMgr *this)
 
 {
-  SetGlobalTurnStateCodeIfAllowed();
+  SetGlobalTurnStateCodeIfAllowed(this);
   return;
 }
 
@@ -280,17 +280,17 @@ void __cdecl TSimMgr::thunk_DispatchEligibleNationTurnCallback158(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406C2B
 // GHIDRA_NAME TSimMgr::thunk_ApplyScenarioVariantSeedForNationSetup
-// GHIDRA_PROTO void __cdecl thunk_ApplyScenarioVariantSeedForNationSetup(void)
+// GHIDRA_PROTO void __thiscall thunk_ApplyScenarioVariantSeedForNationSetup(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ApplyScenarioVariantSeedForNationSetup
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ApplyScenarioVariantSeedForNationSetup */
 
-void __cdecl TSimMgr::thunk_ApplyScenarioVariantSeedForNationSetup(void)
+void __thiscall TSimMgr::thunk_ApplyScenarioVariantSeedForNationSetup(TSimMgr *this)
 
 {
-  ApplyScenarioVariantSeedForNationSetup();
+  ApplyScenarioVariantSeedForNationSetup(this);
   return;
 }
 
@@ -312,33 +312,33 @@ void __cdecl TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407D92
 // GHIDRA_NAME TSimMgr::thunk_DispatchTurnEvent2134AndRefreshNationPanels
-// GHIDRA_PROTO void __cdecl thunk_DispatchTurnEvent2134AndRefreshNationPanels(void)
+// GHIDRA_PROTO void __thiscall thunk_DispatchTurnEvent2134AndRefreshNationPanels(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DispatchTurnEvent2134AndRefreshNationPanels
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DispatchTurnEvent2134AndRefreshNationPanels */
 
-void __cdecl TSimMgr::thunk_DispatchTurnEvent2134AndRefreshNationPanels(void)
+void __thiscall TSimMgr::thunk_DispatchTurnEvent2134AndRefreshNationPanels(TSimMgr *this)
 
 {
-  DispatchTurnEvent2134AndRefreshNationPanels();
+  DispatchTurnEvent2134AndRefreshNationPanels(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408189
 // GHIDRA_NAME TSimMgr::thunk_RebuildSecondaryNationStateForSlot
-// GHIDRA_PROTO void __cdecl thunk_RebuildSecondaryNationStateForSlot(void)
+// GHIDRA_PROTO void __thiscall thunk_RebuildSecondaryNationStateForSlot(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RebuildSecondaryNationStateForSlot
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RebuildSecondaryNationStateForSlot */
 
-void __cdecl TSimMgr::thunk_RebuildSecondaryNationStateForSlot(void)
+void __thiscall TSimMgr::thunk_RebuildSecondaryNationStateForSlot(TSimMgr *this)
 
 {
-  RebuildSecondaryNationStateForSlot();
+  RebuildSecondaryNationStateForSlot(this);
   return;
 }
 
@@ -355,6 +355,78 @@ void __cdecl TSimMgr::thunk_FormatDiplomacyNoticeTextByPolicyOrGrantCode(void)
 
 {
   FormatDiplomacyNoticeTextByPolicyOrGrantCode();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408495
+// GHIDRA_NAME TSimMgr::thunk_ConstructTurnFlowStateManagerVtable00662a58
+// GHIDRA_PROTO void __thiscall thunk_ConstructTurnFlowStateManagerVtable00662a58(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnFlowStateManagerVtable00662a58
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTurnFlowStateManagerVtable00662a58 */
+
+void __thiscall TSimMgr::thunk_ConstructTurnFlowStateManagerVtable00662a58(TSimMgr *this)
+
+{
+  ushort *puVar1;
+  ushort *puVar2;
+  TSimMgr *pTVar3;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  int iStack_14;
+  TSimMgr *pTStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  puStack_8 = &LAB_00636cd6;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(undefined ***)this = &g_vtblRefCountedObjectBase;
+  pTVar3 = this + 0x7c;
+  iVar4 = 0;
+  uStack_4 = 0;
+  pTStack_10 = this;
+  CallCallbackRepeatedly((int)pTVar3,4,0x17,0x404642,0x405fa1);
+  *(undefined ***)this = &g_vtblTSimMgr;
+  uStack_4._0_1_ = 1;
+  *(undefined4 *)(this + 4) = 1;
+  *(undefined4 *)(this + 8) = 1;
+  *(undefined4 *)(this + 0xc) = 1;
+  *(undefined4 *)(this + 0x10) = 1;
+  this[0x14] = (TSimMgr)0x0;
+  do {
+    this[iVar4 + 0x15] = (TSimMgr)0x1;
+    ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+    uStack_4._0_1_ = 2;
+    StringShared__AssignFromPtr(pTVar3,&iStack_14);
+    uStack_4._0_1_ = 1;
+    ReleaseSharedStringRefIfNotEmpty();
+    iVar4 = iVar4 + 1;
+    pTVar3 = pTVar3 + 4;
+  } while (iVar4 < 0x17);
+  *(undefined2 *)(this + 0x2e) = 0xffff;
+  *(undefined2 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 7;
+  *(undefined4 *)(this + 0x34) = 0x10;
+  pTVar3 = this + 0xe8;
+  puVar1 = &g_Turn_Flow_Manager_LookupTable_00698B1A;
+  do {
+    puVar2 = puVar1 + 4;
+    *(ushort *)(pTVar3 + -0xe) = puVar1[-1];
+    *(ushort *)pTVar3 = *puVar1;
+    *(ushort *)(pTVar3 + 0xe) = puVar1[1];
+    *(ushort *)(pTVar3 + 0x1c) = puVar1[2];
+    pTVar3 = pTVar3 + 2;
+    puVar1 = puVar2;
+  } while ((int)puVar2 < 0x698b52);
+  this[0xd8] = (TSimMgr)0x0;
+  this[0x112] = (TSimMgr)0x0;
+  *(undefined2 *)(this + 0x114) = 0;
+  *(undefined4 *)(this + 0x44) = 0;
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
@@ -376,6 +448,261 @@ void * __cdecl TSimMgr::thunk_GetTSimMgrClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7A00
+// GHIDRA_NAME TSimMgr::SetNationDisplayNameAndLocalizationSlotRef
+// GHIDRA_PROTO void __thiscall SetNationDisplayNameAndLocalizationSlotRef(TSimMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Assigns shared display-name ref to object field +4 and mirrors it into localization table slot array indexed by object nation slot field +0xC.
+// GHIDRA_COMMENT_END
+
+/* Assigns shared display-name ref to object field +4 and mirrors it into localization table slot
+   array indexed by object nation slot field +0xC. */
+
+void __thiscall TSimMgr::SetNationDisplayNameAndLocalizationSlotRef(TSimMgr *this,TSimMgr *pThis)
+
+{
+  StringShared__AssignFromPtr(this + 4,(int *)pThis);
+  if (g_pLocalizationTable != 0) {
+    StringShared__AssignFromPtr
+              ((void *)(g_pLocalizationTable + 0x7c + *(short *)(this + 0xc) * 4),(int *)pThis);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D8CC0
+// GHIDRA_NAME TSimMgr::InitializeNationStateRuntimeSubsystems
+// GHIDRA_PROTO void __thiscall InitializeNationStateRuntimeSubsystems(TSimMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes nation-state runtime subsystems: city model, production state, policy/grant arrays, tracked object lists, and diplomacy state defaults.
+// GHIDRA_COMMENT_END
+
+/* Initializes nation-state runtime subsystems: city model, production state, policy/grant arrays,
+   tracked object lists, and diplomacy state defaults. */
+
+void __thiscall TSimMgr::InitializeNationStateRuntimeSubsystems(TSimMgr *this,TSimMgr *pThis)
+
+{
+  int iVar1;
+  undefined4 extraout_EAX;
+  undefined4 *puVar2;
+  CObArray *pCVar3;
+  TForeignMinister *this_00;
+  undefined4 extraout_EAX_00;
+  void *pvVar4;
+  TDefenseMinister *this_01;
+  TSimMgr *pTVar5;
+  TSimMgr *pTVar6;
+  undefined4 uVar7;
+  undefined4 *unaff_FS_OFFSET;
+  short in_stack_00000008;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006320ae;
+  *unaff_FS_OFFSET = &local_c;
+  thunk_InitializeNationStateIdentityAndOwnedRegionList();
+  *(undefined4 *)(this + 0x10) =
+       *(undefined4 *)
+        (&g_Nation_Runtime_Subsystems_RuntimeCache_00653558 +
+        *(int *)(g_pLocalizationTable + 0x40) * 4);
+  if (in_stack_00000008 == 1) {
+    this[0xa0] = (TSimMgr)0x1;
+  }
+  else {
+    this[0xa0] = (TSimMgr)0x0;
+  }
+  iVar1 = AllocateWithFallbackHandler(0x2d4);
+  local_4 = 0;
+  if (iVar1 == 0) {
+    uVar7 = 0;
+  }
+  else {
+    thunk_InitializeCityModel();
+    uVar7 = extraout_EAX;
+  }
+  local_4 = 0xffffffff;
+  thunk_InitializeCityProductionState();
+  *(undefined4 *)(this + 0x894) = uVar7;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  local_4 = 1;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640();
+    *puVar2 = &g_vtblTArmyBattle;
+  }
+  local_4 = 0xffffffff;
+  *(undefined4 **)(this + 0x898) = puVar2;
+  *(undefined4 *)(this + 0xac) = 0;
+  *(undefined2 *)(this + 0xa6) = 0xf;
+  *(undefined4 *)(this + 0x900) = 0xf;
+  pCVar3 = (CObArray *)AllocateWithFallbackHandler(0x18);
+  local_4 = 2;
+  if (pCVar3 == (CObArray *)0x0) {
+    pCVar3 = (CObArray *)0x0;
+  }
+  else {
+    CObArray::CPtrArray_ctor(pCVar3);
+    *(undefined ***)pCVar3 = &PTR_thunk_GetTPtrListClassName_00649068;
+  }
+  *(undefined2 *)(pCVar3 + 0x14) = 4;
+  local_4 = 0xffffffff;
+  *(CObArray **)(this + 0x848) = pCVar3;
+  pCVar3 = (CObArray *)AllocateWithFallbackHandler(0x18);
+  local_4 = 3;
+  if (pCVar3 == (CObArray *)0x0) {
+    pCVar3 = (CObArray *)0x0;
+  }
+  else {
+    CObArray::CPtrArray_ctor(pCVar3);
+    *(undefined ***)pCVar3 = &PTR_thunk_GetTPtrListClassName_00649068;
+  }
+  *(undefined2 *)(pCVar3 + 0x14) = 4;
+  local_4 = 0xffffffff;
+  *(CObArray **)(this + 0x84c) = pCVar3;
+  if (this[0xa0] != (TSimMgr)0x0) {
+    this_00 = (TForeignMinister *)AllocateWithFallbackHandler(0x80);
+    local_4 = 4;
+    if (this_00 == (TForeignMinister *)0x0) {
+      uVar7 = 0;
+    }
+    else {
+      TForeignMinister::thunk_ConstructTForeignMinister(this_00);
+      uVar7 = extraout_EAX_00;
+    }
+    local_4 = 0xffffffff;
+    thunk_InitializeTForeignMinisterStateAndCounters();
+    *(undefined4 *)(this + 0x94) = uVar7;
+    pvVar4 = (void *)AllocateWithFallbackHandler(0x1c4);
+    local_4 = 5;
+    if (pvVar4 == (void *)0x0) {
+      pvVar4 = (void *)0x0;
+    }
+    else {
+      pvVar4 = thunk_WrapperFor_ConstructTMinister_At004be840(pvVar4);
+    }
+    local_4 = 0xffffffff;
+    thunk_InitializeCityInteriorMinister();
+    *(void **)(this + 0x98) = pvVar4;
+    this_01 = (TDefenseMinister *)AllocateWithFallbackHandler(0x94);
+    local_4 = 6;
+    if (this_01 == (TDefenseMinister *)0x0) {
+      pvVar4 = (void *)0x0;
+    }
+    else {
+      pvVar4 = TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(this_01);
+    }
+    local_4 = 0xffffffff;
+    thunk_InitializeTMinisterBaseOrderArrayMetrics();
+    *(void **)(this + 0x9c) = pvVar4;
+  }
+  pTVar6 = this + 0x850;
+  iVar1 = 0x11;
+  do {
+    pCVar3 = (CObArray *)AllocateWithFallbackHandler(0x18);
+    local_4 = 7;
+    if (pCVar3 == (CObArray *)0x0) {
+      pCVar3 = (CObArray *)0x0;
+    }
+    else {
+      CObArray::CPtrArray_ctor(pCVar3);
+      *(undefined ***)pCVar3 = &PTR_thunk_GetTPtrListClassName_00649068;
+    }
+    *(undefined2 *)(pCVar3 + 0x14) = 0xc;
+    *(CObArray **)pTVar6 = pCVar3;
+    pTVar6 = pTVar6 + 4;
+    iVar1 = iVar1 + -1;
+    local_4 = 0xffffffff;
+  } while (iVar1 != 0);
+  pTVar6 = this + 0x918;
+  pTVar5 = this + 0xe0;
+  iVar1 = 0x17;
+  do {
+    *(undefined2 *)(pTVar5 + -0x2e) = 0xffff;
+    *(undefined2 *)pTVar5 = 0xffff;
+    *pTVar6 = (TSimMgr)0x0;
+    pTVar5 = pTVar5 + 2;
+    pTVar6 = pTVar6 + 1;
+    iVar1 = iVar1 + -1;
+  } while (iVar1 != 0);
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar2 = &g_vtblRefCountedObjectBase;
+    local_4 = 9;
+    InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    *puVar2 = &g_vtblTArmyBattle;
+  }
+  *(undefined4 **)(this + 0x89c) = puVar2;
+  *(undefined4 *)(this + 0x8a0) = 0;
+  *(undefined4 *)(this + 0x8a4) = 0;
+  *(undefined4 *)(this + 0x8a8) = 0;
+  local_4 = 0xffffffff;
+  *(undefined4 *)(this + 0x8ac) = 0;
+  *(undefined4 *)(this + 0x8b0) = 0;
+  *(undefined2 *)(this + 0x8b4) = 0;
+  this[0x8b6] = (TSimMgr)0x0;
+  this[0x904] = (TSimMgr)0x1;
+  pCVar3 = (CObArray *)AllocateWithFallbackHandler(0x18);
+  local_4 = 10;
+  if (pCVar3 == (CObArray *)0x0) {
+    pCVar3 = (CObArray *)0x0;
+  }
+  else {
+    CObArray::CPtrArray_ctor(pCVar3);
+    *(undefined ***)pCVar3 = &PTR_thunk_GetTPtrListClassName_00649068;
+  }
+  *(undefined2 *)(pCVar3 + 0x14) = 8;
+  local_4 = 0xffffffff;
+  *(CObArray **)(this + 0x908) = pCVar3;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar2 = &g_vtblRefCountedObjectBase;
+    local_4 = 0xc;
+    InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    *puVar2 = &g_vtblTArmyBattle;
+  }
+  *(undefined4 **)(this + 0x90c) = puVar2;
+  *(undefined4 *)(this + 0x960) = 0;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00543120
+// GHIDRA_NAME TSimMgr::ConfigureTurnResumeStateAndNationMask
+// GHIDRA_PROTO void __thiscall ConfigureTurnResumeStateAndNationMask(TSimMgr * pThis)
+
+void __thiscall TSimMgr::ConfigureTurnResumeStateAndNationMask(TSimMgr *this,TSimMgr *pThis)
+
+{
+  void **ppvVar1;
+  byte bVar2;
+  undefined4 in_stack_00000008;
+  
+  *(TSimMgr **)(this + 0xf0) = pThis;
+  *(undefined4 *)(this + 0xec) = in_stack_00000008;
+  *(undefined4 *)(this + 0xe8) = 0;
+  bVar2 = 0;
+  ppvVar1 = g_apTerrainTypeDescriptorTable;
+  do {
+    if (*ppvVar1 != (void *)0x0) {
+      *(uint *)(this + 0xe8) = *(uint *)(this + 0xe8) | 1 << (bVar2 & 0x1f);
+    }
+    ppvVar1 = ppvVar1 + 1;
+    bVar2 = bVar2 + 1;
+  } while ((int)ppvVar1 < 0x6a432c);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B940
 // GHIDRA_NAME TSimMgr::CreateTurnFlowStateManager
 // GHIDRA_PROTO undefined CreateTurnFlowStateManager()
@@ -383,7 +710,7 @@ void * __cdecl TSimMgr::thunk_GetTSimMgrClassNamePointer(void)
 undefined4 __fastcall TSimMgr::CreateTurnFlowStateManager(undefined4 param_1)
 
 {
-  int iVar1;
+  TSimMgr *this;
   undefined4 extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -394,10 +721,10 @@ undefined4 __fastcall TSimMgr::CreateTurnFlowStateManager(undefined4 param_1)
   puStack_8 = &LAB_00636c9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x118,param_1);
+  this = (TSimMgr *)AllocateWithFallbackHandler(0x118,param_1);
   local_4 = 0;
-  if (iVar1 != 0) {
-    thunk_ConstructTurnFlowStateManagerVtable00662a58();
+  if (this != (TSimMgr *)0x0) {
+    thunk_ConstructTurnFlowStateManagerVtable00662a58(this);
     *unaff_FS_OFFSET = local_c;
     return extraout_EAX;
   }
@@ -422,7 +749,7 @@ void * __cdecl TSimMgr::GetTSimMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B9E0
 // GHIDRA_NAME TSimMgr::ConstructTurnFlowStateManagerVtable00662a58
-// GHIDRA_PROTO void __cdecl ConstructTurnFlowStateManagerVtable00662a58(void)
+// GHIDRA_PROTO void __thiscall ConstructTurnFlowStateManagerVtable00662a58(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Ctor for turn-flow state manager object (stored in g_pLocalizationTable). Its vtable slot +0x90 maps to thunk_AdvanceGlobalTurnStateMachine.
 // GHIDRA_COMMENT_END
@@ -430,17 +757,16 @@ void * __cdecl TSimMgr::GetTSimMgrClassNamePointer(void)
 /* Ctor for turn-flow state manager object (stored in g_pLocalizationTable). Its vtable slot +0x90
    maps to thunk_AdvanceGlobalTurnStateMachine. */
 
-void __cdecl TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(void)
+void __thiscall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(TSimMgr *this)
 
 {
   ushort *puVar1;
   ushort *puVar2;
-  undefined4 *in_ECX;
-  ushort *puVar3;
-  undefined4 *this;
+  TSimMgr *pTVar3;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
-  int local_14 [2];
+  int local_14;
+  TSimMgr *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -448,47 +774,48 @@ void __cdecl TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(void)
   puStack_8 = &LAB_00636cd6;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *in_ECX = &g_vtblRefCountedObjectBase;
-  this = in_ECX + 0x1f;
+  *(undefined ***)this = &g_vtblRefCountedObjectBase;
+  pTVar3 = this + 0x7c;
   iVar4 = 0;
   local_4 = 0;
-  CallCallbackRepeatedly((int)this,4,0x17,0x404642,0x405fa1);
-  *in_ECX = &g_vtblTSimMgr;
+  local_10 = this;
+  CallCallbackRepeatedly((int)pTVar3,4,0x17,0x404642,0x405fa1);
+  *(undefined ***)this = &g_vtblTSimMgr;
   local_4._0_1_ = 1;
-  in_ECX[1] = 1;
-  in_ECX[2] = 1;
-  in_ECX[3] = 1;
-  in_ECX[4] = 1;
-  *(undefined1 *)(in_ECX + 5) = 0;
+  *(undefined4 *)(this + 4) = 1;
+  *(undefined4 *)(this + 8) = 1;
+  *(undefined4 *)(this + 0xc) = 1;
+  *(undefined4 *)(this + 0x10) = 1;
+  this[0x14] = (TSimMgr)0x0;
   do {
-    *(undefined1 *)(iVar4 + 0x15 + (int)in_ECX) = 1;
+    this[iVar4 + 0x15] = (TSimMgr)0x1;
     ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
     local_4._0_1_ = 2;
-    StringShared__AssignFromPtr(this,local_14);
+    StringShared__AssignFromPtr(pTVar3,&local_14);
     local_4._0_1_ = 1;
     ReleaseSharedStringRefIfNotEmpty();
     iVar4 = iVar4 + 1;
-    this = this + 1;
+    pTVar3 = pTVar3 + 4;
   } while (iVar4 < 0x17);
-  *(undefined2 *)((int)in_ECX + 0x2e) = 0xffff;
-  *(undefined2 *)(in_ECX + 0xb) = 0;
-  in_ECX[0xc] = 7;
-  in_ECX[0xd] = 0x10;
-  puVar3 = (ushort *)(in_ECX + 0x3a);
+  *(undefined2 *)(this + 0x2e) = 0xffff;
+  *(undefined2 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 7;
+  *(undefined4 *)(this + 0x34) = 0x10;
+  pTVar3 = this + 0xe8;
   puVar1 = &g_Turn_Flow_Manager_LookupTable_00698B1A;
   do {
     puVar2 = puVar1 + 4;
-    puVar3[-7] = puVar1[-1];
-    *puVar3 = *puVar1;
-    puVar3[7] = puVar1[1];
-    puVar3[0xe] = puVar1[2];
-    puVar3 = puVar3 + 1;
+    *(ushort *)(pTVar3 + -0xe) = puVar1[-1];
+    *(ushort *)pTVar3 = *puVar1;
+    *(ushort *)(pTVar3 + 0xe) = puVar1[1];
+    *(ushort *)(pTVar3 + 0x1c) = puVar1[2];
+    pTVar3 = pTVar3 + 2;
     puVar1 = puVar2;
   } while ((int)puVar2 < 0x698b52);
-  *(undefined1 *)(in_ECX + 0x36) = 0;
-  *(undefined1 *)((int)in_ECX + 0x112) = 0;
-  *(undefined2 *)(in_ECX + 0x45) = 0;
-  in_ECX[0x11] = 0;
+  this[0xd8] = (TSimMgr)0x0;
+  this[0x112] = (TSimMgr)0x0;
+  *(undefined2 *)(this + 0x114) = 0;
+  *(undefined4 *)(this + 0x44) = 0;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -509,7 +836,7 @@ void * __thiscall TSimMgr::DestructTSimMgrAndMaybeFree(TSimMgr *this,byte freeSe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057BD20
 // GHIDRA_NAME TSimMgr::DestroyGlobalOrderManagersAndState
-// GHIDRA_PROTO void __cdecl DestroyGlobalOrderManagersAndState(void)
+// GHIDRA_PROTO void __thiscall DestroyGlobalOrderManagersAndState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Releases and nulls global map/order manager singletons and nation-state arrays.
 // GHIDRA_COMMENT
@@ -544,10 +871,9 @@ void * __thiscall TSimMgr::DestructTSimMgrAndMaybeFree(TSimMgr *this,byte freeSe
    Notes:
    - This is the teardown counterpart of RebuildGlobalOrderManagersAndCapabilityState. */
 
-void __cdecl TSimMgr::DestroyGlobalOrderManagersAndState(void)
+void __thiscall TSimMgr::DestroyGlobalOrderManagersAndState(TSimMgr *this)
 
 {
-  int *in_ECX;
   void **ppvVar1;
   int iVar2;
   
@@ -611,8 +937,8 @@ void __cdecl TSimMgr::DestroyGlobalOrderManagersAndState(void)
     *ppvVar1 = (void *)0x0;
     ppvVar1 = ppvVar1 + 1;
   }
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  if (this != (TSimMgr *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }
@@ -873,7 +1199,7 @@ void __cdecl TSimMgr::NoOpVirtualStub_0057c390(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057CDA0
 // GHIDRA_NAME TSimMgr::RebuildPrimaryNationStateForSlot
-// GHIDRA_PROTO void __cdecl RebuildPrimaryNationStateForSlot(void)
+// GHIDRA_PROTO void __thiscall RebuildPrimaryNationStateForSlot(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Rebuilds one primary nation slot (typically major nation range) from flow config.
 // GHIDRA_COMMENT
@@ -897,26 +1223,28 @@ void __cdecl TSimMgr::NoOpVirtualStub_0057c390(void)
    
    Used by RebuildNationStateSlotsAndAvailability via vtable +0x2C dispatch. */
 
-void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
+void __thiscall TSimMgr::RebuildPrimaryNationStateForSlot(TSimMgr *this)
 
 {
   short sVar1;
   byte bVar2;
-  TAutoGreatPower *pTVar3;
-  void *extraout_EAX;
-  void *pvVar4;
-  int iVar5;
+  TSimMgr *pThis;
+  TSimMgr *this_00;
+  TSimMgr *extraout_EAX;
+  int iVar3;
+  TGreatPower *pTVar4;
+  undefined4 uVar5;
   int *piVar6;
-  int in_ECX;
   short sVar7;
   int iVar8;
   undefined4 *unaff_FS_OFFSET;
-  TAutoGreatPower *in_stack_00000004;
-  char in_stack_00000008;
+  TGreatPower *in_stack_00000004;
+  TSimMgr in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
   
+  pThis = (TSimMgr *)in_stack_00000004;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636e8c;
   uStack_c = *unaff_FS_OFFSET;
@@ -928,27 +1256,28 @@ void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
   }
   g_apNationStates[iVar8] = (void *)0x0;
   g_apTerrainTypeDescriptorTable[iVar8] = (void *)0x0;
-  sVar1 = *(short *)(in_ECX + 0xda + iVar8 * 2);
+  sVar1 = *(short *)(this + iVar8 * 2 + 0xda);
   if (sVar1 != 1) {
     if (sVar1 == 4) {
-      pTVar3 = (TAutoGreatPower *)AllocateWithFallbackHandler(0x964);
+      pTVar4 = (TGreatPower *)AllocateWithFallbackHandler(0x964);
       uStack_4 = 3;
-      in_stack_00000004 = pTVar3;
-      if (pTVar3 == (TAutoGreatPower *)0x0) {
-        pTVar3 = (TAutoGreatPower *)0x0;
+      in_stack_00000004 = pTVar4;
+      if (pTVar4 == (TGreatPower *)0x0) {
+        pTVar4 = (TGreatPower *)0x0;
       }
       else {
-        TGreatPower::thunk_ConstructNationStateBase_Vtbl653938();
-        *(undefined ***)pTVar3 = &PTR_thunk_GetTRemoteGreatPowerClassNamePointer_0065ba80;
+        TGreatPower::thunk_ConstructNationStateBase_Vtbl653938(pTVar4);
+        *(undefined ***)pTVar4 = &PTR_thunk_GetTRemoteGreatPowerClassNamePointer_0065ba80;
       }
-      g_apNationStates[iVar8] = pTVar3;
+      g_apNationStates[iVar8] = pTVar4;
       uStack_4 = 0xffffffff;
-      thunk_InitializeNationStateRuntimeSubsystems();
-      iVar5 = g_pGameFlowState;
+      thunk_InitializeNationStateRuntimeSubsystems((TSimMgr *)pTVar4,pThis);
+      iVar3 = g_pGameFlowState;
       g_apTerrainTypeDescriptorTable[iVar8] = g_apNationStates[iVar8];
-      StringSharedRef_AssignFromPtr(iVar5 + 0x94 + iVar8 * 4);
+      StringSharedRef_AssignFromPtr(iVar3 + 0x94 + iVar8 * 4);
       uStack_4 = 4;
-      thunk_SetNationDisplayNameAndLocalizationSlotRef();
+      thunk_SetNationDisplayNameAndLocalizationSlotRef
+                (g_apTerrainTypeDescriptorTable[iVar8],(TSimMgr *)&stack0x00000004);
       uStack_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
       StringSharedRef_AssignFromPtr(g_pGameFlowState + 0x94 + iVar8 * 4);
@@ -957,7 +1286,7 @@ void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
                 ((void *)((int)g_apTerrainTypeDescriptorTable[iVar8] + 8),(int *)&stack0x00000004);
       uStack_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
-      if ((in_stack_00000008 != '\0') && (*(short *)(in_ECX + 0x114) != 0)) {
+      if ((in_stack_00000008 != (TSimMgr)0x0) && (*(short *)(this + 0x114) != 0)) {
         piVar6 = g_apNationStates[iVar8];
         if (piVar6 == (int *)0x0) {
           (**(code **)(iRam00000000 + 0xe4))(0);
@@ -968,36 +1297,37 @@ void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
       }
     }
     else if (sVar1 == 3) {
-      pTVar3 = (TAutoGreatPower *)AllocateWithFallbackHandler(0x964);
+      pTVar4 = (TGreatPower *)AllocateWithFallbackHandler(0x964);
       uStack_4 = 6;
-      in_stack_00000004 = pTVar3;
-      if (pTVar3 == (TAutoGreatPower *)0x0) {
-        pTVar3 = (TAutoGreatPower *)0x0;
+      in_stack_00000004 = pTVar4;
+      if (pTVar4 == (TGreatPower *)0x0) {
+        pTVar4 = (TGreatPower *)0x0;
       }
       else {
-        TGreatPower::thunk_ConstructNationStateBase_Vtbl653938();
-        *(undefined ***)pTVar3 = &PTR_thunk_GetTProxyGreatPowerClassNamePointer_0065b078;
+        TGreatPower::thunk_ConstructNationStateBase_Vtbl653938(pTVar4);
+        *(undefined ***)pTVar4 = &PTR_thunk_GetTProxyGreatPowerClassNamePointer_0065b078;
       }
       uStack_4 = 0xffffffff;
-      thunk_InitializeNationStateRuntimeSubsystems();
+      thunk_InitializeNationStateRuntimeSubsystems((TSimMgr *)pTVar4,pThis);
       bVar2 = g_bScenarioSetupModeActive;
-      g_apNationStates[iVar8] = pTVar3;
-      g_apTerrainTypeDescriptorTable[iVar8] = pTVar3;
+      g_apNationStates[iVar8] = pTVar4;
+      g_apTerrainTypeDescriptorTable[iVar8] = pTVar4;
       if (bVar2 == 0) {
-        if (in_stack_00000008 != '\0') {
-          if (pTVar3 == (TAutoGreatPower *)0x0) {
-            iVar5 = 0;
+        if (in_stack_00000008 != (TSimMgr)0x0) {
+          if (pTVar4 == (TGreatPower *)0x0) {
+            uVar5 = 0;
           }
           else {
-            iVar5 = *(int *)(pTVar3 + 0x894);
+            uVar5 = *(undefined4 *)((TSimMgr *)pTVar4 + 0x894);
           }
-          (**(code **)(*(int *)pTVar3 + 0xe4))(iVar5);
+          (**(code **)(*(int *)pTVar4 + 0xe4))(uVar5);
         }
         (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x28))();
       }
       StringSharedRef_AssignFromPtr(g_pGameFlowState + 0x94 + iVar8 * 4);
       uStack_4 = 7;
-      thunk_SetNationDisplayNameAndLocalizationSlotRef();
+      thunk_SetNationDisplayNameAndLocalizationSlotRef
+                (g_apTerrainTypeDescriptorTable[iVar8],&stack0x00000008);
       uStack_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
       StringSharedRef_AssignFromPtr(g_pGameFlowState + 0x94 + iVar8 * 4);
@@ -1008,13 +1338,14 @@ void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
       ReleaseSharedStringRefIfNotEmpty();
     }
     else if (sVar1 == 2) {
-      in_stack_00000004 = (TAutoGreatPower *)AllocateWithFallbackHandler(0xb70);
+      in_stack_00000004 = (TGreatPower *)AllocateWithFallbackHandler(0xb70);
       uStack_4 = 9;
-      if (in_stack_00000004 == (TAutoGreatPower *)0x0) {
+      if (in_stack_00000004 == (TGreatPower *)0x0) {
         piVar6 = (int *)0x0;
       }
       else {
-        piVar6 = TAutoGreatPower::ConstructTAutoGreatPowerBaseState(in_stack_00000004);
+        piVar6 = TAutoGreatPower::ConstructTAutoGreatPowerBaseState
+                           ((TAutoGreatPower *)in_stack_00000004);
       }
       uStack_4 = 0xffffffff;
       thunk_InitializeNationMinisterSubsystemsByPolicyIds();
@@ -1022,14 +1353,14 @@ void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
       g_apNationStates[iVar8] = piVar6;
       g_apTerrainTypeDescriptorTable[iVar8] = piVar6;
       if (bVar2 == 0) {
-        if (in_stack_00000008 != '\0') {
+        if (in_stack_00000008 != (TSimMgr)0x0) {
           if (piVar6 == (int *)0x0) {
-            iVar5 = 0;
+            iVar3 = 0;
           }
           else {
-            iVar5 = piVar6[0x225];
+            iVar3 = piVar6[0x225];
           }
-          (**(code **)(*piVar6 + 0xe4))(iVar5);
+          (**(code **)(*piVar6 + 0xe4))(iVar3);
         }
         thunk_QueueMapActionMissionsForPortZoneCandidates();
         (**(code **)(*(int *)g_apNationStates[iVar8] + 0x3c))();
@@ -1041,73 +1372,75 @@ void __cdecl TSimMgr::RebuildPrimaryNationStateForSlot(void)
     }
     goto LAB_0057d286;
   }
-  if (*(int *)(in_ECX + 0x44) == 2) {
-    pTVar3 = (TAutoGreatPower *)AllocateWithFallbackHandler(0x964);
+  if (*(int *)(this + 0x44) == 2) {
+    this_00 = (TSimMgr *)AllocateWithFallbackHandler(0x964);
     uStack_4 = 0;
-    in_stack_00000004 = pTVar3;
-    if (pTVar3 == (TAutoGreatPower *)0x0) {
+    in_stack_00000004 = (TGreatPower *)this_00;
+    if (this_00 == (TSimMgr *)0x0) {
 LAB_0057ce9d:
+      this_00 = (TSimMgr *)0x0;
       g_apNationStates[iVar8] = (void *)0x0;
     }
     else {
-      TGreatPower::thunk_ConstructNationStateBase_Vtbl653938();
-      *(undefined ***)pTVar3 = &PTR_thunk_GetTClientGreatPowerClassNamePointer_0065b728;
-      g_apNationStates[iVar8] = pTVar3;
+      TGreatPower::thunk_ConstructNationStateBase_Vtbl653938((TGreatPower *)this_00);
+      *(undefined ***)this_00 = &PTR_thunk_GetTClientGreatPowerClassNamePointer_0065b728;
+      g_apNationStates[iVar8] = this_00;
     }
   }
-  else if (*(int *)(in_ECX + 0x44) == 1) {
-    pTVar3 = (TAutoGreatPower *)AllocateWithFallbackHandler(0x968);
+  else if (*(int *)(this + 0x44) == 1) {
+    this_00 = (TSimMgr *)AllocateWithFallbackHandler(0x968);
     uStack_4 = 1;
-    in_stack_00000004 = pTVar3;
-    if (pTVar3 == (TAutoGreatPower *)0x0) goto LAB_0057ce9d;
-    TGreatPower::thunk_ConstructNationStateBase_Vtbl653938();
-    pTVar3[0x964] = (TAutoGreatPower)0x0;
-    *(undefined ***)pTVar3 = &PTR_thunk_GetTHostGreatPowerClassNamePointer_0065b3d0;
-    g_apNationStates[iVar8] = pTVar3;
+    in_stack_00000004 = (TGreatPower *)this_00;
+    if (this_00 == (TSimMgr *)0x0) goto LAB_0057ce9d;
+    TGreatPower::thunk_ConstructNationStateBase_Vtbl653938((TGreatPower *)this_00);
+    ((TGreatPower *)this_00)[0x964] = (TGreatPower)0x0;
+    *(undefined ***)this_00 = &PTR_thunk_GetTHostGreatPowerClassNamePointer_0065b3d0;
+    g_apNationStates[iVar8] = this_00;
   }
   else {
-    in_stack_00000004 = (TAutoGreatPower *)AllocateWithFallbackHandler(0x964);
+    in_stack_00000004 = (TGreatPower *)AllocateWithFallbackHandler(0x964);
     uStack_4 = 2;
-    if (in_stack_00000004 == (TAutoGreatPower *)0x0) {
-      pvVar4 = (void *)0x0;
+    if (in_stack_00000004 == (TGreatPower *)0x0) {
+      this_00 = (TSimMgr *)0x0;
     }
     else {
-      TGreatPower::thunk_ConstructNationStateBase_Vtbl653938();
-      pvVar4 = extraout_EAX;
+      TGreatPower::thunk_ConstructNationStateBase_Vtbl653938(in_stack_00000004);
+      this_00 = extraout_EAX;
     }
-    g_apNationStates[iVar8] = pvVar4;
+    g_apNationStates[iVar8] = this_00;
   }
   uStack_4 = 0xffffffff;
-  thunk_InitializeNationStateRuntimeSubsystems();
+  thunk_InitializeNationStateRuntimeSubsystems(this_00,pThis);
   g_apTerrainTypeDescriptorTable[iVar8] = g_apNationStates[iVar8];
   if (g_bScenarioSetupModeActive == 0) {
-    *(short *)(in_ECX + 0x2e) = sVar7;
+    *(short *)(this + 0x2e) = sVar7;
     thunk_RefreshCityCapabilityUiHandlesForActiveNation();
   }
   if (g_bScenarioSetupModeActive == 0) {
-    if (*(int *)(in_ECX + 0x44) != 0) {
+    if (*(int *)(this + 0x44) != 0) {
       *(undefined1 *)(g_pGameFlowState + 0x68) = 0;
     }
-    if (in_stack_00000008 != '\0') {
+    if (in_stack_00000008 != (TSimMgr)0x0) {
       piVar6 = g_apNationStates[iVar8];
       if (piVar6 == (int *)0x0) {
-        iVar5 = 0;
+        iVar3 = 0;
       }
       else {
-        iVar5 = piVar6[0x225];
+        iVar3 = piVar6[0x225];
       }
-      (**(code **)(*piVar6 + 0xe4))(iVar5);
+      (**(code **)(*piVar6 + 0xe4))(iVar3);
     }
-    if (*(int *)(in_ECX + 0x44) != 0) {
+    if (*(int *)(this + 0x44) != 0) {
       *(undefined1 *)(g_pGameFlowState + 0x68) = 1;
     }
   }
 LAB_0057d286:
-  if (sVar7 == *(short *)(in_ECX + 0x2e)) {
-    if (*(int *)(in_ECX + 0x44) == 0) {
+  if (sVar7 == *(short *)(this + 0x2e)) {
+    if (*(int *)(this + 0x44) == 0) {
       StringSharedRef_AssignFromPtr(&g_SelectedSetupNationOrScenarioToken);
       uStack_4 = 0xc;
-      thunk_SetNationDisplayNameAndLocalizationSlotRef();
+      thunk_SetNationDisplayNameAndLocalizationSlotRef
+                (g_apTerrainTypeDescriptorTable[iVar8],&stack0x00000008);
       uStack_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
       StringSharedRef_AssignFromPtr(&g_SelectedSetupNationOrScenarioToken);
@@ -1118,7 +1451,8 @@ LAB_0057d286:
     else {
       StringSharedRef_AssignFromPtr(g_pGameFlowState + 0x94 + iVar8 * 4);
       uStack_4 = 10;
-      thunk_SetNationDisplayNameAndLocalizationSlotRef();
+      thunk_SetNationDisplayNameAndLocalizationSlotRef
+                (g_apTerrainTypeDescriptorTable[iVar8],&stack0x00000008);
       uStack_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
       StringSharedRef_AssignFromPtr(g_pGameFlowState + 0x94 + iVar8 * 4);
@@ -1135,7 +1469,7 @@ LAB_0057d286:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D520
 // GHIDRA_NAME TSimMgr::RebuildSecondaryNationStateForSlot
-// GHIDRA_PROTO void __cdecl RebuildSecondaryNationStateForSlot(void)
+// GHIDRA_PROTO void __thiscall RebuildSecondaryNationStateForSlot(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Rebuilds one secondary/extended nation slot object (minor nation / extra slot range).
 // GHIDRA_COMMENT
@@ -1158,16 +1492,15 @@ LAB_0057d286:
    
    Used by RebuildNationStateSlotsAndAvailability via vtable +0x30 dispatch. */
 
-void __cdecl TSimMgr::RebuildSecondaryNationStateForSlot(void)
+void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(TSimMgr *this)
 
 {
   byte bVar1;
-  int iVar2;
-  undefined4 *puVar3;
+  undefined4 *puVar2;
+  int iVar3;
   int *extraout_EAX;
   int iVar4;
   int *extraout_EAX_00;
-  int in_ECX;
   int iVar5;
   int *piVar6;
   undefined4 *unaff_FS_OFFSET;
@@ -1185,19 +1518,18 @@ void __cdecl TSimMgr::RebuildSecondaryNationStateForSlot(void)
     goto LAB_0057d6fe;
   }
   iVar5 = (int)in_stack_00000004;
-  iVar2 = *(int *)(in_ECX + 0x34) + 7;
-  if (iVar5 < iVar2) {
-    if (*(int *)(in_ECX + 0x44) != 2) {
-      if (iVar5 < iVar2) {
+  if (iVar5 < *(int *)(this + 0x34) + 7) {
+    if (*(int *)(this + 0x44) != 2) {
+      if (iVar5 < *(int *)(this + 0x34) + 7) {
         piVar6 = (int *)0x0;
         if (g_apSecondaryNationStateSlots[iVar5] != (int *)0x0) {
           (**(code **)(*(int *)g_apSecondaryNationStateSlots[iVar5] + 0x1c))();
         }
         g_apSecondaryNationStateSlots[iVar5] = (void *)0x0;
         g_apTerrainTypeDescriptorTable[iVar5] = (void *)0x0;
-        iVar2 = AllocateWithFallbackHandler(0x2dc);
+        iVar3 = AllocateWithFallbackHandler(0x2dc);
         uStack_4 = 1;
-        if (iVar2 != 0) {
+        if (iVar3 != 0) {
           thunk_ConstructSecondaryNationState();
           piVar6 = extraout_EAX;
         }
@@ -1207,9 +1539,9 @@ void __cdecl TSimMgr::RebuildSecondaryNationStateForSlot(void)
         g_apSecondaryNationStateSlots[iVar5] = piVar6;
         g_apTerrainTypeDescriptorTable[iVar5] = piVar6;
         if (bVar1 == 0) {
-          iVar2 = *piVar6;
-          (**(code **)(iVar2 + 0x30))();
-          iVar5 = 2;
+          iVar5 = *piVar6;
+          (**(code **)(iVar5 + 0x30))();
+          iVar3 = 2;
           do {
             iVar4 = AllocateWithFallbackHandler(0x44);
             uStack_4 = 2;
@@ -1223,9 +1555,9 @@ void __cdecl TSimMgr::RebuildSecondaryNationStateForSlot(void)
             uStack_4 = 0xffffffff;
             thunk_InitializeMilitaryRecruitOrderState();
             (**(code **)(*piVar6 + 0x34))(2,0xffffffff);
-            iVar5 = iVar5 + -1;
-          } while (iVar5 != 0);
-          (**(code **)(iVar2 + 0x3c))();
+            iVar3 = iVar3 + -1;
+          } while (iVar3 != 0);
+          (**(code **)(iVar5 + 0x3c))();
         }
         goto LAB_0057d6fe;
       }
@@ -1236,27 +1568,27 @@ void __cdecl TSimMgr::RebuildSecondaryNationStateForSlot(void)
     }
     g_apSecondaryNationStateSlots[iVar5] = (void *)0x0;
     g_apTerrainTypeDescriptorTable[iVar5] = (void *)0x0;
-    puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x2dc);
+    puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x2dc);
     uStack_4 = 0;
-    if (puVar3 == (undefined4 *)0x0) {
-      puVar3 = (undefined4 *)0x0;
+    if (puVar2 == (undefined4 *)0x0) {
+      puVar2 = (undefined4 *)0x0;
     }
     else {
       thunk_ConstructSecondaryNationState();
-      *puVar3 = &PTR_thunk_GetTRemoteMinorClassNamePointer_0065bde0;
+      *puVar2 = &PTR_thunk_GetTRemoteMinorClassNamePointer_0065bde0;
     }
     uStack_4 = 0xffffffff;
     thunk_InitializeSecondaryNationStateAndSelectHomeTile();
   }
   else {
 LAB_0057d6de:
-    puVar3 = (undefined4 *)0x0;
+    puVar2 = (undefined4 *)0x0;
     if (g_apSecondaryNationStateSlots[iVar5] != (int *)0x0) {
       (**(code **)(*(int *)g_apSecondaryNationStateSlots[iVar5] + 0x1c))();
     }
   }
-  g_apSecondaryNationStateSlots[iVar5] = puVar3;
-  g_apTerrainTypeDescriptorTable[iVar5] = puVar3;
+  g_apSecondaryNationStateSlots[iVar5] = puVar2;
+  g_apTerrainTypeDescriptorTable[iVar5] = puVar2;
 LAB_0057d6fe:
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1264,17 +1596,16 @@ LAB_0057d6fe:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D830
 // GHIDRA_NAME TSimMgr::ApplyScenarioVariantSeedForNationSetup
-// GHIDRA_PROTO void __cdecl ApplyScenarioVariantSeedForNationSetup(void)
+// GHIDRA_PROTO void __thiscall ApplyScenarioVariantSeedForNationSetup(void)
 
-void __cdecl TSimMgr::ApplyScenarioVariantSeedForNationSetup(void)
+void __thiscall TSimMgr::ApplyScenarioVariantSeedForNationSetup(TSimMgr *this)
 
 {
-  int *in_ECX;
   uint uVar1;
   
-  uVar1 = (int)(short)in_ECX[0xb] >> 0x1f;
-  (**(code **)(*in_ECX + 0x84))
-            (10000,(((int)(short)in_ECX[0xb] ^ uVar1) - uVar1 & 3 ^ uVar1) - uVar1);
+  uVar1 = (int)*(short *)(this + 0x2c) >> 0x1f;
+  (**(code **)(*(int *)this + 0x84))
+            (10000,(((int)*(short *)(this + 0x2c) ^ uVar1) - uVar1 & 3 ^ uVar1) - uVar1);
   return;
 }
 
@@ -1290,46 +1621,43 @@ void __cdecl TSimMgr::GetTurnFlowStateCounter2C(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D8D0
 // GHIDRA_NAME TSimMgr::CopyScenarioNationSetupIntoFlowState
-// GHIDRA_PROTO void __cdecl CopyScenarioNationSetupIntoFlowState(void)
+// GHIDRA_PROTO void __thiscall CopyScenarioNationSetupIntoFlowState(void)
 
-void __cdecl TSimMgr::CopyScenarioNationSetupIntoFlowState(void)
+void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this)
 
 {
-  undefined2 *puVar1;
-  int in_ECX;
-  undefined2 *puVar2;
+  TSimMgr *pTVar1;
+  TSimMgr *pTVar2;
   int iVar3;
-  undefined1 *in_stack_00000004;
+  TSimMgr *in_stack_00000004;
   
-  puVar2 = (undefined2 *)(in_ECX + 0xe8);
+  pTVar2 = this + 0xe8;
   iVar3 = 7;
-  puVar1 = (undefined2 *)(in_stack_00000004 + 0x10);
+  pTVar1 = in_stack_00000004 + 0x10;
   do {
-    puVar2[-7] = puVar1[-7];
-    *puVar2 = *puVar1;
-    puVar2[7] = puVar1[7];
-    puVar2[0xe] = puVar1[0xe];
-    puVar2 = puVar2 + 1;
+    *(undefined2 *)(pTVar2 + -0xe) = *(undefined2 *)(pTVar1 + -0xe);
+    *(undefined2 *)pTVar2 = *(undefined2 *)pTVar1;
+    *(undefined2 *)(pTVar2 + 0xe) = *(undefined2 *)(pTVar1 + 0xe);
+    *(undefined2 *)(pTVar2 + 0x1c) = *(undefined2 *)(pTVar1 + 0x1c);
+    pTVar2 = pTVar2 + 2;
     iVar3 = iVar3 + -1;
-    puVar1 = puVar1 + 1;
+    pTVar1 = pTVar1 + 2;
   } while (iVar3 != 0);
-  *(undefined1 *)(in_ECX + 0xd8) = *in_stack_00000004;
-  if (in_stack_00000004[0x3a] != '\0') {
-    *(undefined1 *)(in_ECX + 0x112) = 1;
+  this[0xd8] = *in_stack_00000004;
+  if (in_stack_00000004[0x3a] != (TSimMgr)0x0) {
+    this[0x112] = (TSimMgr)0x1;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D950
 // GHIDRA_NAME TSimMgr::IncrementTurnFlowStateCounter2C
-// GHIDRA_PROTO void __cdecl IncrementTurnFlowStateCounter2C(void)
+// GHIDRA_PROTO void __thiscall IncrementTurnFlowStateCounter2C(void)
 
-void __cdecl TSimMgr::IncrementTurnFlowStateCounter2C(void)
+void __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(TSimMgr *this)
 
 {
-  int in_ECX;
-  
-  *(short *)(in_ECX + 0x2c) = *(short *)(in_ECX + 0x2c) + 1;
+  *(short *)(this + 0x2c) = *(short *)(this + 0x2c) + 1;
   return;
 }
 
@@ -1346,19 +1674,18 @@ void __cdecl TSimMgr::PostMainWindowCommand100ForTurnFlow(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D990
 // GHIDRA_NAME TSimMgr::SetGlobalTurnStateCodeIfAllowed
-// GHIDRA_PROTO void __cdecl SetGlobalTurnStateCodeIfAllowed(void)
+// GHIDRA_PROTO void __thiscall SetGlobalTurnStateCodeIfAllowed(void)
 
-void __cdecl TSimMgr::SetGlobalTurnStateCodeIfAllowed(void)
+void __thiscall TSimMgr::SetGlobalTurnStateCodeIfAllowed(TSimMgr *this)
 
 {
   short sVar1;
   void *pvVar2;
-  int iVar3;
+  undefined4 uVar3;
   bool bVar4;
-  int *in_ECX;
-  int in_stack_00000004;
+  undefined4 in_stack_00000004;
   
-  sVar1 = *(short *)((int)in_ECX + 0x2e);
+  sVar1 = *(short *)(this + 0x2e);
   if (sVar1 == -1) {
     bVar4 = false;
   }
@@ -1396,11 +1723,11 @@ LAB_0057d9dd:
       return;
     }
   }
-  iVar3 = in_ECX[1];
-  in_ECX[1] = in_stack_00000004;
-  in_ECX[4] = in_ECX[2];
-  in_ECX[3] = iVar3;
-  (**(code **)(*in_ECX + 0x44))();
+  uVar3 = *(undefined4 *)(this + 4);
+  *(undefined4 *)(this + 4) = in_stack_00000004;
+  *(undefined4 *)(this + 0x10) = *(undefined4 *)(this + 8);
+  *(undefined4 *)(this + 0xc) = uVar3;
+  (**(code **)(*(int *)this + 0x44))();
   return;
 }
 
@@ -1441,14 +1768,14 @@ void __fastcall TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
   int tmp_result;
   undefined4 extraout_ECX;
   void *pvVar3;
-  undefined4 *puVar4;
+  TCommand *pTVar4;
   int obj;
   void **ctx_ptr;
   undefined4 *unaff_FS_OFFSET;
   undefined4 log_arg2;
   astruct_24 **log_retaddr;
   astruct_24 *ctx_stack [2];
-  undefined4 *tmp_obj_ptr;
+  TCommand *tmp_obj_ptr;
   undefined4 seh_prev;
   undefined1 *seh_handler;
   int seh_state;
@@ -1506,7 +1833,7 @@ void __fastcall TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
     (**(code **)(*(int *)g_pHelpManager + 0x2c))();
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57dc59;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
       ctx->field1_0x4 = 0x13;
       (**(code **)(ctx->field0_0x0 + 0x44))();
       break;
@@ -1547,7 +1874,7 @@ void __fastcall TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
       log_arg2 = 0x57dd23;
       thunk_LoadUiStringResourceByGroupAndIndex();
       log_retaddr = (astruct_24 **)&g_Advance_Turn_Machine_Value_006A42F0;
-      tmp_obj_ptr = &log_arg2;
+      tmp_obj_ptr = (TCommand *)&log_arg2;
       log_arg2 = extraout_ECX;
       thunk_AssignStringSharedRefAndReturnThis();
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
@@ -1562,7 +1889,7 @@ void __fastcall TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
     ctx->field1_0x4 = 6;
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57dd96;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
       ctx->field1_0x4 = 0x13;
       (**(code **)(ctx->field0_0x0 + 0x44))();
       break;
@@ -1572,7 +1899,7 @@ void __fastcall TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
     ctx->field1_0x4 = 7;
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57ddcf;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
     }
     if (ctx->field52_0x44 != 1) {
       (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x30))();
@@ -1620,16 +1947,16 @@ LAB_0057de7e:
          (((short)uVar2 < 7 &&
           (((pvVar3 != (void *)0x0 && (99 < *(short *)((int)pvVar3 + 0xe))) &&
            (*(short *)((int)pvVar3 + 0xe) < 200)))))))))) {
-      puVar4 = (undefined4 *)AllocateWithFallbackHandler();
+      pTVar4 = (TCommand *)AllocateWithFallbackHandler();
       seh_state._0_1_ = 2;
-      tmp_obj_ptr = puVar4;
-      if (puVar4 == (undefined4 *)0x0) {
+      tmp_obj_ptr = pTVar4;
+      if (pTVar4 == (TCommand *)0x0) {
         seh_state = (uint)seh_state._1_3_ << 8;
         thunk_DispatchUiPacketWithTagNEXT();
       }
       else {
-        TCommand::thunk_ConstructTurnEventPacketBase();
-        *puVar4 = &PTR_thunk_GetTNextDiplomationCommandClassNamePointer_00654e50;
+        TCommand::thunk_ConstructTurnEventPacketBase(pTVar4);
+        *(undefined ***)pTVar4 = &PTR_thunk_GetTNextDiplomationCommandClassNamePointer_00654e50;
         seh_state = (uint)seh_state._1_3_ << 8;
         thunk_DispatchUiPacketWithTagNEXT();
       }
@@ -1640,7 +1967,7 @@ LAB_0057de7e:
     (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x34))();
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57df7f;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
     }
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57df9c;
@@ -1661,7 +1988,7 @@ LAB_0057de7e:
     (**(code **)(obj + 0x54))();
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57e3ab;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
       ctx->field1_0x4 = 0x13;
       (**(code **)(obj + 0x44))();
       break;
@@ -1874,7 +2201,7 @@ LAB_0057e8c5:
     (**(code **)(*g_pMapContextActionManager + 0x28))();
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57e06a;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
       ctx->field1_0x4 = 0x13;
     }
     break;
@@ -1918,7 +2245,7 @@ LAB_0057e8c5:
     }
     if (ctx->field52_0x44 != 0) {
       log_retaddr = (astruct_24 **)0x57e1a6;
-      thunk_ConfigureTurnResumeStateAndNationMask();
+      thunk_ConfigureTurnResumeStateAndNationMask(g_pGameFlowState,(TSimMgr *)ctx->field2_0x8);
       ctx->field1_0x4 = 0x13;
     }
     (**(code **)(obj + 0x44))();
@@ -1934,7 +2261,7 @@ LAB_0057e8c5:
   case (char *)0x19:
     ctx->field1_0x4 = 8;
     action_needed = false;
-    tmp_obj_ptr = (undefined4 *)0x0;
+    tmp_obj_ptr = (TCommand *)0x0;
     if (((g_apNationStates[*(short *)((int)g_pLocalizationTable + 0x2e)] != (void *)0x0) &&
         (slot_id = *(short *)((int)g_apNationStates[*(short *)((int)g_pLocalizationTable + 0x2e)] +
                              0xe), 99 < slot_id)) && (slot_id < 200)) {
@@ -1974,19 +2301,19 @@ LAB_0057e8c5:
     } while ((int)ctx_stack[0] < 0x6a42dc);
     if (action_needed) break;
     obj = 0;
-    puVar4 = tmp_obj_ptr;
+    pTVar4 = tmp_obj_ptr;
     do {
       slot_id = (short)obj;
       if (((slot_id != -1) &&
           (pvVar3 = g_apTerrainTypeDescriptorTable[slot_id], pvVar3 != (void *)0x0)) &&
          (((6 < slot_id || ((pvVar3 == (void *)0x0 || (*(short *)((int)pvVar3 + 0xe) < 100)))) ||
           (199 < *(short *)((int)pvVar3 + 0xe))))) {
-        puVar4 = (undefined4 *)((int)puVar4 + 1);
+        pTVar4 = pTVar4 + 1;
       }
       obj = obj + 1;
     } while (obj < 7);
     action_needed = false;
-    if ((((puVar4 == (undefined4 *)0x1) && (uVar2 = ctx->field37_0x2e, uVar2 != 0xffff)) &&
+    if ((((pTVar4 == (TCommand *)0x1) && (uVar2 = ctx->field37_0x2e, uVar2 != 0xffff)) &&
         (pvVar3 = g_apTerrainTypeDescriptorTable[(short)uVar2], pvVar3 != (void *)0x0)) &&
        (((6 < (short)uVar2 || (pvVar3 == (void *)0x0)) ||
         ((*(short *)((int)pvVar3 + 0xe) < 100 || (199 < *(short *)((int)pvVar3 + 0xe))))))) {
@@ -2087,14 +2414,12 @@ switchD_0057dad8_caseD_18:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057F110
 // GHIDRA_NAME TSimMgr::IsTurnFlowPhaseOutsideRange4To5
-// GHIDRA_PROTO void __cdecl IsTurnFlowPhaseOutsideRange4To5(void)
+// GHIDRA_PROTO void __thiscall IsTurnFlowPhaseOutsideRange4To5(void)
 
-void __cdecl TSimMgr::IsTurnFlowPhaseOutsideRange4To5(void)
+void __thiscall TSimMgr::IsTurnFlowPhaseOutsideRange4To5(TSimMgr *this)
 
 {
-  int in_ECX;
-  
-  if ((3 < *(int *)(in_ECX + 4)) && (*(int *)(in_ECX + 4) < 6)) {
+  if ((3 < *(int *)(this + 4)) && (*(int *)(this + 4) < 6)) {
     return;
   }
   return;
@@ -2245,15 +2570,14 @@ void __fastcall TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(int *pTurnCon
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057F3C0
 // GHIDRA_NAME TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels
-// GHIDRA_PROTO void __cdecl DispatchTurnEvent2134AndRefreshNationPanels(void)
+// GHIDRA_PROTO void __thiscall DispatchTurnEvent2134AndRefreshNationPanels(void)
 
-void __cdecl TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels(void)
+void __thiscall TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels(TSimMgr *this)
 
 {
-  int in_ECX;
   void **ppvVar1;
   
-  (**(code **)(*g_pUiRuntimeContext + 0x4c))(0x2134,*(undefined2 *)(in_ECX + 0x2e));
+  (**(code **)(*g_pUiRuntimeContext + 0x4c))(0x2134,*(undefined2 *)(this + 0x2e));
   ppvVar1 = g_apNationStates + 6;
   do {
     if (*ppvVar1 != (int *)0x0) {
@@ -2267,7 +2591,7 @@ void __cdecl TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels(void)
   (**(code **)(g_pNationInteractionStateManager->vftable + 0x74))();
   (**(code **)(g_pNationInteractionStateManager->vftable + 0x30))();
   (**(code **)(g_pNationInteractionStateManager->vftable + 0x2c))();
-  if (*(int *)(in_ECX + 0x44) != 0) {
+  if (*(int *)(this + 0x44) != 0) {
     thunk_DispatchTurnEventCode32NoPayload();
   }
   (**(code **)(g_pNationInteractionStateManager->vftable + 0x58))();
@@ -2607,6 +2931,89 @@ LAB_00580f40:
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00593A10
+// GHIDRA_NAME TSimMgr::AudioManager::SetOutputDevice
+// GHIDRA_PROTO void __thiscall AudioManager::SetOutputDevice(int this_ptr)
+
+void __thiscall TSimMgr::AudioManager__SetOutputDevice(TSimMgr *this,int this_ptr)
+
+{
+  char extraout_AL;
+  char ok;
+  char extraout_AL_00;
+  int pending_count;
+  undefined4 timer_handle;
+  short requested_id;
+  char skip_queue;
+  
+  if (*(short *)(this + 0x74) != this_ptr) {
+    if ((this[0x80] == (TSimMgr)0x0) || (*(int *)(this + 0x7c) != 0)) {
+      if ((*(short *)(this + 0x76) == 0) || (*(int *)(this + 0x7c) != 0)) {
+        pending_count = (**(code **)(**(int **)(this + 0x6c) + 0x28))();
+        if ((0 < pending_count) &&
+           (g_wAudioOutputDeviceMode = g_wAudioOutputDeviceMode + 1,
+           4 < (short)g_wAudioOutputDeviceMode)) {
+          g_wAudioOutputDeviceMode = 0;
+          thunk_ForwardMciStatusCommand814IgnoreFailure();
+          if (extraout_AL == '\0') {
+            thunk_SelectAndScheduleRandomAudioCue();
+          }
+        }
+      }
+      else {
+        thunk_RequestAudioPresetChangeWithDeferredApply(this,(int)*(short *)(this + 0x76),0);
+        *(undefined2 *)(this + 0x76) = 0;
+      }
+    }
+    else {
+      pending_count = (**(code **)(**(int **)(this + 0x6c) + 0x28))();
+      if (0 < pending_count) {
+        thunk_ResetDualAudioCuePools();
+      }
+      if (this[0x78] != (TSimMgr)0x0) {
+        ForwardMciCommand808ToDevice();
+        this[0x78] = (TSimMgr)0x0;
+        *(undefined2 *)(this + 0x74) = 0;
+      }
+      this[0x80] = (TSimMgr)0x0;
+    }
+    (**(code **)(**(int **)(this + 0x6c) + 0x30))();
+    (**(code **)(**(int **)(this + 0x70) + 0x30))();
+    (**(code **)(**(int **)(this + 0x6c) + 0x14))(this_ptr);
+    (**(code **)(**(int **)(this + 0x70) + 0x14))(this_ptr);
+    if (*(short *)(g_pLocalizationTable + 0x4e) != 0) {
+      thunk_IsTurnCooldownCounterActiveOrResetFlag();
+      if (ok == '\0') {
+        thunk_ReturnTrueStub();
+        if (extraout_AL_00 == '\0') {
+          *(undefined2 *)(g_pLocalizationTable + 0x4e) = 0;
+          return;
+        }
+        if (this_ptr != *(short *)(this + 0x74)) {
+          requested_id = (short)this_ptr;
+          if ((skip_queue == '\0') || (*(short *)(this + 0x74) < 1)) {
+            *(short *)(this + 0x74) = requested_id;
+            thunk_ApplyMciPlaybackRangeFromAudioManager
+                      (&g_AudioManagerGlobalState,(int)requested_id);
+            thunk_ApplyAuxOutputVolumeFromScalar((int)*(short *)(g_pLocalizationTable + 0x4e) << 8);
+            this[0x78] = (TSimMgr)0x1;
+          }
+          else {
+            *(short *)(this + 0x76) = requested_id;
+            if (*(int *)(this + 0x7c) == 0) {
+              thunk_GetTickCountDiv16();
+              *(undefined4 *)(this + 0x7c) = timer_handle;
+              thunk_ScheduleTimerSlotCallbackWithInterval(0x406dd4,6,0);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
   return;
 }
 

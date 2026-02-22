@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401D0C
 // GHIDRA_NAME TToolBarCluster::thunk_UpdateControlTagTreaTextFromNationAndMapContext
-// GHIDRA_PROTO void __cdecl thunk_UpdateControlTagTreaTextFromNationAndMapContext(void)
+// GHIDRA_PROTO void __thiscall thunk_UpdateControlTagTreaTextFromNationAndMapContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to UpdateControlTagTreaTextFromNationAndMapContext
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to UpdateControlTagTreaTextFromNationAndMapContext */
 
-void __cdecl TToolBarCluster::thunk_UpdateControlTagTreaTextFromNationAndMapContext(void)
+void __thiscall
+TToolBarCluster::thunk_UpdateControlTagTreaTextFromNationAndMapContext(TToolBarCluster *this)
 
 {
-  UpdateControlTagTreaTextFromNationAndMapContext();
+  UpdateControlTagTreaTextFromNationAndMapContext(this);
   return;
 }
 
@@ -58,17 +59,18 @@ TToolBarCluster::thunk_DestructTToolBarClusterAndMaybeFree(TToolBarCluster *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402F40
 // GHIDRA_NAME TToolBarCluster::thunk_UpdateMainCursorRegionAndEmitLocalizedHintIfEligible
-// GHIDRA_PROTO void __cdecl thunk_UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(void)
+// GHIDRA_PROTO void __thiscall thunk_UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to UpdateMainCursorRegionAndEmitLocalizedHintIfEligible
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to UpdateMainCursorRegionAndEmitLocalizedHintIfEligible */
 
-void __cdecl TToolBarCluster::thunk_UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(void)
+void __thiscall
+TToolBarCluster::thunk_UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(TToolBarCluster *this)
 
 {
-  UpdateMainCursorRegionAndEmitLocalizedHintIfEligible();
+  UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(this);
   return;
 }
 
@@ -88,35 +90,49 @@ void __cdecl TToolBarCluster::thunk_SehCleanup_ReleaseTwoTempSharedStringRefs(vo
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405605
+// GHIDRA_NAME TToolBarCluster::thunk_ConstructUiResourceEntryTypeB
+// GHIDRA_PROTO void * __thiscall thunk_ConstructUiResourceEntryTypeB(void)
+
+void * __thiscall TToolBarCluster::thunk_ConstructUiResourceEntryTypeB(TToolBarCluster *this)
+
+{
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  *(undefined ***)this = &g_vtblTToolBarCluster;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407CDE
 // GHIDRA_NAME TToolBarCluster::thunk_DispatchEvent10CommandTagsWithLocalizationGuards
-// GHIDRA_PROTO void __cdecl thunk_DispatchEvent10CommandTagsWithLocalizationGuards(void)
+// GHIDRA_PROTO void __thiscall thunk_DispatchEvent10CommandTagsWithLocalizationGuards(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DispatchEvent10CommandTagsWithLocalizationGuards
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DispatchEvent10CommandTagsWithLocalizationGuards */
 
-void __cdecl TToolBarCluster::thunk_DispatchEvent10CommandTagsWithLocalizationGuards(void)
+void __thiscall
+TToolBarCluster::thunk_DispatchEvent10CommandTagsWithLocalizationGuards(TToolBarCluster *this)
 
 {
-  DispatchEvent10CommandTagsWithLocalizationGuards();
+  DispatchEvent10CommandTagsWithLocalizationGuards(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004091BA
 // GHIDRA_NAME TToolBarCluster::thunk_RefreshTurnOrderStatusPanelTextsAndControls
-// GHIDRA_PROTO void __cdecl thunk_RefreshTurnOrderStatusPanelTextsAndControls(void)
+// GHIDRA_PROTO void __thiscall thunk_RefreshTurnOrderStatusPanelTextsAndControls(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RefreshTurnOrderStatusPanelTextsAndControls
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RefreshTurnOrderStatusPanelTextsAndControls */
 
-void __cdecl TToolBarCluster::thunk_RefreshTurnOrderStatusPanelTextsAndControls(void)
+void __thiscall
+TToolBarCluster::thunk_RefreshTurnOrderStatusPanelTextsAndControls(TToolBarCluster *this)
 
 {
-  RefreshTurnOrderStatusPanelTextsAndControls();
+  RefreshTurnOrderStatusPanelTextsAndControls(this);
   return;
 }
 
@@ -127,8 +143,8 @@ void __cdecl TToolBarCluster::thunk_RefreshTurnOrderStatusPanelTextsAndControls(
 void * __cdecl TToolBarCluster::CreateTToolBarClusterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCluster *this;
+  TCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -138,16 +154,16 @@ void * __cdecl TToolBarCluster::CreateTToolBarClusterInstance(void)
   puStack_8 = &LAB_006376ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &g_vtblTToolBarCluster;
-    puVar2 = puVar1;
+  pTVar1 = (TCluster *)0x0;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    *(undefined ***)this = &g_vtblTToolBarCluster;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584E00
@@ -172,7 +188,7 @@ void * __cdecl TToolBarCluster::GetTToolBarClusterClassNamePointer(void)
 void * __thiscall TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
   *(undefined ***)this = &g_vtblTToolBarCluster;
   return this;
 }
@@ -194,7 +210,7 @@ TToolBarCluster::DestructTToolBarClusterAndMaybeFree(TToolBarCluster *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584EA0
 // GHIDRA_NAME TToolBarCluster::DispatchEvent10CommandTagsWithLocalizationGuards
-// GHIDRA_PROTO void __cdecl DispatchEvent10CommandTagsWithLocalizationGuards(void)
+// GHIDRA_PROTO void __thiscall DispatchEvent10CommandTagsWithLocalizationGuards(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT For event code 10 dispatches command tags (Scor/ReSt/city/dipl/move/map/query/trad/tran) with state/localization gating.
 // GHIDRA_COMMENT_END
@@ -202,7 +218,8 @@ TToolBarCluster::DestructTToolBarClusterAndMaybeFree(TToolBarCluster *this,byte 
 /* For event code 10 dispatches command tags (Scor/ReSt/city/dipl/move/map/query/trad/tran) with
    state/localization gating. */
 
-void __cdecl TToolBarCluster::DispatchEvent10CommandTagsWithLocalizationGuards(void)
+void __thiscall
+TToolBarCluster::DispatchEvent10CommandTagsWithLocalizationGuards(TToolBarCluster *this)
 
 {
   uint uVar1;
@@ -210,12 +227,11 @@ void __cdecl TToolBarCluster::DispatchEvent10CommandTagsWithLocalizationGuards(v
   int extraout_EAX;
   undefined4 extraout_EAX_00;
   int *piVar3;
-  void *in_ECX;
   int in_stack_00000004;
   void *in_stack_00000008;
   int in_stack_0000000c;
   
-  thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   InvokeAfxThreadAndCallSecondaryRefresh();
   if ((in_stack_00000004 == 10) &&
      (*(int *)((int)g_pApplicationUiRootController + 0x24) < 2 && extraout_EAX == 0)) {
@@ -270,7 +286,7 @@ void __cdecl TToolBarCluster::DispatchEvent10CommandTagsWithLocalizationGuards(v
     else if (uVar1 < 0x6d6f7666) {
       if (uVar1 == 0x6d6f7665) {
 LAB_00585059:
-        piVar3 = (int *)(**(code **)(**(int **)((int)in_ECX + 0x20) + 0x94))(0x444c4f47);
+        piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x444c4f47);
         if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -308,7 +324,7 @@ LAB_00585059:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005851C0
 // GHIDRA_NAME TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligible
-// GHIDRA_PROTO void __cdecl UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(void)
+// GHIDRA_PROTO void __thiscall UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Updates main/cursor controls and emits localized hint/event for eligible cursor-region combinations.
 // GHIDRA_COMMENT_END
@@ -316,7 +332,8 @@ LAB_00585059:
 /* Updates main/cursor controls and emits localized hint/event for eligible cursor-region
    combinations. */
 
-void __cdecl TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(void)
+void __thiscall
+TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligible(TToolBarCluster *this)
 
 {
   code *pcVar1;
@@ -324,7 +341,6 @@ void __cdecl TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligib
   int iVar3;
   int *piVar4;
   ushort uVar5;
-  int *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   int unaff_retaddr;
   int in_stack_00000004;
@@ -336,7 +352,7 @@ void __cdecl TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligib
   piStack_8 = (int *)&LAB_006376d8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar3 = (**(code **)(*in_ECX + 0x94))();
+  iVar3 = (**(code **)(*(int *)this + 0x94))();
   if (iVar3 != 0) {
     ConstructSharedStringFromCStrOrResourceId(PTR_g_szEmptyString_00662b90);
     piStack_8 = (int *)0x0;
@@ -379,14 +395,14 @@ void __cdecl TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligib
     piStack_8 = (int *)0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
   }
-  thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(in_ECX,unaff_retaddr,in_stack_00000004);
-  *unaff_FS_OFFSET = in_ECX;
+  thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(this,unaff_retaddr,in_stack_00000004);
+  *unaff_FS_OFFSET = this;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005853F0
 // GHIDRA_NAME TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls
-// GHIDRA_PROTO void __cdecl RefreshTurnOrderStatusPanelTextsAndControls(void)
+// GHIDRA_PROTO void __thiscall RefreshTurnOrderStatusPanelTextsAndControls(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Rebuilds and refreshes turn-order status panel labels/controls based on active event code and current panel tag availability.
 // GHIDRA_COMMENT_END
@@ -394,7 +410,7 @@ void __cdecl TToolBarCluster::UpdateMainCursorRegionAndEmitLocalizedHintIfEligib
 /* Rebuilds and refreshes turn-order status panel labels/controls based on active event code and
    current panel tag availability. */
 
-void __cdecl TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(void)
+void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TToolBarCluster *this)
 
 {
   code *pcVar1;
@@ -405,7 +421,6 @@ void __cdecl TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(void)
   int iVar6;
   int iVar7;
   undefined1 ***pppuVar8;
-  int *in_ECX;
   int *unaff_FS_OFFSET;
   undefined1 *puStack_64;
   undefined1 ***pppuStack_60;
@@ -433,7 +448,7 @@ void __cdecl TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(void)
   *unaff_FS_OFFSET = (int)&iStack_c;
   puStack_34 = (undefined1 *)0x585416;
   InitializeSharedStringRefFromEmpty();
-  iVar6 = *in_ECX;
+  iVar6 = *(int *)this;
   local_4 = 0;
   puStack_34 = (undefined1 *)0x585425;
   piVar3 = (int *)(**(code **)(iVar6 + 0x58))();
@@ -574,7 +589,7 @@ void __cdecl TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(void)
   if (iVar6 == 0) {
     pppuStack_54 = (undefined1 ***)0x746f6f33;
     pppuStack_58 = (undefined1 ***)0x585668;
-    piVar3 = (int *)(**(code **)(*(int *)in_ECX[8] + 0x94))();
+    piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))();
     if (piVar3 != (int *)0x0) {
       pppuStack_54 = (undefined1 ***)0x656e6420;
       pppuStack_58 = (undefined1 ***)0x58567b;
@@ -721,7 +736,7 @@ LAB_00585749:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585BA0
 // GHIDRA_NAME TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
-// GHIDRA_PROTO void __cdecl UpdateControlTagTreaTextFromNationAndMapContext(void)
+// GHIDRA_PROTO void __thiscall UpdateControlTagTreaTextFromNationAndMapContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds and assigns text for control tag 0x74726561 using nation eligibility and map-context dependent values.
 // GHIDRA_COMMENT_END
@@ -729,14 +744,14 @@ LAB_00585749:
 /* Builds and assigns text for control tag 0x74726561 using nation eligibility and map-context
    dependent values. */
 
-void __cdecl TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(void)
+void __thiscall
+TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(TToolBarCluster *this)
 
 {
   code *pcVar1;
   char extraout_AL;
   int *piVar2;
   undefined4 uVar3;
-  int *in_ECX;
   undefined4 unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined1 **ppuStack_3c;
@@ -762,7 +777,7 @@ void __cdecl TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(vo
     (**(code **)(*g_pLocalizationTable + 0x74))();
   }
   puStack_2c = (undefined1 *)0x74726561;
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)(*(int *)this + 0x94);
   piVar2 = (int *)(*pcVar1)();
   if (piVar2 != (int *)0x0) {
     (**(code **)(*piVar2 + 0x1c8))();

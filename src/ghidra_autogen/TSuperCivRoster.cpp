@@ -57,7 +57,7 @@ void * __cdecl TSuperCivRoster::GetTSuperCivRosterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB470
 // GHIDRA_NAME TSuperCivRoster::ConstructTSuperCivRosterBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTSuperCivRosterBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTSuperCivRosterBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassQuad] ctor inferred for TSuperCivRoster from in-body g_vtblTSuperCivRoster assignment/use.
 // GHIDRA_COMMENT_END
@@ -65,7 +65,7 @@ void * __cdecl TSuperCivRoster::GetTSuperCivRosterClassNamePointer(void)
 /* [ClassQuad] ctor inferred for TSuperCivRoster from in-body g_vtblTSuperCivRoster assignment/use.
     */
 
-void * __cdecl TSuperCivRoster::ConstructTSuperCivRosterBaseState(void)
+void * __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRoster *this)
 
 {
   code *pcVar1;
@@ -79,7 +79,6 @@ void * __cdecl TSuperCivRoster::ConstructTSuperCivRosterBaseState(void)
   undefined4 extraout_EAX_00;
   undefined3 extraout_var_00;
   void *extraout_EAX_01;
-  TPageView *in_ECX;
   int pageDelta;
   undefined4 uVar4;
   undefined4 *unaff_FS_OFFSET;
@@ -95,14 +94,14 @@ void * __cdecl TSuperCivRoster::ConstructTSuperCivRosterBaseState(void)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined4 *)(in_ECX + 0x1c) = 0x70616765;
-  TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds(in_ECX);
+  *(undefined4 *)(this + 0x1c) = 0x70616765;
+  TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds((TPageView *)this);
   thunk_GetActiveNationId();
   local_14 = *(undefined4 *)((int)g_apNationStates[extraout_AX] + 0x89c);
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar3 = thunk_LinkedListCursorHasCurrent();
   if (CONCAT31(extraout_var,bVar3) != 0) {
-    pcVar1 = *(code **)(*(int *)in_ECX + 0x1a0);
+    pcVar1 = *(code **)(*(int *)this + 0x1a0);
     uVar4 = extraout_EAX;
     do {
       pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
@@ -125,11 +124,11 @@ void * __cdecl TSuperCivRoster::ConstructTSuperCivRosterBaseState(void)
       uVar4 = extraout_EAX_00;
     } while (CONCAT31(extraout_var_00,bVar3) != 0);
   }
-  iVar2 = *(int *)in_ECX;
-  *(undefined2 *)(in_ECX + 100) = 2;
+  iVar2 = *(int *)this;
+  *(undefined2 *)(this + 100) = 2;
   (**(code **)(iVar2 + 0x1ac))();
   (**(code **)(iVar2 + 0x1b0))(1);
-  pController = *(int **)(in_ECX + 0x20);
+  pController = *(int **)(this + 0x20);
   (**(code **)(*pController + 0xc))();
   thunk_UpdatePagedListNavigationButtonState(pController,pageDelta);
   *unaff_FS_OFFSET = uStack_10;

@@ -56,6 +56,23 @@ THelpWindow::thunk_DestructTHelpWindowAndMaybeFree(THelpWindow *this,byte freeSe
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040834B
+// GHIDRA_NAME THelpWindow::thunk_ConstructUiWindowResourceEntryType572C0
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiWindowResourceEntryType572C0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiWindowResourceEntryType572C0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiWindowResourceEntryType572C0 */
+
+void __thiscall THelpWindow::thunk_ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
+
+{
+  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
+  *(undefined ***)this = &g_vtblTHelpWindow;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00504B50
 // GHIDRA_NAME THelpWindow::CreateTHelpWindowInstance
 // GHIDRA_PROTO void * __cdecl CreateTHelpWindowInstance(void)
@@ -68,8 +85,8 @@ THelpWindow::thunk_DestructTHelpWindowAndMaybeFree(THelpWindow *this,byte freeSe
 void * __cdecl THelpWindow::CreateTHelpWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TFloatWindow *this;
+  TFloatWindow *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -79,16 +96,16 @@ void * __cdecl THelpWindow::CreateTHelpWindowInstance(void)
   puStack_8 = &LAB_0063366a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TFloatWindow *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340();
-    *puVar1 = &g_vtblTHelpWindow;
-    puVar2 = puVar1;
+  pTVar1 = (TFloatWindow *)0x0;
+  if (this != (TFloatWindow *)0x0) {
+    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    *(undefined ***)this = &g_vtblTHelpWindow;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BD0
@@ -108,7 +125,7 @@ void * __cdecl THelpWindow::GetTHelpWindowClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BF0
 // GHIDRA_NAME THelpWindow::ConstructUiWindowResourceEntryType572C0
-// GHIDRA_PROTO void __cdecl ConstructUiWindowResourceEntryType572C0(void)
+// GHIDRA_PROTO void __thiscall ConstructUiWindowResourceEntryType572C0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing vtable PTR_LAB_006572c0.
 // GHIDRA_COMMENT_END
@@ -116,13 +133,11 @@ void * __cdecl THelpWindow::GetTHelpWindowClassNamePointer(void)
 /* Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing
    vtable PTR_LAB_006572c0. */
 
-void __cdecl THelpWindow::ConstructUiWindowResourceEntryType572C0(void)
+void __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340();
-  *in_ECX = &g_vtblTHelpWindow;
+  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
+  *(undefined ***)this = &g_vtblTHelpWindow;
   return;
 }
 

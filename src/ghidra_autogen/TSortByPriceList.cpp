@@ -31,6 +31,40 @@ void __cdecl TSortByPriceList::thunk_DestructTSortByPriceList(TIndexAndRankList 
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403242
+// GHIDRA_NAME TSortByPriceList::thunk_DeletingDestructTSortByPriceList
+// GHIDRA_PROTO void __cdecl thunk_DeletingDestructTSortByPriceList(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTSortByPriceList
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeletingDestructTSortByPriceList */
+
+void __cdecl TSortByPriceList::thunk_DeletingDestructTSortByPriceList(void)
+
+{
+  DeletingDestructTSortByPriceList();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408BF7
+// GHIDRA_NAME TSortByPriceList::thunk_GetTSortByPriceListTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTSortByPriceListTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTSortByPriceListTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTSortByPriceListTypeName */
+
+void * __cdecl TSortByPriceList::thunk_GetTSortByPriceListTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTSortByPriceListClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00534680
 // GHIDRA_NAME TSortByPriceList::AllocateAndConstructTSortByPriceList
 // GHIDRA_PROTO undefined AllocateAndConstructTSortByPriceList()

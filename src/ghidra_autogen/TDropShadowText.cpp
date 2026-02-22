@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TDropShadowText.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401BEA
+// GHIDRA_NAME TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructSelectableTextOptionEntryBase(void)
+
+void __thiscall TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
+
+{
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  this[0x94] = (TDropShadowText)0x0;
+  this[0x95] = (TDropShadowText)0x0;
+  this[0x96] = (TDropShadowText)0x0;
+  this[0x97] = (TDropShadowText)0x0;
+  *(undefined ***)this = &g_vtblTDropShadowText;
+  *(undefined4 *)(this + 0x94) = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040510A
 // GHIDRA_NAME TDropShadowText::thunk_DestructTDropShadowTextAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTDropShadowTextAndMaybeFree(byte freeSelfFlag)
@@ -84,7 +101,7 @@ void __fastcall TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClip
   pHVar2 = CreateRectRgnIndirect(&RStack_20);
   AttachRegionHandleToClipStateAndRegister(pHVar2);
   SelectClipRegionOnPrimaryAndSecondaryDc(&ppuStack_38);
-  DeleteRegionHandleFromClipState();
+  TMapDialog::DeleteRegionHandleFromClipState();
   puStack_8 = (undefined1 *)0xffffffff;
   ppuStack_38 = &PTR_LAB_0067106c;
   WrapperFor_DeleteRegionHandleFromClipState_At0047cb60();
@@ -114,10 +131,10 @@ void __fastcall TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClip
 // GHIDRA_NAME TDropShadowText::CreateSelectableTextOptionEntryBase
 // GHIDRA_PROTO undefined CreateSelectableTextOptionEntryBase()
 
-undefined4 * TDropShadowText::CreateSelectableTextOptionEntryBase(void)
+TStaticText * TDropShadowText::CreateSelectableTextOptionEntryBase(void)
 
 {
-  undefined4 *puVar1;
+  TStaticText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -127,21 +144,21 @@ undefined4 * TDropShadowText::CreateSelectableTextOptionEntryBase(void)
   puStack_8 = &LAB_00638e6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TStaticText *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x25) = 0;
-    *(undefined1 *)((int)puVar1 + 0x95) = 0;
-    *(undefined1 *)((int)puVar1 + 0x96) = 0;
-    *(undefined1 *)((int)puVar1 + 0x97) = 0;
-    puVar1[0x25] = 0;
-    *puVar1 = &g_vtblTDropShadowText;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    this[0x94] = (TStaticText)0x0;
+    this[0x95] = (TStaticText)0x0;
+    this[0x96] = (TStaticText)0x0;
+    this[0x97] = (TStaticText)0x0;
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined ***)this = &g_vtblTDropShadowText;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TStaticText *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5570
@@ -161,7 +178,7 @@ void * __cdecl TDropShadowText::GetTDropShadowTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5590
 // GHIDRA_NAME TDropShadowText::ConstructSelectableTextOptionEntryBase
-// GHIDRA_PROTO void __cdecl ConstructSelectableTextOptionEntryBase(void)
+// GHIDRA_PROTO void __thiscall ConstructSelectableTextOptionEntryBase(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for selectable text option entries.
 // GHIDRA_COMMENT
@@ -178,18 +195,16 @@ void * __cdecl TDropShadowText::GetTDropShadowTextClassNamePointer(void)
    2. Clears option-state bytes used by selection logic.
    3. Installs selectable-option base vtable PTR_LAB_0066ce00. */
 
-void __cdecl TDropShadowText::ConstructSelectableTextOptionEntryBase(void)
+void __thiscall TDropShadowText::ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TStaticText::thunk_ConstructUiTextResourceEntryBase();
-  *(undefined1 *)(in_ECX + 0x25) = 0;
-  *(undefined1 *)((int)in_ECX + 0x95) = 0;
-  *(undefined1 *)((int)in_ECX + 0x96) = 0;
-  *(undefined1 *)((int)in_ECX + 0x97) = 0;
-  *in_ECX = &g_vtblTDropShadowText;
-  in_ECX[0x25] = 0;
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  this[0x94] = (TDropShadowText)0x0;
+  this[0x95] = (TDropShadowText)0x0;
+  this[0x96] = (TDropShadowText)0x0;
+  this[0x97] = (TDropShadowText)0x0;
+  *(undefined ***)this = &g_vtblTDropShadowText;
+  *(undefined4 *)(this + 0x94) = 0;
   return;
 }
 
@@ -258,7 +273,7 @@ void __fastcall TDropShadowText::RefreshNationHeaderDropShadowTextWithClipRegion
   pHVar2 = CreateRectRgnIndirect(&RStack_20);
   AttachRegionHandleToClipStateAndRegister(pHVar2);
   SelectClipRegionOnPrimaryAndSecondaryDc(&ppuStack_38);
-  DeleteRegionHandleFromClipState();
+  TMapDialog::DeleteRegionHandleFromClipState();
   puStack_8 = (undefined1 *)0xffffffff;
   ppuStack_38 = &PTR_LAB_0067106c;
   WrapperFor_DeleteRegionHandleFromClipState_At0047cb60();

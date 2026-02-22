@@ -22,6 +22,24 @@ T2PictureButton::thunk_DestructT2PictureButtonAndMaybeFree(T2PictureButton *this
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004038FA
+// GHIDRA_NAME T2PictureButton::thunk_ConstructUiBattleTabPictureEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiBattleTabPictureEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiBattleTabPictureEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiBattleTabPictureEntry */
+
+void __thiscall T2PictureButton::thunk_ConstructUiBattleTabPictureEntry(T2PictureButton *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined2 *)(this + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblT2PictureButton;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404E80
 // GHIDRA_NAME T2PictureButton::thunk_GetT2PictureButtonClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetT2PictureButtonClassNamePointer(void)
@@ -93,7 +111,7 @@ void * __cdecl T2PictureButton::GetT2PictureButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BB0
 // GHIDRA_NAME T2PictureButton::ConstructUiBattleTabPictureEntry
-// GHIDRA_PROTO void __cdecl ConstructUiBattleTabPictureEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructUiBattleTabPictureEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence includes batt/ttab path with event-id sequence 0x101B..0x101F).
 // GHIDRA_COMMENT_END
@@ -101,14 +119,12 @@ void * __cdecl T2PictureButton::GetT2PictureButtonClassNamePointer(void)
 /* Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence
    includes batt/ttab path with event-id sequence 0x101B..0x101F). */
 
-void __cdecl T2PictureButton::ConstructUiBattleTabPictureEntry(void)
+void __thiscall T2PictureButton::ConstructUiBattleTabPictureEntry(T2PictureButton *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)((int)in_ECX + 0x92) = 7000;
-  *in_ECX = &g_vtblT2PictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblT2PictureButton;
   return;
 }
 

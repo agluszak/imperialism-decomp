@@ -199,14 +199,15 @@ TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int ar
   short sVar1;
   undefined4 uVar2;
   char cVar3;
-  undefined4 *puVar4;
+  TView *pTVar4;
+  TControl *this_00;
   int *piVar5;
   int extraout_EAX;
   int iVar6;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   TGWorldButton *pTStack_68;
-  int *piStack_64;
+  TView *pTStack_64;
   undefined4 *puStack_60;
   TArmyUnitLine *pTStack_5c;
   undefined4 uStack_58;
@@ -220,9 +221,9 @@ TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int ar
   int iStack_28;
   undefined4 local_24;
   undefined4 local_20;
-  undefined4 *local_1c;
+  TView *local_1c;
   undefined4 local_18;
-  undefined1 *puStack_10;
+  TClickZone *pTStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -234,16 +235,16 @@ TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int ar
   iVar6 = *(int *)(arg1 + 0x84);
   uStack_50 = 100;
   uStack_54 = 0x4a8e23;
-  puVar4 = (undefined4 *)AllocateWithFallbackHandler();
+  pTVar4 = (TView *)AllocateWithFallbackHandler();
   local_4 = 0;
-  local_1c = puVar4;
-  if (puVar4 == (undefined4 *)0x0) {
-    puVar4 = (undefined4 *)0x0;
+  local_1c = pTVar4;
+  if (pTVar4 == (TView *)0x0) {
+    pTVar4 = (TView *)0x0;
   }
   else {
     uStack_50 = 0x4a8e3f;
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar4 = &g_vtblTArmyUnitView;
+    TView::thunk_ConstructUiResourceEntryBase(pTVar4);
+    *(undefined ***)pTVar4 = &g_vtblTArmyUnitView;
   }
   uVar2 = *(undefined4 *)(this + 0x10);
   uStack_50 = 0;
@@ -251,26 +252,26 @@ TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int ar
   pTStack_5c = this + 8;
   uStack_58 = (undefined1 *)0x5;
   puStack_60 = (undefined4 *)arg2;
-  piStack_64 = (int *)arg1;
+  pTStack_64 = (TView *)arg1;
   pTStack_68 = (TGWorldButton *)0x0;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
   uStack_50 = 0x94;
-  puVar4[0x18] = uVar2;
+  *(undefined4 *)(pTVar4 + 0x60) = uVar2;
   uStack_54 = 0x4a8e7b;
-  piVar5 = (int *)AllocateWithFallbackHandler();
+  this_00 = (TControl *)AllocateWithFallbackHandler();
   local_4 = 1;
-  if (piVar5 == (int *)0x0) {
-    piVar5 = (int *)0x0;
+  if (this_00 == (TControl *)0x0) {
+    this_00 = (TControl *)0x0;
   }
   else {
     uStack_50 = 0x4a8e99;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *piVar5 = (int)&PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-    piVar5[0x22] = 0;
-    piVar5[0x24] = 0;
-    piVar5[0x23] = 0;
-    *(undefined1 *)(piVar5 + 0x21) = 0;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    *(undefined ***)this_00 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
+    *(undefined4 *)(this_00 + 0x88) = 0;
+    *(undefined4 *)(this_00 + 0x90) = 0;
+    *(undefined4 *)(this_00 + 0x8c) = 0;
+    this_00[0x84] = (TControl)0x0;
   }
   pTStack_5c = (TArmyUnitLine *)&local_1c;
   puStack_60 = &local_24;
@@ -280,16 +281,16 @@ TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int ar
   uStack_54 = 4;
   uStack_58 = (undefined1 *)0x4;
   pTStack_68 = (TGWorldButton *)0x0;
-  local_1c = (undefined4 *)0x3f;
+  local_1c = (TView *)0x3f;
   local_18 = 0x31;
   local_24 = 0;
   local_20 = 0;
-  piStack_64 = puVar4;
+  pTStack_64 = pTVar4;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  piVar5[7] = 0x63686563;
-  piVar5[0x24] = iVar6;
-  piVar5[0x22] = (int)sVar1 << 7;
-  iVar6 = *piVar5;
+  *(int *)(this_00 + 0x1c) = 0x63686563;
+  *(int *)(this_00 + 0x90) = iVar6;
+  *(int *)(this_00 + 0x88) = (int)sVar1 << 7;
+  iVar6 = *(int *)this_00;
   uStack_50 = 0;
   if (g_aeTacticalUnitCategoryBySlot[*(short *)(*(int *)(this + 0x10) + 4)] == TACTICAL_CATEGORY_0)
   {
@@ -302,7 +303,7 @@ TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int ar
     uStack_54 = 1;
     uStack_58 = (undefined1 *)0x4a8f39;
     (**(code **)(iVar6 + 0xa8))();
-    piVar5[0x18] = 4;
+    *(int *)(this_00 + 0x60) = 4;
     if (*(int *)(*(int *)(this + 0x10) + 8) != 0) goto LAB_004a8f66;
     pTStack_5c = (TArmyUnitLine *)0x1;
   }
@@ -318,16 +319,16 @@ LAB_004a8f66:
   pTStack_5c = (TArmyUnitLine *)0x4a8f8c;
   thunk_GetUnitMovementClassId();
   puStack_60 = (undefined4 *)0x2726;
-  piStack_64 = (int *)0x4a8f9e;
+  pTStack_64 = (TView *)0x4a8f9e;
   (**(code **)(iVar6 + 0x84))();
-  puStack_10 = (undefined1 *)&pTStack_68;
-  piStack_64 = piVar5;
+  pTStack_10 = (TClickZone *)&pTStack_68;
+  pTStack_64 = (TView *)this_00;
   thunk_AssignStringSharedRefAndReturnThis();
   InitializeAndRunMainRoutine();
-  piStack_64 = (int *)0x4a8fc0;
+  pTStack_64 = (TView *)0x4a8fc0;
   cVar3 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
   if (cVar3 != '\0') {
-    piStack_64 = (int *)0x8c;
+    pTStack_64 = (TView *)0x8c;
     pTStack_68 = (TGWorldButton *)0x4a8fd2;
     pTStack_38 = (TGWorldButton *)AllocateWithFallbackHandler();
     local_18._0_1_ = 3;
@@ -335,18 +336,18 @@ LAB_004a8f66:
       piVar5 = (int *)0x0;
     }
     else {
-      piStack_64 = (int *)0x4a8fe9;
+      pTStack_64 = (TView *)0x4a8fe9;
       piVar5 = TGWorldButton::ConstructTGWorldButtonBaseState(pTStack_38);
     }
     pTStack_68 = (TGWorldButton *)&pTStack_38;
-    piStack_64 = (int *)0xdae;
-    iStack_28 = puVar4[0xd] + -0x28;
+    pTStack_64 = (TView *)0xdae;
+    iStack_28 = *(int *)(pTVar4 + 0x34) + -0x28;
     local_18._0_1_ = 2;
     pTStack_38 = (TGWorldButton *)0x13;
     local_34 = 0x12;
     local_24 = 0;
     WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0();
-    piStack_64 = (int *)0x0;
+    pTStack_64 = (TView *)0x0;
     pTStack_68 = (TGWorldButton *)0x1;
     (**(code **)(*piVar5 + 0xa8))();
     piVar5[7] = 0x75706772;
@@ -375,42 +376,42 @@ LAB_004a8f66:
       pTStack_68 = pTStack_38;
       scanBracketExpressions(g_pLocalizationTable,auStack_3c,unaff_EDI);
       local_18._0_1_ = 8;
-      piStack_64 = (int *)0x4a918e;
+      pTStack_64 = (TView *)0x4a918e;
       ReleaseSharedStringRefIfNotEmpty();
     }
     pTStack_38 = (TGWorldButton *)&pTStack_68;
-    piStack_64 = piVar5;
+    pTStack_64 = (TView *)piVar5;
     thunk_AssignStringSharedRefAndReturnThis();
     InitializeAndRunMainRoutine();
     local_18._0_1_ = 7;
-    piStack_64 = (int *)0x4a91b6;
+    pTStack_64 = (TView *)0x4a91b6;
     ReleaseSharedStringRefIfNotEmpty();
     local_18._0_1_ = 6;
-    piStack_64 = (int *)0x4a91c4;
+    pTStack_64 = (TView *)0x4a91c4;
     ReleaseSharedStringRefIfNotEmpty();
     local_18._0_1_ = 5;
-    piStack_64 = (int *)0x4a91d2;
+    pTStack_64 = (TView *)0x4a91d2;
     ReleaseSharedStringRefIfNotEmpty();
     local_18._0_1_ = 4;
-    piStack_64 = (int *)0x4a91e0;
+    pTStack_64 = (TView *)0x4a91e0;
     ReleaseSharedStringRefIfNotEmpty();
     local_18 = CONCAT31(local_18._1_3_,2);
-    piStack_64 = (int *)0x4a91ee;
+    pTStack_64 = (TView *)0x4a91ee;
     ReleaseSharedStringRefIfNotEmpty();
   }
-  piStack_64 = (int *)0x88;
+  pTStack_64 = (TView *)0x88;
   pTStack_68 = (TGWorldButton *)0x4a91f8;
-  puStack_10 = (undefined1 *)AllocateWithFallbackHandler();
+  pTStack_10 = (TClickZone *)AllocateWithFallbackHandler();
   local_18._0_1_ = 10;
-  if (puStack_10 == (undefined1 *)0x0) {
+  if (pTStack_10 == (TClickZone *)0x0) {
     iVar6 = 0;
   }
   else {
-    piStack_64 = (int *)0x4a920f;
-    TClickZone::thunk_ConstructUiCommandTagResourceEntry();
+    pTStack_64 = (TView *)0x4a920f;
+    TClickZone::thunk_ConstructUiCommandTagResourceEntry(pTStack_10);
     iVar6 = extraout_EAX;
   }
-  piStack_64 = (int *)0x0;
+  pTStack_64 = (TView *)0x0;
   pTStack_68 = (TGWorldButton *)0x4;
   local_18 = CONCAT31(local_18._1_3_,2);
   iStack_28 = 0x80;
@@ -419,10 +420,10 @@ LAB_004a8f66:
   uStack_2c = 0;
   thunk_InitializeUiResourceEntryFrameAndParent();
   *(undefined4 *)(iVar6 + 0x1c) = 0x6e616d65;
-  piStack_64 = (int *)&stack0xffffffb8;
+  pTStack_64 = (TView *)&stack0xffffffb8;
   pTStack_68 = (TGWorldButton *)0x1;
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  local_1c = (undefined4 *)&stack0xffffff8c;
+  local_1c = (TView *)&stack0xffffff8c;
   thunk_AssignStringSharedRefAndReturnThis();
   InitializeAndRunMainRoutine();
   local_24 = 0xffffffff;

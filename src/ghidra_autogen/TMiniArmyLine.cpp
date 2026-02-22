@@ -5,19 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004022F2
 // GHIDRA_NAME TMiniArmyLine::thunk_Cluster_TurnStateHint_004aa960
-// GHIDRA_PROTO void * __cdecl thunk_Cluster_TurnStateHint_004aa960(void)
+// GHIDRA_PROTO void * __thiscall thunk_Cluster_TurnStateHint_004aa960(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_TurnStateHint_004aa960
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_TurnStateHint_004aa960 */
 
-void * __cdecl TMiniArmyLine::thunk_Cluster_TurnStateHint_004aa960(void)
+void * __thiscall TMiniArmyLine::thunk_Cluster_TurnStateHint_004aa960(TMiniArmyLine *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTMiniArmyLineBaseState();
+  pvVar1 = ConstructTMiniArmyLineBaseState(this);
   return pvVar1;
 }
 
@@ -110,7 +110,7 @@ void * __cdecl TMiniArmyLine::GetTMiniArmyLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA960
 // GHIDRA_NAME TMiniArmyLine::ConstructTMiniArmyLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTMiniArmyLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTMiniArmyLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TMiniArmyLine initializer constructing line control, assigning base text resources, and conditionally attaching grouped TGWorldButton child.
 // GHIDRA_COMMENT_END
@@ -118,19 +118,18 @@ void * __cdecl TMiniArmyLine::GetTMiniArmyLineClassNamePointer(void)
 /* [ClassLane] TMiniArmyLine initializer constructing line control, assigning base text resources,
    and conditionally attaching grouped TGWorldButton child. */
 
-void * __cdecl TMiniArmyLine::ConstructTMiniArmyLineBaseState(void)
+void * __thiscall TMiniArmyLine::ConstructTMiniArmyLineBaseState(TMiniArmyLine *this)
 
 {
   undefined4 uVar1;
-  undefined4 *puVar2;
+  TControl *pTVar2;
   void *pvVar3;
   int *piVar4;
   void *extraout_EAX;
-  int in_ECX;
   short unaff_SI;
   undefined4 *unaff_FS_OFFSET;
   TGWorldButton *pTStack_48;
-  int *piStack_44;
+  TControl *pTStack_44;
   undefined1 auStack_34 [4];
   char *pcStack_30;
   undefined4 uStack_2c;
@@ -138,7 +137,7 @@ void * __cdecl TMiniArmyLine::ConstructTMiniArmyLineBaseState(void)
   undefined1 auStack_24 [4];
   TGWorldButton *local_20;
   undefined4 local_1c;
-  undefined4 *local_18;
+  TControl *local_18;
   undefined1 *local_14;
   undefined4 local_10;
   undefined4 local_c;
@@ -149,33 +148,33 @@ void * __cdecl TMiniArmyLine::ConstructTMiniArmyLineBaseState(void)
   puStack_8 = &LAB_00630564;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  piStack_44 = (int *)0x88;
+  pTStack_44 = (TControl *)0x88;
   pTStack_48 = (TGWorldButton *)0x4aa987;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler();
+  pTVar2 = (TControl *)AllocateWithFallbackHandler();
   local_4 = 0;
-  local_18 = puVar2;
-  if (puVar2 == (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)0x0;
+  local_18 = pTVar2;
+  if (pTVar2 == (TControl *)0x0) {
+    pTVar2 = (TControl *)0x0;
   }
   else {
-    piStack_44 = (int *)0x4aa9a3;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar2 = &PTR_thunk_GetTMiniArmyViewClassNamePointer_0064d550;
+    pTStack_44 = (TControl *)0x4aa9a3;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
+    *(undefined ***)pTVar2 = &PTR_thunk_GetTMiniArmyViewClassNamePointer_0064d550;
   }
-  uVar1 = *(undefined4 *)(in_ECX + 0x10);
-  piStack_44 = (int *)0x0;
+  uVar1 = *(undefined4 *)(this + 0x10);
+  pTStack_44 = (TControl *)0x0;
   pTStack_48 = (TGWorldButton *)0x5;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  puVar2[0x21] = uVar1;
-  puVar2[0x18] = 0x22;
-  piStack_44 = puVar2;
+  *(undefined4 *)(pTVar2 + 0x84) = uVar1;
+  *(undefined4 *)(pTVar2 + 0x60) = 0x22;
+  pTStack_44 = pTVar2;
   WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(PTR_g_szEmptyString_0064cb18);
   InitializeAndRunMainRoutine();
-  piStack_44 = (int *)0x4aaa05;
+  pTStack_44 = (TControl *)0x4aaa05;
   pvVar3 = (void *)WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
   if ((char)pvVar3 != '\0') {
-    piStack_44 = (int *)0x8c;
+    pTStack_44 = (TControl *)0x8c;
     pTStack_48 = (TGWorldButton *)0x4aaa17;
     local_20 = (TGWorldButton *)AllocateWithFallbackHandler();
     local_4 = 1;
@@ -183,18 +182,18 @@ void * __cdecl TMiniArmyLine::ConstructTMiniArmyLineBaseState(void)
       piVar4 = (int *)0x0;
     }
     else {
-      piStack_44 = (int *)0x4aaa31;
+      pTStack_44 = (TControl *)0x4aaa31;
       piVar4 = TGWorldButton::ConstructTGWorldButtonBaseState(local_20);
     }
     pTStack_48 = (TGWorldButton *)&local_14;
-    piStack_44 = (int *)0xdae;
+    pTStack_44 = (TControl *)0xdae;
     local_4 = 0xffffffff;
     local_14 = (undefined1 *)0x13;
     local_10 = 0x12;
     local_20 = (TGWorldButton *)0x73;
     local_1c = 0;
-    WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(puVar2,&local_20);
-    piStack_44 = (int *)0x0;
+    WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(pTVar2,&local_20);
+    pTStack_44 = (TControl *)0x0;
     pTStack_48 = (TGWorldButton *)0x1;
     (**(code **)(*piVar4 + 0xa8))();
     piVar4[7] = 0x75706772;
@@ -214,7 +213,7 @@ void * __cdecl TMiniArmyLine::ConstructTMiniArmyLineBaseState(void)
     (**(code **)(*g_pLocalizationTable + 0x74))((int)unaff_SI,auStack_34);
     if ((short)puStack_8 == 0) {
       (**(code **)(*g_pLocalizationTable + 0x84))(&DAT_00002746,2,&stack0xffffffc0);
-      piStack_44 = (int *)uStack_2c;
+      pTStack_44 = (TControl *)uStack_2c;
       pTStack_48 = (TGWorldButton *)puStack_28;
       scanBracketExpressions(g_pLocalizationTable,auStack_24,pcStack_30);
     }
@@ -223,31 +222,31 @@ void * __cdecl TMiniArmyLine::ConstructTMiniArmyLineBaseState(void)
       local_14 = (undefined1 *)CONCAT31(local_14._1_3_,7);
       FormatStringWithVarArgsToSharedRef(&pcStack_30,&g_szDecimalFormat,(int)(short)puStack_8);
       (**(code **)(*g_pLocalizationTable + 0x84))(&DAT_00002746,6,&stack0xffffffc0);
-      piStack_44 = (int *)uStack_2c;
+      pTStack_44 = (TControl *)uStack_2c;
       pTStack_48 = local_20;
       scanBracketExpressions(g_pLocalizationTable,auStack_24,pcStack_30);
       local_4 = CONCAT31(local_4._1_3_,6);
-      piStack_44 = (int *)0x4aabda;
+      pTStack_44 = (TControl *)0x4aabda;
       ReleaseSharedStringRefIfNotEmpty();
     }
     local_14 = (undefined1 *)&pTStack_48;
-    piStack_44 = piVar4;
+    pTStack_44 = (TControl *)piVar4;
     thunk_AssignStringSharedRefAndReturnThis();
     InitializeAndRunMainRoutine();
     local_4._0_1_ = 5;
-    piStack_44 = (int *)0x4aac02;
+    pTStack_44 = (TControl *)0x4aac02;
     ReleaseSharedStringRefIfNotEmpty();
     local_4._0_1_ = 4;
-    piStack_44 = (int *)0x4aac10;
+    pTStack_44 = (TControl *)0x4aac10;
     ReleaseSharedStringRefIfNotEmpty();
     local_4._0_1_ = 3;
-    piStack_44 = (int *)0x4aac1e;
+    pTStack_44 = (TControl *)0x4aac1e;
     ReleaseSharedStringRefIfNotEmpty();
     local_4 = CONCAT31(local_4._1_3_,2);
-    piStack_44 = (int *)0x4aac2c;
+    pTStack_44 = (TControl *)0x4aac2c;
     ReleaseSharedStringRefIfNotEmpty();
     local_4 = 0xffffffff;
-    piStack_44 = (int *)0x4aac3d;
+    pTStack_44 = (TControl *)0x4aac3d;
     ReleaseSharedStringRefIfNotEmpty();
     pvVar3 = extraout_EAX;
   }

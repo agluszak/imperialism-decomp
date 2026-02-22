@@ -83,7 +83,7 @@ undefined4 ReadBytesFromSerializedBuffer(void)
   return 0;
 }
 
-// ghidra_name WriteBytesToSerializedBuffer
+// ghidra_name TInteriorMinister::WriteBytesToSerializedBuffer
 // ghidra_proto void __thiscall WriteBytesToSerializedBuffer(void * source, uint byteCount)
 // FUNCTION: IMPERIALISM 0x00611e34
 undefined4 WriteBytesToSerializedBuffer(void)
@@ -387,7 +387,7 @@ undefined4 ConstructCClientDCFromViewHandle(void)
   return 0;
 }
 
-// ghidra_name DestroyCClientDCAndReleaseHandle
+// ghidra_name TMacViewMgr::DestroyCClientDCAndReleaseHandle
 // ghidra_proto undefined DestroyCClientDCAndReleaseHandle()
 // FUNCTION: IMPERIALISM 0x00613803
 undefined4 DestroyCClientDCAndReleaseHandle(void)
@@ -467,7 +467,7 @@ undefined4 DetachRegionHandleFromClipStateAndUnregister(void)
   return 0;
 }
 
-// ghidra_name DeleteRegionHandleFromClipState
+// ghidra_name TMapDialog::DeleteRegionHandleFromClipState
 // ghidra_proto undefined DeleteRegionHandleFromClipState()
 // FUNCTION: IMPERIALISM 0x00613aa3
 undefined4 DeleteRegionHandleFromClipState(void)
@@ -1235,7 +1235,7 @@ undefined4 DispatchContextMessage365OrSendCommandE147(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_OnCommand_ID_E146
+// ghidra_name TMacViewMgr::TMacViewMgr_OnCommand_ID_E146
 // ghidra_proto undefined TMacViewMgr_OnCommand_ID_E146()
 // FUNCTION: IMPERIALISM 0x00619467
 undefined4 TMacViewMgr_OnCommand_ID_E146(void)
@@ -1243,7 +1243,7 @@ undefined4 TMacViewMgr_OnCommand_ID_E146(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_OnCommand_ID_E143_E147
+// ghidra_name TMacViewMgr::TMacViewMgr_OnCommand_ID_E143_E147
 // ghidra_proto undefined TMacViewMgr_OnCommand_ID_E143_E147()
 // FUNCTION: IMPERIALISM 0x006194b1
 undefined4 TMacViewMgr_OnCommand_ID_E143_E147(void)
@@ -1419,7 +1419,7 @@ undefined4 AfxFormatStrings(void)
   return 0;
 }
 
-// ghidra_name FormatResourceTemplateWithSingleArg
+// ghidra_name CDocument::FormatResourceTemplateWithSingleArg
 // ghidra_proto void __cdecl FormatResourceTemplateWithSingleArg(void * outString, uint resourceId, void * arg1)
 // FUNCTION: IMPERIALISM 0x0061ab47
 undefined4 FormatResourceTemplateWithSingleArg(void)
@@ -1499,7 +1499,7 @@ undefined4 UnregisterObjectFromModuleThreadStateList(void)
   return 0;
 }
 
-// ghidra_name LoadAcceleratorTableFromResourceId
+// ghidra_name TMacViewMgr::LoadAcceleratorTableFromResourceId
 // ghidra_proto undefined LoadAcceleratorTableFromResourceId()
 // FUNCTION: IMPERIALISM 0x0061c76d
 undefined4 LoadAcceleratorTableFromResourceId(void)
@@ -1563,7 +1563,7 @@ undefined4 TMacViewMgr_Slot32_Target(void)
   return 0;
 }
 
-// ghidra_name IsOwnerChainContainingWindow
+// ghidra_name TMacViewMgr::IsOwnerChainContainingWindow
 // ghidra_proto int IsOwnerChainContainingWindow(void)
 // FUNCTION: IMPERIALISM 0x0061c9ed
 undefined4 IsOwnerChainContainingWindow(void)
@@ -1587,7 +1587,7 @@ undefined4 ReleaseDeferredDisabledWindowsIfCounterZero(void)
   return 0;
 }
 
-// ghidra_name ToggleOverlappingWindowsVisibility
+// ghidra_name TMacViewMgr::ToggleOverlappingWindowsVisibility
 // ghidra_proto undefined ToggleOverlappingWindowsVisibility()
 // FUNCTION: IMPERIALISM 0x0061cba9
 undefined4 ToggleOverlappingWindowsVisibility(void)
@@ -1971,7 +1971,7 @@ undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At0061f423(void)
   return 0;
 }
 
-// ghidra_name SetMfcThreadStateFlagDword30
+// ghidra_name CFrameWnd::SetMfcThreadStateFlagDword30
 // ghidra_proto undefined SetMfcThreadStateFlagDword30()
 // FUNCTION: IMPERIALISM 0x0061f45c
 undefined4 SetMfcThreadStateFlagDword30(void)
@@ -2619,7 +2619,7 @@ undefined4 EnterCriticalSectionByPoolIndex(void)
   return 0;
 }
 
-// ghidra_name LeaveCriticalSectionByPoolIndex
+// ghidra_name TNewGameCommand::LeaveCriticalSectionByPoolIndex
 // ghidra_proto void __cdecl LeaveCriticalSectionByPoolIndex(int lockIndex)
 // FUNCTION: IMPERIALISM 0x006245df
 undefined4 LeaveCriticalSectionByPoolIndex(void)

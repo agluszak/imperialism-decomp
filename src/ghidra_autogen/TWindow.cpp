@@ -21,6 +21,75 @@ void * __cdecl TWindow::thunk_GetTWindowClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407C43
+// GHIDRA_NAME TWindow::thunk_ConstructUiWindowResourceEntryBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiWindowResourceEntryBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiWindowResourceEntryBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiWindowResourceEntryBase */
+
+void __thiscall TWindow::thunk_ConstructUiWindowResourceEntryBase(TWindow *this)
+
+{
+  void *pvVar1;
+  undefined4 *puVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ede3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  uStack_4 = 0;
+  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(this + 0x74));
+  *(undefined4 *)(this + 0x98) = 0;
+  *(undefined ***)this = &g_vtblTWindow;
+  pvVar1 = g_pWindowRegistryHead;
+  uStack_4 = CONCAT31(uStack_4._1_3_,1);
+  puVar4 = g_pWindowRegistryFreeListHead;
+  if (g_pWindowRegistryFreeListHead == (void *)0x0) {
+    iVar3 = AllocateAndLinkBlockHead
+                      (&g_pWindowRegistryBlockChainHead,g_nWindowRegistryNodesPerBlock,0xc);
+    puVar4 = g_pWindowRegistryFreeListHead;
+    puVar2 = (undefined4 *)(iVar3 + -8 + g_nWindowRegistryNodesPerBlock * 0xc);
+    iVar3 = g_nWindowRegistryNodesPerBlock;
+    if (-1 < g_nWindowRegistryNodesPerBlock + -1) {
+      do {
+        puVar4 = puVar2;
+        *puVar4 = g_pWindowRegistryFreeListHead;
+        iVar3 = iVar3 + -1;
+        g_pWindowRegistryFreeListHead = puVar4;
+        puVar2 = puVar4 + -3;
+      } while (iVar3 != 0);
+    }
+  }
+  g_pWindowRegistryFreeListHead = (void *)*puVar4;
+  puVar4[1] = 0;
+  *puVar4 = pvVar1;
+  g_nWindowRegistryCount = g_nWindowRegistryCount + 1;
+  puVar4[2] = 0;
+  puVar4[2] = this;
+  puVar2 = puVar4;
+  if (g_pWindowRegistryHead != (void *)0x0) {
+    *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar4;
+    puVar2 = g_pWindowRegistryTail;
+  }
+  g_pWindowRegistryTail = puVar2;
+  g_pWindowRegistryHead = puVar4;
+  thunk_SetUiColorDescriptorGoldTriplet();
+  *(TWindow **)(this + 0x7c) = this;
+  *(TWindow **)(this + 100) = this;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408C2E
 // GHIDRA_NAME TWindow::thunk_DestructTWindowAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTWindowAndMaybeFree(byte freeSelfFlag)
@@ -53,9 +122,9 @@ void * __cdecl TWindow::CreateTWindowInstance(void)
 {
   void *pvVar1;
   undefined4 *puVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  undefined4 *puVar5;
+  TView *this;
+  int iVar3;
+  undefined4 *puVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -65,54 +134,54 @@ void * __cdecl TWindow::CreateTWindowInstance(void)
   puStack_8 = &LAB_0062edbd;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TView *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar3 == (undefined4 *)0x0) {
+  if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
     return (void *)0x0;
   }
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase(this);
   local_4._0_1_ = 1;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(puVar3 + 0x1d));
-  puVar3[0x26] = 0;
-  *puVar3 = &g_vtblTWindow;
+  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(this + 0x74));
+  *(undefined4 *)(this + 0x98) = 0;
+  *(undefined ***)this = &g_vtblTWindow;
   pvVar1 = g_pWindowRegistryHead;
   local_4 = CONCAT31(local_4._1_3_,2);
-  puVar5 = g_pWindowRegistryFreeListHead;
+  puVar4 = g_pWindowRegistryFreeListHead;
   if (g_pWindowRegistryFreeListHead == (void *)0x0) {
-    iVar4 = AllocateAndLinkBlockHead
+    iVar3 = AllocateAndLinkBlockHead
                       (&g_pWindowRegistryBlockChainHead,g_nWindowRegistryNodesPerBlock,0xc);
-    puVar5 = g_pWindowRegistryFreeListHead;
-    puVar2 = (undefined4 *)(iVar4 + -8 + g_nWindowRegistryNodesPerBlock * 0xc);
-    iVar4 = g_nWindowRegistryNodesPerBlock;
+    puVar4 = g_pWindowRegistryFreeListHead;
+    puVar2 = (undefined4 *)(iVar3 + -8 + g_nWindowRegistryNodesPerBlock * 0xc);
+    iVar3 = g_nWindowRegistryNodesPerBlock;
     if (-1 < g_nWindowRegistryNodesPerBlock + -1) {
       do {
-        puVar5 = puVar2;
-        *puVar5 = g_pWindowRegistryFreeListHead;
-        iVar4 = iVar4 + -1;
-        g_pWindowRegistryFreeListHead = puVar5;
-        puVar2 = puVar5 + -3;
-      } while (iVar4 != 0);
+        puVar4 = puVar2;
+        *puVar4 = g_pWindowRegistryFreeListHead;
+        iVar3 = iVar3 + -1;
+        g_pWindowRegistryFreeListHead = puVar4;
+        puVar2 = puVar4 + -3;
+      } while (iVar3 != 0);
     }
   }
-  g_pWindowRegistryFreeListHead = (void *)*puVar5;
-  puVar5[1] = 0;
-  *puVar5 = pvVar1;
+  g_pWindowRegistryFreeListHead = (void *)*puVar4;
+  puVar4[1] = 0;
+  *puVar4 = pvVar1;
   g_nWindowRegistryCount = g_nWindowRegistryCount + 1;
-  puVar5[2] = 0;
-  puVar5[2] = puVar3;
-  puVar2 = puVar5;
+  puVar4[2] = 0;
+  puVar4[2] = this;
+  puVar2 = puVar4;
   if (g_pWindowRegistryHead != (void *)0x0) {
-    *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar5;
+    *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar4;
     puVar2 = g_pWindowRegistryTail;
   }
   g_pWindowRegistryTail = puVar2;
-  g_pWindowRegistryHead = puVar5;
+  g_pWindowRegistryHead = puVar4;
   thunk_SetUiColorDescriptorGoldTriplet();
-  puVar3[0x1f] = puVar3;
-  puVar3[0x19] = puVar3;
+  *(TView **)(this + 0x7c) = this;
+  *(TView **)(this + 100) = this;
   *unaff_FS_OFFSET = local_c;
-  return puVar3;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D220
@@ -132,7 +201,7 @@ void * __cdecl TWindow::GetTWindowClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D500
 // GHIDRA_NAME TWindow::ConstructUiWindowResourceEntryBase
-// GHIDRA_PROTO void __cdecl ConstructUiWindowResourceEntryBase(void)
+// GHIDRA_PROTO void __thiscall ConstructUiWindowResourceEntryBase(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for tracked UI window resource entries.
 // GHIDRA_COMMENT
@@ -157,14 +226,13 @@ void * __cdecl TWindow::GetTWindowClassNamePointer(void)
    Returns:
    - this pointer. */
 
-void __cdecl TWindow::ConstructUiWindowResourceEntryBase(void)
+void __thiscall TWindow::ConstructUiWindowResourceEntryBase(TWindow *this)
 
 {
   void *pvVar1;
   undefined4 *puVar2;
   int iVar3;
   undefined4 *puVar4;
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -174,11 +242,11 @@ void __cdecl TWindow::ConstructUiWindowResourceEntryBase(void)
   puStack_8 = &LAB_0062ede3;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   local_4 = 0;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(in_ECX + 0x1d));
-  in_ECX[0x26] = 0;
-  *in_ECX = &g_vtblTWindow;
+  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(this + 0x74));
+  *(undefined4 *)(this + 0x98) = 0;
+  *(undefined ***)this = &g_vtblTWindow;
   pvVar1 = g_pWindowRegistryHead;
   local_4 = CONCAT31(local_4._1_3_,1);
   puVar4 = g_pWindowRegistryFreeListHead;
@@ -203,7 +271,7 @@ void __cdecl TWindow::ConstructUiWindowResourceEntryBase(void)
   *puVar4 = pvVar1;
   g_nWindowRegistryCount = g_nWindowRegistryCount + 1;
   puVar4[2] = 0;
-  puVar4[2] = in_ECX;
+  puVar4[2] = this;
   puVar2 = puVar4;
   if (g_pWindowRegistryHead != (void *)0x0) {
     *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar4;
@@ -212,8 +280,8 @@ void __cdecl TWindow::ConstructUiWindowResourceEntryBase(void)
   g_pWindowRegistryTail = puVar2;
   g_pWindowRegistryHead = puVar4;
   thunk_SetUiColorDescriptorGoldTriplet();
-  in_ECX[0x1f] = in_ECX;
-  in_ECX[0x19] = in_ECX;
+  *(TWindow **)(this + 0x7c) = this;
+  *(TWindow **)(this + 100) = this;
   *unaff_FS_OFFSET = local_c;
   return;
 }

@@ -23,21 +23,20 @@ void * __cdecl TCheater::thunk_GetTCheaterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404985
 // GHIDRA_NAME TCheater::thunk_InitializeCheaterDialogControlsAndBindings
-// GHIDRA_PROTO void * __cdecl thunk_InitializeCheaterDialogControlsAndBindings(void)
+// GHIDRA_PROTO void * __thiscall thunk_InitializeCheaterDialogControlsAndBindings(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to InitializeCheaterDialogControlsAndBindings.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to InitializeCheaterDialogControlsAndBindings. */
 
-void * __cdecl TCheater::thunk_InitializeCheaterDialogControlsAndBindings(void)
+void * __thiscall TCheater::thunk_InitializeCheaterDialogControlsAndBindings(TCheater *this)
 
 {
-  undefined4 *puVar1;
+  TControl *pTVar1;
   void *extraout_EAX;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puStack00000004;
+  TControl *pTStack00000004;
   undefined2 in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -48,25 +47,25 @@ void * __cdecl TCheater::thunk_InitializeCheaterDialogControlsAndBindings(void)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  puStack00000004 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  pTStack00000004 = (TControl *)AllocateWithFallbackHandler(0x94);
   uStack_4 = 0;
-  if (puStack00000004 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  if (pTStack00000004 != (TControl *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTStack00000004);
   }
   uStack_4 = 0xffffffff;
   thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  pTVar1 = (TControl *)AllocateWithFallbackHandler(0x84);
   uStack_4 = 1;
-  puStack00000004 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
+  pTStack00000004 = pTVar1;
+  if (pTVar1 == (TControl *)0x0) {
+    pTVar1 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar1);
     uStack_4 = CONCAT31(uStack_4._1_3_,2);
-    *puVar1 = &g_vtblTButton;
+    *(undefined ***)pTVar1 = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *puVar1 = &g_vtblTCtlMgr;
+    *(undefined ***)pTVar1 = &g_vtblTCtlMgr;
   }
   uStack_4 = 0xffffffff;
   ConstructSharedStringFromCStrOrResourceId(&g_TCheater_Base_Value_00695A18);
@@ -76,8 +75,8 @@ void * __cdecl TCheater::thunk_InitializeCheaterDialogControlsAndBindings(void)
   }
   uStack_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  puVar1[0x18] = 0x22;
-  *(undefined2 *)(in_ECX + 0x60) = in_stack_00000008;
+  *(undefined4 *)(pTVar1 + 0x60) = 0x22;
+  *(undefined2 *)&this->dwField_60 = in_stack_00000008;
   *unaff_FS_OFFSET = uStack_c;
   return extraout_EAX;
 }
@@ -99,21 +98,20 @@ void * __cdecl TCheater::GetTCheaterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B14A0
 // GHIDRA_NAME TCheater::ConstructTCheaterBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTCheaterBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTCheaterBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds cheater dialog UI controls/text resources and binds them into the dialog frame.
 // GHIDRA_COMMENT_END
 
 /* Builds cheater dialog UI controls/text resources and binds them into the dialog frame. */
 
-void * __cdecl TCheater::ConstructTCheaterBaseState(void)
+void * __thiscall TCheater::ConstructTCheaterBaseState(TCheater *this)
 
 {
-  undefined4 *puVar1;
+  TControl *pTVar1;
   void *extraout_EAX;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puStack00000004;
+  TControl *pTStack00000004;
   undefined2 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -124,25 +122,25 @@ void * __cdecl TCheater::ConstructTCheaterBaseState(void)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  puStack00000004 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  pTStack00000004 = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puStack00000004 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  if (pTStack00000004 != (TControl *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTStack00000004);
   }
   local_4 = 0xffffffff;
   thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  pTVar1 = (TControl *)AllocateWithFallbackHandler(0x84);
   local_4 = 1;
-  puStack00000004 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
+  pTStack00000004 = pTVar1;
+  if (pTVar1 == (TControl *)0x0) {
+    pTVar1 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar1);
     local_4 = CONCAT31(local_4._1_3_,2);
-    *puVar1 = &g_vtblTButton;
+    *(undefined ***)pTVar1 = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *puVar1 = &g_vtblTCtlMgr;
+    *(undefined ***)pTVar1 = &g_vtblTCtlMgr;
   }
   local_4 = 0xffffffff;
   ConstructSharedStringFromCStrOrResourceId(&g_TCheater_Base_Value_00695A18);
@@ -152,8 +150,8 @@ void * __cdecl TCheater::ConstructTCheaterBaseState(void)
   }
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  puVar1[0x18] = 0x22;
-  *(undefined2 *)(in_ECX + 0x60) = in_stack_00000008;
+  *(undefined4 *)(pTVar1 + 0x60) = 0x22;
+  *(undefined2 *)&this->dwField_60 = in_stack_00000008;
   *unaff_FS_OFFSET = local_c;
   return extraout_EAX;
 }

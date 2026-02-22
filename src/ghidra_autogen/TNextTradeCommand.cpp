@@ -36,7 +36,7 @@ void * __thiscall
 TNextTradeCommand::thunk_ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
 
 {
-  TCommand::thunk_ConstructTurnEventPacketBase();
+  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
   *(undefined ***)this = &g_vtblTNextTradeCommand;
   return this;
 }
@@ -66,8 +66,8 @@ void * __cdecl TNextTradeCommand::thunk_GetTNextTradeCommandClassNamePointer(voi
 void * __cdecl TNextTradeCommand::CreateTNextTradeCommandInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCommand *this;
+  TCommand *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,16 +77,16 @@ void * __cdecl TNextTradeCommand::CreateTNextTradeCommandInstance(void)
   puStack_8 = &LAB_006390ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
+  this = (TCommand *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar1 = &g_vtblTNextTradeCommand;
-    puVar2 = puVar1;
+  pTVar1 = (TCommand *)0x0;
+  if (this != (TCommand *)0x0) {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &g_vtblTNextTradeCommand;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA3E0
@@ -111,7 +111,7 @@ void * __cdecl TNextTradeCommand::GetTNextTradeCommandClassNamePointer(void)
 void * __thiscall TNextTradeCommand::ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
 
 {
-  TCommand::thunk_ConstructTurnEventPacketBase();
+  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
   *(undefined ***)this = &g_vtblTNextTradeCommand;
   return this;
 }

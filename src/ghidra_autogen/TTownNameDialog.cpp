@@ -62,8 +62,8 @@ TTownNameDialog::thunk_DestructTTownNameDialogAndMaybeFree(TTownNameDialog *this
 void * __cdecl TTownNameDialog::CreateTTownNameDialogInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -73,16 +73,16 @@ void * __cdecl TTownNameDialog::CreateTTownNameDialogInstance(void)
   puStack_8 = &LAB_00633eea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &g_vtblTTownNameDialog;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &g_vtblTTownNameDialog;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BAF0
@@ -107,7 +107,7 @@ void * __cdecl TTownNameDialog::GetTTownNameDialogClassNamePointer(void)
 void * __thiscall TTownNameDialog::ConstructTTownNameDialogBaseState(TTownNameDialog *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTTownNameDialog;
   return this;
 }

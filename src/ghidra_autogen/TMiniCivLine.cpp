@@ -110,9 +110,9 @@ void * __cdecl TMiniCivLine::GetTMiniCivLineClassNamePointer(void)
 void * __cdecl TMiniCivLine::ConstructTMiniCivLineBaseState(void)
 
 {
-  TMiniCivView *pTVar1;
+  TControl *this;
   void *extraout_EAX;
-  TMiniCivView *this;
+  TControl *this_00;
   undefined4 *unaff_FS_OFFSET;
   void *in_stack_00000004;
   undefined4 local_c;
@@ -123,18 +123,18 @@ void * __cdecl TMiniCivLine::ConstructTMiniCivLineBaseState(void)
   puStack_8 = &LAB_00630682;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pTVar1 = (TMiniCivView *)AllocateWithFallbackHandler(0x8c);
+  this = (TControl *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  this = (TMiniCivView *)0x0;
-  if (pTVar1 != (TMiniCivView *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  this_00 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     InitializeSharedStringRefFromEmpty();
-    pTVar1->pVtable = &g_vtblTMiniCivLine;
-    this = pTVar1;
+    *(undefined ***)this = &g_vtblTMiniCivLine;
+    this_00 = this;
   }
   local_4 = 0xffffffff;
-  TMiniCivView::ConstructTMiniCivViewLocalizedLineText(this,in_stack_00000004);
+  TMiniCivView::ConstructTMiniCivViewLocalizedLineText((TMiniCivView *)this_00,in_stack_00000004);
   *unaff_FS_OFFSET = local_c;
   return extraout_EAX;
 }

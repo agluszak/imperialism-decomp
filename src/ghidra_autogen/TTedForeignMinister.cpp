@@ -3,55 +3,88 @@
 // Program: Imperialism.exe
 // Bucket: TTedForeignMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405218
+// GHIDRA_NAME TTedForeignMinister::thunk_DeletingDestructTTedForeignMinister
+// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTTedForeignMinister(TTedForeignMinister * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTTedForeignMinister
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeletingDestructTTedForeignMinister */
+
+void __thiscall
+TTedForeignMinister::thunk_DeletingDestructTTedForeignMinister
+          (TTedForeignMinister *this,TTedForeignMinister *pThis)
+
+{
+  DeletingDestructTTedForeignMinister(this,pThis);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040591B
 // GHIDRA_NAME TTedForeignMinister::thunk_DestructTTedForeignMinister
-// GHIDRA_PROTO void __cdecl thunk_DestructTTedForeignMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTTedForeignMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTedForeignMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTTedForeignMinister */
 
-void __cdecl TTedForeignMinister::thunk_DestructTTedForeignMinister(void)
+void __thiscall TTedForeignMinister::thunk_DestructTTedForeignMinister(TTedForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004063E8
+// GHIDRA_NAME TTedForeignMinister::thunk_GetTTedForeignMinisterTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTTedForeignMinisterTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTTedForeignMinisterTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTTedForeignMinisterTypeName */
+
+void * __cdecl TTedForeignMinister::thunk_GetTTedForeignMinisterTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTTedForeignMinisterClassNamePointer();
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407798
 // GHIDRA_NAME TTedForeignMinister::thunk_ConstructTTedForeignMinister
-// GHIDRA_PROTO void __cdecl thunk_ConstructTTedForeignMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTedForeignMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTTedForeignMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTTedForeignMinister */
 
-void __cdecl TTedForeignMinister::thunk_ConstructTTedForeignMinister(void)
+void __thiscall TTedForeignMinister::thunk_ConstructTTedForeignMinister(TTedForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TTedForeignMinister *pTVar2;
   
-  *(undefined4 *)((int)in_ECX + 0x49) = 0x1010101;
-  *(undefined2 *)((int)in_ECX + 0x4d) = 0x101;
-  *(undefined1 *)((int)in_ECX + 0x4f) = 1;
-  puVar2 = in_ECX + 0x14;
+  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
+  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
+  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
+  pTVar2 = this + 0x14;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    pTVar2->pVtable = (void *)0x0;
+    pTVar2 = pTVar2 + 1;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)(in_ECX + 7) = 2;
-  *(undefined2 *)((int)in_ECX + 0x16) = 0;
-  *(undefined1 *)(in_ECX + 0x12) = 0;
-  *in_ECX = &PTR_thunk_GetTTedForeignMinisterTypeName_00659d70;
-  *(undefined2 *)((int)in_ECX + 0x1a) = 4;
-  *(undefined2 *)(in_ECX + 3) = 5;
+  *(undefined2 *)&pTVar2->pVtable = 0;
+  *(undefined2 *)&this[7].pVtable = 2;
+  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
+  *(undefined1 *)&this[0x12].pVtable = 0;
+  this->pVtable = &PTR_thunk_GetTTedForeignMinisterTypeName_00659d70;
+  *(undefined2 *)((int)&this[6].pVtable + 2) = 4;
+  *(undefined2 *)&this[3].pVtable = 5;
   return;
 }
 
@@ -72,59 +105,56 @@ void * __cdecl TTedForeignMinister::GetTTedForeignMinisterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005311D0
 // GHIDRA_NAME TTedForeignMinister::ConstructTTedForeignMinister
-// GHIDRA_PROTO void __cdecl ConstructTTedForeignMinister(void)
+// GHIDRA_PROTO void __thiscall ConstructTTedForeignMinister(void)
 
-void __cdecl TTedForeignMinister::ConstructTTedForeignMinister(void)
+void __thiscall TTedForeignMinister::ConstructTTedForeignMinister(TTedForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TTedForeignMinister *pTVar2;
   
-  *(undefined4 *)((int)in_ECX + 0x49) = 0x1010101;
-  *(undefined2 *)((int)in_ECX + 0x4d) = 0x101;
-  *(undefined1 *)((int)in_ECX + 0x4f) = 1;
-  puVar2 = in_ECX + 0x14;
+  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
+  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
+  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
+  pTVar2 = this + 0x14;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    pTVar2->pVtable = (void *)0x0;
+    pTVar2 = pTVar2 + 1;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)(in_ECX + 7) = 2;
-  *(undefined2 *)((int)in_ECX + 0x16) = 0;
-  *(undefined1 *)(in_ECX + 0x12) = 0;
-  *in_ECX = &PTR_thunk_GetTTedForeignMinisterTypeName_00659d70;
-  *(undefined2 *)((int)in_ECX + 0x1a) = 4;
-  *(undefined2 *)(in_ECX + 3) = 5;
+  *(undefined2 *)&pTVar2->pVtable = 0;
+  *(undefined2 *)&this[7].pVtable = 2;
+  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
+  *(undefined1 *)&this[0x12].pVtable = 0;
+  this->pVtable = &PTR_thunk_GetTTedForeignMinisterTypeName_00659d70;
+  *(undefined2 *)((int)&this[6].pVtable + 2) = 4;
+  *(undefined2 *)&this[3].pVtable = 5;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531240
 // GHIDRA_NAME TTedForeignMinister::DeletingDestructTTedForeignMinister
-// GHIDRA_PROTO void __cdecl DeletingDestructTTedForeignMinister(void)
+// GHIDRA_PROTO void __thiscall DeletingDestructTTedForeignMinister(TTedForeignMinister * pThis)
 
-void __cdecl TTedForeignMinister::DeletingDestructTTedForeignMinister(void)
+void __thiscall
+TTedForeignMinister::DeletingDestructTTedForeignMinister
+          (TTedForeignMinister *this,TTedForeignMinister *pThis)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTTedForeignMinister();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  thunk_DestructTTedForeignMinister(this);
+  if (((uint)pThis & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531270
 // GHIDRA_NAME TTedForeignMinister::DestructTTedForeignMinister
-// GHIDRA_PROTO void __cdecl DestructTTedForeignMinister(void)
+// GHIDRA_PROTO void __thiscall DestructTTedForeignMinister(void)
 
-void __cdecl TTedForeignMinister::DestructTTedForeignMinister(void)
+void __thiscall TTedForeignMinister::DestructTTedForeignMinister(TTedForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 

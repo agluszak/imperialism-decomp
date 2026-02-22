@@ -3,6 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TApplication.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040223E
+// GHIDRA_NAME TApplication::thunk_ConstructGlobalUiRootControllerState
+// GHIDRA_PROTO void __thiscall thunk_ConstructGlobalUiRootControllerState(void)
+
+void __thiscall TApplication::thunk_ConstructGlobalUiRootControllerState(TApplication *this)
+
+{
+  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined ***)(this + 0x2c) = &PTR_GetCObjectRuntimeClass_00648ca8;
+  *(undefined4 *)(this + 0x38) = 0;
+  *(undefined4 *)(this + 0x3c) = 0;
+  *(undefined4 *)(this + 0x34) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined4 *)(this + 0x40) = 0;
+  *(undefined4 *)(this + 0x44) = 10;
+  *(undefined ***)this = &g_vtblTApplication;
+  g_pApplicationUiRootController = this;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404B3D
 // GHIDRA_NAME TApplication::thunk_DestructTApplicationAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTApplicationAndMaybeFree(byte freeSelfFlag)

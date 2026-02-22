@@ -66,7 +66,7 @@ TTextList::thunk_HandleTextListScrollSelectionChange_At00403de1(TTextList *this,
 void * __cdecl TTextList::CreateTTextListInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,17 +76,17 @@ void * __cdecl TTextList::CreateTTextListInstance(void)
   puStack_8 = &LAB_00636bda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1070);
+  this = (TView *)AllocateWithFallbackHandler(0x1070);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTTextListClassNamePointer_00644778;
-    *(undefined2 *)(puVar1 + 0x41b) = 0x10;
-    puVar1[0x418] = 0;
-    puVar1[0x419] = 0;
-    puVar1[0x41a] = 0xffffffff;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTTextListClassNamePointer_00644778;
+    *(undefined2 *)(this + 0x106c) = 0x10;
+    *(undefined4 *)(this + 0x1060) = 0;
+    *(undefined4 *)(this + 0x1064) = 0;
+    *(undefined4 *)(this + 0x1068) = 0xffffffff;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

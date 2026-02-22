@@ -39,22 +39,23 @@ void __fastcall TScrollBarView::thunk_DestructTScrollBarViewAndMaybeFree(TScroll
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407BB2
 // GHIDRA_NAME TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry
-// GHIDRA_PROTO void * __cdecl thunk_InitializeScrollBarViewButtonsAndGeometry(void)
+// GHIDRA_PROTO void * __thiscall thunk_InitializeScrollBarViewButtonsAndGeometry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to InitializeScrollBarViewButtonsAndGeometry.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to InitializeScrollBarViewButtonsAndGeometry. */
 
-void * __cdecl TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(void)
+void * __thiscall
+TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(TScrollBarView *this)
 
 {
   int iVar1;
+  TPictureButton *pTVar2;
   int *extraout_EAX;
   int *extraout_EAX_00;
-  void *pvVar2;
-  int in_ECX;
-  int *piVar3;
+  void *pvVar3;
+  int *piVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -65,40 +66,40 @@ void * __cdecl TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(v
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(int **)(in_ECX + 0x84) = *(int **)(in_ECX + 0x20);
-  (**(code **)(**(int **)(in_ECX + 0x20) + 0xc))();
-  *(undefined2 *)(in_ECX + 0x88) = 0x12;
-  *(short *)(in_ECX + 0x8a) = *(short *)(in_ECX + 0x38) + -0x24;
-  *(undefined2 *)(in_ECX + 0x8c) = 0x12;
+  this[0x21].pVtable = this[8].pVtable;
+  (**(code **)(*(int *)this[8].pVtable + 0xc))();
+  *(undefined2 *)&this[0x22].pVtable = 0x12;
+  *(short *)((int)&this[0x22].pVtable + 2) = *(short *)&this[0xe].pVtable + -0x24;
+  *(undefined2 *)&this[0x23].pVtable = 0x12;
   (**(code **)(*(int *)g_pDisplayManager + 0x2c))();
-  iVar1 = AllocateWithFallbackHandler(0x94);
-  if (iVar1 == 0) {
-    piVar3 = (int *)0x0;
+  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  if (pTVar2 == (TPictureButton *)0x0) {
+    piVar4 = (int *)0x0;
   }
   else {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    piVar3 = extraout_EAX;
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(pTVar2);
+    piVar4 = extraout_EAX;
   }
   thunk_InitializePictureEntryBaseAndRefresh();
-  iVar1 = *piVar3;
-  piVar3[7] = 0x73637570;
+  iVar1 = *piVar4;
+  piVar4[7] = 0x73637570;
   (**(code **)(iVar1 + 0xa4))(0,1);
   (**(code **)(iVar1 + 0xa8))(1,0);
-  iVar1 = AllocateWithFallbackHandler(0x94);
-  if (iVar1 == 0) {
-    piVar3 = (int *)0x0;
+  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  if (pTVar2 == (TPictureButton *)0x0) {
+    piVar4 = (int *)0x0;
   }
   else {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    piVar3 = extraout_EAX_00;
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(pTVar2);
+    piVar4 = extraout_EAX_00;
   }
   thunk_InitializePictureEntryBaseAndRefresh();
-  iVar1 = *piVar3;
-  piVar3[7] = 0x7363646e;
+  iVar1 = *piVar4;
+  piVar4[7] = 0x7363646e;
   (**(code **)(iVar1 + 0xa4))(0,1);
-  pvVar2 = (void *)(**(code **)(iVar1 + 0xa8))(1,0);
+  pvVar3 = (void *)(**(code **)(iVar1 + 0xa8))(1,0);
   *unaff_FS_OFFSET = 0x12;
-  return pvVar2;
+  return pvVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005743F0
@@ -113,7 +114,7 @@ void * __cdecl TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(v
 void * __cdecl TScrollBarView::CreateTScrollBarViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -123,14 +124,14 @@ void * __cdecl TScrollBarView::CreateTScrollBarViewInstance(void)
   puStack_8 = &LAB_006366ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
-    puVar1[0x24] = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
+    *(undefined4 *)(this + 0x90) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -153,22 +154,22 @@ void * __cdecl TScrollBarView::GetTScrollBarViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005744B0
 // GHIDRA_NAME TScrollBarView::ConstructTScrollBarViewBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTScrollBarViewBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTScrollBarViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes scroll-bar geometry and allocates/configures scroll button controls.
 // GHIDRA_COMMENT_END
 
 /* Initializes scroll-bar geometry and allocates/configures scroll button controls. */
 
-void * __cdecl TScrollBarView::ConstructTScrollBarViewBaseState(void)
+void * __thiscall TScrollBarView::ConstructTScrollBarViewBaseState(TScrollBarView *this)
 
 {
   int iVar1;
+  TPictureButton *pTVar2;
   int *extraout_EAX;
   int *extraout_EAX_00;
-  void *pvVar2;
-  int in_ECX;
-  int *piVar3;
+  void *pvVar3;
+  int *piVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -179,40 +180,40 @@ void * __cdecl TScrollBarView::ConstructTScrollBarViewBaseState(void)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(int **)(in_ECX + 0x84) = *(int **)(in_ECX + 0x20);
-  (**(code **)(**(int **)(in_ECX + 0x20) + 0xc))();
-  *(undefined2 *)(in_ECX + 0x88) = 0x12;
-  *(short *)(in_ECX + 0x8a) = *(short *)(in_ECX + 0x38) + -0x24;
-  *(undefined2 *)(in_ECX + 0x8c) = 0x12;
+  this[0x21].pVtable = this[8].pVtable;
+  (**(code **)(*(int *)this[8].pVtable + 0xc))();
+  *(undefined2 *)&this[0x22].pVtable = 0x12;
+  *(short *)((int)&this[0x22].pVtable + 2) = *(short *)&this[0xe].pVtable + -0x24;
+  *(undefined2 *)&this[0x23].pVtable = 0x12;
   (**(code **)(*(int *)g_pDisplayManager + 0x2c))();
-  iVar1 = AllocateWithFallbackHandler(0x94);
-  if (iVar1 == 0) {
-    piVar3 = (int *)0x0;
+  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  if (pTVar2 == (TPictureButton *)0x0) {
+    piVar4 = (int *)0x0;
   }
   else {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    piVar3 = extraout_EAX;
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(pTVar2);
+    piVar4 = extraout_EAX;
   }
   thunk_InitializePictureEntryBaseAndRefresh();
-  iVar1 = *piVar3;
-  piVar3[7] = 0x73637570;
+  iVar1 = *piVar4;
+  piVar4[7] = 0x73637570;
   (**(code **)(iVar1 + 0xa4))(0,1);
   (**(code **)(iVar1 + 0xa8))(1,0);
-  iVar1 = AllocateWithFallbackHandler(0x94);
-  if (iVar1 == 0) {
-    piVar3 = (int *)0x0;
+  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  if (pTVar2 == (TPictureButton *)0x0) {
+    piVar4 = (int *)0x0;
   }
   else {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    piVar3 = extraout_EAX_00;
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(pTVar2);
+    piVar4 = extraout_EAX_00;
   }
   thunk_InitializePictureEntryBaseAndRefresh();
-  iVar1 = *piVar3;
-  piVar3[7] = 0x7363646e;
+  iVar1 = *piVar4;
+  piVar4[7] = 0x7363646e;
   (**(code **)(iVar1 + 0xa4))(0,1);
-  pvVar2 = (void *)(**(code **)(iVar1 + 0xa8))(1,0);
+  pvVar3 = (void *)(**(code **)(iVar1 + 0xa8))(1,0);
   *unaff_FS_OFFSET = 0x12;
-  return pvVar2;
+  return pvVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005746E0

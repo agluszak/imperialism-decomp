@@ -23,17 +23,18 @@ void * __cdecl TGarrisonView::thunk_GetTGarrisonViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403198
 // GHIDRA_NAME TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup
-// GHIDRA_PROTO void __cdecl thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleSelectedTileSpecialOrderPromptAndCleanup
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleSelectedTileSpecialOrderPromptAndCleanup */
 
-void __cdecl TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(void)
+void __thiscall
+TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(TGarrisonView *this)
 
 {
-  HandleSelectedTileSpecialOrderPromptAndCleanup();
+  HandleSelectedTileSpecialOrderPromptAndCleanup(this);
   return;
 }
 
@@ -132,7 +133,7 @@ TGarrisonView::DestructTGarrisonViewAndMaybeFree(TGarrisonView *this,byte freeSe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8A20
 // GHIDRA_NAME TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup
-// GHIDRA_PROTO void __cdecl HandleSelectedTileSpecialOrderPromptAndCleanup(void)
+// GHIDRA_PROTO void __thiscall HandleSelectedTileSpecialOrderPromptAndCleanup(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles selected-tile special-order prompt/cleanup path for order type 0x0E before map-order refresh.
 // GHIDRA_COMMENT_END
@@ -140,7 +141,7 @@ TGarrisonView::DestructTGarrisonViewAndMaybeFree(TGarrisonView *this,byte freeSe
 /* Handles selected-tile special-order prompt/cleanup path for order type 0x0E before map-order
    refresh. */
 
-void __cdecl TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(void)
+void __thiscall TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(TGarrisonView *this)
 
 {
   short sVar1;
@@ -149,12 +150,11 @@ void __cdecl TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(void)
   char cVar4;
   short extraout_AX;
   int iVar5;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 *puVar6;
   undefined4 local_18;
   undefined4 local_14;
-  int local_10;
+  TGarrisonView *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
@@ -163,7 +163,8 @@ void __cdecl TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(void)
   puStack_8 = &LAB_00630340;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  sVar1 = *(short *)(in_ECX + 0x8c);
+  sVar1 = *(short *)(this + 0x8c);
+  local_10 = this;
   if (sVar1 != -1) {
     cVar4 = '\0';
     if ((sVar1 < 0) || (0x17f < sVar1)) {
@@ -180,12 +181,11 @@ void __cdecl TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(void)
     }
     if (cVar4 != '\0') {
 LAB_004a8aa3:
-      local_10 = in_ECX;
       if (*(short *)(g_pLocalizationTable + 0x58) != 0) {
         cVar4 = thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2746,9,1,1);
       }
       if (cVar4 != '\0') {
-        sVar1 = *(short *)(in_ECX + 0x8c);
+        sVar1 = *(short *)(this + 0x8c);
         if ((sVar1 < 0) || (0x17f < sVar1)) {
           piVar3 = (int *)0x0;
         }
@@ -210,7 +210,7 @@ LAB_004a8aa3:
               if (iVar5 == 0) {
                 thunk_GetActiveNationId();
                 iVar5 = (**(code **)(*(int *)g_apTerrainTypeDescriptorTable[extraout_AX] + 0x40))();
-                if (iVar5 == *(short *)(in_ECX + 0x8c)) {
+                if (iVar5 == *(short *)(this + 0x8c)) {
                   g_ShSpecialOrderPromptMessageRef = 0x24d0;
                 }
               }
@@ -222,8 +222,8 @@ LAB_004a8aa3:
             (**(code **)(iVar5 + 0x1c))();
             local_4 = 0xffffffff;
             ReleaseSharedStringRefIfNotEmpty();
+            this = local_10;
             piVar3 = piVar2;
-            in_ECX = local_10;
           }
           else {
             piVar3 = (int *)piVar3[5];

@@ -5,17 +5,17 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403413
 // GHIDRA_NAME TSoundPlayer::thunk_ReleaseRuntimeSelectionPeersAndResetOwner
-// GHIDRA_PROTO void __cdecl thunk_ReleaseRuntimeSelectionPeersAndResetOwner(void)
+// GHIDRA_PROTO void __thiscall thunk_ReleaseRuntimeSelectionPeersAndResetOwner(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReleaseRuntimeSelectionPeersAndResetOwner
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReleaseRuntimeSelectionPeersAndResetOwner */
 
-void __cdecl TSoundPlayer::thunk_ReleaseRuntimeSelectionPeersAndResetOwner(void)
+void __thiscall TSoundPlayer::thunk_ReleaseRuntimeSelectionPeersAndResetOwner(TSoundPlayer *this)
 
 {
-  ReleaseRuntimeSelectionPeersAndResetOwner();
+  ReleaseRuntimeSelectionPeersAndResetOwner(this);
   return;
 }
 
@@ -54,6 +54,24 @@ void * __cdecl TSoundPlayer::thunk_GetTSoundPlayerClassNamePointer(void)
   
   pvVar1 = GetTSoundPlayerClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040923C
+// GHIDRA_NAME TSoundPlayer::thunk_ConstructSfxPlaybackSystemState
+// GHIDRA_PROTO void * __thiscall thunk_ConstructSfxPlaybackSystemState(void)
+
+void * __thiscall TSoundPlayer::thunk_ConstructSfxPlaybackSystemState(TSoundPlayer *this)
+
+{
+  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
+  *(undefined ***)this = &g_vtblTSoundPlayer;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  this[0x78] = (TSoundPlayer)0x0;
+  this[0x79] = (TSoundPlayer)0x0;
+  this[0x7a] = (TSoundPlayer)0x0;
+  *(undefined4 *)(this + 0x7c) = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005932B0
@@ -152,7 +170,7 @@ void __fastcall TSoundPlayer::DestructTSoundPlayerBaseState(TSoundPlayer *pThis)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E51D0
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
-// GHIDRA_PROTO void __cdecl ReleaseRuntimeSelectionPeersAndResetOwner(void)
+// GHIDRA_PROTO void __thiscall ReleaseRuntimeSelectionPeersAndResetOwner(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Releases peer/session pointers at +0x6C/+0x70, performs runtime cleanup callbacks, then clears runtime selection owner context.
 // GHIDRA_COMMENT_END
@@ -160,19 +178,17 @@ void __fastcall TSoundPlayer::DestructTSoundPlayerBaseState(TSoundPlayer *pThis)
 /* Releases peer/session pointers at +0x6C/+0x70, performs runtime cleanup callbacks, then clears
    runtime selection owner context. */
 
-void __cdecl TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner(void)
+void __thiscall TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner(TSoundPlayer *this)
 
 {
-  int in_ECX;
-  
-  if (*(int **)(in_ECX + 0x70) != (int *)0x0) {
-    (**(code **)(**(int **)(in_ECX + 0x70) + 0x38))();
+  if (*(int **)(this + 0x70) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x70) + 0x38))();
   }
-  *(undefined4 *)(in_ECX + 0x70) = 0;
-  if (*(int **)(in_ECX + 0x6c) != (int *)0x0) {
-    (**(code **)(**(int **)(in_ECX + 0x6c) + 0x38))();
+  *(undefined4 *)(this + 0x70) = 0;
+  if (*(int **)(this + 0x6c) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x6c) + 0x38))();
   }
-  *(undefined4 *)(in_ECX + 0x6c) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();
   ForwardMciCommand808ToDevice();
   thunk_ReleaseRuntimeSelectionOwnerAndDestroyObject();

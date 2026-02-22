@@ -42,18 +42,19 @@ void * __cdecl TSliderPicture::thunk_GetTSliderPictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403D0F
 // GHIDRA_NAME TSliderPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00573aa0
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00573aa0 */
 
-void TSliderPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+void __thiscall
+TSliderPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
+          (TSliderPicture *this)
 
 {
-  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0();
+  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(this);
   return;
 }
 
@@ -132,21 +133,20 @@ TSliderPicture::DestructTSliderPictureAndMaybeFree(TSliderPicture *this,byte fre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573AA0
 // GHIDRA_NAME TSliderPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
    instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
 
-void TSliderPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+void __thiscall
+TSliderPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
+          (TSliderPicture *this)
 
 {
-  void *in_ECX;
-  
-  thunk_RenderHintHelperWithCtrlModifierOverlay(in_ECX);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
   return;
 }
 

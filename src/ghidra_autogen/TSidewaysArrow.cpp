@@ -3,6 +3,20 @@
 // Program: Imperialism.exe
 // Bucket: TSidewaysArrow.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404331
+// GHIDRA_NAME TSidewaysArrow::thunk_ConstructTradeQuantityArrowPictureEntry
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTradeQuantityArrowPictureEntry(void)
+
+void * __thiscall
+TSidewaysArrow::thunk_ConstructTradeQuantityArrowPictureEntry(TSidewaysArrow *this)
+
+{
+  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
+  *(undefined ***)this = &g_vtblTSidewaysArrow;
+  *(undefined4 *)(this + 0x94) = 0;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406C80
 // GHIDRA_NAME TSidewaysArrow::thunk_DestructTSidewaysArrowAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTSidewaysArrowAndMaybeFree(byte freeSelfFlag)
@@ -47,7 +61,7 @@ void * __cdecl TSidewaysArrow::thunk_GetTSidewaysArrowClassNamePointer(void)
 void * __cdecl TSidewaysArrow::CreateTSidewaysArrowInstance(void)
 
 {
-  undefined4 *puVar1;
+  TUpDownPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,14 +71,14 @@ void * __cdecl TSidewaysArrow::CreateTSidewaysArrowInstance(void)
   puStack_8 = &LAB_0063754a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
-    *puVar1 = &g_vtblTSidewaysArrow;
-    puVar1[0x25] = 0;
+  if (this != (TUpDownPictureButton *)0x0) {
+    TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(this);
+    *(undefined ***)this = &g_vtblTSidewaysArrow;
+    *(undefined4 *)(this + 0x94) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -92,7 +106,7 @@ void * __cdecl TSidewaysArrow::GetTSidewaysArrowClassNamePointer(void)
 void * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
 
 {
-  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
   *(undefined ***)this = &g_vtblTSidewaysArrow;
   *(undefined4 *)(this + 0x94) = 0;
   return this;

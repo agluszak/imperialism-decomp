@@ -38,33 +38,33 @@ TShipyardCluster::thunk_SelectTradeSpecialCommodityAndInitializeControls(TShipya
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004058A8
 // GHIDRA_NAME TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl
-// GHIDRA_PROTO void __cdecl thunk_RefreshTradeMoveBarAndTurnControl(void)
+// GHIDRA_PROTO void __thiscall thunk_RefreshTradeMoveBarAndTurnControl(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RefreshTradeMoveBarAndTurnControl
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RefreshTradeMoveBarAndTurnControl */
 
-void __cdecl TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl(void)
+void __thiscall TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl(TShipyardCluster *this)
 
 {
-  RefreshTradeMoveBarAndTurnControl();
+  RefreshTradeMoveBarAndTurnControl(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406965
 // GHIDRA_NAME TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent
-// GHIDRA_PROTO void __cdecl thunk_HandleTradeMoveArrowControlEvent(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeMoveArrowControlEvent(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeMoveArrowControlEvent
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeMoveArrowControlEvent */
 
-void __cdecl TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent(void)
+void __thiscall TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent(TShipyardCluster *this)
 
 {
-  HandleTradeMoveArrowControlEvent();
+  HandleTradeMoveArrowControlEvent(this);
   return;
 }
 
@@ -187,14 +187,14 @@ TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls(TShipyardClus
   }
   *(undefined4 *)(this + 0x88) = *(undefined4 *)(iVar1 + 400);
   *(undefined2 *)(this + 0x8c) = 999;
-  TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls();
+  TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls((TAmtBarCluster *)this);
   (**(code **)(*(int *)this + 0x1d0))(0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A690
 // GHIDRA_NAME TShipyardCluster::RefreshTradeMoveBarAndTurnControl
-// GHIDRA_PROTO void __cdecl RefreshTradeMoveBarAndTurnControl(void)
+// GHIDRA_PROTO void __thiscall RefreshTradeMoveBarAndTurnControl(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Refreshes move bar + turn indicator controls after move value changes; invalidates old/new rects and updates bar thumb metrics.
 // GHIDRA_COMMENT_END
@@ -202,20 +202,19 @@ TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls(TShipyardClus
 /* Refreshes move bar + turn indicator controls after move value changes; invalidates old/new rects
    and updates bar thumb metrics. */
 
-void __cdecl TShipyardCluster::RefreshTradeMoveBarAndTurnControl(void)
+void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardCluster *this)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  int *in_ECX;
   code *pcVar4;
   undefined1 auStack_3c [8];
   LONG LStack_34;
   RECT RStack_30;
   tagRECT atStack_20 [2];
   
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)(*(int *)this + 0x94);
   piVar3 = (int *)(*pcVar1)();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -224,7 +223,7 @@ void __cdecl TShipyardCluster::RefreshTradeMoveBarAndTurnControl(void)
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0x1e4))();
   (**(code **)(iVar2 + 300))();
-  OffsetRect((LPRECT)&stack0xffffffc0,in_ECX[9],in_ECX[10]);
+  OffsetRect((LPRECT)&stack0xffffffc0,*(int *)(this + 0x24),*(int *)(this + 0x28));
   RStack_30.top = auStack_3c._0_4_;
   RStack_30.right = auStack_3c._4_4_;
   RStack_30.bottom = LStack_34;
@@ -236,7 +235,7 @@ void __cdecl TShipyardCluster::RefreshTradeMoveBarAndTurnControl(void)
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  if ((short)in_ECX[0x23] == 0) {
+  if (*(short *)(this + 0x8c) == 0) {
     *(undefined2 *)((int)piVar3 + 0x66) = 0x34;
   }
   else {
@@ -245,10 +244,10 @@ void __cdecl TShipyardCluster::RefreshTradeMoveBarAndTurnControl(void)
   (**(code **)(*piVar3 + 0x1a4))(0);
   (**(code **)(iVar2 + 0xf0))(&stack0xffffffac,1);
   (*pcVar4)(&stack0xffffffac);
-  OffsetRect((LPRECT)&stack0xffffffa8,in_ECX[9],in_ECX[10]);
+  OffsetRect((LPRECT)&stack0xffffffa8,*(int *)(this + 0x24),*(int *)(this + 0x28));
   CopyRect((LPRECT)(auStack_3c + 4),(RECT *)&stack0xffffffb8);
   thunk_InvalidateCityDialogRectRegion((int)(auStack_3c + 4),1);
-  piVar3 = (int *)(**(code **)(*(int *)in_ECX[8] + 0x94))(0x7475726e);
+  piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x7475726e);
   if (piVar3 != (int *)0x0) {
     iVar2 = *piVar3;
     (**(code **)(iVar2 + 0x1e4))(0,0);
@@ -256,13 +255,13 @@ void __cdecl TShipyardCluster::RefreshTradeMoveBarAndTurnControl(void)
     CopyRect((LPRECT)auStack_3c,(RECT *)&stack0xffffffb4);
     thunk_InvalidateCityDialogRectRegion((int)auStack_3c,1);
   }
-  (**(code **)(*(int *)in_ECX[8] + 0x1d8))();
+  (**(code **)(**(int **)(this + 0x20) + 0x1d8))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A940
 // GHIDRA_NAME TShipyardCluster::HandleTradeMoveArrowControlEvent
-// GHIDRA_PROTO void __cdecl HandleTradeMoveArrowControlEvent(void)
+// GHIDRA_PROTO void __thiscall HandleTradeMoveArrowControlEvent(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Trade move arrow handler: interprets left/rght control tags and adjusts move amount (+/-1), sharing split-arrow command semantics.
 // GHIDRA_COMMENT_END
@@ -270,19 +269,18 @@ void __cdecl TShipyardCluster::RefreshTradeMoveBarAndTurnControl(void)
 /* Trade move arrow handler: interprets left/rght control tags and adjusts move amount (+/-1),
    sharing split-arrow command semantics. */
 
-void __cdecl TShipyardCluster::HandleTradeMoveArrowControlEvent(void)
+void __thiscall TShipyardCluster::HandleTradeMoveArrowControlEvent(TShipyardCluster *this)
 
 {
   int iVar1;
   int *piVar2;
   int iVar3;
-  int *in_ECX;
   int in_stack_00000004;
   int in_stack_00000008;
   
   if (in_stack_00000004 == 10) {
     if (*(int *)(in_stack_00000008 + 0x1c) == 0x72676874) {
-      iVar1 = *in_ECX;
+      iVar1 = *(int *)this;
       piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
       if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -293,10 +291,10 @@ void __cdecl TShipyardCluster::HandleTradeMoveArrowControlEvent(void)
       return;
     }
     if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c656674) {
-      TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment();
+      TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
       return;
     }
-    iVar1 = *in_ECX;
+    iVar1 = *(int *)this;
     piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
     if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -309,7 +307,7 @@ void __cdecl TShipyardCluster::HandleTradeMoveArrowControlEvent(void)
     }
   }
   else {
-    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment();
+    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
   }
   return;
 }

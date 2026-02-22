@@ -87,6 +87,22 @@ void * __thiscall TObject::thunk_GetTObjectRuntimeClass(TObject *this)
   return in_EAX;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407C57
+// GHIDRA_NAME TObject::thunk_HandleTurnEventVtableSlot08ConditionalDispatch
+// GHIDRA_PROTO void __thiscall thunk_HandleTurnEventVtableSlot08ConditionalDispatch(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleTurnEventVtableSlot08ConditionalDispatch
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleTurnEventVtableSlot08ConditionalDispatch */
+
+void __thiscall TObject::thunk_HandleTurnEventVtableSlot08ConditionalDispatch(TObject *this)
+
+{
+  HandleTurnEventVtableSlot08ConditionalDispatch(this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004798F0
 // GHIDRA_NAME TObject::WrapperFor_FreeHeapBufferIfNotNull_At004798f0
 // GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0()
@@ -139,16 +155,17 @@ TObject::WrapperFor_FreeHeapBufferIfNotNull_At00479fb0(undefined4 param_1,byte p
 /* [WrapperShape] small wrapper around InvokeCurrentMessageFallbackHandler; instructions=28,
    call_insns=3, internal_calls=1, unique_internal=1 */
 
-void __thiscall TObject::CreateTObjectInstance(void *param_1,int param_2)
+void __thiscall TObject::CreateTObjectInstance(TMacViewMgr *param_1,int param_2)
 
 {
+  TMacViewMgr *unaff_ESI;
   undefined4 local_2c;
   undefined4 local_28;
   int local_24;
   undefined4 local_20;
   undefined4 local_1c;
   
-  InvokeCurrentMessageFallbackHandler();
+  TMacViewMgr::InvokeCurrentMessageFallbackHandler(param_1,unaff_ESI);
   local_2c = 0x2c;
   GetWindowPlacementFromThisHwnd(param_1,&local_2c);
   if ((param_2 == 0) && (local_24 != 2)) {
@@ -178,7 +195,7 @@ void * __cdecl TObject::GetTObjectClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E90
 // GHIDRA_NAME TObject::HandleTurnEventVtableSlot08ConditionalDispatch
-// GHIDRA_PROTO void __cdecl HandleTurnEventVtableSlot08ConditionalDispatch(void)
+// GHIDRA_PROTO void __thiscall HandleTurnEventVtableSlot08ConditionalDispatch(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Vtable slot +0x08 handler.
 // GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
@@ -188,10 +205,9 @@ void * __cdecl TObject::GetTObjectClassNamePointer(void)
    Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
    +0x14 (clear) or +0x18 (set). */
 
-void __cdecl TObject::HandleTurnEventVtableSlot08ConditionalDispatch(void)
+void __thiscall TObject::HandleTurnEventVtableSlot08ConditionalDispatch(TObject *this)
 
 {
-  int *in_ECX;
   int *unaff_FS_OFFSET;
   int in_stack_00000004;
   TFileStream local_1c [8];
@@ -211,11 +227,11 @@ void __cdecl TObject::HandleTurnEventVtableSlot08ConditionalDispatch(void)
   local_4 = CONCAT31(local_4._1_3_,1);
   SetObjectField04();
   if ((~*(uint *)(in_stack_00000004 + 0x14) & 1) != 0) {
-    (**(code **)(*in_ECX + 0x14))();
+    (**(code **)((int)this->pVtable + 0x14))();
     *unaff_FS_OFFSET = local_10;
     return;
   }
-  (**(code **)(*in_ECX + 0x18))(local_1c);
+  (**(code **)((int)this->pVtable + 0x18))(local_1c);
   *unaff_FS_OFFSET = local_10;
   return;
 }

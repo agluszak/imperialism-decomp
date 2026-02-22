@@ -60,12 +60,13 @@ TUniversityView::thunk_WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At004cbf
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406AA5
 // GHIDRA_NAME TUniversityView::thunk_HandleUniversityRecruitmentSelectionAndStepCommand
-// GHIDRA_PROTO void __cdecl thunk_HandleUniversityRecruitmentSelectionAndStepCommand(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleUniversityRecruitmentSelectionAndStepCommand(void)
 
-void __cdecl TUniversityView::thunk_HandleUniversityRecruitmentSelectionAndStepCommand(void)
+void __thiscall
+TUniversityView::thunk_HandleUniversityRecruitmentSelectionAndStepCommand(TUniversityView *this)
 
 {
-  HandleUniversityRecruitmentSelectionAndStepCommand();
+  HandleUniversityRecruitmentSelectionAndStepCommand(this);
   return;
 }
 
@@ -124,7 +125,7 @@ void __fastcall TUniversityView::thunk_RefreshUniversityRecruitmentDialog(int *p
 void * __cdecl TUniversityView::CreateTUniversityViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -134,15 +135,15 @@ void * __cdecl TUniversityView::CreateTUniversityViewInstance(void)
   puStack_8 = &LAB_006317ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    *puVar1 = &g_vtblTUniversityView;
-    puVar1[0x26] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined ***)this = &g_vtblTUniversityView;
+    *(undefined4 *)(this + 0x98) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -170,7 +171,7 @@ void * __cdecl TUniversityView::GetTUniversityViewClassNamePointer(void)
 void * __thiscall TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined ***)this = &g_vtblTUniversityView;
   *(undefined4 *)(this + 0x94) = 0;
   *(undefined4 *)(this + 0x98) = 0;
@@ -611,7 +612,7 @@ TUniversityView::SelectUniversityRecruitmentEntry
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CB8A0
 // GHIDRA_NAME TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
-// GHIDRA_PROTO void __cdecl HandleUniversityRecruitmentSelectionAndStepCommand(void)
+// GHIDRA_PROTO void __thiscall HandleUniversityRecruitmentSelectionAndStepCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dehardcoded recruit-row/class mapping anchor from this builder:
 // GHIDRA_COMMENT - civ0 uses bitmap 9920 (0x26C0): Miner (class id 0)
@@ -635,7 +636,8 @@ TUniversityView::SelectUniversityRecruitmentEntry
    Row tags/selection use 0x63697630+index, matching class-index semantics used in recruit/order
    tables. */
 
-void __cdecl TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand(void)
+void __thiscall
+TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand(TUniversityView *this)
 
 {
   int iVar1;
@@ -644,7 +646,6 @@ void __cdecl TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
   short sVar4;
   int *piVar5;
   int *piVar6;
-  int *in_ECX;
   int in_stack_00000004;
   int in_stack_00000008;
   code *pcStack_38;
@@ -655,22 +656,23 @@ void __cdecl TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
   if (in_stack_00000004 == 0xc) {
     sVar4 = *(short *)(in_stack_00000008 + 0x1c) + -0x7630;
     if ((-1 < sVar4) && (sVar4 < 9)) {
-      *(short *)(in_ECX + 0x29) = sVar4;
-      (**(code **)(*in_ECX + 0x1e4))(sVar4);
+      *(short *)(this + 0xa4) = sVar4;
+      (**(code **)(*(int *)this + 0x1e4))(sVar4);
     }
   }
   else if (in_stack_00000004 == 10) {
     sVar4 = *(short *)(*(int *)(in_stack_00000008 + 0x20) + 0x1c) + -30000;
     if ((-1 < sVar4) && (sVar4 < 9)) {
-      iVar1 = *in_ECX;
-      *(short *)(in_ECX + 0x29) = sVar4;
+      iVar1 = *(int *)this;
+      *(short *)(this + 0xa4) = sVar4;
       (**(code **)(iVar1 + 0x1e4))(sVar4);
       pcVar2 = *(code **)(iVar1 + 0x94);
       piVar5 = (int *)(*pcVar2)(0x73656c65);
       iVar1 = *piVar5;
       (**(code **)(iVar1 + 0xc))();
       (**(code **)(iVar1 + 0x1c8))(sVar4 + 0x63697630);
-      piVar5 = *(int **)(in_ECX[0x25] + 0xe4 + (short)((short)in_ECX[0x29] + 0x22) * 4);
+      piVar5 = *(int **)(*(int *)(this + 0x94) + 0xe4 + (short)(*(short *)(this + 0xa4) + 0x22) * 4)
+      ;
       if (*(int *)(iStack_4 + 0x1c) == 0x706c7573) {
         sVar4 = (short)piVar5[1] + 1;
       }
@@ -679,7 +681,7 @@ void __cdecl TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
       }
       cVar3 = (**(code **)(*piVar5 + 0x2c))(sVar4);
       if (cVar3 != '\0') {
-        piVar6 = (int *)(*pcStack_38)((short)in_ECX[0x29] + 0x6e756d30);
+        piVar6 = (int *)(*pcStack_38)(*(short *)(this + 0xa4) + 0x6e756d30);
         if (piVar6 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -696,7 +698,7 @@ void __cdecl TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
         RStack_34.right = (LONG)pcVar2;
         CopyRect(atStack_24,&RStack_34);
         thunk_InvalidateCityDialogRectRegion((int)atStack_24,1);
-        (**(code **)(*in_ECX + 0x1d8))();
+        (**(code **)(*(int *)this + 0x1d8))();
       }
     }
   }

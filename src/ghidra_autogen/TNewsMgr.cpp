@@ -21,6 +21,22 @@ void * __cdecl TNewsMgr::thunk_GetTNewsMgrClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004091E7
+// GHIDRA_NAME TNewsMgr::thunk_DestroyTNewsMgrAndReleaseHeadlineEntries
+// GHIDRA_PROTO void __thiscall thunk_DestroyTNewsMgrAndReleaseHeadlineEntries(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTNewsMgrAndReleaseHeadlineEntries
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestroyTNewsMgrAndReleaseHeadlineEntries */
+
+void __thiscall TNewsMgr::thunk_DestroyTNewsMgrAndReleaseHeadlineEntries(TNewsMgr *this)
+
+{
+  DestroyTNewsMgrAndReleaseHeadlineEntries(this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B6F0
 // GHIDRA_NAME TNewsMgr::GetTNewsMgrClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTNewsMgrClassNamePointer(void)
@@ -38,37 +54,36 @@ void * __cdecl TNewsMgr::GetTNewsMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B820
 // GHIDRA_NAME TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries
-// GHIDRA_PROTO void __cdecl DestroyTNewsMgrAndReleaseHeadlineEntries(void)
+// GHIDRA_PROTO void __thiscall DestroyTNewsMgrAndReleaseHeadlineEntries(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Releases embedded headline objects/arrays and then destroys the TNewsMgr instance.
 // GHIDRA_COMMENT_END
 
 /* Releases embedded headline objects/arrays and then destroys the TNewsMgr instance. */
 
-void __cdecl TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries(void)
+void __thiscall TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries(TNewsMgr *this)
 
 {
-  int *in_ECX;
-  int *piVar1;
+  TNewsMgr *pTVar1;
   int iVar2;
   
-  piVar1 = in_ECX + 0x3b5;
+  pTVar1 = this + 0x3b5;
   iVar2 = 7;
   do {
-    if ((int *)*piVar1 != (int *)0x0) {
-      (**(code **)(*(int *)*piVar1 + 0x24))();
+    if (pTVar1->pVtable != (int *)0x0) {
+      (**(code **)(*(int *)pTVar1->pVtable + 0x24))();
     }
-    if (piVar1[8] != 0) {
-      FreeHeapBufferIfNotNull(piVar1[8]);
+    if (pTVar1[8].pVtable != (void *)0x0) {
+      FreeHeapBufferIfNotNull(pTVar1[8].pVtable);
     }
-    piVar1 = piVar1 + 1;
+    pTVar1 = pTVar1 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
-  if ((int *)in_ECX[0x3bc] != (int *)0x0) {
-    (**(code **)(*(int *)in_ECX[0x3bc] + 0x24))();
+  if (this[0x3bc].pVtable != (int *)0x0) {
+    (**(code **)(*(int *)this[0x3bc].pVtable + 0x24))();
   }
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  if (this != (TNewsMgr *)0x0) {
+    (**(code **)((int)this->pVtable + 4))(1);
   }
   return;
 }

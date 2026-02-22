@@ -24,6 +24,37 @@ TCluster::thunk_RunRegisteredDialogFactoriesByEventCode
   return piVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004042C8
+// GHIDRA_NAME TCluster::thunk_ConstructUiResourceEntryType4B0C0
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiResourceEntryType4B0C0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiResourceEntryType4B0C0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiResourceEntryType4B0C0 */
+
+void __thiscall TCluster::thunk_ConstructUiResourceEntryType4B0C0(TCluster *this)
+
+{
+  ushort uVar1;
+  
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (TCluster)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+  uVar1 = g_wUiResourceEntryDefaultParam2;
+  *(undefined ***)this = &g_vtblTCluster;
+  *(undefined4 *)(this + 0x84) = 0x20202020;
+  *(ushort *)(this + 0x80) = uVar1;
+  *(undefined4 *)(this + 0x60) = 5;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004047FF
 // GHIDRA_NAME TCluster::thunk_GetTClusterClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTClusterClassNamePointer(void)
@@ -93,7 +124,7 @@ void * __cdecl TCluster::CreateTClusterInstance(void)
 
 {
   ushort uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -103,25 +134,25 @@ void * __cdecl TCluster::CreateTClusterInstance(void)
   puStack_8 = &LAB_0062f28a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TView *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    puVar2[0x18] = 1;
-    *(undefined1 *)(puVar2 + 0x19) = 0;
-    puVar2[0x1a] = 0;
-    puVar2[0x1b] = 0;
-    puVar2[0x1c] = 0;
-    puVar2[0x1d] = 0;
-    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined4 *)(this + 0x60) = 1;
+    this[100] = (TView)0x0;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
+    *(undefined4 *)(this + 0x70) = 0;
+    *(undefined4 *)(this + 0x74) = 0;
+    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *puVar2 = &g_vtblTCluster;
-    puVar2[0x21] = 0x20202020;
-    *(ushort *)(puVar2 + 0x20) = uVar1;
-    puVar2[0x18] = 5;
+    *(undefined ***)this = &g_vtblTCluster;
+    *(undefined4 *)(this + 0x84) = 0x20202020;
+    *(ushort *)(this + 0x80) = uVar1;
+    *(undefined4 *)(this + 0x60) = 5;
     *unaff_FS_OFFSET = local_c;
-    return puVar2;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -144,28 +175,27 @@ void * __cdecl TCluster::GetTClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491400
 // GHIDRA_NAME TCluster::ConstructUiResourceEntryType4B0C0
-// GHIDRA_PROTO void __cdecl ConstructUiResourceEntryType4B0C0(void)
+// GHIDRA_PROTO void __thiscall ConstructUiResourceEntryType4B0C0(void)
 
-void __cdecl TCluster::ConstructUiResourceEntryType4B0C0(void)
+void __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this)
 
 {
   ushort uVar1;
-  undefined4 *in_ECX;
   
-  TView::thunk_ConstructUiResourceEntryBase();
-  in_ECX[0x18] = 1;
-  *(undefined1 *)(in_ECX + 0x19) = 0;
-  in_ECX[0x1a] = 0;
-  in_ECX[0x1b] = 0;
-  in_ECX[0x1c] = 0;
-  in_ECX[0x1d] = 0;
-  in_ECX[0x1e] = g_nUiResourceEntryDefaultParam0;
-  in_ECX[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (TCluster)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *in_ECX = &g_vtblTCluster;
-  in_ECX[0x21] = 0x20202020;
-  *(ushort *)(in_ECX + 0x20) = uVar1;
-  in_ECX[0x18] = 5;
+  *(undefined ***)this = &g_vtblTCluster;
+  *(undefined4 *)(this + 0x84) = 0x20202020;
+  *(ushort *)(this + 0x80) = uVar1;
+  *(undefined4 *)(this + 0x60) = 5;
   return;
 }
 

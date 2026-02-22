@@ -25,17 +25,18 @@ TTradePolicyCluster::thunk_DestructTTradePolicyClusterAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D44
 // GHIDRA_NAME TTradePolicyCluster::thunk_HandlePanelEvent67AndClearControlTag636c7573
-// GHIDRA_PROTO void __cdecl thunk_HandlePanelEvent67AndClearControlTag636c7573(void)
+// GHIDRA_PROTO void __thiscall thunk_HandlePanelEvent67AndClearControlTag636c7573(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandlePanelEvent67AndClearControlTag636c7573
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandlePanelEvent67AndClearControlTag636c7573 */
 
-void __cdecl TTradePolicyCluster::thunk_HandlePanelEvent67AndClearControlTag636c7573(void)
+void __thiscall
+TTradePolicyCluster::thunk_HandlePanelEvent67AndClearControlTag636c7573(TTradePolicyCluster *this)
 
 {
-  HandlePanelEvent67AndClearControlTag636c7573();
+  HandlePanelEvent67AndClearControlTag636c7573(this);
   return;
 }
 
@@ -133,7 +134,7 @@ TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584320
 // GHIDRA_NAME TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573
-// GHIDRA_PROTO void __cdecl HandlePanelEvent67AndClearControlTag636c7573(void)
+// GHIDRA_PROTO void __thiscall HandlePanelEvent67AndClearControlTag636c7573(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles event code 0x67 by clearing control tag 0x636c7573; otherwise forwards through panel dispatcher.
 // GHIDRA_COMMENT_END
@@ -141,21 +142,21 @@ TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree
 /* Handles event code 0x67 by clearing control tag 0x636c7573; otherwise forwards through panel
    dispatcher. */
 
-void __cdecl TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573(void)
+void __thiscall
+TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573(TTradePolicyCluster *this)
 
 {
   int iVar1;
   int *piVar2;
-  int *in_ECX;
   int in_stack_00000004;
   void *in_stack_00000008;
   int in_stack_0000000c;
   
   if (in_stack_00000004 != 0x67) {
-    thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+    thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
     return;
   }
-  iVar1 = *in_ECX;
+  iVar1 = *(int *)this;
   piVar2 = (int *)(**(code **)(iVar1 + 0x58))();
   (**(code **)(iVar1 + 0x1c8))(0x20202020);
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x636c7573);

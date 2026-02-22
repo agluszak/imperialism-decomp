@@ -74,7 +74,7 @@ void * __cdecl TAdorner::GetTAdornerClassNamePointer(void)
 void * __cdecl TAdorner::ConstructTAdornerBaseState(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -84,16 +84,16 @@ void * __cdecl TAdorner::ConstructTAdornerBaseState(void)
   puStack_8 = &LAB_0062fcd2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &g_vtblTAdorner;
+    *(undefined ***)this = &g_vtblTAdorner;
     thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
     thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

@@ -89,6 +89,65 @@ void __thiscall THelpMgr::thunk_InitializeHelpManagerIndexArrayAndState(THelpMgr
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004881F0
+// GHIDRA_NAME THelpMgr::UpsertPtrListRecordByComparator
+// GHIDRA_PROTO void __thiscall UpsertPtrListRecordByComparator(THelpMgr * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Searches existing list entries using comparator callback (+0x44). If no match is found,
+// GHIDRA_COMMENT allocates/copies fixed-size record and inserts it into pointer list.
+// GHIDRA_COMMENT_END
+
+/* Searches existing list entries using comparator callback (+0x44). If no match is found,
+   allocates/copies fixed-size record and inserts it into pointer list. */
+
+void __thiscall THelpMgr::UpsertPtrListRecordByComparator(THelpMgr *this,THelpMgr *pThis)
+
+{
+  code *pcVar1;
+  code *pcVar2;
+  short sVar3;
+  int iVar4;
+  undefined4 *insertValue;
+  uint uVar5;
+  int unaff_EBX;
+  int iVar6;
+  undefined4 *puVar7;
+  undefined4 *unaff_retaddr;
+  
+  iVar6 = 1;
+  pcVar1 = *(code **)(*(int *)this + 0x2c);
+  iVar4 = (*pcVar1)(1);
+  if (iVar4 == 0) {
+    (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
+    return;
+  }
+  pcVar2 = *(code **)(unaff_EBX + 0x44);
+  do {
+    sVar3 = (*pcVar2)(unaff_retaddr,iVar4);
+    if (sVar3 != 1) {
+      insertValue = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)(this + 0x14));
+      sVar3 = *(short *)(this + 0x14);
+      puVar7 = insertValue;
+      for (uVar5 = (uint)(int)sVar3 >> 2; uVar5 != 0; uVar5 = uVar5 - 1) {
+        *puVar7 = *unaff_retaddr;
+        unaff_retaddr = unaff_retaddr + 1;
+        puVar7 = puVar7 + 1;
+      }
+      for (uVar5 = (int)sVar3 & 3; uVar5 != 0; uVar5 = uVar5 - 1) {
+        *(undefined1 *)puVar7 = *(undefined1 *)unaff_retaddr;
+        unaff_retaddr = (undefined4 *)((int)unaff_retaddr + 1);
+        puVar7 = (undefined4 *)((int)puVar7 + 1);
+      }
+      InsertRepeatedPointerIntoObArrayAtIndex(this,iVar6 + -1,insertValue,1);
+      return;
+    }
+    iVar6 = iVar6 + 1;
+    iVar4 = (*pcVar1)(iVar6);
+  } while (iVar4 != 0);
+  (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005005C0
 // GHIDRA_NAME THelpMgr::GetTHelpMgrClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTHelpMgrClassNamePointer(void)

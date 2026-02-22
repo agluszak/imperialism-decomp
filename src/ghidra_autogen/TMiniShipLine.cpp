@@ -23,19 +23,19 @@ void * __cdecl TMiniShipLine::thunk_GetTMiniShipLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406767
 // GHIDRA_NAME TMiniShipLine::thunk_ConstructTMiniShipLineBaseState
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTMiniShipLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTMiniShipLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTMiniShipLineBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTMiniShipLineBaseState */
 
-void * __cdecl TMiniShipLine::thunk_ConstructTMiniShipLineBaseState(void)
+void * __thiscall TMiniShipLine::thunk_ConstructTMiniShipLineBaseState(TMiniShipLine *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTMiniShipLineBaseState();
+  pvVar1 = ConstructTMiniShipLineBaseState(this);
   return pvVar1;
 }
 
@@ -105,15 +105,14 @@ void * __cdecl TMiniShipLine::GetTMiniShipLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C80
 // GHIDRA_NAME TMiniShipLine::ConstructTMiniShipLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTMiniShipLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTMiniShipLineBaseState(void)
 
-void * __cdecl TMiniShipLine::ConstructTMiniShipLineBaseState(void)
+void * __thiscall TMiniShipLine::ConstructTMiniShipLineBaseState(TMiniShipLine *this)
 
 {
   undefined4 uVar1;
-  undefined4 *puVar2;
+  TControl *this_00;
   void *extraout_EAX;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -123,20 +122,20 @@ void * __cdecl TMiniShipLine::ConstructTMiniShipLineBaseState(void)
   puStack_8 = &LAB_00635c2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this_00 = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar2 == (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)0x0;
+  if (this_00 == (TControl *)0x0) {
+    this_00 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar2 = &g_vtblTMiniShipLine;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    *(undefined ***)this_00 = &g_vtblTMiniShipLine;
   }
-  uVar1 = *(undefined4 *)(in_ECX + 0x10);
+  uVar1 = *(undefined4 *)(this + 0x10);
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  puVar2[0x21] = uVar1;
-  puVar2[0x18] = 0x22;
+  *(undefined4 *)(this_00 + 0x84) = uVar1;
+  *(undefined4 *)(this_00 + 0x60) = 0x22;
   *unaff_FS_OFFSET = local_c;
   return extraout_EAX;
 }

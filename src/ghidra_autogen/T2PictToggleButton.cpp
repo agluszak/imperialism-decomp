@@ -59,17 +59,18 @@ void __cdecl T2PictToggleButton::thunk_IsField3cWithinShortLimit84(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408E59
 // GHIDRA_NAME T2PictToggleButton::thunk_SyncField0fTowardsField21ByDirectionAndRefresh
-// GHIDRA_PROTO void __cdecl thunk_SyncField0fTowardsField21ByDirectionAndRefresh(void)
+// GHIDRA_PROTO void __thiscall thunk_SyncField0fTowardsField21ByDirectionAndRefresh(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SyncField0fTowardsField21ByDirectionAndRefresh
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SyncField0fTowardsField21ByDirectionAndRefresh */
 
-void __cdecl T2PictToggleButton::thunk_SyncField0fTowardsField21ByDirectionAndRefresh(void)
+void __thiscall
+T2PictToggleButton::thunk_SyncField0fTowardsField21ByDirectionAndRefresh(T2PictToggleButton *this)
 
 {
-  SyncField0fTowardsField21ByDirectionAndRefresh();
+  SyncField0fTowardsField21ByDirectionAndRefresh(this);
   return;
 }
 
@@ -163,7 +164,7 @@ void __cdecl T2PictToggleButton::IsField3cWithinShortLimit84(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849D0
 // GHIDRA_NAME T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh
-// GHIDRA_PROTO void __cdecl SyncField0fTowardsField21ByDirectionAndRefresh(void)
+// GHIDRA_PROTO void __thiscall SyncField0fTowardsField21ByDirectionAndRefresh(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Adjusts field +0x0F toward short at +0x21 depending on direction flag and refreshes dependent view state.
 // GHIDRA_COMMENT_END
@@ -171,21 +172,21 @@ void __cdecl T2PictToggleButton::IsField3cWithinShortLimit84(void)
 /* Adjusts field +0x0F toward short at +0x21 depending on direction flag and refreshes dependent
    view state. */
 
-void __cdecl T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(void)
+void __thiscall
+T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(T2PictToggleButton *this)
 
 {
   short sVar1;
   int iVar2;
-  int *in_ECX;
   char in_stack_00000004;
   
-  sVar1 = (short)in_ECX[0x21];
-  if (((in_stack_00000004 == '\0') && (in_ECX[0xf] < (int)sVar1)) ||
-     ((in_stack_00000004 == '\x01' && ((int)sVar1 < in_ECX[0xf])))) {
-    (**(code **)(*in_ECX + 0x1c8))((short)in_ECX[0xf],0);
-    in_ECX[0xf] = (int)sVar1;
+  sVar1 = *(short *)(this + 0x84);
+  if (((in_stack_00000004 == '\0') && (*(int *)(this + 0x3c) < (int)sVar1)) ||
+     ((in_stack_00000004 == '\x01' && ((int)sVar1 < *(int *)(this + 0x3c))))) {
+    (**(code **)(*(int *)this + 0x1c8))(*(undefined2 *)(this + 0x3c),0);
+    *(int *)(this + 0x3c) = (int)sVar1;
   }
-  iVar2 = *in_ECX;
+  iVar2 = *(int *)this;
   (**(code **)(iVar2 + 0xf8))();
   (**(code **)(iVar2 + 0x114))(0);
   return;

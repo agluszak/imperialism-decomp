@@ -3,14 +3,35 @@
 // Program: Imperialism.exe
 // Bucket: TEngineerDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00409016
+// GHIDRA_NAME TEngineerDialog::thunk_GetEngineerDialogClassName
+// GHIDRA_PROTO void * __cdecl thunk_GetEngineerDialogClassName(void)
+
+void * __cdecl TEngineerDialog::thunk_GetEngineerDialogClassName(void)
+
+{
+  return &g_pClassDescTEngineerDialog;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00409237
+// GHIDRA_NAME TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree
+// GHIDRA_PROTO void __cdecl thunk_DestructEngineerDialogAndMaybeFree(void)
+
+void __cdecl TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree(void)
+
+{
+  DestructEngineerDialogAndMaybeFree();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D04B0
 // GHIDRA_NAME TEngineerDialog::CreateEngineerDialog
 // GHIDRA_PROTO undefined CreateEngineerDialog()
 
-undefined4 * TEngineerDialog::CreateEngineerDialog(void)
+TView * TEngineerDialog::CreateEngineerDialog(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,19 +41,19 @@ undefined4 * TEngineerDialog::CreateEngineerDialog(void)
   puStack_8 = &LAB_00631a8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblFamily_EngineerDialogCore_Root;
-    puVar1[0x18] = 0;
-    puVar1[0x19] = 0;
-    puVar1[0x1a] = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblFamily_EngineerDialogCore_Root;
+    *(undefined4 *)(this + 0x60) = 0;
+    *(undefined4 *)(this + 100) = 0;
+    *(undefined4 *)(this + 0x68) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0540

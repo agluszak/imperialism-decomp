@@ -23,6 +23,22 @@ TOffersPanelView::thunk_DestructTOffersPanelViewAndMaybeFree
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040214E
+// GHIDRA_NAME TOffersPanelView::thunk_ConstructUiResourceEntry_Vtbl00655fb0
+// GHIDRA_PROTO void * __thiscall thunk_ConstructUiResourceEntry_Vtbl00655fb0(void)
+
+void * __thiscall
+TOffersPanelView::thunk_ConstructUiResourceEntry_Vtbl00655fb0(TOffersPanelView *this)
+
+{
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined ***)this = &g_vtblTOffersPanelView;
+  *(undefined4 *)(this + 0x60) = 0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D1F
 // GHIDRA_NAME TOffersPanelView::thunk_GetTOffersPanelViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTOffersPanelViewClassNamePointer(void)
@@ -60,34 +76,36 @@ void TOffersPanelView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChil
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403ED1
 // GHIDRA_NAME TOffersPanelView::thunk_InitializeDiplomacyAcceptRejectControlsAndPrompts
-// GHIDRA_PROTO void __cdecl thunk_InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeDiplomacyAcceptRejectControlsAndPrompts
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeDiplomacyAcceptRejectControlsAndPrompts */
 
-void __cdecl TOffersPanelView::thunk_InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
+void __thiscall
+TOffersPanelView::thunk_InitializeDiplomacyAcceptRejectControlsAndPrompts(TOffersPanelView *this)
 
 {
-  InitializeDiplomacyAcceptRejectControlsAndPrompts();
+  InitializeDiplomacyAcceptRejectControlsAndPrompts(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404949
 // GHIDRA_NAME TOffersPanelView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060 */
 
-void __cdecl
-TOffersPanelView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+void __thiscall
+TOffersPanelView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+          (TOffersPanelView *this)
 
 {
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060();
+  WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(this);
   return;
 }
 
@@ -128,17 +146,17 @@ void TOffersPanelView::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F71
 // GHIDRA_NAME TOffersPanelView::thunk_Cluster_MapHint_004f9450
-// GHIDRA_PROTO void __cdecl thunk_Cluster_MapHint_004f9450(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_MapHint_004f9450(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_MapHint_004f9450
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_MapHint_004f9450 */
 
-void __cdecl TOffersPanelView::thunk_Cluster_MapHint_004f9450(void)
+void __thiscall TOffersPanelView::thunk_Cluster_MapHint_004f9450(TOffersPanelView *this)
 
 {
-  RunDiplomacyNegotiationPopupAndAwaitResponse();
+  RunDiplomacyNegotiationPopupAndAwaitResponse(this);
   return;
 }
 
@@ -151,10 +169,10 @@ void __cdecl TOffersPanelView::thunk_Cluster_MapHint_004f9450(void)
 
 /* Allocates 0x70-byte TOffersPanelView instance and initializes base state with vtable 0x655FB0. */
 
-undefined4 * TOffersPanelView::AllocateTOffersPanelViewInstance(void)
+TView * TOffersPanelView::AllocateTOffersPanelViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -164,19 +182,19 @@ undefined4 * TOffersPanelView::AllocateTOffersPanelViewInstance(void)
   puStack_8 = &LAB_00632e6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x70);
+  this = (TView *)AllocateWithFallbackHandler(0x70);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    puVar1[0x18] = 0;
-    *puVar1 = &g_vtblTOffersPanelView;
-    puVar1[0x1a] = 0;
-    puVar1[0x1b] = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined4 *)(this + 0x60) = 0;
+    *(undefined ***)this = &g_vtblTOffersPanelView;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8F50
@@ -206,7 +224,7 @@ void * __cdecl TOffersPanelView::GetTOffersPanelViewClassNamePointer(void)
 void * __thiscall TOffersPanelView::ConstructTOffersPanelViewBaseState(TOffersPanelView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTOffersPanelView;
   *(undefined4 *)(this + 0x60) = 0;
   *(undefined4 *)(this + 0x68) = 0;
@@ -236,7 +254,7 @@ TOffersPanelView::DestructTOffersPanelViewAndMaybeFree(TOffersPanelView *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8FF0
 // GHIDRA_NAME TOffersPanelView::InitializeDiplomacyAcceptRejectControlsAndPrompts
-// GHIDRA_PROTO void __cdecl InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
+// GHIDRA_PROTO void __thiscall InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT UDiplomacyViews.cpp-anchored routine. Initializes accept/reject controls, applies theme/style settings, sets timeout values, and loads localized prompt text for confirmation flow.
 // GHIDRA_COMMENT_END
@@ -244,13 +262,13 @@ TOffersPanelView::DestructTOffersPanelViewAndMaybeFree(TOffersPanelView *this,by
 /* UDiplomacyViews.cpp-anchored routine. Initializes accept/reject controls, applies theme/style
    settings, sets timeout values, and loads localized prompt text for confirmation flow. */
 
-void __cdecl TOffersPanelView::InitializeDiplomacyAcceptRejectControlsAndPrompts(void)
+void __thiscall
+TOffersPanelView::InitializeDiplomacyAcceptRejectControlsAndPrompts(TOffersPanelView *this)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  int *in_ECX;
   int unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStackY_84;
@@ -293,23 +311,23 @@ void __cdecl TOffersPanelView::InitializeDiplomacyAcceptRejectControlsAndPrompts
   local_1d = 0;
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_20);
   thunk_NoOpUiLifecycleHook();
-  pcVar1 = *(code **)(*in_ECX + 0x94);
-  in_ECX[0x18] = in_ECX[8];
+  pcVar1 = *(code **)(*(int *)this + 0x94);
+  *(undefined4 *)(this + 0x60) = *(undefined4 *)(this + 0x20);
   iVar2 = (*pcVar1)();
-  in_ECX[0x1a] = iVar2;
+  *(int *)(this + 0x68) = iVar2;
   if (iVar2 == 0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar2 = (*pcVar1)();
-  in_ECX[0x1b] = iVar2;
+  *(int *)(this + 0x6c) = iVar2;
   if (iVar2 == 0) {
                     /* WARNING: Subroutine does not return */
     puStack_50 = &UNK_004f90c3;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  *(undefined2 *)(in_ECX[0x1a] + 0x92) = 5000;
-  *(undefined2 *)(in_ECX[0x1b] + 0x92) = 5000;
+  *(undefined2 *)(*(int *)(this + 0x68) + 0x92) = 5000;
+  *(undefined2 *)(*(int *)(this + 0x6c) + 0x92) = 5000;
   puStack_50 = (undefined *)0x4f9100;
   thunk_BuildUiTextStyleDescriptor();
   piVar3 = (int *)(*pcVar1)();
@@ -445,14 +463,15 @@ void TOffersPanelView::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004f942
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9450
 // GHIDRA_NAME TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
-// GHIDRA_PROTO void __cdecl RunDiplomacyNegotiationPopupAndAwaitResponse(void)
+// GHIDRA_PROTO void __thiscall RunDiplomacyNegotiationPopupAndAwaitResponse(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds negotiation popup text/labels
 // GHIDRA_COMMENT_END
 
 /* Builds negotiation popup text/labels */
 
-void __cdecl TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(void)
+void __thiscall
+TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(TOffersPanelView *this)
 
 {
   bool bVar1;
@@ -463,7 +482,6 @@ void __cdecl TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(void
   int *piVar6;
   int *piVar7;
   int iVar8;
-  int *in_ECX;
   char *unaff_EBX;
   code *pcVar9;
   undefined4 unaff_EDI;
@@ -474,6 +492,7 @@ void __cdecl TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(void
   undefined1 auStack_28 [8];
   code *pcStack_20;
   code *local_1c;
+  TOffersPanelView *local_14;
   int local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -484,9 +503,10 @@ void __cdecl TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(void
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   bVar1 = false;
-  local_10 = *in_ECX;
+  local_10 = *(int *)this;
   pcVar9 = *(code **)(local_10 + 0x94);
   local_1c = pcVar9;
+  local_14 = this;
   (*pcVar9)();
   InitializeSharedStringRefFromEmpty();
   puStack_8 = (undefined1 *)0x0;
@@ -498,7 +518,7 @@ void __cdecl TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(void
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
   FormatOverlayTerrainLabelText();
   FormatOverlayTerrainLabelText();
-  *(short *)(in_ECX[0x18] + 0x98) = in_stack_00000004;
+  *(short *)(*(int *)(this + 0x60) + 0x98) = in_stack_00000004;
   iVar4 = (int)in_stack_00000008;
   if (iVar4 < 0x29b) {
     if (iVar4 == 0x29a) {
@@ -613,31 +633,32 @@ LAB_004f98e5:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE060
 // GHIDRA_NAME TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
-// GHIDRA_PROTO void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
 // GHIDRA_COMMENT_END
 
 /* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
 
-void __cdecl TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+void __thiscall
+TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+          (TOffersPanelView *this)
 
 {
   int iVar1;
   char cVar2;
-  int *in_ECX;
   undefined4 in_stack_00000004;
   
   switch(in_stack_00000004) {
   case 10:
-    (**(code **)(*in_ECX + 0x40))(0x1f);
+    (**(code **)(*(int *)this + 0x40))(0x1f,this,0);
     return;
   default:
     thunk_HandleCityDialogToggleCommandOrForward();
     break;
   case 0xc:
-    if ((char)in_ECX[0x19] == '\0') {
-      iVar1 = *in_ECX;
+    if (this[100] == (TOffersPanelView)0x0) {
+      iVar1 = *(int *)this;
       cVar2 = (**(code **)(iVar1 + 0x28))();
       if (cVar2 != '\0') {
         (**(code **)(iVar1 + 0x1c0))(1,0);
@@ -646,7 +667,7 @@ void __cdecl TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward
     thunk_HandleCityDialogToggleCommandOrForward();
     return;
   case 0x1f:
-    iVar1 = *in_ECX;
+    iVar1 = *(int *)this;
     cVar2 = (**(code **)(iVar1 + 0x28))();
     if (cVar2 != '\0') {
       (**(code **)(iVar1 + 0x1c0))(1,1);
@@ -654,7 +675,7 @@ void __cdecl TOffersPanelView::WrapperFor_HandleCityDialogToggleCommandOrForward
     }
     break;
   case 0x20:
-    iVar1 = *in_ECX;
+    iVar1 = *(int *)this;
     cVar2 = (**(code **)(iVar1 + 0x28))();
     if (cVar2 != '\0') {
       (**(code **)(iVar1 + 0x1c0))(0,1);

@@ -3,6 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TCity.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401320
+// GHIDRA_NAME TCity::thunk_GetCityTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetCityTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetCityTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetCityTypeName */
+
+void * __cdecl TCity::thunk_GetCityTypeName(void)
+
+{
+  return &g_pClassDescTCity;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004076C1
 // GHIDRA_NAME TCity::thunk_DestroyTCity
 // GHIDRA_PROTO void * __thiscall thunk_DestroyTCity(byte freeSelfFlag)

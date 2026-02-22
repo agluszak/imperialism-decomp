@@ -104,12 +104,12 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   short sVar1;
   int iVar2;
   uint uVar3;
-  int *piVar4;
-  int *extraout_EAX;
+  TStaticText *pTVar4;
+  undefined4 *extraout_EAX;
   void *extraout_EAX_00;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  int iVar6;
+  undefined4 uVar6;
   undefined1 local_88;
   undefined1 local_87;
   undefined1 local_86;
@@ -119,7 +119,7 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   TMapKey *local_7c;
   int local_78;
   int local_74;
-  int *piStack_70;
+  TStaticText *pTStack_70;
   undefined1 auStack_6c [4];
   undefined4 local_68;
   undefined4 local_64;
@@ -186,26 +186,26 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
     else {
       FormatOverlayTerrainLabelText(local_84);
     }
-    piVar4 = (int *)AllocateWithFallbackHandler(0xa4);
+    pTVar4 = (TStaticText *)AllocateWithFallbackHandler(0xa4);
     local_4._0_1_ = 1;
-    piStack_70 = piVar4;
-    if (piVar4 == (int *)0x0) {
-      piVar4 = (int *)0x0;
+    pTStack_70 = pTVar4;
+    if (pTVar4 == (TStaticText *)0x0) {
+      pTVar4 = (TStaticText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase();
-      *piVar4 = (int)&g_vtblTMapKey;
+      TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar4);
+      *(undefined ***)pTVar4 = &g_vtblTMapKey;
       local_4._0_1_ = 2;
-      *(undefined1 *)(piVar4 + 0x26) = 0;
-      *(undefined1 *)((int)piVar4 + 0x99) = 0;
-      *(undefined1 *)((int)piVar4 + 0x9a) = 0;
-      *(undefined1 *)((int)piVar4 + 0x9b) = 0;
+      pTVar4[0x98] = (TStaticText)0x0;
+      pTVar4[0x99] = (TStaticText)0x0;
+      pTVar4[0x9a] = (TStaticText)0x0;
+      pTVar4[0x9b] = (TStaticText)0x0;
       thunk_ClearColorRgbaBytes();
-      *piVar4 = (int)&g_vtblTMapKey;
+      *(undefined ***)pTVar4 = &g_vtblTMapKey;
       thunk_SetColorRgbAndClearAlphaByte();
-      iVar2 = *extraout_EAX;
-      *(undefined1 *)(piVar4 + 0x28) = 0;
-      piVar4[0x26] = iVar2;
+      uVar6 = *extraout_EAX;
+      pTVar4[0xa0] = (TStaticText)0x0;
+      *(undefined4 *)(pTVar4 + 0x98) = uVar6;
     }
     local_4 = (uint)local_4._1_3_ << 8;
     RStack_2c.left = 0;
@@ -215,15 +215,15 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
     CopyRect(&tStack_1c,&RStack_2c);
     iStack_60 = local_4c[iVar5] - local_78;
     iStack_5c = (local_4c[iVar5 + 8] - local_74) + -0xf;
-    TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout();
-    iVar2 = *piVar4;
-    iVar6 = 0;
+    TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout((TDeluxeText *)pTVar4);
+    iVar2 = *(int *)pTVar4;
+    uVar6 = 0;
     (**(code **)(iVar2 + 0x1ec))(local_84);
     (**(code **)(iVar2 + 0xa4))(0,0);
-    piVar4[7] = iVar5 + 0x6e616d30;
+    *(int *)(pTVar4 + 0x1c) = iVar5 + 0x6e616d30;
     (**(code **)(iVar2 + 0x1f8))(0);
-    piVar4[0x27] = iVar6;
-    *(undefined1 *)(piVar4 + 0x28) = 1;
+    *(undefined4 *)(pTVar4 + 0x9c) = uVar6;
+    pTVar4[0xa0] = (TStaticText)0x1;
     (**(code **)(iVar2 + 0x1e4))(auStack_6c,1);
     iVar5 = iVar5 + 1;
     local_80 = local_80 + 1;

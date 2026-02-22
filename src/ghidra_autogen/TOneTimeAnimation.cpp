@@ -23,36 +23,30 @@ void * __cdecl TOneTimeAnimation::thunk_GetTOneTimeAnimationClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C34
 // GHIDRA_NAME TOneTimeAnimation::thunk_InitializeOneTimeAnimationState
-// GHIDRA_PROTO void __cdecl thunk_InitializeOneTimeAnimationState(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeOneTimeAnimationState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to InitializeOneTimeAnimationState.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to InitializeOneTimeAnimationState. */
 
-void __cdecl TOneTimeAnimation::thunk_InitializeOneTimeAnimationState(void)
+void __thiscall
+TOneTimeAnimation::thunk_InitializeOneTimeAnimationState
+          (TOneTimeAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x1c) = *in_stack_00000008;
-  *(undefined4 *)(in_ECX + 0x20) = in_stack_00000008[1];
-  *(undefined4 *)(in_ECX + 0x24) = in_stack_00000008[2];
-  *(undefined4 *)(in_ECX + 0x28) = in_stack_00000008[3];
-  *(undefined2 *)(in_ECX + 10) = in_stack_0000000c;
-  *(undefined2 *)(in_ECX + 0xc) = in_stack_00000010;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000014;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000018;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  *(undefined1 *)(in_ECX + 0x2c) = 0;
+  this[1].pVtable = (void *)arg1;
+  this[7].pVtable = *(void **)arg2;
+  this[8].pVtable = *(void **)(arg2 + 4);
+  this[9].pVtable = *(void **)(arg2 + 8);
+  this[10].pVtable = *(void **)(arg2 + 0xc);
+  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
+  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
+  this[5].pVtable = (void *)arg5;
+  this[6].pVtable = (void *)arg6;
+  *(undefined2 *)&this[2].pVtable = 0;
+  this[4].pVtable = (void *)0x0;
+  *(undefined1 *)&this[0xb].pVtable = 0;
   return;
 }
 
@@ -126,36 +120,30 @@ void * __cdecl TOneTimeAnimation::GetTOneTimeAnimationClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD60
 // GHIDRA_NAME TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// GHIDRA_PROTO void __cdecl ConstructTOneTimeAnimationBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTOneTimeAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes one-time animation fields and clears completion flag.
 // GHIDRA_COMMENT_END
 
 /* Initializes one-time animation fields and clears completion flag. */
 
-void __cdecl TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(void)
+void __thiscall
+TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
+          (TOneTimeAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x1c) = *in_stack_00000008;
-  *(undefined4 *)(in_ECX + 0x20) = in_stack_00000008[1];
-  *(undefined4 *)(in_ECX + 0x24) = in_stack_00000008[2];
-  *(undefined4 *)(in_ECX + 0x28) = in_stack_00000008[3];
-  *(undefined2 *)(in_ECX + 10) = in_stack_0000000c;
-  *(undefined2 *)(in_ECX + 0xc) = in_stack_00000010;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000014;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000018;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  *(undefined1 *)(in_ECX + 0x2c) = 0;
+  this[1].pVtable = (void *)arg1;
+  this[7].pVtable = *(void **)arg2;
+  this[8].pVtable = *(void **)(arg2 + 4);
+  this[9].pVtable = *(void **)(arg2 + 8);
+  this[10].pVtable = *(void **)(arg2 + 0xc);
+  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
+  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
+  this[5].pVtable = (void *)arg5;
+  this[6].pVtable = (void *)arg6;
+  *(undefined2 *)&this[2].pVtable = 0;
+  this[4].pVtable = (void *)0x0;
+  *(undefined1 *)&this[0xb].pVtable = 0;
   return;
 }
 

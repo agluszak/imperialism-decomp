@@ -39,6 +39,35 @@ void * __thiscall TControl::thunk_DestructTControlAndMaybeFree(TControl *this,by
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004087FB
+// GHIDRA_NAME TControl::thunk_ConstructUiCommandTagResourceEntryBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiCommandTagResourceEntryBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiCommandTagResourceEntryBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiCommandTagResourceEntryBase */
+
+void __thiscall TControl::thunk_ConstructUiCommandTagResourceEntryBase(TControl *this)
+
+{
+  ushort uVar1;
+  
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (TControl)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+  uVar1 = g_wUiResourceEntryDefaultParam2;
+  *(undefined ***)this = &g_vtblTControl;
+  *(ushort *)(this + 0x80) = uVar1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E430
 // GHIDRA_NAME TControl::CreateTControlInstance
 // GHIDRA_PROTO void * __cdecl CreateTControlInstance(void)
@@ -52,7 +81,7 @@ void * __cdecl TControl::CreateTControlInstance(void)
 
 {
   ushort uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,23 +91,23 @@ void * __cdecl TControl::CreateTControlInstance(void)
   puStack_8 = &LAB_0062ee6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    puVar2[0x18] = 1;
-    *(undefined1 *)(puVar2 + 0x19) = 0;
-    puVar2[0x1a] = 0;
-    puVar2[0x1b] = 0;
-    puVar2[0x1c] = 0;
-    puVar2[0x1d] = 0;
-    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined4 *)(this + 0x60) = 1;
+    this[100] = (TView)0x0;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
+    *(undefined4 *)(this + 0x70) = 0;
+    *(undefined4 *)(this + 0x74) = 0;
+    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *puVar2 = &g_vtblTControl;
-    *(ushort *)(puVar2 + 0x20) = uVar1;
+    *(undefined ***)this = &g_vtblTControl;
+    *(ushort *)(this + 0x80) = uVar1;
     *unaff_FS_OFFSET = local_c;
-    return puVar2;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -101,7 +130,7 @@ void * __cdecl TControl::GetTControlClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E520
 // GHIDRA_NAME TControl::ConstructUiCommandTagResourceEntryBase
-// GHIDRA_PROTO void __cdecl ConstructUiCommandTagResourceEntryBase(void)
+// GHIDRA_PROTO void __thiscall ConstructUiCommandTagResourceEntryBase(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base command-tag UI entry constructor. Cross-module callsites bind many 4-char command tags (e.g., map/load/quit/join/name/auto/curs/plat), indicating generic command-tag resource behavior.
 // GHIDRA_COMMENT_END
@@ -110,24 +139,23 @@ void * __cdecl TControl::GetTControlClassNamePointer(void)
    (e.g., map/load/quit/join/name/auto/curs/plat), indicating generic command-tag resource behavior.
     */
 
-void __cdecl TControl::ConstructUiCommandTagResourceEntryBase(void)
+void __thiscall TControl::ConstructUiCommandTagResourceEntryBase(TControl *this)
 
 {
   ushort uVar1;
-  undefined4 *in_ECX;
   
-  TView::thunk_ConstructUiResourceEntryBase();
-  in_ECX[0x18] = 1;
-  *(undefined1 *)(in_ECX + 0x19) = 0;
-  in_ECX[0x1a] = 0;
-  in_ECX[0x1b] = 0;
-  in_ECX[0x1c] = 0;
-  in_ECX[0x1d] = 0;
-  in_ECX[0x1e] = g_nUiResourceEntryDefaultParam0;
-  in_ECX[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (TControl)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *in_ECX = &g_vtblTControl;
-  *(ushort *)(in_ECX + 0x20) = uVar1;
+  *(undefined ***)this = &g_vtblTControl;
+  *(ushort *)(this + 0x80) = uVar1;
   return;
 }
 

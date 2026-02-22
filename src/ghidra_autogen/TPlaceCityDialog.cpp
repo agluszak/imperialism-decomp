@@ -60,35 +60,35 @@ TPlaceCityDialog::thunk_DestructTPlaceCityDialogAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B8A
 // GHIDRA_NAME TPlaceCityDialog::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
+// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At004d1e40
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At004d1e40 */
 
-void TPlaceCityDialog::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
-               (void)
+void __thiscall
+TPlaceCityDialog::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
+          (TPlaceCityDialog *this)
 
 {
-  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40();
+  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004098E5
 // GHIDRA_NAME TPlaceCityDialog::thunk_BuildCityViewResourceRows
-// GHIDRA_PROTO void __cdecl thunk_BuildCityViewResourceRows(void)
+// GHIDRA_PROTO void __thiscall thunk_BuildCityViewResourceRows(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to BuildCityViewResourceRows
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to BuildCityViewResourceRows */
 
-void __cdecl TPlaceCityDialog::thunk_BuildCityViewResourceRows(void)
+void __thiscall TPlaceCityDialog::thunk_BuildCityViewResourceRows(TPlaceCityDialog *this)
 
 {
-  BuildCityViewResourceRows();
+  BuildCityViewResourceRows(this);
   return;
 }
 
@@ -166,16 +166,15 @@ TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree(TPlaceCityDialog *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1880
 // GHIDRA_NAME TPlaceCityDialog::BuildCityViewResourceRows
-// GHIDRA_PROTO void __cdecl BuildCityViewResourceRows(void)
+// GHIDRA_PROTO void __thiscall BuildCityViewResourceRows(void)
 
-void __cdecl TPlaceCityDialog::BuildCityViewResourceRows(void)
+void __thiscall TPlaceCityDialog::BuildCityViewResourceRows(TPlaceCityDialog *this)
 
 {
   ushort uVar1;
   short *psVar2;
   int *piVar3;
   short sVar4;
-  int *in_ECX;
   int iVar5;
   short sVar6;
   short sVar7;
@@ -212,7 +211,7 @@ void __cdecl TPlaceCityDialog::BuildCityViewResourceRows(void)
   local_22 = 0;
   local_21 = 0;
   local_20 = local_20 & 0xffff0000;
-  in_ECX[0x24] = (int)in_stack_00000004;
+  *(int **)(this + 0x90) = in_stack_00000004;
   (**(code **)(iVar5 + 0x30))();
   tStack_4c.bottom = (int)in_stack_00000004 + 0x1e;
   iVar5 = 0x17;
@@ -224,8 +223,8 @@ void __cdecl TPlaceCityDialog::BuildCityViewResourceRows(void)
     psVar2 = psVar2 + 1;
     iVar5 = iVar5 + -1;
   } while (iVar5 != 0);
-  iVar5 = *in_ECX;
-  iVar9 = in_ECX[0xd];
+  iVar5 = *(int *)this;
+  iVar9 = *(int *)(this + 0x34);
   piVar3 = (int *)(**(code **)(iVar5 + 0x58))();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -259,13 +258,13 @@ void __cdecl TPlaceCityDialog::BuildCityViewResourceRows(void)
     OffsetRect(&tStack_4c,0,iVar9);
     input_str = (char *)0x1;
     (**(code **)(iVar5 + 0x168))();
-    sVar6 = (short)in_ECX[0xd];
+    sVar6 = *(short *)(this + 0x34);
     iVar5 = 0;
     pTVar8 = pTStack_78;
     do {
       if (*(short *)pTVar8 != 0) {
         sVar6 = sVar6 + 0x2c;
-        if (in_ECX[0xd] + -0x10 < (int)sVar6) {
+        if (*(int *)(this + 0x34) + -0x10 < (int)sVar6) {
           sVar6 = 0x10;
         }
         pTStack_78 = (TNumberedItem *)AllocateWithFallbackHandler();
@@ -349,21 +348,20 @@ void __cdecl TPlaceCityDialog::BuildCityViewResourceRows(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1E40
 // GHIDRA_NAME TPlaceCityDialog::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
-// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
    instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
 
-void TPlaceCityDialog::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
+void __thiscall
+TPlaceCityDialog::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
+          (TPlaceCityDialog *this)
 
 {
-  void *in_ECX;
-  
-  thunk_RenderHintHelperWithCtrlModifierOverlay(in_ECX);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
   return;
 }
 

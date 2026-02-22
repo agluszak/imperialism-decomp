@@ -20,7 +20,7 @@ void * __cdecl TOcean::GetTOceanClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005621E0
 // GHIDRA_NAME TOcean::DestroyTPortZoneManagerAndPurgePortZones
-// GHIDRA_PROTO void __cdecl DestroyTPortZoneManagerAndPurgePortZones(void)
+// GHIDRA_PROTO void __thiscall DestroyTPortZoneManagerAndPurgePortZones(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Destroys manager-owned port-zone array, unlinks surviving zone contexts, and purges residual TPortZone nodes from global list.
 // GHIDRA_COMMENT_END
@@ -28,12 +28,11 @@ void * __cdecl TOcean::GetTOceanClassNamePointer(void)
 /* Destroys manager-owned port-zone array, unlinks surviving zone contexts, and purges residual
    TPortZone nodes from global list. */
 
-void __cdecl TOcean::DestroyTPortZoneManagerAndPurgePortZones(void)
+void __thiscall TOcean::DestroyTPortZoneManagerAndPurgePortZones(TOcean *this)
 
 {
   int *piVar1;
   void *pvVar2;
-  int *in_ECX;
   int iVar3;
   int iVar4;
   
@@ -47,10 +46,10 @@ void __cdecl TOcean::DestroyTPortZoneManagerAndPurgePortZones(void)
     g_nMapActionContextCount = 0;
   }
   iVar3 = 0;
-  if (0 < (short)in_ECX[1]) {
+  if (0 < *(short *)&this[1].pVtable) {
     iVar4 = 0;
     do {
-      pvVar2 = (void *)(in_ECX[2] + iVar4);
+      pvVar2 = (void *)((int)this[2].pVtable + iVar4);
       if (g_pMapActionContextListHead == pvVar2) {
         g_pMapActionContextListHead = *(void **)((int)pvVar2 + 0x18);
       }
@@ -64,10 +63,10 @@ void __cdecl TOcean::DestroyTPortZoneManagerAndPurgePortZones(void)
       *(undefined4 *)((int)pvVar2 + 0x18) = 0;
       iVar3 = iVar3 + 1;
       iVar4 = iVar4 + 0x48;
-    } while (iVar3 < (short)in_ECX[1]);
+    } while (iVar3 < *(short *)&this[1].pVtable);
   }
-  if ((int *)in_ECX[2] != (int *)0x0) {
-    (**(code **)(*(int *)in_ECX[2] + 4))(3);
+  if (this[2].pVtable != (int *)0x0) {
+    (**(code **)(*(int *)this[2].pVtable + 4))(3);
   }
   while (pvVar2 = g_pMapActionContextListHead, g_pMapActionContextListHead != (void *)0x0) {
     do {
@@ -83,9 +82,9 @@ void __cdecl TOcean::DestroyTPortZoneManagerAndPurgePortZones(void)
     }
     (**(code **)(*piVar1 + 0x1c))();
   }
-  FreeHeapBufferIfNotNull(in_ECX[4]);
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  FreeHeapBufferIfNotNull(this[4].pVtable);
+  if (this != (TOcean *)0x0) {
+    (**(code **)((int)this->pVtable + 4))(1);
   }
   return;
 }

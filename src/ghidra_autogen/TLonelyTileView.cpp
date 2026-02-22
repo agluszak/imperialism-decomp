@@ -52,7 +52,7 @@ void * __cdecl TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer(void)
 void * __thiscall TLonelyTileView::thunk_ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTLonelyTileView;
   return this;
 }
@@ -64,8 +64,8 @@ void * __thiscall TLonelyTileView::thunk_ConstructTLonelyTileViewBaseState(TLone
 void * __cdecl TLonelyTileView::CreateTLonelyTileViewInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,16 +75,16 @@ void * __cdecl TLonelyTileView::CreateTLonelyTileViewInstance(void)
   puStack_8 = &LAB_0063374a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblTLonelyTileView;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTLonelyTileView;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AC0
@@ -109,7 +109,7 @@ void * __cdecl TLonelyTileView::GetTLonelyTileViewClassNamePointer(void)
 void * __thiscall TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTLonelyTileView;
   return this;
 }

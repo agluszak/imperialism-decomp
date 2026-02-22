@@ -21,6 +21,23 @@ void * __cdecl TDlgWindow::thunk_GetTDlgWindowClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405335
+// GHIDRA_NAME TDlgWindow::thunk_ConstructTurnEventWindowEntryStaticBackdrop
+// GHIDRA_PROTO void __thiscall thunk_ConstructTurnEventWindowEntryStaticBackdrop(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnEventWindowEntryStaticBackdrop
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTurnEventWindowEntryStaticBackdrop */
+
+void __thiscall TDlgWindow::thunk_ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
+
+{
+  TWindow::thunk_ConstructUiWindowResourceEntryBase((TWindow *)this);
+  this->pVtable = &g_vtblTDlgWindow;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406DB1
 // GHIDRA_NAME TDlgWindow::thunk_AssertUGameWindowLines634And639
 // GHIDRA_PROTO void __stdcall thunk_AssertUGameWindowLines634And639(void)
@@ -60,8 +77,8 @@ void __cdecl TDlgWindow::thunk_DestroyTurnEventWindowEntryStaticBackdrop(void)
 void * __cdecl TDlgWindow::CreateTDlgWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TWindow *this;
+  TWindow *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -71,16 +88,16 @@ void * __cdecl TDlgWindow::CreateTDlgWindowInstance(void)
   puStack_8 = &LAB_0063333a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TWindow *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TWindow::thunk_ConstructUiWindowResourceEntryBase();
-    *puVar1 = &g_vtblTDlgWindow;
-    puVar2 = puVar1;
+  pTVar1 = (TWindow *)0x0;
+  if (this != (TWindow *)0x0) {
+    TWindow::thunk_ConstructUiWindowResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTDlgWindow;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500300
@@ -100,7 +117,7 @@ void * __cdecl TDlgWindow::GetTDlgWindowClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500320
 // GHIDRA_NAME TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
-// GHIDRA_PROTO void __cdecl ConstructTurnEventWindowEntryStaticBackdrop(void)
+// GHIDRA_PROTO void __thiscall ConstructTurnEventWindowEntryStaticBackdrop(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructor for static-backdrop turn-event window entry used by BuildTurnEventDialogUiByCode branch 0x3B6.
 // GHIDRA_COMMENT_END
@@ -108,13 +125,11 @@ void * __cdecl TDlgWindow::GetTDlgWindowClassNamePointer(void)
 /* Constructor for static-backdrop turn-event window entry used by BuildTurnEventDialogUiByCode
    branch 0x3B6. */
 
-void __cdecl TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(void)
+void __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TWindow::thunk_ConstructUiWindowResourceEntryBase();
-  *in_ECX = &g_vtblTDlgWindow;
+  TWindow::thunk_ConstructUiWindowResourceEntryBase((TWindow *)this);
+  this->pVtable = &g_vtblTDlgWindow;
   return;
 }
 

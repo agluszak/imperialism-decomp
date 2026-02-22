@@ -3,6 +3,17 @@
 // Program: Imperialism.exe
 // Bucket: TIndexAndRankList.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004040B6
+// GHIDRA_NAME TIndexAndRankList::thunk_DeletingDestructTIndexAndRankList
+// GHIDRA_PROTO void __cdecl thunk_DeletingDestructTIndexAndRankList(void)
+
+void __cdecl TIndexAndRankList::thunk_DeletingDestructTIndexAndRankList(void)
+
+{
+  DeletingDestructTIndexAndRankList();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004069F1
 // GHIDRA_NAME TIndexAndRankList::thunk_DestructTIndexAndRankList
 // GHIDRA_PROTO void __cdecl thunk_DestructTIndexAndRankList(TIndexAndRankList * pThis)
@@ -24,6 +35,19 @@ void __cdecl TIndexAndRankList::thunk_DestructTIndexAndRankList(TIndexAndRankLis
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004084DB
+// GHIDRA_NAME TIndexAndRankList::thunk_GetTIndexAndRankListTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTIndexAndRankListTypeName(void)
+
+void * __cdecl TIndexAndRankList::thunk_GetTIndexAndRankListTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTIndexAndRankListClassNamePointer();
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005347E0

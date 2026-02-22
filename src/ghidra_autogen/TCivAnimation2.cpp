@@ -41,29 +41,26 @@ void * __cdecl TCivAnimation2::thunk_GetTCivAnimation2ClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406541
 // GHIDRA_NAME TCivAnimation2::thunk_InitializeCivAnimation2FrameSequence
-// GHIDRA_PROTO void __cdecl thunk_InitializeCivAnimation2FrameSequence(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeCivAnimation2FrameSequence(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to InitializeCivAnimation2FrameSequence.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to InitializeCivAnimation2FrameSequence. */
 
-void __cdecl TCivAnimation2::thunk_InitializeCivAnimation2FrameSequence(void)
+void __thiscall
+TCivAnimation2::thunk_InitializeCivAnimation2FrameSequence
+          (TCivAnimation2 *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   undefined2 uVar1;
-  undefined4 uVar2;
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  int in_stack_0000000c;
-  undefined4 in_stack_00000010;
+  void *pvVar2;
   undefined4 auStack_48 [18];
   
   auStack_48[0xb] = 10;
   auStack_48[0x10] = 10;
   auStack_48[0x11] = 10;
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
+  this[1].pVtable = (void *)arg1;
   auStack_48[10] = 0xf;
   auStack_48[0xd] = 0xf;
   auStack_48[0xe] = 0xf;
@@ -72,26 +69,26 @@ void __cdecl TCivAnimation2::thunk_InitializeCivAnimation2FrameSequence(void)
   auStack_48[9] = 5;
   auStack_48[0] = 14000;
   auStack_48[1] = 0x36b5;
-  *(undefined4 *)(in_ECX + 0x1c) = *in_stack_00000008;
+  this[7].pVtable = *(void **)arg2;
   auStack_48[2] = 0x36bb;
   auStack_48[3] = 0x36bf;
-  *(undefined4 *)(in_ECX + 0x20) = in_stack_00000008[1];
+  this[8].pVtable = *(void **)(arg2 + 4);
   auStack_48[4] = 0x36c5;
   auStack_48[5] = 0x36ca;
-  *(undefined4 *)(in_ECX + 0x24) = in_stack_00000008[2];
+  this[9].pVtable = *(void **)(arg2 + 8);
   auStack_48[6] = 0x36ce;
   auStack_48[7] = 0x36d3;
-  *(undefined4 *)(in_ECX + 0x28) = in_stack_00000008[3];
+  this[10].pVtable = *(void **)(arg2 + 0xc);
   auStack_48[8] = 0x36d8;
-  uVar1 = *(undefined2 *)(auStack_48 + in_stack_0000000c);
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined2 *)(in_ECX + 10) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  uVar2 = auStack_48[in_stack_0000000c + 9];
-  *(undefined2 *)(in_ECX + 0xc) = uVar1;
-  *(undefined4 *)(in_ECX + 0x14) = uVar2;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000010;
-  *(short *)(in_ECX + 0x2c) = (short)in_stack_0000000c;
+  uVar1 = *(undefined2 *)(auStack_48 + arg3);
+  *(undefined2 *)&this[2].pVtable = 0;
+  *(undefined2 *)((int)&this[2].pVtable + 2) = 0;
+  this[4].pVtable = (void *)0x0;
+  pvVar2 = (void *)auStack_48[arg3 + 9];
+  *(undefined2 *)&this[3].pVtable = uVar1;
+  this[5].pVtable = pvVar2;
+  this[6].pVtable = (void *)arg4;
+  *(short *)&this[0xb].pVtable = (short)arg3;
   return;
 }
 
@@ -149,29 +146,26 @@ void * __cdecl TCivAnimation2::GetTCivAnimation2ClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F6A0
 // GHIDRA_NAME TCivAnimation2::ConstructTCivAnimation2BaseState
-// GHIDRA_PROTO void __cdecl ConstructTCivAnimation2BaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTCivAnimation2BaseState(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes CivAnimation2 frame sequence IDs and per-frame delay table.
 // GHIDRA_COMMENT_END
 
 /* Initializes CivAnimation2 frame sequence IDs and per-frame delay table. */
 
-void __cdecl TCivAnimation2::ConstructTCivAnimation2BaseState(void)
+void __thiscall
+TCivAnimation2::ConstructTCivAnimation2BaseState
+          (TCivAnimation2 *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   undefined2 uVar1;
-  undefined4 uVar2;
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  int in_stack_0000000c;
-  undefined4 in_stack_00000010;
+  void *pvVar2;
   undefined4 local_48 [18];
   
   local_48[0xb] = 10;
   local_48[0x10] = 10;
   local_48[0x11] = 10;
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
+  this[1].pVtable = (void *)arg1;
   local_48[10] = 0xf;
   local_48[0xd] = 0xf;
   local_48[0xe] = 0xf;
@@ -180,26 +174,26 @@ void __cdecl TCivAnimation2::ConstructTCivAnimation2BaseState(void)
   local_48[9] = 5;
   local_48[0] = 14000;
   local_48[1] = 0x36b5;
-  *(undefined4 *)(in_ECX + 0x1c) = *in_stack_00000008;
+  this[7].pVtable = *(void **)arg2;
   local_48[2] = 0x36bb;
   local_48[3] = 0x36bf;
-  *(undefined4 *)(in_ECX + 0x20) = in_stack_00000008[1];
+  this[8].pVtable = *(void **)(arg2 + 4);
   local_48[4] = 0x36c5;
   local_48[5] = 0x36ca;
-  *(undefined4 *)(in_ECX + 0x24) = in_stack_00000008[2];
+  this[9].pVtable = *(void **)(arg2 + 8);
   local_48[6] = 0x36ce;
   local_48[7] = 0x36d3;
-  *(undefined4 *)(in_ECX + 0x28) = in_stack_00000008[3];
+  this[10].pVtable = *(void **)(arg2 + 0xc);
   local_48[8] = 0x36d8;
-  uVar1 = *(undefined2 *)(local_48 + in_stack_0000000c);
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined2 *)(in_ECX + 10) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  uVar2 = local_48[in_stack_0000000c + 9];
-  *(undefined2 *)(in_ECX + 0xc) = uVar1;
-  *(undefined4 *)(in_ECX + 0x14) = uVar2;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000010;
-  *(short *)(in_ECX + 0x2c) = (short)in_stack_0000000c;
+  uVar1 = *(undefined2 *)(local_48 + arg3);
+  *(undefined2 *)&this[2].pVtable = 0;
+  *(undefined2 *)((int)&this[2].pVtable + 2) = 0;
+  this[4].pVtable = (void *)0x0;
+  pvVar2 = (void *)local_48[arg3 + 9];
+  *(undefined2 *)&this[3].pVtable = uVar1;
+  this[5].pVtable = pvVar2;
+  this[6].pVtable = (void *)arg4;
+  *(short *)&this[0xb].pVtable = (short)arg3;
   return;
 }
 

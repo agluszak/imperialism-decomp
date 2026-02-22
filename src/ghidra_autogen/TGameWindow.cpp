@@ -5,49 +5,50 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401618
 // GHIDRA_NAME TGameWindow::thunk_HandleTurnOrderNavigationCommand
-// GHIDRA_PROTO void __cdecl thunk_HandleTurnOrderNavigationCommand(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTurnOrderNavigationCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTurnOrderNavigationCommand
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTurnOrderNavigationCommand */
 
-void __cdecl TGameWindow::thunk_HandleTurnOrderNavigationCommand(void)
+void __thiscall TGameWindow::thunk_HandleTurnOrderNavigationCommand(TGameWindow *this)
 
 {
-  HandleTurnOrderNavigationCommand();
+  HandleTurnOrderNavigationCommand(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D24
 // GHIDRA_NAME TGameWindow::thunk_DestroyTurnOrderNavigationWindowAndResetManagerSlot
-// GHIDRA_PROTO void __cdecl thunk_DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
+// GHIDRA_PROTO void __thiscall thunk_DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTurnOrderNavigationWindowAndResetManagerSlot
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTurnOrderNavigationWindowAndResetManagerSlot */
 
-void __cdecl TGameWindow::thunk_DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
+void __thiscall
+TGameWindow::thunk_DestroyTurnOrderNavigationWindowAndResetManagerSlot(TGameWindow *this)
 
 {
-  DestroyTurnOrderNavigationWindowAndResetManagerSlot();
+  DestroyTurnOrderNavigationWindowAndResetManagerSlot(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403BC5
 // GHIDRA_NAME TGameWindow::thunk_UpdateTurnOrderNavigationWindowLayout
-// GHIDRA_PROTO void __cdecl thunk_UpdateTurnOrderNavigationWindowLayout(void)
+// GHIDRA_PROTO void __thiscall thunk_UpdateTurnOrderNavigationWindowLayout(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to UpdateTurnOrderNavigationWindowLayout
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to UpdateTurnOrderNavigationWindowLayout */
 
-void __cdecl TGameWindow::thunk_UpdateTurnOrderNavigationWindowLayout(void)
+void __thiscall TGameWindow::thunk_UpdateTurnOrderNavigationWindowLayout(TGameWindow *this)
 
 {
-  UpdateTurnOrderNavigationWindowLayout();
+  UpdateTurnOrderNavigationWindowLayout(this);
   return;
 }
 
@@ -134,6 +135,29 @@ void __cdecl TGameWindow::thunk_DestroyTurnOrderNavigationWindowEntryViewportAda
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00408620
+// GHIDRA_NAME TGameWindow::thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive
+// GHIDRA_PROTO void __thiscall thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnOrderNavigationWindowEntryViewportAdaptive
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTurnOrderNavigationWindowEntryViewportAdaptive */
+
+void __thiscall
+TGameWindow::thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGameWindow *this)
+
+{
+  TWindow::thunk_ConstructUiWindowResourceEntryBase((TWindow *)this);
+  this->pVtable = &g_vtblTGameWindow;
+  this->field_0xa0 = 0;
+  this->dwField_A4 = 0;
+  this->dwField_A8 = 0;
+  this->dwField_AC = 0;
+  this->wField_A2 = 0x14;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408832
 // GHIDRA_NAME TGameWindow::thunk_NoOpTurnOrderNavigationVtableSlotB
 // GHIDRA_PROTO void __cdecl thunk_NoOpTurnOrderNavigationVtableSlotB(void)
@@ -151,18 +175,18 @@ void __cdecl TGameWindow::thunk_NoOpTurnOrderNavigationVtableSlotB(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004088FA
 // GHIDRA_NAME TGameWindow::thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
+// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Single-JMP thunk to WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0 */
 
-void TGameWindow::thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
+void __thiscall
+TGameWindow::thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(TGameWindow *this)
 
 {
-  WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0();
+  WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(this);
   return;
 }
 
@@ -178,7 +202,7 @@ void TGameWindow::thunk_WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At00
 void * __cdecl TGameWindow::CreateTGameWindowInstance(void)
 
 {
-  undefined4 *puVar1;
+  TWindow *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -188,18 +212,18 @@ void * __cdecl TGameWindow::CreateTGameWindowInstance(void)
   puStack_8 = &LAB_0063331a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb0);
+  this = (TWindow *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TWindow::thunk_ConstructUiWindowResourceEntryBase();
-    *puVar1 = &g_vtblTGameWindow;
-    *(undefined1 *)(puVar1 + 0x28) = 0;
-    *(undefined2 *)((int)puVar1 + 0xa2) = 0x14;
-    puVar1[0x29] = 0;
-    puVar1[0x2a] = 0;
-    puVar1[0x2b] = 0;
+  if (this != (TWindow *)0x0) {
+    TWindow::thunk_ConstructUiWindowResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTGameWindow;
+    this[0xa0] = (TWindow)0x0;
+    *(undefined2 *)(this + 0xa2) = 0x14;
+    *(undefined4 *)(this + 0xa4) = 0;
+    *(undefined4 *)(this + 0xa8) = 0;
+    *(undefined4 *)(this + 0xac) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -222,7 +246,7 @@ void * __cdecl TGameWindow::GetTGameWindowClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFC10
 // GHIDRA_NAME TGameWindow::ConstructTurnOrderNavigationWindowEntryViewportAdaptive
-// GHIDRA_PROTO void __cdecl ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+// GHIDRA_PROTO void __thiscall ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructor for viewport-adaptive turn-order navigation window entries used by BuildTurnEventDialogUiByCode event branches 0x7D1/0x7D2.
 // GHIDRA_COMMENT_END
@@ -230,18 +254,17 @@ void * __cdecl TGameWindow::GetTGameWindowClassNamePointer(void)
 /* Constructor for viewport-adaptive turn-order navigation window entries used by
    BuildTurnEventDialogUiByCode event branches 0x7D1/0x7D2. */
 
-void __cdecl TGameWindow::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+void __thiscall
+TGameWindow::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGameWindow *this)
 
 {
-  undefined4 *in_ECX;
-  
-  TWindow::thunk_ConstructUiWindowResourceEntryBase();
-  *in_ECX = &g_vtblTGameWindow;
-  *(undefined1 *)(in_ECX + 0x28) = 0;
-  in_ECX[0x29] = 0;
-  in_ECX[0x2a] = 0;
-  in_ECX[0x2b] = 0;
-  *(undefined2 *)((int)in_ECX + 0xa2) = 0x14;
+  TWindow::thunk_ConstructUiWindowResourceEntryBase((TWindow *)this);
+  this->pVtable = &g_vtblTGameWindow;
+  this->field_0xa0 = 0;
+  this->dwField_A4 = 0;
+  this->dwField_A8 = 0;
+  this->dwField_AC = 0;
+  this->wField_A2 = 0x14;
   return;
 }
 
@@ -268,26 +291,25 @@ void __cdecl TGameWindow::DestroyTurnOrderNavigationWindowEntryViewportAdaptive(
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFCB0
 // GHIDRA_NAME TGameWindow::WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0
-// GHIDRA_PROTO undefined WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_EnsureChildResourceWindowAndNotify; instructions=14, call_insns=3, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* [WrapperShape] small wrapper around thunk_EnsureChildResourceWindowAndNotify; instructions=14,
    call_insns=3, internal_calls=1, unique_internal=1 */
 
-void TGameWindow::WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(void)
+void __thiscall
+TGameWindow::WrapperFor_thunk_EnsureChildResourceWindowAndNotify_At004ffcb0(TGameWindow *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   char cVar2;
-  int *in_ECX;
   
-  iVar1 = *in_ECX;
-  cVar2 = (**(code **)(iVar1 + 0xec))();
+  pvVar1 = this->pVtable;
+  cVar2 = (**(code **)((int)pvVar1 + 0xec))();
   if (cVar2 == '\0') {
-    (**(code **)(iVar1 + 0x1dc))();
+    (**(code **)((int)pvVar1 + 0x1dc))();
   }
   thunk_EnsureChildResourceWindowAndNotify();
   return;
@@ -335,7 +357,7 @@ void TGameWindow::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004ffd40
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD70
 // GHIDRA_NAME TGameWindow::HandleTurnOrderNavigationCommand
-// GHIDRA_PROTO void __cdecl HandleTurnOrderNavigationCommand(void)
+// GHIDRA_PROTO void __thiscall HandleTurnOrderNavigationCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles commands for the viewport-adaptive turn-order navigation window. Maps command codes 0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC).
 // GHIDRA_COMMENT_END
@@ -344,7 +366,7 @@ void TGameWindow::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At004ffd40
    0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against
    already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC). */
 
-void __cdecl TGameWindow::HandleTurnOrderNavigationCommand(void)
+void __thiscall TGameWindow::HandleTurnOrderNavigationCommand(TGameWindow *this)
 
 {
   short sVar1;
@@ -352,10 +374,9 @@ void __cdecl TGameWindow::HandleTurnOrderNavigationCommand(void)
   int extraout_EAX;
   int iVar3;
   undefined4 extraout_EAX_00;
-  int *in_ECX;
   int unaff_retaddr;
   
-  piVar2 = (int *)(**(code **)(*in_ECX + 0x94))(0x6d61696e);
+  piVar2 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x6d61696e);
   if (piVar2 == (int *)0x0) {
     return;
   }
@@ -458,7 +479,7 @@ switchD_004ffe93_default:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500160
 // GHIDRA_NAME TGameWindow::UpdateTurnOrderNavigationWindowLayout
-// GHIDRA_PROTO void __cdecl UpdateTurnOrderNavigationWindowLayout(void)
+// GHIDRA_PROTO void __thiscall UpdateTurnOrderNavigationWindowLayout(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Layout/update hook for turn-order navigation window. Applies viewport-rect-driven layout update when active event code is 0x7D1, then chains the class update callback.
 // GHIDRA_COMMENT_END
@@ -466,28 +487,27 @@ switchD_004ffe93_default:
 /* Layout/update hook for turn-order navigation window. Applies viewport-rect-driven layout update
    when active event code is 0x7D1, then chains the class update callback. */
 
-void __cdecl TGameWindow::UpdateTurnOrderNavigationWindowLayout(void)
+void __thiscall TGameWindow::UpdateTurnOrderNavigationWindowLayout(TGameWindow *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   int *extraout_EAX;
-  int *in_ECX;
   LONG local_20;
   LONG LStack_1c;
   LONG LStack_18;
   tagRECT tStack_14;
   
   if (*(short *)((int)g_pDisplayManager + 0xe) == 0x7d1) {
-    iVar1 = *in_ECX;
-    (**(code **)(iVar1 + 300))(&local_20);
+    pvVar1 = this->pVtable;
+    (**(code **)((int)pvVar1 + 300))(&local_20);
     InitializeGlobalRectDefaultsIfUninitialized();
     CopyRect(&tStack_14,(RECT *)(*extraout_EAX + 4));
     local_20 = tStack_14.top;
     LStack_18 = tStack_14.bottom;
     LStack_1c = tStack_14.right;
-    (**(code **)(iVar1 + 0x168))(&stack0xffffffdc,1);
+    (**(code **)((int)pvVar1 + 0x168))(&stack0xffffffdc,1);
   }
-  (**(code **)(*in_ECX + 0x1e0))();
+  (**(code **)((int)this->pVtable + 0x1e0))();
   return;
 }
 
@@ -525,7 +545,7 @@ void __cdecl TGameWindow::NoOpTurnOrderNavigationVtableSlotB(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500240
 // GHIDRA_NAME TGameWindow::DestroyTurnOrderNavigationWindowAndResetManagerSlot
-// GHIDRA_PROTO void __cdecl DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
+// GHIDRA_PROTO void __thiscall DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Turn-order navigation window cleanup override: executes class-specific teardown path and clears the display-manager active dialog slot (DAT_006a2158 + 0x4).
 // GHIDRA_COMMENT_END
@@ -533,12 +553,10 @@ void __cdecl TGameWindow::NoOpTurnOrderNavigationVtableSlotB(void)
 /* Turn-order navigation window cleanup override: executes class-specific teardown path and clears
    the display-manager active dialog slot (DAT_006a2158 + 0x4). */
 
-void __cdecl TGameWindow::DestroyTurnOrderNavigationWindowAndResetManagerSlot(void)
+void __thiscall TGameWindow::DestroyTurnOrderNavigationWindowAndResetManagerSlot(TGameWindow *this)
 
 {
-  int *in_ECX;
-  
-  (**(code **)(*in_ECX + 0x1e4))();
+  (**(code **)((int)this->pVtable + 0x1e4))();
   thunk_DestroyChildResourceWindowAndDetach();
   *(undefined4 *)((int)g_pDisplayManager + 4) = 0;
   return;

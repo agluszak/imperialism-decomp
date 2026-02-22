@@ -43,17 +43,18 @@ void * __cdecl TCloseParentButton::thunk_GetTCloseParentButtonClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404624
 // GHIDRA_NAME TCloseParentButton::thunk_NotifyOwnerA0WhenSelectionMatchesAndReady
-// GHIDRA_PROTO void __cdecl thunk_NotifyOwnerA0WhenSelectionMatchesAndReady(void)
+// GHIDRA_PROTO void __thiscall thunk_NotifyOwnerA0WhenSelectionMatchesAndReady(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to NotifyOwnerA0WhenSelectionMatchesAndReady
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to NotifyOwnerA0WhenSelectionMatchesAndReady */
 
-void __cdecl TCloseParentButton::thunk_NotifyOwnerA0WhenSelectionMatchesAndReady(void)
+void __thiscall
+TCloseParentButton::thunk_NotifyOwnerA0WhenSelectionMatchesAndReady(TCloseParentButton *this)
 
 {
-  NotifyOwnerA0WhenSelectionMatchesAndReady();
+  NotifyOwnerA0WhenSelectionMatchesAndReady(this);
   return;
 }
 
@@ -69,8 +70,8 @@ void __cdecl TCloseParentButton::thunk_NotifyOwnerA0WhenSelectionMatchesAndReady
 void * __cdecl TCloseParentButton::CreateTCloseParentButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -80,19 +81,19 @@ void * __cdecl TCloseParentButton::CreateTCloseParentButtonInstance(void)
   puStack_8 = &LAB_00637672;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TControl *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &g_vtblTButton;
+    *(undefined ***)this = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *puVar1 = &g_vtblTCloseParentButton;
-    puVar2 = puVar1;
+    *(undefined ***)this = &g_vtblTCloseParentButton;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C40
@@ -131,7 +132,7 @@ void * __thiscall TCloseParentButton::ConstructTCloseParentButtonBaseState(TClos
   puStack_8 = &LAB_00637698;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
   local_4 = 0;
   *(undefined ***)this = &g_vtblTButton;
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -158,24 +159,24 @@ TCloseParentButton::DestructTCloseParentButtonAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D30
 // GHIDRA_NAME TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady
-// GHIDRA_PROTO void __cdecl NotifyOwnerA0WhenSelectionMatchesAndReady(void)
+// GHIDRA_PROTO void __thiscall NotifyOwnerA0WhenSelectionMatchesAndReady(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT When requested selection matches current and control is interactive
 // GHIDRA_COMMENT_END
 
 /* When requested selection matches current and control is interactive */
 
-void __cdecl TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady(void)
+void __thiscall
+TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady(TCloseParentButton *this)
 
 {
   int iVar1;
   char cVar2;
   int iVar3;
   int *piVar4;
-  int *in_ECX;
   int in_stack_00000004;
   
-  iVar1 = *in_ECX;
+  iVar1 = *(int *)this;
   iVar3 = (**(code **)(iVar1 + 0xbc))();
   if (in_stack_00000004 == iVar3) {
     cVar2 = (**(code **)(iVar1 + 0x28))();

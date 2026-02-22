@@ -25,18 +25,19 @@ TOnOffRadioButton::thunk_DestructTOnOffRadioButtonAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004087F6
 // GHIDRA_NAME TOnOffRadioButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80 */
 
-void __cdecl
-TOnOffRadioButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
+void __thiscall
+TOnOffRadioButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
+          (TOnOffRadioButton *this)
 
 {
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80();
+  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(this);
   return;
 }
 
@@ -137,22 +138,23 @@ TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree(TOnOffRadioButton *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A80
 // GHIDRA_NAME TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-// GHIDRA_PROTO void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
 // GHIDRA_COMMENT_END
 
 /* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
 
-void __cdecl TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
+void __thiscall
+TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
+          (TOnOffRadioButton *this)
 
 {
-  int *in_ECX;
   int in_stack_00000004;
   
   if (in_stack_00000004 == 0xc) {
-    if ((char)in_ECX[0x19] == '\0') {
-      (**(code **)(*in_ECX + 0x1d0))(1,1);
+    if (this[100] == (TOnOffRadioButton)0x0) {
+      (**(code **)(*(int *)this + 0x1d0))(1,1);
     }
     thunk_HandleCityDialogToggleCommandOrForward();
     return;
@@ -162,10 +164,10 @@ void __cdecl TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForwar
       thunk_HandleCityDialogToggleCommandOrForward();
       return;
     }
-    (**(code **)(*in_ECX + 0x1d0))(0,1);
+    (**(code **)(*(int *)this + 0x1d0))(0,1);
     return;
   }
-  (**(code **)(*in_ECX + 0x1d0))(1,1);
+  (**(code **)(*(int *)this + 0x1d0))(1,1);
   return;
 }
 

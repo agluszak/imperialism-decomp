@@ -63,7 +63,7 @@ void TIconSlider::thunk_WrapperFor_TIconBar_VtblSlot68_At00506690_At00407a3b(voi
 void * __cdecl TIconSlider::CreateTIconSliderInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -73,21 +73,21 @@ void * __cdecl TIconSlider::CreateTIconSliderInstance(void)
   puStack_8 = &LAB_0063378a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xbc);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xbc);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x29] = 0;
-    *puVar1 = &g_vtblTIconSlider;
-    *(undefined2 *)(puVar1 + 0x27) = 0;
-    puVar1[0x28] = 0;
-    puVar1[0x2a] = 0;
-    *(undefined2 *)(puVar1 + 0x2d) = 0;
-    *(undefined2 *)((int)puVar1 + 0xb6) = 0;
-    puVar1[0x2b] = 0;
-    puVar1[0x2c] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined4 *)(this + 0xa4) = 0;
+    *(undefined ***)this = &g_vtblTIconSlider;
+    *(undefined2 *)(this + 0x9c) = 0;
+    *(undefined4 *)(this + 0xa0) = 0;
+    *(undefined4 *)(this + 0xa8) = 0;
+    *(undefined2 *)(this + 0xb4) = 0;
+    *(undefined2 *)(this + 0xb6) = 0;
+    *(undefined4 *)(this + 0xac) = 0;
+    *(undefined4 *)(this + 0xb0) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -115,7 +115,7 @@ void * __cdecl TIconSlider::GetTIconSliderClassNamePointer(void)
 void * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined4 *)(this + 0xa4) = 0;
   *(undefined2 *)(this + 0x9c) = 0;
   *(undefined4 *)(this + 0xa0) = 0;

@@ -21,6 +21,24 @@ void * __thiscall TOrItemOrder::thunk_GetTOrItemOrderRuntimeClass(TOrItemOrder *
   return in_EAX;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405227
+// GHIDRA_NAME TOrItemOrder::thunk_GetCityOrderItemClassName
+// GHIDRA_PROTO void * __cdecl thunk_GetCityOrderItemClassName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetCityOrderItemClassName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetCityOrderItemClassName */
+
+void * __cdecl TOrItemOrder::thunk_GetCityOrderItemClassName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTOrItemOrderClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004B57E0
 // GHIDRA_NAME TOrItemOrder::GetTOrItemOrderClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTOrItemOrderClassNamePointer(void)

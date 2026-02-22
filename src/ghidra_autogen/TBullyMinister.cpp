@@ -50,7 +50,7 @@ TBullyMinister::thunk_DestructTBullyMinisterAndMaybeFree(TBullyMinister *this,by
 void * __thiscall TBullyMinister::thunk_ConstructTBullyMinisterBaseState(TBullyMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTBullyMinister;
   *(undefined2 *)(this + 0xc) = 4;
   return this;
@@ -76,17 +76,19 @@ void * __cdecl TBullyMinister::thunk_GetTBullyMinisterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409949
 // GHIDRA_NAME TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// GHIDRA_PROTO void __cdecl thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3 */
 
-void __cdecl TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+void __thiscall
+TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
+          (TBullyMinister *this)
 
 {
-  InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3();
+  InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(this);
   return;
 }
 
@@ -131,7 +133,7 @@ void * __cdecl TBullyMinister::GetTBullyMinisterClassNamePointer(void)
 void * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBullyMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTBullyMinister;
   *(undefined2 *)(this + 0xc) = 4;
   return this;
@@ -154,7 +156,7 @@ TBullyMinister::DestructTBullyMinisterAndMaybeFree(TBullyMinister *this,byte fre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE210
 // GHIDRA_NAME TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// GHIDRA_PROTO void __cdecl InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes recruit queue preset E: field64 mode=2 with two type-2 orders and three type-4 orders.
 // GHIDRA_COMMENT_END
@@ -162,11 +164,11 @@ TBullyMinister::DestructTBullyMinisterAndMaybeFree(TBullyMinister *this,byte fre
 /* Initializes recruit queue preset E: field64 mode=2 with two type-2 orders and three type-4
    orders. */
 
-void __cdecl TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+void __thiscall
+TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBullyMinister *this)
 
 {
   int iVar1;
-  int in_ECX;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -188,7 +190,7 @@ void __cdecl TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x18) = *(short *)(in_ECX + 0x18) + 1;
+    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   iVar2 = 3;
@@ -198,7 +200,7 @@ void __cdecl TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x1c) = *(short *)(in_ECX + 0x1c) + 1;
+    *(short *)(this + 0x1c) = *(short *)(this + 0x1c) + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(undefined2 *)((int)piStack_8 + 0xd6) = 2;

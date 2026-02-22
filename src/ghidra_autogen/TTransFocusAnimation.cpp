@@ -58,50 +58,44 @@ void * __cdecl TTransFocusAnimation::thunk_GetTTransFocusAnimationClassNamePoint
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406799
 // GHIDRA_NAME TTransFocusAnimation::thunk_InitializeTransFocusAnimationBoundsAndLoadBitmapSurface
-// GHIDRA_PROTO void __cdecl thunk_InitializeTransFocusAnimationBoundsAndLoadBitmapSurface(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeTransFocusAnimationBoundsAndLoadBitmapSurface(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk wrapper for InitializeTransFocusAnimationBoundsAndLoadBitmapSurface.
 // GHIDRA_COMMENT_END
 
 /* Thunk wrapper for InitializeTransFocusAnimationBoundsAndLoadBitmapSurface. */
 
-void __cdecl
-TTransFocusAnimation::thunk_InitializeTransFocusAnimationBoundsAndLoadBitmapSurface(void)
+void __thiscall
+TTransFocusAnimation::thunk_InitializeTransFocusAnimationBoundsAndLoadBitmapSurface
+          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  int iVar1;
+  undefined4 uVar1;
   void *pvVar2;
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  int *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  int in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
   undefined4 uStack_10;
   undefined4 uStack_c;
   int iStack_8;
   int iStack_4;
   
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(int *)(in_ECX + 0x1c) = *in_stack_00000008;
-  *(int *)(in_ECX + 0x20) = in_stack_00000008[1];
-  *(int *)(in_ECX + 0x24) = in_stack_00000008[2];
-  iVar1 = in_stack_00000008[3];
-  *(short *)(in_ECX + 0xc) = (short)in_stack_00000010;
-  *(int *)(in_ECX + 0x28) = iVar1;
-  *(undefined2 *)(in_ECX + 10) = in_stack_0000000c;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000014;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000018;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
+  *(int *)(this + 4) = arg1;
+  *(undefined4 *)(this + 0x1c) = *(undefined4 *)arg2;
+  *(undefined4 *)(this + 0x20) = *(undefined4 *)(arg2 + 4);
+  *(undefined4 *)(this + 0x24) = *(undefined4 *)(arg2 + 8);
+  uVar1 = *(undefined4 *)(arg2 + 0xc);
+  *(short *)(this + 0xc) = (short)arg4;
+  *(undefined4 *)(this + 0x28) = uVar1;
+  *(undefined2 *)(this + 10) = (undefined2)arg3;
+  *(int *)(this + 0x14) = arg5;
+  *(int *)(this + 0x18) = arg6;
+  *(undefined2 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0x10) = 0;
   uStack_10 = 0;
   uStack_c = 0;
-  iStack_8 = in_stack_00000008[2] - *in_stack_00000008;
-  iStack_4 = in_stack_00000008[3] - in_stack_00000008[1];
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(in_ECX + 0x30,8,&uStack_10);
-  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000010);
-  *(void **)(in_ECX + 0x34) = pvVar2;
+  iStack_8 = *(int *)(arg2 + 8) - *(int *)arg2;
+  iStack_4 = *(int *)(arg2 + 0xc) - *(int *)(arg2 + 4);
+  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(this + 0x30,8,&uStack_10);
+  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(arg4);
+  *(void **)(this + 0x34) = pvVar2;
   return;
 }
 
@@ -141,7 +135,7 @@ void * __cdecl TTransFocusAnimation::GetTTransFocusAnimationClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A04A0
 // GHIDRA_NAME TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// GHIDRA_PROTO void __cdecl ConstructTTransFocusAnimationBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTTransFocusAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes trans-focus animation bounds/rect fields and loads bitmap surface for current resource id.
 // GHIDRA_COMMENT_END
@@ -149,42 +143,37 @@ void * __cdecl TTransFocusAnimation::GetTTransFocusAnimationClassNamePointer(voi
 /* Initializes trans-focus animation bounds/rect fields and loads bitmap surface for current
    resource id. */
 
-void __cdecl TTransFocusAnimation::ConstructTTransFocusAnimationBaseState(void)
+void __thiscall
+TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
+          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  int iVar1;
+  undefined4 uVar1;
   void *pvVar2;
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  int *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  int in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
   undefined4 local_10;
   undefined4 local_c;
   int local_8;
   int local_4;
   
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(int *)(in_ECX + 0x1c) = *in_stack_00000008;
-  *(int *)(in_ECX + 0x20) = in_stack_00000008[1];
-  *(int *)(in_ECX + 0x24) = in_stack_00000008[2];
-  iVar1 = in_stack_00000008[3];
-  *(short *)(in_ECX + 0xc) = (short)in_stack_00000010;
-  *(int *)(in_ECX + 0x28) = iVar1;
-  *(undefined2 *)(in_ECX + 10) = in_stack_0000000c;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000014;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000018;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
+  *(int *)(this + 4) = arg1;
+  *(undefined4 *)(this + 0x1c) = *(undefined4 *)arg2;
+  *(undefined4 *)(this + 0x20) = *(undefined4 *)(arg2 + 4);
+  *(undefined4 *)(this + 0x24) = *(undefined4 *)(arg2 + 8);
+  uVar1 = *(undefined4 *)(arg2 + 0xc);
+  *(short *)(this + 0xc) = (short)arg4;
+  *(undefined4 *)(this + 0x28) = uVar1;
+  *(undefined2 *)(this + 10) = (undefined2)arg3;
+  *(int *)(this + 0x14) = arg5;
+  *(int *)(this + 0x18) = arg6;
+  *(undefined2 *)(this + 8) = 0;
+  *(undefined4 *)(this + 0x10) = 0;
   local_10 = 0;
   local_c = 0;
-  local_8 = in_stack_00000008[2] - *in_stack_00000008;
-  local_4 = in_stack_00000008[3] - in_stack_00000008[1];
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(in_ECX + 0x30,8,&local_10);
-  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000010);
-  *(void **)(in_ECX + 0x34) = pvVar2;
+  local_8 = *(int *)(arg2 + 8) - *(int *)arg2;
+  local_4 = *(int *)(arg2 + 0xc) - *(int *)(arg2 + 4);
+  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(this + 0x30,8,&local_10);
+  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(arg4);
+  *(void **)(this + 0x34) = pvVar2;
   return;
 }
 

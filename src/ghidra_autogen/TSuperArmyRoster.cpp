@@ -43,19 +43,20 @@ TSuperArmyRoster::thunk_DestructTSuperArmyRosterAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408DA0
 // GHIDRA_NAME TSuperArmyRoster::thunk_PopulateSuperArmyRosterByNationAndUpdateNavigation
-// GHIDRA_PROTO void * __cdecl thunk_PopulateSuperArmyRosterByNationAndUpdateNavigation(void)
+// GHIDRA_PROTO void * __thiscall thunk_PopulateSuperArmyRosterByNationAndUpdateNavigation(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk wrapper for PopulateSuperArmyRosterByNationAndUpdateNavigation.
 // GHIDRA_COMMENT_END
 
 /* Thunk wrapper for PopulateSuperArmyRosterByNationAndUpdateNavigation. */
 
-void * __cdecl TSuperArmyRoster::thunk_PopulateSuperArmyRosterByNationAndUpdateNavigation(void)
+void * __thiscall
+TSuperArmyRoster::thunk_PopulateSuperArmyRosterByNationAndUpdateNavigation(TSuperArmyRoster *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTSuperArmyRosterBaseState();
+  pvVar1 = ConstructTSuperArmyRosterBaseState(this);
   return pvVar1;
 }
 
@@ -76,7 +77,7 @@ void * __cdecl TSuperArmyRoster::GetTSuperArmyRosterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA540
 // GHIDRA_NAME TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTSuperArmyRosterBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTSuperArmyRosterBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Populates super-army roster lines for selected nation/movement class and refreshes page navigation state.
 // GHIDRA_COMMENT_END
@@ -84,18 +85,17 @@ void * __cdecl TSuperArmyRoster::GetTSuperArmyRosterClassNamePointer(void)
 /* Populates super-army roster lines for selected nation/movement class and refreshes page
    navigation state. */
 
-void * __cdecl TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(void)
+void * __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyRoster *this)
 
 {
   code *pcVar1;
   int *pController;
   short extraout_AX;
   short extraout_AX_00;
-  TTextLine *this;
+  TTextLine *this_00;
   void *pvVar2;
   TLineData *pThis;
   void *extraout_EAX;
-  TPageView *in_ECX;
   int pageDelta;
   int iVar3;
   short sVar4;
@@ -114,8 +114,8 @@ void * __cdecl TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(void)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined4 *)(in_ECX + 0x1c) = 0x70616765;
-  TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds(in_ECX);
+  *(undefined4 *)(this + 0x1c) = 0x70616765;
+  TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds((TPageView *)this);
   thunk_GetActiveNationId();
   iStack00000004 = 0;
   do {
@@ -133,13 +133,13 @@ void * __cdecl TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(void)
         local_4 = 0;
         InitializeSharedStringRefFromEmpty();
         local_4._0_1_ = 1;
-        this = (TTextLine *)AllocateWithFallbackHandler(0x20);
+        this_00 = (TTextLine *)AllocateWithFallbackHandler(0x20);
         local_4._0_1_ = 2;
-        if (this == (TTextLine *)0x0) {
+        if (this_00 == (TTextLine *)0x0) {
           pvVar2 = (void *)0x0;
         }
         else {
-          pvVar2 = TTextLine::ConstructTTextLineBaseState(this);
+          pvVar2 = TTextLine::ConstructTTextLineBaseState(this_00);
         }
         local_4 = CONCAT31(local_4._1_3_,1);
         local_1c = 0xec;
@@ -148,7 +148,7 @@ void * __cdecl TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(void)
         thunk_AssignSharedStringFromIndexedA8EntryNameField();
         StringShared__AssignFromPtr(&stack0x00000008,(int *)&stack0x0000000c);
         WrapperFor_StringShared_AssignFromPtr_At00570420(&stack0x00000008);
-        pcVar1 = *(code **)(*(int *)in_ECX + 0x1a0);
+        pcVar1 = *(code **)(*(int *)this + 0x1a0);
         (*pcVar1)(pvVar2);
         if ((sVar4 < 0) || (0x17f < sVar4)) {
           iVar3 = 0;
@@ -181,11 +181,11 @@ void * __cdecl TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(void)
     }
     iStack00000004 = iStack00000004 + 1;
   } while (iStack00000004 < 0x180);
-  iVar3 = *(int *)in_ECX;
-  *(undefined2 *)(in_ECX + 100) = 2;
+  iVar3 = *(int *)this;
+  *(undefined2 *)(this + 100) = 2;
   (**(code **)(iVar3 + 0x1ac))();
   (**(code **)(iVar3 + 0x1b0))(1);
-  pController = *(int **)(in_ECX + 0x20);
+  pController = *(int **)(this + 0x20);
   (**(code **)(*pController + 0xc))();
   thunk_UpdatePagedListNavigationButtonState(pController,pageDelta);
   *unaff_FS_OFFSET = uStack_10;

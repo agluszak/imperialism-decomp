@@ -119,7 +119,7 @@ void __thiscall TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds(TP
 void * __cdecl TPageView::CreateTPageViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -129,17 +129,17 @@ void * __cdecl TPageView::CreateTPageViewInstance(void)
   puStack_8 = &LAB_0063623a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar1 = &g_vtblTPageView;
-    puVar1[0x1f] = 0;
-    puVar1[0x20] = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0xffff;
-    *(undefined2 *)(puVar1 + 0x19) = 1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTPageView;
+    *(undefined4 *)(this + 0x7c) = 0;
+    *(undefined4 *)(this + 0x80) = 0;
+    *(undefined2 *)(this + 0x62) = 0xffff;
+    *(undefined2 *)(this + 100) = 1;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -167,7 +167,7 @@ void * __cdecl TPageView::GetTPageViewClassNamePointer(void)
 void * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase();
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   *(undefined ***)this = &g_vtblTPageView;
   *(undefined4 *)(this + 0x7c) = 0;
   *(undefined4 *)(this + 0x80) = 0;

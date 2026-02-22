@@ -29,16 +29,15 @@ void * __cdecl TZone::thunk_GetTPortZoneClassName(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401212
 // GHIDRA_NAME TZone::thunk_DeserializeTPortZoneFromBinaryStream
-// GHIDRA_PROTO void __cdecl thunk_DeserializeTPortZoneFromBinaryStream(void)
+// GHIDRA_PROTO void __thiscall thunk_DeserializeTPortZoneFromBinaryStream(void)
 
-void __cdecl TZone::thunk_DeserializeTPortZoneFromBinaryStream(void)
+void __thiscall TZone::thunk_DeserializeTPortZoneFromBinaryStream(TZone *this)
 
 {
-  int in_ECX;
   int *in_stack_00000004;
   
-  thunk_DeserializeZoneFromBinaryStream();
-  (**(code **)(*in_stack_00000004 + 0x3c))(in_ECX + 0x48,2);
+  thunk_DeserializeZoneFromBinaryStream(this);
+  (**(code **)(*in_stack_00000004 + 0x3c))(this + 0x48,2);
   return;
 }
 
@@ -120,33 +119,33 @@ void __cdecl TZone::thunk_DestroyTPortZoneManager(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402923
 // GHIDRA_NAME TZone::thunk_RemoveZoneFromGlobalListAndRelease
-// GHIDRA_PROTO void __cdecl thunk_RemoveZoneFromGlobalListAndRelease(void)
+// GHIDRA_PROTO void __thiscall thunk_RemoveZoneFromGlobalListAndRelease(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RemoveZoneFromGlobalListAndRelease
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RemoveZoneFromGlobalListAndRelease */
 
-void __cdecl TZone::thunk_RemoveZoneFromGlobalListAndRelease(void)
+void __thiscall TZone::thunk_RemoveZoneFromGlobalListAndRelease(TZone *this)
 
 {
-  RemoveZoneFromGlobalListAndRelease();
+  RemoveZoneFromGlobalListAndRelease(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402A1D
 // GHIDRA_NAME TZone::thunk_SerializeZoneToBinaryStream
-// GHIDRA_PROTO void __cdecl thunk_SerializeZoneToBinaryStream(void)
+// GHIDRA_PROTO void __thiscall thunk_SerializeZoneToBinaryStream(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SerializeZoneToBinaryStream
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SerializeZoneToBinaryStream */
 
-void __cdecl TZone::thunk_SerializeZoneToBinaryStream(void)
+void __thiscall TZone::thunk_SerializeZoneToBinaryStream(TZone *this)
 
 {
-  SerializeZoneToBinaryStream();
+  SerializeZoneToBinaryStream(this);
   return;
 }
 
@@ -168,12 +167,11 @@ void __cdecl TZone::thunk_SerializeMapActionContextRuntimeState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402CB1
 // GHIDRA_NAME TZone::thunk_RefreshTPortZoneDisplayNameFromLocalization
-// GHIDRA_PROTO void __cdecl thunk_RefreshTPortZoneDisplayNameFromLocalization(void)
+// GHIDRA_PROTO void __thiscall thunk_RefreshTPortZoneDisplayNameFromLocalization(void)
 
-void __cdecl TZone::thunk_RefreshTPortZoneDisplayNameFromLocalization(void)
+void __thiscall TZone::thunk_RefreshTPortZoneDisplayNameFromLocalization(TZone *this)
 
 {
-  int in_ECX;
   undefined4 unaff_ESI;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
@@ -195,9 +193,9 @@ void __cdecl TZone::thunk_RefreshTPortZoneDisplayNameFromLocalization(void)
   puStack_20 = &uStack_10;
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   (**(code **)(*g_pLocalizationTable + 0x84))
-            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)(in_ECX + 4)));
+            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)(this + 4)));
   scanBracketExpressions(g_pLocalizationTable,&puStack_20,unaff_EDI);
-  StringShared__AssignFromPtr((void *)(in_ECX + 8),(int *)&puStack_20);
+  StringShared__AssignFromPtr(this + 8,(int *)&puStack_20);
   uStack_10 = uStack_10 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
   uStack_10 = 0xffffffff;
@@ -251,17 +249,72 @@ void __cdecl TZone::thunk_FindBestCoastalTileForContextAndCityStateByHeuristic(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403E95
 // GHIDRA_NAME TZone::thunk_AssignZoneDisplayNameToOutputRef
-// GHIDRA_PROTO void __cdecl thunk_AssignZoneDisplayNameToOutputRef(void)
+// GHIDRA_PROTO void __thiscall thunk_AssignZoneDisplayNameToOutputRef(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to AssignZoneDisplayNameToOutputRef
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to AssignZoneDisplayNameToOutputRef */
 
-void __cdecl TZone::thunk_AssignZoneDisplayNameToOutputRef(void)
+void __thiscall TZone::thunk_AssignZoneDisplayNameToOutputRef(TZone *this)
 
 {
-  AssignZoneDisplayNameToOutputRef();
+  AssignZoneDisplayNameToOutputRef(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040405C
+// GHIDRA_NAME TZone::thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList
+// GHIDRA_PROTO void __thiscall thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTZoneAndLinkIntoGlobalMapActionContextList
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTZoneAndLinkIntoGlobalMapActionContextList */
+
+void __thiscall TZone::thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZone *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  puStack_8 = &LAB_00635709;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(undefined ***)this = &g_vtblRefCountedObjectBase;
+  uStack_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined ***)(this + 0x24) = &PTR_thunk_GetOrAppendUniqueZonePointerInPrimaryArray_0065c74c;
+  *(undefined4 *)(this + 0x38) = 0;
+  *(undefined4 *)(this + 0x3c) = 0;
+  *(undefined4 *)(this + 0x40) = 0;
+  *(undefined ***)(this + 0x34) = &PTR_thunk_GetOrAppendUniqueZonePointerInSecondaryArray_0065c748;
+  *(undefined ***)this = &g_vtblTZone;
+  *(undefined2 *)(this + 0x12) = 0xffff;
+  *(undefined2 *)(this + 0x14) = (undefined2)g_nMapActionContextCount;
+  g_nMapActionContextCount = g_nMapActionContextCount + 1;
+  uStack_4 = CONCAT31(uStack_4._1_3_,3);
+  *(undefined4 *)(this + 0xc) = 0xffffffff;
+  *(undefined2 *)(this + 0x10) = 0;
+  *(void **)(this + 0x18) = g_pMapActionContextListHead;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined2 *)(this + 0x44) = 0;
+  *(undefined2 *)(this + 4) = 0xffff;
+  *(undefined2 *)(this + 0x20) = 0xffff;
+  g_pMapActionContextListHead = this;
+  if (*(int *)(this + 0x18) != 0) {
+    *(TZone **)(*(int *)(this + 0x18) + 0x1c) = this;
+  }
+  if (g_pMapActionContextDistanceCache != (void *)0x0) {
+    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
+    g_pMapActionContextDistanceCache = (void *)0x0;
+  }
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
@@ -283,79 +336,81 @@ void __cdecl TZone::thunk_NotifyDiplomacyManagerForPortZoneOwnerNation(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040466F
 // GHIDRA_NAME TZone::thunk_DeserializeZoneFromBinaryStream
-// GHIDRA_PROTO void __cdecl thunk_DeserializeZoneFromBinaryStream(void)
+// GHIDRA_PROTO void __thiscall thunk_DeserializeZoneFromBinaryStream(void)
 
-void __cdecl TZone::thunk_DeserializeZoneFromBinaryStream(void)
+void __thiscall TZone::thunk_DeserializeZoneFromBinaryStream(TZone *this)
 
 {
   void *pvVar1;
-  int in_ECX;
   uint uVar2;
   uint uVar3;
-  code *pcVar4;
+  TZone *pTVar4;
   int *in_stack_00000004;
-  int iVar5;
+  TZone *pTVar5;
   int iVar6;
   int iVar7;
   undefined4 uStack_44;
   int iStack_40;
   undefined4 uStack_3c;
   uint uStack_38;
-  int aiStack_34 [4];
+  TZone *pTStack_34;
+  undefined4 uStack_30;
+  TZone *pTStack_2c;
+  undefined4 uStack_28;
   
-  aiStack_34[2] = 0x55ed33;
+  pTStack_2c = (TZone *)0x55ed33;
   thunk_HandleCityDialogNoOpSlot18();
-  iVar5 = *in_stack_00000004;
-  aiStack_34[2] = in_ECX + 8;
-  aiStack_34[3] = 0x20;
-  aiStack_34[1] = 0x55ed41;
-  (**(code **)(iVar5 + 0x70))();
-  pcVar4 = *(code **)(iVar5 + 0x3c);
-  aiStack_34[0] = in_ECX + 4;
-  aiStack_34[1] = 2;
+  iVar6 = *in_stack_00000004;
+  pTStack_2c = this + 8;
+  uStack_28 = 0x20;
+  uStack_30 = 0x55ed41;
+  (**(code **)(iVar6 + 0x70))();
+  pTVar4 = *(TZone **)(iVar6 + 0x3c);
+  pTStack_34 = this + 4;
+  uStack_30 = 2;
   uStack_38 = 0x55ed52;
-  (*pcVar4)();
-  uStack_3c = (code *)(in_ECX + 0xc);
+  (*(code *)pTVar4)();
+  uStack_3c = this + 0xc;
   uStack_38 = 4;
   iStack_40 = 0x55ed5c;
-  (*pcVar4)();
-  uStack_44 = (code *)(in_ECX + 0x12);
+  (*(code *)pTVar4)();
+  uStack_44 = this + 0x12;
   iStack_40 = 2;
-  (*pcVar4)();
-  iVar5 = in_ECX + 0x20;
-  (*pcVar4)(iVar5,2);
+  (*(code *)pTVar4)();
+  pTVar5 = this + 0x20;
+  (*(code *)pTVar4)(pTVar5,2);
   if (g_Advance_Turn_Machine_State_00695278 < 0x12) {
-    *(undefined2 *)(in_ECX + 0x14) = (undefined2)g_nMapActionContextCount;
+    *(undefined2 *)(this + 0x14) = (undefined2)g_nMapActionContextCount;
     g_nMapActionContextCount = g_nMapActionContextCount + 1;
   }
   else {
-    (*pcVar4)(in_ECX + 0x14,2);
+    (*(code *)pTVar4)(this + 0x14,2);
   }
-  *(undefined2 *)(in_ECX + 0x10) = 0;
-  *(undefined2 *)(in_ECX + 0x44) = 0;
-  iVar6 = *(int *)(in_ECX + 0x28);
+  *(undefined2 *)(this + 0x10) = 0;
+  *(undefined2 *)(this + 0x44) = 0;
+  iVar6 = *(int *)(this + 0x28);
   if (iVar6 != 0) {
-    *(undefined4 *)(in_ECX + 0x28) = 0;
-    *(undefined4 *)(in_ECX + 0x2c) = 0;
-    *(undefined4 *)(in_ECX + 0x30) = 0;
+    *(undefined4 *)(this + 0x28) = 0;
+    *(undefined4 *)(this + 0x2c) = 0;
+    *(undefined4 *)(this + 0x30) = 0;
     FreeHeapBlockWithAllocatorTracking(iVar6);
   }
-  iVar6 = *(int *)(in_ECX + 0x38);
+  iVar6 = *(int *)(this + 0x38);
   if (iVar6 != 0) {
-    *(undefined4 *)(in_ECX + 0x38) = 0;
-    *(undefined4 *)(in_ECX + 0x3c) = 0;
-    *(undefined4 *)(in_ECX + 0x40) = 0;
+    *(undefined4 *)(this + 0x38) = 0;
+    *(undefined4 *)(this + 0x3c) = 0;
+    *(undefined4 *)(this + 0x40) = 0;
     FreeHeapBlockWithAllocatorTracking(iVar6);
   }
   if (g_Advance_Turn_Machine_State_00695278 < 0xd) {
-    (*pcVar4)((int)&uStack_3c + 2,2);
+    (*(code *)pTVar4)((int)&uStack_3c + 2,2);
     iStack_40 = 0;
     if (0 < uStack_44._2_2_) {
       do {
         iVar6 = iStack_40;
-        (*pcVar4)(aiStack_34,4);
+        (*(code *)pTVar4)(&pTStack_34,4);
         uVar3 = (uint)(short)iVar6;
-        if (*(uint *)(in_ECX + 0x2c) <= uVar3) {
+        if (*(uint *)(this + 0x2c) <= uVar3) {
           uStack_38 = (uVar3 + 1) * 2;
           if (0x7fffffff < uStack_38) {
             uStack_38 = 0x7fffffff;
@@ -363,30 +418,30 @@ void __cdecl TZone::thunk_DeserializeZoneFromBinaryStream(void)
           pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
           if (pvVar1 == (void *)0x0) {
             pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
-            *(void **)(in_ECX + 0x28) = pvVar1;
-            *(uint *)(in_ECX + 0x2c) = uVar3 + 1;
+            *(void **)(this + 0x28) = pvVar1;
+            *(uint *)(this + 0x2c) = uVar3 + 1;
           }
           else {
-            *(void **)(in_ECX + 0x28) = pvVar1;
-            *(uint *)(in_ECX + 0x2c) = uStack_38;
+            *(void **)(this + 0x28) = pvVar1;
+            *(uint *)(this + 0x2c) = uStack_38;
           }
         }
-        if (*(uint *)(in_ECX + 0x30) <= uVar3) {
-          *(uint *)(in_ECX + 0x30) = uVar3 + 1;
+        if (*(uint *)(this + 0x30) <= uVar3) {
+          *(uint *)(this + 0x30) = uVar3 + 1;
         }
         iStack_40 = iStack_40 + 1;
-        *(int *)(*(int *)(in_ECX + 0x28) + uVar3 * 4) = aiStack_34[0];
-        pcVar4 = uStack_3c;
+        *(TZone **)(*(int *)(this + 0x28) + uVar3 * 4) = pTStack_34;
+        pTVar4 = uStack_3c;
       } while ((short)iStack_40 < uStack_44._2_2_);
     }
-    (*pcVar4)((int)&uStack_44 + 2,2);
+    (*(code *)pTVar4)((int)&uStack_44 + 2,2);
     iVar6 = 0;
-    if (0 < (short)((uint)iVar5 >> 0x10)) {
+    if (0 < (short)((uint)pTVar5 >> 0x10)) {
       do {
         iVar7 = iVar6;
-        (*pcVar4)(&uStack_3c,4);
+        (*(code *)pTVar4)(&uStack_3c,4);
         uVar3 = (uint)(short)iVar6;
-        if (*(uint *)(in_ECX + 0x3c) <= uVar3) {
+        if (*(uint *)(this + 0x3c) <= uVar3) {
           uVar2 = (uVar3 + 1) * 2;
           if (0x7fffffff < uVar2) {
             uVar2 = 0x7fffffff;
@@ -394,21 +449,21 @@ void __cdecl TZone::thunk_DeserializeZoneFromBinaryStream(void)
           pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
           if (pvVar1 == (void *)0x0) {
             pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
-            *(void **)(in_ECX + 0x38) = pvVar1;
-            *(uint *)(in_ECX + 0x3c) = uVar3 + 1;
+            *(void **)(this + 0x38) = pvVar1;
+            *(uint *)(this + 0x3c) = uVar3 + 1;
           }
           else {
-            *(void **)(in_ECX + 0x38) = pvVar1;
-            *(uint *)(in_ECX + 0x3c) = uVar2;
+            *(void **)(this + 0x38) = pvVar1;
+            *(uint *)(this + 0x3c) = uVar2;
           }
         }
-        if (*(uint *)(in_ECX + 0x40) <= uVar3) {
-          *(uint *)(in_ECX + 0x40) = uVar3 + 1;
+        if (*(uint *)(this + 0x40) <= uVar3) {
+          *(uint *)(this + 0x40) = uVar3 + 1;
         }
         iVar6 = iVar7 + 1;
-        *(code **)(*(int *)(in_ECX + 0x38) + uVar3 * 4) = uStack_3c;
-        pcVar4 = uStack_44;
-      } while ((short)iVar6 < (short)((uint)iVar5 >> 0x10));
+        *(TZone **)(*(int *)(this + 0x38) + uVar3 * 4) = uStack_3c;
+        pTVar4 = uStack_44;
+      } while ((short)iVar6 < (short)((uint)pTVar5 >> 0x10));
     }
   }
   return;
@@ -450,20 +505,19 @@ void __cdecl TZone::thunk_UpdatePortZoneTileOverlayMarkersForStateToggle(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C13
 // GHIDRA_NAME TZone::thunk_CanPortZoneInteractWithNationUnderDiplomacyRules
-// GHIDRA_PROTO bool __stdcall thunk_CanPortZoneInteractWithNationUnderDiplomacyRules(void)
+// GHIDRA_PROTO bool __thiscall thunk_CanPortZoneInteractWithNationUnderDiplomacyRules(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to CanPortZoneInteractWithNationUnderDiplomacyRules
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to CanPortZoneInteractWithNationUnderDiplomacyRules */
 
-bool TZone::thunk_CanPortZoneInteractWithNationUnderDiplomacyRules(void)
+bool __thiscall TZone::thunk_CanPortZoneInteractWithNationUnderDiplomacyRules(TZone *this)
 
 {
   bool bVar1;
-  TZone *in_ECX;
   
-  bVar1 = CanPortZoneInteractWithNationUnderDiplomacyRules(in_ECX);
+  bVar1 = CanPortZoneInteractWithNationUnderDiplomacyRules(this);
   return bVar1;
 }
 
@@ -523,49 +577,49 @@ bool TZone::thunk_ReturnTrueForZoneCapabilityFlagA(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406582
 // GHIDRA_NAME TZone::thunk_AssignZoneDisplayNameAliasToOutputRef
-// GHIDRA_PROTO void __cdecl thunk_AssignZoneDisplayNameAliasToOutputRef(void)
+// GHIDRA_PROTO void __thiscall thunk_AssignZoneDisplayNameAliasToOutputRef(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to AssignZoneDisplayNameAliasToOutputRef
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to AssignZoneDisplayNameAliasToOutputRef */
 
-void __cdecl TZone::thunk_AssignZoneDisplayNameAliasToOutputRef(void)
+void __thiscall TZone::thunk_AssignZoneDisplayNameAliasToOutputRef(TZone *this)
 
 {
-  AssignZoneDisplayNameAliasToOutputRef();
+  AssignZoneDisplayNameAliasToOutputRef(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406898
 // GHIDRA_NAME TZone::thunk_AppendZonePointerToPrimaryArray
-// GHIDRA_PROTO void __cdecl thunk_AppendZonePointerToPrimaryArray(void)
+// GHIDRA_PROTO void __thiscall thunk_AppendZonePointerToPrimaryArray(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to AppendZonePointerToPrimaryArray
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to AppendZonePointerToPrimaryArray */
 
-void __cdecl TZone::thunk_AppendZonePointerToPrimaryArray(void)
+void __thiscall TZone::thunk_AppendZonePointerToPrimaryArray(TZone *this)
 
 {
-  AppendZonePointerToPrimaryArray();
+  AppendZonePointerToPrimaryArray(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406EC9
 // GHIDRA_NAME TZone::thunk_GetOrAppendUniqueZonePointerInPrimaryArray
-// GHIDRA_PROTO void __cdecl thunk_GetOrAppendUniqueZonePointerInPrimaryArray(void)
+// GHIDRA_PROTO void __thiscall thunk_GetOrAppendUniqueZonePointerInPrimaryArray(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetOrAppendUniqueZonePointerInPrimaryArray
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetOrAppendUniqueZonePointerInPrimaryArray */
 
-void __cdecl TZone::thunk_GetOrAppendUniqueZonePointerInPrimaryArray(void)
+void __thiscall TZone::thunk_GetOrAppendUniqueZonePointerInPrimaryArray(TZone *this)
 
 {
-  GetOrAppendUniqueZonePointerInPrimaryArray();
+  GetOrAppendUniqueZonePointerInPrimaryArray(this);
   return;
 }
 
@@ -589,33 +643,33 @@ bool TZone::thunk_ReturnFalseForZoneCapabilityFlagB(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040749B
 // GHIDRA_NAME TZone::thunk_DestroyTPortZoneManagerAndPurgePortZones
-// GHIDRA_PROTO void __cdecl thunk_DestroyTPortZoneManagerAndPurgePortZones(void)
+// GHIDRA_PROTO void __thiscall thunk_DestroyTPortZoneManagerAndPurgePortZones(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTPortZoneManagerAndPurgePortZones
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTPortZoneManagerAndPurgePortZones */
 
-void __cdecl TZone::thunk_DestroyTPortZoneManagerAndPurgePortZones(void)
+void __thiscall TZone::thunk_DestroyTPortZoneManagerAndPurgePortZones(TZone *this)
 
 {
-  TOcean::DestroyTPortZoneManagerAndPurgePortZones();
+  TOcean::DestroyTPortZoneManagerAndPurgePortZones((TOcean *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040767B
 // GHIDRA_NAME TZone::thunk_GetOrAppendUniqueZonePointerInSecondaryArray
-// GHIDRA_PROTO void __cdecl thunk_GetOrAppendUniqueZonePointerInSecondaryArray(void)
+// GHIDRA_PROTO void __thiscall thunk_GetOrAppendUniqueZonePointerInSecondaryArray(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetOrAppendUniqueZonePointerInSecondaryArray
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetOrAppendUniqueZonePointerInSecondaryArray */
 
-void __cdecl TZone::thunk_GetOrAppendUniqueZonePointerInSecondaryArray(void)
+void __thiscall TZone::thunk_GetOrAppendUniqueZonePointerInSecondaryArray(TZone *this)
 
 {
-  GetOrAppendUniqueZonePointerInSecondaryArray();
+  GetOrAppendUniqueZonePointerInSecondaryArray(this);
   return;
 }
 
@@ -666,17 +720,17 @@ bool __thiscall TZone::thunk_HasZoneActiveChildCount(TZone *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408918
 // GHIDRA_NAME TZone::thunk_AppendZonePointerToSecondaryArray
-// GHIDRA_PROTO void __cdecl thunk_AppendZonePointerToSecondaryArray(void)
+// GHIDRA_PROTO void __thiscall thunk_AppendZonePointerToSecondaryArray(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to AppendZonePointerToSecondaryArray
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to AppendZonePointerToSecondaryArray */
 
-void __cdecl TZone::thunk_AppendZonePointerToSecondaryArray(void)
+void __thiscall TZone::thunk_AppendZonePointerToSecondaryArray(TZone *this)
 
 {
-  AppendZonePointerToSecondaryArray();
+  AppendZonePointerToSecondaryArray(this);
   return;
 }
 
@@ -765,21 +819,82 @@ void * __cdecl TZone::thunk_GetTZoneClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409791
 // GHIDRA_NAME TZone::thunk_IsPortZoneOwnerNationEqual
-// GHIDRA_PROTO bool __stdcall thunk_IsPortZoneOwnerNationEqual(void)
+// GHIDRA_PROTO bool __thiscall thunk_IsPortZoneOwnerNationEqual(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to IsPortZoneOwnerNationEqual
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to IsPortZoneOwnerNationEqual */
 
-bool TZone::thunk_IsPortZoneOwnerNationEqual(void)
+bool __thiscall TZone::thunk_IsPortZoneOwnerNationEqual(TZone *this)
 
 {
   bool bVar1;
-  TZone *in_ECX;
   
-  bVar1 = IsPortZoneOwnerNationEqual(in_ECX);
+  bVar1 = IsPortZoneOwnerNationEqual(this);
   return bVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00515E00
+// GHIDRA_NAME TZone::SetMapTileStateByteAndNotifyObserver
+// GHIDRA_PROTO void __thiscall SetMapTileStateByteAndNotifyObserver(TZone * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Writes per-tile state byte at map-tile+0x16 and notifies observer via global view callback when available.
+// GHIDRA_COMMENT_END
+
+/* Writes per-tile state byte at map-tile+0x16 and notifies observer via global view callback when
+   available. */
+
+void __thiscall TZone::SetMapTileStateByteAndNotifyObserver(TZone *this,TZone *pThis)
+
+{
+  undefined1 in_stack_00000008;
+  
+  *(undefined1 *)(*(int *)(this + 0xc) + 0x16 + (short)pThis * 0x24) = in_stack_00000008;
+  if (*(int **)(g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+    (**(code **)(**(int **)(g_pUiRuntimeContext + 0xf0) + 0x1d8))(pThis);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055E360
+// GHIDRA_NAME TZone::StepHexTileIndexByDirectionWithWrapRules
+// GHIDRA_PROTO void __cdecl StepHexTileIndexByDirectionWithWrapRules(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Steps a flat tile index by hex-direction with map edge/wrap rules from g_pGlobalMapState.
+// GHIDRA_COMMENT_END
+
+/* Steps a flat tile index by hex-direction with map edge/wrap rules from g_pGlobalMapState. */
+
+void __cdecl TZone::StepHexTileIndexByDirectionWithWrapRules(void)
+
+{
+  uint uVar1;
+  short in_stack_00000004;
+  short in_stack_00000008;
+  
+  uVar1 = (int)in_stack_00000004 / 0x6c;
+  if ((in_stack_00000008 == 4) || ((2 < in_stack_00000008 && ((uVar1 & 1) == 0)))) {
+    if (((short)(in_stack_00000004 % 0x6c + -1) < 0) &&
+       (*(char *)(g_pGlobalMapState + 0x20) != '\0')) {
+      return;
+    }
+  }
+  else if ((((in_stack_00000008 == 1) || ((in_stack_00000008 < 3 && ((uVar1 & 1) != 0)))) &&
+           (0x6b < (short)(in_stack_00000004 % 0x6c + 1))) &&
+          (*(char *)(g_pGlobalMapState + 0x20) != '\0')) {
+    return;
+  }
+  if ((in_stack_00000008 == 5) || (in_stack_00000008 == 0)) {
+    if ((short)((short)uVar1 + -1) < 0) {
+      return;
+    }
+  }
+  else if (((in_stack_00000008 == 3) || (in_stack_00000008 == 2)) &&
+          (0x3b < (short)((short)uVar1 + 1))) {
+    return;
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E660
@@ -789,7 +904,7 @@ bool TZone::thunk_IsPortZoneOwnerNationEqual(void)
 undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
 
 {
-  int iVar1;
+  TZone *this;
   undefined4 extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -800,10 +915,10 @@ undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
   puStack_8 = &LAB_006356ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x48,param_1);
+  this = (TZone *)AllocateWithFallbackHandler(0x48,param_1);
   local_4 = 0;
-  if (iVar1 != 0) {
-    thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList();
+  if (this != (TZone *)0x0) {
+    thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
     *unaff_FS_OFFSET = local_c;
     return extraout_EAX;
   }
@@ -828,7 +943,7 @@ void * __cdecl TZone::GetTZoneClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E700
 // GHIDRA_NAME TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList
-// GHIDRA_PROTO void __cdecl ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
+// GHIDRA_PROTO void __thiscall ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes TZone fields, links into global map-action context list, and resets cached context arrays.
 // GHIDRA_COMMENT_END
@@ -836,10 +951,9 @@ void * __cdecl TZone::GetTZoneClassNamePointer(void)
 /* Initializes TZone fields, links into global map-action context list, and resets cached context
    arrays. */
 
-void __cdecl TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
+void __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZone *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -848,32 +962,32 @@ void __cdecl TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
   puStack_8 = &LAB_00635709;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *in_ECX = &g_vtblRefCountedObjectBase;
+  *(undefined ***)this = &g_vtblRefCountedObjectBase;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  in_ECX[10] = 0;
-  in_ECX[0xb] = 0;
-  in_ECX[0xc] = 0;
-  in_ECX[9] = &PTR_thunk_GetOrAppendUniqueZonePointerInPrimaryArray_0065c74c;
-  in_ECX[0xe] = 0;
-  in_ECX[0xf] = 0;
-  in_ECX[0x10] = 0;
-  in_ECX[0xd] = &PTR_thunk_GetOrAppendUniqueZonePointerInSecondaryArray_0065c748;
-  *in_ECX = &g_vtblTZone;
-  *(undefined2 *)((int)in_ECX + 0x12) = 0xffff;
-  *(undefined2 *)(in_ECX + 5) = (undefined2)g_nMapActionContextCount;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined ***)(this + 0x24) = &PTR_thunk_GetOrAppendUniqueZonePointerInPrimaryArray_0065c74c;
+  *(undefined4 *)(this + 0x38) = 0;
+  *(undefined4 *)(this + 0x3c) = 0;
+  *(undefined4 *)(this + 0x40) = 0;
+  *(undefined ***)(this + 0x34) = &PTR_thunk_GetOrAppendUniqueZonePointerInSecondaryArray_0065c748;
+  *(undefined ***)this = &g_vtblTZone;
+  *(undefined2 *)(this + 0x12) = 0xffff;
+  *(undefined2 *)(this + 0x14) = (undefined2)g_nMapActionContextCount;
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
   local_4 = CONCAT31(local_4._1_3_,3);
-  in_ECX[3] = 0xffffffff;
-  *(undefined2 *)(in_ECX + 4) = 0;
-  in_ECX[6] = g_pMapActionContextListHead;
-  in_ECX[7] = 0;
-  *(undefined2 *)(in_ECX + 0x11) = 0;
-  *(undefined2 *)(in_ECX + 1) = 0xffff;
-  *(undefined2 *)(in_ECX + 8) = 0xffff;
-  g_pMapActionContextListHead = in_ECX;
-  if (in_ECX[6] != 0) {
-    *(undefined4 **)(in_ECX[6] + 0x1c) = in_ECX;
+  *(undefined4 *)(this + 0xc) = 0xffffffff;
+  *(undefined2 *)(this + 0x10) = 0;
+  *(void **)(this + 0x18) = g_pMapActionContextListHead;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined2 *)(this + 0x44) = 0;
+  *(undefined2 *)(this + 4) = 0xffff;
+  *(undefined2 *)(this + 0x20) = 0xffff;
+  g_pMapActionContextListHead = this;
+  if (*(int *)(this + 0x18) != 0) {
+    *(TZone **)(*(int *)(this + 0x18) + 0x1c) = this;
   }
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
     FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
@@ -945,25 +1059,24 @@ bool __thiscall TZone::HasZoneActiveChildCount(TZone *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E8E0
 // GHIDRA_NAME TZone::GetOrAppendUniqueZonePointerInPrimaryArray
-// GHIDRA_PROTO void __cdecl GetOrAppendUniqueZonePointerInPrimaryArray(void)
+// GHIDRA_PROTO void __thiscall GetOrAppendUniqueZonePointerInPrimaryArray(void)
 
-void __cdecl TZone::GetOrAppendUniqueZonePointerInPrimaryArray(void)
+void __thiscall TZone::GetOrAppendUniqueZonePointerInPrimaryArray(TZone *this)
 
 {
   uint uVar1;
   uint uVar2;
   int *piVar3;
   void *pvVar4;
-  int in_ECX;
   int in_stack_00000004;
   
   uVar2 = 0;
-  uVar1 = *(uint *)(in_ECX + 0xc);
+  uVar1 = *(uint *)(this + 0xc);
   if (uVar1 != 0) {
-    piVar3 = *(int **)(in_ECX + 4);
+    piVar3 = *(int **)(this + 4);
     do {
       if (*piVar3 == in_stack_00000004) {
-        piVar3 = *(int **)(in_ECX + 4) + uVar2;
+        piVar3 = *(int **)(this + 4) + uVar2;
         goto LAB_0055e90c;
       }
       uVar2 = uVar2 + 1;
@@ -973,7 +1086,7 @@ void __cdecl TZone::GetOrAppendUniqueZonePointerInPrimaryArray(void)
   piVar3 = (int *)0x0;
 LAB_0055e90c:
   if (piVar3 == (int *)0x0) {
-    if (*(uint *)(in_ECX + 8) <= uVar1) {
+    if (*(uint *)(this + 8) <= uVar1) {
       uVar2 = (uVar1 + 1) * 2;
       if (0x7fffffff < uVar2) {
         uVar2 = 0x7fffffff;
@@ -981,43 +1094,42 @@ LAB_0055e90c:
       pvVar4 = ReallocateHeapBlockWithAllocatorTracking();
       if (pvVar4 == (void *)0x0) {
         pvVar4 = ReallocateHeapBlockWithAllocatorTracking();
-        *(void **)(in_ECX + 4) = pvVar4;
-        *(uint *)(in_ECX + 8) = uVar1 + 1;
+        *(void **)(this + 4) = pvVar4;
+        *(uint *)(this + 8) = uVar1 + 1;
       }
       else {
-        *(void **)(in_ECX + 4) = pvVar4;
-        *(uint *)(in_ECX + 8) = uVar2;
+        *(void **)(this + 4) = pvVar4;
+        *(uint *)(this + 8) = uVar2;
       }
     }
-    if (*(uint *)(in_ECX + 0xc) <= uVar1) {
-      *(uint *)(in_ECX + 0xc) = uVar1 + 1;
+    if (*(uint *)(this + 0xc) <= uVar1) {
+      *(uint *)(this + 0xc) = uVar1 + 1;
     }
-    *(int *)(*(int *)(in_ECX + 4) + uVar1 * 4) = in_stack_00000004;
+    *(int *)(*(int *)(this + 4) + uVar1 * 4) = in_stack_00000004;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E9C0
 // GHIDRA_NAME TZone::GetOrAppendUniqueZonePointerInSecondaryArray
-// GHIDRA_PROTO void __cdecl GetOrAppendUniqueZonePointerInSecondaryArray(void)
+// GHIDRA_PROTO void __thiscall GetOrAppendUniqueZonePointerInSecondaryArray(void)
 
-void __cdecl TZone::GetOrAppendUniqueZonePointerInSecondaryArray(void)
+void __thiscall TZone::GetOrAppendUniqueZonePointerInSecondaryArray(TZone *this)
 
 {
   uint uVar1;
   uint uVar2;
   int *piVar3;
   void *pvVar4;
-  int in_ECX;
   int in_stack_00000004;
   
   uVar2 = 0;
-  uVar1 = *(uint *)(in_ECX + 0xc);
+  uVar1 = *(uint *)(this + 0xc);
   if (uVar1 != 0) {
-    piVar3 = *(int **)(in_ECX + 4);
+    piVar3 = *(int **)(this + 4);
     do {
       if (*piVar3 == in_stack_00000004) {
-        piVar3 = *(int **)(in_ECX + 4) + uVar2;
+        piVar3 = *(int **)(this + 4) + uVar2;
         goto LAB_0055e9ec;
       }
       uVar2 = uVar2 + 1;
@@ -1027,7 +1139,7 @@ void __cdecl TZone::GetOrAppendUniqueZonePointerInSecondaryArray(void)
   piVar3 = (int *)0x0;
 LAB_0055e9ec:
   if (piVar3 == (int *)0x0) {
-    if (*(uint *)(in_ECX + 8) <= uVar1) {
+    if (*(uint *)(this + 8) <= uVar1) {
       uVar2 = (uVar1 + 1) * 2;
       if (0x7fffffff < uVar2) {
         uVar2 = 0x7fffffff;
@@ -1035,37 +1147,36 @@ LAB_0055e9ec:
       pvVar4 = ReallocateHeapBlockWithAllocatorTracking();
       if (pvVar4 == (void *)0x0) {
         pvVar4 = ReallocateHeapBlockWithAllocatorTracking();
-        *(void **)(in_ECX + 4) = pvVar4;
-        *(uint *)(in_ECX + 8) = uVar1 + 1;
+        *(void **)(this + 4) = pvVar4;
+        *(uint *)(this + 8) = uVar1 + 1;
       }
       else {
-        *(void **)(in_ECX + 4) = pvVar4;
-        *(uint *)(in_ECX + 8) = uVar2;
+        *(void **)(this + 4) = pvVar4;
+        *(uint *)(this + 8) = uVar2;
       }
     }
-    if (*(uint *)(in_ECX + 0xc) <= uVar1) {
-      *(uint *)(in_ECX + 0xc) = uVar1 + 1;
+    if (*(uint *)(this + 0xc) <= uVar1) {
+      *(uint *)(this + 0xc) = uVar1 + 1;
     }
-    *(int *)(*(int *)(in_ECX + 4) + uVar1 * 4) = in_stack_00000004;
+    *(int *)(*(int *)(this + 4) + uVar1 * 4) = in_stack_00000004;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EAD0
 // GHIDRA_NAME TZone::AppendZonePointerToPrimaryArray
-// GHIDRA_PROTO void __cdecl AppendZonePointerToPrimaryArray(void)
+// GHIDRA_PROTO void __thiscall AppendZonePointerToPrimaryArray(void)
 
-void __cdecl TZone::AppendZonePointerToPrimaryArray(void)
+void __thiscall TZone::AppendZonePointerToPrimaryArray(TZone *this)
 
 {
   uint uVar1;
   void *pvVar2;
-  int in_ECX;
   uint uVar3;
   undefined4 in_stack_00000004;
   
-  uVar1 = *(uint *)(in_ECX + 0xc);
-  if (*(uint *)(in_ECX + 8) <= uVar1) {
+  uVar1 = *(uint *)(this + 0xc);
+  if (*(uint *)(this + 8) <= uVar1) {
     uVar3 = (uVar1 + 1) * 2;
     if (0x7fffffff < uVar3) {
       uVar3 = 0x7fffffff;
@@ -1073,36 +1184,35 @@ void __cdecl TZone::AppendZonePointerToPrimaryArray(void)
     pvVar2 = ReallocateHeapBlockWithAllocatorTracking();
     if (pvVar2 == (void *)0x0) {
       pvVar2 = ReallocateHeapBlockWithAllocatorTracking();
-      *(void **)(in_ECX + 4) = pvVar2;
-      *(uint *)(in_ECX + 8) = uVar1 + 1;
+      *(void **)(this + 4) = pvVar2;
+      *(uint *)(this + 8) = uVar1 + 1;
     }
     else {
-      *(void **)(in_ECX + 4) = pvVar2;
-      *(uint *)(in_ECX + 8) = uVar3;
+      *(void **)(this + 4) = pvVar2;
+      *(uint *)(this + 8) = uVar3;
     }
   }
-  if (*(uint *)(in_ECX + 0xc) <= uVar1) {
-    *(uint *)(in_ECX + 0xc) = uVar1 + 1;
+  if (*(uint *)(this + 0xc) <= uVar1) {
+    *(uint *)(this + 0xc) = uVar1 + 1;
   }
-  *(undefined4 *)(*(int *)(in_ECX + 4) + uVar1 * 4) = in_stack_00000004;
+  *(undefined4 *)(*(int *)(this + 4) + uVar1 * 4) = in_stack_00000004;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EBA0
 // GHIDRA_NAME TZone::AppendZonePointerToSecondaryArray
-// GHIDRA_PROTO void __cdecl AppendZonePointerToSecondaryArray(void)
+// GHIDRA_PROTO void __thiscall AppendZonePointerToSecondaryArray(void)
 
-void __cdecl TZone::AppendZonePointerToSecondaryArray(void)
+void __thiscall TZone::AppendZonePointerToSecondaryArray(TZone *this)
 
 {
   uint uVar1;
   void *pvVar2;
-  int in_ECX;
   uint uVar3;
   undefined4 in_stack_00000004;
   
-  uVar1 = *(uint *)(in_ECX + 0xc);
-  if (*(uint *)(in_ECX + 8) <= uVar1) {
+  uVar1 = *(uint *)(this + 0xc);
+  if (*(uint *)(this + 8) <= uVar1) {
     uVar3 = (uVar1 + 1) * 2;
     if (0x7fffffff < uVar3) {
       uVar3 = 0x7fffffff;
@@ -1110,132 +1220,132 @@ void __cdecl TZone::AppendZonePointerToSecondaryArray(void)
     pvVar2 = ReallocateHeapBlockWithAllocatorTracking();
     if (pvVar2 == (void *)0x0) {
       pvVar2 = ReallocateHeapBlockWithAllocatorTracking();
-      *(void **)(in_ECX + 4) = pvVar2;
-      *(uint *)(in_ECX + 8) = uVar1 + 1;
+      *(void **)(this + 4) = pvVar2;
+      *(uint *)(this + 8) = uVar1 + 1;
     }
     else {
-      *(void **)(in_ECX + 4) = pvVar2;
-      *(uint *)(in_ECX + 8) = uVar3;
+      *(void **)(this + 4) = pvVar2;
+      *(uint *)(this + 8) = uVar3;
     }
   }
-  if (*(uint *)(in_ECX + 0xc) <= uVar1) {
-    *(uint *)(in_ECX + 0xc) = uVar1 + 1;
+  if (*(uint *)(this + 0xc) <= uVar1) {
+    *(uint *)(this + 0xc) = uVar1 + 1;
   }
-  *(undefined4 *)(*(int *)(in_ECX + 4) + uVar1 * 4) = in_stack_00000004;
+  *(undefined4 *)(*(int *)(this + 4) + uVar1 * 4) = in_stack_00000004;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EC60
 // GHIDRA_NAME TZone::RemoveZoneFromGlobalListAndRelease
-// GHIDRA_PROTO void __cdecl RemoveZoneFromGlobalListAndRelease(void)
+// GHIDRA_PROTO void __thiscall RemoveZoneFromGlobalListAndRelease(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Unlinks zone from global context list and releases via virtual destructor path.
 // GHIDRA_COMMENT_END
 
 /* Unlinks zone from global context list and releases via virtual destructor path. */
 
-void __cdecl TZone::RemoveZoneFromGlobalListAndRelease(void)
+void __thiscall TZone::RemoveZoneFromGlobalListAndRelease(TZone *this)
 
 {
-  int *in_ECX;
-  
-  if (g_pMapActionContextListHead == in_ECX) {
-    g_pMapActionContextListHead = (void *)in_ECX[6];
+  if (g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = *(void **)(this + 0x18);
   }
-  if (in_ECX[6] != 0) {
-    *(int *)(in_ECX[6] + 0x1c) = in_ECX[7];
+  if (*(int *)(this + 0x18) != 0) {
+    *(undefined4 *)(*(int *)(this + 0x18) + 0x1c) = *(undefined4 *)(this + 0x1c);
   }
-  if (in_ECX[7] != 0) {
-    *(int *)(in_ECX[7] + 0x18) = in_ECX[6];
+  if (*(int *)(this + 0x1c) != 0) {
+    *(undefined4 *)(*(int *)(this + 0x1c) + 0x18) = *(undefined4 *)(this + 0x18);
   }
-  in_ECX[7] = 0;
-  in_ECX[6] = 0;
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x18) = 0;
+  if (this != (TZone *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055ED20
 // GHIDRA_NAME TZone::DeserializeZoneFromBinaryStream
-// GHIDRA_PROTO void __cdecl DeserializeZoneFromBinaryStream(void)
+// GHIDRA_PROTO void __thiscall DeserializeZoneFromBinaryStream(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserializes zone/core context fields and variable-length pointer arrays from stream state.
 // GHIDRA_COMMENT_END
 
 /* Deserializes zone/core context fields and variable-length pointer arrays from stream state. */
 
-void __cdecl TZone::DeserializeZoneFromBinaryStream(void)
+void __thiscall TZone::DeserializeZoneFromBinaryStream(TZone *this)
 
 {
   void *pvVar1;
-  int in_ECX;
   uint uVar2;
   uint uVar3;
-  code *pcVar4;
+  TZone *pTVar4;
   int *in_stack_00000004;
-  int iVar5;
+  TZone *pTVar5;
   int iVar6;
   int iVar7;
   undefined4 uStack_44;
   int iStack_40;
   undefined4 uStack_3c;
   uint uStack_38;
-  int aiStack_34 [4];
+  TZone *pTStack_34;
+  undefined4 uStack_30;
+  TZone *pTStack_2c;
+  undefined4 uStack_28;
   
-  aiStack_34[2] = 0x55ed33;
+  pTStack_2c = (TZone *)0x55ed33;
   thunk_HandleCityDialogNoOpSlot18();
-  iVar5 = *in_stack_00000004;
-  aiStack_34[2] = in_ECX + 8;
-  aiStack_34[3] = 0x20;
-  aiStack_34[1] = 0x55ed41;
-  (**(code **)(iVar5 + 0x70))();
-  pcVar4 = *(code **)(iVar5 + 0x3c);
-  aiStack_34[0] = in_ECX + 4;
-  aiStack_34[1] = 2;
+  iVar6 = *in_stack_00000004;
+  pTStack_2c = this + 8;
+  uStack_28 = 0x20;
+  uStack_30 = 0x55ed41;
+  (**(code **)(iVar6 + 0x70))();
+  pTVar4 = *(TZone **)(iVar6 + 0x3c);
+  pTStack_34 = this + 4;
+  uStack_30 = 2;
   uStack_38 = 0x55ed52;
-  (*pcVar4)();
-  uStack_3c = (code *)(in_ECX + 0xc);
+  (*(code *)pTVar4)();
+  uStack_3c = this + 0xc;
   uStack_38 = 4;
   iStack_40 = 0x55ed5c;
-  (*pcVar4)();
-  uStack_44 = (code *)(in_ECX + 0x12);
+  (*(code *)pTVar4)();
+  uStack_44 = this + 0x12;
   iStack_40 = 2;
-  (*pcVar4)();
-  iVar5 = in_ECX + 0x20;
-  (*pcVar4)(iVar5,2);
+  (*(code *)pTVar4)();
+  pTVar5 = this + 0x20;
+  (*(code *)pTVar4)(pTVar5,2);
   if (g_Advance_Turn_Machine_State_00695278 < 0x12) {
-    *(undefined2 *)(in_ECX + 0x14) = (undefined2)g_nMapActionContextCount;
+    *(undefined2 *)(this + 0x14) = (undefined2)g_nMapActionContextCount;
     g_nMapActionContextCount = g_nMapActionContextCount + 1;
   }
   else {
-    (*pcVar4)(in_ECX + 0x14,2);
+    (*(code *)pTVar4)(this + 0x14,2);
   }
-  *(undefined2 *)(in_ECX + 0x10) = 0;
-  *(undefined2 *)(in_ECX + 0x44) = 0;
-  iVar6 = *(int *)(in_ECX + 0x28);
+  *(undefined2 *)(this + 0x10) = 0;
+  *(undefined2 *)(this + 0x44) = 0;
+  iVar6 = *(int *)(this + 0x28);
   if (iVar6 != 0) {
-    *(undefined4 *)(in_ECX + 0x28) = 0;
-    *(undefined4 *)(in_ECX + 0x2c) = 0;
-    *(undefined4 *)(in_ECX + 0x30) = 0;
+    *(undefined4 *)(this + 0x28) = 0;
+    *(undefined4 *)(this + 0x2c) = 0;
+    *(undefined4 *)(this + 0x30) = 0;
     FreeHeapBlockWithAllocatorTracking(iVar6);
   }
-  iVar6 = *(int *)(in_ECX + 0x38);
+  iVar6 = *(int *)(this + 0x38);
   if (iVar6 != 0) {
-    *(undefined4 *)(in_ECX + 0x38) = 0;
-    *(undefined4 *)(in_ECX + 0x3c) = 0;
-    *(undefined4 *)(in_ECX + 0x40) = 0;
+    *(undefined4 *)(this + 0x38) = 0;
+    *(undefined4 *)(this + 0x3c) = 0;
+    *(undefined4 *)(this + 0x40) = 0;
     FreeHeapBlockWithAllocatorTracking(iVar6);
   }
   if (g_Advance_Turn_Machine_State_00695278 < 0xd) {
-    (*pcVar4)((int)&uStack_3c + 2,2);
+    (*(code *)pTVar4)((int)&uStack_3c + 2,2);
     iStack_40 = 0;
     if (0 < uStack_44._2_2_) {
       do {
         iVar6 = iStack_40;
-        (*pcVar4)(aiStack_34,4);
+        (*(code *)pTVar4)(&pTStack_34,4);
         uVar3 = (uint)(short)iVar6;
-        if (*(uint *)(in_ECX + 0x2c) <= uVar3) {
+        if (*(uint *)(this + 0x2c) <= uVar3) {
           uStack_38 = (uVar3 + 1) * 2;
           if (0x7fffffff < uStack_38) {
             uStack_38 = 0x7fffffff;
@@ -1243,30 +1353,30 @@ void __cdecl TZone::DeserializeZoneFromBinaryStream(void)
           pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
           if (pvVar1 == (void *)0x0) {
             pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
-            *(void **)(in_ECX + 0x28) = pvVar1;
-            *(uint *)(in_ECX + 0x2c) = uVar3 + 1;
+            *(void **)(this + 0x28) = pvVar1;
+            *(uint *)(this + 0x2c) = uVar3 + 1;
           }
           else {
-            *(void **)(in_ECX + 0x28) = pvVar1;
-            *(uint *)(in_ECX + 0x2c) = uStack_38;
+            *(void **)(this + 0x28) = pvVar1;
+            *(uint *)(this + 0x2c) = uStack_38;
           }
         }
-        if (*(uint *)(in_ECX + 0x30) <= uVar3) {
-          *(uint *)(in_ECX + 0x30) = uVar3 + 1;
+        if (*(uint *)(this + 0x30) <= uVar3) {
+          *(uint *)(this + 0x30) = uVar3 + 1;
         }
         iStack_40 = iStack_40 + 1;
-        *(int *)(*(int *)(in_ECX + 0x28) + uVar3 * 4) = aiStack_34[0];
-        pcVar4 = uStack_3c;
+        *(TZone **)(*(int *)(this + 0x28) + uVar3 * 4) = pTStack_34;
+        pTVar4 = uStack_3c;
       } while ((short)iStack_40 < uStack_44._2_2_);
     }
-    (*pcVar4)((int)&uStack_44 + 2,2);
+    (*(code *)pTVar4)((int)&uStack_44 + 2,2);
     iVar6 = 0;
-    if (0 < (short)((uint)iVar5 >> 0x10)) {
+    if (0 < (short)((uint)pTVar5 >> 0x10)) {
       do {
         iVar7 = iVar6;
-        (*pcVar4)(&uStack_3c,4);
+        (*(code *)pTVar4)(&uStack_3c,4);
         uVar3 = (uint)(short)iVar6;
-        if (*(uint *)(in_ECX + 0x3c) <= uVar3) {
+        if (*(uint *)(this + 0x3c) <= uVar3) {
           uVar2 = (uVar3 + 1) * 2;
           if (0x7fffffff < uVar2) {
             uVar2 = 0x7fffffff;
@@ -1274,21 +1384,21 @@ void __cdecl TZone::DeserializeZoneFromBinaryStream(void)
           pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
           if (pvVar1 == (void *)0x0) {
             pvVar1 = ReallocateHeapBlockWithAllocatorTracking();
-            *(void **)(in_ECX + 0x38) = pvVar1;
-            *(uint *)(in_ECX + 0x3c) = uVar3 + 1;
+            *(void **)(this + 0x38) = pvVar1;
+            *(uint *)(this + 0x3c) = uVar3 + 1;
           }
           else {
-            *(void **)(in_ECX + 0x38) = pvVar1;
-            *(uint *)(in_ECX + 0x3c) = uVar2;
+            *(void **)(this + 0x38) = pvVar1;
+            *(uint *)(this + 0x3c) = uVar2;
           }
         }
-        if (*(uint *)(in_ECX + 0x40) <= uVar3) {
-          *(uint *)(in_ECX + 0x40) = uVar3 + 1;
+        if (*(uint *)(this + 0x40) <= uVar3) {
+          *(uint *)(this + 0x40) = uVar3 + 1;
         }
         iVar6 = iVar7 + 1;
-        *(code **)(*(int *)(in_ECX + 0x38) + uVar3 * 4) = uStack_3c;
-        pcVar4 = uStack_44;
-      } while ((short)iVar6 < (short)((uint)iVar5 >> 0x10));
+        *(TZone **)(*(int *)(this + 0x38) + uVar3 * 4) = uStack_3c;
+        pTVar4 = uStack_44;
+      } while ((short)iVar6 < (short)((uint)pTVar5 >> 0x10));
     }
   }
   return;
@@ -1296,58 +1406,55 @@ void __cdecl TZone::DeserializeZoneFromBinaryStream(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EFF0
 // GHIDRA_NAME TZone::SerializeZoneToBinaryStream
-// GHIDRA_PROTO void __cdecl SerializeZoneToBinaryStream(void)
+// GHIDRA_PROTO void __thiscall SerializeZoneToBinaryStream(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serializes zone/core context fields to stream state.
 // GHIDRA_COMMENT_END
 
 /* Serializes zone/core context fields to stream state. */
 
-void __cdecl TZone::SerializeZoneToBinaryStream(void)
+void __thiscall TZone::SerializeZoneToBinaryStream(TZone *this)
 
 {
   int iVar1;
   code *pcVar2;
-  int in_ECX;
   int *in_stack_00000004;
   
   thunk_HandleCityDialogNoOpSlot14();
   iVar1 = *in_stack_00000004;
-  (**(code **)(iVar1 + 0xac))(in_ECX + 8);
+  (**(code **)(iVar1 + 0xac))(this + 8);
   pcVar2 = *(code **)(iVar1 + 0x78);
-  (*pcVar2)(in_ECX + 4,2);
-  (*pcVar2)(in_ECX + 0xc,4);
-  (*pcVar2)(in_ECX + 0x12,2);
-  (*pcVar2)(in_ECX + 0x20,2);
-  (*pcVar2)(in_ECX + 0x14,2);
+  (*pcVar2)(this + 4,2);
+  (*pcVar2)(this + 0xc,4);
+  (*pcVar2)(this + 0x12,2);
+  (*pcVar2)(this + 0x20,2);
+  (*pcVar2)(this + 0x14,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055F070
 // GHIDRA_NAME TZone::AssignZoneDisplayNameToOutputRef
-// GHIDRA_PROTO void __cdecl AssignZoneDisplayNameToOutputRef(void)
+// GHIDRA_PROTO void __thiscall AssignZoneDisplayNameToOutputRef(void)
 
-void __cdecl TZone::AssignZoneDisplayNameToOutputRef(void)
+void __thiscall TZone::AssignZoneDisplayNameToOutputRef(TZone *this)
 
 {
-  int in_ECX;
   void *in_stack_00000004;
   
-  StringShared__AssignFromPtr(in_stack_00000004,(int *)(in_ECX + 8));
+  StringShared__AssignFromPtr(in_stack_00000004,(int *)(this + 8));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055F090
 // GHIDRA_NAME TZone::AssignZoneDisplayNameAliasToOutputRef
-// GHIDRA_PROTO void __cdecl AssignZoneDisplayNameAliasToOutputRef(void)
+// GHIDRA_PROTO void __thiscall AssignZoneDisplayNameAliasToOutputRef(void)
 
-void __cdecl TZone::AssignZoneDisplayNameAliasToOutputRef(void)
+void __thiscall TZone::AssignZoneDisplayNameAliasToOutputRef(TZone *this)
 
 {
-  int in_ECX;
   void *in_stack_00000004;
   
-  StringShared__AssignFromPtr(in_stack_00000004,(int *)(in_ECX + 8));
+  StringShared__AssignFromPtr(in_stack_00000004,(int *)(this + 8));
   return;
 }
 
@@ -1674,31 +1781,34 @@ void __thiscall TZone::UpdatePortZoneTileOverlayMarkersForStateToggle(int *param
 {
   int *piVar1;
   code *pcVar2;
-  char cVar3;
-  undefined4 extraout_EAX;
-  undefined4 extraout_EAX_00;
+  undefined4 uVar3;
+  TZone *pThis;
+  TZone *pThis_00;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
   
   piVar1 = *(int **)(g_pUiRuntimeContext + 0xf0);
   if (((bool)param_2 !=
        -1 < *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x16 + (short)param_1[8] * 0x24)) &&
      (piVar1 != (int *)0x0)) {
-    cVar3 = (**(code **)(*param_1 + 0x38))();
-    if (cVar3 != '\0') {
-      thunk_SetMapTileStateByteAndNotifyObserver();
+    uVar3 = (**(code **)(*param_1 + 0x38))();
+    if ((char)uVar3 != '\0') {
+      thunk_SetMapTileStateByteAndNotifyObserver
+                (g_pGlobalMapState,(TZone *)CONCAT22(extraout_var_00,(short)param_1[8]));
       (**(code **)(*piVar1 + 0x1d8))(CONCAT22(extraout_var,(short)param_1[8]));
       return;
     }
-    thunk_SetMapTileStateByteAndNotifyObserver();
+    thunk_SetMapTileStateByteAndNotifyObserver
+              (g_pGlobalMapState,(TZone *)CONCAT22((short)((uint)uVar3 >> 0x10),(short)param_1[8]));
     pcVar2 = *(code **)(*piVar1 + 0x1d8);
-    (*pcVar2)(CONCAT22(extraout_var_00,(short)param_1[8]));
+    (*pcVar2)(CONCAT22(extraout_var_01,(short)param_1[8]));
     thunk_StepHexTileIndexByDirectionWithWrapRules();
-    thunk_SetMapTileStateByteAndNotifyObserver();
-    (*pcVar2)(extraout_EAX);
+    thunk_SetMapTileStateByteAndNotifyObserver(g_pGlobalMapState,pThis);
+    (*pcVar2)(pThis);
     thunk_StepHexTileIndexByDirectionWithWrapRules();
-    thunk_SetMapTileStateByteAndNotifyObserver();
-    (*pcVar2)(extraout_EAX_00);
+    thunk_SetMapTileStateByteAndNotifyObserver(g_pGlobalMapState,pThis_00);
+    (*pcVar2)(pThis_00);
   }
   return;
 }
@@ -1749,16 +1859,15 @@ undefined4 __thiscall TZone::DestroyTPortZone(undefined4 param_1,byte param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005617F0
 // GHIDRA_NAME TZone::DeserializeTPortZoneFromBinaryStream
-// GHIDRA_PROTO void __cdecl DeserializeTPortZoneFromBinaryStream(void)
+// GHIDRA_PROTO void __thiscall DeserializeTPortZoneFromBinaryStream(void)
 
-void __cdecl TZone::DeserializeTPortZoneFromBinaryStream(void)
+void __thiscall TZone::DeserializeTPortZoneFromBinaryStream(TZone *this)
 
 {
-  int in_ECX;
   int *in_stack_00000004;
   
-  thunk_DeserializeZoneFromBinaryStream();
-  (**(code **)(*in_stack_00000004 + 0x3c))(in_ECX + 0x48,2);
+  thunk_DeserializeZoneFromBinaryStream(this);
+  (**(code **)(*in_stack_00000004 + 0x3c))(this + 0x48,2);
   return;
 }
 
@@ -1787,12 +1896,11 @@ void __thiscall TZone::SerializeTPortZoneToBinaryStream(int param_1,int *param_2
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005618B0
 // GHIDRA_NAME TZone::RefreshTPortZoneDisplayNameFromLocalization
-// GHIDRA_PROTO void __cdecl RefreshTPortZoneDisplayNameFromLocalization(void)
+// GHIDRA_PROTO void __thiscall RefreshTPortZoneDisplayNameFromLocalization(void)
 
-void __cdecl TZone::RefreshTPortZoneDisplayNameFromLocalization(void)
+void __thiscall TZone::RefreshTPortZoneDisplayNameFromLocalization(TZone *this)
 
 {
-  int in_ECX;
   undefined4 unaff_ESI;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
@@ -1814,9 +1922,9 @@ void __cdecl TZone::RefreshTPortZoneDisplayNameFromLocalization(void)
   puStack_20 = &local_10;
   local_4 = CONCAT31(local_4._1_3_,1);
   (**(code **)(*g_pLocalizationTable + 0x84))
-            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)(in_ECX + 4)));
+            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)(this + 4)));
   scanBracketExpressions(g_pLocalizationTable,&puStack_20,unaff_EDI);
-  StringShared__AssignFromPtr((void *)(in_ECX + 8),(int *)&puStack_20);
+  StringShared__AssignFromPtr(this + 8,(int *)&puStack_20);
   local_10 = local_10 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
   local_10 = 0xffffffff;
@@ -1838,12 +1946,20 @@ void __cdecl TZone::RefreshTPortZoneDisplayNameFromLocalization(void)
 void __fastcall TZone::DestroyTPortZoneAndClearOverlayMarkers(int *param_1)
 
 {
-  if (g_pGlobalMapState != 0) {
+  undefined4 in_EAX;
+  TZone *pThis;
+  TZone *extraout_EAX;
+  
+  if (g_pGlobalMapState != (TZone *)0x0) {
+    pThis = (TZone *)CONCAT22((short)((uint)in_EAX >> 0x10),(short)param_1[8]);
     if ((short)param_1[8] != -1) {
-      thunk_SetMapTileStateByteAndNotifyObserver();
+      thunk_SetMapTileStateByteAndNotifyObserver(g_pGlobalMapState,pThis);
+      pThis = extraout_EAX;
     }
     if (param_1[3] != -1) {
-      thunk_SetMapTileStateByteAndNotifyObserver();
+      thunk_SetMapTileStateByteAndNotifyObserver
+                (g_pGlobalMapState,(TZone *)CONCAT22((short)((uint)pThis >> 0x10),(short)param_1[3])
+                );
     }
   }
   if (g_pMapActionContextListHead == param_1) {
@@ -2054,7 +2170,8 @@ void __thiscall TZone::DeserializeMapActionContextRuntimeState(int param_1,int *
   short sVar3;
   void *pvVar4;
   int *piVar5;
-  int *piVar6;
+  int *arg1;
+  TZone *pTVar6;
   int iVar7;
   int unaff_EBP;
   int unaff_ESI;
@@ -2062,17 +2179,18 @@ void __thiscall TZone::DeserializeMapActionContextRuntimeState(int param_1,int *
   int unaff_EDI;
   int *unaff_FS_OFFSET;
   int iVar9;
-  undefined1 *puVar10;
-  short *psVar11;
+  TZone *pTVar10;
+  undefined1 *puVar11;
+  short *psVar12;
   short *psStack_14;
-  int *piStack_c;
+  TZone *pTStack_c;
   undefined1 *puStack_8;
   short *psStack_4;
   
   psStack_4 = (short *)0xffffffff;
   puStack_8 = &LAB_00635855;
-  piStack_c = (int *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&piStack_c;
+  pTStack_c = (TZone *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&pTStack_c;
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
     FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
@@ -2119,23 +2237,23 @@ void __thiscall TZone::DeserializeMapActionContextRuntimeState(int param_1,int *
     (**(code **)(*piVar5 + 0x1c))();
   }
   pcVar2 = *(code **)(*param_2 + 0x3c);
-  psVar11 = psVar1;
+  psVar12 = psVar1;
   (*pcVar2)(psVar1,2);
   iVar7 = (int)*psVar1;
   piVar5 = (int *)AllocateWithFallbackHandler(iVar7 * 0x48 + 4);
-  piStack_c = (int *)0x0;
+  pTStack_c = (TZone *)0x0;
   if (piVar5 == (int *)0x0) {
-    piVar6 = (int *)0x0;
+    arg1 = (int *)0x0;
   }
   else {
-    piVar6 = piVar5 + 1;
+    arg1 = piVar5 + 1;
     *piVar5 = iVar7;
-    CallCallbackRepeatedly((int)piVar6,0x48,iVar7,0x40405c,0x407775);
+    CallCallbackRepeatedly((int)arg1,0x48,iVar7,0x40405c,0x407775);
   }
   iVar7 = 0;
-  piStack_c = (int *)0xffffffff;
-  *(int **)(unaff_EBP + 8) = piVar6;
-  if (piVar6 == (int *)0x0) {
+  pTStack_c = (TZone *)0xffffffff;
+  *(int **)(unaff_EBP + 8) = arg1;
+  if (arg1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
@@ -2147,46 +2265,46 @@ void __thiscall TZone::DeserializeMapActionContextRuntimeState(int param_1,int *
       iVar7 = iVar7 + 0x48;
     } while (iVar8 < *psStack_4);
   }
-  puVar10 = &stack0xffffffe4;
-  (*pcVar2)(puVar10,2);
+  puVar11 = &stack0xffffffe4;
+  (*pcVar2)(puVar11,2);
   sVar3 = (short)unaff_ESI;
   while (unaff_ESI = unaff_ESI + -1, sVar3 != 0) {
-    piVar5 = (int *)AllocateWithFallbackHandler(0x4c);
-    piStack_c = piVar5;
-    if (piVar5 == (int *)0x0) {
-      piVar5 = (int *)0x0;
+    pTVar6 = (TZone *)AllocateWithFallbackHandler(0x4c);
+    pTStack_c = pTVar6;
+    if (pTVar6 == (TZone *)0x0) {
+      pTVar6 = (TZone *)0x0;
     }
     else {
-      thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList();
-      *(undefined2 *)(piVar5 + 0x12) = 0xffff;
-      *piVar5 = (int)&PTR_thunk_GetTPortZoneClassName_0065c758;
+      thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList(pTVar6);
+      *(undefined2 *)(pTVar6 + 0x48) = 0xffff;
+      *(undefined ***)pTVar6 = &PTR_thunk_GetTPortZoneClassName_0065c758;
     }
     psStack_14 = (short *)0xffffffff;
-    (**(code **)(*piVar5 + 0x18))(param_2);
+    (**(code **)(*(int *)pTVar6 + 0x18))(param_2);
     sVar3 = (short)unaff_ESI;
   }
-  piVar5 = (int *)(unaff_EDI + 0xc);
-  piVar6 = piVar5;
-  piStack_c = piVar5;
-  (*pcVar2)(piVar5,2);
+  pTVar6 = (TZone *)(unaff_EDI + 0xc);
+  pTVar10 = pTVar6;
+  pTStack_c = pTVar6;
+  (*pcVar2)(pTVar6,2);
   FreeHeapBufferIfNotNull(*(undefined4 *)(unaff_EDI + 0x10));
-  iVar7 = AllocateWithFallbackHandler((int)*(short *)piVar5 << 4);
+  iVar7 = AllocateWithFallbackHandler((int)*(short *)pTVar6 << 4);
   if (iVar7 == 0) {
     iVar7 = 0;
   }
-  *(int *)(psVar11 + 8) = iVar7;
+  *(int *)(psVar12 + 8) = iVar7;
   if (iVar7 == 0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar7 = 0;
-  if (0 < *(short *)piVar5) {
+  if (0 < *(short *)pTVar6) {
     iVar8 = 0;
     do {
-      iVar9 = iVar8 + 4 + *(int *)(psVar11 + 8);
+      iVar9 = iVar8 + 4 + *(int *)(psVar12 + 8);
       (*pcVar2)(iVar9,4);
-      (*pcVar2)(iVar8 + *(int *)(puVar10 + 0x10),4);
-      (*pcVar2)(iVar8 + 0xc + piVar6[4],4);
+      (*pcVar2)(iVar8 + *(int *)(puVar11 + 0x10),4);
+      (*pcVar2)(iVar8 + 0xc + *(int *)(pTVar10 + 0x10),4);
       (*pcVar2)(iVar8 + 8 + *(int *)(iVar9 + 0x10),4);
       iVar7 = iVar7 + 1;
       iVar8 = iVar8 + 0x10;
@@ -2350,5 +2468,31 @@ LAB_00562a16:
     piVar7 = (int *)piVar7[7];
   } while (piVar7 != (int *)0x0);
   goto joined_r0x005629ea;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E7F50
+// GHIDRA_NAME TZone::FreeHeapBlockWithAllocatorTracking
+// GHIDRA_PROTO undefined FreeHeapBlockWithAllocatorTracking()
+
+void TZone::FreeHeapBlockWithAllocatorTracking(LPVOID param_1)
+
+{
+  LPVOID lpMem;
+  int iVar1;
+  undefined4 local_4;
+  
+  lpMem = param_1;
+  if (param_1 != (LPVOID)0x0) {
+    EnterIndexedCriticalSectionWithLazyInit(9);
+    iVar1 = GetAllocatorRegionHeaderForPointer(lpMem,&local_4,&param_1);
+    if (iVar1 != 0) {
+      UpdateAllocatorRegionUsageOnFree(local_4,param_1,iVar1);
+      LeaveIndexedCriticalSection(9);
+      return;
+    }
+    LeaveIndexedCriticalSection(9);
+    HeapFree(g_hCrtProcessHeap,0,lpMem);
+  }
+  return;
 }
 

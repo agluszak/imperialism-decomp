@@ -23,81 +23,82 @@ void * __cdecl TArmyTacUnit::thunk_GetTArmyTacUnitClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401CE9
 // GHIDRA_NAME TArmyTacUnit::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO void __cdecl thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
+// GHIDRA_PROTO void __thiscall thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange */
 
-void __cdecl TArmyTacUnit::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
+void __thiscall
+TArmyTacUnit::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TArmyTacUnit *this)
 
 {
-  DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange();
+  DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040258B
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot03(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot03(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot03
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot03 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot03();
+  TArmyTacUnit_VtblSlot03(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402A13
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot05(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot05(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot05
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot05 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot05();
+  TArmyTacUnit_VtblSlot05(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402BE4
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot09(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot09(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot09
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot09 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot09();
+  TArmyTacUnit_VtblSlot09(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004034D6
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot07(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot07(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot07
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot07 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot07();
+  TArmyTacUnit_VtblSlot07(this);
   return;
 }
 
@@ -212,49 +213,49 @@ int TArmyTacUnit::thunk_GetOrderNodeDescriptorWord0CAsIntByResourceType(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404408
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot02(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot02(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot02
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot02 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot02();
+  TArmyTacUnit_VtblSlot02(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404BF6
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot01(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot01(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot01
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot01 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot01();
+  TArmyTacUnit_VtblSlot01(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004056EB
 // GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot06(void)
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot06(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot06
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot06 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06(void)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 
 {
-  TArmyTacUnit_VtblSlot06();
+  TArmyTacUnit_VtblSlot06(this);
   return;
 }
 
@@ -398,14 +399,14 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot04(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B3E0
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot01
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot01(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot01(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Method slot 01 from vtable rooted at 0x00669620 (TArmyTacUnit family).
 // GHIDRA_COMMENT_END
 
 /* Method slot 01 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot01(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
 
 {
   int *piVar1;
@@ -419,10 +420,9 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot01(void)
   undefined3 extraout_var_01;
   int extraout_EAX_02;
   undefined3 extraout_var_02;
-  int in_ECX;
   int iVar4;
   
-  iVar3 = (**(code **)(**(int **)(in_ECX + 4) + 0x48))();
+  iVar3 = (**(code **)(**(int **)(this + 4) + 0x48))();
   if (0 < iVar3) {
     thunk_InitializeLinkedListCursorFromOwnerHead();
     bVar2 = thunk_LinkedListCursorHasCurrent();
@@ -440,7 +440,7 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot01(void)
       iVar4 = CONCAT31(extraout_var_00,bVar2);
     }
   }
-  iVar3 = (**(code **)(**(int **)(in_ECX + 8) + 0x48))();
+  iVar3 = (**(code **)(**(int **)(this + 8) + 0x48))();
   if (0 < iVar3) {
     thunk_InitializeLinkedListCursorFromOwnerHead();
     bVar2 = thunk_LinkedListCursorHasCurrent();
@@ -463,21 +463,20 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot01(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B4F0
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot02
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot02(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot02(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Method slot 02 from vtable rooted at 0x00669620 (TArmyTacUnit family).
 // GHIDRA_COMMENT_END
 
 /* Method slot 02 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot02(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot02(TArmyTacUnit *this)
 
 {
   int extraout_EAX;
-  int in_ECX;
   int in_stack_00000004;
   
-  FindListNodeByKeyFromNodeOrHead((void *)(*(int *)(in_ECX + 4) + 4),in_stack_00000004,0);
+  FindListNodeByKeyFromNodeOrHead((void *)(*(int *)(this + 4) + 4),in_stack_00000004,0);
   if (extraout_EAX != 0) {
     RemoveListNodeAndRecycle(extraout_EAX);
   }
@@ -487,25 +486,24 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot02(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B540
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot03
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot03(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot03(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Method slot 03 from vtable rooted at 0x00669620 (TArmyTacUnit family).
 // GHIDRA_COMMENT_END
 
 /* Method slot 03 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot03(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot03(TArmyTacUnit *this)
 
 {
   int *piVar1;
-  int in_ECX;
   int *in_stack_00000004;
   
   AddHead(in_stack_00000004);
   (**(code **)(*in_stack_00000004 + 0x3c))();
   piVar1 = (int *)in_stack_00000004[0xe];
-  *(short *)(piVar1 + 6) = (short)*(undefined4 *)(in_ECX + 0x1c);
-  (**(code **)(*piVar1 + 0x28))(*(undefined4 *)(*(int *)(in_ECX + 0x14) + 0x38));
+  *(short *)(piVar1 + 6) = (short)*(undefined4 *)(this + 0x1c);
+  (**(code **)(*piVar1 + 0x28))(*(undefined4 *)(*(int *)(this + 0x14) + 0x38));
   WrapperFor_AllocateWithFallbackHandler_At004a7b20(piVar1);
   in_stack_00000004[0xd] = in_stack_00000004[1];
   return;
@@ -513,67 +511,135 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot03(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059BC80
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot06(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot06(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Method slot 06 from vtable rooted at 0x00669620 (TArmyTacUnit family).
 // GHIDRA_COMMENT_END
 
 /* Method slot 06 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot06(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 
 {
   int extraout_EAX;
   int iVar1;
-  int in_ECX;
+  TArmyTacUnit *unaff_EDI;
   
-  TArmyTacUnit_VtblSlot06_Impl();
-  iVar1 = (**(code **)(**(int **)(in_ECX + 4) + 0x48))();
+  TArmyTacUnit_VtblSlot06_Impl(*(TArmyTacUnit **)(this + 0x14),unaff_EDI);
+  iVar1 = (**(code **)(**(int **)(this + 4) + 0x48))();
   if (extraout_EAX < iVar1) {
     RecomputeTacticalCursorProjectionScoresAndPruneList(extraout_EAX);
   }
-  if (*(char *)(in_ECX + 0xc) != '\0') {
+  if (this[0xc] != (TArmyTacUnit)0x0) {
     BuildTacticalActionPriorityBucketsWithGridGuard();
-    *(undefined1 *)(in_ECX + 0x10) = 1;
+    this[0x10] = (TArmyTacUnit)0x1;
     return;
   }
   DispatchTacticalActionClassSelectionAcrossCursorList();
-  *(undefined1 *)(in_ECX + 0x10) = 1;
+  this[0x10] = (TArmyTacUnit)0x1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059C3C0
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot07
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot07(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot07(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Method slot 07 from vtable rooted at 0x00669620 (TArmyTacUnit family).
 // GHIDRA_COMMENT_END
 
 /* Method slot 07 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot07(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
 
 {
   int iVar1;
   int iVar2;
-  int in_ECX;
   int iVar3;
   undefined4 in_stack_00000004;
   
   iVar3 = 1;
   do {
-    iVar1 = (**(code **)(**(int **)(in_ECX + 4) + 0x4c))(iVar3);
+    iVar1 = (**(code **)(**(int **)(this + 4) + 0x4c))(iVar3);
     iVar3 = iVar3 + 1;
     if (*(int *)(iVar1 + 8) == -2) break;
-    iVar2 = (**(code **)(**(int **)(in_ECX + 4) + 0x48))();
+    iVar2 = (**(code **)(**(int **)(this + 4) + 0x48))();
   } while (iVar3 <= iVar2);
-  iVar2 = (**(code **)(**(int **)(in_ECX + 4) + 0x48))();
+  iVar2 = (**(code **)(**(int **)(this + 4) + 0x48))();
   if (iVar2 < iVar3) {
-    *(undefined1 *)(in_ECX + 0x10) = 1;
+    this[0x10] = (TArmyTacUnit)0x1;
     return;
   }
-  (**(code **)(**(int **)(in_ECX + 0x14) + 0x30))(iVar1,in_stack_00000004);
+  (**(code **)(**(int **)(this + 0x14) + 0x30))(iVar1,in_stack_00000004);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059D530
+// GHIDRA_NAME TArmyTacUnit::SelectBestTacticalTileByWeightedHeuristics
+// GHIDRA_PROTO int __thiscall SelectBestTacticalTileByWeightedHeuristics(int tacticalContext, int * pScoreWeights)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds tactical distance context when needed
+// GHIDRA_COMMENT_END
+
+/* Builds tactical distance context when needed */
+
+int __thiscall
+TArmyTacUnit::SelectBestTacticalTileByWeightedHeuristics
+          (TArmyTacUnit *this,int tacticalContext,int *pScoreWeights)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
+  int iVar5;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
+  iVar1 = pScoreWeights[8];
+  local_4 = -1;
+  local_8 = -99999;
+  if (0 < iVar1) {
+    thunk_BuildTacticalDistanceFieldForSide();
+  }
+  iVar3 = *(int *)(this + 0x14);
+  iVar5 = 0;
+  if (0 < *(int *)(iVar3 + 0x3c)) {
+    local_c = -2;
+    do {
+      if ((*(short *)(*(int *)(iVar3 + 0x24) + iVar5 * 2) == -1) ||
+         ((0 >= iVar1 && ((iVar5 % 0x1d == 0 || (iVar5 % 0x1d == *(int *)(iVar3 + 0x34) + -1)))))) {
+        *(undefined4 *)(*(int *)(iVar3 + 0x2c) + iVar5 * 4) = 0;
+      }
+      else {
+        iVar3 = 0;
+        local_10 = 0xf;
+        piVar4 = pScoreWeights;
+        do {
+          if (*piVar4 != 0) {
+            iVar2 = (**(code **)(((int)&g_apfnTacticalTileScoreTermEvaluators - (int)pScoreWeights)
+                                + (int)piVar4))(tacticalContext,iVar5);
+            iVar3 = iVar3 + iVar2 * *piVar4;
+          }
+          piVar4 = piVar4 + 1;
+          local_10 = local_10 + -1;
+        } while (local_10 != 0);
+        if ((local_8 < iVar3) ||
+           ((iVar3 == local_8 &&
+            (*(short *)(*(int *)(*(int *)(this + 0x14) + 0x24) + iVar5 * 2) <
+             *(short *)(local_c + *(int *)(*(int *)(this + 0x14) + 0x24)))))) {
+          local_c = iVar5 * 2;
+          local_8 = iVar3;
+          local_4 = iVar5;
+        }
+        *(int *)(*(int *)(*(int *)(this + 0x14) + 0x2c) + iVar5 * 4) = iVar3;
+      }
+      iVar3 = *(int *)(this + 0x14);
+      iVar5 = iVar5 + 1;
+    } while (iVar5 < *(int *)(iVar3 + 0x3c));
+  }
+  return local_4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059E4F0
@@ -729,7 +795,7 @@ LAB_0059e5be:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EA60
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot09
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot09(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot09(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT State-machine campaign: table 0x00669620 indicates this method follows auto-turn slot; treated as vtable slot09.
 // GHIDRA_COMMENT_END
@@ -737,10 +803,9 @@ LAB_0059e5be:
 /* State-machine campaign: table 0x00669620 indicates this method follows auto-turn slot; treated as
    vtable slot09. */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot09(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
 
 {
-  int in_ECX;
   undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined1 auStack_34 [4];
@@ -760,7 +825,7 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot09(void)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638568;
   *unaff_FS_OFFSET = &local_c;
-  if (*(char *)(in_ECX + 0xe) != '\0') {
+  if (this[0xe] != (TArmyTacUnit)0x0) {
     puStack_1c = (undefined1 *)0x59ea89;
     InitializeSharedStringRefFromEmpty();
     puStack_1c = local_14;
@@ -787,26 +852,24 @@ void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot09(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EB40
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot05
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot05(void)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot05(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Method slot 05 from vtable rooted at 0x00669620 (TArmyTacUnit family).
 // GHIDRA_COMMENT_END
 
 /* Method slot 05 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
 
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot05(void)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot05(TArmyTacUnit *this)
 
 {
-  int *in_ECX;
-  
-  if ((char)in_ECX[4] == '\0') {
-    (**(code **)(*in_ECX + 0x48))();
+  if (this[0x10] == (TArmyTacUnit)0x0) {
+    (**(code **)(*(int *)this + 0x48))();
     return;
   }
-  if (*(char *)((int)in_ECX + 0xe) == '\0') {
-    *(undefined1 *)((int)in_ECX + 0xe) = 1;
-    thunk_SelectAndApplyTacticalCursorModeProfile((int)in_ECX);
-    (**(code **)(*in_ECX + 0x2c))();
+  if (this[0xe] == (TArmyTacUnit)0x0) {
+    this[0xe] = (TArmyTacUnit)0x1;
+    thunk_SelectAndApplyTacticalCursorModeProfile((int)this);
+    (**(code **)(*(int *)this + 0x2c))();
   }
   return;
 }
@@ -876,7 +939,7 @@ void __thiscall TArmyTacUnit::AddOrderNodeToHeadAndReassignNationCounters(TArmyT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F160
 // GHIDRA_NAME TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO void __cdecl DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
+// GHIDRA_PROTO void __thiscall DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when target becomes reachable.
 // GHIDRA_COMMENT_END
@@ -884,7 +947,8 @@ void __thiscall TArmyTacUnit::AddOrderNodeToHeadAndReassignNationCounters(TArmyT
 /* Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when
    target becomes reachable. */
 
-void __cdecl TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
+void __thiscall
+TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TArmyTacUnit *this)
 
 {
   code *pcVar1;
@@ -898,7 +962,6 @@ void __cdecl TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
   undefined3 extraout_var_00;
   int iVar7;
   int iVar8;
-  int in_ECX;
   int unaff_EBX;
   int *piVar9;
   int fromTileIndex;
@@ -906,17 +969,17 @@ void __cdecl TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
   int *piStack_18;
   int iVar5;
   
-  if (*(char *)(in_ECX + 0xc) == '\0') {
-    piVar9 = *(int **)(*(int *)(*(int *)(in_ECX + 0x14) + 0x14) + 4);
+  if (this[0xc] == (TArmyTacUnit)0x0) {
+    piVar9 = *(int **)(*(int *)(*(int *)(this + 0x14) + 0x14) + 4);
   }
   else {
-    piVar9 = *(int **)(*(int *)(*(int *)(in_ECX + 0x14) + 0x18) + 4);
+    piVar9 = *(int **)(*(int *)(*(int *)(this + 0x14) + 0x18) + 4);
   }
   iVar7 = *piVar9;
   pcVar1 = *(code **)(iVar7 + 0x48);
   iVar3 = (*pcVar1)();
   piVar4 = (int *)AllocateWithFallbackHandler(iVar3 << 2);
-  iVar3 = *(int *)(*(int *)(*(int *)(in_ECX + 0x14) + 0x1c) + 8);
+  iVar3 = *(int *)(*(int *)(*(int *)(this + 0x14) + 0x1c) + 8);
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar2 = thunk_LinkedListCursorHasCurrent();
   iVar5 = CONCAT31(extraout_var,bVar2);
@@ -949,7 +1012,7 @@ void __cdecl TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
   iVar7 = (**(code **)(iVar7 + 0x4c))((int)piStack_18 + 1);
   iVar7 = *(int *)(iVar7 + 8);
   iVar8 = thunk_ComputeHexTileDistanceFromIndices(unaff_EBX,iVar7);
-  iVar6 = *(int *)(in_ECX + 0x14);
+  iVar6 = *(int *)(this + 0x14);
   fromTileIndex = 0;
   iVar5 = unaff_EBX;
   if (0 < *(int *)(iVar6 + 0x3c)) {
@@ -959,26 +1022,86 @@ void __cdecl TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
         iVar5 = fromTileIndex;
         iVar8 = iVar6;
       }
-      iVar6 = *(int *)(in_ECX + 0x14);
+      iVar6 = *(int *)(this + 0x14);
       fromTileIndex = fromTileIndex + 1;
     } while (fromTileIndex < *(int *)(iVar6 + 0x3c));
   }
   if (iVar5 != unaff_EBX) {
-    piVar9 = *(int **)(in_ECX + 0x14);
+    piVar9 = *(int **)(this + 0x14);
     piVar4 = (int *)piVar9[7];
     while ((piVar4 == piStack_18 && (piStack_18[2] != iVar5))) {
       (**(code **)(*piVar9 + 0x34))(piStack_18,iVar5);
-      piVar9 = *(int **)(in_ECX + 0x14);
+      piVar9 = *(int **)(this + 0x14);
       piVar4 = (int *)piVar9[7];
     }
   }
   iVar6 = (**(code **)(*piStack_18 + 0x2c))();
-  if ((iVar8 <= iVar6) && ((int *)(*(int **)(in_ECX + 0x14))[7] == piStack_18)) {
-    (**(code **)(**(int **)(in_ECX + 0x14) + 0x40))(piStack_18,iVar7);
+  if ((iVar8 <= iVar6) && ((int *)(*(int **)(this + 0x14))[7] == piStack_18)) {
+    (**(code **)(**(int **)(this + 0x14) + 0x40))(piStack_18,iVar7);
   }
   FreeHeapBufferIfNotNull(iVar3);
-  if (*(int **)(*(int *)(in_ECX + 0x14) + 0x1c) == piStack_18) {
+  if (*(int **)(*(int *)(this + 0x14) + 0x1c) == piStack_18) {
     thunk_QueueTacticalEventPacket232A();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A39A0
+// GHIDRA_NAME TArmyTacUnit::ComputeHexTileDistanceFromIndices
+// GHIDRA_PROTO int __cdecl ComputeHexTileDistanceFromIndices(int fromTileIndex, int toTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Computes hex-grid distance between two tile indices on 0x1d-column tactical map.
+// GHIDRA_COMMENT_END
+
+/* Computes hex-grid distance between two tile indices on 0x1d-column tactical map. */
+
+int __cdecl TArmyTacUnit::ComputeHexTileDistanceFromIndices(int fromTileIndex,int toTileIndex)
+
+{
+  uint uVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  uint uVar5;
+  
+  uVar1 = fromTileIndex / 0x1d;
+  iVar2 = (uVar1 & 1) + (fromTileIndex % 0x1d) * 2;
+  uVar5 = toTileIndex / 0x1d;
+  iVar4 = (uVar5 & 1) + (toTileIndex % 0x1d) * 2;
+  if (iVar4 < iVar2) {
+    iVar4 = iVar2 * 2 - iVar4;
+  }
+  if ((int)uVar5 < (int)uVar1) {
+    uVar5 = uVar1 * 2 - uVar5;
+  }
+  iVar3 = uVar5 - uVar1;
+  iVar2 = (iVar4 - iVar3) - iVar2;
+  if (0 < iVar2) {
+    return iVar2 / 2 + iVar3;
+  }
+  return iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A4240
+// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_005a4240 with single named caller TArmyTacUnit_VtblSlot06@0x0059bc80
+// GHIDRA_COMMENT_END
+
+/* [ThunkBridge] promoted from thunk_FUN_005a4240 with single named caller
+   TArmyTacUnit_VtblSlot06@0x0059bc80 */
+
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit *this,TArmyTacUnit *pThis)
+
+{
+  int iVar1;
+  
+  iVar1 = 0;
+  if (0 < *(int *)(this + 0x3c)) {
+    do {
+      iVar1 = iVar1 + 1;
+    } while (iVar1 < *(int *)(this + 0x3c));
   }
   return;
 }
@@ -1132,5 +1255,20 @@ int TArmyTacUnit::GetOrderNodeDescriptorWord0CAsIntByResourceType(void)
   
   sVar1 = thunk_GetOrderNodeDescriptorWord0CByResourceType();
   return (int)sVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C3530
+// GHIDRA_NAME TArmyTacUnit::NoOpRuntimeCallback_005c3530
+// GHIDRA_PROTO void __cdecl NoOpRuntimeCallback_005c3530(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Intentional no-op callback/helper stub.
+// GHIDRA_COMMENT_END
+
+/* Intentional no-op callback/helper stub. */
+
+void __cdecl TArmyTacUnit::NoOpRuntimeCallback_005c3530(void)
+
+{
+  return;
 }
 

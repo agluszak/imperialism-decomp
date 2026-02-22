@@ -79,17 +79,18 @@ TOfferDeskPicture::thunk_HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040684D
 // GHIDRA_NAME TOfferDeskPicture::thunk_HandleTradeCommandTagsAndSelectionUpdates
-// GHIDRA_PROTO void __cdecl thunk_HandleTradeCommandTagsAndSelectionUpdates(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeCommandTagsAndSelectionUpdates(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeCommandTagsAndSelectionUpdates
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeCommandTagsAndSelectionUpdates */
 
-void __cdecl TOfferDeskPicture::thunk_HandleTradeCommandTagsAndSelectionUpdates(void)
+void __thiscall
+TOfferDeskPicture::thunk_HandleTradeCommandTagsAndSelectionUpdates(TOfferDeskPicture *this)
 
 {
-  HandleTradeCommandTagsAndSelectionUpdates();
+  HandleTradeCommandTagsAndSelectionUpdates(this);
   return;
 }
 
@@ -107,6 +108,74 @@ TOfferDeskPicture::thunk_ConfigureNationStateResponseCommandTagsAndTimers(TOffer
 
 {
   ConfigureNationStateResponseCommandTagsAndTimers(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BE150
+// GHIDRA_NAME TOfferDeskPicture::UIWidget::UpdateSelectionRect
+// GHIDRA_PROTO void __thiscall UIWidget::UpdateSelectionRect(astruct_4 * this_obj)
+
+void __thiscall
+TOfferDeskPicture::UIWidget__UpdateSelectionRect(TOfferDeskPicture *this,astruct_4 *this_obj)
+
+{
+  short max_short_val;
+  astruct_2 *gfx_iface;
+  undefined4 *seh_chain;
+  char *draw_flags;
+  RECT src_rect;
+  tagRECT dst_rect;
+  undefined4 seh_prev;
+  undefined1 *state_flags;
+  int cleanup_state;
+  astruct_3 *gfx_ifc_vtbl;
+  
+  seh_prev = *seh_chain;
+  cleanup_state = 0xffffffff;
+  state_flags = &LAB_00639518;
+  *seh_chain = &seh_prev;
+  TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection
+            (*(TTradePageBuyView **)(this + 0x68));
+  TTradePageSellView::thunk_RefreshTradeSellPageNationOfferLinesForSelection
+            (*(TTradePageSellView **)(this + 0x6c));
+  if ((short)this_obj == -1) {
+    *(undefined4 *)(this + 0x70) = 0;
+  }
+  else {
+    max_short_val = *(short *)(*(int *)(this + 0x68) + 0x60);
+    if (*(short *)(*(int *)(this + 0x68) + 0x60) <= *(short *)(*(int *)(this + 0x6c) + 0x60)) {
+      max_short_val = *(short *)(*(int *)(this + 0x6c) + 0x60);
+    }
+    *(int *)(this + 0x70) = (int)max_short_val;
+    gfx_iface = (astruct_2 *)(**(code **)(*(int *)this + 0x94))();
+    gfx_ifc_vtbl = gfx_iface->field0_0x0;
+    (*(code *)gfx_ifc_vtbl->field12_0xc)();
+    InitializeSharedStringRefFromEmpty();
+    state_flags = (undefined1 *)0x0;
+    InitializeSharedStringRefFromEmpty();
+    state_flags._0_1_ = 1;
+    InitializeSharedStringRefFromEmpty();
+    draw_flags = (char *)0x3;
+    state_flags = (undefined1 *)CONCAT31(state_flags._1_3_,2);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2741);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2711,this_obj,&stack0xffffffac);
+    scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,draw_flags);
+    (*(code *)gfx_ifc_vtbl->field450_0x1c8)(&stack0xffffffa4,0);
+    (*(code *)gfx_ifc_vtbl->field297_0x12c)(&draw_flags);
+    draw_flags = (char *)0x5be28b;
+    CopyRect(&dst_rect,&src_rect);
+    draw_flags = (char *)0x5be299;
+    thunk_InvalidateCityDialogRectRegion((int)&dst_rect,1);
+    cleanup_state._0_1_ = 1;
+    ReleaseSharedStringRefIfNotEmpty();
+    cleanup_state = (uint)cleanup_state._1_3_ << 8;
+    ReleaseSharedStringRefIfNotEmpty();
+    cleanup_state = 0xffffffff;
+    ReleaseSharedStringRefIfNotEmpty();
+  }
+  *(undefined4 *)(this + 0x74) = 0;
+  UpdatePagerButtonStatesAndRefreshPanels();
+  *seh_chain = seh_prev;
   return;
 }
 
@@ -777,7 +846,7 @@ TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF740
 // GHIDRA_NAME TOfferDeskPicture::HandleTradeCommandTagsAndSelectionUpdates
-// GHIDRA_PROTO void __cdecl HandleTradeCommandTagsAndSelectionUpdates(void)
+// GHIDRA_PROTO void __thiscall HandleTradeCommandTagsAndSelectionUpdates(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles trade command tags (acce/reje/ForM/done) and updates selection rectangles for mapped command ids.
 // GHIDRA_COMMENT
@@ -795,13 +864,13 @@ TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext
    Key effects: mode cycle, selection refresh, next-command prompt construction,
    and selection-rect update for high command IDs. */
 
-void __cdecl TOfferDeskPicture::HandleTradeCommandTagsAndSelectionUpdates(void)
+void __thiscall
+TOfferDeskPicture::HandleTradeCommandTagsAndSelectionUpdates(TOfferDeskPicture *this)
 
 {
   undefined2 uVar1;
   int iVar2;
-  void *this;
-  int *in_ECX;
+  TOfferDeskPicture *this_00;
   undefined4 unaff_EBX;
   int in_stack_00000004;
   int in_stack_00000008;
@@ -818,22 +887,22 @@ void __cdecl TOfferDeskPicture::HandleTradeCommandTagsAndSelectionUpdates(void)
       }
     }
     else if ((in_stack_00000004 == 0x14) && (iVar2 == 0x646f6e65)) {
-      thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged(in_ECX,'\0');
+      thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged(this,'\0');
     }
   }
   else {
     uVar1 = *(undefined2 *)
              (&g_Deal_Book_Trade_Value_00668568 +
              (in_stack_00000004 + *(char *)(g_pCityOrderCapabilityState + 0x193) * 0x11) * 2);
-    if (*(char *)((int)in_ECX + 0x9e) == '\0') {
-      thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged(in_ECX,'\x01');
+    if (this[0x9e] == (TOfferDeskPicture)0x0) {
+      thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged(this,'\x01');
     }
     else {
       (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
     }
-    this = (void *)(**(code **)(*in_ECX + 0x94))(0x626f6f6b);
+    this_00 = (TOfferDeskPicture *)(**(code **)(*(int *)this + 0x94))(0x626f6f6b);
     UIWidget__UpdateSelectionRect
-              (this,(astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
+              (this_00,(astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
   }
   thunk_HandleCityDialogToggleCommandOrForward();
   return;
@@ -880,6 +949,79 @@ TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
       thunk_QueueDeferredUiEventPacket();
       return;
     }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C09D0
+// GHIDRA_NAME TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
+// GHIDRA_PROTO void __thiscall UpdateTradeSelectionStateAndRefreshUiIfChanged(char selectionMode)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Applies trade selection-mode change and refreshes selection rect/text/controls when mode differs from cached state
+// GHIDRA_COMMENT_END
+
+/* Applies trade selection-mode change and refreshes selection rect/text/controls when mode differs
+   from cached state */
+
+void __thiscall
+TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
+          (TOfferDeskPicture *this,char selectionMode)
+
+{
+  code *pcVar1;
+  int iVar2;
+  TOfferDeskPicture *this_00;
+  int *piVar3;
+  int *piVar4;
+  char cStack_10;
+  
+  if ((TOfferDeskPicture)selectionMode != this[0x9e]) {
+    pcVar1 = *(code **)(*(int *)this + 0x94);
+    this_00 = (TOfferDeskPicture *)(*pcVar1)();
+    (**(code **)(*(int *)this_00 + 0xc))();
+    piVar3 = (int *)(*pcVar1)();
+    if (piVar3 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    piVar4 = (int *)(*pcVar1)();
+    iVar2 = *piVar4;
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0xa4))();
+    if (cStack_10 != '\0') {
+      (*pcRam626f705b)();
+      (**(code **)(*piVar3 + 0xf0))();
+      (**(code **)(*(int *)this + 0x1c8))();
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
+      piVar3 = (int *)(*pcVar1)();
+      iVar2 = *piVar3;
+      (**(code **)(iVar2 + 0xc))();
+      (**(code **)(iVar2 + 0x1c4))();
+      (**(code **)(iVar2 + 0xe4))();
+      thunk_LoadUiStringAndDispatchSharedMessageCommand();
+      piVar3 = (int *)(*pcVar1)();
+      (**(code **)(*piVar3 + 0xc))();
+      thunk_LoadUiStringAndDispatchSharedMessageCommand();
+      this[0x9e] = (TOfferDeskPicture)0x28;
+      return;
+    }
+    (*pcRam626f705b)();
+    (**(code **)(*piVar3 + 0xf0))();
+    (**(code **)(*(int *)this + 0x1c8))();
+    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
+    UIWidget__UpdateSelectionRect(this_00,(astruct_4 *)0xffffffff);
+    piVar3 = (int *)(*pcVar1)();
+    iVar2 = *piVar3;
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0x1c4))();
+    *(undefined2 *)(piVar3 + 0x21) = 0xffff;
+    (**(code **)(iVar2 + 0xe4))();
+    thunk_LoadUiStringAndDispatchSharedMessageCommand();
+    piVar3 = (int *)(*pcVar1)();
+    (**(code **)(*piVar3 + 0xc))();
+    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(&g_szEmptyString);
+    thunk_EnableAndProcessFlagWithSharedStringCleanup();
+    this[0x9e] = (TOfferDeskPicture)0x0;
   }
   return;
 }

@@ -41,6 +41,27 @@ TRadioPictureButton::thunk_DestructTRadioPictureButtonAndMaybeFree
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00409980
+// GHIDRA_NAME TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiClickablePictureResourceEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiClickablePictureResourceEntry */
+
+void __thiscall
+TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(TRadioPictureButton *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined2 *)(this + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblTRadioPictureButton;
+  *(undefined4 *)(this + 0x60) = 0xc;
+  this[0x94] = (TRadioPictureButton)0x0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00571700
 // GHIDRA_NAME TRadioPictureButton::CreateTRadioPictureButtonInstance
 // GHIDRA_PROTO void * __cdecl CreateTRadioPictureButtonInstance(void)
@@ -95,7 +116,7 @@ void * __cdecl TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717C0
 // GHIDRA_NAME TRadioPictureButton::ConstructUiClickablePictureResourceEntry
-// GHIDRA_PROTO void __cdecl ConstructUiClickablePictureResourceEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructUiClickablePictureResourceEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command icon slots in multiple UI builders.
 // GHIDRA_COMMENT_END
@@ -103,16 +124,15 @@ void * __cdecl TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
 /* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
    icon slots in multiple UI builders. */
 
-void __cdecl TRadioPictureButton::ConstructUiClickablePictureResourceEntry(void)
+void __thiscall
+TRadioPictureButton::ConstructUiClickablePictureResourceEntry(TRadioPictureButton *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)((int)in_ECX + 0x92) = 7000;
-  *in_ECX = &g_vtblTRadioPictureButton;
-  in_ECX[0x18] = 0xc;
-  *(undefined1 *)(in_ECX + 0x25) = 0;
+  *(undefined2 *)(this + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblTRadioPictureButton;
+  *(undefined4 *)(this + 0x60) = 0xc;
+  this[0x94] = (TRadioPictureButton)0x0;
   return;
 }
 

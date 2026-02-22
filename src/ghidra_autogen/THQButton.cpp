@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040157D
 // GHIDRA_NAME THQButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0 */
 
-void __cdecl THQButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
+void __thiscall
+THQButton::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQButton *this)
 
 {
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0();
+  WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(this);
   return;
 }
 
@@ -170,22 +171,22 @@ void __fastcall THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(int p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B7F0
 // GHIDRA_NAME THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
-// GHIDRA_PROTO void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
 // GHIDRA_COMMENT_END
 
 /* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
 
-void __cdecl THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
+void __thiscall
+THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQButton *this)
 
 {
-  int *in_ECX;
   int in_stack_00000004;
   
   if (in_stack_00000004 == 0xc) {
-    if ((char)in_ECX[0x19] == '\0') {
-      (**(code **)(*in_ECX + 0x1cc))(1,1);
+    if (this[100] == (THQButton)0x0) {
+      (**(code **)(*(int *)this + 0x1cc))(1,1);
     }
     thunk_HandleCityDialogToggleCommandOrForward();
     return;
@@ -195,10 +196,10 @@ void __cdecl THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058
       thunk_HandleCityDialogToggleCommandOrForward();
       return;
     }
-    (**(code **)(*in_ECX + 0x1cc))(0,1);
+    (**(code **)(*(int *)this + 0x1cc))(0,1);
     return;
   }
-  (**(code **)(*in_ECX + 0x1cc))(1,1);
+  (**(code **)(*(int *)this + 0x1cc))(1,1);
   return;
 }
 

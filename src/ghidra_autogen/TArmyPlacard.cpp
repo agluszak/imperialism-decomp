@@ -23,17 +23,17 @@ void * __thiscall TArmyPlacard::thunk_ConstructTArmyPlacardBaseState(TArmyPlacar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004040C5
 // GHIDRA_NAME TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_GetActiveNationId_At0058bf50(void)
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_GetActiveNationId_At0058bf50(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_GetActiveNationId_At0058bf50
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_GetActiveNationId_At0058bf50 */
 
-void __cdecl TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50(void)
+void __thiscall TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this)
 
 {
-  WrapperFor_GetActiveNationId_At0058bf50();
+  WrapperFor_GetActiveNationId_At0058bf50(this);
   return;
 }
 
@@ -167,29 +167,29 @@ TArmyPlacard::DestructTArmyPlacardAndMaybeFree(TArmyPlacard *this,byte freeSelfF
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF50
 // GHIDRA_NAME TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
-// GHIDRA_PROTO void __cdecl WrapperFor_GetActiveNationId_At0058bf50(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-callee wrapper with local state handling.
 // GHIDRA_COMMENT_END
 
 /* Single-callee wrapper with local state handling. */
 
-void __cdecl TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(void)
+void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this)
 
 {
   short sVar1;
   int iVar2;
   short extraout_AX;
   short sVar3;
-  int *in_ECX;
   char unaff_retaddr;
   short in_stack_00000004;
   
   thunk_GetActiveNationId();
-  sVar1 = *(short *)(g_pCityOrderCapabilityState + 0x1f2d3b76 + (in_ECX[7] + extraout_AX * 10) * 2);
+  sVar1 = *(short *)(g_pCityOrderCapabilityState + 0x1f2d3b76 +
+                    (*(int *)(this + 0x1c) + extraout_AX * 10) * 2);
   sVar3 = sVar1 + 0x4c4;
-  if (in_stack_00000004 != (short)in_ECX[0x24]) {
-    iVar2 = *in_ECX;
+  if (in_stack_00000004 != *(short *)(this + 0x90)) {
+    iVar2 = *(int *)this;
     if (in_stack_00000004 < 1) {
       sVar3 = sVar1 + 0x4e2;
     }
@@ -198,7 +198,7 @@ void __cdecl TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(void)
       (**(code **)(iVar2 + 0xe4))();
     }
   }
-  *(short *)(in_ECX + 0x24) = in_stack_00000004;
+  *(short *)(this + 0x90) = in_stack_00000004;
   return;
 }
 

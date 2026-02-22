@@ -5,19 +5,20 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403AE4
 // GHIDRA_NAME TTradeBidNationLine::thunk_ConstructTTradeBidNationLineBaseState
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTTradeBidNationLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTTradeBidNationLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeBidNationLineBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTTradeBidNationLineBaseState */
 
-void * __cdecl TTradeBidNationLine::thunk_ConstructTTradeBidNationLineBaseState(void)
+void * __thiscall
+TTradeBidNationLine::thunk_ConstructTTradeBidNationLineBaseState(TTradeBidNationLine *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTTradeBidNationLineBaseState();
+  pvVar1 = ConstructTTradeBidNationLineBaseState(this);
   return pvVar1;
 }
 
@@ -106,16 +107,16 @@ void * __cdecl TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDA20
 // GHIDRA_NAME TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTTradeBidNationLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTTradeBidNationLineBaseState(void)
 
-void * __cdecl TTradeBidNationLine::ConstructTTradeBidNationLineBaseState(void)
+void * __thiscall
+TTradeBidNationLine::ConstructTTradeBidNationLineBaseState(TTradeBidNationLine *this)
 
 {
   undefined2 uVar1;
   undefined2 uVar2;
-  undefined4 *puVar3;
+  TView *this_00;
   void *extraout_EAX;
-  int in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -125,21 +126,21 @@ void * __cdecl TTradeBidNationLine::ConstructTTradeBidNationLineBaseState(void)
   puStack_8 = &LAB_0063944a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this_00 = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (puVar3 == (undefined4 *)0x0) {
-    puVar3 = (undefined4 *)0x0;
+  if (this_00 == (TView *)0x0) {
+    this_00 = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *puVar3 = &g_vtblTTradeBidNationLine;
+    TView::thunk_ConstructUiResourceEntryBase(this_00);
+    *(undefined ***)this_00 = &g_vtblTTradeBidNationLine;
   }
-  uVar1 = *(undefined2 *)(in_ECX + 0x10);
-  uVar2 = *(undefined2 *)(in_ECX + 0x12);
+  uVar1 = *(undefined2 *)(this + 0x10);
+  uVar2 = *(undefined2 *)(this + 0x12);
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined2 *)((int)puVar3 + 0x62) = uVar2;
-  *(undefined2 *)(puVar3 + 0x18) = uVar1;
+  *(undefined2 *)(this_00 + 0x62) = uVar2;
+  *(undefined2 *)(this_00 + 0x60) = uVar1;
   *unaff_FS_OFFSET = local_c;
   return extraout_EAX;
 }

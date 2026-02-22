@@ -4,7 +4,7 @@
 #include "decomp_types.h"
 
 // ghidra_name TGreatPower::ConstructNationStateBase_Vtbl653938
-// ghidra_proto void __cdecl ConstructNationStateBase_Vtbl653938(void)
+// ghidra_proto void __thiscall ConstructNationStateBase_Vtbl653938(void)
 // FUNCTION: IMPERIALISM 0x004d89f0
 undefined4 ConstructNationStateBase_Vtbl653938(void)
 {
@@ -51,8 +51,8 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d8c50(void)
   return 0;
 }
 
-// ghidra_name InitializeNationStateRuntimeSubsystems
-// ghidra_proto void __cdecl InitializeNationStateRuntimeSubsystems(void)
+// ghidra_name TSimMgr::InitializeNationStateRuntimeSubsystems
+// ghidra_proto void __thiscall InitializeNationStateRuntimeSubsystems(TSimMgr * pThis)
 // FUNCTION: IMPERIALISM 0x004d8cc0
 undefined4 InitializeNationStateRuntimeSubsystems(void)
 {
@@ -68,7 +68,7 @@ undefined4 ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void)
 }
 
 // ghidra_name TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState
-// ghidra_proto void __cdecl InitializeGreatPowerMinisterRosterAndScenarioState(void)
+// ghidra_proto void __thiscall InitializeGreatPowerMinisterRosterAndScenarioState(int arg1)
 // FUNCTION: IMPERIALISM 0x004d92e0
 undefined4 InitializeGreatPowerMinisterRosterAndScenarioState(void)
 {
@@ -187,7 +187,7 @@ undefined4 DispatchTurnEvent11F8WithNoPayload(void)
   return 0;
 }
 
-// ghidra_name CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
+// ghidra_name TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
 // ghidra_proto void __thiscall CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void)
 // FUNCTION: IMPERIALISM 0x004daf30
 undefined4 CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void)
@@ -196,7 +196,7 @@ undefined4 CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void)
 }
 
 // ghidra_name TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
-// ghidra_proto void __cdecl UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
+// ghidra_proto void __thiscall UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
 // FUNCTION: IMPERIALISM 0x004db380
 undefined4 UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
 {
@@ -228,7 +228,7 @@ undefined4 BuildCityInfluenceLevelMap(void)
 }
 
 // ghidra_name TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets
-// ghidra_proto void __cdecl RebuildNationResourceYieldCountersAndDevelopmentTargets(void)
+// ghidra_proto void __thiscall RebuildNationResourceYieldCountersAndDevelopmentTargets(void)
 // FUNCTION: IMPERIALISM 0x004dbd20
 undefined4 RebuildNationResourceYieldCountersAndDevelopmentTargets(void)
 {
@@ -236,7 +236,7 @@ undefined4 RebuildNationResourceYieldCountersAndDevelopmentTargets(void)
 }
 
 // ghidra_name TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents
-// ghidra_proto void __cdecl AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void)
+// ghidra_proto void __thiscall AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void)
 // FUNCTION: IMPERIALISM 0x004dbf00
 undefined4 AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void)
 {
@@ -268,7 +268,7 @@ undefined4 OrphanCallChain_C1_I32_004dc4c0(void)
 }
 
 // ghidra_name TGreatPower::CompareMissionScoreVariantsByMode
-// ghidra_proto void __cdecl CompareMissionScoreVariantsByMode(void)
+// ghidra_proto void __thiscall CompareMissionScoreVariantsByMode(void)
 // FUNCTION: IMPERIALISM 0x004dc540
 undefined4 CompareMissionScoreVariantsByMode(void)
 {
@@ -276,7 +276,7 @@ undefined4 CompareMissionScoreVariantsByMode(void)
 }
 
 // ghidra_name TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages
-// ghidra_proto void __cdecl BuildGreatPowerMapContextTriggeredNationEventMessages(void)
+// ghidra_proto void __thiscall BuildGreatPowerMapContextTriggeredNationEventMessages(void)
 // FUNCTION: IMPERIALISM 0x004dc660
 undefined4 BuildGreatPowerMapContextTriggeredNationEventMessages(void)
 {
@@ -284,7 +284,7 @@ undefined4 BuildGreatPowerMapContextTriggeredNationEventMessages(void)
 }
 
 // ghidra_name TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList
-// ghidra_proto void __cdecl BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
+// ghidra_proto void __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
 // FUNCTION: IMPERIALISM 0x004dc840
 undefined4 BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
 {
@@ -348,7 +348,7 @@ undefined4 OrphanCallChain_C1_I31_004dcca0(void)
 }
 
 // ghidra_name TGreatPower::ApplyNationResourceNeedTargetsToOrderState
-// ghidra_proto void __cdecl ApplyNationResourceNeedTargetsToOrderState(void)
+// ghidra_proto void __thiscall ApplyNationResourceNeedTargetsToOrderState(void)
 // FUNCTION: IMPERIALISM 0x004dcd10
 undefined4 ApplyNationResourceNeedTargetsToOrderState(void)
 {
@@ -364,7 +364,7 @@ undefined4 OrphanLeaf_NoCall_Ins10_004dcdd0(void)
 }
 
 // ghidra_name TGreatPower::SetNationResourceNeedCurrentByType
-// ghidra_proto void __cdecl SetNationResourceNeedCurrentByType(void)
+// ghidra_proto void __thiscall SetNationResourceNeedCurrentByType(void)
 // FUNCTION: IMPERIALISM 0x004dce10
 undefined4 SetNationResourceNeedCurrentByType(void)
 {
@@ -388,7 +388,7 @@ undefined4 GetNationResourceNeedTargetByType(void)
 }
 
 // ghidra_name TGreatPower::TryIncrementNationResourceNeedTargetTowardCurrent
-// ghidra_proto void __cdecl TryIncrementNationResourceNeedTargetTowardCurrent(void)
+// ghidra_proto void __thiscall TryIncrementNationResourceNeedTargetTowardCurrent(void)
 // FUNCTION: IMPERIALISM 0x004dce90
 undefined4 TryIncrementNationResourceNeedTargetTowardCurrent(void)
 {
@@ -396,7 +396,7 @@ undefined4 TryIncrementNationResourceNeedTargetTowardCurrent(void)
 }
 
 // ghidra_name TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6
-// ghidra_proto void __cdecl IsNationResourceNeedCurrentSumExceedingCapA6(void)
+// ghidra_proto void __thiscall IsNationResourceNeedCurrentSumExceedingCapA6(void)
 // FUNCTION: IMPERIALISM 0x004dcf10
 undefined4 IsNationResourceNeedCurrentSumExceedingCapA6(void)
 {
@@ -428,7 +428,7 @@ undefined4 SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant(void)
 }
 
 // ghidra_name TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations
-// ghidra_proto void __cdecl SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(void)
+// ghidra_proto void __thiscall SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(void)
 // FUNCTION: IMPERIALISM 0x004dd0c0
 undefined4 SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(void)
 {
@@ -436,7 +436,7 @@ undefined4 SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(void)
 }
 
 // ghidra_name TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights
-// ghidra_proto void __cdecl RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void)
+// ghidra_proto void __thiscall RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void)
 // FUNCTION: IMPERIALISM 0x004dd140
 undefined4 RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void)
 {
@@ -444,7 +444,7 @@ undefined4 RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void)
 }
 
 // ghidra_name TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix
-// ghidra_proto void __cdecl ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
+// ghidra_proto void __thiscall ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
 // FUNCTION: IMPERIALISM 0x004dd1b0
 undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
 {
@@ -452,7 +452,7 @@ undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
 }
 
 // ghidra_name TGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix
-// ghidra_proto void __cdecl RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
+// ghidra_proto void __thiscall RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
 // FUNCTION: IMPERIALISM 0x004dd270
 undefined4 RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
 {
@@ -460,7 +460,7 @@ undefined4 RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
 }
 
 // ghidra_name TGreatPower::ReleaseDiplomacyTrackedObjectSlots850
-// ghidra_proto void __cdecl ReleaseDiplomacyTrackedObjectSlots850(void)
+// ghidra_proto void __thiscall ReleaseDiplomacyTrackedObjectSlots850(void)
 // FUNCTION: IMPERIALISM 0x004dd310
 undefined4 ReleaseDiplomacyTrackedObjectSlots850(void)
 {
@@ -500,7 +500,7 @@ undefined4 ComputeRemainingDiplomacyAidBudget(void)
 }
 
 // ghidra_name TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
-// ghidra_proto void __cdecl ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void)
+// ghidra_proto void __thiscall ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void)
 // FUNCTION: IMPERIALISM 0x004dd470
 undefined4 ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void)
 {
@@ -508,7 +508,7 @@ undefined4 ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void)
 }
 
 // ghidra_name TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
-// ghidra_proto void __cdecl AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void)
+// ghidra_proto void __thiscall AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void)
 // FUNCTION: IMPERIALISM 0x004dd4e0
 undefined4 AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void)
 {
@@ -676,7 +676,7 @@ undefined4 OrphanLeaf_NoCall_Ins08_004ddb80(void)
 }
 
 // ghidra_name TGreatPower::TryDispatchNationActionViaUiContextOrFallback
-// ghidra_proto void __cdecl TryDispatchNationActionViaUiContextOrFallback(void)
+// ghidra_proto void __thiscall TryDispatchNationActionViaUiContextOrFallback(void)
 // FUNCTION: IMPERIALISM 0x004ddbb0
 undefined4 TryDispatchNationActionViaUiContextOrFallback(void)
 {
@@ -684,7 +684,7 @@ undefined4 TryDispatchNationActionViaUiContextOrFallback(void)
 }
 
 // ghidra_name TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals
-// ghidra_proto void __cdecl ApplyIndexedResourceDeltaAndAdjustNationTotals(void)
+// ghidra_proto void __thiscall ApplyIndexedResourceDeltaAndAdjustNationTotals(void)
 // FUNCTION: IMPERIALISM 0x004ddc30
 undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals(void)
 {
@@ -836,7 +836,7 @@ undefined4 ReleaseAllTrackedObjectsFromList89C(void)
 }
 
 // ghidra_name TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset
-// ghidra_proto void __cdecl ApplyJoinEmpireMode0GlobalDiplomacyReset(void)
+// ghidra_proto void __thiscall ApplyJoinEmpireMode0GlobalDiplomacyReset(void)
 // FUNCTION: IMPERIALISM 0x004de860
 undefined4 ApplyJoinEmpireMode0GlobalDiplomacyReset(void)
 {
@@ -852,7 +852,7 @@ undefined4 OrphanLeaf_NoCall_Ins24_004deca0(void)
 }
 
 // ghidra_name TGreatPower::ApplyImmediateDiplomacyPolicySideEffects
-// ghidra_proto void __cdecl ApplyImmediateDiplomacyPolicySideEffects(void)
+// ghidra_proto void __thiscall ApplyImmediateDiplomacyPolicySideEffects(void)
 // FUNCTION: IMPERIALISM 0x004dedf0
 undefined4 ApplyImmediateDiplomacyPolicySideEffects(void)
 {
@@ -860,7 +860,7 @@ undefined4 ApplyImmediateDiplomacyPolicySideEffects(void)
 }
 
 // ghidra_name TGreatPower::QueueDiplomacyProposalCodeForTargetNation
-// ghidra_proto void __cdecl QueueDiplomacyProposalCodeForTargetNation(void)
+// ghidra_proto void __thiscall QueueDiplomacyProposalCodeForTargetNation(void)
 // FUNCTION: IMPERIALISM 0x004defd0
 undefined4 QueueDiplomacyProposalCodeForTargetNation(void)
 {
@@ -908,7 +908,7 @@ undefined4 OrphanLeaf_NoCall_Ins03_004df5a0(void)
 }
 
 // ghidra_name TGreatPower::DispatchTurnEvent2103WithNationFromRecord
-// ghidra_proto void __cdecl DispatchTurnEvent2103WithNationFromRecord(void)
+// ghidra_proto void __thiscall DispatchTurnEvent2103WithNationFromRecord(void)
 // FUNCTION: IMPERIALISM 0x004df5c0
 undefined4 DispatchTurnEvent2103WithNationFromRecord(void)
 {
@@ -916,7 +916,7 @@ undefined4 DispatchTurnEvent2103WithNationFromRecord(void)
 }
 
 // ghidra_name TGreatPower::ProcessPendingDiplomacyProposalQueue
-// ghidra_proto void __cdecl ProcessPendingDiplomacyProposalQueue(void)
+// ghidra_proto void __thiscall ProcessPendingDiplomacyProposalQueue(void)
 // FUNCTION: IMPERIALISM 0x004df5f0
 undefined4 ProcessPendingDiplomacyProposalQueue(void)
 {
@@ -1316,7 +1316,7 @@ undefined4 ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(void)
 }
 
 // ghidra_name TGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup
-// ghidra_proto void __cdecl RemoveRegionIdAndRunTrackedObjectCleanup(void)
+// ghidra_proto void __thiscall RemoveRegionIdAndRunTrackedObjectCleanup(void)
 // FUNCTION: IMPERIALISM 0x004e2270
 undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void)
 {
@@ -1324,7 +1324,7 @@ undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void)
 }
 
 // ghidra_name TGreatPower::AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet
-// ghidra_proto void __cdecl AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void)
+// ghidra_proto void __thiscall AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void)
 // FUNCTION: IMPERIALISM 0x004e22b0
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void)
 {
@@ -1348,7 +1348,7 @@ undefined4 ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(void)
 }
 
 // ghidra_name TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations
-// ghidra_proto void __cdecl ResetNationDiplomacySlotsAndMarkRelatedNations(void)
+// ghidra_proto void __thiscall ResetNationDiplomacySlotsAndMarkRelatedNations(void)
 // FUNCTION: IMPERIALISM 0x004e25c0
 undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void)
 {
@@ -1404,7 +1404,7 @@ undefined4 OrphanCallChain_C2_I21_004e2b00(void)
 }
 
 // ghidra_name TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch
-// ghidra_proto void __cdecl BuildGreatPowerTurnMessageSummaryAndDispatch(void)
+// ghidra_proto void __thiscall BuildGreatPowerTurnMessageSummaryAndDispatch(void)
 // FUNCTION: IMPERIALISM 0x004e2b70
 undefined4 BuildGreatPowerTurnMessageSummaryAndDispatch(void)
 {
@@ -1844,7 +1844,7 @@ undefined4 WrapperFor_TGreatPower_VtblSlot07_At004e7230(void)
 }
 
 // ghidra_name TAutoGreatPower::InitializeMapActionCandidateStateAndQueueMission
-// ghidra_proto void __cdecl InitializeMapActionCandidateStateAndQueueMission(void)
+// ghidra_proto void __thiscall InitializeMapActionCandidateStateAndQueueMission(void)
 // FUNCTION: IMPERIALISM 0x004e72c0
 undefined4 InitializeMapActionCandidateStateAndQueueMission(void)
 {
@@ -1908,7 +1908,7 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004e7680(void)
 }
 
 // ghidra_name TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix
-// ghidra_proto void __cdecl RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
+// ghidra_proto void __thiscall RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
 // FUNCTION: IMPERIALISM 0x004e7810
 undefined4 RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
 {
@@ -1916,7 +1916,7 @@ undefined4 RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
 }
 
 // ghidra_name TAutoGreatPower::DispatchNationField98CallbackD4
-// ghidra_proto void __cdecl DispatchNationField98CallbackD4(void)
+// ghidra_proto void __thiscall DispatchNationField98CallbackD4(void)
 // FUNCTION: IMPERIALISM 0x004e78d0
 undefined4 DispatchNationField98CallbackD4(void)
 {
@@ -1924,7 +1924,7 @@ undefined4 DispatchNationField98CallbackD4(void)
 }
 
 // ghidra_name TAutoGreatPower::DispatchNationField9CCallback4C
-// ghidra_proto void __cdecl DispatchNationField9CCallback4C(void)
+// ghidra_proto void __thiscall DispatchNationField9CCallback4C(void)
 // FUNCTION: IMPERIALISM 0x004e78f0
 undefined4 DispatchNationField9CCallback4C(void)
 {
@@ -1964,7 +1964,7 @@ undefined4 OrphanRetStub_004e7970(void)
 }
 
 // ghidra_name TAutoGreatPower::DispatchNationField94Callbacks90And94
-// ghidra_proto void __cdecl DispatchNationField94Callbacks90And94(void)
+// ghidra_proto void __thiscall DispatchNationField94Callbacks90And94(void)
 // FUNCTION: IMPERIALISM 0x004e7990
 undefined4 DispatchNationField94Callbacks90And94(void)
 {
@@ -2004,7 +2004,7 @@ undefined4 ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks(void)
 }
 
 // ghidra_name TAutoGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards
-// ghidra_proto void __cdecl QueueDiplomacyProposalCodeWithAllianceGuards(void)
+// ghidra_proto void __thiscall QueueDiplomacyProposalCodeWithAllianceGuards(TAutoGreatPower * pThis)
 // FUNCTION: IMPERIALISM 0x004e7b50
 undefined4 QueueDiplomacyProposalCodeWithAllianceGuards(void)
 {
@@ -2012,7 +2012,7 @@ undefined4 QueueDiplomacyProposalCodeWithAllianceGuards(void)
 }
 
 // ghidra_name TAutoGreatPower::ReplayQueuedDiplomacyProposalRowsAndProcessQueue
-// ghidra_proto void __cdecl ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
+// ghidra_proto void __thiscall ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
 // FUNCTION: IMPERIALISM 0x004e7be0
 undefined4 ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
 {
@@ -2020,7 +2020,7 @@ undefined4 ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
 }
 
 // ghidra_name TAutoGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook
-// ghidra_proto void __cdecl ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(void)
+// ghidra_proto void __thiscall ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(void)
 // FUNCTION: IMPERIALISM 0x004e7c50
 undefined4 ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(void)
 {
@@ -2036,7 +2036,7 @@ undefined4 OrphanRetStub_004e7ca0(void)
 }
 
 // ghidra_name TAutoGreatPower::ExecuteAdvisoryCaseActionType1ForEligibleNations
-// ghidra_proto void __cdecl ExecuteAdvisoryCaseActionType1ForEligibleNations(void)
+// ghidra_proto void __thiscall ExecuteAdvisoryCaseActionType1ForEligibleNations(void)
 // FUNCTION: IMPERIALISM 0x004e7cc0
 undefined4 ExecuteAdvisoryCaseActionType1ForEligibleNations(void)
 {
@@ -2044,7 +2044,7 @@ undefined4 ExecuteAdvisoryCaseActionType1ForEligibleNations(void)
 }
 
 // ghidra_name TAutoGreatPower::ExecuteAdvisoryCaseActionType2OrQueueFallback
-// ghidra_proto void __cdecl ExecuteAdvisoryCaseActionType2OrQueueFallback(void)
+// ghidra_proto void __thiscall ExecuteAdvisoryCaseActionType2OrQueueFallback(void)
 // FUNCTION: IMPERIALISM 0x004e7ec0
 undefined4 ExecuteAdvisoryCaseActionType2OrQueueFallback(void)
 {
@@ -2052,7 +2052,7 @@ undefined4 ExecuteAdvisoryCaseActionType2OrQueueFallback(void)
 }
 
 // ghidra_name TAutoGreatPower::EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics
-// ghidra_proto void __cdecl EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
+// ghidra_proto void __thiscall EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
 // FUNCTION: IMPERIALISM 0x004e8040
 undefined4 EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
 {
@@ -2067,8 +2067,8 @@ undefined4 QueueMapActionMissionsForPortZoneCandidates(void)
   return 0;
 }
 
-// ghidra_name QueueMapActionMissionFromCandidateAndMarkState
-// ghidra_proto void QueueMapActionMissionFromCandidateAndMarkState(void)
+// ghidra_name TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState
+// ghidra_proto void __thiscall QueueMapActionMissionFromCandidateAndMarkState(TAutoGreatPower * pThis)
 // FUNCTION: IMPERIALISM 0x004e8540
 undefined4 QueueMapActionMissionFromCandidateAndMarkState(void)
 {
@@ -2107,7 +2107,7 @@ undefined4 SetByteFlagAtOffsetAF0ByIndex(void)
   return 0;
 }
 
-// ghidra_name ComputeAdvisoryMapNodeCompositeScoreByMode
+// ghidra_name TAutoGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode
 // ghidra_proto float __cdecl ComputeAdvisoryMapNodeCompositeScoreByMode(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004e8c50
 undefined4 ComputeAdvisoryMapNodeCompositeScoreByMode(void)
@@ -2124,7 +2124,7 @@ undefined4 ComputeMapActionContextCompositeScoreForNation(void)
 }
 
 // ghidra_name PopulateCase16AdvisoryMapNodeCandidateState
-// ghidra_proto void PopulateCase16AdvisoryMapNodeCandidateState(void)
+// ghidra_proto void __thiscall PopulateCase16AdvisoryMapNodeCandidateState(void)
 // FUNCTION: IMPERIALISM 0x004e92b0
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void)
 {
@@ -2140,7 +2140,7 @@ undefined4 SelectAndQueueAdvisoryMapMissionsCase16(void)
 }
 
 // ghidra_name TAutoGreatPower::QueueWarTransitionFromAdvisoryAction
-// ghidra_proto void __cdecl QueueWarTransitionFromAdvisoryAction(void)
+// ghidra_proto void __thiscall QueueWarTransitionFromAdvisoryAction(void)
 // FUNCTION: IMPERIALISM 0x004e9ed0
 undefined4 QueueWarTransitionFromAdvisoryAction(void)
 {
@@ -2156,7 +2156,7 @@ undefined4 OrphanCallChain_C3_I60_004e9f10(void)
 }
 
 // ghidra_name TAutoGreatPower::MarkNationAndPortZonePresenceFlags
-// ghidra_proto void __cdecl MarkNationAndPortZonePresenceFlags(void)
+// ghidra_proto void __thiscall MarkNationAndPortZonePresenceFlags(void)
 // FUNCTION: IMPERIALISM 0x004e9ff0
 undefined4 MarkNationAndPortZonePresenceFlags(void)
 {
@@ -2164,7 +2164,7 @@ undefined4 MarkNationAndPortZonePresenceFlags(void)
 }
 
 // ghidra_name TAutoGreatPower::ClearNationAndPortZonePresenceFlags
-// ghidra_proto void __cdecl ClearNationAndPortZonePresenceFlags(void)
+// ghidra_proto void __thiscall ClearNationAndPortZonePresenceFlags(void)
 // FUNCTION: IMPERIALISM 0x004ea0e0
 undefined4 ClearNationAndPortZonePresenceFlags(void)
 {
@@ -2172,7 +2172,7 @@ undefined4 ClearNationAndPortZonePresenceFlags(void)
 }
 
 // ghidra_name TAutoGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches
-// ghidra_proto void __cdecl ApplyJoinEmpireResetAndClearDiplomacyCaches(void)
+// ghidra_proto void __thiscall ApplyJoinEmpireResetAndClearDiplomacyCaches(void)
 // FUNCTION: IMPERIALISM 0x004ea150
 undefined4 ApplyJoinEmpireResetAndClearDiplomacyCaches(void)
 {
@@ -2188,7 +2188,7 @@ undefined4 RemoveFirstTrackedObjectMatchingPredicateAndClearFlag(void)
 }
 
 // ghidra_name TAutoGreatPower::AddRegionToNationAndQueueMapActionMission
-// ghidra_proto void __cdecl AddRegionToNationAndQueueMapActionMission(void)
+// ghidra_proto void __thiscall AddRegionToNationAndQueueMapActionMission(void)
 // FUNCTION: IMPERIALISM 0x004ea290
 undefined4 AddRegionToNationAndQueueMapActionMission(void)
 {
@@ -2196,7 +2196,7 @@ undefined4 AddRegionToNationAndQueueMapActionMission(void)
 }
 
 // ghidra_name TAutoGreatPower::MarkNationPortZoneAndLinkedTilesForActionFlag
-// ghidra_proto void __cdecl MarkNationPortZoneAndLinkedTilesForActionFlag(void)
+// ghidra_proto void __thiscall MarkNationPortZoneAndLinkedTilesForActionFlag(void)
 // FUNCTION: IMPERIALISM 0x004ea300
 undefined4 MarkNationPortZoneAndLinkedTilesForActionFlag(void)
 {
@@ -2220,7 +2220,7 @@ undefined4 OrphanRetStub_004ea450(void)
 }
 
 // ghidra_name TAutoGreatPower::RebuildNationResourceYieldsAndRollField134Into136
-// ghidra_proto void __cdecl RebuildNationResourceYieldsAndRollField134Into136(void)
+// ghidra_proto void __thiscall RebuildNationResourceYieldsAndRollField134Into136(void)
 // FUNCTION: IMPERIALISM 0x004ea470
 undefined4 RebuildNationResourceYieldsAndRollField134Into136(void)
 {
@@ -2260,7 +2260,7 @@ undefined4 IterateLinkedListCursorAndRelinkNodeOwners_004ea990(void)
 }
 
 // ghidra_name TAutoGreatPower::RecomputeNationTerrainCompatibilityAndDiplomacyMetrics
-// ghidra_proto void __cdecl RecomputeNationTerrainCompatibilityAndDiplomacyMetrics(void)
+// ghidra_proto void __thiscall RecomputeNationTerrainCompatibilityAndDiplomacyMetrics(void)
 // FUNCTION: IMPERIALISM 0x004eaa20
 undefined4 RecomputeNationTerrainCompatibilityAndDiplomacyMetrics(void)
 {
@@ -2292,7 +2292,7 @@ undefined4 IterateLinkedListCursorEntries_004eb040(void)
 }
 
 // ghidra_name TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner
-// ghidra_proto void __cdecl PruneInvalidTrackedEntriesAndNotifyOwner(void)
+// ghidra_proto void __thiscall PruneInvalidTrackedEntriesAndNotifyOwner(void)
 // FUNCTION: IMPERIALISM 0x004eb0d0
 undefined4 PruneInvalidTrackedEntriesAndNotifyOwner(void)
 {
@@ -2332,7 +2332,7 @@ undefined4 AssignTrackedEntryActionsByProfileToOrdersOrUnits(void)
 }
 
 // ghidra_name TAutoGreatPower::thunk_PruneInvalidTrackedEntriesAndNotifyOwner_Dispatch
-// ghidra_proto void __cdecl thunk_PruneInvalidTrackedEntriesAndNotifyOwner_Dispatch(void)
+// ghidra_proto void __thiscall thunk_PruneInvalidTrackedEntriesAndNotifyOwner_Dispatch(void)
 // FUNCTION: IMPERIALISM 0x004ebea0
 undefined4 thunk_PruneInvalidTrackedEntriesAndNotifyOwner_Dispatch(void)
 {
@@ -2524,7 +2524,7 @@ undefined4 InitializeMinisterOrderArrayPreset_50_0_10_50(void)
 }
 
 // ghidra_name TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2
-// ghidra_proto void __cdecl InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
+// ghidra_proto void __thiscall InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
 // FUNCTION: IMPERIALISM 0x004ed620
 undefined4 InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
 {
@@ -2588,7 +2588,7 @@ undefined4 InitializeMinisterOrderArrayPreset_10_10_10_50(void)
 }
 
 // ghidra_name TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5
-// ghidra_proto void __cdecl InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
+// ghidra_proto void __thiscall InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
 // FUNCTION: IMPERIALISM 0x004ed950
 undefined4 InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
 {
@@ -2652,7 +2652,7 @@ undefined4 InitializeMinisterOrderArrayPreset_15_20_50_75(void)
 }
 
 // ghidra_name TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3
-// ghidra_proto void __cdecl InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
+// ghidra_proto void __thiscall InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
 // FUNCTION: IMPERIALISM 0x004edc40
 undefined4 InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
 {
@@ -2716,7 +2716,7 @@ undefined4 InitializeMinisterOrderArrayPreset_20_10_10_50(void)
 }
 
 // ghidra_name TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
-// ghidra_proto void __cdecl InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
+// ghidra_proto void __thiscall InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
 // FUNCTION: IMPERIALISM 0x004edf20
 undefined4 InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
 {
@@ -2780,7 +2780,7 @@ undefined4 InitializeMinisterOrderArrayPreset_25_10_20_50(void)
 }
 
 // ghidra_name TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// ghidra_proto void __cdecl InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+// ghidra_proto void __thiscall InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
 // FUNCTION: IMPERIALISM 0x004ee210
 undefined4 InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
 {
@@ -2804,7 +2804,7 @@ undefined4 GetTSortedByRelationshipListClassNamePointer(void)
 }
 
 // ghidra_name TSortedByRelationshipList::ConstructObArrayWithVtable654D38
-// ghidra_proto void __cdecl ConstructObArrayWithVtable654D38(void)
+// ghidra_proto void __thiscall ConstructObArrayWithVtable654D38(void)
 // FUNCTION: IMPERIALISM 0x004ee540
 undefined4 ConstructObArrayWithVtable654D38(void)
 {
@@ -2819,7 +2819,7 @@ undefined4 DestructTSortedByRelationshipListAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructCObArray_004EE5A0
+// ghidra_name CObArray::thunk_DestructCObArray_004EE5A0
 // ghidra_proto void __cdecl thunk_DestructCObArray_004EE5A0(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x004ee5a0
 undefined4 thunk_DestructCObArray_004EE5A0(void)
@@ -2940,7 +2940,7 @@ undefined4 IsNationPairAtWar(void)
 }
 
 // ghidra_name TSortedByRelationshipList::HasWarRelationTurnStampOutOfDate
-// ghidra_proto void __cdecl HasWarRelationTurnStampOutOfDate(void)
+// ghidra_proto void __thiscall HasWarRelationTurnStampOutOfDate(void)
 // FUNCTION: IMPERIALISM 0x004ef590
 undefined4 HasWarRelationTurnStampOutOfDate(void)
 {
@@ -2956,7 +2956,7 @@ undefined4 HasAnyWarRelationForNation(void)
 }
 
 // ghidra_name TSortedByRelationshipList::HasAnyWarRelationTurnStampOutOfDateForNation
-// ghidra_proto void __cdecl HasAnyWarRelationTurnStampOutOfDateForNation(void)
+// ghidra_proto void __thiscall HasAnyWarRelationTurnStampOutOfDateForNation(void)
 // FUNCTION: IMPERIALISM 0x004ef650
 undefined4 HasAnyWarRelationTurnStampOutOfDateForNation(void)
 {
@@ -2988,7 +2988,7 @@ undefined4 ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(void)
 }
 
 // ghidra_name TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation
-// ghidra_proto void __cdecl HasAsymmetricWarRelationForPrimaryNation(void)
+// ghidra_proto void __thiscall HasAsymmetricWarRelationForPrimaryNation(void)
 // FUNCTION: IMPERIALISM 0x004efc30
 undefined4 HasAsymmetricWarRelationForPrimaryNation(void)
 {
@@ -2996,7 +2996,7 @@ undefined4 HasAsymmetricWarRelationForPrimaryNation(void)
 }
 
 // ghidra_name TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors
-// ghidra_proto void __cdecl SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(void)
+// ghidra_proto void __thiscall SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(void)
 // FUNCTION: IMPERIALISM 0x004efcb0
 undefined4 SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(void)
 {
@@ -3004,7 +3004,7 @@ undefined4 SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(void)
 }
 
 // ghidra_name TSortedByRelationshipList::CopyDiplomacyStandingMatrixRowAndColumn
-// ghidra_proto void __cdecl CopyDiplomacyStandingMatrixRowAndColumn(void)
+// ghidra_proto void __thiscall CopyDiplomacyStandingMatrixRowAndColumn(void)
 // FUNCTION: IMPERIALISM 0x004efe30
 undefined4 CopyDiplomacyStandingMatrixRowAndColumn(void)
 {
@@ -3020,7 +3020,7 @@ undefined4 ApplyRelationCode4AndQueueEvent18ForTargetNation(void)
 }
 
 // ghidra_name TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate
-// ghidra_proto void __cdecl AdjustNationPairDiplomacyStandingAndPropagate(void)
+// ghidra_proto void __thiscall AdjustNationPairDiplomacyStandingAndPropagate(void)
 // FUNCTION: IMPERIALISM 0x004eff40
 undefined4 AdjustNationPairDiplomacyStandingAndPropagate(void)
 {
@@ -3044,7 +3044,7 @@ undefined4 SyncNationField790FromLocalizationStateId(void)
 }
 
 // ghidra_name TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
-// ghidra_proto void __cdecl SelectPriorityNationIndicesForMinorCapabilityRows(void)
+// ghidra_proto void __thiscall SelectPriorityNationIndicesForMinorCapabilityRows(void)
 // FUNCTION: IMPERIALISM 0x004f05c0
 undefined4 SelectPriorityNationIndicesForMinorCapabilityRows(void)
 {
@@ -3092,7 +3092,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl(void)
 }
 
 // ghidra_name TSortedByRelationshipList::RebuildDiplomacyStandingAndInfluenceMatrices
-// ghidra_proto void __cdecl RebuildDiplomacyStandingAndInfluenceMatrices(void)
+// ghidra_proto void __thiscall RebuildDiplomacyStandingAndInfluenceMatrices(void)
 // FUNCTION: IMPERIALISM 0x004f0e20
 undefined4 RebuildDiplomacyStandingAndInfluenceMatrices(void)
 {
@@ -3100,7 +3100,7 @@ undefined4 RebuildDiplomacyStandingAndInfluenceMatrices(void)
 }
 
 // ghidra_name TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom
-// ghidra_proto void __cdecl InitializeDiplomacyStandingBaselineRandom(void)
+// ghidra_proto void __thiscall InitializeDiplomacyStandingBaselineRandom(void)
 // FUNCTION: IMPERIALISM 0x004f1570
 undefined4 InitializeDiplomacyStandingBaselineRandom(void)
 {
@@ -3108,7 +3108,7 @@ undefined4 InitializeDiplomacyStandingBaselineRandom(void)
 }
 
 // ghidra_name TSortedByRelationshipList::BuildMajorNationDiplomacyStandingRanking
-// ghidra_proto void __cdecl BuildMajorNationDiplomacyStandingRanking(void)
+// ghidra_proto void __thiscall BuildMajorNationDiplomacyStandingRanking(void)
 // FUNCTION: IMPERIALISM 0x004f1630
 undefined4 BuildMajorNationDiplomacyStandingRanking(void)
 {
@@ -3132,7 +3132,7 @@ undefined4 HasState300LinkBetweenNationPair(void)
 }
 
 // ghidra_name TSortedByRelationshipList::GetNationPairDiplomacyStandingTierCode
-// ghidra_proto void __cdecl GetNationPairDiplomacyStandingTierCode(void)
+// ghidra_proto void __thiscall GetNationPairDiplomacyStandingTierCode(void)
 // FUNCTION: IMPERIALISM 0x004f19c0
 undefined4 GetNationPairDiplomacyStandingTierCode(void)
 {
@@ -3140,7 +3140,7 @@ undefined4 GetNationPairDiplomacyStandingTierCode(void)
 }
 
 // ghidra_name TSortedByRelationshipList::ShowRelationCodeNoticeForNationPairIfRelevant
-// ghidra_proto void __cdecl ShowRelationCodeNoticeForNationPairIfRelevant(void)
+// ghidra_proto void __thiscall ShowRelationCodeNoticeForNationPairIfRelevant(void)
 // FUNCTION: IMPERIALISM 0x004f1a80
 undefined4 ShowRelationCodeNoticeForNationPairIfRelevant(void)
 {
@@ -3188,7 +3188,7 @@ undefined4 IsPrimaryNationSlotIndex(void)
 }
 
 // ghidra_name TSortedByRelationshipList::CollectMinorNationStandingEntriesForMajorNation
-// ghidra_proto void __cdecl CollectMinorNationStandingEntriesForMajorNation(void)
+// ghidra_proto void __thiscall CollectMinorNationStandingEntriesForMajorNation(void)
 // FUNCTION: IMPERIALISM 0x004f1f70
 undefined4 CollectMinorNationStandingEntriesForMajorNation(void)
 {
@@ -3204,7 +3204,7 @@ undefined4 CountNationAllianceRelationsForNation(void)
 }
 
 // ghidra_name TSortedByRelationshipList::GetNthAlliedMajorNationSlotForNation
-// ghidra_proto void __cdecl GetNthAlliedMajorNationSlotForNation(void)
+// ghidra_proto void __thiscall GetNthAlliedMajorNationSlotForNation(void)
 // FUNCTION: IMPERIALISM 0x004f2090
 undefined4 GetNthAlliedMajorNationSlotForNation(void)
 {
@@ -3212,7 +3212,7 @@ undefined4 GetNthAlliedMajorNationSlotForNation(void)
 }
 
 // ghidra_name TSortedByRelationshipList::SelectNationSlotFromCollectedStandingEntries
-// ghidra_proto void __cdecl SelectNationSlotFromCollectedStandingEntries(void)
+// ghidra_proto void __thiscall SelectNationSlotFromCollectedStandingEntries(void)
 // FUNCTION: IMPERIALISM 0x004f2100
 undefined4 SelectNationSlotFromCollectedStandingEntries(void)
 {
@@ -3220,7 +3220,7 @@ undefined4 SelectNationSlotFromCollectedStandingEntries(void)
 }
 
 // ghidra_name TSortedByRelationshipList::SelectDiplomacyTargetNationFromCandidateSet
-// ghidra_proto void __cdecl SelectDiplomacyTargetNationFromCandidateSet(void)
+// ghidra_proto void __thiscall SelectDiplomacyTargetNationFromCandidateSet(void)
 // FUNCTION: IMPERIALISM 0x004f21f0
 undefined4 SelectDiplomacyTargetNationFromCandidateSet(void)
 {
@@ -3612,7 +3612,7 @@ undefined4 DestructTDiplomacyMapViewBaseState(void)
 }
 
 // ghidra_name TDiplomacyMapView::InitializeDiplomacyMapViewOverlaysAndActionControls
-// ghidra_proto void __cdecl InitializeDiplomacyMapViewOverlaysAndActionControls(void)
+// ghidra_proto void __thiscall InitializeDiplomacyMapViewOverlaysAndActionControls(void)
 // FUNCTION: IMPERIALISM 0x004f3d60
 undefined4 InitializeDiplomacyMapViewOverlaysAndActionControls(void)
 {
@@ -3652,14 +3652,14 @@ undefined4 InitializeDiplomacyMinisterActionControlsAndLabels(void)
 }
 
 // ghidra_name TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill
-// ghidra_proto void __cdecl RenderDiplomacyMatrixRowWithStatusIconsAndFill(void)
+// ghidra_proto void __thiscall RenderDiplomacyMatrixRowWithStatusIconsAndFill(void)
 // FUNCTION: IMPERIALISM 0x004f48c0
 undefined4 RenderDiplomacyMatrixRowWithStatusIconsAndFill(void)
 {
   return 0;
 }
 
-// ghidra_name RenderTerrainAndMinorNationLegendLabels
+// ghidra_name TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels
 // ghidra_proto void __fastcall RenderTerrainAndMinorNationLegendLabels(void * pLegendContext)
 // FUNCTION: IMPERIALISM 0x004f4a30
 undefined4 RenderTerrainAndMinorNationLegendLabels(void)
@@ -3683,7 +3683,7 @@ undefined4 HandleDiplomacySelectedNationActionCommand(void)
   return 0;
 }
 
-// ghidra_name ResolveDiplomacyActionFromClickAndUpdateTarget
+// ghidra_name TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget
 // ghidra_proto EDiplomacyProposalCodeRaw __thiscall ResolveDiplomacyActionFromClickAndUpdateTarget(void * pCursorPoint)
 // FUNCTION: IMPERIALISM 0x004f5e00
 undefined4 ResolveDiplomacyActionFromClickAndUpdateTarget(void)
@@ -3700,7 +3700,7 @@ undefined4 OrphanRetStub_004f5f90(void)
 }
 
 // ghidra_name TDiplomacyMapView::UpdateDiplomacyMapHoverCursorFromActionSelection
-// ghidra_proto void __cdecl UpdateDiplomacyMapHoverCursorFromActionSelection(void)
+// ghidra_proto void __thiscall UpdateDiplomacyMapHoverCursorFromActionSelection(void)
 // FUNCTION: IMPERIALISM 0x004f5fb0
 undefined4 UpdateDiplomacyMapHoverCursorFromActionSelection(void)
 {
@@ -3708,7 +3708,7 @@ undefined4 UpdateDiplomacyMapHoverCursorFromActionSelection(void)
 }
 
 // ghidra_name TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent
-// ghidra_proto void __cdecl RenderDiplomacyLegendSurfaceAndPresent(void)
+// ghidra_proto void __thiscall RenderDiplomacyLegendSurfaceAndPresent(void)
 // FUNCTION: IMPERIALISM 0x004f6170
 undefined4 RenderDiplomacyLegendSurfaceAndPresent(void)
 {
@@ -3724,15 +3724,15 @@ undefined4 BuildCombinedTerrainTypeRegionMaskAndDispatch(void)
 }
 
 // ghidra_name TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
-// ghidra_proto void __cdecl RebuildDiplomacyLegendPaletteMode4AndBlit(void)
+// ghidra_proto void __thiscall RebuildDiplomacyLegendPaletteMode4AndBlit(void)
 // FUNCTION: IMPERIALISM 0x004f64c0
 undefined4 RebuildDiplomacyLegendPaletteMode4AndBlit(void)
 {
   return 0;
 }
 
-// ghidra_name BlitMonochromeMaskBytePatternToSurface
-// ghidra_proto void __cdecl BlitMonochromeMaskBytePatternToSurface(void)
+// ghidra_name TDiplomacyMapView::BlitMonochromeMaskBytePatternToSurface
+// ghidra_proto void __thiscall BlitMonochromeMaskBytePatternToSurface(TDiplomacyMapView * pThis)
 // FUNCTION: IMPERIALISM 0x004f66c0
 undefined4 BlitMonochromeMaskBytePatternToSurface(void)
 {
@@ -3748,7 +3748,7 @@ undefined4 OrphanLeaf_NoCall_Ins05_004f6820(void)
 }
 
 // ghidra_name TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
-// ghidra_proto void __cdecl RebuildDiplomacyLegendPaletteMode1AndBlit(void)
+// ghidra_proto void __thiscall RebuildDiplomacyLegendPaletteMode1AndBlit(void)
 // FUNCTION: IMPERIALISM 0x004f6840
 undefined4 RebuildDiplomacyLegendPaletteMode1AndBlit(void)
 {
@@ -3764,7 +3764,7 @@ undefined4 BuildTurnEventMonochromeMaskBuffers(void)
 }
 
 // ghidra_name TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface
-// ghidra_proto void __cdecl BlitDiplomacyMapEventPaletteMaskToSurface(void)
+// ghidra_proto void __thiscall BlitDiplomacyMapEventPaletteMaskToSurface(void)
 // FUNCTION: IMPERIALISM 0x004f6bd0
 undefined4 BlitDiplomacyMapEventPaletteMaskToSurface(void)
 {
@@ -3788,7 +3788,7 @@ undefined4 WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 }
 
 // ghidra_name TDiplomacyMapView::WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080
-// ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
+// ghidra_proto void __thiscall WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
 // FUNCTION: IMPERIALISM 0x004f7080
 undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
 {
@@ -3804,7 +3804,7 @@ undefined4 HandleDiplomacyMapControlTagToggleOrForward(void)
 }
 
 // ghidra_name TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130
-// ghidra_proto void __cdecl WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
+// ghidra_proto void __thiscall WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
 // FUNCTION: IMPERIALISM 0x004f7130
 undefined4 WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
 {
@@ -3819,7 +3819,7 @@ undefined4 RenderDiplomacyPendingPolicyIconsAndFrames(void)
   return 0;
 }
 
-// ghidra_name ShowDiplomacyActionRejectedNotice
+// ghidra_name TDiplomacyMapView::ShowDiplomacyActionRejectedNotice
 // ghidra_proto void __cdecl ShowDiplomacyActionRejectedNotice(void)
 // FUNCTION: IMPERIALISM 0x004f7400
 undefined4 ShowDiplomacyActionRejectedNotice(void)

@@ -38,17 +38,18 @@ void TStatusPicture::thunk__scalar_deleting_destructor_(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405574
 // GHIDRA_NAME TStatusPicture::thunk_HandleDialogCommandTagSaveLoadPrefQuitCred
-// GHIDRA_PROTO void __cdecl thunk_HandleDialogCommandTagSaveLoadPrefQuitCred(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleDialogCommandTagSaveLoadPrefQuitCred(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleDialogCommandTagSaveLoadPrefQuitCred
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleDialogCommandTagSaveLoadPrefQuitCred */
 
-void __cdecl TStatusPicture::thunk_HandleDialogCommandTagSaveLoadPrefQuitCred(void)
+void __thiscall
+TStatusPicture::thunk_HandleDialogCommandTagSaveLoadPrefQuitCred(TStatusPicture *this)
 
 {
-  HandleDialogCommandTagSaveLoadPrefQuitCred();
+  HandleDialogCommandTagSaveLoadPrefQuitCred(this);
   return;
 }
 
@@ -72,17 +73,17 @@ void * __cdecl TStatusPicture::thunk_CreateTStatusPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408FD5
 // GHIDRA_NAME TStatusPicture::thunk_Cluster_NationStateHint_005942f0
-// GHIDRA_PROTO void __cdecl thunk_Cluster_NationStateHint_005942f0(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_NationStateHint_005942f0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_NationStateHint_005942f0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_NationStateHint_005942f0 */
 
-void __cdecl TStatusPicture::thunk_Cluster_NationStateHint_005942f0(void)
+void __thiscall TStatusPicture::thunk_Cluster_NationStateHint_005942f0(TStatusPicture *this)
 
 {
-  DestructTStatusPictureAndMaybeFree();
+  DestructTStatusPictureAndMaybeFree(this);
   return;
 }
 
@@ -106,7 +107,7 @@ void * __cdecl TStatusPicture::thunk_GetTStatusPictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B2B0
 // GHIDRA_NAME TStatusPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
-// GHIDRA_PROTO void __cdecl HandleDialogCommandTagSaveLoadPrefQuitCred(void)
+// GHIDRA_PROTO void __thiscall HandleDialogCommandTagSaveLoadPrefQuitCred(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles dialog command tags including cred/newg/load/pref/quit/save paths, then forwards fallback handling via city-dialog toggle command dispatcher.
 // GHIDRA_COMMENT_END
@@ -114,13 +115,12 @@ void * __cdecl TStatusPicture::thunk_GetTStatusPictureClassNamePointer(void)
 /* Handles dialog command tags including cred/newg/load/pref/quit/save paths, then forwards fallback
    handling via city-dialog toggle command dispatcher. */
 
-void __cdecl TStatusPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(void)
+void __thiscall TStatusPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(TStatusPicture *this)
 
 {
   uint uVar1;
   char cVar2;
   int *piVar3;
-  int *in_ECX;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   int in_stack_00000004;
@@ -143,12 +143,12 @@ void __cdecl TStatusPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(void)
   uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
   if (uVar1 < 0x676f777a) {
     if (uVar1 == 0x676f7779) {
-      piVar3 = (int *)(**(code **)(*in_ECX + 0x58))();
+      piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x63726564) {
-      piVar3 = (int *)(**(code **)(*in_ECX + 0x58))();
+      piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
       (**(code **)(*g_pLocalizationTable + 0x48))();
       goto LAB_0056b529;
@@ -159,7 +159,7 @@ void __cdecl TStatusPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(void)
 LAB_0056b474:
       cVar2 = thunk_DispatchGameStateEventIfLocalizedPromptAccepted();
       if (cVar2 != '\0') {
-        piVar3 = (int *)(**(code **)(*in_ECX + 0x58))();
+        piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
         (**(code **)(*piVar3 + 0x1b4))();
         if (g_pLocalizationTable[0x11] == 1) {
           if (*(char *)(g_pGameFlowState + 0xf4) != '\0') {
@@ -181,7 +181,7 @@ LAB_0056b474:
         thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
-      piVar3 = (int *)(**(code **)(*in_ECX + 0x58))();
+      piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
       iVar4 = *g_pLocalizationTable;
       goto LAB_0056b526;
@@ -189,7 +189,7 @@ LAB_0056b474:
   }
   else {
     if (uVar1 == 0x70726566) {
-      piVar3 = (int *)(**(code **)(*in_ECX + 0x58))();
+      piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
       iVar4 = *g_pLocalizationTable;
 LAB_0056b526:
@@ -198,7 +198,7 @@ LAB_0056b526:
     }
     if (uVar1 == 0x71756974) goto LAB_0056b474;
     if (uVar1 == 0x73617665) {
-      piVar3 = (int *)(**(code **)(*in_ECX + 0x58))();
+      piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
       if (g_pLocalizationTable[0x11] == 2) {
         InitializeSharedStringRefFromEmpty();
@@ -299,6 +299,7 @@ TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture
   TStatusPicture *pTVar9;
   TStatusPicture *pTVar10;
   undefined4 *unaff_FS_OFFSET;
+  TStatusPicture *pThis;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
@@ -338,7 +339,8 @@ TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture
   InitializeMainRoutineContextAndRun();
   pvVar3 = (void *)(*pcVar1)(0x656e6420);
   thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xd,pvVar3);
-  pvVar3 = (void *)(*pcVar1)(0x71756572);
+  pThis = (TStatusPicture *)0x71756572;
+  pvVar3 = (void *)(*pcVar1)();
   thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,3,pvVar3);
   *(undefined4 *)(this + 0x90) = 0;
   (**(code **)(iVar6 + 0xe4))();
@@ -369,7 +371,7 @@ TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture
     local_4 = local_4 + 0x10;
     sVar5 = sVar5 + 1;
   } while (local_4 < 0x70);
-  SortSevenEntriesAndUpdatePictureWidgets();
+  SortSevenEntriesAndUpdatePictureWidgets(this,pThis);
   g_pCursorControlPanel = (int *)(*unaff_EBP)(0x63757273);
   (**(code **)(*g_pCursorControlPanel + 0xc))();
   (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c,0x2b67);
@@ -379,7 +381,7 @@ TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005942F0
 // GHIDRA_NAME TStatusPicture::DestructTStatusPictureAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTStatusPictureAndMaybeFree(void)
+// GHIDRA_PROTO void __thiscall DestructTStatusPictureAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles status-picture nation tab selection input (including shift-modified behavior), validates nation eligibility, recomputes comparative power metrics, and activates pending event type.
 // GHIDRA_COMMENT_END
@@ -387,66 +389,66 @@ TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture
 /* Handles status-picture nation tab selection input (including shift-modified behavior), validates
    nation eligibility, recomputes comparative power metrics, and activates pending event type. */
 
-void __cdecl TStatusPicture::DestructTStatusPictureAndMaybeFree(void)
+void __thiscall TStatusPicture::DestructTStatusPictureAndMaybeFree(TStatusPicture *this)
 
 {
   char extraout_AL;
   ushort uVar1;
   int *piVar2;
   int iVar3;
-  int *in_ECX;
-  int *piVar4;
-  int iVar5;
-  short sVar6;
-  short *psVar7;
-  int iVar8;
+  int iVar4;
+  short sVar5;
+  short *psVar6;
+  TStatusPicture *unaff_EDI;
+  int iVar7;
+  TStatusPicture *pTVar8;
   int in_stack_00000004;
   int in_stack_00000008;
   
   if (((in_stack_00000004 == 10) && (0x7461622f < *(uint *)(in_stack_00000008 + 0x1c))) &&
      (*(uint *)(in_stack_00000008 + 0x1c) < 0x7461623a)) {
-    iVar8 = (int)(short)(*(short *)(in_stack_00000008 + 0x1c) + -0x6230);
-    if (iVar8 != in_ECX[0x24]) {
-      iVar3 = *in_ECX;
-      piVar2 = (int *)(**(code **)(iVar3 + 0x94))(in_ECX[0x24] + 0x74616230);
-      iVar5 = *piVar2;
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0xa4))(0,1);
-      iVar5 = *in_ECX;
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0xa4))(1);
+    iVar7 = (int)(short)(*(short *)(in_stack_00000008 + 0x1c) + -0x6230);
+    if (iVar7 != *(int *)(this + 0x90)) {
+      iVar3 = *(int *)this;
+      piVar2 = (int *)(**(code **)(iVar3 + 0x94))(*(int *)(this + 0x90) + 0x74616230);
+      iVar4 = *piVar2;
+      (**(code **)(iVar4 + 0xc))();
+      (**(code **)(iVar4 + 0xa4))(0,1);
+      iVar4 = *(int *)this;
+      (**(code **)(iVar4 + 0xc))();
+      (**(code **)(iVar4 + 0xa4))(1);
       (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
-      iRam00000091 = iVar8;
+      iRam00000091 = iVar7;
       (**(code **)(iVar3 + 0xe4))();
-      if (iVar8 == 0) {
+      if (iVar7 == 0) {
         thunk_RecomputeNationComparativePowerMetrics(g_pDiplomacyTurnStateManager);
-        sVar6 = 0;
-        iVar8 = 0;
-        psVar7 = (short *)0xb1;
-        piVar2 = in_ECX + 0x25;
+        sVar5 = 0;
+        iVar7 = 0;
+        psVar6 = (short *)0xb1;
+        pTVar8 = this + 0x94;
         do {
           thunk_IsNationSlotEligibleForEventProcessing();
           if (extraout_AL == '\0') {
-            *psVar7 = -1;
+            *psVar6 = -1;
           }
           else {
             iVar3 = 0;
-            piVar4 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + iVar8);
-            iVar5 = 4;
+            piVar2 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + iVar7);
+            iVar4 = 4;
             do {
-              iVar3 = iVar3 + *piVar4;
-              piVar4 = piVar4 + 1;
-              iVar5 = iVar5 + -1;
-            } while (iVar5 != 0);
-            *piVar2 = ((short)iVar3 * 400) / 400;
-            *psVar7 = sVar6;
+              iVar3 = iVar3 + *piVar2;
+              piVar2 = piVar2 + 1;
+              iVar4 = iVar4 + -1;
+            } while (iVar4 != 0);
+            *(int *)pTVar8 = ((short)iVar3 * 400) / 400;
+            *psVar6 = sVar5;
           }
-          piVar2 = piVar2 + 1;
-          psVar7 = psVar7 + 1;
-          iVar8 = iVar8 + 0x10;
-          sVar6 = sVar6 + 1;
-        } while (iVar8 < 0x70);
-        SortSevenEntriesAndUpdatePictureWidgets();
+          pTVar8 = pTVar8 + 4;
+          psVar6 = psVar6 + 1;
+          iVar7 = iVar7 + 0x10;
+          sVar5 = sVar5 + 1;
+        } while (iVar7 < 0x70);
+        SortSevenEntriesAndUpdatePictureWidgets(this,unaff_EDI);
       }
       else {
         thunk_RecomputeNationComparisonValuesAndNormalizeScale();
@@ -462,6 +464,73 @@ void __cdecl TStatusPicture::DestructTStatusPictureAndMaybeFree(void)
     }
   }
   thunk_HandleCityDialogToggleCommandOrForward();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00594C00
+// GHIDRA_NAME TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
+// GHIDRA_PROTO void __thiscall SortSevenEntriesAndUpdatePictureWidgets(TStatusPicture * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sort seven entries by weight/value and update picture widgets with resulting resource IDs.
+// GHIDRA_COMMENT_END
+
+/* Sort seven entries by weight/value and update picture widgets with resulting resource IDs. */
+
+void __thiscall
+TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(TStatusPicture *this,TStatusPicture *pThis)
+
+{
+  short sVar1;
+  int iVar2;
+  bool bVar3;
+  TStatusPicture *pTVar4;
+  int *piVar5;
+  TStatusPicture *pTVar6;
+  TStatusPicture *pTVar7;
+  int iVar8;
+  TStatusPicture *pTVar9;
+  int local_c;
+  int local_8;
+  
+  local_8 = 1;
+  pTVar6 = this + 0x94;
+  pTVar9 = this + 0xb0;
+  do {
+    if (local_8 < 7) {
+      local_c = 7 - local_8;
+      pTVar4 = pTVar6;
+      pTVar7 = pTVar9;
+      do {
+        pTVar7 = pTVar7 + 2;
+        pTVar4 = pTVar4 + 4;
+        if ((*(short *)pTVar7 != -1) &&
+           ((sVar1 = *(short *)pTVar9, sVar1 == -1 || (*(int *)pTVar6 < *(int *)pTVar4)))) {
+          *(short *)pTVar9 = *(short *)pTVar7;
+          *(short *)pTVar7 = sVar1;
+          iVar8 = *(int *)pTVar6;
+          *(int *)pTVar6 = *(int *)pTVar4;
+          *(int *)pTVar4 = iVar8;
+        }
+        local_c = local_c + -1;
+      } while (local_c != 0);
+    }
+    pTVar9 = pTVar9 + 2;
+    pTVar6 = pTVar6 + 4;
+    bVar3 = local_8 < 6;
+    local_8 = local_8 + 1;
+  } while (bVar3);
+  iVar8 = 0;
+  pTVar6 = this + 0xb0;
+  do {
+    if (*(short *)pTVar6 != -1) {
+      piVar5 = (int *)(**(code **)(*(int *)this + 0x94))(iVar8 + 0x70696330);
+      iVar2 = *piVar5;
+      (**(code **)(iVar2 + 0xc))();
+      (**(code **)(iVar2 + 0x1c8))(*(short *)pTVar6 + 0x10d7,1);
+    }
+    iVar8 = iVar8 + 1;
+    pTVar6 = pTVar6 + 2;
+  } while (iVar8 < 7);
   return;
 }
 

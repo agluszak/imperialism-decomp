@@ -52,7 +52,7 @@ TTacticalToolbar::thunk_RenderTacticalToolbarStrengthMeter_At004070a4(TTacticalT
 void * __cdecl TTacticalToolbar::CreateTTacticalToolbarInstance(void)
 
 {
-  undefined4 *puVar1;
+  TCluster *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,17 +62,17 @@ void * __cdecl TTacticalToolbar::CreateTTacticalToolbarInstance(void)
   puStack_8 = &LAB_006387da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &PTR_thunk_GetTTacticalToolbarClassNamePointer_00644d98;
-    puVar1[0x22] = 0;
-    puVar1[0x23] = 0;
-    puVar1[0x25] = 0;
-    puVar1[0x24] = 0;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    *(undefined ***)this = &PTR_thunk_GetTTacticalToolbarClassNamePointer_00644d98;
+    *(undefined4 *)(this + 0x88) = 0;
+    *(undefined4 *)(this + 0x8c) = 0;
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined4 *)(this + 0x90) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -95,7 +95,7 @@ void * __cdecl TTacticalToolbar::GetTTacticalToolbarClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AC840
 // GHIDRA_NAME TTacticalToolbar::ConstructTTacticalToolbarBaseState
-// GHIDRA_PROTO void __cdecl ConstructTTacticalToolbarBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTTacticalToolbarBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [LowHanging] TTacticalToolbar initializer for command-tag entries (help/targ/done/retr/auto) and follow-up UI routine dispatch.
 // GHIDRA_COMMENT_END
@@ -103,15 +103,14 @@ void * __cdecl TTacticalToolbar::GetTTacticalToolbarClassNamePointer(void)
 /* [LowHanging] TTacticalToolbar initializer for command-tag entries (help/targ/done/retr/auto) and
    follow-up UI routine dispatch. */
 
-void __cdecl TTacticalToolbar::ConstructTTacticalToolbarBaseState(void)
+void __thiscall TTacticalToolbar::ConstructTTacticalToolbarBaseState(TTacticalToolbar *this)
 
 {
   code *pcVar1;
   void *pvVar2;
-  int *in_ECX;
   
   thunk_NoOpUiLifecycleHook();
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)((int)this->pVtable + 0x94);
   pvVar2 = (void *)(*pcVar1)();
   thunk_LoadUiStringByGroupAndIndexToControlObject(0x273d,0x20,pvVar2);
   pvVar2 = (void *)(*pcVar1)();

@@ -55,7 +55,7 @@ TShipBuilderCityMinister::thunk_ConstructTShipBuilderCityMinisterBaseState
           (TShipBuilderCityMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined4 *)(this + 0x18c) = 0;
   *(undefined2 *)(this + 0x14) = 1;
   *(undefined2 *)(this + 0x16) = 1;
@@ -71,7 +71,7 @@ TShipBuilderCityMinister::thunk_ConstructTShipBuilderCityMinisterBaseState
 void * __cdecl TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(void)
 
 {
-  undefined4 *puVar1;
+  TMinister *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -81,17 +81,17 @@ void * __cdecl TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(
   puStack_8 = &LAB_006314ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c4);
+  this = (TMinister *)AllocateWithFallbackHandler(0x1c4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMinister::thunk_ConstructTMinister();
-    puVar1[99] = 0;
-    *(undefined2 *)(puVar1 + 5) = 1;
-    *(undefined2 *)((int)puVar1 + 0x16) = 1;
-    *puVar1 = &g_vtblTShipBuilderCityMinister;
-    *(undefined2 *)(puVar1 + 3) = 2;
+  if (this != (TMinister *)0x0) {
+    TMinister::thunk_ConstructTMinister(this);
+    this[99].pVtable = (void *)0x0;
+    *(undefined2 *)&this[5].pVtable = 1;
+    *(undefined2 *)((int)&this[5].pVtable + 2) = 1;
+    this->pVtable = &g_vtblTShipBuilderCityMinister;
+    *(undefined2 *)&this[3].pVtable = 2;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -120,7 +120,7 @@ void * __thiscall
 TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilderCityMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined4 *)(this + 0x18c) = 0;
   *(undefined2 *)(this + 0x14) = 1;
   *(undefined2 *)(this + 0x16) = 1;

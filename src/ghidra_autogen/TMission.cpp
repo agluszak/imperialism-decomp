@@ -3,32 +3,52 @@
 // Program: Imperialism.exe
 // Bucket: TMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A47
-// GHIDRA_NAME TMission::thunk_DestructTMission
-// GHIDRA_PROTO void __cdecl thunk_DestructTMission(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00401DDE
+// GHIDRA_NAME TMission::thunk_DeletingDestructTMission
+// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTMission(TMission * pThis)
 
-void __cdecl TMission::thunk_DestructTMission(void)
+void __thiscall TMission::thunk_DeletingDestructTMission(TMission *this,TMission *pThis)
 
 {
-  undefined4 *in_ECX;
+  DeletingDestructTMission(this,pThis);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040542A
+// GHIDRA_NAME TMission::thunk_GetTMissionTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTMissionTypeName(void)
+
+void * __cdecl TMission::thunk_GetTMissionTypeName(void)
+
+{
+  void *pvVar1;
   
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  pvVar1 = GetTMissionClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405A47
+// GHIDRA_NAME TMission::thunk_DestructTMission
+// GHIDRA_PROTO void __thiscall thunk_DestructTMission(void)
+
+void __thiscall TMission::thunk_DestructTMission(TMission *this)
+
+{
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406F05
 // GHIDRA_NAME TMission::thunk_ConstructTMission
-// GHIDRA_PROTO void __cdecl thunk_ConstructTMission(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTMission(void)
 
-void __cdecl TMission::thunk_ConstructTMission(void)
+void __thiscall TMission::thunk_ConstructTMission(TMission *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *(undefined1 *)(in_ECX + 2) = 2;
-  in_ECX[3] = 0;
-  *in_ECX = &PTR_thunk_GetTMissionTypeName_0065a4e8;
-  *(undefined1 *)((int)in_ECX + 0x11) = 0xff;
+  *(undefined1 *)&this[2].pVtable = 2;
+  this[3].pVtable = (void *)0x0;
+  this->pVtable = &PTR_thunk_GetTMissionTypeName_0065a4e8;
+  *(undefined1 *)((int)&this[4].pVtable + 1) = 0xff;
   return;
 }
 
@@ -49,46 +69,40 @@ void * __cdecl TMission::GetTMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535020
 // GHIDRA_NAME TMission::ConstructTMission
-// GHIDRA_PROTO void __cdecl ConstructTMission(void)
+// GHIDRA_PROTO void __thiscall ConstructTMission(void)
 
-void __cdecl TMission::ConstructTMission(void)
+void __thiscall TMission::ConstructTMission(TMission *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *(undefined1 *)(in_ECX + 2) = 2;
-  in_ECX[3] = 0;
-  *in_ECX = &PTR_thunk_GetTMissionTypeName_0065a4e8;
-  *(undefined1 *)((int)in_ECX + 0x11) = 0xff;
+  *(undefined1 *)&this[2].pVtable = 2;
+  this[3].pVtable = (void *)0x0;
+  this->pVtable = &PTR_thunk_GetTMissionTypeName_0065a4e8;
+  *(undefined1 *)((int)&this[4].pVtable + 1) = 0xff;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535050
 // GHIDRA_NAME TMission::DeletingDestructTMission
-// GHIDRA_PROTO void __cdecl DeletingDestructTMission(void)
+// GHIDRA_PROTO void __thiscall DeletingDestructTMission(TMission * pThis)
 
-void __cdecl TMission::DeletingDestructTMission(void)
+void __thiscall TMission::DeletingDestructTMission(TMission *this,TMission *pThis)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTMission();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  thunk_DestructTMission(this);
+  if (((uint)pThis & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535080
 // GHIDRA_NAME TMission::DestructTMission
-// GHIDRA_PROTO void __cdecl DestructTMission(void)
+// GHIDRA_PROTO void __thiscall DestructTMission(void)
 
-void __cdecl TMission::DestructTMission(void)
+void __thiscall TMission::DestructTMission(TMission *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 

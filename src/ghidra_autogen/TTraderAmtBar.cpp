@@ -15,7 +15,7 @@
 void * __cdecl TTraderAmtBar::CreateTTraderAmtBarInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -25,17 +25,17 @@ void * __cdecl TTraderAmtBar::CreateTTraderAmtBarInstance(void)
   puStack_8 = &LAB_00637a9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *(undefined2 *)(puVar1 + 0x18) = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0;
-    *(undefined2 *)(puVar1 + 0x19) = 0;
-    *(undefined2 *)((int)puVar1 + 0x66) = 0;
-    *puVar1 = &PTR_thunk_GetLiteralTypeName_TTraderAmtBar_00666ba0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined2 *)(this + 0x60) = 0;
+    *(undefined2 *)(this + 0x62) = 0;
+    *(undefined2 *)(this + 100) = 0;
+    *(undefined2 *)(this + 0x66) = 0;
+    *(undefined ***)this = &PTR_thunk_GetLiteralTypeName_TTraderAmtBar_00666ba0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

@@ -5,17 +5,17 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401B2C
 // GHIDRA_NAME THighScoresPicture::thunk_Cluster_MapTileHint_00575460
-// GHIDRA_PROTO void __cdecl thunk_Cluster_MapTileHint_00575460(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_MapTileHint_00575460(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_00575460
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_MapTileHint_00575460 */
 
-void __cdecl THighScoresPicture::thunk_Cluster_MapTileHint_00575460(void)
+void __thiscall THighScoresPicture::thunk_Cluster_MapTileHint_00575460(THighScoresPicture *this)
 
 {
-  DestructTHighScoresPictureAndMaybeFree();
+  DestructTHighScoresPictureAndMaybeFree(this);
   return;
 }
 
@@ -118,12 +118,12 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(THighScoresPicture *thi
     pTVar4 = this + 0x25;
     iVar3 = 10;
     do {
-      iVar2 = ReadBufferedStreamLocked(pTVar4,4,1,iVar1);
+      iVar2 = TLoadSavePicture::ReadBufferedStreamLocked(pTVar4,4,1,iVar1);
       if (iVar2 == 0) {
         pTVar4->pVtable = (void *)0x0;
       }
       else {
-        ReadBufferedStreamLocked(pTVar5,0x20,1,iVar1);
+        TLoadSavePicture::ReadBufferedStreamLocked(pTVar5,0x20,1,iVar1);
       }
       pTVar4 = pTVar4 + 1;
       pTVar5 = pTVar5 + 8;
@@ -139,7 +139,7 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(THighScoresPicture *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575460
 // GHIDRA_NAME THighScoresPicture::DestructTHighScoresPictureAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTHighScoresPictureAndMaybeFree(void)
+// GHIDRA_PROTO void __thiscall DestructTHighScoresPictureAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] THighScoresPicture renderer for top rows: rank index, localized name line, and numeric value columns.
 // GHIDRA_COMMENT_END
@@ -147,21 +147,20 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(THighScoresPicture *thi
 /* [ClassLane] THighScoresPicture renderer for top rows: rank index, localized name line, and
    numeric value columns. */
 
-void __cdecl THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(void)
+void __thiscall THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(THighScoresPicture *this)
 
 {
-  void *in_ECX;
-  void *this;
   void *this_00;
   void *this_01;
-  int *piVar1;
+  void *this_02;
+  THighScoresPicture *pTVar1;
   int iVar2;
   short originY;
   undefined4 *unaff_FS_OFFSET;
   short originY_00;
   undefined4 local_20;
   undefined4 local_1c;
-  int local_18;
+  THighScoresPicture *local_18;
   int local_14 [2];
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -171,7 +170,7 @@ void __cdecl THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(void)
   puStack_8 = &LAB_006367a8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  thunk_RenderHintHelperWithCtrlModifierOverlay(in_ECX);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
   local_1c = 0;
   local_20 = 0;
   InitializeSharedStringRefFromEmpty();
@@ -182,18 +181,18 @@ void __cdecl THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(void)
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_1c);
   thunk_MapUiThemeCodeToStyleFlags(0x2b67,(int)&local_20);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  piVar1 = (int *)((int)in_ECX + 0x94);
-  local_18 = (int)in_ECX + 0xbc;
+  pTVar1 = this + 0x25;
+  local_18 = this + 0x2f;
   originY = 100;
   do {
-    if (*piVar1 < 1) break;
+    if ((int)pTVar1->pVtable < 1) break;
     iVar2 = iVar2 + 1;
     FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,iVar2);
     AssignStringSharedFromCStr(&g_Destruct_THigh_Scores_Value_00698AB4);
     SetQuickDrawColorAndSyncGlobals();
     originY_00 = originY + 1;
     thunk_SetQuickDrawTextOriginWithContextOffset(0x97,originY_00);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(0x96,originY);
     thunk_DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
@@ -204,20 +203,20 @@ void __cdecl THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(void)
     ReleaseSharedStringRefIfNotEmpty();
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(0xbf,originY_00);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(0xbe,originY);
     thunk_DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
-    FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,*piVar1);
+    FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,pTVar1->pVtable);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(0x1af,originY_00);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(0x1ae,originY);
     thunk_DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
     originY = originY + 0x20;
-    piVar1 = piVar1 + 1;
-    local_18 = local_18 + 0x20;
+    pTVar1 = pTVar1 + 1;
+    local_18 = local_18 + 8;
   } while (iVar2 < 10);
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();

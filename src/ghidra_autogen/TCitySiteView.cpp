@@ -37,6 +37,7 @@ void * __cdecl TCitySiteView::CreateTCitySiteViewInstance(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_18;
   undefined4 local_14;
+  TWorldView *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -48,6 +49,7 @@ void * __cdecl TCitySiteView::CreateTCitySiteViewInstance(void)
   this = (TWorldView *)AllocateWithFallbackHandler(0x378);
   local_4 = 0;
   if (this != (TWorldView *)0x0) {
+    local_10 = this;
     TWorldView::ConstructTWorldViewBaseState(this);
     *(undefined4 *)(this + 0x60) = 0;
     this[0x34c] = (TWorldView)0x0;
@@ -55,7 +57,10 @@ void * __cdecl TCitySiteView::CreateTCitySiteViewInstance(void)
     *(undefined ***)this = &g_vtblTMapDialog;
     *(undefined4 *)(this + 100) = 0;
     local_4 = CONCAT31(local_4._1_3_,1);
-    TMapMaker::thunk_SplitTileIndexToRowAndColumn();
+    TMapMaker::thunk_SplitTileIndexToRowAndColumn
+              ((TMapMaker *)&local_18,
+               CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)(g_pGlobalMapState + 6)),
+               (int)&local_18,(int)&local_14);
     (**(code **)(*(int *)this + 0x1e4))(local_14,local_18);
     *(undefined2 *)(this + 0x354) = 0;
     *(undefined2 *)(this + 0x356) = 0xffff;

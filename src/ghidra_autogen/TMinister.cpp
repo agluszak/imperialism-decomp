@@ -3,41 +3,71 @@
 // Program: Imperialism.exe
 // Bucket: TMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401866
+// GHIDRA_NAME TMinister::thunk_DeletingDestructTMinister
+// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTMinister(TMinister * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTMinister
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeletingDestructTMinister */
+
+void __thiscall TMinister::thunk_DeletingDestructTMinister(TMinister *this,TMinister *pThis)
+
+{
+  DeletingDestructTMinister(this,pThis);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040293C
 // GHIDRA_NAME TMinister::thunk_DestructTMinister
-// GHIDRA_PROTO void __cdecl thunk_DestructTMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTMinister */
 
-void __cdecl TMinister::thunk_DestructTMinister(void)
+void __thiscall TMinister::thunk_DestructTMinister(TMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040433B
 // GHIDRA_NAME TMinister::thunk_ConstructTMinister
-// GHIDRA_PROTO void __cdecl thunk_ConstructTMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTMinister */
 
-void __cdecl TMinister::thunk_ConstructTMinister(void)
+void __thiscall TMinister::thunk_ConstructTMinister(TMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *(undefined2 *)(in_ECX + 3) = 0;
-  *in_ECX = &PTR_thunk_GetTMinisterTypeName_00659c00;
+  *(undefined2 *)&this[3].pVtable = 0;
+  this->pVtable = &PTR_thunk_GetTMinisterTypeName_00659c00;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040625D
+// GHIDRA_NAME TMinister::thunk_GetTMinisterTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTMinisterTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTMinisterTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTMinisterTypeName */
+
+void * __cdecl TMinister::thunk_GetTMinisterTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTMinisterClassNamePointer();
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB60
@@ -57,44 +87,38 @@ void * __cdecl TMinister::GetTMinisterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB80
 // GHIDRA_NAME TMinister::ConstructTMinister
-// GHIDRA_PROTO void __cdecl ConstructTMinister(void)
+// GHIDRA_PROTO void __thiscall ConstructTMinister(void)
 
-void __cdecl TMinister::ConstructTMinister(void)
+void __thiscall TMinister::ConstructTMinister(TMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *(undefined2 *)(in_ECX + 3) = 0;
-  *in_ECX = &PTR_thunk_GetTMinisterTypeName_00659c00;
+  *(undefined2 *)&this[3].pVtable = 0;
+  this->pVtable = &PTR_thunk_GetTMinisterTypeName_00659c00;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBA0
 // GHIDRA_NAME TMinister::DeletingDestructTMinister
-// GHIDRA_PROTO void __cdecl DeletingDestructTMinister(void)
+// GHIDRA_PROTO void __thiscall DeletingDestructTMinister(TMinister * pThis)
 
-void __cdecl TMinister::DeletingDestructTMinister(void)
+void __thiscall TMinister::DeletingDestructTMinister(TMinister *this,TMinister *pThis)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTMinister();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  thunk_DestructTMinister(this);
+  if (((uint)pThis & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBD0
 // GHIDRA_NAME TMinister::DestructTMinister
-// GHIDRA_PROTO void __cdecl DestructTMinister(void)
+// GHIDRA_PROTO void __thiscall DestructTMinister(void)
 
-void __cdecl TMinister::DestructTMinister(void)
+void __thiscall TMinister::DestructTMinister(TMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 

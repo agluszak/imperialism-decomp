@@ -19,6 +19,19 @@ void TPtrList::thunk_WrapperFor_AddHead_At004885d0(void)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402649
+// GHIDRA_NAME TPtrList::thunk_GetTPtrListClassName
+// GHIDRA_PROTO void * __cdecl thunk_GetTPtrListClassName(void)
+
+void * __cdecl TPtrList::thunk_GetTPtrListClassName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTPtrListClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C84
 // GHIDRA_NAME TPtrList::thunk_WrapperFor_AddHead_At004885f0
 // GHIDRA_PROTO undefined thunk_WrapperFor_AddHead_At004885f0()

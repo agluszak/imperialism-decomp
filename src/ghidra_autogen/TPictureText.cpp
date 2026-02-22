@@ -47,8 +47,8 @@ void * __cdecl TPictureText::thunk_GetTPictureTextClassNamePointer(void)
 void * __cdecl TPictureText::CreateTPictureTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TStaticText *this;
+  TStaticText *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,16 +58,16 @@ void * __cdecl TPictureText::CreateTPictureTextInstance(void)
   puStack_8 = &LAB_00638e2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *puVar1 = &g_vtblTPictureText;
-    puVar2 = puVar1;
+  pTVar1 = (TStaticText *)0x0;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    *(undefined ***)this = &g_vtblTPictureText;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B52E0
@@ -92,7 +92,7 @@ void * __cdecl TPictureText::GetTPictureTextClassNamePointer(void)
 void * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
   *(undefined ***)this = &g_vtblTPictureText;
   return this;
 }

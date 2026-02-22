@@ -5,12 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406A64
 // GHIDRA_NAME TRemoteMinor::thunk_DestructTRemoteMinor
-// GHIDRA_PROTO void __cdecl thunk_DestructTRemoteMinor(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTRemoteMinor(void)
 
-void __cdecl TRemoteMinor::thunk_DestructTRemoteMinor(void)
+void __thiscall TRemoteMinor::thunk_DestructTRemoteMinor(TRemoteMinor *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -23,7 +22,7 @@ void __cdecl TRemoteMinor::thunk_DestructTRemoteMinor(void)
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -48,12 +47,11 @@ void * __cdecl TRemoteMinor::thunk_GetTRemoteMinorClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541D00
 // GHIDRA_NAME TRemoteMinor::DestructTRemoteMinor
-// GHIDRA_PROTO void __cdecl DestructTRemoteMinor(void)
+// GHIDRA_PROTO void __thiscall DestructTRemoteMinor(void)
 
-void __cdecl TRemoteMinor::DestructTRemoteMinor(void)
+void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -66,7 +64,7 @@ void __cdecl TRemoteMinor::DestructTRemoteMinor(void)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

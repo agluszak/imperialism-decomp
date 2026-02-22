@@ -48,7 +48,7 @@ TPictureNumberText::thunk_DestructTPictureNumberTextAndMaybeFree
 void * __cdecl TPictureNumberText::CreateTPictureNumberTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TEditText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,14 +58,14 @@ void * __cdecl TPictureNumberText::CreateTPictureNumberTextInstance(void)
   puStack_8 = &LAB_00638e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TEditText *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase();
-    puVar1[0x28] = 0;
-    *puVar1 = &g_vtblTPictureNumberText;
+  if (this != (TEditText *)0x0) {
+    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    *(undefined4 *)&this[1].field_0x4 = 0;
+    this->pVtable = &g_vtblTPictureNumberText;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -93,7 +93,7 @@ void * __cdecl TPictureNumberText::GetTPictureNumberTextClassNamePointer(void)
 void * __thiscall TPictureNumberText::ConstructTPictureNumberTextBaseState(TPictureNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase();
+  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)(this + 0xa0) = 0;
   *(undefined ***)this = &g_vtblTPictureNumberText;
   return this;

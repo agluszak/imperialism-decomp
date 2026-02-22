@@ -59,17 +59,18 @@ TArmyStack::thunk_ClearInvalidArmyTileSelectionsAndCycleInteraction(TArmyStack *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004030F8
 // GHIDRA_NAME TArmyStack::thunk_InitializeBattleSetupArmyStacksAndPopulateSelectionState
-// GHIDRA_PROTO void __cdecl thunk_InitializeBattleSetupArmyStacksAndPopulateSelectionState(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeBattleSetupArmyStacksAndPopulateSelectionState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeBattleSetupArmyStacksAndPopulateSelectionState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeBattleSetupArmyStacksAndPopulateSelectionState */
 
-void __cdecl TArmyStack::thunk_InitializeBattleSetupArmyStacksAndPopulateSelectionState(void)
+void __thiscall
+TArmyStack::thunk_InitializeBattleSetupArmyStacksAndPopulateSelectionState(TArmyStack *this)
 
 {
-  InitializeBattleSetupArmyStacksAndPopulateSelectionState();
+  InitializeBattleSetupArmyStacksAndPopulateSelectionState(this);
   return;
 }
 
@@ -159,6 +160,22 @@ TArmyStack::thunk_DestructTArmyStackAndMaybeFree(TArmyStack *this,byte freeSelfF
   
   pvVar1 = DestructTArmyStackAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487FE0
+// GHIDRA_NAME TArmyStack::ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0
+// GHIDRA_PROTO void __cdecl ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00487fe0 with single named caller ClearInvalidArmyTileSelectionsAndCycleInteraction@0x004a7590
+// GHIDRA_COMMENT_END
+
+/* [ThunkBridge] promoted from thunk_FUN_00487fe0 with single named caller
+   ClearInvalidArmyTileSelectionsAndCycleInteraction@0x004a7590 */
+
+void __cdecl TArmyStack::ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0(void)
+
+{
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A5C50
@@ -278,6 +295,34 @@ void * __thiscall TArmyStack::DestructTArmyStackAndMaybeFree(TArmyStack *this,by
   return this;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7770
+// GHIDRA_NAME TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
+// GHIDRA_PROTO void __thiscall InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(TArmyStack * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_004a7770 with single named caller InitializeBattleSetupArmyStacksAndPopulateSelectionState@0x005a4990
+// GHIDRA_COMMENT_END
+
+/* [ThunkBridge] promoted from thunk_FUN_004a7770 with single named caller
+   InitializeBattleSetupArmyStacksAndPopulateSelectionState@0x005a4990 */
+
+void __thiscall
+TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
+          (TArmyStack *this,TArmyStack *pThis)
+
+{
+  undefined2 in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  
+  *(undefined2 *)(this + 10) = 0;
+  *(undefined2 *)(this + 6) = 0;
+  *(undefined2 *)(this + 4) = 0;
+  this[0xc] = (TArmyStack)0x0;
+  *(undefined2 *)(this + 0xe) = in_stack_00000008;
+  this[8] = pThis._0_1_;
+  *(undefined2 *)(this + 0x10) = in_stack_0000000c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7C20
 // GHIDRA_NAME TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20
 // GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004a7c20()
@@ -308,14 +353,15 @@ void __fastcall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(int *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4990
 // GHIDRA_NAME TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState
-// GHIDRA_PROTO void __cdecl InitializeBattleSetupArmyStacksAndPopulateSelectionState(void)
+// GHIDRA_PROTO void __thiscall InitializeBattleSetupArmyStacksAndPopulateSelectionState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds battle setup army-stack objects
 // GHIDRA_COMMENT_END
 
 /* Builds battle setup army-stack objects */
 
-void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState(void)
+void __thiscall
+TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState(TArmyStack *this)
 
 {
   short sVar1;
@@ -330,16 +376,20 @@ void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionStat
   int iVar7;
   int extraout_EAX_01;
   undefined3 extraout_var_00;
-  TArmyStack *pTVar8;
-  int extraout_EAX_02;
+  TArmyStack *pThis;
+  TArmyStack *extraout_EAX_02;
+  TArmyStack *extraout_EAX_03;
+  int extraout_EAX_04;
   undefined3 extraout_var_01;
-  int extraout_EAX_03;
+  int extraout_EAX_05;
   undefined3 extraout_var_02;
-  undefined4 *in_ECX;
   short unaff_BP;
+  TArmyStack *pTVar8;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000004;
+  TArmyStack *pThis_00;
   undefined1 **ppuVar9;
+  TArmyStack *pThis_01;
   undefined1 *puStack_7c;
   undefined4 uStack_78;
   undefined1 *puStack_74;
@@ -348,11 +398,11 @@ void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionStat
   undefined4 uStack_68;
   undefined1 *puStack_64;
   undefined4 uStack_60;
-  undefined4 *puStack_5c;
+  TArmyStack *pTStack_5c;
   undefined4 uStack_58;
-  undefined4 *puStack_54;
+  TArmyStack *pTStack_54;
   undefined4 uStack_50;
-  undefined1 local_3c [48];
+  TArmyStack *local_3c [12];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -362,11 +412,12 @@ void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionStat
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_50 = 4;
-  puStack_54 = in_ECX + 3;
+  pTStack_54 = this + 0xc;
   pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
   uStack_58 = 0x5a49c6;
+  local_3c[0] = this;
   (*pcVar2)();
-  puStack_5c = in_ECX + 4;
+  pTStack_5c = this + 0x10;
   uStack_58 = 4;
   uStack_60 = 0x5a49d0;
   (*pcVar2)();
@@ -386,8 +437,9 @@ void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionStat
   uStack_78 = 4;
   (*pcVar2)();
   (*pcVar2)();
-  (*pcVar2)(&puStack_5c,4);
-  (*pcVar2)(local_3c,2);
+  (*pcVar2)(&pTStack_5c,4);
+  pThis_01 = (TArmyStack *)local_3c;
+  (*pcVar2)(pThis_01,2);
   while (unaff_BP != 0) {
     unaff_BP = unaff_BP + -1;
     ppuVar9 = &puStack_7c;
@@ -428,10 +480,10 @@ void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionStat
     (*pcVar2)(piVar5 + 8,4);
     (*pcVar2)(piVar5 + 9,2);
     (**(code **)(*(int *)ppuVar9[8] + 0x30))(piVar5);
-    in_ECX = &uStack_50;
+    this = (TArmyStack *)&uStack_50;
   }
   (*pcVar2)(&uStack_78,4);
-  puStack_64 = (undefined1 *)in_ECX[8];
+  puStack_64 = *(undefined1 **)(this + 0x20);
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar4 = thunk_LinkedListCursorHasCurrent();
   iVar7 = CONCAT31(extraout_var,bVar4);
@@ -451,35 +503,42 @@ void __cdecl TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionStat
   }
   iVar6 = 0;
 LAB_005a4b8e:
-  in_ECX[7] = iVar6;
-  (*pcVar2)(in_ECX + 0xe,4);
-  (*pcVar2)(in_ECX + 0x11,4);
-  (*pcVar2)((int)in_ECX + 0x49);
-  (*pcVar2)(in_ECX + 0x13,4);
-  (*pcVar2)(in_ECX + 0x14,4);
-  pTVar8 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
+  *(int *)(this + 0x1c) = iVar6;
+  (*pcVar2)(this + 0x38,4);
+  (*pcVar2)(this + 0x44,4);
+  pThis_00 = (TArmyStack *)0x1;
+  (*pcVar2)(this + 0x49);
+  (*pcVar2)(this + 0x4c,4);
+  (*pcVar2)(this + 0x50,4);
+  pThis = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
+  pTVar8 = (TArmyStack *)0x0;
   puStack_7c = (undefined1 *)0x0;
-  if (pTVar8 != (TArmyStack *)0x0) {
-    thunk_ConstructTArmyStackBaseState(pTVar8);
+  if (pThis != (TArmyStack *)0x0) {
+    thunk_ConstructTArmyStackBaseState(pThis);
+    pTVar8 = extraout_EAX_02;
   }
   puStack_7c = (undefined1 *)0xffffffff;
-  InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770();
+  InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(pTVar8,pThis_00);
   pTVar8 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
   puStack_7c = (undefined1 *)0x1;
-  if (pTVar8 != (TArmyStack *)0x0) {
+  if (pTVar8 == (TArmyStack *)0x0) {
+    pTVar8 = (TArmyStack *)0x0;
+  }
+  else {
     thunk_ConstructTArmyStackBaseState(pTVar8);
+    pTVar8 = extraout_EAX_03;
   }
   puStack_7c = (undefined1 *)0xffffffff;
-  InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770();
+  InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(pTVar8,pThis_01);
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar4 = thunk_LinkedListCursorHasCurrent();
   iVar7 = CONCAT31(extraout_var_01,bVar4);
-  iVar6 = extraout_EAX_02;
+  iVar6 = extraout_EAX_04;
   while (iVar7 != 0) {
     WrapperFor_AllocateWithFallbackHandler_At004a7b20(*(undefined4 *)(iVar6 + 0x38));
     thunk_AdvanceLinkedListCursor();
     bVar4 = thunk_LinkedListCursorHasCurrent();
-    iVar6 = extraout_EAX_03;
+    iVar6 = extraout_EAX_05;
     iVar7 = CONCAT31(extraout_var_02,bVar4);
   }
   thunk_InitializeBattleSetupAndMaybeDispatchTurnEventED8();

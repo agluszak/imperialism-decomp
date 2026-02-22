@@ -67,7 +67,7 @@ void TDefenseMinister::thunk_GetDefenseMinisterNeutralPreferenceScalar_At00404a4
 void * __thiscall TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTDefenseMinister;
   return this;
 }
@@ -128,7 +128,7 @@ void * __cdecl TDefenseMinister::GetTDefenseMinisterClassNamePointer(void)
 void * __thiscall TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTDefenseMinister;
   return this;
 }

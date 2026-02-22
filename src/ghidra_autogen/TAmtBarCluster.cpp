@@ -21,17 +21,17 @@ void __cdecl TAmtBarCluster::thunk_DestroyTradeSellControlPanel(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403E22
 // GHIDRA_NAME TAmtBarCluster::thunk_HandleTradeSellControlCommand
-// GHIDRA_PROTO void __cdecl thunk_HandleTradeSellControlCommand(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeSellControlCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeSellControlCommand
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeSellControlCommand */
 
-void __cdecl TAmtBarCluster::thunk_HandleTradeSellControlCommand(void)
+void __thiscall TAmtBarCluster::thunk_HandleTradeSellControlCommand(TAmtBarCluster *this)
 
 {
-  HandleTradeSellControlCommand();
+  HandleTradeSellControlCommand(this);
   return;
 }
 
@@ -53,29 +53,28 @@ void __cdecl TAmtBarCluster::thunk_DestructTAmtBarClusterMaybeFree(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407A90
 // GHIDRA_NAME TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment
-// GHIDRA_PROTO void __cdecl thunk_HandleTradeMoveControlAdjustment(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeMoveControlAdjustment(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeMoveControlAdjustment
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeMoveControlAdjustment */
 
-void __cdecl TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment(void)
+void __thiscall TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment(TAmtBarCluster *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   code *pcVar2;
   short sVar3;
   int *piVar4;
   int iVar5;
-  int *in_ECX;
   int in_stack_00000004;
   void *in_stack_00000008;
   int in_stack_0000000c;
   
   if (in_stack_00000004 == 100) {
-    iVar1 = *in_ECX;
-    pcVar2 = *(code **)(iVar1 + 0x94);
+    pvVar1 = this->pVtable;
+    pcVar2 = *(code **)((int)pvVar1 + 0x94);
     piVar4 = (int *)(*pcVar2)(0x6d6f7665);
     if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -88,45 +87,44 @@ void __cdecl TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment(void)
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     sVar3 = (**(code **)(*piVar4 + 0x1e8))();
-    if ((short)in_ECX < sVar3) {
-      (**(code **)(iVar1 + 0x1d0))((int)in_ECX + 1);
+    if ((short)this < sVar3) {
+      (**(code **)((int)pvVar1 + 0x1d0))((undefined1 *)((int)&this->pVtable + 1));
     }
   }
   else if (in_stack_00000004 == 0x65) {
-    iVar1 = *in_ECX;
-    piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+    pvVar1 = this->pVtable;
+    piVar4 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x6d6f7665);
     if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar5 = (**(code **)(*piVar4 + 0x1e8))();
     if ((short)iVar5 != 0) {
-      (**(code **)(iVar1 + 0x1d0))(iVar5 + -1);
+      (**(code **)((int)pvVar1 + 0x1d0))(iVar5 + -1);
     }
   }
-  thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004080C6
 // GHIDRA_NAME TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls
-// GHIDRA_PROTO void __cdecl thunk_InitializeTradeMoveAndBarControls(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeTradeMoveAndBarControls(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeTradeMoveAndBarControls
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeTradeMoveAndBarControls */
 
-void __cdecl TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(void)
+void __thiscall TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(TAmtBarCluster *this)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  int *in_ECX;
   uint uStack_4;
   
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)((int)this->pVtable + 0x94);
   uStack_4 = uStack_4 & 0xffff0000;
   piVar3 = (int *)(*pcVar1)(0x6d6f7665);
   if (piVar3 != (int *)0x0) {
@@ -238,18 +236,17 @@ void __cdecl TAmtBarCluster::DestructTAmtBarClusterMaybeFree(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586D60
 // GHIDRA_NAME TAmtBarCluster::InitializeTradeMoveAndBarControls
-// GHIDRA_PROTO void __cdecl InitializeTradeMoveAndBarControls(void)
+// GHIDRA_PROTO void __thiscall InitializeTradeMoveAndBarControls(void)
 
-void __cdecl TAmtBarCluster::InitializeTradeMoveAndBarControls(void)
+void __thiscall TAmtBarCluster::InitializeTradeMoveAndBarControls(TAmtBarCluster *this)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  int *in_ECX;
   uint local_4;
   
-  pcVar1 = *(code **)(*in_ECX + 0x94);
+  pcVar1 = *(code **)((int)this->pVtable + 0x94);
   local_4 = local_4 & 0xffff0000;
   piVar3 = (int *)(*pcVar1)(0x6d6f7665);
   if (piVar3 != (int *)0x0) {
@@ -270,7 +267,7 @@ void __cdecl TAmtBarCluster::InitializeTradeMoveAndBarControls(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586E70
 // GHIDRA_NAME TAmtBarCluster::HandleTradeMoveControlAdjustment
-// GHIDRA_PROTO void __cdecl HandleTradeMoveControlAdjustment(void)
+// GHIDRA_PROTO void __thiscall HandleTradeMoveControlAdjustment(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies +/-1 move-value step commands (100/0x65) against "move" quantity, clamped by "avai" quantity.\nFor other commands forwards into generic panel-control event dispatcher.
 // GHIDRA_COMMENT_END
@@ -278,22 +275,21 @@ void __cdecl TAmtBarCluster::InitializeTradeMoveAndBarControls(void)
 /* Applies +/-1 move-value step commands (100/0x65) against "move" quantity, clamped by "avai"
    quantity.\nFor other commands forwards into generic panel-control event dispatcher. */
 
-void __cdecl TAmtBarCluster::HandleTradeMoveControlAdjustment(void)
+void __thiscall TAmtBarCluster::HandleTradeMoveControlAdjustment(TAmtBarCluster *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   code *pcVar2;
   short sVar3;
   int *piVar4;
   int iVar5;
-  int *in_ECX;
   int in_stack_00000004;
   void *in_stack_00000008;
   int in_stack_0000000c;
   
   if (in_stack_00000004 == 100) {
-    iVar1 = *in_ECX;
-    pcVar2 = *(code **)(iVar1 + 0x94);
+    pvVar1 = this->pVtable;
+    pcVar2 = *(code **)((int)pvVar1 + 0x94);
     piVar4 = (int *)(*pcVar2)(0x6d6f7665);
     if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -306,29 +302,29 @@ void __cdecl TAmtBarCluster::HandleTradeMoveControlAdjustment(void)
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     sVar3 = (**(code **)(*piVar4 + 0x1e8))();
-    if ((short)in_ECX < sVar3) {
-      (**(code **)(iVar1 + 0x1d0))((int)in_ECX + 1);
+    if ((short)this < sVar3) {
+      (**(code **)((int)pvVar1 + 0x1d0))((undefined1 *)((int)&this->pVtable + 1));
     }
   }
   else if (in_stack_00000004 == 0x65) {
-    iVar1 = *in_ECX;
-    piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+    pvVar1 = this->pVtable;
+    piVar4 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x6d6f7665);
     if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar5 = (**(code **)(*piVar4 + 0x1e8))();
     if ((short)iVar5 != 0) {
-      (**(code **)(iVar1 + 0x1d0))(iVar5 + -1);
+      (**(code **)((int)pvVar1 + 0x1d0))(iVar5 + -1);
     }
   }
-  thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005873E0
 // GHIDRA_NAME TAmtBarCluster::HandleTradeSellControlCommand
-// GHIDRA_PROTO void __cdecl HandleTradeSellControlCommand(void)
+// GHIDRA_PROTO void __thiscall HandleTradeSellControlCommand(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles trade sell quantity commands (increment/decrement/max/zero + drag/page delegation).\nKey command ids in this handler: 100(+1), 0x65(-1), 0x69(clamp to max), 0x6A(set zero).\n0x67/0x68 paths propagate state across resource-row control tags ("0sr..6sr", "0am..", "0dg..").
 // GHIDRA_COMMENT_END
@@ -337,10 +333,10 @@ void __cdecl TAmtBarCluster::HandleTradeMoveControlAdjustment(void)
    command ids in this handler: 100(+1), 0x65(-1), 0x69(clamp to max), 0x6A(set zero).\n0x67/0x68
    paths propagate state across resource-row control tags ("0sr..6sr", "0am..", "0dg.."). */
 
-void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
+void __thiscall TAmtBarCluster::HandleTradeSellControlCommand(TAmtBarCluster *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   code *pcVar2;
   char cVar3;
   short extraout_AX;
@@ -349,20 +345,19 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
   int *piVar5;
   int *piVar6;
   int iVar7;
-  int *in_ECX;
   int unaff_EBX;
   char *pcVar8;
   int unaff_EBP;
   undefined4 in_stack_00000004;
   int iStack00000008;
   
-  iVar1 = *in_ECX;
-  piVar5 = (int *)(**(code **)(iVar1 + 0x58))();
+  pvVar1 = this->pVtable;
+  piVar5 = (int *)(**(code **)((int)pvVar1 + 0x58))();
   switch(in_stack_00000004) {
   case 100:
-    cVar3 = (**(code **)(iVar1 + 0x1dc))();
+    cVar3 = (**(code **)((int)pvVar1 + 0x1dc))();
     if (cVar3 != '\0') {
-      piVar6 = (int *)(**(code **)(iVar1 + 0x94))(0x53656c6c);
+      piVar6 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x53656c6c);
       if (piVar6 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -370,7 +365,7 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
       iVar7 = (**(code **)(*piVar6 + 0x1e8))();
       thunk_GetActiveNationId();
       (**(code **)(*(int *)g_apNationStates[extraout_AX] + 0x78))
-                (CONCAT22(extraout_AX >> 0xf,(short)in_ECX[0x22]));
+                (CONCAT22(extraout_AX >> 0xf,*(undefined2 *)&this->field_0x88));
       piVar5 = (int *)(**(code **)(*piVar5 + 0x94))(0x6d436170);
       if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -378,25 +373,25 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
       }
       if ((unaff_EBP < iVar7) && (iVar7 = (**(code **)(*piVar5 + 0x1e8))(), unaff_EBP < iVar7)) {
         (**(code **)(unaff_EBX + 0xa4))(unaff_EBP + 1 != 0,1);
-        (**(code **)(iVar1 + 0x1d0))(unaff_EBP + 1);
+        (**(code **)((int)pvVar1 + 0x1d0))(unaff_EBP + 1);
         return;
       }
     }
     break;
   case 0x65:
-    piVar5 = (int *)(**(code **)(iVar1 + 0x94))(0x53656c6c);
+    piVar5 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x53656c6c);
     if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar7 = (**(code **)(*piVar5 + 0x1e8))();
     if (1 < iVar7) {
-      (**(code **)(iVar1 + 0x1d0))(iVar7 + -1);
+      (**(code **)((int)pvVar1 + 0x1d0))(iVar7 + -1);
       return;
     }
     break;
   default:
-    thunk_HandleTradeMoveControlAdjustment();
+    thunk_HandleTradeMoveControlAdjustment(this);
     break;
   case 0x67:
     (**(code **)(*g_pUiRuntimeContext + 0x68))(0xffffffff);
@@ -408,10 +403,10 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
       do {
         piVar5 = (int *)(*pcVar2)(*(undefined4 *)pcVar8);
         if (piVar5 != (int *)0x0) {
-          iVar1 = *piVar5;
-          cVar3 = (**(code **)(iVar1 + 0x1d8))();
+          iVar7 = *piVar5;
+          cVar3 = (**(code **)(iVar7 + 0x1d8))();
           if (cVar3 == '\0') {
-            (**(code **)(iVar1 + 0x1e0))();
+            (**(code **)(iVar7 + 0x1e0))();
           }
         }
         pcVar8 = pcVar8 + 4;
@@ -430,10 +425,10 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
       do {
         piVar5 = (int *)(*pcVar2)(*(undefined4 *)pcVar8);
         if (piVar5 != (int *)0x0) {
-          iVar1 = *piVar5;
-          cVar3 = (**(code **)(iVar1 + 0x1d8))();
+          iVar7 = *piVar5;
+          cVar3 = (**(code **)(iVar7 + 0x1d8))();
           if (cVar3 == '\0') {
-            (**(code **)(iVar1 + 0x1e0))();
+            (**(code **)(iVar7 + 0x1e0))();
           }
         }
         pcVar8 = pcVar8 + 4;
@@ -444,14 +439,15 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
     break;
   case 0x69:
     thunk_GetActiveNationId();
-    sVar4 = (**(code **)(*(int *)g_apNationStates[extraout_AX_00] + 0x78))((short)in_ECX[0x22]);
+    sVar4 = (**(code **)(*(int *)g_apNationStates[extraout_AX_00] + 0x78))
+                      (*(undefined2 *)&this->field_0x88);
     piVar5 = (int *)(**(code **)(*piVar5 + 0x94))(0x6d436170);
     if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     (**(code **)(*piVar5 + 0x1e8))();
-    pcVar2 = *(code **)(iVar1 + 0x94);
+    pcVar2 = *(code **)((int)pvVar1 + 0x94);
     piVar5 = (int *)(*pcVar2)(0x53656c6c);
     iVar7 = (int)sVar4;
     if ((int)(short)unaff_EBP <= (int)sVar4) {
@@ -464,10 +460,10 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     (**(code **)(*piVar5 + 0xa8))(1,0);
-    (**(code **)(iVar1 + 0x1d0))(iVar7);
+    (**(code **)((int)pvVar1 + 0x1d0))(iVar7);
     return;
   case 0x6a:
-    pcVar2 = *(code **)(iVar1 + 0x94);
+    pcVar2 = *(code **)((int)pvVar1 + 0x94);
     piVar5 = (int *)(*pcVar2)(0x53656c6c);
     (**(code **)(*piVar5 + 0xa4))(0,1);
     piVar5 = (int *)(*pcVar2)(0x62617220);
@@ -476,7 +472,7 @@ void __cdecl TAmtBarCluster::HandleTradeSellControlCommand(void)
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     (**(code **)(*piVar5 + 0xa8))(0,1);
-    (**(code **)(iVar1 + 0x1d0))(0);
+    (**(code **)((int)pvVar1 + 0x1d0))(0);
     return;
   }
   return;

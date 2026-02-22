@@ -3,6 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: CDocument.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0060B72D
+// GHIDRA_NAME CDocument::ExtractFileTitleOrPathTailComponent
+// GHIDRA_PROTO int __cdecl ExtractFileTitleOrPathTailComponent(char * sourcePath, char * outBuffer, uint outChars)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Extracts file title into buffer, falling back to tail-component copy when title extraction fails.
+// GHIDRA_COMMENT_END
+
+/* Extracts file title into buffer, falling back to tail-component copy when title extraction fails.
+    */
+
+int __cdecl
+CDocument::ExtractFileTitleOrPathTailComponent(char *sourcePath,char *outBuffer,uint outChars)
+
+{
+  short sVar1;
+  int iVar2;
+  CHAR *Buf;
+  CHAR local_108 [260];
+  
+  Buf = outBuffer;
+  if (outBuffer == (char *)0x0) {
+    Buf = local_108;
+    outChars = 0x104;
+  }
+  sVar1 = GetFileTitleA(sourcePath,Buf,(WORD)outChars);
+  if (sVar1 == 0) {
+    if (outBuffer == (char *)0x0) {
+      iVar2 = lstrlenA(Buf);
+      iVar2 = iVar2 + 1;
+    }
+    else {
+      iVar2 = 0;
+    }
+  }
+  else {
+    iVar2 = CopyPathTailComponent(sourcePath,outBuffer,outChars);
+  }
+  return iVar2;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00610965
 // GHIDRA_NAME CDocument::GetCDocumentMessageMap
 // GHIDRA_PROTO void * __thiscall GetCDocumentMessageMap(void)
@@ -403,5 +443,22 @@ CDocument::OpenFileObjectForDocumentPath(CDocument *this,char *pathName,uint ope
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return this_00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061AB47
+// GHIDRA_NAME CDocument::FormatResourceTemplateWithSingleArg
+// GHIDRA_PROTO void __cdecl FormatResourceTemplateWithSingleArg(void * outString, uint resourceId, void * arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-argument convenience wrapper over resource template formatter.
+// GHIDRA_COMMENT_END
+
+/* Single-argument convenience wrapper over resource template formatter. */
+
+void __cdecl
+CDocument::FormatResourceTemplateWithSingleArg(void *outString,uint resourceId,void *arg1)
+
+{
+  FormatResourceTemplateWithArgs(outString,resourceId,&arg1,1);
+  return;
 }
 

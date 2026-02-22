@@ -23,6 +23,25 @@ TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403512
+// GHIDRA_NAME TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructPictureScreenResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureScreenResourceEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructPictureScreenResourceEntry */
+
+void __thiscall
+TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(TUpDownPictureButton *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined ***)this = &g_vtblTUpDownPictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00403DBE
 // GHIDRA_NAME TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTUpDownPictureButtonClassNamePointer(void)
@@ -89,16 +108,15 @@ void * __cdecl TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715A0
 // GHIDRA_NAME TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// GHIDRA_PROTO void __cdecl ConstructPictureScreenResourceEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructPictureScreenResourceEntry(void)
 
-void __cdecl TUpDownPictureButton::ConstructPictureScreenResourceEntry(void)
+void __thiscall
+TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *in_ECX = &g_vtblTUpDownPictureButton;
-  *(undefined2 *)((int)in_ECX + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblTUpDownPictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
   return;
 }
 

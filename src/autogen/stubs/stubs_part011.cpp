@@ -139,8 +139,8 @@ undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0(vo
   return 0;
 }
 
-// ghidra_name ResolveBmpResourceHandleWithDefault3B6
-// ghidra_proto void __cdecl ResolveBmpResourceHandleWithDefault3B6(void)
+// ghidra_name TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6
+// ghidra_proto void __thiscall ResolveBmpResourceHandleWithDefault3B6(TMacViewMgr * pThis)
 // FUNCTION: IMPERIALISM 0x004995c0
 undefined4 ResolveBmpResourceHandleWithDefault3B6(void)
 {
@@ -811,7 +811,7 @@ undefined4 FinalizeModalDialogAndRestoreOwnerFocus(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_CleanupDialogModalCreateState_At0049d510
+// ghidra_name TMacViewMgr::WrapperFor_CleanupDialogModalCreateState_At0049d510
 // ghidra_proto undefined WrapperFor_CleanupDialogModalCreateState_At0049d510()
 // FUNCTION: IMPERIALISM 0x0049d510
 undefined4 WrapperFor_CleanupDialogModalCreateState_At0049d510(void)
@@ -1052,7 +1052,7 @@ undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0(void)
 }
 
 // ghidra_name TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// ghidra_proto void __cdecl HandleTurnEventViewportEdgeAutoScroll(void)
+// ghidra_proto void __thiscall HandleTurnEventViewportEdgeAutoScroll(void)
 // FUNCTION: IMPERIALISM 0x0049e320
 undefined4 HandleTurnEventViewportEdgeAutoScroll(void)
 {
@@ -1188,7 +1188,7 @@ undefined4 GetTAnimationClassNamePointer(void)
 }
 
 // ghidra_name TAnimation::ConstructTAnimationBaseState
-// ghidra_proto void __cdecl ConstructTAnimationBaseState(void)
+// ghidra_proto void __thiscall ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // FUNCTION: IMPERIALISM 0x0049f0c0
 undefined4 ConstructTAnimationBaseState(void)
 {
@@ -1204,7 +1204,7 @@ undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 }
 
 // ghidra_name TBattleReportView::RenderBattleReportInsetWithPaletteShift
-// ghidra_proto void __cdecl RenderBattleReportInsetWithPaletteShift(void)
+// ghidra_proto void __thiscall RenderBattleReportInsetWithPaletteShift(void)
 // FUNCTION: IMPERIALISM 0x0049f190
 undefined4 RenderBattleReportInsetWithPaletteShift(void)
 {
@@ -1212,7 +1212,7 @@ undefined4 RenderBattleReportInsetWithPaletteShift(void)
 }
 
 // ghidra_name TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle
-// ghidra_proto undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
+// ghidra_proto undefined __thiscall RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
 // FUNCTION: IMPERIALISM 0x0049f2d0
 undefined4 RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
 {
@@ -1276,7 +1276,7 @@ undefined4 GetTCivAnimation2ClassNamePointer(void)
 }
 
 // ghidra_name TCivAnimation2::ConstructTCivAnimation2BaseState
-// ghidra_proto void __cdecl ConstructTCivAnimation2BaseState(void)
+// ghidra_proto void __thiscall ConstructTCivAnimation2BaseState(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x0049f6a0
 undefined4 ConstructTCivAnimation2BaseState(void)
 {
@@ -1324,7 +1324,7 @@ undefined4 GetTOneTimeAnimationClassNamePointer(void)
 }
 
 // ghidra_name TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// ghidra_proto void __cdecl ConstructTOneTimeAnimationBaseState(void)
+// ghidra_proto void __thiscall ConstructTOneTimeAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // FUNCTION: IMPERIALISM 0x0049fd60
 undefined4 ConstructTOneTimeAnimationBaseState(void)
 {
@@ -1364,7 +1364,7 @@ undefined4 GetTCouncilTickerAnimationClassNamePointer(void)
 }
 
 // ghidra_name TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-// ghidra_proto void __cdecl ConstructTCouncilTickerAnimationBaseState(void)
+// ghidra_proto void __thiscall ConstructTCouncilTickerAnimationBaseState(void)
 // FUNCTION: IMPERIALISM 0x0049ff90
 undefined4 ConstructTCouncilTickerAnimationBaseState(void)
 {
@@ -1468,7 +1468,7 @@ undefined4 GetTTransFocusAnimationClassNamePointer(void)
 }
 
 // ghidra_name TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// ghidra_proto void __cdecl ConstructTTransFocusAnimationBaseState(void)
+// ghidra_proto void __thiscall ConstructTTransFocusAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // FUNCTION: IMPERIALISM 0x004a04a0
 undefined4 ConstructTTransFocusAnimationBaseState(void)
 {
@@ -1579,7 +1579,7 @@ undefined4 AddObjectToUiTransientRegistry(void)
   return 0;
 }
 
-// ghidra_name FindLinkedListNodeByIdFieldAt18
+// ghidra_name TMapDialog::FindLinkedListNodeByIdFieldAt18
 // ghidra_proto int * __thiscall FindLinkedListNodeByIdFieldAt18(int keyId)
 // FUNCTION: IMPERIALISM 0x004a0d30
 undefined4 FindLinkedListNodeByIdFieldAt18(void)
@@ -1588,7 +1588,7 @@ undefined4 FindLinkedListNodeByIdFieldAt18(void)
 }
 
 // ghidra_name TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// ghidra_proto void __cdecl ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
+// ghidra_proto void __thiscall ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
 // FUNCTION: IMPERIALISM 0x004a0dc0
 undefined4 ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
 {
@@ -1652,7 +1652,7 @@ undefined4 WrapperFor_AllocateWithFallbackHandler_At004a1130(void)
 }
 
 // ghidra_name ResetMapActionSelectionAndLoadContextByNodeId
-// ghidra_proto void __cdecl ResetMapActionSelectionAndLoadContextByNodeId(void)
+// ghidra_proto void __thiscall ResetMapActionSelectionAndLoadContextByNodeId(int arg1)
 // FUNCTION: IMPERIALISM 0x004a13c0
 undefined4 ResetMapActionSelectionAndLoadContextByNodeId(void)
 {
@@ -2187,8 +2187,8 @@ undefined4 DestructTArmyStackAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-// ghidra_proto void __cdecl InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(void)
+// ghidra_name TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
+// ghidra_proto void __thiscall InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(TArmyStack * pThis)
 // FUNCTION: IMPERIALISM 0x004a7770
 undefined4 InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(void)
 {
@@ -2380,7 +2380,7 @@ undefined4 PopulateTurnEventDialogArmyUnitLinesForTileSelection(void)
 }
 
 // ghidra_name TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup
-// ghidra_proto void __cdecl HandleSelectedTileSpecialOrderPromptAndCleanup(void)
+// ghidra_proto void __thiscall HandleSelectedTileSpecialOrderPromptAndCleanup(void)
 // FUNCTION: IMPERIALISM 0x004a8a20
 undefined4 HandleSelectedTileSpecialOrderPromptAndCleanup(void)
 {
@@ -2476,7 +2476,7 @@ undefined4 RenderDualLineStatusTextAndProgressBar_004a95b0(void)
 }
 
 // ghidra_name TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
-// ghidra_proto void __cdecl HandleCrossUArmyViewsCommandTagDispatch(void)
+// ghidra_proto void __thiscall HandleCrossUArmyViewsCommandTagDispatch(void)
 // FUNCTION: IMPERIALISM 0x004a9990
 undefined4 HandleCrossUArmyViewsCommandTagDispatch(void)
 {
@@ -2612,7 +2612,7 @@ undefined4 GetTSuperArmyRosterClassNamePointer(void)
 }
 
 // ghidra_name TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
-// ghidra_proto void * __cdecl ConstructTSuperArmyRosterBaseState(void)
+// ghidra_proto void * __thiscall ConstructTSuperArmyRosterBaseState(void)
 // FUNCTION: IMPERIALISM 0x004aa540
 undefined4 ConstructTSuperArmyRosterBaseState(void)
 {
@@ -2652,7 +2652,7 @@ undefined4 GetTMiniArmyLineClassNamePointer(void)
 }
 
 // ghidra_name TMiniArmyLine::ConstructTMiniArmyLineBaseState
-// ghidra_proto void * __cdecl ConstructTMiniArmyLineBaseState(void)
+// ghidra_proto void * __thiscall ConstructTMiniArmyLineBaseState(void)
 // FUNCTION: IMPERIALISM 0x004aa960
 undefined4 ConstructTMiniArmyLineBaseState(void)
 {
@@ -2732,7 +2732,7 @@ undefined4 GetTSuperCivRosterClassNamePointer(void)
 }
 
 // ghidra_name TSuperCivRoster::ConstructTSuperCivRosterBaseState
-// ghidra_proto void * __cdecl ConstructTSuperCivRosterBaseState(void)
+// ghidra_proto void * __thiscall ConstructTSuperCivRosterBaseState(void)
 // FUNCTION: IMPERIALISM 0x004ab470
 undefined4 ConstructTSuperCivRosterBaseState(void)
 {
@@ -3244,7 +3244,7 @@ undefined4 GetTBatRepDetLineClassNamePointer(void)
 }
 
 // ghidra_name TBatRepDetLine::ConstructTBatRepDetLineBaseState
-// ghidra_proto void * __cdecl ConstructTBatRepDetLineBaseState(void)
+// ghidra_proto void * __thiscall ConstructTBatRepDetLineBaseState(void)
 // FUNCTION: IMPERIALISM 0x004b0040
 undefined4 ConstructTBatRepDetLineBaseState(void)
 {
@@ -3268,7 +3268,7 @@ undefined4 GetTBattleUnitsViewClassNamePointer(void)
 }
 
 // ghidra_name TBattleUnitsView::ConstructTBattleUnitsViewBaseState
-// ghidra_proto void * __cdecl ConstructTBattleUnitsViewBaseState(void)
+// ghidra_proto void * __thiscall ConstructTBattleUnitsViewBaseState(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004b06f0
 undefined4 ConstructTBattleUnitsViewBaseState(void)
 {
@@ -3276,7 +3276,7 @@ undefined4 ConstructTBattleUnitsViewBaseState(void)
 }
 
 // ghidra_name TBattleUnitsView::DestructTBattleUnitsViewAndMaybeFree
-// ghidra_proto void __cdecl DestructTBattleUnitsViewAndMaybeFree(void)
+// ghidra_proto void __thiscall DestructTBattleUnitsViewAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x004b0900
 undefined4 DestructTBattleUnitsViewAndMaybeFree(void)
 {
@@ -3468,7 +3468,7 @@ undefined4 GetTCheaterClassNamePointer(void)
 }
 
 // ghidra_name TCheater::ConstructTCheaterBaseState
-// ghidra_proto void * __cdecl ConstructTCheaterBaseState(void)
+// ghidra_proto void * __thiscall ConstructTCheaterBaseState(void)
 // FUNCTION: IMPERIALISM 0x004b14a0
 undefined4 ConstructTCheaterBaseState(void)
 {
@@ -3483,7 +3483,7 @@ undefined4 DestructTCheaterAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name ConstructNumericEntryDialogCoreAndValueLabel
+// ghidra_name TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
 // ghidra_proto void __thiscall ConstructNumericEntryDialogCoreAndValueLabel(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x004b1710
 undefined4 ConstructNumericEntryDialogCoreAndValueLabel(void)
@@ -3540,7 +3540,7 @@ undefined4 GetTGPCheaterClassNamePointer(void)
 }
 
 // ghidra_name TGPCheater::ConstructTGPCheaterBaseState
-// ghidra_proto void * __cdecl ConstructTGPCheaterBaseState(void)
+// ghidra_proto void * __thiscall ConstructTGPCheaterBaseState(void)
 // FUNCTION: IMPERIALISM 0x004b1a90
 undefined4 ConstructTGPCheaterBaseState(void)
 {
@@ -3548,7 +3548,7 @@ undefined4 ConstructTGPCheaterBaseState(void)
 }
 
 // ghidra_name TLaborPool::CreateTLaborPoolInstance
-// ghidra_proto void __cdecl CreateTLaborPoolInstance(void)
+// ghidra_proto void __thiscall CreateTLaborPoolInstance(void)
 // FUNCTION: IMPERIALISM 0x004b1cb0
 undefined4 CreateTLaborPoolInstance(void)
 {
@@ -3940,7 +3940,7 @@ undefined4 DestructTProductionOrderAndMaybeFree_Impl(void)
 }
 
 // ghidra_name TProductionOrder::InitializeBasicCityOrderContext
-// ghidra_proto void __cdecl InitializeBasicCityOrderContext(void)
+// ghidra_proto void __thiscall InitializeBasicCityOrderContext(void)
 // FUNCTION: IMPERIALISM 0x004b4f70
 undefined4 InitializeBasicCityOrderContext(void)
 {

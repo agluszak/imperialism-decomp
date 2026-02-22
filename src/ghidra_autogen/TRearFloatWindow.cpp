@@ -48,8 +48,8 @@ TRearFloatWindow::thunk_DestructTRearFloatWindowAndMaybeFree
 void * __cdecl TRearFloatWindow::CreateTRearFloatWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TFloatWindow *this;
+  TFloatWindow *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,16 +59,16 @@ void * __cdecl TRearFloatWindow::CreateTRearFloatWindowInstance(void)
   puStack_8 = &LAB_00632aaa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TFloatWindow *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340();
-    *puVar1 = &g_vtblTRearFloatWindow;
-    puVar2 = puVar1;
+  pTVar1 = (TFloatWindow *)0x0;
+  if (this != (TFloatWindow *)0x0) {
+    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    *(undefined ***)this = &g_vtblTRearFloatWindow;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F38C0
@@ -93,7 +93,7 @@ void * __cdecl TRearFloatWindow::GetTRearFloatWindowClassNamePointer(void)
 void * __thiscall TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 
 {
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340();
+  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
   *(undefined ***)this = &g_vtblTRearFloatWindow;
   return this;
 }

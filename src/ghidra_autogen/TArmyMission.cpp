@@ -31,36 +31,87 @@ void __cdecl TArmyMission::thunk_NoOpMissionVtableSlot44(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D35
 // GHIDRA_NAME TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext
-// GHIDRA_PROTO void __cdecl thunk_CleanupTArmyMissionAndReleaseChildContext(void)
+// GHIDRA_PROTO void __thiscall thunk_CleanupTArmyMissionAndReleaseChildContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to CleanupTArmyMissionAndReleaseChildContext
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to CleanupTArmyMissionAndReleaseChildContext */
 
-void __cdecl TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext(void)
+void __thiscall TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
 
 {
-  CleanupTArmyMissionAndReleaseChildContext();
+  CleanupTArmyMissionAndReleaseChildContext(this);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004064A1
+// GHIDRA_NAME TArmyMission::thunk_ConstructTArmyMissionWithNodeKey
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyMissionWithNodeKey(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTArmyMissionWithNodeKey
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTArmyMissionWithNodeKey */
+
+void * __thiscall TArmyMission::thunk_ConstructTArmyMissionWithNodeKey(TArmyMission *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined2 in_stack_00000004;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063443a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  TMission::thunk_ConstructTMission((TMission *)this);
+  uStack_4 = 0;
+  *(undefined ***)this = &g_vtblTArmyMission;
+  *(undefined2 *)(this + 0x14) = in_stack_00000004;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &g_vtblRefCountedObjectBase;
+    uStack_4 = CONCAT31(uStack_4._1_3_,2);
+    InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    *puVar1 = &g_vtblTArmyBattle;
+  }
+  uStack_4 = uStack_4 & 0xffffff00;
+  *(undefined4 **)(this + 0x18) = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406D7F
 // GHIDRA_NAME TArmyMission::thunk_DestroyTArmyMission
-// GHIDRA_PROTO void * __stdcall thunk_DestroyTArmyMission(void)
+// GHIDRA_PROTO void * __thiscall thunk_DestroyTArmyMission(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTArmyMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTArmyMission */
 
-void * TArmyMission::thunk_DestroyTArmyMission(void)
+void * __thiscall TArmyMission::thunk_DestroyTArmyMission(TArmyMission *this)
 
 {
   void *pvVar1;
-  TArmyMission *in_ECX;
   
-  pvVar1 = DestroyTArmyMission(in_ECX);
+  pvVar1 = DestroyTArmyMission(this);
   return pvVar1;
 }
 
@@ -164,7 +215,7 @@ void * __thiscall TArmyMission::ConstructTArmyMissionWithNodeKey(TArmyMission *t
   puStack_8 = &LAB_0063443a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TMission::thunk_ConstructTMission();
+  TMission::thunk_ConstructTMission((TMission *)this);
   local_4 = 0;
   *(undefined ***)this = &g_vtblTArmyMission;
   *(undefined2 *)(this + 0x14) = in_stack_00000004;
@@ -211,7 +262,7 @@ void * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C220
 // GHIDRA_NAME TArmyMission::CleanupTArmyMissionAndReleaseChildContext
-// GHIDRA_PROTO void __cdecl CleanupTArmyMissionAndReleaseChildContext(void)
+// GHIDRA_PROTO void __thiscall CleanupTArmyMissionAndReleaseChildContext(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base army mission cleanup: clears transient unit/link state, releases child context, and destroys self when requested.
 // GHIDRA_COMMENT_END
@@ -219,7 +270,7 @@ void * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this)
 /* Base army mission cleanup: clears transient unit/link state, releases child context, and destroys
    self when requested. */
 
-void __cdecl TArmyMission::CleanupTArmyMissionAndReleaseChildContext(void)
+void __thiscall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
 
 {
   int iVar1;
@@ -228,7 +279,6 @@ void __cdecl TArmyMission::CleanupTArmyMissionAndReleaseChildContext(void)
   undefined3 extraout_var;
   int extraout_EAX_00;
   undefined3 extraout_var_00;
-  int *in_ECX;
   int iVar3;
   
   thunk_InitializeLinkedListCursorFromOwnerHead();
@@ -242,13 +292,13 @@ void __cdecl TArmyMission::CleanupTArmyMissionAndReleaseChildContext(void)
     iVar1 = extraout_EAX_00;
     iVar3 = CONCAT31(extraout_var_00,bVar2);
   }
-  (**(code **)(*(int *)in_ECX[6] + 0x5c))();
-  if ((int *)in_ECX[6] != (int *)0x0) {
-    (**(code **)(*(int *)in_ECX[6] + 0x58))();
+  (**(code **)(**(int **)(this + 0x18) + 0x5c))();
+  if (*(int **)(this + 0x18) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x18) + 0x58))();
   }
-  in_ECX[6] = 0;
-  if (in_ECX != (int *)0x0) {
-    (**(code **)(*in_ECX + 4))(1);
+  *(undefined4 *)(this + 0x18) = 0;
+  if (this != (TArmyMission *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }

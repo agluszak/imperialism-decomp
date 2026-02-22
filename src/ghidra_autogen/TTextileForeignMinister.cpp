@@ -5,54 +5,89 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401177
 // GHIDRA_NAME TTextileForeignMinister::thunk_ConstructTTextileForeignMinister
-// GHIDRA_PROTO void __cdecl thunk_ConstructTTextileForeignMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTextileForeignMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTTextileForeignMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTTextileForeignMinister */
 
-void __cdecl TTextileForeignMinister::thunk_ConstructTTextileForeignMinister(void)
+void __thiscall
+TTextileForeignMinister::thunk_ConstructTTextileForeignMinister(TTextileForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TTextileForeignMinister *pTVar2;
   
-  *(undefined4 *)((int)in_ECX + 0x49) = 0x1010101;
-  *(undefined2 *)((int)in_ECX + 0x4d) = 0x101;
-  *(undefined1 *)((int)in_ECX + 0x4f) = 1;
-  puVar2 = in_ECX + 0x14;
+  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
+  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
+  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
+  pTVar2 = this + 0x14;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    pTVar2->pVtable = (void *)0x0;
+    pTVar2 = pTVar2 + 1;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)in_ECX + 0x16) = 0;
-  *(undefined2 *)(in_ECX + 7) = 2;
-  *(undefined2 *)(in_ECX + 3) = 2;
-  *(undefined2 *)((int)in_ECX + 0x1a) = 5;
-  *in_ECX = &PTR_thunk_GetTTextileForeignMinisterTypeName_0065a008;
-  *(undefined1 *)(in_ECX + 0x12) = 1;
+  *(undefined2 *)&pTVar2->pVtable = 0;
+  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
+  *(undefined2 *)&this[7].pVtable = 2;
+  *(undefined2 *)&this[3].pVtable = 2;
+  *(undefined2 *)((int)&this[6].pVtable + 2) = 5;
+  this->pVtable = &PTR_thunk_GetTTextileForeignMinisterTypeName_0065a008;
+  *(undefined1 *)&this[0x12].pVtable = 1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405709
+// GHIDRA_NAME TTextileForeignMinister::thunk_DeletingDestructTTextileForeignMinister
+// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTTextileForeignMinister(TTextileForeignMinister * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTTextileForeignMinister
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeletingDestructTTextileForeignMinister */
+
+void __thiscall
+TTextileForeignMinister::thunk_DeletingDestructTTextileForeignMinister
+          (TTextileForeignMinister *this,TTextileForeignMinister *pThis)
+
+{
+  DeletingDestructTTextileForeignMinister(this,pThis);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406AA0
 // GHIDRA_NAME TTextileForeignMinister::thunk_DestructTTextileForeignMinister
-// GHIDRA_PROTO void __cdecl thunk_DestructTTextileForeignMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTTextileForeignMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTextileForeignMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTTextileForeignMinister */
 
-void __cdecl TTextileForeignMinister::thunk_DestructTTextileForeignMinister(void)
+void __thiscall
+TTextileForeignMinister::thunk_DestructTTextileForeignMinister(TTextileForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406DFC
+// GHIDRA_NAME TTextileForeignMinister::thunk_GetTTextileForeignMinisterTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTTextileForeignMinisterTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTTextileForeignMinisterTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTTextileForeignMinisterTypeName */
+
+void * __cdecl TTextileForeignMinister::thunk_GetTTextileForeignMinisterTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTTextileForeignMinisterClassNamePointer();
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005330F0
@@ -72,59 +107,58 @@ void * __cdecl TTextileForeignMinister::GetTTextileForeignMinisterClassNamePoint
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533110
 // GHIDRA_NAME TTextileForeignMinister::ConstructTTextileForeignMinister
-// GHIDRA_PROTO void __cdecl ConstructTTextileForeignMinister(void)
+// GHIDRA_PROTO void __thiscall ConstructTTextileForeignMinister(void)
 
-void __cdecl TTextileForeignMinister::ConstructTTextileForeignMinister(void)
+void __thiscall
+TTextileForeignMinister::ConstructTTextileForeignMinister(TTextileForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TTextileForeignMinister *pTVar2;
   
-  *(undefined4 *)((int)in_ECX + 0x49) = 0x1010101;
-  *(undefined2 *)((int)in_ECX + 0x4d) = 0x101;
-  *(undefined1 *)((int)in_ECX + 0x4f) = 1;
-  puVar2 = in_ECX + 0x14;
+  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
+  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
+  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
+  pTVar2 = this + 0x14;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    pTVar2->pVtable = (void *)0x0;
+    pTVar2 = pTVar2 + 1;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)in_ECX + 0x16) = 0;
-  *(undefined2 *)(in_ECX + 7) = 2;
-  *(undefined2 *)(in_ECX + 3) = 2;
-  *(undefined2 *)((int)in_ECX + 0x1a) = 5;
-  *in_ECX = &PTR_thunk_GetTTextileForeignMinisterTypeName_0065a008;
-  *(undefined1 *)(in_ECX + 0x12) = 1;
+  *(undefined2 *)&pTVar2->pVtable = 0;
+  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
+  *(undefined2 *)&this[7].pVtable = 2;
+  *(undefined2 *)&this[3].pVtable = 2;
+  *(undefined2 *)((int)&this[6].pVtable + 2) = 5;
+  this->pVtable = &PTR_thunk_GetTTextileForeignMinisterTypeName_0065a008;
+  *(undefined1 *)&this[0x12].pVtable = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533180
 // GHIDRA_NAME TTextileForeignMinister::DeletingDestructTTextileForeignMinister
-// GHIDRA_PROTO void __cdecl DeletingDestructTTextileForeignMinister(void)
+// GHIDRA_PROTO void __thiscall DeletingDestructTTextileForeignMinister(TTextileForeignMinister * pThis)
 
-void __cdecl TTextileForeignMinister::DeletingDestructTTextileForeignMinister(void)
+void __thiscall
+TTextileForeignMinister::DeletingDestructTTextileForeignMinister
+          (TTextileForeignMinister *this,TTextileForeignMinister *pThis)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTTextileForeignMinister();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  thunk_DestructTTextileForeignMinister(this);
+  if (((uint)pThis & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005331B0
 // GHIDRA_NAME TTextileForeignMinister::DestructTTextileForeignMinister
-// GHIDRA_PROTO void __cdecl DestructTTextileForeignMinister(void)
+// GHIDRA_PROTO void __thiscall DestructTTextileForeignMinister(void)
 
-void __cdecl TTextileForeignMinister::DestructTTextileForeignMinister(void)
+void __thiscall
+TTextileForeignMinister::DestructTTextileForeignMinister(TTextileForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 

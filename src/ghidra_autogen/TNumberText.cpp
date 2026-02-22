@@ -3,6 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TNumberText.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00406D0C
+// GHIDRA_NAME TNumberText::thunk_NumericEntryMethod_00406d0c
+// GHIDRA_PROTO void * __cdecl thunk_NumericEntryMethod_00406d0c(void)
+
+void * __cdecl TNumberText::thunk_NumericEntryMethod_00406d0c(void)
+
+{
+  return &g_pClassDescTNumberText;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407153
 // GHIDRA_NAME TNumberText::thunk_SetNumberTextValueAndRefresh
 // GHIDRA_PROTO void __thiscall thunk_SetNumberTextValueAndRefresh(int value, uint refreshToken)
@@ -59,9 +69,9 @@ void __thiscall TNumberText::thunk_InitializeNumberTextEntryAndLayoutMetrics(TNu
 void * __cdecl TNumberText::CreateTNumberTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  int iVar2;
-  undefined4 uVar3;
+  TView *this;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -71,44 +81,44 @@ void * __cdecl TNumberText::CreateTNumberTextInstance(void)
   puStack_8 = &LAB_0062f22d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TView *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x19) = 0;
-    puVar1[0x18] = 1;
-    puVar1[0x1a] = 0;
-    puVar1[0x1b] = 0;
-    puVar1[0x1c] = 0;
-    puVar1[0x1d] = 0;
-    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    this[100] = (TView)0x0;
+    *(undefined4 *)(this + 0x60) = 1;
+    *(undefined4 *)(this + 0x68) = 0;
+    *(undefined4 *)(this + 0x6c) = 0;
+    *(undefined4 *)(this + 0x70) = 0;
+    *(undefined4 *)(this + 0x74) = 0;
+    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    puVar1[0x21] = 0;
-    puVar1[0x22] = 0xffffffff;
-    puVar1[0x23] = 0;
-    *(undefined2 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &g_vtblTStaticText;
-    puVar1[0x18] = 0xd;
-    iVar2 = AllocateWithFallbackHandler(4);
+    *(undefined4 *)(this + 0x84) = 0;
+    *(undefined4 *)(this + 0x88) = 0xffffffff;
+    *(undefined4 *)(this + 0x8c) = 0;
+    *(undefined2 *)(this + 0x90) = 0;
+    *(undefined ***)this = &g_vtblTStaticText;
+    *(undefined4 *)(this + 0x60) = 0xd;
+    iVar1 = AllocateWithFallbackHandler(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar2 == 0) {
-      uVar3 = 0;
+    if (iVar1 == 0) {
+      uVar2 = 0;
     }
     else {
-      uVar3 = InitializeSharedStringRefFromEmpty();
+      uVar2 = InitializeSharedStringRefFromEmpty();
     }
-    puVar1[0x21] = uVar3;
-    puVar1[0x25] = 0;
-    puVar1[0x26] = 0;
-    *(undefined2 *)(puVar1 + 0x27) = 0xff;
-    puVar1[0x18] = 6;
-    *(undefined1 *)((int)puVar1 + 0x4d) = 0;
-    puVar1[0x28] = 0;
-    *puVar1 = &g_vtblFamily_NumericEntryDialogCore_Root;
+    *(undefined4 *)(this + 0x84) = uVar2;
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined4 *)(this + 0x98) = 0;
+    *(undefined2 *)(this + 0x9c) = 0xff;
+    *(undefined4 *)(this + 0x60) = 6;
+    this[0x4d] = (TView)0x0;
+    *(undefined4 *)(this + 0xa0) = 0;
+    *(undefined ***)this = &g_vtblFamily_NumericEntryDialogCore_Root;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

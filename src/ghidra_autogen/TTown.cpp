@@ -3,6 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: TTown.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403044
+// GHIDRA_NAME TTown::thunk_ConstructFrogCityMarker
+// GHIDRA_PROTO void __thiscall thunk_ConstructFrogCityMarker(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructFrogCityMarker
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructFrogCityMarker */
+
+void __thiscall TTown::thunk_ConstructFrogCityMarker(TTown *this)
+
+{
+  *(undefined ***)this = &g_vtblTTown;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040398B
 // GHIDRA_NAME TTown::thunk_RecomputeTownAdjacentResourceSupplyTotals
 // GHIDRA_PROTO void __thiscall thunk_RecomputeTownAdjacentResourceSupplyTotals(void)
@@ -198,19 +214,17 @@ void * __cdecl TTown::GetTTownClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6C60
 // GHIDRA_NAME TTown::ConstructFrogCityMarker
-// GHIDRA_PROTO void __cdecl ConstructFrogCityMarker(void)
+// GHIDRA_PROTO void __thiscall ConstructFrogCityMarker(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Tiny constructor assigning FrogCity marker vtable (`PTR_LAB_0066d7c8`).
 // GHIDRA_COMMENT_END
 
 /* Tiny constructor assigning FrogCity marker vtable (`PTR_LAB_0066d7c8`). */
 
-void __cdecl TTown::ConstructFrogCityMarker(void)
+void __thiscall TTown::ConstructFrogCityMarker(TTown *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &g_vtblTTown;
+  *(undefined ***)this = &g_vtblTTown;
   return;
 }
 
@@ -371,7 +385,7 @@ void __thiscall TTown::RecomputeTownAdjacentTileYieldTotals(TTown *this)
   piVar8 = g_pGlobalMapState;
   do {
     if (sVar5 < 6) {
-      thunk_GetWrappedHexNeighborTileIndexByDirection();
+      TMapDialog::thunk_GetWrappedHexNeighborTileIndexByDirection();
       piVar8 = g_pGlobalMapState;
       uVar11 = extraout_EAX;
     }
@@ -460,7 +474,7 @@ void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
   piVar7 = g_pGlobalMapState;
   do {
     if (local_c < 6) {
-      thunk_GetWrappedHexNeighborTileIndexByDirection();
+      TMapDialog::thunk_GetWrappedHexNeighborTileIndexByDirection();
       piVar7 = g_pGlobalMapState;
       uVar11 = extraout_EAX;
     }
@@ -556,7 +570,7 @@ void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this
   piVar4 = g_pGlobalMapState;
   do {
     if (local_8 < 6) {
-      thunk_GetWrappedHexNeighborTileIndexByDirection();
+      TMapDialog::thunk_GetWrappedHexNeighborTileIndexByDirection();
       piVar4 = g_pGlobalMapState;
       local_c = extraout_EAX;
     }

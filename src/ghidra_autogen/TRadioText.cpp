@@ -46,11 +46,11 @@ void * __cdecl TRadioText::thunk_GetTRadioTextClassNamePointer(void)
 
 /* Allocator wrapper for ConstructSelectableTextOptionEntry (size 0x9C). */
 
-undefined4 * TRadioText::CreateSelectableTextOptionEntry(void)
+TDropShadowText * TRadioText::CreateSelectableTextOptionEntry(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TDropShadowText *this;
+  TDropShadowText *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -60,16 +60,16 @@ undefined4 * TRadioText::CreateSelectableTextOptionEntry(void)
   puStack_8 = &LAB_00636aca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  this = (TDropShadowText *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase();
-    *puVar1 = &PTR_thunk_GetTRadioTextClassNamePointer_00642b18;
-    puVar2 = puVar1;
+  pTVar1 = (TDropShadowText *)0x0;
+  if (this != (TDropShadowText *)0x0) {
+    TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTRadioTextClassNamePointer_00642b18;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579470

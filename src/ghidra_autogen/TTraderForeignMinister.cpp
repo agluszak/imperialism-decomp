@@ -3,56 +3,91 @@
 // Program: Imperialism.exe
 // Bucket: TTraderForeignMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402B26
+// GHIDRA_NAME TTraderForeignMinister::thunk_DeletingDestructTTraderForeignMinister
+// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTTraderForeignMinister(TTraderForeignMinister * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTTraderForeignMinister
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeletingDestructTTraderForeignMinister */
+
+void __thiscall
+TTraderForeignMinister::thunk_DeletingDestructTTraderForeignMinister
+          (TTraderForeignMinister *this,TTraderForeignMinister *pThis)
+
+{
+  DeletingDestructTTraderForeignMinister(this,pThis);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00403D55
 // GHIDRA_NAME TTraderForeignMinister::thunk_ConstructTTraderForeignMinister
-// GHIDRA_PROTO void __cdecl thunk_ConstructTTraderForeignMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTraderForeignMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTTraderForeignMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTTraderForeignMinister */
 
-void __cdecl TTraderForeignMinister::thunk_ConstructTTraderForeignMinister(void)
+void __thiscall
+TTraderForeignMinister::thunk_ConstructTTraderForeignMinister(TTraderForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TTraderForeignMinister *pTVar2;
   
-  *(undefined4 *)((int)in_ECX + 0x49) = 0x1010101;
-  *(undefined2 *)((int)in_ECX + 0x4d) = 0x101;
-  *(undefined1 *)((int)in_ECX + 0x4f) = 1;
-  puVar2 = in_ECX + 0x14;
+  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
+  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
+  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
+  pTVar2 = this + 0x14;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    pTVar2->pVtable = (void *)0x0;
+    pTVar2 = pTVar2 + 1;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)in_ECX + 0x1a) = 5;
-  *(undefined2 *)((int)in_ECX + 0x16) = 0;
-  *(undefined1 *)(in_ECX + 0x12) = 0;
-  *(undefined2 *)(in_ECX + 7) = 2;
-  *in_ECX = &PTR_thunk_GetTTraderForeignMinisterTypeName_0065a0c8;
-  *(undefined2 *)(in_ECX + 3) = 1;
+  *(undefined2 *)&pTVar2->pVtable = 0;
+  *(undefined2 *)((int)&this[6].pVtable + 2) = 5;
+  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
+  *(undefined1 *)&this[0x12].pVtable = 0;
+  *(undefined2 *)&this[7].pVtable = 2;
+  this->pVtable = &PTR_thunk_GetTTraderForeignMinisterTypeName_0065a0c8;
+  *(undefined2 *)&this[3].pVtable = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407158
 // GHIDRA_NAME TTraderForeignMinister::thunk_DestructTTraderForeignMinister
-// GHIDRA_PROTO void __cdecl thunk_DestructTTraderForeignMinister(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTTraderForeignMinister(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTraderForeignMinister
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTTraderForeignMinister */
 
-void __cdecl TTraderForeignMinister::thunk_DestructTTraderForeignMinister(void)
+void __thiscall
+TTraderForeignMinister::thunk_DestructTTraderForeignMinister(TTraderForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040795A
+// GHIDRA_NAME TTraderForeignMinister::thunk_GetTTraderForeignMinisterTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetTTraderForeignMinisterTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTTraderForeignMinisterTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTTraderForeignMinisterTypeName */
+
+void * __cdecl TTraderForeignMinister::thunk_GetTTraderForeignMinisterTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTTraderForeignMinisterClassNamePointer();
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533880
@@ -72,59 +107,57 @@ void * __cdecl TTraderForeignMinister::GetTTraderForeignMinisterClassNamePointer
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005338A0
 // GHIDRA_NAME TTraderForeignMinister::ConstructTTraderForeignMinister
-// GHIDRA_PROTO void __cdecl ConstructTTraderForeignMinister(void)
+// GHIDRA_PROTO void __thiscall ConstructTTraderForeignMinister(void)
 
-void __cdecl TTraderForeignMinister::ConstructTTraderForeignMinister(void)
+void __thiscall
+TTraderForeignMinister::ConstructTTraderForeignMinister(TTraderForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
   int iVar1;
-  undefined4 *puVar2;
+  TTraderForeignMinister *pTVar2;
   
-  *(undefined4 *)((int)in_ECX + 0x49) = 0x1010101;
-  *(undefined2 *)((int)in_ECX + 0x4d) = 0x101;
-  *(undefined1 *)((int)in_ECX + 0x4f) = 1;
-  puVar2 = in_ECX + 0x14;
+  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
+  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
+  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
+  pTVar2 = this + 0x14;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
+    pTVar2->pVtable = (void *)0x0;
+    pTVar2 = pTVar2 + 1;
   }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)in_ECX + 0x1a) = 5;
-  *(undefined2 *)((int)in_ECX + 0x16) = 0;
-  *(undefined1 *)(in_ECX + 0x12) = 0;
-  *(undefined2 *)(in_ECX + 7) = 2;
-  *in_ECX = &PTR_thunk_GetTTraderForeignMinisterTypeName_0065a0c8;
-  *(undefined2 *)(in_ECX + 3) = 1;
+  *(undefined2 *)&pTVar2->pVtable = 0;
+  *(undefined2 *)((int)&this[6].pVtable + 2) = 5;
+  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
+  *(undefined1 *)&this[0x12].pVtable = 0;
+  *(undefined2 *)&this[7].pVtable = 2;
+  this->pVtable = &PTR_thunk_GetTTraderForeignMinisterTypeName_0065a0c8;
+  *(undefined2 *)&this[3].pVtable = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533910
 // GHIDRA_NAME TTraderForeignMinister::DeletingDestructTTraderForeignMinister
-// GHIDRA_PROTO void __cdecl DeletingDestructTTraderForeignMinister(void)
+// GHIDRA_PROTO void __thiscall DeletingDestructTTraderForeignMinister(TTraderForeignMinister * pThis)
 
-void __cdecl TTraderForeignMinister::DeletingDestructTTraderForeignMinister(void)
+void __thiscall
+TTraderForeignMinister::DeletingDestructTTraderForeignMinister
+          (TTraderForeignMinister *this,TTraderForeignMinister *pThis)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTTraderForeignMinister();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  thunk_DestructTTraderForeignMinister(this);
+  if (((uint)pThis & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533940
 // GHIDRA_NAME TTraderForeignMinister::DestructTTraderForeignMinister
-// GHIDRA_PROTO void __cdecl DestructTTraderForeignMinister(void)
+// GHIDRA_PROTO void __thiscall DestructTTraderForeignMinister(void)
 
-void __cdecl TTraderForeignMinister::DestructTTraderForeignMinister(void)
+void __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(TTraderForeignMinister *this)
 
 {
-  undefined4 *in_ECX;
-  
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   return;
 }
 

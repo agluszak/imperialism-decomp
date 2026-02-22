@@ -20,90 +20,87 @@ void * __cdecl TNavyMission::thunk_GetNavyMissionClassName(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402531
 // GHIDRA_NAME TNavyMission::thunk_DestroyTNavyMission
-// GHIDRA_PROTO void * __stdcall thunk_DestroyTNavyMission(void)
+// GHIDRA_PROTO void * __thiscall thunk_DestroyTNavyMission(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTNavyMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTNavyMission */
 
-void * TNavyMission::thunk_DestroyTNavyMission(void)
+void * __thiscall TNavyMission::thunk_DestroyTNavyMission(TNavyMission *this)
 
 {
   void *pvVar1;
-  TNavyMission *in_ECX;
   
-  pvVar1 = DestroyTNavyMission(in_ECX);
+  pvVar1 = DestroyTNavyMission(this);
   return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402810
 // GHIDRA_NAME TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid
-// GHIDRA_PROTO void __cdecl thunk_EnsureMissionCurrentTargetContextIsValid(void)
+// GHIDRA_PROTO void __thiscall thunk_EnsureMissionCurrentTargetContextIsValid(void)
 
-void __cdecl TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid(void)
+void __thiscall TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid(TNavyMission *this)
 
 {
-  EnsureMissionCurrentTargetContextIsValid();
+  EnsureMissionCurrentTargetContextIsValid(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004078EC
 // GHIDRA_NAME TNavyMission::thunk_ConstructTNavyMission
-// GHIDRA_PROTO void __cdecl thunk_ConstructTNavyMission(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTNavyMission(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTNavyMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTNavyMission */
 
-void __cdecl TNavyMission::thunk_ConstructTNavyMission(void)
+void __thiscall TNavyMission::thunk_ConstructTNavyMission(TNavyMission *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 in_stack_00000004;
   
-  *(undefined1 *)(in_ECX + 2) = 2;
-  in_ECX[3] = 0;
-  *(undefined1 *)((int)in_ECX + 0x11) = 0xff;
-  in_ECX[5] = in_stack_00000004;
-  in_ECX[6] = 0;
-  in_ECX[7] = 0;
-  in_ECX[8] = 0;
-  in_ECX[9] = 0;
-  in_ECX[10] = 0;
-  *in_ECX = &g_vtblTNavyMission;
-  in_ECX[0xb] = 0;
-  in_ECX[0xc] = 0;
-  in_ECX[0xd] = 0;
-  in_ECX[0xe] = 0;
+  this[8] = (TNavyMission)0x2;
+  *(undefined4 *)(this + 0xc) = 0;
+  this[0x11] = (TNavyMission)0xff;
+  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined ***)this = &g_vtblTNavyMission;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined4 *)(this + 0x34) = 0;
+  *(undefined4 *)(this + 0x38) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535470
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
-// GHIDRA_PROTO void __cdecl ConstructTNavyMission(void)
+// GHIDRA_PROTO void __thiscall ConstructTNavyMission(void)
 
-void __cdecl TNavyMission::ConstructTNavyMission(void)
+void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 in_stack_00000004;
   
-  *(undefined1 *)(in_ECX + 2) = 2;
-  in_ECX[3] = 0;
-  *(undefined1 *)((int)in_ECX + 0x11) = 0xff;
-  in_ECX[5] = in_stack_00000004;
-  in_ECX[6] = 0;
-  in_ECX[7] = 0;
-  in_ECX[8] = 0;
-  in_ECX[9] = 0;
-  in_ECX[10] = 0;
-  *in_ECX = &g_vtblTNavyMission;
-  in_ECX[0xb] = 0;
-  in_ECX[0xc] = 0;
-  in_ECX[0xd] = 0;
-  in_ECX[0xe] = 0;
+  this[8] = (TNavyMission)0x2;
+  *(undefined4 *)(this + 0xc) = 0;
+  this[0x11] = (TNavyMission)0xff;
+  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined ***)this = &g_vtblTNavyMission;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined4 *)(this + 0x34) = 0;
+  *(undefined4 *)(this + 0x38) = 0;
   return;
 }
 
@@ -127,10 +124,10 @@ void * __thiscall TNavyMission::DestroyTNavyMission(TNavyMission *this)
 // GHIDRA_NAME TNavyMission::CreateTNavyMission
 // GHIDRA_PROTO undefined CreateTNavyMission()
 
-undefined4 * TNavyMission::CreateTNavyMission(void)
+TMission * TNavyMission::CreateTNavyMission(void)
 
 {
-  undefined4 *puVar1;
+  TMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -140,26 +137,26 @@ undefined4 * TNavyMission::CreateTNavyMission(void)
   puStack_8 = &LAB_0063430a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)AllocateWithFallbackHandler(0x3c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::thunk_ConstructTMission();
-    puVar1[5] = 0;
-    puVar1[6] = 0;
-    puVar1[7] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[10] = 0;
-    *puVar1 = &g_vtblTNavyMission;
-    puVar1[0xb] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xe] = 0;
+  if (this != (TMission *)0x0) {
+    TMission::thunk_ConstructTMission(this);
+    this[5].pVtable = (void *)0x0;
+    this[6].pVtable = (void *)0x0;
+    this[7].pVtable = (void *)0x0;
+    this[8].pVtable = (void *)0x0;
+    this[9].pVtable = (void *)0x0;
+    this[10].pVtable = (void *)0x0;
+    this->pVtable = &g_vtblTNavyMission;
+    this[0xb].pVtable = (void *)0x0;
+    this[0xc].pVtable = (void *)0x0;
+    this[0xd].pVtable = (void *)0x0;
+    this[0xe].pVtable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536450
@@ -179,7 +176,7 @@ void * __cdecl TNavyMission::GetTNavyMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536FC0
 // GHIDRA_NAME TNavyMission::EnsureMissionCurrentTargetContextIsValid
-// GHIDRA_PROTO void __cdecl EnsureMissionCurrentTargetContextIsValid(void)
+// GHIDRA_PROTO void __thiscall EnsureMissionCurrentTargetContextIsValid(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Validates current mission target context and refreshes via vtable +0xA0 if stale; returns mission pointer on success.
 // GHIDRA_COMMENT_END
@@ -187,20 +184,19 @@ void * __cdecl TNavyMission::GetTNavyMissionClassNamePointer(void)
 /* Validates current mission target context and refreshes via vtable +0xA0 if stale; returns mission
    pointer on success. */
 
-void __cdecl TNavyMission::EnsureMissionCurrentTargetContextIsValid(void)
+void __thiscall TNavyMission::EnsureMissionCurrentTargetContextIsValid(TNavyMission *this)
 
 {
   char cVar1;
-  int iVar2;
-  int *in_ECX;
+  undefined4 uVar2;
   
-  if ((int *)in_ECX[6] != (int *)0x0) {
-    cVar1 = (**(code **)(*(int *)in_ECX[6] + 0x38))();
+  if (*(int **)(this + 0x18) != (int *)0x0) {
+    cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x38))();
     if (cVar1 != '\0') {
-      cVar1 = (**(code **)(*(int *)in_ECX[6] + 0x40))((short)in_ECX[1]);
+      cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x40))(*(undefined2 *)(this + 4));
       if (cVar1 == '\0') {
-        iVar2 = (**(code **)(*in_ECX + 0xa0))();
-        in_ECX[6] = iVar2;
+        uVar2 = (**(code **)(*(int *)this + 0xa0))();
+        *(undefined4 *)(this + 0x18) = uVar2;
       }
     }
   }

@@ -5,17 +5,18 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004046AB
 // GHIDRA_NAME TAutomatedPlayDialog::thunk_Cluster_DispatchHint_005b46c0
-// GHIDRA_PROTO void __cdecl thunk_Cluster_DispatchHint_005b46c0(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_DispatchHint_005b46c0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_DispatchHint_005b46c0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_DispatchHint_005b46c0 */
 
-void __cdecl TAutomatedPlayDialog::thunk_Cluster_DispatchHint_005b46c0(void)
+void __thiscall
+TAutomatedPlayDialog::thunk_Cluster_DispatchHint_005b46c0(TAutomatedPlayDialog *this)
 
 {
-  ConstructTAutomatedPlayDialogBaseState();
+  ConstructTAutomatedPlayDialogBaseState(this);
   return;
 }
 
@@ -54,7 +55,7 @@ void * __cdecl TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B46C0
 // GHIDRA_NAME TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState
-// GHIDRA_PROTO void __cdecl ConstructTAutomatedPlayDialogBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTAutomatedPlayDialogBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44; instructions=30, call_insns=5, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -63,13 +64,13 @@ void * __cdecl TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer(voi
 /* [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44;
    instructions=30, call_insns=5, internal_calls=1, unique_internal=1 */
 
-void __cdecl TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(void)
+void __thiscall
+TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(TAutomatedPlayDialog *this)
 
 {
   int *piVar1;
-  int *in_ECX;
   
-  piVar1 = (int *)(**(code **)(*in_ECX + 0x94))(0x6e756d20);
+  piVar1 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x6e756d20);
   if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

@@ -5,28 +5,27 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004071B7
 // GHIDRA_NAME TTaskForce::thunk_ConstructTTaskForce
-// GHIDRA_PROTO void __cdecl thunk_ConstructTTaskForce(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTaskForce(void)
 
-void __cdecl TTaskForce::thunk_ConstructTTaskForce(void)
+void __thiscall TTaskForce::thunk_ConstructTTaskForce(TTaskForce *this)
 
 {
-  undefined4 *in_ECX;
-  undefined4 in_stack_00000004;
+  void *in_stack_00000004;
   undefined2 in_stack_00000008;
   
-  in_ECX[6] = in_stack_00000004;
-  *(undefined2 *)(in_ECX + 7) = in_stack_00000008;
-  in_ECX[1] = 1;
-  in_ECX[2] = 0;
-  in_ECX[3] = 0;
-  in_ECX[4] = 0;
-  in_ECX[5] = 0;
-  in_ECX[10] = 0;
-  in_ECX[0xb] = 0;
-  *(undefined2 *)(in_ECX + 0xc) = 0xffff;
-  *in_ECX = &PTR_thunk_GetTaskForceClassName_0065c468;
-  *(undefined4 *)((int)in_ECX + 0x1e) = 0;
-  *(undefined4 *)((int)in_ECX + 0x22) = 0;
+  this[6].pVtable = in_stack_00000004;
+  *(undefined2 *)&this[7].pVtable = in_stack_00000008;
+  this[1].pVtable = (void *)0x1;
+  this[2].pVtable = (void *)0x0;
+  this[3].pVtable = (void *)0x0;
+  this[4].pVtable = (void *)0x0;
+  this[5].pVtable = (void *)0x0;
+  this[10].pVtable = (void *)0x0;
+  this[0xb].pVtable = (void *)0x0;
+  *(undefined2 *)&this[0xc].pVtable = 0xffff;
+  this->pVtable = &PTR_thunk_GetTaskForceClassName_0065c468;
+  *(undefined4 *)((int)&this[7].pVtable + 2) = 0;
+  *(undefined4 *)((int)&this[8].pVtable + 2) = 0;
   return;
 }
 
@@ -47,28 +46,27 @@ void * __cdecl TTaskForce::GetTTaskForceClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO void __cdecl ConstructTTaskForce(void)
+// GHIDRA_PROTO void __thiscall ConstructTTaskForce(void)
 
-void __cdecl TTaskForce::ConstructTTaskForce(void)
+void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this)
 
 {
-  undefined4 *in_ECX;
-  undefined4 in_stack_00000004;
+  void *in_stack_00000004;
   undefined2 in_stack_00000008;
   
-  in_ECX[6] = in_stack_00000004;
-  *(undefined2 *)(in_ECX + 7) = in_stack_00000008;
-  in_ECX[1] = 1;
-  in_ECX[2] = 0;
-  in_ECX[3] = 0;
-  in_ECX[4] = 0;
-  in_ECX[5] = 0;
-  in_ECX[10] = 0;
-  in_ECX[0xb] = 0;
-  *(undefined2 *)(in_ECX + 0xc) = 0xffff;
-  *in_ECX = &PTR_thunk_GetTaskForceClassName_0065c468;
-  *(undefined4 *)((int)in_ECX + 0x1e) = 0;
-  *(undefined4 *)((int)in_ECX + 0x22) = 0;
+  this[6].pVtable = in_stack_00000004;
+  *(undefined2 *)&this[7].pVtable = in_stack_00000008;
+  this[1].pVtable = (void *)0x1;
+  this[2].pVtable = (void *)0x0;
+  this[3].pVtable = (void *)0x0;
+  this[4].pVtable = (void *)0x0;
+  this[5].pVtable = (void *)0x0;
+  this[10].pVtable = (void *)0x0;
+  this[0xb].pVtable = (void *)0x0;
+  *(undefined2 *)&this[0xc].pVtable = 0xffff;
+  this->pVtable = &PTR_thunk_GetTaskForceClassName_0065c468;
+  *(undefined4 *)((int)&this[7].pVtable + 2) = 0;
+  *(undefined4 *)((int)&this[8].pVtable + 2) = 0;
   return;
 }
 

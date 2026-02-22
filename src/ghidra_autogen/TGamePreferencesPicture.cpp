@@ -23,19 +23,20 @@ void * __cdecl TGamePreferencesPicture::thunk_GetTGamePreferencesPictureClassNam
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405989
 // GHIDRA_NAME TGamePreferencesPicture::thunk_BuildGamePreferencesUiResourceTree
-// GHIDRA_PROTO void * __cdecl thunk_BuildGamePreferencesUiResourceTree(void)
+// GHIDRA_PROTO void * __thiscall thunk_BuildGamePreferencesUiResourceTree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk wrapper for BuildGamePreferencesUiResourceTree.
 // GHIDRA_COMMENT_END
 
 /* Thunk wrapper for BuildGamePreferencesUiResourceTree. */
 
-void * __cdecl TGamePreferencesPicture::thunk_BuildGamePreferencesUiResourceTree(void)
+void * __thiscall
+TGamePreferencesPicture::thunk_BuildGamePreferencesUiResourceTree(TGamePreferencesPicture *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTGamePreferencesPictureBaseState();
+  pvVar1 = ConstructTGamePreferencesPictureBaseState(this);
   return pvVar1;
 }
 
@@ -91,7 +92,7 @@ void * __cdecl TGamePreferencesPicture::GetTGamePreferencesPictureClassNamePoint
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056A5B0
 // GHIDRA_NAME TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTGamePreferencesPictureBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTGamePreferencesPictureBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds game-preferences UI resource tree (main/query/sound/music/auto/cursor/yes/no/okay tags).
 // GHIDRA_COMMENT_END
@@ -99,7 +100,8 @@ void * __cdecl TGamePreferencesPicture::GetTGamePreferencesPictureClassNamePoint
 /* Builds game-preferences UI resource tree (main/query/sound/music/auto/cursor/yes/no/okay tags).
     */
 
-void * __cdecl TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(void)
+void * __thiscall
+TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(TGamePreferencesPicture *this)
 
 {
   void *pvVar1;
@@ -109,7 +111,6 @@ void * __cdecl TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseStat
   int *extraout_EAX;
   int *piVar4;
   void *extraout_EAX_00;
-  int *in_ECX;
   int iVar5;
   short sVar6;
   code *pcVar7;
@@ -143,7 +144,7 @@ void * __cdecl TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseStat
   (**(code **)(*g_pCursorControlPanel + 0xc))();
   (**(code **)(*g_pCursorControlPanel + 0x204))();
   InitializeMainRoutineContextAndRun();
-  pcVar7 = *(code **)(*in_ECX + 0x94);
+  pcVar7 = *(code **)((int)this->pVtable + 0x94);
   pvVar1 = (void *)(*pcVar7)();
   thunk_LoadUiStringByGroupAndIndexToControlObject(0x2743,0x25,pvVar1);
   pcVar8 = (code *)0x71756572;
@@ -207,7 +208,7 @@ LAB_0056a843:
     pcVar7 = unaff_EDI;
     iVar5 = iVar5 + 1;
     if (4 < iVar2) {
-      *(undefined2 *)(in_ECX + 0x24) = *(undefined2 *)((int)g_pLocalizationTable + 0x4e);
+      *(undefined2 *)&this[0x24].pVtable = *(undefined2 *)((int)g_pLocalizationTable + 0x4e);
       piVar3 = (int *)(*unaff_EDI)();
       (**(code **)(*piVar3 + 0xc))();
       g_nSharedPreviewBitmapContextDepth = g_nSharedPreviewBitmapContextDepth + 1;

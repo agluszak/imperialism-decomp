@@ -22,19 +22,19 @@ TShipLine::thunk_HandleEngineerOrderDialogCheckOrNameCommandAndForward(TShipLine
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004021AD
 // GHIDRA_NAME TShipLine::thunk_ConstructTShipLineBaseState
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTShipLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTShipLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTShipLineBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTShipLineBaseState */
 
-void * __cdecl TShipLine::thunk_ConstructTShipLineBaseState(void)
+void * __thiscall TShipLine::thunk_ConstructTShipLineBaseState(TShipLine *this)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTShipLineBaseState();
+  pvVar1 = ConstructTShipLineBaseState(this);
   return pvVar1;
 }
 
@@ -76,17 +76,17 @@ void * __cdecl TShipLine::thunk_GetTShipLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040803A
 // GHIDRA_NAME TShipLine::thunk_RenderAdmiralSummaryAndNavyNormalizationGauge
-// GHIDRA_PROTO void __cdecl thunk_RenderAdmiralSummaryAndNavyNormalizationGauge(void)
+// GHIDRA_PROTO void __thiscall thunk_RenderAdmiralSummaryAndNavyNormalizationGauge(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RenderAdmiralSummaryAndNavyNormalizationGauge
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RenderAdmiralSummaryAndNavyNormalizationGauge */
 
-void __cdecl TShipLine::thunk_RenderAdmiralSummaryAndNavyNormalizationGauge(void)
+void __thiscall TShipLine::thunk_RenderAdmiralSummaryAndNavyNormalizationGauge(TShipLine *this)
 
 {
-  RenderAdmiralSummaryAndNavyNormalizationGauge();
+  RenderAdmiralSummaryAndNavyNormalizationGauge(this);
   return;
 }
 
@@ -142,34 +142,33 @@ void * __cdecl TShipLine::GetTShipLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565100
 // GHIDRA_NAME TShipLine::ConstructTShipLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTShipLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTShipLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassQuad] ctor inferred for TShipLine from in-body g_vtblTShipLine assignment/use.
 // GHIDRA_COMMENT_END
 
 /* [ClassQuad] ctor inferred for TShipLine from in-body g_vtblTShipLine assignment/use. */
 
-void * __cdecl TShipLine::ConstructTShipLineBaseState(void)
+void * __thiscall TShipLine::ConstructTShipLineBaseState(TShipLine *this)
 
 {
-  undefined4 *puVar1;
-  undefined4 **ppuVar2;
-  int *piVar3;
+  undefined4 uVar1;
+  TView *this_00;
+  TControl *this_01;
   int extraout_EAX;
   void *extraout_EAX_00;
-  int in_ECX;
   undefined4 extraout_ECX;
-  int iVar4;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
   int in_stack_00000004;
-  undefined4 **ppuStack_54;
+  TView *pTStack_54;
   undefined4 *puStack_50;
-  undefined4 **ppuStack_4c;
-  int iStack_48;
+  TView **ppTStack_4c;
+  TShipLine *pTStack_48;
   undefined1 *puStack_44;
   undefined4 uStack_40;
   int iStack_3c;
-  undefined4 *local_24;
+  TView *local_24;
   undefined4 local_20;
   undefined4 local_1c;
   undefined4 local_18;
@@ -177,108 +176,108 @@ void * __cdecl TShipLine::ConstructTShipLineBaseState(void)
   undefined1 *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
+  TClickZone *local_4;
   
-  local_4 = 0xffffffff;
+  local_4 = (TClickZone *)0xffffffff;
   puStack_8 = &LAB_00635976;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_1c = *(undefined4 *)(in_stack_00000004 + 0x84);
   iStack_3c = 0x68;
   uStack_40 = 0x565133;
-  ppuVar2 = (undefined4 **)AllocateWithFallbackHandler();
-  local_4 = 0;
-  if (ppuVar2 == (undefined4 **)0x0) {
-    ppuVar2 = (undefined4 **)0x0;
+  this_00 = (TView *)AllocateWithFallbackHandler();
+  local_4 = (TClickZone *)0x0;
+  if (this_00 == (TView *)0x0) {
+    this_00 = (TView *)0x0;
   }
   else {
     iStack_3c = 0x56514d;
-    local_24 = ppuVar2;
-    TView::thunk_ConstructUiResourceEntryBase();
-    *ppuVar2 = &g_vtblTShipLine;
+    local_24 = this_00;
+    TView::thunk_ConstructUiResourceEntryBase(this_00);
+    *(undefined ***)this_00 = &g_vtblTShipLine;
   }
-  local_24 = *(undefined4 **)(in_ECX + 0x10);
-  puVar1 = *(undefined4 **)(in_ECX + 0x18);
+  local_24 = *(TView **)(this + 0x10);
+  uVar1 = *(undefined4 *)(this + 0x18);
   iStack_3c = 0;
   uStack_40 = 5;
-  iStack_48 = in_ECX + 8;
+  pTStack_48 = this + 8;
   puStack_44 = (undefined1 *)0x5;
-  ppuStack_54 = (undefined4 **)0x0;
-  local_4 = 0xffffffff;
+  pTStack_54 = (TView *)0x0;
+  local_4 = (TClickZone *)0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
   iStack_3c = 0x94;
-  ppuVar2[0x18] = local_24;
-  ppuVar2[0x19] = puVar1;
+  *(TView **)(this_00 + 0x60) = local_24;
+  *(undefined4 *)(this_00 + 100) = uVar1;
   uStack_40 = 0x565199;
-  piVar3 = (int *)AllocateWithFallbackHandler();
-  local_4 = 1;
-  if (piVar3 == (int *)0x0) {
-    piVar3 = (int *)0x0;
+  this_01 = (TControl *)AllocateWithFallbackHandler();
+  local_4 = (TClickZone *)0x1;
+  if (this_01 == (TControl *)0x0) {
+    this_01 = (TControl *)0x0;
   }
   else {
     iStack_3c = 0x5651b5;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *piVar3 = (int)&PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-    piVar3[0x22] = 0;
-    piVar3[0x24] = 0;
-    piVar3[0x23] = 0;
-    *(undefined1 *)(piVar3 + 0x21) = 0;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_01);
+    *(undefined ***)this_01 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
+    *(undefined4 *)(this_01 + 0x88) = 0;
+    *(undefined4 *)(this_01 + 0x90) = 0;
+    *(undefined4 *)(this_01 + 0x8c) = 0;
+    this_01[0x84] = (TControl)0x0;
   }
-  local_4 = 0xffffffff;
-  local_24 = (undefined4 *)0x50;
+  local_4 = (TClickZone *)0xffffffff;
+  local_24 = (TView *)0x50;
   local_20 = 0x2d;
   iStack_3c = (int)*(short *)(&g_TShip_Line_Base_Value_006985E8 +
-                             *(short *)(*(int *)(in_ECX + 0x10) + 4) * 2);
+                             *(short *)(*(int *)(this + 0x10) + 4) * 2);
   uStack_40 = local_1c;
   puStack_44 = (undefined1 *)0x5;
-  ppuStack_4c = &local_24;
-  iStack_48 = 5;
+  ppTStack_4c = &local_24;
+  pTStack_48 = (TShipLine *)0x5;
   puStack_50 = &local_14;
   local_14 = 0;
   local_10 = (undefined1 *)0x0;
-  ppuStack_54 = ppuVar2;
+  pTStack_54 = this_00;
   TArmyCheckBox::ConstructTArmyCheckBoxBaseState();
-  piVar3[7] = 0x63686563;
-  piVar3[0x18] = 4;
+  *(int *)(this_01 + 0x1c) = 0x63686563;
+  *(int *)(this_01 + 0x60) = 4;
   iStack_3c = 0;
-  uStack_40 = CONCAT31((int3)((uint)extraout_ECX >> 8),
-                       *(undefined1 *)(*(int *)(in_ECX + 0x14) + 0xc));
+  uStack_40 = CONCAT31((int3)((uint)extraout_ECX >> 8),*(undefined1 *)(*(int *)(this + 0x14) + 0xc))
+  ;
   puStack_44 = (undefined1 *)0x565245;
-  (**(code **)(*piVar3 + 0x1c8))();
+  (**(code **)(*(int *)this_01 + 0x1c8))();
   puStack_44 = (undefined1 *)0x56524e;
   InitializeSharedStringRefFromEmpty();
   puStack_44 = (undefined1 *)0x88;
   uStack_c = 2;
-  iStack_48 = 0x565260;
-  local_4 = AllocateWithFallbackHandler();
+  pTStack_48 = (TShipLine *)0x565260;
+  local_4 = (TClickZone *)AllocateWithFallbackHandler();
   uStack_c._0_1_ = 3;
-  if (local_4 == 0) {
-    iVar4 = 0;
+  if (local_4 == (TClickZone *)0x0) {
+    iVar2 = 0;
   }
   else {
     puStack_44 = (undefined1 *)0x565277;
-    TClickZone::thunk_ConstructUiCommandTagResourceEntry();
-    iVar4 = extraout_EAX;
+    TClickZone::thunk_ConstructUiCommandTagResourceEntry(local_4);
+    iVar2 = extraout_EAX;
   }
   puStack_44 = (undefined1 *)0x0;
-  iStack_48 = 4;
+  pTStack_48 = (TShipLine *)0x4;
   puStack_50 = &local_1c;
-  ppuStack_4c = (undefined4 **)0x4;
-  ppuStack_54 = &local_24;
+  ppTStack_4c = (TView **)0x4;
+  pTStack_54 = (TView *)&local_24;
   uStack_c = CONCAT31(uStack_c._1_3_,2);
   local_1c = 0x80;
   local_18 = 0x18;
-  local_24 = (undefined4 *)0x40;
+  local_24 = (TView *)0x40;
   local_20 = 0;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined4 *)(iVar4 + 0x1c) = 0x6e616d65;
+  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
   puStack_44 = &stack0xffffffd0;
-  iStack_48 = 4;
-  ppuStack_4c = (undefined4 **)&DAT_00002746;
+  pTStack_48 = (TShipLine *)0x4;
+  ppTStack_4c = (TView **)&DAT_00002746;
   puStack_50 = (undefined4 *)0x5652d7;
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  local_10 = (undefined1 *)&ppuStack_54;
-  puStack_50 = (undefined4 *)iVar4;
+  local_10 = (undefined1 *)&pTStack_54;
+  puStack_50 = (undefined4 *)iVar2;
   thunk_AssignStringSharedRefAndReturnThis();
   InitializeAndRunMainRoutine();
   local_18 = 0xffffffff;
@@ -304,23 +303,22 @@ void * __thiscall TShipLine::DestructTShipLineAndMaybeFree(TShipLine *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005654E0
 // GHIDRA_NAME TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge
-// GHIDRA_PROTO void __cdecl RenderAdmiralSummaryAndNavyNormalizationGauge(void)
+// GHIDRA_PROTO void __thiscall RenderAdmiralSummaryAndNavyNormalizationGauge(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Renders admiral summary text rows and navy normalization gauge bar for current context.
 // GHIDRA_COMMENT_END
 
 /* Renders admiral summary text rows and navy normalization gauge bar for current context. */
 
-void __cdecl TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(void)
+void __thiscall TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(TShipLine *this)
 
 {
   short extraout_AX;
   short sVar1;
   short sVar2;
-  int in_ECX;
-  void *this;
   void *this_00;
   void *this_01;
+  void *this_02;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined1 local_60 [4];
@@ -346,7 +344,7 @@ void __cdecl TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(void)
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  StringShared__AssignFromPtr(local_60,(int *)(*(int *)(in_ECX + 0x60) + 0x18));
+  StringShared__AssignFromPtr(local_60,(int *)(*(int *)(this + 0x60) + 0x18));
   CallCallbackRepeatedly((int)local_2c,4,8,0x404642,0x405fa1);
   local_4._0_1_ = 2;
   do {
@@ -356,7 +354,7 @@ void __cdecl TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(void)
   StringShared__AssignFromPtr
             (local_5c,local_2c +
                       *(int *)(&g_Render_Admiral_Summary_Value_0065C7F8 +
-                              *(short *)(*(int *)(in_ECX + 0x60) + 4) * 4));
+                              *(short *)(*(int *)(this + 0x60) + 4) * 4));
   AssignSharedStringConcatCStrAndRef(&iStack_58,&g_Build_Map_Order_LookupTable_00695794);
   local_4._0_1_ = 3;
   AssignStringSharedFromRef();
@@ -367,8 +365,8 @@ void __cdecl TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(void)
   SetQuickDrawFillColor();
   puStack_54 = &stack0xffffff90;
   SetQuickDrawStrokeColor();
-  thunk_DrawTextWithCachedQuickDrawStyleState(this);
-  if (*(int *)(*(int *)(in_ECX + 0x60) + 0x20) != 0) {
+  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  if (*(int *)(*(int *)(this + 0x60) + 0x20) != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
     AssignSharedStringConcatCStrAndRef(&puStack_54,s_Adm__0069578c);
     local_4._0_1_ = 4;
@@ -380,9 +378,9 @@ void __cdecl TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(void)
     local_4._0_1_ = 2;
     ReleaseSharedStringRefIfNotEmpty();
     thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0xc);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
   }
-  sVar1 = *(short *)(*(int *)(in_ECX + 0x60) + 0x1c);
+  sVar1 = *(short *)(*(int *)(this + 0x60) + 0x1c);
   thunk_GetNavyOrderNormalizationBaseByNationType();
   sVar1 = (short)((sVar1 * 0x14) / (int)extraout_AX) + 1;
   if (0x14 < sVar1) {
@@ -414,7 +412,7 @@ void __cdecl TShipLine::RenderAdmiralSummaryAndNavyNormalizationGauge(void)
   thunk_DrawCenteredGuideLineOnMapDc(0xa2,0x26);
   thunk_DrawCenteredGuideLineOnMapDc(0xa2,0x20);
   local_4._0_1_ = 1;
-  InvokeCallbackNTimesWithSehGuard(this_01,(int)local_2c,4,8,0x405fa1);
+  InvokeCallbackNTimesWithSehGuard(this_02,(int)local_2c,4,8,0x405fa1);
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = 0xffffffff;

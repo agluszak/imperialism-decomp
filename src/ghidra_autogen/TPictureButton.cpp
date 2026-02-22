@@ -40,6 +40,24 @@ TPictureButton::thunk_DestructTPictureButtonAndMaybeFree(TPictureButton *this,by
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405628
+// GHIDRA_NAME TPictureButton::thunk_ConstructUiTabCursorPictureEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiTabCursorPictureEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiTabCursorPictureEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiTabCursorPictureEntry */
+
+void __thiscall TPictureButton::thunk_ConstructUiTabCursorPictureEntry(TPictureButton *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined ***)this = &g_vtblTPictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00570750
 // GHIDRA_NAME TPictureButton::CreateTPictureButtonInstance
 // GHIDRA_PROTO void * __cdecl CreateTPictureButtonInstance(void)
@@ -93,7 +111,7 @@ void * __cdecl TPictureButton::GetTPictureButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005707F0
 // GHIDRA_NAME TPictureButton::ConstructUiTabCursorPictureEntry
-// GHIDRA_PROTO void __cdecl ConstructUiTabCursorPictureEntry(void)
+// GHIDRA_PROTO void __thiscall ConstructUiTabCursorPictureEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs', 'tab0'..'tab8'). Sets timing/word field (+0x92=7000).
 // GHIDRA_COMMENT_END
@@ -101,14 +119,12 @@ void * __cdecl TPictureButton::GetTPictureButtonClassNamePointer(void)
 /* Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs',
    'tab0'..'tab8'). Sets timing/word field (+0x92=7000). */
 
-void __cdecl TPictureButton::ConstructUiTabCursorPictureEntry(void)
+void __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(TPictureButton *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *in_ECX = &g_vtblTPictureButton;
-  *(undefined2 *)((int)in_ECX + 0x92) = 7000;
+  *(undefined ***)this = &g_vtblTPictureButton;
+  *(undefined2 *)(this + 0x92) = 7000;
   return;
 }
 

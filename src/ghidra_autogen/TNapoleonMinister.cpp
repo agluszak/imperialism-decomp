@@ -50,7 +50,7 @@ void * __thiscall
 TNapoleonMinister::thunk_ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTNapoleonMinister;
   *(undefined2 *)(this + 0xc) = 0;
   return this;
@@ -58,17 +58,18 @@ TNapoleonMinister::thunk_ConstructTNapoleonMinisterBaseState(TNapoleonMinister *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405885
 // GHIDRA_NAME TNapoleonMinister::thunk_InitializeRecruitQueuePatternA_Type2x3_Type4x2
-// GHIDRA_PROTO void __cdecl thunk_InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternA_Type2x3_Type4x2
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternA_Type2x3_Type4x2 */
 
-void __cdecl TNapoleonMinister::thunk_InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
+void __thiscall
+TNapoleonMinister::thunk_InitializeRecruitQueuePatternA_Type2x3_Type4x2(TNapoleonMinister *this)
 
 {
-  InitializeRecruitQueuePatternA_Type2x3_Type4x2();
+  InitializeRecruitQueuePatternA_Type2x3_Type4x2(this);
   return;
 }
 
@@ -133,7 +134,7 @@ void * __cdecl TNapoleonMinister::GetTNapoleonMinisterClassNamePointer(void)
 void * __thiscall TNapoleonMinister::ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister();
+  TMinister::thunk_ConstructTMinister((TMinister *)this);
   *(undefined ***)this = &g_vtblTNapoleonMinister;
   *(undefined2 *)(this + 0xc) = 0;
   return this;
@@ -156,17 +157,17 @@ TNapoleonMinister::DestructTNapoleonMinisterAndMaybeFree(TNapoleonMinister *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED620
 // GHIDRA_NAME TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2
-// GHIDRA_PROTO void __cdecl InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
+// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes recruit queue preset A: three type-2 orders and two type-4 orders.
 // GHIDRA_COMMENT_END
 
 /* Initializes recruit queue preset A: three type-2 orders and two type-4 orders. */
 
-void __cdecl TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
+void __thiscall
+TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2(TNapoleonMinister *this)
 
 {
-  int in_ECX;
   undefined4 unaff_ESI;
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
@@ -188,7 +189,7 @@ void __cdecl TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2(v
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x18) = *(short *)(in_ECX + 0x18) + 1;
+    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
     iVar1 = iVar1 + -1;
   } while (iVar1 != 0);
   iVar1 = 2;
@@ -198,7 +199,7 @@ void __cdecl TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2(v
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(in_ECX + 0x1c) = *(short *)(in_ECX + 0x1c) + 1;
+    *(short *)(this + 0x1c) = *(short *)(this + 0x1c) + 1;
     iVar1 = iVar1 + -1;
   } while (iVar1 != 0);
   *unaff_FS_OFFSET = unaff_ESI;

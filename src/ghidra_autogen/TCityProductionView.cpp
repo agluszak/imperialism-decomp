@@ -22,6 +22,21 @@ TCityProductionView::thunk_DestroyTCityProductionView(TCityProductionView *this,
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004083D2
+// GHIDRA_NAME TCityProductionView::thunk_GetCityProductionViewTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetCityProductionViewTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetCityProductionViewTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetCityProductionViewTypeName */
+
+void * __cdecl TCityProductionView::thunk_GetCityProductionViewTypeName(void)
+
+{
+  return &g_pClassDescTCityProductionView;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA240
 // GHIDRA_NAME TCityProductionView::CreateCityProductionView
 // GHIDRA_PROTO undefined CreateCityProductionView()

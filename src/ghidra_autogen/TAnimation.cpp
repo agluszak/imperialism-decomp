@@ -23,35 +23,29 @@ void * __cdecl TAnimation::thunk_GetTAnimationClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040302B
 // GHIDRA_NAME TAnimation::thunk_InitializeAnimationFrameState
-// GHIDRA_PROTO void __cdecl thunk_InitializeAnimationFrameState(void)
+// GHIDRA_PROTO void __thiscall thunk_InitializeAnimationFrameState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to InitializeAnimationFrameState.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to InitializeAnimationFrameState. */
 
-void __cdecl TAnimation::thunk_InitializeAnimationFrameState(void)
+void __thiscall
+TAnimation::thunk_InitializeAnimationFrameState
+          (TAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x1c) = *in_stack_00000008;
-  *(undefined4 *)(in_ECX + 0x20) = in_stack_00000008[1];
-  *(undefined4 *)(in_ECX + 0x24) = in_stack_00000008[2];
-  *(undefined4 *)(in_ECX + 0x28) = in_stack_00000008[3];
-  *(undefined2 *)(in_ECX + 10) = in_stack_0000000c;
-  *(undefined2 *)(in_ECX + 0xc) = in_stack_00000010;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000014;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000018;
+  this[1].pVtable = (void *)arg1;
+  this[7].pVtable = *(void **)arg2;
+  this[8].pVtable = *(void **)(arg2 + 4);
+  this[9].pVtable = *(void **)(arg2 + 8);
+  this[10].pVtable = *(void **)(arg2 + 0xc);
+  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
+  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
+  *(undefined2 *)&this[2].pVtable = 0;
+  this[4].pVtable = (void *)0x0;
+  this[5].pVtable = (void *)arg5;
+  this[6].pVtable = (void *)arg6;
   return;
 }
 
@@ -108,35 +102,29 @@ void * __cdecl TAnimation::GetTAnimationClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0C0
 // GHIDRA_NAME TAnimation::ConstructTAnimationBaseState
-// GHIDRA_PROTO void __cdecl ConstructTAnimationBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes base animation frame rectangle/state and frame timing fields.
 // GHIDRA_COMMENT_END
 
 /* Initializes base animation frame rectangle/state and frame timing fields. */
 
-void __cdecl TAnimation::ConstructTAnimationBaseState(void)
+void __thiscall
+TAnimation::ConstructTAnimationBaseState
+          (TAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  int in_ECX;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  
-  *(undefined4 *)(in_ECX + 4) = in_stack_00000004;
-  *(undefined4 *)(in_ECX + 0x1c) = *in_stack_00000008;
-  *(undefined4 *)(in_ECX + 0x20) = in_stack_00000008[1];
-  *(undefined4 *)(in_ECX + 0x24) = in_stack_00000008[2];
-  *(undefined4 *)(in_ECX + 0x28) = in_stack_00000008[3];
-  *(undefined2 *)(in_ECX + 10) = in_stack_0000000c;
-  *(undefined2 *)(in_ECX + 0xc) = in_stack_00000010;
-  *(undefined2 *)(in_ECX + 8) = 0;
-  *(undefined4 *)(in_ECX + 0x10) = 0;
-  *(undefined4 *)(in_ECX + 0x14) = in_stack_00000014;
-  *(undefined4 *)(in_ECX + 0x18) = in_stack_00000018;
+  this[1].pVtable = (void *)arg1;
+  this[7].pVtable = *(void **)arg2;
+  this[8].pVtable = *(void **)(arg2 + 4);
+  this[9].pVtable = *(void **)(arg2 + 8);
+  this[10].pVtable = *(void **)(arg2 + 0xc);
+  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
+  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
+  *(undefined2 *)&this[2].pVtable = 0;
+  this[4].pVtable = (void *)0x0;
+  this[5].pVtable = (void *)arg5;
+  this[6].pVtable = (void *)arg6;
   return;
 }
 

@@ -23,17 +23,18 @@ void * __cdecl TNetSelectPicture::thunk_GetTNetSelectPictureClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004056F5
 // GHIDRA_NAME TNetSelectPicture::thunk_HandleTNetSelectPictureCommandOkayCancelAndForward
-// GHIDRA_PROTO void __cdecl thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(void)
+// GHIDRA_PROTO void __thiscall thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTNetSelectPictureCommandOkayCancelAndForward
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTNetSelectPictureCommandOkayCancelAndForward */
 
-void __cdecl TNetSelectPicture::thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(void)
+void __thiscall
+TNetSelectPicture::thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(TNetSelectPicture *this)
 
 {
-  HandleTNetSelectPictureCommandOkayCancelAndForward();
+  HandleTNetSelectPictureCommandOkayCancelAndForward(this);
   return;
 }
 
@@ -79,11 +80,11 @@ void __cdecl TNetSelectPicture::thunk_DestructTNetSelectPictureBaseState(void)
 /* Allocates 0x94-byte TNetSelectPicture-like instance, runs shared picture/base constructor, then
    installs vtable 0x6440D8. */
 
-undefined4 * TNetSelectPicture::AllocateTNetSelectPictureInstance(void)
+TNoHilitePicture * TNetSelectPicture::AllocateTNetSelectPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -93,16 +94,16 @@ undefined4 * TNetSelectPicture::AllocateTNetSelectPictureInstance(void)
   puStack_8 = &LAB_006368aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &g_vtblTNetSelectPicture;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined ***)this = &g_vtblTNetSelectPicture;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576980
@@ -138,7 +139,7 @@ void __cdecl TNetSelectPicture::DestructTNetSelectPictureBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769C0
 // GHIDRA_NAME TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward
-// GHIDRA_PROTO void __cdecl HandleTNetSelectPictureCommandOkayCancelAndForward(void)
+// GHIDRA_PROTO void __thiscall HandleTNetSelectPictureCommandOkayCancelAndForward(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles TNetSelectPicture command tags cncl/okay, applies cancel or validate-selection flow, then forwards to shared city-dialog toggle handler.
 // GHIDRA_COMMENT_END
@@ -146,14 +147,14 @@ void __cdecl TNetSelectPicture::DestructTNetSelectPictureBaseState(void)
 /* Handles TNetSelectPicture command tags cncl/okay, applies cancel or validate-selection flow, then
    forwards to shared city-dialog toggle handler. */
 
-void __cdecl TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward(void)
+void __thiscall
+TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward(TNetSelectPicture *this)
 
 {
   code *pcVar1;
   int *piVar2;
   undefined4 uVar3;
   int iVar4;
-  int *in_ECX;
   int in_stack_00000004;
   int in_stack_00000008;
   
@@ -165,7 +166,7 @@ void __cdecl TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForwa
       thunk_ResetGameFlowStateAndPostTurnEvent5DC();
     }
     else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179) {
-      pcVar1 = *(code **)(*in_ECX + 0x94);
+      pcVar1 = *(code **)((int)this->pVtable + 0x94);
       piVar2 = (int *)(*pcVar1)(0x70726f74);
       iVar4 = *piVar2;
       (**(code **)(iVar4 + 0xc))();

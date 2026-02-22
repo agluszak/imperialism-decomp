@@ -23,17 +23,16 @@ void * __cdecl TScroller::thunk_GetTScrollerClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004086E3
 // GHIDRA_NAME TScroller::thunk_DestroyScrollerAndReleaseOwnedResources
-// GHIDRA_PROTO void __cdecl thunk_DestroyScrollerAndReleaseOwnedResources(void)
+// GHIDRA_PROTO void __thiscall thunk_DestroyScrollerAndReleaseOwnedResources(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk forwarding to DestroyScrollerAndReleaseOwnedResources.
 // GHIDRA_COMMENT_END
 
 /* Thunk forwarding to DestroyScrollerAndReleaseOwnedResources. */
 
-void __cdecl TScroller::thunk_DestroyScrollerAndReleaseOwnedResources(void)
+void __thiscall TScroller::thunk_DestroyScrollerAndReleaseOwnedResources(TScroller *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -42,32 +41,31 @@ void __cdecl TScroller::thunk_DestroyScrollerAndReleaseOwnedResources(void)
   puStack_8 = &LAB_0062ece3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *in_ECX = &g_vtblTView;
+  this->pVtable = &g_vtblTView;
   uStack_4 = 1;
-  if ((int *)in_ECX[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)in_ECX[0x11] + 4))(1);
+  if (this[0x11].pVtable != (int *)0x0) {
+    (**(code **)(*(int *)this[0x11].pVtable + 4))(1);
   }
-  FreeHeapBufferIfNotNull(in_ECX[0x12]);
+  FreeHeapBufferIfNotNull(this[0x12].pVtable);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB00
 // GHIDRA_NAME TScroller::CreateTScrollerInstance
-// GHIDRA_PROTO void __cdecl CreateTScrollerInstance(void)
+// GHIDRA_PROTO void __thiscall CreateTScrollerInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Destroys scroller-owned helpers/buffers/string refs and restores base runtime-class vtable.
 // GHIDRA_COMMENT_END
 
 /* Destroys scroller-owned helpers/buffers/string refs and restores base runtime-class vtable. */
 
-void __cdecl TScroller::CreateTScrollerInstance(void)
+void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -76,15 +74,15 @@ void __cdecl TScroller::CreateTScrollerInstance(void)
   puStack_8 = &LAB_0062ece3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *in_ECX = &g_vtblTView;
+  this->pVtable = &g_vtblTView;
   local_4 = 1;
-  if ((int *)in_ECX[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)in_ECX[0x11] + 4))(1);
+  if (this[0x11].pVtable != (int *)0x0) {
+    (**(code **)(*(int *)this[0x11].pVtable + 4))(1);
   }
-  FreeHeapBufferIfNotNull(in_ECX[0x12]);
+  FreeHeapBufferIfNotNull(this[0x12].pVtable);
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -151,10 +149,10 @@ TScroller::ConstructTScrollerBaseState
 void * __cdecl TScroller::DestructTScrollerAndMaybeFree(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   int local_14;
-  undefined4 *local_10;
+  TView *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -163,27 +161,27 @@ void * __cdecl TScroller::DestructTScrollerAndMaybeFree(void)
   puStack_8 = &LAB_0062ed25;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x74);
+  this = (TView *)AllocateWithFallbackHandler(0x74);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    local_10 = puVar1;
-    TView::thunk_ConstructUiResourceEntryBase();
+  if (this != (TView *)0x0) {
+    local_10 = this;
+    TView::thunk_ConstructUiResourceEntryBase(this);
     local_4._0_1_ = 1;
     InitializeSharedStringRefFromEmpty();
-    puVar1[0x19] = 0;
-    puVar1[0x1a] = 0;
+    *(undefined4 *)(this + 100) = 0;
+    *(undefined4 *)(this + 0x68) = 0;
     local_4._0_1_ = 2;
-    *puVar1 = &g_vtblTIncludeView;
-    *(undefined2 *)(puVar1 + 0x18) = 0xffff;
+    *(undefined ***)this = &g_vtblTIncludeView;
+    *(undefined2 *)(this + 0x60) = 0xffff;
     ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
     local_4._0_1_ = 3;
-    StringShared__AssignFromPtr(puVar1 + 0x1b,&local_14);
+    StringShared__AssignFromPtr(this + 0x6c,&local_14);
     local_4 = CONCAT31(local_4._1_3_,2);
     ReleaseSharedStringRefIfNotEmpty();
-    *(undefined2 *)(puVar1 + 0x1c) = 1;
-    puVar1[1] = 0;
+    *(undefined2 *)(this + 0x70) = 1;
+    *(undefined4 *)(this + 4) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

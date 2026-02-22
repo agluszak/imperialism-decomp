@@ -19,6 +19,48 @@ void __cdecl TPoseMessageDialog::thunk_DeletingDestructPoseMessageDialogTurnEven
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403DFF
+// GHIDRA_NAME TPoseMessageDialog::thunk_DispatchSimpleTurnEventEsopWithParam
+// GHIDRA_PROTO void __cdecl thunk_DispatchSimpleTurnEventEsopWithParam(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DispatchSimpleTurnEventEsopWithParam
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DispatchSimpleTurnEventEsopWithParam */
+
+void __cdecl TPoseMessageDialog::thunk_DispatchSimpleTurnEventEsopWithParam(void)
+
+{
+  TCommand *this;
+  TCommand *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634d3a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
+  uStack_4 = 0;
+  if (this == (TCommand *)0x0) {
+    this_00 = (TCommand *)0x0;
+  }
+  else {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &g_vtblTPoseMessageDialog;
+    this_00 = this;
+  }
+  *(undefined4 *)(this_00 + 0x18) = in_stack_00000004;
+  uStack_4 = 0xffffffff;
+  thunk_InitializeRangePairAndResetCursor(this_00,0x706f7365,(int)g_pGlobalUiRootController);
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this_00);
+  *unaff_FS_OFFSET = this;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406537
 // GHIDRA_NAME TPoseMessageDialog::thunk_GetTPoseMessageDialogClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTPoseMessageDialogClassNamePointer(void)
@@ -101,11 +143,11 @@ void __cdecl TPoseMessageDialog::DeletingDestructPoseMessageDialogTurnEventPacke
 /* Allocates 0x1C-byte turn-event packet object, runs base packet constructor, and assigns
    pose-message packet vtable. */
 
-undefined4 * TPoseMessageDialog::AllocateAndConstructPoseMessageDialogTurnEventPacket(void)
+TCommand * TPoseMessageDialog::AllocateAndConstructPoseMessageDialogTurnEventPacket(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCommand *this;
+  TCommand *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -115,16 +157,16 @@ undefined4 * TPoseMessageDialog::AllocateAndConstructPoseMessageDialogTurnEventP
   puStack_8 = &LAB_00634d1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar1 = &g_vtblTPoseMessageDialog;
-    puVar2 = puVar1;
+  pTVar1 = (TCommand *)0x0;
+  if (this != (TCommand *)0x0) {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &g_vtblTPoseMessageDialog;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054B0D0
@@ -155,8 +197,8 @@ void * __cdecl TPoseMessageDialog::GetTPoseMessageDialogClassNamePointer(void)
 void __cdecl TPoseMessageDialog::DispatchSimpleTurnEventEsopWithParam(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *this;
+  TCommand *this;
+  TCommand *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000004;
   undefined4 uStack_c;
@@ -167,21 +209,21 @@ void __cdecl TPoseMessageDialog::DispatchSimpleTurnEventEsopWithParam(void)
   puStack_8 = &LAB_00634d3a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
   local_4 = 0;
-  if (puVar1 == (undefined4 *)0x0) {
-    this = (undefined4 *)0x0;
+  if (this == (TCommand *)0x0) {
+    this_00 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar1 = &g_vtblTPoseMessageDialog;
-    this = puVar1;
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    *(undefined ***)this = &g_vtblTPoseMessageDialog;
+    this_00 = this;
   }
-  this[6] = in_stack_00000004;
+  *(undefined4 *)(this_00 + 0x18) = in_stack_00000004;
   local_4 = 0xffffffff;
-  thunk_InitializeRangePairAndResetCursor(this,0x706f7365,(int)g_pGlobalUiRootController);
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this);
-  *unaff_FS_OFFSET = puVar1;
+  thunk_InitializeRangePairAndResetCursor(this_00,0x706f7365,(int)g_pGlobalUiRootController);
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this_00);
+  *unaff_FS_OFFSET = this;
   return;
 }
 

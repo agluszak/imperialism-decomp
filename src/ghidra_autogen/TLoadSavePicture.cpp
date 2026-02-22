@@ -712,3 +712,19 @@ TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,in
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E9440
+// GHIDRA_NAME TLoadSavePicture::ReadBufferedStreamLocked
+// GHIDRA_PROTO undefined ReadBufferedStreamLocked()
+
+uint TLoadSavePicture::ReadBufferedStreamLocked
+               (void *param_1,uint param_2,uint param_3,void *param_4)
+
+{
+  uint uVar1;
+  
+  EnterStreamCriticalSection(param_4);
+  uVar1 = ReadBufferedStreamCoreUnlocked(param_1,param_2,param_3,param_4);
+  LeaveStreamCriticalSection(param_4);
+  return uVar1;
+}
+

@@ -23,16 +23,16 @@ void * __cdecl TTechStorePage::thunk_GetTTechStorePageClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401799
 // GHIDRA_NAME TTechStorePage::thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls
-// GHIDRA_PROTO void * __cdecl thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls(void)
+// GHIDRA_PROTO void * __thiscall thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls(void)
 
-void * __cdecl
-TTechStorePage::thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls(void)
+void * __thiscall
+TTechStorePage::thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls
+          (TTechStorePage *this)
 
 {
   int iVar1;
   TLineData *pThis;
   void *extraout_EAX;
-  int *in_ECX;
   int pageDelta;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -63,17 +63,17 @@ TTechStorePage::thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControl
       iStack_14 = 0x232;
       uStack_10 = 0x3f;
       thunk_SetLineDataRowAndBounds(pThis,0,0,&iStack_14);
-      iVar1 = *in_ECX;
+      iVar1 = *(int *)this;
       *(undefined4 *)(pThis + 0x10) = in_stack_00000004;
       *(int *)(pThis + 0x14) = iVar2;
       (**(code **)(iVar1 + 0x1a0))(pThis);
     }
     iVar2 = iVar2 + -1;
   } while (0 < iVar2);
-  iVar2 = *in_ECX;
+  iVar2 = *(int *)this;
   (**(code **)(iVar2 + 0x1ac))();
   (**(code **)(iVar2 + 0x1b0))(1);
-  thunk_UpdatePagedListNavigationButtonState((void *)in_ECX[8],pageDelta);
+  thunk_UpdatePagedListNavigationButtonState(*(void **)(this + 0x20),pageDelta);
   InitializeMainRoutineContextAndRun();
   *unaff_FS_OFFSET = uStack_10;
   return extraout_EAX;
@@ -150,7 +150,7 @@ void * __cdecl TTechStorePage::GetTTechStorePageClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0F10
 // GHIDRA_NAME TTechStorePage::ConstructTTechStorePageBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTTechStorePageBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTTechStorePageBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds TTechItemLine entries from city capability-state slots, updates page/line collections, refreshes paging arrows, and triggers post-build UI hook updates.
 // GHIDRA_COMMENT_END
@@ -158,13 +158,12 @@ void * __cdecl TTechStorePage::GetTTechStorePageClassNamePointer(void)
 /* Builds TTechItemLine entries from city capability-state slots, updates page/line collections,
    refreshes paging arrows, and triggers post-build UI hook updates. */
 
-void * __cdecl TTechStorePage::ConstructTTechStorePageBaseState(void)
+void * __thiscall TTechStorePage::ConstructTTechStorePageBaseState(TTechStorePage *this)
 
 {
   int iVar1;
   TLineData *pThis;
   void *extraout_EAX;
-  int *in_ECX;
   int pageDelta;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -195,17 +194,17 @@ void * __cdecl TTechStorePage::ConstructTTechStorePageBaseState(void)
       local_14 = 0x232;
       local_10 = 0x3f;
       thunk_SetLineDataRowAndBounds(pThis,0,0,&local_14);
-      iVar1 = *in_ECX;
+      iVar1 = *(int *)this;
       *(undefined4 *)(pThis + 0x10) = in_stack_00000004;
       *(int *)(pThis + 0x14) = iVar2;
       (**(code **)(iVar1 + 0x1a0))(pThis);
     }
     iVar2 = iVar2 + -1;
   } while (0 < iVar2);
-  iVar2 = *in_ECX;
+  iVar2 = *(int *)this;
   (**(code **)(iVar2 + 0x1ac))();
   (**(code **)(iVar2 + 0x1b0))(1);
-  thunk_UpdatePagedListNavigationButtonState((void *)in_ECX[8],pageDelta);
+  thunk_UpdatePagedListNavigationButtonState(*(void **)(this + 0x20),pageDelta);
   InitializeMainRoutineContextAndRun();
   *unaff_FS_OFFSET = local_10;
   return extraout_EAX;

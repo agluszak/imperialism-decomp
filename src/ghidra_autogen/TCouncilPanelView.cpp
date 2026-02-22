@@ -23,17 +23,17 @@ void * __cdecl TCouncilPanelView::thunk_GetTCouncilPanelViewClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004062B2
 // GHIDRA_NAME TCouncilPanelView::thunk_Cluster_MapTileHint_004fb030
-// GHIDRA_PROTO void __cdecl thunk_Cluster_MapTileHint_004fb030(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_MapTileHint_004fb030(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_004fb030
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_MapTileHint_004fb030 */
 
-void __cdecl TCouncilPanelView::thunk_Cluster_MapTileHint_004fb030(void)
+void __thiscall TCouncilPanelView::thunk_Cluster_MapTileHint_004fb030(TCouncilPanelView *this)
 
 {
-  ConstructTCouncilPanelViewBaseState();
+  ConstructTCouncilPanelViewBaseState(this);
   return;
 }
 
@@ -49,7 +49,7 @@ void __cdecl TCouncilPanelView::thunk_Cluster_MapTileHint_004fb030(void)
 void * __cdecl TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,14 +59,14 @@ void * __cdecl TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
   puStack_8 = &LAB_00632faa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase();
-    puVar1[0x18] = 0;
-    *puVar1 = &PTR_thunk_GetTCouncilPanelViewClassNamePointer_00640060;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructUiResourceEntryBase(this);
+    *(undefined4 *)(this + 0x60) = 0;
+    *(undefined ***)this = &PTR_thunk_GetTCouncilPanelViewClassNamePointer_00640060;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -89,7 +89,7 @@ void * __cdecl TCouncilPanelView::GetTCouncilPanelViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB030
 // GHIDRA_NAME TCouncilPanelView::ConstructTCouncilPanelViewBaseState
-// GHIDRA_PROTO void __cdecl ConstructTCouncilPanelViewBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTCouncilPanelViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TCouncilPanelView text-render path for diplomacy summary/title lines with theme/style mapping and centered layout.
 // GHIDRA_COMMENT_END
@@ -97,18 +97,16 @@ void * __cdecl TCouncilPanelView::GetTCouncilPanelViewClassNamePointer(void)
 /* [ClassLane] TCouncilPanelView text-render path for diplomacy summary/title lines with theme/style
    mapping and centered layout. */
 
-void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
+void __thiscall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(TCouncilPanelView *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   short sVar2;
   short extraout_AX;
   short extraout_AX_00;
   short extraout_AX_01;
   short extraout_AX_02;
   short extraout_AX_03;
-  int in_ECX;
-  void *this;
   void *this_00;
   void *this_01;
   void *this_02;
@@ -120,6 +118,7 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
   void *this_08;
   void *this_09;
   void *this_10;
+  void *this_11;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   short sVar3;
@@ -143,7 +142,7 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
-  iVar1 = *(int *)(in_ECX + 0x34);
+  pvVar1 = this[0xd].pVtable;
   local_4 = CONCAT31(local_4._1_3_,2);
   local_18[0] = 0;
   local_1c = 0;
@@ -153,17 +152,17 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)local_18);
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_1c);
-  sVar2 = (short)(iVar1 / 2);
+  sVar2 = (short)((int)pvVar1 / 2);
   if (g_pDiplomacyTurnStateManager->selectedSourceNationSlot == -1) {
     (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x34);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     sVar2 = sVar2 - extraout_AX / 2;
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 1,0x25);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2,0x24);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
   }
   else {
     (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x35,local_20);
@@ -177,26 +176,26 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
     sVar3 = sVar2 - extraout_AX_00 / 2;
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3 + 1,0x25);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x24);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
     AssignStringSharedFromCStr(&g_TCouncil_Panel_View_Value_00696B10);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset((sVar2 - extraout_AX_01) + 1,0x3d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 - extraout_AX_01,0x3c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
     FormatStringWithVarArgsToSharedRef
               (local_20,&g_szDecimalFormat,(int)g_pDiplomacyTurnStateManager->selectionFlagsA);
     sVar3 = sVar2 + 4;
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 5,0x3d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x3c);
     thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
@@ -205,7 +204,7 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset((sVar2 - extraout_AX_02) + 1,0x4d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 - extraout_AX_02,0x4c);
     thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
@@ -216,7 +215,7 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
     thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x4c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
     (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x36,&stack0xffffffd4);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     SetQuickDrawColorAndSyncGlobals();
@@ -224,15 +223,15 @@ void __cdecl TCouncilPanelView::ConstructTCouncilPanelViewBaseState(void)
     thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 - extraout_AX_03,0x5c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_09);
     FormatStringWithVarArgsToSharedRef
               (local_20,&g_szDecimalFormat,(int)g_pDiplomacyTurnStateManager->selectionFlagsC);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 5,0x5d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_09);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_10);
     SetQuickDrawColorAndSyncGlobals();
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x5c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_10);
+    thunk_DrawTextWithCachedQuickDrawStyleState(this_11);
   }
   local_10._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();

@@ -108,7 +108,7 @@ undefined4 RunNationInfoModalAndReturnNonCancel(void)
 }
 
 // ghidra_name TViewMgr::BuildAndShowTurnOverlayByMode
-// ghidra_proto void __cdecl BuildAndShowTurnOverlayByMode(void)
+// ghidra_proto void __thiscall BuildAndShowTurnOverlayByMode(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005d6480
 undefined4 BuildAndShowTurnOverlayByMode(void)
 {
@@ -132,7 +132,7 @@ undefined4 RefreshMainViewNationIndicatorForCurrentTurnEvent(void)
 }
 
 // ghidra_name TViewMgr::AddPendingTurnOverlayCode
-// ghidra_proto void __thiscall AddPendingTurnOverlayCode(TViewMgr * pThis, int arg1)
+// ghidra_proto void __thiscall AddPendingTurnOverlayCode(int arg1)
 // FUNCTION: IMPERIALISM 0x005d6bf0
 undefined4 AddPendingTurnOverlayCode(void)
 {
@@ -212,7 +212,7 @@ undefined4 DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
 }
 
 // ghidra_name TViewMgr::DispatchTurnEvent7D8IfTurnFlowIdle
-// ghidra_proto void __thiscall DispatchTurnEvent7D8IfTurnFlowIdle(TViewMgr * pThis, int arg1)
+// ghidra_proto void __thiscall DispatchTurnEvent7D8IfTurnFlowIdle(int arg1)
 // FUNCTION: IMPERIALISM 0x005d7100
 undefined4 DispatchTurnEvent7D8IfTurnFlowIdle(void)
 {
@@ -228,7 +228,7 @@ undefined4 NoOpTurnEventStateVtableSlotD4(void)
 }
 
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
-// ghidra_proto void __cdecl InvokeMainWidgetMethod1CCWithArgs(void)
+// ghidra_proto void __thiscall InvokeMainWidgetMethod1CCWithArgs(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005d71b0
 undefined4 InvokeMainWidgetMethod1CCWithArgs(void)
 {
@@ -236,7 +236,7 @@ undefined4 InvokeMainWidgetMethod1CCWithArgs(void)
 }
 
 // ghidra_name TViewMgr::DispatchGlobalTurnEventCode
-// ghidra_proto void __thiscall DispatchGlobalTurnEventCode(TViewMgr * pThis, int arg1, int arg2)
+// ghidra_proto void __thiscall DispatchGlobalTurnEventCode(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005d7240
 undefined4 DispatchGlobalTurnEventCode(void)
 {
@@ -1444,7 +1444,7 @@ undefined4 GetTNetMgrClassNamePointer(void)
 }
 
 // ghidra_name TNetMgr::ConstructGlobalTurnEventQueueManager
-// ghidra_proto void __cdecl ConstructGlobalTurnEventQueueManager(void)
+// ghidra_proto void __thiscall ConstructGlobalTurnEventQueueManager(void)
 // FUNCTION: IMPERIALISM 0x005e33e0
 undefined4 ConstructGlobalTurnEventQueueManager(void)
 {
@@ -1555,7 +1555,7 @@ undefined4 OpenJoinGameRuntimeSelectionAndStartSession(void)
   return 0;
 }
 
-// ghidra_name EnqueueOrSendTurnEventPacketToNation
+// ghidra_name TMultiplayerMgr::EnqueueOrSendTurnEventPacketToNation
 // ghidra_proto void __cdecl EnqueueOrSendTurnEventPacketToNation(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e3d40
 undefined4 EnqueueOrSendTurnEventPacketToNation(void)
@@ -1812,7 +1812,7 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
 }
 
 // ghidra_name TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
-// ghidra_proto void __cdecl ReleaseRuntimeSelectionPeersAndResetOwner(void)
+// ghidra_proto void __thiscall ReleaseRuntimeSelectionPeersAndResetOwner(void)
 // FUNCTION: IMPERIALISM 0x005e51d0
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner(void)
 {
@@ -2555,7 +2555,7 @@ undefined4 AppendPointerToGlobalVectorLocked(void)
   return 0;
 }
 
-// ghidra_name AppendPointerToGlobalVectorAsStatus
+// ghidra_name TMapDialog::AppendPointerToGlobalVectorAsStatus
 // ghidra_proto undefined AppendPointerToGlobalVectorAsStatus()
 // FUNCTION: IMPERIALISM 0x005e7920
 undefined4 AppendPointerToGlobalVectorAsStatus(void)
@@ -2643,7 +2643,7 @@ undefined4 CallCallbackNTimes(void)
   return 0;
 }
 
-// ghidra_name FreeHeapBlockWithAllocatorTracking
+// ghidra_name TZone::FreeHeapBlockWithAllocatorTracking
 // ghidra_proto undefined FreeHeapBlockWithAllocatorTracking()
 // FUNCTION: IMPERIALISM 0x005e7f50
 undefined4 FreeHeapBlockWithAllocatorTracking(void)
@@ -2787,7 +2787,7 @@ undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void)
   return 0;
 }
 
-// ghidra_name GetCurrentLocalEpochSecondsWithTimezoneCache
+// ghidra_name TMapMaker::GetCurrentLocalEpochSecondsWithTimezoneCache
 // ghidra_proto undefined GetCurrentLocalEpochSecondsWithTimezoneCache()
 // FUNCTION: IMPERIALISM 0x005e8ee0
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void)
@@ -2851,7 +2851,7 @@ undefined4 DecodeScenarioTilePaletteMaskWithStreamLock(void)
   return 0;
 }
 
-// ghidra_name ReadBufferedStreamLocked
+// ghidra_name TLoadSavePicture::ReadBufferedStreamLocked
 // ghidra_proto undefined ReadBufferedStreamLocked()
 // FUNCTION: IMPERIALISM 0x005e9440
 undefined4 ReadBufferedStreamLocked(void)
@@ -3067,7 +3067,7 @@ undefined4 StrcspnWithMbcFallback(void)
   return 0;
 }
 
-// ghidra_name FindLastCharWithMbcsLeadByteSupport
+// ghidra_name CDocTemplate::FindLastCharWithMbcsLeadByteSupport
 // ghidra_proto byte * __cdecl FindLastCharWithMbcsLeadByteSupport(byte * pStr, uint ch)
 // FUNCTION: IMPERIALISM 0x005ea780
 undefined4 FindLastCharWithMbcsLeadByteSupport(void)

@@ -47,8 +47,8 @@ void * __cdecl TColorKeyButton::thunk_GetTColorKeyButtonClassNamePointer(void)
 void * __cdecl TColorKeyButton::CreateTColorKeyButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TColorKeyPicture *this;
+  TColorKeyPicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,16 +58,16 @@ void * __cdecl TColorKeyButton::CreateTColorKeyButtonInstance(void)
   puStack_8 = &LAB_0063648a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  this = (TColorKeyPicture *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48();
-    *puVar1 = &g_vtblTColorKeyButton;
-    puVar2 = puVar1;
+  pTVar1 = (TColorKeyPicture *)0x0;
+  if (this != (TColorKeyPicture *)0x0) {
+    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(this);
+    *(undefined ***)this = &g_vtblTColorKeyButton;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F50
@@ -92,7 +92,7 @@ void * __cdecl TColorKeyButton::GetTColorKeyButtonClassNamePointer(void)
 void * __thiscall TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
 
 {
-  TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48();
+  TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this);
   *(undefined ***)this = &g_vtblTColorKeyButton;
   return this;
 }

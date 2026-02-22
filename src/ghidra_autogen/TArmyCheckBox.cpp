@@ -51,7 +51,7 @@ TArmyCheckBox::thunk_UpdateArmyCheckBoxSelectionOffsetAndRefresh_At004095d4
 void * __cdecl TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -61,17 +61,17 @@ void * __cdecl TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
   puStack_8 = &LAB_0063048a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-    puVar1[0x22] = 0;
-    puVar1[0x24] = 0;
-    puVar1[0x23] = 0;
-    *(undefined1 *)(puVar1 + 0x21) = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    *(undefined ***)this = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
+    *(undefined4 *)(this + 0x88) = 0;
+    *(undefined4 *)(this + 0x90) = 0;
+    *(undefined4 *)(this + 0x8c) = 0;
+    this[0x84] = (TControl)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;

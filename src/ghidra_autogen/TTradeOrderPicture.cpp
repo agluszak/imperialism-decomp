@@ -61,17 +61,17 @@ void * __cdecl TTradeOrderPicture::thunk_GetTTradeOrderPictureClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040663B
 // GHIDRA_NAME TTradeOrderPicture::thunk_InvokeVirtualA8WithOneZero
-// GHIDRA_PROTO void __cdecl thunk_InvokeVirtualA8WithOneZero(void)
+// GHIDRA_PROTO void __thiscall thunk_InvokeVirtualA8WithOneZero(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InvokeVirtualA8WithOneZero
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InvokeVirtualA8WithOneZero */
 
-void __cdecl TTradeOrderPicture::thunk_InvokeVirtualA8WithOneZero(void)
+void __thiscall TTradeOrderPicture::thunk_InvokeVirtualA8WithOneZero(TTradeOrderPicture *this)
 
 {
-  InvokeVirtualA8WithOneZero();
+  InvokeVirtualA8WithOneZero(this);
   return;
 }
 
@@ -168,19 +168,17 @@ TTradeOrderPicture::DestructTTradeOrderPictureAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584500
 // GHIDRA_NAME TTradeOrderPicture::InvokeVirtualA8WithOneZero
-// GHIDRA_PROTO void __cdecl InvokeVirtualA8WithOneZero(void)
+// GHIDRA_PROTO void __thiscall InvokeVirtualA8WithOneZero(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin wrapper invoking virtual slot 0xA8 with (1
 // GHIDRA_COMMENT_END
 
 /* Thin wrapper invoking virtual slot 0xA8 with (1 */
 
-void __cdecl TTradeOrderPicture::InvokeVirtualA8WithOneZero(void)
+void __thiscall TTradeOrderPicture::InvokeVirtualA8WithOneZero(TTradeOrderPicture *this)
 
 {
-  int *in_ECX;
-  
-  (**(code **)(*in_ECX + 0xa8))(1,0);
+  (**(code **)(*(int *)this + 0xa8))(1,0);
   return;
 }
 

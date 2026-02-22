@@ -98,12 +98,24 @@ void * __cdecl TIdleMeAnimation::GetTIdleMeAnimationClassNamePointer(void)
 /* [WrapperShape] small wrapper around thunk_AddObjectToUiTransientRegistry; instructions=28,
    call_insns=2, internal_calls=1, unique_internal=1 */
 
-void __fastcall TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined *param_1)
+void __thiscall
+TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TAnimation *param_1,int param_2)
 
 {
+  undefined4 arg6;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  arg6 = s_0TUATIdleMeAnimation_00695934._0_4_;
   s_0TUATIdleMeAnimation_00695934._0_4_ = s_0TUATIdleMeAnimation_00695934._0_4_ + 1;
-  TAnimation::thunk_InitializeAnimationFrameState();
-  thunk_AddObjectToUiTransientRegistry(g_pUiTransientObjectRegistry,param_1);
+  local_10 = 0;
+  local_c = 0;
+  local_8 = 0;
+  local_4 = 0;
+  TAnimation::thunk_InitializeAnimationFrameState(param_1,param_2,(int)&local_10,0,0,0,arg6);
+  thunk_AddObjectToUiTransientRegistry(g_pUiTransientObjectRegistry,(undefined *)param_1);
   return;
 }
 

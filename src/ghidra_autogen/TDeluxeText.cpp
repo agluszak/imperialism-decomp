@@ -39,17 +39,16 @@ void * __cdecl TDeluxeText::thunk_GetTDeluxeTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408E31
 // GHIDRA_NAME TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout
-// GHIDRA_PROTO void __cdecl thunk_ApplyTextStyleRectAndRefreshLayout(void)
+// GHIDRA_PROTO void __thiscall thunk_ApplyTextStyleRectAndRefreshLayout(void)
 
-void __cdecl TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout(void)
+void __thiscall TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout(TDeluxeText *this)
 
 {
-  TTEView *in_ECX;
   int in_stack_00000014;
   
-  TTEView::thunk_InitializeTEViewTextEntryBoundsAndMetrics(in_ECX);
-  *(undefined4 *)(in_ECX + 0x98) = *(undefined4 *)(in_stack_00000014 + 6);
-  (**(code **)(*(int *)in_ECX + 0x1d8))(0);
+  TTEView::thunk_InitializeTEViewTextEntryBoundsAndMetrics((TTEView *)this);
+  this[0x26].pVtable = *(void **)(in_stack_00000014 + 6);
+  (**(code **)((int)this->pVtable + 0x1d8))(0);
   return;
 }
 
@@ -65,7 +64,7 @@ void __cdecl TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout(void)
 void * __cdecl TDeluxeText::CreateTDeluxeTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TStaticText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,23 +74,23 @@ void * __cdecl TDeluxeText::CreateTDeluxeTextInstance(void)
   puStack_8 = &LAB_00638f5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa4);
+  this = (TStaticText *)AllocateWithFallbackHandler(0xa4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x26) = 0;
-    *(undefined1 *)((int)puVar1 + 0x99) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
-    *(undefined1 *)(puVar1 + 0x27) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
-    puVar1[0x26] = 0;
-    *puVar1 = &g_vtblTMapKey;
-    *(undefined1 *)(puVar1 + 0x28) = 0;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    this[0x98] = (TStaticText)0x0;
+    this[0x99] = (TStaticText)0x0;
+    this[0x9a] = (TStaticText)0x0;
+    this[0x9b] = (TStaticText)0x0;
+    this[0x9c] = (TStaticText)0x0;
+    this[0x9d] = (TStaticText)0x0;
+    this[0x9e] = (TStaticText)0x0;
+    this[0x9f] = (TStaticText)0x0;
+    *(undefined4 *)(this + 0x98) = 0;
+    *(undefined ***)this = &g_vtblTMapKey;
+    this[0xa0] = (TStaticText)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -114,22 +113,21 @@ void * __cdecl TDeluxeText::GetTDeluxeTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5FF0
 // GHIDRA_NAME TDeluxeText::ConstructTDeluxeTextBaseState
-// GHIDRA_PROTO void __cdecl ConstructTDeluxeTextBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTDeluxeTextBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies style rect data to TDeluxeText state and refreshes layout via vtbl +0x1D8.
 // GHIDRA_COMMENT_END
 
 /* Applies style rect data to TDeluxeText state and refreshes layout via vtbl +0x1D8. */
 
-void __cdecl TDeluxeText::ConstructTDeluxeTextBaseState(void)
+void __thiscall TDeluxeText::ConstructTDeluxeTextBaseState(TDeluxeText *this)
 
 {
-  TTEView *in_ECX;
   int in_stack_00000014;
   
-  TTEView::thunk_InitializeTEViewTextEntryBoundsAndMetrics(in_ECX);
-  *(undefined4 *)(in_ECX + 0x98) = *(undefined4 *)(in_stack_00000014 + 6);
-  (**(code **)(*(int *)in_ECX + 0x1d8))(0);
+  TTEView::thunk_InitializeTEViewTextEntryBoundsAndMetrics((TTEView *)this);
+  this[0x26].pVtable = *(void **)(in_stack_00000014 + 6);
+  (**(code **)((int)this->pVtable + 0x1d8))(0);
   return;
 }
 

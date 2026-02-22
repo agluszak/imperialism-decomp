@@ -43,17 +43,18 @@ TUnitToolbarCluster::thunk_DestructTUnitToolbarClusterAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405FF6
 // GHIDRA_NAME TUnitToolbarCluster::thunk_Cluster_GameStateEventHint_00586090
-// GHIDRA_PROTO void __cdecl thunk_Cluster_GameStateEventHint_00586090(void)
+// GHIDRA_PROTO void __thiscall thunk_Cluster_GameStateEventHint_00586090(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to Cluster_GameStateEventHint_00586090
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to Cluster_GameStateEventHint_00586090 */
 
-void __cdecl TUnitToolbarCluster::thunk_Cluster_GameStateEventHint_00586090(void)
+void __thiscall
+TUnitToolbarCluster::thunk_Cluster_GameStateEventHint_00586090(TUnitToolbarCluster *this)
 
 {
-  WrapperFor_thunk_DispatchPanelControlEvent_At00586090();
+  WrapperFor_thunk_DispatchPanelControlEvent_At00586090(this);
   return;
 }
 
@@ -133,7 +134,7 @@ TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586090
 // GHIDRA_NAME TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
-// GHIDRA_PROTO void __cdecl WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=49, call_insns=5, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -141,20 +142,21 @@ TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
 /* [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=49,
    call_insns=5, internal_calls=1, unique_internal=1 */
 
-void __cdecl TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
+void __thiscall
+TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
+          (TUnitToolbarCluster *this)
 
 {
   int *piVar1;
-  int *in_ECX;
   int in_stack_00000004;
   void *in_stack_00000008;
   int in_stack_0000000c;
   
-  thunk_DispatchPanelControlEvent(in_ECX,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   if ((((*(int *)((int)g_pApplicationUiRootController + 0x24) == 1) && (in_stack_00000004 == 0x68))
       || (in_stack_00000004 == 0x67)) || ((in_stack_00000004 == 10 || (in_stack_00000004 == 0xc))))
   {
-    piVar1 = (int *)(**(code **)(*in_ECX + 0x58))();
+    piVar1 = (int *)(**(code **)(*(int *)this + 0x58))();
     piVar1 = (int *)(**(code **)(*piVar1 + 0x94))(0x6d61696e);
     if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */

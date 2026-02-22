@@ -22,6 +22,49 @@ TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407838
+// GHIDRA_NAME TIncludeView::thunk_ConstructTurnEventUiEntryBase
+// GHIDRA_PROTO void __thiscall thunk_ConstructTurnEventUiEntryBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnEventUiEntryBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTurnEventUiEntryBase */
+
+void __thiscall TIncludeView::thunk_ConstructTurnEventUiEntryBase(TIncludeView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  int iStack_14;
+  TIncludeView *pTStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ed5b;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pTStack_10 = this;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
+  uStack_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  *(undefined4 *)(this + 100) = 0;
+  *(undefined4 *)(this + 0x68) = 0;
+  uStack_4._0_1_ = 1;
+  *(undefined ***)this = &g_vtblTIncludeView;
+  *(undefined2 *)(this + 0x60) = 0xffff;
+  ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+  uStack_4._0_1_ = 2;
+  StringShared__AssignFromPtr(this + 0x6c,&iStack_14);
+  uStack_4 = CONCAT31(uStack_4._1_3_,1);
+  ReleaseSharedStringRefIfNotEmpty();
+  *(undefined2 *)(this + 0x70) = 1;
+  *(undefined4 *)(this + 4) = 0;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407A04
 // GHIDRA_NAME TIncludeView::thunk_GetTIncludeViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTIncludeViewClassNamePointer(void)
@@ -76,7 +119,7 @@ void * __cdecl TIncludeView::GetTIncludeViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CD70
 // GHIDRA_NAME TIncludeView::ConstructTurnEventUiEntryBase
-// GHIDRA_PROTO void __cdecl ConstructTurnEventUiEntryBase(void)
+// GHIDRA_PROTO void __thiscall ConstructTurnEventUiEntryBase(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and label storage for dispatcher-created event packets.
 // GHIDRA_COMMENT_END
@@ -84,12 +127,12 @@ void * __cdecl TIncludeView::GetTIncludeViewClassNamePointer(void)
 /* Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and
    label storage for dispatcher-created event packets. */
 
-void __cdecl TIncludeView::ConstructTurnEventUiEntryBase(void)
+void __thiscall TIncludeView::ConstructTurnEventUiEntryBase(TIncludeView *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
-  int local_14 [2];
+  int local_14;
+  TIncludeView *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -98,21 +141,22 @@ void __cdecl TIncludeView::ConstructTurnEventUiEntryBase(void)
   puStack_8 = &LAB_0062ed5b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructUiResourceEntryBase();
+  local_10 = this;
+  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  in_ECX[0x19] = 0;
-  in_ECX[0x1a] = 0;
+  *(undefined4 *)(this + 100) = 0;
+  *(undefined4 *)(this + 0x68) = 0;
   local_4._0_1_ = 1;
-  *in_ECX = &g_vtblTIncludeView;
-  *(undefined2 *)(in_ECX + 0x18) = 0xffff;
+  *(undefined ***)this = &g_vtblTIncludeView;
+  *(undefined2 *)(this + 0x60) = 0xffff;
   ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
   local_4._0_1_ = 2;
-  StringShared__AssignFromPtr(in_ECX + 0x1b,local_14);
+  StringShared__AssignFromPtr(this + 0x6c,&local_14);
   local_4 = CONCAT31(local_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  *(undefined2 *)(in_ECX + 0x1c) = 1;
-  in_ECX[1] = 0;
+  *(undefined2 *)(this + 0x70) = 1;
+  *(undefined4 *)(this + 4) = 0;
   *unaff_FS_OFFSET = local_c;
   return;
 }

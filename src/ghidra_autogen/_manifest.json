@@ -3,8 +3,10 @@
   "function_count": 12230,
   "generated_cpp_files": [
     "CDC.cpp",
+    "CDocTemplate.cpp",
     "CDocument.cpp",
     "CFileException.cpp",
+    "CFrameWnd.cpp",
     "CListCtrl.cpp",
     "CObArray.cpp",
     "CProcessLocalObject.cpp",
@@ -454,8 +456,7 @@
     "global_part030.cpp",
     "global_part031.cpp",
     "global_part032.cpp",
-    "global_part033.cpp",
-    "global_part034.cpp"
+    "global_part033.cpp"
   ],
   "module": "IMPERIALISM",
   "program": "Imperialism.exe"

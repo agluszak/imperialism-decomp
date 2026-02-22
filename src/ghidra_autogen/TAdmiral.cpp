@@ -25,6 +25,24 @@ void __thiscall TAdmiral::thunk_DestructTAdmiral(TAdmiral *this)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00406AE1
+// GHIDRA_NAME TAdmiral::thunk_DestructTAdmiralAndFreeIfOwned
+// GHIDRA_PROTO void * __thiscall thunk_DestructTAdmiralAndFreeIfOwned(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestructTAdmiralAndFreeIfOwned
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestructTAdmiralAndFreeIfOwned */
+
+void * __thiscall TAdmiral::thunk_DestructTAdmiralAndFreeIfOwned(TAdmiral *this)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = DestructTAdmiralAndFreeIfOwned(this);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408576
 // GHIDRA_NAME TAdmiral::thunk_GetTAdmiralClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTAdmiralClassNamePointer(void)
@@ -41,6 +59,59 @@ void * __cdecl TAdmiral::thunk_GetTAdmiralClassNamePointer(void)
   
   pvVar1 = GetTAdmiralClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004093DB
+// GHIDRA_NAME TAdmiral::thunk_ConstructAndLinkNavySecondaryOrderNode
+// GHIDRA_PROTO void * __thiscall thunk_ConstructAndLinkNavySecondaryOrderNode(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructAndLinkNavySecondaryOrderNode
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructAndLinkNavySecondaryOrderNode */
+
+void * __thiscall TAdmiral::thunk_ConstructAndLinkNavySecondaryOrderNode(TAdmiral *this)
+
+{
+  TAdmiral *pTVar1;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined2 in_stack_00000004;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  puStack_8 = &LAB_00635133;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(undefined ***)this = &g_vtblRefCountedObjectBase;
+  uStack_4 = 0;
+  *(undefined2 *)(this + 4) = in_stack_00000004;
+  *(undefined4 *)(this + 8) = 0;
+  InitializeSharedStringRefFromEmpty();
+  *(undefined2 *)(this + 0x10) = 0;
+  *(void **)(this + 0x14) = g_pNavySecondaryOrderListHead;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined ***)this = &g_vtblTAdmiral;
+  uStack_4 = CONCAT31(uStack_4._1_3_,1);
+  g_pNavySecondaryOrderListHead = this;
+  if (*(int *)(this + 0x14) != 0) {
+    *(TAdmiral **)(*(int *)(this + 0x14) + 0x18) = this;
+  }
+  if (*(short *)(this + 4) != -1) {
+    thunk_GenerateMappedFlavorTextByNationSlotField0C();
+    for (pTVar1 = g_pNavySecondaryOrderListHead; pTVar1 != (TAdmiral *)0x0;
+        pTVar1 = *(TAdmiral **)(pTVar1 + 0x14)) {
+      if ((pTVar1 != this) &&
+         (iVar2 = CompareAnsiStringsWithMbcsAwareness
+                            (*(undefined4 *)(pTVar1 + 0xc),*(undefined4 *)(this + 0xc)), iVar2 == 0)
+         ) {
+        thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+      }
+    }
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005512D0

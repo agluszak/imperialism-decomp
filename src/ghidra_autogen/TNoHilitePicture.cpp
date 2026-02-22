@@ -21,6 +21,25 @@ void * __cdecl TNoHilitePicture::thunk_GetTNoHilitePictureClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403328
+// GHIDRA_NAME TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8
+// GHIDRA_PROTO void __thiscall thunk_ConstructPictureResourceEntryType606E8(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureResourceEntryType606E8
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructPictureResourceEntryType606E8 */
+
+void __thiscall
+TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  *(undefined ***)this = &g_vtblTNoHilitePicture;
+  this[0x90] = (TNoHilitePicture)0x0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408C60
 // GHIDRA_NAME TNoHilitePicture::thunk_DestructTNoHilitePictureAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTNoHilitePictureAndMaybeFree(byte freeSelfFlag)
@@ -93,7 +112,7 @@ void * __cdecl TNoHilitePicture::GetTNoHilitePictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572B30
 // GHIDRA_NAME TNoHilitePicture::ConstructPictureResourceEntryType606E8
-// GHIDRA_PROTO void __cdecl ConstructPictureResourceEntryType606E8(void)
+// GHIDRA_PROTO void __thiscall ConstructPictureResourceEntryType606E8(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture-entry constructor (vtable PTR_LAB_006606e8) over ConstructPictureResourceEntryBase.
 // GHIDRA_COMMENT Clears extended state byte +0x90.
@@ -103,14 +122,12 @@ void * __cdecl TNoHilitePicture::GetTNoHilitePictureClassNamePointer(void)
    ConstructPictureResourceEntryBase.
    Clears extended state byte +0x90. */
 
-void __cdecl TNoHilitePicture::ConstructPictureResourceEntryType606E8(void)
+void __thiscall TNoHilitePicture::ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
 
 {
-  undefined4 *in_ECX;
-  
   thunk_ConstructPictureResourceEntryBase();
-  *in_ECX = &g_vtblTNoHilitePicture;
-  *(undefined1 *)(in_ECX + 0x24) = 0;
+  *(undefined ***)this = &g_vtblTNoHilitePicture;
+  this[0x90] = (TNoHilitePicture)0x0;
   return;
 }
 

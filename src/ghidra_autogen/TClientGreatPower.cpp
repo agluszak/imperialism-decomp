@@ -23,12 +23,11 @@ void * __cdecl TClientGreatPower::thunk_GetTClientGreatPowerClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403AC1
 // GHIDRA_NAME TClientGreatPower::thunk_DestructTClientGreatPower
-// GHIDRA_PROTO void __cdecl thunk_DestructTClientGreatPower(void)
+// GHIDRA_PROTO void __thiscall thunk_DestructTClientGreatPower(void)
 
-void __cdecl TClientGreatPower::thunk_DestructTClientGreatPower(void)
+void __thiscall TClientGreatPower::thunk_DestructTClientGreatPower(TClientGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -41,19 +40,18 @@ void __cdecl TClientGreatPower::thunk_DestructTClientGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541320
 // GHIDRA_NAME TClientGreatPower::DestructTClientGreatPower
-// GHIDRA_PROTO void __cdecl DestructTClientGreatPower(void)
+// GHIDRA_PROTO void __thiscall DestructTClientGreatPower(void)
 
-void __cdecl TClientGreatPower::DestructTClientGreatPower(void)
+void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *this)
 
 {
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -66,7 +64,7 @@ void __cdecl TClientGreatPower::DestructTClientGreatPower(void)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *in_ECX = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

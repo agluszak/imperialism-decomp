@@ -3,6 +3,30 @@
 // Program: Imperialism.exe
 // Bucket: TArmoryView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004037FB
+// GHIDRA_NAME TArmoryView::thunk_DestructArmoryViewAndMaybeFree
+// GHIDRA_PROTO void __cdecl thunk_DestructArmoryViewAndMaybeFree(void)
+
+void __cdecl TArmoryView::thunk_DestructArmoryViewAndMaybeFree(void)
+
+{
+  DestructArmoryViewAndMaybeFree();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405853
+// GHIDRA_NAME TArmoryView::thunk_GetArmoryViewClassName
+// GHIDRA_PROTO void * __cdecl thunk_GetArmoryViewClassName(void)
+
+void * __cdecl TArmoryView::thunk_GetArmoryViewClassName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTArmoryViewClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004CECE0
 // GHIDRA_NAME TArmoryView::CreateArmoryView
 // GHIDRA_PROTO undefined CreateArmoryView()
@@ -15,10 +39,10 @@
    Allocates 0xAC bytes, runs ConstructArmoryView base/derived initialization, and returns null on
    allocation failure. */
 
-undefined4 * TArmoryView::CreateArmoryView(void)
+TNoHilitePicture * TArmoryView::CreateArmoryView(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -28,18 +52,18 @@ undefined4 * TArmoryView::CreateArmoryView(void)
   puStack_8 = &LAB_006319da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    *puVar1 = &g_vtblFamily_ArmoryViewCore_Root;
-    puVar1[0x26] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined ***)this = &g_vtblFamily_ArmoryViewCore_Root;
+    *(undefined4 *)(this + 0x98) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TNoHilitePicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CED80

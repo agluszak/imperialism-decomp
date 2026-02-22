@@ -65,7 +65,7 @@ TDropShadowNumberText::thunk_RenderDropShadowNumberTextValue(TDropShadowNumberTe
 void * __cdecl TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TEditText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,19 +75,19 @@ void * __cdecl TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
   puStack_8 = &LAB_00638eba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb0);
+  this = (TEditText *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase();
-    puVar1[0x28] = 0;
-    *(undefined1 *)(puVar1 + 0x2b) = 0;
-    *(undefined1 *)((int)puVar1 + 0xad) = 0;
-    *(undefined1 *)((int)puVar1 + 0xae) = 0;
-    *(undefined1 *)((int)puVar1 + 0xaf) = 0;
-    *puVar1 = &g_vtblTDropShadowNumberText;
-    puVar1[0x2b] = g_DropShadowNumberTextDefaultValue_6A58C8;
+  if (this != (TEditText *)0x0) {
+    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    *(undefined4 *)&this[1].field_0x4 = 0;
+    this[1].field_0x10 = 0;
+    this[1].field_0x11 = 0;
+    this[1].field_0x12 = 0;
+    this[1].field_0x13 = 0;
+    this->pVtable = &g_vtblTDropShadowNumberText;
+    *(int *)&this[1].field_0x10 = g_DropShadowNumberTextDefaultValue_6A58C8;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
@@ -116,7 +116,7 @@ void * __thiscall
 TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(TDropShadowNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase();
+  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)(this + 0xa0) = 0;
   this[0xac] = (TDropShadowNumberText)0x0;
   this[0xad] = (TDropShadowNumberText)0x0;

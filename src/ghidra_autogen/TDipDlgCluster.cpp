@@ -5,17 +5,17 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040105F
 // GHIDRA_NAME TDipDlgCluster::thunk_EvaluateSubsAndSancControlActiveState
-// GHIDRA_PROTO void __cdecl thunk_EvaluateSubsAndSancControlActiveState(void)
+// GHIDRA_PROTO void __thiscall thunk_EvaluateSubsAndSancControlActiveState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to EvaluateSubsAndSancControlActiveState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to EvaluateSubsAndSancControlActiveState */
 
-void __cdecl TDipDlgCluster::thunk_EvaluateSubsAndSancControlActiveState(void)
+void __thiscall TDipDlgCluster::thunk_EvaluateSubsAndSancControlActiveState(TDipDlgCluster *this)
 
 {
-  EvaluateSubsAndSancControlActiveState();
+  EvaluateSubsAndSancControlActiveState(this);
   return;
 }
 
@@ -130,7 +130,7 @@ TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(TDipDlgCluster *this,byte fre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584160
 // GHIDRA_NAME TDipDlgCluster::EvaluateSubsAndSancControlActiveState
-// GHIDRA_PROTO void __cdecl EvaluateSubsAndSancControlActiveState(void)
+// GHIDRA_PROTO void __thiscall EvaluateSubsAndSancControlActiveState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Queries control tags 0x73756273 and 0x73616e63 and returns whether either control reports active state.
 // GHIDRA_COMMENT_END
@@ -138,20 +138,19 @@ TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(TDipDlgCluster *this,byte fre
 /* Queries control tags 0x73756273 and 0x73616e63 and returns whether either control reports active
    state. */
 
-void __cdecl TDipDlgCluster::EvaluateSubsAndSancControlActiveState(void)
+void __thiscall TDipDlgCluster::EvaluateSubsAndSancControlActiveState(TDipDlgCluster *this)
 
 {
   char cVar1;
   int *piVar2;
   int *piVar3;
-  int in_ECX;
   
-  piVar2 = (int *)(**(code **)(**(int **)(in_ECX + 0x20) + 0x94))(0x73756273);
+  piVar2 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x73756273);
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  piVar3 = (int *)(**(code **)(**(int **)(in_ECX + 0x20) + 0x94))(0x73616e63);
+  piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x73616e63);
   cVar1 = (**(code **)(*piVar2 + 0x1cc))();
   if (cVar1 != '\0') {
     return;

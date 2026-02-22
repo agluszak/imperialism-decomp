@@ -3,6 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TNavyMgr.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004030B2
+// GHIDRA_NAME TNavyMgr::thunk_GetNavyManagerTypeName
+// GHIDRA_PROTO void * __cdecl thunk_GetNavyManagerTypeName(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetNavyManagerTypeName
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetNavyManagerTypeName */
+
+void * __cdecl TNavyMgr::thunk_GetNavyManagerTypeName(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTNavyMgrClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004068CA
+// GHIDRA_NAME TNavyMgr::thunk_DestroyNavyManager
+// GHIDRA_PROTO void __cdecl thunk_DestroyNavyManager(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyNavyManager
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestroyNavyManager */
+
+void __cdecl TNavyMgr::thunk_DestroyNavyManager(void)
+
+{
+  DestroyNavyManager();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00556570
 // GHIDRA_NAME TNavyMgr::GetTNavyMgrClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTNavyMgrClassNamePointer(void)
