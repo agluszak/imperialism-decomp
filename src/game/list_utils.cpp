@@ -6,16 +6,15 @@ public:
   unsigned int pad_04;
   unsigned int pad_08;
   unsigned int pad_0c;
-  NodeScanner *next;
+  NodeScanner* next;
 
-  unsigned int ScanLinkedListForNodeByNextPointer(void *target_node);
+  unsigned int ScanLinkedListForNodeByNextPointer(void* target_node);
 };
 
 // GHIDRA comment: traverses forward-linked nodes via +0x10 next pointer.
 // FUNCTION: IMPERIALISM 0x00607077
-unsigned int NodeScanner::ScanLinkedListForNodeByNextPointer(void *target_node)
-{
-  NodeScanner *cur = this;
+unsigned int NodeScanner::ScanLinkedListForNodeByNextPointer(void* target_node) {
+  NodeScanner* cur = this;
   while (cur != 0) {
     if (cur == target_node) {
       return 1;
@@ -27,23 +26,21 @@ unsigned int NodeScanner::ScanLinkedListForNodeByNextPointer(void *target_node)
 
 class LinkedListQueryOwner {
 public:
-  virtual NodeScanner *GetNodeScanner();
+  virtual NodeScanner* GetNodeScanner();
 
   int IsNodePresentInLinkedListByNextPointer(int target);
 };
 
 // FUNCTION: IMPERIALISM 0x00606fc0
-int LinkedListQueryOwner::IsNodePresentInLinkedListByNextPointer(int target)
-{
-  NodeScanner *scanner = GetNodeScanner();
-  return scanner->ScanLinkedListForNodeByNextPointer(reinterpret_cast<void *>(target));
+int LinkedListQueryOwner::IsNodePresentInLinkedListByNextPointer(int target) {
+  NodeScanner* scanner = GetNodeScanner();
+  return scanner->ScanLinkedListForNodeByNextPointer(reinterpret_cast<void*>(target));
 }
 
 // FUNCTION: IMPERIALISM 0x00606fd2
-int ReturnNodeIfPresentInLinkedListByNextPointer(int node, int owner)
-{
+int ReturnNodeIfPresentInLinkedListByNextPointer(int node, int owner) {
   return (owner != 0 &&
-          ((LinkedListQueryOwner *)owner)->IsNodePresentInLinkedListByNextPointer(node) != 0)
+          ((LinkedListQueryOwner*)owner)->IsNodePresentInLinkedListByNextPointer(node) != 0)
              ? owner
              : 0;
 }

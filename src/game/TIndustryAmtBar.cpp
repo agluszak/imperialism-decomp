@@ -4,33 +4,18 @@
 // GHIDRA_NAME InitializeTradeSellControlState
 // GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context; then initializes move/bar controls baseline.
-// GHIDRA_COMMENT_END
+// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
+// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589110
-TradeAmountBarLayout *__cdecl CreateTIndustryAmtBarInstance(void)
-{
-  TradeAmountBarLayout *amountBar = reinterpret_cast<TradeAmountBarLayout *>(
-      AllocateWithFallbackHandler(0x6c));
+TradeAmountBarLayout* __cdecl CreateTIndustryAmtBarInstance(void) {
+  TradeAmountBarLayout* amountBar =
+      reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void *>(kVtableTIndustryAmtBar);
+    amountBar->vftable = reinterpret_cast<void*>(kVtableTIndustryAmtBar);
     amountBar->rangeOrMaxValue = 0;
     amountBar->stepOrCurrentValue = 0;
     amountBar->auxValueA = 0;
@@ -39,45 +24,16 @@ TradeAmountBarLayout *__cdecl CreateTIndustryAmtBarInstance(void)
   return amountBar;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x005891B0
-void *__cdecl GetTIndustryAmtBarClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTIndustryAmtBar);
+void* __cdecl GetTIndustryAmtBarClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTIndustryAmtBar);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x005891D0
-TradeAmountBarLayout *__fastcall ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout *amountBar)
-{
+TradeAmountBarLayout* __fastcall
+ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout* amountBar) {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-  amountBar->vftable = reinterpret_cast<void *>(kVtableTIndustryAmtBar);
+  amountBar->vftable = reinterpret_cast<void*>(kVtableTIndustryAmtBar);
   amountBar->rangeOrMaxValue = 0;
   amountBar->stepOrCurrentValue = 0;
   amountBar->auxValueA = 0;
@@ -85,24 +41,10 @@ TradeAmountBarLayout *__fastcall ConstructTIndustryAmtBarBaseState(TradeAmountBa
   return amountBar;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589210
-TradeAmountBarLayout *__fastcall DestructTIndustryAmtBarAndMaybeFree(
-    TradeAmountBarLayout *amountBar, int unusedEdx, unsigned char freeSelfFlag)
-{
+TradeAmountBarLayout* __fastcall
+DestructTIndustryAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar, int unusedEdx,
+                                    unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {
@@ -111,23 +53,9 @@ TradeAmountBarLayout *__fastcall DestructTIndustryAmtBarAndMaybeFree(
   return amountBar;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589260
-void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarState *amountBar)
-{
-  NationCityTradeState *cityState = GetNationCityStateBySlot(QueryActiveNationId());
+void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarState* amountBar) {
+  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   while (mappedTag != amountBar->ownerPanelContext->summaryTag) {
@@ -141,37 +69,26 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
   amountBar->cachedProductionAt64 = (short)productionValue;
 
   short stepValue = amountBar->selectedMetricRecord->QueryStepValue();
-  amountBar->cachedRatioAt62 = (short)((stepValue * amountBar->barRangeRaw) / amountBar->cachedProductionAt64);
+  amountBar->cachedRatioAt62 =
+      (short)((stepValue * amountBar->barRangeRaw) / amountBar->cachedProductionAt64);
 
   amountBar->cachedStyleAt66 = 0x3a;
-  amountBar->cachedRangeAt60 = (short)(
-      (amountBar->selectedMetricRecord->controlValue * amountBar->barRangeRaw) /
-      amountBar->cachedProductionAt64);
+  amountBar->cachedRangeAt60 =
+      (short)((amountBar->selectedMetricRecord->controlValue * amountBar->barRangeRaw) /
+              amountBar->cachedProductionAt64);
 
   thunk_NoOpUiLifecycleHook();
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589DA0
-void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
-    int commandId, void *eventArg, int eventExtra)
-{
-  void *owner = this;
+void TradeMoveStepCluster::HandleTradeMovePageStepCommand(int commandId, void* eventArg,
+                                                          int eventExtra) {
+  void* owner = this;
 
   int relative = commandId - 100;
   if (relative != 0) {
     if (relative == 1) {
-      TradeControl *moveControl = ResolveOwnerControl(owner, kControlTagMove);
+      TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
       if (moveControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineMovePageMinus);
         return;
@@ -180,12 +97,12 @@ void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
       CallApplyMoveValueSlot1D0(owner, (int)moveValue - (int)field_8e);
       return;
     }
-    reinterpret_cast<void (*)(TradeMoveStepCluster *, int, void *, int)>(
+    reinterpret_cast<void (*)(TradeMoveStepCluster*, int, void*, int)>(
         ::thunk_HandleTradeMoveControlAdjustment)(this, commandId, eventArg, eventExtra);
     return;
   }
 
-  TradeControl *moveControl = ResolveOwnerControl(owner, kControlTagMove);
+  TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMovePagePlus);
     return;

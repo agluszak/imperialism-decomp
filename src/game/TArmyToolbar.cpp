@@ -15,55 +15,47 @@ char g_vtblTArmyToolbar;
 char g_pClassDescTArmyToolbar;
 
 struct ArmyToolbarState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x88];
 };
 
 class RuntimeBridge {
 public:
-  static __inline void ConstructTUberClusterBaseState(TradeMoveStepCluster *self)
-  {
-    reinterpret_cast<void (__fastcall *)(TradeMoveStepCluster *)>(
-        ::ConstructTUberClusterBaseState)(self);
+  static __inline void ConstructTUberClusterBaseState(TradeMoveStepCluster* self) {
+    reinterpret_cast<void(__fastcall*)(TradeMoveStepCluster*)>(::ConstructTUberClusterBaseState)(
+        self);
   }
 };
 
-}  // namespace
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0058DE40
-ArmyToolbarState *__cdecl CreateTArmyToolbarInstance(void)
-{
-  ArmyToolbarState *toolbar =
-      reinterpret_cast<ArmyToolbarState *>(AllocateWithFallbackHandler(0x8c));
+ArmyToolbarState* __cdecl CreateTArmyToolbarInstance(void) {
+  ArmyToolbarState* toolbar =
+      reinterpret_cast<ArmyToolbarState*>(AllocateWithFallbackHandler(0x8c));
   if (toolbar != 0) {
-    RuntimeBridge::ConstructTUberClusterBaseState(
-        reinterpret_cast<TradeMoveStepCluster *>(toolbar));
-    toolbar->vftable = reinterpret_cast<void *>(&g_vtblTArmyToolbar);
+    RuntimeBridge::ConstructTUberClusterBaseState(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
+    toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   }
   return toolbar;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058DEC0
-void *__cdecl GetTArmyToolbarClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(&g_pClassDescTArmyToolbar);
+void* __cdecl GetTArmyToolbarClassNamePointer(void) {
+  return reinterpret_cast<void*>(&g_pClassDescTArmyToolbar);
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058DEE0
-ArmyToolbarState *__fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState *toolbar)
-{
-  RuntimeBridge::ConstructTUberClusterBaseState(reinterpret_cast<TradeMoveStepCluster *>(toolbar));
-  toolbar->vftable = reinterpret_cast<void *>(&g_vtblTArmyToolbar);
+ArmyToolbarState* __fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState* toolbar) {
+  RuntimeBridge::ConstructTUberClusterBaseState(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
+  toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   return toolbar;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058DF10
-ArmyToolbarState *__fastcall DestructTArmyToolbarAndMaybeFree(
-    ArmyToolbarState *toolbar, int unusedEdx, unsigned char freeSelfFlag)
-{
+ArmyToolbarState* __fastcall DestructTArmyToolbarAndMaybeFree(ArmyToolbarState* toolbar,
+                                                              int unusedEdx,
+                                                              unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {

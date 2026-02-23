@@ -4,30 +4,18 @@
 // GHIDRA_NAME InitializeTradeSellControlState
 // GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context; then initializes move/bar controls baseline.
-// GHIDRA_COMMENT_END
+// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
+// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589ED0
-IndustryAmtBarState *__cdecl CreateTRailAmtBarInstance(void)
-{
-  IndustryAmtBarState *amountBar = reinterpret_cast<IndustryAmtBarState *>(
-      AllocateWithFallbackHandler(0x6c));
+IndustryAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
+  IndustryAmtBarState* amountBar =
+      reinterpret_cast<IndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void *>(kVtableTRailAmtBar);
+    amountBar->vftable = reinterpret_cast<void*>(kVtableTRailAmtBar);
     amountBar->cachedRangeAt60 = 0;
     amountBar->cachedRatioAt62 = 0;
     amountBar->cachedProductionAt64 = 0;
@@ -36,39 +24,15 @@ IndustryAmtBarState *__cdecl CreateTRailAmtBarInstance(void)
   return amountBar;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589F70
-void *__cdecl GetTRailAmtBarClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTRailAmtBar);
+void* __cdecl GetTRailAmtBarClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTRailAmtBar);
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589F90
-IndustryAmtBarState *IndustryAmtBarState::ConstructTRailAmtBarBaseState()
-{
+IndustryAmtBarState* IndustryAmtBarState::ConstructTRailAmtBarBaseState() {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
-  vftable = reinterpret_cast<void *>(kVtableTRailAmtBar);
+  vftable = reinterpret_cast<void*>(kVtableTRailAmtBar);
   cachedRangeAt60 = 0;
   cachedRatioAt62 = 0;
   cachedProductionAt64 = 0;
@@ -76,20 +40,9 @@ IndustryAmtBarState *IndustryAmtBarState::ConstructTRailAmtBarBaseState()
   return this;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589FD0
-IndustryAmtBarState *IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag)
-{
+IndustryAmtBarState*
+IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)this);
@@ -97,21 +50,9 @@ IndustryAmtBarState *IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsign
   return this;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x0058A020
-void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues()
-{
-  NationCityTradeState *cityState = GetNationCityStateBySlot(QueryActiveNationId());
+void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues() {
+  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
   int summaryTag = ownerPanelContext->summaryTag;
 
   short recordIndex = 0;
@@ -137,10 +78,11 @@ void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues()
 
   short productionOrCapValue = 0;
   if (recordIndex == 0x33 || recordIndex == 7) {
-    CityTradeScenarioDescriptor *scenario = cityState->scenarioTradeDescriptor;
-    CityTradeProductionSlots *slots = scenario->productionSlots;
-    productionOrCapValue = (short)(
-        ((slots->valueAt8 * 2 + slots->valueAt6) * 2 + scenario->extraAt1E + slots->valueAt4) / 2);
+    CityTradeScenarioDescriptor* scenario = cityState->scenarioTradeDescriptor;
+    CityTradeProductionSlots* slots = scenario->productionSlots;
+    productionOrCapValue = (short)(((slots->valueAt8 * 2 + slots->valueAt6) * 2 +
+                                    scenario->extraAt1E + slots->valueAt4) /
+                                   2);
   } else {
     productionOrCapValue = selectedMetricRecord->QueryStepValue();
   }
@@ -161,4 +103,3 @@ void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues()
   cachedStyleAt66 = 0x3a;
   thunk_NoOpUiLifecycleHook();
 }
-

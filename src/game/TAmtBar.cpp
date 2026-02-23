@@ -4,30 +4,14 @@
 // GHIDRA_NAME InitializeTradeSellControlState
 // GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context; then initializes move/bar controls baseline.
-// GHIDRA_COMMENT_END
+// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
+// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00588610
-void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughArg)
-{
-  ((void(__cdecl *)(int))thunk_NoOpUiLifecycleHook)(passthroughArg);
+void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughArg) {
+  ((void(__cdecl*)(int))thunk_NoOpUiLifecycleHook)(passthroughArg);
 }
 
 // GHIDRA_NAME OrphanCallChain_C2_I15_00588630
@@ -37,28 +21,11 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00588FF0
-void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
-{
-  void *owner = this;
+void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId) {
+  void* owner = this;
   if (commandId == 100) {
-    TradeControl *moveControl =
-        ResolveOwnerControl(owner, kControlTagMove);
+    TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
     if (moveControl == 0) {
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
     }
@@ -71,8 +38,7 @@ void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
     return;
   }
 
-  TradeControl *moveControl =
-      ResolveOwnerControl(owner, kControlTagMove);
+  TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
   if (moveControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
   }

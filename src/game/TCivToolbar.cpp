@@ -13,53 +13,44 @@ char g_vtblTCivToolbar;
 char g_pClassDescTCivToolbar;
 
 struct CivToolbarState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x88];
 };
 
 class RuntimeBridge {
 public:
-  static __inline void ConstructUiResourceEntryType4B0C0(void *self)
-  {
-    reinterpret_cast<void (__fastcall *)(void *)>(::thunk_ConstructUiResourceEntryType4B0C0)(self);
+  static __inline void ConstructUiResourceEntryType4B0C0(void* self) {
+    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiResourceEntryType4B0C0)(self);
   }
 };
 
-}  // namespace
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0058EA00
-CivToolbarState *__cdecl CreateTCivToolbarInstance(void)
-{
-  CivToolbarState *toolbar =
-      reinterpret_cast<CivToolbarState *>(AllocateWithFallbackHandler(0x8c));
+CivToolbarState* __cdecl CreateTCivToolbarInstance(void) {
+  CivToolbarState* toolbar = reinterpret_cast<CivToolbarState*>(AllocateWithFallbackHandler(0x8c));
   if (toolbar != 0) {
     RuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
-    toolbar->vftable = reinterpret_cast<void *>(&g_vtblTCivToolbar);
+    toolbar->vftable = reinterpret_cast<void*>(&g_vtblTCivToolbar);
   }
   return toolbar;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058EA80
-void *__cdecl GetTCivToolbarClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(&g_pClassDescTCivToolbar);
+void* __cdecl GetTCivToolbarClassNamePointer(void) {
+  return reinterpret_cast<void*>(&g_pClassDescTCivToolbar);
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058EAA0
-CivToolbarState *__fastcall ConstructTCivToolbarBaseState(CivToolbarState *toolbar)
-{
+CivToolbarState* __fastcall ConstructTCivToolbarBaseState(CivToolbarState* toolbar) {
   RuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
-  toolbar->vftable = reinterpret_cast<void *>(&g_vtblTCivToolbar);
+  toolbar->vftable = reinterpret_cast<void*>(&g_vtblTCivToolbar);
   return toolbar;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058EAD0
-CivToolbarState *__fastcall DestructTCivToolbarAndMaybeFree(
-    CivToolbarState *toolbar, int unusedEdx, unsigned char freeSelfFlag)
-{
+CivToolbarState* __fastcall DestructTCivToolbarAndMaybeFree(CivToolbarState* toolbar, int unusedEdx,
+                                                            unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {

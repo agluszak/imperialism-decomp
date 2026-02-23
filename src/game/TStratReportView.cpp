@@ -13,53 +13,46 @@ char g_vtblTStratReportView;
 char g_pClassDescTStratReportView;
 
 struct StratReportViewState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x60];
 };
 
 class RuntimeBridge {
 public:
-  static __inline void ConstructUiResourceEntryBase(void *self)
-  {
-    reinterpret_cast<void (__fastcall *)(void *)>(::thunk_ConstructUiResourceEntryBase)(self);
+  static __inline void ConstructUiResourceEntryBase(void* self) {
+    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiResourceEntryBase)(self);
   }
 };
 
-}  // namespace
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0058E330
-StratReportViewState *__cdecl CreateTStratReportViewInstance(void)
-{
-  StratReportViewState *view = reinterpret_cast<StratReportViewState *>(
-      AllocateWithFallbackHandler(100));
+StratReportViewState* __cdecl CreateTStratReportViewInstance(void) {
+  StratReportViewState* view =
+      reinterpret_cast<StratReportViewState*>(AllocateWithFallbackHandler(100));
   if (view != 0) {
     RuntimeBridge::ConstructUiResourceEntryBase(view);
-    view->vftable = reinterpret_cast<void *>(&g_vtblTStratReportView);
+    view->vftable = reinterpret_cast<void*>(&g_vtblTStratReportView);
   }
   return view;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058E3A0
-void *__cdecl GetTStratReportViewClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(&g_pClassDescTStratReportView);
+void* __cdecl GetTStratReportViewClassNamePointer(void) {
+  return reinterpret_cast<void*>(&g_pClassDescTStratReportView);
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058E3C0
-StratReportViewState *__fastcall ConstructTStratReportViewBaseState(StratReportViewState *view)
-{
+StratReportViewState* __fastcall ConstructTStratReportViewBaseState(StratReportViewState* view) {
   RuntimeBridge::ConstructUiResourceEntryBase(view);
-  view->vftable = reinterpret_cast<void *>(&g_vtblTStratReportView);
+  view->vftable = reinterpret_cast<void*>(&g_vtblTStratReportView);
   return view;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0058E3F0
-StratReportViewState *__fastcall DestructTStratReportViewAndMaybeFree(
-    StratReportViewState *view, int unusedEdx, unsigned char freeSelfFlag)
-{
+StratReportViewState* __fastcall DestructTStratReportViewAndMaybeFree(StratReportViewState* view,
+                                                                      int unusedEdx,
+                                                                      unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {
