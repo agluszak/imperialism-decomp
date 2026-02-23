@@ -17,6 +17,11 @@
 2. `src/ghidra_autogen/` and `include/ghidra_autogen/` are regenerated snapshots from Ghidra.
 3. Manual files in `src/game/` should preserve exported naming unless there is an explicit RE-driven reason not to.
 
+## Code Shape Policy
+
+1. Do not use inline assembly (`__asm`, `_asm`, `asm(...)`) in project source files.
+2. Express reconstructed behavior in normal C/C++ code (typed structs/classes, virtual calls, helpers) so code remains maintainable and portable across toolchain experiments.
+
 ## Sync Rule
 
 After meaningful renames in Ghidra, run export sync and then continue implementation:

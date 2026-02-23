@@ -23,6 +23,7 @@ const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 const int kControlTagSell = 0x53656c6c;
 const int kControlTagCard = 0x63617264;
 const int kControlTagOffr = 0x6f666672;
+const int kAssertLineBidSecondary = 0x907;
 const int kAssertLineBidActionable = 0x8de;
 const int kAssertLineOfferActionable = 0x8f2;
 
@@ -41,12 +42,16 @@ struct TradeControl {
 
   __inline int QueryValue();
   __inline char IsActionable();
-  __inline void SetEnabled(int enabled, int unknownFlag);
+  __inline void SetEnabledSingle(int enabled);
+  __inline void SetEnabledPair(int enabled, int unknownFlag);
   __inline void SetBitmap(int bitmapIdValue, int unknownFlag);
   __inline void CaptureLayout(int *buffer, int modeFlag);
+  __inline void CaptureLayoutPreset11_14();
   __inline void Refresh();
   __inline void UpdateAfterBitmapChange(int unknownFlag);
 };
+
+struct UiRuntimeContext;
 
 struct TradeScreenContext {
   void *vftable;
@@ -58,121 +63,277 @@ struct TradeScreenContext {
   void QueryTradeSellControlQuantity();
   char IsTradeBidControlActionable();
   char IsTradeOfferControlActionable();
+  void SetTradeBidSecondaryBitmapState();
 };
 
 struct UiRuntimeContext {
   void *vftable;
 };
 
-typedef TradeControl *(*ResolveControlByTagFn)(TradeScreenContext *self, int controlTag);
-typedef int (*QueryControlValueFn)(TradeControl *self);
-typedef short (*GetUiScreenModeFn)(UiRuntimeContext *self);
-typedef void (*SetControlEnabledFn)(TradeControl *self, int enabled, int unknownFlag);
-typedef void (*SetControlBitmapFn)(TradeControl *self, int bitmapId, int unknownFlag);
-typedef void (*CaptureControlLayoutFn)(TradeControl *self, int *buffer, int modeFlag);
-typedef void (*RefreshControlFn)(TradeControl *self);
-typedef void (*UpdateControlAfterBitmapChangeFn)(TradeControl *self, int unknownFlag);
+class TradeControlVirtualShape {
+public:
+  char pad_00[0x80];
+  short bitmapId;
 
-static __inline ResolveControlByTagFn GetResolveControlByTagFn(TradeScreenContext *context)
+  virtual void CtrlSlot00(void) = 0;
+  virtual void CtrlSlot01(void) = 0;
+  virtual void CtrlSlot02(void) = 0;
+  virtual void CtrlSlot03(void) = 0;
+  virtual void CtrlSlot04(void) = 0;
+  virtual void CtrlSlot05(void) = 0;
+  virtual void CtrlSlot06(void) = 0;
+  virtual void CtrlSlot07(void) = 0;
+  virtual void CtrlSlot08(void) = 0;
+  virtual void CtrlSlot09(void) = 0;
+  virtual void CtrlSlot10(void) = 0;
+  virtual void CtrlSlot11(void) = 0;
+  virtual void CtrlSlot12(void) = 0;
+  virtual void CtrlSlot13(void) = 0;
+  virtual void CtrlSlot14(void) = 0;
+  virtual void CtrlSlot15(void) = 0;
+  virtual void CtrlSlot16(void) = 0;
+  virtual void CtrlSlot17(void) = 0;
+  virtual void CtrlSlot18(void) = 0;
+  virtual void CtrlSlot19(void) = 0;
+  virtual void CtrlSlot20(void) = 0;
+  virtual void CtrlSlot21(void) = 0;
+  virtual void CtrlSlot22(void) = 0;
+  virtual void CtrlSlot23(void) = 0;
+  virtual void CtrlSlot24(void) = 0;
+  virtual void CtrlSlot25(void) = 0;
+  virtual void CtrlSlot26(void) = 0;
+  virtual void CtrlSlot27(void) = 0;
+  virtual void CtrlSlot28(void) = 0;
+  virtual void CtrlSlot29(void) = 0;
+  virtual void CtrlSlot30(void) = 0;
+  virtual void CtrlSlot31(void) = 0;
+  virtual void CtrlSlot32(void) = 0;
+  virtual void CtrlSlot33(void) = 0;
+  virtual void CtrlSlot34(void) = 0;
+  virtual void CtrlSlot35(void) = 0;
+  virtual void CtrlSlot36(void) = 0;
+  virtual void CtrlSlot37(void) = 0;
+  virtual void CtrlSlot38(void) = 0;
+  virtual void CtrlSlot39(void) = 0;
+  virtual void CtrlSlot40(void) = 0;
+  virtual void SetEnabledSlotA4(int enabled) = 0;
+  virtual void CtrlSlot42(void) = 0;
+  virtual void CtrlSlot43(void) = 0;
+  virtual void CtrlSlot44(void) = 0;
+  virtual void CtrlSlot45(void) = 0;
+  virtual void CtrlSlot46(void) = 0;
+  virtual void CtrlSlot47(void) = 0;
+  virtual void CtrlSlot48(void) = 0;
+  virtual void CtrlSlot49(void) = 0;
+  virtual void CtrlSlot50(void) = 0;
+  virtual void CtrlSlot51(void) = 0;
+  virtual void CtrlSlot52(void) = 0;
+  virtual void CtrlSlot53(void) = 0;
+  virtual void CtrlSlot54(void) = 0;
+  virtual void CtrlSlot55(void) = 0;
+  virtual void CtrlSlot56(void) = 0;
+  virtual void CtrlSlot57(void) = 0;
+  virtual void CtrlSlot58(void) = 0;
+  virtual char IsActionableSlotEC(void) = 0;
+  virtual void CtrlSlot60(void) = 0;
+  virtual void CaptureLayoutSlotF4(int *buffer, int modeFlag) = 0;
+  virtual void RefreshSlotF8(void) = 0;
+  virtual void CtrlSlot63(void) = 0;
+  virtual void CtrlSlot64(void) = 0;
+  virtual void CtrlSlot65(void) = 0;
+  virtual void CtrlSlot66(void) = 0;
+  virtual void CtrlSlot67(void) = 0;
+  virtual void CtrlSlot68(void) = 0;
+  virtual void UpdateAfterBitmapChangeSlot114(int unknownFlag) = 0;
+  virtual void CtrlSlot70(void) = 0;
+  virtual void CtrlSlot71(void) = 0;
+  virtual void CtrlSlot72(void) = 0;
+  virtual void CtrlSlot73(void) = 0;
+  virtual void CtrlSlot74(void) = 0;
+  virtual void CtrlSlot75(void) = 0;
+  virtual void CtrlSlot76(void) = 0;
+  virtual void CtrlSlot77(void) = 0;
+  virtual void CtrlSlot78(void) = 0;
+  virtual void CtrlSlot79(void) = 0;
+  virtual void CtrlSlot80(void) = 0;
+  virtual void CtrlSlot81(void) = 0;
+  virtual void CtrlSlot82(void) = 0;
+  virtual void CtrlSlot83(void) = 0;
+  virtual void CtrlSlot84(void) = 0;
+  virtual void CtrlSlot85(void) = 0;
+  virtual void CtrlSlot86(void) = 0;
+  virtual void CtrlSlot87(void) = 0;
+  virtual void CtrlSlot88(void) = 0;
+  virtual void CtrlSlot89(void) = 0;
+  virtual void CtrlSlot90(void) = 0;
+  virtual void CtrlSlot91(void) = 0;
+  virtual void CtrlSlot92(void) = 0;
+  virtual void CtrlSlot93(void) = 0;
+  virtual void CtrlSlot94(void) = 0;
+  virtual void CtrlSlot95(void) = 0;
+  virtual void CtrlSlot96(void) = 0;
+  virtual void CtrlSlot97(void) = 0;
+  virtual void CtrlSlot98(void) = 0;
+  virtual void CtrlSlot99(void) = 0;
+  virtual void CtrlSlot100(void) = 0;
+  virtual void CtrlSlot101(void) = 0;
+  virtual void CtrlSlot102(void) = 0;
+  virtual void CtrlSlot103(void) = 0;
+  virtual void CtrlSlot104(void) = 0;
+  virtual void CtrlSlot105(void) = 0;
+  virtual void CtrlSlot106(void) = 0;
+  virtual void CtrlSlot107(void) = 0;
+  virtual void CtrlSlot108(void) = 0;
+  virtual void CtrlSlot109(void) = 0;
+  virtual void CtrlSlot110(void) = 0;
+  virtual void CtrlSlot111(void) = 0;
+  virtual void CtrlSlot112(void) = 0;
+  virtual void CtrlSlot113(void) = 0;
+  virtual void SetBitmapSlot1C8(int bitmapIdValue, int unknownFlag) = 0;
+  virtual void CtrlSlot115(void) = 0;
+  virtual void CtrlSlot116(void) = 0;
+  virtual void CtrlSlot117(void) = 0;
+  virtual void CtrlSlot118(void) = 0;
+  virtual void CtrlSlot119(void) = 0;
+  virtual void CtrlSlot120(void) = 0;
+  virtual void CtrlSlot121(void) = 0;
+  virtual int QueryValueSlot1E8(void) = 0;
+};
+
+class TradeScreenVirtualShape {
+public:
+  virtual void CtxSlot00(void) = 0;
+  virtual void CtxSlot01(void) = 0;
+  virtual void CtxSlot02(void) = 0;
+  virtual void CtxSlot03(void) = 0;
+  virtual void CtxSlot04(void) = 0;
+  virtual void CtxSlot05(void) = 0;
+  virtual void CtxSlot06(void) = 0;
+  virtual void CtxSlot07(void) = 0;
+  virtual void CtxSlot08(void) = 0;
+  virtual void CtxSlot09(void) = 0;
+  virtual void CtxSlot10(void) = 0;
+  virtual void CtxSlot11(void) = 0;
+  virtual void CtxSlot12(void) = 0;
+  virtual void CtxSlot13(void) = 0;
+  virtual void CtxSlot14(void) = 0;
+  virtual void CtxSlot15(void) = 0;
+  virtual void CtxSlot16(void) = 0;
+  virtual void CtxSlot17(void) = 0;
+  virtual void CtxSlot18(void) = 0;
+  virtual void CtxSlot19(void) = 0;
+  virtual void CtxSlot20(void) = 0;
+  virtual void CtxSlot21(void) = 0;
+  virtual void CtxSlot22(void) = 0;
+  virtual void CtxSlot23(void) = 0;
+  virtual void CtxSlot24(void) = 0;
+  virtual void CtxSlot25(void) = 0;
+  virtual void CtxSlot26(void) = 0;
+  virtual void CtxSlot27(void) = 0;
+  virtual void CtxSlot28(void) = 0;
+  virtual void CtxSlot29(void) = 0;
+  virtual void CtxSlot30(void) = 0;
+  virtual void CtxSlot31(void) = 0;
+  virtual void CtxSlot32(void) = 0;
+  virtual void CtxSlot33(void) = 0;
+  virtual void CtxSlot34(void) = 0;
+  virtual void CtxSlot35(void) = 0;
+  virtual void CtxSlot36(void) = 0;
+  virtual TradeControlVirtualShape *ResolveControlByTagSlot94(int controlTag) = 0;
+};
+
+class UiRuntimeVirtualShape {
+public:
+  virtual void RuntimeSlot00(void) = 0;
+  virtual void RuntimeSlot01(void) = 0;
+  virtual void RuntimeSlot02(void) = 0;
+  virtual void RuntimeSlot03(void) = 0;
+  virtual void RuntimeSlot04(void) = 0;
+  virtual void RuntimeSlot05(void) = 0;
+  virtual void RuntimeSlot06(void) = 0;
+  virtual void RuntimeSlot07(void) = 0;
+  virtual void RuntimeSlot08(void) = 0;
+  virtual void RuntimeSlot09(void) = 0;
+  virtual void RuntimeSlot10(void) = 0;
+  virtual void RuntimeSlot11(void) = 0;
+  virtual void RuntimeSlot12(void) = 0;
+  virtual void RuntimeSlot13(void) = 0;
+  virtual void RuntimeSlot14(void) = 0;
+  virtual void RuntimeSlot15(void) = 0;
+  virtual void RuntimeSlot16(void) = 0;
+  virtual void RuntimeSlot17(void) = 0;
+  virtual void RuntimeSlot18(void) = 0;
+  virtual void RuntimeSlot19(void) = 0;
+  virtual void RuntimeSlot20(void) = 0;
+  virtual short QueryUiScreenModeSlot54(void) = 0;
+};
+
+static __inline TradeControlVirtualShape *AsTradeControlVirtualShape(TradeControl *control)
 {
-  return *(ResolveControlByTagFn *)((char *)context->vftable + 0x94);
+  return reinterpret_cast<TradeControlVirtualShape *>(control);
 }
 
-static __inline QueryControlValueFn GetQueryControlValueFn(TradeControl *control)
+static __inline TradeScreenVirtualShape *AsTradeScreenVirtualShape(TradeScreenContext *context)
 {
-  return *(QueryControlValueFn *)((char *)control->vftable + 0x1e8);
+  return reinterpret_cast<TradeScreenVirtualShape *>(context);
 }
 
-static __inline GetUiScreenModeFn GetUiScreenMode(UiRuntimeContext *runtimeContext)
+static __inline UiRuntimeVirtualShape *AsUiRuntimeVirtualShape(UiRuntimeContext *runtimeContext)
 {
-  return *(GetUiScreenModeFn *)((char *)runtimeContext->vftable + 0x54);
-}
-
-static __inline SetControlEnabledFn GetSetControlEnabledFn(TradeControl *control)
-{
-  return *(SetControlEnabledFn *)((char *)control->vftable + 0xa4);
-}
-
-static __inline SetControlBitmapFn GetSetControlBitmapFn(TradeControl *control)
-{
-  return *(SetControlBitmapFn *)((char *)control->vftable + 0x1c8);
-}
-
-static __inline CaptureControlLayoutFn GetCaptureControlLayoutFn(TradeControl *control)
-{
-  return *(CaptureControlLayoutFn *)((char *)control->vftable + 0xf4);
-}
-
-static __inline RefreshControlFn GetRefreshControlFn(TradeControl *control)
-{
-  return *(RefreshControlFn *)((char *)control->vftable + 0xf8);
-}
-
-static __inline UpdateControlAfterBitmapChangeFn GetUpdateControlAfterBitmapChangeFn(TradeControl *control)
-{
-  return *(UpdateControlAfterBitmapChangeFn *)((char *)control->vftable + 0x114);
+  return reinterpret_cast<UiRuntimeVirtualShape *>(runtimeContext);
 }
 
 __inline int TradeControl::QueryValue()
 {
-  int result;
-  __asm {
-    mov ecx, this
-    mov eax, dword ptr [ecx]
-    call dword ptr [eax + 0x1e8]
-    mov result, eax
-  }
-  return result;
+  return AsTradeControlVirtualShape(this)->QueryValueSlot1E8();
 }
 
 __inline char TradeControl::IsActionable()
 {
-  char result;
-  __asm {
-    mov ecx, this
-    mov eax, dword ptr [ecx]
-    call dword ptr [eax + 0xec]
-    mov result, al
-  }
-  return result;
+  return AsTradeControlVirtualShape(this)->IsActionableSlotEC();
 }
 
-__inline void TradeControl::SetEnabled(int enabled, int unknownFlag)
+__inline void TradeControl::SetEnabledSingle(int enabled)
 {
-  GetSetControlEnabledFn(this)(this, enabled, unknownFlag);
+  AsTradeControlVirtualShape(this)->SetEnabledSlotA4(enabled);
+}
+
+__inline void TradeControl::SetEnabledPair(int enabled, int unknownFlag)
+{
+  (void)unknownFlag;
+  AsTradeControlVirtualShape(this)->SetEnabledSlotA4(enabled);
 }
 
 __inline void TradeControl::SetBitmap(int bitmapIdValue, int unknownFlag)
 {
-  GetSetControlBitmapFn(this)(this, bitmapIdValue, unknownFlag);
+  AsTradeControlVirtualShape(this)->SetBitmapSlot1C8(bitmapIdValue, unknownFlag);
 }
 
 __inline void TradeControl::CaptureLayout(int *buffer, int modeFlag)
 {
-  GetCaptureControlLayoutFn(this)(this, buffer, modeFlag);
+  AsTradeControlVirtualShape(this)->CaptureLayoutSlotF4(buffer, modeFlag);
+}
+
+__inline void TradeControl::CaptureLayoutPreset11_14()
+{
+  int layoutCapture[2] = {0x11, 0x14};
+  CaptureLayout(layoutCapture, 1);
 }
 
 __inline void TradeControl::Refresh()
 {
-  GetRefreshControlFn(this)(this);
+  AsTradeControlVirtualShape(this)->RefreshSlotF8();
 }
 
 __inline void TradeControl::UpdateAfterBitmapChange(int unknownFlag)
 {
-  GetUpdateControlAfterBitmapChangeFn(this)(this, unknownFlag);
+  AsTradeControlVirtualShape(this)->UpdateAfterBitmapChangeSlot114(unknownFlag);
 }
 
 __inline TradeControl *TradeScreenContext::ResolveControlByTag(int controlTag)
 {
-  TradeControl *result;
-  __asm {
-    mov ecx, this
-    mov eax, dword ptr [ecx]
-    push controlTag
-    call dword ptr [eax + 0x94]
-    mov result, eax
-  }
-  return result;
+  return reinterpret_cast<TradeControl *>(
+      AsTradeScreenVirtualShape(this)->ResolveControlByTagSlot94(controlTag));
 }
 
 __inline TradeControl *TradeScreenContext::RequireControlByTag(int controlTag)
@@ -197,8 +358,15 @@ static __inline short QueryUiScreenMode(UiRuntimeContext *runtimeContext)
   if (runtimeContext == 0 || runtimeContext->vftable == 0) {
     return 4;
   }
-  return GetUiScreenMode(runtimeContext)(runtimeContext);
+  return AsUiRuntimeVirtualShape(runtimeContext)->QueryUiScreenModeSlot54();
 }
+
+static __inline short QueryUiScreenModeRaw(UiRuntimeContext *runtimeContext)
+{
+  return AsUiRuntimeVirtualShape(runtimeContext)->QueryUiScreenModeSlot54();
+}
+
+UiRuntimeContext *g_pUiRuntimeContext = 0;
 
 }  // namespace
 
@@ -252,117 +420,6 @@ void TradeScreenContext::QueryTradeSellControlQuantity(void)
 /* Trade UI predicate for Bid control interactivity.
    Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F) or 2125 (0x84D)
    and control reports actionable state via vtable+0xEC. */
-
-class TradeControlVirtualShape {
-public:
-  char pad_00[0x80];
-  short bitmapId;
-
-  virtual void CtrlSlot00(void) = 0;
-  virtual void CtrlSlot01(void) = 0;
-  virtual void CtrlSlot02(void) = 0;
-  virtual void CtrlSlot03(void) = 0;
-  virtual void CtrlSlot04(void) = 0;
-  virtual void CtrlSlot05(void) = 0;
-  virtual void CtrlSlot06(void) = 0;
-  virtual void CtrlSlot07(void) = 0;
-  virtual void CtrlSlot08(void) = 0;
-  virtual void CtrlSlot09(void) = 0;
-  virtual void CtrlSlot10(void) = 0;
-  virtual void CtrlSlot11(void) = 0;
-  virtual void CtrlSlot12(void) = 0;
-  virtual void CtrlSlot13(void) = 0;
-  virtual void CtrlSlot14(void) = 0;
-  virtual void CtrlSlot15(void) = 0;
-  virtual void CtrlSlot16(void) = 0;
-  virtual void CtrlSlot17(void) = 0;
-  virtual void CtrlSlot18(void) = 0;
-  virtual void CtrlSlot19(void) = 0;
-  virtual void CtrlSlot20(void) = 0;
-  virtual void CtrlSlot21(void) = 0;
-  virtual void CtrlSlot22(void) = 0;
-  virtual void CtrlSlot23(void) = 0;
-  virtual void CtrlSlot24(void) = 0;
-  virtual void CtrlSlot25(void) = 0;
-  virtual void CtrlSlot26(void) = 0;
-  virtual void CtrlSlot27(void) = 0;
-  virtual void CtrlSlot28(void) = 0;
-  virtual void CtrlSlot29(void) = 0;
-  virtual void CtrlSlot30(void) = 0;
-  virtual void CtrlSlot31(void) = 0;
-  virtual void CtrlSlot32(void) = 0;
-  virtual void CtrlSlot33(void) = 0;
-  virtual void CtrlSlot34(void) = 0;
-  virtual void CtrlSlot35(void) = 0;
-  virtual void CtrlSlot36(void) = 0;
-  virtual void CtrlSlot37(void) = 0;
-  virtual void CtrlSlot38(void) = 0;
-  virtual void CtrlSlot39(void) = 0;
-  virtual void CtrlSlot40(void) = 0;
-  virtual void CtrlSlot41(void) = 0;
-  virtual void CtrlSlot42(void) = 0;
-  virtual void CtrlSlot43(void) = 0;
-  virtual void CtrlSlot44(void) = 0;
-  virtual void CtrlSlot45(void) = 0;
-  virtual void CtrlSlot46(void) = 0;
-  virtual void CtrlSlot47(void) = 0;
-  virtual void CtrlSlot48(void) = 0;
-  virtual void CtrlSlot49(void) = 0;
-  virtual void CtrlSlot50(void) = 0;
-  virtual void CtrlSlot51(void) = 0;
-  virtual void CtrlSlot52(void) = 0;
-  virtual void CtrlSlot53(void) = 0;
-  virtual void CtrlSlot54(void) = 0;
-  virtual void CtrlSlot55(void) = 0;
-  virtual void CtrlSlot56(void) = 0;
-  virtual void CtrlSlot57(void) = 0;
-  virtual void CtrlSlot58(void) = 0;
-  virtual char IsActionableSlotEC(void) = 0;
-};
-
-class TradeScreenVirtualShape {
-public:
-  virtual void CtxSlot00(void) = 0;
-  virtual void CtxSlot01(void) = 0;
-  virtual void CtxSlot02(void) = 0;
-  virtual void CtxSlot03(void) = 0;
-  virtual void CtxSlot04(void) = 0;
-  virtual void CtxSlot05(void) = 0;
-  virtual void CtxSlot06(void) = 0;
-  virtual void CtxSlot07(void) = 0;
-  virtual void CtxSlot08(void) = 0;
-  virtual void CtxSlot09(void) = 0;
-  virtual void CtxSlot10(void) = 0;
-  virtual void CtxSlot11(void) = 0;
-  virtual void CtxSlot12(void) = 0;
-  virtual void CtxSlot13(void) = 0;
-  virtual void CtxSlot14(void) = 0;
-  virtual void CtxSlot15(void) = 0;
-  virtual void CtxSlot16(void) = 0;
-  virtual void CtxSlot17(void) = 0;
-  virtual void CtxSlot18(void) = 0;
-  virtual void CtxSlot19(void) = 0;
-  virtual void CtxSlot20(void) = 0;
-  virtual void CtxSlot21(void) = 0;
-  virtual void CtxSlot22(void) = 0;
-  virtual void CtxSlot23(void) = 0;
-  virtual void CtxSlot24(void) = 0;
-  virtual void CtxSlot25(void) = 0;
-  virtual void CtxSlot26(void) = 0;
-  virtual void CtxSlot27(void) = 0;
-  virtual void CtxSlot28(void) = 0;
-  virtual void CtxSlot29(void) = 0;
-  virtual void CtxSlot30(void) = 0;
-  virtual void CtxSlot31(void) = 0;
-  virtual void CtxSlot32(void) = 0;
-  virtual void CtxSlot33(void) = 0;
-  virtual void CtxSlot34(void) = 0;
-  virtual void CtxSlot35(void) = 0;
-  virtual void CtxSlot36(void) = 0;
-  virtual TradeControlVirtualShape *ResolveControlByTagSlot94(int controlTag) = 0;
-};
-
-
 
 // FUNCTION: IMPERIALISM 0x00587980
 char TradeScreenContext::IsTradeBidControlActionable(void)
@@ -435,27 +492,30 @@ char TradeScreenContext::IsTradeOfferControlActionable(void)
 // GHIDRA showed `g_pUiRuntimeContext` as a global here; this reconstruction passes it explicitly.
 //
 // FUNCTION: IMPERIALISM 0x00587AA0
-void __cdecl SetTradeBidSecondaryBitmapState(
-    TradeScreenContext *context, UiRuntimeContext *runtimeContext)
+void TradeScreenContext::SetTradeBidSecondaryBitmapState(void)
 {
-  TradeControl *bidControl = context->RequireControlByTag(kControlTagCard);
+  TradeScreenVirtualShape *screen = reinterpret_cast<TradeScreenVirtualShape *>(this);
+  TradeControl *bidControl = reinterpret_cast<TradeControl *>(screen->ResolveControlByTagSlot94(kControlTagCard));
   if (bidControl == 0) {
-    return;
+    FailNilPointerInUSmallViews(kAssertLineBidSecondary);
   }
 
-  int layoutScratch[2] = {0, 0};
-  bidControl->CaptureLayout(layoutScratch, 1);
+  int layoutCapture[2];
+  layoutCapture[0] = 0x11;
+  layoutCapture[1] = 0x14;
+  bidControl->CaptureLayout(layoutCapture, 1);
 
-  if (QueryUiScreenMode(runtimeContext) < 4) {
-    int bitmapId = (context->rowStateTag == kTradeRowStateTag_67643020)
-                       ? kTradeBitmapBidSecondaryStateB
-                       : kTradeBitmapBidSecondaryStateA;
-    bidControl->SetEnabled(1, 0);
-    bidControl->SetBitmap(bitmapId, 0);
+  if (QueryUiScreenModeRaw(g_pUiRuntimeContext) < 4) {
+    bidControl->SetEnabledSingle(1);
+    if (rowStateTag == kTradeRowStateTag_67643020) {
+      bidControl->SetBitmap(kTradeBitmapBidSecondaryStateB, 0);
+    } else {
+      bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
+    }
     bidControl->Refresh();
     bidControl->UpdateAfterBitmapChange(0);
     return;
   }
 
-  bidControl->SetEnabled(0, 1);
+  bidControl->SetEnabledSingle(0);
 }
