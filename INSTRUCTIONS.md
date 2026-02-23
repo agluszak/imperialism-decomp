@@ -105,3 +105,6 @@ Current reminders for improving `% similarity`:
 33. If a function is clearly class-owned, move it into `src/game/<ClassName>.cpp` instead of any mixed bucket file.
 34. Keep `src/game/ui_widget_wrappers.cpp` for global/non-class wrappers only; class-owned UI wrappers belong in class files.
 35. Keep trade-screen class functions in flat class files under `src/game/<ClassName>.cpp`, included from `src/game/trade_screen.cpp`.
+36. In manual files, keep `// FUNCTION: ...` immediately above the function signature; do not insert `GHIDRA_*` comment lines between them, or reccmp may fail to match the address.
+37. For this MSVC500 setup, avoid `__thiscall` in free-function pointer casts; normalize these wrappers with `__fastcall` shape to keep builds stable.
+38. Use mixed address-cluster promotion when needed (not strictly class-by-class): promote contiguous subsystem addresses first, then normalize class-scoped raw output into compile-safe wrappers.

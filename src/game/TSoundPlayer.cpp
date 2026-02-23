@@ -103,32 +103,3 @@ void __fastcall DestructTSoundPlayerBaseState(SoundPlayerState *player)
 {
   player->vftable = reinterpret_cast<void *>(&PTR_GetCObjectRuntimeClass_0066fec4);
 }
-
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E51D0
-// GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
-// GHIDRA_PROTO void __thiscall ReleaseRuntimeSelectionPeersAndResetOwner(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Releases peer/session pointers at +0x6C/+0x70, performs runtime cleanup callbacks, then clears runtime selection owner context.
-// GHIDRA_COMMENT_END
-
-/* Releases peer/session pointers at +0x6C/+0x70, performs runtime cleanup callbacks, then clears
-   runtime selection owner context. */
-
-void __thiscall TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner(TSoundPlayer *this)
-
-{
-  if (*(int **)(this + 0x70) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x70) + 0x38))();
-  }
-  *(undefined4 *)(this + 0x70) = 0;
-  if (*(int **)(this + 0x6c) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x6c) + 0x38))();
-  }
-  *(undefined4 *)(this + 0x6c) = 0;
-  ReleaseRuntimeSelectionPeersAndResetOwner_Impl();
-  ForwardMciCommand808ToDevice();
-  thunk_ReleaseRuntimeSelectionOwnerAndDestroyObject();
-  return;
-}
-

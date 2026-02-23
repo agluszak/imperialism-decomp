@@ -13,7 +13,7 @@ undefined4 DestructTCityBarClusterAndMaybeFree(void)
 
 // ghidra_name UpdateTradeSummaryMetricControlsFromRecord
 // ghidra_proto void __thiscall UpdateTradeSummaryMetricControlsFromRecord(int recordContext)
-// FUNCTION: IMPERIALISM 0x005866b0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005866b0
 undefined4 UpdateTradeSummaryMetricControlsFromRecord(void)
 {
   return 0;
@@ -189,7 +189,7 @@ undefined4 OrphanRetStub_00586ff0(void)
 
 // ghidra_name TTradeCluster::CreateTradeSellControlPanel
 // ghidra_proto undefined CreateTradeSellControlPanel()
-// FUNCTION: IMPERIALISM 0x00587010
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587010
 undefined4 CreateTradeSellControlPanel(void)
 {
   return 0;
@@ -197,7 +197,7 @@ undefined4 CreateTradeSellControlPanel(void)
 
 // ghidra_name TTradeCluster::GetTTradeClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTTradeClusterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00587090
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587090
 undefined4 GetTTradeClusterClassNamePointer(void)
 {
   return 0;
@@ -205,7 +205,7 @@ undefined4 GetTTradeClusterClassNamePointer(void)
 
 // ghidra_name ConstructTradeSellControlPanel
 // ghidra_proto void __cdecl ConstructTradeSellControlPanel(void)
-// FUNCTION: IMPERIALISM 0x005870b0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005870b0
 undefined4 ConstructTradeSellControlPanel(void)
 {
   return 0;
@@ -213,7 +213,7 @@ undefined4 ConstructTradeSellControlPanel(void)
 
 // ghidra_name TTradeCluster::DestroyTradeSellControlPanel
 // ghidra_proto void __cdecl DestroyTradeSellControlPanel(void)
-// FUNCTION: IMPERIALISM 0x005870e0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005870e0
 undefined4 DestroyTradeSellControlPanel(void)
 {
   return 0;

@@ -4002,4 +4002,3 @@ undefined4 MapFpControlLowByteToRuntimeBits_EntryB(void)
 {
   return 0;
 }
-

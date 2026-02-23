@@ -2,6 +2,33 @@
 
 ## 2026-02-23
 
+### Mixed promotion batch (non-class + trade-cluster wrappers)
+1. Switched from strict class-by-class promotion to mixed address-cluster promotion for trade-screen.
+2. Promoted non-class/global trade functions into `src/game/trade_screen.cpp` via `just promote`:
+   1. `0x00586170` `UpdateTradeResourceSelectionByIndex`
+   2. `0x005866B0` `UpdateTradeSummaryMetricControlsFromRecord`
+   3. `0x005870B0` `ConstructTradeSellControlPanel`
+3. Promoted adjacent trade-cluster wrappers into `src/game/trade_screen.cpp` and normalized to compile-safe wrappers:
+   1. `0x00587010` `CreateTradeSellControlPanel`
+   2. `0x00587090` `GetTTradeClusterClassNamePointer`
+   3. `0x005870E0` `DestroyTradeSellControlPanel`
+4. Converted all six promoted blocks from raw Ghidra class output into maintainable wrapper shape:
+   1. removed raw class-scoped forms that failed MSVC500 parsing.
+   2. replaced with explicit free-function wrappers and typed pointer access.
+   3. removed `GHIDRA_*` lines between `// FUNCTION` and function signatures to keep reccmp matching stable.
+5. Updated stub ownership to avoid duplicate mappings:
+   1. `src/autogen/stubs/stubs_part017.cpp`: `0x00586170` -> `MANUAL_OVERRIDE_ADDR`
+   2. `src/autogen/stubs/stubs_part018.cpp`: `0x005866B0`, `0x00587010`, `0x00587090`, `0x005870B0`, `0x005870E0` -> `MANUAL_OVERRIDE_ADDR`
+6. Verification sequence:
+   1. `just build`
+   2. `just detect`
+   3. `just stats`
+7. Latest snapshot (`2026-02-23T19:59:43Z`):
+   1. paired: `12229/12229` (`100%`)
+   2. aligned: `43`
+   3. average similarity: `2.13%` (`+0.02 pp` from previous run)
+   4. no failed-to-match lines (`0`)
+
 ### Flatten trade-screen layout into `src/game/`
 1. Removed nested trade-screen directories from active layout:
    1. `src/game/trade_screen_parts/`

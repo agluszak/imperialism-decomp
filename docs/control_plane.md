@@ -119,6 +119,7 @@ Current loop policy for this class:
 2. `data pass` second (type widths, clamp order, float/int math).
 3. Rebuild + targeted `reccmp --verbose` per touched address.
 4. No regressions allowed on adjacent trade-screen functions.
+5. Promotion can be mixed by contiguous trade-screen address clusters (not only class-by-class); normalize promoted raw class output immediately after import.
 
 File layout note:
 1. `src/game/trade_screen.cpp` contains shared scaffolding/helpers and global/non-class trade-screen functions.

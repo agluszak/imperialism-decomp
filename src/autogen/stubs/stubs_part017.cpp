@@ -3933,7 +3933,7 @@ undefined4 OrphanVtableAssignStub_00586150(void)
 
 // ghidra_name UpdateTradeResourceSelectionByIndex
 // ghidra_proto void __thiscall UpdateTradeResourceSelectionByIndex(int nResourceIndex)
-// FUNCTION: IMPERIALISM 0x00586170
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586170
 undefined4 UpdateTradeResourceSelectionByIndex(void)
 {
   return 0;
@@ -4002,4 +4002,3 @@ undefined4 ConstructTCityBarClusterBaseState(void)
 {
   return 0;
 }
-
