@@ -924,13 +924,13 @@ UiRuntimeContext *g_pUiRuntimeContext = 0;
 
 }  // namespace
 
-#include "trade_screen_parts/part_1.cpp"
-#include "trade_screen_parts/part_2.cpp"
-#include "trade_screen_classes/TAmtBar.cpp"
-#include "trade_screen_classes/TIndustryCluster.cpp"
-#include "trade_screen_classes/TIndustryAmtBar.cpp"
-#include "trade_screen_classes/TRailCluster.cpp"
-#include "trade_screen_classes/TRailAmtBar.cpp"
-#include "trade_screen_classes/TShipyardCluster.cpp"
-#include "trade_screen_classes/TShipAmtBar.cpp"
-#include "trade_screen_classes/TTraderAmtBar.cpp"
+#include "trade_screen_part_1.cpp"
+#include "trade_screen_part_2.cpp"
+#include "TAmtBar.cpp"
+#include "TIndustryCluster.cpp"
+#include "TIndustryAmtBar.cpp"
+#include "TRailCluster.cpp"
+#include "TRailAmtBar.cpp"
+#include "TShipyardCluster.cpp"
+#include "TShipAmtBar.cpp"
+#include "TTraderAmtBar.cpp"

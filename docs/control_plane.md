@@ -122,14 +122,14 @@ Current loop policy for this class:
 
 File layout note:
 1. `src/game/trade_screen.cpp` now contains shared scaffolding/helpers and includes:
-   1. `src/game/trade_screen_parts/part_1.cpp` (`0x00587130..0x0058A940`)
-   2. `src/game/trade_screen_parts/part_2.cpp` (`0x0058AAA0..0x0058AF30`)
+   1. `src/game/trade_screen_part_1.cpp` (`0x00587130..0x0058A940`)
+   2. `src/game/trade_screen_part_2.cpp` (`0x0058AAA0..0x0058AF30`)
 2. Class-owned wrappers now live in class files (`src/game/<ClassName>.cpp`), including:
    1. `TCivilianButton`, `THQButton`, `TPlacard`, `TArmyPlacard`, `TNumberedArrowButton`, `TCombatReportView`
    2. `TArmyToolbar`, `TStratReportView`, `TCivToolbar`, `TArmyInfoView`
    3. `TCivReport`, `TTransportPicture`
 3. `src/game/ui_widget_wrappers.cpp` is reserved for global/non-class wrappers.
-4. Trade-screen class methods are split to include files in `src/game/trade_screen_classes/` and included by `src/game/trade_screen.cpp`:
+4. Trade-screen class methods are in flat class files under `src/game/` and included by `src/game/trade_screen.cpp`:
    1. `TAmtBar.cpp`
    2. `TIndustryCluster.cpp`
    3. `TIndustryAmtBar.cpp`
@@ -138,7 +138,7 @@ File layout note:
    6. `TShipyardCluster.cpp`
    7. `TShipAmtBar.cpp`
    8. `TTraderAmtBar.cpp`
-5. `src/game/trade_screen_parts/part_1.cpp` and `src/game/trade_screen_parts/part_2.cpp` now contain only global/non-class functions.
+5. `src/game/trade_screen_part_1.cpp` and `src/game/trade_screen_part_2.cpp` now contain only global/non-class functions.
 6. New extractions should be promoted into class files when symbol ownership is class-scoped.
 
 ### Trade Screen Checkpoint (latest)

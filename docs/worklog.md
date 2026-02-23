@@ -2,6 +2,21 @@
 
 ## 2026-02-23
 
+### Flatten trade-screen layout into `src/game/`
+1. Removed nested trade-screen directories from active layout:
+   1. `src/game/trade_screen_parts/`
+   2. `src/game/trade_screen_classes/`
+2. Moved files to flat `src/game/`:
+   1. `part_1.cpp` -> `trade_screen_part_1.cpp`
+   2. `part_2.cpp` -> `trade_screen_part_2.cpp`
+   3. `TAmtBar.cpp`, `TIndustryCluster.cpp`, `TIndustryAmtBar.cpp`, `TRailCluster.cpp`, `TRailAmtBar.cpp`, `TShipyardCluster.cpp`, `TShipAmtBar.cpp`, `TTraderAmtBar.cpp` moved to `src/game/`.
+3. Updated include paths in `src/game/trade_screen.cpp` to the flat filenames.
+4. Updated `INSTRUCTIONS.md` and `docs/control_plane.md` to reflect flat `src/game/` policy.
+5. Verification:
+   1. Docker MSVC500 build: success.
+   2. `reccmp-project detect`: success.
+   3. `progress_stats.py` snapshot (`2026-02-23T18:59:01Z`) unchanged: paired `12229/12229`, aligned `43`, average similarity `2.06%`.
+
 ### Trade-screen class-file split (part files -> class files)
 1. Split class-owned functions out of:
    1. `src/game/trade_screen_parts/part_1.cpp`
