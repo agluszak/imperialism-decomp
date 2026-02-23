@@ -1021,7 +1021,7 @@ undefined4 DestructTNumberedArrowButtonAndMaybeFree(void)
 
 // ghidra_name OrphanCallChain_C1_I08_0058c330
 // ghidra_proto undefined OrphanCallChain_C1_I08_0058c330()
-// FUNCTION: IMPERIALISM 0x0058c330
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c330
 undefined4 OrphanCallChain_C1_I08_0058c330(void)
 {
   return 0;
@@ -1029,7 +1029,7 @@ undefined4 OrphanCallChain_C1_I08_0058c330(void)
 
 // ghidra_name OrphanCallChain_C2_I23_0058c360
 // ghidra_proto undefined OrphanCallChain_C2_I23_0058c360()
-// FUNCTION: IMPERIALISM 0x0058c360
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c360
 undefined4 OrphanCallChain_C2_I23_0058c360(void)
 {
   return 0;
@@ -1053,7 +1053,7 @@ undefined4 HandleSplitArrowMousePhaseStateAndDispatchCommand64or65(void)
 
 // ghidra_name WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0
 // ghidra_proto void __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0058c7c0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c7c0
 undefined4 WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(void)
 {
   return 0;

@@ -2,6 +2,26 @@
 
 ## 2026-02-23
 
+### Batch loop progress (numbered-arrow wrapper trio)
+1. Promoted with `promote_from_autogen.py`:
+   1. `0x0058C330` `OrphanCallChain_C1_I08_0058c330`
+   2. `0x0058C360` `OrphanCallChain_C2_I23_0058c360`
+   3. `0x0058C7C0` `WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0`
+2. Converted to typed/manual wrappers in `src/game/trade_screen.cpp`:
+   1. extended `NumberedArrowButtonState` with explicit fields (`width38`, `hoverTag4e`, `value84`, `value86`).
+   2. added extern thunk declaration for `thunk_HandleCursorHoverSelectionByChildHitTestAndFallback`.
+   3. used existing virtual helpers (`InvokeSlotE4`, `QueryBounds`, `IsActionable`) instead of raw offset calls.
+3. Stub sync:
+   1. switched all three addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`.
+4. Verification (`progress_stats.py`, `2026-02-23T17:19:42Z`):
+   1. paired coverage: `12229/12229` (`100%`).
+   2. aligned: `43`.
+   3. average similarity: `1.91%` (`+0.02 pp`).
+5. Targeted `reccmp --verbose` checkpoints:
+   1. `0x0058C330`: `60.00%`
+   2. `0x0058C360`: `69.39%`
+   3. `0x0058C7C0`: `68.75%`
+
 ### Batch loop progress (THQ/Army wrapper pass)
 1. Promoted batch with existing workflow script:
    1. `0x0058B6E0`

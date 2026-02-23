@@ -80,3 +80,4 @@ Current reminders for improving `% similarity`:
 24. If promoted class-scoped raws (`ClassName::Func`) fail to compile because the class type is not declared in manual files, immediately convert them to free typed wrappers (`StateStruct *`) and continue; do not stall on class reconstruction.
 25. High-throughput loop works best with class “quads” (create/get/construct/destroy) imported together via `promote_from_autogen.py`, then normalized to shared runtime bridges.
 26. Keep `#pragma auto_inline(off)` around tiny wrapper batches to avoid temporary pair-count regressions from inlining/folding; re-enable after the batch.
+27. For `0x58C330/0x58C360/0x58C7C0`-style numbered-arrow wrappers, explicit field mapping (`width38`, `hoverTag4e`, `value84`, `value86`) plus virtual helper calls (`InvokeSlotE4`, `QueryBounds`) gives immediate ~60-70% range without deep tuning.
