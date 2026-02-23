@@ -47,6 +47,24 @@ void *__cdecl GetTTraderAmtBarClassNamePointer(void)
 
 
 
+// FUNCTION: IMPERIALISM 0x0058AEF0
+TradeAmountBarLayout *__fastcall ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmountBarLayout *amountBar)
+{
+  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
+  amountBar->vftable = reinterpret_cast<void *>(&g_vtblTTraderAmtBar);
+  amountBar->rangeOrMaxValue = 0;
+  amountBar->stepOrCurrentValue = 0;
+  amountBar->auxValueA = 0;
+  amountBar->auxValueB = 0;
+  return amountBar;
+}
+
+
+
+
+
+
+
 // FUNCTION: IMPERIALISM 0x0058AF30
 void __fastcall DestructTTraderAmtBarMaybeFree(
     TradeAmountBarLayout *amountBar, int unusedEdx, unsigned char freeSelfFlag)
@@ -57,4 +75,3 @@ void __fastcall DestructTTraderAmtBarMaybeFree(
     FreeHeapBufferIfNotNull((undefined4)amountBar);
   }
 }
-

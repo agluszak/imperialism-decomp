@@ -33,7 +33,7 @@ From latest fresh import + rebuild + reccmp run:
    2. Focused compare avg similarity (with ignores): `1.32%`.
    3. 100% aligned functions: `42`.
 
-Latest `progress_stats` snapshot (`2026-02-23T18:59:01Z`):
+Latest `progress_stats` snapshot (`2026-02-23T19:05:52Z`):
 1. Paired functions: `12229` (coverage `100%`).
 2. Recompiled functions discovered: `12413`.
 3. 100% aligned functions: `43`.
@@ -121,9 +121,7 @@ Current loop policy for this class:
 4. No regressions allowed on adjacent trade-screen functions.
 
 File layout note:
-1. `src/game/trade_screen.cpp` now contains shared scaffolding/helpers and includes:
-   1. `src/game/trade_screen_part_1.cpp` (`0x00587130..0x0058A940`)
-   2. `src/game/trade_screen_part_2.cpp` (`0x0058AAA0..0x0058AF30`)
+1. `src/game/trade_screen.cpp` contains shared scaffolding/helpers and global/non-class trade-screen functions.
 2. Class-owned wrappers now live in class files (`src/game/<ClassName>.cpp`), including:
    1. `TCivilianButton`, `THQButton`, `TPlacard`, `TArmyPlacard`, `TNumberedArrowButton`, `TCombatReportView`
    2. `TArmyToolbar`, `TStratReportView`, `TCivToolbar`, `TArmyInfoView`
@@ -138,8 +136,7 @@ File layout note:
    6. `TShipyardCluster.cpp`
    7. `TShipAmtBar.cpp`
    8. `TTraderAmtBar.cpp`
-5. `src/game/trade_screen_part_1.cpp` and `src/game/trade_screen_part_2.cpp` now contain only global/non-class functions.
-6. New extractions should be promoted into class files when symbol ownership is class-scoped.
+5. New extractions should be promoted into class files when symbol ownership is class-scoped.
 
 ### Trade Screen Checkpoint (latest)
 

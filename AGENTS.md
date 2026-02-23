@@ -30,3 +30,16 @@ Run this as a continuous loop during active matching work:
 - `docs/worklog.md`: chronological execution log and outcome deltas.
 - `docs/toolchain.md`: compiler/toolchain forensics and decisions.
 - `docs/reccmp_fork.md`: local fork integration and command usage.
+
+## Command Policy
+
+Use `just` targets by default for project workflows.
+
+1. Prefer:
+   - `just build`
+   - `just detect`
+   - `just stats`
+   - `just compare <addr>`
+   - `just promote <target> --address 0x...`
+2. Do not run raw `docker`, `uv run reccmp-*`, or direct workflow scripts when an equivalent `just` target exists.
+3. Use direct commands only when there is no `just` target for the required action; if so, keep it minimal and add/update a `just` target afterward.

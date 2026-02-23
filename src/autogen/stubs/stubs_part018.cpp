@@ -1477,7 +1477,7 @@ undefined4 InvokeVslot1CCAfterThunk48F3C0(void)
 
 // ghidra_name TWarningView::CreateTWarningViewInstance
 // ghidra_proto void * __cdecl CreateTWarningViewInstance(void)
-// FUNCTION: IMPERIALISM 0x00592860
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00592860
 undefined4 CreateTWarningViewInstance(void)
 {
   return 0;
@@ -1485,7 +1485,7 @@ undefined4 CreateTWarningViewInstance(void)
 
 // ghidra_name TWarningView::GetTWarningViewClassNamePointer
 // ghidra_proto void * __cdecl GetTWarningViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005928e0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005928e0
 undefined4 GetTWarningViewClassNamePointer(void)
 {
   return 0;
@@ -1493,7 +1493,7 @@ undefined4 GetTWarningViewClassNamePointer(void)
 
 // ghidra_name TWarningView::ConstructTWarningViewBaseState
 // ghidra_proto void * __thiscall ConstructTWarningViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00592900
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00592900
 undefined4 ConstructTWarningViewBaseState(void)
 {
   return 0;
@@ -1501,7 +1501,7 @@ undefined4 ConstructTWarningViewBaseState(void)
 
 // ghidra_name TWarningView::DestructTWarningViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTWarningViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00592930
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00592930
 undefined4 DestructTWarningViewAndMaybeFree(void)
 {
   return 0;
@@ -1533,7 +1533,7 @@ undefined4 Cluster_GameplayHint_00593210(void)
 
 // ghidra_name TSoundPlayer::CreateTSoundPlayerInstance
 // ghidra_proto void * __cdecl CreateTSoundPlayerInstance(void)
-// FUNCTION: IMPERIALISM 0x005932b0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005932b0
 undefined4 CreateTSoundPlayerInstance(void)
 {
   return 0;
@@ -1541,7 +1541,7 @@ undefined4 CreateTSoundPlayerInstance(void)
 
 // ghidra_name TSoundPlayer::GetTSoundPlayerClassNamePointer
 // ghidra_proto void * __cdecl GetTSoundPlayerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00593350
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00593350
 undefined4 GetTSoundPlayerClassNamePointer(void)
 {
   return 0;
@@ -1549,7 +1549,7 @@ undefined4 GetTSoundPlayerClassNamePointer(void)
 
 // ghidra_name TSoundPlayer::ConstructTSoundPlayerBaseState
 // ghidra_proto void * __thiscall ConstructTSoundPlayerBaseState(void)
-// FUNCTION: IMPERIALISM 0x00593370
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00593370
 undefined4 ConstructTSoundPlayerBaseState(void)
 {
   return 0;
@@ -1557,7 +1557,7 @@ undefined4 ConstructTSoundPlayerBaseState(void)
 
 // ghidra_name TSoundPlayer::DestructTSoundPlayerAndMaybeFree
 // ghidra_proto void * __thiscall DestructTSoundPlayerAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005933b0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005933b0
 undefined4 DestructTSoundPlayerAndMaybeFree(void)
 {
   return 0;
@@ -1565,7 +1565,7 @@ undefined4 DestructTSoundPlayerAndMaybeFree(void)
 
 // ghidra_name TSoundPlayer::DestructTSoundPlayerBaseState
 // ghidra_proto void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer * pThis)
-// FUNCTION: IMPERIALISM 0x005933e0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005933e0
 undefined4 DestructTSoundPlayerBaseState(void)
 {
   return 0;
