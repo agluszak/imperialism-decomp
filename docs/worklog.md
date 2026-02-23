@@ -2,6 +2,20 @@
 
 ## 2026-02-23
 
+### Trade-screen scope cleanup (move non-trade wrappers out)
+1. Moved clearly non-trade class wrapper quads out of trade-screen into:
+   1. `src/game/toolbars_and_views.cpp`
+2. Moved addresses:
+   1. `0x0058DE40..0x0058DF10` (`TArmyToolbar` wrappers)
+   2. `0x0058E330..0x0058E3F0` (`TStratReportView` wrappers)
+   3. `0x0058EA00..0x0058EAD0` (`TCivToolbar` wrappers)
+   4. `0x00591500..0x005915D0` (`TArmyInfoView` wrappers)
+3. Trade-screen layout now:
+   1. `src/game/trade_screen.cpp` (shared scaffolding)
+   2. `src/game/trade_screen_parts/part_1.cpp` and `part_2.cpp` only
+4. Build-system update:
+   1. added `src/game/toolbars_and_views.cpp` to `CMakeLists.txt`.
+
 ### Trade-screen file split (maintainability refactor)
 1. Split `src/game/trade_screen.cpp` into shared scaffolding + address-ordered part files:
    1. `src/game/trade_screen.cpp` (shared declarations/helpers + include hub)

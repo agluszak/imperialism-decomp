@@ -45,7 +45,7 @@ uv run python tools/workflow/promote_from_autogen.py \
 2. Trade-screen is split into address-ordered parts; promote into the correct part file:
    - `src/game/trade_screen_parts/part_1.cpp`: `0x00587130` .. `0x0058A940`
    - `src/game/trade_screen_parts/part_2.cpp`: `0x0058AAA0` .. `0x0058C900`
-   - `src/game/trade_screen_parts/part_3.cpp`: `0x0058DE40` .. `0x005915D0`
+   - toolbar/view class wrappers moved out to `src/game/toolbars_and_views.cpp` (`0x0058DE40` .. `0x005915D0`).
    - keep functions in each part sorted by ascending original address.
 3. Immediately convert promoted raw offset access into typed field access:
    - replace `*(type *)((int)obj + off)` with struct fields.
@@ -91,3 +91,4 @@ Current reminders for improving `% similarity`:
 30. After any annotation-only edit in source/stub files, do a rebuild before trusting stats; stale PDB line mappings can create false pairing regressions.
 31. For view/toolbar wrapper quads with this current shape, first-pass pattern is consistently around `34.78/50.00/85.71/66.67` (`create/get/construct/destruct`); treat this as a quick baseline before deeper prologue/calling-convention tuning.
 32. Keep `src/game/trade_screen.cpp` as shared scaffolding only; add new trade-screen function bodies in `src/game/trade_screen_parts/part_*.cpp`, not in the umbrella file.
+33. If a function is clearly non-trade (toolbar/report/view class wrappers), move it to `src/game/toolbars_and_views.cpp` instead of forcing it into trade-screen parts.

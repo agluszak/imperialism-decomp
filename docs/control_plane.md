@@ -124,8 +124,8 @@ File layout note:
 1. `src/game/trade_screen.cpp` now contains shared scaffolding/helpers and includes:
    1. `src/game/trade_screen_parts/part_1.cpp` (`0x00587130..0x0058A940`)
    2. `src/game/trade_screen_parts/part_2.cpp` (`0x0058AAA0..0x0058C900`)
-   3. `src/game/trade_screen_parts/part_3.cpp` (`0x0058DE40..0x005915D0`)
-2. New trade-screen extractions should be promoted directly into the relevant part file by address range.
+2. Non-trade wrapper classes were moved to `src/game/toolbars_and_views.cpp` (`0x0058DE40..0x005915D0`).
+3. New trade-screen extractions should be promoted directly into the relevant part file by address range.
 
 ### Trade Screen Checkpoint (latest)
 

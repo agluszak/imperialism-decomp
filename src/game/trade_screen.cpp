@@ -126,14 +126,6 @@ char g_vtblTNumberedArrowButton;
 char g_pClassDescTNumberedArrowButton;
 char g_vtblTCombatReportView;
 char g_pClassDescTCombatReportView;
-char g_vtblTArmyToolbar;
-char g_pClassDescTArmyToolbar;
-char g_vtblTStratReportView;
-char g_pClassDescTStratReportView;
-char g_vtblTCivToolbar;
-char g_pClassDescTCivToolbar;
-char g_vtblTArmyInfoView;
-char g_pClassDescTArmyInfoView;
 
 const short kTradeBitmapBidStateA = 0x083f;
 const short kTradeBitmapBidStateB = 0x084d;
@@ -252,26 +244,6 @@ struct NumberedArrowButtonState {
 struct CombatReportViewState {
   void *vftable;
   char pad_04[0x9c];
-};
-
-struct ArmyToolbarState {
-  void *vftable;
-  char pad_04[0x88];
-};
-
-struct StratReportViewState {
-  void *vftable;
-  char pad_04[0x60];
-};
-
-struct CivToolbarState {
-  void *vftable;
-  char pad_04[0x88];
-};
-
-struct ArmyInfoViewState {
-  void *vftable;
-  char pad_04[0x8c];
 };
 
 struct TradeMoveStepCluster {
@@ -1013,4 +985,3 @@ UiRuntimeContext *g_pUiRuntimeContext = 0;
 
 #include "trade_screen_parts/part_1.cpp"
 #include "trade_screen_parts/part_2.cpp"
-#include "trade_screen_parts/part_3.cpp"
