@@ -6,6 +6,10 @@ struct ObjectPoolListNode {
   int object_ptr;
   ObjectPoolListNode *next;
   int prev_node_ptr;
+  unsigned char active_flag;
+  unsigned char pad_0d;
+  unsigned char pad_0e;
+  unsigned char pad_0f;
 };
 
 struct ObjectPoolOwner {
@@ -14,6 +18,18 @@ struct ObjectPoolOwner {
   int active_node;
   char bucket_counts_base[0x100];
 };
+
+ObjectPoolListNode *FindMissionOrderNodeById(ObjectPoolListNode *node, int child_node_id);
+ObjectPoolListNode * __fastcall DeleteMapOrderChildLinkAndReturnNext(
+    ObjectPoolListNode *child_link_node);
+void __cdecl RemoveLinkedOrderNodeByValueRecursive(
+    ObjectPoolListNode *node, int child_node_id);
+ObjectPoolListNode *CreateLinkedOrderNode(
+    ObjectPoolListNode *next_node, int child_node_id);
+ObjectPoolListNode * __fastcall PruneDefeatedMapOrderChildrenAndReturnHead(
+    ObjectPoolListNode *child_link_head);
+void __cdecl NoOpTaskForceVtableSlot(void);
+void RelinkMapOrderQueueNodeBetween(void *node_this, int prev_node, int next_node);
 
 class ObjectPool {
 public:

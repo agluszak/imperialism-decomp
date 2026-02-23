@@ -3,110 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TViewMgr::DeserializeTurnEventDispatchState
-// ghidra_proto void __thiscall DeserializeTurnEventDispatchState(void)
-// FUNCTION: IMPERIALISM 0x005d5200
-undefined4 DeserializeTurnEventDispatchState(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::SerializeTurnEventDispatchState
-// ghidra_proto void __cdecl SerializeTurnEventDispatchState(void)
-// FUNCTION: IMPERIALISM 0x005d5250
-undefined4 SerializeTurnEventDispatchState(void)
-{
-  return 0;
-}
-
-// ghidra_name MapTurnEventCodeToPaletteIndex
-// ghidra_proto void __cdecl MapTurnEventCodeToPaletteIndex(void)
-// FUNCTION: IMPERIALISM 0x005d5270
-undefined4 MapTurnEventCodeToPaletteIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateTurnEventPaletteByCode
-// ghidra_proto void __cdecl UpdateTurnEventPaletteByCode(void)
-// FUNCTION: IMPERIALISM 0x005d5710
-undefined4 UpdateTurnEventPaletteByCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::ApplyTurnEventPaletteColorByEventCode
-// ghidra_proto void __cdecl ApplyTurnEventPaletteColorByEventCode(void)
-// FUNCTION: IMPERIALISM 0x005d5750
-undefined4 ApplyTurnEventPaletteColorByEventCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::UpdatePaletteIndexFromTurnEventCode
-// ghidra_proto void __cdecl UpdatePaletteIndexFromTurnEventCode(void)
-// FUNCTION: IMPERIALISM 0x005d5780
-undefined4 UpdatePaletteIndexFromTurnEventCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog
-// ghidra_proto void __cdecl HandleTurnEventVtableSlot40RefreshGoldDialog(void)
-// FUNCTION: IMPERIALISM 0x005d57b0
-undefined4 HandleTurnEventVtableSlot40RefreshGoldDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::ClassifyTurnStateForOverlayMode
-// ghidra_proto void __cdecl ClassifyTurnStateForOverlayMode(void)
-// FUNCTION: IMPERIALISM 0x005d5960
-undefined4 ClassifyTurnStateForOverlayMode(void)
-{
-  return 0;
-}
-
-// ghidra_name RunControlStringProviderAndDispatchLocalizedMessage
-// ghidra_proto void __thiscall RunControlStringProviderAndDispatchLocalizedMessage(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005d5a70
-undefined4 RunControlStringProviderAndDispatchLocalizedMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchLocalizedUiMessageWithTemplateA13A0
-// ghidra_proto void __cdecl DispatchLocalizedUiMessageWithTemplateA13A0(void)
-// FUNCTION: IMPERIALISM 0x005d5b00
-undefined4 DispatchLocalizedUiMessageWithTemplateA13A0(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchLocalizedUiMessageWithTemplate
-// ghidra_proto void __cdecl DispatchLocalizedUiMessageWithTemplate(void)
-// FUNCTION: IMPERIALISM 0x005d5c40
-undefined4 DispatchLocalizedUiMessageWithTemplate(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_005d5d10
-// ghidra_proto void __cdecl NoOpRuntimeCallback_005d5d10(void)
-// FUNCTION: IMPERIALISM 0x005d5d10
-undefined4 NoOpRuntimeCallback_005d5d10(void)
-{
-  return 0;
-}
-
-// ghidra_name RunNationInfoModalAndReturnNonCancel
-// ghidra_proto bool __thiscall RunNationInfoModalAndReturnNonCancel(void * pDialogContext)
-// FUNCTION: IMPERIALISM 0x005d5d30
-undefined4 RunNationInfoModalAndReturnNonCancel(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::BuildAndShowTurnOverlayByMode
 // ghidra_proto void __thiscall BuildAndShowTurnOverlayByMode(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005d6480
@@ -3999,6 +3895,110 @@ undefined4 CheckRuntimeErrorHookGuardAndReportFcFf(void)
 // ghidra_proto void __cdecl ReportCrtRuntimeErrorByCode(int errorCode)
 // FUNCTION: IMPERIALISM 0x005f26d0
 undefined4 ReportCrtRuntimeErrorByCode(void)
+{
+  return 0;
+}
+
+// ghidra_name LocaleMapStringWideWithAnsiFallback
+// ghidra_proto undefined LocaleMapStringWideWithAnsiFallback()
+// FUNCTION: IMPERIALISM 0x005f29f0
+undefined4 LocaleMapStringWideWithAnsiFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name CountWideCharsUpToLimitOrNul
+// ghidra_proto undefined CountWideCharsUpToLimitOrNul()
+// FUNCTION: IMPERIALISM 0x005f2c00
+undefined4 CountWideCharsUpToLimitOrNul(void)
+{
+  return 0;
+}
+
+// ghidra_name MapStringWithLocaleAndMbcFallback
+// ghidra_proto int __cdecl MapStringWithLocaleAndMbcFallback(int localeId, uint mapFlags, int pSrc, int srcLen, int pDst, int dstLen, uint codePage)
+// FUNCTION: IMPERIALISM 0x005f2c40
+undefined4 MapStringWithLocaleAndMbcFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeBoundedCStringLength
+// ghidra_proto int __cdecl ComputeBoundedCStringLength(char * pText, int maxLen)
+// FUNCTION: IMPERIALISM 0x005f2e60
+undefined4 ComputeBoundedCStringLength(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateZeroedArrayWithRetryFallback
+// ghidra_proto void * __cdecl AllocateZeroedArrayWithRetryFallback(int nCount, int nElemSize)
+// FUNCTION: IMPERIALISM 0x005f2ec0
+undefined4 AllocateZeroedArrayWithRetryFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name ValidateCppExceptionRecordAndDispatchHook
+// ghidra_proto undefined ValidateCppExceptionRecordAndDispatchHook()
+// FUNCTION: IMPERIALISM 0x005f2f70
+undefined4 ValidateCppExceptionRecordAndDispatchHook(void)
+{
+  return 0;
+}
+
+// ghidra_name GetStringTypeWideWithAnsiFallback
+// ghidra_proto undefined GetStringTypeWideWithAnsiFallback()
+// FUNCTION: IMPERIALISM 0x005f3130
+undefined4 GetStringTypeWideWithAnsiFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name GetStringTypeWithCodePageFallback
+// ghidra_proto undefined GetStringTypeWithCodePageFallback()
+// FUNCTION: IMPERIALISM 0x005f32c0
+undefined4 GetStringTypeWithCodePageFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name ToUpperAsciiOrLocaleThreadSafe
+// ghidra_proto int __cdecl ToUpperAsciiOrLocaleThreadSafe(int ch)
+// FUNCTION: IMPERIALISM 0x005f3400
+undefined4 ToUpperAsciiOrLocaleThreadSafe(void)
+{
+  return 0;
+}
+
+// ghidra_name ToUpperCodepointWithLocaleAndMbcFallback
+// ghidra_proto uint __cdecl ToUpperCodepointWithLocaleAndMbcFallback(uint ch)
+// FUNCTION: IMPERIALISM 0x005f3490
+undefined4 ToUpperCodepointWithLocaleAndMbcFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name CompareStringsIgnoreCaseWithMbcFallback
+// ghidra_proto int __cdecl CompareStringsIgnoreCaseWithMbcFallback(byte * pLeft, byte * pRight)
+// FUNCTION: IMPERIALISM 0x005f3ec0
+undefined4 CompareStringsIgnoreCaseWithMbcFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name MapFpControlLowByteToRuntimeBits_EntryA
+// ghidra_proto undefined MapFpControlLowByteToRuntimeBits_EntryA()
+// FUNCTION: IMPERIALISM 0x005f3f90
+undefined4 MapFpControlLowByteToRuntimeBits_EntryA(void)
+{
+  return 0;
+}
+
+// ghidra_name MapFpControlLowByteToRuntimeBits_EntryB
+// ghidra_proto undefined MapFpControlLowByteToRuntimeBits_EntryB()
+// FUNCTION: IMPERIALISM 0x005f3fb0
+undefined4 MapFpControlLowByteToRuntimeBits_EntryB(void)
 {
   return 0;
 }

@@ -3,110 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name LocaleMapStringWideWithAnsiFallback
-// ghidra_proto undefined LocaleMapStringWideWithAnsiFallback()
-// FUNCTION: IMPERIALISM 0x005f29f0
-undefined4 LocaleMapStringWideWithAnsiFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name CountWideCharsUpToLimitOrNul
-// ghidra_proto undefined CountWideCharsUpToLimitOrNul()
-// FUNCTION: IMPERIALISM 0x005f2c00
-undefined4 CountWideCharsUpToLimitOrNul(void)
-{
-  return 0;
-}
-
-// ghidra_name MapStringWithLocaleAndMbcFallback
-// ghidra_proto int __cdecl MapStringWithLocaleAndMbcFallback(int localeId, uint mapFlags, int pSrc, int srcLen, int pDst, int dstLen, uint codePage)
-// FUNCTION: IMPERIALISM 0x005f2c40
-undefined4 MapStringWithLocaleAndMbcFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeBoundedCStringLength
-// ghidra_proto int __cdecl ComputeBoundedCStringLength(char * pText, int maxLen)
-// FUNCTION: IMPERIALISM 0x005f2e60
-undefined4 ComputeBoundedCStringLength(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateZeroedArrayWithRetryFallback
-// ghidra_proto void * __cdecl AllocateZeroedArrayWithRetryFallback(int nCount, int nElemSize)
-// FUNCTION: IMPERIALISM 0x005f2ec0
-undefined4 AllocateZeroedArrayWithRetryFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateCppExceptionRecordAndDispatchHook
-// ghidra_proto undefined ValidateCppExceptionRecordAndDispatchHook()
-// FUNCTION: IMPERIALISM 0x005f2f70
-undefined4 ValidateCppExceptionRecordAndDispatchHook(void)
-{
-  return 0;
-}
-
-// ghidra_name GetStringTypeWideWithAnsiFallback
-// ghidra_proto undefined GetStringTypeWideWithAnsiFallback()
-// FUNCTION: IMPERIALISM 0x005f3130
-undefined4 GetStringTypeWideWithAnsiFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name GetStringTypeWithCodePageFallback
-// ghidra_proto undefined GetStringTypeWithCodePageFallback()
-// FUNCTION: IMPERIALISM 0x005f32c0
-undefined4 GetStringTypeWithCodePageFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name ToUpperAsciiOrLocaleThreadSafe
-// ghidra_proto int __cdecl ToUpperAsciiOrLocaleThreadSafe(int ch)
-// FUNCTION: IMPERIALISM 0x005f3400
-undefined4 ToUpperAsciiOrLocaleThreadSafe(void)
-{
-  return 0;
-}
-
-// ghidra_name ToUpperCodepointWithLocaleAndMbcFallback
-// ghidra_proto uint __cdecl ToUpperCodepointWithLocaleAndMbcFallback(uint ch)
-// FUNCTION: IMPERIALISM 0x005f3490
-undefined4 ToUpperCodepointWithLocaleAndMbcFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareStringsIgnoreCaseWithMbcFallback
-// ghidra_proto int __cdecl CompareStringsIgnoreCaseWithMbcFallback(byte * pLeft, byte * pRight)
-// FUNCTION: IMPERIALISM 0x005f3ec0
-undefined4 CompareStringsIgnoreCaseWithMbcFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name MapFpControlLowByteToRuntimeBits_EntryA
-// ghidra_proto undefined MapFpControlLowByteToRuntimeBits_EntryA()
-// FUNCTION: IMPERIALISM 0x005f3f90
-undefined4 MapFpControlLowByteToRuntimeBits_EntryA(void)
-{
-  return 0;
-}
-
-// ghidra_name MapFpControlLowByteToRuntimeBits_EntryB
-// ghidra_proto undefined MapFpControlLowByteToRuntimeBits_EntryB()
-// FUNCTION: IMPERIALISM 0x005f3fb0
-undefined4 MapFpControlLowByteToRuntimeBits_EntryB(void)
-{
-  return 0;
-}
-
 // ghidra_name MergeMappedFpControlWithMaskAndStore
 // ghidra_proto undefined MergeMappedFpControlWithMaskAndStore()
 // FUNCTION: IMPERIALISM 0x005f3fd0
@@ -1747,66 +1643,10 @@ undefined4 DispatchVirtualSlot18OnImplicitObject(void)
   return 0;
 }
 
-// ghidra_name AllocateSharedStringBufferForLength
-// ghidra_proto undefined AllocateSharedStringBufferForLength()
-// FUNCTION: IMPERIALISM 0x006057de
-undefined4 AllocateSharedStringBufferForLength(void)
-{
-  return 0;
-}
-
-// ghidra_name DecrementSharedStringRefCountAndFree
-// ghidra_proto undefined DecrementSharedStringRefCountAndFree()
-// FUNCTION: IMPERIALISM 0x0060584a
-undefined4 DecrementSharedStringRefCountAndFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At0060586d
 // ghidra_proto undefined WrapperFor_CopyMemoryPossiblyOverlapping_At0060586d()
 // FUNCTION: IMPERIALISM 0x0060586d
 undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At0060586d(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsureUniqueSharedStringBuffer
-// ghidra_proto undefined EnsureUniqueSharedStringBuffer()
-// FUNCTION: IMPERIALISM 0x0060588b
-undefined4 EnsureUniqueSharedStringBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AllocateSharedStringBufferForLength_At006058b9
-// ghidra_proto undefined WrapperFor_AllocateSharedStringBufferForLength_At006058b9()
-// FUNCTION: IMPERIALISM 0x006058b9
-undefined4 WrapperFor_AllocateSharedStringBufferForLength_At006058b9(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc
-// ghidra_proto undefined WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc()
-// FUNCTION: IMPERIALISM 0x006059fc
-undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78
-// ghidra_proto undefined WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78()
-// FUNCTION: IMPERIALISM 0x00605a78
-undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(void)
-{
-  return 0;
-}
-
-// ghidra_name ConcatenateTwoBuffersToSharedString
-// ghidra_proto void __thiscall ConcatenateTwoBuffersToSharedString(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x00605ae0
-undefined4 ConcatenateTwoBuffersToSharedString(void)
 {
   return 0;
 }
@@ -1835,42 +1675,10 @@ undefined4 AssignSharedStringConcatCStrAndRef(void)
   return 0;
 }
 
-// ghidra_name AppendBufferToSharedString
-// ghidra_proto undefined AppendBufferToSharedString()
-// FUNCTION: IMPERIALISM 0x00605c6f
-undefined4 AppendBufferToSharedString(void)
-{
-  return 0;
-}
-
 // ghidra_name AppendSingleByteToSharedStringFromArg
 // ghidra_proto undefined AppendSingleByteToSharedStringFromArg()
 // FUNCTION: IMPERIALISM 0x00605cf5
 undefined4 AppendSingleByteToSharedStringFromArg(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsureSharedStringCapacityPreserveLength
-// ghidra_proto undefined EnsureSharedStringCapacityPreserveLength()
-// FUNCTION: IMPERIALISM 0x00605d22
-undefined4 EnsureSharedStringCapacityPreserveLength(void)
-{
-  return 0;
-}
-
-// ghidra_name SetSharedStringLengthAndTerminator
-// ghidra_proto undefined SetSharedStringLengthAndTerminator()
-// FUNCTION: IMPERIALISM 0x00605d71
-undefined4 SetSharedStringLengthAndTerminator(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99
-// ghidra_proto undefined WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99()
-// FUNCTION: IMPERIALISM 0x00605d99
-undefined4 WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99(void)
 {
   return 0;
 }
@@ -2231,14 +2039,6 @@ undefined4 GetCObjectRuntimeClass(void)
 // ghidra_proto undefined WrapperFor_EstablishSehFrameProlog_At00606ff2()
 // FUNCTION: IMPERIALISM 0x00606ff2
 undefined4 WrapperFor_EstablishSehFrameProlog_At00606ff2(void)
-{
-  return 0;
-}
-
-// ghidra_name ScanLinkedListForNodeByNextPointer
-// ghidra_proto uint __thiscall ScanLinkedListForNodeByNextPointer(void * targetNode)
-// FUNCTION: IMPERIALISM 0x00607077
-undefined4 ScanLinkedListForNodeByNextPointer(void)
 {
   return 0;
 }
@@ -3999,6 +3799,206 @@ undefined4 NoOpVirtualStub_0061180f(void)
 // ghidra_proto undefined WrapperFor_AddTail_At00611810()
 // FUNCTION: IMPERIALISM 0x00611810
 undefined4 WrapperFor_AddTail_At00611810(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed
+// ghidra_proto void __stdcall WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x006118ed
+undefined4 WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(void)
+{
+  return 0;
+}
+
+// ghidra_name WriteVariableLengthPrefixedByteBuffer
+// ghidra_proto undefined WriteVariableLengthPrefixedByteBuffer()
+// FUNCTION: IMPERIALISM 0x00611930
+undefined4 WriteVariableLengthPrefixedByteBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00611a9e
+// ghidra_proto undefined WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00611a9e()
+// FUNCTION: IMPERIALISM 0x00611a9e
+undefined4 WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00611a9e(void)
+{
+  return 0;
+}
+
+// ghidra_name FindThreadHandleMapEntryBySerializedName
+// ghidra_proto void * __stdcall FindThreadHandleMapEntryBySerializedName(void * archiveState, uint * outSerializedKey)
+// FUNCTION: IMPERIALISM 0x00611aec
+undefined4 FindThreadHandleMapEntryBySerializedName(void)
+{
+  return 0;
+}
+
+// ghidra_name WriteRuntimeClassIdAndNameRecord
+// ghidra_proto void __fastcall WriteRuntimeClassIdAndNameRecord(void * runtimeClassRecord)
+// FUNCTION: IMPERIALISM 0x00611b7c
+undefined4 WriteRuntimeClassIdAndNameRecord(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeSerializedArchiveBufferState
+// ghidra_proto void __thiscall InitializeSerializedArchiveBufferState(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00611bb4
+undefined4 InitializeSerializedArchiveBufferState(void)
+{
+  return 0;
+}
+
+// ghidra_name ReleaseSerializedArchiveBufferState
+// ghidra_proto void __thiscall ReleaseSerializedArchiveBufferState(void)
+// FUNCTION: IMPERIALISM 0x00611c90
+undefined4 ReleaseSerializedArchiveBufferState(void)
+{
+  return 0;
+}
+
+// ghidra_name ReleaseSerializedArchiveBackingBuffersAndMaps
+// ghidra_proto void __thiscall ReleaseSerializedArchiveBackingBuffersAndMaps(void)
+// FUNCTION: IMPERIALISM 0x00611cd6
+undefined4 ReleaseSerializedArchiveBackingBuffersAndMaps(void)
+{
+  return 0;
+}
+
+// ghidra_name FlushSerializedArchiveBufferAndResetStreamCount
+// ghidra_proto void __thiscall FlushSerializedArchiveBufferAndResetStreamCount(void)
+// FUNCTION: IMPERIALISM 0x00611d18
+undefined4 FlushSerializedArchiveBufferAndResetStreamCount(void)
+{
+  return 0;
+}
+
+// ghidra_name ReadBytesFromSerializedBuffer
+// ghidra_proto int __thiscall ReadBytesFromSerializedBuffer(void * destination, uint requestedCount)
+// FUNCTION: IMPERIALISM 0x00611d26
+undefined4 ReadBytesFromSerializedBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::WriteBytesToSerializedBuffer
+// ghidra_proto void __thiscall WriteBytesToSerializedBuffer(void * source, uint byteCount)
+// FUNCTION: IMPERIALISM 0x00611e34
+undefined4 WriteBytesToSerializedBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name FlushOrRebaseSerializedBufferCursor
+// ghidra_proto void __fastcall FlushOrRebaseSerializedBufferCursor(void * streamState)
+// FUNCTION: IMPERIALISM 0x00611ec4
+undefined4 FlushOrRebaseSerializedBufferCursor(void)
+{
+  return 0;
+}
+
+// ghidra_name EnsureSerializedBufferHasBytesAvailable
+// ghidra_proto void __thiscall EnsureSerializedBufferHasBytesAvailable(uint requiredBytes)
+// FUNCTION: IMPERIALISM 0x00611f3e
+undefined4 EnsureSerializedBufferHasBytesAvailable(void)
+{
+  return 0;
+}
+
+// ghidra_name WriteArchiveWordOrEscapedDword
+// ghidra_proto void __thiscall WriteArchiveWordOrEscapedDword(void * pArchive, uint value)
+// FUNCTION: IMPERIALISM 0x00612000
+undefined4 WriteArchiveWordOrEscapedDword(void)
+{
+  return 0;
+}
+
+// ghidra_name ReadLineFromArchiveStreamIntoBuffer
+// ghidra_proto undefined ReadLineFromArchiveStreamIntoBuffer()
+// FUNCTION: IMPERIALISM 0x0061207b
+undefined4 ReadLineFromArchiveStreamIntoBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name ReadTextChunksIntoSharedStringAndTrimNewline
+// ghidra_proto bool __thiscall ReadTextChunksIntoSharedStringAndTrimNewline(void * pSharedString)
+// FUNCTION: IMPERIALISM 0x00612132
+undefined4 ReadTextChunksIntoSharedStringAndTrimNewline(void)
+{
+  return 0;
+}
+
+// ghidra_name ValidateSerializedReferenceCountOrThrow
+// ghidra_proto void __fastcall ValidateSerializedReferenceCountOrThrow(void * stateContext)
+// FUNCTION: IMPERIALISM 0x006121cd
+undefined4 ValidateSerializedReferenceCountOrThrow(void)
+{
+  return 0;
+}
+
+// ghidra_name SerializePolymorphicObjectReferenceAndPayload
+// ghidra_proto void __thiscall SerializePolymorphicObjectReferenceAndPayload(void * objectRef)
+// FUNCTION: IMPERIALISM 0x006121e1
+undefined4 SerializePolymorphicObjectReferenceAndPayload(void)
+{
+  return 0;
+}
+
+// ghidra_name ResolveOrInstantiateSerializedObjectReference
+// ghidra_proto void * __thiscall ResolveOrInstantiateSerializedObjectReference(void * runtimeClassOrFactory)
+// FUNCTION: IMPERIALISM 0x0061225e
+undefined4 ResolveOrInstantiateSerializedObjectReference(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterSerializedReferenceInArrayOrMap
+// ghidra_proto void __thiscall RegisterSerializedReferenceInArrayOrMap(void * referenceNode)
+// FUNCTION: IMPERIALISM 0x00612315
+undefined4 RegisterSerializedReferenceInArrayOrMap(void)
+{
+  return 0;
+}
+
+// ghidra_name SerializeObjectReferenceTokenByHandleMap
+// ghidra_proto void __thiscall SerializeObjectReferenceTokenByHandleMap(void * objectRef)
+// FUNCTION: IMPERIALISM 0x0061240d
+undefined4 SerializeObjectReferenceTokenByHandleMap(void)
+{
+  return 0;
+}
+
+// ghidra_name DeserializeObjectReferenceWithValidation
+// ghidra_proto void * __thiscall DeserializeObjectReferenceWithValidation(void * expectedNode, uint * outLookupKey, uint * outRawToken)
+// FUNCTION: IMPERIALISM 0x0061249e
+undefined4 DeserializeObjectReferenceWithValidation(void)
+{
+  return 0;
+}
+
+// ghidra_name CDC::ConstructCDC
+// ghidra_proto void __fastcall ConstructCDC(void * pThis)
+// FUNCTION: IMPERIALISM 0x00612682
+undefined4 ConstructCDC(void)
+{
+  return 0;
+}
+
+// ghidra_name ScalarDeleteCDC
+// ghidra_proto undefined ScalarDeleteCDC()
+// FUNCTION: IMPERIALISM 0x00612696
+undefined4 ScalarDeleteCDC(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_GetOrCreateDcHandleMapForThreadState_At006126b2
+// ghidra_proto undefined WrapperFor_GetOrCreateDcHandleMapForThreadState_At006126b2()
+// FUNCTION: IMPERIALISM 0x006126b2
+undefined4 WrapperFor_GetOrCreateDcHandleMapForThreadState_At006126b2(void)
 {
   return 0;
 }

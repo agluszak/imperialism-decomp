@@ -8,13 +8,14 @@ public:
   unsigned int pad_0c;
   NodeScanner *next;
 
-  int ContainsNode(int target);
+  unsigned int ScanLinkedListForNodeByNextPointer(void *target_node);
 };
 
-int NodeScanner::ContainsNode(int target)
+// GHIDRA comment: traverses forward-linked nodes via +0x10 next pointer.
+// FUNCTION: IMPERIALISM 0x00607077
+unsigned int NodeScanner::ScanLinkedListForNodeByNextPointer(void *target_node)
 {
   NodeScanner *cur = this;
-  NodeScanner *target_node = (NodeScanner *)target;
   while (cur != 0) {
     if (cur == target_node) {
       return 1;
@@ -35,7 +36,7 @@ public:
 int LinkedListQueryOwner::IsNodePresentInLinkedListByNextPointer(int target)
 {
   NodeScanner *scanner = GetNodeScanner();
-  return scanner->ContainsNode(target);
+  return scanner->ScanLinkedListForNodeByNextPointer(reinterpret_cast<void *>(target));
 }
 
 // FUNCTION: IMPERIALISM 0x00606fd2

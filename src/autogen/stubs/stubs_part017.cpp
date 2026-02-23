@@ -3,70 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMiniShipView::CreateTMiniShipViewInstance
-// ghidra_proto void * __cdecl CreateTMiniShipViewInstance(void)
-// FUNCTION: IMPERIALISM 0x00569dc0
-undefined4 CreateTMiniShipViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMiniShipView::GetTMiniShipViewClassNamePointer
-// ghidra_proto void * __cdecl GetTMiniShipViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00569e40
-undefined4 GetTMiniShipViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderNavyOrderNormalizationGaugeAndNationMarker
-// ghidra_proto void __cdecl RenderNavyOrderNormalizationGaugeAndNationMarker(void)
-// FUNCTION: IMPERIALISM 0x00569eb0
-undefined4 RenderNavyOrderNormalizationGaugeAndNationMarker(void)
-{
-  return 0;
-}
-
-// ghidra_name TMiniShipView::DestructTMiniShipViewAndMaybeFree
-// ghidra_proto void __thiscall DestructTMiniShipViewAndMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x0056a330
-undefined4 DestructTMiniShipViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TGamePreferencesPicture::CreateTGamePreferencesPictureInstance
-// ghidra_proto void * __cdecl CreateTGamePreferencesPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x0056a510
-undefined4 CreateTGamePreferencesPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TGamePreferencesPicture::GetTGamePreferencesPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTGamePreferencesPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0056a590
-undefined4 GetTGamePreferencesPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState
-// ghidra_proto void * __thiscall ConstructTGamePreferencesPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x0056a5b0
-undefined4 ConstructTGamePreferencesPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At0056ae10
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At0056ae10(void)
-// FUNCTION: IMPERIALISM 0x0056ae10
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At0056ae10(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC
 // ghidra_proto void __thiscall HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC(int pOptionsState)
 // FUNCTION: IMPERIALISM 0x0056af74
@@ -3999,6 +3935,70 @@ undefined4 OrphanVtableAssignStub_00586150(void)
 // ghidra_proto void __thiscall UpdateTradeResourceSelectionByIndex(int nResourceIndex)
 // FUNCTION: IMPERIALISM 0x00586170
 undefined4 UpdateTradeResourceSelectionByIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name TStatusButton::CreateTStatusButtonInstance
+// ghidra_proto void * __cdecl CreateTStatusButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00586280
+undefined4 CreateTStatusButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TStatusButton::GetTStatusButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTStatusButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00586310
+undefined4 GetTStatusButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TStatusButton::ConstructTStatusButtonBaseState
+// ghidra_proto void * __thiscall ConstructTStatusButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x00586330
+undefined4 ConstructTStatusButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TStatusButton::DestructTStatusButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTStatusButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005863b0
+undefined4 DestructTStatusButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TStatusButton::HandleCityDialogSelectionAndBackControlReset
+// ghidra_proto void __thiscall HandleCityDialogSelectionAndBackControlReset(int selectedIndex)
+// FUNCTION: IMPERIALISM 0x00586400
+undefined4 HandleCityDialogSelectionAndBackControlReset(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityBarCluster::CreateTCityBarClusterInstance
+// ghidra_proto void * __cdecl CreateTCityBarClusterInstance(void)
+// FUNCTION: IMPERIALISM 0x00586590
+undefined4 CreateTCityBarClusterInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityBarCluster::GetTCityBarClusterClassNamePointer
+// ghidra_proto void * __cdecl GetTCityBarClusterClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00586610
+undefined4 GetTCityBarClusterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityBarCluster::ConstructTCityBarClusterBaseState
+// ghidra_proto void * __thiscall ConstructTCityBarClusterBaseState(void)
+// FUNCTION: IMPERIALISM 0x00586630
+undefined4 ConstructTCityBarClusterBaseState(void)
 {
   return 0;
 }
