@@ -69,8 +69,6 @@ const int kSummaryTagProf = 0x70726f66;
 const int kSummaryTagPowe = 0x706f7765;
 const int kSummaryTagRail = 0x7261696c;
 const int kSummaryTagIart = 0x74726169;
-const int kControlTagPlus = 0x706c7573;
-const int kControlTagMinu = 0x6d696e75;
 const int kAssertLineBidSecondary = 0x907;
 const int kAssertLineBidActionable = 0x8de;
 const int kAssertLineOfferActionable = 0x8f2;
@@ -107,25 +105,12 @@ const unsigned int kAddrClassDescTRailAmtBar = 0x00662fe0;
 const unsigned int kVtableTShipyardCluster = 0x00666760;
 const unsigned int kAddrClassDescTShipyardCluster = 0x00662ff8;
 const unsigned int kAddrTradeSummarySelectionMap = 0x006960e0;
-const unsigned int kAddrCityOrderCapabilityState = 0x006A43D8;
 
 // Symbol placeholders to preserve OFFSET-style codegen in ctor/dtor wrappers.
 char g_vtblTShipAmtBar;
 char g_pClassDescTShipAmtBar;
 char g_vtblTTraderAmtBar;
 char g_pClassDescTTraderAmtBar;
-char g_vtblTCivilianButton;
-char g_pClassDescTCivilianButton;
-char g_vtblTHQButton;
-char g_pClassDescTHQButton;
-char g_vtblTPlacard;
-char g_pClassDescTPlacard;
-char g_vtblTArmyPlacard;
-char g_pClassDescTArmyPlacard;
-char g_vtblTNumberedArrowButton;
-char g_pClassDescTNumberedArrowButton;
-char g_vtblTCombatReportView;
-char g_pClassDescTCombatReportView;
 
 const short kTradeBitmapBidStateA = 0x083f;
 const short kTradeBitmapBidStateB = 0x084d;
@@ -200,50 +185,6 @@ struct TradeAmountBarLayout {
   short stepOrCurrentValue;
   short auxValueA;
   short auxValueB;
-};
-
-struct CivilianButtonState {
-  void *vftable;
-  char pad_04[0x5c];
-  int buttonTag;
-};
-
-struct HQButtonState {
-  void *vftable;
-  char pad_04[0x5c];
-  int buttonTag;
-  unsigned char toggleStateAt64;
-  char pad_65[0x1f];
-  short glyphBase84;
-  char pad_86[0xa];
-  short glyph90;
-  short glyph92;
-  short glyph94;
-  short glyph96;
-  short glyph98;
-  char pad_9a[2];
-};
-
-struct PlacardState {
-  void *vftable;
-  char pad_04[0x8c];
-  short placardValue;
-};
-
-struct NumberedArrowButtonState {
-  void *vftable;
-  char pad_04[0x34];
-  int width38;
-  char pad_3c[0x12];
-  short hoverTag4e;
-  char pad_50[0x34];
-  short value84;
-  short value86;
-};
-
-struct CombatReportViewState {
-  void *vftable;
-  char pad_04[0x9c];
 };
 
 struct TradeMoveStepCluster {

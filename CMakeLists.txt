@@ -26,6 +26,7 @@ add_executable(Imperialism
     src/game/string_shared.cpp
     src/game/sprite.cpp
     src/game/trade_screen.cpp
+    src/game/ui_widget_wrappers.cpp
     src/game/toolbars_and_views.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp

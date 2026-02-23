@@ -2,6 +2,23 @@
 
 ## 2026-02-23
 
+### Trade-screen scope cleanup (move widget wrappers out)
+1. Moved non-trade widget wrapper quads from `trade_screen_parts/part_2.cpp` into:
+   1. `src/game/ui_widget_wrappers.cpp`
+2. Moved addresses:
+   1. `0x0058B340..0x0058C900` (`TCivilianButton`, `THQButton`, `TPlacard`, `TArmyPlacard`, `TNumberedArrowButton`, `TCombatReportView` wrappers)
+3. Trade-screen parts now:
+   1. `part_1`: `0x00587130..0x0058A940`
+   2. `part_2`: `0x0058AAA0..0x0058AF30`
+4. Build-system update:
+   1. added `src/game/ui_widget_wrappers.cpp` to `CMakeLists.txt`.
+5. Validation:
+   1. Docker MSVC500 build: success.
+   2. `progress_stats.py` (`2026-02-23T18:36:08Z`) unchanged:
+      1. paired `12229/12229` (`100%`)
+      2. aligned `43`
+      3. average similarity `2.01%`
+
 ### Trade-screen scope cleanup (move non-trade wrappers out)
 1. Moved clearly non-trade class wrapper quads out of trade-screen into:
    1. `src/game/toolbars_and_views.cpp`
