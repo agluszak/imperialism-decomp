@@ -70,3 +70,10 @@ Current reminders for improving `% similarity`:
 14. Prefer promoting contiguous address ranges (same subsystem) in one run of `promote_from_autogen.py` to preserve natural function ordering and reduce merge churn.
 15. After promotion, first clean compile breakages by normalizing class-style decompiler output into existing project free-function style before similarity tuning.
 16. For control lookups on owner panels, use a single typed helper (`ResolveOwnerControl`) instead of repeating inline `reinterpret_cast` at each callsite.
+17. Pull vtable/class-descriptor addresses from `config/symbols.csv` / `config/symbols.ghidra.txt` (not guesses); wrong constants can keep whole constructor/destructor blocks at `0%`.
+18. Treat newly promoted blocks as two phases: first `compiles and links`, then `shape/data parity`; first-pass ports can still report `0%` despite clean builds.
+19. `reccmp_latest.json` stores `matching` as ratio (`0.2987`), not percent; always multiply by `100` when recording stats in docs.
+20. Keep helper usage patterns consistent inside one subsystem (same constructor/destructor style for `*AmtBar` families) before micro-tuning single functions.
+21. For constructor/destructor wrappers that Ghidra shows as unusual `__cdecl` + implicit `ECX`, verify calling-convention/prologue shape before data-layout tuning; wrong wrapper shape can stay pinned at `0%`.
+22. Bridge calls to Ghidra-exported ctor/dtor thunks should usually use `__fastcall` wrappers (ECX-based) in this codebase; plain cdecl wrappers (`push/call/add esp`) often lose >15% similarity on small wrappers.
+23. Validate suspicious `0.00%` entries with `reccmp --verbose 0xADDR`; JSON summaries can underreport some wrapper matches, while verbose diffs show actionable percentages.

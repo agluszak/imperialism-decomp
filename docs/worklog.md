@@ -2,6 +2,87 @@
 
 ## 2026-02-23
 
+### Similarity push (wrapper shape + class wrapper extraction)
+1. Improved call-shape parity in `src/game/trade_screen.cpp`:
+   1. switched bridge wrapper calls for ctor/dtor helper thunks from cdecl-style to `__fastcall` bridge usage.
+   2. tightened `0x0058ABF0` (`SelectTradeSpecialCommodityAndRecomputeBarLimits`) toward original branch/divide shape.
+2. Promoted and converted 16 additional class wrapper functions from autogen into typed manual code:
+   1. `0x0058B340`, `0x0058B3C0`, `0x0058B3E0`, `0x0058B410`
+   2. `0x0058B5C0`, `0x0058B640`, `0x0058B660`, `0x0058B690`
+   3. `0x0058B960`, `0x0058B9F0`, `0x0058BA10`, `0x0058BA40`
+   4. `0x0058BE30`, `0x0058BEB0`, `0x0058BED0`, `0x0058BF00`
+3. Marked all corresponding stubs in `src/autogen/stubs/stubs_part018.cpp` as `MANUAL_OVERRIDE_ADDR`.
+4. Added anti-folding guard for tiny wrappers:
+   1. `#pragma auto_inline(off)` around the newly added small wrapper block.
+   2. restored pairing coverage after temporary `paired -1` regression.
+5. Verification (`progress_stats.py`, `2026-02-23T10:47:59Z`):
+   1. paired coverage: `12229/12229` (`100%`).
+   2. aligned: `43`.
+   3. average similarity: `1.83%` (up from `1.73%` before this pass, `+0.10 pp`).
+6. Targeted verbose checkpoints from this pass:
+   1. `0x0058AB60`: `91.67%`
+   2. `0x0058ABF0`: `81.36%`
+   3. `0x0058AEF0`: `91.67%`
+   4. `0x0058AAA0`: `42.11%`
+
+### Trade-screen extraction batch (`0x0058AAA0`..`0x0058ABF0`)
+1. Promoted and converted 5 contiguous `TShipAmtBar` functions into typed C++ in `src/game/trade_screen.cpp`:
+   1. `0x0058AAA0` `CreateTShipAmtBarInstance`
+   2. `0x0058AB40` `GetTShipAmtBarClassNamePointer`
+   3. `0x0058AB60` `ConstructTShipAmtBarBaseState`
+   4. `0x0058ABA0` `DestructTShipAmtBarAndMaybeFree`
+   5. `0x0058ABF0` `SelectTradeSpecialCommodityAndRecomputeBarLimits`
+2. Added missing constants from exported symbols:
+   1. `kVtableTShipAmtBar = 0x00666998`
+   2. `kAddrClassDescTShipAmtBar = 0x00663010`
+3. Marked corresponding autogen stubs as manual overrides in `src/autogen/stubs/stubs_part018.cpp`.
+4. Verification:
+   1. Docker MSVC500 build: success.
+   2. `reccmp-project detect`: success.
+   3. `progress_stats.py` snapshot (`2026-02-23T10:35:21Z`):
+      1. Recompiled functions: `12354` (`+5`).
+      2. Paired coverage: `12229/12229` (`100%`).
+      3. 100% aligned: `43` (unchanged).
+      4. Average similarity: `1.69%` (`+0.03 pp`).
+5. Focused similarities for this batch:
+   1. `0x0058AAA0`: `0.00%`
+   2. `0x0058AB40`: `0.00%`
+   3. `0x0058AB60`: `0.00%`
+   4. `0x0058ABA0`: `0.00%`
+   5. `0x0058ABF0`: `0.00%`
+6. Observations (works vs does not):
+   1. Works: contiguous promotion + immediate typed rewrite keeps compile/link stable and keeps momentum.
+   2. Works: using exported vtable/class descriptor addresses directly avoids symbol drift.
+   3. Does not yet work: first-pass shape parity on this block; all 5 remain at `0%` and need branch/order/data-layout tuning.
+   4. Does not yet work: relying on inferred field semantics without validating exact offset semantics in hot code paths.
+
+### Trade-screen extraction batch (`0x0058AE30`..`0x0058AF30`)
+1. Promoted and converted 4 additional contiguous amount-bar functions:
+   1. `0x0058AE30` `CreateTTraderAmtBarInstance`
+   2. `0x0058AED0` `GetTTraderAmtBarClassNamePointer`
+   3. `0x0058AEF0` `ConstructTTraderAmtBar_Vtbl00666ba0`
+   4. `0x0058AF30` `DestructTTraderAmtBarMaybeFree`
+2. Added constants:
+   1. `kVtableTTraderAmtBar = 0x00666ba0`
+   2. `kAddrClassDescTTraderAmtBar = 0x00663028`
+3. Marked corresponding autogen stubs as manual overrides in `src/autogen/stubs/stubs_part018.cpp`.
+4. Verification:
+   1. Docker MSVC500 build: success.
+   2. `reccmp-project detect`: success.
+   3. `progress_stats.py` snapshot (`2026-02-23T10:37:58Z`):
+      1. Recompiled functions: `12332`.
+      2. Paired coverage: `12229/12229` (`100%`).
+      3. 100% aligned: `43` (unchanged).
+      4. Average similarity: `1.71%` (`+0.02 pp`).
+5. Focused similarities for this batch:
+   1. `0x0058AE30`: `0.00%`
+   2. `0x0058AED0`: `0.00%`
+   3. `0x0058AEF0`: `0.00%`
+   4. `0x0058AF30`: `0.00%`
+6. Observations:
+   1. Works: contiguous extraction still raises global average despite low first-pass local scores.
+   2. Does not yet work: constructor/destructor wrappers in this block likely still have signature/prologue mismatch relative to original code shape.
+
 ### Process and documentation updates
 1. Updated `AGENTS.md` with a mandatory continuous matching loop:
    1. shape pass -> data pass -> targeted reccmp -> neighbor regression check.
