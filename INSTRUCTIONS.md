@@ -33,3 +33,17 @@ uv run python tools/ghidra/sync_exports.py \
   --ghidra-project-name <GHIDRA_PROJECT_NAME> \
   --ghidra-program-name Imperialism.exe
 ```
+
+## Similarity Improvement Notes
+
+Keep this section updated while working. Add short, concrete notes after each reccmp iteration.
+
+Current reminders for improving `% similarity`:
+
+1. Prefer virtual-slot wrappers over ad-hoc function-pointer typedef calls.
+2. Preserve original control-flow shape first (early-return vs fail-and-continue) before micro-tuning names.
+3. Match argument count at each vtable slot (`+0xA4`, `+0xA8`, etc.); wrong arity tanks similarity quickly.
+4. Reuse exact tag/bitmap constants and stack-local layout arrays from Ghidra comments.
+5. Track one function at a time with `reccmp --verbose`, then commit only when no regression on neighboring functions.
+6. For UI-control initializers, missing style/bounds slots (`+0x1B4`, `+0x1C4`, `+0x12C`, `+0x168`) can cost >20% by themselves.
+7. If Ghidra shows assertion paths, keep their line IDs (`USmallViews.cpp` style) and preserve fail-and-continue shape unless proven otherwise.

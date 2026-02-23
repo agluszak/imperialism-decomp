@@ -221,7 +221,7 @@ undefined4 DestroyTradeSellControlPanel(void)
 
 // ghidra_name InitializeTradeSellControlState
 // ghidra_proto void __cdecl InitializeTradeSellControlState(void)
-// FUNCTION: IMPERIALISM 0x00587130
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587130
 undefined4 InitializeTradeSellControlState(void)
 {
   return 0;
@@ -237,7 +237,7 @@ undefined4 HandleTradeSellControlCommand(void)
 
 // ghidra_name SetTradeBidControlBitmapState
 // ghidra_proto void __cdecl SetTradeBidControlBitmapState(void)
-// FUNCTION: IMPERIALISM 0x00587bb0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587bb0
 undefined4 SetTradeBidControlBitmapState(void)
 {
   return 0;
@@ -245,7 +245,7 @@ undefined4 SetTradeBidControlBitmapState(void)
 
 // ghidra_name SetTradeOfferControlBitmapState
 // ghidra_proto void __cdecl SetTradeOfferControlBitmapState(void)
-// FUNCTION: IMPERIALISM 0x00587dd0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587dd0
 undefined4 SetTradeOfferControlBitmapState(void)
 {
   return 0;
@@ -253,7 +253,7 @@ undefined4 SetTradeOfferControlBitmapState(void)
 
 // ghidra_name SetTradeOfferSecondaryBitmapState
 // ghidra_proto void __cdecl SetTradeOfferSecondaryBitmapState(void)
-// FUNCTION: IMPERIALISM 0x00588030
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588030
 undefined4 SetTradeOfferSecondaryBitmapState(void)
 {
   return 0;
@@ -261,7 +261,7 @@ undefined4 SetTradeOfferSecondaryBitmapState(void)
 
 // ghidra_name UpdateTradeSellControlAndBarFromNationMetric
 // ghidra_proto void __fastcall UpdateTradeSellControlAndBarFromNationMetric(int * this)
-// FUNCTION: IMPERIALISM 0x005882f0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005882f0
 undefined4 UpdateTradeSellControlAndBarFromNationMetric(void)
 {
   return 0;
@@ -4002,4 +4002,3 @@ undefined4 OrphanLeaf_NoCall_Ins838_005a6a20(void)
 {
   return 0;
 }
-
