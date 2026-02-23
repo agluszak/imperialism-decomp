@@ -65,3 +65,9 @@ full-sync-build:
   just build
   just detect
   just stats
+
+format *paths:
+  uv run python tools/workflow/format_cpp.py {{paths}}
+
+format-check *paths:
+  uv run python tools/workflow/format_cpp.py --check {{paths}}
