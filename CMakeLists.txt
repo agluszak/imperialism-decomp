@@ -62,7 +62,14 @@ if(MSVC)
     target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)
 
     if(IMPERIALISM_MATCH_FLAGS_CSV)
-        string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_CSV}")
+        set(IMPERIALISM_MATCH_FLAGS_RAW "${IMPERIALISM_MATCH_FLAGS_CSV}")
+        if(IMPERIALISM_MATCH_FLAGS_RAW MATCHES ",")
+            string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
+        else()
+            # Backward-compat with slash-concatenated form like "/Oy-/Ob1".
+            string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
+            string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS}")
+        endif()
         target_compile_options(
             Imperialism
             PRIVATE
@@ -71,7 +78,13 @@ if(MSVC)
     endif()
 
     if(IMPERIALISM_MATCH_LINK_FLAGS_CSV)
-        string(REPLACE "," ";" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_CSV}")
+        set(IMPERIALISM_MATCH_LINK_FLAGS_RAW "${IMPERIALISM_MATCH_LINK_FLAGS_CSV}")
+        if(IMPERIALISM_MATCH_LINK_FLAGS_RAW MATCHES ",")
+            string(REPLACE "," ";" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
+        else()
+            string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
+            string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS}")
+        endif()
         target_link_options(
             Imperialism
             PRIVATE
