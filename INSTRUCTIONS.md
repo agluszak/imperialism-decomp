@@ -17,6 +17,13 @@
 2. `src/ghidra_autogen/` and `include/ghidra_autogen/` are regenerated snapshots from Ghidra.
 3. Manual files in `src/game/` should preserve exported naming unless there is an explicit RE-driven reason not to.
 
+## File Organization Policy
+
+1. Use class-named source files for class-owned implementations:
+   - `src/game/<ClassName>.cpp` (for example: `src/game/TCivReport.cpp`, `src/game/TTransportPicture.cpp`).
+2. Do not add new class implementations to mixed bucket files.
+3. Keep mixed files only for true globals/wrappers that have no class ownership.
+
 ## Code Shape Policy
 
 1. Do not use inline assembly (`__asm`, `_asm`, `asm(...)`) in project source files.
@@ -45,14 +52,18 @@ uv run python tools/workflow/promote_from_autogen.py \
 2. Trade-screen is split into address-ordered parts; promote into the correct part file:
    - `src/game/trade_screen_parts/part_1.cpp`: `0x00587130` .. `0x0058A940`
    - `src/game/trade_screen_parts/part_2.cpp`: `0x0058AAA0` .. `0x0058AF30`
-   - widget wrapper classes moved out to `src/game/ui_widget_wrappers.cpp` (`0x0058B340` .. `0x0058C900`).
-   - toolbar/view class wrappers moved out to `src/game/toolbars_and_views.cpp` (`0x0058DE40` .. `0x005915D0`).
+   - class wrapper implementations must go to class files `src/game/<ClassName>.cpp`.
    - keep functions in each part sorted by ascending original address.
 3. Immediately convert promoted raw offset access into typed field access:
    - replace `*(type *)((int)obj + off)` with struct fields.
    - introduce/adjust local structs for stable offsets instead of repeating `reinterpret_cast` math.
 4. After promotion, mark corresponding autogen stubs as manual overrides:
    - change `// FUNCTION: IMPERIALISM 0x...` to `// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x...` in `src/autogen/stubs/stubs_part*.cpp`.
+5. For splitting mixed files into class files, use:
+```bash
+uv run python tools/workflow/split_classes_in_file.py \
+  --source-cpp src/game/<mixed_file>.cpp
+```
 
 ## Similarity Improvement Notes
 
@@ -92,5 +103,5 @@ Current reminders for improving `% similarity`:
 30. After any annotation-only edit in source/stub files, do a rebuild before trusting stats; stale PDB line mappings can create false pairing regressions.
 31. For view/toolbar wrapper quads with this current shape, first-pass pattern is consistently around `34.78/50.00/85.71/66.67` (`create/get/construct/destruct`); treat this as a quick baseline before deeper prologue/calling-convention tuning.
 32. Keep `src/game/trade_screen.cpp` as shared scaffolding only; add new trade-screen function bodies in `src/game/trade_screen_parts/part_*.cpp`, not in the umbrella file.
-33. If a function is clearly non-trade (toolbar/report/view class wrappers), move it to `src/game/toolbars_and_views.cpp` instead of forcing it into trade-screen parts.
-34. If the function belongs to generic UI widget wrappers (civilian/HQ/placard/numbered-arrow/combat-report class quads), place it in `src/game/ui_widget_wrappers.cpp`.
+33. If a function is clearly class-owned, move it into `src/game/<ClassName>.cpp` instead of any mixed bucket file.
+34. Keep `src/game/ui_widget_wrappers.cpp` for global/non-class wrappers only; class-owned UI wrappers belong in class files.

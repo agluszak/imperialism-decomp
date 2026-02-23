@@ -2,6 +2,38 @@
 
 ## 2026-02-23
 
+### Class-file split refactor (active)
+1. Enforced class-per-file layout for extracted wrappers.
+2. Added dedicated class files:
+   1. `src/game/TCivReport.cpp`
+   2. `src/game/TTransportPicture.cpp`
+   3. `src/game/TArmyToolbar.cpp`
+   4. `src/game/TStratReportView.cpp`
+   5. `src/game/TCivToolbar.cpp`
+   6. `src/game/TArmyInfoView.cpp`
+3. Added reusable splitter script:
+   1. `tools/workflow/split_classes_in_file.py`
+4. Applied splitter to `src/game/ui_widget_wrappers.cpp`, generating:
+   1. `src/game/TCivilianButton.cpp`
+   2. `src/game/THQButton.cpp`
+   3. `src/game/TPlacard.cpp`
+   4. `src/game/TArmyPlacard.cpp`
+   5. `src/game/TNumberedArrowButton.cpp`
+   6. `src/game/TCombatReportView.cpp`
+5. `src/game/ui_widget_wrappers.cpp` now keeps only global/non-class wrappers.
+6. Build-system updates:
+   1. `CMakeLists.txt` now includes the new class files.
+   2. Removed mixed `src/game/toolbars_and_views.cpp`.
+7. Stub ownership updates:
+   1. Flipped `TTransportPicture` quad (`0x00591D90`, `0x00591E50`, `0x00591E70`, `0x00591EC0`) to `MANUAL_OVERRIDE_ADDR`.
+8. Verification:
+   1. Docker MSVC500 build: success.
+   2. `reccmp-project detect`: success.
+   3. `progress_stats.py` snapshot (`2026-02-23T18:54:09Z`):
+      1. paired `12229/12229` (`100%`)
+      2. aligned `43`
+      3. average similarity `2.06%` (no regression from split)
+
 ### Trade-screen scope cleanup (move widget wrappers out)
 1. Moved non-trade widget wrapper quads from `trade_screen_parts/part_2.cpp` into:
    1. `src/game/ui_widget_wrappers.cpp`

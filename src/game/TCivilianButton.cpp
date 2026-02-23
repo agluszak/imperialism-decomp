@@ -287,18 +287,17 @@ static __inline short QueryActiveNationId(void)
 
 
 
-
-
-
-// FUNCTION: IMPERIALISM 0x0058C330
-void __fastcall OrphanCallChain_C1_I08_0058c330(
-    NumberedArrowButtonState *button, int unusedEdx, short value84, char refreshFlag)
+// FUNCTION: IMPERIALISM 0x0058B340
+CivilianButtonState *__cdecl CreateTCivilianButtonInstance(void)
 {
-  (void)unusedEdx;
-  button->value84 = value84;
-  if (refreshFlag != '\0') {
-    reinterpret_cast<TradeControl *>(button)->InvokeSlotE4();
+  CivilianButtonState *button = reinterpret_cast<CivilianButtonState *>(
+      AllocateWithFallbackHandler(0xa0));
+  if (button != 0) {
+    TradeScreenRuntimeBridge::ConstructUiClickablePictureResourceEntry(button);
+    button->vftable = reinterpret_cast<void *>(&g_vtblTCivilianButton);
+    button->buttonTag = 0xc;
   }
+  return button;
 }
 
 
@@ -306,19 +305,13 @@ void __fastcall OrphanCallChain_C1_I08_0058c330(
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C360
-void __fastcall OrphanCallChain_C2_I23_0058c360(
-    NumberedArrowButtonState *button, int unusedEdx, short value86, char refreshFlag)
+
+
+
+// FUNCTION: IMPERIALISM 0x0058B3C0
+void *__cdecl GetTCivilianButtonClassNamePointer(void)
 {
-  (void)unusedEdx;
-  int bounds[4];
-  if (button->value86 != value86) {
-    if (refreshFlag != '\0') {
-      reinterpret_cast<TradeControl *>(button)->InvokeSlotE4();
-      reinterpret_cast<TradeControl *>(button)->QueryBounds(bounds);
-    }
-    button->value86 = value86;
-  }
+  return reinterpret_cast<void *>(&g_pClassDescTCivilianButton);
 }
 
 
@@ -326,23 +319,36 @@ void __fastcall OrphanCallChain_C2_I23_0058c360(
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C7C0
-void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
-    NumberedArrowButtonState *button, int unusedEdx, int *cursorPoint, int hitArg)
+
+
+
+// FUNCTION: IMPERIALISM 0x0058B3E0
+CivilianButtonState *__fastcall ConstructTCivilianButtonBaseState(CivilianButtonState *button)
+{
+  TradeScreenRuntimeBridge::ConstructUiClickablePictureResourceEntry(button);
+  button->vftable = reinterpret_cast<void *>(&g_vtblTCivilianButton);
+  button->buttonTag = 0xc;
+  return button;
+}
+
+
+
+
+
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0058B410
+CivilianButtonState *__fastcall DestructTCivilianButtonAndMaybeFree(
+    CivilianButtonState *button, int unusedEdx, unsigned char freeSelfFlag)
 {
   (void)unusedEdx;
-  TradeControl *control = reinterpret_cast<TradeControl *>(button);
-  if (control->IsActionable() != '\0') {
-    if (cursorPoint[1] < button->width38 / 2) {
-      button->hoverTag4e = 0x100;
-      reinterpret_cast<void (__fastcall *)(NumberedArrowButtonState *, int *, int)>(
-          ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
-      return;
-    }
-    button->hoverTag4e = (short)0xffff;
+  TradeScreenRuntimeBridge::DestructCityDialogSharedBaseState(button);
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)button);
   }
-  reinterpret_cast<void (__fastcall *)(NumberedArrowButtonState *, int *, int)>(
-      ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
+  return button;
 }
 
 #if defined(_MSC_VER)

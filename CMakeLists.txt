@@ -27,7 +27,18 @@ add_executable(Imperialism
     src/game/sprite.cpp
     src/game/trade_screen.cpp
     src/game/ui_widget_wrappers.cpp
-    src/game/toolbars_and_views.cpp
+    src/game/TCivilianButton.cpp
+    src/game/THQButton.cpp
+    src/game/TPlacard.cpp
+    src/game/TArmyPlacard.cpp
+    src/game/TNumberedArrowButton.cpp
+    src/game/TCombatReportView.cpp
+    src/game/TArmyToolbar.cpp
+    src/game/TStratReportView.cpp
+    src/game/TCivToolbar.cpp
+    src/game/TArmyInfoView.cpp
+    src/game/TCivReport.cpp
+    src/game/TTransportPicture.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
 )

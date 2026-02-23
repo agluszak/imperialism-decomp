@@ -1341,7 +1341,7 @@ undefined4 RenderCivilianTargetProfilePanel(void)
 
 // ghidra_name TCivReport::CreateTCivReportInstance
 // ghidra_proto void * __cdecl CreateTCivReportInstance(void)
-// FUNCTION: IMPERIALISM 0x00590b90
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590b90
 undefined4 CreateTCivReportInstance(void)
 {
   return 0;
@@ -1349,7 +1349,7 @@ undefined4 CreateTCivReportInstance(void)
 
 // ghidra_name TCivReport::GetTCivReportClassNamePointer
 // ghidra_proto void * __cdecl GetTCivReportClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00590c10
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590c10
 undefined4 GetTCivReportClassNamePointer(void)
 {
   return 0;
@@ -1357,7 +1357,7 @@ undefined4 GetTCivReportClassNamePointer(void)
 
 // ghidra_name TCivReport::ConstructTCivReportBaseState
 // ghidra_proto void * __thiscall ConstructTCivReportBaseState(void)
-// FUNCTION: IMPERIALISM 0x00590c30
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590c30
 undefined4 ConstructTCivReportBaseState(void)
 {
   return 0;
@@ -1365,7 +1365,7 @@ undefined4 ConstructTCivReportBaseState(void)
 
 // ghidra_name TCivReport::DestructTCivReportAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCivReportAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00590c60
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590c60
 undefined4 DestructTCivReportAndMaybeFree(void)
 {
   return 0;
@@ -1421,7 +1421,7 @@ undefined4 RefreshArmyInfoViewTextAndStyleDescriptors(void)
 
 // ghidra_name TTransportPicture::CreateTTransportPictureInstance
 // ghidra_proto void * __cdecl CreateTTransportPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00591d90
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591d90
 undefined4 CreateTTransportPictureInstance(void)
 {
   return 0;
@@ -1429,7 +1429,7 @@ undefined4 CreateTTransportPictureInstance(void)
 
 // ghidra_name TTransportPicture::GetTTransportPictureClassNamePointer
 // ghidra_proto void * __cdecl GetTTransportPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00591e50
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591e50
 undefined4 GetTTransportPictureClassNamePointer(void)
 {
   return 0;
@@ -1437,7 +1437,7 @@ undefined4 GetTTransportPictureClassNamePointer(void)
 
 // ghidra_name TTransportPicture::ConstructTTransportPictureBaseState
 // ghidra_proto void * __thiscall ConstructTTransportPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x00591e70
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591e70
 undefined4 ConstructTTransportPictureBaseState(void)
 {
   return 0;
@@ -1445,7 +1445,7 @@ undefined4 ConstructTTransportPictureBaseState(void)
 
 // ghidra_name TTransportPicture::DestructTTransportPictureAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTransportPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00591ec0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591ec0
 undefined4 DestructTTransportPictureAndMaybeFree(void)
 {
   return 0;

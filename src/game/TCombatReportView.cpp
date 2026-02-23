@@ -290,15 +290,17 @@ static __inline short QueryActiveNationId(void)
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C330
-void __fastcall OrphanCallChain_C1_I08_0058c330(
-    NumberedArrowButtonState *button, int unusedEdx, short value84, char refreshFlag)
+
+// FUNCTION: IMPERIALISM 0x0058C830
+CombatReportViewState *__cdecl CreateTCombatReportViewInstance(void)
 {
-  (void)unusedEdx;
-  button->value84 = value84;
-  if (refreshFlag != '\0') {
-    reinterpret_cast<TradeControl *>(button)->InvokeSlotE4();
+  CombatReportViewState *view = reinterpret_cast<CombatReportViewState *>(
+      AllocateWithFallbackHandler(0xa0));
+  if (view != 0) {
+    TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(view);
+    view->vftable = reinterpret_cast<void *>(&g_vtblTCombatReportView);
   }
+  return view;
 }
 
 
@@ -306,19 +308,11 @@ void __fastcall OrphanCallChain_C1_I08_0058c330(
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C360
-void __fastcall OrphanCallChain_C2_I23_0058c360(
-    NumberedArrowButtonState *button, int unusedEdx, short value86, char refreshFlag)
+
+// FUNCTION: IMPERIALISM 0x0058C8B0
+void *__cdecl GetTCombatReportViewClassNamePointer(void)
 {
-  (void)unusedEdx;
-  int bounds[4];
-  if (button->value86 != value86) {
-    if (refreshFlag != '\0') {
-      reinterpret_cast<TradeControl *>(button)->InvokeSlotE4();
-      reinterpret_cast<TradeControl *>(button)->QueryBounds(bounds);
-    }
-    button->value86 = value86;
-  }
+  return reinterpret_cast<void *>(&g_pClassDescTCombatReportView);
 }
 
 
@@ -326,25 +320,34 @@ void __fastcall OrphanCallChain_C2_I23_0058c360(
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C7C0
-void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
-    NumberedArrowButtonState *button, int unusedEdx, int *cursorPoint, int hitArg)
+
+// FUNCTION: IMPERIALISM 0x0058C8D0
+CombatReportViewState *__fastcall ConstructTCombatReportViewBaseState(CombatReportViewState *view)
+{
+  TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(view);
+  view->vftable = reinterpret_cast<void *>(&g_vtblTCombatReportView);
+  return view;
+}
+
+
+
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0058C900
+CombatReportViewState *__fastcall DestructTCombatReportViewAndMaybeFree(
+    CombatReportViewState *view, int unusedEdx, unsigned char freeSelfFlag)
 {
   (void)unusedEdx;
-  TradeControl *control = reinterpret_cast<TradeControl *>(button);
-  if (control->IsActionable() != '\0') {
-    if (cursorPoint[1] < button->width38 / 2) {
-      button->hoverTag4e = 0x100;
-      reinterpret_cast<void (__fastcall *)(NumberedArrowButtonState *, int *, int)>(
-          ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
-      return;
-    }
-    button->hoverTag4e = (short)0xffff;
+  TradeScreenRuntimeBridge::DestructCityDialogSharedBaseState(view);
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)view);
   }
-  reinterpret_cast<void (__fastcall *)(NumberedArrowButtonState *, int *, int)>(
-      ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
+  return view;
 }
 
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+

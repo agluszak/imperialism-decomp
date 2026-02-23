@@ -290,15 +290,19 @@ static __inline short QueryActiveNationId(void)
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C330
-void __fastcall OrphanCallChain_C1_I08_0058c330(
-    NumberedArrowButtonState *button, int unusedEdx, short value84, char refreshFlag)
+
+
+
+// FUNCTION: IMPERIALISM 0x0058BE30
+PlacardState *__cdecl CreateTArmyPlacardInstance(void)
 {
-  (void)unusedEdx;
-  button->value84 = value84;
-  if (refreshFlag != '\0') {
-    reinterpret_cast<TradeControl *>(button)->InvokeSlotE4();
+  PlacardState *placard = reinterpret_cast<PlacardState *>(AllocateWithFallbackHandler(0x94));
+  if (placard != 0) {
+    TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(placard);
+    placard->vftable = reinterpret_cast<void *>(&g_vtblTArmyPlacard);
+    placard->placardValue = (short)0xffff;
   }
+  return placard;
 }
 
 
@@ -306,19 +310,13 @@ void __fastcall OrphanCallChain_C1_I08_0058c330(
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C360
-void __fastcall OrphanCallChain_C2_I23_0058c360(
-    NumberedArrowButtonState *button, int unusedEdx, short value86, char refreshFlag)
+
+
+
+// FUNCTION: IMPERIALISM 0x0058BEB0
+void *__cdecl GetTArmyPlacardClassNamePointer(void)
 {
-  (void)unusedEdx;
-  int bounds[4];
-  if (button->value86 != value86) {
-    if (refreshFlag != '\0') {
-      reinterpret_cast<TradeControl *>(button)->InvokeSlotE4();
-      reinterpret_cast<TradeControl *>(button)->QueryBounds(bounds);
-    }
-    button->value86 = value86;
-  }
+  return reinterpret_cast<void *>(&g_pClassDescTArmyPlacard);
 }
 
 
@@ -326,25 +324,93 @@ void __fastcall OrphanCallChain_C2_I23_0058c360(
 
 
 
-// FUNCTION: IMPERIALISM 0x0058C7C0
-void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
-    NumberedArrowButtonState *button, int unusedEdx, int *cursorPoint, int hitArg)
+
+
+
+// FUNCTION: IMPERIALISM 0x0058BED0
+PlacardState *__fastcall ConstructTArmyPlacardBaseState(PlacardState *placard)
+{
+  TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(placard);
+  placard->vftable = reinterpret_cast<void *>(&g_vtblTArmyPlacard);
+  placard->placardValue = (short)0xffff;
+  return placard;
+}
+
+
+
+
+
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0058BF00
+PlacardState *__fastcall DestructTArmyPlacardAndMaybeFree(
+    PlacardState *placard, int unusedEdx, unsigned char freeSelfFlag)
 {
   (void)unusedEdx;
-  TradeControl *control = reinterpret_cast<TradeControl *>(button);
-  if (control->IsActionable() != '\0') {
-    if (cursorPoint[1] < button->width38 / 2) {
-      button->hoverTag4e = 0x100;
-      reinterpret_cast<void (__fastcall *)(NumberedArrowButtonState *, int *, int)>(
-          ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
-      return;
-    }
-    button->hoverTag4e = (short)0xffff;
+  TradeScreenRuntimeBridge::DestructCityDialogSharedBaseState(placard);
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)placard);
   }
-  reinterpret_cast<void (__fastcall *)(NumberedArrowButtonState *, int *, int)>(
-      ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
+  return placard;
 }
 
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+
+
+
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0058BF50
+void __fastcall WrapperFor_GetActiveNationId_At0058bf50(
+    PlacardState *placard, int unusedEdx, short requestedValue)
+{
+  (void)unusedEdx;
+  short nationId = (short)QueryActiveNationId();
+  int controlIndex = *reinterpret_cast<int *>(reinterpret_cast<char *>(placard) + 0x1c);
+  char *cityOrderBase = *reinterpret_cast<char **>(kAddrCityOrderCapabilityState);
+  short baseSprite = *reinterpret_cast<short *>(
+      cityOrderBase + 0x1f2d3b76 + (controlIndex + (int)nationId * 10) * 2);
+
+  if (requestedValue != placard->placardValue) {
+    short sprite = (short)(baseSprite + 0x4c4);
+    if (requestedValue < 1) {
+      sprite = (short)(baseSprite + 0x4e2);
+    }
+    reinterpret_cast<TradeControl *>(placard)->SetBitmap((int)sprite, 1);
+    reinterpret_cast<TradeControl *>(placard)->InvokeSlotE4();
+  }
+  placard->placardValue = requestedValue;
+}
+
+
+
+
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0058C140
+void __fastcall HandlePlusMinusCommandAndInvokeVslot1CC(
+    PlacardState *placard, int unusedEdx, int *arg1, int *arg2)
+{
+  (void)unusedEdx;
+  (void)arg1;
+  TradeControl *control = reinterpret_cast<TradeControl *>(placard);
+  if (arg2[7] == kControlTagPlus) {
+    int updatedValue = (int)ActivateFirstActiveTacticalUnitByCategoryAtTile();
+    control->InvokeSlot1CC(updatedValue, 1);
+    return;
+  }
+  if (arg2[7] == kControlTagMinu) {
+    int updatedValue = (int)ActivateFirstIdleTacticalUnitByCategoryAtTile();
+    control->InvokeSlot1CC(updatedValue, 1);
+  }
+}
+
