@@ -42,7 +42,6 @@ static char g_vtblTCombatReportView;
 static char g_pClassDescTCombatReportView;
 
 struct TradeControl {
-  void* vftable;
   char pad_04[0x18];
   int controlTag;
   char pad_20[0x64];

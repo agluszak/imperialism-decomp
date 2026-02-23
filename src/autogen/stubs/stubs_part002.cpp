@@ -3965,7 +3965,7 @@ undefined4 thunk_GenerateCoarseAndFineRegionSeedMap(void)
 
 // ghidra_name thunk_SetTradeToolSubcontrolEnabledStateByFlag
 // ghidra_proto undefined thunk_SetTradeToolSubcontrolEnabledStateByFlag(void)
-// FUNCTION: IMPERIALISM 0x004032fb
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x004032fb
 undefined4 thunk_SetTradeToolSubcontrolEnabledStateByFlag(void)
 {
   return 0;
@@ -4002,4 +4002,3 @@ undefined4 thunk_LoadTurnEventCursorByResourceIdOffset1000(void)
 {
   return 0;
 }
-

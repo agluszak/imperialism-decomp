@@ -3421,7 +3421,7 @@ undefined4 DestructTSidewaysArrowAndMaybeFree(void)
 
 // ghidra_name HandleTradeArrowAutoRepeatTickAndDispatch
 // ghidra_proto void __thiscall HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void * arg8, void * argC, void * dispatchArg, void * arg14)
-// FUNCTION: IMPERIALISM 0x00583bd0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00583bd0
 undefined4 HandleTradeArrowAutoRepeatTickAndDispatch(void)
 {
   return 0;

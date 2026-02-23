@@ -109,3 +109,4 @@ Current reminders for improving `% similarity`:
 37. For this MSVC500 setup, avoid `__thiscall` in free-function pointer casts; normalize these wrappers with `__fastcall` shape to keep builds stable.
 38. Use mixed address-cluster promotion when needed (not strictly class-by-class): promote contiguous subsystem addresses first, then normalize class-scoped raw output into compile-safe wrappers.
 39. For ctor chains, keep `thiscall` as real member methods (`Class::thunk_*` calling `Class::Construct*`), and reserve free-function thunk casts only for unresolved external bridges.
+40. If `reccmp --verbose 0xADDR` reports “Failed to find a match”, verify the function is not being dropped as unreferenced by linker optimization (`/OPT:REF`) before spending time on body tuning.

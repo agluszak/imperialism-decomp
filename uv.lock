@@ -82,7 +82,7 @@ dependencies = [
 requires-dist = [
     { name = "clang-format", specifier = "==21.1.8" },
     { name = "pyghidra", specifier = "==3.0.2" },
-    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git" },
+    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=8a9854d2e315cb034c1c008c36138bb0ab60685d" },
 ]
 
 [[package]]
@@ -237,7 +237,7 @@ wheels = [
 [[package]]
 name = "reccmp"
 version = "0.1.0"
-source = { git = "https://github.com/agluszak/reccmp.git#9dcd53bd0dcba2b4c6660e6846a2ced4f466609a" }
+source = { git = "https://github.com/agluszak/reccmp.git?rev=8a9854d2e315cb034c1c008c36138bb0ab60685d#8a9854d2e315cb034c1c008c36138bb0ab60685d" }
 dependencies = [
     { name = "capstone" },
     { name = "colorama" },

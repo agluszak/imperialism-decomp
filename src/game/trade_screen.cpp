@@ -28,6 +28,11 @@ undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void); // GHIDRA_FUNCTION IMPERIALISM 0x004601B0
+undefined4 thunk_DispatchPictureResourceCommand(void);
+undefined4 thunk_GetTickCountDiv16(void);
+void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
+                                                          void* argC, void* dispatchArg,
+                                                          void* arg14);
 // GHIDRA_NAME: InitializeTradeScreenBitmapControls
 // GHIDRA_PROTO: undefined InitializeTradeScreenBitmapControls()
 /* DECOMPILATION FAILED: Exception while decompiling 004601b0: process: timeout */
@@ -37,6 +42,7 @@ namespace {
 const char kNilPointerText[] = "Nil Pointer";
 const char kFailureCaption[] = "Failure";
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
+const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 
 const int kControlTagSell = 0x53656c6c;
 const int kControlTagBar = 0x62617220;
@@ -77,6 +83,7 @@ const int kAssertLineRatioB = 0xb73;
 const int kAssertLineRatioA = 0xd1d;
 const int kAssertLineMovePageMinus = 0xd34;
 const int kAssertLineMovePagePlus = 0xd3c;
+const int kAssertLineToolSubcontrolToggle = 0xac7;
 const unsigned int kVtableTIndustryCluster = 0x00665ed0;
 const unsigned int kAddrClassDescTIndustryCluster = 0x00662f98;
 const unsigned int kVtableTIndustryAmtBar = 0x00666110;
@@ -230,6 +237,7 @@ struct TradeScreenContext {
   void SetTradeOfferControlBitmapState();
   void SetTradeOfferSecondaryBitmapState();
   void UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax);
+  void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
 };
 
 struct UiRuntimeContext {
@@ -317,6 +325,23 @@ __inline TradeControl* TradeScreenContext::RequireControlByTag(int controlTag) {
   return control;
 }
 
+// FUNCTION: IMPERIALISM 0x00401B3B
+void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TradeControl* self, int unusedEdx,
+                                                                int repeatState, void* arg8,
+                                                                void* argC, void* dispatchArg,
+                                                                void* arg14) {
+  (void)unusedEdx;
+  HandleTradeArrowAutoRepeatTickAndDispatch(self, repeatState, arg8, argC, dispatchArg, arg14);
+}
+
+// FUNCTION: IMPERIALISM 0x004032FB
+void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TradeScreenContext* self,
+                                                               int unusedEdx,
+                                                               unsigned char enabledFlag) {
+  (void)unusedEdx;
+  self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
+}
+
 static __inline void FailNilPointerInUSmallViews(int line) {
   MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
   ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
@@ -379,6 +404,51 @@ UiRuntimeContext* g_pUiRuntimeContext = 0;
 // nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
+
+// GHIDRA_NAME HandleTradeArrowAutoRepeatTickAndDispatch
+// GHIDRA_PROTO void __thiscall HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void *
+// arg8, void * argC, void * dispatchArg, void * arg14) GHIDRA_COMMENT_BEGIN GHIDRA_COMMENT [Enum]
+// Auto-repeat tick emits EArrowSplitCommandId::LEFT/RIGHT based on hit side/tag and repeat timing
+// gates. GHIDRA_COMMENT_END
+/* [Enum] Auto-repeat tick emits EArrowSplitCommandId::LEFT/RIGHT based on hit side/tag and repeat
+   timing gates. */
+// FUNCTION: IMPERIALISM 0x00583BD0
+void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
+  void* argC, void* dispatchArg, void* arg14) {
+  (void)arg14;
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*)>(
+      ::thunk_DispatchPictureResourceCommand)(self, repeatState, arg8, argC, dispatchArg);
+
+  if (repeatState == 2) {
+    return;
+  }
+
+  unsigned int tick = (unsigned int)thunk_GetTickCountDiv16();
+  int* repeatDeadline = reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x94);
+  if ((unsigned int)(*repeatDeadline + 5) > tick) {
+    return;
+  }
+
+  tick = (unsigned int)thunk_GetTickCountDiv16();
+  *repeatDeadline = (int)tick;
+  if (repeatState == 0) {
+    *repeatDeadline = (int)tick + 10;
+  }
+
+  void** vtable = *reinterpret_cast<void***>(self);
+  char isActive = reinterpret_cast<char(__fastcall*)(void*)>(vtable[0x16c / 4])(dispatchArg);
+  if (isActive == '\0') {
+    return;
+  }
+
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x1c) == kControlTagRght) {
+    reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(vtable[0x40 / 4])(self, 100, 0, 0);
+    return;
+  }
+
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(vtable[0x40 / 4])(self, 0x65, self,
+                                                                                0);
+}
 
 // FUNCTION: IMPERIALISM 0x00586170
 void UpdateTradeResourceSelectionByIndex(void* self, int nResourceIndex)
@@ -597,6 +667,7 @@ char TradeScreenContext::IsTradeBidControlActionable(void) {
 /* Trade UI predicate for Offer control interactivity.
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
+
 // FUNCTION: IMPERIALISM 0x00587A10
 char TradeScreenContext::IsTradeOfferControlActionable(void) {
   TradeControl* offerControl = CallResolveControlByTagSlot94(this, kControlTagOffr);
@@ -1111,6 +1182,7 @@ void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* clust
   cluster->field_88 = 0;
   cluster->field_8e = 0;
 }
+
 // FUNCTION: IMPERIALISM 0x005897B0
 void __fastcall
 SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* context,
@@ -1190,6 +1262,7 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value) {
 // GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
+
 // FUNCTION: IMPERIALISM 0x005899F0
 void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag) {
   short step = selectedMetricStep;
@@ -1266,3 +1339,39 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
 #include "TShipyardCluster.cpp"
 #include "TShipAmtBar.cpp"
 #include "TTraderAmtBar.cpp"
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059A180
+// GHIDRA_NAME SetTradeToolSubcontrolEnabledStateByFlag
+// GHIDRA_PROTO undefined SetTradeToolSubcontrolEnabledStateByFlag(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Looks up tool container and toggles child controls (seas/year/trea/teer tags)
+// using caller-provided enabled flag. GHIDRA_COMMENT_END
+
+/* Looks up tool container and toggles child controls (seas/year/trea/teer tags) using
+   caller-provided enabled flag. */
+// FUNCTION: IMPERIALISM 0x0059A180
+void TradeScreenContext::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag) {
+  TradeControl* toolControl = ResolveControlByTag(0x746f6f6c);
+  if (toolControl == 0) {
+    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+        kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
+  }
+
+  TradeControl* control = ResolveOwnerControl(toolControl, 0x73656173);
+  if (control != 0) {
+    control->SetEnabledPair((int)enabledFlag, 1);
+  }
+  control = ResolveOwnerControl(toolControl, 0x79656172);
+  if (control != 0) {
+    control->SetEnabledPair((int)enabledFlag, 1);
+  }
+  control = ResolveOwnerControl(toolControl, 0x74726561);
+  if (control != 0) {
+    control->SetEnabledPair((int)enabledFlag, 1);
+  }
+  control = ResolveOwnerControl(toolControl, 0x74726565);
+  if (control != 0) {
+    control->SetEnabledPair((int)enabledFlag, 1);
+  }
+}

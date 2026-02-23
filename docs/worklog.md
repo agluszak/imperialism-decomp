@@ -578,6 +578,28 @@
 3. `0x0048A8E0` `TView::ConstructUiResourceEntryBase`: `38.60%`
 4. `0x0048E520` `TControl::ConstructUiCommandTagResourceEntryBase`: `54.05%`
 
+## 2026-02-23 - trade_screen promotion batch
+
+### Commands
+1. `just promote src/game/trade_screen.cpp --address 0x00583BD0 --address 0x0058AEF0 --address 0x0059A180`
+2. `just format src/game/trade_screen.cpp src/autogen/stubs/stubs_part017.cpp src/autogen/stubs/stubs_part018.cpp`
+3. `just build`
+4. `just detect`
+5. `just compare 0x00583BD0`
+6. `just compare 0x0059A180`
+
+### Changes
+1. Promoted and normalized `0x00583BD0` as compile-safe C++ in `src/game/trade_screen.cpp`.
+2. Promoted and normalized `0x0059A180` as compile-safe C++ in `src/game/trade_screen.cpp`.
+3. Dropped duplicate promoted `0x0058AEF0` block from `src/game/trade_screen.cpp` because `TTraderAmtBar.cpp` already owns that function (`// FUNCTION: IMPERIALISM 0x0058AEF0`).
+4. Marked stubs as manual overrides:
+   1. `src/autogen/stubs/stubs_part017.cpp` (`0x00583BD0`)
+   2. `src/autogen/stubs/stubs_part018.cpp` (`0x0059A180`)
+
+### Results
+1. Build passes.
+2. `reccmp --verbose` currently reports “Failed to find a match” for `0x00583BD0` and `0x0059A180` (likely unreferenced function elimination path to investigate).
+
 ## 2026-02-23 21:34:00 UTC - trade_screen class split scaffolding
 
 ### Commands

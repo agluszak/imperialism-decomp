@@ -2317,7 +2317,7 @@ undefined4 SwapToolInfoSubviewAndRefreshClipRegion(void)
 
 // ghidra_name SetTradeToolSubcontrolEnabledStateByFlag
 // ghidra_proto undefined SetTradeToolSubcontrolEnabledStateByFlag(void)
-// FUNCTION: IMPERIALISM 0x0059a180
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0059a180
 undefined4 SetTradeToolSubcontrolEnabledStateByFlag(void)
 {
   return 0;

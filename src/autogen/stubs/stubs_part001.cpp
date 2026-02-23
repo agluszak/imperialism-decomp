@@ -2517,7 +2517,7 @@ undefined4 thunk_DestroyRadioAndReleaseOwnedResources(void)
 
 // ghidra_name thunk_HandleTradeArrowAutoRepeatTickAndDispatch
 // ghidra_proto void __thiscall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void * arg8, void * argC, void * dispatchArg, void * arg14)
-// FUNCTION: IMPERIALISM 0x00401b3b
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00401b3b
 undefined4 thunk_HandleTradeArrowAutoRepeatTickAndDispatch(void)
 {
   return 0;
@@ -4002,4 +4002,3 @@ undefined4 thunk_NoOpQuickDrawContextSelectionHook(void)
 {
   return 0;
 }
-
