@@ -77,3 +77,6 @@ Current reminders for improving `% similarity`:
 21. For constructor/destructor wrappers that Ghidra shows as unusual `__cdecl` + implicit `ECX`, verify calling-convention/prologue shape before data-layout tuning; wrong wrapper shape can stay pinned at `0%`.
 22. Bridge calls to Ghidra-exported ctor/dtor thunks should usually use `__fastcall` wrappers (ECX-based) in this codebase; plain cdecl wrappers (`push/call/add esp`) often lose >15% similarity on small wrappers.
 23. Validate suspicious `0.00%` entries with `reccmp --verbose 0xADDR`; JSON summaries can underreport some wrapper matches, while verbose diffs show actionable percentages.
+24. If promoted class-scoped raws (`ClassName::Func`) fail to compile because the class type is not declared in manual files, immediately convert them to free typed wrappers (`StateStruct *`) and continue; do not stall on class reconstruction.
+25. High-throughput loop works best with class “quads” (create/get/construct/destroy) imported together via `promote_from_autogen.py`, then normalized to shared runtime bridges.
+26. Keep `#pragma auto_inline(off)` around tiny wrapper batches to avoid temporary pair-count regressions from inlining/folding; re-enable after the batch.

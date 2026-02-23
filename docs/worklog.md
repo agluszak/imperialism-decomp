@@ -2,6 +2,37 @@
 
 ## 2026-02-23
 
+### Batch loop progress (THQ/Army wrapper pass)
+1. Promoted batch with existing workflow script:
+   1. `0x0058B6E0`
+   2. `0x0058B7F0`
+   3. `0x0058BF50`
+   4. `0x0058C140`
+2. Reworked promoted code into manual/typed wrappers in `src/game/trade_screen.cpp`:
+   1. added virtual slot helper for `+0x1CC` (`TradeControl::InvokeSlot1CC`).
+   2. extended `HQButtonState` layout with explicit fields used by wrappers.
+   3. converted problematic `TArmyPlacard::*` class-scoped raws to free typed wrappers after compile breakage.
+3. Stub sync:
+   1. flipped all four addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`.
+4. Results (`progress_stats.py`, `2026-02-23T10:54:06Z`):
+   1. paired coverage restored near full: `12228/12229`.
+   2. average similarity: `1.84%` (`+0.36 pp` vs failed build snapshot).
+
+### Batch loop progress (TNumberedArrowButton + TCombatReportView quads)
+1. Promoted and normalized 8 low-risk class quad functions:
+   1. `0x0058C1E0`, `0x0058C280`, `0x0058C2A0`, `0x0058C2E0`
+   2. `0x0058C830`, `0x0058C8B0`, `0x0058C8D0`, `0x0058C900`
+2. Added reusable scaffolding:
+   1. `NumberedArrowButtonState`, `CombatReportViewState` layouts.
+   2. bridge helper for `thunk_ConstructUiCommandTagResourceEntryBase`.
+   3. symbol placeholders for vtable/classdesc pairs.
+3. Stub sync:
+   1. flipped all eight addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`.
+4. Results (`progress_stats.py`, `2026-02-23T10:56:41Z`):
+   1. paired: `12228/12229` (coverage `99.99%`).
+   2. aligned: `43`.
+   3. average similarity: `1.89%` (`+0.05 pp` from previous loop).
+
 ### Similarity push (wrapper shape + class wrapper extraction)
 1. Improved call-shape parity in `src/game/trade_screen.cpp`:
    1. switched bridge wrapper calls for ctor/dtor helper thunks from cdecl-style to `__fastcall` bridge usage.

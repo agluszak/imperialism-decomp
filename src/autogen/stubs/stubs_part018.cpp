@@ -837,7 +837,7 @@ undefined4 DestructTHQButtonAndMaybeFree(void)
 
 // ghidra_name THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
 // ghidra_proto undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0()
-// FUNCTION: IMPERIALISM 0x0058b6e0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b6e0
 undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(void)
 {
   return 0;
@@ -853,7 +853,7 @@ undefined4 OrphanCallChain_C3_I43_0058b750(void)
 
 // ghidra_name THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
 // ghidra_proto void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
-// FUNCTION: IMPERIALISM 0x0058b7f0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b7f0
 undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
 {
   return 0;
@@ -965,7 +965,7 @@ undefined4 DestructTArmyPlacardAndMaybeFree(void)
 
 // ghidra_name TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
 // ghidra_proto void __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
-// FUNCTION: IMPERIALISM 0x0058bf50
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bf50
 undefined4 WrapperFor_GetActiveNationId_At0058bf50(void)
 {
   return 0;
@@ -981,7 +981,7 @@ undefined4 RenderRightAlignedNumericOverlayWithShadow(void)
 
 // ghidra_name TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC
 // ghidra_proto void __thiscall HandlePlusMinusCommandAndInvokeVslot1CC(int * arg1, int * arg2)
-// FUNCTION: IMPERIALISM 0x0058c140
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c140
 undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
 {
   return 0;
@@ -989,7 +989,7 @@ undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
 
 // ghidra_name TNumberedArrowButton::CreateTNumberedArrowButtonInstance
 // ghidra_proto void * __cdecl CreateTNumberedArrowButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x0058c1e0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c1e0
 undefined4 CreateTNumberedArrowButtonInstance(void)
 {
   return 0;
@@ -997,7 +997,7 @@ undefined4 CreateTNumberedArrowButtonInstance(void)
 
 // ghidra_name TNumberedArrowButton::GetTNumberedArrowButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTNumberedArrowButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0058c280
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c280
 undefined4 GetTNumberedArrowButtonClassNamePointer(void)
 {
   return 0;
@@ -1005,7 +1005,7 @@ undefined4 GetTNumberedArrowButtonClassNamePointer(void)
 
 // ghidra_name TNumberedArrowButton::ConstructTNumberedArrowButtonBaseState
 // ghidra_proto void * __thiscall ConstructTNumberedArrowButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058c2a0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c2a0
 undefined4 ConstructTNumberedArrowButtonBaseState(void)
 {
   return 0;
@@ -1013,7 +1013,7 @@ undefined4 ConstructTNumberedArrowButtonBaseState(void)
 
 // ghidra_name TNumberedArrowButton::DestructTNumberedArrowButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNumberedArrowButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0058c2e0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c2e0
 undefined4 DestructTNumberedArrowButtonAndMaybeFree(void)
 {
   return 0;
@@ -1061,7 +1061,7 @@ undefined4 WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_
 
 // ghidra_name TCombatReportView::CreateTCombatReportViewInstance
 // ghidra_proto void * __cdecl CreateTCombatReportViewInstance(void)
-// FUNCTION: IMPERIALISM 0x0058c830
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c830
 undefined4 CreateTCombatReportViewInstance(void)
 {
   return 0;
@@ -1069,7 +1069,7 @@ undefined4 CreateTCombatReportViewInstance(void)
 
 // ghidra_name TCombatReportView::GetTCombatReportViewClassNamePointer
 // ghidra_proto void * __cdecl GetTCombatReportViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0058c8b0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c8b0
 undefined4 GetTCombatReportViewClassNamePointer(void)
 {
   return 0;
@@ -1077,7 +1077,7 @@ undefined4 GetTCombatReportViewClassNamePointer(void)
 
 // ghidra_name TCombatReportView::ConstructTCombatReportViewBaseState
 // ghidra_proto void * __thiscall ConstructTCombatReportViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058c8d0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c8d0
 undefined4 ConstructTCombatReportViewBaseState(void)
 {
   return 0;
@@ -1085,7 +1085,7 @@ undefined4 ConstructTCombatReportViewBaseState(void)
 
 // ghidra_name TCombatReportView::DestructTCombatReportViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCombatReportViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0058c900
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c900
 undefined4 DestructTCombatReportViewAndMaybeFree(void)
 {
   return 0;
