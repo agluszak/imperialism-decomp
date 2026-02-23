@@ -3,6 +3,7 @@
 // Shared UI-wrapper scaffolding extracted from widget class files.
 
 #include "decomp_types.h"
+#include "game/TControl.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
@@ -13,7 +14,6 @@ undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
-undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void);
@@ -38,7 +38,7 @@ static char g_vtblTCombatReportView;
 static char g_pClassDescTCombatReportView;
 
 struct TradeControl {
-  void *vftable;
+  void* vftable;
   char pad_04[0x18];
   int controlTag;
   char pad_20[0x64];
@@ -46,19 +46,19 @@ struct TradeControl {
 
   __inline char IsActionable();
   __inline void SetBitmap(int bitmapIdValue, int unknownFlag);
-  __inline void QueryBounds(int *boundsBuffer);
+  __inline void QueryBounds(int* boundsBuffer);
   __inline void InvokeSlotE4();
   __inline void InvokeSlot1CC(int value, int modeFlag);
 };
 
 struct CivilianButtonState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x5c];
   int buttonTag;
 };
 
 struct HQButtonState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x5c];
   int buttonTag;
   unsigned char toggleStateAt64;
@@ -74,13 +74,13 @@ struct HQButtonState {
 };
 
 struct PlacardState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x8c];
   short placardValue;
 };
 
 struct NumberedArrowButtonState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x34];
   int width38;
   char pad_3c[0x12];
@@ -91,93 +91,78 @@ struct NumberedArrowButtonState {
 };
 
 struct CombatReportViewState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x9c];
 };
 
-static __inline char CallIsActionableSlotEC(TradeControl *control)
-{
-  return reinterpret_cast<char (__fastcall *)(TradeControl *)>(
-      (*reinterpret_cast<void ***>(control))[0xec / 4])(control);
+static __inline char CallIsActionableSlotEC(TradeControl* control) {
+  return reinterpret_cast<char(__fastcall*)(TradeControl*)>(
+      (*reinterpret_cast<void***>(control))[0xec / 4])(control);
 }
 
-static __inline void CallSetBitmapSlot1C8(TradeControl *control, int bitmapIdValue, int unknownFlag)
-{
-  reinterpret_cast<void (__fastcall *)(TradeControl *, int, int)>(
-      (*reinterpret_cast<void ***>(control))[0x1c8 / 4])(control, bitmapIdValue, unknownFlag);
+static __inline void CallSetBitmapSlot1C8(TradeControl* control, int bitmapIdValue,
+                                          int unknownFlag) {
+  reinterpret_cast<void(__fastcall*)(TradeControl*, int, int)>(
+      (*reinterpret_cast<void***>(control))[0x1c8 / 4])(control, bitmapIdValue, unknownFlag);
 }
 
-static __inline void CallQueryBoundsSlot12C(TradeControl *control, int *boundsBuffer)
-{
-  reinterpret_cast<void (__fastcall *)(TradeControl *, int *)>(
-      (*reinterpret_cast<void ***>(control))[0x12c / 4])(control, boundsBuffer);
+static __inline void CallQueryBoundsSlot12C(TradeControl* control, int* boundsBuffer) {
+  reinterpret_cast<void(__fastcall*)(TradeControl*, int*)>(
+      (*reinterpret_cast<void***>(control))[0x12c / 4])(control, boundsBuffer);
 }
 
-static __inline void CallCtrlSlot57(TradeControl *control)
-{
-  reinterpret_cast<void (__fastcall *)(TradeControl *)>(
-      (*reinterpret_cast<void ***>(control))[0xe4 / 4])(control);
+static __inline void CallCtrlSlot57(TradeControl* control) {
+  reinterpret_cast<void(__fastcall*)(TradeControl*)>(
+      (*reinterpret_cast<void***>(control))[0xe4 / 4])(control);
 }
 
-static __inline void CallInvokeSlot1CC(TradeControl *control, int value, int modeFlag)
-{
-  reinterpret_cast<void (__fastcall *)(TradeControl *, int, int)>(
-      (*reinterpret_cast<void ***>(control))[0x1cc / 4])(control, value, modeFlag);
+static __inline void CallInvokeSlot1CC(TradeControl* control, int value, int modeFlag) {
+  reinterpret_cast<void(__fastcall*)(TradeControl*, int, int)>(
+      (*reinterpret_cast<void***>(control))[0x1cc / 4])(control, value, modeFlag);
 }
 
 class TradeScreenRuntimeBridge {
 public:
-  static __inline void ConstructUiClickablePictureResourceEntry(void *self)
-  {
-    reinterpret_cast<void (__fastcall *)(void *)>(
-        ::thunk_ConstructUiClickablePictureResourceEntry)(self);
+  static __inline void ConstructUiClickablePictureResourceEntry(void* self) {
+    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiClickablePictureResourceEntry)(
+        self);
   }
 
-  static __inline void ConstructUiCommandTagResourceEntryBase(void *self)
-  {
-    reinterpret_cast<void (__fastcall *)(void *)>(
-        ::thunk_ConstructUiCommandTagResourceEntryBase)(self);
+  static __inline void ConstructUiCommandTagResourceEntryBase(void* self) {
+    reinterpret_cast<TControl*>(self)->thunk_ConstructUiCommandTagResourceEntryBase();
   }
 
-  static __inline void ConstructPictureResourceEntryBase(void *self)
-  {
-    reinterpret_cast<void (__fastcall *)(void *)>(::thunk_ConstructPictureResourceEntryBase)(self);
+  static __inline void ConstructPictureResourceEntryBase(void* self) {
+    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructPictureResourceEntryBase)(self);
   }
 
-  static __inline void DestructCityDialogSharedBaseState(void *self)
-  {
-    reinterpret_cast<void (__fastcall *)(void *)>(::thunk_DestructCityDialogSharedBaseState)(self);
+  static __inline void DestructCityDialogSharedBaseState(void* self) {
+    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_DestructCityDialogSharedBaseState)(self);
   }
 };
 
-__inline char TradeControl::IsActionable()
-{
+__inline char TradeControl::IsActionable() {
   return CallIsActionableSlotEC(this);
 }
 
-__inline void TradeControl::SetBitmap(int bitmapIdValue, int unknownFlag)
-{
+__inline void TradeControl::SetBitmap(int bitmapIdValue, int unknownFlag) {
   CallSetBitmapSlot1C8(this, bitmapIdValue, unknownFlag);
 }
 
-__inline void TradeControl::QueryBounds(int *boundsBuffer)
-{
+__inline void TradeControl::QueryBounds(int* boundsBuffer) {
   CallQueryBoundsSlot12C(this, boundsBuffer);
 }
 
-__inline void TradeControl::InvokeSlotE4()
-{
+__inline void TradeControl::InvokeSlotE4() {
   CallCtrlSlot57(this);
 }
 
-__inline void TradeControl::InvokeSlot1CC(int value, int modeFlag)
-{
+__inline void TradeControl::InvokeSlot1CC(int value, int modeFlag) {
   CallInvokeSlot1CC(this, value, modeFlag);
 }
 
-static __inline short QueryActiveNationId(void)
-{
+static __inline short QueryActiveNationId(void) {
   return (short)thunk_GetActiveNationId();
 }
 
-}  // namespace
+} // namespace

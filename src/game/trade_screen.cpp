@@ -2,6 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
+#include "game/TControl.h"
 
 typedef void* hwnd_t;
 typedef void code(void);
@@ -22,10 +23,8 @@ undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 ConstructTUberClusterBaseState(void);
-undefined4 thunk_ConstructUiResourceEntryBase(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
-undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void); // GHIDRA_FUNCTION IMPERIALISM 0x004601B0
@@ -431,7 +430,7 @@ public:
   }
 
   static __inline void ConstructUiResourceEntryBase(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiResourceEntryBase)(self);
+    reinterpret_cast<TView*>(self)->thunk_ConstructUiResourceEntryBase();
   }
 
   static __inline void ConstructUiResourceEntryType4B0C0(void* self) {
@@ -444,8 +443,7 @@ public:
   }
 
   static __inline void ConstructUiCommandTagResourceEntryBase(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiCommandTagResourceEntryBase)(
-        self);
+    reinterpret_cast<TControl*>(self)->ConstructUiCommandTagResourceEntryBase();
   }
 
   static __inline void ConstructPictureResourceEntryBase(void* self) {

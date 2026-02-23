@@ -2965,7 +2965,7 @@ undefined4 thunk_InitializeTurnOrderNavigationDialogByViewportSize(void)
 
 // ghidra_name TView::thunk_ConstructUiResourceEntryBase
 // ghidra_proto void __thiscall thunk_ConstructUiResourceEntryBase(void)
-// FUNCTION: IMPERIALISM 0x004064e2
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x004064e2
 undefined4 thunk_ConstructUiResourceEntryBase(void)
 {
   return 0;
@@ -4002,4 +4002,3 @@ undefined4 thunk_RebuildMapOrderEntryChildren(void)
 {
   return 0;
 }
-

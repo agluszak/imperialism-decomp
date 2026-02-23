@@ -541,3 +541,55 @@
 1. Split “focused” and “full” metrics in reporting to avoid confusion.
 2. Lock ignore-generation policy (which buckets are permanent vs temporary).
 3. Start targeted implementation batches from high-impact game functions.
+
+## 2026-02-23 21:07:41 UTC - TView/TControl ctor hierarchy pass
+
+### Commands
+1. `just promote src/game/TControl.cpp --address 0x004087FB --address 0x0048E520`
+2. `just promote src/game/TView.cpp --address 0x004064E2`
+3. `just build`
+4. `just detect`
+5. `just compare 0x004064E2`
+6. `just compare 0x0048A8E0`
+7. `just compare 0x004087FB`
+8. `just compare 0x0048E520`
+
+### Changes
+1. Added class files:
+   1. `src/game/TView.cpp`
+   2. `src/game/TControl.cpp`
+2. Added shared class layout header:
+   1. `include/game/TControl.h`
+3. Updated runtime bridges to call class members:
+   1. `include/game/ui_widget_shared.h`
+   2. `src/game/trade_screen.cpp`
+4. Added new compile units:
+   1. `src/game/TView.cpp`
+   2. `src/game/TControl.cpp`
+5. Marked overridden stub addresses as manual:
+   1. `0x004064E2`
+   2. `0x004087FB`
+   3. `0x0048A8E0`
+   4. `0x0048E520`
+
+### Results
+1. `0x004064E2` `TView::thunk_ConstructUiResourceEntryBase`: `100.00%`
+2. `0x004087FB` `TControl::thunk_ConstructUiCommandTagResourceEntryBase`: `100.00%`
+3. `0x0048A8E0` `TView::ConstructUiResourceEntryBase`: `38.60%`
+4. `0x0048E520` `TControl::ConstructUiCommandTagResourceEntryBase`: `54.05%`
+
+## 2026-02-23 21:34:00 UTC - trade_screen class split scaffolding
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x00587130`
+4. `just compare 0x00588950`
+5. `just compare 0x005899F0`
+
+### Changes
+1. Split class-owned trade screen implementations into class files included by `src/game/trade_screen.cpp`:
+   1. `src/game/TradeScreenContext.cpp`
+   2. `src/game/TradeMoveControlState.cpp`
+   3. `src/game/TradeMovePanelContext.cpp`
+2. Kept struct declarations in `src/game/trade_screen.cpp` as codegen source-of-truth for now to avoid mangling/codegen churn.

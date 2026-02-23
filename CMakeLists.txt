@@ -41,6 +41,8 @@ add_executable(Imperialism
     src/game/TTransportPicture.cpp
     src/game/TWarningView.cpp
     src/game/TSoundPlayer.cpp
+    src/game/TView.cpp
+    src/game/TControl.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
 )
