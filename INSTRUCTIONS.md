@@ -42,10 +42,15 @@ uv run python tools/workflow/promote_from_autogen.py \
   --target-cpp src/game/<file>.cpp \
   --address 0x<ADDR> [--address 0x<ADDR> ...]
 ```
-2. Immediately convert promoted raw offset access into typed field access:
+2. Trade-screen is split into address-ordered parts; promote into the correct part file:
+   - `src/game/trade_screen_parts/part_1.cpp`: `0x00587130` .. `0x0058A940`
+   - `src/game/trade_screen_parts/part_2.cpp`: `0x0058AAA0` .. `0x0058C900`
+   - `src/game/trade_screen_parts/part_3.cpp`: `0x0058DE40` .. `0x005915D0`
+   - keep functions in each part sorted by ascending original address.
+3. Immediately convert promoted raw offset access into typed field access:
    - replace `*(type *)((int)obj + off)` with struct fields.
    - introduce/adjust local structs for stable offsets instead of repeating `reinterpret_cast` math.
-3. After promotion, mark corresponding autogen stubs as manual overrides:
+4. After promotion, mark corresponding autogen stubs as manual overrides:
    - change `// FUNCTION: IMPERIALISM 0x...` to `// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x...` in `src/autogen/stubs/stubs_part*.cpp`.
 
 ## Similarity Improvement Notes
@@ -85,3 +90,4 @@ Current reminders for improving `% similarity`:
 29. `MANUAL_OVERRIDE_ADDR` entries in stub parts must not keep a `FUNCTION` annotation for the same address, or reccmp sees duplicate mappings and may diff against the stub.
 30. After any annotation-only edit in source/stub files, do a rebuild before trusting stats; stale PDB line mappings can create false pairing regressions.
 31. For view/toolbar wrapper quads with this current shape, first-pass pattern is consistently around `34.78/50.00/85.71/66.67` (`create/get/construct/destruct`); treat this as a quick baseline before deeper prologue/calling-convention tuning.
+32. Keep `src/game/trade_screen.cpp` as shared scaffolding only; add new trade-screen function bodies in `src/game/trade_screen_parts/part_*.cpp`, not in the umbrella file.

@@ -2,6 +2,22 @@
 
 ## 2026-02-23
 
+### Trade-screen file split (maintainability refactor)
+1. Split `src/game/trade_screen.cpp` into shared scaffolding + address-ordered part files:
+   1. `src/game/trade_screen.cpp` (shared declarations/helpers + include hub)
+   2. `src/game/trade_screen_parts/part_1.cpp` (`0x00587130..0x0058A940`)
+   3. `src/game/trade_screen_parts/part_2.cpp` (`0x0058AAA0..0x0058C900`)
+   4. `src/game/trade_screen_parts/part_3.cpp` (`0x0058DE40..0x005915D0`)
+2. Validation:
+   1. Docker MSVC500 build succeeded.
+   2. `reccmp-project detect` succeeded.
+   3. `progress_stats.py` (`2026-02-23T18:25:19Z`) stayed stable:
+      1. paired `12229/12229` (`100%`)
+      2. aligned `43`
+      3. average similarity `2.01%` (no regression).
+3. Workflow update:
+   1. new trade-screen promotions should target `src/game/trade_screen_parts/part_*.cpp` directly.
+
 ### Batch loop progress (TArmyInfoView wrapper quad)
 1. Promoted with `promote_from_autogen.py`:
    1. `0x00591500`, `0x00591580`, `0x005915A0`, `0x005915D0`
