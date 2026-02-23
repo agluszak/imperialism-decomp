@@ -106,7 +106,7 @@ void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls()
   field_8c = 999;
   TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(
       reinterpret_cast<TradeMovePanelContext *>(this));
-  AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(0);
+  CallApplyMoveValueSlot1D0(this, 0);
 }
 
 
@@ -130,12 +130,12 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(
   }
 
   if (sourceControl != 0 && sourceControl->controlTag == kControlTagRght) {
-    TradeControl *moveControl = ResolveOwnerControl(AsTradeOwnerVirtualShape(this), kControlTagMove);
+    TradeControl *moveControl = ResolveOwnerControl(this, kControlTagMove);
     if (moveControl == 0) {
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
       return;
     }
-    AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(moveControl->QueryValue() + 1);
+    CallApplyMoveValueSlot1D0(this, moveControl->QueryValue() + 1);
     return;
   }
 
@@ -145,14 +145,13 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(
     return;
   }
 
-  TradeControl *moveControl = ResolveOwnerControl(AsTradeOwnerVirtualShape(this), kControlTagMove);
+  TradeControl *moveControl = ResolveOwnerControl(this, kControlTagMove);
   if (moveControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
     return;
   }
   int moveValue = moveControl->QueryValue();
   if ((short)moveValue != 0) {
-    AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(moveValue - 1);
+    CallApplyMoveValueSlot1D0(this, moveValue - 1);
   }
 }
-

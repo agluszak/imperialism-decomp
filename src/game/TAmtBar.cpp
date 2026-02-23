@@ -55,7 +55,7 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
 // FUNCTION: IMPERIALISM 0x00588FF0
 void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
 {
-  TradeOwnerVirtualShape *owner = AsTradeOwnerVirtualShape(this);
+  void *owner = this;
   if (commandId == 100) {
     TradeControl *moveControl =
         ResolveOwnerControl(owner, kControlTagMove);
@@ -63,7 +63,7 @@ void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
     }
     int moveValue = moveControl->QueryValue();
-    owner->ApplyMoveValueSlot1D0(moveValue + 1);
+    CallApplyMoveValueSlot1D0(owner, moveValue + 1);
     return;
   }
   if (commandId != 0x65) {
@@ -78,7 +78,7 @@ void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
   }
   int moveValue = moveControl->QueryValue();
   if (commandId == 0x65) {
-    owner->ApplyMoveValueSlot1D0(moveValue - 1);
+    CallApplyMoveValueSlot1D0(owner, moveValue - 1);
   }
 }
 
@@ -88,4 +88,3 @@ void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
 // GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=6
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
-

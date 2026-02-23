@@ -27,27 +27,7 @@ undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
-undefined4 thunk_DestructCityDialogSharedBaseState(void);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004601B0
+undefined4 thunk_DestructCityDialogSharedBaseState(void);// GHIDRA_FUNCTION IMPERIALISM 0x004601B0
 // GHIDRA_NAME: InitializeTradeScreenBitmapControls
 // GHIDRA_PROTO: undefined InitializeTradeScreenBitmapControls()
 /* DECOMPILATION FAILED: Exception while decompiling 004601b0: process: timeout */
@@ -129,11 +109,134 @@ const int kTradeRowStateTag_67643020 = 0x67643020;
 const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
 struct TradeControl {
-  void *vftable;
   char pad_04[0x18];
   int controlTag;
   char pad_20[0x64];
   short bitmapId;
+
+  virtual void CtrlSlot00(void) = 0;
+  virtual void CtrlSlot01(void) = 0;
+  virtual void CtrlSlot02(void) = 0;
+  virtual void CtrlSlot03(void) = 0;
+  virtual void CtrlSlot04(void) = 0;
+  virtual void CtrlSlot05(void) = 0;
+  virtual void CtrlSlot06(void) = 0;
+  virtual void CtrlSlot07(void) = 0;
+  virtual void CtrlSlot08(void) = 0;
+  virtual void CtrlSlot09(void) = 0;
+  virtual void CtrlSlot10(void) = 0;
+  virtual void CtrlSlot11(void) = 0;
+  virtual short QueryStepValueSlot30(void) = 0;
+  virtual void CtrlSlot13(void) = 0;
+  virtual void CtrlSlot14(void) = 0;
+  virtual void CtrlSlot15(void) = 0;
+  virtual void CtrlSlot16(void) = 0;
+  virtual void CtrlSlot17(void) = 0;
+  virtual void CtrlSlot18(void) = 0;
+  virtual void CtrlSlot19(void) = 0;
+  virtual void CtrlSlot20(void) = 0;
+  virtual void CtrlSlot21(void) = 0;
+  virtual void CtrlSlot22(void) = 0;
+  virtual void CtrlSlot23(void) = 0;
+  virtual void CtrlSlot24(void) = 0;
+  virtual void CtrlSlot25(void) = 0;
+  virtual void CtrlSlot26(void) = 0;
+  virtual void CtrlSlot27(void) = 0;
+  virtual void CtrlSlot28(void) = 0;
+  virtual void CtrlSlot29(void) = 0;
+  virtual void CtrlSlot30(void) = 0;
+  virtual void CtrlSlot31(void) = 0;
+  virtual void CtrlSlot32(void) = 0;
+  virtual void CtrlSlot33(void) = 0;
+  virtual void CtrlSlot34(void) = 0;
+  virtual void CtrlSlot35(void) = 0;
+  virtual void CtrlSlot36(void) = 0;
+  virtual void CtrlSlot37(void) = 0;
+  virtual void CtrlSlot38(void) = 0;
+  virtual void CtrlSlot39(void) = 0;
+  virtual void CtrlSlot40(void) = 0;
+  virtual void SetEnabledSlotA4(int enabled, int unknownFlag) = 0;
+  virtual void SetStateSlotA8(int enabled, int unknownFlag) = 0;
+  virtual void CtrlSlot43(void) = 0;
+  virtual void CtrlSlot44(void) = 0;
+  virtual void CtrlSlot45(void) = 0;
+  virtual void CtrlSlot46(void) = 0;
+  virtual void CtrlSlot47(void) = 0;
+  virtual void CtrlSlot48(void) = 0;
+  virtual void CtrlSlot49(void) = 0;
+  virtual void CtrlSlot50(void) = 0;
+  virtual void CtrlSlot51(void) = 0;
+  virtual void CtrlSlot52(void) = 0;
+  virtual void CtrlSlot53(void) = 0;
+  virtual void CtrlSlot54(void) = 0;
+  virtual void CtrlSlot55(void) = 0;
+  virtual void CtrlSlot56(void) = 0;
+  virtual void CtrlSlot57(void) = 0;
+  virtual void CtrlSlot58(void) = 0;
+  virtual char IsActionableSlotEC(void) = 0;
+  virtual void CaptureLayoutSlotF0(int *buffer, int modeFlag) = 0;
+  virtual void CaptureLayoutSlotF4(int *buffer, int modeFlag) = 0;
+  virtual void RefreshSlotF8(void) = 0;
+  virtual void CtrlSlot63(void) = 0;
+  virtual void CtrlSlot64(void) = 0;
+  virtual void CtrlSlot65(void) = 0;
+  virtual void CtrlSlot66(void) = 0;
+  virtual void CtrlSlot67(void) = 0;
+  virtual void CtrlSlot68(void) = 0;
+  virtual void UpdateAfterBitmapChangeSlot114(int unknownFlag) = 0;
+  virtual void CtrlSlot70(void) = 0;
+  virtual void CtrlSlot71(void) = 0;
+  virtual void CtrlSlot72(void) = 0;
+  virtual void CtrlSlot73(void) = 0;
+  virtual void CtrlSlot74(void) = 0;
+  virtual void QueryBoundsSlot12C(int *boundsBuffer) = 0;
+  virtual void CtrlSlot76(void) = 0;
+  virtual void CtrlSlot77(void) = 0;
+  virtual void CtrlSlot78(void) = 0;
+  virtual void CtrlSlot79(void) = 0;
+  virtual void CtrlSlot80(void) = 0;
+  virtual void CtrlSlot81(void) = 0;
+  virtual void CtrlSlot82(void) = 0;
+  virtual void CtrlSlot83(void) = 0;
+  virtual void CtrlSlot84(void) = 0;
+  virtual void CtrlSlot85(void) = 0;
+  virtual void CtrlSlot86(void) = 0;
+  virtual void CtrlSlot87(void) = 0;
+  virtual void CtrlSlot88(void) = 0;
+  virtual void CtrlSlot89(void) = 0;
+  virtual void ApplyBoundsSlot168(int *boundsBuffer, int modeFlag) = 0;
+  virtual void CtrlSlot91(void) = 0;
+  virtual void CtrlSlot92(void) = 0;
+  virtual void CtrlSlot93(void) = 0;
+  virtual void CtrlSlot94(void) = 0;
+  virtual void CtrlSlot95(void) = 0;
+  virtual void CtrlSlot96(void) = 0;
+  virtual void CtrlSlot97(void) = 0;
+  virtual void CtrlSlot98(void) = 0;
+  virtual void CtrlSlot99(void) = 0;
+  virtual void CtrlSlot100(void) = 0;
+  virtual void CtrlSlot101(void) = 0;
+  virtual void CtrlSlot102(void) = 0;
+  virtual void CtrlSlot103(void) = 0;
+  virtual int ApplyMoveClampSlot1A0(int baseValue, int requestedValue) = 0;
+  virtual void SetBarMetricSlot1A4(int value, int range) = 0;
+  virtual void CtrlSlot106(void) = 0;
+  virtual void SetBarMetricRatioSlot1AC(int value) = 0;
+  virtual void CtrlSlot108(void) = 0;
+  virtual void ApplyStyleDescriptorSlot1B4(void *descriptorBuffer, int modeFlag) = 0;
+  virtual void CtrlSlot110(void) = 0;
+  virtual void CtrlSlot111(void) = 0;
+  virtual void CtrlSlot112(void) = 0;
+  virtual void SetStyleStateSlot1C4(int stateValue, int modeFlag) = 0;
+  virtual void SetBitmapSlot1C8(int bitmapIdValue, int unknownFlag) = 0;
+  virtual void InvokeSlot1CCVirtual(int value, int modeFlag) = 0;
+  virtual void CtrlSlot116(void) = 0;
+  virtual void CtrlSlot117(void) = 0;
+  virtual void CtrlSlot118(void) = 0;
+  virtual void CtrlSlot119(void) = 0;
+  virtual void CtrlSlot120(void) = 0;
+  virtual void SetControlValueSlot1E4(int value, int updateFlag) = 0;
+  virtual int QueryValueSlot1E8(void) = 0;
 
   __inline int QueryValue();
   __inline short QueryStepValue();
@@ -289,349 +392,40 @@ struct UiRuntimeContext {
   void *vftable;
 };
 
-class TradeControlVirtualShape {
-public:
-  char pad_00[0x80];
-  short bitmapId;
-
-  virtual void CtrlSlot00(void) = 0;
-  virtual void CtrlSlot01(void) = 0;
-  virtual void CtrlSlot02(void) = 0;
-  virtual void CtrlSlot03(void) = 0;
-  virtual void CtrlSlot04(void) = 0;
-  virtual void CtrlSlot05(void) = 0;
-  virtual void CtrlSlot06(void) = 0;
-  virtual void CtrlSlot07(void) = 0;
-  virtual void CtrlSlot08(void) = 0;
-  virtual void CtrlSlot09(void) = 0;
-  virtual void CtrlSlot10(void) = 0;
-  virtual void CtrlSlot11(void) = 0;
-  virtual short QueryStepValueSlot30(void) = 0;
-  virtual void CtrlSlot13(void) = 0;
-  virtual void CtrlSlot14(void) = 0;
-  virtual void CtrlSlot15(void) = 0;
-  virtual void CtrlSlot16(void) = 0;
-  virtual void CtrlSlot17(void) = 0;
-  virtual void CtrlSlot18(void) = 0;
-  virtual void CtrlSlot19(void) = 0;
-  virtual void CtrlSlot20(void) = 0;
-  virtual void CtrlSlot21(void) = 0;
-  virtual void CtrlSlot22(void) = 0;
-  virtual void CtrlSlot23(void) = 0;
-  virtual void CtrlSlot24(void) = 0;
-  virtual void CtrlSlot25(void) = 0;
-  virtual void CtrlSlot26(void) = 0;
-  virtual void CtrlSlot27(void) = 0;
-  virtual void CtrlSlot28(void) = 0;
-  virtual void CtrlSlot29(void) = 0;
-  virtual void CtrlSlot30(void) = 0;
-  virtual void CtrlSlot31(void) = 0;
-  virtual void CtrlSlot32(void) = 0;
-  virtual void CtrlSlot33(void) = 0;
-  virtual void CtrlSlot34(void) = 0;
-  virtual void CtrlSlot35(void) = 0;
-  virtual void CtrlSlot36(void) = 0;
-  virtual void CtrlSlot37(void) = 0;
-  virtual void CtrlSlot38(void) = 0;
-  virtual void CtrlSlot39(void) = 0;
-  virtual void CtrlSlot40(void) = 0;
-  virtual void SetEnabledSlotA4(int enabled, int unknownFlag) = 0;
-  virtual void SetStateSlotA8(int enabled, int unknownFlag) = 0;
-  virtual void CtrlSlot43(void) = 0;
-  virtual void CtrlSlot44(void) = 0;
-  virtual void CtrlSlot45(void) = 0;
-  virtual void CtrlSlot46(void) = 0;
-  virtual void CtrlSlot47(void) = 0;
-  virtual void CtrlSlot48(void) = 0;
-  virtual void CtrlSlot49(void) = 0;
-  virtual void CtrlSlot50(void) = 0;
-  virtual void CtrlSlot51(void) = 0;
-  virtual void CtrlSlot52(void) = 0;
-  virtual void CtrlSlot53(void) = 0;
-  virtual void CtrlSlot54(void) = 0;
-  virtual void CtrlSlot55(void) = 0;
-  virtual void CtrlSlot56(void) = 0;
-  virtual void CtrlSlot57(void) = 0;
-  virtual void CtrlSlot58(void) = 0;
-  virtual char IsActionableSlotEC(void) = 0;
-  virtual void CaptureLayoutSlotF0(int *buffer, int modeFlag) = 0;
-  virtual void CaptureLayoutSlotF4(int *buffer, int modeFlag) = 0;
-  virtual void RefreshSlotF8(void) = 0;
-  virtual void CtrlSlot63(void) = 0;
-  virtual void CtrlSlot64(void) = 0;
-  virtual void CtrlSlot65(void) = 0;
-  virtual void CtrlSlot66(void) = 0;
-  virtual void CtrlSlot67(void) = 0;
-  virtual void CtrlSlot68(void) = 0;
-  virtual void UpdateAfterBitmapChangeSlot114(int unknownFlag) = 0;
-  virtual void CtrlSlot70(void) = 0;
-  virtual void CtrlSlot71(void) = 0;
-  virtual void CtrlSlot72(void) = 0;
-  virtual void CtrlSlot73(void) = 0;
-  virtual void CtrlSlot74(void) = 0;
-  virtual void QueryBoundsSlot12C(int *boundsBuffer) = 0;
-  virtual void CtrlSlot76(void) = 0;
-  virtual void CtrlSlot77(void) = 0;
-  virtual void CtrlSlot78(void) = 0;
-  virtual void CtrlSlot79(void) = 0;
-  virtual void CtrlSlot80(void) = 0;
-  virtual void CtrlSlot81(void) = 0;
-  virtual void CtrlSlot82(void) = 0;
-  virtual void CtrlSlot83(void) = 0;
-  virtual void CtrlSlot84(void) = 0;
-  virtual void CtrlSlot85(void) = 0;
-  virtual void CtrlSlot86(void) = 0;
-  virtual void CtrlSlot87(void) = 0;
-  virtual void CtrlSlot88(void) = 0;
-  virtual void CtrlSlot89(void) = 0;
-  virtual void ApplyBoundsSlot168(int *boundsBuffer, int modeFlag) = 0;
-  virtual void CtrlSlot91(void) = 0;
-  virtual void CtrlSlot92(void) = 0;
-  virtual void CtrlSlot93(void) = 0;
-  virtual void CtrlSlot94(void) = 0;
-  virtual void CtrlSlot95(void) = 0;
-  virtual void CtrlSlot96(void) = 0;
-  virtual void CtrlSlot97(void) = 0;
-  virtual void CtrlSlot98(void) = 0;
-  virtual void CtrlSlot99(void) = 0;
-  virtual void CtrlSlot100(void) = 0;
-  virtual void CtrlSlot101(void) = 0;
-  virtual void CtrlSlot102(void) = 0;
-  virtual void CtrlSlot103(void) = 0;
-  virtual int ApplyMoveClampSlot1A0(int baseValue, int requestedValue) = 0;
-  virtual void SetBarMetricSlot1A4(int value, int range) = 0;
-  virtual void CtrlSlot106(void) = 0;
-  virtual void SetBarMetricRatioSlot1AC(int value) = 0;
-  virtual void CtrlSlot108(void) = 0;
-  virtual void ApplyStyleDescriptorSlot1B4(void *descriptorBuffer, int modeFlag) = 0;
-  virtual void CtrlSlot110(void) = 0;
-  virtual void CtrlSlot111(void) = 0;
-  virtual void CtrlSlot112(void) = 0;
-  virtual void SetStyleStateSlot1C4(int stateValue, int modeFlag) = 0;
-  virtual void SetBitmapSlot1C8(int bitmapIdValue, int unknownFlag) = 0;
-  virtual void InvokeSlot1CC(int value, int modeFlag) = 0;
-  virtual void CtrlSlot116(void) = 0;
-  virtual void CtrlSlot117(void) = 0;
-  virtual void CtrlSlot118(void) = 0;
-  virtual void CtrlSlot119(void) = 0;
-  virtual void CtrlSlot120(void) = 0;
-  virtual void SetControlValueSlot1E4(int value, int updateFlag) = 0;
-  virtual int QueryValueSlot1E8(void) = 0;
-};
-
-class TradeScreenVirtualShape {
-public:
-  virtual void CtxSlot00(void) = 0;
-  virtual void CtxSlot01(void) = 0;
-  virtual void CtxSlot02(void) = 0;
-  virtual void CtxSlot03(void) = 0;
-  virtual void CtxSlot04(void) = 0;
-  virtual void CtxSlot05(void) = 0;
-  virtual void CtxSlot06(void) = 0;
-  virtual void CtxSlot07(void) = 0;
-  virtual void CtxSlot08(void) = 0;
-  virtual void CtxSlot09(void) = 0;
-  virtual void CtxSlot10(void) = 0;
-  virtual void CtxSlot11(void) = 0;
-  virtual void CtxSlot12(void) = 0;
-  virtual void CtxSlot13(void) = 0;
-  virtual void CtxSlot14(void) = 0;
-  virtual void CtxSlot15(void) = 0;
-  virtual void CtxSlot16(void) = 0;
-  virtual void CtxSlot17(void) = 0;
-  virtual void CtxSlot18(void) = 0;
-  virtual void CtxSlot19(void) = 0;
-  virtual void CtxSlot20(void) = 0;
-  virtual void CtxSlot21(void) = 0;
-  virtual void CtxSlot22(void) = 0;
-  virtual void CtxSlot23(void) = 0;
-  virtual void CtxSlot24(void) = 0;
-  virtual void CtxSlot25(void) = 0;
-  virtual void CtxSlot26(void) = 0;
-  virtual void CtxSlot27(void) = 0;
-  virtual void CtxSlot28(void) = 0;
-  virtual void CtxSlot29(void) = 0;
-  virtual void CtxSlot30(void) = 0;
-  virtual void CtxSlot31(void) = 0;
-  virtual void CtxSlot32(void) = 0;
-  virtual void CtxSlot33(void) = 0;
-  virtual void CtxSlot34(void) = 0;
-  virtual void CtxSlot35(void) = 0;
-  virtual void CtxSlot36(void) = 0;
-  virtual TradeControlVirtualShape *ResolveControlByTagSlot94(int controlTag) = 0;
-};
-
-#define TRADE_OWNER_SLOT_DECL(n) virtual void OwnerSlot##n(void) = 0;
-class TradeOwnerVirtualShape : public TradeScreenVirtualShape {
-public:
-  TRADE_OWNER_SLOT_DECL(38)
-  TRADE_OWNER_SLOT_DECL(39)
-  TRADE_OWNER_SLOT_DECL(40)
-  TRADE_OWNER_SLOT_DECL(41)
-  TRADE_OWNER_SLOT_DECL(42)
-  TRADE_OWNER_SLOT_DECL(43)
-  TRADE_OWNER_SLOT_DECL(44)
-  TRADE_OWNER_SLOT_DECL(45)
-  TRADE_OWNER_SLOT_DECL(46)
-  TRADE_OWNER_SLOT_DECL(47)
-  TRADE_OWNER_SLOT_DECL(48)
-  TRADE_OWNER_SLOT_DECL(49)
-  TRADE_OWNER_SLOT_DECL(50)
-  TRADE_OWNER_SLOT_DECL(51)
-  TRADE_OWNER_SLOT_DECL(52)
-  TRADE_OWNER_SLOT_DECL(53)
-  TRADE_OWNER_SLOT_DECL(54)
-  TRADE_OWNER_SLOT_DECL(55)
-  TRADE_OWNER_SLOT_DECL(56)
-  TRADE_OWNER_SLOT_DECL(57)
-  TRADE_OWNER_SLOT_DECL(58)
-  TRADE_OWNER_SLOT_DECL(59)
-  TRADE_OWNER_SLOT_DECL(60)
-  TRADE_OWNER_SLOT_DECL(61)
-  TRADE_OWNER_SLOT_DECL(62)
-  TRADE_OWNER_SLOT_DECL(63)
-  TRADE_OWNER_SLOT_DECL(64)
-  TRADE_OWNER_SLOT_DECL(65)
-  TRADE_OWNER_SLOT_DECL(66)
-  TRADE_OWNER_SLOT_DECL(67)
-  TRADE_OWNER_SLOT_DECL(68)
-  TRADE_OWNER_SLOT_DECL(69)
-  TRADE_OWNER_SLOT_DECL(70)
-  TRADE_OWNER_SLOT_DECL(71)
-  TRADE_OWNER_SLOT_DECL(72)
-  TRADE_OWNER_SLOT_DECL(73)
-  TRADE_OWNER_SLOT_DECL(74)
-  TRADE_OWNER_SLOT_DECL(75)
-  TRADE_OWNER_SLOT_DECL(76)
-  TRADE_OWNER_SLOT_DECL(77)
-  TRADE_OWNER_SLOT_DECL(78)
-  TRADE_OWNER_SLOT_DECL(79)
-  TRADE_OWNER_SLOT_DECL(80)
-  TRADE_OWNER_SLOT_DECL(81)
-  TRADE_OWNER_SLOT_DECL(82)
-  TRADE_OWNER_SLOT_DECL(83)
-  TRADE_OWNER_SLOT_DECL(84)
-  TRADE_OWNER_SLOT_DECL(85)
-  TRADE_OWNER_SLOT_DECL(86)
-  TRADE_OWNER_SLOT_DECL(87)
-  TRADE_OWNER_SLOT_DECL(88)
-  TRADE_OWNER_SLOT_DECL(89)
-  TRADE_OWNER_SLOT_DECL(90)
-  TRADE_OWNER_SLOT_DECL(91)
-  TRADE_OWNER_SLOT_DECL(92)
-  TRADE_OWNER_SLOT_DECL(93)
-  TRADE_OWNER_SLOT_DECL(94)
-  TRADE_OWNER_SLOT_DECL(95)
-  TRADE_OWNER_SLOT_DECL(96)
-  TRADE_OWNER_SLOT_DECL(97)
-  TRADE_OWNER_SLOT_DECL(98)
-  TRADE_OWNER_SLOT_DECL(99)
-  TRADE_OWNER_SLOT_DECL(100)
-  TRADE_OWNER_SLOT_DECL(101)
-  TRADE_OWNER_SLOT_DECL(102)
-  TRADE_OWNER_SLOT_DECL(103)
-  TRADE_OWNER_SLOT_DECL(104)
-  TRADE_OWNER_SLOT_DECL(105)
-  TRADE_OWNER_SLOT_DECL(106)
-  TRADE_OWNER_SLOT_DECL(107)
-  TRADE_OWNER_SLOT_DECL(108)
-  TRADE_OWNER_SLOT_DECL(109)
-  TRADE_OWNER_SLOT_DECL(110)
-  TRADE_OWNER_SLOT_DECL(111)
-  TRADE_OWNER_SLOT_DECL(112)
-  TRADE_OWNER_SLOT_DECL(113)
-  TRADE_OWNER_SLOT_DECL(114)
-  TRADE_OWNER_SLOT_DECL(115)
-  virtual void ApplyMoveValueSlot1D0(int value) = 0;
-  virtual void PostMoveValueSlot1D4(int value, int commitFlag) = 0;
-  virtual void NotifyMoveUpdatedSlot1D8(void) = 0;
-};
-#undef TRADE_OWNER_SLOT_DECL
-
-class UiRuntimeVirtualShape {
-public:
-  virtual void RuntimeSlot00(void) = 0;
-  virtual void RuntimeSlot01(void) = 0;
-  virtual void RuntimeSlot02(void) = 0;
-  virtual void RuntimeSlot03(void) = 0;
-  virtual void RuntimeSlot04(void) = 0;
-  virtual void RuntimeSlot05(void) = 0;
-  virtual void RuntimeSlot06(void) = 0;
-  virtual void RuntimeSlot07(void) = 0;
-  virtual void RuntimeSlot08(void) = 0;
-  virtual void RuntimeSlot09(void) = 0;
-  virtual void RuntimeSlot10(void) = 0;
-  virtual void RuntimeSlot11(void) = 0;
-  virtual void RuntimeSlot12(void) = 0;
-  virtual void RuntimeSlot13(void) = 0;
-  virtual void RuntimeSlot14(void) = 0;
-  virtual void RuntimeSlot15(void) = 0;
-  virtual void RuntimeSlot16(void) = 0;
-  virtual void RuntimeSlot17(void) = 0;
-  virtual void RuntimeSlot18(void) = 0;
-  virtual void RuntimeSlot19(void) = 0;
-  virtual void RuntimeSlot20(void) = 0;
-  virtual short QueryUiScreenModeSlot54(void) = 0;
-};
-
-class NationStateVirtualShape {
-public:
-  virtual void Slot00(void) = 0;
-  virtual void Slot01(void) = 0;
-  virtual void Slot02(void) = 0;
-  virtual void Slot03(void) = 0;
-  virtual void Slot04(void) = 0;
-  virtual void Slot05(void) = 0;
-  virtual void Slot06(void) = 0;
-  virtual void Slot07(void) = 0;
-  virtual void Slot08(void) = 0;
-  virtual void Slot09(void) = 0;
-  virtual void Slot10(void) = 0;
-  virtual void Slot11(void) = 0;
-  virtual void Slot12(void) = 0;
-  virtual void Slot13(void) = 0;
-  virtual void Slot14(void) = 0;
-  virtual void Slot15(void) = 0;
-  virtual void Slot16(void) = 0;
-  virtual void Slot17(void) = 0;
-  virtual void Slot18(void) = 0;
-  virtual void Slot19(void) = 0;
-  virtual void Slot20(void) = 0;
-  virtual void Slot21(void) = 0;
-  virtual void Slot22(void) = 0;
-  virtual void Slot23(void) = 0;
-  virtual void Slot24(void) = 0;
-  virtual void Slot25(void) = 0;
-  virtual void Slot26(void) = 0;
-  virtual void Slot27(void) = 0;
-  virtual void Slot28(void) = 0;
-  virtual void Slot29(void) = 0;
-  virtual short QueryMetricBySlot78(short metricSlot) = 0;
-};
-
-static __inline TradeControlVirtualShape *AsTradeControlVirtualShape(TradeControl *control)
+static __inline TradeControl *CallResolveControlByTagSlot94(void *context, int controlTag)
 {
-  return reinterpret_cast<TradeControlVirtualShape *>(control);
+  return reinterpret_cast<TradeControl *(__fastcall *)(void *, int)>(
+      (*reinterpret_cast<void ***>(context))[0x94 / 4])(context, controlTag);
 }
 
-static __inline TradeScreenVirtualShape *AsTradeScreenVirtualShape(TradeScreenContext *context)
+static __inline void CallApplyMoveValueSlot1D0(void *context, int value)
 {
-  return reinterpret_cast<TradeScreenVirtualShape *>(context);
+  reinterpret_cast<void (__fastcall *)(void *, int)>(
+      (*reinterpret_cast<void ***>(context))[0x1d0 / 4])(context, value);
 }
 
-static __inline TradeOwnerVirtualShape *AsTradeOwnerVirtualShape(void *context)
+static __inline void CallPostMoveValueSlot1D4(void *context, int value, int commitFlag)
 {
-  return reinterpret_cast<TradeOwnerVirtualShape *>(context);
+  reinterpret_cast<void (__fastcall *)(void *, int, int)>(
+      (*reinterpret_cast<void ***>(context))[0x1d4 / 4])(context, value, commitFlag);
 }
 
-static __inline UiRuntimeVirtualShape *AsUiRuntimeVirtualShape(UiRuntimeContext *runtimeContext)
+static __inline void CallNotifyMoveUpdatedSlot1D8(void *context)
 {
-  return reinterpret_cast<UiRuntimeVirtualShape *>(runtimeContext);
+  reinterpret_cast<void (__fastcall *)(void *)>(
+      (*reinterpret_cast<void ***>(context))[0x1d8 / 4])(context);
 }
 
-static __inline NationStateVirtualShape *AsNationStateVirtualShape(NationState *nationState)
+static __inline short CallQueryUiScreenModeSlot54(UiRuntimeContext *runtimeContext)
 {
-  return reinterpret_cast<NationStateVirtualShape *>(nationState);
+  return reinterpret_cast<short (__fastcall *)(UiRuntimeContext *)>(
+      (*reinterpret_cast<void ***>(runtimeContext))[0x54 / 4])(runtimeContext);
+}
+
+static __inline short CallQueryNationMetricBySlot78(NationState *nationState, short metricSlot)
+{
+  return reinterpret_cast<short (__fastcall *)(NationState *, short)>(
+      (*reinterpret_cast<void ***>(nationState))[0x78 / 4])(nationState, metricSlot);
 }
 
 class TradeScreenRuntimeBridge {
@@ -723,92 +517,92 @@ struct TradeMovePanelContext {
 
 __inline int TradeControl::QueryValue()
 {
-  return AsTradeControlVirtualShape(this)->QueryValueSlot1E8();
+  return this->QueryValueSlot1E8();
 }
 
 __inline short TradeControl::QueryStepValue()
 {
-  return AsTradeControlVirtualShape(this)->QueryStepValueSlot30();
+  return this->QueryStepValueSlot30();
 }
 
 __inline short TradeCommodityMetricRecord::QueryStepValue()
 {
-  return reinterpret_cast<TradeControlVirtualShape *>(this)->QueryStepValueSlot30();
+  return reinterpret_cast<TradeControl *>(this)->QueryStepValueSlot30();
 }
 
 __inline char TradeControl::IsActionable()
 {
-  return AsTradeControlVirtualShape(this)->IsActionableSlotEC();
+  return this->IsActionableSlotEC();
 }
 
 __inline void TradeControl::SetEnabledSingle(int enabled)
 {
-  AsTradeControlVirtualShape(this)->SetEnabledSlotA4(enabled, 1);
+  this->SetEnabledSlotA4(enabled, 1);
 }
 
 __inline void TradeControl::SetEnabledPair(int enabled, int unknownFlag)
 {
-  AsTradeControlVirtualShape(this)->SetEnabledSlotA4(enabled, unknownFlag);
+  this->SetEnabledSlotA4(enabled, unknownFlag);
 }
 
 __inline void TradeControl::SetStatePair(int enabled, int unknownFlag)
 {
-  AsTradeControlVirtualShape(this)->SetStateSlotA8(enabled, unknownFlag);
+  this->SetStateSlotA8(enabled, unknownFlag);
 }
 
 __inline void TradeControl::SetBitmap(int bitmapIdValue, int unknownFlag)
 {
-  AsTradeControlVirtualShape(this)->SetBitmapSlot1C8(bitmapIdValue, unknownFlag);
+  this->SetBitmapSlot1C8(bitmapIdValue, unknownFlag);
 }
 
 __inline void TradeControl::SetBarMetric(int value, int range)
 {
-  AsTradeControlVirtualShape(this)->SetBarMetricSlot1A4(value, range);
+  this->SetBarMetricSlot1A4(value, range);
 }
 
 __inline void TradeControl::SetBarMetricRatio(int value)
 {
-  AsTradeControlVirtualShape(this)->SetBarMetricRatioSlot1AC(value);
+  this->SetBarMetricRatioSlot1AC(value);
 }
 
 __inline int TradeControl::ApplyMoveClamp(int baseValue, int requestedValue)
 {
-  return AsTradeControlVirtualShape(this)->ApplyMoveClampSlot1A0(baseValue, requestedValue);
+  return this->ApplyMoveClampSlot1A0(baseValue, requestedValue);
 }
 
 __inline void TradeControl::SetControlValue(int value, int updateFlag)
 {
-  AsTradeControlVirtualShape(this)->SetControlValueSlot1E4(value, updateFlag);
+  this->SetControlValueSlot1E4(value, updateFlag);
 }
 
 __inline void TradeControl::ApplyStyleDescriptor(void *descriptorBuffer, int modeFlag)
 {
-  AsTradeControlVirtualShape(this)->ApplyStyleDescriptorSlot1B4(descriptorBuffer, modeFlag);
+  this->ApplyStyleDescriptorSlot1B4(descriptorBuffer, modeFlag);
 }
 
 __inline void TradeControl::SetStyleState(int stateValue, int modeFlag)
 {
-  AsTradeControlVirtualShape(this)->SetStyleStateSlot1C4(stateValue, modeFlag);
+  this->SetStyleStateSlot1C4(stateValue, modeFlag);
 }
 
 __inline void TradeControl::QueryBounds(int *boundsBuffer)
 {
-  AsTradeControlVirtualShape(this)->QueryBoundsSlot12C(boundsBuffer);
+  this->QueryBoundsSlot12C(boundsBuffer);
 }
 
 __inline void TradeControl::ApplyBounds(int *boundsBuffer, int modeFlag)
 {
-  AsTradeControlVirtualShape(this)->ApplyBoundsSlot168(boundsBuffer, modeFlag);
+  this->ApplyBoundsSlot168(boundsBuffer, modeFlag);
 }
 
 __inline void TradeControl::CaptureLayoutF0(int *buffer, int modeFlag)
 {
-  AsTradeControlVirtualShape(this)->CaptureLayoutSlotF0(buffer, modeFlag);
+  this->CaptureLayoutSlotF0(buffer, modeFlag);
 }
 
 __inline void TradeControl::CaptureLayout(int *buffer, int modeFlag)
 {
-  AsTradeControlVirtualShape(this)->CaptureLayoutSlotF4(buffer, modeFlag);
+  this->CaptureLayoutSlotF4(buffer, modeFlag);
 }
 
 __inline void TradeControl::CaptureLayoutPreset11_14()
@@ -819,38 +613,37 @@ __inline void TradeControl::CaptureLayoutPreset11_14()
 
 __inline void TradeControl::Refresh()
 {
-  AsTradeControlVirtualShape(this)->RefreshSlotF8();
+  this->RefreshSlotF8();
 }
 
 __inline void TradeControl::UpdateAfterBitmapChange(int unknownFlag)
 {
-  AsTradeControlVirtualShape(this)->UpdateAfterBitmapChangeSlot114(unknownFlag);
+  this->UpdateAfterBitmapChangeSlot114(unknownFlag);
 }
 
 __inline void TradeControl::InvokeSlotE4()
 {
-  AsTradeControlVirtualShape(this)->CtrlSlot57();
+  this->CtrlSlot57();
 }
 
 __inline void TradeControl::InvokeSlot1CC(int value, int modeFlag)
 {
-  AsTradeControlVirtualShape(this)->InvokeSlot1CC(value, modeFlag);
+  this->InvokeSlot1CCVirtual(value, modeFlag);
 }
 
 __inline void TradeControl::InvokeSlot13C()
 {
-  AsTradeControlVirtualShape(this)->CtrlSlot79();
+  this->CtrlSlot79();
 }
 
 __inline void TradeControl::InvokeSlot1A8()
 {
-  AsTradeControlVirtualShape(this)->CtrlSlot106();
+  this->CtrlSlot106();
 }
 
 __inline TradeControl *TradeScreenContext::ResolveControlByTag(int controlTag)
 {
-  return reinterpret_cast<TradeControl *>(
-      AsTradeScreenVirtualShape(this)->ResolveControlByTagSlot94(controlTag));
+  return CallResolveControlByTagSlot94(this, controlTag);
 }
 
 __inline TradeControl *TradeScreenContext::RequireControlByTag(int controlTag)
@@ -875,12 +668,12 @@ static __inline short QueryUiScreenMode(UiRuntimeContext *runtimeContext)
   if (runtimeContext == 0 || runtimeContext->vftable == 0) {
     return 4;
   }
-  return AsUiRuntimeVirtualShape(runtimeContext)->QueryUiScreenModeSlot54();
+  return CallQueryUiScreenModeSlot54(runtimeContext);
 }
 
 static __inline short QueryUiScreenModeRaw(UiRuntimeContext *runtimeContext)
 {
-  return AsUiRuntimeVirtualShape(runtimeContext)->QueryUiScreenModeSlot54();
+  return CallQueryUiScreenModeSlot54(runtimeContext);
 }
 
 static __inline short QueryActiveNationId(void)
@@ -912,7 +705,7 @@ static __inline int GetTradeSummarySelectionTagByIndex(short index)
 
 static __inline short QueryNationMetricBySlot(NationState *nationState, short metricSlot)
 {
-  return AsNationStateVirtualShape(nationState)->QueryMetricBySlot78(metricSlot);
+  return CallQueryNationMetricBySlot78(nationState, metricSlot);
 }
 
 static __inline short QueryNationTradeCapacity(NationState *nationState)
@@ -920,9 +713,9 @@ static __inline short QueryNationTradeCapacity(NationState *nationState)
   return nationState->tradeCapacity;
 }
 
-static __inline TradeControl *ResolveOwnerControl(TradeOwnerVirtualShape *owner, int controlTag)
+static __inline TradeControl *ResolveOwnerControl(void *owner, int controlTag)
 {
-  return reinterpret_cast<TradeControl *>(owner->ResolveControlByTagSlot94(controlTag));
+  return CallResolveControlByTagSlot94(owner, controlTag);
 }
 
 UiRuntimeContext *g_pUiRuntimeContext = 0;
@@ -1048,21 +841,6 @@ void *__fastcall DestroyTradeSellControlPanel(void *self, int unusedEdx, unsigne
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00587130
 void TradeScreenContext::InitializeTradeSellControlState(void)
 {
@@ -1122,21 +900,6 @@ void TradeScreenContext::InitializeTradeSellControlState(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00587900
 void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext *context, UiRuntimeContext *runtimeContext)
 {
@@ -1156,21 +919,6 @@ void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext *context, UiRuntimeC
 // GHIDRA_COMMENT Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8.
 // GHIDRA_COMMENT_END
 /* Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1197,26 +945,10 @@ void TradeScreenContext::QueryTradeSellControlQuantity(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00587980
 char TradeScreenContext::IsTradeBidControlActionable(void)
 {
-  TradeScreenVirtualShape *screen = AsTradeScreenVirtualShape(this);
-  TradeControlVirtualShape *bidControl = screen->ResolveControlByTagSlot94(kControlTagCard);
+  TradeControl *bidControl = CallResolveControlByTagSlot94(this, kControlTagCard);
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -1243,31 +975,10 @@ char TradeScreenContext::IsTradeBidControlActionable(void)
 /* Trade UI predicate for Offer control interactivity.
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00587A10
 char TradeScreenContext::IsTradeOfferControlActionable(void)
 {
-  TradeScreenVirtualShape *screen = AsTradeScreenVirtualShape(this);
-  TradeControlVirtualShape *offerControl = screen->ResolveControlByTagSlot94(kControlTagOffr);
+  TradeControl *offerControl = CallResolveControlByTagSlot94(this, kControlTagOffr);
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
@@ -1299,21 +1010,6 @@ char TradeScreenContext::IsTradeOfferControlActionable(void)
 // NOTE:
 // GHIDRA showed `g_pUiRuntimeContext` as a global here; this reconstruction passes it explicitly.
 //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // FUNCTION: IMPERIALISM 0x00587AA0
@@ -1358,21 +1054,6 @@ void TradeScreenContext::SetTradeBidSecondaryBitmapState(void)
    If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D); otherwise assigns
    bitmap 2111 (0x83F).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1435,21 +1116,6 @@ void TradeScreenContext::SetTradeBidControlBitmapState(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00587DD0
 void TradeScreenContext::SetTradeOfferControlBitmapState(void)
 {
@@ -1504,21 +1170,6 @@ void TradeScreenContext::SetTradeOfferControlBitmapState(void)
 /* Trade UI Offer secondary-state updater.
    Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1589,21 +1240,6 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x005882F0
 void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax)
 {
@@ -1663,21 +1299,6 @@ void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metric
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00588630
 void __fastcall OrphanCallChain_C2_I15_00588630(
     TradeControl *control, int unusedEdx, short valueAt60, short valueAt62)
@@ -1699,21 +1320,6 @@ void __fastcall OrphanCallChain_C2_I15_00588630(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00588670
 void __fastcall OrphanCallChain_C1_I03_00588670(
     TradeControl *control, int unusedEdx, int unusedStackArg)
@@ -1725,21 +1331,6 @@ void __fastcall OrphanCallChain_C1_I03_00588670(
 
 // GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
 // GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1755,7 +1346,7 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int *requestedValuePtr)
 
   TradeControl *moveControl = reinterpret_cast<TradeControl *>(this);
   int appliedValue = moveControl->ApplyMoveClamp(baseValue, (short)requestedValue);
-  TradeOwnerVirtualShape *owner = AsTradeOwnerVirtualShape(ownerContext);
+  void *owner = ownerContext;
   if (((short)appliedValue == 0) && requestedValue != 0) {
     TradeControl *fallbackControl =
         ResolveOwnerControl(owner, kControlTagMove);
@@ -1767,7 +1358,7 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int *requestedValuePtr)
     }
   }
 
-  owner->ApplyMoveValueSlot1D0(appliedValue);
+  CallApplyMoveValueSlot1D0(owner, appliedValue);
 }
 
 // GHIDRA_NAME OrphanCallChain_C1_I06_00588c30
@@ -1776,21 +1367,6 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int *requestedValuePtr)
 // GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=6
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1804,21 +1380,6 @@ void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster *cluster
 
 // GHIDRA_NAME TIndustryCluster::DestructTIndustryClusterMaybeFree
 // GHIDRA_PROTO void __cdecl DestructTIndustryClusterMaybeFree(void)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // FUNCTION: IMPERIALISM 0x00588B70
@@ -1853,38 +1414,22 @@ void __fastcall SyncTradeCommoditySelectionWithActiveNationAndInitControls(
   if (selectedMetricRecord != 0) {
     selectedControlValue = selectedMetricRecord->controlValue;
   }
-  TradeOwnerVirtualShape *owner =
-      AsTradeOwnerVirtualShape(context->ownerContext != 0 ? context->ownerContext : context);
-  owner->PostMoveValueSlot1D4(selectedControlValue, 1);
+  void *owner = context->ownerContext != 0 ? context->ownerContext : context;
+  CallPostMoveValueSlot1D4(owner, selectedControlValue, 1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 // FUNCTION: IMPERIALISM 0x00588C30
 void TradeMovePanelContext::OrphanCallChain_C1_I06_00588c30(int value)
 {
-  AsTradeOwnerVirtualShape(this)->PostMoveValueSlot1D4(value, 0);
+  CallPostMoveValueSlot1D4(this, value, 0);
 }
 
 static __inline void UpdateTradeBarFromSelectedMetricRatio(
     TradeMovePanelContext *context, int assertLine)
 {
-  TradeOwnerVirtualShape *owner = AsTradeOwnerVirtualShape(context);
+  void *owner = context;
   TradeControl *barControl =
       ResolveOwnerControl(owner, kControlTagBar);
   if (barControl == 0) {
@@ -1908,21 +1453,6 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(
 /* Computes bar position from selected metric ratio and applies it to bar control. */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00588C60
 void __fastcall UpdateTradeMoveControlsFromDrag(
     TradeMovePanelContext *context, int unusedEdx, int dragValue, int updateFlag)
@@ -1941,8 +1471,7 @@ void __fastcall UpdateTradeMoveControlsFromDrag(
     return;
   }
 
-  TradeOwnerVirtualShape *owner =
-      AsTradeOwnerVirtualShape(context->ownerContext != 0 ? context->ownerContext : context);
+  void *owner = context->ownerContext != 0 ? context->ownerContext : context;
 
   TradeControl *moveControl =
       ResolveOwnerControl(owner, kControlTagMove);
@@ -1980,23 +1509,8 @@ void __fastcall UpdateTradeMoveControlsFromDrag(
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)selectedControl->QueryStepValue() * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  owner->NotifyMoveUpdatedSlot1D8();
+  CallNotifyMoveUpdatedSlot1D8(owner);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2010,21 +1524,6 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void)
 // GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589720
 void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster *cluster)
 {
@@ -2033,21 +1532,6 @@ void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster *clust
   cluster->field_88 = 0;
   cluster->field_8e = 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x005897B0
 void __fastcall SelectTradeCommodityPresetBySummaryTagAndInitControls(
     TradeMovePanelContext *context, int unusedEdx)
@@ -2111,32 +1595,16 @@ void __fastcall SelectTradeCommodityPresetBySummaryTagAndInitControls(
   TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(context);
 
   short selectedControlValue = metricRecord != 0 ? metricRecord->controlValue : 0;
-  TradeOwnerVirtualShape *owner =
-      AsTradeOwnerVirtualShape(context->ownerContext != 0 ? context->ownerContext : context);
-  owner->PostMoveValueSlot1D4(selectedControlValue, 1);
+  void *owner = context->ownerContext != 0 ? context->ownerContext : context;
+  CallPostMoveValueSlot1D4(owner, selectedControlValue, 1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 // FUNCTION: IMPERIALISM 0x005899C0
 void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value)
 {
-  AsTradeOwnerVirtualShape(this)->PostMoveValueSlot1D4(value, 0);
+  CallPostMoveValueSlot1D4(this, value, 0);
 }
 
 // GHIDRA_NAME UpdateTradeBarFromSelectedMetricRatio_A
@@ -2145,21 +1613,6 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value)
 // GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x005899F0
 void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag)
 {
@@ -2182,8 +1635,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
     return;
   }
 
-  TradeOwnerVirtualShape *owner =
-      AsTradeOwnerVirtualShape(ownerContext != 0 ? ownerContext : this);
+  void *owner = ownerContext != 0 ? ownerContext : this;
 
   TradeControl *moveControl =
       ResolveOwnerControl(owner, kControlTagMove);
@@ -2221,23 +1673,8 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)selectedControl->QueryStepValue() * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  owner->NotifyMoveUpdatedSlot1D8();
+  CallNotifyMoveUpdatedSlot1D8(owner);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

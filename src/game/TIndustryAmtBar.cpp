@@ -166,7 +166,7 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
 void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
     int commandId, void *eventArg, int eventExtra)
 {
-  TradeOwnerVirtualShape *owner = AsTradeOwnerVirtualShape(this);
+  void *owner = this;
 
   int relative = commandId - 100;
   if (relative != 0) {
@@ -177,7 +177,7 @@ void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
         return;
       }
       short moveValue = (short)moveControl->QueryValue();
-      owner->ApplyMoveValueSlot1D0((int)moveValue - (int)field_8e);
+      CallApplyMoveValueSlot1D0(owner, (int)moveValue - (int)field_8e);
       return;
     }
     reinterpret_cast<void (*)(TradeMoveStepCluster *, int, void *, int)>(
@@ -191,6 +191,5 @@ void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
     return;
   }
   short moveValue = (short)moveControl->QueryValue();
-  owner->ApplyMoveValueSlot1D0((int)field_8e + (int)moveValue);
+  CallApplyMoveValueSlot1D0(owner, (int)field_8e + (int)moveValue);
 }
-
