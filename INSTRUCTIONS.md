@@ -84,3 +84,4 @@ Current reminders for improving `% similarity`:
 28. For promoted class-wrapper quads, convert class-scoped decompiler output into local `*State` structs plus shared bridge helpers immediately; this keeps compile stability and typically yields 34-86% first-pass similarity.
 29. `MANUAL_OVERRIDE_ADDR` entries in stub parts must not keep a `FUNCTION` annotation for the same address, or reccmp sees duplicate mappings and may diff against the stub.
 30. After any annotation-only edit in source/stub files, do a rebuild before trusting stats; stale PDB line mappings can create false pairing regressions.
+31. For view/toolbar wrapper quads with this current shape, first-pass pattern is consistently around `34.78/50.00/85.71/66.67` (`create/get/construct/destruct`); treat this as a quick baseline before deeper prologue/calling-convention tuning.

@@ -2,6 +2,25 @@
 
 ## 2026-02-23
 
+### Batch loop progress (TArmyInfoView wrapper quad)
+1. Promoted with `promote_from_autogen.py`:
+   1. `0x00591500`, `0x00591580`, `0x005915A0`, `0x005915D0`
+2. Converted promoted code to typed/manual wrappers in `src/game/trade_screen.cpp`:
+   1. added `ArmyInfoViewState`.
+   2. added vtable/classdesc placeholders for `TArmyInfoView`.
+   3. normalized ctor/dtor path to existing `TradeScreenRuntimeBridge` helpers.
+3. Stub sync:
+   1. switched all 4 addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`.
+4. Verification (`progress_stats.py`, `2026-02-23T17:31:55Z`):
+   1. paired coverage: `12229/12229` (`100%`).
+   2. aligned: `43`.
+   3. average similarity: `2.01%` (`+0.03 pp` from prior `1.98%`).
+5. Targeted `reccmp --verbose` checkpoints:
+   1. `0x00591500`: `34.78%`
+   2. `0x00591580`: `50.00%`
+   3. `0x005915A0`: `85.71%`
+   4. `0x005915D0`: `66.67%`
+
 ### Batch loop progress (TStratReportView + TCivToolbar wrapper quads)
 1. Promoted with `promote_from_autogen.py`:
    1. `0x0058E330`, `0x0058E3A0`, `0x0058E3C0`, `0x0058E3F0`

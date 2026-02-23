@@ -1381,7 +1381,7 @@ undefined4 BuildCivReportNationEntryDetailTextBlock(void)
 
 // ghidra_name TArmyInfoView::CreateTArmyInfoViewInstance
 // ghidra_proto void * __cdecl CreateTArmyInfoViewInstance(void)
-// FUNCTION: IMPERIALISM 0x00591500
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591500
 undefined4 CreateTArmyInfoViewInstance(void)
 {
   return 0;
@@ -1389,7 +1389,7 @@ undefined4 CreateTArmyInfoViewInstance(void)
 
 // ghidra_name TArmyInfoView::GetTArmyInfoViewClassNamePointer
 // ghidra_proto void * __cdecl GetTArmyInfoViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00591580
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591580
 undefined4 GetTArmyInfoViewClassNamePointer(void)
 {
   return 0;
@@ -1397,7 +1397,7 @@ undefined4 GetTArmyInfoViewClassNamePointer(void)
 
 // ghidra_name TArmyInfoView::ConstructTArmyInfoViewBaseState
 // ghidra_proto void * __thiscall ConstructTArmyInfoViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x005915a0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005915a0
 undefined4 ConstructTArmyInfoViewBaseState(void)
 {
   return 0;
@@ -1405,7 +1405,7 @@ undefined4 ConstructTArmyInfoViewBaseState(void)
 
 // ghidra_name TArmyInfoView::DestructTArmyInfoViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTArmyInfoViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005915d0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005915d0
 undefined4 DestructTArmyInfoViewAndMaybeFree(void)
 {
   return 0;
