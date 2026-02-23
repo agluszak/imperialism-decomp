@@ -31,3 +31,6 @@ Thumbs.db
 config/reccmp-project.yml
 reccmp-user.yml
 reccmp-build.yml
+
+# Local environment config
+.env
