@@ -1117,7 +1117,7 @@ undefined4 HandleCombatReportPageNavigationAndRefreshText(void)
 
 // ghidra_name TArmyToolbar::CreateTArmyToolbarInstance
 // ghidra_proto void * __cdecl CreateTArmyToolbarInstance(void)
-// FUNCTION: IMPERIALISM 0x0058de40
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058de40
 undefined4 CreateTArmyToolbarInstance(void)
 {
   return 0;
@@ -1125,7 +1125,7 @@ undefined4 CreateTArmyToolbarInstance(void)
 
 // ghidra_name TArmyToolbar::GetTArmyToolbarClassNamePointer
 // ghidra_proto void * __cdecl GetTArmyToolbarClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0058dec0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058dec0
 undefined4 GetTArmyToolbarClassNamePointer(void)
 {
   return 0;
@@ -1133,7 +1133,7 @@ undefined4 GetTArmyToolbarClassNamePointer(void)
 
 // ghidra_name TArmyToolbar::ConstructTArmyToolbarBaseState
 // ghidra_proto void * __thiscall ConstructTArmyToolbarBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058dee0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058dee0
 undefined4 ConstructTArmyToolbarBaseState(void)
 {
   return 0;
@@ -1141,7 +1141,7 @@ undefined4 ConstructTArmyToolbarBaseState(void)
 
 // ghidra_name TArmyToolbar::DestructTArmyToolbarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTArmyToolbarAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0058df10
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058df10
 undefined4 DestructTArmyToolbarAndMaybeFree(void)
 {
   return 0;
@@ -1165,7 +1165,7 @@ undefined4 HandleMapContextActionArmyRatioAndModeCommands(void)
 
 // ghidra_name TStratReportView::CreateTStratReportViewInstance
 // ghidra_proto void * __cdecl CreateTStratReportViewInstance(void)
-// FUNCTION: IMPERIALISM 0x0058e330
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e330
 undefined4 CreateTStratReportViewInstance(void)
 {
   return 0;
@@ -1173,7 +1173,7 @@ undefined4 CreateTStratReportViewInstance(void)
 
 // ghidra_name TStratReportView::GetTStratReportViewClassNamePointer
 // ghidra_proto void * __cdecl GetTStratReportViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0058e3a0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e3a0
 undefined4 GetTStratReportViewClassNamePointer(void)
 {
   return 0;
@@ -1181,7 +1181,7 @@ undefined4 GetTStratReportViewClassNamePointer(void)
 
 // ghidra_name TStratReportView::ConstructTStratReportViewBaseState
 // ghidra_proto void * __thiscall ConstructTStratReportViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058e3c0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e3c0
 undefined4 ConstructTStratReportViewBaseState(void)
 {
   return 0;
@@ -1189,7 +1189,7 @@ undefined4 ConstructTStratReportViewBaseState(void)
 
 // ghidra_name TStratReportView::DestructTStratReportViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTStratReportViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0058e3f0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e3f0
 undefined4 DestructTStratReportViewAndMaybeFree(void)
 {
   return 0;
@@ -1213,7 +1213,7 @@ undefined4 RenderBattleOutcomeHeaderWinnerLoserLines(void)
 
 // ghidra_name TCivToolbar::CreateTCivToolbarInstance
 // ghidra_proto void * __cdecl CreateTCivToolbarInstance(void)
-// FUNCTION: IMPERIALISM 0x0058ea00
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ea00
 undefined4 CreateTCivToolbarInstance(void)
 {
   return 0;
@@ -1221,7 +1221,7 @@ undefined4 CreateTCivToolbarInstance(void)
 
 // ghidra_name TCivToolbar::GetTCivToolbarClassNamePointer
 // ghidra_proto void * __cdecl GetTCivToolbarClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0058ea80
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ea80
 undefined4 GetTCivToolbarClassNamePointer(void)
 {
   return 0;
@@ -1229,7 +1229,7 @@ undefined4 GetTCivToolbarClassNamePointer(void)
 
 // ghidra_name TCivToolbar::ConstructTCivToolbarBaseState
 // ghidra_proto void * __thiscall ConstructTCivToolbarBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058eaa0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058eaa0
 undefined4 ConstructTCivToolbarBaseState(void)
 {
   return 0;
@@ -1237,7 +1237,7 @@ undefined4 ConstructTCivToolbarBaseState(void)
 
 // ghidra_name TCivToolbar::DestructTCivToolbarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCivToolbarAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0058ead0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ead0
 undefined4 DestructTCivToolbarAndMaybeFree(void)
 {
   return 0;

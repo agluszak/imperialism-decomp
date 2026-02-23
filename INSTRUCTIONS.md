@@ -81,3 +81,6 @@ Current reminders for improving `% similarity`:
 25. High-throughput loop works best with class “quads” (create/get/construct/destroy) imported together via `promote_from_autogen.py`, then normalized to shared runtime bridges.
 26. Keep `#pragma auto_inline(off)` around tiny wrapper batches to avoid temporary pair-count regressions from inlining/folding; re-enable after the batch.
 27. For `0x58C330/0x58C360/0x58C7C0`-style numbered-arrow wrappers, explicit field mapping (`width38`, `hoverTag4e`, `value84`, `value86`) plus virtual helper calls (`InvokeSlotE4`, `QueryBounds`) gives immediate ~60-70% range without deep tuning.
+28. For promoted class-wrapper quads, convert class-scoped decompiler output into local `*State` structs plus shared bridge helpers immediately; this keeps compile stability and typically yields 34-86% first-pass similarity.
+29. `MANUAL_OVERRIDE_ADDR` entries in stub parts must not keep a `FUNCTION` annotation for the same address, or reccmp sees duplicate mappings and may diff against the stub.
+30. After any annotation-only edit in source/stub files, do a rebuild before trusting stats; stale PDB line mappings can create false pairing regressions.

@@ -21,11 +21,14 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_ConstructUiResourceEntryBase(void);
+undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void);
+
+
 
 
 
@@ -122,6 +125,12 @@ char g_vtblTNumberedArrowButton;
 char g_pClassDescTNumberedArrowButton;
 char g_vtblTCombatReportView;
 char g_pClassDescTCombatReportView;
+char g_vtblTArmyToolbar;
+char g_pClassDescTArmyToolbar;
+char g_vtblTStratReportView;
+char g_pClassDescTStratReportView;
+char g_vtblTCivToolbar;
+char g_pClassDescTCivToolbar;
 
 const short kTradeBitmapBidStateA = 0x083f;
 const short kTradeBitmapBidStateB = 0x084d;
@@ -240,6 +249,21 @@ struct NumberedArrowButtonState {
 struct CombatReportViewState {
   void *vftable;
   char pad_04[0x9c];
+};
+
+struct ArmyToolbarState {
+  void *vftable;
+  char pad_04[0x88];
+};
+
+struct StratReportViewState {
+  void *vftable;
+  char pad_04[0x60];
+};
+
+struct CivToolbarState {
+  void *vftable;
+  char pad_04[0x88];
 };
 
 struct TradeMoveStepCluster {
@@ -697,6 +721,11 @@ public:
     reinterpret_cast<void (__fastcall *)(void *)>(::thunk_ConstructUiResourceEntryBase)(self);
   }
 
+  static __inline void ConstructUiResourceEntryType4B0C0(void *self)
+  {
+    reinterpret_cast<void (__fastcall *)(void *)>(::thunk_ConstructUiResourceEntryType4B0C0)(self);
+  }
+
   static __inline void ConstructUiClickablePictureResourceEntry(void *self)
   {
     reinterpret_cast<void (__fastcall *)(void *)>(
@@ -993,6 +1022,8 @@ UiRuntimeContext *g_pUiRuntimeContext = 0;
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00587130
 void TradeScreenContext::InitializeTradeSellControlState(void)
 {
@@ -1061,6 +1092,8 @@ void TradeScreenContext::InitializeTradeSellControlState(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00587900
 void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext *context, UiRuntimeContext *runtimeContext)
 {
@@ -1080,6 +1113,8 @@ void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext *context, UiRuntimeC
 // GHIDRA_COMMENT Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8.
 // GHIDRA_COMMENT_END
 /* Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8. */
+
+
 
 
 
@@ -1124,6 +1159,8 @@ void TradeScreenContext::QueryTradeSellControlQuantity(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00587980
 char TradeScreenContext::IsTradeBidControlActionable(void)
 {
@@ -1155,6 +1192,8 @@ char TradeScreenContext::IsTradeBidControlActionable(void)
 /* Trade UI predicate for Offer control interactivity.
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
+
+
 
 
 
@@ -1216,6 +1255,8 @@ char TradeScreenContext::IsTradeOfferControlActionable(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00587AA0
 void TradeScreenContext::SetTradeBidSecondaryBitmapState(void)
 {
@@ -1258,6 +1299,8 @@ void TradeScreenContext::SetTradeBidSecondaryBitmapState(void)
    If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D); otherwise assigns
    bitmap 2111 (0x83F).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
+
+
 
 
 
@@ -1338,6 +1381,8 @@ void TradeScreenContext::SetTradeBidControlBitmapState(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00587DD0
 void TradeScreenContext::SetTradeOfferControlBitmapState(void)
 {
@@ -1392,6 +1437,8 @@ void TradeScreenContext::SetTradeOfferControlBitmapState(void)
 /* Trade UI Offer secondary-state updater.
    Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
+
+
 
 
 
@@ -1480,6 +1527,8 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x005882F0
 void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax)
 {
@@ -1548,6 +1597,8 @@ void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metric
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588610
 void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughArg)
 {
@@ -1560,6 +1611,8 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
 // GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=2; instructions=15
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
+
+
 
 
 
@@ -1602,6 +1655,8 @@ void __fastcall OrphanCallChain_C2_I15_00588630(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588670
 void __fastcall OrphanCallChain_C1_I03_00588670(
     TradeControl *control, int unusedEdx, int unusedStackArg)
@@ -1613,6 +1668,8 @@ void __fastcall OrphanCallChain_C1_I03_00588670(
 
 // GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
 // GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
+
+
 
 
 
@@ -1670,6 +1727,8 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int *requestedValuePtr)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588A30
 TradeMoveStepCluster *__cdecl CreateTradeMoveStepControlPanel(void)
 {
@@ -1701,6 +1760,8 @@ TradeMoveStepCluster *__cdecl CreateTradeMoveStepControlPanel(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588AD0
 void *__cdecl GetTIndustryClusterClassNamePointer(void)
 {
@@ -1709,6 +1770,8 @@ void *__cdecl GetTIndustryClusterClassNamePointer(void)
 
 // GHIDRA_NAME ConstructTradeMoveStepControlPanel
 // GHIDRA_PROTO void __cdecl ConstructTradeMoveStepControlPanel(void)
+
+
 
 
 
@@ -1743,6 +1806,8 @@ void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster *cluster
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588B20
 void __fastcall DestructTIndustryClusterMaybeFree(
     TradeMoveStepCluster *cluster, int unusedEdx, unsigned char freeSelfFlag)
@@ -1761,6 +1826,8 @@ void __fastcall DestructTIndustryClusterMaybeFree(
 // GHIDRA_COMMENT_END
 /* Clamps requested move value and applies through control vfunc +0x1A0; enforces nonzero fallback
    when move/sell controls are both at zero edge case. */
+
+
 
 
 
@@ -1820,6 +1887,8 @@ void __fastcall SyncTradeCommoditySelectionWithActiveNationAndInitControls(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588C30
 void TradeMovePanelContext::OrphanCallChain_C1_I06_00588c30(int value)
 {
@@ -1851,6 +1920,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(
 // GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
+
+
 
 
 
@@ -1933,6 +2004,8 @@ void __fastcall UpdateTradeMoveControlsFromDrag(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00588F60
 void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void)
 {
@@ -1941,6 +2014,8 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void)
 
 // GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
 // GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
+
+
 
 
 
@@ -2000,6 +2075,8 @@ void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589110
 TradeAmountBarLayout *__cdecl CreateTIndustryAmtBarInstance(void)
 {
@@ -2026,11 +2103,15 @@ TradeAmountBarLayout *__cdecl CreateTIndustryAmtBarInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x005891B0
 void *__cdecl GetTIndustryAmtBarClassNamePointer(void)
 {
   return reinterpret_cast<void *>(kAddrClassDescTIndustryAmtBar);
 }
+
+
 
 
 
@@ -2064,6 +2145,8 @@ TradeAmountBarLayout *__fastcall ConstructTIndustryAmtBarBaseState(TradeAmountBa
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589210
 TradeAmountBarLayout *__fastcall DestructTIndustryAmtBarAndMaybeFree(
     TradeAmountBarLayout *amountBar, int unusedEdx, unsigned char freeSelfFlag)
@@ -2075,6 +2158,8 @@ TradeAmountBarLayout *__fastcall DestructTIndustryAmtBarAndMaybeFree(
   }
   return amountBar;
 }
+
+
 
 
 
@@ -2120,6 +2205,8 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589660
 TradeMoveStepCluster *__cdecl CreateTradeMoveScaledControlPanel(void)
 {
@@ -2144,11 +2231,15 @@ TradeMoveStepCluster *__cdecl CreateTradeMoveScaledControlPanel(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589700
 void *__cdecl GetTRailClusterClassNamePointer(void)
 {
   return reinterpret_cast<void *>(kAddrClassDescTRailCluster);
 }
+
+
 
 
 
@@ -2179,6 +2270,8 @@ void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster *clust
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589760
 void __fastcall DestructTRailClusterMaybeFree(
     TradeMoveStepCluster *cluster, int unusedEdx, unsigned char freeSelfFlag)
@@ -2189,6 +2282,8 @@ void __fastcall DestructTRailClusterMaybeFree(
     FreeHeapBufferIfNotNull((undefined4)cluster);
   }
 }
+
+
 
 
 
@@ -2277,6 +2372,8 @@ void __fastcall SelectTradeCommodityPresetBySummaryTagAndInitControls(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x005899C0
 void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value)
 {
@@ -2289,6 +2386,8 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value)
 // GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
+
+
 
 
 
@@ -2373,6 +2472,8 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589D10
 void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void)
 {
@@ -2382,6 +2483,8 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void)
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+
 
 
 
@@ -2429,6 +2532,8 @@ void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589ED0
 IndustryAmtBarState *__cdecl CreateTRailAmtBarInstance(void)
 {
@@ -2452,11 +2557,15 @@ IndustryAmtBarState *__cdecl CreateTRailAmtBarInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589F70
 void *__cdecl GetTRailAmtBarClassNamePointer(void)
 {
   return reinterpret_cast<void *>(kAddrClassDescTRailAmtBar);
 }
+
+
 
 
 
@@ -2484,6 +2593,8 @@ IndustryAmtBarState *IndustryAmtBarState::ConstructTRailAmtBarBaseState()
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x00589FD0
 IndustryAmtBarState *IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag)
 {
@@ -2493,6 +2604,8 @@ IndustryAmtBarState *IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsign
   }
   return this;
 }
+
+
 
 
 
@@ -2561,6 +2674,8 @@ void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues()
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058A4D0
 TradeMoveStepCluster *__cdecl CreateTradeMoveArrowControlPanel(void)
 {
@@ -2580,11 +2695,15 @@ TradeMoveStepCluster *__cdecl CreateTradeMoveArrowControlPanel(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058A570
 void *__cdecl GetTShipyardClusterClassNamePointer(void)
 {
   return reinterpret_cast<void *>(kAddrClassDescTShipyardCluster);
 }
+
+
 
 
 
@@ -2600,6 +2719,8 @@ TradeMoveStepCluster *__fastcall ConstructTradeMoveArrowControlPanel(TradeMoveSt
   cluster->field_88 = 0;
   return cluster;
 }
+
+
 
 
 
@@ -2624,6 +2745,8 @@ void __fastcall DestructTShipyardClusterMaybeFree(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058A610
 void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls()
 {
@@ -2634,6 +2757,8 @@ void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls()
       reinterpret_cast<TradeMovePanelContext *>(this));
   AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(0);
 }
+
+
 
 
 
@@ -2683,6 +2808,8 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058AAA0
 IndustryAmtBarState *__cdecl CreateTShipAmtBarInstance(void)
 {
@@ -2704,11 +2831,15 @@ IndustryAmtBarState *__cdecl CreateTShipAmtBarInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058AB40
 void *__cdecl GetTShipAmtBarClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTShipAmtBar);
 }
+
+
 
 
 
@@ -2732,6 +2863,8 @@ IndustryAmtBarState *IndustryAmtBarState::ConstructTShipAmtBarBaseState()
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058ABA0
 IndustryAmtBarState *
 IndustryAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag)
@@ -2742,6 +2875,8 @@ IndustryAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag)
   }
   return this;
 }
+
+
 
 
 
@@ -2769,6 +2904,8 @@ void IndustryAmtBarState::SelectTradeSpecialCommodityAndRecomputeBarLimits(int p
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058AE30
 TradeAmountBarLayout *__cdecl CreateTTraderAmtBarInstance(void)
 {
@@ -2789,11 +2926,15 @@ TradeAmountBarLayout *__cdecl CreateTTraderAmtBarInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058AED0
 void *__cdecl GetTTraderAmtBarClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTTraderAmtBar);
 }
+
+
 
 
 
@@ -2810,6 +2951,8 @@ TradeAmountBarLayout *__fastcall ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmount
   amountBar->auxValueB = 0;
   return amountBar;
 }
+
+
 
 
 
@@ -2833,6 +2976,8 @@ void __fastcall DestructTTraderAmtBarMaybeFree(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B340
 CivilianButtonState *__cdecl CreateTCivilianButtonInstance(void)
 {
@@ -2849,11 +2994,15 @@ CivilianButtonState *__cdecl CreateTCivilianButtonInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B3C0
 void *__cdecl GetTCivilianButtonClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTCivilianButton);
 }
+
+
 
 
 
@@ -2866,6 +3015,8 @@ CivilianButtonState *__fastcall ConstructTCivilianButtonBaseState(CivilianButton
   button->buttonTag = 0xc;
   return button;
 }
+
+
 
 
 
@@ -2885,6 +3036,8 @@ CivilianButtonState *__fastcall DestructTCivilianButtonAndMaybeFree(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B5C0
 HQButtonState *__cdecl CreateTHQButtonInstance(void)
 {
@@ -2899,11 +3052,15 @@ HQButtonState *__cdecl CreateTHQButtonInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B640
 void *__cdecl GetTHQButtonClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTHQButton);
 }
+
+
 
 
 
@@ -2915,6 +3072,8 @@ HQButtonState *__fastcall ConstructTHQButtonBaseState(HQButtonState *button)
   button->vftable = reinterpret_cast<void *>(&g_vtblTHQButton);
   return button;
 }
+
+
 
 
 
@@ -2933,6 +3092,8 @@ HQButtonState *__fastcall DestructTHQButtonAndMaybeFree(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B6E0
 void __fastcall WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(HQButtonState *button)
 {
@@ -2945,6 +3106,8 @@ void __fastcall WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(HQButtonState *b
   button->glyph94 = (short)(glyph + 2);
   button->glyph96 = (short)(glyph + 3);
 }
+
+
 
 
 
@@ -2975,6 +3138,8 @@ void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B960
 PlacardState *__cdecl CreateTPlacardInstance(void)
 {
@@ -2990,11 +3155,15 @@ PlacardState *__cdecl CreateTPlacardInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058B9F0
 void *__cdecl GetTPlacardClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTPlacard);
 }
+
+
 
 
 
@@ -3007,6 +3176,8 @@ PlacardState *__fastcall ConstructTPlacardBaseState(PlacardState *placard)
   placard->placardValue = 0;
   return placard;
 }
+
+
 
 
 
@@ -3026,6 +3197,8 @@ PlacardState *__fastcall DestructTPlacardAndMaybeFree(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058BE30
 PlacardState *__cdecl CreateTArmyPlacardInstance(void)
 {
@@ -3041,11 +3214,15 @@ PlacardState *__cdecl CreateTArmyPlacardInstance(void)
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058BEB0
 void *__cdecl GetTArmyPlacardClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTArmyPlacard);
 }
+
+
 
 
 
@@ -3058,6 +3235,8 @@ PlacardState *__fastcall ConstructTArmyPlacardBaseState(PlacardState *placard)
   placard->placardValue = (short)0xffff;
   return placard;
 }
+
+
 
 
 
@@ -3077,6 +3256,8 @@ PlacardState *__fastcall DestructTArmyPlacardAndMaybeFree(
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+
 
 
 
@@ -3104,6 +3285,8 @@ void __fastcall WrapperFor_GetActiveNationId_At0058bf50(
 
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058C140
 void __fastcall HandlePlusMinusCommandAndInvokeVslot1CC(
     PlacardState *placard, int unusedEdx, int *arg1, int *arg2)
@@ -3123,6 +3306,8 @@ void __fastcall HandlePlusMinusCommandAndInvokeVslot1CC(
 }
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058C1E0
 NumberedArrowButtonState *__cdecl CreateTNumberedArrowButtonInstance(void)
 {
@@ -3138,11 +3323,15 @@ NumberedArrowButtonState *__cdecl CreateTNumberedArrowButtonInstance(void)
 }
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058C280
 void *__cdecl GetTNumberedArrowButtonClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTNumberedArrowButton);
 }
+
+
 
 
 // FUNCTION: IMPERIALISM 0x0058C2A0
@@ -3155,6 +3344,8 @@ ConstructTNumberedArrowButtonBaseState(NumberedArrowButtonState *button)
   button->value86 = 0;
   return button;
 }
+
+
 
 
 // FUNCTION: IMPERIALISM 0x0058C2E0
@@ -3170,14 +3361,6 @@ NumberedArrowButtonState *__fastcall DestructTNumberedArrowButtonAndMaybeFree(
 }
 
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0058C330
-// GHIDRA_NAME OrphanCallChain_C1_I08_0058c330
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I08_0058c330()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=8
-// GHIDRA_COMMENT_END
-
-/* [OrphanCallChain] no incoming code refs; calls=1; instructions=8 */
 
 // FUNCTION: IMPERIALISM 0x0058C330
 void __fastcall OrphanCallChain_C1_I08_0058c330(
@@ -3191,14 +3374,6 @@ void __fastcall OrphanCallChain_C1_I08_0058c330(
 }
 
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0058C360
-// GHIDRA_NAME OrphanCallChain_C2_I23_0058c360
-// GHIDRA_PROTO undefined OrphanCallChain_C2_I23_0058c360()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=2; instructions=23
-// GHIDRA_COMMENT_END
-
-/* [OrphanCallChain] no incoming code refs; calls=2; instructions=23 */
 
 // FUNCTION: IMPERIALISM 0x0058C360
 void __fastcall OrphanCallChain_C2_I23_0058c360(
@@ -3216,15 +3391,6 @@ void __fastcall OrphanCallChain_C2_I23_0058c360(
 }
 
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0058C7C0
-// GHIDRA_NAME WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_HandleCursorHoverSelectionByChildHitTestAndFallback; instructions=30, call_insns=3, internal_calls=2, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_HandleCursorHoverSelectionByChildHitTestAndFallback;
-   instructions=30, call_insns=3, internal_calls=2, unique_internal=1 */
 
 // FUNCTION: IMPERIALISM 0x0058C7C0
 void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
@@ -3246,6 +3412,8 @@ void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFall
 }
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058C830
 CombatReportViewState *__cdecl CreateTCombatReportViewInstance(void)
 {
@@ -3259,11 +3427,15 @@ CombatReportViewState *__cdecl CreateTCombatReportViewInstance(void)
 }
 
 
+
+
 // FUNCTION: IMPERIALISM 0x0058C8B0
 void *__cdecl GetTCombatReportViewClassNamePointer(void)
 {
   return reinterpret_cast<void *>(&g_pClassDescTCombatReportView);
 }
+
+
 
 
 // FUNCTION: IMPERIALISM 0x0058C8D0
@@ -3273,6 +3445,8 @@ CombatReportViewState *__fastcall ConstructTCombatReportViewBaseState(CombatRepo
   view->vftable = reinterpret_cast<void *>(&g_vtblTCombatReportView);
   return view;
 }
+
+
 
 
 // FUNCTION: IMPERIALISM 0x0058C900
@@ -3290,3 +3464,135 @@ CombatReportViewState *__fastcall DestructTCombatReportViewAndMaybeFree(
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+
+
+// FUNCTION: IMPERIALISM 0x0058DE40
+ArmyToolbarState *__cdecl CreateTArmyToolbarInstance(void)
+{
+  ArmyToolbarState *toolbar =
+      reinterpret_cast<ArmyToolbarState *>(AllocateWithFallbackHandler(0x8c));
+  if (toolbar != 0) {
+    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(
+        reinterpret_cast<TradeMoveStepCluster *>(toolbar));
+    toolbar->vftable = reinterpret_cast<void *>(&g_vtblTArmyToolbar);
+  }
+  return toolbar;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x0058DEC0
+void *__cdecl GetTArmyToolbarClassNamePointer(void)
+{
+  return reinterpret_cast<void *>(&g_pClassDescTArmyToolbar);
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x0058DEE0
+ArmyToolbarState *__fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState *toolbar)
+{
+  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(
+      reinterpret_cast<TradeMoveStepCluster *>(toolbar));
+  toolbar->vftable = reinterpret_cast<void *>(&g_vtblTArmyToolbar);
+  return toolbar;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x0058DF10
+ArmyToolbarState *__fastcall DestructTArmyToolbarAndMaybeFree(
+    ArmyToolbarState *toolbar, int unusedEdx, unsigned char freeSelfFlag)
+{
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)toolbar);
+  }
+  return toolbar;
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058E330
+StratReportViewState *__cdecl CreateTStratReportViewInstance(void)
+{
+  StratReportViewState *view = reinterpret_cast<StratReportViewState *>(
+      AllocateWithFallbackHandler(100));
+  if (view != 0) {
+    TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(view);
+    view->vftable = reinterpret_cast<void *>(&g_vtblTStratReportView);
+  }
+  return view;
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058E3A0
+void *__cdecl GetTStratReportViewClassNamePointer(void)
+{
+  return reinterpret_cast<void *>(&g_pClassDescTStratReportView);
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058E3C0
+StratReportViewState *__fastcall ConstructTStratReportViewBaseState(StratReportViewState *view)
+{
+  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(view);
+  view->vftable = reinterpret_cast<void *>(&g_vtblTStratReportView);
+  return view;
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058E3F0
+StratReportViewState *__fastcall DestructTStratReportViewAndMaybeFree(
+    StratReportViewState *view, int unusedEdx, unsigned char freeSelfFlag)
+{
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)view);
+  }
+  return view;
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058EA00
+CivToolbarState *__cdecl CreateTCivToolbarInstance(void)
+{
+  CivToolbarState *toolbar =
+      reinterpret_cast<CivToolbarState *>(AllocateWithFallbackHandler(0x8c));
+  if (toolbar != 0) {
+    TradeScreenRuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
+    toolbar->vftable = reinterpret_cast<void *>(&g_vtblTCivToolbar);
+  }
+  return toolbar;
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058EA80
+void *__cdecl GetTCivToolbarClassNamePointer(void)
+{
+  return reinterpret_cast<void *>(&g_pClassDescTCivToolbar);
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058EAA0
+CivToolbarState *__fastcall ConstructTCivToolbarBaseState(CivToolbarState *toolbar)
+{
+  TradeScreenRuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
+  toolbar->vftable = reinterpret_cast<void *>(&g_vtblTCivToolbar);
+  return toolbar;
+}
+
+
+// FUNCTION: IMPERIALISM 0x0058EAD0
+CivToolbarState *__fastcall DestructTCivToolbarAndMaybeFree(
+    CivToolbarState *toolbar, int unusedEdx, unsigned char freeSelfFlag)
+{
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)toolbar);
+  }
+  return toolbar;
+}

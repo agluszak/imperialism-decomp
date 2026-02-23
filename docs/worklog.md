@@ -2,6 +2,50 @@
 
 ## 2026-02-23
 
+### Batch loop progress (TStratReportView + TCivToolbar wrapper quads)
+1. Promoted with `promote_from_autogen.py`:
+   1. `0x0058E330`, `0x0058E3A0`, `0x0058E3C0`, `0x0058E3F0`
+   2. `0x0058EA00`, `0x0058EA80`, `0x0058EAA0`, `0x0058EAD0`
+2. Converted promoted code to typed/manual wrappers in `src/game/trade_screen.cpp`:
+   1. Added `StratReportViewState` and `CivToolbarState`.
+   2. Added bridge helper for `thunk_ConstructUiResourceEntryType4B0C0`.
+   3. Added vtable/classdesc placeholders for `TStratReportView` and `TCivToolbar`.
+3. Stub sync:
+   1. flipped all 8 addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp` and removed `FUNCTION` tags for those addresses.
+4. Verification (`progress_stats.py`, `2026-02-23T17:28:06Z`):
+   1. paired coverage: `12229/12229` (`100%`).
+   2. aligned: `43`.
+   3. average similarity: `1.98%` (`+0.05 pp` from prior `1.93%`).
+5. Targeted `reccmp --verbose` checkpoints:
+   1. `0x0058E330`: `34.78%`
+   2. `0x0058E3A0`: `50.00%`
+   3. `0x0058E3C0`: `85.71%`
+   4. `0x0058E3F0`: `66.67%`
+   5. `0x0058EA00`: `34.78%`
+   6. `0x0058EA80`: `50.00%`
+   7. `0x0058EAA0`: `85.71%`
+   8. `0x0058EAD0`: `66.67%`
+
+### Batch loop progress (TArmyToolbar wrapper quad)
+1. Normalized promoted raw class-scoped decompiler output for:
+   1. `0x0058DE40`
+   2. `0x0058DEC0`
+   3. `0x0058DEE0`
+   4. `0x0058DF10`
+2. Converted to typed/manual wrappers in `src/game/trade_screen.cpp`:
+   1. added `ArmyToolbarState`.
+   2. added vtable/classdesc placeholders for `TArmyToolbar`.
+   3. reused bridge ctor + shared dtor pattern used by neighboring toolbar wrappers.
+3. Stub sync:
+   1. switched all four addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`.
+4. Verification (`reccmp --verbose`):
+   1. `0x0058DE40`: `34.78%`
+   2. `0x0058DEC0`: `50.00%`
+   3. `0x0058DEE0`: `71.43%`
+   4. `0x0058DF10`: `66.67%`
+5. Process note:
+   1. annotation-only changes in stubs require rebuild before metrics; stale line mapping caused a temporary false coverage drop that disappeared after rebuild.
+
 ### Batch loop progress (numbered-arrow wrapper trio)
 1. Promoted with `promote_from_autogen.py`:
    1. `0x0058C330` `OrphanCallChain_C1_I08_0058c330`
