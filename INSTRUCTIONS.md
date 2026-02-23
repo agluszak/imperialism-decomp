@@ -52,7 +52,9 @@ uv run python tools/workflow/promote_from_autogen.py \
 2. Trade-screen is split into address-ordered parts; promote into the correct part file:
    - `src/game/trade_screen_parts/part_1.cpp`: `0x00587130` .. `0x0058A940`
    - `src/game/trade_screen_parts/part_2.cpp`: `0x0058AAA0` .. `0x0058AF30`
-   - class wrapper implementations must go to class files `src/game/<ClassName>.cpp`.
+   - class-owned trade-screen implementations must live in `src/game/trade_screen_classes/<ClassName>.cpp`.
+   - `src/game/trade_screen_parts/part_*.cpp` should keep only global/non-class functions.
+   - class wrapper implementations outside trade-screen must go to `src/game/<ClassName>.cpp`.
    - keep functions in each part sorted by ascending original address.
 3. Immediately convert promoted raw offset access into typed field access:
    - replace `*(type *)((int)obj + off)` with struct fields.
@@ -63,6 +65,12 @@ uv run python tools/workflow/promote_from_autogen.py \
 ```bash
 uv run python tools/workflow/split_classes_in_file.py \
   --source-cpp src/game/<mixed_file>.cpp
+```
+   - for trade-screen parts:
+```bash
+uv run python tools/workflow/split_classes_in_file.py \
+  --source-cpp src/game/trade_screen_parts/part_1.cpp \
+  --target-dir src/game/trade_screen_classes
 ```
 
 ## Similarity Improvement Notes
@@ -105,3 +113,4 @@ Current reminders for improving `% similarity`:
 32. Keep `src/game/trade_screen.cpp` as shared scaffolding only; add new trade-screen function bodies in `src/game/trade_screen_parts/part_*.cpp`, not in the umbrella file.
 33. If a function is clearly class-owned, move it into `src/game/<ClassName>.cpp` instead of any mixed bucket file.
 34. Keep `src/game/ui_widget_wrappers.cpp` for global/non-class wrappers only; class-owned UI wrappers belong in class files.
+35. Keep trade-screen class functions in `src/game/trade_screen_classes/<ClassName>.cpp`, included from `src/game/trade_screen.cpp`; avoid adding class methods back into part files.

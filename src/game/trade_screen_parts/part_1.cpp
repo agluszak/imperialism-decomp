@@ -23,6 +23,7 @@
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00587130
 void TradeScreenContext::InitializeTradeSellControlState(void)
 {
@@ -94,6 +95,7 @@ void TradeScreenContext::InitializeTradeSellControlState(void)
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00587900
 void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext *context, UiRuntimeContext *runtimeContext)
 {
@@ -113,6 +115,7 @@ void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext *context, UiRuntimeC
 // GHIDRA_COMMENT Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8.
 // GHIDRA_COMMENT_END
 /* Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8. */
+
 
 
 
@@ -163,6 +166,7 @@ void TradeScreenContext::QueryTradeSellControlQuantity(void)
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00587980
 char TradeScreenContext::IsTradeBidControlActionable(void)
 {
@@ -194,6 +198,7 @@ char TradeScreenContext::IsTradeBidControlActionable(void)
 /* Trade UI predicate for Offer control interactivity.
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
+
 
 
 
@@ -261,6 +266,7 @@ char TradeScreenContext::IsTradeOfferControlActionable(void)
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00587AA0
 void TradeScreenContext::SetTradeBidSecondaryBitmapState(void)
 {
@@ -303,6 +309,7 @@ void TradeScreenContext::SetTradeBidSecondaryBitmapState(void)
    If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D); otherwise assigns
    bitmap 2111 (0x83F).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
+
 
 
 
@@ -389,6 +396,7 @@ void TradeScreenContext::SetTradeBidControlBitmapState(void)
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00587DD0
 void TradeScreenContext::SetTradeOfferControlBitmapState(void)
 {
@@ -443,6 +451,7 @@ void TradeScreenContext::SetTradeOfferControlBitmapState(void)
 /* Trade UI Offer secondary-state updater.
    Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
+
 
 
 
@@ -537,6 +546,7 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void)
 
 
 
+
 // FUNCTION: IMPERIALISM 0x005882F0
 void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax)
 {
@@ -608,32 +618,6 @@ void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metric
 
 
 
-// FUNCTION: IMPERIALISM 0x00588610
-void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughArg)
-{
-  ((void(__cdecl *)(int))thunk_NoOpUiLifecycleHook)(passthroughArg);
-}
-
-// GHIDRA_NAME OrphanCallChain_C2_I15_00588630
-// GHIDRA_PROTO undefined OrphanCallChain_C2_I15_00588630()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=2; instructions=15
-// GHIDRA_COMMENT_END
-/* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // FUNCTION: IMPERIALISM 0x00588630
 void __fastcall OrphanCallChain_C2_I15_00588630(
@@ -668,6 +652,7 @@ void __fastcall OrphanCallChain_C2_I15_00588630(
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00588670
 void __fastcall OrphanCallChain_C1_I03_00588670(
     TradeControl *control, int unusedEdx, int unusedStackArg)
@@ -679,6 +664,7 @@ void __fastcall OrphanCallChain_C1_I03_00588670(
 
 // GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
 // GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
+
 
 
 
@@ -742,62 +728,6 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int *requestedValuePtr)
 
 
 
-// FUNCTION: IMPERIALISM 0x00588A30
-TradeMoveStepCluster *__cdecl CreateTradeMoveStepControlPanel(void)
-{
-  TradeMoveStepCluster *cluster = reinterpret_cast<TradeMoveStepCluster *>(
-      AllocateWithFallbackHandler(0x90));
-  if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
-    cluster->vftable = reinterpret_cast<void *>(kVtableTIndustryCluster);
-    cluster->field_88 = 0;
-  }
-  return cluster;
-}
-
-// GHIDRA_NAME TIndustryCluster::GetTIndustryClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIndustryClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIndustryCluster.
-// GHIDRA_COMMENT_END
-/* Returns class descriptor pointer for TIndustryCluster. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00588AD0
-void *__cdecl GetTIndustryClusterClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTIndustryCluster);
-}
-
-// GHIDRA_NAME ConstructTradeMoveStepControlPanel
-// GHIDRA_PROTO void __cdecl ConstructTradeMoveStepControlPanel(void)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // FUNCTION: IMPERIALISM 0x00588AF0
 void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster *cluster)
@@ -810,38 +740,6 @@ void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster *cluster
 // GHIDRA_NAME TIndustryCluster::DestructTIndustryClusterMaybeFree
 // GHIDRA_PROTO void __cdecl DestructTIndustryClusterMaybeFree(void)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00588B20
-void __fastcall DestructTIndustryClusterMaybeFree(
-    TradeMoveStepCluster *cluster, int unusedEdx, unsigned char freeSelfFlag)
-{
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-}
-
-// GHIDRA_NAME ClampAndApplyTradeMoveValue
-// GHIDRA_PROTO void __cdecl ClampAndApplyTradeMoveValue(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Clamps requested move value and applies through control vfunc +0x1A0; enforces nonzero fallback when move/sell controls are both at zero edge case.
-// GHIDRA_COMMENT_END
-/* Clamps requested move value and applies through control vfunc +0x1A0; enforces nonzero fallback
-   when move/sell controls are both at zero edge case. */
 
 
 
@@ -907,6 +805,7 @@ void __fastcall SyncTradeCommoditySelectionWithActiveNationAndInitControls(
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00588C30
 void TradeMovePanelContext::OrphanCallChain_C1_I06_00588c30(int value)
 {
@@ -938,6 +837,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(
 // GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
+
 
 
 
@@ -1026,6 +926,7 @@ void __fastcall UpdateTradeMoveControlsFromDrag(
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00588F60
 void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void)
 {
@@ -1049,237 +950,6 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void)
 
 
 
-// FUNCTION: IMPERIALISM 0x00588FF0
-void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId)
-{
-  TradeOwnerVirtualShape *owner = AsTradeOwnerVirtualShape(this);
-  if (commandId == 100) {
-    TradeControl *moveControl =
-        ResolveOwnerControl(owner, kControlTagMove);
-    if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    }
-    int moveValue = moveControl->QueryValue();
-    owner->ApplyMoveValueSlot1D0(moveValue + 1);
-    return;
-  }
-  if (commandId != 0x65) {
-    HandleTradeMoveControlAdjustment();
-    return;
-  }
-
-  TradeControl *moveControl =
-      ResolveOwnerControl(owner, kControlTagMove);
-  if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-  }
-  int moveValue = moveControl->QueryValue();
-  if (commandId == 0x65) {
-    owner->ApplyMoveValueSlot1D0(moveValue - 1);
-  }
-}
-
-// GHIDRA_NAME OrphanCallChain_C1_I06_005899c0
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I06_005899c0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=6
-// GHIDRA_COMMENT_END
-/* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589110
-TradeAmountBarLayout *__cdecl CreateTIndustryAmtBarInstance(void)
-{
-  TradeAmountBarLayout *amountBar = reinterpret_cast<TradeAmountBarLayout *>(
-      AllocateWithFallbackHandler(0x6c));
-  if (amountBar != 0) {
-    TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void *>(kVtableTIndustryAmtBar);
-    amountBar->rangeOrMaxValue = 0;
-    amountBar->stepOrCurrentValue = 0;
-    amountBar->auxValueA = 0;
-    amountBar->auxValueB = 0;
-  }
-  return amountBar;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x005891B0
-void *__cdecl GetTIndustryAmtBarClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTIndustryAmtBar);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x005891D0
-TradeAmountBarLayout *__fastcall ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout *amountBar)
-{
-  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-  amountBar->vftable = reinterpret_cast<void *>(kVtableTIndustryAmtBar);
-  amountBar->rangeOrMaxValue = 0;
-  amountBar->stepOrCurrentValue = 0;
-  amountBar->auxValueA = 0;
-  amountBar->auxValueB = 0;
-  return amountBar;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589210
-TradeAmountBarLayout *__fastcall DestructTIndustryAmtBarAndMaybeFree(
-    TradeAmountBarLayout *amountBar, int unusedEdx, unsigned char freeSelfFlag)
-{
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)amountBar);
-  }
-  return amountBar;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589260
-void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarState *amountBar)
-{
-  NationCityTradeState *cityState = GetNationCityStateBySlot(QueryActiveNationId());
-  short summaryTagIndex = 0;
-  int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  while (mappedTag != amountBar->ownerPanelContext->summaryTag) {
-    summaryTagIndex = (short)(summaryTagIndex + 1);
-    mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  }
-
-  amountBar->selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
-  int productionValue = TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
-      cityState, amountBar->selectedMetricRecord->buildingSlot);
-  amountBar->cachedProductionAt64 = (short)productionValue;
-
-  short stepValue = amountBar->selectedMetricRecord->QueryStepValue();
-  amountBar->cachedRatioAt62 = (short)((stepValue * amountBar->barRangeRaw) / amountBar->cachedProductionAt64);
-
-  amountBar->cachedStyleAt66 = 0x3a;
-  amountBar->cachedRangeAt60 = (short)(
-      (amountBar->selectedMetricRecord->controlValue * amountBar->barRangeRaw) /
-      amountBar->cachedProductionAt64);
-
-  thunk_NoOpUiLifecycleHook();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589660
-TradeMoveStepCluster *__cdecl CreateTradeMoveScaledControlPanel(void)
-{
-  TradeMoveStepCluster *cluster = reinterpret_cast<TradeMoveStepCluster *>(
-      AllocateWithFallbackHandler(0x90));
-  if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
-    cluster->vftable = reinterpret_cast<void *>(kVtableTRailCluster);
-    cluster->field_88 = 0;
-    cluster->field_8e = 0;
-  }
-  return cluster;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589700
-void *__cdecl GetTRailClusterClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTRailCluster);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x00589720
 void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster *cluster)
 {
@@ -1289,29 +959,6 @@ void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster *clust
   cluster->field_8e = 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589760
-void __fastcall DestructTRailClusterMaybeFree(
-    TradeMoveStepCluster *cluster, int unusedEdx, unsigned char freeSelfFlag)
-{
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-}
 
 
 
@@ -1406,6 +1053,7 @@ void __fastcall SelectTradeCommodityPresetBySummaryTagAndInitControls(
 
 
 
+
 // FUNCTION: IMPERIALISM 0x005899C0
 void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value)
 {
@@ -1418,6 +1066,7 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value)
 // GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
+
 
 
 
@@ -1508,6 +1157,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
 
 
 
+
 // FUNCTION: IMPERIALISM 0x00589D10
 void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void)
 {
@@ -1517,343 +1167,4 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void)
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589DA0
-void TradeMoveStepCluster::HandleTradeMovePageStepCommand(
-    int commandId, void *eventArg, int eventExtra)
-{
-  TradeOwnerVirtualShape *owner = AsTradeOwnerVirtualShape(this);
-
-  int relative = commandId - 100;
-  if (relative != 0) {
-    if (relative == 1) {
-      TradeControl *moveControl = ResolveOwnerControl(owner, kControlTagMove);
-      if (moveControl == 0) {
-        FailNilPointerInUSmallViews(kAssertLineMovePageMinus);
-        return;
-      }
-      short moveValue = (short)moveControl->QueryValue();
-      owner->ApplyMoveValueSlot1D0((int)moveValue - (int)field_8e);
-      return;
-    }
-    reinterpret_cast<void (*)(TradeMoveStepCluster *, int, void *, int)>(
-        ::thunk_HandleTradeMoveControlAdjustment)(this, commandId, eventArg, eventExtra);
-    return;
-  }
-
-  TradeControl *moveControl = ResolveOwnerControl(owner, kControlTagMove);
-  if (moveControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineMovePagePlus);
-    return;
-  }
-  short moveValue = (short)moveControl->QueryValue();
-  owner->ApplyMoveValueSlot1D0((int)field_8e + (int)moveValue);
-}
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589ED0
-IndustryAmtBarState *__cdecl CreateTRailAmtBarInstance(void)
-{
-  IndustryAmtBarState *amountBar = reinterpret_cast<IndustryAmtBarState *>(
-      AllocateWithFallbackHandler(0x6c));
-  if (amountBar != 0) {
-    TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void *>(kVtableTRailAmtBar);
-    amountBar->cachedRangeAt60 = 0;
-    amountBar->cachedRatioAt62 = 0;
-    amountBar->cachedProductionAt64 = 0;
-    amountBar->cachedStyleAt66 = 0;
-  }
-  return amountBar;
-}
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589F70
-void *__cdecl GetTRailAmtBarClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTRailAmtBar);
-}
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589F90
-IndustryAmtBarState *IndustryAmtBarState::ConstructTRailAmtBarBaseState()
-{
-  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
-  vftable = reinterpret_cast<void *>(kVtableTRailAmtBar);
-  cachedRangeAt60 = 0;
-  cachedRatioAt62 = 0;
-  cachedProductionAt64 = 0;
-  cachedStyleAt66 = 0;
-  return this;
-}
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x00589FD0
-IndustryAmtBarState *IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag)
-{
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)this);
-  }
-  return this;
-}
-
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A020
-void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues()
-{
-  NationCityTradeState *cityState = GetNationCityStateBySlot(QueryActiveNationId());
-  int summaryTag = ownerPanelContext->summaryTag;
-
-  short recordIndex = 0;
-  if ((unsigned int)summaryTag < 0x706f7076) {
-    if (summaryTag == kSummaryTagPopu) {
-      recordIndex = 0x3c;
-    } else if (summaryTag == kSummaryTagFood) {
-      recordIndex = 7;
-    }
-  } else if ((unsigned int)summaryTag < 0x70726f67) {
-    if (summaryTag == kSummaryTagProf) {
-      recordIndex = 0x18;
-    } else if (summaryTag == kSummaryTagPowe) {
-      recordIndex = 0x34;
-    }
-  } else if (summaryTag == kSummaryTagRail) {
-    recordIndex = 0x33;
-  } else if (summaryTag == kSummaryTagIart) {
-    recordIndex = 0x17;
-  }
-
-  selectedMetricRecord = cityState->tradeCommodityRecordPtrs[recordIndex];
-
-  short productionOrCapValue = 0;
-  if (recordIndex == 0x33 || recordIndex == 7) {
-    CityTradeScenarioDescriptor *scenario = cityState->scenarioTradeDescriptor;
-    CityTradeProductionSlots *slots = scenario->productionSlots;
-    productionOrCapValue = (short)(
-        ((slots->valueAt8 * 2 + slots->valueAt6) * 2 + scenario->extraAt1E + slots->valueAt4) / 2);
-  } else {
-    productionOrCapValue = selectedMetricRecord->QueryStepValue();
-  }
-
-  if (productionOrCapValue == 0) {
-    cachedRatioAt62 = 9999;
-  } else {
-    short selectedStep = selectedMetricRecord->QueryStepValue();
-    cachedRatioAt62 = (short)(((int)selectedStep * barRangeRaw) / (int)productionOrCapValue);
-  }
-  cachedProductionAt64 = productionOrCapValue;
-  if (productionOrCapValue == 0) {
-    cachedRangeAt60 = 9999;
-  } else {
-    cachedRangeAt60 = (short)((barRangeRaw * (int)selectedMetricRecord->controlValue) /
-                              (int)productionOrCapValue);
-  }
-  cachedStyleAt66 = 0x3a;
-  thunk_NoOpUiLifecycleHook();
-}
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A4D0
-TradeMoveStepCluster *__cdecl CreateTradeMoveArrowControlPanel(void)
-{
-  TradeMoveStepCluster *cluster = reinterpret_cast<TradeMoveStepCluster *>(
-      AllocateWithFallbackHandler(0x90));
-  if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
-    cluster->vftable = reinterpret_cast<void *>(kVtableTShipyardCluster);
-    cluster->field_88 = 0;
-  }
-  return cluster;
-}
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A570
-void *__cdecl GetTShipyardClusterClassNamePointer(void)
-{
-  return reinterpret_cast<void *>(kAddrClassDescTShipyardCluster);
-}
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A590
-TradeMoveStepCluster *__fastcall ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster *cluster)
-{
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
-  cluster->vftable = reinterpret_cast<void *>(kVtableTShipyardCluster);
-  cluster->field_88 = 0;
-  return cluster;
-}
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A5C0
-void __fastcall DestructTShipyardClusterMaybeFree(
-    TradeMoveStepCluster *cluster, int unusedEdx, unsigned char freeSelfFlag)
-{
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-}
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A610
-void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls()
-{
-  NationCityTradeState *cityState = GetNationCityStateBySlot(QueryActiveNationId());
-  field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
-  field_8c = 999;
-  TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(
-      reinterpret_cast<TradeMovePanelContext *>(this));
-  AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(0);
-}
-
-
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058A940
-void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(
-    int commandId, TradeControl *sourceControl, int eventExtra)
-{
-  if (commandId != 10) {
-    reinterpret_cast<void (*)(TradeMoveStepCluster *, int, TradeControl *, int)>(
-        ::thunk_HandleTradeMoveControlAdjustment)(this, commandId, sourceControl, eventExtra);
-    return;
-  }
-
-  if (sourceControl != 0 && sourceControl->controlTag == kControlTagRght) {
-    TradeControl *moveControl = ResolveOwnerControl(AsTradeOwnerVirtualShape(this), kControlTagMove);
-    if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      return;
-    }
-    AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(moveControl->QueryValue() + 1);
-    return;
-  }
-
-  if (sourceControl == 0 || sourceControl->controlTag != kControlTagLeft) {
-    reinterpret_cast<void (*)(TradeMoveStepCluster *, int, TradeControl *, int)>(
-        ::thunk_HandleTradeMoveControlAdjustment)(this, commandId, sourceControl, eventExtra);
-    return;
-  }
-
-  TradeControl *moveControl = ResolveOwnerControl(AsTradeOwnerVirtualShape(this), kControlTagMove);
-  if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
-  }
-  int moveValue = moveControl->QueryValue();
-  if ((short)moveValue != 0) {
-    AsTradeOwnerVirtualShape(this)->ApplyMoveValueSlot1D0(moveValue - 1);
-  }
-}
-
-
-
-
-
-
-
-
 

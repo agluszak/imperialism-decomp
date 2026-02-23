@@ -33,7 +33,7 @@ From latest fresh import + rebuild + reccmp run:
    2. Focused compare avg similarity (with ignores): `1.32%`.
    3. 100% aligned functions: `42`.
 
-Latest `progress_stats` snapshot (`2026-02-23T18:54:09Z`):
+Latest `progress_stats` snapshot (`2026-02-23T18:59:01Z`):
 1. Paired functions: `12229` (coverage `100%`).
 2. Recompiled functions discovered: `12413`.
 3. 100% aligned functions: `43`.
@@ -129,7 +129,17 @@ File layout note:
    2. `TArmyToolbar`, `TStratReportView`, `TCivToolbar`, `TArmyInfoView`
    3. `TCivReport`, `TTransportPicture`
 3. `src/game/ui_widget_wrappers.cpp` is reserved for global/non-class wrappers.
-4. New extractions should be promoted into class files when symbol ownership is class-scoped.
+4. Trade-screen class methods are split to include files in `src/game/trade_screen_classes/` and included by `src/game/trade_screen.cpp`:
+   1. `TAmtBar.cpp`
+   2. `TIndustryCluster.cpp`
+   3. `TIndustryAmtBar.cpp`
+   4. `TRailCluster.cpp`
+   5. `TRailAmtBar.cpp`
+   6. `TShipyardCluster.cpp`
+   7. `TShipAmtBar.cpp`
+   8. `TTraderAmtBar.cpp`
+5. `src/game/trade_screen_parts/part_1.cpp` and `src/game/trade_screen_parts/part_2.cpp` now contain only global/non-class functions.
+6. New extractions should be promoted into class files when symbol ownership is class-scoped.
 
 ### Trade Screen Checkpoint (latest)
 

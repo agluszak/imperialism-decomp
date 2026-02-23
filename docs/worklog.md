@@ -2,6 +2,31 @@
 
 ## 2026-02-23
 
+### Trade-screen class-file split (part files -> class files)
+1. Split class-owned functions out of:
+   1. `src/game/trade_screen_parts/part_1.cpp`
+   2. `src/game/trade_screen_parts/part_2.cpp`
+2. Added class include files under `src/game/trade_screen_classes/`:
+   1. `TAmtBar.cpp`
+   2. `TIndustryCluster.cpp`
+   3. `TIndustryAmtBar.cpp`
+   4. `TRailCluster.cpp`
+   5. `TRailAmtBar.cpp`
+   6. `TShipyardCluster.cpp`
+   7. `TShipAmtBar.cpp`
+   8. `TTraderAmtBar.cpp`
+3. Updated `src/game/trade_screen.cpp` include list to include new class files.
+4. Resulting structure:
+   1. `part_1.cpp`: global/non-class only (23 functions).
+   2. `part_2.cpp`: global/non-class only (1 function).
+5. Verification:
+   1. Docker MSVC500 build: success.
+   2. `reccmp-project detect`: success.
+   3. `progress_stats.py` snapshot (`2026-02-23T18:59:01Z`):
+      1. paired `12229/12229` (`100%`)
+      2. aligned `43`
+      3. average similarity `2.06%` (no regression)
+
 ### Class-file split refactor (active)
 1. Enforced class-per-file layout for extracted wrappers.
 2. Added dedicated class files:
