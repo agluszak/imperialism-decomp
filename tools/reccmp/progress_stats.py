@@ -12,6 +12,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+FUNCTION_ROW_TYPE = "fun"
+GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
+AUX_NON_FUNCTION_ROW_TYPES = ("imp",)
+TRACKED_NON_FUNCTION_ROW_TYPES = GLOBAL_ROW_TYPES + AUX_NON_FUNCTION_ROW_TYPES
+ROW_TYPE_LABELS = {
+    "dat": "data",
+    "lab": "labels",
+    "str": "strings",
+    "flo": "float constants",
+    "wid": "wide strings",
+    "imp": "imports",
+}
+
 
 def parse_args() -> argparse.Namespace:
     repo_root = Path(__file__).resolve().parents[2]
@@ -79,42 +92,111 @@ def pct(numerator: int, denominator: int) -> float:
     return (numerator / denominator) * 100.0
 
 
+def parse_optional_int(raw: str) -> int | None:
+    value = raw.strip()
+    if not value:
+        return None
+    if value.lower().startswith("0x"):
+        return int(value, 16)
+    return int(value)
+
+
 def parse_roadmap_counts(path: Path) -> dict[str, int]:
     if not path.exists():
         raise FileNotFoundError(f"Missing roadmap CSV: {path}")
 
-    orig_addrs: set[int] = set()
-    recomp_addrs: set[int] = set()
-    paired_orig_addrs: set[int] = set()
+    fun_orig_addrs: set[int] = set()
+    fun_recomp_addrs: set[int] = set()
+    fun_paired_orig_addrs: set[int] = set()
+    non_fun_sets: dict[str, dict[str, set[int]]] = {
+        row_type: {"orig": set(), "recomp": set(), "paired_orig": set()}
+        for row_type in TRACKED_NON_FUNCTION_ROW_TYPES
+    }
 
     with path.open("r", encoding="utf-8", newline="") as fd:
         reader = csv.DictReader(fd)
         for row in reader:
-            if row.get("row_type") != "fun":
+            row_type = row.get("row_type", "")
+            orig_addr = parse_optional_int(row.get("orig_addr", ""))
+            recomp_addr = parse_optional_int(row.get("recomp_addr", ""))
+
+            if row_type == FUNCTION_ROW_TYPE:
+                if orig_addr is not None:
+                    fun_orig_addrs.add(orig_addr)
+                if recomp_addr is not None:
+                    fun_recomp_addrs.add(recomp_addr)
+                if orig_addr is not None and recomp_addr is not None:
+                    fun_paired_orig_addrs.add(orig_addr)
                 continue
-            orig_addr_s = row.get("orig_addr", "")
-            recomp_addr_s = row.get("recomp_addr", "")
 
-            orig_addr = int(orig_addr_s) if orig_addr_s else None
-            recomp_addr = int(recomp_addr_s) if recomp_addr_s else None
+            if row_type in non_fun_sets:
+                entry = non_fun_sets[row_type]
+                if orig_addr is not None:
+                    entry["orig"].add(orig_addr)
+                if recomp_addr is not None:
+                    entry["recomp"].add(recomp_addr)
+                if orig_addr is not None and recomp_addr is not None:
+                    entry["paired_orig"].add(orig_addr)
 
-            if orig_addr is not None:
-                orig_addrs.add(orig_addr)
-            if recomp_addr is not None:
-                recomp_addrs.add(recomp_addr)
-            if orig_addr is not None and recomp_addr is not None:
-                paired_orig_addrs.add(orig_addr)
-
-    paired = len(paired_orig_addrs)
-    original = len(orig_addrs)
-    recompiled = len(recomp_addrs)
-    return {
+    paired = len(fun_paired_orig_addrs)
+    original = len(fun_orig_addrs)
+    recompiled = len(fun_recomp_addrs)
+    stats = {
         "original_fun_count": original,
         "recompiled_fun_count": recompiled,
         "paired_fun_count": paired,
         "orig_only_count": max(original - paired, 0),
         "recomp_only_count": max(recompiled - paired, 0),
     }
+
+    global_orig_addrs: set[int] = set()
+    global_recomp_addrs: set[int] = set()
+    global_paired_orig_addrs: set[int] = set()
+    non_fun_orig_addrs: set[int] = set()
+    non_fun_recomp_addrs: set[int] = set()
+    non_fun_paired_orig_addrs: set[int] = set()
+
+    for row_type, entry in non_fun_sets.items():
+        orig_addrs = entry["orig"]
+        recomp_addrs = entry["recomp"]
+        paired_orig_addrs = entry["paired_orig"]
+
+        stats[f"original_{row_type}_count"] = len(orig_addrs)
+        stats[f"recompiled_{row_type}_count"] = len(recomp_addrs)
+        stats[f"paired_{row_type}_count"] = len(paired_orig_addrs)
+        stats[f"{row_type}_orig_only_count"] = max(len(orig_addrs) - len(paired_orig_addrs), 0)
+        stats[f"{row_type}_recomp_only_count"] = max(
+            len(recomp_addrs) - len(paired_orig_addrs), 0
+        )
+
+        non_fun_orig_addrs |= orig_addrs
+        non_fun_recomp_addrs |= recomp_addrs
+        non_fun_paired_orig_addrs |= paired_orig_addrs
+        if row_type in GLOBAL_ROW_TYPES:
+            global_orig_addrs |= orig_addrs
+            global_recomp_addrs |= recomp_addrs
+            global_paired_orig_addrs |= paired_orig_addrs
+
+    stats["original_global_count"] = len(global_orig_addrs)
+    stats["recompiled_global_count"] = len(global_recomp_addrs)
+    stats["paired_global_count"] = len(global_paired_orig_addrs)
+    stats["global_orig_only_count"] = max(
+        len(global_orig_addrs) - len(global_paired_orig_addrs), 0
+    )
+    stats["global_recomp_only_count"] = max(
+        len(global_recomp_addrs) - len(global_paired_orig_addrs), 0
+    )
+
+    stats["original_non_fun_count"] = len(non_fun_orig_addrs)
+    stats["recompiled_non_fun_count"] = len(non_fun_recomp_addrs)
+    stats["paired_non_fun_count"] = len(non_fun_paired_orig_addrs)
+    stats["non_fun_orig_only_count"] = max(
+        len(non_fun_orig_addrs) - len(non_fun_paired_orig_addrs), 0
+    )
+    stats["non_fun_recomp_only_count"] = max(
+        len(non_fun_recomp_addrs) - len(non_fun_paired_orig_addrs), 0
+    )
+    return stats
 
 
 def parse_report_counts(path: Path) -> dict[str, float | int]:
@@ -221,6 +303,19 @@ def progress_signal(curr: dict[str, Any], prev: dict[str, Any] | None) -> tuple[
     elif int(curr["paired_fun_count"]) < int(prev["paired_fun_count"]):
         bad.append("paired count decreased")
 
+    if (
+        "paired_global_count" in curr
+        and "paired_global_count" in prev
+        and int(curr["paired_global_count"]) > int(prev["paired_global_count"])
+    ):
+        good.append("paired global count increased")
+    elif (
+        "paired_global_count" in curr
+        and "paired_global_count" in prev
+        and int(curr["paired_global_count"]) < int(prev["paired_global_count"])
+    ):
+        bad.append("paired global count decreased")
+
     if int(curr["not_aligned_vs_original_count"]) < int(prev["not_aligned_vs_original_count"]):
         good.append("not-aligned-vs-original decreased")
     elif int(curr["not_aligned_vs_original_count"]) > int(prev["not_aligned_vs_original_count"]):
@@ -300,6 +395,12 @@ def main() -> int:
         entry["aligned_vs_paired_pct"] = pct(
             int(entry["aligned_fun_count"]), int(entry["paired_fun_count"])
         )
+        entry["global_coverage_pct"] = pct(
+            int(entry["paired_global_count"]), int(entry["original_global_count"])
+        )
+        entry["non_fun_coverage_pct"] = pct(
+            int(entry["paired_non_fun_count"]), int(entry["original_non_fun_count"])
+        )
         entry["not_aligned_vs_original_count"] = max(
             int(entry["original_fun_count"]) - int(entry["aligned_fun_count"]), 0
         )
@@ -341,6 +442,49 @@ def main() -> int:
             f"  recomp-only (unpaired): {entry['recomp_only_count']}"
             f"{delta_str(int(entry['recomp_only_count']), prev, 'recomp_only_count')}"
         )
+        print("")
+        print("Globals / non-function coverage")
+        print(
+            f"  original globals (dat/lab/str/flo/wid): {entry['original_global_count']}"
+            f"{delta_str(int(entry['original_global_count']), prev, 'original_global_count')}"
+        )
+        print(
+            f"  recompiled globals (dat/lab/str/flo/wid): {entry['recompiled_global_count']}"
+            f"{delta_str(int(entry['recompiled_global_count']), prev, 'recompiled_global_count')}"
+        )
+        print(
+            f"  paired globals (dat/lab/str/flo/wid): {entry['paired_global_count']}"
+            f"{delta_str(int(entry['paired_global_count']), prev, 'paired_global_count')}"
+        )
+        print(
+            f"  global original-only (unpaired): {entry['global_orig_only_count']}"
+            f"{delta_str(int(entry['global_orig_only_count']), prev, 'global_orig_only_count')}"
+        )
+        print(
+            f"  global recomp-only (unpaired): {entry['global_recomp_only_count']}"
+            f"{delta_str(int(entry['global_recomp_only_count']), prev, 'global_recomp_only_count')}"
+        )
+        print(
+            f"  non-function total coverage (including imports): {entry['non_fun_coverage_pct']:.2f}%"
+            f"{delta_pp_str(float(entry['non_fun_coverage_pct']), prev, 'non_fun_coverage_pct')}"
+        )
+        print(
+            f"  global coverage (paired/original): {entry['global_coverage_pct']:.2f}%"
+            f"{delta_pp_str(float(entry['global_coverage_pct']), prev, 'global_coverage_pct')}"
+        )
+        for row_type in TRACKED_NON_FUNCTION_ROW_TYPES:
+            label = ROW_TYPE_LABELS.get(row_type, row_type)
+            original_key = f"original_{row_type}_count"
+            paired_key = f"paired_{row_type}_count"
+            recompiled_key = f"recompiled_{row_type}_count"
+            type_coverage = pct(int(entry[paired_key]), int(entry[original_key]))
+            print(
+                f"  {row_type} ({label}): "
+                f"original {entry[original_key]}{delta_str(int(entry[original_key]), prev, original_key)}, "
+                f"paired {entry[paired_key]}{delta_str(int(entry[paired_key]), prev, paired_key)}, "
+                f"recompiled {entry[recompiled_key]}{delta_str(int(entry[recompiled_key]), prev, recompiled_key)}, "
+                f"coverage {type_coverage:.2f}%"
+            )
         print("")
         print("Ratios")
         print(

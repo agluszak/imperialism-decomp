@@ -2,6 +2,22 @@
 
 ## 2026-02-24
 
+### Track globals/non-function roadmap coverage in `just stats`
+1. Extended `tools/reccmp/progress_stats.py` to parse and persist non-function row coverage from `reccmp_roadmap.csv`:
+   1. Aggregate globals (`dat/lab/str/flo/wid`) counts: original/recompiled/paired/unpaired + coverage.
+   2. Per-row-type counts for: `dat`, `lab`, `str`, `flo`, `wid`, `imp`.
+   3. Non-function aggregate coverage (including imports).
+2. Kept existing function/alignment metrics unchanged so session loop tooling remains compatible.
+3. Verification:
+   1. `uv run python tools/reccmp/progress_stats.py --target IMPERIALISM --build-dir build-msvc500 --no-run`
+   2. `just stats`
+4. Current non-function snapshot (`2026-02-24T10:24:28Z`):
+   1. globals paired: `260 / 5027` (`5.17%`)
+   2. non-function paired total (including imports): `334 / 5981` (`5.58%`)
+   3. strings paired: `260 / 1999` (`13.01%`)
+   4. data/labels/floats paired: `0 / 3028` (`0.00%`)
+   5. imports paired: `74 / 954` (`7.76%`)
+
 ### Trade-step/arrow shape pass + callconv annotations
 1. Added reusable callconv annotation script:
    1. `tools/workflow/annotate_orig_callconv.py`
