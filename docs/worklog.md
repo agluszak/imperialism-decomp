@@ -1289,3 +1289,42 @@
 2. Global stats at `2026-02-24T10:06:48Z` remained:
    1. aligned functions: `49`
    2. average similarity: `2.46%`.
+
+## 2026-02-24 14:09:38 UTC - `ret 4` seed-shape + placard render body pass (`0x587130`, `0x58BC60`)
+
+### Commands
+1. `just compare 0x00588B70`
+2. `just compare 0x005897B0`
+3. `just stats`
+4. `just session-loop 12 120 10`
+5. `just compare 0x005873E0`
+6. `just compare 0x005899F0`
+7. `just compare 0x00587130`
+8. `just format src/game/trade_screen.cpp`
+9. `just build`
+10. `just compare 0x00587130`
+11. `just compare 0x0058BC60`
+12. `just promote src/game/TPlacard.cpp --overwrite-existing --address 0x0058bc60`
+13. `just format src/game/TPlacard.cpp`
+14. `just build` (fix compile errors introduced by raw promotion)
+15. `just compare 0x0058BC60`
+16. `just stats`
+
+### Changes
+1. Updated `0x00587130` signature and tail call shape in `src/game/trade_screen.cpp`:
+   1. `InitializeTradeSellControlState` now takes explicit `unsigned int styleSeed`.
+   2. Forwarded `styleSeed` into `InitializeTradeMoveAndBarControls(this, 0, styleSeed)`.
+2. Re-promoted `0x0058BC60` in `src/game/TPlacard.cpp` using `just promote --overwrite-existing`.
+3. Replaced raw promoted artifacts with compile-safe/manual normalized body:
+   1. kept shared-string setup and formatted numeric placard text path,
+   2. preserved theme color mapping + two-pass shadow/text draw sequence,
+   3. preserved quickdraw origin updates and fill-color restore,
+   4. added explicit helper declarations and decimal-format address constant (`0x0069430C`).
+
+### Results
+1. `0x00587130` `InitializeTradeSellControlState`: `40.95% -> 41.52%`.
+2. `0x0058BC60` `PlacardState::RenderPlacardValueTextWithShadow`: `0.00% -> 55.62%`.
+3. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`: `42.50%` (validated current shape after this pass).
+4. Global stats (`2026-02-24T14:09:38Z`):
+   1. aligned functions: `60` (unchanged),
+   2. average similarity: `2.53%` (`+0.01 pp`).

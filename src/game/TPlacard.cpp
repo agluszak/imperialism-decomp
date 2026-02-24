@@ -1,16 +1,21 @@
 // UI wrapper class quads extracted from trade_screen.
 
+#include "game/string_shared.h"
 #include "game/ui_widget_shared.h"
 
-struct tagRECT {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-
-extern "C" int __stdcall CopyRect(tagRECT* lprcDst, const tagRECT* lprcSrc);
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
+undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
+undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
+undefined4 FormatStringWithVarArgsToSharedRef(void);
+undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
+undefined4 SetQuickDrawColorAndSyncGlobals(void);
+undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
+undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
+undefined4 SetQuickDrawFillColor(void);
+
+namespace {
+const unsigned int kAddrDecimalFormat = 0x0069430c;
+}
 
 struct PlacardViewLayout {
   void* vftable;
@@ -86,8 +91,8 @@ void PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(in
     placardValue = requestedValue;
     if ((char)arg2 != 0) {
       PlacardViewLayout* layout = reinterpret_cast<PlacardViewLayout*>(this);
-      tagRECT sourceRect;
-      tagRECT invalidateRect;
+      RECT sourceRect;
+      RECT invalidateRect;
       sourceRect.top = layout->baselineAt38 - 0xc;
       sourceRect.left = (short)(layout->widthAt34 / 2) - 10;
       sourceRect.right = sourceRect.left + 0x14;
@@ -101,7 +106,44 @@ void PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(in
 
 // FUNCTION: IMPERIALISM 0x0058bc60
 void PlacardState::RenderPlacardValueTextWithShadow() {
-  if (placardValue != 0) {
-    thunk_NoOpUiLifecycleHook();
+  int sharedStringRef = 0;
+  int themeColorPrimary = 0;
+  int themeColorSecondary = 0;
+  PlacardViewLayout* layout = reinterpret_cast<PlacardViewLayout*>(this);
+
+  InitializeSharedStringRefFromEmpty(&sharedStringRef);
+  reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(this);
+  reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
+  reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(
+      &sharedStringRef, reinterpret_cast<const char*>(kAddrDecimalFormat), (int)placardValue);
+
+  short originX = 0;
+  if (placardValue < 10) {
+    originX = (short)(layout->widthAt34 / 2) - 2;
+  } else if (placardValue < 100) {
+    originX = (short)(layout->widthAt34 / 2) - 6;
+  } else {
+    originX = (short)(layout->widthAt34 / 2) - 10;
   }
+
+  short baselineY = (short)layout->baselineAt38;
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
+      0x2b6c, (int)&themeColorPrimary);
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
+      0x2b67, (int)&themeColorSecondary);
+
+  reinterpret_cast<void(__cdecl*)()>(SetQuickDrawColorAndSyncGlobals)();
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
+      (short)(originX + 1), (short)(baselineY - 1));
+  reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+      &sharedStringRef);
+
+  reinterpret_cast<void(__cdecl*)()>(SetQuickDrawColorAndSyncGlobals)();
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
+      originX, (short)(baselineY - 2));
+  reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+      &sharedStringRef);
+
+  reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+  ReleaseSharedStringRefIfNotEmpty(&sharedStringRef);
 }

@@ -342,7 +342,7 @@ struct TradeScreenContext {
 
   __inline TradeControl* ResolveControlByTag(int controlTag);
   __inline TradeControl* RequireControlByTag(int controlTag);
-  void InitializeTradeSellControlState();
+  void InitializeTradeSellControlState(unsigned int styleSeed);
   short QueryTradeSellControlQuantity();
   char IsTradeBidControlActionable();
   char IsTradeOfferControlActionable();
@@ -1251,7 +1251,7 @@ void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
 }
 
 // FUNCTION: IMPERIALISM 0x00587130
-void TradeScreenContext::InitializeTradeSellControlState(void) {
+void TradeScreenContext::InitializeTradeSellControlState(unsigned int styleSeed) {
   TradeControl* sellControl = ResolveControlByTag(kControlTagSell);
   if (sellControl != 0) {
     int styleDescriptor[5];
@@ -1298,7 +1298,7 @@ void TradeScreenContext::InitializeTradeSellControlState(void) {
     }
   }
 
-  InitializeTradeMoveAndBarControls(this);
+  InitializeTradeMoveAndBarControls(this, 0, styleSeed);
 }
 
 // FUNCTION: IMPERIALISM 0x005873e0
@@ -1904,23 +1904,27 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
   short tagIndex = 0;
   short activeNationId = QueryActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationId);
-  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
+  void* cityState =
+      activeNationState == 0 ? 0 : reinterpret_cast<void*>(activeNationState->cityState);
 
-  int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
+  int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != context->summaryTag) {
     tagIndex = (short)(tagIndex + 1);
     mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
   }
 
-  TradeCommodityMetricRecord* selectedMetricRecord = cityState->tradeCommodityRecordPtrs[tagIndex];
+  TradeCommodityMetricRecord* selectedMetricRecord = reinterpret_cast<TradeCommodityMetricRecord*>(
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
   context->selectedMetricControl = reinterpret_cast<TradeControl*>(selectedMetricRecord);
   context->selectedMetricValue =
       (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
-          cityState, selectedMetricRecord->buildingSlot);
+          cityState,
+          *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52));
 
   reinterpret_cast<void(__fastcall*)(TradeMovePanelContext*, int, unsigned int)>(
       thunk_InitializeTradeMoveAndBarControls)(context, 0, (unsigned int)styleSeed);
-  CallPostMoveValueSlot1D4(context, selectedMetricRecord->controlValue, 1);
+  CallPostMoveValueSlot1D4(
+      context, *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 4), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30
