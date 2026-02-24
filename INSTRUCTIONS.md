@@ -28,6 +28,9 @@
 
 1. Do not use inline assembly (`__asm`, `_asm`, `asm(...)`) in project source files.
 2. Express reconstructed behavior in normal C/C++ code (typed structs/classes, virtual calls, helpers) so code remains maintainable and portable across toolchain experiments.
+3. If a function was originally `__thiscall` but is represented as a free wrapper (`__fastcall` bridge), keep a reminder comment directly inside the function body:
+   - `// ORIG_CALLCONV: __thiscall`
+   - Do not place this between `// FUNCTION: ...` and the signature (reccmp parser sensitivity).
 
 ## Sync Rule
 
@@ -48,6 +51,10 @@ uv run python tools/ghidra/sync_exports.py \
 uv run python tools/workflow/promote_from_autogen.py \
   --target-cpp src/game/<file>.cpp \
   --address 0x<ADDR> [--address 0x<ADDR> ...]
+```
+Or for contiguous windows:
+```bash
+just promote-range src/game/<file>.cpp 0x<START> 0x<END>
 ```
 2. For trade-screen:
    - keep global/non-class trade functions in `src/game/trade_screen.cpp`.
@@ -110,3 +117,33 @@ Current reminders for improving `% similarity`:
 38. Use mixed address-cluster promotion when needed (not strictly class-by-class): promote contiguous subsystem addresses first, then normalize class-scoped raw output into compile-safe wrappers.
 39. For ctor chains, keep `thiscall` as real member methods (`Class::thunk_*` calling `Class::Construct*`), and reserve free-function thunk casts only for unresolved external bridges.
 40. If `reccmp --verbose 0xADDR` reports “Failed to find a match”, verify the function is not being dropped as unreferenced by linker optimization (`/OPT:REF`) before spending time on body tuning.
+41. For `UpdateTradeMoveControlsFromDrag`/`UpdateTradeMoveControlsFromScaledDrag`, use the selected control’s raw value field (`+0x4`) for move/bar updates; replacing it with virtual `QueryStepValue()` calls hurts similarity.
+42. Keep the move-control invalidation shape in drag handlers: `QueryBounds` -> `OffsetRect` -> `CopyRect` -> `thunk_InvalidateCityDialogRectRegion`; skipping this block costs double-digit similarity.
+43. In `InitializeTradeSellControlState`, the `gree` branch must use the `USmallViews.cpp` assert path (`0x7b8`) and not a message-only helper.
+44. For this trade-screen cluster, defining `0x588c60` as a member `thiscall` method and keeping the same address-local shape as `0x5899f0` is materially better than the older free-function fastcall wrapper shape.
+45. For missing trade-screen functions, promote contiguous TAmtBarCluster ranges directly into `src/game/trade_screen.cpp`, then immediately normalize class-scoped autogen output into typed free wrappers.
+46. Prefer direct typed handler calls (`InitializeTradeMoveAndBarControls` / `HandleTradeMoveControlAdjustment`) in manual code paths instead of routing through unresolved thunk stubs.
+47. For `0x586D60`/`0x586E70` first-pass shape, preserve explicit control-tag lookups (`"move"`, `"avai"`, `"bar"`) and keep the dispatch tail path present even when command-specific handling is incomplete.
+48. In throughput mode, “done for this pass” is: address mapped in source, compiles, stub flipped to `MANUAL_OVERRIDE_ADDR`, and no build regressions; similarity tuning comes in later loops.
+49. Tiny orphan setters (`0x586A60`/`0x586A80`/`0x586AB0`) are good throughput targets; map them with typed field writes to remove stub ownership quickly.
+50. For tiny orphan wrappers, calling-convention/stack-pop mismatches (`ret 4` vs `ret 8`) can force `0%` despite correct semantics; defer micro-tuning until broader coverage is mapped.
+51. Use `just promote` in bigger contiguous batches, then immediately normalize to compile-safe typed wrappers in `trade_screen.cpp` instead of polishing one function at a time.
+52. For heavy render paths, first-pass typed wrappers with existing virtual methods (`IsActionable`, `QueryBounds`, `CaptureLayout`, `Refresh`) are acceptable to secure ownership and keep momentum.
+53. After each big batch, verify the local stub shard has zero remaining `FUNCTION` entries for the active address window before moving to the next window.
+54. For panel-control wrappers like `0x586090`, keep the post-`MessageBoxA` assert path (`USmallViews.cpp` + line literal) when present in Ghidra; dropping it usually costs a large chunk of wrapper similarity.
+55. Prefer `just promote-range <file> <start> <end>` for throughput, then immediately normalize to compile-safe wrappers and flip stub ownership to `MANUAL_OVERRIDE_ADDR`.
+56. In command handlers (`0x589DA0`/`0x58A940` style), compare explicit command IDs (`100`, `0x65`, `10`) directly; arithmetic-normalized branching (`cmd - 100`) changes prologue/branch layout and often lowers similarity.
+57. For fail-and-continue paths, keep `MessageBoxA` without adding extra early-return guards after null checks unless original flow proves a return; added guards frequently diverge branch shape.
+58. Raw `ghidra_autogen` class bodies for heavy UI/render functions can break MSVC500 compilation; if class/type surface is incomplete, keep heavy bodies in stubs and only promote compile-safe wrappers/thunks first.
+59. If verbose diff shows stack-pop mismatch (`ret 4` vs `ret 0xc`) on command handlers, align method signatures to include payload args (`commandId`, `eventArg`, `eventExtra`) even when only `commandId` is semantically used.
+60. For `0x586D60`-style initializers, preserve the stack-argument call shape (`ret 4`) by using a signature with an explicit stack seed parameter; one-arg fastcall variants drift quickly.
+61. When emitting `USmallViews` assert paths, avoid helper wrappers that emit a second `MessageBoxA`; duplicate message-box calls create large branch/prologue divergence.
+62. For scenario-tag lookup handlers (`0x58AF80`), keep the literal 4-byte tag table loop shape (`0x72733020` etc.) before optimizing type names; matching loop shape is higher impact than naming cleanup.
+63. For standalone class files (compiled outside `trade_screen.cpp`), do not introduce new unresolved QuickDraw/string helper externs in first pass; map ownership with compile-safe bodies first, then wire real helper symbols once they are link-proven.
+64. If `reccmp` reports dropped duplicate addresses, check for stale `// FUNCTION:` tags still present in `src/autogen/stubs/stubs_part*.cpp` after promotion; demote them to non-reccmp comments immediately.
+65. For this MSVC500 build, do not use `__thiscall` in free-function pointer casts; use `__fastcall` wrappers for ECX-style thunk bridges to avoid compile breaks and keep calling-shape stable.
+66. For `NumberedArrowButton` wrappers (`0x58B460/0x58B750/0x58B8D0`), preserving raw field offsets (`+0x90/+0x92/+0x94/+0x96/+0x98/+0x9c`) is high impact; mapping them to `value84/value86` directly loses major similarity.
+67. For render wrappers that were `0.00%` due pure JMP forwarding, first-pass inlining of Ghidra body shape (quickdraw acquire/clip/release sequence) can quickly lift them into ~`16-30%` before fine-tuning.
+68. Use global addresses from `config/symbols.ghidra.txt`/`config/symbols.csv` for runtime pointers (`g_pGlobalMapState`, `g_pStrategicMapViewSystem`, `g_pActiveQuickDrawSurfaceContext`, overlay cache globals) instead of inventing surrogate globals.
+69. Tiny orphan leaves with `ret 8` shape should be modeled as stack-arg popping wrappers (`__stdcall` + explicit unused arg) before any body tweaks; otherwise they stay near `0%` due calling-shape mismatch.
+70. For quickdraw overlay wrappers (`0x589540`/`0x58A3B0` style), prefer overlay-cache globals (`g_nOverlayClipCacheParamX/Y`) + rect invalidation flow over generic `QueryBounds`/`ApplyBounds` patterns; that improves branch/data shape consistency.

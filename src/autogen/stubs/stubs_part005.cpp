@@ -69,7 +69,7 @@ undefined4 thunk_GetTDeluxeTextClassNamePointer(void)
 
 // ghidra_name TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl
 // ghidra_proto void __thiscall thunk_RefreshTradeMoveBarAndTurnControl(void)
-// FUNCTION: IMPERIALISM 0x004058a8
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x004058a8
 undefined4 thunk_RefreshTradeMoveBarAndTurnControl(void)
 {
   return 0;
@@ -3965,7 +3965,7 @@ undefined4 thunk_GetCityProductionControllerField60(void)
 
 // ghidra_name TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent
 // ghidra_proto void __thiscall thunk_HandleTradeMoveArrowControlEvent(void)
-// FUNCTION: IMPERIALISM 0x00406965
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00406965
 undefined4 thunk_HandleTradeMoveArrowControlEvent(void)
 {
   return 0;

@@ -59,6 +59,9 @@ bootstrap-reccmp:
 promote target_cpp *args:
   uv run python tools/workflow/promote_from_autogen.py --target-cpp "{{target_cpp}}" {{args}}
 
+promote-range target_cpp start end:
+  uv run python tools/workflow/promote_from_autogen.py --target-cpp "{{target_cpp}}" --range "{{start}}:{{end}}"
+
 full-sync-build:
   just sync-ghidra
   just regen-stubs

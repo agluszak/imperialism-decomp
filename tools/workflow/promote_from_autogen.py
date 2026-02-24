@@ -16,12 +16,29 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--address",
         action="append",
-        required=True,
+        default=[],
         help="Function address to promote (hex, with or without 0x). Repeat for multiple.",
+    )
+    parser.add_argument(
+        "--range",
+        action="append",
+        default=[],
+        help=(
+            "Inclusive address range to promote, format START:END "
+            "(hex, with or without 0x). Repeat for multiple ranges."
+        ),
     )
     parser.add_argument("--target-cpp", required=True, help="Manual destination .cpp file.")
     parser.add_argument("--module", default="IMPERIALISM")
     parser.add_argument("--autogen-dir", default="src/ghidra_autogen")
+    parser.add_argument(
+        "--overwrite-existing",
+        action="store_true",
+        help=(
+            "Replace already-present manual blocks at requested addresses with autogen blocks. "
+            "Default keeps existing manual blocks unchanged."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -30,6 +47,25 @@ def parse_hex_address(value: str) -> int:
     if text.startswith("0x"):
         text = text[2:]
     return int(text, 16)
+
+
+def parse_address_range(value: str) -> tuple[int, int]:
+    parts = value.split(":", 1)
+    if len(parts) != 2:
+        raise ValueError("range must be START:END")
+    start = parse_hex_address(parts[0])
+    end = parse_hex_address(parts[1])
+    if start > end:
+        start, end = end, start
+    return start, end
+
+
+def parse_explicit_addresses(explicit_addresses: list[str]) -> set[int]:
+    return {parse_hex_address(value) for value in explicit_addresses}
+
+
+def parse_ranges(range_specs: list[str]) -> list[tuple[int, int]]:
+    return [parse_address_range(spec) for spec in range_specs]
 
 
 def annotation_re(module: str) -> re.Pattern[str]:
@@ -75,15 +111,31 @@ def collect_autogen_blocks(autogen_dir: Path, module: str) -> dict[int, str]:
 
 def main() -> int:
     args = parse_args()
-    addresses = sorted({parse_hex_address(a) for a in args.address})
+    explicit_addresses = parse_explicit_addresses(args.address)
+    ranges = parse_ranges(args.range)
     autogen_dir = Path(args.autogen_dir)
     target_cpp = Path(args.target_cpp)
+
+    if not explicit_addresses and not ranges:
+        raise SystemExit("No addresses requested. Use --address and/or --range.")
 
     if not autogen_dir.is_dir():
         raise SystemExit(f"Missing autogen directory: {autogen_dir}")
 
     available = collect_autogen_blocks(autogen_dir=autogen_dir, module=args.module)
-    missing = [addr for addr in addresses if addr not in available]
+    requested: set[int] = set(explicit_addresses)
+    if ranges:
+        for addr in available:
+            for start, end in ranges:
+                if start <= addr <= end:
+                    requested.add(addr)
+                    break
+
+    addresses = sorted(requested)
+    if not addresses:
+        raise SystemExit("No functions found for the requested address/range selection.")
+
+    missing = [addr for addr in explicit_addresses if addr not in available]
     if missing:
         missing_fmt = ", ".join(f"0x{addr:08X}" for addr in missing)
         raise SystemExit(f"Requested address(es) not found in autogen snapshot: {missing_fmt}")
@@ -101,6 +153,8 @@ def main() -> int:
     merged: dict[int, str] = {addr: block for addr, block in existing_blocks}
     promoted_count = 0
     for addr in addresses:
+        if addr in merged and not args.overwrite_existing:
+            continue
         if addr not in merged:
             promoted_count += 1
         merged[addr] = available[addr]

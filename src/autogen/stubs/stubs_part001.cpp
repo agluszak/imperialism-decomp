@@ -1133,7 +1133,7 @@ undefined4 thunk_GetTControlClassNamePointer(void)
 
 // ghidra_name TShipyardCluster::thunk_DestructTShipyardClusterMaybeFree
 // ghidra_proto void __cdecl thunk_DestructTShipyardClusterMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x0040153c
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0040153c
 undefined4 thunk_DestructTShipyardClusterMaybeFree(void)
 {
   return 0;

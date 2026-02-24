@@ -8,14 +8,28 @@ typedef void* hwnd_t;
 typedef void code(void);
 extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
                                      unsigned int type);
+struct tagRECT {
+  int left;
+  int top;
+  int right;
+  int bottom;
+};
+typedef tagRECT RECT;
+extern "C" int __stdcall OffsetRect(RECT* lprc, int dx, int dy);
+extern "C" int __stdcall CopyRect(RECT* lprcDst, const RECT* lprcSrc);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
+undefined4 thunk_InvalidateCityDialogRectRegion(void);
 unsigned int __cdecl thunk_GetActiveNationId(void);
-undefined4 InitializeTradeMoveAndBarControls(void);
-undefined4 thunk_InitializeTradeMoveAndBarControls(void);
+void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
+                                                  unsigned int styleSeed);
+void __fastcall thunk_InitializeTradeMoveAndBarControls(void* context);
 undefined4 thunk_NoOpUiLifecycleHook(void);
+undefined4 thunk_BuildUiTextStyleDescriptor(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
-undefined4 HandleTradeMoveControlAdjustment(void);
-undefined4 thunk_HandleTradeMoveControlAdjustment(void);
+void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
+                                                 int eventExtra);
+void __fastcall thunk_HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
+                                                       int eventExtra);
 undefined4 thunk_HandleCityDialogToggleCommandOrForward(void);
 undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
@@ -29,7 +43,30 @@ undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void); // GHIDRA_FUNCTION IMPERIALISM 0x004601B0
 undefined4 thunk_DispatchPictureResourceCommand(void);
+undefined4 thunk_DispatchPanelControlEvent(void);
 undefined4 thunk_GetTickCountDiv16(void);
+undefined4 thunk_InitializeUiTextStyleDescriptor(void);
+undefined4 thunk_ConstructUiTabCursorPictureEntry(void);
+undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
+undefined4 AcquireReusableQuickDrawSurface(void);
+undefined4 ReleaseOrCacheQuickDrawSurface(void);
+undefined4 ApplyHitRegionToClipState(void);
+undefined4 SnapshotHitRegionToClipCache(void);
+undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
+undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
+undefined4 SetQuickDrawFillColor(void);
+undefined4 ResetQuickDrawStrokeState(void);
+undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
+undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
+undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
+undefined4 UpdatePaletteIndexWithDefaultFallback(void);
+undefined4 BlitRectWithOptionalTransparency(void);
+undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
+undefined4 FormatStringWithVarArgsToSharedRef(void);
+undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
+undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
+int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
+void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
 void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
                                                           void* argC, void* dispatchArg,
                                                           void* arg14);
@@ -47,11 +84,15 @@ const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 const int kControlTagSell = 0x53656c6c;
 const int kControlTagBar = 0x62617220;
 const int kControlTagMove = 0x6d6f7665;
+const int kControlTagAvai = 0x61766169;
 const int kControlTagCard = 0x63617264;
+const int kControlTagBack = 0x6261636b;
 const int kControlTagOffr = 0x6f666672;
 const int kControlTagGree = 0x67726565;
 const int kControlTagLeft = 0x6c656674;
 const int kControlTagRght = 0x72676874;
+const int kControlTagArms = 0x41726d73;
+const int kControlTagClos = 0x436c6f73;
 const int kSummaryTagFood = 0x666f6f64;
 const int kSummaryTagPopu = 0x706f7075;
 const int kSummaryTagProf = 0x70726f66;
@@ -76,11 +117,16 @@ const int kAssertLineOfferSecondaryRight = 0x9b1;
 const int kAssertLineInitBar = 0x7a2;
 const int kAssertLineInitLeft = 0x7a6;
 const int kAssertLineInitRight = 0x7a8;
+const int kAssertLineInitGree = 0x7b8;
 const int kAssertLineUpdateSell = 0x9e0;
 const int kAssertLineUpdateBar = 0x9e4;
 const int kAssertLineUpdateGree = 0x9e7;
 const int kAssertLineRatioB = 0xb73;
 const int kAssertLineRatioA = 0xd1d;
+const int kAssertLineMoveBarInitNil = 0x725;
+const int kAssertLineMoveAdjustMove = 0x749;
+const int kAssertLineMoveAdjustAvai = 0x74d;
+const int kAssertLineMoveAdjustMoveMinus = 0x759;
 const int kAssertLineMovePageMinus = 0xd34;
 const int kAssertLineMovePagePlus = 0xd3c;
 const int kAssertLineToolSubcontrolToggle = 0xac7;
@@ -88,13 +134,34 @@ const unsigned int kVtableTIndustryCluster = 0x00665ed0;
 const unsigned int kAddrClassDescTIndustryCluster = 0x00662f98;
 const unsigned int kVtableTIndustryAmtBar = 0x00666110;
 const unsigned int kAddrClassDescTIndustryAmtBar = 0x00662fb0;
+const unsigned int kVtableTAmtBar = 0x00665cc8;
+const unsigned int kAddrClassDescTAmtBar = 0x00662f80;
+const unsigned int kVtableTAmtBarCluster = 0x00665838;
+const unsigned int kAddrClassDescTAmtBarCluster = 0x00662f50;
+const unsigned int kVtableTProductionCluster = 0x006653c8;
+const unsigned int kAddrClassDescTProductionCluster = 0x00662f20;
+const unsigned int kVtableTClosePicture = 0x00665608;
+const unsigned int kAddrClassDescTClosePicture = 0x00662f38;
 const unsigned int kVtableTRailCluster = 0x00666318;
 const unsigned int kAddrClassDescTRailCluster = 0x00662fc8;
 const unsigned int kVtableTRailAmtBar = 0x00666558;
 const unsigned int kAddrClassDescTRailAmtBar = 0x00662fe0;
 const unsigned int kVtableTShipyardCluster = 0x00666760;
 const unsigned int kAddrClassDescTShipyardCluster = 0x00662ff8;
+const unsigned int kVtableTUnitToolbarCluster = 0x00664d38;
+const unsigned int kAddrClassDescTUnitToolbarCluster = 0x00662ed8;
+const unsigned int kVtableTButton = 0x0064a2b8;
+const unsigned int kVtableTStatusButton = 0x00664f68;
+const unsigned int kAddrClassDescTStatusButton = 0x00662ef0;
+const unsigned int kVtableTCityBarCluster = 0x00665190;
+const unsigned int kAddrClassDescTCityBarCluster = 0x00662f08;
 const unsigned int kAddrTradeSummarySelectionMap = 0x006960e0;
+const unsigned int kAddrDecimalFormat = 0x0069430C;
+const unsigned int kAddrActiveQuickDrawSurfaceContext = 0x006A1D60;
+const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
+const unsigned int kAddrGlobalMapState = 0x006A43D4;
+const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
+const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
 
 // Symbol placeholders to preserve OFFSET-style codegen in ctor/dtor wrappers.
 char g_vtblTShipAmtBar;
@@ -144,6 +211,8 @@ struct TradeAmountBarLayout {
   short stepOrCurrentValue;
   short auxValueA;
   short auxValueB;
+
+  void UpdateNationStateGaugeValuesFromScenarioRecordCode();
 };
 
 struct TradeMoveStepCluster {
@@ -152,10 +221,30 @@ struct TradeMoveStepCluster {
   int field_88;
   short field_8c;
   short field_8e;
+  int field_90;
+  int field_94;
 
   void HandleTradeMovePageStepCommand(int commandId, void* eventArg, int eventExtra);
   void SelectTradeSpecialCommodityAndInitializeControls();
+  void RefreshTradeMoveBarAndTurnControl();
   void HandleTradeMoveArrowControlEvent(int commandId, TradeControl* sourceControl, int eventExtra);
+};
+
+struct ProductionClusterState {
+  void* vftable;
+  char pad_04[0x84];
+  int field_88;
+  short field_8c;
+  short field_8e;
+  int field_90;
+  int field_94;
+};
+
+struct ClosePictureState {
+  void* vftable;
+  char pad_04[0x18];
+  int ownerDescriptorAt1c;
+  char pad_20[0x74];
 };
 
 struct IndustryAmtBarState {
@@ -244,6 +333,30 @@ struct UiRuntimeContext {
   void* vftable;
 };
 
+struct ApplicationUiRootControllerState {
+  void* vftable;
+  char pad_04[0x20];
+  int screenModeAt24;
+};
+
+struct UnitToolbarClusterState {
+  void* vftable;
+  char pad_04[0x84];
+};
+
+struct StatusButtonState {
+  void* vftable;
+  char pad_04[0x18];
+  int controlTagAt1c;
+  void* ownerPanelAt20;
+  char pad_24[0x60];
+};
+
+struct CityBarClusterState {
+  void* vftable;
+  char pad_04[0x84];
+};
+
 static __inline TradeControl* CallResolveControlByTagSlot94(void* context, int controlTag) {
   return reinterpret_cast<TradeControl*(__fastcall*)(void*, int)>(
       (*reinterpret_cast<void***>(context))[0x94 / 4])(context, controlTag);
@@ -264,14 +377,60 @@ static __inline void CallNotifyMoveUpdatedSlot1D8(void* context) {
       context);
 }
 
+static __inline short ReadControlValueFieldPlus4(TradeControl* control) {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
+}
+
 static __inline short CallQueryUiScreenModeSlot54(UiRuntimeContext* runtimeContext) {
   return reinterpret_cast<short(__fastcall*)(UiRuntimeContext*)>(
       (*reinterpret_cast<void***>(runtimeContext))[0x54 / 4])(runtimeContext);
 }
 
+static __inline void CallUiRuntimeSlot34(UiRuntimeContext* runtimeContext, int styleIndex) {
+  reinterpret_cast<void(__fastcall*)(UiRuntimeContext*, int)>(
+      (*reinterpret_cast<void***>(runtimeContext))[0x34 / 4])(runtimeContext, styleIndex);
+}
+
 static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
   return reinterpret_cast<short(__fastcall*)(NationState*, short)>(
       (*reinterpret_cast<void***>(nationState))[0x78 / 4])(nationState, metricSlot);
+}
+
+static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, short metricSlot) {
+  return reinterpret_cast<short(__fastcall*)(NationState*, short)>(
+      (*reinterpret_cast<void***>(nationState))[0x7c / 4])(nationState, metricSlot);
+}
+
+static __inline int CallQuerySelectedIndexSlotBC(void* self) {
+  return reinterpret_cast<int(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xbc / 4])(
+      self);
+}
+
+static __inline char CallBoolSlot28(void* self) {
+  return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x28 / 4])(
+      self);
+}
+
+static __inline char CallBoolSlot1BC(void* self) {
+  return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1bc / 4])(
+      self);
+}
+
+static __inline void CallVoidSlotA0(void* self) {
+  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xa0 / 4])(self);
+}
+
+static __inline void CallVoidSlot1C(void* self) {
+  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1c / 4])(self);
+}
+
+static __inline void CallVoidSlotE4(void* self) {
+  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xe4 / 4])(self);
+}
+
+static __inline void* CallOwnerPanelSlot58(void* self) {
+  return reinterpret_cast<void*(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x58 / 4])(
+      self);
 }
 
 static __inline void FailNilPointerInUSmallViews(int line);
@@ -301,8 +460,10 @@ struct TradeMovePanelContext {
   short selectedMetricStep;
 
   void OrphanCallChain_C1_I06_00588c30(int value);
+  void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
+  void UpdateTradeMoveControlsFromDrag(int dragValue, int updateFlag);
   void UpdateTradeBarFromSelectedMetricRatio_B(void);
-  void HandleTradeMoveStepCommand(int commandId);
+  void HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra);
   void OrphanCallChain_C1_I06_005899c0(int value);
   void UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag);
   void UpdateTradeBarFromSelectedMetricRatio_A(void);
@@ -325,11 +486,16 @@ __inline TradeControl* TradeScreenContext::RequireControlByTag(int controlTag) {
   return control;
 }
 
+#if defined(_MSC_VER)
+#pragma auto_inline(off)
+#endif
+
 // FUNCTION: IMPERIALISM 0x00401B3B
 void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TradeControl* self, int unusedEdx,
                                                                 int repeatState, void* arg8,
                                                                 void* argC, void* dispatchArg,
                                                                 void* arg14) {
+  // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   HandleTradeArrowAutoRepeatTickAndDispatch(self, repeatState, arg8, argC, dispatchArg, arg14);
 }
@@ -390,7 +556,45 @@ static __inline TradeControl* ResolveOwnerControl(void* owner, int controlTag) {
   return CallResolveControlByTagSlot94(owner, controlTag);
 }
 
+extern UiRuntimeContext* g_pUiRuntimeContext;
+
+static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {
+  if (g_pUiRuntimeContext == 0) {
+    return;
+  }
+  CallUiRuntimeSlot34(g_pUiRuntimeContext, styleIndex);
+}
+
+static __inline void SetQuickDrawTextOrigin(short x, short y) {
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(x,
+                                                                                                y);
+}
+
+static __inline void DrawCenteredGuideLine(short x, short y) {
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(x, y);
+}
+
+static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
+  reinterpret_cast<void(__cdecl*)(short, short)>(
+      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty)(styleA, styleB);
+}
+
+static __inline void ApplyRectClipRegion(int* rectBuffer) {
+  reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(rectBuffer);
+}
+
+static __inline void* ReadPointerAt(unsigned int address) {
+  return *reinterpret_cast<void**>(address);
+}
+
+static __inline int ReadIntAt(unsigned int address) {
+  return *reinterpret_cast<int*>(address);
+}
+
 UiRuntimeContext* g_pUiRuntimeContext = 0;
+ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
+void* g_pActiveCityDialogLegendSelectionOwner = 0;
+unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
 } // namespace
 
@@ -412,9 +616,12 @@ UiRuntimeContext* g_pUiRuntimeContext = 0;
 // gates. GHIDRA_COMMENT_END
 /* [Enum] Auto-repeat tick emits EArrowSplitCommandId::LEFT/RIGHT based on hit side/tag and repeat
    timing gates. */
+
 // FUNCTION: IMPERIALISM 0x00583BD0
 void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
-  void* argC, void* dispatchArg, void* arg14) {
+                                                          void* argC, void* dispatchArg,
+                                                          void* arg14) {
+  // ORIG_CALLCONV: __thiscall
   (void)arg14;
   reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*)>(
       ::thunk_DispatchPictureResourceCommand)(self, repeatState, arg8, argC, dispatchArg);
@@ -450,10 +657,77 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeat
                                                                                 0);
 }
 
+// FUNCTION: IMPERIALISM 0x00585F70
+UnitToolbarClusterState* __cdecl CreateTUnitToolbarClusterInstance(void) {
+  UnitToolbarClusterState* cluster =
+      reinterpret_cast<UnitToolbarClusterState*>(AllocateWithFallbackHandler(0x88));
+  if (cluster != 0) {
+    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    cluster->vftable = reinterpret_cast<void*>(kVtableTUnitToolbarCluster);
+  }
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00585FF0
+void* __cdecl GetTUnitToolbarClusterClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTUnitToolbarCluster);
+}
+
+// FUNCTION: IMPERIALISM 0x00586010
+UnitToolbarClusterState* __fastcall
+ConstructTUnitToolbarClusterBaseState(UnitToolbarClusterState* cluster) {
+  // ORIG_CALLCONV: __thiscall
+  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  cluster->vftable = reinterpret_cast<void*>(kVtableTUnitToolbarCluster);
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00586040
+UnitToolbarClusterState* __fastcall
+DestructTUnitToolbarClusterAndMaybeFree(UnitToolbarClusterState* cluster, int unusedEdx,
+                                        unsigned char freeSelfFlag) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)cluster);
+  }
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00586090
+void __fastcall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(
+    UnitToolbarClusterState* cluster, int eventClass, void* eventPayload, int eventFlags) {
+  // ORIG_CALLCONV: __thiscall
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
+      cluster, eventClass, eventPayload, eventFlags);
+
+  if (!(((g_pApplicationUiRootController->screenModeAt24 == 1) && (eventClass == 0x68)) ||
+        (eventClass == 0x67) || (eventClass == 10) || (eventClass == 0x0c))) {
+    return;
+  }
+
+  void* ownerPanel = reinterpret_cast<void*(__fastcall*)(UnitToolbarClusterState*)>(
+      (*reinterpret_cast<void***>(cluster))[0x58 / 4])(cluster);
+  TradeControl* mainControl = CallResolveControlByTagSlot94(ownerPanel, 0x6d61696e);
+  if (mainControl == 0) {
+    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    return;
+  }
+  reinterpret_cast<void(__fastcall*)(TradeControl*)>(
+      (*reinterpret_cast<void***>(mainControl))[0x3c / 4])(mainControl);
+}
+
+// FUNCTION: IMPERIALISM 0x00586150
+unsigned char OrphanVtableAssignStub_00586150(void) {
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00586170
 void UpdateTradeResourceSelectionByIndex(void* self, int nResourceIndex)
 
 {
+  // ORIG_CALLCONV: __thiscall
   int* panel = 0;
   int* control = 0;
 
@@ -476,10 +750,130 @@ void UpdateTradeResourceSelectionByIndex(void* self, int nResourceIndex)
       (*reinterpret_cast<void***>(control))[0x3c / 4])(control, 0x0c, 0, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x00586280
+StatusButtonState* __cdecl CreateTStatusButtonInstance(void) {
+  StatusButtonState* button =
+      reinterpret_cast<StatusButtonState*>(AllocateWithFallbackHandler(0x84));
+  if (button != 0) {
+    reinterpret_cast<TControl*>(button)->thunk_ConstructUiCommandTagResourceEntryBase();
+    button->vftable = reinterpret_cast<void*>(kVtableTButton);
+    TemporarilyClearAndRestoreUiInvalidationFlag();
+    button->vftable = reinterpret_cast<void*>(kVtableTStatusButton);
+  }
+  return button;
+}
+
+// FUNCTION: IMPERIALISM 0x00586310
+void* __cdecl GetTStatusButtonClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTStatusButton);
+}
+
+// FUNCTION: IMPERIALISM 0x00586330
+StatusButtonState* __fastcall ConstructTStatusButtonBaseState(StatusButtonState* button,
+                                                              int unusedEdx) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  reinterpret_cast<TControl*>(button)->thunk_ConstructUiCommandTagResourceEntryBase();
+  button->vftable = reinterpret_cast<void*>(kVtableTButton);
+  TemporarilyClearAndRestoreUiInvalidationFlag();
+  button->vftable = reinterpret_cast<void*>(kVtableTStatusButton);
+  return button;
+}
+
+// FUNCTION: IMPERIALISM 0x005863B0
+StatusButtonState* __fastcall DestructTStatusButtonAndMaybeFree(StatusButtonState* button,
+                                                                int unusedEdx,
+                                                                unsigned char freeSelfFlag) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)button);
+  }
+  return button;
+}
+
+// FUNCTION: IMPERIALISM 0x00586400
+void __fastcall HandleCityDialogSelectionAndBackControlReset(StatusButtonState* button,
+                                                             int unusedEdx, int selectedIndex) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+
+  if (selectedIndex == CallQuerySelectedIndexSlotBC(button) && CallBoolSlot28(button) != '\0') {
+    if (CallBoolSlot1BC(button) == '\0') {
+      if (g_pActiveCityDialogLegendSelectionOwner != 0) {
+        CallVoidSlotA0(g_pActiveCityDialogLegendSelectionOwner);
+        g_pActiveCityDialogLegendSelectionOwner = 0;
+        g_bCityDialogLegendSelectionInitialized = 0;
+      }
+
+      TradeControl* backControl =
+          CallResolveControlByTagSlot94(button->ownerPanelAt20, kControlTagBack);
+      if (backControl != 0) {
+        CallVoidSlot1C(backControl);
+        CallVoidSlotE4(button->ownerPanelAt20);
+      }
+
+      if (button->controlTagAt1c != kControlTagArms && button->controlTagAt1c == kControlTagClos) {
+        if (g_pActiveCityDialogLegendSelectionOwner != 0) {
+          CallVoidSlotA0(g_pActiveCityDialogLegendSelectionOwner);
+          g_pActiveCityDialogLegendSelectionOwner = 0;
+        }
+        g_bCityDialogLegendSelectionInitialized = 0;
+        void* ownerPanel = CallOwnerPanelSlot58(button);
+        if (ownerPanel != 0) {
+          CallVoidSlotA0(ownerPanel);
+        }
+      }
+    }
+  }
+
+  thunk_HandleCityDialogToggleCommandOrForward();
+}
+
+// FUNCTION: IMPERIALISM 0x00586590
+CityBarClusterState* __cdecl CreateTCityBarClusterInstance(void) {
+  CityBarClusterState* cluster =
+      reinterpret_cast<CityBarClusterState*>(AllocateWithFallbackHandler(0x88));
+  if (cluster != 0) {
+    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    cluster->vftable = reinterpret_cast<void*>(kVtableTCityBarCluster);
+  }
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00586610
+void* __cdecl GetTCityBarClusterClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTCityBarCluster);
+}
+
+// FUNCTION: IMPERIALISM 0x00586630
+CityBarClusterState* __fastcall ConstructTCityBarClusterBaseState(CityBarClusterState* cluster,
+                                                                  int unusedEdx) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  cluster->vftable = reinterpret_cast<void*>(kVtableTCityBarCluster);
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00586660
+void* __fastcall DestructTCityBarClusterAndMaybeFree(void* cluster, int unusedEdx,
+                                                     unsigned char freeSelfFlag) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)cluster);
+  }
+  return cluster;
+}
+
 // FUNCTION: IMPERIALISM 0x005866B0
 void UpdateTradeSummaryMetricControlsFromRecord(void* self, int recordContext)
 
 {
+  // ORIG_CALLCONV: __thiscall
   int recordNode = *reinterpret_cast<int*>(recordContext + 0xac);
   int metrics = *reinterpret_cast<int*>(recordNode + 0x10);
   int tags[4] = {0x74726561, 0x756e7472, 0x74726169, 0x70726f66};
@@ -505,6 +899,262 @@ void UpdateTradeSummaryMetricControlsFromRecord(void* self, int recordContext)
         (*reinterpret_cast<void***>(control))[0xa4 / 4])(control, 0, 1);
   }
 }
+
+// FUNCTION: IMPERIALISM 0x00586840
+ProductionClusterState* __cdecl CreateTProductionClusterInstance(void) {
+  ProductionClusterState* cluster =
+      reinterpret_cast<ProductionClusterState*>(AllocateWithFallbackHandler(0x98));
+  if (cluster != 0) {
+    reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(cluster);
+    cluster->vftable = reinterpret_cast<void*>(kVtableTProductionCluster);
+    cluster->field_90 = 0;
+    cluster->field_94 = 0;
+    cluster->field_88 = 0;
+    cluster->field_8c = 0;
+    cluster->field_8e = 0;
+  }
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00586900
+void* __cdecl GetTProductionClusterClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTProductionCluster);
+}
+
+// FUNCTION: IMPERIALISM 0x00586920
+ProductionClusterState* __fastcall
+ConstructTProductionClusterBaseState(ProductionClusterState* cluster) {
+  // ORIG_CALLCONV: __thiscall
+  reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(cluster);
+  cluster->vftable = reinterpret_cast<void*>(kVtableTProductionCluster);
+  cluster->field_90 = 0;
+  cluster->field_94 = 0;
+  cluster->field_88 = 0;
+  cluster->field_8c = 0;
+  cluster->field_8e = 0;
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00586970
+ProductionClusterState* __fastcall
+DestructTProductionClusterAndMaybeFree(ProductionClusterState* cluster, int unusedEdx,
+                                       unsigned char freeSelfFlag) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)cluster);
+  }
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x005869C0
+void __fastcall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(
+    ProductionClusterState* cluster, int commandId, void* eventArg, int eventExtra) {
+  // ORIG_CALLCONV: __thiscall
+  TradeControl* valueControl = ResolveOwnerControl(cluster, 0x76616c75);
+  if (valueControl == 0) {
+    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+  }
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
+      cluster, commandId, eventArg, eventExtra);
+}
+
+// FUNCTION: IMPERIALISM 0x00586A60
+void __fastcall OrphanTiny_SetWordEcxOffset_8c_00586a60(TradeMoveStepCluster* cluster,
+                                                        int unusedEdx, short value) {
+  (void)unusedEdx;
+  cluster->field_8c = value;
+}
+
+// FUNCTION: IMPERIALISM 0x00586A80
+void __fastcall OrphanLeaf_NoCall_Ins05_00586a80(TradeMoveStepCluster* cluster, int unusedEdx,
+                                                 int value90, int value94) {
+  (void)unusedEdx;
+  cluster->field_90 = value90;
+  cluster->field_94 = value94;
+}
+
+// FUNCTION: IMPERIALISM 0x00586AB0
+void __fastcall OrphanTiny_SetWordEcxOffset_8e_00586ab0(TradeMoveStepCluster* cluster,
+                                                        int unusedEdx, short value) {
+  (void)unusedEdx;
+  cluster->field_8e = value;
+}
+
+// FUNCTION: IMPERIALISM 0x00586AD0
+ClosePictureState* __cdecl CreateTClosePictureInstance(void) {
+  ClosePictureState* picture =
+      reinterpret_cast<ClosePictureState*>(AllocateWithFallbackHandler(0x94));
+  if (picture != 0) {
+    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiTabCursorPictureEntry)(picture);
+    picture->vftable = reinterpret_cast<void*>(kVtableTClosePicture);
+  }
+  return picture;
+}
+
+// FUNCTION: IMPERIALISM 0x00586B50
+void* __cdecl GetTClosePictureClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTClosePicture);
+}
+
+// FUNCTION: IMPERIALISM 0x00586B70
+ClosePictureState* __fastcall ConstructTClosePictureBaseState(ClosePictureState* picture) {
+  // ORIG_CALLCONV: __thiscall
+  reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiTabCursorPictureEntry)(picture);
+  picture->vftable = reinterpret_cast<void*>(kVtableTClosePicture);
+  return picture;
+}
+
+// FUNCTION: IMPERIALISM 0x00586BA0
+ClosePictureState* __fastcall DestructTClosePictureAndMaybeFree(ClosePictureState* picture,
+                                                                int unusedEdx,
+                                                                unsigned char freeSelfFlag) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  thunk_DestructCityDialogSharedBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)picture);
+  }
+  return picture;
+}
+
+// FUNCTION: IMPERIALISM 0x00586BF0
+void __fastcall
+WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(ClosePictureState* picture, int arg1,
+                                                           int arg2, int arg3, int arg4) {
+  // ORIG_CALLCONV: __thiscall
+  reinterpret_cast<int(__fastcall*)(void*, int, int, int, int)>(
+      ::DispatchUiMouseEventToChildrenOrSelf)(picture, arg1, arg2, arg3, arg4);
+  TradeControl* control =
+      reinterpret_cast<TradeControl*>(reinterpret_cast<void*(__fastcall*)(ClosePictureState*)>(
+          (*reinterpret_cast<void***>(picture))[0x58 / 4])(picture));
+  if (control != 0) {
+    control->ApplyStyleDescriptor(reinterpret_cast<void*>(picture->ownerDescriptorAt1c), 1);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00586C40
+TradeMovePanelContext* __cdecl CreateTradeMoveControlPanelBasic(void) {
+  TradeMovePanelContext* panel =
+      reinterpret_cast<TradeMovePanelContext*>(AllocateWithFallbackHandler(0x88));
+  if (panel != 0) {
+    reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(panel);
+    *reinterpret_cast<void**>(panel) = reinterpret_cast<void*>(kVtableTAmtBarCluster);
+  }
+  return panel;
+}
+
+// FUNCTION: IMPERIALISM 0x00586CC0
+void* __cdecl GetTAmtBarClusterClassNamePointer(void) {
+  return reinterpret_cast<void*>(kAddrClassDescTAmtBarCluster);
+}
+
+// FUNCTION: IMPERIALISM 0x00586CE0
+TradeMovePanelContext* __fastcall
+ConstructTradeMoveControlPanelBasic(TradeMovePanelContext* panel) {
+  reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(panel);
+  *reinterpret_cast<void**>(panel) = reinterpret_cast<void*>(kVtableTAmtBarCluster);
+  return panel;
+}
+
+// FUNCTION: IMPERIALISM 0x00586D10
+TradeMovePanelContext* __fastcall DestructTAmtBarClusterMaybeFree(TradeMovePanelContext* panel,
+                                                                  int unusedEdx,
+                                                                  unsigned char freeSelfFlag) {
+  (void)unusedEdx;
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull((undefined4)panel);
+  }
+  return panel;
+}
+
+// FUNCTION: IMPERIALISM 0x00586D60
+void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
+                                                  unsigned int styleSeed) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(context);
+  TradeControl* moveControl = ResolveOwnerControl(panel, kControlTagMove);
+  unsigned int styleDescriptor = styleSeed & 0xffff0000;
+  if (moveControl != 0) {
+    reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(
+        thunk_BuildUiTextStyleDescriptor)(0, &styleDescriptor, 0xa, 0x2b67);
+    moveControl->ApplyStyleDescriptor(&styleDescriptor, 0);
+    moveControl->SetStyleState(-2, 0);
+  }
+
+  TradeControl* barControl = ResolveOwnerControl(panel, kControlTagBar);
+  if (barControl == 0) {
+    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+        kUSmallViewsCppPath, kAssertLineMoveBarInitNil);
+  }
+  reinterpret_cast<void(__fastcall*)(TradeControl*, int, unsigned int)>(
+      (*reinterpret_cast<void***>(barControl))[0xdc / 4])(barControl, 0, styleDescriptor);
+  reinterpret_cast<void(__fastcall*)(void*, int, unsigned int)>(thunk_NoOpUiLifecycleHook)(
+      panel, 0, styleDescriptor);
+}
+
+// FUNCTION: IMPERIALISM 0x00586E50
+short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
+  (void)unusedArg;
+  return value;
+}
+
+// FUNCTION: IMPERIALISM 0x00586E70
+void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
+                                                             int eventExtra) {
+  // ORIG_CALLCONV: __thiscall
+  if (commandId == 100) {
+    TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+    if (moveControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+          kUSmallViewsCppPath, kAssertLineMoveAdjustMove);
+      goto dispatch;
+    }
+    int moveValue = moveControl->QueryValue();
+
+    TradeControl* availableControl = ResolveOwnerControl(this, kControlTagAvai);
+    if (availableControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+          kUSmallViewsCppPath, kAssertLineMoveAdjustAvai);
+      goto dispatch;
+    }
+    short availableValue = (short)availableControl->QueryValue();
+    if ((short)moveValue < availableValue) {
+      CallApplyMoveValueSlot1D0(this, moveValue + 1);
+    }
+  } else if (commandId == 0x65) {
+    TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+    if (moveControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+          kUSmallViewsCppPath, kAssertLineMoveAdjustMoveMinus);
+      goto dispatch;
+    }
+    int moveValue = moveControl->QueryValue();
+    if ((short)moveValue != 0) {
+      CallApplyMoveValueSlot1D0(this, moveValue - 1);
+    }
+  }
+
+dispatch:
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
+      this, commandId, eventArg, eventExtra);
+}
+
+void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
+                                                 int eventExtra) {
+  reinterpret_cast<TradeMovePanelContext*>(context)->HandleTradeMoveControlAdjustment(
+      commandId, eventArg, eventExtra);
+}
+
+// FUNCTION: IMPERIALISM 0x00586FF0
+void __cdecl OrphanRetStub_00586ff0(void) {}
 
 // FUNCTION: IMPERIALISM 0x00587010
 void* CreateTradeSellControlPanel(void) {
@@ -546,8 +1196,10 @@ void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
 void TradeScreenContext::InitializeTradeSellControlState(void) {
   TradeControl* sellControl = ResolveControlByTag(kControlTagSell);
   if (sellControl != 0) {
-    int styleDescriptor[5] = {0, 0, 0, 0, 0};
+    int styleDescriptor[5];
     int boundsBuffer[2] = {0, 0};
+    reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
+        thunk_InitializeUiTextStyleDescriptor)(0, styleDescriptor, 0xe, 0x2b68, 2);
     sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
     sellControl->SetStyleState(-1, 0);
     sellControl->QueryBounds(boundsBuffer);
@@ -579,13 +1231,79 @@ void TradeScreenContext::InitializeTradeSellControlState(void) {
     leftControl->SetEnabledPair(0, 0);
     rightControl->SetEnabledPair(0, 0);
     barControl->SetEnabledPair(0, 0);
-    TradeControl* greenControl = RequireControlByTag(kControlTagGree);
+    TradeControl* greenControl = ResolveControlByTag(kControlTagGree);
+    if (greenControl == 0) {
+      FailNilPointerInUSmallViews(kAssertLineInitGree);
+    }
     if (greenControl != 0) {
       greenControl->SetEnabledPair(0, 0);
     }
   }
 
-  InitializeTradeMoveAndBarControls();
+  InitializeTradeMoveAndBarControls(this);
+}
+
+// FUNCTION: IMPERIALISM 0x005873E0
+void __fastcall HandleTradeSellControlCommand(void* context, int commandId, void* eventArg,
+                                              int eventExtra) {
+  // ORIG_CALLCONV: __thiscall
+  TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(context);
+  TradeControl* sellControl = ResolveOwnerControl(panel, kControlTagSell);
+
+  switch (commandId) {
+  case 100:
+    if (sellControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      break;
+    }
+    CallApplyMoveValueSlot1D0(panel, sellControl->QueryValue() + 1);
+    return;
+  case 0x65:
+    if (sellControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      break;
+    }
+    if (sellControl->QueryValue() > 1) {
+      CallApplyMoveValueSlot1D0(panel, sellControl->QueryValue() - 1);
+    }
+    return;
+  case 0x69: {
+    if (sellControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      break;
+    }
+    short activeNationSlot = QueryActiveNationId();
+    NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+    int maxSell = activeNationState != 0 ? (int)QueryNationTradeCapacity(activeNationState)
+                                         : sellControl->QueryValue();
+    int sellValue = sellControl->QueryValue();
+    if (sellValue > maxSell) {
+      sellValue = maxSell;
+    }
+    sellControl->SetEnabledPair(1, 1);
+    TradeControl* barControl = ResolveOwnerControl(panel, kControlTagBar);
+    if (barControl != 0) {
+      barControl->SetStatePair(1, 0);
+    }
+    CallApplyMoveValueSlot1D0(panel, sellValue);
+    return;
+  }
+  case 0x6a: {
+    if (sellControl != 0) {
+      sellControl->SetEnabledPair(0, 1);
+    }
+    TradeControl* barControl = ResolveOwnerControl(panel, kControlTagBar);
+    if (barControl != 0) {
+      barControl->SetStatePair(0, 1);
+    }
+    CallApplyMoveValueSlot1D0(panel, 0);
+    return;
+  }
+  default:
+    break;
+  }
+
+  HandleTradeMoveControlAdjustment(panel, commandId, eventArg, eventExtra);
 }
 
 // GHIDRA_NAME IsTradeSellControlAtMinimum
@@ -1005,6 +1723,21 @@ void __fastcall OrphanCallChain_C1_I03_00588670(TradeControl* control, int unuse
 // GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
 // GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
 
+// FUNCTION: IMPERIALISM 0x00588690
+void __fastcall RenderPrimarySurfaceOverlayPanelWithClipCache(TradeControl* control) {
+  // ORIG_CALLCONV: __thiscall
+  if (control == 0) {
+    return;
+  }
+  if (control->IsActionable() == 0) {
+    return;
+  }
+  int bounds[4] = {0, 0, 0, 0};
+  control->QueryBounds(bounds);
+  control->CaptureLayout(bounds, 1);
+  control->Refresh();
+}
+
 // FUNCTION: IMPERIALISM 0x00588950
 void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
   int requestedValue = *requestedValuePtr;
@@ -1113,39 +1846,40 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TradeMovePanelContext
 /* Computes bar position from selected metric ratio and applies it to bar control. */
 
 // FUNCTION: IMPERIALISM 0x00588C60
-void __fastcall UpdateTradeMoveControlsFromDrag(TradeMovePanelContext* context, int unusedEdx,
-                                                int dragValue, int updateFlag) {
-  (void)unusedEdx;
-  TradeControl* selectedControl = context->selectedMetricControl;
-  int previousValue = 0;
+void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int updateFlag) {
+  // ORIG_CALLCONV: __thiscall
+  TradeControl* selectedControl = selectedMetricControl;
+  short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
-    previousValue = selectedControl->QueryValue();
-    selectedControl->SetControlValue(dragValue, 0);
+    selectedControl->SetControlValueRaw(dragValue);
   }
 
-  if (((char)updateFlag == 0) && (selectedControl != 0) &&
-      (selectedControl->QueryStepValue() == (short)previousValue)) {
+  if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
     return;
   }
 
-  void* owner = context->ownerContext != 0 ? context->ownerContext : context;
-
-  TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
+  TradeControl* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
   if (moveControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
-  }
-  if (selectedControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
+    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+        kUSmallViewsCppPath, 0xb42);
   }
 
-  moveControl->SetControlValue(selectedControl->QueryStepValue(), 0);
+  moveControl->SetControlValue((int)ReadControlValueFieldPlus4(selectedControl), 0);
 
-  TradeControl* barControl = ResolveOwnerControl(owner, kControlTagBar);
+  RECT moveBoundsRect;
+  RECT moveInvalidRect;
+  moveControl->QueryBounds(reinterpret_cast<int*>(&moveBoundsRect));
+  OffsetRect(&moveBoundsRect, ownerOffsetX, ownerOffsetY);
+  CopyRect(&moveInvalidRect, &moveBoundsRect);
+  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
+      (int)&moveInvalidRect, 1);
+
+  TradeControl* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
   if (barControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
+    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+        kUSmallViewsCppPath, 0xb49);
   }
 
   TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
@@ -1155,16 +1889,16 @@ void __fastcall UpdateTradeMoveControlsFromDrag(TradeMovePanelContext* context, 
     barScale = (float)barLayout->barRangeRaw / (float)barLayout->barStepsRaw;
   }
 
-  if (selectedControl->QueryStepValue() == context->selectedMetricValue) {
+  if (ReadControlValueFieldPlus4(selectedControl) == selectedMetricValue) {
     barAmount->auxValueB = 0x34;
   } else {
     barAmount->auxValueB = 0x3a;
   }
 
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
-  int scaledRange = (int)((float)selectedControl->QueryStepValue() * barScale);
+  int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  CallNotifyMoveUpdatedSlot1D8(owner);
+  CallNotifyMoveUpdatedSlot1D8(ownerContext);
 }
 
 // FUNCTION: IMPERIALISM 0x00588F60
@@ -1174,6 +1908,74 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void) {
 
 // GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
 // GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
+
+// FUNCTION: IMPERIALISM 0x00589340
+void __fastcall RenderQuickDrawControlWithHitRegionClip_A(TradeControl* control) {
+  AcquireReusableQuickDrawSurface();
+  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      ApplyRectClipRegion(boundsRect);
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      if (styleValueAt60 > 0) {
+        ApplyQuickDrawStyleFromRuntime(0);
+        SetQuickDrawStylePair(1, 4);
+        SetQuickDrawTextOrigin(0, 1);
+        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
+
+      short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
+      short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      SetQuickDrawTextOrigin(overlayOffsetX, 0);
+      reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+      reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
+
+  ReleaseOrCacheQuickDrawSurface();
+}
+
+// FUNCTION: IMPERIALISM 0x00589540
+void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TradeControl* control, int unusedEdx,
+                                                             short selectedValue) {
+  (void)unusedEdx;
+  AcquireReusableQuickDrawSurface();
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
+      int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
+      int invalidRect[4] = {cachedX, cachedY, 0, 0};
+      control->CtrlSlot78();
+      invalidRect[2] =
+          cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
+      invalidRect[3] =
+          cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
+          (int)invalidRect, 1);
+    }
+  }
+
+  ReleaseOrCacheQuickDrawSurface();
+}
 
 // FUNCTION: IMPERIALISM 0x00589720
 void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* cluster) {
@@ -1265,42 +2067,41 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value) {
 
 // FUNCTION: IMPERIALISM 0x005899F0
 void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag) {
+  // ORIG_CALLCONV: __thiscall
   short step = selectedMetricStep;
-  int quantizedDragValue = dragValue;
-  if (step != 0) {
-    quantizedDragValue = (((int)step / 2 + (int)(short)dragValue) / (int)step) * (int)step;
-  }
-
+  int quantizedDragValue = ((((int)step / 2) + (int)(short)dragValue) / (int)step) * (int)step;
   TradeControl* selectedControl = selectedMetricControl;
-  int previousValue = 0;
+  short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
-    previousValue = selectedControl->QueryValue();
-    selectedControl->SetControlValue(quantizedDragValue, 0);
+    selectedControl->SetControlValueRaw(quantizedDragValue);
   }
 
-  if (((char)updateFlag == 0) && (selectedControl != 0) &&
-      (selectedControl->QueryStepValue() == (short)previousValue)) {
+  if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
     return;
   }
 
-  void* owner = ownerContext != 0 ? ownerContext : this;
-
-  TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
+  TradeControl* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
   if (moveControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
-  }
-  if (selectedControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
+    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+        kUSmallViewsCppPath, 0xcf2);
   }
 
-  moveControl->SetControlValue(selectedControl->QueryStepValue(), 0);
+  moveControl->SetControlValue((int)ReadControlValueFieldPlus4(selectedControl), 0);
 
-  TradeControl* barControl = ResolveOwnerControl(owner, kControlTagBar);
+  RECT moveBoundsRect;
+  RECT moveInvalidRect;
+  moveControl->QueryBounds(reinterpret_cast<int*>(&moveBoundsRect));
+  OffsetRect(&moveBoundsRect, ownerOffsetX, ownerOffsetY);
+  CopyRect(&moveInvalidRect, &moveBoundsRect);
+  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
+      (int)&moveInvalidRect, 1);
+
+  TradeControl* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
   if (barControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    return;
+    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
+        kUSmallViewsCppPath, 0xcf9);
   }
 
   TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
@@ -1310,16 +2111,16 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
     barScale = (float)barLayout->barRangeRaw / (float)barLayout->barStepsRaw;
   }
 
-  if (selectedControl->QueryStepValue() == selectedMetricValue) {
+  if (ReadControlValueFieldPlus4(selectedControl) == selectedMetricValue) {
     barAmount->auxValueB = 0x34;
   } else {
     barAmount->auxValueB = 0x3a;
   }
 
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
-  int scaledRange = (int)((float)selectedControl->QueryStepValue() * barScale);
+  int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  CallNotifyMoveUpdatedSlot1D8(owner);
+  CallNotifyMoveUpdatedSlot1D8(ownerContext);
 }
 
 // FUNCTION: IMPERIALISM 0x00589D10
@@ -1340,15 +2141,286 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
 #include "TShipAmtBar.cpp"
 #include "TTraderAmtBar.cpp"
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0059A180
-// GHIDRA_NAME SetTradeToolSubcontrolEnabledStateByFlag
-// GHIDRA_PROTO undefined SetTradeToolSubcontrolEnabledStateByFlag(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Looks up tool container and toggles child controls (seas/year/trea/teer tags)
-// using caller-provided enabled flag. GHIDRA_COMMENT_END
+// FUNCTION: IMPERIALISM 0x0058A1B0
+void __fastcall RenderQuickDrawControlWithHitRegionClip_B(TradeControl* control) {
+  AcquireReusableQuickDrawSurface();
+  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
 
-/* Looks up tool container and toggles child controls (seas/year/trea/teer tags) using
-   caller-provided enabled flag. */
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      ApplyRectClipRegion(boundsRect);
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      if (styleValueAt60 > 0) {
+        SetQuickDrawTextOrigin(0, 1);
+        ApplyQuickDrawStyleFromRuntime(0);
+        SetQuickDrawStylePair(1, 4);
+        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
+
+      short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
+      short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      SetQuickDrawTextOrigin(overlayOffsetX, 0);
+      reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+      reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
+
+  ReleaseOrCacheQuickDrawSurface();
+}
+
+// FUNCTION: IMPERIALISM 0x0058A3B0
+void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* control, int unusedEdx,
+                                                             short selectedValue) {
+  (void)unusedEdx;
+  AcquireReusableQuickDrawSurface();
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      RECT invalidRect;
+      invalidRect.left = boundsRect[0];
+      invalidRect.top = boundsRect[1];
+      invalidRect.right =
+          boundsRect[0] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
+      invalidRect.bottom =
+          boundsRect[1] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
+          &invalidRect, 1);
+    }
+  }
+
+  ReleaseOrCacheQuickDrawSurface();
+}
+
+// FUNCTION: IMPERIALISM 0x0058AC80
+void __fastcall RenderQuickDrawControlWithHitRegionClip_C(TradeControl* control) {
+  AcquireReusableQuickDrawSurface();
+  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      ApplyRectClipRegion(boundsRect);
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      if (styleValueAt60 > 0) {
+        short styleValueAt66 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x66);
+        SetQuickDrawTextOrigin(0, 1);
+        ApplyQuickDrawStyleFromRuntime(styleValueAt66);
+        SetQuickDrawStylePair(1, 4);
+        DrawCenteredGuideLine(styleValueAt60, 1);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
+
+  ReleaseOrCacheQuickDrawSurface();
+}
+
+// FUNCTION: IMPERIALISM 0x0058B0F0
+void __fastcall RenderControlWithTemporaryRectClipRegionAndChildren(TradeControl* control) {
+  AcquireReusableQuickDrawSurface();
+  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      control->ApplyBounds(boundsRect, 1);
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      if (styleValueAt60 > 0) {
+        short styleValueAt66 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x66);
+        SetQuickDrawTextOrigin(0, 0);
+        ApplyQuickDrawStyleFromRuntime(styleValueAt66);
+        SetQuickDrawStylePair(1, 5);
+        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 0);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
+
+  ReleaseOrCacheQuickDrawSurface();
+}
+
+// FUNCTION: IMPERIALISM 0x0058B460
+void __fastcall OrphanCallChain_C4_I34_0058b460(NumberedArrowButtonState* control, int unusedEdx,
+                                                int selectedValue) {
+  (void)unusedEdx;
+  control->hoverTag4e = 0xc;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 0x9c) = selectedValue;
+  if (selectedValue != 0) {
+    reinterpret_cast<TradeControl*>(control)->SetEnabledPair(1, 0);
+    reinterpret_cast<TradeControl*>(control)->SetStatePair(1, 0);
+    short mappedValue = (short)selectedValue;
+    void* globalMapState = ReadPointerAt(kAddrGlobalMapState);
+    if (globalMapState != 0) {
+      mappedValue = reinterpret_cast<short(__fastcall*)(void*, int)>(
+          (*reinterpret_cast<void***>(globalMapState))[0x118 / 4])(globalMapState, selectedValue);
+    }
+    *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98) = mappedValue;
+    return;
+  }
+  reinterpret_cast<TradeControl*>(control)->SetEnabledPair(0, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x0058B4F0
+void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 4) != 0) {
+    reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
+        control);
+  }
+  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+
+  RECT srcRect;
+  srcRect.left = (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98);
+  srcRect.top = 0;
+  srcRect.right = srcRect.left + 0x40;
+  srcRect.bottom = 0x40;
+
+  RECT dstRect;
+  dstRect.left = 0;
+  dstRect.top = 2;
+  dstRect.right = 0x40;
+  dstRect.bottom = 0x42;
+
+  int strategicMapViewSystem = (int)ReadPointerAt(kAddrStrategicMapViewSystem);
+  int activeQuickDrawSurfaceContext = (int)ReadPointerAt(kAddrActiveQuickDrawSurfaceContext);
+  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, unsigned char, void*)>(
+      BlitRectWithOptionalTransparency)(
+      reinterpret_cast<void*>(*reinterpret_cast<int*>(strategicMapViewSystem + 0x66c) + 4),
+      reinterpret_cast<void*>(activeQuickDrawSurfaceContext + 4), &srcRect, &dstRect, 0x24, 0);
+
+  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+}
+
+// FUNCTION: IMPERIALISM 0x0058B750
+void __fastcall OrphanCallChain_C3_I43_0058b750(NumberedArrowButtonState* control, int unusedEdx,
+                                                char mode, char refreshParent) {
+  (void)unusedEdx;
+  if (mode != *reinterpret_cast<char*>(reinterpret_cast<char*>(control) + 0x64)) {
+    *reinterpret_cast<char*>(reinterpret_cast<char*>(control) + 0x64) = mode;
+    short bitmapId = 0;
+    short modeState = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98);
+    if (mode == 0) {
+      if (modeState == 0) {
+        bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x90);
+      } else if (modeState == 1) {
+        bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x94);
+      } else {
+        bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x96);
+      }
+    } else {
+      bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x92);
+    }
+    reinterpret_cast<TradeControl*>(control)->SetBitmap(bitmapId, 1);
+    if (refreshParent != 0) {
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0058B890
+void __fastcall OrphanCallChain_C2_I16_0058b890(TradeControl* control, int unusedEdx, int arg2,
+                                                int arg3) {
+  (void)unusedEdx;
+  if (CallBoolSlot28(control) != 0) {
+    control->InvokeSlot1CC(arg2, arg3);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0058B8D0
+void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* control, int unusedEdx,
+                                                short mode) {
+  (void)unusedEdx;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98) = mode;
+  *reinterpret_cast<char*>(reinterpret_cast<char*>(control) + 0x64) = 0;
+  short bitmapId = 0;
+  if (mode == 0) {
+    bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x90);
+  } else if (mode == 1) {
+    bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x94);
+  } else {
+    bitmapId = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x96);
+  }
+  reinterpret_cast<TradeControl*>(control)->SetBitmap(bitmapId, 1);
+  reinterpret_cast<TradeControl*>(control)->SetStatePair(mode != 2, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0058BFE0
+void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control) {
+  int sharedStringRef = 0;
+  InitializeSharedStringRefFromEmpty(&sharedStringRef);
+
+  reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
+      control);
+
+  if (control->placardValue != 0) {
+    reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
+    reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(
+        &sharedStringRef, reinterpret_cast<const char*>(kAddrDecimalFormat),
+        (int)control->placardValue);
+
+    short textWidth =
+        reinterpret_cast<short(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)();
+    short textX =
+        (short)(*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34) - textWidth);
+    short textY = (short)(*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38) - 2);
+    SetQuickDrawTextOrigin(textX, textY);
+    reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+        &sharedStringRef);
+
+    reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
+    SetQuickDrawTextOrigin((short)(textX - 1), (short)(textY - 1));
+    reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+        &sharedStringRef);
+  }
+
+  ReleaseSharedStringRefIfNotEmpty(&sharedStringRef);
+}
+
 // FUNCTION: IMPERIALISM 0x0059A180
 void TradeScreenContext::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag) {
   TradeControl* toolControl = ResolveControlByTag(0x746f6f6c);

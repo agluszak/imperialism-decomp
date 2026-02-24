@@ -1,6 +1,131 @@
 # Worklog
 
+## 2026-02-24
+
+### Trade-step/arrow shape pass + callconv annotations
+1. Added reusable callconv annotation script:
+   1. `tools/workflow/annotate_orig_callconv.py`
+   2. Applied `// ORIG_CALLCONV: __thiscall` to thiscall-backed wrappers in:
+      1. `src/game/trade_screen.cpp`
+      2. `src/game/TAmtBar.cpp`
+      3. `src/game/TIndustryAmtBar.cpp`
+      4. `src/game/TShipyardCluster.cpp`
+2. Reworked handler shape in class files to follow Ghidra branch order:
+   1. `0x00589DA0` (`src/game/TIndustryAmtBar.cpp`)
+      1. switched to direct `commandId == 100` / `commandId == 0x65` branching.
+      2. preserved fail-and-continue `MessageBoxA` path (no extra early returns).
+   2. `0x0058A940` (`src/game/TShipyardCluster.cpp`)
+      1. switched to explicit `commandId == 10` + left/right tag split shape.
+      2. preserved fail-and-continue `MessageBoxA` path.
+   3. `0x00588FF0` (`src/game/TAmtBar.cpp`)
+      1. removed redundant post-check branch and aligned minus-step path shape.
+      2. changed method signature to `(int commandId, void* eventArg, int eventExtra)` to restore `ret 0xc` shape.
+3. Verified with loop:
+   1. `just build`
+   2. `just detect`
+   3. `just compare 0x00589DA0`
+   4. `just compare 0x0058A610`
+   5. `just compare 0x0058A940`
+   6. `just compare 0x00588FF0`
+   7. `just stats`
+4. Targeted similarity checkpoints:
+   1. `0x00589DA0`: `25.37%`
+   2. `0x0058A610`: `54.55%`
+   3. `0x0058A940`: `41.03%`
+   4. `0x00588FF0`: `28.57%`
+5. Global snapshot (`2026-02-24T00:20:35Z`):
+   1. paired `12228/12228` (`100%`)
+   2. aligned `49`
+   3. average similarity `2.41%`
+   4. failed-to-match lines `0`
+
+### Promotion stress test (class files) and rollback policy
+1. Promoted extra addresses into class files with `just promote`:
+   1. `src/game/TWarningView.cpp` (`0x004013E3`, `0x0040365C`, `0x0040407A`, `0x004092B9`, `0x00592980`, `0x00592A70`)
+   2. `src/game/TTransportPicture.cpp` (`0x004014F1`, `0x004024C8`, `0x00402A04`, `0x00405592`, `0x0040712B`, `0x00407DF6`, `0x00591F10`, `0x005921C0`, `0x00592830`)
+2. Result:
+   1. raw promoted class-scoped output did not compile under current manual type surface (MSVC500 emitted >100 parse/type errors in `TTransportPicture.cpp`).
+3. Action:
+   1. restored `src/game/TWarningView.cpp` and `src/game/TTransportPicture.cpp` to last stable state.
+   2. kept promotion insight as policy: only keep compile-safe wrappers/thunks for these files until class/type reconstruction is ready.
+
 ## 2026-02-23
+
+### Range-based promotion workflow (`just promote-range`) + first real batch
+1. Added contiguous-window promotion support in `tools/workflow/promote_from_autogen.py`:
+   1. new `--range START:END` argument (repeatable).
+   2. range selection now resolves against existing autogen function addresses (sparse-safe).
+2. Added `just` entrypoint:
+   1. `just promote-range <target_cpp> <start> <end>`.
+3. Used range workflow in trade-screen:
+   1. `just promote-range src/game/trade_screen.cpp 0x00586010 0x00586150`
+   2. `just promote-range src/game/trade_screen.cpp 0x00585f70 0x00585ff0`
+4. Normalized promoted raw class-scoped output to compile-safe wrappers in `src/game/trade_screen.cpp`:
+   1. `0x00585F70` `CreateTUnitToolbarClusterInstance`
+   2. `0x00585FF0` `GetTUnitToolbarClusterClassNamePointer`
+   3. `0x00586010` `ConstructTUnitToolbarClusterBaseState`
+   4. `0x00586040` `DestructTUnitToolbarClusterAndMaybeFree`
+   5. `0x00586090` `WrapperFor_thunk_DispatchPanelControlEvent_At00586090`
+   6. `0x00586150` `OrphanVtableAssignStub_00586150`
+5. Stub ownership sync:
+   1. flipped `0x00585F70`, `0x00585FF0`, `0x00586010`, `0x00586040`, `0x00586090`, `0x00586150` to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part017.cpp`.
+6. Verification commands:
+   1. `just format src/game/trade_screen.cpp src/autogen/stubs/stubs_part017.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x00585F70`
+   5. `just compare 0x00585FF0`
+   6. `just compare 0x00586010`
+   7. `just compare 0x00586040`
+   8. `just compare 0x00586090`
+   9. `just compare 0x00586150`
+   10. `just stats`
+7. Targeted similarities:
+   1. `0x00585F70`: `34.78%`
+   2. `0x00585FF0`: `50.00%`
+   3. `0x00586010`: `71.43%`
+   4. `0x00586040`: `66.67%`
+   5. `0x00586090`: `35.96%`
+   6. `0x00586150`: `100.00%`
+8. Global snapshot (`2026-02-23T23:46:18Z`):
+   1. original: `12224`
+   2. recompiled: `12474` (`+6`)
+   3. paired: `12224`
+   4. aligned: `46` (`+1`)
+   5. average similarity: `2.31%` (`+0.26 pp`)
+
+### Trade-screen shape pass (drag + init-state trio)
+1. Reworked `src/game/trade_screen.cpp` drag handlers to match original shape more closely:
+   1. `0x00588C60` converted to member `thiscall` form (`TradeMovePanelContext::UpdateTradeMoveControlsFromDrag`).
+   2. Restored move-control dirty-rect invalidation block in both drag handlers:
+      1. `QueryBounds` -> `OffsetRect` -> `CopyRect` -> `thunk_InvalidateCityDialogRectRegion`.
+   3. Switched drag update math/control writes to raw selected value field (`+0x4`) instead of virtual `QueryStepValue()` in:
+      1. move-control `SetControlValue(..., 0)`
+      2. selected-vs-target comparison for `auxValueB`
+      3. bar `scaledRange` calculation.
+   4. Kept explicit `USmallViews.cpp` assert paths (`0xb42/0xb49`, `0xcf2/0xcf9`) in-place with fail-and-continue behavior.
+2. Updated `InitializeTradeSellControlState` (`0x00587130`) green-control branch:
+   1. replaced message-only `RequireControlByTag` path with assert path line `0x7b8`.
+3. Added local RECT interop declarations in `trade_screen.cpp`:
+   1. `tagRECT`/`RECT`
+   2. `OffsetRect` and `CopyRect` imports
+   3. casted call bridge for `thunk_InvalidateCityDialogRectRegion`.
+4. Verification commands:
+   1. `just format src/game/trade_screen.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x00588C60`
+   5. `just compare 0x005899F0`
+   6. `just compare 0x00587130`
+   7. `just stats`
+5. Targeted similarity deltas:
+   1. `0x00588C60`: `17.02% -> 25.53%`
+   2. `0x005899F0`: `18.94% -> 31.62%`
+   3. `0x00587130`: `24.61% -> 30.91%`
+6. Global metrics snapshot (`2026-02-23T22:58:07Z`):
+   1. paired `12228/12228` (`100%`)
+   2. aligned `45`
+   3. average similarity `2.16%` (no global delta this iteration)
 
 ### Mixed promotion batch (non-class + trade-cluster wrappers)
 1. Switched from strict class-by-class promotion to mixed address-cluster promotion for trade-screen.
@@ -615,3 +740,338 @@
    2. `src/game/TradeMoveControlState.cpp`
    3. `src/game/TradeMovePanelContext.cpp`
 2. Kept struct declarations in `src/game/trade_screen.cpp` as codegen source-of-truth for now to avoid mangling/codegen churn.
+
+## 2026-02-23 23:13:37 UTC - trade_screen missing-function throughput pass
+
+### Commands
+1. `just promote src/game/trade_screen.cpp --address 0x00586C40 --address 0x00586CC0 --address 0x00586CE0 --address 0x00586D10 --address 0x00586D60 --address 0x00586E70`
+2. `just build`
+3. `just detect`
+4. `just compare 0x00586C40`
+5. `just compare 0x00586CC0`
+6. `just compare 0x00586CE0`
+7. `just compare 0x00586D10`
+8. `just compare 0x00586D60`
+9. `just compare 0x00586E70`
+10. `just stats`
+11. Implemented and mapped `0x005873E0` in `src/game/trade_screen.cpp`
+12. `just build`
+13. `just detect`
+14. `just compare 0x005873E0`
+15. `just stats`
+
+### Changes
+1. Promoted missing TAmtBarCluster range directly into `src/game/trade_screen.cpp` and normalized it into compile-safe typed wrappers:
+   1. `0x00586C40` `CreateTradeMoveControlPanelBasic`
+   2. `0x00586CC0` `GetTAmtBarClusterClassNamePointer`
+   3. `0x00586CE0` `ConstructTradeMoveControlPanelBasic`
+   4. `0x00586D10` `DestructTAmtBarClusterMaybeFree`
+   5. `0x00586D60` `InitializeTradeMoveAndBarControls`
+   6. `0x00586E70` `HandleTradeMoveControlAdjustment`
+2. Added first-pass implementation for missing `0x005873E0` `HandleTradeSellControlCommand` in `src/game/trade_screen.cpp`.
+3. Switched active trade-screen call paths to direct typed handlers:
+   1. `include/game/ui_widget_shared.h`
+   2. `src/game/TAmtBar.cpp`
+   3. `src/game/TIndustryAmtBar.cpp`
+   4. `src/game/TShipyardCluster.cpp`
+4. Marked promoted addresses as manual overrides in `src/autogen/stubs/stubs_part018.cpp`:
+   1. `0x00586C40`
+   2. `0x00586CC0`
+   3. `0x00586CE0`
+   4. `0x00586D10`
+   5. `0x00586D60`
+   6. `0x00586E70`
+   7. `0x005873E0`
+
+### Results
+1. Build and detect pass with the promoted trade-screen range.
+2. Targeted similarities (first-pass shape):
+   1. `0x00586C40`: `34.78%`
+   2. `0x00586CC0`: `50.00%`
+   3. `0x00586CE0`: `71.43%`
+   4. `0x00586D10`: `66.67%`
+   5. `0x00586D60`: `37.74%`
+   6. `0x00586E70`: `12.60%`
+   7. `0x005873E0`: `11.94%`
+3. Global stats after this pass:
+   1. original functions: `12224`
+   2. recompiled functions: `12449`
+   3. aligned functions: `45`
+   4. average similarity: `2.19%`
+
+## 2026-02-23 23:17:07 UTC - trade_screen tiny orphan mapping pass
+
+### Commands
+1. Implemented and mapped in `src/game/trade_screen.cpp`:
+   1. `0x00586A60`
+   2. `0x00586A80`
+   3. `0x00586AB0`
+   4. `0x00586E50`
+   5. `0x00586FF0`
+2. `just build`
+3. `just detect`
+4. `just compare 0x00586A60`
+5. `just compare 0x00586A80`
+6. `just compare 0x00586AB0`
+7. `just compare 0x00586E50`
+8. `just compare 0x00586FF0`
+9. `just stats`
+
+### Changes
+1. Added first-pass typed implementations for five missing small trade-screen functions.
+2. Extended `TradeMoveStepCluster` with `field_90`/`field_94` to remove raw offset writes in the tiny setters.
+3. Marked stub ownership as manual in `src/autogen/stubs/stubs_part018.cpp`:
+   1. `0x00586A60`
+   2. `0x00586A80`
+   3. `0x00586AB0`
+   4. `0x00586E50`
+   5. `0x00586FF0`
+
+### Results
+1. Targeted similarities:
+   1. `0x00586A60`: `40.00%`
+   2. `0x00586A80`: `40.00%`
+   3. `0x00586AB0`: `40.00%`
+   4. `0x00586E50`: `0.00%` (signature/ret-shape mismatch, likely `ret 8`)
+   5. `0x00586FF0`: `0.00%` (tiny return-stub shape still off)
+2. Global stats after this pass:
+   1. original functions: `12224`
+   2. recompiled functions: `12454`
+   3. aligned functions: `45`
+   4. average similarity: `2.21%`
+
+## 2026-02-24 00:40:00 UTC - trade-screen shape pass + new ownership mapping
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just stats`
+4. `just compare 0x00586D60`
+5. `just compare 0x00586E70`
+6. `just compare 0x0058A690`
+7. `just promote src/game/TShipyardCluster.cpp --address 0x0058A690`
+8. `just promote src/game/TTraderAmtBar.cpp --address 0x0058AF80`
+9. `just build`
+10. `just detect`
+11. `just compare 0x0058AF80`
+
+### Changes
+1. Promoted and mapped `0x0058A690` into `src/game/TShipyardCluster.cpp` as member `TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl`.
+2. Converted `thunk_RefreshTradeMoveBarAndTurnControl` to a real member dispatch instead of global trampoline cast.
+3. Re-shaped `0x00586D60` (`InitializeTradeMoveAndBarControls`) to stack-arg form:
+   1. signature now carries style seed stack arg (`ret 4` shape)
+   2. explicit `USmallViews` assert call path without double-MessageBox helper.
+4. Re-shaped `0x00586E70` (`HandleTradeMoveControlAdjustment`) to remove duplicate MessageBox side effects and use corrected assert lines:
+   1. `0x749` move nil
+   2. `0x74d` avai nil
+   3. `0x759` minus-branch move nil.
+5. Promoted and mapped `0x0058AF80` into `src/game/TTraderAmtBar.cpp` as member `TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode`.
+6. Added helper plumbing in `src/game/trade_screen.cpp`:
+   1. `TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl` declaration
+   2. `TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode` declaration
+   3. `CallQueryNationMetricBySlot7C` helper.
+7. Flipped stub ownership in `src/autogen/stubs/stubs_part018.cpp`:
+   1. `0x0058A690`
+   2. `0x0058AF80`.
+
+### Results
+1. Build and detect pass with promoted/mapped addresses.
+2. Targeted similarities after this pass:
+   1. `0x00586D60`: `53.12%`
+   2. `0x00586E70`: `17.39%`
+   3. `0x0058A690`: `15.45%`
+   4. `0x0058AF80`: `20.14%`.
+3. Latest global stats (`2026-02-24T00:39:55Z`):
+   1. original functions: `12228`
+   2. recompiled functions: `12490`
+   3. aligned functions: `49`
+   4. average similarity: `2.41%`.
+
+## 2026-02-24 00:44:30 UTC - trader/placard ownership pass
+
+### Commands
+1. `just promote src/game/TTraderAmtBar.cpp --address 0x0058B070`
+2. `just build`
+3. `just detect`
+4. `just compare 0x0058B070`
+5. `just promote src/game/TPlacard.cpp --address 0x0058BC60`
+6. `just build`
+7. `just detect`
+8. `just compare 0x0058BC60`
+9. `just stats`
+
+### Changes
+1. Promoted and normalized `0x0058B070` into `src/game/TTraderAmtBar.cpp` as compile-safe fastcall wrapper preserving `ret 4` shape.
+2. Added `TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode` declaration/slot support and retained first-pass mapped implementation for `0x0058AF80`.
+3. Promoted `0x0058BC60` into `src/game/TPlacard.cpp` and kept ownership with a compile-safe placeholder body (avoids unresolved QuickDraw helper link failures in standalone class TU).
+4. Updated headers for class method declarations:
+   1. `include/game/ui_widget_shared.h` (`PlacardState::RenderPlacardValueTextWithShadow`)
+5. Flipped stub ownership in `src/autogen/stubs/stubs_part018.cpp`:
+   1. `0x0058B070`
+   2. `0x0058BC60`.
+
+### Results
+1. Targeted similarities:
+   1. `0x0058B070`: `49.18%`
+   2. `0x0058AF80`: `20.14%`
+   3. `0x0058BC60`: `0.00%` (intentional compile-safe placeholder; real QuickDraw path deferred).
+2. Remaining unmapped (`FUNCTION`) in `0x586000-0x58C000`: `12` addresses.
+3. Latest global stats (`2026-02-24T00:43:56Z`):
+   1. original functions: `12228`
+   2. recompiled functions: `12492`
+   3. aligned functions: `49`
+   4. average similarity: `2.42%`.
+
+## 2026-02-24 00:46:40 UTC - placard wrapper batch (0x58BAB0 / 0x58BB50)
+
+### Commands
+1. `just promote src/game/TPlacard.cpp --address 0x0058BAB0 --address 0x0058BB50`
+2. `just build`
+3. `just detect`
+4. `just compare 0x0058BAB0`
+5. `just compare 0x0058BB50`
+6. `just stats`
+
+### Changes
+1. Promoted two class-local wrapper functions into `src/game/TPlacard.cpp` and normalized them into typed member methods:
+   1. `0x0058BAB0` `PlacardState::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0`
+   2. `0x0058BB50` `PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50`
+2. Added minimal local rect/layout scaffolding in `src/game/TPlacard.cpp` for compile-safe invalidation path.
+3. Added method declarations to `include/game/ui_widget_shared.h` for the two new `PlacardState` members.
+4. Flipped stub ownership in `src/autogen/stubs/stubs_part018.cpp`:
+   1. `0x0058BAB0`
+   2. `0x0058BB50`.
+
+### Results
+1. Targeted similarities:
+   1. `0x0058BAB0`: `43.48%`
+   2. `0x0058BB50`: `44.04%`
+2. Remaining unmapped (`FUNCTION`) in `0x586000-0x58C000`: `10` addresses.
+3. Latest global stats (`2026-02-24T00:46:13Z`):
+   1. original functions: `12228`
+   2. recompiled functions: `12494`
+   3. aligned functions: `49`
+   4. average similarity: `2.42%`.
+
+## 2026-02-24 09:59:00 UTC - trade-screen promoted-window rebuild + shape/data pass
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just stats`
+4. `just compare 0x0058A1B0`
+5. `rg -n "^// FUNCTION: IMPERIALISM 0x0*58(a1b0|a3b0|ac80|b0f0|b460|b4f0|b750|b890|b8d0|bfe0)$" src`
+6. `just compare 0x0058A1B0`
+7. `just build`
+8. `just compare 0x0058A1B0 0x0058A3B0 0x0058AC80 0x0058B0F0` (targeted loop)
+9. `just detect`
+10. `just stats`
+11. `just build`
+12. `just compare 0x0058B460 0x0058B4F0 0x0058B750 0x0058B890 0x0058B8D0 0x0058BFE0` (targeted loop)
+13. `just detect`
+14. `just stats`
+
+### Changes
+1. Fixed duplicate reccmp mapping for promoted addresses:
+   1. demoted stale annotations in `src/autogen/stubs/stubs_part018.cpp` from `// FUNCTION:` to `// PROMOTED_FUNCTION:` for:
+      1. `0x0058A1B0`
+      2. `0x0058A3B0`
+      3. `0x0058AC80`
+      4. `0x0058B0F0`
+      5. `0x0058B460`
+      6. `0x0058B4F0`
+      7. `0x0058B750`
+      8. `0x0058B890`
+      9. `0x0058B8D0`
+      10. `0x0058BFE0`.
+2. Replaced jump-only wrappers in `src/game/trade_screen.cpp` with real quickdraw shape-pass bodies:
+   1. `0x0058A1B0`
+   2. `0x0058A3B0`
+   3. `0x0058AC80`
+   4. `0x0058B0F0`.
+3. Added reusable helper bridges in `src/game/trade_screen.cpp`:
+   1. quickdraw thunk call helpers (`SetQuickDrawTextOrigin`, style pair, clip apply)
+   2. runtime slot dispatch helper for UI runtime vslot `0x34`
+   3. absolute-address pointer/int readers for global runtime symbols.
+4. Added symbol-backed global address constants from fresh Ghidra exports:
+   1. `g_szDecimalFormat` (`0x0069430C`)
+   2. `g_pActiveQuickDrawSurfaceContext` (`0x006A1D60`)
+   3. `g_pStrategicMapViewSystem` (`0x006A21A8`)
+   4. `g_pGlobalMapState` (`0x006A43D4`)
+   5. overlay cache params (`0x006A4450`, `0x006A4454`).
+5. Ported and data-shaped additional wrappers using offset-accurate field access:
+   1. `0x0058B460` (`+0x98/+0x9c` state + global-map vslot usage)
+   2. `0x0058B4F0` (hint overlay blit/palette path)
+   3. `0x0058B750` (bitmap-select branch using `+0x90/+0x92/+0x94/+0x96/+0x98`)
+   4. `0x0058B8D0` (mode + bitmap/state update path)
+   5. `0x0058BFE0` (shared-string + text-shadow draw flow).
+6. Normalized problematic free-function casts from `__thiscall` to `__fastcall` for MSVC500 compatibility where needed.
+
+### Results
+1. Targeted similarity deltas in this window:
+   1. `0x0058A1B0`: `0.00%` -> `30.06%`
+   2. `0x0058A3B0`: `16.67%` -> `23.76%`
+   3. `0x0058AC80`: `0.00%` -> `27.03%`
+   4. `0x0058B0F0`: `0.00%` -> `16.44%`
+   5. `0x0058B460`: `59.38%` -> `64.37%`
+   6. `0x0058B4F0`: `0.00%` -> `20.93%`
+   7. `0x0058B750`: `15.69%` -> `33.33%`
+   8. `0x0058B890`: `50.00%` -> `50.00%` (no movement)
+   9. `0x0058B8D0`: `24.49%` -> `47.22%`
+   10. `0x0058BFE0`: `0.00%` -> `19.61%`.
+2. Latest global stats (`2026-02-24T09:59:10Z`):
+   1. original functions: `12228`
+   2. recompiled functions: `12504`
+   3. aligned functions: `49`
+   4. average similarity: `2.46%` (`+0.04 pp` from `2.42%` baseline for this window).
+
+## 2026-02-24 10:03:00 UTC - tiny orphan call-shape pass (`0x586E50`, `0x586FF0`)
+
+### Commands
+1. `just compare 0x00586E50`
+2. `just compare 0x00586FF0`
+3. `just build`
+4. `just compare 0x00586E50`
+5. `just compare 0x00586FF0`
+6. `just detect`
+7. `just stats`
+
+### Changes
+1. Updated `0x00586E50` signature in `src/game/trade_screen.cpp` from cdecl leaf to stdcall two-arg wrapper to match observed `ret 8` shape:
+   1. `short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg)`.
+2. Kept `0x00586FF0` as plain no-op return stub (still zero-length mismatch in original vs emitted `ret`).
+
+### Results
+1. Targeted similarities:
+   1. `0x00586E50`: `0.00%` -> `20.00%`
+   2. `0x00586FF0`: `0.00%` -> `0.00%` (no movement; original appears zero-byte/no-body mapping).
+2. Global stats (`2026-02-24T10:03:00Z`) unchanged:
+   1. aligned functions: `49`
+   2. average similarity: `2.46%`.
+
+## 2026-02-24 10:06:48 UTC - quickdraw base pair shape pass (`0x589340`, `0x589540`)
+
+### Commands
+1. `just build`
+2. `just compare 0x00589340`
+3. `just compare 0x00589540`
+4. `just detect`
+5. `just stats`
+
+### Changes
+1. Replaced placeholder bodies in `src/game/trade_screen.cpp` for:
+   1. `0x00589340` `RenderQuickDrawControlWithHitRegionClip_A`
+   2. `0x00589540` `RenderQuickDrawOverlayWithHitRegion_00589540`.
+2. Ported shape to match Ghidra-exported quickdraw flow:
+   1. acquire/release surface sequence
+   2. hit-region clip application
+   3. `IsActionable`-gated draw path
+   4. overlay rect invalidation using cached overlay globals (`0x6A4450/0x6A4454`).
+
+### Results
+1. Targeted similarities:
+   1. `0x00589340`: `18.87%` -> `30.06%`
+   2. `0x00589540`: `17.24%` -> `22.45%`.
+2. Global stats at `2026-02-24T10:06:48Z` remained:
+   1. aligned functions: `49`
+   2. average similarity: `2.46%`.

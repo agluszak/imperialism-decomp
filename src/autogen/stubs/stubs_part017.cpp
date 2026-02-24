@@ -3885,7 +3885,7 @@ undefined4 SehCleanup_ReleaseTwoTempSharedStringRefs(void)
 
 // ghidra_name TUnitToolbarCluster::CreateTUnitToolbarClusterInstance
 // ghidra_proto void * __cdecl CreateTUnitToolbarClusterInstance(void)
-// FUNCTION: IMPERIALISM 0x00585f70
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00585f70
 undefined4 CreateTUnitToolbarClusterInstance(void)
 {
   return 0;
@@ -3893,7 +3893,7 @@ undefined4 CreateTUnitToolbarClusterInstance(void)
 
 // ghidra_name TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTUnitToolbarClusterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00585ff0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00585ff0
 undefined4 GetTUnitToolbarClusterClassNamePointer(void)
 {
   return 0;
@@ -3901,7 +3901,7 @@ undefined4 GetTUnitToolbarClusterClassNamePointer(void)
 
 // ghidra_name TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
 // ghidra_proto void * __thiscall ConstructTUnitToolbarClusterBaseState(void)
-// FUNCTION: IMPERIALISM 0x00586010
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586010
 undefined4 ConstructTUnitToolbarClusterBaseState(void)
 {
   return 0;
@@ -3909,7 +3909,7 @@ undefined4 ConstructTUnitToolbarClusterBaseState(void)
 
 // ghidra_name TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
 // ghidra_proto void * __thiscall DestructTUnitToolbarClusterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00586040
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586040
 undefined4 DestructTUnitToolbarClusterAndMaybeFree(void)
 {
   return 0;
@@ -3917,7 +3917,7 @@ undefined4 DestructTUnitToolbarClusterAndMaybeFree(void)
 
 // ghidra_name TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
 // ghidra_proto void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
-// FUNCTION: IMPERIALISM 0x00586090
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586090
 undefined4 WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
 {
   return 0;
@@ -3925,7 +3925,7 @@ undefined4 WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
 
 // ghidra_name OrphanVtableAssignStub_00586150
 // ghidra_proto undefined OrphanVtableAssignStub_00586150()
-// FUNCTION: IMPERIALISM 0x00586150
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586150
 undefined4 OrphanVtableAssignStub_00586150(void)
 {
   return 0;
@@ -3941,7 +3941,7 @@ undefined4 UpdateTradeResourceSelectionByIndex(void)
 
 // ghidra_name TStatusButton::CreateTStatusButtonInstance
 // ghidra_proto void * __cdecl CreateTStatusButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00586280
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586280
 undefined4 CreateTStatusButtonInstance(void)
 {
   return 0;
@@ -3949,7 +3949,7 @@ undefined4 CreateTStatusButtonInstance(void)
 
 // ghidra_name TStatusButton::GetTStatusButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTStatusButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00586310
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586310
 undefined4 GetTStatusButtonClassNamePointer(void)
 {
   return 0;
@@ -3957,7 +3957,7 @@ undefined4 GetTStatusButtonClassNamePointer(void)
 
 // ghidra_name TStatusButton::ConstructTStatusButtonBaseState
 // ghidra_proto void * __thiscall ConstructTStatusButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x00586330
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586330
 undefined4 ConstructTStatusButtonBaseState(void)
 {
   return 0;
@@ -3965,7 +3965,7 @@ undefined4 ConstructTStatusButtonBaseState(void)
 
 // ghidra_name TStatusButton::DestructTStatusButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTStatusButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005863b0
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005863b0
 undefined4 DestructTStatusButtonAndMaybeFree(void)
 {
   return 0;
@@ -3973,7 +3973,7 @@ undefined4 DestructTStatusButtonAndMaybeFree(void)
 
 // ghidra_name TStatusButton::HandleCityDialogSelectionAndBackControlReset
 // ghidra_proto void __thiscall HandleCityDialogSelectionAndBackControlReset(int selectedIndex)
-// FUNCTION: IMPERIALISM 0x00586400
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586400
 undefined4 HandleCityDialogSelectionAndBackControlReset(void)
 {
   return 0;
@@ -3981,7 +3981,7 @@ undefined4 HandleCityDialogSelectionAndBackControlReset(void)
 
 // ghidra_name TCityBarCluster::CreateTCityBarClusterInstance
 // ghidra_proto void * __cdecl CreateTCityBarClusterInstance(void)
-// FUNCTION: IMPERIALISM 0x00586590
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586590
 undefined4 CreateTCityBarClusterInstance(void)
 {
   return 0;
@@ -3989,7 +3989,7 @@ undefined4 CreateTCityBarClusterInstance(void)
 
 // ghidra_name TCityBarCluster::GetTCityBarClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTCityBarClusterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00586610
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586610
 undefined4 GetTCityBarClusterClassNamePointer(void)
 {
   return 0;
@@ -3997,7 +3997,7 @@ undefined4 GetTCityBarClusterClassNamePointer(void)
 
 // ghidra_name TCityBarCluster::ConstructTCityBarClusterBaseState
 // ghidra_proto void * __thiscall ConstructTCityBarClusterBaseState(void)
-// FUNCTION: IMPERIALISM 0x00586630
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586630
 undefined4 ConstructTCityBarClusterBaseState(void)
 {
   return 0;

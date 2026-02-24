@@ -2445,7 +2445,7 @@ undefined4 thunk_InitializeTacticalSideFromArmyUnitList(void)
 
 // ghidra_name TShipyardCluster::thunk_SelectTradeSpecialCommodityAndInitializeControls
 // ghidra_proto void __thiscall thunk_SelectTradeSpecialCommodityAndInitializeControls(void)
-// FUNCTION: IMPERIALISM 0x00402c11
+// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00402c11
 undefined4 thunk_SelectTradeSpecialCommodityAndInitializeControls(void)
 {
   return 0;

@@ -32,6 +32,7 @@ void* __cdecl GetTIndustryAmtBarClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x005891D0
 TradeAmountBarLayout* __fastcall
 ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout* amountBar) {
+  // ORIG_CALLCONV: __thiscall
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
   amountBar->vftable = reinterpret_cast<void*>(kVtableTIndustryAmtBar);
   amountBar->rangeOrMaxValue = 0;
@@ -45,6 +46,7 @@ ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout* amountBar) {
 TradeAmountBarLayout* __fastcall
 DestructTIndustryAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar, int unusedEdx,
                                     unsigned char freeSelfFlag) {
+  // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {
@@ -55,6 +57,7 @@ DestructTIndustryAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar, int unusedE
 
 // FUNCTION: IMPERIALISM 0x00589260
 void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarState* amountBar) {
+  // ORIG_CALLCONV: __thiscall
   NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
@@ -83,30 +86,25 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
 // FUNCTION: IMPERIALISM 0x00589DA0
 void TradeMoveStepCluster::HandleTradeMovePageStepCommand(int commandId, void* eventArg,
                                                           int eventExtra) {
+  // ORIG_CALLCONV: __thiscall
   void* owner = this;
-
-  int relative = commandId - 100;
-  if (relative != 0) {
-    if (relative == 1) {
-      TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
-      if (moveControl == 0) {
-        FailNilPointerInUSmallViews(kAssertLineMovePageMinus);
-        return;
-      }
-      short moveValue = (short)moveControl->QueryValue();
-      CallApplyMoveValueSlot1D0(owner, (int)moveValue - (int)field_8e);
-      return;
+  if (commandId == 100) {
+    TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
+    if (moveControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
     }
-    reinterpret_cast<void (*)(TradeMoveStepCluster*, int, void*, int)>(
-        ::thunk_HandleTradeMoveControlAdjustment)(this, commandId, eventArg, eventExtra);
+    short moveValue = (short)moveControl->QueryValue();
+    CallApplyMoveValueSlot1D0(owner, (int)field_8e + (int)moveValue);
     return;
   }
-
+  if (commandId != 0x65) {
+    HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
+    return;
+  }
   TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
   if (moveControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineMovePagePlus);
-    return;
+    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
   }
   short moveValue = (short)moveControl->QueryValue();
-  CallApplyMoveValueSlot1D0(owner, (int)field_8e + (int)moveValue);
+  CallApplyMoveValueSlot1D0(owner, (int)moveValue - (int)field_8e);
 }

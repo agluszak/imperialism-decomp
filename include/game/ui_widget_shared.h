@@ -17,7 +17,10 @@ undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
-undefined4 thunk_InitializeTradeMoveAndBarControls(void);
+void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx = 0,
+                                                  unsigned int styleSeed = 0);
+void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
+                                                 int eventExtra);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void);
@@ -58,7 +61,7 @@ struct TradeControl {
   virtual void CtrlSlot08(void) = 0;
   virtual void CtrlSlot09(void) = 0;
   virtual void CtrlSlot10(void) = 0;
-  virtual void CtrlSlot11(void) = 0;
+  virtual void SetControlValueSlot2C(int value) = 0;
   virtual short QueryStepValueSlot30(void) = 0;
   virtual void CtrlSlot13(void) = 0;
   virtual void CtrlSlot14(void) = 0;
@@ -182,6 +185,7 @@ struct TradeControl {
   __inline void SetBarMetricRatio(int value);
   __inline int ApplyMoveClamp(int baseValue, int requestedValue);
   __inline void SetControlValue(int value, int updateFlag);
+  __inline void SetControlValueRaw(int value);
   __inline void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
   __inline void SetStyleState(int stateValue, int modeFlag);
   __inline void QueryBounds(int* boundsBuffer);
@@ -223,6 +227,10 @@ struct PlacardState {
   void* vftable;
   char pad_04[0x8c];
   short placardValue;
+
+  void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0();
+  void WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2);
+  void RenderPlacardValueTextWithShadow();
 };
 
 struct NumberedArrowButtonState {
@@ -269,7 +277,7 @@ public:
   }
 
   static __inline void InitializeTradeMoveAndBarControls(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_InitializeTradeMoveAndBarControls)(self);
+    ::InitializeTradeMoveAndBarControls(self);
   }
 
   static __inline int GetCityBuildingProductionValueBySlot(void* cityState, short slot) {
@@ -324,6 +332,10 @@ __inline int TradeControl::ApplyMoveClamp(int baseValue, int requestedValue) {
 
 __inline void TradeControl::SetControlValue(int value, int updateFlag) {
   this->SetControlValueSlot1E4(value, updateFlag);
+}
+
+__inline void TradeControl::SetControlValueRaw(int value) {
+  this->SetControlValueSlot2C(value);
 }
 
 __inline void TradeControl::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {
