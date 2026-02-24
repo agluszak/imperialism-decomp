@@ -22,7 +22,7 @@ undefined4 thunk_InvalidateCityDialogRectRegion(void);
 unsigned int __cdecl thunk_GetActiveNationId(void);
 void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
                                                   unsigned int styleSeed);
-void __fastcall thunk_InitializeTradeMoveAndBarControls(void* context);
+undefined4 thunk_InitializeTradeMoveAndBarControls(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
@@ -127,6 +127,11 @@ const int kAssertLineMoveBarInitNil = 0x725;
 const int kAssertLineMoveAdjustMove = 0x749;
 const int kAssertLineMoveAdjustAvai = 0x74d;
 const int kAssertLineMoveAdjustMoveMinus = 0x759;
+const int kAssertLineTradeSummaryRtnu = 0x67d;
+const int kAssertLineTradeSummaryIart = 0x682;
+const int kAssertLineTradeSummaryProf = 0x687;
+const int kAssertLineTradeSellIncSell = 0x816;
+const int kAssertLineTradeSellIncCap = 0x81d;
 const int kAssertLineMovePageMinus = 0xd34;
 const int kAssertLineMovePagePlus = 0xd3c;
 const int kAssertLineToolSubcontrolToggle = 0xac7;
@@ -184,6 +189,11 @@ const short kTradeBitmapOfferStateB = 0x084f;
 const short kTradeBitmapOfferSecondaryStateA = 0x0842;
 const short kTradeBitmapOfferSecondaryStateB = 0x0850;
 const int kTradeRowStateTag_67643020 = 0x67643020;
+const int kTradeSellPropagationTags[] = {
+    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
+    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
+    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
+};
 const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
 struct UiRuntimeContext;
@@ -242,6 +252,17 @@ struct ProductionClusterState {
   short field_8e;
   int field_90;
   int field_94;
+};
+
+struct TAmtBarClusterContext {
+  void* vftable;
+  char pad_04[0x84];
+  short metricSlotAt88;
+  short pad_8a;
+  short valueAt8c;
+  short valueAt8e;
+
+  void HandleTradeSellControlCommand(int commandId, void* eventArg, int eventExtra);
 };
 
 struct ClosePictureState {
@@ -322,7 +343,7 @@ struct TradeScreenContext {
   __inline TradeControl* ResolveControlByTag(int controlTag);
   __inline TradeControl* RequireControlByTag(int controlTag);
   void InitializeTradeSellControlState();
-  void QueryTradeSellControlQuantity();
+  short QueryTradeSellControlQuantity();
   char IsTradeBidControlActionable();
   char IsTradeOfferControlActionable();
   void SetTradeBidSecondaryBitmapState();
@@ -395,6 +416,21 @@ static __inline void CallUiRuntimeSlot34(UiRuntimeContext* runtimeContext, int s
       (*reinterpret_cast<void***>(runtimeContext))[0x34 / 4])(runtimeContext, styleIndex);
 }
 
+static __inline void CallUiRuntimeSlot68(UiRuntimeContext* runtimeContext, int modeValue) {
+  reinterpret_cast<void(__fastcall*)(UiRuntimeContext*, int)>(
+      (*reinterpret_cast<void***>(runtimeContext))[0x68 / 4])(runtimeContext, modeValue);
+}
+
+static __inline char CallControlFlagSlot1D8(TradeControl* control) {
+  return reinterpret_cast<char(__fastcall*)(TradeControl*)>(
+      (*reinterpret_cast<void***>(control))[0x1d8 / 4])(control);
+}
+
+static __inline void CallControlActionSlot1E0(TradeControl* control) {
+  reinterpret_cast<void(__fastcall*)(TradeControl*)>(
+      (*reinterpret_cast<void***>(control))[0x1e0 / 4])(control);
+}
+
 static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
   return reinterpret_cast<short(__fastcall*)(NationState*, short)>(
       (*reinterpret_cast<void***>(nationState))[0x78 / 4])(nationState, metricSlot);
@@ -417,6 +453,11 @@ static __inline char CallBoolSlot28(void* self) {
 
 static __inline char CallBoolSlot1BC(void* self) {
   return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1bc / 4])(
+      self);
+}
+
+static __inline char CallBoolSlot1DC(void* self) {
+  return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1dc / 4])(
       self);
 }
 
@@ -878,34 +919,41 @@ void* __fastcall DestructTCityBarClusterAndMaybeFree(void* cluster, int unusedEd
 }
 
 // FUNCTION: IMPERIALISM 0x005866b0
-void UpdateTradeSummaryMetricControlsFromRecord(void* self, int recordContext)
+void __fastcall UpdateTradeSummaryMetricControlsFromRecord(void* self, int unusedEdx,
+                                                           int recordContext)
 
 {
   // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
   int recordNode = *reinterpret_cast<int*>(recordContext + 0xac);
-  int metrics = *reinterpret_cast<int*>(recordNode + 0x10);
-  int tags[4] = {0x74726561, 0x756e7472, 0x74726169, 0x70726f66};
-  int offsets[4] = {2, 4, 6, 8};
-  int i = 0;
+  int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
+  int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
+  void*(__fastcall * resolveByTag)(void*, int) = reinterpret_cast<void*(__fastcall*)(void*, int)>(
+      (*reinterpret_cast<void***>(self))[0x94 / 4]);
 
-  if (metrics == 0) {
-    return;
+  TradeControl* areaControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x74726561));
+  if (areaControl != 0) {
+    areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10), 1);
+    areaControl->SetEnabledPair(0, 1);
   }
 
-  for (i = 0; i < 4; ++i) {
-    int* control = reinterpret_cast<int*>(reinterpret_cast<void*(__fastcall*)(void*, int)>(
-        (*reinterpret_cast<void***>(self))[0x94 / 4])(self, tags[i]));
-    if (control == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      continue;
-    }
-
-    reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-        (*reinterpret_cast<void***>(control))[0x1e4 / 4])(
-        control, static_cast<int>(*reinterpret_cast<short*>(metrics + offsets[i])), 1);
-    reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-        (*reinterpret_cast<void***>(control))[0xa4 / 4])(control, 0, 1);
+  TradeControl* returnControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x756e7472));
+  if (returnControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
+  returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4), 1);
+
+  TradeControl* airControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x74726169));
+  if (airControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
+  }
+  airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6), 1);
+
+  TradeControl* profControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x70726f66));
+  if (profControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
+  }
+  profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00586840
@@ -1115,42 +1163,44 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
 void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
                                                              int eventExtra) {
   // ORIG_CALLCONV: __thiscall
-  if (commandId == 100) {
-    TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+  int normalizedCommand = commandId - 100;
+  void*(__fastcall * resolveByTag)(void*, int) = reinterpret_cast<void*(__fastcall*)(void*, int)>(
+      (*reinterpret_cast<void***>(this))[0x94 / 4]);
+
+  if (normalizedCommand == 0) {
+    TradeControl* moveControl =
+        reinterpret_cast<TradeControl*>(resolveByTag(this, kControlTagMove));
     if (moveControl == 0) {
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
       ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
           kUSmallViewsCppPath, kAssertLineMoveAdjustMove);
-      goto dispatch;
     }
-    int moveValue = moveControl->QueryValue();
+    short moveValue = moveControl->QueryValue();
 
-    TradeControl* availableControl = ResolveOwnerControl(this, kControlTagAvai);
+    TradeControl* availableControl =
+        reinterpret_cast<TradeControl*>(resolveByTag(this, kControlTagAvai));
     if (availableControl == 0) {
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
       ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
           kUSmallViewsCppPath, kAssertLineMoveAdjustAvai);
-      goto dispatch;
     }
     short availableValue = (short)availableControl->QueryValue();
-    if ((short)moveValue < availableValue) {
+    if (moveValue < availableValue) {
       CallApplyMoveValueSlot1D0(this, moveValue + 1);
     }
-  } else if (commandId == 0x65) {
-    TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+  } else if (normalizedCommand == 1) {
+    TradeControl* moveControl =
+        reinterpret_cast<TradeControl*>(resolveByTag(this, kControlTagMove));
     if (moveControl == 0) {
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
       ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
           kUSmallViewsCppPath, kAssertLineMoveAdjustMoveMinus);
-      goto dispatch;
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
       CallApplyMoveValueSlot1D0(this, moveValue - 1);
     }
   }
-
-dispatch:
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
       this, commandId, eventArg, eventExtra);
 }
@@ -1252,66 +1302,131 @@ void TradeScreenContext::InitializeTradeSellControlState(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005873e0
-void __fastcall HandleTradeSellControlCommand(void* context, int commandId, void* eventArg,
-                                              int eventExtra) {
+void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* eventArg,
+                                                          int eventExtra) {
   // ORIG_CALLCONV: __thiscall
-  TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(context);
-  TradeControl* sellControl = ResolveOwnerControl(panel, kControlTagSell);
+  void* ownerPanel = CallOwnerPanelSlot58(this);
 
   switch (commandId) {
-  case 100:
+  case 100: {
+    if (CallBoolSlot1DC(this) != '\0') {
+      TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
+      if (sellControl == 0) {
+        FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
+      }
+
+      int sellValue = sellControl->QueryValue();
+      short activeNationSlot = QueryActiveNationId();
+      NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+      short maxByNationMetric = 0;
+      if (activeNationState != 0) {
+        maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
+      }
+
+      TradeControl* capacityControl = ResolveOwnerControl(ownerPanel, 0x6d436170);
+      if (capacityControl == 0) {
+        FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
+      }
+
+      if ((int)maxByNationMetric < sellValue) {
+        int capacityValue = capacityControl->QueryValue();
+        if ((int)maxByNationMetric < capacityValue) {
+          sellControl->SetEnabledPair(maxByNationMetric + 1 != 0, 1);
+          CallApplyMoveValueSlot1D0(this, maxByNationMetric + 1);
+          return;
+        }
+      }
+    }
+    break;
+  }
+  case 0x65: {
+    TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
     if (sellControl == 0) {
       MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
       break;
     }
-    CallApplyMoveValueSlot1D0(panel, sellControl->QueryValue() + 1);
-    return;
-  case 0x65:
-    if (sellControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      break;
+    int sellValue = sellControl->QueryValue();
+    if (1 < sellValue) {
+      CallApplyMoveValueSlot1D0(this, sellValue - 1);
+      return;
     }
-    if (sellControl->QueryValue() > 1) {
-      CallApplyMoveValueSlot1D0(panel, sellControl->QueryValue() - 1);
+    break;
+  }
+  case 0x67:
+    CallUiRuntimeSlot68(g_pUiRuntimeContext, -1);
+    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 3) {
+      for (int i = 0;
+           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
+           ++i) {
+        TradeControl* rowControl = ResolveOwnerControl(ownerPanel, kTradeSellPropagationTags[i]);
+        if (rowControl != 0 && CallControlFlagSlot1D8(rowControl) == '\0') {
+          CallControlActionSlot1E0(rowControl);
+        }
+      }
+      return;
     }
-    return;
+    break;
+  case 0x68:
+    CallUiRuntimeSlot68(g_pUiRuntimeContext, 1);
+    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 4) {
+      for (int i = 0;
+           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
+           ++i) {
+        TradeControl* rowControl = ResolveOwnerControl(ownerPanel, kTradeSellPropagationTags[i]);
+        if (rowControl != 0 && CallControlFlagSlot1D8(rowControl) == '\0') {
+          CallControlActionSlot1E0(rowControl);
+        }
+      }
+      return;
+    }
+    break;
   case 0x69: {
-    if (sellControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      break;
-    }
     short activeNationSlot = QueryActiveNationId();
     NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
-    int maxSell = activeNationState != 0 ? (int)QueryNationTradeCapacity(activeNationState)
-                                         : sellControl->QueryValue();
-    int sellValue = sellControl->QueryValue();
-    if (sellValue > maxSell) {
-      sellValue = maxSell;
+    short maxByNationMetric = 0;
+    if (activeNationState != 0) {
+      maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
     }
+
+    TradeControl* capacityControl = ResolveOwnerControl(ownerPanel, 0x6d436170);
+    if (capacityControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    }
+    short cappedValue = (short)capacityControl->QueryValue();
+    int applyValue = (int)maxByNationMetric;
+    if ((int)cappedValue <= (int)maxByNationMetric) {
+      applyValue = (int)cappedValue;
+    }
+
+    TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
     sellControl->SetEnabledPair(1, 1);
-    TradeControl* barControl = ResolveOwnerControl(panel, kControlTagBar);
-    if (barControl != 0) {
-      barControl->SetStatePair(1, 0);
+
+    TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
+    if (barControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
     }
-    CallApplyMoveValueSlot1D0(panel, sellValue);
+    barControl->SetStatePair(1, 0);
+    CallApplyMoveValueSlot1D0(this, applyValue);
     return;
   }
   case 0x6a: {
-    if (sellControl != 0) {
-      sellControl->SetEnabledPair(0, 1);
+    TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
+    sellControl->SetEnabledPair(0, 1);
+
+    TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
+    if (barControl == 0) {
+      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
     }
-    TradeControl* barControl = ResolveOwnerControl(panel, kControlTagBar);
-    if (barControl != 0) {
-      barControl->SetStatePair(0, 1);
-    }
-    CallApplyMoveValueSlot1D0(panel, 0);
+    barControl->SetStatePair(0, 1);
+    CallApplyMoveValueSlot1D0(this, 0);
     return;
   }
   default:
-    break;
+    HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
+    return;
   }
 
-  HandleTradeMoveControlAdjustment(panel, commandId, eventArg, eventExtra);
+  HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
 }
 
 // GHIDRA_NAME IsTradeSellControlAtMinimum
@@ -1325,16 +1440,13 @@ void __fastcall HandleTradeSellControlCommand(void* context, int commandId, void
 //
 
 // FUNCTION: IMPERIALISM 0x00587900
-void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext* context,
-                                         UiRuntimeContext* runtimeContext) {
-  if (QueryUiScreenMode(runtimeContext) > 3) {
-    return;
+char __fastcall IsTradeSellControlAtMinimum(TradeScreenContext* context, int unusedEdx) {
+  (void)unusedEdx;
+  if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
+    return 0;
   }
-  TradeControl* sellControl = context->RequireControlByTag(kControlTagSell);
-  if (sellControl == 0) {
-    return;
-  }
-  sellControl->QueryValue();
+  TradeControl* sellControl = CallResolveControlByTagSlot94(context, kControlTagSell);
+  return sellControl->QueryValue() <= 0 ? 1 : 0;
 }
 
 // GHIDRA_NAME QueryTradeSellControlQuantity
@@ -1345,12 +1457,9 @@ void __cdecl IsTradeSellControlAtMinimum(TradeScreenContext* context,
 /* Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8. */
 
 // FUNCTION: IMPERIALISM 0x00587950
-void TradeScreenContext::QueryTradeSellControlQuantity(void) {
-  TradeControl* sellControl = RequireControlByTag(kControlTagSell);
-  if (sellControl == 0) {
-    return;
-  }
-  sellControl->QueryValue();
+short TradeScreenContext::QueryTradeSellControlQuantity(void) {
+  TradeControl* sellControl = CallResolveControlByTagSlot94(this, kControlTagSell);
+  return sellControl->QueryValue();
 }
 
 // GHIDRA_NAME IsTradeBidControlActionable
@@ -1790,38 +1899,28 @@ void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster
 // FUNCTION: IMPERIALISM 0x00588b70
 void __fastcall
 SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext* context,
-                                                           int unusedEdx) {
+                                                           int unusedEdx, int styleSeed) {
   (void)unusedEdx;
   short tagIndex = 0;
-  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
-  int currentSummaryTag = context->summaryTag;
+  short activeNationId = QueryActiveNationId();
+  NationState* activeNationState = GetNationStateBySlot(activeNationId);
+  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
+
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
-  while (mappedSummaryTag != currentSummaryTag) {
+  while (mappedSummaryTag != context->summaryTag) {
     tagIndex = (short)(tagIndex + 1);
     mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
   }
 
-  TradeCommodityMetricRecord* selectedMetricRecord = 0;
-  if (cityState != 0) {
-    selectedMetricRecord = cityState->tradeCommodityRecordPtrs[tagIndex];
-  }
+  TradeCommodityMetricRecord* selectedMetricRecord = cityState->tradeCommodityRecordPtrs[tagIndex];
   context->selectedMetricControl = reinterpret_cast<TradeControl*>(selectedMetricRecord);
-  if (selectedMetricRecord != 0) {
-    context->selectedMetricValue =
-        (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
-            cityState, selectedMetricRecord->buildingSlot);
-  } else {
-    context->selectedMetricValue = 0;
-  }
+  context->selectedMetricValue =
+      (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
+          cityState, selectedMetricRecord->buildingSlot);
 
-  TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(context);
-
-  short selectedControlValue = 0;
-  if (selectedMetricRecord != 0) {
-    selectedControlValue = selectedMetricRecord->controlValue;
-  }
-  void* owner = context->ownerContext != 0 ? context->ownerContext : context;
-  CallPostMoveValueSlot1D4(owner, selectedControlValue, 1);
+  reinterpret_cast<void(__fastcall*)(TradeMovePanelContext*, int, unsigned int)>(
+      thunk_InitializeTradeMoveAndBarControls)(context, 0, (unsigned int)styleSeed);
+  CallPostMoveValueSlot1D4(context, selectedMetricRecord->controlValue, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30
@@ -1995,70 +2094,74 @@ void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* clust
 
 // FUNCTION: IMPERIALISM 0x005897b0
 void __fastcall
-SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* context,
-                                                      int unusedEdx) {
+SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* context, int unusedEdx,
+                                                      short recordIndex) {
   (void)unusedEdx;
-  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
-  CityTradeScenarioDescriptor* scenario = cityState != 0 ? cityState->scenarioTradeDescriptor : 0;
+  short activeNationId = QueryActiveNationId();
+  NationState* activeNationState = GetNationStateBySlot(activeNationId);
+  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
 
-  short recordIndex = 0;
-  context->selectedMetricStep = 0;
-  context->selectedMetricValue = 0;
-
-  if (context->summaryTag == kSummaryTagPopu) {
-    recordIndex = 0x3c;
-    context->selectedMetricStep = 1;
-    if (cityState != 0) {
+  unsigned int summaryTag = (unsigned int)context->summaryTag;
+  int scenarioDescriptor = *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8);
+  if (summaryTag < 0x706f7076) {
+    if (summaryTag == kSummaryTagPopu) {
+      recordIndex = 0x3c;
+      context->selectedMetricStep = 1;
       context->selectedMetricValue =
           (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(cityState, 0x0f);
+    } else if (summaryTag == kSummaryTagFood) {
+      context->selectedMetricStep = 2;
+      recordIndex = 7;
+      int productionSlots = *reinterpret_cast<int*>(
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8) + 0x14);
+      context->selectedMetricValue =
+          (short)(((*reinterpret_cast<short*>(productionSlots + 8) * 2 +
+                    *reinterpret_cast<short*>(productionSlots + 6)) *
+                       2 +
+                   *reinterpret_cast<short*>(
+                       *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8) + 0x1e) +
+                   *reinterpret_cast<short*>(productionSlots + 4)) /
+                  2);
     }
-  } else if (context->summaryTag == kSummaryTagFood) {
-    recordIndex = 7;
-    context->selectedMetricStep = 2;
-    if (scenario != 0 && scenario->productionSlots != 0) {
-      CityTradeProductionSlots* slots = scenario->productionSlots;
-      context->selectedMetricValue = (short)(((slots->valueAt8 * 2 + slots->valueAt6) * 2 +
-                                              scenario->extraAt1E + slots->valueAt4) /
-                                             2);
+  } else if (summaryTag < 0x70726f67) {
+    if (summaryTag == kSummaryTagProf) {
+      context->selectedMetricStep = 1;
+      recordIndex = 0x18;
+      context->selectedMetricValue =
+          *reinterpret_cast<short*>(*reinterpret_cast<int*>(scenarioDescriptor + 0x10) + 6);
+    } else if (summaryTag == kSummaryTagPowe) {
+      recordIndex = 0x34;
+      context->selectedMetricStep = 6;
+      context->selectedMetricValue = 999;
     }
-  } else if (context->summaryTag == kSummaryTagProf) {
-    recordIndex = 0x18;
+  } else if (summaryTag == kSummaryTagRail) {
     context->selectedMetricStep = 1;
-    if (scenario != 0 && scenario->productionSlots != 0) {
-      context->selectedMetricValue = scenario->productionSlots->valueAt6;
-    }
-  } else if (context->summaryTag == kSummaryTagPowe) {
-    recordIndex = 0x34;
-    context->selectedMetricStep = 6;
-    context->selectedMetricValue = 999;
-  } else if (context->summaryTag == kSummaryTagRail) {
     recordIndex = 0x33;
+    int productionSlots = *reinterpret_cast<int*>(
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8) + 0x14);
+    context->selectedMetricValue =
+        (short)(((*reinterpret_cast<short*>(productionSlots + 8) * 2 +
+                  *reinterpret_cast<short*>(productionSlots + 6)) *
+                     2 +
+                 *reinterpret_cast<short*>(productionSlots + 4) +
+                 *reinterpret_cast<short*>(
+                     *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8) + 0x1e)) /
+                2);
+  } else if (summaryTag == kSummaryTagIart) {
     context->selectedMetricStep = 1;
-    if (scenario != 0 && scenario->productionSlots != 0) {
-      CityTradeProductionSlots* slots = scenario->productionSlots;
-      context->selectedMetricValue = (short)(((slots->valueAt8 * 2 + slots->valueAt6) * 2 +
-                                              slots->valueAt4 + scenario->extraAt1E) /
-                                             2);
-    }
-  } else if (context->summaryTag == kSummaryTagIart) {
     recordIndex = 0x17;
-    context->selectedMetricStep = 1;
-    if (scenario != 0 && scenario->productionSlots != 0) {
-      context->selectedMetricValue = scenario->productionSlots->valueAt4;
-    }
+    context->selectedMetricValue =
+        *reinterpret_cast<short*>(*reinterpret_cast<int*>(scenarioDescriptor + 0x10) + 4);
   }
 
-  TradeCommodityMetricRecord* metricRecord = 0;
-  if (cityState != 0) {
-    metricRecord = cityState->tradeCommodityRecordPtrs[recordIndex];
-  }
-  context->selectedMetricControl = reinterpret_cast<TradeControl*>(metricRecord);
-
-  TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(context);
-
-  short selectedControlValue = metricRecord != 0 ? metricRecord->controlValue : 0;
-  void* owner = context->ownerContext != 0 ? context->ownerContext : context;
-  CallPostMoveValueSlot1D4(owner, selectedControlValue, 1);
+  context->selectedMetricControl = reinterpret_cast<TradeControl*>(
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)recordIndex * 4 + 0xe4));
+  reinterpret_cast<void(__fastcall*)(TradeMovePanelContext*, int, unsigned int)>(
+      thunk_InitializeTradeMoveAndBarControls)(context, 0,
+                                               (unsigned int)(unsigned short)recordIndex);
+  CallPostMoveValueSlot1D4(
+      context,
+      *reinterpret_cast<short*>(reinterpret_cast<char*>(context->selectedMetricControl) + 4), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0

@@ -130,11 +130,15 @@ just promote-range src/game/trade_screen.cpp 0x00585f70 0x00586150
 4. Two unresolved thunk callees are currently handled by local placeholders in `src/game/thunks.cpp`.
 5. Match-flag plumbing accepts both old slash format (`/Oy-/Ob1`) and CSV format (`/Oy-,/Ob1`); use CSV in commands for clarity.
 6. Keep reccmp marker syntax exact (`// TYPE: MODULE 0x...` lowercase hex) and keep pseudo markers non-reccmp (`// MANUAL_OVERRIDE_ADDR ...`, `// PROMOTED_FUNCTION ...`) to avoid parser noise.
+7. Run `just compare` and `just stats` sequentially; parallel runs can trigger Wine `winedbg`/`cvdump` contention and produce false temporary regressions.
 
 ## Current Priorities
 1. Keep focused ignore list stable and review weekly.
 2. Move from wrapper/thunk/no-op wins into medium-sized game functions.
 3. Improve type/prototype fidelity in hotspots before deep body work.
+
+## Latest Non-Trade Checkpoint
+1. `0x0055FC40` `InputState::HandleKeyDown`: `25.69%` (from `20.42%` after direct-thunk-call shape pass in `src/game/input_state.cpp`).
 
 ## Active Class Focus: `trade_screen.cpp`
 
@@ -171,7 +175,7 @@ Targeted similarities from current `build-msvc500`:
 3. `0x00587DD0` `SetTradeOfferControlBitmapState`: `55.15%`
 4. `0x00587130` `InitializeTradeSellControlState`: `30.91%`
 5. `0x00588030` `SetTradeOfferSecondaryBitmapState`: `42.07%`
-6. `0x005882F0` `UpdateTradeSellControlAndBarFromNationMetric`: `33.47%`
+6. `0x005882F0` `UpdateTradeSellControlAndBarFromNationMetric`: `22.41%`
 7. `0x00588630` `OrphanCallChain_C2_I15_00588630`: `62.86%`
 8. `0x00588670` `OrphanCallChain_C1_I03_00588670`: `46.15%`
 9. `0x00588610` `WrapperFor_thunk_NoOpUiLifecycleHook_At00588610`: `40.00%`
@@ -190,8 +194,8 @@ Targeted similarities from current `build-msvc500`:
 22. `0x00586CE0` `ConstructTradeMoveControlPanelBasic`: `71.43%`
 23. `0x00586D10` `DestructTAmtBarClusterMaybeFree`: `66.67%`
 24. `0x00586D60` `InitializeTradeMoveAndBarControls`: `53.12%`
-25. `0x00586E70` `HandleTradeMoveControlAdjustment`: `17.39%`
-26. `0x005873E0` `HandleTradeSellControlCommand`: `11.94%`
+25. `0x00586E70` `HandleTradeMoveControlAdjustment`: `26.23%`
+26. `0x005873E0` `HandleTradeSellControlCommand`: `23.68%`
 27. `0x00586A60` `OrphanTiny_SetWordEcxOffset_8c_00586a60`: `40.00%`
 28. `0x00586A80` `OrphanLeaf_NoCall_Ins05_00586a80`: `40.00%`
 29. `0x00586AB0` `OrphanTiny_SetWordEcxOffset_8e_00586ab0`: `40.00%`
@@ -220,6 +224,9 @@ Targeted similarities from current `build-msvc500`:
 52. `0x0058BC60` `PlacardState::RenderPlacardValueTextWithShadow`: `0.00%`
 53. `0x0058BAB0` `PlacardState::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0`: `43.48%`
 54. `0x0058BB50` `PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50`: `44.04%`
+55. `0x005866B0` `UpdateTradeSummaryMetricControlsFromRecord`: `34.91%`
+56. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`: `30.00%`
+57. `0x005897B0` `SelectTradeCommodityPresetBySummaryTagAndInitControls`: `34.39%`
 
 Immediate objective:
 1. Trade-screen batch mapping for `0x586000-0x58A000` is now fully owned (`stubs_part018.cpp` has zero remaining `FUNCTION` entries in that window).
@@ -232,6 +239,8 @@ Latest focused shape-pass checkpoints:
 2. `0x0058A610`: `54.55%`
 3. `0x0058A940`: `41.03%`
 4. `0x00588FF0`: `28.57%`
+5. `0x005866B0`: `34.91%`
+6. `0x00586E70`: `26.23%`
 
 Latest wrapper batch checkpoints:
 1. `0x00585F70` `CreateTUnitToolbarClusterInstance`: `34.78%`
@@ -283,3 +292,65 @@ Tiny-orphan call-shape update (`2026-02-24 10:03 UTC`):
 Quickdraw base-pair update (`2026-02-24 10:06 UTC`):
 1. `0x00589340` `RenderQuickDrawControlWithHitRegionClip_A`: `30.06%` (was `18.87%`).
 2. `0x00589540` `RenderQuickDrawOverlayWithHitRegion_00589540`: `22.45%` (was `17.24%`).
+
+## 2026-02-24 11:45 UTC checkpoint - trade command/preset shape pass
+
+1. `0x005873E0` `HandleTradeSellControlCommand`: `15.50%` (from `11.94%` in this track).
+2. `0x005897B0` `SelectTradeCommodityPresetBySummaryTagAndInitControls`: `19.13%` (from `16.95%` session baseline).
+
+Applied shape changes:
+1. Added missing `0x67/0x68` propagation branches with 17-tag row fan-out loop (`0sr..6sr`, `0am..5am`, `0dg..3dg`) in `0x005873E0`.
+2. Preserved `0x005873E0` as free fastcall wrapper after testing; member-method conversion regressed this function in current type/layout state, then restored `ret 0xc` stack-pop shape with an explicit unused stack argument.
+3. For `0x005897B0`, aligned call-shape toward original by:
+   1. explicit stack-arg signature (`ret 4` behavior),
+   2. casted thunk bridge call to `thunk_InitializeTradeMoveAndBarControls`,
+   3. post-init slot `+0x1D4` dispatch on `this` instead of owner fallback.
+
+Global metrics remained stable:
+1. aligned functions: `60`
+2. average similarity: `2.50%`
+3. paired coverage: `100.00%`.
+
+## 2026-02-24 11:55 UTC checkpoint - trade summary/move-adjust shape pass
+
+1. `0x005866B0` `UpdateTradeSummaryMetricControlsFromRecord`: `34.91%` (from `8.62%` in this track).
+2. `0x00586E70` `HandleTradeMoveControlAdjustment`: `26.23%` (from `17.39%`).
+3. `0x005873E0` `HandleTradeSellControlCommand`: `15.50%` (unchanged guard check).
+4. `0x005882F0` `UpdateTradeSellControlAndBarFromNationMetric`: `22.41%` (attempted rewrite regressed to `17.57%`, reverted).
+
+Applied shape changes:
+1. `0x005866B0`:
+   1. switched to `thiscall` wrapper shape (`__fastcall(this, unusedEdx, stackArg)`),
+   2. replaced loop/arrays with explicit per-tag sequence (`aert`, `rtnu`, `iart`, `forp`),
+   3. matched `USmallViews` assert line ids on nil paths (`0x67d`, `0x682`, `0x687`),
+   4. aligned first setter arg to dword path (`[record+0xac]+0x10`) and remaining to short offsets (`+4/+6/+8`).
+2. `0x00586E70`:
+   1. moved to normalized command branch shape (`commandId - 100` => `0/1`),
+   2. preserved fail-and-continue behavior after nil asserts (no extra early returns).
+
+Global snapshot (`2026-02-24T11:55:01Z`):
+1. aligned functions: `60`
+2. average similarity: `2.51%`
+3. paired coverage: `100.00%`
+4. failed-to-match lines: `0`.
+
+## 2026-02-24 12:13 UTC checkpoint - trade sell-command layout pass
+
+1. `0x005873E0` `HandleTradeSellControlCommand`: `23.68%` (from `15.50%` in prior checkpoint).
+2. `0x005897B0` `SelectTradeCommodityPresetBySummaryTagAndInitControls`: `27.87%` (unchanged this pass).
+3. `0x0055FC40` `InputState::HandleKeyDown`: `25.69%` (probe changes reverted; no net delta).
+
+Applied shape changes:
+1. Converted `0x005873E0` to a real member implementation (`__thiscall` shape, `ret 0xc`), with command switch layout and explicit cases `100/0x65/0x67/0x68/0x69/0x6A`.
+2. Restored case-`100` gating/flow pieces (`slot +0x1dc` check, `Sell` + `mCap` lookups, `0x816`/`0x81d` assert paths) and preserved fan-out loops for `0x67/0x68`.
+3. Split `0x005873E0` onto a dedicated TAmtBarCluster-shaped context (`field +0x88` metric slot) instead of `TradeMovePanelContext`; this removed offset drift in emitted code but did not move similarity beyond `23.68%`.
+4. Validated build stability after the `InputState` call-shape probe and restored baseline when no improvement held.
+
+Current constraint to resolve next:
+1. `0x005873E0` still diverges on prologue/register allocation and nil-path assert sequence (`0x82f/0x85a/0x874/0x896` pathing), even after layout split.
+
+Global snapshot (`2026-02-24T12:13:54Z`):
+1. aligned functions: `60`
+2. average similarity: `2.52%`
+3. paired coverage: `100.00%`
+4. failed-to-match lines: `0`.

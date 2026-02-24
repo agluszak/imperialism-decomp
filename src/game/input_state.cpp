@@ -1,14 +1,12 @@
 #include "game/input_state.h"
 
-typedef short(__cdecl* PFN_GetActiveNationId)(void);
-typedef void*(__cdecl* PFN_GetNavyPrimaryOrderListHead)(void);
-typedef void(__cdecl* PFN_SetMapTileStateByteAndNotifyObserver)(void* this_ptr, void* zone_ptr);
 typedef short(__cdecl* PFN_VtblGetSlot)(void* this_ptr);
 typedef void(__cdecl* PFN_VtblSetUiFlag)(void* this_ptr, int state_flag);
 
-static const unsigned int g_addrThunkGetActiveNationId = 0x00581260;
-static const unsigned int g_addrSetMapTileStateByteAndNotifyObserver = 0x00515e00;
-static const unsigned int g_addrThunkGetNavyPrimaryOrderListHead = 0x005505c0;
+unsigned int __cdecl thunk_GetActiveNationId(void);
+undefined4 thunk_GetNavyPrimaryOrderListHead(void);
+undefined4 thunk_SetMapTileStateByteAndNotifyObserver(void);
+
 static const unsigned int g_addrGlobalMapState = 0x006a43d4;
 
 // FUNCTION: IMPERIALISM 0x0055fc40
@@ -24,15 +22,9 @@ void InputState::HandleKeyDown(int key_id) {
   int* piSlotEntry;
   int iGlobalMapState;
 
-  PFN_GetActiveNationId pfnGetActiveNationId = (PFN_GetActiveNationId)g_addrThunkGetActiveNationId;
-  PFN_SetMapTileStateByteAndNotifyObserver pfnSetMapTileStateByteAndNotifyObserver =
-      (PFN_SetMapTileStateByteAndNotifyObserver)g_addrSetMapTileStateByteAndNotifyObserver;
-  PFN_GetNavyPrimaryOrderListHead pfnGetNavyPrimaryOrderListHead =
-      (PFN_GetNavyPrimaryOrderListHead)g_addrThunkGetNavyPrimaryOrderListHead;
-
   if ((active_key_mask & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
     active_key_mask = active_key_mask | (1U << ((unsigned char)key_id & 0x1f));
-    sVarSlotId = pfnGetActiveNationId();
+    sVarSlotId = (short)thunk_GetActiveNationId();
 
     if ((active_key_mask & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
       uSlotCountLocal = slot_count;
@@ -66,7 +58,9 @@ void InputState::HandleKeyDown(int key_id) {
           if ((active_key_mask & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = ((PFN_VtblGetSlot) * (int*)(iVar2 + 0x50))(this);
             iGlobalMapState = *(int*)g_addrGlobalMapState;
-            pfnSetMapTileStateByteAndNotifyObserver((void*)iGlobalMapState, (void*)(int)sVarSlotId);
+            reinterpret_cast<void(__cdecl*)(void*, void*)>(
+                thunk_SetMapTileStateByteAndNotifyObserver)((void*)iGlobalMapState,
+                                                            (void*)(int)sVarSlotId);
             *(undefined2*)(*(int*)(iGlobalMapState + 0xc) + 0x1a + sVarSlotId * 0x24) = 0xffff;
           }
           key_id = key_id + 1;
@@ -75,19 +69,20 @@ void InputState::HandleKeyDown(int key_id) {
       } else {
         sVarSlotId = ((PFN_VtblGetSlot) * (int*)(*(int*)this + 0x50))(this);
         iGlobalMapState = *(int*)g_addrGlobalMapState;
-        pfnSetMapTileStateByteAndNotifyObserver((void*)iGlobalMapState, (void*)(int)sVarSlotId);
+        reinterpret_cast<void(__cdecl*)(void*, void*)>(thunk_SetMapTileStateByteAndNotifyObserver)(
+            (void*)iGlobalMapState, (void*)(int)sVarSlotId);
         *(undefined2*)(*(int*)(iGlobalMapState + 0xc) + 0x1a + sVarSlotId * 0x24) = 0xffff;
       }
     }
   }
 
-  sVarActiveSlot = pfnGetActiveNationId();
+  sVarActiveSlot = (short)thunk_GetActiveNationId();
   if (sVarActiveSlot == -1) {
-    sVarActiveSlot = pfnGetActiveNationId();
+    sVarActiveSlot = (short)thunk_GetActiveNationId();
   }
 
   if ((active_key_mask & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
-    for (pvNode = pfnGetNavyPrimaryOrderListHead(); pvNode != (void*)0;
+    for (pvNode = (void*)thunk_GetNavyPrimaryOrderListHead(); pvNode != (void*)0;
          pvNode = *(void**)((int)pvNode + 0x24)) {
       if (((*(void**)((int)pvNode + 8) == this) &&
            (*(short*)((int)pvNode + 0x14) == sVarActiveSlot)) &&

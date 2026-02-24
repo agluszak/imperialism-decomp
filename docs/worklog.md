@@ -2,6 +2,150 @@
 
 ## 2026-02-24
 
+### Trade selection shape pass + promotion rollback (`0x00588B70`, `0x005897B0`)
+1. Reworked both trade selection handlers in `src/game/trade_screen.cpp` to match locked stack/call shape:
+   1. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`
+   2. `0x005897B0` `SelectTradeCommodityPresetBySummaryTagAndInitControls`
+2. Key shape changes:
+   1. explicit extra stack arg in signatures (`ret 4` shape),
+   2. init call routed through `thunk_InitializeTradeMoveAndBarControls` via explicit `__fastcall` cast,
+   3. post-init dispatch kept on `this` via slot `+0x1D4` (`CallPostMoveValueSlot1D4(context, ...)`),
+   4. summary-tag branch order aligned to the Ghidra `<` split form (`< 0x706f7076`, `< 0x70726f67`, rail/iart tails).
+3. Attempted batch promotion with:
+   1. `just promote src/game/trade_screen.cpp --address 0x0058C3D0 --address 0x0058C640 --address 0x0058C950 --address 0x0058D2B0 --address 0x0058D950 --address 0x0058DF60`
+4. Promotion outcome:
+   1. raw bodies introduced non-compilable decompiler artifacts under MSVC500 (`undefined1`, `stack0x...`, class-scoped raw signatures),
+   2. build failed (`just build`),
+   3. rolled back promoted block (from `0x0058C3D0` up to `0x0059A180`) and restored compiling baseline.
+5. Verification sequence (final retained state):
+   1. `just format src/game/trade_screen.cpp`
+   2. `just build`
+   3. `just compare 0x00588b70`
+   4. `just compare 0x005897b0`
+   5. `just stats`
+6. Targeted deltas:
+   1. `0x00588B70`: `26.00% -> 30.00%`
+   2. `0x005897B0`: `20.34% -> 34.39%`
+7. Global snapshot (`2026-02-24T13:45:30Z`):
+   1. paired functions: `12228/12228`
+   2. aligned functions: `60`
+   3. average similarity: `2.52%`
+   4. no duplicate-address drops / failed-to-match lines.
+
+### Trade sell-command member-shape pass (`0x005873E0`)
+1. Reworked `src/game/trade_screen.cpp` `0x005873E0` (`HandleTradeSellControlCommand`) into a member-form implementation:
+   1. switched from free wrapper to member dispatch to enforce `__thiscall`-style command flow (`ret 0xc`).
+   2. restored explicit command switch (`100`, `0x65`, `0x67`, `0x68`, `0x69`, `0x6a`) and fan-out propagation loops for `0x67/0x68`.
+   3. restored increment-branch guard and nil-assert paths (`USmallViews` lines `0x816`, `0x81d`) for `Sell`/`mCap` lookups.
+2. Verification sequence:
+   1. `just format src/game/trade_screen.cpp`
+   2. `just build`
+   3. `just compare 0x005873e0`
+   4. `just stats`
+3. Targeted delta:
+   1. `0x005873E0`: `15.50% -> 23.68%`
+4. Follow-up layout split:
+   1. introduced dedicated `TAmtBarClusterContext` layout and moved `0x005873E0` onto it to align `+0x88` metric-slot field usage.
+   2. verified `just build` + `just compare 0x005873e0`; offset drift was removed but similarity remained `23.68%` (no further delta this pass).
+
+### Input-state probe (`0x0055FC40`) - no retained delta
+1. Ran a call-shape probe in `src/game/input_state.cpp` to test lower-byte flag propagation changes.
+2. Result did not hold improvement; restored prior baseline body.
+3. Final verified state:
+   1. `0x0055FC40`: `25.69%` (unchanged vs pre-probe).
+
+### Trade summary/move-adjust shape pass (`0x005866B0`, `0x00586E70`)
+1. Updated `src/game/trade_screen.cpp` `0x005866B0` (`UpdateTradeSummaryMetricControlsFromRecord`):
+   1. switched signature to `__fastcall(this, unusedEdx, stackArg)` to preserve `ret 4` shape.
+   2. replaced looped tag arrays with explicit tag order (`aert`, `rtnu`, `iart`, `forp`).
+   3. matched nil assert paths using `USmallViews.cpp` lines `0x67d`, `0x682`, `0x687`.
+   4. aligned argument loading shape to original:
+      1. first setter uses dword source from `[record+0xac]+0x10`,
+      2. remaining setters use short offsets from `[record+0x1d8]+0x10` (`+4/+6/+8`).
+2. Updated `src/game/trade_screen.cpp` `0x00586E70` (`HandleTradeMoveControlAdjustment`):
+   1. reshaped branch flow to normalized command form (`commandId - 100` => `0/1`).
+   2. kept fail-and-continue behavior after nil-assert message paths (removed extra early exits).
+3. Verification sequence:
+   1. `just format src/game/trade_screen.cpp`
+   2. `just build`
+   3. `just compare 0x005866b0`
+   4. `just compare 0x00586e70`
+   5. `just compare 0x005873e0`
+   6. `just stats`
+4. Targeted deltas:
+   1. `0x005866B0`: `8.62% -> 34.91%`
+   2. `0x00586E70`: `17.39% -> 26.23%`
+   3. `0x005873E0`: `15.50%` (unchanged)
+5. Global snapshot (`2026-02-24T11:55:01Z`):
+   1. paired functions: `12228/12228`
+   2. aligned functions: `60`
+   3. average similarity: `2.51%`
+   4. no duplicate-address drops / failed-to-match lines.
+
+### Trade metric-bar regression probe (`0x005882F0`)
+1. Tested a deeper shape rewrite for `0x005882F0` in `src/game/trade_screen.cpp`:
+   1. forced nil fail-and-continue paths (removed extra guards),
+   2. switched to short-biased clamp/data flow and direct slot lookups.
+2. Verification:
+   1. `just format src/game/trade_screen.cpp`
+   2. `just build`
+   3. `just compare 0x005882f0`
+3. Result:
+   1. similarity regressed `22.41% -> 17.57%`.
+4. Action:
+   1. reverted that rewrite and restored the prior guarded implementation.
+5. Post-revert checks:
+   1. `just compare 0x005882f0` => `22.41%` restored.
+   2. `just compare 0x005866b0` => `34.91%` (kept).
+   3. `just compare 0x00586e70` => `26.23%` (kept).
+   4. `just stats` (`2026-02-24T11:58:02Z`): average similarity `2.51%`, aligned `60`, paired `12228/12228`.
+
+### Trade command/preset shape pass (`0x005873E0`, `0x005897B0`)
+1. Updated `src/game/trade_screen.cpp` for `0x005873E0` `HandleTradeSellControlCommand`:
+   1. added missing `0x67/0x68` UI-runtime propagation paths.
+   2. added 17-tag fan-out loop over row controls (`0sr..6sr`, `0am..5am`, `0dg..3dg`) with slot `+0x1d8`/`+0x1e0` behavior.
+   3. kept fail-and-continue behavior for nil controls.
+2. Tested member-method (`thiscall`) reshaping for `0x005873E0`, confirmed regression, and reverted to the better free-wrapper shape in current codebase.
+3. Added explicit unused stack arg to `0x005873E0` wrapper signature to restore `ret 0xc` stack-pop shape.
+4. Updated `0x005897B0` `SelectTradeCommodityPresetBySummaryTagAndInitControls`:
+   1. added explicit unused stack arg to preserve `ret 4` shape.
+   2. switched init call to casted thunk bridge `thunk_InitializeTradeMoveAndBarControls`.
+   3. switched post-init move dispatch to slot `+0x1D4` on `this` (removed owner fallback).
+5. Verification sequence:
+   1. `just format src/game/trade_screen.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x005873e0`
+   5. `just compare 0x005897b0`
+   6. `just stats`
+6. Targeted deltas:
+   1. `0x005873E0`: `11.94% -> 15.50%`
+   2. `0x005897B0`: `16.95% -> 19.13%` (session baseline to latest)
+7. Global snapshot (`2026-02-24T11:47:29Z`):
+   1. paired functions: `12228/12228`
+   2. aligned functions: `60`
+   3. average similarity: `2.50%`
+   4. no duplicate-address drops / failed-to-match lines.
+
+### Input-state call-shape pass (`0x0055FC40`)
+1. Updated `src/game/input_state.cpp` to reduce call-shape drift in `InputState::HandleKeyDown`:
+   1. removed hardcoded function-address typedef dispatch for:
+      1. `thunk_GetActiveNationId`
+      2. `thunk_GetNavyPrimaryOrderListHead`
+      3. `thunk_SetMapTileStateByteAndNotifyObserver`
+   2. switched to direct thunk symbol calls where available.
+   3. kept a casted bridge only for `thunk_SetMapTileStateByteAndNotifyObserver` callsite argument shape.
+2. Verification sequence:
+   1. `just format src/game/input_state.cpp`
+   2. `just build`
+   3. `just compare 0x0055fc40`
+   4. `just detect`
+   5. `just stats`
+3. Targeted delta:
+   1. `0x0055FC40` `InputState::HandleKeyDown`: `20.42% -> 25.69%` (`+5.27 pp`)
+4. Tooling note captured:
+   1. running `just compare` and `just stats` in parallel caused transient Wine `winedbg`/`cvdump` instability and false pairing regressions; sequential runs recover stable metrics.
+
 ### Marker normalization + vtable/string annotation tooling
 1. Added reusable workflow scripts:
    1. `tools/workflow/normalize_reccmp_markers.py`

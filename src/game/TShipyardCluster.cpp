@@ -99,8 +99,6 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
   if (moveControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, 0xe5a);
   }
 
   moveControl->SetControlValue(0, 0);
@@ -116,8 +114,6 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
   if (barControl == 0) {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, 0xe61);
   }
 
   TradeAmountBarLayout* barLayout = reinterpret_cast<TradeAmountBarLayout*>(barControl);
