@@ -2,6 +2,60 @@
 
 ## 2026-02-24
 
+### Marker normalization + vtable/string annotation tooling
+1. Added reusable workflow scripts:
+   1. `tools/workflow/normalize_reccmp_markers.py`
+   2. `tools/workflow/annotate_vtables_from_symbols.py`
+   3. `tools/workflow/annotate_strings_from_symbols.py`
+2. Added duplicate-resolution override files:
+   1. `config/global_annotation_overrides.csv`
+   2. `config/vtable_annotation_overrides.csv`
+   3. `config/string_annotation_overrides.csv`
+3. Added `just` entrypoints:
+   1. `just normalize-markers`
+   2. `just annotate-vtables`
+   3. `just annotate-strings`
+4. Applied normalization:
+   1. standardized reccmp markers to exact format (`// TYPE: MODULE 0x...` with lowercase hex).
+   2. converted pseudo markers to non-reccmp form (`// MANUAL_OVERRIDE_ADDR ...`, `// PROMOTED_FUNCTION ...`) to avoid parser noise.
+5. Applied vtable annotations:
+   1. `include/game/TControl.h`
+   2. `include/game/TView.h`
+6. Lint impact:
+   1. `bad_decomp_marker`: `0`
+   2. `bogus_marker`: `0`
+   3. remaining lint errors are only existing `function_out_of_order` in:
+      1. `src/game/list_utils.cpp`
+      2. `src/game/object_pool.cpp`
+
+### Annotate manual globals from symbols.csv
+1. Added reusable annotator:
+   1. `tools/workflow/annotate_globals_from_symbols.py`
+   2. Matches `type=global` names from `config/symbols.csv` and inserts missing `// GLOBAL: IMPERIALISM 0x...` markers.
+   3. Resolves duplicate-name globals via override file, name suffix, file-context, then deterministic fallback.
+   4. Script is idempotent.
+2. Added runner command:
+   1. `just annotate-globals`
+3. Applied annotations in manual files:
+   1. `include/game/ui_widget_shared.h`
+   2. `src/game/TArmyInfoView.cpp`
+   3. `src/game/TArmyToolbar.cpp`
+   4. `src/game/TCivReport.cpp`
+   5. `src/game/TCivToolbar.cpp`
+   6. `src/game/TSoundPlayer.cpp`
+   7. `src/game/TStratReportView.cpp`
+   8. `src/game/TTransportPicture.cpp`
+   9. `src/game/TWarningView.cpp`
+   10. `src/game/trade_screen.cpp`
+4. Verification loop:
+   1. `uv run python tools/workflow/annotate_globals_from_symbols.py --paths src/game include/game` (dry-run: no pending changes after apply)
+   2. `just build`
+   3. `just stats`
+5. Result snapshot (`2026-02-24T10:55:59Z`):
+   1. paired functions recovered to `12228/12228` (post-rebuild)
+   2. paired globals (`dat/lab/str/flo/wid`) now `272/5063` (`5.37%`)
+   3. paired data rows (`dat`) now `12/1399` (`0.86%`)
+
 ### Track globals/non-function roadmap coverage in `just stats`
 1. Extended `tools/reccmp/progress_stats.py` to parse and persist non-function row coverage from `reccmp_roadmap.csv`:
    1. Aggregate globals (`dat/lab/str/flo/wid`) counts: original/recompiled/paired/unpaired + coverage.

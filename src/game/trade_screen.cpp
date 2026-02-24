@@ -164,10 +164,14 @@ const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
 const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
 
 // Symbol placeholders to preserve OFFSET-style codegen in ctor/dtor wrappers.
+// GLOBAL: IMPERIALISM 0x666998
 char g_vtblTShipAmtBar;
+// GLOBAL: IMPERIALISM 0x663010
 char g_pClassDescTShipAmtBar;
 char g_vtblTTraderAmtBar;
+// GLOBAL: IMPERIALISM 0x663028
 char g_pClassDescTTraderAmtBar;
+// GLOBAL: IMPERIALISM 0x662f68
 char g_pClassDescTTradeCluster;
 char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70;
 
@@ -490,7 +494,7 @@ __inline TradeControl* TradeScreenContext::RequireControlByTag(int controlTag) {
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00401B3B
+// FUNCTION: IMPERIALISM 0x00401b3b
 void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TradeControl* self, int unusedEdx,
                                                                 int repeatState, void* arg8,
                                                                 void* argC, void* dispatchArg,
@@ -500,7 +504,7 @@ void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TradeControl* se
   HandleTradeArrowAutoRepeatTickAndDispatch(self, repeatState, arg8, argC, dispatchArg, arg14);
 }
 
-// FUNCTION: IMPERIALISM 0x004032FB
+// FUNCTION: IMPERIALISM 0x004032fb
 void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TradeScreenContext* self,
                                                                int unusedEdx,
                                                                unsigned char enabledFlag) {
@@ -591,9 +595,13 @@ static __inline int ReadIntAt(unsigned int address) {
   return *reinterpret_cast<int*>(address);
 }
 
+// GLOBAL: IMPERIALISM 0x6a21bc
 UiRuntimeContext* g_pUiRuntimeContext = 0;
+// GLOBAL: IMPERIALISM 0x6a18e0
 ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
+// GLOBAL: IMPERIALISM 0x6a44b0
 void* g_pActiveCityDialogLegendSelectionOwner = 0;
+// GLOBAL: IMPERIALISM 0x6a44b4
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
 } // namespace
@@ -617,7 +625,7 @@ unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 /* [Enum] Auto-repeat tick emits EArrowSplitCommandId::LEFT/RIGHT based on hit side/tag and repeat
    timing gates. */
 
-// FUNCTION: IMPERIALISM 0x00583BD0
+// FUNCTION: IMPERIALISM 0x00583bd0
 void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
                                                           void* argC, void* dispatchArg,
                                                           void* arg14) {
@@ -657,7 +665,7 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeat
                                                                                 0);
 }
 
-// FUNCTION: IMPERIALISM 0x00585F70
+// FUNCTION: IMPERIALISM 0x00585f70
 UnitToolbarClusterState* __cdecl CreateTUnitToolbarClusterInstance(void) {
   UnitToolbarClusterState* cluster =
       reinterpret_cast<UnitToolbarClusterState*>(AllocateWithFallbackHandler(0x88));
@@ -668,7 +676,7 @@ UnitToolbarClusterState* __cdecl CreateTUnitToolbarClusterInstance(void) {
   return cluster;
 }
 
-// FUNCTION: IMPERIALISM 0x00585FF0
+// FUNCTION: IMPERIALISM 0x00585ff0
 void* __cdecl GetTUnitToolbarClusterClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTUnitToolbarCluster);
 }
@@ -780,7 +788,7 @@ StatusButtonState* __fastcall ConstructTStatusButtonBaseState(StatusButtonState*
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x005863B0
+// FUNCTION: IMPERIALISM 0x005863b0
 StatusButtonState* __fastcall DestructTStatusButtonAndMaybeFree(StatusButtonState* button,
                                                                 int unusedEdx,
                                                                 unsigned char freeSelfFlag) {
@@ -869,7 +877,7 @@ void* __fastcall DestructTCityBarClusterAndMaybeFree(void* cluster, int unusedEd
   return cluster;
 }
 
-// FUNCTION: IMPERIALISM 0x005866B0
+// FUNCTION: IMPERIALISM 0x005866b0
 void UpdateTradeSummaryMetricControlsFromRecord(void* self, int recordContext)
 
 {
@@ -948,7 +956,7 @@ DestructTProductionClusterAndMaybeFree(ProductionClusterState* cluster, int unus
   return cluster;
 }
 
-// FUNCTION: IMPERIALISM 0x005869C0
+// FUNCTION: IMPERIALISM 0x005869c0
 void __fastcall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(
     ProductionClusterState* cluster, int commandId, void* eventArg, int eventExtra) {
   // ORIG_CALLCONV: __thiscall
@@ -960,14 +968,14 @@ void __fastcall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForwa
       cluster, commandId, eventArg, eventExtra);
 }
 
-// FUNCTION: IMPERIALISM 0x00586A60
+// FUNCTION: IMPERIALISM 0x00586a60
 void __fastcall OrphanTiny_SetWordEcxOffset_8c_00586a60(TradeMoveStepCluster* cluster,
                                                         int unusedEdx, short value) {
   (void)unusedEdx;
   cluster->field_8c = value;
 }
 
-// FUNCTION: IMPERIALISM 0x00586A80
+// FUNCTION: IMPERIALISM 0x00586a80
 void __fastcall OrphanLeaf_NoCall_Ins05_00586a80(TradeMoveStepCluster* cluster, int unusedEdx,
                                                  int value90, int value94) {
   (void)unusedEdx;
@@ -975,14 +983,14 @@ void __fastcall OrphanLeaf_NoCall_Ins05_00586a80(TradeMoveStepCluster* cluster, 
   cluster->field_94 = value94;
 }
 
-// FUNCTION: IMPERIALISM 0x00586AB0
+// FUNCTION: IMPERIALISM 0x00586ab0
 void __fastcall OrphanTiny_SetWordEcxOffset_8e_00586ab0(TradeMoveStepCluster* cluster,
                                                         int unusedEdx, short value) {
   (void)unusedEdx;
   cluster->field_8e = value;
 }
 
-// FUNCTION: IMPERIALISM 0x00586AD0
+// FUNCTION: IMPERIALISM 0x00586ad0
 ClosePictureState* __cdecl CreateTClosePictureInstance(void) {
   ClosePictureState* picture =
       reinterpret_cast<ClosePictureState*>(AllocateWithFallbackHandler(0x94));
@@ -993,12 +1001,12 @@ ClosePictureState* __cdecl CreateTClosePictureInstance(void) {
   return picture;
 }
 
-// FUNCTION: IMPERIALISM 0x00586B50
+// FUNCTION: IMPERIALISM 0x00586b50
 void* __cdecl GetTClosePictureClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTClosePicture);
 }
 
-// FUNCTION: IMPERIALISM 0x00586B70
+// FUNCTION: IMPERIALISM 0x00586b70
 ClosePictureState* __fastcall ConstructTClosePictureBaseState(ClosePictureState* picture) {
   // ORIG_CALLCONV: __thiscall
   reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiTabCursorPictureEntry)(picture);
@@ -1006,7 +1014,7 @@ ClosePictureState* __fastcall ConstructTClosePictureBaseState(ClosePictureState*
   return picture;
 }
 
-// FUNCTION: IMPERIALISM 0x00586BA0
+// FUNCTION: IMPERIALISM 0x00586ba0
 ClosePictureState* __fastcall DestructTClosePictureAndMaybeFree(ClosePictureState* picture,
                                                                 int unusedEdx,
                                                                 unsigned char freeSelfFlag) {
@@ -1019,7 +1027,7 @@ ClosePictureState* __fastcall DestructTClosePictureAndMaybeFree(ClosePictureStat
   return picture;
 }
 
-// FUNCTION: IMPERIALISM 0x00586BF0
+// FUNCTION: IMPERIALISM 0x00586bf0
 void __fastcall
 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(ClosePictureState* picture, int arg1,
                                                            int arg2, int arg3, int arg4) {
@@ -1034,7 +1042,7 @@ WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(ClosePictureState* pi
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00586C40
+// FUNCTION: IMPERIALISM 0x00586c40
 TradeMovePanelContext* __cdecl CreateTradeMoveControlPanelBasic(void) {
   TradeMovePanelContext* panel =
       reinterpret_cast<TradeMovePanelContext*>(AllocateWithFallbackHandler(0x88));
@@ -1045,12 +1053,12 @@ TradeMovePanelContext* __cdecl CreateTradeMoveControlPanelBasic(void) {
   return panel;
 }
 
-// FUNCTION: IMPERIALISM 0x00586CC0
+// FUNCTION: IMPERIALISM 0x00586cc0
 void* __cdecl GetTAmtBarClusterClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTAmtBarCluster);
 }
 
-// FUNCTION: IMPERIALISM 0x00586CE0
+// FUNCTION: IMPERIALISM 0x00586ce0
 TradeMovePanelContext* __fastcall
 ConstructTradeMoveControlPanelBasic(TradeMovePanelContext* panel) {
   reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(panel);
@@ -1058,7 +1066,7 @@ ConstructTradeMoveControlPanelBasic(TradeMovePanelContext* panel) {
   return panel;
 }
 
-// FUNCTION: IMPERIALISM 0x00586D10
+// FUNCTION: IMPERIALISM 0x00586d10
 TradeMovePanelContext* __fastcall DestructTAmtBarClusterMaybeFree(TradeMovePanelContext* panel,
                                                                   int unusedEdx,
                                                                   unsigned char freeSelfFlag) {
@@ -1070,7 +1078,7 @@ TradeMovePanelContext* __fastcall DestructTAmtBarClusterMaybeFree(TradeMovePanel
   return panel;
 }
 
-// FUNCTION: IMPERIALISM 0x00586D60
+// FUNCTION: IMPERIALISM 0x00586d60
 void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
                                                   unsigned int styleSeed) {
   // ORIG_CALLCONV: __thiscall
@@ -1097,13 +1105,13 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
       panel, 0, styleDescriptor);
 }
 
-// FUNCTION: IMPERIALISM 0x00586E50
+// FUNCTION: IMPERIALISM 0x00586e50
 short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
   (void)unusedArg;
   return value;
 }
 
-// FUNCTION: IMPERIALISM 0x00586E70
+// FUNCTION: IMPERIALISM 0x00586e70
 void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
                                                              int eventExtra) {
   // ORIG_CALLCONV: __thiscall
@@ -1153,7 +1161,7 @@ void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, v
       commandId, eventArg, eventExtra);
 }
 
-// FUNCTION: IMPERIALISM 0x00586FF0
+// FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}
 
 // FUNCTION: IMPERIALISM 0x00587010
@@ -1172,7 +1180,7 @@ void* GetTTradeClusterClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTTradeCluster);
 }
 
-// FUNCTION: IMPERIALISM 0x005870B0
+// FUNCTION: IMPERIALISM 0x005870b0
 void __fastcall ConstructTradeSellControlPanel(void* self)
 
 {
@@ -1181,7 +1189,7 @@ void __fastcall ConstructTradeSellControlPanel(void* self)
       reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
 }
 
-// FUNCTION: IMPERIALISM 0x005870E0
+// FUNCTION: IMPERIALISM 0x005870e0
 void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
                                               unsigned char freeSelfFlag) {
   (void)unusedEdx;
@@ -1243,7 +1251,7 @@ void TradeScreenContext::InitializeTradeSellControlState(void) {
   InitializeTradeMoveAndBarControls(this);
 }
 
-// FUNCTION: IMPERIALISM 0x005873E0
+// FUNCTION: IMPERIALISM 0x005873e0
 void __fastcall HandleTradeSellControlCommand(void* context, int commandId, void* eventArg,
                                               int eventExtra) {
   // ORIG_CALLCONV: __thiscall
@@ -1386,7 +1394,7 @@ char TradeScreenContext::IsTradeBidControlActionable(void) {
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
 
-// FUNCTION: IMPERIALISM 0x00587A10
+// FUNCTION: IMPERIALISM 0x00587a10
 char TradeScreenContext::IsTradeOfferControlActionable(void) {
   TradeControl* offerControl = CallResolveControlByTagSlot94(this, kControlTagOffr);
   if (offerControl == 0) {
@@ -1421,7 +1429,7 @@ char TradeScreenContext::IsTradeOfferControlActionable(void) {
 // GHIDRA showed `g_pUiRuntimeContext` as a global here; this reconstruction passes it explicitly.
 //
 
-// FUNCTION: IMPERIALISM 0x00587AA0
+// FUNCTION: IMPERIALISM 0x00587aa0
 void TradeScreenContext::SetTradeBidSecondaryBitmapState(void) {
   TradeControl* bidControl = ResolveControlByTag(kControlTagCard);
   if (bidControl == 0) {
@@ -1463,7 +1471,7 @@ void TradeScreenContext::SetTradeBidSecondaryBitmapState(void) {
    bitmap 2111 (0x83F).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
 
-// FUNCTION: IMPERIALISM 0x00587BB0
+// FUNCTION: IMPERIALISM 0x00587bb0
 void TradeScreenContext::SetTradeBidControlBitmapState(void) {
   TradeControl* bidControl = ResolveControlByTag(kControlTagCard);
   if (bidControl == 0) {
@@ -1519,7 +1527,7 @@ void TradeScreenContext::SetTradeBidControlBitmapState(void) {
    bitmap 2113 (0x841).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
 
-// FUNCTION: IMPERIALISM 0x00587DD0
+// FUNCTION: IMPERIALISM 0x00587dd0
 void TradeScreenContext::SetTradeOfferControlBitmapState(void) {
   TradeControl* offerControl = ResolveControlByTag(kControlTagOffr);
   if (offerControl == 0) {
@@ -1638,7 +1646,7 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void) {
 // GHIDRA_COMMENT_END
 /* Updates Sell control quantity */
 
-// FUNCTION: IMPERIALISM 0x005882F0
+// FUNCTION: IMPERIALISM 0x005882f0
 void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax) {
   short activeNationSlot = QueryActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
@@ -1769,7 +1777,7 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) 
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
 
-// FUNCTION: IMPERIALISM 0x00588AF0
+// FUNCTION: IMPERIALISM 0x00588af0
 void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster) {
   TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
   cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
@@ -1779,7 +1787,7 @@ void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster
 // GHIDRA_NAME TIndustryCluster::DestructTIndustryClusterMaybeFree
 // GHIDRA_PROTO void __cdecl DestructTIndustryClusterMaybeFree(void)
 
-// FUNCTION: IMPERIALISM 0x00588B70
+// FUNCTION: IMPERIALISM 0x00588b70
 void __fastcall
 SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext* context,
                                                            int unusedEdx) {
@@ -1816,7 +1824,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
   CallPostMoveValueSlot1D4(owner, selectedControlValue, 1);
 }
 
-// FUNCTION: IMPERIALISM 0x00588C30
+// FUNCTION: IMPERIALISM 0x00588c30
 void TradeMovePanelContext::OrphanCallChain_C1_I06_00588c30(int value) {
   CallPostMoveValueSlot1D4(this, value, 0);
 }
@@ -1845,7 +1853,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TradeMovePanelContext
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
 
-// FUNCTION: IMPERIALISM 0x00588C60
+// FUNCTION: IMPERIALISM 0x00588c60
 void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int updateFlag) {
   // ORIG_CALLCONV: __thiscall
   TradeControl* selectedControl = selectedMetricControl;
@@ -1901,7 +1909,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
   CallNotifyMoveUpdatedSlot1D8(ownerContext);
 }
 
-// FUNCTION: IMPERIALISM 0x00588F60
+// FUNCTION: IMPERIALISM 0x00588f60
 void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void) {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
 }
@@ -1985,7 +1993,7 @@ void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* clust
   cluster->field_8e = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005897B0
+// FUNCTION: IMPERIALISM 0x005897b0
 void __fastcall
 SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* context,
                                                       int unusedEdx) {
@@ -2053,7 +2061,7 @@ SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* con
   CallPostMoveValueSlot1D4(owner, selectedControlValue, 1);
 }
 
-// FUNCTION: IMPERIALISM 0x005899C0
+// FUNCTION: IMPERIALISM 0x005899c0
 void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value) {
   CallPostMoveValueSlot1D4(this, value, 0);
 }
@@ -2065,7 +2073,7 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value) {
 // GHIDRA_COMMENT_END
 /* Computes bar position from selected metric ratio and applies it to bar control. */
 
-// FUNCTION: IMPERIALISM 0x005899F0
+// FUNCTION: IMPERIALISM 0x005899f0
 void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag) {
   // ORIG_CALLCONV: __thiscall
   short step = selectedMetricStep;
@@ -2123,7 +2131,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
   CallNotifyMoveUpdatedSlot1D8(ownerContext);
 }
 
-// FUNCTION: IMPERIALISM 0x00589D10
+// FUNCTION: IMPERIALISM 0x00589d10
 void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioA);
 }
@@ -2141,7 +2149,7 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
 #include "TShipAmtBar.cpp"
 #include "TTraderAmtBar.cpp"
 
-// FUNCTION: IMPERIALISM 0x0058A1B0
+// FUNCTION: IMPERIALISM 0x0058a1b0
 void __fastcall RenderQuickDrawControlWithHitRegionClip_B(TradeControl* control) {
   AcquireReusableQuickDrawSurface();
   reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
@@ -2182,7 +2190,7 @@ void __fastcall RenderQuickDrawControlWithHitRegionClip_B(TradeControl* control)
   ReleaseOrCacheQuickDrawSurface();
 }
 
-// FUNCTION: IMPERIALISM 0x0058A3B0
+// FUNCTION: IMPERIALISM 0x0058a3b0
 void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* control, int unusedEdx,
                                                              short selectedValue) {
   (void)unusedEdx;
@@ -2212,7 +2220,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* contr
   ReleaseOrCacheQuickDrawSurface();
 }
 
-// FUNCTION: IMPERIALISM 0x0058AC80
+// FUNCTION: IMPERIALISM 0x0058ac80
 void __fastcall RenderQuickDrawControlWithHitRegionClip_C(TradeControl* control) {
   AcquireReusableQuickDrawSurface();
   reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
@@ -2247,7 +2255,7 @@ void __fastcall RenderQuickDrawControlWithHitRegionClip_C(TradeControl* control)
   ReleaseOrCacheQuickDrawSurface();
 }
 
-// FUNCTION: IMPERIALISM 0x0058B0F0
+// FUNCTION: IMPERIALISM 0x0058b0f0
 void __fastcall RenderControlWithTemporaryRectClipRegionAndChildren(TradeControl* control) {
   AcquireReusableQuickDrawSurface();
   reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
@@ -2282,7 +2290,7 @@ void __fastcall RenderControlWithTemporaryRectClipRegionAndChildren(TradeControl
   ReleaseOrCacheQuickDrawSurface();
 }
 
-// FUNCTION: IMPERIALISM 0x0058B460
+// FUNCTION: IMPERIALISM 0x0058b460
 void __fastcall OrphanCallChain_C4_I34_0058b460(NumberedArrowButtonState* control, int unusedEdx,
                                                 int selectedValue) {
   (void)unusedEdx;
@@ -2303,7 +2311,7 @@ void __fastcall OrphanCallChain_C4_I34_0058b460(NumberedArrowButtonState* contro
   reinterpret_cast<TradeControl*>(control)->SetEnabledPair(0, 1);
 }
 
-// FUNCTION: IMPERIALISM 0x0058B4F0
+// FUNCTION: IMPERIALISM 0x0058b4f0
 void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
   if (*reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 4) != 0) {
     reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
@@ -2333,7 +2341,7 @@ void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
 
-// FUNCTION: IMPERIALISM 0x0058B750
+// FUNCTION: IMPERIALISM 0x0058b750
 void __fastcall OrphanCallChain_C3_I43_0058b750(NumberedArrowButtonState* control, int unusedEdx,
                                                 char mode, char refreshParent) {
   (void)unusedEdx;
@@ -2362,7 +2370,7 @@ void __fastcall OrphanCallChain_C3_I43_0058b750(NumberedArrowButtonState* contro
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0058B890
+// FUNCTION: IMPERIALISM 0x0058b890
 void __fastcall OrphanCallChain_C2_I16_0058b890(TradeControl* control, int unusedEdx, int arg2,
                                                 int arg3) {
   (void)unusedEdx;
@@ -2371,7 +2379,7 @@ void __fastcall OrphanCallChain_C2_I16_0058b890(TradeControl* control, int unuse
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0058B8D0
+// FUNCTION: IMPERIALISM 0x0058b8d0
 void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* control, int unusedEdx,
                                                 short mode) {
   (void)unusedEdx;
@@ -2389,7 +2397,7 @@ void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* contro
   reinterpret_cast<TradeControl*>(control)->SetStatePair(mode != 2, 0);
 }
 
-// FUNCTION: IMPERIALISM 0x0058BFE0
+// FUNCTION: IMPERIALISM 0x0058bfe0
 void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control) {
   int sharedStringRef = 0;
   InitializeSharedStringRefFromEmpty(&sharedStringRef);
@@ -2421,7 +2429,7 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
   ReleaseSharedStringRefIfNotEmpty(&sharedStringRef);
 }
 
-// FUNCTION: IMPERIALISM 0x0059A180
+// FUNCTION: IMPERIALISM 0x0059a180
 void TradeScreenContext::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag) {
   TradeControl* toolControl = ResolveControlByTag(0x746f6f6c);
   if (toolControl == 0) {

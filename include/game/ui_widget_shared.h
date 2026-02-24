@@ -31,17 +31,29 @@ static const int kControlTagPlus = 0x706c7573;
 static const int kControlTagMinu = 0x6d696e75;
 static const unsigned int kAddrCityOrderCapabilityState = 0x006A43D8;
 
+// GLOBAL: IMPERIALISM 0x666da8
 static char g_vtblTCivilianButton;
+// GLOBAL: IMPERIALISM 0x663040
 static char g_pClassDescTCivilianButton;
+// GLOBAL: IMPERIALISM 0x666fe0
 static char g_vtblTHQButton;
+// GLOBAL: IMPERIALISM 0x663058
 static char g_pClassDescTHQButton;
+// GLOBAL: IMPERIALISM 0x667218
 static char g_vtblTPlacard;
+// GLOBAL: IMPERIALISM 0x663070
 static char g_pClassDescTPlacard;
+// GLOBAL: IMPERIALISM 0x667448
 static char g_vtblTArmyPlacard;
+// GLOBAL: IMPERIALISM 0x663088
 static char g_pClassDescTArmyPlacard;
+// GLOBAL: IMPERIALISM 0x667678
 static char g_vtblTNumberedArrowButton;
+// GLOBAL: IMPERIALISM 0x6630a0
 static char g_pClassDescTNumberedArrowButton;
+// GLOBAL: IMPERIALISM 0x6678a0
 static char g_vtblTCombatReportView;
+// GLOBAL: IMPERIALISM 0x6630b8
 static char g_pClassDescTCombatReportView;
 
 struct TradeControl {

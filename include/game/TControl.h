@@ -2,6 +2,7 @@
 
 #include "game/TView.h"
 
+// VTABLE: IMPERIALISM 0x64a098
 class TControl : public TView {
 public:
   int hasCommandTagResource;

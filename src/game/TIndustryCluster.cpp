@@ -9,7 +9,7 @@
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
-// FUNCTION: IMPERIALISM 0x00588A30
+// FUNCTION: IMPERIALISM 0x00588a30
 TradeMoveStepCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
@@ -28,7 +28,7 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
 // GHIDRA_COMMENT_END
 /* Returns class descriptor pointer for TIndustryCluster. */
 
-// FUNCTION: IMPERIALISM 0x00588AD0
+// FUNCTION: IMPERIALISM 0x00588ad0
 void* __cdecl GetTIndustryClusterClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTIndustryCluster);
 }
@@ -36,7 +36,7 @@ void* __cdecl GetTIndustryClusterClassNamePointer(void) {
 // GHIDRA_NAME ConstructTradeMoveStepControlPanel
 // GHIDRA_PROTO void __cdecl ConstructTradeMoveStepControlPanel(void)
 
-// FUNCTION: IMPERIALISM 0x00588B20
+// FUNCTION: IMPERIALISM 0x00588b20
 void __fastcall DestructTIndustryClusterMaybeFree(TradeMoveStepCluster* cluster, int unusedEdx,
                                                   unsigned char freeSelfFlag) {
   (void)unusedEdx;

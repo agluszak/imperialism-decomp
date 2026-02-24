@@ -11,7 +11,9 @@ struct TradeMoveStepCluster;
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x667ad0
 char g_vtblTArmyToolbar;
+// GLOBAL: IMPERIALISM 0x6630d0
 char g_pClassDescTArmyToolbar;
 
 struct ArmyToolbarState {
@@ -29,7 +31,7 @@ public:
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x0058DE40
+// FUNCTION: IMPERIALISM 0x0058de40
 ArmyToolbarState* __cdecl CreateTArmyToolbarInstance(void) {
   ArmyToolbarState* toolbar =
       reinterpret_cast<ArmyToolbarState*>(AllocateWithFallbackHandler(0x8c));
@@ -40,19 +42,19 @@ ArmyToolbarState* __cdecl CreateTArmyToolbarInstance(void) {
   return toolbar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058DEC0
+// FUNCTION: IMPERIALISM 0x0058dec0
 void* __cdecl GetTArmyToolbarClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTArmyToolbar);
 }
 
-// FUNCTION: IMPERIALISM 0x0058DEE0
+// FUNCTION: IMPERIALISM 0x0058dee0
 ArmyToolbarState* __fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState* toolbar) {
   RuntimeBridge::ConstructTUberClusterBaseState(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
   toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   return toolbar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058DF10
+// FUNCTION: IMPERIALISM 0x0058df10
 ArmyToolbarState* __fastcall DestructTArmyToolbarAndMaybeFree(ArmyToolbarState* toolbar,
                                                               int unusedEdx,
                                                               unsigned char freeSelfFlag) {

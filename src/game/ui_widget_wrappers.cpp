@@ -6,7 +6,7 @@
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058C330
+// FUNCTION: IMPERIALISM 0x0058c330
 void __fastcall OrphanCallChain_C1_I08_0058c330(NumberedArrowButtonState* button, int unusedEdx,
                                                 short value84, char refreshFlag) {
   (void)unusedEdx;
@@ -16,7 +16,7 @@ void __fastcall OrphanCallChain_C1_I08_0058c330(NumberedArrowButtonState* button
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0058C360
+// FUNCTION: IMPERIALISM 0x0058c360
 void __fastcall OrphanCallChain_C2_I23_0058c360(NumberedArrowButtonState* button, int unusedEdx,
                                                 short value86, char refreshFlag) {
   (void)unusedEdx;
@@ -30,7 +30,7 @@ void __fastcall OrphanCallChain_C2_I23_0058c360(NumberedArrowButtonState* button
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0058C7C0
+// FUNCTION: IMPERIALISM 0x0058c7c0
 void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
     NumberedArrowButtonState* button, int unusedEdx, int* cursorPoint, int hitArg) {
   (void)unusedEdx;

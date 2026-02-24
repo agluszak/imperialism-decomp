@@ -965,7 +965,7 @@ undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At004798f0(void)
 
 // ghidra_name TShipyardCluster::thunk_GetTShipyardClusterClassNamePointer
 // ghidra_proto void * __cdecl thunk_GetTShipyardClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00406e65
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00406e65
 undefined4 thunk_GetTShipyardClusterClassNamePointer(void)
 {
   return 0;

@@ -9,7 +9,9 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x668588
 char g_vtblTTransportPicture;
+// GLOBAL: IMPERIALISM 0x663160
 char g_pClassDescTTransportPicture;
 
 struct TransportPictureState {
@@ -35,7 +37,7 @@ public:
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x00591D90
+// FUNCTION: IMPERIALISM 0x00591d90
 TransportPictureState* __cdecl CreateTTransportPictureInstance(void) {
   TransportPictureState* picture =
       reinterpret_cast<TransportPictureState*>(AllocateWithFallbackHandler(0x9c));
@@ -50,12 +52,12 @@ TransportPictureState* __cdecl CreateTTransportPictureInstance(void) {
   return picture;
 }
 
-// FUNCTION: IMPERIALISM 0x00591E50
+// FUNCTION: IMPERIALISM 0x00591e50
 void* __cdecl GetTTransportPictureClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTTransportPicture);
 }
 
-// FUNCTION: IMPERIALISM 0x00591E70
+// FUNCTION: IMPERIALISM 0x00591e70
 TransportPictureState* __fastcall
 ConstructTTransportPictureBaseState(TransportPictureState* picture) {
   RuntimeBridge::ConstructPictureResourceEntryBase(picture);
@@ -67,7 +69,7 @@ ConstructTTransportPictureBaseState(TransportPictureState* picture) {
   return picture;
 }
 
-// FUNCTION: IMPERIALISM 0x00591EC0
+// FUNCTION: IMPERIALISM 0x00591ec0
 TransportPictureState* __fastcall
 DestructTTransportPictureAndMaybeFree(TransportPictureState* picture, int unusedEdx,
                                       unsigned char freeSelfFlag) {

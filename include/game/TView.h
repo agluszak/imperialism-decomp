@@ -5,6 +5,7 @@
 // Runtime thunk exported from the binary for the base UI resource constructor.
 undefined4 thunk_ConstructUiResourceEntryBase(void);
 
+// VTABLE: IMPERIALISM 0x649858
 class TView {
 public:
   void* vftable;

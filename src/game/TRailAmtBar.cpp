@@ -9,7 +9,7 @@
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
-// FUNCTION: IMPERIALISM 0x00589ED0
+// FUNCTION: IMPERIALISM 0x00589ed0
 IndustryAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
   IndustryAmtBarState* amountBar =
       reinterpret_cast<IndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
@@ -24,12 +24,12 @@ IndustryAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
   return amountBar;
 }
 
-// FUNCTION: IMPERIALISM 0x00589F70
+// FUNCTION: IMPERIALISM 0x00589f70
 void* __cdecl GetTRailAmtBarClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTRailAmtBar);
 }
 
-// FUNCTION: IMPERIALISM 0x00589F90
+// FUNCTION: IMPERIALISM 0x00589f90
 IndustryAmtBarState* IndustryAmtBarState::ConstructTRailAmtBarBaseState() {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
   vftable = reinterpret_cast<void*>(kVtableTRailAmtBar);
@@ -40,7 +40,7 @@ IndustryAmtBarState* IndustryAmtBarState::ConstructTRailAmtBarBaseState() {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x00589FD0
+// FUNCTION: IMPERIALISM 0x00589fd0
 IndustryAmtBarState*
 IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
   thunk_DestructEngineerDialogBaseState();
@@ -50,7 +50,7 @@ IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag)
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x0058A020
+// FUNCTION: IMPERIALISM 0x0058a020
 void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues() {
   NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
   int summaryTag = ownerPanelContext->summaryTag;

@@ -8,7 +8,9 @@ undefined4 thunk_InitializeUiResourceEntryBaseHeaderDefaults(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x668a60
 char g_vtblTSoundPlayer;
+// GLOBAL: IMPERIALISM 0x668a18
 char g_pClassDescTSoundPlayer;
 char PTR_GetCObjectRuntimeClass_0066fec4;
 
@@ -38,7 +40,7 @@ public:
 
 void __fastcall DestructTSoundPlayerBaseState(SoundPlayerState* player);
 
-// FUNCTION: IMPERIALISM 0x005932B0
+// FUNCTION: IMPERIALISM 0x005932b0
 SoundPlayerState* __cdecl CreateTSoundPlayerInstance(void) {
   SoundPlayerState* player = reinterpret_cast<SoundPlayerState*>(AllocateWithFallbackHandler(0x84));
   if (player != 0) {
@@ -72,7 +74,7 @@ SoundPlayerState* __fastcall ConstructTSoundPlayerBaseState(SoundPlayerState* pl
   return player;
 }
 
-// FUNCTION: IMPERIALISM 0x005933B0
+// FUNCTION: IMPERIALISM 0x005933b0
 SoundPlayerState* __fastcall DestructTSoundPlayerAndMaybeFree(SoundPlayerState* player,
                                                               int unusedEdx,
                                                               unsigned char freeSelfFlag) {
@@ -84,7 +86,7 @@ SoundPlayerState* __fastcall DestructTSoundPlayerAndMaybeFree(SoundPlayerState* 
   return player;
 }
 
-// FUNCTION: IMPERIALISM 0x005933E0
+// FUNCTION: IMPERIALISM 0x005933e0
 void __fastcall DestructTSoundPlayerBaseState(SoundPlayerState* player) {
   player->vftable = reinterpret_cast<void*>(&PTR_GetCObjectRuntimeClass_0066fec4);
 }

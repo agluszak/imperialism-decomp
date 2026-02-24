@@ -1133,7 +1133,7 @@ undefined4 thunk_GetTControlClassNamePointer(void)
 
 // ghidra_name TShipyardCluster::thunk_DestructTShipyardClusterMaybeFree
 // ghidra_proto void __cdecl thunk_DestructTShipyardClusterMaybeFree(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0040153c
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0040153c
 undefined4 thunk_DestructTShipyardClusterMaybeFree(void)
 {
   return 0;
@@ -2517,7 +2517,7 @@ undefined4 thunk_DestroyRadioAndReleaseOwnedResources(void)
 
 // ghidra_name thunk_HandleTradeArrowAutoRepeatTickAndDispatch
 // ghidra_proto void __thiscall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void * arg8, void * argC, void * dispatchArg, void * arg14)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00401b3b
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00401b3b
 undefined4 thunk_HandleTradeArrowAutoRepeatTickAndDispatch(void)
 {
   return 0;

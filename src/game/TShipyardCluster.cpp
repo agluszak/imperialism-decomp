@@ -13,19 +13,19 @@ void* __cdecl GetTShipyardClusterClassNamePointer(void);
 void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster, int unusedEdx,
                                                   unsigned char freeSelfFlag);
 
-// FUNCTION: IMPERIALISM 0x0040153C
+// FUNCTION: IMPERIALISM 0x0040153c
 void __cdecl thunk_DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* self,
                                                      unsigned char freeSelfFlag) {
   DestructTShipyardClusterMaybeFree(self, 0, freeSelfFlag);
 }
 
-// FUNCTION: IMPERIALISM 0x00402C11
+// FUNCTION: IMPERIALISM 0x00402c11
 void __fastcall thunk_SelectTradeSpecialCommodityAndInitializeControls(TradeMoveStepCluster* self) {
   // ORIG_CALLCONV: __thiscall
   self->SelectTradeSpecialCommodityAndInitializeControls();
 }
 
-// FUNCTION: IMPERIALISM 0x004058A8
+// FUNCTION: IMPERIALISM 0x004058a8
 void __fastcall thunk_RefreshTradeMoveBarAndTurnControl(TradeMoveStepCluster* self) {
   // ORIG_CALLCONV: __thiscall
   self->RefreshTradeMoveBarAndTurnControl();
@@ -40,12 +40,12 @@ void __fastcall thunk_HandleTradeMoveArrowControlEvent(TradeMoveStepCluster* sel
   self->HandleTradeMoveArrowControlEvent(commandId, sourceControl, eventExtra);
 }
 
-// FUNCTION: IMPERIALISM 0x00406E65
+// FUNCTION: IMPERIALISM 0x00406e65
 void* __cdecl thunk_GetTShipyardClusterClassNamePointer(void) {
   return GetTShipyardClusterClassNamePointer();
 }
 
-// FUNCTION: IMPERIALISM 0x0058A4D0
+// FUNCTION: IMPERIALISM 0x0058a4d0
 TradeMoveStepCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
@@ -57,12 +57,12 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   return cluster;
 }
 
-// FUNCTION: IMPERIALISM 0x0058A570
+// FUNCTION: IMPERIALISM 0x0058a570
 void* __cdecl GetTShipyardClusterClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTShipyardCluster);
 }
 
-// FUNCTION: IMPERIALISM 0x0058A590
+// FUNCTION: IMPERIALISM 0x0058a590
 TradeMoveStepCluster* __fastcall
 ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster* cluster) {
   TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
@@ -71,7 +71,7 @@ ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster* cluster) {
   return cluster;
 }
 
-// FUNCTION: IMPERIALISM 0x0058A5C0
+// FUNCTION: IMPERIALISM 0x0058a5c0
 void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster, int unusedEdx,
                                                   unsigned char freeSelfFlag) {
   (void)unusedEdx;
@@ -81,7 +81,7 @@ void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster,
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0058A610
+// FUNCTION: IMPERIALISM 0x0058a610
 void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls() {
   // ORIG_CALLCONV: __thiscall
   NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
@@ -92,7 +92,7 @@ void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls() {
   CallApplyMoveValueSlot1D0(this, 0);
 }
 
-// FUNCTION: IMPERIALISM 0x0058A690
+// FUNCTION: IMPERIALISM 0x0058a690
 void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   // ORIG_CALLCONV: __thiscall
   TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(this);
@@ -142,7 +142,7 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   CallNotifyMoveUpdatedSlot1D8(panel->ownerContext);
 }
 
-// FUNCTION: IMPERIALISM 0x0058A940
+// FUNCTION: IMPERIALISM 0x0058a940
 void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
                                                             TradeControl* sourceControl,
                                                             int eventExtra) {

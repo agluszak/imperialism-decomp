@@ -9,7 +9,9 @@ undefined4 thunk_DestructEngineerDialogBaseState(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x667d08
 char g_vtblTStratReportView;
+// GLOBAL: IMPERIALISM 0x6630e8
 char g_pClassDescTStratReportView;
 
 struct StratReportViewState {
@@ -26,7 +28,7 @@ public:
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x0058E330
+// FUNCTION: IMPERIALISM 0x0058e330
 StratReportViewState* __cdecl CreateTStratReportViewInstance(void) {
   StratReportViewState* view =
       reinterpret_cast<StratReportViewState*>(AllocateWithFallbackHandler(100));
@@ -37,19 +39,19 @@ StratReportViewState* __cdecl CreateTStratReportViewInstance(void) {
   return view;
 }
 
-// FUNCTION: IMPERIALISM 0x0058E3A0
+// FUNCTION: IMPERIALISM 0x0058e3a0
 void* __cdecl GetTStratReportViewClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTStratReportView);
 }
 
-// FUNCTION: IMPERIALISM 0x0058E3C0
+// FUNCTION: IMPERIALISM 0x0058e3c0
 StratReportViewState* __fastcall ConstructTStratReportViewBaseState(StratReportViewState* view) {
   RuntimeBridge::ConstructUiResourceEntryBase(view);
   view->vftable = reinterpret_cast<void*>(&g_vtblTStratReportView);
   return view;
 }
 
-// FUNCTION: IMPERIALISM 0x0058E3F0
+// FUNCTION: IMPERIALISM 0x0058e3f0
 StratReportViewState* __fastcall DestructTStratReportViewAndMaybeFree(StratReportViewState* view,
                                                                       int unusedEdx,
                                                                       unsigned char freeSelfFlag) {

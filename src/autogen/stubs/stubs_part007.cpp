@@ -2669,7 +2669,7 @@ undefined4 thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(vo
 
 // ghidra_name TControl::thunk_ConstructUiCommandTagResourceEntryBase
 // ghidra_proto void __thiscall thunk_ConstructUiCommandTagResourceEntryBase(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x004087fb
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x004087fb
 undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void)
 {
   return 0;

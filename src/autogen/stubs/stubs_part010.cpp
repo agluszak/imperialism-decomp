@@ -1085,7 +1085,7 @@ undefined4 GetTViewClassNamePointer(void)
 
 // ghidra_name TView::ConstructUiResourceEntryBase
 // ghidra_proto void __thiscall ConstructUiResourceEntryBase(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0048a8e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0048a8e0
 undefined4 ConstructUiResourceEntryBase(void)
 {
   return 0;
@@ -2021,7 +2021,7 @@ undefined4 GetTControlClassNamePointer(void)
 
 // ghidra_name TControl::ConstructUiCommandTagResourceEntryBase
 // ghidra_proto void __thiscall ConstructUiCommandTagResourceEntryBase(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0048e520
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0048e520
 undefined4 ConstructUiCommandTagResourceEntryBase(void)
 {
   return 0;

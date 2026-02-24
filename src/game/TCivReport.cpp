@@ -9,7 +9,9 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x668128
 char g_vtblTCivReport;
+// GLOBAL: IMPERIALISM 0x663130
 char g_pClassDescTCivReport;
 
 struct CivReportState {
@@ -30,7 +32,7 @@ public:
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x00590B90
+// FUNCTION: IMPERIALISM 0x00590b90
 CivReportState* __cdecl CreateTCivReportInstance(void) {
   CivReportState* report = reinterpret_cast<CivReportState*>(AllocateWithFallbackHandler(0x90));
   if (report != 0) {
@@ -40,19 +42,19 @@ CivReportState* __cdecl CreateTCivReportInstance(void) {
   return report;
 }
 
-// FUNCTION: IMPERIALISM 0x00590C10
+// FUNCTION: IMPERIALISM 0x00590c10
 void* __cdecl GetTCivReportClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTCivReport);
 }
 
-// FUNCTION: IMPERIALISM 0x00590C30
+// FUNCTION: IMPERIALISM 0x00590c30
 CivReportState* __fastcall ConstructTCivReportBaseState(CivReportState* report) {
   RuntimeBridge::ConstructPictureResourceEntryBase(report);
   report->vftable = reinterpret_cast<void*>(&g_vtblTCivReport);
   return report;
 }
 
-// FUNCTION: IMPERIALISM 0x00590C60
+// FUNCTION: IMPERIALISM 0x00590c60
 CivReportState* __fastcall DestructTCivReportAndMaybeFree(CivReportState* report, int unusedEdx,
                                                           unsigned char freeSelfFlag) {
   (void)unusedEdx;

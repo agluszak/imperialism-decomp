@@ -24,12 +24,12 @@ TradeAmountBarLayout* __cdecl CreateTIndustryAmtBarInstance(void) {
   return amountBar;
 }
 
-// FUNCTION: IMPERIALISM 0x005891B0
+// FUNCTION: IMPERIALISM 0x005891b0
 void* __cdecl GetTIndustryAmtBarClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTIndustryAmtBar);
 }
 
-// FUNCTION: IMPERIALISM 0x005891D0
+// FUNCTION: IMPERIALISM 0x005891d0
 TradeAmountBarLayout* __fastcall
 ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout* amountBar) {
   // ORIG_CALLCONV: __thiscall
@@ -83,7 +83,7 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
   thunk_NoOpUiLifecycleHook();
 }
 
-// FUNCTION: IMPERIALISM 0x00589DA0
+// FUNCTION: IMPERIALISM 0x00589da0
 void TradeMoveStepCluster::HandleTradeMovePageStepCommand(int commandId, void* eventArg,
                                                           int eventExtra) {
   // ORIG_CALLCONV: __thiscall

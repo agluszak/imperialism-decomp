@@ -6,7 +6,7 @@
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058BE30
+// FUNCTION: IMPERIALISM 0x0058be30
 PlacardState* __cdecl CreateTArmyPlacardInstance(void) {
   PlacardState* placard = reinterpret_cast<PlacardState*>(AllocateWithFallbackHandler(0x94));
   if (placard != 0) {
@@ -17,12 +17,12 @@ PlacardState* __cdecl CreateTArmyPlacardInstance(void) {
   return placard;
 }
 
-// FUNCTION: IMPERIALISM 0x0058BEB0
+// FUNCTION: IMPERIALISM 0x0058beb0
 void* __cdecl GetTArmyPlacardClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTArmyPlacard);
 }
 
-// FUNCTION: IMPERIALISM 0x0058BED0
+// FUNCTION: IMPERIALISM 0x0058bed0
 PlacardState* __fastcall ConstructTArmyPlacardBaseState(PlacardState* placard) {
   TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(placard);
   placard->vftable = reinterpret_cast<void*>(&g_vtblTArmyPlacard);
@@ -30,7 +30,7 @@ PlacardState* __fastcall ConstructTArmyPlacardBaseState(PlacardState* placard) {
   return placard;
 }
 
-// FUNCTION: IMPERIALISM 0x0058BF00
+// FUNCTION: IMPERIALISM 0x0058bf00
 PlacardState* __fastcall DestructTArmyPlacardAndMaybeFree(PlacardState* placard, int unusedEdx,
                                                           unsigned char freeSelfFlag) {
   (void)unusedEdx;
@@ -45,7 +45,7 @@ PlacardState* __fastcall DestructTArmyPlacardAndMaybeFree(PlacardState* placard,
 #pragma auto_inline(on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058BF50
+// FUNCTION: IMPERIALISM 0x0058bf50
 void __fastcall WrapperFor_GetActiveNationId_At0058bf50(PlacardState* placard, int unusedEdx,
                                                         short requestedValue) {
   (void)unusedEdx;
@@ -66,7 +66,7 @@ void __fastcall WrapperFor_GetActiveNationId_At0058bf50(PlacardState* placard, i
   placard->placardValue = requestedValue;
 }
 
-// FUNCTION: IMPERIALISM 0x0058C140
+// FUNCTION: IMPERIALISM 0x0058c140
 void __fastcall HandlePlusMinusCommandAndInvokeVslot1CC(PlacardState* placard, int unusedEdx,
                                                         int* arg1, int* arg2) {
   (void)unusedEdx;

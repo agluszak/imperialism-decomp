@@ -6,7 +6,7 @@
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058C1E0
+// FUNCTION: IMPERIALISM 0x0058c1e0
 NumberedArrowButtonState* __cdecl CreateTNumberedArrowButtonInstance(void) {
   NumberedArrowButtonState* button =
       reinterpret_cast<NumberedArrowButtonState*>(AllocateWithFallbackHandler(0x88));
@@ -19,12 +19,12 @@ NumberedArrowButtonState* __cdecl CreateTNumberedArrowButtonInstance(void) {
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058C280
+// FUNCTION: IMPERIALISM 0x0058c280
 void* __cdecl GetTNumberedArrowButtonClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTNumberedArrowButton);
 }
 
-// FUNCTION: IMPERIALISM 0x0058C2A0
+// FUNCTION: IMPERIALISM 0x0058c2a0
 NumberedArrowButtonState* __fastcall
 ConstructTNumberedArrowButtonBaseState(NumberedArrowButtonState* button) {
   TradeScreenRuntimeBridge::ConstructUiCommandTagResourceEntryBase(button);
@@ -34,7 +34,7 @@ ConstructTNumberedArrowButtonBaseState(NumberedArrowButtonState* button) {
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058C2E0
+// FUNCTION: IMPERIALISM 0x0058c2e0
 NumberedArrowButtonState* __fastcall
 DestructTNumberedArrowButtonAndMaybeFree(NumberedArrowButtonState* button, int unusedEdx,
                                          unsigned char freeSelfFlag) {

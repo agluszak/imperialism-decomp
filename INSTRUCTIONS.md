@@ -64,7 +64,7 @@ just promote-range src/game/<file>.cpp 0x<START> 0x<END>
    - replace `*(type *)((int)obj + off)` with struct fields.
    - introduce/adjust local structs for stable offsets instead of repeating `reinterpret_cast` math.
 4. After promotion, mark corresponding autogen stubs as manual overrides:
-   - change `// FUNCTION: IMPERIALISM 0x...` to `// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x...` in `src/autogen/stubs/stubs_part*.cpp`.
+   - change `// FUNCTION: IMPERIALISM 0x...` to `// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x...` in `src/autogen/stubs/stubs_part*.cpp`.
 5. For splitting mixed files into class files, use:
 ```bash
 uv run python tools/workflow/split_classes_in_file.py \

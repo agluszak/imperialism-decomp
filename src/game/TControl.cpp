@@ -12,12 +12,12 @@ const unsigned int kAddrUiResourceEntryDefaultParam2 = 0x006A1D98;
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x004087FB
+// FUNCTION: IMPERIALISM 0x004087fb
 void TControl::thunk_ConstructUiCommandTagResourceEntryBase() {
   ConstructUiCommandTagResourceEntryBase();
 }
 
-// FUNCTION: IMPERIALISM 0x0048E520
+// FUNCTION: IMPERIALISM 0x0048e520
 void TControl::ConstructUiCommandTagResourceEntryBase() {
   TView::thunk_ConstructUiResourceEntryBase();
   hasCommandTagResource = 1;

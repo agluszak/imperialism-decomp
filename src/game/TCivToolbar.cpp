@@ -9,7 +9,9 @@ undefined4 thunk_DestructEngineerDialogBaseState(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x667f00
 char g_vtblTCivToolbar;
+// GLOBAL: IMPERIALISM 0x663100
 char g_pClassDescTCivToolbar;
 
 struct CivToolbarState {
@@ -26,7 +28,7 @@ public:
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x0058EA00
+// FUNCTION: IMPERIALISM 0x0058ea00
 CivToolbarState* __cdecl CreateTCivToolbarInstance(void) {
   CivToolbarState* toolbar = reinterpret_cast<CivToolbarState*>(AllocateWithFallbackHandler(0x8c));
   if (toolbar != 0) {
@@ -36,19 +38,19 @@ CivToolbarState* __cdecl CreateTCivToolbarInstance(void) {
   return toolbar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058EA80
+// FUNCTION: IMPERIALISM 0x0058ea80
 void* __cdecl GetTCivToolbarClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTCivToolbar);
 }
 
-// FUNCTION: IMPERIALISM 0x0058EAA0
+// FUNCTION: IMPERIALISM 0x0058eaa0
 CivToolbarState* __fastcall ConstructTCivToolbarBaseState(CivToolbarState* toolbar) {
   RuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
   toolbar->vftable = reinterpret_cast<void*>(&g_vtblTCivToolbar);
   return toolbar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058EAD0
+// FUNCTION: IMPERIALISM 0x0058ead0
 CivToolbarState* __fastcall DestructTCivToolbarAndMaybeFree(CivToolbarState* toolbar, int unusedEdx,
                                                             unsigned char freeSelfFlag) {
   (void)unusedEdx;

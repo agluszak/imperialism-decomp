@@ -5,7 +5,7 @@
 
 // ghidra_name TCityBarCluster::DestructTCityBarClusterAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCityBarClusterAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586660
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586660
 undefined4 DestructTCityBarClusterAndMaybeFree(void)
 {
   return 0;
@@ -13,7 +13,7 @@ undefined4 DestructTCityBarClusterAndMaybeFree(void)
 
 // ghidra_name UpdateTradeSummaryMetricControlsFromRecord
 // ghidra_proto void __thiscall UpdateTradeSummaryMetricControlsFromRecord(int recordContext)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005866b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005866b0
 undefined4 UpdateTradeSummaryMetricControlsFromRecord(void)
 {
   return 0;
@@ -21,7 +21,7 @@ undefined4 UpdateTradeSummaryMetricControlsFromRecord(void)
 
 // ghidra_name TProductionCluster::CreateTProductionClusterInstance
 // ghidra_proto void * __cdecl CreateTProductionClusterInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586840
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586840
 undefined4 CreateTProductionClusterInstance(void)
 {
   return 0;
@@ -29,7 +29,7 @@ undefined4 CreateTProductionClusterInstance(void)
 
 // ghidra_name TProductionCluster::GetTProductionClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTProductionClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586900
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586900
 undefined4 GetTProductionClusterClassNamePointer(void)
 {
   return 0;
@@ -37,7 +37,7 @@ undefined4 GetTProductionClusterClassNamePointer(void)
 
 // ghidra_name TProductionCluster::ConstructTProductionClusterBaseState
 // ghidra_proto void * __thiscall ConstructTProductionClusterBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586920
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586920
 undefined4 ConstructTProductionClusterBaseState(void)
 {
   return 0;
@@ -45,7 +45,7 @@ undefined4 ConstructTProductionClusterBaseState(void)
 
 // ghidra_name TProductionCluster::DestructTProductionClusterAndMaybeFree
 // ghidra_proto void * __thiscall DestructTProductionClusterAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586970
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586970
 undefined4 DestructTProductionClusterAndMaybeFree(void)
 {
   return 0;
@@ -53,7 +53,7 @@ undefined4 DestructTProductionClusterAndMaybeFree(void)
 
 // ghidra_name TProductionCluster::HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward
 // ghidra_proto void __thiscall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(int commandId, void * arg8, int argC)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005869c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005869c0
 undefined4 HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(void)
 {
   return 0;
@@ -61,7 +61,7 @@ undefined4 HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(vo
 
 // ghidra_name OrphanTiny_SetWordEcxOffset_8c_00586a60
 // ghidra_proto undefined OrphanTiny_SetWordEcxOffset_8c_00586a60()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586a60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586a60
 undefined4 OrphanTiny_SetWordEcxOffset_8c_00586a60(void)
 {
   return 0;
@@ -69,7 +69,7 @@ undefined4 OrphanTiny_SetWordEcxOffset_8c_00586a60(void)
 
 // ghidra_name OrphanLeaf_NoCall_Ins05_00586a80
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins05_00586a80()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586a80
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586a80
 undefined4 OrphanLeaf_NoCall_Ins05_00586a80(void)
 {
   return 0;
@@ -77,7 +77,7 @@ undefined4 OrphanLeaf_NoCall_Ins05_00586a80(void)
 
 // ghidra_name OrphanTiny_SetWordEcxOffset_8e_00586ab0
 // ghidra_proto undefined OrphanTiny_SetWordEcxOffset_8e_00586ab0()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586ab0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586ab0
 undefined4 OrphanTiny_SetWordEcxOffset_8e_00586ab0(void)
 {
   return 0;
@@ -85,7 +85,7 @@ undefined4 OrphanTiny_SetWordEcxOffset_8e_00586ab0(void)
 
 // ghidra_name TClosePicture::CreateTClosePictureInstance
 // ghidra_proto void * __cdecl CreateTClosePictureInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586ad0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586ad0
 undefined4 CreateTClosePictureInstance(void)
 {
   return 0;
@@ -93,7 +93,7 @@ undefined4 CreateTClosePictureInstance(void)
 
 // ghidra_name TClosePicture::GetTClosePictureClassNamePointer
 // ghidra_proto void * __cdecl GetTClosePictureClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586b50
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586b50
 undefined4 GetTClosePictureClassNamePointer(void)
 {
   return 0;
@@ -101,7 +101,7 @@ undefined4 GetTClosePictureClassNamePointer(void)
 
 // ghidra_name TClosePicture::ConstructTClosePictureBaseState
 // ghidra_proto void * __thiscall ConstructTClosePictureBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586b70
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586b70
 undefined4 ConstructTClosePictureBaseState(void)
 {
   return 0;
@@ -109,7 +109,7 @@ undefined4 ConstructTClosePictureBaseState(void)
 
 // ghidra_name TClosePicture::DestructTClosePictureAndMaybeFree
 // ghidra_proto void * __thiscall DestructTClosePictureAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586ba0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586ba0
 undefined4 DestructTClosePictureAndMaybeFree(void)
 {
   return 0;
@@ -117,7 +117,7 @@ undefined4 DestructTClosePictureAndMaybeFree(void)
 
 // ghidra_name TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
 // ghidra_proto void __thiscall WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(int arg1, int arg2, int arg3, int arg4)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586bf0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586bf0
 undefined4 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(void)
 {
   return 0;
@@ -125,7 +125,7 @@ undefined4 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(void)
 
 // ghidra_name TAmtBarCluster::CreateTradeMoveControlPanelBasic
 // ghidra_proto undefined CreateTradeMoveControlPanelBasic()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586c40
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586c40
 undefined4 CreateTradeMoveControlPanelBasic(void)
 {
   return 0;
@@ -133,7 +133,7 @@ undefined4 CreateTradeMoveControlPanelBasic(void)
 
 // ghidra_name TAmtBarCluster::GetTAmtBarClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTAmtBarClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586cc0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586cc0
 undefined4 GetTAmtBarClusterClassNamePointer(void)
 {
   return 0;
@@ -141,7 +141,7 @@ undefined4 GetTAmtBarClusterClassNamePointer(void)
 
 // ghidra_name TAmtBarCluster::ConstructTradeMoveControlPanelBasic
 // ghidra_proto undefined ConstructTradeMoveControlPanelBasic()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586ce0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586ce0
 undefined4 ConstructTradeMoveControlPanelBasic(void)
 {
   return 0;
@@ -149,7 +149,7 @@ undefined4 ConstructTradeMoveControlPanelBasic(void)
 
 // ghidra_name TAmtBarCluster::DestructTAmtBarClusterMaybeFree
 // ghidra_proto void __cdecl DestructTAmtBarClusterMaybeFree(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586d10
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586d10
 undefined4 DestructTAmtBarClusterMaybeFree(void)
 {
   return 0;
@@ -157,7 +157,7 @@ undefined4 DestructTAmtBarClusterMaybeFree(void)
 
 // ghidra_name TAmtBarCluster::InitializeTradeMoveAndBarControls
 // ghidra_proto void __thiscall InitializeTradeMoveAndBarControls(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586d60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586d60
 undefined4 InitializeTradeMoveAndBarControls(void)
 {
   return 0;
@@ -165,7 +165,7 @@ undefined4 InitializeTradeMoveAndBarControls(void)
 
 // ghidra_name OrphanLeaf_NoCall_Ins02_00586e50
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins02_00586e50()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586e50
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586e50
 undefined4 OrphanLeaf_NoCall_Ins02_00586e50(void)
 {
   return 0;
@@ -173,7 +173,7 @@ undefined4 OrphanLeaf_NoCall_Ins02_00586e50(void)
 
 // ghidra_name TAmtBarCluster::HandleTradeMoveControlAdjustment
 // ghidra_proto void __thiscall HandleTradeMoveControlAdjustment(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586e70
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586e70
 undefined4 HandleTradeMoveControlAdjustment(void)
 {
   return 0;
@@ -181,7 +181,7 @@ undefined4 HandleTradeMoveControlAdjustment(void)
 
 // ghidra_name OrphanRetStub_00586ff0
 // ghidra_proto undefined OrphanRetStub_00586ff0()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00586ff0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00586ff0
 undefined4 OrphanRetStub_00586ff0(void)
 {
   return 0;
@@ -189,7 +189,7 @@ undefined4 OrphanRetStub_00586ff0(void)
 
 // ghidra_name TTradeCluster::CreateTradeSellControlPanel
 // ghidra_proto undefined CreateTradeSellControlPanel()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587010
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00587010
 undefined4 CreateTradeSellControlPanel(void)
 {
   return 0;
@@ -197,7 +197,7 @@ undefined4 CreateTradeSellControlPanel(void)
 
 // ghidra_name TTradeCluster::GetTTradeClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTTradeClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587090
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00587090
 undefined4 GetTTradeClusterClassNamePointer(void)
 {
   return 0;
@@ -205,7 +205,7 @@ undefined4 GetTTradeClusterClassNamePointer(void)
 
 // ghidra_name ConstructTradeSellControlPanel
 // ghidra_proto void __cdecl ConstructTradeSellControlPanel(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005870b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005870b0
 undefined4 ConstructTradeSellControlPanel(void)
 {
   return 0;
@@ -213,7 +213,7 @@ undefined4 ConstructTradeSellControlPanel(void)
 
 // ghidra_name TTradeCluster::DestroyTradeSellControlPanel
 // ghidra_proto void __cdecl DestroyTradeSellControlPanel(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005870e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005870e0
 undefined4 DestroyTradeSellControlPanel(void)
 {
   return 0;
@@ -221,7 +221,7 @@ undefined4 DestroyTradeSellControlPanel(void)
 
 // ghidra_name InitializeTradeSellControlState
 // ghidra_proto void __cdecl InitializeTradeSellControlState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587130
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00587130
 undefined4 InitializeTradeSellControlState(void)
 {
   return 0;
@@ -229,7 +229,7 @@ undefined4 InitializeTradeSellControlState(void)
 
 // ghidra_name TAmtBarCluster::HandleTradeSellControlCommand
 // ghidra_proto void __thiscall HandleTradeSellControlCommand(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005873e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005873e0
 undefined4 HandleTradeSellControlCommand(void)
 {
   return 0;
@@ -237,7 +237,7 @@ undefined4 HandleTradeSellControlCommand(void)
 
 // ghidra_name SetTradeBidControlBitmapState
 // ghidra_proto void __cdecl SetTradeBidControlBitmapState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587bb0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00587bb0
 undefined4 SetTradeBidControlBitmapState(void)
 {
   return 0;
@@ -245,7 +245,7 @@ undefined4 SetTradeBidControlBitmapState(void)
 
 // ghidra_name SetTradeOfferControlBitmapState
 // ghidra_proto void __cdecl SetTradeOfferControlBitmapState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00587dd0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00587dd0
 undefined4 SetTradeOfferControlBitmapState(void)
 {
   return 0;
@@ -253,7 +253,7 @@ undefined4 SetTradeOfferControlBitmapState(void)
 
 // ghidra_name SetTradeOfferSecondaryBitmapState
 // ghidra_proto void __cdecl SetTradeOfferSecondaryBitmapState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588030
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588030
 undefined4 SetTradeOfferSecondaryBitmapState(void)
 {
   return 0;
@@ -261,7 +261,7 @@ undefined4 SetTradeOfferSecondaryBitmapState(void)
 
 // ghidra_name UpdateTradeSellControlAndBarFromNationMetric
 // ghidra_proto void __fastcall UpdateTradeSellControlAndBarFromNationMetric(int * this)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005882f0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005882f0
 undefined4 UpdateTradeSellControlAndBarFromNationMetric(void)
 {
   return 0;
@@ -269,7 +269,7 @@ undefined4 UpdateTradeSellControlAndBarFromNationMetric(void)
 
 // ghidra_name TAmtBar::CreateTAmtBarInstance
 // ghidra_proto void * __cdecl CreateTAmtBarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005884c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005884c0
 undefined4 CreateTAmtBarInstance(void)
 {
   return 0;
@@ -277,7 +277,7 @@ undefined4 CreateTAmtBarInstance(void)
 
 // ghidra_name TAmtBar::GetTAmtBarClassNamePointer
 // ghidra_proto void * __cdecl GetTAmtBarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588560
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588560
 undefined4 GetTAmtBarClassNamePointer(void)
 {
   return 0;
@@ -285,7 +285,7 @@ undefined4 GetTAmtBarClassNamePointer(void)
 
 // ghidra_name TAmtBar::ConstructTAmtBarBaseState
 // ghidra_proto void * __thiscall ConstructTAmtBarBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588580
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588580
 undefined4 ConstructTAmtBarBaseState(void)
 {
   return 0;
@@ -293,7 +293,7 @@ undefined4 ConstructTAmtBarBaseState(void)
 
 // ghidra_name TAmtBar::DestructTAmtBarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTAmtBarAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005885c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005885c0
 undefined4 DestructTAmtBarAndMaybeFree(void)
 {
   return 0;
@@ -301,7 +301,7 @@ undefined4 DestructTAmtBarAndMaybeFree(void)
 
 // ghidra_name TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610
 // ghidra_proto undefined WrapperFor_thunk_NoOpUiLifecycleHook_At00588610()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588610
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588610
 undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void)
 {
   return 0;
@@ -309,7 +309,7 @@ undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void)
 
 // ghidra_name OrphanCallChain_C2_I15_00588630
 // ghidra_proto undefined OrphanCallChain_C2_I15_00588630()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588630
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588630
 undefined4 OrphanCallChain_C2_I15_00588630(void)
 {
   return 0;
@@ -317,7 +317,7 @@ undefined4 OrphanCallChain_C2_I15_00588630(void)
 
 // ghidra_name OrphanCallChain_C1_I03_00588670
 // ghidra_proto undefined OrphanCallChain_C1_I03_00588670()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588670
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588670
 undefined4 OrphanCallChain_C1_I03_00588670(void)
 {
   return 0;
@@ -325,7 +325,7 @@ undefined4 OrphanCallChain_C1_I03_00588670(void)
 
 // ghidra_name RenderPrimarySurfaceOverlayPanelWithClipCache
 // ghidra_proto void __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588690
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588690
 undefined4 RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 {
   return 0;
@@ -333,7 +333,7 @@ undefined4 RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
 // ghidra_name ClampAndApplyTradeMoveValue
 // ghidra_proto void __cdecl ClampAndApplyTradeMoveValue(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588950
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588950
 undefined4 ClampAndApplyTradeMoveValue(void)
 {
   return 0;
@@ -341,7 +341,7 @@ undefined4 ClampAndApplyTradeMoveValue(void)
 
 // ghidra_name TIndustryCluster::CreateTradeMoveStepControlPanel
 // ghidra_proto undefined CreateTradeMoveStepControlPanel()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588a30
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588a30
 undefined4 CreateTradeMoveStepControlPanel(void)
 {
   return 0;
@@ -349,7 +349,7 @@ undefined4 CreateTradeMoveStepControlPanel(void)
 
 // ghidra_name TIndustryCluster::GetTIndustryClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTIndustryClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588ad0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588ad0
 undefined4 GetTIndustryClusterClassNamePointer(void)
 {
   return 0;
@@ -357,7 +357,7 @@ undefined4 GetTIndustryClusterClassNamePointer(void)
 
 // ghidra_name ConstructTradeMoveStepControlPanel
 // ghidra_proto void __cdecl ConstructTradeMoveStepControlPanel(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588af0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588af0
 undefined4 ConstructTradeMoveStepControlPanel(void)
 {
   return 0;
@@ -365,7 +365,7 @@ undefined4 ConstructTradeMoveStepControlPanel(void)
 
 // ghidra_name TIndustryCluster::DestructTIndustryClusterMaybeFree
 // ghidra_proto void __cdecl DestructTIndustryClusterMaybeFree(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588b20
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588b20
 undefined4 DestructTIndustryClusterMaybeFree(void)
 {
   return 0;
@@ -373,7 +373,7 @@ undefined4 DestructTIndustryClusterMaybeFree(void)
 
 // ghidra_name SyncTradeCommoditySelectionWithActiveNationAndInitControls
 // ghidra_proto void SyncTradeCommoditySelectionWithActiveNationAndInitControls(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588b70
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588b70
 undefined4 SyncTradeCommoditySelectionWithActiveNationAndInitControls(void)
 {
   return 0;
@@ -381,7 +381,7 @@ undefined4 SyncTradeCommoditySelectionWithActiveNationAndInitControls(void)
 
 // ghidra_name OrphanCallChain_C1_I06_00588c30
 // ghidra_proto undefined OrphanCallChain_C1_I06_00588c30()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588c30
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588c30
 undefined4 OrphanCallChain_C1_I06_00588c30(void)
 {
   return 0;
@@ -389,7 +389,7 @@ undefined4 OrphanCallChain_C1_I06_00588c30(void)
 
 // ghidra_name UpdateTradeMoveControlsFromDrag
 // ghidra_proto void __thiscall UpdateTradeMoveControlsFromDrag(int arg1, int arg2)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588c60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588c60
 undefined4 UpdateTradeMoveControlsFromDrag(void)
 {
   return 0;
@@ -397,7 +397,7 @@ undefined4 UpdateTradeMoveControlsFromDrag(void)
 
 // ghidra_name UpdateTradeBarFromSelectedMetricRatio_B
 // ghidra_proto void __fastcall UpdateTradeBarFromSelectedMetricRatio_B(int * this)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588f60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588f60
 undefined4 UpdateTradeBarFromSelectedMetricRatio_B(void)
 {
   return 0;
@@ -405,7 +405,7 @@ undefined4 UpdateTradeBarFromSelectedMetricRatio_B(void)
 
 // ghidra_name TAmtBar::HandleTradeMoveStepCommand
 // ghidra_proto void __thiscall HandleTradeMoveStepCommand(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00588ff0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00588ff0
 undefined4 HandleTradeMoveStepCommand(void)
 {
   return 0;
@@ -413,7 +413,7 @@ undefined4 HandleTradeMoveStepCommand(void)
 
 // ghidra_name TIndustryAmtBar::CreateTIndustryAmtBarInstance
 // ghidra_proto void * __cdecl CreateTIndustryAmtBarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589110
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589110
 undefined4 CreateTIndustryAmtBarInstance(void)
 {
   return 0;
@@ -421,7 +421,7 @@ undefined4 CreateTIndustryAmtBarInstance(void)
 
 // ghidra_name TIndustryAmtBar::GetTIndustryAmtBarClassNamePointer
 // ghidra_proto void * __cdecl GetTIndustryAmtBarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005891b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005891b0
 undefined4 GetTIndustryAmtBarClassNamePointer(void)
 {
   return 0;
@@ -429,7 +429,7 @@ undefined4 GetTIndustryAmtBarClassNamePointer(void)
 
 // ghidra_name TIndustryAmtBar::ConstructTIndustryAmtBarBaseState
 // ghidra_proto void * __thiscall ConstructTIndustryAmtBarBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005891d0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005891d0
 undefined4 ConstructTIndustryAmtBarBaseState(void)
 {
   return 0;
@@ -437,7 +437,7 @@ undefined4 ConstructTIndustryAmtBarBaseState(void)
 
 // ghidra_name TIndustryAmtBar::DestructTIndustryAmtBarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTIndustryAmtBarAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589210
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589210
 undefined4 DestructTIndustryAmtBarAndMaybeFree(void)
 {
   return 0;
@@ -445,7 +445,7 @@ undefined4 DestructTIndustryAmtBarAndMaybeFree(void)
 
 // ghidra_name TIndustryAmtBar::InitializeTradeBarsFromSelectedCommodityControl
 // ghidra_proto void __thiscall InitializeTradeBarsFromSelectedCommodityControl(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589260
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589260
 undefined4 InitializeTradeBarsFromSelectedCommodityControl(void)
 {
   return 0;
@@ -453,7 +453,7 @@ undefined4 InitializeTradeBarsFromSelectedCommodityControl(void)
 
 // ghidra_name RenderQuickDrawControlWithHitRegionClip_A
 // ghidra_proto undefined RenderQuickDrawControlWithHitRegionClip_A()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589340
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589340
 undefined4 RenderQuickDrawControlWithHitRegionClip_A(void)
 {
   return 0;
@@ -461,7 +461,7 @@ undefined4 RenderQuickDrawControlWithHitRegionClip_A(void)
 
 // ghidra_name RenderQuickDrawOverlayWithHitRegion_00589540
 // ghidra_proto undefined RenderQuickDrawOverlayWithHitRegion_00589540()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589540
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589540
 undefined4 RenderQuickDrawOverlayWithHitRegion_00589540(void)
 {
   return 0;
@@ -469,7 +469,7 @@ undefined4 RenderQuickDrawOverlayWithHitRegion_00589540(void)
 
 // ghidra_name TRailCluster::CreateTradeMoveScaledControlPanel
 // ghidra_proto undefined CreateTradeMoveScaledControlPanel()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589660
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589660
 undefined4 CreateTradeMoveScaledControlPanel(void)
 {
   return 0;
@@ -477,7 +477,7 @@ undefined4 CreateTradeMoveScaledControlPanel(void)
 
 // ghidra_name TRailCluster::GetTRailClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTRailClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589700
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589700
 undefined4 GetTRailClusterClassNamePointer(void)
 {
   return 0;
@@ -485,7 +485,7 @@ undefined4 GetTRailClusterClassNamePointer(void)
 
 // ghidra_name ConstructTradeMoveScaledControlPanel
 // ghidra_proto void __cdecl ConstructTradeMoveScaledControlPanel(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589720
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589720
 undefined4 ConstructTradeMoveScaledControlPanel(void)
 {
   return 0;
@@ -493,7 +493,7 @@ undefined4 ConstructTradeMoveScaledControlPanel(void)
 
 // ghidra_name TRailCluster::DestructTRailClusterMaybeFree
 // ghidra_proto void __cdecl DestructTRailClusterMaybeFree(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589760
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589760
 undefined4 DestructTRailClusterMaybeFree(void)
 {
   return 0;
@@ -501,7 +501,7 @@ undefined4 DestructTRailClusterMaybeFree(void)
 
 // ghidra_name SelectTradeCommodityPresetBySummaryTagAndInitControls
 // ghidra_proto void SelectTradeCommodityPresetBySummaryTagAndInitControls(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005897b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005897b0
 undefined4 SelectTradeCommodityPresetBySummaryTagAndInitControls(void)
 {
   return 0;
@@ -509,7 +509,7 @@ undefined4 SelectTradeCommodityPresetBySummaryTagAndInitControls(void)
 
 // ghidra_name OrphanCallChain_C1_I06_005899c0
 // ghidra_proto undefined OrphanCallChain_C1_I06_005899c0()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005899c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005899c0
 undefined4 OrphanCallChain_C1_I06_005899c0(void)
 {
   return 0;
@@ -517,7 +517,7 @@ undefined4 OrphanCallChain_C1_I06_005899c0(void)
 
 // ghidra_name UpdateTradeMoveControlsFromScaledDrag
 // ghidra_proto void __thiscall UpdateTradeMoveControlsFromScaledDrag(int arg1, int arg2)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005899f0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005899f0
 undefined4 UpdateTradeMoveControlsFromScaledDrag(void)
 {
   return 0;
@@ -525,7 +525,7 @@ undefined4 UpdateTradeMoveControlsFromScaledDrag(void)
 
 // ghidra_name UpdateTradeBarFromSelectedMetricRatio_A
 // ghidra_proto void __fastcall UpdateTradeBarFromSelectedMetricRatio_A(int * this)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589d10
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589d10
 undefined4 UpdateTradeBarFromSelectedMetricRatio_A(void)
 {
   return 0;
@@ -533,7 +533,7 @@ undefined4 UpdateTradeBarFromSelectedMetricRatio_A(void)
 
 // ghidra_name TIndustryAmtBar::HandleTradeMovePageStepCommand
 // ghidra_proto void __thiscall HandleTradeMovePageStepCommand(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589da0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589da0
 undefined4 HandleTradeMovePageStepCommand(void)
 {
   return 0;
@@ -541,7 +541,7 @@ undefined4 HandleTradeMovePageStepCommand(void)
 
 // ghidra_name TRailAmtBar::CreateTRailAmtBarInstance
 // ghidra_proto void * __cdecl CreateTRailAmtBarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589ed0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589ed0
 undefined4 CreateTRailAmtBarInstance(void)
 {
   return 0;
@@ -549,7 +549,7 @@ undefined4 CreateTRailAmtBarInstance(void)
 
 // ghidra_name TRailAmtBar::GetTRailAmtBarClassNamePointer
 // ghidra_proto void * __cdecl GetTRailAmtBarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589f70
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589f70
 undefined4 GetTRailAmtBarClassNamePointer(void)
 {
   return 0;
@@ -557,7 +557,7 @@ undefined4 GetTRailAmtBarClassNamePointer(void)
 
 // ghidra_name TRailAmtBar::ConstructTRailAmtBarBaseState
 // ghidra_proto void * __thiscall ConstructTRailAmtBarBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589f90
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589f90
 undefined4 ConstructTRailAmtBarBaseState(void)
 {
   return 0;
@@ -565,7 +565,7 @@ undefined4 ConstructTRailAmtBarBaseState(void)
 
 // ghidra_name TRailAmtBar::DestructTRailAmtBarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTRailAmtBarAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00589fd0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00589fd0
 undefined4 DestructTRailAmtBarAndMaybeFree(void)
 {
   return 0;
@@ -573,7 +573,7 @@ undefined4 DestructTRailAmtBarAndMaybeFree(void)
 
 // ghidra_name TRailAmtBar::SelectTradeSummaryMetricByTagAndUpdateBarValues
 // ghidra_proto void __thiscall SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a020
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a020
 undefined4 SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
 {
   return 0;
@@ -581,7 +581,7 @@ undefined4 SelectTradeSummaryMetricByTagAndUpdateBarValues(void)
 
 // ghidra_name RenderQuickDrawControlWithHitRegionClip_B
 // ghidra_proto undefined RenderQuickDrawControlWithHitRegionClip_B()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058a1b0
+// PROMOTED_FUNCTION IMPERIALISM 0x0058a1b0
 undefined4 RenderQuickDrawControlWithHitRegionClip_B(void)
 {
   return 0;
@@ -589,7 +589,7 @@ undefined4 RenderQuickDrawControlWithHitRegionClip_B(void)
 
 // ghidra_name RenderQuickDrawOverlayWithHitRegion_0058a3b0
 // ghidra_proto undefined RenderQuickDrawOverlayWithHitRegion_0058a3b0()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058a3b0
+// PROMOTED_FUNCTION IMPERIALISM 0x0058a3b0
 undefined4 RenderQuickDrawOverlayWithHitRegion_0058a3b0(void)
 {
   return 0;
@@ -597,7 +597,7 @@ undefined4 RenderQuickDrawOverlayWithHitRegion_0058a3b0(void)
 
 // ghidra_name TShipyardCluster::CreateTradeMoveArrowControlPanel
 // ghidra_proto undefined CreateTradeMoveArrowControlPanel()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a4d0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a4d0
 undefined4 CreateTradeMoveArrowControlPanel(void)
 {
   return 0;
@@ -605,7 +605,7 @@ undefined4 CreateTradeMoveArrowControlPanel(void)
 
 // ghidra_name TShipyardCluster::GetTShipyardClusterClassNamePointer
 // ghidra_proto void * __cdecl GetTShipyardClusterClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a570
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a570
 undefined4 GetTShipyardClusterClassNamePointer(void)
 {
   return 0;
@@ -613,7 +613,7 @@ undefined4 GetTShipyardClusterClassNamePointer(void)
 
 // ghidra_name TShipyardCluster::ConstructTradeMoveArrowControlPanel
 // ghidra_proto undefined ConstructTradeMoveArrowControlPanel()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a590
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a590
 undefined4 ConstructTradeMoveArrowControlPanel(void)
 {
   return 0;
@@ -621,7 +621,7 @@ undefined4 ConstructTradeMoveArrowControlPanel(void)
 
 // ghidra_name TShipyardCluster::DestructTShipyardClusterMaybeFree
 // ghidra_proto void __cdecl DestructTShipyardClusterMaybeFree(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a5c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a5c0
 undefined4 DestructTShipyardClusterMaybeFree(void)
 {
   return 0;
@@ -629,7 +629,7 @@ undefined4 DestructTShipyardClusterMaybeFree(void)
 
 // ghidra_name TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls
 // ghidra_proto void __thiscall SelectTradeSpecialCommodityAndInitializeControls(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a610
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a610
 undefined4 SelectTradeSpecialCommodityAndInitializeControls(void)
 {
   return 0;
@@ -637,7 +637,7 @@ undefined4 SelectTradeSpecialCommodityAndInitializeControls(void)
 
 // ghidra_name TShipyardCluster::RefreshTradeMoveBarAndTurnControl
 // ghidra_proto void __thiscall RefreshTradeMoveBarAndTurnControl(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a690
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a690
 undefined4 RefreshTradeMoveBarAndTurnControl(void)
 {
   return 0;
@@ -645,7 +645,7 @@ undefined4 RefreshTradeMoveBarAndTurnControl(void)
 
 // ghidra_name TShipyardCluster::HandleTradeMoveArrowControlEvent
 // ghidra_proto void __thiscall HandleTradeMoveArrowControlEvent(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058a940
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058a940
 undefined4 HandleTradeMoveArrowControlEvent(void)
 {
   return 0;
@@ -653,7 +653,7 @@ undefined4 HandleTradeMoveArrowControlEvent(void)
 
 // ghidra_name TShipAmtBar::CreateTShipAmtBarInstance
 // ghidra_proto void * __cdecl CreateTShipAmtBarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058aaa0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058aaa0
 undefined4 CreateTShipAmtBarInstance(void)
 {
   return 0;
@@ -661,7 +661,7 @@ undefined4 CreateTShipAmtBarInstance(void)
 
 // ghidra_name TShipAmtBar::GetTShipAmtBarClassNamePointer
 // ghidra_proto void * __cdecl GetTShipAmtBarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ab40
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ab40
 undefined4 GetTShipAmtBarClassNamePointer(void)
 {
   return 0;
@@ -669,7 +669,7 @@ undefined4 GetTShipAmtBarClassNamePointer(void)
 
 // ghidra_name TShipAmtBar::ConstructTShipAmtBarBaseState
 // ghidra_proto void * __thiscall ConstructTShipAmtBarBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ab60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ab60
 undefined4 ConstructTShipAmtBarBaseState(void)
 {
   return 0;
@@ -677,7 +677,7 @@ undefined4 ConstructTShipAmtBarBaseState(void)
 
 // ghidra_name TShipAmtBar::DestructTShipAmtBarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTShipAmtBarAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058aba0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058aba0
 undefined4 DestructTShipAmtBarAndMaybeFree(void)
 {
   return 0;
@@ -685,7 +685,7 @@ undefined4 DestructTShipAmtBarAndMaybeFree(void)
 
 // ghidra_name TShipAmtBar::SelectTradeSpecialCommodityAndRecomputeBarLimits
 // ghidra_proto void __thiscall SelectTradeSpecialCommodityAndRecomputeBarLimits(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058abf0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058abf0
 undefined4 SelectTradeSpecialCommodityAndRecomputeBarLimits(void)
 {
   return 0;
@@ -693,7 +693,7 @@ undefined4 SelectTradeSpecialCommodityAndRecomputeBarLimits(void)
 
 // ghidra_name RenderQuickDrawControlWithHitRegionClip_C
 // ghidra_proto undefined RenderQuickDrawControlWithHitRegionClip_C()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058ac80
+// PROMOTED_FUNCTION IMPERIALISM 0x0058ac80
 undefined4 RenderQuickDrawControlWithHitRegionClip_C(void)
 {
   return 0;
@@ -701,7 +701,7 @@ undefined4 RenderQuickDrawControlWithHitRegionClip_C(void)
 
 // ghidra_name TTraderAmtBar::CreateTTraderAmtBarInstance
 // ghidra_proto void * __cdecl CreateTTraderAmtBarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ae30
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ae30
 undefined4 CreateTTraderAmtBarInstance(void)
 {
   return 0;
@@ -709,7 +709,7 @@ undefined4 CreateTTraderAmtBarInstance(void)
 
 // ghidra_name TTraderAmtBar::GetTTraderAmtBarClassNamePointer
 // ghidra_proto void * __cdecl GetTTraderAmtBarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058aed0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058aed0
 undefined4 GetTTraderAmtBarClassNamePointer(void)
 {
   return 0;
@@ -717,7 +717,7 @@ undefined4 GetTTraderAmtBarClassNamePointer(void)
 
 // ghidra_name ConstructTTraderAmtBar_Vtbl00666ba0
 // ghidra_proto void __cdecl ConstructTTraderAmtBar_Vtbl00666ba0(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058aef0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058aef0
 undefined4 ConstructTTraderAmtBar_Vtbl00666ba0(void)
 {
   return 0;
@@ -725,7 +725,7 @@ undefined4 ConstructTTraderAmtBar_Vtbl00666ba0(void)
 
 // ghidra_name TTraderAmtBar::DestructTTraderAmtBarMaybeFree
 // ghidra_proto void __cdecl DestructTTraderAmtBarMaybeFree(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058af30
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058af30
 undefined4 DestructTTraderAmtBarMaybeFree(void)
 {
   return 0;
@@ -733,7 +733,7 @@ undefined4 DestructTTraderAmtBarMaybeFree(void)
 
 // ghidra_name UpdateNationStateGaugeValuesFromScenarioRecordCode
 // ghidra_proto void __thiscall UpdateNationStateGaugeValuesFromScenarioRecordCode(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058af80
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058af80
 undefined4 UpdateNationStateGaugeValuesFromScenarioRecordCode(void)
 {
   return 0;
@@ -741,7 +741,7 @@ undefined4 UpdateNationStateGaugeValuesFromScenarioRecordCode(void)
 
 // ghidra_name WrapperFor_GetActiveNationId_At0058b070
 // ghidra_proto void __cdecl WrapperFor_GetActiveNationId_At0058b070(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b070
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b070
 undefined4 WrapperFor_GetActiveNationId_At0058b070(void)
 {
   return 0;
@@ -749,7 +749,7 @@ undefined4 WrapperFor_GetActiveNationId_At0058b070(void)
 
 // ghidra_name RenderControlWithTemporaryRectClipRegionAndChildren
 // ghidra_proto undefined RenderControlWithTemporaryRectClipRegionAndChildren()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058b0f0
+// PROMOTED_FUNCTION IMPERIALISM 0x0058b0f0
 undefined4 RenderControlWithTemporaryRectClipRegionAndChildren(void)
 {
   return 0;
@@ -757,7 +757,7 @@ undefined4 RenderControlWithTemporaryRectClipRegionAndChildren(void)
 
 // ghidra_name TCivilianButton::CreateTCivilianButtonInstance
 // ghidra_proto void * __cdecl CreateTCivilianButtonInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b340
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b340
 undefined4 CreateTCivilianButtonInstance(void)
 {
   return 0;
@@ -765,7 +765,7 @@ undefined4 CreateTCivilianButtonInstance(void)
 
 // ghidra_name TCivilianButton::GetTCivilianButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTCivilianButtonClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b3c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b3c0
 undefined4 GetTCivilianButtonClassNamePointer(void)
 {
   return 0;
@@ -773,7 +773,7 @@ undefined4 GetTCivilianButtonClassNamePointer(void)
 
 // ghidra_name TCivilianButton::ConstructTCivilianButtonBaseState
 // ghidra_proto void * __thiscall ConstructTCivilianButtonBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b3e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b3e0
 undefined4 ConstructTCivilianButtonBaseState(void)
 {
   return 0;
@@ -781,7 +781,7 @@ undefined4 ConstructTCivilianButtonBaseState(void)
 
 // ghidra_name TCivilianButton::DestructTCivilianButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCivilianButtonAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b410
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b410
 undefined4 DestructTCivilianButtonAndMaybeFree(void)
 {
   return 0;
@@ -789,7 +789,7 @@ undefined4 DestructTCivilianButtonAndMaybeFree(void)
 
 // ghidra_name OrphanCallChain_C4_I34_0058b460
 // ghidra_proto undefined OrphanCallChain_C4_I34_0058b460()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058b460
+// PROMOTED_FUNCTION IMPERIALISM 0x0058b460
 undefined4 OrphanCallChain_C4_I34_0058b460(void)
 {
   return 0;
@@ -797,7 +797,7 @@ undefined4 OrphanCallChain_C4_I34_0058b460(void)
 
 // ghidra_name BlitHintOverlayRectWithCtrlModifierPalette
 // ghidra_proto undefined BlitHintOverlayRectWithCtrlModifierPalette()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058b4f0
+// PROMOTED_FUNCTION IMPERIALISM 0x0058b4f0
 undefined4 BlitHintOverlayRectWithCtrlModifierPalette(void)
 {
   return 0;
@@ -805,7 +805,7 @@ undefined4 BlitHintOverlayRectWithCtrlModifierPalette(void)
 
 // ghidra_name THQButton::CreateTHQButtonInstance
 // ghidra_proto void * __cdecl CreateTHQButtonInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b5c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b5c0
 undefined4 CreateTHQButtonInstance(void)
 {
   return 0;
@@ -813,7 +813,7 @@ undefined4 CreateTHQButtonInstance(void)
 
 // ghidra_name THQButton::GetTHQButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTHQButtonClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b640
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b640
 undefined4 GetTHQButtonClassNamePointer(void)
 {
   return 0;
@@ -821,7 +821,7 @@ undefined4 GetTHQButtonClassNamePointer(void)
 
 // ghidra_name THQButton::ConstructTHQButtonBaseState
 // ghidra_proto void * __thiscall ConstructTHQButtonBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b660
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b660
 undefined4 ConstructTHQButtonBaseState(void)
 {
   return 0;
@@ -829,7 +829,7 @@ undefined4 ConstructTHQButtonBaseState(void)
 
 // ghidra_name THQButton::DestructTHQButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTHQButtonAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b690
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b690
 undefined4 DestructTHQButtonAndMaybeFree(void)
 {
   return 0;
@@ -837,7 +837,7 @@ undefined4 DestructTHQButtonAndMaybeFree(void)
 
 // ghidra_name THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
 // ghidra_proto undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b6e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b6e0
 undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(void)
 {
   return 0;
@@ -845,7 +845,7 @@ undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(void)
 
 // ghidra_name OrphanCallChain_C3_I43_0058b750
 // ghidra_proto undefined OrphanCallChain_C3_I43_0058b750()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058b750
+// PROMOTED_FUNCTION IMPERIALISM 0x0058b750
 undefined4 OrphanCallChain_C3_I43_0058b750(void)
 {
   return 0;
@@ -853,7 +853,7 @@ undefined4 OrphanCallChain_C3_I43_0058b750(void)
 
 // ghidra_name THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
 // ghidra_proto void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b7f0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b7f0
 undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
 {
   return 0;
@@ -861,7 +861,7 @@ undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
 
 // ghidra_name OrphanCallChain_C2_I16_0058b890
 // ghidra_proto undefined OrphanCallChain_C2_I16_0058b890()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058b890
+// PROMOTED_FUNCTION IMPERIALISM 0x0058b890
 undefined4 OrphanCallChain_C2_I16_0058b890(void)
 {
   return 0;
@@ -869,7 +869,7 @@ undefined4 OrphanCallChain_C2_I16_0058b890(void)
 
 // ghidra_name OrphanCallChain_C2_I37_0058b8d0
 // ghidra_proto undefined OrphanCallChain_C2_I37_0058b8d0()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058b8d0
+// PROMOTED_FUNCTION IMPERIALISM 0x0058b8d0
 undefined4 OrphanCallChain_C2_I37_0058b8d0(void)
 {
   return 0;
@@ -877,7 +877,7 @@ undefined4 OrphanCallChain_C2_I37_0058b8d0(void)
 
 // ghidra_name TPlacard::CreateTPlacardInstance
 // ghidra_proto void * __cdecl CreateTPlacardInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b960
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b960
 undefined4 CreateTPlacardInstance(void)
 {
   return 0;
@@ -885,7 +885,7 @@ undefined4 CreateTPlacardInstance(void)
 
 // ghidra_name TPlacard::GetTPlacardClassNamePointer
 // ghidra_proto void * __cdecl GetTPlacardClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058b9f0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058b9f0
 undefined4 GetTPlacardClassNamePointer(void)
 {
   return 0;
@@ -893,7 +893,7 @@ undefined4 GetTPlacardClassNamePointer(void)
 
 // ghidra_name TPlacard::ConstructTPlacardBaseState
 // ghidra_proto void * __thiscall ConstructTPlacardBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ba10
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ba10
 undefined4 ConstructTPlacardBaseState(void)
 {
   return 0;
@@ -901,7 +901,7 @@ undefined4 ConstructTPlacardBaseState(void)
 
 // ghidra_name TPlacard::DestructTPlacardAndMaybeFree
 // ghidra_proto void * __thiscall DestructTPlacardAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ba40
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ba40
 undefined4 DestructTPlacardAndMaybeFree(void)
 {
   return 0;
@@ -909,7 +909,7 @@ undefined4 DestructTPlacardAndMaybeFree(void)
 
 // ghidra_name WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
 // ghidra_proto undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bab0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058bab0
 undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(void)
 {
   return 0;
@@ -917,7 +917,7 @@ undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(void)
 
 // ghidra_name WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
 // ghidra_proto void __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bb50
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058bb50
 undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
 {
   return 0;
@@ -925,7 +925,7 @@ undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
 
 // ghidra_name TPlacard::RenderPlacardValueTextWithShadow
 // ghidra_proto void __thiscall RenderPlacardValueTextWithShadow(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bc60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058bc60
 undefined4 RenderPlacardValueTextWithShadow(void)
 {
   return 0;
@@ -933,7 +933,7 @@ undefined4 RenderPlacardValueTextWithShadow(void)
 
 // ghidra_name TArmyPlacard::CreateTArmyPlacardInstance
 // ghidra_proto void * __cdecl CreateTArmyPlacardInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058be30
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058be30
 undefined4 CreateTArmyPlacardInstance(void)
 {
   return 0;
@@ -941,7 +941,7 @@ undefined4 CreateTArmyPlacardInstance(void)
 
 // ghidra_name TArmyPlacard::GetTArmyPlacardClassNamePointer
 // ghidra_proto void * __cdecl GetTArmyPlacardClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058beb0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058beb0
 undefined4 GetTArmyPlacardClassNamePointer(void)
 {
   return 0;
@@ -949,7 +949,7 @@ undefined4 GetTArmyPlacardClassNamePointer(void)
 
 // ghidra_name TArmyPlacard::ConstructTArmyPlacardBaseState
 // ghidra_proto void * __thiscall ConstructTArmyPlacardBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bed0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058bed0
 undefined4 ConstructTArmyPlacardBaseState(void)
 {
   return 0;
@@ -957,7 +957,7 @@ undefined4 ConstructTArmyPlacardBaseState(void)
 
 // ghidra_name TArmyPlacard::DestructTArmyPlacardAndMaybeFree
 // ghidra_proto void * __thiscall DestructTArmyPlacardAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bf00
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058bf00
 undefined4 DestructTArmyPlacardAndMaybeFree(void)
 {
   return 0;
@@ -965,7 +965,7 @@ undefined4 DestructTArmyPlacardAndMaybeFree(void)
 
 // ghidra_name TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
 // ghidra_proto void __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058bf50
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058bf50
 undefined4 WrapperFor_GetActiveNationId_At0058bf50(void)
 {
   return 0;
@@ -973,7 +973,7 @@ undefined4 WrapperFor_GetActiveNationId_At0058bf50(void)
 
 // ghidra_name RenderRightAlignedNumericOverlayWithShadow
 // ghidra_proto undefined RenderRightAlignedNumericOverlayWithShadow()
-// PROMOTED_FUNCTION: IMPERIALISM 0x0058bfe0
+// PROMOTED_FUNCTION IMPERIALISM 0x0058bfe0
 undefined4 RenderRightAlignedNumericOverlayWithShadow(void)
 {
   return 0;
@@ -981,7 +981,7 @@ undefined4 RenderRightAlignedNumericOverlayWithShadow(void)
 
 // ghidra_name TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC
 // ghidra_proto void __thiscall HandlePlusMinusCommandAndInvokeVslot1CC(int * arg1, int * arg2)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c140
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c140
 undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
 {
   return 0;
@@ -989,7 +989,7 @@ undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
 
 // ghidra_name TNumberedArrowButton::CreateTNumberedArrowButtonInstance
 // ghidra_proto void * __cdecl CreateTNumberedArrowButtonInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c1e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c1e0
 undefined4 CreateTNumberedArrowButtonInstance(void)
 {
   return 0;
@@ -997,7 +997,7 @@ undefined4 CreateTNumberedArrowButtonInstance(void)
 
 // ghidra_name TNumberedArrowButton::GetTNumberedArrowButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTNumberedArrowButtonClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c280
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c280
 undefined4 GetTNumberedArrowButtonClassNamePointer(void)
 {
   return 0;
@@ -1005,7 +1005,7 @@ undefined4 GetTNumberedArrowButtonClassNamePointer(void)
 
 // ghidra_name TNumberedArrowButton::ConstructTNumberedArrowButtonBaseState
 // ghidra_proto void * __thiscall ConstructTNumberedArrowButtonBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c2a0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c2a0
 undefined4 ConstructTNumberedArrowButtonBaseState(void)
 {
   return 0;
@@ -1013,7 +1013,7 @@ undefined4 ConstructTNumberedArrowButtonBaseState(void)
 
 // ghidra_name TNumberedArrowButton::DestructTNumberedArrowButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNumberedArrowButtonAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c2e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c2e0
 undefined4 DestructTNumberedArrowButtonAndMaybeFree(void)
 {
   return 0;
@@ -1021,7 +1021,7 @@ undefined4 DestructTNumberedArrowButtonAndMaybeFree(void)
 
 // ghidra_name OrphanCallChain_C1_I08_0058c330
 // ghidra_proto undefined OrphanCallChain_C1_I08_0058c330()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c330
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c330
 undefined4 OrphanCallChain_C1_I08_0058c330(void)
 {
   return 0;
@@ -1029,7 +1029,7 @@ undefined4 OrphanCallChain_C1_I08_0058c330(void)
 
 // ghidra_name OrphanCallChain_C2_I23_0058c360
 // ghidra_proto undefined OrphanCallChain_C2_I23_0058c360()
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c360
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c360
 undefined4 OrphanCallChain_C2_I23_0058c360(void)
 {
   return 0;
@@ -1053,7 +1053,7 @@ undefined4 HandleSplitArrowMousePhaseStateAndDispatchCommand64or65(void)
 
 // ghidra_name WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0
 // ghidra_proto void __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(int arg1, int arg2)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c7c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c7c0
 undefined4 WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(void)
 {
   return 0;
@@ -1061,7 +1061,7 @@ undefined4 WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_
 
 // ghidra_name TCombatReportView::CreateTCombatReportViewInstance
 // ghidra_proto void * __cdecl CreateTCombatReportViewInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c830
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c830
 undefined4 CreateTCombatReportViewInstance(void)
 {
   return 0;
@@ -1069,7 +1069,7 @@ undefined4 CreateTCombatReportViewInstance(void)
 
 // ghidra_name TCombatReportView::GetTCombatReportViewClassNamePointer
 // ghidra_proto void * __cdecl GetTCombatReportViewClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c8b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c8b0
 undefined4 GetTCombatReportViewClassNamePointer(void)
 {
   return 0;
@@ -1077,7 +1077,7 @@ undefined4 GetTCombatReportViewClassNamePointer(void)
 
 // ghidra_name TCombatReportView::ConstructTCombatReportViewBaseState
 // ghidra_proto void * __thiscall ConstructTCombatReportViewBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c8d0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c8d0
 undefined4 ConstructTCombatReportViewBaseState(void)
 {
   return 0;
@@ -1085,7 +1085,7 @@ undefined4 ConstructTCombatReportViewBaseState(void)
 
 // ghidra_name TCombatReportView::DestructTCombatReportViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCombatReportViewAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058c900
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058c900
 undefined4 DestructTCombatReportViewAndMaybeFree(void)
 {
   return 0;
@@ -1117,7 +1117,7 @@ undefined4 HandleCombatReportPageNavigationAndRefreshText(void)
 
 // ghidra_name TArmyToolbar::CreateTArmyToolbarInstance
 // ghidra_proto void * __cdecl CreateTArmyToolbarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058de40
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058de40
 undefined4 CreateTArmyToolbarInstance(void)
 {
   return 0;
@@ -1125,7 +1125,7 @@ undefined4 CreateTArmyToolbarInstance(void)
 
 // ghidra_name TArmyToolbar::GetTArmyToolbarClassNamePointer
 // ghidra_proto void * __cdecl GetTArmyToolbarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058dec0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058dec0
 undefined4 GetTArmyToolbarClassNamePointer(void)
 {
   return 0;
@@ -1133,7 +1133,7 @@ undefined4 GetTArmyToolbarClassNamePointer(void)
 
 // ghidra_name TArmyToolbar::ConstructTArmyToolbarBaseState
 // ghidra_proto void * __thiscall ConstructTArmyToolbarBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058dee0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058dee0
 undefined4 ConstructTArmyToolbarBaseState(void)
 {
   return 0;
@@ -1141,7 +1141,7 @@ undefined4 ConstructTArmyToolbarBaseState(void)
 
 // ghidra_name TArmyToolbar::DestructTArmyToolbarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTArmyToolbarAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058df10
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058df10
 undefined4 DestructTArmyToolbarAndMaybeFree(void)
 {
   return 0;
@@ -1165,7 +1165,7 @@ undefined4 HandleMapContextActionArmyRatioAndModeCommands(void)
 
 // ghidra_name TStratReportView::CreateTStratReportViewInstance
 // ghidra_proto void * __cdecl CreateTStratReportViewInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e330
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058e330
 undefined4 CreateTStratReportViewInstance(void)
 {
   return 0;
@@ -1173,7 +1173,7 @@ undefined4 CreateTStratReportViewInstance(void)
 
 // ghidra_name TStratReportView::GetTStratReportViewClassNamePointer
 // ghidra_proto void * __cdecl GetTStratReportViewClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e3a0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058e3a0
 undefined4 GetTStratReportViewClassNamePointer(void)
 {
   return 0;
@@ -1181,7 +1181,7 @@ undefined4 GetTStratReportViewClassNamePointer(void)
 
 // ghidra_name TStratReportView::ConstructTStratReportViewBaseState
 // ghidra_proto void * __thiscall ConstructTStratReportViewBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e3c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058e3c0
 undefined4 ConstructTStratReportViewBaseState(void)
 {
   return 0;
@@ -1189,7 +1189,7 @@ undefined4 ConstructTStratReportViewBaseState(void)
 
 // ghidra_name TStratReportView::DestructTStratReportViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTStratReportViewAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058e3f0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058e3f0
 undefined4 DestructTStratReportViewAndMaybeFree(void)
 {
   return 0;
@@ -1213,7 +1213,7 @@ undefined4 RenderBattleOutcomeHeaderWinnerLoserLines(void)
 
 // ghidra_name TCivToolbar::CreateTCivToolbarInstance
 // ghidra_proto void * __cdecl CreateTCivToolbarInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ea00
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ea00
 undefined4 CreateTCivToolbarInstance(void)
 {
   return 0;
@@ -1221,7 +1221,7 @@ undefined4 CreateTCivToolbarInstance(void)
 
 // ghidra_name TCivToolbar::GetTCivToolbarClassNamePointer
 // ghidra_proto void * __cdecl GetTCivToolbarClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ea80
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ea80
 undefined4 GetTCivToolbarClassNamePointer(void)
 {
   return 0;
@@ -1229,7 +1229,7 @@ undefined4 GetTCivToolbarClassNamePointer(void)
 
 // ghidra_name TCivToolbar::ConstructTCivToolbarBaseState
 // ghidra_proto void * __thiscall ConstructTCivToolbarBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058eaa0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058eaa0
 undefined4 ConstructTCivToolbarBaseState(void)
 {
   return 0;
@@ -1237,7 +1237,7 @@ undefined4 ConstructTCivToolbarBaseState(void)
 
 // ghidra_name TCivToolbar::DestructTCivToolbarAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCivToolbarAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0058ead0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ead0
 undefined4 DestructTCivToolbarAndMaybeFree(void)
 {
   return 0;
@@ -1341,7 +1341,7 @@ undefined4 RenderCivilianTargetProfilePanel(void)
 
 // ghidra_name TCivReport::CreateTCivReportInstance
 // ghidra_proto void * __cdecl CreateTCivReportInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590b90
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00590b90
 undefined4 CreateTCivReportInstance(void)
 {
   return 0;
@@ -1349,7 +1349,7 @@ undefined4 CreateTCivReportInstance(void)
 
 // ghidra_name TCivReport::GetTCivReportClassNamePointer
 // ghidra_proto void * __cdecl GetTCivReportClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590c10
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00590c10
 undefined4 GetTCivReportClassNamePointer(void)
 {
   return 0;
@@ -1357,7 +1357,7 @@ undefined4 GetTCivReportClassNamePointer(void)
 
 // ghidra_name TCivReport::ConstructTCivReportBaseState
 // ghidra_proto void * __thiscall ConstructTCivReportBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590c30
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00590c30
 undefined4 ConstructTCivReportBaseState(void)
 {
   return 0;
@@ -1365,7 +1365,7 @@ undefined4 ConstructTCivReportBaseState(void)
 
 // ghidra_name TCivReport::DestructTCivReportAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCivReportAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00590c60
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00590c60
 undefined4 DestructTCivReportAndMaybeFree(void)
 {
   return 0;
@@ -1381,7 +1381,7 @@ undefined4 BuildCivReportNationEntryDetailTextBlock(void)
 
 // ghidra_name TArmyInfoView::CreateTArmyInfoViewInstance
 // ghidra_proto void * __cdecl CreateTArmyInfoViewInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591500
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00591500
 undefined4 CreateTArmyInfoViewInstance(void)
 {
   return 0;
@@ -1389,7 +1389,7 @@ undefined4 CreateTArmyInfoViewInstance(void)
 
 // ghidra_name TArmyInfoView::GetTArmyInfoViewClassNamePointer
 // ghidra_proto void * __cdecl GetTArmyInfoViewClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591580
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00591580
 undefined4 GetTArmyInfoViewClassNamePointer(void)
 {
   return 0;
@@ -1397,7 +1397,7 @@ undefined4 GetTArmyInfoViewClassNamePointer(void)
 
 // ghidra_name TArmyInfoView::ConstructTArmyInfoViewBaseState
 // ghidra_proto void * __thiscall ConstructTArmyInfoViewBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005915a0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005915a0
 undefined4 ConstructTArmyInfoViewBaseState(void)
 {
   return 0;
@@ -1405,7 +1405,7 @@ undefined4 ConstructTArmyInfoViewBaseState(void)
 
 // ghidra_name TArmyInfoView::DestructTArmyInfoViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTArmyInfoViewAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005915d0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005915d0
 undefined4 DestructTArmyInfoViewAndMaybeFree(void)
 {
   return 0;
@@ -1421,7 +1421,7 @@ undefined4 RefreshArmyInfoViewTextAndStyleDescriptors(void)
 
 // ghidra_name TTransportPicture::CreateTTransportPictureInstance
 // ghidra_proto void * __cdecl CreateTTransportPictureInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591d90
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00591d90
 undefined4 CreateTTransportPictureInstance(void)
 {
   return 0;
@@ -1429,7 +1429,7 @@ undefined4 CreateTTransportPictureInstance(void)
 
 // ghidra_name TTransportPicture::GetTTransportPictureClassNamePointer
 // ghidra_proto void * __cdecl GetTTransportPictureClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591e50
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00591e50
 undefined4 GetTTransportPictureClassNamePointer(void)
 {
   return 0;
@@ -1437,7 +1437,7 @@ undefined4 GetTTransportPictureClassNamePointer(void)
 
 // ghidra_name TTransportPicture::ConstructTTransportPictureBaseState
 // ghidra_proto void * __thiscall ConstructTTransportPictureBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591e70
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00591e70
 undefined4 ConstructTTransportPictureBaseState(void)
 {
   return 0;
@@ -1445,7 +1445,7 @@ undefined4 ConstructTTransportPictureBaseState(void)
 
 // ghidra_name TTransportPicture::DestructTTransportPictureAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTransportPictureAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00591ec0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00591ec0
 undefined4 DestructTTransportPictureAndMaybeFree(void)
 {
   return 0;
@@ -1477,7 +1477,7 @@ undefined4 InvokeVslot1CCAfterThunk48F3C0(void)
 
 // ghidra_name TWarningView::CreateTWarningViewInstance
 // ghidra_proto void * __cdecl CreateTWarningViewInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00592860
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00592860
 undefined4 CreateTWarningViewInstance(void)
 {
   return 0;
@@ -1485,7 +1485,7 @@ undefined4 CreateTWarningViewInstance(void)
 
 // ghidra_name TWarningView::GetTWarningViewClassNamePointer
 // ghidra_proto void * __cdecl GetTWarningViewClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005928e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005928e0
 undefined4 GetTWarningViewClassNamePointer(void)
 {
   return 0;
@@ -1493,7 +1493,7 @@ undefined4 GetTWarningViewClassNamePointer(void)
 
 // ghidra_name TWarningView::ConstructTWarningViewBaseState
 // ghidra_proto void * __thiscall ConstructTWarningViewBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00592900
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00592900
 undefined4 ConstructTWarningViewBaseState(void)
 {
   return 0;
@@ -1501,7 +1501,7 @@ undefined4 ConstructTWarningViewBaseState(void)
 
 // ghidra_name TWarningView::DestructTWarningViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTWarningViewAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00592930
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00592930
 undefined4 DestructTWarningViewAndMaybeFree(void)
 {
   return 0;
@@ -1533,7 +1533,7 @@ undefined4 Cluster_GameplayHint_00593210(void)
 
 // ghidra_name TSoundPlayer::CreateTSoundPlayerInstance
 // ghidra_proto void * __cdecl CreateTSoundPlayerInstance(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005932b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005932b0
 undefined4 CreateTSoundPlayerInstance(void)
 {
   return 0;
@@ -1541,7 +1541,7 @@ undefined4 CreateTSoundPlayerInstance(void)
 
 // ghidra_name TSoundPlayer::GetTSoundPlayerClassNamePointer
 // ghidra_proto void * __cdecl GetTSoundPlayerClassNamePointer(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00593350
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00593350
 undefined4 GetTSoundPlayerClassNamePointer(void)
 {
   return 0;
@@ -1549,7 +1549,7 @@ undefined4 GetTSoundPlayerClassNamePointer(void)
 
 // ghidra_name TSoundPlayer::ConstructTSoundPlayerBaseState
 // ghidra_proto void * __thiscall ConstructTSoundPlayerBaseState(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00593370
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00593370
 undefined4 ConstructTSoundPlayerBaseState(void)
 {
   return 0;
@@ -1557,7 +1557,7 @@ undefined4 ConstructTSoundPlayerBaseState(void)
 
 // ghidra_name TSoundPlayer::DestructTSoundPlayerAndMaybeFree
 // ghidra_proto void * __thiscall DestructTSoundPlayerAndMaybeFree(byte freeSelfFlag)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005933b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005933b0
 undefined4 DestructTSoundPlayerAndMaybeFree(void)
 {
   return 0;
@@ -1565,7 +1565,7 @@ undefined4 DestructTSoundPlayerAndMaybeFree(void)
 
 // ghidra_name TSoundPlayer::DestructTSoundPlayerBaseState
 // ghidra_proto void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer * pThis)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x005933e0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x005933e0
 undefined4 DestructTSoundPlayerBaseState(void)
 {
   return 0;
@@ -2317,7 +2317,7 @@ undefined4 SwapToolInfoSubviewAndRefreshClipRegion(void)
 
 // ghidra_name SetTradeToolSubcontrolEnabledStateByFlag
 // ghidra_proto undefined SetTradeToolSubcontrolEnabledStateByFlag(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x0059a180
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0059a180
 undefined4 SetTradeToolSubcontrolEnabledStateByFlag(void)
 {
   return 0;

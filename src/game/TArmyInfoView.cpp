@@ -9,7 +9,9 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x668358
 char g_vtblTArmyInfoView;
+// GLOBAL: IMPERIALISM 0x663148
 char g_pClassDescTArmyInfoView;
 
 struct ArmyInfoViewState {
@@ -45,14 +47,14 @@ void* __cdecl GetTArmyInfoViewClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTArmyInfoView);
 }
 
-// FUNCTION: IMPERIALISM 0x005915A0
+// FUNCTION: IMPERIALISM 0x005915a0
 ArmyInfoViewState* __fastcall ConstructTArmyInfoViewBaseState(ArmyInfoViewState* view) {
   RuntimeBridge::ConstructPictureResourceEntryBase(view);
   view->vftable = reinterpret_cast<void*>(&g_vtblTArmyInfoView);
   return view;
 }
 
-// FUNCTION: IMPERIALISM 0x005915D0
+// FUNCTION: IMPERIALISM 0x005915d0
 ArmyInfoViewState* __fastcall DestructTArmyInfoViewAndMaybeFree(ArmyInfoViewState* view,
                                                                 int unusedEdx,
                                                                 unsigned char freeSelfFlag) {

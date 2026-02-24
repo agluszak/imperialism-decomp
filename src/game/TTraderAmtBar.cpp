@@ -1,7 +1,7 @@
 // Included by src/game/trade_screen.cpp.
 // Contains trade amount-bar class wrappers (address-ordered).
 
-// FUNCTION: IMPERIALISM 0x0058AE30
+// FUNCTION: IMPERIALISM 0x0058ae30
 TradeAmountBarLayout* __cdecl CreateTTraderAmtBarInstance(void) {
   TradeAmountBarLayout* amountBar =
       reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x68));
@@ -16,12 +16,12 @@ TradeAmountBarLayout* __cdecl CreateTTraderAmtBarInstance(void) {
   return amountBar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058AED0
+// FUNCTION: IMPERIALISM 0x0058aed0
 void* __cdecl GetTTraderAmtBarClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTTraderAmtBar);
 }
 
-// FUNCTION: IMPERIALISM 0x0058AEF0
+// FUNCTION: IMPERIALISM 0x0058aef0
 TradeAmountBarLayout* __fastcall
 ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmountBarLayout* amountBar) {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
@@ -33,7 +33,7 @@ ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmountBarLayout* amountBar) {
   return amountBar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058AF30
+// FUNCTION: IMPERIALISM 0x0058af30
 void __fastcall DestructTTraderAmtBarMaybeFree(TradeAmountBarLayout* amountBar, int unusedEdx,
                                                unsigned char freeSelfFlag) {
   (void)unusedEdx;
@@ -53,7 +53,7 @@ const int kScenarioRecordTags[] = {
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x0058AF80
+// FUNCTION: IMPERIALISM 0x0058af80
 void TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode() {
   TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
   int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(state->ownerContext) + 0x1c);
@@ -90,7 +90,7 @@ void TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode() 
   thunk_NoOpUiLifecycleHook();
 }
 
-// FUNCTION: IMPERIALISM 0x0058B070
+// FUNCTION: IMPERIALISM 0x0058b070
 void __fastcall WrapperFor_GetActiveNationId_At0058b070(TradeAmountBarLayout* amountBar,
                                                         int unusedEdx, short requestedValue) {
   (void)unusedEdx;

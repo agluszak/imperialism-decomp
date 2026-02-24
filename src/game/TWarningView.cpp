@@ -9,7 +9,9 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void);
 
 namespace {
 
+// GLOBAL: IMPERIALISM 0x6687b8
 char g_vtblTWarningView;
+// GLOBAL: IMPERIALISM 0x663178
 char g_pClassDescTWarningView;
 
 struct WarningViewState {
@@ -40,7 +42,7 @@ WarningViewState* __cdecl CreateTWarningViewInstance(void) {
   return view;
 }
 
-// FUNCTION: IMPERIALISM 0x005928E0
+// FUNCTION: IMPERIALISM 0x005928e0
 void* __cdecl GetTWarningViewClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTWarningView);
 }

@@ -12,12 +12,12 @@ const unsigned int kAddrVtblGetTEventHandlerClassThunk = 0x006497A0;
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x004064E2
+// FUNCTION: IMPERIALISM 0x004064e2
 void TView::thunk_ConstructUiResourceEntryBase() {
   ConstructUiResourceEntryBase();
 }
 
-// FUNCTION: IMPERIALISM 0x0048A8E0
+// FUNCTION: IMPERIALISM 0x0048a8e0
 void TView::ConstructUiResourceEntryBase() {
   field0c = 0;
   field10 = 0x7fffffff;

@@ -25,7 +25,7 @@ struct PlacardViewLayout {
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058B960
+// FUNCTION: IMPERIALISM 0x0058b960
 PlacardState* __cdecl CreateTPlacardInstance(void) {
   PlacardState* placard = reinterpret_cast<PlacardState*>(AllocateWithFallbackHandler(0x94));
   if (placard != 0) {
@@ -36,12 +36,12 @@ PlacardState* __cdecl CreateTPlacardInstance(void) {
   return placard;
 }
 
-// FUNCTION: IMPERIALISM 0x0058B9F0
+// FUNCTION: IMPERIALISM 0x0058b9f0
 void* __cdecl GetTPlacardClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTPlacard);
 }
 
-// FUNCTION: IMPERIALISM 0x0058BA10
+// FUNCTION: IMPERIALISM 0x0058ba10
 PlacardState* __fastcall ConstructTPlacardBaseState(PlacardState* placard) {
   TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(placard);
   placard->vftable = reinterpret_cast<void*>(&g_vtblTPlacard);
@@ -49,7 +49,7 @@ PlacardState* __fastcall ConstructTPlacardBaseState(PlacardState* placard) {
   return placard;
 }
 
-// FUNCTION: IMPERIALISM 0x0058BA40
+// FUNCTION: IMPERIALISM 0x0058ba40
 PlacardState* __fastcall DestructTPlacardAndMaybeFree(PlacardState* placard, int unusedEdx,
                                                       unsigned char freeSelfFlag) {
   (void)unusedEdx;
@@ -64,7 +64,7 @@ PlacardState* __fastcall DestructTPlacardAndMaybeFree(PlacardState* placard, int
 #pragma auto_inline(on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058BAB0
+// FUNCTION: IMPERIALISM 0x0058bab0
 void PlacardState::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0() {
   thunk_NoOpUiLifecycleHook();
   int enabled = (placardValue == 0) ? 0 : 1;
@@ -72,7 +72,7 @@ void PlacardState::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0() {
       (*reinterpret_cast<void***>(this))[0xa4 / 4])(this, enabled, 1);
 }
 
-// FUNCTION: IMPERIALISM 0x0058BB50
+// FUNCTION: IMPERIALISM 0x0058bb50
 void PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2) {
   short requestedValue = (short)arg1;
   if (requestedValue != placardValue) {
@@ -99,7 +99,7 @@ void PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(in
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0058BC60
+// FUNCTION: IMPERIALISM 0x0058bc60
 void PlacardState::RenderPlacardValueTextWithShadow() {
   if (placardValue != 0) {
     thunk_NoOpUiLifecycleHook();

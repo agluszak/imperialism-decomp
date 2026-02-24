@@ -2445,7 +2445,7 @@ undefined4 thunk_InitializeTacticalSideFromArmyUnitList(void)
 
 // ghidra_name TShipyardCluster::thunk_SelectTradeSpecialCommodityAndInitializeControls
 // ghidra_proto void __thiscall thunk_SelectTradeSpecialCommodityAndInitializeControls(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x00402c11
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00402c11
 undefined4 thunk_SelectTradeSpecialCommodityAndInitializeControls(void)
 {
   return 0;
@@ -3965,7 +3965,7 @@ undefined4 thunk_GenerateCoarseAndFineRegionSeedMap(void)
 
 // ghidra_name thunk_SetTradeToolSubcontrolEnabledStateByFlag
 // ghidra_proto undefined thunk_SetTradeToolSubcontrolEnabledStateByFlag(void)
-// MANUAL_OVERRIDE_ADDR: IMPERIALISM 0x004032fb
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x004032fb
 undefined4 thunk_SetTradeToolSubcontrolEnabledStateByFlag(void)
 {
   return 0;

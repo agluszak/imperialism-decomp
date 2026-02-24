@@ -6,7 +6,7 @@
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058B5C0
+// FUNCTION: IMPERIALISM 0x0058b5c0
 HQButtonState* __cdecl CreateTHQButtonInstance(void) {
   HQButtonState* button = reinterpret_cast<HQButtonState*>(AllocateWithFallbackHandler(0x9c));
   if (button != 0) {
@@ -16,19 +16,19 @@ HQButtonState* __cdecl CreateTHQButtonInstance(void) {
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058B640
+// FUNCTION: IMPERIALISM 0x0058b640
 void* __cdecl GetTHQButtonClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTHQButton);
 }
 
-// FUNCTION: IMPERIALISM 0x0058B660
+// FUNCTION: IMPERIALISM 0x0058b660
 HQButtonState* __fastcall ConstructTHQButtonBaseState(HQButtonState* button) {
   TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(button);
   button->vftable = reinterpret_cast<void*>(&g_vtblTHQButton);
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058B690
+// FUNCTION: IMPERIALISM 0x0058b690
 HQButtonState* __fastcall DestructTHQButtonAndMaybeFree(HQButtonState* button, int unusedEdx,
                                                         unsigned char freeSelfFlag) {
   (void)unusedEdx;
@@ -39,7 +39,7 @@ HQButtonState* __fastcall DestructTHQButtonAndMaybeFree(HQButtonState* button, i
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058B6E0
+// FUNCTION: IMPERIALISM 0x0058b6e0
 void __fastcall WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(HQButtonState* button) {
   short glyph = button->glyphBase84;
   thunk_NoOpUiLifecycleHook();
@@ -51,7 +51,7 @@ void __fastcall WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(HQButtonState* b
   button->glyph96 = (short)(glyph + 3);
 }
 
-// FUNCTION: IMPERIALISM 0x0058B7F0
+// FUNCTION: IMPERIALISM 0x0058b7f0
 void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(HQButtonState* button,
                                                                              int unusedEdx,
                                                                              int commandId) {

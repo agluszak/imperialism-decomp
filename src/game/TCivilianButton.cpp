@@ -6,7 +6,7 @@
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x0058B340
+// FUNCTION: IMPERIALISM 0x0058b340
 CivilianButtonState* __cdecl CreateTCivilianButtonInstance(void) {
   CivilianButtonState* button =
       reinterpret_cast<CivilianButtonState*>(AllocateWithFallbackHandler(0xa0));
@@ -18,12 +18,12 @@ CivilianButtonState* __cdecl CreateTCivilianButtonInstance(void) {
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058B3C0
+// FUNCTION: IMPERIALISM 0x0058b3c0
 void* __cdecl GetTCivilianButtonClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTCivilianButton);
 }
 
-// FUNCTION: IMPERIALISM 0x0058B3E0
+// FUNCTION: IMPERIALISM 0x0058b3e0
 CivilianButtonState* __fastcall ConstructTCivilianButtonBaseState(CivilianButtonState* button) {
   TradeScreenRuntimeBridge::ConstructUiClickablePictureResourceEntry(button);
   button->vftable = reinterpret_cast<void*>(&g_vtblTCivilianButton);
@@ -31,7 +31,7 @@ CivilianButtonState* __fastcall ConstructTCivilianButtonBaseState(CivilianButton
   return button;
 }
 
-// FUNCTION: IMPERIALISM 0x0058B410
+// FUNCTION: IMPERIALISM 0x0058b410
 CivilianButtonState* __fastcall DestructTCivilianButtonAndMaybeFree(CivilianButtonState* button,
                                                                     int unusedEdx,
                                                                     unsigned char freeSelfFlag) {

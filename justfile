@@ -23,6 +23,18 @@ sync-ghidra:
 regen-stubs:
   uv run python tools/stubgen.py
 
+annotate-globals:
+  uv run python tools/workflow/annotate_globals_from_symbols.py --paths src/game include/game --write
+
+annotate-vtables:
+  uv run python tools/workflow/annotate_vtables_from_symbols.py --paths include/game --write
+
+annotate-strings:
+  uv run python tools/workflow/annotate_strings_from_symbols.py --paths src/game include/game --write
+
+normalize-markers:
+  uv run python tools/workflow/normalize_reccmp_markers.py --paths src include --write
+
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
 

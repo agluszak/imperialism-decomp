@@ -9,7 +9,7 @@
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
-// FUNCTION: IMPERIALISM 0x005884C0
+// FUNCTION: IMPERIALISM 0x005884c0
 TradeAmountBarLayout* __cdecl CreateTAmtBarInstance(void) {
   TradeAmountBarLayout* amountBar =
       reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x68));
@@ -41,7 +41,7 @@ TradeAmountBarLayout* __fastcall ConstructTAmtBarBaseState(TradeAmountBarLayout*
   return amountBar;
 }
 
-// FUNCTION: IMPERIALISM 0x005885C0
+// FUNCTION: IMPERIALISM 0x005885c0
 TradeAmountBarLayout* __fastcall DestructTAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar,
                                                              int unusedEdx,
                                                              unsigned char freeSelfFlag) {
@@ -66,7 +66,7 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
 
-// FUNCTION: IMPERIALISM 0x00588FF0
+// FUNCTION: IMPERIALISM 0x00588ff0
 void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId, void* eventArg,
                                                        int eventExtra) {
   // ORIG_CALLCONV: __thiscall
