@@ -2,6 +2,91 @@
 
 ## 2026-02-24
 
+### TCivDescription loop pass (`0x0058F3C0`, `0x0058F1A0`)
+1. Reworked `src/game/TCivDescription.cpp` `0x0058F3C0` (`UpdateCivilianOrderTargetTileCountsForOwnerNation`) to follow exported Ghidra shape more literally:
+   1. removed helper indirection and null-guard wrappers.
+   2. switched to direct fixed-address globals (`0x6A43D4`, `0x6A4310`, `0x698F58`) and direct province-collection vtable slot calls (`+0x24`, `+0x28`).
+2. Kept `0x0058F110` on the short-width class-id shape (restored after a temporary 32-bit regression probe):
+   1. `cachedCivilianClassId` and input class-id stay `short`.
+3. Promoted `0x0058F1A0` with `just promote` and normalized to compile-safe manual wrapper in `src/game/TCivDescription.cpp`:
+   1. replaced raw class-scoped Ghidra output with typed free-wrapper form (`// ORIG_CALLCONV: __thiscall`).
+   2. preserved click-hit-test + province/tile scan flow in first-pass form.
+   3. declared `PtInRect` with Win32-compatible shape (`RECT*`, `POINT` by value) to avoid ABI drift.
+4. Updated stub ownership:
+   1. `src/autogen/stubs/stubs_part018.cpp`: `0x0058F1A0` -> `MANUAL_OVERRIDE_ADDR`.
+5. Verification sequence:
+   1. `just promote src/game/TCivDescription.cpp --address 0x0058f1a0`
+   2. `just format src/game/TCivDescription.cpp src/autogen/stubs/stubs_part018.cpp`
+   3. `just build`
+   4. `just detect`
+   5. `just compare 0x0058f110`
+   6. `just compare 0x0058f1a0`
+   7. `just compare 0x0058f3c0`
+   8. `just stats`
+6. Targeted similarities:
+   1. `0x0058F110`: `69.39%` (unchanged, regression probe reverted).
+   2. `0x0058F3C0`: `16.67% -> 24.88%`.
+   3. `0x0058F1A0`: `17.14%` first-pass ownership.
+7. Global snapshot (`2026-02-24T20:41:48Z`):
+   1. paired functions: `12228/12228`
+   2. aligned functions: `60`
+   3. recompiled functions: `12514`
+   4. average similarity: `2.56%`
+   5. non-function coverage (with imports): `5.78%`
+8. `0x0058F1A0` loop-shape probe:
+   1. tested pointer-driven legend-slot loop (`currentSelectionCount`/end-pointer form).
+   2. regression observed: `17.14% -> 4.92%`.
+   3. reverted to slot-index loop; `0x0058F1A0` restored to `17.14%`.
+
+### New function batch promotion (`0x0058E1C0`, `0x0058EED0`, `0x0058F050`, `0x0058F0F0`, `0x0058F110`, `0x0058E440`)
+1. Promoted new functions with `just promote`:
+   1. `just promote src/game/TArmyToolbar.cpp --address 0x0058E1C0`
+   2. `just promote src/game/TCivToolbar.cpp --address 0x0058EED0`
+   3. `just promote src/game/TCivDescription.cpp --address 0x0058F050 --address 0x0058F0F0`
+   4. `just promote src/game/TCivDescription.cpp --address 0x0058F110`
+   5. `just promote src/game/ui_widget_wrappers.cpp --address 0x0058E440`
+2. Normalized promoted code into compile-safe manual wrappers:
+   1. rewrote promoted class-scoped raws into typed free-wrapper forms in:
+      1. `src/game/TArmyToolbar.cpp`
+      2. `src/game/TCivToolbar.cpp`
+      3. `src/game/TCivDescription.cpp` (new file)
+   2. added `src/game/TCivDescription.cpp` to build in `CMakeLists.txt`.
+3. Synced stub ownership to avoid duplicate function mapping:
+   1. changed addresses to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`:
+      1. `0x0058E1C0`
+      2. `0x0058EED0`
+      3. `0x0058F050`
+      4. `0x0058F0F0`
+      5. `0x0058F110`
+      6. `0x0058E440`
+4. Build issue encountered and fixed:
+   1. `just build` initially failed (`C4234`) due `__thiscall` in free-function pointer casts in `TArmyToolbar`.
+   2. replaced those bridge casts with `__fastcall` wrappers + explicit dummy `edx`.
+5. Verification sequence:
+   1. `just format src/game/TArmyToolbar.cpp src/game/TCivToolbar.cpp src/game/TCivDescription.cpp CMakeLists.txt src/autogen/stubs/stubs_part018.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x0058e1c0`
+   5. `just compare 0x0058eed0`
+   6. `just compare 0x0058f050`
+   7. `just compare 0x0058f0f0`
+   8. `just compare 0x0058f110`
+   9. `just compare 0x0058e440`
+   10. `just stats`
+6. Targeted similarities:
+   1. `0x0058E1C0`: `24.60%`
+   2. `0x0058EED0`: `44.98%`
+   3. `0x0058F050`: `42.86%`
+   4. `0x0058F0F0`: `50.00%`
+   5. `0x0058F110`: `69.39%` (after short-width class-id shape adjustment)
+   6. `0x0058E440`: `33.33%` (first-pass tiny-wrapper ownership in `src/game/ui_widget_wrappers.cpp`)
+7. Global snapshot (`2026-02-24T15:08:48Z`):
+   1. paired functions: `12228/12228`
+   2. aligned functions: `60`
+   3. recompiled functions: `12511`
+   4. average similarity: `2.56%`
+   5. non-function coverage (with imports): `5.77%`
+
 ### Trade selection shape pass + promotion rollback (`0x00588B70`, `0x005897B0`)
 1. Reworked both trade selection handlers in `src/game/trade_screen.cpp` to match locked stack/call shape:
    1. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`
@@ -1328,3 +1413,125 @@
 4. Global stats (`2026-02-24T14:09:38Z`):
    1. aligned functions: `60` (unchanged),
    2. average similarity: `2.53%` (`+0.01 pp`).
+
+## 2026-02-24 14:35:35 UTC - offer bitmap shape/data pass (`0x587DD0`, `0x588030`) + sell-handler baseline restore (`0x5873E0`)
+
+### Commands
+1. `just format src/game/trade_screen.cpp`
+2. `just build`
+3. `just compare 0x005873e0`
+4. `just compare 0x00588030`
+5. `just compare 0x00587dd0`
+6. `just build`
+7. `just compare 0x00587dd0`
+8. `just compare 0x00588030`
+9. `just stats`
+
+### Changes
+1. Restored `0x005873E0` `TAmtBarClusterContext::HandleTradeSellControlCommand` to prior stable shape:
+   1. reverted case-100 gate back to slot `+0x1DC` (`CallBoolSlot1DC(this)`),
+   2. restored default dispatch shape (`default -> HandleTradeMoveControlAdjustment(...); return;` plus post-switch tail call).
+2. Adjusted `0x00588030` `SetTradeOfferSecondaryBitmapState`:
+   1. fixed secondary capture buffer to `{0xA3, 0}` (was `{0xA3, 1}` in the regressing variant),
+   2. grouped enabled/state calls as three `SetEnabledPair` then three `SetStatePair`.
+3. Tuned `0x00587DD0` `SetTradeOfferControlBitmapState`:
+   1. cached control resolver slot `+0x94` in a local function pointer and reused it for `offr/gree/left/rght` lookups.
+4. Tested resolver-caching strategy on `0x00588030`; it regressed there, so reverted `0x588030` back to direct `ResolveControlByTag` while keeping the successful ordering/data tweaks.
+
+### Results
+1. `0x005873E0` `HandleTradeSellControlCommand`: back to `23.68%` (restored baseline).
+2. `0x00587DD0` `SetTradeOfferControlBitmapState`: `40.58% -> 52.21%`.
+3. `0x00588030` `SetTradeOfferSecondaryBitmapState`: `41.67% -> 42.31%` (briefly regressed to `41.56%` during resolver-caching experiment, then recovered).
+4. Global stats (`2026-02-24T14:35:35Z`):
+   1. aligned functions: `60` (unchanged),
+   2. average similarity: `2.53%` (no rounded delta).
+
+## 2026-02-24 20:56:17 UTC - civilian description legend ownership batch (`0x58F550`, `0x58F7B0`, `0x58FEC0`)
+
+### Commands
+1. `just promote src/game/TCivDescription.cpp --address 0x0058f550 --address 0x0058f7b0 --address 0x0058fec0`
+2. `just build` (observed promoted raw class-syntax compile failures)
+3. `just format src/game/TCivDescription.cpp src/autogen/stubs/stubs_part018.cpp`
+4. `just build`
+5. `just detect`
+6. `just compare 0x0058f550`
+7. `just compare 0x0058f7b0`
+8. `just compare 0x0058fec0`
+9. `just stats`
+
+### Changes
+1. Promoted three remaining `TCivDescription` legend functions.
+2. Replaced raw class-scoped promoted bodies with compile-safe wrappers that bridge through thunk symbols.
+3. Added proper reccmp markers in manual source:
+   1. `// FUNCTION: IMPERIALISM 0x0058f550`
+   2. `// FUNCTION: IMPERIALISM 0x0058f7b0`
+   3. `// FUNCTION: IMPERIALISM 0x0058fec0`
+4. Flipped stub ownership markers in `src/autogen/stubs/stubs_part018.cpp` to `MANUAL_OVERRIDE_ADDR` for all three addresses.
+
+### Results
+1. `0x0058F550`: `0.00%` (first-pass thunk bridge).
+2. `0x0058F7B0`: `0.00%` (first-pass thunk bridge).
+3. `0x0058FEC0`: `0.00%` (first-pass thunk bridge).
+4. Global stats (`2026-02-24T20:56:17Z`):
+   1. recompiled functions: `12519` (`+5`)
+   2. aligned functions: `60` (unchanged)
+   3. average similarity: `2.57%` (`+0.01 pp`).
+
+## 2026-02-24 20:58:45 UTC - civ report detail-text ownership (`0x590CB0`)
+
+### Commands
+1. `just promote src/game/TCivReport.cpp --address 0x00590cb0`
+2. `just build` (observed promoted raw class-syntax compile failures)
+3. `just format src/game/TCivReport.cpp src/autogen/stubs/stubs_part018.cpp`
+4. `just build`
+5. `just detect`
+6. `just compare 0x00590cb0`
+7. `just stats`
+
+### Changes
+1. Promoted `0x00590CB0` into `src/game/TCivReport.cpp`.
+2. Normalized promoted raw body to compile-safe wrapper form with thunk bridge:
+   1. `BuildCivReportNationEntryDetailTextBlock(CivReportState*, int, void*)`
+   2. preserved `// ORIG_CALLCONV: __thiscall`.
+3. Flipped `0x00590CB0` stub marker to `MANUAL_OVERRIDE_ADDR` in `src/autogen/stubs/stubs_part018.cpp`.
+
+### Results
+1. `0x00590CB0`: `16.67%` first-pass ownership.
+2. Global stats (`2026-02-24T20:58:45Z`):
+   1. recompiled functions: `12520` (`+1`)
+   2. aligned functions: `60` (unchanged)
+   3. average similarity: `2.57%` (unchanged rounded value).
+
+## 2026-02-24 21:07:15 UTC - score pass on `TCivDescription::RefreshCivilianTargetLegendBySelectedClass` (`0x58F550`)
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x0058f550`
+4. `just compare 0x0058f1a0`
+5. `just compare 0x0058f3c0`
+6. `just build`
+7. `just detect && just compare 0x0058f550`
+8. `just build && just detect && just compare 0x0058f550` (regression test and rollback validation)
+9. `just stats`
+
+### Changes
+1. Replaced `0x58F550` thunk-forwarder in `src/game/TCivDescription.cpp` with a real first-pass implementation:
+   1. legend rect/count reset block for first render,
+   2. class-dispatch via vtable slots (`+0x1A0/+0x1A4/+0x1A8`),
+   3. localized label setup/draw path (style init + `0x2718` text + measured centering + two-pass draw).
+2. Updated `CivDescriptionState` field mapping around `+0x6C` (`legendInitialized`) to align with observed behavior in this function cluster.
+3. Tried two additional shape tweaks and kept only the one that improved score:
+   1. kept style-init call shape (`InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b68)`),
+   2. reverted explicit stack-arg virtual-call variant because it regressed.
+
+### Results
+1. `0x0058F550`: `0.00% -> 11.76% -> 16.11%` (final for this pass).
+2. Adjacent checks stayed stable:
+   1. `0x0058F1A0`: `17.14%` (no regression)
+   2. `0x0058F3C0`: `24.88%` (no regression)
+3. One tested variant regressed and was reverted:
+   1. `0x0058F550`: `16.11% -> 15.53% -> 16.11%` (restored).
+4. Global stats (`2026-02-24T21:07:15Z`):
+   1. aligned functions: `60` (unchanged)
+   2. average similarity: `2.57%` (unchanged rounded value).

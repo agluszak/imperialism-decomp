@@ -1157,7 +1157,7 @@ undefined4 Cluster_GameplayHint_0058df60(void)
 
 // ghidra_name TArmyToolbar::HandleMapContextActionArmyRatioAndModeCommands
 // ghidra_proto void __stdcall HandleMapContextActionArmyRatioAndModeCommands(void)
-// FUNCTION: IMPERIALISM 0x0058e1c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058e1c0
 undefined4 HandleMapContextActionArmyRatioAndModeCommands(void)
 {
   return 0;
@@ -1197,7 +1197,7 @@ undefined4 DestructTStratReportViewAndMaybeFree(void)
 
 // ghidra_name OrphanTiny_SetDwordEcxOffset_60_0058e440
 // ghidra_proto undefined OrphanTiny_SetDwordEcxOffset_60_0058e440()
-// FUNCTION: IMPERIALISM 0x0058e440
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058e440
 undefined4 OrphanTiny_SetDwordEcxOffset_60_0058e440(void)
 {
   return 0;
@@ -1245,7 +1245,7 @@ undefined4 DestructTCivToolbarAndMaybeFree(void)
 
 // ghidra_name RefreshCivilianCommandPanelForSelection
 // ghidra_proto void __thiscall RefreshCivilianCommandPanelForSelection(int * pSelectedCivilianOrderEntry)
-// FUNCTION: IMPERIALISM 0x0058eb20
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058eb20
 undefined4 RefreshCivilianCommandPanelForSelection(void)
 {
   return 0;
@@ -1253,7 +1253,7 @@ undefined4 RefreshCivilianCommandPanelForSelection(void)
 
 // ghidra_name RefreshCivilianStackButtonsForTile
 // ghidra_proto void __thiscall RefreshCivilianStackButtonsForTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x0058ec50
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058ec50
 undefined4 RefreshCivilianStackButtonsForTile(void)
 {
   return 0;
@@ -1261,7 +1261,7 @@ undefined4 RefreshCivilianStackButtonsForTile(void)
 
 // ghidra_name TCivToolbar::HandleCivilianMapCommandPanelAction
 // ghidra_proto void __thiscall HandleCivilianMapCommandPanelAction(int nEventClass, void * pEventPayload, int nEventFlags)
-// FUNCTION: IMPERIALISM 0x0058eed0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058eed0
 undefined4 HandleCivilianMapCommandPanelAction(void)
 {
   return 0;
@@ -1269,7 +1269,7 @@ undefined4 HandleCivilianMapCommandPanelAction(void)
 
 // ghidra_name TCivDescription::CreateTCivDescriptionInstance
 // ghidra_proto void * __cdecl CreateTCivDescriptionInstance(void)
-// FUNCTION: IMPERIALISM 0x0058f050
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f050
 undefined4 CreateTCivDescriptionInstance(void)
 {
   return 0;
@@ -1277,7 +1277,7 @@ undefined4 CreateTCivDescriptionInstance(void)
 
 // ghidra_name TCivDescription::GetTCivDescriptionClassNamePointer
 // ghidra_proto void * __cdecl GetTCivDescriptionClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0058f0f0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f0f0
 undefined4 GetTCivDescriptionClassNamePointer(void)
 {
   return 0;
@@ -1285,7 +1285,7 @@ undefined4 GetTCivDescriptionClassNamePointer(void)
 
 // ghidra_name UpdateCivilianOrderClassAndRefreshTargetCounts
 // ghidra_proto undefined UpdateCivilianOrderClassAndRefreshTargetCounts()
-// FUNCTION: IMPERIALISM 0x0058f110
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f110
 undefined4 UpdateCivilianOrderClassAndRefreshTargetCounts(void)
 {
   return 0;
@@ -1293,7 +1293,7 @@ undefined4 UpdateCivilianOrderClassAndRefreshTargetCounts(void)
 
 // ghidra_name TCivDescription::DestructTCivDescriptionAndMaybeFree
 // ghidra_proto void __thiscall DestructTCivDescriptionAndMaybeFree(void * arg1)
-// FUNCTION: IMPERIALISM 0x0058f1a0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f1a0
 undefined4 DestructTCivDescriptionAndMaybeFree(void)
 {
   return 0;
@@ -1301,7 +1301,7 @@ undefined4 DestructTCivDescriptionAndMaybeFree(void)
 
 // ghidra_name UpdateCivilianOrderTargetTileCountsForOwnerNation
 // ghidra_proto void __thiscall UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilianOrderState * pCivilianOrderState)
-// FUNCTION: IMPERIALISM 0x0058f3c0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f3c0
 undefined4 UpdateCivilianOrderTargetTileCountsForOwnerNation(void)
 {
   return 0;
@@ -1309,7 +1309,7 @@ undefined4 UpdateCivilianOrderTargetTileCountsForOwnerNation(void)
 
 // ghidra_name TCivDescription::RefreshCivilianTargetLegendBySelectedClass
 // ghidra_proto void __thiscall RefreshCivilianTargetLegendBySelectedClass(void)
-// FUNCTION: IMPERIALISM 0x0058f550
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f550
 undefined4 RefreshCivilianTargetLegendBySelectedClass(void)
 {
   return 0;
@@ -1317,7 +1317,7 @@ undefined4 RefreshCivilianTargetLegendBySelectedClass(void)
 
 // ghidra_name TCivDescription::RenderCivilianTargetLegendVariantA
 // ghidra_proto void __thiscall RenderCivilianTargetLegendVariantA(void)
-// FUNCTION: IMPERIALISM 0x0058f7b0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058f7b0
 undefined4 RenderCivilianTargetLegendVariantA(void)
 {
   return 0;
@@ -1325,7 +1325,7 @@ undefined4 RenderCivilianTargetLegendVariantA(void)
 
 // ghidra_name TCivDescription::RenderCivilianTargetLegendVariantB
 // ghidra_proto void __cdecl RenderCivilianTargetLegendVariantB(void)
-// FUNCTION: IMPERIALISM 0x0058fec0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x0058fec0
 undefined4 RenderCivilianTargetLegendVariantB(void)
 {
   return 0;
@@ -1373,7 +1373,7 @@ undefined4 DestructTCivReportAndMaybeFree(void)
 
 // ghidra_name TCivReport::BuildCivReportNationEntryDetailTextBlock
 // ghidra_proto void __thiscall BuildCivReportNationEntryDetailTextBlock(void * arg1)
-// FUNCTION: IMPERIALISM 0x00590cb0
+// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x00590cb0
 undefined4 BuildCivReportNationEntryDetailTextBlock(void)
 {
   return 0;

@@ -1638,7 +1638,11 @@ void TradeScreenContext::SetTradeBidControlBitmapState(void) {
 
 // FUNCTION: IMPERIALISM 0x00587dd0
 void TradeScreenContext::SetTradeOfferControlBitmapState(void) {
-  TradeControl* offerControl = ResolveControlByTag(kControlTagOffr);
+  TradeControl*(__fastcall * resolveControl)(TradeScreenContext*, int) =
+      reinterpret_cast<TradeControl*(__fastcall*)(TradeScreenContext*, int)>(
+          (*reinterpret_cast<void***>(this))[0x94 / 4]);
+
+  TradeControl* offerControl = resolveControl(this, kControlTagOffr);
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferControl);
   }
@@ -1655,15 +1659,15 @@ void TradeScreenContext::SetTradeOfferControlBitmapState(void) {
   int layoutCaptureF0[2] = {0x73, 0};
   offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
 
-  TradeControl* greenControl = ResolveControlByTag(kControlTagGree);
+  TradeControl* greenControl = resolveControl(this, kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferGree);
   }
-  TradeControl* leftControl = ResolveControlByTag(kControlTagLeft);
+  TradeControl* leftControl = resolveControl(this, kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferLeft);
   }
-  TradeControl* rightControl = ResolveControlByTag(kControlTagRght);
+  TradeControl* rightControl = resolveControl(this, kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferRight);
   }
@@ -1715,7 +1719,7 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void) {
       } else {
         offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateA, 0);
       }
-      int layoutCaptureF0[2] = {0xa3, 1};
+      int layoutCaptureF0[2] = {0xa3, 0};
       offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
     } else {
       offerControl->SetEnabledPair(0, 1);
@@ -1738,10 +1742,10 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void) {
   }
 
   greenControl->SetEnabledPair(0, 1);
-  greenControl->SetStatePair(0, 1);
   leftControl->SetEnabledPair(0, 1);
-  leftControl->SetStatePair(0, 1);
   rightControl->SetEnabledPair(0, 1);
+  greenControl->SetStatePair(0, 1);
+  leftControl->SetStatePair(0, 1);
   rightControl->SetStatePair(0, 1);
 
   offerControl->Refresh();

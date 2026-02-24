@@ -6,6 +6,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void);
+undefined4 thunk_BuildCivReportNationEntryDetailTextBlock(void);
 
 namespace {
 
@@ -63,4 +64,13 @@ CivReportState* __fastcall DestructTCivReportAndMaybeFree(CivReportState* report
     FreeHeapBufferIfNotNull((undefined4)report);
   }
   return report;
+}
+
+// FUNCTION: IMPERIALISM 0x00590cb0
+void __fastcall BuildCivReportNationEntryDetailTextBlock(CivReportState* context, int unusedEdx,
+                                                         void* arg1) {
+  // ORIG_CALLCONV: __thiscall
+  (void)unusedEdx;
+  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(
+      thunk_BuildCivReportNationEntryDetailTextBlock)(context, 0, arg1);
 }

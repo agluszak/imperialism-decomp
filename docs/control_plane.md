@@ -33,18 +33,71 @@ From latest fresh import + rebuild + reccmp run:
    2. Focused compare avg similarity (with ignores): `1.32%`.
    3. 100% aligned functions: `42`.
 
-Latest `progress_stats` snapshot (`2026-02-24T14:09:38Z`):
+Latest `progress_stats` snapshot (`2026-02-24T15:08:48Z`):
 1. Paired functions: `12228` (coverage `100%`).
-2. Recompiled functions discovered: `12504`.
+2. Recompiled functions discovered: `12511`.
 3. 100% aligned functions: `60`.
-4. Average similarity (current compare set): `2.53%`.
-5. Paired globals (`dat/lab/str/flo/wid`): `272 / 5063` (coverage `5.37%`).
-6. Non-function coverage including imports: `5.75%`.
+4. Average similarity (current compare set): `2.56%`.
+5. Paired globals (`dat/lab/str/flo/wid`): `272 / 5065` (coverage `5.37%`).
+6. Non-function coverage including imports: `5.77%`.
+
+Latest `progress_stats` snapshot (`2026-02-24T20:41:48Z`):
+1. Paired functions: `12228` (coverage `100%`).
+2. Recompiled functions discovered: `12514`.
+3. 100% aligned functions: `60`.
+4. Average similarity (current compare set): `2.56%`.
+5. Paired globals (`dat/lab/str/flo/wid`): `272 / 5065` (coverage `5.37%`).
+6. Non-function coverage including imports: `5.78%`.
+
+Latest `progress_stats` snapshot (`2026-02-24T20:58:45Z`):
+1. Paired functions: `12228` (coverage `100%`).
+2. Recompiled functions discovered: `12520`.
+3. 100% aligned functions: `60`.
+4. Average similarity (current compare set): `2.57%`.
+5. Paired globals (`dat/lab/str/flo/wid`): `272 / 5065` (coverage `5.37%`).
+6. Non-function coverage including imports: `5.78%`.
+
+Latest incremental checkpoint (`2026-02-24 20:56 UTC`):
+1. Promoted and owned `TCivDescription` legend block addresses:
+   1. `0x0058F550` `RefreshCivilianTargetLegendBySelectedClass` (`0.00%`, first-pass thunk bridge).
+   2. `0x0058F7B0` `RenderCivilianTargetLegendVariantA` (`0.00%`, first-pass thunk bridge).
+   3. `0x0058FEC0` `RenderCivilianTargetLegendVariantB` (`0.00%`, first-pass thunk bridge).
+2. Kept compile stability by converting raw class-scoped promoted bodies to compile-safe wrapper form and flipping stub markers to `MANUAL_OVERRIDE_ADDR`.
+
+Latest incremental checkpoint (`2026-02-24 20:58 UTC`):
+1. Promoted and owned `0x00590CB0` `BuildCivReportNationEntryDetailTextBlock` in `src/game/TCivReport.cpp`.
+2. First-pass compile-safe bridge result: `16.67%` (`just compare 0x00590cb0`).
+3. Stub marker at `src/autogen/stubs/stubs_part018.cpp` flipped to `MANUAL_OVERRIDE_ADDR`.
+
+Latest incremental checkpoint (`2026-02-24 21:07 UTC`):
+1. `0x0058F550` `RefreshCivilianTargetLegendBySelectedClass`: `0.00% -> 16.11%` after replacing thunk-forward body with real legend reset + class dispatch + localized text draw path.
+2. Adjacent `TCivDescription` checks stayed stable in the same pass:
+   1. `0x0058F1A0`: `17.14%`
+   2. `0x0058F3C0`: `24.88%`
+3. Reverted one regressing variant on `0x58F550` (`16.11% -> 15.53%`) and kept the higher-scoring shape.
+
+Latest incremental checkpoint (`2026-02-24 20:38 UTC`):
+1. `0x0058F3C0` `UpdateCivilianOrderTargetTileCountsForOwnerNation`: `24.88%` after direct fixed-address global/vtable-slot shape pass in `src/game/TCivDescription.cpp`.
+2. `0x0058F1A0` `DestructTCivDescriptionAndMaybeFree`: `17.14%` first-pass ownership in `src/game/TCivDescription.cpp`.
+3. `0x0058F110` `UpdateCivilianOrderClassAndRefreshTargetCounts`: retained `69.39%` (short-width class-id shape restored).
+
+Latest incremental checkpoint (`2026-02-24 15:08 UTC`):
+1. `0x0058E1C0` `HandleMapContextActionArmyRatioAndModeCommands`: `24.60%` first-pass ownership in `src/game/TArmyToolbar.cpp`.
+2. `0x0058EED0` `HandleCivilianMapCommandPanelAction`: `44.98%` first-pass ownership in `src/game/TCivToolbar.cpp`.
+3. `0x0058F050` `CreateTCivDescriptionInstance`: `42.86%` first-pass ownership in new `src/game/TCivDescription.cpp`.
+4. `0x0058F0F0` `GetTCivDescriptionClassNamePointer`: `50.00%` first-pass ownership in new `src/game/TCivDescription.cpp`.
+5. `0x0058F110` `UpdateCivilianOrderClassAndRefreshTargetCounts`: `69.39%` after short-width class-id shape pass in `src/game/TCivDescription.cpp`.
+6. `0x0058E440` `OrphanTiny_SetDwordEcxOffset_60_0058e440`: `33.33%` first-pass ownership in `src/game/ui_widget_wrappers.cpp` (prologue-shape tuning deferred).
 
 Latest incremental checkpoint (`2026-02-24 14:09 UTC`):
 1. `0x00587130` `InitializeTradeSellControlState`: `41.52%` after restoring explicit stack-seed forwarding (`ret 4` shape).
 2. `0x0058BC60` `PlacardState::RenderPlacardValueTextWithShadow`: `55.62%` after replacing placeholder body with full shared-string + themed two-pass text draw flow.
 3. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`: `42.50%` current retained shape.
+
+Latest incremental checkpoint (`2026-02-24 14:35 UTC`):
+1. `0x005873E0` `HandleTradeSellControlCommand`: restored to `23.68%` baseline shape after reverting a regressing gate/default experiment.
+2. `0x00587DD0` `SetTradeOfferControlBitmapState`: improved to `52.21%` by caching resolver slot `+0x94` and preserving call-order/layout capture shape.
+3. `0x00588030` `SetTradeOfferSecondaryBitmapState`: improved to `42.31%` with `{0xA3,0}` layout capture and enabled/state ordering, while keeping direct `ResolveControlByTag` lookups.
 
 ## Active Ignore Scope
 Generated by `tools/reccmp/generate_ignore_functions.py` and applied to `reccmp-project.yml`:
@@ -141,6 +194,7 @@ just promote-range src/game/trade_screen.cpp 0x00585f70 0x00586150
 1. Keep focused ignore list stable and review weekly.
 2. Move from wrapper/thunk/no-op wins into medium-sized game functions.
 3. Improve type/prototype fidelity in hotspots before deep body work.
+4. Continue `TCivDescription` shape/data passes around `0x0058F1A0` and `0x0058F3C0` (same address cluster, shared globals).
 
 ## Latest Non-Trade Checkpoint
 1. `0x0055FC40` `InputState::HandleKeyDown`: `25.69%` (from `20.42%` after direct-thunk-call shape pass in `src/game/input_state.cpp`).
@@ -158,7 +212,7 @@ File layout note:
 1. `src/game/trade_screen.cpp` contains shared scaffolding/helpers and global/non-class trade-screen functions.
 2. Class-owned wrappers now live in class files (`src/game/<ClassName>.cpp`), including:
    1. `TCivilianButton`, `THQButton`, `TPlacard`, `TArmyPlacard`, `TNumberedArrowButton`, `TCombatReportView`
-   2. `TArmyToolbar`, `TStratReportView`, `TCivToolbar`, `TArmyInfoView`
+   2. `TArmyToolbar`, `TStratReportView`, `TCivToolbar`, `TCivDescription`, `TArmyInfoView`
    3. `TCivReport`, `TTransportPicture`
 3. `src/game/ui_widget_wrappers.cpp` is reserved for global/non-class wrappers.
 4. Trade-screen class methods are in flat class files under `src/game/` and included by `src/game/trade_screen.cpp`:
@@ -177,9 +231,9 @@ File layout note:
 Targeted similarities from current `build-msvc500`:
 1. `0x00587AA0` `SetTradeBidSecondaryBitmapState`: `77.86%`
 2. `0x00587BB0` `SetTradeBidControlBitmapState`: `61.89%`
-3. `0x00587DD0` `SetTradeOfferControlBitmapState`: `55.15%`
-4. `0x00587130` `InitializeTradeSellControlState`: `30.91%`
-5. `0x00588030` `SetTradeOfferSecondaryBitmapState`: `42.07%`
+3. `0x00587DD0` `SetTradeOfferControlBitmapState`: `52.21%`
+4. `0x00587130` `InitializeTradeSellControlState`: `41.52%`
+5. `0x00588030` `SetTradeOfferSecondaryBitmapState`: `42.31%`
 6. `0x005882F0` `UpdateTradeSellControlAndBarFromNationMetric`: `22.41%`
 7. `0x00588630` `OrphanCallChain_C2_I15_00588630`: `62.86%`
 8. `0x00588670` `OrphanCallChain_C1_I03_00588670`: `46.15%`
@@ -226,11 +280,11 @@ Targeted similarities from current `build-msvc500`:
 49. `0x0058A690` `TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl`: `15.45%`
 50. `0x0058AF80` `TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode`: `20.14%`
 51. `0x0058B070` `WrapperFor_GetActiveNationId_At0058b070`: `49.18%`
-52. `0x0058BC60` `PlacardState::RenderPlacardValueTextWithShadow`: `0.00%`
+52. `0x0058BC60` `PlacardState::RenderPlacardValueTextWithShadow`: `55.62%`
 53. `0x0058BAB0` `PlacardState::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0`: `43.48%`
 54. `0x0058BB50` `PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50`: `44.04%`
 55. `0x005866B0` `UpdateTradeSummaryMetricControlsFromRecord`: `34.91%`
-56. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`: `30.00%`
+56. `0x00588B70` `SyncTradeCommoditySelectionWithActiveNationAndInitControls`: `42.50%`
 57. `0x005897B0` `SelectTradeCommodityPresetBySummaryTagAndInitControls`: `34.39%`
 
 Immediate objective:
