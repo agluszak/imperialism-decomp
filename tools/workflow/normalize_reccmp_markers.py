@@ -8,6 +8,8 @@ import re
 from pathlib import Path
 from typing import Iterable
 
+from tools.common.file_scan import iter_files
+
 
 VALID_MARKER_TYPES = {
     "FUNCTION",
@@ -48,28 +50,6 @@ def parse_args() -> argparse.Namespace:
         help="Write changes in-place. Without this flag only prints planned edits.",
     )
     return parser.parse_args()
-
-
-def iter_files(paths: Iterable[str]) -> list[Path]:
-    files: list[Path] = []
-    for item in paths:
-        p = Path(item)
-        if p.is_file():
-            files.append(p)
-            continue
-        if p.is_dir():
-            for ext in ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx"):
-                files.extend(sorted(p.rglob(ext)))
-
-    seen: set[Path] = set()
-    ordered: list[Path] = []
-    for f in sorted(files):
-        rf = f.resolve()
-        if rf in seen:
-            continue
-        seen.add(rf)
-        ordered.append(f)
-    return ordered
 
 
 def normalize_offset(raw_offset: str) -> str:

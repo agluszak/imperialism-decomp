@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import re
 import subprocess
@@ -12,6 +11,9 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+from tools.common.pipe_csv import read_pipe_rows
+from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 
 ANNOT_RE_TEMPLATE = r"//\s*(FUNCTION|STUB|TEMPLATE|SYNTHETIC|LIBRARY)\s*:\s*{target}\s+(?:0x)?([0-9a-fA-F]+)"
@@ -25,7 +27,7 @@ class Location:
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--build-dir", default=str(repo_root / "build-msvc500"))
@@ -116,18 +118,16 @@ def load_ghidra_index(path: Path) -> dict[int, str]:
     if not path.is_file():
         return {}
     out: dict[int, str] = {}
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            addr_raw = (row.get("address") or "").strip()
-            file_raw = (row.get("file") or "").strip()
-            if not addr_raw:
-                continue
-            try:
-                addr = int(addr_raw, 16)
-            except ValueError:
-                continue
-            out[addr] = file_raw
+    for row in read_pipe_rows(path):
+        addr_raw = (row.get("address") or "").strip()
+        file_raw = (row.get("file") or "").strip()
+        if not addr_raw:
+            continue
+        try:
+            addr = int(addr_raw, 16)
+        except ValueError:
+            continue
+        out[addr] = file_raw
     return out
 
 
@@ -144,15 +144,16 @@ def action_hint(path: str, ghidra_file: str | None) -> str:
 
 def main() -> int:
     args = parse_args()
-    repo_root = Path(__file__).resolve().parents[2]
-    build_dir = Path(args.build_dir).resolve()
+    repo_root = repo_root_from_file(__file__)
+    build_dir = resolve_repo_path(repo_root, args.build_dir)
     build_dir.mkdir(parents=True, exist_ok=True)
 
     if not args.no_refresh_ignore:
         run_cmd(
             [
                 sys.executable,
-                str(repo_root / "tools" / "reccmp" / "generate_ignore_functions.py"),
+                "-m",
+                "tools.reccmp.generate_ignore_functions",
                 "--target",
                 args.target,
                 "--apply",
@@ -162,7 +163,8 @@ def main() -> int:
 
     stats_cmd = [
         sys.executable,
-        str(repo_root / "tools" / "reccmp" / "progress_stats.py"),
+        "-m",
+        "tools.reccmp.progress_stats",
         "--target",
         args.target,
         "--build-dir",
@@ -177,7 +179,8 @@ def main() -> int:
     run_cmd(
         [
             sys.executable,
-            str(repo_root / "tools" / "reccmp" / "core_impact_ranking.py"),
+            "-m",
+            "tools.reccmp.core_impact_ranking",
             "--target",
             args.target,
             "--top",
@@ -269,13 +272,13 @@ def main() -> int:
     md_lines.append("## Commands")
     md_lines.append("")
     md_lines.append(
-        "1. `uv run python tools/reccmp/session_loop.py --target IMPERIALISM --pick 8 --top 50 --min-size 1`"
+        "1. `uv run python -m tools.reccmp.session_loop --target IMPERIALISM --pick 8 --top 50 --min-size 1`"
     )
     md_lines.append(
-        "2. `uv run python tools/reccmp/progress_stats.py --target IMPERIALISM --build-dir build-msvc500 --no-run`"
+        "2. `uv run python -m tools.reccmp.progress_stats --target IMPERIALISM --build-dir build-msvc500 --no-run`"
     )
     md_lines.append(
-        "3. `uv run python tools/reccmp/core_impact_ranking.py --target IMPERIALISM --top 50 --min-size 1`"
+        "3. `uv run python -m tools.reccmp.core_impact_ranking --target IMPERIALISM --top 50 --min-size 1`"
     )
     out_md.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 

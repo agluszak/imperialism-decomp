@@ -4,11 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
+
+from tools.common.pipe_csv import read_pipe_rows
 
 ANNOTATION_RE_TEMPLATE = (
     r"//\s*(FUNCTION|STUB|TEMPLATE|SYNTHETIC|LIBRARY)\s*:\s*{target}\s+"
@@ -57,17 +58,15 @@ def load_symbols(symbols_csv: Path) -> dict[int, str]:
         raise FileNotFoundError(f"Missing symbols CSV: {symbols_csv}")
 
     out: dict[int, str] = {}
-    with symbols_csv.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            row_type = (row.get("type") or "").strip().lower()
-            if row_type != "function":
-                continue
-            addr_text = (row.get("address") or "").strip()
-            name = (row.get("name") or "").strip()
-            if not addr_text or not name:
-                continue
-            out[int(addr_text, 16)] = name
+    for row in read_pipe_rows(symbols_csv):
+        row_type = (row.get("type") or "").strip().lower()
+        if row_type != "function":
+            continue
+        addr_text = (row.get("address") or "").strip()
+        name = (row.get("name") or "").strip()
+        if not addr_text or not name:
+            continue
+        out[int(addr_text, 16)] = name
     return out
 
 

@@ -37,7 +37,7 @@
 After meaningful renames in Ghidra, run export sync and then continue implementation:
 
 ```bash
-uv run python tools/ghidra/sync_exports.py \
+uv run python -m tools.ghidra.sync_exports \
   --ghidra-install-dir <GHIDRA_DIR> \
   --ghidra-project-dir <GHIDRA_PROJECT_DIR> \
   --ghidra-project-name <GHIDRA_PROJECT_NAME> \
@@ -48,7 +48,7 @@ uv run python tools/ghidra/sync_exports.py \
 
 1. Promote function bodies from `src/ghidra_autogen/` into manual files with:
 ```bash
-uv run python tools/workflow/promote_from_autogen.py \
+uv run python -m tools.workflow.promote_from_autogen \
   --target-cpp src/game/<file>.cpp \
   --address 0x<ADDR> [--address 0x<ADDR> ...]
 ```
@@ -63,11 +63,13 @@ just promote-range src/game/<file>.cpp 0x<START> 0x<END>
 3. Immediately convert promoted raw offset access into typed field access:
    - replace `*(type *)((int)obj + off)` with struct fields.
    - introduce/adjust local structs for stable offsets instead of repeating `reinterpret_cast` math.
-4. After promotion, mark corresponding autogen stubs as manual overrides:
-   - change `// FUNCTION: IMPERIALISM 0x...` to `// MANUAL_OVERRIDE_ADDR IMPERIALISM 0x...` in `src/autogen/stubs/stubs_part*.cpp`.
+4. After promotion, update function ownership and regenerate stubs:
+   - `just sync-ownership`
+   - `just regen-stubs`
+   - do not hand-edit generated stub shards unless debugging a temporary parser issue.
 5. For splitting mixed files into class files, use:
 ```bash
-uv run python tools/workflow/split_classes_in_file.py \
+uv run python -m tools.workflow.split_classes_in_file \
   --source-cpp src/game/<mixed_file>.cpp
 ```
 
@@ -176,3 +178,15 @@ Current reminders for improving `% similarity`:
 97. For compile-only ownership passes, bridged thunk wrappers are acceptable first step (`reinterpret_cast<...>(thunk_...)(...)`), but keep the original-callconv reminder and do not tune body shape in the same iteration.
 98. In `0x58F550`, replacing a pure thunk-forwarder with real shape/data body plus style-init call (`InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b68)`) improved `0.00% -> 16.11%`.
 99. For `0x58F550`, forcing explicit stack args on virtual calls (`slot + 0x1A0/0x1A4/0x1A8`) regressed (`16.11% -> 15.53%`); keep the simpler one-arg `__fastcall(this)` call shape.
+100. For `0x58F3C0`, switching the inner class-slot loop from `slot < 5` to an explicit decrement counter (`remainingSlots = 5; ...; remainingSlots--; while (remainingSlots != 0)`) improved similarity (`24.88% -> 30.77%`).
+101. For `0x58F3C0`, removing `mapState`/`tableBase` locals (to reduce stack locals) regressed (`30.77% -> 27.84%`); keep those locals in the current `/Oy-,/Ob1` baseline.
+102. For `0x58F3C0`, function-local `#pragma optimize("y", on)` (frame-pointer omission) produced a major jump (`30.77% -> 41.58%`) by restoring `mov ebp, ecx` shape and stack layout closer to original.
+103. For `0x58F3C0`, changing province-entry gating from `if (0 < provinceCount)` to `if (provinceCount < provinceOrdinal) return;` (with `provinceOrdinal = 1`) aligned the early compare/call shape and jumped into the `90%+` range.
+104. For `0x58F3C0`, keep tile index as a cast chain (`provinceTileIndex = (short)*provinceTileIndices; ... (int)(short)provinceTileIndex`) and keep `tileProfileId` as `short` loaded from `(short)*(char*)...`; this aligned the mid-loop sign-extension pattern and reached `97.98%`.
+105. For `0x58F550`, forwarding the stack payload into vtable slots (`+0x1A0/+0x1A4/+0x1A8`) and moving `InitializeSharedStringRefFromEmpty` to function entry improved first-pass similarity (`16.11% -> 18.34%`); keep this call-order baseline.
+106. For `0x58F1A0`, switching province collection calls to virtual `GetByOrdinal`/`GetCount` and pointer-driven legend-counter iteration yielded only a small gain (`17.14% -> 18.50%`); keep it as a baseline but prioritize larger wins elsewhere.
+107. On this `/EHsc-` baseline, functions that originally start with SEH prolog (`push -1`, `fs:[0]`) may stay capped in first pass; avoid deep micro-tuning there until we test per-function EH/codegen strategies.
+108. For `0x58F110`, removing the local cached class-id variable and rewriting to direct `orderState->eCivilianClassId` access regressed heavily (`69.39% -> 53.06%`); keep the explicit local `short civilianClassId` baseline.
+109. For `0x58F7B0`/`0x58FEC0`, replacing pure thunk-forward wrappers with first-pass decomp scaffolds is a good ownership jump (`0.00% -> 25.25%` and `0.00% -> 16.81%`) even before deep icon/layout tuning.
+110. In legend variants, keep early capability-state reads from `g_pCityOrderCapabilityState` (`+0x26e/+0x274/+0x27f`) and a localized header draw path before adding full profile/icon loops; this preserves useful shape while staying compile-safe.
+111. For `0x58F1A0`, removing the outer-loop `candidateOrdinal++` (slot advance path) improved similarity (`20.87% -> 22.22%`) while keeping the `0x58F3C0` high-water mark stable.

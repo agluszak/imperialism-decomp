@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
-from typing import Iterable
+
+from tools.common.file_scan import iter_files, is_generated_source_path
+from tools.common.pipe_csv import normalize_hex, read_pipe_map, read_pipe_rows
+from tools.common.repo import repo_root_from_file
 
 
 STRING_DECL_RE = re.compile(
@@ -24,7 +26,7 @@ STRING_ANNOT_RE = re.compile(
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--symbols-csv",
@@ -78,55 +80,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def iter_files(paths: Iterable[str]) -> list[Path]:
-    files: list[Path] = []
-    for item in paths:
-        p = Path(item)
-        if p.is_file():
-            files.append(p)
-            continue
-        if p.is_dir():
-            for ext in ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp"):
-                files.extend(sorted(p.rglob(ext)))
-    seen: set[Path] = set()
-    ordered: list[Path] = []
-    for f in sorted(files):
-        rf = f.resolve()
-        if rf in seen:
-            continue
-        seen.add(rf)
-        ordered.append(f)
-    return ordered
-
-
 def load_name_to_addresses(symbols_csv: Path) -> dict[str, list[str]]:
     by_name: dict[str, list[str]] = {}
-    with symbols_csv.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            if row.get("type") != "global":
-                continue
-            name = row.get("name", "").strip()
-            addr = row.get("address", "").strip().lower().removeprefix("0x")
-            if not name or not addr:
-                continue
-            by_name.setdefault(name, []).append(addr)
+    for row in read_pipe_rows(symbols_csv):
+        if row.get("type") != "global":
+            continue
+        name = (row.get("name") or "").strip()
+        addr = normalize_hex((row.get("address") or "").strip())
+        if not name or not addr:
+            continue
+        by_name.setdefault(name, []).append(addr)
     return {name: sorted(set(addrs)) for name, addrs in by_name.items()}
 
 
 def load_override_map(path: Path, key_column: str, addr_column: str) -> dict[str, str]:
-    if not path.exists():
-        return {}
-    out: dict[str, str] = {}
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            key = row.get(key_column, "").strip()
-            addr = row.get(addr_column, "").strip().lower().removeprefix("0x")
-            if not key or not addr:
-                continue
-            out[key] = addr
-    return out
+    return read_pipe_map(path, key_column=key_column, value_column=addr_column, normalize_value=normalize_hex)
 
 
 def resolve_global_addr(
@@ -180,8 +148,7 @@ def main() -> int:
     string_added = 0
     resolve_stats = {"unique": 0, "override": 0, "first": 0, "unresolved": 0, "missing": 0}
     for path in files:
-        path_posix = path.as_posix()
-        if "/ghidra_autogen/" in path_posix or "/autogen/stubs/" in path_posix:
+        if is_generated_source_path(path):
             continue
 
         original = path.read_text(encoding="utf-8")

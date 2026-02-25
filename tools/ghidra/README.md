@@ -21,7 +21,7 @@ The single source of truth is `ghidra.toml` in the repository root:
 ## Usage
 
 ```bash
-uv run python tools/ghidra/sync_exports.py \
+uv run python -m tools.ghidra.sync_exports \
   --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
   --ghidra-project-dir /path/to/ghidra/projects \
   --ghidra-project-name imperialism-decomp \
@@ -30,7 +30,7 @@ uv run python tools/ghidra/sync_exports.py \
   --decomp-output-dir src/ghidra_autogen \
   --types-output-dir include/ghidra_autogen \
   --decomp-max-functions-per-file 250 \
-  --name-overrides config/name_overrides.csv
+  --name-overrides config/function_name_overrides.csv
 ```
 
 Outputs:
@@ -46,7 +46,7 @@ Function exports in `src/ghidra_autogen/*.cpp` include:
 - `GHIDRA_NAME` / `GHIDRA_PROTO`
 - `GHIDRA_COMMENT` and `GHIDRA_REPEATABLE_COMMENT` blocks from function comments
 
-If `config/name_overrides.csv` exists, `sync_exports.py` reapplies overrides after export to:
+If `config/function_name_overrides.csv` exists, `sync_exports.py` reapplies overrides after export to:
 
 - `config/symbols.csv`
 - `config/symbols.ghidra.txt` (function names only; whitespace names are skipped)

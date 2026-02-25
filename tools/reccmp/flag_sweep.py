@@ -10,6 +10,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+from tools.common.repo import repo_root_from_file
+
 
 @dataclass(frozen=True)
 class Profile:
@@ -30,7 +32,7 @@ DEFAULT_PROFILES: list[Profile] = [
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--docker-image", default="imperialism-msvc500")
@@ -118,7 +120,7 @@ def make_cmake_flags(profile: Profile) -> str:
 def main() -> int:
     try:
         args = parse_args()
-        repo_root = Path(__file__).resolve().parents[2]
+        repo_root = repo_root_from_file(__file__)
         build_root = Path(args.build_root).resolve()
         build_root.mkdir(parents=True, exist_ok=True)
 

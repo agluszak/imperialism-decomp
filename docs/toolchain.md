@@ -24,7 +24,7 @@ From `objdump -p` and `strings` on:
 Re-check command:
 
 ```bash
-uv run python tools/forensics/check_rich_header.py /home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG\ Games/Imperialism/Imperialism.exe
+uv run python -m tools.forensics.check_rich_header /home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG\ Games/Imperialism/Imperialism.exe
 ```
 
 Observed output:

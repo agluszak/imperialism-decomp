@@ -2,6 +2,46 @@
 
 ## 2026-02-24
 
+### TCivDescription deep shape pass (`0x0058F3C0`) - 97.98%
+1. Continued iterative tuning of `src/game/TCivDescription.cpp` `0x0058F3C0` (`UpdateCivilianOrderTargetTileCountsForOwnerNation`).
+2. Retained high-impact changes:
+   1. enabled function-local frame-pointer omission around this function:
+      1. `#pragma optimize("y", on)` before function.
+      2. `#pragma optimize("", on)` after function.
+   2. switched province-count gate to `provinceCount < provinceOrdinal` with `provinceOrdinal = 1`.
+   3. kept direct global-map reload points in the same spots as original.
+   4. aligned sign-extension shape:
+      1. `provinceTileIndex` as cast chain `(short)` -> `(int)(short)`.
+      2. `tileProfileId` stored as `short` loaded from signed byte.
+3. Probes tested and reverted:
+   1. C-linkage global-symbol variant for table operands (`extern "C"` forms) regressed (`97.98% -> 96.97%`), so reverted.
+4. Verification sequence:
+   1. `just build`
+   2. `just detect`
+   3. `just compare 0x0058f3c0`
+5. Targeted deltas during this pass:
+   1. `30.77% -> 41.58%` after `#pragma optimize("y", on)`.
+   2. `41.58% -> 90.36%` after gate/control-flow + data-reload shape alignment.
+   3. `90.36% -> 92.86%` after sign-extension alignment for profile/tile index.
+   4. `92.86% -> 97.98%` after final cast-chain refinement.
+
+### TCivDescription focused pass (`0x0058F3C0`) - loop-shape improvement
+1. Targeted function:
+   1. `src/game/TCivDescription.cpp`
+   2. `0x0058F3C0` `UpdateCivilianOrderTargetTileCountsForOwnerNation`
+2. Shape/data work retained:
+   1. kept free-wrapper ownership (`__fastcall` + `// ORIG_CALLCONV: __thiscall`) with direct fixed-address globals and direct province-collection slot calls.
+   2. changed inner 5-slot match loop to decrement-counter form (`remainingSlots = 5; ...; remainingSlots--; while (remainingSlots != 0)`).
+3. Probes tested and reverted:
+   1. function-level/global `/Oy` probe (`/Oy,/Ob1`) regressed this function.
+   2. local-pressure rewrite removing `mapState` / `tableBase` also regressed.
+4. Verification sequence:
+   1. `just build`
+   2. `just detect`
+   3. `just compare 0x0058f3c0`
+5. Targeted delta:
+   1. `0x0058F3C0`: `24.88% -> 30.77%` (retained best in this pass).
+
 ### TCivDescription loop pass (`0x0058F3C0`, `0x0058F1A0`)
 1. Reworked `src/game/TCivDescription.cpp` `0x0058F3C0` (`UpdateCivilianOrderTargetTileCountsForOwnerNation`) to follow exported Ghidra shape more literally:
    1. removed helper indirection and null-guard wrappers.
@@ -1535,3 +1575,194 @@
 4. Global stats (`2026-02-24T21:07:15Z`):
    1. aligned functions: `60` (unchanged)
    2. average similarity: `2.57%` (unchanged rounded value).
+
+## 2026-02-25 00:09:17 UTC - `TCivDescription` follow-up shape pass (`0x58F1A0`, `0x58F550`)
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x0058f3c0`
+4. `just compare 0x0058f550`
+5. `just compare 0x0058f7b0`
+6. `just compare 0x0058fec0`
+7. `just compare 0x0058f1a0`
+8. `just compare 0x0058f110`
+9. `just build && just detect && just compare 0x0058f550`
+10. `just build && just detect && just compare 0x0058f1a0`
+
+### Changes
+1. `0x0058F550` `RefreshCivilianTargetLegendBySelectedClass`:
+   1. added explicit forwarded stack payload arg in wrapper signature,
+   2. moved `InitializeSharedStringRefFromEmpty` to function entry,
+   3. changed legend reset loop to pointer-driven shape (`nextLegendSelectionCountsBySlot`),
+   4. forwarded payload into dispatch slots `+0x1A0/+0x1A4/+0x1A8` using compile-safe fastcall bridges.
+2. `0x0058F1A0` `DestructTCivDescriptionAndMaybeFree`:
+   1. switched province collection dispatch to virtual wrappers (`GetCount`, `GetByOrdinal`),
+   2. rewired outer loop to pointer-based legend-counter progression (`currentLegendSelectionCounter`),
+   3. preserved fail-and-continue click-hit-test behavior.
+3. Retained high-score baseline for `0x0058F3C0`; no regression introduced.
+
+### Results
+1. `0x0058F3C0`: retained `97.98%`.
+2. `0x0058F550`: `16.11% -> 18.34%`.
+3. `0x0058F1A0`: `17.14% -> 18.50%`.
+4. `0x0058F110`: unchanged `69.39%`.
+5. `0x0058F7B0`: `0.00%` (still thunk-forward baseline).
+6. `0x0058FEC0`: `0.00%` (still thunk-forward baseline).
+7. `0x0058F110` direct-access probe (`orderState->eCivilianClassId` without local cache) regressed to `53.06%`; reverted to the prior local-`short` baseline (`69.39%`).
+
+## 2026-02-25 00:14:43 UTC - legend-variant de-thunk pass (`0x58F7B0`, `0x58FEC0`)
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x0058f7b0`
+4. `just compare 0x0058fec0`
+5. `just compare 0x0058f3c0`
+6. `just compare 0x0058f550`
+7. `just stats`
+
+### Changes
+1. `0x0058F7B0` `RenderCivilianTargetLegendVariantA`:
+   1. replaced thunk-forward body with first-pass real body,
+   2. added early active-nation capability reads from `g_pCityOrderCapabilityState`,
+   3. added localized header draw scaffold and retained shared-string lifetime handling.
+2. `0x0058FEC0` `RenderCivilianTargetLegendVariantB`:
+   1. replaced thunk-forward body with first-pass loop scaffold,
+   2. added capability-based row-count selection, profile-row icon blit loop, and formatted count draw path,
+   3. wired required quickdraw helper declarations and fixed addresses (`g_pStrategicMapViewSystem`, `g_pActiveQuickDrawSurfaceContext`, `g_szDecimalFormat`).
+3. Preserved prior high-similarity anchors:
+   1. `0x0058F3C0` unchanged.
+   2. `0x0058F550` unchanged.
+
+### Results
+1. `0x0058F7B0`: `0.00% -> 25.25%`.
+2. `0x0058FEC0`: `0.00% -> 16.81%`.
+3. `0x0058F550`: retained `18.34%`.
+4. `0x0058F3C0`: retained `97.98%`.
+5. Global stats (`2026-02-25T00:14:43Z`):
+   1. aligned functions: `60` (unchanged)
+   2. average similarity: `2.58%` (unchanged rounded value).
+
+## 2026-02-25 01:53:08 UTC - targeted score pass (`0x58F1A0`)
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x0058f1a0`
+4. `just compare 0x0058f3c0`
+5. `just compare 0x0058f550`
+
+### Changes
+1. `src/game/TCivDescription.cpp`:
+   1. kept `0x58F1A0` on virtual `ProvinceCollectionVirtualShape` call shape and pointer-based legend-counter walk.
+   2. removed outer-loop `candidateOrdinal++` from `DestructTCivDescriptionAndMaybeFree` slot-advance path.
+2. restored `0x58F3C0` high-similarity baseline shape:
+   1. `CivilianClassCacheContext` typed counters at `+0x64..+0x6C`.
+   2. `#pragma optimize("y", on)` around `UpdateCivilianOrderTargetTileCountsForOwnerNation`.
+   3. direct fixed-address table references (`0x6A4310`, `0x698F58`) and class-slot decrement loop.
+
+### Results
+1. `0x0058F1A0`: `20.87% -> 22.22%`.
+2. `0x0058F3C0`: retained `97.98%`.
+3. `0x0058F550`: currently `16.11%` on this branch state.
+
+## 2026-02-25 20:09:36 UTC - ownership/config refactor (reccmp-safe)
+
+### Commands
+1. `just sync-ownership`
+2. `just regen-stubs`
+3. `just build`
+4. `just detect`
+5. `just compare 0x0058f3c0`
+6. `just stats`
+
+### Changes
+1. Added canonical config plumbing:
+   1. `config/function_name_overrides.csv` (rename/prototype overrides).
+   2. `config/function_ownership.csv` (address ownership map).
+2. Added shared helper module `tools/workflow/function_ownership.py` and ownership sync tool `tools/workflow/sync_function_ownership.py`.
+3. Updated active scripts to use canonical override path with legacy fallback:
+   1. `tools/ghidra/sync_exports.py`
+   2. `tools/stubgen.py`
+   3. `tools/workflow/decomp_loop.py`
+   4. `tools/workflow/promote_from_autogen.py`
+4. Updated `justfile` to pass ownership/override config explicitly and added `just sync-ownership`.
+5. Kept marker semantics reccmp-compatible:
+   1. only real reccmp markers (`FUNCTION/STUB/...`) are parsed for comparisons,
+   2. ownership sync reads manual source markers and excludes `src/autogen/*`.
+6. Fixed one surfaced link-shape issue after ownership suppression:
+   1. `src/game/TStratReportView.cpp` now calls `TView::thunk_ConstructUiResourceEntryBase()` as a real member call instead of unresolved free-symbol thunk bridge.
+
+### Results
+1. `just sync-ownership` scanned `281` manual-owned functions and wrote `config/function_ownership.csv`.
+2. `just regen-stubs` completed successfully with ownership suppression:
+   1. generated `24` stub chunks (`11949` stubs),
+   2. skipped `281` manual-owned addresses from autogen stubs.
+3. Reccmp flow remained operational after refactor:
+   1. `just build` succeeded (MSVC500 Docker pipeline),
+   2. `just detect` resolved recompiled binary + PDB and updated `reccmp-build.yml`,
+   3. `just compare 0x0058f3c0` completed and still reported expected targeted diff output (`97.98%` for this function),
+   4. `just stats` completed without duplicate-address parser noise (`dropped duplicate addresses: 0`).
+4. Snapshot (`2026-02-25T20:14:51Z`):
+   1. aligned functions: `60`
+   2. average similarity: `2.58%`
+   3. paired functions: `12229 / 12229` (`100%` coverage)
+
+## 2026-02-25 20:30 UTC - Python tooling dedup/refactor pass
+
+### Commands
+1. `uv run python -m compileall tools`
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just stats`
+5. `just inventory`
+6. `just generate-ignores`
+7. `just session-loop 1 1 1`
+
+### Changes
+1. Introduced shared tooling modules:
+   1. `tools/common/repo.py` (repo-root/path normalization helpers),
+   2. `tools/common/file_scan.py` (shared file iteration + generated-path filter),
+   3. `tools/common/pipe_csv.py` (pipe-delimited CSV readers),
+   4. `tools/common/hexutil.py` (hex address parsing),
+   5. `tools/common/name_overrides.py` (shared `address|name|prototype` parser).
+2. Package-structured tooling (`tools` + subpackages now have `__init__.py`) and standardized command execution to module mode (`python -m tools...`).
+3. Refactored workflow scripts to remove duplicated scanners/parsers:
+   1. `annotate_globals_from_symbols.py`,
+   2. `annotate_strings_from_symbols.py`,
+   3. `annotate_vtables_from_symbols.py`,
+   4. `normalize_reccmp_markers.py`,
+   5. `split_classes_in_file.py`,
+   6. `stubgen.py`,
+   7. `sync_exports.py`,
+   8. `promote_from_autogen.py`,
+   9. `decomp_loop.py`,
+   10. `function_ownership.py`.
+4. Refactored reccmp utilities to shared repo helpers and module-safe imports:
+   1. `compare_toolchains.py`,
+   2. `core_impact_ranking.py`,
+   3. `flag_sweep.py`,
+   4. `generate_ignore_functions.py`,
+   5. `library_inventory.py`,
+   6. `progress_stats.py`,
+   7. `session_loop.py`,
+   8. `symbol_buckets.py`,
+   9. `function_shape_stats.py`.
+5. Updated command docs/examples to `python -m tools...` in:
+   1. `README.md`,
+   2. `INSTRUCTIONS.md`,
+   3. `tools/ghidra/README.md`,
+   4. `tools/reccmp/README.md`,
+   5. `docs/control_plane.md`,
+   6. `docs/toolchain.md`.
+
+### Results
+1. All refactored modules compile (`compileall` clean).
+2. Primary reccmp loop still works after refactor:
+   1. `just sync-ownership` and `just regen-stubs` succeed.
+   2. `just stats` unchanged (`aligned=60`, `avg=2.58%`, no duplicate-address noise).
+3. Reccmp helper targets with module mode now run cleanly:
+   1. `just inventory`,
+   2. `just generate-ignores`,
+   3. `just session-loop`.

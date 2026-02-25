@@ -10,6 +10,16 @@ import argparse
 import re
 from pathlib import Path
 
+from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.workflow.function_ownership import (
+    DEFAULT_FUNCTION_OWNERSHIP_CSV,
+    FunctionOwnership,
+    load_function_ownership,
+    normalize_repo_relative_path,
+    parse_hex_address,
+    write_function_ownership,
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -32,6 +42,26 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--module", default="IMPERIALISM")
     parser.add_argument("--autogen-dir", default="src/ghidra_autogen")
     parser.add_argument(
+        "--ownership-csv",
+        default=DEFAULT_FUNCTION_OWNERSHIP_CSV,
+        help="Function ownership map (address|target_cpp|ownership|note).",
+    )
+    parser.add_argument(
+        "--ownership",
+        default="manual",
+        help="Ownership value to write for promoted addresses (default: manual).",
+    )
+    parser.add_argument(
+        "--ownership-note",
+        default="promoted_from_autogen",
+        help="Ownership note to write for promoted addresses.",
+    )
+    parser.add_argument(
+        "--force-ownership",
+        action="store_true",
+        help="Allow overwriting ownership entries mapped to another file.",
+    )
+    parser.add_argument(
         "--overwrite-existing",
         action="store_true",
         help=(
@@ -40,13 +70,6 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     return parser.parse_args()
-
-
-def parse_hex_address(value: str) -> int:
-    text = value.strip().lower()
-    if text.startswith("0x"):
-        text = text[2:]
-    return int(text, 16)
 
 
 def parse_address_range(value: str) -> tuple[int, int]:
@@ -111,10 +134,12 @@ def collect_autogen_blocks(autogen_dir: Path, module: str) -> dict[int, str]:
 
 def main() -> int:
     args = parse_args()
+    repo_root = repo_root_from_file(__file__)
     explicit_addresses = parse_explicit_addresses(args.address)
     ranges = parse_ranges(args.range)
-    autogen_dir = Path(args.autogen_dir)
-    target_cpp = Path(args.target_cpp)
+    autogen_dir = resolve_repo_path(repo_root, args.autogen_dir)
+    target_cpp = resolve_repo_path(repo_root, args.target_cpp)
+    ownership_csv = resolve_repo_path(repo_root, args.ownership_csv)
 
     if not explicit_addresses and not ranges:
         raise SystemExit("No addresses requested. Use --address and/or --range.")
@@ -140,13 +165,34 @@ def main() -> int:
         missing_fmt = ", ".join(f"0x{addr:08X}" for addr in missing)
         raise SystemExit(f"Requested address(es) not found in autogen snapshot: {missing_fmt}")
 
+    ownership_entries = load_function_ownership(ownership_csv)
+    target_cpp_rel = normalize_repo_relative_path(target_cpp, repo_root)
+    ownership_conflicts: list[tuple[int, str]] = []
+    for addr in addresses:
+        existing = ownership_entries.get(addr)
+        if existing is None:
+            continue
+        if existing.target_cpp == target_cpp_rel:
+            continue
+        if existing.ownership.lower() == "autogen":
+            continue
+        ownership_conflicts.append((addr, existing.target_cpp))
+
+    if ownership_conflicts and not args.force_ownership:
+        details = ", ".join(
+            f"0x{addr:08X}->{owner}" for addr, owner in sorted(ownership_conflicts)
+        )
+        raise SystemExit(
+            "Ownership conflict(s) detected. Use --force-ownership to overwrite: " + details
+        )
+
     if target_cpp.exists():
         original = target_cpp.read_text(encoding="utf-8", errors="ignore")
         preamble, existing_blocks = split_blocks(original, args.module)
     else:
         preamble = (
             "// Manual decompilation file.\n"
-            "// Use tools/workflow/promote_from_autogen.py to seed functions from autogen.\n\n"
+            "// Use `uv run python -m tools.workflow.promote_from_autogen` to seed from autogen.\n\n"
         )
         existing_blocks = []
 
@@ -166,9 +212,23 @@ def main() -> int:
     target_cpp.parent.mkdir(parents=True, exist_ok=True)
     target_cpp.write_text(output, encoding="utf-8")
 
+    ownership_updates = 0
+    for addr in addresses:
+        next_entry = FunctionOwnership(
+            address=addr,
+            target_cpp=target_cpp_rel,
+            ownership=args.ownership,
+            note=args.ownership_note,
+        )
+        if ownership_entries.get(addr) != next_entry:
+            ownership_updates += 1
+        ownership_entries[addr] = next_entry
+    write_function_ownership(ownership_csv, ownership_entries)
+
     print(f"Wrote {target_cpp}")
     print(f"Functions in file: {len(ordered_addrs)}")
     print(f"Newly promoted this run: {promoted_count}")
+    print(f"Ownership updates: {ownership_updates} ({ownership_csv})")
     return 0
 
 

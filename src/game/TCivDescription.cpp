@@ -62,7 +62,8 @@ struct CivilianClassCacheContext {
   unsigned char pad_04_to_5f[0x5c];
   short cachedCivilianClassId;
   short ownerNationId;
-  unsigned char pad_64_to_6f[0x0c];
+  short targetTileCountsBySlot[5];
+  unsigned char pad_6e_to_6f[0x02];
 };
 
 struct Point32 {
@@ -78,6 +79,21 @@ struct Rect32 {
 };
 
 extern "C" int __stdcall PtInRect(const Rect32* rect, Point32 point);
+
+class ProvinceCollectionVirtualShape {
+public:
+  virtual void Slot00(void);
+  virtual void Slot04(void);
+  virtual void Slot08(void);
+  virtual void Slot0c(void);
+  virtual void Slot10(void);
+  virtual void Slot14(void);
+  virtual void Slot18(void);
+  virtual void Slot1c(void);
+  virtual void Slot20(void);
+  virtual int GetByOrdinal(int provinceOrdinal);
+  virtual int GetCount(void);
+};
 
 typedef int(__fastcall* ProvinceCollectionGetCountFn)(void* thisCollection, int unusedEdx);
 typedef int(__fastcall* ProvinceCollectionGetByOrdinalFn)(void* thisCollection, int unusedEdx,
@@ -170,6 +186,7 @@ void __fastcall UpdateCivilianOrderClassAndRefreshTargetCounts(CivilianClassCach
 /* Handles civ-description click hit-test and selects matching terrain/entry descriptor. */
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
+#pragma optimize("y", on)
 void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context, int unusedEdx,
                                                     void* pointArg) {
   // ORIG_CALLCONV: __thiscall
@@ -179,18 +196,17 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
   int provinceTileCount;
   short* provinceTileIndices;
   unsigned short* legendSelectionCountsBySlot;
+  unsigned short* currentLegendSelectionCounter;
+  int slotIndex;
   int candidateOrdinal;
   Rect32* legendRect;
-  int slotIndex;
   int provinceOrdinal;
   int provinceCount;
   int provinceId;
   int globalMapState;
   int tileDataBase;
   int provinceDataBase;
-  int* ownerNationProvinceCollection;
-  ProvinceCollectionGetCountFn getProvinceCount;
-  ProvinceCollectionGetByOrdinalFn getProvinceIdByOrdinal;
+  ProvinceCollectionVirtualShape* ownerNationProvinceCollection;
 
   (void)unusedEdx;
   legendRect = reinterpret_cast<Rect32*>(reinterpret_cast<char*>(context) + 0x70);
@@ -198,20 +214,17 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
       reinterpret_cast<unsigned short*>(kAddrCivilianLegendSelectionCountsBySlot);
   candidateOrdinal = 0;
   ownerNationId = *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x62);
+  currentLegendSelectionCounter = legendSelectionCountsBySlot;
   slotIndex = 0;
-  while (slotIndex < 0x10) {
+  do {
     if (PtInRect(legendRect, *reinterpret_cast<Point32*>(pointArg)) != 0) {
-      ownerNationProvinceCollection = *reinterpret_cast<int**>(
+      ownerNationProvinceCollection = *reinterpret_cast<ProvinceCollectionVirtualShape**>(
           *reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable + ownerNationId * 4) + 0x90);
-      getProvinceCount =
-          *reinterpret_cast<ProvinceCollectionGetCountFn>(*ownerNationProvinceCollection + 0x28);
-      provinceCount = getProvinceCount(ownerNationProvinceCollection, 0);
+      provinceCount = ownerNationProvinceCollection->GetCount();
       if (0 < provinceCount) {
-        getProvinceIdByOrdinal = *reinterpret_cast<ProvinceCollectionGetByOrdinalFn>(
-            *ownerNationProvinceCollection + 0x24);
         provinceOrdinal = 1;
         do {
-          provinceId = getProvinceIdByOrdinal(ownerNationProvinceCollection, 0, provinceOrdinal);
+          provinceId = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
           globalMapState = *reinterpret_cast<int*>(kAddrGlobalMapState);
           provinceDataBase = *reinterpret_cast<int*>(globalMapState + 0x10);
           provinceTileCount = (int)*(char*)(provinceDataBase + provinceId * 0xa8 + 0x3a);
@@ -225,7 +238,7 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
               if ((*(char*)(tileDataBase + tileIndex * 0x24 + 0xe) == '\0') &&
                   ((unsigned short)(unsigned char)*(char*)(tileDataBase + tileIndex * 0x24 +
                                                            0x13) == (unsigned short)slotIndex)) {
-                if ((int)(unsigned int)legendSelectionCountsBySlot[slotIndex] <= candidateOrdinal) {
+                if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
                   void* uiRootController = *reinterpret_cast<void**>(kAddrGlobalUiRootController);
                   void* legendSelectionOwner =
                       *reinterpret_cast<void**>(reinterpret_cast<char*>(uiRootController) + 0x48);
@@ -234,8 +247,8 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
                         *reinterpret_cast<void**>(legendSelectionOwner))[0x78])(
                         legendSelectionOwner, 0, (int)tileIndex);
                   }
-                  legendSelectionCountsBySlot[slotIndex] =
-                      (unsigned short)(legendSelectionCountsBySlot[slotIndex] + 1);
+                  *currentLegendSelectionCounter =
+                      (unsigned short)((unsigned int)(*currentLegendSelectionCounter) + 1);
                   return;
                 }
                 candidateOrdinal = candidateOrdinal + 1;
@@ -245,16 +258,21 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
             }
           }
           provinceOrdinal = provinceOrdinal + 1;
-          provinceCount = getProvinceCount(ownerNationProvinceCollection, 0);
+          provinceCount = ownerNationProvinceCollection->GetCount();
         } while (provinceOrdinal <= provinceCount);
       }
     }
+    currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
     slotIndex = slotIndex + 1;
-    candidateOrdinal = candidateOrdinal + 1;
     legendRect = legendRect + 1;
-  }
+    if (0x6a44af < reinterpret_cast<int>(currentLegendSelectionCounter)) {
+      return;
+    }
+  } while (true);
 }
+#pragma optimize("", on)
 
+#pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x0058f3c0
 void __fastcall
 UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* context, int unusedEdx,
@@ -265,69 +283,67 @@ UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* con
   int provinceRecord;
   short* targetCountSlot;
   int classSlotOrdinal;
+  int remainingSlots;
   int provinceOrdinal;
-  int provinceCount;
   short* provinceTileIndices;
-  int tileRecord;
-  char tileProfileId;
-  int globalMapState;
-  int tileDataBase;
-  int provinceDataBase;
-  int* ownerNationProvinceCollection;
-  ProvinceCollectionGetCountFn getProvinceCount;
-  ProvinceCollectionGetByOrdinalFn getProvinceIdByOrdinal;
+  int provinceTileIndex;
+  int tableBase;
+  short tileProfileId;
+  ProvinceCollectionVirtualShape* ownerNationProvinceCollection;
+  int provinceCount;
 
   (void)unusedEdx;
   provinceOrdinal = 1;
-  globalMapState = *reinterpret_cast<int*>(kAddrGlobalMapState);
-  tileDataBase = *reinterpret_cast<int*>(globalMapState + 0xc);
-  ownerNationId = (short)*(char*)(tileDataBase + 4 + orderState->nCurrentTileIndex * 0x24);
+  ownerNationId =
+      (short)*(char*)(*reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrGlobalMapState) + 0xc) +
+                      4 + orderState->nCurrentTileIndex * 0x24);
   context->ownerNationId = ownerNationId;
-  ownerNationProvinceCollection = *reinterpret_cast<int**>(
+  ownerNationProvinceCollection = *reinterpret_cast<ProvinceCollectionVirtualShape**>(
       *reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable + ownerNationId * 4) + 0x90);
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x6c) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x6a) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x68) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x66) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x64) = 0;
-  getProvinceCount =
-      *reinterpret_cast<ProvinceCollectionGetCountFn>(*ownerNationProvinceCollection + 0x28);
-  provinceCount = getProvinceCount(ownerNationProvinceCollection, 0);
-  if (0 < provinceCount) {
-    getProvinceIdByOrdinal =
-        *reinterpret_cast<ProvinceCollectionGetByOrdinalFn>(*ownerNationProvinceCollection + 0x24);
-    do {
-      provinceRecord = getProvinceIdByOrdinal(ownerNationProvinceCollection, 0, provinceOrdinal);
-      provinceTileOrdinal = 0;
-      provinceDataBase = *reinterpret_cast<int*>(globalMapState + 0x10);
-      provinceRecord = provinceDataBase + provinceRecord * 0xa8;
-      if ('\0' < *(char*)(provinceRecord + 0x3a)) {
-        provinceTileIndices = reinterpret_cast<short*>(provinceRecord + 0x42);
-        do {
-          tileRecord = tileDataBase + *provinceTileIndices * 0x24;
-          if (*(char*)(tileRecord + 0xe) == '\0') {
-            tileProfileId = *(char*)(tileRecord + 0x13);
-            classSlotOrdinal = 0;
-            targetCountSlot = reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x64);
-            do {
-              if ((short)tileProfileId ==
-                  reinterpret_cast<short*>(kAddrTargetTileProfileByCivilianClassAndSlot)
-                      [classSlotOrdinal + context->cachedCivilianClassId * 5]) {
-                *targetCountSlot = (short)(*targetCountSlot + 1);
-              }
-              classSlotOrdinal = classSlotOrdinal + 1;
-              targetCountSlot = targetCountSlot + 1;
-            } while (classSlotOrdinal < 5);
-          }
-          provinceTileOrdinal = provinceTileOrdinal + 1;
-          provinceTileIndices = provinceTileIndices + 1;
-        } while (provinceTileOrdinal < *(char*)(provinceRecord + 0x3a));
-      }
-      provinceOrdinal = provinceOrdinal + 1;
-      provinceCount = getProvinceCount(ownerNationProvinceCollection, 0);
-    } while (provinceOrdinal <= provinceCount);
+  context->targetTileCountsBySlot[4] = 0;
+  context->targetTileCountsBySlot[3] = 0;
+  context->targetTileCountsBySlot[2] = 0;
+  context->targetTileCountsBySlot[1] = 0;
+  context->targetTileCountsBySlot[0] = 0;
+  provinceCount = ownerNationProvinceCollection->GetCount();
+  if (provinceCount < provinceOrdinal) {
+    return;
   }
+  do {
+    provinceRecord = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
+    provinceTileOrdinal = 0;
+    provinceRecord = *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrGlobalMapState) + 0x10) +
+                     provinceRecord * 0xa8;
+    if ('\0' < *(char*)(provinceRecord + 0x3a)) {
+      provinceTileIndices = reinterpret_cast<short*>(provinceRecord + 0x42);
+      do {
+        provinceTileIndex = (short)*provinceTileIndices;
+        tableBase = *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrGlobalMapState) + 0xc) +
+                    (int)(short)provinceTileIndex * 0x24;
+        if (*(char*)(tableBase + 0xe) == '\0') {
+          tileProfileId = (short)*(char*)(tableBase + 0x13);
+          classSlotOrdinal = 0;
+          remainingSlots = 5;
+          targetCountSlot = &context->targetTileCountsBySlot[0];
+          do {
+            if (tileProfileId == reinterpret_cast<short*>(kAddrTargetTileProfileByCivilianClassAndSlot)
+                                     [classSlotOrdinal + context->cachedCivilianClassId * 5]) {
+              *targetCountSlot = (short)(*targetCountSlot + 1);
+            }
+            classSlotOrdinal = classSlotOrdinal + 1;
+            targetCountSlot = targetCountSlot + 1;
+            remainingSlots = remainingSlots - 1;
+          } while (remainingSlots != 0);
+        }
+        provinceTileOrdinal = provinceTileOrdinal + 1;
+        provinceTileIndices = provinceTileIndices + 1;
+      } while (provinceTileOrdinal < *(char*)(provinceRecord + 0x3a));
+    }
+    provinceOrdinal = provinceOrdinal + 1;
+    provinceCount = ownerNationProvinceCollection->GetCount();
+  } while (provinceOrdinal <= provinceCount);
 }
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x0058f550
 void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* context,

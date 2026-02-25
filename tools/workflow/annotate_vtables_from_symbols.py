@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
-from typing import Iterable
+
+from tools.common.file_scan import iter_files, is_generated_source_path
+from tools.common.pipe_csv import normalize_hex, read_pipe_map, read_pipe_rows
+from tools.common.repo import repo_root_from_file
 
 
 CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+(?P<name>[A-Za-z_]\w*)\b")
@@ -18,7 +20,7 @@ VTABLE_ANNOT_RE = re.compile(
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--symbols-csv",
@@ -58,63 +60,28 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def iter_files(paths: Iterable[str]) -> list[Path]:
-    files: list[Path] = []
-    for item in paths:
-        p = Path(item)
-        if p.is_file():
-            files.append(p)
-            continue
-        if p.is_dir():
-            for ext in ("*.h", "*.hpp", "*.hh", "*.hxx", "*.cpp", "*.cc", "*.cxx"):
-                files.extend(sorted(p.rglob(ext)))
-
-    seen: set[Path] = set()
-    ordered: list[Path] = []
-    for f in sorted(files):
-        rf = f.resolve()
-        if rf in seen:
-            continue
-        seen.add(rf)
-        ordered.append(f)
-    return ordered
-
-
 def load_override_map(path: Path) -> dict[str, str]:
-    if not path.exists():
-        return {}
-    out: dict[str, str] = {}
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            class_name = row.get("class", "").strip()
-            addr = row.get("address", "").strip().lower().removeprefix("0x")
-            if not class_name or not addr:
-                continue
-            out[class_name] = addr
-    return out
+    return read_pipe_map(path, key_column="class", value_column="address", normalize_value=normalize_hex)
 
 
 def load_vtable_symbol_map(
     symbols_csv: Path, overrides: dict[str, str], duplicate_fallback: str
 ) -> tuple[dict[str, str], dict[str, int]]:
     by_class: dict[str, list[str]] = {}
-    with symbols_csv.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            if row.get("type") != "global":
-                continue
-            name = row.get("name", "").strip()
-            if not name:
-                continue
-            match = VTABLE_SYMBOL_RE.match(name)
-            if match is None:
-                continue
-            class_name = match.group("class")
-            addr = row.get("address", "").strip().lower().removeprefix("0x")
-            if not addr:
-                continue
-            by_class.setdefault(class_name, []).append(addr)
+    for row in read_pipe_rows(symbols_csv):
+        if row.get("type") != "global":
+            continue
+        name = (row.get("name") or "").strip()
+        if not name:
+            continue
+        match = VTABLE_SYMBOL_RE.match(name)
+        if match is None:
+            continue
+        class_name = match.group("class")
+        addr = normalize_hex((row.get("address") or "").strip())
+        if not addr:
+            continue
+        by_class.setdefault(class_name, []).append(addr)
 
     resolved: dict[str, str] = {}
     stats = {"override": 0, "unique": 0, "first": 0, "skipped": 0}
@@ -166,8 +133,7 @@ def main() -> int:
     total_added = 0
     changed_files = 0
     for path in files:
-        path_posix = path.as_posix()
-        if "/ghidra_autogen/" in path_posix or "/autogen/stubs/" in path_posix:
+        if is_generated_source_path(path):
             continue
 
         original = path.read_text(encoding="utf-8")

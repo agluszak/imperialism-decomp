@@ -8,9 +8,11 @@ import json
 import re
 from pathlib import Path
 
+from tools.common.repo import repo_root_from_file
+
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument("--a-name", default="msvc500")
     parser.add_argument("--a-build", default=str(repo_root / "build-msvc500"))

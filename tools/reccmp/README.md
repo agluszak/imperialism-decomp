@@ -31,13 +31,13 @@ Typical flow after building:
 Use this to get one-line-direction deltas (better/worse/stalled) between runs:
 
 ```bash
-uv run python tools/reccmp/progress_stats.py --target IMPERIALISM
+uv run python -m tools.reccmp.progress_stats --target IMPERIALISM
 ```
 
 If you already have `reccmp_roadmap.csv` and `reccmp_report.json` generated and only want to recompute/print:
 
 ```bash
-uv run python tools/reccmp/progress_stats.py --target IMPERIALISM --no-run
+uv run python -m tools.reccmp.progress_stats --target IMPERIALISM --no-run
 ```
 
 ## Core impact ranking
@@ -46,7 +46,7 @@ Rank core work by `size * (1 - similarity)` while excluding known non-core bucke
 (CRT/MFC/DirectX/wrappers/thunks by default):
 
 ```bash
-uv run python tools/reccmp/core_impact_ranking.py \
+uv run python -m tools.reccmp.core_impact_ranking \
   --target IMPERIALISM \
   --top 50 \
   --csv-out build-msvc500/core_impact.csv \
@@ -60,7 +60,7 @@ This also prints wrapper relabel candidates to keep library adapters out of core
 Generate the working queue for the next coding session:
 
 ```bash
-uv run python tools/reccmp/session_loop.py \
+uv run python -m tools.reccmp.session_loop \
   --target IMPERIALISM \
   --pick 8 \
   --top 50 \
@@ -78,7 +78,7 @@ Outputs:
 Sweep candidate MSVC optimization profiles and score them with `reccmp`:
 
 ```bash
-uv run python tools/reccmp/flag_sweep.py \
+uv run python -m tools.reccmp.flag_sweep \
   --target IMPERIALISM \
   --docker-image imperialism-msvc500 \
   --build-root build-flag-sweep \

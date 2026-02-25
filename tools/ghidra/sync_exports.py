@@ -12,6 +12,13 @@ import tomllib
 from pathlib import Path
 
 import pyghidra
+from tools.common.name_overrides import parse_name_overrides
+from tools.common.pipe_csv import read_pipe_table
+from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.workflow.function_ownership import (
+    DEFAULT_NAME_OVERRIDES_CSV,
+    resolve_name_overrides_path,
+)
 
 REPO_CONFIG_PATH = "ghidra.toml"
 EXPECTED_PYGHIDRA_VERSION = "3.0.2"
@@ -19,7 +26,7 @@ WS_RE = re.compile(r"\s")
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--ghidra-install-dir",
@@ -64,7 +71,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--name-overrides",
-        default=os.getenv("NAME_OVERRIDES", str(repo_root / "config" / "name_overrides.csv")),
+        default=os.getenv("NAME_OVERRIDES", str(repo_root / DEFAULT_NAME_OVERRIDES_CSV)),
         help="Optional pipe-delimited file: address|name|prototype",
     )
     return parser.parse_args()
@@ -107,35 +114,11 @@ def read_ghidra_props(ghidra_install_dir: Path) -> tuple[str, str]:
     return version, release
 
 
-def clean_field(text: str) -> str:
-    return " ".join(text.replace("|", " ").split())
-
-
-def parse_override_rows(path: Path) -> dict[int, tuple[str, str]]:
-    if not path.is_file():
-        return {}
-    rows: dict[int, tuple[str, str]] = {}
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            addr_text = (row.get("address") or "").strip()
-            if not addr_text:
-                continue
-            addr = int(addr_text, 16)
-            name = clean_field((row.get("name") or "").strip())
-            proto = clean_field((row.get("prototype") or "").strip())
-            rows[addr] = (name, proto)
-    return rows
-
-
 def apply_overrides_to_symbols_csv(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
     if not path.is_file() or not overrides:
         return (0, 0)
 
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        fieldnames = list(reader.fieldnames or [])
-        rows = list(reader)
+    fieldnames, rows = read_pipe_table(path)
 
     renamed_count = 0
     proto_count = 0
@@ -212,10 +195,7 @@ def apply_overrides_to_index_csv(path: Path, overrides: dict[int, tuple[str, str
     if not path.is_file() or not overrides:
         return (0, 0)
 
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        fieldnames = list(reader.fieldnames or [])
-        rows = list(reader)
+    fieldnames, rows = read_pipe_table(path)
 
     renamed_count = 0
     proto_count = 0
@@ -243,7 +223,7 @@ def apply_overrides_to_index_csv(path: Path, overrides: dict[int, tuple[str, str
 
 def main() -> int:
     try:
-        repo_root = Path(__file__).resolve().parents[2]
+        repo_root = repo_root_from_file(__file__)
         args = parse_args()
         cfg = read_repo_config(repo_root)
 
@@ -270,10 +250,10 @@ def main() -> int:
         ghidra_project_dir = Path(require(args.ghidra_project_dir, "--ghidra-project-dir"))
         ghidra_project_name = require(args.ghidra_project_name, "--ghidra-project-name")
         ghidra_program_name = args.ghidra_program_name or default_program
-        output_dir = Path(args.output_dir).resolve()
-        decomp_output_dir = Path(args.decomp_output_dir).resolve()
-        types_output_dir = Path(args.types_output_dir).resolve()
-        name_overrides_path = Path(args.name_overrides).resolve()
+        output_dir = resolve_repo_path(repo_root, args.output_dir)
+        decomp_output_dir = resolve_repo_path(repo_root, args.decomp_output_dir)
+        types_output_dir = resolve_repo_path(repo_root, args.types_output_dir)
+        name_overrides_path = resolve_name_overrides_path(repo_root, args.name_overrides)
         max_per_file = (
             args.decomp_max_functions_per_file
             if args.decomp_max_functions_per_file is not None
@@ -342,7 +322,7 @@ def main() -> int:
                 program.release(consumer)
             project.close()
 
-        overrides = parse_override_rows(name_overrides_path)
+        overrides = parse_name_overrides(name_overrides_path)
         if overrides:
             renamed_csv, proto_csv = apply_overrides_to_symbols_csv(symbols_csv, overrides)
             renamed_txt, skipped_txt = apply_overrides_to_symbols_txt(symbols_txt, overrides)

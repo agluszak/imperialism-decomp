@@ -1,10 +1,10 @@
 // TStratReportView wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
+#include "game/TView.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_ConstructUiResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 
 namespace {
@@ -22,7 +22,7 @@ struct StratReportViewState {
 class RuntimeBridge {
 public:
   static __inline void ConstructUiResourceEntryBase(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiResourceEntryBase)(self);
+    reinterpret_cast<TView*>(self)->thunk_ConstructUiResourceEntryBase();
   }
 };
 

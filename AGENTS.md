@@ -40,6 +40,7 @@ Use `just` targets by default for project workflows.
    - `just detect`
    - `just stats`
    - `just compare <addr>`
+   - `just sync-ownership`
    - `just promote <target> --address 0x...`
 2. Do not run raw `docker`, `uv run reccmp-*`, or direct workflow scripts when an equivalent `just` target exists.
 3. Use direct commands only when there is no `just` target for the required action; if so, keep it minimal and add/update a `just` target afterward.

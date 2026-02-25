@@ -3,11 +3,12 @@
 
 from __future__ import annotations
 
-import csv
 import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
+
+from tools.common.pipe_csv import read_pipe_rows
 
 
 BUCKET_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
@@ -74,27 +75,25 @@ def parse_function_symbols(path: Path) -> list[FunctionSymbol]:
     if not path.is_file():
         raise FileNotFoundError(f"Missing symbols CSV: {path}")
     out: list[FunctionSymbol] = []
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            if (row.get("type") or "").strip().lower() != "function":
-                continue
-            addr_text = (row.get("address") or "").strip()
-            name = (row.get("name") or "").strip()
-            size_text = (row.get("size") or "").strip()
-            if not addr_text or not name:
-                continue
+    for row in read_pipe_rows(path):
+        if (row.get("type") or "").strip().lower() != "function":
+            continue
+        addr_text = (row.get("address") or "").strip()
+        name = (row.get("name") or "").strip()
+        size_text = (row.get("size") or "").strip()
+        if not addr_text or not name:
+            continue
+        try:
+            addr = int(addr_text, 16)
+        except ValueError:
+            continue
+        size = None
+        if size_text:
             try:
-                addr = int(addr_text, 16)
+                size = int(size_text, 10)
             except ValueError:
-                continue
-            size = None
-            if size_text:
-                try:
-                    size = int(size_text, 10)
-                except ValueError:
-                    pass
-            out.append(FunctionSymbol(address=addr, name=name, size=size))
+                pass
+        out.append(FunctionSymbol(address=addr, name=name, size=size))
     return out
 
 

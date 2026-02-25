@@ -11,10 +11,12 @@ Duplicate-name symbols are resolved via:
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
-from typing import Iterable
+
+from tools.common.file_scan import iter_files, is_generated_source_path
+from tools.common.pipe_csv import normalize_hex, read_pipe_map, read_pipe_rows
+from tools.common.repo import repo_root_from_file
 
 DECL_RE = re.compile(
     r"^\s*(?:static\s+)?(?:const\s+)?(?:unsigned\s+|signed\s+)?"
@@ -31,7 +33,7 @@ NAME_ADDR_SUFFIX_RE = re.compile(r"_([0-9A-Fa-f]{6,8})$")
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--symbols-csv",
@@ -71,40 +73,16 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def iter_files(paths: Iterable[str]) -> list[Path]:
-    files: list[Path] = []
-    for item in paths:
-        p = Path(item)
-        if p.is_file():
-            files.append(p)
-            continue
-        if p.is_dir():
-            for ext in ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp"):
-                files.extend(sorted(p.rglob(ext)))
-    # stable, unique ordering
-    seen: set[Path] = set()
-    ordered: list[Path] = []
-    for f in sorted(files):
-        rf = f.resolve()
-        if rf in seen:
-            continue
-        seen.add(rf)
-        ordered.append(f)
-    return ordered
-
-
 def load_global_symbols(path: Path) -> tuple[dict[str, str], dict[str, list[str]]]:
     by_name: dict[str, list[str]] = {}
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            if row.get("type") != "global":
-                continue
-            name = row.get("name", "").strip()
-            addr = row.get("address", "").strip()
-            if not name or not addr:
-                continue
-            by_name.setdefault(name, []).append(addr.lower().removeprefix("0x"))
+    for row in read_pipe_rows(path):
+        if row.get("type") != "global":
+            continue
+        name = (row.get("name") or "").strip()
+        addr = (row.get("address") or "").strip()
+        if not name or not addr:
+            continue
+        by_name.setdefault(name, []).append(normalize_hex(addr))
 
     unique: dict[str, str] = {}
     duplicates: dict[str, list[str]] = {}
@@ -118,19 +96,7 @@ def load_global_symbols(path: Path) -> tuple[dict[str, str], dict[str, list[str]
 
 
 def load_override_map(path: Path) -> dict[str, str]:
-    if not path.exists():
-        return {}
-
-    override: dict[str, str] = {}
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            name = row.get("name", "").strip()
-            addr = row.get("address", "").strip().lower().removeprefix("0x")
-            if not name or not addr:
-                continue
-            override[name] = addr
-    return override
+    return read_pipe_map(path, key_column="name", value_column="address", normalize_value=normalize_hex)
 
 
 def has_nearby_global_annotation(lines: list[str], idx: int, target: str) -> bool:
@@ -161,7 +127,7 @@ def parse_hex_value(addr_hex: str) -> int:
 
 
 def normalize_addr(addr_hex: str) -> str:
-    return addr_hex.lower().removeprefix("0x")
+    return normalize_hex(addr_hex)
 
 
 def resolve_duplicate_address(
@@ -216,9 +182,7 @@ def main() -> int:
         "unresolved": 0,
     }
     for path in files:
-        # Skip generated exports and stubs.
-        path_posix = path.as_posix()
-        if "/ghidra_autogen/" in path_posix or "/autogen/stubs/" in path_posix:
+        if is_generated_source_path(path):
             continue
 
         original = path.read_text(encoding="utf-8")

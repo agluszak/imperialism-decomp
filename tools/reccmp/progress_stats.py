@@ -12,6 +12,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from tools.common.repo import repo_root_from_file
+
 FUNCTION_ROW_TYPE = "fun"
 GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
 AUX_NON_FUNCTION_ROW_TYPES = ("imp",)
@@ -27,7 +29,7 @@ ROW_TYPE_LABELS = {
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     default_build_dir = repo_root / "build-msvc500"
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="IMPERIALISM")

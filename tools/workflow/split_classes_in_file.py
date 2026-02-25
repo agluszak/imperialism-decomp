@@ -8,9 +8,11 @@ Each class function block is copied into src/game/<ClassName>.cpp.
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
+
+from tools.common.hexutil import parse_hex_address
+from tools.common.pipe_csv import read_pipe_rows
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,17 +39,15 @@ def parse_args() -> argparse.Namespace:
 
 def load_symbol_names(path: Path) -> dict[int, str]:
     mapping: dict[int, str] = {}
-    with path.open("r", newline="", encoding="utf-8") as handle:
-        reader = csv.DictReader(handle, delimiter="|")
-        for row in reader:
-            address = (row.get("address") or "").strip()
-            name = (row.get("name") or "").strip()
-            if not address or not name:
-                continue
-            try:
-                mapping[int(address, 16)] = name
-            except ValueError:
-                continue
+    for row in read_pipe_rows(path):
+        address = (row.get("address") or "").strip()
+        name = (row.get("name") or "").strip()
+        if not address or not name:
+            continue
+        try:
+            mapping[parse_hex_address(address)] = name
+        except ValueError:
+            continue
     return mapping
 
 

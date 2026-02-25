@@ -12,7 +12,8 @@ from pathlib import Path
 
 from ruamel.yaml import YAML
 
-from symbol_buckets import classify_name, parse_function_symbols, parse_reccmp_report
+from tools.common.repo import repo_root_from_file
+from tools.reccmp.symbol_buckets import classify_name, parse_function_symbols, parse_reccmp_report
 
 
 DEFAULT_EXCLUDED_BUCKETS = {
@@ -64,7 +65,7 @@ class RankedFunction:
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--symbols-csv", default=str(repo_root / "config" / "symbols.csv"))

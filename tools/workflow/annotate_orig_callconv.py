@@ -9,9 +9,10 @@ inside function bodies for address-annotated functions in source files.
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
+
+from tools.common.pipe_csv import read_pipe_rows
 
 FUNCTION_RE = re.compile(r"//\s*FUNCTION:\s*IMPERIALISM\s+0x([0-9A-Fa-f]+)")
 ORIG_MARKER = "ORIG_CALLCONV: __thiscall"
@@ -33,20 +34,18 @@ def parse_args() -> argparse.Namespace:
 
 
 def load_thiscall_addresses(symbols_csv: Path) -> set[int]:
-    with symbols_csv.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        result: set[int] = set()
-        for row in reader:
-            if (row.get("type") or "").strip().lower() != "function":
-                continue
-            prototype = (row.get("prototype") or "").strip()
-            if "__thiscall" not in prototype:
-                continue
-            address_text = (row.get("address") or "").strip()
-            if not address_text:
-                continue
-            result.add(int(address_text, 16))
-        return result
+    result: set[int] = set()
+    for row in read_pipe_rows(symbols_csv):
+        if (row.get("type") or "").strip().lower() != "function":
+            continue
+        prototype = (row.get("prototype") or "").strip()
+        if "__thiscall" not in prototype:
+            continue
+        address_text = (row.get("address") or "").strip()
+        if not address_text:
+            continue
+        result.add(int(address_text, 16))
+    return result
 
 
 def annotate_segment(segment: str) -> tuple[str, bool]:

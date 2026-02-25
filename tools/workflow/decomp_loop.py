@@ -15,6 +15,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.workflow.function_ownership import (
+    DEFAULT_FUNCTION_OWNERSHIP_CSV,
+    DEFAULT_NAME_OVERRIDES_CSV,
+    resolve_name_overrides_path,
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -27,7 +34,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--decomp-output-dir", default="src/ghidra_autogen")
     parser.add_argument("--decomp-max-functions-per-file", type=int, default=250)
     parser.add_argument("--types-output-dir", default="include/ghidra_autogen")
-    parser.add_argument("--name-overrides", default="config/name_overrides.csv")
+    parser.add_argument("--name-overrides", default=DEFAULT_NAME_OVERRIDES_CSV)
+    parser.add_argument("--ownership-csv", default=DEFAULT_FUNCTION_OWNERSHIP_CSV)
 
     parser.add_argument("--use-prototypes", action="store_true")
     parser.add_argument("--stubgen-target", default="IMPERIALISM")
@@ -52,14 +60,17 @@ def require(value: str | None, flag_name: str) -> str:
 def main() -> int:
     try:
         args = parse_args()
-        repo_root = Path(__file__).resolve().parents[2]
+        repo_root = repo_root_from_file(__file__)
+        resolved_name_overrides = resolve_name_overrides_path(repo_root, args.name_overrides)
+        resolved_ownership_csv = resolve_repo_path(repo_root, args.ownership_csv)
 
         if args.export_ghidra:
             ghidra_cmd = [
                 "uv",
                 "run",
                 "python",
-                "tools/ghidra/sync_exports.py",
+                "-m",
+                "tools.ghidra.sync_exports",
                 "--ghidra-install-dir",
                 require(args.ghidra_install_dir, "--ghidra-install-dir"),
                 "--ghidra-project-dir",
@@ -75,7 +86,7 @@ def main() -> int:
                 "--decomp-max-functions-per-file",
                 str(args.decomp_max_functions_per_file),
                 "--name-overrides",
-                args.name_overrides,
+                str(resolved_name_overrides),
             ]
             if args.ghidra_program_name:
                 ghidra_cmd.extend(["--ghidra-program-name", args.ghidra_program_name])
@@ -85,17 +96,20 @@ def main() -> int:
             "uv",
             "run",
             "python",
-            "tools/stubgen.py",
+            "-m",
+            "tools.stubgen",
             "--target",
             args.stubgen_target,
             "--name-overrides",
-            args.name_overrides,
+            str(resolved_name_overrides),
+            "--ownership-csv",
+            str(resolved_ownership_csv),
         ]
         if args.use_prototypes:
             stubgen_cmd.append("--use-prototypes")
         run(stubgen_cmd, cwd=repo_root)
 
-        build_dir = (repo_root / args.build_dir).resolve()
+        build_dir = resolve_repo_path(repo_root, args.build_dir)
         if args.detect_recompiled:
             run(
                 [
