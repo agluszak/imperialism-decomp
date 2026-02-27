@@ -309,6 +309,36 @@ commands:
     mode: writer
     status: maintained
     summary: Create gameplay enums from JSON spec and optionally apply table typing.
+  - name: extract_enum_domain_candidates
+    module: imperialism_re.commands.extract_enum_domain_candidates
+    mode: reader
+    status: maintained
+    summary: Extract enum candidate constants from decompiled compare/switch usage.
+  - name: build_enum_spec_from_candidates
+    module: imperialism_re.commands.build_enum_spec_from_candidates
+    mode: reader
+    status: maintained
+    summary: Build gameplay enum JSON spec from candidate CSV with evidence thresholds.
+  - name: apply_enum_tables_from_spec
+    module: imperialism_re.commands.apply_enum_tables_from_spec
+    mode: writer
+    status: maintained
+    summary: Apply enum table typing from spec tables section.
+  - name: apply_enum_param_types_clustered
+    module: imperialism_re.commands.apply_enum_param_types_clustered
+    mode: writer
+    status: maintained
+    summary: Apply enum datatypes to parameters from clustered candidate evidence.
+  - name: apply_enum_struct_fields_clustered
+    module: imperialism_re.commands.apply_enum_struct_fields_clustered
+    mode: writer
+    status: maintained
+    summary: Apply enum datatypes to struct fields from clustered candidate evidence.
+  - name: verify_enum_propagation_hotspots
+    module: imperialism_re.commands.verify_enum_propagation_hotspots
+    mode: reader
+    status: maintained
+    summary: Report candidate enum targets still missing propagated enum types.
   - name: inventory_unnamed_globals
     module: imperialism_re.commands.inventory_unnamed_globals
     mode: reader

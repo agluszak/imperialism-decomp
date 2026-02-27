@@ -27,10 +27,14 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import OrderedDict
 from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
-from imperialism_re.core.datatypes import require_project_category_path, resolve_datatype_by_path_or_legacy_aliases
+from imperialism_re.core.datatypes import (
+    require_project_category_path,
+    resolve_datatype_by_path_or_legacy_aliases,
+)
 from imperialism_re.core.ghidra_session import open_program
 
 
@@ -40,9 +44,106 @@ def _parse_int(value) -> int:
     return int(str(value), 0)
 
 
+def _resolve_spec_paths(root: Path, raw_paths: list[str]) -> list[Path]:
+    out: list[Path] = []
+    for raw in raw_paths:
+        p = Path(raw)
+        if not p.is_absolute():
+            p = root / p
+        if not p.exists():
+            raise FileNotFoundError(f"missing spec json: {p}")
+        out.append(p)
+    return out
+
+
+def _merge_specs(spec_paths: list[Path]) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    merged_enums: OrderedDict[tuple[str, str], dict[str, object]] = OrderedDict()
+    merged_tables: OrderedDict[tuple[int, str, int, str], dict[str, object]] = OrderedDict()
+
+    for spec_path in spec_paths:
+        spec = json.loads(spec_path.read_text(encoding="utf-8"))
+        enum_specs = spec.get("enums") or []
+        table_specs = spec.get("tables") or []
+
+        for item in enum_specs:
+            category = require_project_category_path(str(item["category"]))
+            name = str(item["name"])
+            size = _parse_int(item["size"])
+            key = (category, name)
+            existing = merged_enums.get(key)
+            if existing is None:
+                existing = {
+                    "category": category,
+                    "name": name,
+                    "size": size,
+                    "members": OrderedDict(),
+                }
+                merged_enums[key] = existing
+            elif int(existing["size"]) != size:
+                print(
+                    f"[warn] enum size mismatch for {category}/{name}: "
+                    f"existing={existing['size']} incoming={size} (keeping existing)"
+                )
+
+            members = existing["members"]
+            for pair in item.get("values") or []:
+                if not isinstance(pair, (list, tuple)) or len(pair) != 2:
+                    raise ValueError(f"invalid enum value pair for {name}: {pair!r}")
+                member_name = str(pair[0])
+                member_value = _parse_int(pair[1])
+                if member_value in members:
+                    if members[member_value] != member_name:
+                        print(
+                            f"[warn] enum member conflict {category}/{name} "
+                            f"value={member_value} existing={members[member_value]} "
+                            f"incoming={member_name} (keeping existing)"
+                        )
+                    continue
+                members[member_value] = member_name
+
+        for item in table_specs:
+            try:
+                addr_i = _parse_int(item["address"])
+                enum_path = str(item["enum_path"])
+                count = _parse_int(item["count"])
+                label = str(item.get("label") or "")
+            except Exception:
+                continue
+            if count <= 0:
+                continue
+            merged_tables[(addr_i, enum_path, count, label)] = {
+                "address": addr_i,
+                "enum_path": enum_path,
+                "count": count,
+                "label": label,
+            }
+
+    enum_out: list[dict[str, object]] = []
+    for category, name in sorted(merged_enums.keys(), key=lambda x: (x[0], x[1])):
+        entry = merged_enums[(category, name)]
+        members = entry["members"]
+        ordered_values = [[members[v], v] for v in sorted(members.keys())]
+        enum_out.append(
+            {
+                "category": category,
+                "name": name,
+                "size": int(entry["size"]),
+                "values": ordered_values,
+            }
+        )
+
+    table_out = [merged_tables[k] for k in sorted(merged_tables.keys(), key=lambda x: (x[0], x[1], x[2], x[3]))]
+    return enum_out, table_out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--spec-json", required=True, help="Path to enum/table specification JSON")
+    ap.add_argument(
+        "--spec-json",
+        action="append",
+        required=True,
+        help="Path to enum/table specification JSON; pass multiple times to merge specs",
+    )
     ap.add_argument(
         "--apply-tables",
         action="store_true",
@@ -52,19 +153,20 @@ def main() -> int:
     args = ap.parse_args()
 
     root = resolve_project_root(args.project_root)
-    spec_path = Path(args.spec_json)
-    if not spec_path.is_absolute():
-        spec_path = root / spec_path
-    if not spec_path.exists():
-        print(f"[error] missing spec json: {spec_path}")
+    try:
+        spec_paths = _resolve_spec_paths(root, list(args.spec_json))
+    except FileNotFoundError as ex:
+        print(f"[error] {ex}")
         return 1
 
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
-    enum_specs = spec.get("enums") or []
-    table_specs = spec.get("tables") or []
+    enum_specs, table_specs = _merge_specs(spec_paths)
     if not enum_specs:
-        print(f"[error] spec has no enums: {spec_path}")
+        print(f"[error] specs have no enums: {', '.join(str(p) for p in spec_paths)}")
         return 1
+    print(
+        f"[plan] specs={len(spec_paths)} enums={len(enum_specs)} tables={len(table_specs)} "
+        f"apply_tables={int(args.apply_tables)}"
+    )
 
     with open_program(root) as program:
         from ghidra.program.model.data import (

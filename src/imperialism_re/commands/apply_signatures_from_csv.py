@@ -17,12 +17,14 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
-from imperialism_re.core.datatypes import find_named_data_type
+from imperialism_re.core.datatypes import find_named_data_type, resolve_datatype_by_path_or_legacy_aliases
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_hex
+
 
 def split_pointer_type(type_name: str) -> tuple[str, int]:
     t = type_name.strip().replace(" ", "")
@@ -32,6 +34,7 @@ def split_pointer_type(type_name: str) -> tuple[str, int]:
         t = t[:-1]
     return t, stars
 
+
 def normalize_base_type_name(name: str) -> str:
     t = name.strip()
     # Strip common C/C++ modifiers/keywords used in CSV prototypes.
@@ -39,7 +42,12 @@ def normalize_base_type_name(name: str) -> str:
     t = t.replace("struct ", "").replace("class ", "")
     return t.strip()
 
-def build_data_type(type_name: str, dtm):
+
+def _looks_like_enum_name(base_name: str) -> bool:
+    return bool(re.match(r"^E[A-Za-z0-9_]+$", base_name))
+
+
+def build_data_type(type_name: str, dtm, unresolved_enum_refs: set[str] | None = None):
     from ghidra.program.model.data import (
         BooleanDataType,
         ByteDataType,
@@ -69,7 +77,15 @@ def build_data_type(type_name: str, dtm):
 
     dt = base_map.get(base_key)
     if dt is None:
-        dt = find_named_data_type(dtm, base_name)
+        if "/" in base_name:
+            dt = resolve_datatype_by_path_or_legacy_aliases(dtm, base_name)
+        else:
+            dt = find_named_data_type(dtm, base_name)
+
+    if dt is None and unresolved_enum_refs is not None:
+        if "/" in base_name or _looks_like_enum_name(base_name):
+            unresolved_enum_refs.add(base_name)
+
     if dt is None:
         # Fallback for unknown type names keeps operation safe.
         dt = VoidDataType.dataType if ptr_depth > 0 else IntegerDataType.dataType
@@ -77,6 +93,7 @@ def build_data_type(type_name: str, dtm):
     for _ in range(ptr_depth):
         dt = PointerDataType(dt)
     return dt
+
 
 def parse_params(raw: str):
     out: list[tuple[str, str]] = []
@@ -96,6 +113,7 @@ def parse_params(raw: str):
             raise ValueError(f"invalid param entry (empty name/type): {p}")
         out.append((name, typ))
     return out
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -125,9 +143,11 @@ def main() -> int:
 
         af = program.getAddressFactory().getDefaultAddressSpace()
         fm = program.getFunctionManager()
+        dtm = program.getDataTypeManager()
 
         planned = []
         bad_rows = 0
+        unresolved_enum_refs: set[str] = set()
         for i, row in enumerate(rows, start=1):
             addr_txt = (row.get("address") or "").strip()
             ret_txt = (row.get("return_type") or "").strip()
@@ -139,19 +159,23 @@ def main() -> int:
                 continue
             try:
                 addr_int = parse_hex(addr_txt)
-                dtm = program.getDataTypeManager()
-                ret_dt = build_data_type(ret_txt, dtm)
+                ret_dt = build_data_type(ret_txt, dtm, unresolved_enum_refs)
                 params = parse_params(params_txt)
+                params_types = [(pn, pt, build_data_type(pt, dtm, unresolved_enum_refs)) for pn, pt in params]
             except Exception as ex:
                 bad_rows += 1
                 print(f"[row-fail] row={i} addr={addr_txt} err={ex}")
                 continue
-            planned.append((addr_int, cc_txt, ret_dt, params))
+            planned.append((addr_int, cc_txt, ret_dt, params, params_types))
 
         print(f"[rows] total={len(rows)} planned={len(planned)} bad_rows={bad_rows}")
+        if unresolved_enum_refs:
+            print("[warn] unresolved enum type references (fallback type used):")
+            for ref in sorted(unresolved_enum_refs):
+                print(f"  - {ref}")
 
         preview = 0
-        for addr_int, cc_txt, ret_dt, params in planned:
+        for addr_int, cc_txt, ret_dt, params, _params_types in planned:
             addr = af.getAddress(f"0x{addr_int:08x}")
             f = fm.getFunctionAt(addr)
             if f is None:
@@ -173,7 +197,7 @@ def main() -> int:
         skip = 0
         fail = 0
         try:
-            for addr_int, cc_txt, ret_dt, params in planned:
+            for addr_int, cc_txt, ret_dt, _params, params_types in planned:
                 addr = af.getAddress(f"0x{addr_int:08x}")
                 f = fm.getFunctionAt(addr)
                 if f is None:
@@ -186,8 +210,8 @@ def main() -> int:
                         f.setCallingConvention(cc_txt)
 
                     p_objs = [
-                        ParameterImpl(nm, build_data_type(tp, dtm), program, SourceType.USER_DEFINED)
-                        for nm, tp in params
+                        ParameterImpl(nm, pdt, program, SourceType.USER_DEFINED)
+                        for nm, _ptxt, pdt in params_types
                     ]
                     f.replaceParameters(
                         Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS,
@@ -211,6 +235,7 @@ def main() -> int:
         print(f"[done] ok={ok} skip={skip} fail={fail}")
 
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
