@@ -424,3 +424,8 @@ commands:
     mode: reader
     status: maintained
     summary: Infer class membership for Global __thiscall via indirect global access.
+  - name: infer_class_from_this_passing
+    module: imperialism_re.commands.infer_class_from_this_passing
+    mode: reader
+    status: maintained
+    summary: Infer class membership for Global __thiscall via this-pointer passing from class methods.

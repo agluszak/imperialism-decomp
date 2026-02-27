@@ -24,6 +24,7 @@ from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
 from imperialism_re.core.ghidra_session import open_program
+from imperialism_re.commands.infer_class_from_indirect_refs import _VTBL_PATTERN
 from imperialism_re.commands.mine_struct_field_access import _extract_field_accesses
 
 
@@ -198,6 +199,33 @@ def main() -> int:
                         })
                 except ValueError:
                     pass
+
+            # Signal 1b: Symbol-name vtable writes
+            # Decompiler may emit: *(void **)param_1 = &g_vtblTFoo
+            #                  or: *(void **)param_1 = g_vtblTFoo
+            #                  or: *(void **)param_1 = (void *)&g_vtblTFoo
+            vtable_sym_hits = re.findall(
+                r'\*\s*\([^)]*\)\s*(?:param_1|this)\s*=\s*(?:&|\([^)]*\))?(?:&)?(g_vtbl\w+)',
+                c_code,
+            )
+            for vsym in vtable_sym_hits:
+                m = _VTBL_PATTERN.match(vsym)
+                if m:
+                    vtbl_cls = m.group(1)
+                    if vtbl_cls in class_names:
+                        already_has_vtable = any(
+                            r["address"] == f"0x{addr_int:08x}"
+                            and r["evidence"].startswith("vtable_assign_")
+                            for r in results
+                        )
+                        if not already_has_vtable:
+                            results.append({
+                                "address": f"0x{addr_int:08x}",
+                                "name": fn_name,
+                                "class_name": vtbl_cls,
+                                "confidence": "high",
+                                "evidence": f"vtable_sym_{vsym}",
+                            })
 
             # Signal 2: Calls to class-namespaced methods
             # Look for function calls where param_1/this is passed

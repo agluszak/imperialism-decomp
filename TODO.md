@@ -67,17 +67,21 @@ History/logs moved to `agent_2.md`.
     - `create_turn_instruction_types` now adds `TURN_TOKEN_TERM` and labels token-table end sentinel.
   - next: extend struct-field enum propagation beyond current param-heavy matches using the new `struct_field` candidate lane
 
-- [~] Bulk class-namespace assignment (850 of 2,294 assigned, 37%)
-  - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority, 30 indirect-ref
+- [~] Bulk class-namespace assignment (1,273 of 2,294 assigned, 55%)
+  - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority, 30 indirect-ref, 20 decomp-v2, 403 this-passing
   - created `infer_class_from_indirect_refs` command (vtable/class-global data refs)
+  - created `infer_class_from_this_passing` command (this-pointer passing from class methods)
+  - enhanced `infer_class_from_decomp` with symbol-name vtable writes (`g_vtblTFoo` patterns)
+  - decomp-v2 round: +20 (5 vtable-sym high, 15 callee-vote medium)
+  - this-passing round: +403 (11 high, 392 medium)
   - this-pointers auto-typed on namespace move (DYNAMIC_STORAGE mode)
-  - remaining ~1,448 Global __thiscall lack clear class indicators
-  - parked: further assignment needs caller-based or deeper decompiler analysis
+  - remaining 995 Global __thiscall void* lack clear class indicators
 
-- [~] Struct field coverage expansion (1,729 fields named across 199 structs)
+- [~] Struct field coverage expansion (1,742 fields named across 205 structs)
   - created `mine_struct_field_access` command: decompiles class methods + follows thunk chains into Global impl functions
   - created `apply_mined_struct_fields` command: grows stub structs and applies field names/types
   - mined 1,817 field access points across all classes (4,801 class methods + 1,298 impl functions)
   - applied 1,729 fields total, grew 219 structs from stubs to proper sizes
+  - re-mined after class push: +13 fields, grew 6 structs (TSpaceCommand, TAdmiral, TArmyPlayer, TCluster, TDropShadowText, TAssetMgr)
   - key structs populated: TGreatPower (69 fields, 0x1→0xef4), TCountry (37), TToolBarCluster (30), TradeControl (+11 new)
   - remaining: large UI-heavy structs (TBattleReportView 9,392 anon) have few thunk-reachable impl functions
