@@ -421,25 +421,56 @@ def main() -> int:
 
         rename_rows = []
         seen_names: set[str] = set()
+        direct_count = 0
+        indirect_count = 0
+
         for r in rows:
-            if int(r["code_refs"]) == 0:
-                continue
-            anchor = r["anchor_fn"]
-            if not anchor or "ftol" in anchor.lower():
-                continue
-
             addr_hex = r["address"]
-            new_name = ""
-            for pat, formatter in _RENAME_RULES:
-                m = pat.search(anchor)
-                if m:
-                    new_name = formatter(m, addr_hex)
-                    break
+            code_refs = int(r["code_refs"])
+            indirect_code_refs = int(r["indirect_code_refs"])
 
-            if not new_name:
-                # Fallback: g_<anchorFnShortened>_<addrSuffix>
+            # Category A: direct code refs → use anchor_fn + rename rules
+            if code_refs > 0:
+                anchor = r["anchor_fn"]
+                if not anchor or "ftol" in anchor.lower():
+                    continue
+
+                new_name = ""
+                for pat, formatter in _RENAME_RULES:
+                    m = pat.search(anchor)
+                    if m:
+                        new_name = formatter(m, addr_hex)
+                        break
+
+                if not new_name:
+                    short = anchor[:40].replace(" ", "_")
+                    ns = r["anchor_fn_namespace"]
+                    if ns and ns != "Global":
+                        new_name = f"g_{ns}_{short}_{addr_hex[-8:]}"
+                    else:
+                        new_name = f"g_{short}_{addr_hex[-8:]}"
+
+                comment = f"anchor: {anchor}"
+                direct_count += 1
+
+            # Category B: no direct code refs, but indirect code refs
+            elif indirect_code_refs > 0:
+                anchor = r["indirect_anchor_fn"]
+                if not anchor or "ftol" in anchor.lower():
+                    continue
+
                 short = anchor[:40].replace(" ", "_")
-                new_name = f"g_{short}_{addr_hex[-8:]}"
+                ns = r["indirect_anchor_fn_namespace"]
+                if ns and ns != "Global":
+                    new_name = f"g_{ns}_{short}_{addr_hex[-8:]}"
+                else:
+                    new_name = f"g_ind_{short}_{addr_hex[-8:]}"
+
+                comment = f"indirect_anchor: {anchor}"
+                indirect_count += 1
+
+            else:
+                continue
 
             # Deduplicate
             base = new_name
@@ -453,11 +484,11 @@ def main() -> int:
                 "address": addr_hex,
                 "new_name": new_name,
                 "type": "",
-                "comment": f"anchor: {anchor}",
+                "comment": comment,
             })
 
         write_csv_rows(rename_path, rename_rows, RENAME_FIELDNAMES)
-        print(f"\n[rename] {len(rename_rows)} rename candidates written to {rename_path}")
+        print(f"\n[rename] {len(rename_rows)} rename candidates ({direct_count} direct, {indirect_count} indirect) written to {rename_path}")
 
     return 0
 

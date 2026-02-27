@@ -369,3 +369,13 @@ commands:
     mode: writer
     status: maintained
     summary: Force custom parameter storage for callback-ABI functions.
+  - name: resolve_unknown_cc
+    module: imperialism_re.commands.resolve_unknown_cc
+    mode: reader
+    status: maintained
+    summary: Resolve cc=unknown via thunk-chain propagation and decompiler inference.
+  - name: infer_class_from_indirect_refs
+    module: imperialism_re.commands.infer_class_from_indirect_refs
+    mode: reader
+    status: maintained
+    summary: Infer class membership for Global __thiscall via indirect global access.

@@ -16,7 +16,6 @@ History/logs moved to `agent_2.md`.
   - resolved all anonymous fields in `TCViewOwnedBufferRegistryState_00648560`
   - remaining 4 structs already fully typed; all this-pointers already typed
 
-## Active (max 3)
 - [x] Thunk-island bulk signature propagation (`0x00401000..0x0040AFFF`)
   - reduced `undefined` return types from 5,424 → 3,930 (1,494 fixed, 27.5%)
   - applied: 246 SDDs, 49 ctor/dtors, 20 factories, 188 wrapper→callee, 181 void-pattern,
@@ -31,19 +30,34 @@ History/logs moved to `agent_2.md`.
   - 0 candidates remain in class namespaces; all class this-pointers typed
   - 2,294 `void * this` remain in Global namespace (blocked on class assignment)
 
-## Active (max 3)
-- [~] Bulk class-namespace assignment (820 of 2,294 assigned, 36%)
-  - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority
-  - this-pointers auto-typed on namespace move (DYNAMIC_STORAGE mode)
-  - remaining ~1,466 lack clear class indicators (no name match, no unique vtable, callee voting yields only base classes)
-  - parked: further assignment needs caller-based or deeper decompiler analysis
-
-- [x] Return-type inference via decompiler body analysis (3,932 of 3,942 fixed, 99.7%)
+- [x] Return-type inference via decompiler body analysis (3,942 of 3,942 fixed, 100%)
   - created `infer_return_type_from_decomp` command (decompiles each function, extracts inferred types)
   - created `apply_return_type_and_cc` command (sets cc + return type without touching params)
-  - applied: 1,864 void + 1,681 int + 281 other + 63 remaining + 39 thunk cascade
-  - remaining 10 are CRT internals ($E350, $E355, __seh_longjmp_unwind, etc.)
-  - cc=unknown: 3,893 → 292 (cascade chains where every function has unknown cc)
+  - applied: 1,864 void + 1,681 int + 281 other + 63 remaining + 39 thunk cascade + 10 CRT
+  - 0 `undefined` return types remaining
+
+- [x] CC resolution (cc=unknown: 292 → 0)
+  - created `resolve_unknown_cc` command (thunk-chain propagation + decompiler inference)
+  - resolved all 250 remaining cc=unknown functions (all `__cdecl` via decomp inference)
+  - CC distribution: __cdecl 9,071, __thiscall 4,922, __fastcall 659, __stdcall 269
+
+- [x] Global data naming (1,350 indirect + 38 direct = 1,388 named)
+  - extended `inventory_unnamed_globals` with indirect-ref rename (Category B)
+  - 3,403 globals inventoried; 1,652 with code context, 1,751 data-only
+  - 302 remaining direct-ref globals are ftol wrappers (correctly skipped)
+
+- [x] Datatype namespace unification (250 types moved from root / to /imperialism/classes/)
+  - created `move_class_datatypes_to_canonical` command
+  - moved 236 types, resolved 14 collisions (2 src-richer, 12 dst-richer), 0 failures
+  - /imperialism datatype count: 436 → 816; root / reduced: 1,091 → 690 (remaining are Ghidra builtins)
+
+## Active (max 3)
+- [~] Bulk class-namespace assignment (850 of 2,294 assigned, 37%)
+  - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority, 30 indirect-ref
+  - created `infer_class_from_indirect_refs` command (vtable/class-global data refs)
+  - this-pointers auto-typed on namespace move (DYNAMIC_STORAGE mode)
+  - remaining ~1,448 Global __thiscall lack clear class indicators
+  - parked: further assignment needs caller-based or deeper decompiler analysis
 
 - [~] Struct field coverage expansion (1,729 fields named across 199 structs)
   - created `mine_struct_field_access` command: decompiles class methods + follows thunk chains into Global impl functions
@@ -52,8 +66,3 @@ History/logs moved to `agent_2.md`.
   - applied 1,729 fields total, grew 219 structs from stubs to proper sizes
   - key structs populated: TGreatPower (69 fields, 0x1→0xef4), TCountry (37), TToolBarCluster (30), TradeControl (+11 new)
   - remaining: large UI-heavy structs (TBattleReportView 9,392 anon) have few thunk-reachable impl functions
-
-- [x] Datatype namespace unification (250 types moved from root / to /imperialism/classes/)
-  - created `move_class_datatypes_to_canonical` command
-  - moved 236 types, resolved 14 collisions (2 src-richer, 12 dst-richer), 0 failures
-  - /imperialism datatype count: 436 → 816; root / reduced: 1,091 → 690 (remaining are Ghidra builtins)
