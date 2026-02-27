@@ -2108,3 +2108,12 @@
 - Enum wave runner improvements:
   - added `--skip-create-enums` and `--fail-on-hotspots` flags to `run_enum_domain_wave` for safer/faster propagation passes.
   - smoke-validated on strict map-mode domain (`batch_enum_waveK_smoke`): 21 candidates, 0 hotspots.
+- Added reusable domain packs under `config/enum_domains/`:
+  - `core_callbacks.csv`, `diplomacy_raw.csv`, `map_mode_strict.csv`, `all_high_confidence.csv`, `turn_instruction_token.csv`.
+- Ran consolidated high-confidence dry/apply waves:
+  - dry (`batch_enum_waveM_all_dry`) narrowed to 1 hotspot after arrow-domain regex tightening.
+  - apply (`batch_enum_waveN_all_apply`) propagated final hotspot:
+    - `HandleTransportPictureSplitArrowCommand64or65(splitCommandId -> EArrowSplitCommandId)`.
+  - post-wave hotspots: 0.
+- Expanded extractor compare parser to accept quoted FourCC literals (`'xxxx'`) in compare/switch patterns.
+- Turn-instruction token lane probe (`batch_enum_waveP_turn_token_dry`) still yields 0 candidates; current dispatch flow likely compares streamed locals/table lookups rather than handler params.

@@ -1,0 +1,3 @@
+domain,enum_path,function_name_regex,param_name_regex,addr_min,addr_max,value_list,cluster_key
+arrow_command,/imperialism/EArrowSplitCommandId,.*(Arrow|SplitArrow|TransportPictureSplitArrow|TradeArrow).*,(command|event|tag|state|mode|type|token|selector|id|nEventClass|arg1|splitCommandId)$,0x00500000,0x005fffff,"0x64,0x65",arrow_split
+control_tag,/imperialism/EControlTagFourCC,.*(Handle|Apply|Process|Run|On).*,(commandTag|tag|controlTag|token|arg1|arg2)$,0x00500000,0x005fffff,"'txen','enod','yako'",control_tag

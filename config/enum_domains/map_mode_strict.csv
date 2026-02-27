@@ -1,0 +1,2 @@
+domain,enum_path,function_name_regex,param_name_regex,addr_min,addr_max,value_list,cluster_key
+map_interaction_mode,/imperialism/EMapInteractionMode,.*(MapInteraction|OverlayMode|SetModeAndBitmapBySelectionState|SetSelectionStateAndRefreshBitmap).*,(mode|nMode|mapInteractionMode|selectedValue)$,0x00500000,0x0062ffff,"0,1,2,3,4,5",map_mode

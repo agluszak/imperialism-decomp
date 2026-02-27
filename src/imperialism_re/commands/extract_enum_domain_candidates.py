@@ -119,6 +119,9 @@ def _parse_num(text: str) -> int | None:
     if not t:
         return None
     try:
+        if len(t) == 6 and t.startswith("'") and t.endswith("'"):
+            body = t[1:-1]
+            return int.from_bytes(body.encode("ascii", errors="strict"), byteorder="little", signed=False)
         if t.lower().startswith("0x"):
             return int(t, 16)
         return int(t, 10)
@@ -129,11 +132,12 @@ def _parse_num(text: str) -> int | None:
 def _extract_param_constant_hits(code: str, param_name: str) -> list[tuple[int, str, str, int]]:
     out: list[tuple[int, str, str, int]] = []
     p = re.escape(param_name)
+    lit = r"(0x[0-9a-fA-F]+|\d+|'[^']{4}')"
 
     # param OP constant
-    re_a = re.compile(rf"\b{p}\b\s*(==|!=|<=|>=|<|>)\s*(0x[0-9a-fA-F]+|\d+)")
+    re_a = re.compile(rf"\b{p}\b\s*(==|!=|<=|>=|<|>)\s*{lit}")
     # constant OP param
-    re_b = re.compile(rf"(0x[0-9a-fA-F]+|\d+)\s*(==|!=|<=|>=|<|>)\s*\b{p}\b")
+    re_b = re.compile(rf"{lit}\s*(==|!=|<=|>=|<|>)\s*\b{p}\b")
 
     for m in re_a.finditer(code):
         op = m.group(1)
@@ -154,7 +158,7 @@ def _extract_param_constant_hits(code: str, param_name: str) -> list[tuple[int, 
         out.append((value, et, op, es))
 
     if re.search(rf"switch\s*\(\s*{p}\s*\)", code):
-        for m in re.finditer(r"\bcase\s+(0x[0-9a-fA-F]+|\d+)\s*:", code):
+        for m in re.finditer(rf"\bcase\s+{lit}\s*:", code):
             value = _parse_num(m.group(1))
             if value is None:
                 continue
