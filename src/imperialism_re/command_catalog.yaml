@@ -339,6 +339,11 @@ commands:
     mode: reader
     status: maintained
     summary: Report candidate enum targets still missing propagated enum types.
+  - name: run_enum_domain_wave
+    module: imperialism_re.commands.run_enum_domain_wave
+    mode: hybrid
+    status: maintained
+    summary: Run enum domain extraction/spec/apply/verify as one wave.
   - name: inventory_unnamed_globals
     module: imperialism_re.commands.inventory_unnamed_globals
     mode: reader

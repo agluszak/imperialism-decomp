@@ -2074,3 +2074,18 @@
 - Verification:
   - disassembly confirms stack-purge and argument shape remain stable (`RET 0x14` for `0x0058c640`, `RET 0x0c` for `0x005869c0`).
   - decompiler artifact `unaff_retaddr` still appears in these two functions; item remains active for deeper parameter-ID recovery.
+
+## 2026-02-28 — Enum wave tooling + first applied wave
+- Committed enum-pipeline tooling (`c301200`):
+  - candidate extraction/build/apply/verify commands registered in catalog.
+  - `create_gameplay_enums` now supports multi `--spec-json` merge.
+  - `apply_signatures_from_csv` now reports unresolved enum-like type refs.
+- Extended `extract_enum_domain_candidates` with instruction evidence lane:
+  - captures `PUSH imm -> CALL` sequences (`kind=call_arg_immediate`, `evidence_type=push_call`).
+  - this recovered split-arrow command constants where compare/switch extraction had zero coverage.
+- Added reusable orchestration command:
+  - `run_enum_domain_wave` (extract -> build spec -> optional apply -> verify).
+- Ran and applied a real wave (`batch_enum_waveC_apply`) on `arrow_command + control_tag` domains over `0x00500000..0x005fffff`:
+  - candidates: 36, inferred enums: 2 (`EArrowSplitCommandId`, `EControlTagFourCC`).
+  - applied enum parameter propagation: `ok=5` (`nEventClass`/`arg1` in trade/map handlers).
+  - post-verify hotspots: 0.

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Extract enum candidate constants from decompiled parameter compare/switch patterns.
+Extract enum candidate constants from:
+  1) decompiled parameter compare/switch patterns
+  2) instruction-level PUSH immediate -> CALL sequences
 
 Domain CSV columns:
   domain (required)
@@ -161,6 +163,55 @@ def _extract_param_constant_hits(code: str, param_name: str) -> list[tuple[int, 
     return out
 
 
+def _extract_push_call_hits(program, fn, *, max_lookahead: int = 8) -> list[tuple[int, str]]:
+    from ghidra.program.model.scalar import Scalar
+
+    listing = program.getListing()
+    body = fn.getBody()
+    insts = list(listing.getInstructions(body, True))
+    out: list[tuple[int, str]] = []
+    count = len(insts)
+    for i, ins in enumerate(insts):
+        try:
+            if (ins.getMnemonicString() or "").upper() != "PUSH":
+                continue
+            objs = list(ins.getOpObjects(0))
+            if len(objs) != 1:
+                continue
+            scalar = objs[0]
+            if not isinstance(scalar, Scalar):
+                continue
+            value = int(scalar.getUnsignedValue() & 0xFFFFFFFF)
+        except Exception:
+            continue
+
+        anchor = ""
+        for j in range(i + 1, min(count, i + 1 + max_lookahead)):
+            nxt = insts[j]
+            try:
+                mnem = (nxt.getMnemonicString() or "").upper()
+            except Exception:
+                continue
+            if mnem.startswith("J") or mnem in {"RET", "RETN", "HLT"}:
+                break
+            if mnem == "CALL":
+                try:
+                    refs = list(nxt.getReferencesFrom())
+                    if refs:
+                        to_addr = refs[0].getToAddress()
+                        if to_addr is not None:
+                            f = program.getFunctionManager().getFunctionAt(to_addr)
+                            if f is not None:
+                                cname = f.getName() or ""
+                                if cname and not GENERIC_NAME_RE.match(cname):
+                                    anchor = cname
+                except Exception:
+                    pass
+                out.append((value, anchor))
+                break
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--domains-csv", required=True, help="Domain extraction definitions CSV")
@@ -246,6 +297,7 @@ def main() -> int:
                 continue
 
             callee_anchor = _first_named_callee(fn)
+            push_call_hits = _extract_push_call_hits(program, fn)
             seen = set()
 
             for spec in matched_specs:
@@ -281,6 +333,44 @@ def main() -> int:
                             }
                         )
                         matched += 1
+
+                # Secondary evidence lane: PUSH imm followed by CALL.
+                # This captures command-id style constants passed through indirect callbacks.
+                if spec.value_list is None:
+                    continue
+                for value, call_anchor in push_call_hits:
+                    if value not in spec.value_list:
+                        continue
+                    dedup_key = (
+                        spec.domain,
+                        spec.enum_path,
+                        "push_call",
+                        value,
+                        call_anchor.lower(),
+                    )
+                    if dedup_key in seen:
+                        continue
+                    seen.add(dedup_key)
+                    rows.append(
+                        {
+                            "domain": spec.domain,
+                            "address": f"0x{faddr:08x}",
+                            "function_addr": f"0x{faddr:08x}",
+                            "function_name": name,
+                            "namespace": ns_name,
+                            "kind": "call_arg_immediate",
+                            "param_name_or_field": "call_arg0",
+                            "immediate_value": str(value),
+                            "immediate_hex": f"0x{value:08x}",
+                            "evidence_type": "push_call",
+                            "operator": "push_call",
+                            "evidence_strength": "3",
+                            "cluster_key": spec.cluster_key or (ns_name or "Global"),
+                            "callee_anchor": call_anchor or callee_anchor,
+                            "enum_path": spec.enum_path,
+                        }
+                    )
+                    matched += 1
 
     fieldnames = [
         "domain",

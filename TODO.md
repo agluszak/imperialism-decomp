@@ -52,6 +52,13 @@ History/logs moved to `agent_2.md`.
   - /imperialism datatype count: 436 → 816; root / reduced: 1,091 → 690 (remaining are Ghidra builtins)
 
 ## Active (max 3)
+- [~] Enum extraction + propagation wave lane (new reusable flow)
+  - added maintained wave command: `run_enum_domain_wave`
+  - extraction now includes instruction-level `PUSH imm -> CALL` evidence for callback-command constants
+  - first applied lane complete on `arrow_command + control_tag` over `0x00500000..0x005fffff`:
+    - 36 candidates, 2 inferred enums, 5 parameter enum typings applied, 0 post-wave hotspots
+  - next: expand domains beyond callbacks (diplomacy/map/turn-state) with domain CSVs and evidence thresholds
+
 - [~] Bulk class-namespace assignment (850 of 2,294 assigned, 37%)
   - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority, 30 indirect-ref
   - created `infer_class_from_indirect_refs` command (vtable/class-global data refs)
