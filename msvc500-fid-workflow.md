@@ -9,8 +9,8 @@
   - `fid/msvc500/debug`
 - Smaller practical subset:
   - `fid/msvc500_core`
-- Headless import helper script:
-  - `scripts/ImportMSLibsNoPrompt.java`
+- Note: legacy Java helper scripts under `scripts/` were removed during tooling cleanup.
+  Use direct Ghidra GUI/headless workflows instead of repo-local Java script automation.
 - Seed project with imported MSVC5 COFF members:
   - `msvc500-fid-import-v4`
 

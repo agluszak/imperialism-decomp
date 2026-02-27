@@ -37,7 +37,7 @@ Source file: `/home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG Games/Impe
 ## Deeper structure pass (2026-02-16)
 
 Repro script:
-- `scripts/inspect_tabsenu_tables.py`
+- `uv run impk extract_tabsenu_command_summary`
 
 ### `NEWS.TAB` (decoded)
 - Size: `8640` bytes = `360` records x `24` bytes.

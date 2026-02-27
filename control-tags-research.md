@@ -1,7 +1,7 @@
 # Control Tags Research (Batch 197, 2026-02-21)
 
 ## Method
-- Added reusable extractor: `new_scripts/extract_control_tag_usage.py`.
+- Added reusable extractor command: `uv run impk extract_control_tag_usage`.
 - Ran full-program scan and saved:
   - `tmp_decomp/batch197b_control_tag_usage_detail.csv` (2,744 function-tag rows)
   - `tmp_decomp/batch197b_control_tag_usage_summary.csv` (743 unique 4-char tags)

@@ -20,6 +20,11 @@ History/logs moved to `agent_2.md`.
   - propagate typed class pointers into remaining ctor/create helpers and wrapper thunks.
 
 ## Queued
+- [ ] Tooling consolidation lane (no throwaway scripts)
+  - use `uv run impk` as the only execution path for maintained commands.
+  - when a needed command is missing, port it to `src/imperialism_re/commands/` + `command_catalog.yaml` before use.
+  - avoid parallel command variants that duplicate behavior; extend existing maintained commands with flags.
+
 - [ ] Nation-metrics dispatch table lane (`0x0066d9f0..0x0066da18`)
   - recover owner/consumer sites that index this table (direct code/data range refs currently zero).
   - apply `/Imperialism/ENationMetricsDispatchSlot` to selector parameters when callsites are identified.

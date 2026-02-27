@@ -1,0 +1,251 @@
+commands:
+  - name: run_wave_bundle
+    module: imperialism_re.commands.run_wave_bundle
+    mode: writer
+    status: maintained
+    summary: Run full unresolved wave bundle and quality-gate snapshots.
+  - name: run_unresolved_wave
+    module: imperialism_re.commands.run_unresolved_wave
+    mode: writer
+    status: maintained
+    summary: Run core unresolved wave application sequence.
+  - name: dump_function_context
+    module: imperialism_re.commands.dump_function_context
+    mode: reader
+    status: maintained
+    summary: Dump semantic context around a function.
+  - name: list_unresolved_functions_in_range
+    module: imperialism_re.commands.list_unresolved_functions_in_range
+    mode: reader
+    status: maintained
+    summary: List unresolved functions in address range.
+  - name: find_named_functions_with_generic_callees
+    module: imperialism_re.commands.find_named_functions_with_generic_callees
+    mode: reader
+    status: maintained
+    summary: Strict super-lane quality gate scanner.
+  - name: count_re_progress
+    module: imperialism_re.commands.count_re_progress
+    mode: reader
+    status: maintained
+    summary: Emit RE progress counters.
+  - name: apply_function_renames_csv
+    module: imperialism_re.commands.apply_function_renames_csv
+    mode: writer
+    status: maintained
+    summary: Apply function rename rows from CSV.
+  - name: apply_signatures_from_csv
+    module: imperialism_re.commands.apply_signatures_from_csv
+    mode: writer
+    status: maintained
+    summary: Apply signatures from CSV.
+  - name: apply_thunk_target_signatures_from_csv
+    module: imperialism_re.commands.apply_thunk_target_signatures_from_csv
+    mode: writer
+    status: maintained
+    summary: Propagate signatures from thunk targets.
+  - name: apply_global_data_from_csv
+    module: imperialism_re.commands.apply_global_data_from_csv
+    mode: writer
+    status: maintained
+    summary: Apply global data labels/types from CSV.
+  - name: apply_thiscall_bridge_signatures_csv
+    module: imperialism_re.commands.apply_thiscall_bridge_signatures_csv
+    mode: writer
+    status: maintained
+    summary: Apply thiscall bridge signatures from CSV.
+  - name: apply_thiscall_stack_params_from_hidden_csv
+    module: imperialism_re.commands.apply_thiscall_stack_params_from_hidden_csv
+    mode: writer
+    status: maintained
+    summary: Apply stack params inferred from hidden args.
+  - name: apply_hidden_ecx_fastcall_wave
+    module: imperialism_re.commands.apply_hidden_ecx_fastcall_wave
+    mode: writer
+    status: maintained
+    summary: Apply ECX/fastcall hidden-param wave.
+  - name: apply_hidden_param_signature_wave
+    module: imperialism_re.commands.apply_hidden_param_signature_wave
+    mode: writer
+    status: maintained
+    summary: Apply hidden-param signature wave.
+  - name: apply_class_method_stack_params_from_hidden_csv
+    module: imperialism_re.commands.apply_class_method_stack_params_from_hidden_csv
+    mode: writer
+    status: maintained
+    summary: Apply class method stack params from hidden analysis.
+  - name: apply_class_this_param_types
+    module: imperialism_re.commands.apply_class_this_param_types
+    mode: writer
+    status: maintained
+    summary: Retype class this parameters.
+  - name: apply_class_quads_from_csv
+    module: imperialism_re.commands.apply_class_quads_from_csv
+    mode: writer
+    status: maintained
+    summary: Apply class quad assignments from CSV.
+  - name: create_minimal_class_structs_from_csv
+    module: imperialism_re.commands.create_minimal_class_structs_from_csv
+    mode: writer
+    status: maintained
+    summary: Create minimal class structs from CSV.
+  - name: move_functions_to_global_namespace_csv
+    module: imperialism_re.commands.move_functions_to_global_namespace_csv
+    mode: writer
+    status: maintained
+    summary: Move selected functions to global namespace.
+  - name: rename_struct_fields
+    module: imperialism_re.commands.rename_struct_fields
+    mode: writer
+    status: maintained
+    summary: Rename struct fields using CSV plan.
+  - name: list_functions_in_range
+    module: imperialism_re.commands.list_functions_in_range
+    mode: reader
+    status: maintained
+    summary: List functions in address range.
+  - name: list_functions_by_signature_regex
+    module: imperialism_re.commands.list_functions_by_signature_regex
+    mode: reader
+    status: maintained
+    summary: Find functions by signature regex.
+  - name: list_xrefs_to_address
+    module: imperialism_re.commands.list_xrefs_to_address
+    mode: reader
+    status: maintained
+    summary: List xrefs to target address.
+  - name: dump_instructions_window
+    module: imperialism_re.commands.dump_instructions_window
+    mode: reader
+    status: maintained
+    summary: Dump instruction window around address.
+  - name: dump_struct_layout
+    module: imperialism_re.commands.dump_struct_layout
+    mode: reader
+    status: maintained
+    summary: Dump structure layout.
+  - name: find_decomp_text_matches
+    module: imperialism_re.commands.find_decomp_text_matches
+    mode: reader
+    status: maintained
+    summary: Search decomp text and emit matches.
+  - name: find_pointer_table_clusters_for_targets
+    module: imperialism_re.commands.find_pointer_table_clusters_for_targets
+    mode: reader
+    status: maintained
+    summary: Find pointer-table clusters for targets.
+  - name: inventory_code_refs_to_address_range
+    module: imperialism_re.commands.inventory_code_refs_to_address_range
+    mode: reader
+    status: maintained
+    summary: Inventory code refs in range.
+  - name: inventory_data_dword_values_in_range
+    module: imperialism_re.commands.inventory_data_dword_values_in_range
+    mode: reader
+    status: maintained
+    summary: Inventory dword data values in range.
+  - name: inventory_runtime_class_ptr_initializers
+    module: imperialism_re.commands.inventory_runtime_class_ptr_initializers
+    mode: reader
+    status: maintained
+    summary: Inventory runtime class pointer initializers.
+  - name: derive_runtime_class_ptr_owner_candidates
+    module: imperialism_re.commands.derive_runtime_class_ptr_owner_candidates
+    mode: reader
+    status: maintained
+    summary: Derive owner candidates for runtime class pointers.
+  - name: inventory_no_func_branch_sources
+    module: imperialism_re.commands.inventory_no_func_branch_sources
+    mode: reader
+    status: maintained
+    summary: Inventory no-function branch sources.
+  - name: functionize_no_func_summary_candidates
+    module: imperialism_re.commands.functionize_no_func_summary_candidates
+    mode: writer
+    status: maintained
+    summary: Functionize candidates from no-func summary.
+  - name: recover_tiny_no_func_linear_stubs
+    module: imperialism_re.commands.recover_tiny_no_func_linear_stubs
+    mode: writer
+    status: maintained
+    summary: Recover tiny linear no-func stubs.
+  - name: recover_atexit_init_stubs
+    module: imperialism_re.commands.recover_atexit_init_stubs
+    mode: writer
+    status: maintained
+    summary: Recover atexit/init stubs.
+  - name: classify_no_func_branch_islands
+    module: imperialism_re.commands.classify_no_func_branch_islands
+    mode: reader
+    status: maintained
+    summary: Classify no-func branch islands.
+  - name: functionize_specific_addresses
+    module: imperialism_re.commands.functionize_specific_addresses
+    mode: writer
+    status: maintained
+    summary: Create functions at explicit addresses.
+  - name: create_specific_jmp_thunks_from_csv
+    module: imperialism_re.commands.create_specific_jmp_thunks_from_csv
+    mode: writer
+    status: maintained
+    summary: Create specific jmp thunks from CSV.
+  - name: generate_single_jmp_thunk_pairs
+    module: imperialism_re.commands.generate_single_jmp_thunk_pairs
+    mode: reader
+    status: maintained
+    summary: Generate single-jmp thunk candidate pairs.
+  - name: generate_missing_jmp_thunks_for_targets
+    module: imperialism_re.commands.generate_missing_jmp_thunks_for_targets
+    mode: reader
+    status: maintained
+    summary: Generate missing jmp thunks for targets.
+  - name: generate_existing_jmp_thunk_renames
+    module: imperialism_re.commands.generate_existing_jmp_thunk_renames
+    mode: reader
+    status: maintained
+    summary: Generate rename rows for existing jmp thunks.
+  - name: generate_jmp_thunk_addr_fallback_renames
+    module: imperialism_re.commands.generate_jmp_thunk_addr_fallback_renames
+    mode: reader
+    status: maintained
+    summary: Generate fallback jmp-thunk renames.
+  - name: generate_call_wrapper_addr_fallback_renames
+    module: imperialism_re.commands.generate_call_wrapper_addr_fallback_renames
+    mode: reader
+    status: maintained
+    summary: Generate fallback call-wrapper renames.
+  - name: generate_single_callee_wrapper_renames
+    module: imperialism_re.commands.generate_single_callee_wrapper_renames
+    mode: reader
+    status: maintained
+    summary: Generate renames for single-callee wrappers.
+  - name: generate_fun_impl_names_from_thunk_targets
+    module: imperialism_re.commands.generate_fun_impl_names_from_thunk_targets
+    mode: reader
+    status: maintained
+    summary: Generate impl names from thunk targets.
+  - name: generate_fun_impl_names_from_wrapper_targets
+    module: imperialism_re.commands.generate_fun_impl_names_from_wrapper_targets
+    mode: reader
+    status: maintained
+    summary: Generate impl names from wrapper targets.
+  - name: generate_class_helper_signature_candidates
+    module: imperialism_re.commands.generate_class_helper_signature_candidates
+    mode: reader
+    status: maintained
+    summary: Generate class helper signature candidates.
+  - name: scan_hidden_decomp_params
+    module: imperialism_re.commands.scan_hidden_decomp_params
+    mode: reader
+    status: maintained
+    summary: Scan hidden decompiler parameters.
+  - name: run_class_harmonization_wave
+    module: imperialism_re.commands.run_class_harmonization_wave
+    mode: writer
+    status: maintained
+    summary: Run class harmonization wave.
+  - name: build_redecomp_wave_from_ownership
+    module: imperialism_re.commands.build_redecomp_wave_from_ownership
+    mode: reader
+    status: maintained
+    summary: Build redecomp wave rows from ownership data.

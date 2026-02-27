@@ -2011,3 +2011,11 @@
     - `renamed_functions=14931`
     - `default_fun_or_thunk_fun=0`
     - `class_desc_count=406`, `vtbl_count=234`, `type_name_count=406`.
+
+## 2026-02-27 Tooling workflow update (repo restructure)
+- Switched canonical execution path to maintained CLI commands via `uv run impk`.
+- Updated `AGENTS.md`:
+  - `new_scripts/` treated as legacy compatibility only.
+  - new/extended functionality must be added under `src/imperialism_re/commands/` + `command_catalog.yaml`.
+  - explicit anti-duplication guidance added (extend existing commands with flags instead of creating parallel variants).
+- Added queued consolidation item in `TODO.md` to keep tooling migration explicit and prevent throwaway script drift.

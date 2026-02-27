@@ -13,6 +13,8 @@ msvc500-fid*
 msvc500-master
 fid
 **/__pycache__
+.ruff_cache/
+.pytest_cache/
 
 # Binary artifacts (do not commit)
 *.dll

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "imperialism-knowledge"
-version = "0.1.0"
+version = "0.2.0"
 description = "Reverse engineering workspace for Imperialism."
 readme = "instructions.md"
 requires-python = ">=3.12"
@@ -15,3 +15,29 @@ dependencies = [
   "packaging==26.0",
   "pyghidra==3.0.2",
 ]
+
+[project.scripts]
+impk = "imperialism_re.cli:main"
+
+[dependency-groups]
+dev = [
+  "ruff>=0.9.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/imperialism_re"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/imperialism_re",
+  "tests",
+  "AGENTS.md",
+  "docs",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]

@@ -4,7 +4,8 @@
 Maintain steady reverse-engineering progress in Ghidra using safe, evidence-based batch improvements.
 
 ## Environment
-- Python: `.venv/bin/python`
+- Python / project management: `uv` (`uv sync`, `uv run ...`)
+- Bootstrap: `uv sync --dev`
 - Ghidra install:
   - `/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC`
 - Project/program:
@@ -12,6 +13,9 @@ Maintain steady reverse-engineering progress in Ghidra using safe, evidence-base
   - program path: `/Imperialism.exe`
 
 ## Non-Negotiables
+- Use maintained CLI commands via `uv run impk <command>` as the default interface.
+- Treat `new_scripts/` as legacy compatibility only; do not add new files there.
+- If functionality is missing, implement it once under `src/imperialism_re/commands/` and register it in `src/imperialism_re/command_catalog.yaml`.
 - Default to direct pyghidra scripting; do not use MCP for core rename/typing work unless explicitly needed.
 - Keep one writer process at a time. Never run concurrent pyghidra write scripts.
 - Keep one execution path per pass (no mixed MCP/direct writes in the same batch).
@@ -27,14 +31,14 @@ Maintain steady reverse-engineering progress in Ghidra using safe, evidence-base
 - For ad-hoc Python probes, prefer a temp script file (`/tmp/<name>.py`) over inline heredocs.
 - Correct pattern:
 ```bash
-.venv/bin/python - <<'PY' > tmp_decomp/<file>.log 2>&1
+uv run python - <<'PY' > tmp_decomp/<file>.log 2>&1
 # python body
 PY
 sed -n '1,120p' tmp_decomp/<file>.log
 ```
 - Forbidden pattern:
 ```bash
-.venv/bin/python - <<'PY'
+uv run python - <<'PY'
 # body
 PY > file.log 2>&1; sed ...
 ```
@@ -51,11 +55,11 @@ sleep 1
 
 ## P0 Invariants (Always On)
 - Strict super-lane gate must stay zero:
-  - `new_scripts/find_named_functions_with_generic_callees.py`
+  - `uv run impk find_named_functions_with_generic_callees`
 - Runtime bridge unresolved gate must stay zero (`0x00600000..0x0062ffff`):
-  - `new_scripts/list_unresolved_functions_in_range.py`
+  - `uv run impk list_unresolved_functions_in_range`
 - Progress counters and artifacts must be emitted every wave:
-  - `new_scripts/count_re_progress.py`
+  - `uv run impk count_re_progress`
 - If a wave regresses strict/runtime gates, fix immediately before starting a new lane.
 
 ## Wave (Canonical)
@@ -70,14 +74,14 @@ A **wave** is one coherent batch that performs:
 - progress counters.
 
 Default implementation:
-- `new_scripts/run_unresolved_wave.py`
-- `new_scripts/run_wave_bundle.py` (preferred wrapper: runs pre snapshots + optional callback ABI pass + wave + post snapshots)
+- `uv run impk run_unresolved_wave`
+- `uv run impk run_wave_bundle` (preferred wrapper: runs pre snapshots + optional callback ABI pass + wave + post snapshots)
 
 ## Default Workflow
 Use this as the standard loop driver:
 
 ```bash
-.venv/bin/python new_scripts/run_wave_bundle.py \
+uv run impk run_wave_bundle \
   --batch-tag <batch_tag> \
   --renames-csv <renames.csv> \
   --signatures-csv <signatures.csv> \
@@ -86,28 +90,34 @@ Use this as the standard loop driver:
   --apply
 ```
 
-Use single-purpose scripts only for surgical debug/fixups.
+Use single-purpose maintained commands only for surgical debug/fixups.
 
 Artifact policy:
 - Default: summary-only output from `run_wave_bundle.py` (minimal file churn).
 - Use `--emit-detail-artifacts` only when debugging or when a lane needs full CSV traces.
 
 ## Core Script Set
-- `new_scripts/run_unresolved_wave.py`: primary wave execution.
-- `new_scripts/dump_function_context.py`: quick semantic validation before naming.
-- `new_scripts/list_unresolved_functions_in_range.py`: unresolved ranking/snapshot.
-- `new_scripts/find_named_functions_with_generic_callees.py`: strict super-lane gate.
-- `new_scripts/count_re_progress.py`: project counters.
-- `new_scripts/apply_function_renames_csv.py`: targeted rename-only patches.
-- `new_scripts/apply_signatures_from_csv.py`: targeted signature-only patches.
-- `new_scripts/apply_thunk_target_signatures_from_csv.py`: targeted thunk sig propagation.
+- `uv run impk run_unresolved_wave`: primary wave execution.
+- `uv run impk dump_function_context`: quick semantic validation before naming.
+- `uv run impk list_unresolved_functions_in_range`: unresolved ranking/snapshot.
+- `uv run impk find_named_functions_with_generic_callees`: strict super-lane gate.
+- `uv run impk count_re_progress`: project counters.
+- `uv run impk apply_function_renames_csv`: targeted rename-only patches.
+- `uv run impk apply_signatures_from_csv`: targeted signature-only patches.
+- `uv run impk apply_thunk_target_signatures_from_csv`: targeted thunk sig propagation.
 
 ## Reusable Script Rule
-- Prefer reusable scripts under `new_scripts/` for recurring filters/builders.
+- Prefer reusable command modules under `src/imperialism_re/commands/` for recurring filters/builders.
 - Do not rely on ad-hoc inline generators for repeatable rename/signature wave prep.
-- If a repeatable helper is missing, add a script first, then run it.
+- If a repeatable helper is missing, add one maintained command module (not a throwaway script), then run it through `uv run impk`.
 - Keep one active wave CSV per lane and append to it frequently during triage.
 - Do not create many tiny one-off CSV files when rows can be appended to the current wave CSV.
+
+## Tooling Hygiene
+- Before using a command, prefer `uv run impk list` and use an existing maintained entry if available.
+- Avoid command duplication: do not create near-identical command modules with small argument differences.
+- When consolidating behavior, extend an existing maintained command with flags instead of adding a parallel variant.
+- Keep logs/artifacts minimal and purpose-driven; avoid generating extra files that do not affect analysis or application.
 
 ## Naming / Typing Policy
 - Prefer behavior-based names when uncertain.
