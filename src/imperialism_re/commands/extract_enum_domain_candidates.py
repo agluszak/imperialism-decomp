@@ -167,6 +167,63 @@ def _extract_param_constant_hits(code: str, param_name: str) -> list[tuple[int, 
     return out
 
 
+def _field_offset_from_name(field_name: str) -> int | None:
+    m = re.fullmatch(r"field([0-9a-fA-F]+)", field_name.strip())
+    if m:
+        return int(m.group(1), 16)
+    return None
+
+
+def _build_struct_field_offset_map(dtm, struct_path: str) -> dict[str, int]:
+    st = dtm.getDataType(struct_path)
+    if st is None:
+        return {}
+    out: dict[str, int] = {}
+    try:
+        count = int(st.getNumComponents())
+    except Exception:
+        count = 0
+    for i in range(count):
+        try:
+            comp = st.getComponent(i)
+            name = (comp.getFieldName() or "").strip()
+            if not name:
+                continue
+            out[name.lower()] = int(comp.getOffset())
+        except Exception:
+            continue
+    return out
+
+
+def _extract_this_field_constant_hits(code: str, field_name: str) -> list[tuple[int, str, str, int]]:
+    out: list[tuple[int, str, str, int]] = []
+    f = re.escape(field_name)
+    lit = r"(0x[0-9a-fA-F]+|\d+|'[^']{4}')"
+
+    re_a = re.compile(rf"\bthis->{f}\b\s*(==|!=|<=|>=|<|>)\s*{lit}")
+    re_b = re.compile(rf"{lit}\s*(==|!=|<=|>=|<|>)\s*\bthis->{f}\b")
+
+    for m in re_a.finditer(code):
+        op = m.group(1)
+        value = _parse_num(m.group(2))
+        if value is None:
+            continue
+        et = "field_compare_eq" if op in {"==", "!="} else "field_compare_rel"
+        es = 3 if et == "field_compare_eq" else 2
+        out.append((value, et, op, es))
+
+    for m in re_b.finditer(code):
+        op = m.group(2)
+        value = _parse_num(m.group(1))
+        if value is None:
+            continue
+        et = "field_compare_eq" if op in {"==", "!="} else "field_compare_rel"
+        es = 3 if et == "field_compare_eq" else 2
+        out.append((value, et, op, es))
+
+    return out
+
+
 def _extract_push_call_hits(program, fn, *, max_lookahead: int = 8) -> list[tuple[int, str]]:
     from ghidra.program.model.scalar import Scalar
 
@@ -256,6 +313,7 @@ def main() -> int:
 
         af = program.getAddressFactory().getDefaultAddressSpace()
         fm = program.getFunctionManager()
+        dtm = program.getDataTypeManager()
 
         ifc = DecompInterface()
         ifc.openProgram(program)
@@ -305,6 +363,12 @@ def main() -> int:
             seen = set()
 
             for spec in matched_specs:
+                struct_path = ""
+                struct_field_offsets: dict[str, int] = {}
+                if ns_name and ns_name.lower() != "global":
+                    struct_path = f"/imperialism/classes/{ns_name}"
+                    struct_field_offsets = _build_struct_field_offset_map(dtm, struct_path)
+
                 for p in params:
                     pname = str(p.getName() or "")
                     if not pname or not spec.param_name_re.search(pname):
@@ -334,9 +398,67 @@ def main() -> int:
                                 "cluster_key": spec.cluster_key or (ns_name or "Global"),
                                 "callee_anchor": callee_anchor,
                                 "enum_path": spec.enum_path,
+                                "struct_path": "",
+                                "offset_hex": "",
+                                "field_name": "",
                             }
                         )
                         matched += 1
+
+                # Optional struct field evidence lane for class methods.
+                if struct_path:
+                    field_names = set(struct_field_offsets.keys())
+                    # Add synthetic field* names if they appear in decomp and aren't in struct metadata.
+                    for m in re.finditer(r"\bthis->(field[0-9a-fA-F]+)\b", code):
+                        field_names.add(m.group(1).lower())
+
+                    for fname_l in sorted(field_names):
+                        fname = fname_l
+                        off = struct_field_offsets.get(fname_l)
+                        if off is None:
+                            off = _field_offset_from_name(fname)
+                        if off is None:
+                            continue
+                        hits = _extract_this_field_constant_hits(code, fname)
+                        for value, evidence_type, op, strength in hits:
+                            if spec.value_list is not None and value not in spec.value_list:
+                                continue
+                            dedup_key = (
+                                spec.domain,
+                                spec.enum_path,
+                                "struct_field",
+                                struct_path,
+                                off,
+                                value,
+                                evidence_type,
+                                op,
+                            )
+                            if dedup_key in seen:
+                                continue
+                            seen.add(dedup_key)
+                            rows.append(
+                                {
+                                    "domain": spec.domain,
+                                    "address": f"0x{faddr:08x}",
+                                    "function_addr": f"0x{faddr:08x}",
+                                    "function_name": name,
+                                    "namespace": ns_name,
+                                    "kind": "struct_field",
+                                    "param_name_or_field": f"{struct_path}+0x{off:x}",
+                                    "immediate_value": str(value),
+                                    "immediate_hex": f"0x{value:08x}",
+                                    "evidence_type": evidence_type,
+                                    "operator": op,
+                                    "evidence_strength": str(strength),
+                                    "cluster_key": spec.cluster_key or (ns_name or "Global"),
+                                    "callee_anchor": callee_anchor,
+                                    "enum_path": spec.enum_path,
+                                    "struct_path": struct_path,
+                                    "offset_hex": f"0x{off:x}",
+                                    "field_name": fname,
+                                }
+                            )
+                            matched += 1
 
                 # Secondary evidence lane: PUSH imm followed by CALL.
                 # This captures command-id style constants passed through indirect callbacks.
@@ -372,6 +494,9 @@ def main() -> int:
                             "cluster_key": spec.cluster_key or (ns_name or "Global"),
                             "callee_anchor": call_anchor or callee_anchor,
                             "enum_path": spec.enum_path,
+                            "struct_path": "",
+                            "offset_hex": "",
+                            "field_name": "",
                         }
                     )
                     matched += 1
@@ -392,6 +517,9 @@ def main() -> int:
         "cluster_key",
         "callee_anchor",
         "enum_path",
+        "struct_path",
+        "offset_hex",
+        "field_name",
     ]
     with out_csv.open("w", encoding="utf-8", newline="") as fh:
         wr = csv.DictWriter(fh, fieldnames=fieldnames)

@@ -2117,3 +2117,6 @@
   - post-wave hotspots: 0.
 - Expanded extractor compare parser to accept quoted FourCC literals (`'xxxx'`) in compare/switch patterns.
 - Turn-instruction token lane probe (`batch_enum_waveP_turn_token_dry`) still yields 0 candidates; current dispatch flow likely compares streamed locals/table lookups rather than handler params.
+- Extractor enhancement:
+  - `extract_enum_domain_candidates` now parses quoted FourCC literals in compares/switch (`'xxxx'`) and can emit `struct_field` candidate rows from `this->field` compare evidence when class struct offsets are resolvable.
+  - current probe on strict map-mode lane still produced param-only candidates (no struct-field hits yet).
