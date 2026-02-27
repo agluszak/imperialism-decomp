@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+"""
+Dump struct layout from Ghidra datatype manager.
+
+Usage:
+  .venv/bin/python new_scripts/dump_struct_layout.py --name TradeControl
+  .venv/bin/python new_scripts/dump_struct_layout.py --path /imperialism/classes/TradeControl
+"""
+
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+import pyghidra
+
+GHIDRA_DIR = Path(
+    "/home/andrzej.gluszak/Downloads/ghidra_12.0.2_PUBLIC_20260129/ghidra_12.0.2_PUBLIC"
+)
+PROJECT_NAME = "imperialism-decomp"
+PROGRAM_PATH = "/Imperialism.exe"
+
+
+def open_project_with_lock_cleanup(root: Path):
+    try:
+        return pyghidra.open_project(str(root), PROJECT_NAME, create=False)
+    except Exception:
+        for lock_file in (root / f"{PROJECT_NAME}.lock", root / f"{PROJECT_NAME}.lock~"):
+            if lock_file.exists():
+                lock_file.unlink()
+        return pyghidra.open_project(str(root), PROJECT_NAME, create=False)
+
+
+def dump_type(dt, label: str):
+    print(f"TYPE {label} size=0x{dt.getLength():x}")
+    for comp in dt.getComponents():
+        off = int(comp.getOffset())
+        nm = comp.getFieldName() or "<anon>"
+        tn = comp.getDataType().getName()
+        print(f"  +0x{off:02x} {nm} : {tn}")
+    print()
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--path", action="append", default=[], help="Full datatype path, e.g. /TradeControl")
+    ap.add_argument("--name", action="append", default=[], help="Datatype name to resolve in common categories")
+    ap.add_argument(
+        "--project-root",
+        default=str(Path(__file__).resolve().parents[1]),
+        help="Path containing imperialism-decomp.gpr",
+    )
+    args = ap.parse_args()
+
+    if not args.path and not args.name:
+        print("provide --path and/or --name")
+        return 1
+
+    root = Path(args.project_root).resolve()
+    pyghidra.start(install_dir=GHIDRA_DIR)
+    project = open_project_with_lock_cleanup(root)
+
+    with pyghidra.program_context(project, PROGRAM_PATH) as program:
+        dtm = program.getDataTypeManager()
+
+        done = 0
+        for p in args.path:
+            dt = dtm.getDataType(p)
+            if dt is None:
+                print(f"MISSING {p}")
+                continue
+            dump_type(dt, p)
+            done += 1
+
+        common_cats = ["/", "/imperialism/classes", "/imperialism/types", "/Imperialism/classes"]
+        for n in args.name:
+            for cat in common_cats:
+                p = f"{cat.rstrip('/')}/{n}" if cat != "/" else f"/{n}"
+                dt = dtm.getDataType(p)
+                if dt is None:
+                    continue
+                dump_type(dt, p)
+                done += 1
+
+        if done == 0:
+            print("no matching datatypes found")
+            return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+

@@ -6,3 +6,8 @@ imperialism-decomp.gpr
 imperialism-decomp.rep/
 *.lock
 *.lock~
+tmp_decomp
+msvc500-fid*
+msvc500-master
+fid
+**/__pycache__

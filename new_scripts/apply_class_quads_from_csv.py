@@ -95,12 +95,20 @@ def main() -> int:
         fm = program.getFunctionManager()
         st = program.getSymbolTable()
         mem = program.getMemory()
+        global_ns = program.getGlobalNamespace()
+
+        class_map = {}
+        it_cls = st.getClassNamespaces()
+        while it_cls.hasNext():
+            ns = it_cls.next()
+            class_map[ns.getName()] = ns
 
         ifc = DecompInterface()
         ifc.openProgram(program)
 
         tx = program.startTransaction("Apply class quads from CSV")
         fn_ok = fn_skip = fn_fail = 0
+        ns_ok = ns_skip = ns_fail = 0
         lbl_ok = lbl_skip = lbl_fail = 0
         c_ok = 0
         try:
@@ -156,6 +164,26 @@ def main() -> int:
                         fn_fail += 1
                         print(f"[fn-fail] {fmt(addr_int)} -> {new_name} err={ex}")
 
+                cls_ns = class_map.get(t)
+                if cls_ns is not None:
+                    for addr_int in renames.keys():
+                        f = fm.getFunctionAt(af.getAddress(fmt(addr_int)))
+                        if f is None:
+                            continue
+                        try:
+                            cur_ns = f.getParentNamespace()
+                            if cur_ns == cls_ns:
+                                ns_skip += 1
+                                continue
+                            if cur_ns != global_ns and cur_ns.getName() != "Global":
+                                ns_skip += 1
+                                continue
+                            f.setParentNamespace(cls_ns)
+                            ns_ok += 1
+                        except Exception as ex:
+                            ns_fail += 1
+                            print(f"[ns-fail] {fmt(addr_int)} {f.getName()} -> {t} err={ex}")
+
                 labels = [(desc, f"g_pClassDesc{t}")]
                 if tname_addr is not None:
                     labels.append((tname_addr, f"g_szTypeName{t}"))
@@ -187,6 +215,7 @@ def main() -> int:
         print(
             f"[done] rows={len(rows)} "
             f"fn_ok={fn_ok} fn_skip={fn_skip} fn_fail={fn_fail} "
+            f"ns_ok={ns_ok} ns_skip={ns_skip} ns_fail={ns_fail} "
             f"lbl_ok={lbl_ok} lbl_skip={lbl_skip} lbl_fail={lbl_fail} "
             f"comments={c_ok}"
         )
@@ -196,4 +225,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

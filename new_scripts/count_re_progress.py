@@ -59,6 +59,9 @@ def main() -> int:
             if n.startswith("g_pClassDescT"):
                 class_desc += 1
             if n.startswith("g_vtblT"):
+                # Count canonical class vtable roots only, not per-slot/auxiliary aliases.
+                if "_Slot" in n or "Candidate_" in n or "Family_" in n:
+                    continue
                 vtbl += 1
             if n.startswith("g_szTypeNameT"):
                 tname += 1
@@ -74,4 +77,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

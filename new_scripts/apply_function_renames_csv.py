@@ -6,7 +6,7 @@ CSV columns:
   address,new_name[,comment]
 
 Usage:
-  .venv/bin/python new_scripts/apply_function_renames_csv.py <csv_path> [project_root]
+  .venv/bin/python new_scripts/apply_function_renames_csv.py [--create-missing] <csv_path> [project_root]
 """
 
 from __future__ import annotations
@@ -42,12 +42,20 @@ def open_project_with_lock_cleanup(root: Path):
 
 
 def main() -> int:
-    if len(sys.argv) < 2:
-        print("usage: apply_function_renames_csv.py <csv_path> [project_root]")
+    argv = sys.argv[1:]
+    create_missing = False
+    if "--create-missing" in argv:
+        create_missing = True
+        argv = [a for a in argv if a != "--create-missing"]
+
+    if len(argv) < 1:
+        print(
+            "usage: apply_function_renames_csv.py [--create-missing] <csv_path> [project_root]"
+        )
         return 1
 
-    csv_path = Path(sys.argv[1])
-    root = Path(sys.argv[2]) if len(sys.argv) >= 3 else Path(__file__).resolve().parents[1]
+    csv_path = Path(argv[0])
+    root = Path(argv[1]) if len(argv) >= 2 else Path(__file__).resolve().parents[1]
     if not csv_path.exists():
         print(f"missing csv: {csv_path}")
         return 1
@@ -61,13 +69,17 @@ def main() -> int:
     project = open_project_with_lock_cleanup(root)
 
     with pyghidra.program_context(project, PROGRAM_PATH) as program:
+        from ghidra.app.cmd.disassemble import DisassembleCommand
+        from ghidra.app.cmd.function import CreateFunctionCmd
         from ghidra.program.model.symbol import SourceType
+        from ghidra.util.task import ConsoleTaskMonitor
 
         af = program.getAddressFactory().getDefaultAddressSpace()
         fm = program.getFunctionManager()
+        monitor = ConsoleTaskMonitor()
 
         tx = program.startTransaction("Apply function renames from CSV")
-        ok = skip = fail = cmt = 0
+        ok = skip = fail = cmt = created = 0
         try:
             for row in rows:
                 addr_txt = (row.get("address") or "").strip()
@@ -88,9 +100,21 @@ def main() -> int:
                 addr = af.getAddress(f"0x{addr_int:08x}")
                 func = fm.getFunctionAt(addr)
                 if func is None:
-                    fail += 1
-                    print(f"[miss] no function at 0x{addr_int:08x}")
-                    continue
+                    if create_missing:
+                        try:
+                            DisassembleCommand(addr, None, True).applyTo(program, monitor)
+                            CreateFunctionCmd(None, addr, None, SourceType.USER_DEFINED).applyTo(
+                                program, monitor
+                            )
+                            func = fm.getFunctionAt(addr)
+                            if func is not None:
+                                created += 1
+                        except Exception as ex:
+                            print(f"[create-fail] 0x{addr_int:08x} err={ex}")
+                    if func is None:
+                        fail += 1
+                        print(f"[miss] no function at 0x{addr_int:08x}")
+                        continue
 
                 if func.getName() == new_name:
                     skip += 1
@@ -113,7 +137,10 @@ def main() -> int:
             program.endTransaction(tx, True)
 
         program.save("apply function renames from csv", None)
-        print(f"[done] rows={len(rows)} ok={ok} skip={skip} fail={fail} comments={cmt}")
+        print(
+            f"[done] rows={len(rows)} ok={ok} skip={skip} fail={fail} "
+            f"comments={cmt} created={created} create_missing={create_missing}"
+        )
 
     return 0
 

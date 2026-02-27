@@ -9016,3 +9016,13865 @@ Apply result:
 - [ ] Keep CSV-driven mining/apply loop:
   - `generate_fun_callee_candidates.py` / `generate_fun_caller_candidates.py`
   - `apply_function_renames_csv.py`
+
+## Continuation (2026-02-21, script-driven utility/gameplay-adjacent cleanup)
+
+### Mining and curation
+- Re-ran candidate mining after each rename wave to keep CSV state fresh:
+  - `generate_fun_callee_candidates.py` for diplomacy/trade/nation clusters
+  - global pass: `generate_fun_callee_candidates.py "^(?!FUN_|thunk_FUN_).+"`
+- Curated only high-confidence rows with clear decomp behavior.
+
+### Renames applied (saved) in this continuation
+
+1) Utility/diplomacy-adjacent batch (`tmp_decomp/utility_helpers_renames_batch2.csv`)
+- `WriteBufferItemsToStreamUnlocked` (`0x005e91b0`)
+- `WriteBufferItemsToStreamLocked` (`0x005e9170`)
+- `SetBkModeOnPrimaryAndSecondaryDc` (`0x00612ad2`)
+- `ApplyRectMarginsInPlace` (`0x0061f342`)
+- `AppendPointerToGlobalVectorLocked` (`0x005e7890`)
+- `AppendPointerToGlobalVectorAsStatus` (`0x005e7920`)
+- `InvokeCallbackNTimesWithSehGuard` (`0x005e7e10`)
+- `SehCleanup_InvokeCallbackNTimes` (`0x005e7e89`)
+- Apply result: `rows=8 ok=8 fail=0 comments=8`
+
+2) Map/DC helper batch (`tmp_decomp/map_dc_handlemap_helpers_renames.csv`)
+- `RemoveHandleMapEntryByKey` (`0x006035bb`)
+- `IntersectClipRectOnPrimaryAndSecondaryDc` (`0x00612fd8`)
+- Apply result: `rows=2 ok=2 fail=0 comments=2`
+
+3) Clip-region handle-map cluster (`tmp_decomp/clip_region_handlemap_cluster_renames.csv`)
+- `GetOrCreateGdiHandleMapForThread` (`0x006139c6`)
+- `LookupHandleMapEntryNoCreate` (`0x006139b2`)
+- `LookupHandleMapEntryWithCreate` (`0x00613a36`)
+- `AttachRegionHandleToClipStateAndRegister` (`0x00613a4c`)
+- `DetachRegionHandleFromClipStateAndUnregister` (`0x00613a79`)
+- `DeleteRegionHandleFromClipState` (`0x00613aa3`)
+- `SelectClipRegionOnPrimaryAndSecondaryDc` (`0x00612eaa`)
+- Apply result: `rows=7 ok=7 fail=0 comments=7`
+
+### Progress snapshot
+- `total_functions=10512`
+- `renamed_functions=5950`
+- `default_fun_or_thunk_fun=4562`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates for this continuation (low-level helper/function naming only).
+
+## TODO (next pass)
+- [ ] Continue script-mined low-hanging from `tmp_decomp/global_named_callers_fun_callee_candidates_current.csv`, prioritizing gameplay-adjacent callers and skipping pure CRT/MFC internals.
+- [ ] Use `manual_text.txt` wording checks for diplomacy/trade semantics before naming command/tag handlers.
+- [ ] Keep all renames through CSV + `apply_function_renames_csv.py`.
+
+## Continuation (2026-02-21, script-mined utility and clip-state refinement)
+
+### Utility/gameplay-adjacent batch
+- Source CSV: `tmp_decomp/utility_helpers_renames_batch2.csv`
+- Applied renames:
+  - `WriteBufferItemsToStreamUnlocked` (`0x005e91b0`)
+  - `WriteBufferItemsToStreamLocked` (`0x005e9170`)
+  - `SetBkModeOnPrimaryAndSecondaryDc` (`0x00612ad2`)
+  - `ApplyRectMarginsInPlace` (`0x0061f342`)
+  - `AppendPointerToGlobalVectorLocked` (`0x005e7890`)
+  - `AppendPointerToGlobalVectorAsStatus` (`0x005e7920`)
+  - `InvokeCallbackNTimesWithSehGuard` (`0x005e7e10`)
+  - `SehCleanup_InvokeCallbackNTimes` (`0x005e7e89`)
+- Result: `rows=8 ok=8 fail=0 comments=8`
+
+### Clip/region handle-map cluster
+- Source CSV: `tmp_decomp/clip_region_handlemap_cluster_renames.csv`
+- Applied renames:
+  - `GetOrCreateGdiHandleMapForThread` (`0x006139c6`)
+  - `LookupHandleMapEntryNoCreate` (`0x006139b2`)
+  - `LookupHandleMapEntryWithCreate` (`0x00613a36`)
+  - `AttachRegionHandleToClipStateAndRegister` (`0x00613a4c`)
+  - `DetachRegionHandleFromClipStateAndUnregister` (`0x00613a79`)
+  - `DeleteRegionHandleFromClipState` (`0x00613aa3`)
+  - `SelectClipRegionOnPrimaryAndSecondaryDc` (`0x00612eaa`)
+- Result: `rows=7 ok=7 fail=0 comments=7`
+
+### Runtime utility helpers (batch 3)
+- Source CSV: `tmp_decomp/runtime_utility_helpers_renames_batch3.csv`
+- Applied renames:
+  - `SehCleanup_CallCallbackRepeatedly` (`0x005e8cc8`)
+  - `FlushCloseAndResetBufferedStream` (`0x005e9050`)
+  - `CheckCharacterTypeFlag4` (`0x005e8970`)
+  - `InvokeGlobalAllocationFailureCallback` (`0x005e7ac0`)
+  - `FindNextFileAndPopulateFileInfoRecord` (`0x005e7c10`)
+- Result: `rows=5 ok=5 fail=0 comments=5`
+
+### Progress snapshot
+- `total_functions=10512`
+- `renamed_functions=5955`
+- `default_fun_or_thunk_fun=4557`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates for this continuation (low-level rename/comment pass only).
+
+## TODO (next pass)
+- [ ] Refresh `global_named_callers_fun_callee_candidates_current.csv` and continue curated gameplay-adjacent rows first.
+- [ ] Use `manual_text.txt` / Neo4j when naming diplomacy/trade/treaty command semantics.
+- [ ] Keep CSV-first script loop (`generate_*_candidates.py` + `apply_function_renames_csv.py`) and avoid ad-hoc inline renames.
+
+## Continuation (2026-02-21, additional script-driven utility passes)
+
+### Runtime utility batch (round 3)
+- Source CSV: `tmp_decomp/runtime_utility_helpers_renames_batch3.csv`
+- Applied:
+  - `SehCleanup_CallCallbackRepeatedly` (`0x005e8cc8`)
+  - `FlushCloseAndResetBufferedStream` (`0x005e9050`)
+  - `CheckCharacterTypeFlag4` (`0x005e8970`)
+  - `InvokeGlobalAllocationFailureCallback` (`0x005e7ac0`)
+  - `FindNextFileAndPopulateFileInfoRecord` (`0x005e7c10`)
+- Result: `rows=5 ok=5 fail=0 comments=5`
+
+### Handle-map core cluster
+- Source CSV: `tmp_decomp/handlemap_core_cluster_renames.csv`
+- Applied:
+  - `ReallocateHandleMapBucketsAndClear` (`0x006033dd`)
+  - `AllocateHandleMapEntryNodeFromFreePool` (`0x00603481`)
+  - `FindHandleMapEntryNodeAndBucketByKey` (`0x006034e4`)
+  - `TryGetHandleMapEntryValueByKey` (`0x00603549`)
+  - `GetOrCreateHandleMapEntryValueByKey` (`0x0060356b`)
+- Result: `rows=5 ok=5 fail=0 comments=5`
+
+### Progress snapshot
+- `total_functions=10512`
+- `renamed_functions=5960`
+- `default_fun_or_thunk_fun=4552`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates (low-level helper naming only).
+
+## TODO (next pass)
+- [ ] Continue global candidate curation (`tmp_decomp/global_named_callers_fun_callee_candidates_current.csv`) and prioritize gameplay-linked rows.
+- [ ] Use `manual_text.txt` / Neo4j context for ambiguous diplomacy/trade semantics before naming command handlers.
+- [ ] Keep CSV + script-driven workflow only (no ad-hoc rename snippets).
+
+## Continuation (2026-02-21, gameplay-focused wrapper/handler low-hanging via script workflow)
+
+### Workflow / tooling
+- Added reusable script: `new_scripts/dump_function_context.py`.
+  - Purpose: fast semantic validation of candidate functions before rename.
+  - Accepts addresses and/or CSVs (`address` / `callee_addr` / `caller_addr`).
+  - Prints signature, direct callees, resolved strings, and compact decomp snippet.
+- Generated gameplay candidate list with:
+  - `.venv/bin/python new_scripts/generate_fun_caller_candidates.py "RegenerateAllMapActionContextStatusCodes|MapAction|Civilian|Improvement|Tactical|Trade|Diplomacy|TurnEvent|TurnFlow|Production|Resource|Treasury|Tax|Province|Rail|Prospect" tmp_decomp/gameplay_fun_caller_candidates_current.csv`
+- Curated and applied two conservative rename batches via CSV + `apply_function_renames_csv.py`.
+
+### Batch 1 (map/civilian/diplomacy mission flow)
+- Source CSV: `tmp_decomp/gameplay_map_diplomacy_low_hanging_batch1.csv`
+- Applied renames:
+  - `0x0049ffe0` -> `TickAndAdvanceCivilianTerrainSelectionStep`
+  - `0x004a4ad0` -> `HandleMapClickByCivilianCursorState`
+  - `0x004e7b20` -> `ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks`
+  - `0x004e7c50` -> `ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook`
+  - `0x004ea150` -> `ApplyJoinEmpireResetAndClearDiplomacyCaches`
+  - `0x004ea290` -> `AddRegionToNationAndQueueMapActionMission`
+  - `0x004e72c0` -> `InitializeMapActionCandidateStateAndQueueMission`
+  - `0x004e83d0` -> `QueueMapActionMissionsForPortZoneCandidates`
+  - `0x0058f110` -> `UpdateCivilianOrderClassAndRefreshTargetCounts`
+- Result: `rows=9 ok=9 fail=0 comments=9`
+
+### Batch 2 (turn-event packet constructors + diplomacy handlers)
+- Source CSV: `tmp_decomp/gameplay_diplomacy_turnevent_low_hanging_batch2.csv`
+- Applied renames:
+  - `0x004793c0` -> `CreateTurnEventDialogFactoryRegistryObject`
+  - `0x0049dd40` -> `CreateTurnEventPacket_Vtbl0064c130`
+  - `0x004f28a0` -> `CreateTurnEventPacket_Vtbl00654e50`
+  - `0x00575180` -> `CreateTurnEventPacket_Vtbl00661b10`
+  - `0x00578230` -> `CreateTurnEventPacket_Vtbl00661b10WithInitParam`
+  - `0x004f48c0` -> `RenderDiplomacyMatrixRowWithStatusIconsAndFill`
+  - `0x004f81c0` -> `RenderDiplomacyGrantTotalsAndStyledText`
+  - `0x004fad60` -> `HandleDiplomacyNationFilterCommandAndForward`
+  - `0x004fba70` -> `RefreshDiplomacyNationOverlayGeometryAndLabels`
+  - `0x00575fb0` -> `InitializeDiplomacyProtocolOptionsOrResetSelection`
+  - `0x005794b0` -> `UpdateTurnEventPaletteFromUiSelectionFlags`
+  - `0x005c04f0` -> `CreateNextTradeCommandAndFormatPrompt`
+- Result: `rows=12 ok=12 fail=0 comments=12`
+
+### Validation
+- Spot-verified renamed symbols through `dump_function_context.py`.
+- Progress snapshot (`count_re_progress.py`):
+  - `total_functions=10512`
+  - `renamed_functions=5992`
+  - `default_fun_or_thunk_fun=4520`
+  - `class_desc_count=337`
+  - `vtbl_count=151`
+  - `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (function-level renames/comments only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first candidate curation from `tmp_decomp/gameplay_fun_caller_candidates_current.csv`, prioritizing one-callee wrappers around city production / map action / diplomacy.
+- [ ] Decode and rename the `GetCityBuildingProductionValueBySlot` caller cluster (`0x004bfb20`, `0x004c0090`, `0x004c05a0`, `0x004c07d0`, `0x004c4370`, `0x004c4690`) with conservative behavior names.
+- [ ] Where semantics are clear, start light signature cleanup for newly named gameplay handlers (no broad retyping).
+
+## Continuation (2026-02-21, city production + map interaction low-hanging)
+
+### Script improvement
+- Updated `new_scripts/dump_function_context.py`:
+  - added `--max-lines N` and `--full` to inspect deeper decomp blocks when needed.
+- This enabled safer naming in dense city-production routines without ad-hoc snippets.
+
+### Batch 3 (city production + map interaction)
+- Source CSV: `tmp_decomp/gameplay_city_production_low_hanging_batch3.csv`
+- Applied renames:
+  - `0x004bfb20` -> `QueueCityProductionRebalanceCommandsByThresholds`
+  - `0x004c0090` -> `DistributeCityProductionCommandBudgetAndQueueOrders`
+  - `0x004c05a0` -> `QueueCityProductionCommand2BIfMissingAndResetValue`
+  - `0x004c4370` -> `ChooseAndMarkNextCityProductionCommand`
+  - `0x004c4690` -> `ComputeCityProductionCommandLimitsFromBuildingOutputs`
+  - `0x004a4870` -> `HandleMapClickByComputedCursorState`
+  - `0x004a5760` -> `SetActiveProvinceAndBuildDirectionalOrderOverlays`
+- Result: `rows=7 ok=7 fail=0 comments=7`
+
+### Validation / milestone
+- Spot check confirms all seven new names are live.
+- Progress snapshot (`count_re_progress.py`):
+  - `total_functions=10512`
+  - `renamed_functions=6000`
+  - `default_fun_or_thunk_fun=4512`
+  - `class_desc_count=337`
+  - `vtbl_count=151`
+  - `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level function renaming only).
+
+## TODO (next pass)
+- [ ] Continue from `tmp_decomp/gameplay_fun_caller_candidates_current.csv` one-callee gameplay wrappers, especially diplomacy/turn-event call sites not yet renamed (`0x00513290`, `0x005b9370`, `0x004a13c0`).
+- [ ] Revisit `0x004c07d0` with `dump_function_context.py --full` and split into smaller helper naming opportunities if possible.
+- [ ] Start targeted signature cleanup where unambiguous (newly renamed city-production and civilian handlers first).
+
+## Continuation (2026-02-21, cpp-anchor dehardcoding pass: McAppStream wrappers + USmallViews unresolved lane)
+
+### Can cpp file names help dehardcode?
+- Yes. In this pass, cpp-anchor neighborhoods (`McAppStream.cpp` and `USmallViews` lane) produced another safe batch of concrete behavior names.
+- Strategy used:
+  1) start from known cpp-anchor neighborhood,
+  2) enumerate still-`FUN_*` functions in range,
+  3) decompile + tag/code-path inspect,
+  4) apply conservative behavior/field/tag-driven names.
+
+### Script/tooling improvement
+- Extended `new_scripts/apply_function_renames_csv.py` with optional `--create-missing` mode:
+  - attempts disassemble + function-create for missing thunk/stub entrypoints before rename.
+  - useful for non-functionized direct-branch thunk islands.
+- Updated `AGENTS.md` with the new usage form and guidance.
+
+### Batch A: McAppStream wrapper lane (with functionization)
+- Source CSV: `tmp_decomp/mcappstream_wrapper_renames_batch.csv`
+- Applied:
+  - `0x00488c20` -> `ReadDwordFromStreamViaVtableSlot3C`
+  - `0x00488f10` -> `WriteDwordToStreamViaVtableSlot78`
+  - `0x00404b1a` -> `thunk_ReadDwordFromStreamViaVtableSlot3C` (created function)
+  - `0x00409a5c` -> `thunk_WriteDwordToStreamViaVtableSlot78` (created function)
+- Result: `rows=4 ok=4 fail=0 comments=4 created=2 create_missing=True`
+
+### Batch B: USmallViews unresolved command/tag helpers
+- Source CSV: `tmp_decomp/usmallviews_cpp_anchor_low_hanging_batch.csv`
+- Applied:
+  - `0x00584160` -> `EvaluateSubsAndSancControlActiveState`
+  - `0x00584320` -> `HandlePanelEvent67AndClearControlTag636c7573`
+  - `0x00584500` -> `InvokeVirtualA8WithOneZero`
+  - `0x00584520` -> `HandleCardOrOfferTagClickAndDispatchTradeActions`
+  - `0x00584800` -> `HandleNonzeroEventAndClearControlTag636c7573ThenForward`
+  - `0x005849b0` -> `IsField3cWithinShortLimit84`
+  - `0x005849d0` -> `SyncField0fTowardsField21ByDirectionAndRefresh`
+  - `0x00584d30` -> `NotifyOwnerA0WhenSelectionMatchesAndReady`
+  - `0x00584ea0` -> `DispatchEvent10CommandTagsWithLocalizationGuards`
+  - `0x005851c0` -> `UpdateMainCursorRegionAndEmitLocalizedHintIfEligible`
+- Result: `rows=10 ok=10 fail=0 comments=10`
+
+### Verification
+- Spot-verified persisted names for:
+  - `0x00488c20`, `0x00488f10`, `0x00404b1a`, `0x00409a5c`,
+  - `0x00584160`, `0x00584320`, `0x00584520`, `0x00584ea0`, `0x005851c0`.
+
+### Progress snapshot
+- `total_functions=10514`
+- `renamed_functions=6014`
+- `default_fun_or_thunk_fun=4500`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j update in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue cpp-anchor exploitation on remaining `USmallViews`/`UViewMgr` unresolved functions and prioritize command-tag/state-gate helpers.
+- [ ] Revisit naming for highly-generic wrappers (e.g., `InvokeVirtualA8WithOneZero`) once caller context resolves precise semantics.
+- [ ] Continue gameplay-first non-UI queue after one more cpp-anchor micro-batch.
+
+## Continuation (2026-02-21, cpp-anchor tail cleanup + gameplay non-UI follow-up)
+
+### USmallViews cpp-anchor tail cleanup
+- Verified unresolved in `0x00584000..0x00586000` was down to two functions (`0x00585ba0`, `0x00585ee0`).
+- Applied tail batch with `--create-missing`:
+  - `0x00585ba0` -> `UpdateControlTagTreaTextFromNationAndMapContext`
+  - `0x00585ee0` -> `SehCleanup_ReleaseTwoTempSharedStringRefs`
+  - `0x00401d0c` -> `thunk_UpdateControlTagTreaTextFromNationAndMapContext` (created)
+  - `0x00403cc4` -> `thunk_SehCleanup_ReleaseTwoTempSharedStringRefs` (created)
+- Result: `rows=4 ok=4 fail=0 comments=4 created=2 create_missing=True`
+- Post-check: unresolved count in `0x00584000..0x00586000` is now `0`.
+
+### Gameplay non-UI follow-up batch 4
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch4.csv`
+- Applied:
+  - `0x00513290` -> `DispatchFormationEntryActionsAndMaybeCreateTurnEvent12`
+  - `0x005b9370` -> `RefreshNationStateAndEmitTurnEvent3Mode18`
+  - `0x004a13c0` -> `ResetMapActionSelectionAndLoadContextByNodeId`
+- Result: `rows=3 ok=3 fail=0 comments=3`
+
+### Gameplay non-UI follow-up batch 5 (plus thunks)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch5.csv`
+- Applied:
+  - `0x004c07d0` -> `DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits`
+  - `0x004e2880` -> `ClassifyNationProductionTotalAgainstGlobalDistribution`
+  - `0x005b94d0` -> `ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C`
+  - `0x00404a84` -> `thunk_DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits` (created)
+  - `0x00407eb9` -> `thunk_ClassifyNationProductionTotalAgainstGlobalDistribution` (created)
+  - `0x00405af1` -> `thunk_ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C` (created)
+- Result: `rows=6 ok=6 fail=0 comments=6 created=3 create_missing=True`
+
+### Validation
+- Spot-verified persisted names for all batch 4 + batch 5 addresses.
+
+### Progress snapshot
+- `total_functions=10519`
+- `renamed_functions=6029`
+- `default_fun_or_thunk_fun=4490`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Notes
+- One probe run hit project lock during parallel context checks; reran sequentially and continued normally.
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level function renaming/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first unresolved one-callee wrappers from refreshed `tmp_decomp/gameplay_fun_caller_candidates_current.csv` (skip UI template builders).
+- [ ] Revisit a few generic names once more context is available (`InvokeVirtualA8WithOneZero`, some command-tag helpers in USmallViews lane).
+- [ ] Start light signature cleanup for stable, newly named gameplay handlers where parameter roles are clearly inferable.
+
+## Continuation (2026-02-21, gameplay-first continuation after cpp-anchor passes)
+
+### Candidate refresh + selection
+- Refreshed `tmp_decomp/gameplay_fun_caller_candidates_current.csv` after recent renames.
+- Prioritized non-UI, one-callee wrappers and mission/production/diplomacy handlers over UI-template builders.
+
+### Gameplay follow-up batch 6
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch6.csv`
+- Applied:
+  - `0x004a1b80` -> `RebuildMapActionSelectionCachesAndContexts`
+  - `0x00403daf` -> `thunk_RebuildMapActionSelectionCachesAndContexts` (created)
+  - `0x005b91e0` -> `ProcessPendingDiplomacyTransferEntriesUntilBlocked`
+  - `0x00401ae1` -> `thunk_ProcessPendingDiplomacyTransferEntriesUntilBlocked`
+  - `0x005a4990` -> `InitializeBattleSetupArmyStacksAndPopulateSelectionState`
+  - `0x004030f8` -> `thunk_InitializeBattleSetupArmyStacksAndPopulateSelectionState`
+- Result: `rows=6 ok=6 fail=0 comments=6 created=1 create_missing=True`
+
+### Additional non-UI batch already applied in this continuation thread
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch5.csv`
+- Applied:
+  - `DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits` (+ thunk)
+  - `ClassifyNationProductionTotalAgainstGlobalDistribution` (+ thunk)
+  - `ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C` (+ thunk)
+- Result: `rows=6 ok=6 fail=0 comments=6 created=3 create_missing=True`
+
+### Validation
+- Spot-verified persisted names for all new gameplay functions and associated thunks.
+
+### Progress snapshot
+- `total_functions=10520`
+- `renamed_functions=6035`
+- `default_fun_or_thunk_fun=4485`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j update in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first one-callee wrappers from refreshed candidates (`0x004c40c0`, `0x004e32a0`, `0x00506b00`, etc.) when semantics are sufficiently clear.
+- [ ] Tighten a few conservative names where currently field/tag-oriented generics remain.
+- [ ] Start light signature cleanup on stable gameplay handlers renamed in batches 4-6.
+
+## Continuation (2026-02-21, additional gameplay-first renaming waves)
+
+### Batch 7 (nation metrics + production entry panel)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch7.csv`
+- Applied:
+  - `0x004c40c0` -> `RebalanceCitySupportAndLaborAllocations`
+  - `0x004087a1` -> `thunk_RebalanceCitySupportAndLaborAllocations` (created)
+  - `0x004e32a0` -> `RecomputeNationEconomyAndDiplomacySummaryMetrics`
+  - `0x00404502` -> `thunk_RecomputeNationEconomyAndDiplomacySummaryMetrics`
+  - `0x00506b00` -> `PopulateDialogControlsFromSelectedProductionEntry`
+  - `0x00401e38` -> `thunk_PopulateDialogControlsFromSelectedProductionEntry` (created)
+- Result: `rows=6 ok=6 fail=0 comments=6 created=2 create_missing=True`
+
+### Batch 8 (city building action availability/click lane)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch8.csv`
+- Applied:
+  - `0x004bc500` -> `RefreshCityBuildingActionAvailabilityIndicators`
+  - `0x00404197` -> `thunk_RefreshCityBuildingActionAvailabilityIndicators` (created)
+  - `0x004bc660` -> `HandleCityBuildingSlotClickAndDispatchAction`
+  - `0x00402342` -> `thunk_HandleCityBuildingSlotClickAndDispatchAction` (created)
+  - `0x004bee20` -> `ComputeNationProductionCompositeScoreFromCityOutput`
+  - `0x004039e0` -> `thunk_ComputeNationProductionCompositeScoreFromCityOutput` (created)
+- Result: `rows=6 ok=6 fail=0 comments=6 created=3 create_missing=True`
+
+### Batch 9 (mission/minister/tactical setup core)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch9.csv`
+- Applied:
+  - `0x004dc540` -> `CompareMissionScoreVariantsByMode`
+  - `0x004048db` -> `thunk_CompareMissionScoreVariantsByMode` (created)
+  - `0x004e6c20` -> `InitializeNationMinisterSubsystemsByPolicyIds`
+  - `0x0040584e` -> `thunk_InitializeNationMinisterSubsystemsByPolicyIds`
+  - `0x004a5b10` -> `CreateTacticalBattleViewAndInitializeBattleSetup`
+  - `0x00402c89` -> `thunk_CreateTacticalBattleViewAndInitializeBattleSetup`
+- Result: `rows=6 ok=6 fail=0 comments=6 created=1 create_missing=True`
+
+### Batch 10 (map context info panel strings)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch10.csv`
+- Applied:
+  - `0x0051b1c0` -> `PopulateMapContextInfoPanelStringsByTileSelection`
+  - `0x00409935` -> `thunk_PopulateMapContextInfoPanelStringsByTileSelection` (created)
+- Result: `rows=2 ok=2 fail=0 comments=2 created=1 create_missing=True`
+
+### Batch 11 (city production queue command family)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch11.csv`
+- Applied core functions:
+  - `0x004bff80` -> `QueueCityProductionCommand33FromAccumulatedDeficit`
+  - `0x004c02c0` -> `QueueCityProductionCommand17Or18FromSupportRatio`
+  - `0x004c04e0` -> `QueueRandomCityProductionCommand19To1C`
+  - `0x004c0690` -> `QueueSingleCityProductionCommandFromField36`
+  - `0x004c0730` -> `QueueSingleCityProductionCommandFromField38`
+  - `0x004c0e50` -> `ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders`
+- Applied thunk cleanup (created):
+  - `0x0040278e`, `0x004027a7`, `0x004041f1`, `0x0040358a`, `0x004047f5`, `0x00402c70`
+- Result: `rows=12 ok=12 fail=0 comments=12 created=6 create_missing=True`
+
+### Validation
+- Spot-verified all core+thunk names from batches 7-11 via `dump_function_context.py`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6067`
+- `default_fun_or_thunk_fun=4466`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates (all low-level renaming/functionization).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first from refreshed candidate list, especially remaining non-UI one-callee wrappers in tactical/mission lanes.
+- [ ] Begin light signature cleanup for stable renamed gameplay functions (batches 7-11), prioritizing obvious bool/int returns and pointer params.
+- [ ] Revisit a handful of field/tag-heavy names once more caller context is recovered.
+
+## Continuation (2026-02-21, gameplay-first follow-up batch 13)
+
+### Candidate refresh and selection
+- Regenerated gameplay unresolved callers from current symbol state:
+  - `tmp_decomp/gameplay_fun_caller_candidates_refresh.csv`
+- Prioritized non-UI game-logic functions in map action, tile evaluation, navy-order seeding, and trade command dispatch lanes.
+
+### Gameplay follow-up batch 13
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch13.csv`
+- Applied:
+  - `0x004d71b0` -> `SeedRecruitAndNavyOrdersForEligibleCoastalCities`
+  - `0x004c2e10` -> `HandleFrogCityTileSelectionAndDispatchOrders`
+  - `0x004c5240` -> `BuildFrogCityTerrainCountsAndOverlayStats`
+  - `0x00521a40` -> `EmitHexAdjacencyTransitionEventsByBitmask`
+  - `0x0051a2a0` -> `DrawHexNeighborOutlineFromTileArray`
+  - `0x004eaa20` -> `RecomputeNationTerrainCompatibilityAndDiplomacyMetrics`
+  - `0x004ecf20` -> `BuildStrategicTilePriorityHeatmap`
+  - `0x0051c760` -> `HandleTileClickForHomeSelectionOrPortBuild`
+  - `0x004b89a0` -> `CommitQueuedNavyOrdersAndUpdateTierByCapability`
+  - `0x005bf740` -> `HandleTradeCommandTagsAndSelectionUpdates`
+- Result: `rows=10 ok=10 fail=0 comments=10 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 10 renamed addresses via `dump_function_context.py`.
+- Checked for direct unresolved thunk wrappers calling these exact names:
+  - `tmp_decomp/batch13_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6078`
+- `default_fun_or_thunk_fun=4455`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue from refreshed gameplay candidate list with high-confidence map/navy logic wrappers:
+  - `0x004a5080`, `0x004a5ec0`, `0x004a7370`, `0x005698e0`, `0x00569eb0`.
+- [ ] Dehardcode one deeper frog-city helper chain by resolving `thunk_FUN_004c30b0` neighborhood and related order-code routing.
+- [ ] Apply light signature cleanup where stable and obvious (e.g., pointer-return builder paths like `BuildStrategicTilePriorityHeatmap`).
+
+## Continuation (2026-02-21, gameplay-first follow-up batch 14)
+
+### Gameplay follow-up batch 14
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch14.csv`
+- Applied:
+  - `0x004a5080` -> `ValidateOrderPlacementPrerequisitesForSelectedTile`
+  - `0x004a5ec0` -> `BuildMapOrderContextSummaryStringForNation`
+  - `0x004a7370` -> `ValidateOrderSupportDeltaAndMarkDirectionalOverlays`
+  - `0x005698e0` -> `PopulateNavyOrderPageEntriesByMapContext`
+  - `0x00569eb0` -> `RenderNavyOrderNormalizationGaugeAndNationMarker`
+- Result: `rows=5 ok=5 fail=0 comments=5 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 5 renamed addresses via `dump_function_context.py`.
+- Checked for direct unresolved thunk wrappers calling these exact names:
+  - `tmp_decomp/batch14_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6087`
+- `default_fun_or_thunk_fun=4446`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first map/navy lane with high-signal unresolved functions:
+  - `0x004f05c0`, `0x004f24a0`, `0x004f4a30`, `0x004a8a20`, `0x0057b0a0`.
+- [ ] Dehardcode frog-city subchain around `thunk_FUN_004c30b0` and rename the target helper if confidence is sufficient.
+- [ ] Perform one light signature pass on stable functions with obvious return/argument roles (start with `BuildStrategicTilePriorityHeatmap`).
+
+## Continuation (2026-02-21, gameplay-first follow-up batch 15)
+
+### Gameplay follow-up batch 15
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch15.csv`
+- Applied:
+  - `0x004f05c0` -> `SelectPriorityNationIndicesForMinorCapabilityRows`
+  - `0x004f24a0` -> `RebuildMinorNationDispositionLookupTables`
+  - `0x004f4a30` -> `RenderTerrainAndMinorNationLegendLabels`
+  - `0x004a8a20` -> `HandleSelectedTileSpecialOrderPromptAndCleanup`
+  - `0x0057b0a0` -> `PopulateNationSummaryPanelRowsAndPlayCue`
+- Result: `rows=5 ok=5 fail=0 comments=5 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 5 renamed addresses via `dump_function_context.py`.
+- Follow-up caller scan found additional one-callee wrappers tied to the new legend renderer:
+  - `0x004f6170`, `0x004f64c0`, `0x004f6840`.
+
+## Continuation (2026-02-21, gameplay-first follow-up batch 16)
+
+### Gameplay follow-up batch 16 (wrapper cleanup)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch16.csv`
+- Applied:
+  - `0x004f6170` -> `RenderDiplomacyLegendSurfaceAndPresent`
+  - `0x004f64c0` -> `RebuildDiplomacyLegendPaletteMode4AndBlit`
+  - `0x004f6840` -> `RebuildDiplomacyLegendPaletteMode1AndBlit`
+- Result: `rows=3 ok=3 fail=0 comments=3 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 3 wrapper renames via `dump_function_context.py`.
+- Caller scan on new wrapper names:
+  - `tmp_decomp/batch16_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6097`
+- `default_fun_or_thunk_fun=4436`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in these passes (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first from refreshed unresolved list around frog-city and map-order routing (`0x004c30b0` chain + adjacent callers).
+- [ ] Run one focused signature pass on stable functions with obvious return/arg shapes (start with `BuildStrategicTilePriorityHeatmap` and selected wrappers).
+- [ ] Keep exploiting one-callee caller scans after each batch to pick up wrapper renames immediately.
+
+## Continuation (2026-02-21, frog-city subchain dehardcoding batch 17)
+
+### Gameplay follow-up batch 17 (frog-city chain)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch17.csv`
+- Applied:
+  - `0x004c30b0` -> `TraceDescendingTileScoreGradientToSource`
+  - `0x00403ada` -> `thunk_TraceDescendingTileScoreGradientToSource`
+  - `0x004c3170` -> `SelectBestFrogCityTileFromCandidateSet`
+  - `0x004c3640` -> `BuildFrogCityDistanceMapFromPrimarySeedSet`
+  - `0x004c3910` -> `BuildFrogCityDistanceMapFromReachableSeaCandidates`
+- Result: `rows=5 ok=5 fail=0 comments=5 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 5 renamed addresses via `dump_function_context.py`.
+- Caller scan on new frog-city names:
+  - `tmp_decomp/batch17_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6102`
+- `default_fun_or_thunk_fun=4431`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first around remaining map-order/frog-city helpers adjacent to this chain (post-call dispatch and score-routing wrappers).
+- [ ] Run focused signature cleanup pass for stable function shapes (start with pointer-return map builders and selected `__thiscall` handlers).
+- [ ] Keep applying one-callee caller scans immediately after each rename batch for wrapper pickup.
+
+## Continuation (2026-02-21, gameplay follow-up batch 18)
+
+### Gameplay follow-up batch 18 (frog-city + portzone + navy support)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch18.csv`
+- Applied:
+  - `0x004c11c0` -> `SelectBestSecondaryHomeTileByFrogCityScore`
+  - `0x004c3490` -> `ComputeFrogCityCandidateScoreFromNationNeeds`
+  - `0x004dfa20` -> `EnqueueFrogCityMarkerAndFlagOverlay`
+  - `0x004e9ff0` -> `MarkNationAndPortZonePresenceFlags`
+  - `0x004ea0e0` -> `ClearNationAndPortZonePresenceFlags`
+  - `0x005654e0` -> `RenderAdmiralSummaryAndNavyNormalizationGauge`
+  - `0x004a6ef0` -> `TrimExcessNavyOrderSupportAndRebuildOrderBuffer`
+- Result: `rows=7 ok=7 fail=0 comments=7 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 7 renamed addresses via `dump_function_context.py`.
+- Caller scan on new names:
+  - `tmp_decomp/batch18_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6110`
+- `default_fun_or_thunk_fun=4423`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+## Continuation (2026-02-21, gameplay follow-up batch 19)
+
+### Gameplay follow-up batch 19 (recruit preset family + gate-cost commit)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch19.csv`
+- Applied:
+  - `0x004d6bf0` -> `DeserializeRecruitScenarioAndInstantiateOrders`
+  - `0x004ed620` -> `InitializeRecruitQueuePatternA_Type2x3_Type4x2`
+  - `0x004ed950` -> `InitializeRecruitQueuePatternB_Type2x2_Bonus5`
+  - `0x004edc40` -> `InitializeRecruitQueuePatternC_Mode2_Type2x3`
+  - `0x004edf20` -> `InitializeRecruitQueuePatternD_Field64Mode1_Type2x3`
+  - `0x004ee210` -> `InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3`
+  - `0x004a3f30` -> `CommitCityActionGateCostIfAffordable`
+- Result: `rows=7 ok=7 fail=0 comments=7 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 7 renamed addresses via `dump_function_context.py`.
+- Caller scan on new names:
+  - `tmp_decomp/batch19_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6118`
+- `default_fun_or_thunk_fun=4415`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in these passes (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first wrapper sweep from refreshed candidate list around `TMinisterBaseOrderArray` helper wrappers (`0x004ec160`, `0x004ec1d0`, `0x004ec2f0`, `0x004ed560`, `0x004ed890`, `0x004edb80`, `0x004ede60`, `0x004ee150`).
+- [ ] Run focused signature cleanup pass for stable function shapes after this wrapper sweep.
+- [ ] Keep one-callee caller scans after each batch to pick wrapper renames quickly.
+
+## Continuation (2026-02-21, gameplay follow-up batch 20)
+
+### Gameplay follow-up batch 20 (minister-order array wrappers + presets)
+- Source CSV: `tmp_decomp/gameplay_non_ui_followup_batch20.csv`
+- Applied:
+  - `0x004ec160` -> `InitializeTMinisterBaseOrderArrayMetrics`
+  - `0x004ec1d0` -> `SerializeTMinisterBaseOrderArrayMetrics`
+  - `0x004ec2f0` -> `DeserializeTMinisterBaseOrderArrayMetrics`
+  - `0x004ed560` -> `InitializeMinisterOrderArrayPreset_50_0_10_50`
+  - `0x004ed890` -> `InitializeMinisterOrderArrayPreset_10_10_10_50`
+  - `0x004edb80` -> `InitializeMinisterOrderArrayPreset_15_20_50_75`
+  - `0x004ede60` -> `InitializeMinisterOrderArrayPreset_20_10_10_50`
+  - `0x004ee150` -> `InitializeMinisterOrderArrayPreset_25_10_20_50`
+- Result: `rows=8 ok=8 fail=0 comments=8 created=0 create_missing=False`
+
+### Validation
+- Spot-verified all 8 renamed addresses via `dump_function_context.py`.
+- Caller scan on new names:
+  - `tmp_decomp/batch20_named_fun_callers.csv` -> `candidates=0`.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6132`
+- `default_fun_or_thunk_fun=4401`
+- `class_desc_count=337`
+- `vtbl_count=151`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first from refreshed unresolved list, prioritizing non-UI one-callee wrappers with military/map-order semantics.
+- [ ] Run focused signature cleanup pass for stable function shapes (`__thiscall` argument clarity and pointer/int return certainty).
+- [ ] Keep one-callee caller scans after each batch to pick wrapper renames immediately.
+
+## Continuation (2026-02-21, class extraction batch 21)
+
+### Class extraction batch 21 (high-confidence ctor/dtor/create promotions)
+- Source CSV: `tmp_decomp/class_extract_batch21.csv`
+- Applied with `apply_class_quads_from_csv.py`:
+  - `TFileBasedDocument`
+    - `0x00486570` -> `ConstructTFileBasedDocumentBaseState`
+    - `0x004865e0` -> `DestructTFileBasedDocumentAndMaybeFree`
+  - `TBehavior`
+    - `0x004871e0` -> `ConstructTBehaviorBaseState`
+    - `0x00487210` -> `DestructTBehaviorAndMaybeFree`
+  - `TDialogBehavior`
+    - `0x00487370` -> `ConstructTDialogBehaviorBaseState`
+    - `0x004873b0` -> `DestructTDialogBehaviorAndMaybeFree`
+  - `TFileStream`
+    - `0x00489110` -> `ConstructTFileStreamBaseState`
+    - `0x00489130` -> `DestructTFileStreamAndMaybeFree`
+  - `TCountingStream`
+    - `0x00489410` -> `ConstructTCountingStreamBaseState`
+    - `0x00489440` -> `DestructTCountingStreamAndMaybeFree`
+  - `THandleStream`
+    - `0x004895e0` -> `ConstructTHandleStreamBaseState`
+    - `0x00489610` -> `DestructTHandleStreamAndMaybeFree`
+  - `TButton`
+    - `0x0048ece0` -> `ConstructTButtonBaseState`
+    - `0x0048edd0` -> `DestructTButtonAndMaybeFree`
+  - `TAmbitFileBasedDocument`
+    - `0x0049e5f0` -> `ConstructTAmbitFileBasedDocumentBaseState`
+    - `0x0049e610` -> `DestructTAmbitFileBasedDocumentAndMaybeFree`
+  - `TIndustryView`
+    - `0x004cc790` -> `ConstructTIndustryViewBaseState`
+    - `0x004cc7d0` -> `DestructTIndustryViewAndMaybeFree`
+  - `TMiniShipLine`
+    - `0x00569bb0` -> `CreateTMiniShipLineInstance`
+    - `0x00569c80` -> `ConstructTMiniShipLineBaseState`
+    - `0x00569d70` -> `DestructTMiniShipLineAndMaybeFree`
+  - `TLineData`
+    - `0x0056f3b0` -> `ConstructTLineDataBaseState`
+    - `0x0056f3d0` -> `DestructTLineDataAndMaybeFree`
+  - `TMovieView`
+    - `0x005e2100` -> `CreateTMovieViewInstance`
+    - `0x005e2230` -> `ConstructTMovieViewBaseState`
+    - `0x005e22f0` -> `DestructTMovieViewAndMaybeFree`
+- Result: `rows=12 fn_ok=26 fn_skip=12 fn_fail=0 lbl_ok=12 lbl_skip=24 lbl_fail=0 comments=12`
+
+### Class extraction batch 22 (dtor-only low-risk promotions)
+- Source CSV: `tmp_decomp/class_extract_batch22_dtor_only.csv`
+- Applied with `apply_class_quads_from_csv.py`:
+  - `0x004867b0` -> `DestructTApplicationAndMaybeFree`
+  - `0x00487850` -> `DestructTCommandAndMaybeFree`
+  - `0x0048a130` -> `DestructTEventHandlerAndMaybeFree`
+  - `0x0048a9a0` -> `DestructTViewAndMaybeFree`
+  - `0x0048cc40` -> `DestructTScrollerAndMaybeFree`
+  - `0x0048ce40` -> `DestructTIncludeViewAndMaybeFree`
+  - `0x0048d640` -> `DestructTWindowAndMaybeFree`
+  - `0x0048e590` -> `DestructTControlAndMaybeFree`
+  - `0x0048f050` -> `DestructTPictureAndMaybeFree`
+  - `0x0048f9a0` -> `DestructTStaticTextAndMaybeFree`
+  - `0x004904d0` -> `DestructTEditTextAndMaybeFree`
+  - `0x00491480` -> `DestructTClusterAndMaybeFree`
+  - `0x00492110` -> `DestructTFloatWindowAndMaybeFree`
+  - `0x0049d8b0` -> `DestructTDialogViewAndMaybeFree`
+  - `0x004a0ad0` -> `DestructTAnimatorAndMaybeFree`
+- Result: `rows=15 fn_ok=15 fn_skip=15 fn_fail=0 lbl_ok=0 lbl_skip=30 lbl_fail=0 comments=15`
+
+### Validation
+- Spot-verified full function-name mapping for all batch-21/22 addresses using direct `pyghidra` query.
+- No rename collisions or missing-function failures in either batch.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6191`
+- `default_fun_or_thunk_fun=4342`
+- `class_desc_count=337`
+- `vtbl_count=163`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Continue class extraction on remaining high-confidence ctor/dtor rows from `tmp_decomp/named_getter_neighbor_candidates_refresh.csv` (next wave: `THelp*`, `TPicture*`, `T*Text`, `TScrollBarView`).
+- [ ] Run gameplay-first rename pass in parallel (non-UI logic), using one-callee caller/callee candidate scripts after each batch.
+- [ ] Do selective signature cleanup only where ctor/dtor calling convention and `this` usage are unambiguous.
+
+## Continuation (2026-02-21, class extraction batch 23)
+
+### Class extraction batch 23 (dtor-only promotions, second wave)
+- Source CSV: `tmp_decomp/class_extract_batch23_dtor_only.csv`
+- Applied with `apply_class_quads_from_csv.py`:
+  - `0x00503cc0` -> `DestructTHelpPictureAndMaybeFree`
+  - `0x00504c20` -> `DestructTHelpWindowAndMaybeFree`
+  - `0x005653b0` -> `DestructTShipLineAndMaybeFree`
+  - `0x0056b640` -> `DestructTFlagOptionsPictureAndMaybeFree`
+  - `0x0056e2f0` -> `DestructTTwoPicSliderAndMaybeFree`
+  - `0x00570820` -> `DestructTPictureButtonAndMaybeFree`
+  - `0x00570be0` -> `DestructT2PictureButtonAndMaybeFree`
+  - `0x005715d0` -> `DestructTUpDownPictureButtonAndMaybeFree`
+  - `0x00571800` -> `DestructTRadioPictureButtonAndMaybeFree`
+  - `0x00572440` -> `DestructTClickZoneAndMaybeFree`
+  - `0x00572670` -> `DestructTTextPictureButtonAndMaybeFree`
+  - `0x00572b60` -> `DestructTNoHilitePictureAndMaybeFree`
+  - `0x00572e10` -> `DestructTColorKeyPictureAndMaybeFree`
+  - `0x005746e0` -> `DestructTScrollBarViewAndMaybeFree`
+  - `0x005796f0` -> `DestructTRadioTextClusterAndMaybeFree`
+  - `0x005b1040` -> `DestructTTechStorePageAndMaybeFree`
+  - `0x005b5450` -> `DestructTMyStaticTextAndMaybeFree`
+  - `0x005b5600` -> `DestructTDropShadowTextAndMaybeFree`
+  - `0x005b6770` -> `DestructTInfoBarTextAndMaybeFree`
+  - `0x005b6a30` -> `DestructTNoHiliteTextAndMaybeFree`
+- Result: `rows=20 fn_ok=20 fn_skip=20 fn_fail=0 lbl_ok=0 lbl_skip=40 lbl_fail=0 comments=20`
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6211`
+- `default_fun_or_thunk_fun=4322`
+- `class_desc_count=337`
+- `vtbl_count=163`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Promote remaining ctor/create candidates from `tmp_decomp/named_getter_neighbor_candidates_refresh.csv` where still unresolved and structurally obvious (`TAdorner`, `TNewGameCommand`, `TTechCheater`, `TSpaceCommand`, plus selective others after spot-check).
+- [ ] Pivot back to gameplay-first logic renames after this class pass (map actions/civilian improvement flow), keeping class extraction opportunistic.
+- [ ] Add targeted signature cleanup only for newly-promoted ctor/dtor families with unambiguous `this` semantics.
+
+## Continuation (2026-02-21, class extraction batch 24)
+
+### Class extraction batch 24 (remaining ctor/create low-hanging)
+- Source CSV: `tmp_decomp/class_extract_batch24_ctor_create.csv`
+- Applied with `apply_class_quads_from_csv.py`:
+  - `0x0049d650` -> `CreateTAdornerInstance`
+  - `0x0049d6f0` -> `ConstructTAdornerBaseState`
+  - `0x0049de40` -> `ConstructTNewGameCommandBaseState`
+  - `0x004b19b0` -> `ConstructTTechCheaterBaseState`
+  - `0x004b1a20` -> `DestructTTechCheaterAndMaybeFree`
+  - `0x00575280` -> `ConstructTSpaceCommandBaseState`
+  - `0x0048eeb0` -> `ConstructTRadioBaseState`
+- Result: `rows=5 fn_ok=7 fn_skip=5 fn_fail=0 lbl_ok=5 lbl_skip=10 lbl_fail=0 comments=5`
+
+### Validation
+- Spot-verified function names at all promoted addresses:
+  - `0x0049d650`, `0x0049d6f0`, `0x0049de40`, `0x004b19b0`, `0x004b1a20`, `0x00575280`, `0x0048eeb0`.
+- No rename failures/collisions.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6218`
+- `default_fun_or_thunk_fun=4315`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/functionization only).
+
+## TODO (next pass)
+- [ ] Move back to gameplay logic renames (civilian/map actions, non-UI paths), keeping class extraction opportunistic only.
+- [ ] Revisit ambiguous class pairs around `TAdorner`/`TDialogView` boundary with vtbl/caller inspection to split create-vs-construct naming more precisely.
+- [ ] Add selective `__thiscall` signature cleanup for newly promoted ctor/dtor families where parameter roles are clear.
+
+### Post-pass check
+- Re-ran `generate_named_getter_neighbor_candidates.py` after batch 24:
+  - Output: `tmp_decomp/named_getter_neighbor_candidates_post24.csv`
+  - Result: `rows=0` (`create=0`, `ctor=0`, `dtor=0` unresolved by this heuristic).
+- Practical implication: the current getter-neighbor low-hanging class extraction queue is exhausted; next wins should come from gameplay logic clusters or non-neighbor class patterns.
+
+## Continuation (2026-02-21, batch class namespace extraction)
+
+### Class namespace extraction status
+- Verified before extraction: recent `T*` classes were mostly **not** present as Ghidra class namespaces (only function/label naming had been done).
+- Added reusable script:
+  - `new_scripts/extract_class_namespaces_from_csv.py`
+  - Purpose: create/convert class namespaces from CSV rows and attach `create/getter/ctor/dtor` functions under each class namespace.
+
+### Batch run
+- Command:
+  - `.venv/bin/python new_scripts/extract_class_namespaces_from_csv.py tmp_decomp/named_getter_neighbor_candidates_refresh.csv`
+- Result:
+  - `types=52`
+  - `class_created=52`
+  - `class_existing=0`
+  - `class_converted=0`
+  - `class_failed=0`
+  - `fn_attached=120`
+  - `fn_failed=0`
+
+### Validation
+- Class namespace total increased to `72`.
+- Spot-check class presence now true for:
+  - `TFileBasedDocument`, `TBehavior`, `TDialogBehavior`, `TMiniShipLine`, `TMovieView`, `TTechCheater`, `TRadio`, `TSpaceCommand`.
+- Spot-check function parent namespaces:
+  - `0x00486570 ConstructTFileBasedDocumentBaseState` -> namespace `TFileBasedDocument`
+  - `0x00569c80 ConstructTMiniShipLineBaseState` -> namespace `TMiniShipLine`
+  - `0x005e22f0 DestructTMovieViewAndMaybeFree` -> namespace `TMovieView`
+
+## TODO (next pass)
+- [ ] Keep using `extract_class_namespaces_from_csv.py` after each class-rename batch to keep namespace extraction synchronized.
+- [ ] Continue gameplay-first non-UI renaming/signature cleanup (map/civilian/action logic) now that class namespace low-hanging is addressed.
+
+## Continuation (2026-02-21, signatures + gameplay wrappers)
+
+### Signature pass: class-style destructors
+- Added reusable script: `new_scripts/apply_destructor_signatures.py`
+  - Heuristic: `DestructT*AndMaybeFree` + decomp contains `FreeHeapBufferIfNotNull` and `& 1` free-flag check.
+  - Applied signature:
+    - `void * __thiscall DestructT*AndMaybeFree(T* this, byte freeSelfFlag)`
+- Run:
+  - dry-run: `.venv/bin/python new_scripts/apply_destructor_signatures.py`
+  - apply: `.venv/bin/python new_scripts/apply_destructor_signatures.py --apply`
+- Result: `candidates=200`, `ok=199`, `skip=1`, `fail=0`.
+
+### Signature pass: class helpers (get/create/alloc-construct)
+- Added reusable script: `new_scripts/apply_class_helper_signatures.py`
+  - Targets:
+    - `GetT*ClassNamePointer`
+    - `CreateT*Instance` (must call `AllocateWithFallbackHandler`)
+    - `ConstructT*BaseState` (allocation-based only)
+  - Applied signature:
+    - `void * __cdecl <func>(void)`
+- Run:
+  - dry-run: `.venv/bin/python new_scripts/apply_class_helper_signatures.py`
+  - apply: `.venv/bin/python new_scripts/apply_class_helper_signatures.py --apply`
+- Result: `candidates=471`, `ok=469`, `skip=2`, `fail=0`.
+
+### Validation spot-checks
+- `0x00486440` -> `void * __cdecl GetTFileBasedDocumentClassNamePointer(void)`
+- `0x0049d650` -> `void * __cdecl CreateTAdornerInstance(void)`
+- `0x0049d6f0` -> `void * __cdecl ConstructTAdornerBaseState(void)`
+- `0x004b1a20` -> `void * __thiscall DestructTTechCheaterAndMaybeFree(TTechCheater * this, byte freeSelfFlag)`
+- `0x00569d70` -> `void * __thiscall DestructTMiniShipLineAndMaybeFree(TMiniShipLine * this, byte freeSelfFlag)`
+
+### Gameplay rename continuation (wrapper low-hanging)
+- Generated wrapper candidates:
+  - `tmp_decomp/gameplay_fun_wrapper_candidates_postsig.csv`
+- Applied batch rename set:
+  - initial: `tmp_decomp/gameplay_wrapper_batch25.csv` (24 rows)
+  - corrected naming: `tmp_decomp/gameplay_wrapper_batch25_fixnames.csv` (24 rows)
+- Net rename style now:
+  - `WrapperFor_<NamedCallee>_At<address>`
+- Reason for correction:
+  - Avoid collision/misleading `thunk_` naming where wrappers contained local state handling in addition to single-callee calls.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6249`
+- `default_fun_or_thunk_fun=4284`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/signature work only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first renames from `tmp_decomp/gameplay_fun_wrapper_candidates_postsig.csv`, but only for wrappers that clearly expose behavior beyond pure trampolines.
+- [ ] Add focused signature cleanup for selected high-confidence gameplay wrappers (`__thiscall` + parameter names) where decomp makes argument roles obvious.
+- [ ] Expand class namespace extraction workflow by re-running `extract_class_namespaces_from_csv.py` whenever new class rows are promoted.
+
+## Continuation (2026-02-21, signatures + wrapper batch 26)
+
+### Signature pass: non-alloc constructors
+- Added reusable script: `new_scripts/apply_nonalloc_constructor_signatures.py`
+  - Heuristic:
+    - name starts `Construct` and contains `BaseState`
+    - decomp writes vtable via `*param_1 = &g_vtbl...` (or PTR variant)
+    - no `AllocateWithFallbackHandler`
+    - returns `param_1`
+  - Applied signature:
+    - `void * __thiscall Construct*BaseState(void * this)`
+- Run:
+  - dry-run: `.venv/bin/python new_scripts/apply_nonalloc_constructor_signatures.py`
+  - apply: `.venv/bin/python new_scripts/apply_nonalloc_constructor_signatures.py --apply`
+- Result:
+  - `candidates=190`, `ok=125`, `skip=65`, `fail=0`
+
+### Signature validation spot-checks
+- `0x00402194` -> `void * __thiscall ConstructTPlaceCityDialogBaseState(void * this)`
+- `0x0040224d` -> `void * __thiscall ConstructTArmyToolbarBaseState(void * this)`
+- `0x004024f5` -> `void * __thiscall ConstructTNapoleonMinisterBaseState(void * this)`
+- `0x005ba720` -> `void * __thiscall ConstructTradeScreenPictureBaseState(void * this)`
+- `0x005c14c0` -> `void * __thiscall ConstructTCommodityLineBaseState(void * this)`
+
+### Gameplay rename continuation (wrapper batch 26)
+- Source candidate list: `tmp_decomp/gameplay_fun_wrapper_candidates_postsig.csv`
+- Generated and applied:
+  - `tmp_decomp/gameplay_wrapper_batch26.csv`
+  - `rows=61`, `ok=61`, `fail=0`, `comments=61`
+- Naming policy:
+  - `WrapperFor_<NamedCallee>_At<address>`
+  - Keep wrapper semantics explicit, avoid misleading `thunk_` for non-trivial wrappers.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6315`
+- `default_fun_or_thunk_fun=4218`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/signature work only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first from fresh single-callee `FUN_` wrappers, prioritizing map/civilian/minister/order flows.
+- [ ] Add focused signatures for high-confidence wrapper families where callee signature propagation is safe.
+- [ ] Revisit `TMapMaker` extraction path (construct/destruct/delete family) and attach to class namespace if missing.
+
+## Continuation (2026-02-21, cluster placeholders + targeted signatures)
+
+### Placeholder cluster renames (gameplay/UI hint flow)
+- Source CSV: `tmp_decomp/gameplay_cluster_batch28.csv`
+- Applied:
+  - `0x004a6680` -> `BuildMapHintOverlayTextAndDispatchUiMessages`
+  - `0x004fbdf0` -> `BuildDiplomacyMapHintOverlayTextAndMetrics`
+  - `0x004d9c70` -> `HandleCityDialogHintClusterUpdate`
+- Result: `rows=3 ok=3 fail=0 comments=3 created=0`
+
+### Targeted signature updates for renamed clusters
+- Applied directly via pyghidra transaction:
+  - `0x004a6680`: `void __cdecl BuildMapHintOverlayTextAndDispatchUiMessages(int hintContext)`
+  - `0x004fbdf0`: `void __fastcall BuildDiplomacyMapHintOverlayTextAndMetrics(void * pHintContext)`
+  - `0x004d9c70`: `void __thiscall HandleCityDialogHintClusterUpdate(void * this, void * pMessage)`
+
+### Follow-up wrapper rename/sig alignment
+- Renamed stale wrapper reference after cluster rename:
+  - `0x004e73f0` -> `WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0`
+- Updated signature:
+  - `void __thiscall WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void * this, void * pMessage)`
+
+### Notes on wrapper-signature scope
+- Re-scanned wrapper families (`HandleCityDialogNoOpSlot14/18`, toggle-command, invalidate-region).
+- Observed heterogeneous inferred parameter shapes across addresses, so skipped risky bulk one-size signature propagation there.
+
+### Progress snapshot
+- `total_functions=10533`
+- `renamed_functions=6317`
+- `default_fun_or_thunk_fun=4216`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+## TODO (next pass)
+- [ ] Continue decoding `Cluster_*` placeholders with highest gameplay relevance (`Cluster_MapHint_*`, `Cluster_CityHint_*`, `Cluster_MilitaryHint_*`) using caller/context analysis.
+- [ ] Apply signatures to additional renamed clusters/wrappers only when decompiled prototypes are stable per-address.
+- [ ] Revisit `TMapMaker` construct/destruct/delete family and extract/attach class methods where missing.
+
+## Continuation (2026-02-21, wrapper suffix + wrapper signatures + thunk functionization)
+
+### Wrapper suffix mismatch cleanup
+- Detected wrappers where `_At<addr>` suffix did not match actual function address.
+- Source CSV: `tmp_decomp/wrapper_suffix_mismatch_fix_batch.csv`
+- Applied 12 renames (`ok=12`) including:
+  - `0x0040704a` -> `WrapperFor_HandleCityDialogNoOpSlot14_At0040704a`
+  - `0x004076c6` -> `WrapperFor_HandleCityDialogNoOpSlot14_At004076c6`
+  - `0x00401302` -> `WrapperFor_RefreshCityCapabilityUiHandlesForActiveNation_At00401302`
+  - `0x004089f4` -> `WrapperFor_ConstructTMinister_At004089f4`
+
+### Reusable wrapper-family signature script
+- Added: `new_scripts/apply_wrapper_family_signatures.py`
+- Target families:
+  - `WrapperFor_HandleCityDialogNoOpSlot14_At*`
+  - `WrapperFor_HandleCityDialogNoOpSlot18_At*`
+- Strict gate from decomp header:
+  - `__thiscall` and exact `(int param_1, int *param_2)` shape.
+- Applied signature:
+  - `void __thiscall <func>(void * this, void * pMessage)`
+- Run:
+  - dry-run: `candidates=28`
+  - apply: `ok=27`, `skip=1`, `fail=0`
+
+### Thunk functionization + minister preset renames
+- Source CSV: `tmp_decomp/gameplay_batch30_presets_and_thunks.csv`
+- Applied with `--create-missing`:
+  - `rows=10`, `ok=10`, `created=6`, `fail=0`
+- Renamed presets:
+  - `0x004c5a90` -> `ConfigureCityInteriorMinisterPriorityPreset_004c5a90`
+  - `0x004c5d90` -> `ConfigureCityInteriorMinisterPriorityPreset_004c5d90`
+  - `0x004c6090` -> `ConfigureCityInteriorMinisterPriorityPreset_004c6090`
+  - `0x004c63a0` -> `ConfigureCityInteriorMinisterPriorityPreset_004c63a0`
+- Created/renamed jump thunks:
+  - `0x0040155a` -> `thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90`
+  - `0x0040182a` -> `thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5d90`
+  - `0x0040129e` -> `thunk_ConfigureCityInteriorMinisterPriorityPreset_004c6090`
+  - `0x00401edd` -> `thunk_ConfigureCityInteriorMinisterPriorityPreset_004c63a0`
+  - `0x00402d33` -> `thunk_Cluster_CityHint_004cc820`
+  - `0x0040343b` -> `thunk_Cluster_CityHint_005b1e20`
+
+### Signature updates in this pass
+- Preset handlers and their thunks:
+  - `void __fastcall ...(void * pMinisterState)` on
+    - `0x004c5a90`, `0x004c5d90`, `0x004c6090`, `0x004c63a0`
+    - `0x0040155a`, `0x0040182a`, `0x0040129e`, `0x00401edd`
+- City-hint clusters/thunks:
+  - `0x004cc820`: `void __fastcall Cluster_CityHint_004cc820(void * pHintContext)`
+  - `0x005bc0d0`: `void __fastcall Cluster_CityHint_005bc0d0(void * pHintContext)`
+  - `0x00402d33`: `void __fastcall thunk_Cluster_CityHint_004cc820(void * pHintContext)`
+  - `0x005b1e20`: `void __thiscall Cluster_CityHint_005b1e20(void * this, int commandId, void * pMessage)`
+  - `0x0040343b`: `void __cdecl thunk_Cluster_CityHint_005b1e20(void * pThis, int commandId, void * pMessage)`
+
+### Progress snapshot
+- `total_functions=10539`
+- `renamed_functions=6323`
+- `default_fun_or_thunk_fun=4216`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### Neo4j policy
+- No Neo4j updates in this pass (low-level rename/signature/functionization only).
+
+## TODO (next pass)
+- [ ] Continue gameplay-first by deplaceholdering remaining `Cluster_CityHint_*`, `Cluster_MapHint_*`, `Cluster_MilitaryHint_*` with caller-context-backed names.
+- [ ] Add a reusable script to infer/propagate signatures for selected wrapper families beyond `NoOpSlot14/18` where header shape is stable.
+- [ ] Revisit `TMapMaker` construct/destruct/delete family and class attachment/signatures.
+
+## Continuation (2026-02-21, class attachment + targeted ctor/dtor signatures)
+
+### Reusable script added: class namespace attachment from names
+- Added: `new_scripts/attach_class_methods_by_name_patterns.py`
+- Purpose: attach global helper functions to existing class namespaces when function names match conservative class patterns:
+  - `[thunk_]Create<Class>Instance`
+  - `[thunk_]Construct<Class>[BaseState]`
+  - `[thunk_]Destruct<Class>[BaseState|AndMaybeFree]`
+  - `[thunk_]Delete<Class>[AndMaybeFree]`
+  - `[thunk_]Get<Class>ClassNamePointer`
+  - `[thunk_]Get<Class>RuntimeClassDescriptor`
+- Guardrails:
+  - only attaches when function is currently in `Global`
+  - only if inferred `<Class>` already exists as a Ghidra class namespace
+
+### Class extraction / namespace attachment applied
+- Command:
+  - `.venv/bin/python new_scripts/attach_class_methods_by_name_patterns.py --apply`
+- Result:
+  - `[candidates] 20`
+  - `[done] ok=20 skip=0 fail=0`
+- Follow-up dry-run verification:
+  - `[candidates] 0`
+
+Attached examples include:
+- `DestructTDiplomacyMapViewBaseState` (`0x00404363`, `0x004f3cc0`) -> `TDiplomacyMapView`
+- `DestructTSoundPlayerBaseState` (`0x00405b28`, `0x005933e0`) -> `TSoundPlayer`
+- `DestructTSetupRandomMapPictureBaseState` (`0x00576e30`) + thunk (`0x00402d88`) -> `TSetupRandomMapPicture`
+- `DeleteLandSaleEvent` (`0x004d49a0`) + thunk (`0x00408ca1`) -> `LandSaleEvent`
+- `ConstructCDC` (`0x00612682`) -> `CDC`
+- `DestructCObArray` / `DestructCObArrayAndMaybeFree` (+ thunks) -> `CObArray`
+
+### Reusable script added: CSV-driven signature application
+- Added: `new_scripts/apply_signatures_from_csv.py`
+- Supports CSV columns:
+  - `address`, `calling_convention`, `return_type`, `params`
+- `params` format:
+  - `name:type;name:type`
+- Current type support intentionally small/safe (`void`, `void*`, `byte`, `int`, `uint`, `bool`, etc.), with safe fallback behavior.
+
+### Targeted signature batch applied
+- CSV: `tmp_decomp/signature_batch31_class_dtor_ctor.csv`
+- Commands:
+  - dry-run: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch31_class_dtor_ctor.csv`
+  - apply: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch31_class_dtor_ctor.csv --apply`
+- Result:
+  - `[done] ok=10 skip=3 fail=0`
+
+Updated signatures (representative):
+- `0x00404363` / `0x004f3cc0` `DestructTDiplomacyMapViewBaseState`
+  - `void __fastcall (...)(void * pThis)`
+- `0x00405b28` / `0x005933e0` `DestructTSoundPlayerBaseState`
+  - `void __fastcall (...)(void * pThis)`
+- `0x00576e30` `DestructTSetupRandomMapPictureBaseState`
+  - `void __thiscall (...)(void)`
+- `0x004d49a0` `DeleteLandSaleEvent`
+  - `void * __thiscall (...)(byte freeSelfFlag)`
+- `0x00601bc1` `DestructCObArrayAndMaybeFree`
+  - `void * __thiscall (...)(byte freeSelfFlag)`
+- `0x00601bdd` `DestructCObArray`
+  - `void __thiscall (...)(void)`
+- `0x00612682` `ConstructCDC`
+  - `void __fastcall (...)(void * pThis)`
+
+### Progress snapshot
+- `total_functions=10539`
+- `renamed_functions=6323`
+- `default_fun_or_thunk_fun=4216`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Use `attach_class_methods_by_name_patterns.py` periodically after each rename wave to keep class namespace placement synchronized.
+- [ ] Run one more focused signature pass for remaining `undefined` class dtor/thunk wrappers now that they are class-attached.
+- [ ] Pivot back to game-logic-first renames (civilian/map actions/turn flow), and only do class/signature updates when directly adjacent and low-risk.
+
+### Follow-up correction (same pass): explicit-parameter signatures for cdecl-style dtor wrappers
+- Initial batch attempted `__thiscall`/implicit-this for a few wrappers where Ghidra kept cdecl presentation.
+- Applied explicit parameter signatures instead (improves readability and preserves observed decomp behavior):
+  - CSV: `tmp_decomp/signature_batch31_fix_explicit_params.csv`
+  - Command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch31_fix_explicit_params.csv --apply`
+  - Result: `[done] ok=3 skip=4 fail=0`
+
+Final signatures of note:
+- `0x004d49a0` `DeleteLandSaleEvent`
+  - `void * __cdecl (void * pThis, byte freeSelfFlag)`
+- `0x00408ca1` `thunk_DeleteLandSaleEvent`
+  - `void * __cdecl (void * pThis, byte freeSelfFlag)`
+- `0x00601bdd` `DestructCObArray`
+  - `void __cdecl (void * pThis)`
+- `0x00404c19` / `0x004883c0` `thunk_DestructCObArray`
+  - `void __cdecl (void * pThis)`
+- `0x00576e30` / `0x00402d88` `DestructTSetupRandomMapPictureBaseState` (+ thunk)
+  - `void __cdecl (void * pThis)`
+
+Verification:
+- Re-ran `attach_class_methods_by_name_patterns.py` dry-run after attachment/signature updates.
+- Result remains clean: `[candidates] 0`.
+
+## Continuation (2026-02-21, class-method signature cleanup wave)
+
+### Targeted game-logic signature pass: `TMapMaker`
+- Applied typed signatures to map/helper methods that were still `undefined` despite clear decomp prototypes.
+- CSV: `tmp_decomp/signature_batch32_tmapmaker_helpers.csv`
+- Command:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch32_tmapmaker_helpers.csv --apply`
+- Result:
+  - `[done] ok=7 skip=0 fail=0`
+
+Updated examples:
+- `0x00528c10` `GetNeighborTileIndexOnMap108x60`
+  - `int __cdecl (int tileIndex, int directionIndex)`
+- `0x00528ce0` `GetNeighborIndexOnCoarseGrid27x15`
+  - `int __cdecl (int coarseIndex, int directionIndex)`
+- `0x005298a0` `GetFineGridCellBasePointerFromCoarseIndex`
+  - `void * __thiscall (TMapMaker * this, int coarseIndex)`
+- `0x0052a670` `GetCityRegionIdAtTileIndex`
+  - `int __thiscall (TMapMaker * this, int tileIndex)`
+- `0x0052b460` `GetOrCreateOverlaySpanRecordArray18Entry`
+  - `void * __thiscall (TMapMaker * this, uint entryIndex)`
+- `0x0052c030` `GetOverlaySpanRecordByIndex`
+  - `void * __thiscall (TMapMaker * this, uint entryIndex)`
+- `0x0052d150` `GetOrCreateOverlayQuadRecordByIndex`
+  - `void * __thiscall (TMapMaker * this, uint entryIndex)`
+
+### Broad low-risk signature cleanup: undefined `ConstructT*BaseState` / `DestructT*AndMaybeFree`
+- Built a conservative auto-generated CSV by selecting only functions that met all conditions:
+  - in class namespace,
+  - still `undefined` signature,
+  - name pattern `ConstructT*BaseState` or `DestructT*AndMaybeFree`,
+  - decompiler header starts with `void __fastcall ...`.
+- Generated CSV:
+  - `tmp_decomp/signature_batch33_fastcall_void_thisptr.csv`
+- Applied with:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch33_fastcall_void_thisptr.csv --apply`
+- Result:
+  - `[done] ok=16 skip=20 fail=0`
+
+Representative updates:
+- `ConstructTHandleStreamBaseState`, `ConstructTFileStreamBaseState`, `ConstructTBehaviorBaseState`, `ConstructTTacticalBattleBaseState`
+- `DestructTEditTextAndMaybeFree`, `DestructTScrollBarViewAndMaybeFree`, `DestructTMapPreviewViewAndMaybeFree`, `DestructTInfoBarTextAndMaybeFree`
+- Applied shape:
+  - `void __fastcall (...)(void * pThis)`
+
+### Residual undefined class-method signatures in this band
+After this wave, the `undefined` count for class-attached `Construct/Destruct/Delete/Create/Get*` names dropped:
+- before: `43`
+- after: `7`
+
+Remaining 7 (kept for later due non-uniform prototype shapes):
+- `0x00403e0e` / `0x0049e5f0` `ConstructTAmbitFileBasedDocumentBaseState`
+- `0x00407347` / `0x00519b50` `ConstructTMapDialogBaseState`
+- `0x0048cc40` `DestructTScrollerAndMaybeFree`
+- `0x0056b640` `DestructTFlagOptionsPictureAndMaybeFree`
+- `0x005ba1c0` `ConstructTDealListBaseState`
+
+### Progress snapshot
+- `total_functions=10539`
+- `renamed_functions=6323`
+- `default_fun_or_thunk_fun=4216`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Resolve the 7 residual undefined class-method signatures individually (prototype-specific handling).
+- [ ] Keep pushing game-logic signatures/renames around `TMapMaker` and civilian/map-action pipelines.
+- [ ] Continue opportunistic class extraction only where it directly supports game-logic readability.
+
+## Continuation (2026-02-21, residual signature closure + map/civilian-adjacent cleanup)
+
+### Closed residual class-method undefined signatures (7/7)
+- Applied signatures from CSV:
+  - `tmp_decomp/signature_batch34_residual7.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch34_residual7.csv --apply`
+  - result: `[done] ok=5 skip=2 fail=0`
+
+Covered addresses:
+- `0x00403e0e`, `0x0049e5f0` `ConstructTAmbitFileBasedDocumentBaseState`
+  - `void __fastcall (void * pThis)`
+- `0x00407347`, `0x00519b50` `ConstructTMapDialogBaseState`
+  - `void * __fastcall (void * pThis)`
+- `0x005ba1c0` `ConstructTDealListBaseState`
+  - `void * __fastcall (void * pThis)`
+- `0x0048cc40` (later renamed, see below)
+  - `void * __cdecl (void)`
+- `0x0056b640` (later renamed, see below)
+  - `void __cdecl (void * pThis)`
+
+Verification after this pass:
+- `undefined_named_in_classes = 0` for class-attached `Construct/Destruct/Delete/Create/Get*` naming band.
+
+### Low-risk behavior renames from decomp evidence
+- Applied via CSV:
+  - `tmp_decomp/gameplay_batch35_residual_renames.csv`
+  - command: `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/gameplay_batch35_residual_renames.csv`
+  - result: `[done] rows=2 ok=2 fail=0`
+
+Renames:
+- `0x0048cc40`
+  - `DestructTScrollerAndMaybeFree` -> `CreateTScrollerInstance`
+  - Evidence: allocates `0x74`, initializes base + vtable + shared string fields, returns new instance pointer.
+- `0x0056b640`
+  - `DestructTFlagOptionsPictureAndMaybeFree` -> `InitializeFlagOptionsPictureLocalizedTextRows`
+  - Evidence: iterates 8 text rows, loads localization string `0x2743`, applies style/theme flags, no free/delete pattern.
+
+### Additional game/UI-adjacent signature cleanup
+- Applied:
+  - `tmp_decomp/signature_batch36_render_legend.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch36_render_legend.csv --apply`
+  - result: `[done] ok=1 skip=1 fail=0`
+
+Updated:
+- `0x00405e16`, `0x004f4a30` `RenderTerrainAndMinorNationLegendLabels`
+  - `void __fastcall (void * pLegendContext)`
+
+### New reusable thunk signature scripts (safe modes)
+- Added exploratory conservative script (not applied globally):
+  - `new_scripts/apply_simple_thunk_signatures.py`
+  - This was intentionally NOT used for bulk apply due potential return-type loss.
+
+- Added and applied safer propagation script:
+  - `new_scripts/propagate_simple_thunk_signatures_from_callee.py`
+  - Targets only trivial thunk trampolines with non-undefined callee signatures.
+  - command: `.venv/bin/python new_scripts/propagate_simple_thunk_signatures_from_callee.py --apply`
+  - result: `[done] ok=22 skip=0 fail=0`
+
+Notable propagated examples:
+- `thunk_GetNeighborIndexOnCoarseGrid27x15`
+  - now `int __cdecl (...)(int coarseIndex, int directionIndex)`
+- `thunk_GetFineGridCellBasePointerFromCoarseIndex`
+  - now `void * __thiscall (...)(void * this, int coarseIndex)`
+- `thunk_AutoAssignProspectingOrdersByTileHeuristics`
+  - now `void (...)`
+- several assert thunks now typed `void (...)` instead of `undefined`.
+
+### Progress snapshot
+- `total_functions=10539`
+- `renamed_functions=6323`
+- `default_fun_or_thunk_fun=4216`
+- `class_desc_count=337`
+- `vtbl_count=168`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Continue game-logic-first from `TMapMaker` + civilian map-action flow using caller/callee mining around newly typed neighbor/overlay helpers.
+- [ ] Triage `FUN_00612a78`/`FUN_0063de95` thunk chain separately (calling-convention oddities and handle-map behavior) before renaming.
+- [ ] Keep class extraction opportunistic; prioritize semantic function naming/signatures in non-UI gameplay paths.
+
+## New Approach Ideas (2026-02-21)
+
+Proposed new directions (not heavily used yet):
+- Runtime call tracing outside Ghidra (`BitBlt`/resource loaders/cursor setters) to get ground-truth usage addresses.
+- Event-packet schema extraction (auto infer stream read/write order -> struct/enum candidates).
+- Constant-to-domain dehardcoding pipeline: scan immediate constants, map IDs to known resource semantics, and generate rename/comment candidates.
+
+Chosen to execute now:
+- Implement and run **constant-to-domain dehardcoding pipeline** first (approach #3).
+
+Execution plan for #3:
+- Build reusable script to mine push-immediates in functions.
+- Map matched IDs to known domains (trade bitmaps, slider bitmaps, cursor IDs, etc.).
+- Emit ranked candidate CSV for low-hanging dehardcoding comments/renames.
+- Apply only high-confidence comments/renames in small batches.
+
+### Approach #3 execution update (Neo4j-seeded constants)
+- Queried Neo4j ID mappings and exported:
+  - `tmp_decomp/domain_constants_neo4j_seed.json`
+  - `tmp_decomp/domain_constants_neo4j_bitmap_only.json` (IDs >= 1000 to avoid low-ID collisions)
+- Generated ranked candidates:
+  - `tmp_decomp/constant_domain_candidates_batch1.csv`
+  - `tmp_decomp/constant_domain_candidates_batch1_bitmap_only.csv`
+- Verified and kept high-confidence `[ConstDomain]` comments on key functions (trade/civilian/university and related state setters), including:
+  - `InitializeTradeScreenBitmapControls`
+  - `BuildTradeBoardDialogUiLayoutVariantA`
+  - `BuildTradeBoardDialogUiLayoutVariantB`
+  - `SetTradeBidControlBitmapState`
+  - `SetTradeOfferControlBitmapState`
+  - `SetTradeBidSecondaryBitmapState`
+  - `SetTradeOfferSecondaryBitmapState`
+
+### Gameplay pass: map tile adjacency/variant dehardcoding
+- Applied rename batch:
+  - `tmp_decomp/gameplay_batch38_tile_variant_renames.csv`
+  - command: `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/gameplay_batch38_tile_variant_renames.csv`
+  - result: `[done] rows=2 ok=2 fail=0`
+- Applied signature batch:
+  - `tmp_decomp/signature_batch38_tile_variant.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch38_tile_variant.csv --apply`
+  - result: `[done] ok=2 fail=0`
+
+Updated:
+- `0x00510210`
+  - `FUN_00510210` -> `UpdateMapTileAdjacencyMasksAndVariantForTile`
+  - `int __thiscall (...)(void * this, int tileIndex)`
+  - Evidence: recomputes per-tile adjacency masks (`+0x0A/+0x0B`) and variant/state bytes based on 6-neighbor scan and RNG.
+- `0x005108d0`
+  - `FUN_005108d0` -> `ResolveMapTileVariantSpriteFromAdjacencyState`
+  - `int __thiscall (...)(void * this, int tileIndex)`
+  - Evidence: maps terrain/adjacency state bytes to concrete sprite-frame IDs (switch bands including 0x0B..0x3A range).
+
+Additional low-risk map helper rename:
+- `0x00508f30`
+  - `FUN_00508f30` -> `BuildHexNeighborHighlightPolygonForTile`
+  - thunk at `0x00406c62` auto-aligned to same name
+  - Evidence: computes wrapped isometric offset from neighbor index and emits compact point ranges into a highlight draw helper.
+- `0x00503ac0`
+  - `FUN_00503ac0` -> `EnsureMapActionContextViewAndBuildDefaultTileMenu`
+  - thunk at `0x004055ce` auto-aligned to same name
+  - Evidence: lazily allocates/initializes map-action context view object, then dispatches `BuildMapTileActionContextMenu` with bootstrap tile constant.
+
+### TODO (next pass)
+- [ ] Continue map-logic-first around `FUN_00508f30`, `FUN_004c1ac0`, `FUN_0051e260` with behavior-comments first, then rename only if role stabilizes.
+- [ ] Mine callers/callees around newly named `UpdateMapTileAdjacencyMasksAndVariantForTile` / `ResolveMapTileVariantSpriteFromAdjacencyState` for additional low-risk map-action renames.
+- [ ] Keep class extraction opportunistic; prioritize semantic function naming/signatures in non-UI gameplay paths.
+
+### Domain-knowledge driven pass (manual + Neo4j + tables)
+- Queried Neo4j for gameplay domain anchors:
+  - `Unit -> BUILDS_IMPROVEMENT -> TileImprovement` confirms:
+    - Engineer: Rail Line / Rail Depot / Port / Fortification
+    - Prospector: site discovery for Mine / Oil Derrick
+    - Miner/Farmer/Forester/Rancher/Driller mappings
+  - Existing high-confidence function links include `QueueRailConstructionOrder` and `QueuePortConstructionOrder`.
+- Queried `manual_text.txt` and confirmed strong map-action rules for:
+  - prospectable terrain behavior,
+  - rail build adjacency and terrain restrictions,
+  - improvement output/transport constraints.
+- Inspected `Data/extracted_tables/tabsenu`:
+  - scenario/table files (`TABLE_S10..S15`, `.INF/.MAP/.SCN`) provide machine-readable tech/scenario anchors.
+  - These can be used to backfill missing technology IDs (currently many `Technology.tech_id` are null in Neo4j).
+
+### Gameplay signature cleanup (map improvement helpers)
+- Applied:
+  - `tmp_decomp/signature_batch41_map_improvement_helpers.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch41_map_improvement_helpers.csv --apply`
+  - result: `[done] ok=4 fail=0`
+
+Updated:
+- `0x005176e0` `GetMapImprovementTierBucketOffset`
+  - `short __cdecl (...)(short improvementTier)`
+- `0x00517780` `GetMapImprovementSpriteBaseOffset`
+  - `int __cdecl (...)(short improvementClass, byte useExtendedPalette, byte forceAlternateSet)`
+- `0x005177d0` `GetMapImprovementTileOffsetFromClass`
+  - `int __cdecl (...)(byte improvementClass)`
+- `0x005177f0` `GetMapImprovementTileSpriteOffset`
+  - `int __thiscall (...)(void * this, int tileIndex)`
+
+Additional map-action context signature cleanup:
+- Applied:
+  - `tmp_decomp/signature_batch42_map_action_context_menu.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch42_map_action_context_menu.csv --apply`
+  - result: `[done] ok=1 fail=0`
+- Updated:
+  - `0x00503ac0` `EnsureMapActionContextViewAndBuildDefaultTileMenu`
+    - `void __fastcall (...)(void * pMapActionContext)`
+  - thunk `0x004055ce` auto-aligned with same signature.
+
+### TODO (next pass)
+- [ ] Parse `tabsenu.gob_TABLE_S*` text tables to extract stable technology/scenario numeric IDs and map them into Neo4j (`Technology.tech_id`) where missing.
+- [ ] Use extracted tech IDs to seed a tech-gate constant map and annotate/rename prerequisite-check functions in civilian improvement paths.
+- [ ] Continue low-risk map logic around `FUN_004c1ac0` and `FUN_0051e260` via behavior comments before naming.
+
+### New reusable table parser (domain knowledge extraction)
+- Added:
+  - `new_scripts/extract_tabsenu_command_summary.py`
+- Purpose:
+  - Parse `Data/extracted_tables/tabsenu/tabsenu.gob_TABLE_S*` command scripts and emit structured CSV anchors.
+- Generated:
+  - `tmp_decomp/tabsenu_scenario_command_counts.csv` (rows=98)
+  - `tmp_decomp/tabsenu_tech_entries.csv` (rows=210)
+  - `tmp_decomp/tabsenu_map_action_entries.csv` (rows=251)
+
+Key findings:
+- Scenario command grammar gives stable data-driven anchors:
+  - `tech`, `civi`, `rail`, `port`, `deve`, `army`, `ship`, `capa`, `labo`, `ware`, `rela`, `zone`, etc.
+- `S10/S9` (tutorial-like) have dense `civi/rail/port` command sequences useful for validating civilian action semantics.
+- `S14/S15` (historical-like) contain rich baseline tables (`pnam/cnam/rela/ware/tran`) and compact `rail/port/deve/civi` placements.
+- `Technology.tech_id` remains mostly null in Neo4j; these extracted `tech <nation> <index>` entries are a direct candidate source for backfilling high-level tech index mappings (after disambiguation).
+
+### Civilian action core pass (enum anchoring + signatures)
+- Reviewed/validated civilian dispatch core in code:
+  - `HandleCivilianTileOrderAction` (`0x004d26d0`)
+  - `ResolveCivilianTileOrderActionCode` (`0x004d2960`)
+  - `LookupCivilianTileOrderCursorTokenByActionIndex` (`0x004d2930`)
+  - `CanAssignCivilianOrderToTile` (`0x004d2f60`)
+  - `QueueCivilianWorkOrderWithCostCheck` (`0x004d3310`)
+  - `HandleEngineerConstructionAction` (`0x004d3a60`)
+  - `HandleCivilianReportDecision` (`0x004d3070`)
+- Confirmed action/cursor lane and class mapping in decomp comments:
+  - class ids: `0 Miner`, `1 Prospector`, `2 Farmer`, `3 Forester`, `4 Engineer`, `5 Rancher`, `7 Developer`, `8 Driller`
+  - tile action codes include select/move, engineer 4..7, prospect 8, productive work 9, report 10, developer purchase 11.
+
+Signature hygiene batch:
+- Applied:
+  - `tmp_decomp/signature_batch43_civilian_action_core.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch43_civilian_action_core.csv --apply`
+  - result: `[done] ok=1 skip=7 fail=0` (most were already aligned)
+
+### Neo4j high-level update (civilian class IDs)
+- Wrote high-level class-id mapping to `Unit` nodes (name-based):
+  - Miner=0, Prospector=1, Farmer=2, Forester=3, Engineer=4, Rancher=5, Developer=7, Driller=8
+- Stored source tag:
+  - `u.civilian_class_source = 'ghidra:ResolveCivilianTileOrderActionCode/HandleCivilianReportDecision'`
+- Updated nodes: `15` (includes duplicate unit namespaces already present in DB).
+
+### Table parser enhancement
+- Updated:
+  - `new_scripts/extract_tabsenu_command_summary.py`
+- New output:
+  - `tmp_decomp/tabsenu_map_action_entries_annotated.csv`
+  - includes `civilian_class_id`, `civilian_class_name`, and mapping source for `civi` command rows.
+
+### TODO (next pass)
+- [ ] Use `tabsenu_tech_entries.csv` + existing `Technology` nodes to derive/attach scenario-tech index mappings in Neo4j (high-level only).
+- [ ] Mine unnamed gameplay functions outside current civilian band using tech-gate/economic literals (focus on order-cost/refund and capability checks).
+- [ ] Keep utility-buffer clusters (e.g., `0x004d4b90..0x004d4ff0`) deprioritized unless needed by a gameplay caller chain.
+
+### Turn-instruction dispatch dehardcoding pass (token table -> handlers)
+- Located and validated dispatch core:
+  - `ProcessTurnInstructionStreamAndFinalizePhase` at `0x00581e60`
+  - 4-byte token string and handler pointer table:
+    - token blob in decomp: `"obalapacerawymraivicpihsnartevedliartrophcetcirpabmesbusaertraeyvorpenozmancalermanphsacgalfreytrabtrlctnuoc"`
+    - dispatch callsite: `(**(code **)(iVar5 * 4 + 0x698b50))();`
+  - Generated explicit mapping CSV:
+    - `tmp_decomp/scenario_dispatch_token_handler_map_batch52.csv`
+    - decoded tokens include: `labo,capa,ware,army,civi,ship,tran,deve,rail,port,tech,pric,emba,subs,trea,year,prov,zone,cnam,rela,pnam,cash,flag,tyer,tbar,tclr,coun`
+
+- Applied token-backed rename batch:
+  - `tmp_decomp/gameplay_batch52_turn_instruction_token_handlers_renames.csv`
+  - command: `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/gameplay_batch52_turn_instruction_token_handlers_renames.csv`
+  - result: `[done] rows=20 ok=20 fail=0`
+
+Renamed (selected):
+- `0x00582ad0` -> `HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations`
+- `0x00582860` -> `HandleTurnInstruction_Tran_SetNationTransportStat`
+- `0x005828f0` -> `HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry`
+- `0x005829b0` -> `HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus`
+- `0x00582a40` -> `HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus`
+- `0x00582bf0` -> `HandleTurnInstruction_Emba_SetEmbassyRelationFlags`
+- `0x00582ce0` -> `HandleTurnInstruction_Subs_ApplyNationSubsidyEntry`
+- `0x00582da0` -> `HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry`
+- `0x00583070` -> `HandleTurnInstruction_Cnam_AssignCountryName`
+- `0x005831d0` -> `HandleTurnInstruction_Rela_SetNationRelationValue`
+- `0x00583270` -> `HandleTurnInstruction_Pnam_AssignProvinceName`
+- `0x00583360` -> `HandleTurnInstruction_Cash_SetNationCash`
+- `0x00583400` -> `HandleTurnInstruction_Flag_SetNationFlagAndRefresh`
+- `0x00583470` -> `HandleTurnInstruction_Tyer_ApplyUnknownRecord`
+- `0x00583510` -> `HandleTurnInstruction_Tbar_ApplyUnknownRecord`
+- `0x00583670` -> `HandleTurnInstruction_Tclr_ResetNationRelationBars`
+- `0x00583700` -> `HandleTurnInstruction_Coun_ApplyCounterEntry`
+
+- Applied signature cleanup for single-stream-argument handlers:
+  - `tmp_decomp/signature_batch52_turn_instruction_handlers.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch52_turn_instruction_handlers.csv --apply`
+  - result: `[done] ok=17 fail=0`
+  - shape used: `void <handler>(int * pStreamCursor)` for token handlers with obvious stream-cursor pattern.
+
+### Neo4j high-level sync (dispatch semantics only)
+- Wrote high-level command-token mapping:
+  - `(:ControlTag {id:'turn_instr_<token>', tag:'<token>'})-[:HANDLED_BY]->(:Function {address, name})`
+  - source marker: `ghidra:ProcessTurnInstructionStreamAndFinalizePhase@0x00581e60`
+  - updated tokens include: `tran,deve,rail,port,tech,pric,emba,subs,trea,year,prov,zone,cnam,rela,pnam,cash,flag,tyer,tbar,tclr,coun`
+
+### TODO (next pass)
+- [ ] Resolve the remaining ambiguous turn-instruction tokens (`tyer`, `tbar`, `coun`) by tracing downstream vtable targets and scenario examples.
+- [ ] Investigate token index `0` (`labo`) dispatch entry at `0x00698b50` (currently reads as non-pointer `0x51`) and determine whether this is a data-typing artifact or special-case handling.
+- [ ] Rename/create missing thunk stubs in the dispatch pointer table (`0x00402306`, `0x0040247d`, `0x00402fc7`, etc.) once validated, to make the dispatch table readable end-to-end.
+
+### Turn-dispatch refinement pass (assembly-backed token semantics)
+- Refined token-handler names with direct assembly evidence:
+  - `0x00583470`
+    - `HandleTurnInstruction_Tyer_ApplyUnknownRecord` -> `HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue`
+    - Key evidence: loads `ECX = g_pCityOrderCapabilityState` and calls setter thunk with `(index,value)` derived from stream record.
+  - `0x00583510`
+    - `HandleTurnInstruction_Tbar_ApplyUnknownRecord` -> `HandleTurnInstruction_Tbar_SetNationRelationBarValue`
+    - Key evidence: per-nation object path (`g_apNationStates[nation]`) with vtable calls at `+0x114` and `+0x134`; updates one relation-bar slot plus special handling for slots `0` and `0x14`.
+  - `0x00583700`
+    - `HandleTurnInstruction_Coun_ApplyCounterEntry` -> `HandleTurnInstruction_Coun_SetCountrySlotState`
+    - Key evidence: writes per-slot state byte at `this + 0x6e + slot`, and when state==2 updates `this+0x6c` to `slot*10 + 0x717`.
+
+- Refined helper setter used by `tyer`:
+  - `0x005b0c70`
+    - `FUN_005b0c70` -> `SetCityOrderCapabilityTierScaledValueByIndex`
+    - Semantics: `*(short *)(this + 4 + slotIndex*2) = rawValue * 4`
+  - `0x00404f7f`
+    - `thunk_FUN_005b0c70` -> `thunk_SetCityOrderCapabilityTierScaledValueByIndex`
+
+- Signature cleanup pass (dispatch-family calling convention normalization):
+  - Applied `tmp_decomp/signature_batch53_turn_dispatch_thiscall.csv`
+  - command: `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch53_turn_dispatch_thiscall.csv --apply`
+  - result: `[done] ok=22 skip=1 fail=0`
+  - normalized dispatch handlers to:
+    - `void __thiscall Handler(void * this, int * pStreamCursor)`
+  - includes `DeserializeAndAssignMapActionContextNameByNodeId` and all token handlers in `0x00582860..0x00583700`.
+
+- Verification artifacts:
+  - `tmp_decomp/batch53_fun_005b0c70_context.txt`
+  - `tmp_decomp/batch53_postsig_context.txt`
+
+### Additional observations
+- `tabsenu` text tables confirm command presence patterns:
+  - `tyer` appears in scenario text tables (`S9/S10/S13/S14/S15`) with two-integer payloads.
+  - `labo` appears consistently (7 entries, one per nation in sampled scenarios).
+  - `tbar/tclr/coun` do not appear in extracted scenario text files, implying they may be used in other turn/event streams.
+
+### TODO (next pass)
+- [ ] Resolve dispatch entry `labo` (`index 0`) at table base `0x00698b50`; current listing shows `0x51` at base then pointers from `+4`, which needs explicit explanation (special-case or representation artifact).
+- [ ] Trace `HandleTurnInstruction_Coun_SetCountrySlotState` field usage (`this+0x6c`, `this+0x6e+slot`) to rename storage semantics more concretely.
+- [ ] Rename and/or create labels for dispatch table stubs (`0x00402306`, `0x0040247d`, `0x00402fc7`, etc.) so token->stub->handler path is readable in listing.
+
+### Dispatch stub extraction + naming pass
+- Promoted missing dispatch stubs from the token table into real functions using direct pyghidra (`CreateFunctionCmd`):
+  - created: `23` functions (all dispatch table entries except token0 `labo` which points to `0x51`).
+- Normalized stub names to explicit thunk form:
+  - generated/used:
+    - `tmp_decomp/scenario_dispatch_token_handler_map_batch53.csv` (refreshed with current names)
+    - `tmp_decomp/gameplay_batch53_dispatch_stub_cleanup_renames.csv`
+  - examples:
+    - `0x004058ad` -> `thunk_HandleTurnInstruction_Tran_SetNationTransportStat`
+    - `0x00406e4c` -> `thunk_HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations`
+    - `0x00405326` -> `thunk_HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue`
+    - `0x0040498f` -> `thunk_HandleTurnInstruction_Tbar_SetNationRelationBarValue`
+    - `0x004075c7` -> `thunk_HandleTurnInstruction_Coun_SetCountrySlotState`
+    - `0x004092be` -> `thunk_HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4`
+
+- Added comments on stubs:
+  - `Dispatch thunk for turn-instruction token '<token>'`.
+
+### Dispatch data labels added
+- Added global labels for readability of token/handler data:
+  - `0x00662978` -> `g_szTurnInstructionTokenKeysRaw4Char`
+  - `0x00698b50` -> `g_aTurnInstructionDispatchEntries`
+  - `0x00698b54` -> `g_apfnTurnInstructionHandlersByTokenIndex`
+
+### Current dispatch status (important)
+- `token0` (`labo`) still resolves to non-pointer value `0x51` at `0x00698b50`.
+- `token1..token26` dispatch cleanly via `stub -> handler` and are now named coherently.
+
+### TODO (next pass)
+- [ ] Investigate why `labo` entry is `0x51` (runtime patch/sentinel/special-case path) and whether this stream intentionally excludes `labo`.
+- [ ] Trace `HandleTurnInstruction_Coun_SetCountrySlotState` storage fields to replace generic “country slot state” wording with concrete gameplay semantics.
+- [ ] Consider extracting a reusable script for `dispatch-table -> create thunks -> rename/comments` to accelerate future table-driven command maps.
+
+### Turn-dispatch batch55 (raw EXE grounded + labo/zone completion)
+- Ground-truth check against the real game binary:
+  - Used raw EXE at:
+    - `/home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG Games/Imperialism/Imperialism.exe`
+  - Confirmed `0x00698b50` (`.data`) is a static pointer table in raw bytes (not `0x51`):
+    - index `0` = `0x00405f51`
+    - index `1..26` = known dispatch stubs.
+  - This explains the previous Ghidra-project anomaly where memory reads looked zeroed/ambiguous for the table block.
+
+- `labo` token path resolved and renamed:
+  - `0x00405f51` (created/functionized) -> `thunk_HandleTurnInstruction_Labo_SetNationLaborTierCounts`
+  - `0x00582120` -> `HandleTurnInstruction_Labo_SetNationLaborTierCounts`
+  - Signature applied:
+    - `void __thiscall HandleTurnInstruction_Labo_SetNationLaborTierCounts(void *this, int *pStreamCursor)`
+    - `void __thiscall thunk_HandleTurnInstruction_Labo_SetNationLaborTierCounts(void *this, int *pStreamCursor)`
+  - Notes:
+    - Handler reads 4 stream dwords (`nation/index + three payload values`), consistent with scenario lines shaped as `labo <nation> <x> <y> <z>`.
+    - Updates nation-linked manager path (`nation+0x894` -> vfunc `(+0x1d8)->(+0x2c)`), then triggers nation refresh callbacks (`+0x134`, optional `+0x98->+0x50`).
+
+- `zone` token naming normalized to dispatch convention:
+  - `0x00582fa0`
+    - `DeserializeAndAssignMapActionContextNameByNodeId` -> `HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId`
+  - `0x00403b48`
+    - `thunk_DeserializeAndAssignMapActionContextNameByNodeId` -> `thunk_HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId`
+
+- Regenerated mapping artifact with corrected token0:
+  - `tmp_decomp/scenario_dispatch_token_handler_map_batch55.csv`
+  - Now shows full token0..26 mapping:
+    - `labo,capa,ware,army,civi,ship,tran,deve,rail,port,tech,pric,emba,subs,trea,year,prov,zone,cnam,rela,pnam,cash,flag,tyer,tbar,tclr,coun`
+
+### TODO (next pass)
+- [ ] Decode `HandleTurnInstruction_Labo_SetNationLaborTierCounts` payload semantics (what the 3 values represent) by identifying the `nation+0x894` manager class and its vfunc at offset chain `(+0x1d8)->(+0x2c)`.
+- [ ] Continue high-confidence renames in this cluster by following direct callers/callees of `labo/capa/ware` handlers and shared helper objects (game-logic only).
+- [ ] If needed, extract a reusable helper script that merges raw-EXE dispatch-table bytes with live Ghidra function names, to avoid future table-base ambiguity.
+
+### angr-assisted pass (batch56): tactical tile scoring dispatch dehardcoding
+- Added reusable angr helper:
+  - `new_scripts/angr_scan_codeptr_tables.py`
+  - Purpose: scan raw PE `.data/.rdata` for contiguous code-pointer tables (dispatch candidates).
+  - Example run:
+    - `.venv/bin/python new_scripts/angr_scan_codeptr_tables.py /home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG Games/Imperialism/Imperialism.exe tmp_decomp/angr_codeptr_tables_batch56.csv 8`
+
+- High-value game-logic candidate from angr scan:
+  - table: `0x006994c0` (`.data`, len=15), referenced by `SelectBestTacticalTileByWeightedHeuristics` (`0x0059d530`).
+  - Raw EXE entries resolve to thunk island addresses:
+    - `0x00404133, 0x00404caf, 0x004020e0, 0x00404ff7, 0x00402685, 0x00405d21, 0x00403846, 0x00401ec4, 0x00401d66, 0x00405911, 0x0040122b, 0x004073f1, 0x004047dc, 0x00407b53, 0x00406370`
+  - Each thunk jumps into contiguous evaluator cluster:
+    - `0x0059d6b0 .. 0x0059e0d0`
+
+- Ghidra changes applied from this angr discovery:
+  - Labeled table:
+    - `0x006994c0` -> `g_apfnTacticalTileScoreTermEvaluators`
+  - Functionized previously missing thunk entries (15 functions created).
+  - Renamed stubs:
+    - `thunk_EvaluateTacticalTileScoreTerm00` .. `thunk_EvaluateTacticalTileScoreTerm14`
+  - Renamed targets:
+    - `EvaluateTacticalTileScoreTerm00` .. `EvaluateTacticalTileScoreTerm14`
+  - Updated `SelectBestTacticalTileByWeightedHeuristics` comment to describe weighted-term summation through dispatch table.
+
+- Signature pass for readability:
+  - `SelectBestTacticalTileByWeightedHeuristics`:
+    - `int __thiscall SelectBestTacticalTileByWeightedHeuristics(void *this, int tacticalContext, int *pScoreWeights)`
+  - Evaluator callbacks and thunks:
+    - `int __cdecl EvaluateTacticalTileScoreTermXX(int tacticalContext, int tileIndex)`
+    - `int __cdecl thunk_EvaluateTacticalTileScoreTermXX(int tacticalContext, int tileIndex)`
+
+- Low-hanging semantics now visible in decomp:
+  - term00: 100 if tile equals current/reference tile, else 0.
+  - term05/term14: row/column positional bias terms.
+  - term08: inverse distance-field style term (`100 - distance`).
+  - terms01/04/09/11/12/13: enemy reachability/target proximity and unit-type filtered tactical pressure terms.
+
+### TODO (next pass)
+- [ ] Replace index-only `EvaluateTacticalTileScoreTermXX` names with behavior names for the high-confidence subset (00/05/08/14 first).
+- [ ] Trace weight-source array (`pScoreWeights`) construction sites to map which tactical AI mode enables each term.
+- [ ] Use angr table scan output (`tmp_decomp/angr_codeptr_tables_batch56.csv`) to pick the next non-vtable `.data` dispatch table and repeat functionize+rename.
+
+### Tactical scoring refinement (batch57): semantic terms + weight-source tracing
+- Replaced index-only names for high-confidence evaluator terms:
+  - `0x0059d6b0` -> `EvaluateTacticalTileScore_CurrentTileMatchBonus`
+  - `0x0059da20` -> `EvaluateTacticalTileScore_ForwardRowProgressBias`
+  - `0x0059dba0` -> `EvaluateTacticalTileScore_InverseDistanceField`
+  - `0x0059e0d0` -> `EvaluateTacticalTileScore_InsideBattlefrontWidth`
+  - Thunks renamed accordingly:
+    - `0x00404133`, `0x00405d21`, `0x00401d66`, `0x00406370`
+
+- Traced scorer caller and weight-table sources:
+  - `SelectBestTacticalTileByWeightedHeuristics` (`0x0059d530`) is called via thunk `0x004033e6`.
+  - Direct caller: `RunTacticalAutoTurnControllerForActiveUnit` (`0x0059e4f0`) at:
+    - primary callsite `0x0059e5b7`
+    - secondary callsite `0x0059e78c`
+  - Weight pointer assembly in caller:
+    - `0x0059e5ac`: `&0x699500[actionType*15]`
+    - `0x0059e783`: `&0x69953c[actionType*15]`
+  - Preset pointer branches:
+    - `0x6997d0`, `0x69980c`, `0x699938`
+
+- Added Ghidra labels for tactical weight tables:
+  - `0x00699500` -> `g_aiTacticalTileScoreWeightsPrimaryByActionType`
+  - `0x0069953c` -> `g_aiTacticalTileScoreWeightsSecondaryByActionType`
+  - `0x006997d0` -> `g_aiTacticalTileScoreWeightsPresetA`
+  - `0x0069980c` -> `g_aiTacticalTileScoreWeightsPresetB`
+  - `0x00699938` -> `g_aiTacticalTileScoreWeightsPresetC`
+
+- Added disassembly comments at key callsites/branches:
+  - `0x0059e5ac`, `0x0059e5b7`, `0x0059e783`, `0x0059e78c`, `0x0059e54a`, `0x0059e56c`, `0x0059e59f`
+- Updated plate comment for `RunTacticalAutoTurnControllerForActiveUnit` to document the two-pass weighted tile scoring behavior.
+
+- Raw table quick facts (from EXE bytes):
+  - primary row at `0x699500`: `[1,0,100,0,0,0,0,0,0,0,0,0,0,0,0]`
+  - secondary row at `0x69953c`: `[0,1,0,0,0,0,0,0,0,10,0,0,0,0,0]`
+  - presets:
+    - `0x6997d0`: `[0,0,0,0,-1,0,0,0,100,0,0,0,0,0,0]`
+    - `0x69980c`: `[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0]`
+    - `0x699938`: `[0,1,0,0,-100,0,0,0,0,0,0,0,0,0,0]`
+
+### TODO (next pass)
+- [ ] Map `actionType` (`ESI+0x2c` in `RunTacticalAutoTurnControllerForActiveUnit`) to a concrete enum/domain and rename table labels from generic `ByActionType` if warranted.
+- [ ] Semantically rename next evaluator tranche (`term01/04/09/11/12/13`) now that their role is clear (enemy reachability/proximity pressure).
+- [ ] Promote `0x004033e6` from generic thunk naming to explicit scorer wrapper naming tied to tactical auto-turn usage.
+
+### Tactical mode-id refinement (batch58)
+- Confirmed `RunTacticalAutoTurnControllerForActiveUnit` uses `tacticalContext+0x2c` as a score-profile selector (mode id):
+  - primary profile pointer build:
+    - `0x0059e5ac` -> `&g_aiTacticalTileScoreWeightsPrimaryByModeId[modeId*15]`
+  - secondary profile pointer build:
+    - `0x0059e783` -> `&g_aiTacticalTileScoreWeightsSecondaryByModeId[modeId*15]`
+  - secondary-pass mode filter:
+    - mode ids `{2, 5, 14}` (`0x0059e769` branch).
+
+- Renamed tactical score-weight tables to mode-neutral naming:
+  - `0x00699500`
+    - `g_aiTacticalTileScoreWeightsPrimaryByActionType` -> `g_aiTacticalTileScoreWeightsPrimaryByModeId`
+  - `0x0069953c`
+    - `g_aiTacticalTileScoreWeightsSecondaryByActionType` -> `g_aiTacticalTileScoreWeightsSecondaryByModeId`
+
+- Updated function signature/comment:
+  - `RunTacticalAutoTurnControllerForActiveUnit` (`0x0059e4f0`)
+    - signature -> `void __thiscall RunTacticalAutoTurnControllerForActiveUnit(void *this)`
+    - plate comment now documents:
+      - modeId-based profile selection,
+      - primary + optional secondary scoring pass,
+      - mode filter `{2,5,14}` for second pass.
+
+- Added focused EOL comments at key instructions:
+  - `0x0059e573` (read modeId),
+  - `0x0059e5ac` (primary profile pointer),
+  - `0x0059e769` (secondary mode filter),
+  - `0x0059e783` (secondary profile pointer).
+
+### TODO (next pass)
+- [ ] Decode concrete semantics for mode ids `2`, `5`, and `14` in tactical auto-turn scoring (likely from additional target-selection/attack routines).
+- [ ] Rename remaining tactical score terms (`01/04/09/11/12/13`) using behavior names, now that mode/profile flow is mapped.
+- [ ] Optionally rename `thunk_SelectBestTacticalTileByWeightedHeuristics` to profile-centric naming once mode-id enum is better understood.
+
+### Tactical scoring refinement (batch58 continuation): remaining terms + distance helper
+- Renamed remaining evaluator terms and thunks with behavior-focused names:
+  - `0x0059d6e0` -> `EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity`
+    - `0x00404caf` -> `thunk_EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity`
+  - `0x0059d940` -> `EvaluateTacticalTileScore_ReachableCursorEntryCount`
+    - `0x00402685` -> `thunk_EvaluateTacticalTileScore_ReachableCursorEntryCount`
+  - `0x0059dbe0` -> `EvaluateTacticalTileScore_Type2StandOffDistance`
+    - `0x00405911` -> `thunk_EvaluateTacticalTileScore_Type2StandOffDistance`
+  - `0x0059dd40` -> `EvaluateTacticalTileScore_ReachableType2CursorEntryCount`
+    - `0x004073f1` -> `thunk_EvaluateTacticalTileScore_ReachableType2CursorEntryCount`
+  - `0x0059de30` -> `EvaluateTacticalTileScore_ClosestReachableEnemyDistance`
+    - `0x004047dc` -> `thunk_EvaluateTacticalTileScore_ClosestReachableEnemyDistance`
+  - `0x0059dfe0` -> `EvaluateTacticalTileScore_AnyReachableType2EnemyBonus`
+    - `0x00407b53` -> `thunk_EvaluateTacticalTileScore_AnyReachableType2EnemyBonus`
+
+- Renamed/typed shared distance helper used by several terms:
+  - `0x005a39a0`
+    - `FUN_005a39a0` -> `ComputeHexTileDistanceFromIndices`
+    - signature: `int __cdecl ComputeHexTileDistanceFromIndices(int fromTileIndex, int toTileIndex)`
+  - `0x004074dc`
+    - `thunk_FUN_005a39a0` -> `thunk_ComputeHexTileDistanceFromIndices`
+    - signature aligned to helper.
+
+- Promoted scorer entrypoint naming to profile-centric wording:
+  - `0x0059d530`
+    - `SelectBestTacticalTileByWeightedHeuristics` -> `SelectBestTacticalTileByScoreProfile`
+  - `0x004033e6`
+    - `thunk_SelectBestTacticalTileByWeightedHeuristics` -> `thunk_SelectBestTacticalTileByScoreProfile`
+  - Updated `RunTacticalAutoTurnControllerForActiveUnit` plate comment to reference new scorer name.
+
+### TODO (next pass)
+- [ ] Decode `DAT_006693b8 == 2` domain meaning (currently named `Type2`) to replace category-placeholder naming in terms 09/11/13.
+- [ ] Decode modeId enum at `tacticalContext+0x2c`, especially values `2`, `5`, `14`, to rename profile tables from `ByModeId` to concrete tactical-mode naming.
+- [ ] Consider renaming linked-list cursor helpers (`InitializeLinkedListCursorFromOwnerHead`, `AdvanceLinkedListCursor`) to tactical-battle specific list semantics if confirmed.
+
+### Tactical scoring cleanup + thunk-island game-logic pass (batch59)
+- Completed tactical term semantic naming (no `EvaluateTacticalTileScoreTerm*` names remain):
+  - `0x0059d810` -> `EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias`
+    - `0x004020e0` -> `thunk_EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias`
+  - `0x0059db00` -> `EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus`
+    - `0x00401ec4` -> `thunk_EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus`
+  - `0x0059dcd0` -> `EvaluateTacticalTileScore_RightwardOpenColumnBias`
+    - `0x0040122b` -> `thunk_EvaluateTacticalTileScore_RightwardOpenColumnBias`
+  - `0x0059d8a0` -> `EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus`
+    - `0x00404ff7` -> `thunk_EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus`
+  - `0x0059dac0` -> `EvaluateTacticalTileScore_TileType1Or2Bonus`
+    - `0x00403846` -> `thunk_EvaluateTacticalTileScore_TileType1Or2Bonus`
+
+- Added reusable script for low-hanging thunk island recovery:
+  - `new_scripts/generate_missing_jmp_thunk_candidates.py`
+  - Purpose: emit CSV of single-JMP thunk candidates with target-name filtering and source-function presence marker.
+
+- Applied first game-logic missing-thunk batch from thunk islands:
+  - generator output: `tmp_decomp/batch59_missing_jmp_thunks_gameplay.csv` (`rows=938`, `missing_fn=259`)
+  - filtered batch: `tmp_decomp/batch59_missing_gamelogic_thunks_top40.csv`
+  - apply result (`--create-missing`): `[done] rows=40 ok=40 skip=0 fail=0 created=40`
+  - These are direct JMP aliases into already-named tactical/map/civilian/navy/turn handlers (safe dehardcoding without new semantic guesses).
+
+- Signature hygiene:
+  - Ran `propagate_simple_thunk_signatures_from_callee.py --apply`; one pending thunk signature was propagated earlier in batch59 (`ok=1`).
+
+- Progress snapshot after batch59:
+  - `total_functions=10618`
+  - `renamed_functions=6447`
+  - `default_fun_or_thunk_fun=4171`
+
+### TODO (next pass)
+- [ ] Decode and rename `FUN_0059f160` (tactical movement/selection helper using `ComputeHexTileDistanceFromIndices`) once stronger call-context evidence is collected.
+- [ ] Decode and rename `FUN_004a3200` (tactical-battle setup gate that conditionally calls `CreateTacticalBattleViewAndInitializeBattleSetup`).
+- [ ] Run batch60 thunk-island recovery on the next filtered 40-60 game-logic entries from `batch59_missing_jmp_thunks_gameplay.csv`.
+- [ ] Continue mode-id/type-domain dehardcoding in tactical scorer (`modeId {2,5,14}` and `Type2` placeholder domain).
+
+### Tactical game-logic continuation (batch59b): battle setup + unit drive routine
+- Renamed tactical battle setup gate and materialized its thunk alias:
+  - `0x004a3200`
+    - `FUN_004a3200` -> `TryCreateTacticalBattleViewForTileArmies`
+    - behavior: builds attacker/defender tile army stacks and conditionally calls `CreateTacticalBattleViewAndInitializeBattleSetup`.
+  - `0x00406212`
+    - created + renamed -> `thunk_TryCreateTacticalBattleViewForTileArmies`
+
+- Renamed tactical unit movement/attack driver and materialized thunk alias:
+  - `0x0059f160`
+    - `FUN_0059f160` -> `DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange`
+    - behavior: nearest-target selection by hex distance, move toward closer reachable tile, trigger attack path when in range.
+  - `0x00401ce9`
+    - created + renamed -> `thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange`
+
+- Apply results:
+  - `tmp_decomp/gameplay_batch59_tactical_battle_setup_gate_rename.csv`: `rows=2 ok=2 created=1`
+  - `tmp_decomp/gameplay_batch59_tactical_unit_drive_and_attack_rename.csv`: `rows=2 ok=2 created=1`
+
+- Updated progress snapshot:
+  - `total_functions=10620`
+  - `renamed_functions=6451`
+  - `default_fun_or_thunk_fun=4169`
+
+### TODO (next pass)
+- [ ] Run batch60 thunk-island recovery on the next filtered 40-60 game-logic entries from `batch59_missing_jmp_thunks_gameplay.csv`.
+- [ ] Decode mode-id/type-domain dehardcoding in tactical scorer (`modeId {2,5,14}` and `Type2` placeholder domain).
+- [ ] Add high-confidence signatures for newly named tactical routines where callconv/param roles are stable from callers (start with `TryCreateTacticalBattleViewForTileArmies`).
+
+### Thunk-island continuation (batch60): next game-logic slice
+- Generated next filtered thunk-island batch from remaining missing entries:
+  - source pool: `tmp_decomp/batch59_missing_jmp_thunks_gameplay.csv`
+  - next slice: `tmp_decomp/batch60_missing_gamelogic_thunks_next50.csv`
+  - selection rule: `has_function_at_source=0` and gameplay-focused name regex (`Tactical|Battle|MapOrder|MapAction|Civilian|Army|Navy|TurnEvent`).
+
+- Applied batch60 with create-missing enabled:
+  - command target: `tmp_decomp/batch60_missing_gamelogic_thunks_next50.csv`
+  - result: `[done] rows=50 ok=50 skip=0 fail=0 created=50`
+
+- Net effect:
+  - 50 additional thunk-island JMP aliases are now functionized and named in Ghidra.
+  - This slice is dominated by tactical/army/navy/turn-event class getter/destructor aliases and order/serialization wrappers.
+
+- Updated progress snapshot after batch60:
+  - `total_functions=10670`
+  - `renamed_functions=6501`
+  - `default_fun_or_thunk_fun=4169`
+
+### TODO (next pass)
+- [ ] Continue thunk-island recovery with the next filtered slice (remaining pool after batch60: 23 rows from current gameplay regex set).
+- [ ] Decode tactical scorer mode/domain semantics (`modeId {2,5,14}` and `Type2` placeholder) and rename remaining placeholder domain names.
+- [ ] Apply high-confidence signatures to newly named tactical setup/movement routines where caller-side parameter roles are clear.
+
+### Thunk-island continuation (batch61): gameplay-filter pool fully exhausted
+- Built and applied the remaining gameplay-filtered missing-thunk slice:
+  - generated: `tmp_decomp/batch61_missing_gamelogic_thunks_remaining.csv`
+  - rows: `23`
+  - apply result: `[done] rows=23 ok=23 skip=0 fail=0 created=23`
+
+- Notable newly materialized aliases include:
+  - `thunk_RunTacticalAutoTurnControllerForActiveUnit` (`0x004087c4`)
+  - `thunk_ProcessMapOrderEntryContextMode` (`0x00408981`)
+  - `thunk_ResolveNavyOrderChainsForTurnPhase` (`0x00408bbb`)
+  - multiple army/navy/tactical class getter/destructor aliases.
+
+- Progress snapshot after batch61:
+  - `total_functions=10693`
+  - `renamed_functions=6524`
+  - `default_fun_or_thunk_fun=4169`
+
+### TODO (next pass)
+- [ ] Start next low-hanging source from non-thunk unresolved game-logic functions (focus: tactical modeId domain and map-order flow state transitions).
+- [ ] Add high-confidence signatures to key newly named tactical functions (`TryCreateTacticalBattleViewForTileArmies`, `DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange`).
+- [ ] Optionally run a broader second-pass thunk-island sweep with a widened regex (outside current gameplay filter) if we want quantity over depth.
+
+### Class extraction step (batch62): `TArmyTacUnit` vtable slot materialization
+- Confirmed class family anchor:
+  - `GetTArmyTacUnitClassNamePointer` -> `g_pClassDescTArmyTacUnit` (`0x00669e60`), type-name label at `0x00699dcc`.
+  - vtable-family block around `0x00669620` includes tactical auto-turn slot at `0x00669640`.
+
+- Materialized and renamed slot method targets + thunk aliases for slots 00..08:
+  - targets:
+    - `0x0059adb0` -> `TArmyTacUnit_VtblSlot00`
+    - `0x0059b3e0` -> `TArmyTacUnit_VtblSlot01`
+    - `0x0059b4f0` -> `TArmyTacUnit_VtblSlot02`
+    - `0x0059b540` -> `TArmyTacUnit_VtblSlot03`
+    - `0x0059adf0` -> `TArmyTacUnit_VtblSlot04`
+    - `0x0059eb40` -> `TArmyTacUnit_VtblSlot05`
+    - `0x0059bc80` -> `TArmyTacUnit_VtblSlot06`
+    - `0x0059c3c0` -> `TArmyTacUnit_VtblSlot07`
+    - `0x0059ea60` -> `TArmyTacUnit_VtblSlot08`
+  - thunks:
+    - `0x004087b5` -> `thunk_TArmyTacUnit_VtblSlot00`
+    - `0x00404bf6` -> `thunk_TArmyTacUnit_VtblSlot01`
+    - `0x00404408` -> `thunk_TArmyTacUnit_VtblSlot02`
+    - `0x0040258b` -> `thunk_TArmyTacUnit_VtblSlot03`
+    - `0x00403b84` -> `thunk_TArmyTacUnit_VtblSlot04`
+    - `0x00402a13` -> `thunk_TArmyTacUnit_VtblSlot05`
+    - `0x004056eb` -> `thunk_TArmyTacUnit_VtblSlot06`
+    - `0x004034d6` -> `thunk_TArmyTacUnit_VtblSlot07`
+    - `0x00402be4` -> `thunk_TArmyTacUnit_VtblSlot08`
+
+- Batch apply result:
+  - `tmp_decomp/gameplay_batch62_tarmytacunit_vtbl_slot_renames.csv`
+  - `[done] rows=18 ok=18 skip=0 fail=0 created=10`
+
+- Added data labels for class vtable root/slots:
+  - `0x00669620` -> `g_vtblTArmyTacUnit`
+  - `0x00669620..0x00669640` -> `g_vtblTArmyTacUnit_Slot00..Slot08`
+
+- Progress snapshot after batch62:
+  - `total_functions=10703`
+  - `renamed_functions=6542`
+  - `default_fun_or_thunk_fun=4161`
+  - `vtbl_count=178`
+
+### TODO (next pass)
+- [ ] Decompile and semantically rename `TArmyTacUnit_VtblSlot00..08` methods (start with slot08 = `RunTacticalAutoTurnControllerForActiveUnit` path).
+- [ ] Identify concrete meaning of tactical context mode field (`+0x2c`) by tracing writes in renamed vtable slot methods.
+- [ ] Apply signatures to `TryCreateTacticalBattleViewForTileArmies` and `DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange` once caller role mapping is confirmed.
+
+### State-machine campaign (bigger strategy pass): steps 1->4 completed
+
+#### 1) Campaign workspace created
+- Created reproducible campaign scaffold:
+  - `tmp_decomp/campaign_state_machine/README.md`
+  - `tmp_decomp/campaign_state_machine/TODO.md`
+  - subdirs: `inputs/`, `outputs/`, `neo4j/`, `ghidra/`
+- TODO checklist marked complete for requested steps 1..4.
+
+#### 2) angr + pyghidra transition-candidate extraction
+- Ran angr code-pointer table discovery on game binary:
+  - input exe: `/home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG Games/Imperialism/Imperialism.exe`
+  - output: `tmp_decomp/campaign_state_machine/inputs/angr_codeptr_tables_all.csv`
+  - result: `rows=593` (min run=6).
+
+- Added reusable enrichment script:
+  - `new_scripts/build_transition_candidates_from_tables.py`
+  - purpose: resolve angr table rows through Ghidra (table xrefs + source funcs + target handlers) and emit state-machine transition candidates.
+
+- Built transition candidate artifacts:
+  - `tmp_decomp/campaign_state_machine/outputs/transition_candidates_tactical_turn.csv`
+  - `tmp_decomp/campaign_state_machine/outputs/transition_candidates_tactical_turn_summary.json`
+  - result: `transition_rows=13365`, subsystem hints:
+    - TURN: 6567
+    - TACTICAL: 1627
+    - MAP_ORDER: 373
+    - UNKNOWN: 4798
+
+- Built curated high-level subsets for import:
+  - `tmp_decomp/campaign_state_machine/outputs/transition_hub_summary.csv`
+  - `tmp_decomp/campaign_state_machine/outputs/transition_highlevel_edges.csv`
+  - `tmp_decomp/campaign_state_machine/outputs/transition_highlevel_edges_focus.csv`
+
+- Tactical seed-table complement (angr misses sparse tables):
+  - from xref of `thunk_RunTacticalAutoTurnControllerForActiveUnit` discovered explicit table neighborhood at `0x00669620`.
+  - campaign artifact: `tmp_decomp/campaign_state_machine/neo4j/import_rows_state_machine_campaign.json`.
+
+#### 3) Neo4j high-level graph import
+- Imported high-level campaign graph namespace:
+  - campaign id: `imperialism_state_machine_2026_02_21`
+  - labels: `StateMachineSystem`, `StateMachineState`, `StateMachineTable`, `StateMachineSource`, `StateMachineHandler`
+  - relationships: `HAS_SYSTEM`, `HAS_STATE`, `EMITS_STATE`, `USES_TABLE`, `DISPATCHES_VIA`, `ROUTES_TO`
+
+- Imported focused rows (grounded, non-speculative): tactical seed-table + selected turn dispatch states.
+- Post-import snapshot:
+  - systems: 2
+  - states: 7
+  - tables: 7
+  - handlers: 16
+
+#### 4) First Ghidra batch from graph facts
+- Applied campaign-derived rename/comment batch:
+  - file: `tmp_decomp/campaign_state_machine/ghidra/batch_campaign_state_machine_comments_and_slot_fix.csv`
+  - result: `[done] rows=13 ok=2 skip=11 fail=0 comments=13`
+
+- **Slot-index correction from graph evidence**:
+  - `RunTacticalAutoTurnControllerForActiveUnit` is at `g_vtblTArmyTacUnit` (`0x00669620`) slot08 (`0x00669640`), so adjacent entry `0x00669644` is slot09.
+  - renamed:
+    - `0x0059ea60`: `TArmyTacUnit_VtblSlot08` -> `TArmyTacUnit_VtblSlot09`
+    - `0x00402be4`: `thunk_TArmyTacUnit_VtblSlot08` -> `thunk_TArmyTacUnit_VtblSlot09`
+  - added label:
+    - `0x00669644` -> `g_vtblTArmyTacUnit_Slot09`
+
+- Added campaign comments to key functions (turn/tactical dispatch anchors), including:
+  - `RunTacticalAutoTurnControllerForActiveUnit`
+  - `InitializeTurnEventDialogFactoryRegistry`
+  - `ShowNationSelectDialogAndRedispatchCurrentTurnEvent`
+  - `ShowRuntimeSelectionDialogAndReturnRecord`
+  - `InitializeInterNationEventQueueManager`
+  - `AppendInterNationEventSummaryTextEntry`
+  - `RunMapOrderPageSelectionDialogAndApplyResult`
+  - `PopulateNavyOrderPageEntriesByMapContext`
+
+- Synced Neo4j tactical handler name with corrected slot indexing:
+  - `TArmyTacUnit_VtblSlot08` -> `TArmyTacUnit_VtblSlot09` in campaign graph.
+
+### TODO (next pass)
+- [ ] Expand campaign graph with second focused import pass for tactical mode-id semantics (`+0x2c`) from `RunTacticalAutoTurnControllerForActiveUnit` callers/writers.
+- [ ] Convert campaign-derived table-state facts into signature upgrades for key handlers (not only comments).
+- [ ] Build/attach explicit `StateTransition` edges for modeId values `{2,5,14}` once write-sites are confirmed.
+
+### Advanced API findings captured (2026-02-21)
+- Goal:
+  - preserve reusable `angr`/`claripy`/`pyghidra` techniques that worked on Imperialism so we do not re-discover setup details.
+
+- Verified versions in `.venv`:
+  - `angr 9.2.202`
+  - `claripy 9.2.202`
+  - `pyghidra 3.0.2`
+  - `jpype1 1.5.2`
+
+- angr analyses availability check:
+  - available and usable: `CFGFast`, `CFGEmulated`, `CDG`, `DDG`, `BackwardSlice`, `Decompiler`, `VFG`, `VariableRecoveryFast`.
+  - caveat: `Identifier` exists but warns as CGC-oriented for this PE workflow; treat as non-actionable for now.
+
+- Backward-slice recipe validated on tactical mode dispatch:
+  1) build function-scoped `CFGEmulated` with `keep_state=True` and `state_add_options=angr.options.refs`,
+  2) derive `CDG` + `DDG`,
+  3) run `BackwardSlice(..., control_flow_slice=True)` on target node.
+  - working anchor function: `RunTacticalAutoTurnControllerForActiveUnit` (`0x0059e4f0`).
+
+- Focused symbolic execution recipe validated:
+  - start from local block (`0x0059e769`) instead of whole function entry to avoid call/state explosion,
+  - make `[esi+0x2c]` symbolic and explore `find=0x0059e77b`, `avoid=0x0059e7c9`,
+  - solved mode domain: `{2,5,14}`.
+
+- Claripy usage pattern validated:
+  - construct domain predicate with `claripy.Or(mode == c_i...)`,
+  - enumerate bounded values via `solver.satisfiable(extra_constraints=[mode==v])`.
+
+- pyghidra API reminder (stable path):
+  - `pyghidra.start(install_dir=...)`
+  - `pyghidra.open_project(...)`
+  - `with pyghidra.program_context(project, "/Imperialism.exe") as program:`
+  - keep one writer and save after coherent transaction batch.
+
+### TODO (next pass, advanced tooling)
+- [ ] Add a generic reusable script for local branch-gate symbolic solving (inputs: start/find/avoid/symbolic-memory spec, outputs: satisfying values).
+- [ ] Use that script on the next game-logic mode/enum candidate beyond tactical modeId.
+
+### Continuation (2026-02-21, resumed from older tactical TODO thread: mode/domain dehardcoding)
+
+#### What was resumed
+- Picked up the unfinished thread from batch57-62 notes:
+  - `modeId {2,5,14}` semantics in `RunTacticalAutoTurnControllerForActiveUnit`
+  - unresolved `DAT_006693b8 == 2` placeholder naming (`Type2` in several tactical score evaluators)
+- Goal in this pass: land conservative, non-guessing improvements that remove ambiguous placeholder names while preserving correctness.
+
+#### Evidence gathered in this pass
+- `0x006693b8` xrefs are tactical-only and dense (`27` refs in current listing), including:
+  - tactical scorer evaluators,
+  - tactical auto-turn controller,
+  - helper functions with switch/grouping behavior.
+- `FUN_0059e8a0` switch over `DAT_006693b8` value groups:
+  - case `0` -> one flag class,
+  - cases `1/3` -> second flag class,
+  - cases `2/4` -> third flag class.
+- This supports `DAT_006693b8` being a tactical action/class code table (small integer domain), but not enough yet to claim concrete unit labels (e.g. artillery/cavalry/etc.) without further proof.
+
+#### Renames/comments applied (saved)
+- Tactical evaluator placeholder cleanup (`Type2` -> `Class2`):
+  - `0x0059dbe0` -> `EvaluateTacticalTileScore_Class2StandOffDistance`
+  - `0x00405911` -> `thunk_EvaluateTacticalTileScore_Class2StandOffDistance`
+  - `0x0059dd40` -> `EvaluateTacticalTileScore_ReachableClass2CursorEntryCount`
+  - `0x004073f1` -> `thunk_EvaluateTacticalTileScore_ReachableClass2CursorEntryCount`
+  - `0x0059dfe0` -> `EvaluateTacticalTileScore_AnyReachableClass2EnemyBonus`
+  - `0x00407b53` -> `thunk_EvaluateTacticalTileScore_AnyReachableClass2EnemyBonus`
+
+- Additional low-hanging helper renames from same domain:
+  - `0x0059b070` -> `CompareTacticalCursorEntriesByActionClassPriority`
+  - `0x0059b5b0` -> `AccumulateTacticalCursorActionClassProfileMetrics`
+  - `0x0059c140` -> `SelectTacticalTileByActionClassAdjacencyPriority`
+  - `0x0059e8a0` -> `BuildTacticalActionClassAndPositionFlags`
+
+- Data label rename:
+  - `0x006693b8`: `DAT_006693b8` -> `g_awTacticalActionClassCodeBySlot`
+
+- Batch apply artifact:
+  - `tmp_decomp/gameplay_batch63_tactical_class_domain_renames.csv`
+  - result: `[done] rows=10 ok=10 skip=0 fail=0 comments=10`
+
+#### Why this is safe
+- Renames are behavior-based and derived from direct decomp/xref usage.
+- No speculative mapping from class codes to concrete regiment names was applied yet.
+- Placeholder `Type2` wording was replaced by domain-grounded `Class2` to reduce ambiguity while preserving uncertainty.
+
+#### Progress snapshot
+- `total_functions=10703`
+- `renamed_functions=6548`
+- `default_fun_or_thunk_fun=4155`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Resolve concrete meaning of tactical action class codes (`0..4`) from producers/loaders of `g_awTacticalActionClassCodeBySlot` before mapping class IDs to regiment semantics.
+- [ ] Trace write-sites/producers for `tacticalContext+0x2c` to attach concrete mode names for `{2,5,14}` (currently numeric mode IDs only).
+- [ ] Once class/mode semantics are proven, promote `Class2`/`ModeId` names to concrete domain names and mirror only high-level conclusions into Neo4j.
+
+### Continuation (2026-02-21, tactical mode-writer dehardcoding from older TODO thread)
+
+#### Scope resumed
+- Continued the exact unfinished tactical thread:
+  - decode `tacticalContext+0x2c` mode-writer paths,
+  - reduce remaining generic `FUN_` names in the tactical mode-profile cluster,
+  - keep semantics conservative (no guessed regiment labels).
+
+#### Key evidence established
+- `SelectAndApplyTacticalCursorModeProfile` (`0x0059c440`) is the orchestration point:
+  - computes a profile id (`0..7`) from side-level metrics/distributions,
+  - dispatches to profile-specific assigners that write cursor mode IDs into entry field `+0x2c`.
+- Profile-helper functions and their writes were decoded:
+  - `ApplyTacticalCursorModeProfile0_ByActionClassCounts` (`0x0059caf0`)
+  - `ApplyTacticalCursorModeProfile2_ByActionClassCounts` (`0x0059cd00`)
+  - `ApplyTacticalCursorModeProfile3_ClassAware` (`0x0059ce90`)
+  - `ApplyTacticalCursorModeProfile4_ClassAware` (`0x0059d020`)
+  - `ApplyTacticalCursorModeProfile5_ClassAware` (`0x0059d1a0`)
+  - `ApplyTacticalCursorModeProfile6_DefaultByActionClass` (`0x0059d320`)
+- `HasReachableActiveClass2CursorEntry` (`0x0059d470`) confirmed as a boolean helper used by profile 3/4/5 assigners.
+
+#### Mode-id mapping progress (grounded, still numeric)
+- Secondary-pass mode set `{2,5,14}` in auto-turn is now backed by writer-side evidence:
+  - profile 0 / 3: class `1/3` entries can receive mode `0xE` (14),
+  - profile 2 / 4 / 6: class `1/3` entries receive mode `5`,
+  - profile 5: class `1/3` entries receive mode `2`.
+- This is enough to tie `{2,5,14}` to profile-specific class handling, but not yet enough to assign concrete gameplay labels.
+
+#### Renames/comments applied (saved)
+- Orchestrator + thunk:
+  - `0x0059c440` -> `SelectAndApplyTacticalCursorModeProfile`
+  - `0x00409a34` -> `thunk_SelectAndApplyTacticalCursorModeProfile`
+
+- Profile helper family + thunks:
+  - `0x0059caf0` -> `ApplyTacticalCursorModeProfile0_ByActionClassCounts`
+  - `0x00409363` -> `thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts`
+  - `0x0059cd00` -> `ApplyTacticalCursorModeProfile2_ByActionClassCounts`
+  - `0x00401cb2` -> `thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts`
+  - `0x0059ce90` -> `ApplyTacticalCursorModeProfile3_ClassAware`
+  - `0x00407d1a` -> `thunk_ApplyTacticalCursorModeProfile3_ClassAware`
+  - `0x0059d020` -> `ApplyTacticalCursorModeProfile4_ClassAware`
+  - `0x00409449` -> `thunk_ApplyTacticalCursorModeProfile4_ClassAware`
+  - `0x0059d1a0` -> `ApplyTacticalCursorModeProfile5_ClassAware`
+  - `0x004090ac` -> `thunk_ApplyTacticalCursorModeProfile5_ClassAware`
+  - `0x0059d320` -> `ApplyTacticalCursorModeProfile6_DefaultByActionClass`
+  - `0x00401a0f` -> `thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass`
+
+- Reachability helper + thunk:
+  - `0x0059d470` -> `HasReachableActiveClass2CursorEntry`
+  - `0x0040851c` -> `thunk_HasReachableActiveClass2CursorEntry`
+
+- Batch artifact:
+  - `tmp_decomp/gameplay_batch64_tactical_mode_profile_renames.csv`
+  - result: `rows=16 ok=16 skip=0 fail=0`
+
+#### Signature cleanup applied (easy/high-confidence)
+- `tmp_decomp/signature_batch64_tactical_mode_profiles.csv`
+  - set fastcall `void(int tacticalSide)` for:
+    - `SelectAndApplyTacticalCursorModeProfile`
+    - `ApplyTacticalCursorModeProfile3_ClassAware`
+    - `ApplyTacticalCursorModeProfile4_ClassAware`
+    - `ApplyTacticalCursorModeProfile5_ClassAware`
+    - and matching thunks
+  - set `bool __cdecl` for:
+    - `HasReachableActiveClass2CursorEntry`
+    - `thunk_HasReachableActiveClass2CursorEntry`
+
+- `tmp_decomp/signature_batch64_tactical_mode_profiles_tail.csv`
+  - set `void __cdecl(void)` for:
+    - profile helpers 0/2/6 and their thunks.
+
+#### Progress snapshot
+- `total_functions=10703`
+- `renamed_functions=6564`
+- `default_fun_or_thunk_fun=4139`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Resolve concrete semantics for tactical action class codes `0..4` (currently class IDs only) by finding authoritative producer/loader context for `g_awTacticalActionClassCodeBySlot`.
+- [ ] Rename remaining numeric mode constants (`0,1,2,5,7,8,9,0xB,0xC,0xD,0xE,0x11,0x13`) only after concrete behavior labels are proven.
+- [ ] Trace `FUN_005a4330` and neighboring side-state fields (`+0x49`, `+0x54[8]`) to remove another central tactical generic safely.
+
+### Continuation (2026-02-21, tactical mode/profile thread continued)
+
+#### Additional extraction completed
+- Dumped tactical slot schema tables and confirmed repeating slot structure (27 entries):
+  - artifact: `tmp_decomp/tactical_action_class_table_dump_batch64.csv`
+  - `g_awTacticalUnitCategoryCodeBySlot` values:
+    - `0..7` repeated 3 times, then `8,8,8`
+  - `g_awTacticalUnitActionClassCodeBySlot` values:
+    - counts: class0=12, class1=5, class2=6, class3=1, class4=3
+    - class/category histogram:
+      - class0 -> categories 0/1/2/3
+      - class1 -> categories 4/5 (most)
+      - class2 -> categories 6/7
+      - class3 -> category 5 (rare override)
+      - class4 -> category 8 only
+
+- This strongly supports a tactical unit-slot schema rather than the prior generic/city-action naming.
+
+#### Further renames/signatures/comments applied (saved)
+- Tactical side gate helper:
+  - `0x005a4330` -> `IsTacticalSideCategoryCoverageIncompleteOrFlagOff`
+  - `0x00404129` -> `thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff`
+  - signature:
+    - `bool __fastcall IsTacticalSideCategoryCoverageIncompleteOrFlagOff(int tacticalSideState)`
+
+- Tactical table label normalization:
+  - `0x00695528`:
+    - `g_cityActionCategoryCodeBySlot` -> `g_awTacticalUnitCategoryCodeBySlot`
+  - `0x006693b8`:
+    - `g_awTacticalActionClassCodeBySlot` -> `g_awTacticalUnitActionClassCodeBySlot`
+
+- Mode-profile function cluster (from same pass):
+  - `SelectAndApplyTacticalCursorModeProfile` + profile0/2/3/4/5/6 helpers and thunks.
+  - signature cleanup completed for profile selector/helpers where roles were stable.
+
+#### Why this is safe
+- All naming changes are directly grounded in observed table contents and tactical callsites.
+- No concrete regiment-name mapping was applied yet; class IDs remain numeric where semantics are not fully proven.
+
+#### Progress snapshot
+- `total_functions=10703`
+- `renamed_functions=6566`
+- `default_fun_or_thunk_fun=4137`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Resolve concrete semantics of tactical category `8` and action classes `2/3/4` using additional producers/consumers, then decide whether `Class2` can be promoted to a concrete gameplay term.
+- [ ] Decode semantic meaning of key mode IDs (`2`, `5`, `0xE`) now linked to profile-helper assignments for class `1/3`.
+- [ ] Consider high-level Neo4j sync for this tactical slot-schema discovery (single concept-level update only).
+
+### Continuation (2026-02-21, tactical slot-schema refinement: class2 -> artillery-class)
+
+#### Additional grounded conclusion
+- Using slot-table dump + evaluator behavior:
+  - class code `2` maps to unit categories `6/7` (`g_awTacticalUnitCategoryCodeBySlot` histogram),
+  - all class-2 evaluators are stand-off / reachability / ranged-target-pressure driven.
+- Applied a conservative promotion to **ArtilleryClass** naming (still explicitly class-scoped).
+
+#### Renames/comments applied (saved)
+- `Class2` -> `ArtilleryClass` tactical scorer helpers:
+  - `0x0059dbe0` -> `EvaluateTacticalTileScore_ArtilleryClassStandOffDistance`
+  - `0x00405911` -> `thunk_EvaluateTacticalTileScore_ArtilleryClassStandOffDistance`
+  - `0x0059dd40` -> `EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount`
+  - `0x004073f1` -> `thunk_EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount`
+  - `0x0059dfe0` -> `EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus`
+  - `0x00407b53` -> `thunk_EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus`
+  - `0x0059d470` -> `HasReachableActiveArtilleryClassCursorEntry`
+  - `0x0040851c` -> `thunk_HasReachableActiveArtilleryClassCursorEntry`
+
+- Batch artifact:
+  - `tmp_decomp/gameplay_batch65_artillery_class_renames.csv`
+  - result: `rows=8 ok=8 skip=0 fail=0`
+
+#### Progress snapshot
+- `total_functions=10703`
+- `renamed_functions=6566`
+- `default_fun_or_thunk_fun=4137`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Resolve concrete semantics of tactical category `8` and action classes `3/4` (class `2` now promoted to ArtilleryClass).
+- [ ] Decode semantic meaning of key mode IDs (`2`, `5`, `0xE`) now tied to profile-helper assignment branches.
+- [ ] Consider high-level Neo4j sync for tactical slot-schema discovery (single concept-level update only).
+
+### Continuation (2026-02-21, tactical category-8 adjacency + sprite helper cleanup)
+
+#### Additional findings
+- Scanned tactical lane for direct category-8 checks (`g_awTacticalUnitCategoryCodeBySlot == 8`) and isolated 7 hits in key tactical functions:
+  - `HandleTacticalCommandTag_skip`
+  - `RunTacticalAutoTurnControllerForActiveUnit`
+  - `ComputeTacticalHoverCursorStateIndex`
+  - `AdvanceToNextTacticalUnitTurnStep`
+  - `IsTacticalTargetTileReachableForAction`
+  - plus draw/overlay helpers around `0x005aa670/0x005aa7d0`.
+- This confirms category-8 is treated with dedicated tactical behavior (skip gating, neighbor-only rules, special draw handling), supporting the ongoing “special unit category” interpretation.
+
+#### Renames/comments/signatures applied (saved)
+- `0x005aa670`:
+  - `FUN_005aa670` -> `ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy`
+  - signature: `ushort __thiscall ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tacticalView, int tileIndex)`
+
+- `0x00405b87`:
+  - `thunk_FUN_005aa670` -> `thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy`
+  - signature aligned to callee.
+
+- `0x005aa7d0`:
+  - `FUN_005aa7d0` -> `ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset`
+  - signature: `void __thiscall ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(int tacticalView, int tacticalEntry, void *pRect)`
+  - comment notes category-8 busy-hide behavior branch.
+
+- Batch artifacts:
+  - `tmp_decomp/gameplay_batch66_tactical_sprite_orientation_rect_renames.csv`
+  - `tmp_decomp/signature_batch66_tactical_sprite_orientation_rect.csv`
+
+#### Progress snapshot
+- `total_functions=10703`
+- `renamed_functions=6570`
+- `default_fun_or_thunk_fun=4133`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Resolve concrete semantics of category-8 tactical entries (likely special/sapper-like branch) using command handlers around `ComputeTacticalHoverCursorStateIndex` and `IsTacticalTargetTileReachableForAction`.
+- [ ] Decode semantic meaning of mode IDs (`2`, `5`, `0xE`) from downstream action handlers (not only assignment sites).
+- [ ] If stability remains high, publish a single high-level Neo4j update for the tactical slot schema (`category table + action-class table + mode-profile selector`).
+
+### Continuation (2026-02-21, bigger-batch execution: broad gameplay thunk-island recovery)
+
+#### Batch strategy
+- User requested bigger batches.
+- Switched from narrow tactical-only mining to broad gameplay thunk-island expansion using:
+  - `new_scripts/generate_missing_jmp_thunk_candidates.py`
+  - range: `0x00400000..0x00412000`
+  - name filter:
+    - `Map|Turn|Tactical|Navy|Army|Civilian|Trade|Diplomacy|Order|Minister|Battle|Tile|Cursor|Profile`
+
+- Generated master candidate CSV:
+  - `tmp_decomp/batch67_missing_jmp_thunks_gamelogic_broad.csv`
+  - rows: `1427`
+
+#### Large apply waves (with create-missing)
+- Applied in three large chunks (`--create-missing`) to keep each transaction bounded:
+  1) `tmp_decomp/batch67_missing_gamelogic_thunks_top250.csv`
+     - result: `rows=250 ok=71 skip=179 fail=0 created=43`
+  2) `tmp_decomp/batch67_missing_gamelogic_thunks_next250.csv`
+     - result: `rows=250 ok=80 skip=170 fail=0 created=49`
+  3) `tmp_decomp/batch67_missing_gamelogic_thunks_next250_b.csv`
+     - result: `rows=250 ok=71 skip=179 fail=0 created=39`
+
+- Combined for this pass:
+  - processed rows: `750`
+  - renamed: `222`
+  - created functions: `131`
+  - skipped: `528`
+  - failed: `0`
+
+#### What this achieved
+- Materialized and named a large tranche of missing direct-JMP gameplay aliases (safe, non-speculative dehardcoding).
+- Improved call-graph readability around map/turn/tactical/navy/civilian/diplomacy lanes without inventing new semantics.
+
+#### Progress snapshot
+- `total_functions=10834`
+- `renamed_functions=6701`
+- `default_fun_or_thunk_fun=4133`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Continue the same broad thunk batch on the remaining rows of `batch67_missing_jmp_thunks_gamelogic_broad.csv` (starting after line 751).
+- [ ] Run one focused cleanup pass for any newly created thunk aliases that still carry stale signatures from pre-existing targets.
+- [ ] Resume tactical semantic dehardcoding (category-8 / mode-id labels) after this throughput batch.
+
+### Continuation (2026-02-21, bigger-batch execution extended: chunk 4)
+
+#### Fourth large chunk applied
+- Added one more 250-row wave from the same master thunk list:
+  - `tmp_decomp/batch67_missing_gamelogic_thunks_next250_c.csv`
+  - result: `rows=250 ok=73 skip=177 fail=0 created=46`
+
+#### Updated combined totals for batch67 campaign so far
+- processed rows: `1000`
+- renamed: `295`
+- created functions: `177`
+- skipped: `705`
+- failed: `0`
+
+#### Updated progress snapshot
+- `total_functions=10880`
+- `renamed_functions=6747`
+- `default_fun_or_thunk_fun=4133`
+- `vtbl_count=179`
+
+### TODO (next pass)
+- [ ] Continue batch67 on remaining rows after line 1001 (`~427` rows left in master CSV).
+- [ ] Run focused signature propagation/cleanup for newly materialized thunk aliases.
+- [ ] Return to tactical semantic decoding (category-8 and mode-id concrete labels) after finishing batch67 throughput.
+
+### Continuation (2026-02-21, bigger-batch completion + second full-range campaign)
+
+#### Batch67 completion
+- Finished remaining prepared chunks from the same `batch67` master set:
+  - `tmp_decomp/batch67_missing_gamelogic_thunks_next250_d.csv`
+    - final rerun result: `rows=250 ok=0 skip=250 fail=0 created=0` (already applied from prior run state)
+  - `tmp_decomp/batch67_missing_gamelogic_thunks_tail.csv`
+    - result: `rows=177 ok=68 skip=109 fail=0 created=44`
+- Net effect: completed the full `1427`-row `batch67_missing_jmp_thunks_gamelogic_broad.csv` campaign.
+
+#### New bigger batch campaign (batch68)
+- Generated a wider, full-code-range game-logic thunk candidate set:
+  - script: `new_scripts/generate_missing_jmp_thunk_candidates.py`
+  - range: `0x00400000..0x00690000`
+  - regex:
+    - `Map|Turn|Tactical|Navy|Army|Civilian|Trade|Diplomacy|Order|Minister|Battle|Tile|Cursor|Profile|Nation|Econom|Budget|Price|Resource|Production|Tax|Revenue|Treasury|Market|Consulate|Embassy|Build|Improve|Mine|Farm|Forester|Rail|Factory|Industry`
+  - output: `tmp_decomp/batch68_missing_jmp_thunks_fullrange.csv`
+  - rows: `1797`
+
+- Split into six large chunks and applied all with `--create-missing`:
+  1) `tmp_decomp/batch68_missing_gamelogic_thunks_chunk01.csv`
+     - `rows=300 ok=15 skip=285 fail=0 created=10`
+  2) `tmp_decomp/batch68_missing_gamelogic_thunks_chunk02.csv`
+     - `rows=300 ok=13 skip=287 fail=0 created=8`
+  3) `tmp_decomp/batch68_missing_gamelogic_thunks_chunk03.csv`
+     - `rows=300 ok=24 skip=276 fail=0 created=13`
+  4) `tmp_decomp/batch68_missing_gamelogic_thunks_chunk04.csv`
+     - `rows=300 ok=21 skip=279 fail=0 created=15`
+  5) `tmp_decomp/batch68_missing_gamelogic_thunks_chunk05.csv`
+     - `rows=300 ok=26 skip=274 fail=0 created=17`
+  6) `tmp_decomp/batch68_missing_gamelogic_thunks_chunk06.csv`
+     - `rows=297 ok=14 skip=283 fail=0 created=11`
+
+- Batch68 combined:
+  - processed rows: `1797`
+  - renamed (`ok`): `113`
+  - created functions: `74`
+  - skipped: `1684`
+  - failed: `0`
+
+#### Updated progress snapshot
+- `total_functions=11047`
+- `renamed_functions=6914`
+- `default_fun_or_thunk_fun=4133`
+- `class_desc_count=337`
+- `vtbl_count=179`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Run a focused signature cleanup pass for newly created thunk aliases from batch67/68 where callee signatures are now stable.
+- [ ] Launch a non-thunk semantic batch around turn-flow money/resource updates (trade/price/production calculators), using existing named anchors from batch68.
+- [ ] Continue tactical category-8/mode-id semantic decode after one more high-throughput game-logic batch.
+
+### Continuation (2026-02-21, bigger-batch campaign extension: batch69 domain delta)
+
+#### Why this pass
+- After finishing batch68, ran another broad domain-keyword candidate generation to catch gameplay aliases that were not covered by the previous keyword set.
+
+#### Candidate generation + delta
+- Generated:
+  - `tmp_decomp/batch69_missing_jmp_thunks_domain_broad.csv`
+  - range: `0x00400000..0x0063e000`
+  - rows: `1781`
+- Compared against `batch68` candidates (`1797` rows) and extracted only new source addresses:
+  - `tmp_decomp/batch69_missing_gamelogic_thunks_new_vs_batch68.csv`
+  - delta rows: `256`
+
+#### Apply result (saved)
+- Applied the 256-row delta in one transaction:
+  - command: `apply_function_renames_csv.py --create-missing`
+  - result: `rows=256 ok=133 skip=123 fail=0 created=110`
+
+#### What this achieved
+- High-yield throughput batch:
+  - 133 additional direct-JMP alias names materialized.
+  - 110 new function entries created at previously unnamed jump sources.
+- This further improves game-logic call-graph readability for domain lanes (trade/diplomacy/turn/economy/army/navy/civilian/resource operations) without speculative semantics.
+
+#### Updated progress snapshot
+- `total_functions=11157`
+- `renamed_functions=7024`
+- `default_fun_or_thunk_fun=4133`
+- `class_desc_count=337`
+- `vtbl_count=179`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Run signature/prototype propagation for newly created thunk aliases where callee signatures are reliable (avoid undefined propagation).
+- [ ] Start one non-thunk semantic batch in economic turn flow (pricing/resource/budget calculators) using the enlarged alias graph as anchors.
+- [ ] Continue tactical category-8 / mode-id semantic decode only after one semantic economy batch.
+
+### Continuation (2026-02-21, non-thunk semantic pass: map/tactical + nation/navy/turn)
+
+#### Reusable tooling added
+- Added new reusable script:
+  - `new_scripts/build_fun_caller_hint_renames.py`
+  - Purpose: convert `generate_fun_caller_candidates.py` output into safe hint-rename CSV (`address,new_name,comment`) with gameplay/noise filtering.
+  - This speeds up broad non-thunk naming passes while avoiding speculative concrete semantics.
+
+#### Larger non-thunk hint batches applied
+- Generated map/civilian/tactical caller candidates:
+  - `tmp_decomp/batch72_fun_callers_map_actions.csv` (`81` candidates)
+- Built + applied filtered gameplay hint renames:
+  - `tmp_decomp/batch73_gameplay_hint_renames_from_batch72_filtered.csv`
+  - result: `rows=45 ok=45 skip=0 fail=0`
+
+- Generated broader turn/economy caller candidates:
+  - `tmp_decomp/batch70_fun_callers_domain.csv`
+- Curated and applied non-UI subset:
+  - `tmp_decomp/batch74_gameplay_hint_renames_from_batch70_curated.csv`
+  - result: `rows=10 ok=7 skip=3 fail=0`
+
+#### Concrete semantic promotions (from new hint set)
+- Renamed + commented:
+  - `0x004e0500` -> `ComputeNavyOrderIndustryCostWeightSumForNation`
+  - `0x00513f60` -> `SetHexAdjacencyDirectionFlagsForTilePair`
+  - `0x0051d380` -> `MarkHexTileAndNeighborsDirtyAndNotify`
+  - `0x0059b830` -> `UpdateTacticalCursorModeProfileAndMaybeOpenDialog`
+  - `0x004e3060` -> `ComputeNationNavyOrderWeightedMovementScore`
+  - `0x004e6a70` -> `CreateAutoGreatPowerNationState`
+  - `0x004f0db0` -> `DispatchProcessQueuedWarTransitions`
+
+- Signature updates applied:
+  - `0x004e0500`: `int __fastcall (void *pNationCtx)`
+  - `0x00513f60`: `void __thiscall (void *pMapAdjacencyState, short fromTile, short toTile)`
+  - `0x0051d380`: `void __thiscall (void *pMapState, short centerTile)`
+  - `0x0059b830`: `void __fastcall (void *pTacticalState)`
+  - `0x004e3060`: `int __fastcall (void *pNationCtx)`
+  - `0x004e6a70`: `void * __cdecl (void)`
+  - `0x004f0db0`: `void __fastcall (void *pDiplomacyTurnStateManager)`
+
+#### Wrapper alignment for promoted names
+- Auto-generated and applied direct-JMP wrappers for newly promoted concrete names:
+  - `tmp_decomp/batch76_new_concrete_thunks.csv`
+  - result: `rows=5 ok=5 skip=0 fail=0 created=4`
+
+#### Updated progress snapshot
+- `total_functions=11161`
+- `renamed_functions=7092`
+- `default_fun_or_thunk_fun=4069`
+- `class_desc_count=337`
+- `vtbl_count=179`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Continue concrete promotion pass on `Cluster_MapTileHint_*` functions with strong neighbor/direction/dirty-bit semantics (especially around `0x0050f860`, `0x0050fca0`, `0x0050fe10`, `0x005107e0`).
+- [ ] Decode `CreateAutoGreatPowerNationState` caller chain and promote adjacent `NationStateHint` constructors/wrappers to concrete class-oriented names where safe.
+- [ ] Run one focused non-UI economy pass starting from `ComputeNationNavyOrderWeightedMovementScore` + `ComputeNavyOrderIndustryCostWeightSumForNation` callers.
+
+### Continuation (2026-02-21, semantic continuation: nation-power metrics + extra wrapper sync)
+
+#### Additional targeted discovery
+- Queried focused non-UI caller anchors and found:
+  - `0x004f1760 (FUN_004f1760)` calling `thunk_ComputeNationNavyOrderWeightedMovementScore`.
+- Decompiled context confirms this function iterates eligible nation slots and fills comparative score arrays with per-metric maxima tracking.
+
+#### Concrete rename/signature applied
+- `0x004f1760`:
+  - `FUN_004f1760` -> `RecomputeNationComparativePowerMetrics`
+  - signature: `void __fastcall RecomputeNationComparativePowerMetrics(void *pPowerEvalState)`
+  - comment added describing multi-metric nation-score recomputation behavior.
+
+#### Wrapper sync for new concrete promotion
+- Generated + applied direct-JMP thunk alias for the newly promoted function:
+  - `tmp_decomp/batch79_thunks_recompute_nation_power.csv`
+  - result: `rows=1 ok=1 skip=0 fail=0 created=0`
+
+#### Updated progress snapshot
+- `total_functions=11161`
+- `renamed_functions=7094`
+- `default_fun_or_thunk_fun=4067`
+- `class_desc_count=337`
+- `vtbl_count=179`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Continue concrete promotion for `Cluster_MapTileHint_*` neighborhood-state functions (`0x0050fca0`, `0x0050fe10`, `0x005107e0`, `0x005133f0`) with safe behavior-based names.
+- [ ] Follow caller chain of `RecomputeNationComparativePowerMetrics` to identify higher-level turn-phase driver names.
+- [ ] Continue non-UI economy/turn dehardcoding by promoting selected `Cluster_NationStateHint_*`/`Cluster_TurnStateHint_*` functions where callsites are now stable.
+
+### Continuation (2026-02-21, concrete map-neighbor promotion pass)
+
+#### Concrete promotions completed
+- Promoted four previously hint-only map-neighbor functions:
+  - `0x0050fca0` -> `UpdateTilePrimaryAndSecondaryNeighborLinksByPriority`
+  - `0x0050fe10` -> `UpdateTileNeighborBorderInfluenceCounters`
+  - `0x005107e0` -> `InitializeTileNeighborConnectionMaskIfNeeded`
+  - `0x005133f0` -> `SetTileOwnerAndInvalidateNeighborState`
+
+- Added behavior-grounded comments for each function documenting:
+  - neighbor scan/wrap usage,
+  - ownership/type conditioned branch behavior,
+  - local/neighbor cache invalidation and callback emission semantics.
+
+#### Signature updates applied
+- `0x0050fca0`: `void __thiscall (void *pMapState, int tileIndex)`
+- `0x0050fe10`: `void __thiscall (void *pMapState, short tileIndex, short modeFlags)`
+- `0x005107e0`: `void __thiscall (void *pMapState, int tileIndex)`
+- `0x005133f0`: `void __fastcall (void *pMapState, uint packedOldOwnerWord, short tileIndex, short newOwnerNationId)`
+
+#### Wrapper synchronization
+- Generated and applied direct-JMP wrappers for the above concrete names:
+  - `tmp_decomp/batch80_new_concrete_maptile_thunks.csv`
+  - result: `rows=4 ok=4 skip=0 fail=0 created=4`
+
+#### Updated progress snapshot
+- `total_functions=11165`
+- `renamed_functions=7098`
+- `default_fun_or_thunk_fun=4067`
+- `class_desc_count=337`
+- `vtbl_count=179`
+- `type_name_count=335`
+
+### TODO (next pass)
+- [ ] Continue caller-chain promotion from `RecomputeNationComparativePowerMetrics` toward its enclosing turn-phase driver function(s).
+- [ ] Promote adjacent `Cluster_NationStateHint_*` constructors/dispatchers (especially around `0x004d8950`, `0x004e6a70`, `0x0057bea0`, `0x005ba4b0`) where behavior remains stable.
+- [ ] Resume targeted non-UI economy scoring path around `ComputeNationNavyOrderWeightedMovementScore` and neighboring `FUN_004e3220` branch to split economic vs military score lanes.
+
+### Continuation (2026-02-21, bigger class/type extraction + enum typing wave)
+
+#### Larger class/type extraction batch
+- Built full getter-stub inventory from concrete pattern:
+  - `MOV EAX,<class_desc>; RET` (6-byte stubs), type-string resolved from class descriptor.
+  - artifact: `tmp_decomp/batch81_getter_stub_inventory.csv`
+  - total getter stubs found: `403`
+  - non-standard/missing-label targets: `76`
+
+- Applied class/type normalization + label extraction for those 76 targets:
+  - input: `tmp_decomp/batch81_class_label_and_getter_fix.csv`
+  - command: `apply_class_quads_from_csv.py`
+  - result:
+    - `fn_ok=73` (getter name normalization to `GetT*ClassNamePointer`)
+    - `fn_skip=3`
+    - `lbl_ok=140` (new `g_pClassDescT*` / `g_szTypeNameT*` labels)
+    - `lbl_skip=12`
+    - `fn_fail=0`, `lbl_fail=0`
+
+#### Enum extraction and table typing (new reusable script)
+- Added reusable script:
+  - `new_scripts/create_gameplay_enums.py`
+  - creates/updates:
+    - `EHexDirection` (size 2)
+    - `EHexDirectionMask` (size 2)
+    - `ETacticalUnitActionClass` (size 2; class 2 explicitly marked artillery)
+    - `ETacticalUnitCategoryCode` (size 2)
+  - optional `--apply-tactical-tables` applies enum arrays to tactical slot tables.
+
+- Applied enum arrays to core tactical tables:
+  - `0x006693b8` -> `ETacticalUnitActionClass[27]`
+    - label: `g_aeTacticalUnitActionClassBySlot`
+  - `0x00695528` -> `ETacticalUnitCategoryCode[27]`
+    - label: `g_aeTacticalUnitCategoryBySlot`
+
+#### Updated progress snapshot
+- `total_functions=11165`
+- `renamed_functions=7098`
+- `default_fun_or_thunk_fun=4067`
+- `class_desc_count=406`
+- `vtbl_count=179`
+- `type_name_count=406`
+
+### Bigger opportunities identified
+- Class/type coverage is now much better (`class_desc/type_name` both +69 in this pass), but `vtbl_count` is still lagging (`179`), so next high-impact batch is:
+  - infer+label missing `g_vtblT*` from constructor bodies adjacent to getter stubs.
+
+### TODO (next pass)
+- [ ] Implement/execute a vtable-label extraction batch from getter-adjacent constructor patterns (aim: raise `vtbl_count` significantly).
+- [ ] Promote newly normalized class getters’ surrounding ctor/dtor wrappers where still generic (`FUN_`/`Cluster_`) and behavior is constructor/destructor-stable.
+- [ ] Continue turn/economy caller-chain naming after this type-system batch.
+
+### Continuation (2026-02-21, classes/types/enums bigger pass)
+
+#### Class/type extraction (major)
+- Generated full getter-stub inventory and non-standard target set:
+  - `tmp_decomp/batch81_getter_stub_inventory.csv`
+  - `403` valid class getter stubs total
+  - `76` targets needing normalization and/or missing class/type labels
+
+- Applied class getter normalization + class/type label creation:
+  - input: `tmp_decomp/batch81_class_label_and_getter_fix.csv`
+  - result:
+    - `fn_ok=73`, `fn_skip=3`, `fn_fail=0`
+    - `lbl_ok=140`, `lbl_skip=12`, `lbl_fail=0`
+  - Effect: broad extraction of previously missing `g_pClassDescT*` and `g_szTypeNameT*` symbols and getter-name consistency.
+
+#### Enum extraction and table typing
+- Added reusable script:
+  - `new_scripts/create_gameplay_enums.py`
+  - Creates/updates:
+    - `EHexDirection` (2-byte)
+    - `EHexDirectionMask` (2-byte)
+    - `ETacticalUnitActionClass` (2-byte, class 2 marked artillery)
+    - `ETacticalUnitCategoryCode` (2-byte)
+  - Optional `--apply-tactical-tables`:
+    - applies `ETacticalUnitActionClass[27]` at `0x006693b8`
+    - applies `ETacticalUnitCategoryCode[27]` at `0x00695528`
+    - ensures labels:
+      - `g_aeTacticalUnitActionClassBySlot`
+      - `g_aeTacticalUnitCategoryBySlot`
+
+#### Vtable label extraction (major)
+- Added reusable conservative extractor:
+  - `new_scripts/extract_vtbl_labels_from_ctor_neighbors.py`
+  - Heuristic:
+    - class getter stub -> adjacent ctor candidate -> decompile -> infer `PTR_LAB_00xxxxxx`
+    - default conservative mode skips shared vtable-address collisions.
+
+- Applied conservative vtable-label pass:
+  - candidates: `59`
+  - unique vtable addresses: `51`
+  - shared-address groups: `3`
+  - apply result: `ok=48`, `skip=11`, `fail=0`
+
+#### Updated progress snapshot
+- `total_functions=11165`
+- `renamed_functions=7098`
+- `default_fun_or_thunk_fun=4067`
+- `class_desc_count=406`
+- `vtbl_count=227`
+- `type_name_count=406`
+
+### Bigger opportunities now
+- Shared-vtable groups are isolated and can be resolved manually/class-hierarchy-aware next (`--allow-shared-vtbl` intentionally not used yet).
+- With class/type/vtable coverage improved, next high-impact work is promoting ctor/dtor wrappers and applying these enum/types in key signatures/struct fields.
+
+### TODO (next pass)
+- [ ] Resolve shared-vtable groups (`shared=3`) manually and label base vs derived ownership for those addresses.
+- [ ] Promote ctor/dtor neighbors of newly normalized getters where still `FUN_`/`Cluster_` and behavior is stable.
+- [ ] Use new enums in selected function signatures/locals for tactical map functions (direction/action-class/category paths).
+
+### Continuation (2026-02-21, class/vtable continuation + risk-gated ctor/dtor plan)
+
+#### Shared-vtable groups resolved conservatively
+- Added alias `g_vtblT*` labels for classes sharing inferred vtable addresses (instead of forcing one owner):
+  - `0x0064a2b8`: `TCtlMgr`, `TButton`, `TCheater`, `TCloseParentButton`, `TStatusButton`
+  - `0x006406d8`: `TMapKey`, `TTechItemView`, `TTechHistoryView`
+  - `0x00648f78`: `TArmyMission`, `TArmyPlayer`, `TArmyBattle`
+- Additional residual shared group resolved in follow-up run:
+  - `0x00644308`: `TMapKey`, `TTechHistoryView`, `TTechItemView`
+- Net alias-label application totals this pass:
+  - initial inline batch: `ok=11`
+  - reusable-script follow-up: `ok=3`
+
+#### Reusable scripts added
+- `new_scripts/add_shared_vtbl_alias_labels.py`
+  - computes shared-vtable groups from getter+adjacent-ctor inference and adds alias labels.
+- `new_scripts/extract_vtbl_labels_from_ctor_neighbors.py`
+  - improved with shared-address detection and conservative skip behavior by default.
+
+#### Risk-gated larger ctor/dtor extraction (prepared, not blindly applied)
+- Generated a broad candidate set for getter-neighbor class quads:
+  - `tmp_decomp/batch83_class_quads_generic_neighbors.csv` (`207` rows)
+  - filtered form: `tmp_decomp/batch83_class_quads_generic_neighbors_filtered.csv`
+- Decision:
+  - Did **not** auto-apply all 207 ctor/dtor/create renames yet.
+  - Reason: many rows are mechanically adjacent but semantically mixed (would risk clobbering already-good names).
+  - Kept artifacts for staged/manual curation in upcoming passes.
+
+#### Updated progress snapshot
+- `total_functions=11165`
+- `renamed_functions=7098`
+- `default_fun_or_thunk_fun=4067`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Curate and apply a safe subset from `batch83_*` for ctor/dtor extraction (start with rows where both ctor+dtor are still `FUN_` and decomp confirms class-vtbl assignment).
+- [ ] Push enum usage into selected tactical/map signatures and, where safe, local variable typing.
+- [ ] Continue non-UI turn/economy caller-chain naming now that class/vtable coverage is stronger.
+
+### Continuation (2026-02-21, follow-up: shared-vtbl aliases + safe ctor extraction)
+
+#### Shared-vtable aliasing extended
+- Added reusable script:
+  - `new_scripts/add_shared_vtbl_alias_labels.py`
+  - Purpose: infer shared-vtable groups from getter+adjacent-ctor pattern and add per-class alias labels.
+
+- Applied shared-vtable alias labels:
+  - inline pass: `ok=11`
+  - reusable-script pass: `ok=3`
+- This resolved shared ownership visibility for class families that point at identical vtables (inheritance/shared-vtable cases).
+
+#### High-confidence ctor extraction (risk-gated)
+- Built large candidate set:
+  - `tmp_decomp/batch83_class_quads_generic_neighbors.csv` (`207` rows)
+  - filtered: `tmp_decomp/batch83_class_quads_generic_neighbors_filtered.csv`
+- Applied only high-confidence subset where generic function decomp explicitly referenced class vtable label (`g_vtblT*`):
+  - `tmp_decomp/batch85_safe_ctor_dtor_renames.csv`
+  - result: `rows=7 ok=7 skip=0 fail=0`
+
+- New constructor names recovered:
+  - `ConstructTSuperCivRosterBaseState`
+  - `ConstructTBattleReportViewBaseState`
+  - `ConstructTBatRepDetLineBaseState`
+  - `ConstructTBattleUnitsViewBaseState`
+  - `ConstructTMapKeyBaseState`
+  - `ConstructTShipLineBaseState`
+  - `ConstructTArmyBattleBaseState`
+
+#### Updated progress snapshot
+- `total_functions=11165`
+- `renamed_functions=7098`
+- `default_fun_or_thunk_fun=4067`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue staged ctor/dtor extraction from `batch83_*` using strict evidence gates (vtbl/classdesc evidence), avoiding blanket adjacency renames.
+- [ ] Use new enums in tactical/map code paths (`EHexDirection*`, `ETacticalUnitActionClass`, `ETacticalUnitCategoryCode`) for signature/local typing improvements.
+- [ ] Continue non-UI turn/economy caller-chain naming now that class/vtable coverage is stronger.
+
+### Continuation (2026-02-21, big-batch class-quad + signature + namespace pass)
+
+#### Fixed + completed evidence-gated class-quad rename batch
+- Added reusable generator:
+  - `new_scripts/generate_class_quad_evidence_renames.py`
+- Input:
+  - `tmp_decomp/batch83_class_quads_generic_neighbors_filtered.csv` (`207` rows)
+- Output:
+  - `tmp_decomp/batch86_class_quad_evidence_renames.csv`
+  - generation stats:
+    - `create_candidate=158`, `create_emit=85`
+    - `ctor_candidate=114`, `ctor_emit=2`
+    - `dtor_candidate=98`, `dtor_emit=7`
+    - `output_rows=94`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch86_class_quad_evidence_renames.csv`
+  - result: `rows=94 ok=94 skip=0 fail=0 comments=94`
+
+#### Bulk signature + method-attachment passes
+- Applied destructor signature normalizer:
+  - `new_scripts/apply_destructor_signatures.py --apply`
+  - result: `ok=0 skip=200 fail=0` (already normalized)
+- Applied class-helper signature pass:
+  - `new_scripts/apply_class_helper_signatures.py --apply`
+  - result: `ok=157 skip=476 fail=0`
+- Applied class method namespace attachment pass:
+  - `new_scripts/attach_class_methods_by_name_patterns.py --apply`
+  - result: `ok=93 skip=0 fail=0`
+- Applied simple thunk signature propagation from callee:
+  - `new_scripts/propagate_simple_thunk_signatures_from_callee.py --apply`
+  - result: `ok=3 skip=0 fail=0`
+
+#### Additional big class extraction: namespace creation/attachment from CSV
+- Applied:
+  - `.venv/bin/python new_scripts/extract_class_namespaces_from_csv.py tmp_decomp/batch81_getter_stub_inventory.csv tmp_decomp/batch83_class_quads_generic_neighbors_filtered.csv`
+- Result:
+  - `types=403`
+  - `class_created=71`, `class_existing=332`, `class_failed=0`
+  - `fn_attached=359`, `fn_already=414`, `fn_failed=0`
+- Net effect: broad class extraction/organization in Ghidra namespaces using existing getter/class-quad evidence.
+
+#### Exploration artifacts (no blind apply)
+- Ran aggressive discovery pipeline:
+  - `tmp_decomp/batch90_aggressive_discovery.json`
+  - `tmp_decomp/batch91_cluster_vcall_upgrade.csv`
+  - `tmp_decomp/batch91_cluster_vcall_upgrade.json`
+- Outcome:
+  - only `5` residual `Cluster_Vcall_*` functions remained in that pass and all scored `Unknown`; no rename apply from this dataset.
+- Added strict ctor-only generator for future reuse:
+  - `new_scripts/generate_ctor_base_from_class_quads.py`
+  - current run on `batch83` emitted `0` rows (gates intentionally strict).
+
+#### Updated progress snapshot
+- `total_functions=11165`
+- `renamed_functions=7204`
+- `default_fun_or_thunk_fun=3961`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Target game-logic-heavy `FUN_*` islands around already renamed economy/turn-flow anchors (avoid UI builder-heavy caller clusters).
+- [ ] Extend class-quad ctor recovery with a second strict gate family that detects EH-prologue ctors (without dropping confidence).
+- [ ] Push enum usage (`EHexDirection*`, `ETacticalUnitActionClass`, `ETacticalUnitCategoryCode`) into tactical/map function signatures and key locals.
+
+### Continuation (2026-02-21, big-batch gameplay thunk + namespace attachment pass)
+
+#### High-confidence gameplay thunk creation/renaming (bulk)
+- Tightened thunk candidate generator:
+  - `new_scripts/generate_missing_jmp_thunk_candidates.py`
+  - New safety gate: only emit source addresses that are either:
+    - no existing function at source, or
+    - existing generic function (`FUN_` / `thunk_FUN_`)
+  - Added CSV metadata columns:
+    - `source_name`, `source_is_generic`
+
+- Generated gameplay-filtered single-JMP thunk batch:
+  - `tmp_decomp/batch92_missing_jmp_thunks_gameplay.csv`
+  - range: `0x00401000-0x0063dfff`
+  - regex: `(Map|Turn|Nation|Civilian|Trade|Mission|Battle|Army|Navy|Tactical|Province|Commodity|Resource|Production|Diplom)`
+  - rows: `33`
+
+- Applied with function creation enabled:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch92_missing_jmp_thunks_gameplay.csv`
+  - result: `rows=33 ok=33 skip=0 fail=0 created=33 comments=33`
+
+#### Gameplay hint rename mini-batch
+- Applied previously prepared hint batch:
+  - `tmp_decomp/batch89_gameplay_hint_renames.csv`
+  - result: `rows=10 ok=10 skip=0 fail=0 comments=10`
+
+#### Additional class extraction / method attachment wave
+- Re-ran namespace attachment pass after new thunk/rename wave:
+  - `.venv/bin/python new_scripts/attach_class_methods_by_name_patterns.py --apply`
+  - result: `ok=77 skip=0 fail=0`
+  - Covered many mission/foreign-minister/admiral/great-power families and related thunks.
+
+#### Exploration artifacts (no blind apply)
+- Added reusable cpp-anchor hint script:
+  - `new_scripts/generate_cpp_anchor_hint_renames.py`
+  - Current run (`--min-hits 2`) produced `0` rows because `.cpp` anchor refs are currently all in already-named functions (no `FUN_*` remaining for this anchor class).
+
+- Ran constant-domain candidate exploration without nearby-call gate:
+  - `tmp_decomp/batch94b_constant_domain_candidates_logic_nogate.csv`
+  - functions: `107`
+  - This output is useful for dehardcoding/comment triage, but still mixes many low-ID cursor constants (high noise risk), so no blind comment apply from this broad run.
+
+#### Updated progress snapshot
+- `total_functions=11198`
+- `renamed_functions=7252`
+- `default_fun_or_thunk_fun=3946`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Mine the newly created thunk wrappers (`batch92`) for consistent signature propagation (pattern-specific, not blanket).
+- [ ] Do a filtered constant-domain comment pass that requires higher-confidence IDs (e.g., >=1000 UI/table domains) to reduce cursor-noise false positives.
+- [ ] Continue game-logic `FUN_*` reduction around tactical/map-order and turn-flow anchors with caller/callee batches.
+
+### Follow-up (same session)
+
+#### Signature propagation check for new thunk batch
+- Added reusable script:
+  - `new_scripts/apply_thunk_target_signatures_from_csv.py`
+  - purpose: copy target signatures to source thunks using CSV `address,target_addr`.
+- Ran on `tmp_decomp/batch92_missing_jmp_thunks_gameplay.csv`:
+  - result: `rows=33 ok=0 skip=33 fail=0`
+  - interpretation: created thunks were already in equivalent signature shape for this copier (no net signature delta).
+
+#### Additional caller/callee probe artifacts (no blind apply)
+- `tmp_decomp/batch93_fun_callers_logic.csv` (logic caller probe; 19 candidates)
+- `tmp_decomp/batch96_fun_callees_logic.csv` (logic callee probe; 5 candidates)
+- These are retained for targeted manual naming in next gameplay-focused pass.
+
+#### High-confidence constant-domain dehardcoding filter (ID>=1000)
+- Enhanced script:
+  - `new_scripts/generate_constant_domain_candidates.py`
+  - Added `--min-matched-id` to suppress low-ID cursor noise.
+
+- Generated filtered candidate set:
+  - `tmp_decomp/batch97_constant_domain_candidates_id1000.csv`
+  - args: `--min-hits 2 --min-matched-id 1000 --require-nearby-call-regex ""`
+  - result: `functions=10` (trade UI, diplomacy slider, civilian dialog, command controls)
+
+- Applied comment sync for this filtered set:
+  - same command + `--apply-comments --max-apply 10`
+  - result: `applied=1 skipped=9 fail=0`
+  - (most were already carrying equivalent const-domain annotations)
+
+### Continuation (2026-02-21, major thunk-wrapper batch)
+
+#### Large safe thunk creation/rename wave
+- Generated broad logic-oriented missing-jump-thunk candidates:
+  - input script: `new_scripts/generate_missing_jmp_thunk_candidates.py`
+  - output raw:
+    - `tmp_decomp/batch100_missing_jmp_thunks_broad_logic.csv`
+    - `rows=171`
+  - regex:
+    - `(Turn|Nation|Map|Civilian|Trade|Mission|Battle|Army|Navy|Tactical|Province|Commodity|Resource|Production|Diplom|Serialize|Deserialize|Dispatch|Process|Refresh|Rebuild|Queue|Apply|Compute|Handle|CreateT|ConstructT|DestructT)`
+
+- Sanitized for apply safety (name validity + duplicate target-name disambiguation):
+  - `tmp_decomp/batch100_missing_jmp_thunks_broad_logic_apply.csv`
+
+- Applied with function creation:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch100_missing_jmp_thunks_broad_logic_apply.csv`
+  - result: `rows=171 ok=171 skip=0 fail=0 created=171 comments=171`
+
+#### Related script additions / adjustments
+- Added reusable callee-hint builder:
+  - `new_scripts/build_fun_callee_hint_renames.py`
+  - mirrors caller-hint workflow but consumes `generate_fun_callee_candidates.py` output.
+- Added reusable thunk signature copier by CSV mapping:
+  - `new_scripts/apply_thunk_target_signatures_from_csv.py`
+- Signature propagation runs on new thunk batches:
+  - `propagate_simple_thunk_signatures_from_callee.py --apply` -> `candidates=0`
+  - `apply_thunk_target_signatures_from_csv.py batch100...` -> `ok=0 skip=171 fail=0`
+  - (new wrappers were already effectively in the same signature shape for these passes)
+
+#### Probe artifacts (targeted follow-up)
+- `tmp_decomp/batch98_fun_callees_logic.csv`
+- `tmp_decomp/batch99_fun_callee_hints.csv` (`rows=2`, not bulk-applied in this pass)
+
+#### Updated progress snapshot
+- `total_functions=11369`
+- `renamed_functions=7423`
+- `default_fun_or_thunk_fun=3946`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue de-`FUN_` reduction by mining unresolved callers/callees around newly-created thunk wrappers (batch100) with gameplay-only filters.
+- [ ] Apply selective `batch99`-style callee hints where caller evidence is gameplay-clean (avoid runtime/MFC dispatch clusters).
+- [ ] Push more concrete signatures on gameplay clusters surfaced by batch100 wrappers (mission/turn/nation handlers first).
+
+### Follow-up (same session, wrapper-anchored `FUN_` reduction)
+
+#### Wrapper-anchored caller/callee mining
+- Generated caller candidates from newly named thunk families:
+  - `tmp_decomp/batch101_fun_callers_from_new_thunks.csv`
+  - `matched_callees=1354`, `candidates=254`
+- Built conservative hint renames:
+  - `tmp_decomp/batch102_fun_caller_hints_from_new_thunks.csv`
+  - `rows=3`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch102_fun_caller_hints_from_new_thunks.csv`
+  - result: `rows=3 ok=3 skip=0 fail=0`
+
+#### Updated progress snapshot
+- `total_functions=11369`
+- `renamed_functions=7426`
+- `default_fun_or_thunk_fun=3943`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### Continuation (2026-02-21, large wrapper + graph-hint waves)
+
+#### Wide logic thunk sweep (batch107..111)
+- Generated wide-range thunk candidates (`0x00400000-0x00620000`) with gameplay-leaning regex:
+  - `tmp_decomp/batch107_missing_jmp_thunks_wide_logic.csv`
+  - sanitized apply file: `tmp_decomp/batch107_missing_jmp_thunks_wide_logic_apply.csv`
+  - candidate rows: `71`
+- Applied with function creation:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch107_missing_jmp_thunks_wide_logic_apply.csv`
+  - result: `rows=71 ok=71 skip=0 fail=0 created=71 comments=71`
+- Follow-on caller/callee passes:
+  - callers: `tmp_decomp/batch108_fun_callers_from_wide_thunks.csv` (`candidates=156`)
+  - caller hints: `tmp_decomp/batch109_fun_caller_hints_from_wide_thunks.csv` (`rows=10`)
+  - applied: `ok=10`
+  - callees: `tmp_decomp/batch110_fun_callees_from_wide_hints.csv` (`candidates=4`)
+  - callee hints: `tmp_decomp/batch111_fun_callee_hints_from_wide_hints.csv` (`rows=0`)
+
+#### Curated class-quad merge apply (batch112)
+- Merged curated class rows:
+  - `tmp_decomp/batch112_class_quads_merged.csv` (`rows=58`)
+  - sources: `class_extract_batch21/22/23/24` + `getter_neighbor_promotion_game_logic_fulltriples`
+- Applied class quads:
+  - `fn_ok=5 fn_skip=139 fn_fail=0`
+  - `lbl_ok=0 lbl_skip=139 lbl_fail=0`
+  - comments added/refreshed for all getter rows: `comments=58`
+- Namespace attach:
+  - `class_created=0 class_existing=58 class_converted=0`
+  - `fn_attached=3 fn_already=141 fn_failed=0`
+
+#### Broad gameplay graph wave (batch113..116)
+- Generated unresolved callers from broad gameplay-named callees:
+  - `tmp_decomp/batch113_fun_callers_from_broad_gameplay_named.csv`
+  - `matched_callees=2656 candidates=208`
+- Built+applied caller hints:
+  - `tmp_decomp/batch114_fun_caller_hints_broad_gameplay_named.csv` (`rows=9`)
+  - apply result: `ok=9`
+- Generated unresolved callee set from same gameplay caller regex:
+  - `tmp_decomp/batch115_fun_callees_from_broad_gameplay_named.csv` (`candidates=29`)
+- Built+applied callee hints:
+  - `tmp_decomp/batch116_fun_callee_hints_broad_gameplay_named.csv` (`rows=9`)
+  - apply result: `ok=9`
+
+#### Constant-domain dehardcoding comment pass (batch117..118)
+- Ran Neo4j-seeded constant-domain scan with nearby-call gate and comment apply:
+  - `tmp_decomp/batch117_constant_domain_candidates_all.csv`
+  - `functions=9`, comments applied: `9`
+  - produced useful annotations around diplomacy/command resource ID pushes.
+- Built unresolved-only rename hints from same CSV:
+  - `tmp_decomp/batch118_constdomain_fun_hints.csv`
+  - `rows=0` (only one residual FUN row with weak hit density; left unrenamed).
+
+#### Full-range wrapper pocket + secondary hint wave (batch119..123)
+- Generated all missing single-JMP wrapper candidates:
+  - `tmp_decomp/batch119_missing_jmp_thunks_wide_all.csv` (`rows=86`)
+- Sanitized with light MFC-noise pruning:
+  - `tmp_decomp/batch120_missing_jmp_thunks_wide_all_apply.csv` (`rows=81`)
+- Applied with function creation:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch120_missing_jmp_thunks_wide_all_apply.csv`
+  - result: `rows=81 ok=79 skip=2 fail=0 created=81 comments=81`
+- Built all-thunk caller graph:
+  - `tmp_decomp/batch121_fun_callers_from_all_thunks.csv`
+  - `matched_callees=4194 candidates=827`
+- Built+applied conservative hints from batch121:
+  - `tmp_decomp/batch122_fun_caller_hints_from_all_thunks.csv` (`rows=42`)
+  - apply result: `ok=42`
+- Built+applied extra gameplay-leaning low-hanging hints from same graph:
+  - `tmp_decomp/batch123_fun_caller_lowhang_from_all_thunks.csv` (`rows=49`)
+  - apply result: `ok=49`
+
+#### Updated progress snapshot
+- `total_functions=11696`
+- `renamed_functions=7934`
+- `default_fun_or_thunk_fun=3762`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Drive targeted decomp/context review for newly named `Cluster_NationStateHint_*` / `Cluster_MapTileHint_*` hot spots with high call density (especially `0x005b12e0`, `0x005942f0`, `0x005be600` neighborhoods).
+- [ ] Convert highest-confidence `Cluster_*Hint_*` functions into semantic names (non-hint) where behavior is now obvious from immediate callees/constants.
+- [ ] Run a stricter game-logic-only extractor over `batch121` to avoid further UI-heavy hint spray, then apply signatures for new non-thunk wrappers where parameter roles are clear.
+
+### Continuation (2026-02-21, signature sweep + second-order callee wave)
+
+#### Signature sweep (bulk scripts)
+- Ran:
+  - `new_scripts/apply_class_helper_signatures.py --apply`
+  - `new_scripts/apply_destructor_signatures.py --apply`
+  - `new_scripts/apply_wrapper_family_signatures.py --apply`
+  - `new_scripts/apply_wrapper_template_signatures.py --apply`
+- Results:
+  - class helper signatures: `candidates=632 ok=0 skip=632 fail=0`
+  - destructor signatures: `candidates=200 ok=0 skip=200 fail=0`
+  - wrapper family signatures: `candidates=0`
+  - wrapper template signatures: `candidates=0`
+- Interpretation: the targeted signatures are already in expected shape for these pattern families (no additional write deltas needed).
+
+#### Second-order callee pass from expanded Cluster hints (batch124..125)
+- Generated unresolved callee candidates from current `Cluster_*Hint_*` callers:
+  - `tmp_decomp/batch124_fun_callees_from_cluster_hints.csv`
+  - `callers=222`, `candidates=20`
+- Built conservative callee hint renames:
+  - `tmp_decomp/batch125_fun_callee_hints_from_cluster_hints.csv` (`rows=1`)
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch125_fun_callee_hints_from_cluster_hints.csv`
+  - result: `ok=1`
+
+#### Updated progress snapshot
+- `total_functions=11696`
+- `renamed_functions=7935`
+- `default_fun_or_thunk_fun=3761`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Use decomp/context dumps on top cluster hotspots (`0x005b12e0`, `0x005942f0`, `0x005be600`, `0x004fa190`) to replace hint names with semantic behavior names.
+- [ ] Add one reusable script to score `Cluster_*Hint_*` by xref count + named-callee purity and auto-propose semantic rename candidates (CSV only, no blind apply).
+- [ ] Continue game-logic-first reduction of remaining `FUN_` around nation-turn-map pipelines; avoid additional UI-resource-only hint spray.
+
+### Continuation (2026-02-21, wrapper-shape mining + hotspot semantic upgrades)
+
+#### New reusable script
+- Added:
+  - `new_scripts/generate_single_callee_wrapper_renames.py`
+- Purpose:
+  - find small `FUN_`/`Cluster_*Hint_*` functions that have one clear internal named callee,
+  - emit concrete wrapper names (`WrapperFor_<callee>_At<addr>`) with comment evidence,
+  - avoid speculative gameplay naming while still reducing unresolved/hint noise.
+
+#### Wrapper-shape wave #1 (batch126..130)
+- Generated strict gameplay-biased candidates:
+  - `tmp_decomp/batch126_single_callee_wrappers_gameplay.csv`
+  - result: `rows=42`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch126_single_callee_wrappers_gameplay.csv`
+  - result: `ok=42`
+- Follow-on graph mining from these wrapper names:
+  - callers: `tmp_decomp/batch127_fun_callers_from_single_callee_wrappers.csv` (`candidates=44`)
+  - caller hints: `tmp_decomp/batch128_fun_caller_hints_from_single_callee_wrappers.csv` (`rows=1`, applied `ok=1`)
+  - callees: `tmp_decomp/batch129_fun_callees_from_wrapper_and_cluster_wave.csv` (`candidates=25`)
+  - callee hints: `tmp_decomp/batch130_fun_callee_hints_from_wrapper_and_cluster_wave.csv` (`rows=1`, applied `ok=1`)
+
+#### Wrapper-shape wave #2 (relaxed thresholds, batch131..133)
+- Generated relaxed candidates (`max-instructions=40`, `max-call-insns=3`):
+  - `tmp_decomp/batch131_single_callee_wrappers_gameplay_relaxed.csv`
+  - result: `rows=30`
+- Applied:
+  - apply result: `ok=30`
+- Follow-on caller mining:
+  - `tmp_decomp/batch132_fun_callers_from_relaxed_wrapper_wave.csv` (`candidates=55`)
+  - hints: `tmp_decomp/batch133_fun_caller_hints_from_relaxed_wrapper_wave.csv` (`rows=1`, applied `ok=1`)
+
+#### Full thunk resweep (batch134..137)
+- Re-ran full-range missing-JMP thunk detection:
+  - `tmp_decomp/batch134_missing_jmp_thunks_full_resweep.csv` (`rows=63`)
+  - sanitized apply file: `tmp_decomp/batch134_missing_jmp_thunks_full_resweep_apply.csv` (`rows=59`)
+- Applied with function creation:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch134_missing_jmp_thunks_full_resweep_apply.csv`
+  - result: `rows=59 ok=59 created=59`
+- Caller mining from the reswept thunk set:
+  - `tmp_decomp/batch135_fun_callers_from_all_thunks_resweep.csv` (`candidates=726`)
+  - conservative builder output: `tmp_decomp/batch136_fun_caller_hints_from_all_thunks_resweep.csv` (`rows=0`)
+  - manual low-hanging extraction: `tmp_decomp/batch137_fun_caller_lowhang_from_resweep.csv` (`rows=1`, applied `ok=1`)
+
+#### Class-evidence retry from broad getter extraction (batch138..139)
+- Ran strict evidence generators against `class_extract_from_all_getters.csv`:
+  - `tmp_decomp/batch138_class_quad_evidence_from_all_getters.csv`
+  - `tmp_decomp/batch139_ctor_base_from_all_getters.csv`
+- Both produced `rows=0` (all candidates already non-generic/previously handled; no safe new deltas).
+
+#### Semantic hotspot conversion (batch140)
+- Reviewed full decomp/context for:
+  - `0x005b12e0`, `0x005942f0`, `0x005be600`, `0x004fa190`
+- Applied concrete semantic upgrades where behavior was clear:
+  - `0x005b12e0` -> `InitializeTechItemViewResourceEntriesAndText`
+  - `0x005942f0` -> `HandleStatusPictureNationTabSelectionAndActivateEvent`
+  - `0x004fa190` -> `RefreshInfoPanelNationMetricsAndLabels`
+- Source CSV:
+  - `tmp_decomp/batch140_semantic_hotspot_renames.csv`
+
+#### Updated progress snapshot
+- `total_functions=11755`
+- `renamed_functions=8070`
+- `default_fun_or_thunk_fun=3685`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Add a wrapper-name normalization pass to collapse deep `WrapperFor_WrapperFor_*` chains into cleaner single-layer forwarding names while preserving address suffixes.
+- [ ] Continue semantic upgrades on high-value cluster functions (`0x005be600` and nearby trade/nation panel handlers) using full decomp evidence.
+- [ ] Run one focused game-logic-only caller/callee pass anchored on newly semantic functions (`HandleStatusPictureNationTabSelectionAndActivateEvent`, `RefreshInfoPanelNationMetricsAndLabels`, `InitializeTechItemViewResourceEntriesAndText`) to pull in adjacent unresolved helpers.
+
+### Continuation (2026-02-21, high-throughput wrapper + graph batches)
+
+#### New scripts added
+- `new_scripts/generate_single_callee_wrapper_renames.py`
+  - mines small single-callee forwarding bodies and emits concrete `WrapperFor_*_At<addr>` renames.
+- `new_scripts/normalize_wrapper_chain_names.py`
+  - collapses nested `WrapperFor_WrapperFor_*` chains into single-layer wrapper names.
+
+#### Gameplay-focused wrapper mining wave (batch126..130)
+- Generated and applied strict wrapper candidates:
+  - `tmp_decomp/batch126_single_callee_wrappers_gameplay.csv`
+  - applied: `rows=42 ok=42`
+- Follow-on graph passes:
+  - `batch127` callers from these wrappers (`candidates=44`)
+  - `batch128` caller hints (`rows=1`, applied `ok=1`)
+  - `batch129` callee candidates (`candidates=25`)
+  - `batch130` callee hints (`rows=1`, applied `ok=1`)
+
+#### Relaxed gameplay wrapper mining wave (batch131..133)
+- Generated and applied relaxed wrapper candidates:
+  - `tmp_decomp/batch131_single_callee_wrappers_gameplay_relaxed.csv`
+  - applied: `rows=30 ok=30`
+- Follow-on caller pass:
+  - `batch132` (`candidates=55`)
+  - `batch133` caller hints (`rows=1`, applied `ok=1`)
+
+#### Full-range thunk resweep + follow-up (batch134..137)
+- Reswept missing single-JMP thunks:
+  - `tmp_decomp/batch134_missing_jmp_thunks_full_resweep.csv` (`rows=63`)
+  - sanitized apply file: `batch134..._apply.csv` (`rows=59`)
+- Applied with create-missing:
+  - result: `rows=59 ok=59 created=59`
+- Caller mining from reswept all-thunk set:
+  - `batch135` (`candidates=726`)
+  - conservative hints `batch136` (`rows=0`)
+  - low-hanging filtered hints `batch137` (`rows=1`, applied `ok=1`)
+
+#### Hotspot semantic conversion (batch140)
+- Deep context review for:
+  - `0x005b12e0`, `0x005942f0`, `0x005be600`, `0x004fa190`
+- Applied semantic upgrades where evidence was strong:
+  - `0x005b12e0` -> `InitializeTechItemViewResourceEntriesAndText`
+  - `0x005942f0` -> `HandleStatusPictureNationTabSelectionAndActivateEvent`
+  - `0x004fa190` -> `RefreshInfoPanelNationMetricsAndLabels`
+- `0x005be600` intentionally left as hint pending stronger behavioral certainty.
+
+#### Wrapper-chain normalization (batch141)
+- Generated and applied nested wrapper name collapse:
+  - `tmp_decomp/batch141_wrapper_chain_normalize.csv`
+  - applied: `rows=7 ok=7`
+
+#### Broad FUN_* wrapper sweep (batch144..146)
+- Ran broad single-callee wrapper mining on remaining `FUN_*` (strict shape, with core runtime exclusions):
+  - `tmp_decomp/batch144_single_callee_wrappers_fun_broad.csv`
+  - applied: `rows=323 ok=323`
+- Follow-on wrapper caller graph:
+  - `batch145` (`candidates=144`)
+  - built+applied hints `batch146` (`rows=25`, applied `ok=25`)
+
+#### Wrapper-callee follow-up (batch147..148)
+- Generated callee candidates from `WrapperFor_*` callers:
+  - `batch147` (`candidates=45`)
+- Built+applied strict callee hints:
+  - `batch148` (`rows=2`, applied `ok=2`)
+
+#### Updated progress snapshot
+- `total_functions=11755`
+- `renamed_functions=8493`
+- `default_fun_or_thunk_fun=3262`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Refine broad wrapper pass quality by adding an allow/deny list split (e.g., keep gameplay + core infra wrappers; optionally skip repetitive `FreeHeapBufferIfNotNull` wrappers if desired).
+- [ ] Promote selected high-value `Cluster_*Hint_*` to semantic names around turn/nation pipelines now exposed by `batch145`/`batch147` graph output.
+- [ ] Re-run targeted caller/callee mining on the newest semantic anchors and wrapper-normalized names to continue reducing remaining `FUN_*`.
+
+### Continuation (2026-02-21, map/turn propagation + locale cluster + ctor-style wrappers)
+
+#### Map/turn propagation waves (batch161..170)
+- Anchored fresh game-logic passes on map/turn/civilian/resource keywords:
+  - `batch161_fun_callers_game_logic_anchor.csv` (`candidates=147`)
+  - built caller hints `batch162` (`rows=27`) and applied (`ok=27`)
+- Follow-on callee expansion from new map/turn clusters:
+  - `batch163_fun_callees_from_new_mapturn_clusters.csv` (`candidates=35`)
+  - built callee hints `batch164` (`rows=5`) and applied (`ok=5`)
+- Additional wrapper-shaped low-hanging pass (map/turn scoped):
+  - `batch165_single_callee_wrappers_mapturn.csv` (`rows=13`, applied `ok=13`)
+  - wrapper normalization `batch166` (`rows=0`)
+- Second graph expansion:
+  - callers: `batch167` (`candidates=139`)
+  - caller hints `batch168` (`rows=7`, applied `ok=7`)
+  - callees: `batch169` (`candidates=32`)
+  - callee hints `batch170` (`rows=3`, applied `ok=3`)
+
+#### Signature hygiene chunk
+- Ran conservative thunk signature pass:
+  - `.venv/bin/python new_scripts/apply_simple_thunk_signatures.py --apply`
+  - result: `candidates=2785`, applied `ok=2346`, `skip=439`, `fail=0`
+- Wrapper-family/template signature scripts were rechecked and produced no new candidates:
+  - `apply_wrapper_family_signatures.py --apply` -> `candidates=0`
+  - `apply_wrapper_template_signatures.py --apply` -> `candidates=0`
+
+#### Domain-constant comment issue and cleanup
+- Ran broad constant-domain scan (`batch173`/`batch174`) and temporarily applied comments.
+- Detected correctness issue: low numeric constants overlap locale/LCTYPE values, causing misleading `[ConstDomain]` comments in non-resource functions.
+- Added reusable cleanup script:
+  - `new_scripts/cleanup_const_domain_comments.py`
+- Executed cleanup:
+  - `.venv/bin/python new_scripts/cleanup_const_domain_comments.py`
+  - result: `comments_cleaned=241`
+
+#### Locale/date-time formatting cluster decoded and renamed (batch180..181)
+High-confidence semantic renames from direct decomp evidence:
+- `0x005f8a80` -> `GetLocaleInfoWideWithAnsiFallback`
+- `0x005f8bb0` -> `GetLocaleInfoAnsiWithWideFallback`
+- `0x005f6a40` -> `NormalizeDigitStringAndStripSemicolons`
+- `0x005f88c0` -> `LoadLocaleInfoFieldByLctype`
+- `0x005f64c0` -> `BuildLocaleTimeFormatPatternString`
+- `0x005f5f00` -> `InitializeLocaleDayMonthNameTable`
+- `0x005f68f0` -> `InitializeLocaleDateTimeFormattingFields`
+- `0x005b3570` -> `RefreshMinorRelationshipDialogTerrainMatrix`
+- `0x005b4090` -> `RefreshMinorTreatyDialogTerrainMatrix`
+
+Applied signatures (`batch181_signatures_locale_helpers.csv`, `ok=7`):
+- meaningful calling conventions, return types, and key parameter names for the above locale helpers.
+
+#### Broad wrapper resweep + ctor-style refinement (batch183..186)
+- Broad residual wrapper sweep:
+  - `batch183_single_callee_wrappers_fun_broad3.csv` (`rows=8`, applied `ok=8`)
+  - normalized wrapper chains in `batch184` (`rows=2`, applied `ok=2`)
+- Inspected resulting `_memset` wrappers; identified constructor-like patterns with explicit vtable installs.
+- Applied semantic ctor-pattern renames (`batch185`, `ok=8`):
+  - `ConstructObjectVtable0067066cBase`
+  - `ConstructObjectVtable00670b4cBase`
+  - `ConstructObjectVtable00670b4cWithArg`
+  - `ConstructObjectVtable0066fc2cBase`
+  - `ConstructObjectVtable0066fc2cWithArgs`
+  - `ConstructObjectVtable00672c54Base`
+  - `ConstructObjectVtable0067358cBase`
+  - `StartDocAFromContextWithDocName`
+- Applied matching signature upgrades (`batch186`, `ok=8`).
+
+#### Progress snapshot (post-pass)
+- `total_functions=11755`
+- `renamed_functions=8732`
+- `default_fun_or_thunk_fun=3023`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue map-action/civilian game-logic reduction by anchoring from `Cluster_MapTileHint_*` functions that now have 2+ unresolved FUN callers (`batch177` low-hanging single-callee wrappers first).
+- [ ] Promote additional constructor clusters from vtable-install + memset shapes to `ConstructObjectVtable*` style names, then backfill class extraction candidates from shared vtable roots.
+- [ ] Run targeted semantic upgrades around minor-diplomacy update pipeline adjacent to:
+  - `RefreshMinorRelationshipDialogTerrainMatrix`
+  - `RefreshMinorTreatyDialogTerrainMatrix`
+  (favor nearby unresolved helpers with string/control-key evidence).
+- [ ] Keep constant-domain analysis in strict mode only (callsite-gated) or as CSV-only triage; avoid broad ungated comment application.
+
+### Continuation (2026-02-21, control-tag low-hanging cleanup before deeper control-tag research)
+
+#### Control-tag evidence refresh
+- Rebuilt focused control-tag context artifacts:
+  - `tmp_decomp/batch196_controltag_context.txt`
+  - `tmp_decomp/batch196_controltag_token_hits.txt`
+  - `tmp_decomp/batch196_controltag_core_context.txt`
+- High-confidence token family confirmed around target functions:
+  - summary/commodity tags: `food`, `popu`, `prof/forp`, `powe/ewop`, `rail`, `airt/iart`
+  - additional city-production tags: `rtnu`, `iarg`, `dorp`, `taem`, `drah`, `tolc`, `nruf`, `Pbal`
+- This gave enough direct decomp evidence for safe behavior-based renaming of unresolved control-tag updaters.
+
+#### Renames applied (batch196)
+- Source CSV:
+  - `tmp_decomp/batch196_semantic_controltag_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch196_semantic_controltag_renames.csv`
+  - result: `[done] rows=4 ok=4 skip=0 fail=0 comments=4`
+
+Renames:
+- `0x004bc0b0`:
+  - `FUN_004bc0b0` -> `UpdateCityProductionDialogCommodityValueControls`
+- `0x005866b0`:
+  - `FUN_005866b0` -> `UpdateTradeSummaryMetricControlsFromRecord`
+- `0x0058a020`:
+  - `Cluster_NationStateHint_0058a020` -> `SelectTradeSummaryMetricByTagAndUpdateBarValues`
+- `0x00402cf7`:
+  - `thunk_Cluster_NationStateHint_0058a020` -> `thunk_SelectTradeSummaryMetricByTagAndUpdateBarValues`
+
+#### Signature cleanup (batch196)
+- Source CSV:
+  - `tmp_decomp/signature_batch196_controltag_fun_cleanup.csv`
+- Final apply command:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch196_controltag_fun_cleanup.csv --apply`
+  - result: `[done] ok=2 skip=0 fail=0`
+- Applied signatures:
+  - `0x004bc0b0`: `void __fastcall UpdateCityProductionDialogCommodityValueControls(int * this)`
+  - `0x005866b0`: `void __thiscall UpdateTradeSummaryMetricControlsFromRecord(void * this, int recordContext)`
+
+#### Important workflow note captured
+- Attempted concurrent writer operations (rename apply + signature apply in parallel) caused one save failure:
+  - `java.io.IOException: File error during save`
+- Re-running signature apply sequentially succeeded.
+- Keep one active pyghidra writer operation at a time for reliability.
+
+#### Progress snapshot (post-batch196)
+- `total_functions=11755`
+- `renamed_functions=8755`
+- `default_fun_or_thunk_fun=3000`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue control-tag research on unresolved heavy hubs with the same evidence-first approach:
+  - `0x005be600` (done/reje/acce/wait/list/book/query/text tags)
+  - `0x0041b6d0` and `0x00427360` (large commodity/control constructors)
+- [ ] Build a small reusable control-tag extractor script (function -> list of 4-char immediates + call targets) to speed future dehardcoding batches.
+- [ ] Keep prioritizing low-hanging semantic upgrades; skip giant constructors until an adjacent caller/callee gives a concrete behavior anchor.
+
+### Continuation (2026-02-21, dedicated control-tag research batch)
+
+#### Reusable tooling added
+- Added script:
+  - `new_scripts/extract_control_tag_usage.py`
+- Purpose:
+  - scan all functions for likely 4-char immediate tags,
+  - export per-function usage and per-tag summary,
+  - include both immediate-order (`tag_le`) and human-order (`tag_be`) strings.
+
+#### Full control-tag scan outputs
+- Generated:
+  - `tmp_decomp/batch197b_control_tag_usage_detail.csv` (`rows=2744`)
+  - `tmp_decomp/batch197b_control_tag_usage_summary.csv` (`rows=743`)
+  - `tmp_decomp/batch197b_control_tag_unresolved_focus.txt` (unresolved function focus list)
+- Persisted curated findings:
+  - `control-tags-research.md`
+
+#### Key findings from scan
+- High-signal command/control tag families confirmed with broad coverage:
+  - `okay`, `cncl`, `acce`, `reje`, `next`, `back`, `left`, `rght`, `move`, `card`, `offr`
+  - trade/diplomacy selectors: `trea`, `trad`, `tran`, `dipl`, `city`
+  - commodity lane: `food`, `popu`, `prof`, `powe`, `rail`, `grai`, `prod`
+- Meta layout tags (`main`, `tool`, `curs`, `pict`, `stat`, `name`) are highly frequent and less useful alone for naming decisions.
+
+#### Low-hanging tag-handler renames applied (batch197c)
+- Source CSV:
+  - `tmp_decomp/batch197c_control_tag_handler_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch197c_control_tag_handler_renames.csv`
+  - result: `[done] rows=5 ok=5 skip=0 fail=0 comments=5`
+
+Renames:
+- `0x004f2e00`:
+  - `FUN_004f2e00` -> `HandleDialogEvent10BackOkayAndForward`
+- `0x004f3050`:
+  - `FUN_004f3050` -> `HandleDialogEvent14ActionTagsAndEvent10BackOkay`
+- `0x004f3710`:
+  - `FUN_004f3710` -> `HandleDialogEvent14TranTreaAndEvent10BackOkay`
+- `0x004f9350`:
+  - `FUN_004f9350` -> `HandleDialogAcceptRejectShortcutAndQueueUiEvent`
+- `0x005bf860`:
+  - `FUN_005bf860` -> `HandleDialogAcceptRejectShortcutAndQueueUiEventAlt`
+
+#### Signature cleanup for new handlers
+- Source CSV:
+  - `tmp_decomp/signature_batch197c_control_tag_handlers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch197c_control_tag_handlers.csv --apply`
+  - result: `[done] ok=5 skip=0 fail=0`
+
+#### Writer/save reliability note
+- Parallel writer operations caused a save conflict once (`java.io.IOException: File error during save`).
+- Re-running sequentially succeeded.
+- Keep pyghidra write operations strictly serialized per batch.
+
+#### Progress snapshot (post-batch197c)
+- `total_functions=11755`
+- `renamed_functions=8760`
+- `default_fun_or_thunk_fun=2995`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue control-tag research on unresolved heavy constructors:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Add extractor mode for narrowed target sets (only unresolved `FUN_`/`Cluster_*Hint_*`) to reduce tag-noise from already-known UI builders.
+- [ ] Use caller/event-code anchors to promote one of the above constructor clusters to semantic naming without overfitting on tag frequency alone.
+
+### Continuation (2026-02-21, control-tag Neo4j sync + follow-up low-hanging renames)
+
+#### Neo4j control-tag sync completed
+- Wrote curated control-tag nodes from batch197 summary into Neo4j:
+  - source: `ghidra:batch197b_control_tag_usage`
+  - tags upserted: `29`
+  - each tag now has:
+    - `tag`, `tag_le`
+    - `function_count`, `total_hits`
+    - `category` (`command`, `commodity`, `trade_diplomacy`, `ui_meta`)
+- Added curated code links:
+  - relation: `(:ControlTag)-[:OBSERVED_IN]->(:Function)`
+  - source: `ghidra:batch197d_curated_control_tag_edges`
+  - edges upserted: `55`
+  - linked functions: `24`
+
+#### Follow-up control-tag low-hanging renames (batch197e)
+- Source CSV:
+  - `tmp_decomp/batch197e_control_tag_fun_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch197e_control_tag_fun_renames.csv`
+  - result: `[done] rows=3 ok=3 skip=0 fail=0 comments=3`
+
+Renames:
+- `0x00586400`:
+  - `FUN_00586400` -> `HandleCityDialogSelectionAndBackControlReset`
+- `0x0056d1e0`:
+  - `FUN_0056d1e0` -> `HandleDialogOkayCancelShortcutAndQueueUiEvent`
+- `0x0056fbf0`:
+  - `FUN_0056fbf0` -> `ResetSelectableOptionEntriesExceptColorAndOkay`
+
+#### Signatures applied (batch197e)
+- Source CSV:
+  - `tmp_decomp/signature_batch197e_control_tag_fun.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch197e_control_tag_fun.csv --apply`
+  - result: `[done] ok=3 skip=0 fail=0`
+
+#### Neo4j follow-up function name + edge sync
+- Updated Neo4j function names for:
+  - `0x00586400`, `0x0056d1e0`, `0x0056fbf0`
+- Added observed tag links:
+  - `back -> 0x00586400`
+  - `okay/cncl -> 0x0056d1e0`
+  - `okay -> 0x0056fbf0`
+  - source: `ghidra:batch197e_control_tag_renames`
+
+#### Progress snapshot (post-batch197e)
+- `total_functions=11755`
+- `renamed_functions=8763`
+- `default_fun_or_thunk_fun=2992`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue dehardcoding control-tag handlers around unresolved heavy hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Add unresolved-only mode to `extract_control_tag_usage.py` (filter by `FUN_`/`Cluster_*Hint_*`) for cleaner rename candidate output.
+- [ ] Promote one large constructor cluster to semantic naming via caller/event anchor first, then apply the same pattern to the remaining three.
+
+### Continuation (2026-02-21, control-tag follow-up renames + Neo4j expansion)
+
+#### Additional control-tag renames applied (batch198)
+- Source CSV:
+  - `tmp_decomp/batch198_control_tag_followup_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch198_control_tag_followup_renames.csv`
+  - result: `[done] rows=8 ok=8 skip=0 fail=0 comments=8`
+
+Renames:
+- `0x004f9450`:
+  - `Cluster_MapHint_004f9450` -> `RunDiplomacyNegotiationPopupAndAwaitResponse`
+- `0x004f9a60`:
+  - `FUN_004f9a60` -> `RunDiplomacyWaitSheetPopupAndAwaitResponse`
+- `0x00405281`:
+  - `thunk_FUN_004f9a60` -> `thunk_RunDiplomacyWaitSheetPopupAndAwaitResponse`
+- `0x0059a180`:
+  - `FUN_0059a180` -> `SetTradeToolSubcontrolEnabledStateByFlag`
+- `0x00583fb0`:
+  - `FUN_00583fb0` -> `HandleRightArrowAutoRepeatTickAndDispatch`
+- `0x005882f0`:
+  - `FUN_005882f0` -> `UpdateTradeSellControlAndBarFromNationMetric`
+- `0x00589d10`:
+  - `FUN_00589d10` -> `UpdateTradeBarFromSelectedMetricRatio_A`
+- `0x00588f60`:
+  - `FUN_00588f60` -> `UpdateTradeBarFromSelectedMetricRatio_B`
+
+#### Signature cleanup (batch198)
+- Source CSV:
+  - `tmp_decomp/signature_batch198_followup.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch198_followup.csv --apply`
+  - result: `[done] ok=4 skip=0 fail=0`
+- Updated signatures:
+  - `UpdateTradeSellControlAndBarFromNationMetric` (`__fastcall void(this:int*)`)
+  - `UpdateTradeBarFromSelectedMetricRatio_A` (`__fastcall void(this:int*)`)
+  - `UpdateTradeBarFromSelectedMetricRatio_B` (`__fastcall void(this:int*)`)
+  - `HandleRightArrowAutoRepeatTickAndDispatch` (`__thiscall void(this:int*, repeatState:int, a3:int, a4:int, dispatchArg:int)`)
+
+#### Neo4j updates (control tags)
+- Existing curated control-tag graph retained and expanded.
+- Added/updated function links for batch198 renames:
+  - source: `ghidra:batch198_control_tag_followup`
+  - observed edges added: `8`
+- Added extra tag nodes from summary scan:
+  - `wait`, `shee`, `seas`, `year`, `dont`
+  - source: `ghidra:batch198_extra_control_tags`
+- Added extra observed edges:
+  - source: `ghidra:batch198_extra_control_tag_edges`
+  - edges added: `7`
+
+Neo4j control-tag snapshot after this pass:
+- batch19-era control tags loaded: `34`
+- curated `OBSERVED_IN` edges (batch197d/197e/198 + extras): `73`
+- linked functions in curated set: `33`
+
+#### Progress snapshot (post-batch198)
+- `total_functions=11755`
+- `renamed_functions=8770`
+- `default_fun_or_thunk_fun=2985`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue with the unresolved constructor hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Add unresolved-only filter support to `extract_control_tag_usage.py` so hotspot extraction excludes already-semantic functions by default.
+- [ ] Decode and rename one of the following high-use control helpers next (low-hanging):
+  - `FUN_005de5d0`
+  - `FUN_00456ba3`
+  - `Cluster_NationStateHint_005be600` (if a concrete caller/event anchor is recovered first).
+
+### Continuation (2026-02-21, batch199 low-hanging control-helper cleanup)
+
+#### Low-hanging renames applied
+- Source CSV:
+  - `tmp_decomp/batch199_low_hanging_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch199_low_hanging_renames.csv`
+  - result: `[done] rows=3 ok=3 skip=0 fail=0 comments=3`
+
+Renames:
+- `0x005de5d0`:
+  - `FUN_005de5d0` -> `RefreshCurrentUiViewAndActivePanelState`
+  - why safe: fetches active view from `g_pUiViewManager`, nil-guards with `MessageBoxA("Nil Pointer","Failure")`, then executes fixed refresh/update vtable sequence.
+- `0x00406ded`:
+  - `thunk_FUN_005de5d0` -> `thunk_RefreshCurrentUiViewAndActivePanelState`
+  - why safe: direct thunk/body-equivalent wrapper for `0x005de5d0`.
+- `0x00456ba3`:
+  - `FUN_00456ba3` -> `BuildDifficultyAndNamesSetupUiResources`
+  - why safe: function constructs UI resource nodes with explicit setup strings:
+    - `Difficulty Setting`
+    - `Introductory`, `Normal`, `Nigh-On Impossible`
+    - `Names:`, `Random`, `Historical`, `All AutoGP's`
+
+#### Signature cleanup (batch199)
+- Source CSV:
+  - `tmp_decomp/signature_batch199_low_hanging.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch199_low_hanging.csv --apply`
+  - result: `[done] ok=1 skip=2 fail=0`
+- Effective change:
+  - `BuildDifficultyAndNamesSetupUiResources` now has explicit signature:
+    - `int * __cdecl BuildDifficultyAndNamesSetupUiResources(void)`
+
+#### Control-tag hotspot follow-up (005be600)
+- Re-checked large unresolved helper:
+  - `Cluster_NationStateHint_005be600`
+- Artifacts:
+  - `tmp_decomp/batch199_005be600_context.txt`
+  - `tmp_decomp/batch199_005be600_tags_detail.csv`
+  - `tmp_decomp/batch199_005be600_tags_summary.csv`
+- Observed command tags in this function:
+  - `acce`, `reje`, `wait`, `done`, `trea`, plus UI meta tags (`tool`, `tabs`, `text`, `list`, `book`).
+- Decision:
+  - kept unresolved name for now (still a large mixed hub); defer until caller/event anchor becomes concrete.
+
+#### Progress snapshot (post-batch199)
+- `total_functions=11755`
+- `renamed_functions=8773`
+- `default_fun_or_thunk_fun=2982`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue with unresolved heavy constructor/control hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [x] `extract_control_tag_usage.py` unresolved-only filter support exists (`--only-unresolved`).
+- [ ] Promote `Cluster_NationStateHint_005be600` only after recovering a concrete caller/event anchor (avoid overfitting from tag frequency).
+- [ ] Target next low-hanging non-hub control helpers adjacent to newly-renamed functions (`RefreshCurrentUiViewAndActivePanelState`, `BuildDifficultyAndNamesSetupUiResources`).
+
+### Continuation (2026-02-21, batch199d command-tag FUN low-hanging pass)
+
+#### Candidate triage performed
+- Re-scanned unresolved-only control-tag usage:
+  - `tmp_decomp/batch199b_unresolved_control_tag_detail.csv`
+  - `tmp_decomp/batch199b_unresolved_control_tag_summary.csv`
+- Focused `FUN_*` shortlist (command-tag low-hanging):
+  - `0x00441948`, `0x0044a810`, `0x004b1a90`, `0x004b1cb0`, `0x004bd260`, `0x005649a0`, `0x00572e60`, `0x005ac840`
+- Context dump artifact:
+  - `tmp_decomp/batch199c_fun_tag_candidates_context.txt`
+
+#### Renames applied
+- Source CSV:
+  - `tmp_decomp/batch199d_fun_tag_low_hanging_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch199d_fun_tag_low_hanging_renames.csv`
+  - result: `[done] rows=6 ok=6 skip=0 fail=0 comments=6`
+
+Renames:
+- `0x00441948`:
+  - `FUN_00441948` -> `BuildGarrisonViewBaseAndTabCursorUiResources`
+- `0x004b1a90`:
+  - `FUN_004b1a90` -> `InitializeCheaterLaborPoolDialogResources`
+- `0x004b1cb0`:
+  - `FUN_004b1cb0` -> `RefreshLaborPoolOverlayResourceValues`
+- `0x00401a00`:
+  - `thunk_FUN_004b1cb0` -> `thunk_RefreshLaborPoolOverlayResourceValues`
+- `0x004bd260`:
+  - `FUN_004bd260` -> `HandleRailheadDialogOkaySelection`
+- `0x005ac840`:
+  - `FUN_005ac840` -> `InitializeTacticalToolbarCommandEntries`
+
+#### Signature updates/fixes
+- Applied:
+  - `tmp_decomp/signature_batch199d_fun_tag_low_hanging.csv`
+  - `tmp_decomp/signature_batch199d_fix_railhead.csv`
+- Key outcomes:
+  - `BuildGarrisonViewBaseAndTabCursorUiResources`:
+    - `int * __cdecl BuildGarrisonViewBaseAndTabCursorUiResources(void)`
+  - `HandleRailheadDialogOkaySelection`:
+    - `void __thiscall HandleRailheadDialogOkaySelection(TRailheadDialog * this, uint controlTag)`
+  - corrected an intermediate bad param shape (removed extra synthetic arg after initial apply).
+
+#### Deferred (not renamed this pass)
+- `0x0044a810`, `0x005649a0`, `0x00572e60`:
+  - retained unresolved due weaker semantic anchors (builder/flow fragments still too ambiguous for stable behavior names).
+
+#### Progress snapshot (post-batch199d)
+- `total_functions=11755`
+- `renamed_functions=8780`
+- `default_fun_or_thunk_fun=2975`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue with unresolved heavy constructor/control hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Recover concrete caller/event anchor for `Cluster_NationStateHint_005be600`, then decide semantic rename.
+- [ ] Revisit deferred low-hanging trio with stronger anchors:
+  - `FUN_0044a810`
+  - `FUN_005649a0`
+  - `FUN_00572e60`
+
+### Continuation (2026-02-21, batch200 deferred-trio closure + thunk table workflow)
+
+#### Reusable script added (to avoid ad-hoc inline commands)
+- Added:
+  - `new_scripts/dump_ref_table_context.py`
+- Purpose:
+  - dump refs to target function addresses,
+  - include data-slot neighborhood for thunk-table analysis,
+  - quickly recover neighboring function pointers for vtable/dispatch rows.
+- Example usage:
+  - `.venv/bin/python new_scripts/dump_ref_table_context.py 0x005649a0 0x00572e60`
+
+#### Evidence collected
+- Dialog-factory callback anchor:
+  - `InitializeTurnEventDialogFactoryRegistry` contains callback thunk `0x004053f8` (targeting `0x0044a810`).
+  - artifact: `tmp_decomp/batch200_dialog_factory_scan_479480.txt`
+- Roster/page helper anchor:
+  - `0x0056fa50` is called from super-army/super-civ/navy roster builders and reused by `0x005649a0`.
+  - artifacts:
+    - `tmp_decomp/batch200_5649a0_callers_context.txt`
+    - `tmp_decomp/batch200_ref_table_context2.txt`
+- Render pipeline anchor:
+  - `0x00572e60` resolves `main/back/GOLD` tags and runs palette/blit helpers via temporary bitmap wrapper.
+  - artifacts:
+    - `tmp_decomp/batch200_helper_context.txt`
+    - `tmp_decomp/batch200_ref_table_context.txt`
+
+#### Renames applied (batch200)
+- Source CSV:
+  - `tmp_decomp/batch200_roster_dialog_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch200_roster_dialog_renames.csv`
+  - result: `[done] rows=8 ok=8 skip=0 fail=0 comments=8`
+
+Renames:
+- `0x0044a810`:
+  - `FUN_0044a810` -> `BuildTurnEventDialogResources_2508`
+- `0x004053f8`:
+  - `thunk_FUN_0044a810` -> `thunk_BuildTurnEventDialogResources_2508`
+- `0x0056fa50`:
+  - `FUN_0056fa50` -> `InitializeRosterPageLineCollectionsAndBounds`
+- `0x00406f8c`:
+  - `thunk_FUN_0056fa50` -> `thunk_InitializeRosterPageLineCollectionsAndBounds`
+- `0x005649a0`:
+  - `FUN_005649a0` -> `ResetRosterPageStateAndDispatchUiText2730`
+- `0x00572e60`:
+  - `FUN_00572e60` -> `BlitPanelBitmapFromMainBackOrGoldTag`
+- `0x0047a200`:
+  - `FUN_0047a200` -> `ConstructBitmapBlitBufferFromSourceDescriptor`
+- `0x00404999`:
+  - `thunk_FUN_0047a200` -> `thunk_ConstructBitmapBlitBufferFromSourceDescriptor`
+
+#### Missing thunk functions created + named
+- Source CSV:
+  - `tmp_decomp/batch200_create_missing_thunks.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch200_create_missing_thunks.csv`
+  - result: `[done] rows=2 ok=2 created=2`
+
+Created:
+- `0x00407f90` -> `thunk_ResetRosterPageStateAndDispatchUiText2730`
+- `0x00407068` -> `thunk_BlitPanelBitmapFromMainBackOrGoldTag`
+
+#### Signature updates (batch200)
+- Applied:
+  - `tmp_decomp/signature_batch200_roster_helper.csv`
+  - `tmp_decomp/signature_batch200_methodify.csv`
+  - `tmp_decomp/signature_batch200_new_thunks.csv`
+- Key outcomes:
+  - `InitializeRosterPageLineCollectionsAndBounds`:
+    - `void __thiscall ... (void * this)`
+  - `ResetRosterPageStateAndDispatchUiText2730`:
+    - `void __thiscall ... (void * this)`
+  - `BlitPanelBitmapFromMainBackOrGoldTag`:
+    - `void __thiscall ... (void * this)`
+  - new thunk functions at `0x00407f90` and `0x00407068` carry matching `__thiscall void` signatures.
+
+#### Progress snapshot (post-batch200)
+- `total_functions=11757`
+- `renamed_functions=8790`
+- `default_fun_or_thunk_fun=2967`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue unresolved heavy constructor/control hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Recover concrete caller/event anchor for `Cluster_NationStateHint_005be600`, then decide semantic rename.
+- [ ] Use `dump_ref_table_context.py` on remaining thunk-island targets in dialog-factory callback set to convert more `FUN_`/`thunk_FUN_` into behavior-based names.
+
+### Continuation (2026-02-21, batch200e load/save slot control handler)
+
+#### Reusable selector script update
+- Added:
+  - `new_scripts/select_control_tag_fun_candidates.py`
+- Updated:
+  - added `--name-mode`:
+    - `fun_only`
+    - `cluster_only`
+    - `all_unresolved`
+- Purpose:
+  - quickly rank unresolved functions/clusters by command-tag density from control-tag detail CSV.
+
+#### Candidate extraction artifacts
+- `tmp_decomp/batch200b_unresolved_control_tag_detail.csv`
+- `tmp_decomp/batch200c_control_tag_cluster_candidates.csv`
+- `tmp_decomp/batch200d_cluster_candidates_context.txt`
+
+This surfaced `0x0056cd10` as a strong low-hanging slot/okay/cancel handler in `TLoadSavePicture`.
+
+#### Renames applied (batch200e)
+- Source CSV:
+  - `tmp_decomp/batch200e_loadsave_slot_rename.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch200e_loadsave_slot_rename.csv`
+  - result: `[done] rows=2 ok=2 skip=0 fail=0`
+
+Renames:
+- `0x0056cd10`:
+  - `Cluster_CityHint_0056cd10` -> `HandleLoadSaveSlotControlSelectionAndQueueOkay`
+- `0x004018de`:
+  - `thunk_Cluster_CityHint_0056cd10` -> `thunk_HandleLoadSaveSlotControlSelectionAndQueueOkay`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch200e_loadsave_slot.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch200e_loadsave_slot.csv --apply`
+  - result: `[done] ok=1 skip=1 fail=0`
+- Signatures:
+  - `void __thiscall HandleLoadSaveSlotControlSelectionAndQueueOkay(void * this, int eventCode, void * controlEntry)`
+  - `void __thiscall thunk_HandleLoadSaveSlotControlSelectionAndQueueOkay(void * this, int eventCode, void * controlEntry)`
+
+#### Progress snapshot (post-batch200e)
+- `total_functions=11757`
+- `renamed_functions=8790`
+- `default_fun_or_thunk_fun=2967`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue unresolved heavy constructor/control hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Recover concrete caller/event anchor for `Cluster_NationStateHint_005be600`, then decide semantic rename.
+- [ ] Continue `cluster_only` control-tag triage on smaller command handlers:
+  - `Cluster_NationStateHint_004f3370`
+  - `Cluster_CityHint_0050bea0`
+  - `Cluster_UiControlA4A8_1C8_0056bcc0`
+
+### Continuation (2026-02-21, batch200f engineer command-dispatch handler)
+
+#### Renames applied
+- Source CSV:
+  - `tmp_decomp/batch200f_engineer_dialog_rename.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch200f_engineer_dialog_rename.csv`
+  - result: `[done] rows=2 ok=2`
+
+Renames:
+- `0x004f3370`:
+  - `Cluster_NationStateHint_004f3370` -> `DispatchEngineerDialogCommandTagsByEventCode`
+- `0x0040811b`:
+  - `thunk_Cluster_NationStateHint_004f3370` -> `thunk_DispatchEngineerDialogCommandTagsByEventCode`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch200f_engineer_dialog.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch200f_engineer_dialog.csv --apply`
+  - result: `[done] ok=1 skip=1`
+- Signatures:
+  - `void __thiscall DispatchEngineerDialogCommandTagsByEventCode(void * this, int eventCode, void * controlEntry)`
+  - `void __thiscall thunk_DispatchEngineerDialogCommandTagsByEventCode(void * this, int eventCode, void * controlEntry)`
+
+#### Progress snapshot (post-batch200f)
+- `total_functions=11757`
+- `renamed_functions=8790`
+- `default_fun_or_thunk_fun=2967`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue unresolved heavy constructor/control hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Recover concrete caller/event anchor for `Cluster_NationStateHint_005be600`, then decide semantic rename.
+- [ ] Continue small-cluster command-handler triage:
+  - `Cluster_CityHint_0050bea0`
+  - `Cluster_UiControlA4A8_1C8_0056bcc0`
+
+### Continuation (2026-02-21, batch201 Neo4j/tag-table-guided city + load/save handlers)
+
+#### Domain/tag grounding used in this pass
+- Queried Neo4j `ControlTag` domain map and observed-link set:
+  - command tags: `okay`, `cncl`, `left`, `rght` (with category/hit coverage)
+  - trade/load-save command families from prior curation (`HandleDialogCommandTagSaveLoadPrefQuitCred` etc.)
+- Re-ran local tag-table extraction for targets:
+  - `0x0050bea0` tags: `left`, `rght`, `text`, `tota`, `valu`
+  - `0x0056bcc0` tags: `okay`, `cncl`, `slt0`, `otto`, `map `, `info`, `curs`, `plat`
+- Table/thunk context verified with:
+  - `new_scripts/dump_ref_table_context.py`
+
+#### Renames applied (batch201)
+- Source CSV:
+  - `tmp_decomp/batch201_city_loadsave_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch201_city_loadsave_renames.csv`
+  - result: `[done] rows=4 ok=4`
+
+Renames:
+- `0x0050bea0`:
+  - `Cluster_CityHint_0050bea0` -> `RefreshCityProductionDetailPanelAndArrowWidgets`
+- `0x004090de`:
+  - `thunk_Cluster_CityHint_0050bea0` -> `thunk_RefreshCityProductionDetailPanelAndArrowWidgets`
+- `0x0056bcc0`:
+  - `Cluster_UiControlA4A8_1C8_0056bcc0` -> `InitializeLoadSaveDialogSlotControlsAndCommandTags`
+- `0x0040948f`:
+  - `thunk_Cluster_UiControlA4A8_1C8_0056bcc0` -> `thunk_InitializeLoadSaveDialogSlotControlsAndCommandTags`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch201_loadsave_thiscall.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch201_loadsave_thiscall.csv --apply`
+  - result: `[done] ok=1 skip=1`
+- Updated to method form:
+  - `InitializeLoadSaveDialogSlotControlsAndCommandTags(TLoadSavePicture * this)`
+  - thunk aligned to same calling convention/signature.
+
+#### Progress snapshot (post-batch201)
+- `total_functions=11757`
+- `renamed_functions=8790`
+- `default_fun_or_thunk_fun=2967`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue unresolved heavy constructor/control hubs:
+  - `0x0041b6d0`, `0x00427360`, `0x0045e0b0`, `0x004538a0`
+- [ ] Recover concrete caller/event anchor for `Cluster_NationStateHint_005be600`, then decide semantic rename.
+- [ ] Continue small-cluster command-handler triage from Neo4j/tag-table set:
+  - `Cluster_ArmyNavyHint_0043dbc0`
+  - `Cluster_UiControlA4A8_1C8_1E4_00430c50`
+
+### Continuation (2026-02-21, batch202 Neo4j + tag-table cluster renaming)
+
+#### Domain/tag grounding used in this pass
+- Queried Neo4j `ControlTag` inventory and hit coverage to prioritize high-signal unresolved clusters.
+- Re-ran tag extraction with unresolved focus:
+  - `.venv/bin/python new_scripts/extract_control_tag_usage.py tmp_decomp/batch202_control_tags_detail.csv tmp_decomp/batch202_control_tags_summary.csv /home/andrzej.gluszak/code/personal/imperialism_knowledge --only-unresolved`
+- Ranked cluster-only candidates:
+  - `.venv/bin/python new_scripts/select_control_tag_fun_candidates.py --detail-csv tmp_decomp/batch202_control_tags_detail.csv --name-mode cluster_only --out-csv tmp_decomp/batch202_cluster_candidates.csv`
+
+#### Evidence snapshots used for naming
+- `0x0041b6d0`:
+  - explicit tag constants in decomp: `left`, `rght`, `move`, `bar `
+  - key callees: `thunk_ConstructTradeMoveStepControlPanel`, `thunk_ConstructTradeQuantityArrowPictureEntry`, `TIndustryAmtBar::...`
+- `0x0043dbc0`:
+  - tag usage confirms command set: `okay`, `cncl`, `next`, `trad`, `tran`
+  - key callees: `thunk_ConstructTArmyInfoViewBaseState`, `ConstructTCombatReportViewBaseState`, `ConstructTOceanDialogBaseState`
+- `0x00427360`:
+  - tag set includes `trea`, `trad`, `tran`, `dipl`, `seas`, `city`
+  - key callee: `thunk_InitializeCityProductionView`
+- `0x004538a0`:
+  - tag set includes `load`, `rand`, `mult`, `pref`, `quit`, `send`, `okay`, `cncl`
+  - key callees: `ConstructTGameSetupPictureBaseState`, `TSetupRandomMapPicture`-related init path
+
+#### Renames applied (batch202)
+- Source CSV:
+  - `tmp_decomp/batch202_tag_table_cluster_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch202_tag_table_cluster_renames.csv`
+  - result: `[done] rows=8 ok=8`
+
+Renames:
+- `0x0041b6d0`:
+  - `Cluster_UiControlA4A8_1C8_1E4_0041b6d0` -> `InitializeIndustryViewTradeMoveControlsAndCommodityRows`
+- `0x004070ae`:
+  - `Cluster_UiControlA4A8_1C8_1E4_0041b6d0` thunk -> `thunk_InitializeIndustryViewTradeMoveControlsAndCommodityRows`
+- `0x0043dbc0`:
+  - `Cluster_ArmyNavyHint_0043dbc0` -> `InitializeArmyNavyReportViewsAndCommandTags`
+- `0x00407013`:
+  - `Cluster_ArmyNavyHint_0043dbc0` thunk -> `thunk_InitializeArmyNavyReportViewsAndCommandTags`
+- `0x00427360`:
+  - `Cluster_UiControlA4A8_1C8_00427360` -> `InitializeIndustryOverviewPlacardsAndTradeStatusTags`
+- `0x00403977`:
+  - `Cluster_UiControlA4A8_1C8_00427360` thunk -> `thunk_InitializeIndustryOverviewPlacardsAndTradeStatusTags`
+- `0x004538a0`:
+  - `Cluster_UiControlA4A8_1C8_004538a0` -> `InitializeGameSetupScreenControlsAndModeTags`
+- `0x00406690`:
+  - `Cluster_UiControlA4A8_1C8_004538a0` thunk -> `thunk_InitializeGameSetupScreenControlsAndModeTags`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch202_ui_cluster_initializers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch202_ui_cluster_initializers.csv --apply`
+  - result: `[done] ok=4 skip=4`
+- Standardized callback shape for these initializer clusters and thunks:
+  - `void * __cdecl (..., void * pContext, short controlCode)`
+
+#### Neo4j high-level sync
+- Upserted renamed `Function` nodes for:
+  - `0x0041b6d0`, `0x0043dbc0`, `0x00427360`, `0x004538a0`
+- Added high-level `ControlTag` -> `Function` `OBSERVED_IN` links (24 total), preserving only conceptual tag bindings:
+  - Industry trade controls (`left`, `rght`, `move`, `bar `)
+  - Army/Navy command tags (`okay`, `cncl`, `next`, `trad`, `tran`)
+  - Industry overview trade/diplomacy tags (`trea`, `trad`, `tran`, `dipl`, `seas`, `city`)
+  - Game setup mode/command tags (`load`, `quit`, `send`, `okay`, `cncl`)
+
+#### Progress snapshot (post-batch202)
+- `total_functions=11757`
+- `renamed_functions=8790`
+- `default_fun_or_thunk_fun=2967`
+- `class_desc_count=406`
+- `vtbl_count=241`
+- `type_name_count=406`
+
+### TODO (next pass)
+- [ ] Continue unresolved command-heavy cluster triage from `batch202_cluster_candidates.csv`:
+  - `0x005be600` (`aert/ecca/ejer/enod/tiaw` set)
+  - `0x00430c50` (same command quintet, compare against `0x005be600`)
+  - `0x0045b100` (`okay/cncl/done`)
+- [ ] For `0x005be600`, derive concrete screen/state anchor (likely diplomacy/turn-state path) before renaming.
+- [ ] Use the same script-driven pipeline (`extract_control_tag_usage` + `select_control_tag_fun_candidates` + `dump_function_context`) for the next batch.
+
+### Continuation (2026-02-21, batch203 command-quintet + tactical split)
+
+#### Domain/tag grounding used in this pass
+- Focused next unresolved clusters from `batch202_cluster_candidates.csv`:
+  - `0x005be600`, `0x00430c50`, `0x0045b100`
+- Verified tag evidence in `tmp_decomp/batch202_control_tags_detail.csv` and decomp context using:
+  - `new_scripts/dump_function_context.py`
+  - `new_scripts/dump_ref_table_context.py`
+
+#### High-confidence semantic split discovered
+- `0x00430c50`:
+  - contains `Deal Book` string and `TDealBookPicture` construction path
+  - command tags include `acce/reje/wait/done/book`
+- `0x005be600`:
+  - non-initializer command/tag setup routine (nation-state path)
+  - configures response tags and per-tag timers (`acce/reje` timeout writes)
+- `0x0045b100`:
+  - tactical battle UI initializer (`TacticalBattleView`, tactical toolbar/resource entry paths)
+  - includes command tags (`okay/cncl/done`) but is primarily tactical-view construction
+
+#### Renames applied (batch203)
+- Source CSV:
+  - `tmp_decomp/batch203_command_quintet_and_tactical_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch203_command_quintet_and_tactical_renames.csv`
+  - result: `[done] rows=6 ok=6`
+
+Renames:
+- `0x00430c50`:
+  - `Cluster_UiControlA4A8_1C8_1E4_00430c50` -> `InitializeDealBookScreenControlsAndCommandTags`
+- `0x004059cf`:
+  - `Cluster_UiControlA4A8_1C8_1E4_00430c50` thunk -> `thunk_InitializeDealBookScreenControlsAndCommandTags`
+- `0x005be600`:
+  - `Cluster_NationStateHint_005be600` -> `ConfigureNationStateResponseCommandTagsAndTimers`
+- `0x00407c4d`:
+  - `thunk_Cluster_NationStateHint_005be600` -> `thunk_ConfigureNationStateResponseCommandTagsAndTimers`
+- `0x0045b100`:
+  - `Cluster_UiControlA4A8_1C8_30_0045b100` -> `InitializeTacticalBattleViewToolbarAndDialogControls`
+- `0x004056fa`:
+  - `Cluster_UiControlA4A8_1C8_30_0045b100` thunk -> `thunk_InitializeTacticalBattleViewToolbarAndDialogControls`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch203_dealbook_tactical_nationstate.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch203_dealbook_tactical_nationstate.csv --apply`
+  - result: `[done] ok=3 skip=3`
+- Updated signatures:
+  - `InitializeDealBookScreenControlsAndCommandTags(void* pContext, short controlCode) -> void* __cdecl`
+  - `InitializeTacticalBattleViewToolbarAndDialogControls(void* pContext, short controlCode) -> void* __cdecl`
+  - `ConfigureNationStateResponseCommandTagsAndTimers(void* this) -> void __thiscall`
+  - corresponding thunks aligned.
+
+#### Neo4j high-level sync
+- Upserted `Function` nodes for:
+  - `0x00430c50`, `0x005be600`, `0x0045b100`
+- Added high-level `ControlTag` -> `Function` links where tags exist in DB:
+  - Deal Book init: `acce/reje/wait/done`
+  - Nation response config: `acce/reje/wait/done` (+ existing `tool`)
+  - Tactical init: `okay/cncl/done`
+- Non-existing tags in current DB (e.g., `book/list/quer/help/info`) were intentionally not force-created in this pass.
+
+### TODO (next pass)
+- [ ] Continue unresolved control clusters with same pipeline:
+  - `0x005d5d30`, `0x005779c0`, `0x005acd60`
+- [ ] Decide whether to normalize missing control tags in Neo4j (`book/list/quer/help/info`) as first-class `ControlTag` nodes.
+- [ ] Revisit `0x0045d520` and nearby cluster family for diplomacy/trade navigation tags after the tactical split is stabilized.
+
+### Continuation (2026-02-21, batch204 unresolved cluster triage)
+
+#### Re-ranking after batch203
+- Re-ran unresolved extraction + candidate ranking:
+  - `tmp_decomp/batch204_control_tags_detail.csv`
+  - `tmp_decomp/batch204_cluster_candidates.csv`
+- Targeted next low-hanging set:
+  - `0x0044af90`, `0x005779c0`, `0x005d5d30`
+
+#### Evidence used
+- `0x0044af90`:
+  - strong slot-pattern tags: `nam0..nam6`, `pick0..pick6`, `box0..box6`, `rad0..rad6`
+  - command tags: `okay`, `cncl`, `canc`
+  - class anchor in decomp path: `TJoinSelectorDialog`
+- `0x005779c0`:
+  - command tags: `pick`, `flag`, `coat`, `glob`, `plan`, `okay`, `cncl`
+  - key callees: `thunk_RefreshSetupRandomMapCountryControlIfApplicable`, map/toggle forwarding calls
+- `0x005d5d30`:
+  - modal/dialog behavior with `okay`/`cncl` and `info` path; boolean return depends on cancel tag
+
+#### Renames applied (batch204)
+- Source CSV:
+  - `tmp_decomp/batch204_joinselector_randommap_modal_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch204_joinselector_randommap_modal_renames.csv`
+  - result: `[done] rows=6 ok=6`
+
+Renames:
+- `0x0044af90`:
+  - `Cluster_UiControlA4A8_1C8_30_0044af90` -> `InitializeJoinSelectorDialogControlsAndNationSlots`
+- `0x004033be`:
+  - thunk -> `thunk_InitializeJoinSelectorDialogControlsAndNationSlots`
+- `0x005779c0`:
+  - `Cluster_ArmyNavyHint_005779c0` -> `HandleRandomMapNationPlanAndFlagCommands`
+- `0x00404e7b`:
+  - thunk -> `thunk_HandleRandomMapNationPlanAndFlagCommands`
+- `0x005d5d30`:
+  - `Cluster_UiControlA4A8_1C8_1E4_005d5d30` -> `RunNationInfoModalAndReturnNonCancel`
+- `0x0040327e`:
+  - thunk -> `thunk_RunNationInfoModalAndReturnNonCancel`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch204_joinselector_randommap_modal.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch204_joinselector_randommap_modal.csv --apply`
+  - result: `[done] ok=3 skip=3`
+- Updated signatures:
+  - `InitializeJoinSelectorDialogControlsAndNationSlots(void* pContext, short controlCode) -> void* __cdecl`
+  - `HandleRandomMapNationPlanAndFlagCommands(void* this, int eventCode, void* pControl) -> void __thiscall`
+  - `RunNationInfoModalAndReturnNonCancel(void* this, void* pDialogContext) -> bool __thiscall`
+  - corresponding thunks aligned.
+
+#### Neo4j high-level sync
+- Upserted `Function` nodes for:
+  - `0x0044af90`, `0x005779c0`, `0x005d5d30`
+- Added `ControlTag` -> `Function` links for existing DB tags:
+  - Join selector: `okay`, `cncl`
+  - Random-map handler: `flag`, `okay`, `cncl`
+  - Nation-info modal: `okay`, `cncl`
+
+### TODO (next pass)
+- [ ] Continue remaining unresolved candidates from `batch204_cluster_candidates.csv`:
+  - `0x0045e0b0`, `0x004ad7a0`, `0x005acd60`, `0x0045d520`
+- [ ] Decide whether to add missing command tags to Neo4j (`pick`, `plan`, `book`, `list`, `quer`, etc.) as first-class `ControlTag` nodes.
+
+### Continuation (2026-02-21, batch205 targeted command handlers)
+
+#### Targeted inspection
+- Inspected unresolved set:
+  - `0x005acd60`, `0x004ad7a0`, `0x0045d520`
+- Kept `0x0045d520` unresolved for now (initializer pattern still too generic for confident semantic naming).
+
+#### Renames applied (batch205)
+- Source CSV:
+  - `tmp_decomp/batch205_target_command_handlers_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch205_target_command_handlers_renames.csv`
+  - result: `[done] rows=4 ok=4`
+
+Renames:
+- `0x005acd60`:
+  - `Cluster_UiControlA4A8_1C8_005acd60` -> `ConfigureTacticalTargetDoneRetreatAutoControls`
+- `0x0040652d`:
+  - thunk -> `thunk_ConfigureTacticalTargetDoneRetreatAutoControls`
+- `0x004ad7a0`:
+  - `Cluster_UiHint_004ad7a0` -> `HandleMapContextPrevNextInfoCommands`
+- `0x00403c47`:
+  - thunk -> `thunk_HandleMapContextPrevNextInfoCommands`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch205_target_command_handlers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch205_target_command_handlers.csv --apply`
+  - result: `[done] ok=2 skip=2`
+- Updated signatures:
+  - `ConfigureTacticalTargetDoneRetreatAutoControls(void* this, int modeFlag) -> void __thiscall`
+  - `HandleMapContextPrevNextInfoCommands(void* this, int eventCode, void* pControl) -> void __thiscall`
+  - corresponding thunks aligned.
+
+#### Neo4j high-level sync
+- Upserted `Function` nodes for:
+  - `0x005acd60`, `0x004ad7a0`
+- Added available-tag `OBSERVED_IN` links:
+  - tactical control config: `done`
+  - map-context command handler: `next`, `okay`
+
+### TODO (next pass)
+- [ ] Continue with unresolved initializer family around:
+  - `0x0045e0b0`, `0x0045d520`
+- [ ] Revisit `0x004adfc0` as companion of `HandleMapContextPrevNextInfoCommands` for potential paired rename.
+- [ ] Optional Neo4j hygiene: add missing command tags encountered in code (`pick`, `plan`, `book`, `list`, `quer`, `info`, `prev`) if we want complete tag-link coverage.
+
+### Continuation (2026-02-21, batch206b global command-tag dispatch matrix)
+
+#### Big-win workflow implemented
+- Added reusable script:
+  - `new_scripts/generate_command_tag_dispatch_matrix.py`
+- Purpose:
+  - Build global matrix of functions vs command tags with handler heuristics.
+  - Emit high-confidence unresolved handler rename candidates in CSV format.
+- Inputs/outputs used in this pass:
+  - input: `tmp_decomp/batch204_control_tags_detail.csv`
+  - matrix: `tmp_decomp/batch206b_command_tag_dispatch_matrix.csv`
+  - candidates: `tmp_decomp/batch206b_command_tag_handler_candidates.csv`
+
+#### Matrix-driven bulk renaming (applied subset)
+- Candidate set produced: 5 unresolved handlers.
+- Applied only high-confidence subset after manual decomp validation:
+  - `0x004adfc0` and `0x00503ed0` (+ direct thunks).
+
+Renames applied:
+- `0x004adfc0`:
+  - `Cluster_UiControlA4A8_1C8_004adfc0` -> `RefreshMapContextSelectionPanelAndInfoLabels`
+- `0x00403bca`:
+  - thunk -> `thunk_RefreshMapContextSelectionPanelAndInfoLabels`
+- `0x00503ed0`:
+  - `Cluster_ArmyNavyHint_00503ed0` -> `HandleNameSlotNextPrevToggleCommands`
+- `0x00401e5b`:
+  - thunk -> `thunk_HandleNameSlotNextPrevToggleCommands`
+
+Signature updates:
+- `0x004adfc0` / `0x00403bca`:
+  - `void __thiscall (..., void* pSelectionPayload)`
+- `0x00503ed0` / `0x00401e5b`:
+  - `void __thiscall (..., int eventCode, void* pControl)`
+
+#### Deferred from matrix candidates (kept conservative)
+- Not auto-applied in this pass due weaker semantics from current evidence:
+  - `0x0045e0b0`
+  - `0x0045d520`
+  - `0x005b1e20` (already semantically improved earlier as TTechItemView handler)
+
+#### Neo4j high-level sync
+- Upserted high-level function names for:
+  - `0x004adfc0`, `0x00503ed0`
+- Added available-tag `OBSERVED_IN` links where corresponding `ControlTag` nodes exist.
+
+### Big-Win Backlog (explicit reminder)
+- [ ] Second major approach (do not forget):
+  - Extract a typed base UI view/vtable skeleton for the common dialog/view objects (especially resolver slot paths around `+0x94`, `+0x1ac`, `+0x1d0`, `+0x1d4`) and apply shared method prototypes/comments across families.
+  - Goal: improve decomp readability globally and make future dispatch/handler renames faster and safer.
+
+### Continuation (2026-02-21, batch208 factory-callback dehardcoding)
+
+#### Reliability + workflow updates
+- Save/lock sanity check passed:
+  - used a write probe (`tmp_decomp/batch208_write_probe.csv`) through `apply_function_renames_csv.py`
+  - result: `[done] rows=1 ok=0 skip=1 fail=0`, confirming project writes/saves are working again.
+- Added reusable helper script:
+  - `new_scripts/list_function_callers.py`
+  - purpose: list callsites/caller functions for one or more target addresses (CSV output), used to validate factory callback wiring quickly.
+
+#### Factory callback evidence
+- Using `list_function_callers.py`, validated unresolved callbacks are registered in:
+  - `InitializeTurnEventDialogFactoryRegistry` (`0x00479480`)
+- Evidence:
+  - `0x00405402` and `0x00401235` are thunk callbacks pushed into `thunk_RegisterDialogFactoryCallback`.
+  - callback targets are `0x0045d520` and `0x0045e0b0`.
+- Additional registry scan used:
+  - `tmp_decomp/batch208_factory_scan.txt`
+
+#### Renames/comments applied (saved)
+- Source CSV:
+  - `tmp_decomp/batch208_eventfactory_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch208_eventfactory_renames.csv`
+  - result: `[done] rows=6 ok=6 skip=0 fail=0 comments=3`
+
+Renames:
+- `0x0045d520`:
+  - `Cluster_UiControlA4A8_1C8_0045d520` -> `BuildTurnEventDialogResourcesForEvent898`
+- `0x00405402`:
+  - thunk -> `thunk_BuildTurnEventDialogResourcesForEvent898`
+- `0x0045e0b0`:
+  - `Cluster_UiControlA4A8_1C8_30_0045e0b0` -> `BuildTurnEventDialogResourcesForEvent8FC`
+- `0x00401235`:
+  - thunk -> `thunk_BuildTurnEventDialogResourcesForEvent8FC`
+- `0x005b1e20`:
+  - `Cluster_CityHint_005b1e20` -> `HandleTechItemViewPurchaseOrDescriptionCommand`
+- `0x0040343b`:
+  - thunk -> `thunk_HandleTechItemViewPurchaseOrDescriptionCommand`
+
+Attached comments in Ghidra (high-confidence behavior):
+- Event 898 callback: base/main/text/tool/end/seas/trea resource tree
+- Event 8FC callback: extended tab/dialog tree (`seas/trea/tran/city/trad/dipl/okay/...`)
+- Tech-item handler: `purc` and `desc` command handling under commandId 10.
+
+#### Signature updates applied
+- Source CSV:
+  - `tmp_decomp/signature_batch208_eventfactory_targets.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch208_eventfactory_targets.csv --apply`
+  - result: `[done] ok=2 skip=0 fail=0`
+- Updated:
+  - `BuildTurnEventDialogResourcesForEvent898(int callbackCtx, short eventCode) -> int *`
+  - `BuildTurnEventDialogResourcesForEvent8FC(int callbackCtx, short eventCode) -> int *`
+
+Thunk signature copy attempt:
+- Source CSV:
+  - `tmp_decomp/batch208_thunk_sig_copy.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_thunk_target_signatures_from_csv.py tmp_decomp/batch208_thunk_sig_copy.csv`
+  - result: `[done] rows=3 ok=0 skip=3 fail=0` (already matched/unchanged)
+
+Verification artifact:
+- `tmp_decomp/batch208_verify.txt`
+
+### TODO (next pass)
+- [ ] Continue factory callback dehardcoding from `InitializeTurnEventDialogFactoryRegistry`:
+  - prioritize unresolved callback thunks/targets still carrying generic names after batch208.
+- [ ] Revisit calling conventions for event-factory callbacks (`Event898`, `Event8FC`) once callback type is recovered from registry container type.
+- [ ] Keep game-logic priority next: continue civilian/map action flows (improvement/build orders) rather than UI-only clusters.
+
+### Continuation (2026-02-21, batch209 tech-item purchase helper dehardcoding)
+
+#### Scope
+- Followed game-logic adjacent to:
+  - `HandleTechItemViewPurchaseOrDescriptionCommand` (`0x005b1e20`)
+- Goal: dehardcode helper calls and associated money tables used in purchase/refund state transitions.
+
+#### Reusable script additions
+- `new_scripts/list_xrefs_to_address.py`
+  - generic xref scanner for data/function addresses with function+instruction context.
+- `new_scripts/dump_dword_table.py`
+  - quick dword table dumper for address/count.
+- `new_scripts/rename_labels_from_csv.py`
+  - reusable CSV-driven primary label rename/create script for globals/data symbols.
+
+#### Evidence gathered
+- Call chain confirmation:
+  - `HandleTechItemViewPurchaseOrDescriptionCommand` calls thunks:
+    - `0x004023e7 -> 0x005b0b30`
+    - `0x004039cc -> 0x005b0bb0`
+- Data xrefs:
+  - `0x0066aae8` used by both mutators (`+/-` funds path).
+  - `0x0066ad58` used by tech-item init + affordability checks.
+- Table comparison:
+  - dumped first 32 dwords from both tables; values match in this range (including sentinels).
+  - artifacts:
+    - `tmp_decomp/batch209_table_66aae8.csv`
+    - `tmp_decomp/batch209_table_66ad58.csv`
+
+#### Renames/comments applied (saved)
+- Source CSV:
+  - `tmp_decomp/batch209_tech_purchase_helper_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch209_tech_purchase_helper_renames.csv`
+  - result: `[done] rows=4 ok=4`
+
+Function renames:
+- `0x005b0b30`:
+  - `FUN_005b0b30` -> `ApplyTechItemPurchaseCostAndState`
+- `0x004023e7`:
+  - thunk -> `thunk_ApplyTechItemPurchaseCostAndState`
+- `0x005b0bb0`:
+  - `FUN_005b0bb0` -> `RefundTechItemPurchaseCostAndClearState`
+- `0x004039cc`:
+  - thunk -> `thunk_RefundTechItemPurchaseCostAndClearState`
+
+Global labels applied:
+- Source CSV:
+  - `tmp_decomp/batch209_tech_cost_labels.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/rename_labels_from_csv.py tmp_decomp/batch209_tech_cost_labels.csv`
+  - result: `[done] rows=2 ok=2`
+- Labels:
+  - `0x0066ad58` -> `g_aiTechItemCostByIndex`
+  - `0x0066aae8` -> `g_aiTechItemCostDeltaByIndex`
+
+Verification artifacts:
+- `tmp_decomp/batch209_verify.txt`
+- `tmp_decomp/batch209_verify_after_labels.txt`
+- `tmp_decomp/batch209_data_xrefs.csv`
+
+### TODO (next pass)
+- [ ] Continue around `InitializeTechItemViewResourceEntriesAndText` (`0x005b12e0`) to rename neighboring cost/prompt helpers while context is hot.
+- [ ] Evaluate if `g_aiTechItemCostByIndex` and `g_aiTechItemCostDeltaByIndex` should be unified/aliased after full-range table comparison and broader xref scan.
+- [ ] Return to civilian/map-action game logic cluster after finishing this short tech-item subcluster.
+
+### Continuation (2026-02-21, batch210 shared text helpers + tech prereq dehardcoding)
+
+#### Scope
+- Expanded from `InitializeTechItemViewResourceEntriesAndText` (`0x005b12e0`) into:
+  - shared text/picture helper chain,
+  - tech prerequisite pair helpers,
+  - purchase/refund mutators and prerequisite tables.
+
+#### Reusable script additions
+- `new_scripts/inspect_entry_stub_targets.py`
+  - disassembles/inspects first instruction at candidate stub addresses,
+  - resolves flow target names,
+  - can create missing thunk functions in-place (`--create`).
+
+#### Renames/comments applied (saved)
+- Source CSV:
+  - `tmp_decomp/batch210_shared_text_and_tech_helpers_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch210_shared_text_and_tech_helpers_renames.csv`
+  - result: `[done] rows=27 ok=27`
+
+Key renames:
+- Tech prerequisite/purchase helpers:
+  - `0x005b0a20` -> `AreTechItemPrerequisitePairCompleted`
+  - `0x005b0a90` -> `SelectMissingTechItemPrerequisitesFromPair`
+  - `0x005b0b30` -> `ApplyTechItemPurchaseCostAndState`
+  - `0x005b0bb0` -> `RefundTechItemPurchaseCostAndClearState`
+  - corresponding direct thunks renamed.
+- Shared text/picture helpers:
+  - `0x0048fd00` -> `InitializeTextEntryBaseAndOptionalStringResource`
+  - `0x0048fe60` -> `AssignTextSharedRefIfChangedAndMaybeInvalidate`
+  - `0x004861f0` -> `AssignTextFromResourceIdAndMaybeInvalidate`
+  - `0x00486290` -> `UpdateTextEntrySharedStringIfChanged`
+  - `0x0048f330` -> `InitializePictureEntryBaseAndRefresh`
+  - `0x0045b080` -> `ClearColorRgbaBytes`
+  - `0x0045b0a0` -> `SetColorRgbAndClearAlphaByte`
+  - `0x005b5ff0` -> `ApplyTextStyleRectAndRefreshLayout`
+  - `0x005b63e0` -> `RecenterTextFromMeasuredWidthAndMaybeInvalidate`
+  - `0x004860e0` -> `MeasureRenderedTextWidthWithCompatibleDC`
+  - `0x00486300` -> `NoOpTextPostLayoutHook`
+  - direct thunks renamed where present.
+
+#### Data labels applied (saved)
+- Source CSV:
+  - `tmp_decomp/batch210_tech_prereq_pair_labels.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/rename_labels_from_csv.py tmp_decomp/batch210_tech_prereq_pair_labels.csv`
+  - result: `[done] rows=2 ok=2`
+- Labels:
+  - `0x0066ac10` -> `g_awTechItemPrereqPrimaryByIndex`
+  - `0x0066ac12` -> `g_awTechItemPrereqSecondaryByIndex`
+
+#### Signature hygiene (saved)
+- Initial pass (`signature_batch210_helper_hygiene.csv`) introduced extra implicit-this duplication on global `__thiscall` helpers.
+- Fixed pass:
+  - `tmp_decomp/signature_batch210_helper_hygiene_fix.csv`
+  - result: `[done] ok=5 skip=5`
+- Finalized helper signatures:
+  - `AreTechItemPrerequisitePairCompleted(void* this, int itemIndex, int nationIndex) -> bool __thiscall`
+  - `SelectMissingTechItemPrerequisitesFromPair(void* this, int itemIndex, int nationIndex, int* pPrimaryMissing, uint* pSecondaryMissing) -> void __thiscall`
+  - `ApplyTechItemPurchaseCostAndState(void* this, int itemIndex, int nationIndex) -> void __thiscall`
+  - `RefundTechItemPurchaseCostAndClearState(void* this, int itemIndex, int nationIndex) -> void __thiscall`
+  - `MeasureRenderedTextWidthWithCompatibleDC(TTEView* this) -> int __thiscall`
+  - direct thunks aligned.
+
+Verification artifacts:
+- `tmp_decomp/batch210_verify_core.txt`
+- `tmp_decomp/batch210_verify_signatures_fix.txt`
+
+### Continuation (2026-02-21, batch211 map-mode dispatch slot-table chunk)
+
+#### Big-chunk extraction from map-mode slot table
+- Traced data xref:
+  - `0x00658b34 -> 0x0040140b -> 0x00519d30`
+- Used `inspect_entry_stub_targets.py --create` to create missing thunk functions for table entries:
+  - created 14 missing thunk functions in one pass.
+
+Artifacts:
+- `tmp_decomp/batch211_stub_inspect_create.csv`
+- `tmp_decomp/batch211_refctx_40140b.txt`
+
+#### Renames/comments applied (saved)
+- Source CSV:
+  - `tmp_decomp/batch211_mode4_slot_cluster_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch211_mode4_slot_cluster_renames.csv`
+  - result: `[done] rows=32 ok=32`
+
+Key dispatch-surface renames:
+- Mode base/init and lifecycle hooks:
+  - `0x00519d30` -> `InitializeMapInteractionMode4BaseState`
+  - `0x0040140b` -> `thunk_InitializeMapInteractionMode4BaseState`
+  - `0x0048ab70` -> `NoOpUiLifecycleHook`
+  - `0x00595090` -> `RunNoOpUiLifecycleHook`
+  - plus corresponding thunks.
+- Slot handlers:
+  - `DispatchControlEventToChildrenAndSelf`
+  - `ForwardMapViewVirtualC4IfPresent`
+  - `QueryChildMapViewSlot58OrZero`
+  - `CanProcessMapViewSlotECUnderWindowState`
+  - `UpdateControlPositionAndInvalidateUnionRect`
+  - `InvalidateOffsetRegionUsingChildClipRect`
+  - `ValidateControlRectIfWindowActive`
+  - `SetGlobalUiSelectionIfChangedAndNotify`
+  - `EvaluateControlInputGate`
+  - `HasRenderableParentAndContent`
+  - plus all created thunks in this slot cluster.
+- Constant/no-op handlers:
+  - `ReturnZeroStatus` (+ thunk)
+  - `NoOpCommandHandler` (+ thunk)
+  - `NoOpUiCallback` (+ thunk)
+
+#### Signature cleanup for slot predicates
+- Initial pass:
+  - `tmp_decomp/signature_batch211_mode4_slot_cluster.csv`
+- Calling-convention cleanup:
+  - `tmp_decomp/signature_batch211_mode4_slot_cc_fix.csv`
+  - result: `[done] ok=4 skip=4`
+- Finalized bool predicate signatures to remove unknown-CC noise:
+  - `EvaluateControlInputGate(void* this) -> bool __thiscall`
+  - `HasRenderableParentAndContent(void* this) -> bool __thiscall`
+  - `CanProcessMapViewSlotECUnderWindowState(void* this) -> bool __thiscall`
+  - `SetGlobalUiSelectionIfChangedAndNotify(void* this) -> bool __thiscall`
+  - direct thunks aligned.
+
+Verification artifacts:
+- `tmp_decomp/batch211_verify_cluster.txt`
+- `tmp_decomp/batch211_verify_cc_fix.txt`
+- `tmp_decomp/batch211_mode4_slot_targets_ctx.txt`
+- `tmp_decomp/batch211_slot_target_funcs_ctx.txt`
+
+### TODO (next pass)
+- [ ] Continue game-logic (civilian/map actions) from map interaction anchors:
+  - `InitializeMapInteractionMode4BoundsAndCursorControls`
+  - `SetMapInteractionMode`
+  - newly renamed slot handlers around `0x00658b34` table.
+- [ ] Identify and label additional mode-handler tables adjacent to `0x00658b34` and batch-resolve missing thunk entries via `inspect_entry_stub_targets.py`.
+- [ ] Revisit `thunk_FUN_005c4ab0` target (`0x005c4ab0`) for final semantic naming once one more caller cluster confirms message-routing semantics.
+
+### Continuation (2026-02-21, batch212 tech-store + paged-list helper chunk)
+
+#### Scope
+- Continued from map/tech overlap by resolving:
+  - `TTechStorePage` rebuild function (`0x005b0f10`)
+  - shared paged-list helpers used by map/roster/navy/capability pages (`0x0056f420`, `0x0056f6c0`).
+
+#### Renames/comments applied (saved)
+- Source CSV:
+  - `tmp_decomp/batch212_techstore_pagedlist_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch212_techstore_pagedlist_renames.csv`
+  - result: `[done] rows=6 ok=6`
+
+Renames:
+- `0x005b0f10`:
+  - `FUN_005b0f10` -> `RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls`
+- `0x00401799`:
+  - thunk -> `thunk_RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls`
+- `0x0056f420`:
+  - `FUN_0056f420` -> `SetLineDataRowAndBounds`
+- `0x00409025`:
+  - thunk -> `thunk_SetLineDataRowAndBounds`
+- `0x0056f6c0`:
+  - `FUN_0056f6c0` -> `UpdatePagedListNavigationButtonState`
+- `0x00404def`:
+  - thunk -> `thunk_UpdatePagedListNavigationButtonState`
+
+#### Signature updates
+- Source CSV:
+  - `tmp_decomp/signature_batch212_pagedlist_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch212_pagedlist_helpers.csv --apply`
+  - result: `[done] ok=3 skip=3`
+
+Selected outcomes:
+- `RebuildTechStoreCapabilityLineEntriesAndRefreshPageControls(TTechStorePage* this) -> void __thiscall`
+- `SetLineDataRowAndBounds(void* this, ushort primaryIndex, ushort secondaryIndex, int* pRect) -> void __thiscall`
+- `UpdatePagedListNavigationButtonState` partially improved.
+
+Additional CC refinement:
+- Source CSV:
+  - `tmp_decomp/signature_batch212_pagedlist_nav_cc_fix.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch212_pagedlist_nav_cc_fix.csv --apply`
+  - result: `[done] ok=1 skip=1`
+- Current signature:
+  - `UpdatePagedListNavigationButtonState(void* pController, int pageDelta) -> void __fastcall`
+
+#### Notes / residual ambiguity
+- In decomp, `UpdatePagedListNavigationButtonState` still shows `unaff_retaddr` in comparisons where `pageDelta` is expected.
+- Behavior is still clear enough for current naming (updates prev/next nav controls based on current page + delta), but parameter storage/calling-convention recovery is not fully resolved yet.
+
+Verification artifacts:
+- `tmp_decomp/batch212_verify_pagedlist.txt`
+- `tmp_decomp/batch212_verify_nav_fix.txt`
+- `tmp_decomp/batch212_adjacent_mapmode_ctx.txt`
+- `tmp_decomp/batch212_techstore_helpers_ctx.txt`
+
+### TODO (next pass)
+- [ ] Resolve `UpdatePagedListNavigationButtonState` delta-param storage (likely via disasm-driven storage/type correction) so decomp stops using `unaff_retaddr`.
+- [ ] Continue civilian/map-action logic via mode-handler callers:
+  - `SetMapInteractionMode`
+  - `InitializeMapInteractionMode4BoundsAndCursorControls`
+  - `HandleMapContextPrevNextInfoCommands`
+- [ ] Explore adjacent function-pointer tables near `0x00658b34` and apply the same create+rename sweep.
+
+### Continuation (2026-02-21, UI base vtable skeleton for common resolver slots)
+
+#### Scope
+- Implemented a reusable pyghidra batch to define and apply a typed base UI-vtable skeleton around common virtual slots:
+  - `+0x0094` resolver path
+  - `+0x01ac`
+  - `+0x01d0`
+  - `+0x01d4`
+- Goal: improve decomp readability across UI families without speculative semantic renames.
+
+#### New scripts
+- `new_scripts/apply_ui_base_vslot_skeleton.py`
+  - Creates/updates base datatype skeletons.
+  - Scans `g_vtbl*` roots with slot validation.
+  - Adds per-slot labels at vtable offsets.
+  - Adds conservative comments/signature typing on eligible direct slot targets.
+- `new_scripts/cleanup_recursive_ui_vslot_labels.py`
+  - Removes accidentally recursive nested slot labels generated by re-running the first version.
+
+#### Datatypes created/updated
+- Category: `/imperialism/ui`
+- `TUiViewSlot0094_ResolveControlByTag` (function definition)
+- `TUiViewSlot01AC_InvokeControlAction` (function definition)
+- `TUiViewSlot01D0_NotifyControlStateChange` (function definition)
+- `TUiViewSlot01D4_NotifyControlSelectionChange` (function definition)
+- `TUiViewBaseVtableSkeleton`
+- `TUiViewBaseSkeleton`
+
+#### Applied results (saved)
+- Run:
+  - `.venv/bin/python new_scripts/apply_ui_base_vslot_skeleton.py --min-slots-per-vtbl 4 --apply`
+- Stable post-cleanup result:
+  - `vtables=27`
+  - `slot_hits=108`
+  - `unique_targets=36`
+  - labels: `ok=0 skip=108` (already applied after first pass)
+  - comments/signatures: `comments_skip=4 typed_skip=4` (already applied)
+
+#### Corrective cleanup (saved)
+- First rerun of the initial script version created recursive nested slot labels.
+- Cleaned with:
+  - `.venv/bin/python new_scripts/cleanup_recursive_ui_vslot_labels.py --apply`
+- Deleted nested recursive labels:
+  - `deleted=72`
+
+#### Artifacts
+- `tmp_decomp/ui_base_vslot_skeleton_report.csv`
+
+### TODO (next pass)
+- [ ] Extend `apply_ui_base_vslot_skeleton.py` with an optional allowlist/denylist for root families (e.g., `T*View/T*Dialog` only) so UI-only targeting is explicit.
+- [ ] Use the new slot report to identify additional low-risk non-thunk targets for signature tightening where current sigs remain `undefined`.
+- [ ] Apply the same slot-skeleton strategy to neighboring common UI slots (`+0x0c/+0x84/+0xa4/+0xa8`) only when call-shapes are equally stable.
+
+### Continuation (2026-02-21, UI base slot-core semantic cleanup + filtered skeleton mode)
+
+#### Script enhancement
+- Updated `new_scripts/apply_ui_base_vslot_skeleton.py` to support explicit vtable filtering:
+  - `--include-vtbl-name-re`
+  - `--exclude-vtbl-name-re`
+- Also kept `_Slot` alias labels excluded at source to avoid recursive re-labeling.
+
+#### Filtered UI-only skeleton scan (dry run)
+- Command:
+  - `.venv/bin/python new_scripts/apply_ui_base_vslot_skeleton.py --min-slots-per-vtbl 4 --include-vtbl-name-re "^(g_vtblT.*(View|Dialog|Text|Picture|ToolBar|MapKey|Cluster)|g_vtblFamily_.*(View|Dialog)|g_vtbl_TMacViewMgr)$" --exclude-vtbl-name-re "Mission|ArmyTacUnit|TurnEvent|TurnState|StateMachine"`
+- Result:
+  - `vtables=20`
+  - `slot_hits=80`
+  - `unique_targets=20`
+  - typed candidates now near-zero after this pass cleanup.
+
+#### Low-hanging slot-core renames/comments (saved)
+- Source CSV:
+  - `tmp_decomp/batch213_ui_base_slot_core_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch213_ui_base_slot_core_renames.csv`
+  - result: `rows=8 ok=8`
+
+Renamed:
+- `0x0048afd0`
+  - `FindCityProductionChildByWindowHandle` -> `FindUiChildControlByWindowHandleRecursive`
+- `0x0040424b`
+  - `thunk_FindCityProductionChildByWindowHandle` -> `thunk_FindUiChildControlByWindowHandleRecursive`
+- `0x0048e9c0`
+  - `NoOpCityProductionDialogMethod` -> `NoOpUiViewSlotHandler`
+- `0x00406eb5`
+  - `thunk_NoOpCityProductionDialogMethod` -> `thunk_NoOpUiViewSlotHandler`
+- `0x004294d0`
+  - `WrapperFor_StringShared_AssignFromPtr_At004294d0` -> `AssignSharedStringFromField84`
+- `0x00408e1d`
+  - `WrapperFor_StringShared_AssignFromPtr_At004294d0` (thunk entry) -> `thunk_AssignSharedStringFromField84`
+- `0x004900a0`
+  - `FUN_004900a0` -> `RenderControlStateTextBySelectionCode`
+- `0x0040305d`
+  - `thunk_FUN_004900a0` -> `thunk_RenderControlStateTextBySelectionCode`
+
+#### Signature cleanup for slot-core functions (saved)
+- Source CSV:
+  - `tmp_decomp/signature_batch213_ui_base_slot_core.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch213_ui_base_slot_core.csv --apply`
+  - result: `ok=3 skip=3`
+
+Key improved signatures:
+- `FindUiChildControlByWindowHandleRecursive(void* this, int windowHandle) -> void* __thiscall`
+- `AssignSharedStringFromField84(void* this, void* pDestSharedString) -> void __thiscall`
+- Thunk mirrors updated where compatible.
+
+#### Why this is safe
+- `0x0048afd0` decomp now clearly returns found child pointer or null and recursively dispatches via child slot `+0x94`.
+- `0x004294d0` is a narrow one-call wrapper to `StringShared::AssignFromPtr` with stable `this+0x84` source.
+- `0x0048e9c0` remains pure no-op and is heavily reused as a generic slot body.
+
+### TODO (next pass)
+- [ ] Apply filtered skeleton run with `--apply` only after deciding final include/exclude regex policy for UI families.
+- [ ] Decode and type `RenderControlStateTextBySelectionCode` call shape (currently still decomped as `__cdecl void(void)` due storage ambiguity).
+- [ ] Continue next common UI slot family (`+0x0c/+0x84/+0xa4/+0xa8`) with the same filter-first workflow.
+
+### Continuation (2026-02-21, secondary UI slot family stabilization `+0x84/+0xa4/+0xa8`)
+
+#### Applied batch215 (text-control family)
+- Source CSVs:
+  - `tmp_decomp/batch215_ui_secondary_slot_family_renames.csv`
+  - `tmp_decomp/signature_batch215_ui_secondary_slot_family.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch215_ui_secondary_slot_family_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch215_ui_secondary_slot_family.csv --apply`
+
+Renamed:
+- `0x00490c30` -> `ApplyControlFocusIfEnabledAndNotifySelectionRange`
+- `0x00406b8b` -> `thunk_ApplyControlFocusIfEnabledAndNotifySelectionRange`
+- `0x00490730` -> `SetUiControlActiveFlagAndMaybeRefreshWindow`
+- `0x00409741` -> `thunk_SetUiControlActiveFlagAndMaybeRefreshWindow`
+- `0x0048b070` -> `SetUiControlVisibleFlagAndMaybeRefreshWindow`
+- `0x004026cb` -> `thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow`
+
+Signatures:
+- `ApplyControlFocusIfEnabledAndNotifySelectionRange(void* this, int notifyToken) -> void __thiscall`
+- `SetUiControlActiveFlagAndMaybeRefreshWindow(void* this, int activeFlag, int refreshNow) -> void __thiscall`
+- `SetUiControlVisibleFlagAndMaybeRefreshWindow(void* this, int visibleFlag) -> void __thiscall`
+- Thunk mirrors updated with matching calling convention/params.
+
+#### Applied batch216 (BattleReport slot-default family)
+- Source CSVs:
+  - `tmp_decomp/batch216_ui_secondary_slot_noop_forward_renames.csv`
+  - `tmp_decomp/signature_batch216_ui_secondary_slot_noop_forward.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch216_ui_secondary_slot_noop_forward.csv --apply`
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch216_ui_secondary_slot_noop_forward_renames.csv`
+
+Renamed:
+- `0x0048a310` -> `ForwardNotifyParamToPrimaryChildSlot44`
+- `0x004069ec` -> `thunk_ForwardNotifyParamToPrimaryChildSlot44`
+- `0x0048a690` -> `NoOpUiSetControlActiveFlag`
+- `0x004088c8` -> `thunk_NoOpUiSetControlActiveFlag`
+- `0x0048a6b0` -> `NoOpUiSetControlVisibleFlag`
+- `0x004097f5` -> `thunk_NoOpUiSetControlVisibleFlag`
+
+Signatures:
+- `ForwardNotifyParamToPrimaryChildSlot44(void* this, int notifyValue) -> void __thiscall`
+- `NoOpUiSetControlActiveFlag(void* this, int activeFlag, int refreshNow) -> void __thiscall`
+- `NoOpUiSetControlVisibleFlag(void* this, int visibleFlag) -> void __thiscall`
+- Thunk mirrors updated with matching params.
+
+#### Filtered secondary-slot skeleton pass (saved)
+- Command:
+  - `.venv/bin/python new_scripts/apply_ui_base_vslot_skeleton.py --apply --min-slots-per-vtbl 4 --slots 0x0c,0x84,0xa4,0xa8 --include-vtbl-name-re "^(g_vtblT.*(View|Dialog|Text|Picture|ToolBar|MapKey|Cluster)|g_vtblFamily_.*(View|Dialog)|g_vtbl_TMacViewMgr)$" --exclude-vtbl-name-re "Mission|ArmyTacUnit|TurnEvent|TurnState|StateMachine" --out-csv tmp_decomp/ui_secondary_vslot_report.csv`
+- Result:
+  - `vtables=6`
+  - `slot_hits=24`
+  - `unique_targets=10`
+  - `labels_ok=24`
+  - `comments_ok=3`
+- Artifact:
+  - `tmp_decomp/ui_secondary_vslot_report.csv`
+
+#### Important workflow note
+- Ghidra write operations must stay single-session.
+- Parallel write/read script runs caused intermittent `program.save(...)` file I/O errors.
+- Rule for next passes: no parallel tool calls while a write script is active.
+
+### TODO (next pass)
+- [ ] Stabilize naming/signatures for `_TMacViewMgr` secondary slot targets (`0x006091d9`, `0x00608ba8`, `0x00608467`) now that non-TMac secondary families are dehardcoded.
+- [ ] Extend `apply_ui_base_vslot_skeleton.py` to optionally emit typed function-definition datatypes for `+0x0c/+0x84/+0xa4/+0xa8` in `/imperialism/ui`.
+- [ ] Resolve `RenderControlStateTextBySelectionCode` call-shape ambiguity and promote to cleaner `__thiscall`/params if stable.
+
+### Continuation (2026-02-21, TMacViewMgr dispatch cluster + lock-pool helper cleanup)
+
+#### Applied batch217 (TMacViewMgr/MFC dispatch chain)
+- Source CSV:
+  - `tmp_decomp/batch217_tmacviewmgr_dispatch_cluster_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch217_tmacviewmgr_dispatch_cluster_renames.csv`
+  - result: `rows=4 ok=4`
+
+Renamed:
+- `0x00608ba8`
+  - `TMacViewMgr_Slot41_Target` -> `DispatchWindowMessageViaCachedAfxMessageMapEntry`
+- `0x00609c92`
+  - `FUN_00609c92` -> `TranslateUiMessageCodeAndDispatchToTMacViewMgr`
+- `0x00606a07`
+  - `Cluster_TurnStateCalleeHint_00606a07` -> `DispatchCommandToAfxMessageMapChain`
+- `0x00606b1f`
+  - `FUN_00606b1f` -> `InvokeAfxMessageMapHandlerBySignatureCode`
+
+Why safe:
+- `0x00608ba8` clearly handles WM-style IDs (`0x111`, `0x4e`, etc.), message-map lookup via `AfxFindMessageEntry`, and cached dispatch.
+- `0x00609c92` maps compact input message codes into `0xBCxx/0xBDxx` dispatch families and forwards into the dispatcher.
+- `0x00606a07` walks message-map chains and dispatches matched entries; `0x00606b1f` executes handler by signature-code switch.
+
+#### Applied batch218 (critical-section pool helpers)
+- Source CSVs:
+  - `tmp_decomp/batch218_lock_pool_helpers_renames.csv`
+  - `tmp_decomp/signature_batch218_lock_pool_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch218_lock_pool_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch218_lock_pool_helpers.csv --apply`
+
+Renamed + typed:
+- `0x006244d3` -> `InitializeCriticalSectionPoolRuntimeGate`
+  - signature: `int __cdecl (void)`
+- `0x0062456f` -> `EnterCriticalSectionByPoolIndex`
+  - signature: `void __cdecl (int lockIndex)`
+- `0x006245df` -> `LeaveCriticalSectionByPoolIndex`
+  - signature: `void __cdecl (int lockIndex)`
+
+Impact:
+- `DispatchWindowMessageViaCachedAfxMessageMapEntry` decomp now shows explicit lock helper calls instead of opaque `FUN_` names, making the message-map cache path much easier to follow.
+
+### TODO (next pass)
+- [ ] Rename and (carefully) type remaining `_TMacViewMgr` secondary slot helpers:
+  - `0x006091d9` (`+0x84` notify-route path)
+  - `0x00608467` (`+0xa8` wndproc forward/default path)
+- [ ] Evaluate a conservative signature upgrade for `DispatchWindowMessageViaCachedAfxMessageMapEntry` once EBP-reuse ambiguity is reduced (likely via a dedicated storage-fix script pass).
+- [ ] Extend `apply_ui_base_vslot_skeleton.py` with optional typed secondary-slot function definitions (`+0x0c/+0x84/+0xa4/+0xa8`) while keeping signatures generic enough to avoid overfitting.
+
+### Continuation (2026-02-21, reflected-message routing cleanup and slot `0x0C` generalization)
+
+#### Applied batch219 (slot `0x0C` no-op dehardcode)
+- Source CSV:
+  - `tmp_decomp/batch219_noop_slot0c_generalize.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch219_noop_slot0c_generalize.csv`
+
+Renamed:
+- `0x00412bf0`
+  - `NoOpTurnEventStateVtableSlot0C` -> `NoOpUiVtableSlot0C`
+- `0x004010a0`
+  - `thunk_NoOpTurnEventStateVtableSlot0C` -> `thunk_NoOpUiVtableSlot0C`
+
+Why safe:
+- Both are immediate-return stubs reused across many UI vtables; naming no longer overfits turn-event context.
+
+#### Secondary-slot report refresh (post-rename)
+- Re-ran:
+  - `.venv/bin/python new_scripts/apply_ui_base_vslot_skeleton.py --apply --min-slots-per-vtbl 4 --slots 0x0c,0x84,0xa4,0xa8 --include-vtbl-name-re "^(g_vtblT.*(View|Dialog|Text|Picture|ToolBar|MapKey|Cluster)|g_vtblFamily_.*(View|Dialog)|g_vtbl_TMacViewMgr)$" --exclude-vtbl-name-re "Mission|ArmyTacUnit|TurnEvent|TurnState|StateMachine" --out-csv tmp_decomp/ui_secondary_vslot_report.csv`
+- Result stable:
+  - `vtables=6`
+  - `slot_hits=24`
+  - `unique_targets=10`
+  - labels now fully reused (`labels_skip=24`)
+- Artifact:
+  - `tmp_decomp/ui_secondary_vslot_report.csv`
+
+#### Applied batch220/221 (reflected message routing signatures)
+- Source CSVs:
+  - `tmp_decomp/signature_batch220_tmac_message_dispatch.csv`
+  - `tmp_decomp/signature_batch221_tmac_router_cleanup.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch220_tmac_message_dispatch.csv --apply`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch221_tmac_router_cleanup.csv --apply`
+
+Updated signatures:
+- `0x00609c37` `DispatchReflectedControlMessageOrFallback`
+  - `uint __thiscall (void* this, uint messageCode, int wParam, int lParam, void* pResult)`
+- `0x00609c92` `TranslateUiMessageCodeAndDispatchToTMacViewMgr`
+  - `uint __thiscall (void* this, uint messageCode, int wParam, int lParam, void* pResult)`
+- `0x006091d9` `RouteControlNotifyByDlgCtrlIdOrHwnd`
+  - `int __thiscall (void* this, uint messageCode)`
+- `0x00608467` `DispatchWindowMessageToPrevProcOrDefault`
+  - `void __thiscall (void* this, uint messageCode, int wParam, int lParam)`
+- `0x005ffd49` `DispatchNegativeCommandRangeToFrameHandlers`
+  - `uint __thiscall (void* this, uint messageCode, int pNotify, void* pResult)`
+
+Impact:
+- Decomp now shows consistent message-flow names/params (`messageCode`, `wParam`, `lParam`, `pResult`) through reflected-control dispatch.
+- Caller/callee chain readability improved around:
+  - `DispatchReflectedControlMessageOrFallback`
+  - `TranslateUiMessageCodeAndDispatchToTMacViewMgr`
+  - `RouteControlNotifyByDlgCtrlIdOrHwnd`
+
+### TODO (next pass)
+- [ ] Decide whether to split `DispatchWindowMessageViaCachedAfxMessageMapEntry` into helper labels/comments at major branch anchors (`WM_COMMAND`, `WM_NOTIFY`, message-map cache hit/miss) for readability without risky retyping.
+- [ ] Extend `apply_ui_base_vslot_skeleton.py` to optionally emit typed secondary-slot function-definition datatypes (`+0x0c/+0x84/+0xa4/+0xa8`) with generic argument naming.
+- [ ] Start a non-UI gameplay batch next (turn-state/economy) using the improved dispatcher readability as a stable infrastructure baseline.
+
+### Continuation (2026-02-21, gameplay-adjacent diplomacy helper)
+
+#### Applied batch224 (TDiplomacyMgr comparator helper)
+- Source CSVs:
+  - `tmp_decomp/batch224_diplomacy_compare_helper.csv`
+  - `tmp_decomp/signature_batch224_diplomacy_compare_helper.csv`
+  - `tmp_decomp/signature_batch224b_diplomacy_compare_helper.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch224_diplomacy_compare_helper.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch224_diplomacy_compare_helper.csv --apply`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch224b_diplomacy_compare_helper.csv --apply`
+
+Renamed + typed:
+- `0x004ee5e0`
+  - `WrapperFor_GenerateThreadLocalRandom15_At004ee5e0` -> `CompareShortFieldAtOffset2WithRandomTieBreak`
+  - signature: `int __cdecl (int entryA, int entryB)`
+
+Why safe:
+- Function compares signed short at `+0x2` between two records and only uses `GenerateThreadLocalRandom15` when values are equal, producing `-1/+1` tie-break behavior.
+
+### TODO (next pass)
+- [ ] Continue diplomacy gameplay pass from `ProcessDiplomacyTurnStateEventStateMachine` by extracting next low-risk helper names from its peripheral helper cluster (focus on `FUN_`/`Cluster_` callees that are still generic).
+- [ ] Decide whether to split `DispatchWindowMessageViaCachedAfxMessageMapEntry` into helper labels/comments at major branch anchors (`WM_COMMAND`, `WM_NOTIFY`, message-map cache hit/miss) for readability without risky retyping.
+- [ ] Extend `apply_ui_base_vslot_skeleton.py` to optionally emit typed secondary-slot function-definition datatypes (`+0x0c/+0x84/+0xa4/+0xa8`) with generic argument naming.
+
+### Continuation (2026-02-21, diplomacy state-machine peripheral helper dehardcode)
+
+#### Applied batch225 (generic thunk/helper cleanup near diplomacy path)
+- Source CSVs:
+  - `tmp_decomp/batch225_diplomacy_helper_renames.csv`
+  - `tmp_decomp/signature_batch225_diplomacy_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch225_diplomacy_helper_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch225_diplomacy_helpers.csv --apply`
+
+Renamed:
+- `0x0057d870` -> `SetStateCodeAndUpdateZeroOrOutOfRangeFlag`
+- `0x00401668` -> `thunk_SetStateCodeAndUpdateZeroOrOutOfRangeFlag`
+- `0x004878a0` -> `InitializeRangePairAndResetCursor`
+- `0x00405ee3` -> `thunk_InitializeRangePairAndResetCursor`
+- `0x005a53e0` -> `SeekLinkedListCursorByNestedId`
+- `0x00406b27` -> `thunk_SeekLinkedListCursorByNestedId`
+- `0x00489660` -> `AttachGlobalMemoryHandleAndResetPosition`
+- `0x00408765` -> `thunk_AttachGlobalMemoryHandleAndResetPosition`
+- `0x005ba480` -> `ForwardInitializeRangePairAndResetCursor`
+- `0x00408b7f` -> `thunk_ForwardInitializeRangePairAndResetCursor`
+
+Typed signatures (where stable):
+- `SetStateCodeAndUpdateZeroOrOutOfRangeFlag(void* this, int stateCode) -> void __thiscall`
+- `InitializeRangePairAndResetCursor(void* this, int rangeStart, int rangeEnd) -> void __thiscall`
+- `SeekLinkedListCursorByNestedId(void* this, int targetNestedId) -> void __thiscall`
+- `AttachGlobalMemoryHandleAndResetPosition(void* this, int hGlobalHandle, int streamTag) -> void __thiscall`
+- Thunk mirrors updated.
+
+#### Applied batch226 (constant-argument range init refinement)
+- Source CSVs:
+  - `tmp_decomp/batch226_rangepair_constant_init_renames.csv`
+  - `tmp_decomp/signature_batch226_rangepair_constant_init.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch226_rangepair_constant_init_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch226_rangepair_constant_init.csv --apply`
+
+Renamed:
+- `0x005ba480` -> `InitializeRangePairFromDiplomacyConstants`
+- `0x00408b7f` -> `thunk_InitializeRangePairFromDiplomacyConstants`
+
+Signature refinement:
+- both now `void __thiscall (void* this)` since they ignore external params and forward fixed constants.
+
+#### Applied batch227 (cluster_* to behavioral names in diplomacy flow)
+- Source CSV:
+  - `tmp_decomp/batch227_diplomacy_cluster_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch227_diplomacy_cluster_renames.csv`
+
+Renamed:
+- `0x0054e4c0` -> `RefreshMapAndMessageControlsForCurrentContext`
+- `0x00401587` -> `thunk_RefreshMapAndMessageControlsForCurrentContext`
+- `0x005dea60` -> `CreateModalMessageCommandAndQueue`
+- `0x00402e0f` -> `thunk_CreateModalMessageCommandAndQueue`
+- `0x00579270` -> `ApplyPaletteMaskToTileBufferByEventCode`
+- `0x0040686b` -> `thunk_ApplyPaletteMaskToTileBufferByEventCode`
+- `0x005c4910` -> `LoadUiStringAndDispatchSharedMessageCommand`
+- `0x00407ce8` -> `thunk_LoadUiStringAndDispatchSharedMessageCommand`
+- `0x0056df40` -> `BuildSaveSlotPathAndProbeMetadata`
+- `0x00408d78` -> `thunk_BuildSaveSlotPathAndProbeMetadata`
+
+#### Applied batch228 (signature cleanup for renamed diplomacy clusters)
+- Source CSV:
+  - `tmp_decomp/signature_batch228_diplomacy_clusters.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch228_diplomacy_clusters.csv --apply`
+
+Resulting key signatures:
+- `RefreshMapAndMessageControlsForCurrentContext(void* pContextHolder) -> void __fastcall`
+- `CreateModalMessageCommandAndQueue(void* pSharedText, int messageParam) -> void __cdecl`
+- `ApplyPaletteMaskToTileBufferByEventCode(int tileBufferOwner) -> void __fastcall`
+- `LoadUiStringAndDispatchSharedMessageCommand(void) -> void __cdecl`
+- `BuildSaveSlotPathAndProbeMetadata(int slotId, void* pathSuffixOverride) -> byte __cdecl`
+
+#### Progress check against diplomacy state machine callees
+- Regenerated callee map:
+  - `tmp_decomp/batch229_545940_callees_after227.csv`
+- Status:
+  - `64` direct callees scanned from `ProcessDiplomacyTurnStateEventStateMachine`
+  - `0` remaining names matching `FUN_*`/`Cluster_*` in that direct callee set.
+
+### TODO (next pass)
+- [ ] Move one level deeper on diplomacy: inspect newly renamed direct callees for their own unresolved leaf helpers (`FUN_*`/ambiguous wrappers) and dehardcode the next low-risk wave.
+- [ ] Consider a non-GUI gameplay branch next (turn-economy/order resolution) using the same “callee wave + behavior rename + conservative signatures” workflow.
+- [ ] Keep `DispatchWindowMessageViaCachedAfxMessageMapEntry` branch-label/comment split as a separate readability task (no aggressive typing yet).
+
+### Continuation (2026-02-21, map-preview / tactical render helper dehardcode)
+
+#### Applied batch233 (map-preview + tactical render helper wave)
+- Source CSVs:
+  - `tmp_decomp/batch233_mappreview_renderhook_renames.csv`
+  - `tmp_decomp/signature_batch233_mappreview_renderhook.csv`
+  - `tmp_decomp/signature_batch233b_thunk_targets.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch233_mappreview_renderhook_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch233_mappreview_renderhook.csv --apply`
+  - `.venv/bin/python new_scripts/apply_thunk_target_signatures_from_csv.py tmp_decomp/signature_batch233b_thunk_targets.csv`
+
+Renamed:
+- `0x005127e0` -> `SplitTileIndexToHexRasterColumnX2AndRow`
+- `0x00407225` -> `thunk_SplitTileIndexToHexRasterColumnX2AndRow`
+- `0x00578850` -> `InitializeMapPreviewBufferAndSelectionState`
+- `0x0040524a` -> `thunk_InitializeMapPreviewBufferAndSelectionState` (materialized)
+- `0x00578a80` -> `BlitMapPreviewSurfaceAndSelectionMarker`
+- `0x004025c7` -> `thunk_BlitMapPreviewSurfaceAndSelectionMarker` (materialized)
+- `0x0050da80` -> `BlitMapOverlayGlyphStrip32x24SkipMask10`
+- `0x0040777f` -> `thunk_BlitMapOverlayGlyphStrip32x24SkipMask10` (materialized)
+- `0x005aa2e0` -> `RenderTacArmyViewBandAndOverlayRegion`
+- `0x00409642` -> `thunk_RenderTacArmyViewBandAndOverlayRegion` (materialized)
+- `0x004962a0` -> `NoOpMapRenderLifecycleHookA`
+- `0x0040520e` -> `thunk_NoOpMapRenderLifecycleHookA`
+- `0x00497300` -> `NoOpMapRenderLifecycleHookB`
+- `0x00405e39` -> `thunk_NoOpMapRenderLifecycleHookB`
+
+Typed signatures (stable subset):
+- `SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* pRasterColumnX2, ushort* pRow) -> void __cdecl`
+- `BlitMapOverlayGlyphStrip32x24SkipMask10(int* pAtlasSurface, short glyphIndex, short dstX, short dstY) -> void __cdecl`
+- `InitializeMapPreviewBufferAndSelectionState(int* this) -> void __thiscall`
+- `BlitMapPreviewSurfaceAndSelectionMarker(int pPreviewSurface) -> void __fastcall`
+- `RenderTacArmyViewBandAndOverlayRegion(int* this, int* pDestRect) -> void __thiscall`
+
+Why safe:
+- `0x005127e0` is pure arithmetic split of linear index using map width `0x6c`, writing raster X*2 and row outputs.
+- `0x0050da80` is a fixed-size `32x24` masked blit routine (`0x10` transparent byte) used by strategic-map overlay draws.
+- `0x004962a0` / `0x00497300` decompile to empty bodies and are used as repeat lifecycle placeholders in render pipelines.
+
+#### Applied batch234 (materialize remaining thunk wrapper)
+- Source CSV:
+  - `tmp_decomp/batch234_materialize_4fedc0_thunk.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch234_materialize_4fedc0_thunk.csv`
+- Result:
+  - Created/kept `0x0040544d` as `thunk_FUN_004fedc0` to make this wrapper explicit for future refactor.
+
+#### Applied batch238 (shared quick-draw state helper promotion)
+- Source CSVs:
+  - `tmp_decomp/batch238_quickdraw_state_helpers_renames.csv`
+  - `tmp_decomp/signature_batch238_quickdraw_state_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch238_quickdraw_state_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch238_quickdraw_state_helpers.csv --apply`
+
+Renamed:
+- `0x004961b0` -> `SetActiveQuickDrawSurfaceContext`
+- `0x00406f5f` -> `thunk_SetActiveQuickDrawSurfaceContext`
+- `0x00496270` -> `GetActiveQuickDrawSurfaceContextAndFlags`
+- `0x00408d64` -> `thunk_GetActiveQuickDrawSurfaceContextAndFlags`
+- `0x00495a80` -> `ApplyRectClipRegionToGlobalClipState`
+- `0x004030e9` -> `thunk_ApplyRectClipRegionToGlobalClipState`
+- `0x00495b40` -> `SetGlobalQuickDrawOrigin`
+- `0x00409a11` -> `thunk_SetGlobalQuickDrawOrigin`
+- `0x004972c0` -> `NoOpQuickDrawLifecycleHookA`
+- `0x0040761c` -> `thunk_NoOpQuickDrawLifecycleHookA`
+- `0x004972e0` -> `NoOpQuickDrawLifecycleHookB`
+- `0x004024fa` -> `thunk_NoOpQuickDrawLifecycleHookB`
+
+Typed signatures:
+- `SetActiveQuickDrawSurfaceContext(int* pSurface, int contextFlags) -> void __cdecl`
+- `GetActiveQuickDrawSurfaceContextAndFlags(int** ppSurface, int* pContextFlags) -> void __cdecl`
+- `ApplyRectClipRegionToGlobalClipState(int* pRect) -> void __cdecl`
+- `SetGlobalQuickDrawOrigin(short originX, short originY) -> void __cdecl`
+
+Why safe:
+- Function bodies directly operate on shared quick-draw globals (`DAT_006a1d60`, `DAT_006a1db0`, etc.) and GDI object/region APIs.
+- These helpers appear in repeated save/restore and clip-region patterns across map/tactical render paths.
+
+#### Applied batch241 (linked-list lookup helper used by map-order preview)
+- Source CSVs:
+  - `tmp_decomp/batch241_linkedlist_find_18_renames.csv`
+  - `tmp_decomp/signature_batch241_linkedlist_find_18.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch241_linkedlist_find_18_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch241_linkedlist_find_18.csv --apply`
+
+Renamed:
+- `0x004a0d30` -> `FindLinkedListNodeByIdFieldAt18`
+- `0x004055ec` -> `thunk_FindLinkedListNodeByIdFieldAt18`
+
+Typed signature:
+- `int* __thiscall FindLinkedListNodeByIdFieldAt18(int* this, int keyId)`
+
+Impact:
+- `UpdateMapOrderEntryTilePreviewSlot` now has no unresolved `FUN_*` callees in its direct helper list.
+- The city-object lookup branch now reads clearly through:
+  - `thunk_FindLinkedListNodeByIdFieldAt18(g_pUiTransientObjectRegistry, tileObjectId)`
+  - followed by quick-draw context swap + clip apply + draw call.
+
+### TODO (next pass)
+- [ ] Continue same render/game-logic seam by dehardcoding `FUN_004fedc0` (now with explicit thunk at `0x0040544d`) and nearby linked-list/object helpers.
+- [ ] Promote names/signatures in `RenderStrategicMapTileCell` residual generic helpers (`thunk_FUN_00494660`, `thunk_FUN_00494a90`, `thunk_FUN_00495310`, `thunk_FUN_00495260`, `thunk_FUN_00495230`, `thunk_FUN_00495290`) using the now-stable quick-draw naming baseline.
+- [ ] Keep diplomacy deeper-leaf wave in backlog, but prioritize game-logic-heavy map/civilian/tactical helpers first.
+
+### Continuation (2026-02-21, strategic-map tile render helper cleanup wave)
+
+#### Applied batch244 (quick-draw style state helpers)
+- Source CSVs:
+  - `tmp_decomp/batch244_quickdraw_style_state_renames.csv`
+  - `tmp_decomp/signature_batch244_quickdraw_style_state.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch244_quickdraw_style_state_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch244_quickdraw_style_state.csv --apply`
+
+Renamed:
+- `0x00495230` -> `SetQuickDrawStyleWord_1D4C_AndMarkDirty`
+- `0x0040583f` -> `thunk_SetQuickDrawStyleWord_1D4C_AndMarkDirty`
+- `0x00495260` -> `SetQuickDrawStyleWord_1D50_AndMarkDirty`
+- `0x00404ee9` -> `thunk_SetQuickDrawStyleWord_1D50_AndMarkDirty`
+- `0x00495290` -> `SetQuickDrawStyleWord_1D4E_AndMarkDirty`
+- `0x004065a0` -> `thunk_SetQuickDrawStyleWord_1D4E_AndMarkDirty`
+- `0x00495310` -> `SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty`
+- `0x00402e73` -> `thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty`
+- `0x00494a90` -> `DrawTextWithCachedQuickDrawStyleState`
+- `0x004029aa` -> `thunk_DrawTextWithCachedQuickDrawStyleState`
+- `0x00494660` -> `NoOpQuickDrawContextSelectionHook`
+- `0x004021c6` -> `thunk_NoOpQuickDrawContextSelectionHook`
+
+Typed signatures:
+- Style-word setters: `void __cdecl (short styleWord)` for `0x00495230/0x00495260/0x00495290` + thunks.
+- Style-pair setter: `void __cdecl (short styleParamA, short styleParamB)` for `0x00495310` + thunk.
+- Text draw helper: `void __thiscall (int* this)` for `0x00494a90` + thunk.
+
+Why safe:
+- Each style setter directly mutates one/two global state slots and marks dirty flag `DAT_006a1d56`/`_DAT_006a1db4`.
+- `0x00494a90` explicitly ensures cached style object, sets draw context state, and executes text draw through context virtual call.
+
+#### Applied batch247 (text extent/origin/fill helpers)
+- Source CSVs:
+  - `tmp_decomp/batch247_quickdraw_text_rect_helpers_renames.csv`
+  - `tmp_decomp/signature_batch247_quickdraw_text_rect_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch247_quickdraw_text_rect_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch247_quickdraw_text_rect_helpers.csv --apply`
+
+Renamed:
+- `0x00494e00` -> `MeasureTextExtentWithCachedQuickDrawStyle`
+- `0x00405b7d` -> `thunk_MeasureTextExtentWithCachedQuickDrawStyle`
+- `0x00497c80` -> `SetQuickDrawTextOriginWithContextOffset`
+- `0x00408d6e` -> `thunk_SetQuickDrawTextOriginWithContextOffset`
+- `0x00498980` -> `FillRectWithQuickDrawBrushAndContextOffset`
+- `0x00406546` -> `thunk_FillRectWithQuickDrawBrushAndContextOffset`
+
+Typed signatures:
+- `SetQuickDrawTextOriginWithContextOffset(short originX, short originY) -> void __cdecl` (+ thunk).
+- `FillRectWithQuickDrawBrushAndContextOffset(int* pRect) -> void __cdecl` (+ thunk).
+
+Why safe:
+- `0x00494e00` calls `GetTextExtentPointA` under cached quick-draw style.
+- `0x00497c80` writes text origin globals and applies context-offset correction.
+- `0x00498980` copies/offsets rect then calls `FillRect`.
+
+#### Applied batch249 (tile token helper pair)
+- Source CSVs:
+  - `tmp_decomp/batch249_render_tile_token_helpers_renames.csv`
+  - `tmp_decomp/signature_batch249_render_tile_token_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch249_render_tile_token_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch249_render_tile_token_helpers.csv --apply`
+
+Renamed:
+- `0x004d4bd0` -> `NoOpTileTokenEmissionHook`
+- `0x00403e18` -> `thunk_NoOpTileTokenEmissionHook`
+- `0x004d4ff0` -> `AppendCallbackGeneratedByteToGrowableBuffer`
+- `0x0040953e` -> `thunk_AppendCallbackGeneratedByteToGrowableBuffer`
+
+Typed signature:
+- `AppendCallbackGeneratedByteToGrowableBuffer(int* this) -> void __thiscall` (+ thunk).
+
+Resulting impact:
+- `RenderStrategicMapTileCell` direct callee list now has **zero** `FUN_*` names.
+- Previously generic quick-draw/text/tile-token helper chains are now behavior-labeled, improving readability in both strategic-map and map-order preview flows.
+
+### TODO (next pass)
+- [ ] Dehardcode `FUN_004fedc0` / `thunk_FUN_004fedc0` into a behavioral name (main-view clip/surface snapshot helper) now that quick-draw helper vocabulary is stable.
+- [ ] Revisit `NoOpMapRenderLifecycleHookA/B` and `NoOpTileTokenEmissionHook` with disassembly-level validation to confirm they are true intentional stubs and not boundary artifacts.
+- [ ] Pivot next batch to game-logic-heavy non-UI seam (civilian order resolution / resource turn processing) using same CSV pipeline.
+
+#### Applied batch253 (main-view clip snapshot helper)
+- Source CSVs:
+  - `tmp_decomp/batch253_mainview_clip_snapshot_renames.csv`
+  - `tmp_decomp/signature_batch253_mainview_clip_snapshot.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch253_mainview_clip_snapshot_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch253_mainview_clip_snapshot.csv --apply`
+
+Renamed:
+- `0x004fedc0` -> `LoadMainViewClipSnapshotIntoQuickDrawState`
+- `0x0040544d` -> `thunk_LoadMainViewClipSnapshotIntoQuickDrawState`
+
+Typed signature:
+- `void __thiscall LoadMainViewClipSnapshotIntoQuickDrawState(int* this, ushort stateWord)` (+ thunk)
+
+Why safe:
+- Function resolves main view (`"main"`), snapshots clip bounds into quick-draw state/cache paths, and stores caller-provided word at `this+0x1C`.
+
+### TODO (next pass)
+- [ ] Revisit `NoOpMapRenderLifecycleHookA/B` and `NoOpTileTokenEmissionHook` with disassembly-level validation to confirm they are true intentional stubs and not boundary artifacts.
+- [ ] Pivot next batch to game-logic-heavy non-UI seam (civilian order resolution / resource turn processing) using same CSV pipeline.
+- [ ] Investigate unresolved gameplay-adjacent helper `SetCursorFromResourceE4AndClampRange` callees (`FUN_00605445`, `FUN_00607469`) as likely low-risk utility renames.
+
+### Continuation (2026-02-21, tactical/audio chain + no-op revalidation)
+
+#### Added reusable script (batch256 support tooling)
+- New script:
+  - `new_scripts/find_named_functions_with_generic_callees.py`
+- Purpose:
+  - Finds already-named functions matching caller regex that still call generic helpers (`FUN_*`, `Cluster_*`, `WrapperFor_Cluster_*`), to drive low-hanging dehardcode waves beyond FUN-only mining.
+- Example output file:
+  - `tmp_decomp/batch256_named_gameplay_with_generic_callees.csv`
+
+#### Applied batch258 (tactical military helper high-level rename)
+- Source CSVs:
+  - `tmp_decomp/batch258_tactical_side_eval_dialog_renames.csv`
+  - `tmp_decomp/signature_batch258_tactical_side_eval_dialog.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch258_tactical_side_eval_dialog_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch258_tactical_side_eval_dialog.csv --apply`
+
+Renamed:
+- `0x005a2750` -> `EvaluateTacticalSideStateAndShowBattleSummaryDialog`
+- `0x00409606` -> `thunk_EvaluateTacticalSideStateAndShowBattleSummaryDialog`
+
+Typed signature:
+- `void __fastcall (int pTacticalController)`
+
+Why safe:
+- Called from tactical turn-step/move/attack functions.
+- Iterates tactical unit list to compute side-state, updates controller flags, and builds localized tactical summary UI text.
+
+#### Applied batch261 (no-op revalidation corrections from disassembly)
+- Source CSVs:
+  - `tmp_decomp/batch261_noop_revalidation_renames.csv`
+  - `tmp_decomp/signature_batch261_noop_revalidation.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch261_noop_revalidation_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch261_noop_revalidation.csv --apply`
+- Validation artifact:
+  - `tmp_decomp/batch259_noop_disasm_validation.txt`
+
+Critical correction:
+- Previously tagged no-op functions were partially wrong:
+  - `0x004962a0` is not no-op; it returns pointer at `arg+0x24`.
+  - `0x00497300` is not no-op; it returns first dword pointer from surface wrapper.
+  - `0x004972c0` returns constant `AL=1`.
+  - `0x004972e0` remains true no-op (`RET`).
+  - `0x004d4bd0` is no-op with arg consume (`RET 4`).
+
+Renamed:
+- `0x004962a0` -> `GetSurfaceObjectAtContextOffset24`
+- `0x0040520e` -> `thunk_GetSurfaceObjectAtContextOffset24`
+- `0x00497300` -> `GetSurfaceHeaderFromSurfaceObject`
+- `0x00405e39` -> `thunk_GetSurfaceHeaderFromSurfaceObject`
+- `0x004972c0` -> `ReturnConstantTrueQuickDrawFlag`
+- `0x0040761c` -> `thunk_ReturnConstantTrueQuickDrawFlag`
+- `0x004d4bd0` -> `DiscardTileTokenArgumentAndReturn`
+- `0x00403e18` -> `thunk_DiscardTileTokenArgumentAndReturn`
+
+Typed signatures (stable subset):
+- `GetSurfaceObjectAtContextOffset24(int* pRenderContext) -> int* __cdecl` (+ thunk)
+- `GetSurfaceHeaderFromSurfaceObject(int* pSurfaceObject) -> int* __cdecl` (+ thunk)
+- `ReturnConstantTrueQuickDrawFlag(void) -> byte __cdecl` (+ thunk)
+- `DiscardTileTokenArgumentAndReturn(int tileToken) -> void __cdecl` (+ thunk)
+
+Impact:
+- `ApplyPaletteMaskToTileBufferByEventCode` and `RasterizeHexNeighborTerrainPaletteMap` decomp now explicitly shows surface object/header derivation instead of fake no-op calls.
+
+#### Applied batch267 (audio preset + volume/track helper chain)
+- Source CSVs:
+  - `tmp_decomp/batch267_audio_preset_chain_renames.csv`
+  - `tmp_decomp/signature_batch267_audio_preset_chain.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch267_audio_preset_chain_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch267_audio_preset_chain.csv --apply`
+- Supporting disassembly/context:
+  - `tmp_decomp/batch265_593920_disasm.txt`
+  - `tmp_decomp/batch266_audio_apply_disasm.txt`
+
+Renamed:
+- `0x00593920` -> `RequestAudioPresetChangeWithDeferredApply`
+- `0x00409381` -> `thunk_RequestAudioPresetChangeWithDeferredApply`
+- `0x0047cd60` -> `ApplyMciPlaybackRangeFromAudioManager`
+- `0x00403373` -> `thunk_ApplyMciPlaybackRangeFromAudioManager`
+- `0x0047cdd0` -> `ApplyAuxOutputVolumeFromScalar`
+- `0x00402a81` -> `thunk_ApplyAuxOutputVolumeFromScalar`
+- `0x005e1850` -> `SetMciPlaybackRangeByTrackIndexAndDevice`
+- `0x0040641a` -> `thunk_SetMciPlaybackRangeByTrackIndexAndDevice`
+- `0x005e1500` -> `SetAuxOutputVolumeFromScalar`
+- `0x004082dd` -> `thunk_SetAuxOutputVolumeFromScalar`
+
+Typed signatures:
+- `RequestAudioPresetChangeWithDeferredApply(int* this, int presetIndex, byte allowDeferred) -> void __thiscall`
+- `ApplyMciPlaybackRangeFromAudioManager(int* this, int trackIndex) -> void __thiscall`
+- `ApplyAuxOutputVolumeFromScalar(int volumeScalar) -> byte __cdecl`
+- `SetMciPlaybackRangeByTrackIndexAndDevice(byte trackIndex, int mciDeviceId) -> void __cdecl`
+- `SetAuxOutputVolumeFromScalar(int volumeScalar) -> byte __cdecl`
+
+Why safe:
+- Disassembly shows explicit MCI commands (`mciSendCommandA`) and AUX volume calls (`auxSetVolume`) wired through this chain.
+- `0x00593920` updates current/pending preset fields and optionally defers dispatch by tick timestamp.
+
+#### Applied batch270 (cursor helper utility pair)
+- Source CSVs:
+  - `tmp_decomp/batch270_cursor_helper_util_renames.csv`
+  - `tmp_decomp/signature_batch270_cursor_helper_util.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch270_cursor_helper_util_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch270_cursor_helper_util.csv --apply`
+- Related context:
+  - `tmp_decomp/batch269_setcursor_e4_ctx.txt`
+
+Renamed:
+- `0x00605445` -> `UpdateCursorHelperWindowVisibilityFromControllerState`
+- `0x00607469` -> `MoveWindowOrForwardToInPlaceSite`
+
+Typed signatures:
+- `UpdateCursorHelperWindowVisibilityFromControllerState(int pController) -> byte __fastcall`
+- `MoveWindowOrForwardToInPlaceSite(int* this, int x, int y, int width, int height, byte repaint) -> void __thiscall`
+
+### TODO (next pass)
+- [ ] Continue non-UI gameplay seam using `batch256` outputs: prioritize tactical/civilian functions with **single** remaining generic callee (low-risk cluster promotion).
+- [ ] Target `InitializeTradeScreenControlsLabelsAndNationContext` and adjacent trade flow for remaining generic cluster helpers now that audio preset chain is named.
+- [ ] Keep disassembly-first validation when a helper decompiles as “empty” to avoid false no-op naming regressions.
+
+#### Applied batch275 (global blit color setter)
+- Source CSVs:
+  - `tmp_decomp/batch275_set_global_blit_color_renames.csv`
+  - `tmp_decomp/signature_batch275_set_global_blit_color.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch275_set_global_blit_color_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch275_set_global_blit_color.csv --apply`
+- Supporting evidence:
+  - `tmp_decomp/batch272_dat695100_xrefs.csv`
+  - `tmp_decomp/batch273_4950d0_callsite_disasm.txt`
+  - `tmp_decomp/batch274_blitmode_ctx.txt`
+
+Renamed:
+- `0x004950d0` -> `SetGlobalBlitTransparentColorRaw`
+- `0x004069e2` -> `thunk_SetGlobalBlitTransparentColorRaw`
+
+Typed signature:
+- `void __cdecl SetGlobalBlitTransparentColorRaw(int blitColorRaw)` (+ thunk)
+
+Why safe:
+- Function only writes global transparent-color slot (`DAT_00695100`) used by map/trade render call chains; callsites pass immediate palette-style constants.
+
+#### Applied batch278 (trade selection-mode updater)
+- Source CSVs:
+  - `tmp_decomp/batch278_trade_selection_refresh_renames.csv`
+  - `tmp_decomp/signature_batch278_trade_selection_refresh.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch278_trade_selection_refresh_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch278_trade_selection_refresh.csv --apply`
+- Supporting context:
+  - `tmp_decomp/batch277_5c09d0_ctx.txt`
+  - `tmp_decomp/batch277_5c09d0_callers.csv`
+
+Renamed:
+- `0x005c09d0` -> `UpdateTradeSelectionStateAndRefreshUiIfChanged`
+- `0x0040707c` -> `thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged`
+
+Typed signature:
+- `void __thiscall UpdateTradeSelectionStateAndRefreshUiIfChanged(int* this, char selectionMode)` (+ thunk)
+
+Why safe:
+- Wrapper updates mode field under bounds checks and triggers redraw/update path only on value change; called from bid/offer command path.
+
+#### Applied batch281 (trade mode cycler)
+- Source CSVs:
+  - `tmp_decomp/batch281_trade_cycle_mode_renames.csv`
+  - `tmp_decomp/signature_batch281_trade_cycle_mode.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch281_trade_cycle_mode_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch281_trade_cycle_mode.csv --apply`
+- Post-check:
+  - `tmp_decomp/batch282_trade_cmd_post281_ctx.txt`
+
+Renamed:
+- `0x00503b90` -> `CycleTradeScreenMode0To2`
+- `0x00405db7` -> `thunk_CycleTradeScreenMode0To2`
+
+Typed signature:
+- `void __thiscall CycleTradeScreenMode0To2(int* this)` (+ thunk)
+
+Why safe:
+- Logic increments/normalizes a small mode slot (0..2) used by trade screen command handlers.
+
+#### Applied batch285 (timer slot callback scheduler)
+- Source CSVs:
+  - `tmp_decomp/batch285_timer_slot_scheduler_renames.csv`
+  - `tmp_decomp/signature_batch285_timer_slot_scheduler.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch285_timer_slot_scheduler_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch285_timer_slot_scheduler.csv --apply`
+- Supporting context:
+  - `tmp_decomp/batch284_dispatchhint_5e0520_ctx.txt`
+  - `tmp_decomp/batch284_dispatchhint_5e0520_callers.csv`
+
+Renamed:
+- `0x005e0520` -> `ScheduleTimerSlotCallbackWithInterval`
+- `0x00407815` -> `thunk_ScheduleTimerSlotCallbackWithInterval`
+
+Typed signature:
+- `void __cdecl ScheduleTimerSlotCallbackWithInterval(int callbackEntry, uint intervalMs, int timerSlot)` (+ thunk)
+
+Why safe:
+- Uses `SetTimer` with slot id base `0xA000 + timerSlot` and stores callback metadata in per-slot table.
+
+### TODO (next pass)
+- [ ] Continue from `tmp_decomp/batch283_named_gameplay_with_generic_callees_post281.csv` and promote one-callee gameplay helpers (avoid UI-only wrappers).
+- [ ] Add at least one more non-UI trade/economy rename batch (function + direct thunk + signature).
+- [ ] Keep no-op naming guarded by disassembly proof (`dump_function_disassembly.py`) before semantic rename.
+
+### Continuation (2026-02-21, economy/map-generation helper dehardcoding)
+
+#### Applied batch286 (economy control-state + string loader helpers)
+- Source CSVs:
+  - `tmp_decomp/batch286_economy_ui_string_helpers_renames.csv`
+  - `tmp_decomp/signature_batch286_economy_ui_string_helpers.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch286_economy_ui_string_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch286_economy_ui_string_helpers.csv --apply`
+- Supporting evidence:
+  - `tmp_decomp/batch286_ctx_economy_chain.txt`
+  - `tmp_decomp/batch286_disasm_568f90.txt`
+  - `tmp_decomp/batch286_disasm_5c4780.txt`
+  - `tmp_decomp/batch286_disasm_5c4850.txt`
+  - `tmp_decomp/batch286_callers_5c4850_and_thunk.csv`
+
+Renamed:
+- `0x00568f90` -> `UpdateIndustryCapabilityControlStateAndValue`
+- `0x0040905c` -> `thunk_UpdateIndustryCapabilityControlStateAndValue`
+- `0x005c4780` -> `LoadUiStringByGroupAndIndexToGlobalControlTag`
+- `0x00403a30` -> `thunk_LoadUiStringByGroupAndIndexToGlobalControlTag`
+- `0x005c4850` -> `LoadUiStringByGroupAndIndexToControlObject`
+- `0x0040807b` -> `thunk_LoadUiStringByGroupAndIndexToControlObject`
+
+Typed signatures:
+- `UpdateIndustryCapabilityControlStateAndValue(void* this, int stateValue, int overrideValue) -> void __thiscall` (+ thunk).
+- `LoadUiStringByGroupAndIndexToGlobalControlTag(int stringGroup, int stringIndex, int controlTag) -> void __cdecl` (+ thunk).
+- `LoadUiStringByGroupAndIndexToControlObject(int stringGroup, int stringIndex, void* pControlObject) -> void __cdecl` (+ thunk).
+
+Notes:
+- One save failed when I accidentally ran two writers in parallel; reran sequentially (single writer) and persisted cleanly.
+
+#### Applied batch287 (map-generation progress spinner helper)
+- Source CSVs:
+  - `tmp_decomp/batch287_mapgen_progress_spinner_renames.csv`
+  - `tmp_decomp/signature_batch287_mapgen_progress_spinner.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch287_mapgen_progress_spinner_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch287_mapgen_progress_spinner.csv --apply`
+- Supporting evidence:
+  - `tmp_decomp/batch287_ctx_578680_chain.txt`
+  - `tmp_decomp/batch287_disasm_578680.txt`
+  - `tmp_decomp/batch287_callers_578680.csv`
+
+Renamed:
+- `0x00578680` -> `UpdateMapGenerationProgressSpinnerFrame`
+- `0x00401c2b` -> `thunk_UpdateMapGenerationProgressSpinnerFrame`
+
+Typed signature:
+- `UpdateMapGenerationProgressSpinnerFrame(void* this) -> void __thiscall` (+ thunk).
+
+Why safe:
+- Tick-gated frame counter (`this+0xA0`) cycles 0..23.
+- Applies resource id base `0x11D0 + frame` to control resolved via tag `0x676c6f62`.
+- Called repeatedly across map generation/rebuild path.
+
+#### Applied batch288 (string loader sibling helper used by diplomacy/setup/status init)
+- Source CSVs:
+  - `tmp_decomp/batch288_ui_string_tag_apply_renames.csv`
+  - `tmp_decomp/signature_batch288_ui_string_tag_apply.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch288_ui_string_tag_apply_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch288_ui_string_tag_apply.csv --apply`
+- Supporting evidence:
+  - `tmp_decomp/batch288_ctx_5c46b0_chain.txt`
+  - `tmp_decomp/batch288_disasm_5c46b0.txt`
+  - `tmp_decomp/batch288_callers_5c46b0.csv`
+
+Renamed:
+- `0x005c46b0` -> `LoadUiStringByGroupAndIndexToGlobalControlTagAndApply`
+- `0x00406bc7` -> `thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply`
+
+Typed signature:
+- `LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(int stringGroup, int stringIndex, int controlTag) -> void __cdecl` (+ thunk).
+
+Cross-check output:
+- `tmp_decomp/batch288_postcheck_context.txt`
+
+### TODO (next pass)
+- [ ] Continue from `tmp_decomp/batch287_named_gameplay_with_generic_callees_post286.csv` and prioritize one-generic-callee **gameplay** helpers over UI-only wrappers.
+- [ ] Target remaining map-generation shared helper chain around `Cluster_MapTileHint_00578330` and adjacent callers now that spinner helper is named.
+- [ ] For helper signatures that still decompile with `unaff_*` artifacts (e.g., `UpdateIndustryCapabilityControlStateAndValue`), run disassembly-guided calling-convention cleanup before broader propagation.
+
+#### Applied batch289 (random-map setup preview generator cluster)
+- Source CSVs:
+  - `tmp_decomp/batch289_random_map_preview_generator_renames.csv`
+  - `tmp_decomp/signature_batch289_random_map_preview_generator.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch289_random_map_preview_generator_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch289_random_map_preview_generator.csv --apply`
+- Supporting evidence:
+  - `tmp_decomp/batch289_ctx_578330.txt`
+  - `tmp_decomp/batch289_disasm_578330.txt`
+  - `tmp_decomp/batch289_ctx_5779c0.txt`
+  - `tmp_decomp/batch289_callers_thunk_4035f8.csv`
+  - `tmp_decomp/batch289_postcheck_context.txt`
+
+Renamed:
+- `0x00578330` -> `GenerateRandomMapAndRefreshSetupPreview`
+- `0x004035f8` -> `thunk_GenerateRandomMapAndRefreshSetupPreview`
+- `0x005751f0` -> `WrapperFor_GenerateRandomMapAndRefreshSetupPreview_At005751f0`
+
+Typed signature:
+- `GenerateRandomMapAndRefreshSetupPreview(void* this, int showProgress) -> void __thiscall` (+ thunk).
+
+Why safe:
+- Called from random-map command handler on `glob`/`plan` flow.
+- Drives spinner helper (`UpdateMapGenerationProgressSpinnerFrame`), map rebuild dispatch (`thunk_RebuildMapContextAndGlobalMapState`), preview raster/palette refresh, and setup-control text updates.
+
+#### Refresh scan
+- Generated:
+  - `tmp_decomp/batch290_named_gameplay_with_generic_callees_post289.csv`
+  - `tmp_decomp/batch290_named_gameplay_with_generic_callees_post289.txt`
+- Current pass reduced generic-callee pressure in map-generation/random-map setup seam; remaining top one-callee items are mostly deeper maptile/runtime clusters.
+
+### TODO (next pass)
+- [ ] Continue from `tmp_decomp/batch290_named_gameplay_with_generic_callees_post289.csv` and focus on non-UI map/gameplay helpers first.
+- [ ] Resolve signature/calling-convention artifacts in `UpdateIndustryCapabilityControlStateAndValue` (still decompiling with `unaff_*` usage).
+- [ ] Promote one additional map-generation helper in `005f*/0060*` cluster chain with disassembly-backed semantics.
+
+#### Applied batch296 (large class namespace extraction via getter-neighbor evidence)
+- Added reusable script:
+  - `new_scripts/attach_class_neighbors_from_getters.py`
+- Purpose:
+  - Attach high-confidence neighbor methods (`create`/`ctor`/`dtor`) into existing class namespaces using `GetT*ClassNamePointer` anchors and strict scoring gates.
+- Default evidence gates in script:
+  - `create`: allocator-call + size/name checks.
+  - `ctor`: vtable-install patterns from disassembly/decomp (`g_vtblT*`/`PTR_` install).
+  - `dtor`: free-if-owned patterns (`FreeHeapBufferIfNotNull`, `& 1`) + size/name checks.
+- Dry run:
+  - `.venv/bin/python new_scripts/attach_class_neighbors_from_getters.py --max-print 120`
+  - Summary: `accepted=117`, `ambiguous=0`.
+- Applied:
+  - `.venv/bin/python new_scripts/attach_class_neighbors_from_getters.py --apply --max-print 40`
+  - Result: `[done] ok=117 skip=0 fail=0`
+
+Impact snapshot:
+- Before pass:
+  - `class_namespaces=430`
+  - `functions_in_non_global_namespace=2284`
+- After pass:
+  - `class_namespaces=430`
+  - `functions_in_non_global_namespace=2402`
+- Net effect:
+  - `+118` functions moved under class namespaces (117 from batch attach + 1 getter attachment from `extract_class_namespaces_from_csv` run).
+
+Aux checks performed in this pass:
+- `.venv/bin/python new_scripts/generate_named_getter_neighbor_candidates.py tmp_decomp/batch296_named_getter_neighbor_candidates.csv`
+  - Only `rows=2` unresolved neighbor rows remained for legacy generic promotion pipeline.
+- `.venv/bin/python new_scripts/scan_class_getters_fun6.py 0x00401000 0x00630000 tmp_decomp/batch296_getter_fun6_fullscan.csv`
+  - `rows=0` for remaining `FUN_` 6-byte getter stubs (this path is saturated).
+- `.venv/bin/python new_scripts/extract_vtbl_labels_from_ctor_neighbors.py`
+  - Candidate set is small (`10`), with only one currently unlabeled target; not a big-batch lever.
+
+### TODO (next pass)
+- [ ] Re-run `attach_class_neighbors_from_getters.py` with a tighter print/export path and optionally persist accepted rows to CSV for audit/replay.
+- [ ] Add one companion script to attach additional class methods by callgraph proximity from getter/ctor anchors (only when class ownership is unambiguous).
+- [ ] Continue gameplay renaming/signature pass (non-UI), now using improved class scoping to simplify decomp context.
+
+#### Applied batch297 (large class extraction via unique vtable ownership)
+- Added reusable script:
+  - `new_scripts/attach_unique_vtable_targets_to_class.py`
+- Purpose:
+  - Attach globally-scoped methods to class namespaces when ownership is unambiguous from `g_vtblT*` entries.
+- Core safety gates:
+  - scans only canonical class vtable labels matching `g_vtblT*`,
+  - reads contiguous dword function-entry pointers from each vtable,
+  - computes target -> owning classes map,
+  - attaches only targets owned by exactly one class and still in global namespace.
+
+Dry run:
+- `.venv/bin/python new_scripts/attach_unique_vtable_targets_to_class.py --max-print 120`
+- Summary:
+  - `vtbl_symbols_seen=230`
+  - `vtbl_with_targets=222`
+  - `owned_targets=1175`
+  - `unique_global_candidates=496`
+
+Applied:
+- `.venv/bin/python new_scripts/attach_unique_vtable_targets_to_class.py --apply --max-print 40`
+- Result:
+  - `[done] ok=496 skip=0 fail=0`
+
+Impact snapshot:
+- Before batch297:
+  - `class_namespaces=430`
+  - `functions_in_non_global_namespace=2402`
+- After batch297:
+  - `class_namespaces=430`
+  - `functions_in_non_global_namespace=2898`
+- Net effect:
+  - `+496` methods moved under class namespaces.
+
+Notes:
+- This pass intentionally changes ownership/organization only (namespace/class extraction), not naming.
+- Renaming counters unchanged after this pass.
+
+### TODO (next pass)
+- [ ] Run one targeted cleanup pass for cross-family/misfit methods (for example wrappers that semantically reference a different class than their vtable owner) and only detach/reassign when strongly evidenced.
+- [ ] Use improved class scoping to accelerate non-UI gameplay renaming/signature batches (mission/zone/mapturn chains).
+- [ ] Add optional CSV export mode to `attach_unique_vtable_targets_to_class.py` for auditable candidate review before apply.
+
+#### Applied batch298 (unique class-vtable slot generic renames)
+- Added reusable script:
+  - `new_scripts/generate_unique_vtable_slot_fun_renames.py`
+- Purpose:
+  - Generate low-risk renames for remaining generic `FUN_/thunk_FUN_` methods that are uniquely owned by exactly one `g_vtblT*` class slot.
+- Generated:
+  - `.venv/bin/python new_scripts/generate_unique_vtable_slot_fun_renames.py tmp_decomp/batch298_unique_vtable_slot_fun_renames.csv`
+  - Output rows: `6`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch298_unique_vtable_slot_fun_renames.csv`
+  - Result: `[done] rows=6 ok=6 skip=0 fail=0 comments=6`
+
+Renamed:
+- `0x00401997` -> `TMapUberUberPicture_VtblSlot55`
+- `0x004057b8` -> `TOffLimitsPicture_VtblSlot55`
+- `0x00405de4` -> `TGreatPower_VtblSlot07`
+- `0x00405f56` -> `TIconBar_VtblSlot68`
+- `0x00407392` -> `TGreatPower_VtblSlot32`
+- `0x00407563` -> `TCzechBox_VtblSlot55`
+
+Why safe:
+- Each target was still generic and had exactly one `(class,slot)` owner from canonical `g_vtblT*` table scan.
+- Naming is intentionally neutral/structural (`Class_VtblSlotNN`) until behavioral semantics are confirmed.
+
+#### Applied batch299 (materialized missing MFC-style vtable stubs + semantic naming)
+- Source rename CSV:
+  - `tmp_decomp/batch299_missing_mfc_vtbl_stubs_renames.csv`
+- Applied with function materialization:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch299_missing_mfc_vtbl_stubs_renames.csv`
+  - Result: `[done] rows=5 ok=5 ... created=5`
+
+Created+renamed:
+- `0x006239a2` -> `GetCDocumentRuntimeClass`
+- `0x00622cad` -> `GetCCmdTargetRuntimeClass`
+- `0x00610965` -> `GetCDocumentMessageMap`
+- `0x00606ca6` -> `GetCCmdTargetMessageMap`
+- `0x00610a57` -> `DispatchViaVtableSlot84FromSlot06`
+
+Why safe:
+- All 5 addresses were executable stubs referenced directly from vtable data entries and lacked function objects.
+- `0x006239a2`/`0x00622cad` are literal `MOV EAX,<CRuntimeClass ptr>; RET` stubs for `CDocument`/`CCmdTarget` descriptors.
+- `0x00610965`/`0x00606ca6` are literal `MOV EAX,<AFX_MSGMAP ptr>; RET` stubs for document/cmdtarget message-map roots.
+- `0x00610a57` is a 2-instruction virtual-forwarder (`MOV EAX,[ECX]; JMP [EAX+0x84]`) used as vtable slot bridge.
+
+Typed signatures:
+- Initial signature pass added duplicate explicit `pThis` with `__thiscall`; fixed immediately.
+- Final signatures (`tmp_decomp/signature_batch299_mfc_vtbl_stub_helpers_fix.csv`):
+  - `void* __thiscall <name>(void* this)` for all five stubs.
+
+Stats after batch299:
+- `total_functions=11782` (+5)
+- `renamed_functions=8963` (+5)
+- `default_fun_or_thunk_fun=2819`
+
+### TODO (next pass)
+- [ ] Continue mapturn/mission non-UI semantics with newly materialized vtable stubs as anchors (`TMacViewMgr`/MFC dispatch seam around `0x0061096b` and `0x00606a07`).
+- [ ] Add optional CSV export mode to `attach_unique_vtable_targets_to_class.py` for audit-first class ownership passes.
+- [ ] Run a targeted “misfit ownership” review for recently attached class methods only when name evidence strongly contradicts vtable ownership.
+
+#### Applied batch300 (CDocument base-state cleanup around turn-event dialog factory)
+- Source rename CSV:
+  - `tmp_decomp/batch300_cdocument_base_and_registry_teardown_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch300_cdocument_base_and_registry_teardown_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch300_cdocument_base_and_registry_teardown.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch300_cdocument_base_and_registry_teardown.csv --apply`
+
+Renamed:
+- `0x0061096b` -> `ConstructCDocumentBaseState`
+- `0x006109eb` -> `DestructCDocumentBaseState`
+- `0x006109cf` -> `DestructCDocumentBaseStateAndMaybeFree`
+- `0x00479710` -> `DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory`
+
+Typed signatures:
+- `ConstructCDocumentBaseState(void* this) -> void* __thiscall`
+- `DestructCDocumentBaseState(void* this) -> void __thiscall`
+- `DestructCDocumentBaseStateAndMaybeFree(void* this, byte freeSelfFlag) -> void* __thiscall`
+- `DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(void* this) -> void __thiscall`
+
+Why safe:
+- `ConstructCDocumentBaseState`/`DestructCDocumentBaseState` form a clear ctor/dtor pair around the same vtable root (`0x0067210c`) and shared member cleanup sequence.
+- `Destruct...AndMaybeFree` is a textbook deleting-destructor wrapper (`dtor + conditional FreeHeapBufferIfNotNull`).
+- Registry teardown wrapper explicitly resets derived vtable/global singleton state then delegates into the base destructor.
+
+Post-check:
+- `find_named_functions_with_generic_callees.py` dropped from `440` rows to `437` after this batch set.
+
+### TODO (next pass)
+- [ ] Continue cleanup of the same seam: resolve `FUN_00601f7c` (called by both `DestructCDocumentBaseState` and `DestroyTMacViewMgrBase`) with disassembly-backed container/base-state semantics.
+- [ ] Add CSV export mode to `attach_unique_vtable_targets_to_class.py` (audit-first class ownership pass support).
+- [ ] Keep prioritizing non-UI gameplay chains where class extraction already reduced ambiguity.
+
+#### Applied batch301 (CPtrList/MFC runtime-class stubs + thunk-island functionization)
+- Source rename CSV:
+  - `tmp_decomp/batch301_mfc_baseptrlist_and_thunk_island_renames.csv`
+- Applied with function materialization:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py --create-missing tmp_decomp/batch301_mfc_baseptrlist_and_thunk_island_renames.csv`
+  - Result: `[done] rows=14 ok=10 skip=4 fail=0 created=8`
+
+Renamed core functions:
+- `0x00601f7c` -> `DestructCPtrListBaseState`
+- `0x00601f40` -> `DestructCPtrListAndMaybeFree`
+- `0x00606fba` -> `GetCObjectRuntimeClass`
+- `0x00623b3a` -> `GetCPtrListRuntimeClass`
+- `0x00623b40` -> `GetCFileExceptionRuntimeClass`
+- `0x00623b46` -> `GetCMemFileRuntimeClass`
+
+Created+named thunk-island entries:
+- `0x00401de8` -> `thunk_DestructCObjectAndMaybeFree`
+- `0x00401ded` -> `thunk_AppendRuntimeSelectionRecordEntry`
+- `0x00401df2` -> `thunk_WrapperFor_FreeHeapBufferIfNotNull_At004829f0`
+- `0x00401df7` -> `thunk_ResetObjectToCObjectSentinelVtable`
+- `0x00401dfc` -> `thunk_FUN_0056e8e0`
+- `0x00401e01` -> `thunk_DestructTClosePictureAndMaybeFree`
+- `0x00401e06` -> `thunk_FUN_00506f90`
+- `0x00401e10` -> `thunk_GetTAttackProvinceMissionClassNamePointer`
+
+Typed signatures:
+- `tmp_decomp/signature_batch301_mfc_ptrlist_and_runtimeclass.csv` applied:
+  - `DestructCPtrListBaseState(void* this) -> void __thiscall`
+  - `DestructCPtrListAndMaybeFree(void* this, byte freeSelfFlag) -> void* __thiscall`
+  - `GetCObjectRuntimeClass/GetCPtrListRuntimeClass/GetCFileExceptionRuntimeClass/GetCMemFileRuntimeClass(void* this) -> void* __thiscall`
+- `tmp_decomp/signature_batch301_thunk_destructor_wrappers_fix.csv` applied:
+  - `thunk_DestructCObjectAndMaybeFree(void* this, byte freeSelfFlag) -> void* __thiscall`
+  - `thunk_WrapperFor_FreeHeapBufferIfNotNull_At004829f0(void* this, byte freeSelfFlag) -> void* __thiscall`
+
+Why safe:
+- Runtime-class getters are literal `MOV EAX,<CRuntimeClass ptr>; RET` stubs tied to descriptor tables with explicit type names (`CObject`, `CPtrList`, `CFileException`, `CMemFile`).
+- `DestructCPtrListBaseState` is an unambiguous list/base teardown pattern:
+  - swaps to CPtrList teardown vtable,
+  - calls `RemoveAll`,
+  - restores sentinel/base vtable.
+- Thunk-island entries are direct `JMP` forwards with direct data/call xrefs.
+
+Stats after batch301:
+- `total_functions=11790`
+- `renamed_functions=8972`
+- `default_fun_or_thunk_fun=2818`
+
+### TODO (next pass)
+- [ ] Resolve `thunk_FUN_0056e8e0` and target `FUN_0056e8e0` into concrete `TQueryFloater` semantics (slot role + command/tag behavior).
+- [ ] Resolve `thunk_FUN_00506f90` and target `FUN_00506f90` into concrete query-floater command semantics.
+- [ ] Continue non-UI gameplay clusters after this MFC/base-state seam cleanup.
+
+#### Applied batch302 (QueryFloater/OrderView dehardcoding + signature cleanup)
+- Source rename CSV:
+  - `tmp_decomp/batch302_queryfloater_orderview_renames.csv`
+- Applied:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch302_queryfloater_orderview_renames.csv`
+  - Result: `[done] rows=4 ok=4 skip=0 fail=0 comments=4`
+- Signature CSV:
+  - `tmp_decomp/signature_batch302_queryfloater_orderview.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch302_queryfloater_orderview.csv --apply`
+  - Result: `[done] ok=3 skip=3 fail=0`
+
+Renamed:
+- `0x0056e8e0` -> `InitializeQueryFloaterTitleAndTextControlStyles`
+- `0x00401dfc` -> `thunk_InitializeQueryFloaterTitleAndTextControlStyles`
+- `0x00506f90` -> `RefreshOrderViewSupplyAndUseControlValues`
+- `0x00401e06` -> `thunk_RefreshOrderViewSupplyAndUseControlValues`
+
+Signature improvements:
+- `InitializeQueryFloaterTitleAndTextControlStyles(TQueryFloater* this, int lifecycleContext) -> void __thiscall`
+- `thunk_InitializeQueryFloaterTitleAndTextControlStyles(TQueryFloater* this, int lifecycleContext) -> void __thiscall`
+- `RefreshOrderViewSupplyAndUseControlValues(TOrderView* this) -> void __thiscall`
+- `thunk_RefreshOrderViewSupplyAndUseControlValues(TOrderView* this) -> void __thiscall`
+- `PopulateDialogControlsFromSelectedProductionEntry(TOrderView* this, void* ownerContext, int selectionIndex) -> void __thiscall`
+- `thunk_PopulateDialogControlsFromSelectedProductionEntry(TOrderView* this, void* ownerContext, int selectionIndex) -> void __thiscall`
+
+Class attachments applied (vtable single-owner evidence from `g_vtblTOrderView`):
+- `0x00401e38` `thunk_PopulateDialogControlsFromSelectedProductionEntry`: `Global -> TOrderView`
+- `0x00506b00` `PopulateDialogControlsFromSelectedProductionEntry`: `Global -> TOrderView`
+- `0x00401e06` `thunk_RefreshOrderViewSupplyAndUseControlValues`: `Global -> TOrderView`
+- `0x00506f90` `RefreshOrderViewSupplyAndUseControlValues`: `Global -> TOrderView`
+
+Why safe:
+- `0x0056e8e0` explicitly drives `titl` and `tex0..tex6` controls via control resolver slot `+0x94`, applies text style descriptors, and toggles final-row visibility.
+- `0x00506f90` updates `sup1/sup2/supl/use1/use2/usel` from cached fields written by `PopulateDialogControlsFromSelectedProductionEntry` (`this+0x60/this+0x64`).
+- `0x00401e06` and `0x00401e38` each have a single data xref from `g_vtblTOrderView` slots and are pure one-jump thunks to their targets.
+
+#### Applied batch303 (large class extraction via unique vtable ownership with deeper hole tolerance)
+- Applied:
+  - `.venv/bin/python new_scripts/attach_unique_vtable_targets_to_class.py --apply --max-hole-run 24 --max-print 80`
+  - Result: `[done] ok=187 skip=0 fail=0`
+- Summary:
+  - `vtbl_symbols_seen=230`
+  - `vtbl_with_targets=222`
+  - `owned_targets=1506`
+  - `unique_global_candidates=187`
+
+Why this pass changed more than prior runs:
+- Default `--max-hole-run 6` stopped scanning some long sparse vtables before later high-index slots.
+- Increasing to `--max-hole-run 24` captured additional unique tail entries, then attached only functions whose owner set remained exactly one class.
+
+Stats after batch303:
+- `total_functions=11790`
+- `renamed_functions=8976`
+- `default_fun_or_thunk_fun=2814`
+- `functions_in_non_global_namespace=3090`
+- `class_namespaces=430`
+
+### TODO (next pass)
+- [ ] Revisit `attach_unique_vtable_targets_to_class.py` and add CSV export mode so high-volume ownership passes can be audited before apply.
+- [ ] Run a focused “misfit ownership” review on the 187 newly-attached methods (only detach where symbol/decomp evidence strongly contradicts vtable ownership).
+- [ ] Continue non-UI gameplay chain work from high-generic hotspots (`Cluster_TurnStateHint_0061249e`, `Cluster_MapTileHint_005f57c0`) using same script-driven batch workflow.
+
+#### Applied batch304 (tile/tactical low-hanging semantics + signatures)
+- Rename CSV:
+  - `tmp_decomp/batch304_tile_and_tactical_helpers_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch304_tile_and_tactical_helpers.csv`
+- Applied with lock-clean retry due intermittent Ghidra save I/O error:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch304_tile_and_tactical_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch304_tile_and_tactical_helpers.csv --apply`
+
+Renamed:
+- `0x005ad180` -> `InitializeTacticalNavyToolbarCommandEntries`
+- `0x005ee900` -> `GetTileAttributeMaskByTileCode`
+- `0x005e89d0` -> `HasTileAttributeMask08`
+- `0x005f13b0` -> `NormalizeTileCodeUsingAttributeMask04`
+- `0x005f1420` -> `AppendTileCodeIfValid`
+- `0x005f03a0` -> `ResetBufferedTileStreamStateIfFlushRequested`
+- `0x005f57c0` -> `CreateFileHandleFromCrtOpenFlags`
+
+Why safe:
+- `0x005ee900/0x005e89d0/0x005f13b0` are direct table-mask helpers (`& 0x8`, `& 0x4`) with extended-code fallback through shared decoder.
+- `0x005f1420` is a strict `tileCode != -1` guard wrapper before append helper.
+- `0x005f03a0` checks flush flag bit (`0x1000`) and resets stream-state fields after flush path.
+- `0x005f57c0` clearly maps CRT-style flags to `CreateFileA/GetFileType/CloseHandle/GetLastError`.
+
+#### Applied batch306 (turn-state serialization read/lookup helper family)
+- Rename CSV:
+  - `tmp_decomp/batch306_turnstate_serialization_helpers_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch306_turnstate_serialization_helpers.csv`
+- Applied with lock-clean retry for signature save:
+  - `.venv/bin/python new_scripts/apply_function_renames_csv.py tmp_decomp/batch306_turnstate_serialization_helpers_renames.csv`
+  - `.venv/bin/python new_scripts/apply_signatures_from_csv.py tmp_decomp/signature_batch306_turnstate_serialization_helpers.csv --apply`
+
+Renamed:
+- `0x005e6da3` -> `ReadWordFromSerializedBuffer`
+- `0x005e6dd6` -> `ReadDwordFromSerializedBuffer`
+- `0x00611f3e` -> `EnsureSerializedBufferHasBytesAvailable`
+- `0x00611d26` -> `ReadBytesFromSerializedBuffer`
+- `0x00607077` -> `ScanLinkedListForNodeByNextPointer`
+- `0x00611aec` -> `FindThreadHandleMapEntryBySerializedName`
+
+#### Applied batch306b (turn-state exception/array helpers: Cluster_* -> semantic)
+- Rename CSV:
+  - `tmp_decomp/batch306b_turnstate_cluster_to_semantic_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch306b_turnstate_cluster_to_semantic.csv`
+
+Renamed:
+- `0x00615dcb` -> `RaiseSerializedDataExceptionWithCode`
+- `0x006121cd` -> `ValidateSerializedReferenceCountOrThrow`
+- `0x00601e0a` -> `InsertRepeatedPointerIntoObArrayAtIndex`
+- `0x0060aa96` -> `ConstructSerializedDataExceptionBase`
+
+Impact:
+- `Cluster_TurnStateHint_0061249e` generic-callee count dropped from `9` to `2` (before final cleanup in batch306c/307).
+
+#### Applied batch306c (SEH helper + reference registration naming)
+- Rename CSV:
+  - `tmp_decomp/batch306c_seh_and_refregister_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch306c_refregister.csv`
+
+Renamed:
+- `0x005e9ae8` -> `EstablishSehFrameProlog`
+- `0x00612315` -> `RegisterSerializedReferenceInArrayOrMap`
+
+Why safe:
+- `0x005e9ae8` disassembly is canonical SEH prolog linkage (`FS:[0]` chain setup).
+- `0x00612315` initializes reference storage (`CObArray` or `CMap`) and registers/assigns reference ordinals.
+
+#### Applied batch307 (object-reference serialization encode/decode family)
+- Rename CSV:
+  - `tmp_decomp/batch307_serialization_reference_family_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch307_serialization_reference_family.csv`
+- Applied with lock-clean retry for signature save.
+
+Renamed:
+- `0x0061249e` -> `DeserializeObjectReferenceWithValidation`
+- `0x006121e1` -> `SerializePolymorphicObjectReferenceAndPayload`
+- `0x0061240d` -> `SerializeObjectReferenceTokenByHandleMap`
+- `0x00611b7c` -> `WriteRuntimeClassIdAndNameRecord`
+- `0x005e6d27` -> `WriteWordToSerializedBuffer`
+- `0x005e6d4e` -> `WriteDwordToSerializedBuffer`
+- `0x00611e34` -> `WriteBytesToSerializedBuffer`
+- `0x00611ec4` -> `FlushOrRebaseSerializedBufferCursor`
+
+Why safe:
+- These functions form a tight, evidence-backed read/write symmetry around archive cursor fields (`+0x24/+0x28/+0x2c`) and object-reference table/index encoding paths.
+- `SerializePolymorphicObjectReferenceAndPayload` and `SerializeObjectReferenceTokenByHandleMap` now call into already-renamed registration/validation helpers with consistent semantics.
+
+Generic-callee backlog progression:
+- `rows=437` (pre-batch302 baseline)
+- `rows=430` (after batch306)
+- `rows=360` (after batch306c)
+- `rows=351` (after batch307)
+
+Stats after batch307:
+- `total_functions=11790`
+- `renamed_functions=8987`
+- `default_fun_or_thunk_fun=2803`
+- `functions_in_non_global_namespace=3090`
+- `class_namespaces=430`
+
+### TODO (next pass)
+- [ ] Continue map-tile serializer dehardcoding at the current top hotspot:
+  - `CreateFileHandleFromCrtOpenFlags` generic callees (`Cluster_MapTileCalleeHint_005f4d30`, `Cluster_MapTileCalleeHint_005f56d0`, `Cluster_MapTileHint_005ead20`, `Cluster_MapTileHint_005efd50`, `Cluster_MapTileHint_005f1600`, `Cluster_MapTileHint_005f52a0`, `Cluster_MapTileHint_005f5410`, `Cluster_MapTileHint_005f8770`).
+- [ ] Keep converting high-fanout `Cluster_*` callee nodes to semantic serialization/map helpers to reduce global generic-callee noise.
+- [ ] Add CSV export mode to `attach_unique_vtable_targets_to_class.py` for audit-first ownership passes.
+
+#### Applied batch308 (CRT FD/runtime helper dehardcode from queued hotspot)
+- Rename CSV:
+  - `tmp_decomp/batch308_fd_runtime_helpers_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch308_fd_runtime_helpers.csv`
+
+Renamed:
+- `0x005ead20` -> `MapWin32ErrorToCrtErrno`
+- `0x005f5560` -> `GetOsHandleFromFileDescriptor`
+- `0x005f5660` -> `EnterFileDescriptorCriticalSection`
+- `0x005f56d0` -> `LeaveFileDescriptorCriticalSection`
+- `0x005f4d30` -> `SeekFileDescriptorAndClearEofFlag`
+- `0x005f5410` -> `AttachHandleToFileDescriptorSlot`
+- `0x005f52a0` -> `AllocateFileDescriptorSlot`
+- `0x005efdc0` -> `CloseOsHandleAndReleaseFileDescriptor`
+- `0x005efd50` -> `CloseFileDescriptorWithLock`
+- `0x005f1600` -> `ReadFromFileDescriptorUnlocked`
+- `0x005f1580` -> `ReadFromFileDescriptorWithLock`
+- `0x005f0460` -> `WriteToFileDescriptorUnlocked`
+- `0x005f5700` -> `FlushFileDescriptorBuffersWithLock`
+- `0x005f8770` -> `AdjustFileDescriptorLengthWithZeroFill`
+
+Why safe:
+- Direct `HANDLE` calls (`SetFilePointer`, `FlushFileBuffers`, `CloseHandle`) and fd-table bitfield access confirm CRT fd runtime semantics.
+- `*_WithLock` wrappers are explicit lock-enter/leave around unlocked bodies.
+
+#### Applied batch311 (turn-state archive mode helpers + buffer lifecycle)
+- Rename CSV:
+  - `tmp_decomp/batch311_turnstate_archive_mode_helpers_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch311_turnstate_archive_mode_helpers.csv`
+
+Renamed:
+- `0x00611443` -> `RunArchiveOperationWithTempMapLock_Mode0x20`
+- `0x0061160e` -> `RunArchiveOperationWithTempMapLock_Mode0x1012`
+- `0x00611bb4` -> `InitializeSerializedArchiveBufferState`
+- `0x00611c90` -> `ReleaseSerializedArchiveBufferState`
+- `0x00611cd6` -> `ReleaseSerializedArchiveBackingBuffersAndMaps`
+- `0x00611d18` -> `FlushSerializedArchiveBufferAndResetStreamCount`
+
+Signature updates:
+- `0x00611bb4` set as `__thiscall` initializer with named args
+- `0x00611c90/0x00611cd6/0x00611d18` set as `__thiscall void`
+- `0x00611443/0x0061160e` set as `__thiscall bool`
+
+Why safe:
+- Shared call pattern: `LockMfcTempMaps -> callback -> FlushSerializedArchiveBufferAndResetStreamCount -> UnlockMfcTempMaps`.
+- `0x00611bb4` initializes archive cursor/buffer fields and allocation mode bits.
+
+#### Applied batch313 (MFC exception + serialization helper semantics)
+- Rename CSV:
+  - `tmp_decomp/batch313_mfc_exception_and_serialization_helpers_renames.csv`
+- Signature CSV:
+  - `tmp_decomp/signature_batch313_mfc_exception_and_serialization_helpers.csv`
+
+Renamed:
+- `0x0060abac` -> `ConstructCFileException`
+- `0x0060acf6` -> `DestructCFileException`
+- `0x0060bd7d` -> `ThrowMfcCFileExceptionWithContext`
+- `0x00611930` -> `WriteVariableLengthPrefixedByteBuffer`
+- `0x0061225e` -> `ResolveOrInstantiateSerializedObjectReference`
+- `0x006192a1` -> `EnsureWindowSubclassAndParentConsistency`
+
+Signature updates:
+- `ConstructCFileException`/`DestructCFileException` as `__thiscall`
+- `ThrowMfcCFileExceptionWithContext` as `__cdecl void(causeCode, osError, fileNameContext)`
+- `ResolveOrInstantiateSerializedObjectReference` with explicit `runtimeClassOrFactory` parameter
+
+Why safe:
+- `ConstructCFileException`/`DestructCFileException` match runtime-class + string member init/release shape.
+- `ThrowMfcCFileExceptionWithContext` allocates/constructs exception object then raises MFC SEH.
+- `WriteVariableLengthPrefixedByteBuffer` is explicit compact length encoding + payload write.
+
+#### Applied batch314c (low-risk wrapper semantic cleanup)
+- Source candidates:
+  - `tmp_decomp/batch314_wrapperfor_cluster_to_named_callee_post313.csv`
+- Filtered apply CSV:
+  - `tmp_decomp/batch314c_wrapper_lowrisk_apply.csv`
+
+Applied 14 wrapper renames, including:
+- `WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960`
+- `WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160` (+ siblings)
+- `WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300`
+- `WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390`
+- `WrapperFor_ConstructCFileException_At00619aac`
+- `WrapperFor_ThrowMfcCFileExceptionWithContext_At00619d11`
+
+Why safe:
+- Generated strictly from single-internal-callee wrapper shape and filtered to non-generic semantic callees.
+
+#### Applied batch315f (manual class extraction)
+- CSV:
+  - `tmp_decomp/batch315f_manual_class_extract_cfileexception.csv`
+- Applied with:
+  - `.venv/bin/python new_scripts/extract_class_namespaces_from_csv.py tmp_decomp/batch315f_manual_class_extract_cfileexception.csv`
+
+Result:
+- Created class namespace: `CFileException`
+- Attached methods:
+  - `CFileException::ConstructCFileException` (`0x0060abac`)
+  - `CFileException::DestructCFileException` (`0x0060acf6`)
+
+Verification:
+- `class_namespaces=431`
+- `has_CFileException=True`
+
+Generic-callee backlog progression (this pass):
+- `rows=341` -> `rows=323`
+
+Notes:
+- `new_scripts/attach_unique_vtable_targets_to_class.py --apply --max-hole-run 24` rerun yielded no new unique global candidates this pass (`unique_global_candidates=0`).
+- `new_scripts/attach_class_neighbors_from_getters.py` and `new_scripts/attach_class_methods_by_name_patterns.py` both returned zero new candidates.
+
+### TODO (next pass)
+- [ ] Attack current highest-fanout generic runtime/parser hotspot:
+  - `Cluster_MapTileCalleeHint_005eeb10` plus immediate helpers (`FUN_005ef570`, `FUN_005ef590`, `FUN_005ef5b0`, `FUN_005f4e40`, `Cluster_MapTileHint_005ee9e0` wrapper chain).
+- [ ] Continue game-logic dehardcoding in map/turn chain near top rows:
+  - `Cluster_MapTileHint_006110fa`, `Cluster_MapTileHint_0060add5`, `Cluster_MapTileHint_00610e6f`, `Cluster_MapTileHint_0061d01e`.
+- [ ] Use wrapper generator with strict callee filters after each semantic callee rename to keep wrapper namespace clean.
+- [ ] Keep class extraction opportunistic: create class namespace only when ctor/dtor/runtime-class evidence is explicit (as with `CFileException`).
+
+#### Applied batch320-324 (MSVC500 FID pipeline hardening)
+Goal:
+- Build a reproducible local MSVC 5.0 FID pipeline to accelerate CRT/MFC dehardcoding in Imperialism.
+
+New scripts:
+- `scripts/ImportMSLibsNoPromptUnique.java`
+  - Headless importer variant with stable names:
+    - `<LIB>__<member>__<R|D>__<payloadOffsetHex>`
+  - Skips obvious `.DLL` pseudo-members inside import libs.
+  - Prints compact summary counters/per-lib stats.
+- `scripts/CreateSingleFidLibraryNoPrompt.java`
+  - Headless no-prompt FID populate script:
+    - creates/attaches `.fidb`
+    - recursively collects programs from a project folder
+    - populates one library with explicit family/version/variant/language
+    - reports `totalAttempted/Added/Excluded` + disposition breakdown.
+- `scripts/AttachFidDatabaseNoPrompt.java`
+  - Headless attach script with arg-only file path.
+
+Execution summary:
+- Import run (unique script, phase1 non-debug subset):
+  - Log: `tmp_decomp/batch320_phase1_nodebug_unique_import.log`
+  - Imported programs: `504`
+  - Load failures: `999`
+  - Skipped `.DLL` pseudo-members: `13582`
+  - Notes:
+    - `OLDNAMES.LIB` parse fail expected.
+    - Key CRT libs (`LIBC*.LIB`, `MSVCRT.LIB`) are mostly non-COFF in this corpus; only small COFF subset imports.
+- Analysis run on imported objects:
+  - Log: `tmp_decomp/batch322_analyze_phase1_unique_libs.log`
+  - Processed/saved: `504/504`.
+- FID populate run after analysis:
+  - Log: `tmp_decomp/batch323_create_fid_phase1_nodebug_after_analysis.log`
+  - FID output: `fid/fidbs/msvc500_phase1_nodebug.fidb`
+  - Result:
+    - `totalAttempted=19624`
+    - `totalAdded=11446`
+    - `totalExcluded=8178`
+    - breakdown:
+      - `INCLUDED=11446`
+      - `IS_THUNK=2`
+      - `FAILS_MINIMUM_SHORTHASH_LENGTH=2740`
+      - `DUPLICATE_INFO=5436`
+
+Blocking note:
+- Direct headless apply against `imperialism-decomp` failed due project lock:
+  - Log: `tmp_decomp/batch324_apply_fid_to_imperialism.log`
+  - Error: `LockException: Unable to lock project .../imperialism-decomp`
+
+Why this is safe:
+- No speculative gameplay renames were applied in this batch.
+- Changes are tooling-only and reproducible; resulting `.fidb` is generated from local toolchain inputs and analyzed object programs.
+
+### TODO (FID continuation)
+- [ ] Re-run attach + analysis on `imperialism-decomp` when project lock is free:
+  - preScript: `AttachFidDatabaseNoPrompt.java fid/fidbs/msvc500_phase1_nodebug.fidb`
+  - then process `Imperialism.exe` and harvest Function ID hits.
+- [ ] Add a no-prompt FID match exporter script (CSV) for `FUN_*` only, score-thresholded, to drive safe rename batches.
+- [ ] Attempt phase2 subset import with the unique importer (expect low yield on non-COFF libs; confirm with counters).
+
+#### Applied batch327 (Imperialism sidecar FID scan + export)
+Purpose:
+- Unblock FID evidence gathering while `imperialism-decomp` remains locked.
+
+Scripts/files:
+- Added script: `scripts/ExportFidAnalyzerBookmarksNoPrompt.java`
+  - Exports `Analysis` bookmarks in `Function ID Analyzer` category to CSV with function/address/comment.
+- Run log:
+  - `tmp_decomp/batch327_imperialism_fid_scan.log`
+- Output CSV:
+  - `tmp_decomp/batch327_imperialism_fid_bookmarks.csv`
+
+Run result:
+- Imported+analyzed `Imperialism.exe` in sidecar project `imperialism-fid-scan`.
+- Attached custom fidb: `fid/fidbs/msvc500_phase1_nodebug.fidb`.
+- Export stats:
+  - `totalAnalysisBookmarks=3909`
+  - `fidRows=1464`
+  - `Single Match=1401`
+  - `Multiple Matches=63`
+
+Interpretation:
+- Custom MSVC500 phase1 fidb is producing substantial match coverage.
+- Many hits are expected runtime noise (`scalar_deleting_destructor`, common MFC/CRT symbol families), but this is enough to drive filtered low-hanging rename batches once applied to the main project.
+
+### TODO (immediate next)
+- [ ] Build a filtered rename candidate CSV from `batch327_imperialism_fid_bookmarks.csv`:
+  - include only `Single Match`
+  - exclude destructor/operator-heavy noise families first
+  - target wrappers/thunks and short forwarding chains where safe.
+- [ ] Once `imperialism-decomp` lock is free, re-run attach+analyze there and apply conservative candidate batch.
+
+#### Applied batch327b (single-match candidate extraction)
+Script:
+- `new_scripts/build_fid_single_match_candidates.py`
+
+Input:
+- `tmp_decomp/batch327_imperialism_fid_bookmarks.csv`
+
+Output:
+- `tmp_decomp/batch327_fid_single_match_candidates.csv`
+
+Result:
+- `685` conservative candidates emitted from FID single-match comments.
+- Name normalization:
+  - converts to valid C identifiers,
+  - strips invalid characters/backticks,
+  - deduplicates by suffixing with address when needed.
+
+Notes:
+- This CSV is intended as staging, not blind apply.
+- Next pass should intersect these with `FUN_*` on the main project and apply strict confidence gates (wrapper/thunk-first).
+
+#### FID yield interpretation note (why many rows != many renames)
+- Observed behavior after applying/refining FID workflow:
+  - Sidecar coverage increased (`1464 -> 1503` rows after phase2 merge).
+  - Main project export stayed lower (`559` rows) because many runtime/MFC functions were already named and/or previously normalized.
+- Filtering against `imperialism-decomp` shows the core reason:
+  - most candidates resolve to `already_named`,
+  - remaining unresolved names are mostly weak/generic (`On*`, `Get*`, `Create`, etc.) and intentionally rejected by safety gates.
+- Practical conclusion:
+  - FID remains useful for confirmation and targeted CRT/MFC helper cleanup,
+  - but it has diminishing returns for low-risk unresolved `FUN_*` renaming at current project maturity.
+
+### Execution Plan (current pass)
+1. Close current CRT/parser cleanup lane first.
+   - finish renaming/signaturing immediate neighbors of `ReadByteFromCrtInputBufferWithRefill`
+   - target: `0x005f03e0`, `0x005f4cb0`, related wrappers.
+2. Propagate low-risk wrapper renames from newly named helpers.
+   - regenerate single-callee wrapper candidates
+   - apply only strict one-target wrappers.
+3. Shift back to game logic (not UI) with low-hanging filters.
+   - use existing caller/callee scripts on map actions, turn flow, civilian-improvement paths.
+   - apply only high-confidence behavior names + easy signatures.
+4. Strict class extraction mini-pass.
+   - only ctor/dtor/runtime-class evidence; no speculative namespaces.
+5. Use FID only as targeted support.
+   - consume only `Single Match` unresolved symbols with strict name-quality gates.
+6. Momentum rule.
+   - if ambiguous for >1 pass, move to adjacent easy wins and continue.
+7. End-of-pass checkpoint.
+   - summarize renames, signature updates, and next highest-ROI lane.
+
+#### Applied batch345 (document/frame low-hanging from pending TODO anchors)
+Goal:
+- Execute the pending game-logic-adjacent anchor queue noted previously:
+  - `0x006110fa`, `0x0060add5`, `0x00610e6f`, `0x0061d01e`.
+- First two were already dehardcoded; focused this pass on unresolved neighbors and vtable slots.
+
+New/updated artifacts:
+- Context dumps:
+  - `tmp_decomp/batch345_game_logic_todo_context.txt`
+  - `tmp_decomp/batch345_helper_context.txt`
+  - `tmp_decomp/batch345_doc_vtable_neighbors_context.txt`
+  - `tmp_decomp/batch345_doc_newfunc_context.txt`
+  - `tmp_decomp/batch345_postapply_context_verified.txt`
+- Xref/table evidence:
+  - `tmp_decomp/batch345_xrefs_targets.csv`
+  - `tmp_decomp/batch345_ref_table_context.txt`
+  - `tmp_decomp/batch345_xrefs_ctor_dtor_open.csv`
+- Apply CSVs:
+  - `tmp_decomp/batch345_doc_mfc_low_hanging_renames.csv`
+  - `tmp_decomp/signature_batch345_doc_mfc_low_hanging.csv`
+
+Functionization done (missing vtable entries converted to real functions):
+- `0x006113f7`, `0x00610c08`, `0x00610ce5`, `0x00610aba`, `0x00610f84`, `0x00610f87`, `0x0061180f`.
+
+Renames applied (11):
+- `0x00610e6f` -> `SaveModifiedDocumentWithPrompt`
+- `0x00610f8a` -> `ReportDocumentSaveLoadException`
+- `0x00611334` -> `OpenFileObjectForDocumentPath`
+- `0x006113f7` -> `ReleaseFileObjectCloseOrAbort`
+- `0x00610ce5` -> `DoSaveDocumentWithPromptAndReplace`
+- `0x00610aba` -> `RenumberAndActivateVisibleDocumentFrames`
+- `0x0061d01e` -> `LoadFrameWindowFromResourceId`
+- `0x0060b72d` -> `ExtractFileTitleOrPathTailComponent`
+- `0x0060cf09` -> `LoadResourceStringOrEmptyFromMfcInstance`
+- `0x0061aa0e` -> `FormatResourceTemplateWithArgs`
+- `0x0061ab47` -> `FormatResourceTemplateWithSingleArg`
+
+Signatures applied (11) with `__thiscall`/`__cdecl` normalization and typed params where stable.
+
+Safety/quality notes:
+- `0x00610e6f` and `0x00610f8a` are high-confidence MFC document semantics:
+  - modified-check + save prompt + cancel/yes handling,
+  - exception-type sensitive save/load reporting.
+- `0x0061d01e` is high-confidence frame-load flow:
+  - resource caption/menu/accelerator loading + frame creation.
+- Save failure incident occurred once due concurrent writer/read operations; rerun sequentially fixed it.
+- Rule reinforced for next passes: no parallel commands during write transactions.
+
+### TODO (next pass)
+- [ ] Continue the same class/vtable lane immediately after `LoadFrameWindowFromResourceId`:
+  - inspect/rename next adjacent unresolved slots: `0x0061d917`, `0x0061dc76`, `0x0061e49c`, `0x0061e6e3`, `0x0061ddb2`.
+- [ ] Re-check `ConstructCFileException` naming lineage versus `OpenFileObjectForDocumentPath` object lifecycle to determine whether ctor naming should be split/base-adjusted.
+- [ ] Pivot back to non-UI gameplay queue after one more low-hanging lane closeout:
+  - focus on civilian/map action or turn-economy candidates (not UI paint/plumbing).
+
+#### Applied batch346 (requested: 1+2 = vtable-neighbor class extraction + signature propagation)
+Goal:
+- Execute a bigger batch for:
+  1) vtable-neighbor/class extraction,
+  2) mass-safe signature propagation for forwarders/wrappers.
+
+Script improvements (reusable):
+- Updated `new_scripts/attach_unique_vtable_targets_to_class.py`:
+  - now recognizes both vtable symbol styles:
+    - `g_vtblT*`
+    - `g_vtbl_<Class>_SlotNN`
+  - for slot-labeled symbols, derives candidate vtable base via `base = slot_addr - slot*4`.
+- Updated `new_scripts/generate_unique_vtable_slot_fun_renames.py`:
+  - same dual symbol-style support (`g_vtblT*` + `g_vtbl_<Class>_SlotNN`),
+  - added CLI options:
+    - `--max-slots`
+    - `--max-hole-run`
+    - `--min-targets-per-vtbl`
+- Added `new_scripts/propagate_simple_forwarder_signatures_from_callee.py`:
+  - safe signature propagation for simple forwarders (`JMP target` or `CALL target; RET`) with undefined signatures.
+
+Important process note:
+- Two save failures were hit when writer/read scripts were accidentally launched in parallel.
+- Sequential rerun persisted all results.
+- Reinforced rule: **never run parallel tool calls during write operations**.
+
+##### 1) Vtable-neighbor/class extraction results
+- Functionized missing `TMacViewMgr` vtable neighbors:
+  - `0x0061d917`, `0x0061e49c`, `0x0061dc76`, `0x0061e6e3`, `0x0061ddb2`.
+- Generated+applied unique vtable slot rename batch:
+  - CSV: `tmp_decomp/batch346_unique_vtable_slot_fun_renames_v2.csv`
+  - applied: `11` renames.
+- Re-ran class attachment with improved vtable parsing:
+  - command: `attach_unique_vtable_targets_to_class.py --apply --max-hole-run 24 --min-targets-per-vtbl 2`
+  - applied: `23` namespace attachments to `TMacViewMgr`/others.
+
+Key renamed neighbors in this lane:
+- `0x0061d917` -> `TMacViewMgr_VtblSlot49`
+- `0x0061e49c` -> `TMacViewMgr_VtblSlot50`
+- `0x0061dc76` -> `TMacViewMgr_VtblSlot51`
+- `0x0061e6e3` -> `TMacViewMgr_VtblSlot53`
+- `0x0061ddb2` -> `TMacViewMgr_VtblSlot55`
+
+##### 2) Signature propagation results
+- Forwarder propagation:
+  - script: `propagate_simple_forwarder_signatures_from_callee.py --apply`
+  - applied: `1` safe wrapper signature:
+    - `0x00485c00` -> `void __cdecl WrapperFor_InvokeCurrentMessageFallbackHandler_At00485c00(void)`
+- Targeted slot-wave signature batch:
+  - CSV: `tmp_decomp/signature_batch346_tmac_slot_wave.csv`
+  - applied: `5` signatures:
+    - `0x0061d917` -> `uint __thiscall (TMacViewMgr *this)`
+    - `0x0061e49c` -> `void* __thiscall (TMacViewMgr *this)`
+    - `0x0061dc76` -> `void __thiscall (TMacViewMgr *this, uint stringResourceId)`
+    - `0x0061e6e3` -> `void __thiscall (TMacViewMgr *this, int showCommand)`
+    - `0x0061ddb2` -> `void __thiscall (TMacViewMgr *this)`
+
+Verification artifacts:
+- `tmp_decomp/batch346_post_sig_context_seq.txt`
+- `tmp_decomp/batch346_attach_unique_vtbl_apply_v2.log`
+- `tmp_decomp/batch346_forwarder_sig_propagation_apply_seq.log`
+- `tmp_decomp/batch346_tmac_slot_signature_apply_seq.log`
+
+Progress snapshot:
+- `tmp_decomp/batch346_progress_counts.txt`
+- `renamed_functions: 9485` (from `9474`)
+- `default_fun_or_thunk_fun: 2318` (from `2324`)
+
+### TODO (next pass)
+- [ ] Continue the same `TMacViewMgr` vtable lane and semantically promote slot names where behavior is now clear (`Slot49/50/51/53/55`).
+- [ ] Apply the improved unique-vtable scripts on the next class-family-heavy corridor (outside `TMacViewMgr`) with the same `--max-hole-run 24 --min-targets-per-vtbl 2` settings.
+- [ ] Run `propagate_simple_forwarder_signatures_from_callee.py` after each large rename batch as a standard cleanup step (sequential-only).
+
+#### Applied batch348 (class-thunk tail cleanup + ctor-chain normalization + focused hints)
+Goal:
+- Continue `1+2` style work with a sequential script-driven pass:
+  - consume any remaining unique class-thunk ownership attachments,
+  - normalize one concrete constructor/thunk chain,
+  - apply only high-confidence residual gameplay hints.
+
+Dry-run findings:
+- `attach_class_thunk_targets.py`:
+  - `targets_with_class_thunk_owner=3`
+  - `unique_targets=2`
+  - `ambiguous_targets=1`
+- `generate_unique_vtable_slot_fun_renames.py` (with `--max-hole-run 24 --min-targets-per-vtbl 2`):
+  - emitted `0` new rows (lane largely exhausted this pass).
+- `propagate_simple_forwarder_signatures_from_callee.py`:
+  - emitted `0` candidates (both default and `--name-regex '.*'` runs).
+
+Applied renames (batch CSV):
+- CSV: `tmp_decomp/batch348_apply_renames.csv`
+- Command: `apply_function_renames_csv.py`
+- Result: `rows=5 ok=5 skip=0 fail=0`
+- Renamed:
+  - `0x0059f7f0` -> `ConstructTArmyBattleBaseStateImpl`
+  - `0x00408f4e` -> `thunk_ConstructTArmyBattleBaseStateImpl`
+  - `0x004ab970` -> `Cluster_MapTileHint_004ab970`
+  - `0x005a4fc0` -> `Cluster_MapTileHint_005a4fc0`
+  - `0x005e8cf0` -> `Cluster_MapTileCalleeHint_005e8cf0`
+
+Evidence notes for ctor-chain rename:
+- `0x005a4770` (`ConstructTArmyBattleBaseState`) is a single-jump wrapper:
+  - `0x005a4770 -> 0x00408f4e -> 0x0059f7f0`.
+- `0x0059f7f0` is the real implementation:
+  - allocates `0x20`,
+  - installs `g_vtblRefCountedObjectBase` then `g_vtblTArmyBattle`,
+  - stores object at `this+0x20`,
+  - initializes embedded list sentinel (`InitializeLinkedListSentinelNodeWithOwnerContext(10)`).
+
+Class extraction/attachment applied:
+- Command: `attach_class_thunk_targets.py --apply`
+- Result: `ok=2 skip=0 fail=0`
+- Attachments:
+  - `0x00407568` `thunk_PruneInvalidTrackedEntriesAndNotifyOwner` -> `TAutoGreatPower`
+  - `0x0059f7f0` `ConstructTArmyBattleBaseStateImpl` -> `TArmyBattle`
+
+Signature updates applied:
+- CSV: `tmp_decomp/signature_batch348_ctor_chain.csv`
+- Command: `apply_signatures_from_csv.py --apply`
+- Result: `ok=1 skip=1 fail=0`
+- Targeted signatures:
+  - `ConstructTArmyBattleBaseStateImpl(void* pThis) -> void* __thiscall`
+  - `thunk_ConstructTArmyBattleBaseStateImpl(void* pThis) -> void* __thiscall`
+
+Artifacts:
+- `tmp_decomp/batch348_attach_class_thunk_targets_dry.log`
+- `tmp_decomp/batch348_apply_renames.log`
+- `tmp_decomp/batch348_attach_class_thunk_targets_apply.log`
+- `tmp_decomp/batch348_signature_apply.log`
+- `tmp_decomp/batch348_disasm_armybattle_ctor_chain.txt`
+- `tmp_decomp/batch348_ctx_0059f7f0.txt`
+- `tmp_decomp/batch348_ctx_005a4770.txt`
+- `tmp_decomp/batch348_progress_counts.txt`
+
+Progress snapshot:
+- `total_functions: 11803`
+- `renamed_functions: 9499`
+- `default_fun_or_thunk_fun: 2304`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+
+### TODO (next pass)
+- [ ] Chase the one remaining ambiguous class-thunk ownership candidate from `attach_class_thunk_targets.py` and resolve by direct xref/decomp evidence.
+- [ ] Continue non-UI game-logic renaming around `TAutoGreatPower`/`TArmyBattle` neighbors surfaced in this pass (`RefreshTrackedEntriesAndReplanAiDevelopment`, battle-side setup helpers).
+- [ ] Keep unique-vtable/class-attach sweep in routine, but deprioritize as it now yields near-zero candidates; prioritize gameplay semantic passes.
+
+#### Applied batch349 (bulk one-shot functionization + bulk class extraction)
+Prompt-driven objective:
+- Test the aggressive mode directly:
+  - functionize candidate missing code regions in one pass,
+  - extract/attach classes in one pass.
+
+New reusable script:
+- Added `new_scripts/functionize_missing_branch_targets.py`
+  - scans executable memory for single-flow `CALL/JMP` branch targets with no containing function,
+  - supports dry-run and apply,
+  - supports address window and creation cap.
+
+##### 1) Bulk functionization (one go)
+Command:
+- `.venv/bin/python new_scripts/functionize_missing_branch_targets.py --apply --max-create 0 --start 0x00400000 --end 0x00700000`
+
+Result:
+- Dry-run candidates: `222`
+- Applied: `created=166`, `skipped=56`, `failed=0`
+
+Notes:
+- This is intentionally aggressive and materially increases coverage.
+- Side effect: many newly materialized functions are generic `FUN_*` and require follow-up semantic triage/renaming.
+
+##### 2) Bulk class extraction/attachment stack
+Commands and results:
+- `extract_vtbl_labels_from_ctor_neighbors.py --apply`
+  - candidates `9`, all already labeled (`ok=0 skip=9`).
+- `extract_class_namespaces_from_csv.py` over:
+  - `tmp_decomp/batch112_class_quads_merged.csv`
+  - `tmp_decomp/batch138_class_quad_evidence_from_all_getters.csv`
+  - `tmp_decomp/batch172_class_quad_evidence_from_all_getters_rerun.csv`
+  - result: `class_created=0 class_existing=58 fn_attached=0 fn_already=144`.
+- `attach_unique_vtable_targets_to_class.py --apply --max-hole-run 32 --min-targets-per-vtbl 1`
+  - result: `ok=16 skip=0 fail=0` (relaxed gate found additional attachable globals).
+- `attach_class_thunk_targets.py --apply`
+  - result: `ok=6 skip=0 fail=0`, `ambiguous_targets=1`.
+
+Examples of class attachments from this pass:
+- `RunRegisteredDialogFactoriesByEventCode` -> `TCluster`
+- `InvokeDialogFactoryFromPacket` -> `TCluster`
+- `PruneInvalidTrackedEntriesAndNotifyOwner` -> `TAutoGreatPower`
+- `HandleTradeSellControlCommand` -> `TAmtBarCluster`
+- `HandleTradeMoveStepCommand` -> `TAmtBar`
+- `HandleTradeMovePageStepCommand` -> `TIndustryAmtBar`
+
+Artifacts:
+- `tmp_decomp/batch349_functionize_missing_branch_targets_dry.log`
+- `tmp_decomp/batch349_functionize_missing_branch_targets_apply.log`
+- `tmp_decomp/batch349_extract_vtbl_labels_apply.log`
+- `tmp_decomp/batch349_extract_class_namespaces_apply.log`
+- `tmp_decomp/batch349_attach_unique_vtbl_relaxed_apply.log`
+- `tmp_decomp/batch349_attach_class_thunk_targets_apply.log`
+- `tmp_decomp/batch349_progress_counts.txt`
+
+Progress snapshot:
+- `total_functions: 11969` (was `11803`)
+- `renamed_functions: 9500`
+- `default_fun_or_thunk_fun: 2469`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+
+### TODO (next pass)
+- [ ] Prioritize semantic triage for newly materialized high-xref `FUN_*` from batch349 (game-logic first; skip UI plumbing unless it unblocks gameplay).
+- [ ] Resolve remaining `ambiguous_targets=1` from class-thunk ownership with direct evidence before attaching.
+- [ ] Run a constrained “newly created functions only” rename/signature wave to quickly reduce the `default_fun_or_thunk_fun` spike from the aggressive functionization pass.
+
+#### Applied batch350 (targeted triage of newly functionized corridor)
+Goal:
+- Execute the follow-up requested after bulk functionization:
+  - prioritize high-impact, low-risk game-logic cleanup on newly opened branch-target space.
+
+New reusable script:
+- Added `new_scripts/rank_csv_addresses_by_xrefs.py`
+  - ranks candidate CSV rows by cross-reference count,
+  - preserves existing columns and appends:
+    - `xref_count`
+    - `unique_callers`
+    - `caller_names`.
+
+Workflow executed:
+1) Generated gameplay-focused missing-thunk candidates in full code range:
+   - `generate_missing_jmp_thunk_candidates.py --start 0x00400000 --end 0x00700000 --name-regex <gameplay-wide>`
+   - output: `tmp_decomp/batch350_missing_jmp_thunks_gameplay.csv` (`32` rows).
+2) Ranked by xrefs:
+   - `rank_csv_addresses_by_xrefs.py`
+   - output: `tmp_decomp/batch350_missing_jmp_thunks_gameplay_ranked.csv`.
+3) Filtered out obvious UI-noise wrappers (global UI invalidation/resource-window family), kept trade/tactical/maptile/railhead/city-production lane.
+4) Applied with `--create-missing`:
+   - CSV: `tmp_decomp/batch350_missing_jmp_thunks_gameplay_filtered_apply.csv`
+   - result: `rows=20 ok=20 created=20 fail=0`.
+
+Renames applied (20):
+- `thunk_WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0`
+- `thunk_Cluster_MapTileHint_0049f2d0`
+- `thunk_Cluster_MapTileHint_0048da60`
+- `thunk_WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750`
+- `thunk_Cluster_TurnStateHint_00583bd0`
+- `thunk_UpdateTradeBarFromSelectedMetricRatio_A`
+- `thunk_Cluster_MapTileHint_004133d0`
+- `thunk_SetTradeToolSubcontrolEnabledStateByFlag`
+- `thunk_ClampTileCoordsToMapDialogBoundsAndRefresh`
+- `thunk_UpdateTradeSellControlAndBarFromNationMetric`
+- `thunk_WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780`
+- `thunk_Cluster_MapTileHint_004fcf80`
+- `thunk_WrapperFor_Cluster_MapTileHint_005740a0_At00574d10`
+- `thunk_InitializeTacticalNavyToolbarCommandEntries`
+- `thunk_UpdateCityProductionDialogCommodityValueControls`
+- `thunk_UpdateTradeBarFromSelectedMetricRatio_B`
+- `thunk_Cluster_MapTileHint_004bac50`
+- `thunk_HandleRailheadDialogOkaySelection`
+- `thunk_Cluster_MapTileHint_0050d700`
+- `thunk_UpdateTradeSummaryMetricControlsFromRecord`
+
+Signature follow-up:
+- Ran `propagate_simple_thunk_signatures_from_callee.py --apply`:
+  - `candidates=0` for current gate.
+- Ran `apply_thunk_target_signatures_from_csv.py` on the same 20-row thunk-target set:
+  - `ok=0 skip=20` (no net signature deltas needed in this lane).
+
+Verification artifacts:
+- `tmp_decomp/batch350_missing_jmp_thunks_gameplay.log`
+- `tmp_decomp/batch350_missing_jmp_thunks_gameplay_ranked.log`
+- `tmp_decomp/batch350_missing_jmp_thunks_gameplay_filtered_apply.log`
+- `tmp_decomp/batch350_propagate_simple_thunk_signatures_apply.log`
+- `tmp_decomp/batch350_apply_thunk_target_signatures.log`
+- `tmp_decomp/batch350_progress_counts.txt`
+- `tmp_decomp/batch350_progress_counts_after_sigs.txt`
+
+Progress snapshot after batch350:
+- `total_functions: 11989`
+- `renamed_functions: 9520`
+- `default_fun_or_thunk_fun: 2469`
+
+### TODO (next pass)
+- [ ] Resolve the one ambiguous class-thunk ownership target:
+  - `0x00408e5e` currently shared by `TSelectoText` and `TInfoBarPictureText` thunk owners.
+- [ ] Triage newly functionized generic `FUN_*` entries with highest xrefs from:
+  - `tmp_decomp/batch350_newly_functionized_fun_ranked.csv`
+  - especially `0x0047b55d`, `0x004c4c4c` (verify if true function boundaries vs mid-block splits before naming).
+- [ ] Continue game-logic-first wrapper naming in the `0x0040xxxx` thunk corridor, keeping UI-invalidator family excluded unless directly required.
+
+#### Applied batch351 (UI + FID-focused pass; removed UI exclusion)
+Context shift:
+- Per user direction, stopped excluding UI and explicitly leveraged SDK/FID-derived matches for UI/MFC cleanup.
+
+FID reconciliation:
+- Re-checked historical FID apply set `tmp_decomp/batch328_fid_fun_apply.csv`:
+  - all 29 entries already dehardcoded in current project.
+- Parsed raw phase2 sidecar FID bookmarks directly:
+  - unresolved single-match entries remaining in current project: exactly 2
+    - `0x0061852a` raw=`DoMessageBox`
+    - `0x005e55ee` raw=`Dropped`
+
+UI thunk wave:
+- Generated additional UI wrapper-thunk candidates (previously filtered out):
+  - `tmp_decomp/batch351_ui_extra_thunks.csv` (`16` rows)
+  - mostly `UiInvalidationFlag`/`TemporarilyClearAndRestoreUiInvalidationFlag`/resource-window wrappers.
+- Applied combined rename batch:
+  - CSV: `tmp_decomp/batch351_ui_fid_apply_renames.csv` (`18` rows total = 16 UI thunks + 2 FID/UI entries)
+  - command: `apply_function_renames_csv.py --create-missing`
+  - result: `ok=18 created=16 fail=0`
+
+Key semantic renames:
+- `0x0061852a` -> `DoMessageBox`
+  - from FID single-match + direct decomp evidence:
+    - resolves safe owner/top parent,
+    - normalizes flags,
+    - calls `MessageBoxA`.
+- `0x005e55ee` -> `HandleDroppedListBoxEntryReorder`
+  - behavior evidence:
+    - fetches dropped index,
+    - grabs item text/data,
+    - delete/insert cycle on listbox messages (`0x182/0x181/0x19a/0x186`),
+    - preserves selection/data after reorder.
+
+Signature updates:
+- Applied typed signature for `DoMessageBox`:
+  - CSV: `tmp_decomp/signature_batch351_do_message_box.csv`
+  - `DoMessageBox(void* pContext, char* pMessage, uint uType, int nHelpContext) -> int __thiscall`
+- Attempted thunk-target signature copy for 16 new UI thunks:
+  - CSV: `tmp_decomp/signature_batch351_ui_thunk_targets.csv`
+  - result: `ok=0 skip=16` (no net signature deltas needed).
+
+Artifacts:
+- `tmp_decomp/batch351_ui_extra_thunks.log`
+- `tmp_decomp/batch351_ui_fid_apply_renames.log`
+- `tmp_decomp/batch351_signature_do_message_box.log`
+- `tmp_decomp/batch351_signature_ui_thunk_targets.log`
+- `tmp_decomp/batch351_raw_fid_unresolved_from_bookmarks.txt`
+- `tmp_decomp/batch351_fid_rejected_candidates_inspect.txt`
+- `tmp_decomp/batch351_progress_counts.txt`
+
+Progress snapshot after batch351:
+- `total_functions: 12005`
+- `renamed_functions: 9538`
+- `default_fun_or_thunk_fun: 2467`
+
+### TODO (next pass)
+- [ ] Continue UI/FID integration by rescanning for fresh FID single matches after the latest functionization wave when project lock allows reliable headless pass.
+- [ ] Resolve `0x00408e5e` ambiguous class-thunk owner split (`TSelectoText` vs `TInfoBarPictureText`) and attach only with strong evidence.
+- [ ] Continue high-impact UI wrapper normalization (caption/help/dialog-flow lanes) now that UI exclusion is removed.
+
+#### Applied batch352 (main-project FID refresh + mismatch inventory)
+Goal:
+- Refresh FID bookmarks against the current main project and produce an actionable mismatch set for UI-focused cleanup.
+
+Workflow:
+- Re-attached `fid/fidbs/msvc500_phase1_nodebug.fidb` to `imperialism-decomp` and exported bookmarks.
+- Rebuilt single-match candidates and strict-filter outputs.
+- Generated mismatch report for already-named functions that differ from FID candidate identity strings.
+
+Results:
+- Refresh bookmarks rows: `560`
+- Strict filter: no new strict apply rows (`already_named=296`)
+- Mismatch inventory: `75` rows
+
+Artifacts:
+- `tmp_decomp/batch352_mainproject_fid_scan_refresh.log`
+- `tmp_decomp/batch352_mainproject_fid_bookmarks_refresh.csv`
+- `tmp_decomp/batch352_fid_single_match_candidates.csv`
+- `tmp_decomp/batch352_fid_filter_report_strict.txt`
+- `tmp_decomp/batch352_fid_name_mismatches_report.txt`
+
+#### Applied batch353 (UI/MFC-focused FID cleanup using msvc500 SDK references)
+Goal:
+- Execute a safe, UI-focused cleanup pass from batch352 mismatches:
+  - canonical MFC naming for high-confidence single matches,
+  - disambiguate overloaded/duplicate UI helper names,
+  - tighten easy signatures.
+
+SDK grounding:
+- Verified API/overload families from:
+  - `msvc500-master/mfc/include/AFXCMN.INL`
+  - `msvc500-master/mfc/include/AFXCMN.H`
+  - `msvc500-master/mfc/include/AFXDD_.H`
+  - `msvc500-master/mfc/include/AFXVER_.H`
+- Confirmed DDX overload set and `AFXAPI` calling-convention expectations used in signature cleanup.
+
+Important operational note:
+- One parallel write attempt caused save failure (`File error during save`) from lock contention.
+- Re-ran apply operations sequentially (single writer session), then verified via decomp/context dumps.
+
+Wave 1 renames/signatures (12 targets):
+- Canonicalized core UI/MFC methods:
+  - `0x005e591c` -> `AddBitmap`
+  - `0x005e5987` -> `SaveState`
+  - `0x005e59b7` -> `RestoreState`
+  - `0x005e5b9a` -> `GetBorders`
+  - `0x005e5d3b` -> `HitTest` (CListCtrl)
+  - `0x005e628b` -> `HitTest` (CTreeCtrl)
+  - `0x006130ec` -> `LineTo`
+  - `0x00613686` -> `PlayMetaFile`
+  - `0x0061f0fa` -> `FillSolidRect`
+  - `0x00601baa` -> `CPtrArray`
+- `0x0060339a` and `0x0060366f` remained as constructor-style names due duplicate-symbol collision at the same address:
+  - `ConstructCMapPtrToPtr`
+  - `ConstructCMapStringToPtr`
+- Signature hygiene corrected for all 12 targets (after fixing an initial accidental explicit-`this` parameter injection).
+
+Wave 2 UI disambiguation renames (13 targets):
+- Message/handler/helper disambiguation:
+  - `OnCreate_613d76`
+  - `OnDestroy_613da6`
+  - `OnIdle_614c76`
+  - `ExecuteDlgInit_60a44b`
+  - `GetFont_60c367`
+  - `PreCreateWindow_61cdb3`
+  - `OnDestroy_61d30e`
+- DDX overload disambiguation:
+  - `DDX_Text_618a40`
+  - `DDX_Text_618bc6`
+  - `DDX_Text_618c30`
+  - `DDX_Text_618c5f`
+  - `DDX_Text_618c8e`
+  - `DDX_Text_618cbd`
+
+Wave 2 signatures (7 targets):
+- Updated with explicit calling convention and parameter naming:
+  - `AfxInternalProcessWndProcException` -> `int __stdcall (void* pException, void* pMsg)`
+  - six `DDX_Text_*` overloads -> `void __stdcall (void* pDX, int nIDC, <typed value ptr>)`
+
+Artifacts:
+- `tmp_decomp/batch353_ui_fid_context.txt`
+- `tmp_decomp/batch353_ui_fid_rename_apply.csv`
+- `tmp_decomp/batch353_ui_fid_rename_apply_retry.log`
+- `tmp_decomp/batch353_ui_fid_signature_apply.csv`
+- `tmp_decomp/batch353_ui_fid_signature_fix.csv`
+- `tmp_decomp/batch353_ui_fid_signature_fix.log`
+- `tmp_decomp/batch353_ui_fid_rename_canonical.csv`
+- `tmp_decomp/batch353_ui_fid_rename_canonical.log`
+- `tmp_decomp/batch353_ui_fid_context_canonical.txt`
+- `tmp_decomp/batch353_ui_fid_context_wave2.txt`
+- `tmp_decomp/batch353_ui_fid_rename_wave2.csv`
+- `tmp_decomp/batch353_ui_fid_rename_wave2.log`
+- `tmp_decomp/batch353_ui_fid_context_wave2_after.txt`
+- `tmp_decomp/batch353_ui_fid_signature_wave2.csv`
+- `tmp_decomp/batch353_ui_fid_signature_wave2.log`
+- `tmp_decomp/batch353_ui_fid_context_sig_wave2_after.txt`
+- `tmp_decomp/batch353_progress_counts.txt`
+
+Progress snapshot after batch353:
+- `total_functions: 12005`
+- `renamed_functions: 9539`
+- `default_fun_or_thunk_fun: 2466`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+
+### TODO (next pass)
+- [ ] Continue UI/FID wave on safe single-match rows near `0x0060a***` and `0x0061e***`, prioritizing helpers with clear message/WinAPI behavior over destructor conflicts.
+- [ ] Resolve `ConstructCMapPtrToPtr` / `ConstructCMapStringToPtr` duplicate-symbol collision at address-level and normalize naming cleanly if safe.
+- [ ] Apply targeted UI signature cleanup for disambiguated handlers where roles are now clear (`OnCreate_613d76`, `PreCreateWindow_61cdb3`, `ExecuteDlgInit_60a44b`) without speculative retyping.
+
+#### Applied batch354 (addressed batch353 TODO set)
+Goal:
+- Execute the three pending TODOs from batch353:
+  - continue safe UI/FID wave in `0x0060a***` / `0x0061e***`,
+  - resolve CMap ctor naming collision cleanly,
+  - apply targeted signature cleanup for selected UI handlers.
+
+Collision diagnosis + fix:
+- Inspected symbol table for `0x0060339a` / `0x0060366f` and confirmed collisions were caused by analysis labels at the same address:
+  - function + analysis label pair:
+    - `ConstructCMapPtrToPtr` + label `CMapPtrToPtr`
+    - `ConstructCMapStringToPtr` + label `CMapStringToPtr`
+- Normalized constructor naming while preserving analysis labels:
+  - `0x00601baa` -> `CPtrArray_ctor`
+  - `0x0060339a` -> `CMapPtrToPtr_ctor`
+  - `0x0060366f` -> `CMapStringToPtr_ctor`
+
+Safe UI/FID wave (`0x0060a***` / `0x0061e***`):
+- `0x0060a3fb` -> `ExecuteDlgInitFromResource`
+  - behavior: loads `RT_DLGINIT` resource and forwards to template-execution helper.
+- `0x0061e79d` -> `CreateStaticClassControl`
+  - behavior: calls create slot with class string `"STATIC"`.
+- `0x0061e7f7` -> `CreateButtonClassControl`
+  - behavior: calls create slot with class string `"BUTTON"`.
+- `0x0061e921` -> `OnChildNotify_61e921`
+- `0x0061ea9c` -> `OnChildNotify_61ea9c`
+
+Targeted signature cleanup applied:
+- `0x00613d76` `OnCreate_613d76`:
+  - `int __thiscall (void* pCreateContext)`
+- `0x0061cdb3` `PreCreateWindow_61cdb3`:
+  - `bool __thiscall (void* pCreateStruct)`
+- `0x0060a44b` `ExecuteDlgInit_60a44b`:
+  - `int __thiscall (void* pDlgInitData)`
+
+Additional signature hygiene in same lane:
+- `0x0060a3fb` `ExecuteDlgInitFromResource`:
+  - `int __thiscall (char* pszResourceName)`
+- `0x0061e79d` `CreateStaticClassControl`:
+  - `int __thiscall (char* pszCaption, uint dwStyle, void* pRect, void* pParentWnd, uint nControlId)`
+- `0x0061e7f7` `CreateButtonClassControl`:
+  - same as above.
+- `0x0061e921` `OnChildNotify_61e921`:
+  - `uint __thiscall (uint message, uint wParam, int lParam, void* pResult)`
+- `0x0061ea9c` `OnChildNotify_61ea9c`:
+  - same as above.
+
+Artifacts:
+- `tmp_decomp/batch354_ui_fid_61e_context.txt`
+- `tmp_decomp/batch354_ui_fid_more_context.txt`
+- `tmp_decomp/batch354_ui_fid_todo_renames.csv`
+- `tmp_decomp/batch354_ui_fid_todo_renames.log`
+- `tmp_decomp/batch354_ui_fid_todo_signatures.csv`
+- `tmp_decomp/batch354_ui_fid_todo_signatures.log`
+- `tmp_decomp/batch354_ui_fid_todo_context_after.txt`
+- `tmp_decomp/batch354_ui_fid_todo_signatures_followup.csv`
+- `tmp_decomp/batch354_ui_fid_todo_signatures_followup.log`
+- `tmp_decomp/batch354_ui_fid_todo_context_followup.txt`
+- `tmp_decomp/batch354_progress_counts.txt`
+
+Progress snapshot after batch354:
+- `total_functions: 12005`
+- `renamed_functions: 9539`
+- `default_fun_or_thunk_fun: 2466`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+
+### TODO (next pass)
+- [ ] Continue UI/FID safe-single cleanup in the same lane, prioritizing unambiguous method wrappers (`UpdateData`, `CDataExchange`, `PreTranslateInput`, `SubclassCtl3d`, `SubclassDlg3d`) before destructor-conflict rows.
+- [ ] Investigate and type `FID_conflict` destructor cluster at `0x0061e8cb/0x0061ea56/0x0061eb67/0x0061ebc0` with vtable evidence first, then rename conservatively.
+- [ ] Revisit ambiguous class-thunk ownership at `0x00408e5e` (`TSelectoText` vs `TInfoBarPictureText`) and resolve with direct caller/xref evidence.
+
+#### Applied batch355 (all batch354 TODOs addressed in one pass)
+Goal:
+- Close the full pending TODO set in one go:
+  1) safe single-match UI cleanup in `0x0060a***` lane,
+  2) vtable-backed conservative destructor-cluster renaming,
+  3) direct evidence resolution of ambiguous ownership at `0x00408e5e`.
+
+Evidence-gather phase:
+- Exported/inspected:
+  - vtable xrefs for cluster vtbl pointers (`0x00671d1c`, `0x00671e04`, `0x00671ee4`, `0x00671fb4`)
+  - callers for destructor cluster + `0x00408e5e`
+  - function context for all target functions.
+- Key ownership evidence for `0x00408e5e`:
+  - function body writes `g_vtblTStaticText` directly before `TView` teardown.
+  - wrappers exist in both `TSelectoText` and `TInfoBarPictureText`, consistent with shared base implementation.
+  - resolved as `TStaticText` core dtor implementation.
+
+Safe UI/FID single-match cleanup applied:
+- Renames:
+  - `0x0060a1c4` -> `UpdateDataWithExchangeContext`
+  - `0x0060a267` -> `CDataExchange_ctor`
+  - `0x0060a5da` -> `PreTranslateInputMessage`
+  - `0x0060a935` -> `SubclassCtl3dIfAvailable`
+  - `0x0060a97f` -> `SubclassDlg3dIfAvailable`
+- Signatures:
+  - `UpdateDataWithExchangeContext`: `bool __thiscall (int bSaveAndValidate)`
+  - `CDataExchange_ctor`: `void __thiscall (void* pDlgWnd, int bSaveAndValidate)`
+  - `PreTranslateInputMessage`: `bool (void* pMsg)` (calling convention left unchanged/unknown)
+  - `SubclassCtl3dIfAvailable`: `bool __thiscall (int nControlType)`
+  - `SubclassDlg3dIfAvailable`: `bool __thiscall (void* pMap)`
+
+Destructor cluster (conservative, evidence-backed) applied:
+- Renames:
+  - `0x0061e8cb` -> `Dtor_CListBox_FID_61e8cb`
+  - `0x0061ea56` -> `Dtor_CHeaderCtrl_FID_61ea56`
+  - `0x0061eb67` -> `Dtor_CHeaderCtrl_FID_61eb67`
+  - `0x0061ebc0` -> `Dtor_CHeaderCtrl_FID_61ebc0`
+- Signatures:
+  - all four set to `void __thiscall (void)`
+- Vtable labels renamed for traceability:
+  - `0x00671d1c` -> `g_vtblCListBox_FID_61e8cb`
+  - `0x00671e04` -> `g_vtblCHeaderCtrl_FID_61ea56`
+  - `0x00671ee4` -> `g_vtblCHeaderCtrl_FID_61eb67`
+  - `0x00671fb4` -> `g_vtblCHeaderCtrl_FID_61ebc0`
+
+Ambiguous ownership resolution at `0x00408e5e`:
+- Moved function namespace to `TStaticText`.
+- Renamed:
+  - `0x00408e5e` -> `DestructTStaticTextCore`
+- Signature:
+  - `void __thiscall DestructTStaticTextCore(TStaticText* this)`
+- Added function comment noting ownership basis (direct `g_vtblTStaticText` assignment).
+- Normalized remaining generic wrapper-thunk names:
+  - renamed 4 occurrences of `thunk_FUN_0048fc30` -> `thunk_DestructTStaticTextCore`.
+
+Artifacts:
+- `tmp_decomp/batch355_vtbl_xrefs_destructor_cluster.csv`
+- `tmp_decomp/batch355_callers_destructor_and_408e5e.csv`
+- `tmp_decomp/batch355_ctx_destructor_and_408e5e.txt`
+- `tmp_decomp/batch355_todo_onego_renames.csv`
+- `tmp_decomp/batch355_todo_onego_renames.log`
+- `tmp_decomp/batch355_todo_onego_signatures.csv`
+- `tmp_decomp/batch355_todo_onego_signatures.log`
+- `tmp_decomp/batch355_todo_onego_vtbl_labels.csv`
+- `tmp_decomp/batch355_todo_onego_vtbl_labels.log`
+- `tmp_decomp/batch355_resolve_408e5e_namespace.log`
+- `tmp_decomp/batch355_fix_408e5e_signature.csv`
+- `tmp_decomp/batch355_fix_408e5e_signature.log`
+- `tmp_decomp/batch355_todo_onego_context_after.txt`
+- `tmp_decomp/batch355_ctx_408e5e_after_sig.txt`
+- `tmp_decomp/batch355_progress_counts.txt`
+
+Progress snapshot after batch355:
+- `total_functions: 12005`
+- `renamed_functions: 9560`
+- `default_fun_or_thunk_fun: 2445`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+
+### TODO (next pass)
+- [ ] Continue UI/FID lane for remaining safe singles around `OnUpdateFrameTitle`, `OnUpdateContextHelp`, `UpdateFrameTitleForDocument`, `RecalcLayout`, `NegotiateBorderSpace`, `GetCheckedRadioButton`.
+- [ ] Investigate `0x0061e819` multi-match destructor conflict (`~CAnimateCtrl/~CButton/...`) with vtable/xref evidence before any rename.
+- [ ] Re-open batch350 high-xref function triage (`0x0047b55d`, `0x004c4c4c`) now that UI/FID TODO debt was reduced.
+
+## Class Extraction Recovery Plan (new)
+
+Objective:
+- Move from name-level class recovery to typed object-model recovery (fields + hierarchy), with strict evidence gates.
+
+Pass 1: Class model inventory (ground truth)
+- Build an inventory from:
+  - `g_szTypeNameT*`
+  - `g_pClassDescT*`
+  - `g_vtblT*`
+  - function namespaces / class-attached methods
+- Produce:
+  - `tmp_decomp/class_model_inventory.csv`
+  - `tmp_decomp/class_model_gaps.csv`
+- Gap metrics:
+  - classes missing struct datatype
+  - classes missing vtable anchor
+  - classes with default-named methods in class namespaces
+  - descriptor symbols that still collapse to string pointers
+
+Pass 2: Hierarchy extraction
+- Recover base/derived edges from high-confidence patterns:
+  - ctor: base vtbl write -> derived vtbl write
+  - dtor: derived teardown -> base dtor call
+  - shared vslot compatibility + unique ownership evidence
+- Produce:
+  - `tmp_decomp/class_inheritance_edges.csv` with confidence level.
+- Apply only high-confidence edges to names/comments/types.
+
+Pass 3: Field/layout extraction
+- Aggregate `this+offset` accesses across methods per class.
+- Infer candidate field width/type from usage and call context.
+- Produce:
+  - `tmp_decomp/class_field_candidates.csv`
+  - `tmp_decomp/class_struct_apply_batch_*.csv`
+- Apply only high-confidence fields first; keep uncertain fields as placeholders.
+
+Pass 4: Method attachment + cleanup
+- Attach global methods/thunks into class namespaces when owner is unique.
+- Rename residual default methods using vslot role + caller/callee evidence.
+- Produce:
+  - `tmp_decomp/class_method_attach_batch_*.csv`
+  - `tmp_decomp/class_method_rename_batch_*.csv`
+
+Operational rules:
+- Single writer session only (no concurrent Ghidra writes).
+- Save after each batch.
+- Update `agent_1.md` after every meaningful pass with artifacts + unresolved ambiguity list.
+
+Done criteria:
+- `missing_struct_for_typed_name_count` near-zero for major gameplay/UI classes.
+- default method names in class namespaces reduced to low double digits.
+- core families have high-confidence inheritance edges documented.
+
+### Started: batch356 (Pass1 + Pass3 groundwork)
+Goal:
+- Start the class-extraction plan with concrete, rerunnable outputs.
+
+New reusable scripts:
+- `new_scripts/build_class_model_inventory.py`
+- `new_scripts/generate_class_field_candidates.py`
+
+Pass 1 artifacts:
+- `tmp_decomp/class_model_inventory.csv`
+- `tmp_decomp/class_model_gaps.csv`
+- `tmp_decomp/class_model_inventory_summary.txt`
+- `tmp_decomp/batch356_build_class_model_inventory.log`
+
+Pass 1 snapshot:
+- `classes_total=568`
+- `class_desc_count=406`
+- `vtbl_count=345`
+- `typename_count=406`
+- `struct_type_count=241`
+- `classes_missing_struct=327`
+- `classes_missing_vtbl=223`
+- `classes_missing_class_desc=162`
+- `classes_with_default_methods=127`
+- `class_desc_pointing_to_string=404`
+
+Top missing-struct candidates (has class_desc + vtbl + many methods):
+- `TViewMgr` (`123` methods)
+- `TGameWindow` (`16` methods)
+- `TMultiplayerMgr` (`16` methods)
+- `TEditText` (`15` methods)
+- `TAmtBarCluster` (`13` methods)
+
+Pass 3 groundwork artifact:
+- `tmp_decomp/class_field_candidates_batch356_top5.csv`
+- `tmp_decomp/batch356_generate_class_field_candidates.log`
+- `tmp_decomp/class_struct_apply_candidates_batch356.csv` (first apply-prep set for `TMultiplayerMgr` + `TEditText`)
+
+Pass 3 mined offsets (top highlights):
+- `TViewMgr`: `0x44`, `0xec`, `0xf0`, `0xf4`, `0x4`, `0xc`, `0x10`
+- `TGameWindow`: `0x28`, `0x94`, `0x1e0`, `0x1e4`
+- `TMultiplayerMgr`: `0x44`, `0xb0`, `0x74`, `0xe4`, `0xbc`
+- `TEditText`: `0x84`, `0x94`, `0x98`, `0x44`, `0x48`, `0x30`, `0x34`
+- `TAmtBarCluster`: `0x94`, `0x88`
+
+### Next (class extraction execution)
+- [ ] Pass 3 apply batch #1: create/extend struct layouts for `TMultiplayerMgr` and `TEditText` from highest-confidence offsets.
+- [ ] Pass 3 apply batch #2: create initial `TViewMgr` skeleton from high-confidence offsets (`0x44`, `0xec`, `0xf0`, `0xf4`) and validate against turn-event handlers.
+- [ ] Pass 2 start: generate first inheritance-edge CSV for top-5 classes using ctor/dtor/vtbl evidence.
+
+#### Applied batch357 (class extraction, big chunk)
+Goal:
+- Execute Pass 3 class-struct application in a reusable/scripted way and reduce model gaps quickly, while keeping semantic claims conservative.
+
+New reusable script:
+- `new_scripts/apply_class_structs_from_candidates.py`
+  - reads candidate-offset CSVs,
+  - filters by `--classes`, `--min-hit`, `--min-confidence`, alignment,
+  - creates/replaces class struct datatypes under `/imperialism/classes`,
+  - always adds `pVtable` at offset `0`,
+  - supports dry-run and `--create-empty-for-classes` (vtable-only structs when no offsets pass filters).
+
+Batch357 apply wave A (high-confidence/min-hit2 top classes):
+- Input:
+  - `tmp_decomp/class_field_candidates_batch356_top5.csv`
+- Applied (`--min-hit 2 --require-aligned --apply`):
+  - `TAmtBarCluster`
+  - `TEditText`
+  - `TMultiplayerMgr`
+  - `TViewMgr`
+- Artifacts:
+  - `tmp_decomp/batch357_struct_apply_dryrun.log`
+  - `tmp_decomp/batch357_struct_apply.log`
+
+Batch357 apply wave B (mid classes with min-hit2):
+- Generated candidates:
+  - `tmp_decomp/class_field_candidates_batch357_midclasses.csv`
+- Applied structs:
+  - `TBattleReportView`
+  - `TBattleUnitsView`
+  - `TCheater`
+  - `TRadio`
+- Artifacts:
+  - `tmp_decomp/batch357_generate_class_field_candidates_midclasses.log`
+  - `tmp_decomp/batch357_struct_apply_midclasses_dryrun.log`
+  - `tmp_decomp/batch357_struct_apply_midclasses.log`
+
+Batch357 apply wave C (remaining desc+vtbl classes, conservative closure):
+- Generated candidates:
+  - `tmp_decomp/class_field_candidates_batch357_remaining10.csv`
+- Applied with `--min-hit 1 --require-aligned --create-empty-for-classes --apply`:
+  - `TAdorner` (vtable-only)
+  - `TBatRepDetLine`
+  - `TDlgWindow` (vtable-only)
+  - `TMapKey`
+  - `TMapUberUberPicture` (vtable-only)
+  - `TNetSelectPicture`
+  - `TObject`
+  - `TPoseMessageDialog`
+  - `TSpaceCommand` (vtable-only)
+  - `TTechHistoryView`
+- Artifacts:
+  - `tmp_decomp/batch357_generate_class_field_candidates_remaining10.log`
+  - `tmp_decomp/batch357_struct_apply_remaining10_dryrun.log`
+  - `tmp_decomp/batch357_struct_apply_remaining10.log`
+  - `tmp_decomp/batch357_struct_apply_tgamewindow_dryrun.log`
+  - `tmp_decomp/batch357_struct_apply_tgamewindow.log`
+
+Inventory refresh after batch357:
+- Artifact:
+  - `tmp_decomp/batch357_build_class_model_inventory.log`
+  - `tmp_decomp/batch357_build_class_model_inventory_after_all.log`
+  - `tmp_decomp/batch357_build_class_model_inventory_after_remaining10.log`
+  - `tmp_decomp/class_model_inventory_summary.txt`
+- Progress snapshot:
+  - `struct_type_count: 260` (was `241` before batch356/357 application)
+  - `classes_missing_struct: 308` (was `327` before)
+  - `total_missing_struct_with_desc_vtbl: 0` (major class-model closure milestone)
+
+Notes:
+- Field names/types are intentionally placeholder-level (`dwField_*`, `uint`) unless prior evidence exists.
+- For low-evidence classes, vtable-only structs were used to avoid speculative layout claims.
+
+### TODO (next pass)
+- [ ] Pass 2: generate `tmp_decomp/class_inheritance_edges.csv` for recovered classes (`ctor/dtor + vtbl write` evidence), start with top families: `TViewMgr`, `TGameWindow`, `TEditText`, `TMultiplayerMgr`, `TBattleReportView`.
+- [ ] Pass 3 refinement: upgrade placeholder fields in `TViewMgr`, `TGameWindow`, `TMultiplayerMgr` using concrete usage sites (turn-event/state slots first).
+- [ ] Attach easy method signatures where struct types are now available (`this` parameter typing for the most-called methods in the above classes).
+
+#### Applied batch358 (Pass2 hierarchy evidence + safe signature hygiene)
+Goal:
+- Move Pass 2 from initial dtor-call-only output to a broader, evidence-backed inheritance map using decompiled `g_vtbl*` sequence traces.
+- Apply high-level inheritance comments in Ghidra (functions + class-desc anchors).
+- Perform only low-risk `pThis` typing cleanup where first param is still generic pointer.
+
+New reusable scripts:
+- `new_scripts/generate_class_inheritance_edges.py` (upgraded)
+  - now mines:
+    - destructor call-chain edges (`dtor_calls_base_dtor`)
+    - decompiler vtable-sequence edges from `g_vtblT*` writes:
+      - `decomp_vtbl_seq_dtor` (derived -> base order)
+      - `decomp_vtbl_seq_ctor` (base -> derived order)
+- `new_scripts/apply_inheritance_edge_comments.py`
+  - writes `[InheritanceEvidence]` comments to evidence functions
+  - writes `[InheritanceEvidence] likely_base=...` EOL comments at `g_pClassDescT*` anchors for strong pairs
+- `new_scripts/apply_class_this_param_types.py`
+  - conservative first-param retyping to `Class*` in class namespaces
+  - narrowed to pointer-generic first param types only (`void*`/`undefined*`)
+
+Batch358 outputs:
+- `tmp_decomp/class_inheritance_edges_batch358.csv` (61 rows, 18 class pairs)
+- `tmp_decomp/batch358_generate_class_inheritance_edges.log`
+- `tmp_decomp/batch358_apply_inheritance_edge_comments_dryrun.log`
+- `tmp_decomp/batch358_apply_inheritance_edge_comments.log`
+- `tmp_decomp/batch358_apply_class_this_param_types_dryrun.log`
+- `tmp_decomp/batch358_apply_class_this_param_types.log`
+- `tmp_decomp/batch358_apply_class_this_param_types_edgeset_dryrun.log`
+- `tmp_decomp/batch358_build_class_model_inventory.log`
+
+Key recovered inheritance signals (aggregated):
+- `TView -> TStaticText` (support `27`, high `27`)
+- `TStaticText -> TEditText` (support `12`, high `10`)
+- `TLineData -> TTextLine` (support `3`)
+- `TButton -> TCloseParentButton` (support `2`)
+- `TButton -> TStatusButton` (support `2`)
+- `TWindow -> TFloatWindow` (support `2`)
+- `TUpDownPictureButton -> TTextPictureButton` (support `2`)
+
+Applied Ghidra comments:
+- Function comments with `[InheritanceEvidence]` on `51` evidence functions.
+- Class-desc EOL comments (strong pairs):
+  - `g_pClassDescTEditText`: likely base `TStaticText`
+  - `g_pClassDescTStaticText`: likely base `TView`
+  - `g_pClassDescTTextLine`: likely base `TLineData`
+
+Signature/type hygiene:
+- Applied `pThis` retyping where safe:
+  - `DestructTEditTextAndMaybeFree` now explicitly uses `TEditText * pThis` on the canonical implementation.
+  - `ConstructTLineDataBaseState` now uses `TLineData * pThis` on two implementations.
+- Candidate selection tightened to avoid false positives on semantic `int` first-params.
+
+Progress snapshot after batch358:
+- `struct_type_count: 260` (unchanged from batch357)
+- `classes_missing_struct: 308` (unchanged)
+- `missing_struct where has_class_desc + has_vtbl: 0` (maintained)
+
+### TODO (next pass)
+- [ ] Pass 3 refinement for high-impact classes:
+  - `TViewMgr`: convert top placeholder offsets (`0xec/0xf0/0xf4/0x44`) into semantic fields using turn-event handlers.
+  - `TGameWindow`: refine `0x1e0/0x1e4/0x94` via layout/update/destroy functions.
+  - `TMultiplayerMgr`: refine `0x44/0x74/0xb0/0xe4` from nation-status init and shutdown flows.
+- [ ] Pass 2 follow-up: emit a deduplicated `class_inheritance_edges_ranked.csv` (pair-level support/confidence summary) for easier manual class-hierarchy application.
+- [ ] Extend `apply_class_this_param_types.py` with optional whitelist by function-name regex to type additional safe wrappers/constructors in one batch.
+
+#### Applied batch358b (layout quality correction + ranked hierarchy output)
+Goal:
+- Correct a discovered false-positive source in field mining (vtable slot offsets misread as instance fields).
+- Repair `TGameWindow` struct layout with constructor-backed fields only.
+- Emit ranked inheritance-pair summary for easier hierarchy application workflow.
+
+Quality fix in field miner:
+- Updated `new_scripts/generate_class_field_candidates.py` regex to ignore dereferenced-base patterns:
+  - excludes `*this + 0xNN` style matches that are typically virtual slot calls.
+- New cleaner output:
+  - `tmp_decomp/class_field_candidates_batch358_top5_clean.csv`
+  - `tmp_decomp/batch358_generate_class_field_candidates_top5_clean.log`
+
+Manual struct correction (reusable script + apply):
+- Added `new_scripts/apply_manual_struct_fields.py`.
+- Applied curated `TGameWindow` layout from constructor evidence:
+  - size `0xB0`
+  - `0x00 pVtable : void*`
+  - `0x28 bField_28 : byte`
+  - `0xA2 wField_A2 : ushort`
+  - `0xA4 dwField_A4 : uint`
+  - `0xA8 dwField_A8 : uint`
+  - `0xAC dwField_AC : uint`
+- Artifacts:
+  - `tmp_decomp/batch358_tgamewindow_manual_struct_dryrun.log`
+  - `tmp_decomp/batch358_tgamewindow_manual_struct_apply.log`
+  - `tmp_decomp/batch358_tgamewindow_core_ctx.txt`
+
+Additional hierarchy tooling:
+- Added `new_scripts/rank_class_inheritance_edges.py`.
+- Generated ranked summary:
+  - `tmp_decomp/class_inheritance_edges_ranked_batch358.csv`
+- Top pair supports:
+  - `TView -> TStaticText` (27 high-confidence evidences)
+  - `TStaticText -> TEditText` (12 total, 10 high-confidence)
+
+Signature hygiene hardening:
+- Tightened `new_scripts/apply_class_this_param_types.py` to only retype pointer-generic first params (`void*`/`undefined*`), removing `int/uint` to avoid false positives.
+- Re-run dryrun on broader edge-class set confirms no accidental `int`-semantic rewrites.
+
+### TODO (next pass)
+- [ ] Apply manual-layout refinement to `TMultiplayerMgr` from init/shutdown functions (avoid vslot-offset contamination like with `TGameWindow`).
+- [ ] Build `TViewMgr` curated layout subset from concrete writes in `ConstructGlobalTurnEventState` / `DeserializeTurnEventDispatchState` and re-apply via `apply_manual_struct_fields.py`.
+- [ ] Add optional `--name-regex` filter to `apply_class_this_param_types.py` and run a safe constructor/destructor-focused pass.
+
+#### Applied batch359-362 (requested lanes 3/4/5/6)
+Goal:
+- Execute four requested high-leverage cleanup lanes:
+  1) mass thunk-island recovery + rename,
+  2) MFC document/frame lane extraction,
+  3) constant/domain-driven mode-state renames,
+  4) FID safe-only normalization.
+
+### 3) Mass thunk-island recovery + rename
+Actions:
+- Gameplay-filtered pilot:
+  - generated `tmp_decomp/batch359_missing_jmp_thunks_gameplay_mass.csv` (`15` rows)
+  - applied with create-missing:
+    - `tmp_decomp/batch359_apply_missing_jmp_thunks.log`
+    - result: `ok=15 created=15`
+- Full range mass wave (`0x00400000..0x00600000`):
+  - generated `tmp_decomp/batch359_missing_jmp_thunks_full_4to6.csv` (`273` rows)
+  - applied with create-missing:
+    - `tmp_decomp/batch359_apply_missing_jmp_thunks_full.log`
+    - result: `ok=273 created=273`
+
+Notes:
+- These are direct single-JMP thunk stubs renamed to `thunk_<target>`, low-risk and high xref clarity gain.
+
+### 4) MFC document/frame class lane extraction (`0x00610xxx..0x0061exxx`)
+Lane scan:
+- FID single matches in range: `116` entries (source: `batch352_mainproject_fid_bookmarks_refresh.csv`).
+- Unresolved functions in this lane are now low (`24`) and had no FID single-match names.
+
+Reusable script added:
+- `new_scripts/extract_mfc_doc_frame_lane.py`
+  - creates missing class namespaces
+  - attaches Global functions by doc/frame naming rules
+  - runs conservative signature sweep (`__thiscall` only when obvious generic first param exists)
+
+Applied:
+- Created class namespaces:
+  - `CDocument`, `CDocTemplate`, `CWinApp`
+- Attached `43` functions from Global into class namespaces (`CDocument`/`CDocTemplate`/`CWinApp`/`CFrameWnd`)
+- Artifact:
+  - `tmp_decomp/batch360_extract_mfc_doc_frame_lane_apply.log`
+- Added placeholder class structs for lane classes (for future typing work):
+  - `CDocument`, `CDocTemplate`, `CWinApp`, `CFrameWnd` via `new_scripts/apply_manual_struct_fields.py`
+  - artifact: `tmp_decomp/batch360_create_mfc_placeholder_structs.log`
+
+### 5) Constant/domain-driven rename batches (tactical/turn-state/order-state)
+Applied existing vetted batches:
+- `tmp_decomp/tactical_state_low_hanging_renames.csv` -> `ok=2 skip=5`
+- `tmp_decomp/tactical_controller_lane_renames.csv` -> `ok=0 skip=7`
+- `tmp_decomp/batch306b_turnstate_cluster_to_semantic_renames.csv` -> `ok=0 skip=4`
+- `tmp_decomp/batch311_turnstate_archive_mode_helpers_renames.csv` -> `ok=0 skip=6`
+- log: `tmp_decomp/batch361_apply_domain_rename_batches.log`
+
+New domain-driven pass (reusable tooling):
+- Generated candidates:
+  - `tmp_decomp/batch361_constant_domain_candidates_mode_state.csv`
+- Added script:
+  - `new_scripts/build_mode_state_constdomain_renames.py`
+- Built+applied mode/state hint renames:
+  - `tmp_decomp/batch361_mode_state_constdomain_renames.csv` (`10` rows)
+  - apply log: `tmp_decomp/batch361_apply_mode_state_constdomain_renames.log` (`ok=10`)
+
+### 6) FID-assisted safe-only runtime normalization
+Strict safe-only pipeline run twice:
+- from `batch352_mainproject_fid_bookmarks_refresh.csv`
+- from `batch336_sidecar_fid_bookmarks_after_phase2.csv`
+
+Results:
+- zero unresolved `FUN_*/thunk_FUN_*` addresses with usable single-match FID names at this stage.
+- strict outputs were empty apply sets (`fun_kept=0`, `thunk_kept=0`) because candidates were already named.
+
+Artifacts:
+- `tmp_decomp/batch362_fid_single_match_candidates.csv`
+- `tmp_decomp/batch362_fid_filter_report_strict.txt`
+- `tmp_decomp/batch362b_fid_single_match_candidates_sidecar.csv`
+- `tmp_decomp/batch362b_fid_filter_report_strict.txt`
+
+Progress snapshot after batch362:
+- `total_functions: 12293`
+- `renamed_functions: 9858`
+- `default_fun_or_thunk_fun: 2435`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+- source: `tmp_decomp/batch362_progress_counts.txt`
+
+### TODO (next pass)
+- [ ] Continue thunk-island recovery in `0x00600000+` ranges (non-UI filters first) using the same `generate_missing_jmp_thunk_candidates.py + apply_function_renames_csv.py --create-missing` pipeline.
+- [ ] For MFC lane: resolve remaining `24` unresolved functions in `0x00610xxx..0x0061exxx` by caller/callee context (no FID single-match coverage left).
+- [ ] Refine `TMultiplayerMgr` struct manually from validated offsets (`0x10/0x44/0x68/0x69/0x74/0xb0/0xbc/0xd8/0xdc/0xe4/0xec/0xf0`) similar to `TGameWindow` correction pass.
+
+#### Applied batch363-364 (MFC lane low-risk wrappers + thunk completion)
+Goal:
+- Close easy unresolved wins in `0x00610xxx..0x0061exxx` with behavior-backed names/signatures.
+- Recover remaining missing single-JMP thunk stubs in the mouse-wheel init pocket.
+
+Batch363 context pass:
+- Artifacts:
+  - `tmp_decomp/batch363_mfc_lane_fun_ctx.txt`
+  - `tmp_decomp/batch363_mfc_lane_fun_callers.csv`
+  - `tmp_decomp/batch363_mfc_lane_followup_ctx.txt`
+- Findings:
+  - Confirmed clear wrappers/dtors:
+    - `0x00612e9a`: `GetClipBox(*(HDC*)(this+4), outRect)`
+    - `0x00614eb4`: vtable reset + `CView::~CView`
+    - `0x0061a982`: vtable reset + `CDialog::~CDialog`
+  - Confirmed mouse-wheel init helpers:
+    - `0x0061c55e`: reset sentinel globals
+    - `0x0061c581`: version-gated `RegisterWindowMessageA("MSWHEEL_ROLLMSG")`
+
+Batch364 applied renames/comments:
+- `0x00612e9a` -> `GetClipBoxFromThisHdcField`
+- `0x00614eb4` -> `DestructCViewAndResetVtable_0067358c`
+- `0x0061a982` -> `DestructCDialogAndResetVtable_006732dc`
+- `0x0061c55e` -> `ResetMouseWheelTrackingGlobals`
+- `0x0061c581` -> `RegisterMouseWheelRollMessageForLegacyWindows`
+
+Signature updates (safe-only):
+- `GetClipBoxFromThisHdcField`: `void __thiscall (..., void* pOutRect)`
+- both dtor bodies: `void __thiscall (this)`
+- wheel helpers: `void __cdecl ()`
+- Artifacts:
+  - `tmp_decomp/batch364_mfc_lane_safe_renames.csv`
+  - `tmp_decomp/batch364_mfc_lane_safe_signatures.csv`
+  - `tmp_decomp/batch364_mfc_lane_signature_fix_thiscall.csv`
+  - `tmp_decomp/batch364_post_mfc_lane_ctx.txt`
+  - `tmp_decomp/batch364_post_sigfix_ctx.txt`
+  - `tmp_decomp/batch364_comment_fix.csv`
+  - `tmp_decomp/batch364_comment_fix.log`
+
+Thunk completion in same lane:
+- Generated + applied missing thunk stubs:
+  - `0x0061c559` -> `thunk_ResetMouseWheelTrackingGlobals`
+  - `0x0061c57c` -> `thunk_RegisterMouseWheelRollMessageForLegacyWindows`
+- Artifacts:
+  - `tmp_decomp/batch364_missing_jmp_thunks_mfc_lane_retry.csv`
+  - `tmp_decomp/batch364_apply_missing_jmp_thunks_mfc_lane_retry.log`
+  - `tmp_decomp/batch364_post_thunks_ctx.txt`
+
+Lane status after batch364:
+- unresolved `FUN_*/thunk_FUN_*` in `0x00610000..0x0061f000`: `19` (down from `24`)
+- current unresolved list:
+  - `0x00610701, 0x0061073e, 0x00610c08, 0x00610c87, 0x00610f84, 0x00610f87, 0x0061180f, 0x0061287e, 0x00612a78, 0x00613e44, 0x00613f04, 0x006145f5, 0x00614a19, 0x00614a23, 0x00618753, 0x00619cca, 0x0061a04d, 0x0061eb46, 0x0061ec02`
+
+### TODO (next pass)
+- [ ] Resolve `0x0061a04d` safely (linked-list virtual dispatch helper) and rename with behavior-level semantics.
+- [ ] Pair-resolve `0x00614a19`/`0x00614a23` (field `+0x24` setter/resetter) and update compact signatures.
+- [ ] Resolve `0x0061eb46` from `AmbitMcAppUI::InitDialogWindow` caller context (likely virtual dialog-create bridge), then rename/signature.
+- [ ] Keep no-op/pure-virtual style stubs (`0x00610f84/87`, `0x00610c08`, `0x0061180f`, `0x0061ec02`) for last, unless vtable-slot evidence gives concrete semantics.
+
+#### Applied batch365-366 (MFC lane closure pass)
+Goal:
+- Finish low-risk naming for the remaining unresolved MFC doc/frame lane functions.
+- Apply simple signatures where role is trivially stable (no-op / constant-return stubs).
+
+Batch365 targeted helper renames:
+- `0x0061a04d` -> `DispatchVslot84ForLinkedNodeChain`
+- `0x00614a19` -> `SetObjectField24Value`
+- `0x00614a23` -> `ClearObjectField24Value`
+- `0x0061eb46` -> `InvokeDialogCreateVslot5CWithTemplate45`
+- Artifacts:
+  - `tmp_decomp/batch365_target_ctx.txt`
+  - `tmp_decomp/batch365_mfc_lane_followup_renames.csv`
+  - `tmp_decomp/batch365_apply_mfc_lane_followup_renames.log`
+
+Batch365 thunk retry:
+- Re-ran missing single-JMP thunk generation for lane after follow-up renames.
+- Result: no additional rows (`0`).
+- Artifacts:
+  - `tmp_decomp/batch365_missing_jmp_thunks_after_followup.csv`
+  - `tmp_decomp/batch365_apply_missing_jmp_thunks_after_followup.log`
+
+Batch366 remaining-lane closure:
+- Contexted all remaining `15` unresolved entries:
+  - `tmp_decomp/batch366_remaining15_ctx.txt`
+- Applied behavior/stub renames to all remaining entries:
+  - ctor/helper-ish:
+    - `InitVtable0067074cAndMapTileHint_0061499c`
+    - `ResetField24ArgAndThisField100`
+    - `InvokeVslot84IfVslot98ReturnsNonZero`
+    - `CallDcCallbackIfPrimaryHdcDiffers`
+    - `InvokeHandleMapReadPtrBridge_0063de95`
+    - `InvokeVslotF4WithZeroArgs`
+  - no-op/return stubs:
+    - `NoOpVirtualStub_00610c08`
+    - `NoOpVirtualStub_0061180f`
+    - `NoOpVirtualStub_00613e44`
+    - `NoOpVirtualStub_00618753`
+    - `NoOpVirtualStub_00619cca`
+    - `NoOpVirtualStub_0061ec02`
+    - `ReturnZeroStub_00610f84`
+    - `ReturnZeroStub_00610f87`
+    - `ReturnOneStub_006145f5`
+- Artifacts:
+  - `tmp_decomp/batch366_mfc_lane_stub_and_helper_renames.csv`
+  - `tmp_decomp/batch366_apply_stub_and_helper_renames.log`
+  - `tmp_decomp/batch366_fun63de95_ctx.txt`
+
+Batch366 signature hygiene:
+- Applied easy signatures for no-op and constant-return stubs:
+  - no-op stubs -> `void __cdecl ()`
+  - return stubs -> `int __cdecl ()`
+- Artifacts:
+  - `tmp_decomp/batch366_mfc_lane_stub_signatures.csv`
+  - `tmp_decomp/batch366_apply_stub_signatures.log`
+
+Lane status:
+- unresolved `FUN_*/thunk_FUN_*` in `0x00610000..0x0061f000`: `0`
+
+Global progress snapshot after batch366:
+- `total_functions: 12313`
+- `renamed_functions: 9902`
+- `default_fun_or_thunk_fun: 2411`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+- source: `tmp_decomp/batch366_progress_counts.txt`
+
+### TODO (next pass)
+- [ ] Promote `InvokeHandleMapReadPtrBridge_0063de95` and `FUN_0063de95` together via caller/callee context to replace bridge-style naming with semantic handle-map operation names.
+- [ ] Run `extract_mfc_doc_frame_lane.py` once more as a sanity pass to confirm no newly exposed Global lane methods remain unattached after closure renames.
+- [ ] Start next class lane: apply the same closure method to `0x0060dxxx` lifecycle/message-loop helpers (`DispatchMfcAppLifecycle`, `RunMfcThreadMessageLoopCore` neighbors) with safe wrapper/stub naming and easy signatures.
+
+#### Applied batch367 (lifecycle lane cleanup + sanity check)
+Goal:
+- Close the remaining unresolved function in the `0x0060d000..0x0060efff` lifecycle neighborhood.
+- Verify no residual Global MFC doc/frame lane attachments are pending.
+
+Sanity checks:
+- Ran `extract_mfc_doc_frame_lane.py --dry-run`:
+  - `classes_to_create=0`
+  - `attachments=0`
+  - artifact: `tmp_decomp/batch366_extract_mfc_doc_frame_lane_dryrun.log`
+- Scoped unresolved check in `0x0060d000..0x0060efff` found one target:
+  - `0x0060d16d FUN_0060d16d`
+  - context artifacts:
+    - `tmp_decomp/batch367_fun60d16d_ctx.txt`
+    - `tmp_decomp/batch367_fun60d16d_callers.txt`
+    - `tmp_decomp/batch367_lock_unlock_compare_ctx.txt`
+
+Applied:
+- `0x0060d16d` -> `IncrementAfxModuleThreadStateTempMapLockDepth`
+- signature set to `void __cdecl ()`
+- artifacts:
+  - `tmp_decomp/batch367_fun60d16d_rename.csv`
+  - `tmp_decomp/batch367_fun60d16d_signature.csv`
+  - `tmp_decomp/batch367_apply_fun60d16d_rename.log`
+  - `tmp_decomp/batch367_apply_fun60d16d_signature.log`
+
+Post status:
+- unresolved `FUN_*/thunk_FUN_*` in `0x0060d000..0x0060efff`: `0`
+- global progress snapshot:
+  - `total_functions: 12313`
+  - `renamed_functions: 9903`
+  - `default_fun_or_thunk_fun: 2410`
+  - source: `tmp_decomp/batch367_progress_counts.txt`
+
+### TODO (next pass)
+- [ ] Resolve `FUN_0063de95` and rename `InvokeHandleMapReadPtrBridge_0063de95` pair semantically (handle-map read-pointer gate path).
+- [ ] Launch next batch lane around `0x00605f00..0x00609000` (MFC thread/message helpers), run the same low-risk closure strategy: wrappers/stubs first, then easy signatures.
+- [ ] If suitable, extract/attach any newly clarified helper families into existing class namespaces (`CWinApp`, `CFrameWnd`) only when name patterns are direct matches.
+
+#### Applied batch368 (handle-map bridge semantic pass + next lane closure + class-layout TODO)
+Goal:
+- Complete the outstanding semantic TODO for `FUN_0063de95` and its bridge thunk chain.
+- Execute next low-risk closure lane at `0x00605f00..0x00609000`.
+- Tackle older struct-layout TODO for `TMultiplayerMgr`.
+
+Handle-map bridge semanticization:
+- Context/caller analysis artifacts:
+  - `tmp_decomp/batch368_lookup_bridge_ctx.txt`
+  - `tmp_decomp/batch368_lookup_bridge_callers.csv`
+  - `tmp_decomp/batch368_63de95_disasm.txt`
+  - `tmp_decomp/batch368_612a88_disasm.txt`
+- Applied renames:
+  - `0x0063de95` -> `DispatchHandleMapLookupWithReadPtrProbe`
+  - `0x00612a78` -> `thunk_DispatchHandleMapLookupWithReadPtrProbe`
+  - `0x00612a88` -> `SelectPaletteThenLookupHandleMapEntryWithCreate`
+- Notes:
+  - `0x0063de95` is a register/stack-preserving dispatch bridge (`PUSHFD/PUSHAD`), using `IsBadReadPtr(ptr,8)` to select path into `0x00612a88` fast path vs direct `LookupHandleMapEntryWithCreate` path.
+
+Lane `0x00605f00..0x00609000` closure:
+- Unresolved in lane before: `5`
+  - `0x0060719b, 0x006071d0, 0x006076bd, 0x00608657, 0x0060866e`
+- Context/caller artifacts:
+  - `tmp_decomp/batch368_lane605f_6090_ctx.txt`
+  - `tmp_decomp/batch368_lane605f_6090_callers.csv`
+- Applied renames:
+  - `0x0060719b` -> `GetDlgItemTextOrDelegateHandler`
+  - `0x006071d0` -> `SendDlgItemMessageOrDelegateHandler`
+  - `0x006076bd` -> `RegisterCommctrlDragListMessage`
+  - `0x00608657` -> `GetWindowPlacementFromThisHwnd`
+  - `0x0060866e` -> `SetWindowPlacementFromThisHwnd`
+- Applied signatures (safe-only):
+  - ui bridge methods as `__thiscall void (...)`
+  - message registration helper as `__cdecl void ()`
+  - `SelectPaletteThenLookupHandleMapEntryWithCreate` as `__thiscall void (...)`
+- Additional thunk recovery in lane:
+  - generated/applied `0x006076b8` -> `thunk_RegisterCommctrlDragListMessage`
+  - artifacts:
+    - `tmp_decomp/batch368_missing_jmp_thunks_605f_6090.csv`
+    - `tmp_decomp/batch368_apply_missing_jmp_thunks_605f_6090.log`
+
+Struct-layout TODO completed (`TMultiplayerMgr`):
+- Dry-run + apply using validated offsets:
+  - size `0xF4`
+  - fields at:
+    - `0x10, 0x44, 0x68, 0x69, 0x74, 0xB0, 0xBC, 0xD8, 0xDC, 0xE4, 0xEC, 0xF0`
+- Artifacts:
+  - `tmp_decomp/batch368_tmultiplayermgr_manual_struct_dryrun.log`
+  - `tmp_decomp/batch368_tmultiplayermgr_manual_struct_apply.log`
+
+Post status:
+- unresolved `FUN_*/thunk_FUN_*`:
+  - in `0x00605f00..0x00609000`: `0`
+  - in `0x00610000..0x0061f000`: `0`
+- global snapshot:
+  - `total_functions: 12314`
+  - `renamed_functions: 9910`
+  - `default_fun_or_thunk_fun: 2404`
+  - source: `tmp_decomp/batch368_progress_counts.txt`
+
+### TODO (next pass)
+- [ ] Refine `DispatchHandleMapLookupWithReadPtrProbe`/`SelectPaletteThenLookupHandleMapEntryWithCreate` prototype hygiene (calling-convention/arg ordering) using disassembly-backed stack argument reconstruction.
+- [ ] Continue low-risk closure in next adjacent lane (`0x00609000..0x0060c000`) with the same recipe: unresolved inventory -> context/callers -> rename/signature -> missing-thunk recovery.
+- [ ] Evaluate whether newly named UI-bridge helpers should be attached to existing class namespaces (`CWnd`/`CFrameWnd`) only where method-name identity is direct and unambiguous.
+
+#### Applied batch369 (adjacent lane closure continuation)
+Goal:
+- Continue adjacent-lane closure after batch368.
+
+Scope:
+- Checked unresolved inventory:
+  - `0x00609000..0x0060c000`: `0`
+  - `0x0060c000..0x00610000`: `1` unresolved (`0x0060c1ba`)
+- Artifacts:
+  - `tmp_decomp/batch369_fun60c1ba_ctx.txt`
+  - `tmp_decomp/batch369_fun60c1ba_callers.csv`
+
+Applied:
+- `0x0060c1ba` -> `TakeAndClearPointerSlot`
+  - behavior: returns `*slot`, then clears slot to `0`
+  - signature: `void* __fastcall (void** pSlot)`
+- Artifacts:
+  - `tmp_decomp/batch369_fun60c1ba_rename.csv`
+  - `tmp_decomp/batch369_fun60c1ba_signature.csv`
+  - `tmp_decomp/batch369_apply_fun60c1ba_rename.log`
+  - `tmp_decomp/batch369_apply_fun60c1ba_signature.log`
+
+Thunk follow-up:
+- Ran missing-thunk generation in `0x0060c000..0x00610000`; no rows.
+- Artifacts:
+  - `tmp_decomp/batch369_missing_jmp_thunks_60c0_6100.csv`
+  - `tmp_decomp/batch369_apply_missing_jmp_thunks_60c0_6100.log`
+
+Post status:
+- unresolved `FUN_*/thunk_FUN_*`:
+  - `0x00605f00..0x00609000`: `0`
+  - `0x00609000..0x0060c000`: `0`
+  - `0x0060c000..0x00610000`: `0`
+- snapshot:
+  - `total_functions: 12314`
+  - `renamed_functions: 9911`
+  - `default_fun_or_thunk_fun: 2403`
+  - source: `tmp_decomp/batch369_progress_counts.txt`
+
+#### Applied batch370 (singleton unresolved sweep; low-risk)
+Goal:
+- Use unresolved-density scan to pick singleton unresolved functions and clear easy wins without speculative semantics.
+
+Discovery:
+- Generated singleton unresolved list:
+  - `tmp_decomp/batch369_singleton_unresolved_addresses.txt`
+- Analyzed gameplay-leaning subset:
+  - `tmp_decomp/batch370_gameplay_singletons_ctx.txt`
+  - `tmp_decomp/batch370_selected_callers.csv`
+
+Applied semantic/stub renames (selected low-risk):
+- `0x00565f50` -> `InitializeField76_78AfterNoOpHook`
+- `0x00577df0` -> `UpdateRectFromGridIndicesAndTileSize`
+- `0x005782f0` -> `DispatchByEntryTypeToVslots1D0_1D4`
+- `0x0057c390` -> `NoOpVirtualStub_0057c390`
+- `0x00592830` -> `InvokeVslot1CCAfterThunk48F3C0`
+- `0x00595c40` -> `SetFlagByteAndInvokeVslot1A4`
+- `0x0059d400` -> `SetLinkedListNodeField2CTo13ForAllNodes`
+- plus signature fix:
+  - `NoOpVirtualStub_0057c390` -> `void __cdecl ()`
+- Artifacts:
+  - `tmp_decomp/batch370_selected_singletons_renames.csv`
+  - `tmp_decomp/batch370_selected_singletons_signatures.csv`
+  - `tmp_decomp/batch370_apply_selected_singletons_renames.log`
+  - `tmp_decomp/batch370_apply_selected_singletons_signatures.log`
+
+Thunk recovery for these new targets:
+- Filtered thunk generation in `0x00400000..0x00410000` produced `5` rows; all created/applied:
+  - `thunk_InitializeField76_78AfterNoOpHook` (`0x004019b0`)
+  - `thunk_NoOpVirtualStub_0057c390` (`0x0040229d`)
+  - `thunk_DispatchByEntryTypeToVslots1D0_1D4` (`0x0040500b`)
+  - `thunk_InvokeVslot1CCAfterThunk48F3C0` (`0x0040712b`)
+  - `thunk_SetFlagByteAndInvokeVslot1A4` (`0x00407e50`)
+- Artifacts:
+  - `tmp_decomp/batch370_missing_jmp_thunks_filtered_4x.log.csv`
+  - `tmp_decomp/batch370_apply_missing_jmp_thunks_filtered_4x.log`
+
+Global snapshot after batch370:
+- `total_functions: 12319`
+- `renamed_functions: 9924`
+- `default_fun_or_thunk_fun: 2395`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+- source: `tmp_decomp/batch370_progress_counts.txt`
+
+### TODO (next pass)
+- [ ] Refine prototype hygiene for `DispatchHandleMapLookupWithReadPtrProbe` and `SelectPaletteThenLookupHandleMapEntryWithCreate` (stack/register argument ordering from disassembly).
+- [ ] Continue singleton/bin sweeps with `count<=2` unresolved strategy (same workflow: context + safe rename + filtered thunk recovery), prioritize gameplay bins first.
+- [ ] Evaluate class-namespace attachment for newly named UI bridge helpers only when method identity is exact (avoid speculative `CWnd` mapping).
+
+#### Applied batch371/batch372/batch373 (requested order: 2 -> 1 -> 3)
+Goal:
+- Execute three high-ROI lanes in strict order:
+  1) table schema recovery + loader binding,
+  2) state/command dehardcoding layer,
+  3) global-state atlas.
+
+Step 2 (table schema recovery + loader binding) completed:
+- Added reusable script:
+  - `new_scripts/build_tabsenu_schema_loader_bindings.py`
+- Built schema/binding artifacts from `Data/extracted_tables/tabsenu/TABLE_S*` + `scenario_dispatch_token_handler_map_batch55.csv`:
+  - `tmp_decomp/batch371_tabsenu_command_schema.csv` (rows=21)
+  - `tmp_decomp/batch371_tabsenu_loader_bindings.csv` (rows=21)
+  - `tmp_decomp/batch371_tabsenu_loader_comment_apply.csv` (rows=21)
+  - `tmp_decomp/batch371_tabsenu_command_rows.csv` (rows=4373)
+  - `tmp_decomp/batch371_tabsenu_summary.json`
+  - `tmp_decomp/batch371_tabsenu_build.log`
+- Result:
+  - `unique_commands=21`, `loader_bound_commands=21`, `loader_unbound_commands=0`.
+  - Stable arity/record-size map extracted (examples: `rail/port=8`, `tech/civi/tran=12`, `army/rela/ware/capa/emba/trea=16`, `ship/labo=20`).
+- Persisted to Ghidra:
+  - Applied comment batch to all bound turn-instruction handlers:
+    - log: `tmp_decomp/batch371_tabsenu_loader_comment_apply.log`
+    - result: `rows=21 ok=0 skip=21 comments=21` (names already stable, comments refreshed).
+
+Step 1 (state/command dehardcoding layer) completed:
+- Refreshed command-tag evidence:
+  - `tmp_decomp/batch372_control_tags_detail.csv` (rows=2801)
+  - `tmp_decomp/batch372_control_tags_summary.csv` (rows=754)
+  - `tmp_decomp/batch372_extract_control_tag_usage.log`
+- Built unresolved turn-token dispatch matrix (focused on `obal/apac/.../nuoc`):
+  - `tmp_decomp/batch372_turntoken_dispatch_matrix_unresolved.csv` (rows=125)
+  - `tmp_decomp/batch372_turntoken_handler_candidates_unresolved.csv` (rows=0)
+  - no safe auto-candidates, proceeded with low-hanging manual context pass.
+- Context artifacts:
+  - `tmp_decomp/batch372_state_command_hub_context.txt`
+  - `tmp_decomp/batch372_state_command_target_ctx.txt`
+- Low-hanging command/state renames applied:
+  - `0x00583bd0` -> `HandleTradeArrowAutoRepeatTickAndDispatch`
+  - `0x0058c140` -> `HandlePlusMinusCommandAndInvokeVslot1CC`
+  - `0x0050bc50` -> `SyncSellTaggedChildControlWithNationState`
+  - artifacts:
+    - `tmp_decomp/batch372_state_command_low_hanging_renames.csv`
+    - `tmp_decomp/batch372_apply_state_command_low_hanging_renames.log`
+    - `tmp_decomp/batch372_state_command_followup_rename.csv`
+    - `tmp_decomp/batch372_apply_state_command_followup_rename.log`
+- Signature hygiene applied:
+  - `0x00583bd0` -> `void __thiscall (...)(void* pThis, int commandState, void* arg8, void* argC, void* arg10)`
+  - `0x0058c140` -> `void __thiscall (...)(void* pThis, void* unusedArg, int* pCommandEntry)`
+  - `0x0050bc50` -> `void __thiscall (...)(int* pThis, short nationIndex)`
+  - artifacts:
+    - `tmp_decomp/batch372_state_command_low_hanging_signatures.csv`
+    - `tmp_decomp/batch372_apply_state_command_low_hanging_signatures.log`
+
+Step 3 (global-state atlas) completed:
+- Added reusable atlas script:
+  - `new_scripts/build_global_state_atlas.py`
+- Built scoped atlas (`0x00690000..0x006b0000`, `name_regex=^(g_|DAT_006a|_DAT_006a|PTR_006a)`, `min_xrefs=5`):
+  - `tmp_decomp/batch373_global_state_atlas.csv` (rows=200)
+  - `tmp_decomp/batch373_global_state_atlas.json`
+  - `tmp_decomp/batch373_build_global_state_atlas.log`
+- Added reusable gameplay filter script:
+  - `new_scripts/filter_global_state_atlas_gameplay.py`
+- Built gameplay-focused atlas slice:
+  - `tmp_decomp/batch373_global_state_atlas_gameplay.csv` (rows=19)
+  - `tmp_decomp/batch373_global_state_atlas_gameplay.json`
+  - `tmp_decomp/batch373_filter_global_state_atlas_gameplay.log`
+- Gameplay hotspots surfaced by write-paths:
+  - `g_pGlobalMapState`, `g_pActiveMapContextState`, `g_pMapActionContextListHead`,
+  - `g_pGameFlowState`,
+  - `g_pNavySecondaryOrderList`,
+  - manager pointers (`g_pDiplomacyTurnStateManager`, `g_pNationInteractionStateManager`, `g_pInterNationEventQueueManager`, `g_pMapContextActionManager`).
+
+Global snapshot after batch373:
+- `total_functions: 12319`
+- `renamed_functions: 9926`
+- `default_fun_or_thunk_fun: 2393`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+- source: `tmp_decomp/batch373_progress_counts.txt`
+
+### TODO (next pass after 2->1->3 completion)
+- [ ] Use `batch373_global_state_atlas_gameplay.csv` to run one writer-driven rename pass for top ambiguous globals (`DAT_006a5aec`, `DAT_006a38e8`, `DAT_006a390c/3908/3900`) and replace `DAT_*` placeholders where caller semantics are already stable.
+- [ ] Extend `build_tabsenu_schema_loader_bindings.py` with per-command arity override support for mixed-arity commands (`cnam/pnam/zone`) and emit separate strict-vs-loose schema columns.
+- [ ] Follow `HandleTradeArrowAutoRepeatTickAndDispatch` callers to identify sibling left/right arrow wrappers and unify command-id names (`0x64/0x65`) in one small signature/comment batch.
+
+#### Applied batch375 (writer-driven DAT global rename pass)
+Goal:
+- Close the `batch373` gameplay-atlas TODO by replacing high-confidence `DAT_` globals with stable semantic labels.
+
+Evidence inputs:
+- `tmp_decomp/batch374_dat_globals_xrefs.txt`
+- `tmp_decomp/batch374_target_context.txt`
+- Focused decomp dump:
+  - `tmp_decomp/batch375_dat_global_target_funcs_ctx.txt`
+
+Applied global label renames (+EOL comments):
+- `0x006a5aec` -> `g_uMapContextStatusRngState`
+- `0x006a38e8` -> `g_uMapGenerationRngState`
+- `0x006a3900` -> `g_OverlaySpanRecordArray18State`
+- `0x006a3904` -> `g_pOverlaySpanRecordArray18Buffer`
+- `0x006a3908` -> `g_uOverlaySpanRecordArray18Capacity`
+- `0x006a390c` -> `g_uOverlaySpanRecordArray18Count`
+
+Artifacts:
+- rename CSV: `tmp_decomp/batch375_dat_global_label_renames.csv`
+- apply log: `tmp_decomp/batch375_apply_dat_global_label_renames_retry.log`
+- symbol verification context:
+  - `tmp_decomp/batch375_dat_global_target_funcs_ctx.txt`
+
+Note:
+- First attempt collided with a concurrent save from progress-count script; reran sequentially and persisted successfully.
+
+Post snapshot:
+- `tmp_decomp/batch375_progress_counts.txt`
+- `total_functions: 12319`
+- `renamed_functions: 9926`
+- `default_fun_or_thunk_fun: 2393`
+
+#### Applied batch376 (trade split-arrow command 0x64/0x65 lane)
+Goal:
+- Continue state/command dehardcoding around trade split-arrow handlers and unify low-level callback/thunk naming.
+
+Discovery:
+- Existing `HandleTradeArrowAutoRepeatTickAndDispatch` is table-driven (thunk ref at `0x00401b3b`, slot near `0x006636e0`).
+- Command-immediate sweep in `0x00580000..0x00590000` identified additional unresolved split-arrow handlers using `PUSH 0x64/0x65`:
+  - `0x005839f0`
+  - `0x00583dd0`
+  - `0x0058c640`
+- Artifacts:
+  - `tmp_decomp/batch376_trade_arrow_callers.csv`
+  - `tmp_decomp/batch376_trade_arrow_xrefs.csv`
+  - `tmp_decomp/batch376_trade_arrow_thunk_xrefs.csv`
+  - `tmp_decomp/batch376_trade_arrow_thunk_table_ctx.txt`
+  - `tmp_decomp/batch376_push_64_65_100_58xx.csv`
+  - `tmp_decomp/batch376_arrow_cmd_funcs_ctx.txt`
+  - `tmp_decomp/batch376_arrow_cmd_disasm.txt`
+
+Applied function renames (and created missing thunk functions):
+- `0x005839f0` -> `HandleSplitArrowAutoRepeatTickAndDispatch_Offset90`
+- `0x00583dd0` -> `HandleSplitArrowAutoRepeatTickAndDispatch_Offset84`
+- `0x0058c640` -> `HandleSplitArrowMousePhaseStateAndDispatchCommand64or65`
+- `0x004015b9` -> `thunk_HandleSplitArrowAutoRepeatTickAndDispatch_Offset90` (created)
+- `0x00409a4d` -> `thunk_HandleSplitArrowAutoRepeatTickAndDispatch_Offset84` (created)
+- `0x00405f6f` -> `thunk_HandleSplitArrowMousePhaseStateAndDispatchCommand64or65` (created)
+- `0x00401b3b` -> `thunk_HandleTradeArrowAutoRepeatTickAndDispatch`
+
+Rename artifacts:
+- CSV: `tmp_decomp/batch376_arrow_handler_renames.csv`
+- apply log: `tmp_decomp/batch376_apply_arrow_handler_renames.log`
+
+Signature hygiene applied (safe callback-shape normalization, `RET 0x14`):
+- `0x005839f0`
+- `0x00583dd0`
+- `0x00583fb0`
+- `0x00583bd0`
+- `0x0058c640`
+- normalized to: `void __thiscall (...)(int repeat/phase, void* arg8, void* argC, void* dispatchArg, void* arg14)`
+- artifacts:
+  - `tmp_decomp/batch376_arrow_handler_signatures.csv`
+  - `tmp_decomp/batch376_apply_arrow_handler_signatures.log`
+  - `tmp_decomp/batch376_postsig_ctx.txt`
+
+Post snapshot:
+- `tmp_decomp/batch376_progress_counts.txt`
+- `total_functions: 12322`
+- `renamed_functions: 9932`
+- `default_fun_or_thunk_fun: 2390`
+
+### TODO (next pass)
+- [ ] Extend `new_scripts/build_tabsenu_schema_loader_bindings.py` with strict-vs-loose schema columns and per-command mixed-arity override support (`cnam/pnam/zone`).
+- [ ] Run a focused command-id normalization lane around `0x64/0x65` dispatchers in adjacent handlers (`0x00583fb0`, `0x0058c640`, `0x00583bd0`) by adding concise function comments and aligning names where currently direction-biased names conflict with split/center-hit behavior.
+- [ ] Sweep nearby table-driven callback thunks around `0x006636e0` for missing-function creation + `thunk_<target>` naming where still unresolved.
+
+#### Applied batch377 (tabsenu strict/loose schema extension + thunk sweep)
+Goal:
+- Close TODO on mixed-arity tabsenu schema handling (`cnam/pnam/zone`) and take a safe callback-thunk cleanup pass around 0x0040xxxx.
+
+1) Script enhancement: strict-vs-loose tabsenu schema columns
+- Updated script:
+  - `new_scripts/build_tabsenu_schema_loader_bindings.py`
+- Added:
+  - `--strict-arity-overrides` CLI option (default: `cnam:2,pnam:2,zone:2`)
+  - separate loose vs strict arity counters
+  - separate loose vs strict record-size guesses
+  - strict override indicator column
+- New output columns:
+  - schema CSV:
+    - `arity_min_loose`, `arity_max_loose`, `arity_primary_loose`, `record_size_guess_loose`
+    - `arity_min_strict`, `arity_max_strict`, `arity_primary_strict`, `record_size_guess_strict`
+    - `strict_arity_override`
+  - binding CSV:
+    - `arity_primary_loose`, `record_size_guess_loose`
+    - `arity_primary_strict`, `record_size_guess_strict`
+    - `strict_arity_override`
+  - command rows CSV now includes `arity_loose` and `arity_strict`.
+- Generated artifacts:
+  - `tmp_decomp/batch377_tabsenu_build.log`
+  - `tmp_decomp/batch377_tabsenu_command_schema.csv`
+  - `tmp_decomp/batch377_tabsenu_loader_bindings.csv`
+  - `tmp_decomp/batch377_tabsenu_loader_comment_apply.csv`
+  - `tmp_decomp/batch377_tabsenu_command_rows.csv`
+  - `tmp_decomp/batch377_tabsenu_summary.json`
+- Validation (mixed-arity commands):
+  - `cnam`: loose primary=2, strict primary=2
+  - `pnam`: loose primary=2, strict primary=2
+  - `zone`: loose primary=3, strict primary=2 (override corrected)
+
+2) Safe missing-JMP thunk sweep (0x00400000..0x00410000)
+- Generated candidates:
+  - `tmp_decomp/batch377_missing_jmp_thunks_4x.csv` (10 rows)
+  - `tmp_decomp/batch377_generate_missing_jmp_thunks_4x.log`
+- Applied with create-missing:
+  - `tmp_decomp/batch377_apply_missing_jmp_thunks_4x.log`
+  - result: `ok=10`, `created=10`
+- Examples:
+  - `0x00401433` -> `thunk_SyncSellTaggedChildControlWithNationState`
+  - `0x00406550` -> `thunk_HandlePlusMinusCommandAndInvokeVslot1CC`
+  - plus tactical/order-state const-domain thunks in same lane.
+
+Post snapshot:
+- `tmp_decomp/batch377_progress_counts.txt`
+- `total_functions: 12332`
+- `renamed_functions: 9942`
+- `default_fun_or_thunk_fun: 2390`
+
+### TODO (next pass)
+- [ ] Continue callback-table thunk-island cleanup beyond `0x0040xxxx` with the same safe filter (single-JMP to already named non-generic targets).
+- [ ] Normalize naming/comment consistency in split-arrow family where direction-specific names can be misleading for center-split handlers (`0x00583fb0` vs split-hit behavior).
+- [ ] Evaluate turning command IDs `0x64/0x65` into a small enum/type alias lane where those dispatch values repeat in trade/city arrow handlers.
+
+#### Applied batch378 (callback thunk sweep continuation)
+Goal:
+- Continue safe callback-table thunk-island cleanup beyond the initial 0x0040xxxx batch.
+
+Runs:
+- `0x00410000..0x00420000` -> `0` rows
+- `0x00420000..0x00430000` -> `0` rows
+- `0x00430000..0x00440000` -> `0` rows
+- broader resweep `0x00400000..0x00470000` -> `1` row
+
+Artifacts:
+- `tmp_decomp/batch378_generate_missing_jmp_thunks_41xx.log`
+- `tmp_decomp/batch378_missing_jmp_thunks_41xx.csv`
+- `tmp_decomp/batch378_generate_missing_jmp_thunks_42xx.log`
+- `tmp_decomp/batch378_missing_jmp_thunks_42xx.csv`
+- `tmp_decomp/batch378_generate_missing_jmp_thunks_43xx.log`
+- `tmp_decomp/batch378_missing_jmp_thunks_43xx.csv`
+- `tmp_decomp/batch378_generate_missing_jmp_thunks_40_47.log`
+- `tmp_decomp/batch378_missing_jmp_thunks_40_47.csv`
+- `tmp_decomp/batch378_apply_missing_jmp_thunks_40_47.log`
+
+Applied:
+- `0x00458d10` -> `thunk_Cluster_OrderStateConstDomainHint_00458d14` (created)
+
+Post snapshot:
+- `tmp_decomp/batch378_progress_counts.txt`
+- `total_functions: 12333`
+- `renamed_functions: 9943`
+- `default_fun_or_thunk_fun: 2390`
+
+### TODO (next pass)
+- [ ] Expand safe thunk sweep into additional execute ranges outside `0x0040xxxx` where callback tables still point at non-function JMP stubs.
+- [ ] Continue split-arrow command-id normalization comments and decide whether to rename `HandleRightArrowAutoRepeatTickAndDispatch` to a split-agnostic name for consistency with observed 0x64/0x65 dual dispatch behavior.
+- [ ] Optionally add a small command enum/type alias for recurrent 0x64/0x65 dispatch IDs in trade arrow handlers.
+
+#### Applied batch379 (Step 1: turn-instruction system typing pass)
+Goal:
+- Execute a high-ROI typing pass for the `tabsenu` turn-instruction system beyond function naming: typed dispatch tables + explicit token/index enums + handler metadata comments.
+
+Validation:
+- Scanned all 27 handlers from `scenario_dispatch_token_handler_map_batch55.csv`:
+  - all handlers already consistently named `HandleTurnInstruction_*`
+  - all signatures already normalized to `void __thiscall (...)(void* this, int* pStreamCursor)`
+  - all have `RET 0x4`
+- Artifacts:
+  - `tmp_decomp/batch379_turn_handlers_27_scan.csv`
+  - `tmp_decomp/batch379_tabsenu_handler_ret_scan.csv`
+
+Applied typing/model upgrades:
+1) New reusable script:
+- `new_scripts/create_turn_instruction_types.py`
+- Creates/updates:
+  - `/Imperialism/ETurnInstructionTokenFourCC`
+  - `/Imperialism/ETurnInstructionDispatchIndex`
+- Types key tables:
+  - `0x00662978` as `ETurnInstructionTokenFourCC[27]`
+    - label: `g_aeTurnInstructionTokenFourCCByIndex`
+  - `0x00698b50` as `void *[27]`
+    - label: `g_apfnTurnInstructionHandlerByIndex`
+
+2) Removed stale alias label:
+- deleted `g_apfnTurnInstructionHandlersByTokenIndex` at `0x00698b54`
+  - stale element-label from prior untyped table state
+
+3) Added per-handler dispatch metadata comments (27 rows):
+- source map: `tmp_decomp/scenario_dispatch_token_handler_map_batch55.csv`
+- applied via:
+  - `tmp_decomp/batch379_turn_handler_comments.csv`
+  - `tmp_decomp/batch379_apply_turn_handler_comments.log`
+- comment format:
+  - `[TurnInstruction] dispatch_index=<n> token=<cmd> token_raw=<raw> stream=TABSENU`
+
+Artifacts:
+- `tmp_decomp/batch379_turn_dispatch_table_xrefs.csv`
+- `tmp_decomp/batch379_turn_token_keys_dwords.csv`
+- `tmp_decomp/batch379_turn_dispatch_pfns_dwords.csv`
+- `tmp_decomp/batch379_create_turn_instruction_types.log`
+- `tmp_decomp/batch383_rerun_create_turn_instruction_types.log`
+
+#### Applied batch380 (Step 3: UMapper overlay span/route extraction)
+Goal:
+- Extract core UMapper data model for overlay route/span pipeline and apply typed pointers to global buffers.
+
+Applied:
+1) New reusable script:
+- `new_scripts/create_umapper_overlay_types.py`
+
+2) New struct types:
+- `/Imperialism/UMapper/TOverlayQuadBorderLinkRecord16` (size 0x10)
+  - `nQuadCellId`
+  - `nEdgeVertexA`
+  - `nEdgeVertexB`
+  - `nEdgeDirection`
+- `/Imperialism/UMapper/TOverlaySpanRecord24` (size 0x18)
+  - `sStartX`, `sStartY`, `sEndX`, `sEndY`
+  - `nRouteNodeIndexA`, `nRouteNodeIndexB`
+  - `sRegionIdA`, `sRegionIdB`
+  - `sLinkPrevIndex`, `sLinkNextIndex`
+
+3) Typed globals:
+- `0x006a347c` -> `g_pOverlayQuadBorderLinkArray16Buffer` as `TOverlayQuadBorderLinkRecord16 *`
+- `0x006a3904` -> `g_pOverlaySpanRecordArray18Buffer` as `TOverlaySpanRecord24 *`
+- `0x006a38e8` forced to `uint` (RNG state clarity)
+
+4) Label normalization (quad/span array state):
+- `0x006a3478` -> `g_OverlayQuadBorderLinkArray16State`
+- `0x006a3480` -> `g_uOverlayQuadBorderLinkArray16Capacity`
+- `0x006a3484` -> `g_uOverlayQuadBorderLinkArray16Count`
+- (span globals retained/confirmed):
+  - `g_OverlaySpanRecordArray18State`
+  - `g_uOverlaySpanRecordArray18Capacity`
+  - `g_uOverlaySpanRecordArray18Count`
+
+Artifacts:
+- `tmp_decomp/batch380_umapper_core_xrefs.csv`
+- `tmp_decomp/batch380_52cae0_disasm.txt`
+- `tmp_decomp/batch380_52b9b0_disasm.txt`
+- `tmp_decomp/batch380_create_umapper_overlay_types.log`
+
+#### Applied batch381 (Step 2: map-generation RNG/state consolidation)
+Goal:
+- Dehardcode mapgen tuning globals into stable token-driven names and type them as unsigned counters.
+
+Evidence source:
+- `GenerateMapFromTuningStringAndApplyScenarioOverrides` (`0x00525a30`) full decomp with explicit token switches (`D/H/M/F/S/R/C`).
+- artifacts:
+  - `tmp_decomp/batch381_525a30_full_ctx.txt`
+  - `tmp_decomp/batch381_mapgen_state_xrefs.csv`
+  - `tmp_decomp/batch381_mapgen_param_xrefs2.csv`
+
+Applied label renames (+comments):
+- `0x006a3470` -> `g_nMapGenQuotaTokenM`
+- `0x006a38bc` -> `g_nMapGenQuotaTokenD`
+- `0x006a38c0` -> `g_nMapGenQuotaTokenH`
+- `0x006a38e0` -> `g_nMapGenQuotaTokenS`
+- `0x006a38f8` -> `g_nMapGenQuotaTokenF`
+- `0x006a38e4` -> `g_nMapGenType3ExpansionAttempts`
+- `0x006a38ec` -> `g_nMapGenCityRegionSeedParamTokenC_A`
+- `0x006a38f0` -> `g_nMapGenCityRegionSeedParamTokenC_B`
+
+Then typed all 8 as `uint`.
+
+Artifacts:
+- `tmp_decomp/batch381_mapgen_token_param_label_renames.csv`
+- `tmp_decomp/batch381_apply_mapgen_token_param_label_renames.log`
+- `tmp_decomp/batch381_type_mapgen_token_params_uint.log`
+
+#### Applied batch382 (Step 5: broad safe thunk cleanup)
+Goal:
+- Run safe single-JMP thunk recovery over wider ranges and apply `thunk_<target>` names.
+
+Sweeps:
+- `0x00400000..0x00670000` -> 5 candidates (all applied)
+- `0x00670000..0x006a0000` -> 0
+- `0x00500000..0x00600000` -> 0
+
+Applied (created+renamed):
+- `0x00612878` -> `thunk_CallDcCallbackIfPrimaryHdcDiffers`
+- `0x00613e36` -> `thunk_NoOpVirtualStub_00613e44`
+- `0x006145e3` -> `thunk_ReturnOneStub_006145f5`
+- `0x0061874f` -> `thunk_NoOpVirtualStub_00618753`
+- `0x00619ca6` -> `thunk_NoOpVirtualStub_00619cca`
+
+Artifacts:
+- `tmp_decomp/batch382_generate_missing_jmp_thunks_40_67.log`
+- `tmp_decomp/batch382_missing_jmp_thunks_40_67.csv`
+- `tmp_decomp/batch382_apply_missing_jmp_thunks_40_67.log`
+- `tmp_decomp/batch382_generate_missing_jmp_thunks_67_6a.log`
+- `tmp_decomp/batch382_missing_jmp_thunks_67_6a.csv`
+- `tmp_decomp/batch382_generate_missing_jmp_thunks_50_60.log`
+- `tmp_decomp/batch382_missing_jmp_thunks_50_60.csv`
+
+#### Applied batch383 (Steps 4 + 7: arrow command normalization + enumization)
+Goal:
+- Normalize `0x64/0x65` split-arrow command domain with explicit enum and align naming/comments.
+
+Applied:
+1) New enum script:
+- `new_scripts/create_arrow_command_enum.py`
+- creates `/Imperialism/EArrowSplitCommandId`:
+  - `ARROW_SPLIT_CMD_LEFT = 100 (0x64)`
+  - `ARROW_SPLIT_CMD_RIGHT = 101 (0x65)`
+
+2) Naming normalization:
+- `0x00583fb0`:
+  - `HandleRightArrowAutoRepeatTickAndDispatch` ->
+  - `HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84`
+- `0x00406843`:
+  - `thunk_HandleRightArrowAutoRepeatTickAndDispatch` ->
+  - `thunk_HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84`
+
+3) Arrow-family behavior comments refreshed (6 functions):
+- `0x005839f0`
+- `0x00583dd0`
+- `0x00583bd0`
+- `0x00583fb0`
+- `0x0058c640`
+- `0x0058a940`
+- comments now explicitly reference `EArrowSplitCommandId` and `0x64/0x65` semantics.
+
+Artifacts:
+- `tmp_decomp/batch383_create_arrow_command_enum.log`
+- `tmp_decomp/batch383_arrow_name_normalize.csv`
+- `tmp_decomp/batch383_apply_arrow_name_normalize.log`
+- `tmp_decomp/batch383_arrow_family_comments.csv`
+- `tmp_decomp/batch383_apply_arrow_family_comments.log`
+- `tmp_decomp/batch383_arrow_family_xrefs.csv`
+- `tmp_decomp/batch383_arrow_family_callers.csv`
+
+Post snapshot:
+- `tmp_decomp/batch383_progress_counts.txt`
+- `total_functions: 12338`
+- `renamed_functions: 9948`
+- `default_fun_or_thunk_fun: 2390`
+- `class_desc_count: 406`
+- `vtbl_count: 357`
+- `type_name_count: 406`
+
+### TODO (next high-ROI pass)
+- [ ] Apply function-pointer signature typing for `g_apfnTurnInstructionHandlerByIndex` callsites (promote from `void*` to typed callback signatures where used).
+- [ ] Continue UMapper data-model extraction: define/label city-region remap scratch arrays around `0x006a3498/0x006a349c` and assign typed arrays.
+- [ ] Expand mapgen token-parameter naming from token-based to semantic terrain-class naming once corroborated by additional caller evidence (`GenerateCityRegionIdsBySeedAndNeighborPropagation`, `PickRandomType3SeedAndAttemptExpansion`).
+- [ ] Run next safe thunk sweep over remaining high-exec ranges and follow with signature propagation for newly-created thunks.
+
+#### Applied batch384 (follow-up continuation: typed turn-handler callbacks + city-region remap table)
+Goal:
+- Continue high-ROI dehardcoding after batch383 by finishing two TODOs:
+  1) typed turn-handler callback model at dispatch table callsites,
+  2) typed city-region remap scratch model around `0x006a3498`.
+
+1) Turn-instruction callback typing upgrade
+- Improved `new_scripts/create_turn_instruction_types.py`:
+  - added function definition datatype:
+    - `/Imperialism/TTurnInstructionHandlerProc`
+    - `void __thiscall (uint* pStreamCursor)`
+  - retyped handler table:
+    - `0x00698b50` as `TTurnInstructionHandlerProc *[27]`
+- Re-ran script:
+  - `tmp_decomp/batch384_rerun_create_turn_instruction_types.log`
+- Effect in decomp:
+  - `ProcessTurnInstructionStreamAndFinalizePhase` now decompiles dispatch as:
+    - `(*g_apfnTurnInstructionHandlerByIndex[iVar6])(in_ECX);`
+  - i.e., explicit callback argument instead of opaque no-arg indirect call.
+- Artifacts:
+  - `tmp_decomp/batch384_turn_stream_dispatch_ctx.txt`
+  - `tmp_decomp/batch384_turn_stream_dispatch_disasm.txt`
+  - `tmp_decomp/batch384_turn_stream_dispatch_ctx_after_fdef.txt`
+
+2) City-region remap scratch table extraction
+- Added reusable script:
+  - `new_scripts/create_city_region_remap_types.py`
+- Applied at globals:
+  - `0x006a3498` -> `g_aiCityRegionIdRemapByLegacyIndex` typed `int[256]`
+  - removed stale inner label `DAT_006a349c`
+- Validation from context:
+  - both `ReindexType5CellsAndRebuildRegionOverlays` and `CompactCityRegionIdsInTileData`
+    initialize 256 entries to `-1` and use table as legacy-id -> compact-id remap.
+- Artifacts:
+  - `tmp_decomp/batch384_city_region_reindex_ctx.txt`
+  - `tmp_decomp/batch384_create_city_region_remap_types.log`
+
+Additional note:
+- Ran global simple-thunk signature propagation dry-run:
+  - `tmp_decomp/batch384_thunk_sig_propagate_dryrun.log`
+  - candidates: `0` (no pending undefined-signature simple thunks remained).
+
+Post snapshot:
+- `tmp_decomp/batch384_progress_counts.txt`
+- `total_functions: 12338`
+- `renamed_functions: 9948`
+- `default_fun_or_thunk_fun: 2390`
+
+### TODO (next pass)
+- [ ] Type the turn-dispatch handler table with a stronger semantic stream-cursor typedef (if we extract the concrete stream record model), then propagate that typedef into handler signatures.
+- [ ] Continue UMapper model extraction for nearby global buffers (`0x006a3910`, `0x006a3914`, and `0x006a3470..0x006a38f8` neighborhoods) with conservative semantics-only naming.
+- [ ] Run next wide safe thunk sweep over remaining executable ranges and apply `thunk_<target>` where still missing.
+
+#### Applied batch385 (class-model seed extraction + UI vslot skeleton refresh + wrapper cleanup)
+Goal:
+- Execute a larger low-risk pass focused on class extraction and broad readability upgrades (without speculative semantics).
+
+1) UMapper array-state extraction completed
+- Ran reusable script:
+  - `new_scripts/create_umapper_array_state_structs.py`
+- Created/applied types:
+  - `/Imperialism/UMapper/TOverlayQuadBorderLinkArrayState16` at `0x006a3478`
+  - `/Imperialism/UMapper/TOverlaySpanRecordArrayState24` at `0x006a3900`
+- Includes conservative fields:
+  - state base pointer, typed data buffer pointer, capacity/count, and two assert-guard dwords.
+- Artifact:
+  - `tmp_decomp/batch385_create_umapper_array_state_structs.log`
+
+2) Wide missing-JMP thunk sweep (full executable range)
+- Ran:
+  - `generate_missing_jmp_thunk_candidates.py --start 0x00400000 --end 0x00700000`
+- Result:
+  - `rows=0` (no remaining safe single-JMP generic stubs in that range).
+- Artifacts:
+  - `tmp_decomp/batch385_generate_missing_jmp_thunks_40_70.log`
+  - `tmp_decomp/batch385_missing_jmp_thunks_40_70.csv`
+
+3) New reusable class-struct seeding script + apply (big extraction chunk)
+- Added script:
+  - `new_scripts/create_missing_class_structs_from_inventory.py`
+- Workflow:
+  - `build_class_model_inventory.py` -> `tmp_decomp/class_model_inventory.csv`
+  - selected classes with:
+    - `class_name` starts with `T`
+    - missing struct type
+    - at least one anchor (`g_pClassDesc*` / `g_vtbl*` / `g_szTypeName*`)
+    - `method_count_in_namespace >= 1`
+- Applied:
+  - created `151` minimal class structs (`void* pVtable` seed only) in `/imperialism/classes`.
+- Impact (inventory summary):
+  - `struct_type_count: 264 -> 415`
+  - `classes_missing_struct: 311 -> 160`
+- Artifacts:
+  - `tmp_decomp/batch385_build_class_model_inventory.log`
+  - `tmp_decomp/batch385_create_missing_class_structs_dry.log`
+  - `tmp_decomp/batch385_create_missing_class_structs_apply.log`
+  - `tmp_decomp/batch385_build_class_model_inventory_after.log`
+  - `tmp_decomp/class_model_inventory_summary.txt`
+
+4) Class-namespace extraction follow-up
+- Ran and applied:
+  - `new_scripts/attach_class_thunk_targets.py --apply`
+- Attached unique target:
+  - `0x0048fc30` (`FUN_0048fc30`) -> `TStaticText` namespace.
+- Artifacts:
+  - `tmp_decomp/batch385_attach_class_thunk_targets_dry.log`
+  - `tmp_decomp/batch385_attach_class_thunk_targets_apply.log`
+
+5) Wrapper-based low-risk rename waves (gameplay + UI)
+- Generated/applied small single-callee wrapper renames:
+  - gameplay CSV: `3` rows
+  - UI CSV: `15` rows
+- Artifacts:
+  - `tmp_decomp/batch385_generate_wrapper_single_callee_gameplay.log`
+  - `tmp_decomp/batch385_wrapper_single_callee_gameplay.csv`
+  - `tmp_decomp/batch385_apply_wrapper_single_callee_gameplay.log`
+  - `tmp_decomp/batch385_generate_wrapper_single_callee_ui.log`
+  - `tmp_decomp/batch385_wrapper_single_callee_ui.csv`
+  - `tmp_decomp/batch385_apply_wrapper_single_callee_ui.log`
+
+6) UI base vslot skeleton refresh (broad label/comment/type pass)
+- Applied:
+  - `new_scripts/apply_ui_base_vslot_skeleton.py --apply --include-vtbl-name-re "^g_vtblT"`
+- Result:
+  - `labels_ok=307`, `labels_skip=92`, `labels_fail=0`
+  - `comments_ok=3`, `typed=2`, `type_fail=0`
+  - updated/created 6 skeleton datatypes in `/imperialism/ui`.
+- Artifacts:
+  - `tmp_decomp/batch385_ui_base_vslot_skeleton_dry.log`
+  - `tmp_decomp/batch385_ui_base_vslot_skeleton_apply.log`
+  - `tmp_decomp/batch385_ui_base_vslot_skeleton_report.csv`
+
+7) Batch `this`-parameter type propagation on class methods
+- Prepared target class list from inventory:
+  - `tmp_decomp/batch385_class_this_candidates_ge6.txt` (`288` classes with `method_count >= 6` and struct present)
+- Ran:
+  - `new_scripts/apply_class_this_param_types.py --dry-run` -> `59` candidates
+  - `new_scripts/apply_class_this_param_types.py --apply`
+- Result:
+  - `ok=32`, `skip=27`, `fail=0`
+  - first parameter retyped from generic `void*` to `<ClassName>*` for methods in class namespaces.
+- Artifacts:
+  - `tmp_decomp/batch385_apply_class_this_param_types_dry.log`
+  - `tmp_decomp/batch385_apply_class_this_param_types_apply.log`
+
+8) Fixed vtable-metric pollution from slot labels
+- Issue:
+  - UI skeleton slot labels using `g_vtbl..._Slot...` polluted vtable/class inventory scans.
+- Fixes:
+  - Updated generator naming in `new_scripts/apply_ui_base_vslot_skeleton.py` to emit `g_vslot..._Slot...` labels.
+  - Added reusable migration script:
+    - `new_scripts/normalize_ui_vslot_label_prefix.py`
+  - Applied migration:
+    - renamed `471` labels from `g_vtbl*` slot form to `g_vslot*` slot form.
+  - Tightened progress counter:
+    - `new_scripts/count_re_progress.py` now excludes `_Slot`/`Candidate_`/`Family_` aliases when counting `g_vtblT*`.
+- Artifacts:
+  - `tmp_decomp/batch385_normalize_ui_vslot_label_prefix_dry.log`
+  - `tmp_decomp/batch385_normalize_ui_vslot_label_prefix_apply.log`
+  - `tmp_decomp/batch385_progress_counts_post_vslot_norm.txt`
+
+Post snapshot:
+- `tmp_decomp/batch385_progress_counts_post_vslot_norm.txt`
+- `total_functions: 12338`
+- `renamed_functions: 9968`
+- `default_fun_or_thunk_fun: 2370`
+- `class_desc_count: 406`
+- `vtbl_count: 231` (root-only `g_vtblT*` counter, excludes slot aliases)
+- `type_name_count: 406`
+
+### TODO (next pass)
+- [ ] Use the new class-struct seeds to apply `this` parameter types/signatures on high-call-count class methods (start with classes where `method_count_in_namespace >= 6` from `class_model_inventory.csv`).
+- [ ] Continue UMapper state extraction around `0x006a3910/0x006a3914`: identify exact guard semantics and rename away from line-number placeholder fields once corroborated.
+- [ ] Run a focused unresolved-function rename wave using class ownership + vslot report (`tmp_decomp/batch385_ui_base_vslot_skeleton_report.csv`) for remaining generic slot handlers.
+
+#### Applied batch386 (loop pass: unresolved vslot closures + UMapper guard semantics + inventory cleanup)
+Goal:
+- Continue script-driven low-hanging cleanup loop from batch385 TODOs, with no speculative renames.
+
+1) Closed remaining generic targets from primary vslot report
+- From `tmp_decomp/batch385_ui_base_vslot_skeleton_report.csv`, extracted 5 generic targets.
+- Renamed + documented (core + thunk wrappers):
+  - `0x0048c080` -> `HandleCursorHoverSelectionByChildHitTestAndFallback`
+  - `0x00408b07` -> `thunk_HandleCursorHoverSelectionByChildHitTestAndFallback`
+  - `0x00427290` -> `BuildRectFromControlPositionAndSizeFields`
+  - `0x004067da` -> `thunk_BuildRectFromControlPositionAndSizeFields`
+  - `0x004798b0` -> `DeleteObjectIfNonNullViaVslot04`
+  - `0x004092cd` -> `thunk_DeleteObjectIfNonNullViaVslot04`
+  - `0x0048b8d0` -> `PaintVisibleChildrenIntersectingClipRect`
+  - `0x00406ef1` -> `thunk_PaintVisibleChildrenIntersectingClipRect`
+  - `0x00495b70` -> `EnsureBitmapResourceLoadedAndCopyRectSize`
+  - `0x00408d37` -> `thunk_EnsureBitmapResourceLoadedAndCopyRectSize`
+- Signatures tightened where clear:
+  - `0x00427290`: `void __thiscall (...)(int* pOutRect)`
+  - `0x004798b0`: `void __thiscall (...)(void)`
+  - `0x00495b70`: `void __thiscall (...)(void)`
+- Artifacts:
+  - `tmp_decomp/batch386_vslot_generic_target_context.txt`
+  - `tmp_decomp/batch386_vslot_generic_target_xrefs.csv`
+  - `tmp_decomp/batch386_vslot_generic_target_renames.csv`
+  - `tmp_decomp/batch386_apply_vslot_generic_target_renames.log`
+  - `tmp_decomp/signature_batch386_vslot_generic_targets.csv`
+  - `tmp_decomp/batch386_apply_vslot_generic_target_signatures.log`
+
+2) UMapper guard extraction follow-up (`0x006a3910` / `0x006a3914`)
+- Corroborated readers:
+  - `AssignCityRegionIdsFromOverlayScanlineIntersections` reads `0x006a3910`
+  - `RebuildUMapperRouteRecordsAndActiveMapRects` reads `0x006a3914`
+- Updated `new_scripts/create_umapper_array_state_structs.py` to use semantic guard names:
+  - `uSuppressRoutePointPairMismatchAssert` (offset `+0x10`)
+  - `uSuppressSpanEndpointLinkAssert` (offset `+0x14`)
+- Reapplied struct data; component labels now present at:
+  - `g_OverlaySpanRecordArray18State.uSuppressRoutePointPairMismatchAssert`
+  - `g_OverlaySpanRecordArray18State.uSuppressSpanEndpointLinkAssert`
+- Added function comments documenting guard usage and tightened signatures:
+  - `0x0052b9b0` -> `void __thiscall (...)(void* pMapTileBuffer)` (comment updated)
+  - `0x0052e350` -> `void __cdecl (...)(void)` (comment updated)
+- Artifacts:
+  - `tmp_decomp/batch386_umapper_guard_xrefs.csv`
+  - `tmp_decomp/batch386_umapper_guard_ctx_full.txt`
+  - `tmp_decomp/batch386_reapply_umapper_array_state_structs.log`
+  - `tmp_decomp/batch386_umapper_guard_comments.csv`
+  - `tmp_decomp/batch386_apply_umapper_guard_comments.log`
+  - `tmp_decomp/signature_batch386_umapper_guards.csv`
+  - `tmp_decomp/batch386_apply_umapper_guard_signatures.log`
+
+3) Secondary vslot cleanup loop (`0x0c/0x84/0xa4/0xa8`)
+- Generated secondary report:
+  - `tmp_decomp/batch386_ui_secondary_vslot_report.csv`
+- Found one high-hit generic target (`thunk_FUN_0048b1c0`, 141 hits at slot `+0xa4`).
+- Renamed + typed:
+  - `0x0048b1c0` -> `SetControlActiveFlagAndRefreshIfChanged`
+  - `0x00404e21` -> `thunk_SetControlActiveFlagAndRefreshIfChanged`
+  - signature on `0x0048b1c0`: `void __thiscall (...)(int activeFlag, int refreshIfChanged)`
+- Re-ran secondary report: generic targets now `0`.
+- Artifacts:
+  - `tmp_decomp/batch386_fun_48b1c0_ctx.txt`
+  - `tmp_decomp/batch386_setcontrolactive_renames.csv`
+  - `tmp_decomp/batch386_apply_setcontrolactive_renames.log`
+  - `tmp_decomp/signature_batch386_setcontrolactive.csv`
+  - `tmp_decomp/batch386_apply_setcontrolactive_signature.log`
+  - `tmp_decomp/batch386_ui_secondary_vslot_report_after.csv`
+
+4) Class inventory tooling cleanup + remaining struct seeds
+- Fixed `new_scripts/build_class_model_inventory.py` vtable parsing:
+  - now accepts canonical `g_vtblT*` / `g_vtbl_T*`
+  - excludes slot/family/candidate aliases from class inference.
+- Rebuilt inventory:
+  - `classes_total=453`, `classes_missing_struct=38` before seed pass.
+- Ran class-seed pass (`--min-methods 0`), created 3 new minimal structs:
+  - `TMapMaker_CityRegionGenerationCallbacks`
+  - `TTacticalBattleView`
+  - `TTradeScreenPicture`
+- Artifacts:
+  - `tmp_decomp/batch386_build_class_model_inventory_filtered.log`
+  - `tmp_decomp/batch386_create_missing_class_structs_remaining_dry.log`
+  - `tmp_decomp/batch386_create_missing_class_structs_remaining_apply.log`
+
+5) Additional wrapper + control-tag loop
+- Wrapper generator found 3 UI wrappers; all applied:
+  - `WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004adc80`
+  - `WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950`
+  - `WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0`
+- Control-tag unresolved scan (using Neo4j-priority tags as guidance) surfaced one remaining `FUN_*` builder:
+  - `0x00457af2` -> `Cluster_UiResourceNodeBuilder_00457af2`
+  - created missing thunk at `0x00457aee` -> `thunk_Cluster_UiResourceNodeBuilder_00457af2`
+- Artifacts:
+  - `tmp_decomp/batch386_wrapper_single_callee_ui.csv`
+  - `tmp_decomp/batch386_apply_wrapper_single_callee_ui.log`
+  - `tmp_decomp/batch386_unresolved_control_tag_detail.csv`
+  - `tmp_decomp/batch386_control_tag_fun_candidates.csv`
+  - `tmp_decomp/batch386_control_tag_candidate_ctx.txt`
+  - `tmp_decomp/batch386_control_tag_fun_renames.csv`
+  - `tmp_decomp/batch386_apply_control_tag_fun_renames.log`
+
+Post snapshot:
+- `tmp_decomp/batch386_progress_counts_final.txt`
+- `total_functions: 12339`
+- `renamed_functions: 9985`
+- `default_fun_or_thunk_fun: 2354`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop)
+- [ ] Continue control-tag cluster dehardcoding for `yako/txen` candidates (`Cluster_ArmyNavyHint_00447353`, `Cluster_UiControlA4A8_1C8_*`) by resolving their parent dialog/screen identity and replacing `Cluster_*Hint_*` names with screen-specific builders.
+- [ ] Extract/rename remaining `g_vtblT*` roots missing class descriptors (`classes_missing_class_desc`) where ctor/getter evidence exists; keep non-canonical slot aliases excluded.
+- [ ] Extend UMapper model from guard semantics to explicit route-node/link-state structs referenced by `RebuildUMapperRouteRecordsAndActiveMapRects` and apply typed globals for those buffers.
+
+#### Applied batch387 (loop continuation: command-tag builder refinement + secondary cleanup verification)
+Goal:
+- Continue control-tag driven refinement on the remaining cluster-hint builders without speculative gameplay assumptions.
+
+1) Navy-roster dialog builder refinement from `yako` command evidence
+- Disassembly/context on `Cluster_ArmyNavyHint_00447353` showed explicit `'okay'` command-tag materialization (`0x6f6b6179`) and `TNavyRoster` payload construction.
+- Renamed + typed:
+  - `0x00447353`:
+    - `Cluster_ArmyNavyHint_00447353` -> `BuildNavyRosterDialogUiResourceTree`
+    - signature set to `int * __thiscall (...)(void)` (resource-tree builder shape)
+- Artifacts:
+  - `tmp_decomp/batch386_fun_447353_disasm.txt`
+  - `tmp_decomp/batch386_navyroster_resource_tree_rename.csv`
+  - `tmp_decomp/batch386_apply_navyroster_resource_tree_rename.log`
+  - `tmp_decomp/signature_batch386_navyroster_resource_tree.csv`
+  - `tmp_decomp/batch386_apply_navyroster_resource_tree_signature.log`
+
+2) Secondary-slot unresolved verification loop
+- Re-ran `0x0c/0x84/0xa4/0xa8` slot report after `SetControlActiveFlagAndRefreshIfChanged` rename wave:
+  - `tmp_decomp/batch386_ui_secondary_vslot_report_after.csv`
+  - generic targets remained `0`.
+
+3) Neo4j context check in-loop
+- Queried control-tag priority/coverage in Neo4j and used high-hit tags (`okay/rght/left/next/...`) to prioritize unresolved control-tag clusters.
+- Artifacts:
+  - Neo4j query result used for ranking in this pass; extraction side:
+  - `tmp_decomp/batch386_unresolved_control_tag_summary_after.csv`
+  - `tmp_decomp/batch386_control_tag_fun_candidates_after.csv`
+
+Post snapshot (unchanged vs late batch386):
+- `tmp_decomp/batch386_progress_counts_loop2.txt`
+- `total_functions: 12339`
+- `renamed_functions: 9985`
+- `default_fun_or_thunk_fun: 2354`
+
+### TODO (next loop)
+- [ ] Resolve `txen`-tagged builders (`Cluster_UiControlA4A8_1C8_00504220`, `Cluster_UiControlA4A8_1C8_005046c0`) to concrete screen/dialog identities via parent caller/vtable ownership and rename from generic cluster IDs.
+- [ ] Continue the `yako` lane (`Cluster_UiControlA4A8_1C8_0056a5b0`, `Cluster_UiControlA4A8_1C8_005de010`) with the same evidence-first screen identity workflow.
+- [ ] Build/attach explicit route-node/link structs for UMapper route rebuild path (`RebuildUMapperRouteRecordsAndActiveMapRects`) and propagate typed globals.
+
+#### Applied batch388 (loop pass: txen/yako closure + dialog/builder concretization)
+Goal:
+- Close the pending `txen/yako` control-tag cluster TODOs with evidence-first renames.
+
+1) Resolved pending `txen/yako` cluster functions and wrappers
+- Renamed + commented:
+  - `0x00504220` -> `BuildHelpSubjectListControlsWithPrevNext`
+  - `0x00406343` -> `thunk_BuildHelpSubjectListControlsWithPrevNext`
+  - `0x005046c0` -> `RefreshHelpSubjectListControlsWithPrevNext`
+  - `0x004070b3` -> `thunk_RefreshHelpSubjectListControlsWithPrevNext`
+  - `0x0056a5b0` -> `BuildGamePreferencesUiResourceTree`
+  - `0x00405989` -> `thunk_BuildGamePreferencesUiResourceTree`
+  - `0x005de010` -> `RunTaggedOptionDialogAndReturnSelectionTag`
+  - `0x00407ce3` -> `thunk_RunTaggedOptionDialogAndReturnSelectionTag`
+- Signatures tightened where unambiguous:
+  - `0x00504220`: `void __thiscall (...)(void)`
+  - `0x005046c0`: `void __thiscall (...)(void)`
+  - `0x0056a5b0`: `void __thiscall (...)(void)`
+- Artifacts:
+  - `tmp_decomp/batch388_ctx_txen_yako.txt`
+  - `tmp_decomp/batch388_callers_txen_yako.csv`
+  - `tmp_decomp/batch388_control_tag_detail.csv`
+  - `tmp_decomp/batch388_control_tag_summary.csv`
+  - `tmp_decomp/batch388_txen_yako_renames.csv`
+  - `tmp_decomp/batch388_apply_txen_yako_renames.log`
+  - `tmp_decomp/signature_batch388_txen_yako.csv`
+  - `tmp_decomp/batch388_apply_txen_yako_signatures.log`
+
+2) Neo4j-guided anchor validation for this lane
+- Queried control-tag/domain context (`next/okay`) and verified nearby known function anchor:
+  - `HandleNameSlotNextPrevToggleCommands` (`0x00503ed0`) in same neighborhood used as naming shape reference.
+
+#### Applied batch389 (loop pass: CRT/MFC helper dehardcoding + wrapper cleanup seed)
+Goal:
+- Take low-risk unresolved helpers with strong named-caller evidence and convert to concrete runtime names.
+
+1) CRT/MFC helper renames + signatures
+- Renamed + commented:
+  - `0x005e9cd0` -> `InvokeNonNullFunctionPointerRange`
+  - `0x005f1eb0` -> `ParseCommandLineToArgvBuffers`
+  - `0x005e8380` -> `AllocateAligned16FromSmallBlockOrHeap`
+  - `0x005ea050` -> `FindCharWithMbcsLeadByteSupport`
+  - `0x005ea780` -> `FindLastCharWithMbcsLeadByteSupport`
+  - `0x005ed7d0` -> `InitializeCrtThreadDataPrimaryFields`
+  - `0x005eda70` -> `InitializeCrtGlobalCriticalSections`
+  - `0x005f2ec0` -> `AllocateZeroedArrayWithRetryFallback`
+- Applied signatures for all 8 with conservative parameter typing.
+- Artifacts:
+  - `tmp_decomp/batch389_ctx_crt_mfc_helpers.txt`
+  - `tmp_decomp/batch389_crt_mfc_helper_renames.csv`
+  - `tmp_decomp/batch389_apply_crt_mfc_helper_renames.log`
+  - `tmp_decomp/signature_batch389_crt_mfc_helpers.csv`
+  - `tmp_decomp/batch389_apply_crt_mfc_helper_signatures.log`
+
+2) Inventory/class pass status check
+- Rebuilt class inventory and re-ran class-struct seed + this-parameter propagation sweep.
+- Outcome in this pass:
+  - missing-struct seed selected `0` new classes under current gates.
+  - this-parameter candidates `0` (already converged under existing rules).
+- Artifacts:
+  - `tmp_decomp/batch389_class_inventory/class_model_inventory.csv`
+  - `tmp_decomp/batch389_class_inventory/class_model_gaps.csv`
+  - `tmp_decomp/batch389_create_missing_class_structs_*.log`
+  - `tmp_decomp/batch389_apply_class_this_param_types_*.log`
+
+#### Applied batch390 (loop pass: gameplay-adjacent cluster wave + MFC handle-map lane)
+Goal:
+- Reduce named-caller -> generic-callee debt in large chunks, then tighten wrapper naming.
+
+1) Gameplay-adjacent cluster lane dehardcoding
+- Renamed + commented targets + direct thunk wrappers:
+  - `0x004a7590` -> `ClearInvalidArmyTileSelectionsAndCycleInteraction`
+  - `0x004021e9` -> `thunk_ClearInvalidArmyTileSelectionsAndCycleInteraction`
+  - `0x005dda30` -> `OpenSuperArmyRosterPageAndActivateProvinceSelection`
+  - `0x0040593e` -> `thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection`
+  - `0x005c4620` -> `ApplyControlTextStyleDescriptorFromThemeCode`
+  - `0x00406a5a` -> `thunk_ApplyControlTextStyleDescriptorFromThemeCode`
+  - `0x005d5a70` -> `RunControlStringProviderAndDispatchLocalizedMessage`
+  - `0x00401730` -> `thunk_RunControlStringProviderAndDispatchLocalizedMessage`
+  - `0x00597020` -> `ComposeAndDispatchTurnSummaryLocalizedMessage`
+  - `0x00408df0` -> `thunk_ComposeAndDispatchTurnSummaryLocalizedMessage`
+  - `0x0056c740` -> `LoadSaveSlotMetadataAndRefreshInfoPanel`
+  - `0x004047d7` -> `thunk_LoadSaveSlotMetadataAndRefreshInfoPanel`
+  - `0x00594900` -> `RecomputeNationComparisonValuesAndNormalizeScale`
+  - `0x00406f32` -> `thunk_RecomputeNationComparisonValuesAndNormalizeScale`
+  - `0x005bac50` -> `RefreshHudNationTitleControlsAndTheme`
+  - `0x00405137` -> `thunk_RefreshHudNationTitleControlsAndTheme`
+- Signatures tightened:
+  - `0x004a7590`: `void __thiscall (...)(void)`
+  - `0x0056c740`: `void __thiscall (...)(int eventCode)`
+
+2) MFC handle-map lane concretization
+- Renamed + commented:
+  - `0x00606f5f` -> `SwapAfxModuleThreadStateMapContext`
+  - `0x0060d264` -> `ConstructCHandleMapWithBlockAndType`
+  - `0x005e691b` -> `GetOrCreateImageListHandleMapForThreadState`
+  - `0x006126c6` -> `GetOrCreateDcHandleMapForThreadState`
+  - `0x005deb40` -> `DispatchGameStateEventIfLocalizedPromptAccepted`
+  - `0x0040426e` -> `thunk_DispatchGameStateEventIfLocalizedPromptAccepted`
+  - `0x00618605` -> `FormatResourceStringAndDispatchViaThreadState`
+- Signature tightened:
+  - `0x00606f5f`: `void* __cdecl (...)(void* pNewMapContext)`
+
+3) Wrapper follow-up wave
+- Applied generated single-callee wrapper renames:
+  - `34` renames applied (`10` already matching/skipped) in initial follow-up.
+- Then normalized nested wrapper chains:
+  - `5` chain normalizations in first normalization pass.
+- Artifacts:
+  - `tmp_decomp/batch390_wrapper_single_callee_followup.csv`
+  - `tmp_decomp/batch390_apply_wrapper_single_callee_followup.log`
+  - `tmp_decomp/batch390_wrapper_chain_normalize.csv`
+  - `tmp_decomp/batch390_apply_wrapper_chain_normalize.log`
+
+4) Residual generic-edge cleanup (targeted)
+- Renamed residual generic nodes on final named-caller edges:
+  - `0x004d5d30` -> `BuildDiplomacyOverlayHitMaskOpcodeStream`
+  - `0x00403b4d` -> `thunk_BuildDiplomacyOverlayHitMaskOpcodeStream`
+  - `0x005f54c0` -> `CloseLowIoHandleEntryAndMaybeSetStdHandleNull`
+  - `0x005b22c0` -> `InitializeTechHistoryViewTitleAndMapKeyControls`
+  - `0x00408da5` -> `thunk_InitializeTechHistoryViewTitleAndMapKeyControls`
+  - `0x005a4fc0` -> `LoadBattleSetupTabDataByIndex`
+  - `0x004056d7` -> `thunk_LoadBattleSetupTabDataByIndex`
+  - `0x004d5720` -> `FinalizeDiplomacyHitMaskOpcodeBufferAlignment`
+  - `0x004098f4` -> `thunk_FinalizeDiplomacyHitMaskOpcodeBufferAlignment`
+  - `0x004a04a0` -> `InitializeTransFocusAnimationBoundsAndLoadBitmapSurface`
+  - `0x00406799` -> `thunk_InitializeTransFocusAnimationBoundsAndLoadBitmapSurface`
+  - `0x005e9b10` -> `AllocateAnsiStringCopyWithGlobalNewMode`
+- Signatures tightened:
+  - `0x005f54c0`: `int __cdecl (...)(uint fdIndex)`
+  - `0x005b22c0`: `void __thiscall (...)(void)`
+  - `0x005e9b10`: `byte* __cdecl (...)(byte* pSource)`
+- Artifacts:
+  - `tmp_decomp/batch391_remaining_generic_cluster_renames.csv`
+  - `tmp_decomp/batch391_apply_remaining_generic_cluster_renames.log`
+  - `tmp_decomp/signature_batch391_remaining_generic_clusters.csv`
+  - `tmp_decomp/batch391_apply_remaining_generic_cluster_signatures.log`
+  - `tmp_decomp/batch391_last_generic_edge_renames.csv`
+  - `tmp_decomp/batch391_apply_last_generic_edge_renames.log`
+  - `tmp_decomp/signature_batch391_last_generic_edges.csv`
+  - `tmp_decomp/batch391_apply_last_generic_edge_signature.log`
+
+Post snapshot:
+- `tmp_decomp/batch391_progress_counts_final.txt`
+- `total_functions: 12339`
+- `renamed_functions: 10025`
+- `default_fun_or_thunk_fun: 2314`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+Quality gate result:
+- Named-caller -> generic-callee debt (regex lane `Handle|Initialize|Build|Apply|Refresh|Run`) reduced to zero:
+  - `tmp_decomp/batch391_named_callers_with_generic_callees_final.csv` (`rows=0`)
+
+### TODO (next loop)
+- [ ] Resolve residual control-tag unresolved candidate `Cluster_UiResourceNodeBuilder_00457af2` (`enod`) by tracing parent dialog/screen ownership and replacing with concrete dialog-builder name.
+- [ ] Run a second named-caller generic-callee sweep on adjacent regex lanes (`Create|Open|Close|Select|Load|Save|Dispatch`) and close any newly surfaced residual generic callees.
+- [ ] Continue class-model gap closure focused on non-MFC `T*` classes with `missing_class_desc_symbol`/`missing_vtbl_symbol` but strong method evidence; keep MFC/CRT library classes out of semantic rename passes.
+- [ ] Revisit UMapper route-node/link struct typing TODO and attach additional typed globals around `RebuildUMapperRouteRecordsAndActiveMapRects` after current UI/runtime cleanup stabilizes.
+
+#### Applied batch392 (loop pass: unresolved control-tag builder closure)
+Goal:
+- Close the last unresolved control-tag candidate (`enod`) with concrete builder naming and persist high-level tag mapping.
+
+1) Resolved residual UI resource-node builder
+- Context extraction showed one isolated unresolved builder with strong tag set:
+  - `main/stat`, `numA..numL`, `scrA..scrL`, `pict`, `vict`, `done`.
+- Renamed:
+  - `0x00457af2` -> `BuildMainStatsScoreboardAndDoneUiResourceTree`
+  - `0x00457aee` -> `thunk_BuildMainStatsScoreboardAndDoneUiResourceTree`
+- Artifacts:
+  - `tmp_decomp/batch392_ctx_00457af2_full.txt`
+  - `tmp_decomp/batch392_callers_00457af2.csv`
+  - `tmp_decomp/batch392_ref_table_ctx_00457af2.txt`
+  - `tmp_decomp/batch392_control_tag_detail_00457af2.csv`
+  - `tmp_decomp/batch392_control_tag_summary_00457af2.csv`
+  - `tmp_decomp/batch392_ui_resource_node_builder_renames.csv`
+  - `tmp_decomp/batch392_apply_ui_resource_node_builder_renames.log`
+
+2) Neo4j high-level sync (intentional, non-noisy)
+- Wrote function node + tag observations for this high-level builder:
+  - Function: `BuildMainStatsScoreboardAndDoneUiResourceTree` (`0x00457af2`)
+  - Linked tags: `done/main/stat/pict/vict/num*/scr*` (`29` links)
+- Query result:
+  - `tags_linked = 29`
+
+3) Residual unresolved control-tag queue check
+- Re-ran unresolved control-tag candidate selection (`min-distinct-tags=1`):
+  - `tmp_decomp/batch392_control_tag_candidates_any_unresolved.csv` -> `rows=0`.
+
+#### Applied batch393 (loop pass: expanded named-caller generic-callee closure)
+Goal:
+- Run broader named-caller regex lane and close all surfaced generic-callee edges.
+
+1) Expanded lane discovery
+- Regex lane:
+  - `(Handle|Initialize|Build|Apply|Refresh|Run|Create|Open|Close|Select|Load|Save|Dispatch)`
+- Initial result:
+  - `tmp_decomp/batch392_named_callers_with_generic_callees_expanded.csv` -> `rows=9`.
+
+2) Trade/Nation/UI + CRT helper renames (wave 1)
+- Applied renames + comments:
+  - `0x005bcc30` -> `RefreshTradeSellPageNationOfferLinesForSelection`
+  - `0x00402fbd` -> `thunk_RefreshTradeSellPageNationOfferLinesForSelection`
+  - `0x005bd690` -> `RefreshTradeBuyPageNationBidLinesForSelection`
+  - `0x00408300` -> `thunk_RefreshTradeBuyPageNationBidLinesForSelection`
+  - `0x005eaa30` -> `ComputeAbsoluteIntValue`
+  - `0x005ea3b0` -> `CreateThreadWithCrtStartupTrampoline`
+  - `0x005eff10` -> `FlushBufferedStreamPendingWrite`
+  - `0x005e9840` -> `ScanFormattedInputIntoBufferAndTerminate`
+  - `0x005e90c0` -> `OpenBufferedStreamDescriptorWithModeAndLock`
+  - `0x004aa540` -> `PopulateSuperArmyRosterByNationAndUpdateNavigation`
+  - `0x00408da0` -> `thunk_PopulateSuperArmyRosterByNationAndUpdateNavigation`
+  - `0x005b5650` -> `RefreshNationHeaderDropShadowTextWithClipRegion`
+  - `0x0040991c` -> `thunk_RefreshNationHeaderDropShadowTextWithClipRegion`
+  - `0x00518bd0` -> `MarkAdjacentHexOrderDirectionAndSelectTile`
+  - `0x004079af` -> `thunk_MarkAdjacentHexOrderDirectionAndSelectTile`
+- Signatures tightened:
+  - `0x005eaa30`: `int __cdecl (...)(int value)`
+  - `0x005ea3b0`: `void* __cdecl (...)(void* pSecurityAttributes, uint stackSize, void* pThreadEntry, void* pThreadArg, uint createFlags, uint* pThreadIdOut)`
+
+3) Stream open lane closure (wave 2)
+- Remaining edge after wave 1 was in `OpenBufferedStreamDescriptorWithModeAndLock`:
+  - generic callees: `Cluster_MapTileHint_005f0220`, `FUN_005f0050`.
+- Renamed + typed:
+  - `0x005f0220` -> `AcquireAndInitializeBufferedStreamSlot`
+  - `0x005f0050` -> `OpenFileByModeStringAndInitStreamState`
+  - signatures:
+    - `0x005f0220`: `void* __cdecl (...)(void)`
+    - `0x005f0050`: `void* __cdecl (...)(void* pPath, byte* pMode, uint shareFlags, void* pStreamState)`
+
+4) Expanded lane closure result
+- Final result:
+  - `tmp_decomp/batch393_named_callers_with_generic_callees_final.csv` -> `rows=0`.
+
+Post snapshot:
+- `tmp_decomp/batch393_progress_counts.txt`
+- `total_functions: 12339`
+- `renamed_functions: 10029`
+- `default_fun_or_thunk_fun: 2310`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop)
+- [ ] Start next large regex lane for generic-callee debt in non-handler APIs (e.g., `Get|Set|Update|Route|Validate|Process`) and close surfaced clusters in one batch.
+- [ ] Run targeted unresolved function pass for remaining `FUN_` in high-call MFC/runtime bridge area (`0x0060xxxx`-`0x0062xxxx`) and convert to behavior names where decomp is explicit.
+- [ ] Continue class-model gap closure specifically for non-library `T*` classes with missing class-desc/vtbl anchors; avoid MFC/CRT library semantic overreach.
+- [ ] Re-open UMapper route-node/link struct typing TODO after current naming convergence and propagate additional typed globals.
+
+#### Applied batch394 (loop pass: runtime/MFC bridge lane crush 0x0060xxxx..0x0062xxxx)
+Goal:
+- Close unresolved runtime/MFC bridge debt in one address-scoped lane using reusable scripts.
+
+1) Scripting upgrade (reusable)
+- Updated `new_scripts/generate_single_callee_wrapper_renames.py`:
+  - Added `--addr-min` / `--addr-max` filters for range-scoped wrapper passes.
+- Added new reusable triage script:
+  - `new_scripts/list_unresolved_functions_in_range.py`
+  - Outputs unresolved/generic functions in an address range ranked by named-caller pressure, xrefs, and callee shape.
+
+2) Runtime/MFC bridge concretization wave 1
+- Renamed + commented:
+  - `0x00612000` -> `WriteArchiveWordOrEscapedDword`
+  - `0x0060d176` -> `AfxUnlockTempMapsWithDeleteOption`
+  - `0x006064b0` -> `BroadcastEnterIdleAndManageTempMapUnlock`
+  - `0x0062246c` -> `ConstructMfcThreadObjectAndAttachTlsState`
+  - `0x0061499c` -> `DestructMenuOwnerAndReleaseCaptionString`
+  - `0x0060affb` -> `CloseFileHandleAndThrowMfcExceptionOnError`
+  - `0x006113c6` -> `DestructFileExceptionAndReleaseMessageString`
+- Signatures tightened (`batch394_runtime_mfc_bridge`):
+  - applied 7/7.
+
+3) Runtime/MFC bridge concretization wave 2
+- Renamed + commented:
+  - `0x00623bc8` -> `FreeLocalAllocHandleIfNotNull`
+  - `0x00622448` -> `InitializeThreadObjectVtableProxy`
+  - `0x00623ecd` -> `InitializeThreadObjectPrimaryVtable`
+  - `0x00623006` -> `InitializeThreadNameAndSystemAtoms`
+  - `0x00622a95` -> `NoOpThreadInitializationStub`
+  - `0x00605665` -> `DispatchVirtualSlot18OnImplicitObject`
+- Signatures tightened (`batch394_runtime_mfc_bridge_wave2`):
+  - applied 5/5.
+
+4) Runtime/MFC bridge concretization wave 3 (CFile lane)
+- Renamed + commented:
+  - `0x0060b910` -> `PopulateCFileStatusFromHandleAndPath`
+  - `0x0060b7dd` -> `BuildPathTailSharedStringFromFileStatus`
+  - `0x0060b85f` -> `BuildFileTitleSharedStringFromFileStatus`
+  - `0x0060ac4c` -> `ConstructAndOpenCFileWithFlagsOrThrow`
+  - `0x0060ad44` -> `DuplicateCFileHandleToNewObject`
+  - `0x0060af37` -> `WriteBufferToFileHandleOrThrow`
+  - `0x0060bcdd` -> `FormatFileStatusLineIntoBuffer`
+  - `0x0060c900` -> `RemoveSharedStringEntryAndShiftLeft`
+  - `0x006108fe` -> `EmitDocumentTitleOrFallbackResourceString`
+- Signatures tightened (`batch394_runtime_mfc_bridge_wave3`):
+  - applied 5/5.
+
+5) Runtime/MFC bridge concretization wave 4 (prompt/dialog/doc-template lane)
+- Renamed + commented:
+  - `0x00619083` -> `FormatDualValuePromptAndSelectInputText`
+  - `0x0061a06a` -> `RunModalFileDialogWithDynamicFilterList`
+  - `0x006192ed` -> `FormatNumericPromptAndSelectInputText`
+  - `0x00619365` -> `FormatVarArgPromptAndSelectInputText`
+  - `0x00615d2b` -> `FormatOffsetStatusLineIntoBufferFromResource`
+  - `0x00612132` -> `ReadTextChunksIntoSharedStringAndTrimNewline`
+  - `0x0061cea3` -> `CreateWindowViaVirtualFactoryAndNormalizeExStyle`
+  - `0x00600331` -> `FormatSharedStringFromResourceId`
+  - `0x0060042f` -> `AssignSharedStringFromLoadedResource`
+  - `0x0060048b` -> `AssignSharedStringFromLoadedResourceAlt`
+  - `0x00610752` -> `OpenOrCreateDocumentViaTemplateAndNotifyThreadState`
+- Signatures tightened (`batch394_runtime_mfc_bridge_wave4`):
+  - applied 4/4.
+
+6) Range-lane closure status
+- `list_unresolved_functions_in_range.py --addr-min 0x00600000 --addr-max 0x0062ffff`
+  - pre-pass: `rows=37`
+  - post-wave2: `rows=24`
+  - post-wave3: `rows=15`
+  - post-wave4: `rows=4` (orphan/no-xref stubs only)
+
+Artifacts:
+- `tmp_decomp/batch394_unresolved_0060_0062.csv`
+- `tmp_decomp/batch394_unresolved_0060_0062_postwave2.csv`
+- `tmp_decomp/batch394_unresolved_0060_0062_postwave3.csv`
+- `tmp_decomp/batch394_unresolved_0060_0062_postwave4.csv`
+- `tmp_decomp/batch394_ctx_top_0060_0062.txt`
+- `tmp_decomp/batch394_ctx_unresolved_groupA.txt`
+- `tmp_decomp/batch394_ctx_unresolved_groupB.txt`
+- `tmp_decomp/batch394_ctx_00610752_full.txt`
+- `tmp_decomp/batch394_runtime_mfc_bridge_renames*.csv`
+- `tmp_decomp/signature_batch394_runtime_mfc_bridge*.csv`
+- corresponding `tmp_decomp/batch394_apply_*.log` files.
+
+#### Applied batch395 (loop pass: gameplay-candidate sweep + UMapper typed-state refresh)
+Goal:
+- Use scripted gameplay-candidate extraction and close remaining low-risk FUN_* residues.
+
+1) Gameplay-candidate callee sweep
+- Ran:
+  - `generate_fun_callee_candidates.py '(Map|Tile|Civilian|Order|Trade|Diplom|Army|Navy|Battle|Turn|Route|Region|Commodity|Nation|Improve|Mine|Farm|Forester)'`
+- Initial candidates: `4` runtime helpers.
+- Renamed + commented:
+  - `0x005eb460` -> `ConvertEpochSecondsToTmFieldsThreadLocal`
+  - `0x005ef5d0` -> `EnsureRuntimeLocaleTablesInitializedOnce`
+  - `0x005f5b60` -> `CallWithAtomicRefAndOptionalCriticalSection13`
+  - `0x005f77d0` -> `FindMatchingKeyNodeInBucketChain`
+- Signatures tightened (`signature_batch395_runtime_helper.csv`):
+  - applied 4/4.
+- Re-ran candidate sweep: `candidates=0`.
+
+2) UMapper typed-state refresh and atlas snapshot
+- Re-applied idempotent typing scripts:
+  - `create_umapper_overlay_types.py`
+  - `create_umapper_array_state_structs.py`
+- Rebuilt focused atlas:
+  - `build_global_state_atlas.py --start 0x006a3000 --end 0x006a3c40 ...`
+  - outputs:
+    - `tmp_decomp/batch395_umapper_global_state_atlas.csv`
+    - `tmp_decomp/batch395_umapper_global_state_atlas.json`
+
+3) Map-interaction cleanup function
+- Renamed + typed:
+  - `0x00519c90` -> `CleanupMapInteractionModeBuffersAndChildDialog`
+  - signature: `__fastcall void(pModeState:void*)`
+
+Quality gates:
+- Expanded named-caller -> generic-callee lane remains clean:
+  - `tmp_decomp/batch395_named_callers_with_generic_callees_expanded.csv` -> `rows=0`
+- Gameplay callee candidate lane clean:
+  - `tmp_decomp/batch395_fun_callee_candidates_gameplay_post.csv` -> `candidates=0`
+
+Post snapshot:
+- `tmp_decomp/batch395_progress_counts_post_map_cleanup.txt`
+- `total_functions: 12339`
+- `renamed_functions: 10046`
+- `default_fun_or_thunk_fun: 2293`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop)
+- [ ] Resolve remaining 4 orphan no-xref stubs in `0x0060xxxx..0x0062xxxx` (`FUN_00604c3c`, `FUN_006241b1`, `FUN_00624491`, `FUN_006244b7`): decide create/remove/merge function boundaries based on neighboring disassembly and vtable slot ownership.
+- [ ] Run a dedicated class-extraction pass on high-default-method namespaces (`TViewMgr`, `TGreatPower`, `TAutoGreatPower`, `TNewGameCommand`, `TArmyTacUnit`) to convert residual default method names where callshape is explicit; keep behavior names and avoid speculative semantics.
+- [ ] Use `batch395_umapper_global_state_atlas.csv` to type/rename top remaining write-hot globals around `0x006a3450` and adjacent map-interaction state; prioritize globals with both named readers and named writers.
+- [ ] Add a reusable script for orphan-function triage (no xrefs, no callees) that classifies stubs as vtable slots, dead islands, or functionization mistakes and outputs apply-ready CSV actions.
+- [ ] Keep rerunning expanded named-caller/generic-callee gate after each batch and maintain zero debt.
+
+#### Applied batch395b (loop continuation: orphan closure + super-lane residual cleanup)
+Goal:
+- Finish runtime bridge closure and keep expanded named-caller/generic-callee debt at zero.
+
+1) Orphan-function triage script + lane closure
+- Added reusable script:
+  - `new_scripts/triage_orphan_functions.py`
+  - Classifies no-xref functions into `ret_stub`, `vtable_assign_stub`, `padding_stub`, `orphan_leaf_unknown`.
+- Ran on `0x0060xxxx..0x0062xxxx`:
+  - `tmp_decomp/batch395_orphan_triage_0060_0062.csv`
+- Resolved all remaining unresolved in that range:
+  - `0x006241b1` -> `InitializeGlobalMfcVersionAndCursorState`
+  - `0x00604c3c` -> `NoOpPaddingStub_00604c3c`
+  - `0x00624491` -> `NoOpPaddingStub_00624491`
+  - `0x006244b7` -> `NoOpPaddingStub_006244b7`
+- Range verification:
+  - `tmp_decomp/batch395_unresolved_0060_0062_final.csv` -> `rows=0`
+
+2) Gameplay-candidate follow-up (runtime helper chain)
+- Renamed + signed:
+  - `0x005ef630` -> `InitializeRuntimeTimeZoneStateFromEnvironmentOrWin32`
+  - `0x005e8760` -> `ParseSignedIntFromAsciiWithWhitespaceSkip`
+  - `0x005f4f30` -> `ConvertWideToMultiByteWithThreadGate`
+  - `0x005f4fb0` -> `ConvertWideToMultiByteWithCodePageFallback`
+  - `0x005f5210` -> `LookupEnvironmentVariableValueByName`
+  - `0x005f8640` -> `CompareLocaleMultibytePrefixLength`
+  - `0x005f8680` -> `PopulateNarrowEnvironmentFromWideList`
+  - `0x005f94b0` -> `CompareLocaleStringsWithCodePageFallback`
+  - `0x005f9780` -> `ComputeCStringLengthBoundedByLimit`
+  - `0x005f51a0` -> `ComputeWideStringLengthOrLimit`
+  - `0x005f3400` -> `ToUpperAsciiOrLocaleThreadSafe`
+  - `0x005f97b0` -> `SetEnvironmentEntryAndSyncWideState`
+  - `0x005f99c0` -> `FindEnvironmentEntryIndexByNamePrefix`
+  - `0x005f9a40` -> `DuplicateEnvironmentVectorWithStringCopies`
+  - `0x005f1490` -> `RefillBufferedFileStreamAndReadFirstByte`
+  - `0x005e9480` -> `ReadBufferedStreamCoreUnlocked`
+  - `0x0061207b` -> `ReadLineFromArchiveStreamIntoBuffer`
+  - `0x005e8800` -> `ParseSignedIntAndDiscardResult`
+  - `0x005ea8b0` -> `ClassifyDigitCharPlusOne`
+  - `0x005ea8d0` -> `IsDigitCodepointAsciiOrWide`
+  - `0x00600196` -> `ConvertEpochSecondsToLocalTmCopyOut`
+  - `0x005e8bb0` -> `ProcessFormattedInputAndNullTerminateBuffer`
+  - `0x005e8cf0` -> `ConvertEpochSecondsToLocalTmWithDstAdjust`
+
+3) Super-lane quality gate
+- Regex lane:
+  - `(Handle|Initialize|Build|Apply|Refresh|Run|Create|Open|Close|Select|Load|Save|Dispatch|Get|Set|Update|Route|Validate|Process|Convert|Lookup|Parse|Compare|Populate|Format|Write|Read)`
+- Result:
+  - `tmp_decomp/batch395_named_callers_with_generic_callees_superlane_post2.csv` -> `rows=0`
+
+Post snapshot:
+- `tmp_decomp/batch395_progress_counts_superlane_final.txt`
+- `total_functions: 12339`
+- `renamed_functions: 10067`
+- `default_fun_or_thunk_fun: 2272`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Start class-method default-name reduction for highest-ROI namespaces (`TViewMgr`, `TGreatPower`, `TAutoGreatPower`, `TNewGameCommand`) using caller/callee context clusters and small safe batches.
+- [ ] Use `batch395_umapper_global_state_atlas.csv` to type/rename remaining write-hot map globals around `0x006a3450` and link to map-interaction mode lifecycle functions.
+- [ ] Build a reusable script that emits rename/signature CSV for high-confidence no-UI runtime wrappers (single internal named callee + constrained instruction shape) to accelerate repeated cleanup.
+- [ ] Keep both quality gates at zero after each pass:
+  - expanded named-caller/generic-callee super-lane,
+  - range unresolved lane (`list_unresolved_functions_in_range.py`).
+
+#### Applied batch396 (loop continuation: class-default cleanup + scripted class triage)
+Goal:
+- Start class-default method reduction in high-ROI namespaces with reusable script support.
+
+1) Added reusable class-default triage script
+- New script:
+  - `new_scripts/list_class_default_methods.py`
+- Purpose:
+  - Enumerates `FUN_`/`thunk_FUN_` inside selected class namespaces.
+  - Ranks by named caller/callee pressure for low-risk rename batching.
+
+2) Targeted namespaces pass
+- Scoped classes:
+  - `TViewMgr`, `TGreatPower`, `TAutoGreatPower`, `TNewGameCommand`
+- Initial triage output:
+  - `tmp_decomp/batch396_class_default_methods_top_namespaces.csv` (`rows=8`)
+- Renamed + commented all surfaced defaults:
+  - `0x005d4c60` -> `TruncateSharedStringToFitWidthWithEllipsis`
+  - `0x00409241` -> `thunk_TruncateSharedStringToFitWidthWithEllipsis`
+  - `0x004d9160` -> `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`
+  - `0x004ddc30` -> `ApplyIndexedResourceDeltaAndAdjustNationTotals`
+  - `0x0049de00` -> `ConstructNewGameCommandBaseState`
+  - `0x00403df0` -> `thunk_ConstructNewGameCommandBaseState`
+  - `0x00415030` -> `ExecuteNoOpNewGameCommand`
+  - `0x004e6b10` -> `ReturnFalseForAutoGreatPowerCondition`
+- Signatures tightened where unambiguous:
+  - `0x004d9160`, `0x0049de00`, `0x00403df0`, `0x00415030`, `0x004e6b10`
+
+3) Class-default lane verification
+- Re-ran class-default triage on the same namespaces:
+  - `tmp_decomp/batch396_class_default_methods_top_namespaces_post.csv` -> `rows=0`
+
+4) Quality gates (maintained)
+- Super-lane named-caller/generic-callee gate:
+  - `tmp_decomp/batch396_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge range unresolved gate:
+  - `tmp_decomp/batch396_unresolved_0060_0062.csv` -> `rows=0`
+
+Post snapshot:
+- `tmp_decomp/batch396_progress_counts.txt`
+- `total_functions: 12339`
+- `renamed_functions: 10075`
+- `default_fun_or_thunk_fun: 2264`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Expand `list_class_default_methods.py` pass to next high-default namespaces (`TArmyTacUnit`, `TInteriorMinister`, `TMacViewMgr`) and batch low-risk method renames/signatures.
+- [ ] UMapper/map-state lane: turn top write-hot globals from `batch395_umapper_global_state_atlas.csv` into typed/renamed state fields around `0x006a3450` and adjacent map interaction buffers.
+- [ ] Add one script to auto-propose rename CSV for class default methods when function body shape matches known patterns (release-owned pointers, no-op return false/void, constructor vtable set).
+- [ ] Continue loop discipline: run both quality gates after each batch and keep them at zero.
+
+#### Applied batch397 (loop continuation: class-default reduction wave 2)
+Goal:
+- Continue class-default cleanup in next namespaces with script-driven triage.
+
+1) Namespace triage
+- Ran:
+  - `list_class_default_methods.py --classes TArmyTacUnit TInteriorMinister TMacViewMgr`
+- Initial output:
+  - `tmp_decomp/batch397_class_default_methods_next_namespaces.csv` (`rows=12`)
+
+2) Renamed + signed default methods
+- Renamed:
+  - `0x004c18a0` -> `AppendInteriorMinisterValueGrowShortBuffer`
+  - `0x0040134d` -> `thunk_AppendInteriorMinisterValueGrowShortBuffer`
+  - `0x004be170` -> `ReturnInteriorMinisterInputValue`
+  - `0x00484bb0` -> `GetTMacViewMgrRuntimeClass`
+  - `0x00509e10` -> `GetMacViewMgrSlotValueByIndex`
+  - `0x005a5eb0` -> `ToggleArmyTacUnitStateFlag20`
+  - `0x005a5f20` -> `InitializeArmyTacUnitFromSourceRecord`
+  - `0x005a5fe0` -> `RecomputeArmyTacUnitProjectionScalars`
+  - `0x005a6120` -> `NoOpArmyTacUnitHook`
+  - `0x00403891` -> `thunk_NoOpArmyTacUnitHook`
+  - `0x00403f26` -> `thunk_InitializeArmyTacUnitFromSourceRecord`
+  - `0x00406d34` -> `thunk_RecomputeArmyTacUnitProjectionScalars`
+- Signatures tightened:
+  - `0x004c18a0`, `0x004be170`, `0x00484bb0`, `0x00509e10`, `0x005a5eb0`, `0x005a5f20`, `0x005a5fe0`, `0x005a6120`
+
+3) Namespace closure check
+- Re-ran same class-default triage:
+  - `tmp_decomp/batch397_class_default_methods_next_namespaces_post.csv` -> `rows=0`
+
+4) Quality gate
+- Super-lane named-caller/generic-callee:
+  - `tmp_decomp/batch397_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+
+Post snapshot:
+- `tmp_decomp/batch397_progress_counts.txt`
+- `total_functions: 12339`
+- `renamed_functions: 10087`
+- `default_fun_or_thunk_fun: 2252`
+
+### TODO (next loop refresh)
+- [ ] Start next class-default wave on `TArmyPlayer`, `TNavyPlayer`, `TTacticalPlayer`, `TTown` using `list_class_default_methods.py` and close low-risk `FUN_` methods.
+- [ ] UMapper/map-state typing wave: promote `DAT_006a3450` and adjacent map interaction globals to explicit typed state names/structures using `batch395_umapper_global_state_atlas.csv` evidence.
+- [ ] Script improvement: add an auto-generator that converts `list_class_default_methods.py` output rows with obvious patterns (return false/no-op/thunk-only/runtimeclass getter) into ready-to-apply rename CSV.
+- [ ] Maintain both gates at zero after each pass.
+
+#### Applied batch398 (loop continuation: class-default reduction wave 3)
+Goal:
+- Continue class-default cleanup for player/town classes with script triage.
+
+1) Namespace triage
+- Ran:
+  - `list_class_default_methods.py --classes TArmyPlayer TNavyPlayer TTacticalPlayer TTown`
+- Initial output:
+  - `tmp_decomp/batch398_class_default_methods_player_wave.csv` (`rows=10`)
+
+2) Renamed + signed default methods
+- Renamed:
+  - `0x005b6a80` -> `ParseTownValueFromStringAndReleaseSourceRef`
+  - `0x0040720c` -> `thunk_ParseTownValueFromStringAndReleaseSourceRef`
+  - `0x0059b170` -> `ConstructArmyPlayerBaseState`
+  - `0x004087f1` -> `thunk_ConstructArmyPlayerBaseState`
+  - `0x0059ebe0` -> `ConstructNavyPlayerBaseState`
+  - `0x00407e78` -> `thunk_ConstructNavyPlayerBaseState`
+  - `0x0059ae60` -> `ConstructTacticalPlayerBaseState`
+  - `0x0040989f` -> `thunk_ConstructTacticalPlayerBaseState`
+  - `0x0059aee0` -> `ReleaseOwnedTacticalPlayerViewsAndDeleteSelf`
+  - `0x0059ed60` -> `GetNavyPlayerField34Value`
+- Signatures tightened where unambiguous:
+  - constructors/thunks/player getter/release method.
+
+3) Namespace closure check
+- Re-ran same class-default triage:
+  - `tmp_decomp/batch398_class_default_methods_player_wave_post.csv` -> `rows=0`
+
+4) Quality gate and progress
+- Super-lane generic-callee gate:
+  - `tmp_decomp/batch398_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Progress snapshot:
+  - `tmp_decomp/batch398_progress_counts.txt`
+  - `renamed_functions: 10097`
+  - `default_fun_or_thunk_fun: 2242`
+
+### TODO (next loop refresh)
+- [ ] Continue class-default wave for next classes (`TNavyAutoPlayer`, `TArmyBoyView`, `TBattleReportView`, `TCivDescription`) via `list_class_default_methods.py`.
+- [ ] UMapper/map-state typing wave around `DAT_006a3450` + neighbors from atlas; attach concrete names/types and update related lifecycle functions.
+- [ ] Add script that auto-converts obvious class-default method patterns (runtimeclass getter, no-op return, delete-self release) into apply-ready rename/signature CSV.
+- [ ] Keep super-lane and range gates at zero each batch.
+
+#### Applied batch400 (loop continuation: class-default reduction wave A+B)
+Goal:
+- Remove remaining low-risk `FUN_`/`thunk_FUN_` methods from high-yield class namespaces via script triage + signature hygiene.
+
+1) Wave A classes (animation/task/tactical/order cluster)
+- Triage:
+  - `new_scripts/list_class_default_methods.py --classes TCivAnimation2 TTrainingOrder TTask TOneTimeAnimation TTacticalUnit TPopGrowthOrder TCouncilTickerAnimation TAnimation`
+  - output: `tmp_decomp/batch400_class_default_methods_waveA.csv` (`rows=33`)
+- Context review:
+  - `tmp_decomp/batch400_waveA_context.txt`
+- Applied renames:
+  - `tmp_decomp/batch400_apply_renames_waveA.csv` (`rows=33`, `ok=33`)
+  - Key promoted names include:
+    - `BuildTaskOverlayTerrainLabelFromTemplate` (+ thunk)
+    - `AdvanceCivAnimation2FrameAndInvalidateOnWrap`
+    - `InitializeCivAnimation2FrameSequence` (+ thunk)
+    - `InitializeAnimationFrameState` (+ thunk)
+    - `InitializeCouncilTickerAnimationState` (+ thunk)
+    - `InitializeOneTimeAnimationState` (+ thunk)
+    - `InitializePopGrowthOrderStateFromCity` (+ thunk)
+    - `ApplyPopGrowthOrderSpanToTargetCity`
+    - `ComputePopGrowthOrderMinimumCapacityWithLimitFlag`
+    - `ResetTacticalUnitTurnStateFromDefaultRange`
+    - `ApplyTacticalUnitDamageAndSetDefeatedState`
+    - `AdjustTrainingOrderProgressAndCostByDelta` (+ thunk)
+    - runtime-class getters + thunks for `TTask/TAnimation/TCivAnimation2/TCouncilTickerAnimation/TOneTimeAnimation/TTacticalUnit/TTrainingOrder`
+- Signatures:
+  - `tmp_decomp/batch400_apply_signatures_waveA.csv` (`ok=14`)
+  - Tightened obvious `__thiscall` methods and runtime-class getter return types (`void*`).
+- Wave A closure check:
+  - `tmp_decomp/batch400_class_default_methods_waveA_post.csv` -> `rows=0`
+
+2) Wave B classes (scroller/order/navy-human/animation cluster)
+- Triage:
+  - `new_scripts/list_class_default_methods.py --classes TUnitOrder TShipOrder TNavyHumanPlayer TItemOrder TFocusAnimation TCivAnimation TCapacityOrder TScroller`
+  - output: `tmp_decomp/batch400_class_default_methods_waveB.csv` (`rows=24`)
+- Context review:
+  - `tmp_decomp/batch400_waveB_context.txt`
+- Applied renames:
+  - `tmp_decomp/batch400_apply_renames_waveB.csv` (`rows=24`, `ok=24`)
+  - Key promoted names include:
+    - `DestroyScrollerAndReleaseOwnedResources` (+ thunk)
+    - `InitializeScrollerViewStateAndAttachOwner`
+    - `AdvanceCivAnimationFrameAndInvalidateOnCycle`
+    - `DispatchNavyHumanPlayerCommandToFirstReadyUnit`
+    - `ApplyUnitOrderPopulationTransferAndAlerts`
+    - `ComputeCapacityOrderResourceCostsFromIndustryWeights`
+    - `AdvanceFocusAnimationFrameWithWrapCallback`
+    - `InitializeItemOrderTargetFromTemplate`
+    - `InitializeShipOrderFieldsFromTarget`
+    - runtime-class getters + thunks for `TCapacityOrder/TCivAnimation/TFocusAnimation/TItemOrder/TNavyHumanPlayer/TShipOrder/TUnitOrder`
+- Signatures:
+  - `tmp_decomp/batch400_apply_signatures_waveB.csv` (`ok=14`)
+- Wave B closure check:
+  - `tmp_decomp/batch400_class_default_methods_waveB_post.csv` -> `rows=0`
+
+3) Gate checks and snapshot
+- Super-lane named-caller/generic-callee gate:
+  - `tmp_decomp/batch400_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch400_unresolved_0060_0062.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch400_progress_counts.txt`
+  - `total_functions: 12342`
+  - `renamed_functions: 10163`
+  - `default_fun_or_thunk_fun: 2179`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Continue class-default waves with top remaining classes from `class_model_inventory.csv` (start: `TCommandHandler`, `TItemBoyView`, `TColorFill`, `TCheater`, `TUnit`).
+- [ ] Keep using `list_class_default_methods.py` + `dump_function_context.py` + CSV apply scripts as the default loop pattern.
+- [ ] Revisit UMapper map-interaction globals around `0x006a3450` and apply function signatures/types where obvious after global labels are in place.
+- [ ] Run both gates and progress counters after each batch; keep both gate CSVs at zero.
+
+#### Applied batch401 (loop continuation: class-default reduction wave C)
+Goal:
+- Continue low-risk class-default cleanup in top remaining namespaces with script-driven triage.
+
+1) Wave C classes
+- Scoped classes:
+  - `TCommandHandler`, `TItemBoyView`, `TColorFill`, `TCheater`, `TUnit`
+- Triage output:
+  - `tmp_decomp/batch401_class_default_methods_waveC.csv` (`rows=14`)
+- Context review:
+  - `tmp_decomp/batch401_waveC_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch401_apply_renames_waveC.csv` (`rows=14`, `ok=14`)
+  - Key promotions:
+    - `InitializeCheaterDialogControlsAndBindings` (+ thunk)
+    - `CenterCheaterDialogUsingContentBounds`
+    - `RenderItemBoyViewColumnBarsAndText` (+ thunk)
+    - `UpdateItemBoyViewLocalizedSummaryAndRender`
+    - `CreateColorFillViewInstance`
+    - `RunCommandHandlerPreAndPostHooks`
+    - runtime-class getters + thunks for `TColorFill`, `TCommandHandler`, `TUnit`
+- Signatures tightened:
+  - `tmp_decomp/batch401_apply_signatures_waveC.csv` (`ok=9`)
+  - Applied stable `__thiscall`/`__cdecl` + return-type updates for the promoted methods.
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch401_class_default_methods_waveC_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch401_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch401_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch401_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10177`
+- `default_fun_or_thunk_fun: 2165`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Next class-default wave from inventory top: `TTransFocusAnimation`, `TStream`, `TLaborPool`, `TArmyBattle`, `TTEView`.
+- [ ] Build one reusable helper to auto-generate rename CSV for pure runtime-class getter/thunk pairs within selected classes.
+- [ ] UMapper lane refresh: function signatures/comments around map interaction preview offset/scale helpers after global labels applied in batch399.
+- [ ] Keep gates at zero and continue in waves until default-method count is reduced below 2,000.
+
+#### Applied batch402 (loop continuation: class-default reduction wave D)
+Goal:
+- Continue class-default reduction in next queued namespaces with tight, low-risk naming.
+
+1) Wave D classes
+- Scoped classes:
+  - `TTransFocusAnimation`, `TStream`, `TLaborPool`, `TArmyBattle`, `TTEView`
+- Triage output:
+  - `tmp_decomp/batch402_class_default_methods_waveD.csv` (`rows=10`)
+- Context review:
+  - `tmp_decomp/batch402_waveD_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch402_apply_renames_waveD.csv` (`rows=10`, `ok=10`)
+  - Key promotions:
+    - `InitializeTEViewTextEntryBoundsAndMetrics` (+ thunk)
+    - `CheckArmyBattleRowParitySuppressionCondition` (+ thunk)
+    - runtime-class getters + thunks for `TLaborPool`, `TStream`, `TTransFocusAnimation`
+- Signatures tightened:
+  - `tmp_decomp/batch402_apply_signatures_waveD.csv` (`ok=5`)
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch402_class_default_methods_waveD_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch402_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch402_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch402_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10187`
+- `default_fun_or_thunk_fun: 2155`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Next wave target from inventory backlog: `TPowerPlantOrder`, `TPopulationMgr`, `TPictureLine`, `TObject`, `TNumberText`.
+- [ ] Add/finish helper to auto-generate rename CSV for runtime-class getter + thunk pairs in selected classes.
+- [ ] Continue UMapper map interaction lane: function comments/signatures around preview scale/offset state transition helpers.
+- [ ] Keep both gates at zero after each batch and continue wave execution.
+
+#### Applied batch403 (loop continuation: class-default reduction wave E)
+Goal:
+- Continue queue-driven class-default cleanup with low-risk runtimeclass/init promotions.
+
+1) Wave E classes
+- Scoped classes:
+  - `TPowerPlantOrder`, `TPopulationMgr`, `TPictureLine`, `TObject`, `TNumberText`
+- Triage output:
+  - `tmp_decomp/batch403_class_default_methods_waveE.csv` (`rows=10`)
+- Context review:
+  - `tmp_decomp/batch403_waveE_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch403_apply_renames_waveE.csv` (`rows=10`, `ok=10`)
+  - Key promotions:
+    - `InitializeNumberTextEntryAndLayoutMetrics` (+ thunk)
+    - runtime-class getters + thunks for `TObject`, `TPictureLine`, `TPopulationMgr`, `TPowerPlantOrder`
+- Signatures tightened:
+  - `tmp_decomp/batch403_apply_signatures_waveE.csv` (`ok=5`)
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch403_class_default_methods_waveE_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch403_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch403_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch403_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10197`
+- `default_fun_or_thunk_fun: 2145`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Next wave target from inventory: `TFuzzyVar`, `TFoodProcessingOrder`, `TExpansionOrder`, `TTalkBubble`, `TShip`.
+- [ ] Continue reducing default methods in class clusters; prioritize methods with named callee/caller pressure first.
+- [ ] UMapper lane refresh with focused signature/comments pass after class-default wave drain.
+- [ ] Keep gates at zero per batch.
+
+#### Applied batch404 (loop continuation: class-default reduction wave F)
+Goal:
+- Drain small runtime-class getter backlog in queued classes.
+
+1) Wave F classes
+- Scoped classes:
+  - `TFuzzyVar`, `TFoodProcessingOrder`, `TExpansionOrder`, `TTalkBubble`, `TShip`
+- Triage output:
+  - `tmp_decomp/batch404_class_default_methods_waveF.csv` (`rows=6`)
+- Context review:
+  - `tmp_decomp/batch404_waveF_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch404_apply_renames_waveF.csv` (`rows=6`, `ok=6`)
+  - Promoted runtime-class getters + thunks:
+    - `GetTExpansionOrderRuntimeClass`
+    - `GetTFoodProcessingOrderRuntimeClass`
+    - `GetTFuzzyVarRuntimeClass`
+- Signatures tightened:
+  - `tmp_decomp/batch404_apply_signatures_waveF.csv` (`ok=3`)
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch404_class_default_methods_waveF_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch404_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch404_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch404_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10203`
+- `default_fun_or_thunk_fun: 2139`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Next class-default wave from inventory top: `TButton`, `TScrollBarView`, `TScrollView`, `TSpaceCommand`, `TIdleMeAnimation`.
+- [ ] Build tiny helper script for class-scoped runtime-class getter/thunk auto-rename generation.
+- [ ] After next 1-2 waves, pivot one batch to UMapper signature/comment hygiene on already-typed globals.
+- [ ] Keep gates at zero per batch.
+
+#### Applied batch405 (loop continuation: class-default reduction wave G)
+Goal:
+- Continue backlog drain in UI-control class lane with safe behavior-based names.
+
+1) Wave G classes
+- Scoped classes:
+  - `TButton`, `TScrollBarView`, `TScrollView`, `TSpaceCommand`, `TIdleMeAnimation`
+- Triage output:
+  - `tmp_decomp/batch405_class_default_methods_waveG.csv` (`rows=10`)
+- Context review:
+  - `tmp_decomp/batch405_waveG_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch405_apply_renames_waveG.csv` (`rows=10`, `ok=10`)
+  - Key promotions:
+    - `InitializeScrollBarViewButtonsAndGeometry` (+ thunk)
+    - `InitializeScrollViewAndAttachScrollBarChild` (+ thunk)
+    - `DestroyButtonAndReleaseOwnedResources` (+ thunk)
+    - `GetTIdleMeAnimationRuntimeClass` (+ thunk)
+    - `GetTSpaceCommandRuntimeClass` (+ thunk)
+- Signatures tightened:
+  - `tmp_decomp/batch405_apply_signatures_waveG.csv` (`ok=5`)
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch405_class_default_methods_waveG_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch405_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch405_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch405_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10213`
+- `default_fun_or_thunk_fun: 2129`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Next class-default wave from inventory: `TFileBasedDocument`, `TTransData`, `TTargetData`, `TSideView`, `TCityScroller`.
+- [ ] Keep class-default wave execution going until `default_fun_or_thunk_fun` < 2100.
+- [ ] After crossing <2100, run one UMapper map-state signature/comment batch before returning to class waves.
+- [ ] Build helper script for class-scoped runtime-class getter/thunk auto-rename generation.
+
+#### Applied batch406 (loop continuation: class-default reduction wave H)
+Goal:
+- Continue queued class-default cleanup and keep gates stable.
+
+1) Wave H classes
+- Scoped classes:
+  - `TFileBasedDocument`, `TTransData`, `TTargetData`, `TSideView`, `TCityScroller`
+- Triage output:
+  - `tmp_decomp/batch406_class_default_methods_waveH.csv` (`rows=2`)
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch406_apply_renames_waveH.csv` (`rows=2`, `ok=2`)
+  - Promoted:
+    - `GetTFileBasedDocumentRuntimeClass` (+ thunk)
+- Signatures tightened:
+  - `tmp_decomp/batch406_apply_signatures_waveH.csv` (`ok=1`)
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch406_class_default_methods_waveH_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch406_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch406_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch406_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10215`
+- `default_fun_or_thunk_fun: 2127`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Re-rank top classes by remaining default-method count and switch from queue order to max-yield waves.
+- [ ] Execute at least two high-yield waves before any UMapper pivot.
+- [ ] Keep gates at zero each wave.
+
+#### Applied batch407 (loop continuation: max-yield class-default sweep)
+Goal:
+- Switch to max-yield class clusters (remaining default count = 2) and remove a large chunk in one pass.
+
+1) Wave scope
+- Classes:
+  - `TDocument`, `TBatRepDetLine`, `TArmyMgr`, `TTacMapUberPicture`, `TSortedList`, `TRadio`, `TNextDiplomationCommand`, `TTurnStartEvent`, `TNavyTacUnit`, `TNavyBoyView`, `TNavyBattle`, `TMinorTradeBidsDialog`, `TInterruptusView`, `TGPTreatyDialog`, `TOrItemOrder`
+- Triage output:
+  - `tmp_decomp/batch407_class_default_methods_waveMax.csv` (`rows=30`)
+- Context review:
+  - `tmp_decomp/batch407_waveMax_context.txt`
+
+2) Renames + signatures
+- Main rename batch:
+  - `tmp_decomp/batch407_apply_renames_waveMax.csv` (`rows=30`, `ok=30`)
+- Follow-up fix:
+  - restored `0x00575240` to `GetTSpaceCommandRuntimeClass` (reverted accidental alias)
+  - `tmp_decomp/batch407_fix_spacecommand_rename.csv`
+- Signature pass:
+  - `tmp_decomp/batch407_apply_signatures_waveMax.csv` (`ok=16`)
+- Residual class-default row closed:
+  - `0x005b2aa0` -> `PopulateMinorTradeBidsDialogControlValuesFromNationState`
+  - `tmp_decomp/batch407_apply_rename_minortrade.csv`
+  - `tmp_decomp/batch407_apply_signature_minortrade.csv`
+
+3) Key promoted names in this sweep
+- `RenderNavyBoyViewPanelAndStatusRows`
+- `UpdateInterruptusViewLocalizedSummaryAndRender`
+- `CreateGPTreatyDialogAdornerView`
+- `CreateMinorTradeBidsDialogAdornerView`
+- `PopulateGPTreatyDialogControlValuesFromNationState`
+- `PopulateMinorTradeBidsDialogControlValuesFromNationState`
+- `DestroyRadioAndReleaseOwnedResources` (+ thunk)
+- `DeserializeArmyMgrStateFromStream` (+ thunk)
+- `InitializeTacMapUberPictureDialogHandle`
+- `ApplyTacMapUberPictureDialogModeValue`
+- `ConditionalSwapSortedListEntries`
+- `CompareSortedListUIntValues`
+- `SwapNextDiplomacyCommandPairBytes` (+ thunk)
+- `ApplyNavyTacUnitDamageAndSetSunkStates`
+- `GetNavyTacUnitField3CValue`
+- runtime-class getters + thunks for `TBatRepDetLine`, `TDocument`, `TNavyBattle`, `TOrItemOrder`, `TTurnStartEvent`
+
+4) Closure and gates
+- Post checks:
+  - `tmp_decomp/batch407_class_default_methods_waveMax_post.csv` -> `rows=1`
+  - `tmp_decomp/batch407_class_default_methods_waveMax_post2.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch407_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch407_unresolved_0060_0062.csv` -> `rows=0`
+
+5) Progress snapshot
+- `tmp_decomp/batch407_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10245`
+- `default_fun_or_thunk_fun: 2097`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Target remaining 1-default class wave (priority: `TDiplomacyMapView`, `TStaticText`, `TOffLimitsPicture`, `TCzechBox`, ministers cluster).
+- [ ] Execute promised pivot batch: UMapper map-state signature/comment hygiene on already typed globals around `0x006a3450`.
+- [ ] Add helper script to auto-generate runtime-class getter/thunk rename CSV for class list input.
+- [ ] Keep gates at zero per batch.
+
+#### Applied batch408 (pivot: UMapper / primary-surface map-state hygiene)
+Goal:
+- Execute planned non-class wave around map-state globals (`g_pPrimaryRenderSurfaceContext`, map interaction preview globals) with safe naming/signature/comment improvements.
+
+1) UMapper / surface-lane analysis
+- Extracted xrefs around map globals:
+  - `tmp_decomp/batch408_xrefs_umapper_globals.csv`
+- Inspected generic hot candidates tied to `g_pPrimaryRenderSurfaceContext`:
+  - `tmp_decomp/batch408_ctx_map_generic_candidates.txt`
+
+2) Renames/comments/signatures on map/surface helper lane
+- Applied:
+  - `tmp_decomp/batch408_apply_renames_umapper_surface_lane.csv` (`rows=8`, `ok=8`)
+  - `tmp_decomp/batch408_apply_signatures_umapper_surface_lane.csv` (`ok=8`)
+- Promoted names:
+  - `BlitTransientSurfaceToPrimaryRenderContextWithClip`
+  - `BlitUiFrameToTransientSurfaceWithOptionalOverlay`
+  - `RenderViewIntoPrimaryRenderContextWithTemporaryClip`
+  - `RenderStrategicViewportOverlayBadgeIfVisible`
+  - `RenderPrimarySurfaceOverlayPanelWithClipCache`
+  - `EnsurePrimaryRenderSurfaceContextAllocated`
+  - `ReleasePrimaryRenderSurfaceContextAndCloseOwnerView`
+  - `thunk_ReleasePrimaryRenderSurfaceContextAndCloseOwnerView`
+
+3) Gate cleanup follow-up (allocator helper)
+- Super-lane gate temporarily surfaced one residue:
+  - `ReleaseAllocatorPagesByCount` -> generic callee `FUN_005ee0b0`
+- Promoted helper:
+  - `0x005ee0b0` -> `FreeAllocatorPageNodeAndUnlink`
+  - files:
+    - `tmp_decomp/batch408_apply_rename_allocator_helper.csv`
+    - `tmp_decomp/batch408_apply_signature_allocator_helper.csv`
+- Result:
+  - `tmp_decomp/batch408_named_callers_with_generic_callees_superlane_post.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch408_progress_counts_post.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10252`
+- `default_fun_or_thunk_fun: 2090`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Resume class-default 1-default sweep (priority: `TDiplomacyMapView`, `TStaticText`, `TOffLimitsPicture`, `TCzechBox`, minister classes).
+- [ ] Keep map-state lane momentum: continue replacing map/render `FUN_*` that are directly proven by `g_pPrimaryRenderSurfaceContext` / `g_pMapInteractionPreviewSurfaceContext` xrefs.
+- [ ] Build helper script for class-scoped runtime-class getter/thunk auto-rename CSV generation.
+- [ ] Keep gates at zero after every batch.
+
+#### Applied batch409 (loop continuation: 1-default class sweep A)
+Goal:
+- Start draining the remaining 1-default class backlog in high-signal diplomacy/UI/ministers cluster.
+
+1) Wave scope
+- Classes:
+  - `TDiplomacyMapView`, `TStaticText`, `TOffLimitsPicture`, `TCzechBox`, `TPirateMinister`, `TNapoleonMinister`, `TIconBar`, `TFileStream`, `TDefenseMinister`, `TDefenderMinister`, `TBullyMinister`, `TBismarckMinister`
+- Triage output:
+  - `tmp_decomp/batch409_class_default_methods_wave1defaultA.csv` (`rows=12`)
+- Context review:
+  - `tmp_decomp/batch409_wave1defaultA_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch409_apply_renames_wave1defaultA.csv` (`rows=12`, `ok=12`)
+  - Key promotions:
+    - `RenderIconBarEntryStrip`
+    - `DestroyStaticTextAndReleaseOwnedResources`
+    - `InitializeOffLimitsPictureCachedBrushResources`
+    - `InitializeCzechBoxVisualModeDefault`
+    - `WriteCStringToFileStream`
+    - `ResetDiplomacyMapViewSelectionOutput`
+    - minister scalar helpers:
+      - `GetBismarckMinisterSignedPreferenceScalar`
+      - `GetBullyMinisterSignedPreferenceScalar`
+      - `GetDefenderMinisterNeutralPreferenceScalar`
+      - `GetDefenseMinisterNeutralPreferenceScalar`
+      - `GetNapoleonMinisterSignedPreferenceScalar`
+      - `GetPirateMinisterSignedPreferenceScalar`
+- Signatures tightened:
+  - `tmp_decomp/batch409_apply_signatures_wave1defaultA.csv` (`ok=5`, `skip=1`)
+
+3) Wave closure and gates
+- Class-default closure check:
+  - `tmp_decomp/batch409_class_default_methods_wave1defaultA_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch409_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch409_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch409_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10264`
+- `default_fun_or_thunk_fun: 2078`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Continue 1-default wave B (`TTacticalBattle`, `THandleStream`, `TDialogBehavior`, `TTextList`, `TTechHistoryView`, `TTacticalToolbar`, `TScenarioChooser`, `TMiniArmyView`, `TMapUberUberPicture`, `TInfoBarText`, `TDealTabControl`, `TCommand`, `TBook`).
+- [ ] Maintain mixed cadence: one class wave, then one map/global lane cleanup if a strong xref-proven cluster appears.
+- [ ] Keep both quality gates at zero every batch.
+
+#### Applied batch410 (loop continuation: 1-default class sweep B)
+Goal:
+- Continue draining 1-default class backlog with behavior-based names + stable signatures.
+
+1) Wave scope
+- Classes:
+  - `TTacticalBattle`, `THandleStream`, `TDialogBehavior`, `TTextList`, `TTechHistoryView`, `TTacticalToolbar`, `TScenarioChooser`, `TMiniArmyView`, `TMapUberUberPicture`, `TInfoBarText`, `TDealTabControl`, `TCommand`, `TBook`
+- Triage output:
+  - `tmp_decomp/batch410_class_default_methods_wave1defaultB.csv` (`rows=13`)
+- Context review:
+  - `tmp_decomp/batch410_wave1defaultB_context.txt`
+
+2) Renames + signatures
+- Renames applied:
+  - `tmp_decomp/batch410_apply_renames_wave1defaultB.csv` (`rows=13`, `ok=13`)
+  - Key promotions:
+    - `RenderMiniArmyViewUnitSummaryAndBars`
+    - `RenderDealTabControlProgressFill`
+    - `RenderTacticalToolbarStrengthMeter`
+    - `CreateTechHistoryViewAdornerView`
+    - `HandleScenarioChooserCommandAndCursorState`
+    - `RunCommandModalLoopAndFinalizeState`
+    - `InitializeBookDialogResourceLabels`
+    - `HandleTextListScrollSelectionChange`
+    - `UpdateInfoBarTextRegionAndRefresh`
+    - `SetDialogBehaviorEnabledFlag`
+    - `AdvanceHandleStreamPositionAndTrackExtent`
+    - `ResetMapUberUberPictureStateAndCloseOffLimitsDialog`
+    - `SetTacticalBattleReadyFlag`
+- Signatures applied:
+  - `tmp_decomp/batch410_apply_signatures_wave1defaultB.csv` (`ok=13`)
+
+3) Gate fix follow-up
+- Super-lane gate surfaced one residual `Cluster_*` callee.
+- Promoted:
+  - `0x004099b7` -> `LoadScenarioMetadataByIndexIntoUiControl`
+  - Signature: `__thiscall void(scenarioIndex:ushort)`
+  - Files:
+    - `tmp_decomp/batch410_apply_rename_cluster_004099b7.csv`
+    - `tmp_decomp/batch410_apply_signature_cluster_004099b7.csv`
+
+4) Closure + gates
+- Class-default closure check:
+  - `tmp_decomp/batch410_class_default_methods_wave1defaultB_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch410_named_callers_with_generic_callees_superlane.csv` -> `rows=1` (before follow-up)
+  - `tmp_decomp/batch410_named_callers_with_generic_callees_superlane_post.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch410_unresolved_0060_0062.csv` -> `rows=0`
+
+5) Progress snapshot
+- `tmp_decomp/batch410_progress_counts_post.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10277`
+- `default_fun_or_thunk_fun: 2065`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Continue 1-default sweep C for remaining classes from refreshed inventory.
+- [ ] Keep mixed cadence: class wave -> map/global lane if strong xref-proven generic helper appears.
+- [ ] Keep super-lane and runtime-bridge gates at zero after each batch.
+
+#### Post-batch410 inventory refresh
+- Rebuilt class inventory after batch410 + cluster follow-up:
+  - `tmp_decomp/batch410_build_class_model_inventory_post.log`
+- Remaining classes with default methods dropped to:
+  - `classes_with_defaults=27` (all at `1` default each)
+- Top remaining targets:
+  - `TBattleDetailBook`, `TArmyCheckBox`, `TTechMgr`, `TScoreGraph`, `TRelationshipDialog`, `TRailheadDialog`, `TMinorTreatyDialog`, `TMerchantBoyView`, `TMapEditCluster`, `THighScoresPicture`, `TGWorldPartView`, `TEventHandler`, ...
+- Next action:
+  - run one more multi-class wave over top 10 remaining classes, then re-run gates and progress.
+
+#### Applied batch411 (loop continuation: residual class-default wave A)
+Goal:
+- Continue draining remaining 1-default class backlog in ranked high-signal classes.
+
+1) Wave scope
+- Classes:
+  - `TBattleDetailBook`, `TArmyCheckBox`, `TTechMgr`, `TScoreGraph`, `TRelationshipDialog`, `TRailheadDialog`, `TMinorTreatyDialog`, `TMerchantBoyView`, `TMapEditCluster`, `THighScoresPicture`
+- Triage output:
+  - `tmp_decomp/batch411_class_default_methods_waveA.csv` (`rows=10`)
+- Context review:
+  - `tmp_decomp/batch411_waveA_context.txt`
+
+2) Renames + signatures
+- Renames:
+  - `tmp_decomp/batch411_apply_renames_waveA.csv` (`rows=10`, `ok=10`)
+  - Key promotions:
+    - `InitializeHighScoresPictureStateFromFileAndAudioCues`
+    - `RenderScoreGraphSeriesAndLabels`
+    - `PopulateRelationshipDialogControlValuesFromNationState`
+    - `CreateMapEditClusterAdornerView`
+    - `CreateMinorTreatyDialogAdornerView`
+    - `CreateBattleDetailBookViewInstance`
+    - `CreateMerchantBoyViewPanelInstance`
+    - `ConfigureRailheadDialogForSelectionRecord`
+    - `UpdateArmyCheckBoxSelectionOffsetAndRefresh`
+    - `TechMgrContainsTechId`
+- Signatures:
+  - `tmp_decomp/batch411_apply_signatures_waveA.csv` (`ok=10`)
+
+3) Closure + gates
+- Class-default closure check:
+  - `tmp_decomp/batch411_class_default_methods_waveA_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch411_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch411_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch411_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10287`
+- `default_fun_or_thunk_fun: 2055`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Refresh class inventory and execute next residual wave over remaining default-bearing classes.
+- [ ] Keep mixed cadence and zero-gate invariant.
+
+#### Applied batch412 (loop continuation: residual class-default final sweep)
+Goal:
+- Finish remaining class namespaces still carrying one default method each.
+
+1) Wave scope
+- Classes:
+  - `TGWorldPartView`, `TEventHandler`, `TTradeOfferNationView`, `TTerrainHelpPicture`, `TTacticalAdiosPicture`, `TSwapperDaddyView`, `TOverlayRadioButton`, `TNominationView`, `TMiniShipView`, `TCityInteriorMinister`, `TCity`, `TSortedPtrList`, `TGameSetupDialog`, `TGameInfoPicture`, `TGWorldPeeker`, `TFrameRadioView`, `TEvent`
+- Triage output:
+  - `tmp_decomp/batch412_class_default_methods_waveFinal.csv` (`rows=17`)
+- Context review:
+  - `tmp_decomp/batch412_waveFinal_context.txt`
+
+2) Renames + signatures
+- Renames:
+  - `tmp_decomp/batch412_apply_renames_waveFinal.csv` (`rows=17`, `ok=17`)
+  - Key promotions include:
+    - `RenderTradeOfferNationViewRowsAndLabels`
+    - `BuildNominationViewTextBlocksAndStyles`
+    - `InitializeGameInfoPictureLocalizedLabels`
+    - `SelectSwapperEntryByOptionIdAndReflow`
+    - `InitializeTerrainHelpPictureTextBlocks`
+    - `RenderOverlayRadioButtonSelectionLayer`
+    - `InitializeTacticalAdiosPictureLocalizedLabels`
+    - `RenderGWorldPartViewCachedRect`
+    - `BlitGWorldPeekerRectToCachedSurface`
+    - `CreateGameSetupDialogClusterInstance`
+    - `CreateSortedPtrListInstance`
+    - `RenderFrameRadioViewRaisedBorder`
+    - `RefreshMiniShipViewCargoCountsFromShipRecord`
+    - `DrainEventHandlerQueueViaDispatcher`
+    - `TransferCityPopulationBucketsToTargetCity`
+    - `ClearCityInteriorMinisterSlotByIndex`
+    - `GetTEventClassInfoPointer`
+- Signatures:
+  - `tmp_decomp/batch412_apply_signatures_waveFinal.csv` (`ok=17`)
+
+3) Closure + gates
+- Class-default closure check:
+  - `tmp_decomp/batch412_class_default_methods_waveFinal_post.csv` -> `rows=0`
+- Super-lane gate:
+  - `tmp_decomp/batch412_named_callers_with_generic_callees_superlane.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch412_unresolved_0060_0062.csv` -> `rows=0`
+
+4) Progress snapshot
+- `tmp_decomp/batch412_progress_counts.txt`
+- `total_functions: 12342`
+- `renamed_functions: 10304`
+- `default_fun_or_thunk_fun: 2038`
+- `class_desc_count: 406`
+- `vtbl_count: 231`
+- `type_name_count: 406`
+
+5) Milestone verification
+- Rebuilt class inventory after batch412:
+  - `tmp_decomp/batch412_build_class_model_inventory_post.log`
+- Result:
+  - `classes_with_defaults=0`
+  - Class-namespace default backlog fully cleared.
+
+### TODO (next loop refresh)
+- [ ] Pivot from class-default cleanup to non-class unresolved function waves (high xref/high caller pressure first).
+- [ ] Keep map/global lane cadence for xref-proven render/state clusters.
+- [ ] Maintain zero-gate invariant for super-lane and runtime-bridge checks.
+
+#### Applied batch413 (loop continuation: thunk-island recovery + runtime helper cleanup)
+Goal:
+- Pivot from class-default lane (completed) to non-class unresolved cleanup with high-ROI, low-risk bulk operations.
+
+1) Bulk single-JMP thunk island recovery
+- Generated missing thunk candidates over main code range:
+  - `new_scripts/generate_missing_jmp_thunk_candidates.py --start 0x00400000 --end 0x00600000`
+  - output: `tmp_decomp/batch413_jmp_thunk_candidates_raw.csv` (`rows=99`)
+- Built unique apply CSV (`thunk_<target>_At<addr>` naming):
+  - `tmp_decomp/batch413_jmp_thunk_candidates_apply.csv`
+- Applied with auto-create enabled:
+  - `apply_function_renames_csv.py --create-missing ...`
+  - result: `rows=99 ok=99 created=99 fail=0`
+- Impact:
+  - Added and named 99 previously non-functionized thunk entry points, improving xrefs and callgraph readability.
+
+2) Runtime helper cluster cleanup (non-class FUN_* low-hanging fruit)
+- Context reviewed:
+  - `tmp_decomp/batch413_ctx_nonclass_candidates.txt`
+- Renamed + signed:
+  - `tmp_decomp/batch413_apply_renames_runtime_cluster.csv`
+  - `tmp_decomp/batch413_apply_signatures_runtime_cluster.csv`
+- Promoted:
+  - `AllocateCrtHeapBlockFromRegionMaps` (`0x005ee2a0`)
+  - `ReportCrtRuntimeErrorByCode` (`0x005f26d0`)
+  - `GetSpaceCharacterClassFlagForCodepoint` (`0x005ea990`)
+  - `CrtThreadExitWithTlsCleanup` (`0x005ea4e0`)
+  - `CallCrtHelperWithDefaultFlag1` (`0x005eb200`)
+  - `ConstructSharedStringFromCStrOrResourceIdLegacy` (`0x005ebb20`)
+
+3) Gates and snapshots
+- Strict super-lane gate:
+  - `tmp_decomp/batch413_named_callers_with_generic_callees_superlane_strict_post.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch413_unresolved_0060_0062.csv` -> `rows=0`
+- Class inventory check:
+  - `classes_with_defaults=0`
+- Progress:
+  - `tmp_decomp/batch413_progress_counts_post.txt`
+  - `total_functions: 12441`
+  - `renamed_functions: 10409`
+  - `default_fun_or_thunk_fun: 2032`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Continue non-class unresolved waves (top xref/caller pressure in `tmp_decomp/batch413_unresolved_maincode.csv`).
+- [ ] Keep using batch thunk/functionization where shape is single-JMP and target is already named.
+- [ ] Maintain strict super-lane + runtime-bridge gates at zero after each batch.
+
+#### Applied batch414 (loop continuation: wrapper/thunk normalization micro-batch)
+Goal:
+- Continue low-risk non-class cleanup with reusable-script-driven wrapper normalization and conservative wrapper promotions.
+
+1) New reusable script
+- Added:
+  - `new_scripts/generate_existing_jmp_thunk_renames.py`
+- Purpose:
+  - Generate rename CSV for existing generic single-JMP thunk functions (`FUN_`/`thunk_FUN_`) to `thunk_<target>_At<addr>`.
+- Initial run over `0x00400000..0x00600000` produced `rows=0` (no exact single-JMP existing generic function matches under this strict shape).
+
+2) Conservative single-callee wrapper promotions
+- Generated and applied:
+  - `tmp_decomp/batch414_single_callee_wrapper_candidates.csv` (`rows=2`)
+- Promoted:
+  - `0x005e02c0` -> wrapper around `WriteProfileInt` path
+  - `0x005eaa40` -> wrapper around `ParseUnsignedLongFromStringWithBase`
+
+3) Wrapper chain normalization
+- Generated and applied:
+  - `tmp_decomp/batch414_wrapper_chain_normalize_candidates.csv` (`rows=2`)
+- Collapsed nested wrapper-chain names into single-layer wrapper naming.
+
+4) Gates and progress
+- Strict super-lane gate:
+  - `tmp_decomp/batch414_named_callers_with_generic_callees_superlane_strict.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch414_unresolved_0060_0062.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch414_progress_counts.txt`
+  - `total_functions: 12441`
+  - `renamed_functions: 10412`
+  - `default_fun_or_thunk_fun: 2029`
+
+### TODO (next loop refresh)
+- [ ] Continue non-class unresolved function waves from `tmp_decomp/batch413_unresolved_maincode.csv`, prioritizing non-trivial `FUN_*` with named callers/callees (not pure wrappers).
+- [ ] Reuse `generate_single_callee_wrapper_renames.py` in focused ranges to keep harvesting safe wrapper names.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch414-B (loop continuation: CRT/string/TLS helper promotion)
+Goal:
+- Continue non-class unresolved cleanup by promoting high-signal CRT/string/TLS helper `FUN_*` nodes.
+
+1) Context reviewed
+- `tmp_decomp/batch414_ctx_runtime_chain_candidates.txt`
+
+2) Renames + signatures
+- Renames:
+  - `tmp_decomp/batch414_apply_renames_runtime_strings_tls.csv` (`rows=7`, `ok=7`)
+  - Promoted:
+    - `FormatBufferWithPercentDirectivesAndLocaleLock`
+    - `NormalizeTmFieldsAndComputeEpochSeconds`
+    - `ToUpperInPlaceWithMbcFallback`
+    - `ToLowerInPlaceWithMbcFallback`
+    - `ReverseStringWithMbcPairAwareness`
+    - `ShowRuntimeErrorMessageBoxWithLazyUser32Imports`
+    - `FreeCrtThreadTlsDataAndClearSlot`
+- Signatures:
+  - `tmp_decomp/batch414_apply_signatures_runtime_strings_tls.csv` (`ok=7`)
+
+3) Gates + snapshot
+- Strict super-lane gate:
+  - `tmp_decomp/batch414_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch414_progress_counts_post2.txt`
+  - `total_functions: 12441`
+  - `renamed_functions: 10419`
+  - `default_fun_or_thunk_fun: 2022`
+
+### TODO (next loop refresh)
+- [ ] Continue unresolved non-class pass over updated `batch414_unresolved_maincode.csv` top `FUN_*` entries with named caller pressure.
+- [ ] Keep using conservative wrapper promotion + normalization scripts in between semantic helper batches.
+- [ ] Preserve zero-gate invariant on strict super-lane and runtime-bridge checks.
+
+#### Applied batch416 (loop continuation: strict residue closure + helper refinement)
+Goal:
+- Close remaining strict-gate generic callees and keep runtime bridge lane clean.
+
+1) Residue closure
+- Context:
+  - `tmp_decomp/batch416_ctx_005f4270.txt`
+- Applied:
+  - `tmp_decomp/batch416_apply_renames_gate_residue.csv` (`ok=1`)
+  - `tmp_decomp/batch416_apply_signatures_gate_residue.csv` (`ok=1`)
+- Promoted:
+  - `0x005f4270` -> `ToLowerCodepointWithLocaleAndMbcFallback`
+
+2) Follow-up 4-function cleanup wave
+- Context:
+  - `tmp_decomp/batch416_ctx_four_residues.txt`
+  - `tmp_decomp/batch416_ctx_005ee2a0.txt`
+- Applied:
+  - `tmp_decomp/batch416_apply_renames_four_residues.csv` (`ok=4`)
+  - `tmp_decomp/batch416_apply_signatures_four_residues.csv` (`ok=4`)
+- Promoted:
+  - `0x005f3490` -> `ToUpperCodepointWithLocaleAndMbcFallback`
+  - `0x005ee4e0` -> `AllocateBlockFromCrtHeapRegionPage`
+  - `0x00622b58` -> `ConstructObjectVtable006704ccAndRunCommonConstruct`
+  - `0x00404426` -> `ConstructTMiniCivViewLocalizedLineText`
+
+3) Gates + snapshot
+- Strict super-lane gate:
+  - `tmp_decomp/batch416_named_callers_with_generic_callees_superlane_strict_post.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch416_unresolved_0060_0062.csv` -> `rows=0`
+- Main unresolved refresh:
+  - `tmp_decomp/batch416_unresolved_maincode.csv` (`rows=2181`)
+- Progress:
+  - `tmp_decomp/batch416_progress_counts_post.txt`
+  - `total_functions: 12441`
+  - `renamed_functions: 10435`
+  - `default_fun_or_thunk_fun: 2006`
+
+#### Applied batch417 (loop continuation: gameplay hint caller wave)
+Goal:
+- Run script-driven low-risk rename wave for unresolved generic callers with gameplay-signaled callees.
+
+1) Candidate generation + hint build
+- Inputs:
+  - `tmp_decomp/batch417_fun_caller_candidates_gameplay.csv` (`matched_callees=4451`, `candidates=66`)
+- Built hints:
+  - `tmp_decomp/batch417_fun_caller_hints_gameplay.csv` (`rows=23`)
+
+2) Apply
+- Applied:
+  - `tmp_decomp/batch417_fun_caller_hints_gameplay.csv`
+  - result: `rows=23 ok=23 fail=0`
+- Effect:
+  - Promoted 23 `FUN_*` nodes into conservative `Cluster_{Domain}Hint_<addr>` names.
+
+3) Gates + snapshot
+- Strict super-lane gate:
+  - `tmp_decomp/batch417_named_callers_with_generic_callees_superlane_strict.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch417_unresolved_0060_0062.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch417_progress_counts.txt`
+  - `total_functions: 12441`
+  - `renamed_functions: 10463`
+  - `default_fun_or_thunk_fun: 1978`
+
+#### Applied batch418 (loop continuation: wrapper + missing thunk island harvest)
+Goal:
+- Continue fast, safe dehardcoding with wrapper-shape renames and missing JMP-thunk creation.
+
+1) Single-callee wrapper sweep
+- Generated:
+  - `tmp_decomp/batch418_single_callee_wrapper_candidates.csv` (`rows=4`)
+- Applied:
+  - `tmp_decomp/batch418_apply_single_callee_wrapper.log` (`ok=4`)
+- Promoted 4 tiny wrappers forwarding to `Cluster_MapTileHint_0048f3c0`.
+
+2) Missing JMP-thunk creation + naming
+- Generated:
+  - `tmp_decomp/batch418_jmp_thunk_candidates_raw.csv` (`rows=18`)
+- Applied with create-missing:
+  - `tmp_decomp/batch418_apply_jmp_thunk_candidates.log`
+  - result: `rows=18 ok=18 created=18 fail=0`
+- Effect:
+  - Functionized and named 18 additional thunk entries (including several map/turn/nation hint forwards and runtime/mfc thunk stubs).
+
+3) Gates + snapshot
+- Strict super-lane gate:
+  - `tmp_decomp/batch418_named_callers_with_generic_callees_superlane_strict.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch418_unresolved_0060_0062.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch418_progress_counts.txt`
+  - `total_functions: 12459`
+  - `renamed_functions: 10485`
+  - `default_fun_or_thunk_fun: 1974`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Run another gameplay caller-hint wave with relaxed/noise-tuned filters to harvest the remaining `FUN_*` callers around map/turn/nation lanes.
+- [ ] Promote top unresolved non-thunk runtime helpers from `batch416_unresolved_maincode.csv` (high named-caller pressure first).
+- [ ] Repeat missing-JMP-thunk candidate generation in narrower hot ranges (0x0040xxxx thunk islands) and apply with `--create-missing`.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch419 (loop continuation: turn-instruction typing + mapgen state consolidation + arrow domain normalization)
+Goal:
+- Execute high-ROI structured dehardcoding across user-priority lanes: turn-instruction typing, mapgen state typing, and arrow-command domain normalization.
+
+1) Turn-instruction system typing pass (tabsenu)
+- Rebuilt tabsenu schema/bindings:
+  - `tmp_decomp/batch419_tabsenu_command_schema.csv` (`rows=21`)
+  - `tmp_decomp/batch419_tabsenu_loader_bindings.csv` (`rows=21`, `bound=21`)
+  - `tmp_decomp/batch419_tabsenu_loader_comment_apply.csv`
+- Added reusable script:
+  - `new_scripts/apply_turn_instruction_struct_signatures.py`
+- Applied typed structs + signatures:
+  - log: `tmp_decomp/batch419_apply_turn_instruction_struct_signatures.log`
+  - result: `planned=21`, `structs=21`, `sig_ok=21`
+- Effect:
+  - Created `/Imperialism/TurnInstruction/STurnInstruction_<Cmd>` records from strict arity.
+  - Updated handlers to:
+    - `void __thiscall HandleTurnInstruction_<Cmd>...(void* this, STurnInstruction_<Cmd>* pInstruction)`.
+
+2) Map-generation RNG/state consolidation (MapMaker/UMapper)
+- Added reusable script:
+  - `new_scripts/create_mapmaker_generation_state_struct.py`
+- Re-applied/validated typed state scripts:
+  - `new_scripts/create_umapper_overlay_types.py`
+  - `new_scripts/create_umapper_array_state_structs.py`
+  - `new_scripts/create_city_region_remap_types.py`
+  - `new_scripts/create_mapmaker_generation_state_struct.py`
+- Outputs:
+  - `tmp_decomp/batch419_create_umapper_overlay_types.log`
+  - `tmp_decomp/batch419_create_umapper_array_state_structs.log`
+  - `tmp_decomp/batch419_create_city_region_remap_types.log`
+  - `tmp_decomp/batch419_create_mapmaker_generation_state_struct.log`
+- Typed:
+  - `0x006a38bc` as `/Imperialism/MapGen/TMapMakerGenerationState` (0x44 bytes),
+    labeled `g_MapMakerGenerationState`.
+- Evidence capture:
+  - `tmp_decomp/batch419_mapgen_state_xrefs.csv` (strong hits from `GenerateMapFromTuningStringAndApplyScenarioOverrides`, `GenerateCoarseAndFineRegionSeedMap`, etc.)
+  - `tmp_decomp/batch419_symbols_6a38bc_post.txt`
+
+3) Arrow-command domain normalization (0x64/0x65)
+- Added reusable miner:
+  - `new_scripts/generate_arrow_split_command_candidates.py`
+- Mined candidates:
+  - `tmp_decomp/batch419_arrow_split_candidates.csv` (`rows=220`)
+- Created enum:
+  - `new_scripts/create_arrow_command_enum.py`
+  - log: `tmp_decomp/batch419_create_arrow_command_enum.log`
+  - result: `/Imperialism/EArrowSplitCommandId` (`LEFT=100`, `RIGHT=101`)
+- Focused rename/signature batch:
+  - `tmp_decomp/batch419_apply_renames_arrow_split_focus.csv`
+  - `tmp_decomp/batch419_apply_signatures_arrow_split_focus.csv`
+  - result: `ok=3`
+  - Promoted:
+    - `HandleTransportPictureSplitArrowCommand64or65` (`0x00591f10`)
+    - `HandleShipFractionClusterSplitArrowCommand64or65` (`0x00568eb0`)
+    - `NotifyTaskForceSelectionListenerByWord62` (`0x00599a20`)
+- Strict residue closure from this lane:
+  - Promoted `0x004a8890` -> `PopulateTurnEventDialogArmyUnitLinesForTileSelection`
+  - signatures applied in `tmp_decomp/batch419_apply_signature_gate_residue.csv`
+
+4) Gates + snapshot
+- Strict super-lane gate:
+  - `tmp_decomp/batch419_named_callers_with_generic_callees_superlane_strict_post.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch419_unresolved_0060_0062.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch419_progress_counts_final.txt`
+  - `total_functions: 12459`
+  - `renamed_functions: 10487`
+  - `default_fun_or_thunk_fun: 1972`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Extend turn-instruction typing from 21 tabsenu-bound commands to remaining dispatch-table entries (`pric`, `prov`, `tbar`, `tclr`, `coun`) by deriving arity from handler cursor increments.
+- [ ] Do a mapgen propagation pass: rename remaining `FUN_*` RNG-adjacent helpers (e.g., around `0x00511a70`, `0x00526ba0` clusters) using `g_MapMakerGenerationState` field usage.
+- [ ] Continue arrow-domain cleanup: batch-rename unresolved `both_ids=1` candidates from `batch419_arrow_split_candidates.csv` where command-path semantics are direct.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch421 (loop continuation: remaining turn-instruction typing + mapgen RNG lane + arrow/gate cleanup)
+Goal:
+- Continue loop TODOs in one pass: finish missing turn-dispatch typing, push mapgen RNG-adjacent low-hanging renames, apply direct arrow-domain cleanup, and keep strict gates at zero.
+
+1) Turn-instruction residual typing (`pric/prov/tbar/tclr/coun`)
+- Added reusable script:
+  - `new_scripts/extend_turn_instruction_bindings_from_handler_cursor.py`
+  - infers arity by scanning handler decomp for stream-pointer increments/index access patterns.
+- Generated extended bindings:
+  - `tmp_decomp/batch421_tabsenu_loader_bindings_extended.csv`
+  - result: `total=26`, `bound=26`, added commands:
+    - `pric=2`, `prov=2`, `tbar=3`, `tclr=1`, `coun=2`.
+- Re-applied typed struct/signature batch with extended bindings:
+  - `tmp_decomp/batch421_apply_turn_instruction_struct_signatures.log`
+  - result: `planned=26`, `structs=26`, `sig_ok=26`, `sig_fail=0`.
+- Effect:
+  - Remaining dispatch-table entries now use typed `/Imperialism/TurnInstruction/STurnInstruction_<Cmd>` signatures:
+    - `HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry`
+    - `HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry`
+    - `HandleTurnInstruction_Tbar_SetNationRelationBarValue`
+    - `HandleTurnInstruction_Tclr_ResetNationRelationBars`
+    - `HandleTurnInstruction_Coun_SetCountrySlotState`.
+
+2) Mapgen RNG propagation pass (focused low-hanging around `0x00511a70`)
+- Applied renames/comments:
+  - `0x00511a70` -> `EnsureRegionClassHasSubtype3And4AssignmentsWithRng`
+  - `0x00514110` -> `ResolveRegionTileSubtypeCodeForTileIndex`
+  - `0x00406320` -> `thunk_ResolveRegionTileSubtypeCodeForTileIndex`
+  - `0x00515720` -> `MarkType5NeighborTilesUnavailableByNationCapability`
+  - `0x00407932` -> `thunk_MarkType5NeighborTilesUnavailableByNationCapability`
+  - `0x005159b0` -> `MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA`
+  - `0x00515b10` -> `MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB`
+- Applied signature hygiene:
+  - `ResolveRegionTileSubtypeCodeForTileIndex`: `short __thiscall (..., short tileIndex)`
+  - mapgen helper lane normalized to `__thiscall` with explicit seed-context args where stable.
+- Artifacts:
+  - `tmp_decomp/batch421_ctx_511a70_full.txt`
+  - `tmp_decomp/batch421_disasm_514110.txt`
+  - `tmp_decomp/batch421_apply_mapgen_rng_cluster_renames.log`
+  - `tmp_decomp/batch421_apply_mapgen_rng_cluster_signatures.log`
+
+3) Arrow-domain cleanup (direct `both_ids=1` residue)
+- Applied direct wrapper promotion:
+  - `0x005869c0` -> `HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward`
+  - signature normalized to `__thiscall` command-wrapper shape.
+- Artifacts:
+  - `tmp_decomp/batch421_apply_arrow_direct_wrapper_rename.log`
+  - `tmp_decomp/batch421_apply_arrow_direct_wrapper_signature.log`
+
+4) Strict-gate maintenance (`0` invariant restored)
+- Super-lane strict gate (post-cleanup):
+  - `tmp_decomp/batch421_named_callers_with_generic_callees_superlane_strict_post.csv` -> `rows=0`
+- Runtime-bridge unresolved gate:
+  - `tmp_decomp/batch421_unresolved_0060_0062.csv` -> `rows=0`
+- Additional residue cleanups needed to keep the broad strict regex at zero:
+  - `0x00403bb6` -> `RenderHintHelper_00497d10`
+  - `0x00404fe8` -> `RenderHintHelper_0048f3c0`
+  - `0x00407c6b` -> `UiRenderHintHelper_00564a60`
+  - `0x00404a25` -> `PaletteBufferHintHelper_004d4bf0`
+
+5) Item 5/6 sweeps status in this pass
+- Mass table-driven thunk cleanup outside `0x0040xxxx`:
+  - re-run produced no new safe candidates in the scanned ranges.
+- Class-attachment sweep:
+  - re-ran attach/sig scripts; no new low-risk attachments/signature deltas in this pass (lane appears saturated for current heuristics).
+
+6) Progress snapshot
+- `tmp_decomp/batch421_progress_counts.txt`
+  - `total_functions: 12459`
+  - `renamed_functions: 10492`
+  - `default_fun_or_thunk_fun: 1967`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Continue mapgen propagation in `0x00511000..0x00516000` by promoting the remaining thunk-only `FUN_*` lane where behavior is stable via `g_MapMakerGenerationState`/tile-field usage.
+- [ ] Continue arrow-domain cleanup from regenerated `both_ids=1` candidates, but only when command-path semantics are direct and non-render-generic.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch421b (loop continuation: mapgen thunk-only low-hanging wave)
+Goal:
+- Continue TODO loop on the `0x00511000..0x00516000` mapgen lane with behavior-backed, low-risk helper/thunk renames and lightweight signature cleanup.
+
+1) Mapgen helper/thunk renames (20 rows applied)
+- Core helper promotions:
+  - `0x005112f0` -> `CheckTileVariantCodeMembershipSetA`
+  - `0x00511360` -> `CheckTileVariantCodeMembershipSetB`
+  - `0x005113d0` -> `CheckTileVariantCodeMembershipSetC`
+  - `0x00511440` -> `CheckTileVariantCodeMembershipSetD`
+  - `0x005114b0` -> `CheckTilePatternMaskAllowedByModeFlag`
+  - `0x00512850` -> `NoOpMapTilePredicateStub`
+  - `0x005128f0` -> `ReturnIfTileIndexNegative`
+  - `0x00513050` -> `NormalizeWrappedMapCoord108x60`
+  - `0x00513120` -> `NormalizeWrappedMapCoord217x60`
+  - `0x00515db0` -> `ClearPerTileByte0FForAllMapTiles`
+- Matching thunk normalization:
+  - `0x004099df`, `0x00407d5b`, `0x0040854e`, `0x00401af0`, `0x00403ae9`,
+    `0x00402338`, `0x0040676c`, `0x00408328`, `0x0040907f`, `0x00409250`.
+- Artifact:
+  - `tmp_decomp/batch421_apply_mapgen_lowhanging_setmask_coord_renames.log` (`ok=20`)
+
+2) Signature cleanup (obvious coordinate/clear helpers)
+- Applied signatures:
+  - `NormalizeWrappedMapCoord108x60(short* pTileX, short* pTileY)`
+  - `NormalizeWrappedMapCoord217x60(short* pTileX, short* pTileY)`
+  - `ClearPerTileByte0FForAllMapTiles(__thiscall)`
+  - plus matching thunk signatures for the two coordinate normalizers and clear helper.
+- Artifact:
+  - `tmp_decomp/batch421_apply_mapgen_lowhanging_setmask_coord_signatures.log` (`ok=3`, `skip=3`)
+
+3) Gate re-check (post-wave)
+- Strict super-lane:
+  - `tmp_decomp/batch421_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Runtime-bridge:
+  - `tmp_decomp/batch421_unresolved_0060_0062_post2.csv` -> `rows=0`
+
+4) Progress snapshot (post-wave)
+- `tmp_decomp/batch421_progress_counts_post2.txt`
+  - `total_functions: 12459`
+  - `renamed_functions: 10512`
+  - `default_fun_or_thunk_fun: 1947`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ] Continue mapgen propagation in `0x00511000..0x00516000` for remaining thunk-only `FUN_*` helpers where behavior can be confirmed from decomp/disasm.
+- [ ] Re-run arrow-domain candidate mining and only promote `both_ids=1` cases with direct command-path semantics.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch422 (loop continuation: unresolved/callback lane ABI lane + typing/enum lane enum/state-command typing)
+Goal:
+- Run unresolved/callback lane callback/wrapper ABI normalization scripts first; if saturated, pivot to concrete turn-event factory helper typing.
+- Run typing/enum lane enumization/typing passes and keep strict gates at zero.
+
+1) unresolved/callback lane script sweep (reusable ABI scripts, serial writer mode)
+- Ran:
+  - `new_scripts/propagate_simple_thunk_signatures_from_callee.py --apply`
+  - `new_scripts/propagate_simple_forwarder_signatures_from_callee.py --apply`
+  - `new_scripts/apply_wrapper_template_signatures.py --apply`
+  - `new_scripts/apply_wrapper_family_signatures.py --apply`
+- Result:
+  - all four reported `candidates=0`; lane is currently saturated for existing templates.
+- Artifacts:
+  - `tmp_decomp/batch422_item8_propagate_simple_thunk_sigs.log`
+  - `tmp_decomp/batch422_item8_propagate_simple_forwarder_sigs.log`
+  - `tmp_decomp/batch422_item8_apply_wrapper_template_sigs.log`
+  - `tmp_decomp/batch422_item8_apply_wrapper_family_sigs.log`
+
+2) unresolved/callback lane fallback: turn-event dialog factory callback/helper lane cleanup
+- Callback registry scan:
+  - `tmp_decomp/batch422_item8_scan_dialog_callbacks_00405781.log` (`callbacks_found=17`).
+- Renamed + commented low-risk helpers:
+  - `0x005df3c0` -> `ResolveTurnEventDialogNodeByMessageContext`
+  - `0x0050be30` -> `ResolveTurnEventDialogOrFailAndInvokeSlot9C`
+  - `0x005dff20` -> `EnsurePictWvDataGobLoadedBySlot`
+  - `0x005df3a0` -> `ForwardEnsurePictWvDataGobLoadedBySlot`
+  - `0x004068bb` -> `thunk_EnsurePictWvDataGobLoadedBySlot`
+  - `0x005dfea0` -> `AssignScoresDatPathToSharedString`
+- Applied signature normalization (5 changed, 1 already-matching):
+  - `tmp_decomp/batch422_item8_turnevent_factory_helper_signatures.csv`
+  - `tmp_decomp/batch422_item8_apply_turnevent_factory_helper_signatures.log`
+- Cleared strict-gate residue by promoting generic helper callees:
+  - `0x005fa845` -> `ConstructTooltipRelayWindowStateObject`
+  - `0x00573f60` -> `AdjustCityDialogScrollRangeByDeltaAndClamp`
+  - `0x005740a0` -> `RefreshCityDialogScrollableViewportWithQuickDrawContext`
+- Artifacts:
+  - `tmp_decomp/batch422_item8_apply_turnevent_factory_helper_renames.log`
+  - `tmp_decomp/batch422_item8_apply_gate_residue_renames.log`
+  - `tmp_decomp/batch422_gate_residue_ctx.txt`
+
+3) typing/enum lane enum/state-command typing pass
+- Re-ran gameplay enum creation with tactical table typing:
+  - `new_scripts/create_gameplay_enums.py --apply-tactical-tables`
+  - typed:
+    - `g_aeTacticalUnitActionClassBySlot` as `ETacticalUnitActionClass[27]`
+    - `g_aeTacticalUnitCategoryBySlot` as `ETacticalUnitCategoryCode[27]`
+- Re-ran turn-instruction enum/type setup:
+  - `new_scripts/create_turn_instruction_types.py`
+  - confirmed:
+    - `/Imperialism/ETurnInstructionTokenFourCC`
+    - `/Imperialism/ETurnInstructionDispatchIndex`
+    - `/Imperialism/TTurnInstructionHandlerProc`
+    - typed tables at `0x00662978` and `0x00698b50`.
+- Re-ran arrow enum:
+  - `new_scripts/create_arrow_command_enum.py` (`/Imperialism/EArrowSplitCommandId`).
+- Artifacts:
+  - `tmp_decomp/batch422_item7_create_gameplay_enums.log`
+  - `tmp_decomp/batch422_item7_create_turn_instruction_types.log`
+  - `tmp_decomp/batch422_item7_create_arrow_command_enum.log`
+
+4) Constant-domain state/command lane probe (typing/enum lane support)
+- Generated broad mode/state candidates in targeted regex lane:
+  - `tmp_decomp/batch422_item7_constant_domain_candidates_mode_state.csv` (`functions=162`).
+- Conservative FUN_-only lane builder produced no safe auto-rename rows this batch:
+  - `tmp_decomp/batch422_item7_mode_state_constdomain_renames.csv` (`out_rows=0`)
+  - `tmp_decomp/batch422_item7_mode_state_constdomain_renames_relaxed.csv` (`out_rows=0`).
+
+5) Gates + progress
+- Strict super-lane gate:
+  - `tmp_decomp/batch422_named_callers_with_generic_callees_superlane_strict_post3.csv` -> `rows=0`.
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch422_unresolved_0060_0062_post.csv` -> `rows=0`.
+- Progress:
+  - `tmp_decomp/batch422_progress_counts.txt`
+  - `total_functions: 12459`
+  - `renamed_functions: 10520`
+  - `default_fun_or_thunk_fun: 1939`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop refresh)
+- [ ]  add a reusable `RET imm` callback-ABI miner/applier script (start with `ret 0x14` family in UI command/callback lanes), then apply only to named non-cluster handlers.
+- [ ]  continue turn-event dialog factory unresolved lane (`0x005d6000..0x005e0000`) and promote remaining `FUN_*` file/path/runtime helpers with conservative behavior names + signatures.
+- [ ]  extend enum propagation beyond table typing by applying enum-aware parameter/local types in hot handlers (`HandleTransportPictureSplitArrowCommand64or65*`, production/ship split-arrow lane, turn-instruction dispatch readers).
+- [ ]  introduce a small turn-event factory slot enum (`0x70..0xF8`) and annotate/propagate in slot handlers where callsites are stable.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch422b (loop continuation: reusable RET-imm ABI tooling + focused ret14 normalization)
+Goal:
+- Start unresolved/callback lane TODO #1 with reusable tooling, then apply only high-confidence signatures from the `ret 0x14` lane.
+
+1) Added reusable script
+- New script:
+  - `new_scripts/generate_ret_imm_signature_candidates.py`
+- Purpose:
+  - mine functions ending in `RET <imm>` with name filters;
+  - emit candidate CSV + optional signatures CSV for `apply_signatures_from_csv.py`.
+
+2) Ran `ret 0x14` callback-ABI mining
+- Command output:
+  - `tmp_decomp/batch422_item8_generate_ret14_candidates.log`
+- Candidate report:
+  - `tmp_decomp/batch422_item8_ret14_candidates.csv` (`candidates=3`, non-generic + zero-param gated)
+- Raw signatures:
+  - `tmp_decomp/batch422_item8_ret14_signatures_raw.csv`
+- Candidates found:
+  - `CreateCityBuildingDialogBySlot` (`0x0050d360`)
+  - `InitializeTradeScreenControlsLabelsAndNationContext` (`0x005bea00`)
+  - `SendControlMessage101BWithOptions` (`0x005e5c9c`)
+
+3) Applied focused signature normalization (safe subset only)
+- Applied:
+  - `0x0050d360` `CreateCityBuildingDialogBySlot` -> `void __stdcall (...5 args...)`
+  - `0x005e5c9c` `SendControlMessage101BWithOptions` -> `void __thiscall (wParam, optionDataA, optionDataB, optionalIndexA, optionalIndexB)`
+- Artifact:
+  - `tmp_decomp/batch422_item8_apply_ret14_signature_focus.log` (`ok=2`)
+- Deferred:
+  - `0x005bea00` kept unchanged for now (large routine; needs deeper calling-pattern pass before forcing ABI).
+
+4) Gate re-check + progress
+- Strict super-lane:
+  - `tmp_decomp/batch422_named_callers_with_generic_callees_superlane_strict_post4.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch422_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch422_progress_counts_post_item8_ret14.txt`
+  - `renamed_functions: 10520` (stable; this micro-pass was mostly signature-focused)
+
+### TODO (next loop refresh)
+- [ ]  extend `generate_ret_imm_signature_candidates.py` with optional caller-shape scoring (stack-arg evidence + ECX-this usage) to auto-prioritize `__stdcall` vs `__thiscall` lanes.
+- [ ]  continue turn-event unresolved lane (`0x005d6000..0x005e0000`) with conservative file/path/runtime helper naming (`FUN_005df7a0`, `FUN_005df890`, `FUN_005db2f0`, `FUN_005dc560` candidates).
+- [ ]  propagate `EArrowSplitCommandId` into split-arrow handlers via typed params/locals where command constants `0x64/0x65` are direct.
+- [ ]  draft and apply `ETurnEventFactorySlot` enum (`0x70..0xF8`) and annotate slot handlers (`HandleTurnEventDialogFactorySlot*`) + dispatch callsites.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch422c (loop continuation: typing/enum lane slot-enumization + unresolved/callback lane ret14 focus refinement)
+Goal:
+- Land another typing/enum lane enumization chunk and keep unresolved/callback lane ABI work script-driven.
+
+1)  turn-event factory slot enumization
+- Added reusable script:
+  - `new_scripts/create_turn_event_factory_slot_enum.py`
+- Applied enum creation:
+  - `tmp_decomp/batch422_item7_create_turn_event_factory_slot_enum.log`
+  - created `/Imperialism/ETurnEventFactorySlotId` with 15 entries:
+    - `0x70,0x74,0x78,0x7C,0x80,0xB4,0xB8,0xD0,0xD8,0xE4,0xE8,0xEC,0xF0,0xF4,0xF8`.
+
+2)  ret14 signature normalization (focused)
+- Candidate mining artifacts:
+  - `tmp_decomp/batch422_item8_ret14_candidates.csv`
+  - `tmp_decomp/batch422_item8_ret14_candidate_contexts.txt`
+  - `tmp_decomp/batch422_item8_ret14_candidate_disasm.txt`
+- Applied signatures (already in prior mini-pass) retained as-is:
+  - `CreateCityBuildingDialogBySlot` -> `__stdcall` 5 args
+  - `SendControlMessage101BWithOptions` -> `__thiscall` + named option params.
+
+3) Gates + progress re-check
+- Strict super-lane:
+  - `tmp_decomp/batch422_named_callers_with_generic_callees_superlane_strict_post5.csv` -> `rows=0`.
+- Runtime bridge:
+  - `tmp_decomp/batch422_unresolved_0060_0062_post3.csv` -> `rows=0`.
+- Progress:
+  - `tmp_decomp/batch422_progress_counts_post_enumslot.txt`
+  - `renamed_functions: 10520` (signature/type heavy loop; rename count stable).
+
+### TODO (next loop refresh)
+- [ ]  extend `generate_ret_imm_signature_candidates.py` with caller-shape scoring and optional `--apply-safe` mode (only for non-generic named handlers with consistent stack/ECX evidence).
+- [ ]  continue unresolved turn-event/file-path helper lane (`0x005d6000..0x005e0000`) and promote the next 4-8 stable `FUN_*` helpers.
+- [ ]  propagate `ETurnEventFactorySlotId` into slot dispatch/decode callsites (comments + parameter/local typing where direct).
+- [ ]  propagate `EArrowSplitCommandId` through split-arrow handler signatures/locals in trade/production/ship panel lanes.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch422d (loop continuation: unresolved/callback lane unresolved helper promotions)
+Goal:
+- Continue unresolved/callback lane unresolved lane with conservative, behavior-backed helper naming and thunk alignment.
+
+1) Promoted unresolved runtime/message helpers (+ matching thunks)
+- Renamed:
+  - `0x005db2f0` -> `NoOpUiRuntimeCallback_005db2f0`
+  - `0x00405c9a` -> `thunk_NoOpUiRuntimeCallback_005db2f0`
+  - `0x005dc560` -> `DispatchUiRuntimeMessage102CAndRefreshActiveView`
+  - `0x00402e9b` -> `thunk_DispatchUiRuntimeMessage102CAndRefreshActiveView`
+  - `0x005de8f0` -> `DispatchUiRuntimeMessage101AAndRefreshActiveView`
+  - `0x0040425f` -> `thunk_DispatchUiRuntimeMessage101AAndRefreshActiveView`
+- Artifact:
+  - `tmp_decomp/batch422_item8_apply_runtime_message_helper_renames.log` (`ok=6`)
+
+2) Gates + progress
+- Strict super-lane:
+  - `tmp_decomp/batch422_named_callers_with_generic_callees_superlane_strict_post6.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch422_unresolved_0060_0062_post4.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch422_progress_counts_post_runtime_helpers.txt`
+  - `renamed_functions: 10526`
+  - `default_fun_or_thunk_fun: 1933`
+
+### TODO (next loop refresh)
+- [ ]  extend `generate_ret_imm_signature_candidates.py` with caller-shape scoring and optional `--apply-safe` mode.
+- [ ]  continue unresolved helper promotion in `0x005d6000..0x005e0000` (`FUN_005df7a0`, `FUN_005df890`, `FUN_005df610`, `FUN_005df730`, `FUN_005df890` thunk lane).
+- [ ]  propagate `ETurnEventFactorySlotId` into callsites/comments for `DispatchTurnEventPacketThroughDialogFactory` and `HandleTurnEventDialogFactorySlot*` lane.
+- [ ]  propagate `EArrowSplitCommandId` through split-arrow handlers (`HandleTransportPictureSplitArrowCommand64or65*`, production/ship variants) where constants are direct.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+### TODO (high-yield refresh)
+- [ ] **unresolved/callback lane (highest ROI):** upgrade `generate_ret_imm_signature_candidates.py` with confidence scoring (`ecx-read`, stack-pop arity consistency, caller arg-shape), plus `--apply-safe` to auto-apply only high-confidence rows.
+- [ ] ** ** run one `ret 0x14` + `ret 0x10/0x18` ABI sweep over named UI/event handlers and normalize signatures in batches (skip large ambiguous functions like `InitializeTradeScreenControlsLabelsAndNationContext` until caller-evidence is strong).
+- [ ] ** ** continue unresolved turn-event/runtime helper dehardcoding in `0x005d6000..0x005e0000` (promote next 6-10 stable `FUN_*` + direct thunks).
+- [ ] **typing/enum lane (highest ROI):** propagate `ETurnEventFactorySlotId` into dispatch callsites and slot handlers (`DispatchTurnEventPacketThroughDialogFactory`, `HandleTurnEventDialogFactorySlot*`) via typed locals/comments.
+- [ ] ** ** propagate `EArrowSplitCommandId` through split-arrow handlers and wrappers in trade/production/ship lanes; replace hardcoded `0x64/0x65` semantics in signatures/comments.
+- [ ] ** ** attach turn-instruction enums/typedefs to the token/handler tables at read sites (not just table declarations) to reduce decompiler ambiguity in loader/dispatch code.
+- [ ] Add a small reusable script to annotate direct constant-based dispatch branches with enum labels (safe comment-only mode first, rename/type mode second).
+- [ ] Run one focused thunk-alignment wave for newly renamed helpers (ensure `thunk_*` names/signatures match targets immediately after each rename batch).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+
+#### Applied batch423 (loop continuation: complete P0 typed-propagation lane/unresolved-callback lane execution wave)
+Goal:
+- Execute TODO P0 lane fully for unresolved/callback lane (ABI tooling + sweeps + helper promotions) and typing/enum lane (slot/arrow/turn-instruction enum propagation), then refresh TODO with next active items.
+
+1) unresolved/callback lane tooling upgrade (`RET imm` scoring + safe apply)
+- Enhanced reusable script:
+  - `new_scripts/generate_ret_imm_signature_candidates.py`
+- New capabilities:
+  - confidence scoring (`instruction_count`, `ecx_use_count`, caller count, push-match ratio, ecx-setup ratio),
+  - dynamic `suggested_calling_convention` (`__stdcall` vs `__thiscall`),
+  - `--apply-safe` with `--min-score` + `--max-safe-instruction-count`.
+
+2) unresolved/callback lane ABI sweeps (`ret 0x14`, `ret 0x10`, `ret 0x18`)
+- `ret 0x14`:
+  - `tmp_decomp/batch423_ret14_candidates.csv` (`candidates=8`)
+  - safe apply: `ok=2`
+- `ret 0x10`:
+  - `tmp_decomp/batch423_ret10_candidates.csv` (`candidates=58`)
+  - safe apply: `ok=11`
+- `ret 0x18`:
+  - `tmp_decomp/batch423_ret18_candidates.csv` (`candidates=8`)
+  - safe apply: `ok=1`
+- Key artifacts:
+  - `tmp_decomp/batch423_ret14_applysafe.log`
+  - `tmp_decomp/batch423_ret10_applysafe.log`
+  - `tmp_decomp/batch423_ret18_applysafe.log`
+
+3) unresolved/callback lane unresolved helper promotions in `0x005d6000..0x005e0000` (wave 2)
+- Renamed + commented (with matching thunks):
+  - `0x005df610` -> `InitializeRuntimeClassVtablePointer_0066FEC4`
+  - `0x004051c3` -> `thunk_InitializeRuntimeClassVtablePointer_0066FEC4`
+  - `0x005df730` -> `InvokeVtableSlot30OnTargetObject`
+  - `0x00409421` -> `thunk_InvokeVtableSlot30OnTargetObject`
+  - `0x005df890` -> `QueryDriveTypeByDriveIndex`
+  - `0x004099b2` -> `thunk_QueryDriveTypeByDriveIndex`
+  - `0x005df7a0` -> `QueryVolumeInformationForDriveIndex`
+  - `0x0040539e` -> `thunk_QueryVolumeInformationForDriveIndex`
+- Signature hygiene pass applied where low-risk:
+  - `InvokeVtableSlot30OnTargetObject(void *pTarget)`
+  - `QueryDriveTypeByDriveIndex(int driveIndex)`
+  - aligned thunk signatures.
+- Artifacts:
+  - `tmp_decomp/batch423_item8_apply_runtime_helpers_wave2_renames.log`
+  - `tmp_decomp/batch423_item8_apply_runtime_helpers_wave2_signatures.log`
+
+4) typing/enum lane propagation wave
+- Turn-event slot enum propagation (dispatch + slots):
+  - applied comments to `DispatchTurnEventPacketThroughDialogFactory`,
+    `InitializeTurnEventDialogFactoryRegistry`,
+    and all `HandleTurnEventDialogFactorySlot*` handlers (`70..F8`) linking `ETurnEventFactorySlotId` labels.
+  - artifact: `tmp_decomp/batch423_item7_apply_turn_event_slot_enum_comments.log`
+- Arrow command enum propagation:
+  - applied `EArrowSplitCommandId` comments to split-arrow handlers/auto-repeat lane:
+    - `HandleTransportPictureSplitArrowCommand64or65`
+    - `HandleShipFractionClusterSplitArrowCommand64or65`
+    - `HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward`
+    - `HandleTradeArrowAutoRepeatTickAndDispatch`
+    - `HandleSplitArrowAutoRepeatTickAndDispatch_Offset90`
+    - `HandleSplitArrowAutoRepeatTickAndDispatch_Offset84`
+    - `HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84`
+    - `HandleSplitArrowMousePhaseStateAndDispatchCommand64or65`
+  - signature hygiene on two direct split handlers:
+    - `0x00591f10`, `0x00568eb0` (explicit split-command payload arg naming).
+  - artifacts:
+    - `tmp_decomp/batch423_item7_apply_arrow_enum_comments.log`
+    - `tmp_decomp/batch423_item7_apply_arrow_signature_hygiene.log`
+- Turn-instruction table propagation:
+  - confirmed token-table read site at `ProcessTurnInstructionStreamAndFinalizePhase` and applied enum-dispatch comment tying `ETurnInstructionTokenFourCC` and `TTurnInstructionHandlerProc`.
+  - artifact:
+    - `tmp_decomp/batch423_item7_apply_turn_instruction_dispatch_comments.log`
+
+5) Gates + progress
+- Strict super-lane:
+  - `tmp_decomp/batch423_named_callers_with_generic_callees_superlane_strict_post.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch423_unresolved_0060_0062_post.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch423_progress_counts.txt`
+  - `total_functions: 12459`
+  - `renamed_functions: 10534`
+  - `default_fun_or_thunk_fun: 1925`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (post-batch423 active)
+- [ ]  audit/curate batch423 `--apply-safe` signature changes and revert/fix false positives.
+- [ ]  tighten `--apply-safe` heuristics further (wrapper denylist + min caller-count + optional namespace/class filters).
+- [ ]  continue unresolved helper promotions in `0x005d6000..0x005e0000` (next stable `FUN_*` + thunks).
+- [ ]  replace comment-only slot propagation with typed-local propagation where straightforward in slot handlers/dispatch hubs.
+- [ ]  extend arrow-domain enumization into adjacent direct-branch handlers beyond current comments/signature hygiene.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch423b (loop continuation: unresolved/callback lane curation/tightening + missing vtable thunk recovery)
+Goal:
+- Close remaining batch423 safety tasks, recover low-risk missing thunks, and keep gates clean.
+
+1) unresolved/callback lane curation: fixed safe-apply false positives
+- Audited `--apply-safe` results in context and corrected clear CC misclassifications:
+  - `0x0060785a` `UpdateWindowLongMaskedAndRefresh` -> `__stdcall` (was false-positive `__thiscall`)
+  - `0x006078c3` `DispatchCWndMessageWithTlsStateScope` -> `__stdcall`
+  - `0x00607c10` `DispatchSubclassedWindowProcWithAfxProps` -> `__stdcall`
+- Artifacts:
+  - `tmp_decomp/batch423_item8_audit_fix_false_positive_signatures.csv`
+  - `tmp_decomp/batch423_item8_apply_audit_fix_false_positive_signatures.log`
+
+2) unresolved/callback lane tooling hardening (`generate_ret_imm_signature_candidates.py`)
+- Added stricter safe-apply controls:
+  - `--min-safe-caller-count`
+  - `--safe-denylist-regex` (default excludes `WrapperFor_` and `thunk_`)
+- Existing scoring fields retained (`ecx/push/caller` ratios + score); safe auto-apply now better gated for runtime/UI lanes.
+
+3) Missing vtable thunk recovery (low-risk functionization + renames)
+- Created and renamed missing direct-jump thunk entries:
+  - `0x0040335f` -> `thunk_DiplomacyMgrVtableSlot14_Target004ef2a0`
+  - `0x004035b7` -> `thunk_DiplomacyMgrVtableSlot1C_Target004ef040`
+  - `0x00408238` -> `thunk_NextDiplomacyCommandVtableSlotDC_Target004878e0`
+  - `0x00405713` -> `thunk_NextDiplomacyCommandVtableSlotE8_Target00487900`
+- Artifacts:
+  - `tmp_decomp/batch423_missing_vtable_thunks_create.csv`
+  - `tmp_decomp/batch423_apply_missing_vtable_thunks_create.log`
+
+4) Gates + progress snapshot
+- Strict super-lane:
+  - `tmp_decomp/batch423_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch423_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch423_progress_counts_post2.txt`
+  - `total_functions: 12463`
+  - `renamed_functions: 10538`
+  - `default_fun_or_thunk_fun: 1925`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  replace comment-only turn-event slot propagation with typed-local propagation where straightforward in slot handlers and dispatch hubs.
+- [ ]  extend arrow-domain normalization from comments/signatures to direct command-branch enumization in adjacent handlers (`0x00583fb0`, `0x0058c640`, `0x00583bd0` siblings).
+- [ ]  continue unresolved helper promotion in `0x005d6000..0x005e0000` (next stable `FUN_*` + direct thunks after wave 2).
+- [ ]  run curated follow-up on retained `ret 0x10/0x14/0x18` candidates using tightened `--apply-safe` gates (manual review for top rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch424 (loop continuation: unresolved/callback lane range closure + typed turn-event packet dispatch lane)
+Goal:
+- Close remaining unresolved helpers in `0x005d6000..0x005e0000`, recover missing thunks tied to those helpers, and move typing/enum lane from comment-only toward concrete type propagation.
+
+1)  unresolved helper promotion in `0x005d6000..0x005e0000` completed
+- Renamed remaining unresolved functions in range:
+  - `0x005dbdd0` -> `HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4`
+  - `0x005dbe10` -> `HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4`
+  - `0x005dc3f0` -> `HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14`
+  - `0x005deea0` -> `GetRuntimePtrTable0066F368`
+  - `0x005dee80` -> `NoOpRuntimeUiCallback_005dee80`
+  - `0x005df3f0` -> `NoOpRuntimeUiCallback_005df3f0`
+  - `0x005df410` -> `NoOpRuntimeUiCallback_005df410`
+  - `0x005df780` -> `NoOpRuntimeUiCallback_005df780`
+  - `0x005df040` -> `NoOpOnPaintWithCPaintDCScope_005df040`
+- Artifact:
+  - `tmp_decomp/batch424_apply_runtime_helper_renames.log` (`ok=9`)
+
+2)  missing single-JMP thunk recovery for promoted helpers
+- Created and renamed missing thunks:
+  - `0x004014ec` -> `thunk_HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4`
+  - `0x00401f3c` -> `thunk_HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4`
+  - `0x00409a61` -> `thunk_HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14`
+  - `0x00407dc9` -> `thunk_NoOpRuntimeUiCallback_005dee80`
+  - `0x00401db6` -> `thunk_GetRuntimePtrTable0066F368`
+  - `0x00409683` -> `thunk_NoOpRuntimeUiCallback_005df3f0`
+  - `0x0040517d` -> `thunk_NoOpRuntimeUiCallback_005df410`
+  - `0x0040920f` -> `thunk_NoOpRuntimeUiCallback_005df780`
+  - `0x004048ae` -> `thunk_ResolveTurnEventDialogNodeByMessageContext`
+- Artifact:
+  - `tmp_decomp/batch424_apply_create_and_rename_thunks.log` (`created=9`, `ok=9`)
+
+3)  curated ret-imm follow-up with tightened auto-apply gates
+- Re-ran `ret 0x10 / 0x14 / 0x18` lanes with tightened safe settings:
+  - `--min-score 9`
+  - `--max-safe-instruction-count 140`
+  - `--min-safe-caller-count 1`
+  - denylist retained (`WrapperFor_`, `thunk_`)
+- Result:
+  - `safe_candidates=0` for all three lanes (expected under strict gating), so no auto-applies were performed.
+- Artifacts:
+  - `tmp_decomp/batch424_ret0x10_applysafe.log`
+  - `tmp_decomp/batch424_ret0x14_applysafe.log`
+  - `tmp_decomp/batch424_ret0x18_applysafe.log`
+
+4)  typed propagation step in dispatch hub
+- Added reusable script:
+  - `new_scripts/create_turn_event_factory_packet_struct_and_apply.py`
+- Created type:
+  - `/Imperialism/TurnEvent/STurnEventFactoryPacket`
+- Applied typed signature:
+  - `0x0048cfd0` `DispatchTurnEventPacketThroughDialogFactory`
+  - from raw pointer form to:
+    - `void __fastcall DispatchTurnEventPacketThroughDialogFactory(STurnEventFactoryPacket * pEventPacket)`
+  - includes packet field at `+0x60` (`eFactorySlot60`) for turn-event factory slot dispatch semantics.
+- Artifact:
+  - `tmp_decomp/batch424_apply_turn_event_packet_struct_and_signature.log`
+
+5) Reusable script maintenance
+- Added:
+  - `new_scripts/create_specific_jmp_thunks_from_csv.py`
+- Purpose:
+  - reusable verified creation/rename pass for specific missing single-JMP thunk addresses from CSV rows.
+
+6) Gates + progress snapshot
+- Unresolved lane closure:
+  - `tmp_decomp/batch424_unresolved_005d6000_005e0000_post.csv` -> `rows=0`
+- Strict super-lane:
+  - `tmp_decomp/batch424_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch424_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch424_progress_counts_post2.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10556`
+  - `default_fun_or_thunk_fun: 1916`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend arrow-domain normalization from comments/signatures to direct command-branch enumization in adjacent handlers (`0x00583fb0`, `0x0058c640`, `0x00583bd0` siblings).
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  propagate `STurnEventFactoryPacket` typing to `BuildTurnEventFactoryPacket` and direct thunk wrappers.
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005d6000..0x005e0000` closure (start `0x005e0000..0x005e4000`).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch424b (loop continuation: full `0x005e0000..0x005e4000` helper dehardcode wave)
+Goal:
+- Execute the next runtime helper window in full, including direct thunk alignment where present.
+
+1) Runtime helper promotion wave in `0x005e0000..0x005e4000`
+- Promoted/renamed high-confidence helpers in multiple sub-lanes:
+  - save/profile/version utilities:
+    - `DeleteLegacyCliSaveImpFiles`
+    - `LoadProfileStringAndAssignSharedRef`
+    - `FormatVersionStringFromVersionResource`
+  - runtime-selection and state callbacks:
+    - `DestructMovieViewAndCloseOwnedWindow`
+    - `DestructRuntimeSelectionRecordBufferState`
+    - `OpenRuntimeSelectionSourceByIndexAndCopyPath`
+    - `OpenRuntimeSelectionSourceAndApplyActiveNationState`
+    - `SetLoadedTagOnLocalizationEntryIfPresent`
+    - `SendMessage806IfSelectionStateActive`
+    - `SendMessage808IfSelectionStateActive`
+  - audio/MMIO/MCI lane:
+    - `OpenWaveMmioReadFmtChunkAndAllocateHeader`
+    - `ReadMmioBytesToBufferAndUpdateChunkRemaining`
+    - `LoadWaveDataAndFormatFromFilePath`
+    - `SendMciStatusCommand814AndIgnoreFailure`
+    - `OpenCdAudioAndProbeAuxOutputDevice`
+    - `SendMciCommand804ToDevice`
+    - `SendMciCommand808ToDeviceWithParam`
+    - `SetPlaybackState2AndNotifyOwnerCallback`
+    - `NoOpPlaybackCallback_005e1fd0`
+    - `IncrementPlaybackCounterAndNotifyOwnerCallback`
+  - remaining helpers in same lane:
+    - `UpdateCursorHelperWindowTextFromUiString`
+    - `CreateRuntimeSelectionRecordEntryIfTagNotReserved`
+    - `EnumerateStreamEntriesWithDualCallbacksAndTempBuffer`
+    - `InitializeMovieViewOwnedStateBlock`
+    - `SendMessage808IfActiveThenDispatchMouseMove`
+    - `CreateWaveFileAndWriteFmtFactChunks`
+    - `CopyMmioChunkByFourCCViaGlobalBuffer`
+    - `ProbeAuxOutputDeviceIndexByPidMask`
+    - `SetAuxOutputVolumeAcrossCompatibleDevices`
+    - `GetAuxOutputVolumeFromFirstCompatibleDevice`
+    - `QueryMciStatusField5ViaCommand814`
+    - `QueryMciStatusField8ViaCommand814`
+    - `QueryMciStatusField3ViaCommand814`
+    - `GetRuntimePtrTable0066F588`
+    - `EnumerateStateEntriesAndInvokeObjectCallback`
+    - `NoOpRuntimeUiCallback_005e2490`
+    - `StartAsyncWNetOperationWithErrorCallback`
+    - `ReleaseObjectIfNonNullViaVslot04`
+    - `ReleaseSharedStringRefOnly_005e2850`
+    - `InitializeRuntimeClassVtablePointer_0066FEC4_Secondary`
+
+2) Thunk alignment wave for renamed runtime helpers
+- Applied direct single-JMP thunk renames for the above where present in `0x00400000..0x00410000`:
+  - examples:
+    - `thunk_DeleteLegacyCliSaveImpFiles_At00409953`
+    - `thunk_FormatVersionStringFromVersionResource_At00408111`
+    - `thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2`
+    - `thunk_OpenWaveMmioReadFmtChunkAndAllocateHeader_At00401645`
+    - `thunk_OpenCdAudioAndProbeAuxOutputDevice_At0040194c`
+    - `thunk_QueryMciStatusField5ViaCommand814` family not present as direct thunks in this island (no-op for that subset)
+- Artifacts:
+  - `tmp_decomp/batch424_runtime_window_5e00_thunk_renames.csv`
+  - `tmp_decomp/batch424_runtime_window_5e00_thunk_renames_wave2.csv`
+  - `tmp_decomp/batch424_apply_runtime_window_5e00_thunk_renames.log`
+  - `tmp_decomp/batch424_apply_runtime_window_5e00_thunk_renames_wave2.log`
+
+3) typing/enum lane arrow direct-command enumization completed
+- Added reusable script:
+  - `new_scripts/annotate_arrow_command_constants.py`
+- Applied EOL enum comments for immediate constants `0x64/0x65` in key split-arrow handlers:
+  - `HandleTradeArrowAutoRepeatTickAndDispatch`
+  - `HandleSplitArrowAutoRepeatTickAndDispatch_Offset90`
+  - `HandleSplitArrowAutoRepeatTickAndDispatch_Offset84`
+  - `HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84`
+  - `HandleSplitArrowMousePhaseStateAndDispatchCommand64or65`
+  - `HandleTransportPictureSplitArrowCommand64or65`
+  - `HandleShipFractionClusterSplitArrowCommand64or65`
+  - `HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward`
+- Artifact:
+  - `tmp_decomp/batch424_apply_annotate_arrow_command_constants.log` (`annotations_set=17`)
+
+4) Window/gate outcomes
+- Runtime window closure:
+  - `tmp_decomp/batch424_unresolved_005e0000_005e4000_post6.csv` -> `rows=0`
+- Strict super-lane:
+  - `tmp_decomp/batch424_named_callers_with_generic_callees_superlane_strict_post7.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch424_unresolved_0060_0062_post7.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch424_progress_counts_post7.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10618`
+  - `default_fun_or_thunk_fun: 1854`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  propagate `STurnEventFactoryPacket` typing to `BuildTurnEventFactoryPacket` and direct thunk wrappers.
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005e0000..0x005e4000` closure (start `0x005e4000..0x005e8000`).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch424c (loop continuation: close `0x005e4000..0x005e8000` unresolved runtime lane)
+Goal:
+- Continue unresolved/callback lane window-based dehardcoding and close the next runtime window end-to-end.
+
+1) Runtime window promotion waves in `0x005e4000..0x005e8000`
+- Promoted wrappers/runtime helpers including:
+  - text-output/HDC wrappers:
+    - `CallExtTextOutAOnStoredHdc`
+    - `CallTabbedTextOutAOnStoredHdcAndSplitResult`
+    - `CallGrayStringAOnStoredHdcWithOptionalBrush`
+  - runtime class pointer initializers:
+    - `InitializeRuntimeClassVtablePointer_0066FEC4_VariantA/B/C/D`
+    - `InitializeRuntimeClassVtablePointer_0066FA50_State`
+    - `InitializeRuntimeClassVtablePointer_0066FA68_State`
+  - exception/runtime bridge helpers:
+    - `WrapperFor_FUN_005eccc0_At005e74d0`
+    - `DispatchExceptionThroughCrtThreadHandlerFrame`
+    - `ExecuteCrtHandlerWithOptionalRtlUnwind`
+    - `RestoreSehFrameAndJumpIndirect`
+    - `AtomicLockUnlockAndJumpIndirect_A/B/C`
+    - `CaptureExceptionContextToGlobalSlots`
+    - `InitializeFpmathAmsgExitHandlerTable`
+    - `FindFrameRecordRangeByPcAndDepth`
+    - `WrapperFor_FUN_005eccc0_WithFrameState`
+  - runtime container/serialization/audio control helpers:
+    - `ResizeDwordPointerArrayAndZeroNewSlots`
+    - `SerializeLinkedRecordListWithFreeNodePool`
+    - `SerializeDynamicDwordPointerArrayState`
+    - `InitializeSoundSubsystemAndAllocateChannelLists`
+    - `DestructClipStateRegionAndMaybeFreeSelf`
+    - `RequestDirectSoundInitIfAllowed`
+    - `ClearDirectSoundInitPendingAndResetState`
+    - `NotifyGlobalAudioObjectsViaVslot48`
+    - `UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState`
+    - `ForwardActionToVslotB4WithFlag1`
+    - `ReturnConstantTrue_SoundPredicate`
+    - `ReturnConstantFalse_SoundPredicate`
+    - `ReturnConstantZero_005e5170`
+    - `ReturnConstantZero_005e5190`
+    - `NoOpAudioTickCallback_005e50a0`
+    - `NoOpRuntimeCallback_005e717b`
+
+2) Thunk alignment in same wave
+- Direct thunk updates applied where present:
+  - `thunk_ResizeDwordPointerArrayAndZeroNewSlots_At00407694`
+  - `thunk_InitializeRuntimeClassVtablePointer_0066FA50_State_At004056e6`
+  - `thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7`
+- Artifacts:
+  - `tmp_decomp/batch424_runtime_window_5e40_thunk_renames_wave1.csv`
+  - `tmp_decomp/batch424_runtime_window_5e40_thunk_renames_wave2.csv`
+  - `tmp_decomp/batch424_apply_runtime_window_5e40_thunk_renames_wave1.log`
+  - `tmp_decomp/batch424_apply_runtime_window_5e40_thunk_renames_wave2.log`
+
+3) Window/gate outcomes
+- Window closure:
+  - `tmp_decomp/batch424_unresolved_005e4000_005e8000_post3.csv` -> `rows=0`
+- Strict super-lane:
+  - `tmp_decomp/batch424_named_callers_with_generic_callees_superlane_strict_post10.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch424_unresolved_0060_0062_post10.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch424_progress_counts_post10.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10657`
+  - `default_fun_or_thunk_fun: 1815`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  propagate `STurnEventFactoryPacket` typing to `BuildTurnEventFactoryPacket` and direct thunk wrappers.
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005e4000..0x005e8000` closure (start `0x005e8000..0x005ec000`).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch424d (loop continuation: close `0x005e8000..0x005ec000`)
+Goal:
+- Continue unresolved/callback lane window progression and close next unresolved band.
+
+1) Promoted all 4 unresolved functions in `0x005e8000..0x005ec000`
+- `0x005e95c0` -> `ReadNextByteFromBufferedStreamWithLock`
+- `0x005e9620` -> `ConvertSignedIntToStringWithBaseAndSignHandling`
+- `0x005e9660` -> `ConvertUnsignedIntToStringInBase`
+- `0x005ea810` -> `FindSubstringMbcsAwareOrFallbackStrstr`
+- Artifacts:
+  - `tmp_decomp/batch424_runtime_window_5e80_renames.csv`
+  - `tmp_decomp/batch424_apply_runtime_window_5e80_renames.log`
+
+2) Window/gate outcomes
+- Window closure:
+  - `tmp_decomp/batch424_unresolved_005e8000_005ec000_post.csv` -> `rows=0`
+- Strict super-lane:
+  - `tmp_decomp/batch424_named_callers_with_generic_callees_superlane_strict_post11.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch424_unresolved_0060_0062_post11.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch424_progress_counts_post11.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10661`
+  - `default_fun_or_thunk_fun: 1811`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  propagate `STurnEventFactoryPacket` typing to `BuildTurnEventFactoryPacket` and direct thunk wrappers.
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005e8000..0x005ec000` closure (start `0x005ec000..0x005f0000`).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch424e (loop continuation: close `0x005ec000..0x005f0000`)
+Goal:
+- Continue unresolved/callback lane window progression and clear the next unresolved block.
+
+1) Promoted all unresolved functions in `0x005ec000..0x005f0000`
+- Exception/runtime chain:
+  - `DispatchStructuredExceptionThroughFrameInfo`
+  - `RunStructuredExceptionHandlerSearch`
+  - `InvokeFrameHandlersForCurrentPcRange`
+  - `UnwindAndInvokeFrameHandlerDispatch`
+  - `ApplyExceptionDataTransferByFrameDescriptor`
+  - `RunSettingFrameChainUntilTargetIndex`
+  - `CallSettingFrameWithThreadExceptionContext`
+  - `RestoreThreadExceptionContextAndFinalizeFrameCall`
+  - `InvokeFrameTerminationHandlerIfPresent`
+  - `ComputeAdjustedFramePointerFromDescriptor`
+  - `RunLocalExceptionFilterChainAndUnwind`
+  - `AbortOnRuntimeInvariantViolation`
+  - `AbortWithThreadAbortHookIfPresent`
+  - `WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e`
+- Runtime/DST/allocator/string formatting lane:
+  - `EvaluateIsInDstUsingRuntimeRuleTables`
+  - `ConfigureDstTransitionWindowFromRuleSet`
+  - `IsRuntimeFloatThresholdNegative_006739C8`
+  - `TrimHeapSubblockTailIfZeroFilled`
+  - `FormatNumericStringAndAppendWithFlags`
+  - `FormatNumericStringAndAppend`
+  - `FormatNumericStringWithWidthAndTrimRules`
+- Artifacts:
+  - `tmp_decomp/batch424_runtime_window_5ec0_renames_wave1.csv`
+  - `tmp_decomp/batch424_apply_runtime_window_5ec0_renames_wave1.log`
+
+2) Window/gate outcomes
+- Window closure:
+  - `tmp_decomp/batch424_unresolved_005ec000_005f0000_post1.csv` -> `rows=0`
+- Strict super-lane:
+  - `tmp_decomp/batch424_named_callers_with_generic_callees_superlane_strict_post12.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch424_unresolved_0060_0062_post12.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch424_progress_counts_post12.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10682`
+  - `default_fun_or_thunk_fun: 1790`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  propagate `STurnEventFactoryPacket` typing to `BuildTurnEventFactoryPacket` and direct thunk wrappers.
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005ec000..0x005f0000` closure (start `0x005f0000..0x005f4000`).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch425 (loop continuation: close `0x005f0000..0x005f4000` + finish typing/enum lane packet propagation)
+Goal:
+- Continue runtime unresolved-window loop and complete pending typed-propagation item for turn-event factory packet lane.
+
+1) Closed unresolved runtime window `0x005f0000..0x005f4000`
+- Promoted all unresolved entries in window and related support helpers:
+  - `DecodeCompressedTileCodeStreamAndAppendValidTiles`
+  - `ReadNextTileCodeSkippingAttributeMask08`
+  - `CheckRuntimeErrorHookGuardAndReportFcFf`
+  - `LocaleMapStringWideWithAnsiFallback`
+  - `CountWideCharsUpToLimitOrNul`
+  - `ValidateCppExceptionRecordAndDispatchHook`
+  - `GetStringTypeWideWithAnsiFallback`
+  - `MapFpControlLowByteToRuntimeBits_EntryA`
+  - `MapFpControlLowByteToRuntimeBits_EntryB`
+  - `MergeMappedFpControlWithMaskAndStore`
+  - `MapFpControlWordToRuntimeControlBits`
+  - `StoreMappedFpControlBits_NoOp`
+  - `MapFpControlLowByteToRuntimeBits`
+  - `IsCodePointerCallableViaIsBadCodePtr`
+- Gate-fix follow-up renames (from strict super-lane post-check):
+  - `ReadBufferedFileByteWithRefillFallback` (`0x005f13f0`)
+  - `IsReadablePointerRangeViaIsBadReadPtr` (`0x005f4b50`)
+  - `IsWritablePointerRangeViaIsBadWritePtr` (`0x005f4b70`)
+- Artifacts:
+  - `tmp_decomp/batch425_runtime_window_5f00_renames_wave1.csv`
+  - `tmp_decomp/batch425_apply_runtime_window_5f00_renames_wave1.log`
+  - `tmp_decomp/batch425_runtime_window_5f00_renames_wave2.csv`
+  - `tmp_decomp/batch425_apply_runtime_window_5f00_renames_wave2.log`
+  - `tmp_decomp/batch425_unresolved_005f0000_005f4000_pre.csv`
+  - `tmp_decomp/batch425_unresolved_005f0000_005f4000_post2.csv` -> `rows=0`
+
+2) typing/enum lane completed: propagate `STurnEventFactoryPacket` typing to builder + thunks
+- Extended reusable script:
+  - `new_scripts/create_turn_event_factory_packet_struct_and_apply.py`
+- Applied typed signatures/comments to:
+  - `DispatchTurnEventPacketThroughDialogFactory` (`0x0048cfd0`)
+  - `BuildTurnEventFactoryPacket` (`0x0048cf10`)
+  - `thunk_BuildTurnEventFactoryPacket` (`0x00408d46`)
+  - `thunk_DispatchTurnEventPacketThroughDialogFactory` (`0x00404593`)
+- Artifact:
+  - `tmp_decomp/batch425_apply_turn_event_factory_packet_struct_and_signatures.log`
+
+3) Gate outcomes (kept zero after fix wave)
+- Strict super-lane:
+  - initial post-check: `tmp_decomp/batch425_named_callers_with_generic_callees_superlane_strict_post1.csv` -> `rows=3`
+  - after fix wave: `tmp_decomp/batch425_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch425_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch425_progress_counts_post2.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10696`
+  - `default_fun_or_thunk_fun: 1776`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005f0000..0x005f4000` closure (start `0x005f4000..0x005f8000`).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch426 (loop continuation: close `0x005f4000..0x005f8000`)
+Goal:
+- Continue unresolved-callback lane unresolved runtime window promotion and keep strict gates at zero.
+
+1) Closed unresolved runtime window `0x005f4000..0x005f8000`
+- Promoted 32 high-confidence runtime helpers in FP/decimal/signal lanes, including:
+  - `MergeMappedFpControlWithMaskClearingBit80000`
+  - `ToLowerCodepointAsciiOrLocaleAware`
+  - `Is96BitIntegerZeroAtOrAboveBitIndex`
+  - `SetBitIn96BitIntegerWithCarry`
+  - `Truncate96BitIntegerAtBitWithRounding`
+  - `Copy96BitIntegerWords`
+  - `Zero96BitIntegerWords`
+  - `Is96BitIntegerZero`
+  - `ShiftRight96BitIntegerByBitCount`
+  - `ConvertExtendedFloatToDecimalState`
+  - `ConvertParsedDecimalStateWithProfileA`
+  - `ConvertParsedDecimalStateWithProfileB`
+  - `ParseDecimalTextAndConvertWithProfileA`
+  - `ParseDecimalTextAndConvertWithProfileB`
+  - `RoundAndTrimDecimalDigitBuffer`
+  - `BuildDecimalConversionStateFromFpInput`
+  - `ConvertFpMantissaTo96BitIntegerAndExponent`
+  - `DecodeNextMultibyteCharToWideChar`
+  - `ExecuteCallbackUnderStreamCriticalSection`
+  - `FreePointerArrayEntries43`
+  - `InitializeLocaleDecimalSeparatorFromRuntimeLocale`
+  - `NormalizeDigitStringInPlace_RemoveSemicolons`
+  - `FreeOwnedPointerFieldsIfNotUsingStaticBuffer`
+  - `SetCrtSignalHandlerWithConsoleCtrlSetup`
+  - `ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks`
+  - `RaiseRuntimeSignalAndInvokeHandler`
+  - `AddUintWithCarryOutFlag`
+  - `Add96BitIntegerWithCarry`
+  - `ShiftLeft96BitIntegerBy1`
+  - `ShiftRight96BitIntegerBy1`
+  - `Build96BitIntegerFromDigitBytesAndNormalize`
+  - `ParseFloatingPointTextToInternalState`
+- Closed last residual unresolved in window:
+  - `0x005f6d33` -> `OrphanTail_FreeFourSavedPointersAndReturnTrue`
+- Artifacts:
+  - `tmp_decomp/batch426_runtime_window_5f40_renames_wave1.csv`
+  - `tmp_decomp/batch426_apply_runtime_window_5f40_renames_wave1.log`
+  - `tmp_decomp/batch426_runtime_window_5f40_renames_wave2.csv`
+  - `tmp_decomp/batch426_apply_runtime_window_5f40_renames_wave2.log`
+  - `tmp_decomp/batch426_unresolved_005f4000_005f8000_pre.csv`
+  - `tmp_decomp/batch426_unresolved_005f4000_005f8000_post2.csv` -> `rows=0`
+
+2) Strict gate fix-up (single residual generic callee)
+- `BuildDecimalConversionStateFromFpInput` initially hit strict super-lane due generic callee `FUN_005f8210`.
+- Promoted residual dependency chain:
+  - `0x005f8210` -> `ConvertExtendedFloatToStringInternal`
+  - `0x005f8f10` -> `MultiplyExtendedFloatByTableFactor`
+  - `0x005f91d0` -> `ApplyPowerOf10ExponentToExtendedFloat`
+- Artifacts:
+  - `tmp_decomp/batch426_runtime_window_5f40_renames_wave3.csv`
+  - `tmp_decomp/batch426_apply_runtime_window_5f40_renames_wave3.log`
+
+3) Gate outcomes
+- Strict super-lane:
+  - initial: `tmp_decomp/batch426_named_callers_with_generic_callees_superlane_strict_post1.csv` -> `rows=1`
+  - after dependency promotion: `tmp_decomp/batch426_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch426_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch426_progress_counts_post2.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10729`
+  - `default_fun_or_thunk_fun: 1743`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005f4000..0x005f8000` closure (start `0x005f8000..0x005fc000`).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+
+#### Applied batch427 (loop continuation: close `0x005f8000..0x005fc000`)
+Goal:
+- Continue unresolved-window loop and clear the next small runtime/UI-adjacent helper band.
+
+1) Closed unresolved runtime window `0x005f8000..0x005fc000`
+- Promoted all 7 unresolved functions in the window:
+  - `ParseUnsignedLongFromWideStringWithRadixFlags`
+  - `ToLowerCodepointWithLocaleLock`
+  - `MapCodepointToLowercaseWithLocale`
+  - `GetCharTypeMaskForCodepoint`
+  - `TerminateMfcApplicationState`
+  - `DestructTNewGameCommandAndBaseCWnd`
+  - `HitTestTooltipToolInfoWithLoadedResourceString`
+- Artifacts:
+  - `tmp_decomp/batch427_runtime_window_5f80_renames_wave1.csv`
+  - `tmp_decomp/batch427_apply_runtime_window_5f80_renames_wave1.log`
+  - `tmp_decomp/batch427_unresolved_005f8000_005fc000_pre.csv`
+  - `tmp_decomp/batch427_unresolved_005f8000_005fc000_post1.csv` -> `rows=0`
+
+2) Gate outcomes
+- Strict super-lane:
+  - `tmp_decomp/batch427_named_callers_with_generic_callees_superlane_strict_post1.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch427_unresolved_0060_0062_post1.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch427_progress_counts_post1.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10734`
+  - `default_fun_or_thunk_fun: 1738`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005f8000..0x005fc000` closure (start `0x005fc000..0x00600000`).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+
+#### Applied batch428 (loop continuation: close `0x005fc000..0x00600000`)
+Goal:
+- Continue unresolved-callback lane unresolved helper promotion and complete the next runtime/UI-support window.
+
+1) Closed unresolved window `0x005fc000..0x00600000`
+- Promoted all 8 unresolved functions in the window:
+  - `FormatMessageFromLoadedResourceOrThrowMfcException`
+  - `GetThisField10Value`
+  - `RegisterCommdlgLbSelChangedNotifyMessage`
+  - `RegisterCommdlgShareViolationMessage`
+  - `RegisterCommdlgFileNameOkMessage`
+  - `RegisterCommdlgColorOkMessage`
+  - `RegisterCommdlgHelpMessage`
+  - `RegisterCommdlgSetRgbColorMessage`
+- Artifacts:
+  - `tmp_decomp/batch428_runtime_window_5fc0_renames_wave1.csv`
+  - `tmp_decomp/batch428_apply_runtime_window_5fc0_renames_wave1.log`
+  - `tmp_decomp/batch428_unresolved_005fc000_00600000_pre.csv`
+  - `tmp_decomp/batch428_unresolved_005fc000_00600000_post1.csv` -> `rows=0`
+
+2) Gate outcomes
+- Strict super-lane:
+  - `tmp_decomp/batch428_named_callers_with_generic_callees_superlane_strict_post1.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch428_unresolved_0060_0062_post1.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch428_progress_counts_post1.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10741`
+  - `default_fun_or_thunk_fun: 1731`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue unresolved helper promotion in next runtime window after `0x005fc000..0x00600000` closure (start `0x00600000..0x00604000`).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch429 (loop continuation: runtime-window sanity sweep + thunk-target promotion lane)
+Goal:
+- Complete next runtime-window TODO checkpoints and pivot to higher-ROI unresolved lane (`thunk_FUN_*` target promotion).
+
+1) Runtime-window sanity sweep completed (`0x00600000..0x00624000`)
+- Checked sequential windows:
+  - `0x00600000..0x00604000` -> `rows=0`
+  - `0x00604000..0x00608000` -> `rows=0`
+  - `0x00608000..0x0060c000` -> `rows=0`
+  - `0x0060c000..0x00610000` -> `rows=0`
+  - `0x00610000..0x00614000` -> `rows=0`
+  - `0x00614000..0x00618000` -> `rows=0`
+  - `0x00618000..0x0061c000` -> `rows=0`
+  - `0x0061c000..0x00620000` -> `rows=0`
+  - `0x00620000..0x00624000` -> `rows=0`
+- Artifacts:
+  - `tmp_decomp/batch429_unresolved_00600000_00604000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_00604000_00608000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_00608000_0060c000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_0060c000_00610000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_00610000_00614000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_00614000_00618000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_00618000_0061c000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_0061c000_00620000_pre.csv`
+  - `tmp_decomp/batch429_unresolved_00620000_00624000_pre.csv`
+
+2) New high-ROI lane initiated: top unresolved snapshot and thunk-target promotions
+- Snapshot of unresolved/generic in `0x00400000..0x006fffff`:
+  - `tmp_decomp/batch429_unresolved_0040_006f_snapshot.csv` -> `rows=1912`
+- Selected highest-pressure `thunk_FUN_*` targets and promoted target functions:
+  - `NoOpRuntimeCallback_005184e0`
+  - `NoOpRuntimeCallback_005c34d0`
+  - `ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor`
+  - `InitializeUiTextStyleDescriptorAndApplyQuickDraw`
+  - `InitializeMainRoutineContextAndRun`
+  - `DispatchUiResourceContextVslot1E4WithCoords`
+  - `SetQuickDrawColorAndSyncGlobals`
+  - `DestroyClipStateRegionWrapperObject`
+  - `CreateClipStateRegionWrapperObject`
+  - `DrawFrameRectOrUpdateClipRegion`
+- Artifacts:
+  - `tmp_decomp/batch429_top_thunk_targets_context.log`
+  - `tmp_decomp/batch429_thunk_target_promotions_wave1.csv`
+  - `tmp_decomp/batch429_apply_thunk_target_promotions_wave1.log`
+
+3) Gate + progress outcomes
+- Strict super-lane:
+  - `tmp_decomp/batch429_named_callers_with_generic_callees_superlane_strict_post1.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch429_unresolved_0060_0062_post1.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch429_progress_counts_post1.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10761`
+  - `default_fun_or_thunk_fun: 1711`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue high-call-pressure thunk-target promotion from `tmp_decomp/batch429_unresolved_0040_006f_snapshot.csv` (top `thunk_FUN_*` by named callers first).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch429b (loop continuation: thunk-target promotion wave 2)
+Goal:
+- Continue unresolved-callback lane high-call-pressure `thunk_FUN_*` target promotion with low-risk behavioral names.
+
+1) Promoted additional top-pressure thunk targets
+- Renamed:
+  - `0x00484970` -> `InitializeRefCountedObjectBaseVtable`
+  - `0x0047a3e0` -> `CopyOffset10PointPairToOutOrZero`
+  - `0x00497c00` -> `NoOpRuntimeCallback_00497c00`
+  - `0x004958e0` -> `ReplaceClipStateRegionHandleFromRect`
+  - `0x00412a70` -> `InvokeAfxThreadVslot7CAndGetValueAtOffset98`
+- Artifacts:
+  - `tmp_decomp/batch429_thunk_target_promotions_wave2.csv`
+  - `tmp_decomp/batch429_apply_thunk_target_promotions_wave2.log`
+
+2) Gate + progress outcomes
+- Strict super-lane:
+  - `tmp_decomp/batch429_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+- Runtime bridge:
+  - `tmp_decomp/batch429_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch429_progress_counts_post2.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10771`
+  - `default_fun_or_thunk_fun: 1701`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+#### Applied batch430 (loop continuation: high-call-pressure thunk-target promotion waves 3-5)
+Goal:
+- Continue unresolved-callback lane thunk-target dehardcoding in dense `thunk_FUN_*` lane using top named-caller pressure.
+
+1) Wave 3 target promotions (15 functions)
+- Promoted:
+  - `ResetTerrainAdjacencyMatrixRowAndSymmetricLink`
+  - `ReleaseSharedStringRefOnly_0047f7f0`
+  - `PlayDefaultMessageBeep`
+  - `CenterViewportAroundGridIndexAndSnap`
+  - `NoOpRuntimeCallback_00489a70`
+  - `CreateFontFromPresetAndAttachRegionHandle`
+  - `IntersectRectWrapper`
+  - `CallObjectOffset24Vslot54IfPresent`
+  - `BuildMappedSharedStringFromByteStateTable`
+  - `SyncBoundedValueAndToggleControlStates`
+  - `NoOpRuntimeCallback_00426f80`
+  - `SetFieldC0AndInvalidateWindowIfChanged`
+  - `InvokeAfxThreadAndCallSecondaryRefresh`
+  - `SetObjectField04`
+  - `InitializePacketHeaderFields_Tag20202020`
+- Artifacts:
+  - `tmp_decomp/batch430_thunk_target_promotions_wave3.csv`
+  - `tmp_decomp/batch430_apply_thunk_target_promotions_wave3.log`
+
+2) Wave 4 target promotions (9 functions)
+- Promoted:
+  - `InitializeOutSharedStringWithEmptyRefAndCopyBuffer`
+  - `UpdateGlobalFontPresetAndRebuildCachedFontIfDirty`
+  - `SetMapStateByteFlag970WithRuntimeGate`
+  - `FrameRegionOnHdcAndReleaseBrushState`
+  - `ScanMapContextActionEntriesForCodeMatch`
+  - `CopyTwoDwordsAndWordToObjectOffset14`
+  - `NoOpRuntimeCallback_005c3530`
+  - `SortSevenEntriesAndUpdatePictureWidgets`
+  - `SetObjectField1EWord`
+- Artifacts:
+  - `tmp_decomp/batch430_thunk_target_promotions_wave4.csv`
+  - `tmp_decomp/batch430_apply_thunk_target_promotions_wave4.log`
+
+3) Wave 5 target promotions (11 functions)
+- Promoted:
+  - `BlitSurfaceRectSkippingTransparentColor`
+  - `ForwardMciCommand808ToDevice`
+  - `GetRegionBoxToRectIfPresent`
+  - `ApplyEraCapabilityCostAndSetSelection`
+  - `CombineTwoRegionsIntoDestinationAndUpdateBox`
+  - `StretchDibitsFromStoredBitmapToHdc`
+  - `ClearQuickDrawModeFlag950AC`
+  - `InitializeBrushStateVtableAndClearHandle`
+  - `HandleBlinkStateAndScheduleTimerTick`
+  - `ReloadBitmap244AndRefreshUiCaches`
+  - `BlitMonochromeMaskBytePatternToSurface`
+- Artifacts:
+  - `tmp_decomp/batch430_thunk_target_promotions_wave5.csv`
+  - `tmp_decomp/batch430_apply_thunk_target_promotions_wave5.log`
+
+4) Lane outcomes
+- Unresolved snapshot evolution:
+  - `tmp_decomp/batch430_unresolved_0040_006f_snapshot.csv` -> `rows=1882`
+  - `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave3.csv` -> `rows=1852`
+  - `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave4.csv` -> `rows=1834`
+  - `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave5.csv` -> `rows=1812`
+- Strict super-lane gate:
+  - `tmp_decomp/batch430_named_callers_with_generic_callees_superlane_strict_post3.csv` -> `rows=0`
+- Runtime bridge gate:
+  - maintained zero in prior/ongoing checks (`0x0060..0x0062`).
+- Progress:
+  - `tmp_decomp/batch430_progress_counts_post3.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10841`
+  - `default_fun_or_thunk_fun: 1631`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue high-call-pressure thunk-target promotion from `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave5.csv` (top `thunk_FUN_*` by named callers/xrefs first).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch430c (loop continuation: thunk-target promotion wave 6)
+Goal:
+- Continue unresolved-callback lane top-pressure thunk-target cleanup with direct behavior-based naming.
+
+1) Wave 6 target promotions (10 functions)
+- Promoted:
+  - `LoadBitmapResourceAndInitializeSurfaceState`
+  - `CacheObjectVslot18ResultToField0C`
+  - `CacheObjectVslot74ResultToField0C`
+  - `SetByteFlagAtOffsetAF0ByIndex`
+  - `ResizePointerArrayAndZeroEntries`
+  - `NoOpRuntimeCallback_005d5d10`
+  - `AreAllLinkedEntriesTerrainFlagBit2Clear`
+  - `RenderDiplomacyPendingPolicyIconsAndFrames`
+  - `AssignSharedStringFromMidSubstring`
+  - `TestGridSegmentCrossesViewportThreshold`
+- Artifacts:
+  - `tmp_decomp/batch430_thunk_target_promotions_wave6.csv`
+  - `tmp_decomp/batch430_apply_thunk_target_promotions_wave6.log`
+
+2) Lane outcomes after wave 6
+- Unresolved snapshot:
+  - `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave6.csv` -> `rows=1792`
+- Strict super-lane gate:
+  - `tmp_decomp/batch430_named_callers_with_generic_callees_superlane_strict_post4.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch430_progress_counts_post4.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10861`
+  - `default_fun_or_thunk_fun: 1611`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue high-call-pressure thunk-target promotion from `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave6.csv` (top `thunk_FUN_*` by named callers/xrefs first).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch430d (loop continuation: thunk-target promotion waves 7)
+Goal:
+- Keep reducing top `thunk_FUN_*` pressure in `0x0040..0x006f` snapshot using low-risk behavioral naming.
+
+1) Wave 7 target promotions (10 functions)
+- Promoted:
+  - `ReleaseBitmapSurfaceResourcesAndResetState`
+  - `BuildPaletteFromBitmapColorTable`
+  - `ComputeBucketIndexAndScanNodeByKey`
+  - `UpdatePagerButtonStatesAndRefreshPanels`
+  - `InitializeGlobalRectDefaultsIfUninitialized`
+  - `ActivateFirstActiveTacticalUnitByCategoryAtTile`
+  - `InitializePaletteHolderVtableAndReset`
+  - `CallObjectOffset18Vslot28`
+  - `ResizeDynamicPointerArrayWithGrowthStep`
+  - `ActivateFirstIdleTacticalUnitByCategoryAtTile`
+- Artifacts:
+  - `tmp_decomp/batch430_thunk_target_promotions_wave7.csv`
+  - `tmp_decomp/batch430_apply_thunk_target_promotions_wave7.log`
+
+2) Lane outcomes after wave 7
+- Unresolved snapshot:
+  - `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave7.csv` -> `rows=1772`
+- Strict super-lane gate:
+  - `tmp_decomp/batch430_named_callers_with_generic_callees_superlane_strict_post5.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch430_progress_counts_post5.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10881`
+  - `default_fun_or_thunk_fun: 1591`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue high-call-pressure thunk-target promotion from `tmp_decomp/batch430_unresolved_0040_006f_snapshot_post_wave7.csv` (top `thunk_FUN_*` by named callers/xrefs first).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch431e (loop continuation: thunk-target promotion wave 8)
+Goal:
+- Continue unresolved-callback lane high-call-pressure `thunk_FUN_*` target promotion with low-risk, behavior-backed naming.
+
+1) Wave 8 target promotions (10 functions)
+- Promoted:
+  - `UpdateRectCacheIfChangedAndInvalidateCityDialog`
+  - `ValidateGridIndexRange0To17F`
+  - `InitializeOrderRecordFieldsFromArgs`
+  - `ResizePointerArrayAndZeroEntries_Simple`
+  - `CommitPendingUiModeChangeAndRefreshViews`
+  - `ConstructBitmapSurfaceStateAndResetResources`
+  - `BuildPaletteFromRgbQuadBuffer`
+  - `DestructTWindowViewAndUnlinkGlobalLists`
+  - `BeginMouseCaptureAndStartRepeatTimer`
+  - `ApplyGridColumnSelectionGuard`
+- Artifacts:
+  - `tmp_decomp/batch431_thunk_target_promotions_wave8.csv`
+  - `tmp_decomp/batch431_apply_thunk_target_promotions_wave8.log`
+
+2) Lane outcomes after wave 8
+- Unresolved snapshot:
+  - `tmp_decomp/batch431_unresolved_0040_006f_snapshot_post_wave8.csv` -> `rows=1742`
+- Strict super-lane gate:
+  - `tmp_decomp/batch431_named_callers_with_generic_callees_superlane_strict_post1.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch431_progress_counts_post1.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10911`
+  - `default_fun_or_thunk_fun: 1561`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+#### Applied batch432 (loop continuation: thunk-target promotion waves 1-3 + gate hygiene)
+Goal:
+- Keep reducing unresolved high-pressure `thunk_FUN_*` lane, prioritize low-hanging wrappers/helpers, and maintain strict gates at zero.
+
+1) Wave 1 target + thunk promotions (22 rows)
+- Promoted helpers:
+  - `SetQuickDrawColorAndPropagateIfChanged`
+  - `AllocateBitmapSurfaceHeaderAndPixelBuffer`
+  - `EnsureBitmapSurfaceDibSectionCreated`
+  - `ReleaseHashIndexedRecordByHandle`
+  - `NoOpCallback_00498ca0`
+  - `SetMapRecordFlagA3AndPropagateToChildren`
+  - `EnsureDynamicPointerArrayCapacityForIndex`
+  - `ForwardMciStatusCommand814IgnoreFailure`
+  - `CopyRgbQuadTableToBitmapSurfacePalette`
+  - `InvokeViewSlotE4IfContextPresent`
+  - `ResetClipRegionAndReadBoundingRect`
+- Also promoted direct thunk wrappers for each of the above targets.
+- Artifacts:
+  - `tmp_decomp/batch432_thunk_target_promotions_wave1.csv`
+  - `tmp_decomp/batch432_apply_thunk_target_promotions_wave1.log`
+
+2) Strict gate residue fix
+- Promoted residual generic wrapper:
+  - `0x005f5d30` -> `WriteByteToBufferedStreamState`
+- Restored strict super-lane to zero.
+- Artifacts:
+  - `tmp_decomp/batch432_gate_fix_renames.csv`
+  - `tmp_decomp/batch432_apply_gate_fix_renames.log`
+  - `tmp_decomp/batch432_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+
+3) Wave 2 wrapper promotions (5 rows)
+- Promoted:
+  - `ResetAndOpenCdAudioDeviceHandle`
+  - `EnsureCdAudioDeviceHandleInitialized`
+  - `SendMciCommand804IfDeviceOpenAndClearHandle`
+  - `SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge`
+  - `ForwardBeginMouseCaptureAndStartRepeatTimer`
+- Artifacts:
+  - `tmp_decomp/batch432_wrapper_promotions_wave2.csv`
+  - `tmp_decomp/batch432_apply_wrapper_promotions_wave2.log`
+
+4) Wave 3 target + thunk promotions (20 rows)
+- Promoted helpers:
+  - `ForwardBlitSurfaceRectSkippingTransparentColor`
+  - `EndMouseCaptureAndStopRepeatTimer`
+  - `ProbeRectEmptyAfterCopyToLocal`
+  - `FindShortKeyHashNodeAndOutputBucketIndex`
+  - `SwapFirstTwoBytesInBuffer`
+  - `UnlinkNodeFromDoublyLinkedListAndRecycle`
+  - `NoOpUiStyleBridge_004862b0`
+  - `AppendBytePairToGrowableBuffer`
+  - `StretchDibitsWithCopiedPaletteTable`
+  - `RebuildSurfaceRowsWithTemporaryRowBuffer`
+- Also promoted direct thunk wrappers for each of the above targets.
+- Artifacts:
+  - `tmp_decomp/batch432_thunk_target_promotions_wave3.csv`
+  - `tmp_decomp/batch432_apply_thunk_target_promotions_wave3.log`
+
+5) Lane outcomes after batch432 wave 3
+- Unresolved snapshot progression:
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave1.csv` -> `rows=1723`
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave2.csv` -> `rows=1712`
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave3.csv` -> `rows=1692`
+- Strict super-lane gate:
+  - `tmp_decomp/batch432_named_callers_with_generic_callees_superlane_strict_post4.csv` -> `rows=0`
+- Runtime-bridge unresolved gate:
+  - `tmp_decomp/batch432_unresolved_0060_0062_post4.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch432_progress_counts_post_wave3.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 10961`
+  - `default_fun_or_thunk_fun: 1511`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  derive/type `pSourcePacket0C` for `BuildTurnEventFactoryPacket` (replace remaining `void*` + key field offsets with struct fields).
+- [ ]  continue high-call-pressure thunk-target promotion from `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave3.csv` (top `thunk_FUN_*` by named callers/xrefs first).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch432e (loop continuation: thunk-target promotion waves 4-7)
+Goal:
+- Continue unresolved-callback lane unresolved reduction by promoting remaining high-pressure `thunk_FUN_*` targets with concrete behavior-backed names.
+
+1) Wave 4 promotions (16 rows)
+- Promoted targets + thunks:
+  - `NoOpCallback_004886d0`
+  - `StretchDibitsFromStoredBitmapToHdcSimple`
+  - `AppendByteToGrowableBuffer`
+  - `PopSinglyLinkedListHeadPointer`
+  - `CallThisVslot1B4NoArgs`
+  - `RemoveHashIndexedRecordByShortKey`
+  - `NotifyGlobalCaptureOwnerState1WithCachedCoords`
+  - `WriteWordArrayToOutputCallbackLE`
+- Artifacts:
+  - `tmp_decomp/batch432_thunk_target_promotions_wave4.csv`
+  - `tmp_decomp/batch432_apply_thunk_target_promotions_wave4.log`
+
+2) Wave 5 cluster cleanup (2 rows)
+- Promoted:
+  - `AppendExponentSuffixToNumericBuffer` (`0x005ec930`)
+  - `AppendFractionalDigitsAndPadNumericBuffer` (`0x005ecaa0`)
+- Artifacts:
+  - `tmp_decomp/batch432_numeric_format_cluster_promotions_wave5.csv`
+  - `tmp_decomp/batch432_apply_numeric_format_cluster_promotions_wave5.log`
+
+3) Wave 6 promotions (16 rows)
+- Promoted targets + thunks:
+  - `NotifyCaptureOwnerState1AndMaybeUpdateCoords`
+  - `CopyExtendedCityDialogControllerState`
+  - `InitializeDiplomacyCouncilViewControlsAndTicker`
+  - `GenerateMappedFlavorTextVariantA_005d13d0`
+  - `GenerateMappedFlavorTextVariantB_005cfc40`
+  - `GenerateMappedFlavorTextVariantC_005cf1b0`
+  - `GenerateMappedFlavorTextVariantD_005d33a0`
+  - `GenerateMappedFlavorTextVariantE_005ccce0`
+- Artifacts:
+  - `tmp_decomp/batch432_thunk_target_promotions_wave6.csv`
+  - `tmp_decomp/batch432_apply_thunk_target_promotions_wave6.log`
+
+4) Wave 7 promotions (4 rows)
+- Promoted:
+  - `BuildArmyActionLabelFromLocalizationAndCounts` (`0x004a2610`)
+  - `BuildArmyContextActionRecordsAndDispatchLabel` (`0x004a2900`)
+  - plus both direct thunk wrappers.
+- Artifacts:
+  - `tmp_decomp/batch432_thunk_target_promotions_wave7.csv`
+  - `tmp_decomp/batch432_apply_thunk_target_promotions_wave7.log`
+
+5) typed-propagation lane typed propagation slice (turn-event packet)
+- Updated reusable script:
+  - `new_scripts/create_turn_event_factory_packet_struct_and_apply.py`
+  - retyped `pSourcePacket0C` parameter to `STurnEventFactoryPacket*` in builder/thunk signatures.
+  - added best-effort struct-field replacement at offset `0x0C` to recursive packet pointer type.
+- Reapplied signatures/comments:
+  - `BuildTurnEventFactoryPacket` (`0x0048cf10`)
+  - `DispatchTurnEventPacketThroughDialogFactory` (`0x0048cfd0`)
+  - `thunk_BuildTurnEventFactoryPacket` (`0x00408d46`)
+  - `thunk_DispatchTurnEventPacketThroughDialogFactory` (`0x00404593`)
+- Artifact:
+  - `tmp_decomp/batch433_apply_turn_event_factory_packet_struct_and_apply.log`
+
+6) Lane outcomes after wave 7
+- Unresolved snapshot progression:
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave4.csv` -> `rows=1676`
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave5.csv` -> `rows=1674`
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave6.csv` -> `rows=1658`
+  - `tmp_decomp/batch432_unresolved_0040_006f_snapshot_post_wave7.csv` -> `rows=1654`
+- Gates:
+  - `tmp_decomp/batch432_named_callers_with_generic_callees_superlane_strict_post8.csv` -> `rows=0`
+  - `tmp_decomp/batch432_unresolved_0060_0062_post8.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch432_progress_counts_post_wave7.txt`
+  - `renamed_functions: 10997`
+  - `default_fun_or_thunk_fun: 1475`
+
+#### Applied batch433 (loop continuation: wrapper promotions wave 1)
+Goal:
+- Harvest remaining low-risk wrapper-style unresolved functions in one coherent pass.
+
+1) Wrapper/helper promotions (9 rows)
+- Promoted:
+  - `DestructBitmapSurfaceStateAndRestoreRuntimeClass`
+  - `DispatchVslot24ThenCopyExtendedCityDialogControllerState`
+  - `CombineOptionalSourceRegionIntoDestinationAndUpdateBox`
+  - `thunk_CombineOptionalSourceRegionIntoDestinationAndUpdateBox`
+  - `EnsureClipRegionWrapperAtSlotAndMergeSourceRegion`
+  - `ComputeWrappedTileIndexFromObjectOffset7C7E`
+  - `PlayControlSoundAndBeginMouseCapture_Field92_A`
+  - `PlayControlSoundAndBeginMouseCapture_Field92_B`
+  - `PlayControlSoundAndBeginMouseCapture_Field84`
+- Artifacts:
+  - `tmp_decomp/batch433_wrapper_promotions_wave1.csv`
+  - `tmp_decomp/batch433_apply_wrapper_promotions_wave1.log`
+
+2) Lane outcomes after batch433 wave 1
+- Unresolved snapshot:
+  - `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post1.csv` -> `rows=1644`
+- Gates:
+  - `tmp_decomp/batch433_named_callers_with_generic_callees_superlane_strict_post2.csv` -> `rows=0`
+  - `tmp_decomp/batch433_unresolved_0060_0062_post2.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch433_progress_counts_post2.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 11007`
+  - `default_fun_or_thunk_fun: 1465`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing: if stable, tighten `pSharedString6C` and payload helper parameter typing.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post1.csv` (remaining low-pressure `FUN_/thunk_FUN_` wrappers first, then `Cluster_*` lane).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch433b (loop continuation: wrapper/callee-hint waves 2-7)
+Goal:
+- Continue unresolved reduction in low-pressure lanes while preserving strict gate invariants.
+
+1) Wave 2 (single forwarder)
+- Promoted:
+  - `0x00573940` -> `ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox`
+- Artifact:
+  - `tmp_decomp/batch433_wrapper_promotions_wave2.csv`
+
+2) Wave 3 (wave-loader helper)
+- Promoted:
+  - `0x0049c720` -> `ReadWaveDataAndFormatViaLoaderWithRetry`
+  - `0x004038f5` -> `thunk_ReadWaveDataAndFormatViaLoaderWithRetry`
+- Artifact:
+  - `tmp_decomp/batch433_thunk_target_promotions_wave3.csv`
+
+3) Caller-evidence lane (FUN_* -> concrete names, no generic Cluster_* output)
+- Generated caller-evidence candidates:
+  - `tmp_decomp/batch433_fun_callers_gameplay.csv` (`candidates=65`)
+- Applied high-confidence subset with concrete behavior names:
+  - `LoadWaveResourceByNumericIdAndBuildBuffer`
+  - `thunk_LoadWaveResourceByNumericIdAndBuildBuffer`
+  - `RenderControlWithTemporaryRectClipRegionAndChildren`
+  - `UpdateIconBarOffsetAndRecomputeClipRegion`
+  - `SwapToolInfoSubviewAndRefreshClipRegion`
+  - `PaintVisibleChildrenWithTemporaryRectClipRegion`
+  - `BuildCombinedTerrainTypeRegionMaskAndDispatch`
+  - `RenderQuickDrawControlWithHitRegionClip_A`
+  - `RenderQuickDrawControlWithHitRegionClip_B`
+  - `RenderQuickDrawControlWithHitRegionClip_C`
+  - `IntersectClipRegionWithRectAndUpdateBounds`
+  - `BuildCombatReportLossesSummaryText`
+- Artifacts:
+  - `tmp_decomp/batch433_gate_fix3_renames.csv`
+  - `tmp_decomp/batch433_clip_overlay_promotions_wave5.csv`
+  - `tmp_decomp/batch433_apply_clip_overlay_promotions_wave5.log`
+
+4) Lane outcomes (post wave 7)
+- Unresolved snapshot progression:
+  - `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post2.csv` -> `rows=1643`
+  - `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post5.csv` -> `rows=1641`
+  - `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post6.csv` -> `rows=1639`
+  - `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post7.csv` -> `rows=1629`
+- Gates:
+  - `tmp_decomp/batch433_named_callers_with_generic_callees_superlane_strict_post7.csv` -> `rows=0`
+  - `tmp_decomp/batch433_unresolved_0060_0062_post7.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch433_progress_counts_post7.txt`
+  - `total_functions: 12472`
+  - `renamed_functions: 11031`
+  - `default_fun_or_thunk_fun: 1441`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  extend typed propagation from dispatch hub into remaining slot handlers (replace `int*`/raw locals with packet/slot types where stable).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing: if stable, tighten `pSharedString6C` and payload helper parameter typing.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch433_unresolved_0040_006f_snapshot_post7.csv` (remaining low-pressure `FUN_/thunk_FUN_` first, then `Cluster_*` class lanes).
+- [ ]  run orphan-tail boundary repair pass for functions like `OrphanTail_*` (validate entry boundaries and re-functionize when safe).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto intentionally strict; hand-apply top signal rows only).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` and nearby methods into `TNewGameCommand` namespace and apply constructor/destructor signatures.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch434 (loop continuation: gate-fix renames, typed-propagation lane typing, mass thunk cleanup)
+Goal:
+- Keep strict gates at zero while landing larger structural wins:
+  - clean residual `Cluster_/WrapperFor_Cluster_` gate regressions,
+  - extend turn-instruction typing lane to missing dispatch commands,
+  - execute a broad safe JMP-thunk creation wave outside early startup range.
+
+1) Wrapper-shape unresolved promotions (wave 1)
+- Generated and applied:
+  - `tmp_decomp/batch434_single_callee_wrapper_candidates.csv` (`rows=5`)
+  - `tmp_decomp/batch434_wrapper_promotions_wave1.csv`
+  - `tmp_decomp/batch434_apply_wrapper_promotions_wave1.log`
+- Post-wave:
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post1.csv` -> `rows=1599`
+  - strict gate temporarily regressed to `rows=10` due legacy `Cluster_/WrapperFor_Cluster_` callees.
+
+2) Strict-gate residue cleanup (waves 2-3)
+- Applied concrete behavior-backed renames for gate residue:
+  - `ReleaseGlobalClipRegionHandleListAndReset_006a1c98`
+  - `RecomputeTacticalCursorProjectionScoresAndPruneList`
+  - `BuildTacticalActionPriorityBucketsWithGridGuard`
+  - `DispatchTacticalActionClassSelectionAcrossCursorList`
+  - `DestructCViewDerivedStateAndReleaseOwnedBuffers_00482ab0`
+  - `SehProlog_RemoveHandleMapEntryByKey_Wrapper`
+  - `SehProlog_DeleteObjectHandle_Wrapper`
+  - `SehProlog_RemoveAllCollection_Wrapper`
+  - `DestructCMemFileLikeStateWithCloseIfOpen`
+  - `EnsureCrtStreamFallbackBufferAllocatedForFlag40`
+  - six `WrapperFor_FormatDualValuePromptAndSelectInputText_At...` wrappers
+  - `SelectTacticalTileIndexByColumnPriorityVariantA/B`
+- Artifacts:
+  - `tmp_decomp/batch434_gate_fix_wave2_renames.csv`
+  - `tmp_decomp/batch434_apply_gate_fix_wave2_renames.log`
+  - `tmp_decomp/batch434_gate_fix_wave3_renames.csv`
+  - `tmp_decomp/batch434_apply_gate_fix_wave3_renames.log`
+- Post-fix:
+  - `tmp_decomp/batch434_named_callers_with_generic_callees_superlane_strict_post3.csv` -> `rows=0`
+  - `tmp_decomp/batch434_unresolved_0060_0062_post3.csv` -> `rows=0`
+
+3) typed-propagation lane extension: missing `tabsenu` dispatch commands
+- Extended loader bindings with inferred arity for previously unbound commands:
+  - `pric=2`, `prov=2`, `tbar=3`, `tclr=1`, `coun=10`
+- Artifacts:
+  - `tmp_decomp/batch434_tabsenu_loader_bindings_extended.csv`
+  - `tmp_decomp/batch434_extend_turn_instruction_bindings.log`
+- Applied typed signatures/structs from extended bindings:
+  - `new_scripts/apply_turn_instruction_struct_signatures.py --bindings-csv tmp_decomp/batch434_tabsenu_loader_bindings_extended.csv`
+  - produced `STurnInstruction_{Pric,Prov,Tbar,Tclr,Coun}` and applied to handlers.
+- Artifact:
+  - `tmp_decomp/batch434_apply_turn_instruction_struct_signatures.log` (`planned=26`, `sig_ok=26`, `sig_fail=0`)
+
+4) Item-5 mass table-driven thunk cleanup outside `0x0040xxxx`
+- Generated safe single-JMP thunk candidates:
+  - `tmp_decomp/batch434_missing_jmp_thunk_candidates_wave1.csv` (`rows=1357`)
+- Created/renamed all candidates successfully:
+  - `tmp_decomp/batch434_apply_missing_jmp_thunks_wave1.log`
+  - summary: `[done] rows=1357 ok=1357 created=1357 skipped=0 fail=0`
+- This significantly improved xref readability in runtime-heavy ranges.
+
+5) Lane outcomes after batch434
+- Unresolved snapshots:
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post5.csv` -> `rows=1585`
+  - `tmp_decomp/batch434_unresolved_0060_0062_post5.csv` -> `rows=0`
+- Strict super-lane gate:
+  - `tmp_decomp/batch434_named_callers_with_generic_callees_superlane_strict_post5.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch434_progress_counts_post5.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12418`
+  - `default_fun_or_thunk_fun: 1411`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the newly added `pric/prov/tbar/tclr/coun` lane.
+- [ ]  continue `BuildTurnEventFactoryPacket` typing: tighten `pSharedString6C` and payload helper parameter typing where stable.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post5.csv` (non-cluster low-risk first, then class lanes).
+- [ ]  run orphan-tail boundary repair pass for `OrphanTail_*` functions and validate boundaries with re-functionization when safe.
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (safe-auto strict; hand-apply top-signal rows only).
+- [ ] Item 5 follow-up: normalize generated `thunk_WrapperFor_FUN_005eccc0_At005e74d0` islands by promoting target `FUN_005eccc0` semantics, then retarget thunk names.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` neighbors into `TNewGameCommand` namespace with ctor/dtor signature templates.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch434c (loop continuation: SEH thunk normalization + FUN_* low-hanging waves 7-11)
+Goal:
+- Continue unresolved reduction in large chunks while preserving strict gates.
+- Normalize the large autogenerated thunk island that still referenced `FUN_` in wrapper names.
+
+1) SEH wrapper normalization (item-5 follow-up)
+- Confirmed core dispatcher context:
+  - `0x005eccc0` already named as `DispatchStructuredExceptionThroughFrameInfo`.
+  - wrapper targets:
+    - `0x005e74d0` (`WrapperFor_FUN_005eccc0_At005e74d0`)
+    - `0x005e7590` (`WrapperFor_FUN_005eccc0_WithFrameState`)
+- Renamed wrapper targets:
+  - `0x005e74d0` -> `ForwardStructuredExceptionDispatchThroughFrameInfo`
+  - `0x005e7590` -> `DispatchStructuredExceptionThroughFrameStateContext`
+- Retargeted thunk island names:
+  - generated `tmp_decomp/batch434_thunk_retarget_seh_wrapper.csv` (`rows=1342`)
+  - applied via `tmp_decomp/batch434_apply_thunk_retarget_seh_wrapper.log`
+  - converted `thunk_WrapperFor_FUN_005eccc0_At005e74d0` -> `thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At...`
+
+2) FUN promotion wave 7 (10 rows)
+- Promoted archive/window helpers:
+  - `SerializeNodeMapEntries_Key16Value32_WithArchive`
+  - `SerializeNodeMapEntries_Key32Value32_WithArchive`
+  - `SerializeDwordArrayWithAutoReallocFromArchive`
+  - `SerializeRecordList_0x18_WithBlockPool`
+  - `SerializeRecordList_0x0C_WithBlockPool_A/B/C/D`
+  - `ResetTopLevelWindowStateAndReleaseTempMapBuffer`
+  - `InitializeTopLevelWindowTimerAndAcquireTempMapHandle`
+- Artifacts:
+  - `tmp_decomp/batch434_fun_promotions_wave9.csv`
+  - `tmp_decomp/batch434_apply_fun_promotions_wave9.log`
+
+3) FUN promotion wave 10 (5 rows, UI resource constructors)
+- Promoted:
+  - `BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e`
+  - `BuildUiResourceTree_TextPictureCursorComposite_0042e864`
+  - `BuildUiResourceTree_MultiTextOptionComposite_0042e494`
+  - `InitializeTGarrisonViewBitmapAndControlResources`
+  - `InitializeTNavyRosterBitmapAndControlResources`
+- Artifacts:
+  - `tmp_decomp/batch434_fun_promotions_wave10.csv`
+  - `tmp_decomp/batch434_apply_fun_promotions_wave10.log`
+
+4) FUN promotion wave 11 (3 rows, battle/status render lane)
+- Promoted:
+  - `RenderBattleOutcomeHeaderWinnerLoserLines`
+  - `RenderBoundedValueProgressWithStyledOverlayText`
+  - `RenderDualLineStatusTextAndProgressBar_004a95b0`
+- Artifacts:
+  - `tmp_decomp/batch434_fun_promotions_wave11.csv`
+  - `tmp_decomp/batch434_apply_fun_promotions_wave11.log`
+
+5) Lane outcomes after batch434 post9
+- Unresolved snapshot progression:
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post7.csv` -> `rows=1571`
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post8.csv` -> `rows=1566`
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post9.csv` -> `rows=1563`
+- Gates remained clean:
+  - `tmp_decomp/batch434_named_callers_with_generic_callees_superlane_strict_post9.csv` -> `rows=0`
+  - `tmp_decomp/batch434_unresolved_0060_0062_post9.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch434_progress_counts_post9.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12440`
+  - `default_fun_or_thunk_fun: 1389`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters).
+- [ ]  continue unresolved promotion from `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post9.csv` (high named-callee `FUN_*` first, then `Cluster_*` class lanes).
+- [ ]  run orphan-tail boundary repair pass for `OrphanTail_*` functions and validate boundaries with re-functionization when safe.
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (strict auto stays unchanged).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` neighbors into `TNewGameCommand` namespace with ctor/dtor signature templates.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch434d (loop continuation: quick low-hanging FUN promotion wave 12)
+Goal:
+- Keep momentum with safe single-function promotion while preserving strict gates.
+
+1) Promotion
+- `0x0057f5b0`:
+  - `FUN_0057f5b0` -> `FormatSignedIntWithSingleThousandsSeparator`
+  - rationale: decimal conversion + shared-string split (`Left`/`Right`) + comma insertion behavior.
+- Artifacts:
+  - `tmp_decomp/batch434_fun_promotions_wave12.csv`
+  - `tmp_decomp/batch434_apply_fun_promotions_wave12.log`
+
+2) Lane outcomes after post10
+- Unresolved snapshot:
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post10.csv` -> `rows=1562`
+- Gates:
+  - `tmp_decomp/batch434_named_callers_with_generic_callees_superlane_strict_post10.csv` -> `rows=0`
+  - `tmp_decomp/batch434_unresolved_0060_0062_post10.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch434_progress_counts_post10.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12441`
+  - `default_fun_or_thunk_fun: 1388`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters).
+- [ ]  continue unresolved promotion from `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post10.csv` (high named-callee `FUN_*` first, then `Cluster_*` class lanes).
+- [ ]  run orphan-tail boundary repair pass for `OrphanTail_*` functions and validate boundaries with re-functionization when safe.
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (strict auto stays unchanged).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` neighbors into `TNewGameCommand` namespace with ctor/dtor signature templates.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch434e (loop continuation: FUN promotion wave 13)
+Goal:
+- Continue low-risk unresolved reduction from high named-callee FUN lanes.
+
+1) Promotions (2 rows)
+- `0x005c0e50`:
+  - `FUN_005c0e50` -> `BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50`
+- `0x005c1580`:
+  - `FUN_005c1580` -> `InitializeCompositeTextPictureResourceEntries_005c1580`
+- Artifacts:
+  - `tmp_decomp/batch434_fun_promotions_wave13.csv`
+  - `tmp_decomp/batch434_apply_fun_promotions_wave13.log`
+
+2) Lane outcomes after post11
+- Unresolved snapshot:
+  - `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post11.csv` -> `rows=1560`
+- Gates:
+  - `tmp_decomp/batch434_named_callers_with_generic_callees_superlane_strict_post11.csv` -> `rows=0`
+  - `tmp_decomp/batch434_unresolved_0060_0062_post11.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch434_progress_counts_post11.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12443`
+  - `default_fun_or_thunk_fun: 1386`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters).
+- [ ]  continue unresolved promotion from `tmp_decomp/batch434_unresolved_0040_006f_snapshot_post11.csv` (high named-callee `FUN_*` first, then `Cluster_*` class lanes).
+- [ ]  run orphan-tail boundary repair pass for `OrphanTail_*` functions and validate boundaries with re-functionization when safe.
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (strict auto stays unchanged).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: attach `DestructTNewGameCommandAndBaseCWnd` neighbors into `TNewGameCommand` namespace with ctor/dtor signature templates.
+- [ ] UI-runtime follow-up: group/register commdlg message globals (`DAT_006a7f8c..006a7fa0`) with typed names and init-order comments.
+
+#### Applied batch435 (loop continuation: typed-propagation lane signatures, commdlg globals, class lane cleanup, orphan triage, FUN wave)
+Goal:
+- Tackle active TODO lanes in one pass with script-driven batches:
+  - typed-propagation lane typed propagation follow-up,
+  - commdlg globals typing,
+  - class-lane evidence cleanup around misattributed `TNewGameCommand` destructor,
+  - orphan-stub cleanup,
+  - further unresolved FUN promotion.
+
+1) typed-propagation lane turn-instruction handler signature hygiene (`pric/prov/tbar/tclr/coun`)
+- Applied cursor-pointer signatures to handlers:
+  - `HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry`
+  - `HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry`
+  - `HandleTurnInstruction_Tbar_SetNationRelationBarValue`
+  - `HandleTurnInstruction_Tclr_ResetNationRelationBars`
+  - `HandleTurnInstruction_Coun_SetCountrySlotState`
+- Artifacts:
+  - `tmp_decomp/signature_batch435_turn_handler_cursor.csv`
+  - `tmp_decomp/signature_batch435_turn_handler_cursor_fix.csv`
+  - `tmp_decomp/batch435_apply_turn_handler_cursor_signatures.log`
+  - `tmp_decomp/batch435_apply_turn_handler_cursor_signatures_fix.log`
+- Note: decompiler still folds parsed scalar temporaries into parameter byte-slices; this is structural decompiler behavior around pointer cursor parsing, not a signature failure.
+
+2) typed-propagation lane `BuildTurnEventFactoryPacket` signature refinement
+- Refined:
+  - `0x0048cf10 BuildTurnEventFactoryPacket`
+  - `eFactorySlot60` typed to enum `ETurnEventFactorySlotId`
+  - parameter order corrected to stable/expected order after one misordered attempt and immediate fix.
+- Confirmed `0x0048cfd0 DispatchTurnEventPacketThroughDialogFactory` stays typed on `STurnEventFactoryPacket*`.
+- Artifacts:
+  - `tmp_decomp/batch435_apply_turn_event_signature_refine.log`
+  - `tmp_decomp/batch435_fix_turn_event_signature_order.log`
+  - `tmp_decomp/batch435_ctx_turn_event_factory_final.log`
+
+3) UI-runtime commdlg globals follow-up (completed)
+- Resolved and renamed:
+  - `DAT_006a7f8c` -> `g_uMsgCommdlgShareViolation`
+  - `DAT_006a7f90` -> `g_uMsgCommdlgColorOk`
+  - `DAT_006a7f94` -> `g_uMsgCommdlgLbSelChangedNotify`
+  - `DAT_006a7f98` -> `g_uMsgCommdlgFileNameOk`
+  - `DAT_006a7f9c` -> `g_uMsgCommdlgHelp`
+  - `DAT_006a7fa0` -> `g_uMsgCommdlgSetRgbColor`
+- Added EOL comments documenting registration source/semantics.
+- Artifact:
+  - `tmp_decomp/batch435_apply_commdlg_global_renames.log`
+
+4) Class-lane cleanup around `0x005fa845..0x005fa8e5`
+- Evidence showed tooltip-relay behavior rather than true `TNewGameCommand` ownership.
+- Created namespace:
+  - `TTooltipRelayWindowState`
+- Renamed and attached:
+  - `ConstructTooltipRelayWindowStateObject` -> `ConstructTooltipRelayWindowState` (`0x005fa845`)
+  - `WrapperFor_FreeHeapBufferIfNotNull_At005fa87e` -> `ScalarDeletingDestructorTooltipRelayWindowState` (`0x005fa87e`)
+  - `DestructTNewGameCommandAndBaseCWnd` -> `DestructTooltipRelayWindowStateAndBaseCWnd` (`0x005fa8e5`)
+- Artifact:
+  - `tmp_decomp/batch435_apply_tooltiprelay_class_attach_fix.log`
+
+5) unresolved-callback lane orphan-tail/orphan-stub triage slice
+- Generated orphan triage:
+  - `tmp_decomp/batch435_orphan_triage_0040_006f.csv` (`rows=905`)
+  - classes: `ret_stub=136`, `vtable_assign_stub=47`, plus unknown buckets.
+- Applied only safe categories:
+  - mass rename `ret_stub` + `vtable_assign_stub` -> `OrphanRetStub_*` / `OrphanVtableAssignStub_*`
+  - `rows=183`, `ok=183`
+- Artifacts:
+  - `tmp_decomp/batch435_orphan_stub_promotions_wave1.csv`
+  - `tmp_decomp/batch435_apply_orphan_stub_promotions_wave1.log`
+
+6) unresolved-callback lane unresolved FUN promotion wave
+- Promoted 9 high-signal `FUN_*` helpers:
+  - `RenderLeftRightIndicatorIconsAndValueText`
+  - `RenderLocalizedHeaderAndSevenLineTerrainSummary`
+  - `RenderIndexedSpriteCellWithFormattedValue`
+  - `RenderRightAlignedNumericOverlayWithShadow`
+  - `RenderCenteredPositiveCountLabelAtFixedOrigin`
+  - `RecomputeAndRenderStrategicMapViewportOverlay`
+  - `BlitBitmapResourceToTemporaryCompatibleDcAndPresent`
+  - `InitializeMapKeyStaticTextEntryAndSyncBounds`
+  - `RebuildIconPictureEntriesFromSelectableTextOptions`
+- Artifacts:
+  - `tmp_decomp/batch435_fun_promotions_wave2.csv`
+  - `tmp_decomp/batch435_apply_fun_promotions_wave2.log`
+
+7) Lane outcomes
+- Snapshot progression:
+  - `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post1.csv` -> `rows=1377`
+  - `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post2.csv` -> `rows=1368`
+  - `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post3.csv` -> `rows=1368`
+- Gates:
+  - `tmp_decomp/batch435_named_callers_with_generic_callees_superlane_strict_post3.csv` -> `rows=0`
+  - `tmp_decomp/batch435_unresolved_0060_0062_post3.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch435_progress_counts_post3.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12635`
+  - `default_fun_or_thunk_fun: 1194`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post3.csv` (high named-callee `FUN_*` first, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (strict auto unchanged).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+
+#### Applied batch435b (loop continuation: additional unresolved wave + gates)
+Goal:
+- Keep unresolved-callback lane momentum on high-callee unresolved functions after the large orphan cleanup.
+
+1) FUN promotion wave 3 (8 rows)
+- Promoted:
+  - `ReadOrCreateRegistryStringValueWithFallback`
+  - `BuildIndustryActionCostSummaryTextByActionIndex`
+  - `RenderStrategicNationTileMarkerInRect`
+  - `RenderStrategicNationTileMarkerAtCellCoords`
+  - `FilterStringByCharacterTypeFlag4AndAppend`
+  - `RemoveFirstTrackedObjectMatchingPredicateAndClearFlag`
+  - `RunOneTimeAnimationModalWaitAndInvalidateCityDialog`
+  - `RefreshNewGameCommandWindowTextAndData`
+- Artifacts:
+  - `tmp_decomp/batch435_fun_promotions_wave3.csv`
+  - `tmp_decomp/batch435_apply_fun_promotions_wave3.log`
+
+2) Lane outcomes after post4
+- Unresolved snapshot:
+  - `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post4.csv` -> `rows=1360`
+- Gates:
+  - `tmp_decomp/batch435_named_callers_with_generic_callees_superlane_strict_post4.csv` -> `rows=0`
+  - `tmp_decomp/batch435_unresolved_0060_0062_post4.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch435_progress_counts_post4.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12643`
+  - `default_fun_or_thunk_fun: 1186`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post4.csv` (high named-callee `FUN_*` first, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review lane for retained `ret 0x10/0x14/0x18` candidates (strict auto unchanged).
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+
+#### Applied batch436 (loop continuation: unresolved FUN cleanup + wrapper wave + callback ABI lane)
+Goal:
+- Continue unresolved-callback lane unresolved reduction in large safe chunks, keep both gates at zero, and run the callback ABI normalization lane (`RET 0x10/0x14/0x18`).
+
+1) Wrapper-style unresolved FUN promotions (safe shape-based)
+- Generated and applied single-callee wrapper renames for unresolved `FUN_*`:
+  - artifacts:
+    - `tmp_decomp/batch436_generate_wrapper_fun_candidates_relaxed.log`
+    - `tmp_decomp/batch436_wrapper_fun_candidates_filtered.csv`
+    - `tmp_decomp/batch436_apply_wrapper_fun_candidates_filtered.log`
+  - result:
+    - `rows=37`, `ok=37`.
+- Additional `Cluster_*` wrapper cleanup (safe subset):
+  - artifacts:
+    - `tmp_decomp/batch436_wrapper_cluster_candidates_filtered.csv`
+    - `tmp_decomp/batch436_apply_wrapper_cluster_candidates_filtered.log`
+  - result:
+    - `rows=5`, `ok=5`.
+
+2) Behavior-backed FUN promotion waves
+- Wave 1 (12 rows):
+  - `DestructTWindowAndUnlinkGlobalWindowNode`
+  - `PaintStoredBitmapToWindowClientDc`
+  - `DispatchToFirstMatchingListNodeAndRemove`
+  - `ReloadPreplutNewsTableAndResources`
+  - `DispatchToSelectableTextOptionEntries`
+  - `ConstructNumericEntryDialogCoreAndValueLabel`
+  - `InitializeInfoBarTagEntryWithOptionalDummyChild`
+  - `RenderControlRectWithPaletteAndOptionalBlit`
+  - `BuildMapContextStatusStringWithRandomSuffix`
+  - `TriggerRandomPaletteCueAndMapContextAnimation`
+  - `PopulateSelectableEntryFlavorTextAndOrdinals`
+  - `ExpandBracketMappedStringToSinkCallback`
+- Wave 2 (4 rows):
+  - `BuildRandomMapContextStatusBaseString`
+  - `AssignRandomMapContextStatusBaseString`
+  - thunk retarget names for both.
+- Wave 3 (11 rows):
+  - `AppendRandomMapContextStatusSuffixWithProbability`
+  - `CreateParentDirectoryAndRunArchiveOperation_Mode1012`
+  - `UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel`
+  - `UpdateAudioPlaybackStateAndScheduleRandomCue`
+  - `DestructModuleLibraryCacheAndHashTables`
+  - `DispatchUiWindowStatusTickForClass99Windows`
+  - `RenderStrategicMapViewportBandsAndBlit`
+  - `InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock`
+  - `BuildTerrainLinkedSelectionListFromSerializedCounts`
+  - `ComputeCityOrderCapabilityAggregateScore`
+  - plus thunk rename `thunk_AppendRandomMapContextStatusSuffixWithProbability`.
+- artifacts:
+  - `tmp_decomp/batch436_fun_promotions_wave1.csv`
+  - `tmp_decomp/batch436_apply_fun_promotions_wave1.log`
+  - `tmp_decomp/batch436_fun_promotions_wave2.csv`
+  - `tmp_decomp/batch436_apply_fun_promotions_wave2.log`
+  - `tmp_decomp/batch436_fun_promotions_wave3.csv`
+  - `tmp_decomp/batch436_apply_fun_promotions_wave3.log`
+
+3) Callback ABI normalization lane (`RET imm`)
+- Executed candidate/safe-apply passes:
+  - `ret 0x14`:
+    - `tmp_decomp/batch436_ret14_candidates.csv`
+    - `tmp_decomp/batch436_ret14_signatures.csv`
+    - safe auto-applied: `0`.
+  - `ret 0x10`:
+    - `tmp_decomp/batch436_ret10_candidates.csv`
+    - `tmp_decomp/batch436_ret10_signatures.csv`
+    - safe auto-applied: `6`.
+  - `ret 0x18`:
+    - `tmp_decomp/batch436_ret18_candidates.csv`
+    - `tmp_decomp/batch436_ret18_signatures.csv`
+    - safe auto-applied: `1`.
+- One save collision occurred when `ret` jobs were run in parallel writer sessions; immediately reran `ret 0x10` serially and persisted successfully:
+  - `tmp_decomp/batch436_ret10_apply_safe_rerun.log`.
+
+4) Lane outcomes
+- Unresolved snapshot progression:
+  - `tmp_decomp/batch435_unresolved_0040_006f_snapshot_post4.csv` -> `rows=1360`
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post5.csv` -> `rows=1277`
+- Gates remained clean throughout:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post5.csv` -> `rows=0`
+  - `tmp_decomp/batch436_unresolved_0060_0062_post5.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post5.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12721`
+  - `default_fun_or_thunk_fun: 1108`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post5.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: convert top `Cluster_*` methods in one namespace at a time (start `TArmyUnitLine` / `TArmyInfoView`) using callee-backed behavior names.
+
+#### Applied batch436c (loop continuation: class-lane `TArmy*` cluster pass)
+Goal:
+- Start the class-lane TODO by converting top `Cluster_*` methods in `TArmyUnitLine` and `TArmyInfoView` to behavior-backed names.
+
+1) Class-lane promotions
+- `0x004a8df0`:
+  - `Cluster_MapTileHint_004a8df0` -> `InitializeArmyUnitLineControlsAndState`
+  - rationale: constructor/initializer path creating command-tag controls and toggling active/visible state for line entries.
+- `0x00591620`:
+  - `Cluster_MapHint_00591620` -> `RefreshArmyInfoViewTextAndStyleDescriptors`
+  - rationale: localized string composition + style descriptor build/apply refresh path.
+- artifacts:
+  - `tmp_decomp/batch436_ctx_tarmy_line_info_cluster.log`
+  - `tmp_decomp/batch436_class_lane_promotions_wave1.csv`
+  - `tmp_decomp/batch436_apply_class_lane_promotions_wave1.log`
+
+2) Lane outcomes after post7
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post7.csv` -> `rows=1263`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post7.csv` -> `rows=0`
+  - runtime bridge remained clean in prior post5/post6 checks (`rows=0`).
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post7.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post7.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: continue namespace-by-namespace cluster conversion (next: `TTransportPicture` and `TMiniArmyLine`).
+
+#### Applied batch436d (loop continuation: class-lane `TTransportPicture` + `TMiniArmyLine`)
+Goal:
+- Continue namespace-by-namespace `Cluster_*` conversion with evidence-backed behavior names.
+
+1) Class-lane promotions
+- `0x005921c0`:
+  - `Cluster_NationStateHint_005921c0` -> `RenderTransportPictureGaugeAndLabels`
+  - rationale: gauge span math + clip/fill draw + transport label formatting with active-nation context.
+- `0x004aa960`:
+  - `Cluster_TurnStateHint_004aa960` -> `InitializeMiniArmyLineControlAndOptionalGroupButton`
+  - rationale: TMiniArmyLine control init and conditional grouped button child setup.
+- artifacts:
+  - `tmp_decomp/batch436_ctx_transport_miniarmy_cluster.log`
+  - `tmp_decomp/batch436_class_lane_promotions_wave2.csv`
+  - `tmp_decomp/batch436_apply_class_lane_promotions_wave2.log`
+
+2) Lane outcomes after post8
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post8.csv` -> `rows=1261`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post8.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post8.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post8.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: continue namespace-by-namespace cluster conversion (next: `TMiniCivView` and `TDealBookPicture`).
+
+#### Applied batch436e (loop continuation: class-lane `TMiniCivView` + `TDealBookPicture`)
+Goal:
+- Continue namespace-by-namespace `Cluster_*` conversion for high-signal UI/gameplay mixed class methods.
+
+1) Class-lane promotions
+- `0x004ac000`:
+  - `Cluster_TacticalConstDomainHint_004ac000` -> `RenderMiniCivViewTerrainSummaryAndPreviewTile`
+  - rationale: TMiniCivView rendering path for terrain summary text and preview tile blit.
+- `0x005bbc30`:
+  - `Cluster_ArmyNavyHint_005bbc30` -> `HandleDealBookTradeCommandAndRefreshNationLines`
+  - rationale: TDealBookPicture command/refresh flow for buy/sell nation lines and mark/toggle handling.
+- artifacts:
+  - `tmp_decomp/batch436_ctx_miniciv_dealbook_cluster.log`
+  - `tmp_decomp/batch436_class_lane_promotions_wave3.csv`
+  - `tmp_decomp/batch436_apply_class_lane_promotions_wave3.log`
+
+2) Lane outcomes after post9
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post9.csv` -> `rows=1259`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post9.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post9.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post9.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: continue namespace-by-namespace cluster conversion (next: `TArmyBoyView` and `TGreatPower`).
+
+#### Applied batch436f (loop continuation: class-lane `TArmyBoyView` + `TGreatPower`)
+Goal:
+- Continue class-lane conversion for top unresolved namespaces while keeping gates stable.
+
+1) Class-lane promotions
+- `0x004aebc0`:
+  - `Cluster_TacticalConstDomainHint_004aebc0` -> `RenderArmyBoyViewStatBarAndStatusText`
+  - rationale: TArmyBoyView render/update path for status text + bar/preview elements.
+- `0x004e2b70`:
+  - `Cluster_TurnStateHint_004e2b70` -> `BuildGreatPowerTurnMessageSummaryAndDispatch`
+  - rationale: TGreatPower turn message aggregation and localized dispatch.
+- artifacts:
+  - `tmp_decomp/batch436_ctx_armyboy_greatpower_cluster.log`
+  - `tmp_decomp/batch436_class_lane_promotions_wave4.csv`
+  - `tmp_decomp/batch436_apply_class_lane_promotions_wave4.log`
+
+2) Lane outcomes after post10
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post10.csv` -> `rows=1257`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post10.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post10.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post10.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: continue namespace-by-namespace cluster conversion (next: `TCouncilPanelView` and `THighScoresPicture`).
+
+#### Applied batch436g (loop continuation: class-lane `TCouncilPanelView` + `THighScoresPicture`)
+Goal:
+- Continue the class-lane cluster conversion sequence with text-heavy render methods.
+
+1) Class-lane promotions
+- `0x004fb030`:
+  - `Cluster_MapTileHint_004fb030` -> `RenderCouncilPanelDiplomacySummaryText`
+  - rationale: council/diplomacy summary text rendering with theme/style mapping and centered placement.
+- `0x00575460`:
+  - `Cluster_MapTileHint_00575460` -> `RenderHighScoresRankNameValueRows`
+  - rationale: high-score board renderer for rank, name text, and numeric value rows.
+- artifacts:
+  - `tmp_decomp/batch436_ctx_council_highscores_cluster.log`
+  - `tmp_decomp/batch436_class_lane_promotions_wave5.csv`
+  - `tmp_decomp/batch436_apply_class_lane_promotions_wave5.log`
+
+2) Lane outcomes after post11
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post11.csv` -> `rows=1255`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post11.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post11.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post11.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: continue namespace-by-namespace cluster conversion (next: `TScenarioChooser` and `TTradeBidNationView`).
+
+#### Applied batch436h (loop continuation: class-lane `TScenarioChooser` + `TTradeBidNationView`)
+Goal:
+- Keep class-lane namespace conversion rolling on top unresolved clusters.
+
+1) Class-lane promotions
+- `0x00579b80`:
+  - `Cluster_MapTileHint_00579b80` -> `LoadScenarioMetadataListAndPopulateChooser`
+  - rationale: scans scenario files, reads metadata lines, and populates chooser row/index state.
+- `0x005bdc20`:
+  - `Cluster_TacticalConstDomainHint_005bdc20` -> `RenderTradeBidNationViewIconAndValues`
+  - rationale: renders nation icon tile and bid-value text fields.
+- artifacts:
+  - `tmp_decomp/batch436_ctx_scenario_tradebid_cluster.log`
+  - `tmp_decomp/batch436_class_lane_promotions_wave6.csv`
+  - `tmp_decomp/batch436_apply_class_lane_promotions_wave6.log`
+
+2) Lane outcomes after post12
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post12.csv` -> `rows=1253`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post12.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post12.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post12.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: continue namespace-by-namespace cluster conversion (next: `TBattleReportView` and `TGreatPower` residual clusters).
+
+#### Applied batch436b (loop continuation: post-batch436 wrapper sweep)
+Goal:
+- Run another low-risk wrapper promotion sweep after batch436 to pick up newly-eligible `FUN_*` functions and further reduce unresolved count.
+
+1) Wrapper promotion wave 4
+- Generated:
+  - `tmp_decomp/batch436_wrapper_fun_candidates_wave4_raw.csv` (`rows=15`)
+- Filtered for unresolved + non-nested targets (dropped `WrapperFor_*`-callee and `__ftol` wrappers), applied:
+  - `tmp_decomp/batch436_wrapper_fun_candidates_wave4_filtered.csv` (`rows=10`)
+  - `tmp_decomp/batch436_apply_wrapper_fun_candidates_wave4_filtered.log` (`ok=10`)
+- Notable promotions:
+  - `WrapperFor_AllocateAndLinkBlockHead_At00483ba0`
+  - `WrapperFor_FreeHeapBufferIfNotNull_At004a1a00`
+  - `WrapperFor_GenerateThreadLocalRandom15_At004bf8a0`
+  - `WrapperFor_TGreatPower_VtblSlot07_At004e7230`
+  - `WrapperFor_GenerateThreadLocalRandom15_At004e7680`
+  - `WrapperFor_GenerateThreadLocalRandom15_At004ff840`
+  - `WrapperFor_AllocateWithFallbackHandler_At005082b0`
+  - `WrapperFor_FreeHeapBufferIfNotNull_At0059fb50`
+  - `WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320`
+  - `WrapperFor_thunk_NoOpUiLifecycleHook_At005a84d0`
+
+2) Lane outcomes after post6
+- Unresolved snapshot:
+  - `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post6.csv` -> `rows=1265`
+- Gates:
+  - `tmp_decomp/batch436_named_callers_with_generic_callees_superlane_strict_post6.csv` -> `rows=0`
+  - `tmp_decomp/batch436_unresolved_0060_0062_post5.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch436_progress_counts_post6.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ]  continue typed propagation inside handlers (locals/field names) for the expanded `tabsenu` lane (`pric/prov/tbar/tclr/coun`).
+- [ ]  continue `BuildTurnEventFactoryPacket` typing (`pSharedString6C` + payload helper parameters) if stronger type evidence appears.
+- [ ]  continue unresolved promotion from `tmp_decomp/batch436_unresolved_0040_006f_snapshot_post6.csv` (finish remaining high named-callee `FUN_*`, then `Cluster_*` class lanes).
+- [ ]  continue orphan boundary repair beyond safe stub renames (focus `orphan_leaf_unknown` / `orphan_unknown_with_calls` with boundary validation).
+- [ ]  manual review and hand-apply callback ABI signatures from:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every batch.
+- [ ] Class lane follow-up: audit `TNewGameCommand` namespace membership against tooltip-relay lane and detach/retarget misattributed members where evidence is strong.
+- [ ] Class lane follow-up: convert top `Cluster_*` methods in one namespace at a time (start `TArmyUnitLine` / `TArmyInfoView`) using callee-backed behavior names.
+
+#### Applied batch437 (loop continuation: tabsenu typing expansion + TGreatPower/TBattleReport class-lane sweep)
+Goal:
+- Push the two top active lanes in one pass:
+  1) complete the `tabsenu` command-signature expansion (including `pric/prov/tbar/tclr/coun`),
+  2) continue namespace-backed `Cluster_*` promotion in `TGreatPower` + `TBattleReportView`,
+  while keeping strict gates at zero.
+
+1) `tabsenu` typing lane (script-driven)
+- Rebuilt schema/bindings from extracted tables:
+  - `.venv/bin/python new_scripts/build_tabsenu_schema_loader_bindings.py --out-prefix tmp_decomp/batch437_tabsenu`
+  - outputs:
+    - `tmp_decomp/batch437_tabsenu_command_schema.csv` (`rows=21`)
+    - `tmp_decomp/batch437_tabsenu_loader_bindings.csv` (`rows=21`, all bound)
+- Extended bindings by handler-cursor arity inference:
+  - `.venv/bin/python new_scripts/extend_turn_instruction_bindings_from_handler_cursor.py ... --commands pric,prov,tbar,tclr,coun --out-csv tmp_decomp/batch437_tabsenu_loader_bindings_extended.csv`
+  - added commands (all medium-confidence cursor inference):
+    - `pric` -> `HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry` (`arity=2`)
+    - `prov` -> `HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry` (`arity=2`)
+    - `tbar` -> `HandleTurnInstruction_Tbar_SetNationRelationBarValue` (`arity=3`)
+    - `tclr` -> `HandleTurnInstruction_Tclr_ResetNationRelationBars` (`arity=1`)
+    - `coun` -> `HandleTurnInstruction_Coun_SetCountrySlotState` (`arity=2`)
+- Applied per-command instruction struct signatures across full bound set:
+  - `.venv/bin/python new_scripts/apply_turn_instruction_struct_signatures.py --bindings-csv tmp_decomp/batch437_tabsenu_loader_bindings_extended.csv`
+  - result: `planned=26 structs=26 sig_ok=26 sig_fail=0`
+- Re-applied token/dispatch table typing for consistency:
+  - `.venv/bin/python new_scripts/create_turn_instruction_types.py`
+  - confirms:
+    - `/Imperialism/ETurnInstructionTokenFourCC[27]` at `0x00662978`
+    - `/Imperialism/TTurnInstructionHandlerProc *[27]` at `0x00698b50`
+
+2) Unresolved promotion probes (low-risk wrappers/thunks)
+- Ran wrapper and existing single-JMP thunk generators over `0x00400000..0x006f0000`; both lanes are near-saturated in current state.
+- New candidates found:
+  - wrapper-shape: only `FUN_00486b10` (single candidate)
+  - existing generic single-JMP thunk retargets: `rows=0`
+
+3) Class-lane promotions (`TGreatPower` + `TBattleReportView`)
+- Context evidence:
+  - `tmp_decomp/batch437_ctx_greatpower_battlereport_wave1.log`
+- Applied renames:
+  - `0x004d92e0` -> `InitializeGreatPowerMinisterRosterAndScenarioState`
+  - `0x004dc840` -> `BuildGreatPowerEligibleNationEventMessagesFromLinkedList`
+  - `0x004dc660` -> `BuildGreatPowerMapContextTriggeredNationEventMessages`
+  - `0x004db380` -> `UpdateGreatPowerPressureStateAndDispatchEscalationMessage`
+  - `0x004e00d0` -> `DispatchGreatPowerQuarterlyStatusMessageLevel2`
+  - `0x004e0140` -> `DispatchGreatPowerQuarterlyStatusMessageLevel1`
+  - `0x004e01b0` -> `DispatchGreatPowerQuarterlyStatusMessageLevel0`
+  - `0x0049f2d0` -> `RenderBattleReportViewSurfaceSpriteWithResourceHandle`
+  - `0x004d8950` -> `AllocateAndConstructGreatPowerNationStateBase`
+- Direct thunk mirrors renamed in same pass:
+  - `0x0040376a`, `0x00407b26`, `0x0040816b`, `0x00402185`, `0x00402919`, `0x00401983`, `0x004096c4`, `0x00403a4e`
+- Artifacts:
+  - `tmp_decomp/batch437_class_lane_promotions_wave1.csv`
+
+4) Strict-gate cleanup
+- One residue appeared after class pass:
+  - `UpdateGreatPowerPressureStateAndDispatchEscalationMessage` -> generic callee `Cluster_TurnStateHint_004daf30@0x00406ca3`
+- Resolved by renaming:
+  - `0x00406ca3` -> `BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage`
+- Artifact:
+  - `tmp_decomp/batch437_gate_fix_wave1.csv`
+
+5) Batch outcomes
+- Unresolved snapshot:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post3.csv` -> `rows=1243` (from `1253` baseline)
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post3.csv` -> `rows=0`
+  - `tmp_decomp/batch437_unresolved_0060_0062_post1.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post3.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post3.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments) now that `pric/prov/tbar/tclr/coun` are signature-typed.
+- [ ] Continue `BuildTurnEventFactoryPacket` internal typing (`pSharedString6C` and payload helper param roles) where direct evidence exists.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` and `orphan_unknown_with_calls`) with boundary validation before functionization.
+- [ ] Manual callback ABI review for retained `ret 0x10/0x14/0x18` candidates:
+- `tmp_decomp/batch436_ret10_candidates.csv`
+- `tmp_decomp/batch436_ret14_candidates.csv`
+- `tmp_decomp/batch436_ret18_candidates.csv`
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after every applied batch.
+- [ ] Class lane follow-up: continue namespace-by-namespace `Cluster_*` conversion (next: `TMapDialog`, `TDiplomacyMapView`, `TDealBookPicture`).
+
+#### Applied batch437d (loop continuation: class-lane `TMapDialog` + `TDiplomacyMapView` + `TDealBookPicture`)
+Goal:
+- Continue high-yield namespace conversion from the updated unresolved snapshot (`post3`) using behavior-backed names and direct thunk mirror alignment.
+
+1) Class-lane promotions
+- `TMapDialog`:
+  - `0x005220f0` -> `RenderMapDialogDiplomacyNeighborRelationHints`
+  - `0x0051ab60` -> `ComputeMapDialogProjectedTileClipIntersection`
+  - `0x0051a900` -> `UpdateMapDialogProjectedTileMarkerAndInvalidate`
+  - `0x0051ac40` -> `UpdateMapDialogTileRowColumnMarkerAndInvalidate`
+  - `0x00520670` -> `RenderMapDialogBilateralRelationMarkers`
+- `TDiplomacyMapView`:
+  - `0x004f3d60` -> `InitializeDiplomacyMapViewOverlaysAndActionControls`
+  - `0x004f6bd0` -> `BlitDiplomacyMapEventPaletteMaskToSurface`
+  - `0x004f70c0` -> `HandleDiplomacyMapControlTagToggleOrForward`
+  - `0x004f3e30` -> `ResetDiplomacyOverlayFlagAndDispatchChildUpdate`
+- `TDealBookPicture`:
+  - `0x005baf70` -> `UpdateDealBookResourceSelectionAndToggleControls`
+- Thunk mirror renames applied in same batch:
+  - `0x00403463`, `0x00404278`, `0x004057c2`, `0x00405ac4`, `0x00406cd0`,
+    `0x00404679`, `0x0040534e`, `0x00404264`, `0x00409917`, `0x004039b8`
+- Artifacts:
+  - `tmp_decomp/batch437_ctx_mapdialog_diplomap_dealbook_wave2.log`
+  - `tmp_decomp/batch437_class_lane_promotions_wave2.csv`
+
+2) Lane outcomes after post4
+- Unresolved snapshot:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post4.csv` -> `rows=1233`
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post4.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post4.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+
+#### Applied batch437e (loop continuation: `TGreatPower` residual cluster cleanup)
+Goal:
+- Clear remaining `TGreatPower` residual clusters with strong direct-call evidence and keep gates clean.
+
+1) Residual promotions
+- `0x004daf30` -> `CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`
+- `0x004dc9f0` -> `RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
+- thunk mirror:
+  - `0x00407db0` -> `thunk_RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
+- Artifacts:
+  - `tmp_decomp/batch437_ctx_greatpower_residual_wave3.log`
+  - `tmp_decomp/batch437_class_lane_promotions_wave3.csv`
+
+2) Lane outcomes after post5
+- Unresolved snapshot:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post5.csv` -> `rows=1231`
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post5.csv` -> `rows=0`
+  - runtime-bridge lane remains clear (`0x0060..0x0062` unresolved gate stays at `rows=0` from `post1`)
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post5.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post5.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments), now that signature typing covers `pric/prov/tbar/tclr/coun`.
+- [ ] Continue `BuildTurnEventFactoryPacket` internal typing (`pSharedString6C` and payload helper roles) with direct-evidence-only renames.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` + `orphan_unknown_with_calls`) with boundary validation before creating/retargeting functions.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each applied wave.
+- [ ] Class lane follow-up: next namespaces `TUnit`, `TCombatReportView`, `TCivReport`, then top high-pressure `Global` clusters.
+
+#### Applied batch438 (loop continuation: relationship/info UI cluster promotion + signature hygiene)
+Goal:
+- Continue low-risk class-lane promotion from the latest unresolved snapshot and enforce paired signature updates (core functions + direct thunk mirrors).
+
+1) Class-lane promotions with behavior-backed naming
+- `TRelationshipDialog`:
+  - `0x005b2da0` -> `SyncRelationshipDialogGridValuesToDiplomacyTurnState`
+- `TMinorRelationshipDialog`:
+  - `0x005b3400` -> `SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState`
+- `TGrantsView`:
+  - `0x004f8080` -> `InitializeGrantsViewAmountLabelControls`
+- `TInfoPanelView`:
+  - `0x004fa010` -> `InitializeInfoPanelViewStatusLabelControls`
+- `TDisplayMgr`:
+  - `0x004fec80` -> `DispatchDisplayManagerControlStringMessage`
+- `TMyNumberText`:
+  - `0x005b5050` -> `UpdateMyNumberTextFromTownValueString`
+- `TDropShadowNumberText`:
+  - `0x005b59b0` -> `RenderDropShadowNumberTextValue`
+- `Global`:
+  - `0x00564dc0` -> `InitializePagedListLineDataControlsAndHeaderBitmap`
+
+2) Direct thunk mirror renames in same wave
+- `0x00403215` -> `thunk_SyncRelationshipDialogGridValuesToDiplomacyTurnState`
+- `0x00403bac` -> `thunk_SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState`
+- `0x00407a13` -> `thunk_InitializeGrantsViewAmountLabelControls`
+- `0x004088af` -> `thunk_InitializeInfoPanelViewStatusLabelControls`
+- `0x00406eab` -> `thunk_DispatchDisplayManagerControlStringMessage`
+- `0x00405e0c` -> `thunk_UpdateMyNumberTextFromTownValueString`
+- `0x00407af4` -> `thunk_RenderDropShadowNumberTextValue`
+- `0x0040950c` -> `thunk_InitializePagedListLineDataControlsAndHeaderBitmap`
+
+3) Signature adaptation (requested hygiene)
+- Applied typed signatures for all 8 promoted primary functions:
+  - `tmp_decomp/batch438_signature_updates_wave12.csv`
+  - key examples:
+    - `0x005b2da0` / `0x005b3400`: `__thiscall void(pThis:void*)`
+    - `0x005b59b0`: `__thiscall void(pThis:void*;pRenderContext:void*)`
+    - `0x00564dc0`: `__thiscall void(pThis:void*;nPageIndex:int)`
+- Applied thunk signature alignment from targets:
+  - `tmp_decomp/batch438_thunk_signature_targets_wave12.csv`
+
+4) Strict-gate residue cleanup from this wave
+- Residue introduced by newly named caller:
+  - `RenderDropShadowNumberTextValue -> Cluster_NationStateHint_004906a0`
+- Resolved with helper promotion + signature:
+  - `0x004906a0` -> `InitializeDialogWindowAndRefreshSelectedNationHeaderStatus`
+  - `0x00405182` -> `thunk_InitializeDialogWindowAndRefreshSelectedNationHeaderStatus`
+  - signature: `__fastcall void(pDialogWindow:void*)`
+
+5) Lane outcomes
+- Unresolved snapshot:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post10.csv` -> `rows=1210`
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post11.csv` -> `rows=1208`
+- Gates after fix-up:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post11.csv` -> `rows=0`
+  - `tmp_decomp/batch437_unresolved_0060_0062_post11.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post11.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+6) Artifacts
+- `tmp_decomp/batch438_ctx_wave1.log`
+- `tmp_decomp/batch438_class_lane_promotions_wave12.csv`
+- `tmp_decomp/batch438_signature_updates_wave12.csv`
+- `tmp_decomp/batch438_thunk_signature_targets_wave12.csv`
+- `tmp_decomp/batch438_gate_fix_wave12.csv`
+- `tmp_decomp/batch438_signature_gate_fix_wave12.csv`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post11.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments), now that signature typing covers `pric/prov/tbar/tclr/coun`.
+- [ ] Continue `BuildTurnEventFactoryPacket` internal typing (`pSharedString6C` and payload helper roles) with direct-evidence-only renames.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` + `orphan_unknown_with_calls`) with boundary validation before creating/retargeting functions.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each applied wave.
+- [ ] Class lane follow-up: next namespaces `TTextList`, `TSimMgr`, `TradeScreenPicture`, `TTextPictureButton`.
+
+#### Applied batch438 (loop continuation: larger namespace waves + signature pairing)
+Goal:
+- Increase batch size for efficiency while keeping evidence-based naming and mandatory signature pairing.
+
+1) Wave13 class-lane promotions (`TTextList`, `TSimMgr`, `TradeScreenPicture`, `TTextPictureButton`)
+- Core renames:
+  - `0x0057acc0` -> `RenderTextListRowsWithSelectionHighlight`
+  - `0x0057bea0` -> `InitializeSimMgrScenarioStateAndRebuildNationSystems`
+  - `0x005ba7a0` -> `RenderTradeScreenCommoditySummaryRows`
+  - `0x00572790` -> `RenderTextPictureButtonCaptionWithPressedOffset`
+- Direct thunk mirrors:
+  - `0x0040362f`, `0x004065c8`, `0x00404228`, `0x00401bbd`
+- Signatures (applied):
+  - `tmp_decomp/batch438_signature_updates_wave13.csv`
+  - `__thiscall void(pThis:void*)` on 3 methods
+  - `__thiscall void(pThis:void*;pClipRect:void*)` on `RenderTradeScreenCommoditySummaryRows`
+
+2) Wave14 large class-lane promotions (10 core + 10 thunk mirrors)
+- Core renames:
+  - `0x005acb50` -> `UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel`
+  - `0x004fbd60` -> `HandleCouncilViewCommandByControlTag`
+  - `0x00500680` -> `InitializeHelpManagerIndexArrayAndState`
+  - `0x004fe2b0` -> `InitializeScoreGraphNationLabelsAndCursorPanel`
+  - `0x00568d70` -> `InitializeShipFractionClusterCapabilityControl`
+  - `0x005b6f70` -> `RecomputeTownAdjacentTileYieldTotals`
+  - `0x005b7140` -> `RecomputeTownAdjacentResourceSupplyTotals`
+  - `0x005b73e0` -> `RecomputeTownAdjacentUniversityWeightedTotals`
+  - `0x005789e0` -> `HandleTurnEventPaletteClickSelection`
+  - `0x0056e640` -> `HandleMapOverlaySliderInputAndRefresh`
+- Direct thunk mirrors:
+  - `0x00405358`, `0x00407d15`, `0x004069dd`, `0x0040329c`, `0x00405aa1`,
+    `0x00408990`, `0x0040398b`, `0x0040997b`, `0x00407bad`, `0x00402644`
+- Signatures (applied):
+  - `tmp_decomp/batch438_signature_updates_wave14.csv`
+  - command handlers normalized to `__thiscall void(pThis:void*;...)`
+  - town recompute methods normalized to `__thiscall void(pThis:void*)`
+  - palette-click handler normalized to `__thiscall void(pThis:void*;pPixelOffset:void*)`
+
+3) Strict-gate fix after Wave14
+- Residue:
+  - `UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel` called generic `Cluster_TurnStateHint_005c4b70`
+- Fix-up promotion:
+  - `0x005c4b70` -> `AssignSharedStringToTaggedControlAndProcessState`
+  - `0x00404c96` -> `thunk_AssignSharedStringToTaggedControlAndProcessState`
+  - signature applied on target: `__cdecl void*`
+
+4) Outcomes
+- Unresolved snapshots:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post12.csv` -> `rows=1194`
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post13.csv` -> `rows=1192`
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post12.csv` -> `rows=0`
+  - `tmp_decomp/batch437_unresolved_0060_0062_post12.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post12.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+5) Artifacts
+- `tmp_decomp/batch438_ctx_wave2.log`
+- `tmp_decomp/batch438_ctx_wave3.log`
+- `tmp_decomp/batch438_class_lane_promotions_wave13.csv`
+- `tmp_decomp/batch438_signature_updates_wave13.csv`
+- `tmp_decomp/batch438_thunk_signature_targets_wave13.csv`
+- `tmp_decomp/batch438_class_lane_promotions_wave14.csv`
+- `tmp_decomp/batch438_signature_updates_wave14.csv`
+- `tmp_decomp/batch438_thunk_signature_targets_wave14.csv`
+- `tmp_decomp/batch438_gate_fix_wave14.csv`
+- `tmp_decomp/batch438_signature_gate_fix_wave14.csv`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post13.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Next large wave: high-pressure `Global` cluster set (`0x005aa900`, `0x0050b640`, `0x0056d2a0`, `0x0050d700`, `0x0050a9f0`) with matching signature pass.
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments), now that signature typing covers `pric/prov/tbar/tclr/coun`.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` + `orphan_unknown_with_calls`) with boundary validation before creating/retargeting functions.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each applied wave.
+
+#### Applied batch438 (loop continuation: high-pressure Global cluster wave)
+Goal:
+- Execute a larger top-Global cluster pass with signature updates and no strict-gate regressions.
+
+1) Wave15 promotions (6 core + 6 direct thunks)
+- Core:
+  - `0x005aa900` -> `RenderTacticalBattleSelectionAndUnitOverlayPass`
+  - `0x0050b640` -> `RenderTurnEventPalettePreviewSurfaceAndProgress`
+  - `0x0056d2a0` -> `HandleSaveGameSlotSelectionAndPromptFlow`
+  - `0x0050d700` -> `RenderOffscreenBitmapTileSpanAndRestoreContext`
+  - `0x0050a9f0` -> `RenderOffscreenBitmapGridStripAndRestoreContext`
+  - `0x004d5090` -> `BuildBitmapMaskOpcodeBufferFromResourceRows`
+- Thunk mirrors:
+  - `0x00408f99`, `0x004027ed`, `0x004043bd`, `0x00408cd8`, `0x00401e29`, `0x00402ab3`
+
+2) Signature adaptation
+- Core signatures applied:
+  - `tmp_decomp/batch438_signature_updates_wave15.csv`
+  - includes:
+    - `0x004d5090`: `__thiscall void(pThis:void*;nBitmapId:int;wCols:short;wRows:short;nStride:int;bTranspose:byte)`
+    - `0x0050d700`: `__thiscall void(pThis:void*;nStripIndex:int)`
+    - `0x005aa900`: `__thiscall void(pThis:void*;nPixelOffset:int)`
+- Thunk signature alignment:
+  - `tmp_decomp/batch438_thunk_signature_targets_wave15.csv`
+
+3) Outcomes
+- Unresolved snapshots:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post14.csv` -> `rows=1185`
+  - (previous baseline `post13` was `rows=1192`)
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post14.csv` -> `rows=0`
+  - `tmp_decomp/batch437_unresolved_0060_0062_post14.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post14.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+4) Artifacts
+- `tmp_decomp/batch438_ctx_wave4.log`
+- `tmp_decomp/batch438_ctx_004d5090.log`
+- `tmp_decomp/batch438_class_lane_promotions_wave15.csv`
+- `tmp_decomp/batch438_signature_updates_wave15.csv`
+- `tmp_decomp/batch438_thunk_signature_targets_wave15.csv`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post14.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Next large wave: high-pressure `Global` cluster set (`0x0057a6e0`, `0x0056e370`, `0x004bac50`, `0x00483750`, `0x004a1f80`) with matching signature pass.
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments), now that signature typing covers `pric/prov/tbar/tclr/coun`.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` + `orphan_unknown_with_calls`) with boundary validation before creating/retargeting functions.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each applied wave.
+
+#### Applied batch438 (loop continuation: scenario/overlay global cluster wave)
+Goal:
+- Continue large-batch promotion while normalizing scenario-load core/thunk naming and preserving signature hygiene.
+
+1) Wave16 promotions (11 total)
+- Core:
+  - `0x0057a6e0` -> `LoadScenarioMetadataByIndexIntoUiControlCore`
+  - `0x005e9300` -> `DecodeScenarioTilePaletteMaskWithStreamLock`
+  - `0x0056e370` -> `RenderSplitOverlaySurfaceAndCenteredStatusText`
+  - `0x004bac50` -> `BlitBitmapResourceRectWithScreenOffsetAndPalette`
+  - `0x00483750` -> `InitializeChildWindowSurfaceAndTickTimer`
+  - `0x004a1f80` -> `ProcessTileUnitListsAndApplyRandomStatusUpdates`
+- Thunk/core normalization:
+  - `0x004099b7` -> `thunk_LoadScenarioMetadataByIndexIntoUiControlCore`
+  - `0x00407496` -> `thunk_RenderSplitOverlaySurfaceAndCenteredStatusText`
+  - `0x00406753` -> `thunk_BlitBitmapResourceRectWithScreenOffsetAndPalette`
+  - `0x00401bae` -> `thunk_InitializeChildWindowSurfaceAndTickTimer`
+  - `0x00405006` -> `thunk_ProcessTileUnitListsAndApplyRandomStatusUpdates`
+
+2) Signature adaptation
+- Applied:
+  - `tmp_decomp/batch438_signature_updates_wave16.csv`
+  - key updates:
+    - `0x0057a6e0`: `__thiscall void(pThis:void*;scenarioIndex:ushort)`
+    - `0x005e9300`: `__cdecl int(pStream:void*;pEncodedData:void*)`
+    - `0x0056e370`: `__thiscall void(pThis:void*)`
+    - `0x00483750`: `__fastcall void(pWindowState:void*)`
+    - `0x004a1f80`: `__thiscall void(pThis:void*)`
+- Thunk signature alignment:
+  - `tmp_decomp/batch438_thunk_signature_targets_wave16.csv`
+
+3) Outcomes
+- Unresolved snapshots:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post15.csv` -> `rows=1179`
+  - (previous `post14` was `rows=1185`)
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post15.csv` -> `rows=0`
+  - `tmp_decomp/batch437_unresolved_0060_0062_post15.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post15.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+4) Artifacts
+- `tmp_decomp/batch438_ctx_wave5.log`
+- `tmp_decomp/batch438_ctx_005e9300.log`
+- `tmp_decomp/batch438_class_lane_promotions_wave16.csv`
+- `tmp_decomp/batch438_signature_updates_wave16.csv`
+- `tmp_decomp/batch438_thunk_signature_targets_wave16.csv`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post15.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Next large wave: high-pressure `Global` cluster set (`0x004badd0`, `0x004ec540`, `0x005dfc10`, `0x0047dae0`, `0x00497d10`) with matching signature pass.
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments), now that signature typing covers `pric/prov/tbar/tclr/coun`.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` + `orphan_unknown_with_calls`) with boundary validation before creating/retargeting functions.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each applied wave.
+
+#### Applied batch438 (loop continuation: high-pressure Global cluster wave B)
+Goal:
+- Continue large-batch Global dehardcoding with direct thunk mirrors and signature updates.
+
+1) Wave17 promotions (5 core + 5 thunks)
+- Core:
+  - `0x004badd0` -> `RenderNationHeaderDateLabelWithPeriodicRefresh`
+  - `0x004ec540` -> `BuildTileIndexListsForSelectedTerrainClass`
+  - `0x005dfc10` -> `PlayMovieClipAndDispatchTurnStateFollowup`
+  - `0x0047dae0` -> `UpdateCursorHelperWindowLayoutAndMask`
+  - `0x00497d10` -> `DrawCenteredGuideLineOnMapDc`
+- Thunks:
+  - `0x00403ddc`, `0x004097be`, `0x004093ae`, `0x004054b6`, `0x00403bb6`
+
+2) Signature adaptation
+- Applied:
+  - `tmp_decomp/batch438_signature_updates_wave17.csv`
+  - `0x004badd0`: `__thiscall void(pThis:void*)`
+  - `0x004ec540`: `__thiscall void(pThis:void*)`
+  - `0x005dfc10`: `__thiscall void(pThis:void*)`
+  - `0x0047dae0`: `__fastcall int(pThis:void*)`
+- Thunk signature alignment:
+  - `tmp_decomp/batch438_thunk_signature_targets_wave17.csv`
+
+3) Outcomes
+- Unresolved snapshots:
+  - `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post16.csv` -> `rows=1174`
+  - (previous `post15` was `rows=1179`)
+- Gates:
+  - `tmp_decomp/batch437_named_callers_with_generic_callees_superlane_strict_post16.csv` -> `rows=0`
+  - `tmp_decomp/batch437_unresolved_0060_0062_post16.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch437_progress_counts_post16.txt`
+  - `total_functions: 13829`
+  - `renamed_functions: 12733`
+  - `default_fun_or_thunk_fun: 1096`
+  - `class_desc_count: 406`
+  - `vtbl_count: 231`
+  - `type_name_count: 406`
+
+4) Artifacts
+- `tmp_decomp/batch438_ctx_wave6.log`
+- `tmp_decomp/batch438_class_lane_promotions_wave17.csv`
+- `tmp_decomp/batch438_signature_updates_wave17.csv`
+- `tmp_decomp/batch438_thunk_signature_targets_wave17.csv`
+
+### TODO (next loop lane)
+- [ ] Continue unresolved promotion from `tmp_decomp/batch437_unresolved_0040_006f_snapshot_post16.csv` (top `Cluster_*` by named-callee pressure first).
+- [ ] Next large wave: high-pressure `Global` cluster set (`0x005682d0`, `0x004133d0`, `0x004c1510`, `0x004d4bf0`, `0x0050bad0`) with matching signature pass.
+- [ ] Deepen turn-instruction typing inside handler internals (locals/field roles/comments), now that signature typing covers `pric/prov/tbar/tclr/coun`.
+- [ ] Continue orphan boundary repair (`orphan_leaf_unknown` + `orphan_unknown_with_calls`) with boundary validation before creating/retargeting functions.
+- [ ] Keep strict super-lane and runtime-bridge gates at zero after each applied wave.
+
+#### Batch440 (workflow acceleration pass: single-session wave orchestrator)
+Goal:
+- Remove per-wave overhead by running rename/signature/thunk-signature/gates in one pyghidra session.
+
+1) New reusable script added
+- `new_scripts/run_unresolved_wave.py`
+- Capabilities:
+  - apply core rename CSV (`address,new_name[,comment]`),
+  - optional auto direct-JMP thunk mirror rename (`thunk_<target>`),
+  - apply signature CSV,
+  - apply thunk-signature propagation CSV,
+  - emit unresolved snapshots, strict super-lane gate, runtime-bridge gate, progress counters.
+
+2) Validation
+- Syntax/exec checks:
+  - `python -m py_compile new_scripts/run_unresolved_wave.py`
+- Dry run:
+  - `tmp_decomp/batch440_run_unresolved_wave_dry.log`
+  - produced expected plan lines and artifacts.
+- Apply run (idempotent dataset):
+  - `tmp_decomp/batch440_run_unresolved_wave_apply.log`
+  - completed with zero failures.
+
+3) Artifacts from validation
+- `tmp_decomp/batch440_auto_thunks_smoketest.csv`
+- `tmp_decomp/batch440_unresolved_0040_006f_snapshot_smoketest.csv`
+- `tmp_decomp/batch440_named_callers_with_generic_callees_superlane_strict_smoketest.csv`
+- `tmp_decomp/batch440_unresolved_0060_0062_smoketest.csv`
+- `tmp_decomp/batch440_progress_counts_smoketest.txt`
+- `tmp_decomp/batch440_auto_thunks_applytest.csv`
+- `tmp_decomp/batch440_unresolved_0040_006f_snapshot_applytest.csv`
+- `tmp_decomp/batch440_named_callers_with_generic_callees_superlane_strict_applytest.csv`
+- `tmp_decomp/batch440_unresolved_0060_0062_applytest.csv`
+- `tmp_decomp/batch440_progress_counts_applytest.txt`
+
+4) Expected impact
+- One writer transaction + one save per wave instead of 3-6 separate writer scripts.
+- Lower lock/save-conflict risk and higher loop throughput.
+
+### TODO (next loop lane)
+- [ ] Drive the next unresolved waves with `new_scripts/run_unresolved_wave.py` as default.
+- [ ] Feed wave24/25-style CSVs to orchestrator and retire per-step manual command chains.
+- [ ] Add optional "top-N unresolved seed" mode into orchestrator to generate starter candidate CSVs automatically.
+
+#### Batch444 (unresolved cleanup + class/enum sweep)
+Goal:
+- Continue safe high-throughput cleanup with strict gates, then refresh TODO to current baseline.
+
+1) Applied rename waves
+- Wrapper-chain normalization:
+  - `tmp_decomp/batch444_wrapper_chain_normalize_candidates.csv` (`rows=1`)
+  - applied via `run_unresolved_wave.py` (`rename_ok=1`)
+- Unresolved callee-hint wave:
+  - `tmp_decomp/batch444_unresolved_callee_hint_renames_wave3.csv` (`rows=6`)
+  - applied via `run_unresolved_wave.py` (`rename_ok=6`)
+  - default names reduced: `499 -> 493`
+- Single-callee wrapper refinement:
+  - `tmp_decomp/batch444_single_callee_wrapper_renames_wave1.csv` (`rows=4`)
+  - applied via `run_unresolved_wave.py` (`rename_ok=4`, mostly non-default wrapper refinement)
+
+2) Class extraction/attachment pass
+- Inventory refresh:
+  - `tmp_decomp/class_model_inventory.csv`
+  - `tmp_decomp/class_model_gaps.csv`
+  - `tmp_decomp/class_model_inventory_summary.txt`
+- Findings:
+  - `T*` struct gaps at current threshold: none actionable (`create_missing_class_structs_from_inventory.py` selected `0`)
+  - unique global-to-class attachment candidates: `5`
+- Applied namespace attachments (`ok=5`):
+  - `thunk_HandleTurnEventTable66F220_Slot04_InvokeMainViewSlots0C_E4` -> `TViewMgr`
+  - `thunk_HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4` -> `TViewMgr`
+  - `thunk_DiplomacyMgrVtableSlot14_Target004ef2a0` -> `TSortedByRelationshipList`
+  - `thunk_DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy` -> `TSortedByRelationshipList`
+  - `thunk_HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14` -> `TViewMgr`
+
+3) Enum/dehardcoding lane updates
+- Created/updated enums and tactical slot typing:
+  - `new_scripts/create_gameplay_enums.py --apply-tactical-tables`
+  - added/updated:
+    - `/Imperialism/EHexDirection`
+    - `/Imperialism/EHexDirectionMask`
+    - `/Imperialism/ETacticalUnitActionClass`
+    - `/Imperialism/ETacticalUnitCategoryCode`
+  - typed tables:
+    - `g_aeTacticalUnitActionClassBySlot @ 0x006693b8`
+    - `g_aeTacticalUnitCategoryBySlot @ 0x00695528`
+- Created arrow split enum:
+  - `/Imperialism/EArrowSplitCommandId` via `create_arrow_command_enum.py`
+- Arrow annotation pass:
+  - `annotate_arrow_command_constants.py` scanned `8` target functions, `annotations_set=0` (already covered).
+
+4) Signature lane status
+- `apply_wrapper_family_signatures.py`, `apply_wrapper_template_signatures.py`, `apply_nonalloc_constructor_signatures.py`:
+  - executed in single-writer mode,
+  - no new candidates matched in current state (`0` changes).
+
+5) Baseline / gates after batch
+- Progress:
+  - `tmp_decomp/batch444_progress_counts_post42.txt`
+  - `total_functions 13829`
+  - `renamed_functions 13336`
+  - `default_fun_or_thunk_fun 493`
+  - `class_desc_count 406`
+  - `vtbl_count 231`
+  - `type_name_count 406`
+- Super-lane strict gate:
+  - `tmp_decomp/batch444_named_callers_with_generic_callees_superlane_strict_post42.csv` -> `rows=0`
+- Runtime-bridge strict gate:
+  - `tmp_decomp/batch444_unresolved_0060_0062_runtime_bridge_post42.csv` -> `rows=0`
+
+6) Process note (important)
+- Save/contention failures were reproducible when running multiple writer scripts in parallel.
+- Keep one Ghidra writer script at a time for all apply/save operations.
+
+#### Batch445 (callback ABI + thunk default elimination lane)
+Goal:
+- Push default names down by removing residual `thunk_FUN_*`, keep strict gates at zero, and run another callback ABI normalization tranche.
+
+1) Callback ABI normalization (safe ret-imm apply)
+- Ran safe apply lanes:
+  - `generate_ret_imm_signature_candidates.py --ret-imm 0x10 ... --apply-safe`
+    - `tmp_decomp/batch445_ret10_candidates.csv` (`86` candidates, `safe=8`, `ok=8`)
+  - `generate_ret_imm_signature_candidates.py --ret-imm 0x14 ... --apply-safe`
+    - `tmp_decomp/batch445_ret14_candidates.csv` (`25` candidates, `safe=4`, `ok=4`)
+  - `generate_ret_imm_signature_candidates.py --ret-imm 0x18 ... --apply-safe`
+    - `tmp_decomp/batch445_ret18_candidates.csv` (`9` candidates, `safe=3`, `ok=3`)
+- Net safe signature updates this pass: `15`.
+
+2) Turn-instruction typing consistency refresh
+- Re-ran type/enum+apply in single-writer order:
+  - `create_turn_instruction_types.py`
+  - `apply_turn_instruction_struct_signatures.py --bindings-csv tmp_decomp/batch421_tabsenu_loader_bindings_extended.csv`
+- Important correction:
+  - avoided stale `batch442` binding where `coun` arity drifted to `10`;
+  - enforced `coun` arity `3` from `batch421` and re-applied (`sig_ok=26`).
+
+3) Mapgen/UMapper typed-state refresh
+- Reapplied typed global/model scripts (idempotent+save-persistent):
+  - `create_mapmaker_generation_state_struct.py`
+  - `create_umapper_overlay_types.py`
+  - `create_umapper_array_state_structs.py`
+
+4) Class extraction follow-up
+- Applied unique class thunk-target attachment:
+  - `attach_class_thunk_targets.py --apply`
+  - `ok=5`, `fail=0`
+- Ran class helper signature lane:
+  - `apply_class_helper_signatures.py --apply`
+  - candidates `632`, net changes `ok=1`, `skip=631`.
+
+5) New reusable scripts added
+- `new_scripts/generate_jmp_thunk_addr_fallback_renames.py`
+  - purpose: rename generic single-JMP `thunk_FUN_*` to deterministic `thunk_Target_<addr>_At<src>`.
+- `new_scripts/generate_call_wrapper_addr_fallback_renames.py`
+  - purpose: rename tiny `FUN_*` CALL wrappers to deterministic `WrapperFor_*` with address fallback.
+
+6) Applied rename waves
+- Wave A (new thunk fallback script):
+  - input: `tmp_decomp/batch445_jmp_thunk_addr_fallback_renames.csv` (`rows=29`)
+  - apply via `run_unresolved_wave.py`:
+    - `rename_ok=29`
+    - defaults: `493 -> 464`
+    - snapshot rows: `683 -> 637`
+- Wave B (tiny call-wrapper fallback):
+  - input: `tmp_decomp/batch445_fun_call_wrapper_addr_fallback_renames.csv` (`rows=2`)
+  - apply via `run_unresolved_wave.py`:
+    - `rename_ok=2`
+    - defaults: `464 -> 462`
+    - snapshot rows: `637 -> 635`
+
+7) Baseline after batch445
+- `tmp_decomp/batch445_progress_counts_post45.txt`
+  - `total_functions 13829`
+  - `renamed_functions 13367`
+  - `default_fun_or_thunk_fun 462`
+  - `class_desc_count 406`
+  - `vtbl_count 231`
+  - `type_name_count 406`
+- Gate status:
+  - `tmp_decomp/batch445_named_callers_with_generic_callees_superlane_strict_post45.csv` -> `rows=0`
+  - `tmp_decomp/batch445_unresolved_0060_0062_runtime_bridge_post45.csv` -> `rows=0`
+- Key milestone:
+  - unresolved defaults in active lane are now `FUN_*` only (no `thunk_FUN_*` remain in `post45` snapshot).
+
+#### Batch445B (reusable orphan-wave lanes + aggressive default reduction)
+Goal:
+- Continue FUN-only cleanup using reusable scripts (no ad-hoc wave builders), while preserving strict gates.
+
+1) Reusable scripts added
+- `new_scripts/build_orphan_rename_wave.py`
+  - reusable generator for orphan-based rename waves from triage CSV.
+  - modes:
+    - `leaf_nocall`
+    - `callchain_small`
+- (previous batch445 additions still active):
+  - `generate_jmp_thunk_addr_fallback_renames.py`
+  - `generate_fun_impl_names_from_thunk_targets.py`
+  - `generate_call_wrapper_addr_fallback_renames.py`
+  - `generate_fun_impl_names_from_wrapper_targets.py`
+
+2) Applied wave summary
+- Thunk target impl neutralization:
+  - `tmp_decomp/batch445_fun_impl_names_from_thunk_targets.csv`
+  - applied via `run_unresolved_wave.py`:
+    - `rename_ok=28`
+    - defaults `462 -> 434`
+- Orphan no-call leaf waves:
+  - `batch445_orphan_nocall_stub_renames_wave1.csv` (`79`)
+  - `batch445_orphan_nocall_stub_renames_wave2.csv` (`16`)
+  - `batch445_orphan_nocall_stub_renames_wave3.csv` (`12`)
+- Orphan small callchain waves (reusable generator):
+  - `batch445_orphan_callchain_stub_renames_wave4.csv` (`75`, ins<=12, calls<=2)
+  - `batch445_orphan_callchain_stub_renames_wave5.csv` (`25`, ins 13..16, calls<=2)
+  - `batch445_orphan_callchain_stub_renames_wave6.csv` (`22`, ins 17..20, calls<=2)
+  - `batch445_orphan_callchain_stub_renames_wave7.csv` (`13`, ins 21..24, calls<=2)
+  - `batch445_orphan_callchain_stub_renames_wave8.csv` (`20`, ins 25..32, calls<=2)
+  - `batch445_orphan_callchain_stub_renames_wave9_preview.csv` (`16`, ins 33..40, calls<=2)
+  - `batch445_orphan_callchain_stub_renames_wave10.csv` (`3`, ins 41..48, calls<=2)
+
+3) Current baseline after post56
+- `tmp_decomp/batch445_progress_counts_post56.txt`
+  - `total_functions 13829`
+  - `renamed_functions 13676`
+  - `default_fun_or_thunk_fun 153`
+  - `class_desc_count 406`
+  - `vtbl_count 231`
+  - `type_name_count 406`
+- Gates:
+  - `tmp_decomp/batch445_named_callers_with_generic_callees_superlane_strict_post56.csv` -> `rows=0`
+  - `tmp_decomp/batch445_unresolved_0060_0062_runtime_bridge_post56.csv` -> `rows=0`
+- Unresolved snapshot:
+  - `tmp_decomp/batch445_unresolved_0040_006f_snapshot_post56.csv` -> `rows=326`
+
+4) Process correction
+- Enforced reusable-script-first workflow for recurring wave builders.
+- Added explicit rule into `AGENTS.md` to avoid ad-hoc inline generators for repeatable tasks.
+
+#### Batch447 (P0 execution from new TODO: strict-gate cleanup + callback ABI safe wave)
+Goal:
+- Execute the new P0 loop efficiently using reusable scripts only: clear residual generic-callee strict gate rows, then run callback ABI safe-apply lanes and re-validate gates/stats.
+
+1) Baseline checks
+- Progress baseline (`count_re_progress.py`):
+  - `total_functions 13829`
+  - `renamed_functions 13829`
+  - `default_fun_or_thunk_fun 0`
+  - `class_desc_count 406`
+  - `vtbl_count 231`
+  - `type_name_count 406`
+- Strict-gate pre snapshot (explicit broad caller regex) found `4` residual rows:
+  - `tmp_decomp/batch447_named_callers_with_generic_callees_superlane_strict_pre.csv`
+- Runtime bridge unresolved pre snapshot:
+  - `tmp_decomp/batch447_unresolved_0060_0062_runtime_bridge_pre.csv` -> `rows=0`.
+
+2) Residual generic-callee chain cleanup (single wave)
+- Built rename/signature inputs:
+  - `tmp_decomp/batch447_wave01_residual_generic_chain_renames.csv`
+  - `tmp_decomp/batch447_wave01_residual_generic_chain_signatures.csv`
+- Applied with `run_unresolved_wave.py --apply`:
+  - `rename_ok=8`, `rename_fail=0`, `comments=8`
+  - `sig_ok=8`, `sig_fail=0`
+  - strict gate post-wave: `rows=0`
+  - runtime bridge post-wave: `rows=0`
+  - progress unchanged on defaults (`default_fun_or_thunk_fun 0`).
+- Key renamed nodes (evidence-backed wrapper/cluster chain):
+  - `0x00408e36` -> `RenderMapTileHintOverlayToDcOrWindow`
+  - `0x00482fc0` -> `UpdateAndRenderMapTileHintOverlayQueue`
+  - `0x00404570` -> `TBook_HandleArmyNavyPageNavigationCommand`
+  - `0x004aea90` -> `TBattleDetailBook_HandleArmyNavyPageNavigationCommand`
+  - `0x006242de` -> `FinalizeTurnStateObjectModuleHandleResources`
+  - `0x005e5455` -> `DestroyTurnStateObjectWithModuleHandleFinalizer`
+  - `0x00626b59` -> `FinalizeTurnStateObjectMfcDeleteResources`
+  - `0x00622451` -> `DestroyTurnStateObjectWithMfcDeleteFinalizer`
+
+3) Callback ABI normalization (safe-only reusable passes)
+- Ran `generate_ret_imm_signature_candidates.py --apply-safe` with `--exclude-generic-callers --min-score 7`:
+  - ret `0x10`: `ok=16` (`tmp_decomp/batch447_ret10_*`)
+  - ret `0x14`: `ok=5` (`tmp_decomp/batch447_ret14_*`)
+  - ret `0x18`: `ok=2` (`tmp_decomp/batch447_ret18_*`)
+- Net callback ABI safe updates in this batch: `23`.
+
+4) Post-batch gates and stats
+- Strict super-lane gate (default strict caller regex):
+  - `tmp_decomp/batch447_named_callers_with_generic_callees_superlane_strict_post_wave02.csv` -> `rows=0`
+- Runtime bridge unresolved gate:
+  - `tmp_decomp/batch447_unresolved_0060_0062_runtime_bridge_post_wave02.csv` -> `rows=0`
+- Progress:
+  - `tmp_decomp/batch447_progress_counts_post_wave02.txt`
+  - `total_functions 13829`, `renamed_functions 13829`, `default_fun_or_thunk_fun 0`, `class_desc_count 406`, `vtbl_count 231`, `type_name_count 406`.
+
+Next queued (from TODO P1/P2):
+- Continue turn-instruction deep typing inside handler bodies.
+- Continue mapgen state propagation near `0x00511a70`/`0x00526ba0` clusters.
+- Start descriptor-vtable gap closure pass (`g_pClassDescT*` -> canonical `g_vtblT*`).
+
+#### Batch447B (P1 turn-instruction consistency + class-gap quantification)
+Goal:
+- Continue loop after P0 by refreshing trusted turn-instruction typing and establish measurable class-recovery baseline.
+
+1) Turn-instruction binding extension check
+- Ran extender script with requested commands (`pric,prov,tbar,tclr,coun`):
+  - `tmp_decomp/batch447_tabsenu_loader_bindings_extended.csv`
+  - script inferred `coun` arity `7` (medium confidence), which is known to drift due pointer-index noise.
+- Decision:
+  - did **not** apply this new extended file.
+  - kept trusted corrected bindings baseline (`batch421`) where `coun` arity is fixed to `3`.
+
+2) Re-apply trusted turn-instruction typed signatures
+- Applied:
+  - `apply_turn_instruction_struct_signatures.py --bindings-csv tmp_decomp/batch421_tabsenu_loader_bindings_extended.csv`
+- Result:
+  - `planned=26`, `sig_ok=26`, `sig_fail=0`
+  - all tabsenu lane handlers now re-stamped with stable typed `STurnInstruction_*` pointer signatures/comments.
+
+3) Class model inventory snapshot (for TODO prioritization)
+- Built inventory via reusable script:
+  - `tmp_decomp/batch447_class_inventory/class_model_inventory.csv`
+  - `tmp_decomp/batch447_class_inventory/class_model_gaps.csv`
+  - `tmp_decomp/batch447_class_inventory/class_model_inventory_summary.txt`
+- Snapshot metrics:
+  - `classes_total=455`
+  - `class_desc_count=406`
+  - `typename_count=406`
+  - `vtbl_count=224` (canonical inventory extraction)
+  - `classes_missing_vtbl=231`
+  - `classes_missing_struct=36`
+  - `classes_with_default_methods=0`
+- Note:
+  - `create_missing_class_structs_from_inventory.py` selected `0` rows with current gates (class-name filter expects `T*` + anchor/method constraints); no speculative struct creation applied.
+
+#### Batch447C (loop continuation: map-dialog cluster dehardcoding + turn-event packet typing)
+Goal:
+- Keep loop momentum after P0: push concrete game/map semantics in `0x0051xxxx..0x0052xxxx`, keep gates clean, and execute reusable packet typing lane.
+
+1) Class/vtable lane quick checks (single-writer correction)
+- Re-ran `extract_vtbl_labels_from_ctor_neighbors.py` sequentially after one accidental parallel writer run.
+- Result: no new labels (`ok=0`, `skip=9`); candidates already covered.
+- Ran `add_shared_vtbl_alias_labels.py`: `shared_groups=0`.
+- Applied namespace attachment from class quads:
+  - `extract_class_namespaces_from_csv.py` on `batch112_class_quads_merged.csv` + `batch83_class_quads_generic_neighbors_filtered.csv`
+  - result: `fn_attached=29`, `class_created=0` (existing class set reused).
+
+2) Map/dialog semantic wave (factory + helpers)
+- Verified and renamed high-confidence map-dialog creation/coord helpers:
+  - `0x005199c0` -> `CreateTMapDialogInstance`
+  - `0x0051bd60` -> `CreateTCitySiteViewInstance`
+  - `0x0051cab0` -> `CreateTMapEditViewInstance`
+  - `0x0051a990` -> `ComputeWrappedMapCellAndRegionBandFromScreenCoord`
+  - `0x0051bcc0` -> `RenderMapTileNameControlHighlight`
+  - `0x00520de0` -> `DrawMapDialogTileGuidePatternByVariant`
+- Applied with `run_unresolved_wave.py` using:
+  - `tmp_decomp/batch447_wave03_mapdialog_mapedit_citysite_renames.csv`
+  - `tmp_decomp/batch447_wave03_mapdialog_mapedit_citysite_signatures.csv`
+- Apply result: `rename_ok=6`, `sig_ok=6`, gates remained clean.
+
+3) Class-namespace follow-up after naming
+- Ran `attach_class_methods_by_name_patterns.py --apply`.
+- New attachments:
+  - `CreateTMapDialogInstance -> TMapDialog`
+  - `CreateTMapEditViewInstance -> TMapEditView`
+  - result: `ok=2`.
+
+4) Map-dialog guide helper family batch (big low-risk chunk)
+- Remaining unresolved cluster in `0x0051..0x0052` narrowed to 12 map guide/overlay helpers.
+- Applied semantic family rename+signature batch:
+  - `tmp_decomp/batch447_wave05_mapdialog_helper_family_renames.csv`
+  - `tmp_decomp/batch447_wave05_mapdialog_helper_family_signatures.csv`
+- Key examples:
+  - `0x00520970` -> `DrawMapDialogGuidePatternSetA_00520970`
+  - `0x00522000` -> `DrawMapDialogOwnershipMarkerForNation_00522000`
+  - `0x00522c10` -> `DrawMapDialogWrappedTileConnectionMarker_00522c10`
+  - `0x00523ff0` -> `RenderMapDialogTerrainOverlayFrameByTileOwner_00523ff0`
+- Apply result: `rename_ok=12`, `sig_ok=12`.
+- Post-check:
+  - `tmp_decomp/batch447_unresolved_0051_0052_map_post_wave05.csv` -> `rows=0` for `name-regex=^(Cluster_)` in that range.
+
+5) Turn-event factory packet typing lane (reusable script)
+- Ran `create_turn_event_factory_packet_struct_and_apply.py`.
+- Applied/confirmed:
+  - struct `/Imperialism/TurnEvent/STurnEventFactoryPacket`
+  - `BuildTurnEventFactoryPacket` typed params including `pSourcePacket0C`, `eFactorySlot60`, payload pair and shared-string pointer
+  - `DispatchTurnEventPacketThroughDialogFactory` typed to packet pointer
+  - direct thunk signature sync at `0x00408d46` and `0x00404593`.
+
+6) Gate/progress status (post wave04/05)
+- Strict gate: `tmp_decomp/batch447_named_callers_with_generic_callees_superlane_strict_post_wave05.csv` -> `rows=0`
+- Runtime bridge gate: `tmp_decomp/batch447_unresolved_0060_0062_runtime_bridge_post_wave05.csv` -> `rows=0`
+- Progress:
+  - `total_functions 13829`
+  - `renamed_functions 13829`
+  - `default_fun_or_thunk_fun 0`
+  - `class_desc_count 406`
+  - `vtbl_count 231`
+  - `type_name_count 406`
+
+Notes:
+- Control-tag dispatch matrix on unresolved set produced no safe rename candidates in this pass (focus-tag overlap too weak), so no speculative tag-based renames were applied.
+
+#### Batch447D (loop continuation: map helper cluster elimination + semantic cluster tranche)
+Goal:
+- Keep loop moving with evidence-backed, non-speculative semantic renames in map/gameplay clusters while preserving strict gates.
+
+1) Map helper cluster elimination in `0x0051..0x0052`
+- Identified remaining 12 unresolved `Cluster_MapTileHint_*` functions in range:
+  - `tmp_decomp/batch447_unresolved_0051_0052_map_post_wave04.csv`.
+- Applied family rename/signature wave:
+  - `tmp_decomp/batch447_wave05_mapdialog_helper_family_renames.csv`
+  - `tmp_decomp/batch447_wave05_mapdialog_helper_family_signatures.csv`
+- Result:
+  - `rename_ok=12`, `sig_ok=12`
+  - strict gate `rows=0`
+  - runtime bridge gate `rows=0`
+  - post-scan `tmp_decomp/batch447_unresolved_0051_0052_map_post_wave05.csv` -> `rows=0` for `name-regex=^(Cluster_)` in that lane.
+
+2) Additional high-signal semantic cluster tranche (top unresolved rows)
+- Analyzed contexts for:
+  - `0x0047ed70`, `0x0048fed0`, `0x00495eb0`, `0x004962c0`, `0x00482d00`, `0x0056f5e0`.
+- Applied rename-only wave:
+  - `tmp_decomp/batch447_wave06_cluster_semantic_renames.csv`
+- Renames:
+  - `0x0047ed70` -> `LoadPaletteChunkFromMmioAndRegisterPaletteHandle`
+  - `0x0048fed0` -> `LoadUiStringAndDispatchViaVslot1C8`
+  - `0x00495eb0` -> `InitializeBitmapDescriptorNodeFromResourceSurface`
+  - `0x004962c0` -> `InitializeBitmapDescriptorRecordAndLoadSurfaceNode`
+  - `0x00482d00` -> `BlitMapDialogSurfaceToHdcWithClipBounds`
+  - `0x0056f5e0` -> `TBook_HandlePageArrowCommandAcrossPagedControls`
+- Result:
+  - `rename_ok=6`, `comments=6`
+  - strict gate `rows=0`
+  - runtime bridge gate `rows=0`.
+
+3) Progress deltas
+- Unresolved main snapshot rows:
+  - post wave05: `152`
+  - post wave06: `146`
+- Global progress unchanged on default-name metric:
+  - `default_fun_or_thunk_fun 0` (still clean).
+
+#### Batch448 (mapgen propagation follow-up)
+Goal:
+- Continue TODO mapgen propagation lane around `0x00511a70` / `0x00526ba0` and keep strict gates clean.
+
+1) Context and range checks
+- Captured mapgen contexts/inventories:
+  - `tmp_decomp/batch448_ctx_00511a70.txt`
+  - `tmp_decomp/batch448_ctx_00526ba0.txt`
+  - `tmp_decomp/batch448_allfunc_00511800_00512000.csv`
+  - `tmp_decomp/batch448_allfunc_00525000_00527fff.csv`
+- Verified unresolved in immediate `0x00525xxx..0x00526xxx` lane was already zero.
+
+2) Applied mapgen propagation wave (511x cluster)
+- Wave inputs:
+  - `tmp_decomp/batch448_wave01_mapgen_propagation_511x_renames.csv`
+  - `tmp_decomp/batch448_wave01_mapgen_propagation_511x_signatures.csv`
+- Renames:
+  - `0x00511a70` -> `TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng`
+  - `0x00511e80` -> `TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress`
+  - `0x00511f10` -> `ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias`
+  - `0x00511f30` -> `TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask`
+- Result:
+  - `rename_ok=4`
+  - `sig_ok=2`, `sig_skip=2`, `sig_fail=0`
+
+3) Post-wave gates
+- `tmp_decomp/batch448_named_callers_with_generic_callees_superlane_strict_post_wave01.csv` -> `rows=0`
+- `tmp_decomp/batch448_unresolved_0060_0062_runtime_bridge_post_wave01.csv` -> `rows=0`
+- `tmp_decomp/batch448_progress_counts_post_wave01.txt` kept defaults clean (`default_fun_or_thunk_fun=0`).
+
+#### Batch449 (P0+P2+P3 combined wave)
+Goal:
+- Run a full TODO loop chunk with reusable scripts only: P0 ABI/gate maintenance, P2 class/signature extraction sweep, P3 enumization, and a focused unresolved semantic wave.
+
+1) P0 baseline + callback ABI normalization
+- Baselines:
+  - `tmp_decomp/batch449_progress_pre.txt`
+  - `tmp_decomp/batch449_unresolved_0040_006f_pre.csv` (`rows=146`)
+  - strict gate pre `rows=0`
+  - runtime bridge pre `rows=0`
+- Callback ABI safe passes:
+  - ret `0x10`: `ok=6`, `safe_candidates=6` (`tmp_decomp/batch449_ret10_*`)
+  - ret `0x14`: `safe_candidates=0` (`tmp_decomp/batch449_ret14_*`)
+  - ret `0x18`: `ok=1`, `safe_candidates=1` (`tmp_decomp/batch449_ret18_*`)
+
+2) P2 class/signature sweep (reusable scripts)
+- Re-applied quad evidence:
+  - `apply_class_quads_from_csv.py` on:
+    - `tmp_decomp/batch112_class_quads_merged.csv` -> `fn_ok=0 fn_skip=144 lbl_ok=0 lbl_skip=139 comments=58`
+    - `tmp_decomp/batch83_class_quads_generic_neighbors_filtered.csv` -> `fn_ok=284 fn_skip=293 lbl_ok=0 lbl_skip=414 comments=207`
+- Signature sweeps:
+  - `apply_nonalloc_constructor_signatures.py --apply` -> `ok=1`
+  - `apply_destructor_signatures.py --apply` -> `ok=7 skip=200 fail=0`
+  - `apply_class_helper_signatures.py --apply` -> `ok=14 skip=637 fail=0`
+- Class struct seed pass (non-DLL subset, conservative vtable-only):
+  - `apply_class_structs_from_candidates.py --create-empty-for-classes --apply`
+  - `created=24`, `skipped_existing=4`, `failed=0`
+  - inventory refresh:
+    - `tmp_decomp/batch449_class_inventory_post_structseed/class_model_inventory_summary.txt`
+    - `classes_missing_struct=34` (from 36 baseline), `classes_missing_vtbl=231`.
+
+3) P3 domain enumization
+- Applied:
+  - `create_arrow_command_enum.py` -> `/Imperialism/EArrowSplitCommandId`
+  - `create_gameplay_enums.py --apply-tactical-tables`
+    - created/refreshed `EHexDirection`, `EHexDirectionMask`, `ETacticalUnitActionClass`, `ETacticalUnitCategoryCode`
+    - typed tables:
+      - `g_aeTacticalUnitActionClassBySlot` @ `0x006693b8`
+      - `g_aeTacticalUnitCategoryBySlot` @ `0x00695528`
+  - `annotate_arrow_command_constants.py` (idempotent this pass: `annotations_set=0`).
+
+4) Focused unresolved semantic wave
+- Applied via `run_unresolved_wave.py`:
+  - renames: `tmp_decomp/batch449_wave_semantic_top3_renames.csv`
+  - signatures: `tmp_decomp/batch449_wave_semantic_top3_signatures.csv`
+  - auto-thunks: `tmp_decomp/batch449_wave_semantic_top3_auto_thunks.csv`
+- Renamed:
+  - `0x005ba4b0` -> `ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked`
+  - `0x0047efa0` -> `WritePaletteChunkToMmioFromPaletteHandle`
+  - `0x00494040` -> `InitializeGlobalClipRegionHandleState`
+- Result:
+  - `rename_ok=3`, `sig_ok=2`, `sig_skip=1`, `auto_thunks=3`
+  - unresolved main `146 -> 143` (`tmp_decomp/batch449_unresolved_0040_006f_post_wave_semantic_top3.csv`).
+
+5) P0 gates after all Batch449 changes
+- strict gate remained `rows=0`:
+  - `tmp_decomp/batch449_named_callers_with_generic_callees_superlane_strict_post_structseed.csv`
+- runtime bridge remained `rows=0`:
+  - `tmp_decomp/batch449_unresolved_0060_0062_runtime_bridge_post_structseed.csv`
+- progress remained clean:
+  - `default_fun_or_thunk_fun=0`.
+
+Notes:
+- Moved completed TODO items out of `TODO.md` and narrowed pending enumization to turn/order-state constants only.
+- Kept all waves in reusable-script mode (no MCP), single-writer discipline.
+
+#### Batch449B (continued loop: unresolved semantic linked-owner wave)
+Goal:
+- Continue TODO unresolved semantic cleanup with behavior-safe names and zero-gate regression.
+
+1) Applied behavior-safe rename wave (no speculative game nouns)
+- Wave inputs:
+  - `tmp_decomp/batch449_wave_semantic_linked_owner_renames.csv`
+- Renames:
+  - `0x004a8040` -> `ApplyRandomizedMeterDecayToEligibleLinkedEntries`
+  - `0x004a7e70` -> `AccumulateWeightedMeterAndCountFromEligibleLinkedEntries`
+  - `0x004e6040` -> `ReassignTileObjectOwnerAndNotifyForSelectedCells`
+  - `0x005c2680` -> `UnlinkFromNationOrTerrainOwnerListAndDestroy`
+- Auto-thunk mirrors:
+  - `tmp_decomp/batch449_wave_semantic_linked_owner_auto_thunks.csv` (`rows=4`)
+- Apply result:
+  - `rename_ok=4`, `rename_fail=0`, `comments=4`.
+
+2) Post-wave status
+- Unresolved snapshot decreased:
+  - `tmp_decomp/batch449_unresolved_0040_006f_post_wave_semantic_linked_owner.csv` -> `rows=139`
+  - (from 143 after first Batch449 semantic wave, from 146 batch start)
+- Strict gate remained clean:
+  - `tmp_decomp/batch449_named_callers_with_generic_callees_superlane_strict_post_wave_semantic_linked_owner.csv` -> `rows=0`
+- Runtime bridge remained clean:
+  - `tmp_decomp/batch449_unresolved_0060_0062_runtime_bridge_post_wave_semantic_linked_owner.csv` -> `rows=0`
+
+3) Notes
+- `classes_missing_struct` metric in inventory tracks only struct datatype names starting with `T*`; newly seeded `C*` skeleton structs improve local typing availability but do not materially change that specific metric.
+
+#### Batch450 (process efficiency refactor: active queue + wave bundle runner)
+Goal:
+- Implement workflow efficiency changes so each future loop executes faster and with fewer manual mistakes.
+
+1) New reusable wrapper script
+- Added: `new_scripts/run_wave_bundle.py`
+- Purpose: single-command wave orchestration.
+- What it does in one run:
+  - pre snapshots (`unresolved main`, `strict gate`, `runtime gate`, `progress`)
+  - optional callback ABI safe pass (`ret 0x10/0x14/0x18`)
+  - main wave apply via `run_unresolved_wave.py`
+  - post snapshots + compact summary file
+- Artifacts naming:
+  - `tmp_decomp/<batch_tag>_*`
+  - summary: `tmp_decomp/<batch_tag>_bundle_summary.txt`
+
+2) Validation of new runner
+- Ran dry validation:
+  - `.venv/bin/python new_scripts/run_wave_bundle.py --batch-tag batch450_dry --renames-csv tmp_decomp/batch449_wave_semantic_top3_renames.csv --signatures-csv tmp_decomp/batch449_wave_semantic_top3_signatures.csv --auto-thunk-mirrors`
+- Result:
+  - pre/post snapshots generated correctly
+  - summary generated and parsed metrics correctly (`pre/post strict=0`, `runtime=0`, unresolved stable in dry mode)
+
+3) TODO refactor for speed/focus
+- Rewrote `TODO.md` to:
+  - `Active (Max 3)` only
+  - `Backlog (Prioritized)` for everything else
+  - explicit lane-level done criteria in active items
+- Removed recurring hygiene clutter from TODO to avoid drift and busywork.
+
+4) AGENTS workflow update
+- Updated `AGENTS.md`:
+  - added `P0 Invariants (Always On)` section
+  - made `run_wave_bundle.py` the preferred default loop command
+  - kept `run_unresolved_wave.py` as core engine underneath
+  - enforced TODO size rule (`max 3` active items)
+
+Outcome:
+- Future waves are now one-command and artifact-consistent.
+- Active queue is smaller and easier to prioritize.
+- P0 gates are now treated as invariants rather than checklist noise.
+
+#### Batch450B (runner refactor per feedback: no script-in-script nesting)
+Goal:
+- Remove subprocess chaining from wave wrapper and run the full wave in one pyghidra session.
+
+Changes:
+- Rewrote `new_scripts/run_wave_bundle.py`:
+  - no subprocess calls to other scripts
+  - imports core helper functions from `run_unresolved_wave.py`
+  - executes pre snapshots + apply + post snapshots in-process
+  - preserves auto-thunk mirror/signature propagation and summary output
+- Updated `AGENTS.md` default command snippet to match the new runner flags (removed callback flag from example).
+
+Validation:
+- `py_compile` passed for `new_scripts/run_wave_bundle.py`.
+- Dry run:
+  - `.venv/bin/python new_scripts/run_wave_bundle.py --batch-tag batch450_single_session_dry --renames-csv tmp_decomp/batch449_wave_semantic_top3_renames.csv --signatures-csv tmp_decomp/batch449_wave_semantic_top3_signatures.csv --auto-thunk-mirrors`
+- Output confirmed:
+  - pre/post artifacts generated
+  - strict/runtime gates remained zero
+  - no nested script execution required.
+
+#### Batch450C (artifact volume reduction)
+Goal:
+- Reduce file churn from wave execution; keep only useful outputs by default.
+
+Changes:
+- Updated `new_scripts/run_wave_bundle.py` artifact policy:
+  - default is **summary-only** output (`tmp_decomp/<batch_tag>_bundle_summary.txt`)
+  - detailed pre/post CSV artifacts are now opt-in via `--emit-detail-artifacts`
+- Updated `AGENTS.md` to document minimal artifact policy.
+
+Validation:
+- Dry run (`batch450_minimal_dry`) produced only:
+  - `tmp_decomp/batch450_minimal_dry_bundle_summary.txt`
+  - stdout capture file used in terminal session
+- No pre/post CSV artifact fan-out unless explicitly requested.
+
+#### Batch451 (Active TODO lane execution: unresolved semantic cleanup)
+Goal:
+- Execute high-ROI unresolved semantic waves with behavior-safe names and keep strict/runtime gates at zero.
+
+1) Wave 1 (`batch451_wave01_semantic_big`)
+- Input: `tmp_decomp/batch451_wave01_semantic_big_renames.csv`
+- Applied with `run_wave_bundle.py --auto-thunk-mirrors --apply`
+- Result:
+  - `rename_ok=28`, `rename_fail=0`
+  - unresolved rows: `139 -> 111`
+  - strict gate: `0 -> 0`
+  - runtime bridge gate: `0 -> 0`
+
+2) Wave 2 (`batch451_wave02_semantic_followup`)
+- Input: `tmp_decomp/batch451_wave02_semantic_followup_renames.csv`
+- Applied with `run_wave_bundle.py --auto-thunk-mirrors --apply`
+- Result:
+  - `rename_ok=21`, `rename_fail=0`
+  - unresolved rows: `111 -> 90`
+  - strict gate: `0 -> 0`
+  - runtime bridge gate: `0 -> 0`
+
+3) Lane done-condition check
+- Verified after wave 2:
+  - `strict_rows=0`
+  - `runtime_rows=0`
+  - `unresolved_rows=90`
+- This satisfies the active-lane done criteria (below 120 + two consecutive clean waves).
+
+#### Batch451B (Turn-instruction / Turn-event typing follow-up)
+Goal:
+- Continue active turn-instruction lane and tighten turn-event packet typing where safe.
+
+1) Turn-event packet shared-string typing refinement
+- Updated reusable script `new_scripts/create_turn_event_factory_packet_struct_and_apply.py`:
+  - added `/Imperialism/String/STSharedStringRef` (conservative 4-byte wrapper)
+  - changed packet field at `+0x6c` from `void*` to inline `STSharedStringRef`
+  - changed builder param `pSharedString6C` type to `STSharedStringRef*`
+- Re-applied script successfully:
+  - `BuildTurnEventFactoryPacket` and direct thunk now use `STSharedStringRef * pSharedString6C`
+
+2) Re-stamped trusted turn-instruction signatures
+- Applied:
+  - `.venv/bin/python new_scripts/apply_turn_instruction_struct_signatures.py --bindings-csv tmp_decomp/batch421_tabsenu_loader_bindings_extended.csv`
+- Result:
+  - `planned=26`, `sig_ok=26`, `sig_fail=0`
+  - includes trusted `coun` arity `3` (not inferred `7` variant).
+
+3) Post-check
+- strict/runtime gates remain clean (`0/0`) after typing changes.
+
+TODO update notes:
+- Moved unresolved semantic lane out of Active and marked completed in TODO.
+- Activated mapgen propagation lane as third active item.
+
+#### Batch451C (class/vtable lane probe + active-lane rotation)
+Goal:
+- Probe high-yield descriptor-vtable closure paths and validate next active lane priorities.
+
+1) Class-vtable extraction probes
+- Added reusable script:
+  - `new_scripts/extract_vtbl_labels_from_class_csv.py`
+  - purpose: derive `g_vtblT*` labels from class-extract CSV rows (explicit `vtbl_addr` or ctor decomp fallback).
+- Ran dry probes on:
+  - `tmp_decomp/class_extract_from_all_getters_nearest.csv`
+  - `tmp_decomp/class_extract_from_name_patterns.csv`
+- Outcome:
+  - `candidates=0` (for both)
+  - dominant reason: rows already covered (`skip_existing`) or unresolved vtbl source (`skip_no_addr`).
+- Also tested `extract_vtbl_labels_from_named_ctors.py` dry pass:
+  - `candidates=0` (named ctor pattern does not cover unresolved class-desc gap enough).
+
+2) TODO active-lane rotation
+- Marked mapgen propagation lane completed after verifying no unresolved `Cluster_*` remained in primary mapgen ranges:
+  - `0x00510000..0x00513fff` -> `rows=0`
+  - `0x00525000..0x00527fff` -> `rows=0`
+- Promoted UMapper/overlay route lane to active.
+
+#### Batch451D (small overlay follow-up wave)
+Goal:
+- Keep active queue moving with a small safe overlay cleanup batch.
+
+- Applied wave `batch451_wave03_overlay_followup`:
+  - `0x00573890` -> `RenderHintOverlayWithCtrlModifierClipRegion`
+  - `0x0058b4f0` -> `BlitHintOverlayRectWithCtrlModifierPalette`
+- Result:
+  - `rename_ok=2`, `rename_fail=0`
+  - unresolved rows `90 -> 88`
+  - strict/runtime gates remained `0/0`.
