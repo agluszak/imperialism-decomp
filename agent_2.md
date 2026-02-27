@@ -2105,3 +2105,6 @@
 - Safety hardening:
   - `create_gameplay_enums` now merges incoming specs with existing enum members and preserves existing member names on conflicts.
   - size selection now prefers existing observed enum sizes (including legacy aliases) instead of forcing inferred size.
+- Enum wave runner improvements:
+  - added `--skip-create-enums` and `--fail-on-hotspots` flags to `run_enum_domain_wave` for safer/faster propagation passes.
+  - smoke-validated on strict map-mode domain (`batch_enum_waveK_smoke`): 21 candidates, 0 hotspots.

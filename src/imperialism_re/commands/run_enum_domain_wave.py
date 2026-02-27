@@ -52,6 +52,16 @@ def main() -> int:
     ap.add_argument("--cluster-threshold", type=int, default=1)
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--apply-tables", action="store_true")
+    ap.add_argument(
+        "--skip-create-enums",
+        action="store_true",
+        help="When applying, skip create_gameplay_enums stage and only propagate types",
+    )
+    ap.add_argument(
+        "--fail-on-hotspots",
+        action="store_true",
+        help="Return non-zero when post-verify hotspots are present",
+    )
     ap.add_argument("--project-root", default=default_project_root())
     args = ap.parse_args()
 
@@ -110,15 +120,16 @@ def main() -> int:
     )
 
     if args.apply:
-        argv = [
-            "--spec-json",
-            str(spec_json),
-            "--project-root",
-            str(root),
-        ]
-        if args.apply_tables:
-            argv.append("--apply-tables")
-        _run_module("imperialism_re.commands.create_gameplay_enums", argv)
+        if not args.skip_create_enums:
+            argv = [
+                "--spec-json",
+                str(spec_json),
+                "--project-root",
+                str(root),
+            ]
+            if args.apply_tables:
+                argv.append("--apply-tables")
+            _run_module("imperialism_re.commands.create_gameplay_enums", argv)
 
         _run_module(
             "imperialism_re.commands.apply_enum_param_types_clustered",
@@ -171,10 +182,15 @@ def main() -> int:
         ],
     )
 
+    candidates_rows = _csv_rows(candidates_csv)
+    hotspots_rows = _csv_rows(hotspots_csv)
     print(f"[done] batch={args.batch_tag}")
-    print(f"[artifact] candidates={candidates_csv} rows={_csv_rows(candidates_csv)}")
+    print(f"[artifact] candidates={candidates_csv} rows={candidates_rows}")
     print(f"[artifact] spec={spec_json}")
-    print(f"[artifact] hotspots={hotspots_csv} rows={_csv_rows(hotspots_csv)}")
+    print(f"[artifact] hotspots={hotspots_csv} rows={hotspots_rows}")
+    if args.fail_on_hotspots and hotspots_rows > 0:
+        print(f"[error] hotspots present: {hotspots_rows}")
+        return 4
     return 0
 
 
