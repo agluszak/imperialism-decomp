@@ -19,10 +19,10 @@ from __future__ import annotations
 import argparse
 import csv
 import re
-from functools import lru_cache
 from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import find_named_data_type, resolve_datatype_by_path_or_legacy_aliases
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_hex
 
@@ -44,39 +44,6 @@ def parse_array_suffix(type_name: str) -> tuple[str, int]:
     if count <= 0:
         raise ValueError(f"invalid array length: {count}")
     return base, count
-
-@lru_cache(maxsize=1024)
-def resolve_named_data_type(dtm, base_name: str):
-    target = base_name.strip()
-    if not target:
-        return None
-    best = None
-    best_score = None
-    it = dtm.getAllDataTypes()
-    while it.hasNext():
-        dt = it.next()
-        try:
-            if dt.getName() != target:
-                continue
-            cat = str(dt.getCategoryPath().getPath())
-            if cat in (
-                "/imperialism/classes",
-                "/Imperialism/classes",
-                "/imperialism/types",
-                "/Imperialism/types",
-            ):
-                pri = 0
-            elif cat == "/":
-                pri = 1
-            else:
-                pri = 2
-            score = (pri, len(cat), cat)
-            if best is None or score < best_score:
-                best = dt
-                best_score = score
-        except Exception:
-            continue
-    return best
 
 def resolve_data_type(program, type_name: str):
     from ghidra.program.model.data import (
@@ -107,7 +74,7 @@ def resolve_data_type(program, type_name: str):
         path = raw.split(":", 1)[1].strip()
         if not path:
             raise ValueError("empty struct/type path")
-        dt = dtm.getDataType(path)
+        dt = resolve_datatype_by_path_or_legacy_aliases(dtm, path)
         if dt is None:
             raise ValueError(f"type not found: {path}")
         return dt
@@ -129,7 +96,7 @@ def resolve_data_type(program, type_name: str):
     }
     dt = base_map.get(base_low)
     if dt is None:
-        dt = resolve_named_data_type(dtm, base)
+        dt = find_named_data_type(dtm, base)
     if dt is None:
         raise ValueError(f"unsupported type: {raw}")
 

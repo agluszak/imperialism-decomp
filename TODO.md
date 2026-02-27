@@ -2,38 +2,58 @@
 
 History/logs moved to `agent_2.md`.
 
+## Completed
+- [x] Split-arrow callback ABI normalization
+  - created `force_callback_abi_parameter_storage` command with CUSTOM_STORAGE
+  - `unaff_retaddr` eliminated from both `0x0058c640` and `0x005869c0`
+  - `EArrowSplitCommandId` typing retained
+
+- [x] Nation-metrics dispatch table lane (`0x0066d9f0..0x0066da18`)
+  - identified as NationInteractionStateManager vtable (base `0x0066d990`)
+  - labeled 41 vtable slots; de-orphaned 4 nation-metric helpers
+
+- [x] Runtime-pointer state class extraction follow-up
+  - resolved all anonymous fields in `TCViewOwnedBufferRegistryState_00648560`
+  - remaining 4 structs already fully typed; all this-pointers already typed
+
 ## Active (max 3)
-- [ ] Struct/enum propagation in hot dispatch/state lanes
-  - done: full 26-command turn-instruction typing pass (including `pric/prov/tbar/tclr/coun`) with `STurnInstruction_*` structs.
-  - done: city-building hover/control coordinate DAT cluster dehardcoded (`0x0069619c..0x006961da`) to typed `ushort` globals.
-  - next: propagate enum parameter types in command/event handlers where param names are still generic (`param_*`, `arg*`) by first normalizing signatures.
-  - next: continue high-xref global struct typing in remaining runtime windows outside resolved locale/stream lanes.
+- [x] Thunk-island bulk signature propagation (`0x00401000..0x0040AFFF`)
+  - reduced `undefined` return types from 5,424 → 3,930 (1,494 fixed, 27.5%)
+  - applied: 246 SDDs, 49 ctor/dtors, 20 factories, 188 wrapper→callee, 181 void-pattern,
+    101 orphan-leaf, 86 vtable-stubs, 174 ret-stubs, 69 hidden-stack, 37 ECX→thiscall, 39 getters, 79 allocators, 23 booleans
+  - fixed external-address crash in `generate_single_jmp_thunk_pairs.py`
 
-- [ ] Class attachment + ABI normalization follow-up
-  - done: attached 166 global typed-`this` methods into class namespaces (safe typed-first-param batch).
-  - next: recover more class ownership by retyping global `__thiscall` first params from `void*` to concrete class pointers, then rerun typed-attach sweep.
-  - next: normalize method signatures after ownership moves where hidden-`this`/stack params are still generic.
+- [x] Hidden-param register-artifact cleanup
+  - reduced from 194 → 124 hidden-param functions via automated waves
+  - remaining 124 are ECX-only (global variable access patterns)
 
-- [ ] Runtime-pointer state class extraction follow-up
-  - continue field-semantics naming in runtime state classes (`TCViewOwnedBuffer*`, `TRuntimeHeapBufferOwnerState_0066FA68`, `TModuleLibraryCacheTableState*`, etc.).
-  - finish remaining anonymous ranges in `TCViewOwnedBufferRegistryState_00648560` (`0x68..0x6b`, `0x78..0x8f`) once usage evidence is clearer.
-  - propagate typed class pointers into remaining ctor/create helpers and wrapper thunks.
+- [x] `void *` this-pointer and parameter typing (class-namespaced)
+  - 0 candidates remain in class namespaces; all class this-pointers typed
+  - 2,294 `void * this` remain in Global namespace (blocked on class assignment)
 
-## Queued
-- [ ] Tooling consolidation lane (no throwaway scripts)
-  - use `uv run impk` as the only execution path for maintained commands.
-  - when a needed command is missing, port it to `src/imperialism_re/commands/` + `command_catalog.yaml` before use.
-  - avoid parallel command variants that duplicate behavior; extend existing maintained commands with flags.
+## Active (max 3)
+- [~] Bulk class-namespace assignment (820 of 2,294 assigned, 36%)
+  - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority
+  - this-pointers auto-typed on namespace move (DYNAMIC_STORAGE mode)
+  - remaining ~1,466 lack clear class indicators (no name match, no unique vtable, callee voting yields only base classes)
+  - parked: further assignment needs caller-based or deeper decompiler analysis
 
-- [ ] Nation-metrics dispatch table lane (`0x0066d9f0..0x0066da18`)
-  - recover owner/consumer sites that index this table (direct code/data range refs currently zero).
-  - apply `/Imperialism/ENationMetricsDispatchSlot` to selector parameters when callsites are identified.
-  - continue de-orphaning nearby `0x005b97xx..0x005ba1xx` helpers with behavior-based names.
+- [x] Return-type inference via decompiler body analysis (3,932 of 3,942 fixed, 99.7%)
+  - created `infer_return_type_from_decomp` command (decompiles each function, extracts inferred types)
+  - created `apply_return_type_and_cc` command (sets cc + return type without touching params)
+  - applied: 1,864 void + 1,681 int + 281 other + 63 remaining + 39 thunk cascade
+  - remaining 10 are CRT internals ($E350, $E355, __seh_longjmp_unwind, etc.)
+  - cc=unknown: 3,893 → 292 (cascade chains where every function has unknown cc)
 
-- [ ] TView/TControl/TradeControl class-contract alignment
-  - recover/label missing vtable ownership evidence for `TradeControl` (or confirm abstract/no-concrete-vtbl status).
-  - normalize method ABI where virtual slots clearly require `this` semantics.
-  - propagate stable field names from verified `TView`/`TControl` layout into ghidra types.
+- [~] Struct field coverage expansion (1,729 fields named across 199 structs)
+  - created `mine_struct_field_access` command: decompiles class methods + follows thunk chains into Global impl functions
+  - created `apply_mined_struct_fields` command: grows stub structs and applies field names/types
+  - mined 1,817 field access points across all classes (4,801 class methods + 1,298 impl functions)
+  - applied 1,729 fields total, grew 219 structs from stubs to proper sizes
+  - key structs populated: TGreatPower (69 fields, 0x1→0xef4), TCountry (37), TToolBarCluster (30), TradeControl (+11 new)
+  - remaining: large UI-heavy structs (TBattleReportView 9,392 anon) have few thunk-reachable impl functions
 
-- [ ] Targeted state/command enum propagation in post-class lanes
-  - apply enum types to hot handlers now moved into runtime/state classes where command/state constants are still raw integers.
+- [x] Datatype namespace unification (250 types moved from root / to /imperialism/classes/)
+  - created `move_class_datatypes_to_canonical` command
+  - moved 236 types, resolved 14 collisions (2 src-richer, 12 dst-richer), 0 failures
+  - /imperialism datatype count: 436 → 816; root / reduced: 1,091 → 690 (remaining are Ghidra builtins)

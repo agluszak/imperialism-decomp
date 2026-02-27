@@ -76,10 +76,15 @@ def main() -> int:
             refs = i0.getReferencesFrom()
             for ref in refs:
                 tgt = ref.getToAddress()
+                if tgt.isExternalAddress():
+                    continue
                 tf = fm.getFunctionAt(tgt)
                 if tf is None:
                     continue
-                tgt_ep = int(str(tf.getEntryPoint()), 16)
+                tgt_entry = tf.getEntryPoint()
+                if tgt_entry.isExternalAddress():
+                    continue
+                tgt_ep = int(str(tgt_entry), 16)
                 if tgt_ep == int(str(tgt), 16):
                     tgt_fn = tf
                     break

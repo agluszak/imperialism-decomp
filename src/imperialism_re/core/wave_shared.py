@@ -5,6 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from imperialism_re.core.csvio import write_csv_rows
+from imperialism_re.core.datatypes import find_named_data_type
 
 
 def sanitize_symbol_name(text: str) -> str:
@@ -52,26 +53,7 @@ def normalize_base_type_name(name: str) -> str:
 
 @lru_cache(maxsize=2048)
 def resolve_named_data_type(dtm, base_name: str):
-    target = base_name.strip()
-    if not target:
-        return None
-    best = None
-    best_score = None
-    it = dtm.getAllDataTypes()
-    while it.hasNext():
-        dt = it.next()
-        try:
-            if dt.getName() != target:
-                continue
-            cat = str(dt.getCategoryPath().getPath())
-            pri = 0 if cat in ("/", "/imperialism/classes", "/Imperialism/classes") else 1
-            score = (pri, len(cat), cat)
-            if best is None or score < best_score:
-                best = dt
-                best_score = score
-        except Exception:
-            continue
-    return best
+    return find_named_data_type(dtm, base_name)
 
 
 def build_data_type(type_name: str, dtm=None):

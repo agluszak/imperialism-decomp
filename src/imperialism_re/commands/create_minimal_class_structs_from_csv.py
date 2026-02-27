@@ -21,13 +21,13 @@ import csv
 from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import project_category_path
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_int_default
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", required=True, help="Input CSV with type_name,size")
-    ap.add_argument("--category", default="/imperialism/classes", help="Datatype category")
     ap.add_argument("--default-size", default="0x4", help="Default struct size")
     ap.add_argument("--apply", action="store_true", help="Write changes")
     ap.add_argument(
@@ -65,7 +65,8 @@ def main() -> int:
         plans.append((name, sz))
 
     plans.sort(key=lambda x: x[0].lower())
-    print(f"[plan] classes={len(plans)} apply={args.apply} category={args.category}")
+    category = project_category_path("classes")
+    print(f"[plan] classes={len(plans)} apply={args.apply} category={category}")
     for name, sz in plans[:200]:
         print(f"  {name} size=0x{sz:x}")
     if len(plans) > 200:
@@ -84,7 +85,7 @@ def main() -> int:
         )
 
         dtm = program.getDataTypeManager()
-        cat = CategoryPath(args.category)
+        cat = CategoryPath(category)
         p_void = PointerDataType(VoidDataType.dataType)
 
         tx = program.startTransaction("Create minimal class structs from CSV")

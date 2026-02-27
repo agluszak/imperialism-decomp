@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import DEFAULT_CANONICAL_PROJECT_ROOT, find_named_data_type
 from imperialism_re.core.ghidra_session import open_program
 
 GENERIC_FIRST_PARAM_TYPES = {
@@ -35,21 +36,6 @@ GENERIC_FIRST_PARAM_TYPES = {
     "undefined4",
     "undefined8",
 }
-
-def find_datatype_by_name(dtm, name: str):
-    # Prefer /imperialism/classes/name, then any matching datatype by name.
-    from ghidra.program.model.data import CategoryPath
-
-    dt = dtm.getDataType(CategoryPath("/imperialism/classes"), name)
-    if dt is not None:
-        return dt
-
-    it = dtm.getAllDataTypes()
-    while it.hasNext():
-        cand = it.next()
-        if cand.getName() == name:
-            return cand
-    return None
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -95,7 +81,11 @@ def main() -> int:
 
         class_ptr_types = {}
         for cls in sorted(target_classes):
-            dt = find_datatype_by_name(dtm, cls)
+            dt = find_named_data_type(
+                dtm,
+                cls,
+                preferred_categories=[f"{DEFAULT_CANONICAL_PROJECT_ROOT}/classes"],
+            )
             if dt is None:
                 print(f"[skip-class] missing datatype: {cls}")
                 continue

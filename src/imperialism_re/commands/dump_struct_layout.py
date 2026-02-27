@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import DEFAULT_CANONICAL_PROJECT_ROOT, DEFAULT_LEGACY_PROJECT_ROOTS
 from imperialism_re.core.ghidra_session import open_program
 
 def dump_type(dt, label: str):
@@ -51,7 +52,13 @@ def main() -> int:
             dump_type(dt, p)
             done += 1
 
-        common_cats = ["/", "/imperialism/classes", "/imperialism/types", "/Imperialism/classes"]
+        common_cats = [
+            "/",
+            f"{DEFAULT_CANONICAL_PROJECT_ROOT}/classes",
+            f"{DEFAULT_CANONICAL_PROJECT_ROOT}/types",
+            f"{DEFAULT_LEGACY_PROJECT_ROOTS[0]}/classes",
+            f"{DEFAULT_LEGACY_PROJECT_ROOTS[0]}/types",
+        ]
         for n in args.name:
             for cat in common_cats:
                 p = f"{cat.rstrip('/')}/{n}" if cat != "/" else f"/{n}"
@@ -69,4 +76,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

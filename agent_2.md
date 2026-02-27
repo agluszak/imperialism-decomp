@@ -28,7 +28,7 @@
   - `new_scripts/annotate_control_tag_constants.py`
   - `new_scripts/extract_vtbl_labels_from_class_methods.py`
 - Control-tag dehardcode progress:
-  - Created `/Imperialism/EControlTagFourCC` (27 entries, includes `txen/yako/enod`).
+  - Created `/imperialism/EControlTagFourCC` (27 entries, includes `txen/yako/enod`).
   - Added 29 EOL enum annotations in command-tag handlers (including tactical + trade + dialog paths).
 - Class/vtable closure progress:
   - Method-evidence script recovered canonical labels:
@@ -87,7 +87,7 @@
 - Added reusable script:
   - `new_scripts/create_map_interaction_mode_enum_and_apply.py`
 - Domain constant dehardcoding progress:
-  - Created `/Imperialism/EMapInteractionMode` from observed `SetMapInteractionMode` callsites (`0..5`).
+  - Created `/imperialism/EMapInteractionMode` from observed `SetMapInteractionMode` callsites (`0..5`).
   - Typed `SetMapInteractionMode` mode parameter with `EMapInteractionMode` (core/thunk path).
   - Added 23 EOL annotations at mode callsites (`MAP_INTERACTION_MODE_<n>`).
 - TODO reprioritized for higher ROI:
@@ -98,8 +98,8 @@
 - Added reusable script:
   - `new_scripts/create_diplomacy_raw_enums_and_annotate.py`
 - Created and applied raw diplomacy enums:
-  - `/Imperialism/EDiplomacyRelationCodeRaw` values `2..6`
-  - `/Imperialism/EDiplomacyActionCodeRaw` values `0,1,10,13,60`
+  - `/imperialism/EDiplomacyRelationCodeRaw` values `2..6`
+  - `/imperialism/EDiplomacyActionCodeRaw` values `0,1,10,13,60`
 - Added focused CMP/PUSH annotations in high-traffic diplomacy handlers:
   - `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode`
   - `ValidateDiplomacyProposalTargetAndShowBlockedDetails`
@@ -145,7 +145,7 @@
 - Added reusable script:
   - `new_scripts/create_diplomacy_proposal_enum_and_apply.py`
 - Created and applied new raw proposal enum:
-  - `/Imperialism/EDiplomacyProposalCodeRaw` (`0x02..0x0F`)
+  - `/imperialism/EDiplomacyProposalCodeRaw` (`0x02..0x0F`)
 - Signature/type upgrades in diplomacy action flow:
   - `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode` + thunk:
     - typed as `__thiscall (..., short sourceNationSlot, short targetNationSlot, EDiplomacyProposalCodeRaw eProposalCode)`
@@ -670,7 +670,7 @@
   - `new_scripts/apply_thiscall_bridge_signatures_csv.py`
   - `new_scripts/annotate_trade_slot_semantics.py`
 - Applied lane 1 (slot typing semantics/comments):
-  - created/confirmed enum: `/Imperialism/EArrowSplitCommandId`
+  - created/confirmed enum: `/imperialism/EArrowSplitCommandId`
   - annotated key handlers:
     - `0x00583BD0`, `0x00401B3B`
     - `0x00586E70`, `0x005873E0`, `0x005869C0`
@@ -1688,16 +1688,16 @@
   - paired destruct wrappers for `0x00646fb0` / `0x0064b580` lanes.
 - Struct/global dehardcode pass:
   - created manual structs:
-    - `/Imperialism/runtime/RuntimeClassState_0063E898`
-    - `/Imperialism/runtime/RuntimeClassState_00646FB0`
-    - `/Imperialism/runtime/RuntimeClassState_0064B580`
+    - `/imperialism/runtime/RuntimeClassState_0063E898`
+    - `/imperialism/runtime/RuntimeClassState_00646FB0`
+    - `/imperialism/runtime/RuntimeClassState_0064B580`
   - applied typed global labels/comments at:
     - `0x006a13e0` (`g_UiResourcePoolState`)
     - `0x006a15e0` (`g_RuntimeSelectionRecordArrayState`)
     - `0x006a1ac0` (`g_ViewModalStateNodeBlockChainState_006A1AC0`)
     - `0x006a1a40` (`g_TWindowUnlinkDestructState_006A1A40`)
 - Enum lane refresh:
-  - refreshed `/Imperialism/EControlTagFourCC`, `/Imperialism/EArrowSplitCommandId`.
+  - refreshed `/imperialism/EControlTagFourCC`, `/imperialism/EArrowSplitCommandId`.
   - refreshed gameplay enums and retyped tactical tables (`g_aeTacticalUnitActionClassBySlot`, `g_aeTacticalUnitCategoryBySlot`).
 - Progress counters (`tmp_decomp/batch773_count_re_progress.log`):
   - `total_functions=14140`, `renamed_functions=14140`, `default_fun_or_thunk_fun=0`, `class_desc_count=406`, `vtbl_count=234`, `type_name_count=406`.
@@ -1864,7 +1864,7 @@
     - `BuildEligibleNationMetricBucketsAndWeightedTrendScores` (+ thunk `0x00405948`)
     - `BuildSecondaryNationMetricBucketsAndWeightedTrendScores` (+ thunk `0x00404fd4`)
   - normalized hidden-`this` signatures for `RunNationUpdatePassesAndResetTransitionFlags` and eligible/secondary metric builders.
-  - labeled dispatch table slots `0x0066d9f0..0x0066da18` and created enum `/Imperialism/ENationMetricsDispatchSlot`.
+  - labeled dispatch table slots `0x0066d9f0..0x0066da18` and created enum `/imperialism/ENationMetricsDispatchSlot`.
 
 ## 2026-02-27 Batch783 (nation-metrics nearby orphan dehardcode)
 - De-orphaned adjacent helper cluster in `0x005b9000..0x005ba300` with behavior names/signatures:
@@ -1987,8 +1987,8 @@
   - applied full `STurnInstruction_*` signature wave to all 26 dispatch commands using `batch447_tabsenu_loader_bindings_extended.csv`:
     - includes previously missing commands `pric`, `prov`, `tbar`, `tclr`, `coun`.
   - refreshed core dispatch typing with `create_turn_instruction_types.py`:
-    - `/Imperialism/ETurnInstructionTokenFourCC`
-    - `/Imperialism/ETurnInstructionDispatchIndex`
+    - `/imperialism/ETurnInstructionTokenFourCC`
+    - `/imperialism/ETurnInstructionDispatchIndex`
     - table typing at `0x00662978` and `0x00698b50`.
 - Class extraction/ownership lane:
   - generated `tmp_decomp/batch792_global_typed_this_attach_candidates.csv` and attached all rows:
@@ -2019,3 +2019,58 @@
   - new/extended functionality must be added under `src/imperialism_re/commands/` + `command_catalog.yaml`.
   - explicit anti-duplication guidance added (extend existing commands with flags instead of creating parallel variants).
 - Added queued consolidation item in `TODO.md` to keep tooling migration explicit and prevent throwaway script drift.
+
+## 2026-02-27 — Datatype Policy Gate + Trade/Dialog Signature Normalization
+- Added datatype-root policy gating into `run_wave_bundle` (pre/post checks for forbidden legacy roots, summary counters, failure code on violations).
+- Updated active docs/queue references to canonical `/imperialism/...` in `TODO.md` and historical notes in `agent_2.md` where they refer to current datatype paths.
+- Applied signature normalization batch for trade/dialog handlers:
+  - `0x004f2e00`, `0x004f3050`, `0x004f3370`, `0x004f3710` now use `PanelEventPayload*` event records and explicit `InterNationEventCode` event-code params.
+  - `0x0058a940`, `0x005bf740` corrected to `commandId:int` + `PanelEventPayload*` command/event payloads.
+
+## 2026-02-27 — Wave A continuation (UI command-event signatures)
+- Normalized additional command-event handlers to typed payload signatures:
+  - `0x004ad7a0` `HandleMapContextPrevNextInfoCommands(void*, int, PanelEventPayload*)`
+  - `0x00503ed0` `HandleNameSlotNextPrevToggleCommands(void*, int, PanelEventPayload*)`
+  - `0x0054e1f0` `HandleNationStatusDialogCommand(void*, int, PanelEventPayload*, int)` (removed incorrect `EControlTagFourCC` param type)
+  - `0x0056cd10` `HandleLoadSaveSlotControlSelectionAndQueueOkay(void*, int, PanelEventPayload*)`
+  - `0x005779c0` `HandleRandomMapNationPlanAndFlagCommands(void*, int, PanelEventPayload*)`
+- Verified decomp now uses `pPanelEvent->controlTag1c` directly in these handlers instead of raw pointer arithmetic.
+
+## 2026-02-27 — Wave A/B/C closure (command-event typing + enum propagation + class ownership)
+- Wave A closure:
+  - completed command-event signature normalization across trade/diplomacy/dialog handlers from the active queue.
+  - verified key handlers keep typed `PanelEventPayload*` access and no regression to raw `*(int *)(param + 0x1c)` patterns in touched functions.
+- Wave B closure:
+  - refreshed enums:
+    - `create_control_tag_enum` from focused trade/dialog summary (`entries=37`).
+    - `create_arrow_command_enum` (`/imperialism/EArrowSplitCommandId`).
+  - propagated enum typing into payload structs:
+    - `/PanelEventPayload +0x1c` `controlTag1c: uint -> EControlTagFourCC`.
+    - `/imperialism/types/SplitArrowDispatchPayload +0x0` `eventToken0: uint -> EArrowSplitCommandId`.
+  - decomp now renders control-tag comparisons symbolically (example: `CONTROL_TAG_THGR`, `CONTROL_TAG_TFEL`, `CONTROL_TAG_YAKO`) in touched handlers.
+- Wave C closure:
+  - added maintained command `attach_functions_to_class_csv` and registered it in `command_catalog.yaml`.
+  - attached remaining high-confidence global arrow handlers using thunk/vtable owner evidence:
+    - `0x005839f0 -> TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90`
+    - `0x0058c640 -> TNumberedArrowButton::HandleSplitArrowMousePhaseStateAndDispatchCommand64or65`
+  - post-check: no remaining global methods with typed `this` pointers for `TView/TControl/TradeControl/TArrowsControl/TNumberedArrowButton` (`rows=0` in `batch_waveC_global_class_this_post.csv`).
+- Tooling upgrade used in this wave:
+  - extended `rename_struct_fields` to accept full datatype-path overrides, enabling direct enum-field typing (for example `0x1c:/imperialism/EControlTagFourCC:controlTag1c`).
+- Post-wave counters:
+  - `total_functions=14931`
+  - `renamed_functions=14931`
+  - `default_fun_or_thunk_fun=0`
+  - `class_desc_count=406`
+  - `vtbl_count=234`
+  - `type_name_count=406`
+  - datatype root policy remains clean: forbidden `/Imperialism` violations=`0`.
+
+## 2026-02-27 — Split-arrow ABI lane start (post-queue reprioritization)
+- Reprioritized `TODO.md` active queue to put split-arrow callback ABI normalization first.
+- Applied focused signature normalization batch:
+  - `0x0058c640` -> `TNumberedArrowButton::HandleSplitArrowMousePhaseStateAndDispatchCommand64or65(TNumberedArrowButton*, int mousePhase, void*, void*, SplitArrowDispatchPayload*, void*)`
+  - `0x005869c0` -> `TProductionCluster::HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(TProductionCluster*, EArrowSplitCommandId commandId, PanelEventPayload*, int)`
+- Added explicit function comments (ABI notes) documenting that decompiler `unaff_retaddr` corresponds to callback stack arg 1 semantics in both handlers.
+- Verification:
+  - disassembly confirms stack-purge and argument shape remain stable (`RET 0x14` for `0x0058c640`, `RET 0x0c` for `0x005869c0`).
+  - decompiler artifact `unaff_retaddr` still appears in these two functions; item remains active for deeper parameter-ID recovery.

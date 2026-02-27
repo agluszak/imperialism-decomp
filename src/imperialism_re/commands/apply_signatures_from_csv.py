@@ -17,10 +17,10 @@ from __future__ import annotations
 
 import argparse
 import csv
-from functools import lru_cache
 from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import find_named_data_type
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_hex
 
@@ -38,35 +38,6 @@ def normalize_base_type_name(name: str) -> str:
     t = t.replace("const ", "").replace("volatile ", "")
     t = t.replace("struct ", "").replace("class ", "")
     return t.strip()
-
-@lru_cache(maxsize=1024)
-def resolve_named_data_type(dtm, base_name: str):
-    target = base_name.strip()
-    if not target:
-        return None
-    best = None
-    best_score = None
-    it = dtm.getAllDataTypes()
-    while it.hasNext():
-        dt = it.next()
-        try:
-            if dt.getName() != target:
-                continue
-            cat = str(dt.getCategoryPath().getPath())
-            # Prefer extracted class categories before root stubs.
-            if cat in ("/imperialism/classes", "/Imperialism/classes"):
-                pri = 0
-            elif cat == "/":
-                pri = 1
-            else:
-                pri = 2
-            score = (pri, len(cat), cat)
-            if best is None or score < best_score:
-                best = dt
-                best_score = score
-        except Exception:
-            continue
-    return best
 
 def build_data_type(type_name: str, dtm):
     from ghidra.program.model.data import (
@@ -98,7 +69,7 @@ def build_data_type(type_name: str, dtm):
 
     dt = base_map.get(base_key)
     if dt is None:
-        dt = resolve_named_data_type(dtm, base_name)
+        dt = find_named_data_type(dtm, base_name)
     if dt is None:
         # Fallback for unknown type names keeps operation safe.
         dt = VoidDataType.dataType if ptr_depth > 0 else IntegerDataType.dataType

@@ -16,9 +16,14 @@ from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
 from imperialism_re.core.csvio import load_csv_rows
+from imperialism_re.core.datatypes import (
+    DEFAULT_CANONICAL_PROJECT_ROOT,
+    DEFAULT_LEGACY_PROJECT_ROOTS,
+    collect_root_policy_violations,
+)
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_hex
-from imperialism_re.core.wave_engine import WaveApplyConfig, apply_wave_rows
+from imperialism_re.core.wave_engine import WaveApplyConfig, WaveApplyResult, apply_wave_rows
 from imperialism_re.core.wave_shared import (
     build_strict_gate_rows,
     build_unresolved_rows,
@@ -117,87 +122,171 @@ def main() -> int:
     post_progress_txt = out_dir / f"{tag}_progress_post.txt"
     auto_thunks_csv = out_dir / f"{tag}_auto_thunk_mirrors.csv"
     summary_txt = out_dir / f"{tag}_bundle_summary.txt"
+    pre_dtype_policy_csv = out_dir / f"{tag}_datatype_root_policy_pre.csv"
+    post_dtype_policy_csv = out_dir / f"{tag}_datatype_root_policy_post.csv"
+
+    pre_um_rows = []
+    pre_sg_rows = []
+    pre_ur_rows = []
+    pre_progress: dict[str, int] = {}
+    post_um_rows = []
+    post_sg_rows = []
+    post_ur_rows = []
+    post_progress: dict[str, int] = {}
+    pre_policy_rows: list[dict[str, str]] = []
+    post_policy_rows: list[dict[str, str]] = []
+    aborted_reason = ""
+    return_code = 0
+    result = WaveApplyResult(
+        rename_ok=0,
+        rename_skip=0,
+        rename_fail=0,
+        rename_comments=0,
+        created_functions=0,
+        sig_ok=0,
+        sig_skip=0,
+        sig_fail=0,
+        thunk_sig_ok=0,
+        thunk_sig_skip=0,
+        thunk_sig_fail=0,
+        auto_thunk_rows=[],
+    )
 
     with open_program(root) as program:
-        pre_um_rows = build_unresolved_rows(
-            program,
-            parse_hex(args.unresolved_main_min),
-            parse_hex(args.unresolved_main_max),
-            args.unresolved_main_name_regex,
+        pre_policy_rows = collect_root_policy_violations(
+            program.getDataTypeManager(),
+            canonical_root=DEFAULT_CANONICAL_PROJECT_ROOT,
+            forbidden_roots=DEFAULT_LEGACY_PROJECT_ROOTS,
         )
-        pre_sg_rows = build_strict_gate_rows(program, args.strict_caller_regex)
-        pre_ur_rows = build_unresolved_rows(
-            program,
-            parse_hex(args.unresolved_runtime_min),
-            parse_hex(args.unresolved_runtime_max),
-            args.unresolved_runtime_name_regex,
-        )
-        pre_progress = compute_progress(program)
-
-        if args.emit_detail_artifacts:
-            write_dict_csv(pre_main_csv, pre_um_rows, UNRESOLVED_FIELDS)
+        if pre_policy_rows:
             write_dict_csv(
-                pre_strict_csv,
-                pre_sg_rows,
-                ["caller_addr", "caller_name", "generic_callee_count", "generic_callees"],
+                pre_dtype_policy_csv,
+                pre_policy_rows,
+                ["full_path", "category_path", "forbidden_root", "canonical_root"],
             )
-            write_dict_csv(pre_runtime_csv, pre_ur_rows, UNRESOLVED_FIELDS)
-            write_progress(pre_progress_txt, pre_progress)
-            print(f"[saved] {pre_main_csv} rows={len(pre_um_rows)}")
-            print(f"[saved] {pre_strict_csv} rows={len(pre_sg_rows)}")
-            print(f"[saved] {pre_runtime_csv} rows={len(pre_ur_rows)}")
-            print(f"[saved] {pre_progress_txt}")
-
-        result = apply_wave_rows(
-            program,
-            rename_rows=rename_rows,
-            sig_rows=sig_rows,
-            thunk_sig_rows=thunk_sig_rows,
-            config=WaveApplyConfig(
-                apply=args.apply,
-                create_missing=args.create_missing,
-                auto_thunk_mirrors=args.auto_thunk_mirrors,
-                transaction_label="Run wave bundle",
-                save_message="run wave bundle",
-            ),
-        )
-
-        post_um_rows = build_unresolved_rows(
-            program,
-            parse_hex(args.unresolved_main_min),
-            parse_hex(args.unresolved_main_max),
-            args.unresolved_main_name_regex,
-        )
-        post_sg_rows = build_strict_gate_rows(program, args.strict_caller_regex)
-        post_ur_rows = build_unresolved_rows(
-            program,
-            parse_hex(args.unresolved_runtime_min),
-            parse_hex(args.unresolved_runtime_max),
-            args.unresolved_runtime_name_regex,
-        )
-        post_progress = compute_progress(program)
-
-        if args.emit_detail_artifacts:
-            write_dict_csv(post_main_csv, post_um_rows, UNRESOLVED_FIELDS)
-            write_dict_csv(
-                post_strict_csv,
-                post_sg_rows,
-                ["caller_addr", "caller_name", "generic_callee_count", "generic_callees"],
+            print(
+                f"[error] datatype-root-policy-pre violations={len(pre_policy_rows)} csv={pre_dtype_policy_csv}"
             )
-            write_dict_csv(post_runtime_csv, post_ur_rows, UNRESOLVED_FIELDS)
-            write_progress(post_progress_txt, post_progress)
-            if args.auto_thunk_mirrors:
+            for row in pre_policy_rows[:40]:
+                print(f"  {row['full_path']} (root={row['forbidden_root']})")
+            if len(pre_policy_rows) > 40:
+                print(f"  ... ({len(pre_policy_rows) - 40} more)")
+            aborted_reason = "pre_datatype_root_policy_failed"
+            return_code = 2
+        else:
+            if args.emit_detail_artifacts:
                 write_dict_csv(
-                    auto_thunks_csv,
-                    result.auto_thunk_rows,
-                    ["address", "old_name", "new_name", "target_addr", "target_name"],
+                    pre_dtype_policy_csv,
+                    pre_policy_rows,
+                    ["full_path", "category_path", "forbidden_root", "canonical_root"],
                 )
-            print(f"[saved] {post_main_csv} rows={len(post_um_rows)}")
-            print(f"[saved] {post_strict_csv} rows={len(post_sg_rows)}")
-            print(f"[saved] {post_runtime_csv} rows={len(post_ur_rows)}")
-            print(f"[saved] {post_progress_txt}")
-            if args.auto_thunk_mirrors:
-                print(f"[saved] {auto_thunks_csv} rows={len(result.auto_thunk_rows)}")
+                print(f"[saved] {pre_dtype_policy_csv} rows={len(pre_policy_rows)}")
+
+            pre_um_rows = build_unresolved_rows(
+                program,
+                parse_hex(args.unresolved_main_min),
+                parse_hex(args.unresolved_main_max),
+                args.unresolved_main_name_regex,
+            )
+            pre_sg_rows = build_strict_gate_rows(program, args.strict_caller_regex)
+            pre_ur_rows = build_unresolved_rows(
+                program,
+                parse_hex(args.unresolved_runtime_min),
+                parse_hex(args.unresolved_runtime_max),
+                args.unresolved_runtime_name_regex,
+            )
+            pre_progress = compute_progress(program)
+
+            if args.emit_detail_artifacts:
+                write_dict_csv(pre_main_csv, pre_um_rows, UNRESOLVED_FIELDS)
+                write_dict_csv(
+                    pre_strict_csv,
+                    pre_sg_rows,
+                    ["caller_addr", "caller_name", "generic_callee_count", "generic_callees"],
+                )
+                write_dict_csv(pre_runtime_csv, pre_ur_rows, UNRESOLVED_FIELDS)
+                write_progress(pre_progress_txt, pre_progress)
+                print(f"[saved] {pre_main_csv} rows={len(pre_um_rows)}")
+                print(f"[saved] {pre_strict_csv} rows={len(pre_sg_rows)}")
+                print(f"[saved] {pre_runtime_csv} rows={len(pre_ur_rows)}")
+                print(f"[saved] {pre_progress_txt}")
+
+            result = apply_wave_rows(
+                program,
+                rename_rows=rename_rows,
+                sig_rows=sig_rows,
+                thunk_sig_rows=thunk_sig_rows,
+                config=WaveApplyConfig(
+                    apply=args.apply,
+                    create_missing=args.create_missing,
+                    auto_thunk_mirrors=args.auto_thunk_mirrors,
+                    transaction_label="Run wave bundle",
+                    save_message="run wave bundle",
+                ),
+            )
+
+            post_um_rows = build_unresolved_rows(
+                program,
+                parse_hex(args.unresolved_main_min),
+                parse_hex(args.unresolved_main_max),
+                args.unresolved_main_name_regex,
+            )
+            post_sg_rows = build_strict_gate_rows(program, args.strict_caller_regex)
+            post_ur_rows = build_unresolved_rows(
+                program,
+                parse_hex(args.unresolved_runtime_min),
+                parse_hex(args.unresolved_runtime_max),
+                args.unresolved_runtime_name_regex,
+            )
+            post_progress = compute_progress(program)
+            post_policy_rows = collect_root_policy_violations(
+                program.getDataTypeManager(),
+                canonical_root=DEFAULT_CANONICAL_PROJECT_ROOT,
+                forbidden_roots=DEFAULT_LEGACY_PROJECT_ROOTS,
+            )
+            if post_policy_rows:
+                write_dict_csv(
+                    post_dtype_policy_csv,
+                    post_policy_rows,
+                    ["full_path", "category_path", "forbidden_root", "canonical_root"],
+                )
+                print(
+                    f"[error] datatype-root-policy-post violations={len(post_policy_rows)} csv={post_dtype_policy_csv}"
+                )
+                for row in post_policy_rows[:40]:
+                    print(f"  {row['full_path']} (root={row['forbidden_root']})")
+                if len(post_policy_rows) > 40:
+                    print(f"  ... ({len(post_policy_rows) - 40} more)")
+                return_code = 2
+            elif args.emit_detail_artifacts:
+                write_dict_csv(
+                    post_dtype_policy_csv,
+                    post_policy_rows,
+                    ["full_path", "category_path", "forbidden_root", "canonical_root"],
+                )
+                print(f"[saved] {post_dtype_policy_csv} rows={len(post_policy_rows)}")
+
+            if args.emit_detail_artifacts:
+                write_dict_csv(post_main_csv, post_um_rows, UNRESOLVED_FIELDS)
+                write_dict_csv(
+                    post_strict_csv,
+                    post_sg_rows,
+                    ["caller_addr", "caller_name", "generic_callee_count", "generic_callees"],
+                )
+                write_dict_csv(post_runtime_csv, post_ur_rows, UNRESOLVED_FIELDS)
+                write_progress(post_progress_txt, post_progress)
+                if args.auto_thunk_mirrors:
+                    write_dict_csv(
+                        auto_thunks_csv,
+                        result.auto_thunk_rows,
+                        ["address", "old_name", "new_name", "target_addr", "target_name"],
+                    )
+                print(f"[saved] {post_main_csv} rows={len(post_um_rows)}")
+                print(f"[saved] {post_strict_csv} rows={len(post_sg_rows)}")
+                print(f"[saved] {post_runtime_csv} rows={len(post_ur_rows)}")
+                print(f"[saved] {post_progress_txt}")
+                if args.auto_thunk_mirrors:
+                    print(f"[saved] {auto_thunks_csv} rows={len(result.auto_thunk_rows)}")
 
     summary_lines = [
         f"batch_tag={tag}",
@@ -208,6 +297,8 @@ def main() -> int:
         f"post_strict_rows={len(post_sg_rows)}",
         f"pre_runtime_rows={len(pre_ur_rows)}",
         f"post_runtime_rows={len(post_ur_rows)}",
+        f"pre_datatype_root_policy_rows={len(pre_policy_rows)}",
+        f"post_datatype_root_policy_rows={len(post_policy_rows)}",
         f"pre_default_fun_or_thunk_fun={pre_progress.get('default_fun_or_thunk_fun', '')}",
         f"post_default_fun_or_thunk_fun={post_progress.get('default_fun_or_thunk_fun', '')}",
         f"rename_ok={result.rename_ok}",
@@ -221,6 +312,8 @@ def main() -> int:
         f"thunk_sig_fail={result.thunk_sig_fail}",
         f"auto_thunks={len(result.auto_thunk_rows)}",
         f"emit_detail_artifacts={int(args.emit_detail_artifacts)}",
+        f"aborted_reason={aborted_reason}",
+        f"return_code={return_code}",
     ]
     summary_txt.write_text("\n".join(summary_lines) + "\n", encoding="utf-8")
     print(f"[saved] {summary_txt}")
@@ -230,9 +323,11 @@ def main() -> int:
         f"rename_ok={result.rename_ok} rename_skip={result.rename_skip} rename_fail={result.rename_fail} "
         f"sig_ok={result.sig_ok} sig_skip={result.sig_skip} sig_fail={result.sig_fail} "
         f"thunk_sig_ok={result.thunk_sig_ok} thunk_sig_skip={result.thunk_sig_skip} "
-        f"thunk_sig_fail={result.thunk_sig_fail} auto_thunks={len(result.auto_thunk_rows)}"
+        f"thunk_sig_fail={result.thunk_sig_fail} auto_thunks={len(result.auto_thunk_rows)} "
+        f"dtype_policy_pre={len(pre_policy_rows)} dtype_policy_post={len(post_policy_rows)} "
+        f"return_code={return_code}"
     )
-    return 0
+    return return_code
 
 
 if __name__ == "__main__":

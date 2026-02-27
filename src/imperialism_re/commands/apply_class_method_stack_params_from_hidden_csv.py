@@ -15,6 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import DEFAULT_CANONICAL_PROJECT_ROOT, find_named_data_type
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_hex
 
@@ -35,19 +36,6 @@ def contiguous_slots(slots: list[int]) -> bool:
         return False
     expected = list(range(0x4, max(slots) + 1, 4))
     return slots == expected
-
-def find_datatype_by_name(dtm, name: str):
-    from ghidra.program.model.data import CategoryPath
-
-    dt = dtm.getDataType(CategoryPath("/imperialism/classes"), name)
-    if dt is not None:
-        return dt
-    it = dtm.getAllDataTypes()
-    while it.hasNext():
-        cand = it.next()
-        if cand.getName() == name:
-            return cand
-    return None
 
 @dataclass
 class Candidate:
@@ -164,7 +152,11 @@ def main() -> int:
                     continue
                 try:
                     if c.cls not in class_ptr_cache:
-                        cdt = find_datatype_by_name(dtm, c.cls)
+                        cdt = find_named_data_type(
+                            dtm,
+                            c.cls,
+                            preferred_categories=[f"{DEFAULT_CANONICAL_PROJECT_ROOT}/classes"],
+                        )
                         if cdt is None:
                             class_ptr_cache[c.cls] = None
                         else:

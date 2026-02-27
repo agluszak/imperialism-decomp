@@ -84,6 +84,11 @@ commands:
     mode: writer
     status: maintained
     summary: Apply class quad assignments from CSV.
+  - name: attach_functions_to_class_csv
+    module: imperialism_re.commands.attach_functions_to_class_csv
+    mode: writer
+    status: maintained
+    summary: Attach functions to class namespaces from CSV.
   - name: create_minimal_class_structs_from_csv
     module: imperialism_re.commands.create_minimal_class_structs_from_csv
     mode: writer
@@ -249,3 +254,118 @@ commands:
     mode: reader
     status: maintained
     summary: Build redecomp wave rows from ownership data.
+  - name: extract_control_tag_usage
+    module: imperialism_re.commands.extract_control_tag_usage
+    mode: reader
+    status: maintained
+    summary: Extract control-tag immediate usage into detail and summary CSVs.
+  - name: generate_command_tag_dispatch_matrix
+    module: imperialism_re.commands.generate_command_tag_dispatch_matrix
+    mode: reader
+    status: maintained
+    summary: Build command-tag dispatch matrix and rename candidates.
+  - name: create_control_tag_enum
+    module: imperialism_re.commands.create_control_tag_enum
+    mode: writer
+    status: maintained
+    summary: Create/update EControlTagFourCC enum.
+  - name: apply_control_tag_enum_param_types
+    module: imperialism_re.commands.apply_control_tag_enum_param_types
+    mode: writer
+    status: maintained
+    summary: Apply EControlTagFourCC to eligible handler parameters.
+  - name: create_arrow_command_enum
+    module: imperialism_re.commands.create_arrow_command_enum
+    mode: writer
+    status: maintained
+    summary: Create/update EArrowSplitCommandId enum under canonical project category.
+  - name: annotate_arrow_command_constants
+    module: imperialism_re.commands.annotate_arrow_command_constants
+    mode: writer
+    status: maintained
+    summary: Annotate split-arrow command constants in selected functions.
+  - name: apply_event_code_enum_params
+    module: imperialism_re.commands.apply_event_code_enum_params
+    mode: writer
+    status: maintained
+    summary: Apply enum datatype to matching event-code parameters.
+  - name: create_turn_instruction_types
+    module: imperialism_re.commands.create_turn_instruction_types
+    mode: writer
+    status: maintained
+    summary: Create turn-instruction enums/function-def and type dispatch tables.
+  - name: apply_turn_instruction_struct_signatures
+    module: imperialism_re.commands.apply_turn_instruction_struct_signatures
+    mode: writer
+    status: maintained
+    summary: Create per-command instruction structs and apply handler signatures.
+  - name: create_map_interaction_mode_enum_and_apply
+    module: imperialism_re.commands.create_map_interaction_mode_enum_and_apply
+    mode: writer
+    status: maintained
+    summary: Create map interaction enum and apply signatures/comments at callsites.
+  - name: create_gameplay_enums
+    module: imperialism_re.commands.create_gameplay_enums
+    mode: writer
+    status: maintained
+    summary: Create gameplay enums from JSON spec and optionally apply table typing.
+  - name: inventory_unnamed_globals
+    module: imperialism_re.commands.inventory_unnamed_globals
+    mode: reader
+    status: maintained
+    summary: Inventory unnamed DAT_/PTR_DAT_ globals with xref analysis for rename planning.
+  - name: inventory_datatype_hierarchy
+    module: imperialism_re.commands.inventory_datatype_hierarchy
+    mode: reader
+    status: maintained
+    summary: Inventory datatype roots and detect canonical-path collisions.
+  - name: normalize_datatype_categories
+    module: imperialism_re.commands.normalize_datatype_categories
+    mode: writer
+    status: maintained
+    summary: Normalize project datatype categories into canonical root.
+  - name: check_datatype_root_policy
+    module: imperialism_re.commands.check_datatype_root_policy
+    mode: reader
+    status: maintained
+    summary: Fail when project datatypes exist under forbidden roots.
+  - name: infer_class_from_decomp
+    module: imperialism_re.commands.infer_class_from_decomp
+    mode: reader
+    status: maintained
+    summary: Infer class membership for Global __thiscall functions via decompilation.
+  - name: infer_class_from_callers
+    module: imperialism_re.commands.infer_class_from_callers
+    mode: reader
+    status: maintained
+    summary: Infer class membership for Global __thiscall functions via caller namespace analysis.
+  - name: mine_struct_field_access
+    module: imperialism_re.commands.mine_struct_field_access
+    mode: reader
+    status: maintained
+    summary: Mine struct field access patterns from decompiled class methods.
+  - name: apply_return_type_and_cc
+    module: imperialism_re.commands.apply_return_type_and_cc
+    mode: writer
+    status: maintained
+    summary: Apply return type and calling convention without touching parameters.
+  - name: infer_return_type_from_decomp
+    module: imperialism_re.commands.infer_return_type_from_decomp
+    mode: reader
+    status: maintained
+    summary: Infer return types and calling conventions from decompiler output.
+  - name: move_class_datatypes_to_canonical
+    module: imperialism_re.commands.move_class_datatypes_to_canonical
+    mode: writer
+    status: maintained
+    summary: Move class datatypes from root / to /imperialism/classes/.
+  - name: apply_mined_struct_fields
+    module: imperialism_re.commands.apply_mined_struct_fields
+    mode: writer
+    status: maintained
+    summary: Apply mined struct field names from mine_struct_field_access CSV.
+  - name: force_callback_abi_parameter_storage
+    module: imperialism_re.commands.force_callback_abi_parameter_storage
+    mode: writer
+    status: maintained
+    summary: Force custom parameter storage for callback-ABI functions.

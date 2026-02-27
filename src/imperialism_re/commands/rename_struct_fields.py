@@ -15,6 +15,9 @@ Usage:
 
   # Optional type override format:
   --rename 0x04:byte:cityDialogFlag4
+
+  # Optional full datatype path override:
+  --rename 0x1c:/imperialism/EControlTagFourCC:controlTag1c
 """
 
 from __future__ import annotations
@@ -22,6 +25,7 @@ from __future__ import annotations
 import argparse
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
+from imperialism_re.core.datatypes import resolve_datatype_by_path_or_legacy_aliases
 from imperialism_re.core.ghidra_session import open_program
 from imperialism_re.core.typing_utils import parse_int
 
@@ -34,7 +38,8 @@ def parse_rename(spec: str):
         name = parts[1].strip()
     elif len(parts) == 3:
         off = parse_int(parts[0])
-        typ = parts[1].strip().lower()
+        typ_raw = parts[1].strip()
+        typ = typ_raw if typ_raw.startswith("/") else typ_raw.lower()
         name = parts[2].strip()
     else:
         raise ValueError(f"invalid --rename spec: {spec}")
@@ -42,7 +47,7 @@ def parse_rename(spec: str):
         raise ValueError(f"empty field name in --rename spec: {spec}")
     return off, typ, name
 
-def dtype_for(kind: str):
+def dtype_for(kind: str, dtm):
     from ghidra.program.model.data import (
         ByteDataType,
         PointerDataType,
@@ -51,6 +56,12 @@ def dtype_for(kind: str):
         UnsignedShortDataType,
         VoidDataType,
     )
+
+    if kind.startswith("/"):
+        dt = resolve_datatype_by_path_or_legacy_aliases(dtm, kind)
+        if dt is None:
+            raise ValueError(f"missing datatype override: {kind}")
+        return dt
 
     if kind in ("byte", "u8", "char"):
         return ByteDataType.dataType
@@ -135,7 +146,7 @@ def main() -> int:
                     old_name = comp.getFieldName() or "<anon>"
                     old_dt = comp.getDataType()
                     old_comment = comp.getComment()
-                    use_dt = old_dt if typ is None else dtype_for(typ)
+                    use_dt = old_dt if typ is None else dtype_for(typ, dtm)
                     use_len = use_dt.getLength()
                     st.replaceAtOffset(off, use_dt, use_len, new_name, old_comment)
                     print(
@@ -153,4 +164,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
