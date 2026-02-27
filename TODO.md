@@ -54,12 +54,14 @@ History/logs moved to `agent_2.md`.
 ## Active (max 3)
 - [~] Enum extraction + propagation wave lane (new reusable flow)
   - added maintained wave command: `run_enum_domain_wave`
+  - checked-in reusable domain packs: `config/enum_domains/*.csv` (`all_high_confidence`, `core_callbacks`, `diplomacy_raw`, `map_mode_strict`, `turn_instruction_token`)
   - extraction now includes instruction-level `PUSH imm -> CALL` evidence for callback-command constants
   - applied lanes so far:
     - `arrow_command + control_tag` over `0x00500000..0x005fffff`: 36 candidates, 2 inferred enums, 5 param typings, 0 hotspots
     - `diplomacy_*_raw` over `0x00500000..0x0062ffff`: 65 candidates, 3 inferred enums, 1 param typing, 0 hotspots
     - strict `map_interaction_mode` lane: 25 candidates, 1 inferred enum (merged safely), 2 param typings, 0 hotspots
-  - next: turn-state/turn-event domain CSV lanes + selective struct-field enum propagation
+  - consolidated high-confidence lane now hotspot-clean (`batch_enum_waveN_all_apply`): +1 final arrow param typing (`HandleTransportPictureSplitArrowCommand64or65`)
+  - next: turn-state/turn-event domain CSV lanes + selective struct-field enum propagation (new struct candidate extraction lane now available)
 
 - [~] Bulk class-namespace assignment (850 of 2,294 assigned, 37%)
   - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority, 30 indirect-ref

@@ -2120,3 +2120,6 @@
 - Extractor enhancement:
   - `extract_enum_domain_candidates` now parses quoted FourCC literals in compares/switch (`'xxxx'`) and can emit `struct_field` candidate rows from `this->field` compare evidence when class struct offsets are resolvable.
   - current probe on strict map-mode lane still produced param-only candidates (no struct-field hits yet).
+- Added `config/enum_domains/turn_event_factory_slot.csv` and ran strict probe wave (`batch_enum_waveR_turnevent_dry`):
+  - 1 candidate found (`call_arg_immediate` in `HandleTurnEventCodes28_2E_2F_30_31_32`), no param/struct propagation targets.
+  - no hotspots.

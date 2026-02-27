@@ -1,0 +1,2 @@
+domain,enum_path,function_name_regex,param_name_regex,addr_min,addr_max,value_list,cluster_key
+turn_event_factory_slot,/imperialism/ETurnEventFactorySlotId,.*(TurnEvent|TurnEventPacket|DispatchTurnEvent|CreateAndSendTurnEvent|EmitTurnEvent).*,(eventCode|turnEventCode|slot|slotId|factorySlot|offset|code|arg1)$,0x004f0000,0x00560000,"0x70,0x74,0x78,0x7c,0x80,0xb4,0xb8,0xd0,0xd8,0xe4,0xe8,0xec,0xf0,0xf4,0xf8",turn_event_factory
