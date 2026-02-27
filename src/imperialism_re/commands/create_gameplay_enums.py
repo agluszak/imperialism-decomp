@@ -32,6 +32,7 @@ from pathlib import Path
 
 from imperialism_re.core.config import default_project_root, resolve_project_root
 from imperialism_re.core.datatypes import (
+    alias_datatype_paths,
     require_project_category_path,
     resolve_datatype_by_path_or_legacy_aliases,
 )
@@ -42,6 +43,70 @@ def _parse_int(value) -> int:
     if isinstance(value, int):
         return value
     return int(str(value), 0)
+
+
+def _enum_members_map(enum_dt) -> OrderedDict[int, str]:
+    out: OrderedDict[int, str] = OrderedDict()
+    try:
+        names = list(enum_dt.getNames())
+    except Exception:
+        names = []
+    for name in names:
+        try:
+            value = int(enum_dt.getValue(name))
+        except Exception:
+            continue
+        if value in out:
+            continue
+        out[value] = str(name)
+    return out
+
+
+def _existing_enum_variants(dtm, enum_path: str) -> list[object]:
+    out = []
+    seen = set()
+    for path in alias_datatype_paths(enum_path):
+        dt = dtm.getDataType(path)
+        if dt is None:
+            continue
+        try:
+            key = str(dt.getPathName())
+        except Exception:
+            key = str(path)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(dt)
+    return out
+
+
+def _merge_enum_members(
+    existing_enums: list[object],
+    incoming_values: list[list[object] | tuple[object, object]],
+    enum_path: str,
+) -> list[tuple[str, int]]:
+    merged: OrderedDict[int, str] = OrderedDict()
+    for existing_enum in existing_enums:
+        for value, name in _enum_members_map(existing_enum).items():
+            if int(value) in merged:
+                continue
+            merged[int(value)] = str(name)
+
+    for pair in incoming_values:
+        if not isinstance(pair, (list, tuple)) or len(pair) != 2:
+            raise ValueError(f"invalid enum value pair for {enum_path}: {pair!r}")
+        in_name = str(pair[0])
+        in_value = _parse_int(pair[1])
+        if in_value in merged:
+            if merged[in_value] != in_name:
+                print(
+                    f"[warn] enum value-name conflict {enum_path} value={in_value}: "
+                    f"existing={merged[in_value]} incoming={in_name} (keeping existing)"
+                )
+            continue
+        merged[in_value] = in_name
+
+    return [(merged[v], v) for v in sorted(merged.keys())]
 
 
 def _resolve_spec_paths(root: Path, raw_paths: list[str]) -> list[Path]:
@@ -187,17 +252,34 @@ def main() -> int:
             for item in enum_specs:
                 category = require_project_category_path(str(item["category"]))
                 name = str(item["name"])
-                size = _parse_int(item["size"])
+                incoming_size = _parse_int(item["size"])
+                size = incoming_size
                 values = item.get("values") or []
+                enum_path = f"{category}/{name}"
+                existing_enums = _existing_enum_variants(dtm, enum_path)
+                existing_sizes = []
+                for ex in existing_enums:
+                    try:
+                        ex_len = int(ex.getLength())
+                    except Exception:
+                        ex_len = 0
+                    if ex_len > 0:
+                        existing_sizes.append(ex_len)
+                if existing_sizes:
+                    chosen_size = min(existing_sizes)
+                    if chosen_size != incoming_size or len(set(existing_sizes)) > 1:
+                        print(
+                            f"[warn] enum size differs for {enum_path}: "
+                            f"existing_sizes={sorted(set(existing_sizes))} incoming={incoming_size} "
+                            f"(keeping {chosen_size})"
+                        )
+                    size = chosen_size
+                merged_values = _merge_enum_members(existing_enums, values, enum_path)
                 e = EnumDataType(CategoryPath(category), name, size)
-                for pair in values:
-                    if not isinstance(pair, (list, tuple)) or len(pair) != 2:
-                        raise ValueError(f"invalid enum value pair for {name}: {pair!r}")
-                    member_name = str(pair[0])
-                    member_value = _parse_int(pair[1])
+                for member_name, member_value in merged_values:
                     e.add(member_name, member_value)
                 dtm.addDataType(e, DataTypeConflictHandler.REPLACE_HANDLER)
-                print(f"[enum] {category}/{name} size={size} values={len(values)}")
+                print(f"[enum] {category}/{name} size={size} values={len(merged_values)}")
         finally:
             program.endTransaction(tx, True)
 

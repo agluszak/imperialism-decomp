@@ -2089,3 +2089,19 @@
   - candidates: 36, inferred enums: 2 (`EArrowSplitCommandId`, `EControlTagFourCC`).
   - applied enum parameter propagation: `ok=5` (`nEventClass`/`arg1` in trade/map handlers).
   - post-verify hotspots: 0.
+
+## 2026-02-28 — Enum propagation continuation (diplomacy + map mode)
+- Added and used `run_enum_domain_wave` for multi-lane propagation without per-step manual command chains.
+- Diplomacy lane (`enum_domains_diplomacy.csv`, `0x00500000..0x0062ffff`):
+  - extracted 65 candidates across relation/action/proposal raw domains.
+  - applied 1 additional enum param type (`ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl(arg1 -> EDiplomacyActionCodeRaw)`).
+  - post-wave hotspots: 0.
+- Map interaction mode strict lane (`enum_domains_mapmode_strict.csv`):
+  - extracted 25 candidates.
+  - applied 2 enum param types:
+    - `SetModeAndBitmapBySelectionState(mode -> EMapInteractionMode)`
+    - `SetSelectionStateAndRefreshBitmap(mode -> EMapInteractionMode)`
+  - post-wave hotspots: 0.
+- Safety hardening:
+  - `create_gameplay_enums` now merges incoming specs with existing enum members and preserves existing member names on conflicts.
+  - size selection now prefers existing observed enum sizes (including legacy aliases) instead of forcing inferred size.
