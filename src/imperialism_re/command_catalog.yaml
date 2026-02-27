@@ -294,6 +294,16 @@ commands:
     mode: writer
     status: maintained
     summary: Create turn-instruction enums/function-def and type dispatch tables.
+  - name: create_turn_event_factory_types
+    module: imperialism_re.commands.create_turn_event_factory_types
+    mode: writer
+    status: maintained
+    summary: Create turn-event factory enum/packet types and apply core signatures.
+  - name: annotate_turn_instruction_dispatch_internals
+    module: imperialism_re.commands.annotate_turn_instruction_dispatch_internals
+    mode: writer
+    status: maintained
+    summary: Annotate turn-instruction table-dispatch internals with enum-aware comments.
   - name: apply_turn_instruction_struct_signatures
     module: imperialism_re.commands.apply_turn_instruction_struct_signatures
     mode: writer

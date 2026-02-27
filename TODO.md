@@ -61,7 +61,11 @@ History/logs moved to `agent_2.md`.
     - `diplomacy_*_raw` over `0x00500000..0x0062ffff`: 65 candidates, 3 inferred enums, 1 param typing, 0 hotspots
     - strict `map_interaction_mode` lane: 25 candidates, 1 inferred enum (merged safely), 2 param typings, 0 hotspots
   - consolidated high-confidence lane now hotspot-clean (`batch_enum_waveN_all_apply`): +1 final arrow param typing (`HandleTransportPictureSplitArrowCommand64or65`)
-  - next: turn-state/turn-event domain CSV lanes + selective struct-field enum propagation (new struct candidate extraction lane now available)
+  - table-dispatch follow-up completed:
+    - new maintained command `create_turn_event_factory_types` now canonicalizes `ETurnEventFactorySlotId` + `STurnEventFactoryPacket` and reapplies core factory signatures.
+    - new maintained command `annotate_turn_instruction_dispatch_internals` annotates TERM/table-bound sentinels in dispatcher internals.
+    - `create_turn_instruction_types` now adds `TURN_TOKEN_TERM` and labels token-table end sentinel.
+  - next: extend struct-field enum propagation beyond current param-heavy matches using the new `struct_field` candidate lane
 
 - [~] Bulk class-namespace assignment (850 of 2,294 assigned, 37%)
   - applied: 388 vtable-unique, 204 callee-round1, 75 name-based, 71 callee-round2, 82 vtable-majority, 30 indirect-ref

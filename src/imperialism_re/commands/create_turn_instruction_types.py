@@ -123,6 +123,11 @@ def main() -> int:
                     index_enum.add(member.replace("TURN_TOKEN_", "TURN_INSTR_"), idx)
                 except Exception:
                     index_enum.add(f"TURN_INSTR_{cmd.upper()}_{idx}", idx)
+            # Stream terminator token observed in dispatcher loop.
+            try:
+                token_enum.add("TURN_TOKEN_TERM", encode_fourcc_be("TERM"))
+            except Exception:
+                pass
 
             enum_dt = dtm.addDataType(token_enum, DataTypeConflictHandler.REPLACE_HANDLER)
             index_enum_dt = dtm.addDataType(index_enum, DataTypeConflictHandler.REPLACE_HANDLER)
@@ -148,6 +153,7 @@ def main() -> int:
             handler_arr_dt = ArrayDataType(PointerDataType(handler_fdef_dt), entry_count, 4)
 
             token_end = token_addr.add(token_arr_dt.getLength() - 1)
+            token_table_end_addr = token_addr.add(token_arr_dt.getLength())
             handler_end = handler_addr.add(handler_arr_dt.getLength() - 1)
 
             listing.clearCodeUnits(token_addr, token_end, False)
@@ -157,6 +163,7 @@ def main() -> int:
 
             token_lbl = args.token_label
             handler_lbl = args.handler_label
+            token_end_lbl = f"{token_lbl}_End"
 
             ps = st.getPrimarySymbol(token_addr)
             if ps is None:
@@ -171,6 +178,13 @@ def main() -> int:
                 s.setPrimary()
             elif ps.getName() != handler_lbl:
                 ps.setName(handler_lbl, SourceType.USER_DEFINED)
+
+            ps = st.getPrimarySymbol(token_table_end_addr)
+            if ps is None:
+                s = st.createLabel(token_table_end_addr, token_end_lbl, SourceType.USER_DEFINED)
+                s.setPrimary()
+            elif ps.getName() != token_end_lbl:
+                ps.setName(token_end_lbl, SourceType.USER_DEFINED)
 
             token_cu = listing.getCodeUnitAt(token_addr)
             if token_cu is not None:

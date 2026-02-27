@@ -2123,3 +2123,13 @@
 - Added `config/enum_domains/turn_event_factory_slot.csv` and ran strict probe wave (`batch_enum_waveR_turnevent_dry`):
   - 1 candidate found (`call_arg_immediate` in `HandleTurnEventCodes28_2E_2F_30_31_32`), no param/struct propagation targets.
   - no hotspots.
+## 2026-02-28 — Table-dispatch enumization (turn instruction + turn event)
+- Added maintained command `create_turn_event_factory_types`:
+  - creates/updates `/imperialism/ETurnEventFactorySlotId` (2-byte enum, 15 entries).
+  - rebuilds `/imperialism/TurnEvent/STurnEventFactoryPacket` (size `0x74`) with `eFactorySlot60: ETurnEventFactorySlotId`.
+  - reapplies core signatures for build/dispatch helpers and thunks (`0x0048cf10`, `0x00408d46`, `0x0048cfd0`, `0x00404593`).
+- Added maintained command `annotate_turn_instruction_dispatch_internals`:
+  - annotates dispatcher/thunk internals with TERM sentinel + token table bounds comments.
+- Updated `create_turn_instruction_types`:
+  - adds `TURN_TOKEN_TERM` (`0x5445524d`) to `ETurnInstructionTokenFourCC`.
+  - labels token table end sentinel address (`g_aeTurnInstructionTokenFourCCByIndex_End`).
