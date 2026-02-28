@@ -389,6 +389,11 @@ commands:
     mode: reader
     status: maintained
     summary: Mine struct field access patterns from decompiled class methods.
+  - name: mine_struct_field_access_ssa
+    module: imperialism_re.commands.mine_struct_field_access_ssa
+    mode: reader
+    status: maintained
+    summary: Mine struct field access via Pcode SSA varnode tracing.
   - name: apply_return_type_and_cc
     module: imperialism_re.commands.apply_return_type_and_cc
     mode: writer
@@ -429,3 +434,23 @@ commands:
     mode: reader
     status: maintained
     summary: Infer class membership for Global __thiscall via this-pointer passing from class methods.
+  - name: reconstruct_class_hierarchy
+    module: imperialism_re.commands.reconstruct_class_hierarchy
+    mode: reader
+    status: maintained
+    summary: Reconstruct class inheritance hierarchy from constructor/destructor vtable sequences.
+  - name: apply_class_hierarchy
+    module: imperialism_re.commands.apply_class_hierarchy
+    mode: writer
+    status: maintained
+    summary: Embed parent class structs at offset 0 of derived class structs from hierarchy CSV.
+  - name: decompiler_quality_pass
+    module: imperialism_re.commands.decompiler_quality_pass
+    mode: reader
+    status: maintained
+    summary: Re-decompile functions with quality settings and report metrics.
+  - name: fill_out_structure_wave
+    module: imperialism_re.commands.fill_out_structure_wave
+    mode: writer
+    status: maintained
+    summary: Run FillOutStructureCmd on class methods to auto-grow struct layouts.
