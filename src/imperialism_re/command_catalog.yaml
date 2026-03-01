@@ -1,4 +1,34 @@
 commands:
+  - name: setup_bsim_db
+    module: imperialism_re.commands.setup_bsim_db
+    mode: setup
+    status: maintained
+    summary: One-time BSim H2 database creation and signature ingestion for all programs in the project.
+  - name: query_bsim_matches
+    module: imperialism_re.commands.query_bsim_matches
+    mode: reader
+    status: maintained
+    summary: Query BSim H2 database for structurally similar function pairs (main binary vs demo).
+  - name: analyze_bsim_results
+    module: imperialism_re.commands.analyze_bsim_results
+    mode: reader
+    status: maintained
+    summary: Coverage map, cross-validation spot-check, and ambiguous wrapper detection from BSim matches CSV.
+  - name: infer_class_from_bsim
+    module: imperialism_re.commands.infer_class_from_bsim
+    mode: reader
+    status: maintained
+    summary: Infer class membership for unresolved thiscall functions via BSim demo caller neighborhoods.
+  - name: run_qc_pass
+    module: imperialism_re.commands.run_qc_pass
+    mode: reader
+    status: maintained
+    summary: Comprehensive QC health pass (class assignment, stale names, gates, duplicates).
+  - name: generate_stale_wrapper_renames
+    module: imperialism_re.commands.generate_stale_wrapper_renames
+    mode: reader
+    status: maintained
+    summary: Generate rename CSV for WrapperFor_*_At<addr> functions stale after target renames.
   - name: run_wave_bundle
     module: imperialism_re.commands.run_wave_bundle
     mode: writer
@@ -454,3 +484,83 @@ commands:
     mode: writer
     status: maintained
     summary: Run FillOutStructureCmd on class methods to auto-grow struct layouts.
+  - name: apply_fid_candidates
+    module: imperialism_re.commands.apply_fid_candidates
+    mode: writer
+    status: maintained
+    summary: Apply FID (Function ID) rename candidates from CSV.
+  - name: infer_class_from_constprop
+    module: imperialism_re.commands.infer_class_from_constprop
+    mode: reader
+    status: maintained
+    summary: Infer class membership for Global __thiscall via SymbolicPropogator constant propagation.
+  - name: qc_orphan_vtable_stub_match
+    module: imperialism_re.commands.qc_orphan_vtable_stub_match
+    mode: reader
+    status: maintained
+    summary: Match OrphanVtableAssignStub functions to classes via embedded vtable address.
+  - name: qc_vtable_slot_coverage
+    module: imperialism_re.commands.qc_vtable_slot_coverage
+    mode: reader
+    status: maintained
+    summary: Report vtable slot naming coverage per class (named vs generic function pointers).
+  - name: qc_unreferenced_named_functions
+    module: imperialism_re.commands.qc_unreferenced_named_functions
+    mode: reader
+    status: maintained
+    summary: Find named functions with zero callers and zero data xrefs.
+  - name: extract_macos_vtable_layout
+    module: imperialism_re.commands.extract_macos_vtable_layout
+    mode: reader
+    status: maintained
+    summary: Extract per-class vtable slot order from the macOS binary using constructor Pcode analysis.
+  - name: extract_windows_runtime_vtable_slot_writes
+    module: imperialism_re.commands.extract_windows_runtime_vtable_slot_writes
+    mode: reader
+    status: maintained
+    summary: Reconstruct runtime-populated Windows vtable slot mappings from code writes.
+  - name: build_windows_vtable_apply_plans
+    module: imperialism_re.commands.build_windows_vtable_apply_plans
+    mode: reader
+    status: maintained
+    summary: Build base-label and class-attach CSV plans from Windows vtable slot map.
+  - name: ensure_class_namespaces_from_slot_map
+    module: imperialism_re.commands.ensure_class_namespaces_from_slot_map
+    mode: writer
+    status: maintained
+    summary: Create missing class namespaces from filtered Windows vtable slot-map evidence.
+  - name: build_macos_class_gap_map
+    module: imperialism_re.commands.build_macos_class_gap_map
+    mode: reader
+    status: maintained
+    summary: Build ranked per-class macOS method gaps against Windows class namespaces.
+  - name: infer_name_from_macos_vtable
+    module: imperialism_re.commands.infer_name_from_macos_vtable
+    mode: reader
+    status: maintained
+    summary: Propose Windows function names by correlating vtable slot positions with macOS debug names.
+  - name: generate_macos_vocab_candidates
+    module: imperialism_re.commands.generate_macos_vocab_candidates
+    mode: reader
+    status: maintained
+    summary: Generate conservative wave-ready rename/signature CSVs from macOS vtable candidates.
+  - name: apply_macos_vocab_wave
+    module: imperialism_re.commands.apply_macos_vocab_wave
+    mode: reader
+    status: maintained
+    summary: Run macOS vocabulary wave (gap map, vtable candidates, CSV generation, and wave apply).
+  - name: propose_macos_vocabulary_names
+    module: imperialism_re.commands.propose_macos_vocabulary_names
+    mode: reader
+    status: maintained
+    summary: Fallback: propose macOS method names for unnamed Windows class functions via signature shape matching.
+  - name: infer_name_from_bsim_macos
+    module: imperialism_re.commands.infer_name_from_bsim_macos
+    mode: reader
+    status: maintained
+    summary: Propose Windows function names and class assignments by BSim matching against the macOS binary.
+  - name: run_cross_platform_vtable_recovery
+    module: imperialism_re.commands.run_cross_platform_vtable_recovery
+    mode: reader
+    status: maintained
+    summary: Run the macOS->Windows static vtable recovery pipeline and emit slot-map/name propagation artifacts.

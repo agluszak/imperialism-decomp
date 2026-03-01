@@ -18,3 +18,13 @@ def open_program(project_root: Path | None = None) -> Iterator[object]:
     project = _open_project(cfg)
     with pyghidra.program_context(project, cfg.program_path) as program:
         yield program
+
+
+@contextmanager
+def open_program_path(project_root: Path | None, program_path: str) -> Iterator[object]:
+    """Open an arbitrary program from the Ghidra project by explicit path."""
+    cfg = get_runtime_config(project_root)
+    _start_pyghidra(cfg)
+    project = _open_project(cfg)
+    with pyghidra.program_context(project, program_path) as program:
+        yield program

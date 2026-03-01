@@ -1,5 +1,63 @@
 # Agent 2 Minimal Notes
 
+## 2026-03-01 Batch (namespace unlock + vtblslot thunk readability)
+- Added maintained command:
+  - `ensure_class_namespaces_from_slot_map`
+    - creates missing class namespaces from filtered/high-confidence slot-map evidence.
+- Ran namespace creation wave:
+  - plan: `tmp_decomp/windows_missing_class_namespace_plan.csv` (`rows=246`, `missing=22`)
+  - apply result: `created=22`
+- Rebuilt/reapplied class-attach wave after namespace unlock:
+  - `windows_vtable_slot_attach_apply.csv` grew `1215 -> 1431`
+  - apply result: `ns_ok=123`, `ns_skip=1308`, `rename_ok=166`, `rename_skip=1056`
+  - one extra high-confidence indirect attach applied:
+    - `0x004d2050` moved to `CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable`
+- Ran structural-slot -> thunk-target rename wave:
+  - generated `windows_vtblslot_jmp_thunk_renames.csv` (`1210` rows)
+  - filtered non-noisy targets and applied `windows_vtblslot_jmp_thunk_renames_filtered.csv` (`993/993` ok)
+  - follow-up pass for wrapper/orphan (non-mangled) targets:
+    - applied `windows_vtblslot_jmp_thunk_renames_remaining.csv` (`207/207` ok)
+  - final single-callee wrapper pass:
+    - applied `windows_vtblslot_final_single_callee.csv` (`3/3` ok)
+- Snapshot:
+  - `_VtblSlot` names: `1238 -> 46`
+  - `thunk_*_At<addr>` names: `3003`
+
+## 2026-03-01 Batch (windows vtable base+slot application wave)
+- Added maintained planner command:
+  - `build_windows_vtable_apply_plans`
+    - builds both:
+      - labels CSV for `apply_global_data_from_csv`
+      - class-attach CSV for `attach_functions_to_class_csv`
+    - filters ambiguous `target_addr -> class` mappings and optional existing-namespace gating.
+- Generated plans from full slot map (`windows_runtime_vtable_slot_map_all.csv`):
+  - `tmp_decomp/windows_vtable_base_labels_apply.csv`: `298` rows (`bases_with_aliases=4`)
+  - `tmp_decomp/windows_vtable_slot_attach_apply.csv`: `1215` rows (`renamed_generic=1056`)
+- Applied writer waves (sequential):
+  - `apply_global_data_from_csv ... --apply`:
+    - `ok=8`, `skip=287`, `fail=3` (duplicate-name collisions at existing symbols)
+  - `attach_functions_to_class_csv ... --apply`:
+    - `ns_ok=38`, `ns_skip=1177`, `rename_ok=1056`, `rename_fail=0`
+- Post-wave structural naming snapshot:
+  - functions with `_VtblSlot` names: `1077`
+
+## 2026-03-01 Batch (windows-vtable + macos-correlation hardening)
+- Extended Windows runtime vtable extraction (`extract_windows_runtime_vtable_slot_writes`):
+  - Added `vtable_base_addr` to both raw and best outputs.
+  - Ran unfiltered file-bytes pass:
+    - `tmp_decomp/windows_runtime_vtable_slot_writes_all.csv`: `32180` rows
+    - `tmp_decomp/windows_runtime_vtable_slot_map_all.csv`: `32174` class-slot winners across `383` classes
+  - Added base-level summary artifact:
+    - `tmp_decomp/windows_vtable_base_summary.csv` (`383` rows, one per class/base)
+- Correlation safety fixes for macOS vocabulary lane:
+  - `generate_macos_vocab_candidates`:
+    - broadened generic-placeholder detection (`thunk_*`, `OrphanCallChain_*`, `*_VtblSlot*`)
+    - skips ambiguous address rows when multiple class/name candidates target the same address
+  - `extract_macos_vtable_layout` now emits `layout_source` (`ctor_vtable_store` vs `fallback_data_ref_cluster`)
+  - `infer_name_from_macos_vtable` now downgrades fallback-derived layouts to `low` confidence
+- Validation:
+  - `batch_macos_vocab_wave6_preview` now correctly produces `99 low` and `0 medium/high` candidates for affected classes, so no unsafe semantic rename wave is auto-applied.
+
 ## 2026-02-22 Batch452
 - Turn-instruction lane refreshed:
   - Re-ran `create_turn_instruction_types.py`.
@@ -2133,3 +2191,32 @@
 - Updated `create_turn_instruction_types`:
   - adds `TURN_TOKEN_TERM` (`0x5445524d`) to `ETurnInstructionTokenFourCC`.
   - labels token table end sentinel address (`g_aeTurnInstructionTokenFourCCByIndex_End`).
+
+## 2026-02-28 — macOS symbol integration lane bootstrap
+- Implemented maintained command trio for class-first macOS vocabulary waves:
+  - `build_macos_class_gap_map`
+  - `generate_macos_vocab_candidates`
+  - `apply_macos_vocab_wave`
+- Hardened macOS support tooling:
+  - fixed `infer_name_from_macos_vtable` symbol-table API call for Ghidra 12 overload resolution.
+  - extended `extract_macos_vtable_layout` with:
+    - method-start slot detection,
+    - bounded diagnostics,
+    - fallback extraction via dense non-code data-reference clustering.
+- Current measured state:
+  - `extract_macos_vtable_layout` now outputs `174` rows across `13` classes (was `0`).
+  - added `extract_windows_runtime_vtable_slot_writes` and integrated it into `apply_macos_vocab_wave`.
+  - orchestrated waves (`batch_macos_vocab_wave1`, `batch_macos_vocab_wave2`) still produce `0` rename rows because Windows `g_vtbl*` tables are runtime-zero and static write-path scan currently finds `0` slot writes.
+- Next concrete blocker task:
+  - recover slot mapping through init-helper argument tracing (indirect registration/population calls) instead of direct absolute STORE extraction.
+
+## 2026-02-28 — located real Windows vtable payloads (on-disk bytes)
+- Confirmed root cause for prior zero vtable reads:
+  - Ghidra project memory bytes are zeroed for `/Imperialism.exe` (including `.text/.rdata`), but the on-disk executable has non-zero vtable pointers in `.rdata`.
+- Added PE file-bytes fallback to `extract_windows_runtime_vtable_slot_writes`:
+  - parses PE headers, maps VA->file offsets, reads vtable slot dwords from actual executable bytes.
+  - class-filtered run recovered 902 class-slot mappings across 13 classes.
+- `apply_macos_vocab_wave` now uses this recovered slot map via `infer_name_from_macos_vtable --windows-slot-map-csv`.
+- Current macOS correlation output (`batch_macos_vocab_wave3`):
+  - 99 candidates (all `medium`, 0 `high`) across `TView/TGreatPower/TCountry/TMultiplayerMgr/TSimMgr/TArmyMission`.
+  - no auto-applied renames under strict high-confidence gate.

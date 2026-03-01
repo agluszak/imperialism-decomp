@@ -8,11 +8,16 @@ to that class too.
 
 No decompilation needed — pure reference + namespace analysis.
 
+With ``--caller-depth 2`` (or higher), when a caller is itself unclassified and not a
+thunk, the command recurses to check *that* caller's callers, up to the specified depth.
+Evidence obtained at depth > 1 is capped at medium confidence.
+
 Output CSV columns:
   address, name, class_name, confidence, evidence
 
 Usage:
   uv run impk infer_class_from_callers --out-csv tmp_decomp/caller_infer.csv
+  uv run impk infer_class_from_callers --caller-depth 2 --out-csv tmp_decomp/caller_infer_d2.csv
 """
 
 from __future__ import annotations
@@ -64,6 +69,12 @@ def main() -> int:
         type=float,
         default=0.67,
         help="Minimum ratio of top-class callers for medium confidence (default 0.67)",
+    )
+    ap.add_argument(
+        "--caller-depth",
+        type=int,
+        default=1,
+        help="Max recursion depth for transitive caller lookup (default 1, try 2)",
     )
     ap.add_argument(
         "--confidence-filter",
@@ -135,6 +146,75 @@ def main() -> int:
 
         print(f"[init] thunk pairs: {len(thunk_to_target)}")
 
+        caller_depth = args.caller_depth
+
+        def _resolve_caller_class(
+            caller_entry: int,
+            depth: int,
+            visited_callers: set[int],
+        ) -> str | None:
+            """Resolve a caller to a class name, recursing up to *depth* levels.
+
+            Returns the class name if found, or None.
+            """
+            # Direct: caller is in a class namespace
+            if caller_entry in fn_to_class:
+                return fn_to_class[caller_entry]
+
+            # Thunk resolution: check thunk equiv group members
+            if caller_entry in thunk_to_target or caller_entry in target_to_thunks:
+                thunk_equiv = {caller_entry}
+                if caller_entry in thunk_to_target:
+                    thunk_equiv.add(thunk_to_target[caller_entry])
+                if caller_entry in target_to_thunks:
+                    thunk_equiv.update(target_to_thunks[caller_entry])
+                for tea in thunk_equiv:
+                    if tea in fn_to_class:
+                        return fn_to_class[tea]
+
+            # Recurse: if depth allows, check callers of this caller
+            if depth <= 1:
+                return None
+
+            caller_fn = fm.getFunctionAt(
+                af.getAddress(f"0x{caller_entry:08x}")
+            )
+            if caller_fn is None:
+                return None
+
+            # Build equiv group for this intermediate caller
+            inter_equiv = {caller_entry}
+            if caller_entry in thunk_to_target:
+                inter_equiv.add(thunk_to_target[caller_entry])
+            if caller_entry in target_to_thunks:
+                inter_equiv.update(target_to_thunks[caller_entry])
+            for ea2 in list(inter_equiv):
+                if ea2 in target_to_thunks:
+                    inter_equiv.update(target_to_thunks[ea2])
+
+            # Gather upstream callers and recurse
+            upstream_votes: Counter = Counter()
+            for ea2 in inter_equiv:
+                ga2 = af.getAddress(f"0x{ea2:08x}")
+                refs2 = rm.getReferencesTo(ga2)
+                for ref2 in refs2:
+                    from_addr2 = ref2.getFromAddress()
+                    up_fn = fm.getFunctionContaining(from_addr2)
+                    if up_fn is None:
+                        continue
+                    up_entry = up_fn.getEntryPoint().getOffset() & 0xFFFFFFFF
+                    if up_entry in inter_equiv or up_entry in visited_callers:
+                        continue
+                    visited_callers.add(up_entry)
+                    cls = _resolve_caller_class(up_entry, depth - 1, visited_callers)
+                    if cls:
+                        upstream_votes[cls] += 1
+
+            if upstream_votes:
+                top_cls, _cnt = upstream_votes.most_common(1)[0]
+                return top_cls
+            return None
+
         # --- Step 3: Collect candidates (Global __thiscall void* first param) ---
         candidates = []
         fit = fm.getFunctions(True)
@@ -205,31 +285,13 @@ def main() -> int:
 
                     total_callers += 1
 
-                    # Direct vote: caller is in a class namespace
-                    if caller_entry in fn_to_class:
-                        caller_classes[fn_to_class[caller_entry]] += 1
-                        continue
-
-                    # Indirect vote: caller is an unclassified thunk — check
-                    # one level deeper for class-namespaced callers of the thunk
-                    if caller_entry in thunk_to_target or caller_entry in target_to_thunks:
-                        # This caller is a thunk; check its own callers
-                        thunk_equiv = {caller_entry}
-                        if caller_entry in thunk_to_target:
-                            thunk_equiv.add(thunk_to_target[caller_entry])
-                        if caller_entry in target_to_thunks:
-                            thunk_equiv.update(target_to_thunks[caller_entry])
-
-                        found_indirect = False
-                        for tea in thunk_equiv:
-                            if tea in fn_to_class:
-                                caller_classes[fn_to_class[tea]] += 1
-                                found_indirect = True
-                                break
-                        if found_indirect:
-                            continue
-
-                    unclassified_callers += 1
+                    # Resolve caller class (supports recursive depth)
+                    visited = set(equiv_addrs) | {caller_entry}
+                    cls = _resolve_caller_class(caller_entry, caller_depth, visited)
+                    if cls:
+                        caller_classes[cls] += 1
+                    else:
+                        unclassified_callers += 1
 
             classified_count = sum(caller_classes.values())
             if classified_count < args.min_callers or not caller_classes:
@@ -238,7 +300,7 @@ def main() -> int:
             top_cls, top_count = caller_classes.most_common(1)[0]
             ratio = top_count / classified_count
 
-            # Score
+            # Score — cap at medium when transitive depth was used
             if ratio == 1.0:
                 confidence = "high"
             elif ratio >= args.min_ratio:
@@ -246,12 +308,18 @@ def main() -> int:
             else:
                 confidence = "low"
 
+            if caller_depth > 1 and confidence == "high":
+                # Depth-2+ evidence is less certain; cap at medium
+                confidence = "medium"
+
             if conf_rank[confidence] < conf_filter_rank:
                 continue
 
+            depth_tag = f"_depth={caller_depth}" if caller_depth > 1 else ""
             evidence = (
                 f"callers_{top_cls}={top_count}_of_{classified_count}"
                 f"_total={total_callers}_unclass={unclassified_callers}"
+                f"{depth_tag}"
             )
             results.append({
                 "address": f"0x{addr_int:08x}",

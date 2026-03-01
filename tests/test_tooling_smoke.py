@@ -21,7 +21,7 @@ from imperialism_re.core.runtime import WriterLockError, writer_lock
 class ToolingSmokeTests(unittest.TestCase):
     def test_catalog_has_expected_size(self) -> None:
         catalog = load_catalog()
-        self.assertEqual(50, len(catalog))
+        self.assertEqual(113, len(catalog))
 
     def test_catalog_modules_import(self) -> None:
         for spec in load_catalog():

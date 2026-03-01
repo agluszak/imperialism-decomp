@@ -26,6 +26,11 @@ Maintain steady reverse-engineering progress in Ghidra using safe, evidence-base
 - Keep `TODO.md` as active queue only (max 3 in-progress items).
 
 ## Hard Fixes (Do Not Repeat)
+0) Python execution: ALWAYS use `uv run python` or `uv run impk`. NEVER invoke `python3`, `python`, or `pytest` directly. System Python is not the project interpreter.
+- Tests: `uv run pytest`
+- Ad-hoc scripts: `uv run python -c "..."` or `uv run python /tmp/probe.py`
+- Commands: `uv run impk <command>`
+
 1) Heredoc redirection syntax:
 - Always attach redirection on the `python` command line, not after the terminator.
 - For ad-hoc Python probes, prefer a temp script file (`/tmp/<name>.py`) over inline heredocs.
@@ -131,6 +136,59 @@ After each wave:
 - runtime bridge unresolved (`0x0060xxxx..0x0062xxxx`) must be `0` rows,
 - if non-zero, do immediate fix-up wave before new lane work.
 
+## Quality Pass (Full Audit)
+
+Run after every major batch of attribution or rename work, and at the start of a
+new session to get a project health snapshot.
+
+```bash
+uv run impk run_qc_pass
+# or save machine-readable issues:
+uv run impk run_qc_pass --out-csv tmp_decomp/qc_report.csv
+```
+
+The pass checks 7 categories in one Ghidra session:
+
+| # | Check | Critical? |
+|---|---|---|
+| 1 | Class assignment progress (% attributed __thiscall) | No |
+| 2 | Strict super-lane gate — named class fn calling only generic callees | **Yes** |
+| 3 | Stale thunk names — `thunk_Foo` where JMP target is no longer `Foo` | No |
+| 4 | Stale wrapper names — `WrapperFor_Foo_AtX` where target renamed | No |
+| 5 | `FID_conflict:` prefix leftovers | No |
+| 6 | Duplicate (class, name) pairs — junk-drawer signal | No |
+| 7 | Unknown/default calling conventions on named functions | **Yes** |
+
+Exits with code 1 if any critical gate fails.
+
+### Fixing stale names (thunks and wrappers)
+
+When check 3 shows stale thunks:
+```bash
+uv run impk generate_single_jmp_thunk_pairs --out-csv tmp_decomp/qc_thunk_pairs.csv
+# then filter + apply with apply_fid_candidates --override-conflicts --apply
+```
+
+When check 4 shows stale wrappers:
+```bash
+uv run impk generate_stale_wrapper_renames --out-csv tmp_decomp/stale_wrapper_renames.csv
+uv run impk apply_fid_candidates \
+    --in-csv tmp_decomp/stale_wrapper_renames.csv \
+    --override-conflicts --apply
+```
+
+### Attribution Audit (periodic, ~quarterly waves)
+
+When check 1 regresses unexpectedly, or after bulk attribution, run a full audit:
+1. Export all functions: `uv run impk list_functions_in_range --out-csv tmp_decomp/all_fns.csv`
+2. Check for junk-drawer signals:
+   - Classes with no vtable and large counts of SDDs / OrphanVtableAssignStubs
+   - Thunk clusters (`thunk_DestructFooBaseState` ×N) that belong to *derived* classes
+   - MFC class names containing game-logic functions
+   - Excess duplicate names (same method name ×N in one namespace)
+3. Revert suspect assignments with `move_functions_to_global_namespace_csv`
+4. Re-run all 4 inference commands to recover correct attributions
+
 ## Documentation Discipline
 - `TODO.md` = active queue only.
 - Move completed work to `agent_2.md` with minimal batch summaries.
@@ -140,6 +198,23 @@ After each wave:
 - Neo4j contains high-level Imperialism domain knowledge and resource mappings (bitmaps/strings/tables).
 - `manual_text.txt` is available for gameplay semantics.
 - If Neo4j is unavailable and needed, ask user for context rather than blocking.
+
+## macOS Binary Reference (Vocabulary)
+
+The Power Macintosh port (`Imperialism_macos` in the Ghidra project) ships with full
+Cfront-style C++ debug names. It provides ground-truth method inventories for 508 classes.
+
+Reference files (in `tmp_decomp/`):
+- `macos_class_methods.csv` — 2,210 rows: class→method mapping (primary lookup)
+- `macos_global_functions.csv` — 1,040 rows: non-class global functions
+- `macos_debug_symbols.csv` — 3,441 rows: raw full dump
+
+See `docs/macos-debug-symbols.md` for architecture details, name mangling format, class
+inventory, and BSim cross-arch caveats.
+
+**Do NOT apply BSim cross-arch (macOS↔Windows) matches as renames** without manual
+semantic validation — even sim=1.0 cross-arch matches can be false positives.
+Use `macos_class_methods.csv` as a vocabulary reference instead.
 
 ## FID and Advanced Lanes
 - Use FID as an accelerator, not blind rename authority.
