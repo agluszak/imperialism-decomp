@@ -3,342 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestructRuntimeSelectionRecordBufferState
-// ghidra_proto void __cdecl DestructRuntimeSelectionRecordBufferState(void)
-// FUNCTION: IMPERIALISM 0x005e2a20
-undefined4 DestructRuntimeSelectionRecordBufferState(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetJoinableGameDescriptorBuffer
-// ghidra_proto void __cdecl ResetJoinableGameDescriptorBuffer(void)
-// FUNCTION: IMPERIALISM 0x005e2bb0
-undefined4 ResetJoinableGameDescriptorBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeJoinGameSelectionDialogState
-// ghidra_proto void __cdecl InitializeJoinGameSelectionDialogState(void)
-// FUNCTION: IMPERIALISM 0x005e2c80
-undefined4 InitializeJoinGameSelectionDialogState(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendJoinableGameDescriptorEntry
-// ghidra_proto void __cdecl AppendJoinableGameDescriptorEntry(int arg1)
-// FUNCTION: IMPERIALISM 0x005e2cf0
-undefined4 AppendJoinableGameDescriptorEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateRuntimeSelectionRecordEntryIfTagNotReserved
-// ghidra_proto bool __cdecl CreateRuntimeSelectionRecordEntryIfTagNotReserved(char * pTagBuffer, void * pEntryPayload)
-// FUNCTION: IMPERIALISM 0x005e2f60
-undefined4 CreateRuntimeSelectionRecordEntryIfTagNotReserved(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowJoinGameSelectionDialogAndCaptureChoice
-// ghidra_proto void __cdecl ShowJoinGameSelectionDialogAndCaptureChoice(void)
-// FUNCTION: IMPERIALISM 0x005e30c0
-undefined4 ShowJoinGameSelectionDialogAndCaptureChoice(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::CreateTNetMgrInstance
-// ghidra_proto TNetMgr * __cdecl CreateTNetMgrInstance(void)
-// FUNCTION: IMPERIALISM 0x005e3310
-undefined4 CreateTNetMgrInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::GetTNetMgrClassNamePointer
-// ghidra_proto void * __cdecl GetTNetMgrClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005e33c0
-undefined4 GetTNetMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::ConstructGlobalTurnEventQueueManager
-// ghidra_proto void __thiscall ConstructGlobalTurnEventQueueManager(void)
-// FUNCTION: IMPERIALISM 0x005e33e0
-undefined4 ConstructGlobalTurnEventQueueManager(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::DestructTNetMgrAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNetMgrAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005e3400
-undefined4 DestructTNetMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_Secondary
-// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_Secondary(void)
-// FUNCTION: IMPERIALISM 0x005e3430
-undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_Secondary(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpInitializeGlobalTurnEventQueueManager
-// ghidra_proto void __cdecl NoOpInitializeGlobalTurnEventQueueManager(void)
-// FUNCTION: IMPERIALISM 0x005e3450
-undefined4 NoOpInitializeGlobalTurnEventQueueManager(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseObjectIfNonNullViaVslot04
-// ghidra_proto void __cdecl ReleaseObjectIfNonNullViaVslot04(void)
-// FUNCTION: IMPERIALISM 0x005e3470
-undefined4 ReleaseObjectIfNonNullViaVslot04(void)
-{
-  return 0;
-}
-
-// ghidra_name DefaultUnhandledTurnEventHookReturnsFalse
-// ghidra_proto void __cdecl DefaultUnhandledTurnEventHookReturnsFalse(void)
-// FUNCTION: IMPERIALISM 0x005e3490
-undefined4 DefaultUnhandledTurnEventHookReturnsFalse(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueRuntimeCredentialInitStub
-// ghidra_proto void __cdecl ReturnTrueRuntimeCredentialInitStub(void)
-// FUNCTION: IMPERIALISM 0x005e34b0
-undefined4 ReturnTrueRuntimeCredentialInitStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetRuntimeSelectionRecordBufferAndReturnTrue
-// ghidra_proto void __cdecl ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
-// FUNCTION: IMPERIALISM 0x005e34d0
-undefined4 ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
-{
-  return 0;
-}
-
-// ghidra_name ReportWNetManagerErrorCodeAndNotifyUi
-// ghidra_proto void __cdecl ReportWNetManagerErrorCodeAndNotifyUi(int arg1)
-// FUNCTION: IMPERIALISM 0x005e34f0
-undefined4 ReportWNetManagerErrorCodeAndNotifyUi(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetRuntimeProtocolOptionsAndRebuildSelectionSource
-// ghidra_proto void __cdecl ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
-// FUNCTION: IMPERIALISM 0x005e39a0
-undefined4 ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenRuntimeSelectionSourceByIndexAndCopyPath
-// ghidra_proto void __cdecl OpenRuntimeSelectionSourceByIndexAndCopyPath(void)
-// FUNCTION: IMPERIALISM 0x005e3a60
-undefined4 OpenRuntimeSelectionSourceByIndexAndCopyPath(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenRuntimeSelectionSourceAndApplyActiveNationState
-// ghidra_proto void __cdecl OpenRuntimeSelectionSourceAndApplyActiveNationState(void)
-// FUNCTION: IMPERIALISM 0x005e3ad0
-undefined4 OpenRuntimeSelectionSourceAndApplyActiveNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueRuntimeCredentialFinalizeStub
-// ghidra_proto void __cdecl ReturnTrueRuntimeCredentialFinalizeStub(void)
-// FUNCTION: IMPERIALISM 0x005e3c00
-undefined4 ReturnTrueRuntimeCredentialFinalizeStub(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenJoinGameRuntimeSelectionAndStartSession
-// ghidra_proto bool __cdecl OpenJoinGameRuntimeSelectionAndStartSession(void * pJoinContext, int * pSourceToken, char * pSessionName)
-// FUNCTION: IMPERIALISM 0x005e3c20
-undefined4 OpenJoinGameRuntimeSelectionAndStartSession(void)
-{
-  return 0;
-}
-
-// ghidra_name EnqueueOrSendTurnEventPacketToNation
-// ghidra_proto void __cdecl EnqueueOrSendTurnEventPacketToNation(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e3d40
-undefined4 EnqueueOrSendTurnEventPacketToNation(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTurnEventQueueRuntimeRecordBuffer
-// ghidra_proto void __cdecl ResetTurnEventQueueRuntimeRecordBuffer(void)
-// FUNCTION: IMPERIALISM 0x005e3ef0
-undefined4 ResetTurnEventQueueRuntimeRecordBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeTurnEventPacketBuffer
-// ghidra_proto void __cdecl FreeTurnEventPacketBuffer(int arg1)
-// FUNCTION: IMPERIALISM 0x005e3f10
-undefined4 FreeTurnEventPacketBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name PopNextTurnEventPacketOrProcessSpecialQueueRecords
-// ghidra_proto void __cdecl PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
-// FUNCTION: IMPERIALISM 0x005e3f30
-undefined4 PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
-{
-  return 0;
-}
-
-// ghidra_name GetSessionActiveNationId
-// ghidra_proto int __cdecl GetSessionActiveNationId(void)
-// FUNCTION: IMPERIALISM 0x005e4280
-undefined4 GetSessionActiveNationId(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDialogModeTagChangedHook
-// ghidra_proto void __cdecl NoOpDialogModeTagChangedHook(void)
-// FUNCTION: IMPERIALISM 0x005e42a0
-undefined4 NoOpDialogModeTagChangedHook(void)
-{
-  return 0;
-}
-
-// ghidra_name NotifyIfNationMatchesSessionActiveNation
-// ghidra_proto void __cdecl NotifyIfNationMatchesSessionActiveNation(void)
-// FUNCTION: IMPERIALISM 0x005e42c0
-undefined4 NotifyIfNationMatchesSessionActiveNation(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckConnectivityOrShowLocalizedWarningAndReturnReady
-// ghidra_proto void __cdecl CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
-// FUNCTION: IMPERIALISM 0x005e42f0
-undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
-{
-  return 0;
-}
-
-// ghidra_name ProbeNationReachabilityAndMarkAwolBitmask
-// ghidra_proto void __cdecl ProbeNationReachabilityAndMarkAwolBitmask(void)
-// FUNCTION: IMPERIALISM 0x005e43e0
-undefined4 ProbeNationReachabilityAndMarkAwolBitmask(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State
-// ghidra_proto void __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(uint arg1)
-// FUNCTION: IMPERIALISM 0x005e4540
-undefined4 InitializeRuntimeClassVtablePointer_0066FA50_State(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// ghidra_proto void __thiscall DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-// FUNCTION: IMPERIALISM 0x005e4580
-undefined4 DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeLinkedRecordListWithFreeNodePool
-// ghidra_proto void __fastcall SerializeLinkedRecordListWithFreeNodePool(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x005e4610
-undefined4 SerializeLinkedRecordListWithFreeNodePool(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
-// ghidra_proto void __thiscall InitializeRuntimeClassVtablePointer_0066FA68_State(void)
-// FUNCTION: IMPERIALISM 0x005e4780
-undefined4 InitializeRuntimeClassVtablePointer_0066FA68_State(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// ghidra_proto void __thiscall DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-// FUNCTION: IMPERIALISM 0x005e47b0
-undefined4 DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeDynamicDwordPointerArrayState
-// ghidra_proto void __fastcall SerializeDynamicDwordPointerArrayState(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x005e4830
-undefined4 SerializeDynamicDwordPointerArrayState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(void)
-// FUNCTION: IMPERIALISM 0x005e4a30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(void)
-// FUNCTION: IMPERIALISM 0x005e4a60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(void)
-{
-  return 0;
-}
-
-// ghidra_name ResizeDwordPointerArrayAndZeroNewSlots
-// ghidra_proto void __fastcall ResizeDwordPointerArrayAndZeroNewSlots(int ecxArg, int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e4a90
-undefined4 ResizeDwordPointerArrayAndZeroNewSlots(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At005e4d50
-// ghidra_proto void __cdecl WrapperFor_ftol_At005e4d50(void)
-// FUNCTION: IMPERIALISM 0x005e4d50
-undefined4 WrapperFor_ftol_At005e4d50(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
-// FUNCTION: IMPERIALISM 0x005e4d80
-undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0
 // ghidra_proto void __cdecl thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0(void)
 // FUNCTION: IMPERIALISM 0x005e4dc0
@@ -3999,6 +3663,342 @@ undefined4 FindEnvironmentEntryIndexByNamePrefix(void)
 // ghidra_proto void * __cdecl DuplicateEnvironmentVectorWithStringCopies(void * pEnvVector)
 // FUNCTION: IMPERIALISM 0x005f9a40
 undefined4 DuplicateEnvironmentVectorWithStringCopies(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20
+// ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005f9b20
+undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20(void)
+{
+  return 0;
+}
+
+// ghidra_name ToLowerCodepointWithLocaleLock
+// ghidra_proto uint __cdecl ToLowerCodepointWithLocaleLock(int arg1)
+// FUNCTION: IMPERIALISM 0x005f9b90
+undefined4 ToLowerCodepointWithLocaleLock(void)
+{
+  return 0;
+}
+
+// ghidra_name MapCodepointToLowercaseWithLocale
+// ghidra_proto uint __cdecl MapCodepointToLowercaseWithLocale(void)
+// FUNCTION: IMPERIALISM 0x005f9c20
+undefined4 MapCodepointToLowercaseWithLocale(void)
+{
+  return 0;
+}
+
+// ghidra_name GetCharTypeMaskForCodepoint
+// ghidra_proto int __cdecl GetCharTypeMaskForCodepoint(void)
+// FUNCTION: IMPERIALISM 0x005f9ca0
+undefined4 GetCharTypeMaskForCodepoint(void)
+{
+  return 0;
+}
+
+// ghidra_name CallMfcAppLifecycleEntry
+// ghidra_proto void __thiscall CallMfcAppLifecycleEntry(void)
+// FUNCTION: IMPERIALISM 0x005fa7c2
+undefined4 CallMfcAppLifecycleEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AfxTermLocalData_At005fa80b
+// ghidra_proto void __cdecl WrapperFor_AfxTermLocalData_At005fa80b(void)
+// FUNCTION: IMPERIALISM 0x005fa80b
+undefined4 WrapperFor_AfxTermLocalData_At005fa80b(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_TerminateMfcApplicationState_At005fa815
+// ghidra_proto void __cdecl WrapperFor_TerminateMfcApplicationState_At005fa815(void)
+// FUNCTION: IMPERIALISM 0x005fa815
+undefined4 WrapperFor_TerminateMfcApplicationState_At005fa815(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
+// FUNCTION: IMPERIALISM 0x005fa81a
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
+{
+  return 0;
+}
+
+// ghidra_name TerminateMfcApplicationState
+// ghidra_proto void __cdecl TerminateMfcApplicationState(void)
+// FUNCTION: IMPERIALISM 0x005fa81f
+undefined4 TerminateMfcApplicationState(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
+// FUNCTION: IMPERIALISM 0x005fa829
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a
+// ghidra_proto void __cdecl thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a(void)
+// FUNCTION: IMPERIALISM 0x005fa83a
+undefined4 thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a(void)
+{
+  return 0;
+}
+
+// ghidra_name CToolTipCtrl
+// ghidra_proto int * __cdecl CToolTipCtrl(void)
+// FUNCTION: IMPERIALISM 0x005fa845
+undefined4 CToolTipCtrl(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::ScalarDeletingDestructorTooltipRelayWindowState
+// ghidra_proto void __thiscall ScalarDeletingDestructorTooltipRelayWindowState(void)
+// FUNCTION: IMPERIALISM 0x005fa87e
+undefined4 ScalarDeletingDestructorTooltipRelayWindowState(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a
+// ghidra_proto void __thiscall WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a(void)
+// FUNCTION: IMPERIALISM 0x005fa89a
+undefined4 WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTooltipRelayWindowStateAndBaseCWnd
+// ghidra_proto void __cdecl DestructTooltipRelayWindowStateAndBaseCWnd(void)
+// FUNCTION: IMPERIALISM 0x005fa8e5
+undefined4 DestructTooltipRelayWindowStateAndBaseCWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name AddTool
+// ghidra_proto void __thiscall AddTool(void)
+// FUNCTION: IMPERIALISM 0x005faa44
+undefined4 AddTool(void)
+{
+  return 0;
+}
+
+// ghidra_name AddTool_5faa92
+// ghidra_proto void __thiscall AddTool_5faa92(void)
+// FUNCTION: IMPERIALISM 0x005faa92
+undefined4 AddTool_5faa92(void)
+{
+  return 0;
+}
+
+// ghidra_name DelTool
+// ghidra_proto void __thiscall DelTool(void)
+// FUNCTION: IMPERIALISM 0x005faaec
+undefined4 DelTool(void)
+{
+  return 0;
+}
+
+// ghidra_name GetText_5fab1d
+// ghidra_proto void __thiscall GetText_5fab1d(void)
+// FUNCTION: IMPERIALISM 0x005fab1d
+undefined4 GetText_5fab1d(void)
+{
+  return 0;
+}
+
+// ghidra_name GetTooltipToolInfo
+// ghidra_proto void __thiscall GetTooltipToolInfo(void)
+// FUNCTION: IMPERIALISM 0x005fab68
+undefined4 GetTooltipToolInfo(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocTemplate::HitTest
+// ghidra_proto bool __thiscall HitTest(void)
+// FUNCTION: IMPERIALISM 0x005fab9a
+undefined4 HitTest_005FAB9A(void)
+{
+  return 0;
+}
+
+// ghidra_name SetToolRect
+// ghidra_proto void __cdecl SetToolRect(void)
+// FUNCTION: IMPERIALISM 0x005fac0d
+undefined4 SetToolRect(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateTipText
+// ghidra_proto void __thiscall UpdateTipText(void)
+// FUNCTION: IMPERIALISM 0x005fac4f
+undefined4 UpdateTipText(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateTipText_5fac86
+// ghidra_proto void __cdecl UpdateTipText_5fac86(void)
+// FUNCTION: IMPERIALISM 0x005fac86
+undefined4 UpdateTipText_5fac86(void)
+{
+  return 0;
+}
+
+// ghidra_name EnableToolTips
+// ghidra_proto void __cdecl EnableToolTips(void)
+// FUNCTION: IMPERIALISM 0x005fad29
+undefined4 EnableToolTips(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb
+// ghidra_proto void __cdecl WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb(void)
+// FUNCTION: IMPERIALISM 0x005fadcb
+undefined4 WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb(void)
+{
+  return 0;
+}
+
+// ghidra_name FilterToolTipMessage
+// ghidra_proto void __cdecl FilterToolTipMessage(void)
+// FUNCTION: IMPERIALISM 0x005faddb
+undefined4 FilterToolTipMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RelayToolTipMessage
+// ghidra_proto void __thiscall RelayToolTipMessage(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005fb0d5
+undefined4 RelayToolTipMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxIsValidAddress
+// ghidra_proto int __cdecl AfxIsValidAddress(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x005feb02
+undefined4 AfxIsValidAddress(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9
+// ghidra_proto void __cdecl WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9(void)
+// FUNCTION: IMPERIALISM 0x005feba9
+undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9(void)
+{
+  return 0;
+}
+
+// ghidra_name Mid_5feca5
+// ghidra_proto int __cdecl Mid_5feca5(void)
+// FUNCTION: IMPERIALISM 0x005feca5
+undefined4 Mid_5feca5(void)
+{
+  return 0;
+}
+
+// ghidra_name FindCharIndexInStringPtrOrMinusOne
+// ghidra_proto int __thiscall FindCharIndexInStringPtrOrMinusOne(int chValue)
+// FUNCTION: IMPERIALISM 0x005fee99
+undefined4 FindCharIndexInStringPtrOrMinusOne(void)
+{
+  return 0;
+}
+
+// ghidra_name FormatStringWithVarArgsToSharedRef
+// ghidra_proto void __cdecl FormatStringWithVarArgsToSharedRef(void)
+// FUNCTION: IMPERIALISM 0x005ff15e
+undefined4 FormatStringWithVarArgsToSharedRef(void)
+{
+  return 0;
+}
+
+// ghidra_name FormatMessageFromLoadedResourceOrThrowMfcException
+// ghidra_proto void __cdecl FormatMessageFromLoadedResourceOrThrowMfcException(void)
+// FUNCTION: IMPERIALISM 0x005ff206
+undefined4 FormatMessageFromLoadedResourceOrThrowMfcException(void)
+{
+  return 0;
+}
+
+// ghidra_name CopyElements
+// ghidra_proto int * __thiscall CopyElements(int * dst_ref_ptr)
+// FUNCTION: IMPERIALISM 0x005ff36a
+undefined4 CopyElements(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_InitString_At005ff3f6
+// ghidra_proto void __thiscall WrapperFor_InitString_At005ff3f6(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x005ff3f6
+undefined4 WrapperFor_InitString_At005ff3f6(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetThisField10Value
+// ghidra_proto int __cdecl thunk_GetThisField10Value(void)
+// FUNCTION: IMPERIALISM 0x005ff429
+undefined4 thunk_GetThisField10Value(void)
+{
+  return 0;
+}
+
+// ghidra_name GetThisField10Value
+// ghidra_proto int __cdecl GetThisField10Value(void)
+// FUNCTION: IMPERIALISM 0x005ff432
+undefined4 GetThisField10Value(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxThrowMemoryException
+// ghidra_proto void __cdecl AfxThrowMemoryException(void)
+// FUNCTION: IMPERIALISM 0x005ff439
+undefined4 AfxThrowMemoryException(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxThrowNotSupportedException
+// ghidra_proto void __cdecl AfxThrowNotSupportedException(void)
+// FUNCTION: IMPERIALISM 0x005ff454
+undefined4 AfxThrowNotSupportedException(void)
+{
+  return 0;
+}
+
+// ghidra_name CFileDialog
+// ghidra_proto void __thiscall CFileDialog(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// FUNCTION: IMPERIALISM 0x005ff46f
+undefined4 CFileDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
+// FUNCTION: IMPERIALISM 0x005ff5c5
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
 {
   return 0;
 }

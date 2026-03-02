@@ -2195,14 +2195,6 @@ undefined4 thunk_scalar_deleting_destructor_00404A98(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::ReplyToDiplomacyOffers
-// ghidra_proto void * __cdecl ReplyToDiplomacyOffers(void)
-// FUNCTION: IMPERIALISM 0x00404a9d
-undefined4 ReplyToDiplomacyOffers(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_Slot02_Target
 // ghidra_proto void __cdecl TMacViewMgr_Slot02_Target(void)
 // FUNCTION: IMPERIALISM 0x00404aa7
@@ -3999,6 +3991,14 @@ undefined4 thunk_EmitTurnEvent1DCommand61ForCurrentNationSlot(void)
 // ghidra_proto void __thiscall thunk_ConstructTMapPreviewViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x0040524a
 undefined4 thunk_ConstructTMapPreviewViewBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructPictureResourceEntry_Vtbl00640258
+// ghidra_proto void __cdecl thunk_ConstructPictureResourceEntry_Vtbl00640258(void)
+// FUNCTION: IMPERIALISM 0x0040524f
+undefined4 thunk_ConstructPictureResourceEntry_Vtbl00640258(void)
 {
   return 0;
 }

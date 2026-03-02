@@ -3,342 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20
-// ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005f9b20
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20(void)
-{
-  return 0;
-}
-
-// ghidra_name ToLowerCodepointWithLocaleLock
-// ghidra_proto uint __cdecl ToLowerCodepointWithLocaleLock(int arg1)
-// FUNCTION: IMPERIALISM 0x005f9b90
-undefined4 ToLowerCodepointWithLocaleLock(void)
-{
-  return 0;
-}
-
-// ghidra_name MapCodepointToLowercaseWithLocale
-// ghidra_proto uint __cdecl MapCodepointToLowercaseWithLocale(void)
-// FUNCTION: IMPERIALISM 0x005f9c20
-undefined4 MapCodepointToLowercaseWithLocale(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCharTypeMaskForCodepoint
-// ghidra_proto int __cdecl GetCharTypeMaskForCodepoint(void)
-// FUNCTION: IMPERIALISM 0x005f9ca0
-undefined4 GetCharTypeMaskForCodepoint(void)
-{
-  return 0;
-}
-
-// ghidra_name CallMfcAppLifecycleEntry
-// ghidra_proto void __thiscall CallMfcAppLifecycleEntry(void)
-// FUNCTION: IMPERIALISM 0x005fa7c2
-undefined4 CallMfcAppLifecycleEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AfxTermLocalData_At005fa80b
-// ghidra_proto void __cdecl WrapperFor_AfxTermLocalData_At005fa80b(void)
-// FUNCTION: IMPERIALISM 0x005fa80b
-undefined4 WrapperFor_AfxTermLocalData_At005fa80b(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_TerminateMfcApplicationState_At005fa815
-// ghidra_proto void __cdecl WrapperFor_TerminateMfcApplicationState_At005fa815(void)
-// FUNCTION: IMPERIALISM 0x005fa815
-undefined4 WrapperFor_TerminateMfcApplicationState_At005fa815(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
-// FUNCTION: IMPERIALISM 0x005fa81a
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
-{
-  return 0;
-}
-
-// ghidra_name TerminateMfcApplicationState
-// ghidra_proto void __cdecl TerminateMfcApplicationState(void)
-// FUNCTION: IMPERIALISM 0x005fa81f
-undefined4 TerminateMfcApplicationState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
-// FUNCTION: IMPERIALISM 0x005fa829
-undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a
-// ghidra_proto void __cdecl thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a(void)
-// FUNCTION: IMPERIALISM 0x005fa83a
-undefined4 thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a(void)
-{
-  return 0;
-}
-
-// ghidra_name CToolTipCtrl
-// ghidra_proto int * __cdecl CToolTipCtrl(void)
-// FUNCTION: IMPERIALISM 0x005fa845
-undefined4 CToolTipCtrl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::ScalarDeletingDestructorTooltipRelayWindowState
-// ghidra_proto void __thiscall ScalarDeletingDestructorTooltipRelayWindowState(void)
-// FUNCTION: IMPERIALISM 0x005fa87e
-undefined4 ScalarDeletingDestructorTooltipRelayWindowState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a
-// ghidra_proto void __thiscall WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a(void)
-// FUNCTION: IMPERIALISM 0x005fa89a
-undefined4 WrapperFor_CreateWindowExWithPreCreateHook_At005fa89a(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTooltipRelayWindowStateAndBaseCWnd
-// ghidra_proto void __cdecl DestructTooltipRelayWindowStateAndBaseCWnd(void)
-// FUNCTION: IMPERIALISM 0x005fa8e5
-undefined4 DestructTooltipRelayWindowStateAndBaseCWnd(void)
-{
-  return 0;
-}
-
-// ghidra_name AddTool
-// ghidra_proto void __thiscall AddTool(void)
-// FUNCTION: IMPERIALISM 0x005faa44
-undefined4 AddTool(void)
-{
-  return 0;
-}
-
-// ghidra_name AddTool_5faa92
-// ghidra_proto void __thiscall AddTool_5faa92(void)
-// FUNCTION: IMPERIALISM 0x005faa92
-undefined4 AddTool_5faa92(void)
-{
-  return 0;
-}
-
-// ghidra_name DelTool
-// ghidra_proto void __thiscall DelTool(void)
-// FUNCTION: IMPERIALISM 0x005faaec
-undefined4 DelTool(void)
-{
-  return 0;
-}
-
-// ghidra_name GetText_5fab1d
-// ghidra_proto void __thiscall GetText_5fab1d(void)
-// FUNCTION: IMPERIALISM 0x005fab1d
-undefined4 GetText_5fab1d(void)
-{
-  return 0;
-}
-
-// ghidra_name GetTooltipToolInfo
-// ghidra_proto void __thiscall GetTooltipToolInfo(void)
-// FUNCTION: IMPERIALISM 0x005fab68
-undefined4 GetTooltipToolInfo(void)
-{
-  return 0;
-}
-
-// ghidra_name CDocTemplate::HitTest
-// ghidra_proto bool __thiscall HitTest(void)
-// FUNCTION: IMPERIALISM 0x005fab9a
-undefined4 HitTest_005FAB9A(void)
-{
-  return 0;
-}
-
-// ghidra_name SetToolRect
-// ghidra_proto void __cdecl SetToolRect(void)
-// FUNCTION: IMPERIALISM 0x005fac0d
-undefined4 SetToolRect(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateTipText
-// ghidra_proto void __thiscall UpdateTipText(void)
-// FUNCTION: IMPERIALISM 0x005fac4f
-undefined4 UpdateTipText(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateTipText_5fac86
-// ghidra_proto void __cdecl UpdateTipText_5fac86(void)
-// FUNCTION: IMPERIALISM 0x005fac86
-undefined4 UpdateTipText_5fac86(void)
-{
-  return 0;
-}
-
-// ghidra_name EnableToolTips
-// ghidra_proto void __cdecl EnableToolTips(void)
-// FUNCTION: IMPERIALISM 0x005fad29
-undefined4 EnableToolTips(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb
-// ghidra_proto void __cdecl WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb(void)
-// FUNCTION: IMPERIALISM 0x005fadcb
-undefined4 WrapperFor_RelayMouseEventToTooltipWindow_At005fadcb(void)
-{
-  return 0;
-}
-
-// ghidra_name FilterToolTipMessage
-// ghidra_proto void __cdecl FilterToolTipMessage(void)
-// FUNCTION: IMPERIALISM 0x005faddb
-undefined4 FilterToolTipMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name RelayToolTipMessage
-// ghidra_proto void __thiscall RelayToolTipMessage(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005fb0d5
-undefined4 RelayToolTipMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxIsValidAddress
-// ghidra_proto int __cdecl AfxIsValidAddress(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x005feb02
-undefined4 AfxIsValidAddress(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9
-// ghidra_proto void __cdecl WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9(void)
-// FUNCTION: IMPERIALISM 0x005feba9
-undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9(void)
-{
-  return 0;
-}
-
-// ghidra_name Mid_5feca5
-// ghidra_proto int __cdecl Mid_5feca5(void)
-// FUNCTION: IMPERIALISM 0x005feca5
-undefined4 Mid_5feca5(void)
-{
-  return 0;
-}
-
-// ghidra_name FindCharIndexInStringPtrOrMinusOne
-// ghidra_proto int __thiscall FindCharIndexInStringPtrOrMinusOne(int chValue)
-// FUNCTION: IMPERIALISM 0x005fee99
-undefined4 FindCharIndexInStringPtrOrMinusOne(void)
-{
-  return 0;
-}
-
-// ghidra_name FormatStringWithVarArgsToSharedRef
-// ghidra_proto void __cdecl FormatStringWithVarArgsToSharedRef(void)
-// FUNCTION: IMPERIALISM 0x005ff15e
-undefined4 FormatStringWithVarArgsToSharedRef(void)
-{
-  return 0;
-}
-
-// ghidra_name FormatMessageFromLoadedResourceOrThrowMfcException
-// ghidra_proto void __cdecl FormatMessageFromLoadedResourceOrThrowMfcException(void)
-// FUNCTION: IMPERIALISM 0x005ff206
-undefined4 FormatMessageFromLoadedResourceOrThrowMfcException(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyElements
-// ghidra_proto int * __thiscall CopyElements(int * dst_ref_ptr)
-// FUNCTION: IMPERIALISM 0x005ff36a
-undefined4 CopyElements(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InitString_At005ff3f6
-// ghidra_proto void __thiscall WrapperFor_InitString_At005ff3f6(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x005ff3f6
-undefined4 WrapperFor_InitString_At005ff3f6(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetThisField10Value
-// ghidra_proto int __cdecl thunk_GetThisField10Value(void)
-// FUNCTION: IMPERIALISM 0x005ff429
-undefined4 thunk_GetThisField10Value(void)
-{
-  return 0;
-}
-
-// ghidra_name GetThisField10Value
-// ghidra_proto int __cdecl GetThisField10Value(void)
-// FUNCTION: IMPERIALISM 0x005ff432
-undefined4 GetThisField10Value(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxThrowMemoryException
-// ghidra_proto void __cdecl AfxThrowMemoryException(void)
-// FUNCTION: IMPERIALISM 0x005ff439
-undefined4 AfxThrowMemoryException(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxThrowNotSupportedException
-// ghidra_proto void __cdecl AfxThrowNotSupportedException(void)
-// FUNCTION: IMPERIALISM 0x005ff454
-undefined4 AfxThrowNotSupportedException(void)
-{
-  return 0;
-}
-
-// ghidra_name CFileDialog
-// ghidra_proto void __thiscall CFileDialog(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// FUNCTION: IMPERIALISM 0x005ff46f
-undefined4 CFileDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
-// FUNCTION: IMPERIALISM 0x005ff5c5
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
-{
-  return 0;
-}
-
 // ghidra_name DoModal
 // ghidra_proto int __fastcall DoModal(void)
 // FUNCTION: IMPERIALISM 0x005ff5e1
@@ -3999,6 +3663,342 @@ undefined4 InvokeVslotF4WithZeroArgs(void)
 // ghidra_proto void __cdecl InvalidateWindowRectFromHandleField1C(void)
 // FUNCTION: IMPERIALISM 0x00613f12
 undefined4 InvalidateWindowRectFromHandleField1C(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchVirtualSlotF8_WithArg
+// ghidra_proto void __thiscall DispatchVirtualSlotF8_WithArg(void)
+// FUNCTION: IMPERIALISM 0x00613f22
+undefined4 DispatchVirtualSlotF8_WithArg(void)
+{
+  return 0;
+}
+
+// ghidra_name OnActivateView
+// ghidra_proto void __cdecl OnActivateView(void)
+// FUNCTION: IMPERIALISM 0x00613f39
+undefined4 OnActivateView(void)
+{
+  return 0;
+}
+
+// ghidra_name OnMouseActivate
+// ghidra_proto int __fastcall OnMouseActivate(void)
+// FUNCTION: IMPERIALISM 0x00613f5a
+undefined4 OnMouseActivate(void)
+{
+  return 0;
+}
+
+// ghidra_name OnEndPrintPreview
+// ghidra_proto void __thiscall OnEndPrintPreview(void)
+// FUNCTION: IMPERIALISM 0x0061419f
+undefined4 OnEndPrintPreview(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006142c0
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006142c0(void)
+// FUNCTION: IMPERIALISM 0x006142c0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006142c0(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxCustomLogFont
+// ghidra_proto void __cdecl AfxCustomLogFont(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00614331
+undefined4 AfxCustomLogFont(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxIsComboBoxControl
+// ghidra_proto void __stdcall AfxIsComboBoxControl(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006143a9
+undefined4 AfxIsComboBoxControl(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxCompareClassName
+// ghidra_proto bool __cdecl AfxCompareClassName(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006143f3
+undefined4 AfxCompareClassName(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxChildWindowFromPoint
+// ghidra_proto void * __cdecl AfxChildWindowFromPoint(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x0061441e
+undefined4 AfxChildWindowFromPoint(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxSetWindowText
+// ghidra_proto void __cdecl AfxSetWindowText(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00614493
+undefined4 AfxSetWindowText(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxDeleteObject
+// ghidra_proto void __cdecl AfxDeleteObject(int arg1)
+// FUNCTION: IMPERIALISM 0x006144eb
+undefined4 AfxDeleteObject(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxCancelModes
+// ghidra_proto void __cdecl AfxCancelModes(int arg1)
+// FUNCTION: IMPERIALISM 0x00614504
+undefined4 AfxCancelModes(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxGlobalFree
+// ghidra_proto void __cdecl AfxGlobalFree(int arg1)
+// FUNCTION: IMPERIALISM 0x0061457b
+undefined4 AfxGlobalFree(void)
+{
+  return 0;
+}
+
+// ghidra_name EnsureMfcModuleThreadBufferCapacity
+// ghidra_proto int __cdecl EnsureMfcModuleThreadBufferCapacity(void)
+// FUNCTION: IMPERIALISM 0x006145b1
+undefined4 EnsureMfcModuleThreadBufferCapacity(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnOneStub_006145f5
+// ghidra_proto int __cdecl thunk_ReturnOneStub_006145f5(void)
+// FUNCTION: IMPERIALISM 0x006145e3
+undefined4 thunk_ReturnOneStub_006145f5(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnOneStub_006145f5
+// ghidra_proto int __cdecl ReturnOneStub_006145f5(void)
+// FUNCTION: IMPERIALISM 0x006145f5
+undefined4 ReturnOneStub_006145f5(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ThrowMfcResourceException_At006145fa
+// ghidra_proto int __cdecl WrapperFor_ThrowMfcResourceException_At006145fa(void)
+// FUNCTION: IMPERIALISM 0x006145fa
+undefined4 WrapperFor_ThrowMfcResourceException_At006145fa(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocTemplate::OpenDocumentFile_614603
+// ghidra_proto int * __thiscall OpenDocumentFile_614603(void)
+// FUNCTION: IMPERIALISM 0x00614603
+undefined4 OpenDocumentFile_614603(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocTemplate
+// ghidra_proto int * __cdecl CDocTemplate(void)
+// FUNCTION: IMPERIALISM 0x00614790
+undefined4 CDocTemplate(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00614893
+// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00614893(void)
+// FUNCTION: IMPERIALISM 0x00614893
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00614893(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadTemplate
+// ghidra_proto void __fastcall LoadTemplate(void)
+// FUNCTION: IMPERIALISM 0x006148af
+undefined4 LoadTemplate(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructMenuOwnerAndReleaseCaptionString
+// ghidra_proto void __thiscall DestructMenuOwnerAndReleaseCaptionString(void)
+// FUNCTION: IMPERIALISM 0x0061499c
+undefined4 DestructMenuOwnerAndReleaseCaptionString(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04
+// ghidra_proto bool __cdecl WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04(void * destination, char * source, int fieldIndex, char delimiter)
+// FUNCTION: IMPERIALISM 0x00614a04
+undefined4 WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04(void)
+{
+  return 0;
+}
+
+// ghidra_name SetObjectField24Value
+// ghidra_proto void __cdecl SetObjectField24Value(void)
+// FUNCTION: IMPERIALISM 0x00614a19
+undefined4 SetObjectField24Value(void)
+{
+  return 0;
+}
+
+// ghidra_name ClearObjectField24Value
+// ghidra_proto void __cdecl ClearObjectField24Value(void)
+// FUNCTION: IMPERIALISM 0x00614a23
+undefined4 ClearObjectField24Value(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateNewDocument
+// ghidra_proto int __cdecl CreateNewDocument(void)
+// FUNCTION: IMPERIALISM 0x00614aeb
+undefined4 CreateNewDocument(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_InitialUpdateFrame_At00614bef
+// ghidra_proto void __cdecl WrapperFor_InitialUpdateFrame_At00614bef(void)
+// FUNCTION: IMPERIALISM 0x00614bef
+undefined4 WrapperFor_InitialUpdateFrame_At00614bef(void)
+{
+  return 0;
+}
+
+// ghidra_name OnIdle_614c76
+// ghidra_proto void __fastcall OnIdle_614c76(void)
+// FUNCTION: IMPERIALISM 0x00614c76
+undefined4 OnIdle_614c76(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9
+// ghidra_proto void __thiscall WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9(void)
+// FUNCTION: IMPERIALISM 0x00614ca9
+undefined4 WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxGetMouseScrollLines
+// ghidra_proto int __cdecl AfxGetMouseScrollLines(int arg1)
+// FUNCTION: IMPERIALISM 0x00614cfa
+undefined4 AfxGetMouseScrollLines(void)
+{
+  return 0;
+}
+
+// ghidra_name CScrollView
+// ghidra_proto void * __fastcall CScrollView(void * pThis)
+// FUNCTION: IMPERIALISM 0x00614e71
+undefined4 CScrollView(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00614e98
+// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00614e98(void)
+// FUNCTION: IMPERIALISM 0x00614e98
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00614e98(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructCViewAndResetVtable_0067358c
+// ghidra_proto void __thiscall DestructCViewAndResetVtable_0067358c(void)
+// FUNCTION: IMPERIALISM 0x00614eb4
+undefined4 DestructCViewAndResetVtable_0067358c(void)
+{
+  return 0;
+}
+
+// ghidra_name TCViewOwnedBufferRegistryState_00648560::OnPrepareDC_614ebf
+// ghidra_proto void __thiscall OnPrepareDC_614ebf(TMacViewMgr * thisObj, pointer pDc, pointer drawInfo)
+// FUNCTION: IMPERIALISM 0x00614ebf
+undefined4 OnPrepareDC_614ebf(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::SetScaleToFitSize
+// ghidra_proto void __thiscall SetScaleToFitSize(TMacViewMgr * thisObj, int extentX, int extentY)
+// FUNCTION: IMPERIALISM 0x00614f95
+undefined4 SetScaleToFitSize(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::SetScrollSizes
+// ghidra_proto void __thiscall SetScrollSizes(TMacViewMgr * thisObj, int mapMode, int * sizeTotal, int * sizePage, int * sizeLine)
+// FUNCTION: IMPERIALISM 0x00615020
+undefined4 SetScrollSizes(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::GetScrollPosition
+// ghidra_proto void __thiscall GetScrollPosition(TMacViewMgr * thisObj, int * outPt)
+// FUNCTION: IMPERIALISM 0x00615152
+undefined4 GetScrollPosition(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::ScrollToPosition
+// ghidra_proto void __thiscall ScrollToPosition(TMacViewMgr * thisObj, int * ptLogical)
+// FUNCTION: IMPERIALISM 0x006151d6
+undefined4 ScrollToPosition(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::GetDeviceScrollPosition
+// ghidra_proto void __thiscall GetDeviceScrollPosition(TMacViewMgr * thisObj, int * outPtDevice)
+// FUNCTION: IMPERIALISM 0x00615277
+undefined4 GetDeviceScrollPosition(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::ScrollToDevicePosition
+// ghidra_proto void __thiscall ScrollToDevicePosition(TMacViewMgr * thisObj, int xPos, int yPos)
+// FUNCTION: IMPERIALISM 0x00615329
+undefined4 ScrollToDevicePosition(void)
+{
+  return 0;
+}
+
+// ghidra_name FillOutsideRect
+// ghidra_proto void __thiscall FillOutsideRect(TMacViewMgr * thisObj, pointer paintStruct, pointer viewObj)
+// FUNCTION: IMPERIALISM 0x0061537b
+undefined4 FillOutsideRect(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::ResizeParentToFit
+// ghidra_proto void __thiscall ResizeParentToFit(TMacViewMgr * thisObj, int shrinkOnly)
+// FUNCTION: IMPERIALISM 0x006153fe
+undefined4 ResizeParentToFit(void)
 {
   return 0;
 }

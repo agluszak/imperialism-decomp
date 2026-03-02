@@ -1,5 +1,82 @@
 # Worklog
 
+## 2026-03-02
+
+### TGreatPower zero-cleanup pass (`0x00404A9D`, `0x00405DE4`, `0x00406B2C`, `0x00406C49`, `0x00406C9E`)
+1. Goal: eliminate the remaining `0.00%` thunk cluster in `src/game/TGreatPower.cpp`.
+2. Root cause discovered:
+   1. these entries are tiny thunk/jump wrappers; large/manual bodies or indirect address-jumps (`mov eax,imm; jmp eax`) stayed at `0.00%`.
+   2. earlier direct symbol-forward attempt failed due MSVC decorated-name mismatch (`void` declarations vs stub `undefined4` returns).
+3. Retained fix:
+   1. switched to direct symbol calls with stub-compatible declarations/signatures:
+      1. `ReplyToDiplomacyOffers` -> `GetTGreatPowerClassNamePointer`
+      2. `TGreatPower_VtblSlot07` -> `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`
+      3. `thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c` -> `RemoveRegionIdAndRunTrackedObjectCleanup`
+      4. `thunk_ClearFieldBlock1c6_At00406c49` -> `ClearFieldBlock1c6`
+      5. `thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e` -> `ResetNationDiplomacySlotsAndMarkRelatedNations`
+4. Verification sequence:
+   1. `just format src/game/TGreatPower.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x00404A9D`
+   5. `just compare 0x00405DE4`
+   6. `just compare 0x00406B2C`
+   7. `just compare 0x00406C49`
+   8. `just compare 0x00406C9E`
+   9. anchor stability:
+      1. `just compare 0x004DDA90`
+      2. `just compare 0x004DDBB0`
+      3. `just compare 0x004E8540`
+      4. `just compare 0x004E8750`
+5. Targeted deltas:
+   1. `0x00404A9D`: `0.00% -> 100%`
+   2. `0x00405DE4`: `0.00% -> 100%`
+   3. `0x00406B2C`: `0.00% -> 100%`
+   4. `0x00406C49`: `0.00% -> 100%`
+   5. `0x00406C9E`: `0.00% -> 100%`
+6. Anchor checks (unchanged in this pass):
+   1. `0x004DDA90`: `26.67%`
+   2. `0x004DDBB0`: `37.89%`
+   3. `0x004E8540`: `42.86%`
+   4. `0x004E8750`: `34.25%`
+
+### TGreatPower thunk batch pass (`0x00405DE4`..`0x004097FF`)
+1. Continued `src/game/TGreatPower.cpp` ownership block work for the promoted thunk window.
+2. First attempt:
+   1. replaced many no-op wrappers with direct call-through bridges to inferred callee symbols.
+   2. build failed at link (`LNK1120`) with 26 unresolved externals (`LNK2001`) for those bridge targets.
+3. Retained approach for this pass:
+   1. kept build green by removing unresolved call-through targets.
+   2. implemented direct typed bodies (field/vtable shape) for:
+      1. `0x00405DE4` `TGreatPower_VtblSlot07`
+      2. `0x00406B2C` `thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c`
+      3. `0x00406C49` `thunk_ClearFieldBlock1c6_At00406c49`
+      4. `0x00406C9E` `thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e`
+   3. kept remaining wrappers in this promoted window compile-safe placeholders for now.
+4. Verification sequence:
+   1. `just format src/game/TGreatPower.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x00405DE4`
+   5. `just compare 0x00406B2C`
+   6. `just compare 0x00406C49`
+   7. `just compare 0x00406C9E`
+   8. stability checks:
+      1. `just compare 0x004DDA90`
+      2. `just compare 0x004DDBB0`
+      3. `just compare 0x004E8540`
+      4. `just compare 0x004E8750`
+5. Targeted similarities after retained edits:
+   1. `0x00405DE4`: `0.00%`
+   2. `0x00406B2C`: `0.00%`
+   3. `0x00406C49`: `0.00%`
+   4. `0x00406C9E`: `0.00%`
+6. Anchor checks stayed stable in this pass:
+   1. `0x004DDA90`: `26.67%`
+   2. `0x004DDBB0`: `37.89%`
+   3. `0x004E8540`: `42.86%`
+   4. `0x004E8750`: `34.25%`
+
 ## 2026-02-24
 
 ### TCivDescription deep shape pass (`0x0058F3C0`) - 97.98%
@@ -2047,3 +2124,347 @@
 3. `0x004E8750`: `34.25%` (baseline retained after rollback)
 4. `0x004DDBB0`: `37.89%` (higher than pre-pass baseline)
 5. Build/detect loop remains green after all rollbacks and retained changes.
+
+## 2026-03-02 18:02 UTC - `TGreatPower` non-zero body expansion (`0x4DDFC0`, `0x4E9060`, `0x4DC9F0`, `0x4DBD20`)
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x00407392 --overwrite-existing`
+2. `just promote src/game/TGreatPower.cpp --address 0x004DDFC0 --address 0x004E9060`
+3. `just sync-ownership`
+4. `just regen-stubs`
+5. `just build`
+6. `just detect`
+7. `just compare 0x00406915`
+8. `just compare 0x004070E5`
+9. `just compare 0x00407DB0`
+10. `just compare 0x004097FF`
+11. `just compare 0x004DDFC0`
+12. `just compare 0x004E9060`
+13. `just compare 0x004DC9F0`
+14. `just compare 0x004DBD20`
+15. `just stats`
+
+### Changes
+1. Converted zero wrappers to real member-forwarding in `src/game/TGreatPower.cpp`:
+   1. `0x00406915` -> `ComputeMapActionContextCompositeScoreForNation`.
+   2. `0x004070E5` -> `ApplyDiplomacyPolicyStateForTargetWithCostChecks`.
+   3. `0x00407DB0` -> `RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`.
+   4. `0x004097FF` -> `RebuildNationResourceYieldCountersAndDevelopmentTargets`.
+2. Added/ported non-zero member bodies at real addresses:
+   1. `0x004DDFC0` (`ApplyDiplomacyPolicyStateForTargetWithCostChecks`).
+   2. `0x004E9060` (`ComputeMapActionContextCompositeScoreForNation`).
+   3. `0x004DC9F0` (`RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`).
+   4. `0x004DBD20` (`RebuildNationResourceYieldCountersAndDevelopmentTargets`).
+3. Repeated `sync-ownership + regen-stubs` after each manual marker addition to prevent stale stub ownership from shadowing manual implementations in reccmp compares.
+
+### Results
+1. Targeted compares:
+   1. `0x004DDFC0`: `25.77%`.
+   2. `0x004E9060`: `9.52%`.
+   3. `0x004DC9F0`: `57.63%`.
+   4. `0x004DBD20`: `13.74%`.
+2. Project-wide stats (`just stats`):
+   1. aligned functions: `86` (`+7`).
+   2. not aligned vs original: `12887` (`-7`).
+   3. average similarity: `2.67%` (`+0.08 pp`).
+3. Build/detect stayed green across the full pass.
+
+## 2026-03-02 18:20 UTC - `TGreatPower` shape pass + real-body split (`0x4E9060`, `0x4DEDF0`, `0x40862A`)
+
+### Commands
+1. `just compare 0x004E9060`
+2. `just compare 0x004DDFC0`
+3. `just format src/game/TGreatPower.cpp`
+4. `just build`
+5. `just detect`
+6. `just compare 0x004E9060`
+7. `just promote src/game/TGreatPower.cpp --address 0x0040862A --overwrite-existing`
+8. `just sync-ownership`
+9. `just regen-stubs`
+10. `just build`
+11. `just detect`
+12. `just compare 0x004DEDF0`
+13. `just compare 0x0040862A`
+14. `just compare 0x004DC9F0`
+15. `just stats`
+
+### Changes
+1. `0x004E9060` (`ComputeMapActionContextCompositeScoreForNation`) shape/data pass:
+   1. fixed advisory-factor thunk arity to 4 args and forwarded `selectedCandidateIndex`,
+   2. corrected relationship-list init/list-call shape (`+0x2C` path),
+   3. narrowed candidate-priority scratch loop to 7-slot form for this pass.
+2. Promoted `0x0040862A` block from Ghidra and normalized it into manual style.
+3. Split thunk-vs-real ownership for immediate diplomacy side effects:
+   1. `0x0040862A` kept as thunk wrapper,
+   2. real implementation moved to `0x004DEDF0` (`ApplyImmediateDiplomacyPolicySideEffects`).
+4. Ran `just sync-ownership && just regen-stubs` after new markers to remove dropped-duplicate-address conflicts.
+
+### Results
+1. `0x004E9060`: `24.90% -> 30.99%`.
+2. `0x004DEDF0`: `0.00% -> 17.79%` (manual body now active).
+3. `0x0040862A`: remains `0.00%` (pure-jump thunk shape still unresolved in no-inline-asm policy).
+4. Stability anchors:
+   1. `0x004DC9F0`: still `100%`,
+   2. `0x004DDFC0`: still `25.77%`.
+5. `just stats`: average similarity `2.68%` (small uptick), aligned count unchanged (`87`).
+
+## 2026-03-02 18:28 UTC - `TGreatPower` `0x4DEDF0` prologue/register pass
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004DEDF0`
+5. `just compare 0x004E9060`
+
+### Changes
+1. Added local `#pragma optimize("y", on)` around `0x004DEDF0` (`ApplyImmediateDiplomacyPolicySideEffects`) to reduce frame-prologue drift under `/Oy-` baseline.
+
+### Results
+1. `0x004DEDF0`: `17.79% -> 19.93%`.
+2. `0x004E9060`: stable at `30.99%`.
+3. Build/detect remained green.
+
+## 2026-03-02 18:27 UTC - `TGreatPower` additional function ports (`0x4E7B50`, `0x4E7C50`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004E7B50`
+5. `just compare 0x004E7C50`
+6. `just sync-ownership`
+7. `just regen-stubs`
+8. `just build`
+9. `just detect`
+10. `just compare 0x004E7B50`
+11. `just compare 0x004E7C50`
+12. `just compare 0x004DEDF0`
+13. `just stats`
+
+### Changes
+1. Added manual implementations in `src/game/TGreatPower.cpp`:
+   1. `0x004E7B50` `QueueDiplomacyProposalCodeWithAllianceGuards`.
+   2. `0x004E7C50` `ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook`.
+2. Added corresponding member declarations to `class TGreatPower` in the same file.
+3. Ran ownership + stub regeneration so reccmp binds these addresses to manual code (not generated stubs).
+
+### Results
+1. `0x004E7B50`: `29.73%`.
+2. `0x004E7C50`: `50.00%`.
+3. Anchor check:
+   1. `0x004DEDF0`: `19.93%` (stable).
+4. `just stats`:
+   1. aligned functions: `87` (no change),
+   2. average similarity: `2.68%` (`+0.01 pp`).
+
+## 2026-03-02 18:29 UTC - `TGreatPower` diplomacy queue pair (`0x4083F5`, `0x4DEFD0`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just build`
+5. `just detect`
+6. `just compare 0x004083F5`
+7. `just compare 0x004DEFD0`
+8. `just compare 0x004E7B50`
+9. `just compare 0x004E7C50`
+10. `just stats`
+
+### Changes
+1. Replaced `0x004083F5` placeholder with member-forward thunk to `QueueDiplomacyProposalCodeForTargetNation`.
+2. Added first-pass manual body for `0x004DEFD0` (`QueueDiplomacyProposalCodeForTargetNation`) with queue object `+0x84C` and vtable slot `+0x38` dispatch.
+3. Added corresponding member declaration and removed unused global prototype in `src/game/TGreatPower.cpp`.
+4. Re-ran ownership/stub sync to ensure both addresses map to manual code.
+
+### Results
+1. `0x004083F5`: `100.00%`.
+2. `0x004DEFD0`: `29.63%`.
+3. `0x004E7B50`: `29.73%` (stable).
+4. `0x004E7C50`: `50.00%` (stable).
+5. `just stats`:
+   1. aligned functions: `88` (`+1`),
+   2. not aligned vs original: `12885` (`-1`),
+   3. average similarity: `2.70%` (`+0.01 pp`).
+
+## 2026-03-02 18:35 UTC - `TGreatPower` method ports (`0x4DD470`, `0x4DF5C0`) + thunk wiring
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004DD470 --address 0x004DF5C0`
+2. `just format src/game/TGreatPower.cpp`
+3. `just sync-ownership`
+4. `just regen-stubs`
+5. `just build`
+6. `just detect`
+7. `just compare 0x00406FE1`
+8. `just compare 0x00408017`
+9. `just compare 0x00408076`
+10. `just compare 0x004DD470`
+11. `just compare 0x004DF5C0`
+12. `just stats`
+
+### Changes
+1. Promoted real Ghidra bodies and normalized to compile-safe manual code:
+   1. `0x004DD470` `ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
+   2. `0x004DF5C0` `DispatchTurnEvent2103WithNationFromRecord`.
+2. Replaced no-op thunk bodies with real dispatch paths:
+   1. `0x00408017` now forwards to `0x004DD470`.
+   2. `0x00408076` now forwards to `0x004DF5C0`.
+   3. `0x00406FE1` now performs queue-transition + secondary-slot update path (first pass).
+3. Kept `0x004085EE` as no-op after unresolved-symbol attempt; retained build stability.
+4. Converted promoted `GHIDRA_FUNCTION` markers to `FUNCTION` markers and re-synced ownership/stubs.
+
+### Results
+1. `0x00408017`: `100.00%`.
+2. `0x00408076`: `100.00%`.
+3. `just stats`:
+   1. aligned functions: `90` (`+2`),
+   2. not aligned vs original: `12883` (`-2`),
+   3. average similarity: `2.72%` (`+0.03 pp`).
+
+## 2026-03-02 18:38 UTC - `TGreatPower` first-pass body import (`0x4E73F0`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just build` (failed once with `C2374`, then fixed and reran)
+5. `just detect`
+6. `just compare 0x004E73F0`
+7. `just stats`
+
+### Changes
+1. Added manual owned body for `0x004E73F0` `WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0`.
+2. Preserved first-pass call order:
+   1. pre-handler call (`0x00408143`),
+   2. six short payload writes from `+0x964`,
+   3. `+0x970`/`+0xAF0` blob writes,
+   4. queue apply/refresh (`+0x14`/`+0x48`),
+   5. queue replay loop over `1..0x70` through message slot `+0xB4`.
+3. Compile-only fix for MSVC500 loop-variable redeclaration (`for (int i)` -> `for (int j)`).
+
+### Results
+1. Build/detect remained green after normalization.
+2. `just stats`: no aggregate movement in this pass (`aligned 90`, `avg 2.72%`), which is expected for a heavy first-pass wrapper body before ABI/prologue tuning.
+
+## 2026-03-02 18:47 UTC - `TGreatPower` large-body ports (`0x4DE860`, `0x4DF5F0`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just build`
+5. `just detect`
+6. `just compare 0x00401CBC`
+7. `just compare 0x004097FA`
+8. `just compare 0x004DE860`
+9. `just compare 0x004DF5F0`
+10. `just stats`
+
+### Changes
+1. Added real method implementations in `src/game/TGreatPower.cpp`:
+   1. `0x004DE860` `ApplyJoinEmpireMode0GlobalDiplomacyReset`.
+   2. `0x004DF5F0` `ProcessPendingDiplomacyProposalQueue`.
+2. Rewired thunk entries to real methods:
+   1. `0x00401CBC` now calls member `ProcessPendingDiplomacyProposalQueue`.
+   2. `0x004097FA` now calls member `ApplyJoinEmpireMode0GlobalDiplomacyReset`.
+3. Added helper thunk declarations + address constants needed for these bodies.
+4. Fixed one compile regression (`C2197` wrong call arity) by correcting `DipSlot28Fn` signature in the new reset body.
+
+### Results
+1. Build/detect: pass.
+2. Compare snapshot:
+   1. `0x004DE860`: `26.16%`.
+   2. `0x004DF5F0`: `9.49%`.
+   3. `0x00401CBC`: `100.00%` (thunk wrapper).
+   4. `0x004097FA`: `0.00%` (thunk wrapper still call-shape mismatch).
+3. `just stats`:
+   1. aligned functions: `90` (unchanged),
+   2. average similarity: `2.73%` (small uptick).
+
+## 2026-03-02 18:50 UTC - `TGreatPower` additional body pass (`0x406CA3`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x00406CA3`
+5. `just stats`
+
+### Changes
+1. Replaced `0x00406CA3` no-op with a first-pass relation-summary body:
+   1. mode gate via slot `+0x28`,
+   2. localization-based threshold gate,
+   3. diplomacy matrix scan (`thisSlot * 0x17 + slot`) for hostile/positive counters,
+   4. writes aggregate counters back to runtime fields.
+
+### Results
+1. Build/detect: pass.
+2. `0x00406CA3`: still `0.00%` in this simplified pass.
+3. `just stats`: no aggregate movement (`aligned 90`, avg similarity `2.73%`).
+4. Decision: keep this owned implementation for now and defer deep SEH/string-shape tuning; continue prioritizing high-throughput large functions that produce immediate non-zero scores.
+
+## 2026-03-02 19:03 UTC - `TGreatPower` runtime-subsystem init body (`0x4D8CC0`)
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x004D8CC0` (initial run showed duplicate annotation against stubs)
+4. `just sync-ownership`
+5. `just regen-stubs`
+6. `just build`
+7. `just detect`
+8. `just compare 0x004D8CC0`
+9. `just compare 0x004DE860`
+10. `just compare 0x004DF5F0`
+11. `just compare 0x00409291`
+12. `just stats`
+
+### Changes
+1. Added real method body `0x004D8CC0` `InitializeNationStateRuntimeSubsystems` in `src/game/TGreatPower.cpp`.
+2. Preserved first-pass subsystem shape from Ghidra:
+   1. nation identity bootstrap call,
+   2. runtime-cache lookup from localization slot `+0x40`,
+   3. city model + production init,
+   4. minister object allocation/constructor/init calls,
+   5. repeated pointer-list allocations (`+0x848/+0x84C/+0x850..`),
+   6. diplomacy arrays reset (`+0xB2/+0xE0/+0x918`),
+   7. late list objects (`+0x89C/+0x908/+0x90C`) and default flags.
+3. Fixed compare plumbing for new address ownership by re-running `just sync-ownership` and `just regen-stubs` before compare.
+
+### Results
+1. `0x004D8CC0`: `32.14%`.
+2. Adjacent checks stayed stable:
+   1. `0x004DE860`: `26.16%`.
+   2. `0x004DF5F0`: `9.49%`.
+3. `0x00409291` remained `0.00%` (expected thin thunk call-shape mismatch; real body address owns meaningful similarity now).
+4. `just stats`: aggregate unchanged (`aligned 90`, average similarity `2.73%`).
+
+## 2026-03-02 19:06 UTC - `TGreatPower` release-owned-objects body (`0x4D9160`)
+
+### Commands
+1. `just build`
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just build`
+5. `just detect`
+6. `just compare 0x004D9160`
+7. `just compare 0x00405DE4`
+8. `just compare 0x004D8CC0`
+9. `just stats`
+
+### Changes
+1. Added real method body `0x004D9160` `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`.
+2. Converted `0x00405DE4` `TGreatPower_VtblSlot07` to dispatch through the new class method (same semantic role, no free-function fallback).
+3. Implemented first-pass owned-release flow:
+   1. releases major pointers using vtable slots `+0x1C/+0x24/+0x38/+0x58`,
+   2. clears the `+0x850` pointer array in loop,
+   3. releases/clears `+0x898/+0x89C/+0x908/+0x90C/+0x44/+0x90`,
+   4. final delete-style virtual dispatch through `field00[1]` with argument `1`.
+
+### Results
+1. `0x004D9160`: `37.38%`.
+2. `0x00405DE4`: remained `100.00%` after dispatch conversion.
+3. `0x004D8CC0`: remained `32.14%`.
+4. `just stats`: aggregate unchanged (`aligned 90`, average similarity `2.73%`).

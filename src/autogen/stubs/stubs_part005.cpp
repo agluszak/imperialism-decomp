@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ConstructPictureResourceEntry_Vtbl00640258
-// ghidra_proto void __cdecl thunk_ConstructPictureResourceEntry_Vtbl00640258(void)
-// FUNCTION: IMPERIALISM 0x0040524f
-undefined4 thunk_ConstructPictureResourceEntry_Vtbl00640258(void)
-{
-  return 0;
-}
-
 // ghidra_name TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d
 // ghidra_proto bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
 // FUNCTION: IMPERIALISM 0x0040526d
@@ -2947,14 +2939,6 @@ undefined4 thunk_ReturnZeroMissionVtableSlot58(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::TGreatPower_VtblSlot07
-// ghidra_proto void __thiscall TGreatPower_VtblSlot07(void)
-// FUNCTION: IMPERIALISM 0x00405de4
-undefined4 TGreatPower_VtblSlot07(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_OrphanTiny_SetDwordEcxOffset_20_00486880_At00405e02
 // ghidra_proto void __cdecl thunk_OrphanTiny_SetDwordEcxOffset_20_00486880_At00405e02(void)
 // FUNCTION: IMPERIALISM 0x00405e02
@@ -3999,6 +3983,22 @@ undefined4 TInvadeMission_VtblSlot016(void)
 // ghidra_proto void __cdecl TAmbitFileBasedDocument_VtblSlot010(TAmbitFileBasedDocument * pThis)
 // FUNCTION: IMPERIALISM 0x00406249
 undefined4 TAmbitFileBasedDocument_VtblSlot010(void)
+{
+  return 0;
+}
+
+// ghidra_name TRadioText::thunk_GetTRadioTextClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTRadioTextClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0040624e
+undefined4 thunk_GetTRadioTextClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry
+// ghidra_proto void __thiscall thunk_HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(STurnInstruction_Prov * pInstruction)
+// FUNCTION: IMPERIALISM 0x00406253
+undefined4 thunk_HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void)
 {
   return 0;
 }

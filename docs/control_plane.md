@@ -1,6 +1,6 @@
 # Imperialism Decomp Control Plane
 
-Last updated: 2026-02-25
+Last updated: 2026-03-02
 
 ## Purpose
 This file is the single source of truth for:
@@ -16,6 +16,29 @@ This file is the single source of truth for:
 4. Track two metric views:
    1. Full compare (all functions).
    2. Focused compare (runtime/library-heavy symbols ignored in `report.ignore_functions`).
+5. For promoted thunk windows, prefer build-safe incremental ownership:
+   1. compile-safe direct body for one function,
+   2. targeted `just compare 0xADDR`,
+   3. move on if score stays `0%`.
+
+Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
+1. `TGreatPower` large-body ownership pass:
+   1. `0x004D8CC0` `InitializeNationStateRuntimeSubsystems`: first-pass real body landed at `32.14%`.
+   2. `0x004D9160` `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`: first-pass real body landed at `37.38%`.
+2. Wrapper stability:
+   1. `0x00405DE4` stayed at `100.00%` after redirecting through the newly owned `0x004D9160` method.
+3. Control loop reminder:
+   1. after adding a new manual `// FUNCTION` address, run `just sync-ownership && just regen-stubs` before compare to avoid duplicate-address diffing against stubs.
+4. Current anchor snapshot in this class:
+   1. `0x004D8CC0`: `32.14%`
+   2. `0x004D9160`: `37.38%`
+   3. `0x004DE860`: `26.16%`
+   4. `0x004DF5F0`: `9.49%`
+   5. `0x00405DE4`: `100.00%`
+5. Aggregate metrics (`just stats`):
+   1. aligned functions: `90`
+   2. average similarity: `2.73%`
+   3. status: stalled globally, but local class ownership and non-zero body coverage increased.
 
 ## Current Baseline
 From latest fresh import + rebuild + reccmp run:
@@ -56,6 +79,71 @@ Latest `progress_stats` snapshot (`2026-02-24T20:58:45Z`):
 4. Average similarity (current compare set): `2.57%`.
 5. Paired globals (`dat/lab/str/flo/wid`): `272 / 5065` (coverage `5.37%`).
 6. Non-function coverage including imports: `5.78%`.
+
+Latest incremental checkpoint (`2026-03-02`):
+1. `TGreatPower` promoted thunk window pass in `src/game/TGreatPower.cpp`:
+   1. retained direct typed first-pass bodies for:
+      1. `0x00405DE4`
+      2. `0x00406B2C`
+      3. `0x00406C49`
+      4. `0x00406C9E`
+   2. kept remaining promoted wrappers compile-safe placeholders in this iteration.
+2. Build loop status:
+   1. `just build` succeeded after removing unresolved call-through targets.
+   2. `just detect` succeeded.
+3. Targeted results in this pass:
+   1. `0x00405DE4`: `0.00%`
+   2. `0x00406B2C`: `0.00%`
+   3. `0x00406C49`: `0.00%`
+   4. `0x00406C9E`: `0.00%`
+4. Anchors remained stable:
+   1. `0x004DDA90`: `26.67%`
+   2. `0x004DDBB0`: `37.89%`
+   3. `0x004E8540`: `42.86%`
+   4. `0x004E8750`: `34.25%`
+
+Latest incremental checkpoint (`2026-03-02`, zero-cleanup):
+1. `TGreatPower` thunk-cluster zero pass in `src/game/TGreatPower.cpp`:
+   1. `0x00404A9D` `ReplyToDiplomacyOffers`: `100%`
+   2. `0x00405DE4` `TGreatPower_VtblSlot07`: `100%`
+   3. `0x00406B2C` `thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c`: `100%`
+   4. `0x00406C49` `thunk_ClearFieldBlock1c6_At00406c49`: `100%`
+   5. `0x00406C9E` `thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e`: `100%`
+2. Key implementation note:
+   1. thunk wrappers needed direct symbol calls with stub-compatible return signatures (`undefined4`) to keep MSVC decorated names/link resolution aligned.
+3. Stability checks after the pass:
+   1. `0x004DDA90`: `26.67%`
+   2. `0x004DDBB0`: `37.89%`
+   3. `0x004E8540`: `42.86%`
+   4. `0x004E8750`: `34.25%`
+
+Latest incremental checkpoint (`2026-03-02 18:20 UTC`):
+1. `TGreatPower` dual-address side-effects pass:
+   1. `0x0040862A` kept as thunk entrypoint (`thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a`).
+   2. `0x004DEDF0` now owns the first-pass real body (`ApplyImmediateDiplomacyPolicySideEffects`).
+2. `0x004E9060` shape/data pass retained:
+   1. advisory-factor thunk now forwarded with 4 args including selected-candidate slot,
+   2. relationship-list init + `+0x2c` call shape corrected to current best scoring form.
+3. Current targeted scores:
+   1. `0x004E9060`: `30.99%`
+   2. `0x004DEDF0`: `19.93%`
+   3. `0x004E7B50`: `29.73%`
+   4. `0x004E7C50`: `50.00%`
+   5. `0x004DEFD0`: `29.63%`
+   6. `0x004083F5`: `100%`
+   7. `0x0040862A`: `0.00%`
+   8. `0x004DDFC0`: `25.77%`
+   9. `0x004DC9F0`: `100%`
+4. Required guardrail in this flow:
+   1. run `just sync-ownership && just regen-stubs` immediately after adding new manual `// FUNCTION` markers to avoid dropped-duplicate-address compare errors.
+
+Latest `progress_stats` snapshot (`2026-03-02T18:28:51Z`):
+1. Paired functions: `12973` (coverage `100%`).
+2. Recompiled functions discovered: `13064`.
+3. 100% aligned functions: `88`.
+4. Average similarity (current compare set): `2.70%`.
+5. Paired globals (`dat/lab/str/flo/wid`): `280 / 5073` (coverage `5.52%`).
+6. Non-function coverage including imports: `5.91%`.
 
 Latest `progress_stats` snapshot (`2026-02-25T00:14:43Z`):
 1. Paired functions: `12228` (coverage `100%`).
@@ -489,6 +577,123 @@ Project snapshot (`just stats`):
 2. aligned functions: `63`
 3. average similarity: `2.60%`
 4. paired coverage: `100.00%`
+
+## 2026-03-02 18:38 UTC checkpoint - `TGreatPower` incremental port batch
+
+Focused update:
+1. Ported additional `TGreatPower` methods and replaced several no-op thunks with owned code.
+
+What changed:
+1. Added/normalized real method bodies:
+   1. `0x004DD470` `ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
+   2. `0x004DF5C0` `DispatchTurnEvent2103WithNationFromRecord`.
+   3. `0x004E73F0` `WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0` (first-pass body).
+2. Wired thunk addresses to real methods:
+   1. `0x00408017 -> 0x004DD470`.
+   2. `0x00408076 -> 0x004DF5C0`.
+3. Added first-pass non-no-op body for `0x00406FE1`.
+4. Ran ownership and stub sync after each marker update (`just sync-ownership && just regen-stubs`).
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. Per-address:
+   1. `0x00408017`: `100.00%`
+   2. `0x00408076`: `100.00%`
+4. Global (`just stats`):
+   1. aligned functions: `90` (`+2`)
+   2. not aligned vs original: `12883` (`-2`)
+   3. average similarity: `2.72%` (`+0.03 pp`)
+
+Immediate next loop:
+1. Tune `0x004DD470` prologue/register shape (`field00` load/call form) using targeted `just compare`.
+2. Tune `0x004DF5C0` call ABI (`push this->field0c` and slot `+0x4C` call form).
+3. Keep `0x004E73F0` as ownership anchor and tune message-slot ABI/payload width in small diffs.
+
+## 2026-03-02 18:47 UTC checkpoint - big-body first pass on `TGreatPower`
+
+Focused update:
+1. Ported two substantial runtime methods from Ghidra into manual code and kept build loop stable.
+
+What changed:
+1. Added real bodies:
+   1. `0x004DE860` `ApplyJoinEmpireMode0GlobalDiplomacyReset`.
+   2. `0x004DF5F0` `ProcessPendingDiplomacyProposalQueue`.
+2. Rewired thin thunks:
+   1. `0x00401CBC` -> member `ProcessPendingDiplomacyProposalQueue`.
+   2. `0x004097FA` -> member `ApplyJoinEmpireMode0GlobalDiplomacyReset`.
+3. Synced ownership + stubs after marker changes.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. Targeted compares:
+   1. `0x004DE860`: `26.16%`
+   2. `0x004DF5F0`: `9.49%`
+   3. `0x00401CBC`: `100.00%`
+4. Global (`just stats`):
+   1. aligned functions: `90`
+   2. average similarity: `2.73%`
+
+Next loop:
+1. Keep prioritizing large real bodies over thunk polish.
+2. Candidate next body: `0x00406CA3` (`BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage`) or `0x004D8CC0` (`InitializeNationStateRuntimeSubsystems`) as compile-safe first pass.
+
+## 2026-03-02 18:50 UTC checkpoint - extra large-body attempt (`0x00406CA3`)
+
+Focused update:
+1. Landed a compile-safe first-pass implementation for `0x00406CA3` (relation-scan summary path) to remove no-op ownership.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. `just compare 0x00406CA3`: still `0.00%`
+
+Interpretation:
+1. This address appears dominated by original SEH + string-lifetime scaffolding; simplified pass is not enough for non-zero similarity.
+2. Keep this function owned in manual code, but treat it as a deep-tuning lane.
+
+Immediate plan:
+1. Continue large-function throughput on easier non-zero candidates (for example `0x004D8CC0`) while leaving `0x00406CA3` for later SEH-shape work.
+
+## 2026-03-02 18:02 UTC checkpoint - `TGreatPower` real-body expansion
+
+Focused update:
+1. Shifted four `TGreatPower` addresses from zero/stub state to real C++ bodies in `src/game/TGreatPower.cpp` while keeping build loop green.
+
+What changed:
+1. Added non-zero real bodies:
+   1. `0x004DDFC0` (`ApplyDiplomacyPolicyStateForTargetWithCostChecks`)
+   2. `0x004E9060` (`ComputeMapActionContextCompositeScoreForNation`)
+   3. `0x004DC9F0` (`RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`)
+   4. `0x004DBD20` (`RebuildNationResourceYieldCountersAndDevelopmentTargets`)
+2. Kept thunk entrypoints wired to those real bodies:
+   1. `0x00406915`
+   2. `0x004070E5`
+   3. `0x00407DB0`
+   4. `0x004097FF`
+3. Stabilized ownership flow:
+   1. after manual marker edits, run `just sync-ownership && just regen-stubs` before compare to avoid stale stub shadowing.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. targeted compares:
+   1. `0x004DC9F0`: `57.63%`
+   2. `0x004DDFC0`: `25.77%`
+   3. `0x004DBD20`: `13.74%`
+   4. `0x004E9060`: `9.52%`
+4. global snapshot (`just stats`):
+   1. aligned functions: `86` (`+7`)
+   2. average similarity: `2.67%` (`+0.08 pp`)
+
+Next high-impact targets:
+1. `0x004DBD20` data-pass cleanup:
+   1. reduce extra locals/stack temps,
+   2. tighten global-map call shape (`+0xC4`) and loop-carried pointer math.
+2. `0x004E9060` shape pass:
+   1. add missing zero-candidate branch behavior from Ghidra flow,
+   2. align SEH/prologue expectations only after the above branch parity.
 
 ## 2026-03-02 17:11 UTC checkpoint - `TGreatPower` focused gains
 
