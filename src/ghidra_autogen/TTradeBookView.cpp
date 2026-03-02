@@ -21,6 +21,41 @@ void * __cdecl TTradeBookView::thunk_GetTTradeBookViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402252
+// GHIDRA_NAME TTradeBookView::thunk_scalar_deleting_destructor_00402252
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402252(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTradeBookView::thunk_scalar_deleting_destructor_00402252(TTradeBookView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408332
+// GHIDRA_NAME TTradeBookView::SetupSceneResources
+// GHIDRA_PROTO void __thiscall SetupSceneResources(uint this_obj)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Init::SetupSceneResources
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Init::SetupSceneResources */
+
+void __thiscall TTradeBookView::SetupSceneResources(TTradeBookView *this,uint this_obj)
+
+{
+  SetupSceneResources_005BDEF0(this,this_obj);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDE30
 // GHIDRA_NAME TTradeBookView::CreateTTradeBookViewInstance
 // GHIDRA_PROTO void * __cdecl CreateTTradeBookViewInstance(void)
@@ -43,13 +78,14 @@ void * __cdecl TTradeBookView::CreateTTradeBookViewInstance(void)
   puStack_8 = &LAB_006394aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x78);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTTradeBookViewClassNamePointer_00640b50;
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined4 *)(this + 100) = 0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTTradeBookViewClassNamePointer_00640b50;
+    this[1].pVtable = (void *)0x0;
+    this[1].field1_0x4 = 0;
+    this[1].field2_0x5 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -70,5 +106,73 @@ void * __cdecl TTradeBookView::GetTTradeBookViewClassNamePointer(void)
 
 {
   return &g_pClassDescTTradeBookView;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BDEF0
+// GHIDRA_NAME TTradeBookView::SetupSceneResources_005BDEF0
+// GHIDRA_PROTO void __thiscall SetupSceneResources_005BDEF0(uint this_obj)
+
+void __thiscall TTradeBookView::SetupSceneResources_005BDEF0(TTradeBookView *this,uint this_obj)
+
+{
+  astruct_7 *resource_obj;
+  astruct_5 *lit_resource;
+  astruct_6 *lit_resource2;
+  undefined4 *seh_chain;
+  void *tag_or_handle;
+  uint color_or_tag;
+  undefined1 tmp_buf4 [4];
+  undefined1 tmp_buf8 [8];
+  undefined4 seh_prev;
+  undefined1 *seh_handler;
+  int seh_state;
+  code *getResourceByTag;
+  int iVar1;
+  
+  seh_state = -1;
+  seh_handler = &LAB_006394e8;
+  seh_prev = *seh_chain;
+  *seh_chain = &seh_prev;
+  color_or_tag = this_obj;
+  tag_or_handle = (void *)0x5bdf18;
+  thunk_NoOpUiLifecycleHook();
+  color_or_tag = 0x6c636f72;
+  getResourceByTag = *(code **)((int)this->pVtable + 0x94);
+  tag_or_handle = (void *)0x5bdf29;
+  resource_obj = (astruct_7 *)(*getResourceByTag)();
+  tag_or_handle = (void *)0x72636f72;
+  this->pField60 = resource_obj;
+  iVar1 = (*getResourceByTag)();
+  this->field64 = iVar1;
+  iVar1 = (*getResourceByTag)();
+  this->field68 = iVar1;
+  iVar1 = (*getResourceByTag)(0x74736f6c);
+  this->field6c = iVar1;
+  lit_resource = (astruct_5 *)(*getResourceByTag)(0x7274696c);
+  iVar1 = lit_resource->field0_0x0;
+  (**(code **)(iVar1 + 0xc))();
+  lit_resource2 = (astruct_6 *)(*getResourceByTag)(0x7469744c);
+  (**(code **)(lit_resource2->field0_0x0 + 0xc))();
+  thunk_ApplyUiTextStyleAndThemeFlags((int *)lit_resource,0,0x12,0x2b6b,0x2b6c);
+  thunk_ApplyUiTextStyleAndThemeFlags((int *)lit_resource2,0,0x12,0x2b6b,0x2b6c);
+  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty();
+  FormatStringWithVarArgsToSharedRef();
+  (**(code **)(*(int *)g_pLocalizationTable + 0x34))(tmp_buf8);
+  AssignSharedStringConcatRefAndCStr();
+  AssignSharedStringConcatRefAndRef();
+  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&tag_or_handle);
+  AssignFromPtr(tmp_buf4,(int *)&tag_or_handle);
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  (**(code **)(iVar1 + 0x1c8))(tmp_buf4,0);
+  (**(code **)(iVar1 + 0xa4))(1,1);
+  color_or_tag = color_or_tag & 0xffffff00;
+  ReleaseSharedStringRefIfNotEmpty();
+  color_or_tag = -1;
+  ReleaseSharedStringRefIfNotEmpty();
+  *seh_chain = 0x74626f75;
+  return;
 }
 

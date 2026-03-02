@@ -3,6 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TBook.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004042A5
+// GHIDRA_NAME TBook::thunk_scalar_deleting_destructor_004042A5
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004042A5(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall TBook::thunk_scalar_deleting_destructor_004042A5(TBook *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404570
 // GHIDRA_NAME TBook::TBook_HandleArmyNavyPageNavigationCommand
 // GHIDRA_PROTO void __thiscall TBook_HandleArmyNavyPageNavigationCommand(int nCommand, int pControl, int a4)
@@ -70,15 +88,15 @@ void * __cdecl TBook::thunk_GetTBookClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C2F
-// GHIDRA_NAME TBook::thunk_InitializeBookDialogResourceLabels_At00407c2f
-// GHIDRA_PROTO void __thiscall thunk_InitializeBookDialogResourceLabels_At00407c2f(void)
+// GHIDRA_NAME TBook::thunk_ConstructTBookBaseState_At00407c2f
+// GHIDRA_PROTO void __thiscall thunk_ConstructTBookBaseState_At00407c2f(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeBookDialogResourceLabels
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTBookBaseState
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to InitializeBookDialogResourceLabels */
+/* Single-JMP thunk to ConstructTBookBaseState */
 
-void __thiscall TBook::thunk_InitializeBookDialogResourceLabels_At00407c2f(TBook *this)
+void __thiscall TBook::thunk_ConstructTBookBaseState_At00407c2f(TBook *this)
 
 {
   ConstructTBookBaseState(this);
@@ -107,7 +125,7 @@ void * __cdecl TBook::CreateTBookInstance(void)
   puStack_8 = &LAB_006361fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -149,16 +167,16 @@ void __thiscall TBook::ConstructTBookBaseState(TBook *this)
 
 {
   code *pcVar1;
-  void *pvVar2;
+  int *piVar2;
   
   thunk_NoOpUiLifecycleHook();
   pcVar1 = *(code **)((int)this->pVtable + 0x94);
-  pvVar2 = (void *)(*pcVar1)(0x6c636f72);
-  this[0x24].pVtable = pvVar2;
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,pvVar2);
-  pvVar2 = (void *)(*pcVar1)(0x72636f72);
-  this[0x25].pVtable = pvVar2;
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,pvVar2);
+  piVar2 = (int *)(*pcVar1)(0x6c636f72);
+  this->field141_0x90 = piVar2;
+  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,piVar2);
+  piVar2 = (int *)(*pcVar1)(0x72636f72);
+  this->field142_0x94 = piVar2;
+  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,piVar2);
   return;
 }
 

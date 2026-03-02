@@ -4,39 +4,21 @@
 // Bucket: TOrItemOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401069
-// GHIDRA_NAME TOrItemOrder::thunk_GetTOrItemOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTOrItemOrderRuntimeClass(void)
+// GHIDRA_NAME TOrItemOrder::thunk_DestructTOrItemOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTOrItemOrderAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTOrItemOrderRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTOrItemOrderRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTOrItemOrderRuntimeClass. */
+/* Thunk forwarding to GetTOrItemOrderRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TOrItemOrder::thunk_GetTOrItemOrderRuntimeClass(TOrItemOrder *this)
+void * __thiscall TOrItemOrder::thunk_DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405227
-// GHIDRA_NAME TOrItemOrder::thunk_GetCityOrderItemClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetCityOrderItemClassName(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetCityOrderItemClassName
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetCityOrderItemClassName */
-
-void * __cdecl TOrItemOrder::thunk_GetCityOrderItemClassName(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTOrItemOrderClassNamePointer();
-  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B57E0
@@ -68,7 +50,7 @@ void * __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *t
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

@@ -21,20 +21,23 @@ void * __cdecl TGPTreatyDialog::thunk_GetTGPTreatyDialogClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004050C9
-// GHIDRA_NAME TGPTreatyDialog::thunk_PopulateGPTreatyDialogControlValuesFromNationState_At004050c9
-// GHIDRA_PROTO undefined thunk_PopulateGPTreatyDialogControlValuesFromNationState_At004050c9()
+// GHIDRA_FUNCTION IMPERIALISM 0x00404403
+// GHIDRA_NAME TGPTreatyDialog::thunk_scalar_deleting_destructor_00404403
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00404403(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateGPTreatyDialogControlValuesFromNationState
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to PopulateGPTreatyDialogControlValuesFromNationState */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void TGPTreatyDialog::thunk_PopulateGPTreatyDialogControlValuesFromNationState_At004050c9(void)
+void * __thiscall
+TGPTreatyDialog::thunk_scalar_deleting_destructor_00404403(TGPTreatyDialog *this,byte freeSelfFlag)
 
 {
-  ConstructTGPTreatyDialogBaseState();
-  return;
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3BC0
@@ -54,14 +57,14 @@ void * __cdecl TGPTreatyDialog::GetTGPTreatyDialogClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3BE0
 // GHIDRA_NAME TGPTreatyDialog::ConstructTGPTreatyDialogBaseState
-// GHIDRA_PROTO undefined ConstructTGPTreatyDialogBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTGPTreatyDialogBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Populates GP treaty dialog controls from current inter-nation relationship/state values.
 // GHIDRA_COMMENT_END
 
 /* Populates GP treaty dialog controls from current inter-nation relationship/state values. */
 
-void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
+void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDialog *this)
 
 {
   int iVar1;
@@ -77,7 +80,7 @@ void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
   int iStack_38;
   int *local_34;
   int local_30;
-  int *local_2c;
+  TGPTreatyDialog *local_2c;
   undefined4 local_28;
   undefined4 local_24;
   undefined4 local_20;
@@ -93,7 +96,7 @@ void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
   puStack_8 = &LAB_00638cc8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_2c = param_1;
+  local_2c = this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   local_28 = 0x6e616d30;
@@ -107,7 +110,7 @@ void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
   local_30 = 0;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_30) != 0) {
-      piVar5 = (int *)(**(code **)(*param_1 + 0x94))();
+      piVar5 = (int *)(**(code **)((int)this->pVtable + 0x94))();
       if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -133,13 +136,13 @@ void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
         }
         iVar7 = iVar7 + 1;
         iVar8 = iVar8 + 4;
-        param_1 = local_2c;
+        this = local_2c;
       } while ((short)iVar7 < 7);
     }
     local_34 = (int *)((int)local_34 + 1);
     local_30 = local_30 + 4;
   } while ((short)local_34 < 7);
-  pcVar2 = *(code **)(*param_1 + 0x94);
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
   local_30 = (*pcVar2)();
   if (local_30 == 0) {
                     /* WARNING: Subroutine does not return */
@@ -154,7 +157,7 @@ void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
   iStack_38 = 7;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffbc);
+      FormatOverlayTerrainLabelText();
       uVar3 = *(undefined4 *)((int)&local_30 + iVar7);
       piVar5 = (int *)(**(code **)(*local_34 + 0x94))(uVar3);
       if (piVar5 == (int *)0x0) {
@@ -182,18 +185,17 @@ void __fastcall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(int *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3F90
 // GHIDRA_NAME TGPTreatyDialog::DestructTGPTreatyDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTGPTreatyDialogAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTGPTreatyDialogAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Allocates and constructs GP treaty dialog adorner/view instance.
 // GHIDRA_COMMENT_END
 
 /* Allocates and constructs GP treaty dialog adorner/view instance. */
 
-TView * TGPTreatyDialog::DestructTGPTreatyDialogAndMaybeFree(void)
+void __thiscall TGPTreatyDialog::DestructTGPTreatyDialogAndMaybeFree(TGPTreatyDialog *this)
 
 {
-  TView *this;
-  TView *pTVar1;
+  TView *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -203,18 +205,16 @@ TView * TGPTreatyDialog::DestructTGPTreatyDialogAndMaybeFree(void)
   puStack_8 = &LAB_00638cf2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
+  if (this_00 != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this_00);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTAdorner;
+    this_00->pVtable = &g_vtblTAdorner;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &PTR_thunk_GetTMinorTreatyDialogClassNamePointer_0066bf80;
-    pTVar1 = this;
+    this_00->pVtable = &PTR_thunk_GetTMinorTreatyDialogClassNamePointer_0066bf80;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return;
 }
 

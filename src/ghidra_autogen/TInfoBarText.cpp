@@ -4,17 +4,16 @@
 // Bucket: TInfoBarText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407D24
-// GHIDRA_NAME TInfoBarText::thunk_UpdateInfoBarTextRegionAndRefresh_At00407d24
-// GHIDRA_PROTO void __thiscall thunk_UpdateInfoBarTextRegionAndRefresh_At00407d24(int textRef, int * pRect)
+// GHIDRA_NAME TInfoBarText::thunk_ConstructTInfoBarTextBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTInfoBarTextBaseState(int textRef, int * pRect)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateInfoBarTextRegionAndRefresh
+// GHIDRA_COMMENT Single-JMP thunk to UpdateInfoBarTextRegionAndRefresh [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to UpdateInfoBarTextRegionAndRefresh */
+/* Single-JMP thunk to UpdateInfoBarTextRegionAndRefresh [FID:thunk_target_sync] */
 
 void __thiscall
-TInfoBarText::thunk_UpdateInfoBarTextRegionAndRefresh_At00407d24
-          (TInfoBarText *this,int textRef,int *pRect)
+TInfoBarText::thunk_ConstructTInfoBarTextBaseState(TInfoBarText *this,int textRef,int *pRect)
 
 {
   ConstructTInfoBarTextBaseState(this,textRef,pRect);
@@ -77,21 +76,21 @@ void * __cdecl TInfoBarText::CreateTInfoBarTextInstance(void)
   puStack_8 = &LAB_00638ffa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    this[0x98] = (TStaticText)0x0;
-    this[0x99] = (TStaticText)0x0;
-    this[0x9a] = (TStaticText)0x0;
-    this[0x9b] = (TStaticText)0x0;
-    this[0x9c] = (TStaticText)0x0;
-    this[0x9d] = (TStaticText)0x0;
-    this[0x9e] = (TStaticText)0x0;
-    this[0x9f] = (TStaticText)0x0;
-    *(undefined4 *)(this + 0x98) = 0;
-    this[0xa0] = (TStaticText)0x0;
-    *(undefined ***)this =
+    *(undefined1 *)((int)&this[1].base.field2_0x5 + 1) = 0;
+    *(undefined1 *)((int)&this[1].base.field2_0x5 + 2) = 0;
+    *(undefined1 *)&this[1].base.field3_0x8 = 0;
+    *(undefined1 *)((int)&this[1].base.field3_0x8 + 1) = 0;
+    *(undefined1 *)((int)&this[1].base.field3_0x8 + 2) = 0;
+    *(undefined1 *)((int)&this[1].base.field3_0x8 + 3) = 0;
+    *(undefined1 *)&this[1].base.dialogValueDwordC = 0;
+    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 1) = 0;
+    *(undefined4 *)((int)&this[1].base.field2_0x5 + 1) = 0;
+    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 2) = 0;
+    (this->base).pVtable =
          &g_vslotFamily_CityProductionDialogCore_Slot05_Slot0094_ResolveControlByTag;
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -141,12 +140,12 @@ TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this,int textRef,int 
   puStack_8 = &LAB_00639018;
   *unaff_FS_OFFSET = &uStack_c;
   local_4 = 0;
-  BVar3 = EqualRect((RECT *)pRect,(RECT *)(this + 0x29));
+  BVar3 = EqualRect((RECT *)pRect,(RECT *)&this->field_0xa4);
   if (BVar3 == 0) {
-    ((RECT *)(this + 0x29))->left = *piVar2;
-    this[0x2a].pVtable = (void *)piVar2[1];
-    this[0x2b].pVtable = (void *)piVar2[2];
-    this[0x2c].pVtable = (void *)piVar2[3];
+    *(int *)&this->field_0xa4 = *piVar2;
+    *(int *)&this->field_0xa8 = piVar2[1];
+    *(int *)&this->field_0xac = piVar2[2];
+    this->field170_0xb0 = piVar2[3];
     pvVar1 = this->pVtable;
     (**(code **)((int)pvVar1 + 0x1f0))(&textRef);
     (**(code **)((int)pvVar1 + 0x1f8))(1);
@@ -174,11 +173,11 @@ void __fastcall TInfoBarText::DestructTInfoBarTextAndMaybeFree(TInfoBarText *pTh
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639038;
   *unaff_FS_OFFSET = &uStack_c;
-  pThis[0x29].pVtable = (void *)0x0;
+  *(undefined4 *)&pThis->field_0xa4 = 0;
   local_4 = 0;
-  pThis[0x2a].pVtable = (void *)0x0;
-  pThis[0x2b].pVtable = (void *)0x0;
-  pThis[0x2c].pVtable = (void *)0x0;
+  *(undefined4 *)&pThis->field_0xa8 = 0;
+  *(undefined4 *)&pThis->field_0xac = 0;
+  pThis->field170_0xb0 = 0;
   pvVar1 = pThis->pVtable;
   (**(code **)((int)pvVar1 + 0x1f0))(&stack0x00000004);
   (**(code **)((int)pvVar1 + 0x1f8))(1);

@@ -4,15 +4,15 @@
 // Bucket: TDlgWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401019
-// GHIDRA_NAME TDlgWindow::thunk_GetTDlgWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDlgWindowClassNamePointer(void)
+// GHIDRA_NAME TDlgWindow::TDlgWindow_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDlgWindow_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDlgWindowClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDlgWindowClassNamePointer */
 
-void * __cdecl TDlgWindow::thunk_GetTDlgWindowClassNamePointer(void)
+void * __cdecl TDlgWindow::TDlgWindow_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,28 +21,16 @@ void * __cdecl TDlgWindow::thunk_GetTDlgWindowClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405335
-// GHIDRA_NAME TDlgWindow::thunk_ConstructTurnEventWindowEntryStaticBackdrop
-// GHIDRA_PROTO void __thiscall thunk_ConstructTurnEventWindowEntryStaticBackdrop(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00406DB1
+// GHIDRA_NAME TDlgWindow::TDlgWindow_VtblSlot114
+// GHIDRA_PROTO void __stdcall TDlgWindow_VtblSlot114(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnEventWindowEntryStaticBackdrop
+// GHIDRA_COMMENT Single-JMP thunk to AssertUGameWindowLines634And639
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ConstructTurnEventWindowEntryStaticBackdrop */
+/* Single-JMP thunk to AssertUGameWindowLines634And639 */
 
-void __thiscall TDlgWindow::thunk_ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
-
-{
-  TWindow::thunk_ConstructUiWindowResourceEntryBase((TWindow *)this);
-  this->pVtable = &g_vtblTDlgWindow;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406DB1
-// GHIDRA_NAME TDlgWindow::thunk_AssertUGameWindowLines634And639
-// GHIDRA_PROTO void __stdcall thunk_AssertUGameWindowLines634And639(void)
-
-void TDlgWindow::thunk_AssertUGameWindowLines634And639(void)
+void TDlgWindow::TDlgWindow_VtblSlot114(void)
 
 {
   AssertUGameWindowLines634And639();
@@ -50,18 +38,18 @@ void TDlgWindow::thunk_AssertUGameWindowLines634And639(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040952A
-// GHIDRA_NAME TDlgWindow::thunk_DestroyTurnEventWindowEntryStaticBackdrop
-// GHIDRA_PROTO void __cdecl thunk_DestroyTurnEventWindowEntryStaticBackdrop(void)
+// GHIDRA_NAME TDlgWindow::TDlgWindow_VtblSlot001
+// GHIDRA_PROTO void __cdecl TDlgWindow_VtblSlot001(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTurnEventWindowEntryStaticBackdrop
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTurnEventWindowEntryStaticBackdrop */
 
-void __cdecl TDlgWindow::thunk_DestroyTurnEventWindowEntryStaticBackdrop(void)
+void __cdecl TDlgWindow::TDlgWindow_VtblSlot001(int arg1)
 
 {
-  DestroyTurnEventWindowEntryStaticBackdrop();
+  DestroyTurnEventWindowEntryStaticBackdrop(arg1);
   return;
 }
 
@@ -77,8 +65,8 @@ void __cdecl TDlgWindow::thunk_DestroyTurnEventWindowEntryStaticBackdrop(void)
 void * __cdecl TDlgWindow::CreateTDlgWindowInstance(void)
 
 {
-  TWindow *this;
-  TWindow *pTVar1;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -88,12 +76,12 @@ void * __cdecl TDlgWindow::CreateTDlgWindowInstance(void)
   puStack_8 = &LAB_0063333a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TWindow *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TWindow *)0x0;
-  if (this != (TWindow *)0x0) {
-    TWindow::thunk_ConstructUiWindowResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTDlgWindow;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryBase(this);
+    (this->base).pVtable = &g_vtblTDlgWindow;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -128,50 +116,8 @@ void * __cdecl TDlgWindow::GetTDlgWindowClassNamePointer(void)
 void __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
 
 {
-  TWindow::thunk_ConstructUiWindowResourceEntryBase((TWindow *)this);
+  TControl::thunk_ConstructUiWindowResourceEntryBase((TControl *)this);
   this->pVtable = &g_vtblTDlgWindow;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00500350
-// GHIDRA_NAME TDlgWindow::DestroyTurnEventWindowEntryStaticBackdrop
-// GHIDRA_PROTO void __cdecl DestroyTurnEventWindowEntryStaticBackdrop(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Destructor wrapper for static-backdrop turn-event window entry.
-// GHIDRA_COMMENT_END
-
-/* Destructor wrapper for static-backdrop turn-event window entry. */
-
-void __cdecl TDlgWindow::DestroyTurnEventWindowEntryStaticBackdrop(void)
-
-{
-  byte in_stack_00000004;
-  
-  DestructTWindowViewAndUnlinkGlobalLists();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005003A0
-// GHIDRA_NAME TDlgWindow::AssertUGameWindowLines634And639
-// GHIDRA_PROTO void __stdcall AssertUGameWindowLines634And639(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Assertion helper anchored to D:\Ambit\Cross\UGameWindow.cpp lines 634 and 639; also calls AssertMcAppUILine2358.
-// GHIDRA_COMMENT_END
-
-/* Assertion helper anchored to D:\Ambit\Cross\UGameWindow.cpp lines 634 and 639; also calls
-   AssertMcAppUILine2358. */
-
-void TDlgWindow::AssertUGameWindowLines634And639(void)
-
-{
-  AssertMcAppUILine2358();
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-  if (*(short *)((int)g_pDisplayManager + 10) != 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-  }
   return;
 }
 

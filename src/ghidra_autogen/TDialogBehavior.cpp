@@ -3,17 +3,33 @@
 // Program: Imperialism.exe
 // Bucket: TDialogBehavior.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402DC9
-// GHIDRA_NAME TDialogBehavior::thunk_SetDialogBehaviorEnabledFlag_At00402dc9
-// GHIDRA_PROTO void __thiscall thunk_SetDialogBehaviorEnabledFlag_At00402dc9(byte enabled)
+// GHIDRA_FUNCTION IMPERIALISM 0x00401050
+// GHIDRA_NAME TDialogBehavior::TDialogBehavior_VtblSlot018
+// GHIDRA_PROTO void __thiscall TDialogBehavior_VtblSlot018(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetDialogBehaviorEnabledFlag
+// GHIDRA_COMMENT Single-JMP thunk to CreateTCommandInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to SetDialogBehaviorEnabledFlag */
+/* Single-JMP thunk to CreateTCommandInstance */
+
+void __thiscall TDialogBehavior::TDialogBehavior_VtblSlot018(TDialogBehavior *this)
+
+{
+  TCommand::CreateTCommandInstance((TCommand *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402DC9
+// GHIDRA_NAME TDialogBehavior::thunk_CreateTDialogBehaviorInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTDialogBehaviorInstance(byte enabled)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetDialogBehaviorEnabledFlag [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetDialogBehaviorEnabledFlag [FID:thunk_target_sync] */
 
 void __thiscall
-TDialogBehavior::thunk_SetDialogBehaviorEnabledFlag_At00402dc9(TDialogBehavior *this,byte enabled)
+TDialogBehavior::thunk_CreateTDialogBehaviorInstance(TDialogBehavior *this,byte enabled)
 
 {
   CreateTDialogBehaviorInstance(this,enabled);
@@ -21,8 +37,8 @@ TDialogBehavior::thunk_SetDialogBehaviorEnabledFlag_At00402dc9(TDialogBehavior *
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004042A0
-// GHIDRA_NAME TDialogBehavior::thunk_DestructTDialogBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDialogBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDialogBehavior::TDialogBehavior_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDialogBehavior_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDialogBehaviorAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -30,7 +46,7 @@ TDialogBehavior::thunk_SetDialogBehaviorEnabledFlag_At00402dc9(TDialogBehavior *
 /* Single-JMP thunk to DestructTDialogBehaviorAndMaybeFree */
 
 void * __thiscall
-TDialogBehavior::thunk_DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this,byte freeSelfFlag)
+TDialogBehavior::TDialogBehavior_VtblSlot001(TDialogBehavior *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -40,15 +56,15 @@ TDialogBehavior::thunk_DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004077C5
-// GHIDRA_NAME TDialogBehavior::thunk_GetTDialogBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDialogBehaviorClassNamePointer(void)
+// GHIDRA_NAME TDialogBehavior::TDialogBehavior_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDialogBehavior_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDialogBehaviorClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDialogBehaviorClassNamePointer */
 
-void * __cdecl TDialogBehavior::thunk_GetTDialogBehaviorClassNamePointer(void)
+void * __cdecl TDialogBehavior::TDialogBehavior_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -69,7 +85,7 @@ void * __cdecl TDialogBehavior::thunk_GetTDialogBehaviorClassNamePointer(void)
 void __thiscall TDialogBehavior::CreateTDialogBehaviorInstance(TDialogBehavior *this,byte enabled)
 
 {
-  this[0xc] = (TDialogBehavior)enabled;
+  this->field6_0xc = enabled;
   return;
 }
 
@@ -95,15 +111,15 @@ void * __cdecl TDialogBehavior::GetTDialogBehaviorClassNamePointer(void)
 void __fastcall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavior *pThis)
 
 {
-  *(undefined4 *)(pThis + 4) = 0x20202020;
-  *(undefined4 *)(pThis + 8) = 0;
-  pThis[0xc] = (TDialogBehavior)0x1;
+  pThis->field04 = 0x20202020;
+  pThis->field08 = 0;
+  pThis->field6_0xc = 1;
   *(undefined ***)pThis = &g_vtblTDialogBehavior;
-  pThis[0x10] = (TDialogBehavior)0x0;
-  *(undefined4 *)(pThis + 0x14) = 0x20202020;
-  *(undefined4 *)(pThis + 0x18) = 0x20202020;
-  *(undefined4 *)(pThis + 0x1c) = 0x20202020;
-  pThis[0x20] = (TDialogBehavior)0x1;
+  pThis->field_0x10 = 0;
+  pThis->field14 = 0x20202020;
+  pThis->field18 = 0x20202020;
+  pThis->field1c = 0x20202020;
+  *(undefined1 *)(pThis + 1) = 1;
   return;
 }
 
@@ -117,7 +133,7 @@ TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this,byte 
 {
   DestructTDialogBehaviorAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

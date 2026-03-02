@@ -3,16 +3,91 @@
 // Program: Imperialism.exe
 // Bucket: CWnd.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005FFFFD
+// GHIDRA_NAME CWnd::thunk_Default
+// GHIDRA_PROTO void __thiscall thunk_Default(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InvokeCurrentMessageFallbackHandler [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InvokeCurrentMessageFallbackHandler [FID:thunk_target_sync] */
+
+void __thiscall CWnd::thunk_Default(CWnd *this)
+
+{
+  Default(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00603516
+// GHIDRA_NAME CWnd::GetValueAt
+// GHIDRA_PROTO int __thiscall GetValueAt(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object pointer. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object
+   pointer. [FID:FID_single_match_phase1_nodebug] */
+
+int __thiscall CWnd::GetValueAt(CWnd *this)
+
+{
+  undefined4 *puVar1;
+  uint in_stack_00000004;
+  
+  if (this->field1_0x4 != 0) {
+    for (puVar1 = *(undefined4 **)
+                   (this->field1_0x4 + ((in_stack_00000004 >> 4) % this->field2_0x8) * 4);
+        puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+      if (puVar1[1] == in_stack_00000004) {
+        return puVar1[2];
+      }
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607673
+// GHIDRA_NAME CWnd::AttachControlSite_607673
+// GHIDRA_PROTO void __thiscall AttachControlSite_607673(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper for LookupHandleMapEntryByHwnd. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Single-callee wrapper for LookupHandleMapEntryByHwnd. [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall CWnd::AttachControlSite_607673(CWnd *this)
+
+{
+  int iVar1;
+  int iVar2;
+  int in_stack_00000004;
+  
+  if ((((this != (CWnd *)0x0) && (this->field41_0x38 == 0)) && (in_stack_00000004 != 0)) &&
+     (*(int *)(in_stack_00000004 + 0x34) != 0)) {
+    iVar2 = GetValueAt((CWnd *)(*(int *)(in_stack_00000004 + 0x34) + 0x20));
+    if (iVar2 != 0) {
+      iVar1 = *(int *)(iVar2 + 0x24);
+      if ((iVar1 != 0) && (*(int *)(iVar1 + 0x38) == iVar2)) {
+        *(undefined4 *)(iVar1 + 0x38) = 0;
+      }
+      this->field41_0x38 = iVar2;
+      *(CWnd **)(iVar2 + 0x24) = this;
+    }
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00607706
-// GHIDRA_NAME CWnd::thunk_~CWnd
-// GHIDRA_PROTO void __thiscall thunk_~CWnd(void)
+// GHIDRA_NAME CWnd::CWnd
+// GHIDRA_PROTO void __thiscall CWnd(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ~CWnd
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ~CWnd */
 
-void __thiscall CWnd::thunk__CWnd(CWnd *this)
+void __thiscall CWnd::CWnd(CWnd *this)
 
 {
   ~CWnd(this);
@@ -20,15 +95,15 @@ void __thiscall CWnd::thunk__CWnd(CWnd *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607744
-// GHIDRA_NAME CWnd::thunk_~CWnd
-// GHIDRA_PROTO void __thiscall thunk_~CWnd(void)
+// GHIDRA_NAME CWnd::CWnd_00607744
+// GHIDRA_PROTO void __thiscall CWnd_00607744(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ~CWnd
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ~CWnd */
 
-void __thiscall CWnd::thunk__CWnd(CWnd *this)
+void __thiscall CWnd::CWnd_00607744(CWnd *this)
 
 {
   ~CWnd(this);
@@ -36,15 +111,15 @@ void __thiscall CWnd::thunk__CWnd(CWnd *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607782
-// GHIDRA_NAME CWnd::thunk_~CWnd
-// GHIDRA_PROTO void __thiscall thunk_~CWnd(void)
+// GHIDRA_NAME CWnd::CWnd_00607782
+// GHIDRA_PROTO void __thiscall CWnd_00607782(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ~CWnd
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ~CWnd */
 
-void __thiscall CWnd::thunk__CWnd(CWnd *this)
+void __thiscall CWnd::CWnd_00607782(CWnd *this)
 
 {
   ~CWnd(this);
@@ -52,18 +127,40 @@ void __thiscall CWnd::thunk__CWnd(CWnd *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006077C0
-// GHIDRA_NAME CWnd::thunk_~CWnd
-// GHIDRA_PROTO void __thiscall thunk_~CWnd(void)
+// GHIDRA_NAME CWnd::CWnd_006077C0
+// GHIDRA_PROTO void __thiscall CWnd_006077C0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ~CWnd
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ~CWnd */
 
-void __thiscall CWnd::thunk__CWnd(CWnd *this)
+void __thiscall CWnd::CWnd_006077C0(CWnd *this)
 
 {
   ~CWnd(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00607A84
+// GHIDRA_NAME CWnd::Default
+// GHIDRA_PROTO void __thiscall Default(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Invokes fallback message handler virtual using current thread-state message tuple. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Invokes fallback message handler virtual using current thread-state message tuple.
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall CWnd::Default(CWnd *this)
+
+{
+  int iVar1;
+  
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&g_MfcThreadStateSlotManager);
+  (**(code **)(this->field0_0x0 + 0xa8))
+            (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
+             *(undefined4 *)(iVar1 + 0x40));
   return;
 }
 

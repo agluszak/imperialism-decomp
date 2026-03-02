@@ -3,9 +3,45 @@
 // Program: Imperialism.exe
 // Bucket: TSuperCivRoster.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402239
+// GHIDRA_NAME TSuperCivRoster::TSuperCivRoster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TSuperCivRoster_VtblSlot000(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTMiniCivLineClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTMiniCivLineClassNamePointer */
+
+void * __cdecl TSuperCivRoster::TSuperCivRoster_VtblSlot000(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TMiniCivLine::GetTMiniCivLineClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040512D
+// GHIDRA_NAME TSuperCivRoster::TSuperCivRoster_VtblSlot010
+// GHIDRA_PROTO void * __thiscall TSuperCivRoster_VtblSlot010(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTMiniCivLineBaseState
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTMiniCivLineBaseState */
+
+void * __thiscall TSuperCivRoster::TSuperCivRoster_VtblSlot010(TSuperCivRoster *this,int arg1)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TMiniCivLine::ConstructTMiniCivLineBaseState((TMiniCivLine *)this,arg1);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405411
-// GHIDRA_NAME TSuperCivRoster::thunk_DestructTSuperCivRosterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSuperCivRosterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TSuperCivRoster::TSuperCivRoster_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TSuperCivRoster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTSuperCivRosterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +49,7 @@
 /* Single-JMP thunk to DestructTSuperCivRosterAndMaybeFree */
 
 void * __thiscall
-TSuperCivRoster::thunk_DestructTSuperCivRosterAndMaybeFree(TSuperCivRoster *this,byte freeSelfFlag)
+TSuperCivRoster::TSuperCivRoster_VtblSlot001(TSuperCivRoster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -38,6 +74,57 @@ void * __cdecl TSuperCivRoster::thunk_GetTSuperCivRosterClassNamePointer(void)
   
   pvVar1 = GetTSuperCivRosterClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405637
+// GHIDRA_NAME TSuperCivRoster::thunk_DestroyCivilianLedgerDialog
+// GHIDRA_PROTO void * __thiscall thunk_DestroyCivilianLedgerDialog(byte bFreeMemory)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyCivilianLedgerDialog
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestroyCivilianLedgerDialog */
+
+void * __thiscall
+TSuperCivRoster::thunk_DestroyCivilianLedgerDialog(TSuperCivRoster *this,byte bFreeMemory)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = DestroyCivilianLedgerDialog(this,bFreeMemory);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AB400
+// GHIDRA_NAME TSuperCivRoster::DestroyCivilianLedgerDialog
+// GHIDRA_PROTO void * __thiscall DestroyCivilianLedgerDialog(byte bFreeMemory)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Cleans up a civilian-ledger dialog instance; optionally releases heap memory.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - bFreeMemory: If low bit is set, frees the dialog object after destructor logic.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - this pointer.
+// GHIDRA_COMMENT_END
+
+/* Cleans up a civilian-ledger dialog instance; optionally releases heap memory.
+   
+   Parameters:
+   - bFreeMemory: If low bit is set, frees the dialog object after destructor logic.
+   
+   Returns:
+   - this pointer. */
+
+void * __thiscall
+TSuperCivRoster::DestroyCivilianLedgerDialog(TSuperCivRoster *this,byte bFreeMemory)
+
+{
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((bFreeMemory & 1) != 0) {
+    FreeHeapBufferIfNotNull();
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB450
@@ -69,18 +156,18 @@ void * __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRo
 
 {
   code *pcVar1;
-  int iVar2;
+  undefined **ppuVar2;
   int *pController;
   bool bVar3;
   short extraout_AX;
-  undefined4 extraout_EAX;
+  int extraout_EAX;
   undefined3 extraout_var;
   TLineData *pThis;
-  undefined4 extraout_EAX_00;
+  int extraout_EAX_00;
   undefined3 extraout_var_00;
   void *extraout_EAX_01;
   int pageDelta;
-  undefined4 uVar4;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   int local_20 [3];
   undefined4 local_14;
@@ -94,41 +181,41 @@ void * __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRo
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined4 *)(this + 0x1c) = 0x70616765;
-  TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds((TPageView *)this);
+  this->field1c = 0x70616765;
+  TControl::thunk_InitializeRosterPageLineCollectionsAndBounds_At00406f8c((TControl *)this);
   thunk_GetActiveNationId();
   local_14 = *(undefined4 *)((int)g_apNationStates[extraout_AX] + 0x89c);
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar3 = thunk_LinkedListCursorHasCurrent();
   if (CONCAT31(extraout_var,bVar3) != 0) {
-    pcVar1 = *(code **)(*(int *)this + 0x1a0);
-    uVar4 = extraout_EAX;
+    pcVar1 = (code *)this->field0_0x0[0x68];
+    iVar4 = extraout_EAX;
     do {
-      pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
+      pThis = AllocateWithFallbackHandler();
       local_4 = 0;
       if (pThis == (TLineData *)0x0) {
         pThis = (TLineData *)0x0;
       }
       else {
         TLineData::ConstructTLineDataBaseState(pThis);
-        *(undefined ***)pThis = &g_vtblTSuperCivRoster;
+        pThis->field0_0x0 = &g_vtblTSuperCivRoster;
       }
       local_4 = 0xffffffff;
       local_20[0] = 0xec;
       local_20[1] = 0x40;
-      thunk_SetLineDataRowAndBounds(pThis,0,0,local_20);
-      *(undefined4 *)(pThis + 0x10) = uVar4;
+      TLineData::thunk_SetLineDataRowAndBounds(pThis,0,0,local_20);
+      pThis->field10 = iVar4;
       (*pcVar1)(pThis);
       thunk_AdvanceLinkedListCursor();
       bVar3 = thunk_LinkedListCursorHasCurrent();
-      uVar4 = extraout_EAX_00;
+      iVar4 = extraout_EAX_00;
     } while (CONCAT31(extraout_var_00,bVar3) != 0);
   }
-  iVar2 = *(int *)this;
-  *(undefined2 *)(this + 100) = 2;
-  (**(code **)(iVar2 + 0x1ac))();
-  (**(code **)(iVar2 + 0x1b0))(1);
-  pController = *(int **)(this + 0x20);
+  ppuVar2 = this->field0_0x0;
+  this->field64 = 2;
+  (*(code *)ppuVar2[0x6b])();
+  (*(code *)ppuVar2[0x6c])(1);
+  pController = this->pField20;
   (**(code **)(*pController + 0xc))();
   thunk_UpdatePagedListNavigationButtonState(pController,pageDelta);
   *unaff_FS_OFFSET = uStack_10;
@@ -145,7 +232,7 @@ TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(TSuperCivRoster *this,byte 
 {
   DestructTSuperCivRosterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

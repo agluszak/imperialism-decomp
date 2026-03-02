@@ -3,36 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TRadio.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004014D8
-// GHIDRA_NAME TRadio::thunk_GetTRadioClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRadioClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRadioClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRadioClassNamePointer */
-
-void * __cdecl TRadio::thunk_GetTRadioClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRadioClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00401B36
-// GHIDRA_NAME TRadio::thunk_DestroyRadioAndReleaseOwnedResources
-// GHIDRA_PROTO void __thiscall thunk_DestroyRadioAndReleaseOwnedResources(void)
+// GHIDRA_NAME TRadio::thunk_CreateTRadioInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTRadioInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to DestroyRadioAndReleaseOwnedResources.
+// GHIDRA_COMMENT Thunk forwarding to DestroyRadioAndReleaseOwnedResources. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to DestroyRadioAndReleaseOwnedResources. */
+/* Thunk forwarding to DestroyRadioAndReleaseOwnedResources. [FID:thunk_target_sync] */
 
-void __thiscall TRadio::thunk_DestroyRadioAndReleaseOwnedResources(TRadio *this)
+void __thiscall TRadio::thunk_CreateTRadioInstance(TRadio *this)
 
 {
+  int *piVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -41,17 +24,54 @@ void __thiscall TRadio::thunk_DestroyRadioAndReleaseOwnedResources(TRadio *this)
   puStack_8 = &LAB_0062ef53;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTView;
+  (this->base).base.pVtable = &g_vtblTView;
+  piVar1 = (this->base).base.pChildControlList44;
   uStack_4 = 1;
-  if ((int *)this->dwField_44 != (int *)0x0) {
-    (**(code **)(*(int *)this->dwField_44 + 4))(1);
+  if (piVar1 != (int *)0x0) {
+    (**(code **)(*piVar1 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->dwField_48);
+  FreeHeapBufferIfNotNull();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  (this->base).base.pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407865
+// GHIDRA_NAME TRadio::TRadio_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TRadio_VtblSlot000(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTPictureClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTPictureClassNamePointer */
+
+void * __cdecl TRadio::TRadio_VtblSlot000(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TPicture::GetTPictureClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004088A0
+// GHIDRA_NAME TRadio::TRadio_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TRadio_VtblSlot001(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestructTPictureAndMaybeFree
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestructTPictureAndMaybeFree */
+
+void * __thiscall TRadio::TRadio_VtblSlot001(TRadio *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TPicture::DestructTPictureAndMaybeFree((TPicture *)this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EE00
@@ -67,6 +87,7 @@ void __thiscall TRadio::thunk_DestroyRadioAndReleaseOwnedResources(TRadio *this)
 void __thiscall TRadio::CreateTRadioInstance(TRadio *this)
 
 {
+  int *piVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -75,15 +96,16 @@ void __thiscall TRadio::CreateTRadioInstance(TRadio *this)
   puStack_8 = &LAB_0062ef53;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTView;
+  (this->base).base.pVtable = &g_vtblTView;
+  piVar1 = (this->base).base.pChildControlList44;
   local_4 = 1;
-  if ((int *)this->dwField_44 != (int *)0x0) {
-    (**(code **)(*(int *)this->dwField_44 + 4))(1);
+  if (piVar1 != (int *)0x0) {
+    (**(code **)(*piVar1 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this->dwField_48);
+  FreeHeapBufferIfNotNull();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  (this->base).base.pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -121,29 +143,83 @@ void * __cdecl TRadio::ConstructTRadioBaseState(void)
   puStack_8 = &LAB_0062ef7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x90);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 1;
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x1;
+    this[1].field1_0x4 = 0;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *(undefined2 *)(this + 0x84) = 0xffff;
-    *(undefined4 *)(this + 0x88) = 0;
-    *(ushort *)(this + 0x80) = uVar1;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(undefined ***)this = &g_vtblTRadio;
-    *(undefined4 *)(this + 0x60) = 10;
+    *(undefined2 *)&this[1].field10_0x24 = 0xffff;
+    this[1].field11_0x28 = 0;
+    *(ushort *)&this[1].pChildMapView20 = uVar1;
+    this[1].cachedPosX2c = 0;
+    this->pVtable = &g_vtblTRadio;
+    this[1].pVtable = (void *)0xa;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F080
+// GHIDRA_NAME TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080
+// GHIDRA_PROTO void * __thiscall Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [CalleeAnchor] unresolved Cluster_* renamed with named-callee anchor; named_callee_count=2; anchor=thunk_CopyCityDialogStateFromSourceAndCloneChildLinks; sample=thunk_CopyCityDialogStateFromSourceAndCloneChildLinks;thunk_IncrementDialogResourceRefCountByShortIdInRegistry
+// GHIDRA_COMMENT_END
+
+/* [CalleeAnchor] unresolved Cluster_* renamed with named-callee anchor; named_callee_count=2;
+   anchor=thunk_CopyCityDialogStateFromSourceAndCloneChildLinks;
+   sample=thunk_CopyCityDialogStateFromSourceAndCloneChildLinks;thunk_IncrementDialogResourceRefCountByShortIdInRegistry
+    */
+
+void * __thiscall
+TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080(TRadio *this)
+
+{
+  undefined2 uVar1;
+  short sVar2;
+  undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ef98;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  TCityDialogModalState_00649A50::thunk_CopyCityDialogStateFromSourceAndCloneChildLinks
+            ((TCityDialogModalState_00649A50 *)this,in_stack_00000004);
+  (this->base).hasCommandTagResource60 = *(void **)(in_stack_00000004 + 0x60);
+  *(undefined1 *)&(this->base).commandTagResourceByte64 = *(undefined1 *)(in_stack_00000004 + 100);
+  (this->base).commandTagDefaultParam68 = *(void **)(in_stack_00000004 + 0x68);
+  (this->base).commandTagDefaultParam6c = *(HWND *)(in_stack_00000004 + 0x6c);
+  (this->base).commandTagDefaultParam70 = *(uint *)(in_stack_00000004 + 0x70);
+  (this->base).commandTagDefaultParam74 = *(uint *)(in_stack_00000004 + 0x74);
+  (this->base).commandTagDefaultParam78 = *(byte **)(in_stack_00000004 + 0x78);
+  (this->base).commandTagDefaultParam7c = *(byte **)(in_stack_00000004 + 0x7c);
+  uVar1 = *(undefined2 *)(in_stack_00000004 + 0x80);
+  (this->base).base.pVtable = &g_vtblTControl;
+  *(undefined2 *)&(this->base).commandTagDefaultParam80 = uVar1;
+  sVar2 = *(short *)(in_stack_00000004 + 0x84);
+  local_4 = 0;
+  *(short *)&(this->base).field_0x84 = sVar2;
+  *(undefined4 *)&(this->base).field_0x88 = *(undefined4 *)(in_stack_00000004 + 0x88);
+  *(undefined4 *)&(this->base).field_0x8c = *(undefined4 *)(in_stack_00000004 + 0x8c);
+  (this->base).base.pVtable = &g_vtblTRadio;
+  if (sVar2 != -1) {
+    thunk_IncrementDialogResourceRefCountByShortIdInRegistry();
+  }
+  *unaff_FS_OFFSET = local_c;
+  return this;
 }
 

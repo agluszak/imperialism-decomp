@@ -4,15 +4,15 @@
 // Bucket: TDefenseMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401ACD
-// GHIDRA_NAME TDefenseMinister::thunk_NoOpForeignMinisterUtilityStub
-// GHIDRA_PROTO void __cdecl thunk_NoOpForeignMinisterUtilityStub(void)
+// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot017
+// GHIDRA_PROTO void __cdecl TDefenseMinister_VtblSlot017(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to NoOpForeignMinisterUtilityStub
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to NoOpForeignMinisterUtilityStub */
 
-void __cdecl TDefenseMinister::thunk_NoOpForeignMinisterUtilityStub(void)
+void __cdecl TDefenseMinister::TDefenseMinister_VtblSlot017(void)
 
 {
   NoOpForeignMinisterUtilityStub();
@@ -20,8 +20,8 @@ void __cdecl TDefenseMinister::thunk_NoOpForeignMinisterUtilityStub(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401B59
-// GHIDRA_NAME TDefenseMinister::thunk_DestructTDefenseMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDefenseMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDefenseMinister_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDefenseMinisterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -29,8 +29,7 @@ void __cdecl TDefenseMinister::thunk_NoOpForeignMinisterUtilityStub(void)
 /* Single-JMP thunk to DestructTDefenseMinisterAndMaybeFree */
 
 void * __thiscall
-TDefenseMinister::thunk_DestructTDefenseMinisterAndMaybeFree
-          (TDefenseMinister *this,byte freeSelfFlag)
+TDefenseMinister::TDefenseMinister_VtblSlot001(TDefenseMinister *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -40,19 +39,40 @@ TDefenseMinister::thunk_DestructTDefenseMinisterAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404A48
-// GHIDRA_NAME TDefenseMinister::thunk_GetDefenseMinisterNeutralPreferenceScalar_At00404a48
-// GHIDRA_PROTO undefined thunk_GetDefenseMinisterNeutralPreferenceScalar_At00404a48()
+// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot024
+// GHIDRA_PROTO TDefenseMinister * __cdecl TDefenseMinister_VtblSlot024(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetDefenseMinisterNeutralPreferenceScalar
+// GHIDRA_COMMENT Single-JMP thunk to CreateTDefenseMinisterInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetDefenseMinisterNeutralPreferenceScalar */
+/* Single-JMP thunk to CreateTDefenseMinisterInstance */
 
-void TDefenseMinister::thunk_GetDefenseMinisterNeutralPreferenceScalar_At00404a48(void)
+TDefenseMinister * __cdecl TDefenseMinister::TDefenseMinister_VtblSlot024(void)
 
 {
-  CreateTDefenseMinisterInstance();
-  return;
+  TDefenseMinister *pTVar1;
+  
+  pTVar1 = CreateTDefenseMinisterInstance();
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004071D0
+// GHIDRA_NAME TDefenseMinister::thunk_BuildTileRingPriorityMapForNationTileList
+// GHIDRA_PROTO byte * __thiscall thunk_BuildTileRingPriorityMapForNationTileList(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BuildTileRingPriorityMapForNationTileList
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to BuildTileRingPriorityMapForNationTileList */
+
+byte * __thiscall
+TDefenseMinister::thunk_BuildTileRingPriorityMapForNationTileList(TDefenseMinister *this,int arg1)
+
+{
+  byte *pbVar1;
+  
+  pbVar1 = BuildTileRingPriorityMapForNationTileList(this,arg1);
+  return pbVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407CD9
@@ -68,20 +88,20 @@ void * __thiscall TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(TDe
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTDefenseMinister;
+  this->field0_0x0 = &g_vtblTDefenseMinister;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004084A4
-// GHIDRA_NAME TDefenseMinister::thunk_GetTDefenseMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDefenseMinisterClassNamePointer(void)
+// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDefenseMinister_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDefenseMinisterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDefenseMinisterClassNamePointer */
 
-void * __cdecl TDefenseMinister::thunk_GetTDefenseMinisterClassNamePointer(void)
+void * __cdecl TDefenseMinister::TDefenseMinister_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -90,20 +110,38 @@ void * __cdecl TDefenseMinister::thunk_GetTDefenseMinisterClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004097BE
+// GHIDRA_NAME TDefenseMinister::thunk_BuildTileIndexListsForSelectedTerrainClass
+// GHIDRA_PROTO void __thiscall thunk_BuildTileIndexListsForSelectedTerrainClass(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for BuildTileIndexListsForSelectedTerrainClass.
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for BuildTileIndexListsForSelectedTerrainClass. */
+
+void __thiscall
+TDefenseMinister::thunk_BuildTileIndexListsForSelectedTerrainClass(TDefenseMinister *this)
+
+{
+  TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass((TArmyPlayer *)this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC0A0
 // GHIDRA_NAME TDefenseMinister::CreateTDefenseMinisterInstance
-// GHIDRA_PROTO undefined CreateTDefenseMinisterInstance()
+// GHIDRA_PROTO TDefenseMinister * __cdecl CreateTDefenseMinisterInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Returns defense minister neutral preference scalar constant.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Returns defense minister neutral preference scalar constant. */
 
-float10 TDefenseMinister::CreateTDefenseMinisterInstance(void)
+TDefenseMinister * __cdecl TDefenseMinister::CreateTDefenseMinisterInstance(void)
 
 {
-  return (float10)_g_TDefense_Minister_Instance_Value_006548E0;
+  TDefenseMinister *in_EAX;
+  
+  return in_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC0C0
@@ -129,7 +167,7 @@ void * __thiscall TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseM
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTDefenseMinister;
+  this->field0_0x0 = &g_vtblTDefenseMinister;
   return this;
 }
 
@@ -143,18 +181,158 @@ TDefenseMinister::DestructTDefenseMinisterAndMaybeFree(TDefenseMinister *this,by
 {
   DestructTDefenseMinisterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0052EFB0
-// GHIDRA_NAME TDefenseMinister::NoOpForeignMinisterUtilityStub
-// GHIDRA_PROTO void __cdecl NoOpForeignMinisterUtilityStub(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004ECBB0
+// GHIDRA_NAME TDefenseMinister::BuildTileRingPriorityMapForNationTileList
+// GHIDRA_PROTO byte * __thiscall BuildTileRingPriorityMapForNationTileList(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds a per-tile ring-priority byte map around a nation tile list. Uses multiple neighbor-expansion passes and prospecting-candidate boosts; used by land-sale event strategy tables.
+// GHIDRA_COMMENT_END
 
-void __cdecl TDefenseMinister::NoOpForeignMinisterUtilityStub(void)
+/* Builds a per-tile ring-priority byte map around a nation tile list. Uses multiple
+   neighbor-expansion passes and prospecting-candidate boosts; used by land-sale event strategy
+   tables. */
+
+byte * __thiscall
+TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TDefenseMinister *this,int arg1)
 
 {
-  return;
+  char cVar1;
+  code *pcVar2;
+  byte bVar3;
+  short nTileIndex;
+  short sVar4;
+  int iVar5;
+  byte *pbVar6;
+  short *psVar7;
+  int iVar8;
+  int iVar9;
+  int iVar10;
+  byte *pbVar11;
+  int local_10;
+  short asStack_c [6];
+  
+  sVar4 = *(short *)(this->field04 + 0xc);
+  iVar9 = *(int *)arg1;
+  iVar5 = (**(code **)(iVar9 + 0x28))();
+  pbVar6 = AllocateWithFallbackHandler();
+  if (pbVar6 != (byte *)0x0) {
+    pbVar11 = pbVar6;
+    for (iVar8 = 0x654; iVar8 != 0; iVar8 = iVar8 + -1) {
+      pbVar11[0] = 0;
+      pbVar11[1] = 0;
+      pbVar11[2] = 0;
+      pbVar11[3] = 0;
+      pbVar11 = pbVar11 + 4;
+    }
+    iVar8 = 1;
+    if (0 < iVar5) {
+      do {
+        nTileIndex = (**(code **)(iVar9 + 0x24))(iVar8);
+        thunk_ComputeHexNeighborTileIndices
+                  (nTileIndex,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+        psVar7 = asStack_c;
+        iVar10 = 6;
+        do {
+          cVar1 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + *psVar7 * 0x24);
+          if (('\0' < cVar1) && (cVar1 != sVar4)) {
+            pbVar6[nTileIndex] = 4;
+          }
+          psVar7 = psVar7 + 1;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        iVar8 = iVar8 + 1;
+      } while (iVar8 <= iVar5);
+    }
+    iVar8 = 1;
+    if (0 < iVar5) {
+      pcVar2 = *(code **)(iVar9 + 0x24);
+      do {
+        sVar4 = (*pcVar2)(iVar8);
+        thunk_ComputeHexNeighborTileIndices
+                  (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+        psVar7 = asStack_c;
+        iVar10 = 6;
+        do {
+          if (pbVar6[*psVar7] == 4) {
+            pbVar6[sVar4] = 3;
+          }
+          psVar7 = psVar7 + 1;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        iVar8 = iVar8 + 1;
+      } while (iVar8 <= iVar5);
+    }
+    local_10 = 1;
+    if (0 < iVar5) {
+      do {
+        sVar4 = (**(code **)(iVar9 + 0x24))(local_10);
+        thunk_ComputeHexNeighborTileIndices
+                  (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+        psVar7 = asStack_c;
+        iVar8 = 6;
+        do {
+          if ((pbVar6[*psVar7] == 3) ||
+             (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + *psVar7 * 0x24) == '\x05')) {
+            pbVar6[sVar4] = 2;
+          }
+          psVar7 = psVar7 + 1;
+          iVar8 = iVar8 + -1;
+        } while (iVar8 != 0);
+        local_10 = local_10 + 1;
+      } while (local_10 <= iVar5);
+    }
+    iVar8 = 1;
+    if (0 < iVar5) {
+      pcVar2 = *(code **)(iVar9 + 0x24);
+      do {
+        sVar4 = (*pcVar2)(iVar8);
+        thunk_ComputeHexNeighborTileIndices
+                  (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+        psVar7 = asStack_c;
+        iVar10 = 6;
+        do {
+          if (pbVar6[*psVar7] == 2) {
+            pbVar6[sVar4] = 1;
+          }
+          psVar7 = psVar7 + 1;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        iVar8 = iVar8 + 1;
+      } while (iVar8 <= iVar5);
+    }
+    iVar8 = 1;
+    if (0 < iVar5) {
+      pcVar2 = *(code **)(iVar9 + 0x24);
+      do {
+        sVar4 = (*pcVar2)(iVar8);
+        iVar9 = (int)sVar4;
+        if (((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + iVar9 * 0x24) & 3) != 0) &&
+           (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar9 * 0x24 + 0x13) != '\0')) {
+          pbVar6[iVar9] = pbVar6[iVar9] + 3;
+          thunk_ComputeHexNeighborTileIndices
+                    (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+          psVar7 = asStack_c;
+          iVar9 = 6;
+          do {
+            bVar3 = thunk_CheckTileProspectingDiscoveryCandidate(g_pGlobalMapState,*psVar7);
+            if (bVar3 != 0) {
+              pbVar6[*psVar7] = pbVar6[*psVar7] + 1;
+            }
+            psVar7 = psVar7 + 1;
+            iVar9 = iVar9 + -1;
+          } while (iVar9 != 0);
+        }
+        iVar8 = iVar8 + 1;
+      } while (iVar8 <= iVar5);
+    }
+    return pbVar6;
+  }
+                    /* WARNING: Subroutine does not return */
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 

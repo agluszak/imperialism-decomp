@@ -4,15 +4,15 @@
 // Bucket: TGameSetupPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405FB5
-// GHIDRA_NAME TGameSetupPicture::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0_At00405fb5
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0_At00405fb5()
+// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot055
+// GHIDRA_PROTO void __cdecl TGameSetupPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0 */
 
-void TGameSetupPicture::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0_At00405fb5(void)
+void __cdecl TGameSetupPicture::TGameSetupPicture_VtblSlot055(void)
 
 {
   WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0();
@@ -20,15 +20,15 @@ void TGameSetupPicture::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0_At
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040872E
-// GHIDRA_NAME TGameSetupPicture::thunk_HandleMainMenuCommandAction
-// GHIDRA_PROTO void __stdcall thunk_HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
+// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot015
+// GHIDRA_PROTO void __stdcall TGameSetupPicture_VtblSlot015(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleMainMenuCommandAction
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleMainMenuCommandAction */
 
-void TGameSetupPicture::thunk_HandleMainMenuCommandAction
+void TGameSetupPicture::TGameSetupPicture_VtblSlot015
                (int nDialogEventCode,int pMenuCommandEvent,int nDispatchFlags)
 
 {
@@ -37,8 +37,8 @@ void TGameSetupPicture::thunk_HandleMainMenuCommandAction
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408963
-// GHIDRA_NAME TGameSetupPicture::thunk_DestructTGameSetupPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTGameSetupPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TGameSetupPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTGameSetupPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -46,8 +46,7 @@ void TGameSetupPicture::thunk_HandleMainMenuCommandAction
 /* Single-JMP thunk to DestructTGameSetupPictureAndMaybeFree */
 
 void * __thiscall
-TGameSetupPicture::thunk_DestructTGameSetupPictureAndMaybeFree
-          (TGameSetupPicture *this,byte freeSelfFlag)
+TGameSetupPicture::TGameSetupPicture_VtblSlot001(TGameSetupPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -57,15 +56,15 @@ TGameSetupPicture::thunk_DestructTGameSetupPictureAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004098BD
-// GHIDRA_NAME TGameSetupPicture::thunk_GetTGameSetupPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGameSetupPictureClassNamePointer(void)
+// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TGameSetupPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTGameSetupPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTGameSetupPictureClassNamePointer */
 
-void * __cdecl TGameSetupPicture::thunk_GetTGameSetupPictureClassNamePointer(void)
+void * __cdecl TGameSetupPicture::TGameSetupPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -92,12 +91,12 @@ void * __cdecl TGameSetupPicture::CreateTGameSetupPictureInstance(void)
   puStack_8 = &LAB_006367ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTGameSetupPicture;
+    this->field0_0x0 = &g_vtblTGameSetupPicture;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -127,7 +126,7 @@ void * __thiscall TGameSetupPicture::ConstructTGameSetupPictureBaseState(TGameSe
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined ***)this = &g_vtblTGameSetupPicture;
+  this->field0_0x0 = &g_vtblTGameSetupPicture;
   return this;
 }
 
@@ -141,201 +140,8 @@ TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree(TGameSetupPicture *this
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005758E0
-// GHIDRA_NAME TGameSetupPicture::WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0
-// GHIDRA_PROTO undefined WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void TGameSetupPicture::WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0(void)
-
-{
-  thunk_NoOpUiLifecycleHook();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00575900
-// GHIDRA_NAME TGameSetupPicture::HandleMainMenuCommandAction
-// GHIDRA_PROTO void __stdcall HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: void HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent,
-   int nDispatchFlags) */
-
-void TGameSetupPicture::HandleMainMenuCommandAction
-               (int nDialogEventCode,int pMenuCommandEvent,int nDispatchFlags)
-
-{
-  char fModalAccepted;
-  char cVar1;
-  char extraout_AL;
-  char extraout_AL_00;
-  char extraout_AL_01;
-  char extraout_AL_02;
-  char extraout_AL_03;
-  char extraout_AL_04;
-  char extraout_AL_05;
-  char extraout_AL_06;
-  ushort wShiftState;
-  int nMapTileIndex;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  uint dwCommandTag;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636802;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  if (((nDialogEventCode == 0x14) || (nDialogEventCode == 10)) || (nDialogEventCode == 0x22)) {
-    dwCommandTag = *(uint *)(pMenuCommandEvent + 0x1c);
-    if (dwCommandTag < 0x68696769) {
-      if (dwCommandTag == 0x68696768) {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-      }
-      else if (dwCommandTag != 0x636e636c) goto LAB_00575d3b;
-      goto LAB_00575d30;
-    }
-    if (dwCommandTag < 0x6d756c75) {
-      if (dwCommandTag == 0x6d756c74) {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-        thunk_EnsureGameFlowStateAndPostTurnEvent5E5();
-      }
-      else if (dwCommandTag == 0x6c6f6164) {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-        thunk_ReturnTrueStub();
-        cVar1 = fModalAccepted;
-        while (cVar1 == '\0') {
-          InitializeSharedStringRefFromEmpty();
-          uStack_4 = 2;
-          thunk_LoadUiStringResourceByGroupAndIndex();
-          thunk_AssignStringSharedRefAndReturnThis();
-          thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-          uStack_4 = 0xffffffff;
-          if (extraout_AL == '\0') goto LAB_00575d64;
-          ReleaseSharedStringRefIfNotEmpty();
-          thunk_ReturnTrueStub();
-          cVar1 = extraout_AL_00;
-        }
-        g_Advance_Turn_Machine_State_00695278 = -2;
-        goto LAB_00575d30;
-      }
-    }
-    else if (dwCommandTag < 0x71756975) {
-      if (dwCommandTag == 0x71756974) {
-        PostWmCloseToMainThreadWindow();
-      }
-      else if (dwCommandTag == 0x70726566) goto LAB_00575d30;
-    }
-    else {
-      if (dwCommandTag == 0x72616e64) {
-        wShiftState = GetAsyncKeyState(0x10);
-        if (((wShiftState & 0x8000) == 0) || (g_bTurnFlowAuxStateFlag == 0)) {
-          (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-          thunk_ReturnTrueStub();
-          cVar1 = extraout_AL_04;
-          while (cVar1 == '\0') {
-            InitializeSharedStringRefFromEmpty();
-            uStack_4 = 1;
-            thunk_LoadUiStringResourceByGroupAndIndex();
-            thunk_AssignStringSharedRefAndReturnThis();
-            thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-            uStack_4 = 0xffffffff;
-            if (extraout_AL_05 == '\0') goto LAB_00575d64;
-            ReleaseSharedStringRefIfNotEmpty();
-            thunk_ReturnTrueStub();
-            cVar1 = extraout_AL_06;
-          }
-          thunk_SetSelectedIndex6AAndTriggerRefresh();
-          (**(code **)(*g_pUiViewManager + 0x30))();
-        }
-        else {
-          (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-          if (g_pGlobalMapState == (int *)0x0) {
-            if (g_pActiveMapOrderContext != (void *)0x0) {
-              (**(code **)(*(int *)g_pActiveMapOrderContext + 0x1c))();
-              g_pActiveMapOrderContext = (void *)0x0;
-            }
-            g_pActiveMapOrderContext = (void *)AllocateWithFallbackHandler();
-            if (g_pActiveMapOrderContext == (undefined4 *)0x0) {
-              g_pActiveMapOrderContext = (undefined4 *)0x0;
-            }
-            else {
-              *(undefined2 *)((int)g_pActiveMapOrderContext + 4) = 0;
-              *(undefined4 *)((int)g_pActiveMapOrderContext + 8) = 0;
-              *(undefined2 *)((int)g_pActiveMapOrderContext + 0xc) = 0;
-              *(undefined4 *)((int)g_pActiveMapOrderContext + 0x10) = 0;
-              *(undefined4 *)((int)g_pActiveMapOrderContext + 0x14) = 0;
-              *(undefined ***)g_pActiveMapOrderContext =
-                   &PTR_thunk_GetTPortZoneManagerClassName_0065c7c8;
-            }
-            thunk_ResetPortZoneGlobalContextCounters();
-            if (g_pGlobalMapState != (int *)0x0) {
-              (**(code **)(*g_pGlobalMapState + 0x1c))();
-              g_pGlobalMapState = (int *)0x0;
-            }
-            puStack_8 = (undefined1 *)AllocateWithFallbackHandler();
-            if (puStack_8 == (undefined1 *)0x0) {
-              g_pGlobalMapState = (int *)0x0;
-            }
-            else {
-              g_pGlobalMapState = thunk_ConstructGlobalMapState(puStack_8);
-            }
-            thunk_InitializeGlobalMapState(g_pGlobalMapState);
-          }
-          thunk_RebuildGlobalOrderManagersAndCapabilityState();
-          (**(code **)(*g_pGlobalMapState + 0x28))();
-          (**(code **)(*g_pGlobalMapState + 0x30))();
-          nMapTileIndex = 0;
-          do {
-            (**(code **)(*g_pGlobalMapState + 0x34))();
-            (**(code **)(*g_pGlobalMapState + 0x3c))();
-            nMapTileIndex = nMapTileIndex + 1;
-          } while (nMapTileIndex < 0x1950);
-        }
-      }
-      else {
-        if (dwCommandTag != 0x7363656e) goto LAB_00575d3b;
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-        thunk_ReturnTrueStub();
-        cVar1 = extraout_AL_01;
-        while (cVar1 == '\0') {
-          InitializeSharedStringRefFromEmpty();
-          uStack_4 = 3;
-          thunk_LoadUiStringResourceByGroupAndIndex();
-          thunk_AssignStringSharedRefAndReturnThis();
-          thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-          uStack_4 = 0xffffffff;
-          if (extraout_AL_02 == '\0') goto LAB_00575d64;
-          ReleaseSharedStringRefIfNotEmpty();
-          thunk_ReturnTrueStub();
-          cVar1 = extraout_AL_03;
-        }
-      }
-LAB_00575d30:
-      thunk_PostTurnEventCodeMessage2420();
-    }
-  }
-LAB_00575d3b:
-  thunk_HandleCityDialogToggleCommandOrForward();
-LAB_00575d4f:
-  *unaff_FS_OFFSET = local_c;
-  return;
-LAB_00575d64:
-  uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  goto LAB_00575d4f;
 }
 

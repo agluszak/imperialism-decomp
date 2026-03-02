@@ -3,33 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldPartView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004033C3
-// GHIDRA_NAME TGWorldPartView::thunk_WrapperFor_AllocateWithFallbackHandler_At004ac920
-// GHIDRA_PROTO undefined thunk_WrapperFor_AllocateWithFallbackHandler_At004ac920()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AllocateWithFallbackHandler_At004ac920
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AllocateWithFallbackHandler_At004ac920 */
-
-void TGWorldPartView::thunk_WrapperFor_AllocateWithFallbackHandler_At004ac920(void)
-
-{
-  DestructTGWorldPartViewAndMaybeFree();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00407F22
-// GHIDRA_NAME TGWorldPartView::thunk_RenderGWorldPartViewCachedRect_At00407f22
-// GHIDRA_PROTO void __thiscall thunk_RenderGWorldPartViewCachedRect_At00407f22(void)
+// GHIDRA_NAME TGWorldPartView::thunk_ConstructTGWorldPartViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTGWorldPartViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderGWorldPartViewCachedRect
+// GHIDRA_COMMENT Single-JMP thunk to RenderGWorldPartViewCachedRect [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RenderGWorldPartViewCachedRect */
+/* Single-JMP thunk to RenderGWorldPartViewCachedRect [FID:thunk_target_sync] */
 
-void __thiscall
-TGWorldPartView::thunk_RenderGWorldPartViewCachedRect_At00407f22(TGWorldPartView *this)
+void __thiscall TGWorldPartView::thunk_ConstructTGWorldPartViewBaseState(TGWorldPartView *this)
 
 {
   ConstructTGWorldPartViewBaseState(this);
@@ -52,6 +35,60 @@ void * __cdecl TGWorldPartView::thunk_GetTGWorldPartViewClassNamePointer(void)
   
   pvVar1 = GetTGWorldPartViewClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408C01
+// GHIDRA_NAME TGWorldPartView::thunk_scalar_deleting_destructor_00408C01
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00408C01(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TGWorldPartView::thunk_scalar_deleting_destructor_00408C01(TGWorldPartView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC7D0
+// GHIDRA_NAME TGWorldPartView::CreateTGWorldPartViewInstance
+// GHIDRA_PROTO void * __cdecl CreateTGWorldPartViewInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ClassQuad] create inferred for TGWorldPartView; alloc factory pattern.
+// GHIDRA_COMMENT_END
+
+/* [ClassQuad] create inferred for TGWorldPartView; alloc factory pattern. */
+
+void * __cdecl TGWorldPartView::CreateTGWorldPartViewInstance(void)
+
+{
+  TView *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063082a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = AllocateWithFallbackHandler();
+  local_4 = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &PTR_thunk_GetTGWorldPartViewClassNamePointer_00644ba0;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (void *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC860
@@ -86,15 +123,15 @@ void __thiscall TGWorldPartView::ConstructTGWorldPartViewBaseState(TGWorldPartVi
   LONG LStack_18;
   RECT RStack_14;
   
-  if (this[0x18].pVtable != (void *)0x0) {
+  if (this->field90_0x60 != 0) {
     (**(code **)((int)this->pVtable + 0x128))(&local_20);
     RStack_14.top = local_20;
     RStack_14.right = LStack_1c;
     RStack_14.bottom = LStack_18;
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)this[0x18].pVtable + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)(this + 0x19),
+              ((astruct_17 *)(this->field90_0x60 + 4),
+               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&this->field91_0x64,
                &RStack_14,0x24,(astruct_19 *)0x0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
   }
@@ -103,7 +140,7 @@ void __thiscall TGWorldPartView::ConstructTGWorldPartViewBaseState(TGWorldPartVi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC920
 // GHIDRA_NAME TGWorldPartView::DestructTGWorldPartViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTGWorldPartViewAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTGWorldPartViewAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AllocateWithFallbackHandler; instructions=9, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -111,16 +148,16 @@ void __thiscall TGWorldPartView::ConstructTGWorldPartViewBaseState(TGWorldPartVi
 /* [WrapperShape] small wrapper around AllocateWithFallbackHandler; instructions=9, call_insns=1,
    internal_calls=1, unique_internal=1 */
 
-undefined4 * TGWorldPartView::DestructTGWorldPartViewAndMaybeFree(void)
+void __thiscall TGWorldPartView::DestructTGWorldPartViewAndMaybeFree(TGWorldPartView *this)
 
 {
   undefined4 *puVar1;
   
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x2c);
+  puVar1 = AllocateWithFallbackHandler();
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblTBattleReportView;
-    return puVar1;
+    return;
   }
-  return (undefined4 *)0x0;
+  return;
 }
 

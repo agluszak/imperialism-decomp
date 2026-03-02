@@ -4,16 +4,16 @@
 // Bucket: TradeScreenPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404228
-// GHIDRA_NAME TradeScreenPicture::thunk_RenderTradeScreenCommoditySummaryRows
-// GHIDRA_PROTO void __thiscall thunk_RenderTradeScreenCommoditySummaryRows(void * arg1)
+// GHIDRA_NAME TradeScreenPicture::TradeScreenPicture_VtblSlot068
+// GHIDRA_PROTO void __thiscall TradeScreenPicture_VtblSlot068(void * arg1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RenderTradeScreenCommoditySummaryRows.
+// GHIDRA_COMMENT Single-JMP thunk to RenderTradeScreenCommoditySummaryRows
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for RenderTradeScreenCommoditySummaryRows. */
+/* Single-JMP thunk to RenderTradeScreenCommoditySummaryRows */
 
 void __thiscall
-TradeScreenPicture::thunk_RenderTradeScreenCommoditySummaryRows(TradeScreenPicture *this,void *arg1)
+TradeScreenPicture::TradeScreenPicture_VtblSlot068(TradeScreenPicture *this,void *arg1)
 
 {
   RenderTradeScreenCommoditySummaryRows(this,arg1);
@@ -21,15 +21,15 @@ TradeScreenPicture::thunk_RenderTradeScreenCommoditySummaryRows(TradeScreenPictu
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E20
-// GHIDRA_NAME TradeScreenPicture::thunk_GetTradeScreenPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTradeScreenPictureClassNamePointer(void)
+// GHIDRA_NAME TradeScreenPicture::TradeScreenPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TradeScreenPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTradeScreenPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTradeScreenPictureClassNamePointer */
 
-void * __cdecl TradeScreenPicture::thunk_GetTradeScreenPictureClassNamePointer(void)
+void * __cdecl TradeScreenPicture::TradeScreenPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -39,8 +39,8 @@ void * __cdecl TradeScreenPicture::thunk_GetTradeScreenPictureClassNamePointer(v
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407243
-// GHIDRA_NAME TradeScreenPicture::thunk_DestructTradeScreenPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTradeScreenPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TradeScreenPicture::TradeScreenPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TradeScreenPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTradeScreenPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -48,8 +48,7 @@ void * __cdecl TradeScreenPicture::thunk_GetTradeScreenPictureClassNamePointer(v
 /* Single-JMP thunk to DestructTradeScreenPictureAndMaybeFree */
 
 void * __thiscall
-TradeScreenPicture::thunk_DestructTradeScreenPictureAndMaybeFree
-          (TradeScreenPicture *this,byte freeSelfFlag)
+TradeScreenPicture::TradeScreenPicture_VtblSlot001(TradeScreenPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -72,70 +71,8 @@ TradeScreenPicture::thunk_ConstructTradeScreenPictureBaseState(TradeScreenPictur
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTradeScreenPicture;
+  this->field0_0x0 = &g_vtblTradeScreenPicture;
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494BF0
-// GHIDRA_NAME TradeScreenPicture::RenderTradeScreenCommoditySummaryRows_Impl
-// GHIDRA_PROTO void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00494bf0 with single named caller RenderTradeScreenCommoditySummaryRows@0x005ba7a0
-// GHIDRA_COMMENT_END
-
-/* [ThunkBridge] promoted from thunk_FUN_00494bf0 with single named caller
-   RenderTradeScreenCommoditySummaryRows@0x005ba7a0 */
-
-void __cdecl TradeScreenPicture::RenderTradeScreenCommoditySummaryRows_Impl(void)
-
-{
-  void *extraout_EAX;
-  undefined4 uVar1;
-  int *piVar2;
-  int *unaff_ESI;
-  undefined4 uVar3;
-  undefined4 unaff_retaddr;
-  short in_stack_0000000c;
-  
-  uVar3 = 0x920;
-  if (in_stack_0000000c != -2) {
-    if (in_stack_0000000c == -1) {
-      uVar3 = 0x922;
-    }
-    else if (in_stack_0000000c == 1) {
-      uVar3 = 0x921;
-    }
-  }
-  if ((g_bQuickDrawStyleDirty != 0) || (g_hQuickDrawCachedFontHandle == (void *)0x0)) {
-    if (g_hQuickDrawCachedFontHandle != (void *)0x0) {
-      (**(code **)(*(int *)g_hQuickDrawCachedFontHandle + 4))(1);
-    }
-    CreateFontFromPresetAndAttachRegionHandle();
-    g_bQuickDrawStyleDirty = 0;
-    g_hQuickDrawCachedFontHandle = extraout_EAX;
-  }
-  piVar2 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  uVar1 = (**(code **)(*piVar2 + 0x30))(g_hQuickDrawCachedFontHandle);
-  piVar2 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
-  SetBkModeOnPrimaryAndSecondaryDc(1);
-  piVar2 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x70))(*unaff_ESI,*(undefined4 *)(*unaff_ESI + -8),unaff_retaddr,uVar3);
-  piVar2 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x30))(uVar1);
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA680
@@ -156,7 +93,7 @@ void * __cdecl TradeScreenPicture::CreateTradeScreenPictureInstance(void)
   puStack_8 = &LAB_006390da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -191,7 +128,7 @@ void * __thiscall TradeScreenPicture::ConstructTradeScreenPictureBaseState(Trade
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTradeScreenPicture;
+  this->field0_0x0 = &g_vtblTradeScreenPicture;
   return this;
 }
 
@@ -206,7 +143,7 @@ TradeScreenPicture::DestructTradeScreenPictureAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -231,21 +168,25 @@ TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(TradeScreenPicture *th
   int iVar3;
   char *pcVar4;
   int iVar5;
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
   code *local_30;
+  void *pvStack_2c;
+  int iStack_28;
+  int iStack_24;
+  int iStack_20;
   RECT local_1c;
-  undefined4 local_c;
+  int local_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  int *local_4;
   
-  local_4 = 0xffffffff;
+  local_4 = (int *)0xffffffff;
   puStack_8 = &LAB_00639100;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
+  *unaff_FS_OFFSET = (int)&local_c;
   local_1c.left = *(LONG *)arg1;
   local_1c.top = *(LONG *)((int)arg1 + 4);
   local_1c.right = *(LONG *)((int)arg1 + 8);
-  local_1c.bottom = *(LONG *)((int)arg1 + 0xc);
+  local_1c.bottom = *(int *)((int)arg1 + 0xc);
   if ((*(short *)((int)g_pDisplayManager + 0x1c) == 0x7d9) ||
      (*(short *)((int)g_pDisplayManager + 0x1c) == 0x7da)) {
     BlitRectWithOptionalTransparency
@@ -254,14 +195,14 @@ TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(TradeScreenPicture *th
                (astruct_19 *)0x0);
   }
   else {
-    thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
     InitializeUiTextStyleDescriptorAndApplyQuickDraw();
     iVar5 = 0;
     pcVar4 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-    local_30 = *(code **)(*(int *)this + 0x94);
+    local_30 = *(code **)((int)this->field0_0x0 + 0x94);
     do {
       InitializeSharedStringRefFromEmpty();
-      local_4 = 0;
+      local_4 = (int *)0x0;
       iVar3 = (*local_30)(*(undefined4 *)pcVar4);
       if (iVar3 == 0) {
                     /* WARNING: Subroutine does not return */
@@ -269,30 +210,43 @@ TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(TradeScreenPicture *th
       }
       if (((pcVar4 != " 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg") &&
           (pcVar4 != " 5am 0dg 1dg 2dg 3dg")) ||
-         (*(char *)(g_pCityOrderCapabilityState + 0x193) != '\0')) {
+         (*(char *)((int)g_pCityOrderCapabilityState + 0x193) != '\0')) {
+        iStack_28 = *(int *)(iVar3 + 0x28) + 3;
+        iStack_20 = *(int *)(iVar3 + 0x28) + 0x11;
+        pvStack_2c = (void *)(*(int *)(iVar3 + 0x24) + 0x11a);
+        iStack_24 = *(int *)(iVar3 + 0x24) + 300;
         thunk_GetActiveNationId();
         sVar2 = (**(code **)(*(int *)g_apNationStates[extraout_AX] + 0x78))(iVar5);
         if (sVar2 == 0) {
-          ConstructSharedStringFromCStrOrResourceId(&g_Render_Trade_Screen_Value_0069AA90);
+          TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+                    ((TToolBarCluster *)&stack0xffffffc4);
           puStack_8._0_1_ = 1;
-          StringShared__AssignFromPtr(&stack0x00000000,(int *)&stack0xffffffc4);
+          AssignFromPtr(&stack0x00000000,(int *)&stack0xffffffc4);
           puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
           ReleaseSharedStringRefIfNotEmpty();
         }
         else {
           thunk_GetActiveNationId();
-          sVar2 = (**(code **)(*(int *)g_apNationStates[extraout_AX_00] + 0x78))(iVar5);
-          FormatStringWithVarArgsToSharedRef(&stack0x00000000,&g_szDecimalFormat,(int)sVar2);
+          (**(code **)(*(int *)g_apNationStates[extraout_AX_00] + 0x78))(iVar5);
+          FormatStringWithVarArgsToSharedRef();
         }
-        RenderTradeScreenCommoditySummaryRows_Impl();
-        iVar1 = *g_pLocalizationTable;
+        pvStack_2c = (void *)((int)pvStack_2c + -5);
+        iStack_24 = iStack_24 + -5;
+        RenderTradeScreenCommoditySummaryRows_Impl
+                  ((TradeScreenPicture *)&stack0x00000000,&local_30,-1,0);
+        pvStack_2c = (void *)(*(int *)(iVar3 + 0x28) + 3);
+        iStack_24 = *(int *)(iVar3 + 0x28) + 0x11;
+        iVar1 = *(int *)g_pLocalizationTable;
         local_30 = (code *)(*(int *)(iVar3 + 0x24) + 200);
+        iStack_28 = *(int *)(iVar3 + 0x24) + 0xee;
         sVar2 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))
                           (iVar5,&stack0x00000000);
         (**(code **)(iVar1 + 0x74))((int)sVar2);
-        RenderTradeScreenCommoditySummaryRows_Impl();
+        iStack_20 = iStack_20 + -5;
+        iStack_28 = iStack_28 + -5;
+        RenderTradeScreenCommoditySummaryRows_Impl((TradeScreenPicture *)&arg1,&pvStack_2c,-1,0);
       }
-      local_4 = 0xffffffff;
+      local_4 = (int *)0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
       pcVar4 = pcVar4 + 4;
       iVar5 = iVar5 + 1;

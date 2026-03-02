@@ -4,8 +4,8 @@
 // Bucket: TRadioTextCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401195
-// GHIDRA_NAME TRadioTextCluster::thunk_DestructTRadioTextClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTRadioTextClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TRadioTextCluster::TRadioTextCluster_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TRadioTextCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTRadioTextClusterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,8 +13,7 @@
 /* Single-JMP thunk to DestructTRadioTextClusterAndMaybeFree */
 
 void * __thiscall
-TRadioTextCluster::thunk_DestructTRadioTextClusterAndMaybeFree
-          (TRadioTextCluster *this,byte freeSelfFlag)
+TRadioTextCluster::TRadioTextCluster_VtblSlot001(TRadioTextCluster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -24,15 +23,15 @@ TRadioTextCluster::thunk_DestructTRadioTextClusterAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403FC1
-// GHIDRA_NAME TRadioTextCluster::thunk_GetTRadioTextClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRadioTextClusterClassNamePointer(void)
+// GHIDRA_NAME TRadioTextCluster::TRadioTextCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TRadioTextCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTRadioTextClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTRadioTextClusterClassNamePointer */
 
-void * __cdecl TRadioTextCluster::thunk_GetTRadioTextClusterClassNamePointer(void)
+void * __cdecl TRadioTextCluster::TRadioTextCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -41,38 +40,59 @@ void * __cdecl TRadioTextCluster::thunk_GetTRadioTextClusterClassNamePointer(voi
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040533A
-// GHIDRA_NAME TRadioTextCluster::thunk_ConstructUiGoldLabelResourceEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiGoldLabelResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiGoldLabelResourceEntry
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x00407C07
+// GHIDRA_NAME TRadioTextCluster::thunk_SetSelectedTextOptionByTag
+// GHIDRA_PROTO void __thiscall thunk_SetSelectedTextOptionByTag(int nSelectedTag, bool fRedrawChangedEntries)
 
-/* Single-JMP thunk to ConstructUiGoldLabelResourceEntry */
-
-void __thiscall TRadioTextCluster::thunk_ConstructUiGoldLabelResourceEntry(TRadioTextCluster *this)
+void __thiscall
+TRadioTextCluster::thunk_SetSelectedTextOptionByTag
+          (TRadioTextCluster *this,int nSelectedTag,bool fRedrawChangedEntries)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  *(undefined ***)this = &g_vtblTRadioTextCluster;
-  *(undefined2 *)(this + 0x8c) = 0x4b;
-  *(undefined2 *)(this + 0x8e) = 0x49;
-  *(undefined2 *)(this + 0x90) = 0xffff;
-  *(undefined2 *)(this + 0x92) = 0;
-  *(undefined2 *)(this + 0x94) = 2;
+  int *piVar1;
+  int iVar2;
+  int *extraout_EAX;
+  int extraout_EAX_00;
+  int *extraout_EAX_01;
+  int extraout_EAX_02;
+  bool bVar3;
+  
+  if ((this->field88 != nSelectedTag) &&
+     ((nSelectedTag == 0x6e616461 ||
+      (iVar2 = (*(code *)this->field0_0x0[0x25])(nSelectedTag), iVar2 != 0)))) {
+    this->field88 = nSelectedTag;
+    thunk_InitializeSelectableTextOptionEntryIteratorContext();
+    thunk_BeginSelectableTextOptionEntryIterator();
+    thunk_IsSelectableTextOptionEntryIteratorValid();
+    piVar1 = extraout_EAX;
+    iVar2 = extraout_EAX_00;
+    while (iVar2 != 0) {
+      iVar2 = *piVar1;
+      (**(code **)(iVar2 + 0xc))();
+      bVar3 = piVar1[7] == this->field88;
+      if ((bVar3 != (bool)(char)piVar1[0x26]) &&
+         (*(bool *)(piVar1 + 0x26) = bVar3, fRedrawChangedEntries)) {
+        (**(code **)(iVar2 + 0xe4))();
+      }
+      thunk_AdvanceSelectableTextOptionEntryIterator();
+      thunk_IsSelectableTextOptionEntryIteratorValid();
+      piVar1 = extraout_EAX_01;
+      iVar2 = extraout_EAX_02;
+    }
+  }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E5F
-// GHIDRA_NAME TRadioTextCluster::thunk_WrapperFor_SetQuickDrawFillColor_At00579a60
-// GHIDRA_PROTO undefined thunk_WrapperFor_SetQuickDrawFillColor_At00579a60()
+// GHIDRA_NAME TRadioTextCluster::TRadioTextCluster_VtblSlot068
+// GHIDRA_PROTO void __cdecl TRadioTextCluster_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_SetQuickDrawFillColor_At00579a60
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_SetQuickDrawFillColor_At00579a60 */
 
-void TRadioTextCluster::thunk_WrapperFor_SetQuickDrawFillColor_At00579a60(void)
+void __cdecl TRadioTextCluster::TRadioTextCluster_VtblSlot068(void)
 
 {
   WrapperFor_SetQuickDrawFillColor_At00579a60();
@@ -80,15 +100,15 @@ void TRadioTextCluster::thunk_WrapperFor_SetQuickDrawFillColor_At00579a60(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408823
-// GHIDRA_NAME TRadioTextCluster::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579740_At00408823
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579740_At00408823()
+// GHIDRA_NAME TRadioTextCluster::TRadioTextCluster_VtblSlot055
+// GHIDRA_PROTO void __cdecl TRadioTextCluster_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At00579740
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At00579740 */
 
-void TRadioTextCluster::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579740_At00408823(void)
+void __cdecl TRadioTextCluster::TRadioTextCluster_VtblSlot055(void)
 
 {
   WrapperFor_thunk_NoOpUiLifecycleHook_At00579740();
@@ -96,19 +116,231 @@ void TRadioTextCluster::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579740_At
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409520
-// GHIDRA_NAME TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch
-// GHIDRA_PROTO void __thiscall thunk_HandleSelectableTextOptionEventDispatch(void)
+// GHIDRA_NAME TRadioTextCluster::TRadioTextCluster_VtblSlot015
+// GHIDRA_PROTO void __thiscall TRadioTextCluster_VtblSlot015(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleSelectableTextOptionEventDispatch
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleSelectableTextOptionEventDispatch */
 
-void __thiscall
-TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch(TRadioTextCluster *this)
+void __thiscall TRadioTextCluster::TRadioTextCluster_VtblSlot015(TRadioTextCluster *this)
 
 {
   HandleSelectableTextOptionEventDispatch(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00577030
+// GHIDRA_NAME TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext
+// GHIDRA_PROTO void __thiscall InitializeSetupRandomMapPictureDialogFromGameContext(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes setup-random-map dialog controls from game/global-map context, including flavor text, difficulty/random/history options, and UI text resources.
+// GHIDRA_COMMENT_END
+
+/* Initializes setup-random-map dialog controls from game/global-map context, including flavor text,
+   difficulty/random/history options, and UI text resources. */
+
+void __thiscall
+TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(TRadioTextCluster *this)
+
+{
+  short sVar1;
+  undefined **ppuVar2;
+  uint uVar3;
+  int *piVar4;
+  TCommand *this_00;
+  int *dst_ref_ptr;
+  int *dst_ref_ptr_00;
+  TRadioTextCluster *this_01;
+  TRadioTextCluster *this_02;
+  int arg1;
+  undefined4 *unaff_FS_OFFSET;
+  bool bVar5;
+  code *pcVar6;
+  code *pcVar7;
+  undefined4 uVar8;
+  code *pcVar9;
+  int aiStack_70 [2];
+  int iVar10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063697a;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_NoOpUiLifecycleHook();
+  thunk_EnsurePictWvDataGobLoadedBySlot(0);
+  *(undefined2 *)((int)g_pLocalizationTable + 0x114) = 0;
+  if (g_pGlobalMapState == (void *)0x0) {
+    uVar3 = GenerateThreadLocalRandom15();
+    *(short *)&this->field_0x9a = (short)((int)uVar3 % 7);
+    thunk_GenerateMappedFlavorTextByCurrentContextNation(&this->field_0x94);
+    this->field_0x98 = 0;
+  }
+  else {
+    AssignFromPtr(&this->field_0x94,(int *)((int)g_pGlobalMapState + 0x1c));
+    this->field_0x98 = *(undefined1 *)((int)g_pGlobalMapState + 0x20);
+    bVar5 = g_Apply_Nation_Selection_WordState_00698AB0 == 0xffff;
+    *(ushort *)&this->field_0x9a = g_Apply_Nation_Selection_WordState_00698AB0;
+    if (bVar5) {
+      uVar3 = GenerateThreadLocalRandom15();
+      *(short *)&this->field_0x9a = (short)((int)uVar3 % 7);
+    }
+    piVar4 = (int *)(*(code *)this->field0_0x0[0x25])();
+    (**(code **)(*piVar4 + 0xc))();
+    piVar4[0x1b] = (int)*(short *)&this->field_0x9a;
+  }
+  thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
+  pcVar6 = (code *)this->field0_0x0[0x25];
+  piVar4 = (int *)(*pcVar6)();
+  (**(code **)(*piVar4 + 0xc))();
+  *(undefined2 *)(piVar4 + 0x27) = 0xc;
+  g_bScenarioSetupModeActive = 0;
+  thunk_RebuildGlobalOrderManagersAndCapabilityState((int)g_pLocalizationTable,arg1);
+  g_pCursorControlPanel = (void *)(*pcVar6)();
+  (**(code **)(*(int *)g_pCursorControlPanel + 0xc))();
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x1e0))();
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x204))();
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x1c4))();
+  InitializeMainRoutineContextAndRun();
+  InitializeMainRoutineContextAndRun();
+  InitializeMainRoutineContextAndRun();
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758,0x1e,0x6e616d65);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x13,0x676c6f62);
+  if (*(int *)((int)g_pLocalizationTable + 0x44) == 0) {
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x14,0x63616e63);
+    iVar10 = 0x14;
+  }
+  else {
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x2e,0x63616e63);
+    iVar10 = 0x2e;
+  }
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,iVar10,0x636e636c);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x15,0x6f6b6179);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758,0x13,0x6d617020);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x17,0x64696666);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1a,0x636f756e);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1b,0x666c6167);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1c,0x636f6174);
+  piVar4 = (int *)(*pcVar6)();
+  iVar10 = *piVar4;
+  (**(code **)(iVar10 + 0xc))();
+  aiStack_70[1] = 0x57730e;
+  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,0x2b6a,0x2b6c);
+  (**(code **)(iVar10 + 0x1cc))();
+  piVar4 = (int *)(*pcVar6)();
+  (**(code **)(*piVar4 + 0xc))();
+  piVar4[0x1a] = (int)*(short *)&this->field_0x9a;
+  aiStack_70[1] = 0x577345;
+  this_00 = AllocateWithFallbackHandler();
+  if (this_00 == (TCommand *)0x0) {
+    this_00 = (TCommand *)0x0;
+  }
+  else {
+    TCommand::thunk_ConstructTurnEventPacketBase(this_00);
+    this_00->field0_0x0 = &PTR_thunk_GetTSpaceCommandClassNamePointer_00661b10;
+  }
+  aiStack_70[1] = 0;
+  aiStack_70[0] = 0;
+  thunk_InitializeRangePairAndResetCursor(this_00,0x4e415341,(int)g_pGlobalUiRootController);
+  *(TRadioTextCluster **)&this_00->field_0x18 = this;
+  *(undefined1 *)&this_00->field1c = 1;
+  aiStack_70[1] = 0x57739f;
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
+  aiStack_70[1] = 0;
+  aiStack_70[0] = 1;
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x1c4))();
+  piVar4 = (int *)(*pcVar6)();
+  (**(code **)(*piVar4 + 0xc))();
+  piVar4[0x18] = *(int *)((int)g_pStrategicMapViewSystem + 0x680);
+  sVar1 = *(short *)&this->field_0x9a;
+  piVar4[0x19] = (int)sVar1 * piVar4[0xd];
+  piVar4[0x1a] = 0;
+  piVar4[0x1b] = (sVar1 + 1) * piVar4[0xd];
+  piVar4[0x1c] = piVar4[0xe];
+  if (*(int *)((int)g_pLocalizationTable + 0x44) == 0) {
+    *(char *)((int)g_pLocalizationTable + 0x68) =
+         (char)*(undefined2 *)((int)g_pLocalizationTable + 0x62);
+    InitializeSharedStringRefFromEmpty();
+    thunk_GenerateMappedFlavorTextByCurrentContextNation(&g_SelectedSetupNationOrScenarioToken);
+    thunk_LoadProfileStringAndAssignSharedRef_At00409610
+              ((int)&stack0xffffff9c,0x698ae0,(int)g_SelectedSetupNationOrScenarioToken);
+    thunk_NormalizeRuntimeCredentialNameToken();
+    AssignFromPtr(&g_SelectedSetupNationOrScenarioToken,dst_ref_ptr_00);
+    ReleaseSharedStringRefIfNotEmpty();
+  }
+  else {
+    thunk_NormalizeRuntimeCredentialNameToken();
+    AssignFromPtr(&g_SelectedSetupNationOrScenarioToken,dst_ref_ptr);
+  }
+  ReleaseSharedStringRefIfNotEmpty();
+  thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
+  this_01 = (TRadioTextCluster *)(*pcVar6)();
+  (*(code *)this_01->field0_0x0[3])();
+  thunk_SetSelectedTextOptionByTag
+            (this_01,*(short *)((int)g_pLocalizationTable + 0x5e) + 0x64696630,false);
+  this_01->field90 = 0x2b6b;
+  piVar4 = (int *)(*pcVar6)();
+  iVar10 = *piVar4;
+  (**(code **)(iVar10 + 0xc))();
+  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,0x2b6a,0x2b6c);
+  InitializeSharedStringRefFromEmpty();
+  thunk_LoadUiStringResourceByGroupAndIndex();
+  (**(code **)(iVar10 + 0x1c8))();
+  piVar4 = (int *)(*pcVar6)();
+  aiStack_70[0] = *piVar4;
+  (**(code **)(aiStack_70[0] + 0xc))();
+  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,0x2b6a,0x2b6c);
+  thunk_LoadUiStringResourceByGroupAndIndex();
+  pcVar9 = (code *)&stack0xffffffa8;
+  (**(code **)(aiStack_70[0] + 0x1c8))();
+  this_02 = (TRadioTextCluster *)(*pcVar6)();
+  ppuVar2 = this_02->field0_0x0;
+  (*(code *)ppuVar2[3])();
+  thunk_SetSelectedTextOptionByTag
+            (this_02,(-(uint)(*(short *)((int)g_pLocalizationTable + 0x62) != 0) & 0xf6080510) +
+                     0x72616e64,false);
+  pcVar6 = (code *)ppuVar2[0x25];
+  this_02->field90 = 0x2b6b;
+  piVar4 = (int *)(*pcVar6)();
+  (**(code **)(*piVar4 + 0xc))();
+  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xc,0x2b6b,0x2b6c);
+  uVar8 = 0;
+  pcVar7 = (code *)0x1;
+  (**(code **)(*piVar4 + 0x1c4))();
+  thunk_LoadUiStringResourceByGroupAndIndex();
+  (**(code **)(*piVar4 + 0x1c8))(aiStack_70,0);
+  piVar4[0xf] = 0x68697374;
+  piVar4 = (int *)(*pcVar9)(0x72616e64);
+  iVar10 = *piVar4;
+  (**(code **)(iVar10 + 0xc))();
+  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xc,0x2b6b,0x2b6c);
+  (**(code **)(iVar10 + 0x1c4))(1,0);
+  thunk_LoadUiStringResourceByGroupAndIndex();
+  (**(code **)(iVar10 + 0x1c8))(&stack0xffffff7c,0);
+  ppuVar2 = this_01->field0_0x0;
+  piVar4[0xf] = 0x72616e64;
+  iVar10 = 0;
+  pcVar6 = (code *)ppuVar2[0x25];
+  do {
+    piVar4 = (int *)(*pcVar6)(iVar10 + 0x64696630);
+    (**(code **)(*piVar4 + 0xc))();
+    thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xc,0x2b6b,0x2b6c);
+    (**(code **)(*piVar4 + 0x1c4))(1,0);
+    thunk_LoadUiStringResourceByGroupAndIndex();
+    (**(code **)(*piVar4 + 0x1c8))(&stack0xffffff68,0);
+    piVar4[0xf] = iVar10;
+    iVar10 = iVar10 + 1;
+  } while (iVar10 < 5);
+  if ((this->field_0xa4 == '\0') && (*(int *)((int)g_pLocalizationTable + 0x44) == 0)) {
+    piVar4 = (int *)(*pcVar7)(0x636f756e);
+    (**(code **)(*piVar4 + 0xc))();
+  }
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = uVar8;
   return;
 }
 
@@ -134,16 +366,16 @@ void * __cdecl TRadioTextCluster::CreateTRadioTextClusterInstance(void)
   puStack_8 = &LAB_00636aea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &g_vtblTRadioTextCluster;
-    *(undefined2 *)(this + 0x8c) = 0x4b;
-    *(undefined2 *)(this + 0x8e) = 0x49;
-    *(undefined2 *)(this + 0x90) = 0xffff;
-    *(undefined2 *)(this + 0x92) = 0;
-    *(undefined2 *)(this + 0x94) = 2;
+    this->field0_0x0 = &g_vtblTRadioTextCluster;
+    *(undefined2 *)&this[1].field_0x4 = 0x4b;
+    *(undefined2 *)&this[1].field_0x6 = 0x49;
+    *(undefined2 *)&this[1].field_0x8 = 0xffff;
+    *(undefined2 *)&this[1].field_0xa = 0;
+    *(undefined2 *)&this[1].field9_0xc = 2;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -166,29 +398,6 @@ void * __cdecl TRadioTextCluster::GetTRadioTextClusterClassNamePointer(void)
   return &g_pClassDescTRadioTextCluster;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005796A0
-// GHIDRA_NAME TRadioTextCluster::ConstructUiGoldLabelResourceEntry
-// GHIDRA_PROTO void __thiscall ConstructUiGoldLabelResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Derived UI resource constructor used in call paths that bind tag 'gold' and localized string setup; initializes label geometry/sentinel defaults.
-// GHIDRA_COMMENT_END
-
-/* Derived UI resource constructor used in call paths that bind tag 'gold' and localized string
-   setup; initializes label geometry/sentinel defaults. */
-
-void __thiscall TRadioTextCluster::ConstructUiGoldLabelResourceEntry(TRadioTextCluster *this)
-
-{
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  *(undefined ***)this = &g_vtblTRadioTextCluster;
-  *(undefined2 *)(this + 0x8c) = 0x4b;
-  *(undefined2 *)(this + 0x8e) = 0x49;
-  *(undefined2 *)(this + 0x90) = 0xffff;
-  *(undefined2 *)(this + 0x92) = 0;
-  *(undefined2 *)(this + 0x94) = 2;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005796F0
 // GHIDRA_NAME TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTRadioTextClusterAndMaybeFree(byte freeSelfFlag)
@@ -197,29 +406,11 @@ void * __thiscall
 TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree(TRadioTextCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00579740
-// GHIDRA_NAME TRadioTextCluster::WrapperFor_thunk_NoOpUiLifecycleHook_At00579740
-// GHIDRA_PROTO undefined WrapperFor_thunk_NoOpUiLifecycleHook_At00579740()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=8, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void __fastcall TRadioTextCluster::WrapperFor_thunk_NoOpUiLifecycleHook_At00579740(int param_1)
-
-{
-  thunk_NoOpUiLifecycleHook();
-  *(undefined4 *)(param_1 + 0x88) = 0x6e616461;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579770
@@ -240,34 +431,14 @@ void __thiscall TRadioTextCluster::HandleSelectableTextOptionEventDispatch(TRadi
 
 {
   int in_stack_00000004;
-  void *in_stack_00000008;
+  PanelEventPayload *in_stack_00000008;
   int in_stack_0000000c;
   
   if (in_stack_00000004 == 0xd) {
-    thunk_SetSelectedTextOptionByTag(this,*(int *)((int)in_stack_00000008 + 0x1c),true);
+    thunk_SetSelectedTextOptionByTag(this,in_stack_00000008->controlTag1c,true);
   }
-  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00579A60
-// GHIDRA_NAME TRadioTextCluster::WrapperFor_SetQuickDrawFillColor_At00579a60
-// GHIDRA_PROTO undefined WrapperFor_SetQuickDrawFillColor_At00579a60()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around SetQuickDrawFillColor; instructions=23, call_insns=3, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around SetQuickDrawFillColor; instructions=23, call_insns=3,
-   internal_calls=1, unique_internal=1 */
-
-void __fastcall TRadioTextCluster::WrapperFor_SetQuickDrawFillColor_At00579a60(int param_1)
-
-{
-  if (-1 < *(short *)(param_1 + 0x90)) {
-    (**(code **)(*g_pUiRuntimeContext + 0x34))();
-    DrawFrameRectOrUpdateClipRegion();
-    SetQuickDrawFillColor(0);
-  }
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 

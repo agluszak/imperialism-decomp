@@ -4,15 +4,16 @@
 // Bucket: TMinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040518C
-// GHIDRA_NAME TMinisterView::thunk_DestroyTMinisterView
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTMinisterView(byte freeSelfFlag)
+// GHIDRA_NAME TMinisterView::thunk_DestructTMinisterViewAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTMinisterViewAndMaybeFree(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTMinisterView
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTMinisterView [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestroyTMinisterView */
+/* Single-JMP thunk to DestroyTMinisterView [FID:thunk_target_sync] */
 
-void * __thiscall TMinisterView::thunk_DestroyTMinisterView(TMinisterView *this,byte freeSelfFlag)
+void * __thiscall
+TMinisterView::thunk_DestructTMinisterViewAndMaybeFree(TMinisterView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -43,12 +44,12 @@ void * __cdecl TMinisterView::CreateTMinisterViewInstance(void)
   puStack_8 = &LAB_00632a0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetMinisterViewClassNamePointer_00655100;
-    *(undefined4 *)(this + 0x60) = 0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTMinisterViewClassNamePointer_00655100;
+    this[1].pVtable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -83,9 +84,9 @@ void * __cdecl TMinisterView::GetTMinisterViewClassNamePointer(void)
 void * __thiscall TMinisterView::ConstructTMinisterViewBaseState(TMinisterView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  this->pVtable = &PTR_thunk_GetMinisterViewClassNamePointer_00655100;
-  this[0x18].pVtable = (void *)0x0;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &PTR_thunk_GetTMinisterViewClassNamePointer_00655100;
+  this->field1_0x60 = (void *)0x0;
   return this;
 }
 
@@ -102,9 +103,9 @@ void * __thiscall
 TMinisterView::DestructTMinisterViewAndMaybeFree(TMinisterView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

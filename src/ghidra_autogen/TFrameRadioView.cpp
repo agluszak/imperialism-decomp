@@ -4,19 +4,55 @@
 // Bucket: TFrameRadioView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402A72
-// GHIDRA_NAME TFrameRadioView::thunk_RenderFrameRadioViewRaisedBorder_At00402a72
-// GHIDRA_PROTO void __thiscall thunk_RenderFrameRadioViewRaisedBorder_At00402a72(void)
+// GHIDRA_NAME TFrameRadioView::thunk_ConstructTFrameRadioViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTFrameRadioViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderFrameRadioViewRaisedBorder
+// GHIDRA_COMMENT Single-JMP thunk to RenderFrameRadioViewRaisedBorder [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RenderFrameRadioViewRaisedBorder */
+/* Single-JMP thunk to RenderFrameRadioViewRaisedBorder [FID:thunk_target_sync] */
 
-void __thiscall
-TFrameRadioView::thunk_RenderFrameRadioViewRaisedBorder_At00402a72(TFrameRadioView *this)
+void __thiscall TFrameRadioView::thunk_ConstructTFrameRadioViewBaseState(TFrameRadioView *this)
 
 {
   ConstructTFrameRadioViewBaseState(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404322
+// GHIDRA_NAME TFrameRadioView::thunk_scalar_deleting_destructor_00404322
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00404322(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TFrameRadioView::thunk_scalar_deleting_destructor_00404322(TFrameRadioView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404949
+// GHIDRA_NAME TFrameRadioView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060 */
+
+void __thiscall
+TFrameRadioView::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+          (TFrameRadioView *this)
+
+{
+  WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(this);
   return;
 }
 
@@ -67,9 +103,9 @@ void __thiscall TFrameRadioView::ConstructTFrameRadioViewBaseState(TFrameRadioVi
 {
   tagRECT local_10;
   
-  if (*(char *)&this[0x19].pVtable != '\0') {
-    local_10.right = (LONG)this[0xd].pVtable;
-    local_10.bottom = (LONG)this[0xe].pVtable;
+  if (this->field64 != 0) {
+    local_10.right = this->field49_0x34;
+    local_10.bottom = this->field50_0x38;
     local_10.left = 1;
     local_10.top = 1;
     SetQuickDrawFillColor(0);
@@ -77,6 +113,59 @@ void __thiscall TFrameRadioView::ConstructTFrameRadioViewBaseState(TFrameRadioVi
     OffsetRect(&local_10,-1,-1);
     SetQuickDrawFillColor(0xffffff);
     DrawFrameRectOrUpdateClipRegion();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE060
+// GHIDRA_NAME TFrameRadioView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
+// GHIDRA_COMMENT_END
+
+/* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
+
+void __thiscall
+TFrameRadioView::WrapperFor_HandleCityDialogToggleCommandOrForward_At004fe060(TFrameRadioView *this)
+
+{
+  void *pvVar1;
+  char cVar2;
+  undefined4 in_stack_00000004;
+  
+  switch(in_stack_00000004) {
+  case 10:
+    (**(code **)((int)this->pVtable + 0x40))(0x1f,this,0);
+    return;
+  default:
+    thunk_HandleCityDialogToggleCommandOrForward();
+    break;
+  case 0xc:
+    if (this->field64 == 0) {
+      pvVar1 = this->pVtable;
+      cVar2 = (**(code **)((int)pvVar1 + 0x28))();
+      if (cVar2 != '\0') {
+        (**(code **)((int)pvVar1 + 0x1c0))(1,0);
+      }
+    }
+    thunk_HandleCityDialogToggleCommandOrForward();
+    return;
+  case 0x1f:
+    pvVar1 = this->pVtable;
+    cVar2 = (**(code **)((int)pvVar1 + 0x28))();
+    if (cVar2 != '\0') {
+      (**(code **)((int)pvVar1 + 0x1c0))(1,1);
+      return;
+    }
+    break;
+  case 0x20:
+    pvVar1 = this->pVtable;
+    cVar2 = (**(code **)((int)pvVar1 + 0x28))();
+    if (cVar2 != '\0') {
+      (**(code **)((int)pvVar1 + 0x1c0))(0,1);
+      return;
+    }
   }
   return;
 }

@@ -3,49 +3,74 @@
 // Program: Imperialism.exe
 // Bucket: TSidewaysArrow.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404331
-// GHIDRA_NAME TSidewaysArrow::thunk_ConstructTradeQuantityArrowPictureEntry
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTradeQuantityArrowPictureEntry(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00401B3B
+// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow_VtblSlot104
+// GHIDRA_PROTO void __thiscall TSidewaysArrow_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleTradeArrowAutoRepeatTickAndDispatch
+// GHIDRA_COMMENT_END
 
-void * __thiscall
-TSidewaysArrow::thunk_ConstructTradeQuantityArrowPictureEntry(TSidewaysArrow *this)
+/* Single-JMP thunk to HandleTradeArrowAutoRepeatTickAndDispatch */
+
+void __thiscall
+TSidewaysArrow::TSidewaysArrow_VtblSlot104
+          (TSidewaysArrow *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  HandleTradeArrowAutoRepeatTickAndDispatch
+            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404331
+// GHIDRA_NAME TSidewaysArrow::thunk_ConstructTSidewaysArrowBaseState
+// GHIDRA_PROTO TSidewaysArrow * __thiscall thunk_ConstructTSidewaysArrowBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* [FID:thunk_target_sync] */
+
+TSidewaysArrow * __thiscall
+TSidewaysArrow::thunk_ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
 
 {
   TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
-  *(undefined ***)this = &g_vtblTSidewaysArrow;
-  *(undefined4 *)(this + 0x94) = 0;
+  this->field0_0x0 = &g_vtblTSidewaysArrow;
+  this->field94 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406C80
-// GHIDRA_NAME TSidewaysArrow::thunk_DestructTSidewaysArrowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSidewaysArrowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow_VtblSlot001
+// GHIDRA_PROTO TSidewaysArrow * __thiscall TSidewaysArrow_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTSidewaysArrowAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTSidewaysArrowAndMaybeFree */
 
-void * __thiscall
-TSidewaysArrow::thunk_DestructTSidewaysArrowAndMaybeFree(TSidewaysArrow *this,byte freeSelfFlag)
+TSidewaysArrow * __thiscall
+TSidewaysArrow::TSidewaysArrow_VtblSlot001(TSidewaysArrow *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TSidewaysArrow *pTVar1;
   
-  pvVar1 = DestructTSidewaysArrowAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTSidewaysArrowAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407847
-// GHIDRA_NAME TSidewaysArrow::thunk_GetTSidewaysArrowClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSidewaysArrowClassNamePointer(void)
+// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TSidewaysArrow_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTSidewaysArrowClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTSidewaysArrowClassNamePointer */
 
-void * __cdecl TSidewaysArrow::thunk_GetTSidewaysArrowClassNamePointer(void)
+void * __cdecl TSidewaysArrow::TSidewaysArrow_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -71,12 +96,12 @@ void * __cdecl TSidewaysArrow::CreateTSidewaysArrowInstance(void)
   puStack_8 = &LAB_0063754a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TUpDownPictureButton *)0x0) {
     TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(this);
-    *(undefined ***)this = &g_vtblTSidewaysArrow;
-    *(undefined4 *)(this + 0x94) = 0;
+    this->field0_0x0 = &g_vtblTSidewaysArrow;
+    this[1].field0_0x0 = (undefined **)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -101,29 +126,80 @@ void * __cdecl TSidewaysArrow::GetTSidewaysArrowClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B50
 // GHIDRA_NAME TSidewaysArrow::ConstructTSidewaysArrowBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTSidewaysArrowBaseState(void)
+// GHIDRA_PROTO TSidewaysArrow * __thiscall ConstructTSidewaysArrowBaseState(void)
 
-void * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
+TSidewaysArrow * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
 
 {
   TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
-  *(undefined ***)this = &g_vtblTSidewaysArrow;
-  *(undefined4 *)(this + 0x94) = 0;
+  this->field0_0x0 = &g_vtblTSidewaysArrow;
+  this->field94 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B80
 // GHIDRA_NAME TSidewaysArrow::DestructTSidewaysArrowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTSidewaysArrowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TSidewaysArrow * __thiscall DestructTSidewaysArrowAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall
+TSidewaysArrow * __thiscall
 TSidewaysArrow::DestructTSidewaysArrowAndMaybeFree(TSidewaysArrow *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00583BD0
+// GHIDRA_NAME TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch
+// GHIDRA_PROTO void __thiscall HandleTradeArrowAutoRepeatTickAndDispatch(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Trade auto-repeat dispatcher. Uses TradeControl vslots:
+// GHIDRA_COMMENT - slot +0x16c (CtrlSlot91): readiness gate using dispatchArg
+// GHIDRA_COMMENT - slot +0x40 (CtrlSlot16): emits split-arrow command dispatch
+// GHIDRA_COMMENT Command IDs observed: LEFT=0x64, RIGHT=0x65, synthetic tick path uses 100.
+// GHIDRA_COMMENT_END
+
+/* Trade auto-repeat dispatcher. Uses TradeControl vslots:
+   - slot +0x16c (CtrlSlot91): readiness gate using dispatchArg
+   - slot +0x40 (CtrlSlot16): emits split-arrow command dispatch
+   Command IDs observed: LEFT=0x64, RIGHT=0x65, synthetic tick path uses 100. */
+
+void __thiscall
+TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch
+          (TSidewaysArrow *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  undefined **ppuVar1;
+  char cVar2;
+  uint extraout_EAX;
+  int extraout_EAX_00;
+  
+  TControl::thunk_DispatchPictureResourceCommand
+            ((TControl *)this,(void *)nEventType,pEventSender,pEventDataA,
+             (PanelEventPayload *)pHitPayload);
+  if (nEventType != 2) {
+    thunk_GetTickCountDiv16();
+    if (this->field94 + 5U <= extraout_EAX) {
+      thunk_GetTickCountDiv16();
+      this->field94 = extraout_EAX_00;
+      if (nEventType == 0) {
+        this->field94 = extraout_EAX_00 + 10;
+      }
+      ppuVar1 = this->field0_0x0;
+      cVar2 = (*(code *)ppuVar1[0x5b])(pHitPayload);
+      if (cVar2 != '\0') {
+        if (this->field1c == 0x72676874) {
+          (*(code *)ppuVar1[0x10])(100);
+          return;
+        }
+        (*(code *)ppuVar1[0x10])(0x65,this,0);
+      }
+    }
+  }
+  return;
 }
 

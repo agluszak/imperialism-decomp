@@ -4,15 +4,15 @@
 // Bucket: TNetSelectPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401785
-// GHIDRA_NAME TNetSelectPicture::thunk_GetTNetSelectPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNetSelectPictureClassNamePointer(void)
+// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNetSelectPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNetSelectPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNetSelectPictureClassNamePointer */
 
-void * __cdecl TNetSelectPicture::thunk_GetTNetSelectPictureClassNamePointer(void)
+void * __cdecl TNetSelectPicture::TNetSelectPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,16 +22,15 @@ void * __cdecl TNetSelectPicture::thunk_GetTNetSelectPictureClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004056F5
-// GHIDRA_NAME TNetSelectPicture::thunk_HandleTNetSelectPictureCommandOkayCancelAndForward
-// GHIDRA_PROTO void __thiscall thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(void)
+// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_VtblSlot015
+// GHIDRA_PROTO void __thiscall TNetSelectPicture_VtblSlot015(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTNetSelectPictureCommandOkayCancelAndForward
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTNetSelectPictureCommandOkayCancelAndForward */
 
-void __thiscall
-TNetSelectPicture::thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(TNetSelectPicture *this)
+void __thiscall TNetSelectPicture::TNetSelectPicture_VtblSlot015(TNetSelectPicture *this)
 
 {
   HandleTNetSelectPictureCommandOkayCancelAndForward(this);
@@ -39,71 +38,39 @@ TNetSelectPicture::thunk_HandleTNetSelectPictureCommandOkayCancelAndForward(TNet
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407FDB
-// GHIDRA_NAME TNetSelectPicture::thunk_`scalar_deleting_destructor'
-// GHIDRA_PROTO undefined thunk_`scalar_deleting_destructor'()
+// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_thunk_scalar_deleting_destructor
+// GHIDRA_PROTO void * __thiscall TNetSelectPicture_thunk_scalar_deleting_destructor(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void TNetSelectPicture::thunk__scalar_deleting_destructor_(void)
+void * __thiscall
+TNetSelectPicture::TNetSelectPicture_thunk_scalar_deleting_destructor
+          (TNetSelectPicture *this,byte freeSelfFlag)
 
 {
-  _scalar_deleting_destructor_();
-  return;
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408A58
-// GHIDRA_NAME TNetSelectPicture::thunk_DestructTNetSelectPictureBaseState
-// GHIDRA_PROTO void __cdecl thunk_DestructTNetSelectPictureBaseState(void)
+// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_VtblSlot055
+// GHIDRA_PROTO void __cdecl TNetSelectPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNetSelectPictureBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTNetSelectPictureBaseState */
 
-void __cdecl TNetSelectPicture::thunk_DestructTNetSelectPictureBaseState(void)
+void __cdecl TNetSelectPicture::TNetSelectPicture_VtblSlot055(void)
 
 {
   DestructTNetSelectPictureBaseState();
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00576900
-// GHIDRA_NAME TNetSelectPicture::AllocateTNetSelectPictureInstance
-// GHIDRA_PROTO undefined AllocateTNetSelectPictureInstance()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x94-byte TNetSelectPicture-like instance, runs shared picture/base constructor, then installs vtable 0x6440D8.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0x94-byte TNetSelectPicture-like instance, runs shared picture/base constructor, then
-   installs vtable 0x6440D8. */
-
-TNoHilitePicture * TNetSelectPicture::AllocateTNetSelectPictureInstance(void)
-
-{
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006368aa;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
-  local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTNetSelectPicture;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576980
@@ -152,9 +119,9 @@ TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward(TNetSelect
 
 {
   code *pcVar1;
-  int *piVar2;
-  undefined4 uVar3;
-  int iVar4;
+  int iVar2;
+  int *piVar3;
+  undefined4 uVar4;
   int in_stack_00000004;
   int in_stack_00000008;
   
@@ -167,12 +134,12 @@ TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward(TNetSelect
     }
     else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179) {
       pcVar1 = *(code **)((int)this->pVtable + 0x94);
-      piVar2 = (int *)(*pcVar1)(0x70726f74);
-      iVar4 = *piVar2;
-      (**(code **)(iVar4 + 0xc))();
-      uVar3 = (**(code **)(iVar4 + 0x1c4))();
-      iVar4 = (*pcVar1)(uVar3);
-      ValidateGameFlowNameAndSelectionContext(*(undefined4 *)(iVar4 + 0x3c),1);
+      piVar3 = (int *)(*pcVar1)(0x70726f74);
+      iVar2 = *piVar3;
+      (**(code **)(iVar2 + 0xc))();
+      uVar4 = (**(code **)(iVar2 + 0x1c4))();
+      (*pcVar1)(uVar4);
+      ValidateGameFlowNameAndSelectionContext();
     }
   }
   thunk_HandleCityDialogToggleCommandOrForward();

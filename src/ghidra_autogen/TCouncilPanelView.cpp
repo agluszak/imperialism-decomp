@@ -21,16 +21,37 @@ void * __cdecl TCouncilPanelView::thunk_GetTCouncilPanelViewClassNamePointer(voi
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004062B2
-// GHIDRA_NAME TCouncilPanelView::thunk_Cluster_MapTileHint_004fb030
-// GHIDRA_PROTO void __thiscall thunk_Cluster_MapTileHint_004fb030(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00404C23
+// GHIDRA_NAME TCouncilPanelView::thunk_scalar_deleting_destructor_00404C23
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00404C23(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_004fb030
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_MapTileHint_004fb030 */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void __thiscall TCouncilPanelView::thunk_Cluster_MapTileHint_004fb030(TCouncilPanelView *this)
+void * __thiscall
+TCouncilPanelView::thunk_scalar_deleting_destructor_00404C23
+          (TCouncilPanelView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004062B2
+// GHIDRA_NAME TCouncilPanelView::thunk_ConstructTCouncilPanelViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTCouncilPanelViewBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_004fb030 [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Cluster_MapTileHint_004fb030 [FID:thunk_target_sync] */
+
+void __thiscall
+TCouncilPanelView::thunk_ConstructTCouncilPanelViewBaseState(TCouncilPanelView *this)
 
 {
   ConstructTCouncilPanelViewBaseState(this);
@@ -59,12 +80,12 @@ void * __cdecl TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
   puStack_8 = &LAB_00632faa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTCouncilPanelViewClassNamePointer_00640060;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &PTR_thunk_GetTCouncilPanelViewClassNamePointer_00640060;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -107,18 +128,20 @@ void __thiscall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(TCouncilP
   short extraout_AX_01;
   short extraout_AX_02;
   short extraout_AX_03;
-  void *this_00;
-  void *this_01;
-  void *this_02;
-  void *this_03;
-  void *this_04;
-  void *this_05;
-  void *this_06;
-  void *this_07;
-  void *this_08;
-  void *this_09;
-  void *this_10;
-  void *this_11;
+  THQButton *this_00;
+  THQButton *this_01;
+  THQButton *this_02;
+  THQButton *this_03;
+  THQButton *this_04;
+  THQButton *this_05;
+  THQButton *this_06;
+  THQButton *this_07;
+  THQButton *this_08;
+  THQButton *this_09;
+  THQButton *this_10;
+  THQButton *this_11;
+  int unaff_EBX;
+  int unaff_ESI;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   short sVar3;
@@ -142,8 +165,8 @@ void __thiscall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(TCouncilP
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
-  pvVar1 = this[0xd].pVtable;
-  local_4 = CONCAT31(local_4._1_3_,2);
+  pvVar1 = this->field49_0x34;
+  local_4._0_1_ = 2;
   local_18[0] = 0;
   local_1c = 0;
   local_1b = 0;
@@ -154,84 +177,77 @@ void __thiscall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(TCouncilP
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_1c);
   sVar2 = (short)((int)pvVar1 / 2);
   if (g_pDiplomacyTurnStateManager->selectedSourceNationSlot == -1) {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x34);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x34);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     sVar2 = sVar2 - extraout_AX / 2;
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 1,0x25);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2,0x24);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
   }
   else {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x35,local_20);
-    FormatStringWithVarArgsToSharedRef
-              (local_20,&g_szDecimalFormat,
-               ((int)(short)((int)((int)(short)g_pLocalizationTable[0xb] +
-                                  ((int)(short)g_pLocalizationTable[0xb] >> 0x1f & 3U)) >> 2) / 10)
-               * 10 + 0x717);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x35,local_20);
+    FormatStringWithVarArgsToSharedRef();
     scanBracketExpressions(g_pLocalizationTable,&local_1c,unaff_EDI);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     sVar3 = sVar2 - extraout_AX_00 / 2;
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3 + 1,0x25);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x24);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-    FormatOverlayTerrainLabelText(&stack0xffffffd4);
-    AssignStringSharedFromCStr(&g_TCouncil_Panel_View_Value_00696B10);
+    FormatOverlayTerrainLabelText();
+    AssignStringSharedFromCStr();
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset((sVar2 - extraout_AX_01) + 1,0x3d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 - extraout_AX_01,0x3c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
-    FormatStringWithVarArgsToSharedRef
-              (local_20,&g_szDecimalFormat,(int)g_pDiplomacyTurnStateManager->selectionFlagsA);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
+    FormatStringWithVarArgsToSharedRef();
     sVar3 = sVar2 + 4;
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 5,0x3d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x3c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
-    FormatOverlayTerrainLabelText(&stack0xffffffd4);
-    AssignStringSharedFromCStr(&g_TCouncil_Panel_View_Value_00696B10);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)local_20);
+    FormatOverlayTerrainLabelText();
+    AssignStringSharedFromCStr();
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset((sVar2 - extraout_AX_02) + 1,0x4d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 - extraout_AX_02,0x4c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
-    FormatStringWithVarArgsToSharedRef
-              (local_20,&g_szDecimalFormat,(int)g_pDiplomacyTurnStateManager->selectionFlagsB);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffd4);
+    FormatStringWithVarArgsToSharedRef();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 5,0x4d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)local_20);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x4c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x36,&stack0xffffffd4);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x36,&stack0xffffffd4);
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset((sVar2 - extraout_AX_03) + 1,0x5d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffd4);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 - extraout_AX_03,0x5c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_09);
-    FormatStringWithVarArgsToSharedRef
-              (local_20,&g_szDecimalFormat,(int)g_pDiplomacyTurnStateManager->selectionFlagsC);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_09);
+    FormatStringWithVarArgsToSharedRef();
+    SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 5,0x5d);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_10);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_10);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x5c);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_11);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_11);
   }
   local_10._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();

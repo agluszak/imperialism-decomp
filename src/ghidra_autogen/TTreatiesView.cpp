@@ -3,19 +3,69 @@
 // Program: Imperialism.exe
 // Bucket: TTreatiesView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040310C
-// GHIDRA_NAME TTreatiesView::thunk_RenderTreatiesViewHeaderAndOptionRows
-// GHIDRA_PROTO void __thiscall thunk_RenderTreatiesViewHeaderAndOptionRows(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0040271B
+// GHIDRA_NAME TTreatiesView::thunk_EnterDiplomacyTreatyActionSelectionMode
+// GHIDRA_PROTO void __thiscall thunk_EnterDiplomacyTreatyActionSelectionMode(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderTreatiesViewHeaderAndOptionRows
+// GHIDRA_COMMENT Single-JMP thunk to EnterDiplomacyTreatyActionSelectionMode
 // GHIDRA_COMMENT_END
 
-/* Thunk to RenderTreatiesViewHeaderAndOptionRows */
+/* Single-JMP thunk to EnterDiplomacyTreatyActionSelectionMode */
 
-void __thiscall TTreatiesView::thunk_RenderTreatiesViewHeaderAndOptionRows(TTreatiesView *this)
+void __thiscall TTreatiesView::thunk_EnterDiplomacyTreatyActionSelectionMode(TTreatiesView *this)
+
+{
+  TToolBarCluster::EnterDiplomacyTreatyActionSelectionMode((TToolBarCluster *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040310C
+// GHIDRA_NAME TTreatiesView::thunk_DestructTTreatiesViewAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTTreatiesViewAndMaybeFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk to RenderTreatiesViewHeaderAndOptionRows [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk to RenderTreatiesViewHeaderAndOptionRows [FID:thunk_target_sync] */
+
+void __thiscall TTreatiesView::thunk_DestructTTreatiesViewAndMaybeFree(TTreatiesView *this)
 
 {
   DestructTTreatiesViewAndMaybeFree(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040566E
+// GHIDRA_NAME TTreatiesView::thunk_BuildDiplomacyTreatyActionRowsFromRcsTagBase
+// GHIDRA_PROTO void __thiscall thunk_BuildDiplomacyTreatyActionRowsFromRcsTagBase(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BuildDiplomacyTreatyActionRowsFromRcsTagBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to BuildDiplomacyTreatyActionRowsFromRcsTagBase */
+
+void __thiscall
+TTreatiesView::thunk_BuildDiplomacyTreatyActionRowsFromRcsTagBase(TTreatiesView *this,int arg1)
+
+{
+  TToolBarCluster::BuildDiplomacyTreatyActionRowsFromRcsTagBase((TToolBarCluster *)this,arg1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407527
+// GHIDRA_NAME TTreatiesView::thunk_HandleDiplomacyTreatyActionTagSelection
+// GHIDRA_PROTO void __thiscall thunk_HandleDiplomacyTreatyActionTagSelection(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleDiplomacyTreatyActionTagSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleDiplomacyTreatyActionTagSelection */
+
+void __thiscall
+TTreatiesView::thunk_HandleDiplomacyTreatyActionTagSelection(TTreatiesView *this,int arg1,int arg2)
+
+{
+  HandleDiplomacyTreatyActionTagSelection(this,arg1,arg2);
   return;
 }
 
@@ -34,6 +84,25 @@ void * __cdecl TTreatiesView::thunk_GetTTreatiesViewClassNamePointer(void)
   void *pvVar1;
   
   pvVar1 = GetTTreatiesViewClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408558
+// GHIDRA_NAME TTreatiesView::thunk_scalar_deleting_destructor_00408558
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00408558(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTreatiesView::thunk_scalar_deleting_destructor_00408558(TTreatiesView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
   return pvVar1;
 }
 
@@ -59,12 +128,12 @@ void * __cdecl TTreatiesView::CreateTTreatiesViewInstance(void)
   puStack_8 = &LAB_00632d3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTTreatiesViewClassNamePointer_0063f878;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &PTR_thunk_GetTTreatiesViewClassNamePointer_0063f878;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -101,12 +170,14 @@ void __thiscall TTreatiesView::DestructTTreatiesViewAndMaybeFree(TTreatiesView *
 
 {
   short extraout_AX;
-  void *this_00;
-  void *this_01;
+  THQButton *this_00;
+  THQButton *this_01;
+  int unaff_EBX;
+  int unaff_EBP;
   int iVar1;
   short sVar2;
   short sVar3;
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
   undefined1 *local_3c;
   undefined2 local_38;
   undefined1 local_36;
@@ -114,25 +185,25 @@ void __thiscall TTreatiesView::DestructTTreatiesViewAndMaybeFree(TTreatiesView *
   undefined2 local_2c;
   undefined2 local_2a;
   short local_28 [8];
-  undefined4 local_18;
+  int local_18;
   undefined2 local_14;
   undefined2 local_12;
   uint local_10;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632d80;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   InitializeSharedStringRefFromEmpty();
   iVar1 = 0;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
   local_28[6] = 0x83;
   local_28[7] = 0x83;
-  local_4 = CONCAT31(local_4._1_3_,1);
+  local_4._0_1_ = 1;
   local_38._0_1_ = 0;
   local_38._1_1_ = 0;
   local_36 = 0;
@@ -152,36 +223,68 @@ void __thiscall TTreatiesView::DestructTTreatiesViewAndMaybeFree(TTreatiesView *
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&local_38);
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_3c);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
-  sVar2 = *(short *)&this[10].pVtable;
-  sVar3 = *(short *)&this[9].pVtable;
-  SetQuickDrawColorAndSyncGlobals();
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  sVar2 = this->field33_0x28;
+  sVar3 = this->field30_0x24;
+  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
   thunk_SetQuickDrawTextOriginWithContextOffset(-sVar3 + 0x49,-sVar2 + 0x170);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb4);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb4);
+  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
   thunk_SetQuickDrawTextOriginWithContextOffset(-sVar3 + 0x48,-sVar2 + 0x16f);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   do {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar1 + 6);
-    sVar3 = (&local_38)[iVar1] - *(short *)&this[10].pVtable;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,iVar1 + 6);
+    sVar3 = (&local_38)[iVar1] - this->field33_0x28;
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    sVar2 = (local_28[iVar1] - extraout_AX / 2) - *(short *)&this[9].pVtable;
-    SetQuickDrawColorAndSyncGlobals();
+    sVar2 = (local_28[iVar1] - extraout_AX / 2) - this->field30_0x24;
+    SetQuickDrawColorAndSyncGlobals(unaff_EBP);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 1,sVar3 + 1);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar2,sVar3);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb4);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb4);
     iVar1 = iVar1 + 1;
   } while (iVar1 < 7);
   local_3c = &stack0xffffffa0;
-  SetQuickDrawFillColor();
+  SetQuickDrawFillColor(0);
   local_10 = local_10 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
   local_10 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_18;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F7F80
+// GHIDRA_NAME TTreatiesView::HandleDiplomacyTreatyActionTagSelection
+// GHIDRA_PROTO void __thiscall HandleDiplomacyTreatyActionTagSelection(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT On command 0x0C, maps 4-char action tags to diplomacy action ids in this+0xBC.\nObserved mapping from tag integer form: 0rcs->2, 1rcs->3, 2rcs->4, 3rcs->5, 4rcs->6, 5rcs->14, 6rcs->15.\nThese align with treaty actions plus consulate/embassy action pair.
+// GHIDRA_COMMENT_END
+
+/* On command 0x0C, maps 4-char action tags to diplomacy action ids in this+0xBC.\nObserved mapping
+   from tag integer form: 0rcs->2, 1rcs->3, 2rcs->4, 3rcs->5, 4rcs->6, 5rcs->14, 6rcs->15.\nThese
+   align with treaty actions plus consulate/embassy action pair. */
+
+void __thiscall
+TTreatiesView::HandleDiplomacyTreatyActionTagSelection(TTreatiesView *this,int arg1,int arg2)
+
+{
+  uint uVar1;
+  int iVar2;
+  
+  if (arg1 == 0xc) {
+    uVar1 = *(uint *)(arg2 + 0x1c);
+    if (uVar1 < 0x73637235) {
+      iVar2 = uVar1 + 0x8c9c8dd2;
+    }
+    else {
+      iVar2 = uVar1 + 0x8c9c8dd9;
+    }
+    *(int *)((int)this->field60 + 0xbc) = iVar2;
+  }
+  TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
   return;
 }
 

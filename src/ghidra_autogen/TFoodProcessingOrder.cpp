@@ -4,21 +4,21 @@
 // Bucket: TFoodProcessingOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405B32
-// GHIDRA_NAME TFoodProcessingOrder::thunk_GetTFoodProcessingOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTFoodProcessingOrderRuntimeClass(void)
+// GHIDRA_NAME TFoodProcessingOrder::thunk_DestructTFoodProcessingOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTFoodProcessingOrderAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFoodProcessingOrderRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTFoodProcessingOrderRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTFoodProcessingOrderRuntimeClass. */
+/* Thunk forwarding to GetTFoodProcessingOrderRuntimeClass. [FID:thunk_target_sync] */
 
 void * __thiscall
-TFoodProcessingOrder::thunk_GetTFoodProcessingOrderRuntimeClass(TFoodProcessingOrder *this)
+TFoodProcessingOrder::thunk_DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -40,22 +40,6 @@ void * __cdecl TFoodProcessingOrder::thunk_GetTFoodProcessingOrderClassNamePoint
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004068A2
-// GHIDRA_NAME TFoodProcessingOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b7e30
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b7e30()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b7e30
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b7e30 */
-
-void TFoodProcessingOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b7e30(void)
-
-{
-  ConstructTFoodProcessingOrderBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7DF0
 // GHIDRA_NAME TFoodProcessingOrder::GetTFoodProcessingOrderClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTFoodProcessingOrderClassNamePointer(void)
@@ -73,7 +57,7 @@ void * __cdecl TFoodProcessingOrder::GetTFoodProcessingOrderClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E30
 // GHIDRA_NAME TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
-// GHIDRA_PROTO undefined ConstructTFoodProcessingOrderBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTFoodProcessingOrderBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -81,16 +65,17 @@ void * __cdecl TFoodProcessingOrder::GetTFoodProcessingOrderClassNamePointer(voi
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TFoodProcessingOrder * __thiscall
-TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
-          (TFoodProcessingOrder *param_1,byte param_2)
+void __thiscall
+TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState(TFoodProcessingOrder *this)
 
 {
-  thunk_GetTFoodProcessingOrderRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTFoodProcessingOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E60
@@ -108,7 +93,7 @@ TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOr
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

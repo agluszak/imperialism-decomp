@@ -3,33 +3,20 @@
 // Program: Imperialism.exe
 // Bucket: TNewspaperView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004022BB
-// GHIDRA_NAME TNewspaperView::thunk_GetTNewspaperViewTypeNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNewspaperViewTypeNamePointer(void)
-
-void * __cdecl TNewspaperView::thunk_GetTNewspaperViewTypeNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNewspaperViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D160
 // GHIDRA_NAME TNewspaperView::CreateTNewspaperView
-// GHIDRA_PROTO undefined CreateTNewspaperView()
+// GHIDRA_PROTO TNewspaperView * __cdecl CreateTNewspaperView(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Allocates and constructs a TNewspaperView picture resource entry object.
 // GHIDRA_COMMENT_END
 
 /* Allocates and constructs a TNewspaperView picture resource entry object. */
 
-undefined4 * TNewspaperView::CreateTNewspaperView(void)
+TNewspaperView * __cdecl TNewspaperView::CreateTNewspaperView(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNewspaperView *pTVar1;
+  TNewspaperView *pTVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -39,16 +26,16 @@ undefined4 * TNewspaperView::CreateTNewspaperView(void)
   puStack_8 = &LAB_0063551a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  pTVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
+  pTVar2 = (TNewspaperView *)0x0;
+  if (pTVar1 != (TNewspaperView *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTNewspaperViewTypeNamePointer_00641390;
-    puVar2 = puVar1;
+    pTVar1->pVtable = &PTR_thunk_GetTNewspaperViewClassNamePointer_00641390;
+    pTVar2 = pTVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D1E0

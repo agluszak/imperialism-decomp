@@ -21,17 +21,36 @@ void * __cdecl TMerchantBoyView::thunk_GetTMerchantBoyViewClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040664F
-// GHIDRA_NAME TMerchantBoyView::thunk_RenderMerchantBoyCommodityCountAndStatusLabel
-// GHIDRA_PROTO void __thiscall thunk_RenderMerchantBoyCommodityCountAndStatusLabel(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004045E3
+// GHIDRA_NAME TMerchantBoyView::thunk_scalar_deleting_destructor_004045E3
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004045E3(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderMerchantBoyCommodityCountAndStatusLabel
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Thunk to RenderMerchantBoyCommodityCountAndStatusLabel */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void __thiscall
-TMerchantBoyView::thunk_RenderMerchantBoyCommodityCountAndStatusLabel(TMerchantBoyView *this)
+void * __thiscall
+TMerchantBoyView::thunk_scalar_deleting_destructor_004045E3
+          (TMerchantBoyView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040664F
+// GHIDRA_NAME TMerchantBoyView::thunk_ConstructTMerchantBoyViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTMerchantBoyViewBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk to RenderMerchantBoyCommodityCountAndStatusLabel [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk to RenderMerchantBoyCommodityCountAndStatusLabel [FID:thunk_target_sync] */
+
+void __thiscall TMerchantBoyView::thunk_ConstructTMerchantBoyViewBaseState(TMerchantBoyView *this)
 
 {
   ConstructTMerchantBoyViewBaseState(this);
@@ -66,8 +85,8 @@ void * __cdecl TMerchantBoyView::GetTMerchantBoyViewClassNamePointer(void)
 void __thiscall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(TMerchantBoyView *this)
 
 {
-  void *this_00;
-  void *this_01;
+  THQButton *this_00;
+  THQButton *this_01;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_18;
   undefined4 uStack_c;
@@ -86,18 +105,18 @@ void __thiscall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(TMerchantBo
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   thunk_FormatLocalizedCommodityCountLabelByIndex();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0x18);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  if (*(short *)((int)this[0x18].pVtable + 2) == 0) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  if (*(short *)((int)this->field93_0x60 + 2) == 0) {
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   }
   else {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_MeasureTextExtentWithCachedQuickDrawStyle();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0x26);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-  SetQuickDrawStrokeColor();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  TCivDescription::SetQuickDrawStrokeColor();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_18;
@@ -127,12 +146,12 @@ void * __cdecl TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
   puStack_8 = &LAB_00630a7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTItemBoyViewClassNamePointer_0064e5e0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTItemBoyViewClassNamePointer_0064e5e0;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

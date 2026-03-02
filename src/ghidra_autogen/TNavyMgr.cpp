@@ -3,16 +3,63 @@
 // Program: Imperialism.exe
 // Bucket: TNavyMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004030B2
-// GHIDRA_NAME TNavyMgr::thunk_GetNavyManagerTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetNavyManagerTypeName(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004010A0
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot003
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot003(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetNavyManagerTypeName
+// GHIDRA_COMMENT Single-JMP thunk wrapper
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetNavyManagerTypeName */
+/* Single-JMP thunk wrapper */
 
-void * __cdecl TNavyMgr::thunk_GetNavyManagerTypeName(void)
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot003(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004018FC
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot006
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot006(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeserializeNavyManager
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeserializeNavyManager */
+
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot006(void)
+
+{
+  DeserializeNavyManager();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402D6F
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot005
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot005(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SerializeNavyManager
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SerializeNavyManager */
+
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot005(void)
+
+{
+  SerializeNavyManager();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004030B2
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNavyMgr_VtblSlot000(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetNavyManagerTypeName [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetNavyManagerTypeName [FID:thunk_target_sync] */
+
+void * __cdecl TNavyMgr::TNavyMgr_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,19 +68,93 @@ void * __cdecl TNavyMgr::thunk_GetNavyManagerTypeName(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004051AF
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot007
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot007(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ClearNavyOrderLists
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ClearNavyOrderLists */
+
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot007(void)
+
+{
+  ClearNavyOrderLists();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405C59
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot009
+// GHIDRA_PROTO void __thiscall TNavyMgr_VtblSlot009(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleTurnEventVtableSlot24CopyPayloadBuffer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleTurnEventVtableSlot24CopyPayloadBuffer */
+
+void __thiscall TNavyMgr::TNavyMgr_VtblSlot009(TNavyMgr *this)
+
+{
+  HandleTurnEventVtableSlot24CopyPayloadBuffer(this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004068CA
-// GHIDRA_NAME TNavyMgr::thunk_DestroyNavyManager
-// GHIDRA_PROTO void __cdecl thunk_DestroyNavyManager(void)
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot001
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot001(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyNavyManager
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyNavyManager */
 
-void __cdecl TNavyMgr::thunk_DestroyNavyManager(void)
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot001(void)
 
 {
   DestroyNavyManager();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407C57
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot002
+// GHIDRA_PROTO void __thiscall TNavyMgr_VtblSlot002(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleTurnEventVtableSlot08ConditionalDispatch
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleTurnEventVtableSlot08ConditionalDispatch */
+
+void __thiscall TNavyMgr::TNavyMgr_VtblSlot002(TNavyMgr *this,int arg1)
+
+{
+  TControl::HandleTurnEventVtableSlot08ConditionalDispatch((TControl *)this,arg1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408625
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot004
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot004(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to NoOpTurnEventStateVtableSlot10
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to NoOpTurnEventStateVtableSlot10 */
+
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot004(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408684
+// GHIDRA_NAME TNavyMgr::TNavyMgr_VtblSlot008
+// GHIDRA_PROTO void __cdecl TNavyMgr_VtblSlot008(void)
+
+void __cdecl TNavyMgr::TNavyMgr_VtblSlot008(void)
+
+{
+  InvokeObjectVtableMethod24();
   return;
 }
 
@@ -50,21 +171,5 @@ void * __cdecl TNavyMgr::GetTNavyMgrClassNamePointer(void)
 
 {
   return &g_pClassDescTNavyMgr;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005565C0
-// GHIDRA_NAME TNavyMgr::DestroyNavyManager
-// GHIDRA_PROTO void __cdecl DestroyNavyManager(void)
-
-void __cdecl TNavyMgr::DestroyNavyManager(void)
-
-{
-  byte in_stack_00000004;
-  
-  thunk_ResetNavyManagerVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
 }
 

@@ -3,27 +3,9 @@
 // Program: Imperialism.exe
 // Bucket: THandleStream.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A9E
-// GHIDRA_NAME THandleStream::thunk_AdvanceHandleStreamPositionAndTrackExtent_At00403a9e
-// GHIDRA_PROTO void __thiscall thunk_AdvanceHandleStreamPositionAndTrackExtent_At00403a9e(int handle, int delta)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AdvanceHandleStreamPositionAndTrackExtent
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AdvanceHandleStreamPositionAndTrackExtent */
-
-void __thiscall
-THandleStream::thunk_AdvanceHandleStreamPositionAndTrackExtent_At00403a9e
-          (THandleStream *this,int handle,int delta)
-
-{
-  CreateTHandleStreamInstance(this,handle,delta);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00403E40
-// GHIDRA_NAME THandleStream::thunk_DestructTHandleStreamAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTHandleStreamAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME THandleStream::thunk_DestructTHandleStreamAndMaybeFree_At00403e40
+// GHIDRA_PROTO void * __thiscall thunk_DestructTHandleStreamAndMaybeFree_At00403e40(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTHandleStreamAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,7 +13,8 @@ THandleStream::thunk_AdvanceHandleStreamPositionAndTrackExtent_At00403a9e
 /* Single-JMP thunk to DestructTHandleStreamAndMaybeFree */
 
 void * __thiscall
-THandleStream::thunk_DestructTHandleStreamAndMaybeFree(THandleStream *this,byte freeSelfFlag)
+THandleStream::thunk_DestructTHandleStreamAndMaybeFree_At00403e40
+          (THandleStream *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -40,32 +23,80 @@ THandleStream::thunk_DestructTHandleStreamAndMaybeFree(THandleStream *this,byte 
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405E52
+// GHIDRA_NAME THandleStream::thunk_OrphanCallChain_C1_I16_00489760_At00405e52
+// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I16_00489760_At00405e52(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I16_00489760
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanCallChain_C1_I16_00489760 */
+
+void __cdecl THandleStream::thunk_OrphanCallChain_C1_I16_00489760_At00405e52(void)
+
+{
+  OrphanCallChain_C1_I16_00489760();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406483
+// GHIDRA_NAME THandleStream::thunk_OrphanCallChain_C3_I20_004896a0_At00406483
+// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C3_I20_004896a0_At00406483(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C3_I20_004896a0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanCallChain_C3_I20_004896a0 */
+
+void __cdecl THandleStream::thunk_OrphanCallChain_C3_I20_004896a0_At00406483(void)
+
+{
+  OrphanCallChain_C3_I20_004896a0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406CC1
-// GHIDRA_NAME THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0
-// GHIDRA_PROTO undefined thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0()
+// GHIDRA_NAME THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0_At00406cc1
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0_At00406cc1(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At004897a0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At004897a0 */
 
-void THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0(void)
+void __cdecl THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0_At00406cc1(void)
 
 {
   WrapperFor_MoveMemoryOverlapSafe_At004897a0();
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004075F4
+// GHIDRA_NAME THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At00489810_At004075f4
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_MoveMemoryOverlapSafe_At00489810_At004075f4(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At00489810
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At00489810 */
+
+void __cdecl THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At00489810_At004075f4(void)
+
+{
+  WrapperFor_MoveMemoryOverlapSafe_At00489810();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B03
-// GHIDRA_NAME THandleStream::thunk_GetTHandleStreamClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTHandleStreamClassNamePointer(void)
+// GHIDRA_NAME THandleStream::thunk_GetTHandleStreamClassNamePointer_At00407b03
+// GHIDRA_PROTO void * __cdecl thunk_GetTHandleStreamClassNamePointer_At00407b03(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTHandleStreamClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTHandleStreamClassNamePointer */
 
-void * __cdecl THandleStream::thunk_GetTHandleStreamClassNamePointer(void)
+void * __cdecl THandleStream::thunk_GetTHandleStreamClassNamePointer_At00407b03(void)
 
 {
   void *pvVar1;
@@ -88,10 +119,10 @@ void __thiscall THandleStream::CreateTHandleStreamInstance(THandleStream *this,i
 {
   int iVar1;
   
-  iVar1 = *(int *)(this + 4) + delta;
-  *(int *)(this + 4) = iVar1;
-  if (*(int *)(this + 8) < iVar1) {
-    *(int *)(this + 8) = iVar1;
+  iVar1 = this->field04 + delta;
+  this->field04 = iVar1;
+  if (this->field08 < iVar1) {
+    this->field08 = iVar1;
   }
   return;
 }
@@ -119,11 +150,11 @@ void __fastcall THandleStream::ConstructTHandleStreamBaseState(THandleStream *pT
 
 {
   *(undefined ***)pThis = &g_vtblTHandleStream;
-  *(undefined4 *)(pThis + 0x10) = 1;
-  *(undefined4 *)(pThis + 4) = 0;
-  *(undefined4 *)(pThis + 8) = 0;
-  pThis[0x14] = (THandleStream)0x0;
-  *(undefined4 *)(pThis + 0xc) = 0;
+  pThis->field10 = 1;
+  pThis->field04 = 0;
+  pThis->field08 = 0;
+  *(undefined1 *)(pThis + 1) = 0;
+  pThis->field0c = 0;
   return;
 }
 
@@ -137,39 +168,8 @@ THandleStream::DestructTHandleStreamAndMaybeFree(THandleStream *this,byte freeSe
 {
   DestructTHandleStreamAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004897A0
-// GHIDRA_NAME THandleStream::WrapperFor_MoveMemoryOverlapSafe_At004897a0
-// GHIDRA_PROTO undefined WrapperFor_MoveMemoryOverlapSafe_At004897a0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around MoveMemoryOverlapSafe; instructions=30, call_insns=3, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around MoveMemoryOverlapSafe; instructions=30, call_insns=3,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall
-THandleStream::WrapperFor_MoveMemoryOverlapSafe_At004897a0
-          (int param_1,undefined4 param_2,int param_3)
-
-{
-  int iVar1;
-  LPVOID pvVar2;
-  
-  iVar1 = *(int *)(param_1 + 0xc) - *(int *)(param_1 + 8);
-  if (iVar1 < param_3) {
-    param_3 = iVar1;
-  }
-  if (0 < param_3) {
-    pvVar2 = GlobalLock(*(HGLOBAL *)(param_1 + 4));
-    MoveMemoryOverlapSafe(param_2,(int)pvVar2 + *(int *)(param_1 + 8),param_3);
-    GlobalUnlock(*(HGLOBAL *)(param_1 + 4));
-    *(int *)(param_1 + 8) = *(int *)(param_1 + 8) + param_3;
-  }
-  return;
 }
 

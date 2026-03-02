@@ -3,22 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TRadioText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040351C
-// GHIDRA_NAME TRadioText::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579490_At0040351c
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579490_At0040351c()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At00579490
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At00579490 */
-
-void TRadioText::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00579490_At0040351c(void)
-
-{
-  ConstructTRadioTextBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040624E
 // GHIDRA_NAME TRadioText::thunk_GetTRadioTextClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTRadioTextClassNamePointer(void)
@@ -35,41 +19,6 @@ void * __cdecl TRadioText::thunk_GetTRadioTextClassNamePointer(void)
   
   pvVar1 = GetTRadioTextClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005793F0
-// GHIDRA_NAME TRadioText::CreateSelectableTextOptionEntry
-// GHIDRA_PROTO undefined CreateSelectableTextOptionEntry()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocator wrapper for ConstructSelectableTextOptionEntry (size 0x9C).
-// GHIDRA_COMMENT_END
-
-/* Allocator wrapper for ConstructSelectableTextOptionEntry (size 0x9C). */
-
-TDropShadowText * TRadioText::CreateSelectableTextOptionEntry(void)
-
-{
-  TDropShadowText *this;
-  TDropShadowText *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00636aca;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TDropShadowText *)AllocateWithFallbackHandler(0x9c);
-  local_4 = 0;
-  pTVar1 = (TDropShadowText *)0x0;
-  if (this != (TDropShadowText *)0x0) {
-    TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTRadioTextClassNamePointer_00642b18;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579470
@@ -89,7 +38,7 @@ void * __cdecl TRadioText::GetTRadioTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579490
 // GHIDRA_NAME TRadioText::ConstructTRadioTextBaseState
-// GHIDRA_PROTO undefined ConstructTRadioTextBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTRadioTextBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -97,7 +46,7 @@ void * __cdecl TRadioText::GetTRadioTextClassNamePointer(void)
 /* [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1,
    internal_calls=1, unique_internal=1 */
 
-void TRadioText::ConstructTRadioTextBaseState(void)
+void __thiscall TRadioText::ConstructTRadioTextBaseState(TRadioText *this)
 
 {
   thunk_NoOpUiLifecycleHook();

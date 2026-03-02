@@ -4,16 +4,16 @@
 // Bucket: TCityInteriorMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040461A
-// GHIDRA_NAME TCityInteriorMinister::thunk_DestroyTCityInteriorMinister
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTCityInteriorMinister(byte freeSelfFlag)
+// GHIDRA_NAME TCityInteriorMinister::thunk_DestructTCityInteriorMinisterAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTCityInteriorMinisterAndMaybeFree(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTCityInteriorMinister
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTCityInteriorMinister [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestroyTCityInteriorMinister */
+/* Single-JMP thunk to DestroyTCityInteriorMinister [FID:thunk_target_sync] */
 
 void * __thiscall
-TCityInteriorMinister::thunk_DestroyTCityInteriorMinister
+TCityInteriorMinister::thunk_DestructTCityInteriorMinisterAndMaybeFree
           (TCityInteriorMinister *this,byte freeSelfFlag)
 
 {
@@ -24,16 +24,16 @@ TCityInteriorMinister::thunk_DestroyTCityInteriorMinister
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406D5C
-// GHIDRA_NAME TCityInteriorMinister::thunk_ClearCityInteriorMinisterSlotByIndex_At00406d5c
-// GHIDRA_PROTO void __thiscall thunk_ClearCityInteriorMinisterSlotByIndex_At00406d5c(int slotIndex)
+// GHIDRA_NAME TCityInteriorMinister::thunk_CreateTCityInteriorMinisterInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTCityInteriorMinisterInstance(int slotIndex)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ClearCityInteriorMinisterSlotByIndex
+// GHIDRA_COMMENT Single-JMP thunk to ClearCityInteriorMinisterSlotByIndex [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ClearCityInteriorMinisterSlotByIndex */
+/* Single-JMP thunk to ClearCityInteriorMinisterSlotByIndex [FID:thunk_target_sync] */
 
 void __thiscall
-TCityInteriorMinister::thunk_ClearCityInteriorMinisterSlotByIndex_At00406d5c
+TCityInteriorMinister::thunk_CreateTCityInteriorMinisterInstance
           (TCityInteriorMinister *this,int slotIndex)
 
 {
@@ -55,7 +55,7 @@ TCityInteriorMinister::CreateTCityInteriorMinisterInstance
           (TCityInteriorMinister *this,int slotIndex)
 
 {
-  *(undefined2 *)((int)&this[0x56].pVtable + slotIndex * 2) = 0;
+  *(undefined2 *)((int)&this[1].pVtable + slotIndex * 2) = 0;
   return;
 }
 
@@ -90,7 +90,7 @@ TCityInteriorMinister::DestructTCityInteriorMinisterAndMaybeFree
 {
   DestroyTCityInteriorMinister_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

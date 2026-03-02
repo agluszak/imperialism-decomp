@@ -4,8 +4,8 @@
 // Bucket: TNetGameSelectPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F29
-// GHIDRA_NAME TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-// GHIDRA_PROTO void __thiscall thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
+// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot015
+// GHIDRA_PROTO void __thiscall TNetGameSelectPicture_VtblSlot015(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
 // GHIDRA_COMMENT_END
@@ -13,8 +13,7 @@
 /* Single-JMP thunk to HandleTNetGameSelectPictureCommandHostJoinCancelAndForward */
 
 void __thiscall
-TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-          (TNetGameSelectPicture *this)
+TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot015(TNetGameSelectPicture *this)
 
 {
   HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(this);
@@ -22,8 +21,8 @@ TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAnd
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406401
-// GHIDRA_NAME TNetGameSelectPicture::thunk_DestructTNetGameSelectPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNetGameSelectPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TNetGameSelectPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNetGameSelectPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,7 +30,7 @@ TNetGameSelectPicture::thunk_HandleTNetGameSelectPictureCommandHostJoinCancelAnd
 /* Single-JMP thunk to DestructTNetGameSelectPictureAndMaybeFree */
 
 void * __thiscall
-TNetGameSelectPicture::thunk_DestructTNetGameSelectPictureAndMaybeFree
+TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot001
           (TNetGameSelectPicture *this,byte freeSelfFlag)
 
 {
@@ -42,15 +41,15 @@ TNetGameSelectPicture::thunk_DestructTNetGameSelectPictureAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004073E2
-// GHIDRA_NAME TNetGameSelectPicture::thunk_InitializeRuntimeSelectionCredentialsFromProvider
-// GHIDRA_PROTO void __cdecl thunk_InitializeRuntimeSelectionCredentialsFromProvider(void)
+// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055
+// GHIDRA_PROTO void __cdecl TNetGameSelectPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRuntimeSelectionCredentialsFromProvider
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRuntimeSelectionCredentialsFromProvider */
 
-void __cdecl TNetGameSelectPicture::thunk_InitializeRuntimeSelectionCredentialsFromProvider(void)
+void __cdecl TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055(void)
 
 {
   InitializeRuntimeSelectionCredentialsFromProvider();
@@ -58,15 +57,15 @@ void __cdecl TNetGameSelectPicture::thunk_InitializeRuntimeSelectionCredentialsF
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408D23
-// GHIDRA_NAME TNetGameSelectPicture::thunk_GetTNetGameSelectPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNetGameSelectPictureClassNamePointer(void)
+// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNetGameSelectPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNetGameSelectPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNetGameSelectPictureClassNamePointer */
 
-void * __cdecl TNetGameSelectPicture::thunk_GetTNetGameSelectPictureClassNamePointer(void)
+void * __cdecl TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -91,7 +90,7 @@ TNetGameSelectPicture::DestructTNetGameSelectPictureAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -111,24 +110,6 @@ void * __cdecl TNetGameSelectPicture::GetTNetGameSelectPictureClassNamePointer(v
   return &g_pClassDescTNetGameSelectPicture;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00576B90
-// GHIDRA_NAME TNetGameSelectPicture::InitializeRuntimeSelectionCredentialsFromProvider
-// GHIDRA_PROTO void __cdecl InitializeRuntimeSelectionCredentialsFromProvider(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Copies/initializes base state from provider and initializes runtime selection credentials/connect context.
-// GHIDRA_COMMENT_END
-
-/* Copies/initializes base state from provider and initializes runtime selection credentials/connect
-   context. */
-
-void __cdecl TNetGameSelectPicture::InitializeRuntimeSelectionCredentialsFromProvider(void)
-
-{
-  thunk_NoOpUiLifecycleHook();
-  thunk_InitializeRuntimeSelectionCredentialsFromProviderAndConnect();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00576BC0
 // GHIDRA_NAME TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
 // GHIDRA_PROTO void __thiscall HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
@@ -144,29 +125,29 @@ TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForwar
           (TNetGameSelectPicture *this)
 
 {
-  int iVar1;
-  code *pcVar2;
-  int *piVar3;
-  undefined4 uVar4;
+  code *pcVar1;
+  int *piVar2;
+  undefined4 uVar3;
+  int iVar4;
   int in_stack_00000004;
   int in_stack_00000008;
   
   if (((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) {
-    iVar1 = *(int *)(in_stack_00000008 + 0x1c);
-    if (iVar1 == 0x636e636c) {
+    iVar4 = *(int *)(in_stack_00000008 + 0x1c);
+    if (iVar4 == 0x636e636c) {
       thunk_ResetGameFlowStateAndPostTurnEvent5DCAlt();
     }
-    else if (iVar1 == 0x686f7374) {
+    else if (iVar4 == 0x686f7374) {
       thunk_AssignStringAtB4FromB0AndResetState40();
     }
-    else if (iVar1 == 0x6a6f696e) {
-      pcVar2 = *(code **)(*(int *)this + 0x94);
-      piVar3 = (int *)(*pcVar2)(0x67616d65);
-      iVar1 = *piVar3;
-      (**(code **)(iVar1 + 0xc))();
-      uVar4 = (**(code **)(iVar1 + 0x1c4))();
-      (*pcVar2)(uVar4);
-      thunk_ApplyJoinGameSelectionAndPostTurnEvent5E4();
+    else if (iVar4 == 0x6a6f696e) {
+      pcVar1 = *(code **)(this->field0_0x0 + 0x94);
+      piVar2 = (int *)(*pcVar1)(0x67616d65);
+      iVar4 = *piVar2;
+      (**(code **)(iVar4 + 0xc))();
+      uVar3 = (**(code **)(iVar4 + 0x1c4))();
+      iVar4 = (*pcVar1)(uVar3);
+      thunk_ApplyJoinGameSelectionAndPostTurnEvent5E4(g_pGameFlowState,*(int *)(iVar4 + 0x3c));
     }
   }
   thunk_HandleCityDialogToggleCommandOrForward();

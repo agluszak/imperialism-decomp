@@ -4,15 +4,15 @@
 // Bucket: THelpWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404BF1
-// GHIDRA_NAME THelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
-// GHIDRA_PROTO undefined thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70()
+// GHIDRA_NAME THelpWindow::THelpWindow_VtblSlot040
+// GHIDRA_PROTO void __cdecl THelpWindow_VtblSlot040(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70 */
 
-void THelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
+void __cdecl THelpWindow::THelpWindow_VtblSlot040(void)
 
 {
   WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70();
@@ -20,15 +20,15 @@ void THelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406131
-// GHIDRA_NAME THelpWindow::thunk_GetTHelpWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTHelpWindowClassNamePointer(void)
+// GHIDRA_NAME THelpWindow::THelpWindow_VtblSlot000
+// GHIDRA_PROTO void * __cdecl THelpWindow_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTHelpWindowClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTHelpWindowClassNamePointer */
 
-void * __cdecl THelpWindow::thunk_GetTHelpWindowClassNamePointer(void)
+void * __cdecl THelpWindow::THelpWindow_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -38,39 +38,21 @@ void * __cdecl THelpWindow::thunk_GetTHelpWindowClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406BEA
-// GHIDRA_NAME THelpWindow::thunk_DestructTHelpWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTHelpWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME THelpWindow::THelpWindow_VtblSlot001
+// GHIDRA_PROTO void * __thiscall THelpWindow_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTHelpWindowAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTHelpWindowAndMaybeFree */
 
-void * __thiscall
-THelpWindow::thunk_DestructTHelpWindowAndMaybeFree(THelpWindow *this,byte freeSelfFlag)
+void * __thiscall THelpWindow::THelpWindow_VtblSlot001(THelpWindow *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTHelpWindowAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040834B
-// GHIDRA_NAME THelpWindow::thunk_ConstructUiWindowResourceEntryType572C0
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiWindowResourceEntryType572C0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiWindowResourceEntryType572C0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiWindowResourceEntryType572C0 */
-
-void __thiscall THelpWindow::thunk_ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
-
-{
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
-  *(undefined ***)this = &g_vtblTHelpWindow;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504B50
@@ -85,8 +67,8 @@ void __thiscall THelpWindow::thunk_ConstructUiWindowResourceEntryType572C0(THelp
 void * __cdecl THelpWindow::CreateTHelpWindowInstance(void)
 
 {
-  TFloatWindow *this;
-  TFloatWindow *pTVar1;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -96,12 +78,12 @@ void * __cdecl THelpWindow::CreateTHelpWindowInstance(void)
   puStack_8 = &LAB_0063366a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TFloatWindow *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TFloatWindow *)0x0;
-  if (this != (TFloatWindow *)0x0) {
-    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340(this);
-    *(undefined ***)this = &g_vtblTHelpWindow;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    (this->base).pVtable = &g_vtblTHelpWindow;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -136,8 +118,8 @@ void * __cdecl THelpWindow::GetTHelpWindowClassNamePointer(void)
 void __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
 
 {
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
-  *(undefined ***)this = &g_vtblTHelpWindow;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  this->field0_0x0 = &g_vtblTHelpWindow;
   return;
 }
 
@@ -150,26 +132,8 @@ void * __thiscall THelpWindow::DestructTHelpWindowAndMaybeFree(THelpWindow *this
 {
   DestructTWindowViewAndUnlinkGlobalLists();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00504C70
-// GHIDRA_NAME THelpWindow::WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
-// GHIDRA_PROTO undefined WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ResetChildSelectionAndNotifyParent468Alt; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around ResetChildSelectionAndNotifyParent468Alt; instructions=4,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-void THelpWindow::WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
-
-{
-  ResetChildSelectionAndNotifyParent468Alt();
-  *(undefined4 *)((int)g_pHelpManager + 8) = 0;
-  return;
 }
 

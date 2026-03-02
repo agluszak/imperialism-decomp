@@ -4,15 +4,15 @@
 // Bucket: TRearFloatWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401F19
-// GHIDRA_NAME TRearFloatWindow::thunk_GetTRearFloatWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRearFloatWindowClassNamePointer(void)
+// GHIDRA_NAME TRearFloatWindow::TRearFloatWindow_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TRearFloatWindow_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTRearFloatWindowClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTRearFloatWindowClassNamePointer */
 
-void * __cdecl TRearFloatWindow::thunk_GetTRearFloatWindowClassNamePointer(void)
+void * __cdecl TRearFloatWindow::TRearFloatWindow_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,9 +21,27 @@ void * __cdecl TRearFloatWindow::thunk_GetTRearFloatWindowClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403D14
+// GHIDRA_NAME TRearFloatWindow::TRearFloatWindow_VtblSlot070
+// GHIDRA_PROTO void __thiscall TRearFloatWindow_VtblSlot070(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960 */
+
+void __thiscall
+TRearFloatWindow::TRearFloatWindow_VtblSlot070
+          (TRearFloatWindow *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960(this,arg1,arg2,arg3,arg4);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004040D4
-// GHIDRA_NAME TRearFloatWindow::thunk_DestructTRearFloatWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTRearFloatWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TRearFloatWindow::TRearFloatWindow_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TRearFloatWindow_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTRearFloatWindowAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,8 +49,7 @@ void * __cdecl TRearFloatWindow::thunk_GetTRearFloatWindowClassNamePointer(void)
 /* Single-JMP thunk to DestructTRearFloatWindowAndMaybeFree */
 
 void * __thiscall
-TRearFloatWindow::thunk_DestructTRearFloatWindowAndMaybeFree
-          (TRearFloatWindow *this,byte freeSelfFlag)
+TRearFloatWindow::TRearFloatWindow_VtblSlot001(TRearFloatWindow *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -48,8 +65,8 @@ TRearFloatWindow::thunk_DestructTRearFloatWindowAndMaybeFree
 void * __cdecl TRearFloatWindow::CreateTRearFloatWindowInstance(void)
 
 {
-  TFloatWindow *this;
-  TFloatWindow *pTVar1;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,12 +76,12 @@ void * __cdecl TRearFloatWindow::CreateTRearFloatWindowInstance(void)
   puStack_8 = &LAB_00632aaa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TFloatWindow *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TFloatWindow *)0x0;
-  if (this != (TFloatWindow *)0x0) {
-    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340(this);
-    *(undefined ***)this = &g_vtblTRearFloatWindow;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    (this->base).pVtable = &g_vtblTRearFloatWindow;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -93,8 +110,8 @@ void * __cdecl TRearFloatWindow::GetTRearFloatWindowClassNamePointer(void)
 void * __thiscall TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 
 {
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
-  *(undefined ***)this = &g_vtblTRearFloatWindow;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  this->field0_0x0 = &g_vtblTRearFloatWindow;
   return this;
 }
 
@@ -108,8 +125,48 @@ TRearFloatWindow::DestructTRearFloatWindowAndMaybeFree(TRearFloatWindow *this,by
 {
   DestructTWindowViewAndUnlinkGlobalLists();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F3960
+// GHIDRA_NAME TRearFloatWindow::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchUiMouseMoveToChildren; instructions=66, call_insns=6, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_DispatchUiMouseMoveToChildren; instructions=66,
+   call_insns=6, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TRearFloatWindow::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
+          (TRearFloatWindow *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  void *pvVar1;
+  undefined4 uVar2;
+  
+  pvVar1 = this->field0_0x0;
+  uVar2 = (**(code **)((int)pvVar1 + 0x17c))(arg1);
+  switch((short)uVar2) {
+  case 3:
+    TControl::thunk_DispatchUiMouseMoveToChildren((TControl *)this,arg1,arg1,arg2,arg3);
+    return;
+  case 4:
+    (**(code **)((int)pvVar1 + 0x184))(arg1);
+    return;
+  case 5:
+    (**(code **)((int)pvVar1 + 0x188))(arg1);
+    return;
+  case 6:
+    (**(code **)((int)pvVar1 + 0x180))(arg1);
+    return;
+  case 7:
+  case 8:
+    (**(code **)((int)pvVar1 + 0x18c))(arg1,uVar2);
+  }
+  return;
 }
 

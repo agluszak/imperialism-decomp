@@ -3,24 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TShipView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004044AD
-// GHIDRA_NAME TShipView::thunk_GetTShipViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipViewClassNamePointer */
-
-void * __cdecl TShipView::thunk_GetTShipViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00565400
 // GHIDRA_NAME TShipView::CreateTShipViewInstance
 // GHIDRA_PROTO void * __cdecl CreateTShipViewInstance(void)
@@ -44,12 +26,12 @@ void * __cdecl TShipView::CreateTShipViewInstance(void)
   puStack_8 = &LAB_0063599a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTShipLine;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTShipLine;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

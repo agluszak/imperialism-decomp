@@ -4,34 +4,54 @@
 // Bucket: TRightLeftView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004013ED
-// GHIDRA_NAME TRightLeftView::thunk_DestructTRightLeftViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTRightLeftViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TRightLeftView::TRightLeftView_VtblSlot001
+// GHIDRA_PROTO TRightLeftView * __thiscall TRightLeftView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTRightLeftViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTRightLeftViewAndMaybeFree */
 
-void * __thiscall
-TRightLeftView::thunk_DestructTRightLeftViewAndMaybeFree(TRightLeftView *this,byte freeSelfFlag)
+TRightLeftView * __thiscall
+TRightLeftView::TRightLeftView_VtblSlot001(TRightLeftView *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TRightLeftView *pTVar1;
   
-  pvVar1 = DestructTRightLeftViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTRightLeftViewAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406843
+// GHIDRA_NAME TRightLeftView::TRightLeftView_VtblSlot104
+// GHIDRA_PROTO void __thiscall TRightLeftView_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84 */
+
+void __thiscall
+TRightLeftView::TRightLeftView_VtblSlot104
+          (TRightLeftView *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
+            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004090BB
-// GHIDRA_NAME TRightLeftView::thunk_GetTRightLeftViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRightLeftViewClassNamePointer(void)
+// GHIDRA_NAME TRightLeftView::TRightLeftView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TRightLeftView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTRightLeftViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTRightLeftViewClassNamePointer */
 
-void * __cdecl TRightLeftView::thunk_GetTRightLeftViewClassNamePointer(void)
+void * __cdecl TRightLeftView::TRightLeftView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -57,12 +77,12 @@ void * __cdecl TRightLeftView::CreateTRightLeftViewInstance(void)
   puStack_8 = &LAB_0063758a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTRightLeftView;
-    *(undefined4 *)(this + 0x84) = 0;
+    (this->base).pVtable = &g_vtblTRightLeftView;
+    *(undefined4 *)&this->field_0x84 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -87,29 +107,72 @@ void * __cdecl TRightLeftView::GetTRightLeftViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F30
 // GHIDRA_NAME TRightLeftView::ConstructTRightLeftViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTRightLeftViewBaseState(void)
+// GHIDRA_PROTO TRightLeftView * __thiscall ConstructTRightLeftViewBaseState(void)
 
-void * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
+TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  *(undefined ***)this = &g_vtblTRightLeftView;
-  *(undefined4 *)(this + 0x84) = 0;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase(&this->base);
+  (this->base).base.pVtable = &g_vtblTRightLeftView;
+  *(undefined4 *)&(this->base).field_0x84 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F60
 // GHIDRA_NAME TRightLeftView::DestructTRightLeftViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTRightLeftViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TRightLeftView * __thiscall DestructTRightLeftViewAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall
+TRightLeftView * __thiscall
 TRightLeftView::DestructTRightLeftViewAndMaybeFree(TRightLeftView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00583FB0
+// GHIDRA_NAME TRightLeftView::HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
+// GHIDRA_PROTO void __thiscall HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [Enum] Tagged auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x84 timer state).
+// GHIDRA_COMMENT_END
+
+/* [Enum] Tagged auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset
+   0x84 timer state). */
+
+void __thiscall
+TRightLeftView::HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
+          (TRightLeftView *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  void *pvVar1;
+  char cVar2;
+  uint extraout_EAX;
+  int extraout_EAX_00;
+  
+  if (nEventType != 2) {
+    thunk_GetTickCountDiv16();
+    if (*(int *)&(this->base).field_0x84 + 5U <= extraout_EAX) {
+      thunk_GetTickCountDiv16();
+      *(int *)&(this->base).field_0x84 = extraout_EAX_00;
+      if (nEventType == 0) {
+        *(int *)&(this->base).field_0x84 = extraout_EAX_00 + 10;
+      }
+      pvVar1 = (this->base).base.pVtable;
+      cVar2 = (**(code **)((int)pvVar1 + 0x16c))(pHitPayload);
+      if (cVar2 != '\0') {
+        if ((this->base).base.field8_0x1c == 0x72676874) {
+          (**(code **)((int)pvVar1 + 0x40))(100);
+          return;
+        }
+        (**(code **)((int)pvVar1 + 0x40))(0x65,this,0);
+      }
+    }
+  }
+  return;
 }
 

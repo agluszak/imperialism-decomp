@@ -4,17 +4,17 @@
 // Bucket: TRelationshipDialog.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040143D
-// GHIDRA_NAME TRelationshipDialog::thunk_PopulateRelationshipDialogControlValuesFromNationState_At0040143d
-// GHIDRA_PROTO void __thiscall thunk_PopulateRelationshipDialogControlValuesFromNationState_At0040143d(void)
+// GHIDRA_NAME TRelationshipDialog::thunk_DestructTRelationshipDialogAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTRelationshipDialogAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateRelationshipDialogControlValuesFromNationState
+// GHIDRA_COMMENT Single-JMP thunk to PopulateRelationshipDialogControlValuesFromNationState [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to PopulateRelationshipDialogControlValuesFromNationState */
+/* Single-JMP thunk to PopulateRelationshipDialogControlValuesFromNationState
+   [FID:thunk_target_sync] */
 
 void __thiscall
-TRelationshipDialog::thunk_PopulateRelationshipDialogControlValuesFromNationState_At0040143d
-          (TRelationshipDialog *this)
+TRelationshipDialog::thunk_DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog *this)
 
 {
   DestructTRelationshipDialogAndMaybeFree(this);
@@ -40,21 +40,41 @@ void * __cdecl TRelationshipDialog::thunk_GetTRelationshipDialogClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403215
-// GHIDRA_NAME TRelationshipDialog::thunk_SyncRelationshipDialogGridValuesToDiplomacyTurnState
-// GHIDRA_PROTO void __thiscall thunk_SyncRelationshipDialogGridValuesToDiplomacyTurnState(void)
+// GHIDRA_NAME TRelationshipDialog::thunk_ConstructTRelationshipDialogBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTRelationshipDialogBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for SyncRelationshipDialogGridValuesToDiplomacyTurnState.
+// GHIDRA_COMMENT Thunk wrapper for SyncRelationshipDialogGridValuesToDiplomacyTurnState. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for SyncRelationshipDialogGridValuesToDiplomacyTurnState. */
+/* Thunk wrapper for SyncRelationshipDialogGridValuesToDiplomacyTurnState. [FID:thunk_target_sync]
+    */
 
 void __thiscall
-TRelationshipDialog::thunk_SyncRelationshipDialogGridValuesToDiplomacyTurnState
-          (TRelationshipDialog *this)
+TRelationshipDialog::thunk_ConstructTRelationshipDialogBaseState(TRelationshipDialog *this)
 
 {
   ConstructTRelationshipDialogBaseState(this);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040378D
+// GHIDRA_NAME TRelationshipDialog::thunk_scalar_deleting_destructor_0040378D
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040378D(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TRelationshipDialog::thunk_scalar_deleting_destructor_0040378D
+          (TRelationshipDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2D80
@@ -128,7 +148,7 @@ TRelationshipDialog::ConstructTRelationshipDialogBaseState(TRelationshipDialog *
     sVar5 = sVar5 + 1;
     local_c = (void *)((int)local_c + 4);
   } while (sVar5 < 7);
-  thunk_DispatchVfuncA0ToLinkedChildListSlot44();
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
   return;
 }
 
@@ -243,7 +263,7 @@ TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog
   local_38 = (int *)0x7;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffb4);
+      FormatOverlayTerrainLabelText();
       uVar3 = *(undefined4 *)((int)&local_30 + iVar7);
       piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(uVar3);
       if (piVar4 == (int *)0x0) {

@@ -3,28 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401DDE
-// GHIDRA_NAME TMission::thunk_DeletingDestructTMission
-// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTMission(TMission * pThis)
+// GHIDRA_FUNCTION IMPERIALISM 0x0040322E
+// GHIDRA_NAME TMission::thunk_ConstructTEscortMissionForPortContext
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTEscortMissionForPortContext(int arg1)
 
-void __thiscall TMission::thunk_DeletingDestructTMission(TMission *this,TMission *pThis)
-
-{
-  DeletingDestructTMission(this,pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040542A
-// GHIDRA_NAME TMission::thunk_GetTMissionTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetTMissionTypeName(void)
-
-void * __cdecl TMission::thunk_GetTMissionTypeName(void)
+void * __thiscall TMission::thunk_ConstructTEscortMissionForPortContext(TMission *this,int arg1)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = GetTMissionClassNamePointer();
-  return pvVar1;
+  thunk_ConstructTMission(this);
+  this->field14_0x14 = arg1;
+  this->field15_0x18 = (undefined4 *)0x0;
+  this->field16_0x1c = (void *)0x0;
+  this->field17_0x20 = (void *)0x0;
+  this->field18_0x24 = 0;
+  this->field19_0x28 = 0;
+  this->field20_0x2c = (void *)0x0;
+  this->field21_0x30 = (void *)0x0;
+  this->field22_0x34 = (undefined *)0x0;
+  this->field23_0x38 = 0;
+  this->pVtable = &g_vtblTEscortMission;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A47
@@ -34,8 +32,59 @@ void * __cdecl TMission::thunk_GetTMissionTypeName(void)
 void __thiscall TMission::thunk_DestructTMission(TMission *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004064A1
+// GHIDRA_NAME TMission::thunk_ConstructTArmyMissionWithNodeKey
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyMissionWithNodeKey(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTArmyMissionWithNodeKey
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTArmyMissionWithNodeKey */
+
+void * __thiscall TMission::thunk_ConstructTArmyMissionWithNodeKey(TMission *this,int arg1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063443a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_ConstructTMission(this);
+  uStack_4 = 0;
+  this->pVtable = &g_vtblTArmyMission;
+  *(undefined2 *)&this->field14_0x14 = (undefined2)arg1;
+  puVar1 = AllocateWithFallbackHandler();
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &g_vtblRefCountedObjectBase;
+    uStack_4 = CONCAT31(uStack_4._1_3_,2);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &g_vtblTArmyBattle;
+  }
+  uStack_4 = uStack_4 & 0xffffff00;
+  this->field15_0x18 = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  this->field16_0x1c = (void *)0x0;
+  this->field17_0x20 = (void *)0x0;
+  this->field18_0x24 = 0;
+  this->field19_0x28 = 0;
+  this->field20_0x2c = (void *)0x0;
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406F05
@@ -45,11 +94,116 @@ void __thiscall TMission::thunk_DestructTMission(TMission *this)
 void __thiscall TMission::thunk_ConstructTMission(TMission *this)
 
 {
-  *(undefined1 *)&this[2].pVtable = 2;
-  this[3].pVtable = (void *)0x0;
-  this->pVtable = &PTR_thunk_GetTMissionTypeName_0065a4e8;
-  *(undefined1 *)((int)&this[4].pVtable + 1) = 0xff;
+  this->field5_0x8 = 2;
+  this->pField0c = (void *)0x0;
+  this->pVtable = &PTR_thunk_GetTMissionClassNamePointer_0065a4e8;
+  this->field11_0x11 = 0xff;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004071A3
+// GHIDRA_NAME TMission::thunk_ConstructBlockadePortMissionForContext
+// GHIDRA_PROTO void * __thiscall thunk_ConstructBlockadePortMissionForContext(int arg1)
+
+void * __thiscall TMission::thunk_ConstructBlockadePortMissionForContext(TMission *this,int arg1)
+
+{
+  int iVar1;
+  void *pvVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006343c8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (*(int *)(arg1 + 0x2c) == 0) {
+    pvVar2 = ReallocateHeapBlockWithAllocatorTracking(*(int *)(arg1 + 0x28),8);
+    if (pvVar2 == (void *)0x0) {
+      pvVar2 = ReallocateHeapBlockWithAllocatorTracking(*(int *)(arg1 + 0x28),4);
+      *(void **)(arg1 + 0x28) = pvVar2;
+      *(undefined4 *)(arg1 + 0x2c) = 1;
+    }
+    else {
+      *(void **)(arg1 + 0x28) = pvVar2;
+      *(undefined4 *)(arg1 + 0x2c) = 2;
+    }
+  }
+  if (*(int *)(arg1 + 0x30) == 0) {
+    *(undefined4 *)(arg1 + 0x30) = 1;
+  }
+  iVar1 = **(int **)(arg1 + 0x28);
+  thunk_ConstructTMission(this);
+  this->field14_0x14 = iVar1;
+  this->field15_0x18 = (undefined4 *)0x0;
+  this->field16_0x1c = (void *)0x0;
+  this->field17_0x20 = (void *)0x0;
+  this->field18_0x24 = 0;
+  this->field19_0x28 = 0;
+  this->field20_0x2c = (void *)0x0;
+  this->field21_0x30 = (void *)0x0;
+  this->field22_0x34 = (undefined *)0x0;
+  this->field23_0x38 = 0;
+  iVar1 = *(int *)arg1;
+  uStack_4 = 0;
+  this->pVtable = &g_vtblTBlockadePortMission;
+  this->field24_0x3c = (void *)arg1;
+  (**(code **)(iVar1 + 0xc))();
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004082BF
+// GHIDRA_NAME TMission::thunk_ConstructTInvadeMissionWithOptionalBeachhead
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTInvadeMissionWithOptionalBeachhead(int arg1, int arg2)
+
+void * __thiscall
+TMission::thunk_ConstructTInvadeMissionWithOptionalBeachhead(TMission *this,int arg1,int arg2)
+
+{
+  TMission *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006344d2;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  thunk_ConstructTArmyMissionWithNodeKey(this,-1);
+  *(undefined2 *)((int)&this->field21_0x30 + 2) = 0xffff;
+  *(undefined2 *)&this->field21_0x30 = (undefined2)arg2;
+  uStack_4 = 0;
+  this->field22_0x34 = (undefined *)0x0;
+  this->pVtable = &g_vtblTInvadeMission;
+  if (arg1 != 0) {
+    this_00 = AllocateWithFallbackHandler();
+    uStack_4 = CONCAT31(uStack_4._1_3_,1);
+    if (this_00 == (TMission *)0x0) {
+      this_00 = (TMission *)0x0;
+    }
+    else {
+      thunk_ConstructTMission(this_00);
+      this_00->field14_0x14 = arg1;
+      this_00->field15_0x18 = (undefined4 *)0x0;
+      this_00->field16_0x1c = (void *)0x0;
+      this_00->field17_0x20 = (void *)0x0;
+      this_00->field18_0x24 = 0;
+      this_00->field19_0x28 = 0;
+      this_00->field20_0x2c = (void *)0x0;
+      this_00->field21_0x30 = (void *)0x0;
+      this_00->field22_0x34 = (undefined *)0x0;
+      this_00->field23_0x38 = 0;
+      this_00->field24_0x3c = this;
+      this_00->pVtable = &g_vtblTBeachheadMission;
+    }
+    this->field22_0x34 = (undefined *)this_00;
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534FB0
@@ -74,23 +228,25 @@ void * __cdecl TMission::GetTMissionClassNamePointer(void)
 void __thiscall TMission::ConstructTMission(TMission *this)
 
 {
-  *(undefined1 *)&this[2].pVtable = 2;
-  this[3].pVtable = (void *)0x0;
-  this->pVtable = &PTR_thunk_GetTMissionTypeName_0065a4e8;
-  *(undefined1 *)((int)&this[4].pVtable + 1) = 0xff;
+  this->field5_0x8 = 2;
+  this->pField0c = (void *)0x0;
+  this->pVtable = &PTR_thunk_GetTMissionClassNamePointer_0065a4e8;
+  this->field11_0x11 = 0xff;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535050
 // GHIDRA_NAME TMission::DeletingDestructTMission
-// GHIDRA_PROTO void __thiscall DeletingDestructTMission(TMission * pThis)
+// GHIDRA_PROTO void __thiscall DeletingDestructTMission(void)
 
-void __thiscall TMission::DeletingDestructTMission(TMission *this,TMission *pThis)
+void __thiscall TMission::DeletingDestructTMission(TMission *this)
 
 {
+  byte in_stack_00000004;
+  
   thunk_DestructTMission(this);
-  if (((uint)pThis & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
   return;
 }
@@ -102,7 +258,265 @@ void __thiscall TMission::DeletingDestructTMission(TMission *this,TMission *pThi
 void __thiscall TMission::DestructTMission(TMission *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00539A20
+// GHIDRA_NAME TMission::ConstructTEscortMissionForPortContext
+// GHIDRA_PROTO void * __thiscall ConstructTEscortMissionForPortContext(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Constructs mission variant (vtable 0x65aab0) for selected port/zone context id.
+// GHIDRA_COMMENT_END
+
+/* Constructs mission variant (vtable 0x65aab0) for selected port/zone context id. */
+
+void * __thiscall TMission::ConstructTEscortMissionForPortContext(TMission *this,int arg1)
+
+{
+  thunk_ConstructTMission(this);
+  this->field14_0x14 = arg1;
+  this->field15_0x18 = (undefined4 *)0x0;
+  this->field16_0x1c = (void *)0x0;
+  this->field17_0x20 = (void *)0x0;
+  this->field18_0x24 = 0;
+  this->field19_0x28 = 0;
+  this->field20_0x2c = (void *)0x0;
+  this->field21_0x30 = (void *)0x0;
+  this->field22_0x34 = (undefined *)0x0;
+  this->field23_0x38 = 0;
+  this->pVtable = &g_vtblTEscortMission;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0053AB50
+// GHIDRA_NAME TMission::ConstructBlockadePortMissionForContext
+// GHIDRA_PROTO void * __thiscall ConstructBlockadePortMissionForContext(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Constructs g_vtblTBlockadePortMission instance for provided context list object.
+// GHIDRA_COMMENT_END
+
+/* Constructs g_vtblTBlockadePortMission instance for provided context list object. */
+
+void * __thiscall TMission::ConstructBlockadePortMissionForContext(TMission *this,int arg1)
+
+{
+  int iVar1;
+  void *pvVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006343c8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (*(int *)(arg1 + 0x2c) == 0) {
+    pvVar2 = ReallocateHeapBlockWithAllocatorTracking(*(int *)(arg1 + 0x28),8);
+    if (pvVar2 == (void *)0x0) {
+      pvVar2 = ReallocateHeapBlockWithAllocatorTracking(*(int *)(arg1 + 0x28),4);
+      *(void **)(arg1 + 0x28) = pvVar2;
+      *(undefined4 *)(arg1 + 0x2c) = 1;
+    }
+    else {
+      *(void **)(arg1 + 0x28) = pvVar2;
+      *(undefined4 *)(arg1 + 0x2c) = 2;
+    }
+  }
+  if (*(int *)(arg1 + 0x30) == 0) {
+    *(undefined4 *)(arg1 + 0x30) = 1;
+  }
+  iVar1 = **(int **)(arg1 + 0x28);
+  thunk_ConstructTMission(this);
+  this->field14_0x14 = iVar1;
+  this->field15_0x18 = (undefined4 *)0x0;
+  this->field16_0x1c = (void *)0x0;
+  this->field17_0x20 = (void *)0x0;
+  this->field18_0x24 = 0;
+  this->field19_0x28 = 0;
+  this->field20_0x2c = (void *)0x0;
+  this->field21_0x30 = (void *)0x0;
+  this->field22_0x34 = (undefined *)0x0;
+  this->field23_0x38 = 0;
+  iVar1 = *(int *)arg1;
+  local_4 = 0;
+  this->pVtable = &g_vtblTBlockadePortMission;
+  this->field24_0x3c = (void *)arg1;
+  (**(code **)(iVar1 + 0xc))();
+  *unaff_FS_OFFSET = uStack_c;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0053C0A0
+// GHIDRA_NAME TMission::ConstructTArmyMissionWithNodeKey
+// GHIDRA_PROTO void * __thiscall ConstructTArmyMissionWithNodeKey(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Constructs TArmyMission base object and initializes node-key storage container.
+// GHIDRA_COMMENT [InheritanceEvidence] TArmyBattle derives from TArmyMission (decomp_vtbl_seq_ctor, medium)
+// GHIDRA_COMMENT_END
+
+/* Constructs TArmyMission base object and initializes node-key storage container.
+   [InheritanceEvidence] TArmyBattle derives from TArmyMission (decomp_vtbl_seq_ctor, medium) */
+
+void * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,int arg1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063443a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  thunk_ConstructTMission(this);
+  local_4 = 0;
+  this->pVtable = &g_vtblTArmyMission;
+  *(undefined2 *)&this->field14_0x14 = (undefined2)arg1;
+  puVar1 = AllocateWithFallbackHandler();
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &g_vtblRefCountedObjectBase;
+    local_4 = CONCAT31(local_4._1_3_,2);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &g_vtblTArmyBattle;
+  }
+  local_4 = local_4 & 0xffffff00;
+  this->field15_0x18 = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  this->field16_0x1c = (void *)0x0;
+  this->field17_0x20 = (void *)0x0;
+  this->field18_0x24 = 0;
+  this->field19_0x28 = 0;
+  this->field20_0x2c = (void *)0x0;
+  *unaff_FS_OFFSET = local_c;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0053F2D0
+// GHIDRA_NAME TMission::ConstructTInvadeMissionWithOptionalBeachhead
+// GHIDRA_PROTO void * __thiscall ConstructTInvadeMissionWithOptionalBeachhead(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Constructs army-mission variant (vtable 0x65aec0) and optionally attaches TBeachheadMission child.
+// GHIDRA_COMMENT [InheritanceEvidence] TBeachheadMission derives from TInvadeMission (decomp_vtbl_seq_ctor, medium)
+// GHIDRA_COMMENT_END
+
+/* Constructs army-mission variant (vtable 0x65aec0) and optionally attaches TBeachheadMission
+   child.
+   [InheritanceEvidence] TBeachheadMission derives from TInvadeMission (decomp_vtbl_seq_ctor,
+   medium) */
+
+void * __thiscall
+TMission::ConstructTInvadeMissionWithOptionalBeachhead(TMission *this,int arg1,int arg2)
+
+{
+  TMission *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006344d2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  thunk_ConstructTArmyMissionWithNodeKey(this,-1);
+  *(undefined2 *)((int)&this->field21_0x30 + 2) = 0xffff;
+  *(undefined2 *)&this->field21_0x30 = (undefined2)arg2;
+  local_4 = 0;
+  this->field22_0x34 = (undefined *)0x0;
+  this->pVtable = &g_vtblTInvadeMission;
+  if (arg1 != 0) {
+    this_00 = AllocateWithFallbackHandler();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    if (this_00 == (TMission *)0x0) {
+      this_00 = (TMission *)0x0;
+    }
+    else {
+      thunk_ConstructTMission(this_00);
+      this_00->field14_0x14 = arg1;
+      this_00->field15_0x18 = (undefined4 *)0x0;
+      this_00->field16_0x1c = (void *)0x0;
+      this_00->field17_0x20 = (void *)0x0;
+      this_00->field18_0x24 = 0;
+      this_00->field19_0x28 = 0;
+      this_00->field20_0x2c = (void *)0x0;
+      this_00->field21_0x30 = (void *)0x0;
+      this_00->field22_0x34 = (undefined *)0x0;
+      this_00->field23_0x38 = 0;
+      this_00->field24_0x3c = this;
+      this_00->pVtable = &g_vtblTBeachheadMission;
+    }
+    this->field22_0x34 = (undefined *)this_00;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0053F690
+// GHIDRA_NAME TMission::DeserializeTInvadeMission
+// GHIDRA_PROTO void __thiscall DeserializeTInvadeMission(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Deserialize invade mission fields and reconstruct beachhead child mission object.
+// GHIDRA_COMMENT_END
+
+/* Deserialize invade mission fields and reconstruct beachhead child mission object. */
+
+void __thiscall TMission::DeserializeTInvadeMission(TMission *this)
+
+{
+  code *pcVar1;
+  void *pvVar2;
+  TMission *pTVar3;
+  undefined4 *unaff_FS_OFFSET;
+  int *in_stack_00000004;
+  TMission *pTStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  pTStack_c = (TMission *)*unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006344fa;
+  *unaff_FS_OFFSET = &pTStack_c;
+  TDefendProvinceMission::TDefendProvinceMission_VtblSlot006();
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  (*pcVar1)(&this->field21_0x30);
+  (*pcVar1)((undefined1 *)((int)&this->field21_0x30 + 2),2);
+  if ((int *)this->field22_0x34 != (int *)0x0) {
+    (**(code **)(*(int *)this->field22_0x34 + 0x1c))();
+  }
+  pTVar3 = AllocateWithFallbackHandler();
+  pTStack_c = pTVar3;
+  if (pTVar3 == (TMission *)0x0) {
+    pTVar3 = (TMission *)0x0;
+  }
+  else {
+    thunk_ConstructTMission(pTVar3);
+    pTVar3->field14_0x14 = 0;
+    pTVar3->field15_0x18 = (undefined4 *)0x0;
+    pTVar3->field16_0x1c = (void *)0x0;
+    pTVar3->field17_0x20 = (void *)0x0;
+    pTVar3->field18_0x24 = 0;
+    pTVar3->field19_0x28 = 0;
+    pTVar3->field20_0x2c = (void *)0x0;
+    pTVar3->field21_0x30 = (void *)0x0;
+    pTVar3->field22_0x34 = (undefined *)0x0;
+    pTVar3->field23_0x38 = 0;
+    pTVar3->field24_0x3c = this;
+    pTVar3->pVtable = &g_vtblTBeachheadMission;
+  }
+  pvVar2 = pTVar3->pVtable;
+  this->field22_0x34 = (undefined *)pTVar3;
+  (**(code **)((int)pvVar2 + 0x18))();
+  *unaff_FS_OFFSET = 2;
   return;
 }
 

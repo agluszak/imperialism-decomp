@@ -3,16 +3,53 @@
 // Program: Imperialism.exe
 // Bucket: TaskList.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004011DB
+// GHIDRA_NAME TaskList::thunk_CreateTTechMgrInstance_At004011db
+// GHIDRA_PROTO int __thiscall thunk_CreateTTechMgrInstance_At004011db(short techId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CreateTTechMgrInstance
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CreateTTechMgrInstance */
+
+int __thiscall TaskList::thunk_CreateTTechMgrInstance_At004011db(TaskList *this,short techId)
+
+{
+  int iVar1;
+  
+  iVar1 = TTechMgr::CreateTTechMgrInstance((TTechMgr *)this,techId);
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404B74
+// GHIDRA_NAME TaskList::thunk_GetTaskListClassNamePointer_At00404b74
+// GHIDRA_PROTO void * __cdecl thunk_GetTaskListClassNamePointer_At00404b74(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTaskListClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTaskListClassNamePointer */
+
+void * __cdecl TaskList::thunk_GetTaskListClassNamePointer_At00404b74(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTaskListClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040654B
-// GHIDRA_NAME TaskList::thunk_DestructTaskListAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTaskListAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TaskList::thunk_DestructTaskListAndMaybeFree_At0040654b
+// GHIDRA_PROTO void * __thiscall thunk_DestructTaskListAndMaybeFree_At0040654b(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTaskListAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTaskListAndMaybeFree */
 
-void * __thiscall TaskList::thunk_DestructTaskListAndMaybeFree(TaskList *this,byte freeSelfFlag)
+void * __thiscall
+TaskList::thunk_DestructTaskListAndMaybeFree_At0040654b(TaskList *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -39,12 +76,12 @@ void * __cdecl TaskList::CreateTaskListInstance(void)
   puStack_8 = &LAB_006388e2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
     local_4 = 1;
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &g_vtblTaskList;
     puVar2 = puVar1;
   }
@@ -82,10 +119,10 @@ void * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
   puStack_8 = &LAB_00638908;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *(undefined ***)this = &g_vtblRefCountedObjectBase;
+  this->field0_0x0 = &g_vtblRefCountedObjectBase;
   local_4 = 0;
-  InitializeLinkedListSentinelNodeWithOwnerContext(10);
-  *(undefined ***)this = &g_vtblTaskList;
+  TGreatPower::CPtrList((TGreatPower *)&this->field1_0x4);
+  this->field0_0x0 = &g_vtblTaskList;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -97,10 +134,38 @@ void * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
 void * __thiscall TaskList::DestructTaskListAndMaybeFree(TaskList *this,byte freeSelfFlag)
 
 {
-  WrapperFor_DestructCPtrListBaseState_At005aec30();
+  WrapperFor_DestructCPtrListBaseState_At005aec30(this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AEC30
+// GHIDRA_NAME TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30
+// GHIDRA_PROTO void __thiscall WrapperFor_DestructCPtrListBaseState_At005aec30(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(TaskList *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_00638928;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  DestructCPtrListBaseState(&this->field1_0x4);
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 

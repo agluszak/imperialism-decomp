@@ -4,15 +4,15 @@
 // Bucket: TEditText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004071C6
-// GHIDRA_NAME TEditText::thunk_GetTEditTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTEditTextClassNamePointer(void)
+// GHIDRA_NAME TEditText::TEditText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TEditText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTEditTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTEditTextClassNamePointer */
 
-void * __cdecl TEditText::thunk_GetTEditTextClassNamePointer(void)
+void * __cdecl TEditText::TEditText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,19 +22,22 @@ void * __cdecl TEditText::thunk_GetTEditTextClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B35
-// GHIDRA_NAME TEditText::thunk_`scalar_deleting_destructor'
-// GHIDRA_PROTO undefined thunk_`scalar_deleting_destructor'()
+// GHIDRA_NAME TEditText::TEditText_thunk_scalar_deleting_destructor
+// GHIDRA_PROTO void * __thiscall TEditText_thunk_scalar_deleting_destructor(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void TEditText::thunk__scalar_deleting_destructor_(void)
+void * __thiscall
+TEditText::TEditText_thunk_scalar_deleting_destructor(TEditText *this,byte freeSelfFlag)
 
 {
-  _scalar_deleting_destructor_();
-  return;
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040913D
@@ -44,8 +47,8 @@ void TEditText::thunk__scalar_deleting_destructor_(void)
 void __thiscall TEditText::thunk_ConstructUiNumericTextEntryBase(TEditText *this)
 
 {
-  int iVar1;
-  uint uVar2;
+  void *pvVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -55,38 +58,38 @@ void __thiscall TEditText::thunk_ConstructUiNumericTextEntryBase(TEditText *this
   puStack_8 = &LAB_0062f163;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined4 *)&this->field_0x60 = 1;
-  this->field_0x64 = 0;
-  *(undefined4 *)&this->field_0x68 = 0;
-  *(undefined4 *)&this->field_0x6c = 0;
-  *(undefined4 *)&this->field_0x70 = 0;
-  *(undefined4 *)&this->field_0x74 = 0;
-  *(int *)&this->field_0x78 = g_nUiResourceEntryDefaultParam0;
-  *(int *)&this->field_0x7c = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)&this->field_0x80 = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  (this->base).field1_0x60 = 1;
+  (this->base).field2_0x64 = 0;
+  (this->base).field6_0x68 = 0;
+  (this->base).field7_0x6c = 0;
+  (this->base).field8_0x70 = 0;
+  (this->base).field9_0x74 = 0;
+  (this->base).field10_0x78 = g_nUiResourceEntryDefaultParam0;
+  (this->base).field11_0x7c = g_nUiResourceEntryDefaultParam1;
+  (this->base).field12_0x80 = g_wUiResourceEntryDefaultParam2;
   uStack_4 = 0;
-  this->dwField_84 = 0;
-  *(undefined4 *)&this->field_0x88 = 0xffffffff;
-  *(undefined4 *)&this->field_0x8c = 0;
-  *(undefined2 *)&this->field_0x90 = 0;
-  this->pVtable = &g_vtblTStaticText;
-  *(undefined4 *)&this->field_0x60 = 0xd;
-  iVar1 = AllocateWithFallbackHandler(4);
+  (this->base).field84 = (int *)0x0;
+  (this->base).field16_0x88 = (void *)0xffffffff;
+  (this->base).field17_0x8c = 0;
+  (this->base).field18_0x90 = 0;
+  (this->base).base.pVtable = &g_vtblTStaticText;
+  (this->base).field1_0x60 = 0xd;
+  pvVar1 = AllocateWithFallbackHandler();
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  if (iVar1 == 0) {
-    uVar2 = 0;
+  if (pvVar1 == (void *)0x0) {
+    piVar2 = (int *)0x0;
   }
   else {
-    uVar2 = InitializeSharedStringRefFromEmpty();
+    piVar2 = InitializeSharedStringRefFromEmpty();
   }
-  this->dwField_84 = uVar2;
-  this->dwField_94 = 0;
-  this->dwField_98 = 0;
-  *(undefined2 *)&this[1].pVtable = 0xff;
-  this->pVtable = &g_vtblTEditText;
-  *(undefined4 *)&this->field_0x60 = 6;
-  this->field_0x4d = 0;
+  (this->base).field84 = piVar2;
+  this->dwField_94 = (int *)0x0;
+  this->dwField_98 = (int *)0x0;
+  this->field5_0x9c = 0xff;
+  (this->base).base.pVtable = &g_vtblTEditText;
+  (this->base).field1_0x60 = 6;
+  (this->base).base.renderEnableFlag4d = 0;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -106,8 +109,8 @@ void * __cdecl TEditText::CreateTEditTextInstance(void)
 
 {
   TView *this;
-  int iVar1;
-  undefined4 uVar2;
+  void *pvVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -117,41 +120,41 @@ void * __cdecl TEditText::CreateTEditTextInstance(void)
   puStack_8 = &LAB_0062f13d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x60) = 1;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].field1_0x4 = 0;
+    this[1].pVtable = (void *)0x1;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    *(undefined4 *)(this + 0x84) = 0;
-    *(undefined4 *)(this + 0x88) = 0xffffffff;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(undefined2 *)(this + 0x90) = 0;
-    *(undefined ***)this = &g_vtblTStaticText;
-    *(undefined4 *)(this + 0x60) = 0xd;
-    iVar1 = AllocateWithFallbackHandler(4);
+    this[1].field10_0x24 = 0;
+    this[1].field11_0x28 = -1;
+    this[1].cachedPosX2c = 0;
+    *(undefined2 *)&this[1].cachedPosY30 = 0;
+    this->pVtable = &g_vtblTStaticText;
+    this[1].pVtable = (void *)0xd;
+    pvVar1 = AllocateWithFallbackHandler();
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar1 == 0) {
-      uVar2 = 0;
+    if (pvVar1 == (void *)0x0) {
+      piVar2 = (int *)0x0;
     }
     else {
-      uVar2 = InitializeSharedStringRefFromEmpty();
+      piVar2 = InitializeSharedStringRefFromEmpty();
     }
-    *(undefined4 *)(this + 0x84) = uVar2;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0x98) = 0;
-    *(undefined2 *)(this + 0x9c) = 0xff;
-    *(undefined ***)this = &g_vtblTEditText;
-    *(undefined4 *)(this + 0x60) = 6;
-    this[0x4d] = (TView)0x0;
+    this[1].field10_0x24 = (int)piVar2;
+    this[1].field14_0x34 = 0;
+    this[1].field15_0x38 = 0;
+    *(undefined2 *)&this[1].viewFlags3c = 0xff;
+    this->pVtable = &g_vtblTEditText;
+    this[1].pVtable = (void *)0x6;
+    this->renderEnableFlag4d = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -189,8 +192,8 @@ void * __cdecl TEditText::GetTEditTextClassNamePointer(void)
 void __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *this)
 
 {
-  int iVar1;
-  uint uVar2;
+  void *pvVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -200,168 +203,39 @@ void __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *this)
   puStack_8 = &LAB_0062f163;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined4 *)&this->field_0x60 = 1;
-  this->field_0x64 = 0;
-  *(undefined4 *)&this->field_0x68 = 0;
-  *(undefined4 *)&this->field_0x6c = 0;
-  *(undefined4 *)&this->field_0x70 = 0;
-  *(undefined4 *)&this->field_0x74 = 0;
-  *(int *)&this->field_0x78 = g_nUiResourceEntryDefaultParam0;
-  *(int *)&this->field_0x7c = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)&this->field_0x80 = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  (this->base).field1_0x60 = 1;
+  (this->base).field2_0x64 = 0;
+  (this->base).field6_0x68 = 0;
+  (this->base).field7_0x6c = 0;
+  (this->base).field8_0x70 = 0;
+  (this->base).field9_0x74 = 0;
+  (this->base).field10_0x78 = g_nUiResourceEntryDefaultParam0;
+  (this->base).field11_0x7c = g_nUiResourceEntryDefaultParam1;
+  (this->base).field12_0x80 = g_wUiResourceEntryDefaultParam2;
   local_4 = 0;
-  this->dwField_84 = 0;
-  *(undefined4 *)&this->field_0x88 = 0xffffffff;
-  *(undefined4 *)&this->field_0x8c = 0;
-  *(undefined2 *)&this->field_0x90 = 0;
-  this->pVtable = &g_vtblTStaticText;
-  *(undefined4 *)&this->field_0x60 = 0xd;
-  iVar1 = AllocateWithFallbackHandler(4);
+  (this->base).field84 = (int *)0x0;
+  (this->base).field16_0x88 = (void *)0xffffffff;
+  (this->base).field17_0x8c = 0;
+  (this->base).field18_0x90 = 0;
+  (this->base).base.pVtable = &g_vtblTStaticText;
+  (this->base).field1_0x60 = 0xd;
+  pvVar1 = AllocateWithFallbackHandler();
   local_4 = CONCAT31(local_4._1_3_,1);
-  if (iVar1 == 0) {
-    uVar2 = 0;
+  if (pvVar1 == (void *)0x0) {
+    piVar2 = (int *)0x0;
   }
   else {
-    uVar2 = InitializeSharedStringRefFromEmpty();
+    piVar2 = InitializeSharedStringRefFromEmpty();
   }
-  this->dwField_84 = uVar2;
-  this->dwField_94 = 0;
-  this->dwField_98 = 0;
-  *(undefined2 *)&this[1].pVtable = 0xff;
-  this->pVtable = &g_vtblTEditText;
-  *(undefined4 *)&this->field_0x60 = 6;
-  this->field_0x4d = 0;
+  (this->base).field84 = piVar2;
+  this->dwField_94 = (int *)0x0;
+  this->dwField_98 = (int *)0x0;
+  this->field5_0x9c = 0xff;
+  (this->base).base.pVtable = &g_vtblTEditText;
+  (this->base).field1_0x60 = 6;
+  (this->base).base.renderEnableFlag4d = 0;
   *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004904D0
-// GHIDRA_NAME TEditText::DestructTEditTextAndMaybeFree
-// GHIDRA_PROTO void __fastcall DestructTEditTextAndMaybeFree(TEditText * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TEditText derives from TStaticText (decomp_vtbl_seq_dtor, high)
-// GHIDRA_COMMENT [InheritanceEvidence] TStaticText derives from TView (decomp_vtbl_seq_dtor, high)
-// GHIDRA_COMMENT_END
-
-/* [InheritanceEvidence] TEditText derives from TStaticText (decomp_vtbl_seq_dtor, high)
-   [InheritanceEvidence] TStaticText derives from TView (decomp_vtbl_seq_dtor, high) */
-
-void __fastcall TEditText::DestructTEditTextAndMaybeFree(TEditText *pThis)
-
-{
-  uint uVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f1a3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  pThis->pVtable = &g_vtblTEditText;
-  local_4 = 0;
-  if ((int *)pThis->dwField_94 != (int *)0x0) {
-    (**(code **)(*(int *)pThis->dwField_94 + 4))(1);
-  }
-  if ((int *)pThis->dwField_98 != (int *)0x0) {
-    (**(code **)(*(int *)pThis->dwField_98 + 4))(1);
-  }
-  pThis->pVtable = &g_vtblTStaticText;
-  uVar1 = pThis->dwField_84;
-  local_4 = 1;
-  if (uVar1 != 0) {
-    ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(uVar1);
-  }
-  pThis->pVtable = &g_vtblTView;
-  local_4 = 3;
-  if (*(int **)&pThis->field_0x44 != (int *)0x0) {
-    (**(code **)(**(int **)&pThis->field_0x44 + 4))(1);
-  }
-  FreeHeapBufferIfNotNull(*(undefined4 *)&pThis->field_0x48);
-  local_4 = CONCAT31(local_4._1_3_,2);
-  ReleaseSharedStringRefIfNotEmpty();
-  pThis->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606A07
-// GHIDRA_NAME TEditText::DispatchCommandToAfxMessageMapChain
-// GHIDRA_PROTO void __thiscall DispatchCommandToAfxMessageMapChain(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Walks AFX message-map chain and dispatches matching handlers (including special synthetic dispatch modes)
-// GHIDRA_COMMENT_END
-
-/* Walks AFX message-map chain and dispatches matching handlers (including special synthetic
-   dispatch modes) */
-
-void __thiscall
-TEditText::DispatchCommandToAfxMessageMapChain(TEditText *this,int arg1,int arg2,int arg3,int arg4)
-
-{
-  void *_Buf1;
-  bool bVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  AFX_MSGMAP_ENTRY *pAVar4;
-  uint uVar5;
-  int *piVar6;
-  
-  if (arg2 == -2) {
-    iVar2 = GetOrCreateMfcModuleThreadState();
-    (**(code **)(**(int **)(iVar2 + 0x1038) + 4))(this,arg1,arg3,arg4);
-  }
-  else {
-    uVar5 = 0;
-    if (arg2 == -3) {
-      bVar1 = false;
-      _Buf1 = *(void **)(arg3 + 0x30);
-      puVar3 = (undefined4 *)(**(code **)((int)this->pVtable + 0x34))();
-      while ((puVar3 != (undefined4 *)0x0 && (!bVar1))) {
-        piVar6 = (int *)puVar3[1];
-        while (((piVar6[1] != 0 && (piVar6[2] != 0)) && (!bVar1))) {
-          if (arg1 == piVar6[1]) {
-            if (_Buf1 == (void *)0x0) {
-              iVar2 = *piVar6;
-            }
-            else {
-              if ((void *)*piVar6 == (void *)0x0) goto LAB_00606aac;
-              iVar2 = _memcmp(_Buf1,(void *)*piVar6,0x10);
-            }
-            if (iVar2 == 0) {
-              bVar1 = true;
-              *(int *)(arg3 + 4) = piVar6[2];
-            }
-          }
-LAB_00606aac:
-          piVar6 = piVar6 + 3;
-        }
-        puVar3 = (undefined4 *)*puVar3;
-      }
-    }
-    else {
-      if (arg2 != -1) {
-        uVar5 = (uint)arg2 >> 0x10;
-        arg2 = arg2 & 0xffff;
-      }
-      if (uVar5 == 0) {
-        uVar5 = 0x111;
-      }
-      for (puVar3 = (undefined4 *)(**(code **)((int)this->pVtable + 0x30))();
-          puVar3 != (undefined4 *)0x0; puVar3 = (undefined4 *)*puVar3) {
-        pAVar4 = TNewGameCommand::AfxFindMessageEntry((AFX_MSGMAP_ENTRY *)puVar3[1],uVar5,arg2,arg1)
-        ;
-        if (pAVar4 != (AFX_MSGMAP_ENTRY *)0x0) {
-          InvokeAfxMessageMapHandlerBySignatureCode
-                    (this,arg1,arg2,*(undefined4 *)(pAVar4 + 0x14),arg3,
-                     *(undefined4 *)(pAVar4 + 0x10),arg4);
-          return;
-        }
-      }
-    }
-  }
   return;
 }
 

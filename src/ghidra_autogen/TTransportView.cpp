@@ -21,6 +21,25 @@ void * __cdecl TTransportView::thunk_GetTTransportViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004081C5
+// GHIDRA_NAME TTransportView::thunk_scalar_deleting_destructor_004081C5
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004081C5(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTransportView::thunk_scalar_deleting_destructor_004081C5(TTransportView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD3C0
 // GHIDRA_NAME TTransportView::GetTTransportViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTTransportViewClassNamePointer(void)

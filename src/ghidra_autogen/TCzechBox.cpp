@@ -4,15 +4,15 @@
 // Bucket: TCzechBox.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004026E4
-// GHIDRA_NAME TCzechBox::thunk_GetTCzechBoxClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCzechBoxClassNamePointer(void)
+// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCzechBox_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCzechBoxClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCzechBoxClassNamePointer */
 
-void * __cdecl TCzechBox::thunk_GetTCzechBoxClassNamePointer(void)
+void * __cdecl TCzechBox::TCzechBox_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,15 +22,15 @@ void * __cdecl TCzechBox::thunk_GetTCzechBoxClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D8D
-// GHIDRA_NAME TCzechBox::thunk_DestructTCzechBoxAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCzechBoxAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TCzechBox_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCzechBoxAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCzechBoxAndMaybeFree */
 
-void * __thiscall TCzechBox::thunk_DestructTCzechBoxAndMaybeFree(TCzechBox *this,byte freeSelfFlag)
+void * __thiscall TCzechBox::TCzechBox_VtblSlot001(TCzechBox *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -40,36 +40,54 @@ void * __thiscall TCzechBox::thunk_DestructTCzechBoxAndMaybeFree(TCzechBox *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404D40
-// GHIDRA_NAME TCzechBox::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot015
+// GHIDRA_PROTO void __cdecl TCzechBox_VtblSlot015(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0 */
 
-void __thiscall
-TCzechBox::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(TCzechBox *this)
+void __cdecl TCzechBox::TCzechBox_VtblSlot015(void)
 
 {
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(this);
+  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407563
-// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot55
-// GHIDRA_PROTO void __thiscall TCzechBox_VtblSlot55(void)
+// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot055
+// GHIDRA_PROTO void __thiscall TCzechBox_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [VtableSlot] Unique TCzechBox owner, vtable slot 55.
+// GHIDRA_COMMENT Single-JMP thunk to InitializeCzechBoxVisualModeDefault
 // GHIDRA_COMMENT_END
 
-/* [VtableSlot] Unique TCzechBox owner, vtable slot 55. */
+/* Single-JMP thunk to InitializeCzechBoxVisualModeDefault */
 
-void __thiscall TCzechBox::TCzechBox_VtblSlot55(TCzechBox *this)
+void __thiscall TCzechBox::TCzechBox_VtblSlot055(TCzechBox *this)
 
 {
-  *(undefined4 *)(this + 0x60) = 4;
+  this->field60 = 4;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D6F0
+// GHIDRA_NAME TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
+// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTCzechBoxBaseState; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around ConstructTCzechBoxBaseState; instructions=8, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void * __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(TCzechBox *this)
+
+{
+  ConstructTCzechBoxBaseState(this);
+  this->field98 = 0;
+  this->field0_0x0 = &PTR_thunk_GetTMadnessButtonClassNamePointer_00641df0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571B60
@@ -89,7 +107,7 @@ void * __cdecl TCzechBox::CreateTCzechBoxInstance(void)
   puStack_8 = &LAB_0063646a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -126,9 +144,9 @@ void * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)(this + 0x92) = 7000;
-  this[0x94] = (TCzechBox)0x0;
-  *(undefined ***)this = &g_vtblTCzechBox;
+  this->field92 = 7000;
+  this->field140_0x94 = 0;
+  this->field0_0x0 = &g_vtblTCzechBox;
   return this;
 }
 
@@ -141,46 +159,8 @@ void * __thiscall TCzechBox::DestructTCzechBoxAndMaybeFree(TCzechBox *this,byte 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00571CB0
-// GHIDRA_NAME TCzechBox::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
-
-void __thiscall
-TCzechBox::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(TCzechBox *this)
-
-{
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0x21) {
-    (**(code **)(*(int *)this + 0x1dc))(1);
-  }
-  thunk_HandleCityDialogToggleCommandOrForward();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00571CF0
-// GHIDRA_NAME TCzechBox::InitializeCzechBoxVisualModeDefault
-// GHIDRA_PROTO void __thiscall InitializeCzechBoxVisualModeDefault(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes CzechBox default visual mode/state field.
-// GHIDRA_COMMENT_END
-
-/* Initializes CzechBox default visual mode/state field. */
-
-void __thiscall TCzechBox::InitializeCzechBoxVisualModeDefault(TCzechBox *this)
-
-{
-  *(undefined4 *)(this + 0x60) = 4;
-  return;
 }
 

@@ -3,9 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TNumberedArrowButton.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401294
+// GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton_VtblSlot068
+// GHIDRA_PROTO void __cdecl TNumberedArrowButton_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to RenderLeftRightIndicatorIconsAndValueText
+// GHIDRA_COMMENT_END
+
+/* [ThunkJmp] single JMP thunk to RenderLeftRightIndicatorIconsAndValueText */
+
+void __cdecl TNumberedArrowButton::TNumberedArrowButton_VtblSlot068(void)
+
+{
+  RenderLeftRightIndicatorIconsAndValueText();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00402798
-// GHIDRA_NAME TNumberedArrowButton::thunk_DestructTNumberedArrowButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNumberedArrowButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TNumberedArrowButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNumberedArrowButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,26 +29,63 @@
 /* Single-JMP thunk to DestructTNumberedArrowButtonAndMaybeFree */
 
 void * __thiscall
-TNumberedArrowButton::thunk_DestructTNumberedArrowButtonAndMaybeFree
-          (TNumberedArrowButton *this,byte freeSelfFlag)
+TNumberedArrowButton::TNumberedArrowButton_VtblSlot001(TNumberedArrowButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
-  pvVar1 = DestructTNumberedArrowButtonAndMaybeFree(this,freeSelfFlag);
+  pvVar1 = _DestructTNumberedArrowButtonAndMaybeFree__YIPAUNumberedArrowButtonState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12_HE_Z
+                     (this,freeSelfFlag);
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405943
+// GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton_VtblSlot113
+// GHIDRA_PROTO void __cdecl TNumberedArrowButton_VtblSlot113(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to 0x0058c330
+// GHIDRA_COMMENT_END
+
+/* [ThunkJmp] single JMP thunk to 0x0058c330 */
+
+void __cdecl TNumberedArrowButton::TNumberedArrowButton_VtblSlot113(void)
+
+{
+  _OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z__imperialism_include_game_ui_widget_shared_h141796978__HFD_Z
+            ();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405F6F
+// GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton_VtblSlot104
+// GHIDRA_PROTO void __thiscall TNumberedArrowButton_VtblSlot104(int callbackContext, int mousePhase, void * pEventSender, void * pEventData, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleSplitArrowMousePhaseStateAndDispatchCommand64or65
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleSplitArrowMousePhaseStateAndDispatchCommand64or65 */
+
+void __thiscall
+TNumberedArrowButton::TNumberedArrowButton_VtblSlot104
+          (TNumberedArrowButton *this,int callbackContext,int mousePhase,void *pEventSender,
+          void *pEventData,SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  HandleSplitArrowMousePhaseStateAndDispatchCommand64or65
+            (this,callbackContext,mousePhase,pEventSender,pEventData,pHitPayload,pRepeatArg);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408C0B
-// GHIDRA_NAME TNumberedArrowButton::thunk_GetTNumberedArrowButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNumberedArrowButtonClassNamePointer(void)
+// GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNumberedArrowButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNumberedArrowButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNumberedArrowButtonClassNamePointer */
 
-void * __cdecl TNumberedArrowButton::thunk_GetTNumberedArrowButtonClassNamePointer(void)
+void * __cdecl TNumberedArrowButton::TNumberedArrowButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -44,6 +97,11 @@ void * __cdecl TNumberedArrowButton::thunk_GetTNumberedArrowButtonClassNamePoint
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C1E0
 // GHIDRA_NAME TNumberedArrowButton::CreateTNumberedArrowButtonInstance
 // GHIDRA_PROTO void * __cdecl CreateTNumberedArrowButtonInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled leaf extracted from mangled MSVC symbol
+// GHIDRA_COMMENT_END
+
+/* demangled leaf extracted from mangled MSVC symbol */
 
 void * __cdecl TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
 
@@ -58,13 +116,13 @@ void * __cdecl TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
   puStack_8 = &LAB_00637bba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTNumberedArrowButton;
-    *(undefined2 *)(this + 0x84) = 0;
-    *(undefined2 *)(this + 0x86) = 0;
+    (this->base).pVtable = &g_vtblTNumberedArrowButton;
+    *(undefined2 *)&this->field_0x84 = 0;
+    *(undefined2 *)&this->field_0x86 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -88,33 +146,257 @@ void * __cdecl TNumberedArrowButton::GetTNumberedArrowButtonClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C2A0
-// GHIDRA_NAME TNumberedArrowButton::ConstructTNumberedArrowButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTNumberedArrowButtonBaseState(void)
+// GHIDRA_NAME TNumberedArrowButton::?ConstructTNumberedArrowButtonBaseState@@YIPAUNumberedArrowButtonState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@@Z
+// GHIDRA_PROTO void * __thiscall ?ConstructTNumberedArrowButtonBaseState@@YIPAUNumberedArrowButtonState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@@Z(void)
 
 void * __thiscall
-TNumberedArrowButton::ConstructTNumberedArrowButtonBaseState(TNumberedArrowButton *this)
+TNumberedArrowButton::
+_ConstructTNumberedArrowButtonBaseState__YIPAUNumberedArrowButtonState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12__Z
+          (TNumberedArrowButton *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  *(undefined ***)this = &g_vtblTNumberedArrowButton;
-  *(undefined2 *)(this + 0x84) = 0;
-  *(undefined2 *)(this + 0x86) = 0;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase(&this->base);
+  (this->base).base.pVtable = &g_vtblTNumberedArrowButton;
+  *(undefined2 *)&(this->base).field_0x84 = 0;
+  *(undefined2 *)&(this->base).field_0x86 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C2E0
-// GHIDRA_NAME TNumberedArrowButton::DestructTNumberedArrowButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNumberedArrowButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNumberedArrowButton::?DestructTNumberedArrowButtonAndMaybeFree@@YIPAUNumberedArrowButtonState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z
+// GHIDRA_PROTO void * __thiscall ?DestructTNumberedArrowButtonAndMaybeFree@@YIPAUNumberedArrowButtonState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z(byte freeSelfFlag)
 
 void * __thiscall
-TNumberedArrowButton::DestructTNumberedArrowButtonAndMaybeFree
+TNumberedArrowButton::
+_DestructTNumberedArrowButtonAndMaybeFree__YIPAUNumberedArrowButtonState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12_HE_Z
           (TNumberedArrowButton *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058C640
+// GHIDRA_NAME TNumberedArrowButton::HandleSplitArrowMousePhaseStateAndDispatchCommand64or65
+// GHIDRA_PROTO void __thiscall HandleSplitArrowMousePhaseStateAndDispatchCommand64or65(int callbackContext, int mousePhase, void * pEventSender, void * pEventData, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Callback ABI note: first stack arg (shown by decompiler as unaff_retaddr) is the mouse phase/state selector (0,1,2). Uses pHitPayload->axisCoord4 and dispatches split commands 0x64/0x65 via parent slot 0x40.
+// GHIDRA_COMMENT_END
+
+/* Callback ABI note: first stack arg (shown by decompiler as unaff_retaddr) is the mouse
+   phase/state selector (0,1,2). Uses pHitPayload->axisCoord4 and dispatches split commands
+   0x64/0x65 via parent slot 0x40. */
+
+void __thiscall
+TNumberedArrowButton::HandleSplitArrowMousePhaseStateAndDispatchCommand64or65
+          (TNumberedArrowButton *this,int callbackContext,int mousePhase,void *pEventSender,
+          void *pEventData,SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  void *pvVar1;
+  int iVar2;
+  int *piVar3;
+  char cVar4;
+  short sVar5;
+  short sVar6;
+  int unaff_retaddr;
+  short sStack_10;
+  
+  sVar6 = 0;
+  pvVar1 = (this->base).base.pVtable;
+  cVar4 = (**(code **)((int)pvVar1 + 0x16c))(pEventData);
+  if (cVar4 != '\0') {
+    (**(code **)((int)pvVar1 + 0x1a4))(&stack0xffffffec);
+    sVar5 = *(short *)((int)pEventData + 4) - sStack_10;
+    if ((sVar5 < 1) || ((this->base).base.field15_0x38 / 2 <= (int)sVar5)) {
+      iVar2 = (this->base).base.field15_0x38;
+      if ((iVar2 / 2 < (int)sVar5) && (sVar5 < iVar2)) {
+        sVar6 = 1;
+      }
+    }
+    else {
+      sVar6 = 2;
+    }
+  }
+  if (-1 < unaff_retaddr) {
+    if (unaff_retaddr < 2) {
+      if (*(short *)&(this->base).field_0x86 != sVar6) {
+        (**(code **)((int)pvVar1 + 0xe4))();
+        (**(code **)((int)pvVar1 + 300))(&stack0xffffffec);
+        *(short *)&(this->base).field_0x86 = sVar6;
+      }
+      (**(code **)((int)pvVar1 + 0x114))(0);
+    }
+    else if ((unaff_retaddr == 2) && (sVar6 != 0)) {
+      if (*(short *)&(this->base).field_0x86 != 0) {
+        (**(code **)((int)pvVar1 + 0xe4))();
+        (**(code **)((int)pvVar1 + 300))(&stack0xffffffec);
+        *(undefined2 *)&(this->base).field_0x86 = 0;
+      }
+      piVar3 = (this->base).base.pChildMapView20;
+      if (sVar6 == 2) {
+        (**(code **)(*piVar3 + 0x40))(100,this,0);
+        (**(code **)((int)pvVar1 + 0x114))(0);
+        return;
+      }
+      (**(code **)(*piVar3 + 0x40))(0x65,this,0);
+      (**(code **)((int)pvVar1 + 0x114))(0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058D950
+// GHIDRA_NAME TNumberedArrowButton::HandleCombatReportPageNavigationAndRefreshText
+// GHIDRA_PROTO void __thiscall HandleCombatReportPageNavigationAndRefreshText(int commandId, PanelEventPayload * pPanelEvent)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ClassLane] Handles pgup/pgdn page navigation controls in combat report and rebuilds page text content before invalidation.
+// GHIDRA_COMMENT_END
+
+/* [ClassLane] Handles pgup/pgdn page navigation controls in combat report and rebuilds page text
+   content before invalidation. */
+
+void __thiscall
+TNumberedArrowButton::HandleCombatReportPageNavigationAndRefreshText
+          (TNumberedArrowButton *this,int commandId,PanelEventPayload *pPanelEvent)
+
+{
+  short sVar1;
+  void *pvVar2;
+  code *pcVar3;
+  int *piVar4;
+  int iVar5;
+  char *pcVar6;
+  int *unaff_FS_OFFSET;
+  undefined1 auStack_3c [4];
+  int aiStack_38 [3];
+  RECT RStack_2c;
+  tagRECT tStack_1c;
+  int iStack_c;
+  undefined1 *puStack_8;
+  int iStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  iStack_4 = -1;
+  puStack_8 = &LAB_00637d28;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  if (commandId != 10) goto LAB_0058dd08;
+  if (pPanelEvent->controlTag1c == 0x70677570) {
+    sVar1 = *(short *)&(this->base).pField94;
+    if (sVar1 < 2) {
+      pvVar2 = (this->base).base.pVtable;
+      *(undefined2 *)&(this->base).pField94 = 0;
+      pcVar6 = s_ltitoperssoledro_00698ed0;
+      iVar5 = 4;
+      pcVar3 = *(code **)((int)pvVar2 + 0x94);
+      do {
+        piVar4 = (int *)(*pcVar3)(*(undefined4 *)pcVar6);
+        if (piVar4 != (int *)0x0) {
+          (**(code **)(*piVar4 + 0xa4))(1,1);
+        }
+        pcVar6 = pcVar6 + 4;
+        iVar5 = iVar5 + -1;
+      } while (iVar5 != 0);
+      piVar4 = (int *)(*pcVar3)(0x70677570);
+      if (piVar4 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      }
+      (**(code **)(*piVar4 + 0xa4))(0,1);
+    }
+    else {
+      *(short *)&(this->base).pField94 = sVar1 + -1;
+    }
+    piVar4 = (int *)(**(code **)((int)(this->base).base.pVtable + 0x94))(0x7067646e);
+    if (piVar4 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    (**(code **)(*piVar4 + 0xa4))(1,1);
+    RStack_2c.top = 0x9f;
+    RStack_2c.right = 0xe1;
+    RStack_2c.left = 4;
+    RStack_2c.bottom = 0x149;
+    CopyRect(&tStack_1c,&RStack_2c);
+LAB_0058dbdf:
+    thunk_InvalidateCityDialogRectRegion((int)&tStack_1c,1);
+  }
+  else if (pPanelEvent->controlTag1c == 0x7067646e) {
+    sVar1 = *(short *)&(this->base).pField94;
+    if (sVar1 == 0) {
+      pvVar2 = (this->base).base.pVtable;
+      *(undefined2 *)&(this->base).pField94 = 1;
+      pcVar6 = s_ltitoperssoledro_00698ed0;
+      iVar5 = 4;
+      pcVar3 = *(code **)((int)pvVar2 + 0x94);
+      do {
+        piVar4 = (int *)(*pcVar3)(*(undefined4 *)pcVar6);
+        if (piVar4 != (int *)0x0) {
+          (**(code **)(*piVar4 + 0xa4))(0,1);
+        }
+        pcVar6 = pcVar6 + 4;
+        iVar5 = iVar5 + -1;
+      } while (iVar5 != 0);
+      piVar4 = (int *)(*pcVar3)(0x70677570);
+      if (piVar4 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      }
+      (**(code **)(*piVar4 + 0xa4))(1,1);
+    }
+    else if (sVar1 < *(short *)((int)&(this->base).pField94 + 2)) {
+      *(short *)&(this->base).pField94 = sVar1 + 1;
+    }
+    if (*(short *)&(this->base).pField94 == *(short *)((int)&(this->base).pField94 + 2)) {
+      piVar4 = (int *)(**(code **)((int)(this->base).base.pVtable + 0x94))(0x7067646e);
+      if (piVar4 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      }
+      (**(code **)(*piVar4 + 0xa4))(0,1);
+    }
+    RStack_2c.top = 0x9f;
+    RStack_2c.right = 0xe1;
+    RStack_2c.left = 4;
+    RStack_2c.bottom = 0x149;
+    CopyRect(&tStack_1c,&RStack_2c);
+    goto LAB_0058dbdf;
+  }
+  piVar4 = (int *)(**(code **)((int)(this->base).base.pVtable + 0x94))(0x70616765);
+  if (piVar4 != (int *)0x0) {
+    InitializeSharedStringRefFromEmpty();
+    iStack_4 = 0;
+    InitializeSharedStringRefFromEmpty();
+    iStack_4._0_1_ = 1;
+    FormatStringWithVarArgsToSharedRef();
+    AssignSharedStringConcatCStrAndRef();
+    iStack_4._0_1_ = 2;
+    AssignSharedStringConcatRefAndCStr();
+    iStack_4._0_1_ = 3;
+    TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)aiStack_38);
+    iStack_4._0_1_ = 4;
+    AssignFromPtr(auStack_3c,aiStack_38);
+    iStack_4._0_1_ = 3;
+    ReleaseSharedStringRefIfNotEmpty();
+    iStack_4._0_1_ = 2;
+    ReleaseSharedStringRefIfNotEmpty();
+    iStack_4._0_1_ = 1;
+    ReleaseSharedStringRefIfNotEmpty();
+    FormatStringWithVarArgsToSharedRef();
+    AssignStringSharedFromRef();
+    (**(code **)(*piVar4 + 0x1c8))(auStack_3c,1);
+    iStack_4 = (uint)iStack_4._1_3_ << 8;
+    ReleaseSharedStringRefIfNotEmpty();
+    iStack_4 = -1;
+    ReleaseSharedStringRefIfNotEmpty();
+  }
+LAB_0058dd08:
+  thunk_HandleCityDialogToggleCommandOrForward();
+  *unaff_FS_OFFSET = iStack_c;
+  return;
 }
 

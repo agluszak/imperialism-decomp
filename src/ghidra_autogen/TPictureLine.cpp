@@ -3,37 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TPictureLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004023C4
-// GHIDRA_NAME TPictureLine::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005700a0
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At005700a0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005700a0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005700a0 */
-
-void TPictureLine::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005700a0(void)
-
-{
-  ConstructTPictureLineBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00407784
-// GHIDRA_NAME TPictureLine::thunk_GetTPictureLineRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTPictureLineRuntimeClass(void)
+// GHIDRA_NAME TPictureLine::thunk_DestructTPictureLineAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTPictureLineAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTPictureLineRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTPictureLineRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTPictureLineRuntimeClass. */
+/* Thunk forwarding to GetTPictureLineRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TPictureLine::thunk_GetTPictureLineRuntimeClass(TPictureLine *this)
+void * __thiscall TPictureLine::thunk_DestructTPictureLineAndMaybeFree(TPictureLine *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -72,7 +56,7 @@ void * __cdecl TPictureLine::GetTPictureLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700A0
 // GHIDRA_NAME TPictureLine::ConstructTPictureLineBaseState
-// GHIDRA_PROTO undefined ConstructTPictureLineBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTPictureLineBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -80,15 +64,16 @@ void * __cdecl TPictureLine::GetTPictureLineClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TPictureLine * __thiscall
-TPictureLine::ConstructTPictureLineBaseState(TPictureLine *param_1,byte param_2)
+void __thiscall TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this)
 
 {
-  thunk_GetTPictureLineRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTPictureLineAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700D0
@@ -105,7 +90,7 @@ void * __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *t
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

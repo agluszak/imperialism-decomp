@@ -4,15 +4,16 @@
 // Bucket: TTacticalBattle.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402068
-// GHIDRA_NAME TTacticalBattle::thunk_GetTTacticalBattleClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacticalBattleClassNamePointer(void)
+// GHIDRA_NAME TTacticalBattle::LaDeploy
+// GHIDRA_PROTO void * __cdecl LaDeploy(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacticalBattleClassNamePointer
+// GHIDRA_COMMENT macos_vtable_slot=0;class=TTacticalBattle;confidence=low;current=thunk_GetTTacticalBattleClassNamePointer_At00402068
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetTTacticalBattleClassNamePointer */
+/* macos_vtable_slot=0;class=TTacticalBattle;confidence=low;current=thunk_GetTTacticalBattleClassNamePointer_At00402068
+    */
 
-void * __cdecl TTacticalBattle::thunk_GetTTacticalBattleClassNamePointer(void)
+void * __cdecl TTacticalBattle::LaDeploy(void)
 
 {
   void *pvVar1;
@@ -34,26 +35,27 @@ void __fastcall TTacticalBattle::thunk_ConstructTTacticalBattleBaseState(TTactic
 
 {
   *(undefined ***)pThis = &g_vtblTTacticalBattle;
-  *(undefined4 *)(pThis + 4) = 0;
-  *(undefined4 *)(pThis + 8) = 0;
-  *(undefined4 *)(pThis + 0x24) = 0;
-  *(undefined4 *)(pThis + 0x1c) = 0;
-  *(undefined4 *)(pThis + 0x34) = 0;
-  *(undefined4 *)(pThis + 0x74) = 0;
-  *(undefined4 *)(pThis + 0x20) = 0;
+  pThis->field04 = 0;
+  pThis->field08 = 0;
+  pThis->field24 = 0;
+  pThis->field1c = 0;
+  pThis->field34 = 0;
+  pThis->field74 = 0;
+  pThis->field20 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004042B9
-// GHIDRA_NAME TTacticalBattle::thunk_SetTacticalBattleReadyFlag_At004042b9
-// GHIDRA_PROTO void __thiscall thunk_SetTacticalBattleReadyFlag_At004042b9(void)
+// GHIDRA_NAME TTacticalBattle::thunk_CreateTTacticalBattleInstance_At004042b9
+// GHIDRA_PROTO void __thiscall thunk_CreateTTacticalBattleInstance_At004042b9(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetTacticalBattleReadyFlag
+// GHIDRA_COMMENT Single-JMP thunk to CreateTTacticalBattleInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to SetTacticalBattleReadyFlag */
+/* Single-JMP thunk to CreateTTacticalBattleInstance */
 
-void __thiscall TTacticalBattle::thunk_SetTacticalBattleReadyFlag_At004042b9(TTacticalBattle *this)
+void __thiscall
+TTacticalBattle::thunk_CreateTTacticalBattleInstance_At004042b9(TTacticalBattle *this)
 
 {
   CreateTTacticalBattleInstance(this);
@@ -61,8 +63,8 @@ void __thiscall TTacticalBattle::thunk_SetTacticalBattleReadyFlag_At004042b9(TTa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004068B6
-// GHIDRA_NAME TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTacticalBattleAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree_At004068b6
+// GHIDRA_PROTO void * __thiscall thunk_DestructTTacticalBattleAndMaybeFree_At004068b6(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTacticalBattleAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -70,7 +72,8 @@ void __thiscall TTacticalBattle::thunk_SetTacticalBattleReadyFlag_At004042b9(TTa
 /* Single-JMP thunk to DestructTTacticalBattleAndMaybeFree */
 
 void * __thiscall
-TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree(TTacticalBattle *this,byte freeSelfFlag)
+TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree_At004068b6
+          (TTacticalBattle *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -91,7 +94,7 @@ TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree(TTacticalBattle *this
 void __thiscall TTacticalBattle::CreateTTacticalBattleInstance(TTacticalBattle *this)
 
 {
-  *(undefined4 *)(this + 0x44) = 1;
+  this->field44 = 1;
   return;
 }
 
@@ -118,13 +121,13 @@ void __fastcall TTacticalBattle::ConstructTTacticalBattleBaseState(TTacticalBatt
 
 {
   *(undefined ***)pThis = &g_vtblTTacticalBattle;
-  *(undefined4 *)(pThis + 4) = 0;
-  *(undefined4 *)(pThis + 8) = 0;
-  *(undefined4 *)(pThis + 0x24) = 0;
-  *(undefined4 *)(pThis + 0x1c) = 0;
-  *(undefined4 *)(pThis + 0x34) = 0;
-  *(undefined4 *)(pThis + 0x74) = 0;
-  *(undefined4 *)(pThis + 0x20) = 0;
+  pThis->field04 = 0;
+  pThis->field08 = 0;
+  pThis->field24 = 0;
+  pThis->field1c = 0;
+  pThis->field34 = 0;
+  pThis->field74 = 0;
+  pThis->field20 = 0;
   return;
 }
 
@@ -138,7 +141,7 @@ TTacticalBattle::DestructTTacticalBattleAndMaybeFree(TTacticalBattle *this,byte 
 {
   DestructTTacticalBattleAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

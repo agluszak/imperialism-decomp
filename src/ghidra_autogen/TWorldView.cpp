@@ -4,16 +4,15 @@
 // Bucket: TWorldView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401154
-// GHIDRA_NAME TWorldView::thunk_DestructTWorldViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTWorldViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TWorldView::TWorldView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TWorldView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTWorldViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTWorldViewAndMaybeFree */
 
-void * __thiscall
-TWorldView::thunk_DestructTWorldViewAndMaybeFree(TWorldView *this,byte freeSelfFlag)
+void * __thiscall TWorldView::TWorldView_VtblSlot001(TWorldView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,10 +22,15 @@ TWorldView::thunk_DestructTWorldViewAndMaybeFree(TWorldView *this,byte freeSelfF
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004072C5
-// GHIDRA_NAME TWorldView::thunk_RunNoOpUiLifecycleHook
-// GHIDRA_PROTO void __cdecl thunk_RunNoOpUiLifecycleHook(void)
+// GHIDRA_NAME TWorldView::TWorldView_VtblSlot055
+// GHIDRA_PROTO void __cdecl TWorldView_VtblSlot055(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RunNoOpUiLifecycleHook
+// GHIDRA_COMMENT_END
 
-void __cdecl TWorldView::thunk_RunNoOpUiLifecycleHook(void)
+/* Single-JMP thunk to RunNoOpUiLifecycleHook */
+
+void __cdecl TWorldView::TWorldView_VtblSlot055(void)
 
 {
   thunk_NoOpUiLifecycleHook();
@@ -34,21 +38,107 @@ void __cdecl TWorldView::thunk_RunNoOpUiLifecycleHook(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409269
-// GHIDRA_NAME TWorldView::thunk_GetTWorldViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTWorldViewClassNamePointer(void)
+// GHIDRA_NAME TWorldView::TWorldView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TWorldView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTWorldViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTWorldViewClassNamePointer */
 
-void * __cdecl TWorldView::thunk_GetTWorldViewClassNamePointer(void)
+void * __cdecl TWorldView::TWorldView_VtblSlot000(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTWorldViewClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0051CC60
+// GHIDRA_NAME TWorldView::InitializeStrategicMapTileIconStateCache
+// GHIDRA_PROTO void __thiscall InitializeStrategicMapTileIconStateCache(void * pMapView, int nInitToken)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes strategic-map tile icon cache bytes used by RenderStrategicMapTileCell.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resets map interaction/render state and enters map mode 5.
+// GHIDRA_COMMENT 2. Iterates all 0x1950 tiles (stride 0x24) except city cells (tile[0]==5).
+// GHIDRA_COMMENT 3. For each tile, computes icon cache byte tile[0x11] from tile[0x13] using a local 15-entry lookup table.
+// GHIDRA_COMMENT 4. Clears secondary icon cache byte tile[0x12] to 0xFF.
+// GHIDRA_COMMENT 5. Refreshes renderer object tagged 'urnp'.
+// GHIDRA_COMMENT Lookup table (index=tile[0x13]): [-1,-1,0,20,5,17,18,1,-1,-1,-1,-1,-1,2,-1].
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - tile[0x11]/tile[0x12]/tile[0x13] are consumed later by DrawStrategicMapUnitIcon and DrawStrategicMapUnitIconOverlay paths.
+// GHIDRA_COMMENT - This function seeds default civilian/overlay icon variants before per-tile updates.
+// GHIDRA_COMMENT_END
+
+/* Initializes strategic-map tile icon cache bytes used by RenderStrategicMapTileCell.
+   Algorithm:
+   1. Resets map interaction/render state and enters map mode 5.
+   2. Iterates all 0x1950 tiles (stride 0x24) except city cells (tile[0]==5).
+   3. For each tile, computes icon cache byte tile[0x11] from tile[0x13] using a local 15-entry
+   lookup table.
+   4. Clears secondary icon cache byte tile[0x12] to 0xFF.
+   5. Refreshes renderer object tagged 'urnp'.
+   Lookup table (index=tile[0x13]): [-1,-1,0,20,5,17,18,1,-1,-1,-1,-1,-1,2,-1].
+   Notes:
+   - tile[0x11]/tile[0x12]/tile[0x13] are consumed later by DrawStrategicMapUnitIcon and
+   DrawStrategicMapUnitIconOverlay paths.
+   - This function seeds default civilian/overlay icon variants before per-tile updates. */
+
+void __thiscall
+TWorldView::InitializeStrategicMapTileIconStateCache(TWorldView *this,void *pMapView,int nInitToken)
+
+{
+  int iVar1;
+  int iVar2;
+  int *piVar3;
+  int iVar4;
+  short sVar5;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined2 uStack_10;
+  
+  TWorldView_VtblSlot055();
+  this->field78 = 0x40;
+  local_14 = 0x40;
+  this->field76 = 1;
+  sVar5 = 0;
+  local_20 = 0;
+  local_1c = 0;
+  local_18 = 0x1680;
+  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->pField350,8,&local_20);
+  (**(code **)((int)(this->base).pVtable + 0x1f8))();
+  g_pMapInteractionPreviewSurfaceContext = g_pPrimaryRenderSurfaceContext;
+  InitializeMainRoutineContextAndRun();
+  InitializeMainRoutineContextAndRun();
+  TCivToolbar::thunk_SetMapInteractionMode((this->base).pChildMapView20,MAP_INTERACTION_MODE_5);
+  *(undefined1 *)((int)g_pGlobalMapState + 0x24) = 1;
+  (**(code **)(*(int *)g_pUiRuntimeContext + 0xc4))();
+  (**(code **)(*(int *)(this->base).pChildMapView20 + 500))();
+  iVar4 = 0;
+  do {
+    iVar1 = *(int *)((int)g_pGlobalMapState + 0xc);
+    if (*(char *)(iVar4 + iVar1) != '\x05') {
+      iVar2 = sVar5 * 0x24;
+      local_20 = 0x10012;
+      local_1c = 0xffffffff;
+      local_18 = 0xffffffff;
+      local_14 = 0x2ffff;
+      uStack_10 = 0xffff;
+      *(undefined1 *)(iVar2 + 0x11 + iVar1) =
+           (&stack0xffffffd4)[*(char *)(iVar2 + 0x13 + iVar1) * 2];
+      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x12 + iVar2) = 0xff;
+    }
+    iVar4 = iVar4 + 0x24;
+    sVar5 = sVar5 + 1;
+  } while (iVar4 < 0x38f40);
+  piVar3 = (int *)(**(code **)(*(int *)(this->base).pChildMapView20 + 0x94))(0x70726e75);
+  (**(code **)(*piVar3 + 0xc))();
+  piVar3[0x2a] = 0x17f;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594F20
@@ -68,16 +158,16 @@ void * __cdecl TWorldView::CreateTWorldViewInstance(void)
   puStack_8 = &LAB_006381ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x7c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTWorldView;
-    *(undefined2 *)(this + 0x6c) = 0;
-    *(undefined2 *)(this + 0x6e) = 0;
-    *(undefined2 *)(this + 0x68) = 0;
-    *(undefined2 *)(this + 0x6a) = 0;
-    *(undefined2 *)(this + 0x7a) = 0xffff;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTWorldView;
+    *(undefined2 *)&this[1].dialogValueDwordC = 0;
+    *(undefined2 *)((int)&this[1].dialogValueDwordC + 2) = 0;
+    *(undefined2 *)&this[1].field3_0x8 = 0;
+    *(undefined2 *)((int)&this[1].field3_0x8 + 2) = 0;
+    *(undefined2 *)((int)&this[1].pUiOwner18 + 2) = 0xffff;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -107,13 +197,13 @@ void * __cdecl TWorldView::GetTWorldViewClassNamePointer(void)
 void * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTWorldView;
-  *(undefined2 *)(this + 0x6c) = 0;
-  *(undefined2 *)(this + 0x6e) = 0;
-  *(undefined2 *)(this + 0x68) = 0;
-  *(undefined2 *)(this + 0x6a) = 0;
-  *(undefined2 *)(this + 0x7a) = 0xffff;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTWorldView;
+  this->field6c = 0;
+  this->field6e = 0;
+  this->field68 = 0;
+  this->field6a = 0;
+  this->field7a = -1;
   return this;
 }
 
@@ -124,21 +214,10 @@ void * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
 void * __thiscall TWorldView::DestructTWorldViewAndMaybeFree(TWorldView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00595090
-// GHIDRA_NAME TWorldView::RunNoOpUiLifecycleHook
-// GHIDRA_PROTO void __cdecl RunNoOpUiLifecycleHook(void)
-
-void __cdecl TWorldView::RunNoOpUiLifecycleHook(void)
-
-{
-  thunk_NoOpUiLifecycleHook();
-  return;
 }
 

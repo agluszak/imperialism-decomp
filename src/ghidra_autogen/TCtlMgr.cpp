@@ -4,15 +4,15 @@
 // Bucket: TCtlMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402FB3
-// GHIDRA_NAME TCtlMgr::thunk_DestructTCtlMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCtlMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCtlMgr::TCtlMgr_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TCtlMgr_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCtlMgrAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCtlMgrAndMaybeFree */
 
-void * __thiscall TCtlMgr::thunk_DestructTCtlMgrAndMaybeFree(TCtlMgr *this,byte freeSelfFlag)
+void * __thiscall TCtlMgr::TCtlMgr_VtblSlot001(TCtlMgr *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -39,6 +39,24 @@ void * __cdecl TCtlMgr::thunk_GetTCtlMgrClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405957
+// GHIDRA_NAME TCtlMgr::TCtlMgr_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCtlMgr_VtblSlot000(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTButtonClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTButtonClassNamePointer */
+
+void * __cdecl TCtlMgr::TCtlMgr_VtblSlot000(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TButton::GetTButtonClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EA00
 // GHIDRA_NAME TCtlMgr::CreateTCtlMgrInstance
 // GHIDRA_PROTO void * __cdecl CreateTCtlMgrInstance(void)
@@ -56,21 +74,21 @@ void * __cdecl TCtlMgr::CreateTCtlMgrInstance(void)
   puStack_8 = &LAB_0062ee92;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x60) = 1;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].field1_0x4 = 0;
+    this[1].pVtable = (void *)0x1;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTButton;
+    this->pVtable = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -116,23 +134,23 @@ void * __cdecl TCtlMgr::ConstructTCtlMgrBaseState(void)
   puStack_8 = &LAB_0062eec2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x60) = 1;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].field1_0x4 = 0;
+    this[1].pVtable = (void *)0x1;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTButton;
+    this->pVtable = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &g_vtblTCtlMgr;
+    this->pVtable = &g_vtblTCtlMgr;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -147,9 +165,9 @@ void * __cdecl TCtlMgr::ConstructTCtlMgrBaseState(void)
 void * __thiscall TCtlMgr::DestructTCtlMgrAndMaybeFree(TCtlMgr *this,byte freeSelfFlag)
 
 {
-  TButton::thunk_DestroyButtonAndReleaseOwnedResources((TButton *)this);
+  TButton::thunk_CreateTButtonInstance((TButton *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

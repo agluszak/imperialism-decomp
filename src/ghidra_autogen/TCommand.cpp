@@ -3,53 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401050
-// GHIDRA_NAME TCommand::thunk_RunCommandModalLoopAndFinalizeState_At00401050
-// GHIDRA_PROTO void __thiscall thunk_RunCommandModalLoopAndFinalizeState_At00401050(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunCommandModalLoopAndFinalizeState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RunCommandModalLoopAndFinalizeState */
-
-void __thiscall TCommand::thunk_RunCommandModalLoopAndFinalizeState_At00401050(TCommand *this)
-
-{
-  CreateTCommandInstance(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D5F
-// GHIDRA_NAME TCommand::thunk_ConstructTurnEventPacketBase
-// GHIDRA_PROTO void __thiscall thunk_ConstructTurnEventPacketBase(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnEventPacketBase
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTurnEventPacketBase */
-
-void __thiscall TCommand::thunk_ConstructTurnEventPacketBase(TCommand *this)
-
-{
-  *(undefined4 *)(this + 4) = 0;
-  *(undefined4 *)(this + 8) = 0;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 0x10) = 0;
-  *(undefined ***)this = &g_vtblTCommand;
-  *(undefined4 *)(this + 0x14) = 0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00404656
-// GHIDRA_NAME TCommand::thunk_GetTCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCommandClassNamePointer(void)
+// GHIDRA_NAME TCommand::thunk_GetTCommandClassNamePointer_At00404656
+// GHIDRA_PROTO void * __cdecl thunk_GetTCommandClassNamePointer_At00404656(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCommandClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCommandClassNamePointer */
 
-void * __cdecl TCommand::thunk_GetTCommandClassNamePointer(void)
+void * __cdecl TCommand::thunk_GetTCommandClassNamePointer_At00404656(void)
 
 {
   void *pvVar1;
@@ -59,15 +22,16 @@ void * __cdecl TCommand::thunk_GetTCommandClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404D4A
-// GHIDRA_NAME TCommand::thunk_DestructTCommandAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCommandAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCommand::thunk_DestructTCommandAndMaybeFree_At00404d4a
+// GHIDRA_PROTO void * __thiscall thunk_DestructTCommandAndMaybeFree_At00404d4a(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCommandAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCommandAndMaybeFree */
 
-void * __thiscall TCommand::thunk_DestructTCommandAndMaybeFree(TCommand *this,byte freeSelfFlag)
+void * __thiscall
+TCommand::thunk_DestructTCommandAndMaybeFree_At00404d4a(TCommand *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -78,7 +42,7 @@ void * __thiscall TCommand::thunk_DestructTCommandAndMaybeFree(TCommand *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484080
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
-// GHIDRA_PROTO void __thiscall RunCommandModalLoopAndFinalizeState_Impl(TCommand * pThis)
+// GHIDRA_PROTO void __thiscall RunCommandModalLoopAndFinalizeState_Impl(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00484080 with single named caller RunCommandModalLoopAndFinalizeState@0x00487660
 // GHIDRA_COMMENT_END
@@ -86,10 +50,10 @@ void * __thiscall TCommand::thunk_DestructTCommandAndMaybeFree(TCommand *this,by
 /* [ThunkBridge] promoted from thunk_FUN_00484080 with single named caller
    RunCommandModalLoopAndFinalizeState@0x00487660 */
 
-void __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,TCommand *pThis)
+void __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,int arg1)
 
 {
-  *(uint *)(this + 0x90) = (uint)pThis & 0xff;
+  this->field90 = arg1 & 0xff;
   return;
 }
 
@@ -105,27 +69,29 @@ void __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *thi
 void __thiscall TCommand::CreateTCommandInstance(TCommand *this)
 
 {
-  TCommand *this_00;
+  TMovieView *this_00;
+  TCommand *this_01;
   int extraout_EAX;
   int *piVar1;
-  TCommand *this_01;
+  TCommand *this_02;
   BOOL unaff_EDI;
-  TCommand *pTVar2;
+  int iVar2;
   
-  pTVar2 = (TCommand *)0x0;
+  iVar2 = 0;
   InvokeAfxThreadVslot7CAndGetValueAtOffset98();
-  RunCommandModalLoopAndFinalizeState_Impl(this_00,pTVar2);
-  piVar1 = (int *)(**(code **)(**(int **)(this + 8) + 0x58))();
+  RunCommandModalLoopAndFinalizeState_Impl(this_01,iVar2);
+  piVar1 = (int *)(**(code **)(*(int *)this->pField08 + 0x58))();
   (**(code **)(*piVar1 + 0x9c))();
-  (**(code **)(**(int **)(this + 8) + 0x58))();
-  this[0x20] = (TCommand)0x0;
-  *(undefined4 *)(this + 0x1c) = 0x20202020;
+  iVar2 = (**(code **)(*(int *)this->pField08 + 0x58))();
+  this_00 = *(TMovieView **)(iVar2 + 0x50);
+  this->field11_0x20 = 0;
+  this->field1c = 0x20202020;
   EnableWindow((HWND)0x1,unaff_EDI);
-  RunModalLoopWithIdleMessages(0);
+  TMovieView::RunModalLoop(this_00);
   if (extraout_EAX != 0) {
-    pTVar2 = (TCommand *)0x1;
+    iVar2 = 1;
     InvokeAfxThreadVslot7CAndGetValueAtOffset98();
-    RunCommandModalLoopAndFinalizeState_Impl(this_01,pTVar2);
+    RunCommandModalLoopAndFinalizeState_Impl(this_02,iVar2);
   }
   return;
 }
@@ -152,12 +118,12 @@ void * __cdecl TCommand::GetTCommandClassNamePointer(void)
 void __thiscall TCommand::ConstructTurnEventPacketBase(TCommand *this)
 
 {
-  *(undefined4 *)(this + 4) = 0;
-  *(undefined4 *)(this + 8) = 0;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 0x10) = 0;
-  *(undefined ***)this = &g_vtblTCommand;
-  *(undefined4 *)(this + 0x14) = 0;
+  this->field1_0x4 = 0;
+  this->pField08 = (void *)0x0;
+  this->field3_0xc = 0;
+  this->field4_0x10 = 0;
+  this->field0_0x0 = &g_vtblTCommand;
+  this->field5_0x14 = 0;
   return;
 }
 
@@ -170,7 +136,7 @@ void * __thiscall TCommand::DestructTCommandAndMaybeFree(TCommand *this,byte fre
 {
   DestructTCommandAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

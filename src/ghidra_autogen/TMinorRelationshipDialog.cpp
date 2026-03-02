@@ -3,17 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TMinorRelationshipDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403BAC
-// GHIDRA_NAME TMinorRelationshipDialog::thunk_SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState
-// GHIDRA_PROTO void __thiscall thunk_SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0040317A
+// GHIDRA_NAME TMinorRelationshipDialog::thunk_scalar_deleting_destructor_0040317A
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040317A(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState.
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState. */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TMinorRelationshipDialog::thunk_scalar_deleting_destructor_0040317A
+          (TMinorRelationshipDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403BAC
+// GHIDRA_NAME TMinorRelationshipDialog::thunk_ConstructTMinorRelationshipDialogBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTMinorRelationshipDialogBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState.
+   [FID:thunk_target_sync] */
 
 void __thiscall
-TMinorRelationshipDialog::thunk_SyncMinorRelationshipDialogGridValuesToDiplomacyTurnState
+TMinorRelationshipDialog::thunk_ConstructTMinorRelationshipDialogBaseState
           (TMinorRelationshipDialog *this)
 
 {
@@ -37,22 +58,6 @@ void * __cdecl TMinorRelationshipDialog::thunk_GetTMinorRelationshipDialogClassN
   
   pvVar1 = GetTMinorRelationshipDialogClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A56
-// GHIDRA_NAME TMinorRelationshipDialog::thunk_RefreshMinorRelationshipDialogTerrainMatrix
-// GHIDRA_PROTO undefined thunk_RefreshMinorRelationshipDialogTerrainMatrix()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshMinorRelationshipDialogTerrainMatrix
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshMinorRelationshipDialogTerrainMatrix */
-
-void TMinorRelationshipDialog::thunk_RefreshMinorRelationshipDialogTerrainMatrix(void)
-
-{
-  DestructTMinorRelationshipDialogAndMaybeFree();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B33E0
@@ -126,13 +131,13 @@ TMinorRelationshipDialog::ConstructTMinorRelationshipDialogBaseState(TMinorRelat
     local_c = (void *)((int)local_c + 4);
     sVar4 = sVar4 + 1;
   } while (sVar4 < 0x17);
-  thunk_DispatchVfuncA0ToLinkedChildListSlot44();
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3570
 // GHIDRA_NAME TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMinorRelationshipDialogAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTMinorRelationshipDialogAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [MinorDiplomacy] Rebuilds per-terrain relationship values for minor-nation relationship dialog grid.
 // GHIDRA_COMMENT_END
@@ -140,7 +145,9 @@ TMinorRelationshipDialog::ConstructTMinorRelationshipDialogBaseState(TMinorRelat
 /* [MinorDiplomacy] Rebuilds per-terrain relationship values for minor-nation relationship dialog
    grid. */
 
-void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree(int *param_1)
+void __thiscall
+TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
+          (TMinorRelationshipDialog *this)
 
 {
   int iVar1;
@@ -155,32 +162,42 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
   int *piStack_44;
   int local_40;
   int local_3c [2];
-  int *local_34 [11];
+  TMinorRelationshipDialog *local_34;
+  int *piStack_30;
+  undefined4 local_2c;
+  undefined4 local_28;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638c78;
-  local_34[10] = (int *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = local_34 + 10;
-  local_34[0] = param_1;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_34 = this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  local_34[2] = (int *)0x6e616d30;
-  local_34[3] = (int *)0x6e616d31;
-  local_34[4] = (int *)0x6e616d32;
-  local_34[5] = (int *)0x6e616d33;
-  local_34[6] = (int *)0x6e616d34;
-  local_34[7] = (int *)0x6e616d35;
-  local_34[8] = (int *)0x6e616d36;
-  local_34[9] = (int *)0x6e616d37;
+  local_2c = 0x6e616d30;
+  local_28 = 0x6e616d31;
+  local_24 = 0x6e616d32;
+  local_20 = 0x6e616d33;
+  local_1c = 0x6e616d34;
+  local_18 = 0x6e616d35;
+  local_14 = 0x6e616d36;
+  local_10 = 0x6e616d37;
   local_40 = 0x7aa;
   local_3c[0] = 0;
   local_3c[1] = 0x10;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_3c[0] + 0x1c) != 0) {
-      piVar4 = (int *)(**(code **)(*param_1 + 0x94))();
-      local_34[1] = piVar4;
+      piVar4 = (int *)(**(code **)((int)this->pVtable + 0x94))();
+      piStack_30 = piVar4;
       if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -200,8 +217,8 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
                     ((int)*(short *)((int)g_pDiplomacyTurnStateManager->relationCodeMatrix17x17 +
                                     iVar7 + -4));
           (**(code **)(iVar1 + 0xa8))((int)(char)g_bTurnFlowAuxStateFlag,0);
-          piVar4 = local_34[1];
-          param_1 = local_34[0];
+          piVar4 = piStack_30;
+          this = local_34;
         }
         iVar6 = iVar6 + 4;
         iVar7 = iVar7 + 0x2e;
@@ -213,7 +230,7 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
     local_3c[0] = local_3c[0] + 4;
     local_3c[1] = local_3c[1] + -1;
   } while (local_3c[1] != 0);
-  pcVar2 = *(code **)(*param_1 + 0x94);
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
   piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -228,8 +245,8 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
   local_40 = 7;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffb0);
-      uVar3 = *(undefined4 *)((int)local_34 + iVar7);
+      FormatOverlayTerrainLabelText();
+      uVar3 = *(undefined4 *)((int)&local_34 + iVar7);
       piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(uVar3);
       if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -261,7 +278,7 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
   local_48 = (code *)0x8;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffa8);
+      FormatOverlayTerrainLabelText();
       piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(*(undefined4 *)((int)local_3c + iVar7 + -0x1c));
       if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -271,7 +288,7 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
       piVar4 = piStack_44;
     }
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7 + 0x20) != 0) {
-      FormatOverlayTerrainLabelText(&stack0xffffffa8);
+      FormatOverlayTerrainLabelText();
       piVar4 = (int *)(**(code **)(*piVar5 + 0x94))(*(undefined4 *)((int)local_3c + iVar7 + -0x1c));
       if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -283,9 +300,9 @@ void __fastcall TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMay
     iVar7 = iVar7 + 4;
     local_48 = (code *)((int)local_48 + -1);
   } while (local_48 != (code *)0x0);
-  local_34[8] = (int *)0xffffffff;
+  local_14 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = local_34[6];
+  *unaff_FS_OFFSET = local_1c;
   return;
 }
 

@@ -4,8 +4,8 @@
 // Bucket: TScrollerButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404A02
-// GHIDRA_NAME TScrollerButton::thunk_DestructTScrollerButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTScrollerButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TScrollerButton::TScrollerButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TScrollerButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTScrollerButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructTScrollerButtonAndMaybeFree */
 
 void * __thiscall
-TScrollerButton::thunk_DestructTScrollerButtonAndMaybeFree(TScrollerButton *this,byte freeSelfFlag)
+TScrollerButton::TScrollerButton_VtblSlot001(TScrollerButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +23,15 @@ TScrollerButton::thunk_DestructTScrollerButtonAndMaybeFree(TScrollerButton *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404CEB
-// GHIDRA_NAME TScrollerButton::thunk_GetTScrollerButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTScrollerButtonClassNamePointer(void)
+// GHIDRA_NAME TScrollerButton::TScrollerButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TScrollerButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTScrollerButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTScrollerButtonClassNamePointer */
 
-void * __cdecl TScrollerButton::thunk_GetTScrollerButtonClassNamePointer(void)
+void * __cdecl TScrollerButton::TScrollerButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,12 +58,12 @@ void * __cdecl TScrollerButton::CreateTScrollerButtonInstance(void)
   puStack_8 = &LAB_0063671a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
     TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
-    *(undefined ***)this = &g_vtblTScrollerButton;
+    this->field0_0x0 = &g_vtblTScrollerButton;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -93,7 +93,7 @@ void * __thiscall TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerBu
 
 {
   TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
-  *(undefined ***)this = &g_vtblTScrollerButton;
+  this->field0_0x0 = &g_vtblTScrollerButton;
   return this;
 }
 
@@ -107,7 +107,7 @@ TScrollerButton::DestructTScrollerButtonAndMaybeFree(TScrollerButton *this,byte 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

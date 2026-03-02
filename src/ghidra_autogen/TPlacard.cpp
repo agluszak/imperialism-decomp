@@ -4,15 +4,15 @@
 // Bucket: TPlacard.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D5B
-// GHIDRA_NAME TPlacard::thunk_GetTPlacardClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPlacardClassNamePointer(void)
+// GHIDRA_NAME TPlacard::TPlacard_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TPlacard_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTPlacardClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTPlacardClassNamePointer */
 
-void * __cdecl TPlacard::thunk_GetTPlacardClassNamePointer(void)
+void * __cdecl TPlacard::TPlacard_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,34 +21,87 @@ void * __cdecl TPlacard::thunk_GetTPlacardClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403738
+// GHIDRA_NAME TPlacard::ConstructTPlacardBaseState_At00403738
+// GHIDRA_PROTO TPlacard * __thiscall ConstructTPlacardBaseState_At00403738(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT duplicate constructor copy; keep address-qualified suffix
+// GHIDRA_COMMENT_END
+
+/* duplicate constructor copy; keep address-qualified suffix */
+
+TPlacard * __thiscall TPlacard::ConstructTPlacardBaseState_At00403738(TPlacard *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  this->pVtable = "[-@";
+  this->placardValue90 = 0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040380A
+// GHIDRA_NAME TPlacard::TPlacard_VtblSlot115
+// GHIDRA_PROTO void __thiscall TPlacard_VtblSlot115(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50 */
+
+void __thiscall TPlacard::TPlacard_VtblSlot115(TPlacard *this,int arg1,int arg2)
+
+{
+  RECT RStack_20;
+  tagRECT tStack_10;
+  
+  if ((short)arg1 != this->placardValue90) {
+    if ((short)arg1 == 0) {
+      (**(code **)((int)this->pVtable + 0xa4))(0,(int)(char)arg2);
+    }
+    else if (this->placardValue90 == 0) {
+      (**(code **)((int)this->pVtable + 0xa4))(1,(int)(char)arg2);
+    }
+    this->placardValue90 = (short)arg1;
+    if ((char)arg2 != '\0') {
+      RStack_20.top = this->controlHeight38 + -0xc;
+      RStack_20.left = (LONG)(short)((short)(this->controlWidth34 / 2) + -10);
+      RStack_20.right = RStack_20.left + 0x14;
+      RStack_20.bottom = this->controlHeight38 + -1;
+      CopyRect(&tStack_10,&RStack_20);
+      thunk_InvalidateCityDialogRectRegion((int)&tStack_10,1);
+    }
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040399A
-// GHIDRA_NAME TPlacard::thunk_DestructTPlacardAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TPlacard::TPlacard_VtblSlot001
+// GHIDRA_PROTO TPlacard * __thiscall TPlacard_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTPlacardAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTPlacardAndMaybeFree */
 
-void * __thiscall TPlacard::thunk_DestructTPlacardAndMaybeFree(TPlacard *this,byte freeSelfFlag)
+TPlacard * __thiscall TPlacard::TPlacard_VtblSlot001(TPlacard *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TPlacard *pTVar1;
   
-  pvVar1 = DestructTPlacardAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTPlacardAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404CB9
-// GHIDRA_NAME TPlacard::thunk_RenderPlacardValueTextWithShadow
-// GHIDRA_PROTO void __thiscall thunk_RenderPlacardValueTextWithShadow(void)
+// GHIDRA_NAME TPlacard::TPlacard_VtblSlot068
+// GHIDRA_PROTO void __thiscall TPlacard_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk to RenderPlacardValueTextWithShadow
 // GHIDRA_COMMENT_END
 
 /* Thunk to RenderPlacardValueTextWithShadow */
 
-void __thiscall TPlacard::thunk_RenderPlacardValueTextWithShadow(TPlacard *this)
+void __thiscall TPlacard::TPlacard_VtblSlot068(TPlacard *this)
 
 {
   RenderPlacardValueTextWithShadow(this);
@@ -58,6 +111,11 @@ void __thiscall TPlacard::thunk_RenderPlacardValueTextWithShadow(TPlacard *this)
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B960
 // GHIDRA_NAME TPlacard::CreateTPlacardInstance
 // GHIDRA_PROTO void * __cdecl CreateTPlacardInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled class factory name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled class factory name */
 
 void * __cdecl TPlacard::CreateTPlacardInstance(void)
 
@@ -72,11 +130,11 @@ void * __cdecl TPlacard::CreateTPlacardInstance(void)
   puStack_8 = &LAB_00637b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTPlacard;
+    *puVar1 = "[-@";
     *(undefined2 *)(puVar1 + 0x24) = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
@@ -102,51 +160,117 @@ void * __cdecl TPlacard::GetTPlacardClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA10
 // GHIDRA_NAME TPlacard::ConstructTPlacardBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPlacardBaseState(void)
+// GHIDRA_PROTO TPlacard * __thiscall ConstructTPlacardBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled constructor name
+// GHIDRA_COMMENT_END
 
-void * __thiscall TPlacard::ConstructTPlacardBaseState(TPlacard *this)
+/* demangled from mangled constructor name */
+
+TPlacard * __thiscall TPlacard::ConstructTPlacardBaseState(TPlacard *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTPlacard;
-  *(undefined2 *)(this + 0x90) = 0;
+  this->pVtable = "[-@";
+  this->placardValue90 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA40
 // GHIDRA_NAME TPlacard::DestructTPlacardAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TPlacard * __thiscall DestructTPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled destructor name
+// GHIDRA_COMMENT_END
 
-void * __thiscall TPlacard::DestructTPlacardAndMaybeFree(TPlacard *this,byte freeSelfFlag)
+/* demangled from mangled destructor name */
+
+TPlacard * __thiscall TPlacard::DestructTPlacardAndMaybeFree(TPlacard *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058BAB0
+// GHIDRA_NAME TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled Placard wrapper name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled Placard wrapper name */
+
+void __thiscall TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(TPlacard *this)
+
+{
+  thunk_NoOpUiLifecycleHook();
+  if (this->placardValue90 == 0) {
+    (**(code **)((int)this->pVtable + 0xa4))(0,1);
+    return;
+  }
+  (**(code **)((int)this->pVtable + 0xa4))(1,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058BB50
+// GHIDRA_NAME TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled Placard wrapper name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled Placard wrapper name */
+
+void __thiscall
+TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
+          (TPlacard *this,int arg1,int arg2)
+
+{
+  RECT local_20;
+  tagRECT tStack_10;
+  
+  if ((short)arg1 != this->placardValue90) {
+    if ((short)arg1 == 0) {
+      (**(code **)((int)this->pVtable + 0xa4))(0,(int)(char)arg2);
+    }
+    else if (this->placardValue90 == 0) {
+      (**(code **)((int)this->pVtable + 0xa4))(1,(int)(char)arg2);
+    }
+    this->placardValue90 = (short)arg1;
+    if ((char)arg2 != '\0') {
+      local_20.top = this->controlHeight38 + -0xc;
+      local_20.left = (LONG)(short)((short)(this->controlWidth34 / 2) + -10);
+      local_20.right = local_20.left + 0x14;
+      local_20.bottom = this->controlHeight38 + -1;
+      CopyRect(&tStack_10,&local_20);
+      thunk_InvalidateCityDialogRectRegion((int)&tStack_10,1);
+    }
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BC60
 // GHIDRA_NAME TPlacard::RenderPlacardValueTextWithShadow
 // GHIDRA_PROTO void __thiscall RenderPlacardValueTextWithShadow(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Renders centered placard numeric value text with shadow/stroke styling and theme color application.
+// GHIDRA_COMMENT demangled from mangled Placard method name
 // GHIDRA_COMMENT_END
 
-/* [ClassLane] Renders centered placard numeric value text with shadow/stroke styling and theme
-   color application. */
+/* demangled from mangled Placard method name */
 
 void __thiscall TPlacard::RenderPlacardValueTextWithShadow(TPlacard *this)
 
 {
   short sVar1;
-  void *this_00;
+  THQButton *this_00;
   short originX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined1 local_10 [4];
+  int local_18;
+  int local_14 [2];
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -157,30 +281,30 @@ void __thiscall TPlacard::RenderPlacardValueTextWithShadow(TPlacard *this)
   *unaff_FS_OFFSET = &local_c;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  local_14 = 0;
+  local_14[0] = 0;
   local_18 = 0;
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  FormatStringWithVarArgsToSharedRef(local_10,&g_szDecimalFormat);
-  if (*(short *)(this + 0x90) < 10) {
-    originX = (short)(*(int *)(this + 0x34) / 2) + -2;
+  FormatStringWithVarArgsToSharedRef();
+  if (this->placardValue90 < 10) {
+    originX = (short)(this->controlWidth34 / 2) + -2;
   }
-  else if (*(short *)(this + 0x90) < 100) {
-    originX = (short)(*(int *)(this + 0x34) / 2) + -6;
+  else if (this->placardValue90 < 100) {
+    originX = (short)(this->controlWidth34 / 2) + -6;
   }
   else {
-    originX = (short)(*(int *)(this + 0x34) / 2) + -10;
+    originX = (short)(this->controlWidth34 / 2) + -10;
   }
-  sVar1 = *(short *)(this + 0x38);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&local_14);
+  sVar1 = (short)this->controlHeight38;
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)local_14);
   thunk_MapUiThemeCodeToStyleFlags(0x2b67,(int)&local_18);
-  SetQuickDrawColorAndSyncGlobals();
+  SetQuickDrawColorAndSyncGlobals(local_18);
   thunk_SetQuickDrawTextOriginWithContextOffset(originX + 1,sVar1 + -1);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  SetQuickDrawColorAndSyncGlobals(local_14[0]);
   thunk_SetQuickDrawTextOriginWithContextOffset(originX,sVar1 + -2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(local_10);
-  SetQuickDrawFillColor();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)(local_14 + 1));
+  SetQuickDrawFillColor(0);
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_c;

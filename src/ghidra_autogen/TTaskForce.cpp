@@ -5,27 +5,24 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004071B7
 // GHIDRA_NAME TTaskForce::thunk_ConstructTTaskForce
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTaskForce(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTaskForce(int arg1, int arg2)
 
-void __thiscall TTaskForce::thunk_ConstructTTaskForce(TTaskForce *this)
+void __thiscall TTaskForce::thunk_ConstructTTaskForce(TTaskForce *this,int arg1,int arg2)
 
 {
-  void *in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  this[6].pVtable = in_stack_00000004;
-  *(undefined2 *)&this[7].pVtable = in_stack_00000008;
-  this[1].pVtable = (void *)0x1;
-  this[2].pVtable = (void *)0x0;
-  this[3].pVtable = (void *)0x0;
-  this[4].pVtable = (void *)0x0;
-  this[5].pVtable = (void *)0x0;
-  this[10].pVtable = (void *)0x0;
-  this[0xb].pVtable = (void *)0x0;
-  *(undefined2 *)&this[0xc].pVtable = 0xffff;
-  this->pVtable = &PTR_thunk_GetTaskForceClassName_0065c468;
-  *(undefined4 *)((int)&this[7].pVtable + 2) = 0;
-  *(undefined4 *)((int)&this[8].pVtable + 2) = 0;
+  this->field6_0x18 = (void *)arg1;
+  this->field7_0x1c = (undefined2)arg2;
+  this->field1_0x4 = (void *)0x1;
+  this->field2_0x8 = (void *)0x0;
+  this->field3_0xc = (void *)0x0;
+  this->field4_0x10 = (void *)0x0;
+  this->field5_0x14 = (void *)0x0;
+  this->field12_0x28 = (void *)0x0;
+  this->field13_0x2c = (void *)0x0;
+  this->field14_0x30 = 0xffff;
+  this->pVtable = &PTR_thunk_GetTTaskForceClassNamePointer_At00404115_0065c468;
+  this->field8_0x1e = 0;
+  this->field9_0x22 = 0;
   return;
 }
 
@@ -46,43 +43,24 @@ void * __cdecl TTaskForce::GetTTaskForceClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO void __thiscall ConstructTTaskForce(void)
+// GHIDRA_PROTO void __thiscall ConstructTTaskForce(int arg1, int arg2)
 
-void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this)
-
-{
-  void *in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  this[6].pVtable = in_stack_00000004;
-  *(undefined2 *)&this[7].pVtable = in_stack_00000008;
-  this[1].pVtable = (void *)0x1;
-  this[2].pVtable = (void *)0x0;
-  this[3].pVtable = (void *)0x0;
-  this[4].pVtable = (void *)0x0;
-  this[5].pVtable = (void *)0x0;
-  this[10].pVtable = (void *)0x0;
-  this[0xb].pVtable = (void *)0x0;
-  *(undefined2 *)&this[0xc].pVtable = 0xffff;
-  this->pVtable = &PTR_thunk_GetTaskForceClassName_0065c468;
-  *(undefined4 *)((int)&this[7].pVtable + 2) = 0;
-  *(undefined4 *)((int)&this[8].pVtable + 2) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00552870
-// GHIDRA_NAME TTaskForce::DestroyTTaskForce
-// GHIDRA_PROTO void __cdecl DestroyTTaskForce(void)
-
-void __cdecl TTaskForce::DestroyTTaskForce(void)
+void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this,int arg1,int arg2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_ResetTTaskForceToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
+  this->field6_0x18 = (void *)arg1;
+  this->field7_0x1c = (undefined2)arg2;
+  this->field1_0x4 = (void *)0x1;
+  this->field2_0x8 = (void *)0x0;
+  this->field3_0xc = (void *)0x0;
+  this->field4_0x10 = (void *)0x0;
+  this->field5_0x14 = (void *)0x0;
+  this->field12_0x28 = (void *)0x0;
+  this->field13_0x2c = (void *)0x0;
+  this->field14_0x30 = 0xffff;
+  this->pVtable = &PTR_thunk_GetTTaskForceClassNamePointer_At00404115_0065c468;
+  this->field8_0x1e = 0;
+  this->field9_0x22 = 0;
   return;
 }
 

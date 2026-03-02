@@ -4,16 +4,15 @@
 // Bucket: TArmyUnitLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405B55
-// GHIDRA_NAME TArmyUnitLine::thunk_DestructTArmyUnitLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyUnitLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TArmyUnitLine_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTArmyUnitLineAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTArmyUnitLineAndMaybeFree */
 
-void * __thiscall
-TArmyUnitLine::thunk_DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte freeSelfFlag)
+void * __thiscall TArmyUnitLine::TArmyUnitLine_VtblSlot001(TArmyUnitLine *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,19 +22,18 @@ TArmyUnitLine::thunk_DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte 
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406032
-// GHIDRA_NAME TArmyUnitLine::thunk_Cluster_MapTileHint_004a8df0
-// GHIDRA_PROTO void __thiscall thunk_Cluster_MapTileHint_004a8df0(int arg1, int arg2)
+// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_VtblSlot010
+// GHIDRA_PROTO void __thiscall TArmyUnitLine_VtblSlot010(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_004a8df0
+// GHIDRA_COMMENT Single-JMP thunk to InitializeArmyUnitLineControlsAndState
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_MapTileHint_004a8df0 */
+/* Single-JMP thunk to InitializeArmyUnitLineControlsAndState */
 
-void __thiscall
-TArmyUnitLine::thunk_Cluster_MapTileHint_004a8df0(TArmyUnitLine *this,int arg1,int arg2)
+void __thiscall TArmyUnitLine::TArmyUnitLine_VtblSlot010(TArmyUnitLine *this,int arg1,int arg2)
 
 {
-  InitializeArmyUnitLineControlsAndState(this,arg1,arg2);
+  TToolBarCluster::InitializeArmyUnitLineControlsAndState((TToolBarCluster *)this,arg1,arg2);
   return;
 }
 
@@ -53,23 +51,23 @@ TArmyUnitLine::thunk_SetArmyUnitLineActiveFlagAndNotify
           (TArmyUnitLine *this,byte isActive,void *notifyContext)
 
 {
-  if (this[0x84] != (TArmyUnitLine)isActive) {
-    this[0x84] = (TArmyUnitLine)isActive;
-    (**(code **)(*(int *)this + 0x1cc))(notifyContext);
+  if (this->field84 != isActive) {
+    this->field84 = isActive;
+    (**(code **)((int)this->field0_0x0 + 0x1cc))(notifyContext);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004074E6
-// GHIDRA_NAME TArmyUnitLine::thunk_GetTArmyUnitLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyUnitLineClassNamePointer(void)
+// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TArmyUnitLine_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArmyUnitLineClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArmyUnitLineClassNamePointer */
 
-void * __cdecl TArmyUnitLine::thunk_GetTArmyUnitLineClassNamePointer(void)
+void * __cdecl TArmyUnitLine::TArmyUnitLine_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -80,33 +78,88 @@ void * __cdecl TArmyUnitLine::thunk_GetTArmyUnitLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004080EE
 // GHIDRA_NAME TArmyUnitLine::thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280()
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280 */
 
-void TArmyUnitLine::thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280(void)
+void __cdecl
+TArmyUnitLine::thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280(void)
 
 {
   WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280();
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00408409
+// GHIDRA_NAME TArmyUnitLine::thunk_GetTArmyCheckBoxClassNamePointer
+// GHIDRA_PROTO void * __cdecl thunk_GetTArmyCheckBoxClassNamePointer(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTArmyCheckBoxClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTArmyCheckBoxClassNamePointer */
+
+void * __cdecl TArmyUnitLine::thunk_GetTArmyCheckBoxClassNamePointer(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TArmyCheckBox::GetTArmyCheckBoxClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040849A
+// GHIDRA_NAME TArmyUnitLine::thunk_OrphanVtableAssignStub_004aa2f0_At0040849a
+// GHIDRA_PROTO void __thiscall thunk_OrphanVtableAssignStub_004aa2f0_At0040849a(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanVtableAssignStub_004aa2f0
+// GHIDRA_COMMENT_END
+
+/* [ThunkJmp] single JMP thunk to OrphanVtableAssignStub_004aa2f0 */
+
+void __thiscall TArmyUnitLine::thunk_OrphanVtableAssignStub_004aa2f0_At0040849a(TArmyUnitLine *this)
+
+{
+  OrphanVtableAssignStub_004aa2f0(this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040917E
-// GHIDRA_NAME TArmyUnitLine::thunk_`scalar_deleting_destructor'
-// GHIDRA_PROTO undefined thunk_`scalar_deleting_destructor'()
+// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_thunk_scalar_deleting_destructor
+// GHIDRA_PROTO void * __thiscall TArmyUnitLine_thunk_scalar_deleting_destructor(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void TArmyUnitLine::thunk__scalar_deleting_destructor_(void)
+void * __thiscall
+TArmyUnitLine::TArmyUnitLine_thunk_scalar_deleting_destructor(TArmyUnitLine *this,byte freeSelfFlag)
 
 {
-  _scalar_deleting_destructor_();
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004095D4
+// GHIDRA_NAME TArmyUnitLine::thunk_DestructTArmyCheckBoxAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTArmyCheckBoxAndMaybeFree(byte notify)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to UpdateArmyCheckBoxSelectionOffsetAndRefresh [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to UpdateArmyCheckBoxSelectionOffsetAndRefresh [FID:thunk_target_sync] */
+
+void __thiscall
+TArmyUnitLine::thunk_DestructTArmyCheckBoxAndMaybeFree(TArmyUnitLine *this,byte notify)
+
+{
+  TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree((TArmyCheckBox *)this,notify);
   return;
 }
 
@@ -128,12 +181,12 @@ void * __cdecl TArmyUnitLine::CreateTArmyUnitLineInstance(void)
   puStack_8 = &LAB_0063035a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &g_vtblTArmyUnitLine;
+    pThis->field0_0x0 = &g_vtblTArmyUnitLine;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -163,7 +216,7 @@ void * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyUnitLine *
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  *(undefined ***)this = &g_vtblTArmyUnitLine;
+  this->field0_0x0 = &g_vtblTArmyUnitLine;
   return this;
 }
 
@@ -177,307 +230,24 @@ TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte freeSe
 {
   DestructTArmyUnitLineAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A8DF0
-// GHIDRA_NAME TArmyUnitLine::InitializeArmyUnitLineControlsAndState
-// GHIDRA_PROTO void __thiscall InitializeArmyUnitLineControlsAndState(int arg1, int arg2)
+// GHIDRA_FUNCTION IMPERIALISM 0x004AA2F0
+// GHIDRA_NAME TArmyUnitLine::OrphanVtableAssignStub_004aa2f0
+// GHIDRA_PROTO void __thiscall OrphanVtableAssignStub_004aa2f0(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] TArmyUnitLine initializer building command-tag controls, checkbox/view children, and entry visibility/active state.
+// GHIDRA_COMMENT Orphan no-xref vtable-assignment stub from orphan triage lane.
 // GHIDRA_COMMENT_END
 
-/* [ClassLane] TArmyUnitLine initializer building command-tag controls, checkbox/view children, and
-   entry visibility/active state. */
+/* Orphan no-xref vtable-assignment stub from orphan triage lane. */
 
-void __thiscall
-TArmyUnitLine::InitializeArmyUnitLineControlsAndState(TArmyUnitLine *this,int arg1,int arg2)
+void __thiscall TArmyUnitLine::OrphanVtableAssignStub_004aa2f0(TArmyUnitLine *this)
 
 {
-  short sVar1;
-  undefined4 uVar2;
-  char cVar3;
-  TView *pTVar4;
-  TControl *this_00;
-  int *piVar5;
-  int extraout_EAX;
-  int iVar6;
-  char *unaff_EDI;
-  undefined4 *unaff_FS_OFFSET;
-  TGWorldButton *pTStack_68;
-  TView *pTStack_64;
-  undefined4 *puStack_60;
-  TArmyUnitLine *pTStack_5c;
-  undefined4 uStack_58;
-  undefined4 uStack_54;
-  undefined4 uStack_50;
-  undefined1 auStack_3c [4];
-  TGWorldButton *pTStack_38;
-  undefined4 local_34;
-  undefined4 uStack_30;
-  undefined4 uStack_2c;
-  int iStack_28;
-  undefined4 local_24;
-  undefined4 local_20;
-  TView *local_1c;
-  undefined4 local_18;
-  TClickZone *pTStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006303d0;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  iVar6 = *(int *)(arg1 + 0x84);
-  uStack_50 = 100;
-  uStack_54 = 0x4a8e23;
-  pTVar4 = (TView *)AllocateWithFallbackHandler();
-  local_4 = 0;
-  local_1c = pTVar4;
-  if (pTVar4 == (TView *)0x0) {
-    pTVar4 = (TView *)0x0;
-  }
-  else {
-    uStack_50 = 0x4a8e3f;
-    TView::thunk_ConstructUiResourceEntryBase(pTVar4);
-    *(undefined ***)pTVar4 = &g_vtblTArmyUnitView;
-  }
-  uVar2 = *(undefined4 *)(this + 0x10);
-  uStack_50 = 0;
-  uStack_54 = 5;
-  pTStack_5c = this + 8;
-  uStack_58 = (undefined1 *)0x5;
-  puStack_60 = (undefined4 *)arg2;
-  pTStack_64 = (TView *)arg1;
-  pTStack_68 = (TGWorldButton *)0x0;
-  local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  uStack_50 = 0x94;
-  *(undefined4 *)(pTVar4 + 0x60) = uVar2;
-  uStack_54 = 0x4a8e7b;
-  this_00 = (TControl *)AllocateWithFallbackHandler();
-  local_4 = 1;
-  if (this_00 == (TControl *)0x0) {
-    this_00 = (TControl *)0x0;
-  }
-  else {
-    uStack_50 = 0x4a8e99;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
-    *(undefined ***)this_00 = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-    *(undefined4 *)(this_00 + 0x88) = 0;
-    *(undefined4 *)(this_00 + 0x90) = 0;
-    *(undefined4 *)(this_00 + 0x8c) = 0;
-    this_00[0x84] = (TControl)0x0;
-  }
-  pTStack_5c = (TArmyUnitLine *)&local_1c;
-  puStack_60 = &local_24;
-  local_4 = 0xffffffff;
-  sVar1 = *(short *)(*(int *)(this + 0x10) + 4);
-  uStack_50 = 0;
-  uStack_54 = 4;
-  uStack_58 = (undefined1 *)0x4;
-  pTStack_68 = (TGWorldButton *)0x0;
-  local_1c = (TView *)0x3f;
-  local_18 = 0x31;
-  local_24 = 0;
-  local_20 = 0;
-  pTStack_64 = pTVar4;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  *(int *)(this_00 + 0x1c) = 0x63686563;
-  *(int *)(this_00 + 0x90) = iVar6;
-  *(int *)(this_00 + 0x88) = (int)sVar1 << 7;
-  iVar6 = *(int *)this_00;
-  uStack_50 = 0;
-  if (g_aeTacticalUnitCategoryBySlot[*(short *)(*(int *)(this + 0x10) + 4)] == TACTICAL_CATEGORY_0)
-  {
-    uStack_54 = 0;
-    uStack_58 = (undefined1 *)0x4a8f5a;
-    (**(code **)(iVar6 + 0xa8))();
-    pTStack_5c = (TArmyUnitLine *)0x0;
-  }
-  else {
-    uStack_54 = 1;
-    uStack_58 = (undefined1 *)0x4a8f39;
-    (**(code **)(iVar6 + 0xa8))();
-    *(int *)(this_00 + 0x60) = 4;
-    if (*(int *)(*(int *)(this + 0x10) + 8) != 0) goto LAB_004a8f66;
-    pTStack_5c = (TArmyUnitLine *)0x1;
-  }
-  uStack_58 = (undefined1 *)0x0;
-  puStack_60 = (undefined4 *)0x4a8f66;
-  (**(code **)(iVar6 + 0x1c8))();
-LAB_004a8f66:
-  uStack_58 = (undefined1 *)0x4a8f6f;
-  InitializeSharedStringRefFromEmpty();
-  uStack_58 = auStack_3c;
-  uStack_c = 2;
-  iVar6 = *g_pLocalizationTable;
-  pTStack_5c = (TArmyUnitLine *)0x4a8f8c;
-  thunk_GetUnitMovementClassId();
-  puStack_60 = (undefined4 *)0x2726;
-  pTStack_64 = (TView *)0x4a8f9e;
-  (**(code **)(iVar6 + 0x84))();
-  pTStack_10 = (TClickZone *)&pTStack_68;
-  pTStack_64 = (TView *)this_00;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
-  pTStack_64 = (TView *)0x4a8fc0;
-  cVar3 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
-  if (cVar3 != '\0') {
-    pTStack_64 = (TView *)0x8c;
-    pTStack_68 = (TGWorldButton *)0x4a8fd2;
-    pTStack_38 = (TGWorldButton *)AllocateWithFallbackHandler();
-    local_18._0_1_ = 3;
-    if (pTStack_38 == (TGWorldButton *)0x0) {
-      piVar5 = (int *)0x0;
-    }
-    else {
-      pTStack_64 = (TView *)0x4a8fe9;
-      piVar5 = TGWorldButton::ConstructTGWorldButtonBaseState(pTStack_38);
-    }
-    pTStack_68 = (TGWorldButton *)&pTStack_38;
-    pTStack_64 = (TView *)0xdae;
-    iStack_28 = *(int *)(pTVar4 + 0x34) + -0x28;
-    local_18._0_1_ = 2;
-    pTStack_38 = (TGWorldButton *)0x13;
-    local_34 = 0x12;
-    local_24 = 0;
-    WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0();
-    pTStack_64 = (TView *)0x0;
-    pTStack_68 = (TGWorldButton *)0x1;
-    (**(code **)(*piVar5 + 0xa8))();
-    piVar5[7] = 0x75706772;
-    InitializeSharedStringRefFromEmpty();
-    local_20._0_1_ = 4;
-    InitializeSharedStringRefFromEmpty();
-    local_20._0_1_ = 5;
-    InitializeSharedStringRefFromEmpty();
-    local_20._0_1_ = 6;
-    InitializeSharedStringRefFromEmpty();
-    local_20._0_1_ = 7;
-    InitializeSharedStringRefFromEmpty();
-    local_20 = CONCAT31(local_20._1_3_,8);
-    WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840((int)&uStack_58 + 2);
-    FormatStringWithVarArgsToSharedRef();
-    (**(code **)(*g_pLocalizationTable + 0x74))();
-    if ((short)local_20 == 0) {
-      (**(code **)(*g_pLocalizationTable + 0x84))(&DAT_00002746,2);
-      scanBracketExpressions(g_pLocalizationTable,auStack_3c,unaff_EDI);
-    }
-    else {
-      InitializeSharedStringRefFromEmpty();
-      iStack_28 = CONCAT31(iStack_28._1_3_,9);
-      FormatStringWithVarArgsToSharedRef(&stack0xffffffb8,&g_szDecimalFormat);
-      (**(code **)(*g_pLocalizationTable + 0x84))(&DAT_00002746,6);
-      pTStack_68 = pTStack_38;
-      scanBracketExpressions(g_pLocalizationTable,auStack_3c,unaff_EDI);
-      local_18._0_1_ = 8;
-      pTStack_64 = (TView *)0x4a918e;
-      ReleaseSharedStringRefIfNotEmpty();
-    }
-    pTStack_38 = (TGWorldButton *)&pTStack_68;
-    pTStack_64 = (TView *)piVar5;
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
-    local_18._0_1_ = 7;
-    pTStack_64 = (TView *)0x4a91b6;
-    ReleaseSharedStringRefIfNotEmpty();
-    local_18._0_1_ = 6;
-    pTStack_64 = (TView *)0x4a91c4;
-    ReleaseSharedStringRefIfNotEmpty();
-    local_18._0_1_ = 5;
-    pTStack_64 = (TView *)0x4a91d2;
-    ReleaseSharedStringRefIfNotEmpty();
-    local_18._0_1_ = 4;
-    pTStack_64 = (TView *)0x4a91e0;
-    ReleaseSharedStringRefIfNotEmpty();
-    local_18 = CONCAT31(local_18._1_3_,2);
-    pTStack_64 = (TView *)0x4a91ee;
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  pTStack_64 = (TView *)0x88;
-  pTStack_68 = (TGWorldButton *)0x4a91f8;
-  pTStack_10 = (TClickZone *)AllocateWithFallbackHandler();
-  local_18._0_1_ = 10;
-  if (pTStack_10 == (TClickZone *)0x0) {
-    iVar6 = 0;
-  }
-  else {
-    pTStack_64 = (TView *)0x4a920f;
-    TClickZone::thunk_ConstructUiCommandTagResourceEntry(pTStack_10);
-    iVar6 = extraout_EAX;
-  }
-  pTStack_64 = (TView *)0x0;
-  pTStack_68 = (TGWorldButton *)0x4;
-  local_18 = CONCAT31(local_18._1_3_,2);
-  iStack_28 = 0x80;
-  local_24 = 0x18;
-  uStack_30 = 0x40;
-  uStack_2c = 0;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined4 *)(iVar6 + 0x1c) = 0x6e616d65;
-  pTStack_64 = (TView *)&stack0xffffffb8;
-  pTStack_68 = (TGWorldButton *)0x1;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
-  local_1c = (TView *)&stack0xffffff8c;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
-  local_24 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uStack_2c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AA280
-// GHIDRA_NAME TArmyUnitLine::WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
-// GHIDRA_PROTO undefined WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_HandleCityDialogToggleCommandOrForward; instructions=27, call_insns=3, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_HandleCityDialogToggleCommandOrForward;
-   instructions=27, call_insns=3, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TArmyUnitLine::WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
-          (int *param_1,int param_2)
-
-{
-  ushort uVar1;
-  
-  if (param_2 == 0x21) {
-    uVar1 = GetAsyncKeyState(0x11);
-    if (((uVar1 & 0x8000) == 0) || ((char)param_1[0x21] != '\0')) {
-      (**(code **)(*param_1 + 0x1d0))(1);
-    }
-  }
-  thunk_HandleCityDialogToggleCommandOrForward();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AA360
-// GHIDRA_NAME TArmyUnitLine::SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO void __thiscall SetArmyUnitLineActiveFlagAndNotify(byte isActive, void * notifyContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates army-unit-line active flag and emits change notification only when state actually changed.
-// GHIDRA_COMMENT_END
-
-/* Updates army-unit-line active flag and emits change notification only when state actually
-   changed. */
-
-void __thiscall
-TArmyUnitLine::SetArmyUnitLineActiveFlagAndNotify
-          (TArmyUnitLine *this,byte isActive,void *notifyContext)
-
-{
-  if (this[0x84] != (TArmyUnitLine)isActive) {
-    this[0x84] = (TArmyUnitLine)isActive;
-    (**(code **)(*(int *)this + 0x1cc))(notifyContext);
-  }
+  this->field60 = 4;
   return;
 }
 

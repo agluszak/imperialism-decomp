@@ -3,8 +3,2712 @@
 
 #include "decomp_types.h"
 
+// ghidra_name thunk_SetActiveProvinceSelection
+// ghidra_proto void __cdecl thunk_SetActiveProvinceSelection(void)
+// FUNCTION: IMPERIALISM 0x00408337
+undefined4 thunk_SetActiveProvinceSelection(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildPathToTargetByDistanceField
+// ghidra_proto void __cdecl thunk_BuildPathToTargetByDistanceField(void)
+// FUNCTION: IMPERIALISM 0x0040833c
+undefined4 thunk_BuildPathToTargetByDistanceField(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeProtocolOptionControlFromProvider
+// ghidra_proto void __cdecl thunk_InitializeProtocolOptionControlFromProvider(void)
+// FUNCTION: IMPERIALISM 0x00408341
+undefined4 thunk_InitializeProtocolOptionControlFromProvider(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructUiWindowResourceEntryType572C0
+// ghidra_proto void __thiscall thunk_ConstructUiWindowResourceEntryType572C0(void)
+// FUNCTION: IMPERIALISM 0x0040834b
+undefined4 thunk_ConstructUiWindowResourceEntryType572C0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_CanProcessMapViewSlotECUnderWindowState
+// ghidra_proto bool __thiscall thunk_CanProcessMapViewSlotECUnderWindowState(void)
+// FUNCTION: IMPERIALISM 0x00408350
+undefined4 thunk_CanProcessMapViewSlotECUnderWindowState(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot129
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot129(void)
+// FUNCTION: IMPERIALISM 0x0040835a
+undefined4 TAutoGreatPower_VtblSlot129(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_HandleTurnInstruction_Tclr_ResetNationRelationBars
+// ghidra_proto void __thiscall thunk_HandleTurnInstruction_Tclr_ResetNationRelationBars(STurnInstruction_Tclr * pInstruction)
+// FUNCTION: IMPERIALISM 0x0040835f
+undefined4 thunk_HandleTurnInstruction_Tclr_ResetNationRelationBars(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::thunk_HandleTurnEventViewportEdgeAutoScroll_At00408373
+// ghidra_proto void __thiscall thunk_HandleTurnEventViewportEdgeAutoScroll_At00408373(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408373
+undefined4 thunk_HandleTurnEventViewportEdgeAutoScroll_At00408373(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders
+// ghidra_proto void __thiscall thunk_HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(STurnInstruction_Ship * pInstruction)
+// FUNCTION: IMPERIALISM 0x00408378
+undefined4 thunk_HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivDescription::thunk_GetTCivDescriptionClassNamePointer_At0040838c
+// ghidra_proto void * __cdecl thunk_GetTCivDescriptionClassNamePointer_At0040838c(void)
+// FUNCTION: IMPERIALISM 0x0040838c
+undefined4 thunk_GetTCivDescriptionClassNamePointer_At0040838c(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyTacUnit::thunk_GetTNavyTacUnitClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTNavyTacUnitClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408391
+undefined4 thunk_GetTNavyTacUnitClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnFalseMissionVtableSlot28
+// ghidra_proto void __cdecl thunk_ReturnFalseMissionVtableSlot28(void)
+// FUNCTION: IMPERIALISM 0x00408396
+undefined4 thunk_ReturnFalseMissionVtableSlot28(void)
+{
+  return 0;
+}
+
+// ghidra_name StrategicMapViewSystem::thunk_RebuildMapTileNeighborHighlightPolygonsForAllTiles_At0040839b
+// ghidra_proto void __fastcall thunk_RebuildMapTileNeighborHighlightPolygonsForAllTiles_At0040839b(void * pMapView)
+// FUNCTION: IMPERIALISM 0x0040839b
+undefined4 thunk_RebuildMapTileNeighborHighlightPolygonsForAllTiles_At0040839b(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterAmbitMcWindowClass
+// ghidra_proto void __cdecl thunk_RegisterAmbitMcWindowClass(void)
+// FUNCTION: IMPERIALISM 0x004083a5
+undefined4 thunk_RegisterAmbitMcWindowClass(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetOrderNodeDescriptorWord0CByResourceType
+// ghidra_proto short __cdecl thunk_GetOrderNodeDescriptorWord0CByResourceType(void)
+// FUNCTION: IMPERIALISM 0x004083aa
+undefined4 thunk_GetOrderNodeDescriptorWord0CByResourceType(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanRetStub_004899a0_At004083b4
+// ghidra_proto void __cdecl thunk_OrphanRetStub_004899a0_At004083b4(void)
+// FUNCTION: IMPERIALISM 0x004083b4
+undefined4 thunk_OrphanRetStub_004899a0_At004083b4(void)
+{
+  return 0;
+}
+
+// ghidra_name TSimMgr::thunk_FormatDiplomacyNoticeTextByPolicyOrGrantCode_At004083b9
+// ghidra_proto void __cdecl thunk_FormatDiplomacyNoticeTextByPolicyOrGrantCode_At004083b9(int unusedArg, short * pNoticeCode)
+// FUNCTION: IMPERIALISM 0x004083b9
+undefined4 thunk_FormatDiplomacyNoticeTextByPolicyOrGrantCode_At004083b9(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::thunk_SetGlobalMapCellSharedLabel
+// ghidra_proto void __thiscall thunk_SetGlobalMapCellSharedLabel(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004083cd
+undefined4 thunk_SetGlobalMapCellSharedLabel(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetTCityProductionViewClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTCityProductionViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004083d2
+undefined4 thunk_GetTCityProductionViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniShipLine::TMiniShipLine_VtblSlot000
+// ghidra_proto void * __cdecl TMiniShipLine_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x004083dc
+undefined4 TMiniShipLine_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::TIconSlider_VtblSlot104
+// ghidra_proto void __cdecl TIconSlider_VtblSlot104(void)
+// FUNCTION: IMPERIALISM 0x004083e1
+undefined4 TIconSlider_VtblSlot104(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6
+// ghidra_proto short __cdecl thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
+// FUNCTION: IMPERIALISM 0x004083e6
+undefined4 thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
+{
+  return 0;
+}
+
+// ghidra_name TBattleReportView::thunk_GetTBattleReportViewClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTBattleReportViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004083eb
+undefined4 thunk_GetTBattleReportViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TGreatPower::thunk_QueueDiplomacyProposalCodeForTargetNation_At004083f5
+// ghidra_proto void __thiscall thunk_QueueDiplomacyProposalCodeForTargetNation_At004083f5(void)
+// FUNCTION: IMPERIALISM 0x004083f5
+undefined4 thunk_QueueDiplomacyProposalCodeForTargetNation_At004083f5(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::thunk_RenderCityBuildingIcons
+// ghidra_proto void __thiscall thunk_RenderCityBuildingIcons(tagRECT * pTargetRect)
+// FUNCTION: IMPERIALISM 0x004083ff
+undefined4 thunk_RenderCityBuildingIcons(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyUnitLine::thunk_GetTArmyCheckBoxClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTArmyCheckBoxClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408409
+undefined4 thunk_GetTArmyCheckBoxClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TScenarioChooser::thunk_DestructTScenarioChooserAndMaybeFree
+// ghidra_proto void __thiscall thunk_DestructTScenarioChooserAndMaybeFree(int commandTag, int payload)
+// FUNCTION: IMPERIALISM 0x0040840e
+undefined4 thunk_DestructTScenarioChooserAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::TSoundPlayer_VtblSlot001
+// ghidra_proto void * __thiscall TSoundPlayer_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408418
+undefined4 TSoundPlayer_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name TAttackProvinceMission::thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427
+// ghidra_proto void __thiscall thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427(void)
+// FUNCTION: IMPERIALISM 0x00408427
+undefined4 thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960
+// ghidra_proto bool __thiscall thunk_WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960(void)
+// FUNCTION: IMPERIALISM 0x0040842c
+undefined4 thunk_WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndustryAmtBar::TIndustryAmtBar_VtblSlot107
+// ghidra_proto void __thiscall TIndustryAmtBar_VtblSlot107(int selectedValue)
+// FUNCTION: IMPERIALISM 0x00408431
+undefined4 TIndustryAmtBar_VtblSlot107(void)
+{
+  return 0;
+}
+
+// ghidra_name TDiplomacyMapView::thunk_DestructTDiplomacyMapViewAndMaybeFree
+// ghidra_proto void __thiscall thunk_DestructTDiplomacyMapViewAndMaybeFree(int * pOutValue)
+// FUNCTION: IMPERIALISM 0x00408436
+undefined4 thunk_DestructTDiplomacyMapViewAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TFileStream::thunk_OrphanCallChain_C1_I09_004891c0_At0040844a
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I09_004891c0_At0040844a(void)
+// FUNCTION: IMPERIALISM 0x0040844a
+undefined4 thunk_OrphanCallChain_C1_I09_004891c0_At0040844a(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_CloneCityDialogExtendedStateToNewInstance
+// ghidra_proto CityDialogController * __fastcall thunk_CloneCityDialogExtendedStateToNewInstance(CityDialogController * pSource)
+// FUNCTION: IMPERIALISM 0x0040844f
+undefined4 thunk_CloneCityDialogExtendedStateToNewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetPictureResourceIdAndRefresh
+// ghidra_proto void __thiscall thunk_SetPictureResourceIdAndRefresh(ETradeUiBitmapId ePictureId, bool fRefreshNow)
+// FUNCTION: IMPERIALISM 0x00408454
+undefined4 thunk_SetPictureResourceIdAndRefresh(void)
+{
+  return 0;
+}
+
+// ghidra_name TEvent::thunk_GetTEventClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTEventClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408463
+undefined4 thunk_GetTEventClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_scalar_deleting_destructor_00408477
+// ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00408477(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408477
+undefined4 thunk_scalar_deleting_destructor_00408477(void)
+{
+  return 0;
+}
+
+// ghidra_name TLoungeDialog::thunk_IsSpecialNationDialogModeActive
+// ghidra_proto bool __thiscall thunk_IsSpecialNationDialogModeActive(void)
+// FUNCTION: IMPERIALISM 0x00408481
+undefined4 thunk_IsSpecialNationDialogModeActive(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SelectNationInteractionModePriorityTriplet
+// ghidra_proto void __cdecl thunk_SelectNationInteractionModePriorityTriplet(void)
+// FUNCTION: IMPERIALISM 0x00408486
+undefined4 thunk_SelectNationInteractionModePriorityTriplet(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructTurnFlowStateManagerVtable00662a58
+// ghidra_proto void __thiscall thunk_ConstructTurnFlowStateManagerVtable00662a58(void)
+// FUNCTION: IMPERIALISM 0x00408495
+undefined4 thunk_ConstructTurnFlowStateManagerVtable00662a58(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyUnitLine::thunk_OrphanVtableAssignStub_004aa2f0_At0040849a
+// ghidra_proto void __thiscall thunk_OrphanVtableAssignStub_004aa2f0_At0040849a(void)
+// FUNCTION: IMPERIALISM 0x0040849a
+undefined4 thunk_OrphanVtableAssignStub_004aa2f0_At0040849a(void)
+{
+  return 0;
+}
+
+// ghidra_name TDefenseMinister::TDefenseMinister_VtblSlot000
+// ghidra_proto void * __cdecl TDefenseMinister_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x004084a4
+undefined4 TDefenseMinister_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetNeighborTileIndexOnMap108x60
+// ghidra_proto int __cdecl thunk_GetNeighborTileIndexOnMap108x60(int tileIndex, int directionIndex)
+// FUNCTION: IMPERIALISM 0x004084ae
+undefined4 thunk_GetNeighborTileIndexOnMap108x60(void)
+{
+  return 0;
+}
+
+// ghidra_name StrategicMapViewSystem::thunk_WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180_At004084b3
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180_At004084b3(void)
+// FUNCTION: IMPERIALISM 0x004084b3
+undefined4 thunk_WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180_At004084b3(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RefreshForeignMinisterStateByLocalizationMode
+// ghidra_proto void __cdecl thunk_RefreshForeignMinisterStateByLocalizationMode(void)
+// FUNCTION: IMPERIALISM 0x004084b8
+undefined4 thunk_RefreshForeignMinisterStateByLocalizationMode(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameWindow::TGameWindow_VtblSlot001
+// ghidra_proto void __cdecl TGameWindow_VtblSlot001(int arg1)
+// FUNCTION: IMPERIALISM 0x004084bd
+undefined4 TGameWindow_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot107
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot107(void)
+// FUNCTION: IMPERIALISM 0x004084c2
+undefined4 TAutoGreatPower_VtblSlot107(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RunForeignMinisterVtableSlot90BillVariant
+// ghidra_proto void __fastcall thunk_RunForeignMinisterVtableSlot90BillVariant(void)
+// FUNCTION: IMPERIALISM 0x004084cc
+undefined4 thunk_RunForeignMinisterVtableSlot90BillVariant(void)
+{
+  return 0;
+}
+
+// ghidra_name TBatRepDetLine::TBatRepDetLine_thunk_scalar_deleting_destructor
+// ghidra_proto void * __thiscall TBatRepDetLine_thunk_scalar_deleting_destructor(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x004084d1
+undefined4 TBatRepDetLine_thunk_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
+// ghidra_name TAmtBarCluster::thunk_SetTradeOfferControlBitmapState
+// ghidra_proto void __thiscall thunk_SetTradeOfferControlBitmapState(void)
+// FUNCTION: IMPERIALISM 0x004084d6
+undefined4 thunk_SetTradeOfferControlBitmapState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetTIndexAndRankListClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTIndexAndRankListClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004084db
+undefined4 thunk_GetTIndexAndRankListClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructTShipOrderBaseState
+// ghidra_proto void __thiscall thunk_ConstructTShipOrderBaseState(void)
+// FUNCTION: IMPERIALISM 0x004084e5
+undefined4 thunk_ConstructTShipOrderBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_MergeSmallCityRegionsAndCompactIds
+// ghidra_proto void __cdecl thunk_MergeSmallCityRegionsAndCompactIds(void)
+// FUNCTION: IMPERIALISM 0x004084ef
+undefined4 thunk_MergeSmallCityRegionsAndCompactIds(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::thunk_IsNationMetricCellNegative
+// ghidra_proto bool __thiscall thunk_IsNationMetricCellNegative(int groupIndex, int entryIndex)
+// FUNCTION: IMPERIALISM 0x004084f4
+undefined4 thunk_IsNationMetricCellNegative(void)
+{
+  return 0;
+}
+
+// ghidra_name THostGreatPower::thunk_GetTHostGreatPowerClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTHostGreatPowerClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004084f9
+undefined4 thunk_GetTHostGreatPowerClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60
+// ghidra_proto void __cdecl thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60(void)
+// FUNCTION: IMPERIALISM 0x004084fe
+undefined4 thunk_WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_FreeNestedPointerTableRowsAndResetDimensions
+// ghidra_proto void __cdecl thunk_FreeNestedPointerTableRowsAndResetDimensions(void)
+// FUNCTION: IMPERIALISM 0x00408508
+undefined4 thunk_FreeNestedPointerTableRowsAndResetDimensions(void)
+{
+  return 0;
+}
+
+// ghidra_name TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance
+// ghidra_proto void * __thiscall thunk_CreateTFileBasedDocumentInstance(void)
+// FUNCTION: IMPERIALISM 0x0040850d
+undefined4 thunk_CreateTFileBasedDocumentInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_HasReachableActiveArtilleryClassCursorEntry
+// ghidra_proto bool __cdecl thunk_HasReachableActiveArtilleryClassCursorEntry(void)
+// FUNCTION: IMPERIALISM 0x0040851c
+undefined4 thunk_HasReachableActiveArtilleryClassCursorEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TLaborPool::thunk_DestructTLaborPoolAndMaybeFree
+// ghidra_proto void * __thiscall thunk_DestructTLaborPoolAndMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x0040852b
+undefined4 thunk_DestructTLaborPoolAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00481e80
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00481e80(void)
+// FUNCTION: IMPERIALISM 0x00408535
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00481e80(void)
+{
+  return 0;
+}
+
+// ghidra_name TSimMgr::CreateSimObjects
+// ghidra_proto void * __cdecl CreateSimObjects(void)
+// FUNCTION: IMPERIALISM 0x0040853f
+undefined4 CreateSimObjects(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestructLandSaleEventToBase
+// ghidra_proto void __cdecl thunk_DestructLandSaleEventToBase(void)
+// FUNCTION: IMPERIALISM 0x00408544
+undefined4 thunk_DestructLandSaleEventToBase(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_CheckTileVariantCodeMembershipSetC
+// ghidra_proto void __cdecl thunk_CheckTileVariantCodeMembershipSetC(void)
+// FUNCTION: IMPERIALISM 0x0040854e
+undefined4 thunk_CheckTileVariantCodeMembershipSetC(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot059
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot059(void)
+// FUNCTION: IMPERIALISM 0x00408553
+undefined4 TAutoGreatPower_VtblSlot059(void)
+{
+  return 0;
+}
+
+// ghidra_name TTreatiesView::thunk_scalar_deleting_destructor_00408558
+// ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00408558(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408558
+undefined4 thunk_scalar_deleting_destructor_00408558(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndustryAmtBar::TIndustryAmtBar_VtblSlot106
+// ghidra_proto void __thiscall TIndustryAmtBar_VtblSlot106(void)
+// FUNCTION: IMPERIALISM 0x00408562
+undefined4 TIndustryAmtBar_VtblSlot106(void)
+{
+  return 0;
+}
+
+// ghidra_name TAdmiral::thunk_GetTAdmiralClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTAdmiralClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408576
+undefined4 thunk_GetTAdmiralClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ComputeDefendProvinceMissionLocalSupportVectorScore
+// ghidra_proto void __cdecl thunk_ComputeDefendProvinceMissionLocalSupportVectorScore(int arg1)
+// FUNCTION: IMPERIALISM 0x0040857b
+undefined4 thunk_ComputeDefendProvinceMissionLocalSupportVectorScore(void)
+{
+  return 0;
+}
+
+// ghidra_name TOceanDialog::TOceanDialog_VtblSlot112
+// ghidra_proto void __thiscall TOceanDialog_VtblSlot112(void)
+// FUNCTION: IMPERIALISM 0x0040858a
+undefined4 TOceanDialog_VtblSlot112(void)
+{
+  return 0;
+}
+
+// ghidra_name TOceanDialog::TOceanDialog_VtblSlot000
+// ghidra_proto void * __cdecl TOceanDialog_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x0040858f
+undefined4 TOceanDialog_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnTrueStub
+// ghidra_proto void __cdecl thunk_ReturnTrueStub(void)
+// FUNCTION: IMPERIALISM 0x00408594
+undefined4 thunk_ReturnTrueStub(void)
+{
+  return 0;
+}
+
+// ghidra_name TAttackProvinceMission::thunk_CleanupTAttackProvinceMissionAndReleaseChildContext_At00408599
+// ghidra_proto void __thiscall thunk_CleanupTAttackProvinceMissionAndReleaseChildContext_At00408599(void)
+// FUNCTION: IMPERIALISM 0x00408599
+undefined4 thunk_CleanupTAttackProvinceMissionAndReleaseChildContext_At00408599(void)
+{
+  return 0;
+}
+
+// ghidra_name TProductionCluster::TProductionCluster_VtblSlot015
+// ghidra_proto void __thiscall TProductionCluster_VtblSlot015(int callbackContext, EArrowSplitCommandId commandId, PanelEventPayload * pPanelEvent, int eventFlags)
+// FUNCTION: IMPERIALISM 0x004085a3
+undefined4 TProductionCluster_VtblSlot015(void)
+{
+  return 0;
+}
+
+// ghidra_name TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot116
+// ghidra_proto void __thiscall TSetupRandomMapPicture_VtblSlot116(void)
+// FUNCTION: IMPERIALISM 0x004085a8
+undefined4 TSetupRandomMapPicture_VtblSlot116(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ComputeOrderNodeCompositeEconomicScore
+// ghidra_proto int __cdecl thunk_ComputeOrderNodeCompositeEconomicScore(void)
+// FUNCTION: IMPERIALISM 0x004085b2
+undefined4 thunk_ComputeOrderNodeCompositeEconomicScore(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot000
+// ghidra_proto void * __cdecl TGameSetupMultiplayerPicture_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x004085bc
+undefined4 TGameSetupMultiplayerPicture_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructTDocumentBaseState
+// ghidra_proto void __thiscall thunk_ConstructTDocumentBaseState(void)
+// FUNCTION: IMPERIALISM 0x004085c6
+undefined4 thunk_ConstructTDocumentBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TForeignMinister::thunk_DestructTForeignMinister
+// ghidra_proto void __thiscall thunk_DestructTForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x004085cb
+undefined4 thunk_DestructTForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TTextLine::thunk_Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500_At004085da
+// ghidra_proto void __cdecl thunk_Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500_At004085da(void)
+// FUNCTION: IMPERIALISM 0x004085da
+undefined4 thunk_Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500_At004085da(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_HandleMapTileClickSetOrderContextAndDispatchEvent79
+// ghidra_proto void __thiscall thunk_HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004085e4
+undefined4 thunk_HandleMapTileClickSetOrderContextAndDispatchEvent79(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_EnumerateStreamEntriesWithDualCallbacksAndTempBuffer_At004085e9
+// ghidra_proto void __cdecl thunk_EnumerateStreamEntriesWithDualCallbacksAndTempBuffer_At004085e9(void)
+// FUNCTION: IMPERIALISM 0x004085e9
+undefined4 thunk_EnumerateStreamEntriesWithDualCallbacksAndTempBuffer_At004085e9(void)
+{
+  return 0;
+}
+
+// ghidra_name TGreatPower::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004d8c20_At004085ee
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004d8c20_At004085ee(void)
+// FUNCTION: IMPERIALISM 0x004085ee
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At004d8c20_At004085ee(void)
+{
+  return 0;
+}
+
+// ghidra_name TBattleReportView_VtblSlot001
+// ghidra_proto void __cdecl TBattleReportView_VtblSlot001(void)
+// FUNCTION: IMPERIALISM 0x004085f3
+undefined4 TBattleReportView_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name TTransFocusAnimation::thunk_BlitTransientSurfaceToPrimaryRenderContextWithClip_At004085f8
+// ghidra_proto void __thiscall thunk_BlitTransientSurfaceToPrimaryRenderContextWithClip_At004085f8(void)
+// FUNCTION: IMPERIALISM 0x004085f8
+undefined4 thunk_BlitTransientSurfaceToPrimaryRenderContextWithClip_At004085f8(void)
+{
+  return 0;
+}
+
+// ghidra_name TStatusPicture::TStatusPicture_VtblSlot068
+// ghidra_proto void __cdecl TStatusPicture_VtblSlot068(void)
+// FUNCTION: IMPERIALISM 0x00408602
+undefined4 TStatusPicture_VtblSlot068(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot098
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot098(void)
+// FUNCTION: IMPERIALISM 0x00408607
+undefined4 TAutoGreatPower_VtblSlot098(void)
+{
+  return 0;
+}
+
+// ghidra_name TViewMgr::TViewMgr_VtblSlot030
+// ghidra_proto void __cdecl TViewMgr_VtblSlot030(void)
+// FUNCTION: IMPERIALISM 0x00408611
+undefined4 TViewMgr_VtblSlot030(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot070
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot070(void)
+// FUNCTION: IMPERIALISM 0x00408616
+undefined4 TAutoGreatPower_VtblSlot070(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyStack::thunk_ComputeRallyStrengthAndQueueTacticalRallyCommand
+// ghidra_proto void __thiscall thunk_ComputeRallyStrengthAndQueueTacticalRallyCommand(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0040861b
+undefined4 thunk_ComputeRallyStrengthAndQueueTacticalRallyCommand(void)
+{
+  return 0;
+}
+
+// ghidra_name TGreatPower::thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive
+// ghidra_proto void __thiscall thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+// FUNCTION: IMPERIALISM 0x00408620
+undefined4 thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyMgr::TNavyMgr_VtblSlot004
+// ghidra_proto void __cdecl TNavyMgr_VtblSlot004(void)
+// FUNCTION: IMPERIALISM 0x00408625
+undefined4 TNavyMgr_VtblSlot004(void)
+{
+  return 0;
+}
+
+// ghidra_name TGreatPower::thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a
+// ghidra_proto void __thiscall thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0040862a
+undefined4 thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a(void)
+{
+  return 0;
+}
+
+// ghidra_name TShipyardView::TShipyardView_VtblSlot124
+// ghidra_proto void __thiscall TShipyardView_VtblSlot124(void)
+// FUNCTION: IMPERIALISM 0x00408639
+undefined4 TShipyardView_VtblSlot124(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_IterateLinkedListCursorEntries_004c2d50_At00408648
+// ghidra_proto void __cdecl thunk_IterateLinkedListCursorEntries_004c2d50_At00408648(void)
+// FUNCTION: IMPERIALISM 0x00408648
+undefined4 thunk_IterateLinkedListCursorEntries_004c2d50_At00408648(void)
+{
+  return 0;
+}
+
+// ghidra_name TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40
+// ghidra_proto void __cdecl thunk_ForwardEngineerDialogCommandToChildSlot40(void)
+// FUNCTION: IMPERIALISM 0x00408657
+undefined4 thunk_ForwardEngineerDialogCommandToChildSlot40(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyMgr::thunk_DestructTArmyMgrAndMaybeFree
+// ghidra_proto void * __thiscall thunk_DestructTArmyMgrAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0040866b
+undefined4 thunk_DestructTArmyMgrAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DispatchLocalizedUiMessageWithTemplate
+// ghidra_proto void __cdecl thunk_DispatchLocalizedUiMessageWithTemplate(void)
+// FUNCTION: IMPERIALISM 0x00408670
+undefined4 thunk_DispatchLocalizedUiMessageWithTemplate(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetNavyOrderRankWithinNationBucket
+// ghidra_proto void __cdecl thunk_GetNavyOrderRankWithinNationBucket(void)
+// FUNCTION: IMPERIALISM 0x0040867a
+undefined4 thunk_GetNavyOrderRankWithinNationBucket(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C1_I06_0056fbd0_At0040867f
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I06_0056fbd0_At0040867f(void)
+// FUNCTION: IMPERIALISM 0x0040867f
+undefined4 thunk_OrphanCallChain_C1_I06_0056fbd0_At0040867f(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyMgr::TNavyMgr_VtblSlot008
+// ghidra_proto void __cdecl TNavyMgr_VtblSlot008(void)
+// FUNCTION: IMPERIALISM 0x00408684
+undefined4 TNavyMgr_VtblSlot008(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldButton_VtblSlot112
+// ghidra_proto void __fastcall TGWorldButton_VtblSlot112(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0040868e
+undefined4 TGWorldButton_VtblSlot112(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot015
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot015(void)
+// FUNCTION: IMPERIALISM 0x00408693
+undefined4 TAutoGreatPower_VtblSlot015(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberPicture::CreateToolWindow
+// ghidra_proto void __fastcall CreateToolWindow(astruct_20 * this_obj)
+// FUNCTION: IMPERIALISM 0x0040869d
+undefined4 CreateToolWindow(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityBarCluster::TCityBarCluster_VtblSlot000
+// ghidra_proto void * __cdecl TCityBarCluster_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x004086a2
+undefined4 TCityBarCluster_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapKey::thunk_GetTMapKeyClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTMapKeyClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004086b1
+undefined4 thunk_GetTMapKeyClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTacticalPlayer::thunk_ConstructTTacticalPlayerBaseState
+// ghidra_proto void __thiscall thunk_ConstructTTacticalPlayerBaseState(void)
+// FUNCTION: IMPERIALISM 0x004086c0
+undefined4 thunk_ConstructTTacticalPlayerBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot162
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot162(void)
+// FUNCTION: IMPERIALISM 0x004086c5
+undefined4 TAutoGreatPower_VtblSlot162(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortedByRelationshipList::thunk_HasWarRelationTurnStampOutOfDate_At004086ca
+// ghidra_proto void __thiscall thunk_HasWarRelationTurnStampOutOfDate_At004086ca(void)
+// FUNCTION: IMPERIALISM 0x004086ca
+undefined4 thunk_HasWarRelationTurnStampOutOfDate_At004086ca(void)
+{
+  return 0;
+}
+
+// ghidra_name TUnitToolbarCluster::thunk_OrphanVtableAssignStub_00586150
+// ghidra_proto byte __cdecl thunk_OrphanVtableAssignStub_00586150(void)
+// FUNCTION: IMPERIALISM 0x004086cf
+undefined4 thunk_OrphanVtableAssignStub_00586150(void)
+{
+  return 0;
+}
+
+// ghidra_name TOceanDialog::TOceanDialog_VtblSlot121
+// ghidra_proto void __fastcall TOceanDialog_VtblSlot121(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004086d4
+undefined4 TOceanDialog_VtblSlot121(void)
+{
+  return 0;
+}
+
+// ghidra_name TScroller::thunk_CreateTScrollerInstance
+// ghidra_proto void __thiscall thunk_CreateTScrollerInstance(void)
+// FUNCTION: IMPERIALISM 0x004086e3
+undefined4 thunk_CreateTScrollerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivilianButton::TCivilianButton_VtblSlot068
+// ghidra_proto void __thiscall TCivilianButton_VtblSlot068(void)
+// FUNCTION: IMPERIALISM 0x004086e8
+undefined4 TCivilianButton_VtblSlot068(void)
+{
+  return 0;
+}
+
+// ghidra_name TJoinSelectorDialog::thunk_GetTJoinSelectorDialogClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTJoinSelectorDialogClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004086f7
+undefined4 thunk_GetTJoinSelectorDialogClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C1_I06_0056fbb0_At0040870b
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I06_0056fbb0_At0040870b(void)
+// FUNCTION: IMPERIALISM 0x0040870b
+undefined4 thunk_OrphanCallChain_C1_I06_0056fbb0_At0040870b(void)
+{
+  return 0;
+}
+
+// ghidra_name TModuleLibraryCacheTableStateB_0064BA80::thunk_ConstructModuleLibraryCacheDualTableState
+// ghidra_proto void __thiscall thunk_ConstructModuleLibraryCacheDualTableState(void)
+// FUNCTION: IMPERIALISM 0x00408710
+undefined4 thunk_ConstructModuleLibraryCacheDualTableState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_PostTurnEventCodeMessage2420
+// ghidra_proto void __cdecl thunk_PostTurnEventCodeMessage2420(int arg1)
+// FUNCTION: IMPERIALISM 0x00408715
+undefined4 thunk_PostTurnEventCodeMessage2420(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_FindNextSelectableProvinceForNation
+// ghidra_proto void __cdecl thunk_FindNextSelectableProvinceForNation(void)
+// FUNCTION: IMPERIALISM 0x0040871a
+undefined4 thunk_FindNextSelectableProvinceForNation(void)
+{
+  return 0;
+}
+
+// ghidra_name TViewMgr::TViewMgr_VtblSlot063
+// ghidra_proto void __cdecl TViewMgr_VtblSlot063(void)
+// FUNCTION: IMPERIALISM 0x00408724
+undefined4 TViewMgr_VtblSlot063(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameSetupPicture::TGameSetupPicture_VtblSlot015
+// ghidra_proto void __stdcall TGameSetupPicture_VtblSlot015(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
+// FUNCTION: IMPERIALISM 0x0040872e
+undefined4 TGameSetupPicture_VtblSlot015(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameInfoPicture::thunk_ConstructTGameInfoPictureBaseState
+// ghidra_proto void __thiscall thunk_ConstructTGameInfoPictureBaseState(int labelSeed)
+// FUNCTION: IMPERIALISM 0x00408733
+undefined4 thunk_ConstructTGameInfoPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ShouldAttemptMapOrderPairResolution
+// ghidra_proto void __thiscall thunk_ShouldAttemptMapOrderPairResolution(int arg1)
+// FUNCTION: IMPERIALISM 0x00408738
+undefined4 thunk_ShouldAttemptMapOrderPairResolution(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeJoinGameSelectionDialogState
+// ghidra_proto void __cdecl thunk_InitializeJoinGameSelectionDialogState(void)
+// FUNCTION: IMPERIALISM 0x0040873d
+undefined4 thunk_InitializeJoinGameSelectionDialogState(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::thunk_HasZoneActiveChildCount_At00408747
+// ghidra_proto bool __thiscall thunk_HasZoneActiveChildCount_At00408747(void)
+// FUNCTION: IMPERIALISM 0x00408747
+undefined4 thunk_HasZoneActiveChildCount_At00408747(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00480dd0
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(void)
+// FUNCTION: IMPERIALISM 0x0040874c
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructTNavyAutoPlayerBaseState
+// ghidra_proto void __fastcall thunk_ConstructTNavyAutoPlayerBaseState(TNavyAutoPlayer * pThis)
+// FUNCTION: IMPERIALISM 0x00408751
+undefined4 thunk_ConstructTNavyAutoPlayerBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TCouncilView::thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b
+// ghidra_proto void __thiscall thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b(void)
+// FUNCTION: IMPERIALISM 0x0040875b
+undefined4 thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_AttachGlobalMemoryHandleAndResetPosition
+// ghidra_proto void __thiscall thunk_AttachGlobalMemoryHandleAndResetPosition(int hGlobalHandle, int streamTag)
+// FUNCTION: IMPERIALISM 0x00408765
+undefined4 thunk_AttachGlobalMemoryHandleAndResetPosition(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildTacticalBattleStateFromBothSides
+// ghidra_proto void __fastcall thunk_BuildTacticalBattleStateFromBothSides(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0040877e
+undefined4 thunk_BuildTacticalBattleStateFromBothSides(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170
+// ghidra_proto void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
+// FUNCTION: IMPERIALISM 0x00408783
+undefined4 thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00498dd0
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00498dd0(void)
+// FUNCTION: IMPERIALISM 0x00408788
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00498dd0(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot022
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot022(void)
+// FUNCTION: IMPERIALISM 0x00408792
+undefined4 TAutoGreatPower_VtblSlot022(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RebalanceCitySupportAndLaborAllocations
+// ghidra_proto void __cdecl thunk_RebalanceCitySupportAndLaborAllocations(void)
+// FUNCTION: IMPERIALISM 0x004087a1
+undefined4 thunk_RebalanceCitySupportAndLaborAllocations(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::thunk_GetTMacViewMgrClassNamePointer_At004087ab
+// ghidra_proto void * __cdecl thunk_GetTMacViewMgrClassNamePointer_At004087ab(void)
+// FUNCTION: IMPERIALISM 0x004087ab
+undefined4 thunk_GetTMacViewMgrClassNamePointer_At004087ab(void)
+{
+  return 0;
+}
+
+// ghidra_name TPowerPlantOrder::thunk_DestructTPowerPlantOrderAndMaybeFree
+// ghidra_proto void * __thiscall thunk_DestructTPowerPlantOrderAndMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x004087b0
+undefined4 thunk_DestructTPowerPlantOrderAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot00
+// ghidra_proto void __cdecl thunk_TArmyTacUnit_VtblSlot00(void)
+// FUNCTION: IMPERIALISM 0x004087b5
+undefined4 thunk_TArmyTacUnit_VtblSlot00(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot025
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot025(int arg1)
+// FUNCTION: IMPERIALISM 0x004087bf
+undefined4 TAutoGreatPower_VtblSlot025(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::thunk_RunTacticalAutoTurnControllerForActiveUnit_At004087c4
+// ghidra_proto void __thiscall thunk_RunTacticalAutoTurnControllerForActiveUnit_At004087c4(void)
+// FUNCTION: IMPERIALISM 0x004087c4
+undefined4 thunk_RunTacticalAutoTurnControllerForActiveUnit_At004087c4(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeDialogTemplateDBWithTextState
+// ghidra_proto void __cdecl thunk_InitializeDialogTemplateDBWithTextState(void)
+// FUNCTION: IMPERIALISM 0x004087c9
+undefined4 thunk_InitializeDialogTemplateDBWithTextState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_UnlinkFromNationOrTerrainOwnerListAndDestroy
+// ghidra_proto void __cdecl thunk_UnlinkFromNationOrTerrainOwnerListAndDestroy(void)
+// FUNCTION: IMPERIALISM 0x004087ce
+undefined4 thunk_UnlinkFromNationOrTerrainOwnerListAndDestroy(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::thunk_GetTNavyPlayerClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTNavyPlayerClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004087d3
+undefined4 thunk_GetTNavyPlayerClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapDialog::TMapDialog_VtblSlot129
+// ghidra_proto void __thiscall TMapDialog_VtblSlot129(int arg1)
+// FUNCTION: IMPERIALISM 0x004087d8
+undefined4 TMapDialog_VtblSlot129(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyPlayer::thunk_CreateTArmyPlayerInstance
+// ghidra_proto void __thiscall thunk_CreateTArmyPlayerInstance(void)
+// FUNCTION: IMPERIALISM 0x004087f1
+undefined4 thunk_CreateTArmyPlayerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TOnOffRadioButton::TOnOffRadioButton_VtblSlot015
+// ghidra_proto void __thiscall TOnOffRadioButton_VtblSlot015(void)
+// FUNCTION: IMPERIALISM 0x004087f6
+undefined4 TOnOffRadioButton_VtblSlot015(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildFrogCityDistanceMapFromPrimarySeedSet
+// ghidra_proto void __thiscall thunk_BuildFrogCityDistanceMapFromPrimarySeedSet(int arg1)
+// FUNCTION: IMPERIALISM 0x00408805
+undefined4 thunk_BuildFrogCityDistanceMapFromPrimarySeedSet(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructUiTextResourceEntry_Vtbl0066cbc8
+// ghidra_proto void __thiscall thunk_ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
+// FUNCTION: IMPERIALISM 0x00408814
+undefined4 thunk_ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyMission::Reassess
+// ghidra_proto void * __cdecl Reassess(void)
+// FUNCTION: IMPERIALISM 0x00408819
+undefined4 Reassess(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e
+// ghidra_proto void * __thiscall thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0040881e
+undefined4 thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e(void)
+{
+  return 0;
+}
+
+// ghidra_name TRadioTextCluster::TRadioTextCluster_VtblSlot055
+// ghidra_proto void __cdecl TRadioTextCluster_VtblSlot055(void)
+// FUNCTION: IMPERIALISM 0x00408823
+undefined4 TRadioTextCluster_VtblSlot055(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameWindow::TGameWindow_VtblSlot121
+// ghidra_proto void __cdecl TGameWindow_VtblSlot121(void)
+// FUNCTION: IMPERIALISM 0x00408832
+undefined4 TGameWindow_VtblSlot121(void)
+{
+  return 0;
+}
+
+// ghidra_name SecondaryNationState::thunk_OrphanCallChain_C2_I33_004e59d0_At00408837
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C2_I33_004e59d0_At00408837(void)
+// FUNCTION: IMPERIALISM 0x00408837
+undefined4 thunk_OrphanCallChain_C2_I33_004e59d0_At00408837(void)
+{
+  return 0;
+}
+
+// ghidra_name TApplication::thunk_GetTApplicationClassNamePointer_At00408841
+// ghidra_proto void * __cdecl thunk_GetTApplicationClassNamePointer_At00408841(void)
+// FUNCTION: IMPERIALISM 0x00408841
+undefined4 thunk_GetTApplicationClassNamePointer_At00408841(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureLine::thunk_GetTPictureLineClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTPictureLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0040884b
+undefined4 thunk_GetTPictureLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NoOpCallbackRet10
+// ghidra_proto void __stdcall thunk_NoOpCallbackRet10(int arg0, int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00408855
+undefined4 thunk_NoOpCallbackRet10(void)
+{
+  return 0;
+}
+
+// ghidra_name TViewMgr::TViewMgr_VtblSlot041
+// ghidra_proto void __cdecl TViewMgr_VtblSlot041(void)
+// FUNCTION: IMPERIALISM 0x00408869
+undefined4 TViewMgr_VtblSlot041(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C7_I65_004bfa50_At0040886e
+// ghidra_proto void __fastcall thunk_OrphanCallChain_C7_I65_004bfa50_At0040886e(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x0040886e
+undefined4 thunk_OrphanCallChain_C7_I65_004bfa50_At0040886e(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructUiResourceEntry_Vtbl00640940
+// ghidra_proto void __cdecl thunk_ConstructUiResourceEntry_Vtbl00640940(void)
+// FUNCTION: IMPERIALISM 0x00408873
+undefined4 thunk_ConstructUiResourceEntry_Vtbl00640940(void)
+{
+  return 0;
+}
+
+// ghidra_name TPopulationMgr::thunk_DestructTPopulationMgrAndMaybeFree
+// ghidra_proto void * __thiscall thunk_DestructTPopulationMgrAndMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x00408878
+undefined4 thunk_DestructTPopulationMgrAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::THQButton_VtblSlot116
+// ghidra_proto void __thiscall THQButton_VtblSlot116(EMapInteractionMode mode)
+// FUNCTION: IMPERIALISM 0x00408891
+undefined4 THQButton_VtblSlot116(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyStack::thunk_PropagateTileAccessibilityStrengthLevels
+// ghidra_proto void __thiscall thunk_PropagateTileAccessibilityStrengthLevels(void * param_1)
+// FUNCTION: IMPERIALISM 0x00408896
+undefined4 thunk_PropagateTileAccessibilityStrengthLevels(void)
+{
+  return 0;
+}
+
+// ghidra_name TRadio::TRadio_VtblSlot001
+// ghidra_proto void * __thiscall TRadio_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x004088a0
+undefined4 TRadio_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_UpsertPtrListRecordByComparator
+// ghidra_proto void __thiscall thunk_UpsertPtrListRecordByComparator(void)
+// FUNCTION: IMPERIALISM 0x004088a5
+undefined4 thunk_UpsertPtrListRecordByComparator(void)
+{
+  return 0;
+}
+
+// ghidra_name TInfoPanelView::thunk_ConstructTInfoPanelViewBaseState
+// ghidra_proto void __thiscall thunk_ConstructTInfoPanelViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x004088af
+undefined4 thunk_ConstructTInfoPanelViewBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_InvalidateOffsetRegionUsingChildClipRect
+// ghidra_proto void __thiscall thunk_InvalidateOffsetRegionUsingChildClipRect(int * arg1)
+// FUNCTION: IMPERIALISM 0x004088b4
+undefined4 thunk_InvalidateOffsetRegionUsingChildClipRect(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At0057b6f0
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At0057b6f0(void)
+// FUNCTION: IMPERIALISM 0x004088be
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At0057b6f0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_HandleCityDialogNoOpA
+// ghidra_proto void __thiscall thunk_HandleCityDialogNoOpA(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004088c8
+undefined4 thunk_HandleCityDialogNoOpA(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::thunk_WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190
+// ghidra_proto void __thiscall thunk_WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(void)
+// FUNCTION: IMPERIALISM 0x004088d2
+undefined4 thunk_WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffLimitsPicture::TOffLimitsPicture_VtblSlot007
+// ghidra_proto void __cdecl TOffLimitsPicture_VtblSlot007(void)
+// FUNCTION: IMPERIALISM 0x004088d7
+undefined4 TOffLimitsPicture_VtblSlot007(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C1_I08_005b60a0_At004088e1
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I08_005b60a0_At004088e1(void)
+// FUNCTION: IMPERIALISM 0x004088e1
+undefined4 thunk_OrphanCallChain_C1_I08_005b60a0_At004088e1(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::thunk_GetTSoundPlayerClassNamePointer_At004088eb
+// ghidra_proto void * __cdecl thunk_GetTSoundPlayerClassNamePointer_At004088eb(void)
+// FUNCTION: IMPERIALISM 0x004088eb
+undefined4 thunk_GetTSoundPlayerClassNamePointer_At004088eb(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnMissionConstantFloatSlot6C
+// ghidra_proto void __cdecl thunk_ReturnMissionConstantFloatSlot6C(void)
+// FUNCTION: IMPERIALISM 0x004088f5
+undefined4 thunk_ReturnMissionConstantFloatSlot6C(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameWindow::TGameWindow_VtblSlot039
+// ghidra_proto void __thiscall TGameWindow_VtblSlot039(void)
+// FUNCTION: IMPERIALISM 0x004088fa
+undefined4 TGameWindow_VtblSlot039(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortedByRelationshipList::thunk_IsPrimaryNationSlotIndex
+// ghidra_proto void __cdecl thunk_IsPrimaryNationSlotIndex(void)
+// FUNCTION: IMPERIALISM 0x004088ff
+undefined4 thunk_IsPrimaryNationSlotIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_SetCivWorkOrderTypeTargetTileAndDuration_At00408904
+// ghidra_proto void __thiscall thunk_SetCivWorkOrderTypeTargetTileAndDuration_At00408904(int nOrderType, short nTargetTileIndex)
+// FUNCTION: IMPERIALISM 0x00408904
+undefined4 thunk_SetCivWorkOrderTypeTargetTileAndDuration_At00408904(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsView::thunk_CreateTUnitInstance_At0040890e
+// ghidra_proto void __thiscall thunk_CreateTUnitInstance_At0040890e(void)
+// FUNCTION: IMPERIALISM 0x0040890e
+undefined4 thunk_CreateTUnitInstance_At0040890e(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::thunk_AppendZonePointerToSecondaryArray
+// ghidra_proto void __thiscall thunk_AppendZonePointerToSecondaryArray(void)
+// FUNCTION: IMPERIALISM 0x00408918
+undefined4 thunk_AppendZonePointerToSecondaryArray(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ComputeMissionOrderMatchDeltaWithCandidateNavyOrder
+// ghidra_proto void __cdecl thunk_ComputeMissionOrderMatchDeltaWithCandidateNavyOrder(void)
+// FUNCTION: IMPERIALISM 0x0040891d
+undefined4 thunk_ComputeMissionOrderMatchDeltaWithCandidateNavyOrder(void)
+{
+  return 0;
+}
+
+// ghidra_name TViewMgr::TViewMgr_VtblSlot025
+// ghidra_proto void __cdecl TViewMgr_VtblSlot025(void)
+// FUNCTION: IMPERIALISM 0x00408922
+undefined4 TViewMgr_VtblSlot025(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_CancelNationOrdersAndResetPrimaryFlags
+// ghidra_proto void __cdecl thunk_CancelNationOrdersAndResetPrimaryFlags(void)
+// FUNCTION: IMPERIALISM 0x00408927
+undefined4 thunk_CancelNationOrdersAndResetPrimaryFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name TItemBoyView::thunk_scalar_deleting_destructor_0040892C
+// ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_0040892C(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0040892c
+undefined4 thunk_scalar_deleting_destructor_0040892C(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapMgr::thunk_FloodFillTileRegionMarker_At0040893b
+// ghidra_proto void __thiscall thunk_FloodFillTileRegionMarker_At0040893b(short nTileIndex, short nOwnerNationId)
+// FUNCTION: IMPERIALISM 0x0040893b
+undefined4 thunk_FloodFillTileRegionMarker_At0040893b(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RefreshTaskForceSelectionFlagsForCurrentNationOrders
+// ghidra_proto void __cdecl thunk_RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
+// FUNCTION: IMPERIALISM 0x0040894f
+undefined4 thunk_RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RebuildMapTileNeighborBucketsForInteriorMinister
+// ghidra_proto void __thiscall thunk_RebuildMapTileNeighborBucketsForInteriorMinister(void)
+// FUNCTION: IMPERIALISM 0x00408954
+undefined4 thunk_RebuildMapTileNeighborBucketsForInteriorMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TFocusAnimation::thunk_DestructTFocusAnimationAndMaybeFree
+// ghidra_proto void __thiscall thunk_DestructTFocusAnimationAndMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x00408959
+undefined4 thunk_DestructTFocusAnimationAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TGameSetupPicture::TGameSetupPicture_VtblSlot001
+// ghidra_proto void * __thiscall TGameSetupPicture_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408963
+undefined4 TGameSetupPicture_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot042
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot042(void)
+// FUNCTION: IMPERIALISM 0x00408968
+undefined4 TAutoGreatPower_VtblSlot042(void)
+{
+  return 0;
+}
+
+// ghidra_name TUpDownView::TUpDownView_VtblSlot000
+// ghidra_proto void * __cdecl TUpDownView_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408977
+undefined4 TUpDownView_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TBlockadePortMission::TBlockadePortMission_VtblSlot017
+// ghidra_proto void __cdecl TBlockadePortMission_VtblSlot017(void)
+// FUNCTION: IMPERIALISM 0x00408981
+undefined4 TBlockadePortMission_VtblSlot017(void)
+{
+  return 0;
+}
+
+// ghidra_name THelpPicture_VtblSlot116
+// ghidra_proto void __cdecl THelpPicture_VtblSlot116(void)
+// FUNCTION: IMPERIALISM 0x00408986
+undefined4 THelpPicture_VtblSlot116(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::thunk_RecomputeTownAdjacentTileYieldTotals
+// ghidra_proto void __thiscall thunk_RecomputeTownAdjacentTileYieldTotals(void)
+// FUNCTION: IMPERIALISM 0x00408990
+undefined4 thunk_RecomputeTownAdjacentTileYieldTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::thunk_RefreshMapOrderEntryPanel
+// ghidra_proto void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00408995
+undefined4 thunk_RefreshMapOrderEntryPanel(void)
+{
+  return 0;
+}
+
+// ghidra_name TPopGrowthOrder::thunk_ConstructTPopGrowthOrderBaseState
+// ghidra_proto void __thiscall thunk_ConstructTPopGrowthOrderBaseState(int * pCity)
+// FUNCTION: IMPERIALISM 0x0040899f
+undefined4 thunk_ConstructTPopGrowthOrderBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_CopyExtendedCityDialogControllerState
+// ghidra_proto void __fastcall thunk_CopyExtendedCityDialogControllerState(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x004089a4
+undefined4 thunk_CopyExtendedCityDialogControllerState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ResizePointerArrayCapacityByRequestedCount
+// ghidra_proto void __cdecl thunk_ResizePointerArrayCapacityByRequestedCount(void)
+// FUNCTION: IMPERIALISM 0x004089a9
+undefined4 thunk_ResizePointerArrayCapacityByRequestedCount(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeTForeignMinisterStateAndCounters
+// ghidra_proto void __cdecl thunk_InitializeTForeignMinisterStateAndCounters(void)
+// FUNCTION: IMPERIALISM 0x004089ae
+undefined4 thunk_InitializeTForeignMinisterStateAndCounters(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ClearMissionQueuedOrderLinksAndOwnerPointers
+// ghidra_proto void __cdecl thunk_ClearMissionQueuedOrderLinksAndOwnerPointers(void)
+// FUNCTION: IMPERIALISM 0x004089b8
+undefined4 thunk_ClearMissionQueuedOrderLinksAndOwnerPointers(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C1_I06_00488f70_At004089c2
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I06_00488f70_At004089c2(void)
+// FUNCTION: IMPERIALISM 0x004089c2
+undefined4 thunk_OrphanCallChain_C1_I06_00488f70_At004089c2(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetProvinceByTileIndex
+// ghidra_proto void * __cdecl thunk_GetProvinceByTileIndex(short nTileIndex)
+// FUNCTION: IMPERIALISM 0x004089c7
+undefined4 thunk_GetProvinceByTileIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name TAnimation::thunk_CreateTAnimationInstance
+// ghidra_proto void * __thiscall thunk_CreateTAnimationInstance(void)
+// FUNCTION: IMPERIALISM 0x004089cc
+undefined4 thunk_CreateTAnimationInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeForeignMinisterStateFlags
+// ghidra_proto void __cdecl thunk_InitializeForeignMinisterStateFlags(void)
+// FUNCTION: IMPERIALISM 0x004089d6
+undefined4 thunk_InitializeForeignMinisterStateFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetSharedStringFromRotatingFlavorTextBySlot
+// ghidra_proto void __cdecl thunk_SetSharedStringFromRotatingFlavorTextBySlot(void * pDstSharedRef, int nSlotIndex)
+// FUNCTION: IMPERIALISM 0x004089db
+undefined4 thunk_SetSharedStringFromRotatingFlavorTextBySlot(void)
+{
+  return 0;
+}
+
+// ghidra_name TDefenderMinister::TDefenderMinister_VtblSlot024
+// ghidra_proto TDefenderMinister * __cdecl TDefenderMinister_VtblSlot024(void)
+// FUNCTION: IMPERIALISM 0x004089e0
+undefined4 TDefenderMinister_VtblSlot024(void)
+{
+  return 0;
+}
+
+// ghidra_name TFocusAnimation::thunk_GetTFocusAnimationClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTFocusAnimationClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004089ef
+undefined4 thunk_GetTFocusAnimationClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840
+// ghidra_proto void __thiscall thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
+// FUNCTION: IMPERIALISM 0x004089f4
+undefined4 thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InvalidateCityDialogRectRegion
+// ghidra_proto void __stdcall thunk_InvalidateCityDialogRectRegion(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408a03
+undefined4 thunk_InvalidateCityDialogRectRegion(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeMinisterOrderArrayPreset_10_10_10_50
+// ghidra_proto void __cdecl thunk_InitializeMinisterOrderArrayPreset_10_10_10_50(void)
+// FUNCTION: IMPERIALISM 0x00408a08
+undefined4 thunk_InitializeMinisterOrderArrayPreset_10_10_10_50(void)
+{
+  return 0;
+}
+
+// ghidra_name TTurnStartEvent::thunk_CreateTTurnStartEventInstance
+// ghidra_proto void * __thiscall thunk_CreateTTurnStartEventInstance(void)
+// FUNCTION: IMPERIALISM 0x00408a0d
+undefined4 thunk_CreateTTurnStartEventInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TStaticText::TStaticText_VtblSlot000
+// ghidra_proto void * __cdecl TStaticText_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408a1c
+undefined4 TStaticText_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_LoadPictureResourceRegionAndRefresh
+// ghidra_proto void __cdecl thunk_LoadPictureResourceRegionAndRefresh(void)
+// FUNCTION: IMPERIALISM 0x00408a2b
+undefined4 thunk_LoadPictureResourceRegionAndRefresh(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot020
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot020(int arg1)
+// FUNCTION: IMPERIALISM 0x00408a35
+undefined4 TAutoGreatPower_VtblSlot020(void)
+{
+  return 0;
+}
+
+// ghidra_name TCzechBox_VtblSlot119
+// ghidra_proto void __cdecl TCzechBox_VtblSlot119(void)
+// FUNCTION: IMPERIALISM 0x00408a3a
+undefined4 TCzechBox_VtblSlot119(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_UpdateRectCacheIfChangedAndInvalidateCityDialog
+// ghidra_proto void __thiscall thunk_UpdateRectCacheIfChangedAndInvalidateCityDialog(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408a3f
+undefined4 thunk_UpdateRectCacheIfChangedAndInvalidateCityDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At004293c0
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004293c0(void)
+// FUNCTION: IMPERIALISM 0x00408a49
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At004293c0(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetSelectPicture::TNetSelectPicture_VtblSlot055
+// ghidra_proto void __cdecl TNetSelectPicture_VtblSlot055(void)
+// FUNCTION: IMPERIALISM 0x00408a58
+undefined4 TNetSelectPicture_VtblSlot055(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_ResetUiInputCaptureState
+// ghidra_proto void __thiscall thunk_ResetUiInputCaptureState(void)
+// FUNCTION: IMPERIALISM 0x00408a5d
+undefined4 thunk_ResetUiInputCaptureState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildTacticalDistanceFieldForSide
+// ghidra_proto void __fastcall thunk_BuildTacticalDistanceFieldForSide(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00408a67
+undefined4 thunk_BuildTacticalDistanceFieldForSide(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ComputeCityProductionCommandLimitsFromBuildingOutputs
+// ghidra_proto void __cdecl thunk_ComputeCityProductionCommandLimitsFromBuildingOutputs(void)
+// FUNCTION: IMPERIALISM 0x00408a85
+undefined4 thunk_ComputeCityProductionCommandLimitsFromBuildingOutputs(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot006
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot006(int arg1)
+// FUNCTION: IMPERIALISM 0x00408a8a
+undefined4 TAutoGreatPower_VtblSlot006(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortedByRelationshipList::thunk_ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
+// ghidra_proto void __thiscall thunk_ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNationSlot, int targetNationSlot, int eProposalCode)
+// FUNCTION: IMPERIALISM 0x00408a94
+undefined4 thunk_ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ResetJoinableGameDescriptorBuffer
+// ghidra_proto void __cdecl thunk_ResetJoinableGameDescriptorBuffer(void)
+// FUNCTION: IMPERIALISM 0x00408aa3
+undefined4 thunk_ResetJoinableGameDescriptorBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
+// FUNCTION: IMPERIALISM 0x00408aa8
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniArmyLine::thunk_DestructTMiniArmyLineAndMaybeFree
+// ghidra_proto void * __thiscall thunk_DestructTMiniArmyLineAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408ab7
+undefined4 thunk_DestructTMiniArmyLineAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot010
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot010(void)
+// FUNCTION: IMPERIALISM 0x00408ac6
+undefined4 TAutoGreatPower_VtblSlot010(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetMinActionThresholdFromEntryChildren
+// ghidra_proto void __cdecl thunk_GetMinActionThresholdFromEntryChildren(void)
+// FUNCTION: IMPERIALISM 0x00408ad0
+undefined4 thunk_GetMinActionThresholdFromEntryChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name TMultiplayerMgr::thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents_At00408ad5
+// ghidra_proto void __thiscall thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents_At00408ad5(int arg1)
+// FUNCTION: IMPERIALISM 0x00408ad5
+undefined4 thunk_InitializeNationStatusSlotsFromNationListAndEmitStartupEvents_At00408ad5(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_AdvanceCityOrderAndQueueRequirementCommands
+// ghidra_proto void __fastcall thunk_AdvanceCityOrderAndQueueRequirementCommands(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00408ada
+undefined4 thunk_AdvanceCityOrderAndQueueRequirementCommands(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot011
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot011(void)
+// FUNCTION: IMPERIALISM 0x00408adf
+undefined4 TAutoGreatPower_VtblSlot011(void)
+{
+  return 0;
+}
+
+// ghidra_name TBattleUnitsView::thunk_GetTBattleUnitsViewClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTBattleUnitsViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408aee
+undefined4 thunk_GetTBattleUnitsViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DistributeCityProductionCommandBudgetAndQueueOrders
+// ghidra_proto void __thiscall thunk_DistributeCityProductionCommandBudgetAndQueueOrders(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408af8
+undefined4 thunk_DistributeCityProductionCommandBudgetAndQueueOrders(void)
+{
+  return 0;
+}
+
+// ghidra_name TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot000
+// ghidra_proto void * __cdecl TDropShadowTextBehavior_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408afd
+undefined4 TDropShadowTextBehavior_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+// ghidra_proto void __thiscall thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408b07
+undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeCityOrderCapabilityStateDefaults
+// ghidra_proto void __cdecl thunk_InitializeCityOrderCapabilityStateDefaults(void)
+// FUNCTION: IMPERIALISM 0x00408b0c
+undefined4 thunk_InitializeCityOrderCapabilityStateDefaults(void)
+{
+  return 0;
+}
+
+// ghidra_name TScatteredShipsMission::TScatteredShipsMission_VtblSlot014
+// ghidra_proto void __thiscall TScatteredShipsMission_VtblSlot014(void)
+// FUNCTION: IMPERIALISM 0x00408b11
+undefined4 TScatteredShipsMission_VtblSlot014(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextMoveCommand::thunk_DestructTNextMoveCommandAndMaybeFree_At00408b16
+// ghidra_proto void * __thiscall thunk_DestructTNextMoveCommandAndMaybeFree_At00408b16(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408b16
+undefined4 thunk_DestructTNextMoveCommandAndMaybeFree_At00408b16(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At0056ffe0
+// ghidra_proto void __cdecl thunk_WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At0056ffe0(void)
+// FUNCTION: IMPERIALISM 0x00408b2a
+undefined4 thunk_WrapperFor_CloseCityDialogChildrenAndReleaseSelf_At0056ffe0(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeDialogTemplateD0WithTextState
+// ghidra_proto void __cdecl thunk_InitializeDialogTemplateD0WithTextState(void)
+// FUNCTION: IMPERIALISM 0x00408b2f
+undefined4 thunk_InitializeDialogTemplateD0WithTextState(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::thunk_GetTAmbitApplicationClassNamePointer_At00408b34
+// ghidra_proto void * __cdecl thunk_GetTAmbitApplicationClassNamePointer_At00408b34(void)
+// FUNCTION: IMPERIALISM 0x00408b34
+undefined4 thunk_GetTAmbitApplicationClassNamePointer_At00408b34(void)
+{
+  return 0;
+}
+
+// ghidra_name TRailAmtBar::TRailAmtBar_VtblSlot106
+// ghidra_proto void __thiscall TRailAmtBar_VtblSlot106(void)
+// FUNCTION: IMPERIALISM 0x00408b43
+undefined4 TRailAmtBar_VtblSlot106(void)
+{
+  return 0;
+}
+
+// ghidra_name TSteelCityMinister::thunk_GetTSteelCityMinisterClassNamePointer_At00408b4d
+// ghidra_proto void * __cdecl thunk_GetTSteelCityMinisterClassNamePointer_At00408b4d(void)
+// FUNCTION: IMPERIALISM 0x00408b4d
+undefined4 thunk_GetTSteelCityMinisterClassNamePointer_At00408b4d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeArmsForeignMinisterOrderCandidates
+// ghidra_proto void __cdecl thunk_InitializeArmsForeignMinisterOrderCandidates(void)
+// FUNCTION: IMPERIALISM 0x00408b5c
+undefined4 thunk_InitializeArmsForeignMinisterOrderCandidates(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot065
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot065(void)
+// FUNCTION: IMPERIALISM 0x00408b61
+undefined4 TAutoGreatPower_VtblSlot065(void)
+{
+  return 0;
+}
+
+// ghidra_name CivUnitOrderState::thunk_ClearCivUnitTileLink_At00408b66
+// ghidra_proto void __cdecl thunk_ClearCivUnitTileLink_At00408b66(void)
+// FUNCTION: IMPERIALISM 0x00408b66
+undefined4 thunk_ClearCivUnitTileLink_At00408b66(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ResizePointerArrayCapacityByRequestedCountAlt
+// ghidra_proto void __cdecl thunk_ResizePointerArrayCapacityByRequestedCountAlt(void)
+// FUNCTION: IMPERIALISM 0x00408b6b
+undefined4 thunk_ResizePointerArrayCapacityByRequestedCountAlt(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::thunk_GetTScrollViewClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTScrollViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408b75
+undefined4 thunk_GetTScrollViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TShipAmtBar::TShipAmtBar_VtblSlot055
+// ghidra_proto void __thiscall TShipAmtBar_VtblSlot055(int passthroughArg)
+// FUNCTION: IMPERIALISM 0x00408b7a
+undefined4 TShipAmtBar_VtblSlot055(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeRangePairFromDiplomacyConstants
+// ghidra_proto void __thiscall thunk_InitializeRangePairFromDiplomacyConstants(void)
+// FUNCTION: IMPERIALISM 0x00408b7f
+undefined4 thunk_InitializeRangePairFromDiplomacyConstants(void)
+{
+  return 0;
+}
+
+// ghidra_name TInvadeMission::TInvadeMission_VtblSlot010
+// ghidra_proto bool __cdecl TInvadeMission_VtblSlot010(void)
+// FUNCTION: IMPERIALISM 0x00408b84
+undefined4 TInvadeMission_VtblSlot010(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetSharedStringFromMappedFlavorTextWithLengthClamp
+// ghidra_proto void __cdecl thunk_SetSharedStringFromMappedFlavorTextWithLengthClamp(void * pDstSharedRef, int nTableSlot)
+// FUNCTION: IMPERIALISM 0x00408b89
+undefined4 thunk_SetSharedStringFromMappedFlavorTextWithLengthClamp(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetHexDirectionBetweenTiles
+// ghidra_proto short __cdecl thunk_GetHexDirectionBetweenTiles(short nFromTileIndex, short nToTileIndex)
+// FUNCTION: IMPERIALISM 0x00408b8e
+undefined4 thunk_GetHexDirectionBetweenTiles(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick
+// ghidra_proto void __thiscall thunk_CycleMapInteractionSelectionAfterHandledClick(void)
+// FUNCTION: IMPERIALISM 0x00408b93
+undefined4 thunk_CycleMapInteractionSelectionAfterHandledClick(void)
+{
+  return 0;
+}
+
+// ghidra_name TDialogBehavior_VtblSlot016
+// ghidra_proto void __cdecl TDialogBehavior_VtblSlot016(void)
+// FUNCTION: IMPERIALISM 0x00408b98
+undefined4 TDialogBehavior_VtblSlot016(void)
+{
+  return 0;
+}
+
+// ghidra_name TBuildingConstructionView::TBuildingConstructionView_VtblSlot116
+// ghidra_proto void __thiscall TBuildingConstructionView_VtblSlot116(EControlTagFourCC nDialogActionTag)
+// FUNCTION: IMPERIALISM 0x00408ba7
+undefined4 TBuildingConstructionView_VtblSlot116(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090(void)
+// FUNCTION: IMPERIALISM 0x00408bb6
+undefined4 thunk_WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ResolveNavyOrderChainsForTurnPhase
+// ghidra_proto void __cdecl thunk_ResolveNavyOrderChainsForTurnPhase(void)
+// FUNCTION: IMPERIALISM 0x00408bbb
+undefined4 thunk_ResolveNavyOrderChainsForTurnPhase(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetWordField90AndMaybeNotify_At00408bc0
+// ghidra_proto void __thiscall thunk_SetWordField90AndMaybeNotify_At00408bc0(short nValue, byte notify)
+// FUNCTION: IMPERIALISM 0x00408bc0
+undefined4 thunk_SetWordField90AndMaybeNotify_At00408bc0(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommandHandler::thunk_CreateTCommandHandlerInstance
+// ghidra_proto void * __thiscall thunk_CreateTCommandHandlerInstance(void)
+// FUNCTION: IMPERIALISM 0x00408bc5
+undefined4 thunk_CreateTCommandHandlerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_ValidateProposalSelectionAndQueueEvent1C
+// ghidra_proto void __thiscall thunk_ValidateProposalSelectionAndQueueEvent1C(word proposalQueueIndex)
+// FUNCTION: IMPERIALISM 0x00408bca
+undefined4 thunk_ValidateProposalSelectionAndQueueEvent1C(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot161
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot161(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408bcf
+undefined4 TAutoGreatPower_VtblSlot161(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot015
+// ghidra_proto void __thiscall TNavyToolbarCluster_VtblSlot015(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00408bde
+undefined4 TNavyToolbarCluster_VtblSlot015(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::TIconSlider_VtblSlot055
+// ghidra_proto void __cdecl TIconSlider_VtblSlot055(void)
+// FUNCTION: IMPERIALISM 0x00408be3
+undefined4 TIconSlider_VtblSlot055(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GenerateMappedFlavorTextVariantD_005d33a0
+// ghidra_proto void __cdecl thunk_GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
+// FUNCTION: IMPERIALISM 0x00408bed
+undefined4 thunk_GenerateMappedFlavorTextVariantD_005d33a0(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetTSortByPriceListClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTSortByPriceListClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408bf7
+undefined4 thunk_GetTSortByPriceListClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_scalar_deleting_destructor_00408BFC
+// ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00408BFC(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408bfc
+undefined4 thunk_scalar_deleting_destructor_00408BFC(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldPartView::thunk_scalar_deleting_destructor_00408C01
+// ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00408C01(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408c01
+undefined4 thunk_scalar_deleting_destructor_00408C01(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedArrowButton::TNumberedArrowButton_VtblSlot000
+// ghidra_proto void * __cdecl TNumberedArrowButton_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408c0b
+undefined4 TNumberedArrowButton_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TEscortMission::TEscortMission_VtblSlot040
+// ghidra_proto void __cdecl TEscortMission_VtblSlot040(void)
+// FUNCTION: IMPERIALISM 0x00408c10
+undefined4 TEscortMission_VtblSlot040(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeBitmapDescriptorRecordState_At00408c1a
+// ghidra_proto void __thiscall thunk_InitializeBitmapDescriptorRecordState_At00408c1a(void)
+// FUNCTION: IMPERIALISM 0x00408c1a
+undefined4 thunk_InitializeBitmapDescriptorRecordState_At00408c1a(void)
+{
+  return 0;
+}
+
+// ghidra_name TOceanDialog::TOceanDialog_VtblSlot108
+// ghidra_proto void __thiscall TOceanDialog_VtblSlot108(short wTileIndex, void * pDestRect, void * param_3)
+// FUNCTION: IMPERIALISM 0x00408c1f
+undefined4 TOceanDialog_VtblSlot108(void)
+{
+  return 0;
+}
+
+// ghidra_name TWindow::thunk_DestructTWindowAndMaybeFree_At00408c2e
+// ghidra_proto void * __thiscall thunk_DestructTWindowAndMaybeFree_At00408c2e(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408c2e
+undefined4 thunk_DestructTWindowAndMaybeFree_At00408c2e(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::thunk_ReturnFalseForZoneCapabilityFlagE_At00408c3d
+// ghidra_proto bool __stdcall thunk_ReturnFalseForZoneCapabilityFlagE_At00408c3d(void)
+// FUNCTION: IMPERIALISM 0x00408c3d
+undefined4 thunk_ReturnFalseForZoneCapabilityFlagE_At00408c3d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_PruneInactiveTaskForceOrderHead
+// ghidra_proto void __cdecl thunk_PruneInactiveTaskForceOrderHead(void)
+// FUNCTION: IMPERIALISM 0x00408c51
+undefined4 thunk_PruneInactiveTaskForceOrderHead(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetOrderNodeDescriptorWord20ByResourceType
+// ghidra_proto short __cdecl thunk_GetOrderNodeDescriptorWord20ByResourceType(void)
+// FUNCTION: IMPERIALISM 0x00408c56
+undefined4 thunk_GetOrderNodeDescriptorWord20ByResourceType(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_UpdateTacticalCursorModeProfileAndMaybeOpenDialog
+// ghidra_proto void __fastcall thunk_UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void * pTacticalState)
+// FUNCTION: IMPERIALISM 0x00408c5b
+undefined4 thunk_UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHilitePicture::TNoHilitePicture_VtblSlot001
+// ghidra_proto void * __thiscall TNoHilitePicture_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408c60
+undefined4 TNoHilitePicture_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ConstructTPowerPlantOrderBaseState
+// ghidra_proto void __thiscall thunk_ConstructTPowerPlantOrderBaseState(void)
+// FUNCTION: IMPERIALISM 0x00408c65
+undefined4 thunk_ConstructTPowerPlantOrderBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildMapOrderContextSummaryStringForNation
+// ghidra_proto void __cdecl thunk_BuildMapOrderContextSummaryStringForNation(void)
+// FUNCTION: IMPERIALISM 0x00408c79
+undefined4 thunk_BuildMapOrderContextSummaryStringForNation(void)
+{
+  return 0;
+}
+
+// ghidra_name TInvadeMission::TInvadeMission_VtblSlot033
+// ghidra_proto void __thiscall TInvadeMission_VtblSlot033(void)
+// FUNCTION: IMPERIALISM 0x00408c7e
+undefined4 TInvadeMission_VtblSlot033(void)
+{
+  return 0;
+}
+
+// ghidra_name TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d
+// ghidra_proto void __cdecl thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d(void)
+// FUNCTION: IMPERIALISM 0x00408c8d
+undefined4 thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SelectBestTacticalTargetTileByActionHeuristics
+// ghidra_proto int __cdecl thunk_SelectBestTacticalTargetTileByActionHeuristics(void)
+// FUNCTION: IMPERIALISM 0x00408c92
+undefined4 thunk_SelectBestTacticalTargetTileByActionHeuristics(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnFalseMissionVtableSlot50
+// ghidra_proto void __cdecl thunk_ReturnFalseMissionVtableSlot50(void)
+// FUNCTION: IMPERIALISM 0x00408c9c
+undefined4 thunk_ReturnFalseMissionVtableSlot50(void)
+{
+  return 0;
+}
+
+// ghidra_name LandSaleEvent::thunk_DeleteLandSaleEvent
+// ghidra_proto void * __cdecl thunk_DeleteLandSaleEvent(LandSaleEvent * pThis, byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408ca1
+undefined4 thunk_DeleteLandSaleEvent(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanRetStub_004bff60_At00408ca6
+// ghidra_proto void __cdecl thunk_OrphanRetStub_004bff60_At00408ca6(void)
+// FUNCTION: IMPERIALISM 0x00408ca6
+undefined4 thunk_OrphanRetStub_004bff60_At00408ca6(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ExtractWrappedEndpointFromSpanRecordBySide
+// ghidra_proto void __thiscall thunk_ExtractWrappedEndpointFromSpanRecordBySide(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00408cab
+undefined4 thunk_ExtractWrappedEndpointFromSpanRecordBySide(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeEventThunkFields_00648590_At00408cb5
+// ghidra_proto void __thiscall thunk_InitializeEventThunkFields_00648590_At00408cb5(void)
+// FUNCTION: IMPERIALISM 0x00408cb5
+undefined4 thunk_InitializeEventThunkFields_00648590_At00408cb5(void)
+{
+  return 0;
+}
+
+// ghidra_name TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
+// FUNCTION: IMPERIALISM 0x00408cce
+undefined4 thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DereferencePointerCellInPlace_At00408cd3
+// ghidra_proto void __cdecl thunk_DereferencePointerCellInPlace_At00408cd3(void * * pPointerCell)
+// FUNCTION: IMPERIALISM 0x00408cd3
+undefined4 thunk_DereferencePointerCellInPlace_At00408cd3(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::thunk_RenderOffscreenBitmapTileSpanAndRestoreContext
+// ghidra_proto void __thiscall thunk_RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
+// FUNCTION: IMPERIALISM 0x00408cd8
+undefined4 thunk_RenderOffscreenBitmapTileSpanAndRestoreContext(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_SetControlPictureEntryAndMaybeRefresh
+// ghidra_proto void __thiscall thunk_SetControlPictureEntryAndMaybeRefresh(bool arg1, bool arg2)
+// FUNCTION: IMPERIALISM 0x00408cdd
+undefined4 thunk_SetControlPictureEntryAndMaybeRefresh(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
+// ghidra_proto void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void * pMessage)
+// FUNCTION: IMPERIALISM 0x00408ce2
+undefined4 thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_OnMsg_WM_ACTIVATEAPP
+// ghidra_proto TObject * __fastcall TMacViewMgr_OnMsg_WM_ACTIVATEAPP(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00408ce7
+undefined4 TMacViewMgr_OnMsg_WM_ACTIVATEAPP(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReadScenarioIndexFromSaveHeader
+// ghidra_proto void __cdecl thunk_ReadScenarioIndexFromSaveHeader(void)
+// FUNCTION: IMPERIALISM 0x00408cec
+undefined4 thunk_ReadScenarioIndexFromSaveHeader(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ResetTDefendProvinceMissionToSentinelVtable
+// ghidra_proto void __cdecl thunk_ResetTDefendProvinceMissionToSentinelVtable(void)
+// FUNCTION: IMPERIALISM 0x00408cf6
+undefined4 thunk_ResetTDefendProvinceMissionToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapMgr::thunk_QueueDepotConstructionOrder_At00408cfb
+// ghidra_proto int __thiscall thunk_QueueDepotConstructionOrder_At00408cfb(int * pMapContext, short nTileIndex, short nNationId)
+// FUNCTION: IMPERIALISM 0x00408cfb
+undefined4 thunk_QueueDepotConstructionOrder_At00408cfb(void)
+{
+  return 0;
+}
+
+// ghidra_name TShipBuilderCityMinister::thunk_ConstructTShipBuilderCityMinisterBaseState
+// ghidra_proto void * __thiscall thunk_ConstructTShipBuilderCityMinisterBaseState(void)
+// FUNCTION: IMPERIALISM 0x00408d05
+undefined4 thunk_ConstructTShipBuilderCityMinisterBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeOrLoadEntryArray14AndClampLimits
+// ghidra_proto void __fastcall thunk_InitializeOrLoadEntryArray14AndClampLimits(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00408d0a
+undefined4 thunk_InitializeOrLoadEntryArray14AndClampLimits(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::thunk_ReturnFalseForZoneCapabilityFlagC_At00408d0f
+// ghidra_proto bool __stdcall thunk_ReturnFalseForZoneCapabilityFlagC_At00408d0f(void)
+// FUNCTION: IMPERIALISM 0x00408d0f
+undefined4 thunk_ReturnFalseForZoneCapabilityFlagC_At00408d0f(void)
+{
+  return 0;
+}
+
+// ghidra_name TBoycottButton::TBoycottButton_VtblSlot001
+// ghidra_proto TBoycottButton * __thiscall TBoycottButton_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408d14
+undefined4 TBoycottButton_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot000
+// ghidra_proto void * __cdecl TNetGameSelectPicture_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408d23
+undefined4 TNetGameSelectPicture_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TAmbitFileBasedDocument::thunk_EnsureBitmapResourceLoadedAndCopyRectSize_At00408d37
+// ghidra_proto void __thiscall thunk_EnsureBitmapResourceLoadedAndCopyRectSize_At00408d37(void)
+// FUNCTION: IMPERIALISM 0x00408d37
+undefined4 thunk_EnsureBitmapResourceLoadedAndCopyRectSize_At00408d37(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SelectPreferredNationMetricCodeFromLookup
+// ghidra_proto ushort __stdcall thunk_SelectPreferredNationMetricCodeFromLookup(ushort firstCode, ushort secondCode)
+// FUNCTION: IMPERIALISM 0x00408d3c
+undefined4 thunk_SelectPreferredNationMetricCodeFromLookup(void)
+{
+  return 0;
+}
+
+// ghidra_name TCViewOwnedBufferRegistryState_00648560::thunk_BuildTurnEventFactoryPacket
+// ghidra_proto void __thiscall thunk_BuildTurnEventFactoryPacket(uint dwDispatchArg40, STurnEventFactoryPacket * pSourcePacket0C, ETurnEventFactorySlotId eFactorySlot60, uint * pPayloadPair64_68, STSharedStringRef * pSharedString6C, ushort wPayload70)
+// FUNCTION: IMPERIALISM 0x00408d46
+undefined4 thunk_BuildTurnEventFactoryPacket(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedItem::TNumberedItem_VtblSlot000
+// ghidra_proto void * __cdecl TNumberedItem_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408d4b
+undefined4 TNumberedItem_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealTabControl::thunk_GetTDealTabControlClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTDealTabControlClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408d50
+undefined4 thunk_GetTDealTabControlClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetActiveQuickDrawSurfaceContextAndFlags
+// ghidra_proto void __cdecl thunk_GetActiveQuickDrawSurfaceContextAndFlags(int * * ppSurface, int * pContextFlags)
+// FUNCTION: IMPERIALISM 0x00408d64
+undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SetQuickDrawTextOriginWithContextOffset
+// ghidra_proto void __cdecl thunk_SetQuickDrawTextOriginWithContextOffset(short originX, short originY)
+// FUNCTION: IMPERIALISM 0x00408d6e
+undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildSaveSlotPathAndProbeMetadata
+// ghidra_proto byte __cdecl thunk_BuildSaveSlotPathAndProbeMetadata(int slotId, void * pathSuffixOverride)
+// FUNCTION: IMPERIALISM 0x00408d78
+undefined4 thunk_BuildSaveSlotPathAndProbeMetadata(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_AdvanceCivilianTerrainSelectionStep
+// ghidra_proto void __cdecl thunk_AdvanceCivilianTerrainSelectionStep(void)
+// FUNCTION: IMPERIALISM 0x00408d87
+undefined4 thunk_AdvanceCivilianTerrainSelectionStep(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealBookPicture::TDealBookPicture_VtblSlot000
+// ghidra_proto void * __cdecl TDealBookPicture_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x00408d8c
+undefined4 TDealBookPicture_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name StrategicMapViewSystem::thunk_OrphanCallChain_C4_I35_0050bbc0_At00408d91
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C4_I35_0050bbc0_At00408d91(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00408d91
+undefined4 thunk_OrphanCallChain_C4_I35_0050bbc0_At00408d91(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconBar::TIconBar_VtblSlot001
+// ghidra_proto void * __thiscall TIconBar_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00408d96
+undefined4 TIconBar_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivAnimation::thunk_ConstructTCivAnimationBaseState
+// ghidra_proto void __thiscall thunk_ConstructTCivAnimationBaseState(void)
+// FUNCTION: IMPERIALISM 0x00408d9b
+undefined4 thunk_ConstructTCivAnimationBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TSuperArmyRoster::thunk_ConstructTSuperArmyRosterBaseState
+// ghidra_proto void * __thiscall thunk_ConstructTSuperArmyRosterBaseState(void)
+// FUNCTION: IMPERIALISM 0x00408da0
+undefined4 thunk_ConstructTSuperArmyRosterBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTechHistoryView::thunk_ConstructTTechHistoryViewBaseState
+// ghidra_proto void * __thiscall thunk_ConstructTTechHistoryViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x00408da5
+undefined4 thunk_ConstructTTechHistoryViewBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TPoseMessageDialog::thunk_InvokePoseMessageDialogRefreshFromContextField18_At00408daa
+// ghidra_proto void __cdecl thunk_InvokePoseMessageDialogRefreshFromContextField18_At00408daa(void)
+// FUNCTION: IMPERIALISM 0x00408daa
+undefined4 thunk_InvokePoseMessageDialogRefreshFromContextField18_At00408daa(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_DDX_Text_At00481ca0
+// ghidra_proto void __stdcall thunk_WrapperFor_DDX_Text_At00481ca0(void * pDX, int nIDC, void * pValue)
+// FUNCTION: IMPERIALISM 0x00408daf
+undefined4 thunk_WrapperFor_DDX_Text_At00481ca0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_CloseCityDialogChildrenAndReleaseSelf
+// ghidra_proto void __thiscall thunk_CloseCityDialogChildrenAndReleaseSelf(void)
+// FUNCTION: IMPERIALISM 0x00408db4
+undefined4 thunk_CloseCityDialogChildrenAndReleaseSelf(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetNewsMgrEntryArrayBaseAtOffset2C
+// ghidra_proto void __cdecl thunk_GetNewsMgrEntryArrayBaseAtOffset2C(void)
+// FUNCTION: IMPERIALISM 0x00408dbe
+undefined4 thunk_GetNewsMgrEntryArrayBaseAtOffset2C(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_AutoAssignProspectingOrdersFromSeedTileNeighbors
+// ghidra_proto void __cdecl thunk_AutoAssignProspectingOrdersFromSeedTileNeighbors(void)
+// FUNCTION: IMPERIALISM 0x00408de6
+undefined4 thunk_AutoAssignProspectingOrdersFromSeedTileNeighbors(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ComposeAndDispatchTurnSummaryLocalizedMessage
+// ghidra_proto void __cdecl thunk_ComposeAndDispatchTurnSummaryLocalizedMessage(void)
+// FUNCTION: IMPERIALISM 0x00408df0
+undefined4 thunk_ComposeAndDispatchTurnSummaryLocalizedMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyMgr::thunk_GetTArmyMgrClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTArmyMgrClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408dff
+undefined4 thunk_GetTArmyMgrClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380_At00408e09
+// ghidra_proto byte __fastcall thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380_At00408e09(int pController)
+// FUNCTION: IMPERIALISM 0x00408e09
+undefined4 thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380_At00408e09(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760(void)
+// FUNCTION: IMPERIALISM 0x00408e0e
+undefined4 thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
+// FUNCTION: IMPERIALISM 0x00408e13
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_AssignSharedStringFromField84
+// ghidra_proto void __thiscall thunk_AssignSharedStringFromField84(void * pDestSharedString)
+// FUNCTION: IMPERIALISM 0x00408e1d
+undefined4 thunk_AssignSharedStringFromField84(void)
+{
+  return 0;
+}
+
+// ghidra_name TFileBasedDocument::thunk_GetTFileBasedDocumentClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTFileBasedDocumentClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408e22
+undefined4 thunk_GetTFileBasedDocumentClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TViewMgr::TViewMgr_VtblSlot038
+// ghidra_proto void __thiscall TViewMgr_VtblSlot038(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00408e27
+undefined4 TViewMgr_VtblSlot038(void)
+{
+  return 0;
+}
+
+// ghidra_name TDeluxeText::thunk_ConstructTDeluxeTextBaseState
+// ghidra_proto void __thiscall thunk_ConstructTDeluxeTextBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// FUNCTION: IMPERIALISM 0x00408e31
+undefined4 thunk_ConstructTDeluxeTextBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TCViewOwnedBufferRegistryState_00648560::RenderMapTileHintOverlayToDcOrWindow
+// ghidra_proto void __thiscall RenderMapTileHintOverlayToDcOrWindow(int pHdc, int pClipRect)
+// FUNCTION: IMPERIALISM 0x00408e36
+undefined4 RenderMapTileHintOverlayToDcOrWindow(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::thunk_ReturnTrueForPortZoneCapabilityFlagB
+// ghidra_proto bool __stdcall thunk_ReturnTrueForPortZoneCapabilityFlagB(void)
+// FUNCTION: IMPERIALISM 0x00408e3b
+undefined4 thunk_ReturnTrueForPortZoneCapabilityFlagB(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b3050
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b3050(void)
+// FUNCTION: IMPERIALISM 0x00408e45
+undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b3050(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_CtrlSlot83_TransformRectViaSlot148_Impl
+// ghidra_proto void __thiscall thunk_CtrlSlot83_TransformRectViaSlot148_Impl(int * arg1, int * arg2)
+// FUNCTION: IMPERIALISM 0x00408e4a
+undefined4 thunk_CtrlSlot83_TransformRectViaSlot148_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_AddJoinableGameOptionEntry
+// ghidra_proto void __cdecl thunk_AddJoinableGameOptionEntry(void)
+// FUNCTION: IMPERIALISM 0x00408e54
+undefined4 thunk_AddJoinableGameOptionEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name T2PictToggleButton::T2PictToggleButton_VtblSlot116
+// ghidra_proto void __thiscall T2PictToggleButton_VtblSlot116(void)
+// FUNCTION: IMPERIALISM 0x00408e59
+undefined4 T2PictToggleButton_VtblSlot116(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTStaticTextCore
+// ghidra_proto void __thiscall DestructTStaticTextCore(void)
+// FUNCTION: IMPERIALISM 0x00408e5e
+undefined4 DestructTStaticTextCore(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyStack::thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At005a4da0_At00408e63
+// ghidra_proto void __fastcall thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At005a4da0_At00408e63(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00408e63
+undefined4 thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At005a4da0_At00408e63(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_CtrlSlot82_TransformPointViaSlot138_Impl
+// ghidra_proto void __thiscall thunk_CtrlSlot82_TransformPointViaSlot138_Impl(int * arg1, int * arg2)
+// FUNCTION: IMPERIALISM 0x00408e72
+undefined4 thunk_CtrlSlot82_TransformPointViaSlot138_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestructLinkedValueListMaybeFree
+// ghidra_proto void __cdecl thunk_DestructLinkedValueListMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x00408e77
+undefined4 thunk_DestructLinkedValueListMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetNavyPrimaryOrderListIndexOfNode
+// ghidra_proto int __cdecl thunk_GetNavyPrimaryOrderListIndexOfNode(void)
+// FUNCTION: IMPERIALISM 0x00408e81
+undefined4 thunk_GetNavyPrimaryOrderListIndexOfNode(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_FindFirstTrackedHandlerMatchingModeAndShortKey
-// ghidra_proto void * thunk_FindFirstTrackedHandlerMatchingModeAndShortKey(void)
+// ghidra_proto void * __cdecl thunk_FindFirstTrackedHandlerMatchingModeAndShortKey(void)
 // FUNCTION: IMPERIALISM 0x00408e86
 undefined4 thunk_FindFirstTrackedHandlerMatchingModeAndShortKey(void)
 {
@@ -19,10 +2723,18 @@ undefined4 thunk_GenerateMappedFlavorTextUntilValidationPasses(void)
   return 0;
 }
 
-// ghidra_name TScoreGraph::thunk_RenderScoreGraphSeriesAndLabels_At00408ea4
-// ghidra_proto void __thiscall thunk_RenderScoreGraphSeriesAndLabels_At00408ea4(void)
+// ghidra_name TDisplayMgr::thunk_CreateTDisplayMgrInstance
+// ghidra_proto void __thiscall thunk_CreateTDisplayMgrInstance(void)
 // FUNCTION: IMPERIALISM 0x00408ea4
-undefined4 thunk_RenderScoreGraphSeriesAndLabels_At00408ea4(void)
+undefined4 thunk_CreateTDisplayMgrInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TPlaceCityDialog::TPlaceCityDialog_VtblSlot040
+// ghidra_proto void __thiscall TPlaceCityDialog_VtblSlot040(void)
+// FUNCTION: IMPERIALISM 0x00408ea9
+undefined4 TPlaceCityDialog_VtblSlot040(void)
 {
   return 0;
 }
@@ -51,8 +2763,16 @@ undefined4 thunk_GetTTerrainHelpPictureClassNamePointer(void)
   return 0;
 }
 
+// ghidra_name TControl::thunk_CtrlSlot95_TestPointInBoundsFromSlot128_Impl
+// ghidra_proto byte __thiscall thunk_CtrlSlot95_TestPointInBoundsFromSlot128_Impl(int * arg1)
+// FUNCTION: IMPERIALISM 0x00408ed1
+undefined4 thunk_CtrlSlot95_TestPointInBoundsFromSlot128_Impl(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_GetResourceTypeRandomDrawBlockFlag
-// ghidra_proto short thunk_GetResourceTypeRandomDrawBlockFlag(void)
+// ghidra_proto short __cdecl thunk_GetResourceTypeRandomDrawBlockFlag(void)
 // FUNCTION: IMPERIALISM 0x00408ed6
 undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void)
 {
@@ -67,7 +2787,7 @@ undefined4 thunk_WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004bf390(
   return 0;
 }
 
-// ghidra_name TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48
+// ghidra_name thunk_ConstructPictureResourceEntry_Vtbl00660b48
 // ghidra_proto void __thiscall thunk_ConstructPictureResourceEntry_Vtbl00660b48(void)
 // FUNCTION: IMPERIALISM 0x00408ee5
 undefined4 thunk_ConstructPictureResourceEntry_Vtbl00660b48(void)
@@ -75,10 +2795,10 @@ undefined4 thunk_ConstructPictureResourceEntry_Vtbl00660b48(void)
   return 0;
 }
 
-// ghidra_name TArmyTacUnit::thunk_ToggleArmyTacUnitStateFlag20_At00408eea
-// ghidra_proto void __fastcall thunk_ToggleArmyTacUnitStateFlag20_At00408eea(void * pThis)
+// ghidra_name TArmyTacUnit::thunk_CreateTArmyTacUnitInstance_At00408eea
+// ghidra_proto void __fastcall thunk_CreateTArmyTacUnitInstance_At00408eea(TArmyTacUnit * pThis)
 // FUNCTION: IMPERIALISM 0x00408eea
-undefined4 thunk_ToggleArmyTacUnitStateFlag20_At00408eea(void)
+undefined4 thunk_CreateTArmyTacUnitInstance_At00408eea(void)
 {
   return 0;
 }
@@ -92,7 +2812,7 @@ undefined4 thunk_ApplyMapOrderTypeExecutionEffects(void)
 }
 
 // ghidra_name TSortedByRelationshipList::thunk_CopyDiplomacyStandingMatrixRowAndColumn
-// ghidra_proto void __thiscall thunk_CopyDiplomacyStandingMatrixRowAndColumn(void)
+// ghidra_proto void __thiscall thunk_CopyDiplomacyStandingMatrixRowAndColumn(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00408ef4
 undefined4 thunk_CopyDiplomacyStandingMatrixRowAndColumn(void)
 {
@@ -100,33 +2820,41 @@ undefined4 thunk_CopyDiplomacyStandingMatrixRowAndColumn(void)
 }
 
 // ghidra_name thunk_SumWeightedNeighborLinkScoreForLinkedNodes
-// ghidra_proto int thunk_SumWeightedNeighborLinkScoreForLinkedNodes(void)
+// ghidra_proto int __cdecl thunk_SumWeightedNeighborLinkScoreForLinkedNodes(void)
 // FUNCTION: IMPERIALISM 0x00408ef9
 undefined4 thunk_SumWeightedNeighborLinkScoreForLinkedNodes(void)
 {
   return 0;
 }
 
-// ghidra_name TInteriorMinister::thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
-// ghidra_proto void __thiscall thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void * pSerializedStream)
+// ghidra_name TInteriorMinister::thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320_At00408f08
+// ghidra_proto void __thiscall thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320_At00408f08(void * pSerializedStream)
 // FUNCTION: IMPERIALISM 0x00408f08
-undefined4 thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void)
+undefined4 thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320_At00408f08(void)
 {
   return 0;
 }
 
-// ghidra_name TMiniShipLine::thunk_DestructTMiniShipLineAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTMiniShipLineAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TControl::thunk_CtrlSlot98_NoOp_Impl
+// ghidra_proto void __thiscall thunk_CtrlSlot98_NoOp_Impl(void)
+// FUNCTION: IMPERIALISM 0x00408f12
+undefined4 thunk_CtrlSlot98_NoOp_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniShipLine::TMiniShipLine_VtblSlot001
+// ghidra_proto void * __thiscall TMiniShipLine_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00408f17
-undefined4 thunk_DestructTMiniShipLineAndMaybeFree(void)
+undefined4 TMiniShipLine_VtblSlot001(void)
 {
   return 0;
 }
 
-// ghidra_name TEscortMission::thunk_ReturnFalseForEscortMissionCapabilityFlagB
-// ghidra_proto bool __stdcall thunk_ReturnFalseForEscortMissionCapabilityFlagB(void)
+// ghidra_name TEscortMission::TEscortMission_VtblSlot024
+// ghidra_proto bool __stdcall TEscortMission_VtblSlot024(void)
 // FUNCTION: IMPERIALISM 0x00408f1c
-undefined4 thunk_ReturnFalseForEscortMissionCapabilityFlagB(void)
+undefined4 TEscortMission_VtblSlot024(void)
 {
   return 0;
 }
@@ -148,7 +2876,7 @@ undefined4 thunk_BuildNationTileDevelopmentScoreListForTerrainClass(void)
 }
 
 // ghidra_name thunk_DispatchMapInteractionPayloadAndResetWorkingFields
-// ghidra_proto void __cdecl thunk_DispatchMapInteractionPayloadAndResetWorkingFields(void)
+// ghidra_proto void __thiscall thunk_DispatchMapInteractionPayloadAndResetWorkingFields(int arg1)
 // FUNCTION: IMPERIALISM 0x00408f30
 undefined4 thunk_DispatchMapInteractionPayloadAndResetWorkingFields(void)
 {
@@ -156,25 +2884,33 @@ undefined4 thunk_DispatchMapInteractionPayloadAndResetWorkingFields(void)
 }
 
 // ghidra_name thunk_GenerateMappedFlavorTextVariantE_005ccce0
-// ghidra_proto void __cdecl thunk_GenerateMappedFlavorTextVariantE_005ccce0(void)
+// ghidra_proto void __cdecl thunk_GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
 // FUNCTION: IMPERIALISM 0x00408f35
 undefined4 thunk_GenerateMappedFlavorTextVariantE_005ccce0(void)
 {
   return 0;
 }
 
-// ghidra_name TDealBookPicture::thunk_DestructTDealBookPictureAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTDealBookPictureAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TDealBookPicture::TDealBookPicture_VtblSlot001
+// ghidra_proto void * __thiscall TDealBookPicture_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00408f3a
-undefined4 thunk_DestructTDealBookPictureAndMaybeFree(void)
+undefined4 TDealBookPicture_VtblSlot001(void)
 {
   return 0;
 }
 
-// ghidra_name TDropShadowText::thunk_GetTDropShadowTextClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTDropShadowTextClassNamePointer(void)
+// ghidra_name TDropShadowText::TDropShadowText_VtblSlot000
+// ghidra_proto void * __cdecl TDropShadowText_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00408f3f
-undefined4 thunk_GetTDropShadowTextClassNamePointer(void)
+undefined4 TDropShadowText_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_PlayControlSoundAndBeginMouseCapture_Field92_A_At00408f44
+// ghidra_proto void __thiscall thunk_PlayControlSoundAndBeginMouseCapture_Field92_A_At00408f44(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00408f44
+undefined4 thunk_PlayControlSoundAndBeginMouseCapture_Field92_A_At00408f44(void)
 {
   return 0;
 }
@@ -187,50 +2923,58 @@ undefined4 thunk_ConstructTArmyBattleBaseStateImpl(void)
   return 0;
 }
 
-// ghidra_name TCluster::thunk_DestructTClusterAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTClusterAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TCluster::TCluster_VtblSlot001
+// ghidra_proto void * __thiscall TCluster_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00408f5d
-undefined4 thunk_DestructTClusterAndMaybeFree(void)
+undefined4 TCluster_VtblSlot001(void)
 {
   return 0;
 }
 
-// ghidra_name TNavyHumanPlayer::thunk_DispatchNavyHumanPlayerCommandToFirstReadyUnit_At00408f62
-// ghidra_proto void __thiscall thunk_DispatchNavyHumanPlayerCommandToFirstReadyUnit_At00408f62(int commandArg)
+// ghidra_name TNavyHumanPlayer::thunk_ConstructTNavyHumanPlayerBaseState
+// ghidra_proto void __thiscall thunk_ConstructTNavyHumanPlayerBaseState(int commandArg)
 // FUNCTION: IMPERIALISM 0x00408f62
-undefined4 thunk_DispatchNavyHumanPlayerCommandToFirstReadyUnit_At00408f62(void)
+undefined4 thunk_ConstructTNavyHumanPlayerBaseState(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_RecomputeAndClearMissionScoreUsingPortZoneContextAverage
-// ghidra_proto void thunk_RecomputeAndClearMissionScoreUsingPortZoneContextAverage(void)
+// ghidra_proto void __cdecl thunk_RecomputeAndClearMissionScoreUsingPortZoneContextAverage(void)
 // FUNCTION: IMPERIALISM 0x00408f67
 undefined4 thunk_RecomputeAndClearMissionScoreUsingPortZoneContextAverage(void)
 {
   return 0;
 }
 
-// ghidra_name TOffersPanelView::thunk_Cluster_MapHint_004f9450
-// ghidra_proto void __thiscall thunk_Cluster_MapHint_004f9450(void)
+// ghidra_name TPictureRadioButton_VtblSlot070
+// ghidra_proto int __cdecl TPictureRadioButton_VtblSlot070(void)
+// FUNCTION: IMPERIALISM 0x00408f6c
+undefined4 TPictureRadioButton_VtblSlot070(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffersPanelView::thunk_RunDiplomacyNegotiationPopupAndAwaitResponse_At00408f71
+// ghidra_proto void __thiscall thunk_RunDiplomacyNegotiationPopupAndAwaitResponse_At00408f71(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00408f71
-undefined4 thunk_Cluster_MapHint_004f9450(void)
+undefined4 thunk_RunDiplomacyNegotiationPopupAndAwaitResponse_At00408f71(void)
 {
   return 0;
 }
 
-// ghidra_name TUniversityView::thunk_RefreshUniversityRecruitmentDialog
-// ghidra_proto void __fastcall thunk_RefreshUniversityRecruitmentDialog(int * pCityViewDialog)
+// ghidra_name TUniversityView::TUniversityView_VtblSlot117
+// ghidra_proto void __fastcall TUniversityView_VtblSlot117(int * pCityViewDialog)
 // FUNCTION: IMPERIALISM 0x00408f76
-undefined4 thunk_RefreshUniversityRecruitmentDialog(void)
+undefined4 TUniversityView_VtblSlot117(void)
 {
   return 0;
 }
 
-// ghidra_name TMovieView::thunk_GetTMovieViewClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTMovieViewClassNamePointer(void)
+// ghidra_name TMovieView::TMovieView_VtblSlot000
+// ghidra_proto void * __cdecl TMovieView_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00408f80
-undefined4 thunk_GetTMovieViewClassNamePointer(void)
+undefined4 TMovieView_VtblSlot000(void)
 {
   return 0;
 }
@@ -243,7 +2987,7 @@ undefined4 thunk_HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void)
   return 0;
 }
 
-// ghidra_name thunk_RenderTacticalBattleSelectionAndUnitOverlayPass
+// ghidra_name TTacArmyView::thunk_RenderTacticalBattleSelectionAndUnitOverlayPass
 // ghidra_proto void __thiscall thunk_RenderTacticalBattleSelectionAndUnitOverlayPass(int param_1)
 // FUNCTION: IMPERIALISM 0x00408f99
 undefined4 thunk_RenderTacticalBattleSelectionAndUnitOverlayPass(void)
@@ -251,18 +2995,18 @@ undefined4 thunk_RenderTacticalBattleSelectionAndUnitOverlayPass(void)
   return 0;
 }
 
-// ghidra_name TDefendProvinceMission::thunk_ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14
-// ghidra_proto void __thiscall thunk_ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14(void)
+// ghidra_name TDefendProvinceMission::TDefendProvinceMission_VtblSlot014
+// ghidra_proto void __thiscall TDefendProvinceMission_VtblSlot014(void)
 // FUNCTION: IMPERIALISM 0x00408f9e
-undefined4 thunk_ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14(void)
+undefined4 TDefendProvinceMission_VtblSlot014(void)
 {
   return 0;
 }
 
-// ghidra_name TArmyStack::thunk_DestructTArmyStackAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTArmyStackAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TArmyStack::thunk_DestructTArmyStackAndMaybeFree_At00408fb2
+// ghidra_proto void * __thiscall thunk_DestructTArmyStackAndMaybeFree_At00408fb2(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00408fb2
-undefined4 thunk_DestructTArmyStackAndMaybeFree(void)
+undefined4 thunk_DestructTArmyStackAndMaybeFree_At00408fb2(void)
 {
   return 0;
 }
@@ -276,49 +3020,57 @@ undefined4 thunk_BuildInterNationEventSummaryRowsForAdvisorDialog(void)
 }
 
 // ghidra_name thunk_ResetDiplomacyRuntimeSelectionAndSetModeNada
-// ghidra_proto void __cdecl thunk_ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
+// ghidra_proto void __thiscall thunk_ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
 // FUNCTION: IMPERIALISM 0x00408fc1
 undefined4 thunk_ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
 {
   return 0;
 }
 
-// ghidra_name TStatusPicture::thunk_Cluster_NationStateHint_005942f0
-// ghidra_proto void __thiscall thunk_Cluster_NationStateHint_005942f0(void)
+// ghidra_name TStatusPicture::TStatusPicture_VtblSlot015
+// ghidra_proto void __thiscall TStatusPicture_VtblSlot015(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00408fd5
-undefined4 thunk_Cluster_NationStateHint_005942f0(void)
+undefined4 TStatusPicture_VtblSlot015(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At004796e0
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004796e0()
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004796e0(void)
 // FUNCTION: IMPERIALISM 0x00408fdf
 undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At004796e0(void)
 {
   return 0;
 }
 
-// ghidra_name TShipAmtBar::thunk_GetLiteralTypeName_TTraderAmtBar
-// ghidra_proto void * __cdecl thunk_GetLiteralTypeName_TTraderAmtBar(void)
+// ghidra_name TTraderAmtBar::TTraderAmtBar_VtblSlot000
+// ghidra_proto void * __cdecl TTraderAmtBar_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00408fe4
-undefined4 thunk_GetLiteralTypeName_TTraderAmtBar(void)
+undefined4 TTraderAmtBar_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::thunk_HandleDiplomacySelectedNationActionCommand
-// ghidra_proto void __thiscall thunk_HandleDiplomacySelectedNationActionCommand(void * pCursorPoint)
+// ghidra_name thunk_OrphanLeaf_NoCall_Ins08_004beeb0_At00408fe9
+// ghidra_proto void __cdecl thunk_OrphanLeaf_NoCall_Ins08_004beeb0_At00408fe9(void)
+// FUNCTION: IMPERIALISM 0x00408fe9
+undefined4 thunk_OrphanLeaf_NoCall_Ins08_004beeb0_At00408fe9(void)
+{
+  return 0;
+}
+
+// ghidra_name TDiplomacyMapView::TDiplomacyMapView_VtblSlot071
+// ghidra_proto void __thiscall TDiplomacyMapView_VtblSlot071(void * pCursorPoint)
 // FUNCTION: IMPERIALISM 0x00408fee
-undefined4 thunk_HandleDiplomacySelectedNationActionCommand(void)
+undefined4 TDiplomacyMapView_VtblSlot071(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_ProcessTurnEventNationStateTransitionAndDiplomacy
-// ghidra_proto void __thiscall thunk_ProcessTurnEventNationStateTransitionAndDiplomacy(short param_1)
+// ghidra_name TCountry::thunk_ProcessTurnEventNationStateTransitionAndDiplomacy_At00408ffd
+// ghidra_proto void __thiscall thunk_ProcessTurnEventNationStateTransitionAndDiplomacy_At00408ffd(int turnEventCode)
 // FUNCTION: IMPERIALISM 0x00408ffd
-undefined4 thunk_ProcessTurnEventNationStateTransitionAndDiplomacy(void)
+undefined4 thunk_ProcessTurnEventNationStateTransitionAndDiplomacy_At00408ffd(void)
 {
   return 0;
 }
@@ -339,26 +3091,34 @@ undefined4 thunk_CopyRgbQuadTableToBitmapSurfacePalette(void)
   return 0;
 }
 
-// ghidra_name thunk_LoadStrategicMapMarkerAtlas1372
-// ghidra_proto void __cdecl thunk_LoadStrategicMapMarkerAtlas1372(void)
+// ghidra_name StrategicMapViewSystem::thunk_LoadStrategicMapMarkerAtlas1372_At00409011
+// ghidra_proto void __cdecl thunk_LoadStrategicMapMarkerAtlas1372_At00409011(void)
 // FUNCTION: IMPERIALISM 0x00409011
-undefined4 thunk_LoadStrategicMapMarkerAtlas1372(void)
+undefined4 thunk_LoadStrategicMapMarkerAtlas1372_At00409011(void)
 {
   return 0;
 }
 
-// ghidra_name TEngineerDialog::thunk_GetEngineerDialogClassName
-// ghidra_proto void * __cdecl thunk_GetEngineerDialogClassName(void)
+// ghidra_name Family_EngineerDialogCore_Root::thunk_GetTEngineerDialogClassNamePointer_At00409016
+// ghidra_proto void * __cdecl thunk_GetTEngineerDialogClassNamePointer_At00409016(void)
 // FUNCTION: IMPERIALISM 0x00409016
-undefined4 thunk_GetEngineerDialogClassName(void)
+undefined4 thunk_GetTEngineerDialogClassNamePointer_At00409016(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_SetLineDataRowAndBounds
+// ghidra_name TLineData::thunk_SetLineDataRowAndBounds
 // ghidra_proto void __thiscall thunk_SetLineDataRowAndBounds(ushort primaryIndex, ushort secondaryIndex, int * pRect)
 // FUNCTION: IMPERIALISM 0x00409025
 undefined4 thunk_SetLineDataRowAndBounds(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::thunk_CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl
+// ghidra_proto void __thiscall thunk_CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl(int * arg1)
+// FUNCTION: IMPERIALISM 0x00409034
+undefined4 thunk_CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl(void)
 {
   return 0;
 }
@@ -371,10 +3131,10 @@ undefined4 thunk_AdjustMapOrderNodeStatCapped499(void)
   return 0;
 }
 
-// ghidra_name TNavyAutoPlayer::thunk_ConstructNavyAutoPlayerBaseState
-// ghidra_proto void __thiscall thunk_ConstructNavyAutoPlayerBaseState(void)
+// ghidra_name TNavyAutoPlayer::thunk_CreateTNavyAutoPlayerInstance
+// ghidra_proto void __thiscall thunk_CreateTNavyAutoPlayerInstance(void)
 // FUNCTION: IMPERIALISM 0x00409043
-undefined4 thunk_ConstructNavyAutoPlayerBaseState(void)
+undefined4 thunk_CreateTNavyAutoPlayerInstance(void)
 {
   return 0;
 }
@@ -387,15 +3147,23 @@ undefined4 thunk_FindPortZoneByTile(void)
   return 0;
 }
 
-// ghidra_name TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTGarrisonViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409052
-undefined4 thunk_DestructTGarrisonViewAndMaybeFree(void)
+// ghidra_name TIconSlider_VtblSlot121
+// ghidra_proto void __cdecl TIconSlider_VtblSlot121(void)
+// FUNCTION: IMPERIALISM 0x0040904d
+undefined4 TIconSlider_VtblSlot121(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_UpdateIndustryCapabilityControlStateAndValue
+// ghidra_name TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree_At00409052
+// ghidra_proto void * __thiscall thunk_DestructTGarrisonViewAndMaybeFree_At00409052(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00409052
+undefined4 thunk_DestructTGarrisonViewAndMaybeFree_At00409052(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::thunk_UpdateIndustryCapabilityControlStateAndValue
 // ghidra_proto void __thiscall thunk_UpdateIndustryCapabilityControlStateAndValue(int stateValue, int overrideValue)
 // FUNCTION: IMPERIALISM 0x0040905c
 undefined4 thunk_UpdateIndustryCapabilityControlStateAndValue(void)
@@ -412,7 +3180,7 @@ undefined4 thunk_ConstructTSetupRandomMapPictureBaseState(void)
 }
 
 // ghidra_name thunk_ApplyUiResourceColorTripletFromContext
-// ghidra_proto void __cdecl thunk_ApplyUiResourceColorTripletFromContext(void)
+// ghidra_proto void __cdecl thunk_ApplyUiResourceColorTripletFromContext(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00409066
 undefined4 thunk_ApplyUiResourceColorTripletFromContext(void)
 {
@@ -435,34 +3203,34 @@ undefined4 thunk_NormalizeWrappedMapCoord217x60(void)
   return 0;
 }
 
-// ghidra_name TFloatWindow::thunk_GetTFloatWindowClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTFloatWindowClassNamePointer(void)
+// ghidra_name TFloatWindow::TFloatWindow_VtblSlot000
+// ghidra_proto void * __cdecl TFloatWindow_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00409084
-undefined4 thunk_GetTFloatWindowClassNamePointer(void)
+undefined4 TFloatWindow_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders
-// ghidra_proto void __thiscall thunk_DeserializeRecruitScenarioAndInstantiateOrders(void)
+// ghidra_name TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089
+// ghidra_proto void __thiscall thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(int arg1)
 // FUNCTION: IMPERIALISM 0x00409089
-undefined4 thunk_DeserializeRecruitScenarioAndInstantiateOrders(void)
+undefined4 thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(void)
 {
   return 0;
 }
 
-// ghidra_name TCity::thunk_TransferCityPopulationBucketsToTargetCity_At0040908e
-// ghidra_proto bool __thiscall thunk_TransferCityPopulationBucketsToTargetCity_At0040908e(int * pTargetCity, short amount)
+// ghidra_name TCity::thunk_CreateTCityInstance
+// ghidra_proto bool __thiscall thunk_CreateTCityInstance(int * pTargetCity, short amount)
 // FUNCTION: IMPERIALISM 0x0040908e
-undefined4 thunk_TransferCityPopulationBucketsToTargetCity_At0040908e(void)
+undefined4 thunk_CreateTCityInstance(void)
 {
   return 0;
 }
 
-// ghidra_name TDealBookPicture::thunk_Cluster_ArmyNavyHint_005bbc30
-// ghidra_proto void __thiscall thunk_Cluster_ArmyNavyHint_005bbc30(void)
+// ghidra_name TDealBookPicture::TDealBookPicture_VtblSlot015
+// ghidra_proto void __thiscall TDealBookPicture_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent, int forwardArg)
 // FUNCTION: IMPERIALISM 0x0040909d
-undefined4 thunk_Cluster_ArmyNavyHint_005bbc30(void)
+undefined4 TDealBookPicture_VtblSlot015(void)
 {
   return 0;
 }
@@ -491,10 +3259,10 @@ undefined4 thunk_ApplyTacticalCursorModeProfile5_ClassAware(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::thunk_NoOpNationDiplomacyCallback
-// ghidra_proto void __cdecl thunk_NoOpNationDiplomacyCallback(void)
+// ghidra_name TGreatPower::thunk_NoOpNationDiplomacyCallback_At004090b1
+// ghidra_proto void __cdecl thunk_NoOpNationDiplomacyCallback_At004090b1(void)
 // FUNCTION: IMPERIALISM 0x004090b1
-undefined4 thunk_NoOpNationDiplomacyCallback(void)
+undefined4 thunk_NoOpNationDiplomacyCallback_At004090b1(void)
 {
   return 0;
 }
@@ -507,42 +3275,42 @@ undefined4 thunk_ClearTacticalTileStateRunByStride(void)
   return 0;
 }
 
-// ghidra_name TRightLeftView::thunk_GetTRightLeftViewClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTRightLeftViewClassNamePointer(void)
+// ghidra_name TRightLeftView::TRightLeftView_VtblSlot000
+// ghidra_proto void * __cdecl TRightLeftView_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x004090bb
-undefined4 thunk_GetTRightLeftViewClassNamePointer(void)
+undefined4 TRightLeftView_VtblSlot000(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_IsNationCodeLinkedInNationGraph
-// ghidra_proto bool thunk_IsNationCodeLinkedInNationGraph(void)
+// ghidra_proto bool __cdecl thunk_IsNationCodeLinkedInNationGraph(void)
 // FUNCTION: IMPERIALISM 0x004090c5
 undefined4 thunk_IsNationCodeLinkedInNationGraph(void)
 {
   return 0;
 }
 
-// ghidra_name TDefenderMinister::thunk_DestructTDefenderMinisterAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTDefenderMinisterAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TDefenderMinister::TDefenderMinister_VtblSlot001
+// ghidra_proto void * __thiscall TDefenderMinister_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x004090cf
-undefined4 thunk_DestructTDefenderMinisterAndMaybeFree(void)
+undefined4 TDefenderMinister_VtblSlot001(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_SetCityDialogValueDword10
-// ghidra_proto void __thiscall thunk_SetCityDialogValueDword10(int value)
+// ghidra_name TControl::thunk_SetCityDialogValueDword10
+// ghidra_proto void __thiscall thunk_SetCityDialogValueDword10(int arg1)
 // FUNCTION: IMPERIALISM 0x004090d4
 undefined4 thunk_SetCityDialogValueDword10(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_RefreshCityProductionDetailPanelAndArrowWidgets
-// ghidra_proto void __cdecl thunk_RefreshCityProductionDetailPanelAndArrowWidgets(void)
+// ghidra_name StrategicMapViewSystem::thunk_RefreshCityProductionDetailPanelAndArrowWidgets_At004090de
+// ghidra_proto void __cdecl thunk_RefreshCityProductionDetailPanelAndArrowWidgets_At004090de(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004090de
-undefined4 thunk_RefreshCityProductionDetailPanelAndArrowWidgets(void)
+undefined4 thunk_RefreshCityProductionDetailPanelAndArrowWidgets_At004090de(void)
 {
   return 0;
 }
@@ -555,50 +3323,82 @@ undefined4 thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(void)
   return 0;
 }
 
-// ghidra_name thunk_ReturnZeroForArmyMissionCapabilityFlag
-// ghidra_proto int thunk_ReturnZeroForArmyMissionCapabilityFlag(void)
+// ghidra_name TDefendProvinceMission::TDefendProvinceMission_VtblSlot023
+// ghidra_proto int __cdecl TDefendProvinceMission_VtblSlot023(void)
 // FUNCTION: IMPERIALISM 0x004090f7
-undefined4 thunk_ReturnZeroForArmyMissionCapabilityFlag(void)
+undefined4 TDefendProvinceMission_VtblSlot023(void)
 {
   return 0;
 }
 
-// ghidra_name TTerrainInfoDialog::thunk_GetTTerrainInfoDialogClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTTerrainInfoDialogClassNamePointer(void)
+// ghidra_name TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot000
+// ghidra_proto void * __cdecl TTerrainInfoDialog_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x004090fc
-undefined4 thunk_GetTTerrainInfoDialogClassNamePointer(void)
+undefined4 TTerrainInfoDialog_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_ComputeAdvisoryPeerAdjustedNationMetricRatio
-// ghidra_proto void __cdecl thunk_ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
+// ghidra_name TAutoGreatPower_VtblSlot163
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot163(void)
 // FUNCTION: IMPERIALISM 0x00409101
-undefined4 thunk_ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
+undefined4 TAutoGreatPower_VtblSlot163(void)
 {
   return 0;
 }
 
-// ghidra_name TViewMgr::thunk_HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
-// ghidra_proto void __cdecl thunk_HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
+// ghidra_name TControl::thunk_CtrlSlot84_AddControlPosToPoint_Impl_At0040910b
+// ghidra_proto void __thiscall thunk_CtrlSlot84_AddControlPosToPoint_Impl_At0040910b(int * arg1, int * arg2, int * arg3)
+// FUNCTION: IMPERIALISM 0x0040910b
+undefined4 thunk_CtrlSlot84_AddControlPosToPoint_Impl_At0040910b(void)
+{
+  return 0;
+}
+
+// ghidra_name TViewMgr::TViewMgr_VtblSlot033
+// ghidra_proto void __cdecl TViewMgr_VtblSlot033(void)
 // FUNCTION: IMPERIALISM 0x00409115
-undefined4 thunk_HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
+undefined4 TViewMgr_VtblSlot033(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower_VtblSlot139
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot139(void)
+// FUNCTION: IMPERIALISM 0x0040911a
+undefined4 TAutoGreatPower_VtblSlot139(void)
+{
+  return 0;
+}
+
+// ghidra_name TAmbitFileBasedDocument::thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124(void)
+// FUNCTION: IMPERIALISM 0x00409124
+undefined4 thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_BuildSavePathStringForMode
-// ghidra_proto void __cdecl thunk_BuildSavePathStringForMode(void)
+// ghidra_proto void __cdecl thunk_BuildSavePathStringForMode(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00409129
 undefined4 thunk_BuildSavePathStringForMode(void)
 {
   return 0;
 }
 
-// ghidra_name TInfoPanelView::thunk_Cluster_MapTileHint_004fa190
-// ghidra_proto void __thiscall thunk_Cluster_MapTileHint_004fa190(void)
+// ghidra_name thunk_OrphanLeaf_NoCall_Ins04_004c3620_At0040912e
+// ghidra_proto void __cdecl thunk_OrphanLeaf_NoCall_Ins04_004c3620_At0040912e(void)
+// FUNCTION: IMPERIALISM 0x0040912e
+undefined4 thunk_OrphanLeaf_NoCall_Ins04_004c3620_At0040912e(void)
+{
+  return 0;
+}
+
+// ghidra_name TInfoPanelView::thunk_DestructTInfoPanelViewAndMaybeFree
+// ghidra_proto void __thiscall thunk_DestructTInfoPanelViewAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x00409133
-undefined4 thunk_Cluster_MapTileHint_004fa190(void)
+undefined4 thunk_DestructTInfoPanelViewAndMaybeFree(void)
 {
   return 0;
 }
@@ -619,31 +3419,31 @@ undefined4 thunk_ConstructUiNumericTextEntryBase(void)
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_InitializeCityInteriorMinister_At004c5a70
-// ghidra_proto void __fastcall thunk_WrapperFor_InitializeCityInteriorMinister_At004c5a70(void * pMinisterState)
+// ghidra_name thunk_WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70(void)
 // FUNCTION: IMPERIALISM 0x00409147
-undefined4 thunk_WrapperFor_InitializeCityInteriorMinister_At004c5a70(void)
+undefined4 thunk_WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70(void)
 {
   return 0;
 }
 
-// ghidra_name TSetupRandomMapPicture::thunk_GetTSetupRandomMapPictureClassNamePtr
-// ghidra_proto void * __cdecl thunk_GetTSetupRandomMapPictureClassNamePtr(void)
+// ghidra_name TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot000
+// ghidra_proto void * __cdecl TSetupRandomMapPicture_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00409151
-undefined4 thunk_GetTSetupRandomMapPictureClassNamePtr(void)
+undefined4 TSetupRandomMapPicture_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name TBullyMinister::thunk_GetTBullyMinisterClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTBullyMinisterClassNamePointer(void)
+// ghidra_name TBullyMinister::TBullyMinister_VtblSlot000
+// ghidra_proto void * __cdecl TBullyMinister_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00409156
-undefined4 thunk_GetTBullyMinisterClassNamePointer(void)
+undefined4 TBullyMinister_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_RouteAndProcessDiplomacyTurnStateEventQueue
+// ghidra_name TMultiplayerMgr::thunk_RouteAndProcessDiplomacyTurnStateEventQueue
 // ghidra_proto void __thiscall thunk_RouteAndProcessDiplomacyTurnStateEventQueue(void)
 // FUNCTION: IMPERIALISM 0x00409160
 undefined4 thunk_RouteAndProcessDiplomacyTurnStateEventQueue(void)
@@ -660,25 +3460,25 @@ undefined4 thunk_QueueNationPairWarTransition(void)
 }
 
 // ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00413cd0
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00413cd0()
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00413cd0(void)
 // FUNCTION: IMPERIALISM 0x0040916f
 undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00413cd0(void)
 {
   return 0;
 }
 
-// ghidra_name TArmyUnitLine::thunk_`scalar_deleting_destructor'
-// ghidra_proto undefined thunk_`scalar_deleting_destructor'()
+// ghidra_name TArmyUnitLine::TArmyUnitLine_thunk_scalar_deleting_destructor
+// ghidra_proto void * __thiscall TArmyUnitLine_thunk_scalar_deleting_destructor(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0040917e
 undefined4 TArmyUnitLine_thunk_scalar_deleting_destructor(void)
 {
   return 0;
 }
 
-// ghidra_name TacticalBattleView::thunk_DestructTacticalBattleViewAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTacticalBattleViewAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TacticalBattleView::TacticalBattleView_VtblSlot001
+// ghidra_proto void * __thiscall TacticalBattleView_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00409188
-undefined4 thunk_DestructTacticalBattleViewAndMaybeFree(void)
+undefined4 TacticalBattleView_VtblSlot001(void)
 {
   return 0;
 }
@@ -691,24 +3491,24 @@ undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void)
   return 0;
 }
 
-// ghidra_name TInfoBarPictureText::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60()
+// ghidra_name thunk_ConstructTInfoBarPictureTextBaseState
+// ghidra_proto void __thiscall thunk_ConstructTInfoBarPictureTextBaseState(void)
 // FUNCTION: IMPERIALISM 0x00409192
-undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60(void)
+undefined4 thunk_ConstructTInfoBarPictureTextBaseState(void)
 {
   return 0;
 }
 
-// ghidra_name TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTSetupRandomMapPictureAndMaybeFree(byte freeSelfFlag)
+// ghidra_name TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot001
+// ghidra_proto void * __thiscall TSetupRandomMapPicture_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00409197
-undefined4 thunk_DestructTSetupRandomMapPictureAndMaybeFree(void)
+undefined4 TSetupRandomMapPicture_VtblSlot001(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_CreateMilitaryRecruitOrdersForSelectedTerrain
-// ghidra_proto void __cdecl thunk_CreateMilitaryRecruitOrdersForSelectedTerrain(void)
+// ghidra_proto void __cdecl thunk_CreateMilitaryRecruitOrdersForSelectedTerrain(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004091a1
 undefined4 thunk_CreateMilitaryRecruitOrdersForSelectedTerrain(void)
 {
@@ -716,25 +3516,25 @@ undefined4 thunk_CreateMilitaryRecruitOrdersForSelectedTerrain(void)
 }
 
 // ghidra_name thunk_CompareTacticalCursorEntriesByActionClassPriority
-// ghidra_proto void __cdecl thunk_CompareTacticalCursorEntriesByActionClassPriority(void)
+// ghidra_proto void __cdecl thunk_CompareTacticalCursorEntriesByActionClassPriority(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004091ab
 undefined4 thunk_CompareTacticalCursorEntriesByActionClassPriority(void)
 {
   return 0;
 }
 
-// ghidra_name TAmtBarCluster::thunk_GetTAmtBarClusterClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTAmtBarClusterClassNamePointer(void)
+// ghidra_name TAmtBarCluster::TAmtBarCluster_VtblSlot000
+// ghidra_proto void * __cdecl TAmtBarCluster_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x004091b0
-undefined4 thunk_GetTAmtBarClusterClassNamePointer(void)
+undefined4 TAmtBarCluster_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name TToolBarCluster::thunk_RefreshTurnOrderStatusPanelTextsAndControls
-// ghidra_proto void __thiscall thunk_RefreshTurnOrderStatusPanelTextsAndControls(void)
+// ghidra_name TToolBarCluster::TToolBarCluster_VtblSlot115
+// ghidra_proto void __thiscall TToolBarCluster_VtblSlot115(void)
 // FUNCTION: IMPERIALISM 0x004091ba
-undefined4 thunk_RefreshTurnOrderStatusPanelTextsAndControls(void)
+undefined4 TToolBarCluster_VtblSlot115(void)
 {
   return 0;
 }
@@ -747,10 +3547,18 @@ undefined4 thunk_IncrementProductionDerivedCountersWithTurnParityRules(void)
   return 0;
 }
 
-// ghidra_name TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand
-// ghidra_proto void __thiscall thunk_HandleTradeMovePageStepCommand(void)
+// ghidra_name TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand_At004091ce
+// ghidra_proto void __thiscall thunk_HandleTradeMovePageStepCommand_At004091ce(EArrowSplitCommandId nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
 // FUNCTION: IMPERIALISM 0x004091ce
-undefined4 thunk_HandleTradeMovePageStepCommand(void)
+undefined4 thunk_HandleTradeMovePageStepCommand_At004091ce(void)
+{
+  return 0;
+}
+
+// ghidra_name TSimMgr::thunk_OrphanCallChain_C2_I07_0057fec0_At004091d3
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C2_I07_0057fec0_At004091d3(void)
+// FUNCTION: IMPERIALISM 0x004091d3
+undefined4 thunk_OrphanCallChain_C2_I07_0057fec0_At004091d3(void)
 {
   return 0;
 }
@@ -763,10 +3571,10 @@ undefined4 thunk_IsNationSlotInPrimaryGroupA(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::thunk_SetNationResourceNeedCurrentByType
-// ghidra_proto void __thiscall thunk_SetNationResourceNeedCurrentByType(void)
+// ghidra_name TAutoGreatPower_VtblSlot068
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot068(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004091e2
-undefined4 thunk_SetNationResourceNeedCurrentByType(void)
+undefined4 TAutoGreatPower_VtblSlot068(void)
 {
   return 0;
 }
@@ -779,55 +3587,55 @@ undefined4 thunk_DestroyTNewsMgrAndReleaseHeadlineEntries(void)
   return 0;
 }
 
-// ghidra_name TArmyInfoView::thunk_Cluster_MapHint_00591620
-// ghidra_proto void __thiscall thunk_Cluster_MapHint_00591620(void)
+// ghidra_name TArmyInfoView::TArmyInfoView_VtblSlot115
+// ghidra_proto void __thiscall TArmyInfoView_VtblSlot115(void)
 // FUNCTION: IMPERIALISM 0x004091ec
-undefined4 thunk_Cluster_MapHint_00591620(void)
+undefined4 TArmyInfoView_VtblSlot115(void)
 {
   return 0;
 }
 
-// ghidra_name TEvent::thunk_GetTEventClassInfoPointer_At004091f6
-// ghidra_proto void * __cdecl thunk_GetTEventClassInfoPointer_At004091f6(void)
+// ghidra_name thunk_CreateTEventInstance
+// ghidra_proto void * __cdecl thunk_CreateTEventInstance(void)
 // FUNCTION: IMPERIALISM 0x004091f6
-undefined4 thunk_GetTEventClassInfoPointer_At004091f6(void)
+undefined4 thunk_CreateTEventInstance(void)
 {
   return 0;
 }
 
-// ghidra_name TGreatPower::thunk_TryIncrementNationResourceNeedTargetTowardCurrent
-// ghidra_proto void __thiscall thunk_TryIncrementNationResourceNeedTargetTowardCurrent(void)
+// ghidra_name TAutoGreatPower_VtblSlot072
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot072(int arg1)
 // FUNCTION: IMPERIALISM 0x004091fb
-undefined4 thunk_TryIncrementNationResourceNeedTargetTowardCurrent(void)
+undefined4 TAutoGreatPower_VtblSlot072(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_MapTurnEventCodeToPaletteIndex
-// ghidra_proto void __cdecl thunk_MapTurnEventCodeToPaletteIndex(void)
+// ghidra_proto void __cdecl thunk_MapTurnEventCodeToPaletteIndex(int arg1)
 // FUNCTION: IMPERIALISM 0x00409205
 undefined4 thunk_MapTurnEventCodeToPaletteIndex(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_NoOpRuntimeUiCallback_005df780
-// ghidra_proto undefined thunk_NoOpRuntimeUiCallback_005df780()
+// ghidra_name UiViewManager::thunk_NoOpRuntimeUiCallback_005df780_At0040920f
+// ghidra_proto void __cdecl thunk_NoOpRuntimeUiCallback_005df780_At0040920f(void)
 // FUNCTION: IMPERIALISM 0x0040920f
-undefined4 thunk_NoOpRuntimeUiCallback_005df780(void)
+undefined4 thunk_NoOpRuntimeUiCallback_005df780_At0040920f(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_ComputeTacticalHoverCursorStateIndex
-// ghidra_proto void __cdecl thunk_ComputeTacticalHoverCursorStateIndex(void)
+// ghidra_proto void __fastcall thunk_ComputeTacticalHoverCursorStateIndex(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x00409214
 undefined4 thunk_ComputeTacticalHoverCursorStateIndex(void)
 {
   return 0;
 }
 
-// ghidra_name TGWorldPeeker::thunk_GetTGWorldPeekerClassNamePointer
+// ghidra_name TDisplayMgr::thunk_GetTGWorldPeekerClassNamePointer
 // ghidra_proto void * __cdecl thunk_GetTGWorldPeekerClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00409219
 undefined4 thunk_GetTGWorldPeekerClassNamePointer(void)
@@ -835,18 +3643,18 @@ undefined4 thunk_GetTGWorldPeekerClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
-// ghidra_proto undefined thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
+// ghidra_name TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
 // FUNCTION: IMPERIALISM 0x00409232
 undefined4 thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
 {
   return 0;
 }
 
-// ghidra_name TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree
-// ghidra_proto void __cdecl thunk_DestructEngineerDialogAndMaybeFree(void)
+// ghidra_name Family_EngineerDialogCore_Root::thunk_DestructEngineerDialogAndMaybeFree_At00409237
+// ghidra_proto void __cdecl thunk_DestructEngineerDialogAndMaybeFree_At00409237(void)
 // FUNCTION: IMPERIALISM 0x00409237
-undefined4 thunk_DestructEngineerDialogAndMaybeFree(void)
+undefined4 thunk_DestructEngineerDialogAndMaybeFree_At00409237(void)
 {
   return 0;
 }
@@ -859,10 +3667,10 @@ undefined4 thunk_ConstructSfxPlaybackSystemState(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::thunk_TruncateSharedStringToFitWidthWithEllipsis
-// ghidra_proto void __cdecl thunk_TruncateSharedStringToFitWidthWithEllipsis(void)
+// ghidra_name thunk_CreateTViewMgrInstance
+// ghidra_proto void __cdecl thunk_CreateTViewMgrInstance(int arg1)
 // FUNCTION: IMPERIALISM 0x00409241
-undefined4 thunk_TruncateSharedStringToFitWidthWithEllipsis(void)
+undefined4 thunk_CreateTViewMgrInstance(void)
 {
   return 0;
 }
@@ -875,6 +3683,14 @@ undefined4 thunk_ShowCountrySelectionPromptAndReturnNationId(void)
   return 0;
 }
 
+// ghidra_name TInteriorMinister::thunk_OrphanCallChain_C1_I13_004be690_At0040924b
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I13_004be690_At0040924b(void)
+// FUNCTION: IMPERIALISM 0x0040924b
+undefined4 thunk_OrphanCallChain_C1_I13_004be690_At0040924b(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_ClearPerTileByte0FForAllMapTiles
 // ghidra_proto void __thiscall thunk_ClearPerTileByte0FForAllMapTiles(void)
 // FUNCTION: IMPERIALISM 0x00409250
@@ -883,50 +3699,66 @@ undefined4 thunk_ClearPerTileByte0FForAllMapTiles(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::thunk_ReturnTrueForScatteredShipsMissionCapabilityFlagB
-// ghidra_proto bool __stdcall thunk_ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+// ghidra_name TScatteredShipsMission::TScatteredShipsMission_VtblSlot024
+// ghidra_proto bool __stdcall TScatteredShipsMission_VtblSlot024(void)
 // FUNCTION: IMPERIALISM 0x0040925f
-undefined4 thunk_ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+undefined4 TScatteredShipsMission_VtblSlot024(void)
 {
   return 0;
 }
 
-// ghidra_name TWorldView::thunk_GetTWorldViewClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTWorldViewClassNamePointer(void)
+// ghidra_name TWorldView::TWorldView_VtblSlot000
+// ghidra_proto void * __cdecl TWorldView_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00409269
-undefined4 thunk_GetTWorldViewClassNamePointer(void)
+undefined4 TWorldView_VtblSlot000(void)
 {
   return 0;
 }
 
-// ghidra_name TMapDialog::thunk_Cluster_MapTileHint_0051ad70
-// ghidra_proto void __thiscall thunk_Cluster_MapTileHint_0051ad70(int arg1)
+// ghidra_name TMapDialog::TMapDialog_VtblSlot120
+// ghidra_proto void __thiscall TMapDialog_VtblSlot120(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x0040926e
-undefined4 thunk_Cluster_MapTileHint_0051ad70(void)
+undefined4 TMapDialog_VtblSlot120(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanRetStub_00492d00_At00409282
+// ghidra_proto void __cdecl thunk_OrphanRetStub_00492d00_At00409282(void)
+// FUNCTION: IMPERIALISM 0x00409282
+undefined4 thunk_OrphanRetStub_00492d00_At00409282(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh
-// ghidra_proto int thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
+// ghidra_proto int __cdecl thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
 // FUNCTION: IMPERIALISM 0x0040928c
 undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_InitializeNationStateRuntimeSubsystems
-// ghidra_proto void __thiscall thunk_InitializeNationStateRuntimeSubsystems(TSimMgr * pThis)
+// ghidra_name TGreatPower::thunk_InitializeNationStateRuntimeSubsystems
+// ghidra_proto void __thiscall thunk_InitializeNationStateRuntimeSubsystems(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00409291
 undefined4 thunk_InitializeNationStateRuntimeSubsystems(void)
 {
   return 0;
 }
 
-// ghidra_name TMapUberPicture::thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
-// ghidra_proto void __thiscall thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
+// ghidra_name TMapUberPicture::TMapUberPicture_VtblSlot118
+// ghidra_proto void __cdecl TMapUberPicture_VtblSlot118(void)
 // FUNCTION: IMPERIALISM 0x004092a0
-undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
+undefined4 TMapUberPicture_VtblSlot118(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapDialog::TMapDialog_VtblSlot162
+// ghidra_proto int __cdecl TMapDialog_VtblSlot162(void)
+// FUNCTION: IMPERIALISM 0x004092a5
+undefined4 TMapDialog_VtblSlot162(void)
 {
   return 0;
 }
@@ -939,31 +3771,31 @@ undefined4 thunk_ResetDualAudioCuePools(void)
   return 0;
 }
 
-// ghidra_name TCivUnit::thunk_GetCivUnitOrderTypeName
-// ghidra_proto void * __cdecl thunk_GetCivUnitOrderTypeName(void)
+// ghidra_name CivUnitOrderState::thunk_GetTCivUnitClassNamePointer_At004092b4
+// ghidra_proto void * __cdecl thunk_GetTCivUnitClassNamePointer_At004092b4(void)
 // FUNCTION: IMPERIALISM 0x004092b4
-undefined4 thunk_GetCivUnitOrderTypeName(void)
+undefined4 thunk_GetTCivUnitClassNamePointer_At004092b4(void)
 {
   return 0;
 }
 
-// ghidra_name TWarningView::thunk_GetTWarningViewClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTWarningViewClassNamePointer(void)
+// ghidra_name TWarningView::TWarningView_VtblSlot000
+// ghidra_proto void * __cdecl TWarningView_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x004092b9
-undefined4 thunk_GetTWarningViewClassNamePointer(void)
+undefined4 TWarningView_VtblSlot000(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4
-// ghidra_proto void __thiscall thunk_HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(int * pStreamCursor)
+// ghidra_proto void __thiscall thunk_HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(STurnInstruction_Year * pInstruction)
 // FUNCTION: IMPERIALISM 0x004092be
 undefined4 thunk_HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_CanHandleCityDialogActionFalse
+// ghidra_name TradeControl::thunk_CanHandleCityDialogActionFalse
 // ghidra_proto void __cdecl thunk_CanHandleCityDialogActionFalse(void)
 // FUNCTION: IMPERIALISM 0x004092c8
 undefined4 thunk_CanHandleCityDialogActionFalse(void)
@@ -971,7 +3803,7 @@ undefined4 thunk_CanHandleCityDialogActionFalse(void)
   return 0;
 }
 
-// ghidra_name thunk_DeleteObjectIfNonNullViaVslot04
+// ghidra_name TMapMaker::thunk_DeleteObjectIfNonNullViaVslot04
 // ghidra_proto void __thiscall thunk_DeleteObjectIfNonNullViaVslot04(void)
 // FUNCTION: IMPERIALISM 0x004092cd
 undefined4 thunk_DeleteObjectIfNonNullViaVslot04(void)
@@ -980,7 +3812,7 @@ undefined4 thunk_DeleteObjectIfNonNullViaVslot04(void)
 }
 
 // ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00486350
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00486350()
+// ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00486350(void)
 // FUNCTION: IMPERIALISM 0x004092d2
 undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00486350(void)
 {
@@ -996,7 +3828,7 @@ undefined4 thunk_GetTickCountDiv16(void)
 }
 
 // ghidra_name thunk_DeserializeNavyOrderSelectionStateFromStream
-// ghidra_proto void thunk_DeserializeNavyOrderSelectionStateFromStream(void)
+// ghidra_proto void __fastcall thunk_DeserializeNavyOrderSelectionStateFromStream(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x004092dc
 undefined4 thunk_DeserializeNavyOrderSelectionStateFromStream(void)
 {
@@ -1011,32 +3843,40 @@ undefined4 thunk_InitializeCivilianMapInteractionManagerVtable(void)
   return 0;
 }
 
-// ghidra_name TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTNextMoveCommandClassNamePointer(void)
+// ghidra_name TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer_At004092e6
+// ghidra_proto void * __cdecl thunk_GetTNextMoveCommandClassNamePointer_At004092e6(void)
 // FUNCTION: IMPERIALISM 0x004092e6
-undefined4 thunk_GetTNextMoveCommandClassNamePointer(void)
+undefined4 thunk_GetTNextMoveCommandClassNamePointer_At004092e6(void)
 {
   return 0;
 }
 
-// ghidra_name TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300
-// ghidra_proto void __thiscall thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(void)
+// ghidra_name TFileStream::thunk_WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300_At004092f0
+// ghidra_proto void * __thiscall thunk_WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300_At004092f0(void * runtimeClassOrFactory)
 // FUNCTION: IMPERIALISM 0x004092f0
-undefined4 thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(void)
+undefined4 thunk_WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300_At004092f0(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_FindIndex_At00488840_At004092f5
-// ghidra_proto undefined thunk_WrapperFor_FindIndex_At00488840_At004092f5()
+// ghidra_name TSortedList::thunk_WrapperFor_FindIndex_At00488840_At004092f5
+// ghidra_proto void __cdecl thunk_WrapperFor_FindIndex_At00488840_At004092f5(void)
 // FUNCTION: IMPERIALISM 0x004092f5
 undefined4 thunk_WrapperFor_FindIndex_At00488840_At004092f5(void)
 {
   return 0;
 }
 
+// ghidra_name TSimMgr::thunk_OrphanCallChain_C1_I08_0057fe90_At004092fa
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C1_I08_0057fe90_At004092fa(void)
+// FUNCTION: IMPERIALISM 0x004092fa
+undefined4 thunk_OrphanCallChain_C1_I08_0057fe90_At004092fa(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_RunEngineerOrderNameEditDialogAndApply
-// ghidra_proto void thunk_RunEngineerOrderNameEditDialogAndApply(void)
+// ghidra_proto void __cdecl thunk_RunEngineerOrderNameEditDialogAndApply(void)
 // FUNCTION: IMPERIALISM 0x004092ff
 undefined4 thunk_RunEngineerOrderNameEditDialogAndApply(void)
 {
@@ -1051,15 +3891,15 @@ undefined4 thunk_IsUiWindowTraversalEntryValid(void)
   return 0;
 }
 
-// ghidra_name thunk_AdvanceNationPendingActionStateMachine
-// ghidra_proto void __cdecl thunk_AdvanceNationPendingActionStateMachine(void)
+// ghidra_name TAutoGreatPower_VtblSlot044
+// ghidra_proto void __cdecl TAutoGreatPower_VtblSlot044(void)
 // FUNCTION: IMPERIALISM 0x0040930e
-undefined4 thunk_AdvanceNationPendingActionStateMachine(void)
+undefined4 TAutoGreatPower_VtblSlot044(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_ApplyRecruitmentSliderDeltaAndRebalancePools
+// ghidra_name TControl::thunk_ApplyRecruitmentSliderDeltaAndRebalancePools
 // ghidra_proto bool __thiscall thunk_ApplyRecruitmentSliderDeltaAndRebalancePools(short nNewOrderAmount)
 // FUNCTION: IMPERIALISM 0x00409318
 undefined4 thunk_ApplyRecruitmentSliderDeltaAndRebalancePools(void)
@@ -1067,18 +3907,18 @@ undefined4 thunk_ApplyRecruitmentSliderDeltaAndRebalancePools(void)
   return 0;
 }
 
-// ghidra_name thunk_SelectTradeCommodityPresetBySummaryTagAndInitControls
-// ghidra_proto void thunk_SelectTradeCommodityPresetBySummaryTagAndInitControls(void)
+// ghidra_name TIndustryAmtBar::thunk_SelectTradeCommodityPresetBySummaryTagAndInitControls_At0040931d
+// ghidra_proto void __thiscall thunk_SelectTradeCommodityPresetBySummaryTagAndInitControls_At0040931d(short summaryMetricValue)
 // FUNCTION: IMPERIALISM 0x0040931d
-undefined4 thunk_SelectTradeCommodityPresetBySummaryTagAndInitControls(void)
+undefined4 thunk_SelectTradeCommodityPresetBySummaryTagAndInitControls_At0040931d(void)
 {
   return 0;
 }
 
-// ghidra_name TTradePolicyCluster::thunk_GetTTradePolicyClusterClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTTradePolicyClusterClassNamePointer(void)
+// ghidra_name TTradePolicyCluster::TTradePolicyCluster_VtblSlot000
+// ghidra_proto void * __cdecl TTradePolicyCluster_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x00409322
-undefined4 thunk_GetTTradePolicyClusterClassNamePointer(void)
+undefined4 TTradePolicyCluster_VtblSlot000(void)
 {
   return 0;
 }
@@ -1091,24 +3931,24 @@ undefined4 thunk_DestroyTPortZoneAndClearOverlayMarkers(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::thunk_EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics
-// ghidra_proto void __thiscall thunk_EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
+// ghidra_name TAutoGreatPower_VtblSlot157
+// ghidra_proto void __thiscall TAutoGreatPower_VtblSlot157(void)
 // FUNCTION: IMPERIALISM 0x00409331
-undefined4 thunk_EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
+undefined4 TAutoGreatPower_VtblSlot157(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_ThunkTargetImpl_004946b0
-// ghidra_proto void __cdecl thunk_ThunkTargetImpl_004946b0(int arg1, int arg2)
+// ghidra_name thunk_ReleaseScopedMapQuickDrawDcHandle_At00409336
+// ghidra_proto void __cdecl thunk_ReleaseScopedMapQuickDrawDcHandle_At00409336(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00409336
-undefined4 thunk_ThunkTargetImpl_004946b0(void)
+undefined4 thunk_ReleaseScopedMapQuickDrawDcHandle_At00409336(void)
 {
   return 0;
 }
 
 // ghidra_name thunk_TryResolveMapOrderEntryPairExecution
-// ghidra_proto void __cdecl thunk_TryResolveMapOrderEntryPairExecution(void)
+// ghidra_proto void __thiscall thunk_TryResolveMapOrderEntryPairExecution(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x0040933b
 undefined4 thunk_TryResolveMapOrderEntryPairExecution(void)
 {
@@ -1123,2882 +3963,42 @@ undefined4 thunk_ReturnFalseMissionCapabilityStub(void)
   return 0;
 }
 
-// ghidra_name thunk_QueueDiplomatTwoCompatibleMatrixActionsCode5A
-// ghidra_proto void __cdecl thunk_QueueDiplomatTwoCompatibleMatrixActionsCode5A(void)
+// ghidra_name TControl::thunk_QueueDiplomatTwoCompatibleMatrixActionsCode5A
+// ghidra_proto void __thiscall thunk_QueueDiplomatTwoCompatibleMatrixActionsCode5A(void)
 // FUNCTION: IMPERIALISM 0x00409345
 undefined4 thunk_QueueDiplomatTwoCompatibleMatrixActionsCode5A(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_LoadStrategicMapOverlayAtlas8699
-// ghidra_proto void __cdecl thunk_LoadStrategicMapOverlayAtlas8699(void)
+// ghidra_name StrategicMapViewSystem::thunk_LoadStrategicMapOverlayAtlas8699_At0040934a
+// ghidra_proto void __cdecl thunk_LoadStrategicMapOverlayAtlas8699_At0040934a(void)
 // FUNCTION: IMPERIALISM 0x0040934a
-undefined4 thunk_LoadStrategicMapOverlayAtlas8699(void)
+undefined4 thunk_LoadStrategicMapOverlayAtlas8699_At0040934a(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_SerializeDiplomacyNationStateToStream
-// ghidra_proto void __cdecl thunk_SerializeDiplomacyNationStateToStream(void)
+// ghidra_name thunk_OrphanLeaf_NoCall_Ins03_004f2ea0_At0040934f
+// ghidra_proto void __cdecl thunk_OrphanLeaf_NoCall_Ins03_004f2ea0_At0040934f(void)
+// FUNCTION: IMPERIALISM 0x0040934f
+undefined4 thunk_OrphanLeaf_NoCall_Ins03_004f2ea0_At0040934f(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::thunk_SerializeDiplomacyNationStateToStream_At00409354
+// ghidra_proto void __thiscall thunk_SerializeDiplomacyNationStateToStream_At00409354(void)
 // FUNCTION: IMPERIALISM 0x00409354
-undefined4 thunk_SerializeDiplomacyNationStateToStream(void)
+undefined4 thunk_SerializeDiplomacyNationStateToStream_At00409354(void)
 {
   return 0;
 }
 
-// ghidra_name TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTInfoBarBehaviorClassNamePointer(void)
+// ghidra_name TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer_At00409359
+// ghidra_proto void * __cdecl thunk_GetTInfoBarBehaviorClassNamePointer_At00409359(void)
 // FUNCTION: IMPERIALISM 0x00409359
-undefined4 thunk_GetTInfoBarBehaviorClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts
-// ghidra_proto void __cdecl thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
-// FUNCTION: IMPERIALISM 0x00409363
-undefined4 thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::thunk_GetTZoneClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTZoneClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409368
-undefined4 thunk_GetTZoneClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ConstructObArrayWithVtable653810
-// ghidra_proto void * thunk_ConstructObArrayWithVtable653810(void)
-// FUNCTION: IMPERIALISM 0x00409372
-undefined4 thunk_ConstructObArrayWithVtable653810(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_`scalar_deleting_destructor'
-// ghidra_proto undefined thunk_`scalar_deleting_destructor'()
-// FUNCTION: IMPERIALISM 0x0040937c
-undefined4 thunk_scalar_deleting_destructor_0040937C(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RequestAudioPresetChangeWithDeferredApply
-// ghidra_proto void __thiscall thunk_RequestAudioPresetChangeWithDeferredApply(int presetIndex, byte allowDeferred)
-// FUNCTION: IMPERIALISM 0x00409381
-undefined4 thunk_RequestAudioPresetChangeWithDeferredApply(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_`scalar_deleting_destructor'
-// ghidra_proto undefined thunk_`scalar_deleting_destructor'()
-// FUNCTION: IMPERIALISM 0x00409386
-undefined4 thunk_scalar_deleting_destructor_00409386(void)
-{
-  return 0;
-}
-
-// ghidra_name TMiniArmyView::thunk_HandleMiniArmyViewUpgradeCommandAndSyncNationState
-// ghidra_proto void __thiscall thunk_HandleMiniArmyViewUpgradeCommandAndSyncNationState(void * arg1, void * arg2)
-// FUNCTION: IMPERIALISM 0x0040938b
-undefined4 thunk_HandleMiniArmyViewUpgradeCommandAndSyncNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name TacticalBattleView::thunk_DrawUiTilesAndOverlay
-// ghidra_proto void __fastcall thunk_DrawUiTilesAndOverlay(astruct_13 * ui_ctx)
-// FUNCTION: IMPERIALISM 0x0040939a
-undefined4 thunk_DrawUiTilesAndOverlay(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650
-// ghidra_proto void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650(void)
-// FUNCTION: IMPERIALISM 0x0040939f
-undefined4 thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CallThisVslot1B4NoArgs
-// ghidra_proto void __cdecl thunk_CallThisVslot1B4NoArgs(void)
-// FUNCTION: IMPERIALISM 0x004093a4
-undefined4 thunk_CallThisVslot1B4NoArgs(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_PlayMovieClipAndDispatchTurnStateFollowup
-// ghidra_proto void __thiscall thunk_PlayMovieClipAndDispatchTurnStateFollowup(void)
-// FUNCTION: IMPERIALISM 0x004093ae
-undefined4 thunk_PlayMovieClipAndDispatchTurnStateFollowup(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::thunk_DestructTLineDataAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTLineDataAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004093b3
-undefined4 thunk_DestructTLineDataAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName
-// ghidra_proto void * thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void)
-// FUNCTION: IMPERIALISM 0x004093bd
-undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::thunk_RemoveNthIntFromLinkedValueList
-// ghidra_proto void __thiscall thunk_RemoveNthIntFromLinkedValueList(void)
-// FUNCTION: IMPERIALISM 0x004093c2
-undefined4 thunk_RemoveNthIntFromLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_IsNodeTypeLinkUnavailableAndNoActiveMapActionContext
-// ghidra_proto bool thunk_IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(void)
-// FUNCTION: IMPERIALISM 0x004093c7
-undefined4 thunk_IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_MapUiThemeCodeToStyleFlags
-// ghidra_proto void __cdecl thunk_MapUiThemeCodeToStyleFlags(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004093cc
-undefined4 thunk_MapUiThemeCodeToStyleFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetUiResourceOwner
-// ghidra_proto void __cdecl thunk_SetUiResourceOwner(void)
-// FUNCTION: IMPERIALISM 0x004093d1
-undefined4 thunk_SetUiResourceOwner(void)
-{
-  return 0;
-}
-
-// ghidra_name TSuperNavyRoster::thunk_GetTSuperNavyRosterClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTSuperNavyRosterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004093d6
-undefined4 thunk_GetTSuperNavyRosterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::thunk_ConstructAndLinkNavySecondaryOrderNode
-// ghidra_proto void * __thiscall thunk_ConstructAndLinkNavySecondaryOrderNode(void)
-// FUNCTION: IMPERIALISM 0x004093db
-undefined4 thunk_ConstructAndLinkNavySecondaryOrderNode(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ThunkTargetImpl_00427240
-// ghidra_proto void __cdecl thunk_ThunkTargetImpl_00427240(void)
-// FUNCTION: IMPERIALISM 0x004093e5
-undefined4 thunk_ThunkTargetImpl_00427240(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ResetTNewsMgrToSentinelVtable
-// ghidra_proto void __cdecl thunk_ResetTNewsMgrToSentinelVtable(void)
-// FUNCTION: IMPERIALISM 0x004093f4
-undefined4 thunk_ResetTNewsMgrToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_QueueTedFourRandomAvailableTerrainActionsCode133
-// ghidra_proto void __cdecl thunk_QueueTedFourRandomAvailableTerrainActionsCode133(void)
-// FUNCTION: IMPERIALISM 0x004093f9
-undefined4 thunk_QueueTedFourRandomAvailableTerrainActionsCode133(void)
-{
-  return 0;
-}
-
-// ghidra_name TCityBarCluster::thunk_DestructTCityBarClusterAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTCityBarClusterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004093fe
-undefined4 thunk_DestructTCityBarClusterAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::thunk_ReserveOverlayQuadRecordArrayCapacity
-// ghidra_proto void __thiscall thunk_ReserveOverlayQuadRecordArrayCapacity(int arg1)
-// FUNCTION: IMPERIALISM 0x00409408
-undefined4 thunk_ReserveOverlayQuadRecordArrayCapacity(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource
-// ghidra_proto void __cdecl thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
-// FUNCTION: IMPERIALISM 0x00409412
-undefined4 thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InvokeVtableSlot30OnTargetObject
-// ghidra_proto void __cdecl thunk_InvokeVtableSlot30OnTargetObject(void * pTarget)
-// FUNCTION: IMPERIALISM 0x00409421
-undefined4 thunk_InvokeVtableSlot30OnTargetObject(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_`scalar_deleting_destructor'
-// ghidra_proto undefined thunk_`scalar_deleting_destructor'()
-// FUNCTION: IMPERIALISM 0x00409426
-undefined4 thunk_scalar_deleting_destructor_00409426(void)
-{
-  return 0;
-}
-
-// ghidra_name TRemoteGreatPower::thunk_GetTRemoteGreatPowerClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTRemoteGreatPowerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409430
-undefined4 thunk_GetTRemoteGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemoveTaskForceOrderNodesByNationAndClearSelectionState
-// ghidra_proto void __cdecl thunk_RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-// FUNCTION: IMPERIALISM 0x00409435
-undefined4 thunk_RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagB
-// ghidra_proto bool __stdcall thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x0040943f
-undefined4 thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ApplyTacticalCursorModeProfile4_ClassAware
-// ghidra_proto void __fastcall thunk_ApplyTacticalCursorModeProfile4_ClassAware(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x00409449
-undefined4 thunk_ApplyTacticalCursorModeProfile4_ClassAware(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InvalidateMapRegionForEntryIfUiPassive
-// ghidra_proto void __cdecl thunk_InvalidateMapRegionForEntryIfUiPassive(void)
-// FUNCTION: IMPERIALISM 0x00409458
-undefined4 thunk_InvalidateMapRegionForEntryIfUiPassive(void)
-{
-  return 0;
-}
-
-// ghidra_name TArrowsControl::thunk_GetTArrowsControlClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTArrowsControlClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409471
-undefined4 thunk_GetTArrowsControlClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_TrySaveGameAndMaybeShowFailureDialog
-// ghidra_proto void __cdecl thunk_TrySaveGameAndMaybeShowFailureDialog(void)
-// FUNCTION: IMPERIALISM 0x00409476
-undefined4 thunk_TrySaveGameAndMaybeShowFailureDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TNapoleonMinister::thunk_DestructTNapoleonMinisterAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTNapoleonMinisterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0040947b
-undefined4 thunk_DestructTNapoleonMinisterAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ReturnMissionConstantFloatSlot74
-// ghidra_proto void __cdecl thunk_ReturnMissionConstantFloatSlot74(void)
-// FUNCTION: IMPERIALISM 0x0040948a
-undefined4 thunk_ReturnMissionConstantFloatSlot74(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoadSavePicture::thunk_InitializeLoadSaveDialogSlotControlsAndCommandTags
-// ghidra_proto void __thiscall thunk_InitializeLoadSaveDialogSlotControlsAndCommandTags(void)
-// FUNCTION: IMPERIALISM 0x0040948f
-undefined4 thunk_InitializeLoadSaveDialogSlotControlsAndCommandTags(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_SetWindowPosOrForwardToSite_At00490e50
-// ghidra_proto undefined thunk_WrapperFor_SetWindowPosOrForwardToSite_At00490e50()
-// FUNCTION: IMPERIALISM 0x00409494
-undefined4 thunk_WrapperFor_SetWindowPosOrForwardToSite_At00490e50(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyToolbarCluster::thunk_ConstructTNavyToolbarClusterBaseState
-// ghidra_proto void * __thiscall thunk_ConstructTNavyToolbarClusterBaseState(void)
-// FUNCTION: IMPERIALISM 0x00409499
-undefined4 thunk_ConstructTNavyToolbarClusterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::thunk_DestroyTEscortMission
-// ghidra_proto void * __thiscall thunk_DestroyTEscortMission(void)
-// FUNCTION: IMPERIALISM 0x004094a3
-undefined4 thunk_DestroyTEscortMission(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_LoadWaveResourceByNumericIdAndBuildBuffer
-// ghidra_proto void __cdecl thunk_LoadWaveResourceByNumericIdAndBuildBuffer(void)
-// FUNCTION: IMPERIALISM 0x004094a8
-undefined4 thunk_LoadWaveResourceByNumericIdAndBuildBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name TSpaceCommand::thunk_GetTSpaceCommandRuntimeClass
-// ghidra_proto void * __thiscall thunk_GetTSpaceCommandRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x004094b2
-undefined4 thunk_GetTSpaceCommandRuntimeClass(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::thunk_DispatchTurnEvent7D8AndUpdateMainViewSelection
-// ghidra_proto void __thiscall thunk_DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
-// FUNCTION: IMPERIALISM 0x004094bc
-undefined4 thunk_DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::thunk_ReturnTrueForEscortMissionCapabilityFlagA
-// ghidra_proto bool __stdcall thunk_ReturnTrueForEscortMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x004094c1
-undefined4 thunk_ReturnTrueForEscortMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name TEventHandler::thunk_DestructTEventHandlerAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTEventHandlerAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004094cb
-undefined4 thunk_DestructTEventHandlerAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::thunk_GetTTownClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTTownClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004094da
-undefined4 thunk_GetTTownClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTwoPicSlider::thunk_GetTTwoPicSliderClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTTwoPicSliderClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004094df
-undefined4 thunk_GetTTwoPicSliderClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::thunk_RemoveRegionIdFromNationOwnedRegionList
-// ghidra_proto void __thiscall thunk_RemoveRegionIdFromNationOwnedRegionList(void)
-// FUNCTION: IMPERIALISM 0x004094e4
-undefined4 thunk_RemoveRegionIdFromNationOwnedRegionList(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::thunk_InvokeStrategicMapViewMethod68
-// ghidra_proto void __cdecl thunk_InvokeStrategicMapViewMethod68(void)
-// FUNCTION: IMPERIALISM 0x004094e9
-undefined4 thunk_InvokeStrategicMapViewMethod68(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedList::thunk_GetTSortedListClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTSortedListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004094f3
-undefined4 thunk_GetTSortedListClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::thunk_HandleTurnEventVtableSlotA0SyncStatusPanel
-// ghidra_proto void __cdecl thunk_HandleTurnEventVtableSlotA0SyncStatusPanel(void)
-// FUNCTION: IMPERIALISM 0x004094f8
-undefined4 thunk_HandleTurnEventVtableSlotA0SyncStatusPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name TAttackProvinceMission::thunk_EvaluateAttackProvinceMissionAndQueueEligibleUnits
-// ghidra_proto bool __thiscall thunk_EvaluateAttackProvinceMissionAndQueueEligibleUnits(void)
-// FUNCTION: IMPERIALISM 0x004094fd
-undefined4 thunk_EvaluateAttackProvinceMissionAndQueueEligibleUnits(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At0045ad70
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At0045ad70()
-// FUNCTION: IMPERIALISM 0x00409502
-undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At0045ad70(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializePagedListLineDataControlsAndHeaderBitmap
-// ghidra_proto void __thiscall thunk_InitializePagedListLineDataControlsAndHeaderBitmap(int param_1)
-// FUNCTION: IMPERIALISM 0x0040950c
-undefined4 thunk_InitializePagedListLineDataControlsAndHeaderBitmap(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioTextCluster::thunk_HandleSelectableTextOptionEventDispatch
-// ghidra_proto void __thiscall thunk_HandleSelectableTextOptionEventDispatch(void)
-// FUNCTION: IMPERIALISM 0x00409520
-undefined4 thunk_HandleSelectableTextOptionEventDispatch(void)
-{
-  return 0;
-}
-
-// ghidra_name TDlgWindow::thunk_DestroyTurnEventWindowEntryStaticBackdrop
-// ghidra_proto void __cdecl thunk_DestroyTurnEventWindowEntryStaticBackdrop(void)
-// FUNCTION: IMPERIALISM 0x0040952a
-undefined4 thunk_DestroyTurnEventWindowEntryStaticBackdrop(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::thunk_UpdatePaletteIndexFromTurnEventCode
-// ghidra_proto void __cdecl thunk_UpdatePaletteIndexFromTurnEventCode(void)
-// FUNCTION: IMPERIALISM 0x0040952f
-undefined4 thunk_UpdatePaletteIndexFromTurnEventCode(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_AppendCallbackGeneratedByteToGrowableBuffer
-// ghidra_proto void __thiscall thunk_AppendCallbackGeneratedByteToGrowableBuffer(void)
-// FUNCTION: IMPERIALISM 0x0040953e
-undefined4 thunk_AppendCallbackGeneratedByteToGrowableBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetCachedMapActionContextDistanceOrRecompute
-// ghidra_proto void __thiscall thunk_GetCachedMapActionContextDistanceOrRecompute(int arg1)
-// FUNCTION: IMPERIALISM 0x0040954d
-undefined4 thunk_GetCachedMapActionContextDistanceOrRecompute(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ApplyEngineerRailCostDeltaForConnectedTiles
-// ghidra_proto void __thiscall thunk_ApplyEngineerRailCostDeltaForConnectedTiles(short nSourceTileIndex, short nTargetTileIndex)
-// FUNCTION: IMPERIALISM 0x00409557
-undefined4 thunk_ApplyEngineerRailCostDeltaForConnectedTiles(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::thunk_GetTLineDataClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTLineDataClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0040955c
-undefined4 thunk_GetTLineDataClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::thunk_DestructTToggleButtonAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTToggleButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409566
-undefined4 thunk_DestructTToggleButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeAdvisoryHandlerCase00Metric
-// ghidra_proto void __cdecl thunk_ComputeAdvisoryHandlerCase00Metric(void)
-// FUNCTION: IMPERIALISM 0x0040956b
-undefined4 thunk_ComputeAdvisoryHandlerCase00Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name TIncludeView::thunk_DestructTIncludeViewAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTIncludeViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409570
-undefined4 thunk_DestructTIncludeViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SerializeCityOrderItemContextCore
-// ghidra_proto void __cdecl thunk_SerializeCityOrderItemContextCore(void)
-// FUNCTION: IMPERIALISM 0x00409575
-undefined4 thunk_SerializeCityOrderItemContextCore(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyPlacard::thunk_DestructTArmyPlacardAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTArmyPlacardAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0040957f
-undefined4 thunk_DestructTArmyPlacardAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00491b10
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00491b10()
-// FUNCTION: IMPERIALISM 0x00409589
-undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00491b10(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::thunk_CopyDiagonalMaskWideningBlockKernel
-// ghidra_proto void __thiscall thunk_CopyDiagonalMaskWideningBlockKernel(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x0040958e
-undefined4 thunk_CopyDiagonalMaskWideningBlockKernel(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
-// ghidra_proto void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void * pMessage)
-// FUNCTION: IMPERIALISM 0x0040959d
-undefined4 thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0()
-// FUNCTION: IMPERIALISM 0x004095c0
-undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720
-// ghidra_proto undefined thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720()
-// FUNCTION: IMPERIALISM 0x004095c5
-undefined4 thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_BuildStrategicMapGaugeAtlasFrom1422And1423
-// ghidra_proto void __cdecl thunk_BuildStrategicMapGaugeAtlasFrom1422And1423(void)
-// FUNCTION: IMPERIALISM 0x004095ca
-undefined4 thunk_BuildStrategicMapGaugeAtlasFrom1422And1423(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyCheckBox::thunk_UpdateArmyCheckBoxSelectionOffsetAndRefresh_At004095d4
-// ghidra_proto void __thiscall thunk_UpdateArmyCheckBoxSelectionOffsetAndRefresh_At004095d4(byte notify)
-// FUNCTION: IMPERIALISM 0x004095d4
-undefined4 thunk_UpdateArmyCheckBoxSelectionOffsetAndRefresh_At004095d4(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeMinisterOrderArrayPreset_25_10_20_50
-// ghidra_proto void __cdecl thunk_InitializeMinisterOrderArrayPreset_25_10_20_50(void)
-// FUNCTION: IMPERIALISM 0x004095e3
-undefined4 thunk_InitializeMinisterOrderArrayPreset_25_10_20_50(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RunForeignMinisterVtableSlot90Base
-// ghidra_proto void __cdecl thunk_RunForeignMinisterVtableSlot90Base(void)
-// FUNCTION: IMPERIALISM 0x004095f2
-undefined4 thunk_RunForeignMinisterVtableSlot90Base(void)
-{
-  return 0;
-}
-
-// ghidra_name TStream::thunk_GetTStreamClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTStreamClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004095fc
-undefined4 thunk_GetTStreamClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_EvaluateTacticalSideStateAndShowBattleSummaryDialog
-// ghidra_proto void __fastcall thunk_EvaluateTacticalSideStateAndShowBattleSummaryDialog(int pTacticalController)
-// FUNCTION: IMPERIALISM 0x00409606
-undefined4 thunk_EvaluateTacticalSideStateAndShowBattleSummaryDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpMissionVtableSlot30
-// ghidra_proto void __cdecl thunk_NoOpMissionVtableSlot30(void)
-// FUNCTION: IMPERIALISM 0x0040960b
-undefined4 thunk_NoOpMissionVtableSlot30(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_LoadProfileStringAndAssignSharedRef_At00409610
-// ghidra_proto void __cdecl thunk_LoadProfileStringAndAssignSharedRef_At00409610(void)
-// FUNCTION: IMPERIALISM 0x00409610
-undefined4 thunk_LoadProfileStringAndAssignSharedRef_At00409610(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RefreshSelectedNationOrderCompatibilityInfo
-// ghidra_proto void __cdecl thunk_RefreshSelectedNationOrderCompatibilityInfo(void)
-// FUNCTION: IMPERIALISM 0x00409615
-undefined4 thunk_RefreshSelectedNationOrderCompatibilityInfo(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At005acc90
-// ghidra_proto void __cdecl thunk_WrapperFor_InvalidateCityDialogRectRegion_At005acc90(void)
-// FUNCTION: IMPERIALISM 0x0040961f
-undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At005acc90(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90
-// ghidra_proto void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void * pMessage)
-// FUNCTION: IMPERIALISM 0x00409624
-undefined4 thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_AssertMcAppStreamLine596
-// ghidra_proto void thunk_AssertMcAppStreamLine596(void)
-// FUNCTION: IMPERIALISM 0x0040962e
-undefined4 thunk_AssertMcAppStreamLine596(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_AssignTrackedEntryActionsByProfileToOrdersOrUnits
-// ghidra_proto void thunk_AssignTrackedEntryActionsByProfileToOrdersOrUnits(void)
-// FUNCTION: IMPERIALISM 0x00409633
-undefined4 thunk_AssignTrackedEntryActionsByProfileToOrdersOrUnits(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacArmyView::thunk_RenderTacArmyViewBandAndOverlayRegion
-// ghidra_proto void __thiscall thunk_RenderTacArmyViewBandAndOverlayRegion(int * pDestRect)
-// FUNCTION: IMPERIALISM 0x00409642
-undefined4 thunk_RenderTacArmyViewBandAndOverlayRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetTileTransportFlags
-// ghidra_proto int __thiscall thunk_SetTileTransportFlags(short nTileIndex, ushort wTileTransportFlags)
-// FUNCTION: IMPERIALISM 0x0040964c
-undefined4 thunk_SetTileTransportFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_`scalar_deleting_destructor'
-// ghidra_proto undefined thunk_`scalar_deleting_destructor'()
-// FUNCTION: IMPERIALISM 0x00409651
-undefined4 thunk_scalar_deleting_destructor_00409651(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetResourceDescriptorWord08ByTypeOffset
-// ghidra_proto short thunk_GetResourceDescriptorWord08ByTypeOffset(void)
-// FUNCTION: IMPERIALISM 0x0040965b
-undefined4 thunk_GetResourceDescriptorWord08ByTypeOffset(void)
-{
-  return 0;
-}
-
-// ghidra_name TPirateMinister::thunk_GetTPirateMinisterClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTPirateMinisterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409665
-undefined4 thunk_GetTPirateMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacMapUberPicture::thunk_InitializeTacMapUberPictureDialogHandle_At0040966f
-// ghidra_proto void __thiscall thunk_InitializeTacMapUberPictureDialogHandle_At0040966f(void)
-// FUNCTION: IMPERIALISM 0x0040966f
-undefined4 thunk_InitializeTacMapUberPictureDialogHandle_At0040966f(void)
-{
-  return 0;
-}
-
-// ghidra_name TTurnStartEvent::thunk_GetTTurnStartEventClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTTurnStartEventClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409674
-undefined4 thunk_GetTTurnStartEventClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpPlaybackCallback_005e1fd0_At00409679
-// ghidra_proto void __cdecl thunk_NoOpPlaybackCallback_005e1fd0_At00409679(void)
-// FUNCTION: IMPERIALISM 0x00409679
-undefined4 thunk_NoOpPlaybackCallback_005e1fd0_At00409679(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::thunk_ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// ghidra_proto bool __stdcall thunk_ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x0040967e
-undefined4 thunk_ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpRuntimeUiCallback_005df3f0
-// ghidra_proto undefined thunk_NoOpRuntimeUiCallback_005df3f0()
-// FUNCTION: IMPERIALISM 0x00409683
-undefined4 thunk_NoOpRuntimeUiCallback_005df3f0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ResetRuntimeSelectionRecordBufferAndReturnTrue
-// ghidra_proto void __cdecl thunk_ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
-// FUNCTION: IMPERIALISM 0x0040968d
-undefined4 thunk_ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacArmyView::thunk_InitializeTacArmyViewSurfacesAndControlBindings
-// ghidra_proto void * __thiscall thunk_InitializeTacArmyViewSurfacesAndControlBindings(void)
-// FUNCTION: IMPERIALISM 0x00409697
-undefined4 thunk_InitializeTacArmyViewSurfacesAndControlBindings(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_UpdateTradeSummaryMetricControlsFromRecord
-// ghidra_proto void __thiscall thunk_UpdateTradeSummaryMetricControlsFromRecord(int recordContext)
-// FUNCTION: IMPERIALISM 0x004096a1
-undefined4 thunk_UpdateTradeSummaryMetricControlsFromRecord(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::thunk_ReturnFalseForBlockadePortMissionCapabilityFlagA
-// ghidra_proto bool __stdcall thunk_ReturnFalseForBlockadePortMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x004096a6
-undefined4 thunk_ReturnFalseForBlockadePortMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DispatchLocalizedUiMessageWithTemplateA13A0
-// ghidra_proto void __cdecl thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void)
-// FUNCTION: IMPERIALISM 0x004096b0
-undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeUiResourceEntryFrameAndParent
-// ghidra_proto void __cdecl thunk_InitializeUiResourceEntryFrameAndParent(void)
-// FUNCTION: IMPERIALISM 0x004096b5
-undefined4 thunk_InitializeUiResourceEntryFrameAndParent(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::thunk_DispatchGreatPowerQuarterlyStatusMessageLevel0
-// ghidra_proto void __cdecl thunk_DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
-// FUNCTION: IMPERIALISM 0x004096c4
-undefined4 thunk_DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_`scalar_deleting_destructor'
-// ghidra_proto undefined thunk_`scalar_deleting_destructor'()
-// FUNCTION: IMPERIALISM 0x004096c9
-undefined4 thunk_scalar_deleting_destructor_004096C9(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SeedRecruitAndNavyOrdersForEligibleCoastalCities
-// ghidra_proto void __cdecl thunk_SeedRecruitAndNavyOrdersForEligibleCoastalCities(void)
-// FUNCTION: IMPERIALISM 0x004096ce
-undefined4 thunk_SeedRecruitAndNavyOrdersForEligibleCoastalCities(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemoveNationSlotAndNotifyPeers
-// ghidra_proto void __cdecl thunk_RemoveNationSlotAndNotifyPeers(void)
-// FUNCTION: IMPERIALISM 0x004096d8
-undefined4 thunk_RemoveNationSlotAndNotifyPeers(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ConstructScopedMapQuickDrawContextWithPaletteToken
-// ghidra_proto void __cdecl thunk_ConstructScopedMapQuickDrawContextWithPaletteToken(void)
-// FUNCTION: IMPERIALISM 0x004096dd
-undefined4 thunk_ConstructScopedMapQuickDrawContextWithPaletteToken(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RecenterTextFromMeasuredWidthAndMaybeInvalidate
-// ghidra_proto void __cdecl thunk_RecenterTextFromMeasuredWidthAndMaybeInvalidate(void)
-// FUNCTION: IMPERIALISM 0x004096e7
-undefined4 thunk_RecenterTextFromMeasuredWidthAndMaybeInvalidate(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0
-// ghidra_proto undefined thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
-// FUNCTION: IMPERIALISM 0x004096f6
-undefined4 thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacMapUberPicture::thunk_ApplyTacMapUberPictureDialogModeValue_At0040970a
-// ghidra_proto void __thiscall thunk_ApplyTacMapUberPictureDialogModeValue_At0040970a(int modeValue)
-// FUNCTION: IMPERIALISM 0x0040970a
-undefined4 thunk_ApplyTacMapUberPictureDialogModeValue_At0040970a(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberText::thunk_InitializeNumberTextEntryAndLayoutMetrics
-// ghidra_proto void __thiscall thunk_InitializeNumberTextEntryAndLayoutMetrics(void)
-// FUNCTION: IMPERIALISM 0x0040970f
-undefined4 thunk_InitializeNumberTextEntryAndLayoutMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RefreshMapOrderBattleSideSnapshot
-// ghidra_proto void __cdecl thunk_RefreshMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
-// FUNCTION: IMPERIALISM 0x00409719
-undefined4 thunk_RefreshMapOrderBattleSideSnapshot(void)
-{
-  return 0;
-}
-
-// ghidra_name TBatRepDetLine::thunk_GetTBatRepDetLineClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTBatRepDetLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409723
-undefined4 thunk_GetTBatRepDetLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::thunk_GetTMacViewMgrMessageMap
-// ghidra_proto void __cdecl thunk_GetTMacViewMgrMessageMap(void)
-// FUNCTION: IMPERIALISM 0x0040972d
-undefined4 thunk_GetTMacViewMgrMessageMap(void)
-{
-  return 0;
-}
-
-// ghidra_name TShipAmtBar::thunk_GetTShipAmtBarClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTShipAmtBarClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409737
-undefined4 thunk_GetTShipAmtBarClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::thunk_SetNationPairDiplomacyRelationWithFinalFlag
-// ghidra_proto void thunk_SetNationPairDiplomacyRelationWithFinalFlag(DiplomacyTurnStateManager * pManager, short sourceNationSlot, short targetNationSlot, EDiplomacyRelationCodeRaw relationCode)
-// FUNCTION: IMPERIALISM 0x0040973c
-undefined4 thunk_SetNationPairDiplomacyRelationWithFinalFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetUiControlActiveFlagAndMaybeRefreshWindow
-// ghidra_proto void __thiscall thunk_SetUiControlActiveFlagAndMaybeRefreshWindow(int activeFlag, int refreshNow)
-// FUNCTION: IMPERIALISM 0x00409741
-undefined4 thunk_SetUiControlActiveFlagAndMaybeRefreshWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::thunk_GetOrCreateOverlayQuadRecordByIndex
-// ghidra_proto void * __thiscall thunk_GetOrCreateOverlayQuadRecordByIndex(uint entryIndex)
-// FUNCTION: IMPERIALISM 0x0040974b
-undefined4 thunk_GetOrCreateOverlayQuadRecordByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::thunk_ClearLinkedValueList
-// ghidra_proto void __thiscall thunk_ClearLinkedValueList(void)
-// FUNCTION: IMPERIALISM 0x0040976e
-undefined4 thunk_ClearLinkedValueList(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeTradeScreenBitmapControls
-// ghidra_proto void __cdecl thunk_InitializeTradeScreenBitmapControls(void)
-// FUNCTION: IMPERIALISM 0x00409773
-undefined4 thunk_InitializeTradeScreenBitmapControls(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ProcessNationMapOrderInteractionsAndApplyOutcomes
-// ghidra_proto void __cdecl thunk_ProcessNationMapOrderInteractionsAndApplyOutcomes(int arg1)
-// FUNCTION: IMPERIALISM 0x0040977d
-undefined4 thunk_ProcessNationMapOrderInteractionsAndApplyOutcomes(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::thunk_HandleInvadeMissionActionOnTargetViaBeachhead
-// ghidra_proto bool __thiscall thunk_HandleInvadeMissionActionOnTargetViaBeachhead(void)
-// FUNCTION: IMPERIALISM 0x00409782
-undefined4 thunk_HandleInvadeMissionActionOnTargetViaBeachhead(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_PublishTerrainDescriptorAndNotifyOrderListeners
-// ghidra_proto void __cdecl thunk_PublishTerrainDescriptorAndNotifyOrderListeners(void)
-// FUNCTION: IMPERIALISM 0x00409787
-undefined4 thunk_PublishTerrainDescriptorAndNotifyOrderListeners(void)
-{
-  return 0;
-}
-
-// ghidra_name TRemoteGreatPower::thunk_DestructTRemoteGreatPower
-// ghidra_proto void __thiscall thunk_DestructTRemoteGreatPower(void)
-// FUNCTION: IMPERIALISM 0x0040978c
-undefined4 thunk_DestructTRemoteGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::thunk_IsPortZoneOwnerNationEqual
-// ghidra_proto bool __thiscall thunk_IsPortZoneOwnerNationEqual(void)
-// FUNCTION: IMPERIALISM 0x00409791
-undefined4 thunk_IsPortZoneOwnerNationEqual(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyHumanPlayer::thunk_GetTNavyHumanPlayerClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTNavyHumanPlayerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0040979b
-undefined4 thunk_GetTNavyHumanPlayerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeAverageRelationScoreForNationAcrossEligibleSlots
-// ghidra_proto void __cdecl thunk_ComputeAverageRelationScoreForNationAcrossEligibleSlots(void)
-// FUNCTION: IMPERIALISM 0x004097aa
-undefined4 thunk_ComputeAverageRelationScoreForNationAcrossEligibleSlots(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CreateTMacViewMgrObject
-// ghidra_proto TMacViewMgr * __stdcall thunk_CreateTMacViewMgrObject(void)
-// FUNCTION: IMPERIALISM 0x004097af
-undefined4 thunk_CreateTMacViewMgrObject(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_BuildTileIndexListsForSelectedTerrainClass
-// ghidra_proto void __thiscall thunk_BuildTileIndexListsForSelectedTerrainClass(void)
-// FUNCTION: IMPERIALISM 0x004097be
-undefined4 thunk_BuildTileIndexListsForSelectedTerrainClass(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_HandleCustomMessage2420DispatchTurnEvent
-// ghidra_proto void __stdcall thunk_HandleCustomMessage2420DispatchTurnEvent(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004097c8
-undefined4 thunk_HandleCustomMessage2420DispatchTurnEvent(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinorTradeBidsDialog::thunk_PopulateMinorTradeBidsDialogControlValuesFromNationState_At004097cd
-// ghidra_proto void __thiscall thunk_PopulateMinorTradeBidsDialogControlValuesFromNationState_At004097cd(void)
-// FUNCTION: IMPERIALISM 0x004097cd
-undefined4 thunk_PopulateMinorTradeBidsDialogControlValuesFromNationState_At004097cd(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemovePtrListEntryByOneBasedIndexAndFree
-// ghidra_proto void __cdecl thunk_RemovePtrListEntryByOneBasedIndexAndFree(void)
-// FUNCTION: IMPERIALISM 0x004097d7
-undefined4 thunk_RemovePtrListEntryByOneBasedIndexAndFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_IncrementPlaybackCounterAndNotifyOwnerCallback_At004097dc
-// ghidra_proto void __cdecl thunk_IncrementPlaybackCounterAndNotifyOwnerCallback_At004097dc(void)
-// FUNCTION: IMPERIALISM 0x004097dc
-undefined4 thunk_IncrementPlaybackCounterAndNotifyOwnerCallback_At004097dc(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SerializeTMinisterBaseOrderArrayMetrics
-// ghidra_proto void __cdecl thunk_SerializeTMinisterBaseOrderArrayMetrics(void)
-// FUNCTION: IMPERIALISM 0x004097e1
-undefined4 thunk_SerializeTMinisterBaseOrderArrayMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpUiSetControlVisibleFlag
-// ghidra_proto void __thiscall thunk_NoOpUiSetControlVisibleFlag(int visibleFlag)
-// FUNCTION: IMPERIALISM 0x004097f5
-undefined4 thunk_NoOpUiSetControlVisibleFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::thunk_ApplyJoinEmpireMode0GlobalDiplomacyReset
-// ghidra_proto void __thiscall thunk_ApplyJoinEmpireMode0GlobalDiplomacyReset(void)
-// FUNCTION: IMPERIALISM 0x004097fa
-undefined4 thunk_ApplyJoinEmpireMode0GlobalDiplomacyReset(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::thunk_RebuildNationResourceYieldCountersAndDevelopmentTargets
-// ghidra_proto void __thiscall thunk_RebuildNationResourceYieldCountersAndDevelopmentTargets(void)
-// FUNCTION: IMPERIALISM 0x004097ff
-undefined4 thunk_RebuildNationResourceYieldCountersAndDevelopmentTargets(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RegisterAmbitGameWindowClass
-// ghidra_proto void __cdecl thunk_RegisterAmbitGameWindowClass(void)
-// FUNCTION: IMPERIALISM 0x00409804
-undefined4 thunk_RegisterAmbitGameWindowClass(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_HandleTurnResumeStateTelemetry
-// ghidra_proto void __cdecl thunk_HandleTurnResumeStateTelemetry(void)
-// FUNCTION: IMPERIALISM 0x0040980e
-undefined4 thunk_HandleTurnResumeStateTelemetry(void)
-{
-  return 0;
-}
-
-// ghidra_name TStatusPicture::thunk_GetTStatusPictureClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTStatusPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0040981d
-undefined4 thunk_GetTStatusPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetMapActionContextTargetTileAndRefreshMarkers
-// ghidra_proto void __cdecl thunk_SetMapActionContextTargetTileAndRefreshMarkers(void)
-// FUNCTION: IMPERIALISM 0x0040982c
-undefined4 thunk_SetMapActionContextTargetTileAndRefreshMarkers(void)
-{
-  return 0;
-}
-
-// ghidra_name TRailAmtBar::thunk_ConstructTRailAmtBarBaseState
-// ghidra_proto void * __thiscall thunk_ConstructTRailAmtBarBaseState(void)
-// FUNCTION: IMPERIALISM 0x0040983b
-undefined4 thunk_ConstructTRailAmtBarBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_PromoteMapOrderChainAndQueue
-// ghidra_proto void __fastcall thunk_PromoteMapOrderChainAndQueue(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00409840
-undefined4 thunk_PromoteMapOrderChainAndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::thunk_DestructTCivToolbarAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTCivToolbarAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409845
-undefined4 thunk_DestructTCivToolbarAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::thunk_GetInvadeMissionClassName
-// ghidra_proto void * __cdecl thunk_GetInvadeMissionClassName(void)
-// FUNCTION: IMPERIALISM 0x0040984a
-undefined4 thunk_GetInvadeMissionClassName(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::thunk_CopyDiamondMaskBlockKernel
-// ghidra_proto void __thiscall thunk_CopyDiamondMaskBlockKernel(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x0040984f
-undefined4 thunk_CopyDiamondMaskBlockKernel(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RefreshNationStatusLabelsAndCodesForSlotOrAll
-// ghidra_proto void __thiscall thunk_RefreshNationStatusLabelsAndCodesForSlotOrAll(int slotNationId)
-// FUNCTION: IMPERIALISM 0x00409859
-undefined4 thunk_RefreshNationStatusLabelsAndCodesForSlotOrAll(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_Cluster_GameplayHint_004962c0
-// ghidra_proto void __cdecl thunk_Cluster_GameplayHint_004962c0(void)
-// FUNCTION: IMPERIALISM 0x00409863
-undefined4 thunk_Cluster_GameplayHint_004962c0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetPtrListEntryByOneBasedIndex
-// ghidra_proto void __cdecl thunk_GetPtrListEntryByOneBasedIndex(void)
-// FUNCTION: IMPERIALISM 0x00409868
-undefined4 thunk_GetPtrListEntryByOneBasedIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetForeignMinisterReadyFlag14
-// ghidra_proto void __cdecl thunk_SetForeignMinisterReadyFlag14(void)
-// FUNCTION: IMPERIALISM 0x00409877
-undefined4 thunk_SetForeignMinisterReadyFlag14(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DeserializeCityProductionQueueCommand
-// ghidra_proto void __thiscall thunk_DeserializeCityProductionQueueCommand(void * pArchive)
-// FUNCTION: IMPERIALISM 0x00409886
-undefined4 thunk_DeserializeCityProductionQueueCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ThunkTargetImpl_0047aae0
-// ghidra_proto void __cdecl thunk_ThunkTargetImpl_0047aae0(void)
-// FUNCTION: IMPERIALISM 0x00409890
-undefined4 thunk_ThunkTargetImpl_0047aae0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CreateNextTradeCommandAndFormatPrompt
-// ghidra_proto void __cdecl thunk_CreateNextTradeCommandAndFormatPrompt(void)
-// FUNCTION: IMPERIALISM 0x00409895
-undefined4 thunk_CreateNextTradeCommandAndFormatPrompt(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalPlayer::thunk_ConstructTacticalPlayerBaseState
-// ghidra_proto void __thiscall thunk_ConstructTacticalPlayerBaseState(void)
-// FUNCTION: IMPERIALISM 0x0040989f
-undefined4 thunk_ConstructTacticalPlayerBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RenderEngineerDialogBackground
-// ghidra_proto void __cdecl thunk_RenderEngineerDialogBackground(void)
-// FUNCTION: IMPERIALISM 0x004098a4
-undefined4 thunk_RenderEngineerDialogBackground(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::thunk_InvokeStrategicMapViewMethod70
-// ghidra_proto void __cdecl thunk_InvokeStrategicMapViewMethod70(void)
-// FUNCTION: IMPERIALISM 0x004098b8
-undefined4 thunk_InvokeStrategicMapViewMethod70(void)
-{
-  return 0;
-}
-
-// ghidra_name TGameSetupPicture::thunk_GetTGameSetupPictureClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTGameSetupPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004098bd
-undefined4 thunk_GetTGameSetupPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CleanupTMissionAndReleaseOwnedOrders
-// ghidra_proto void __cdecl thunk_CleanupTMissionAndReleaseOwnedOrders(void)
-// FUNCTION: IMPERIALISM 0x004098c2
-undefined4 thunk_CleanupTMissionAndReleaseOwnedOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealList::thunk_DestructTDealListAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTDealListAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004098c7
-undefined4 thunk_DestructTDealListAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
-// ghidra_proto undefined thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(void)
-// FUNCTION: IMPERIALISM 0x004098d1
-undefined4 thunk_WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeDiplomacyCouncilViewControlsAndTicker
-// ghidra_proto void __cdecl thunk_InitializeDiplomacyCouncilViewControlsAndTicker(void)
-// FUNCTION: IMPERIALISM 0x004098d6
-undefined4 thunk_InitializeDiplomacyCouncilViewControlsAndTicker(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_AssertMcAppUILine1914
-// ghidra_proto void thunk_AssertMcAppUILine1914(void)
-// FUNCTION: IMPERIALISM 0x004098db
-undefined4 thunk_AssertMcAppUILine1914(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::thunk_AppendSixDwordsToDynamicRecordArray
-// ghidra_proto void __cdecl thunk_AppendSixDwordsToDynamicRecordArray(void)
-// FUNCTION: IMPERIALISM 0x004098e0
-undefined4 thunk_AppendSixDwordsToDynamicRecordArray(void)
-{
-  return 0;
-}
-
-// ghidra_name TPlaceCityDialog::thunk_BuildCityViewResourceRows
-// ghidra_proto void __thiscall thunk_BuildCityViewResourceRows(void)
-// FUNCTION: IMPERIALISM 0x004098e5
-undefined4 thunk_BuildCityViewResourceRows(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_FinalizeDiplomacyHitMaskOpcodeBufferAlignment
-// ghidra_proto undefined thunk_FinalizeDiplomacyHitMaskOpcodeBufferAlignment()
-// FUNCTION: IMPERIALISM 0x004098f4
-undefined4 thunk_FinalizeDiplomacyHitMaskOpcodeBufferAlignment(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetEventPayloadNationIdFromSlotIndexWithSentinelHandling
-// ghidra_proto void __cdecl thunk_SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(void)
-// FUNCTION: IMPERIALISM 0x004098f9
-undefined4 thunk_SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeArmyMissionDotProductScore
-// ghidra_proto void __cdecl thunk_ComputeArmyMissionDotProductScore(void)
-// FUNCTION: IMPERIALISM 0x004098fe
-undefined4 thunk_ComputeArmyMissionDotProductScore(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch
-// ghidra_proto void __thiscall thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
-// FUNCTION: IMPERIALISM 0x00409903
-undefined4 thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::thunk_RenderMapInteractionPreviewSlotsAndTransientSprites
-// ghidra_proto void __thiscall thunk_RenderMapInteractionPreviewSlotsAndTransientSprites(int arg1)
-// FUNCTION: IMPERIALISM 0x00409908
-undefined4 thunk_RenderMapInteractionPreviewSlotsAndTransientSprites(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMapView::thunk_ResetDiplomacyOverlayFlagAndDispatchChildUpdate
-// ghidra_proto void __thiscall thunk_ResetDiplomacyOverlayFlagAndDispatchChildUpdate(void)
-// FUNCTION: IMPERIALISM 0x00409917
-undefined4 thunk_ResetDiplomacyOverlayFlagAndDispatchChildUpdate(void)
-{
-  return 0;
-}
-
-// ghidra_name TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClipRegion
-// ghidra_proto undefined thunk_RefreshNationHeaderDropShadowTextWithClipRegion()
-// FUNCTION: IMPERIALISM 0x0040991c
-undefined4 thunk_RefreshNationHeaderDropShadowTextWithClipRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DispatchNationInteractionAmountByModePolicyB
-// ghidra_proto void __cdecl thunk_DispatchNationInteractionAmountByModePolicyB(void)
-// FUNCTION: IMPERIALISM 0x00409926
-undefined4 thunk_DispatchNationInteractionAmountByModePolicyB(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_PopulateMapContextInfoPanelStringsByTileSelection
-// ghidra_proto void __cdecl thunk_PopulateMapContextInfoPanelStringsByTileSelection(void)
-// FUNCTION: IMPERIALISM 0x00409935
-undefined4 thunk_PopulateMapContextInfoPanelStringsByTileSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_HasRenderableParentAndContent
-// ghidra_proto bool __thiscall thunk_HasRenderableParentAndContent(void)
-// FUNCTION: IMPERIALISM 0x0040993a
-undefined4 thunk_HasRenderableParentAndContent(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RefreshNationAdvisorLabelStrings
-// ghidra_proto void __cdecl thunk_RefreshNationAdvisorLabelStrings(void)
-// FUNCTION: IMPERIALISM 0x0040993f
-undefined4 thunk_RefreshNationAdvisorLabelStrings(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90
-// ghidra_proto void thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90(DiplomacyTurnStateManager * pManager)
-// FUNCTION: IMPERIALISM 0x00409944
-undefined4 thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
-{
-  return 0;
-}
-
-// ghidra_name TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// ghidra_proto void __thiscall thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
-// FUNCTION: IMPERIALISM 0x00409949
-undefined4 thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DispatchTurnEvent3B8AndWaitForCompletionFlag
-// ghidra_proto void __cdecl thunk_DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
-// FUNCTION: IMPERIALISM 0x0040994e
-undefined4 thunk_DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DeleteLegacyCliSaveImpFiles_At00409953
-// ghidra_proto void __cdecl thunk_DeleteLegacyCliSaveImpFiles_At00409953(void)
-// FUNCTION: IMPERIALISM 0x00409953
-undefined4 thunk_DeleteLegacyCliSaveImpFiles_At00409953(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::thunk_DestructTTownAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTTownAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409958
-undefined4 thunk_DestructTTownAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TMegaPicture::thunk_DestructTMegaPictureAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTMegaPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0040996c
-undefined4 thunk_DestructTMegaPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::thunk_WrapperFor_TGreatPower_VtblSlot32_At004e7630_At00409971
-// ghidra_proto undefined thunk_WrapperFor_TGreatPower_VtblSlot32_At004e7630_At00409971()
-// FUNCTION: IMPERIALISM 0x00409971
-undefined4 thunk_WrapperFor_TGreatPower_VtblSlot32_At004e7630_At00409971(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::thunk_SelectNationSlotFromCollectedStandingEntries
-// ghidra_proto void __thiscall thunk_SelectNationSlotFromCollectedStandingEntries(void)
-// FUNCTION: IMPERIALISM 0x00409976
-undefined4 thunk_SelectNationSlotFromCollectedStandingEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::thunk_RecomputeTownAdjacentUniversityWeightedTotals
-// ghidra_proto void __thiscall thunk_RecomputeTownAdjacentUniversityWeightedTotals(void)
-// FUNCTION: IMPERIALISM 0x0040997b
-undefined4 thunk_RecomputeTownAdjacentUniversityWeightedTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry
-// ghidra_proto void __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x00409980
-undefined4 thunk_ConstructUiClickablePictureResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeCivUnitOrderObject
-// ghidra_proto void __cdecl thunk_InitializeCivUnitOrderObject(void)
-// FUNCTION: IMPERIALISM 0x00409985
-undefined4 thunk_InitializeCivUnitOrderObject(void)
-{
-  return 0;
-}
-
-// ghidra_name THelpPicture::thunk_GetTHelpPictureClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTHelpPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0040998f
-undefined4 thunk_GetTHelpPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TInfoBarText::thunk_DestructTInfoBarTextAndMaybeFree
-// ghidra_proto void __fastcall thunk_DestructTInfoBarTextAndMaybeFree(TInfoBarText * pThis)
-// FUNCTION: IMPERIALISM 0x00409994
-undefined4 thunk_DestructTInfoBarTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CopySpriteSurfaceToStrideBuffer
-// ghidra_proto void __cdecl thunk_CopySpriteSurfaceToStrideBuffer(void)
-// FUNCTION: IMPERIALISM 0x00409999
-undefined4 thunk_CopySpriteSurfaceToStrideBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextDiplomationCommand::thunk_GetTNextDiplomationCommandClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTNextDiplomationCommandClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0040999e
-undefined4 thunk_GetTNextDiplomationCommandClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::thunk_RenderMapOrderEntryTilePreview
-// ghidra_proto void __thiscall thunk_RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x004099a3
-undefined4 thunk_RenderMapOrderEntryTilePreview(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpTextPostLayoutHook
-// ghidra_proto void __cdecl thunk_NoOpTextPostLayoutHook(void)
-// FUNCTION: IMPERIALISM 0x004099ad
-undefined4 thunk_NoOpTextPostLayoutHook(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_QueryDriveTypeByDriveIndex
-// ghidra_proto void __cdecl thunk_QueryDriveTypeByDriveIndex(int driveIndex)
-// FUNCTION: IMPERIALISM 0x004099b2
-undefined4 thunk_QueryDriveTypeByDriveIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_LoadScenarioMetadataByIndexIntoUiControlCore
-// ghidra_proto void __thiscall thunk_LoadScenarioMetadataByIndexIntoUiControlCore(ushort param_1)
-// FUNCTION: IMPERIALISM 0x004099b7
-undefined4 thunk_LoadScenarioMetadataByIndexIntoUiControlCore(void)
-{
-  return 0;
-}
-
-// ghidra_name TTownNameDialog::thunk_DestructTTownNameDialogAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTTownNameDialogAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004099bc
-undefined4 thunk_DestructTTownNameDialogAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_HandleTurnFlowStateTickOrPostTurnEvent5DC
-// ghidra_proto void __cdecl thunk_HandleTurnFlowStateTickOrPostTurnEvent5DC(void)
-// FUNCTION: IMPERIALISM 0x004099c6
-undefined4 thunk_HandleTurnFlowStateTickOrPostTurnEvent5DC(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RasterizeHexNeighborTerrainPaletteMap
-// ghidra_proto undefined thunk_RasterizeHexNeighborTerrainPaletteMap()
-// FUNCTION: IMPERIALISM 0x004099d0
-undefined4 thunk_RasterizeHexNeighborTerrainPaletteMap(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeTacticalReachableTileCostsByUnitCategory
-// ghidra_proto void __thiscall thunk_ComputeTacticalReachableTileCostsByUnitCategory(void * param_1)
-// FUNCTION: IMPERIALISM 0x004099d5
-undefined4 thunk_ComputeTacticalReachableTileCostsByUnitCategory(void)
-{
-  return 0;
-}
-
-// ghidra_name TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady
-// ghidra_proto bool __thiscall thunk_ClearBlockadePortMissionChildOrderLinksIfReady(void)
-// FUNCTION: IMPERIALISM 0x004099da
-undefined4 thunk_ClearBlockadePortMissionChildOrderLinksIfReady(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CheckTileVariantCodeMembershipSetA
-// ghidra_proto void __cdecl thunk_CheckTileVariantCodeMembershipSetA(void)
-// FUNCTION: IMPERIALISM 0x004099df
-undefined4 thunk_CheckTileVariantCodeMembershipSetA(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeAdvisoryMapNodeCompositeScoreByMode
-// ghidra_proto float __cdecl thunk_ComputeAdvisoryMapNodeCompositeScoreByMode(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004099e9
-undefined4 thunk_ComputeAdvisoryMapNodeCompositeScoreByMode(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ShowRuntimeSelectionDialogAndReturnRecord
-// ghidra_proto void __cdecl thunk_ShowRuntimeSelectionDialogAndReturnRecord(void)
-// FUNCTION: IMPERIALISM 0x004099f8
-undefined4 thunk_ShowRuntimeSelectionDialogAndReturnRecord(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
-// ghidra_proto void thunk_ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(void)
-// FUNCTION: IMPERIALISM 0x00409a07
-undefined4 thunk_ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name TAmbitFileBasedDocument::thunk_DestructTAmbitFileBasedDocumentAndMaybeFree
-// ghidra_proto void * __thiscall thunk_DestructTAmbitFileBasedDocumentAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409a0c
-undefined4 thunk_DestructTAmbitFileBasedDocumentAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetGlobalQuickDrawOrigin
-// ghidra_proto void __cdecl thunk_SetGlobalQuickDrawOrigin(short originX, short originY)
-// FUNCTION: IMPERIALISM 0x00409a11
-undefined4 thunk_SetGlobalQuickDrawOrigin(void)
-{
-  return 0;
-}
-
-// ghidra_name TOnOffRadioButton::thunk_GetTOnOffRadioButtonClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTOnOffRadioButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409a25
-undefined4 thunk_GetTOnOffRadioButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SelectAndApplyTacticalCursorModeProfile
-// ghidra_proto void __fastcall thunk_SelectAndApplyTacticalCursorModeProfile(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x00409a34
-undefined4 thunk_SelectAndApplyTacticalCursorModeProfile(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NumericEntryMethod_00409a39
-// ghidra_proto void __cdecl thunk_NumericEntryMethod_00409a39(void)
-// FUNCTION: IMPERIALISM 0x00409a39
-undefined4 thunk_NumericEntryMethod_00409a39(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountingStream::thunk_GetTCountingStreamClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTCountingStreamClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409a3e
-undefined4 thunk_GetTCountingStreamClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemoveHashIndexedRecordByShortKey
-// ghidra_proto void __cdecl thunk_RemoveHashIndexedRecordByShortKey(void)
-// FUNCTION: IMPERIALISM 0x00409a48
-undefined4 thunk_RemoveHashIndexedRecordByShortKey(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
-// ghidra_proto void __thiscall thunk_HandleSplitArrowAutoRepeatTickAndDispatch_Offset84(int repeatState, void * arg8, void * argC, void * dispatchArg, void * arg14)
-// FUNCTION: IMPERIALISM 0x00409a4d
-undefined4 thunk_HandleSplitArrowAutoRepeatTickAndDispatch_Offset84(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_UpdateControlSeaZoneMissionStateFromTargetNavySimilarity
-// ghidra_proto void __cdecl thunk_UpdateControlSeaZoneMissionStateFromTargetNavySimilarity(void)
-// FUNCTION: IMPERIALISM 0x00409a57
-undefined4 thunk_UpdateControlSeaZoneMissionStateFromTargetNavySimilarity(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WriteDwordToStreamViaVtableSlot78
-// ghidra_proto void __cdecl thunk_WriteDwordToStreamViaVtableSlot78(void)
-// FUNCTION: IMPERIALISM 0x00409a5c
-undefined4 thunk_WriteDwordToStreamViaVtableSlot78(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::thunk_HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14
-// ghidra_proto undefined thunk_HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14()
-// FUNCTION: IMPERIALISM 0x00409a61
-undefined4 thunk_HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_PromoteNationPendingActionSlot5IfCapabilityActive
-// ghidra_proto void __cdecl thunk_PromoteNationPendingActionSlot5IfCapabilityActive(void)
-// FUNCTION: IMPERIALISM 0x00409a6b
-undefined4 thunk_PromoteNationPendingActionSlot5IfCapabilityActive(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00492de0
-// ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00492de0()
-// FUNCTION: IMPERIALISM 0x00409a7a
-undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00492de0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DispatchVfuncA0ToLinkedChildListSlot44
-// ghidra_proto void __cdecl thunk_DispatchVfuncA0ToLinkedChildListSlot44(void)
-// FUNCTION: IMPERIALISM 0x00409a8e
-undefined4 thunk_DispatchVfuncA0ToLinkedChildListSlot44(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NotifyGlobalCaptureOwnerState1WithCachedCoords
-// ghidra_proto void __cdecl thunk_NotifyGlobalCaptureOwnerState1WithCachedCoords(void)
-// FUNCTION: IMPERIALISM 0x00409a9d
-undefined4 thunk_NotifyGlobalCaptureOwnerState1WithCachedCoords(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::thunk_GetTCommodityLineClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTCommodityLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409aa2
-undefined4 thunk_GetTCommodityLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TItemBoyView::thunk_GetTItemBoyViewClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTItemBoyViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409aa7
-undefined4 thunk_GetTItemBoyViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeCallbackForRecordRangeWithStride
-// ghidra_proto void __stdcall InvokeCallbackForRecordRangeWithStride(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x00412600
-undefined4 InvokeCallbackForRecordRangeWithStride(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C5_I60_00412640
-// ghidra_proto undefined OrphanCallChain_C5_I60_00412640()
-// FUNCTION: IMPERIALISM 0x00412640
-undefined4 OrphanCallChain_C5_I60_00412640(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C7_I93_00412720
-// ghidra_proto undefined OrphanCallChain_C7_I93_00412720()
-// FUNCTION: IMPERIALISM 0x00412720
-undefined4 OrphanCallChain_C7_I93_00412720(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadOrCreateRegistryStringValueWithFallback
-// ghidra_proto undefined ReadOrCreateRegistryStringValueWithFallback()
-// FUNCTION: IMPERIALISM 0x00412840
-undefined4 ReadOrCreateRegistryStringValueWithFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeAfxThreadVslot7CAndGetValueAtOffset98
-// ghidra_proto void __cdecl InvokeAfxThreadVslot7CAndGetValueAtOffset98(void)
-// FUNCTION: IMPERIALISM 0x00412a70
-undefined4 InvokeAfxThreadVslot7CAndGetValueAtOffset98(void)
-{
-  return 0;
-}
-
-// ghidra_name ThunkTargetImpl_00412aa0
-// ghidra_proto void __cdecl ThunkTargetImpl_00412aa0(void)
-// FUNCTION: IMPERIALISM 0x00412aa0
-undefined4 ThunkTargetImpl_00412aa0(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructImperialismApplicationSingleton
-// ghidra_proto void __cdecl ConstructImperialismApplicationSingleton(void)
-// FUNCTION: IMPERIALISM 0x00412ac0
-undefined4 ConstructImperialismApplicationSingleton(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::TMacViewMgr_Slot02_NoOpRet4
-// ghidra_proto undefined TMacViewMgr_Slot02_NoOpRet4()
-// FUNCTION: IMPERIALISM 0x00412bd0
-undefined4 TMacViewMgr_Slot02_NoOpRet4(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseImperialismApplicationSingleton
-// ghidra_proto void __cdecl ReleaseImperialismApplicationSingleton(void)
-// FUNCTION: IMPERIALISM 0x00412c30
-undefined4 ReleaseImperialismApplicationSingleton(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyImperialismApplicationSingleton
-// ghidra_proto void __cdecl DestroyImperialismApplicationSingleton(void)
-// FUNCTION: IMPERIALISM 0x00412c60
-undefined4 DestroyImperialismApplicationSingleton(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeImperialismAppSingletonGlobal
-// ghidra_proto undefined InitializeImperialismAppSingletonGlobal()
-// FUNCTION: IMPERIALISM 0x00412d40
-undefined4 InitializeImperialismAppSingletonGlobal(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyImperialismAppSingletonGlobal
-// ghidra_proto undefined DestroyImperialismAppSingletonGlobal()
-// FUNCTION: IMPERIALISM 0x00412d70
-undefined4 DestroyImperialismAppSingletonGlobal(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00412d90
-// ghidra_proto undefined OrphanCallChain_C1_I05_00412d90()
-// FUNCTION: IMPERIALISM 0x00412d90
-undefined4 OrphanCallChain_C1_I05_00412d90(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeImperialismApplicationInstance
-// ghidra_proto void __cdecl InitializeImperialismApplicationInstance(void)
-// FUNCTION: IMPERIALISM 0x00412dc0
-undefined4 InitializeImperialismApplicationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250
-// ghidra_proto void __thiscall WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250(void)
-// FUNCTION: IMPERIALISM 0x00413250
-undefined4 WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_004133a0
-// ghidra_proto undefined OrphanCallChain_C1_I08_004133a0()
-// FUNCTION: IMPERIALISM 0x004133a0
-undefined4 OrphanCallChain_C1_I08_004133a0(void)
-{
-  return 0;
-}
-
-// ghidra_name ParseDirectionTokenAndSetMovementFlags
-// ghidra_proto undefined ParseDirectionTokenAndSetMovementFlags(void)
-// FUNCTION: IMPERIALISM 0x004133d0
-undefined4 ParseDirectionTokenAndSetMovementFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413550
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550()
-// FUNCTION: IMPERIALISM 0x00413550
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413550(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
-// FUNCTION: IMPERIALISM 0x00413580
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::WrapperFor_FreeHeapBufferIfNotNull_At004135f0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004135f0()
-// FUNCTION: IMPERIALISM 0x004135f0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004135f0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004136c0
-// ghidra_proto undefined OrphanRetStub_004136c0()
-// FUNCTION: IMPERIALISM 0x004136c0
-undefined4 OrphanRetStub_004136c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_004136e0
-// ghidra_proto undefined OrphanVtableAssignStub_004136e0()
-// FUNCTION: IMPERIALISM 0x004136e0
-undefined4 OrphanVtableAssignStub_004136e0(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowDialogTemplate64Modal
-// ghidra_proto undefined ShowDialogTemplate64Modal()
-// FUNCTION: IMPERIALISM 0x00413700
-undefined4 ShowDialogTemplate64Modal(void)
-{
-  return 0;
-}
-
-// ghidra_name ShutdownImperialismApplicationInstance
-// ghidra_proto void __cdecl ShutdownImperialismApplicationInstance(void)
-// FUNCTION: IMPERIALISM 0x00413780
-undefined4 ShutdownImperialismApplicationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name PostCommand100ToMainWindow
-// ghidra_proto undefined PostCommand100ToMainWindow()
-// FUNCTION: IMPERIALISM 0x004138b0
-undefined4 PostCommand100ToMainWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleStartupCommand100
-// ghidra_proto void __cdecl HandleStartupCommand100(void)
-// FUNCTION: IMPERIALISM 0x00413950
-undefined4 HandleStartupCommand100(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0
-// ghidra_proto undefined WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0()
-// FUNCTION: IMPERIALISM 0x004139f0
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RefreshBackdropOnInputMessages_At00413a20
-// ghidra_proto undefined WrapperFor_RefreshBackdropOnInputMessages_At00413a20()
-// FUNCTION: IMPERIALISM 0x00413a20
-undefined4 WrapperFor_RefreshBackdropOnInputMessages_At00413a20(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowSelectedDibInTemplateDDDialog
-// ghidra_proto undefined ShowSelectedDibInTemplateDDDialog()
-// FUNCTION: IMPERIALISM 0x00413a50
-undefined4 ShowSelectedDibInTemplateDDDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CDialog_At00413b80
-// ghidra_proto undefined WrapperFor_CDialog_At00413b80()
-// FUNCTION: IMPERIALISM 0x00413b80
-undefined4 WrapperFor_CDialog_At00413b80(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413c00
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413c00()
-// FUNCTION: IMPERIALISM 0x00413c00
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413c00(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl(void)
-// FUNCTION: IMPERIALISM 0x00413c30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413cd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0()
-// FUNCTION: IMPERIALISM 0x00413cd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413cd0(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowNationSelectDialogAndRedispatchCurrentTurnEvent
-// ghidra_proto undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()
-// FUNCTION: IMPERIALISM 0x00413d20
-undefined4 ShowNationSelectDialogAndRedispatchCurrentTurnEvent(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl(void)
-// FUNCTION: IMPERIALISM 0x00413ed0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleDialogResultAndPostCommand100
-// ghidra_proto void __cdecl HandleDialogResultAndPostCommand100(void)
-// FUNCTION: IMPERIALISM 0x00413f60
-undefined4 HandleDialogResultAndPostCommand100(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CDialog_At00414070
-// ghidra_proto undefined WrapperFor_CDialog_At00414070()
-// FUNCTION: IMPERIALISM 0x00414070
-undefined4 WrapperFor_CDialog_At00414070(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyDialogSelectionToNationState
-// ghidra_proto undefined ApplyDialogSelectionToNationState()
-// FUNCTION: IMPERIALISM 0x004140f0
-undefined4 ApplyDialogSelectionToNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl(void)
-// FUNCTION: IMPERIALISM 0x00414320
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadAndPreviewDibFromDialogInput
-// ghidra_proto undefined LoadAndPreviewDibFromDialogInput()
-// FUNCTION: IMPERIALISM 0x004143b0
-undefined4 LoadAndPreviewDibFromDialogInput(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_OnIdle_At004145f0
-// ghidra_proto void __cdecl WrapperFor_OnIdle_At004145f0(void)
-// FUNCTION: IMPERIALISM 0x004145f0
-undefined4 WrapperFor_OnIdle_At004145f0(void)
-{
-  return 0;
-}
-
-// ghidra_name AssertAmbitSubsystemReadyOrFailWithBmp3B6
-// ghidra_proto undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()
-// FUNCTION: IMPERIALISM 0x00414640
-undefined4 AssertAmbitSubsystemReadyOrFailWithBmp3B6(void)
-{
-  return 0;
-}
-
-// ghidra_name PostWmCloseToMainThreadWindow
-// ghidra_proto undefined PostWmCloseToMainThreadWindow()
-// FUNCTION: IMPERIALISM 0x004146d0
-undefined4 PostWmCloseToMainThreadWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name PostTurnEventCodeMessage2420
-// ghidra_proto void __cdecl PostTurnEventCodeMessage2420(void)
-// FUNCTION: IMPERIALISM 0x00414720
-undefined4 PostTurnEventCodeMessage2420(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00414770
-// ghidra_proto undefined OrphanRetStub_00414770()
-// FUNCTION: IMPERIALISM 0x00414770
-undefined4 OrphanRetStub_00414770(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850
-// ghidra_proto void __cdecl LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850(void)
-// FUNCTION: IMPERIALISM 0x00414850
-undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850(void)
-{
-  return 0;
-}
-
-// ghidra_name DetectImperialismInstallDriveAndSetPathPrefix
-// ghidra_proto void __cdecl DetectImperialismInstallDriveAndSetPathPrefix(void)
-// FUNCTION: IMPERIALISM 0x00414870
-undefined4 DetectImperialismInstallDriveAndSetPathPrefix(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadLanguageResourcesFromIrgFiles
-// ghidra_proto void __cdecl LoadLanguageResourcesFromIrgFiles(void)
-// FUNCTION: IMPERIALISM 0x004149a0
-undefined4 LoadLanguageResourcesFromIrgFiles(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000
-// ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000()
-// FUNCTION: IMPERIALISM 0x00415000
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::ExecuteNoOpNewGameCommand
-// ghidra_proto void __thiscall ExecuteNoOpNewGameCommand(void)
-// FUNCTION: IMPERIALISM 0x00415030
-undefined4 ExecuteNoOpNewGameCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00415050
-// ghidra_proto undefined OrphanCallChain_C1_I05_00415050()
-// FUNCTION: IMPERIALISM 0x00415050
-undefined4 OrphanCallChain_C1_I05_00415050(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00415070
-// ghidra_proto undefined OrphanCallChain_C1_I05_00415070()
-// FUNCTION: IMPERIALISM 0x00415070
-undefined4 OrphanCallChain_C1_I05_00415070(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowAutoResolutionDialogIfNeeded
-// ghidra_proto undefined ShowAutoResolutionDialogIfNeeded()
-// FUNCTION: IMPERIALISM 0x00415090
-undefined4 ShowAutoResolutionDialogIfNeeded(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyDialogWithListBoxAndHotKeyControl
-// ghidra_proto void __thiscall DestroyDialogWithListBoxAndHotKeyControl(void)
-// FUNCTION: IMPERIALISM 0x004152e0
-undefined4 DestroyDialogWithListBoxAndHotKeyControl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380
-// ghidra_proto undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380()
-// FUNCTION: IMPERIALISM 0x00415380
-undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadSettingsPrefIntByIndex
-// ghidra_proto int __cdecl ReadSettingsPrefIntByIndex(int nPrefIndex, int nDefault)
-// FUNCTION: IMPERIALISM 0x004153a0
-undefined4 ReadSettingsPrefIntByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name WriteSettingsPrefIntByIndex
-// ghidra_proto void __cdecl WriteSettingsPrefIntByIndex(int nPrefIndex, int nValue)
-// FUNCTION: IMPERIALISM 0x00415440
-undefined4 WriteSettingsPrefIntByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name GetSettingValueFromSettingsSection
-// ghidra_proto void __cdecl GetSettingValueFromSettingsSection(void)
-// FUNCTION: IMPERIALISM 0x004154e0
-undefined4 GetSettingValueFromSettingsSection(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_WriteProfileInt_At00415510
-// ghidra_proto void __cdecl WrapperFor_WriteProfileInt_At00415510(void)
-// FUNCTION: IMPERIALISM 0x00415510
-undefined4 WrapperFor_WriteProfileInt_At00415510(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetProfileStringA_At00415540
-// ghidra_proto void __cdecl WrapperFor_GetProfileStringA_At00415540(void)
-// FUNCTION: IMPERIALISM 0x00415540
-undefined4 WrapperFor_GetProfileStringA_At00415540(void)
-{
-  return 0;
-}
-
-// ghidra_name SetSettingValueInSettingsSection
-// ghidra_proto void __cdecl SetSettingValueInSettingsSection(void)
-// FUNCTION: IMPERIALISM 0x00415580
-undefined4 SetSettingValueInSettingsSection(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyAutoResolutionModeAndPersist
-// ghidra_proto void __cdecl ApplyAutoResolutionModeAndPersist(void)
-// FUNCTION: IMPERIALISM 0x004155b0
-undefined4 ApplyAutoResolutionModeAndPersist(void)
-{
-  return 0;
-}
-
-// ghidra_name WarnLowDiskSpaceAndConfirmContinue
-// ghidra_proto undefined WarnLowDiskSpaceAndConfirmContinue()
-// FUNCTION: IMPERIALISM 0x00415760
-undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl(void)
-// FUNCTION: IMPERIALISM 0x00415b70
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEventVtableSlot24CopyPayloadBuffer
-// ghidra_proto void __cdecl HandleTurnEventVtableSlot24CopyPayloadBuffer(void)
-// FUNCTION: IMPERIALISM 0x00415ce0
-undefined4 HandleTurnEventVtableSlot24CopyPayloadBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCityDialogValueDword10
-// ghidra_proto int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)
-// FUNCTION: IMPERIALISM 0x00415d50
-undefined4 GetCityDialogValueDword10(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCityDialogValueDword10
-// ghidra_proto void __thiscall SetCityDialogValueDword10(int value)
-// FUNCTION: IMPERIALISM 0x00415d70
-undefined4 SetCityDialogValueDword10(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_WrapperFor_FreeLinkedBlockChain_At00415e70
-// ghidra_proto undefined thunk_WrapperFor_FreeLinkedBlockChain_At00415e70()
-// FUNCTION: IMPERIALISM 0x00415e55
-undefined4 thunk_WrapperFor_FreeLinkedBlockChain_At00415e70(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeLinkedBlockChain_At00415e70
-// ghidra_proto undefined WrapperFor_FreeLinkedBlockChain_At00415e70()
-// FUNCTION: IMPERIALISM 0x00415e70
-undefined4 WrapperFor_FreeLinkedBlockChain_At00415e70(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00415f00
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00415f00(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00415f00
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00415f00(void)
-{
-  return 0;
-}
-
-// ghidra_name ThunkTargetImpl_00415f50
-// ghidra_proto void __cdecl ThunkTargetImpl_00415f50(void)
-// FUNCTION: IMPERIALISM 0x00415f50
-undefined4 ThunkTargetImpl_00415f50(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00415f90
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00415f90()
-// FUNCTION: IMPERIALISM 0x00415f90
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTradeSchoolDialogControls
-// ghidra_proto int * __cdecl BuildTradeSchoolDialogControls(void * pFactoryContext, int nEventCode)
-// FUNCTION: IMPERIALISM 0x00415fe0
-undefined4 BuildTradeSchoolDialogControls(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateUiResourceNode
-// ghidra_proto void __cdecl AllocateUiResourceNode(void)
-// FUNCTION: IMPERIALISM 0x0041b1c0
-undefined4 AllocateUiResourceNode(void)
-{
-  return 0;
-}
-
-// ghidra_name RegisterUiResourceEntry
-// ghidra_proto void __cdecl RegisterUiResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x0041b210
-undefined4 RegisterUiResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceStateFlags
-// ghidra_proto void __cdecl SetUiResourceStateFlags(void)
-// FUNCTION: IMPERIALISM 0x0041b3a0
-undefined4 SetUiResourceStateFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyUiResourceLayoutFromContext
-// ghidra_proto void __cdecl ApplyUiResourceLayoutFromContext(void)
-// FUNCTION: IMPERIALISM 0x0041b3d0
-undefined4 ApplyUiResourceLayoutFromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceContextStringCode
-// ghidra_proto void __cdecl SetUiResourceContextStringCode(void)
-// FUNCTION: IMPERIALISM 0x0041b400
-undefined4 SetUiResourceContextStringCode(void)
-{
-  return 0;
-}
-
-// ghidra_name ZeroUiResourceContextStyleBytes
-// ghidra_proto void __cdecl ZeroUiResourceContextStyleBytes(void)
-// FUNCTION: IMPERIALISM 0x0041b420
-undefined4 ZeroUiResourceContextStyleBytes(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceLayoutValues
-// ghidra_proto void __cdecl SetUiResourceLayoutValues(void)
-// FUNCTION: IMPERIALISM 0x0041b450
-undefined4 SetUiResourceLayoutValues(void)
-{
-  return 0;
-}
-
-// ghidra_name BindUiResourceTextAndStyle
-// ghidra_proto void __cdecl BindUiResourceTextAndStyle(void)
-// FUNCTION: IMPERIALISM 0x0041b490
-undefined4 BindUiResourceTextAndStyle(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateUiResourceContextMetricWord27
-// ghidra_proto void __cdecl UpdateUiResourceContextMetricWord27(void)
-// FUNCTION: IMPERIALISM 0x0041b570
-undefined4 UpdateUiResourceContextMetricWord27(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchUiResourceContextVslot1E4WithCoords
-// ghidra_proto void __cdecl DispatchUiResourceContextVslot1E4WithCoords(void)
-// FUNCTION: IMPERIALISM 0x0041b5a0
-undefined4 DispatchUiResourceContextVslot1E4WithCoords(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearUiResourceContext
-// ghidra_proto void __cdecl ClearUiResourceContext(void)
-// FUNCTION: IMPERIALISM 0x0041b5f0
-undefined4 ClearUiResourceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name PopUiResourcePoolNode
-// ghidra_proto void __cdecl PopUiResourcePoolNode(void)
-// FUNCTION: IMPERIALISM 0x0041b610
-undefined4 PopUiResourcePoolNode(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeIndustryViewTradeMoveControlsAndCommodityRows
-// ghidra_proto void * __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(void * pFactoryContext, int nEventCode)
-// FUNCTION: IMPERIALISM 0x0041b6d0
-undefined4 InitializeIndustryViewTradeMoveControlsAndCommodityRows(void)
-{
-  return 0;
-}
-
-// ghidra_name PushUiLinkedListNodeWithPayload
-// ghidra_proto void __cdecl PushUiLinkedListNodeWithPayload(void)
-// FUNCTION: IMPERIALISM 0x00426ec0
-undefined4 PushUiLinkedListNodeWithPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name GetUiLinkedListNodePayload
-// ghidra_proto void __cdecl GetUiLinkedListNodePayload(void)
-// FUNCTION: IMPERIALISM 0x00426f60
-undefined4 GetUiLinkedListNodePayload(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_00426f80
-// ghidra_proto void __cdecl NoOpRuntimeCallback_00426f80(void)
-// FUNCTION: IMPERIALISM 0x00426f80
-undefined4 NoOpRuntimeCallback_00426f80(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceContextFlagsAndMetrics
-// ghidra_proto void __cdecl SetUiResourceContextFlagsAndMetrics(void)
-// FUNCTION: IMPERIALISM 0x00426fa0
-undefined4 SetUiResourceContextFlagsAndMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyUiResourceColorTripletFromContext
-// ghidra_proto void __cdecl ApplyUiResourceColorTripletFromContext(void)
-// FUNCTION: IMPERIALISM 0x00427010
-undefined4 ApplyUiResourceColorTripletFromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ReplaceUiResourceContextPairBuffer
-// ghidra_proto void __cdecl ReplaceUiResourceContextPairBuffer(void)
-// FUNCTION: IMPERIALISM 0x00427060
-undefined4 ReplaceUiResourceContextPairBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourceContextTagWord
-// ghidra_proto void __cdecl SetUiResourceContextTagWord(void)
-// FUNCTION: IMPERIALISM 0x004270e0
-undefined4 SetUiResourceContextTagWord(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUiResourcePairValues
-// ghidra_proto void __cdecl SetUiResourcePairValues(void)
-// FUNCTION: IMPERIALISM 0x00427100
-undefined4 SetUiResourcePairValues(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetWordEcxOffset_4e_00427200
-// ghidra_proto undefined OrphanTiny_GetWordEcxOffset_4e_00427200()
-// FUNCTION: IMPERIALISM 0x00427200
-undefined4 OrphanTiny_GetWordEcxOffset_4e_00427200(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCommandHandler
-// ghidra_proto undefined NoOpCommandHandler()
-// FUNCTION: IMPERIALISM 0x00427220
-undefined4 NoOpCommandHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name ThunkTargetImpl_00427240
-// ghidra_proto void __cdecl ThunkTargetImpl_00427240(void)
-// FUNCTION: IMPERIALISM 0x00427240
-undefined4 ThunkTargetImpl_00427240(void)
-{
-  return 0;
-}
-
-// ghidra_name ThunkTargetImpl_00427260
-// ghidra_proto void __cdecl ThunkTargetImpl_00427260(void)
-// FUNCTION: IMPERIALISM 0x00427260
-undefined4 ThunkTargetImpl_00427260(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildRectFromControlPositionAndSizeFields
-// ghidra_proto void __thiscall BuildRectFromControlPositionAndSizeFields(int * pOutRect)
-// FUNCTION: IMPERIALISM 0x00427290
-undefined4 BuildRectFromControlPositionAndSizeFields(void)
-{
-  return 0;
-}
-
-// ghidra_name ThunkTargetImpl_004272d0
-// ghidra_proto void __cdecl ThunkTargetImpl_004272d0(void)
-// FUNCTION: IMPERIALISM 0x004272d0
-undefined4 ThunkTargetImpl_004272d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins12_00427330
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins12_00427330()
-// FUNCTION: IMPERIALISM 0x00427330
-undefined4 OrphanLeaf_NoCall_Ins12_00427330(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeIndustryOverviewPlacardsAndTradeStatusTags
-// ghidra_proto void * __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(void * pFactoryContext, int nEventCode)
-// FUNCTION: IMPERIALISM 0x00427360
-undefined4 InitializeIndustryOverviewPlacardsAndTradeStatusTags(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiCursorTextResourceEntry
-// ghidra_proto void __cdecl ConstructUiCursorTextResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x00429330
-undefined4 ConstructUiCursorTextResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004293c0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004293c0()
-// FUNCTION: IMPERIALISM 0x004293c0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004293c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I16_00429410
-// ghidra_proto undefined OrphanCallChain_C1_I16_00429410()
-// FUNCTION: IMPERIALISM 0x00429410
-undefined4 OrphanCallChain_C1_I16_00429410(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCityProductionControllerField60
-// ghidra_proto void __cdecl GetCityProductionControllerField60(void)
-// FUNCTION: IMPERIALISM 0x00429450
-undefined4 GetCityProductionControllerField60(void)
-{
-  return 0;
-}
-
-// ghidra_name AssertCityProductionGlobalStateInitialized
-// ghidra_proto void __cdecl AssertCityProductionGlobalStateInitialized(void)
-// FUNCTION: IMPERIALISM 0x00429470
-undefined4 AssertCityProductionGlobalStateInitialized(void)
-{
-  return 0;
-}
-
-// ghidra_name LogUnhandledDialogMethodAndReturnFalse
-// ghidra_proto bool __cdecl LogUnhandledDialogMethodAndReturnFalse(void)
-// FUNCTION: IMPERIALISM 0x004294a0
-undefined4 LogUnhandledDialogMethodAndReturnFalse(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringFromField84
-// ghidra_proto void __thiscall AssignSharedStringFromField84(void * pDestSharedString)
-// FUNCTION: IMPERIALISM 0x004294d0
-undefined4 AssignSharedStringFromField84(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiNumericTextEntry
-// ghidra_proto void __cdecl ConstructUiNumericTextEntry(void)
-// FUNCTION: IMPERIALISM 0x00429500
-undefined4 ConstructUiNumericTextEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name NumericEntryMethod_00409a39
-// ghidra_proto void __cdecl NumericEntryMethod_00409a39(void)
-// FUNCTION: IMPERIALISM 0x00429530
-undefined4 NumericEntryMethod_00409a39(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTurnEventDialogResourcesForEvent547Or7D8
-// ghidra_proto void __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(void)
-// FUNCTION: IMPERIALISM 0x004295a0
-undefined4 BuildTurnEventDialogResourcesForEvent547Or7D8(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityTradeDiplomacyUiEntries
-// ghidra_proto undefined InitializeCityTradeDiplomacyUiEntries()
-// FUNCTION: IMPERIALISM 0x0042d240
-undefined4 InitializeCityTradeDiplomacyUiEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildOrderStateStaticTextUiResourceEntries
-// ghidra_proto undefined BuildOrderStateStaticTextUiResourceEntries()
-// FUNCTION: IMPERIALISM 0x0042e0b5
-undefined4 BuildOrderStateStaticTextUiResourceEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildUiResourceTree_MultiTextOptionComposite_0042e494
-// ghidra_proto undefined BuildUiResourceTree_MultiTextOptionComposite_0042e494()
-// FUNCTION: IMPERIALISM 0x0042e494
-undefined4 BuildUiResourceTree_MultiTextOptionComposite_0042e494(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildUiResourceTree_TextPictureCursorComposite_0042e864
-// ghidra_proto undefined BuildUiResourceTree_TextPictureCursorComposite_0042e864()
-// FUNCTION: IMPERIALISM 0x0042e864
-undefined4 BuildUiResourceTree_TextPictureCursorComposite_0042e864(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructPictureResourceEntry_Vtbl0063f650
-// ghidra_proto void __cdecl ConstructPictureResourceEntry_Vtbl0063f650(void)
-// FUNCTION: IMPERIALISM 0x00430250
-undefined4 ConstructPictureResourceEntry_Vtbl0063f650(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiResourceEntry_Vtbl0063f878
-// ghidra_proto void __cdecl ConstructUiResourceEntry_Vtbl0063f878(void)
-// FUNCTION: IMPERIALISM 0x00430320
-undefined4 ConstructUiResourceEntry_Vtbl0063f878(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiResourceEntry_Vtbl0063fa70
-// ghidra_proto void __cdecl ConstructUiResourceEntry_Vtbl0063fa70(void)
-// FUNCTION: IMPERIALISM 0x004303a0
-undefined4 ConstructUiResourceEntry_Vtbl0063fa70(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiResourceEntry_Vtbl0063fc68
-// ghidra_proto void __cdecl ConstructUiResourceEntry_Vtbl0063fc68(void)
-// FUNCTION: IMPERIALISM 0x00430420
-undefined4 ConstructUiResourceEntry_Vtbl0063fc68(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiResourceEntry_Vtbl0063fe60
-// ghidra_proto void __cdecl ConstructUiResourceEntry_Vtbl0063fe60(void)
-// FUNCTION: IMPERIALISM 0x004304a0
-undefined4 ConstructUiResourceEntry_Vtbl0063fe60(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiResourceEntry_Vtbl00640060
-// ghidra_proto void __cdecl ConstructUiResourceEntry_Vtbl00640060(void)
-// FUNCTION: IMPERIALISM 0x00430520
-undefined4 ConstructUiResourceEntry_Vtbl00640060(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00430550
-// ghidra_proto undefined OrphanRetStub_00430550()
-// FUNCTION: IMPERIALISM 0x00430550
-undefined4 OrphanRetStub_00430550(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004305c0
-// ghidra_proto undefined OrphanRetStub_004305c0()
-// FUNCTION: IMPERIALISM 0x004305c0
-undefined4 OrphanRetStub_004305c0(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructPictureResourceEntry_Vtbl00640258
-// ghidra_proto void __cdecl ConstructPictureResourceEntry_Vtbl00640258(void)
-// FUNCTION: IMPERIALISM 0x00430630
-undefined4 ConstructPictureResourceEntry_Vtbl00640258(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430660
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430660()
-// FUNCTION: IMPERIALISM 0x00430660
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430660(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl(void)
-// FUNCTION: IMPERIALISM 0x00430690
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430730
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430730()
-// FUNCTION: IMPERIALISM 0x00430730
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430730(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750
-// ghidra_proto undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750()
-// FUNCTION: IMPERIALISM 0x00430750
-undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
-// ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0()
-// FUNCTION: IMPERIALISM 0x004307a0
-undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
-// ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830()
-// FUNCTION: IMPERIALISM 0x00430830
-undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructPictureResourceEntry_Vtbl006404b0
-// ghidra_proto void __cdecl ConstructPictureResourceEntry_Vtbl006404b0(void)
-// FUNCTION: IMPERIALISM 0x004308d0
-undefined4 ConstructPictureResourceEntry_Vtbl006404b0(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiColorTextResourceEntry
-// ghidra_proto void __cdecl ConstructUiColorTextResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x00430950
-undefined4 ConstructUiColorTextResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004309e0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004309e0()
-// FUNCTION: IMPERIALISM 0x004309e0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004309e0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430a30
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430a30()
-// FUNCTION: IMPERIALISM 0x00430a30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(void)
-// FUNCTION: IMPERIALISM 0x00430a60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiResourceEntry_Vtbl00640940
-// ghidra_proto void __cdecl ConstructUiResourceEntry_Vtbl00640940(void)
-// FUNCTION: IMPERIALISM 0x00430b50
-undefined4 ConstructUiResourceEntry_Vtbl00640940(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnZeroStatus
-// ghidra_proto bool ReturnZeroStatus(void)
-// FUNCTION: IMPERIALISM 0x00430bd0
-undefined4 ReturnZeroStatus(void)
+undefined4 thunk_GetTInfoBarBehaviorClassNamePointer_At00409359(void)
 {
   return 0;
 }

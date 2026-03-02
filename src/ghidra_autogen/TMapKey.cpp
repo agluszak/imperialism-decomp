@@ -21,6 +21,41 @@ void * __thiscall TMapKey::thunk_ConstructTMapKeyBaseState(TMapKey *this)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403CCE
+// GHIDRA_NAME TMapKey::thunk_DispatchHintRenderByViewMode
+// GHIDRA_PROTO void __thiscall thunk_DispatchHintRenderByViewMode(void * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Direct thunk
+// GHIDRA_COMMENT_END
+
+/* Direct thunk */
+
+void __thiscall TMapKey::thunk_DispatchHintRenderByViewMode(TMapKey *this,void *param_1)
+
+{
+  THQButton::DispatchHintRenderByViewMode((THQButton *)this,param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406E8D
+// GHIDRA_NAME TMapKey::thunk_scalar_deleting_destructor_00406E8D
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406E8D(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TMapKey::thunk_scalar_deleting_destructor_00406E8D(TMapKey *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004086B1
 // GHIDRA_NAME TMapKey::thunk_GetTMapKeyClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTMapKeyClassNamePointer(void)
@@ -37,6 +72,24 @@ void * __cdecl TMapKey::thunk_GetTMapKeyClassNamePointer(void)
   
   pvVar1 = GetTMapKeyClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AD20
+// GHIDRA_NAME TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructUiTextResourceEntryBase; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_ConstructUiTextResourceEntryBase; instructions=7,
+   call_insns=1, internal_calls=1, unique_internal=1 */
+
+void __thiscall TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(TMapKey *this)
+
+{
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  this->pVtable = &g_vtblTMapKey;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC9C0
@@ -61,7 +114,7 @@ void * __cdecl TMapKey::CreateTMapKeyInstance(void)
   puStack_8 = &LAB_006330ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -102,9 +155,9 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
 
 {
   short sVar1;
-  int iVar2;
+  void *pvVar2;
   uint uVar3;
-  TStaticText *pTVar4;
+  TDeluxeText *pTVar4;
   undefined4 *extraout_EAX;
   void *extraout_EAX_00;
   int iVar5;
@@ -119,12 +172,13 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   TMapKey *local_7c;
   int local_78;
   int local_74;
-  TStaticText *pTStack_70;
+  TDeluxeText *pTStack_70;
   undefined1 auStack_6c [4];
   undefined4 local_68;
   undefined4 local_64;
   int iStack_60;
   int iStack_5c;
+  undefined1 local_58 [6];
   undefined1 local_52;
   undefined1 local_51;
   undefined1 local_50;
@@ -174,38 +228,38 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   local_86 = 0;
   local_85 = 0;
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_88);
-  thunk_InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor((int)local_58,0,10,0x2b6b,3);
   local_74 = (int)(short)local_80;
   local_78 = (int)(short)((short)uVar3 + sVar1);
   iVar5 = 0;
   local_80 = g_apTerrainTypeDescriptorTable;
   do {
     if (*local_80 == (void *)0x0) {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x275d,2,local_84);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x275d,2,local_84);
     }
     else {
-      FormatOverlayTerrainLabelText(local_84);
+      FormatOverlayTerrainLabelText();
     }
-    pTVar4 = (TStaticText *)AllocateWithFallbackHandler(0xa4);
+    pTVar4 = AllocateWithFallbackHandler();
     local_4._0_1_ = 1;
     pTStack_70 = pTVar4;
-    if (pTVar4 == (TStaticText *)0x0) {
-      pTVar4 = (TStaticText *)0x0;
+    if (pTVar4 == (TDeluxeText *)0x0) {
+      pTVar4 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar4);
-      *(undefined ***)pTVar4 = &g_vtblTMapKey;
+      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar4);
+      ((TView *)&pTVar4->pVtable)->pVtable = &g_vtblTMapKey;
       local_4._0_1_ = 2;
-      pTVar4[0x98] = (TStaticText)0x0;
-      pTVar4[0x99] = (TStaticText)0x0;
-      pTVar4[0x9a] = (TStaticText)0x0;
-      pTVar4[0x9b] = (TStaticText)0x0;
+      pTVar4->field_0x98 = 0;
+      pTVar4->field99 = 0;
+      pTVar4->field9a = 0;
+      pTVar4->field9b = 0;
       thunk_ClearColorRgbaBytes();
-      *(undefined ***)pTVar4 = &g_vtblTMapKey;
+      ((TView *)&pTVar4->pVtable)->pVtable = &g_vtblTMapKey;
       thunk_SetColorRgbAndClearAlphaByte();
       uVar6 = *extraout_EAX;
-      pTVar4[0xa0] = (TStaticText)0x0;
-      *(undefined4 *)(pTVar4 + 0x98) = uVar6;
+      *(undefined1 *)&pTVar4[1].pVtable = 0;
+      *(undefined4 *)&pTVar4->field_0x98 = uVar6;
     }
     local_4 = (uint)local_4._1_3_ << 8;
     RStack_2c.left = 0;
@@ -215,18 +269,20 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
     CopyRect(&tStack_1c,&RStack_2c);
     iStack_60 = local_4c[iVar5] - local_78;
     iStack_5c = (local_4c[iVar5 + 8] - local_74) + -0xf;
-    TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout((TDeluxeText *)pTVar4);
-    iVar2 = *(int *)pTVar4;
+    TDeluxeText::thunk_ConstructTDeluxeTextBaseState
+              (pTVar4,(int)this,(int)&iStack_60,(int)&local_68,(int)&tStack_1c,(int)local_58,-2);
+    pvVar2 = pTVar4->pVtable;
     uVar6 = 0;
-    (**(code **)(iVar2 + 0x1ec))(local_84);
-    (**(code **)(iVar2 + 0xa4))(0,0);
-    *(int *)(pTVar4 + 0x1c) = iVar5 + 0x6e616d30;
-    (**(code **)(iVar2 + 0x1f8))(0);
-    *(undefined4 *)(pTVar4 + 0x9c) = uVar6;
-    pTVar4[0xa0] = (TStaticText)0x1;
-    (**(code **)(iVar2 + 0x1e4))(auStack_6c,1);
+    (**(code **)((int)pvVar2 + 0x1ec))(local_84);
+    (**(code **)((int)pvVar2 + 0xa4))(0,0);
+    *(int *)&pTVar4->field_0x1c = iVar5 + 0x6e616d30;
+    (**(code **)((int)pvVar2 + 0x1f8))(0);
+    *(undefined4 *)&pTVar4->field_0x9c = uVar6;
+    *(undefined1 *)&pTVar4[1].pVtable = 1;
+    (**(code **)((int)pvVar2 + 0x1e4))(auStack_6c,1);
     iVar5 = iVar5 + 1;
     local_80 = local_80 + 1;
+    this = local_7c;
   } while ((int)local_80 < 0x6a432c);
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();

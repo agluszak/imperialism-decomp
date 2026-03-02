@@ -3,6 +3,59 @@
 // Program: Imperialism.exe
 // Bucket: TInfoPanelView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004035BC
+// GHIDRA_NAME TInfoPanelView::thunk_HandleDiplomacyNationFilterCommandAndForward
+// GHIDRA_PROTO void __thiscall thunk_HandleDiplomacyNationFilterCommandAndForward(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleDiplomacyNationFilterCommandAndForward
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleDiplomacyNationFilterCommandAndForward */
+
+void __thiscall
+TInfoPanelView::thunk_HandleDiplomacyNationFilterCommandAndForward
+          (TInfoPanelView *this,int arg1,int arg2)
+
+{
+  TControl::HandleDiplomacyNationFilterCommandAndForward((TControl *)this,arg1,arg2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403A71
+// GHIDRA_NAME TInfoPanelView::thunk_EnterDiplomacyTargetNationSelectionMode
+// GHIDRA_PROTO void __thiscall thunk_EnterDiplomacyTargetNationSelectionMode(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EnterDiplomacyTargetNationSelectionMode
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to EnterDiplomacyTargetNationSelectionMode */
+
+void __thiscall TInfoPanelView::thunk_EnterDiplomacyTargetNationSelectionMode(TInfoPanelView *this)
+
+{
+  TToolBarCluster::EnterDiplomacyTargetNationSelectionMode((TToolBarCluster *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407851
+// GHIDRA_NAME TInfoPanelView::thunk_scalar_deleting_destructor_00407851
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407851(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TInfoPanelView::thunk_scalar_deleting_destructor_00407851(TInfoPanelView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E2D
 // GHIDRA_NAME TInfoPanelView::thunk_GetTInfoPanelViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTInfoPanelViewClassNamePointer(void)
@@ -22,16 +75,15 @@ void * __cdecl TInfoPanelView::thunk_GetTInfoPanelViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004088AF
-// GHIDRA_NAME TInfoPanelView::thunk_InitializeInfoPanelViewStatusLabelControls
-// GHIDRA_PROTO void __thiscall thunk_InitializeInfoPanelViewStatusLabelControls(void)
+// GHIDRA_NAME TInfoPanelView::thunk_ConstructTInfoPanelViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTInfoPanelViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeInfoPanelViewStatusLabelControls.
+// GHIDRA_COMMENT Thunk wrapper for InitializeInfoPanelViewStatusLabelControls. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for InitializeInfoPanelViewStatusLabelControls. */
+/* Thunk wrapper for InitializeInfoPanelViewStatusLabelControls. [FID:thunk_target_sync] */
 
-void __thiscall
-TInfoPanelView::thunk_InitializeInfoPanelViewStatusLabelControls(TInfoPanelView *this)
+void __thiscall TInfoPanelView::thunk_ConstructTInfoPanelViewBaseState(TInfoPanelView *this)
 
 {
   ConstructTInfoPanelViewBaseState(this);
@@ -39,15 +91,15 @@ TInfoPanelView::thunk_InitializeInfoPanelViewStatusLabelControls(TInfoPanelView 
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409133
-// GHIDRA_NAME TInfoPanelView::thunk_Cluster_MapTileHint_004fa190
-// GHIDRA_PROTO void __thiscall thunk_Cluster_MapTileHint_004fa190(void)
+// GHIDRA_NAME TInfoPanelView::thunk_DestructTInfoPanelViewAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTInfoPanelViewAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_004fa190
+// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_004fa190 [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_MapTileHint_004fa190 */
+/* Single-JMP thunk to Cluster_MapTileHint_004fa190 [FID:thunk_target_sync] */
 
-void __thiscall TInfoPanelView::thunk_Cluster_MapTileHint_004fa190(TInfoPanelView *this)
+void __thiscall TInfoPanelView::thunk_DestructTInfoPanelViewAndMaybeFree(TInfoPanelView *this)
 
 {
   DestructTInfoPanelViewAndMaybeFree(this);
@@ -76,12 +128,12 @@ void * __cdecl TInfoPanelView::CreateTInfoPanelViewInstance(void)
   puStack_8 = &LAB_00632f2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x70);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTInfoPanelViewClassNamePointer_0063fe60;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &PTR_thunk_GetTInfoPanelViewClassNamePointer_0063fe60;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -143,28 +195,28 @@ void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(TInfoPanelView 
   local_e = 2;
   puStack_34 = (undefined1 *)0x4fa063;
   thunk_NoOpUiLifecycleHook();
-  this[0x18].pVtable = this[8].pVtable;
+  this->field60 = this->field29_0x20;
   pcStack00000004 = *(code **)((int)this->pVtable + 0x94);
   do {
     puStack_34 = (undefined1 *)0x4fa08a;
     (*pcStack00000004)();
     puStack_34 = &stack0xffffffe0;
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar1 + 0x4e);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,iVar1 + 0x4e);
     puStack_18 = (undefined1 *)&puStack_34;
     thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    TToolBarCluster::InitializeAndRunMainRoutine();
     iVar1 = iVar1 + 1;
   } while (iVar1 < 4);
   puStack_34 = (undefined1 *)0x4fa0d9;
-  ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0x00000004);
   local_4._0_1_ = 1;
   puStack_34 = (undefined1 *)0x4fa0ec;
-  StringShared__AssignFromPtr(local_1c,(int *)&stack0x00000004);
+  AssignFromPtr(local_1c,(int *)&stack0x00000004);
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   puStack_18 = (undefined1 *)&puStack_34;
   thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  TToolBarCluster::InitializeAndRunMainRoutine();
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
@@ -184,53 +236,55 @@ void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(TInfoPanelView 
 void __thiscall TInfoPanelView::DestructTInfoPanelViewAndMaybeFree(TInfoPanelView *this)
 
 {
-  void *pvVar1;
-  short sVar2;
-  undefined4 uVar3;
+  short sVar1;
+  void *pvVar2;
+  short sVar3;
   int iVar4;
-  void *this_00;
-  void *this_01;
-  void *this_02;
-  void *this_03;
-  void *this_04;
-  void *this_05;
-  void *this_06;
-  void *this_07;
-  void *this_08;
-  void *this_09;
-  void *this_10;
-  void *this_11;
-  void *this_12;
-  void *this_13;
-  void *this_14;
-  void *this_15;
-  void *this_16;
-  short unaff_BX;
+  THQButton *this_00;
+  THQButton *this_01;
+  THQButton *this_02;
+  THQButton *this_03;
+  THQButton *this_04;
+  THQButton *this_05;
+  THQButton *this_06;
+  THQButton *this_07;
+  THQButton *this_08;
+  THQButton *this_09;
+  THQButton *this_10;
+  THQButton *this_11;
+  THQButton *this_12;
+  THQButton *this_13;
+  THQButton *this_14;
+  THQButton *this_15;
+  THQButton *this_16;
+  int unaff_EBX;
   short sVar5;
+  int unaff_EBP;
   int iVar6;
   short sVar7;
   char *unaff_ESI;
   short sVar8;
-  undefined4 unaff_EDI;
+  int unaff_EDI;
   int iVar9;
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
   undefined1 *puVar10;
+  int *arg1;
   int local_38;
   int local_34;
   int local_30;
   short local_2c;
-  undefined4 local_24;
+  int local_24;
   int iStack_20;
   TInfoPanelView *local_1c;
   int local_18;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632f80;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   local_1c = this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
@@ -239,50 +293,52 @@ void __thiscall TInfoPanelView::DestructTInfoPanelViewAndMaybeFree(TInfoPanelVie
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 2;
   InitializeSharedStringRefFromEmpty();
-  sVar7 = *(short *)&this[10].pVtable;
+  sVar7 = this->field33_0x28;
   iVar9 = CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar7);
-  sVar5 = *(short *)&this[9].pVtable;
+  sVar5 = this->field30_0x24;
   local_30 = 0;
   local_34 = 0;
-  local_4 = CONCAT31(local_4._1_3_,3);
-  local_24 = CONCAT22(local_24._2_2_,*(undefined2 *)((int)this[0x18].pVtable + 0x98));
+  local_4._0_1_ = 3;
+  local_24 = CONCAT22(local_24._2_2_,*(undefined2 *)((int)this->field60 + 0x98));
   local_18 = iVar9;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&local_30);
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_34);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  arg1 = &local_38;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   iVar6 = -iVar9 + 0x16f;
   iStack_20 = iVar6;
-  SetQuickDrawColorAndSyncGlobals();
+  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
   thunk_SetQuickDrawTextOriginWithContextOffset(-sVar5 + 0x49,(short)-iVar9 + 0x170);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffbc);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffbc);
+  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
   thunk_SetQuickDrawTextOriginWithContextOffset(-sVar5 + 0x48,(short)iVar6);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  (**(code **)(*g_pLocalizationTable + 0x84))(0x2733);
-  sVar2 = (short)g_Destruct_TInfo_Panel_Value_006969C0 - sVar7;
+  puVar10 = &stack0xffffffbc;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733);
+  sVar3 = (short)g_Destruct_TInfo_Panel_Value_006969C0 - sVar7;
   sVar8 = (short)g_Destruct_TInfo_Panel_Value_006969B0 - sVar5;
-  SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(sVar8 + 1,sVar2 + 1);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb0);
-  SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,sVar2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  SetQuickDrawColorAndSyncGlobals((int)arg1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(sVar8 + 1,sVar3 + 1);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
+  SetQuickDrawColorAndSyncGlobals(unaff_EDI);
+  thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,sVar3);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
   sVar8 = *(short *)(*(int *)(local_34 + 0x60) + 0x98);
   if (sVar8 < 7) {
     local_38 = 1;
     iVar6 = 0;
     do {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,local_38 + 1,&stack0xffffffb0);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,local_38 + 1,&stack0xffffffb0);
       sVar7 = *(short *)((int)&g_Destruct_TInfo_Panel_Value_006969C0 + iVar6 + 2) - (short)iVar9;
       sVar8 = *(short *)((int)&g_Destruct_TInfo_Panel_Value_006969B0 + iVar6 + 2) - sVar5;
-      SetQuickDrawColorAndSyncGlobals();
+      SetQuickDrawColorAndSyncGlobals((int)arg1);
       thunk_SetQuickDrawTextOriginWithContextOffset(sVar8 + 1,sVar7 + 1);
-      thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
-      SetQuickDrawColorAndSyncGlobals();
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+      SetQuickDrawColorAndSyncGlobals(unaff_EDI);
       thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,sVar7);
-      thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
       iVar6 = iVar6 + 2;
       local_38 = local_38 + 1;
       iVar9 = local_30;
@@ -291,120 +347,121 @@ void __thiscall TInfoPanelView::DestructTInfoPanelViewAndMaybeFree(TInfoPanelVie
   else if (((g_apTerrainTypeDescriptorTable[sVar8] == (void *)0x0) ||
            (sVar8 = *(short *)((int)g_apTerrainTypeDescriptorTable[sVar8] + 0xe), sVar8 < 100)) ||
           (199 < sVar8)) {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x61,&stack0xffffffb0);
-    sVar2 = g_Destruct_TInfo_Panel_Value_006969C0._2_2_ - sVar7;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x61,&stack0xffffffb0);
+    sVar3 = g_Destruct_TInfo_Panel_Value_006969C0._2_2_ - sVar7;
     sVar8 = g_Destruct_TInfo_Panel_Value_006969B0._2_2_ - sVar5;
-    SetQuickDrawColorAndSyncGlobals();
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar8 + 1,sVar2 + 1);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa4);
-    SetQuickDrawColorAndSyncGlobals();
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,sVar2);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x62,&stack0xffffffa4);
+    SetQuickDrawColorAndSyncGlobals((int)puVar10);
+    thunk_SetQuickDrawTextOriginWithContextOffset(sVar8 + 1,sVar3 + 1);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa4);
+    SetQuickDrawColorAndSyncGlobals(0x2733);
+    thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,sVar3);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x62,&stack0xffffffa4);
     sVar7 = (short)g_Destruct_TInfo_Panel_Value_006969C4 - sVar7;
     sVar8 = (short)g_Destruct_TInfo_Panel_Value_006969B4 - sVar5;
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals((int)arg1);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar8 + 1,sVar7 + 1);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb0);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
+    SetQuickDrawColorAndSyncGlobals(unaff_EDI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,sVar7);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  iVar6 = (int)unaff_BX;
+  sVar3 = (short)unaff_EBX;
+  iVar6 = (int)sVar3;
   local_30 = iVar6;
   thunk_LoadNationDisplayNameSharedRefFromField8();
   sVar7 = -sVar5;
   sVar8 = sVar7 + 0xa7;
-  SetQuickDrawColorAndSyncGlobals();
+  SetQuickDrawColorAndSyncGlobals((int)arg1);
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar7 + 0xa8,local_2c + 1);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
+  SetQuickDrawColorAndSyncGlobals(unaff_EDI);
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,local_2c);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  pvVar1 = g_apTerrainTypeDescriptorTable[*(short *)(*(int *)(local_34 + 0x60) + 0x98)];
-  if (*(short *)((int)pvVar1 + 0xe) < 200) {
-    if (((pvVar1 != (void *)0x0) && (99 < *(short *)((int)pvVar1 + 0xe))) &&
-       (*(short *)((int)pvVar1 + 0xe) < 200)) {
-      FormatOverlayTerrainLabelText(&stack0xffffffc0);
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x17,&stack0xffffffbc);
+  pvVar2 = g_apTerrainTypeDescriptorTable[*(short *)(*(int *)(local_34 + 0x60) + 0x98)];
+  if (*(short *)((int)pvVar2 + 0xe) < 200) {
+    if (((pvVar2 != (void *)0x0) && (99 < *(short *)((int)pvVar2 + 0xe))) &&
+       (*(short *)((int)pvVar2 + 0xe) < 200)) {
+      FormatOverlayTerrainLabelText();
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x17,&stack0xffffffbc);
       scanBracketExpressions(g_pLocalizationTable,&stack0xffffffb0,unaff_ESI);
-      SetQuickDrawColorAndSyncGlobals();
+      SetQuickDrawColorAndSyncGlobals((int)arg1);
       thunk_SetQuickDrawTextOriginWithContextOffset(0x79,0x25);
-      thunk_DrawTextWithCachedQuickDrawStyleState(this_10);
-      SetQuickDrawColorAndSyncGlobals();
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_10);
+      SetQuickDrawColorAndSyncGlobals(unaff_EDI);
       thunk_SetQuickDrawTextOriginWithContextOffset(0x78,0x24);
-      thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb0);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
     }
   }
   else {
-    FormatOverlayTerrainLabelText(&stack0xffffffc0);
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x16,&stack0xffffffbc);
+    FormatOverlayTerrainLabelText();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x16,&stack0xffffffbc);
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffb0,unaff_ESI);
     sVar5 = g_Destruct_TInfo_Panel_Value_006969B0._2_2_ - sVar5;
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals((int)arg1);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar5 + 1,0x25);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
+    SetQuickDrawColorAndSyncGlobals(unaff_EDI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar5,0x24);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_09);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_09);
     iVar6 = local_30;
   }
-  uVar3 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
-  FormatStringWithVarArgsToSharedRef(&stack0xffffffb0,&g_szDecimalFormat,uVar3);
+  (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
+  FormatStringWithVarArgsToSharedRef();
   sVar5 = (short)iVar9;
-  SetQuickDrawColorAndSyncGlobals();
+  SetQuickDrawColorAndSyncGlobals((int)arg1);
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar7 + 0xa8,-sVar5 + 0x199);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_11);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_11);
+  SetQuickDrawColorAndSyncGlobals(unaff_EDI);
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,-sVar5 + 0x198);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb0);
-  if (unaff_BX < 7) {
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
+  if (sVar3 < 7) {
     puVar10 = &stack0xffffffb0;
-    iVar9 = *g_pLocalizationTable;
+    iVar9 = *(int *)g_pLocalizationTable;
     iVar4 = thunk_ClassifyNationMilitaryPowerBandAgainstGlobalMean();
     (**(code **)(iVar9 + 0x84))(0x2733,iVar4 + 0x19,puVar10);
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals((int)arg1);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar7 + 0xa8,-sVar5 + 0x1aa);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb0);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
+    SetQuickDrawColorAndSyncGlobals(unaff_EDI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,-sVar5 + 0x1a9);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_12);
-    if (unaff_BX < 7) {
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_12);
+    if (sVar3 < 7) {
       if (((g_apTerrainTypeDescriptorTable[iVar6] == (void *)0x0) ||
-          (sVar2 = *(short *)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0xe), sVar2 < 100)) ||
-         (199 < sVar2)) {
-        iVar9 = *g_pLocalizationTable;
+          (sVar1 = *(short *)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0xe), sVar1 < 100)) ||
+         (199 < sVar1)) {
+        iVar9 = *(int *)g_pLocalizationTable;
         iVar4 = (**(code **)(*(int *)g_apNationStates[iVar6] + 0x208))(&stack0xffffffb0);
         (**(code **)(iVar9 + 0x84))(0x2733,iVar4 + 0x19);
-        SetQuickDrawColorAndSyncGlobals();
+        SetQuickDrawColorAndSyncGlobals((int)arg1);
         thunk_SetQuickDrawTextOriginWithContextOffset(sVar7 + 0xa8,-sVar5 + 0x1bb);
-        thunk_DrawTextWithCachedQuickDrawStyleState(this_13);
-        SetQuickDrawColorAndSyncGlobals();
+        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_13);
+        SetQuickDrawColorAndSyncGlobals(unaff_EDI);
         thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,-sVar5 + 0x1ba);
-        thunk_DrawTextWithCachedQuickDrawStyleState(this_14);
+        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_14);
       }
-      if (unaff_BX < 7) goto LAB_004faa26;
+      if (sVar3 < 7) goto LAB_004faa26;
     }
   }
   if (((g_apTerrainTypeDescriptorTable[*(short *)(*(int *)(local_34 + 0x60) + 0x98)] == (void *)0x0)
-      || (sVar2 = *(short *)((int)g_apTerrainTypeDescriptorTable
-                                  [*(short *)(*(int *)(local_34 + 0x60) + 0x98)] + 0xe), sVar2 < 100
-         )) || (199 < sVar2)) {
-    sVar2 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x9c))(iVar6);
-    if (sVar2 == -1) {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x18,&stack0xffffffb0);
+      || (sVar3 = *(short *)((int)g_apTerrainTypeDescriptorTable
+                                  [*(short *)(*(int *)(local_34 + 0x60) + 0x98)] + 0xe), sVar3 < 100
+         )) || (199 < sVar3)) {
+    sVar3 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x9c))(iVar6);
+    if (sVar3 == -1) {
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x18,&stack0xffffffb0);
     }
     else {
-      FormatOverlayTerrainLabelText(&stack0xffffffb0);
+      FormatOverlayTerrainLabelText();
     }
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals((int)arg1);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar7 + 0xa8,-sVar5 + 0x1bb);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_15);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_15);
+    SetQuickDrawColorAndSyncGlobals(unaff_EDI);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar8,-sVar5 + 0x1ba);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_16);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_16);
   }
 LAB_004faa26:
   local_1c._0_1_ = 2;

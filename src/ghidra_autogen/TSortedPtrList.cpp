@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TSortedPtrList.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403FE4
+// GHIDRA_NAME TSortedPtrList::thunk_scalar_deleting_destructor_00403FE4
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403FE4(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TSortedPtrList::thunk_scalar_deleting_destructor_00403FE4(TSortedPtrList *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = CObArray::_scalar_deleting_destructor_((CObArray *)this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407491
 // GHIDRA_NAME TSortedPtrList::thunk_GetTSortedPtrListClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTSortedPtrListClassNamePointer(void)
@@ -48,8 +67,8 @@ void * __cdecl TSortedPtrList::GetTSortedPtrListClassNamePointer(void)
 void * __cdecl TSortedPtrList::ConstructTSortedPtrListBaseState(void)
 
 {
-  CObArray *this;
-  CObArray *pCVar1;
+  TIndexAndRankList *this;
+  TIndexAndRankList *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,15 +78,15 @@ void * __cdecl TSortedPtrList::ConstructTSortedPtrListBaseState(void)
   puStack_8 = &LAB_0062eb7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (CObArray *)AllocateWithFallbackHandler(0x18);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pCVar1 = (CObArray *)0x0;
-  if (this != (CObArray *)0x0) {
-    CObArray::CPtrArray_ctor(this);
-    *(undefined ***)this = &PTR_thunk_GetTPtrListClassName_00649068;
-    pCVar1 = this;
+  pTVar1 = (TIndexAndRankList *)0x0;
+  if (this != (TIndexAndRankList *)0x0) {
+    TIndexAndRankList::CPtrArray(this);
+    this->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pCVar1;
+  return pTVar1;
 }
 

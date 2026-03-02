@@ -3,9 +3,29 @@
 // Program: Imperialism.exe
 // Bucket: TSuperNavyRoster.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402559
+// GHIDRA_NAME TSuperNavyRoster::thunk_scalar_deleting_destructor_00402559
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402559(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TSuperNavyRoster::thunk_scalar_deleting_destructor_00402559
+          (TSuperNavyRoster *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404BDD
-// GHIDRA_NAME TSuperNavyRoster::thunk_DestructTSuperNavyRosterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSuperNavyRosterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TSuperNavyRoster::thunk_DestructTSuperNavyRosterAndMaybeFree_At00404bdd
+// GHIDRA_PROTO void * __thiscall thunk_DestructTSuperNavyRosterAndMaybeFree_At00404bdd(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTSuperNavyRosterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,13 +33,50 @@
 /* Single-JMP thunk to DestructTSuperNavyRosterAndMaybeFree */
 
 void * __thiscall
-TSuperNavyRoster::thunk_DestructTSuperNavyRosterAndMaybeFree
+TSuperNavyRoster::thunk_DestructTSuperNavyRosterAndMaybeFree_At00404bdd
           (TSuperNavyRoster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTSuperNavyRosterAndMaybeFree(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404EC6
+// GHIDRA_NAME TSuperNavyRoster::thunk_GetTMiniShipLineClassNamePointer_At00404ec6
+// GHIDRA_PROTO void * __cdecl thunk_GetTMiniShipLineClassNamePointer_At00404ec6(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTMiniShipLineClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTMiniShipLineClassNamePointer */
+
+void * __cdecl TSuperNavyRoster::thunk_GetTMiniShipLineClassNamePointer_At00404ec6(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TMiniShipLine::GetTMiniShipLineClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406767
+// GHIDRA_NAME TSuperNavyRoster::thunk_ConstructTMiniShipLineBaseState_At00406767
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTMiniShipLineBaseState_At00406767(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTMiniShipLineBaseState
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTMiniShipLineBaseState */
+
+void * __thiscall
+TSuperNavyRoster::thunk_ConstructTMiniShipLineBaseState_At00406767(TSuperNavyRoster *this)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TMiniShipLine::ConstructTMiniShipLineBaseState((TMiniShipLine *)this);
   return pvVar1;
 }
 
@@ -66,7 +123,7 @@ TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(TSuperNavyRoster *this,by
 {
   DestructTSuperNavyRosterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

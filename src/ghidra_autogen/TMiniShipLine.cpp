@@ -3,53 +3,67 @@
 // Program: Imperialism.exe
 // Bucket: TMiniShipLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404EC6
-// GHIDRA_NAME TMiniShipLine::thunk_GetTMiniShipLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMiniShipLineClassNamePointer(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00402725
+// GHIDRA_NAME TMiniShipLine::TMiniShipLine_VtblSlot071
+// GHIDRA_PROTO void __thiscall TMiniShipLine_VtblSlot071(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMiniShipLineClassNamePointer
+// GHIDRA_COMMENT Single-JMP thunk to DestructTMiniShipViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetTMiniShipLineClassNamePointer */
+/* Single-JMP thunk to DestructTMiniShipViewAndMaybeFree */
 
-void * __cdecl TMiniShipLine::thunk_GetTMiniShipLineClassNamePointer(void)
+void __thiscall
+TMiniShipLine::TMiniShipLine_VtblSlot071(TMiniShipLine *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = GetTMiniShipLineClassNamePointer();
-  return pvVar1;
+  TMiniShipView::DestructTMiniShipViewAndMaybeFree((TMiniShipView *)this,arg1,arg2,arg3,arg4);
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406767
-// GHIDRA_NAME TMiniShipLine::thunk_ConstructTMiniShipLineBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTMiniShipLineBaseState(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004059ED
+// GHIDRA_NAME TMiniShipLine::TMiniShipLine_VtblSlot068
+// GHIDRA_PROTO void __cdecl TMiniShipLine_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTMiniShipLineBaseState
+// GHIDRA_COMMENT Single-JMP thunk to RenderNavyOrderNormalizationGaugeAndNationMarker
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ConstructTMiniShipLineBaseState */
+/* Single-JMP thunk to RenderNavyOrderNormalizationGaugeAndNationMarker */
 
-void * __thiscall TMiniShipLine::thunk_ConstructTMiniShipLineBaseState(TMiniShipLine *this)
+void __cdecl TMiniShipLine::TMiniShipLine_VtblSlot068(void)
+
+{
+  RenderNavyOrderNormalizationGaugeAndNationMarker();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004083DC
+// GHIDRA_NAME TMiniShipLine::TMiniShipLine_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMiniShipLine_VtblSlot000(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTMiniShipViewClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTMiniShipViewClassNamePointer */
+
+void * __cdecl TMiniShipLine::TMiniShipLine_VtblSlot000(void)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTMiniShipLineBaseState(this);
+  pvVar1 = TMiniShipView::GetTMiniShipViewClassNamePointer();
   return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F17
-// GHIDRA_NAME TMiniShipLine::thunk_DestructTMiniShipLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMiniShipLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMiniShipLine::TMiniShipLine_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TMiniShipLine_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMiniShipLineAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTMiniShipLineAndMaybeFree */
 
-void * __thiscall
-TMiniShipLine::thunk_DestructTMiniShipLineAndMaybeFree(TMiniShipLine *this,byte freeSelfFlag)
+void * __thiscall TMiniShipLine::TMiniShipLine_VtblSlot001(TMiniShipLine *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -76,12 +90,12 @@ void * __cdecl TMiniShipLine::CreateTMiniShipLineInstance(void)
   puStack_8 = &LAB_00635c0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &g_vtblTSuperNavyRoster;
+    pThis->field0_0x0 = &g_vtblTSuperNavyRoster;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -122,20 +136,20 @@ void * __thiscall TMiniShipLine::ConstructTMiniShipLineBaseState(TMiniShipLine *
   puStack_8 = &LAB_00635c2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TControl *)AllocateWithFallbackHandler(0x88);
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this_00 == (TControl *)0x0) {
     this_00 = (TControl *)0x0;
   }
   else {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
-    *(undefined ***)this_00 = &g_vtblTMiniShipLine;
+    (this_00->base).pVtable = &g_vtblTMiniShipLine;
   }
-  uVar1 = *(undefined4 *)(this + 0x10);
+  uVar1 = this->field13_0x10;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined4 *)(this_00 + 0x84) = uVar1;
-  *(undefined4 *)(this_00 + 0x60) = 0x22;
+  *(undefined4 *)&this_00->field_0x84 = uVar1;
+  this_00->hasCommandTagResource60 = (void *)0x22;
   *unaff_FS_OFFSET = local_c;
   return extraout_EAX;
 }
@@ -148,9 +162,9 @@ void * __thiscall
 TMiniShipLine::DestructTMiniShipLineAndMaybeFree(TMiniShipLine *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

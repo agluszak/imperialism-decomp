@@ -21,6 +21,26 @@ void * __cdecl TGameSetupDialog::thunk_GetTGameSetupDialogClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004081DE
+// GHIDRA_NAME TGameSetupDialog::thunk_scalar_deleting_destructor_004081DE
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004081DE(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TGameSetupDialog::thunk_scalar_deleting_destructor_004081DE
+          (TGameSetupDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2820
 // GHIDRA_NAME TGameSetupDialog::GetTGameSetupDialogClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTGameSetupDialogClassNamePointer(void)
@@ -59,12 +79,12 @@ void * __cdecl TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
   puStack_8 = &LAB_00638baa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &PTR_thunk_GetTMapEditClusterClassNamePointer_0066b578;
+    this->field0_0x0 = &PTR_thunk_GetTMapEditClusterClassNamePointer_0066b578;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

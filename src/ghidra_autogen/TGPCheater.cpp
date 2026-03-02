@@ -3,24 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TGPCheater.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D37
-// GHIDRA_NAME TGPCheater::thunk_GetTGPCheaterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGPCheaterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGPCheaterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGPCheaterClassNamePointer */
-
-void * __cdecl TGPCheater::thunk_GetTGPCheaterClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGPCheaterClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1710
 // GHIDRA_NAME TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
 // GHIDRA_PROTO void __thiscall ConstructNumericEntryDialogCoreAndValueLabel(int arg1, int arg2, int arg3, int arg4)
@@ -36,9 +18,13 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
           (TGPCheater *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  TEditText *this_00;
+  TNumberText *this_00;
   TStaticText *this_01;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -47,20 +33,26 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
   puStack_8 = &LAB_00630d84;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = (TEditText *)AllocateWithFallbackHandler(0xac);
+  local_1c = 0x20;
+  local_18 = 0x16;
+  local_14 = 0x80;
+  local_10 = 0x18;
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
-  if (this_00 == (TEditText *)0x0) {
-    this_00 = (TEditText *)0x0;
+  if (this_00 == (TNumberText *)0x0) {
+    this_00 = (TNumberText *)0x0;
   }
   else {
-    TEditText::thunk_ConstructUiNumericTextEntryBase(this_00);
-    *(undefined4 *)&this_00[1].field_0x4 = 0;
-    this_00->pVtable = &g_vtblFamily_NumericEntryDialogCore_Root;
+    TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this_00);
+    this_00->fielda0 = 0;
+    (((TStaticText *)&this_00->field0_0x0)->base).pVtable =
+         &g_vtblFamily_NumericEntryDialogCore_Root;
   }
   local_4 = 0xffffffff;
-  TNumberText::thunk_InitializeNumberTextEntryAndLayoutMetrics((TNumberText *)this_00);
+  TNumberText::thunk_ConstructTNumberTextBaseState
+            (this_00,(int)this,arg1,(int)&local_1c,(int)(short)arg3,-30000);
   *(int *)&this_00->field_0x1c = arg4;
-  this_01 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this_01 = AllocateWithFallbackHandler();
   local_4 = 1;
   if (this_01 != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this_01);
@@ -88,7 +80,7 @@ void * __cdecl TGPCheater::GetTGPCheaterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A90
 // GHIDRA_NAME TGPCheater::ConstructTGPCheaterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTGPCheaterBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTGPCheaterBaseState(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [LowHanging] TGPCheater method that allocates and initializes labor-pool dialog text resources and then triggers labor-pool value refresh.
 // GHIDRA_COMMENT_END
@@ -96,15 +88,15 @@ void * __cdecl TGPCheater::GetTGPCheaterClassNamePointer(void)
 /* [LowHanging] TGPCheater method that allocates and initializes labor-pool dialog text resources
    and then triggers labor-pool value refresh. */
 
-void * __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *this)
+void * __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *this,int arg1)
 
 {
+  TStaticText *this_00;
   int extraout_EAX;
   int *piVar1;
   void *extraout_EAX_00;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  TStaticText *pTStack00000004;
   undefined4 local_20;
   undefined4 local_1c;
   undefined4 local_18;
@@ -117,14 +109,14 @@ void * __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *this)
   puStack_8 = &LAB_00630dea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TCheater::thunk_InitializeCheaterDialogControlsAndBindings((TCheater *)this);
-  pTStack00000004 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  TCheater::thunk_ConstructTCheaterBaseState((TCheater *)this,arg1,0x2728);
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
-  if (pTStack00000004 == (TStaticText *)0x0) {
+  if (this_00 == (TStaticText *)0x0) {
     iVar2 = 0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(pTStack00000004);
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
     iVar2 = extraout_EAX;
   }
   local_4 = 0xffffffff;
@@ -156,7 +148,7 @@ void * __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *this)
   local_18 = 0x1c0;
   uStack_14 = 0x14c;
   (**(code **)(iVar2 + 0x168))(&local_20,1);
-  TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues((TLaborPool *)this);
+  TLaborPool::thunk_CreateTLaborPoolInstance((TLaborPool *)this,0);
   *unaff_FS_OFFSET = local_18;
   return extraout_EAX_00;
 }

@@ -4,15 +4,15 @@
 // Bucket: TDipDlgCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040105F
-// GHIDRA_NAME TDipDlgCluster::thunk_EvaluateSubsAndSancControlActiveState
-// GHIDRA_PROTO void __thiscall thunk_EvaluateSubsAndSancControlActiveState(void)
+// GHIDRA_NAME TDipDlgCluster::TDipDlgCluster_VtblSlot115
+// GHIDRA_PROTO void __thiscall TDipDlgCluster_VtblSlot115(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to EvaluateSubsAndSancControlActiveState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to EvaluateSubsAndSancControlActiveState */
 
-void __thiscall TDipDlgCluster::thunk_EvaluateSubsAndSancControlActiveState(TDipDlgCluster *this)
+void __thiscall TDipDlgCluster::TDipDlgCluster_VtblSlot115(TDipDlgCluster *this)
 
 {
   EvaluateSubsAndSancControlActiveState(this);
@@ -20,34 +20,34 @@ void __thiscall TDipDlgCluster::thunk_EvaluateSubsAndSancControlActiveState(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004026B7
-// GHIDRA_NAME TDipDlgCluster::thunk_DestructTDipDlgClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDipDlgClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDipDlgCluster::TDipDlgCluster_VtblSlot001
+// GHIDRA_PROTO TDipDlgCluster * __thiscall TDipDlgCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDipDlgClusterAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTDipDlgClusterAndMaybeFree */
 
-void * __thiscall
-TDipDlgCluster::thunk_DestructTDipDlgClusterAndMaybeFree(TDipDlgCluster *this,byte freeSelfFlag)
+TDipDlgCluster * __thiscall
+TDipDlgCluster::TDipDlgCluster_VtblSlot001(TDipDlgCluster *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TDipDlgCluster *pTVar1;
   
-  pvVar1 = DestructTDipDlgClusterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTDipDlgClusterAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406B5E
-// GHIDRA_NAME TDipDlgCluster::thunk_GetTDipDlgClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDipDlgClusterClassNamePointer(void)
+// GHIDRA_NAME TDipDlgCluster::TDipDlgCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDipDlgCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDipDlgClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDipDlgClusterClassNamePointer */
 
-void * __cdecl TDipDlgCluster::thunk_GetTDipDlgClusterClassNamePointer(void)
+void * __cdecl TDipDlgCluster::TDipDlgCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -74,12 +74,12 @@ void * __cdecl TDipDlgCluster::CreateTDipDlgClusterInstance(void)
   puStack_8 = &LAB_006375aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &g_vtblTDipDlgCluster;
+    this->field0_0x0 = &g_vtblTDipDlgCluster;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -103,27 +103,27 @@ void * __cdecl TDipDlgCluster::GetTDipDlgClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840E0
 // GHIDRA_NAME TDipDlgCluster::ConstructTDipDlgClusterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTDipDlgClusterBaseState(void)
+// GHIDRA_PROTO TDipDlgCluster * __thiscall ConstructTDipDlgClusterBaseState(void)
 
-void * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDipDlgCluster *this)
+TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDipDlgCluster *this)
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  *(undefined ***)this = &g_vtblTDipDlgCluster;
+  this->field0_0x0 = &g_vtblTDipDlgCluster;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584110
 // GHIDRA_NAME TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDipDlgClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TDipDlgCluster * __thiscall DestructTDipDlgClusterAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall
+TDipDlgCluster * __thiscall
 TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(TDipDlgCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -145,12 +145,12 @@ void __thiscall TDipDlgCluster::EvaluateSubsAndSancControlActiveState(TDipDlgClu
   int *piVar2;
   int *piVar3;
   
-  piVar2 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x73756273);
+  piVar2 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x73756273);
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x73616e63);
+  piVar3 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x73616e63);
   cVar1 = (**(code **)(*piVar2 + 0x1cc))();
   if (cVar1 != '\0') {
     return;

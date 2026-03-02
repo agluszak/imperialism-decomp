@@ -4,31 +4,32 @@
 // Bucket: TPurchaseCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401F91
-// GHIDRA_NAME TPurchaseCluster::thunk_Cluster_GameStateEventHint_004cc490
-// GHIDRA_PROTO void __thiscall thunk_Cluster_GameStateEventHint_004cc490(void)
+// GHIDRA_NAME TPurchaseCluster::TPurchaseCluster_VtblSlot015
+// GHIDRA_PROTO void __thiscall TPurchaseCluster_VtblSlot015(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_GameStateEventHint_004cc490
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_GameStateEventHint_004cc490 */
+/* Single-JMP thunk to WrapperFor_thunk_DispatchPanelControlEvent_At004cc490 */
 
-void __thiscall TPurchaseCluster::thunk_Cluster_GameStateEventHint_004cc490(TPurchaseCluster *this)
+void __thiscall
+TPurchaseCluster::TPurchaseCluster_VtblSlot015(TPurchaseCluster *this,int arg1,int arg2,int arg3)
 
 {
-  WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(this);
+  WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(this,arg1,arg2,arg3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004021DF
-// GHIDRA_NAME TPurchaseCluster::thunk_UpdateCityViewValueControl
-// GHIDRA_PROTO void __thiscall thunk_UpdateCityViewValueControl(void)
+// GHIDRA_NAME TPurchaseCluster::TPurchaseCluster_VtblSlot117
+// GHIDRA_PROTO void __thiscall TPurchaseCluster_VtblSlot117(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to UpdateCityViewValueControl
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to UpdateCityViewValueControl */
 
-void __thiscall TPurchaseCluster::thunk_UpdateCityViewValueControl(TPurchaseCluster *this)
+void __thiscall TPurchaseCluster::TPurchaseCluster_VtblSlot117(TPurchaseCluster *this)
 
 {
   UpdateCityViewValueControl(this);
@@ -36,16 +37,15 @@ void __thiscall TPurchaseCluster::thunk_UpdateCityViewValueControl(TPurchaseClus
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403382
-// GHIDRA_NAME TPurchaseCluster::thunk_SetCityViewValueControlAmount
-// GHIDRA_PROTO void __fastcall thunk_SetCityViewValueControlAmount(int * pCityViewDialog, short nValue)
+// GHIDRA_NAME TPurchaseCluster::TPurchaseCluster_VtblSlot116
+// GHIDRA_PROTO void __fastcall TPurchaseCluster_VtblSlot116(int * pCityViewDialog, short nValue)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SetCityViewValueControlAmount
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SetCityViewValueControlAmount */
 
-void __fastcall
-TPurchaseCluster::thunk_SetCityViewValueControlAmount(int *pCityViewDialog,short nValue)
+void __fastcall TPurchaseCluster::TPurchaseCluster_VtblSlot116(int *pCityViewDialog,short nValue)
 
 {
   SetCityViewValueControlAmount(pCityViewDialog,nValue);
@@ -53,8 +53,8 @@ TPurchaseCluster::thunk_SetCityViewValueControlAmount(int *pCityViewDialog,short
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404F84
-// GHIDRA_NAME TPurchaseCluster::thunk_DestructTPurchaseClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPurchaseClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TPurchaseCluster::TPurchaseCluster_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TPurchaseCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTPurchaseClusterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -62,8 +62,7 @@ TPurchaseCluster::thunk_SetCityViewValueControlAmount(int *pCityViewDialog,short
 /* Single-JMP thunk to DestructTPurchaseClusterAndMaybeFree */
 
 void * __thiscall
-TPurchaseCluster::thunk_DestructTPurchaseClusterAndMaybeFree
-          (TPurchaseCluster *this,byte freeSelfFlag)
+TPurchaseCluster::TPurchaseCluster_VtblSlot001(TPurchaseCluster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -73,15 +72,15 @@ TPurchaseCluster::thunk_DestructTPurchaseClusterAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406613
-// GHIDRA_NAME TPurchaseCluster::thunk_GetTPurchaseClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPurchaseClusterClassNamePointer(void)
+// GHIDRA_NAME TPurchaseCluster::TPurchaseCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TPurchaseCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTPurchaseClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTPurchaseClusterClassNamePointer */
 
-void * __cdecl TPurchaseCluster::thunk_GetTPurchaseClusterClassNamePointer(void)
+void * __cdecl TPurchaseCluster::TPurchaseCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -107,12 +106,12 @@ void * __cdecl TPurchaseCluster::CreateTPurchaseClusterInstance(void)
   puStack_8 = &LAB_0063183a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x8c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &g_vtblTPurchaseCluster;
-    *(undefined4 *)(this + 0x88) = 0;
+    this->field0_0x0 = &g_vtblTPurchaseCluster;
+    this[1].field0_0x0 = (undefined **)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -143,8 +142,8 @@ void * __thiscall TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchase
 
 {
   TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  *(undefined ***)this = &g_vtblTPurchaseCluster;
-  *(undefined4 *)(this + 0x88) = 0;
+  this->field0_0x0 = &g_vtblTPurchaseCluster;
+  this->pField88 = (void *)0x0;
   return this;
 }
 
@@ -156,16 +155,16 @@ void * __thiscall
 TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree(TPurchaseCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC490
 // GHIDRA_NAME TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=48, call_insns=5, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -174,90 +173,35 @@ TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree(TPurchaseCluster *this,by
    call_insns=5, internal_calls=1, unique_internal=1 */
 
 void __thiscall
-TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(TPurchaseCluster *this)
+TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
+          (TPurchaseCluster *this,int arg1,int arg2,int arg3)
 
 {
   int iVar1;
   undefined2 extraout_var;
   int iVar2;
-  int iVar3;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
+  undefined **ppuVar3;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)((int)in_stack_00000008 + 0x1c) == 0x6c61726f) {
-      iVar3 = *(int *)this;
-      iVar2 = **(int **)(this + 0x88);
-      iVar1 = (**(code **)(iVar3 + 0x1d4))();
+  if (arg1 == 10) {
+    if (*(int *)(arg2 + 0x1c) == 0x6c61726f) {
+      ppuVar3 = this->field0_0x0;
+      iVar2 = *(int *)this->pField88;
+      iVar1 = (*(code *)ppuVar3[0x75])();
       iVar1 = iVar1 + -1;
     }
     else {
-      if (*(int *)((int)in_stack_00000008 + 0x1c) != 0x7261726f) goto LAB_004cc4fb;
-      iVar3 = *(int *)this;
-      iVar2 = **(int **)(this + 0x88);
-      iVar1 = (**(code **)(iVar3 + 0x1d4))();
+      if (*(int *)(arg2 + 0x1c) != 0x7261726f) goto LAB_004cc4fb;
+      ppuVar3 = this->field0_0x0;
+      iVar2 = *(int *)this->pField88;
+      iVar1 = (*(code *)ppuVar3[0x75])();
       iVar1 = iVar1 + 1;
     }
     (**(code **)(iVar2 + 0x2c))(iVar1);
-    (**(code **)(iVar3 + 0x1d0))
-              (CONCAT22(extraout_var,*(undefined2 *)(*(int *)(this + 0x88) + 4)),1);
+    (*(code *)ppuVar3[0x74])(CONCAT22(extraout_var,*(undefined2 *)((int)this->pField88 + 4)),1);
   }
 LAB_004cc4fb:
-  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004CC550
-// GHIDRA_NAME TPurchaseCluster::SetCityViewValueControlAmount
-// GHIDRA_PROTO void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates numeric value control ('valu' tag) in city-view dialog and optionally invalidates the affected region.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Resolve control by tag 'valu'.
-// GHIDRA_COMMENT 2. Write new value into control numeric field.
-// GHIDRA_COMMENT 3. If redraw flag is set, invalidate control rectangle and refresh parent panel.
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - pCityViewDialog: Dialog/controller instance.
-// GHIDRA_COMMENT - nValue: Value to display.
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT_END
-
-/* Updates numeric value control ('valu' tag) in city-view dialog and optionally invalidates the
-   affected region.
-   Algorithm:
-   1. Resolve control by tag 'valu'.
-   2. Write new value into control numeric field.
-   3. If redraw flag is set, invalidate control rectangle and refresh parent panel.
-   Parameters:
-   - pCityViewDialog: Dialog/controller instance.
-   - nValue: Value to display.
-   Returns:
-   - void. */
-
-void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int *pCityViewDialog,short nValue)
-
-{
-  int *piVar1;
-  short unaff_retaddr;
-  LONG LStack_2c;
-  tagRECT tStack_1c;
-  char cStack_4;
-  
-  LStack_2c = 0x76616c75;
-  piVar1 = (int *)(**(code **)(*pCityViewDialog + 0x94))();
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  (**(code **)(*piVar1 + 0x1e4))((int)unaff_retaddr,0);
-  if (cStack_4 != '\0') {
-    LStack_2c = piVar1[9] + pCityViewDialog[9];
-    CopyRect(&tStack_1c,(RECT *)&LStack_2c);
-    thunk_InvalidateCityDialogRectRegion((int)&tStack_1c,1);
-    (**(code **)(*(int *)pCityViewDialog[8] + 0x1d8))();
-  }
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,arg1,(PanelEventPayload *)arg2,arg3);
   return;
 }
 
@@ -270,7 +214,7 @@ void __thiscall TPurchaseCluster::UpdateCityViewValueControl(TPurchaseCluster *t
 {
   int *piVar1;
   
-  piVar1 = (int *)(**(code **)(*(int *)this + 0x94))(0x76616c75);
+  piVar1 = (int *)(*(code *)this->field0_0x0[0x25])(0x76616c75);
   if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

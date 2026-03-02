@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TRemoteMinor.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040423C
+// GHIDRA_NAME TRemoteMinor::thunk_SetNationSelectedRegionAndMapCellLabelAlt
+// GHIDRA_PROTO void __thiscall thunk_SetNationSelectedRegionAndMapCellLabelAlt(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetNationSelectedRegionAndMapCellLabelAlt
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetNationSelectedRegionAndMapCellLabelAlt */
+
+void __thiscall
+TRemoteMinor::thunk_SetNationSelectedRegionAndMapCellLabelAlt(TRemoteMinor *this,int arg1)
+
+{
+  TToolBarCluster::SetNationSelectedRegionAndMapCellLabelAlt((TToolBarCluster *)this,arg1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406A64
 // GHIDRA_NAME TRemoteMinor::thunk_DestructTRemoteMinor
 // GHIDRA_PROTO void __thiscall thunk_DestructTRemoteMinor(void)
@@ -22,7 +39,7 @@ void __thiscall TRemoteMinor::thunk_DestructTRemoteMinor(TRemoteMinor *this)
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -64,7 +81,7 @@ void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

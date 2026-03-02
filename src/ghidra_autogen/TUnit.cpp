@@ -3,22 +3,90 @@
 // Program: Imperialism.exe
 // Bucket: TUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004050DD
-// GHIDRA_NAME TUnit::thunk_GetTUnitRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTUnitRuntimeClass(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004043EA
+// GHIDRA_NAME TUnit::thunk_SerializeUnitOrderCoreState
+// GHIDRA_PROTO void __thiscall thunk_SerializeUnitOrderCoreState(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTUnitRuntimeClass.
+// GHIDRA_COMMENT Single-JMP thunk to SerializeUnitOrderCoreState
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTUnitRuntimeClass. */
+/* Single-JMP thunk to SerializeUnitOrderCoreState */
 
-void * __thiscall TUnit::thunk_GetTUnitRuntimeClass(TUnit *this)
+void __thiscall TUnit::thunk_SerializeUnitOrderCoreState(TUnit *this,int *pArchiveStream)
+
+{
+  code *pcVar1;
+  
+  TradeControl::thunk_HandleCityDialogNoOpSlot14();
+  pcVar1 = *(code **)(*pArchiveStream + 0x78);
+  (*pcVar1)(&this->field1_0x4,2);
+  (*pcVar1)(&this->field3_0x6,2);
+  (*pcVar1)(&this->field8_0xc,2);
+  (*pcVar1)(&this->field20_0x18,2);
+  (*pcVar1)(&this->field22_0x1a,2);
+  (*pcVar1)(&this->field24_0x1c,1);
+  (*pcVar1)(&this->field4_0x8,4);
+  (*pcVar1)(&this->field28_0x20,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004050DD
+// GHIDRA_NAME TUnit::thunk_DestructTUnitAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTUnitAndMaybeFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk forwarding to GetTUnitRuntimeClass. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk forwarding to GetTUnitRuntimeClass. [FID:thunk_target_sync] */
+
+void * __thiscall TUnit::thunk_DestructTUnitAndMaybeFree(TUnit *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405ED4
+// GHIDRA_NAME TUnit::thunk_DeserializeUnitOrderCoreState
+// GHIDRA_PROTO void __thiscall thunk_DeserializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeserializeUnitOrderCoreState
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeserializeUnitOrderCoreState */
+
+void __thiscall TUnit::thunk_DeserializeUnitOrderCoreState(TUnit *this,int *pArchiveStream)
+
+{
+  short *psVar1;
+  short sVar2;
+  code *pcVar3;
+  undefined2 extraout_var;
+  undefined2 uVar4;
+  
+  TradeControl::thunk_HandleCityDialogNoOpSlot18();
+  pcVar3 = *(code **)(*pArchiveStream + 0x3c);
+  (*pcVar3)(&this->field1_0x4,2);
+  psVar1 = &this->field3_0x6;
+  (*pcVar3)(psVar1,2);
+  (*pcVar3)(&this->field8_0xc,2);
+  (*pcVar3)(&this->field20_0x18,2);
+  (*pcVar3)(&this->field22_0x1a,2);
+  (*pcVar3)(&this->field24_0x1c,1);
+  (*pcVar3)(&this->field4_0x8,4);
+  sVar2 = *psVar1;
+  if (sVar2 != -1) {
+    uVar4 = *(undefined2 *)&this->field8_0xc;
+    *psVar1 = -1;
+    (**(code **)((int)this->pVtable + 0x28))(CONCAT22(extraout_var,sVar2));
+    *(undefined2 *)&this->field8_0xc = uVar4;
+  }
+  if (0x2d < g_Advance_Turn_Machine_State_00695278) {
+    (*pcVar3)(&this->field28_0x20,4);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407423
@@ -39,22 +107,6 @@ void * __cdecl TUnit::thunk_GetTUnitClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040890E
-// GHIDRA_NAME TUnit::thunk_RenderUnitNationDeltaSummaryTextPanel
-// GHIDRA_PROTO void __thiscall thunk_RenderUnitNationDeltaSummaryTextPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderUnitNationDeltaSummaryTextPanel
-// GHIDRA_COMMENT_END
-
-/* Thunk to RenderUnitNationDeltaSummaryTextPanel */
-
-void __thiscall TUnit::thunk_RenderUnitNationDeltaSummaryTextPanel(TUnit *this)
-
-{
-  CreateTUnitInstance(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1BD0
 // GHIDRA_NAME TUnit::CreateTUnitInstance
 // GHIDRA_PROTO void __thiscall CreateTUnitInstance(void)
@@ -70,142 +122,139 @@ void __thiscall TUnit::CreateTUnitInstance(TUnit *this)
 {
   char *input_str;
   int iVar1;
-  void *this_00;
-  void *this_01;
-  void *this_02;
-  void *this_03;
-  void *this_04;
-  void *this_05;
-  void *this_06;
+  THQButton *this_00;
+  THQButton *this_01;
+  THQButton *this_02;
+  THQButton *this_03;
+  THQButton *this_04;
+  THQButton *this_05;
+  THQButton *this_06;
   undefined2 extraout_var;
-  void *this_07;
-  void *this_08;
+  THQButton *this_07;
+  THQButton *this_08;
+  int unaff_EBX;
+  int unaff_EBP;
   int iVar2;
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
   short sVar3;
   char *input_str_00;
-  undefined4 uStack_84;
-  undefined4 uStack_c;
+  void *pvStack_84;
+  int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006398a8;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
-  local_4 = CONCAT31(local_4._1_3_,2);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  local_4._0_1_ = 2;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&stack0xffffffdc);
   thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&stack0xffffffd8);
-  SetQuickDrawColorAndSyncGlobals();
+  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
   thunk_SetQuickDrawTextOriginWithContextOffset(10,0x12);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
   thunk_SetQuickDrawTextOriginWithContextOffset(9,0x11);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   thunk_SetQuickDrawTextOriginWithContextOffset(8,0x1e);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
-  (**(code **)(*g_pLocalizationTable + 0x74))();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x80,0x1e);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffc0);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffc0);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   thunk_SetQuickDrawTextOriginWithContextOffset(8,0x2a);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffb4);
-  (**(code **)(*g_pLocalizationTable + 0x74))();
-  if (*(int *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x844) < 0) {
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb4);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+  if (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x844) < 0) {
     sVar3 = 0x7c;
   }
   else {
     sVar3 = 0x80;
   }
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x2a);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   thunk_SetQuickDrawTextOriginWithContextOffset(8,0x36);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa0);
-  input_str = (char *)-*(int *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x960);
-  (**(code **)(*g_pLocalizationTable + 0x74))();
-  if (*(int *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x960) < 1) {
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa0);
+  input_str = (char *)-*(int *)((int)g_apNationStates[this->field91_0x60] + 0x960);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+  if (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x960) < 1) {
     sVar3 = 0x80;
   }
   else {
     sVar3 = 0x7c;
   }
-  uStack_84 = 0x5c1e56;
+  pvStack_84 = (void *)0x5c1e56;
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x36);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
-  uStack_84 = 0x2740;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
+  pvStack_84 = (void *)0x2740;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   iVar2 = 0x42;
   thunk_SetQuickDrawTextOriginWithContextOffset(8,0x42);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffff8c);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff8c);
   input_str_00 = &stack0xffffff8c;
-  iVar1 = *g_pLocalizationTable;
-  (**(code **)(*(int *)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x17c))();
+  iVar1 = *(int *)g_pLocalizationTable;
+  (**(code **)(*(int *)g_apNationStates[this->field91_0x60] + 0x17c))();
   (**(code **)(iVar1 + 0x74))();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x80,0x42);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffff84);
-  if ('\0' < *(char *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x8fc)) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-    FormatStringWithVarArgsToSharedRef
-              (&stack0xffffff84,&g_szDecimalFormat,
-               (int)*(char *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x8f4));
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff84);
+  if ('\0' < *(char *)((int)g_apNationStates[this->field91_0x60] + 0x8fc)) {
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    FormatStringWithVarArgsToSharedRef();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffff78,input_str);
     iVar2 = 0x4e;
     thunk_SetQuickDrawTextOriginWithContextOffset(8,0x4e);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
-    (**(code **)(*g_pLocalizationTable + 0x74))
-              (-*(int *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x8f8),
-               &stack0xffffff78);
-    if (*(int *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x8f8) < 1) {
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x74))
+              (-*(int *)((int)g_apNationStates[this->field91_0x60] + 0x8f8),&stack0xffffff78);
+    if (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x8f8) < 1) {
       sVar3 = 0x80;
     }
     else {
       sVar3 = 0x7c;
     }
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x4e);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
   }
   thunk_SetQuickDrawTextOriginWithContextOffset(8,(short)(iVar2 + 2));
-  thunk_DrawCenteredGuideLineOnMapDc
-            (CONCAT22(extraout_var,*(short *)&this[0xd].pVtable + -8),iVar2 + 2);
-  iVar1 = *g_pLocalizationTable;
-  (**(code **)(*(int *)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x180))();
+  thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var,this->field48_0x34 + -8),iVar2 + 2);
+  iVar1 = *(int *)g_pLocalizationTable;
+  (**(code **)(*(int *)g_apNationStates[this->field91_0x60] + 0x180))();
   (**(code **)(iVar1 + 0x74))();
-  iVar1 = (**(code **)(*(int *)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x180))();
+  iVar1 = (**(code **)(*(int *)g_apNationStates[this->field91_0x60] + 0x180))();
   if (iVar1 < 0) {
-    (**(code **)(*g_pUiRuntimeContext + 0x34))();
+    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
     sVar3 = 0x7c;
   }
   else {
     sVar3 = 0x80;
   }
   thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,(short)iVar2 + 0xe);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&uStack_84);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&pvStack_84);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  (**(code **)(*g_pLocalizationTable + 0x84))(0x2740,0x1b);
-  (**(code **)(*g_pLocalizationTable + 0x74))
-            (*(int *)((int)g_apNationStates[*(short *)&this[0x18].pVtable] + 0x8f0) / 100,&uStack_84
-            );
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2740,0x1b);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x74))
+            (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x8f0) / 100,&pvStack_84);
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff68,input_str_00);
   sVar3 = (short)iVar2 + 0x1a;
   thunk_SetQuickDrawTextOriginWithContextOffset(8,sVar3);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x80,sVar3);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
   SetQuickDrawFillColorFromPaletteIndex(0);
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uStack_84;
+  *unaff_FS_OFFSET = (int)pvStack_84;
   return;
 }
 
@@ -226,7 +275,7 @@ void * __cdecl TUnit::GetTUnitClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C24E0
 // GHIDRA_NAME TUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO undefined ConstructTUnitBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTUnitBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -234,14 +283,16 @@ void * __cdecl TUnit::GetTUnitClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *param_1,byte param_2)
+void __thiscall TUnit::ConstructTUnitBaseState(TUnit *this)
 
 {
-  thunk_GetTUnitRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTUnitAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2510
@@ -258,7 +309,85 @@ void * __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2B10
+// GHIDRA_NAME TUnit::DeserializeCivUnitOrderState
+// GHIDRA_PROTO void __thiscall DeserializeCivUnitOrderState(int * pArchiveStream)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Deserialize civilian-order state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Deserialize shared unit-order core fields via DeserializeUnitOrderCoreState.
+// GHIDRA_COMMENT 2. Read civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): Civilian unit-order state object.
+// GHIDRA_COMMENT - pArchiveStream: Load/archive stream interface.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Deserialize civilian-order state.
+   
+   Algorithm:
+   1. Deserialize shared unit-order core fields via DeserializeUnitOrderCoreState.
+   2. Read civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+   
+   Parameters:
+   - this (IMPLICIT): Civilian unit-order state object.
+   - pArchiveStream: Load/archive stream interface.
+   
+   Returns:
+   - void. */
+
+void __thiscall TUnit::DeserializeCivUnitOrderState(TUnit *this,int *pArchiveStream)
+
+{
+  thunk_DeserializeUnitOrderCoreState(this,pArchiveStream);
+  (**(code **)(*pArchiveStream + 0x3c))(&this->field32_0x24,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2B40
+// GHIDRA_NAME TUnit::SerializeCivUnitOrderState
+// GHIDRA_PROTO void __thiscall SerializeCivUnitOrderState(int * pArchiveStream)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Serialize civilian-order state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Serialize shared unit-order core fields via SerializeUnitOrderCoreState.
+// GHIDRA_COMMENT 2. Write civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): Civilian unit-order state object.
+// GHIDRA_COMMENT - pArchiveStream: Save/archive stream interface.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Serialize civilian-order state.
+   
+   Algorithm:
+   1. Serialize shared unit-order core fields via SerializeUnitOrderCoreState.
+   2. Write civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+   
+   Parameters:
+   - this (IMPLICIT): Civilian unit-order state object.
+   - pArchiveStream: Save/archive stream interface.
+   
+   Returns:
+   - void. */
+
+void __thiscall TUnit::SerializeCivUnitOrderState(TUnit *this,int *pArchiveStream)
+
+{
+  thunk_SerializeUnitOrderCoreState(this,pArchiveStream);
+  (**(code **)(*pArchiveStream + 0x78))(&this->field32_0x24,2);
+  return;
 }
 

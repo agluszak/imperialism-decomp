@@ -4,15 +4,15 @@
 // Bucket: TDisappearingButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402293
-// GHIDRA_NAME TDisappearingButton::thunk_GetTDisappearingButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDisappearingButtonClassNamePointer(void)
+// GHIDRA_NAME TDisappearingButton::TDisappearingButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDisappearingButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDisappearingButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDisappearingButtonClassNamePointer */
 
-void * __cdecl TDisappearingButton::thunk_GetTDisappearingButtonClassNamePointer(void)
+void * __cdecl TDisappearingButton::TDisappearingButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TDisappearingButton::thunk_GetTDisappearingButtonClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403C56
-// GHIDRA_NAME TDisappearingButton::thunk_DestructTDisappearingButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDisappearingButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDisappearingButton::TDisappearingButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDisappearingButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDisappearingButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,8 +31,7 @@ void * __cdecl TDisappearingButton::thunk_GetTDisappearingButtonClassNamePointer
 /* Single-JMP thunk to DestructTDisappearingButtonAndMaybeFree */
 
 void * __thiscall
-TDisappearingButton::thunk_DestructTDisappearingButtonAndMaybeFree
-          (TDisappearingButton *this,byte freeSelfFlag)
+TDisappearingButton::TDisappearingButton_VtblSlot001(TDisappearingButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -59,7 +58,7 @@ void * __cdecl TDisappearingButton::CreateTDisappearingButtonInstance(void)
   puStack_8 = &LAB_00635b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -95,7 +94,7 @@ TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTDisappearingButton;
+  this->field0_0x0 = &g_vtblTDisappearingButton;
   return this;
 }
 
@@ -110,7 +109,7 @@ TDisappearingButton::DestructTDisappearingButtonAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

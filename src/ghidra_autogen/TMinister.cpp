@@ -3,22 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401866
-// GHIDRA_NAME TMinister::thunk_DeletingDestructTMinister
-// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTMinister(TMinister * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTMinister
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeletingDestructTMinister */
-
-void __thiscall TMinister::thunk_DeletingDestructTMinister(TMinister *this,TMinister *pThis)
-
-{
-  DeletingDestructTMinister(this,pThis);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040293C
 // GHIDRA_NAME TMinister::thunk_DestructTMinister
 // GHIDRA_PROTO void __thiscall thunk_DestructTMinister(void)
@@ -31,7 +15,7 @@ void __thiscall TMinister::thunk_DeletingDestructTMinister(TMinister *this,TMini
 void __thiscall TMinister::thunk_DestructTMinister(TMinister *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
@@ -47,27 +31,50 @@ void __thiscall TMinister::thunk_DestructTMinister(TMinister *this)
 void __thiscall TMinister::thunk_ConstructTMinister(TMinister *this)
 
 {
-  *(undefined2 *)&this[3].pVtable = 0;
-  this->pVtable = &PTR_thunk_GetTMinisterTypeName_00659c00;
+  this->field9_0xc = 0;
+  this->pVtable = &PTR_thunk_GetTMinisterClassNamePointer_00659c00;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040625D
-// GHIDRA_NAME TMinister::thunk_GetTMinisterTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetTMinisterTypeName(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004089F4
+// GHIDRA_NAME TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMinisterTypeName
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ConstructTMinister_At004be840 [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetTMinisterTypeName */
+/* Single-JMP thunk to WrapperFor_ConstructTMinister_At004be840 [FID:thunk_target_sync] */
 
-void * __cdecl TMinister::thunk_GetTMinisterTypeName(void)
+void __thiscall TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = GetTMinisterClassNamePointer();
-  return pvVar1;
+  thunk_ConstructTMinister(this);
+  this->field390_0x18c = 0;
+  this->field16_0x14 = 1;
+  this->field17_0x16 = 1;
+  this->pVtable = &PTR_thunk_GetTCityInteriorMinisterClassNamePointer_006508a8;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE840
+// GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructTMinister; instructions=11, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_ConstructTMinister; instructions=11, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
+
+{
+  thunk_ConstructTMinister(this);
+  this->field390_0x18c = 0;
+  this->field16_0x14 = 1;
+  this->field17_0x16 = 1;
+  this->pVtable = &PTR_thunk_GetTCityInteriorMinisterClassNamePointer_006508a8;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB60
@@ -92,21 +99,23 @@ void * __cdecl TMinister::GetTMinisterClassNamePointer(void)
 void __thiscall TMinister::ConstructTMinister(TMinister *this)
 
 {
-  *(undefined2 *)&this[3].pVtable = 0;
-  this->pVtable = &PTR_thunk_GetTMinisterTypeName_00659c00;
+  this->field9_0xc = 0;
+  this->pVtable = &PTR_thunk_GetTMinisterClassNamePointer_00659c00;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBA0
 // GHIDRA_NAME TMinister::DeletingDestructTMinister
-// GHIDRA_PROTO void __thiscall DeletingDestructTMinister(TMinister * pThis)
+// GHIDRA_PROTO void __thiscall DeletingDestructTMinister(void)
 
-void __thiscall TMinister::DeletingDestructTMinister(TMinister *this,TMinister *pThis)
+void __thiscall TMinister::DeletingDestructTMinister(TMinister *this)
 
 {
+  byte in_stack_00000004;
+  
   thunk_DestructTMinister(this);
-  if (((uint)pThis & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
   return;
 }
@@ -118,7 +127,7 @@ void __thiscall TMinister::DeletingDestructTMinister(TMinister *this,TMinister *
 void __thiscall TMinister::DestructTMinister(TMinister *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

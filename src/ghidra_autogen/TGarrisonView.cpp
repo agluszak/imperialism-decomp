@@ -4,15 +4,15 @@
 // Bucket: TGarrisonView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402365
-// GHIDRA_NAME TGarrisonView::thunk_GetTGarrisonViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGarrisonViewClassNamePointer(void)
+// GHIDRA_NAME TGarrisonView::thunk_GetTGarrisonViewClassNamePointer_At00402365
+// GHIDRA_PROTO void * __cdecl thunk_GetTGarrisonViewClassNamePointer_At00402365(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTGarrisonViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTGarrisonViewClassNamePointer */
 
-void * __cdecl TGarrisonView::thunk_GetTGarrisonViewClassNamePointer(void)
+void * __cdecl TGarrisonView::thunk_GetTGarrisonViewClassNamePointer_At00402365(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TGarrisonView::thunk_GetTGarrisonViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403198
-// GHIDRA_NAME TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup
-// GHIDRA_PROTO void __thiscall thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(void)
+// GHIDRA_NAME TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup_At00403198
+// GHIDRA_PROTO void __thiscall thunk_HandleSelectedTileSpecialOrderPromptAndCleanup_At00403198(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleSelectedTileSpecialOrderPromptAndCleanup
 // GHIDRA_COMMENT_END
@@ -31,7 +31,7 @@ void * __cdecl TGarrisonView::thunk_GetTGarrisonViewClassNamePointer(void)
 /* Single-JMP thunk to HandleSelectedTileSpecialOrderPromptAndCleanup */
 
 void __thiscall
-TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(TGarrisonView *this)
+TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup_At00403198(TGarrisonView *this)
 
 {
   HandleSelectedTileSpecialOrderPromptAndCleanup(this);
@@ -39,8 +39,8 @@ TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(TGarrisonVie
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409052
-// GHIDRA_NAME TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTGarrisonViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree_At00409052
+// GHIDRA_PROTO void * __thiscall thunk_DestructTGarrisonViewAndMaybeFree_At00409052(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTGarrisonViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -48,7 +48,8 @@ TGarrisonView::thunk_HandleSelectedTileSpecialOrderPromptAndCleanup(TGarrisonVie
 /* Single-JMP thunk to DestructTGarrisonViewAndMaybeFree */
 
 void * __thiscall
-TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree(TGarrisonView *this,byte freeSelfFlag)
+TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree_At00409052
+          (TGarrisonView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -75,13 +76,13 @@ void * __cdecl TGarrisonView::CreateTGarrisonViewInstance(void)
   puStack_8 = &LAB_006302ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMilitaryPageView *)AllocateWithFallbackHandler(0x90);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TMilitaryPageView *)0x0;
   if (this != (TMilitaryPageView *)0x0) {
     TMilitaryPageView::ConstructTMilitaryPageViewBaseState(this);
-    *(undefined ***)this = &g_vtblTGarrisonView;
-    *(undefined2 *)(this + 0x8c) = 0xffff;
+    (this->base).base.pVtable = &g_vtblTGarrisonView;
+    *(undefined2 *)&this[1].base.base.field1_0x4 = 0xffff;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -110,9 +111,9 @@ void * __cdecl TGarrisonView::GetTGarrisonViewClassNamePointer(void)
 void * __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(TGarrisonView *this)
 
 {
-  TMilitaryPageView::ConstructTMilitaryPageViewBaseState((TMilitaryPageView *)this);
-  *(undefined ***)this = &g_vtblTGarrisonView;
-  *(undefined2 *)(this + 0x8c) = 0xffff;
+  TMilitaryPageView::ConstructTMilitaryPageViewBaseState(&this->base);
+  (this->base).base.base.pVtable = &g_vtblTGarrisonView;
+  this->field8c = -1;
   return this;
 }
 
@@ -124,9 +125,9 @@ void * __thiscall
 TGarrisonView::DestructTGarrisonViewAndMaybeFree(TGarrisonView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -151,9 +152,8 @@ void __thiscall TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(TG
   short extraout_AX;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puVar6;
-  undefined4 local_18;
-  undefined4 local_14;
+  int local_18;
+  int local_14;
   TGarrisonView *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -163,7 +163,7 @@ void __thiscall TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(TG
   puStack_8 = &LAB_00630340;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  sVar1 = *(short *)(this + 0x8c);
+  sVar1 = this->field8c;
   local_10 = this;
   if (sVar1 != -1) {
     cVar4 = '\0';
@@ -171,7 +171,7 @@ void __thiscall TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(TG
       iVar5 = 0;
     }
     else {
-      iVar5 = *(int *)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar1 * 0xa8);
+      iVar5 = *(int *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + sVar1 * 0xa8);
     }
     for (; iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x14)) {
       if (cVar4 != '\0') goto LAB_004a8aa3;
@@ -181,36 +181,34 @@ void __thiscall TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup(TG
     }
     if (cVar4 != '\0') {
 LAB_004a8aa3:
-      if (*(short *)(g_pLocalizationTable + 0x58) != 0) {
+      if (*(short *)((int)g_pLocalizationTable + 0x58) != 0) {
         cVar4 = thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2746,9,1,1);
       }
       if (cVar4 != '\0') {
-        sVar1 = *(short *)(this + 0x8c);
+        sVar1 = this->field8c;
         if ((sVar1 < 0) || (0x17f < sVar1)) {
           piVar3 = (int *)0x0;
         }
         else {
-          piVar3 = *(int **)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar1 * 0xa8);
+          piVar3 = *(int **)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + sVar1 * 0xa8);
         }
         while (piVar3 != (int *)0x0) {
           if (piVar3[2] == 0xe) {
             piVar2 = (int *)piVar3[5];
             InitializeSharedStringRefFromEmpty();
             local_4 = 0;
-            StringShared__AssignFromPtr(&local_14,piVar3 + 9);
-            iVar5 = CompareAnsiStringsWithMbcsAwareness(local_14,s_Snidely_0069584c);
+            AssignFromPtr(&local_14,piVar3 + 9);
+            iVar5 = CompareAnsiStringsWithMbcsAwareness(local_14,0x69584c);
             if (iVar5 == 0) {
               InitializeSharedStringRefFromEmpty();
-              puVar6 = &local_18;
               local_4 = CONCAT31(local_4._1_3_,1);
               thunk_GetActiveNationId();
-              FormatOverlayTerrainLabelText(puVar6);
-              iVar5 = CompareAnsiStringsWithMbcsAwareness
-                                (local_18,&g_Apply_Join_Game_Value_00695844);
+              FormatOverlayTerrainLabelText();
+              iVar5 = CompareAnsiStringsWithMbcsAwareness(local_18,0x695844);
               if (iVar5 == 0) {
                 thunk_GetActiveNationId();
                 iVar5 = (**(code **)(*(int *)g_apTerrainTypeDescriptorTable[extraout_AX] + 0x40))();
-                if (iVar5 == *(short *)(this + 0x8c)) {
+                if (iVar5 == this->field8c) {
                   g_ShSpecialOrderPromptMessageRef = 0x24d0;
                 }
               }
@@ -232,7 +230,8 @@ LAB_004a8aa3:
       }
     }
   }
-  TMilitaryPageView::WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0();
+  TMilitaryPageView::
+  thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0_At0040354e(&this->base);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

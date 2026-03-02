@@ -4,16 +4,15 @@
 // Bucket: TUberCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404192
-// GHIDRA_NAME TUberCluster::thunk_DestructTUberClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUberClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TUberCluster::TUberCluster_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TUberCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTUberClusterAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTUberClusterAndMaybeFree */
 
-void * __thiscall
-TUberCluster::thunk_DestructTUberClusterAndMaybeFree(TUberCluster *this,byte freeSelfFlag)
+void * __thiscall TUberCluster::TUberCluster_VtblSlot001(TUberCluster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +22,15 @@ TUberCluster::thunk_DestructTUberClusterAndMaybeFree(TUberCluster *this,byte fre
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407720
-// GHIDRA_NAME TUberCluster::thunk_GetTUberClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUberClusterClassNamePointer(void)
+// GHIDRA_NAME TUberCluster::TUberCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TUberCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTUberClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTUberClusterClassNamePointer */
 
-void * __cdecl TUberCluster::thunk_GetTUberClusterClassNamePointer(void)
+void * __cdecl TUberCluster::TUberCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,12 +57,12 @@ void * __cdecl TUberCluster::CreateTUberClusterInstance(void)
   puStack_8 = &LAB_006363ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &g_vtblTUberCluster;
+    this->field0_0x0 = &g_vtblTUberCluster;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -93,7 +92,7 @@ void * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberCluster *thi
 
 {
   TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  *(undefined ***)this = &g_vtblTUberCluster;
+  this->field0_0x0 = &g_vtblTUberCluster;
   return this;
 }
 
@@ -105,9 +104,9 @@ void * __thiscall
 TUberCluster::DestructTUberClusterAndMaybeFree(TUberCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

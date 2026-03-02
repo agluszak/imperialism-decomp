@@ -4,8 +4,8 @@
 // Bucket: TCountingStream.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040287E
-// GHIDRA_NAME TCountingStream::thunk_DestructTCountingStreamAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCountingStreamAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCountingStream::thunk_DestructTCountingStreamAndMaybeFree_At0040287e
+// GHIDRA_PROTO void * __thiscall thunk_DestructTCountingStreamAndMaybeFree_At0040287e(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCountingStreamAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,8 @@
 /* Single-JMP thunk to DestructTCountingStreamAndMaybeFree */
 
 void * __thiscall
-TCountingStream::thunk_DestructTCountingStreamAndMaybeFree(TCountingStream *this,byte freeSelfFlag)
+TCountingStream::thunk_DestructTCountingStreamAndMaybeFree_At0040287e
+          (TCountingStream *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,32 +23,50 @@ TCountingStream::thunk_DestructTCountingStreamAndMaybeFree(TCountingStream *this
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403BA7
-// GHIDRA_NAME TCountingStream::thunk_WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390
-// GHIDRA_PROTO undefined thunk_WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390()
+// GHIDRA_FUNCTION IMPERIALISM 0x00403A9E
+// GHIDRA_NAME TCountingStream::thunk_CreateTHandleStreamInstance_At00403a9e
+// GHIDRA_PROTO void __thiscall thunk_CreateTHandleStreamInstance_At00403a9e(int handle, int delta)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390
+// GHIDRA_COMMENT Single-JMP thunk to CreateTHandleStreamInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390 */
+/* Single-JMP thunk to CreateTHandleStreamInstance */
 
-void TCountingStream::thunk_WrapperFor_WriteVariableLengthPrefixedByteBuffer_At00489390(void)
+void __thiscall
+TCountingStream::thunk_CreateTHandleStreamInstance_At00403a9e
+          (TCountingStream *this,int handle,int delta)
 
 {
-  CreateTCountingStreamInstance();
+  THandleStream::CreateTHandleStreamInstance((THandleStream *)this,handle,delta);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004072E8
+// GHIDRA_NAME TCountingStream::thunk_OrphanRetStub_00488b40_At004072e8
+// GHIDRA_PROTO void __cdecl thunk_OrphanRetStub_00488b40_At004072e8(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanRetStub_00488b40
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanRetStub_00488b40 */
+
+void __cdecl TCountingStream::thunk_OrphanRetStub_00488b40_At004072e8(void)
+
+{
+  OrphanRetStub_00488b40();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409A3E
-// GHIDRA_NAME TCountingStream::thunk_GetTCountingStreamClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCountingStreamClassNamePointer(void)
+// GHIDRA_NAME TCountingStream::thunk_GetTCountingStreamClassNamePointer_At00409a3e
+// GHIDRA_PROTO void * __cdecl thunk_GetTCountingStreamClassNamePointer_At00409a3e(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCountingStreamClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCountingStreamClassNamePointer */
 
-void * __cdecl TCountingStream::thunk_GetTCountingStreamClassNamePointer(void)
+void * __cdecl TCountingStream::thunk_GetTCountingStreamClassNamePointer_At00409a3e(void)
 
 {
   void *pvVar1;
@@ -58,7 +77,7 @@ void * __cdecl TCountingStream::thunk_GetTCountingStreamClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489390
 // GHIDRA_NAME TCountingStream::CreateTCountingStreamInstance
-// GHIDRA_PROTO undefined CreateTCountingStreamInstance()
+// GHIDRA_PROTO TCountingStream * __cdecl CreateTCountingStreamInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around WriteVariableLengthPrefixedByteBuffer; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -66,11 +85,15 @@ void * __cdecl TCountingStream::thunk_GetTCountingStreamClassNamePointer(void)
 /* [WrapperShape] small wrapper around WriteVariableLengthPrefixedByteBuffer; instructions=7,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
-void __thiscall TCountingStream::CreateTCountingStreamInstance(int param_1,undefined4 param_2)
+TCountingStream * __cdecl TCountingStream::CreateTCountingStreamInstance(void)
 
 {
-  WriteVariableLengthPrefixedByteBuffer(*(undefined4 *)(*(int *)(param_1 + 4) + 4),param_2);
-  return;
+  TCountingStream *extraout_EAX;
+  int in_ECX;
+  int in_stack_00000004;
+  
+  WriteVariableLengthPrefixedByteBuffer(*(int *)(*(int *)(in_ECX + 4) + 4),in_stack_00000004);
+  return extraout_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004893F0
@@ -96,8 +119,8 @@ void __fastcall TCountingStream::ConstructTCountingStreamBaseState(TCountingStre
 
 {
   *(undefined ***)pThis = &g_vtblTCountingStream;
-  *(undefined4 *)(pThis + 4) = 0;
-  *(undefined4 *)(pThis + 8) = 0;
+  pThis->field04 = 0;
+  pThis->field08 = 0;
   return;
 }
 
@@ -111,7 +134,7 @@ TCountingStream::DestructTCountingStreamAndMaybeFree(TCountingStream *this,byte 
 {
   DestructTCountingStreamAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

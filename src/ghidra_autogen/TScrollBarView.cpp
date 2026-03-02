@@ -21,6 +21,25 @@ void * __cdecl TScrollBarView::thunk_GetTScrollBarViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404557
+// GHIDRA_NAME TScrollBarView::thunk_scalar_deleting_destructor_00404557
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00404557(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TScrollBarView::thunk_scalar_deleting_destructor_00404557(TScrollBarView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004052C7
 // GHIDRA_NAME TScrollBarView::thunk_DestructTScrollBarViewAndMaybeFree
 // GHIDRA_PROTO void __fastcall thunk_DestructTScrollBarViewAndMaybeFree(TScrollBarView * pThis)
@@ -38,16 +57,15 @@ void __fastcall TScrollBarView::thunk_DestructTScrollBarViewAndMaybeFree(TScroll
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407BB2
-// GHIDRA_NAME TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry
-// GHIDRA_PROTO void * __thiscall thunk_InitializeScrollBarViewButtonsAndGeometry(void)
+// GHIDRA_NAME TScrollBarView::thunk_ConstructTScrollBarViewBaseState
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTScrollBarViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeScrollBarViewButtonsAndGeometry.
+// GHIDRA_COMMENT Thunk forwarding to InitializeScrollBarViewButtonsAndGeometry. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to InitializeScrollBarViewButtonsAndGeometry. */
+/* Thunk forwarding to InitializeScrollBarViewButtonsAndGeometry. [FID:thunk_target_sync] */
 
-void * __thiscall
-TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(TScrollBarView *this)
+void * __thiscall TScrollBarView::thunk_ConstructTScrollBarViewBaseState(TScrollBarView *this)
 
 {
   int iVar1;
@@ -66,13 +84,13 @@ TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(TScrollBarView *
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  this[0x21].pVtable = this[8].pVtable;
-  (**(code **)(*(int *)this[8].pVtable + 0xc))();
-  *(undefined2 *)&this[0x22].pVtable = 0x12;
-  *(short *)((int)&this[0x22].pVtable + 2) = *(short *)&this[0xe].pVtable + -0x24;
-  *(undefined2 *)&this[0x23].pVtable = 0x12;
+  this->field125_0x84 = this->field29_0x20;
+  (**(code **)(*(int *)this->field29_0x20 + 0xc))();
+  this->field126_0x88 = 0x12;
+  this->field127_0x8a = this->field50_0x38 + -0x24;
+  this->field128_0x8c = 0x12;
   (**(code **)(*(int *)g_pDisplayManager + 0x2c))();
-  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = AllocateWithFallbackHandler();
   if (pTVar2 == (TPictureButton *)0x0) {
     piVar4 = (int *)0x0;
   }
@@ -85,7 +103,7 @@ TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry(TScrollBarView *
   piVar4[7] = 0x73637570;
   (**(code **)(iVar1 + 0xa4))(0,1);
   (**(code **)(iVar1 + 0xa8))(1,0);
-  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = AllocateWithFallbackHandler();
   if (pTVar2 == (TPictureButton *)0x0) {
     piVar4 = (int *)0x0;
   }
@@ -124,12 +142,12 @@ void * __cdecl TScrollBarView::CreateTScrollBarViewInstance(void)
   puStack_8 = &LAB_006366ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
-    *(undefined4 *)(this + 0x90) = 0;
+    (this->base).pVtable = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
+    this->field90 = (byte *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -180,13 +198,13 @@ void * __thiscall TScrollBarView::ConstructTScrollBarViewBaseState(TScrollBarVie
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  this[0x21].pVtable = this[8].pVtable;
-  (**(code **)(*(int *)this[8].pVtable + 0xc))();
-  *(undefined2 *)&this[0x22].pVtable = 0x12;
-  *(short *)((int)&this[0x22].pVtable + 2) = *(short *)&this[0xe].pVtable + -0x24;
-  *(undefined2 *)&this[0x23].pVtable = 0x12;
+  this->field125_0x84 = this->field29_0x20;
+  (**(code **)(*(int *)this->field29_0x20 + 0xc))();
+  this->field126_0x88 = 0x12;
+  this->field127_0x8a = this->field50_0x38 + -0x24;
+  this->field128_0x8c = 0x12;
   (**(code **)(*(int *)g_pDisplayManager + 0x2c))();
-  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = AllocateWithFallbackHandler();
   if (pTVar2 == (TPictureButton *)0x0) {
     piVar4 = (int *)0x0;
   }
@@ -199,7 +217,7 @@ void * __thiscall TScrollBarView::ConstructTScrollBarViewBaseState(TScrollBarVie
   piVar4[7] = 0x73637570;
   (**(code **)(iVar1 + 0xa4))(0,1);
   (**(code **)(iVar1 + 0xa8))(1,0);
-  pTVar2 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTVar2 = AllocateWithFallbackHandler();
   if (pTVar2 == (TPictureButton *)0x0) {
     piVar4 = (int *)0x0;
   }
@@ -223,10 +241,10 @@ void * __thiscall TScrollBarView::ConstructTScrollBarViewBaseState(TScrollBarVie
 void __fastcall TScrollBarView::DestructTScrollBarViewAndMaybeFree(TScrollBarView *pThis)
 
 {
-  if (pThis[0x24].pVtable != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6(pThis + 0x24);
+  if (*(int *)((int)&pThis[1].pVtable + 2) != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
   }
-  thunk_CloseCityDialogChildrenAndReleaseSelf();
+  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf((TControl *)pThis);
   return;
 }
 

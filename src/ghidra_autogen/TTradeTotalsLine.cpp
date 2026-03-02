@@ -4,15 +4,15 @@
 // Bucket: TTradeTotalsLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402F72
-// GHIDRA_NAME TTradeTotalsLine::thunk_GetTTradeTotalsLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeTotalsLineClassNamePointer(void)
+// GHIDRA_NAME TTradeTotalsLine::TTradeTotalsLine_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TTradeTotalsLine_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTradeTotalsLineClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTradeTotalsLineClassNamePointer */
 
-void * __cdecl TTradeTotalsLine::thunk_GetTTradeTotalsLineClassNamePointer(void)
+void * __cdecl TTradeTotalsLine::TTradeTotalsLine_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,9 +21,25 @@ void * __cdecl TTradeTotalsLine::thunk_GetTTradeTotalsLineClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405759
+// GHIDRA_NAME TTradeTotalsLine::TTradeTotalsLine_VtblSlot010
+// GHIDRA_PROTO void __cdecl TTradeTotalsLine_VtblSlot010(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0 */
+
+void __cdecl TTradeTotalsLine::TTradeTotalsLine_VtblSlot010(void)
+
+{
+  Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040675D
-// GHIDRA_NAME TTradeTotalsLine::thunk_DestructTTradeTotalsLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeTotalsLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTradeTotalsLine::TTradeTotalsLine_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TTradeTotalsLine_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTradeTotalsLineAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,8 +47,7 @@ void * __cdecl TTradeTotalsLine::thunk_GetTTradeTotalsLineClassNamePointer(void)
 /* Single-JMP thunk to DestructTTradeTotalsLineAndMaybeFree */
 
 void * __thiscall
-TTradeTotalsLine::thunk_DestructTTradeTotalsLineAndMaybeFree
-          (TTradeTotalsLine *this,byte freeSelfFlag)
+TTradeTotalsLine::TTradeTotalsLine_VtblSlot001(TTradeTotalsLine *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -59,12 +74,12 @@ void * __cdecl TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
   puStack_8 = &LAB_0063983a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &g_vtblTTradeTotalsLine;
+    pThis->field0_0x0 = &g_vtblTTradeTotalsLine;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -94,7 +109,7 @@ void * __thiscall TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTot
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  *(undefined ***)this = &g_vtblTTradeTotalsLine;
+  this->field0_0x0 = &g_vtblTTradeTotalsLine;
   return this;
 }
 
@@ -106,10 +121,27 @@ void * __thiscall
 TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,byte freeSelfFlag)
 
 {
-  DestructTTradeTotalsLineAndMaybeFree_Impl();
+  DestructTTradeTotalsLineAndMaybeFree_Impl(this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C1960
+// GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
+// GHIDRA_PROTO void __thiscall DestructTTradeTotalsLineAndMaybeFree_Impl(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_005c1960 with single named caller DestructTTradeTotalsLineAndMaybeFree@0x005c1930
+// GHIDRA_COMMENT_END
+
+/* [ThunkBridge] promoted from thunk_FUN_005c1960 with single named caller
+   DestructTTradeTotalsLineAndMaybeFree@0x005c1930 */
+
+void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTradeTotalsLine *this)
+
+{
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

@@ -3,50 +3,120 @@
 // Program: Imperialism.exe
 // Bucket: TAmtBar.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AA0
-// GHIDRA_NAME TAmtBar::thunk_DestructTIndustryClusterMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructTIndustryClusterMaybeFree(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004018ED
+// GHIDRA_NAME TAmtBar::thunk_SyncTradeCommoditySelectionWithActiveNationAndInitControls_At004018ed
+// GHIDRA_PROTO void __thiscall thunk_SyncTradeCommoditySelectionWithActiveNationAndInitControls_At004018ed(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTIndustryClusterMaybeFree
+// GHIDRA_COMMENT Single-JMP thunk to SyncTradeCommoditySelectionWithActiveNationAndInitControls
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestructTIndustryClusterMaybeFree */
+/* Single-JMP thunk to SyncTradeCommoditySelectionWithActiveNationAndInitControls */
 
-void __cdecl TAmtBar::thunk_DestructTIndustryClusterMaybeFree(void)
+void __thiscall
+TAmtBar::thunk_SyncTradeCommoditySelectionWithActiveNationAndInitControls_At004018ed(TAmtBar *this)
 
 {
-  TIndustryCluster::DestructTIndustryClusterMaybeFree();
+  SyncTradeCommoditySelectionWithActiveNationAndInitControls(this);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040535D
-// GHIDRA_NAME TAmtBar::thunk_GetLiteralTypeName_TIndustryCluster
-// GHIDRA_PROTO void * __cdecl thunk_GetLiteralTypeName_TIndustryCluster(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00402DF6
+// GHIDRA_NAME TAmtBar::thunk_ClampAndApplyTradeMoveValue
+// GHIDRA_PROTO void __thiscall thunk_ClampAndApplyTradeMoveValue(int * requestedMovePtr)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetLiteralTypeName_TIndustryCluster
+// GHIDRA_COMMENT Single-JMP thunk to ClampAndApplyTradeMoveValue
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetLiteralTypeName_TIndustryCluster */
+/* Single-JMP thunk to ClampAndApplyTradeMoveValue */
 
-void * __cdecl TAmtBar::thunk_GetLiteralTypeName_TIndustryCluster(void)
+void __thiscall TAmtBar::thunk_ClampAndApplyTradeMoveValue(TAmtBar *this,int *requestedMovePtr)
+
+{
+  ClampAndApplyTradeMoveValue(this,requestedMovePtr);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403823
+// GHIDRA_NAME TAmtBar::thunk_UpdateBarValuesAndRefresh
+// GHIDRA_PROTO void __thiscall thunk_UpdateBarValuesAndRefresh(int valueAt60, int valueAt62)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Recovered single-JMP thunk for trade TAmtBar lane
+// GHIDRA_COMMENT_END
+
+/* Recovered single-JMP thunk for trade TAmtBar lane */
+
+void __thiscall TAmtBar::thunk_UpdateBarValuesAndRefresh(TAmtBar *this,int valueAt60,int valueAt62)
 
 {
   void *pvVar1;
   
-  pvVar1 = TIndustryCluster::GetTIndustryClusterClassNamePointer();
-  return pvVar1;
+  pvVar1 = (this->base).pVtable;
+  this->barSelected62 = (ushort)valueAt62;
+  this->barValue60 = (ushort)valueAt60;
+  (**(code **)((int)pvVar1 + 0xe4))();
+  (**(code **)((int)pvVar1 + 0x13c))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004038C8
+// GHIDRA_NAME TAmtBar::TAmtBar_VtblSlot106
+// GHIDRA_PROTO void __thiscall TAmtBar_VtblSlot106(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderPrimarySurfaceOverlayPanelWithClipCache
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderPrimarySurfaceOverlayPanelWithClipCache */
+
+void __thiscall TAmtBar::TAmtBar_VtblSlot106(TAmtBar *this)
+
+{
+  RenderPrimarySurfaceOverlayPanelWithClipCache(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004056B4
+// GHIDRA_NAME TAmtBar::thunk_ApplyMoveValueSlot1D4NoCommit_At004056b4
+// GHIDRA_PROTO void __thiscall thunk_ApplyMoveValueSlot1D4NoCommit_At004056b4(int value)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ApplyMoveValueSlot1D4NoCommit
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ApplyMoveValueSlot1D4NoCommit */
+
+void __thiscall TAmtBar::thunk_ApplyMoveValueSlot1D4NoCommit_At004056b4(TAmtBar *this,int value)
+
+{
+  (**(code **)((int)(this->base).pVtable + 0x1d4))(value,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405AF6
+// GHIDRA_NAME TAmtBar::thunk_UpdateTradeMoveControlsFromDrag_At00405af6
+// GHIDRA_PROTO void __thiscall thunk_UpdateTradeMoveControlsFromDrag_At00405af6(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to UpdateTradeMoveControlsFromDrag
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to UpdateTradeMoveControlsFromDrag */
+
+void __thiscall
+TAmtBar::thunk_UpdateTradeMoveControlsFromDrag_At00405af6(TAmtBar *this,int arg1,int arg2)
+
+{
+  UpdateTradeMoveControlsFromDrag(this,arg1,arg2);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405AFB
-// GHIDRA_NAME TAmtBar::thunk_GetTAmtBarClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAmtBarClassNamePointer(void)
+// GHIDRA_NAME TAmtBar::TAmtBar_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TAmtBar_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTAmtBarClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTAmtBarClassNamePointer */
 
-void * __cdecl TAmtBar::thunk_GetTAmtBarClassNamePointer(void)
+void * __cdecl TAmtBar::TAmtBar_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -55,50 +125,85 @@ void * __cdecl TAmtBar::thunk_GetTAmtBarClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405CC7
+// GHIDRA_NAME TAmtBar::thunk_InvokeSlot1A8NoArg
+// GHIDRA_PROTO void __thiscall thunk_InvokeSlot1A8NoArg(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Recovered single-JMP thunk for trade TAmtBar lane
+// GHIDRA_COMMENT_END
+
+/* Recovered single-JMP thunk for trade TAmtBar lane */
+
+void __thiscall TAmtBar::thunk_InvokeSlot1A8NoArg(TAmtBar *this)
+
+{
+  (**(code **)((int)(this->base).pVtable + 0x1a8))();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040611D
-// GHIDRA_NAME TAmtBar::thunk_HandleTradeMoveStepCommand
-// GHIDRA_PROTO void __thiscall thunk_HandleTradeMoveStepCommand(void)
+// GHIDRA_NAME TAmtBar::thunk_HandleTradeMoveStepCommand_At0040611d
+// GHIDRA_PROTO void __thiscall thunk_HandleTradeMoveStepCommand_At0040611d(EArrowSplitCommandId nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleTradeMoveStepCommand
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleTradeMoveStepCommand */
 
-void __thiscall TAmtBar::thunk_HandleTradeMoveStepCommand(TAmtBar *this)
+void __thiscall
+TAmtBar::thunk_HandleTradeMoveStepCommand_At0040611d
+          (TAmtBar *this,EArrowSplitCommandId nEventClass,PanelEventPayload *pEventPayload,
+          int nEventFlags)
 
 {
-  HandleTradeMoveStepCommand(this);
+  HandleTradeMoveStepCommand(this,nEventClass,pEventPayload,nEventFlags);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040661D
+// GHIDRA_NAME TAmtBar::thunk_UpdateTradeBarFromSelectedMetricRatio_B_At0040661d
+// GHIDRA_PROTO void __fastcall thunk_UpdateTradeBarFromSelectedMetricRatio_B_At0040661d(int * this)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to UpdateTradeBarFromSelectedMetricRatio_B
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to UpdateTradeBarFromSelectedMetricRatio_B */
+
+void __fastcall TAmtBar::thunk_UpdateTradeBarFromSelectedMetricRatio_B_At0040661d(int *this)
+
+{
+  UpdateTradeBarFromSelectedMetricRatio_B(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B17
-// GHIDRA_NAME TAmtBar::thunk_DestructTAmtBarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTAmtBarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TAmtBar::TAmtBar_VtblSlot001
+// GHIDRA_PROTO TAmtBar * __thiscall TAmtBar_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTAmtBarAndMaybeFree
+// GHIDRA_COMMENT Single-JMP thunk to DestructAndMaybeFree
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestructTAmtBarAndMaybeFree */
+/* Single-JMP thunk to DestructAndMaybeFree */
 
-void * __thiscall TAmtBar::thunk_DestructTAmtBarAndMaybeFree(TAmtBar *this,byte freeSelfFlag)
+TAmtBar * __thiscall TAmtBar::TAmtBar_VtblSlot001(TAmtBar *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TAmtBar *pTVar1;
   
-  pvVar1 = DestructTAmtBarAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407D8D
-// GHIDRA_NAME TAmtBar::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00588610_At00407d8d
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00588610_At00407d8d()
+// GHIDRA_NAME TAmtBar::TAmtBar_VtblSlot055
+// GHIDRA_PROTO void __cdecl TAmtBar_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At00588610
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At00588610 */
 
-void TAmtBar::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00588610_At00407d8d(void)
+void __cdecl TAmtBar::TAmtBar_VtblSlot055(void)
 
 {
   WrapperFor_thunk_NoOpUiLifecycleHook_At00588610();
@@ -108,6 +213,11 @@ void TAmtBar::thunk_WrapperFor_thunk_NoOpUiLifecycleHook_At00588610_At00407d8d(v
 // GHIDRA_FUNCTION IMPERIALISM 0x005884C0
 // GHIDRA_NAME TAmtBar::CreateTAmtBarInstance
 // GHIDRA_PROTO void * __cdecl CreateTAmtBarInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled leaf extracted from mangled MSVC symbol
+// GHIDRA_COMMENT_END
+
+/* demangled leaf extracted from mangled MSVC symbol */
 
 void * __cdecl TAmtBar::CreateTAmtBarInstance(void)
 
@@ -122,15 +232,15 @@ void * __cdecl TAmtBar::CreateTAmtBarInstance(void)
   puStack_8 = &LAB_006378fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTAmtBar;
-    *(undefined2 *)(this + 0x60) = 0;
-    *(undefined2 *)(this + 0x62) = 0;
-    *(undefined2 *)(this + 100) = 0;
-    *(undefined2 *)(this + 0x66) = 0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTAmtBar;
+    *(undefined2 *)&this[1].pVtable = 0;
+    *(undefined2 *)((int)&this[1].pVtable + 2) = 0;
+    *(undefined2 *)&this[1].field1_0x4 = 0;
+    *(undefined2 *)((int)&this[1].field2_0x5 + 1) = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -154,38 +264,48 @@ void * __cdecl TAmtBar::GetTAmtBarClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588580
-// GHIDRA_NAME TAmtBar::ConstructTAmtBarBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTAmtBarBaseState(void)
+// GHIDRA_NAME TAmtBar::ConstructBaseState
+// GHIDRA_PROTO TAmtBar * __thiscall ConstructBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TAmtBar base-state constructor wrapper from redecomp.
+// GHIDRA_COMMENT_END
 
-void * __thiscall TAmtBar::ConstructTAmtBarBaseState(TAmtBar *this)
+/* TAmtBar base-state constructor wrapper from redecomp. */
+
+TAmtBar * __thiscall TAmtBar::ConstructBaseState(TAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTAmtBar;
-  *(undefined2 *)(this + 0x60) = 0;
-  *(undefined2 *)(this + 0x62) = 0;
-  *(undefined2 *)(this + 100) = 0;
-  *(undefined2 *)(this + 0x66) = 0;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTAmtBar;
+  this->barValue60 = 0;
+  this->barSelected62 = 0;
+  this->barLimit64 = 0;
+  this->barAux66 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005885C0
-// GHIDRA_NAME TAmtBar::DestructTAmtBarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTAmtBarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TAmtBar::DestructAndMaybeFree
+// GHIDRA_PROTO TAmtBar * __thiscall DestructAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TAmtBar destructor wrapper with conditional freeSelf flag.
+// GHIDRA_COMMENT_END
 
-void * __thiscall TAmtBar::DestructTAmtBarAndMaybeFree(TAmtBar *this,byte freeSelfFlag)
+/* TAmtBar destructor wrapper with conditional freeSelf flag. */
+
+TAmtBar * __thiscall TAmtBar::DestructAndMaybeFree(TAmtBar *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588610
 // GHIDRA_NAME TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610
-// GHIDRA_PROTO undefined WrapperFor_thunk_NoOpUiLifecycleHook_At00588610()
+// GHIDRA_PROTO void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -193,48 +313,433 @@ void * __thiscall TAmtBar::DestructTAmtBarAndMaybeFree(TAmtBar *this,byte freeSe
 /* [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1,
    internal_calls=1, unique_internal=1 */
 
-void TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void)
+void __cdecl TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void)
 
 {
   thunk_NoOpUiLifecycleHook();
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00588FF0
-// GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
-// GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00588630
+// GHIDRA_NAME TAmtBar::UpdateBarValuesAndRefresh
+// GHIDRA_PROTO void __thiscall UpdateBarValuesAndRefresh(int valueAt60, int valueAt62)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Imported from redecomp trade_screen.cpp; updates +0x60/+0x62 then invokes slots +0xE4 and +0x13C.
+// GHIDRA_COMMENT_END
 
-void __thiscall TAmtBar::HandleTradeMoveStepCommand(TAmtBar *this)
+/* Imported from redecomp trade_screen.cpp; updates +0x60/+0x62 then invokes slots +0xE4 and +0x13C.
+    */
+
+void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this,int valueAt60,int valueAt62)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = (this->base).pVtable;
+  this->barSelected62 = (ushort)valueAt62;
+  this->barValue60 = (ushort)valueAt60;
+  (**(code **)((int)pvVar1 + 0xe4))();
+  (**(code **)((int)pvVar1 + 0x13c))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588670
+// GHIDRA_NAME TAmtBar::InvokeSlot1A8NoArg
+// GHIDRA_PROTO void __thiscall InvokeSlot1A8NoArg(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Imported from redecomp trade_screen.cpp; direct bridge to virtual slot +0x1A8.
+// GHIDRA_COMMENT_END
+
+/* Imported from redecomp trade_screen.cpp; direct bridge to virtual slot +0x1A8. */
+
+void __thiscall TAmtBar::InvokeSlot1A8NoArg(TAmtBar *this)
+
+{
+  (**(code **)((int)(this->base).pVtable + 0x1a8))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588690
+// GHIDRA_NAME TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+// GHIDRA_PROTO void __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TAmtBar *this)
+
+{
+  ushort uVar1;
+  void *pvVar2;
+  char cVar3;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 extraout_var_02;
+  short originX;
+  undefined4 unaff_EBX;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  int local_5c;
+  undefined1 *puStack_58;
+  int iStack_54;
+  int iStack_50;
+  RECT RStack_4c;
+  RECT RStack_3c;
+  LONG LStack_2c;
+  LONG LStack_28;
+  int iStack_24;
+  int iStack_20;
+  LONG LStack_1c;
+  LONG LStack_18;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00637918;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  AcquireReusableQuickDrawSurface();
+  uVar1 = this->barValue60;
+  local_4 = 0;
+  ApplyHitRegionToClipState(local_5c);
+  pvVar2 = (this->base).pVtable;
+  cVar3 = (**(code **)((int)pvVar2 + 0xec))();
+  if (cVar3 != '\0') {
+    cVar3 = (**(code **)((int)pvVar2 + 0xf8))();
+    if (cVar3 != '\0') {
+      (**(code **)((int)pvVar2 + 0x128))();
+      RStack_3c.left = LStack_2c;
+      RStack_4c.bottom = RStack_3c.bottom;
+      RStack_3c.top = LStack_28;
+      RStack_3c.right = iStack_24;
+      thunk_ApplyRectClipRegionToGlobalClipState(&RStack_4c.bottom);
+      (**(code **)((int)pvVar2 + 300))(&iStack_20);
+      iStack_54 = iStack_24;
+      RStack_4c.left = LStack_1c;
+      RStack_4c.top = LStack_18;
+      iStack_50 = iStack_20;
+      puStack_58 = (undefined1 *)g_nOverlayClipCacheParamY;
+      local_5c = g_nOverlayClipCacheParamX;
+      (**(code **)((int)pvVar2 + 0x138))(&local_5c);
+      RStack_4c.right = iStack_54 + (this->base).field14_0x34;
+      RStack_4c.bottom = iStack_50 + (this->base).field15_0x38;
+      RStack_4c.left = iStack_54;
+      RStack_4c.top = iStack_50;
+      BlitRectWithOptionalTransparency
+                ((astruct_17 *)((int)g_pPrimaryRenderSurfaceContext + 4),
+                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_4c,&RStack_3c,0,
+                 (astruct_19 *)0x0);
+      if ((short)uVar1 < 1) {
+        iVar4 = 0;
+      }
+      else {
+        thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
+        (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
+        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,7);
+        iVar4 = CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1);
+        if ((short)this->barSelected62 < (short)uVar1) {
+          iVar4 = CONCAT22(extraout_var,this->barSelected62);
+        }
+        thunk_DrawCenteredGuideLineOnMapDc(iVar4 + -1,1);
+        ResetQuickDrawStrokeState();
+      }
+      if ((short)iVar4 < 1) {
+        originX = 0;
+      }
+      else {
+        originX = (short)iVar4 + 1;
+      }
+      thunk_SetQuickDrawTextOriginWithContextOffset(originX,4);
+      puStack_58 = &stack0xffffff90;
+      SetQuickDrawFillColor(0);
+      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
+      thunk_DrawCenteredGuideLineOnMapDc
+                (CONCAT22(extraout_var_01,(short)(this->base).field14_0x34),4);
+      thunk_SetQuickDrawTextOriginWithContextOffset(this->barSelected62,0);
+      ResetQuickDrawStrokeState();
+      thunk_DrawCenteredGuideLineOnMapDc
+                (CONCAT22(extraout_var_02,this->barSelected62 - 1),
+                 CONCAT22(extraout_var_00,(short)(this->base).field15_0x38));
+      SnapshotHitRegionToClipCache();
+    }
+  }
+  local_4 = 0xffffffff;
+  ReleaseOrCacheQuickDrawSurface();
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588950
+// GHIDRA_NAME TAmtBar::ClampAndApplyTradeMoveValue
+// GHIDRA_PROTO void __thiscall ClampAndApplyTradeMoveValue(int * requestedMovePtr)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall TAmtBar::ClampAndApplyTradeMoveValue(TAmtBar *this,int *requestedMovePtr)
+
+{
+  short sVar1;
+  int iVar2;
+  undefined4 uVar3;
+  int *piVar4;
+  undefined2 uVar5;
+  undefined2 extraout_var;
+  
+  uVar5 = (undefined2)((uint)this >> 0x10);
+  if (((short)this->barLimit64 < 1) ||
+     ((this->base).field14_0x34 / ((int)(short)this->barLimit64 << 1) <= *requestedMovePtr)) {
+    iVar2 = ftol();
+    uVar5 = extraout_var;
+  }
+  else {
+    iVar2 = 0;
+  }
+  uVar3 = (**(code **)((int)(this->base).pVtable + 0x1a0))
+                    (iVar2,CONCAT22(uVar5,(short)*requestedMovePtr));
+  if (((short)uVar3 == 0) && (*requestedMovePtr != 0)) {
+    piVar4 = (int *)(**(code **)(*(int *)(this->base).pChildMapView20 + 0x94))(0x6d6f7665);
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)(**(code **)(*(int *)(this->base).pChildMapView20 + 0x94))(0x53656c6c);
+      if (piVar4 == (int *)0x0) goto LAB_005889eb;
+    }
+    sVar1 = (**(code **)(*piVar4 + 0x1e8))();
+    if (sVar1 == 0) {
+      uVar3 = 1;
+    }
+  }
+LAB_005889eb:
+  (**(code **)(*(int *)(this->base).pChildMapView20 + 0x1d0))(uVar3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588B70
+// GHIDRA_NAME TAmtBar::SyncTradeCommoditySelectionWithActiveNationAndInitControls
+// GHIDRA_PROTO void __thiscall SyncTradeCommoditySelectionWithActiveNationAndInitControls(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall TAmtBar::SyncTradeCommoditySelectionWithActiveNationAndInitControls(TAmtBar *this)
+
+{
+  int *piVar1;
+  short extraout_AX;
+  int iVar2;
+  undefined2 extraout_var;
+  void *this_00;
+  short sVar3;
+  
+  sVar3 = 0;
+  thunk_GetActiveNationId();
+  if (g_apNationStates[extraout_AX] == (void *)0x0) {
+    this_00 = (void *)0x0;
+  }
+  else {
+    this_00 = *(void **)((int)g_apNationStates[extraout_AX] + 0x894);
+  }
+  iVar2 = s_doofrbafbmulepapeetsleuftolcnruf_006960e0._40_4_;
+  while (iVar2 != (this->base).field8_0x1c) {
+    sVar3 = sVar3 + 1;
+    iVar2 = *(int *)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0 + sVar3 * 4 + 0x28);
+  }
+  piVar1 = *(int **)((int)this_00 + sVar3 * 4 + 0xe4);
+  this->field36_0x88 = piVar1;
+  iVar2 = thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)piVar1 + 0x52));
+  this->field37_0x8c = (short)iVar2;
+  TAmtBarCluster::TAmtBarCluster_VtblSlot055((TAmtBarCluster *)this);
+  (**(code **)((int)(this->base).pVtable + 0x1d4))
+            (CONCAT22(extraout_var,(short)this->field36_0x88[1]),1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588C30
+// GHIDRA_NAME TAmtBar::ApplyMoveValueSlot1D4NoCommit
+// GHIDRA_PROTO void __thiscall ApplyMoveValueSlot1D4NoCommit(int value)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Apply move/control value via vslot +0x1D4 with commitFlag=0
+// GHIDRA_COMMENT_END
+
+/* Apply move/control value via vslot +0x1D4 with commitFlag=0 */
+
+void __thiscall TAmtBar::ApplyMoveValueSlot1D4NoCommit(TAmtBar *this,int value)
+
+{
+  (**(code **)((int)(this->base).pVtable + 0x1d4))(value,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588C60
+// GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
+// GHIDRA_PROTO void __thiscall UpdateTradeMoveControlsFromDrag(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,int arg1,int arg2)
+
+{
+  code *pcVar1;
+  int *piVar2;
+  int iVar3;
+  short sVar4;
+  int *piVar5;
+  code *pcVar6;
+  int *piVar7;
+  int iVar8;
+  LONG LStack_58;
+  undefined1 auStack_40 [12];
+  LONG LStack_34;
+  RECT RStack_30;
+  tagRECT tStack_20;
+  int iStack_10;
+  float fStack_c;
+  
+  piVar5 = this->field36_0x88;
+  iVar3 = piVar5[1];
+  if (piVar5 != (int *)0x0) {
+    LStack_58 = arg1;
+    (**(code **)(*piVar5 + 0x2c))();
+  }
+  if (((char)arg2 != '\0') || ((short)this->field36_0x88[1] != (short)iVar3)) {
+    LStack_58 = 0x6d6f7665;
+    pcVar1 = *(code **)((int)(this->base).pVtable + 0x94);
+    piVar5 = (int *)(*pcVar1)();
+    if (piVar5 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    iVar3 = *piVar5;
+    pcVar6 = (code *)(int)(short)this->field36_0x88[1];
+    (**(code **)(iVar3 + 0x1e4))(pcVar6,0);
+    (**(code **)(iVar3 + 300))(auStack_40 + 4);
+    OffsetRect((LPRECT)auStack_40,(this->base).field10_0x24,(this->base).field11_0x28);
+    RStack_30.top = auStack_40._4_4_;
+    RStack_30.right = auStack_40._8_4_;
+    RStack_30.left = auStack_40._0_4_;
+    RStack_30.bottom = LStack_34;
+    CopyRect(&tStack_20,&RStack_30);
+    thunk_InvalidateCityDialogRectRegion((int)&tStack_20,1);
+    piVar7 = (int *)(*pcVar1)(0x62617220);
+    if (piVar7 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    if ((short)piVar7[0x19] == 0) {
+      fStack_c = 9999.0;
+    }
+    else {
+      fStack_c = (float)piVar7[0xd] / (float)(int)(short)piVar7[0x19];
+    }
+    if ((short)this->field36_0x88[1] == this->field37_0x8c) {
+      *(undefined2 *)((int)piVar7 + 0x66) = 0x34;
+    }
+    else {
+      *(undefined2 *)((int)piVar7 + 0x66) = 0x3a;
+    }
+    piVar2 = this->field36_0x88;
+    iStack_10 = (int)(short)piVar2[1];
+    LStack_58 = ftol();
+    iVar3 = *piVar7;
+    sVar4 = (**(code **)(*piVar2 + 0x30))();
+    iStack_10 = (int)sVar4;
+    iVar8 = ftol();
+    (**(code **)(iVar3 + 0x1a4))(LStack_58,iVar8);
+    iVar3 = piVar7[0xe];
+    iVar8 = piVar7[10];
+    (**(code **)(*piVar5 + 0xf0))(&stack0xffffffac,1);
+    (*pcVar6)(&stack0xffffffac);
+    OffsetRect((LPRECT)&LStack_58,(this->base).field10_0x24,(this->base).field11_0x28);
+    auStack_40._0_4_ = iVar8 + iVar3;
+    CopyRect((LPRECT)(auStack_40 + 8),(RECT *)&stack0xffffffb8);
+    thunk_InvalidateCityDialogRectRegion((int)(auStack_40 + 8),1);
+    (**(code **)(*(int *)(this->base).pChildMapView20 + 0x1d8))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588F60
+// GHIDRA_NAME TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B
+// GHIDRA_PROTO void __fastcall UpdateTradeBarFromSelectedMetricRatio_B(int * this)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __fastcall TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B(int *this)
 
 {
   int iVar1;
+  short sVar2;
+  int *piVar3;
+  
+  piVar3 = (int *)(**(code **)(*this + 0x94))(0x62617220);
+  if (piVar3 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  if ((short)piVar3[0x19] != 0) {
+    iVar1 = *piVar3;
+    sVar2 = (**(code **)(*(int *)this[0x22] + 0x30))();
+    (**(code **)(iVar1 + 0x1ac))(((int)sVar2 * piVar3[0xd]) / (int)(short)piVar3[0x19]);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588FF0
+// GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
+// GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(EArrowSplitCommandId nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled TradeMovePanelContext method name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled TradeMovePanelContext method name */
+
+void __thiscall
+TAmtBar::HandleTradeMoveStepCommand
+          (TAmtBar *this,EArrowSplitCommandId nEventClass,PanelEventPayload *pEventPayload,
+          int nEventFlags)
+
+{
+  void *pvVar1;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 100) {
-    iVar1 = *(int *)this;
-    piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+  if (nEventClass == ARROW_COMMAND_VALUE_00000064) {
+    pvVar1 = (this->base).pVtable;
+    piVar2 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x6d6f7665);
     if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar3 = (**(code **)(*piVar2 + 0x1e8))();
-    (**(code **)(iVar1 + 0x1d0))(iVar3 + 1);
+    (**(code **)((int)pvVar1 + 0x1d0))(iVar3 + 1);
     return;
   }
-  if (in_stack_00000004 != 0x65) {
-    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
+  if (nEventClass != ARROW_COMMAND_VALUE_00000065) {
+    TAmtBarCluster::TAmtBarCluster_VtblSlot015
+              ((TAmtBarCluster *)this,nEventClass,pEventPayload,nEventFlags);
     return;
   }
-  iVar1 = *(int *)this;
-  piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+  pvVar1 = (this->base).pVtable;
+  piVar2 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x6d6f7665);
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar3 = (**(code **)(*piVar2 + 0x1e8))();
-  (**(code **)(iVar1 + 0x1d0))(iVar3 + -1);
+  (**(code **)((int)pvVar1 + 0x1d0))(iVar3 + -1);
   return;
 }
 

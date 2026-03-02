@@ -4,15 +4,15 @@
 // Bucket: TDealLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401686
-// GHIDRA_NAME TDealLine::thunk_GetTDealLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDealLineClassNamePointer(void)
+// GHIDRA_NAME TDealLine::thunk_GetTDealLineClassNamePointer_At00401686
+// GHIDRA_PROTO void * __cdecl thunk_GetTDealLineClassNamePointer_At00401686(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDealLineClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDealLineClassNamePointer */
 
-void * __cdecl TDealLine::thunk_GetTDealLineClassNamePointer(void)
+void * __cdecl TDealLine::thunk_GetTDealLineClassNamePointer_At00401686(void)
 
 {
   void *pvVar1;
@@ -22,15 +22,16 @@ void * __cdecl TDealLine::thunk_GetTDealLineClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404444
-// GHIDRA_NAME TDealLine::thunk_DestructTDealLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDealLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDealLine::thunk_DestructTDealLineAndMaybeFree_At00404444
+// GHIDRA_PROTO void * __thiscall thunk_DestructTDealLineAndMaybeFree_At00404444(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDealLineAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTDealLineAndMaybeFree */
 
-void * __thiscall TDealLine::thunk_DestructTDealLineAndMaybeFree(TDealLine *this,byte freeSelfFlag)
+void * __thiscall
+TDealLine::thunk_DestructTDealLineAndMaybeFree_At00404444(TDealLine *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -57,12 +58,12 @@ void * __cdecl TDealLine::CreateTDealLineInstance(void)
   puStack_8 = &LAB_0063971a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x18);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &g_vtblTDealLine;
+    pThis->field0_0x0 = &g_vtblTDealLine;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -92,7 +93,7 @@ void * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  *(undefined ***)this = &g_vtblTDealLine;
+  this->field0_0x0 = &g_vtblTDealLine;
   return this;
 }
 
@@ -105,7 +106,7 @@ void * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this,byte 
 {
   DestructTDealLineAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

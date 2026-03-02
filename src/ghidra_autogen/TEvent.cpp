@@ -21,24 +21,6 @@ void * __cdecl TEvent::thunk_GetTEventClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004091F6
-// GHIDRA_NAME TEvent::thunk_GetTEventClassInfoPointer_At004091f6
-// GHIDRA_PROTO void * __cdecl thunk_GetTEventClassInfoPointer_At004091f6(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTEventClassInfoPointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTEventClassInfoPointer */
-
-void * __cdecl TEvent::thunk_GetTEventClassInfoPointer_At004091f6(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = CreateTEventInstance();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00489EE0
 // GHIDRA_NAME TEvent::CreateTEventInstance
 // GHIDRA_PROTO void * __cdecl CreateTEventInstance(void)

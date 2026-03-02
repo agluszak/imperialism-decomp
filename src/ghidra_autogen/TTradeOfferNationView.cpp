@@ -4,16 +4,16 @@
 // Bucket: TTradeOfferNationView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401C94
-// GHIDRA_NAME TTradeOfferNationView::thunk_RenderTradeOfferNationViewRowsAndLabels_At00401c94
-// GHIDRA_PROTO void __thiscall thunk_RenderTradeOfferNationViewRowsAndLabels_At00401c94(void)
+// GHIDRA_NAME TTradeOfferNationView::thunk_ConstructTTradeOfferNationViewBaseState_At00401c94
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTradeOfferNationViewBaseState_At00401c94(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderTradeOfferNationViewRowsAndLabels
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeOfferNationViewBaseState
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RenderTradeOfferNationViewRowsAndLabels */
+/* Single-JMP thunk to ConstructTTradeOfferNationViewBaseState */
 
 void __thiscall
-TTradeOfferNationView::thunk_RenderTradeOfferNationViewRowsAndLabels_At00401c94
+TTradeOfferNationView::thunk_ConstructTTradeOfferNationViewBaseState_At00401c94
           (TTradeOfferNationView *this)
 
 {
@@ -22,15 +22,16 @@ TTradeOfferNationView::thunk_RenderTradeOfferNationViewRowsAndLabels_At00401c94
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402720
-// GHIDRA_NAME TTradeOfferNationView::thunk_GetTTradeOfferNationViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeOfferNationViewClassNamePointer(void)
+// GHIDRA_NAME TTradeOfferNationView::thunk_GetTTradeOfferNationViewClassNamePointer_At00402720
+// GHIDRA_PROTO void * __cdecl thunk_GetTTradeOfferNationViewClassNamePointer_At00402720(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTradeOfferNationViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTradeOfferNationViewClassNamePointer */
 
-void * __cdecl TTradeOfferNationView::thunk_GetTTradeOfferNationViewClassNamePointer(void)
+void * __cdecl
+TTradeOfferNationView::thunk_GetTTradeOfferNationViewClassNamePointer_At00402720(void)
 
 {
   void *pvVar1;
@@ -62,12 +63,12 @@ void * __cdecl TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
   puStack_8 = &LAB_0063937a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTTradeOfferNationLine;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTTradeOfferNationLine;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -108,7 +109,7 @@ TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(TTradeOfferNation
   int *dst_ref_ptr;
   int *piVar4;
   int iVar5;
-  void *this_00;
+  THQButton *this_00;
   char *unaff_ESI;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
@@ -132,25 +133,25 @@ TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(TTradeOfferNation
   local_4._0_1_ = 2;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 3;
-  wVar1 = g_pNationInteractionStateManager->nationRows17[*(short *)&this[0x18].pVtable].matrixA23
-          [*(short *)((int)&this[0x18].pVtable + 2)];
+  wVar1 = g_pNationInteractionStateManager->nationRows17[this->field93_0x60].matrixA23
+          [this->field94_0x62];
   thunk_AssignNormalizedCredentialTokenToIndexedSlot();
   local_4._0_1_ = 4;
-  StringShared__AssignFromPtr(&local_40.top,dst_ref_ptr);
+  AssignFromPtr(&local_40.top,dst_ref_ptr);
   local_4 = CONCAT31(local_4._1_3_,3);
   ReleaseSharedStringRefIfNotEmpty();
   if (wVar1 == 1) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   else {
     FormatStringWithVarArgsToSharedRef();
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_SetQuickDrawTextOriginWithContextOffset(0,8);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   piVar4 = (int *)(**(code **)(g_pNationInteractionStateManager->vftable + 0x80))();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   iVar2 = *piVar4;
@@ -168,12 +169,12 @@ TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(TTradeOfferNation
     local_40.top = 0xc;
     local_40.bottom = 0x24;
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4),
+              ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x680) + 4),
                (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_30,&local_40,0x24,
                (astruct_19 *)0x0);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 8);
-  SetQuickDrawStrokeColor();
+  TCivDescription::SetQuickDrawStrokeColor();
   (**(code **)(iVar2 + 0x38))();
   iStack_18._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();

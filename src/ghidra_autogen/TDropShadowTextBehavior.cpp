@@ -4,8 +4,8 @@
 // Bucket: TDropShadowTextBehavior.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004074FA
-// GHIDRA_NAME TDropShadowTextBehavior::thunk_DestructTDropShadowTextBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDropShadowTextBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDropShadowTextBehavior_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDropShadowTextBehaviorAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructTDropShadowTextBehaviorAndMaybeFree */
 
 void * __thiscall
-TDropShadowTextBehavior::thunk_DestructTDropShadowTextBehaviorAndMaybeFree
+TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot001
           (TDropShadowTextBehavior *this,byte freeSelfFlag)
 
 {
@@ -24,15 +24,15 @@ TDropShadowTextBehavior::thunk_DestructTDropShadowTextBehaviorAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408AFD
-// GHIDRA_NAME TDropShadowTextBehavior::thunk_GetTDropShadowTextBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDropShadowTextBehaviorClassNamePointer(void)
+// GHIDRA_NAME TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDropShadowTextBehavior_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDropShadowTextBehaviorClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDropShadowTextBehaviorClassNamePointer */
 
-void * __cdecl TDropShadowTextBehavior::thunk_GetTDropShadowTextBehaviorClassNamePointer(void)
+void * __cdecl TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,14 +58,14 @@ void * __cdecl TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance(vo
   puStack_8 = &LAB_00630cda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TBehavior *)AllocateWithFallbackHandler(0x14);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   if (pThis != (TBehavior *)0x0) {
     TBehavior::ConstructTBehaviorBaseState(pThis);
-    pThis[0x10] = (TBehavior)0x0;
-    pThis[0x11] = (TBehavior)0x0;
-    pThis[0x12] = (TBehavior)0x0;
-    pThis[0x13] = (TBehavior)0x0;
+    *(undefined1 *)&pThis[1].field04 = 0;
+    *(undefined1 *)((int)&pThis[1].field04 + 1) = 0;
+    *(undefined1 *)((int)&pThis[1].field04 + 2) = 0;
+    *(undefined1 *)((int)&pThis[1].field04 + 3) = 0;
     *(undefined ***)pThis = &g_vtblTDropShadowTextBehavior;
     *unaff_FS_OFFSET = local_c;
     return pThis;
@@ -98,11 +98,11 @@ TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState(TDropShadowTe
 
 {
   TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
-  this[0x10] = (TDropShadowTextBehavior)0x0;
-  this[0x11] = (TDropShadowTextBehavior)0x0;
-  this[0x12] = (TDropShadowTextBehavior)0x0;
-  this[0x13] = (TDropShadowTextBehavior)0x0;
-  *(undefined ***)this = &g_vtblTDropShadowTextBehavior;
+  this->field7_0x10 = 0;
+  this->field8_0x11 = 0;
+  this->field9_0x12 = 0;
+  this->field10_0x13 = 0;
+  this->field0_0x0 = &g_vtblTDropShadowTextBehavior;
   return this;
 }
 
@@ -117,7 +117,7 @@ TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
 {
   DestructTDropShadowTextBehaviorAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

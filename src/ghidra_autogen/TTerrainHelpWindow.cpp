@@ -4,15 +4,15 @@
 // Bucket: TTerrainHelpWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040313E
-// GHIDRA_NAME TTerrainHelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
-// GHIDRA_PROTO undefined thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0()
+// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot040
+// GHIDRA_PROTO void __cdecl TTerrainHelpWindow_VtblSlot040(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0 */
 
-void TTerrainHelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
+void __cdecl TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot040(void)
 
 {
   WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0();
@@ -20,8 +20,8 @@ void TTerrainHelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468A
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403945
-// GHIDRA_NAME TTerrainHelpWindow::thunk_DestructTTerrainHelpWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTerrainHelpWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TTerrainHelpWindow_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTerrainHelpWindowAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -29,8 +29,7 @@ void TTerrainHelpWindow::thunk_WrapperFor_ResetChildSelectionAndNotifyParent468A
 /* Single-JMP thunk to DestructTTerrainHelpWindowAndMaybeFree */
 
 void * __thiscall
-TTerrainHelpWindow::thunk_DestructTTerrainHelpWindowAndMaybeFree
-          (TTerrainHelpWindow *this,byte freeSelfFlag)
+TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot001(TTerrainHelpWindow *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -40,15 +39,15 @@ TTerrainHelpWindow::thunk_DestructTTerrainHelpWindowAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405416
-// GHIDRA_NAME TTerrainHelpWindow::thunk_GetTTerrainHelpWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTerrainHelpWindowClassNamePointer(void)
+// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TTerrainHelpWindow_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTerrainHelpWindowClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTerrainHelpWindowClassNamePointer */
 
-void * __cdecl TTerrainHelpWindow::thunk_GetTTerrainHelpWindowClassNamePointer(void)
+void * __cdecl TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -64,8 +63,8 @@ void * __cdecl TTerrainHelpWindow::thunk_GetTTerrainHelpWindowClassNamePointer(v
 void * __cdecl TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
 
 {
-  TFloatWindow *this;
-  TFloatWindow *pTVar1;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,12 +74,12 @@ void * __cdecl TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
   puStack_8 = &LAB_0063368a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TFloatWindow *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TFloatWindow *)0x0;
-  if (this != (TFloatWindow *)0x0) {
-    TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340(this);
-    *(undefined ***)this = &g_vtblTTerrainHelpWindow;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    (this->base).pVtable = &g_vtblTTerrainHelpWindow;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -109,8 +108,8 @@ void * __cdecl TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer(void)
 void * __thiscall TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *this)
 
 {
-  TFloatWindow::thunk_ConstructUiWindowResourceEntryType4B340((TFloatWindow *)this);
-  *(undefined ***)this = &g_vtblTTerrainHelpWindow;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340(&this->base);
+  (this->base).base.pVtable = &g_vtblTTerrainHelpWindow;
   return this;
 }
 
@@ -125,26 +124,8 @@ TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
 {
   DestructTWindowViewAndUnlinkGlobalLists();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00504DC0
-// GHIDRA_NAME TTerrainHelpWindow::WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
-// GHIDRA_PROTO undefined WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ResetChildSelectionAndNotifyParent468Alt; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around ResetChildSelectionAndNotifyParent468Alt; instructions=4,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-void TTerrainHelpWindow::WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
-
-{
-  ResetChildSelectionAndNotifyParent468Alt();
-  *(undefined4 *)((int)g_pHelpManager + 0xc) = 0;
-  return;
 }
 

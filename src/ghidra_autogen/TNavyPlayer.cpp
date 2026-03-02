@@ -23,15 +23,15 @@ TNavyPlayer::thunk_DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this,byte freeSe
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402473
-// GHIDRA_NAME TNavyPlayer::thunk_GetNavyPlayerField34Value_At00402473
-// GHIDRA_PROTO uint __thiscall thunk_GetNavyPlayerField34Value_At00402473(void)
+// GHIDRA_NAME TNavyPlayer::thunk_ConstructTNavyPlayerBaseState
+// GHIDRA_PROTO uint __thiscall thunk_ConstructTNavyPlayerBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetNavyPlayerField34Value
+// GHIDRA_COMMENT Single-JMP thunk to GetNavyPlayerField34Value [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetNavyPlayerField34Value */
+/* Single-JMP thunk to GetNavyPlayerField34Value [FID:thunk_target_sync] */
 
-uint __thiscall TNavyPlayer::thunk_GetNavyPlayerField34Value_At00402473(TNavyPlayer *this)
+uint __thiscall TNavyPlayer::thunk_ConstructTNavyPlayerBaseState(TNavyPlayer *this)
 
 {
   uint uVar1;
@@ -41,18 +41,18 @@ uint __thiscall TNavyPlayer::thunk_GetNavyPlayerField34Value_At00402473(TNavyPla
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E78
-// GHIDRA_NAME TNavyPlayer::thunk_ConstructNavyPlayerBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructNavyPlayerBaseState(void)
+// GHIDRA_NAME TNavyPlayer::thunk_CreateTNavyPlayerInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTNavyPlayerInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to ConstructNavyPlayerBaseState.
+// GHIDRA_COMMENT Thunk to ConstructNavyPlayerBaseState. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk to ConstructNavyPlayerBaseState. */
+/* Thunk to ConstructNavyPlayerBaseState. [FID:thunk_target_sync] */
 
-void __thiscall TNavyPlayer::thunk_ConstructNavyPlayerBaseState(TNavyPlayer *this)
+void __thiscall TNavyPlayer::thunk_CreateTNavyPlayerInstance(TNavyPlayer *this)
 
 {
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
@@ -86,7 +86,7 @@ void * __cdecl TNavyPlayer::thunk_GetTNavyPlayerClassNamePointer(void)
 void __thiscall TNavyPlayer::CreateTNavyPlayerInstance(TNavyPlayer *this)
 
 {
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
@@ -117,7 +117,7 @@ void * __cdecl TNavyPlayer::GetTNavyPlayerClassNamePointer(void)
 uint __thiscall TNavyPlayer::ConstructTNavyPlayerBaseState(TNavyPlayer *this)
 
 {
-  return *(uint *)(this + 0x34);
+  return this->field49_0x34;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ED80
@@ -129,7 +129,7 @@ void * __thiscall TNavyPlayer::DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this
 {
   DestructTNavyPlayerAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -3,43 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TCivMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401816
-// GHIDRA_NAME TCivMgr::thunk_GetCivilianMapManagerTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetCivilianMapManagerTypeName(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetCivilianMapManagerTypeName
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetCivilianMapManagerTypeName */
-
-void * __cdecl TCivMgr::thunk_GetCivilianMapManagerTypeName(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCivMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406A6E
-// GHIDRA_NAME TCivMgr::thunk_DeleteCivilianMapInteractionManager
-// GHIDRA_PROTO undefined1 * __thiscall thunk_DeleteCivilianMapInteractionManager(byte bFreeHeapMemory)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeleteCivilianMapInteractionManager
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeleteCivilianMapInteractionManager */
-
-undefined1 * __thiscall
-TCivMgr::thunk_DeleteCivilianMapInteractionManager(TCivMgr *this,byte bFreeHeapMemory)
-
-{
-  undefined1 *puVar1;
-  
-  puVar1 = DeleteCivilianMapInteractionManager(this,bFreeHeapMemory);
-  return puVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2030
 // GHIDRA_NAME TCivMgr::GetTCivMgrClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTCivMgrClassNamePointer(void)
@@ -53,20 +16,5 @@ void * __cdecl TCivMgr::GetTCivMgrClassNamePointer(void)
 
 {
   return &g_pClassDescTCivMgr;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004D2070
-// GHIDRA_NAME TCivMgr::DeleteCivilianMapInteractionManager
-// GHIDRA_PROTO undefined1 * __thiscall DeleteCivilianMapInteractionManager(byte bFreeHeapMemory)
-
-undefined1 * __thiscall
-TCivMgr::DeleteCivilianMapInteractionManager(TCivMgr *this,byte bFreeHeapMemory)
-
-{
-  thunk_InitializeCivilianMapInteractionManagerBaseVtable(this);
-  if ((bFreeHeapMemory & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
-  }
-  return this;
 }
 

@@ -4,32 +4,30 @@
 // Bucket: TCouncilTickerAnimation.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D47
-// GHIDRA_NAME TCouncilTickerAnimation::thunk_InitializeCouncilTickerAnimationState
-// GHIDRA_PROTO void __thiscall thunk_InitializeCouncilTickerAnimationState(void)
+// GHIDRA_NAME TCouncilTickerAnimation::thunk_ConstructTCouncilTickerAnimationBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTCouncilTickerAnimationBaseState(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeCouncilTickerAnimationState.
+// GHIDRA_COMMENT Thunk forwarding to InitializeCouncilTickerAnimationState. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to InitializeCouncilTickerAnimationState. */
+/* Thunk forwarding to InitializeCouncilTickerAnimationState. [FID:thunk_target_sync] */
 
 void __thiscall
-TCouncilTickerAnimation::thunk_InitializeCouncilTickerAnimationState(TCouncilTickerAnimation *this)
+TCouncilTickerAnimation::thunk_ConstructTCouncilTickerAnimationBaseState
+          (TCouncilTickerAnimation *this,int arg1,int arg2)
 
 {
-  void *in_stack_00000004;
-  void *in_stack_00000008;
-  
-  this[1].pVtable = in_stack_00000004;
-  this[7].pVtable = (void *)0x0;
-  this[8].pVtable = (void *)0x0;
-  *(undefined2 *)&this[2].pVtable = 0;
-  this[9].pVtable = (void *)0x0;
-  *(undefined2 *)((int)&this[2].pVtable + 2) = 0;
-  *(undefined2 *)&this[3].pVtable = 0;
-  this[4].pVtable = (void *)0x0;
-  this[10].pVtable = (void *)0x0;
-  this[5].pVtable = in_stack_00000008;
-  this[6].pVtable = (void *)0x0;
+  this->pField04 = (void *)arg1;
+  this->pField1c = (void *)0x0;
+  this->pField20 = (void *)0x0;
+  this->field08 = 0;
+  this->pField24 = (void *)0x0;
+  this->field0a = 0;
+  this->field0c = 0;
+  this->pField10 = (void *)0x0;
+  this->pField28 = (void *)0x0;
+  this->pField14 = (void *)arg2;
+  this->pField18 = (void *)0x0;
   return;
 }
 
@@ -52,22 +50,142 @@ void * __cdecl TCouncilTickerAnimation::thunk_GetTCouncilTickerAnimationClassNam
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040623F
-// GHIDRA_NAME TCouncilTickerAnimation::thunk_GetTCouncilTickerAnimationRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTCouncilTickerAnimationRuntimeClass(void)
+// GHIDRA_NAME TCouncilTickerAnimation::thunk_CreateTCouncilTickerAnimationInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTCouncilTickerAnimationInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTCouncilTickerAnimationRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTCouncilTickerAnimationRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTCouncilTickerAnimationRuntimeClass. */
+/* Thunk forwarding to GetTCouncilTickerAnimationRuntimeClass. [FID:thunk_target_sync] */
 
 void * __thiscall
-TCouncilTickerAnimation::thunk_GetTCouncilTickerAnimationRuntimeClass(TCouncilTickerAnimation *this)
+TCouncilTickerAnimation::thunk_CreateTCouncilTickerAnimationInstance(TCouncilTickerAnimation *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004098D6
+// GHIDRA_NAME TCouncilTickerAnimation::thunk_InitializeDiplomacyCouncilViewControlsAndTicker
+// GHIDRA_PROTO void __thiscall thunk_InitializeDiplomacyCouncilViewControlsAndTicker(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Direct thunk forwarding to InitializeDiplomacyCouncilViewControlsAndTicker.
+// GHIDRA_COMMENT_END
+
+/* Direct thunk forwarding to InitializeDiplomacyCouncilViewControlsAndTicker. */
+
+void __thiscall
+TCouncilTickerAnimation::thunk_InitializeDiplomacyCouncilViewControlsAndTicker
+          (TCouncilTickerAnimation *this)
+
+{
+  short sVar1;
+  code *pcVar2;
+  int *piVar3;
+  TCouncilTickerAnimation *this_00;
+  int iVar4;
+  int iVar5;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puStack_38;
+  undefined1 *puStack_34;
+  undefined4 uStack_30;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006330a8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStack_30 = 0x4fc307;
+  InitializeSharedStringRefFromEmpty();
+  uStack_30 = 0x2b6a;
+  puStack_34 = (undefined1 *)0xe;
+  uStack_4 = 0;
+  *(undefined2 *)&this[7].field_0x94 = 0;
+  puStack_38 = (undefined1 *)0x0;
+  thunk_BuildUiTextStyleDescriptor();
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
+  uStack_30 = 0x63616e30;
+  puStack_34 = (undefined1 *)0x4fc34a;
+  piVar3 = (int *)(*pcVar2)();
+  iVar4 = *piVar3;
+  puStack_34 = (undefined1 *)0x4fc353;
+  (**(code **)(iVar4 + 0xc))();
+  puStack_34 = &stack0xffffffe0;
+  puStack_38 = (undefined1 *)0x4fc370;
+  FormatOverlayTerrainLabelText();
+  puStack_38 = &stack0xffffffe0;
+  puStack_34 = (undefined1 *)0x1;
+  (**(code **)(iVar4 + 0x1c8))();
+  (**(code **)(iVar4 + 0x1b4))(&stack0xffffffdc,0);
+  piVar3 = (int *)(*pcVar2)(0x63616e31);
+  iVar4 = *piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  FormatOverlayTerrainLabelText();
+  (**(code **)(iVar4 + 0x1c8))(&puStack_34,1);
+  (**(code **)(iVar4 + 0x1b4))(&puStack_38,0);
+  piVar3 = (int *)(*pcVar2)();
+  iVar4 = *piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  (**(code **)(iVar4 + 0x1c8))(g_pDiplomacyTurnStateManager->selectedSourceNationSlot + 0x1105,1);
+  piVar3 = (int *)(*pcVar2)(0x636f6131);
+  iVar4 = *piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  (**(code **)(iVar4 + 0x1c8))(g_pDiplomacyTurnStateManager->selectedTargetNationSlot + 0x1105,1);
+  if ((*(short *)((int)g_pLocalizationTable + 8) == 0x17) ||
+     (*(short *)((int)g_pLocalizationTable + 8) == 0x16)) {
+    iVar5 = 0;
+    iVar4 = 0;
+    do {
+      if (*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + iVar4) != -1) {
+        *(undefined1 *)((int)&this[1].pVtable + iVar5) = 1;
+      }
+      iVar4 = iVar4 + 0xa8;
+      iVar5 = iVar5 + 1;
+    } while (iVar4 < 0xfc00);
+    this->field528 = 10000;
+    piVar3 = (int *)(*pcVar2)(0x656e6420);
+    (**(code **)(*piVar3 + 0xc))();
+    if (*(short *)((int)g_pLocalizationTable + 8) == 0x17) {
+      piVar3[7] = 0x52655374;
+    }
+    else {
+      piVar3[7] = 0x53636f72;
+    }
+  }
+  else {
+    iVar4 = 0x484;
+    do {
+      sVar1 = *(short *)((int)g_pDiplomacyTurnStateManager->relationCodeMatrix17x17 + iVar4 + -4);
+      if ((sVar1 != -1) && (*(short *)&this[7].field_0x94 < sVar1)) {
+        *(short *)&this[7].field_0x94 = sVar1;
+      }
+      iVar4 = iVar4 + 2;
+    } while (iVar4 < 0x784);
+    this->field528 = 0;
+    this_00 = AllocateWithFallbackHandler();
+    if (this_00 == (TCouncilTickerAnimation *)0x0) {
+      this_00 = (TCouncilTickerAnimation *)0x0;
+    }
+    else {
+      this_00->pVtable = &PTR_thunk_GetTCouncilTickerAnimationClassNamePointer_0064c410;
+    }
+    thunk_ConstructTCouncilTickerAnimationBaseState(this_00,(int)this,2);
+    TCivAnimation2::thunk_AddObjectToUiTransientRegistry
+              ((TCivAnimation2 *)g_pUiTransientObjectRegistry,(undefined *)this_00);
+    SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + 0x7c));
+    piVar3 = (int *)(*pcVar2)(0x656e6420);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xc))();
+    (**(code **)(iVar4 + 0xa8))(0,0);
+  }
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = 0x636f6130;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF50
@@ -85,7 +203,7 @@ TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(TCouncilTickerAni
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -106,7 +224,7 @@ void * __cdecl TCouncilTickerAnimation::GetTCouncilTickerAnimationClassNamePoint
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF90
 // GHIDRA_NAME TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-// GHIDRA_PROTO void __thiscall ConstructTCouncilTickerAnimationBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTCouncilTickerAnimationBaseState(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes ticker animation fields and resets frame/timer state.
 // GHIDRA_COMMENT_END
@@ -114,23 +232,142 @@ void * __cdecl TCouncilTickerAnimation::GetTCouncilTickerAnimationClassNamePoint
 /* Initializes ticker animation fields and resets frame/timer state. */
 
 void __thiscall
-TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(TCouncilTickerAnimation *this)
+TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
+          (TCouncilTickerAnimation *this,int arg1,int arg2)
 
 {
-  void *in_stack_00000004;
-  void *in_stack_00000008;
+  this->pField04 = (void *)arg1;
+  this->pField1c = (void *)0x0;
+  this->pField20 = (void *)0x0;
+  this->field08 = 0;
+  this->pField24 = (void *)0x0;
+  this->field0a = 0;
+  this->field0c = 0;
+  this->pField10 = (void *)0x0;
+  this->pField28 = (void *)0x0;
+  this->pField14 = (void *)arg2;
+  this->pField18 = (void *)0x0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FC2E0
+// GHIDRA_NAME TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
+// GHIDRA_PROTO void __thiscall InitializeDiplomacyCouncilViewControlsAndTicker(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initialize diplomacy council view controls, labels, cursor state, and transient ticker/animation path from relation matrix state.
+// GHIDRA_COMMENT_END
+
+/* Initialize diplomacy council view controls, labels, cursor state, and transient ticker/animation
+   path from relation matrix state. */
+
+void __thiscall
+TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
+          (TCouncilTickerAnimation *this)
+
+{
+  short sVar1;
+  code *pcVar2;
+  int *piVar3;
+  TCouncilTickerAnimation *this_00;
+  int iVar4;
+  int iVar5;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puStack_38;
+  undefined1 *puStack_34;
+  undefined4 uStack_30;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
   
-  this[1].pVtable = in_stack_00000004;
-  this[7].pVtable = (void *)0x0;
-  this[8].pVtable = (void *)0x0;
-  *(undefined2 *)&this[2].pVtable = 0;
-  this[9].pVtable = (void *)0x0;
-  *(undefined2 *)((int)&this[2].pVtable + 2) = 0;
-  *(undefined2 *)&this[3].pVtable = 0;
-  this[4].pVtable = (void *)0x0;
-  this[10].pVtable = (void *)0x0;
-  this[5].pVtable = in_stack_00000008;
-  this[6].pVtable = (void *)0x0;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006330a8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStack_30 = 0x4fc307;
+  InitializeSharedStringRefFromEmpty();
+  uStack_30 = 0x2b6a;
+  puStack_34 = (undefined1 *)0xe;
+  local_4 = 0;
+  *(undefined2 *)&this[7].field_0x94 = 0;
+  puStack_38 = (undefined1 *)0x0;
+  thunk_BuildUiTextStyleDescriptor();
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
+  uStack_30 = 0x63616e30;
+  puStack_34 = (undefined1 *)0x4fc34a;
+  piVar3 = (int *)(*pcVar2)();
+  iVar4 = *piVar3;
+  puStack_34 = (undefined1 *)0x4fc353;
+  (**(code **)(iVar4 + 0xc))();
+  puStack_34 = &stack0xffffffe0;
+  puStack_38 = (undefined1 *)0x4fc370;
+  FormatOverlayTerrainLabelText();
+  puStack_38 = &stack0xffffffe0;
+  puStack_34 = (undefined1 *)0x1;
+  (**(code **)(iVar4 + 0x1c8))();
+  (**(code **)(iVar4 + 0x1b4))(&stack0xffffffdc,0);
+  piVar3 = (int *)(*pcVar2)(0x63616e31);
+  iVar4 = *piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  FormatOverlayTerrainLabelText();
+  (**(code **)(iVar4 + 0x1c8))(&puStack_34,1);
+  (**(code **)(iVar4 + 0x1b4))(&puStack_38,0);
+  piVar3 = (int *)(*pcVar2)();
+  iVar4 = *piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  (**(code **)(iVar4 + 0x1c8))(g_pDiplomacyTurnStateManager->selectedSourceNationSlot + 0x1105,1);
+  piVar3 = (int *)(*pcVar2)(0x636f6131);
+  iVar4 = *piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  (**(code **)(iVar4 + 0x1c8))(g_pDiplomacyTurnStateManager->selectedTargetNationSlot + 0x1105,1);
+  if ((*(short *)((int)g_pLocalizationTable + 8) == 0x17) ||
+     (*(short *)((int)g_pLocalizationTable + 8) == 0x16)) {
+    iVar5 = 0;
+    iVar4 = 0;
+    do {
+      if (*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + iVar4) != -1) {
+        *(undefined1 *)((int)&this[1].pVtable + iVar5) = 1;
+      }
+      iVar4 = iVar4 + 0xa8;
+      iVar5 = iVar5 + 1;
+    } while (iVar4 < 0xfc00);
+    this->field528 = 10000;
+    piVar3 = (int *)(*pcVar2)(0x656e6420);
+    (**(code **)(*piVar3 + 0xc))();
+    if (*(short *)((int)g_pLocalizationTable + 8) == 0x17) {
+      piVar3[7] = 0x52655374;
+    }
+    else {
+      piVar3[7] = 0x53636f72;
+    }
+  }
+  else {
+    iVar4 = 0x484;
+    do {
+      sVar1 = *(short *)((int)g_pDiplomacyTurnStateManager->relationCodeMatrix17x17 + iVar4 + -4);
+      if ((sVar1 != -1) && (*(short *)&this[7].field_0x94 < sVar1)) {
+        *(short *)&this[7].field_0x94 = sVar1;
+      }
+      iVar4 = iVar4 + 2;
+    } while (iVar4 < 0x784);
+    this->field528 = 0;
+    this_00 = AllocateWithFallbackHandler();
+    if (this_00 == (TCouncilTickerAnimation *)0x0) {
+      this_00 = (TCouncilTickerAnimation *)0x0;
+    }
+    else {
+      this_00->pVtable = &PTR_thunk_GetTCouncilTickerAnimationClassNamePointer_0064c410;
+    }
+    thunk_ConstructTCouncilTickerAnimationBaseState(this_00,(int)this,2);
+    TCivAnimation2::thunk_AddObjectToUiTransientRegistry
+              ((TCivAnimation2 *)g_pUiTransientObjectRegistry,(undefined *)this_00);
+    SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + 0x7c));
+    piVar3 = (int *)(*pcVar2)(0x656e6420);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xc))();
+    (**(code **)(iVar4 + 0xa8))(0,0);
+  }
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = 0x636f6130;
   return;
 }
 

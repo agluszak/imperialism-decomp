@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TNavyAutoPlayer.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401CE9
+// GHIDRA_NAME TNavyAutoPlayer::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
+// GHIDRA_PROTO void __thiscall thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange */
+
+void __thiscall
+TNavyAutoPlayer::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TNavyAutoPlayer *this)
+
+{
+  DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406FFF
 // GHIDRA_NAME TNavyAutoPlayer::thunk_GetTNavyAutoPlayerClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTNavyAutoPlayerClassNamePointer(void)
@@ -21,35 +38,19 @@ void * __cdecl TNavyAutoPlayer::thunk_GetTNavyAutoPlayerClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408751
-// GHIDRA_NAME TNavyAutoPlayer::thunk_RunNavyAutoPlayerCountdownLoop_At00408751
-// GHIDRA_PROTO void __fastcall thunk_RunNavyAutoPlayerCountdownLoop_At00408751(void * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunNavyAutoPlayerCountdownLoop
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RunNavyAutoPlayerCountdownLoop */
-
-void __fastcall TNavyAutoPlayer::thunk_RunNavyAutoPlayerCountdownLoop_At00408751(void *pThis)
-
-{
-  ConstructTNavyAutoPlayerBaseState(pThis);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00409043
-// GHIDRA_NAME TNavyAutoPlayer::thunk_ConstructNavyAutoPlayerBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructNavyAutoPlayerBaseState(void)
+// GHIDRA_NAME TNavyAutoPlayer::thunk_CreateTNavyAutoPlayerInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTNavyAutoPlayerInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to ConstructNavyAutoPlayerBaseState.
+// GHIDRA_COMMENT Thunk to ConstructNavyAutoPlayerBaseState. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk to ConstructNavyAutoPlayerBaseState. */
+/* Thunk to ConstructNavyAutoPlayerBaseState. [FID:thunk_target_sync] */
 
-void __thiscall TNavyAutoPlayer::thunk_ConstructNavyAutoPlayerBaseState(TNavyAutoPlayer *this)
+void __thiscall TNavyAutoPlayer::thunk_CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
@@ -65,7 +66,7 @@ void __thiscall TNavyAutoPlayer::thunk_ConstructNavyAutoPlayerBaseState(TNavyAut
 void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
@@ -86,30 +87,138 @@ void * __cdecl TNavyAutoPlayer::GetTNavyAutoPlayerClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F110
 // GHIDRA_NAME TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState
-// GHIDRA_PROTO void __fastcall ConstructTNavyAutoPlayerBaseState(void * pThis)
+// GHIDRA_PROTO void __fastcall ConstructTNavyAutoPlayerBaseState(TNavyAutoPlayer * pThis)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Runs naval autoplayer countdown/step loop until completion flag is set.
 // GHIDRA_COMMENT_END
 
 /* Runs naval autoplayer countdown/step loop until completion flag is set. */
 
-void __fastcall TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState(void *pThis)
+void __fastcall TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState(TNavyAutoPlayer *pThis)
 
 {
   char cVar1;
   int iVar2;
   
-  if (*(char *)((int)pThis + 0xc) == '\0') {
+  if (pThis->field0c == 0) {
     iVar2 = 0x29;
   }
   else {
-    iVar2 = *(int *)(*(int *)((int)pThis + 0x14) + 0x34) * 6 + -0x19;
+    iVar2 = pThis->field14[0xd] * 6 + -0x19;
   }
-  cVar1 = *(char *)((int)pThis + 0x10);
+  cVar1 = pThis->field_0x10;
   while (cVar1 == '\0') {
-    (**(code **)(**(int **)((int)pThis + 0x14) + 0x30))((*(int **)((int)pThis + 0x14))[7],iVar2);
+    (**(code **)(*pThis->field14 + 0x30))(pThis->field14[7],iVar2);
     iVar2 = iVar2 + -1;
-    cVar1 = *(char *)((int)pThis + 0x10);
+    cVar1 = pThis->field_0x10;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059F160
+// GHIDRA_NAME TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
+// GHIDRA_PROTO void __thiscall DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when target becomes reachable.
+// GHIDRA_COMMENT_END
+
+/* Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when
+   target becomes reachable. */
+
+void __thiscall
+TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TNavyAutoPlayer *this)
+
+{
+  code *pcVar1;
+  bool bVar2;
+  int *piVar3;
+  int extraout_EAX;
+  undefined3 extraout_var;
+  int iVar4;
+  int extraout_EAX_00;
+  undefined3 extraout_var_00;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  int unaff_EBX;
+  int *piVar8;
+  int iVar9;
+  int iStack_20;
+  int *piStack_18;
+  
+  if (this->field0c == 0) {
+    piVar8 = *(int **)(this->field14[5] + 4);
+  }
+  else {
+    piVar8 = *(int **)(this->field14[6] + 4);
+  }
+  iVar6 = *piVar8;
+  pcVar1 = *(code **)(iVar6 + 0x48);
+  (*pcVar1)();
+  piVar3 = AllocateWithFallbackHandler();
+  iVar5 = *(int *)(this->field14[7] + 8);
+  thunk_InitializeLinkedListCursorFromOwnerHead();
+  bVar2 = thunk_LinkedListCursorHasCurrent();
+  iVar9 = CONCAT31(extraout_var,bVar2);
+  piVar8 = piVar3;
+  iVar4 = extraout_EAX;
+  while (iVar9 != 0) {
+    iVar4 = thunk_ComputeHexTileDistanceFromIndices(iVar5,*(int *)(iVar4 + 8));
+    *piVar8 = iVar4;
+    piVar8 = piVar8 + 1;
+    thunk_AdvanceLinkedListCursor();
+    bVar2 = thunk_LinkedListCursorHasCurrent();
+    iVar4 = extraout_EAX_00;
+    iVar9 = CONCAT31(extraout_var_00,bVar2);
+  }
+  piStack_18 = (int *)0xffffffff;
+  iStack_20 = 999;
+  piVar8 = (int *)0x0;
+  iVar5 = (*pcVar1)();
+  if (0 < iVar5) {
+    do {
+      if (*piVar3 < iStack_20) {
+        iStack_20 = *piVar3;
+        piStack_18 = piVar8;
+      }
+      piVar8 = (int *)((int)piVar8 + 1);
+      piVar3 = piVar3 + 1;
+      iVar5 = (*pcVar1)();
+    } while ((int)piVar8 < iVar5);
+  }
+  iVar6 = (**(code **)(iVar6 + 0x4c))((int)piStack_18 + 1);
+  iVar6 = *(int *)(iVar6 + 8);
+  iVar4 = thunk_ComputeHexTileDistanceFromIndices(unaff_EBX,iVar6);
+  piVar8 = this->field14;
+  iVar9 = 0;
+  iVar5 = unaff_EBX;
+  if (0 < piVar8[0xf]) {
+    do {
+      if ((*(short *)(piVar8[9] + iVar9 * 2) != -1) &&
+         (iVar7 = thunk_ComputeHexTileDistanceFromIndices(iVar9,iVar6), iVar7 < iVar4)) {
+        iVar5 = iVar9;
+        iVar4 = iVar7;
+      }
+      piVar8 = this->field14;
+      iVar9 = iVar9 + 1;
+    } while (iVar9 < piVar8[0xf]);
+  }
+  if (iVar5 != unaff_EBX) {
+    piVar8 = this->field14;
+    piVar3 = (int *)piVar8[7];
+    while ((piVar3 == piStack_18 && (piStack_18[2] != iVar5))) {
+      (**(code **)(*piVar8 + 0x34))(piStack_18,iVar5);
+      piVar8 = this->field14;
+      piVar3 = (int *)piVar8[7];
+    }
+  }
+  iVar5 = (**(code **)(*piStack_18 + 0x2c))();
+  if ((iVar4 <= iVar5) && ((int *)this->field14[7] == piStack_18)) {
+    (**(code **)(*this->field14 + 0x40))(piStack_18,iVar6);
+  }
+  FreeHeapBufferIfNotNull();
+  if ((int *)this->field14[7] == piStack_18) {
+    thunk_QueueTacticalEventPacket232A();
   }
   return;
 }

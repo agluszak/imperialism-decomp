@@ -41,8 +41,8 @@ TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState(TTradeOffer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408166
-// GHIDRA_NAME TTradeOfferNationLine::thunk_DestructTTradeOfferNationLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeOfferNationLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTradeOfferNationLine::thunk_DestructTTradeOfferNationLineAndMaybeFree_At00408166
+// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeOfferNationLineAndMaybeFree_At00408166(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTradeOfferNationLineAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -50,7 +50,7 @@ TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState(TTradeOffer
 /* Single-JMP thunk to DestructTTradeOfferNationLineAndMaybeFree */
 
 void * __thiscall
-TTradeOfferNationLine::thunk_DestructTTradeOfferNationLineAndMaybeFree
+TTradeOfferNationLine::thunk_DestructTTradeOfferNationLineAndMaybeFree_At00408166
           (TTradeOfferNationLine *this,byte freeSelfFlag)
 
 {
@@ -78,12 +78,12 @@ void * __cdecl TTradeOfferNationLine::CreateTTradeOfferNationLineInstance(void)
   puStack_8 = &LAB_0063933a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &PTR_thunk_GetTTradeOfferNationLineClassNamePointer_0066e2b8;
+    pThis->field0_0x0 = &PTR_thunk_GetTTradeOfferNationLineClassNamePointer_0066e2b8;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -113,8 +113,8 @@ void * __thiscall
 TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(TTradeOfferNationLine *this)
 
 {
-  undefined2 uVar1;
-  undefined2 uVar2;
+  short sVar1;
+  short sVar2;
   undefined *puVar3;
   short extraout_AX;
   TView *this_00;
@@ -130,24 +130,24 @@ TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(TTradeOfferNation
   puStack_8 = &LAB_0063935a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = (TView *)AllocateWithFallbackHandler(100);
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this_00 == (TView *)0x0) {
     this_00 = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructUiResourceEntryBase(this_00);
-    *(undefined ***)this_00 = &g_vtblTTradeOfferNationLine;
+    TView::thunk_ConstructTViewBaseState(this_00);
+    this_00->pVtable = &g_vtblTTradeOfferNationLine;
   }
-  uVar1 = *(undefined2 *)(this + 0x10);
-  uVar2 = *(undefined2 *)(this + 0x12);
+  sVar1 = this->field10;
+  sVar2 = this->field12;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined2 *)(this_00 + 0x62) = uVar2;
-  *(undefined2 *)(this_00 + 0x60) = uVar1;
+  *(short *)((int)&this_00[1].pVtable + 2) = sVar2;
+  *(short *)&this_00[1].pVtable = sVar1;
   puVar3 = g_pNationInteractionStateManager->vftable;
   thunk_GetActiveNationId();
-  pvVar4 = (void *)(**(code **)(puVar3 + 0x78))((int)*(short *)(this + 0x10),(int)extraout_AX);
+  pvVar4 = (void *)(**(code **)(puVar3 + 0x78))((int)this->field10,(int)extraout_AX);
   if ((char)pvVar4 != '\0') {
     thunk_LoadUiStringByGroupAndIndexToControlObject(0x2740,3,this_00);
     pvVar4 = extraout_EAX;
@@ -165,9 +165,9 @@ TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree
           (TTradeOfferNationLine *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -4,15 +4,15 @@
 // Bucket: TNavyToolbarCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004041B0
-// GHIDRA_NAME TNavyToolbarCluster::thunk_GetTNavyToolbarClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNavyToolbarClusterClassNamePointer(void)
+// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNavyToolbarCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNavyToolbarClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNavyToolbarClusterClassNamePointer */
 
-void * __cdecl TNavyToolbarCluster::thunk_GetTNavyToolbarClusterClassNamePointer(void)
+void * __cdecl TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TNavyToolbarCluster::thunk_GetTNavyToolbarClusterClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004073EC
-// GHIDRA_NAME TNavyToolbarCluster::thunk_DestructTNavyToolbarClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNavyToolbarClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TNavyToolbarCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNavyToolbarClusterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,8 +31,7 @@ void * __cdecl TNavyToolbarCluster::thunk_GetTNavyToolbarClusterClassNamePointer
 /* Single-JMP thunk to DestructTNavyToolbarClusterAndMaybeFree */
 
 void * __thiscall
-TNavyToolbarCluster::thunk_DestructTNavyToolbarClusterAndMaybeFree
-          (TNavyToolbarCluster *this,byte freeSelfFlag)
+TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot001(TNavyToolbarCluster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -42,8 +41,8 @@ TNavyToolbarCluster::thunk_DestructTNavyToolbarClusterAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408BDE
-// GHIDRA_NAME TNavyToolbarCluster::thunk_HandleMapOrderPanelCommandTagsAndSelectionCycling
-// GHIDRA_PROTO void __thiscall thunk_HandleMapOrderPanelCommandTagsAndSelectionCycling(int arg1, int arg2, int arg3)
+// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot015
+// GHIDRA_PROTO void __thiscall TNavyToolbarCluster_VtblSlot015(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleMapOrderPanelCommandTagsAndSelectionCycling
 // GHIDRA_COMMENT_END
@@ -51,7 +50,7 @@ TNavyToolbarCluster::thunk_DestructTNavyToolbarClusterAndMaybeFree
 /* Single-JMP thunk to HandleMapOrderPanelCommandTagsAndSelectionCycling */
 
 void __thiscall
-TNavyToolbarCluster::thunk_HandleMapOrderPanelCommandTagsAndSelectionCycling
+TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot015
           (TNavyToolbarCluster *this,int arg1,int arg2,int arg3)
 
 {
@@ -73,8 +72,24 @@ TNavyToolbarCluster::thunk_ConstructTNavyToolbarClusterBaseState(TNavyToolbarClu
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  *(undefined ***)this = &g_vtblTNavyToolbarCluster;
+  (this->base).pVtable = &g_vtblTNavyToolbarCluster;
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040986D
+// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot114
+// GHIDRA_PROTO void __cdecl TNavyToolbarCluster_VtblSlot114(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel */
+
+void __cdecl TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot114(void)
+
+{
+  UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel();
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569430
@@ -95,12 +110,12 @@ void * __cdecl TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
   puStack_8 = &LAB_00635b9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &g_vtblTNavyToolbarCluster;
+    this->field0_0x0 = &g_vtblTNavyToolbarCluster;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -131,7 +146,7 @@ TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  *(undefined ***)this = &g_vtblTNavyToolbarCluster;
+  (this->base).pVtable = &g_vtblTNavyToolbarCluster;
   return this;
 }
 
@@ -144,9 +159,9 @@ TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree
           (TNavyToolbarCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -170,15 +185,15 @@ TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
   int iVar2;
   ushort uVar3;
   int *piVar4;
-  TNavyToolbarCluster *this_00;
   void *pvVar5;
+  TCivToolbar *this_00;
   
   if (arg1 == 0xc) {
     if (*(int *)(arg2 + 0x1c) + 0x9e988dd0U < 3) {
-      piVar4 = (int *)(**(code **)(*(int *)this + 0x58))();
-      this_00 = (TNavyToolbarCluster *)(**(code **)(*piVar4 + 0x94))(0x6d61696e);
-      (**(code **)(*(int *)this_00 + 0xc))();
-      pvVar5 = thunk_GetActiveMapOrderEntry(this_00);
+      piVar4 = (int *)(**(code **)((int)(this->base).pVtable + 0x58))();
+      piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(0x6d61696e);
+      (**(code **)(*piVar4 + 0xc))();
+      pvVar5 = thunk_GetActiveMapOrderEntry(piVar4);
       if (pvVar5 != (void *)0x0) {
         thunk_SetTaskForceOwnerPointer();
       }
@@ -192,8 +207,8 @@ TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
       if (uVar1 == 0x626f6d62) {
         uVar3 = GetAsyncKeyState(0x11);
         if ((uVar3 & 0x8000) == 0) {
-          iVar2 = *g_pUiRuntimeContext;
-          pvVar5 = thunk_GetActiveMapOrderEntry((TNavyToolbarCluster *)g_pUiRuntimeContext[0x3c]);
+          iVar2 = *(int *)g_pUiRuntimeContext;
+          pvVar5 = thunk_GetActiveMapOrderEntry(*(void **)((int)g_pUiRuntimeContext + 0xf0));
           (**(code **)(iVar2 + 0xf0))(pvVar5);
         }
         else {
@@ -203,35 +218,35 @@ TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
       goto LAB_00569662;
     }
 LAB_00569626:
-    pvVar5 = thunk_GetActiveMapOrderEntry((TNavyToolbarCluster *)g_pUiRuntimeContext[0x3c]);
+    pvVar5 = thunk_GetActiveMapOrderEntry(*(void **)((int)g_pUiRuntimeContext + 0xf0));
     if (pvVar5 != (void *)0x0) {
       thunk_ApplyTaskForceSelectionModeForCurrentNationOrders();
     }
-    pvVar5 = (void *)g_pUiRuntimeContext[0x3c];
+    this_00 = *(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0);
   }
   else {
     if (uVar1 == 0x646f6e65) goto LAB_00569626;
     if (uVar1 != 0x6e657874) goto LAB_00569662;
-    pvVar5 = (void *)g_pUiRuntimeContext[0x3c];
+    this_00 = *(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0);
   }
-  thunk_CycleMapInteractionSelectionAfterHandledClick(pvVar5);
+  TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this_00);
 LAB_00569662:
-  thunk_DispatchPanelControlEvent(this,arg1,(void *)arg2,arg3);
+  TMapEditCluster::thunk_DispatchPanelControlEvent(&this->base,arg1,(PanelEventPayload *)arg2,arg3);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005979F0
-// GHIDRA_NAME TNavyToolbarCluster::GetActiveMapOrderEntry
-// GHIDRA_PROTO void * __thiscall GetActiveMapOrderEntry(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005696D0
+// GHIDRA_NAME TNavyToolbarCluster::OrphanVtableAssignStub_005696d0
+// GHIDRA_PROTO void __thiscall OrphanVtableAssignStub_005696d0(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns pointer to the currently active map-order entry stored at DAT_006A3FBC+0x14.
+// GHIDRA_COMMENT Orphan no-xref vtable-assignment stub from orphan triage lane.
 // GHIDRA_COMMENT_END
 
-/* Returns pointer to the currently active map-order entry stored at DAT_006A3FBC+0x14. */
+/* Orphan no-xref vtable-assignment stub from orphan triage lane. */
 
-void * __thiscall TNavyToolbarCluster::GetActiveMapOrderEntry(TNavyToolbarCluster *this)
+void __thiscall TNavyToolbarCluster::OrphanVtableAssignStub_005696d0(TNavyToolbarCluster *this)
 
 {
-  return *(void **)((int)g_pActiveMapOrderContext + 0x14);
+  return;
 }
 

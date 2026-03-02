@@ -4,36 +4,54 @@
 // Bucket: TDealTabControl.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004027AC
-// GHIDRA_NAME TDealTabControl::thunk_RenderDealTabControlProgressFill_At004027ac
-// GHIDRA_PROTO void __thiscall thunk_RenderDealTabControlProgressFill_At004027ac(void)
+// GHIDRA_NAME TDealTabControl::thunk_DestructTDealTabControlAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTDealTabControlAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderDealTabControlProgressFill
+// GHIDRA_COMMENT Single-JMP thunk to RenderDealTabControlProgressFill [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RenderDealTabControlProgressFill */
+/* Single-JMP thunk to RenderDealTabControlProgressFill [FID:thunk_target_sync] */
 
-void __thiscall
-TDealTabControl::thunk_RenderDealTabControlProgressFill_At004027ac(TDealTabControl *this)
+void __thiscall TDealTabControl::thunk_DestructTDealTabControlAndMaybeFree(TDealTabControl *this)
 
 {
   DestructTDealTabControlAndMaybeFree(this);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403B57
-// GHIDRA_NAME TDealTabControl::thunk_WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780
-// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00403337
+// GHIDRA_NAME TDealTabControl::thunk_scalar_deleting_destructor_00403337
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403337(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780 */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void __thiscall
-TDealTabControl::thunk_WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780(TDealTabControl *this)
+void * __thiscall
+TDealTabControl::thunk_scalar_deleting_destructor_00403337(TDealTabControl *this,byte freeSelfFlag)
 
 {
-  ConstructTDealTabControlBaseState(this);
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403B57
+// GHIDRA_NAME TDealTabControl::thunk_ConstructTDealTabControlBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTDealTabControlBaseState(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780 [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_005c3b70_At005bc780 [FID:thunk_target_sync] */
+
+void __thiscall
+TDealTabControl::thunk_ConstructTDealTabControlBaseState(TDealTabControl *this,int arg1,int arg2)
+
+{
+  ConstructTDealTabControlBaseState(this,arg1,arg2);
   return;
 }
 
@@ -77,16 +95,16 @@ void * __cdecl TDealTabControl::CreateTDealTabControlInstance(void)
   puStack_8 = &LAB_006392ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTDealTabControlClassNamePointer_00641168;
-    *(undefined2 *)(this + 0x84) = 0xffff;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(undefined4 *)(this + 0x90) = 0;
-    *(undefined2 *)(this + 0x86) = 0x10;
-    *(undefined2 *)(this + 0x88) = 0x11;
+    (this->base).pVtable = &PTR_thunk_GetTDealTabControlClassNamePointer_00641168;
+    *(undefined2 *)&this->field_0x84 = 0xffff;
+    *(undefined4 *)&this->field_0x8c = 0;
+    this->field90 = (byte *)0x0;
+    *(undefined2 *)&this->field_0x86 = 0x10;
+    *(undefined2 *)&this->field_0x88 = 0x11;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -111,7 +129,7 @@ void * __cdecl TDealTabControl::GetTDealTabControlClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC780
 // GHIDRA_NAME TDealTabControl::ConstructTDealTabControlBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDealTabControlBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTDealTabControlBaseState(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext; instructions=24, call_insns=2, internal_calls=2, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -119,24 +137,23 @@ void * __cdecl TDealTabControl::GetTDealTabControlClassNamePointer(void)
 /* [WrapperShape] small wrapper around thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext;
    instructions=24, call_insns=2, internal_calls=2, unique_internal=1 */
 
-void __thiscall TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this)
+void __thiscall
+TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this,int arg1,int arg2)
 
 {
   void *pvVar1;
-  int in_stack_00000004;
-  char in_stack_00000008;
   
-  if (in_stack_00000008 == '\0') {
-    *(undefined2 *)(this + 0x88) = 0xf;
+  if ((char)arg2 == '\0') {
+    this->field88 = 0xf;
   }
   else {
-    in_stack_00000004 = in_stack_00000004 + 1;
+    arg1 = arg1 + 1;
   }
-  pvVar1 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004);
-  *(void **)(this + 0x8c) = pvVar1;
-  pvVar1 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004 + 4);
-  *(void **)(this + 0x90) = pvVar1;
-  *(undefined2 *)(this + 0x86) = 0x19;
+  pvVar1 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(arg1);
+  this->field8c = pvVar1;
+  pvVar1 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(arg1 + 4);
+  this->field90 = pvVar1;
+  this->field86 = 0x19;
   return;
 }
 
@@ -156,48 +173,48 @@ void __thiscall TDealTabControl::DestructTDealTabControlAndMaybeFree(TDealTabCon
   int iVar2;
   RECT local_10;
   
-  if (*(int *)(this + 0x8c) != 0) {
+  if (this->field8c != (void *)0x0) {
     ResetQuickDrawStrokeState();
-    SetQuickDrawStrokeColor(0xffffff);
+    TCivDescription::SetQuickDrawStrokeColor();
     SetQuickDrawFillColor(0);
-    if (*(short *)(this + 0x84) < 0) {
-      local_10.right = *(LONG *)(this + 0x34);
-      local_10.bottom = *(LONG *)(this + 0x38);
+    if (this->field84 < 0) {
+      local_10.right = this->field34;
+      local_10.bottom = this->field38;
       local_10.top = 0;
       local_10.left = 0;
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(this + 0x90) + 4),
+                ((astruct_17 *)((int)this->field90 + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
                  (astruct_19 *)0x0);
     }
     else {
-      sVar1 = *(short *)(this + 0x84) * *(short *)(this + 0x86);
+      sVar1 = this->field84 * this->field86;
       if (sVar1 != 0) {
-        local_10.right = *(LONG *)(this + 0x34);
+        local_10.right = this->field34;
         local_10.left = 0;
         local_10.top = 0;
         local_10.bottom = (LONG)sVar1;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)(this + 0x90) + 4),
+                  ((astruct_17 *)((int)this->field90 + 4),
                    (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
                    (astruct_19 *)0x0);
       }
-      local_10.right = *(LONG *)(this + 0x34);
+      local_10.right = this->field34;
       iVar2 = (int)sVar1;
-      local_10.bottom = *(short *)(this + 0x86) + iVar2;
+      local_10.bottom = this->field86 + iVar2;
       local_10.left = 0;
       local_10.top = iVar2;
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(this + 0x8c) + 4),
+                ((astruct_17 *)((int)this->field8c + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
                  (astruct_19 *)0x0);
-      local_10.bottom = *(LONG *)(this + 0x38);
-      local_10.top = *(short *)(this + 0x86) + iVar2;
+      local_10.bottom = this->field38;
+      local_10.top = this->field86 + iVar2;
       if (local_10.top < local_10.bottom) {
-        local_10.right = *(LONG *)(this + 0x34);
+        local_10.right = this->field34;
         local_10.left = 0;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)(this + 0x90) + 4),
+                  ((astruct_17 *)((int)this->field90 + 4),
                    (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
                    (astruct_19 *)0x0);
         return;

@@ -4,15 +4,15 @@
 // Bucket: TShipPlacard.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403A08
-// GHIDRA_NAME TShipPlacard::thunk_GetTShipPlacardClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipPlacardClassNamePointer(void)
+// GHIDRA_NAME TShipPlacard::TShipPlacard_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TShipPlacard_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTShipPlacardClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTShipPlacardClassNamePointer */
 
-void * __cdecl TShipPlacard::thunk_GetTShipPlacardClassNamePointer(void)
+void * __cdecl TShipPlacard::TShipPlacard_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,17 +21,32 @@ void * __cdecl TShipPlacard::thunk_GetTShipPlacardClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404584
+// GHIDRA_NAME TShipPlacard::TShipPlacard_VtblSlot068
+// GHIDRA_PROTO void __cdecl TShipPlacard_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderCenteredPositiveCountLabelAtFixedOrigin
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderCenteredPositiveCountLabelAtFixedOrigin */
+
+void __cdecl TShipPlacard::TShipPlacard_VtblSlot068(void)
+
+{
+  RenderCenteredPositiveCountLabelAtFixedOrigin();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040674E
-// GHIDRA_NAME TShipPlacard::thunk_DestructTShipPlacardAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTShipPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TShipPlacard::TShipPlacard_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TShipPlacard_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTShipPlacardAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTShipPlacardAndMaybeFree */
 
-void * __thiscall
-TShipPlacard::thunk_DestructTShipPlacardAndMaybeFree(TShipPlacard *this,byte freeSelfFlag)
+void * __thiscall TShipPlacard::TShipPlacard_VtblSlot001(TShipPlacard *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -58,12 +73,12 @@ void * __cdecl TShipPlacard::CreateTShipPlacardInstance(void)
   puStack_8 = &LAB_00635b5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTShipPlacard;
+    this->field0_0x0 = &g_vtblTShipPlacard;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -93,7 +108,7 @@ void * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlacard *thi
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined ***)this = &g_vtblTShipPlacard;
+  this->field0_0x0 = &g_vtblTShipPlacard;
   return this;
 }
 
@@ -107,7 +122,7 @@ TShipPlacard::DestructTShipPlacardAndMaybeFree(TShipPlacard *this,byte freeSelfF
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

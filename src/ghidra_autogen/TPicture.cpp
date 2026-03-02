@@ -3,42 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407865
-// GHIDRA_NAME TPicture::thunk_GetTPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPictureClassNamePointer */
-
-void * __cdecl TPicture::thunk_GetTPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004088A0
-// GHIDRA_NAME TPicture::thunk_DestructTPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPictureAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPictureAndMaybeFree */
-
-void * __thiscall TPicture::thunk_DestructTPictureAndMaybeFree(TPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EFA0
 // GHIDRA_NAME TPicture::GetTPictureClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTPictureClassNamePointer(void)
@@ -63,7 +27,7 @@ void * __thiscall TPicture::DestructTPictureAndMaybeFree(TPicture *this,byte fre
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -4,15 +4,15 @@
 // Bucket: TPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040393B
-// GHIDRA_NAME TPictureButton::thunk_GetTPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPictureButtonClassNamePointer(void)
+// GHIDRA_NAME TPictureButton::TPictureButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TPictureButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTPictureButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTPictureButtonClassNamePointer */
 
-void * __cdecl TPictureButton::thunk_GetTPictureButtonClassNamePointer(void)
+void * __cdecl TPictureButton::TPictureButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,40 +22,21 @@ void * __cdecl TPictureButton::thunk_GetTPictureButtonClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405010
-// GHIDRA_NAME TPictureButton::thunk_DestructTPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TPictureButton::TPictureButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TPictureButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTPictureButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTPictureButtonAndMaybeFree */
 
-void * __thiscall
-TPictureButton::thunk_DestructTPictureButtonAndMaybeFree(TPictureButton *this,byte freeSelfFlag)
+void * __thiscall TPictureButton::TPictureButton_VtblSlot001(TPictureButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTPictureButtonAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405628
-// GHIDRA_NAME TPictureButton::thunk_ConstructUiTabCursorPictureEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiTabCursorPictureEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiTabCursorPictureEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiTabCursorPictureEntry */
-
-void __thiscall TPictureButton::thunk_ConstructUiTabCursorPictureEntry(TPictureButton *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTPictureButton;
-  *(undefined2 *)(this + 0x92) = 7000;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570750
@@ -81,7 +62,7 @@ void * __cdecl TPictureButton::CreateTPictureButtonInstance(void)
   puStack_8 = &LAB_0063634a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -123,8 +104,8 @@ void __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(TPictureButton 
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTPictureButton;
-  *(undefined2 *)(this + 0x92) = 7000;
+  this->field0_0x0 = &g_vtblTPictureButton;
+  this->field143_0x92 = 7000;
   return;
 }
 
@@ -138,7 +119,7 @@ TPictureButton::DestructTPictureButtonAndMaybeFree(TPictureButton *this,byte fre
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

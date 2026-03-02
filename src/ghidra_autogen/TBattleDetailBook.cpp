@@ -21,17 +21,38 @@ void * __cdecl TBattleDetailBook::thunk_GetTBattleDetailBookClassNamePointer(voi
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407F04
-// GHIDRA_NAME TBattleDetailBook::thunk_WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90(int nCommand, int pControl, int a4)
+// GHIDRA_FUNCTION IMPERIALISM 0x00407586
+// GHIDRA_NAME TBattleDetailBook::thunk_scalar_deleting_destructor_00407586
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407586(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90 */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TBattleDetailBook::thunk_scalar_deleting_destructor_00407586
+          (TBattleDetailBook *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407F04
+// GHIDRA_NAME TBattleDetailBook::thunk_ConstructTBattleDetailBookBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTBattleDetailBookBaseState(int nCommand, int pControl, int a4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90 [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90 [FID:thunk_target_sync]
+    */
 
 void __thiscall
-TBattleDetailBook::thunk_WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90
+TBattleDetailBook::thunk_ConstructTBattleDetailBookBaseState
           (TBattleDetailBook *this,int nCommand,int pControl,int a4)
 
 {
@@ -61,7 +82,7 @@ void * __cdecl TBattleDetailBook::CreateTBattleDetailBookInstance(void)
   puStack_8 = &LAB_0063091a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -138,12 +159,12 @@ void * __cdecl TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
   puStack_8 = &LAB_0063093a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTArmyBoyViewClassNamePointer_0064dff8;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTArmyBoyViewClassNamePointer_0064dff8;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

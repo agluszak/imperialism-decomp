@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TArmyToolbar.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401C21
+// GHIDRA_NAME TArmyToolbar::TArmyToolbar_VtblSlot116
+// GHIDRA_PROTO void __cdecl TArmyToolbar_VtblSlot116(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
+    */
+
+void __cdecl TArmyToolbar::TArmyToolbar_VtblSlot116(void)
+
+{
+  Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040224D
 // GHIDRA_NAME TArmyToolbar::thunk_ConstructTArmyToolbarBaseState
 // GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyToolbarBaseState(void)
@@ -15,21 +32,21 @@
 void * __thiscall TArmyToolbar::thunk_ConstructTArmyToolbarBaseState(TArmyToolbar *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  *(undefined ***)this = &g_vtblTArmyToolbar;
+  TUberCluster::ConstructTUberClusterBaseState(&this->base);
+  (this->base).field0_0x0 = &g_vtblTArmyToolbar;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403DB9
-// GHIDRA_NAME TArmyToolbar::thunk_GetTArmyToolbarClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyToolbarClassNamePointer(void)
+// GHIDRA_NAME TArmyToolbar::TArmyToolbar_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TArmyToolbar_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArmyToolbarClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArmyToolbarClassNamePointer */
 
-void * __cdecl TArmyToolbar::thunk_GetTArmyToolbarClassNamePointer(void)
+void * __cdecl TArmyToolbar::TArmyToolbar_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -39,45 +56,49 @@ void * __cdecl TArmyToolbar::thunk_GetTArmyToolbarClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403E59
-// GHIDRA_NAME TArmyToolbar::thunk_HandleMapContextActionArmyRatioAndModeCommands
-// GHIDRA_PROTO void __stdcall thunk_HandleMapContextActionArmyRatioAndModeCommands(void)
+// GHIDRA_NAME TArmyToolbar::TArmyToolbar_VtblSlot015
+// GHIDRA_PROTO void __cdecl TArmyToolbar_VtblSlot015(EArrowSplitCommandId arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleMapContextActionArmyRatioAndModeCommands
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleMapContextActionArmyRatioAndModeCommands */
 
-void TArmyToolbar::thunk_HandleMapContextActionArmyRatioAndModeCommands(void)
+void __cdecl TArmyToolbar::TArmyToolbar_VtblSlot015(EArrowSplitCommandId arg1,int arg2)
 
 {
-  HandleMapContextActionArmyRatioAndModeCommands();
+  _HandleMapContextActionArmyRatioAndModeCommands__YGXHPAUArmyCommandPayload___Z__imperialism_src_game_TArmyToolbar_cpp126722299___Z
+            (arg1,arg2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404AAC
-// GHIDRA_NAME TArmyToolbar::thunk_DestructTArmyToolbarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyToolbarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyToolbar::TArmyToolbar_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TArmyToolbar_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTArmyToolbarAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTArmyToolbarAndMaybeFree */
 
-void * __thiscall
-TArmyToolbar::thunk_DestructTArmyToolbarAndMaybeFree(TArmyToolbar *this,byte freeSelfFlag)
+void * __thiscall TArmyToolbar::TArmyToolbar_VtblSlot001(TArmyToolbar *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
-  pvVar1 = DestructTArmyToolbarAndMaybeFree(this,freeSelfFlag);
+  pvVar1 = _DestructTArmyToolbarAndMaybeFree__YIPAUArmyToolbarState___Z__imperialism_src_game_TArmyToolbar_cpp126722299__PAU12_HE_Z
+                     (this,freeSelfFlag);
   return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DE40
-// GHIDRA_NAME TArmyToolbar::CreateTArmyToolbarInstance
-// GHIDRA_PROTO void * __cdecl CreateTArmyToolbarInstance(void)
+// GHIDRA_NAME TArmyToolbar::?CreateTArmyToolbarInstance@@YAPAUArmyToolbarState@?%Z:\imperialism\src\game\TArmyToolbar.cpp126722299@@XZ
+// GHIDRA_PROTO void * __cdecl ?CreateTArmyToolbarInstance@@YAPAUArmyToolbarState@?%Z:\imperialism\src\game\TArmyToolbar.cpp126722299@@XZ(void)
 
-void * __cdecl TArmyToolbar::CreateTArmyToolbarInstance(void)
+void * __cdecl
+TArmyToolbar::
+_CreateTArmyToolbarInstance__YAPAUArmyToolbarState___Z__imperialism_src_game_TArmyToolbar_cpp126722299__XZ
+          (void)
 
 {
   TUberCluster *this;
@@ -91,12 +112,12 @@ void * __cdecl TArmyToolbar::CreateTArmyToolbarInstance(void)
   puStack_8 = &LAB_00637d4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x8c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &g_vtblTArmyToolbar;
+    this->field0_0x0 = &g_vtblTArmyToolbar;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -119,101 +140,34 @@ void * __cdecl TArmyToolbar::GetTArmyToolbarClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DEE0
-// GHIDRA_NAME TArmyToolbar::ConstructTArmyToolbarBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArmyToolbarBaseState(void)
+// GHIDRA_NAME TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:\imperialism\src\game\TArmyToolbar.cpp126722299@@PAU12@@Z
+// GHIDRA_PROTO void * __thiscall ?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:\imperialism\src\game\TArmyToolbar.cpp126722299@@PAU12@@Z(void)
 
-void * __thiscall TArmyToolbar::ConstructTArmyToolbarBaseState(TArmyToolbar *this)
+void * __thiscall
+TArmyToolbar::
+_ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z__imperialism_src_game_TArmyToolbar_cpp126722299__PAU12__Z
+          (TArmyToolbar *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  *(undefined ***)this = &g_vtblTArmyToolbar;
+  TUberCluster::ConstructTUberClusterBaseState(&this->base);
+  (this->base).field0_0x0 = &g_vtblTArmyToolbar;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DF10
-// GHIDRA_NAME TArmyToolbar::DestructTArmyToolbarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyToolbarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyToolbar::?DestructTArmyToolbarAndMaybeFree@@YIPAUArmyToolbarState@?%Z:\imperialism\src\game\TArmyToolbar.cpp126722299@@PAU12@HE@Z
+// GHIDRA_PROTO void * __thiscall ?DestructTArmyToolbarAndMaybeFree@@YIPAUArmyToolbarState@?%Z:\imperialism\src\game\TArmyToolbar.cpp126722299@@PAU12@HE@Z(byte freeSelfFlag)
 
 void * __thiscall
-TArmyToolbar::DestructTArmyToolbarAndMaybeFree(TArmyToolbar *this,byte freeSelfFlag)
+TArmyToolbar::
+_DestructTArmyToolbarAndMaybeFree__YIPAUArmyToolbarState___Z__imperialism_src_game_TArmyToolbar_cpp126722299__PAU12_HE_Z
+          (TArmyToolbar *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0058E1C0
-// GHIDRA_NAME TArmyToolbar::HandleMapContextActionArmyRatioAndModeCommands
-// GHIDRA_PROTO void __stdcall HandleMapContextActionArmyRatioAndModeCommands(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles map-context action command tags for army ratio adjustments and mode transitions (defend/later/done/garrison), then cycles active map interaction selection when required.
-// GHIDRA_COMMENT_END
-
-/* Handles map-context action command tags for army ratio adjustments and mode transitions
-   (defend/later/done/garrison), then cycles active map interaction selection when required. */
-
-void TArmyToolbar::HandleMapContextActionArmyRatioAndModeCommands(void)
-
-{
-  uint uVar1;
-  ushort uVar2;
-  undefined4 extraout_EAX;
-  undefined4 extraout_EAX_00;
-  undefined2 extraout_var;
-  int iVar3;
-  int in_stack_00000004;
-  int *in_stack_00000008;
-  undefined4 uVar4;
-  
-  uVar1 = in_stack_00000008[7];
-  if ((0x6172722f < uVar1) && (uVar1 < 0x6172723a)) {
-    if (in_stack_00000004 == 100) {
-      ActivateFirstActiveTacticalUnitByCategoryAtTile();
-      uVar4 = extraout_EAX;
-    }
-    else {
-      ActivateFirstIdleTacticalUnitByCategoryAtTile();
-      uVar4 = extraout_EAX_00;
-    }
-    (**(code **)(*in_stack_00000008 + 0x1c4))(uVar4,1);
-    (**(code **)(*g_pUiRuntimeContext + 0x48))();
-    return;
-  }
-  if (uVar1 == 0x67617272) {
-    uVar2 = GetAsyncKeyState(0x11);
-    if ((uVar2 & 0x8000) != 0) {
-      thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection();
-      return;
-    }
-    if ((short)g_pMapContextActionManager[199] != -1) {
-      (**(code **)(*g_pUiRuntimeContext + 0xec))
-                (CONCAT22(extraout_var,(short)g_pMapContextActionManager[199]));
-      return;
-    }
-  }
-  else {
-    if (uVar1 == 0x64666e64) {
-      (**(code **)(*g_pMapContextActionManager + 0x58))(2);
-      thunk_CycleMapInteractionSelectionAfterHandledClick((void *)g_pUiRuntimeContext[0x3c]);
-      return;
-    }
-    if (uVar1 == 0x6c617472) {
-      uVar4 = 3;
-      iVar3 = *g_pMapContextActionManager;
-    }
-    else {
-      if (uVar1 != 0x646f6e65) {
-        return;
-      }
-      uVar4 = 4;
-      iVar3 = *g_pMapContextActionManager;
-    }
-    (**(code **)(iVar3 + 0x58))(uVar4);
-    thunk_CycleMapInteractionSelectionAfterHandledClick((void *)g_pUiRuntimeContext[0x3c]);
-  }
-  return;
 }
 

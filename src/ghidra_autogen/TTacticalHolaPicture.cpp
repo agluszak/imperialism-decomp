@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalHolaPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401271
+// GHIDRA_NAME TTacticalHolaPicture::thunk_scalar_deleting_destructor_00401271
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00401271(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTacticalHolaPicture::thunk_scalar_deleting_destructor_00401271
+          (TTacticalHolaPicture *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004044C1
 // GHIDRA_NAME TTacticalHolaPicture::thunk_GetTTacticalHolaPictureClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTTacticalHolaPictureClassNamePointer(void)
@@ -44,7 +64,7 @@ void * __cdecl TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
   puStack_8 = &LAB_0063887a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {

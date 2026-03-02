@@ -3,26 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TNextDiplomationCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405952
-// GHIDRA_NAME TNextDiplomationCommand::thunk_SwapNextDiplomacyCommandPairBytes
-// GHIDRA_PROTO void __cdecl thunk_SwapNextDiplomacyCommandPairBytes(byte * pPair)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to SwapNextDiplomacyCommandPairBytes.
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to SwapNextDiplomacyCommandPairBytes. */
-
-void __cdecl TNextDiplomationCommand::thunk_SwapNextDiplomacyCommandPairBytes(byte *pPair)
-
-{
-  byte bVar1;
-  
-  bVar1 = *pPair;
-  *pPair = pPair[1];
-  pPair[1] = bVar1;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040999E
 // GHIDRA_NAME TNextDiplomationCommand::thunk_GetTNextDiplomationCommandClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTNextDiplomationCommandClassNamePointer(void)
@@ -39,41 +19,6 @@ void * __cdecl TNextDiplomationCommand::thunk_GetTNextDiplomationCommandClassNam
   
   pvVar1 = GetTNextDiplomationCommandClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004F28A0
-// GHIDRA_NAME TNextDiplomationCommand::CreateTurnEventPacket_Vtbl00654e50
-// GHIDRA_PROTO undefined CreateTurnEventPacket_Vtbl00654e50()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates turn-event packet object and installs vtable at 0x00654e50.
-// GHIDRA_COMMENT_END
-
-/* Allocates turn-event packet object and installs vtable at 0x00654e50. */
-
-TCommand * TNextDiplomationCommand::CreateTurnEventPacket_Vtbl00654e50(void)
-
-{
-  TCommand *this;
-  TCommand *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006329ea;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x18);
-  local_4 = 0;
-  pTVar1 = (TCommand *)0x0;
-  if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTNextDiplomationCommandClassNamePointer_00654e50;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2910

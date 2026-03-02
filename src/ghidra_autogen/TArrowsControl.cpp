@@ -3,17 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TArrowsControl.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004015B9
+// GHIDRA_NAME TArrowsControl::TArrowsControl_VtblSlot104
+// GHIDRA_PROTO void __thiscall TArrowsControl_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset90 */
+
+void __thiscall
+TArrowsControl::TArrowsControl_VtblSlot104
+          (TArrowsControl *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
+            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004033EB
-// GHIDRA_NAME TArrowsControl::thunk_DestructTArrowsControlAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArrowsControlAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArrowsControl::TArrowsControl_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TArrowsControl_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTArrowsControlAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTArrowsControlAndMaybeFree */
 
-void * __thiscall
-TArrowsControl::thunk_DestructTArrowsControlAndMaybeFree(TArrowsControl *this,byte freeSelfFlag)
+void * __thiscall TArrowsControl::TArrowsControl_VtblSlot001(TArrowsControl *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +42,15 @@ TArrowsControl::thunk_DestructTArrowsControlAndMaybeFree(TArrowsControl *this,by
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409471
-// GHIDRA_NAME TArrowsControl::thunk_GetTArrowsControlClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArrowsControlClassNamePointer(void)
+// GHIDRA_NAME TArrowsControl::TArrowsControl_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TArrowsControl_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArrowsControlClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArrowsControlClassNamePointer */
 
-void * __cdecl TArrowsControl::thunk_GetTArrowsControlClassNamePointer(void)
+void * __cdecl TArrowsControl::TArrowsControl_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -57,7 +76,7 @@ void * __cdecl TArrowsControl::CreateTArrowsControlInstance(void)
   puStack_8 = &LAB_0063752a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -93,8 +112,8 @@ void * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TArrowsContro
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTArrowsControl;
-  *(undefined4 *)(this + 0x90) = 0;
+  this->field0_0x0 = &g_vtblTArrowsControl;
+  this->field90 = 0;
   return this;
 }
 
@@ -108,8 +127,51 @@ TArrowsControl::DestructTArrowsControlAndMaybeFree(TArrowsControl *this,byte fre
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005839F0
+// GHIDRA_NAME TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
+// GHIDRA_PROTO void __thiscall HandleSplitArrowAutoRepeatTickAndDispatch_Offset90(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x90 timer state).
+// GHIDRA_COMMENT_END
+
+/* [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x90 timer
+   state). */
+
+void __thiscall
+TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
+          (TArrowsControl *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  undefined **ppuVar1;
+  char cVar2;
+  uint extraout_EAX;
+  int extraout_EAX_00;
+  
+  if (nEventType != 2) {
+    thunk_GetTickCountDiv16();
+    if (this->field90 + 5U <= extraout_EAX) {
+      thunk_GetTickCountDiv16();
+      this->field90 = extraout_EAX_00;
+      if (nEventType == 0) {
+        this->field90 = extraout_EAX_00 + 10;
+      }
+      ppuVar1 = this->field0_0x0;
+      cVar2 = (*(code *)ppuVar1[0x5b])(pHitPayload);
+      if (cVar2 != '\0') {
+        if ((int)pHitPayload->axisCoord4 <= this->field38 / 2) {
+          (*(code *)ppuVar1[0x10])(100);
+          return;
+        }
+        (*(code *)ppuVar1[0x10])(0x65,this,0);
+      }
+    }
+  }
+  return;
 }
 

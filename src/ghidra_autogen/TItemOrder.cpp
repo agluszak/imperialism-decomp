@@ -21,56 +21,22 @@ void * __cdecl TItemOrder::thunk_GetTItemOrderClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004060CD
-// GHIDRA_NAME TItemOrder::thunk_InitializeItemOrderTargetFromTemplate_At004060cd
-// GHIDRA_PROTO void __thiscall thunk_InitializeItemOrderTargetFromTemplate_At004060cd(int * pTargetOrder)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeItemOrderTargetFromTemplate
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeItemOrderTargetFromTemplate */
-
-void __thiscall
-TItemOrder::thunk_InitializeItemOrderTargetFromTemplate_At004060cd
-          (TItemOrder *this,int *pTargetOrder)
-
-{
-  CreateTItemOrderInstance(this,pTargetOrder);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004062AD
-// GHIDRA_NAME TItemOrder::thunk_GetTItemOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTItemOrderRuntimeClass(void)
+// GHIDRA_NAME TItemOrder::thunk_DestructTItemOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTItemOrderAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTItemOrderRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTItemOrderRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTItemOrderRuntimeClass. */
+/* Thunk forwarding to GetTItemOrderRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TItemOrder::thunk_GetTItemOrderRuntimeClass(TItemOrder *this)
+void * __thiscall TItemOrder::thunk_DestructTItemOrderAndMaybeFree(TItemOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408170
-// GHIDRA_NAME TItemOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b5240
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b5240()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b5240
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b5240 */
-
-void TItemOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b5240(void)
-
-{
-  ConstructTItemOrderBaseState();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B51B0
@@ -106,7 +72,7 @@ void * __cdecl TItemOrder::GetTItemOrderClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5240
 // GHIDRA_NAME TItemOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined ConstructTItemOrderBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTItemOrderBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -114,14 +80,16 @@ void * __cdecl TItemOrder::GetTItemOrderClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TItemOrder * __thiscall TItemOrder::ConstructTItemOrderBaseState(TItemOrder *param_1,byte param_2)
+void __thiscall TItemOrder::ConstructTItemOrderBaseState(TItemOrder *this)
 
 {
-  thunk_GetTItemOrderRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTItemOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5270
@@ -138,7 +106,7 @@ void * __thiscall TItemOrder::DestructTItemOrderAndMaybeFree(TItemOrder *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

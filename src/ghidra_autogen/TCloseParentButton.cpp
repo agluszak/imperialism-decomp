@@ -4,35 +4,34 @@
 // Bucket: TCloseParentButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403260
-// GHIDRA_NAME TCloseParentButton::thunk_DestructTCloseParentButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCloseParentButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCloseParentButton::TCloseParentButton_VtblSlot001
+// GHIDRA_PROTO TCloseParentButton * __thiscall TCloseParentButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCloseParentButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCloseParentButtonAndMaybeFree */
 
-void * __thiscall
-TCloseParentButton::thunk_DestructTCloseParentButtonAndMaybeFree
-          (TCloseParentButton *this,byte freeSelfFlag)
+TCloseParentButton * __thiscall
+TCloseParentButton::TCloseParentButton_VtblSlot001(TCloseParentButton *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TCloseParentButton *pTVar1;
   
-  pvVar1 = DestructTCloseParentButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTCloseParentButtonAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403EF4
-// GHIDRA_NAME TCloseParentButton::thunk_GetTCloseParentButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCloseParentButtonClassNamePointer(void)
+// GHIDRA_NAME TCloseParentButton::TCloseParentButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCloseParentButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCloseParentButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCloseParentButtonClassNamePointer */
 
-void * __cdecl TCloseParentButton::thunk_GetTCloseParentButtonClassNamePointer(void)
+void * __cdecl TCloseParentButton::TCloseParentButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -42,16 +41,15 @@ void * __cdecl TCloseParentButton::thunk_GetTCloseParentButtonClassNamePointer(v
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404624
-// GHIDRA_NAME TCloseParentButton::thunk_NotifyOwnerA0WhenSelectionMatchesAndReady
-// GHIDRA_PROTO void __thiscall thunk_NotifyOwnerA0WhenSelectionMatchesAndReady(void)
+// GHIDRA_NAME TCloseParentButton::TCloseParentButton_VtblSlot015
+// GHIDRA_PROTO void __thiscall TCloseParentButton_VtblSlot015(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to NotifyOwnerA0WhenSelectionMatchesAndReady
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to NotifyOwnerA0WhenSelectionMatchesAndReady */
 
-void __thiscall
-TCloseParentButton::thunk_NotifyOwnerA0WhenSelectionMatchesAndReady(TCloseParentButton *this)
+void __thiscall TCloseParentButton::TCloseParentButton_VtblSlot015(TCloseParentButton *this)
 
 {
   NotifyOwnerA0WhenSelectionMatchesAndReady(this);
@@ -81,15 +79,15 @@ void * __cdecl TCloseParentButton::CreateTCloseParentButtonInstance(void)
   puStack_8 = &LAB_00637672;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x84);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTButton;
+    (this->base).pVtable = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &g_vtblTCloseParentButton;
+    (this->base).pVtable = &g_vtblTCloseParentButton;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -113,14 +111,15 @@ void * __cdecl TCloseParentButton::GetTCloseParentButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C60
 // GHIDRA_NAME TCloseParentButton::ConstructTCloseParentButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCloseParentButtonBaseState(void)
+// GHIDRA_PROTO TCloseParentButton * __thiscall ConstructTCloseParentButtonBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [InheritanceEvidence] TCloseParentButton derives from TButton (decomp_vtbl_seq_ctor, medium)
 // GHIDRA_COMMENT_END
 
 /* [InheritanceEvidence] TCloseParentButton derives from TButton (decomp_vtbl_seq_ctor, medium) */
 
-void * __thiscall TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *this)
+TCloseParentButton * __thiscall
+TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -134,25 +133,25 @@ void * __thiscall TCloseParentButton::ConstructTCloseParentButtonBaseState(TClos
   *unaff_FS_OFFSET = &local_c;
   TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
   local_4 = 0;
-  *(undefined ***)this = &g_vtblTButton;
+  this->field0_0x0 = &g_vtblTButton;
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-  *(undefined ***)this = &g_vtblTCloseParentButton;
+  this->field0_0x0 = &g_vtblTCloseParentButton;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584CE0
 // GHIDRA_NAME TCloseParentButton::DestructTCloseParentButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCloseParentButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TCloseParentButton * __thiscall DestructTCloseParentButtonAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall
+TCloseParentButton * __thiscall
 TCloseParentButton::DestructTCloseParentButtonAndMaybeFree
           (TCloseParentButton *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -170,20 +169,20 @@ void __thiscall
 TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady(TCloseParentButton *this)
 
 {
-  int iVar1;
+  undefined **ppuVar1;
   char cVar2;
   int iVar3;
   int *piVar4;
   int in_stack_00000004;
   
-  iVar1 = *(int *)this;
-  iVar3 = (**(code **)(iVar1 + 0xbc))();
+  ppuVar1 = this->field0_0x0;
+  iVar3 = (*(code *)ppuVar1[0x2f])();
   if (in_stack_00000004 == iVar3) {
-    cVar2 = (**(code **)(iVar1 + 0x28))();
+    cVar2 = (*(code *)ppuVar1[10])();
     if (cVar2 != '\0') {
-      cVar2 = (**(code **)(iVar1 + 0x1bc))();
+      cVar2 = (*(code *)ppuVar1[0x6f])();
       if (cVar2 == '\0') {
-        piVar4 = (int *)(**(code **)(iVar1 + 0x58))();
+        piVar4 = (int *)(*(code *)ppuVar1[0x16])();
         (**(code **)(*piVar4 + 0xa0))();
       }
     }

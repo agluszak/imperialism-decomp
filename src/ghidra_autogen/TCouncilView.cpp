@@ -21,20 +21,57 @@ void * __cdecl TCouncilView::thunk_GetTCouncilViewClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407D15
-// GHIDRA_NAME TCouncilView::thunk_HandleCouncilViewCommandByControlTag
-// GHIDRA_PROTO void __thiscall thunk_HandleCouncilViewCommandByControlTag(void * arg1, void * arg2)
+// GHIDRA_FUNCTION IMPERIALISM 0x004065B9
+// GHIDRA_NAME TCouncilView::thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for HandleCouncilViewCommandByControlTag.
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for HandleCouncilViewCommandByControlTag. */
+/* Single-JMP thunk to
+   WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950 */
 
 void __thiscall
-TCouncilView::thunk_HandleCouncilViewCommandByControlTag(TCouncilView *this,void *arg1,void *arg2)
+TCouncilView::
+thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9
+          (TCouncilView *this,int arg1,int arg2)
+
+{
+  WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(this,arg1,arg2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407D15
+// GHIDRA_NAME TCouncilView::thunk_DestructTCouncilViewAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTCouncilViewAndMaybeFree(void * arg1, void * arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for HandleCouncilViewCommandByControlTag. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for HandleCouncilViewCommandByControlTag. [FID:thunk_target_sync] */
+
+void __thiscall
+TCouncilView::thunk_DestructTCouncilViewAndMaybeFree(TCouncilView *this,void *arg1,void *arg2)
 
 {
   DestructTCouncilViewAndMaybeFree(this,arg1,arg2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040875B
+// GHIDRA_NAME TCouncilView::thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b
+// GHIDRA_PROTO void __thiscall thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RefreshDiplomacyNationOverlayGeometryAndLabels
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RefreshDiplomacyNationOverlayGeometryAndLabels */
+
+void __thiscall
+TCouncilView::thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b(TCouncilView *this)
+
+{
+  RefreshDiplomacyNationOverlayGeometryAndLabels(this);
   return;
 }
 
@@ -61,12 +98,12 @@ void * __cdecl TCouncilView::CreateTCouncilViewInstance(void)
   puStack_8 = &LAB_0063303a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TDiplomacyMapView *)AllocateWithFallbackHandler(0x24e0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TDiplomacyMapView *)0x0;
   if (this != (TDiplomacyMapView *)0x0) {
     TDiplomacyMapView::thunk_ConstructTDiplomacyMapViewBaseState(this);
-    *(undefined ***)this = &PTR_thunk_GetTCouncilViewClassNamePointer_00640258;
+    this->field00 = &PTR_thunk_GetTCouncilViewClassNamePointer_00640258;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -88,6 +125,89 @@ void * __cdecl TCouncilView::GetTCouncilViewClassNamePointer(void)
   return &g_pClassDescTCouncilView;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004FBA70
+// GHIDRA_NAME TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels
+// GHIDRA_PROTO void __thiscall RefreshDiplomacyNationOverlayGeometryAndLabels(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Rebuilds diplomacy nation overlay geometry and associated styled labels.
+// GHIDRA_COMMENT_END
+
+/* Rebuilds diplomacy nation overlay geometry and associated styled labels. */
+
+void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCouncilView *this)
+
+{
+  short sVar1;
+  code *pcVar2;
+  int iVar3;
+  short extraout_AX;
+  int *pControl;
+  void *pvVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar5;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00633068;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  local_4._0_1_ = 1;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = CONCAT31(local_4._1_3_,2);
+  thunk_NoOpUiLifecycleHook();
+  TDiplomacyMapView::thunk_BuildDiplomacyNationOverlayGeometryAndHitMasks((TDiplomacyMapView *)this)
+  ;
+  this->field94 = 5;
+  this->field24ca = 0;
+  pcVar2 = *(code **)((int)this->pVtable + 0x94);
+  this->field24ce = 0;
+  this->field24d2 = 0;
+  this->field24d6 = 0;
+  this->field24dc = 0;
+  this->field24da = 0;
+  pControl = (int *)(*pcVar2)();
+  iVar3 = *pControl;
+  (**(code **)(iVar3 + 0xc))();
+  thunk_ApplyUiTextStyleAndThemeFlags(pControl,0,0x10,0x2b6c,0x2b67);
+  uVar5 = 0xfffffffe;
+  (**(code **)(iVar3 + 0x1c4))();
+  if ((*(short *)((int)g_pLocalizationTable + 8) == 0x17) ||
+     (*(short *)((int)g_pLocalizationTable + 8) == 0x16)) {
+    FormatOverlayTerrainLabelText();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x275d,3,&stack0xffffffe0);
+    scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,(char *)0x7469746c);
+    (**(code **)(iVar3 + 0x1c8))(&stack0xffffffd0,0);
+    thunk_BuildDiplomacyMapHintOverlayTextAndMetrics(this);
+    sVar1 = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
+    thunk_GetActiveNationId();
+    if (sVar1 == extraout_AX) {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x1f43,0,1);
+    }
+    else {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x1f44,0,1);
+    }
+  }
+  else {
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x5e,&stack0xffffffdc);
+    (**(code **)(iVar3 + 0x1c8))(&stack0xffffffd0,0);
+    InitializeMainRoutineContextAndRun();
+    pvVar4 = (void *)(*pcVar2)(0x656e6420);
+    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2746,6,pvVar4);
+    pvVar4 = (void *)(*pcVar2)(0x71756572);
+    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,3,pvVar4);
+  }
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = uVar5;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBD60
 // GHIDRA_NAME TCouncilView::DestructTCouncilViewAndMaybeFree
 // GHIDRA_PROTO void __thiscall DestructTCouncilViewAndMaybeFree(void * arg1, void * arg2)
@@ -106,7 +226,8 @@ TCouncilView::DestructTCouncilViewAndMaybeFree(TCouncilView *this,void *arg1,voi
   
   if (arg1 == (void *)0xa) {
     if (*(int *)((int)arg2 + 0x1c) == 0x73746172) {
-      thunk_InitializeDiplomacyCouncilViewControlsAndTicker();
+      TCouncilTickerAnimation::thunk_InitializeDiplomacyCouncilViewControlsAndTicker
+                ((TCouncilTickerAnimation *)this);
       return;
     }
   }
@@ -125,6 +246,28 @@ TCouncilView::DestructTCouncilViewAndMaybeFree(TCouncilView *this,void *arg1,voi
   }
   else {
     thunk_HandleCityDialogToggleCommandOrForward();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FC950
+// GHIDRA_NAME TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_HandleCursorHoverSelectionByChildHitTestAndFallback; instructions=19, call_insns=2, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_HandleCursorHoverSelectionByChildHitTestAndFallback;
+   instructions=19, call_insns=2, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
+          (TCouncilView *this,int arg1,int arg2)
+
+{
+  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback((TControl *)this,arg1,arg2);
+  if ((int)this->field528 < this->field24c8 + 2) {
+    SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + 0x7c));
   }
   return;
 }

@@ -3,19 +3,87 @@
 // Program: Imperialism.exe
 // Bucket: TGrantsView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407A13
-// GHIDRA_NAME TGrantsView::thunk_InitializeGrantsViewAmountLabelControls
-// GHIDRA_PROTO void __thiscall thunk_InitializeGrantsViewAmountLabelControls(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00403ED6
+// GHIDRA_NAME TGrantsView::thunk_scalar_deleting_destructor_00403ED6
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403ED6(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeGrantsViewAmountLabelControls.
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for InitializeGrantsViewAmountLabelControls. */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void __thiscall TGrantsView::thunk_InitializeGrantsViewAmountLabelControls(TGrantsView *this)
+void * __thiscall
+TGrantsView::thunk_scalar_deleting_destructor_00403ED6(TGrantsView *this,byte freeSelfFlag)
 
 {
-  ConstructTGrantsViewBaseState(this);
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404C78
+// GHIDRA_NAME TGrantsView::thunk_EnterDiplomacyGrantActionSelectionMode
+// GHIDRA_PROTO void __thiscall thunk_EnterDiplomacyGrantActionSelectionMode(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EnterDiplomacyGrantActionSelectionMode
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to EnterDiplomacyGrantActionSelectionMode */
+
+void __thiscall TGrantsView::thunk_EnterDiplomacyGrantActionSelectionMode(TGrantsView *this)
+
+{
+  TToolBarCluster::EnterDiplomacyGrantActionSelectionMode((TToolBarCluster *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407509
+// GHIDRA_NAME TGrantsView::thunk_HandleDiplomacyGrantAmountTagSelection
+// GHIDRA_PROTO void __thiscall thunk_HandleDiplomacyGrantAmountTagSelection(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleDiplomacyGrantAmountTagSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleDiplomacyGrantAmountTagSelection */
+
+void __thiscall
+TGrantsView::thunk_HandleDiplomacyGrantAmountTagSelection(TGrantsView *this,int arg1,int arg2)
+
+{
+  TacticalBattleView::HandleDiplomacyGrantAmountTagSelection((TacticalBattleView *)this,arg1,arg2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407A13
+// GHIDRA_NAME TGrantsView::thunk_ConstructTGrantsViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTGrantsViewBaseState(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for InitializeGrantsViewAmountLabelControls. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for InitializeGrantsViewAmountLabelControls. [FID:thunk_target_sync] */
+
+void __thiscall TGrantsView::thunk_ConstructTGrantsViewBaseState(TGrantsView *this,int arg1)
+
+{
+  ConstructTGrantsViewBaseState(this,arg1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407F54
+// GHIDRA_NAME TGrantsView::thunk_RenderDiplomacyGrantTotalsAndStyledText
+// GHIDRA_PROTO void __thiscall thunk_RenderDiplomacyGrantTotalsAndStyledText(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderDiplomacyGrantTotalsAndStyledText
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderDiplomacyGrantTotalsAndStyledText */
+
+void __thiscall TGrantsView::thunk_RenderDiplomacyGrantTotalsAndStyledText(TGrantsView *this)
+
+{
+  RenderDiplomacyGrantTotalsAndStyledText(this);
   return;
 }
 
@@ -59,12 +127,12 @@ void * __cdecl TGrantsView::CreateTGrantsViewInstance(void)
   puStack_8 = &LAB_00632d9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTGrantsViewClassNamePointer_0063fa70;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &PTR_thunk_GetTGrantsViewClassNamePointer_0063fa70;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -89,20 +157,19 @@ void * __cdecl TGrantsView::GetTGrantsViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8080
 // GHIDRA_NAME TGrantsView::ConstructTGrantsViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTGrantsViewBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTGrantsViewBaseState(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Create and initialize grants view amount label controls from localization resources.
 // GHIDRA_COMMENT_END
 
 /* Create and initialize grants view amount label controls from localization resources. */
 
-void __thiscall TGrantsView::ConstructTGrantsViewBaseState(TGrantsView *this)
+void __thiscall TGrantsView::ConstructTGrantsViewBaseState(TGrantsView *this,int arg1)
 
 {
   code *pcVar1;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 **in_stack_00000004;
   undefined1 *puStack_2c;
   undefined1 local_14 [4];
   undefined1 *puStack_10;
@@ -119,31 +186,164 @@ void __thiscall TGrantsView::ConstructTGrantsViewBaseState(TGrantsView *this)
   local_4 = 0;
   puStack_2c = (undefined1 *)0x4f80b9;
   thunk_NoOpUiLifecycleHook();
-  this[0x18].pVtable = this[8].pVtable;
+  this->field60 = this->field29_0x20;
   pcVar1 = *(code **)((int)this->pVtable + 0x94);
   do {
     puStack_2c = (undefined1 *)0x4f80d3;
     (*pcVar1)();
     puStack_2c = &stack0xffffffe8;
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar2 + 0x3e);
-    in_stack_00000004 = &puStack_2c;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,iVar2 + 0x3e);
+    arg1 = (int)&puStack_2c;
     thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    TToolBarCluster::InitializeAndRunMainRoutine();
     iVar2 = iVar2 + 1;
   } while (iVar2 < 8);
   puStack_2c = (undefined1 *)0x4f811f;
-  ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&arg1);
   local_4._0_1_ = 1;
   puStack_2c = (undefined1 *)0x4f8132;
-  StringShared__AssignFromPtr(local_14,(int *)&stack0x00000004);
+  AssignFromPtr(local_14,&arg1);
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   puStack_10 = (undefined1 *)&puStack_2c;
   thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  TToolBarCluster::InitializeAndRunMainRoutine();
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F81C0
+// GHIDRA_NAME TGrantsView::RenderDiplomacyGrantTotalsAndStyledText
+// GHIDRA_PROTO void __thiscall RenderDiplomacyGrantTotalsAndStyledText(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds diplomacy grant totals and renders styled text row entries.
+// GHIDRA_COMMENT_END
+
+/* Builds diplomacy grant totals and renders styled text row entries. */
+
+void __thiscall TGrantsView::RenderDiplomacyGrantTotalsAndStyledText(TGrantsView *this)
+
+{
+  short sVar1;
+  short sVar2;
+  THQButton *this_00;
+  THQButton *this_01;
+  THQButton *this_02;
+  THQButton *this_03;
+  int unaff_EBX;
+  int unaff_EBP;
+  int iVar3;
+  short originX;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  int arg1;
+  short local_40;
+  undefined1 local_3e;
+  undefined1 local_3d;
+  int local_3c;
+  short local_38 [2];
+  int local_34;
+  undefined4 local_2c;
+  short local_28 [2];
+  int local_24;
+  undefined2 local_20;
+  undefined2 local_1e;
+  undefined2 local_1c;
+  undefined2 local_1a;
+  undefined2 local_18;
+  undefined2 local_16;
+  undefined2 local_14;
+  undefined2 local_12;
+  undefined2 local_10;
+  undefined2 local_e;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00632de8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  iVar3 = CONCAT22((short)((uint)unaff_EBP >> 0x10),this->field24);
+  sVar1 = this->field28;
+  local_28[0] = 0x180;
+  local_4._0_1_ = 1;
+  local_3c = 0;
+  local_40 = 0;
+  local_3e = 0;
+  local_3d = 0;
+  local_1c = 0xe7;
+  local_1a = 0x14d;
+  local_18 = 0x1f1;
+  local_16 = 0x48;
+  local_14 = 0x5e;
+  local_12 = 0xe8;
+  local_10 = 0x173;
+  local_e = 0x1f7;
+  local_2c = 0x180016f;
+  local_28[1] = 0x187;
+  local_24 = 0x1d501d5;
+  local_20 = 0x1d5;
+  local_1e = 0x1d5;
+  local_34 = iVar3;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&local_3c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_40);
+  arg1 = 0x21;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  iVar3 = -iVar3;
+  iVar4 = iVar3 + 0x48;
+  local_3c = iVar4;
+  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
+  thunk_SetQuickDrawTextOriginWithContextOffset((short)iVar3 + 0x49,-sVar1 + 0x170);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
+  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
+  thunk_SetQuickDrawTextOriginWithContextOffset((short)iVar4,-sVar1 + 0x16f);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  iVar3 = 0;
+  do {
+    if (iVar3 != 3) {
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+      sVar2 = local_38[iVar3];
+      originX = local_28[iVar3] - local_40;
+      SetQuickDrawColorAndSyncGlobals(unaff_EBP);
+      thunk_SetQuickDrawTextOriginWithContextOffset(originX + 1,(sVar2 - sVar1) + 1);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb0);
+      SetQuickDrawColorAndSyncGlobals(unaff_EBX);
+      thunk_SetQuickDrawTextOriginWithContextOffset(originX,sVar2 - sVar1);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+      iVar4 = local_3c;
+    }
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 8);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  iVar3 = *(int *)g_pLocalizationTable;
+  thunk_GetActiveNationId();
+  thunk_SumDiplomacyGrantEntriesMaskedToValueBits();
+  (**(code **)(iVar3 + 0x74))();
+  AssignSharedStringConcatCStrAndRef();
+  local_24._0_1_ = 2;
+  AssignStringSharedFromRef();
+  local_24._0_1_ = 1;
+  ReleaseSharedStringRefIfNotEmpty();
+  SetQuickDrawColorAndSyncGlobals(0x2733);
+  thunk_SetQuickDrawTextOriginWithContextOffset((short)iVar4 + 1,-sVar1 + 0x188);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+  SetQuickDrawColorAndSyncGlobals(arg1);
+  thunk_SetQuickDrawTextOriginWithContextOffset((short)iVar4,-sVar1 + 0x187);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
+  SetQuickDrawFillColor(0);
+  local_24 = (uint)local_24._1_3_ << 8;
+  ReleaseSharedStringRefIfNotEmpty();
+  local_24 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = local_2c;
   return;
 }
 

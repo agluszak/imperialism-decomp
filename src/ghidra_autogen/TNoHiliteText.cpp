@@ -3,28 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TNoHiliteText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040320B
-// GHIDRA_NAME TNoHiliteText::thunk_ConstructUiStatusListTextEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiStatusListTextEntry(void)
-
-void __thiscall TNoHiliteText::thunk_ConstructUiStatusListTextEntry(TNoHiliteText *this)
-
-{
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  *(undefined ***)this = &g_vtblTNoHiliteText;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040628A
-// GHIDRA_NAME TNoHiliteText::thunk_GetTNoHiliteTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNoHiliteTextClassNamePointer(void)
+// GHIDRA_NAME TNoHiliteText::TNoHiliteText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNoHiliteText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNoHiliteTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNoHiliteTextClassNamePointer */
 
-void * __cdecl TNoHiliteText::thunk_GetTNoHiliteTextClassNamePointer(void)
+void * __cdecl TNoHiliteText::TNoHiliteText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -34,16 +22,15 @@ void * __cdecl TNoHiliteText::thunk_GetTNoHiliteTextClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004074B9
-// GHIDRA_NAME TNoHiliteText::thunk_DestructTNoHiliteTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNoHiliteTextAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNoHiliteText::TNoHiliteText_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TNoHiliteText_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNoHiliteTextAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTNoHiliteTextAndMaybeFree */
 
-void * __thiscall
-TNoHiliteText::thunk_DestructTNoHiliteTextAndMaybeFree(TNoHiliteText *this,byte freeSelfFlag)
+void * __thiscall TNoHiliteText::TNoHiliteText_VtblSlot001(TNoHiliteText *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -75,12 +62,12 @@ void * __cdecl TNoHiliteText::CreateTNoHiliteTextInstance(void)
   puStack_8 = &LAB_0063905a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTNoHiliteText;
+    (this->base).pVtable = &g_vtblTNoHiliteText;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -130,7 +117,7 @@ void __thiscall TNoHiliteText::ConstructUiStatusListTextEntry(TNoHiliteText *thi
 
 {
   TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  *(undefined ***)this = &g_vtblTNoHiliteText;
+  this->field0_0x0 = &g_vtblTNoHiliteText;
   return;
 }
 
@@ -149,7 +136,7 @@ TNoHiliteText::DestructTNoHiliteTextAndMaybeFree(TNoHiliteText *this,byte freeSe
 {
   TStaticText::DestructTStaticTextCore((TStaticText *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

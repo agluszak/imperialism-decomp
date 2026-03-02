@@ -4,15 +4,15 @@
 // Bucket: TArmyStackList.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403634
-// GHIDRA_NAME TArmyStackList::thunk_GetTArmyStackListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyStackListClassNamePointer(void)
+// GHIDRA_NAME TArmyStackList::thunk_GetTArmyStackListClassNamePointer_At00403634
+// GHIDRA_PROTO void * __cdecl thunk_GetTArmyStackListClassNamePointer_At00403634(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArmyStackListClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArmyStackListClassNamePointer */
 
-void * __cdecl TArmyStackList::thunk_GetTArmyStackListClassNamePointer(void)
+void * __cdecl TArmyStackList::thunk_GetTArmyStackListClassNamePointer_At00403634(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TArmyStackList::thunk_GetTArmyStackListClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004075B8
-// GHIDRA_NAME TArmyStackList::thunk_DestructTArmyStackListAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyStackListAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyStackList::thunk_DestructTArmyStackListAndMaybeFree_At004075b8
+// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyStackListAndMaybeFree_At004075b8(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTArmyStackListAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,13 +31,71 @@ void * __cdecl TArmyStackList::thunk_GetTArmyStackListClassNamePointer(void)
 /* Single-JMP thunk to DestructTArmyStackListAndMaybeFree */
 
 void * __thiscall
-TArmyStackList::thunk_DestructTArmyStackListAndMaybeFree(TArmyStackList *this,byte freeSelfFlag)
+TArmyStackList::thunk_DestructTArmyStackListAndMaybeFree_At004075b8
+          (TArmyStackList *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTArmyStackListAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A18F0
+// GHIDRA_NAME TArmyStackList::InitializeMapContextActionManager
+// GHIDRA_PROTO void __thiscall InitializeMapContextActionManager(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void InitializeMapContextActionManager(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void InitializeMapContextActionManager(void) */
+
+void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList *this)
+
+{
+  undefined4 *puVar1;
+  TIndexAndRankList *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ff3c;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = AllocateWithFallbackHandler();
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &g_vtblRefCountedObjectBase;
+    local_4 = 1;
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &g_vtblTArmyStackList;
+  }
+  local_4 = 0xffffffff;
+  (this->field1_0x4).controlActiveFlag8 = puVar1;
+  (this->field1_0x4).dialogValueDword10 = (int *)&g_Map_Context_Action_Value_00695448;
+  (this->field1_0x4).pField14 = &g_Apply_Randomized_Meter_Value_00695428;
+  (this->field1_0x4).field_0x396 = 0;
+  *(undefined4 *)&(this->field1_0x4).field_0x398 = 0;
+  *(undefined4 *)&(this->field1_0x4).field_0x39c = 0;
+  *(undefined4 *)&(this->field1_0x4).field_0x3a0 = 0;
+  this_00 = AllocateWithFallbackHandler();
+  local_4 = 2;
+  if (this_00 == (TIndexAndRankList *)0x0) {
+    this_00 = (TIndexAndRankList *)0x0;
+  }
+  else {
+    TIndexAndRankList::CPtrArray(this_00);
+    this_00->pVtable = &PTR_thunk_GetTSortedPtrListClassNamePointer_00649010;
+  }
+  (this->field1_0x4).base.pVtable = this_00;
+  *(undefined2 *)&this_00->field_0x14 = 0x268;
+  (this->field1_0x4).field1_0x4 = 0;
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A83B0
@@ -58,12 +116,12 @@ void * __cdecl TArmyStackList::CreateTArmyStackListInstance(void)
   puStack_8 = &LAB_00630262;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
     local_4 = 1;
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &g_vtblTArmyStackList;
     puVar2 = puVar1;
   }
@@ -101,10 +159,10 @@ void * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TArmyStackLis
   puStack_8 = &LAB_00630288;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *(undefined ***)this = &g_vtblRefCountedObjectBase;
+  this->field0_0x0 = &g_vtblRefCountedObjectBase;
   local_4 = 0;
-  InitializeLinkedListSentinelNodeWithOwnerContext(10);
-  *(undefined ***)this = &g_vtblTArmyStackList;
+  TGreatPower::CPtrList((TGreatPower *)&this->field1_0x4);
+  this->field0_0x0 = &g_vtblTArmyStackList;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -117,10 +175,39 @@ void * __thiscall
 TArmyStackList::DestructTArmyStackListAndMaybeFree(TArmyStackList *this,byte freeSelfFlag)
 
 {
-  WrapperFor_DestructCPtrListBaseState_At004a84f0();
+  WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A84F0
+// GHIDRA_NAME TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
+// GHIDRA_PROTO void __thiscall WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_006302a8;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  DestructCPtrListBaseState(&this->field1_0x4);
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 

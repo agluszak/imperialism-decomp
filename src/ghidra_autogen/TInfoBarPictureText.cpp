@@ -22,13 +22,18 @@ void * __cdecl TInfoBarPictureText::thunk_GetTInfoBarPictureTextClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401AB4
-// GHIDRA_NAME TInfoBarPictureText::thunk_DestructTStaticTextCore
-// GHIDRA_PROTO void __thiscall thunk_DestructTStaticTextCore(void)
+// GHIDRA_NAME TInfoBarPictureText::thunk_DestructTInfoBarPictureTextAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTInfoBarPictureTextAndMaybeFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
 
-void __thiscall TInfoBarPictureText::thunk_DestructTStaticTextCore(TInfoBarPictureText *this)
+/* [FID:thunk_target_sync] */
+
+void __thiscall
+TInfoBarPictureText::thunk_DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
 
 {
-  void *pvVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -38,38 +43,21 @@ void __thiscall TInfoBarPictureText::thunk_DestructTStaticTextCore(TInfoBarPictu
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   this->pVtable = &g_vtblTStaticText;
-  pvVar1 = this[0x21].pVtable;
   uStack_4 = 0;
-  if (pvVar1 != (void *)0x0) {
+  if (this->field126_0x84 != 0) {
     ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(pvVar1);
+    FreeHeapBufferIfNotNull();
   }
   this->pVtable = &g_vtblTView;
   uStack_4 = 2;
-  if (this[0x11].pVtable != (int *)0x0) {
-    (**(code **)(*(int *)this[0x11].pVtable + 4))(1);
+  if (this->field65_0x44 != (int *)0x0) {
+    (**(code **)(*this->field65_0x44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this[0x12].pVtable);
+  FreeHeapBufferIfNotNull();
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409192
-// GHIDRA_NAME TInfoBarPictureText::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005b5c60
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005b5c60 */
-
-void TInfoBarPictureText::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005b5c60(void)
-
-{
-  ConstructTInfoBarPictureTextBaseState();
   return;
 }
 
@@ -95,21 +83,21 @@ void * __cdecl TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
   puStack_8 = &LAB_00638efa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    this[0x98] = (TStaticText)0x0;
-    this[0x99] = (TStaticText)0x0;
-    this[0x9a] = (TStaticText)0x0;
-    this[0x9b] = (TStaticText)0x0;
-    this[0x9c] = (TStaticText)0x0;
-    this[0x9d] = (TStaticText)0x0;
-    this[0x9e] = (TStaticText)0x0;
-    this[0x9f] = (TStaticText)0x0;
-    *(undefined4 *)(this + 0x98) = 0;
-    this[0xa0] = (TStaticText)0x0;
-    *(undefined ***)this = &PTR_thunk_GetTInfoBarPictureTextClassNamePointer_0066d288;
+    *(undefined1 *)((int)&this[1].base.field2_0x5 + 1) = 0;
+    *(undefined1 *)((int)&this[1].base.field2_0x5 + 2) = 0;
+    *(undefined1 *)&this[1].base.field3_0x8 = 0;
+    *(undefined1 *)((int)&this[1].base.field3_0x8 + 1) = 0;
+    *(undefined1 *)((int)&this[1].base.field3_0x8 + 2) = 0;
+    *(undefined1 *)((int)&this[1].base.field3_0x8 + 3) = 0;
+    *(undefined1 *)&this[1].base.dialogValueDwordC = 0;
+    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 1) = 0;
+    *(undefined4 *)((int)&this[1].base.field2_0x5 + 1) = 0;
+    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 2) = 0;
+    (this->base).pVtable = &PTR_thunk_GetTInfoBarPictureTextClassNamePointer_0066d288;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -134,7 +122,7 @@ void * __cdecl TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C60
 // GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState
-// GHIDRA_PROTO undefined ConstructTInfoBarPictureTextBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTInfoBarPictureTextBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -142,16 +130,17 @@ void * __cdecl TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TInfoBarPictureText * __thiscall
-TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState
-          (TInfoBarPictureText *param_1,byte param_2)
+void __thiscall
+TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState(TInfoBarPictureText *this)
 
 {
-  thunk_DestructTStaticTextCore(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTInfoBarPictureTextAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C90
@@ -162,7 +151,6 @@ void __thiscall
 TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
 
 {
-  void *pvVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -172,21 +160,20 @@ TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   this->pVtable = &g_vtblTStaticText;
-  pvVar1 = this[0x21].pVtable;
   uStack_4 = 0;
-  if (pvVar1 != (void *)0x0) {
+  if (this->field126_0x84 != 0) {
     ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(pvVar1);
+    FreeHeapBufferIfNotNull();
   }
   this->pVtable = &g_vtblTView;
   uStack_4 = 2;
-  if (this[0x11].pVtable != (int *)0x0) {
-    (**(code **)(*(int *)this[0x11].pVtable + 4))(1);
+  if (this->field65_0x44 != (int *)0x0) {
+    (**(code **)(*this->field65_0x44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this[0x12].pVtable);
+  FreeHeapBufferIfNotNull();
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

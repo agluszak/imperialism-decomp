@@ -3,18 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404066
-// GHIDRA_NAME TButton::thunk_DestroyButtonAndReleaseOwnedResources
-// GHIDRA_PROTO void __thiscall thunk_DestroyButtonAndReleaseOwnedResources(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004014D8
+// GHIDRA_NAME TButton::TButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to DestroyButtonAndReleaseOwnedResources.
+// GHIDRA_COMMENT Single-JMP thunk to GetTRadioClassNamePointer
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to DestroyButtonAndReleaseOwnedResources. */
+/* Single-JMP thunk to GetTRadioClassNamePointer */
 
-void __thiscall TButton::thunk_DestroyButtonAndReleaseOwnedResources(TButton *this)
+void * __cdecl TButton::TButton_VtblSlot000(void)
 
 {
+  void *pvVar1;
+  
+  pvVar1 = TRadio::GetTRadioClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404066
+// GHIDRA_NAME TButton::thunk_CreateTButtonInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTButtonInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk forwarding to DestroyButtonAndReleaseOwnedResources. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk forwarding to DestroyButtonAndReleaseOwnedResources. [FID:thunk_target_sync] */
+
+void __thiscall TButton::thunk_CreateTButtonInstance(TButton *this)
+
+{
+  int *piVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -23,47 +42,30 @@ void __thiscall TButton::thunk_DestroyButtonAndReleaseOwnedResources(TButton *th
   puStack_8 = &LAB_0062eef3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *(undefined ***)this = &g_vtblTView;
+  (this->base).field0_0x0 = &g_vtblTView;
+  piVar1 = (this->base).field65_0x44;
   uStack_4 = 1;
-  if (*(int **)(this + 0x44) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x44) + 4))(1);
+  if (piVar1 != (int *)0x0) {
+    (**(code **)(*piVar1 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(*(undefined4 *)(this + 0x48));
+  FreeHeapBufferIfNotNull();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  (this->base).field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405957
-// GHIDRA_NAME TButton::thunk_GetTButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTButtonClassNamePointer */
-
-void * __cdecl TButton::thunk_GetTButtonClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00407469
-// GHIDRA_NAME TButton::thunk_DestructTButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TButton::TButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTButtonAndMaybeFree */
 
-void * __thiscall TButton::thunk_DestructTButtonAndMaybeFree(TButton *this,byte freeSelfFlag)
+void * __thiscall TButton::TButton_VtblSlot001(TButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -85,6 +87,7 @@ void * __thiscall TButton::thunk_DestructTButtonAndMaybeFree(TButton *this,byte 
 void __thiscall TButton::CreateTButtonInstance(TButton *this)
 
 {
+  int *piVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -93,15 +96,16 @@ void __thiscall TButton::CreateTButtonInstance(TButton *this)
   puStack_8 = &LAB_0062eef3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *(undefined ***)this = &g_vtblTView;
+  (this->base).field0_0x0 = &g_vtblTView;
+  piVar1 = (this->base).field65_0x44;
   local_4 = 1;
-  if (*(int **)(this + 0x44) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x44) + 4))(1);
+  if (piVar1 != (int *)0x0) {
+    (**(code **)(*piVar1 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(*(undefined4 *)(this + 0x48));
+  FreeHeapBufferIfNotNull();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  (this->base).field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -138,23 +142,23 @@ void * __cdecl TButton::ConstructTButtonBaseState(void)
   puStack_8 = &LAB_0062ef22;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x60) = 1;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].field1_0x4 = 0;
+    this[1].pVtable = (void *)0x1;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTButton;
+    this->pVtable = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &g_vtblTButton;
+    this->pVtable = &g_vtblTButton;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -169,9 +173,9 @@ void * __cdecl TButton::ConstructTButtonBaseState(void)
 void * __thiscall TButton::DestructTButtonAndMaybeFree(TButton *this,byte freeSelfFlag)
 
 {
-  TRadio::thunk_DestroyRadioAndReleaseOwnedResources((TRadio *)this);
+  TRadio::thunk_CreateTRadioInstance((TRadio *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

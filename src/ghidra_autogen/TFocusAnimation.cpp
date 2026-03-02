@@ -4,34 +4,33 @@
 // Bucket: TFocusAnimation.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401AB9
-// GHIDRA_NAME TFocusAnimation::thunk_GetTFocusAnimationRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTFocusAnimationRuntimeClass(void)
+// GHIDRA_NAME TFocusAnimation::thunk_CreateTFocusAnimationInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTFocusAnimationInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFocusAnimationRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTFocusAnimationRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTFocusAnimationRuntimeClass. */
+/* Thunk forwarding to GetTFocusAnimationRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TFocusAnimation::thunk_GetTFocusAnimationRuntimeClass(TFocusAnimation *this)
+void * __thiscall TFocusAnimation::thunk_CreateTFocusAnimationInstance(TFocusAnimation *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402FAE
-// GHIDRA_NAME TFocusAnimation::thunk_AdvanceFocusAnimationFrameWithWrapCallback_At00402fae
-// GHIDRA_PROTO void __thiscall thunk_AdvanceFocusAnimationFrameWithWrapCallback_At00402fae(void)
+// GHIDRA_NAME TFocusAnimation::thunk_ConstructTFocusAnimationBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTFocusAnimationBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AdvanceFocusAnimationFrameWithWrapCallback
+// GHIDRA_COMMENT Single-JMP thunk to AdvanceFocusAnimationFrameWithWrapCallback [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to AdvanceFocusAnimationFrameWithWrapCallback */
+/* Single-JMP thunk to AdvanceFocusAnimationFrameWithWrapCallback [FID:thunk_target_sync] */
 
-void __thiscall
-TFocusAnimation::thunk_AdvanceFocusAnimationFrameWithWrapCallback_At00402fae(TFocusAnimation *this)
+void __thiscall TFocusAnimation::thunk_ConstructTFocusAnimationBaseState(TFocusAnimation *this)
 
 {
   ConstructTFocusAnimationBaseState(this);
@@ -39,15 +38,15 @@ TFocusAnimation::thunk_AdvanceFocusAnimationFrameWithWrapCallback_At00402fae(TFo
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408959
-// GHIDRA_NAME TFocusAnimation::thunk_RenderFocusAnimationFrameIfEnabled
-// GHIDRA_PROTO void __thiscall thunk_RenderFocusAnimationFrameIfEnabled(void)
+// GHIDRA_NAME TFocusAnimation::thunk_DestructTFocusAnimationAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTFocusAnimationAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
+// GHIDRA_COMMENT Direct thunk [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Direct thunk */
+/* Direct thunk [FID:thunk_target_sync] */
 
-void __thiscall TFocusAnimation::thunk_RenderFocusAnimationFrameIfEnabled(TFocusAnimation *this)
+void __thiscall TFocusAnimation::thunk_DestructTFocusAnimationAndMaybeFree(TFocusAnimation *this)
 
 {
   DestructTFocusAnimationAndMaybeFree(this);
@@ -86,7 +85,7 @@ void * __thiscall TFocusAnimation::CreateTFocusAnimationInstance(TFocusAnimation
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -119,14 +118,14 @@ void __thiscall TFocusAnimation::ConstructTFocusAnimationBaseState(TFocusAnimati
 {
   void *pvVar1;
   
-  pvVar1 = (void *)((int)this[4].pVtable + 1);
-  this[4].pVtable = pvVar1;
-  if (pvVar1 == this[5].pVtable) {
+  pvVar1 = (void *)((int)this->field8_0x10 + 1);
+  this->field8_0x10 = pvVar1;
+  if (pvVar1 == this->field9_0x14) {
     (**(code **)((int)this->pVtable + 0x34))();
-    *(short *)&this[2].pVtable = *(short *)&this[2].pVtable + 1;
-    this[4].pVtable = (void *)0x0;
-    if (*(short *)&this[2].pVtable == *(short *)((int)&this[2].pVtable + 2)) {
-      *(undefined2 *)&this[2].pVtable = 0;
+    this->field2_0x8 = this->field2_0x8 + 1;
+    this->field8_0x10 = (void *)0x0;
+    if (this->field2_0x8 == this->field3_0xa) {
+      this->field2_0x8 = 0;
     }
   }
   return;
@@ -147,6 +146,7 @@ void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnima
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_2c;
   undefined4 uStack_28;
+  undefined1 local_24 [24];
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -155,14 +155,14 @@ void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnima
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe58;
   *unaff_FS_OFFSET = &local_c;
-  if (*(char *)&this[0xb].pVtable != '\0') {
-    thunk_ConstructScopedMapQuickDrawContext();
+  if (this->field30_0x2c != '\0') {
+    thunk_ConstructScopedMapQuickDrawContext(local_24,(int)this->field1_0x4);
     local_4 = 0;
-    (**(code **)(*(int *)this[1].pVtable + 0xf8))();
+    (**(code **)(*this->field1_0x4 + 0xf8))();
     uStack_2c = 0;
     uStack_28 = 0;
     (**(code **)((int)this->pVtable + 0x2c))(&uStack_2c);
-    (**(code **)(*(int *)this[1].pVtable + 0xfc))();
+    (**(code **)(*this->field1_0x4 + 0xfc))();
     local_4 = 0xffffffff;
     thunk_DestroyScopedMapQuickDrawContext();
   }

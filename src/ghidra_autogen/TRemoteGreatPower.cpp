@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TRemoteGreatPower.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004039A4
+// GHIDRA_NAME TRemoteGreatPower::thunk_SetNationSelectedRegionAndMapCellLabel
+// GHIDRA_PROTO void __thiscall thunk_SetNationSelectedRegionAndMapCellLabel(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetNationSelectedRegionAndMapCellLabel
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetNationSelectedRegionAndMapCellLabel */
+
+void __thiscall
+TRemoteGreatPower::thunk_SetNationSelectedRegionAndMapCellLabel(TRemoteGreatPower *this,int arg1)
+
+{
+  TToolBarCluster::SetNationSelectedRegionAndMapCellLabel((TToolBarCluster *)this,arg1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00409430
 // GHIDRA_NAME TRemoteGreatPower::thunk_GetTRemoteGreatPowerClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTRemoteGreatPowerClassNamePointer(void)
@@ -40,7 +57,7 @@ void __thiscall TRemoteGreatPower::thunk_DestructTRemoteGreatPower(TRemoteGreatP
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -64,7 +81,7 @@ void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

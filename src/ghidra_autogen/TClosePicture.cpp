@@ -4,34 +4,34 @@
 // Bucket: TClosePicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E01
-// GHIDRA_NAME TClosePicture::thunk_DestructTClosePictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTClosePictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TClosePicture::TClosePicture_VtblSlot001
+// GHIDRA_PROTO TClosePicture * __thiscall TClosePicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkIsland] JMP thunk to close-picture deleting-destructor.
+// GHIDRA_COMMENT Single-JMP thunk to DestructTClosePictureAndMaybeFree
 // GHIDRA_COMMENT_END
 
-/* [ThunkIsland] JMP thunk to close-picture deleting-destructor. */
+/* Single-JMP thunk to DestructTClosePictureAndMaybeFree */
 
-void * __thiscall
-TClosePicture::thunk_DestructTClosePictureAndMaybeFree(TClosePicture *this,byte freeSelfFlag)
+TClosePicture * __thiscall
+TClosePicture::TClosePicture_VtblSlot001(TClosePicture *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TClosePicture *pTVar1;
   
-  pvVar1 = DestructTClosePictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTClosePictureAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004052FE
-// GHIDRA_NAME TClosePicture::thunk_GetTClosePictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTClosePictureClassNamePointer(void)
+// GHIDRA_NAME TClosePicture::TClosePicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TClosePicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTClosePictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTClosePictureClassNamePointer */
 
-void * __cdecl TClosePicture::thunk_GetTClosePictureClassNamePointer(void)
+void * __cdecl TClosePicture::TClosePicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -41,8 +41,8 @@ void * __cdecl TClosePicture::thunk_GetTClosePictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040590C
-// GHIDRA_NAME TClosePicture::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_NAME TClosePicture::TClosePicture_VtblSlot072
+// GHIDRA_PROTO void __thiscall TClosePicture_VtblSlot072(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
 // GHIDRA_COMMENT_END
@@ -50,8 +50,7 @@ void * __cdecl TClosePicture::thunk_GetTClosePictureClassNamePointer(void)
 /* Single-JMP thunk to WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0 */
 
 void __thiscall
-TClosePicture::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
-          (TClosePicture *this,int arg1,int arg2,int arg3,int arg4)
+TClosePicture::TClosePicture_VtblSlot072(TClosePicture *this,int arg1,int arg2,int arg3,int arg4)
 
 {
   WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(this,arg1,arg2,arg3,arg4);
@@ -61,6 +60,11 @@ TClosePicture::thunk_WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
 // GHIDRA_FUNCTION IMPERIALISM 0x00586AD0
 // GHIDRA_NAME TClosePicture::CreateTClosePictureInstance
 // GHIDRA_PROTO void * __cdecl CreateTClosePictureInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TClosePicture::CreateTClosePictureInstance(void)
 
@@ -76,12 +80,12 @@ void * __cdecl TClosePicture::CreateTClosePictureInstance(void)
   puStack_8 = &LAB_0063789a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
     TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
-    *(undefined ***)this = &g_vtblTClosePicture;
+    this->field0_0x0 = &g_vtblTClosePicture;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -92,10 +96,10 @@ void * __cdecl TClosePicture::CreateTClosePictureInstance(void)
 // GHIDRA_NAME TClosePicture::GetTClosePictureClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTClosePictureClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TClosePicture.
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* Returns class descriptor pointer for TClosePicture. */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TClosePicture::GetTClosePictureClassNamePointer(void)
 
@@ -105,27 +109,37 @@ void * __cdecl TClosePicture::GetTClosePictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586B70
 // GHIDRA_NAME TClosePicture::ConstructTClosePictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTClosePictureBaseState(void)
+// GHIDRA_PROTO TClosePicture * __thiscall ConstructTClosePictureBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClosePicture *this)
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClosePicture *this)
 
 {
   TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
-  *(undefined ***)this = &g_vtblTClosePicture;
+  this->field0_0x0 = &g_vtblTClosePicture;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BA0
 // GHIDRA_NAME TClosePicture::DestructTClosePictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTClosePictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TClosePicture * __thiscall DestructTClosePictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void * __thiscall
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TClosePicture * __thiscall
 TClosePicture::DestructTClosePictureAndMaybeFree(TClosePicture *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -134,11 +148,10 @@ TClosePicture::DestructTClosePictureAndMaybeFree(TClosePicture *this,byte freeSe
 // GHIDRA_NAME TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
 // GHIDRA_PROTO void __thiscall WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around DispatchUiMouseEventToChildrenOrSelf; instructions=27, call_insns=3, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* [WrapperShape] small wrapper around DispatchUiMouseEventToChildrenOrSelf; instructions=27,
-   call_insns=3, internal_calls=1, unique_internal=1 */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void __thiscall
 TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
@@ -147,9 +160,9 @@ TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
 {
   int *piVar1;
   
-  DispatchUiMouseEventToChildrenOrSelf(this,arg1,arg2,arg3,arg4);
-  piVar1 = (int *)(**(code **)(*(int *)this + 0x58))();
-  (**(code **)(*piVar1 + 0x1b4))(*(undefined4 *)(this + 0x1c),1);
+  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this,arg1,arg2,arg3,arg4);
+  piVar1 = (int *)(**(code **)((int)this->field0_0x0 + 0x58))();
+  (**(code **)(*piVar1 + 0x1b4))(this->field1c,1);
   return;
 }
 

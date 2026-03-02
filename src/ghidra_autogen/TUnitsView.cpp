@@ -4,16 +4,15 @@
 // Bucket: TUnitsView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402DE2
-// GHIDRA_NAME TUnitsView::thunk_DestructTUnitsViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUnitsViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TUnitsView::TUnitsView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TUnitsView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTUnitsViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTUnitsViewAndMaybeFree */
 
-void * __thiscall
-TUnitsView::thunk_DestructTUnitsViewAndMaybeFree(TUnitsView *this,byte freeSelfFlag)
+void * __thiscall TUnitsView::TUnitsView_VtblSlot001(TUnitsView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,16 +21,32 @@ TUnitsView::thunk_DestructTUnitsViewAndMaybeFree(TUnitsView *this,byte freeSelfF
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004075EF
+// GHIDRA_NAME TUnitsView::TUnitsView_VtblSlot117
+// GHIDRA_PROTO void __cdecl TUnitsView_VtblSlot117(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RebuildIconPictureEntriesFromSelectableTextOptions
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RebuildIconPictureEntriesFromSelectableTextOptions */
+
+void __cdecl TUnitsView::TUnitsView_VtblSlot117(void)
+
+{
+  RebuildIconPictureEntriesFromSelectableTextOptions();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C66
-// GHIDRA_NAME TUnitsView::thunk_GetTUnitsViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUnitsViewClassNamePointer(void)
+// GHIDRA_NAME TUnitsView::TUnitsView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TUnitsView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTUnitsViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTUnitsViewClassNamePointer */
 
-void * __cdecl TUnitsView::thunk_GetTUnitsViewClassNamePointer(void)
+void * __cdecl TUnitsView::TUnitsView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -57,12 +72,12 @@ void * __cdecl TUnitsView::CreateTUnitsViewInstance(void)
   puStack_8 = &LAB_0063162a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined ***)this = &g_vtblTUnitsView;
+    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
+    this->field0_0x0 = &g_vtblTUnitsView;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -93,8 +108,8 @@ void * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *this)
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined ***)this = &g_vtblTUnitsView;
+  this->field94 = 0;
+  this->field0_0x0 = &g_vtblTUnitsView;
   return this;
 }
 
@@ -107,7 +122,7 @@ void * __thiscall TUnitsView::DestructTUnitsViewAndMaybeFree(TUnitsView *this,by
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

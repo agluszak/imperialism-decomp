@@ -4,15 +4,15 @@
 // Bucket: TRadioPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401217
-// GHIDRA_NAME TRadioPictureButton::thunk_GetTRadioPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRadioPictureButtonClassNamePointer(void)
+// GHIDRA_NAME TRadioPictureButton::TRadioPictureButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TRadioPictureButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTRadioPictureButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTRadioPictureButtonClassNamePointer */
 
-void * __cdecl TRadioPictureButton::thunk_GetTRadioPictureButtonClassNamePointer(void)
+void * __cdecl TRadioPictureButton::TRadioPictureButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TRadioPictureButton::thunk_GetTRadioPictureButtonClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406893
-// GHIDRA_NAME TRadioPictureButton::thunk_DestructTRadioPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTRadioPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TRadioPictureButton::TRadioPictureButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TRadioPictureButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTRadioPictureButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,35 +31,13 @@ void * __cdecl TRadioPictureButton::thunk_GetTRadioPictureButtonClassNamePointer
 /* Single-JMP thunk to DestructTRadioPictureButtonAndMaybeFree */
 
 void * __thiscall
-TRadioPictureButton::thunk_DestructTRadioPictureButtonAndMaybeFree
-          (TRadioPictureButton *this,byte freeSelfFlag)
+TRadioPictureButton::TRadioPictureButton_VtblSlot001(TRadioPictureButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTRadioPictureButtonAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409980
-// GHIDRA_NAME TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiClickablePictureResourceEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiClickablePictureResourceEntry */
-
-void __thiscall
-TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(TRadioPictureButton *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)(this + 0x92) = 7000;
-  *(undefined ***)this = &g_vtblTRadioPictureButton;
-  *(undefined4 *)(this + 0x60) = 0xc;
-  this[0x94] = (TRadioPictureButton)0x0;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571700
@@ -84,7 +62,7 @@ void * __cdecl TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
   puStack_8 = &LAB_0063642a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -114,28 +92,6 @@ void * __cdecl TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
   return &g_pClassDescTRadioPictureButton;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005717C0
-// GHIDRA_NAME TRadioPictureButton::ConstructUiClickablePictureResourceEntry
-// GHIDRA_PROTO void __thiscall ConstructUiClickablePictureResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command icon slots in multiple UI builders.
-// GHIDRA_COMMENT_END
-
-/* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
-   icon slots in multiple UI builders. */
-
-void __thiscall
-TRadioPictureButton::ConstructUiClickablePictureResourceEntry(TRadioPictureButton *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)(this + 0x92) = 7000;
-  *(undefined ***)this = &g_vtblTRadioPictureButton;
-  *(undefined4 *)(this + 0x60) = 0xc;
-  this[0x94] = (TRadioPictureButton)0x0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00571800
 // GHIDRA_NAME TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTRadioPictureButtonAndMaybeFree(byte freeSelfFlag)
@@ -147,7 +103,7 @@ TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

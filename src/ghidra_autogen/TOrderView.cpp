@@ -4,24 +4,25 @@
 // Bucket: TOrderView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E06
-// GHIDRA_NAME TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues
-// GHIDRA_PROTO void __thiscall thunk_RefreshOrderViewSupplyAndUseControlValues(void)
+// GHIDRA_NAME TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues_At00401e06
+// GHIDRA_PROTO void __thiscall thunk_RefreshOrderViewSupplyAndUseControlValues_At00401e06(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshOrderViewSupplyAndUseControlValues.
+// GHIDRA_COMMENT Single-JMP thunk to RefreshOrderViewSupplyAndUseControlValues
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RefreshOrderViewSupplyAndUseControlValues. */
+/* Single-JMP thunk to RefreshOrderViewSupplyAndUseControlValues */
 
-void __thiscall TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues(TOrderView *this)
+void __thiscall
+TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues_At00401e06(TOrderView *this)
 
 {
-  RefreshOrderViewSupplyAndUseControlValues(this);
+  TControl::RefreshOrderViewSupplyAndUseControlValues((TControl *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E38
-// GHIDRA_NAME TOrderView::thunk_PopulateDialogControlsFromSelectedProductionEntry
-// GHIDRA_PROTO void __thiscall thunk_PopulateDialogControlsFromSelectedProductionEntry(void * ownerContext, int selectionIndex)
+// GHIDRA_NAME TOrderView::thunk_PopulateDialogControlsFromSelectedProductionEntry_At00401e38
+// GHIDRA_PROTO void __thiscall thunk_PopulateDialogControlsFromSelectedProductionEntry_At00401e38(void * ownerContext, int selectionIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PopulateDialogControlsFromSelectedProductionEntry
 // GHIDRA_COMMENT_END
@@ -29,24 +30,25 @@ void __thiscall TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues(TOrd
 /* Single-JMP thunk to PopulateDialogControlsFromSelectedProductionEntry */
 
 void __thiscall
-TOrderView::thunk_PopulateDialogControlsFromSelectedProductionEntry
+TOrderView::thunk_PopulateDialogControlsFromSelectedProductionEntry_At00401e38
           (TOrderView *this,void *ownerContext,int selectionIndex)
 
 {
-  PopulateDialogControlsFromSelectedProductionEntry(this,ownerContext,selectionIndex);
+  TControl::PopulateDialogControlsFromSelectedProductionEntry
+            ((TControl *)this,ownerContext,selectionIndex);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004054D4
-// GHIDRA_NAME TOrderView::thunk_GetTOrderViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTOrderViewClassNamePointer(void)
+// GHIDRA_NAME TOrderView::thunk_GetTOrderViewClassNamePointer_At004054d4
+// GHIDRA_PROTO void * __cdecl thunk_GetTOrderViewClassNamePointer_At004054d4(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTOrderViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTOrderViewClassNamePointer */
 
-void * __cdecl TOrderView::thunk_GetTOrderViewClassNamePointer(void)
+void * __cdecl TOrderView::thunk_GetTOrderViewClassNamePointer_At004054d4(void)
 
 {
   void *pvVar1;
@@ -55,9 +57,27 @@ void * __cdecl TOrderView::thunk_GetTOrderViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004073CE
+// GHIDRA_NAME TOrderView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240 */
+
+void __cdecl
+TOrderView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce
+          (void)
+
+{
+  WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004078AB
-// GHIDRA_NAME TOrderView::thunk_DestructTOrderViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTOrderViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TOrderView::thunk_DestructTOrderViewAndMaybeFree_At004078ab
+// GHIDRA_PROTO void * __thiscall thunk_DestructTOrderViewAndMaybeFree_At004078ab(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTOrderViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -65,7 +85,7 @@ void * __cdecl TOrderView::thunk_GetTOrderViewClassNamePointer(void)
 /* Single-JMP thunk to DestructTOrderViewAndMaybeFree */
 
 void * __thiscall
-TOrderView::thunk_DestructTOrderViewAndMaybeFree(TOrderView *this,byte freeSelfFlag)
+TOrderView::thunk_DestructTOrderViewAndMaybeFree_At004078ab(TOrderView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -91,12 +111,12 @@ void * __cdecl TOrderView::CreateTOrderViewInstance(void)
   puStack_8 = &LAB_006337aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTOrderView;
-    *(undefined4 *)(this + 0x60) = 0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTOrderView;
+    this[1].pVtable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -126,9 +146,9 @@ void * __cdecl TOrderView::GetTOrderViewClassNamePointer(void)
 void * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTOrderView;
-  *(undefined4 *)(this + 0x60) = 0;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTOrderView;
+  this->field60 = (void *)0x0;
   return this;
 }
 
@@ -139,241 +159,10 @@ void * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
 void * __thiscall TOrderView::DestructTOrderViewAndMaybeFree(TOrderView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00506B00
-// GHIDRA_NAME TOrderView::PopulateDialogControlsFromSelectedProductionEntry
-// GHIDRA_PROTO void __thiscall PopulateDialogControlsFromSelectedProductionEntry(void * ownerContext, int selectionIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Populates slider/supply/use/icon controls from selected production entry and linked city/state values.
-// GHIDRA_COMMENT_END
-
-/* Populates slider/supply/use/icon controls from selected production entry and linked city/state
-   values. */
-
-void __thiscall
-TOrderView::PopulateDialogControlsFromSelectedProductionEntry
-          (TOrderView *this,void *ownerContext,int selectionIndex)
-
-{
-  short sVar1;
-  code *pcVar2;
-  int iVar3;
-  int *piVar4;
-  int iVar5;
-  undefined4 uVar6;
-  undefined2 extraout_var;
-  undefined2 extraout_var_00;
-  undefined2 extraout_var_01;
-  int unaff_retaddr;
-  
-  if (ownerContext == (void *)0x0) {
-    iVar3 = 0;
-  }
-  else {
-    iVar3 = *(int *)((int)ownerContext + 0x894);
-  }
-  *(int *)(this + 0x60) = iVar3;
-  iVar3 = *(int *)(iVar3 + 0xe4 + (short)selectionIndex * 4);
-  *(int *)(this + 100) = iVar3;
-  if (iVar3 == 0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  pcVar2 = *(code **)(*(int *)this + 0x94);
-  piVar4 = (int *)(*pcVar2)(0x736c6964);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  iVar5 = thunk_GetCityBuildingProductionValueBySlot
-                    (*(void **)(this + 0x60),*(short *)(*(int *)(this + 100) + 0x52));
-  (**(code **)(iVar3 + 0x1d4))(iVar5);
-  (**(code **)(iVar3 + 0x1c8))(unaff_retaddr + 700,1);
-  *(undefined2 *)(piVar4 + 0x27) = *(undefined2 *)(*(int *)(this + 100) + 4);
-  uVar6 = (**(code **)(**(int **)(this + 100) + 0x30))();
-  (**(code **)(iVar3 + 0x1d8))(uVar6);
-  piVar4 = (int *)(*pcVar2)(0x73757031);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22((short)((uint)*(int *)(this + 0x60) >> 0x10),
-                      *(undefined2 *)
-                       (*(int *)(this + 0x60) + 0xb6 + *(short *)(*(int *)(this + 100) + 0x4e) * 2))
-            );
-  (**(code **)(iVar3 + 0x1c8))
-            (CONCAT22(extraout_var,*(undefined2 *)(*(int *)(this + 100) + 0x4e)) + 700,1);
-  piVar4 = (int *)(*pcVar2)(0x73757032);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  sVar1 = *(short *)(*(int *)(this + 100) + 0x50);
-  if (sVar1 != -1) {
-    iVar3 = *piVar4;
-    (**(code **)(iVar3 + 0x1d4))
-              (CONCAT22(sVar1 >> 0xf,*(undefined2 *)(*(int *)(this + 0x60) + 0xb6 + sVar1 * 2)));
-    (**(code **)(iVar3 + 0x1c8))
-              (CONCAT22(extraout_var_00,*(undefined2 *)(*(int *)(this + 100) + 0x50)) + 700,1);
-  }
-  piVar4 = (int *)(*pcVar2)(0x7375706c);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22((short)((uint)*(int *)(this + 0x60) >> 0x10),
-                      *(undefined2 *)(*(int *)(*(int *)(this + 0x60) + 0x1d8) + 0x1c)));
-  (**(code **)(iVar3 + 0x1c8))(0x148,1);
-  piVar4 = (int *)(*pcVar2)(0x75736531);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1c8))
-            (CONCAT22((short)((uint)piVar4 >> 0x10),*(undefined2 *)(*(int *)(this + 100) + 0x4e)) +
-             700,1);
-  iVar5 = *(int *)(this + 100);
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22((short)((uint)iVar5 >> 0x10),
-                      *(undefined2 *)(iVar5 + 0x10 + *(short *)(iVar5 + 0x4e) * 2)));
-  piVar4 = (int *)(*pcVar2)(0x75736532);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *(int *)(this + 100);
-  if (*(short *)(iVar3 + 0x50) != -1) {
-    iVar5 = *piVar4;
-    (**(code **)(iVar5 + 0x1d4))
-              (CONCAT22((short)((uint)iVar3 >> 0x10),
-                        *(undefined2 *)(iVar3 + 0x10 + *(short *)(iVar3 + 0x50) * 2)));
-    (**(code **)(iVar5 + 0x1c8))
-              (CONCAT22((short)((uint)*(int *)(this + 100) >> 0x10),
-                        *(undefined2 *)(*(int *)(this + 100) + 0x50)) + 700,1);
-  }
-  piVar4 = (int *)(*pcVar2)(0x7573656c);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1c8))(0x148,1);
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22(extraout_var_01,*(undefined2 *)(*(int *)(this + 100) + 4)) * 2);
-  piVar4 = (int *)(*pcVar2)(0x69636f31);
-  (**(code **)(*piVar4 + 0x1c8))
-            (CONCAT22((short)((uint)*(int *)(this + 100) >> 0x10),
-                      *(undefined2 *)(*(int *)(this + 100) + 0x4e)) + 700,1);
-  piVar4 = (int *)(*pcVar2)(0x69636f32);
-  (**(code **)(*piVar4 + 0x1c8))
-            (CONCAT22((short)((uint)*(int *)(this + 100) >> 0x10),
-                      *(undefined2 *)(*(int *)(this + 100) + 0x50)) + 700,1);
-  piVar4 = (int *)(*pcVar2)(0x69636f33);
-  (**(code **)(*piVar4 + 0x1c8))(0x148,1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00506F90
-// GHIDRA_NAME TOrderView::RefreshOrderViewSupplyAndUseControlValues
-// GHIDRA_PROTO void __thiscall RefreshOrderViewSupplyAndUseControlValues(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes existing OrderView supply/use controls (sup1/sup2/supl/use1/use2/usel) from cached selected production pointers at this+0x60/this+0x64.
-// GHIDRA_COMMENT_END
-
-/* Refreshes existing OrderView supply/use controls (sup1/sup2/supl/use1/use2/usel) from cached
-   selected production pointers at this+0x60/this+0x64. */
-
-void __thiscall TOrderView::RefreshOrderViewSupplyAndUseControlValues(TOrderView *this)
-
-{
-  short sVar1;
-  code *pcVar2;
-  int iVar3;
-  int *piVar4;
-  undefined2 extraout_var;
-  undefined2 extraout_var_00;
-  undefined2 extraout_var_01;
-  
-  pcVar2 = *(code **)(*(int *)this + 0x94);
-  piVar4 = (int *)(*pcVar2)(0x73757031);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22((short)((uint)*(int *)(this + 100) >> 0x10),
-                      *(undefined2 *)
-                       (*(int *)(this + 0x60) + 0xb6 + *(short *)(*(int *)(this + 100) + 0x4e) * 2))
-            );
-  (**(code **)(iVar3 + 0xe4))();
-  piVar4 = (int *)(*pcVar2)(0x73757032);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  sVar1 = *(short *)(*(int *)(this + 100) + 0x50);
-  if (sVar1 != -1) {
-    iVar3 = *piVar4;
-    (**(code **)(iVar3 + 0x1d4))
-              (CONCAT22((short)((uint)*(int *)(this + 100) >> 0x10),
-                        *(undefined2 *)(*(int *)(this + 0x60) + 0xb6 + sVar1 * 2)));
-    (**(code **)(iVar3 + 0xe4))();
-  }
-  piVar4 = (int *)(*pcVar2)(0x7375706c);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22(extraout_var,*(undefined2 *)(*(int *)(*(int *)(this + 0x60) + 0x1d8) + 0x1c)))
-  ;
-  (**(code **)(iVar3 + 0xe4))();
-  piVar4 = (int *)(*pcVar2)(0x75736531);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1d4))
-            (CONCAT22(extraout_var_00,
-                      *(undefined2 *)
-                       (*(int *)(this + 100) + 0x10 + *(short *)(*(int *)(this + 100) + 0x4e) * 2)))
-  ;
-  (**(code **)(iVar3 + 0xe4))();
-  piVar4 = (int *)(*pcVar2)(0x75736532);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  sVar1 = *(short *)(*(int *)(this + 100) + 0x50);
-  if (sVar1 != -1) {
-    iVar3 = *piVar4;
-    (**(code **)(iVar3 + 0x1d4))
-              (CONCAT22(extraout_var_01,*(undefined2 *)(*(int *)(this + 100) + 0x10 + sVar1 * 2)));
-    (**(code **)(iVar3 + 0xe4))();
-  }
-  piVar4 = (int *)(*pcVar2)(0x7573656c);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x1d4))(*(short *)(*(int *)(this + 100) + 4) << 1);
-  (**(code **)(iVar3 + 0xe4))();
-  return;
 }
 

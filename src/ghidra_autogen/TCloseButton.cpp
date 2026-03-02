@@ -4,50 +4,50 @@
 // Bucket: TCloseButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403E90
-// GHIDRA_NAME TCloseButton::thunk_DispatchUiMouseMoveThenClearTurnEvent
-// GHIDRA_PROTO void __stdcall thunk_DispatchUiMouseMoveThenClearTurnEvent(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_NAME TCloseButton::TCloseButton_VtblSlot070
+// GHIDRA_PROTO void __stdcall TCloseButton_VtblSlot070(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DispatchUiMouseMoveThenClearTurnEvent
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DispatchUiMouseMoveThenClearTurnEvent */
 
-void TCloseButton::thunk_DispatchUiMouseMoveThenClearTurnEvent(int arg1,int arg2,int arg3,int arg4)
+void TCloseButton::TCloseButton_VtblSlot070(int arg1,int arg2,int arg3,int arg4)
 
 {
-  DispatchUiMouseMoveThenClearTurnEvent(arg1,arg2,arg3,arg4);
+  T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent(arg1,arg2,arg3,arg4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405AB0
-// GHIDRA_NAME TCloseButton::thunk_DestructTCloseButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCloseButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCloseButton::TCloseButton_VtblSlot001
+// GHIDRA_PROTO TCloseButton * __thiscall TCloseButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCloseButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCloseButtonAndMaybeFree */
 
-void * __thiscall
-TCloseButton::thunk_DestructTCloseButtonAndMaybeFree(TCloseButton *this,byte freeSelfFlag)
+TCloseButton * __thiscall
+TCloseButton::TCloseButton_VtblSlot001(TCloseButton *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TCloseButton *pTVar1;
   
-  pvVar1 = DestructTCloseButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTCloseButtonAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040696F
-// GHIDRA_NAME TCloseButton::thunk_GetTCloseButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCloseButtonClassNamePointer(void)
+// GHIDRA_NAME TCloseButton::TCloseButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCloseButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCloseButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCloseButtonClassNamePointer */
 
-void * __cdecl TCloseButton::thunk_GetTCloseButtonClassNamePointer(void)
+void * __cdecl TCloseButton::TCloseButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -74,12 +74,12 @@ void * __cdecl TCloseButton::CreateTCloseButtonInstance(void)
   puStack_8 = &LAB_0063764a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
     TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
-    *(undefined ***)this = &g_vtblTCloseButton;
+    this->field0_0x0 = &g_vtblTCloseButton;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -103,42 +103,28 @@ void * __cdecl TCloseButton::GetTCloseButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584AF0
 // GHIDRA_NAME TCloseButton::ConstructTCloseButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCloseButtonBaseState(void)
+// GHIDRA_PROTO TCloseButton * __thiscall ConstructTCloseButtonBaseState(void)
 
-void * __thiscall TCloseButton::ConstructTCloseButtonBaseState(TCloseButton *this)
+TCloseButton * __thiscall TCloseButton::ConstructTCloseButtonBaseState(TCloseButton *this)
 
 {
   TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
-  *(undefined ***)this = &g_vtblTCloseButton;
+  this->field0_0x0 = &g_vtblTCloseButton;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584B20
 // GHIDRA_NAME TCloseButton::DestructTCloseButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCloseButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TCloseButton * __thiscall DestructTCloseButtonAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall
+TCloseButton * __thiscall
 TCloseButton::DestructTCloseButtonAndMaybeFree(TCloseButton *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00584B70
-// GHIDRA_NAME TCloseButton::DispatchUiMouseMoveThenClearTurnEvent
-// GHIDRA_PROTO void __stdcall DispatchUiMouseMoveThenClearTurnEvent(int arg1, int arg2, int arg3, int arg4)
-
-void TCloseButton::DispatchUiMouseMoveThenClearTurnEvent(int arg1,int arg2,int arg3,int arg4)
-
-{
-  void *in_ECX;
-  
-  thunk_DispatchUiMouseMoveToChildren(in_ECX,arg1,arg2,arg3,arg4);
-  (**(code **)(*g_pUiRuntimeContext + 0x4c))(0,0);
-  return;
 }
 

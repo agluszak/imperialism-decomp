@@ -4,16 +4,15 @@
 // Bucket: TSliderPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040123A
-// GHIDRA_NAME TSliderPicture::thunk_DestructTSliderPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TSliderPicture::TSliderPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TSliderPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTSliderPictureAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTSliderPictureAndMaybeFree */
 
-void * __thiscall
-TSliderPicture::thunk_DestructTSliderPictureAndMaybeFree(TSliderPicture *this,byte freeSelfFlag)
+void * __thiscall TSliderPicture::TSliderPicture_VtblSlot001(TSliderPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +22,15 @@ TSliderPicture::thunk_DestructTSliderPictureAndMaybeFree(TSliderPicture *this,by
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402013
-// GHIDRA_NAME TSliderPicture::thunk_GetTSliderPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSliderPictureClassNamePointer(void)
+// GHIDRA_NAME TSliderPicture::TSliderPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TSliderPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTSliderPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTSliderPictureClassNamePointer */
 
-void * __cdecl TSliderPicture::thunk_GetTSliderPictureClassNamePointer(void)
+void * __cdecl TSliderPicture::TSliderPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -41,20 +40,18 @@ void * __cdecl TSliderPicture::thunk_GetTSliderPictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403D0F
-// GHIDRA_NAME TSliderPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+// GHIDRA_NAME TSliderPicture::TSliderPicture_VtblSlot068
+// GHIDRA_PROTO void __thiscall TSliderPicture_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00573aa0
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00573aa0 */
+/* Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0 */
 
-void __thiscall
-TSliderPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-          (TSliderPicture *this)
+void __thiscall TSliderPicture::TSliderPicture_VtblSlot068(TSliderPicture *this)
 
 {
-  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(this);
+  THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0((THQButton *)this);
   return;
 }
 
@@ -75,7 +72,7 @@ void * __cdecl TSliderPicture::CreateTSliderPictureInstance(void)
   puStack_8 = &LAB_0063661a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -111,8 +108,8 @@ void * __thiscall TSliderPicture::ConstructTSliderPictureBaseState(TSliderPictur
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  this[0x90] = (TSliderPicture)0x0;
-  *(undefined ***)this = &g_vtblTSliderPicture;
+  this->field141_0x90 = 0;
+  this->field0_0x0 = &g_vtblTSliderPicture;
   return this;
 }
 
@@ -126,27 +123,8 @@ TSliderPicture::DestructTSliderPictureAndMaybeFree(TSliderPicture *this,byte fre
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00573AA0
-// GHIDRA_NAME TSliderPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
-   instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TSliderPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-          (TSliderPicture *this)
-
-{
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  return;
 }
 

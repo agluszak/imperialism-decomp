@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TNewTownView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403F1C
+// GHIDRA_NAME TNewTownView::thunk_scalar_deleting_destructor_00403F1C
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403F1C(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TNewTownView::thunk_scalar_deleting_destructor_00403F1C(TNewTownView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004080DF
 // GHIDRA_NAME TNewTownView::thunk_GetTNewTownViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTNewTownViewClassNamePointer(void)

@@ -16,39 +16,39 @@ void * __thiscall TArmyInfoView::thunk_ConstructTArmyInfoViewBaseState(TArmyInfo
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTArmyInfoView;
+  this->field0_0x0 = &g_vtblTArmyInfoView;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403A49
-// GHIDRA_NAME TArmyInfoView::thunk_DestructTArmyInfoViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyInfoViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyInfoView::TArmyInfoView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TArmyInfoView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTArmyInfoViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTArmyInfoViewAndMaybeFree */
 
-void * __thiscall
-TArmyInfoView::thunk_DestructTArmyInfoViewAndMaybeFree(TArmyInfoView *this,byte freeSelfFlag)
+void * __thiscall TArmyInfoView::TArmyInfoView_VtblSlot001(TArmyInfoView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
-  pvVar1 = DestructTArmyInfoViewAndMaybeFree(this,freeSelfFlag);
+  pvVar1 = _DestructTArmyInfoViewAndMaybeFree__YIPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__PAU12_HE_Z
+                     (this,freeSelfFlag);
   return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405849
-// GHIDRA_NAME TArmyInfoView::thunk_GetTArmyInfoViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyInfoViewClassNamePointer(void)
+// GHIDRA_NAME TArmyInfoView::TArmyInfoView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TArmyInfoView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArmyInfoViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArmyInfoViewClassNamePointer */
 
-void * __cdecl TArmyInfoView::thunk_GetTArmyInfoViewClassNamePointer(void)
+void * __cdecl TArmyInfoView::TArmyInfoView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,26 +58,29 @@ void * __cdecl TArmyInfoView::thunk_GetTArmyInfoViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004091EC
-// GHIDRA_NAME TArmyInfoView::thunk_Cluster_MapHint_00591620
-// GHIDRA_PROTO void __thiscall thunk_Cluster_MapHint_00591620(void)
+// GHIDRA_NAME TArmyInfoView::TArmyInfoView_VtblSlot115
+// GHIDRA_PROTO void __thiscall TArmyInfoView_VtblSlot115(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapHint_00591620
+// GHIDRA_COMMENT Single-JMP thunk to RefreshArmyInfoViewTextAndStyleDescriptors
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_MapHint_00591620 */
+/* Single-JMP thunk to RefreshArmyInfoViewTextAndStyleDescriptors */
 
-void __thiscall TArmyInfoView::thunk_Cluster_MapHint_00591620(TArmyInfoView *this)
+void __thiscall TArmyInfoView::TArmyInfoView_VtblSlot115(TArmyInfoView *this)
 
 {
-  RefreshArmyInfoViewTextAndStyleDescriptors(this);
+  TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors((TToolBarCluster *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591500
-// GHIDRA_NAME TArmyInfoView::CreateTArmyInfoViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTArmyInfoViewInstance(void)
+// GHIDRA_NAME TArmyInfoView::?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@XZ
+// GHIDRA_PROTO void * __cdecl ?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@XZ(void)
 
-void * __cdecl TArmyInfoView::CreateTArmyInfoViewInstance(void)
+void * __cdecl
+TArmyInfoView::
+_CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__XZ
+          (void)
 
 {
   undefined4 *puVar1;
@@ -91,7 +94,7 @@ void * __cdecl TArmyInfoView::CreateTArmyInfoViewInstance(void)
   puStack_8 = &LAB_00637fca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -119,254 +122,34 @@ void * __cdecl TArmyInfoView::GetTArmyInfoViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915A0
-// GHIDRA_NAME TArmyInfoView::ConstructTArmyInfoViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArmyInfoViewBaseState(void)
+// GHIDRA_NAME TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@@Z
+// GHIDRA_PROTO void * __thiscall ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@@Z(void)
 
-void * __thiscall TArmyInfoView::ConstructTArmyInfoViewBaseState(TArmyInfoView *this)
+void * __thiscall
+TArmyInfoView::
+_ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__PAU12__Z
+          (TArmyInfoView *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTArmyInfoView;
+  this->field0_0x0 = &g_vtblTArmyInfoView;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915D0
-// GHIDRA_NAME TArmyInfoView::DestructTArmyInfoViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyInfoViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyInfoView::?DestructTArmyInfoViewAndMaybeFree@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@HE@Z
+// GHIDRA_PROTO void * __thiscall ?DestructTArmyInfoViewAndMaybeFree@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@HE@Z(byte freeSelfFlag)
 
 void * __thiscall
-TArmyInfoView::DestructTArmyInfoViewAndMaybeFree(TArmyInfoView *this,byte freeSelfFlag)
+TArmyInfoView::
+_DestructTArmyInfoViewAndMaybeFree__YIPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__PAU12_HE_Z
+          (TArmyInfoView *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00591620
-// GHIDRA_NAME TArmyInfoView::RefreshArmyInfoViewTextAndStyleDescriptors
-// GHIDRA_PROTO void __thiscall RefreshArmyInfoViewTextAndStyleDescriptors(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] TArmyInfoView refresh pass composing localized movement/terrain text and applying text-style descriptors.
-// GHIDRA_COMMENT_END
-
-/* [ClassLane] TArmyInfoView refresh pass composing localized movement/terrain text and applying
-   text-style descriptors. */
-
-void __thiscall TArmyInfoView::RefreshArmyInfoViewTextAndStyleDescriptors(TArmyInfoView *this)
-
-{
-  short extraout_AX;
-  short extraout_AX_00;
-  int *piVar1;
-  int iVar2;
-  int *unaff_FS_OFFSET;
-  char *input_str;
-  code *pcStack_dc;
-  undefined4 uStack_d8;
-  undefined4 **ppuStack_d4;
-  code **ppcStack_bc;
-  undefined4 uStack_b8;
-  undefined1 **ppuStack_b4;
-  undefined1 *puStack_9c;
-  undefined4 uStack_98;
-  undefined *puStack_94;
-  code *pcVar3;
-  code *local_68;
-  undefined1 local_64;
-  undefined4 local_5c;
-  int *local_58 [7];
-  undefined1 local_3c [6];
-  undefined1 local_36;
-  undefined1 local_35;
-  undefined1 local_34;
-  undefined1 local_33;
-  undefined1 local_2a;
-  undefined1 local_29;
-  undefined1 local_28;
-  undefined1 local_27;
-  undefined1 local_1e;
-  undefined1 local_1d;
-  undefined1 local_1c;
-  undefined1 local_1b;
-  undefined1 local_12;
-  undefined1 local_11;
-  undefined1 local_10;
-  undefined1 local_f;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638048;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
-  local_4._0_1_ = 2;
-  local_5c = 0;
-  InitializeSharedStringRefFromEmpty();
-  local_4._0_1_ = 3;
-  InitializeSharedStringRefFromEmpty();
-  local_4 = CONCAT31(local_4._1_3_,4);
-  local_1e = 0;
-  local_1d = 0;
-  local_1c = 0;
-  local_1b = 0;
-  local_2a = 0;
-  local_29 = 0;
-  local_28 = 0;
-  local_27 = 0;
-  local_36 = 0;
-  local_35 = 0;
-  local_34 = 0;
-  local_33 = 0;
-  local_12 = 0;
-  local_11 = 0;
-  local_10 = 0;
-  local_f = 0;
-  puStack_94 = (undefined *)0x5916e6;
-  thunk_InitializeUiTextStyleDescriptor();
-  thunk_BuildUiTextStyleDescriptor();
-  puStack_94 = (undefined *)0x591712;
-  thunk_InitializeUiTextStyleDescriptor();
-  puStack_94 = (undefined *)0x59172a;
-  thunk_InitializeUiTextStyleDescriptor();
-  local_68 = *(code **)(*(int *)this + 0x94);
-  piVar1 = (int *)(*local_68)();
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    puStack_94 = &UNK_0059175c;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  pcVar3 = (code *)0xb;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
-  iVar2 = *piVar1;
-  puStack_94 = &stack0xffffff84;
-  uStack_98 = 0x591799;
-  (**(code **)(iVar2 + 0x1c8))();
-  puStack_9c = local_3c;
-  uStack_98 = 0;
-  (**(code **)(iVar2 + 0x1b4))();
-  piVar1 = (int *)(*pcVar3)();
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    ppuStack_b4 = (undefined1 **)&UNK_005917cb;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  pcVar3 = (code *)0xc;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
-  iVar2 = *piVar1;
-  ppuStack_b4 = &puStack_9c;
-  uStack_b8 = 0x591808;
-  (**(code **)(iVar2 + 0x1c8))();
-  ppcStack_bc = &local_68;
-  uStack_b8 = 0;
-  (**(code **)(iVar2 + 0x1b4))();
-  piVar1 = (int *)(*pcVar3)();
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    ppuStack_d4 = (undefined4 **)&UNK_0059183a;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  pcVar3 = (code *)0xd;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
-  iVar2 = *piVar1;
-  ppuStack_d4 = &ppcStack_bc;
-  uStack_d8 = 0x591877;
-  (**(code **)(iVar2 + 0x1c8))();
-  pcStack_dc = (code *)&stack0xffffff78;
-  uStack_d8 = 0;
-  (**(code **)(iVar2 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  local_64 = 5;
-  StringShared__AssignFromPtr(&stack0xffffff34,(int *)&stack0xffffff50);
-  local_64 = 4;
-  ReleaseSharedStringRefIfNotEmpty();
-  iVar2 = 0;
-  piVar1 = local_58[0];
-  do {
-    if (*piVar1 != 0) {
-      FormatStringWithVarArgsToSharedRef();
-      (**(code **)(*g_pLocalizationTable + 0x84))();
-      if (ppcStack_bc == (code **)0x0) {
-        AssignSharedStringConcatRefAndCStr();
-        local_64 = 6;
-        AssignSharedStringConcatRefAndRef();
-        local_64 = 7;
-        StringSharedRef_AssignFromPtr();
-        local_64 = 8;
-        StringShared__AssignFromPtr(&stack0xffffff34,(int *)local_58);
-        local_64 = 7;
-        ReleaseSharedStringRefIfNotEmpty();
-        local_64 = 6;
-        ReleaseSharedStringRefIfNotEmpty();
-      }
-      else {
-        AssignSharedStringConcatCStrAndRef();
-        local_64 = 9;
-        AssignSharedStringConcatRefAndCStr();
-        local_64 = 10;
-        AssignSharedStringConcatRefAndRef();
-        local_64 = 0xb;
-        AssignStringSharedFromRef();
-        local_64 = 10;
-        ReleaseSharedStringRefIfNotEmpty();
-        local_64 = 9;
-        ReleaseSharedStringRefIfNotEmpty();
-      }
-      local_64 = 4;
-      ReleaseSharedStringRefIfNotEmpty();
-      ppcStack_bc = (code **)((int)ppcStack_bc + 1);
-    }
-    iVar2 = iVar2 + 1;
-    piVar1 = piVar1 + 1;
-  } while (iVar2 < 10);
-  piVar1 = (int *)(*pcVar3)();
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar2 = *piVar1;
-  input_str = &stack0xffffff30;
-  (**(code **)(iVar2 + 0x1c8))();
-  (**(code **)(iVar2 + 0x1b4))();
-  piVar1 = (int *)(*pcStack_dc)();
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  ConstructSharedStringFromCStrOrResourceId();
-  iVar2 = *piVar1;
-  pcVar3 = (code *)&stack0xffffff90;
-  (**(code **)(iVar2 + 0x1c8))();
-  ReleaseSharedStringRefIfNotEmpty();
-  (**(code **)(iVar2 + 0x1b4))();
-  thunk_GetTileNormalizedMovementClassId();
-  thunk_GetActiveNationId();
-  (**(code **)(*g_pLocalizationTable + 0x84))
-            (0x2744,(-(extraout_AX != extraout_AX_00) & 4U) + 10,&pcStack_dc);
-  thunk_AssignSharedStringFromIndexedA8EntryNameField();
-  scanBracketExpressions(g_pLocalizationTable,&stack0xffffff00,input_str);
-  piVar1 = (int *)(*pcVar3)(0x6f726473);
-  if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar2 = *piVar1;
-  (**(code **)(iVar2 + 0x1c8))(&stack0xfffffefc,1);
-  (**(code **)(iVar2 + 0x1b4))(&pcStack_dc,0);
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = (int)ppuStack_b4;
-  return;
 }
 

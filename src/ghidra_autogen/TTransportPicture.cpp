@@ -4,15 +4,15 @@
 // Bucket: TTransportPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004014F1
-// GHIDRA_NAME TTransportPicture::thunk_GetTTransportPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTransportPictureClassNamePointer(void)
+// GHIDRA_NAME TTransportPicture::TTransportPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TTransportPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTransportPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTransportPictureClassNamePointer */
 
-void * __cdecl TTransportPicture::thunk_GetTTransportPictureClassNamePointer(void)
+void * __cdecl TTransportPicture::TTransportPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,15 +22,15 @@ void * __cdecl TTransportPicture::thunk_GetTTransportPictureClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004024C8
-// GHIDRA_NAME TTransportPicture::thunk_Cluster_NationStateHint_005921c0
-// GHIDRA_PROTO void __thiscall thunk_Cluster_NationStateHint_005921c0(void)
+// GHIDRA_NAME TTransportPicture::TTransportPicture_VtblSlot115
+// GHIDRA_PROTO void __thiscall TTransportPicture_VtblSlot115(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_NationStateHint_005921c0
+// GHIDRA_COMMENT Single-JMP thunk to RenderTransportPictureGaugeAndLabels
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_NationStateHint_005921c0 */
+/* Single-JMP thunk to RenderTransportPictureGaugeAndLabels */
 
-void __thiscall TTransportPicture::thunk_Cluster_NationStateHint_005921c0(TTransportPicture *this)
+void __thiscall TTransportPicture::TTransportPicture_VtblSlot115(TTransportPicture *this)
 
 {
   RenderTransportPictureGaugeAndLabels(this);
@@ -51,17 +51,17 @@ TTransportPicture::thunk_ConstructTTransportPictureBaseState(TTransportPicture *
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTTransportPicture;
-  *(undefined2 *)(this + 0x94) = 0;
-  *(undefined2 *)(this + 0x96) = 0;
-  *(undefined2 *)(this + 0x90) = 0x3a;
-  *(undefined2 *)(this + 0x98) = 0xffff;
+  this->field0_0x0 = &g_vtblTTransportPicture;
+  this->field94 = 0;
+  this->field96 = 0;
+  this->field90 = 0x3a;
+  this->field98 = -1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405592
-// GHIDRA_NAME TTransportPicture::thunk_DestructTTransportPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTransportPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTransportPicture::TTransportPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TTransportPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTransportPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -69,26 +69,26 @@ TTransportPicture::thunk_ConstructTTransportPictureBaseState(TTransportPicture *
 /* Single-JMP thunk to DestructTTransportPictureAndMaybeFree */
 
 void * __thiscall
-TTransportPicture::thunk_DestructTTransportPictureAndMaybeFree
-          (TTransportPicture *this,byte freeSelfFlag)
+TTransportPicture::TTransportPicture_VtblSlot001(TTransportPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
-  pvVar1 = DestructTTransportPictureAndMaybeFree(this,freeSelfFlag);
+  pvVar1 = _DestructTTransportPictureAndMaybeFree__YIPAUTransportPictureState___Z__imperialism_src_game_TTransportPicture_cpp234212302__PAU12_HE_Z
+                     (this,freeSelfFlag);
   return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040712B
-// GHIDRA_NAME TTransportPicture::thunk_InvokeVslot1CCAfterThunk48F3C0
-// GHIDRA_PROTO undefined thunk_InvokeVslot1CCAfterThunk48F3C0()
+// GHIDRA_NAME TTransportPicture::TTransportPicture_VtblSlot068
+// GHIDRA_PROTO void __cdecl TTransportPicture_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InvokeVslot1CCAfterThunk48F3C0
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InvokeVslot1CCAfterThunk48F3C0 */
 
-void TTransportPicture::thunk_InvokeVslot1CCAfterThunk48F3C0(void)
+void __cdecl TTransportPicture::TTransportPicture_VtblSlot068(void)
 
 {
   InvokeVslot1CCAfterThunk48F3C0();
@@ -96,18 +96,18 @@ void TTransportPicture::thunk_InvokeVslot1CCAfterThunk48F3C0(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407DF6
-// GHIDRA_NAME TTransportPicture::thunk_Cluster_NationStateHint_00591f10
-// GHIDRA_PROTO void __thiscall thunk_Cluster_NationStateHint_00591f10(uint splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
+// GHIDRA_NAME TTransportPicture::TTransportPicture_VtblSlot015
+// GHIDRA_PROTO void __thiscall TTransportPicture_VtblSlot015(EArrowSplitCommandId splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_NationStateHint_00591f10
+// GHIDRA_COMMENT Single-JMP thunk to HandleTransportPictureSplitArrowCommand64or65
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_NationStateHint_00591f10 */
+/* Single-JMP thunk to HandleTransportPictureSplitArrowCommand64or65 */
 
 void __thiscall
-TTransportPicture::thunk_Cluster_NationStateHint_00591f10
-          (TTransportPicture *this,uint splitCommandId,void *payloadArg,int payloadArg2,
-          int payloadArg3)
+TTransportPicture::TTransportPicture_VtblSlot015
+          (TTransportPicture *this,EArrowSplitCommandId splitCommandId,void *payloadArg,
+          int payloadArg2,int payloadArg3)
 
 {
   HandleTransportPictureSplitArrowCommand64or65
@@ -116,10 +116,13 @@ TTransportPicture::thunk_Cluster_NationStateHint_00591f10
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591D90
-// GHIDRA_NAME TTransportPicture::CreateTTransportPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTTransportPictureInstance(void)
+// GHIDRA_NAME TTransportPicture::?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:\imperialism\src\game\TTransportPicture.cpp234212302@@XZ
+// GHIDRA_PROTO void * __cdecl ?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:\imperialism\src\game\TTransportPicture.cpp234212302@@XZ(void)
 
-void * __cdecl TTransportPicture::CreateTTransportPictureInstance(void)
+void * __cdecl
+TTransportPicture::
+_CreateTTransportPictureInstance__YAPAUTransportPictureState___Z__imperialism_src_game_TTransportPicture_cpp234212302__XZ
+          (void)
 
 {
   undefined4 *puVar1;
@@ -132,7 +135,7 @@ void * __cdecl TTransportPicture::CreateTTransportPictureInstance(void)
   puStack_8 = &LAB_0063807a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -164,39 +167,44 @@ void * __cdecl TTransportPicture::GetTTransportPictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E70
-// GHIDRA_NAME TTransportPicture::ConstructTTransportPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTransportPictureBaseState(void)
+// GHIDRA_NAME TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:\imperialism\src\game\TTransportPicture.cpp234212302@@PAU12@@Z
+// GHIDRA_PROTO void * __thiscall ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:\imperialism\src\game\TTransportPicture.cpp234212302@@PAU12@@Z(void)
 
-void * __thiscall TTransportPicture::ConstructTTransportPictureBaseState(TTransportPicture *this)
+void * __thiscall
+TTransportPicture::
+_ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z__imperialism_src_game_TTransportPicture_cpp234212302__PAU12__Z
+          (TTransportPicture *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTTransportPicture;
-  *(undefined2 *)(this + 0x94) = 0;
-  *(undefined2 *)(this + 0x96) = 0;
-  *(undefined2 *)(this + 0x90) = 0x3a;
-  *(undefined2 *)(this + 0x98) = 0xffff;
+  this->field0_0x0 = &g_vtblTTransportPicture;
+  this->field94 = 0;
+  this->field96 = 0;
+  this->field90 = 0x3a;
+  this->field98 = -1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591EC0
-// GHIDRA_NAME TTransportPicture::DestructTTransportPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTransportPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTransportPicture::?DestructTTransportPictureAndMaybeFree@@YIPAUTransportPictureState@?%Z:\imperialism\src\game\TTransportPicture.cpp234212302@@PAU12@HE@Z
+// GHIDRA_PROTO void * __thiscall ?DestructTTransportPictureAndMaybeFree@@YIPAUTransportPictureState@?%Z:\imperialism\src\game\TTransportPicture.cpp234212302@@PAU12@HE@Z(byte freeSelfFlag)
 
 void * __thiscall
-TTransportPicture::DestructTTransportPictureAndMaybeFree(TTransportPicture *this,byte freeSelfFlag)
+TTransportPicture::
+_DestructTTransportPictureAndMaybeFree__YIPAUTransportPictureState___Z__imperialism_src_game_TTransportPicture_cpp234212302__PAU12_HE_Z
+          (TTransportPicture *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591F10
 // GHIDRA_NAME TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
-// GHIDRA_PROTO void __thiscall HandleTransportPictureSplitArrowCommand64or65(uint splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
+// GHIDRA_PROTO void __thiscall HandleTransportPictureSplitArrowCommand64or65(EArrowSplitCommandId splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [Enum] Handles EArrowSplitCommandId::LEFT(0x64) / RIGHT(0x65) for transport value adjustment; forwards non-arrow commands.
 // GHIDRA_COMMENT_END
@@ -206,8 +214,8 @@ TTransportPicture::DestructTTransportPictureAndMaybeFree(TTransportPicture *this
 
 void __thiscall
 TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
-          (TTransportPicture *this,uint splitCommandId,void *payloadArg,int payloadArg2,
-          int payloadArg3)
+          (TTransportPicture *this,EArrowSplitCommandId splitCommandId,void *payloadArg,
+          int payloadArg2,int payloadArg3)
 
 {
   int *piVar1;
@@ -224,7 +232,7 @@ TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
   bVar3 = false;
   if (((int)splitCommandId < 100) || (0x65 < (int)splitCommandId)) goto LAB_00592108;
   thunk_GetActiveNationId();
-  iVar6 = (int)*(short *)(this + 0x92);
+  iVar6 = (int)this->field92;
   piVar1 = g_apNationStates[extraout_AX];
   if (iVar6 == 0) {
     sVar4 = *(short *)((int)piVar1 + 0x13e) + (short)piVar1[0x4f];
@@ -238,11 +246,11 @@ TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
     sVar4 = *(short *)((int)piVar1 + iVar6 * 2 + 0x13c);
     sVar5 = *(short *)((int)piVar1 + iVar6 * 2 + 0x10e);
   }
-  if (splitCommandId == 100) {
+  if (splitCommandId == ARROW_COMMAND_VALUE_00000064) {
     if ((sVar4 < sVar5) && (*(short *)((int)piVar1 + 0xa6) != (short)piVar1[0x2a])) {
       sVar5 = 1;
 LAB_00591fc3:
-      *(short *)(this + 0x94) = sVar4 + sVar5;
+      this->field94 = sVar4 + sVar5;
       bVar3 = true;
     }
   }
@@ -252,43 +260,42 @@ LAB_00591fc3:
   }
   if (bVar3) {
     uVar7 = 7000;
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-    sVar4 = *(short *)(this + 0x92);
+    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+    sVar4 = this->field92;
     if (sVar4 == 0) {
       sVar4 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(0);
       sVar5 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(1);
       bVar3 = sVar4 <= sVar5;
       sVar4 = *(short *)((int)piVar1 + (short)(ushort)bVar3 * 2 + 0x10e);
-      if (sVar4 < *(short *)(this + 0x94)) {
+      if (sVar4 < this->field94) {
         pcVar2 = *(code **)(*piVar1 + 0x114);
         (*pcVar2)(bVar3,sVar4);
-        (*pcVar2)(uVar7,*(short *)(this + 0x94) - sVar4);
+        (*pcVar2)(uVar7,this->field94 - sVar4);
       }
       else {
         pcVar2 = *(code **)(*piVar1 + 0x114);
-        (*pcVar2)(bVar3,*(short *)(this + 0x94));
+        (*pcVar2)(bVar3,this->field94);
         (*pcVar2)(uVar7,0);
       }
     }
     else if (sVar4 == 0x13) {
       sVar4 = (short)piVar1[0x4d];
-      if (sVar4 < *(short *)(this + 0x94)) {
+      if (sVar4 < this->field94) {
         pcVar2 = *(code **)(*piVar1 + 0x114);
         (*pcVar2)(0x13,sVar4);
-        (*pcVar2)(0x14,*(short *)(this + 0x94) - sVar4);
+        (*pcVar2)(0x14,this->field94 - sVar4);
       }
       else {
         pcVar2 = *(code **)(*piVar1 + 0x114);
-        (*pcVar2)(0x13,CONCAT22(extraout_var,*(short *)(this + 0x94)));
+        (*pcVar2)(0x13,CONCAT22(extraout_var,this->field94));
         (*pcVar2)(0x14,0);
       }
     }
     else {
       (**(code **)(*piVar1 + 0x114))
-                (CONCAT22(extraout_var,sVar4),CONCAT22(extraout_var_00,*(undefined2 *)(this + 0x94))
-                );
+                (CONCAT22(extraout_var,sVar4),CONCAT22(extraout_var_00,this->field94));
     }
-    (**(code **)(*(int *)this + 0xe4))();
+    (*(code *)this->field0_0x0[0x39])();
   }
 LAB_00592108:
   thunk_HandleCityDialogToggleCommandOrForward();
@@ -320,30 +327,28 @@ void __thiscall TTransportPicture::RenderTransportPictureGaugeAndLabels(TTranspo
   short sVar8;
   int iVar9;
   int *unaff_FS_OFFSET;
-  undefined1 local_4c [4];
   int local_48;
-  int local_44;
-  undefined1 local_40 [4];
+  int local_44 [2];
   float local_3c;
-  undefined1 *local_38;
-  int iStack_34;
+  undefined **local_38;
+  void *pvStack_34;
   int iStack_30;
   int iStack_2c;
   int iStack_28;
-  undefined4 uStack_24;
+  void *pvStack_24;
   int iStack_20;
   int local_1c;
   int local_18;
   int local_14;
-  undefined4 local_10;
-  int iStack_c;
+  int local_10;
+  int *piStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006380c8;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
+  piStack_c = (int *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&piStack_c;
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
@@ -351,90 +356,90 @@ void __thiscall TTransportPicture::RenderTransportPictureGaugeAndLabels(TTranspo
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 2;
   InitializeSharedStringRefFromEmpty();
-  local_4 = CONCAT31(local_4._1_3_,3);
+  local_4._0_1_ = 3;
   sVar8 = 0x61;
-  if (200 < *(int *)(this + 0x24)) {
+  if (200 < this->field24) {
     sVar8 = 0x5d;
   }
-  local_3c = (float)(int)*(short *)(this + 0x96);
-  fVar5 = (float)(int)*(short *)(this + 0x94);
+  local_3c = (float)(int)this->field96;
+  fVar5 = (float)(int)this->field94;
   fVar3 = _g_Render_Transport_Picture_Value_006631B8 / local_3c;
   fVar4 = _g_Render_Transport_Picture_Value_006631B8 - fVar3 * local_3c;
   if (fVar4 < fVar5) {
-    local_38 = (undefined1 *)
+    local_38 = (undefined **)
                (fVar4 * (fVar3 - (float)_g_Render_Transport_Picture_Value_006631A0) +
                (fVar5 - fVar4) * fVar3);
   }
   else {
-    local_38 = (undefined1 *)
-               ((float)(int)*(short *)(this + 0x94) *
+    local_38 = (undefined **)
+               ((float)(int)this->field94 *
                (fVar3 - (float)_g_Render_Transport_Picture_Value_006631A0));
   }
-  ApplyHitRegionToClipState();
+  ApplyHitRegionToClipState(local_48);
   iVar9 = (int)sVar8;
   local_3c = (float)iVar9;
-  iVar6 = __ftol();
+  iVar6 = ftol();
   local_18 = 0xd;
   local_14 = iVar9 + 0x71;
   local_10 = 0x11;
   local_1c = iVar6;
   thunk_ApplyRectClipRegionToGlobalClipState(&local_1c);
-  (**(code **)(*g_pUiRuntimeContext + 0x34))();
+  (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
   thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_20);
   iStack_2c = 0xd;
-  uStack_24 = 0x11;
+  pvStack_24 = (void *)0x11;
   iStack_30 = iVar9;
   iStack_28 = iVar6;
-  if (*(int *)(this + 0x1c) == 0x746f7461) {
-    if (*(short *)(this + 0x96) == *(short *)(this + 0x94)) {
-      iVar6 = *g_pUiRuntimeContext;
+  if (this->field1c == 0x746f7461) {
+    if (this->field96 == this->field94) {
+      iVar6 = *(int *)g_pUiRuntimeContext;
       goto LAB_00592373;
     }
-    (**(code **)(*g_pUiRuntimeContext + 0x34))();
+    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
   }
   else {
-    iVar6 = *g_pUiRuntimeContext;
+    iVar6 = *(int *)g_pUiRuntimeContext;
 LAB_00592373:
     (**(code **)(iVar6 + 0x34))();
   }
-  thunk_ApplyRectClipRegionToGlobalClipState(&iStack_34);
-  thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_34);
+  thunk_ApplyRectClipRegionToGlobalClipState((int *)&pvStack_34);
+  thunk_FillRectWithQuickDrawBrushAndContextOffset((int *)&pvStack_34);
   SnapshotHitRegionToClipCache();
-  local_38 = &stack0xffffff9c;
-  SetQuickDrawFillColor();
-  if (-1 < *(short *)(this + 0x98)) {
-    iStack_34 = iVar9 + -1;
+  local_38 = (undefined **)&stack0xffffff9c;
+  SetQuickDrawFillColor(0);
+  if (-1 < this->field98) {
+    pvStack_34 = (void *)(iVar9 + -1);
     iStack_2c = iVar9 + 0x72;
     iStack_30 = 0x12;
     iStack_28 = 0x14;
-    if (*(short *)(this + 0x94) < *(short *)(this + 0x98)) {
-      (**(code **)(*g_pUiRuntimeContext + 0x34))();
+    if (this->field94 < this->field98) {
+      (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
     }
     else {
-      (**(code **)(*g_pUiRuntimeContext + 0x34))();
+      (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
     }
-    thunk_ApplyRectClipRegionToGlobalClipState(&iStack_34);
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_34);
+    thunk_ApplyRectClipRegionToGlobalClipState((int *)&pvStack_34);
+    thunk_FillRectWithQuickDrawBrushAndContextOffset((int *)&pvStack_34);
     SnapshotHitRegionToClipCache();
-    local_38 = &stack0xffffff9c;
-    SetQuickDrawFillColor();
+    local_38 = (undefined **)&stack0xffffff9c;
+    SetQuickDrawFillColor(0);
   }
-  local_38 = *(undefined1 **)this;
-  pcVar1 = *(code **)((int)local_38 + 0x94);
+  local_38 = this->field0_0x0;
+  pcVar1 = (code *)local_38[0x25];
   piVar7 = (int *)(*pcVar1)();
   if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  FormatStringWithVarArgsToSharedRef(local_4c);
-  FormatStringWithVarArgsToSharedRef(&stack0xffffffb0);
-  AssignSharedStringConcatRefAndCStr(local_40);
+  FormatStringWithVarArgsToSharedRef();
+  FormatStringWithVarArgsToSharedRef();
+  AssignSharedStringConcatRefAndCStr();
   local_10._0_1_ = 4;
-  AssignSharedStringConcatRefAndRef(&local_48);
+  AssignSharedStringConcatRefAndRef();
   local_10._0_1_ = 5;
-  StringSharedRef_AssignFromPtr();
+  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)local_44);
   local_10._0_1_ = 6;
-  StringShared__AssignFromPtr(&stack0xffffffa8,&local_44);
+  AssignFromPtr(&stack0xffffffa8,local_44);
   local_10._0_1_ = 5;
   ReleaseSharedStringRefIfNotEmpty();
   local_10._0_1_ = 4;
@@ -442,32 +447,32 @@ LAB_00592373:
   local_10 = CONCAT31(local_10._1_3_,3);
   ReleaseSharedStringRefIfNotEmpty();
   (**(code **)(*piVar7 + 0x1c8))();
-  if (*(short *)(this + 0x92) == 0x16) {
+  if (this->field92 == 0x16) {
     piVar7 = (int *)(*pcVar1)(0x76616c75);
     if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
-    iVar6 = *g_pLocalizationTable;
-    iVar9 = *(short *)(this + 0x94) * 200;
+    iVar6 = *(int *)g_pLocalizationTable;
+    iVar9 = this->field94 * 200;
   }
   else {
-    if (*(short *)(this + 0x92) != 0x15) goto LAB_005925fa;
+    if (this->field92 != 0x15) goto LAB_005925fa;
     piVar7 = (int *)(*pcVar1)(0x76616c75);
     if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
-    iVar6 = *g_pLocalizationTable;
-    iVar9 = *(short *)(this + 0x94) * 500;
+    iVar6 = *(int *)g_pLocalizationTable;
+    iVar9 = this->field94 * 500;
   }
   (**(code **)(iVar6 + 0x74))(iVar9,&stack0xffffff9c);
   (**(code **)(*piVar7 + 0x1c8))(&stack0xffffff94,1);
 LAB_005925fa:
-  if (*(int *)(this + 0x1c) != 0x746f7461) {
+  if (this->field1c != 0x746f7461) {
     thunk_GetActiveNationId();
     pvVar2 = g_apNationStates[extraout_AX];
-    piVar7 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x746f7461);
+    piVar7 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x746f7461);
     if (piVar7 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -489,26 +494,9 @@ LAB_005925fa:
   ReleaseSharedStringRefIfNotEmpty();
   local_18 = (uint)local_18._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
-  local_18 = 0xffffffff;
+  local_18 = -1;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = iStack_20;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00592830
-// GHIDRA_NAME TTransportPicture::InvokeVslot1CCAfterThunk48F3C0
-// GHIDRA_PROTO undefined InvokeVslot1CCAfterThunk48F3C0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Dispatch] Calls thunk_FUN_0048f3c0 then invokes vslot +0x1CC on target object.
-// GHIDRA_COMMENT_END
-
-/* [Dispatch] Calls thunk_FUN_0048f3c0 then invokes vslot +0x1CC on target object. */
-
-void __fastcall TTransportPicture::InvokeVslot1CCAfterThunk48F3C0(int *param_1)
-
-{
-  thunk_RenderHintHelperWithCtrlModifierOverlay(param_1);
-  (**(code **)(*param_1 + 0x1cc))();
   return;
 }
 

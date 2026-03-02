@@ -4,30 +4,30 @@
 // Bucket: TNavyMission.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401EB0
-// GHIDRA_NAME TNavyMission::thunk_GetNavyMissionClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetNavyMissionClassName(void)
+// GHIDRA_NAME TNavyMission::thunk_GetTNavyMissionClassNamePointer_At00401eb0
+// GHIDRA_PROTO void * __cdecl thunk_GetTNavyMissionClassNamePointer_At00401eb0(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetNavyMissionClassName
+// GHIDRA_COMMENT Single-JMP thunk to GetTNavyMissionClassNamePointer
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetNavyMissionClassName */
+/* Single-JMP thunk to GetTNavyMissionClassNamePointer */
 
-void * __cdecl TNavyMission::thunk_GetNavyMissionClassName(void)
+void * __cdecl TNavyMission::thunk_GetTNavyMissionClassNamePointer_At00401eb0(void)
 
 {
   return &g_pClassDescTNavyMission;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402531
-// GHIDRA_NAME TNavyMission::thunk_DestroyTNavyMission
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTNavyMission(void)
+// GHIDRA_NAME TNavyMission::thunk_DestroyTNavyMission_At00402531
+// GHIDRA_PROTO void * __thiscall thunk_DestroyTNavyMission_At00402531(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTNavyMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTNavyMission */
 
-void * __thiscall TNavyMission::thunk_DestroyTNavyMission(TNavyMission *this)
+void * __thiscall TNavyMission::thunk_DestroyTNavyMission_At00402531(TNavyMission *this)
 
 {
   void *pvVar1;
@@ -37,10 +37,16 @@ void * __thiscall TNavyMission::thunk_DestroyTNavyMission(TNavyMission *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402810
-// GHIDRA_NAME TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid
-// GHIDRA_PROTO void __thiscall thunk_EnsureMissionCurrentTargetContextIsValid(void)
+// GHIDRA_NAME TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid_At00402810
+// GHIDRA_PROTO void __thiscall thunk_EnsureMissionCurrentTargetContextIsValid_At00402810(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EnsureMissionCurrentTargetContextIsValid
+// GHIDRA_COMMENT_END
 
-void __thiscall TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid(TNavyMission *this)
+/* Single-JMP thunk to EnsureMissionCurrentTargetContextIsValid */
+
+void __thiscall
+TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid_At00402810(TNavyMission *this)
 
 {
   EnsureMissionCurrentTargetContextIsValid(this);
@@ -49,58 +55,54 @@ void __thiscall TNavyMission::thunk_EnsureMissionCurrentTargetContextIsValid(TNa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004078EC
 // GHIDRA_NAME TNavyMission::thunk_ConstructTNavyMission
-// GHIDRA_PROTO void __thiscall thunk_ConstructTNavyMission(void)
+// GHIDRA_PROTO void __thiscall thunk_ConstructTNavyMission(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTNavyMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTNavyMission */
 
-void __thiscall TNavyMission::thunk_ConstructTNavyMission(TNavyMission *this)
+void __thiscall TNavyMission::thunk_ConstructTNavyMission(TNavyMission *this,int arg1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  this[8] = (TNavyMission)0x2;
-  *(undefined4 *)(this + 0xc) = 0;
-  this[0x11] = (TNavyMission)0xff;
-  *(undefined4 *)(this + 0x14) = in_stack_00000004;
-  *(undefined4 *)(this + 0x18) = 0;
-  *(undefined4 *)(this + 0x1c) = 0;
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x24) = 0;
-  *(undefined4 *)(this + 0x28) = 0;
-  *(undefined ***)this = &g_vtblTNavyMission;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
-  *(undefined4 *)(this + 0x34) = 0;
-  *(undefined4 *)(this + 0x38) = 0;
+  this->field4_0x8 = 2;
+  this->field0c = 0;
+  this->field10_0x11 = 0xff;
+  this->field14 = arg1;
+  this->pField18 = (void *)0x0;
+  this->field1c = 0;
+  this->field20 = 0;
+  this->field24 = 0;
+  this->field28 = 0;
+  this->field0_0x0 = &g_vtblTNavyMission;
+  this->field2c = 0;
+  this->field30 = 0;
+  this->field34 = 0;
+  this->field38 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535470
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
-// GHIDRA_PROTO void __thiscall ConstructTNavyMission(void)
+// GHIDRA_PROTO void __thiscall ConstructTNavyMission(int arg1)
 
-void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this)
+void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this,int arg1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  this[8] = (TNavyMission)0x2;
-  *(undefined4 *)(this + 0xc) = 0;
-  this[0x11] = (TNavyMission)0xff;
-  *(undefined4 *)(this + 0x14) = in_stack_00000004;
-  *(undefined4 *)(this + 0x18) = 0;
-  *(undefined4 *)(this + 0x1c) = 0;
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x24) = 0;
-  *(undefined4 *)(this + 0x28) = 0;
-  *(undefined ***)this = &g_vtblTNavyMission;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
-  *(undefined4 *)(this + 0x34) = 0;
-  *(undefined4 *)(this + 0x38) = 0;
+  this->field4_0x8 = 2;
+  this->field0c = 0;
+  this->field10_0x11 = 0xff;
+  this->field14 = arg1;
+  this->pField18 = (void *)0x0;
+  this->field1c = 0;
+  this->field20 = 0;
+  this->field24 = 0;
+  this->field28 = 0;
+  this->field0_0x0 = &g_vtblTNavyMission;
+  this->field2c = 0;
+  this->field30 = 0;
+  this->field34 = 0;
+  this->field38 = 0;
   return;
 }
 
@@ -115,19 +117,19 @@ void * __thiscall TNavyMission::DestroyTNavyMission(TNavyMission *this)
   
   thunk_ResetTNavyMissionToSentinelVtable();
   if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536390
 // GHIDRA_NAME TNavyMission::CreateTNavyMission
-// GHIDRA_PROTO undefined CreateTNavyMission()
+// GHIDRA_PROTO TNavyMission * __cdecl CreateTNavyMission(void)
 
-TMission * TNavyMission::CreateTNavyMission(void)
+TNavyMission * __cdecl TNavyMission::CreateTNavyMission(void)
 
 {
-  TMission *this;
+  TNavyMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -137,26 +139,26 @@ TMission * TNavyMission::CreateTNavyMission(void)
   puStack_8 = &LAB_0063430a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x3c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  if (this != (TMission *)0x0) {
-    TMission::thunk_ConstructTMission(this);
-    this[5].pVtable = (void *)0x0;
-    this[6].pVtable = (void *)0x0;
-    this[7].pVtable = (void *)0x0;
-    this[8].pVtable = (void *)0x0;
-    this[9].pVtable = (void *)0x0;
-    this[10].pVtable = (void *)0x0;
-    this->pVtable = &g_vtblTNavyMission;
-    this[0xb].pVtable = (void *)0x0;
-    this[0xc].pVtable = (void *)0x0;
-    this[0xd].pVtable = (void *)0x0;
-    this[0xe].pVtable = (void *)0x0;
+  if (this != (TNavyMission *)0x0) {
+    TMission::thunk_ConstructTMission((TMission *)this);
+    this->field14 = 0;
+    this->pField18 = (undefined4 *)0x0;
+    this->field1c = 0;
+    this->field20 = 0;
+    this->field24 = 0;
+    this->field28 = 0;
+    this->field0_0x0 = &g_vtblTNavyMission;
+    this->field2c = 0;
+    this->field30 = 0;
+    this->field34 = 0;
+    this->field38 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMission *)0x0;
+  return (TNavyMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536450
@@ -188,15 +190,15 @@ void __thiscall TNavyMission::EnsureMissionCurrentTargetContextIsValid(TNavyMiss
 
 {
   char cVar1;
-  undefined4 uVar2;
+  void *pvVar2;
   
-  if (*(int **)(this + 0x18) != (int *)0x0) {
-    cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x38))();
+  if (this->pField18 != (int *)0x0) {
+    cVar1 = (**(code **)(*(int *)this->pField18 + 0x38))();
     if (cVar1 != '\0') {
-      cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x40))(*(undefined2 *)(this + 4));
+      cVar1 = (**(code **)(*(int *)this->pField18 + 0x40))(this->field04);
       if (cVar1 == '\0') {
-        uVar2 = (**(code **)(*(int *)this + 0xa0))();
-        *(undefined4 *)(this + 0x18) = uVar2;
+        pvVar2 = (void *)(*(code *)this->field0_0x0[0x28])();
+        this->pField18 = pvVar2;
       }
     }
   }

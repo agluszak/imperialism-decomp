@@ -16,8 +16,8 @@ void * __thiscall TPirateMinister::thunk_ConstructTPirateMinisterBaseState(TPira
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTPirateMinister;
-  *(undefined2 *)(this + 0xc) = 2;
+  this->field0_0x0 = &g_vtblTPirateMinister;
+  this->field0c = 2;
   return this;
 }
 
@@ -39,24 +39,26 @@ TPirateMinister::thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinis
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403DA0
-// GHIDRA_NAME TPirateMinister::thunk_GetPirateMinisterSignedPreferenceScalar_At00403da0
-// GHIDRA_PROTO undefined thunk_GetPirateMinisterSignedPreferenceScalar_At00403da0()
+// GHIDRA_NAME TPirateMinister::thunk_CreateTPirateMinisterInstance_At00403da0
+// GHIDRA_PROTO TPirateMinister * __cdecl thunk_CreateTPirateMinisterInstance_At00403da0(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetPirateMinisterSignedPreferenceScalar
+// GHIDRA_COMMENT Single-JMP thunk to CreateTPirateMinisterInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetPirateMinisterSignedPreferenceScalar */
+/* Single-JMP thunk to CreateTPirateMinisterInstance */
 
-void TPirateMinister::thunk_GetPirateMinisterSignedPreferenceScalar_At00403da0(void)
+TPirateMinister * __cdecl TPirateMinister::thunk_CreateTPirateMinisterInstance_At00403da0(void)
 
 {
-  CreateTPirateMinisterInstance();
-  return;
+  TPirateMinister *pTVar1;
+  
+  pTVar1 = CreateTPirateMinisterInstance();
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004065F0
-// GHIDRA_NAME TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPirateMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree_At004065f0
+// GHIDRA_PROTO void * __thiscall thunk_DestructTPirateMinisterAndMaybeFree_At004065f0(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTPirateMinisterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -64,7 +66,8 @@ void TPirateMinister::thunk_GetPirateMinisterSignedPreferenceScalar_At00403da0(v
 /* Single-JMP thunk to DestructTPirateMinisterAndMaybeFree */
 
 void * __thiscall
-TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree(TPirateMinister *this,byte freeSelfFlag)
+TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree_At004065f0
+          (TPirateMinister *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -74,15 +77,15 @@ TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree(TPirateMinister *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409665
-// GHIDRA_NAME TPirateMinister::thunk_GetTPirateMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPirateMinisterClassNamePointer(void)
+// GHIDRA_NAME TPirateMinister::thunk_GetTPirateMinisterClassNamePointer_At00409665
+// GHIDRA_PROTO void * __cdecl thunk_GetTPirateMinisterClassNamePointer_At00409665(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTPirateMinisterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTPirateMinisterClassNamePointer */
 
-void * __cdecl TPirateMinister::thunk_GetTPirateMinisterClassNamePointer(void)
+void * __cdecl TPirateMinister::thunk_GetTPirateMinisterClassNamePointer_At00409665(void)
 
 {
   void *pvVar1;
@@ -93,21 +96,25 @@ void * __cdecl TPirateMinister::thunk_GetTPirateMinisterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDAB0
 // GHIDRA_NAME TPirateMinister::CreateTPirateMinisterInstance
-// GHIDRA_PROTO undefined CreateTPirateMinisterInstance()
+// GHIDRA_PROTO TPirateMinister * __cdecl CreateTPirateMinisterInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Returns Pirate minister signed preference scalar selected by polarity flag.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Returns Pirate minister signed preference scalar selected by polarity flag. */
 
-float10 TPirateMinister::CreateTPirateMinisterInstance(char param_1)
+TPirateMinister * __cdecl TPirateMinister::CreateTPirateMinisterInstance(void)
 
 {
-  if (param_1 != '\0') {
-    return (float10)_g_TNapoleon_Minister_Instance_Value_006548E8;
+  undefined4 in_EAX;
+  TPirateMinister *pTVar1;
+  char in_stack_00000004;
+  
+  pTVar1 = (TPirateMinister *)CONCAT31((int3)((uint)in_EAX >> 8),in_stack_00000004);
+  if (in_stack_00000004 != '\0') {
+    return pTVar1;
   }
-  return (float10)_g_TNapoleon_Minister_Instance_Value_006548F0;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDAE0
@@ -133,8 +140,8 @@ void * __thiscall TPirateMinister::ConstructTPirateMinisterBaseState(TPirateMini
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTPirateMinister;
-  *(undefined2 *)(this + 0xc) = 2;
+  this->field0_0x0 = &g_vtblTPirateMinister;
+  this->field0c = 2;
   return this;
 }
 
@@ -148,7 +155,7 @@ TPirateMinister::DestructTPirateMinisterAndMaybeFree(TPirateMinister *this,byte 
 {
   DestructTPirateMinisterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -166,7 +173,7 @@ TPirateMinister::DestructTPirateMinisterAndMaybeFree(TPirateMinister *this,byte 
 void __thiscall TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -183,12 +190,12 @@ void __thiscall TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TP
   *(undefined2 *)(in_stack_00000004 + 0x62) = 2;
   iVar2 = 3;
   do {
-    iVar1 = AllocateWithFallbackHandler(0x44);
-    if (iVar1 != 0) {
+    pvVar1 = AllocateWithFallbackHandler();
+    if (pvVar1 != (void *)0x0) {
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
+    this->field18 = this->field18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 2;

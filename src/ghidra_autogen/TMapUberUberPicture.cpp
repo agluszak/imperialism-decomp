@@ -4,49 +4,52 @@
 // Bucket: TMapUberUberPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040103C
-// GHIDRA_NAME TMapUberUberPicture::thunk_`scalar_deleting_destructor'
-// GHIDRA_PROTO undefined thunk_`scalar_deleting_destructor'()
+// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_thunk_scalar_deleting_destructor
+// GHIDRA_PROTO void * __thiscall TMapUberUberPicture_thunk_scalar_deleting_destructor(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void TMapUberUberPicture::thunk__scalar_deleting_destructor_(void)
+void * __thiscall
+TMapUberUberPicture::TMapUberUberPicture_thunk_scalar_deleting_destructor
+          (TMapUberUberPicture *this,byte freeSelfFlag)
 
 {
-  _scalar_deleting_destructor_();
-  return;
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401997
-// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot55
-// GHIDRA_PROTO void __thiscall TMapUberUberPicture_VtblSlot55(void)
+// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot055
+// GHIDRA_PROTO void __thiscall TMapUberUberPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [VtableSlot] Unique TMapUberUberPicture owner, vtable slot 55.
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTMapUberUberPictureBaseState
 // GHIDRA_COMMENT_END
 
-/* [VtableSlot] Unique TMapUberUberPicture owner, vtable slot 55. */
+/* Single-JMP thunk to ConstructTMapUberUberPictureBaseState */
 
-void __thiscall TMapUberUberPicture::TMapUberUberPicture_VtblSlot55(TMapUberUberPicture *this)
+void __thiscall TMapUberUberPicture::TMapUberUberPicture_VtblSlot055(TMapUberUberPicture *this)
 
 {
-  TOffLimitsPicture::TOffLimitsPicture_VtblSlot55((TOffLimitsPicture *)this);
+  TOffLimitsPicture::TOffLimitsPicture_VtblSlot055((TOffLimitsPicture *)this);
   *(TMapUberUberPicture **)((int)g_pGlobalUiRootController + 0x48) = this;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401F5F
-// GHIDRA_NAME TMapUberUberPicture::thunk_ResetMapUberUberPictureStateAndCloseOffLimitsDialog_At00401f5f
-// GHIDRA_PROTO void __cdecl thunk_ResetMapUberUberPictureStateAndCloseOffLimitsDialog_At00401f5f(void)
+// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot007
+// GHIDRA_PROTO void __cdecl TMapUberUberPicture_VtblSlot007(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ResetMapUberUberPictureStateAndCloseOffLimitsDialog
+// GHIDRA_COMMENT Single-JMP thunk to DestructTMapUberUberPictureAndMaybeFree
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ResetMapUberUberPictureStateAndCloseOffLimitsDialog */
+/* Single-JMP thunk to DestructTMapUberUberPictureAndMaybeFree */
 
-void __cdecl
-TMapUberUberPicture::thunk_ResetMapUberUberPictureStateAndCloseOffLimitsDialog_At00401f5f(void)
+void __cdecl TMapUberUberPicture::TMapUberUberPicture_VtblSlot007(void)
 
 {
   DestructTMapUberUberPictureAndMaybeFree();
@@ -54,21 +57,43 @@ TMapUberUberPicture::thunk_ResetMapUberUberPictureStateAndCloseOffLimitsDialog_A
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402DA6
-// GHIDRA_NAME TMapUberUberPicture::thunk_GetTMapUberUberPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMapUberUberPictureClassNamePointer(void)
+// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMapUberUberPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMapUberUberPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMapUberUberPictureClassNamePointer */
 
-void * __cdecl TMapUberUberPicture::thunk_GetTMapUberUberPictureClassNamePointer(void)
+void * __cdecl TMapUberUberPicture::TMapUberUberPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTMapUberUberPictureClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573850
+// GHIDRA_NAME TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources
+// GHIDRA_PROTO void __thiscall InitializeOffLimitsPictureCachedBrushResources(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes OffLimitsPicture cached brush/surface resources.
+// GHIDRA_COMMENT_END
+
+/* Initializes OffLimitsPicture cached brush/surface resources. */
+
+void __thiscall
+TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources(TMapUberUberPicture *this)
+
+{
+  int arg1;
+  
+  thunk_NoOpUiLifecycleHook();
+  CreateClipStateRegionWrapperObject();
+  this->field141_0x90 = arg1;
+  thunk_ResetClipRegionAndReadBoundingRect(arg1);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596770
@@ -89,12 +114,12 @@ void * __cdecl TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
   puStack_8 = &LAB_006382fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TOffLimitsPicture *)0x0;
   if (this != (TOffLimitsPicture *)0x0) {
     TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-    *(undefined ***)this = &g_vtblTMapUberUberPicture;
+    this->field0_0x0 = &g_vtblTMapUberUberPicture;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -130,7 +155,7 @@ void __thiscall
 TMapUberUberPicture::ConstructTMapUberUberPictureBaseState(TMapUberUberPicture *this)
 
 {
-  TOffLimitsPicture::TOffLimitsPicture_VtblSlot55((TOffLimitsPicture *)this);
+  TOffLimitsPicture::TOffLimitsPicture_VtblSlot055((TOffLimitsPicture *)this);
   *(TMapUberUberPicture **)((int)g_pGlobalUiRootController + 0x48) = this;
   return;
 }
@@ -149,7 +174,7 @@ void __cdecl TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree(void)
 {
   *(undefined4 *)((int)g_pGlobalUiRootController + 0x48) = 0;
   *(undefined4 *)((int)g_pGlobalUiRootController + 0x28) = 0;
-  TOffLimitsPicture::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900();
+  TOffLimitsPicture::TOffLimitsPicture_VtblSlot007();
   return;
 }
 

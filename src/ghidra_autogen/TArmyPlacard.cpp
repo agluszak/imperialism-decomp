@@ -3,34 +3,79 @@
 // Program: Imperialism.exe
 // Bucket: TArmyPlacard.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040178F
+// GHIDRA_NAME TArmyPlacard::TArmyPlacard_VtblSlot068
+// GHIDRA_PROTO void __thiscall TArmyPlacard_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderRightAlignedNumericOverlayWithShadow
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderRightAlignedNumericOverlayWithShadow */
+
+void __thiscall TArmyPlacard::TArmyPlacard_VtblSlot068(TArmyPlacard *this)
+
+{
+  short extraout_AX;
+  THQButton *this_00;
+  THQButton *this_01;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00637b98;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4 = 0;
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  if (this->placardValue90 != 0) {
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+    FormatStringWithVarArgsToSharedRef();
+    thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              ((short)this->controlWidth34 - extraout_AX,(short)this->controlHeight38 + -2);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              (((short)this->controlWidth34 - extraout_AX) + -1,(short)this->controlHeight38 + -3);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  }
+  uStack_4 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040285B
 // GHIDRA_NAME TArmyPlacard::thunk_ConstructTArmyPlacardBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyPlacardBaseState(void)
+// GHIDRA_PROTO TArmyPlacard * __thiscall thunk_ConstructTArmyPlacardBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTArmyPlacardBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTArmyPlacardBaseState */
 
-void * __thiscall TArmyPlacard::thunk_ConstructTArmyPlacardBaseState(TArmyPlacard *this)
+TArmyPlacard * __thiscall TArmyPlacard::thunk_ConstructTArmyPlacardBaseState(TArmyPlacard *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTArmyPlacard;
-  *(undefined2 *)(this + 0x90) = 0xffff;
+  this->pVtable = "de@";
+  this->placardValue90 = -1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004040C5
-// GHIDRA_NAME TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_GetActiveNationId_At0058bf50(void)
+// GHIDRA_NAME TArmyPlacard::TArmyPlacard_VtblSlot115
+// GHIDRA_PROTO void __thiscall TArmyPlacard_VtblSlot115(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_GetActiveNationId_At0058bf50
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_GetActiveNationId_At0058bf50 */
 
-void __thiscall TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this)
+void __thiscall TArmyPlacard::TArmyPlacard_VtblSlot115(TArmyPlacard *this)
 
 {
   WrapperFor_GetActiveNationId_At0058bf50(this);
@@ -38,16 +83,15 @@ void __thiscall TArmyPlacard::thunk_WrapperFor_GetActiveNationId_At0058bf50(TArm
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406550
-// GHIDRA_NAME TArmyPlacard::thunk_HandlePlusMinusCommandAndInvokeVslot1CC
-// GHIDRA_PROTO void __thiscall thunk_HandlePlusMinusCommandAndInvokeVslot1CC(int * arg1, int * arg2)
+// GHIDRA_NAME TArmyPlacard::TArmyPlacard_VtblSlot015
+// GHIDRA_PROTO void __thiscall TArmyPlacard_VtblSlot015(int * arg1, int * arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandlePlusMinusCommandAndInvokeVslot1CC
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandlePlusMinusCommandAndInvokeVslot1CC */
 
-void __thiscall
-TArmyPlacard::thunk_HandlePlusMinusCommandAndInvokeVslot1CC(TArmyPlacard *this,int *arg1,int *arg2)
+void __thiscall TArmyPlacard::TArmyPlacard_VtblSlot015(TArmyPlacard *this,int *arg1,int *arg2)
 
 {
   HandlePlusMinusCommandAndInvokeVslot1CC(this,arg1,arg2);
@@ -55,15 +99,15 @@ TArmyPlacard::thunk_HandlePlusMinusCommandAndInvokeVslot1CC(TArmyPlacard *this,i
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406564
-// GHIDRA_NAME TArmyPlacard::thunk_GetTArmyPlacardClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyPlacardClassNamePointer(void)
+// GHIDRA_NAME TArmyPlacard::TArmyPlacard_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TArmyPlacard_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArmyPlacardClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArmyPlacardClassNamePointer */
 
-void * __cdecl TArmyPlacard::thunk_GetTArmyPlacardClassNamePointer(void)
+void * __cdecl TArmyPlacard::TArmyPlacard_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -73,27 +117,32 @@ void * __cdecl TArmyPlacard::thunk_GetTArmyPlacardClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040957F
-// GHIDRA_NAME TArmyPlacard::thunk_DestructTArmyPlacardAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TArmyPlacard::TArmyPlacard_VtblSlot001
+// GHIDRA_PROTO TArmyPlacard * __thiscall TArmyPlacard_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTArmyPlacardAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTArmyPlacardAndMaybeFree */
 
-void * __thiscall
-TArmyPlacard::thunk_DestructTArmyPlacardAndMaybeFree(TArmyPlacard *this,byte freeSelfFlag)
+TArmyPlacard * __thiscall
+TArmyPlacard::TArmyPlacard_VtblSlot001(TArmyPlacard *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TArmyPlacard *pTVar1;
   
-  pvVar1 = DestructTArmyPlacardAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTArmyPlacardAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BE30
 // GHIDRA_NAME TArmyPlacard::CreateTArmyPlacardInstance
 // GHIDRA_PROTO void * __cdecl CreateTArmyPlacardInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled class factory name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled class factory name */
 
 void * __cdecl TArmyPlacard::CreateTArmyPlacardInstance(void)
 
@@ -109,12 +158,12 @@ void * __cdecl TArmyPlacard::CreateTArmyPlacardInstance(void)
   puStack_8 = &LAB_00637b7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTArmyPlacard;
+    *puVar1 = "de@";
     *(undefined2 *)(puVar1 + 0x24) = 0xffff;
     puVar2 = puVar1;
   }
@@ -139,28 +188,38 @@ void * __cdecl TArmyPlacard::GetTArmyPlacardClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BED0
 // GHIDRA_NAME TArmyPlacard::ConstructTArmyPlacardBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArmyPlacardBaseState(void)
+// GHIDRA_PROTO TArmyPlacard * __thiscall ConstructTArmyPlacardBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled constructor name
+// GHIDRA_COMMENT_END
 
-void * __thiscall TArmyPlacard::ConstructTArmyPlacardBaseState(TArmyPlacard *this)
+/* demangled from mangled constructor name */
+
+TArmyPlacard * __thiscall TArmyPlacard::ConstructTArmyPlacardBaseState(TArmyPlacard *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTArmyPlacard;
-  *(undefined2 *)(this + 0x90) = 0xffff;
+  this->pVtable = "de@";
+  this->placardValue90 = -1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF00
 // GHIDRA_NAME TArmyPlacard::DestructTArmyPlacardAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TArmyPlacard * __thiscall DestructTArmyPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled destructor name
+// GHIDRA_COMMENT_END
 
-void * __thiscall
+/* demangled from mangled destructor name */
+
+TArmyPlacard * __thiscall
 TArmyPlacard::DestructTArmyPlacardAndMaybeFree(TArmyPlacard *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -169,36 +228,81 @@ TArmyPlacard::DestructTArmyPlacardAndMaybeFree(TArmyPlacard *this,byte freeSelfF
 // GHIDRA_NAME TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
 // GHIDRA_PROTO void __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper with local state handling.
+// GHIDRA_COMMENT demangled from mangled wrapper name
 // GHIDRA_COMMENT_END
 
-/* Single-callee wrapper with local state handling. */
+/* demangled from mangled wrapper name */
 
 void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this)
 
 {
   short sVar1;
-  int iVar2;
+  void *pvVar2;
   short extraout_AX;
   short sVar3;
   char unaff_retaddr;
   short in_stack_00000004;
   
   thunk_GetActiveNationId();
-  sVar1 = *(short *)(g_pCityOrderCapabilityState + 0x1f2d3b76 +
-                    (*(int *)(this + 0x1c) + extraout_AX * 10) * 2);
+  sVar1 = *(short *)((int)g_pCityOrderCapabilityState +
+                    (this->field25_0x1c + extraout_AX * 10) * 2 + 0x1f2d3b76);
   sVar3 = sVar1 + 0x4c4;
-  if (in_stack_00000004 != *(short *)(this + 0x90)) {
-    iVar2 = *(int *)this;
+  if (in_stack_00000004 != this->placardValue90) {
+    pvVar2 = this->pVtable;
     if (in_stack_00000004 < 1) {
       sVar3 = sVar1 + 0x4e2;
     }
-    (**(code **)(iVar2 + 0x1c8))(sVar3,1);
+    (**(code **)((int)pvVar2 + 0x1c8))(sVar3,1);
     if (unaff_retaddr != '\0') {
-      (**(code **)(iVar2 + 0xe4))();
+      (**(code **)((int)pvVar2 + 0xe4))();
     }
   }
-  *(short *)(this + 0x90) = in_stack_00000004;
+  this->placardValue90 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058BFE0
+// GHIDRA_NAME TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow
+// GHIDRA_PROTO void __thiscall RenderRightAlignedNumericOverlayWithShadow(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow(TArmyPlacard *this)
+
+{
+  short extraout_AX;
+  THQButton *this_00;
+  THQButton *this_01;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00637b98;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = 0;
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  if (this->placardValue90 != 0) {
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+    FormatStringWithVarArgsToSharedRef();
+    thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              ((short)this->controlWidth34 - extraout_AX,(short)this->controlHeight38 + -2);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+    thunk_SetQuickDrawTextOriginWithContextOffset
+              (((short)this->controlWidth34 - extraout_AX) + -1,(short)this->controlHeight38 + -3);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  }
+  local_4 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 
@@ -206,11 +310,10 @@ void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlaca
 // GHIDRA_NAME TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC
 // GHIDRA_PROTO void __thiscall HandlePlusMinusCommandAndInvokeVslot1CC(int * arg1, int * arg2)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [StateCommand] Command-tag handler for 'plus'/'minu' controls; updates value via helper and forwards normalized value through vslot +0x1CC.
+// GHIDRA_COMMENT demangled from mangled ArmyPlacard method name
 // GHIDRA_COMMENT_END
 
-/* [StateCommand] Command-tag handler for 'plus'/'minu' controls; updates value via helper and
-   forwards normalized value through vslot +0x1CC. */
+/* demangled from mangled ArmyPlacard method name */
 
 void __thiscall
 TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC(TArmyPlacard *this,int *arg1,int *arg2)
@@ -218,15 +321,22 @@ TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC(TArmyPlacard *this,int *ar
 {
   undefined4 extraout_EAX;
   undefined4 extraout_EAX_00;
+  undefined4 in_EDX;
+  undefined2 uVar1;
   
+  uVar1 = (undefined2)((uint)in_EDX >> 0x10);
   if (arg2[7] == 0x706c7573) {
-    ActivateFirstActiveTacticalUnitByCategoryAtTile();
-    (**(code **)(*(int *)this + 0x1cc))(extraout_EAX,1);
+    ActivateFirstActiveTacticalUnitByCategoryAtTile
+              (CONCAT22(0x706c,(short)this->field25_0x1c + -0x6330),
+               CONCAT22(uVar1,*(undefined2 *)((int)g_pMapContextActionManager + 0x31c)));
+    (**(code **)((int)this->pVtable + 0x1cc))(extraout_EAX,1);
     return;
   }
   if (arg2[7] == 0x6d696e75) {
-    ActivateFirstIdleTacticalUnitByCategoryAtTile();
-    (**(code **)(*(int *)this + 0x1cc))(extraout_EAX_00,1);
+    ActivateFirstIdleTacticalUnitByCategoryAtTile
+              (CONCAT22(uVar1,(short)this->field25_0x1c + -0x6330),
+               CONCAT22(0x6d69,*(undefined2 *)((int)g_pMapContextActionManager + 0x31c)));
+    (**(code **)((int)this->pVtable + 0x1cc))(extraout_EAX_00,1);
   }
   return;
 }

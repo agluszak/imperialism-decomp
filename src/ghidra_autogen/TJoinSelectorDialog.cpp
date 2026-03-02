@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TJoinSelectorDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402DF1
+// GHIDRA_NAME TJoinSelectorDialog::thunk_scalar_deleting_destructor_00402DF1
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402DF1(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TJoinSelectorDialog::thunk_scalar_deleting_destructor_00402DF1
+          (TJoinSelectorDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004086F7
 // GHIDRA_NAME TJoinSelectorDialog::thunk_GetTJoinSelectorDialogClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTJoinSelectorDialogClassNamePointer(void)
@@ -19,42 +39,6 @@ void * __cdecl TJoinSelectorDialog::thunk_GetTJoinSelectorDialogClassNamePointer
   
   pvVar1 = GetTJoinSelectorDialogClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0054E690
-// GHIDRA_NAME TJoinSelectorDialog::AllocateAndConstructTJoinSelectorDialog
-// GHIDRA_PROTO undefined AllocateAndConstructTJoinSelectorDialog()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x94-byte dialog object, runs picture-resource-entry ctor, and assigns TJoinSelectorDialog vtable.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0x94-byte dialog object, runs picture-resource-entry ctor, and assigns
-   TJoinSelectorDialog vtable. */
-
-TNoHilitePicture * TJoinSelectorDialog::AllocateAndConstructTJoinSelectorDialog(void)
-
-{
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00634f2a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
-  local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &PTR_thunk_GetTJoinSelectorDialogClassNamePointer_006435e8;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E710

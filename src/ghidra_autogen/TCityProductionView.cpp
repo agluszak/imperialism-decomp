@@ -3,17 +3,72 @@
 // Program: Imperialism.exe
 // Bucket: TCityProductionView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404C64
-// GHIDRA_NAME TCityProductionView::thunk_DestroyTCityProductionView
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTCityProductionView(byte freeSelfFlag)
+// GHIDRA_FUNCTION IMPERIALISM 0x00402342
+// GHIDRA_NAME TCityProductionView::thunk_HandleCityBuildingSlotClickAndDispatchAction
+// GHIDRA_PROTO void __thiscall thunk_HandleCityBuildingSlotClickAndDispatchAction(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTCityProductionView
+// GHIDRA_COMMENT Single-JMP thunk to HandleCityBuildingSlotClickAndDispatchAction
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestroyTCityProductionView */
+/* Single-JMP thunk to HandleCityBuildingSlotClickAndDispatchAction */
+
+void __thiscall
+TCityProductionView::thunk_HandleCityBuildingSlotClickAndDispatchAction
+          (TCityProductionView *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  HandleCityBuildingSlotClickAndDispatchAction(this,arg1,arg2,arg3,arg4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402CE8
+// GHIDRA_NAME TCityProductionView::thunk_HandleCityBuildingHoverSelection
+// GHIDRA_PROTO void __thiscall thunk_HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleCityBuildingHoverSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleCityBuildingHoverSelection */
+
+void __thiscall
+TCityProductionView::thunk_HandleCityBuildingHoverSelection
+          (TCityProductionView *this,int *pCursorPoint,int nEventFlags)
+
+{
+  TToolBarCluster::HandleCityBuildingHoverSelection
+            ((TToolBarCluster *)this,pCursorPoint,nEventFlags);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403DDC
+// GHIDRA_NAME TCityProductionView::thunk_RenderNationHeaderDateLabelWithPeriodicRefresh
+// GHIDRA_PROTO void __thiscall thunk_RenderNationHeaderDateLabelWithPeriodicRefresh(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for RenderNationHeaderDateLabelWithPeriodicRefresh.
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for RenderNationHeaderDateLabelWithPeriodicRefresh. */
+
+void __thiscall
+TCityProductionView::thunk_RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProductionView *this)
+
+{
+  RenderNationHeaderDateLabelWithPeriodicRefresh(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404C64
+// GHIDRA_NAME TCityProductionView::thunk_DestructTCityProductionViewAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTCityProductionViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTCityProductionView [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestroyTCityProductionView [FID:thunk_target_sync] */
 
 void * __thiscall
-TCityProductionView::thunk_DestroyTCityProductionView(TCityProductionView *this,byte freeSelfFlag)
+TCityProductionView::thunk_DestructTCityProductionViewAndMaybeFree
+          (TCityProductionView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,48 +77,92 @@ TCityProductionView::thunk_DestroyTCityProductionView(TCityProductionView *this,
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004083D2
-// GHIDRA_NAME TCityProductionView::thunk_GetCityProductionViewTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetCityProductionViewTypeName(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00405173
+// GHIDRA_NAME TCityProductionView::thunk_InitializeCityBuildingControlRegions
+// GHIDRA_PROTO void __thiscall thunk_InitializeCityBuildingControlRegions(void * pInitContext)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetCityProductionViewTypeName
+// GHIDRA_COMMENT Single-JMP thunk to InitializeCityBuildingControlRegions
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetCityProductionViewTypeName */
+/* Single-JMP thunk to InitializeCityBuildingControlRegions */
 
-void * __cdecl TCityProductionView::thunk_GetCityProductionViewTypeName(void)
+void __thiscall
+TCityProductionView::thunk_InitializeCityBuildingControlRegions
+          (TCityProductionView *this,void *pInitContext)
 
 {
-  return &g_pClassDescTCityProductionView;
+  TTransFocusAnimation::InitializeCityBuildingControlRegions
+            ((TTransFocusAnimation *)this,pInitContext);
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004BA240
-// GHIDRA_NAME TCityProductionView::CreateCityProductionView
-// GHIDRA_PROTO undefined CreateCityProductionView()
+// GHIDRA_FUNCTION IMPERIALISM 0x00406294
+// GHIDRA_NAME TCityProductionView::thunk_RenderViewIntoPrimaryRenderContextWithTemporaryClip_At00406294
+// GHIDRA_PROTO void __thiscall thunk_RenderViewIntoPrimaryRenderContextWithTemporaryClip_At00406294(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderViewIntoPrimaryRenderContextWithTemporaryClip
+// GHIDRA_COMMENT_END
 
-undefined4 __fastcall TCityProductionView::CreateCityProductionView(undefined4 param_1)
+/* Single-JMP thunk to RenderViewIntoPrimaryRenderContextWithTemporaryClip */
+
+void __thiscall
+TCityProductionView::thunk_RenderViewIntoPrimaryRenderContextWithTemporaryClip_At00406294
+          (TCityProductionView *this)
 
 {
-  int iVar1;
-  undefined4 extraout_EAX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00630f8a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x18c,param_1);
-  local_4 = 0;
-  if (iVar1 != 0) {
-    thunk_InitializeCityProductionView();
-    *unaff_FS_OFFSET = local_c;
-    return extraout_EAX;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return 0;
+  RenderViewIntoPrimaryRenderContextWithTemporaryClip(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040630C
+// GHIDRA_NAME TCityProductionView::thunk_InitializeCityProductionDialog
+// GHIDRA_PROTO void __thiscall thunk_InitializeCityProductionDialog(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InitializeCityProductionDialog
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InitializeCityProductionDialog */
+
+void __thiscall
+TCityProductionView::thunk_InitializeCityProductionDialog
+          (TCityProductionView *this,int arg1,int arg2)
+
+{
+  TToolBarCluster::InitializeCityProductionDialog((TToolBarCluster *)this,arg1,arg2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407D47
+// GHIDRA_NAME TCityProductionView::thunk_ReleaseCityBuildingControls
+// GHIDRA_PROTO void __thiscall thunk_ReleaseCityBuildingControls(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ReleaseCityBuildingControls
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ReleaseCityBuildingControls */
+
+void __thiscall TCityProductionView::thunk_ReleaseCityBuildingControls(TCityProductionView *this)
+
+{
+  ReleaseCityBuildingControls(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004083FF
+// GHIDRA_NAME TCityProductionView::thunk_RenderCityBuildingIcons
+// GHIDRA_PROTO void __thiscall thunk_RenderCityBuildingIcons(tagRECT * pTargetRect)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderCityBuildingIcons
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderCityBuildingIcons */
+
+void __thiscall
+TCityProductionView::thunk_RenderCityBuildingIcons(TCityProductionView *this,tagRECT *pTargetRect)
+
+{
+  THQButton::RenderCityBuildingIcons((THQButton *)this,pTargetRect);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA2C0
@@ -97,8 +196,256 @@ TCityProductionView::DestructTCityProductionViewAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA740
+// GHIDRA_NAME TCityProductionView::ReleaseCityBuildingControls
+// GHIDRA_PROTO void __thiscall ReleaseCityBuildingControls(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void ReleaseCityBuildingControls(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void ReleaseCityBuildingControls(void) */
+
+void __thiscall TCityProductionView::ReleaseCityBuildingControls(TCityProductionView *this)
+
+{
+  void *extraout_EAX;
+  void **ppvVar1;
+  int iVar2;
+  
+  CallObjectOffset24Vslot54IfPresent();
+  ppvVar1 = &this->pFieldec;
+  iVar2 = 0x10;
+  do {
+    DestroyClipStateRegionWrapperObject();
+    *ppvVar1 = extraout_EAX;
+    ppvVar1 = ppvVar1 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  *(undefined4 *)((int)g_pGlobalUiRootController + 0x28) = 0;
+  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf((TControl *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BADD0
+// GHIDRA_NAME TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
+// GHIDRA_PROTO void __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Render nation header/date label and refresh cached date fields on periodic boundary.
+// GHIDRA_COMMENT_END
+
+/* Render nation header/date label and refresh cached date fields on periodic boundary. */
+
+void __thiscall
+TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProductionView *this)
+
+{
+  short sVar1;
+  short extraout_AX;
+  short sVar2;
+  void *pvVar3;
+  int iVar4;
+  int *piVar5;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  short sVar6;
+  undefined2 extraout_var_01;
+  undefined2 extraout_var_02;
+  short originX;
+  
+  thunk_GetActiveNationId();
+  if (g_apNationStates[extraout_AX] == (void *)0x0) {
+    piVar5 = (int *)0x0;
+  }
+  else {
+    piVar5 = *(int **)((int)g_apNationStates[extraout_AX] + 0x894);
+  }
+  sVar2 = (**(code **)(*piVar5 + 0x5c))(0xe);
+  originX = (-(ushort)(sVar2 == 2) & 0xffe9) + 0x213;
+  sVar2 = (-(ushort)(sVar2 == 2) & 0x14) + 0x6b;
+  if (this->fielda8 < 0) {
+    GetCurrentLocalEpochSecondsWithTimezoneCache();
+    pvVar3 = ConvertEpochSecondsToLocalTmWithDstAdjust((int *)&stack0xfffffff8);
+    iVar4 = *(int *)((int)pvVar3 + 4);
+    sVar6 = ((short)(iVar4 / 5) + (short)(iVar4 >> 0x1f)) -
+            (short)((longlong)iVar4 * 0x66666667 >> 0x3f);
+    this->fieldaa = sVar6;
+    sVar1 = *(short *)((int)pvVar3 + 8);
+    this->fielda8 = sVar1;
+    if (6 < sVar6) {
+      this->fielda8 = sVar1 + 1;
+    }
+    if (0xb < this->fielda8) {
+      this->fielda8 = this->fielda8 + -0xc;
+    }
+    if (0xb < this->fielda8) {
+      this->fielda8 = this->fielda8 + -0xc;
+    }
+  }
+  ResetQuickDrawStrokeState();
+  (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(originX,sVar2);
+  iVar4 = this->fielda8 * 2;
+  thunk_DrawCenteredGuideLineOnMapDc
+            (CONCAT22(extraout_var_01,
+                      *(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar4) + originX),
+             CONCAT22(extraout_var,
+                      *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar4) + sVar2));
+  SetQuickDrawFillColor(0);
+  thunk_SetQuickDrawTextOriginWithContextOffset(originX,sVar2);
+  iVar4 = this->fieldaa * 2;
+  thunk_DrawCenteredGuideLineOnMapDc
+            (CONCAT22(extraout_var_02,
+                      *(short *)(&g_Render_Nation_Header_Value_00696210 + iVar4) + originX),
+             CONCAT22(extraout_var_00,
+                      *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar4) + sVar2));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC660
+// GHIDRA_NAME TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction
+// GHIDRA_PROTO void __thiscall HandleCityBuildingSlotClickAndDispatchAction(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resolves clicked building slot hit-region and dispatches build/action command flow with SFX and gate checks.
+// GHIDRA_COMMENT_END
+
+/* Resolves clicked building slot hit-region and dispatches build/action command flow with SFX and
+   gate checks. */
+
+void __thiscall
+TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction
+          (TCityProductionView *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  bool bVar1;
+  bool bVar2;
+  char cVar3;
+  short extraout_AX;
+  undefined3 extraout_var;
+  void *pvVar4;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 uVar5;
+  int iVar6;
+  int iVar7;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  local_4 = *(undefined4 *)(arg1 + 4);
+  local_8 = *(undefined4 *)arg1;
+  bVar1 = false;
+  iVar6 = 0;
+  iVar7 = arg1;
+  do {
+    if (bVar1) goto LAB_004bc6b8;
+    iVar7 = (int)*(short *)((int)&g_nCityBuildingSlotOrderLast + iVar6);
+    bVar2 = IsPointInsideHitRegion((int)&local_8,(int)(&this->pFieldec)[iVar7]);
+    if (CONCAT31(extraout_var,bVar2) != 0) {
+      bVar1 = true;
+    }
+    iVar6 = iVar6 + -2;
+  } while (-0x20 < iVar6);
+  if (!bVar1) {
+    return;
+  }
+LAB_004bc6b8:
+  if (iVar7 == 0xf) {
+    if (this->fielde8 == 0) {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0xbdb,0,1);
+      iVar7 = (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x54))(0xf,this->field94,0,0,0);
+      this->fielde8 = iVar7;
+      (**(code **)((int)this->pVtable + 0x1e0))();
+      return;
+    }
+  }
+  else if ((&this->field152_0xac)[iVar7] == (void *)0x0) {
+    iVar6 = thunk_GetCityBuildingProductionValueBySlot(this->field94,(short)iVar7);
+    uVar5 = extraout_var_00;
+    if (((short)iVar6 == 0) &&
+       (cVar3 = (**(code **)(*(int *)this->field94 + 0x78))(iVar7), uVar5 = extraout_var_01,
+       cVar3 != '\0')) {
+      bVar1 = true;
+      if (((iVar7 == 6) || (iVar7 == 0xb)) &&
+         (thunk_GetActiveNationId(),
+         *(char *)((int)g_pCityOrderCapabilityState + extraout_AX * 0x1d + 0x27b) != '\x02')) {
+        bVar1 = false;
+      }
+      if (bVar1) {
+        (**(code **)((int)this->pVtable + 0x1a0))(2,arg1,arg1,arg1,0);
+        (**(code **)((int)this->pVtable + 0x1e0))();
+        return;
+      }
+    }
+    else {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))
+                (CONCAT22(uVar5,*(short *)(&UNK_0064fab0 + iVar7 * 2) + 3000),0,1);
+      pvVar4 = (void *)(**(code **)(*(int *)g_pStrategicMapViewSystem + 0x54))
+                                 (iVar7,this->field94,0,0,0);
+      (&this->field152_0xac)[iVar7] = pvVar4;
+    }
+  }
+  (**(code **)((int)this->pVtable + 0x1e0))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC9B0
+// GHIDRA_NAME TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip
+// GHIDRA_PROTO void __thiscall RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Renders a view into primary render context while applying temporary clip/hit-region snapshot guards.
+// GHIDRA_COMMENT_END
+
+/* Renders a view into primary render context while applying temporary clip/hit-region snapshot
+   guards. */
+
+void __thiscall
+TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(TCityProductionView *this)
+
+{
+  void *pvVar1;
+  int unaff_ESI;
+  int unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  int *local_34;
+  int iStack_30;
+  undefined4 local_2c;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  int iStack_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
+  undefined4 uStack_14;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631048;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  AcquireReusableQuickDrawSurface();
+  pvVar1 = this->pVtable;
+  local_4 = 0;
+  (**(code **)((int)pvVar1 + 300))(&local_2c);
+  uStack_1c = local_2c;
+  iStack_20 = iStack_30;
+  uStack_18 = uStack_28;
+  uStack_14 = uStack_24;
+  ApplyHitRegionToClipState(0);
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_34,(int *)&stack0xffffffc4);
+  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,unaff_ESI);
+  thunk_ApplyRectClipRegionToGlobalClipState(&iStack_20);
+  *(undefined1 *)((int)&this->fielda4 + 2) = 1;
+  (**(code **)((int)pvVar1 + 0x110))(&iStack_30);
+  thunk_SetActiveQuickDrawSurfaceContext((int *)0x0,unaff_EDI);
+  SnapshotHitRegionToClipCache();
+  uStack_c = 0xffffffff;
+  ReleaseOrCacheQuickDrawSurface();
+  *unaff_FS_OFFSET = uStack_14;
+  return;
 }
 

@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TSwapperDaddyView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403283
+// GHIDRA_NAME TSwapperDaddyView::thunk_scalar_deleting_destructor_00403283
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403283(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TSwapperDaddyView::thunk_scalar_deleting_destructor_00403283
+          (TSwapperDaddyView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C5E
 // GHIDRA_NAME TSwapperDaddyView::thunk_GetTSwapperDaddyViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTSwapperDaddyViewClassNamePointer(void)
@@ -61,7 +81,7 @@ TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,i
   undefined4 uStack_1c;
   undefined4 uStack_18;
   
-  if ((void *)optionId != this[0x18].pVtable) {
+  if ((void *)optionId != this->field93_0x60) {
     piVar3 = (int *)0x0;
     thunk_InitializeSelectableTextOptionEntryIteratorContext();
     thunk_BeginSelectableTextOptionEntryIterator();
@@ -85,45 +105,10 @@ TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,i
       piVar1 = extraout_EAX_01;
       iVar2 = extraout_EAX_02;
     }
-    this[0x18].pVtable = (void *)optionId;
+    this->field93_0x60 = (void *)optionId;
     return piVar3;
   }
   piVar3 = (int *)(**(code **)((int)this->pVtable + 0x94))(optionId);
   return piVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AC7D0
-// GHIDRA_NAME TSwapperDaddyView::CreateTGWorldPartViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTGWorldPartViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TGWorldPartView; alloc factory pattern.
-// GHIDRA_COMMENT_END
-
-/* [ClassQuad] create inferred for TGWorldPartView; alloc factory pattern. */
-
-void * __cdecl TSwapperDaddyView::CreateTGWorldPartViewInstance(void)
-
-{
-  TView *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063082a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x74);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTGWorldPartViewClassNamePointer_00644ba0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
 }
 

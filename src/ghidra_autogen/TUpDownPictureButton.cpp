@@ -4,8 +4,8 @@
 // Bucket: TUpDownPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402257
-// GHIDRA_NAME TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUpDownPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree_At00402257
+// GHIDRA_PROTO void * __thiscall thunk_DestructTUpDownPictureButtonAndMaybeFree_At00402257(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTUpDownPictureButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructTUpDownPictureButtonAndMaybeFree */
 
 void * __thiscall
-TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree
+TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree_At00402257
           (TUpDownPictureButton *this,byte freeSelfFlag)
 
 {
@@ -23,72 +23,22 @@ TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403512
-// GHIDRA_NAME TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructPictureScreenResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureScreenResourceEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructPictureScreenResourceEntry */
-
-void __thiscall
-TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(TUpDownPictureButton *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTUpDownPictureButton;
-  *(undefined2 *)(this + 0x92) = 7000;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00403DBE
-// GHIDRA_NAME TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUpDownPictureButtonClassNamePointer(void)
+// GHIDRA_NAME TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer_At00403dbe
+// GHIDRA_PROTO void * __cdecl thunk_GetTUpDownPictureButtonClassNamePointer_At00403dbe(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTUpDownPictureButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTUpDownPictureButtonClassNamePointer */
 
-void * __cdecl TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer(void)
+void * __cdecl TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer_At00403dbe(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTUpDownPictureButtonClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00571500
-// GHIDRA_NAME TUpDownPictureButton::CreatePictureScreenResourceEntry
-// GHIDRA_PROTO undefined CreatePictureScreenResourceEntry()
-
-undefined4 * TUpDownPictureButton::CreatePictureScreenResourceEntry(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063640a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
-  local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTUpDownPictureButton;
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    puVar2 = puVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571580
@@ -115,8 +65,8 @@ TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTUpDownPictureButton;
-  *(undefined2 *)(this + 0x92) = 7000;
+  this->field0_0x0 = &g_vtblTUpDownPictureButton;
+  this->field143_0x92 = 7000;
   return;
 }
 
@@ -131,7 +81,7 @@ TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -3,26 +3,9 @@
 // Program: Imperialism.exe
 // Bucket: TDropShadowText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401BEA
-// GHIDRA_NAME TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase
-// GHIDRA_PROTO void __thiscall thunk_ConstructSelectableTextOptionEntryBase(void)
-
-void __thiscall TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
-
-{
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  this[0x94] = (TDropShadowText)0x0;
-  this[0x95] = (TDropShadowText)0x0;
-  this[0x96] = (TDropShadowText)0x0;
-  this[0x97] = (TDropShadowText)0x0;
-  *(undefined ***)this = &g_vtblTDropShadowText;
-  *(undefined4 *)(this + 0x94) = 0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040510A
-// GHIDRA_NAME TDropShadowText::thunk_DestructTDropShadowTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDropShadowTextAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDropShadowText::TDropShadowText_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDropShadowText_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDropShadowTextAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -30,7 +13,7 @@ void __thiscall TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(TD
 /* Single-JMP thunk to DestructTDropShadowTextAndMaybeFree */
 
 void * __thiscall
-TDropShadowText::thunk_DestructTDropShadowTextAndMaybeFree(TDropShadowText *this,byte freeSelfFlag)
+TDropShadowText::TDropShadowText_VtblSlot001(TDropShadowText *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -40,15 +23,15 @@ TDropShadowText::thunk_DestructTDropShadowTextAndMaybeFree(TDropShadowText *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F3F
-// GHIDRA_NAME TDropShadowText::thunk_GetTDropShadowTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDropShadowTextClassNamePointer(void)
+// GHIDRA_NAME TDropShadowText::TDropShadowText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDropShadowText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDropShadowTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDropShadowTextClassNamePointer */
 
-void * __cdecl TDropShadowText::thunk_GetTDropShadowTextClassNamePointer(void)
+void * __cdecl TDropShadowText::TDropShadowText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,24 +41,25 @@ void * __cdecl TDropShadowText::thunk_GetTDropShadowTextClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040991C
-// GHIDRA_NAME TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClipRegion
-// GHIDRA_PROTO undefined thunk_RefreshNationHeaderDropShadowTextWithClipRegion()
+// GHIDRA_NAME TDropShadowText::TDropShadowText_VtblSlot068
+// GHIDRA_PROTO void __cdecl TDropShadowText_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RefreshNationHeaderDropShadowTextWithClipRegion.
+// GHIDRA_COMMENT Single-JMP thunk to RefreshNationHeaderDropShadowTextWithClipRegion
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for RefreshNationHeaderDropShadowTextWithClipRegion. */
+/* WARNING: Type propagation algorithm not settling */
+/* Single-JMP thunk to RefreshNationHeaderDropShadowTextWithClipRegion */
 
-void __fastcall TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClipRegion(int *param_1)
+void __cdecl TDropShadowText::TDropShadowText_VtblSlot068(void)
 
 {
   int iVar1;
-  HRGN pHVar2;
+  TDropShadowText *this;
+  int *in_ECX;
   int unaff_EDI;
   LONG *unaff_FS_OFFSET;
   LONG *dx;
-  undefined **ppuStack_38;
-  int iStack_34;
+  CBrush CStack_38;
   tagRECT tStack_30;
   RECT RStack_20;
   LONG LStack_c;
@@ -87,7 +71,7 @@ void __fastcall TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClip
   LStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (LONG)&LStack_c;
   dx = &RStack_20.top;
-  iVar1 = *param_1;
+  iVar1 = *in_ECX;
   (**(code **)(iVar1 + 0x15c))();
   tStack_30.left = 1;
   tStack_30.top = 1;
@@ -95,70 +79,36 @@ void __fastcall TDropShadowText::thunk_RefreshNationHeaderDropShadowTextWithClip
   tStack_30.bottom = 0;
   InflateRect(&tStack_30,(int)dx,unaff_EDI);
   InitializeBrushStateVtableAndClearHandle();
-  ppuStack_38 = &PTR_LAB_0067106c;
+  CStack_38._0_4_ = &PTR_LAB_0067106c;
   puStack_8 = (undefined1 *)0x0;
   thunk_NoOpQuickDrawContextSelectionHook();
-  pHVar2 = CreateRectRgnIndirect(&RStack_20);
-  AttachRegionHandleToClipStateAndRegister(pHVar2);
-  SelectClipRegionOnPrimaryAndSecondaryDc(&ppuStack_38);
-  TMapDialog::DeleteRegionHandleFromClipState();
+  CreateRectRgnIndirect(&RStack_20);
+  CBrush::AttachRegionHandleToClipStateAndRegister(&CStack_38);
+  SelectClipRegionOnPrimaryAndSecondaryDc(this);
+  DeleteObject();
   puStack_8 = (undefined1 *)0xffffffff;
-  ppuStack_38 = &PTR_LAB_0067106c;
+  CStack_38._0_4_ = &PTR_LAB_0067106c;
   WrapperFor_DeleteRegionHandleFromClipState_At0047cb60();
   puStack_8 = (undefined1 *)0x1;
   thunk_RefreshSelectedNationHeaderStatus();
-  thunk_SetQuickDrawColorAndPropagateIfChanged();
+  thunk_SetQuickDrawColorAndPropagateIfChanged(in_ECX[0x25]);
   InitializeSharedStringRefFromEmpty();
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
   (**(code **)(iVar1 + 0x1d0))(&stack0x00000000);
-  (**(code **)(iVar1 + 0x1a4))(&iStack_34);
-  iStack_34 = iStack_34 + -1;
+  (**(code **)(iVar1 + 0x1a4))(&CStack_38.field4_0x4);
+  CStack_38.field4_0x4 = CStack_38.field4_0x4 + -1;
   tStack_30.top = tStack_30.top + -1;
-  ppuStack_38 = (undefined **)((int)ppuStack_38 + -1);
+  CStack_38._0_4_ = CStack_38._0_4_ + -1;
   tStack_30.left = tStack_30.left + -1;
   (**(code **)(iVar1 + 0x1d4))
-            (puStack_8,*(undefined4 *)((int)puStack_8 + -8),&ppuStack_38,
-             CONCAT22((short)((uint)ppuStack_38 >> 0x10),(short)param_1[0x24]));
+            (puStack_8,*(undefined4 *)((int)puStack_8 + -8),&CStack_38,
+             CONCAT22((short)((uint)CStack_38._0_4_ >> 0x10),(short)in_ECX[0x24]));
   RStack_20.left = CONCAT31(RStack_20.left._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
   RStack_20.left = -1;
-  SelectClipRegionOnPrimaryAndSecondaryDc(0);
+  SelectClipRegionOnPrimaryAndSecondaryDc(this);
   *unaff_FS_OFFSET = tStack_30.right;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B54A0
-// GHIDRA_NAME TDropShadowText::CreateSelectableTextOptionEntryBase
-// GHIDRA_PROTO undefined CreateSelectableTextOptionEntryBase()
-
-TStaticText * TDropShadowText::CreateSelectableTextOptionEntryBase(void)
-
-{
-  TStaticText *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638e6a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x98);
-  local_4 = 0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    this[0x94] = (TStaticText)0x0;
-    this[0x95] = (TStaticText)0x0;
-    this[0x96] = (TStaticText)0x0;
-    this[0x97] = (TStaticText)0x0;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined ***)this = &g_vtblTDropShadowText;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TStaticText *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5570
@@ -199,12 +149,15 @@ void __thiscall TDropShadowText::ConstructSelectableTextOptionEntryBase(TDropSha
 
 {
   TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  this[0x94] = (TDropShadowText)0x0;
-  this[0x95] = (TDropShadowText)0x0;
-  this[0x96] = (TDropShadowText)0x0;
-  this[0x97] = (TDropShadowText)0x0;
-  *(undefined ***)this = &g_vtblTDropShadowText;
-  *(undefined4 *)(this + 0x94) = 0;
+  this->field104_0x94 = 0;
+  this->field105_0x95 = 0;
+  this->field106_0x96 = 0;
+  this->field107_0x97 = 0;
+  this->field0_0x0 = &g_vtblTDropShadowText;
+  this->field104_0x94 = 0;
+  this->field105_0x95 = 0;
+  this->field106_0x96 = 0;
+  this->field107_0x97 = 0;
   return;
 }
 
@@ -223,79 +176,46 @@ TDropShadowText::DestructTDropShadowTextAndMaybeFree(TDropShadowText *this,byte 
 {
   TStaticText::DestructTStaticTextCore((TStaticText *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B5650
-// GHIDRA_NAME TDropShadowText::RefreshNationHeaderDropShadowTextWithClipRegion
-// GHIDRA_PROTO undefined RefreshNationHeaderDropShadowTextWithClipRegion()
+// GHIDRA_FUNCTION IMPERIALISM 0x00612EAA
+// GHIDRA_NAME TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc
+// GHIDRA_PROTO int __thiscall SelectClipRegionOnPrimaryAndSecondaryDc(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes selected nation header drop-shadow text using temporary clip region and style update hooks.
+// GHIDRA_COMMENT Selects clip region on primary and optional secondary DC from shared clip-state region.
 // GHIDRA_COMMENT_END
 
-/* Refreshes selected nation header drop-shadow text using temporary clip region and style update
-   hooks. */
+/* Selects clip region on primary and optional secondary DC from shared clip-state region. */
 
-void __fastcall TDropShadowText::RefreshNationHeaderDropShadowTextWithClipRegion(int *param_1)
+int __thiscall TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(TDropShadowText *this)
 
 {
   int iVar1;
   HRGN pHVar2;
-  int unaff_EDI;
-  LONG *unaff_FS_OFFSET;
-  LONG *dx;
-  undefined **ppuStack_38;
-  int iStack_34;
-  tagRECT tStack_30;
-  RECT RStack_20;
-  LONG LStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
+  int in_stack_00000004;
   
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00638e98;
-  LStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (LONG)&LStack_c;
-  dx = &RStack_20.top;
-  iVar1 = *param_1;
-  (**(code **)(iVar1 + 0x15c))();
-  tStack_30.left = 1;
-  tStack_30.top = 1;
-  tStack_30.right = 0;
-  tStack_30.bottom = 0;
-  InflateRect(&tStack_30,(int)dx,unaff_EDI);
-  InitializeBrushStateVtableAndClearHandle();
-  ppuStack_38 = &PTR_LAB_0067106c;
-  puStack_8 = (undefined1 *)0x0;
-  thunk_NoOpQuickDrawContextSelectionHook();
-  pHVar2 = CreateRectRgnIndirect(&RStack_20);
-  AttachRegionHandleToClipStateAndRegister(pHVar2);
-  SelectClipRegionOnPrimaryAndSecondaryDc(&ppuStack_38);
-  TMapDialog::DeleteRegionHandleFromClipState();
-  puStack_8 = (undefined1 *)0xffffffff;
-  ppuStack_38 = &PTR_LAB_0067106c;
-  WrapperFor_DeleteRegionHandleFromClipState_At0047cb60();
-  puStack_8 = (undefined1 *)0x1;
-  thunk_RefreshSelectedNationHeaderStatus();
-  thunk_SetQuickDrawColorAndPropagateIfChanged();
-  InitializeSharedStringRefFromEmpty();
-  puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-  (**(code **)(iVar1 + 0x1d0))(&stack0x00000000);
-  (**(code **)(iVar1 + 0x1a4))(&iStack_34);
-  iStack_34 = iStack_34 + -1;
-  tStack_30.top = tStack_30.top + -1;
-  ppuStack_38 = (undefined **)((int)ppuStack_38 + -1);
-  tStack_30.left = tStack_30.left + -1;
-  (**(code **)(iVar1 + 0x1d4))
-            (puStack_8,*(undefined4 *)((int)puStack_8 + -8),&ppuStack_38,
-             CONCAT22((short)((uint)ppuStack_38 >> 0x10),(short)param_1[0x24]));
-  RStack_20.left = CONCAT31(RStack_20.left._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  RStack_20.left = -1;
-  SelectClipRegionOnPrimaryAndSecondaryDc(0);
-  *unaff_FS_OFFSET = tStack_30.right;
-  return;
+  iVar1 = in_stack_00000004;
+  if (this->field04 != this->field2_0x8) {
+    if (in_stack_00000004 == 0) {
+      pHVar2 = (HRGN)0x0;
+    }
+    else {
+      pHVar2 = *(HRGN *)(in_stack_00000004 + 4);
+    }
+    in_stack_00000004 = SelectClipRgn(this->field04,pHVar2);
+  }
+  if (this->field2_0x8 != (HDC)0x0) {
+    if (iVar1 == 0) {
+      pHVar2 = (HRGN)0x0;
+    }
+    else {
+      pHVar2 = *(HRGN *)(iVar1 + 4);
+    }
+    in_stack_00000004 = SelectClipRgn(this->field2_0x8,pHVar2);
+  }
+  return in_stack_00000004;
 }
 

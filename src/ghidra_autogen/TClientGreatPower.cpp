@@ -40,8 +40,26 @@ void __thiscall TClientGreatPower::thunk_DestructTClientGreatPower(TClientGreatP
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406EDD
+// GHIDRA_NAME TClientGreatPower::thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E
+// GHIDRA_PROTO void __thiscall thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ApplyClientGreatPowerCommand69AndEmitTurnEvent1E
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ApplyClientGreatPowerCommand69AndEmitTurnEvent1E */
+
+void __thiscall
+TClientGreatPower::thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E
+          (TClientGreatPower *this,int arg1,int arg2)
+
+{
+  TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E((TGreatPower *)this,arg1,arg2);
   return;
 }
 
@@ -64,7 +82,7 @@ void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

@@ -4,8 +4,8 @@
 // Bucket: TColorKeyPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403B9D
-// GHIDRA_NAME TColorKeyPicture::thunk_DestructTColorKeyPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTColorKeyPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TColorKeyPicture::TColorKeyPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TColorKeyPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTColorKeyPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,8 +13,7 @@
 /* Single-JMP thunk to DestructTColorKeyPictureAndMaybeFree */
 
 void * __thiscall
-TColorKeyPicture::thunk_DestructTColorKeyPictureAndMaybeFree
-          (TColorKeyPicture *this,byte freeSelfFlag)
+TColorKeyPicture::TColorKeyPicture_VtblSlot001(TColorKeyPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -24,41 +23,21 @@ TColorKeyPicture::thunk_DestructTColorKeyPictureAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407635
-// GHIDRA_NAME TColorKeyPicture::thunk_GetTColorKeyPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTColorKeyPictureClassNamePointer(void)
+// GHIDRA_NAME TColorKeyPicture::TColorKeyPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TColorKeyPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTColorKeyPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTColorKeyPictureClassNamePointer */
 
-void * __cdecl TColorKeyPicture::thunk_GetTColorKeyPictureClassNamePointer(void)
+void * __cdecl TColorKeyPicture::TColorKeyPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTColorKeyPictureClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408EE5
-// GHIDRA_NAME TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_PROTO void __thiscall thunk_ConstructPictureResourceEntry_Vtbl00660b48(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructPictureResourceEntry_Vtbl00660b48 */
-
-void __thiscall
-TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTColorKeyPicture;
-  this[0x90] = (TColorKeyPicture)0x0;
-  *(undefined4 *)(this + 0x94) = 0;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D20
@@ -83,7 +62,7 @@ void * __cdecl TColorKeyPicture::CreateTColorKeyPictureInstance(void)
   puStack_8 = &LAB_0063659a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -120,9 +99,9 @@ void __thiscall TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TCo
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTColorKeyPicture;
-  this[0x90] = (TColorKeyPicture)0x0;
-  *(undefined4 *)(this + 0x94) = 0;
+  this->field0_0x0 = &g_vtblTColorKeyPicture;
+  this->field141_0x90 = 0;
+  this->field145_0x94 = 0;
   return;
 }
 
@@ -136,7 +115,7 @@ TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree(TColorKeyPicture *this,by
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

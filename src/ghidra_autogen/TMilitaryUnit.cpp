@@ -3,37 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMilitaryUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405867
-// GHIDRA_NAME TMilitaryUnit::thunk_DestroyMilitaryUnitOrderObject
-// GHIDRA_PROTO void __cdecl thunk_DestroyMilitaryUnitOrderObject(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyMilitaryUnitOrderObject
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyMilitaryUnitOrderObject */
-
-void __cdecl TMilitaryUnit::thunk_DestroyMilitaryUnitOrderObject(void)
-
-{
-  DestroyMilitaryUnitOrderObject();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040794B
-// GHIDRA_NAME TMilitaryUnit::thunk_GetMilitaryUnitOrderTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetMilitaryUnitOrderTypeName(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetMilitaryUnitOrderTypeName
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetMilitaryUnitOrderTypeName */
-
-void * __cdecl TMilitaryUnit::thunk_GetMilitaryUnitOrderTypeName(void)
-
-{
-  return &g_pClassDescTMilitaryUnit;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2CB0
 // GHIDRA_NAME TMilitaryUnit::CreateTMilitaryUnitInstance
 // GHIDRA_PROTO void * __cdecl CreateTMilitaryUnitInstance(void)
@@ -47,18 +16,18 @@ void * __cdecl TMilitaryUnit::CreateTMilitaryUnitInstance(void)
 
 {
   undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
+  int *unaff_FS_OFFSET;
   int local_14;
   undefined4 *local_10;
-  undefined4 local_c;
+  int local_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  void *local_4;
   
-  local_4 = 0xffffffff;
+  local_4 = (void *)0xffffffff;
   puStack_8 = &LAB_006398e5;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x44);
+  *unaff_FS_OFFSET = (int)&local_c;
+  puVar1 = AllocateWithFallbackHandler();
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &PTR_thunk_GetTUnitClassNamePointer_0066ee18;
     puVar1[4] = 0;
@@ -74,14 +43,14 @@ void * __cdecl TMilitaryUnit::CreateTMilitaryUnitInstance(void)
     *(undefined2 *)((int)puVar1 + 0x3a) = 0;
     *(undefined2 *)(puVar1 + 0xf) = 0;
     puVar1[0x10] = 0;
-    *puVar1 = &PTR_thunk_GetMilitaryUnitOrderTypeName_0066eea8;
+    *puVar1 = &PTR_thunk_GetTMilitaryUnitClassNamePointer_At0040794b_0066eea8;
     *(undefined1 *)(puVar1 + 7) = 1;
     *(undefined2 *)(puVar1 + 0xd) = 500;
     *(undefined2 *)((int)puVar1 + 0x36) = 0;
-    ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_14);
     local_4._0_1_ = 3;
-    StringShared__AssignFromPtr(puVar1 + 9,&local_14);
-    local_4 = CONCAT31(local_4._1_3_,2);
+    AssignFromPtr(puVar1 + 9,&local_14);
+    local_4 = (void *)CONCAT31(local_4._1_3_,2);
     ReleaseSharedStringRefIfNotEmpty();
     *unaff_FS_OFFSET = local_c;
     return puVar1;
@@ -103,21 +72,5 @@ void * __cdecl TMilitaryUnit::GetTMilitaryUnitClassNamePointer(void)
 
 {
   return &g_pClassDescTMilitaryUnit;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2ED0
-// GHIDRA_NAME TMilitaryUnit::DestroyMilitaryUnitOrderObject
-// GHIDRA_PROTO void __cdecl DestroyMilitaryUnitOrderObject(void)
-
-void __cdecl TMilitaryUnit::DestroyMilitaryUnitOrderObject(void)
-
-{
-  byte in_stack_00000004;
-  
-  WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
 }
 

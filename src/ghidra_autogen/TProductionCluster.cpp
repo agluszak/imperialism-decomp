@@ -3,16 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TProductionCluster.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402E55
+// GHIDRA_NAME TProductionCluster::TProductionCluster_VtblSlot118
+// GHIDRA_PROTO void __thiscall TProductionCluster_VtblSlot118(int value90, int value94)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanLeaf_NoCall_Ins05_00586a80
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanLeaf_NoCall_Ins05_00586a80 */
+
+void __thiscall
+TProductionCluster::TProductionCluster_VtblSlot118(TProductionCluster *this,int value90,int value94)
+
+{
+  this->field90 = value90;
+  this->field94 = value94;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040324C
+// GHIDRA_NAME TProductionCluster::TProductionCluster_VtblSlot117
+// GHIDRA_PROTO void __thiscall TProductionCluster_VtblSlot117(short value)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetTAmtBarClusterWordField8e
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetTAmtBarClusterWordField8e */
+
+void __thiscall
+TProductionCluster::TProductionCluster_VtblSlot117(TProductionCluster *this,short value)
+
+{
+  this->field8e = value;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040579F
-// GHIDRA_NAME TProductionCluster::thunk_GetTProductionClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTProductionClusterClassNamePointer(void)
+// GHIDRA_NAME TProductionCluster::TProductionCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TProductionCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTProductionClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTProductionClusterClassNamePointer */
 
-void * __cdecl TProductionCluster::thunk_GetTProductionClusterClassNamePointer(void)
+void * __cdecl TProductionCluster::TProductionCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,46 +57,69 @@ void * __cdecl TProductionCluster::thunk_GetTProductionClusterClassNamePointer(v
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406118
-// GHIDRA_NAME TProductionCluster::thunk_DestructTProductionClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTProductionClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TProductionCluster::TProductionCluster_VtblSlot001
+// GHIDRA_PROTO TProductionCluster * __thiscall TProductionCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTProductionClusterAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTProductionClusterAndMaybeFree */
 
-void * __thiscall
-TProductionCluster::thunk_DestructTProductionClusterAndMaybeFree
-          (TProductionCluster *this,byte freeSelfFlag)
+TProductionCluster * __thiscall
+TProductionCluster::TProductionCluster_VtblSlot001(TProductionCluster *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TProductionCluster *pTVar1;
   
-  pvVar1 = DestructTProductionClusterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTProductionClusterAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004085A3
-// GHIDRA_NAME TProductionCluster::thunk_Cluster_GameStateEventHint_005869c0
-// GHIDRA_PROTO void __thiscall thunk_Cluster_GameStateEventHint_005869c0(int commandId, void * arg8, int argC)
+// GHIDRA_NAME TProductionCluster::TProductionCluster_VtblSlot015
+// GHIDRA_PROTO void __thiscall TProductionCluster_VtblSlot015(int callbackContext, EArrowSplitCommandId commandId, PanelEventPayload * pPanelEvent, int eventFlags)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_GameStateEventHint_005869c0
+// GHIDRA_COMMENT Single-JMP thunk to HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_GameStateEventHint_005869c0 */
+/* Single-JMP thunk to HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward */
 
 void __thiscall
-TProductionCluster::thunk_Cluster_GameStateEventHint_005869c0
-          (TProductionCluster *this,int commandId,void *arg8,int argC)
+TProductionCluster::TProductionCluster_VtblSlot015
+          (TProductionCluster *this,int callbackContext,EArrowSplitCommandId commandId,
+          PanelEventPayload *pPanelEvent,int eventFlags)
 
 {
-  HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(this,commandId,arg8,argC);
+  HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward
+            (this,callbackContext,commandId,pPanelEvent,eventFlags);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004096E2
+// GHIDRA_NAME TProductionCluster::TProductionCluster_VtblSlot116
+// GHIDRA_PROTO void __thiscall TProductionCluster_VtblSlot116(short value)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetTAmtBarClusterWordField8c
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetTAmtBarClusterWordField8c */
+
+void __thiscall
+TProductionCluster::TProductionCluster_VtblSlot116(TProductionCluster *this,short value)
+
+{
+  this->field8c = value;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586840
 // GHIDRA_NAME TProductionCluster::CreateTProductionClusterInstance
 // GHIDRA_PROTO void * __cdecl CreateTProductionClusterInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TProductionCluster::CreateTProductionClusterInstance(void)
 
@@ -76,16 +134,16 @@ void * __cdecl TProductionCluster::CreateTProductionClusterInstance(void)
   puStack_8 = &LAB_0063787a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &g_vtblTProductionCluster;
-    *(undefined4 *)(this + 0x90) = 0;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0x88) = 0;
-    *(undefined2 *)(this + 0x8c) = 0;
-    *(undefined2 *)(this + 0x8e) = 0;
+    this->field0_0x0 = &g_vtblTProductionCluster;
+    *(undefined4 *)&this[1].field_0x8 = 0;
+    *(undefined4 *)&this[1].field_0xc = 0;
+    this[1].field0_0x0 = (undefined **)0x0;
+    *(undefined2 *)&this[1].field_0x4 = 0;
+    *(undefined2 *)&this[1].field_0x6 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -97,10 +155,10 @@ void * __cdecl TProductionCluster::CreateTProductionClusterInstance(void)
 // GHIDRA_NAME TProductionCluster::GetTProductionClusterClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTProductionClusterClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TProductionCluster.
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* Returns class descriptor pointer for TProductionCluster. */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TProductionCluster::GetTProductionClusterClassNamePointer(void)
 
@@ -110,50 +168,63 @@ void * __cdecl TProductionCluster::GetTProductionClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586920
 // GHIDRA_NAME TProductionCluster::ConstructTProductionClusterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTProductionClusterBaseState(void)
+// GHIDRA_PROTO TProductionCluster * __thiscall ConstructTProductionClusterBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void * __thiscall TProductionCluster::ConstructTProductionClusterBaseState(TProductionCluster *this)
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TProductionCluster * __thiscall
+TProductionCluster::ConstructTProductionClusterBaseState(TProductionCluster *this)
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
   *(undefined ***)this = &g_vtblTProductionCluster;
-  *(undefined4 *)(this + 0x90) = 0;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined4 *)(this + 0x88) = 0;
-  *(undefined2 *)(this + 0x8c) = 0;
-  *(undefined2 *)(this + 0x8e) = 0;
+  this->field90 = 0;
+  this->field94 = 0;
+  this->field88 = 0;
+  this->field8c = 0;
+  this->field8e = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586970
 // GHIDRA_NAME TProductionCluster::DestructTProductionClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTProductionClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TProductionCluster * __thiscall DestructTProductionClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void * __thiscall
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TProductionCluster * __thiscall
 TProductionCluster::DestructTProductionClusterAndMaybeFree
           (TProductionCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005869C0
 // GHIDRA_NAME TProductionCluster::HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward
-// GHIDRA_PROTO void __thiscall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(int commandId, void * arg8, int argC)
+// GHIDRA_PROTO void __thiscall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(int callbackContext, EArrowSplitCommandId commandId, PanelEventPayload * pPanelEvent, int eventFlags)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Enum] Handles EArrowSplitCommandId::LEFT(0x64) / RIGHT(0x65) for production value panel and forwards through panel dispatch path.
+// GHIDRA_COMMENT Callback ABI note: first stack arg (shown by decompiler as unaff_retaddr) is split command id; guarded to 0x64..0x65 before forwarding to parent slot 0x40, then forwarded to DispatchPanelControlEvent(commandId,pPanelEvent,eventFlags).
 // GHIDRA_COMMENT_END
 
-/* [Enum] Handles EArrowSplitCommandId::LEFT(0x64) / RIGHT(0x65) for production value panel and
-   forwards through panel dispatch path. */
+/* Callback ABI note: first stack arg (shown by decompiler as unaff_retaddr) is split command id;
+   guarded to 0x64..0x65 before forwarding to parent slot 0x40, then forwarded to
+   DispatchPanelControlEvent(commandId,pPanelEvent,eventFlags). */
 
 void __thiscall
 TProductionCluster::HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward
-          (TProductionCluster *this,int commandId,void *arg8,int argC)
+          (TProductionCluster *this,int callbackContext,EArrowSplitCommandId commandId,
+          PanelEventPayload *pPanelEvent,int eventFlags)
 
 {
   int iVar1;
@@ -164,11 +235,12 @@ TProductionCluster::HandleProductionClusterValuePanelSplitArrowCommand64or65AndF
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  if ((((*(int *)(this + 0x90) != 0) && (*(int *)(this + 0x88) != 0)) && (99 < unaff_retaddr)) &&
+  if ((((this->field90 != 0) && (this->field88 != 0)) && (99 < unaff_retaddr)) &&
      (unaff_retaddr < 0x66)) {
-    (**(code **)(**(int **)(this + 0x20) + 0x40))(unaff_retaddr,this,0);
+    (**(code **)(*(int *)this->pField20 + 0x40))(unaff_retaddr,this,0);
   }
-  thunk_DispatchPanelControlEvent(this,unaff_retaddr,(void *)commandId,(int)arg8);
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,unaff_retaddr,(PanelEventPayload *)callbackContext,commandId);
   return;
 }
 

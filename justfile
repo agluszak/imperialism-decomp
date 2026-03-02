@@ -23,6 +23,19 @@ sync-ghidra:
     --ghidra-program-name "{{ghidra_program_name}}" \
     --name-overrides "{{name_overrides}}"
 
+import-ghidra *args:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  : "${GHIDRA_PROJECT_DIR:?Set GHIDRA_PROJECT_DIR in .env}"
+  : "${GHIDRA_PROJECT_NAME:?Set GHIDRA_PROJECT_NAME in .env}"
+  file_in_project="{{ghidra_program_name}}"; \
+  [[ "$file_in_project" == /* ]] || file_in_project="/$file_in_project"; \
+  (cd "{{build_dir}}" && GHIDRA_INSTALL_DIR="$GHIDRA_INSTALL_DIR" uv run reccmp-ghidra-import \
+    --target "{{target}}" \
+    --local-project-name "$GHIDRA_PROJECT_NAME" \
+    --local-project-dir "$GHIDRA_PROJECT_DIR" \
+    --file "$file_in_project" \
+    {{args}})
+
 regen-stubs:
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \

@@ -3,69 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TArmoryView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004037FB
-// GHIDRA_NAME TArmoryView::thunk_DestructArmoryViewAndMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructArmoryViewAndMaybeFree(void)
-
-void __cdecl TArmoryView::thunk_DestructArmoryViewAndMaybeFree(void)
-
-{
-  DestructArmoryViewAndMaybeFree();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405853
-// GHIDRA_NAME TArmoryView::thunk_GetArmoryViewClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetArmoryViewClassName(void)
-
-void * __cdecl TArmoryView::thunk_GetArmoryViewClassName(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmoryViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004CECE0
-// GHIDRA_NAME TArmoryView::CreateArmoryView
-// GHIDRA_PROTO undefined CreateArmoryView()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Factory allocator for TArmoryView instances.
-// GHIDRA_COMMENT Allocates 0xAC bytes, runs ConstructArmoryView base/derived initialization, and returns null on allocation failure.
-// GHIDRA_COMMENT_END
-
-/* Factory allocator for TArmoryView instances.
-   Allocates 0xAC bytes, runs ConstructArmoryView base/derived initialization, and returns null on
-   allocation failure. */
-
-TNoHilitePicture * TArmoryView::CreateArmoryView(void)
-
-{
-  TNoHilitePicture *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006319da;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
-  local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined ***)this = &g_vtblFamily_ArmoryViewCore_Root;
-    *(undefined4 *)(this + 0x98) = 0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TNoHilitePicture *)0x0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004CED80
 // GHIDRA_NAME TArmoryView::GetTArmoryViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTArmoryViewClassNamePointer(void)
@@ -79,21 +16,5 @@ void * __cdecl TArmoryView::GetTArmoryViewClassNamePointer(void)
 
 {
   return &g_pClassDescTArmoryView;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004CEDD0
-// GHIDRA_NAME TArmoryView::DestructArmoryViewAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructArmoryViewAndMaybeFree(void)
-
-void __cdecl TArmoryView::DestructArmoryViewAndMaybeFree(void)
-
-{
-  byte in_stack_00000004;
-  
-  thunk_DestructCityDialogSharedBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
 }
 

@@ -3,9 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TNextMoveCommand.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404BA1
+// GHIDRA_NAME TNextMoveCommand::thunk_HandleActiveTacticalUnitReadyToggleOrAdvanceTurn_At00404ba1
+// GHIDRA_PROTO void __cdecl thunk_HandleActiveTacticalUnitReadyToggleOrAdvanceTurn_At00404ba1(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleActiveTacticalUnitReadyToggleOrAdvanceTurn
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleActiveTacticalUnitReadyToggleOrAdvanceTurn */
+
+void __cdecl
+TNextMoveCommand::thunk_HandleActiveTacticalUnitReadyToggleOrAdvanceTurn_At00404ba1(void)
+
+{
+  HandleActiveTacticalUnitReadyToggleOrAdvanceTurn();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00408B16
-// GHIDRA_NAME TNextMoveCommand::thunk_DestructTNextMoveCommandAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNextMoveCommandAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNextMoveCommand::thunk_DestructTNextMoveCommandAndMaybeFree_At00408b16
+// GHIDRA_PROTO void * __thiscall thunk_DestructTNextMoveCommandAndMaybeFree_At00408b16(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNextMoveCommandAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +30,7 @@
 /* Single-JMP thunk to DestructTNextMoveCommandAndMaybeFree */
 
 void * __thiscall
-TNextMoveCommand::thunk_DestructTNextMoveCommandAndMaybeFree
+TNextMoveCommand::thunk_DestructTNextMoveCommandAndMaybeFree_At00408b16
           (TNextMoveCommand *this,byte freeSelfFlag)
 
 {
@@ -24,15 +41,15 @@ TNextMoveCommand::thunk_DestructTNextMoveCommandAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004092E6
-// GHIDRA_NAME TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNextMoveCommandClassNamePointer(void)
+// GHIDRA_NAME TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer_At004092e6
+// GHIDRA_PROTO void * __cdecl thunk_GetTNextMoveCommandClassNamePointer_At004092e6(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNextMoveCommandClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNextMoveCommandClassNamePointer */
 
-void * __cdecl TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer(void)
+void * __cdecl TNextMoveCommand::thunk_GetTNextMoveCommandClassNamePointer_At004092e6(void)
 
 {
   void *pvVar1;
@@ -59,12 +76,12 @@ void * __cdecl TNextMoveCommand::CreateTNextMoveCommandInstance(void)
   puStack_8 = &LAB_0063873a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCommand *)AllocateWithFallbackHandler(0x1c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
     TCommand::thunk_ConstructTurnEventPacketBase(this);
-    *(undefined ***)this = &g_vtblTNextMoveCommand;
+    this->field0_0x0 = &g_vtblTNextMoveCommand;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -94,7 +111,7 @@ void * __thiscall TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMove
 
 {
   TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
-  *(undefined ***)this = &g_vtblTNextMoveCommand;
+  this->field0_0x0 = &g_vtblTNextMoveCommand;
   return this;
 }
 
@@ -108,7 +125,7 @@ TNextMoveCommand::DestructTNextMoveCommandAndMaybeFree(TNextMoveCommand *this,by
 {
   DestructTNextMoveCommandAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -4,15 +4,15 @@
 // Bucket: TForeignMinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401C49
-// GHIDRA_NAME TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTForeignMinisterViewClassNamePointer(void)
+// GHIDRA_NAME TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePointer_At00401c49
+// GHIDRA_PROTO void * __cdecl thunk_GetTForeignMinisterViewClassNamePointer_At00401c49(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTForeignMinisterViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTForeignMinisterViewClassNamePointer */
 
-void * __cdecl TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePointer(void)
+void * __cdecl TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePointer_At00401c49(void)
 
 {
   void *pvVar1;
@@ -21,9 +21,25 @@ void * __cdecl TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePoint
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040411F
+// GHIDRA_NAME TForeignMinisterView::thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f
+// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C3_I22_004f31d0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanCallChain_C3_I22_004f31d0 */
+
+void __cdecl TForeignMinisterView::thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
+
+{
+  OrphanCallChain_C3_I22_004f31d0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406B63
-// GHIDRA_NAME TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay
-// GHIDRA_PROTO void __thiscall thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay(InterNationEventCode eventCode, int eventRecord)
+// GHIDRA_NAME TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay_At00406b63
+// GHIDRA_PROTO void __thiscall thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay_At00406b63(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleDialogEvent14ActionTagsAndEvent10BackOkay
 // GHIDRA_COMMENT_END
@@ -31,17 +47,18 @@ void * __cdecl TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePoint
 /* Single-JMP thunk to HandleDialogEvent14ActionTagsAndEvent10BackOkay */
 
 void __thiscall
-TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay
-          (TForeignMinisterView *this,InterNationEventCode eventCode,int eventRecord)
+TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay_At00406b63
+          (TForeignMinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent)
 
 {
-  HandleDialogEvent14ActionTagsAndEvent10BackOkay(this,eventCode,eventRecord);
+  TCivDescription::HandleDialogEvent14ActionTagsAndEvent10BackOkay
+            ((TCivDescription *)this,eventCode,pPanelEvent);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040795F
-// GHIDRA_NAME TForeignMinisterView::thunk_DestructTForeignMinisterViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTForeignMinisterViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TForeignMinisterView::thunk_DestructTForeignMinisterViewAndMaybeFree_At0040795f
+// GHIDRA_PROTO void * __thiscall thunk_DestructTForeignMinisterViewAndMaybeFree_At0040795f(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTForeignMinisterViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -49,7 +66,7 @@ TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay
 /* Single-JMP thunk to DestructTForeignMinisterViewAndMaybeFree */
 
 void * __thiscall
-TForeignMinisterView::thunk_DestructTForeignMinisterViewAndMaybeFree
+TForeignMinisterView::thunk_DestructTForeignMinisterViewAndMaybeFree_At0040795f
           (TForeignMinisterView *this,byte freeSelfFlag)
 
 {
@@ -76,12 +93,12 @@ void * __cdecl TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
   puStack_8 = &LAB_00632a2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTForeignMinisterView;
-    *(undefined4 *)(this + 0x60) = 0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTForeignMinisterView;
+    this[1].pVtable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -112,9 +129,9 @@ void * __thiscall
 TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTForeignMinisterView;
-  *(undefined4 *)(this + 0x60) = 0;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTForeignMinisterView;
+  this->field60 = 0;
   return this;
 }
 
@@ -127,79 +144,10 @@ TForeignMinisterView::DestructTForeignMinisterViewAndMaybeFree
           (TForeignMinisterView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004F3050
-// GHIDRA_NAME TForeignMinisterView::HandleDialogEvent14ActionTagsAndEvent10BackOkay
-// GHIDRA_PROTO void __thiscall HandleDialogEvent14ActionTagsAndEvent10BackOkay(InterNationEventCode eventCode, int eventRecord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles event code 0x14 action tags (deal/merc/opxe/cipr/ccer/blob) plus event code 10 back/okay fallback routing.
-// GHIDRA_COMMENT_END
-
-/* Handles event code 0x14 action tags (deal/merc/opxe/cipr/ccer/blob) plus event code 10 back/okay
-   fallback routing. */
-
-void __thiscall
-TForeignMinisterView::HandleDialogEvent14ActionTagsAndEvent10BackOkay
-          (TForeignMinisterView *this,InterNationEventCode eventCode,int eventRecord)
-
-{
-  uint uVar1;
-  int iVar2;
-  undefined4 uVar3;
-  
-  uVar1 = *(uint *)(eventRecord + 0x1c);
-  if (eventCode == IN_EVENT_14_SPECIAL_RELATION_FLAG_2) {
-    if (uVar1 < 0x65787070) {
-      if (uVar1 == 0x6578706f) {
-        (**(code **)(*(int *)this + 0x1a8))(0x2300);
-        return;
-      }
-      if (uVar1 == 0x6465616c) {
-        (**(code **)(*(int *)this + 0x1a8))(0x22f6);
-        return;
-      }
-    }
-    else if (uVar1 < 0x6d657264) {
-      if (uVar1 == 0x6d657263) {
-        (**(code **)(*(int *)this + 0x1a8))(0x22ec);
-        return;
-      }
-      if (uVar1 == 0x676c6f62) {
-        (**(code **)(*(int *)this + 0x1b0))();
-        return;
-      }
-    }
-    else if (uVar1 == 0x70726963) {
-      (**(code **)(*(int *)this + 0x1a8))(0x231e);
-    }
-    else if (uVar1 == 0x72656363) {
-      (**(code **)(*(int *)this + 0x1a8))(0x22e2);
-      return;
-    }
-    return;
-  }
-  if (eventCode != 10) {
-    thunk_ForwardEngineerDialogCommandToChildSlot40();
-    return;
-  }
-  if (uVar1 != 0x6261636b) {
-    if (uVar1 != 0x6f6b6179) {
-      thunk_ForwardEngineerDialogCommandToChildSlot40();
-      return;
-    }
-    iVar2 = *(int *)this;
-    (**(code **)(iVar2 + 0x1ac))();
-    uVar3 = (**(code **)(iVar2 + 0x58))();
-    (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar3);
-    return;
-  }
-  (**(code **)(*(int *)this + 0x1ac))();
-  return;
 }
 

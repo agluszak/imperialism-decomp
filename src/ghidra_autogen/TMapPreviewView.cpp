@@ -19,6 +19,25 @@ void __fastcall TMapPreviewView::thunk_DestructTMapPreviewViewAndMaybeFree(TMapP
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004024AA
+// GHIDRA_NAME TMapPreviewView::thunk_scalar_deleting_destructor_004024AA
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004024AA(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TMapPreviewView::thunk_scalar_deleting_destructor_004024AA(TMapPreviewView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004050D8
 // GHIDRA_NAME TMapPreviewView::thunk_GetTMapPreviewViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTMapPreviewViewClassNamePointer(void)
@@ -38,51 +57,36 @@ void * __cdecl TMapPreviewView::thunk_GetTMapPreviewViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040524A
-// GHIDRA_NAME TMapPreviewView::thunk_InitializeMapPreviewBufferAndSelectionState
-// GHIDRA_PROTO void __thiscall thunk_InitializeMapPreviewBufferAndSelectionState(void)
+// GHIDRA_NAME TMapPreviewView::thunk_ConstructTMapPreviewViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTMapPreviewViewBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
 
-void __thiscall
-TMapPreviewView::thunk_InitializeMapPreviewBufferAndSelectionState(TMapPreviewView *this)
+/* [FID:thunk_target_sync] */
+
+void __thiscall TMapPreviewView::thunk_ConstructTMapPreviewViewBaseState(TMapPreviewView *this)
 
 {
   ConstructTMapPreviewViewBaseState(this);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005787B0
-// GHIDRA_NAME TMapPreviewView::CreateUiPlanetListResourceEntry
-// GHIDRA_PROTO undefined CreateUiPlanetListResourceEntry()
+// GHIDRA_FUNCTION IMPERIALISM 0x00407BAD
+// GHIDRA_NAME TMapPreviewView::thunk_HandleTurnEventPaletteClickSelection
+// GHIDRA_PROTO void __thiscall thunk_HandleTurnEventPaletteClickSelection(void * param_1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocator wrapper for ConstructUiResourceEntryType419D8 (size 0x70).
+// GHIDRA_COMMENT Thunk wrapper for HandleTurnEventPaletteClickSelection.
 // GHIDRA_COMMENT_END
 
-/* Allocator wrapper for ConstructUiResourceEntryType419D8 (size 0x70). */
+/* Thunk wrapper for HandleTurnEventPaletteClickSelection. */
 
-TView * TMapPreviewView::CreateUiPlanetListResourceEntry(void)
+void __thiscall
+TMapPreviewView::thunk_HandleTurnEventPaletteClickSelection(TMapPreviewView *this,void *param_1)
 
 {
-  TView *this;
-  TView *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00636a8a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x70);
-  local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTMapPreviewViewClassNamePointer_006419d8;
-    *(undefined4 *)(this + 100) = 0xffffffff;
-    pTVar1 = this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  HandleTurnEventPaletteClickSelection(this,param_1);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578830
@@ -117,7 +121,7 @@ void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(TMapPreviewVi
   uint uVar3;
   uint uVar4;
   int unaff_ESI;
-  TMapPreviewView *pTVar5;
+  void **ppvVar5;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack00000004;
   undefined4 local_2c;
@@ -136,20 +140,20 @@ void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(TMapPreviewVi
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_NoOpUiLifecycleHook();
-  *(undefined4 *)(this + 0x68) = 0xffffffff;
-  *(undefined4 *)(this + 4) = 1;
+  this->field68 = -1;
+  this->field04 = 1;
   g_nSharedPreviewBitmapContextDepth = g_nSharedPreviewBitmapContextDepth + 1;
   uStack00000004 = 1;
   local_4 = 0;
-  (**(code **)(*(int *)this + 0x128))();
+  (**(code **)(this->field0_0x0 + 0x128))();
   uStack_18 = uStack_28;
   uStack_14 = uStack_24;
   uStack_1c = local_2c;
-  pTVar5 = this + 0x60;
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(pTVar5,8,auStack_20);
-  piVar1 = thunk_GetSurfaceObjectAtContextOffset24(*(int **)pTVar5);
-  piVar1 = TMapDialog::thunk_GetSurfaceHeaderFromSurfaceObject(piVar1);
-  piVar2 = thunk_GetSurfaceObjectAtContextOffset24(*(int **)pTVar5);
+  ppvVar5 = &this->pField60;
+  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(ppvVar5,8,auStack_20);
+  piVar1 = thunk_GetSurfaceObjectAtContextOffset24(*ppvVar5);
+  piVar1 = thunk_GetSurfaceHeaderFromSurfaceObject(piVar1);
+  piVar2 = thunk_GetSurfaceObjectAtContextOffset24(*ppvVar5);
   uVar3 = (unaff_ESI - (int)&local_2c) * (*(ushort *)(*piVar2 + 4) & 0x3fff);
   if (0 < (int)uVar3) {
     for (uVar4 = uVar3 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
@@ -173,8 +177,47 @@ void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(TMapPreviewVi
 void __fastcall TMapPreviewView::DestructTMapPreviewViewAndMaybeFree(TMapPreviewView *pThis)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At004010e6(pThis + 0x60);
-  thunk_CloseCityDialogChildrenAndReleaseSelf();
+  WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf((TControl *)pThis);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005789E0
+// GHIDRA_NAME TMapPreviewView::HandleTurnEventPaletteClickSelection
+// GHIDRA_PROTO void __thiscall HandleTurnEventPaletteClickSelection(void * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Map clicked palette value to turn-event selection entry.
+// GHIDRA_COMMENT_END
+
+/* Map clicked palette value to turn-event selection entry. */
+
+void __thiscall
+TMapPreviewView::HandleTurnEventPaletteClickSelection(TMapPreviewView *this,void *param_1)
+
+{
+  byte bVar1;
+  int iVar2;
+  ushort extraout_AX;
+  int *piVar3;
+  int *piVar4;
+  int arg1;
+  
+  piVar3 = thunk_GetSurfaceObjectAtContextOffset24(this->pField60);
+  piVar3 = thunk_GetSurfaceHeaderFromSurfaceObject(piVar3);
+  piVar4 = thunk_GetSurfaceObjectAtContextOffset24(this->pField60);
+  arg1 = 0;
+  bVar1 = *(byte *)((int)piVar3 +
+                   *(int *)param_1 +
+                   (*(ushort *)(*piVar4 + 4) & 0x3fff) * *(int *)((int)param_1 + 4));
+  do {
+    thunk_MapTurnEventCodeToPaletteIndex(arg1);
+    if (extraout_AX == bVar1) {
+      iVar2 = *(int *)this->pField20;
+      this->field6c = arg1;
+      (**(code **)(iVar2 + 0x3c))(0x7069636b,this,0);
+    }
+    arg1 = arg1 + 1;
+  } while (arg1 < 7);
   return;
 }
 

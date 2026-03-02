@@ -4,85 +4,117 @@
 // Bucket: TShipAmtBar.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402EAA
-// GHIDRA_NAME TShipAmtBar::thunk_DestructTShipAmtBarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTShipAmtBarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TShipAmtBar::TShipAmtBar_VtblSlot001
+// GHIDRA_PROTO TShipAmtBar * __thiscall TShipAmtBar_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTShipAmtBarAndMaybeFree
+// GHIDRA_COMMENT Single-JMP thunk to DestructAndMaybeFree
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestructTShipAmtBarAndMaybeFree */
+/* Single-JMP thunk to DestructAndMaybeFree */
 
-void * __thiscall
-TShipAmtBar::thunk_DestructTShipAmtBarAndMaybeFree(TShipAmtBar *this,byte freeSelfFlag)
+TShipAmtBar * __thiscall TShipAmtBar::TShipAmtBar_VtblSlot001(TShipAmtBar *this,byte freeSelfFlag)
+
+{
+  TShipAmtBar *pTVar1;
+  
+  pTVar1 = DestructAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403FFD
+// GHIDRA_NAME TShipAmtBar::TShipAmtBar_VtblSlot106
+// GHIDRA_PROTO void __thiscall TShipAmtBar_VtblSlot106(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderQuickDrawControlWithHitRegionClipVariantC
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderQuickDrawControlWithHitRegionClipVariantC */
+
+void __thiscall TShipAmtBar::TShipAmtBar_VtblSlot106(TShipAmtBar *this)
 
 {
   void *pvVar1;
+  char cVar2;
+  undefined2 extraout_var;
+  int *piVar3;
+  undefined2 extraout_var_00;
+  undefined4 *unaff_FS_OFFSET;
+  int iStack_48;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  int iStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  undefined1 auStack_20 [20];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
   
-  pvVar1 = DestructTShipAmtBarAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404647
-// GHIDRA_NAME TShipAmtBar::thunk_DestructTTraderAmtBarMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructTTraderAmtBarMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTraderAmtBarMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTraderAmtBarMaybeFree */
-
-void __cdecl TShipAmtBar::thunk_DestructTTraderAmtBarMaybeFree(void)
-
-{
-  TTraderAmtBar::DestructTTraderAmtBarMaybeFree();
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00637a78;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  AcquireReusableQuickDrawSurface();
+  uStack_4 = 0;
+  ApplyHitRegionToClipState(iStack_48);
+  pvVar1 = (this->base).pVtable;
+  cVar2 = (**(code **)((int)pvVar1 + 0xec))();
+  if (cVar2 != '\0') {
+    cVar2 = (**(code **)((int)pvVar1 + 0xf8))();
+    if (cVar2 != '\0') {
+      (**(code **)((int)pvVar1 + 0x128))(&uStack_3c);
+      uStack_2c = uStack_3c;
+      uStack_28 = uStack_38;
+      uStack_24 = uStack_34;
+      thunk_ApplyRectClipRegionToGlobalClipState(&iStack_30);
+      (**(code **)((int)pvVar1 + 300))(auStack_20);
+      (**(code **)((int)pvVar1 + 0x138))(&stack0xffffffb4);
+      if (0 < (short)this->barValue60) {
+        thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
+        (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(CONCAT22(extraout_var,this->barAux66));
+        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
+        thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,this->barValue60),1);
+        ResetQuickDrawStrokeState();
+      }
+      SnapshotHitRegionToClipCache();
+      piVar3 = (int *)(**(code **)((int)pvVar1 + 0x58))();
+      (**(code **)(*piVar3 + 0x13c))();
+    }
+  }
+  uStack_4 = 0xffffffff;
+  ReleaseOrCacheQuickDrawSurface();
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408B7A
-// GHIDRA_NAME TShipAmtBar::thunk_SelectTradeSpecialCommodityAndRecomputeBarLimits
-// GHIDRA_PROTO void __thiscall thunk_SelectTradeSpecialCommodityAndRecomputeBarLimits(void)
+// GHIDRA_NAME TShipAmtBar::TShipAmtBar_VtblSlot055
+// GHIDRA_PROTO void __thiscall TShipAmtBar_VtblSlot055(int passthroughArg)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SelectTradeSpecialCommodityAndRecomputeBarLimits
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SelectTradeSpecialCommodityAndRecomputeBarLimits */
 
-void __thiscall
-TShipAmtBar::thunk_SelectTradeSpecialCommodityAndRecomputeBarLimits(TShipAmtBar *this)
+void __thiscall TShipAmtBar::TShipAmtBar_VtblSlot055(TShipAmtBar *this,int passthroughArg)
 
 {
-  SelectTradeSpecialCommodityAndRecomputeBarLimits(this);
+  SelectTradeSpecialCommodityAndRecomputeBarLimits(this,passthroughArg);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408FE4
-// GHIDRA_NAME TShipAmtBar::thunk_GetLiteralTypeName_TTraderAmtBar
-// GHIDRA_PROTO void * __cdecl thunk_GetLiteralTypeName_TTraderAmtBar(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetLiteralTypeName_TTraderAmtBar
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetLiteralTypeName_TTraderAmtBar */
-
-void * __cdecl TShipAmtBar::thunk_GetLiteralTypeName_TTraderAmtBar(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TTraderAmtBar::GetTTraderAmtBarClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00409737
-// GHIDRA_NAME TShipAmtBar::thunk_GetTShipAmtBarClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipAmtBarClassNamePointer(void)
+// GHIDRA_NAME TShipAmtBar::TShipAmtBar_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TShipAmtBar_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTShipAmtBarClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTShipAmtBarClassNamePointer */
 
-void * __cdecl TShipAmtBar::thunk_GetTShipAmtBarClassNamePointer(void)
+void * __cdecl TShipAmtBar::TShipAmtBar_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -94,6 +126,11 @@ void * __cdecl TShipAmtBar::thunk_GetTShipAmtBarClassNamePointer(void)
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AAA0
 // GHIDRA_NAME TShipAmtBar::CreateTShipAmtBarInstance
 // GHIDRA_PROTO void * __cdecl CreateTShipAmtBarInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled leaf extracted from mangled MSVC symbol
+// GHIDRA_COMMENT_END
+
+/* demangled leaf extracted from mangled MSVC symbol */
 
 void * __cdecl TShipAmtBar::CreateTShipAmtBarInstance(void)
 
@@ -108,15 +145,15 @@ void * __cdecl TShipAmtBar::CreateTShipAmtBarInstance(void)
   puStack_8 = &LAB_00637a5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x6c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined2 *)(this + 0x60) = 0;
-    *(undefined2 *)(this + 0x62) = 0;
-    *(undefined2 *)(this + 100) = 0;
-    *(undefined2 *)(this + 0x66) = 0;
-    *(undefined ***)this = &g_vtblTShipAmtBar;
+    TView::thunk_ConstructTViewBaseState(this);
+    *(undefined2 *)&this[1].pVtable = 0;
+    *(undefined2 *)((int)&this[1].pVtable + 2) = 0;
+    *(undefined2 *)&this[1].field1_0x4 = 0;
+    *(undefined2 *)((int)&this[1].field2_0x5 + 1) = 0;
+    this->pVtable = &g_vtblTShipAmtBar;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -140,49 +177,59 @@ void * __cdecl TShipAmtBar::GetTShipAmtBarClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB60
-// GHIDRA_NAME TShipAmtBar::ConstructTShipAmtBarBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTShipAmtBarBaseState(void)
+// GHIDRA_NAME TShipAmtBar::ConstructBaseState
+// GHIDRA_PROTO TShipAmtBar * __thiscall ConstructBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TShipAmtBar base-state constructor wrapper from redecomp.
+// GHIDRA_COMMENT_END
 
-void * __thiscall TShipAmtBar::ConstructTShipAmtBarBaseState(TShipAmtBar *this)
+/* TShipAmtBar base-state constructor wrapper from redecomp. */
+
+TShipAmtBar * __thiscall TShipAmtBar::ConstructBaseState(TShipAmtBar *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTShipAmtBar;
-  *(undefined2 *)(this + 0x60) = 0;
-  *(undefined2 *)(this + 0x62) = 0;
-  *(undefined2 *)(this + 100) = 0;
-  *(undefined2 *)(this + 0x66) = 0;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTShipAmtBar;
+  this->barValue60 = 0;
+  this->barSelected62 = 0;
+  this->barLimit64 = 0;
+  this->barAux66 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABA0
-// GHIDRA_NAME TShipAmtBar::DestructTShipAmtBarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTShipAmtBarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TShipAmtBar::DestructAndMaybeFree
+// GHIDRA_PROTO TShipAmtBar * __thiscall DestructAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TShipAmtBar destructor wrapper with conditional freeSelf flag.
+// GHIDRA_COMMENT_END
 
-void * __thiscall TShipAmtBar::DestructTShipAmtBarAndMaybeFree(TShipAmtBar *this,byte freeSelfFlag)
+/* TShipAmtBar destructor wrapper with conditional freeSelf flag. */
+
+TShipAmtBar * __thiscall TShipAmtBar::DestructAndMaybeFree(TShipAmtBar *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABF0
 // GHIDRA_NAME TShipAmtBar::SelectTradeSpecialCommodityAndRecomputeBarLimits
-// GHIDRA_PROTO void __thiscall SelectTradeSpecialCommodityAndRecomputeBarLimits(void)
+// GHIDRA_PROTO void __thiscall SelectTradeSpecialCommodityAndRecomputeBarLimits(int passthroughArg)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Selects the special trade commodity slot, recomputes bar limit fields from nation production state, and refreshes trade control bindings.
+// GHIDRA_COMMENT Selects special commodity metric and recomputes cached bar limits.
 // GHIDRA_COMMENT_END
 
-/* Selects the special trade commodity slot, recomputes bar limit fields from nation production
-   state, and refreshes trade control bindings. */
+/* Selects special commodity metric and recomputes cached bar limits. */
 
-void __thiscall TShipAmtBar::SelectTradeSpecialCommodityAndRecomputeBarLimits(TShipAmtBar *this)
+void __thiscall
+TShipAmtBar::SelectTradeSpecialCommodityAndRecomputeBarLimits(TShipAmtBar *this,int passthroughArg)
 
 {
-  short sVar1;
+  ushort uVar1;
   short extraout_AX;
   int iVar2;
   
@@ -193,13 +240,81 @@ void __thiscall TShipAmtBar::SelectTradeSpecialCommodityAndRecomputeBarLimits(TS
   else {
     iVar2 = *(int *)((int)g_apNationStates[extraout_AX] + 0x894);
   }
-  *(undefined4 *)(this + 0x68) = *(undefined4 *)(iVar2 + 400);
-  sVar1 = *(short *)(*(int *)(iVar2 + 0x1d8) + 0x1c);
-  *(undefined2 *)(this + 0x62) = *(undefined2 *)(this + 0x34);
-  *(short *)(this + 100) = sVar1;
-  *(undefined2 *)(this + 0x66) = 0x3a;
-  *(short *)(this + 0x60) = (short)(0 / (longlong)(int)sVar1);
+  *(undefined4 *)&this->barExtra68 = *(undefined4 *)(iVar2 + 400);
+  uVar1 = *(ushort *)(*(int *)(iVar2 + 0x1d8) + 0x1c);
+  this->barSelected62 = (ushort)(this->base).field14_0x34;
+  this->barLimit64 = uVar1;
+  this->barAux66 = 0x3a;
+  this->barValue60 = (ushort)(0 / (longlong)(int)(short)uVar1);
   thunk_NoOpUiLifecycleHook();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058AC80
+// GHIDRA_NAME TShipAmtBar::RenderQuickDrawControlWithHitRegionClipVariantC
+// GHIDRA_PROTO void __thiscall RenderQuickDrawControlWithHitRegionClipVariantC(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT TradeControl quick-draw render variant C with style-state variant handling.
+// GHIDRA_COMMENT_END
+
+/* TradeControl quick-draw render variant C with style-state variant handling. */
+
+void __thiscall TShipAmtBar::RenderQuickDrawControlWithHitRegionClipVariantC(TShipAmtBar *this)
+
+{
+  void *pvVar1;
+  char cVar2;
+  undefined2 extraout_var;
+  int *piVar3;
+  undefined2 extraout_var_00;
+  undefined4 *unaff_FS_OFFSET;
+  int local_48;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  int iStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  undefined1 auStack_20 [20];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00637a78;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  AcquireReusableQuickDrawSurface();
+  local_4 = 0;
+  ApplyHitRegionToClipState(local_48);
+  pvVar1 = (this->base).pVtable;
+  cVar2 = (**(code **)((int)pvVar1 + 0xec))();
+  if (cVar2 != '\0') {
+    cVar2 = (**(code **)((int)pvVar1 + 0xf8))();
+    if (cVar2 != '\0') {
+      (**(code **)((int)pvVar1 + 0x128))(&uStack_3c);
+      uStack_2c = uStack_3c;
+      uStack_28 = uStack_38;
+      uStack_24 = uStack_34;
+      thunk_ApplyRectClipRegionToGlobalClipState(&iStack_30);
+      (**(code **)((int)pvVar1 + 300))(auStack_20);
+      (**(code **)((int)pvVar1 + 0x138))(&stack0xffffffb4);
+      if (0 < (short)this->barValue60) {
+        thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
+        (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(CONCAT22(extraout_var,this->barAux66));
+        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
+        thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,this->barValue60),1);
+        ResetQuickDrawStrokeState();
+      }
+      SnapshotHitRegionToClipCache();
+      piVar3 = (int *)(**(code **)((int)pvVar1 + 0x58))();
+      (**(code **)(*piVar3 + 0x13c))();
+    }
+  }
+  local_4 = 0xffffffff;
+  ReleaseOrCacheQuickDrawSurface();
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 

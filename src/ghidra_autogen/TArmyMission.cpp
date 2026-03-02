@@ -4,15 +4,15 @@
 // Bucket: TArmyMission.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401794
-// GHIDRA_NAME TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile
-// GHIDRA_PROTO void __cdecl thunk_ReturnMissionIfMovementClassMatchesTargetTile(void)
+// GHIDRA_NAME TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile_At00401794
+// GHIDRA_PROTO void __cdecl thunk_ReturnMissionIfMovementClassMatchesTargetTile_At00401794(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReturnMissionIfMovementClassMatchesTargetTile
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReturnMissionIfMovementClassMatchesTargetTile */
 
-void __cdecl TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile(void)
+void __cdecl TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile_At00401794(void)
 
 {
   ReturnMissionIfMovementClassMatchesTargetTile();
@@ -20,93 +20,47 @@ void __cdecl TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile(v
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040476E
-// GHIDRA_NAME TArmyMission::thunk_NoOpMissionVtableSlot44
-// GHIDRA_PROTO void __cdecl thunk_NoOpMissionVtableSlot44(void)
+// GHIDRA_NAME TArmyMission::thunk_NoOpMissionVtableSlot44_At0040476e
+// GHIDRA_PROTO void __cdecl thunk_NoOpMissionVtableSlot44_At0040476e(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to NoOpMissionVtableSlot44
+// GHIDRA_COMMENT_END
 
-void __cdecl TArmyMission::thunk_NoOpMissionVtableSlot44(void)
+/* Single-JMP thunk to NoOpMissionVtableSlot44 */
+
+void __cdecl TArmyMission::thunk_NoOpMissionVtableSlot44_At0040476e(void)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D35
-// GHIDRA_NAME TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext
-// GHIDRA_PROTO void __thiscall thunk_CleanupTArmyMissionAndReleaseChildContext(void)
+// GHIDRA_NAME TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext_At00405d35
+// GHIDRA_PROTO void __thiscall thunk_CleanupTArmyMissionAndReleaseChildContext_At00405d35(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to CleanupTArmyMissionAndReleaseChildContext
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to CleanupTArmyMissionAndReleaseChildContext */
 
-void __thiscall TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
+void __thiscall
+TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext_At00405d35(TArmyMission *this)
 
 {
   CleanupTArmyMissionAndReleaseChildContext(this);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004064A1
-// GHIDRA_NAME TArmyMission::thunk_ConstructTArmyMissionWithNodeKey
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyMissionWithNodeKey(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTArmyMissionWithNodeKey
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTArmyMissionWithNodeKey */
-
-void * __thiscall TArmyMission::thunk_ConstructTArmyMissionWithNodeKey(TArmyMission *this)
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063443a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  TMission::thunk_ConstructTMission((TMission *)this);
-  uStack_4 = 0;
-  *(undefined ***)this = &g_vtblTArmyMission;
-  *(undefined2 *)(this + 0x14) = in_stack_00000004;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar1 = &g_vtblRefCountedObjectBase;
-    uStack_4 = CONCAT31(uStack_4._1_3_,2);
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
-    *puVar1 = &g_vtblTArmyBattle;
-  }
-  uStack_4 = uStack_4 & 0xffffff00;
-  *(undefined4 **)(this + 0x18) = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  *(undefined4 *)(this + 0x1c) = 0;
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x24) = 0;
-  *(undefined4 *)(this + 0x28) = 0;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *unaff_FS_OFFSET = uStack_c;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00406D7F
-// GHIDRA_NAME TArmyMission::thunk_DestroyTArmyMission
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTArmyMission(void)
+// GHIDRA_NAME TArmyMission::thunk_DestroyTArmyMission_At00406d7f
+// GHIDRA_PROTO void * __thiscall thunk_DestroyTArmyMission_At00406d7f(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTArmyMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTArmyMission */
 
-void * __thiscall TArmyMission::thunk_DestroyTArmyMission(TArmyMission *this)
+void * __thiscall TArmyMission::thunk_DestroyTArmyMission_At00406d7f(TArmyMission *this)
 
 {
   void *pvVar1;
@@ -116,63 +70,19 @@ void * __thiscall TArmyMission::thunk_DestroyTArmyMission(TArmyMission *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408819
-// GHIDRA_NAME TArmyMission::thunk_GetArmyMissionClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetArmyMissionClassName(void)
+// GHIDRA_NAME TArmyMission::Reassess
+// GHIDRA_PROTO void * __cdecl Reassess(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetArmyMissionClassName
+// GHIDRA_COMMENT macos_vtable_slot=0;class=TArmyMission;confidence=low;current=thunk_GetTArmyMissionClassNamePointer_At00408819
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetArmyMissionClassName */
+/* macos_vtable_slot=0;class=TArmyMission;confidence=low;current=thunk_GetTArmyMissionClassNamePointer_At00408819
+    */
 
-void * __cdecl TArmyMission::thunk_GetArmyMissionClassName(void)
+void * __cdecl TArmyMission::Reassess(void)
 
 {
   return &g_pClassDescTArmyMission;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00534CF0
-// GHIDRA_NAME TArmyMission::NoOpMissionVtableSlot44
-// GHIDRA_PROTO void __cdecl NoOpMissionVtableSlot44(void)
-
-void __cdecl TArmyMission::NoOpMissionVtableSlot44(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053BFB0
-// GHIDRA_NAME TArmyMission::AllocateAndConstructTArmyMissionWithNodeKey
-// GHIDRA_PROTO undefined AllocateAndConstructTArmyMissionWithNodeKey()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x30 bytes and constructs base TArmyMissionWithNodeKey object; returns null on allocation failure.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0x30 bytes and constructs base TArmyMissionWithNodeKey object; returns null on
-   allocation failure. */
-
-void * __fastcall TArmyMission::AllocateAndConstructTArmyMissionWithNodeKey(undefined4 param_1)
-
-{
-  TArmyMission *this;
-  void *pvVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063440a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TArmyMission *)AllocateWithFallbackHandler(0x30,param_1);
-  local_4 = 0;
-  if (this != (TArmyMission *)0x0) {
-    pvVar1 = thunk_ConstructTArmyMissionWithNodeKey(this);
-    *unaff_FS_OFFSET = local_c;
-    return pvVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C030
@@ -190,60 +100,6 @@ void * __cdecl TArmyMission::GetTArmyMissionClassNamePointer(void)
   return &g_pClassDescTArmyMission;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0053C0A0
-// GHIDRA_NAME TArmyMission::ConstructTArmyMissionWithNodeKey
-// GHIDRA_PROTO void * __thiscall ConstructTArmyMissionWithNodeKey(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs TArmyMission base object and initializes node-key storage container.
-// GHIDRA_COMMENT [InheritanceEvidence] TArmyBattle derives from TArmyMission (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
-
-/* Constructs TArmyMission base object and initializes node-key storage container.
-   [InheritanceEvidence] TArmyBattle derives from TArmyMission (decomp_vtbl_seq_ctor, medium) */
-
-void * __thiscall TArmyMission::ConstructTArmyMissionWithNodeKey(TArmyMission *this)
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  uint local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063443a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TMission::thunk_ConstructTMission((TMission *)this);
-  local_4 = 0;
-  *(undefined ***)this = &g_vtblTArmyMission;
-  *(undefined2 *)(this + 0x14) = in_stack_00000004;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar1 = &g_vtblRefCountedObjectBase;
-    local_4 = CONCAT31(local_4._1_3_,2);
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
-    *puVar1 = &g_vtblTArmyBattle;
-  }
-  local_4 = local_4 & 0xffffff00;
-  *(undefined4 **)(this + 0x18) = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  *(undefined4 *)(this + 0x1c) = 0;
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x24) = 0;
-  *(undefined4 *)(this + 0x28) = 0;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *unaff_FS_OFFSET = local_c;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C1D0
 // GHIDRA_NAME TArmyMission::DestroyTArmyMission
 // GHIDRA_PROTO void * __thiscall DestroyTArmyMission(void)
@@ -255,7 +111,7 @@ void * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this)
   
   thunk_ResetTArmyMissionToSentinelVtable();
   if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -292,31 +148,14 @@ void __thiscall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(TArmyMis
     iVar1 = extraout_EAX_00;
     iVar3 = CONCAT31(extraout_var_00,bVar2);
   }
-  (**(code **)(**(int **)(this + 0x18) + 0x5c))();
-  if (*(int **)(this + 0x18) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x18) + 0x58))();
+  (**(code **)(*(int *)this->pField18 + 0x5c))();
+  if (this->pField18 != (int *)0x0) {
+    (**(code **)(*(int *)this->pField18 + 0x58))();
   }
-  *(undefined4 *)(this + 0x18) = 0;
+  this->pField18 = (void *)0x0;
   if (this != (TArmyMission *)0x0) {
-    (**(code **)(*(int *)this + 4))(1);
+    (**(code **)(this->field0_0x0 + 4))(1);
   }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053D630
-// GHIDRA_NAME TArmyMission::ReturnMissionIfMovementClassMatchesTargetTile
-// GHIDRA_PROTO void __cdecl ReturnMissionIfMovementClassMatchesTargetTile(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns mission pointer only when target tile movement class matches mission movement-class constraint.
-// GHIDRA_COMMENT_END
-
-/* Returns mission pointer only when target tile movement class matches mission movement-class
-   constraint. */
-
-void __cdecl TArmyMission::ReturnMissionIfMovementClassMatchesTargetTile(void)
-
-{
-  thunk_GetTileNormalizedMovementClassId();
   return;
 }
 

@@ -78,7 +78,7 @@ struct TradeControl {
   virtual void CtrlSlot13(void) = 0;
   virtual void CtrlSlot14(void) = 0;
   virtual void CtrlSlot15(void) = 0;
-  virtual void CtrlSlot16(void) = 0;
+  virtual void CtrlSlot16(int commandId, void* eventArg, int eventExtra) = 0;
   virtual void CtrlSlot17(void) = 0;
   virtual void CtrlSlot18(void) = 0;
   virtual void CtrlSlot19(void) = 0;
@@ -153,7 +153,7 @@ struct TradeControl {
   virtual void CtrlSlot88(void) = 0;
   virtual void CtrlSlot89(void) = 0;
   virtual void ApplyBoundsSlot168(int* boundsBuffer, int modeFlag) = 0;
-  virtual void CtrlSlot91(void) = 0;
+  virtual char CtrlSlot91(void* dispatchArg) = 0;
   virtual void CtrlSlot92(void) = 0;
   virtual void CtrlSlot93(void) = 0;
   virtual void CtrlSlot94(void) = 0;

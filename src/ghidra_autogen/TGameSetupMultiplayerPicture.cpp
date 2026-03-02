@@ -4,128 +4,45 @@
 // Bucket: TGameSetupMultiplayerPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E24
-// GHIDRA_NAME TGameSetupMultiplayerPicture::thunk_InitializeDiplomacyProtocolOptionsOrResetSelection
-// GHIDRA_PROTO void __thiscall thunk_InitializeDiplomacyProtocolOptionsOrResetSelection(void)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot055
+// GHIDRA_PROTO void __thiscall TGameSetupMultiplayerPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeDiplomacyProtocolOptionsOrResetSelection
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeDiplomacyProtocolOptionsOrResetSelection */
-
-void __thiscall
-TGameSetupMultiplayerPicture::thunk_InitializeDiplomacyProtocolOptionsOrResetSelection
-          (TGameSetupMultiplayerPicture *this)
-
-{
-  InitializeDiplomacyProtocolOptionsOrResetSelection(this);
-  return;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040355D
-// GHIDRA_NAME TGameSetupMultiplayerPicture::thunk_HandleSetupDialogCommandTagsAndDispatchEvents
-// GHIDRA_PROTO void __thiscall thunk_HandleSetupDialogCommandTagsAndDispatchEvents(void)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot015
+// GHIDRA_PROTO void __thiscall TGameSetupMultiplayerPicture_VtblSlot015(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleSetupDialogCommandTagsAndDispatchEvents
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleSetupDialogCommandTagsAndDispatchEvents */
-
-void __thiscall
-TGameSetupMultiplayerPicture::thunk_HandleSetupDialogCommandTagsAndDispatchEvents
-          (TGameSetupMultiplayerPicture *this)
-
-{
-  HandleSetupDialogCommandTagsAndDispatchEvents(this);
-  return;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403ADF
-// GHIDRA_NAME TGameSetupMultiplayerPicture::thunk_DestructTGameSetupMultiplayerPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTGameSetupMultiplayerPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TGameSetupMultiplayerPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTGameSetupMultiplayerPictureAndMaybeFree
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTGameSetupMultiplayerPictureAndMaybeFree */
-
-void * __thiscall
-TGameSetupMultiplayerPicture::thunk_DestructTGameSetupMultiplayerPictureAndMaybeFree
-          (TGameSetupMultiplayerPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTGameSetupMultiplayerPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004085BC
-// GHIDRA_NAME TGameSetupMultiplayerPicture::thunk_GetTGameSetupMultiplayerPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGameSetupMultiplayerPictureClassNamePointer(void)
+// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TGameSetupMultiplayerPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTGameSetupMultiplayerPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTGameSetupMultiplayerPictureClassNamePointer */
 
-void * __cdecl
-TGameSetupMultiplayerPicture::thunk_GetTGameSetupMultiplayerPictureClassNamePointer(void)
+void * __cdecl TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTGameSetupMultiplayerPictureClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00544FF0
-// GHIDRA_NAME TGameSetupMultiplayerPicture::ValidateAndPrepareGameFlowNameForDispatch
-// GHIDRA_PROTO void __thiscall ValidateAndPrepareGameFlowNameForDispatch(TGameSetupMultiplayerPicture * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Validates/normalizes game-flow name state and marks localization mode for subsequent dispatch.
-// GHIDRA_COMMENT_END
-
-/* Validates/normalizes game-flow name state and marks localization mode for subsequent dispatch. */
-
-void __thiscall
-TGameSetupMultiplayerPicture::ValidateAndPrepareGameFlowNameForDispatch
-          (TGameSetupMultiplayerPicture *this,TGameSetupMultiplayerPicture *pThis)
-
-{
-  char extraout_AL;
-  int iVar1;
-  undefined4 *unaff_FS_OFFSET;
-  TGameSetupMultiplayerPicture *local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00634968;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_10 = this;
-  InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
-  StringShared__AssignFromPtr(&local_10,(int *)(this + 0x74));
-  thunk_SaveSettingValueFromPointerByKey((int)&local_10,0x698010);
-  do {
-    iVar1 = TMapMaker::GetCurrentLocalEpochSecondsWithTimezoneCache(0);
-    *(int *)(this + 100) = iVar1;
-  } while (iVar1 == 0);
-  thunk_OpenRuntimeSelectionSourceAndApplyActiveNationState_At00407dbf();
-  if (extraout_AL != '\0') {
-    *(undefined4 *)(this + 0x40) = 0;
-    local_4 = 0xffffffff;
-    *(undefined4 *)(g_pLocalizationTable + 0x44) = 1;
-    ReleaseSharedStringRefIfNotEmpty();
-    *unaff_FS_OFFSET = local_c;
-    return;
-  }
-  local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = local_c;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575E90
@@ -146,12 +63,12 @@ void * __cdecl TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureI
   puStack_8 = &LAB_0063682a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTGameSetupMultiplayerPicture;
+    this->field0_0x0 = &g_vtblTGameSetupMultiplayerPicture;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -176,32 +93,12 @@ void * __cdecl TGameSetupMultiplayerPicture::GetTGameSetupMultiplayerPictureClas
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F30
 // GHIDRA_NAME TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTGameSetupMultiplayerPictureBaseState(void)
-
-void * __thiscall
-TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
-          (TGameSetupMultiplayerPicture *this)
-
-{
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined ***)this = &g_vtblTGameSetupMultiplayerPicture;
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F60
 // GHIDRA_NAME TGameSetupMultiplayerPicture::DestructTGameSetupMultiplayerPictureAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTGameSetupMultiplayerPictureAndMaybeFree(byte freeSelfFlag)
-
-void * __thiscall
-TGameSetupMultiplayerPicture::DestructTGameSetupMultiplayerPictureAndMaybeFree
-          (TGameSetupMultiplayerPicture *this,byte freeSelfFlag)
-
-{
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
-  }
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575FB0
 // GHIDRA_NAME TGameSetupMultiplayerPicture::InitializeDiplomacyProtocolOptionsOrResetSelection
@@ -209,259 +106,5 @@ TGameSetupMultiplayerPicture::DestructTGameSetupMultiplayerPictureAndMaybeFree
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes protocol-option controls; resets diplomacy runtime selection when provider init fails.
 // GHIDRA_COMMENT_END
-
-/* Initializes protocol-option controls; resets diplomacy runtime selection when provider init
-   fails. */
-
-void __thiscall
-TGameSetupMultiplayerPicture::InitializeDiplomacyProtocolOptionsOrResetSelection
-          (TGameSetupMultiplayerPicture *this)
-
-{
-  code *pcVar1;
-  char extraout_AL;
-  char cVar2;
-  int *piVar3;
-  int *extraout_EAX;
-  int extraout_EAX_00;
-  int iVar4;
-  int *extraout_EAX_01;
-  int extraout_EAX_02;
-  
-  thunk_NoOpUiLifecycleHook();
-  pcVar1 = *(code **)(*(int *)this + 0x94);
-  piVar3 = (int *)(*pcVar1)(0x70726f74);
-  (**(code **)(*piVar3 + 0xc))();
-  *(undefined2 *)(piVar3 + 0x23) = 0x4c;
-  *(undefined2 *)((int)piVar3 + 0x8e) = 0x4d;
-  thunk_InitializeProtocolOptionControlFromProvider();
-  if (extraout_AL == '\0') {
-    thunk_ResetDiplomacyRuntimeSelectionAndSetModeNada();
-  }
-  else {
-    thunk_InitializeSelectableTextOptionEntryIteratorContext();
-    thunk_BeginSelectableTextOptionEntryIterator();
-    thunk_IsSelectableTextOptionEntryIteratorValid();
-    piVar3 = extraout_EAX;
-    iVar4 = extraout_EAX_00;
-    while (iVar4 != 0) {
-      (**(code **)(*piVar3 + 0xc))();
-      thunk_ApplyUiTextStyleAndThemeFlags(piVar3,0,0xc,0x2b6c,0x2b6a);
-      thunk_AdvanceSelectableTextOptionEntryIterator();
-      thunk_IsSelectableTextOptionEntryIteratorValid();
-      piVar3 = extraout_EAX_01;
-      iVar4 = extraout_EAX_02;
-    }
-    g_pCursorControlPanel = (int *)(*pcVar1)(0x63757273);
-    (**(code **)(*g_pCursorControlPanel + 0xc))();
-    thunk_BuildUiTextStyleDescriptor();
-    (**(code **)(*g_pCursorControlPanel + 0x1e4))(&stack0xffffffd8,1);
-    (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6b,0x2b6c);
-    (**(code **)(*g_pCursorControlPanel + 0x1c4))(1,0);
-    InitializeMainRoutineContextAndRun();
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1f,0x72616e64);
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x20,0x7363656e);
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x21,0x6c6f6164);
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x22,0x6d756c74);
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x23,0x6a6f696e);
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x24,0x70726f74);
-  }
-  cVar2 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0();
-  if (cVar2 != '\0') {
-    piVar3 = (int *)(*pcVar1)(0x73706974);
-    iVar4 = *piVar3;
-    (**(code **)(iVar4 + 0xc))();
-    (**(code **)(iVar4 + 0xa8))(1,0);
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2759,7,piVar3);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00576230
-// GHIDRA_NAME TGameSetupMultiplayerPicture::HandleSetupDialogCommandTagsAndDispatchEvents
-// GHIDRA_PROTO void __thiscall HandleSetupDialogCommandTagsAndDispatchEvents(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Dispatches setup/menu command tags and posts follow-up turn-event codes (load/random/scenario/join/multiplayer paths).
-// GHIDRA_COMMENT_END
-
-/* Dispatches setup/menu command tags and posts follow-up turn-event codes
-   (load/random/scenario/join/multiplayer paths). */
-
-void __thiscall
-TGameSetupMultiplayerPicture::HandleSetupDialogCommandTagsAndDispatchEvents
-          (TGameSetupMultiplayerPicture *this)
-
-{
-  uint uVar1;
-  code *pcVar2;
-  char extraout_AL;
-  char extraout_AL_00;
-  char extraout_AL_01;
-  char extraout_AL_02;
-  char extraout_AL_03;
-  char cVar3;
-  char extraout_AL_04;
-  int iVar4;
-  int *piVar5;
-  TGameSetupMultiplayerPicture *unaff_EDI;
-  undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  char *local_1c;
-  int local_18;
-  undefined1 *local_14;
-  undefined1 *local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00636878;
-  *unaff_FS_OFFSET = &local_c;
-  if ((((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) ||
-     (in_stack_00000004 == 0xd)) {
-    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
-    if (uVar1 < 0x6c6f6165) {
-      if (uVar1 == 0x6c6f6164) goto LAB_005762a1;
-      if (uVar1 != 0x6a6f696e) goto LAB_005764ac;
-LAB_005763d6:
-      pcVar2 = *(code **)(*(int *)this + 0x94);
-      piVar5 = (int *)(*pcVar2)();
-      (**(code **)(*piVar5 + 0xc))();
-      piVar5 = (int *)(*pcVar2)();
-      (**(code **)(*piVar5 + 0xc))();
-      cVar3 = ValidateGameFlowNameAndSelectionContext();
-      if (cVar3 == '\0') {
-        InitializeSharedStringRefFromEmpty();
-        local_4 = 3;
-        thunk_LoadUiStringResourceByGroupAndIndex();
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        thunk_ResetGameFlowStateAndPostTurnEvent5DC();
-LAB_00576781:
-        local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
-        goto LAB_00576786;
-      }
-      WrapperFor_WriteProfileInt_At00403d23();
-    }
-    else if ((uVar1 == 0x72616e64) || (uVar1 == 0x7363656e)) {
-LAB_005762a1:
-      thunk_ReturnTrueStub();
-      cVar3 = extraout_AL;
-      while (cVar3 == '\0') {
-        InitializeSharedStringRefFromEmpty();
-        local_4 = 0;
-        thunk_LoadUiStringResourceByGroupAndIndex();
-        local_14 = &stack0xffffffc4;
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        local_4 = 0xffffffff;
-        if (extraout_AL_00 == '\0') goto LAB_00576781;
-        ReleaseSharedStringRefIfNotEmpty();
-        thunk_ReturnTrueStub();
-        cVar3 = extraout_AL_01;
-      }
-      ConstructSharedStringFromCStrOrResourceId();
-      local_4 = 1;
-      InitializeSharedStringRefFromEmpty();
-      local_4._0_1_ = 2;
-      thunk_LoadUiStringResourceByGroupAndIndex();
-      iVar4 = thunk_RunTaggedOptionDialogAndReturnSelectionTag(local_1c,&local_18);
-      if (iVar4 != 0x63616e63) {
-        iVar4 = CompareAnsiStringsWithMbcsAwareness();
-        if (iVar4 != 0) {
-          StringShared__AssignFromPtr(g_pGameFlowState + 0x74,&local_18);
-          local_4 = CONCAT31(local_4._1_3_,1);
-          ReleaseSharedStringRefIfNotEmpty();
-          local_4 = 0xffffffff;
-          ReleaseSharedStringRefIfNotEmpty();
-          goto LAB_005763d6;
-        }
-        thunk_LoadUiStringResourceByGroupAndIndex();
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-      }
-      local_4 = CONCAT31(local_4._1_3_,1);
-      ReleaseSharedStringRefIfNotEmpty();
-      goto LAB_00576781;
-    }
-LAB_005764ac:
-    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
-    if (uVar1 < 0x6c6f6165) {
-      if (uVar1 == 0x6c6f6164) {
-        *(undefined4 *)(g_pGameFlowState + 0xe0) = 0x6c6f6164;
-        thunk_ValidateAndPrepareGameFlowNameForDispatch(g_pGameFlowState,unaff_EDI);
-        if (extraout_AL_02 != '\0') {
-          *(undefined4 *)((int)g_pLocalizationTable + 0x44) = 1;
-          g_Advance_Turn_Machine_State_00695278 = -2;
-          goto LAB_0057670d;
-        }
-      }
-      else if (uVar1 == 0x6a6f696e) {
-        g_bScenarioSetupModeActive = 0;
-        *(undefined4 *)((int)g_pLocalizationTable + 0x44) = 2;
-        thunk_ApplyJoinGameSelectionAndPostTurnEvent5E4();
-      }
-    }
-    else if (uVar1 < 0x72616e65) {
-      if (uVar1 == 0x72616e64) {
-        *(undefined4 *)(g_pGameFlowState + 0xe0) = 0x72616e64;
-        thunk_ValidateAndPrepareGameFlowNameForDispatch(g_pGameFlowState,unaff_EDI);
-        if (extraout_AL_03 != '\0') {
-          *(undefined4 *)((int)g_pLocalizationTable + 0x44) = 1;
-LAB_0057670d:
-          thunk_PostTurnEventCodeMessage2420();
-        }
-      }
-      else if (uVar1 == 0x6d756c74) {
-        thunk_ResetGameFlowStateAndPostTurnEvent5DC();
-      }
-    }
-    else if (uVar1 == 0x7363656e) {
-      *(undefined4 *)(g_pGameFlowState + 0xe0) = 0x73636e30;
-      thunk_ValidateAndPrepareGameFlowNameForDispatch(g_pGameFlowState,unaff_EDI);
-      if (extraout_AL_04 != '\0') {
-        *(undefined4 *)((int)g_pLocalizationTable + 0x44) = 1;
-        goto LAB_0057670d;
-      }
-    }
-    else if (((uVar1 == 0x73706974) &&
-             (cVar3 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0(), cVar3 != '\0')
-             ) && (cVar3 = thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2759,8,0,1), cVar3 != '\0'))
-    {
-      thunk_DeleteLegacyCliSaveImpFiles_At00409953();
-      InitializeSharedStringRefFromEmpty();
-      local_4 = 4;
-      InitializeSharedStringRefFromEmpty();
-      local_4._0_1_ = 5;
-      InitializeSharedStringRefFromEmpty();
-      local_4._0_1_ = 6;
-      thunk_LoadUiStringResourceByGroupAndIndex();
-      FormatStringWithVarArgsToSharedRef();
-      scanBracketExpressions(g_pLocalizationTable,&local_14,local_1c);
-      local_10 = &stack0xffffffc4;
-      thunk_AssignStringSharedRefAndReturnThis();
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-      piVar5 = (int *)(**(code **)(*(int *)this + 0x94))();
-      iVar4 = *piVar5;
-      (**(code **)(iVar4 + 0xc))();
-      (**(code **)(iVar4 + 0xa8))();
-      local_10 = &stack0xffffffcc;
-      WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370();
-      InitializeAndRunMainRoutine();
-      local_4._0_1_ = 5;
-      ReleaseSharedStringRefIfNotEmpty();
-      local_4 = CONCAT31(local_4._1_3_,4);
-      ReleaseSharedStringRefIfNotEmpty();
-      local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
-    }
-  }
-  thunk_HandleCityDialogToggleCommandOrForward();
-LAB_00576786:
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
 

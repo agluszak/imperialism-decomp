@@ -44,6 +44,8 @@ add_executable(Imperialism
     src/game/TSoundPlayer.cpp
     src/game/TView.cpp
     src/game/TControl.cpp
+    src/game/TCapacityOrder.cpp
+    src/game/TGreatPower.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
 )

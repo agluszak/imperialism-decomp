@@ -26,6 +26,40 @@ typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef short    wchar_t;
 typedef unsigned short    word;
+typedef struct RuntimeClassState_0063E898 RuntimeClassState_0063E898, *PRuntimeClassState_0063E898;
+
+struct RuntimeClassState_0063E898 {
+    void *pRuntimeClassPtr; // manual
+    void *pChainHead; // manual
+    uint state08; // manual
+    uint state0C; // manual
+    uint state10; // manual
+    uint state14; // manual
+    uint seedOrCapacity; // manual
+};
+
+typedef struct RuntimeClassState_00646FB0 RuntimeClassState_00646FB0, *PRuntimeClassState_00646FB0;
+
+struct RuntimeClassState_00646FB0 {
+    void *pRuntimeClassPtr; // manual
+    void *pOwnedBuffer; // manual
+    uint state08; // manual
+    uint state0C; // manual
+    uint state10; // manual
+};
+
+typedef struct RuntimeClassState_0064B580 RuntimeClassState_0064B580, *PRuntimeClassState_0064B580;
+
+struct RuntimeClassState_0064B580 {
+    void *pRuntimeClassPtr; // manual
+    void *pChainHead; // manual
+    uint state08; // manual
+    uint state0C; // manual
+    uint state10; // manual
+    uint state14; // manual
+    uint seedOrCapacity; // manual
+};
+
 typedef struct TUiResourcePoolState TUiResourcePoolState, *PTUiResourcePoolState;
 
 struct TUiResourcePoolState {

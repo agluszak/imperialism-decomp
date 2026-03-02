@@ -3,51 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401140
-// GHIDRA_NAME TPtrList::thunk_WrapperFor_AddHead_At004885d0
-// GHIDRA_PROTO undefined thunk_WrapperFor_AddHead_At004885d0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddHead_At004885d0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddHead_At004885d0 */
-
-void TPtrList::thunk_WrapperFor_AddHead_At004885d0(void)
-
-{
-  ConstructTPtrListBaseState();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402649
-// GHIDRA_NAME TPtrList::thunk_GetTPtrListClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetTPtrListClassName(void)
-
-void * __cdecl TPtrList::thunk_GetTPtrListClassName(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPtrListClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C84
-// GHIDRA_NAME TPtrList::thunk_WrapperFor_AddHead_At004885f0
-// GHIDRA_PROTO undefined thunk_WrapperFor_AddHead_At004885f0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddHead_At004885f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddHead_At004885f0 */
-
-void TPtrList::thunk_WrapperFor_AddHead_At004885f0(void)
-
-{
-  DestructTPtrListAndMaybeFree();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00488510
 // GHIDRA_NAME TPtrList::GetTPtrListClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTPtrListClassNamePointer(void)
@@ -65,7 +20,7 @@ void * __cdecl TPtrList::GetTPtrListClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004885D0
 // GHIDRA_NAME TPtrList::ConstructTPtrListBaseState
-// GHIDRA_PROTO undefined ConstructTPtrListBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTPtrListBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AddHead; instructions=5, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -73,16 +28,16 @@ void * __cdecl TPtrList::GetTPtrListClassNamePointer(void)
 /* [WrapperShape] small wrapper around AddHead; instructions=5, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
-void TPtrList::ConstructTPtrListBaseState(undefined4 param_1)
+void __thiscall TPtrList::ConstructTPtrListBaseState(TPtrList *this)
 
 {
-  AddHead(param_1);
+  TArmyStack::AddHead((TArmyStack *)&this->field04);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004885F0
 // GHIDRA_NAME TPtrList::DestructTPtrListAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPtrListAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTPtrListAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AddHead; instructions=5, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -90,10 +45,10 @@ void TPtrList::ConstructTPtrListBaseState(undefined4 param_1)
 /* [WrapperShape] small wrapper around AddHead; instructions=5, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
-void TPtrList::DestructTPtrListAndMaybeFree(undefined4 param_1)
+void __thiscall TPtrList::DestructTPtrListAndMaybeFree(TPtrList *this)
 
 {
-  AddHead(param_1);
+  TArmyStack::AddHead((TArmyStack *)&this->field04);
   return;
 }
 

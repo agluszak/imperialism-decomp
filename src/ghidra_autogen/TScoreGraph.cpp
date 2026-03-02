@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TScoreGraph.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402964
+// GHIDRA_NAME TScoreGraph::thunk_scalar_deleting_destructor_00402964
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402964(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TScoreGraph::thunk_scalar_deleting_destructor_00402964(TScoreGraph *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00402D01
 // GHIDRA_NAME TScoreGraph::thunk_GetTScoreGraphClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTScoreGraphClassNamePointer(void)
@@ -22,34 +41,18 @@ void * __cdecl TScoreGraph::thunk_GetTScoreGraphClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040329C
-// GHIDRA_NAME TScoreGraph::thunk_InitializeScoreGraphNationLabelsAndCursorPanel
-// GHIDRA_PROTO void __thiscall thunk_InitializeScoreGraphNationLabelsAndCursorPanel(void)
+// GHIDRA_NAME TScoreGraph::thunk_ConstructTScoreGraphBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTScoreGraphBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeScoreGraphNationLabelsAndCursorPanel.
+// GHIDRA_COMMENT Thunk wrapper for InitializeScoreGraphNationLabelsAndCursorPanel. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for InitializeScoreGraphNationLabelsAndCursorPanel. */
+/* Thunk wrapper for InitializeScoreGraphNationLabelsAndCursorPanel. [FID:thunk_target_sync] */
 
-void __thiscall TScoreGraph::thunk_InitializeScoreGraphNationLabelsAndCursorPanel(TScoreGraph *this)
+void __thiscall TScoreGraph::thunk_ConstructTScoreGraphBaseState(TScoreGraph *this)
 
 {
   ConstructTScoreGraphBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408EA4
-// GHIDRA_NAME TScoreGraph::thunk_RenderScoreGraphSeriesAndLabels_At00408ea4
-// GHIDRA_PROTO void __thiscall thunk_RenderScoreGraphSeriesAndLabels_At00408ea4(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderScoreGraphSeriesAndLabels
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderScoreGraphSeriesAndLabels */
-
-void __thiscall TScoreGraph::thunk_RenderScoreGraphSeriesAndLabels_At00408ea4(TScoreGraph *this)
-
-{
-  CreateTDisplayMgrInstance(this);
   return;
 }
 
@@ -88,107 +91,19 @@ void __thiscall TScoreGraph::ConstructTScoreGraphBaseState(TScoreGraph *this)
   thunk_RecomputeNationComparativePowerMetrics(g_pDiplomacyTurnStateManager);
   iVar2 = 0;
   do {
-    piVar1 = (int *)(**(code **)(*(int *)this[8].pVtable + 0x94))();
+    piVar1 = (int *)(**(code **)(*(int *)this->field29_0x20 + 0x94))();
     (**(code **)(*piVar1 + 0xc))();
     thunk_LoadUiStringByGroupAndIndexToControlObject(0x2757,iVar2 + 9,piVar1);
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);
   puStack00000004 = &stack0xffffffec;
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&stack0xffffffec);
+  TToolBarCluster::InitializeAndRunMainRoutine();
   piVar1 = (int *)(**(code **)((int)this->pVtable + 0x58))();
-  g_pCursorControlPanel = (int *)(**(code **)(*piVar1 + 0x94))();
-  (**(code **)(*g_pCursorControlPanel + 0xc))();
-  (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004FE390
-// GHIDRA_NAME TScoreGraph::CreateTDisplayMgrInstance
-// GHIDRA_PROTO void __thiscall CreateTDisplayMgrInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders score-graph series bars/labels using diplomacy/terrain state snapshots.
-// GHIDRA_COMMENT_END
-
-/* Renders score-graph series bars/labels using diplomacy/terrain state snapshots. */
-
-void __thiscall TScoreGraph::CreateTDisplayMgrInstance(TScoreGraph *this)
-
-{
-  int iVar1;
-  int *piVar2;
-  int iVar3;
-  void *this_00;
-  short sVar4;
-  int iVar5;
-  int iVar6;
-  undefined4 *unaff_FS_OFFSET;
-  int local_34;
-  int local_30;
-  int local_24;
-  int local_1c;
-  int local_18;
-  int local_14;
-  int local_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00633228;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  sVar4 = 0;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  local_24 = 0;
-  local_34 = 0;
-  do {
-    if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_34) != 0) {
-      local_30 = 0;
-      iVar6 = 0;
-      piVar2 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + local_24);
-      iVar3 = 4;
-      do {
-        iVar5 = *piVar2;
-        piVar2 = piVar2 + 1;
-        iVar6 = iVar6 + iVar5;
-        iVar3 = iVar3 + -1;
-      } while (iVar3 != 0);
-      SetQuickDrawFillColor();
-      iVar5 = (int)sVar4;
-      local_18 = iVar5 + 2;
-      local_14 = (short)iVar6 + 2;
-      local_10 = iVar5 + 0x26;
-      local_1c = 2;
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_1c);
-      iVar6 = 0;
-      iVar3 = local_24 + 0x1824;
-      do {
-        local_1c = (int)(short)local_30;
-        iVar1 = *(int *)((int)g_pDiplomacyTurnStateManager->relationCodeMatrix17x17 + iVar3 + -4);
-        local_14 = (short)iVar1 + local_1c;
-        local_10 = iVar5 + 0x24;
-        local_18 = iVar5;
-        (**(code **)(*g_pUiRuntimeContext + 0x34))();
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_1c);
-        local_30 = local_30 + iVar1;
-        iVar6 = iVar6 + 1;
-        iVar3 = iVar3 + 4;
-      } while (iVar6 < 4);
-      InitializeSharedStringRefFromEmpty();
-      uStack_4 = 0;
-      FormatOverlayTerrainLabelText();
-      SetQuickDrawFillColor();
-      thunk_SetQuickDrawTextOriginWithContextOffset(0,sVar4 + 0x30);
-      thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-      sVar4 = sVar4 + 0x34;
-      uStack_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
-    }
-    local_24 = local_24 + 0x10;
-    local_34 = local_34 + 4;
-  } while (local_24 < 0x70);
-  *unaff_FS_OFFSET = uStack_c;
+  g_pCursorControlPanel = (void *)(**(code **)(*piVar1 + 0x94))();
+  (**(code **)(*(int *)g_pCursorControlPanel + 0xc))();
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x204))(0x2b6c);
   return;
 }
 

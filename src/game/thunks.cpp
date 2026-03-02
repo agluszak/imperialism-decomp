@@ -108,3 +108,38 @@ void thunk_AssertCityProductionGlobalStateInitialized(void) {
 void thunk_InvokeStrategicMapViewMethod5C(void) {
   InvokeStrategicMapViewMethod5C();
 }
+
+// Compatibility aliases for thunk names that were renamed in recent exports.
+// Keep these minimal so existing manual files continue to link.
+
+undefined4 GetOrCreateMfcModuleThreadState(void) {
+  return 0;
+}
+
+undefined4 LoadResourceStringToSharedBuffer(void) {
+  return 0;
+}
+
+undefined4 thunk_DestructEngineerDialogBaseState(void) {
+  return 0;
+}
+
+undefined4 thunk_DestructTShipAndFreeIfOwned(void) {
+  return 0;
+}
+
+undefined4 thunk_InitializeTradeMoveAndBarControls(void) {
+  return 0;
+}
+
+undefined4 thunk_RenderCivilianTargetLegendVariantA(void) {
+  return 0;
+}
+
+undefined4 thunk_RenderCivilianTargetLegendVariantB(void) {
+  return 0;
+}
+
+undefined4 thunk_BuildCivReportNationEntryDetailTextBlock(void) {
+  return 0;
+}

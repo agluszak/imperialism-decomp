@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TMultiMessagePicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401A6E
+// GHIDRA_NAME TMultiMessagePicture::thunk_scalar_deleting_destructor_00401A6E
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00401A6E(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TMultiMessagePicture::thunk_scalar_deleting_destructor_00401A6E
+          (TMultiMessagePicture *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407996
 // GHIDRA_NAME TMultiMessagePicture::thunk_GetTMultiMessagePictureClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTMultiMessagePictureClassNamePointer(void)
@@ -19,42 +39,6 @@ void * __cdecl TMultiMessagePicture::thunk_GetTMultiMessagePictureClassNamePoint
   
   pvVar1 = GetTMultiMessagePictureClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0054EC20
-// GHIDRA_NAME TMultiMessagePicture::AllocateAndConstructTMultiMessagePicture
-// GHIDRA_PROTO undefined AllocateAndConstructTMultiMessagePicture()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x90-byte picture object, runs picture base ctor, and assigns TMultiMessagePicture vtable.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0x90-byte picture object, runs picture base ctor, and assigns TMultiMessagePicture
-   vtable. */
-
-undefined4 * TMultiMessagePicture::AllocateAndConstructTMultiMessagePicture(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00634faa;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
-  local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTMultiMessagePictureClassNamePointer_00643818;
-    puVar2 = puVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0

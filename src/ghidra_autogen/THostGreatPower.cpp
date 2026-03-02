@@ -22,8 +22,43 @@ void __thiscall THostGreatPower::thunk_DestructTHostGreatPower(THostGreatPower *
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401514
+// GHIDRA_NAME THostGreatPower::thunk_ProcessPendingDiplomacyThenDispatchTurnEvent29A
+// GHIDRA_PROTO void __thiscall thunk_ProcessPendingDiplomacyThenDispatchTurnEvent29A(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ProcessPendingDiplomacyThenDispatchTurnEvent29A
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ProcessPendingDiplomacyThenDispatchTurnEvent29A */
+
+void __thiscall
+THostGreatPower::thunk_ProcessPendingDiplomacyThenDispatchTurnEvent29A(THostGreatPower *this)
+
+{
+  TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A((TGreatPower *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404273
+// GHIDRA_NAME THostGreatPower::thunk_TryDispatchNationActionViaUiThenTurnEvent
+// GHIDRA_PROTO void __thiscall thunk_TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to TryDispatchNationActionViaUiThenTurnEvent
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to TryDispatchNationActionViaUiThenTurnEvent */
+
+void __thiscall
+THostGreatPower::thunk_TryDispatchNationActionViaUiThenTurnEvent
+          (THostGreatPower *this,int arg1,int arg2)
+
+{
+  TGreatPower::TryDispatchNationActionViaUiThenTurnEvent((TGreatPower *)this,arg1,arg2);
   return;
 }
 
@@ -64,7 +99,7 @@ void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

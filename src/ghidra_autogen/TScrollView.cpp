@@ -4,19 +4,38 @@
 // Bucket: TScrollView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004034D1
-// GHIDRA_NAME TScrollView::thunk_InitializeScrollViewAndAttachScrollBarChild
-// GHIDRA_PROTO void __thiscall thunk_InitializeScrollViewAndAttachScrollBarChild(void)
+// GHIDRA_NAME TScrollView::thunk_DestructTScrollViewAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTScrollViewAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeScrollViewAndAttachScrollBarChild.
+// GHIDRA_COMMENT Thunk forwarding to InitializeScrollViewAndAttachScrollBarChild. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to InitializeScrollViewAndAttachScrollBarChild. */
+/* Thunk forwarding to InitializeScrollViewAndAttachScrollBarChild. [FID:thunk_target_sync] */
 
-void __thiscall TScrollView::thunk_InitializeScrollViewAndAttachScrollBarChild(TScrollView *this)
+void __thiscall TScrollView::thunk_DestructTScrollViewAndMaybeFree(TScrollView *this)
 
 {
   DestructTScrollViewAndMaybeFree(this);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407E6E
+// GHIDRA_NAME TScrollView::thunk_scalar_deleting_destructor_00407E6E
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407E6E(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TScrollView::thunk_scalar_deleting_destructor_00407E6E(TScrollView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408B75
@@ -60,12 +79,12 @@ void * __cdecl TScrollView::CreateTScrollViewInstance(void)
   puStack_8 = &LAB_0063663a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTScrollViewClassNamePointer_006417e0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTScrollViewClassNamePointer_006417e0;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -89,7 +108,7 @@ void * __cdecl TScrollView::GetTScrollViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CB0
 // GHIDRA_NAME TScrollView::ConstructTScrollViewBaseState
-// GHIDRA_PROTO undefined ConstructTScrollViewBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTScrollViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_InitializeUiResourceEntryFrameAndParent; instructions=12, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -97,7 +116,7 @@ void * __cdecl TScrollView::GetTScrollViewClassNamePointer(void)
 /* [WrapperShape] small wrapper around thunk_InitializeUiResourceEntryFrameAndParent;
    instructions=12, call_insns=1, internal_calls=1, unique_internal=1 */
 
-void TScrollView::ConstructTScrollViewBaseState(void)
+void __thiscall TScrollView::ConstructTScrollViewBaseState(TScrollView *this)
 
 {
   thunk_InitializeUiResourceEntryFrameAndParent();
@@ -130,20 +149,20 @@ void __thiscall TScrollView::DestructTScrollViewAndMaybeFree(TScrollView *this)
   *unaff_FS_OFFSET = &uStack_c;
   thunk_NoOpUiLifecycleHook();
   pvVar1 = (void *)(**(code **)((int)this->pVtable + 0x94))(0x7363726f);
-  this[0x18].pVtable = pvVar1;
-  this_00 = (TControl *)AllocateWithFallbackHandler(0x94);
+  this->field63_0x60 = pvVar1;
+  this_00 = AllocateWithFallbackHandler();
   puStack_8 = (undefined1 *)0x0;
   if (this_00 == (TControl *)0x0) {
     this_00 = (TControl *)0x0;
   }
   else {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
-    *(undefined ***)this_00 = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
-    *(undefined4 *)(this_00 + 0x90) = 0;
+    (this_00->base).pVtable = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
+    this_00->field90 = (byte *)0x0;
   }
   puStack_8 = (undefined1 *)0xffffffff;
-  TScrollBarView::thunk_InitializeScrollBarViewButtonsAndGeometry((TScrollBarView *)this_00);
-  this[0x19].pVtable = this_00;
+  TScrollBarView::thunk_ConstructTScrollBarViewBaseState((TScrollBarView *)this_00);
+  this->field64_0x64 = this_00;
   *unaff_FS_OFFSET = uStack_10;
   return;
 }

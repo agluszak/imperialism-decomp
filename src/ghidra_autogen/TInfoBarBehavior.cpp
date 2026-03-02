@@ -4,8 +4,8 @@
 // Bucket: TInfoBarBehavior.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404296
-// GHIDRA_NAME TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTInfoBarBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree_At00404296
+// GHIDRA_PROTO void * __thiscall thunk_DestructTInfoBarBehaviorAndMaybeFree_At00404296(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTInfoBarBehaviorAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructTInfoBarBehaviorAndMaybeFree */
 
 void * __thiscall
-TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree
+TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree_At00404296
           (TInfoBarBehavior *this,byte freeSelfFlag)
 
 {
@@ -24,15 +24,16 @@ TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406721
-// GHIDRA_NAME TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip
-// GHIDRA_PROTO void __thiscall thunk_RefreshInfoBarCursorPanelRegionClip(void)
+// GHIDRA_NAME TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip_At00406721
+// GHIDRA_PROTO void __thiscall thunk_RefreshInfoBarCursorPanelRegionClip_At00406721(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
+// GHIDRA_COMMENT Single-JMP thunk to RefreshInfoBarCursorPanelRegionClip
 // GHIDRA_COMMENT_END
 
-/* Direct thunk */
+/* Single-JMP thunk to RefreshInfoBarCursorPanelRegionClip */
 
-void __thiscall TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip(TInfoBarBehavior *this)
+void __thiscall
+TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip_At00406721(TInfoBarBehavior *this)
 
 {
   RefreshInfoBarCursorPanelRegionClip(this);
@@ -40,15 +41,15 @@ void __thiscall TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip(TInf
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409359
-// GHIDRA_NAME TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTInfoBarBehaviorClassNamePointer(void)
+// GHIDRA_NAME TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer_At00409359
+// GHIDRA_PROTO void * __cdecl thunk_GetTInfoBarBehaviorClassNamePointer_At00409359(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTInfoBarBehaviorClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTInfoBarBehaviorClassNamePointer */
 
-void * __cdecl TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer(void)
+void * __cdecl TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer_At00409359(void)
 
 {
   void *pvVar1;
@@ -75,7 +76,7 @@ void * __cdecl TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
   puStack_8 = &LAB_00630c42;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TBehavior *)AllocateWithFallbackHandler(0x24);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TBehavior *)0x0;
   if (pThis != (TBehavior *)0x0) {
@@ -123,7 +124,7 @@ void * __thiscall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarB
   TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  *(undefined ***)this = &g_vtblTInfoBarBehavior;
+  this->field0_0x0 = &g_vtblTInfoBarBehavior;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -138,7 +139,7 @@ TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this,by
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -156,13 +157,13 @@ void __thiscall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(TInfoBarBe
 
 {
   char extraout_AL;
-  undefined4 unaff_retaddr;
+  int unaff_retaddr;
   
-  if (g_pCursorControlPanel != (int *)0x0) {
+  if (g_pCursorControlPanel != (void *)0x0) {
     thunk_AssignStringSharedRefAndReturnThis();
-    (**(code **)(*g_pCursorControlPanel + 0x200))();
-    (**(code **)(**(int **)(this + 8) + 0xf8))();
-    GetRegionBoxToRectIfPresent();
+    (**(code **)(*(int *)g_pCursorControlPanel + 0x200))();
+    (**(code **)(*(int *)this->pField08 + 0xf8))();
+    GetRegionBoxToRectIfPresent(unaff_retaddr);
     if (extraout_AL != '\0') {
       WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0(unaff_retaddr,0,0,0x280,0x1e0);
     }

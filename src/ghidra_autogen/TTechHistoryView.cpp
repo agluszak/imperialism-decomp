@@ -21,24 +21,43 @@ void * __cdecl TTechHistoryView::thunk_GetTTechHistoryViewClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408DA5
-// GHIDRA_NAME TTechHistoryView::thunk_InitializeTechHistoryViewTitleAndMapKeyControls
-// GHIDRA_PROTO void * __thiscall thunk_InitializeTechHistoryViewTitleAndMapKeyControls(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00407711
+// GHIDRA_NAME TTechHistoryView::thunk_scalar_deleting_destructor_00407711
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407711(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeTechHistoryViewTitleAndMapKeyControls.
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for InitializeTechHistoryViewTitleAndMapKeyControls. */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
 void * __thiscall
-TTechHistoryView::thunk_InitializeTechHistoryViewTitleAndMapKeyControls(TTechHistoryView *this)
+TTechHistoryView::thunk_scalar_deleting_destructor_00407711
+          (TTechHistoryView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408DA5
+// GHIDRA_NAME TTechHistoryView::thunk_ConstructTTechHistoryViewBaseState
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTTechHistoryViewBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for InitializeTechHistoryViewTitleAndMapKeyControls. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for InitializeTechHistoryViewTitleAndMapKeyControls. [FID:thunk_target_sync] */
+
+void * __thiscall TTechHistoryView::thunk_ConstructTTechHistoryViewBaseState(TTechHistoryView *this)
 
 {
   code *pcVar1;
   int iVar2;
   undefined4 uVar3;
   int *piVar4;
-  TStaticText *this_00;
+  TTEView *this_00;
   undefined4 *extraout_EAX;
   int iVar5;
   void *pvVar6;
@@ -105,36 +124,38 @@ TTechHistoryView::thunk_InitializeTechHistoryViewTitleAndMapKeyControls(TTechHis
   (**(code **)(iVar2 + 0x1c8))(iStack_10 + 0x944,1);
   piVar4 = (int *)(*pcVar1)(0x73637677);
   (**(code **)(*piVar4 + 0xc))();
-  this_00 = (TStaticText *)AllocateWithFallbackHandler(0xa4);
+  this_00 = AllocateWithFallbackHandler();
   uStack_24 = 0;
-  if (this_00 == (TStaticText *)0x0) {
-    this_00 = (TStaticText *)0x0;
+  if (this_00 == (TTEView *)0x0) {
+    this_00 = (TTEView *)0x0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
-    *(undefined ***)this_00 = &g_vtblTMapKey;
+    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
+    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
     uStack_24 = CONCAT31(uStack_24._1_3_,1);
-    this_00[0x98] = (TStaticText)0x0;
-    this_00[0x99] = (TStaticText)0x0;
-    this_00[0x9a] = (TStaticText)0x0;
-    this_00[0x9b] = (TStaticText)0x0;
+    this_00->field_0x98 = 0;
+    this_00->field_0x99 = 0;
+    this_00->field_0x9a = 0;
+    this_00->field_0x9b = 0;
     thunk_ClearColorRgbaBytes();
-    *(undefined ***)this_00 = &g_vtblTMapKey;
+    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
     thunk_SetColorRgbAndClearAlphaByte();
     uVar3 = *extraout_EAX;
-    this_00[0xa0] = (TStaticText)0x0;
-    *(undefined4 *)(this_00 + 0x98) = uVar3;
+    this_00->field_0xa0 = 0;
+    *(undefined4 *)&this_00->field_0x98 = uVar3;
   }
   uStack_24 = 0xffffffff;
   uStack_4c = 0;
   uStack_48 = 0;
   uStack_44 = 0;
   aiStack_40[0] = 0;
-  TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout((TDeluxeText *)this_00);
-  iVar2 = *(int *)this_00;
-  *(undefined4 *)((TTEView *)this_00 + 0x98) = 0x2712;
+  TDeluxeText::thunk_ConstructTDeluxeTextBaseState
+            ((TDeluxeText *)this_00,(int)piVar4,(int)&stack0xffffffa0,(int)&stack0xffffff94,
+             (int)&uStack_4c,(int)&stack0xffffffa8,-2);
+  iVar2 = this_00->field0_0x0;
+  *(undefined4 *)&this_00->field_0x98 = 0x2712;
   (**(code **)(iVar2 + 0x1dc))(iStack_1c + 0x8fc);
-  iVar5 = TTEView::thunk_MeasureRenderedTextWidthWithCompatibleDC((TTEView *)this_00);
+  iVar5 = TTEView::thunk_DestructTTEViewAndMaybeFree(this_00);
   (**(code **)(iVar2 + 300))(aiStack_40);
   iStack_38 = aiStack_40[0] + (short)iVar5;
   (**(code **)(iVar2 + 0x168))(&uStack_44,1);
@@ -169,12 +190,12 @@ void * __cdecl TTechHistoryView::CreateTTechHistoryViewInstance(void)
   puStack_8 = &LAB_00638b2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTTechHistoryViewClassNamePointer_00645ab0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTTechHistoryViewClassNamePointer_00645ab0;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -213,7 +234,7 @@ void * __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHist
   int iVar2;
   undefined4 uVar3;
   int *piVar4;
-  TStaticText *this_00;
+  TTEView *this_00;
   undefined4 *extraout_EAX;
   int iVar5;
   void *pvVar6;
@@ -280,36 +301,38 @@ void * __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHist
   (**(code **)(iVar2 + 0x1c8))(iStack_10 + 0x944,1);
   piVar4 = (int *)(*pcVar1)(0x73637677);
   (**(code **)(*piVar4 + 0xc))();
-  this_00 = (TStaticText *)AllocateWithFallbackHandler(0xa4);
+  this_00 = AllocateWithFallbackHandler();
   uStack_24 = 0;
-  if (this_00 == (TStaticText *)0x0) {
-    this_00 = (TStaticText *)0x0;
+  if (this_00 == (TTEView *)0x0) {
+    this_00 = (TTEView *)0x0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
-    *(undefined ***)this_00 = &g_vtblTMapKey;
+    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
+    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
     uStack_24 = CONCAT31(uStack_24._1_3_,1);
-    this_00[0x98] = (TStaticText)0x0;
-    this_00[0x99] = (TStaticText)0x0;
-    this_00[0x9a] = (TStaticText)0x0;
-    this_00[0x9b] = (TStaticText)0x0;
+    this_00->field_0x98 = 0;
+    this_00->field_0x99 = 0;
+    this_00->field_0x9a = 0;
+    this_00->field_0x9b = 0;
     thunk_ClearColorRgbaBytes();
-    *(undefined ***)this_00 = &g_vtblTMapKey;
+    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
     thunk_SetColorRgbAndClearAlphaByte();
     uVar3 = *extraout_EAX;
-    this_00[0xa0] = (TStaticText)0x0;
-    *(undefined4 *)(this_00 + 0x98) = uVar3;
+    this_00->field_0xa0 = 0;
+    *(undefined4 *)&this_00->field_0x98 = uVar3;
   }
   uStack_24 = 0xffffffff;
   uStack_4c = 0;
   uStack_48 = 0;
   uStack_44 = 0;
   aiStack_40[0] = 0;
-  TDeluxeText::thunk_ApplyTextStyleRectAndRefreshLayout((TDeluxeText *)this_00);
-  iVar2 = *(int *)this_00;
-  *(undefined4 *)((TTEView *)this_00 + 0x98) = 0x2712;
+  TDeluxeText::thunk_ConstructTDeluxeTextBaseState
+            ((TDeluxeText *)this_00,(int)piVar4,(int)&stack0xffffffa0,(int)&stack0xffffff94,
+             (int)&uStack_4c,(int)&stack0xffffffa8,-2);
+  iVar2 = this_00->field0_0x0;
+  *(undefined4 *)&this_00->field_0x98 = 0x2712;
   (**(code **)(iVar2 + 0x1dc))(iStack_1c + 0x8fc);
-  iVar5 = TTEView::thunk_MeasureRenderedTextWidthWithCompatibleDC((TTEView *)this_00);
+  iVar5 = TTEView::thunk_DestructTTEViewAndMaybeFree(this_00);
   (**(code **)(iVar2 + 300))(aiStack_40);
   iStack_38 = aiStack_40[0] + (short)iVar5;
   (**(code **)(iVar2 + 0x168))(&uStack_44,1);
@@ -344,15 +367,15 @@ void * __cdecl TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
   puStack_8 = &LAB_00638b82;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
+    TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTAdorner;
+    this->pVtable = &g_vtblTAdorner;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &PTR_thunk_GetTGameSetupDialogClassNamePointer_0066b380;
+    this->pVtable = &PTR_thunk_GetTGameSetupDialogClassNamePointer_0066b380;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

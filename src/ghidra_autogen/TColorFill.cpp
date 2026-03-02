@@ -3,39 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TColorFill.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404B51
-// GHIDRA_NAME TColorFill::thunk_GetTColorFillClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTColorFillClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTColorFillClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTColorFillClassNamePointer */
-
-void * __cdecl TColorFill::thunk_GetTColorFillClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTColorFillClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00405583
-// GHIDRA_NAME TColorFill::thunk_GetTColorFillRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTColorFillRuntimeClass(void)
+// GHIDRA_NAME TColorFill::thunk_CreateTColorFillInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTColorFillInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTColorFillRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTColorFillRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTColorFillRuntimeClass. */
+/* Thunk forwarding to GetTColorFillRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TColorFill::thunk_GetTColorFillRuntimeClass(TColorFill *this)
+void * __thiscall TColorFill::thunk_CreateTColorFillInstance(TColorFill *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -53,7 +35,7 @@ void * __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -94,12 +76,12 @@ void * __cdecl TColorFill::DestructTColorFillAndMaybeFree(void)
   puStack_8 = &LAB_006332fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &PTR_thunk_GetTGWorldPeekerClassNamePointer_00656748;
-    *(undefined4 *)(this + 0x60) = 0;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &PTR_thunk_GetTGWorldPeekerClassNamePointer_00656748;
+    this[1].pVtable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }

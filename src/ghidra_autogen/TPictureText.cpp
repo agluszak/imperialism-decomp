@@ -4,16 +4,15 @@
 // Bucket: TPictureText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403C33
-// GHIDRA_NAME TPictureText::thunk_DestructTPictureTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPictureTextAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TPictureText::TPictureText_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TPictureText_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTPictureTextAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTPictureTextAndMaybeFree */
 
-void * __thiscall
-TPictureText::thunk_DestructTPictureTextAndMaybeFree(TPictureText *this,byte freeSelfFlag)
+void * __thiscall TPictureText::TPictureText_VtblSlot001(TPictureText *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +22,15 @@ TPictureText::thunk_DestructTPictureTextAndMaybeFree(TPictureText *this,byte fre
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040585D
-// GHIDRA_NAME TPictureText::thunk_GetTPictureTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPictureTextClassNamePointer(void)
+// GHIDRA_NAME TPictureText::TPictureText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TPictureText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTPictureTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTPictureTextClassNamePointer */
 
-void * __cdecl TPictureText::thunk_GetTPictureTextClassNamePointer(void)
+void * __cdecl TPictureText::TPictureText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,12 +57,12 @@ void * __cdecl TPictureText::CreateTPictureTextInstance(void)
   puStack_8 = &LAB_00638e2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTPictureText;
+    (this->base).pVtable = &g_vtblTPictureText;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -93,7 +92,7 @@ void * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureText *thi
 
 {
   TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  *(undefined ***)this = &g_vtblTPictureText;
+  this->field0_0x0 = &g_vtblTPictureText;
   return this;
 }
 
@@ -112,7 +111,7 @@ TPictureText::DestructTPictureTextAndMaybeFree(TPictureText *this,byte freeSelfF
 {
   TStaticText::DestructTStaticTextCore((TStaticText *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

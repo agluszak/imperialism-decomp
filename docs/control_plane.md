@@ -470,3 +470,220 @@ Global snapshot (`2026-02-24T12:13:54Z`):
 2. average similarity: `2.52%`
 3. paired coverage: `100.00%`
 4. failed-to-match lines: `0`.
+
+## 2026-02-25 22:37 UTC checkpoint - trade-screen micro-shape wins
+
+Focused trade-screen updates:
+1. `0x00583BD0` `HandleTradeArrowAutoRepeatTickAndDispatch`: `58.18% -> 67.77%`.
+2. `0x00586A60` `OrphanTiny_SetWordEcxOffset_8c_00586a60`: `40.00% -> 100.00%`.
+3. `0x00586A80` `OrphanLeaf_NoCall_Ins05_00586a80`: `40.00% -> 100.00%`.
+4. `0x00586AB0` `OrphanTiny_SetWordEcxOffset_8e_00586ab0`: `40.00% -> 100.00%`.
+
+What changed:
+1. Restored `thiscall` stack-arg shape in `0x00583BD0` for both dispatch thunk call and slot `+0x40` calls (dummy `edx` fastcall bridge).
+2. Rewired nil-pointer assert helper to call `thunk_DestructTShipAndFreeIfOwned(file, line)` cast instead of the previous incorrect cast target.
+3. Applied local `#pragma optimize("y", on)` bracket for the three tiny `0x586A*` leaf wrappers to remove frame-prologue drift.
+
+Project snapshot (`just stats`):
+1. paired functions: `12229`
+2. aligned functions: `63`
+3. average similarity: `2.60%`
+4. paired coverage: `100.00%`
+
+## 2026-03-02 17:11 UTC checkpoint - `TGreatPower` focused gains
+
+Focused update:
+1. Ran a constrained shape-first pass only on `TGreatPower` real-address bodies with strict rollback on regressions.
+
+What changed:
+1. `0x004E8540` (`QueueMapActionMissionFromCandidateAndMarkState`):
+   1. removed mission-queue null guard branch,
+   2. restored nil-pointer assert flow (`MessageBoxA` + invalidation helper call) without early return,
+   3. kept state-byte writes in original order.
+2. `0x004DDA90` (`QueueInterNationEventType0FForNationPairContext`):
+   1. removed queue-manager null branch,
+   2. reduced to direct thunk dispatch with fixed-address queue manager read.
+3. `0x004E8750`:
+   1. rejected broader case-expansion attempt after measured regression,
+   2. retained prior tighter baseline.
+4. `0x004DDBB0`:
+   1. attempted arg-shape rewrite was rolled back after regression,
+   2. current guarded baseline preserved.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. targeted compare snapshot:
+   1. `0x004DDBB0`: `37.89%`
+   2. `0x004DDA90`: `26.67%`
+   3. `0x004E8540`: `44.16%`
+   4. `0x004E8750`: `34.25%`
+
+Next high-impact target:
+1. Keep `0x004E8540` and `0x004E8750` stable and move to `0x004E1D50` with the same rollback rule (single-function edits, compare immediately, revert regressions).
+
+## 2026-03-01 20:09 UTC checkpoint - `TGreatPower` first owned batch
+
+Focused update:
+1. Added manual `TGreatPower` surface (`src/game/TGreatPower.cpp`) and promoted 23 addresses as compile-safe wrappers.
+
+What changed:
+1. `just promote` used to claim ownership for the first 23 `TGreatPower` addresses.
+2. Raw promoted bodies were normalized into wrapper-style methods/functions to keep build stability:
+   1. class member wrappers for `thunk_*` entries,
+   2. free wrappers for cdecl/stdcall-style entries.
+3. Build wiring updated in `CMakeLists.txt` (`src/game/TGreatPower.cpp` added).
+4. Ownership/stubs refreshed via `just sync-ownership` + `just regen-stubs`.
+
+Per-address spot-check:
+1. `0x00401172`: `100.00%`
+2. `0x004014A6`: `0.00%`
+3. `0x00401AD2`: `0.00%`
+4. `0x00403C15`: `0.00%`
+5. `0x00404CE1`: `0.00%`
+6. `0x00405AC9`: `0.00%`
+
+Current interpretation:
+1. Ownership/import pipeline for `TGreatPower` is healthy (compile+detect pass).
+2. Wrapper-only forwarding gave one exact thunk match and multiple `0%` entries; next step is argument/call-shape-preserving wrappers for this class.
+
+Project snapshot (`2026-03-01T20:09:37Z`):
+1. paired functions: `12229`
+2. aligned functions: `79`
+3. average similarity: `2.57%`
+4. paired coverage: `100.00%`
+
+## 2026-03-01 20:17 UTC checkpoint - `TGreatPower` class-routing enforcement
+
+Focused update:
+1. Enforced class routing for selected `TGreatPower` thunk wrappers: thunk methods now call class member methods directly.
+
+What changed:
+1. Introduced class-owned methods for key thunk targets (`QueueMapActionMission...`, `ComputeAdvisoryMapNodeScore...`, `ExecuteAdvisoryPrompt...`, `TryDispatchNationAction...`, `QueueInterNationEventType0F...`).
+2. Moved bridge casts out of thunk bodies and into those class methods.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. compares:
+   1. `0x00401172`: `100.00%`
+   2. `0x004014A6`: `0.00%`
+   3. `0x00401AD2`: `0.00%`
+   4. `0x00403C15`: `0.00%` (regressed from `66.67%`)
+   5. `0x00404CE1`: `0.00%`
+   6. `0x00405AC9`: `0.00%`
+
+Next action in this class:
+1. Replace bridge-style methods with class-owned first-pass bodies for the `0%` addresses, starting with `0x00403C15` to recover the regression.
+
+## 2026-03-01 21:50 UTC checkpoint - `TGreatPower` class-owned body pass (no-gain)
+
+Focused update:
+1. Added class-owned first-pass bodies for `0x00403C15` and `0x00404CE1` in `src/game/TGreatPower.cpp`, while keeping the remaining selected `0%` entries as class thunks.
+
+What changed:
+1. Switched new body logic to fixed-address global reads (`0x6A21BC`, `0x6A4280`, `0x6A43D0`) to avoid type-mangled extern link failures.
+2. Kept function ownership entirely in class methods (no free-function fallback for these addresses).
+3. Recovered build stability after intermediate linker/type errors.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. compares:
+   1. `0x00401172`: `100.00%`
+   2. `0x004014A6`: `0.00%`
+   3. `0x00401AD2`: `0.00%`
+   4. `0x00403C15`: `0.00%`
+   5. `0x00404CE1`: `0.00%`
+   6. `0x00405AC9`: `0.00%`
+4. stats:
+   1. aligned functions: `79 / 12973`
+   2. average similarity: `2.57%`
+
+Conclusion:
+1. This iteration met structural/class goals and kept the pipeline green, but did not lift targeted similarity.
+2. Next high-value move is to use exact branch/arg shape from autogen for a single address (`0x00403C15`) with minimal normalization, then compare before touching neighbors.
+
+## 2026-03-01 22:05 UTC checkpoint - dual-address ownership (`thunk` + `real`)
+
+Focused update:
+1. Established explicit dual-address mapping for selected `TGreatPower` flows:
+   1. thunk entrypoints keep thunk addresses,
+   2. corresponding real implementation addresses are now also represented in manual source with `// FUNCTION` markers.
+
+What changed:
+1. Thunk addresses retained:
+   1. `0x00403C15`
+   2. `0x00404CE1`
+   3. `0x00405AC9`
+2. Real addresses added:
+   1. `0x004E1D50`
+   2. `0x004DDBB0`
+   3. `0x004DDA90`
+   4. `0x004E8540`
+   5. `0x004E8750`
+3. Replaced typed extern global references in this file with fixed-address reads for known symbol addresses to avoid mangled-data linker failures.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. Compare snapshot:
+   1. `0x00403C15`: `66.67%`
+   2. `0x00404CE1`: `0.00%`
+   3. `0x00405AC9`: `0.00%`
+   4. `0x004E1D50`: `20.32%`
+   5. `0x004DDBB0`: `35.42%`
+   6. `0x004DDA90`: `0.00%`
+   7. `0x004E8540`: `25.00%`
+   8. `0x004E8750`: `0.00%`
+4. Global metric:
+   1. average similarity: `2.59%`.
+
+Next high-impact target:
+1. `0x00404CE1` and `0x004DDA90` are good candidates for immediate branch-shape passes because they are class-adjacent and still pinned at `0%`.
+
+## 2026-03-01 20:00 UTC checkpoint - class-member conversion for `TCapacityOrder`
+
+Focused update:
+1. Moved the promoted `TCapacityOrder` block to real class member methods in `src/game/TCapacityOrder.cpp` (no free-wrapper fallback for these addresses).
+
+What changed:
+1. Kept thunk wrappers as member methods dispatching to member implementations.
+2. Removed explicit `__thiscall` spellings on member declarations/definitions due MSVC500 `C4234` parser rejection; ABI remains member-call `thiscall`.
+3. Rebuilt and re-ran only the seven promoted addresses for this class.
+
+Per-address status:
+1. `0x00401c0d`: `100.00%`
+2. `0x00404093`: `0.00%`
+3. `0x00405ab5`: `100.00%`
+4. `0x004b8b80`: `30.89%`
+5. `0x004b8cc0`: `100.00%`
+6. `0x004b8d00`: `74.07%`
+7. `0x004b8d30`: `100.00%`
+
+Next immediate tuning targets in this class:
+1. `0x00404093` (currently `0.00%`, likely thin thunk/jump shape issue).
+2. `0x004b8b80` (`30.89%`, body/data-shape pass).
+3. `0x004b8d00` (`74.07%`, ctor/dtor wrapper shape pass).
+
+## 2026-02-25 22:58 UTC checkpoint - trade arrow dispatch typed-slot pass
+
+Focused trade-screen update:
+1. `0x00583BD0` `HandleTradeArrowAutoRepeatTickAndDispatch`: `67.77% -> 82.35%`.
+
+What changed:
+1. Typed virtual slots in `include/game/ui_widget_shared.h` for this path:
+   1. `CtrlSlot16(int commandId, void* eventArg, int eventExtra)` (`+0x40`),
+   2. `CtrlSlot91(void* dispatchArg)` (`+0x16c`).
+2. Replaced raw vtable casts in `0x00583BD0` with those typed virtual calls, preserving the existing stack-shaped dispatch and repeat-deadline logic.
+3. Kept local `#pragma optimize("y", on/off)` for this function; it still helps avoid extra frame-prologue drift under `/Oy-` baseline flags.
+
+Current constraints:
+1. `0x00583BD0` still carries extra `xor edx` before several calls (dispatch thunk and slot calls); likely tied to fastcall bridge usage and worth a dedicated callconv pass.
+2. `0x00586E70` remains unstable to tune in this compiler mode because `__thiscall` free-function pointer casts fail (`C4234`), so tuning there should prefer typed class/member surfaces over raw casts.
+
+Project snapshot (`just stats`):
+1. paired functions: `12229`
+2. aligned functions: `63`
+3. average similarity: `2.60%`
+4. paired coverage: `100.00%`

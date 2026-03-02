@@ -3,42 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TInterruptusView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401BB8
-// GHIDRA_NAME TInterruptusView::thunk_UpdateInterruptusViewLocalizedSummaryAndRender_At00401bb8
-// GHIDRA_PROTO void __thiscall thunk_UpdateInterruptusViewLocalizedSummaryAndRender_At00401bb8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateInterruptusViewLocalizedSummaryAndRender
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateInterruptusViewLocalizedSummaryAndRender */
-
-void __thiscall
-TInterruptusView::thunk_UpdateInterruptusViewLocalizedSummaryAndRender_At00401bb8
-          (TInterruptusView *this)
-
-{
-  ConstructTInterruptusViewBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F4C
-// GHIDRA_NAME TInterruptusView::thunk_GetTInterruptusViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTInterruptusViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTInterruptusViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTInterruptusViewClassNamePointer */
-
-void * __cdecl TInterruptusView::thunk_GetTInterruptusViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTInterruptusViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFD80
 // GHIDRA_NAME TInterruptusView::GetTInterruptusViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTInterruptusViewClassNamePointer(void)
@@ -67,13 +31,7 @@ void __thiscall TInterruptusView::ConstructTInterruptusViewBaseState(TInterruptu
 
 {
   undefined4 *unaff_FS_OFFSET;
-  char *input_str;
-  undefined1 **ppuStack_30;
-  undefined4 uStack_2c;
-  undefined1 *puStack_28;
-  undefined4 auStack_20 [2];
-  int local_18;
-  undefined1 local_14 [8];
+  undefined4 uStack_20;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -82,61 +40,44 @@ void __thiscall TInterruptusView::ConstructTInterruptusViewBaseState(TInterruptu
   puStack_8 = &LAB_00630b18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_28 = (undefined1 *)0x4afdc4;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  puStack_28 = (undefined1 *)0x4afdd5;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
-  puStack_28 = (undefined1 *)0x4afde3;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 2;
-  puStack_28 = (undefined1 *)0x4afdf1;
   InitializeSharedStringRefFromEmpty();
-  puStack_28 = local_14;
   local_4 = CONCAT31(local_4._1_3_,3);
-  uStack_2c = CONCAT22((short)((uint)this[0x18].pVtable >> 0x10),*(undefined2 *)this[0x18].pVtable);
-  ppuStack_30 = (undefined1 **)0x4afe0d;
-  (**(code **)(*g_pLocalizationTable + 0x7c))();
-  ppuStack_30 = (undefined1 **)(int)*(short *)((int)this[0x18].pVtable + 2);
-  FormatStringWithVarArgsToSharedRef(auStack_20,&g_szDecimalFormat);
-  ppuStack_30 = (undefined1 **)0x4afe30;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x7c))();
+  FormatStringWithVarArgsToSharedRef();
   InitializeSharedStringRefFromEmpty();
-  ppuStack_30 = &puStack_28;
-  input_str = (char *)0x1e;
   uStack_c = CONCAT31(uStack_c._1_3_,4);
-  (**(code **)(*g_pLocalizationTable + 0x84))(0x273c);
-  FormatOverlayTerrainLabelText(&ppuStack_30);
-  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,input_str);
-  TItemBoyView::thunk_RenderItemBoyViewColumnBarsAndText((TItemBoyView *)this);
-  local_18._0_1_ = 3;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273c);
+  FormatOverlayTerrainLabelText();
+  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,(char *)0x1e);
+  TItemBoyView::thunk_DestructTItemBoyViewAndMaybeFree((TItemBoyView *)this);
   ReleaseSharedStringRefIfNotEmpty();
-  local_18._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
-  local_18._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();
-  local_18 = (uint)local_18._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
-  local_18 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = auStack_20[0];
+  *unaff_FS_OFFSET = uStack_20;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFF60
 // GHIDRA_NAME TInterruptusView::DestructTInterruptusViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTInterruptusViewAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTInterruptusViewAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Allocates and constructs Interruptus battle-units line-data object.
 // GHIDRA_COMMENT_END
 
 /* Allocates and constructs Interruptus battle-units line-data object. */
 
-TLineData * TInterruptusView::DestructTInterruptusViewAndMaybeFree(void)
+void __thiscall TInterruptusView::DestructTInterruptusViewAndMaybeFree(TInterruptusView *this)
 
 {
   TLineData *pThis;
-  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -146,15 +87,13 @@ TLineData * TInterruptusView::DestructTInterruptusViewAndMaybeFree(void)
   puStack_8 = &LAB_00630b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x18);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &g_vtblTBattleUnitsView;
-    pTVar1 = pThis;
+    pThis->field0_0x0 = &g_vtblTBattleUnitsView;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return;
 }
 

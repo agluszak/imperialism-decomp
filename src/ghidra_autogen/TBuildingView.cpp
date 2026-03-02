@@ -4,34 +4,23 @@
 // Bucket: TBuildingView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004022E3
-// GHIDRA_NAME TBuildingView::thunk_DestructTBuildingViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTBuildingViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TBuildingView::TBuildingView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TBuildingView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTBuildingViewAndMaybeFree
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTBuildingViewAndMaybeFree */
-
-void * __thiscall
-TBuildingView::thunk_DestructTBuildingViewAndMaybeFree(TBuildingView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTBuildingViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TBuildingView */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407A22
-// GHIDRA_NAME TBuildingView::thunk_GetTBuildingViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBuildingViewClassNamePointer(void)
+// GHIDRA_NAME TBuildingView::TBuildingView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TBuildingView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTBuildingViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTBuildingViewClassNamePointer */
 
-void * __cdecl TBuildingView::thunk_GetTBuildingViewClassNamePointer(void)
+void * __cdecl TBuildingView::TBuildingView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -57,12 +46,12 @@ void * __cdecl TBuildingView::CreateTBuildingViewInstance(void)
   puStack_8 = &LAB_0063154a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTBuildingView;
-    *(undefined4 *)(this + 0x94) = 0;
+    this->field0_0x0 = &g_vtblTBuildingView;
+    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -88,28 +77,10 @@ void * __cdecl TBuildingView::GetTBuildingViewClassNamePointer(void)
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6EB0
 // GHIDRA_NAME TBuildingView::ConstructTBuildingViewBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTBuildingViewBaseState(void)
-
-void * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuildingView *this)
-
-{
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined ***)this = &g_vtblTBuildingView;
-  *(undefined4 *)(this + 0x94) = 0;
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TBuildingView */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6EE0
 // GHIDRA_NAME TBuildingView::DestructTBuildingViewAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTBuildingViewAndMaybeFree(byte freeSelfFlag)
-
-void * __thiscall
-TBuildingView::DestructTBuildingViewAndMaybeFree(TBuildingView *this,byte freeSelfFlag)
-
-{
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
-  }
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TBuildingView */
 

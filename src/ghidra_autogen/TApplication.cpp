@@ -3,31 +3,9 @@
 // Program: Imperialism.exe
 // Bucket: TApplication.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040223E
-// GHIDRA_NAME TApplication::thunk_ConstructGlobalUiRootControllerState
-// GHIDRA_PROTO void __thiscall thunk_ConstructGlobalUiRootControllerState(void)
-
-void __thiscall TApplication::thunk_ConstructGlobalUiRootControllerState(TApplication *this)
-
-{
-  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x24) = 0;
-  *(undefined ***)(this + 0x2c) = &PTR_GetCObjectRuntimeClass_00648ca8;
-  *(undefined4 *)(this + 0x38) = 0;
-  *(undefined4 *)(this + 0x3c) = 0;
-  *(undefined4 *)(this + 0x34) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
-  *(undefined4 *)(this + 0x40) = 0;
-  *(undefined4 *)(this + 0x44) = 10;
-  *(undefined ***)this = &g_vtblTApplication;
-  g_pApplicationUiRootController = this;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00404B3D
-// GHIDRA_NAME TApplication::thunk_DestructTApplicationAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTApplicationAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TApplication::thunk_DestructTApplicationAndMaybeFree_At00404b3d
+// GHIDRA_PROTO void * __thiscall thunk_DestructTApplicationAndMaybeFree_At00404b3d(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTApplicationAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -35,7 +13,8 @@ void __thiscall TApplication::thunk_ConstructGlobalUiRootControllerState(TApplic
 /* Single-JMP thunk to DestructTApplicationAndMaybeFree */
 
 void * __thiscall
-TApplication::thunk_DestructTApplicationAndMaybeFree(TApplication *this,byte freeSelfFlag)
+TApplication::thunk_DestructTApplicationAndMaybeFree_At00404b3d
+          (TApplication *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -45,15 +24,15 @@ TApplication::thunk_DestructTApplicationAndMaybeFree(TApplication *this,byte fre
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408841
-// GHIDRA_NAME TApplication::thunk_GetTApplicationClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTApplicationClassNamePointer(void)
+// GHIDRA_NAME TApplication::thunk_GetTApplicationClassNamePointer_At00408841
+// GHIDRA_PROTO void * __cdecl thunk_GetTApplicationClassNamePointer_At00408841(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTApplicationClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTApplicationClassNamePointer */
 
-void * __cdecl TApplication::thunk_GetTApplicationClassNamePointer(void)
+void * __cdecl TApplication::thunk_GetTApplicationClassNamePointer_At00408841(void)
 
 {
   void *pvVar1;
@@ -77,28 +56,6 @@ void * __cdecl TApplication::GetTApplicationClassNamePointer(void)
   return &g_pClassDescTApplication;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00486760
-// GHIDRA_NAME TApplication::ConstructGlobalUiRootControllerState
-// GHIDRA_PROTO void __thiscall ConstructGlobalUiRootControllerState(void)
-
-void __thiscall TApplication::ConstructGlobalUiRootControllerState(TApplication *this)
-
-{
-  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x24) = 0;
-  *(undefined ***)(this + 0x2c) = &PTR_GetCObjectRuntimeClass_00648ca8;
-  *(undefined4 *)(this + 0x38) = 0;
-  *(undefined4 *)(this + 0x3c) = 0;
-  *(undefined4 *)(this + 0x34) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
-  *(undefined4 *)(this + 0x40) = 0;
-  *(undefined4 *)(this + 0x44) = 10;
-  *(undefined ***)this = &g_vtblTApplication;
-  g_pApplicationUiRootController = this;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004867B0
 // GHIDRA_NAME TApplication::DestructTApplicationAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTApplicationAndMaybeFree(byte freeSelfFlag)
@@ -107,9 +64,11 @@ void * __thiscall
 TApplication::DestructTApplicationAndMaybeFree(TApplication *this,byte freeSelfFlag)
 
 {
-  WrapperFor_FreeLinkedBlockChain_At004867e0();
+  TApplicationUiRootControllerState_00648CA8::
+  DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
+            ((TApplicationUiRootControllerState_00648CA8 *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

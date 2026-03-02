@@ -4,20 +4,75 @@
 // Bucket: MinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004019EC
-// GHIDRA_NAME MinisterView::thunk_GetMinisterViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetMinisterViewClassNamePointer(void)
+// GHIDRA_NAME MinisterView::thunk_GetTMinisterViewClassNamePointer
+// GHIDRA_PROTO void * __cdecl thunk_GetTMinisterViewClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetMinisterViewClassNamePointer
+// GHIDRA_COMMENT Single-JMP thunk to GetMinisterViewClassNamePointer [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetMinisterViewClassNamePointer */
+/* Single-JMP thunk to GetMinisterViewClassNamePointer [FID:thunk_target_sync] */
 
-void * __cdecl MinisterView::thunk_GetMinisterViewClassNamePointer(void)
+void * __cdecl MinisterView::thunk_GetTMinisterViewClassNamePointer(void)
 
 {
   void *pvVar1;
   
   pvVar1 = TMinisterView::GetTMinisterViewClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406C44
+// GHIDRA_NAME MinisterView::thunk_HandleDialogEvent10BackOkayAndForward
+// GHIDRA_PROTO void __thiscall thunk_HandleDialogEvent10BackOkayAndForward(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleDialogEvent10BackOkayAndForward
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleDialogEvent10BackOkayAndForward */
+
+void __thiscall
+MinisterView::thunk_HandleDialogEvent10BackOkayAndForward
+          (MinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent)
+
+{
+  HandleDialogEvent10BackOkayAndForward(this,eventCode,pPanelEvent);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2E00
+// GHIDRA_NAME MinisterView::HandleDialogEvent10BackOkayAndForward
+// GHIDRA_PROTO void __thiscall HandleDialogEvent10BackOkayAndForward(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handles event code 10 back/okay control tags and forwards other commands to shared child-slot dispatcher.
+// GHIDRA_COMMENT_END
+
+/* Handles event code 10 back/okay control tags and forwards other commands to shared child-slot
+   dispatcher. */
+
+void __thiscall
+MinisterView::HandleDialogEvent10BackOkayAndForward
+          (MinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent)
+
+{
+  void *pvVar1;
+  undefined4 uVar2;
+  
+  if (eventCode != 10) {
+    TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+    return;
+  }
+  if (pPanelEvent->controlTag1c != 0x6261636b) {
+    if (pPanelEvent->controlTag1c != CONTROL_TAG_TAG_YAKO) {
+      TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+      return;
+    }
+    pvVar1 = this->pVtable;
+    (**(code **)((int)pvVar1 + 0x1ac))();
+    uVar2 = (**(code **)((int)pvVar1 + 0x58))();
+    (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar2);
+    return;
+  }
+  (**(code **)((int)this->pVtable + 0x1ac))();
+  return;
 }
 

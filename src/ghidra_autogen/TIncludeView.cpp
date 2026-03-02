@@ -4,17 +4,16 @@
 // Bucket: TIncludeView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404593
-// GHIDRA_NAME TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory
-// GHIDRA_PROTO void __fastcall thunk_DispatchTurnEventPacketThroughDialogFactory(STurnEventFactoryPacket * pEventPacket)
+// GHIDRA_NAME TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory_At00404593
+// GHIDRA_PROTO void __fastcall thunk_DispatchTurnEventPacketThroughDialogFactory_At00404593(STurnEventFactoryPacket * pEventPacket)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Typed] Direct thunk kept signature-aligned with target DispatchTurnEventPacketThroughDialogFactory.
+// GHIDRA_COMMENT Single-JMP thunk to DispatchTurnEventPacketThroughDialogFactory
 // GHIDRA_COMMENT_END
 
-/* [Typed] Direct thunk kept signature-aligned with target
-   DispatchTurnEventPacketThroughDialogFactory. */
+/* Single-JMP thunk to DispatchTurnEventPacketThroughDialogFactory */
 
 void __fastcall
-TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory
+TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory_At00404593
           (STurnEventFactoryPacket *pEventPacket)
 
 {
@@ -22,59 +21,16 @@ TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407838
-// GHIDRA_NAME TIncludeView::thunk_ConstructTurnEventUiEntryBase
-// GHIDRA_PROTO void __thiscall thunk_ConstructTurnEventUiEntryBase(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTurnEventUiEntryBase
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTurnEventUiEntryBase */
-
-void __thiscall TIncludeView::thunk_ConstructTurnEventUiEntryBase(TIncludeView *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  int iStack_14;
-  TIncludeView *pTStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ed5b;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  pTStack_10 = this;
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  uStack_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  *(undefined4 *)(this + 100) = 0;
-  *(undefined4 *)(this + 0x68) = 0;
-  uStack_4._0_1_ = 1;
-  *(undefined ***)this = &g_vtblTIncludeView;
-  *(undefined2 *)(this + 0x60) = 0xffff;
-  ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
-  uStack_4._0_1_ = 2;
-  StringShared__AssignFromPtr(this + 0x6c,&iStack_14);
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  *(undefined2 *)(this + 0x70) = 1;
-  *(undefined4 *)(this + 4) = 0;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00407A04
-// GHIDRA_NAME TIncludeView::thunk_GetTIncludeViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTIncludeViewClassNamePointer(void)
+// GHIDRA_NAME TIncludeView::thunk_GetTIncludeViewClassNamePointer_At00407a04
+// GHIDRA_PROTO void * __cdecl thunk_GetTIncludeViewClassNamePointer_At00407a04(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTIncludeViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTIncludeViewClassNamePointer */
 
-void * __cdecl TIncludeView::thunk_GetTIncludeViewClassNamePointer(void)
+void * __cdecl TIncludeView::thunk_GetTIncludeViewClassNamePointer_At00407a04(void)
 
 {
   void *pvVar1;
@@ -84,8 +40,8 @@ void * __cdecl TIncludeView::thunk_GetTIncludeViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409570
-// GHIDRA_NAME TIncludeView::thunk_DestructTIncludeViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTIncludeViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TIncludeView::thunk_DestructTIncludeViewAndMaybeFree_At00409570
+// GHIDRA_PROTO void * __thiscall thunk_DestructTIncludeViewAndMaybeFree_At00409570(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTIncludeViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -93,7 +49,8 @@ void * __cdecl TIncludeView::thunk_GetTIncludeViewClassNamePointer(void)
 /* Single-JMP thunk to DestructTIncludeViewAndMaybeFree */
 
 void * __thiscall
-TIncludeView::thunk_DestructTIncludeViewAndMaybeFree(TIncludeView *this,byte freeSelfFlag)
+TIncludeView::thunk_DestructTIncludeViewAndMaybeFree_At00409570
+          (TIncludeView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -117,50 +74,6 @@ void * __cdecl TIncludeView::GetTIncludeViewClassNamePointer(void)
   return &g_pClassDescTIncludeView;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048CD70
-// GHIDRA_NAME TIncludeView::ConstructTurnEventUiEntryBase
-// GHIDRA_PROTO void __thiscall ConstructTurnEventUiEntryBase(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and label storage for dispatcher-created event packets.
-// GHIDRA_COMMENT_END
-
-/* Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and
-   label storage for dispatcher-created event packets. */
-
-void __thiscall TIncludeView::ConstructTurnEventUiEntryBase(TIncludeView *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  int local_14;
-  TIncludeView *local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ed5b;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_10 = this;
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  *(undefined4 *)(this + 100) = 0;
-  *(undefined4 *)(this + 0x68) = 0;
-  local_4._0_1_ = 1;
-  *(undefined ***)this = &g_vtblTIncludeView;
-  *(undefined2 *)(this + 0x60) = 0xffff;
-  ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
-  local_4._0_1_ = 2;
-  StringShared__AssignFromPtr(this + 0x6c,&local_14);
-  local_4 = CONCAT31(local_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  *(undefined2 *)(this + 0x70) = 1;
-  *(undefined4 *)(this + 4) = 0;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CE40
 // GHIDRA_NAME TIncludeView::DestructTIncludeViewAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTIncludeViewAndMaybeFree(byte freeSelfFlag)
@@ -171,46 +84,8 @@ TIncludeView::DestructTIncludeViewAndMaybeFree(TIncludeView *this,byte freeSelfF
 {
   DestructTIncludeViewAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048CFD0
-// GHIDRA_NAME TIncludeView::DispatchTurnEventPacketThroughDialogFactory
-// GHIDRA_PROTO void __fastcall DispatchTurnEventPacketThroughDialogFactory(STurnEventFactoryPacket * pEventPacket)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Typed] Uses STurnEventFactoryPacket::eFactorySlot60 (ETurnEventFactorySlotId) for dispatch.
-// GHIDRA_COMMENT_END
-
-/* [Typed] Uses STurnEventFactoryPacket::eFactorySlot60 (ETurnEventFactorySlotId) for dispatch. */
-
-void __fastcall
-TIncludeView::DispatchTurnEventPacketThroughDialogFactory(STurnEventFactoryPacket *pEventPacket)
-
-{
-  uint uVar1;
-  undefined2 extraout_var;
-  undefined2 uVar3;
-  int iVar2;
-  
-  if (*(short *)(pEventPacket->abUnknown54 + 8) != -1) {
-    uVar3 = 0;
-    if (pEventPacket->dwTag1C != 0) {
-      uVar1 = pEventPacket->dwVtableOrType;
-      (**(code **)(uVar1 + 0xf0))(g_adwTurnEventFactoryDispatchScratch,0);
-      (**(code **)(uVar1 + 0xf4))(pEventPacket->dwTag1C + 0x34,0);
-      uVar3 = extraout_var;
-    }
-    iVar2 = (**(code **)(*(int *)g_pTurnEventDialogFactoryRegistry + 0x2c))
-                      (0,pEventPacket,CONCAT22(uVar3,*(undefined2 *)(pEventPacket->abUnknown54 + 8))
-                       ,g_adwTurnEventFactoryDispatchScratch);
-    if (iVar2 == 0) {
-                    /* WARNING: Subroutine does not return */
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    }
-  }
-  SendMessageA(*(HWND *)(*(int *)(pEventPacket->abUnknown44 + 8) + 0x1c),0x4ef,1,0);
-  return;
 }
 

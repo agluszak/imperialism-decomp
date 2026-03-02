@@ -4,16 +4,16 @@
 // Bucket: TNavyTacUnit.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040167C
-// GHIDRA_NAME TNavyTacUnit::thunk_ApplyNavyTacUnitDamageAndSetSunkStates_At0040167c
-// GHIDRA_PROTO void __thiscall thunk_ApplyNavyTacUnitDamageAndSetSunkStates_At0040167c(int hullDamage, int crewDamage)
+// GHIDRA_NAME TNavyTacUnit::thunk_CreateTNavyTacUnitInstance_At0040167c
+// GHIDRA_PROTO void __thiscall thunk_CreateTNavyTacUnitInstance_At0040167c(int hullDamage, int crewDamage)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyNavyTacUnitDamageAndSetSunkStates
+// GHIDRA_COMMENT Single-JMP thunk to CreateTNavyTacUnitInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ApplyNavyTacUnitDamageAndSetSunkStates */
+/* Single-JMP thunk to CreateTNavyTacUnitInstance */
 
 void __thiscall
-TNavyTacUnit::thunk_ApplyNavyTacUnitDamageAndSetSunkStates_At0040167c
+TNavyTacUnit::thunk_CreateTNavyTacUnitInstance_At0040167c
           (TNavyTacUnit *this,int hullDamage,int crewDamage)
 
 {
@@ -22,15 +22,15 @@ TNavyTacUnit::thunk_ApplyNavyTacUnitDamageAndSetSunkStates_At0040167c
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405DD0
-// GHIDRA_NAME TNavyTacUnit::thunk_GetNavyTacUnitField3CValue_At00405dd0
-// GHIDRA_PROTO int __thiscall thunk_GetNavyTacUnitField3CValue_At00405dd0(void)
+// GHIDRA_NAME TNavyTacUnit::thunk_DestructTNavyTacUnitAndMaybeFree
+// GHIDRA_PROTO int __thiscall thunk_DestructTNavyTacUnitAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetNavyTacUnitField3CValue
+// GHIDRA_COMMENT Single-JMP thunk to GetNavyTacUnitField3CValue [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetNavyTacUnitField3CValue */
+/* Single-JMP thunk to GetNavyTacUnitField3CValue [FID:thunk_target_sync] */
 
-int __thiscall TNavyTacUnit::thunk_GetNavyTacUnitField3CValue_At00405dd0(TNavyTacUnit *this)
+int __thiscall TNavyTacUnit::thunk_DestructTNavyTacUnitAndMaybeFree(TNavyTacUnit *this)
 
 {
   int iVar1;
@@ -72,17 +72,17 @@ TNavyTacUnit::CreateTNavyTacUnitInstance(TNavyTacUnit *this,int hullDamage,int c
 {
   void *pvVar1;
   
-  pvVar1 = (void *)((int)this[0xd].pVtable - crewDamage);
-  this[0xd].pVtable = pvVar1;
+  pvVar1 = (void *)((int)this->field43_0x34 - crewDamage);
+  this->field43_0x34 = pvVar1;
   if ((int)pvVar1 < 1) {
-    this[0xd].pVtable = (void *)0x0;
-    this[7].pVtable = (void *)0x1;
+    this->field43_0x34 = (void *)0x0;
+    this->field22_0x1c = (void *)0x1;
   }
-  pvVar1 = (void *)((int)this[1].pVtable - hullDamage);
-  this[1].pVtable = pvVar1;
+  pvVar1 = (void *)((int)this->field1_0x4 - hullDamage);
+  this->field1_0x4 = pvVar1;
   if ((int)pvVar1 < 1) {
-    this[1].pVtable = (void *)0x0;
-    this[7].pVtable = (void *)0x3;
+    this->field1_0x4 = (void *)0x0;
+    this->field22_0x1c = (void *)0x3;
   }
   return;
 }
@@ -114,6 +114,6 @@ void * __cdecl TNavyTacUnit::GetTNavyTacUnitClassNamePointer(void)
 int __thiscall TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree(TNavyTacUnit *this)
 
 {
-  return (int)this[0xf].pVtable;
+  return (int)this->field48_0x3c;
 }
 

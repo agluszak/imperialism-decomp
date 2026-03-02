@@ -3,37 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TCivUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401753
-// GHIDRA_NAME TCivUnit::thunk_DestroyCivUnitOrderObject
-// GHIDRA_PROTO void __cdecl thunk_DestroyCivUnitOrderObject(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyCivUnitOrderObject
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyCivUnitOrderObject */
-
-void __cdecl TCivUnit::thunk_DestroyCivUnitOrderObject(void)
-
-{
-  DestroyCivUnitOrderObject();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004092B4
-// GHIDRA_NAME TCivUnit::thunk_GetCivUnitOrderTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetCivUnitOrderTypeName(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetCivUnitOrderTypeName
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetCivUnitOrderTypeName */
-
-void * __cdecl TCivUnit::thunk_GetCivUnitOrderTypeName(void)
-
-{
-  return &g_pClassDescTCivUnit;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C28A0
 // GHIDRA_NAME TCivUnit::GetTCivUnitClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTCivUnitClassNamePointer(void)
@@ -47,21 +16,5 @@ void * __cdecl TCivUnit::GetTCivUnitClassNamePointer(void)
 
 {
   return &g_pClassDescTCivUnit;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C28F0
-// GHIDRA_NAME TCivUnit::DestroyCivUnitOrderObject
-// GHIDRA_PROTO void __cdecl DestroyCivUnitOrderObject(void)
-
-void __cdecl TCivUnit::DestroyCivUnitOrderObject(void)
-
-{
-  byte in_stack_00000004;
-  
-  DestroyCivUnitOrderObject_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
 }
 

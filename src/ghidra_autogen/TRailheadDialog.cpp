@@ -22,16 +22,16 @@ void * __cdecl TRailheadDialog::thunk_GetTRailheadDialogClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403D91
-// GHIDRA_NAME TRailheadDialog::thunk_ConfigureRailheadDialogForSelectionRecord_At00403d91
-// GHIDRA_PROTO void __thiscall thunk_ConfigureRailheadDialogForSelectionRecord_At00403d91(int * pSelectionRecord)
+// GHIDRA_NAME TRailheadDialog::thunk_ConstructTRailheadDialogBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTRailheadDialogBaseState(int * pSelectionRecord)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConfigureRailheadDialogForSelectionRecord
+// GHIDRA_COMMENT Single-JMP thunk to ConfigureRailheadDialogForSelectionRecord [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ConfigureRailheadDialogForSelectionRecord */
+/* Single-JMP thunk to ConfigureRailheadDialogForSelectionRecord [FID:thunk_target_sync] */
 
 void __thiscall
-TRailheadDialog::thunk_ConfigureRailheadDialogForSelectionRecord_At00403d91
+TRailheadDialog::thunk_ConstructTRailheadDialogBaseState
           (TRailheadDialog *this,int *pSelectionRecord)
 
 {
@@ -39,17 +39,36 @@ TRailheadDialog::thunk_ConfigureRailheadDialogForSelectionRecord_At00403d91
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407301
-// GHIDRA_NAME TRailheadDialog::thunk_HandleRailheadDialogOkaySelection
-// GHIDRA_PROTO void __thiscall thunk_HandleRailheadDialogOkaySelection(EControlTagFourCC controlTag)
+// GHIDRA_FUNCTION IMPERIALISM 0x004049B7
+// GHIDRA_NAME TRailheadDialog::thunk_scalar_deleting_destructor_004049B7
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004049B7(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleRailheadDialogOkaySelection
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to HandleRailheadDialogOkaySelection */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TRailheadDialog::thunk_scalar_deleting_destructor_004049B7(TRailheadDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407301
+// GHIDRA_NAME TRailheadDialog::thunk_DestructTRailheadDialogAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTRailheadDialogAndMaybeFree(EControlTagFourCC controlTag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleRailheadDialogOkaySelection [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleRailheadDialogOkaySelection [FID:thunk_target_sync] */
 
 void __thiscall
-TRailheadDialog::thunk_HandleRailheadDialogOkaySelection
+TRailheadDialog::thunk_DestructTRailheadDialogAndMaybeFree
           (TRailheadDialog *this,EControlTagFourCC controlTag)
 
 {
@@ -89,8 +108,8 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int *pS
   code *pcVar2;
   int *piVar3;
   
-  *(int **)(this + 0x60) = pSelectionRecord;
-  piVar3 = (int *)(**(code **)(*(int *)this + 0x94))(0x63686f69);
+  this->pField60 = pSelectionRecord;
+  piVar3 = (int *)(**(code **)(this->field0_0x0 + 0x94))(0x63686f69);
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -154,8 +173,8 @@ TRailheadDialog::DestructTRailheadDialogAndMaybeFree
   int iVar2;
   int iVar3;
   
-  if (controlTag == CONTROL_TAG_YAKO) {
-    piVar1 = (int *)(**(code **)(*(int *)this + 0x94))(0x63686f69);
+  if (controlTag == CONTROL_TAG_TAG_YAKO) {
+    piVar1 = (int *)(**(code **)(this->field0_0x0 + 0x94))(0x63686f69);
     if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -167,7 +186,7 @@ TRailheadDialog::DestructTRailheadDialogAndMaybeFree
       break;
       iVar3 = iVar3 + 1;
     } while ((short)iVar3 < 0x17);
-    (**(code **)(**(int **)(this + 0x60) + 0x40))(iVar3);
+    (**(code **)(*(int *)this->pField60 + 0x40))(iVar3);
   }
   return;
 }

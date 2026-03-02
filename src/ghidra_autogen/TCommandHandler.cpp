@@ -3,56 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TCommandHandler.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A12
-// GHIDRA_NAME TCommandHandler::thunk_GetTCommandHandlerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCommandHandlerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCommandHandlerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCommandHandlerClassNamePointer */
-
-void * __cdecl TCommandHandler::thunk_GetTCommandHandlerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCommandHandlerClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E1B
-// GHIDRA_NAME TCommandHandler::thunk_RunCommandHandlerPreAndPostHooks_At00405e1b
-// GHIDRA_PROTO void __thiscall thunk_RunCommandHandlerPreAndPostHooks_At00405e1b(void)
+// GHIDRA_NAME TCommandHandler::thunk_ConstructTCommandHandlerBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTCommandHandlerBaseState(int arg1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunCommandHandlerPreAndPostHooks
+// GHIDRA_COMMENT Single-JMP thunk to RunCommandHandlerPreAndPostHooks [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RunCommandHandlerPreAndPostHooks */
+/* Single-JMP thunk to RunCommandHandlerPreAndPostHooks [FID:thunk_target_sync] */
 
 void __thiscall
-TCommandHandler::thunk_RunCommandHandlerPreAndPostHooks_At00405e1b(TCommandHandler *this)
+TCommandHandler::thunk_ConstructTCommandHandlerBaseState(TCommandHandler *this,int arg1)
 
 {
-  ConstructTCommandHandlerBaseState(this);
+  ConstructTCommandHandlerBaseState(this,arg1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408BC5
-// GHIDRA_NAME TCommandHandler::thunk_GetTCommandHandlerRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTCommandHandlerRuntimeClass(void)
+// GHIDRA_NAME TCommandHandler::thunk_CreateTCommandHandlerInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTCommandHandlerInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTCommandHandlerRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTCommandHandlerRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTCommandHandlerRuntimeClass. */
+/* Thunk forwarding to GetTCommandHandlerRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TCommandHandler::thunk_GetTCommandHandlerRuntimeClass(TCommandHandler *this)
+void * __thiscall TCommandHandler::thunk_CreateTCommandHandlerInstance(TCommandHandler *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -70,7 +52,7 @@ void * __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -91,66 +73,21 @@ void * __cdecl TCommandHandler::GetTCommandHandlerClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486650
 // GHIDRA_NAME TCommandHandler::ConstructTCommandHandlerBaseState
-// GHIDRA_PROTO void __thiscall ConstructTCommandHandlerBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTCommandHandlerBaseState(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Invokes command-handler pre/post virtual hooks in sequence.
 // GHIDRA_COMMENT_END
 
 /* Invokes command-handler pre/post virtual hooks in sequence. */
 
-void __thiscall TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this)
+void __thiscall TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this,int arg1)
 
 {
   int iVar1;
-  int *in_stack_00000004;
   
-  iVar1 = *in_stack_00000004;
+  iVar1 = *(int *)arg1;
   (**(code **)(iVar1 + 0x2c))();
   (**(code **)(iVar1 + 0x1c))();
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00486680
-// GHIDRA_NAME TCommandHandler::CreateTApplicationInstance
-// GHIDRA_PROTO void * __cdecl CreateTApplicationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TApplication; alloc factory pattern.
-// GHIDRA_COMMENT_END
-
-/* [ClassQuad] create inferred for TApplication; alloc factory pattern. */
-
-void * __cdecl TCommandHandler::CreateTApplicationInstance(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ea9a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x48);
-  local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[0xb] = &PTR_GetCObjectRuntimeClass_00648ca8;
-    puVar1[0xe] = 0;
-    puVar1[0xf] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0x10] = 0;
-    puVar1[0x11] = 10;
-    *puVar1 = &g_vtblTApplication;
-    g_pApplicationUiRootController = puVar1;
-    *unaff_FS_OFFSET = local_c;
-    return puVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
 }
 

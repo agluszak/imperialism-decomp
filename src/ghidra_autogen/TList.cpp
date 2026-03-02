@@ -44,12 +44,12 @@ void * __cdecl TList::CreateTListInstance(void)
   puStack_8 = &LAB_0062eb32;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
     local_4 = 1;
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &g_vtblTArmyBattle;
     puVar2 = puVar1;
   }

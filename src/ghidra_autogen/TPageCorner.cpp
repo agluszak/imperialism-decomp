@@ -21,19 +21,42 @@ void * __cdecl TPageCorner::thunk_GetTPageCornerClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406ABE
-// GHIDRA_NAME TPageCorner::thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f850
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f850()
+// GHIDRA_FUNCTION IMPERIALISM 0x0040704F
+// GHIDRA_NAME TPageCorner::thunk_scalar_deleting_destructor_0040704F
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040704F(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f850
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f850 */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void TPageCorner::thunk_WrapperFor_thunk_DispatchUiMouseMoveToChildren_At0056f850(void)
+void * __thiscall
+TPageCorner::thunk_scalar_deleting_destructor_0040704F(TPageCorner *this,byte freeSelfFlag)
 
 {
-  ConstructTPageCornerBaseState();
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0044A6C0
+// GHIDRA_NAME TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructPictureResourceEntry_Vtbl00660b48; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_ConstructPictureResourceEntry_Vtbl00660b48;
+   instructions=7, call_insns=1, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
+          (TPageCorner *this)
+
+{
+  TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this);
+  this->pVtable = &PTR_thunk_GetTPageCornerClassNamePointer_0063f1f8;
   return;
 }
 
@@ -60,12 +83,12 @@ void * __cdecl TPageCorner::CreateTPageCornerInstance(void)
   puStack_8 = &LAB_0063621a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TColorKeyPicture *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TColorKeyPicture *)0x0;
   if (this != (TColorKeyPicture *)0x0) {
     TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(this);
-    *(undefined ***)this = &PTR_thunk_GetTPageCornerClassNamePointer_0063f1f8;
+    this->field0_0x0 = &PTR_thunk_GetTPageCornerClassNamePointer_0063f1f8;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -89,7 +112,7 @@ void * __cdecl TPageCorner::GetTPageCornerClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F850
 // GHIDRA_NAME TPageCorner::ConstructTPageCornerBaseState
-// GHIDRA_PROTO undefined ConstructTPageCornerBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTPageCornerBaseState(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchUiMouseMoveToChildren; instructions=39, call_insns=2, internal_calls=2, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -97,24 +120,20 @@ void * __cdecl TPageCorner::GetTPageCornerClassNamePointer(void)
 /* [WrapperShape] small wrapper around thunk_DispatchUiMouseMoveToChildren; instructions=39,
    call_insns=2, internal_calls=2, unique_internal=1 */
 
-uint __thiscall
-TPageCorner::ConstructTPageCornerBaseState
-          (void *param_1,int *param_2,int param_3,int param_4,int param_5)
+void __thiscall
+TPageCorner::ConstructTPageCornerBaseState(TPageCorner *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  uint extraout_EAX;
-  uint extraout_EAX_00;
-  
-  if (*(int *)((int)param_1 + 0x1c) == 0x6c636f72) {
-    if (*param_2 < param_2[1]) {
-      thunk_DispatchUiMouseMoveToChildren(param_1,(int)param_2,param_3,param_4,param_5);
-      return extraout_EAX;
+  if (this->field25_0x1c == (void *)0x6c636f72) {
+    if (*(int *)arg1 < *(int *)(arg1 + 4)) {
+      TControl::thunk_DispatchUiMouseMoveToChildren((TControl *)this,arg1,arg2,arg3,arg4);
+      return;
     }
   }
-  else if (*(int *)((int)param_1 + 0x38) - param_2[1] < *param_2) {
-    thunk_DispatchUiMouseMoveToChildren(param_1,(int)param_2,param_3,param_4,param_5);
-    return extraout_EAX_00;
+  else if ((int)this->field50_0x38 - *(int *)(arg1 + 4) < *(int *)arg1) {
+    TControl::thunk_DispatchUiMouseMoveToChildren((TControl *)this,arg1,arg2,arg3,arg4);
+    return;
   }
-  return (uint)param_2 & 0xffffff00;
+  return;
 }
 

@@ -4,15 +4,15 @@
 // Bucket: TIconBar.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401A5F
-// GHIDRA_NAME TIconBar::thunk_GetTIconBarClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTIconBarClassNamePointer(void)
+// GHIDRA_NAME TIconBar::TIconBar_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TIconBar_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTIconBarClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTIconBarClassNamePointer */
 
-void * __cdecl TIconBar::thunk_GetTIconBarClassNamePointer(void)
+void * __cdecl TIconBar::TIconBar_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,16 +21,33 @@ void * __cdecl TIconBar::thunk_GetTIconBarClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F56
-// GHIDRA_NAME TIconBar::TIconBar_VtblSlot68
-// GHIDRA_PROTO void __thiscall TIconBar_VtblSlot68(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00401D2A
+// GHIDRA_NAME TIconBar::TIconBar_VtblSlot117
+// GHIDRA_PROTO void __cdecl TIconBar_VtblSlot117(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [VtableSlot] Unique TIconBar owner, vtable slot 68.
+// GHIDRA_COMMENT Single-JMP thunk to OrphanTiny_SetWordEcxOffset_96_005060f0
 // GHIDRA_COMMENT_END
 
-/* [VtableSlot] Unique TIconBar owner, vtable slot 68. */
+/* Single-JMP thunk to OrphanTiny_SetWordEcxOffset_96_005060f0 */
 
-void __thiscall TIconBar::TIconBar_VtblSlot68(TIconBar *this)
+void __cdecl TIconBar::TIconBar_VtblSlot117(void)
+
+{
+  OrphanTiny_SetWordEcxOffset_96_005060f0();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405F56
+// GHIDRA_NAME TIconBar::TIconBar_VtblSlot068
+// GHIDRA_PROTO void __thiscall TIconBar_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderIconBarEntryStrip
+// GHIDRA_COMMENT_END
+
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
+/* Single-JMP thunk to RenderIconBarEntryStrip */
+
+void __thiscall TIconBar::TIconBar_VtblSlot068(TIconBar *this)
 
 {
   short sVar1;
@@ -39,42 +56,43 @@ void __thiscall TIconBar::TIconBar_VtblSlot68(TIconBar *this)
   short sStack_1c;
   RECT RStack_14;
   
-  (**(code **)(*(int *)this + 0x1a4))(auStack_20);
-  sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)(this + 0x96) + 1));
+  (*(code *)this->field0_0x0[0x69])(auStack_20);
+  sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)&(this->field90).field_0x6 + 1));
   if (0x20 < sVar1) {
     sVar1 = 0x20;
   }
-  RStack_14.left = *(short *)(this + 0x94) * 0x20;
+  RStack_14.left = *(short *)&(this->field90).field_0x4 * 0x20;
   RStack_14.right = RStack_14.left + 0x20;
-  *(short *)(this + 0x98) = sVar1;
+  *(short *)&(this->field90).field_0x8 = sVar1;
   RStack_14.top = 0;
   RStack_14.bottom = 0x18;
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   sVar1 = 0;
-  if (0 < *(short *)(this + 0x96)) {
+  if (0 < *(short *)&(this->field90).field_0x6) {
     do {
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_14,
                  (RECT *)&stack0xffffffcc,0x24,(astruct_19 *)0x0);
       sVar1 = sVar1 + 1;
-    } while (sVar1 < *(short *)(this + 0x96));
+    } while (sVar1 < *(short *)&(this->field90).field_0x6);
   }
   UpdatePaletteIndexWithDefaultFallback(0x13);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408D96
-// GHIDRA_NAME TIconBar::thunk_DestructTIconBarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTIconBarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TIconBar::TIconBar_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TIconBar_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTIconBarAndMaybeFree
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
 /* Single-JMP thunk to DestructTIconBarAndMaybeFree */
 
-void * __thiscall TIconBar::thunk_DestructTIconBarAndMaybeFree(TIconBar *this,byte freeSelfFlag)
+void * __thiscall TIconBar::TIconBar_VtblSlot001(TIconBar *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -101,12 +119,12 @@ void * __cdecl TIconBar::CreateTIconBarInstance(void)
   puStack_8 = &LAB_0063376a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x9c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTIconBar;
+    this->field0_0x0 = &g_vtblTIconBar;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -132,11 +150,13 @@ void * __cdecl TIconBar::GetTIconBarClassNamePointer(void)
 // GHIDRA_NAME TIconBar::ConstructTIconBarBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTIconBarBaseState(void)
 
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
+
 void * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined ***)this = &g_vtblTIconBar;
+  this->field0_0x0 = &g_vtblTIconBar;
   return this;
 }
 
@@ -144,12 +164,14 @@ void * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 // GHIDRA_NAME TIconBar::DestructTIconBarAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTIconBarAndMaybeFree(byte freeSelfFlag)
 
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
+
 void * __thiscall TIconBar::DestructTIconBarAndMaybeFree(TIconBar *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -161,6 +183,7 @@ void * __thiscall TIconBar::DestructTIconBarAndMaybeFree(TIconBar *this,byte fre
 // GHIDRA_COMMENT Renders icon-bar entry strip tiles using current entry count and selected icon index.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
 /* Renders icon-bar entry strip tiles using current entry count and selected icon index. */
 
 void __thiscall TIconBar::RenderIconBarEntryStrip(TIconBar *this)
@@ -172,29 +195,117 @@ void __thiscall TIconBar::RenderIconBarEntryStrip(TIconBar *this)
   short sStack_1c;
   RECT RStack_14;
   
-  (**(code **)(*(int *)this + 0x1a4))(local_20);
-  sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)(this + 0x96) + 1));
+  (*(code *)this->field0_0x0[0x69])(local_20);
+  sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)&(this->field90).field_0x6 + 1));
   if (0x20 < sVar1) {
     sVar1 = 0x20;
   }
-  RStack_14.left = *(short *)(this + 0x94) * 0x20;
+  RStack_14.left = *(short *)&(this->field90).field_0x4 * 0x20;
   RStack_14.right = RStack_14.left + 0x20;
-  *(short *)(this + 0x98) = sVar1;
+  *(short *)&(this->field90).field_0x8 = sVar1;
   RStack_14.top = 0;
   RStack_14.bottom = 0x18;
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   sVar1 = 0;
-  if (0 < *(short *)(this + 0x96)) {
+  if (0 < *(short *)&(this->field90).field_0x6) {
     do {
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_14,
                  (RECT *)&stack0xffffffcc,0x24,(astruct_19 *)0x0);
       sVar1 = sVar1 + 1;
-    } while (sVar1 < *(short *)(this + 0x96));
+    } while (sVar1 < *(short *)&(this->field90).field_0x6);
   }
   UpdatePaletteIndexWithDefaultFallback(0x13);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00506690
+// GHIDRA_NAME TIconBar::WrapperFor_TIconBar_VtblSlot68_At00506690
+// GHIDRA_PROTO void __thiscall WrapperFor_TIconBar_VtblSlot68_At00506690(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around TIconBar_VtblSlot68; instructions=10, call_insns=2, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
+/* [WrapperShape] small wrapper around TIconBar_VtblSlot68; instructions=10, call_insns=2,
+   internal_calls=1, unique_internal=1 */
+
+void __thiscall TIconBar::WrapperFor_TIconBar_VtblSlot68_At00506690(TIconBar *this)
+
+{
+  TIconBar_VtblSlot068(this);
+  (*(code *)this->field0_0x0[0x78])();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00597600
+// GHIDRA_NAME TIconBar::WrapperFor_GetActiveNationId_At00597600
+// GHIDRA_PROTO void __thiscall WrapperFor_GetActiveNationId_At00597600(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper with local state handling.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
+/* Single-callee wrapper with local state handling. */
+
+void __thiscall TIconBar::WrapperFor_GetActiveNationId_At00597600(TIconBar *this,int arg1)
+
+{
+  short sVar1;
+  undefined **ppuVar2;
+  undefined4 extraout_EAX;
+  undefined4 uVar3;
+  int iVar4;
+  
+  if (arg1 == 0x406) {
+    sVar1 = *(short *)&(this->field90).field_0x6;
+    switch(sVar1) {
+    case 0:
+      iVar4 = *(int *)((int)g_pSelectedCivilianOrderState + 4);
+      if (iVar4 != 0) {
+        (*(code *)this->field0_0x0[0x78])
+                  (CONCAT22((short)((uint)iVar4 >> 0x10),*(undefined2 *)(iVar4 + 6)));
+        return;
+      }
+      break;
+    case 1:
+      sVar1 = *(short *)((int)g_pMapContextActionManager + 0x31c);
+      if (sVar1 != -1) {
+        (*(code *)this->field0_0x0[0x78])
+                  (CONCAT22((short)((uint)(sVar1 * 0x15) >> 0x10),
+                            *(undefined2 *)
+                             (*(int *)((int)g_pGlobalMapState + 0x10) + 4 + sVar1 * 0xa8)));
+        return;
+      }
+      break;
+    case 2:
+      if (sVar1 == 2) {
+        iVar4 = *(int *)&(this->field90).field_0x8;
+      }
+      else {
+        iVar4 = 0;
+      }
+      if (iVar4 != 0) {
+        if (sVar1 != 2) {
+          (*(code *)this->field0_0x0[0x78])(uRam0000000c);
+          return;
+        }
+        iVar4 = *(int *)&(this->field90).field_0x8;
+        (*(code *)this->field0_0x0[0x78])
+                  (CONCAT22((short)((uint)iVar4 >> 0x10),*(undefined2 *)(iVar4 + 0xc)));
+        return;
+      }
+      break;
+    case 3:
+      ppuVar2 = this->field0_0x0;
+      iVar4 = *(int *)g_pGlobalMapState;
+      thunk_GetActiveNationId();
+      uVar3 = (**(code **)(iVar4 + 100))(extraout_EAX);
+      (*(code *)ppuVar2[0x78])(uVar3);
+    }
+  }
   return;
 }
 

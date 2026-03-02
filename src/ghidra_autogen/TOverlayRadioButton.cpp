@@ -4,16 +4,16 @@
 // Bucket: TOverlayRadioButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404435
-// GHIDRA_NAME TOverlayRadioButton::thunk_RenderOverlayRadioButtonSelectionLayer_At00404435
-// GHIDRA_PROTO void __thiscall thunk_RenderOverlayRadioButtonSelectionLayer_At00404435(void)
+// GHIDRA_NAME TOverlayRadioButton::thunk_ConstructTOverlayRadioButtonBaseState_At00404435
+// GHIDRA_PROTO void __thiscall thunk_ConstructTOverlayRadioButtonBaseState_At00404435(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderOverlayRadioButtonSelectionLayer
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTOverlayRadioButtonBaseState
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RenderOverlayRadioButtonSelectionLayer */
+/* Single-JMP thunk to ConstructTOverlayRadioButtonBaseState */
 
 void __thiscall
-TOverlayRadioButton::thunk_RenderOverlayRadioButtonSelectionLayer_At00404435
+TOverlayRadioButton::thunk_ConstructTOverlayRadioButtonBaseState_At00404435
           (TOverlayRadioButton *this)
 
 {
@@ -22,57 +22,21 @@ TOverlayRadioButton::thunk_RenderOverlayRadioButtonSelectionLayer_At00404435
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405600
-// GHIDRA_NAME TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTOverlayRadioButtonClassNamePointer(void)
+// GHIDRA_NAME TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer_At00405600
+// GHIDRA_PROTO void * __cdecl thunk_GetTOverlayRadioButtonClassNamePointer_At00405600(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTOverlayRadioButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTOverlayRadioButtonClassNamePointer */
 
-void * __cdecl TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer(void)
+void * __cdecl TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer_At00405600(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTOverlayRadioButtonClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004CAA50
-// GHIDRA_NAME TOverlayRadioButton::AllocateUiClickablePictureResourceEntry_Vtbl643A40
-// GHIDRA_PROTO undefined AllocateUiClickablePictureResourceEntry_Vtbl643A40()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0xBC-byte UiClickablePictureResourceEntry variant instance and runs constructor for vtable 0x643A40.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0xBC-byte UiClickablePictureResourceEntry variant instance and runs constructor for
-   vtable 0x643A40. */
-
-TRadioPictureButton * TOverlayRadioButton::AllocateUiClickablePictureResourceEntry_Vtbl643A40(void)
-
-{
-  TRadioPictureButton *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063179a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TRadioPictureButton *)AllocateWithFallbackHandler(0xbc);
-  local_4 = 0;
-  if (this != (TRadioPictureButton *)0x0) {
-    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(this);
-    *(undefined ***)this = &g_vtblUiClickablePictureResourceEntry_643A40;
-    *(undefined4 *)(this + 0x98) = 0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TRadioPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAAF0
@@ -103,14 +67,14 @@ void __thiscall
 TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState(TOverlayRadioButton *this)
 
 {
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  if (this[0x26].pVtable != (void *)0x0) {
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  if (this->field134_0x98 != 0) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)this[0x26].pVtable + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)(this + 0x27),
-               (RECT *)(this + 0x2b),0x24,(astruct_19 *)0x0);
-    SetQuickDrawStrokeColor(0x13);
+              ((astruct_17 *)(this->field134_0x98 + 4),
+               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&this->field135_0x9c,
+               &this->field136_0xac,0x24,(astruct_19 *)0x0);
+    TCivDescription::SetQuickDrawStrokeColor();
   }
   return;
 }

@@ -3,16 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TMapUberPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004032FB
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot127
+// GHIDRA_PROTO void __thiscall TMapUberPicture_VtblSlot127(byte enabledFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetTradeToolSubcontrolEnabledStateByFlag
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetTradeToolSubcontrolEnabledStateByFlag */
+
+void __thiscall TMapUberPicture::TMapUberPicture_VtblSlot127(TMapUberPicture *this,byte enabledFlag)
+
+{
+  SetTradeToolSubcontrolEnabledStateByFlag(this,enabledFlag);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004036C0
-// GHIDRA_NAME TMapUberPicture::thunk_GetTMapUberPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMapUberPictureClassNamePointer(void)
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMapUberPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMapUberPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMapUberPictureClassNamePointer */
 
-void * __cdecl TMapUberPicture::thunk_GetTMapUberPictureClassNamePointer(void)
+void * __cdecl TMapUberPicture::TMapUberPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,8 +38,8 @@ void * __cdecl TMapUberPicture::thunk_GetTMapUberPictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004054F7
-// GHIDRA_NAME TMapUberPicture::thunk_DestructTMapUberPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMapUberPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TMapUberPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMapUberPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,7 +47,7 @@ void * __cdecl TMapUberPicture::thunk_GetTMapUberPictureClassNamePointer(void)
 /* Single-JMP thunk to DestructTMapUberPictureAndMaybeFree */
 
 void * __thiscall
-TMapUberPicture::thunk_DestructTMapUberPictureAndMaybeFree(TMapUberPicture *this,byte freeSelfFlag)
+TMapUberPicture::TMapUberPicture_VtblSlot001(TMapUberPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -41,37 +57,34 @@ TMapUberPicture::thunk_DestructTMapUberPictureAndMaybeFree(TMapUberPicture *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405BE6
-// GHIDRA_NAME TMapUberPicture::thunk_InitializeMapOverlayDialogControlsAndSelectionState
-// GHIDRA_PROTO void __thiscall thunk_InitializeMapOverlayDialogControlsAndSelectionState(void)
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot055
+// GHIDRA_PROTO void __thiscall TMapUberPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeMapOverlayDialogControlsAndSelectionState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeMapOverlayDialogControlsAndSelectionState */
 
-void __thiscall
-TMapUberPicture::thunk_InitializeMapOverlayDialogControlsAndSelectionState(TMapUberPicture *this)
+void __thiscall TMapUberPicture::TMapUberPicture_VtblSlot055(TMapUberPicture *this)
 
 {
-  InitializeMapOverlayDialogControlsAndSelectionState(this);
+  TOffLimitsPicture::InitializeMapOverlayDialogControlsAndSelectionState(&this->base);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E25
-// GHIDRA_NAME TMapUberPicture::thunk_HandleMapOverlayDialogCommandTagsAndForward
-// GHIDRA_PROTO void __thiscall thunk_HandleMapOverlayDialogCommandTagsAndForward(TMapUberPicture * pThis)
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot015
+// GHIDRA_PROTO void __cdecl TMapUberPicture_VtblSlot015(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleMapOverlayDialogCommandTagsAndForward
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleMapOverlayDialogCommandTagsAndForward */
 
-void __thiscall
-TMapUberPicture::thunk_HandleMapOverlayDialogCommandTagsAndForward
-          (TMapUberPicture *this,TMapUberPicture *pThis)
+void __cdecl TMapUberPicture::TMapUberPicture_VtblSlot015(int arg1,int arg2)
 
 {
-  HandleMapOverlayDialogCommandTagsAndForward(this,pThis);
+  HandleMapOverlayDialogCommandTagsAndForward(arg1,arg2);
   return;
 }
 
@@ -87,65 +100,63 @@ TMapUberPicture::thunk_HandleMapOverlayDialogCommandTagsAndForward
 void * __thiscall TMapUberPicture::thunk_ConstructTMapUberPictureBaseState(TMapUberPicture *this)
 
 {
-  TOffLimitsPicture::ConstructTOffLimitsPictureBaseState((TOffLimitsPicture *)this);
-  this[0x94] = (TMapUberPicture)0x1;
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined4 *)(this + 0x9c) = 0;
-  *(undefined4 *)(this + 0xa0) = 0;
-  *(undefined4 *)(this + 0xc0) = 0;
-  *(undefined2 *)(this + 0x96) = 3;
-  *(undefined ***)this = &g_vtblTMapUberPicture;
+  TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(&this->base);
+  (this->base).field_0x94 = 1;
+  *(undefined4 *)&(this->base).field_0x98 = 0;
+  *(undefined4 *)&(this->base).field_0x9c = 0;
+  *(undefined4 *)&(this->base).field_0xa0 = 0;
+  this->pFieldc0 = (void *)0x0;
+  *(undefined2 *)&(this->base).field_0x96 = 3;
+  (this->base).field0_0x0 = &g_vtblTMapUberPicture;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C98
-// GHIDRA_NAME TMapUberPicture::thunk_WrapperFor_GetActiveNationId_At00597600
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_GetActiveNationId_At00597600(int arg1)
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot017
+// GHIDRA_PROTO void __thiscall TMapUberPicture_VtblSlot017(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_GetActiveNationId_At00597600
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
 /* Single-JMP thunk to WrapperFor_GetActiveNationId_At00597600 */
 
-void __thiscall
-TMapUberPicture::thunk_WrapperFor_GetActiveNationId_At00597600(TMapUberPicture *this,int arg1)
+void __thiscall TMapUberPicture::TMapUberPicture_VtblSlot017(TMapUberPicture *this,int arg1)
 
 {
-  WrapperFor_GetActiveNationId_At00597600(this,arg1);
+  TIconBar::WrapperFor_GetActiveNationId_At00597600((TIconBar *)this,arg1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040869D
-// GHIDRA_NAME TMapUberPicture::thunk_SuperMap::CreateToolWindow
-// GHIDRA_PROTO void __fastcall thunk_SuperMap::CreateToolWindow(astruct_20 * this_obj)
+// GHIDRA_NAME TMapUberPicture::CreateToolWindow
+// GHIDRA_PROTO void __fastcall CreateToolWindow(astruct_20 * this_obj)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SuperMap::CreateToolWindow
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to SuperMap::CreateToolWindow */
 
-void __fastcall TMapUberPicture::thunk_SuperMap__CreateToolWindow(astruct_20 *this_obj)
+void __fastcall TMapUberPicture::CreateToolWindow(astruct_20 *this_obj)
 
 {
-  SuperMap__CreateToolWindow(this_obj);
+  CreateToolWindow_00599CF0(this_obj);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004092A0
-// GHIDRA_NAME TMapUberPicture::thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
+// GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot118
+// GHIDRA_PROTO void __cdecl TMapUberPicture_VtblSlot118(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_InvalidateCityDialogRectRegionChain_At00598870 */
 
-void __thiscall
-TMapUberPicture::thunk_WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
-          (TMapUberPicture *this)
+void __cdecl TMapUberPicture::TMapUberPicture_VtblSlot118(void)
 
 {
-  WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(this);
+  WrapperFor_InvalidateCityDialogRectRegionChain_At00598870();
   return;
 }
 
@@ -166,17 +177,17 @@ void * __cdecl TMapUberPicture::CreateTMapUberPictureInstance(void)
   puStack_8 = &LAB_0063831a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0xc4);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TOffLimitsPicture *)0x0) {
     TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-    this[0x94] = (TOffLimitsPicture)0x1;
-    *(undefined2 *)(this + 0x96) = 3;
-    *(undefined4 *)(this + 0x98) = 0;
-    *(undefined4 *)(this + 0x9c) = 0;
-    *(undefined4 *)(this + 0xa0) = 0;
-    *(undefined4 *)(this + 0xc0) = 0;
-    *(undefined ***)this = &g_vtblTMapUberPicture;
+    this->field_0x94 = 1;
+    *(undefined2 *)&this->field_0x96 = 3;
+    *(undefined4 *)&this->field_0x98 = 0;
+    *(undefined4 *)&this->field_0x9c = 0;
+    *(undefined4 *)&this->field_0xa0 = 0;
+    this[1].field0_0x0 = (undefined **)0x0;
+    this->field0_0x0 = &g_vtblTMapUberPicture;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -206,14 +217,14 @@ void * __cdecl TMapUberPicture::GetTMapUberPictureClassNamePointer(void)
 void * __thiscall TMapUberPicture::ConstructTMapUberPictureBaseState(TMapUberPicture *this)
 
 {
-  TOffLimitsPicture::ConstructTOffLimitsPictureBaseState((TOffLimitsPicture *)this);
-  this[0x94] = (TMapUberPicture)0x1;
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined4 *)(this + 0x9c) = 0;
-  *(undefined4 *)(this + 0xa0) = 0;
-  *(undefined4 *)(this + 0xc0) = 0;
-  *(undefined2 *)(this + 0x96) = 3;
-  *(undefined ***)this = &g_vtblTMapUberPicture;
+  TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(&this->base);
+  (this->base).field_0x94 = 1;
+  *(undefined4 *)&(this->base).field_0x98 = 0;
+  *(undefined4 *)&(this->base).field_0x9c = 0;
+  *(undefined4 *)&(this->base).field_0xa0 = 0;
+  this->pFieldc0 = (void *)0x0;
+  *(undefined2 *)&(this->base).field_0x96 = 3;
+  (this->base).field0_0x0 = &g_vtblTMapUberPicture;
   return this;
 }
 
@@ -227,358 +238,50 @@ TMapUberPicture::DestructTMapUberPictureAndMaybeFree(TMapUberPicture *this,byte 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00596A80
-// GHIDRA_NAME TMapUberPicture::InitializeMapOverlayDialogControlsAndSelectionState
-// GHIDRA_PROTO void __thiscall InitializeMapOverlayDialogControlsAndSelectionState(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0059A180
+// GHIDRA_NAME TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag
+// GHIDRA_PROTO void __thiscall SetTradeToolSubcontrolEnabledStateByFlag(byte enabledFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes map-overlay dialog control bindings and runtime pointers, installs current selection context, refreshes task-force/map-action overlays, and updates localized send control state.
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* Initializes map-overlay dialog control bindings and runtime pointers, installs current selection
-   context, refreshes task-force/map-action overlays, and updates localized send control state. */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void __thiscall
-TMapUberPicture::InitializeMapOverlayDialogControlsAndSelectionState(TMapUberPicture *this)
+TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(TMapUberPicture *this,byte enabledFlag)
 
 {
-  int iVar1;
-  code *pcVar2;
-  int iVar3;
-  int *piVar4;
-  undefined4 uVar5;
-  undefined4 extraout_EAX;
-  undefined4 uStack_34;
+  code *pcVar1;
+  int *piVar2;
+  char unaff_BL;
   
-  TOffLimitsPicture::TOffLimitsPicture_VtblSlot55((TOffLimitsPicture *)this);
-  iVar1 = *(int *)this;
-  uStack_34 = 0x444c4f47;
-  pcVar2 = *(code **)(iVar1 + 0x94);
-  *(TMapUberPicture **)((int)g_pGlobalUiRootController + 0x48) = this;
-  piVar4 = (int *)(*pcVar2)();
-  iVar3 = *piVar4;
-  *(int **)(this + 0xa8) = piVar4;
-  (**(code **)(iVar3 + 0xc))();
-  piVar4 = (int *)(*pcVar2)(0x444f4f47);
-  if (piVar4 != (int *)0x0) {
-    iVar3 = *piVar4;
-    *(int **)(this + 0xa4) = piVar4;
-    (**(code **)(iVar3 + 0xc))();
-  }
-  *(undefined4 *)(this + 0xac) = *(undefined4 *)(this + 0xa8);
-  uVar5 = (*pcVar2)(0x75636976);
-  *(undefined4 *)(this + 0xb0) = uVar5;
-  uVar5 = (*pcVar2)(0x7561726d);
-  *(undefined4 *)(this + 0xb4) = uVar5;
-  uVar5 = (*pcVar2)(0x756e6176);
-  *(undefined4 *)(this + 0xb8) = uVar5;
-  *(undefined4 *)(this + 0xbc) = 0;
-  (**(code **)(**(int **)(this + 0xa8) + 300))(&uStack_34);
-  CreateClipStateRegionWrapperObject();
-  ReplaceClipStateRegionHandleFromRect();
-  (**(code **)(iVar1 + 0x1cc))(extraout_EAX);
-  DestroyClipStateRegionWrapperObject();
-  *(TMapUberPicture **)(g_pUiRuntimeContext + 0xf0) = this;
-  *(TMapUberPicture **)g_pUiTransientObjectRegistry->_pad_02c_02f = this;
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
-  thunk_RefreshMapActionContextNationOverlaysAndOrderRanks();
-  if (*(int *)(g_pLocalizationTable + 0x44) != 0) {
-    piVar4 = (int *)(*pcVar2)(0x73656e64);
-    iVar1 = *piVar4;
-    (**(code **)(iVar1 + 0xc))();
-    (**(code **)(iVar1 + 0xa8))(1,0);
-    (**(code **)(iVar1 + 0xa4))(1,0);
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2742,0xe,piVar4);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00597340
-// GHIDRA_NAME TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward
-// GHIDRA_PROTO void __thiscall HandleMapOverlayDialogCommandTagsAndForward(TMapUberPicture * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles map-overlay dialog command tags (overlay mode toggles, cancel/send, owner reassignment keys), then forwards unresolved commands through shared city-dialog command routing.
-// GHIDRA_COMMENT_END
-
-/* Handles map-overlay dialog command tags (overlay mode toggles, cancel/send, owner reassignment
-   keys), then forwards unresolved commands through shared city-dialog command routing. */
-
-void __thiscall
-TMapUberPicture::HandleMapOverlayDialogCommandTagsAndForward
-          (TMapUberPicture *this,TMapUberPicture *pThis)
-
-{
-  uint uVar1;
-  ushort uVar2;
-  int unaff_ESI;
-  int *unaff_FS_OFFSET;
-  int in_stack_00000008;
-  undefined1 auStackY_30 [4];
-  int *piStackY_2c;
-  undefined4 uStackY_28;
-  undefined4 uStackY_24;
-  TMapUberPicture *pTStackY_20;
-  undefined4 uStackY_1c;
-  undefined1 *puVar3;
-  int local_c;
-  undefined1 *puStack_8;
-  undefined1 *local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = (undefined1 *)0xffffffff;
-  puStack_8 = &LAB_006383e8;
-  *unaff_FS_OFFSET = (int)&local_c;
-  if (pThis == (TMapUberPicture *)0xa) {
-    uStackY_1c = 0x597370;
-    uVar2 = GetAsyncKeyState(0x11);
-    if (((uVar2 & 0x8000) != 0) &&
-       ((*(int *)(in_stack_00000008 + 0x1c) == 0x5a6d496e ||
-        (*(int *)(in_stack_00000008 + 0x1c) == 0x5a6d4f74)))) {
-      thunk_ComposeAndDispatchTurnSummaryLocalizedMessage();
-      *unaff_FS_OFFSET = local_c;
-      return;
-    }
-    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
-    if (uVar1 < 0x5a6d4f75) {
-      if (uVar1 == 0x5a6d4f74) {
-        uStackY_1c = 0x5973d8;
-        CommitPendingUiModeChangeAndRefreshViews();
-        *unaff_FS_OFFSET = local_c;
-        return;
-      }
-      if (uVar1 == 0x5a6d496e) {
-        uStackY_1c = 0x5973bd;
-        thunk_EnterMapInteractionOverlayMode(this,in_stack_00000008);
-        *unaff_FS_OFFSET = local_c;
-        return;
-      }
-    }
-    else {
-      if (uVar1 == 0x63616e63) {
-        if (g_pLocalizationTable[0x11] != 0) {
-          InitializeSharedStringRefFromEmpty();
-          puVar3 = &stack0x0000000c;
-          uStackY_1c = 0x25;
-          pTStackY_20 = (TMapUberPicture *)0x2742;
-          local_4 = (undefined1 *)0x0;
-          uStackY_24 = 0x5974a2;
-          (**(code **)(*g_pLocalizationTable + 0x84))();
-          uStackY_24 = 0;
-          uStackY_28 = 0;
-          piStackY_2c = &g_ShTurnSummaryDialogMessageRef;
-          local_4 = auStackY_30;
-          thunk_AssignStringSharedRefAndReturnThis();
-          thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-          uStackY_24 = 0x5974d8;
-          ReleaseSharedStringRefIfNotEmpty();
-          *unaff_FS_OFFSET = (int)puVar3;
-          return;
-        }
-        uStackY_1c = 0x5974f5;
-        thunk_ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
-        *unaff_FS_OFFSET = local_c;
-        return;
-      }
-      if (uVar1 == 0x73656e64) {
-        uStackY_1c = 0x59740a;
-        uVar2 = GetAsyncKeyState(0x11);
-        if ((uVar2 & 0x8000) == 0) {
-          uStackY_1c = 0x597450;
-          thunk_RefreshPoseMessageDialogNationSelectionControls();
-          *unaff_FS_OFFSET = local_c;
-          return;
-        }
-        if (*(char *)(g_pGameFlowState + 0xf4) != '\0') {
-          uStackY_1c = 0x597430;
-          (**(code **)(*g_pLocalizationTable + 0x48))();
-          *unaff_FS_OFFSET = unaff_ESI;
-          return;
-        }
-        goto LAB_00597559;
-      }
-    }
-    pTStackY_20 = (TMapUberPicture *)0xa;
-  }
-  else if (pThis == (TMapUberPicture *)0xc) {
-    if (((0x6167722f < *(uint *)(in_stack_00000008 + 0x1c)) &&
-        (*(uint *)(in_stack_00000008 + 0x1c) < 0x61677233)) &&
-       (*(int *)((int)g_pActiveMapOrderContext + 0x14) != 0)) {
-      uStackY_1c = 0x59753d;
-      thunk_SetTaskForceOwnerPointer();
-    }
-    pTStackY_20 = (TMapUberPicture *)0xc;
-  }
-  else {
-    pTStackY_20 = pThis;
-  }
-  uStackY_24 = 0x597559;
-  thunk_HandleCityDialogToggleCommandOrForward();
-LAB_00597559:
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00597600
-// GHIDRA_NAME TMapUberPicture::WrapperFor_GetActiveNationId_At00597600
-// GHIDRA_PROTO void __thiscall WrapperFor_GetActiveNationId_At00597600(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper with local state handling.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper with local state handling. */
-
-void __thiscall
-TMapUberPicture::WrapperFor_GetActiveNationId_At00597600(TMapUberPicture *this,int arg1)
-
-{
-  short sVar1;
-  int iVar2;
-  undefined4 extraout_EAX;
-  undefined4 uVar3;
-  int iVar4;
-  
-  if (arg1 == 0x406) {
-    sVar1 = *(short *)(this + 0x96);
-    switch(sVar1) {
-    case 0:
-      iVar4 = *(int *)(g_pSelectedCivilianOrderState + 4);
-      if (iVar4 != 0) {
-        (**(code **)(*(int *)this + 0x1e0))
-                  (CONCAT22((short)((uint)iVar4 >> 0x10),*(undefined2 *)(iVar4 + 6)));
-        return;
-      }
-      break;
-    case 1:
-      sVar1 = *(short *)(g_pMapContextActionManager + 0x31c);
-      if (sVar1 != -1) {
-        (**(code **)(*(int *)this + 0x1e0))
-                  (CONCAT22((short)((uint)(sVar1 * 0x15) >> 0x10),
-                            *(undefined2 *)(g_pGlobalMapState[4] + 4 + sVar1 * 0xa8)));
-        return;
-      }
-      break;
-    case 2:
-      if (sVar1 == 2) {
-        iVar4 = *(int *)(this + 0x98);
-      }
-      else {
-        iVar4 = 0;
-      }
-      if (iVar4 != 0) {
-        if (sVar1 != 2) {
-          (**(code **)(*(int *)this + 0x1e0))(uRam0000000c);
-          return;
-        }
-        (**(code **)(*(int *)this + 0x1e0))
-                  (CONCAT22((short)((uint)*(int *)(this + 0x98) >> 0x10),
-                            *(undefined2 *)(*(int *)(this + 0x98) + 0xc)));
-        return;
-      }
-      break;
-    case 3:
-      iVar4 = *(int *)this;
-      iVar2 = *g_pGlobalMapState;
-      thunk_GetActiveNationId();
-      uVar3 = (**(code **)(iVar2 + 100))(extraout_EAX);
-      (**(code **)(iVar4 + 0x1e0))(uVar3);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00598870
-// GHIDRA_NAME TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
-// GHIDRA_PROTO void __thiscall WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper in invalidation chain.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper in invalidation chain. */
-
-void __thiscall
-TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(TMapUberPicture *this)
-
-{
-  if (this[0x94] != (TMapUberPicture)0x0) {
-    (**(code **)(**(int **)(this + 0xa8) + 0x200))();
-    return;
-  }
-  thunk_WrapperFor_InvalidateCityDialogRectRegion_At00565fc0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00599CF0
-// GHIDRA_NAME TMapUberPicture::SuperMap::CreateToolWindow
-// GHIDRA_PROTO void __fastcall SuperMap::CreateToolWindow(astruct_20 * this_obj)
-
-void __fastcall TMapUberPicture::SuperMap__CreateToolWindow(astruct_20 *this_obj)
-
-{
-  int iVar2;
-  astruct_22 *tool_iface;
-  astruct_21 *child_ctrl;
-  astruct_23 *ui_mgr;
-  int *seh_frame;
-  astruct_21 *vtable_or_iface;
-  int seh_prev;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  undefined **iVar1;
-  int *piVar1;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006384ea;
-  seh_prev = *seh_frame;
-  *seh_frame = (int)&seh_prev;
-  tool_iface = (astruct_22 *)(*(code *)this_obj->field0_0x0[0x25])(0x746f6f6c);
-  if (tool_iface == (astruct_22 *)0x0) {
+  piVar2 = (int *)(*(code *)(this->base).field0_0x0[0x25])(0x746f6f6c);
+  if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  child_ctrl = (astruct_21 *)AllocateWithFallbackHandler(0xa0);
-  puStack_8 = (undefined1 *)0x0;
-  if (child_ctrl == (astruct_21 *)0x0) {
-    child_ctrl = (astruct_21 *)0x0;
+  pcVar1 = *(code **)(*piVar2 + 0x94);
+  piVar2 = (int *)(*pcVar1)(0x73656173);
+  if (piVar2 != (int *)0x0) {
+    (**(code **)(*piVar2 + 0xa4))((int)unaff_BL,1);
   }
-  else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)child_ctrl);
-    child_ctrl->field0_0x0 = &g_vtblTMiniMapView;
-    child_ctrl->field126_0x90 = 0;
-    child_ctrl->field127_0x94 = (undefined *)0x0;
-    child_ctrl->field124_0x88 = 0;
-    child_ctrl->field125_0x8c = 0;
-    child_ctrl->field128_0x98 = (int)g_wMiniMapViewHalfWidth;
-    child_ctrl->field129_0x9c = 8;
+  piVar2 = (int *)(*pcVar1)(0x79656172);
+  if (piVar2 != (int *)0x0) {
+    (**(code **)(*piVar2 + 0xa4))((int)unaff_BL,1);
   }
-  puStack_8 = (undefined1 *)0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  child_ctrl->field126_0x90 = child_ctrl->field49_0x34 / 2 - child_ctrl->field128_0x98;
-  child_ctrl->field123_0x84 = this_obj;
-  iVar1 = child_ctrl->field0_0x0;
-  child_ctrl->field127_0x94 =
-       (undefined *)(child_ctrl->field50_0x38 / 2 - child_ctrl->field129_0x9c);
-  (*(code *)iVar1[0x39])();
-  (*(code *)iVar1[0x2a])(1,0);
-  this_obj->field183_0xc0 = (int *)child_ctrl;
-  iVar2 = tool_iface->field34_0x28;
-  CreateClipStateRegionWrapperObject();
-  ReplaceClipStateRegionHandleFromRect();
-  CombineTwoRegionsIntoDestinationAndUpdateBox();
-  DestroyClipStateRegionWrapperObject();
-  if ((char)this_obj->field142_0x94 == '\0') {
-    piVar1 = this_obj->field183_0xc0;
-    piVar1[0x26] = 0x20;
-    piVar1[0x27] = 0x1c;
-    piVar1[0x24] = (piVar1[0xd] / 2 - piVar1[0x26]) + -2;
-    piVar1[0x25] = (piVar1[0xe] / 2 - piVar1[0x27]) + -2;
-    (**(code **)(*piVar1 + 0xe4))();
+  piVar2 = (int *)(*pcVar1)(0x74726561);
+  if (piVar2 != (int *)0x0) {
+    (**(code **)(*piVar2 + 0xa4))((int)unaff_BL,1);
   }
-  (*(code *)ui_mgr->field508_0x1fc)(0);
-  *seh_frame = iVar2 + 0x82;
+  piVar2 = (int *)(*pcVar1)(0x74726565);
+  if (piVar2 != (int *)0x0) {
+    (**(code **)(*piVar2 + 0xa4))((int)unaff_BL,1);
+  }
   return;
 }
 

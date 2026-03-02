@@ -4,15 +4,16 @@
 // Bucket: TView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401096
-// GHIDRA_NAME TView::thunk_GetTViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTViewClassNamePointer(void)
+// GHIDRA_NAME TView::UpdateCoordinates
+// GHIDRA_PROTO void * __cdecl UpdateCoordinates(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTViewClassNamePointer
+// GHIDRA_COMMENT macos_vtable_slot=0;class=TView;confidence=low;current=thunk_GetTViewClassNamePointer_At00401096
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetTViewClassNamePointer */
+/* macos_vtable_slot=0;class=TView;confidence=low;current=thunk_GetTViewClassNamePointer_At00401096
+    */
 
-void * __cdecl TView::thunk_GetTViewClassNamePointer(void)
+void * __cdecl TView::UpdateCoordinates(void)
 
 {
   void *pvVar1;
@@ -21,65 +22,107 @@ void * __cdecl TView::thunk_GetTViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401366
+// GHIDRA_NAME TView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At0048cad0_At00401366
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At0048cad0_At00401366(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At0048cad0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At0048cad0 */
+
+void __cdecl TView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At0048cad0_At00401366(void)
+
+{
+  WrapperFor_FreeHeapBufferIfNotNull_At0048cad0();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004040E8
+// GHIDRA_NAME TView::thunk_CopyCityDialogStateFromSource
+// GHIDRA_PROTO void __thiscall thunk_CopyCityDialogStateFromSource(CityDialogController * pSource)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CopyCityDialogStateFromSource
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CopyCityDialogStateFromSource */
+
+void __thiscall
+TView::thunk_CopyCityDialogStateFromSource(TView *this,CityDialogController *pSource)
+
+{
+  void *pvVar1;
+  code *pcVar2;
+  int *piVar3;
+  undefined3 uVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  
+  uVar4 = *(undefined3 *)&pSource->field_0x5;
+  this->field1_0x4 = pSource->flagByte4;
+  this->field2_0x5 = uVar4;
+  this->field3_0x8 = pSource->field_08;
+  this->field8_0x1c = pSource->field_1C;
+  this->dialogValueDwordC = pSource->valueDwordC;
+  this->pChildMapView20 = (void *)0x0;
+  pvVar1 = (void *)pSource->field_50;
+  this->pChildControlList44 = (void *)0x0;
+  this->pWindowOwner50 = pvVar1;
+  this->pOwnedBuffer48 = (void *)0x0;
+  this->viewFlags3c = pSource->field_3C;
+  this->viewStateWord54 = pSource->resourceShortId54;
+  this->field10_0x24 = pSource->field_24;
+  this->field11_0x28 = pSource->field_28;
+  this->cachedPosX2c = pSource->field_2C;
+  this->cachedPosY30 = pSource->field_30;
+  this->field14_0x34 = pSource->field_34;
+  this->field15_0x38 = pSource->field_38;
+  this->inputEnableFlag4c = pSource->flagByte4C;
+  this->renderEnableFlag4d = pSource->flagByte4D;
+  if ((pSource->pChildDialogList != (void *)0x0) &&
+     (piVar6 = *(int **)((int)pSource->pChildDialogList + 4), piVar6 != (int *)0x0)) {
+    pcVar2 = *(code **)((int)this->pVtable + 0x170);
+    do {
+      piVar3 = (int *)*piVar6;
+      uVar5 = (**(code **)(*(int *)piVar6[2] + 0x20))();
+      (*pcVar2)(uVar5,0);
+      piVar6 = piVar3;
+    } while (piVar3 != (int *)0x0);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404318
-// GHIDRA_NAME TView::thunk_DestructTViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TView::TView_VtblSlot001
+// GHIDRA_PROTO TView * __thiscall TView_VtblSlot001(byte arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTViewAndMaybeFree */
 
-void * __thiscall TView::thunk_DestructTViewAndMaybeFree(TView *this,byte freeSelfFlag)
+TView * __thiscall TView::TView_VtblSlot001(TView *this,byte arg1)
 
 {
-  void *pvVar1;
+  TView *pTVar1;
   
-  pvVar1 = DestructTViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTViewAndMaybeFree(this,arg1);
+  return pTVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004064E2
-// GHIDRA_NAME TView::thunk_ConstructUiResourceEntryBase
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiResourceEntryBase(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00406726
+// GHIDRA_NAME TView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At0048ada0_At00406726
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At0048ada0_At00406726(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiResourceEntryBase
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At0048ada0
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ConstructUiResourceEntryBase */
+/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At0048ada0 */
 
-void __thiscall TView::thunk_ConstructUiResourceEntryBase(TView *this)
+void __cdecl TView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At0048ada0_At00406726(void)
 
 {
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_0062ebf8;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 0x10) = 0x7fffffff;
-  *(undefined4 *)(this + 0x14) = 0;
-  *(undefined4 *)(this + 0x18) = 0;
-  *(undefined ***)this = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
-  uStack_4 = 0;
-  *(undefined4 *)(this + 0x3c) = 0;
-  *(undefined4 *)(this + 0x44) = 0;
-  *(undefined4 *)(this + 0x48) = 0;
-  this[0x4c] = (TView)0x1;
-  this[0x4d] = (TView)0x1;
-  *(undefined2 *)(this + 0x4e) = 0xffff;
-  *(undefined4 *)(this + 0x50) = 0;
-  *(undefined2 *)(this + 0x54) = 1;
-  InitializeSharedStringRefFromEmpty();
-  *(undefined4 *)(this + 0x5c) = 0;
-  *(undefined ***)this = &g_vtblTView;
-  *unaff_FS_OFFSET = uStack_c;
+  WrapperFor_FreeHeapBufferIfNotNull_At0048ada0();
   return;
 }
 
@@ -106,10 +149,10 @@ void * __cdecl TView::CreateTViewInstance(void)
   puStack_8 = &LAB_0062ebda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    thunk_ConstructUiResourceEntryBase(this);
+    thunk_ConstructTViewBaseState(this);
     *unaff_FS_OFFSET = local_c;
     return extraout_EAX;
   }
@@ -133,10 +176,16 @@ void * __cdecl TView::GetTViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A8E0
-// GHIDRA_NAME TView::ConstructUiResourceEntryBase
-// GHIDRA_PROTO void __thiscall ConstructUiResourceEntryBase(void)
+// GHIDRA_NAME TView::ConstructTViewBaseState
+// GHIDRA_PROTO void __thiscall ConstructTViewBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Renamed from generic UiResourceEntry base constructor to explicit TView base-state constructor.
+// GHIDRA_COMMENT_END
 
-void __thiscall TView::ConstructUiResourceEntryBase(TView *this)
+/* Renamed from generic UiResourceEntry base constructor to explicit TView base-state constructor.
+    */
+
+void __thiscall TView::ConstructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -147,41 +196,175 @@ void __thiscall TView::ConstructUiResourceEntryBase(TView *this)
   puStack_8 = &LAB_0062ebf8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 0x10) = 0x7fffffff;
-  *(undefined4 *)(this + 0x14) = 0;
-  *(undefined4 *)(this + 0x18) = 0;
-  *(undefined ***)this = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
-  *(undefined4 *)(this + 0x20) = 0;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
+  this->dialogValueDwordC = 0;
+  this->dialogValueDword10 = 0x7fffffff;
+  this->viewStateDword14 = 0;
+  this->pUiOwner18 = (void *)0x0;
+  this->pVtable = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
+  this->pChildMapView20 = (void *)0x0;
+  this->cachedPosX2c = 0;
+  this->cachedPosY30 = 0;
   local_4 = 0;
-  *(undefined4 *)(this + 0x3c) = 0;
-  *(undefined4 *)(this + 0x44) = 0;
-  *(undefined4 *)(this + 0x48) = 0;
-  this[0x4c] = (TView)0x1;
-  this[0x4d] = (TView)0x1;
-  *(undefined2 *)(this + 0x4e) = 0xffff;
-  *(undefined4 *)(this + 0x50) = 0;
-  *(undefined2 *)(this + 0x54) = 1;
+  this->viewFlags3c = 0;
+  this->pChildControlList44 = (void *)0x0;
+  this->pOwnedBuffer48 = (void *)0x0;
+  this->inputEnableFlag4c = 1;
+  this->renderEnableFlag4d = 1;
+  this->selectionState4e = 0xffff;
+  this->pWindowOwner50 = (void *)0x0;
+  this->viewStateWord54 = 1;
   InitializeSharedStringRefFromEmpty();
-  *(undefined4 *)(this + 0x5c) = 0;
-  *(undefined ***)this = &g_vtblTView;
+  this->inputGateOverride5c = 0;
+  this->pVtable = &g_vtblTView;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A9A0
 // GHIDRA_NAME TView::DestructTViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TView * __thiscall DestructTViewAndMaybeFree(byte arg1)
 
-void * __thiscall TView::DestructTViewAndMaybeFree(TView *this,byte freeSelfFlag)
+TView * __thiscall TView::DestructTViewAndMaybeFree(TView *this,byte arg1)
 
 {
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+  thunk_DestructTViewBaseState(this);
+  if ((arg1 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A9D0
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall DestructTViewBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Renamed from legacy EngineerDialog wording; this is TView base-state teardown.
+// GHIDRA_COMMENT_END
+
+/* Renamed from legacy EngineerDialog wording; this is TView base-state teardown. */
+
+void __thiscall TView::DestructTViewBaseState(TView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_0062ec23;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->pVtable = &g_vtblTView;
+  local_4 = 1;
+  if (this->pChildControlList44 != (int *)0x0) {
+    (**(code **)(*(int *)this->pChildControlList44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull();
+  local_4 = local_4 & 0xffffff00;
+  ReleaseSharedStringRefIfNotEmpty();
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048BEF0
+// GHIDRA_NAME TView::CopyCityDialogStateFromSource
+// GHIDRA_PROTO void __thiscall CopyCityDialogStateFromSource(CityDialogController * pSource)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void CopyCityDialogStateFromSource(CityDialogController *this, CityDialogController *pSource)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void CopyCityDialogStateFromSource(CityDialogController *this,
+   CityDialogController *pSource) */
+
+void __thiscall TView::CopyCityDialogStateFromSource(TView *this,CityDialogController *pSource)
+
+{
+  void *pvVar1;
+  code *pcVar2;
+  int *piVar3;
+  undefined3 uVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  
+  uVar4 = *(undefined3 *)&pSource->field_0x5;
+  this->field1_0x4 = pSource->flagByte4;
+  this->field2_0x5 = uVar4;
+  this->field3_0x8 = pSource->field_08;
+  this->field8_0x1c = pSource->field_1C;
+  this->dialogValueDwordC = pSource->valueDwordC;
+  this->pChildMapView20 = (void *)0x0;
+  pvVar1 = (void *)pSource->field_50;
+  this->pChildControlList44 = (void *)0x0;
+  this->pWindowOwner50 = pvVar1;
+  this->pOwnedBuffer48 = (void *)0x0;
+  this->viewFlags3c = pSource->field_3C;
+  this->viewStateWord54 = pSource->resourceShortId54;
+  this->field10_0x24 = pSource->field_24;
+  this->field11_0x28 = pSource->field_28;
+  this->cachedPosX2c = pSource->field_2C;
+  this->cachedPosY30 = pSource->field_30;
+  this->field14_0x34 = pSource->field_34;
+  this->field15_0x38 = pSource->field_38;
+  this->inputEnableFlag4c = pSource->flagByte4C;
+  this->renderEnableFlag4d = pSource->flagByte4D;
+  if ((pSource->pChildDialogList != (void *)0x0) &&
+     (piVar6 = *(int **)((int)pSource->pChildDialogList + 4), piVar6 != (int *)0x0)) {
+    pcVar2 = *(code **)((int)this->pVtable + 0x170);
+    do {
+      piVar3 = (int *)*piVar6;
+      uVar5 = (**(code **)(*(int *)piVar6[2] + 0x20))();
+      (*pcVar2)(uVar5,0);
+      piVar6 = piVar3;
+    } while (piVar3 != (int *)0x0);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7B20
+// GHIDRA_NAME TView::ApplyJoinEmpireModeForTargetNation
+// GHIDRA_PROTO void __thiscall ApplyJoinEmpireModeForTargetNation(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Join-empire mode applicator for a target nation slot.\nWhen mode==1, writes relation code 5 bidirectionally.\nMode callbacks:\n- mode 0 -> vtable +0x50 (ApplyJoinEmpireMode0GlobalDiplomacyReset)\n- mode 1 -> vtable +0x54 (ApplyJoinEmpireMode1TargetTransition)\n- other  -> vtable +0x58 (ApplyJoinEmpireMode2FinalizeNationNameState).
+// GHIDRA_COMMENT_END
+
+/* Join-empire mode applicator for a target nation slot.\nWhen mode==1, writes relation code 5
+   bidirectionally.\nMode callbacks:\n- mode 0 -> vtable +0x50
+   (ApplyJoinEmpireMode0GlobalDiplomacyReset)\n- mode 1 -> vtable +0x54
+   (ApplyJoinEmpireMode1TargetTransition)\n- other  -> vtable +0x58
+   (ApplyJoinEmpireMode2FinalizeNationNameState). */
+
+void __thiscall TView::ApplyJoinEmpireModeForTargetNation(TView *this,int arg1,int arg2)
+
+{
+  undefined4 in_EDX;
+  undefined2 uVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  
+  uVar1 = (undefined2)((uint)in_EDX >> 0x10);
+  if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
+    thunk_DispatchJoinEmpireModeEventPacket24_27();
+    uVar1 = extraout_var;
+  }
+  if (arg2 == 1) {
+    (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x78))
+              (CONCAT22(uVar1,(short)this->dialogValueDwordC),arg1,5);
+    (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x78))
+              (arg1,CONCAT22(extraout_var_00,(short)this->dialogValueDwordC),5);
+  }
+  if ((short)this->dialogValueDwordC < 7) {
+    thunk_DecrementField30Value();
+  }
+  if (arg2 == 0) {
+    (**(code **)((int)this->pVtable + 0x50))(arg1);
+    return;
+  }
+  if (arg2 == 1) {
+    (**(code **)((int)this->pVtable + 0x54))(arg1);
+    return;
+  }
+  (**(code **)((int)this->pVtable + 0x58))();
+  return;
 }
 

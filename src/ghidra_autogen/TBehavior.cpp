@@ -4,15 +4,15 @@
 // Bucket: TBehavior.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004036F7
-// GHIDRA_NAME TBehavior::thunk_GetTBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME TBehavior::TBehavior_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TBehavior_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTBehaviorClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTBehaviorClassNamePointer */
 
-void * __cdecl TBehavior::thunk_GetTBehaviorClassNamePointer(void)
+void * __cdecl TBehavior::TBehavior_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,15 +22,15 @@ void * __cdecl TBehavior::thunk_GetTBehaviorClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407086
-// GHIDRA_NAME TBehavior::thunk_DestructTBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TBehavior::TBehavior_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TBehavior_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTBehaviorAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTBehaviorAndMaybeFree */
 
-void * __thiscall TBehavior::thunk_DestructTBehaviorAndMaybeFree(TBehavior *this,byte freeSelfFlag)
+void * __thiscall TBehavior::TBehavior_VtblSlot001(TBehavior *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -41,7 +41,7 @@ void * __thiscall TBehavior::thunk_DestructTBehaviorAndMaybeFree(TBehavior *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486F90
 // GHIDRA_NAME TBehavior::CreateTBehaviorInstance
-// GHIDRA_PROTO undefined CreateTBehaviorInstance()
+// GHIDRA_PROTO TBehavior * __cdecl CreateTBehaviorInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeLinkedBlockChain; instructions=33, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -49,10 +49,12 @@ void * __thiscall TBehavior::thunk_DestructTBehaviorAndMaybeFree(TBehavior *this
 /* [WrapperShape] small wrapper around FreeLinkedBlockChain; instructions=33, call_insns=1,
    internal_calls=1, unique_internal=1 */
 
-void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
+TBehavior * __cdecl TBehavior::CreateTBehaviorInstance(void)
 
 {
   undefined4 *puVar1;
+  TBehavior *extraout_EAX;
+  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -61,20 +63,20 @@ void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
   puStack_8 = &LAB_0062ead8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_GetCObjectRuntimeClass_00648ca8;
-  puVar1 = (undefined4 *)param_1[1];
+  *in_ECX = &PTR_GetCObjectRuntimeClass_ApplicationUiRootControllerState_00648CA8;
+  puVar1 = (undefined4 *)in_ECX[1];
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  param_1[3] = 0;
-  param_1[4] = 0;
-  param_1[2] = 0;
-  param_1[1] = 0;
-  TInteriorMinister::FreeLinkedBlockChain();
-  param_1[5] = 0;
-  *param_1 = &PTR_GetCObjectRuntimeClass_0066fec4;
+  in_ECX[3] = 0;
+  in_ECX[4] = 0;
+  in_ECX[2] = 0;
+  in_ECX[1] = 0;
+  FreeDataChain();
+  in_ECX[5] = 0;
+  *in_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
-  return;
+  return extraout_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871C0
@@ -100,9 +102,9 @@ void __fastcall TBehavior::ConstructTBehaviorBaseState(TBehavior *pThis)
 
 {
   *(undefined ***)pThis = &g_vtblTBehavior;
-  *(undefined4 *)(pThis + 4) = 0x20202020;
-  *(undefined4 *)(pThis + 8) = 0;
-  pThis[0xc] = (TBehavior)0x1;
+  pThis->field04 = 0x20202020;
+  pThis->field08 = 0;
+  *(undefined1 *)(pThis + 1) = 1;
   return;
 }
 
@@ -115,7 +117,7 @@ void * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this,byte 
 {
   DestructTBehaviorAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -3,60 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TDialogView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004049F8
-// GHIDRA_NAME TDialogView::thunk_GetTDialogViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDialogViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDialogViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDialogViewClassNamePointer */
-
-void * __cdecl TDialogView::thunk_GetTDialogViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDialogViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B46
-// GHIDRA_NAME TDialogView::thunk_DestructTDialogViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDialogViewAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDialogViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDialogViewAndMaybeFree */
-
-void * __thiscall
-TDialogView::thunk_DestructTDialogViewAndMaybeFree(TDialogView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDialogViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406424
-// GHIDRA_NAME TDialogView::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d880
-// GHIDRA_PROTO undefined __stdcall thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d880(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d880
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d880 */
-
-void TDialogView::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d880
-               (void)
-
-{
-  ConstructTDialogViewBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D790
 // GHIDRA_NAME TDialogView::GetTDialogViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTDialogViewClassNamePointer(void)
@@ -74,7 +20,7 @@ void * __cdecl TDialogView::GetTDialogViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D880
 // GHIDRA_NAME TDialogView::ConstructTDialogViewBaseState
-// GHIDRA_PROTO undefined __stdcall ConstructTDialogViewBaseState(void)
+// GHIDRA_PROTO void __stdcall ConstructTDialogViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_SetGlobalUiInvalidationFlagAndReturnPrevious; instructions=7, call_insns=2, internal_calls=2, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -97,9 +43,9 @@ void TDialogView::ConstructTDialogViewBaseState(void)
 void * __thiscall TDialogView::DestructTDialogViewAndMaybeFree(TDialogView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

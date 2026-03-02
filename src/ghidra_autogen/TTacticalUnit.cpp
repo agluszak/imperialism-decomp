@@ -4,35 +4,34 @@
 // Bucket: TTacticalUnit.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040443A
-// GHIDRA_NAME TTacticalUnit::thunk_GetTTacticalUnitRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTTacticalUnitRuntimeClass(void)
+// GHIDRA_NAME TTacticalUnit::thunk_CreateTTacticalUnitInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTTacticalUnitInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTacticalUnitRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTTacticalUnitRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTTacticalUnitRuntimeClass. */
+/* Thunk forwarding to GetTTacticalUnitRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TTacticalUnit::thunk_GetTTacticalUnitRuntimeClass(TTacticalUnit *this)
+void * __thiscall TTacticalUnit::thunk_CreateTTacticalUnitInstance(TTacticalUnit *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404DA4
-// GHIDRA_NAME TTacticalUnit::thunk_ApplyTacticalUnitDamageAndSetDefeatedState_At00404da4
-// GHIDRA_PROTO void __thiscall thunk_ApplyTacticalUnitDamageAndSetDefeatedState_At00404da4(int damage)
+// GHIDRA_NAME TTacticalUnit::thunk_DestructTTacticalUnitAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTTacticalUnitAndMaybeFree(int damage)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyTacticalUnitDamageAndSetDefeatedState
+// GHIDRA_COMMENT Single-JMP thunk to ApplyTacticalUnitDamageAndSetDefeatedState [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ApplyTacticalUnitDamageAndSetDefeatedState */
+/* Single-JMP thunk to ApplyTacticalUnitDamageAndSetDefeatedState [FID:thunk_target_sync] */
 
 void __thiscall
-TTacticalUnit::thunk_ApplyTacticalUnitDamageAndSetDefeatedState_At00404da4
-          (TTacticalUnit *this,int damage)
+TTacticalUnit::thunk_DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this,int damage)
 
 {
   DestructTTacticalUnitAndMaybeFree(this,damage);
@@ -71,7 +70,7 @@ void * __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -103,15 +102,15 @@ void * __cdecl TTacticalUnit::GetTTacticalUnitClassNamePointer(void)
 void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *this)
 
 {
-  void *pvVar1;
+  undefined4 uVar1;
   
-  this[2].pVtable = (void *)0xfffffffe;
-  *(undefined1 *)&this[6].pVtable = 0;
-  this[7].pVtable = (void *)0x0;
-  pvVar1 = (void *)(**(code **)((int)this->pVtable + 0x28))();
-  this[10].pVtable = pvVar1;
-  this[0xb].pVtable = (void *)0x0;
-  this[0xc].pVtable = (void *)0x0;
+  this->field2_0x8 = 0xfffffffe;
+  this->field15_0x18 = 0;
+  this->field19_0x1c = (void *)0x0;
+  uVar1 = (**(code **)((int)this->pVtable + 0x28))();
+  this->field28_0x28 = uVar1;
+  this->field29_0x2c = 0;
+  this->field30_0x30 = 0;
   return;
 }
 
@@ -129,11 +128,11 @@ void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(TTacticalUnit *
 {
   void *pvVar1;
   
-  pvVar1 = (void *)((int)this[1].pVtable - damage);
-  this[1].pVtable = pvVar1;
+  pvVar1 = (void *)((int)this->field1_0x4 - damage);
+  this->field1_0x4 = pvVar1;
   if ((int)pvVar1 < 1) {
-    this[1].pVtable = (void *)0x0;
-    this[7].pVtable = (void *)0x3;
+    this->field1_0x4 = (void *)0x0;
+    this->field19_0x1c = (void *)0x3;
   }
   return;
 }

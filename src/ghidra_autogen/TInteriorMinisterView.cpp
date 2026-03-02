@@ -4,8 +4,8 @@
 // Bucket: TInteriorMinisterView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004035A3
-// GHIDRA_NAME TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTInteriorMinisterViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree_At004035a3
+// GHIDRA_PROTO void * __thiscall thunk_DestructTInteriorMinisterViewAndMaybeFree_At004035a3(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTInteriorMinisterViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructTInteriorMinisterViewAndMaybeFree */
 
 void * __thiscall
-TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree
+TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree_At004035a3
           (TInteriorMinisterView *this,byte freeSelfFlag)
 
 {
@@ -24,8 +24,8 @@ TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405065
-// GHIDRA_NAME TInteriorMinisterView::thunk_HandleDialogEvent14TranTreaAndEvent10BackOkay
-// GHIDRA_PROTO void __thiscall thunk_HandleDialogEvent14TranTreaAndEvent10BackOkay(InterNationEventCode eventCode, int eventRecord)
+// GHIDRA_NAME TInteriorMinisterView::thunk_HandleDialogEvent14TranTreaAndEvent10BackOkay_At00405065
+// GHIDRA_PROTO void __thiscall thunk_HandleDialogEvent14TranTreaAndEvent10BackOkay_At00405065(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleDialogEvent14TranTreaAndEvent10BackOkay
 // GHIDRA_COMMENT_END
@@ -33,30 +33,142 @@ TInteriorMinisterView::thunk_DestructTInteriorMinisterViewAndMaybeFree
 /* Single-JMP thunk to HandleDialogEvent14TranTreaAndEvent10BackOkay */
 
 void __thiscall
-TInteriorMinisterView::thunk_HandleDialogEvent14TranTreaAndEvent10BackOkay
-          (TInteriorMinisterView *this,InterNationEventCode eventCode,int eventRecord)
+TInteriorMinisterView::thunk_HandleDialogEvent14TranTreaAndEvent10BackOkay_At00405065
+          (TInteriorMinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent
+          )
 
 {
-  HandleDialogEvent14TranTreaAndEvent10BackOkay(this,eventCode,eventRecord);
+  HandleDialogEvent14TranTreaAndEvent10BackOkay(this,eventCode,pPanelEvent);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406D70
-// GHIDRA_NAME TInteriorMinisterView::thunk_GetTInteriorMinisterViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTInteriorMinisterViewClassNamePointer(void)
+// GHIDRA_NAME TInteriorMinisterView::thunk_GetTInteriorMinisterViewClassNamePointer_At00406d70
+// GHIDRA_PROTO void * __cdecl thunk_GetTInteriorMinisterViewClassNamePointer_At00406d70(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTInteriorMinisterViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTInteriorMinisterViewClassNamePointer */
 
-void * __cdecl TInteriorMinisterView::thunk_GetTInteriorMinisterViewClassNamePointer(void)
+void * __cdecl
+TInteriorMinisterView::thunk_GetTInteriorMinisterViewClassNamePointer_At00406d70(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTInteriorMinisterViewClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F3370
+// GHIDRA_NAME TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
+// GHIDRA_PROTO void __thiscall DispatchEngineerDialogCommandTagsByEventCode(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [LowHanging] Routes engineer dialog command-tag controls by event code; handles back/cancel-like tags, dispatches localized UI message path, otherwise forwards to child slot-40 handler.
+// GHIDRA_COMMENT_END
+
+/* [LowHanging] Routes engineer dialog command-tag controls by event code; handles back/cancel-like
+   tags, dispatches localized UI message path, otherwise forwards to child slot-40 handler. */
+
+void __thiscall
+TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
+          (TInteriorMinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent
+          )
+
+{
+  EControlTagFourCC EVar1;
+  void *pvVar2;
+  char extraout_AL;
+  short extraout_AX;
+  int unaff_ESI;
+  int *unaff_FS_OFFSET;
+  undefined1 auStackY_30 [4];
+  int *piStackY_2c;
+  undefined4 uStackY_28;
+  undefined4 uStackY_24;
+  InterNationEventCode IStackY_20;
+  PanelEventPayload *pPStackY_1c;
+  undefined1 *puVar3;
+  int local_c;
+  undefined1 *puStack_8;
+  undefined1 *local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = (undefined1 *)0xffffffff;
+  puStack_8 = &LAB_00632a68;
+  *unaff_FS_OFFSET = (int)&local_c;
+  EVar1 = pPanelEvent->controlTag1c;
+  if (eventCode == IN_EVENT_14_SPECIAL_RELATION_FLAG_2) {
+    if (EVar1 == 0x63616e6e) {
+      thunk_GetActiveNationId();
+      pPStackY_1c = (PanelEventPayload *)0x4f3497;
+      ScanMapContextActionEntriesForCodeMatch((int)extraout_AX);
+      if (extraout_AL == '\0') {
+        InitializeSharedStringRefFromEmpty();
+        puVar3 = &stack0x0000000c;
+        pPStackY_1c = (PanelEventPayload *)0x12;
+        IStackY_20 = 0x273d;
+        local_4 = (undefined1 *)0x0;
+        uStackY_24 = 0x4f34c6;
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+        uStackY_24 = 0;
+        uStackY_28 = 1;
+        piStackY_2c = &g_ShDiplomacyActionRejectMessageRef;
+        local_4 = auStackY_30;
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        uStackY_24 = 0x4f34fc;
+        ReleaseSharedStringRefIfNotEmpty();
+        *unaff_FS_OFFSET = (int)puVar3;
+        return;
+      }
+      if (*(char *)((int)g_pLocalizationTable + 0x14) == '\0') {
+        (**(code **)((int)(this->base).pVtable + 0x58))();
+        pPStackY_1c = (PanelEventPayload *)0x4f3531;
+        (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))();
+        pPStackY_1c = (PanelEventPayload *)0x65;
+        IStackY_20 = 0x4f353e;
+        (**(code **)(*(int *)g_pLocalizationTable + 0x48))();
+      }
+    }
+    else if (EVar1 == 0x72656363) {
+      pPStackY_1c = (PanelEventPayload *)0x4f346a;
+      (**(code **)((int)(this->base).pVtable + 0x1a8))();
+      *unaff_FS_OFFSET = unaff_ESI;
+      return;
+    }
+    *unaff_FS_OFFSET = local_c;
+    return;
+  }
+  if (eventCode != 10) {
+    pPStackY_1c = pPanelEvent;
+    IStackY_20 = eventCode;
+    uStackY_24 = 0x4f3434;
+    TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+    *unaff_FS_OFFSET = local_c;
+    return;
+  }
+  if (EVar1 == 0x6261636b) {
+    (**(code **)((int)(this->base).pVtable + 0x1ac))();
+    *unaff_FS_OFFSET = local_c;
+    return;
+  }
+  if (EVar1 != CONTROL_TAG_TAG_YAKO) {
+    pPStackY_1c = pPanelEvent;
+    IStackY_20 = 10;
+    uStackY_24 = 0x4f33c5;
+    TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+    *unaff_FS_OFFSET = local_c;
+    return;
+  }
+  pvVar2 = (this->base).pVtable;
+  (**(code **)((int)pvVar2 + 0x1ac))();
+  (**(code **)((int)pvVar2 + 0x58))();
+  pPStackY_1c = (PanelEventPayload *)0x4f33f6;
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))();
+  *unaff_FS_OFFSET = unaff_ESI;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F35E0
@@ -76,12 +188,12 @@ void * __cdecl TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
   puStack_8 = &LAB_00632a8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &g_vtblTInteriorMinisterView;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &g_vtblTInteriorMinisterView;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -112,9 +224,9 @@ void * __thiscall
 TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TInteriorMinisterView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined4 *)(this + 0x60) = 0;
-  *(undefined ***)this = &g_vtblTInteriorMinisterView;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  this->field60 = 0;
+  (this->base).pVtable = &g_vtblTInteriorMinisterView;
   return this;
 }
 
@@ -127,16 +239,16 @@ TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree
           (TInteriorMinisterView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3710
 // GHIDRA_NAME TInteriorMinisterView::HandleDialogEvent14TranTreaAndEvent10BackOkay
-// GHIDRA_PROTO void __thiscall HandleDialogEvent14TranTreaAndEvent10BackOkay(InterNationEventCode eventCode, int eventRecord)
+// GHIDRA_PROTO void __thiscall HandleDialogEvent14TranTreaAndEvent10BackOkay(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles event code 0x14 tran/trea/ccer tags and event code 10 back/okay routing with shared view activation.
 // GHIDRA_COMMENT_END
@@ -146,46 +258,48 @@ TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree
 
 void __thiscall
 TInteriorMinisterView::HandleDialogEvent14TranTreaAndEvent10BackOkay
-          (TInteriorMinisterView *this,InterNationEventCode eventCode,int eventRecord)
+          (TInteriorMinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent
+          )
 
 {
-  int iVar1;
-  undefined4 uVar2;
+  EControlTagFourCC EVar1;
+  void *pvVar2;
+  undefined4 uVar3;
   
-  iVar1 = *(int *)(eventRecord + 0x1c);
+  EVar1 = pPanelEvent->controlTag1c;
   if (eventCode == IN_EVENT_14_SPECIAL_RELATION_FLAG_2) {
-    if (iVar1 == 0x72656363) {
-      (**(code **)(*(int *)this + 0x1a8))(0x25ee);
+    if (EVar1 == 0x72656363) {
+      (**(code **)((int)(this->base).pVtable + 0x1a8))(0x25ee);
     }
-    else if (iVar1 == 0x7472616e) {
-      if (*(char *)(g_pLocalizationTable + 0x14) == '\0') {
-        uVar2 = (**(code **)(*(int *)this + 0x58))();
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar2);
+    else if (EVar1 == 0x7472616e) {
+      if (*(char *)((int)g_pLocalizationTable + 0x14) == '\0') {
+        uVar3 = (**(code **)((int)(this->base).pVtable + 0x58))();
+        (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar3);
         return;
       }
     }
-    else if (iVar1 == 0x74726561) {
-      (**(code **)(*(int *)this + 0x1a8))(0x25f8);
+    else if (EVar1 == 0x74726561) {
+      (**(code **)((int)(this->base).pVtable + 0x1a8))(0x25f8);
       return;
     }
     return;
   }
   if (eventCode != 10) {
-    thunk_ForwardEngineerDialogCommandToChildSlot40();
+    TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
     return;
   }
-  if (iVar1 == 0x6261636b) {
-    (**(code **)(*(int *)this + 0x1ac))();
+  if (EVar1 == 0x6261636b) {
+    (**(code **)((int)(this->base).pVtable + 0x1ac))();
     return;
   }
-  if (iVar1 != 0x6f6b6179) {
-    thunk_ForwardEngineerDialogCommandToChildSlot40();
+  if (EVar1 != CONTROL_TAG_TAG_YAKO) {
+    TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
     return;
   }
-  iVar1 = *(int *)this;
-  (**(code **)(iVar1 + 0x1ac))();
-  uVar2 = (**(code **)(iVar1 + 0x58))();
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar2);
+  pvVar2 = (this->base).pVtable;
+  (**(code **)((int)pvVar2 + 0x1ac))();
+  uVar3 = (**(code **)((int)pvVar2 + 0x58))();
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar3);
   return;
 }
 

@@ -4,8 +4,8 @@
 // Bucket: TSetupRandomMapPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401BEF
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_InitializeSetupRandomMapPictureDialogFromGameContext
-// GHIDRA_PROTO void __thiscall thunk_InitializeSetupRandomMapPictureDialogFromGameContext(void)
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot055
+// GHIDRA_PROTO void __thiscall TSetupRandomMapPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeSetupRandomMapPictureDialogFromGameContext
 // GHIDRA_COMMENT_END
@@ -13,11 +13,11 @@
 /* Single-JMP thunk to InitializeSetupRandomMapPictureDialogFromGameContext */
 
 void __thiscall
-TSetupRandomMapPicture::thunk_InitializeSetupRandomMapPictureDialogFromGameContext
-          (TSetupRandomMapPicture *this)
+TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot055(TSetupRandomMapPicture *this)
 
 {
-  InitializeSetupRandomMapPictureDialogFromGameContext(this);
+  TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext((TRadioTextCluster *)this)
+  ;
   return;
 }
 
@@ -51,33 +51,34 @@ TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureBaseState(TSetupRand
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404E7B
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_HandleRandomMapNationPlanAndFlagCommands
-// GHIDRA_PROTO void __thiscall thunk_HandleRandomMapNationPlanAndFlagCommands(int eventCode, void * pControl)
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot015
+// GHIDRA_PROTO void __thiscall TSetupRandomMapPicture_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT JMP thunk
+// GHIDRA_COMMENT Single-JMP thunk to HandleRandomMapNationPlanAndFlagCommands
 // GHIDRA_COMMENT_END
 
-/* JMP thunk */
+/* Single-JMP thunk to HandleRandomMapNationPlanAndFlagCommands */
 
 void __thiscall
-TSetupRandomMapPicture::thunk_HandleRandomMapNationPlanAndFlagCommands
-          (TSetupRandomMapPicture *this,int eventCode,void *pControl)
+TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot015
+          (TSetupRandomMapPicture *this,int commandId,PanelEventPayload *pPanelEvent)
 
 {
-  HandleRandomMapNationPlanAndFlagCommands(this,eventCode,pControl);
+  TSpaceCommand::HandleRandomMapNationPlanAndFlagCommands
+            ((TSpaceCommand *)this,commandId,pPanelEvent);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040500B
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_DispatchByEntryTypeToVslots1D0_1D4
-// GHIDRA_PROTO undefined thunk_DispatchByEntryTypeToVslots1D0_1D4()
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot018
+// GHIDRA_PROTO void __cdecl TSetupRandomMapPicture_VtblSlot018(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DispatchByEntryTypeToVslots1D0_1D4
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DispatchByEntryTypeToVslots1D0_1D4 */
 
-void TSetupRandomMapPicture::thunk_DispatchByEntryTypeToVslots1D0_1D4(void)
+void __cdecl TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot018(void)
 
 {
   DispatchByEntryTypeToVslots1D0_1D4();
@@ -85,15 +86,15 @@ void TSetupRandomMapPicture::thunk_DispatchByEntryTypeToVslots1D0_1D4(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D8A
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_PostTurnEvent5DCOrResetLocalUiState
-// GHIDRA_PROTO void __cdecl thunk_PostTurnEvent5DCOrResetLocalUiState(void)
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot117
+// GHIDRA_PROTO void __cdecl TSetupRandomMapPicture_VtblSlot117(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PostTurnEvent5DCOrResetLocalUiState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to PostTurnEvent5DCOrResetLocalUiState */
 
-void __cdecl TSetupRandomMapPicture::thunk_PostTurnEvent5DCOrResetLocalUiState(void)
+void __cdecl TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot117(void)
 
 {
   PostTurnEvent5DCOrResetLocalUiState();
@@ -101,8 +102,8 @@ void __cdecl TSetupRandomMapPicture::thunk_PostTurnEvent5DCOrResetLocalUiState(v
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004085A8
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_ApplyNationSelectionAndMaybePostTurnEvent5E4
-// GHIDRA_PROTO void __thiscall thunk_ApplyNationSelectionAndMaybePostTurnEvent5E4(void)
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot116
+// GHIDRA_PROTO void __thiscall TSetupRandomMapPicture_VtblSlot116(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ApplyNationSelectionAndMaybePostTurnEvent5E4
 // GHIDRA_COMMENT_END
@@ -110,11 +111,10 @@ void __cdecl TSetupRandomMapPicture::thunk_PostTurnEvent5DCOrResetLocalUiState(v
 /* Single-JMP thunk to ApplyNationSelectionAndMaybePostTurnEvent5E4 */
 
 void __thiscall
-TSetupRandomMapPicture::thunk_ApplyNationSelectionAndMaybePostTurnEvent5E4
-          (TSetupRandomMapPicture *this)
+TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot116(TSetupRandomMapPicture *this)
 
 {
-  ApplyNationSelectionAndMaybePostTurnEvent5E4(this);
+  TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4((TToolBarCluster *)this);
   return;
 }
 
@@ -143,23 +143,23 @@ TSetupRandomMapPicture::thunk_ConstructTSetupRandomMapPictureBaseState(TSetupRan
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   uStack_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  this[0x98] = (TSetupRandomMapPicture)0x0;
-  this[0xa4] = (TSetupRandomMapPicture)0x0;
-  *(undefined ***)this = &g_vtblTSetupRandomMapPicture;
+  this->field98 = 0;
+  this->fielda4 = 0;
+  this->field0_0x0 = &g_vtblTSetupRandomMapPicture;
   *unaff_FS_OFFSET = uStack_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409151
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_GetTSetupRandomMapPictureClassNamePtr
-// GHIDRA_PROTO void * __cdecl thunk_GetTSetupRandomMapPictureClassNamePtr(void)
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TSetupRandomMapPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSetupRandomMapPictureClassNamePtr
+// GHIDRA_COMMENT Single-JMP thunk to GetTSetupRandomMapPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetTSetupRandomMapPictureClassNamePtr */
+/* Single-JMP thunk to GetTSetupRandomMapPictureClassNamePointer */
 
-void * __cdecl TSetupRandomMapPicture::thunk_GetTSetupRandomMapPictureClassNamePtr(void)
+void * __cdecl TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -169,8 +169,8 @@ void * __cdecl TSetupRandomMapPicture::thunk_GetTSetupRandomMapPictureClassNameP
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409197
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSetupRandomMapPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TSetupRandomMapPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTSetupRandomMapPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -178,7 +178,7 @@ void * __cdecl TSetupRandomMapPicture::thunk_GetTSetupRandomMapPictureClassNameP
 /* Single-JMP thunk to DestructTSetupRandomMapPictureAndMaybeFree */
 
 void * __thiscall
-TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureAndMaybeFree
+TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot001
           (TSetupRandomMapPicture *this,byte freeSelfFlag)
 
 {
@@ -186,45 +186,6 @@ TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureAndMaybeFree
   
   pvVar1 = DestructTSetupRandomMapPictureAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00576CA0
-// GHIDRA_NAME TSetupRandomMapPicture::AllocateTSetupRandomMapPictureInstance
-// GHIDRA_PROTO undefined AllocateTSetupRandomMapPictureInstance()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0xA8-byte TSetupRandomMapPicture-like instance, runs shared picture ctor, initializes local shared-string fields/flags, and installs vtable 0x6621E0.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0xA8-byte TSetupRandomMapPicture-like instance, runs shared picture ctor, initializes
-   local shared-string fields/flags, and installs vtable 0x6621E0. */
-
-TNoHilitePicture * TSetupRandomMapPicture::AllocateTSetupRandomMapPictureInstance(void)
-
-{
-  TNoHilitePicture *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006368f2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
-  local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeSharedStringRefFromEmpty();
-    this[0x98] = (TNoHilitePicture)0x0;
-    this[0xa4] = (TNoHilitePicture)0x0;
-    *(undefined ***)this = &g_vtblTSetupRandomMapPicture;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TNoHilitePicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576D60
@@ -268,9 +229,9 @@ TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMap
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  this[0x98] = (TSetupRandomMapPicture)0x0;
-  this[0xa4] = (TSetupRandomMapPicture)0x0;
-  *(undefined ***)this = &g_vtblTSetupRandomMapPicture;
+  this->field98 = 0;
+  this->fielda4 = 0;
+  this->field0_0x0 = &g_vtblTSetupRandomMapPicture;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -293,7 +254,7 @@ TSetupRandomMapPicture::DestructTSetupRandomMapPictureAndMaybeFree
   
   thunk_DestructTSetupRandomMapPictureBaseState(unaff_ESI);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -325,669 +286,6 @@ TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(TSetupRandomMapP
   local_4 = 0xffffffff;
   thunk_DestructCityDialogSharedBaseState();
   *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00577030
-// GHIDRA_NAME TSetupRandomMapPicture::InitializeSetupRandomMapPictureDialogFromGameContext
-// GHIDRA_PROTO void __thiscall InitializeSetupRandomMapPictureDialogFromGameContext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes setup-random-map dialog controls from game/global-map context, including flavor text, difficulty/random/history options, and UI text resources.
-// GHIDRA_COMMENT_END
-
-/* Initializes setup-random-map dialog controls from game/global-map context, including flavor text,
-   difficulty/random/history options, and UI text resources. */
-
-void __thiscall
-TSetupRandomMapPicture::InitializeSetupRandomMapPictureDialogFromGameContext
-          (TSetupRandomMapPicture *this)
-
-{
-  short sVar1;
-  int iVar2;
-  int *piVar3;
-  TCommand *this_00;
-  int *dst_ref_ptr;
-  int *dst_ref_ptr_00;
-  int *piVar4;
-  int iVar5;
-  undefined4 *unaff_FS_OFFSET;
-  bool bVar6;
-  code *pcVar7;
-  code *pcVar8;
-  undefined4 uVar9;
-  code *pcVar10;
-  int aiStack_70 [2];
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063697a;
-  *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
-  thunk_EnsurePictWvDataGobLoadedBySlot(0);
-  *(undefined2 *)(g_pLocalizationTable + 0x114) = 0;
-  if (g_pGlobalMapState == 0) {
-    iVar2 = GenerateThreadLocalRandom15();
-    *(short *)(this + 0x9a) = (short)(iVar2 % 7);
-    thunk_GenerateMappedFlavorTextByCurrentContextNation(this + 0x94);
-    this[0x98] = (TSetupRandomMapPicture)0x0;
-  }
-  else {
-    StringShared__AssignFromPtr(this + 0x94,(int *)(g_pGlobalMapState + 0x1c));
-    this[0x98] = *(TSetupRandomMapPicture *)(g_pGlobalMapState + 0x20);
-    bVar6 = g_Apply_Nation_Selection_WordState_00698AB0 == 0xffff;
-    *(ushort *)(this + 0x9a) = g_Apply_Nation_Selection_WordState_00698AB0;
-    if (bVar6) {
-      iVar2 = GenerateThreadLocalRandom15();
-      *(short *)(this + 0x9a) = (short)(iVar2 % 7);
-    }
-    piVar3 = (int *)(**(code **)(*(int *)this + 0x94))();
-    (**(code **)(*piVar3 + 0xc))();
-    piVar3[0x1b] = (int)*(short *)(this + 0x9a);
-  }
-  thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
-  pcVar7 = *(code **)(*(int *)this + 0x94);
-  piVar3 = (int *)(*pcVar7)();
-  (**(code **)(*piVar3 + 0xc))();
-  *(undefined2 *)(piVar3 + 0x27) = 0xc;
-  g_bScenarioSetupModeActive = 0;
-  thunk_RebuildGlobalOrderManagersAndCapabilityState();
-  g_pCursorControlPanel = (int *)(*pcVar7)();
-  (**(code **)(*g_pCursorControlPanel + 0xc))();
-  (**(code **)(*g_pCursorControlPanel + 0x1e0))();
-  (**(code **)(*g_pCursorControlPanel + 0x204))();
-  (**(code **)(*g_pCursorControlPanel + 0x1c4))();
-  InitializeMainRoutineContextAndRun();
-  InitializeMainRoutineContextAndRun();
-  InitializeMainRoutineContextAndRun();
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758,0x1e,0x6e616d65);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x13,0x676c6f62);
-  if (*(int *)(g_pLocalizationTable + 0x44) == 0) {
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x14,0x63616e63);
-    iVar2 = 0x14;
-  }
-  else {
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x2e,0x63616e63);
-    iVar2 = 0x2e;
-  }
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,iVar2,0x636e636c);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x15,0x6f6b6179);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758,0x13,0x6d617020);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x17,0x64696666);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1a,0x636f756e);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1b,0x666c6167);
-  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1c,0x636f6174);
-  piVar3 = (int *)(*pcVar7)();
-  iVar2 = *piVar3;
-  (**(code **)(iVar2 + 0xc))();
-  aiStack_70[1] = 0x57730e;
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar3,0,0xe,0x2b6a,0x2b6c);
-  (**(code **)(iVar2 + 0x1cc))();
-  piVar3 = (int *)(*pcVar7)();
-  (**(code **)(*piVar3 + 0xc))();
-  piVar3[0x1a] = (int)*(short *)(this + 0x9a);
-  aiStack_70[1] = 0x577345;
-  this_00 = (TCommand *)AllocateWithFallbackHandler();
-  if (this_00 == (TCommand *)0x0) {
-    this_00 = (TCommand *)0x0;
-  }
-  else {
-    TCommand::thunk_ConstructTurnEventPacketBase(this_00);
-    *(undefined ***)this_00 = &PTR_thunk_GetTSpaceCommandClassNamePointer_00661b10;
-  }
-  aiStack_70[1] = 0;
-  aiStack_70[0] = 0;
-  thunk_InitializeRangePairAndResetCursor(this_00,0x4e415341,(int)g_pGlobalUiRootController);
-  *(TSetupRandomMapPicture **)(this_00 + 0x18) = this;
-  this_00[0x1c] = (TCommand)0x1;
-  aiStack_70[1] = 0x57739f;
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
-  aiStack_70[1] = 0;
-  aiStack_70[0] = 1;
-  (**(code **)(*g_pCursorControlPanel + 0x1c4))();
-  piVar3 = (int *)(*pcVar7)();
-  (**(code **)(*piVar3 + 0xc))();
-  piVar3[0x18] = *(int *)(g_pStrategicMapViewSystem + 0x680);
-  sVar1 = *(short *)(this + 0x9a);
-  piVar3[0x19] = (int)sVar1 * piVar3[0xd];
-  piVar3[0x1a] = 0;
-  piVar3[0x1b] = (sVar1 + 1) * piVar3[0xd];
-  piVar3[0x1c] = piVar3[0xe];
-  if (*(int *)(g_pLocalizationTable + 0x44) == 0) {
-    *(char *)(g_pLocalizationTable + 0x68) = (char)*(undefined2 *)(g_pLocalizationTable + 0x62);
-    InitializeSharedStringRefFromEmpty();
-    thunk_GenerateMappedFlavorTextByCurrentContextNation(&g_SelectedSetupNationOrScenarioToken);
-    thunk_LoadProfileStringAndAssignSharedRef_At00409610();
-    thunk_NormalizeRuntimeCredentialNameToken();
-    StringShared__AssignFromPtr(&g_SelectedSetupNationOrScenarioToken,dst_ref_ptr_00);
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  else {
-    thunk_NormalizeRuntimeCredentialNameToken();
-    StringShared__AssignFromPtr(&g_SelectedSetupNationOrScenarioToken,dst_ref_ptr);
-  }
-  ReleaseSharedStringRefIfNotEmpty();
-  thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
-  piVar3 = (int *)(*pcVar7)();
-  (**(code **)(*piVar3 + 0xc))();
-  thunk_SetSelectedTextOptionByTag
-            (piVar3,*(short *)(g_pLocalizationTable + 0x5e) + 0x64696630,false);
-  *(undefined2 *)(piVar3 + 0x24) = 0x2b6b;
-  piVar4 = (int *)(*pcVar7)();
-  iVar2 = *piVar4;
-  (**(code **)(iVar2 + 0xc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,0x2b6a,0x2b6c);
-  InitializeSharedStringRefFromEmpty();
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  (**(code **)(iVar2 + 0x1c8))();
-  piVar4 = (int *)(*pcVar7)();
-  aiStack_70[0] = *piVar4;
-  (**(code **)(aiStack_70[0] + 0xc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,0x2b6a,0x2b6c);
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  pcVar10 = (code *)&stack0xffffffa8;
-  (**(code **)(aiStack_70[0] + 0x1c8))();
-  piVar4 = (int *)(*pcVar7)();
-  iVar2 = *piVar4;
-  (**(code **)(iVar2 + 0xc))();
-  thunk_SetSelectedTextOptionByTag
-            (piVar4,(-(uint)(*(short *)(g_pLocalizationTable + 0x62) != 0) & 0xf6080510) +
-                    0x72616e64,false);
-  pcVar7 = *(code **)(iVar2 + 0x94);
-  *(undefined2 *)(piVar4 + 0x24) = 0x2b6b;
-  piVar4 = (int *)(*pcVar7)();
-  (**(code **)(*piVar4 + 0xc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xc,0x2b6b,0x2b6c);
-  uVar9 = 0;
-  pcVar8 = (code *)0x1;
-  (**(code **)(*piVar4 + 0x1c4))();
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  (**(code **)(*piVar4 + 0x1c8))(aiStack_70,0);
-  piVar4[0xf] = 0x68697374;
-  piVar4 = (int *)(*pcVar10)(0x72616e64);
-  iVar2 = *piVar4;
-  (**(code **)(iVar2 + 0xc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xc,0x2b6b,0x2b6c);
-  (**(code **)(iVar2 + 0x1c4))(1,0);
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  (**(code **)(iVar2 + 0x1c8))(&stack0xffffff7c,0);
-  iVar2 = *piVar3;
-  piVar4[0xf] = 0x72616e64;
-  iVar5 = 0;
-  pcVar7 = *(code **)(iVar2 + 0x94);
-  do {
-    piVar3 = (int *)(*pcVar7)(iVar5 + 0x64696630);
-    (**(code **)(*piVar3 + 0xc))();
-    thunk_ApplyUiTextStyleAndThemeFlags(piVar3,0,0xc,0x2b6b,0x2b6c);
-    (**(code **)(*piVar3 + 0x1c4))(1,0);
-    thunk_LoadUiStringResourceByGroupAndIndex();
-    (**(code **)(*piVar3 + 0x1c8))(&stack0xffffff68,0);
-    piVar3[0xf] = iVar5;
-    iVar5 = iVar5 + 1;
-  } while (iVar5 < 5);
-  if ((this[0xa4] == (TSetupRandomMapPicture)0x0) && (*(int *)(g_pLocalizationTable + 0x44) == 0)) {
-    piVar3 = (int *)(*pcVar8)(0x636f756e);
-    (**(code **)(*piVar3 + 0xc))();
-  }
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uVar9;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005779C0
-// GHIDRA_NAME TSetupRandomMapPicture::HandleRandomMapNationPlanAndFlagCommands
-// GHIDRA_PROTO void __thiscall HandleRandomMapNationPlanAndFlagCommands(int eventCode, void * pControl)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles random-map nation commands (pick/flag/coat/glob/plan/okay/cncl) and forwards map updates
-// GHIDRA_COMMENT_END
-
-/* Handles random-map nation commands (pick/flag/coat/glob/plan/okay/cncl) and forwards map updates
-    */
-
-void __thiscall
-TSetupRandomMapPicture::HandleRandomMapNationPlanAndFlagCommands
-          (TSetupRandomMapPicture *this,int eventCode,void *pControl)
-
-{
-  void *tileBufferOwner;
-  ushort uVar1;
-  undefined4 *puVar2;
-  int *piVar3;
-  int iVar4;
-  code *unaff_EBP;
-  uint uVar5;
-  int *unaff_FS_OFFSET;
-  undefined4 uStack_40;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  tileBufferOwner = pControl;
-  iStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006369c8;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  if (eventCode == 0x7069636b) {
-    iVar4 = *(int *)pControl;
-    (**(code **)(iVar4 + 0xc))();
-    *(undefined4 *)((int)tileBufferOwner + 0x68) = *(undefined4 *)((int)tileBufferOwner + 0x6c);
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0);
-    *(undefined2 *)(this + 0x9a) = *(undefined2 *)((int)tileBufferOwner + 0x68);
-    puVar2 = (undefined4 *)(**(code **)(*(int *)this + 0x94))(0x666c6167);
-    puStack_8 = (undefined1 *)*puVar2;
-    (**(code **)(puStack_8 + 0xc))();
-    UpdateRectFromGridIndicesAndTileSize();
-    (**(code **)(puStack_8 + 0xe4))();
-    piVar3 = (int *)(*unaff_EBP)(0x636f6174);
-    iStack_c = *piVar3;
-    (**(code **)(iStack_c + 0xc))();
-    (**(code **)(iStack_c + 0x1c8))(*(short *)(this + 0x9a) + 0x11c6,1);
-    thunk_RefreshSetupRandomMapCountryControlIfApplicable();
-    thunk_ApplyPaletteMaskToTileBufferByEventCode((int)tileBufferOwner);
-    (**(code **)(iVar4 + 0x128))(&stack0xffffffb0);
-    thunk_ConstructScopedMapQuickDrawContext();
-    (**(code **)(iVar4 + 0x110))(&stack0xffffffac);
-    uStack_4 = 0xffffffff;
-    thunk_DestroyScopedMapQuickDrawContext();
-  }
-  uVar5 = *(uint *)((int)tileBufferOwner + 0x1c);
-  if (uVar5 == 0x676c6f62) {
-    uVar1 = GetAsyncKeyState(0x11);
-    if ((uVar1 & 0x8000) != 0) {
-      uVar5 = 0x706c616e;
-    }
-  }
-  if ((((eventCode != 0x14) && (eventCode != 10)) && (eventCode != 0x22)) && (eventCode != 0xd))
-  goto LAB_00577ce4;
-  if (uVar5 < 0x636e636d) {
-    if ((uVar5 == 0x636e636c) || (uVar5 == 0x63616e63)) {
-      (**(code **)(*(int *)this + 0x1d4))();
-    }
-    goto LAB_00577ce4;
-  }
-  if (uVar5 < 0x6b657921) {
-    if (uVar5 != 0x6b657920) {
-      if (uVar5 == 0x676c6f62) {
-        thunk_GenerateMappedFlavorTextByCurrentContextNation(this + 0x94);
-        thunk_GenerateRandomMapAndRefreshSetupPreview(this,1);
-      }
-      goto LAB_00577ce4;
-    }
-  }
-  else {
-    if (uVar5 == 0x6f6b6179) {
-      (**(code **)(*(int *)this + 0x1d0))();
-      goto LAB_00577ce4;
-    }
-    if (uVar5 != 0x706c616e) goto LAB_00577ce4;
-  }
-  StringSharedRef_AssignFromPtr();
-  uStack_4 = 1;
-  InitializeSharedStringRefFromEmpty();
-  uStack_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
-  uStack_4._0_1_ = 3;
-  InitializeSharedStringRefFromEmpty();
-  uStack_4 = CONCAT31(uStack_4._1_3_,4);
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  iVar4 = thunk_RunTaggedOptionDialogAndReturnSelectionTag(uStack_40,&pControl,0,0,0);
-  this[0x98] = (TSetupRandomMapPicture)(iVar4 == 0x6f6e6531);
-  iVar4 = CompareAnsiStringsWithMbcsAwareness(pControl);
-  if (iVar4 == 0) {
-LAB_00577c8c:
-    *(TSetupRandomMapPicture *)(g_pGlobalMapState + 0x20) = this[0x98];
-  }
-  else {
-    iVar4 = CompareAnsiStringsWithMbcsAwareness(pControl);
-    if (iVar4 == 0) goto LAB_00577c8c;
-    StringShared__AssignFromPtr(this + 0x94,(int *)&pControl);
-    thunk_GenerateRandomMapAndRefreshSetupPreview(this,1);
-  }
-  uStack_4._0_1_ = 3;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-LAB_00577ce4:
-  thunk_HandleCityDialogToggleCommandOrForward();
-  *unaff_FS_OFFSET = iStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00577E40
-// GHIDRA_NAME TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4
-// GHIDRA_PROTO void __thiscall ApplyNationSelectionAndMaybePostTurnEvent5E4(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies selected nation/country setup, updates localization/gameflow fields, and conditionally posts event 5E4.
-// GHIDRA_COMMENT_END
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* Applies selected nation/country setup, updates localization/gameflow fields, and conditionally
-   posts event 5E4. */
-
-void __thiscall
-TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4(TSetupRandomMapPicture *this)
-
-{
-  code *pcVar1;
-  bool bVar2;
-  int *piVar3;
-  int iVar4;
-  undefined4 extraout_EAX;
-  undefined4 unaff_EBX;
-  undefined4 unaff_EBP;
-  uint unaff_ESI;
-  int iVar5;
-  uint *unaff_FS_OFFSET;
-  uint uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636a00;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (uint)&uStack_c;
-  pcVar1 = *(code **)(*(int *)this + 0x94);
-  piVar3 = (int *)(*pcVar1)(0x636f756e);
-  iVar5 = *piVar3;
-  (**(code **)(iVar5 + 0xc))();
-  InitializeSharedStringRefFromEmpty();
-  puStack_8 = (undefined1 *)0x0;
-  (**(code **)(iVar5 + 0x1dc))(&stack0xffffffe8);
-  if ((char)g_pLocalizationTable[0x1a] != '\0') {
-    bVar2 = false;
-    InitializeSharedStringRefFromEmpty();
-    uStack_c = CONCAT31(uStack_c._1_3_,1);
-    iVar5 = 0;
-    do {
-      if (0x16 < iVar5) break;
-      if (iVar5 != *(short *)(this + 0x9a)) {
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x2715,iVar5,&stack0xffffffe8);
-        iVar4 = CompareAnsiStringsWithMbcsAwareness(unaff_EBX,unaff_EBP);
-        if (iVar4 == 0) {
-          bVar2 = true;
-        }
-      }
-      iVar5 = iVar5 + 1;
-    } while (!bVar2);
-    if (bVar2) {
-      (**(code **)(*g_pLocalizationTable + 0x84))
-                (0x2715,CONCAT22((short)((uint)&stack0xffffffe4 >> 0x10),
-                                 *(undefined2 *)(this + 0x9a)),&stack0xffffffe4);
-    }
-    uStack_c = uStack_c & 0xffffff00;
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
-  uStack_c._0_1_ = 2;
-  StringShared__AssignFromPtr(&g_SelectedSetupNationOrScenarioToken,(int *)&stack0xffffffe8);
-  uStack_c = (uint)uStack_c._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
-  thunk_ShowCountrySelectionPromptAndReturnNationId();
-  AppendSingleByteToSharedStringFromArg(extraout_EAX);
-  AssignStringSharedFromRef(&stack0xffffffe4);
-  piVar3 = (int *)(*pcVar1)(0x64696666);
-  (**(code **)(*piVar3 + 0xc))();
-  piVar3 = (int *)(*pcVar1)(piVar3[0x22]);
-  (**(code **)(*piVar3 + 0xc))();
-  thunk_SetStateCodeAndUpdateZeroOrOutOfRangeFlag(g_pLocalizationTable,piVar3[0xf]);
-  *(short *)((int)g_pLocalizationTable + 0x5e) = (short)piVar3[0xf];
-  piVar3 = (int *)(*pcVar1)(0x6e616d65);
-  (**(code **)(*piVar3 + 0xc))();
-  *(bool *)(g_pLocalizationTable + 0x1a) = piVar3[0x22] != 0x72616e64;
-  *(short *)((int)g_pLocalizationTable + 0x62) = (short)(char)g_pLocalizationTable[0x1a];
-  thunk_InitializeOrLoadEntryArray14AndClampLimits();
-  _g_Apply_Nation_Selection_WordState_00698AB0 = (int)*(short *)(this + 0x9a);
-  if (g_pLocalizationTable[0x11] == 0) {
-    thunk_WrapperFor_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0
-              (g_pLocalizationTable,*(ushort *)(this + 0x9a));
-    StringSharedRef_AssignFromPtr(&g_SelectedSetupNationOrScenarioToken);
-    thunk_SaveSettingValueFromPointerByKey((int)&stack0xffffffdc,0x698ae0);
-    ReleaseSharedStringRefIfNotEmpty();
-    iVar5 = 0xda;
-    do {
-      iVar4 = iVar5 + 2;
-      *(undefined2 *)((int)g_pLocalizationTable + iVar5) = 2;
-      iVar5 = iVar4;
-    } while (iVar4 < 0xe8);
-    *(undefined2 *)((int)g_pLocalizationTable + *(short *)(this + 0x9a) * 2 + 0xda) = 1;
-    (**(code **)(*g_pLocalizationTable + 0x44))();
-  }
-  else {
-    thunk_PostTurnEventCodeMessage2420();
-    StringShared__AssignFromPtr
-              ((void *)(g_pGameFlowState + 0xb4),(int *)&g_SelectedSetupNationOrScenarioToken);
-    StringShared__AssignFromPtr
-              ((void *)(g_pGameFlowState + 0xb0),(int *)&g_SelectedSetupNationOrScenarioToken);
-    *(TSetupRandomMapPicture *)(g_pGameFlowState + 0xdc) = this[0x9a];
-  }
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = unaff_ESI;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005781F0
-// GHIDRA_NAME TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState
-// GHIDRA_PROTO void __cdecl PostTurnEvent5DCOrResetLocalUiState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Scheduler helper: if g_pLocalizationTable +0x44 is non-zero, runs ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC.
-// GHIDRA_COMMENT_END
-
-/* Scheduler helper: if g_pLocalizationTable +0x44 is non-zero, runs
-   ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC. */
-
-void __cdecl TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(void)
-
-{
-  if (*(int *)(g_pLocalizationTable + 0x44) != 0) {
-    thunk_ResetLocalUiStateAndPostTurnEvent5E5();
-    return;
-  }
-  thunk_PostTurnEventCodeMessage2420();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005782F0
-// GHIDRA_NAME TSetupRandomMapPicture::DispatchByEntryTypeToVslots1D0_1D4
-// GHIDRA_PROTO undefined DispatchByEntryTypeToVslots1D0_1D4()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Dispatch] Routes by entry type codes (3/0xD vs 0x1B) to vslots +0x1D0/+0x1D4.
-// GHIDRA_COMMENT_END
-
-/* [Dispatch] Routes by entry type codes (3/0xD vs 0x1B) to vslots +0x1D0/+0x1D4. */
-
-void __thiscall TSetupRandomMapPicture::DispatchByEntryTypeToVslots1D0_1D4(int *param_1,int param_2)
-
-{
-  short sVar1;
-  
-  sVar1 = *(short *)(param_2 + 0x1c);
-  if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    (**(code **)(*param_1 + 0x1d0))();
-  }
-  else if (sVar1 == 0x1b) {
-    (**(code **)(*param_1 + 0x1d4))();
-    return;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00578330
-// GHIDRA_NAME TSetupRandomMapPicture::GenerateRandomMapAndRefreshSetupPreview
-// GHIDRA_PROTO void __thiscall GenerateRandomMapAndRefreshSetupPreview(int showProgress)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Generates/rebuilds random-map state and refreshes setup preview controls, overlays, and related labels.
-// GHIDRA_COMMENT_END
-
-/* Generates/rebuilds random-map state and refreshes setup preview controls, overlays, and related
-   labels. */
-
-void __thiscall
-TSetupRandomMapPicture::GenerateRandomMapAndRefreshSetupPreview
-          (TSetupRandomMapPicture *this,int showProgress)
-
-{
-  code *pcVar1;
-  int iVar2;
-  int *piVar3;
-  undefined4 extraout_EAX;
-  undefined4 extraout_EAX_00;
-  undefined4 *unaff_FS_OFFSET;
-  undefined1 **ppuStack_9c;
-  undefined4 uStack_98;
-  undefined4 uStack_94;
-  undefined4 uStack_90;
-  undefined4 uStack_8c;
-  code *pcStack_88;
-  undefined4 uStack_84;
-  code *pcStack_80;
-  undefined4 uStack_7c;
-  undefined4 uStack_78;
-  int **ppiStack_74;
-  code *pcStack_70;
-  code *pcStack_6c;
-  int *piStack_68;
-  code *pcStack_64;
-  undefined4 uStack_60;
-  undefined1 *puStack_5c;
-  int *piStack_58;
-  int iStack_54;
-  undefined4 uStack_50;
-  int *piStack_3c;
-  undefined4 uStack_38;
-  undefined4 uStack_34;
-  undefined4 uStack_30;
-  code *pcStack_24;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636a50;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_50 = 0x686f7421;
-  pcVar1 = *(code **)(*(int *)this + 0x94);
-  iStack_54 = 0x57835d;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
-  iStack_54 = 0x578367;
-  (**(code **)(iVar2 + 0xc))();
-  iStack_54 = 0x578370;
-  InitializeSharedStringRefFromEmpty();
-  iStack_54 = 7;
-  puStack_5c = &stack0xffffffc0;
-  piStack_58 = (int *)0x2758;
-  puStack_8 = (undefined1 *)0x0;
-  uStack_60 = 0x57838f;
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  pcStack_24 = *(code **)(iVar2 + 0x1ec);
-  piStack_58 = (int *)&stack0xffffffc0;
-  iStack_54 = 1;
-  puStack_5c = (undefined1 *)0x5783a4;
-  (*pcStack_24)();
-  puStack_5c = (undefined1 *)0x1;
-  uStack_60 = 0x5783ae;
-  (**(code **)(iVar2 + 0x1f8))();
-  uStack_60 = 0x636f756e;
-  pcStack_64 = (code *)0x5783b7;
-  piVar3 = (int *)(*pcVar1)();
-  pcStack_64 = (code *)0x5783c0;
-  (**(code **)(*piVar3 + 0xc))();
-  pcStack_64 = (code *)0x0;
-  piStack_68 = (int *)0x0;
-  pcStack_6c = (code *)0x5783d4;
-  (**(code **)(*piVar3 + 0xa4))();
-  pcStack_6c = (code *)0x73747566;
-  pcStack_70 = (code *)0x5783dd;
-  piStack_58 = (int *)(*pcVar1)();
-  iStack_54 = *piStack_58;
-  pcStack_70 = (code *)0x5783ec;
-  (**(code **)(iStack_54 + 0xc))();
-  ppiStack_74 = &piStack_3c;
-  pcStack_70 = (code *)0x0;
-  uStack_34 = 0x120;
-  uStack_30 = 4;
-  piStack_3c = (int *)0x7d0;
-  uStack_38 = 0x898;
-  uStack_78 = 0x578427;
-  (**(code **)(iStack_54 + 0xf0))();
-  uStack_78 = 1;
-  uStack_7c = 0x1195;
-  pcStack_80 = (code *)0x57843e;
-  (**(code **)(*(int *)this + 0x1c8))();
-  pcStack_80 = (code *)0x636f6174;
-  uStack_84 = 0x578447;
-  piStack_68 = (int *)(*pcVar1)();
-  pcStack_64 = (code *)*piStack_68;
-  uStack_84 = 0x578456;
-  (**(code **)((int)pcStack_64 + 0xc))();
-  uStack_84 = 1;
-  pcStack_88 = (code *)0x11cd;
-  pcStack_64 = *(code **)((int)pcStack_64 + 0x1c8);
-  uStack_8c = 0x578471;
-  (*pcStack_64)();
-  if ((char)uStack_38 != '\0') {
-    uStack_8c = 0x578480;
-    piVar3 = (int *)(**(code **)(*(int *)this + 0x58))();
-    uStack_8c = 0x57848a;
-    (**(code **)(*piVar3 + 0x13c))();
-  }
-  uStack_8c = 0x578495;
-  g_pMapGenerationProgressContext = this;
-  thunk_GetTickCountDiv16();
-  *(undefined4 *)(this + 0x9c) = extraout_EAX;
-  *(undefined4 *)(this + 0xa0) = 0;
-  uStack_8c = 0x5784ac;
-  TMapMaker::thunk_UpdateMapGenerationProgressSpinnerFrame((TMapMaker *)this);
-  uStack_8c = CONCAT31((int3)((uint)extraout_EAX_00 >> 8),this[0x98]);
-  uStack_90 = *(undefined4 *)(this + 0x94);
-  uStack_94 = 1;
-  uStack_98 = 0x5784c7;
-  thunk_RebuildMapContextAndGlobalMapState();
-  g_pMapGenerationProgressContext = (void *)0x0;
-  uStack_8c = 0x5784d8;
-  TMapMaker::thunk_UpdateMapGenerationProgressSpinnerFrame((TMapMaker *)this);
-  uStack_8c = 0x6d617020;
-  uStack_90 = 0x5784e1;
-  piStack_3c = (int *)(*pcVar1)();
-  uStack_90 = 0x5784ec;
-  (**(code **)(*piStack_3c + 0xc))();
-  uStack_90 = 0;
-  uStack_94 = 0x5784f7;
-  thunk_RasterizeHexNeighborTerrainPaletteMap();
-  uStack_90 = 0x578500;
-  thunk_ApplyPaletteMaskToTileBufferByEventCode((int)piStack_3c);
-  uStack_90 = 0;
-  uStack_94 = 1;
-  uStack_98 = 0x57850a;
-  (*pcStack_6c)();
-  ppuStack_9c = &puStack_5c;
-  uStack_98 = 0;
-  (*pcStack_70)();
-  (*(code *)ppiStack_74)(0x11bc,1);
-  (*pcStack_88)(*(short *)(this + 0x9a) + 0x11c6,1);
-  ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
-  pcStack_64._0_1_ = 1;
-  StringShared__AssignFromPtr(&ppuStack_9c,(int *)&puStack_5c);
-  pcStack_64 = (code *)((uint)pcStack_64._1_3_ << 8);
-  ReleaseSharedStringRefIfNotEmpty();
-  (*pcStack_80)(&ppuStack_9c,1);
-  if ((this[0xa4] == (TSetupRandomMapPicture)0x0) && (*(int *)(g_pLocalizationTable + 0x44) == 0)) {
-    piVar3 = (int *)(*pcVar1)(0x636f756e);
-    (**(code **)(*piVar3 + 0xc))();
-  }
-  pcStack_6c = (code *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = ppiStack_74;
   return;
 }
 

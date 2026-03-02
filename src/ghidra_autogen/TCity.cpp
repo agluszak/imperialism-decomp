@@ -3,31 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TCity.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401320
-// GHIDRA_NAME TCity::thunk_GetCityTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetCityTypeName(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0040494E
+// GHIDRA_NAME TCity::thunk_ToggleCityPowerPlantUpgradeOrder
+// GHIDRA_PROTO void __thiscall thunk_ToggleCityPowerPlantUpgradeOrder(bool fEnableUpgrade)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetCityTypeName
+// GHIDRA_COMMENT Single-JMP thunk to ToggleCityPowerPlantUpgradeOrder
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetCityTypeName */
+/* Single-JMP thunk to ToggleCityPowerPlantUpgradeOrder */
 
-void * __cdecl TCity::thunk_GetCityTypeName(void)
+void __thiscall TCity::thunk_ToggleCityPowerPlantUpgradeOrder(TCity *this,bool fEnableUpgrade)
 
 {
-  return &g_pClassDescTCity;
+  char cVar1;
+  
+  cVar1 = (char)this->field04;
+  if (fEnableUpgrade) {
+    if (cVar1 == '\0') {
+      (**(code **)(*(int *)this->pFieldac + 0x38))(0xffffec78);
+      *(undefined1 *)&this->field04 = 1;
+      return;
+    }
+  }
+  else if (cVar1 == '\0') {
+    return;
+  }
+  if (!fEnableUpgrade) {
+    (**(code **)(*(int *)this->pFieldac + 0x38))(5000);
+    *(undefined1 *)&this->field04 = 0;
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004076C1
-// GHIDRA_NAME TCity::thunk_DestroyTCity
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTCity(byte freeSelfFlag)
+// GHIDRA_NAME TCity::thunk_DestructTCityAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTCityAndMaybeFree(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTCity
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTCity [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to DestroyTCity */
+/* Single-JMP thunk to DestroyTCity [FID:thunk_target_sync] */
 
-void * __thiscall TCity::thunk_DestroyTCity(TCity *this,byte freeSelfFlag)
+void * __thiscall TCity::thunk_DestructTCityAndMaybeFree(TCity *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -37,17 +54,15 @@ void * __thiscall TCity::thunk_DestroyTCity(TCity *this,byte freeSelfFlag)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040908E
-// GHIDRA_NAME TCity::thunk_TransferCityPopulationBucketsToTargetCity_At0040908e
-// GHIDRA_PROTO bool __thiscall thunk_TransferCityPopulationBucketsToTargetCity_At0040908e(int * pTargetCity, short amount)
+// GHIDRA_NAME TCity::thunk_CreateTCityInstance
+// GHIDRA_PROTO bool __thiscall thunk_CreateTCityInstance(int * pTargetCity, short amount)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to TransferCityPopulationBucketsToTargetCity
+// GHIDRA_COMMENT Single-JMP thunk to TransferCityPopulationBucketsToTargetCity [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to TransferCityPopulationBucketsToTargetCity */
+/* Single-JMP thunk to TransferCityPopulationBucketsToTargetCity [FID:thunk_target_sync] */
 
-bool __thiscall
-TCity::thunk_TransferCityPopulationBucketsToTargetCity_At0040908e
-          (TCity *this,int *pTargetCity,short amount)
+bool __thiscall TCity::thunk_CreateTCityInstance(TCity *this,int *pTargetCity,short amount)
 
 {
   bool bVar1;
@@ -72,32 +87,32 @@ bool __thiscall TCity::CreateTCityInstance(TCity *this,int *pTargetCity,short am
   short sVar1;
   short sVar2;
   
-  sVar1 = *(short *)&this[2].pVtable;
+  sVar1 = this->field3_0x8;
   if (amount <= sVar1) {
-    *(short *)&this[2].pVtable = sVar1 - amount;
+    this->field3_0x8 = sVar1 - amount;
     *(short *)(pTargetCity + 2) = (short)pTargetCity[2] + amount;
     return true;
   }
   *(short *)(pTargetCity + 2) = (short)pTargetCity[2] + sVar1;
-  sVar2 = amount - *(short *)&this[2].pVtable;
-  sVar1 = *(short *)((int)&this[1].pVtable + 2);
-  *(undefined2 *)&this[2].pVtable = 0;
+  sVar2 = amount - this->field3_0x8;
+  sVar1 = this->field2_0x6;
+  this->field3_0x8 = 0;
   if (sVar2 <= sVar1) {
-    *(short *)((int)&this[1].pVtable + 2) = sVar1 - sVar2;
+    this->field2_0x6 = sVar1 - sVar2;
     *(short *)((int)pTargetCity + 6) = *(short *)((int)pTargetCity + 6) + sVar2;
     return true;
   }
   *(short *)((int)pTargetCity + 6) = *(short *)((int)pTargetCity + 6) + sVar1;
-  sVar2 = sVar2 - *(short *)((int)&this[1].pVtable + 2);
-  sVar1 = *(short *)&this[1].pVtable;
-  *(undefined2 *)((int)&this[1].pVtable + 2) = 0;
+  sVar2 = sVar2 - this->field2_0x6;
+  sVar1 = this->field04;
+  this->field2_0x6 = 0;
   if (sVar2 <= sVar1) {
-    *(short *)&this[1].pVtable = sVar1 - sVar2;
+    this->field04 = sVar1 - sVar2;
     *(short *)(pTargetCity + 1) = (short)pTargetCity[1] + sVar2;
     return true;
   }
   *(short *)(pTargetCity + 1) = sVar1;
-  *(undefined2 *)&this[1].pVtable = 0;
+  this->field04 = 0;
   return false;
 }
 
@@ -130,7 +145,7 @@ void * __thiscall TCity::DestructTCityAndMaybeFree(TCity *this,byte freeSelfFlag
 {
   DestroyTCity_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

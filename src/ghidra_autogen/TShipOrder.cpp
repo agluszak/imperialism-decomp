@@ -22,16 +22,15 @@ void * __cdecl TShipOrder::thunk_GetTShipOrderClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405303
-// GHIDRA_NAME TShipOrder::thunk_InitializeShipOrderFieldsFromTarget_At00405303
-// GHIDRA_PROTO void __thiscall thunk_InitializeShipOrderFieldsFromTarget_At00405303(int * pTargetOrder)
+// GHIDRA_NAME TShipOrder::thunk_CreateTShipOrderInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTShipOrderInstance(int * pTargetOrder)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeShipOrderFieldsFromTarget
+// GHIDRA_COMMENT Single-JMP thunk to InitializeShipOrderFieldsFromTarget [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to InitializeShipOrderFieldsFromTarget */
+/* Single-JMP thunk to InitializeShipOrderFieldsFromTarget [FID:thunk_target_sync] */
 
-void __thiscall
-TShipOrder::thunk_InitializeShipOrderFieldsFromTarget_At00405303(TShipOrder *this,int *pTargetOrder)
+void __thiscall TShipOrder::thunk_CreateTShipOrderInstance(TShipOrder *this,int *pTargetOrder)
 
 {
   CreateTShipOrderInstance(this,pTargetOrder);
@@ -39,37 +38,21 @@ TShipOrder::thunk_InitializeShipOrderFieldsFromTarget_At00405303(TShipOrder *thi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040702C
-// GHIDRA_NAME TShipOrder::thunk_GetTShipOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTShipOrderRuntimeClass(void)
+// GHIDRA_NAME TShipOrder::thunk_DestructTShipOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTShipOrderAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTShipOrderRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTShipOrderRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTShipOrderRuntimeClass. */
+/* Thunk forwarding to GetTShipOrderRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TShipOrder::thunk_GetTShipOrderRuntimeClass(TShipOrder *this)
+void * __thiscall TShipOrder::thunk_DestructTShipOrderAndMaybeFree(TShipOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004084E5
-// GHIDRA_NAME TShipOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b84e0
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b84e0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b84e0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b84e0 */
-
-void TShipOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b84e0(void)
-
-{
-  ConstructTShipOrderBaseState();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8440
@@ -108,7 +91,7 @@ void * __cdecl TShipOrder::GetTShipOrderClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B84E0
 // GHIDRA_NAME TShipOrder::ConstructTShipOrderBaseState
-// GHIDRA_PROTO undefined ConstructTShipOrderBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTShipOrderBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -116,14 +99,16 @@ void * __cdecl TShipOrder::GetTShipOrderClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *param_1,byte param_2)
+void __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *this)
 
 {
-  thunk_GetTShipOrderRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTShipOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8510
@@ -140,7 +125,7 @@ void * __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(TShipOrder *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

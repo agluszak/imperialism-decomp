@@ -4,44 +4,43 @@
 // Bucket: TTrainingOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403535
-// GHIDRA_NAME TTrainingOrder::thunk_AdjustTrainingOrderProgressAndCostByDelta
-// GHIDRA_PROTO void __thiscall thunk_AdjustTrainingOrderProgressAndCostByDelta(short delta)
+// GHIDRA_NAME TTrainingOrder::thunk_CreateTTrainingOrderInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTTrainingOrderInstance(short delta)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to AdjustTrainingOrderProgressAndCostByDelta.
+// GHIDRA_COMMENT Thunk forwarding to AdjustTrainingOrderProgressAndCostByDelta. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to AdjustTrainingOrderProgressAndCostByDelta. */
+/* Thunk forwarding to AdjustTrainingOrderProgressAndCostByDelta. [FID:thunk_target_sync] */
 
-void __thiscall
-TTrainingOrder::thunk_AdjustTrainingOrderProgressAndCostByDelta(TTrainingOrder *this,short delta)
+void __thiscall TTrainingOrder::thunk_CreateTTrainingOrderInstance(TTrainingOrder *this,short delta)
 
 {
   short *psVar1;
   
-  psVar1 = (short *)((int)this[4].pVtable + 8);
+  psVar1 = (short *)((int)this->field12_0x10 + 8);
   *psVar1 = *psVar1 + delta;
-  psVar1 = (short *)((int)this[5].pVtable + 8);
+  psVar1 = (short *)((int)this->field13_0x14 + 8);
   *psVar1 = *psVar1 + delta;
-  *(short *)&this[2].pVtable = *(short *)&this[2].pVtable + delta;
-  *(short *)&this[7].pVtable = *(short *)&this[7].pVtable + delta * 4;
+  this->field5_0x8 = this->field5_0x8 + delta;
+  this->field18_0x1c = this->field18_0x1c + delta * 4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403701
-// GHIDRA_NAME TTrainingOrder::thunk_GetTTrainingOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTTrainingOrderRuntimeClass(void)
+// GHIDRA_NAME TTrainingOrder::thunk_DestructTTrainingOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTTrainingOrderAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTrainingOrderRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTTrainingOrderRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTTrainingOrderRuntimeClass. */
+/* Thunk forwarding to GetTTrainingOrderRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TTrainingOrder::thunk_GetTTrainingOrderRuntimeClass(TTrainingOrder *this)
+void * __thiscall TTrainingOrder::thunk_DestructTTrainingOrderAndMaybeFree(TTrainingOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -63,22 +62,6 @@ void * __cdecl TTrainingOrder::thunk_GetTTrainingOrderClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004069B5
-// GHIDRA_NAME TTrainingOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b6ad0
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b6ad0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b6ad0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b6ad0 */
-
-void TTrainingOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b6ad0(void)
-
-{
-  ConstructTTrainingOrderBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6A30
 // GHIDRA_NAME TTrainingOrder::CreateTTrainingOrderInstance
 // GHIDRA_PROTO void __thiscall CreateTTrainingOrderInstance(short delta)
@@ -93,12 +76,12 @@ void __thiscall TTrainingOrder::CreateTTrainingOrderInstance(TTrainingOrder *thi
 {
   short *psVar1;
   
-  psVar1 = (short *)((int)this[4].pVtable + 8);
+  psVar1 = (short *)((int)this->field12_0x10 + 8);
   *psVar1 = *psVar1 + delta;
-  psVar1 = (short *)((int)this[5].pVtable + 8);
+  psVar1 = (short *)((int)this->field13_0x14 + 8);
   *psVar1 = *psVar1 + delta;
-  *(short *)&this[2].pVtable = *(short *)&this[2].pVtable + delta;
-  *(short *)&this[7].pVtable = *(short *)&this[7].pVtable + delta * 4;
+  this->field5_0x8 = this->field5_0x8 + delta;
+  this->field18_0x1c = this->field18_0x1c + delta * 4;
   return;
 }
 
@@ -119,7 +102,7 @@ void * __cdecl TTrainingOrder::GetTTrainingOrderClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6AD0
 // GHIDRA_NAME TTrainingOrder::ConstructTTrainingOrderBaseState
-// GHIDRA_PROTO undefined ConstructTTrainingOrderBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTTrainingOrderBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -127,15 +110,16 @@ void * __cdecl TTrainingOrder::GetTTrainingOrderClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TTrainingOrder * __thiscall
-TTrainingOrder::ConstructTTrainingOrderBaseState(TTrainingOrder *param_1,byte param_2)
+void __thiscall TTrainingOrder::ConstructTTrainingOrderBaseState(TTrainingOrder *this)
 
 {
-  thunk_GetTTrainingOrderRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTTrainingOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B00
@@ -152,7 +136,7 @@ void * __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(TTrainingOr
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

@@ -3,18 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TShipFractionCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405AA1
-// GHIDRA_NAME TShipFractionCluster::thunk_InitializeShipFractionClusterCapabilityControl
-// GHIDRA_PROTO void __thiscall thunk_InitializeShipFractionClusterCapabilityControl(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004014AB
+// GHIDRA_NAME TShipFractionCluster::thunk_scalar_deleting_destructor_004014AB
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004014AB(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeShipFractionClusterCapabilityControl.
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for InitializeShipFractionClusterCapabilityControl. */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TShipFractionCluster::thunk_scalar_deleting_destructor_004014AB
+          (TShipFractionCluster *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405AA1
+// GHIDRA_NAME TShipFractionCluster::thunk_ConstructTShipFractionClusterBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTShipFractionClusterBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk wrapper for InitializeShipFractionClusterCapabilityControl. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk wrapper for InitializeShipFractionClusterCapabilityControl. [FID:thunk_target_sync] */
 
 void __thiscall
-TShipFractionCluster::thunk_InitializeShipFractionClusterCapabilityControl
-          (TShipFractionCluster *this)
+TShipFractionCluster::thunk_ConstructTShipFractionClusterBaseState(TShipFractionCluster *this)
 
 {
   ConstructTShipFractionClusterBaseState(this);
@@ -40,16 +59,16 @@ void * __cdecl TShipFractionCluster::thunk_GetTShipFractionClusterClassNamePoint
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040820B
-// GHIDRA_NAME TShipFractionCluster::thunk_Cluster_ArmyNavyHint_00568eb0
-// GHIDRA_PROTO void __thiscall thunk_Cluster_ArmyNavyHint_00568eb0(uint splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
+// GHIDRA_NAME TShipFractionCluster::thunk_DestructTShipFractionClusterAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTShipFractionClusterAndMaybeFree(uint splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_ArmyNavyHint_00568eb0
+// GHIDRA_COMMENT Single-JMP thunk to Cluster_ArmyNavyHint_00568eb0 [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_ArmyNavyHint_00568eb0 */
+/* Single-JMP thunk to Cluster_ArmyNavyHint_00568eb0 [FID:thunk_target_sync] */
 
 void __thiscall
-TShipFractionCluster::thunk_Cluster_ArmyNavyHint_00568eb0
+TShipFractionCluster::thunk_DestructTShipFractionClusterAndMaybeFree
           (TShipFractionCluster *this,uint splitCommandId,void *payloadArg,int payloadArg2,
           int payloadArg3)
 
@@ -81,12 +100,12 @@ void * __cdecl TShipFractionCluster::CreateTShipFractionClusterInstance(void)
   puStack_8 = &LAB_00635b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &PTR_thunk_GetTShipFractionClusterClassNamePointer_00642f88;
+    this->field0_0x0 = &PTR_thunk_GetTShipFractionClusterClassNamePointer_00642f88;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -131,7 +150,7 @@ TShipFractionCluster::ConstructTShipFractionClusterBaseState(TShipFractionCluste
   piVar2 = (int *)(**(code **)((int)pvVar3 + 0x58))();
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))();
   iVar1 = *piVar2;
-  this[0x23].pVtable = piVar2;
+  this->field131_0x8c = piVar2;
   (**(code **)(iVar1 + 0xc))();
   piVar2 = (int *)(**(code **)((int)pvVar3 + 0x94))();
   iVar1 = *piVar2;
@@ -139,19 +158,20 @@ TShipFractionCluster::ConstructTShipFractionClusterBaseState(TShipFractionCluste
   thunk_GetEnabledIndustryCapabilitySlotByClass();
   if ((short)extraout_EAX == 0) {
     (**(code **)((int)pvVar3 + 0xa4))();
-    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(PTR_g_szEmptyString_0065c830);
-    InitializeAndRunMainRoutine();
+    TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+              ((TToolBarCluster *)&stack0xffffffcc);
+    TToolBarCluster::InitializeAndRunMainRoutine();
   }
   else {
     (**(code **)(iVar1 + 0x1c8))();
     (**(code **)((int)pvVar3 + 0xa4))();
     thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply
-              (0x2716,extraout_EAX + 1,(int)this[7].pVtable);
+              (0x2716,extraout_EAX + 1,(int)this->field25_0x1c);
   }
   pvVar3 = (void *)(*(code *)0x73686970)();
-  this[0x24].pVtable = pvVar3;
-  *(undefined2 *)&this[0x22].pVtable = 1;
-  thunk_UpdateIndustryCapabilityControlStateAndValue(this,0,-1);
+  this->field132_0x90 = pvVar3;
+  *(undefined2 *)&this->field130_0x88 = 1;
+  TToolBarCluster::thunk_UpdateIndustryCapabilityControlStateAndValue((TToolBarCluster *)this,0,-1);
   return;
 }
 
@@ -175,28 +195,29 @@ TShipFractionCluster::DestructTShipFractionClusterAndMaybeFree
   int iVar2;
   
   if (splitCommandId == 100) {
-    if ((short)*(ushort *)&this[0x25].pVtable < *(short *)&this[0x22].pVtable) {
-      iVar2 = *(ushort *)&this[0x25].pVtable + 1;
-      iVar1 = *(int *)this[0x24].pVtable;
-      *(short *)&this[0x25].pVtable = (short)iVar2;
+    if ((short)this->field133_0x94 < (short)this->field130_0x88) {
+      iVar2 = this->field133_0x94 + 1;
+      iVar1 = *(int *)this->field132_0x90;
+      this->field133_0x94 = (ushort)iVar2;
       (**(code **)(iVar1 + 0x1c4))(iVar2,1);
 LAB_00568f19:
       thunk_SetTaskForceOrderSelectionByNationClassAndFlag();
-      NotifyTaskForceSelectionListenerByWord62(this[0x23].pVtable);
+      NotifyTaskForceSelectionListenerByWord62(this->field131_0x8c);
       return;
     }
   }
   else if (splitCommandId == 0x65) {
-    if (0 < (short)*(ushort *)&this[0x25].pVtable) {
-      iVar2 = *(ushort *)&this[0x25].pVtable - 1;
-      iVar1 = *(int *)this[0x24].pVtable;
-      *(short *)&this[0x25].pVtable = (short)iVar2;
+    if (0 < (short)this->field133_0x94) {
+      iVar2 = this->field133_0x94 - 1;
+      iVar1 = *(int *)this->field132_0x90;
+      this->field133_0x94 = (ushort)iVar2;
       (**(code **)(iVar1 + 0x1c4))(iVar2,1);
       goto LAB_00568f19;
     }
   }
   else {
-    thunk_DispatchPanelControlEvent(this,splitCommandId,payloadArg,payloadArg2);
+    TMapEditCluster::thunk_DispatchPanelControlEvent
+              ((TMapEditCluster *)this,splitCommandId,payloadArg,payloadArg2);
   }
   return;
 }

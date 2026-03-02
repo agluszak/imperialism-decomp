@@ -3,24 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TTechMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004011DB
-// GHIDRA_NAME TTechMgr::thunk_TechMgrContainsTechId_At004011db
-// GHIDRA_PROTO int __thiscall thunk_TechMgrContainsTechId_At004011db(short techId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to TechMgrContainsTechId
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to TechMgrContainsTechId */
-
-int __thiscall TTechMgr::thunk_TechMgrContainsTechId_At004011db(TTechMgr *this,short techId)
-
-{
-  int iVar1;
-  
-  iVar1 = CreateTTechMgrInstance(this,techId);
-  return iVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00403C38
 // GHIDRA_NAME TTechMgr::thunk_DestructTTechMgrAndMaybeFree
 // GHIDRA_PROTO void * __thiscall thunk_DestructTTechMgrAndMaybeFree(byte freeSelfFlag)
@@ -77,7 +59,7 @@ int __thiscall TTechMgr::CreateTTechMgrInstance(TTechMgr *this,short techId)
   short unaff_retaddr;
   
   sVar3 = 1;
-  iVar4 = *(int *)this;
+  iVar4 = this->field0_0x0;
   uVar2 = (**(code **)(iVar4 + 0x48))();
   if ((int)uVar2 < 1) {
     return uVar2 & 0xffffff00;
@@ -120,7 +102,7 @@ void * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this,byte fre
 {
   DestructTTechMgrAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -4,16 +4,16 @@
 // Bucket: TMyNumberText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C2A
-// GHIDRA_NAME TMyNumberText::thunk_DestructTMyNumberTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMyNumberTextAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMyNumberText::TMyNumberText_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TMyNumberText_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMyNumberTextAndMaybeFree
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TMyNumberText": ignoring overlapping field "field9c" */
 /* Single-JMP thunk to DestructTMyNumberTextAndMaybeFree */
 
-void * __thiscall
-TMyNumberText::thunk_DestructTMyNumberTextAndMaybeFree(TMyNumberText *this,byte freeSelfFlag)
+void * __thiscall TMyNumberText::TMyNumberText_VtblSlot001(TMyNumberText *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +23,15 @@ TMyNumberText::thunk_DestructTMyNumberTextAndMaybeFree(TMyNumberText *this,byte 
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402F3B
-// GHIDRA_NAME TMyNumberText::thunk_GetTMyNumberTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMyNumberTextClassNamePointer(void)
+// GHIDRA_NAME TMyNumberText::TMyNumberText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMyNumberText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMyNumberTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMyNumberTextClassNamePointer */
 
-void * __cdecl TMyNumberText::thunk_GetTMyNumberTextClassNamePointer(void)
+void * __cdecl TMyNumberText::TMyNumberText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -41,19 +41,80 @@ void * __cdecl TMyNumberText::thunk_GetTMyNumberTextClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E0C
-// GHIDRA_NAME TMyNumberText::thunk_UpdateMyNumberTextFromTownValueString
-// GHIDRA_PROTO void __thiscall thunk_UpdateMyNumberTextFromTownValueString(void)
+// GHIDRA_NAME TMyNumberText::TMyNumberText_VtblSlot122
+// GHIDRA_PROTO void __thiscall TMyNumberText_VtblSlot122(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for UpdateMyNumberTextFromTownValueString.
+// GHIDRA_COMMENT Single-JMP thunk to UpdateMyNumberTextFromTownValueString
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for UpdateMyNumberTextFromTownValueString. */
+/* WARNING: Struct "TMyNumberText": ignoring overlapping field "field9c" */
+/* Single-JMP thunk to UpdateMyNumberTextFromTownValueString */
 
-void __thiscall TMyNumberText::thunk_UpdateMyNumberTextFromTownValueString(TMyNumberText *this)
+void __thiscall TMyNumberText::TMyNumberText_VtblSlot122(TMyNumberText *this)
 
 {
   UpdateMyNumberTextFromTownValueString(this);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F9D0
+// GHIDRA_NAME TMyNumberText::CloneCityDialogStateWithSharedStringInit
+// GHIDRA_PROTO void * __thiscall CloneCityDialogStateWithSharedStringInit(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [BehaviorHint] allocates city-state object and clones dialog state with shared-string setup.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Struct "TMyNumberText": ignoring overlapping field "field9c" */
+/* [BehaviorHint] allocates city-state object and clones dialog state with shared-string setup. */
+
+void * __thiscall TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this)
+
+{
+  ushort uVar1;
+  void *pvVar2;
+  int *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f053;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  TCityDialogModalState_00649A50::thunk_CopyCityDialogStateFromSourceAndCloneChildLinks
+            ((TCityDialogModalState_00649A50 *)this,in_stack_00000004);
+  (this->base).base.field1_0x60 = *(undefined4 *)(in_stack_00000004 + 0x60);
+  (this->base).base.field2_0x64 = *(undefined1 *)(in_stack_00000004 + 100);
+  (this->base).base.field6_0x68 = *(undefined4 *)(in_stack_00000004 + 0x68);
+  (this->base).base.field7_0x6c = *(undefined4 *)(in_stack_00000004 + 0x6c);
+  (this->base).base.field8_0x70 = *(undefined4 *)(in_stack_00000004 + 0x70);
+  (this->base).base.field9_0x74 = *(undefined4 *)(in_stack_00000004 + 0x74);
+  (this->base).base.field10_0x78 = *(int *)(in_stack_00000004 + 0x78);
+  (this->base).base.field11_0x7c = *(int *)(in_stack_00000004 + 0x7c);
+  uVar1 = *(ushort *)(in_stack_00000004 + 0x80);
+  (this->base).base.base.pVtable = &g_vtblTControl;
+  (this->base).base.field12_0x80 = uVar1;
+  (this->base).base.field84 = (int *)0x0;
+  (this->base).base.field16_0x88 = *(void **)(in_stack_00000004 + 0x88);
+  (this->base).base.field17_0x8c = *(undefined4 *)(in_stack_00000004 + 0x8c);
+  local_4 = 0;
+  (this->base).base.field18_0x90 = *(undefined2 *)(in_stack_00000004 + 0x90);
+  (this->base).base.base.pVtable = &g_vtblTStaticText;
+  pvVar2 = AllocateWithFallbackHandler();
+  local_4._0_1_ = 1;
+  if (pvVar2 == (void *)0x0) {
+    this_00 = (int *)0x0;
+  }
+  else {
+    this_00 = InitializeSharedStringRefFromEmpty();
+  }
+  (this->base).base.field84 = this_00;
+  local_4 = (uint)local_4._1_3_ << 8;
+  AssignFromPtr(this_00,*(int **)(in_stack_00000004 + 0x84));
+  *unaff_FS_OFFSET = local_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4F10
@@ -73,12 +134,12 @@ void * __cdecl TMyNumberText::CreateTMyNumberTextInstance(void)
   puStack_8 = &LAB_00638dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)AllocateWithFallbackHandler(0xac);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TEditText *)0x0) {
     TEditText::thunk_ConstructUiNumericTextEntryBase(this);
-    *(undefined4 *)&this[1].field_0x4 = 0;
-    this->pVtable = &g_vtblTMyNumberText;
+    *(undefined4 *)((int)&this[1].base.base.pVtable + 2) = 0;
+    (this->base).base.pVtable = &g_vtblTMyNumberText;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -105,12 +166,14 @@ void * __cdecl TMyNumberText::GetTMyNumberTextClassNamePointer(void)
 // GHIDRA_NAME TMyNumberText::ConstructTMyNumberTextBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTMyNumberTextBaseState(void)
 
+/* WARNING: Struct "TMyNumberText": ignoring overlapping field "field9c" */
+
 void * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
-  *(undefined4 *)(this + 0xa0) = 0;
-  *(undefined ***)this = &g_vtblTMyNumberText;
+  TEditText::thunk_ConstructUiNumericTextEntryBase(&this->base);
+  this->fielda0 = 0;
+  (this->base).base.base.pVtable = &g_vtblTMyNumberText;
   return this;
 }
 
@@ -121,15 +184,16 @@ void * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNumberText *
 // GHIDRA_COMMENT [InheritanceEvidence] TMyNumberText derives from TEditText (dtor_calls_base_dtor, medium)
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TMyNumberText": ignoring overlapping field "field9c" */
 /* [InheritanceEvidence] TMyNumberText derives from TEditText (dtor_calls_base_dtor, medium) */
 
 void * __thiscall
 TMyNumberText::DestructTMyNumberTextAndMaybeFree(TMyNumberText *this,byte freeSelfFlag)
 
 {
-  TEditText::DestructTEditTextAndMaybeFree((TEditText *)this);
+  DestructTEditTextAndMaybeFree(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -141,16 +205,17 @@ TMyNumberText::DestructTMyNumberTextAndMaybeFree(TMyNumberText *this,byte freeSe
 // GHIDRA_COMMENT Read source value string from owner control and update numeric text value.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TMyNumberText": ignoring overlapping field "field9c" */
 /* Read source value string from owner control and update numeric text value. */
 
 void __thiscall TMyNumberText::UpdateMyNumberTextFromTownValueString(TMyNumberText *this)
 
 {
+  int extraout_ECX;
   int unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_28 [4];
-  undefined1 *puStack_24;
-  undefined1 *puStack_20;
+  int arg1;
+  undefined1 *arg2;
   undefined1 local_18 [4];
   undefined1 *local_14;
   undefined4 uStack_10;
@@ -163,20 +228,17 @@ void __thiscall TMyNumberText::UpdateMyNumberTextFromTownValueString(TMyNumberTe
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = (undefined1 *)0x0;
-  puStack_20 = (undefined1 *)0x5b507c;
   InitializeSharedStringRefFromEmpty();
-  puStack_20 = local_18;
   local_4 = 0;
-  puStack_24 = (undefined1 *)0x5b5093;
-  (**(code **)(*(int *)this + 0x1dc))();
+  (**(code **)((int)(this->base).base.base.pVtable + 0x1dc))();
   if (*(int *)(unaff_ESI + -8) != 0) {
-    puStack_24 = local_18;
-    local_14 = auStack_28;
+    arg2 = local_18;
+    local_14 = &stack0xffffffd8;
+    arg1 = extraout_ECX;
     thunk_AssignStringSharedRefAndReturnThis();
-    TTown::thunk_ParseTownValueFromStringAndReleaseSourceRef();
+    TTown::thunk_CreateTTownInstance(arg1,(int)arg2);
   }
   puStack_8 = (undefined1 *)0xffffffff;
-  puStack_24 = (undefined1 *)0x5b50d1;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_10;
   return;

@@ -3,59 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TEngineerDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00409016
-// GHIDRA_NAME TEngineerDialog::thunk_GetEngineerDialogClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetEngineerDialogClassName(void)
-
-void * __cdecl TEngineerDialog::thunk_GetEngineerDialogClassName(void)
-
-{
-  return &g_pClassDescTEngineerDialog;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409237
-// GHIDRA_NAME TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructEngineerDialogAndMaybeFree(void)
-
-void __cdecl TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree(void)
-
-{
-  DestructEngineerDialogAndMaybeFree();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004D04B0
-// GHIDRA_NAME TEngineerDialog::CreateEngineerDialog
-// GHIDRA_PROTO undefined CreateEngineerDialog()
-
-TView * TEngineerDialog::CreateEngineerDialog(void)
-
-{
-  TView *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00631a8a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x6c);
-  local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblFamily_EngineerDialogCore_Root;
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined4 *)(this + 100) = 0;
-    *(undefined4 *)(this + 0x68) = 0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TView *)0x0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0540
 // GHIDRA_NAME TEngineerDialog::GetTEngineerDialogClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTEngineerDialogClassNamePointer(void)
@@ -69,21 +16,5 @@ void * __cdecl TEngineerDialog::GetTEngineerDialogClassNamePointer(void)
 
 {
   return &g_pClassDescTEngineerDialog;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004D0590
-// GHIDRA_NAME TEngineerDialog::DestructEngineerDialogAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructEngineerDialogAndMaybeFree(void)
-
-void __cdecl TEngineerDialog::DestructEngineerDialogAndMaybeFree(void)
-
-{
-  byte in_stack_00000004;
-  
-  thunk_DestructEngineerDialogBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
 }
 

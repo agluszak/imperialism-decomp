@@ -21,6 +21,60 @@ void * __cdecl TProxyGreatPower::thunk_GetTProxyGreatPowerClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004024A5
+// GHIDRA_NAME TProxyGreatPower::thunk_EmitTradePolicyEventAndSetDiplomacyValueForTarget
+// GHIDRA_PROTO void __thiscall thunk_EmitTradePolicyEventAndSetDiplomacyValueForTarget(int targetNationSlot, short policyValue)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EmitTradePolicyEventAndSetDiplomacyValueForTarget
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to EmitTradePolicyEventAndSetDiplomacyValueForTarget */
+
+void __thiscall
+TProxyGreatPower::thunk_EmitTradePolicyEventAndSetDiplomacyValueForTarget
+          (TProxyGreatPower *this,int targetNationSlot,short policyValue)
+
+{
+  EmitTradePolicyEventAndSetDiplomacyValueForTarget(this,targetNationSlot,policyValue);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404EB7
+// GHIDRA_NAME TProxyGreatPower::thunk_QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16
+// GHIDRA_PROTO void __thiscall thunk_QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16 */
+
+void __thiscall
+TProxyGreatPower::thunk_QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16
+          (TProxyGreatPower *this)
+
+{
+  TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16((TGreatPower *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004052A4
+// GHIDRA_NAME TProxyGreatPower::thunk_EmitTurnEvent1DCommand69ForCurrentNationSlot
+// GHIDRA_PROTO void __thiscall thunk_EmitTurnEvent1DCommand69ForCurrentNationSlot(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EmitTurnEvent1DCommand69ForCurrentNationSlot
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to EmitTurnEvent1DCommand69ForCurrentNationSlot */
+
+void __thiscall
+TProxyGreatPower::thunk_EmitTurnEvent1DCommand69ForCurrentNationSlot
+          (TProxyGreatPower *this,int arg1,int arg2)
+
+{
+  EmitTurnEvent1DCommand69ForCurrentNationSlot(this,arg1,arg2);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040554C
 // GHIDRA_NAME TProxyGreatPower::thunk_DestructTProxyGreatPower
 // GHIDRA_PROTO void __thiscall thunk_DestructTProxyGreatPower(void)
@@ -40,7 +94,7 @@ void __thiscall TProxyGreatPower::thunk_DestructTProxyGreatPower(TProxyGreatPowe
   ReleaseSharedStringRefIfNotEmpty();
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -64,7 +118,7 @@ void __thiscall TProxyGreatPower::DestructTProxyGreatPower(TProxyGreatPower *thi
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -82,5 +136,59 @@ void * __cdecl TProxyGreatPower::GetTProxyGreatPowerClassNamePointer(void)
 
 {
   return &g_pClassDescTProxyGreatPower;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00540C20
+// GHIDRA_NAME TProxyGreatPower::EmitTradePolicyEventAndSetDiplomacyValueForTarget
+// GHIDRA_PROTO void __thiscall EmitTradePolicyEventAndSetDiplomacyValueForTarget(int targetNationSlot, short policyValue)
+
+void __thiscall
+TProxyGreatPower::EmitTradePolicyEventAndSetDiplomacyValueForTarget
+          (TProxyGreatPower *this,int targetNationSlot,short policyValue)
+
+{
+  thunk_DispatchTaggedGameStateEvent1F20();
+  TAutoGreatPower_VtblSlot018(this,targetNationSlot,policyValue);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00540CF0
+// GHIDRA_NAME TProxyGreatPower::EmitTurnEvent1DCommand69ForCurrentNationSlot
+// GHIDRA_PROTO void __thiscall EmitTurnEvent1DCommand69ForCurrentNationSlot(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds and sends turn-event 0x1D for current nation slot with command byte 0x69 and two payload bytes.
+// GHIDRA_COMMENT_END
+
+/* Builds and sends turn-event 0x1D for current nation slot with command byte 0x69 and two payload
+   bytes. */
+
+void __thiscall
+TProxyGreatPower::EmitTurnEvent1DCommand69ForCurrentNationSlot
+          (TProxyGreatPower *this,int arg1,int arg2)
+
+{
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined1 local_4;
+  undefined1 local_3;
+  undefined1 local_2;
+  
+  local_10 = 0x74696d65;
+  thunk_GetActiveNationId();
+  local_1c = 0;
+  local_20 = 0x1d;
+  local_18 = 0;
+  local_14 = 0x20;
+  thunk_SetTimeEmitPacketGameFlowTurnId();
+  local_18 = 0xffffffff;
+  thunk_SetEventPayloadNationIdFromSlotIndexWithSentinelHandling();
+  local_4 = 0x69;
+  local_3 = (undefined1)arg1;
+  local_2 = (undefined1)arg2;
+  thunk_EnqueueOrSendTurnEventPacketToNation((int)&local_20,0);
+  return;
 }
 

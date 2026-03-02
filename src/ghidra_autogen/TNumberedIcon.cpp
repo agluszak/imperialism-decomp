@@ -4,16 +4,15 @@
 // Bucket: TNumberedIcon.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403107
-// GHIDRA_NAME TNumberedIcon::thunk_DestructTNumberedIconAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNumberedIconAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TNumberedIcon_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNumberedIconAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTNumberedIconAndMaybeFree */
 
-void * __thiscall
-TNumberedIcon::thunk_DestructTNumberedIconAndMaybeFree(TNumberedIcon *this,byte freeSelfFlag)
+void * __thiscall TNumberedIcon::TNumberedIcon_VtblSlot001(TNumberedIcon *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,16 +21,48 @@ TNumberedIcon::thunk_DestructTNumberedIconAndMaybeFree(TNumberedIcon *this,byte 
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404002
+// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot119
+// GHIDRA_PROTO void __cdecl TNumberedIcon_VtblSlot119(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Helper_Uses_ConstructTMyNumberTextBaseState_At00507570 */
+
+void __cdecl TNumberedIcon::TNumberedIcon_VtblSlot119(void)
+
+{
+  Helper_Uses_ConstructTMyNumberTextBaseState_At00507570();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404499
+// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot055
+// GHIDRA_PROTO void __cdecl TNumberedIcon_VtblSlot055(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0 */
+
+void __cdecl TNumberedIcon::TNumberedIcon_VtblSlot055(void)
+
+{
+  WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E57
-// GHIDRA_NAME TNumberedIcon::thunk_GetTNumberedIconClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNumberedIconClassNamePointer(void)
+// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNumberedIcon_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNumberedIconClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNumberedIconClassNamePointer */
 
-void * __cdecl TNumberedIcon::thunk_GetTNumberedIconClassNamePointer(void)
+void * __cdecl TNumberedIcon::TNumberedIcon_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -57,12 +88,12 @@ void * __cdecl TNumberedIcon::CreateTNumberedIconInstance(void)
   puStack_8 = &LAB_006337ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMegaPicture *)AllocateWithFallbackHandler(0xb0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TMegaPicture *)0x0) {
     TMegaPicture::ConstructTMegaPictureBaseState(this);
-    *(undefined ***)this = &g_vtblTNumberedIcon;
-    *(undefined4 *)(this + 0xac) = 0;
+    this->field0_0x0 = &g_vtblTNumberedIcon;
+    *(undefined4 *)&this[1].field_0x12 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -93,8 +124,8 @@ void * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumberedIcon *
 
 {
   TMegaPicture::ConstructTMegaPictureBaseState((TMegaPicture *)this);
-  *(undefined ***)this = &g_vtblTNumberedIcon;
-  *(undefined4 *)(this + 0xac) = 0;
+  this->field0_0x0 = &g_vtblTNumberedIcon;
+  this->pFieldac = (void *)0x0;
   return this;
 }
 
@@ -108,7 +139,7 @@ TNumberedIcon::DestructTNumberedIconAndMaybeFree(TNumberedIcon *this,byte freeSe
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

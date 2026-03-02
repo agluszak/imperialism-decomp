@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TTradeCluster.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040135C
+// GHIDRA_NAME TTradeCluster::thunk_DestroyTradeSellControlPanel
+// GHIDRA_PROTO TTradeCluster * __thiscall thunk_DestroyTradeSellControlPanel(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTradeSellControlPanel
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DestroyTradeSellControlPanel */
+
+TTradeCluster * __thiscall
+TTradeCluster::thunk_DestroyTradeSellControlPanel(TTradeCluster *this,byte freeSelfFlag)
+
+{
+  TTradeCluster *pTVar1;
+  
+  pTVar1 = DestroyTradeSellControlPanel(this,freeSelfFlag);
+  return pTVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00401591
 // GHIDRA_NAME TTradeCluster::thunk_GetTTradeClusterClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTTradeClusterClassNamePointer(void)
@@ -21,11 +40,50 @@ void * __cdecl TTradeCluster::thunk_GetTTradeClusterClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004046A1
+// GHIDRA_NAME TTradeCluster::thunk_ConstructTradeSellControlPanel
+// GHIDRA_PROTO TTradeCluster * __thiscall thunk_ConstructTradeSellControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTradeSellControlPanel
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTradeSellControlPanel */
+
+TTradeCluster * __thiscall TTradeCluster::thunk_ConstructTradeSellControlPanel(TTradeCluster *this)
+
+{
+  TUberCluster::ConstructTUberClusterBaseState(&this->base);
+  (this->base).field0_0x0 = &PTR_thunk_GetTTradeClusterClassNamePointer_00665a70;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407E7D
+// GHIDRA_NAME TTradeCluster::thunk_InitializeTradeSellControlState
+// GHIDRA_PROTO void __thiscall thunk_InitializeTradeSellControlState(uint styleSeed)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InitializeTradeSellControlState
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InitializeTradeSellControlState */
+
+void __thiscall
+TTradeCluster::thunk_InitializeTradeSellControlState(TTradeCluster *this,uint styleSeed)
+
+{
+  InitializeTradeSellControlState(this,styleSeed);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00587010
 // GHIDRA_NAME TTradeCluster::CreateTradeSellControlPanel
-// GHIDRA_PROTO undefined CreateTradeSellControlPanel()
+// GHIDRA_PROTO TTradeCluster * __cdecl CreateTradeSellControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-TUberCluster * TTradeCluster::CreateTradeSellControlPanel(void)
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TTradeCluster * __cdecl TTradeCluster::CreateTradeSellControlPanel(void)
 
 {
   TUberCluster *this;
@@ -39,26 +97,26 @@ TUberCluster * TTradeCluster::CreateTradeSellControlPanel(void)
   puStack_8 = &LAB_006378da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x8c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &PTR_thunk_GetTTradeClusterClassNamePointer_00665a70;
+    this->field0_0x0 = &PTR_thunk_GetTTradeClusterClassNamePointer_00665a70;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return (TTradeCluster *)pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00587090
 // GHIDRA_NAME TTradeCluster::GetTTradeClusterClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTTradeClusterClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeCluster.
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* Returns class descriptor pointer for TTradeCluster. */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TTradeCluster::GetTTradeClusterClassNamePointer(void)
 
@@ -66,19 +124,122 @@ void * __cdecl TTradeCluster::GetTTradeClusterClassNamePointer(void)
   return &g_pClassDescTTradeCluster;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005870E0
-// GHIDRA_NAME TTradeCluster::DestroyTradeSellControlPanel
-// GHIDRA_PROTO void __cdecl DestroyTradeSellControlPanel(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x005870B0
+// GHIDRA_NAME TTradeCluster::ConstructTradeSellControlPanel
+// GHIDRA_PROTO TTradeCluster * __thiscall ConstructTradeSellControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void __cdecl TTradeCluster::DestroyTradeSellControlPanel(void)
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TTradeCluster * __thiscall TTradeCluster::ConstructTradeSellControlPanel(TTradeCluster *this)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructEngineerDialogBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
+  TUberCluster::ConstructTUberClusterBaseState(&this->base);
+  (this->base).field0_0x0 = &PTR_thunk_GetTTradeClusterClassNamePointer_00665a70;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005870E0
+// GHIDRA_NAME TTradeCluster::DestroyTradeSellControlPanel
+// GHIDRA_PROTO TTradeCluster * __thiscall DestroyTradeSellControlPanel(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TTradeCluster * __thiscall
+TTradeCluster::DestroyTradeSellControlPanel(TTradeCluster *this,byte freeSelfFlag)
+
+{
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull();
   }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00587130
+// GHIDRA_NAME TTradeCluster::InitializeTradeSellControlState
+// GHIDRA_PROTO void __thiscall InitializeTradeSellControlState(uint styleSeed)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall TTradeCluster::InitializeTradeSellControlState(TTradeCluster *this,uint styleSeed)
+
+{
+  short extraout_AX;
+  int *piVar1;
+  int *piVar2;
+  code *unaff_EDI;
+  code *pcVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  int iStack_28;
+  int iStack_24;
+  undefined1 auStack_20 [10];
+  undefined1 local_16;
+  undefined1 local_15;
+  undefined1 local_14;
+  undefined1 local_13;
+  
+  local_16 = 0;
+  pcVar3 = (code *)(this->base).field0_0x0[0x25];
+  local_15 = 0;
+  local_14 = 0;
+  local_13 = 0;
+  piVar1 = (int *)(*pcVar3)(0x53656c6c);
+  if (piVar1 != (int *)0x0) {
+    thunk_InitializeUiTextStyleDescriptor((int)auStack_20,0,0xe,0x2b68,2);
+    iVar6 = *piVar1;
+    (**(code **)(iVar6 + 0x1b4))(auStack_20,0);
+    (**(code **)(iVar6 + 0x1c4))(0xffffffff,0);
+    (**(code **)(iVar6 + 300))(&iStack_24);
+    iStack_24 = iStack_24 + -2;
+    (**(code **)(iVar6 + 0x168))(&iStack_28,1);
+  }
+  piVar1 = (int *)(*pcVar3)(0x62617220);
+  if (piVar1 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  iStack_28 = *piVar1;
+  (**(code **)(iStack_28 + 0xa8))(0,0);
+  iVar6 = 0x6c656674;
+  piVar1 = (int *)(*unaff_EDI)();
+  if (piVar1 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  iVar5 = 0x72676874;
+  piVar2 = (int *)(*unaff_EDI)();
+  if (piVar2 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  iVar4 = 0;
+  (**(code **)(*piVar1 + 0xa8))(0);
+  (**(code **)(*piVar2 + 0xa8))(0,0);
+  thunk_GetActiveNationId();
+  if (*(short *)((int)g_apNationStates[extraout_AX] + 0xa4) == 0) {
+    pcVar3 = (code *)0x0;
+    (**(code **)(iVar6 + 0xa4))(0,0);
+    (**(code **)(iVar5 + 0xa4))(0,0);
+    (**(code **)(iVar4 + 0xa4))(0,0);
+    piVar1 = (int *)(*pcVar3)(0x67726565);
+    if (piVar1 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    (**(code **)(*piVar1 + 0xa4))(0,0);
+  }
+  TAmtBarCluster::TAmtBarCluster_VtblSlot055((TAmtBarCluster *)this);
   return;
 }
 

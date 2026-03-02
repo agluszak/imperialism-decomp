@@ -20,16 +20,15 @@ void __thiscall CProcessLocalObject::thunk_CProcessLocalObject(CProcessLocalObje
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006244CE
-// GHIDRA_NAME CProcessLocalObject::thunk_CProcessLocalObject_at_006244ce
-// GHIDRA_PROTO void __thiscall thunk_CProcessLocalObject_at_006244ce(void)
+// GHIDRA_NAME CProcessLocalObject::thunk_~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall thunk_~CProcessLocalObject(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ~CProcessLocalObject
+// GHIDRA_COMMENT Single-JMP thunk to ~CProcessLocalObject [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ~CProcessLocalObject */
+/* Single-JMP thunk to ~CProcessLocalObject [FID:thunk_target_sync] */
 
-void __thiscall
-CProcessLocalObject::thunk_CProcessLocalObject_at_006244ce(CProcessLocalObject *this)
+void __thiscall CProcessLocalObject::thunk__CProcessLocalObject(CProcessLocalObject *this)
 
 {
   ~CProcessLocalObject(this);

@@ -5,19 +5,20 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401384
 // GHIDRA_NAME TTechItemLine::thunk_ConstructTTechItemLineBaseState
-// GHIDRA_PROTO void * __cdecl thunk_ConstructTTechItemLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall thunk_ConstructTTechItemLineBaseState(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTTechItemLineBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTTechItemLineBaseState */
 
-void * __cdecl TTechItemLine::thunk_ConstructTTechItemLineBaseState(void)
+void * __thiscall
+TTechItemLine::thunk_ConstructTTechItemLineBaseState(TTechItemLine *this,int arg1,int arg2)
 
 {
   void *pvVar1;
   
-  pvVar1 = ConstructTTechItemLineBaseState();
+  pvVar1 = ConstructTTechItemLineBaseState(this,arg1,arg2);
   return pvVar1;
 }
 
@@ -40,16 +41,16 @@ void * __cdecl TTechItemLine::thunk_GetTTechItemLineClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040343B
-// GHIDRA_NAME TTechItemLine::thunk_HandleTechItemViewPurchaseOrDescriptionCommand
-// GHIDRA_PROTO void __thiscall thunk_HandleTechItemViewPurchaseOrDescriptionCommand(int commandId, void * pMessage)
+// GHIDRA_NAME TTechItemLine::thunk_DestructTTechItemViewAndMaybeFree_At0040343b
+// GHIDRA_PROTO void __thiscall thunk_DestructTTechItemViewAndMaybeFree_At0040343b(int commandId, void * pMessage)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_CityHint_005b1e20
+// GHIDRA_COMMENT Single-JMP thunk to DestructTTechItemViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_CityHint_005b1e20 */
+/* Single-JMP thunk to DestructTTechItemViewAndMaybeFree */
 
 void __thiscall
-TTechItemLine::thunk_HandleTechItemViewPurchaseOrDescriptionCommand
+TTechItemLine::thunk_DestructTTechItemViewAndMaybeFree_At0040343b
           (TTechItemLine *this,int commandId,void *pMessage)
 
 {
@@ -58,8 +59,8 @@ TTechItemLine::thunk_HandleTechItemViewPurchaseOrDescriptionCommand
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406C35
-// GHIDRA_NAME TTechItemLine::thunk_DestructTTechItemLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTechItemLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTechItemLine::thunk_DestructTTechItemLineAndMaybeFree_At00406c35
+// GHIDRA_PROTO void * __thiscall thunk_DestructTTechItemLineAndMaybeFree_At00406c35(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTechItemLineAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -67,12 +68,31 @@ TTechItemLine::thunk_HandleTechItemViewPurchaseOrDescriptionCommand
 /* Single-JMP thunk to DestructTTechItemLineAndMaybeFree */
 
 void * __thiscall
-TTechItemLine::thunk_DestructTTechItemLineAndMaybeFree(TTechItemLine *this,byte freeSelfFlag)
+TTechItemLine::thunk_DestructTTechItemLineAndMaybeFree_At00406c35
+          (TTechItemLine *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTTechItemLineAndMaybeFree(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407C7A
+// GHIDRA_NAME TTechItemLine::thunk_GetTTechItemViewClassNamePointer_At00407c7a
+// GHIDRA_PROTO void * __cdecl thunk_GetTTechItemViewClassNamePointer_At00407c7a(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTTechItemViewClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTTechItemViewClassNamePointer */
+
+void * __cdecl TTechItemLine::thunk_GetTTechItemViewClassNamePointer_At00407c7a(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TTechItemView::GetTTechItemViewClassNamePointer();
   return pvVar1;
 }
 
@@ -94,12 +114,12 @@ void * __cdecl TTechItemLine::CreateTTechItemLineInstance(void)
   puStack_8 = &LAB_006389ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x18);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &PTR_thunk_GetTTechItemLineClassNamePointer_0066aec8;
+    pThis->field0_0x0 = &PTR_thunk_GetTTechItemLineClassNamePointer_0066aec8;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -123,14 +143,15 @@ void * __cdecl TTechItemLine::GetTTechItemLineClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1160
 // GHIDRA_NAME TTechItemLine::ConstructTTechItemLineBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTTechItemLineBaseState(void)
+// GHIDRA_PROTO void * __thiscall ConstructTTechItemLineBaseState(int arg1, int arg2)
 
-void * __cdecl TTechItemLine::ConstructTTechItemLineBaseState(void)
+void * __thiscall
+TTechItemLine::ConstructTTechItemLineBaseState(TTechItemLine *this,int arg1,int arg2)
 
 {
-  TView *this;
-  void *pvVar1;
   TTechItemView *this_00;
+  void *pvVar1;
+  TTechItemView *this_01;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -140,16 +161,17 @@ void * __cdecl TTechItemLine::ConstructTTechItemLineBaseState(void)
   puStack_8 = &LAB_006389da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
-  this_00 = (TTechItemView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTTechItemLine;
-    this_00 = (TTechItemView *)this;
+  this_01 = (TTechItemView *)0x0;
+  if (this_00 != (TTechItemView *)0x0) {
+    TView::thunk_ConstructTViewBaseState((TView *)this_00);
+    this_00->field0_0x0 = (int)&g_vtblTTechItemLine;
+    this_01 = this_00;
   }
   local_4 = 0xffffffff;
-  pvVar1 = TTechItemView::ConstructTTechItemViewBaseState(this_00);
+  pvVar1 = TTechItemView::ConstructTTechItemViewBaseState
+                     (this_01,arg1,arg2,(int)&this->field5_0x8,this->field10,this->field14_0x14);
   *unaff_FS_OFFSET = local_c;
   return pvVar1;
 }
@@ -162,9 +184,9 @@ void * __thiscall
 TTechItemLine::DestructTTechItemLineAndMaybeFree(TTechItemLine *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

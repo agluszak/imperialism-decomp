@@ -4,24 +4,29 @@
 // Bucket: TShipyardCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040153C
-// GHIDRA_NAME TShipyardCluster::thunk_DestructTShipyardClusterMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructTShipyardClusterMaybeFree(void)
+// GHIDRA_NAME TShipyardCluster::?thunk_DestructTShipyardClusterMaybeFree@@YAXPAUTradeMoveStepCluster@?%Z:\imperialism\include\game/ui_widget_shared.h137827804@@E@Z
+// GHIDRA_PROTO TShipyardCluster * __thiscall ?thunk_DestructTShipyardClusterMaybeFree@@YAXPAUTradeMoveStepCluster@?%Z:\imperialism\include\game/ui_widget_shared.h137827804@@E@Z(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTShipyardClusterMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTShipyardClusterMaybeFree */
 
-void __cdecl TShipyardCluster::thunk_DestructTShipyardClusterMaybeFree(void)
+TShipyardCluster * __thiscall
+TShipyardCluster::
+_thunk_DestructTShipyardClusterMaybeFree__YAXPAUTradeMoveStepCluster___Z__imperialism_include_game_ui_widget_shared_h137827804__E_Z
+          (TShipyardCluster *this,byte freeSelfFlag)
 
 {
-  DestructTShipyardClusterMaybeFree();
-  return;
+  TShipyardCluster *pTVar1;
+  
+  pTVar1 = DestructTShipyardClusterMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C11
-// GHIDRA_NAME TShipyardCluster::thunk_SelectTradeSpecialCommodityAndInitializeControls
-// GHIDRA_PROTO void __thiscall thunk_SelectTradeSpecialCommodityAndInitializeControls(void)
+// GHIDRA_NAME TShipyardCluster::?thunk_SelectTradeSpecialCommodityAndInitializeControls@@YIXPAUTradeMoveStepCluster@?%Z:\imperialism\include\game/ui_widget_shared.h137827804@@@Z
+// GHIDRA_PROTO void __thiscall ?thunk_SelectTradeSpecialCommodityAndInitializeControls@@YIXPAUTradeMoveStepCluster@?%Z:\imperialism\include\game/ui_widget_shared.h137827804@@@Z(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to SelectTradeSpecialCommodityAndInitializeControls
 // GHIDRA_COMMENT_END
@@ -29,7 +34,9 @@ void __cdecl TShipyardCluster::thunk_DestructTShipyardClusterMaybeFree(void)
 /* Single-JMP thunk to SelectTradeSpecialCommodityAndInitializeControls */
 
 void __thiscall
-TShipyardCluster::thunk_SelectTradeSpecialCommodityAndInitializeControls(TShipyardCluster *this)
+TShipyardCluster::
+_thunk_SelectTradeSpecialCommodityAndInitializeControls__YIXPAUTradeMoveStepCluster___Z__imperialism_include_game_ui_widget_shared_h137827804___Z
+          (TShipyardCluster *this)
 
 {
   SelectTradeSpecialCommodityAndInitializeControls(this);
@@ -37,15 +44,18 @@ TShipyardCluster::thunk_SelectTradeSpecialCommodityAndInitializeControls(TShipya
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004058A8
-// GHIDRA_NAME TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl
-// GHIDRA_PROTO void __thiscall thunk_RefreshTradeMoveBarAndTurnControl(void)
+// GHIDRA_NAME TShipyardCluster::?thunk_RefreshTradeMoveBarAndTurnControl@@YIXPAUTradeMoveStepCluster@?%Z:\imperialism\include\game/ui_widget_shared.h137827804@@@Z
+// GHIDRA_PROTO void __thiscall ?thunk_RefreshTradeMoveBarAndTurnControl@@YIXPAUTradeMoveStepCluster@?%Z:\imperialism\include\game/ui_widget_shared.h137827804@@@Z(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RefreshTradeMoveBarAndTurnControl
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RefreshTradeMoveBarAndTurnControl */
 
-void __thiscall TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl(TShipyardCluster *this)
+void __thiscall
+TShipyardCluster::
+_thunk_RefreshTradeMoveBarAndTurnControl__YIXPAUTradeMoveStepCluster___Z__imperialism_include_game_ui_widget_shared_h137827804___Z
+          (TShipyardCluster *this)
 
 {
   RefreshTradeMoveBarAndTurnControl(this);
@@ -53,31 +63,33 @@ void __thiscall TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl(TShipy
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406965
-// GHIDRA_NAME TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent
-// GHIDRA_PROTO void __thiscall thunk_HandleTradeMoveArrowControlEvent(void)
+// GHIDRA_NAME TShipyardCluster::TShipyardCluster_VtblSlot015
+// GHIDRA_PROTO void __thiscall TShipyardCluster_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent, int eventExtra)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTradeMoveArrowControlEvent
+// GHIDRA_COMMENT Single-JMP thunk to TShipyardCluster::HandleTradeMoveArrowControlEvent
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to HandleTradeMoveArrowControlEvent */
+/* Single-JMP thunk to TShipyardCluster::HandleTradeMoveArrowControlEvent */
 
-void __thiscall TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent(TShipyardCluster *this)
+void __thiscall
+TShipyardCluster::TShipyardCluster_VtblSlot015
+          (TShipyardCluster *this,int commandId,PanelEventPayload *pPanelEvent,int eventExtra)
 
 {
-  HandleTradeMoveArrowControlEvent(this);
+  HandleTradeMoveArrowControlEvent(this,commandId,pPanelEvent,eventExtra);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406E65
-// GHIDRA_NAME TShipyardCluster::thunk_GetTShipyardClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipyardClusterClassNamePointer(void)
+// GHIDRA_NAME TShipyardCluster::TShipyardCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TShipyardCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTShipyardClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTShipyardClusterClassNamePointer */
 
-void * __cdecl TShipyardCluster::thunk_GetTShipyardClusterClassNamePointer(void)
+void * __cdecl TShipyardCluster::TShipyardCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -88,12 +100,17 @@ void * __cdecl TShipyardCluster::thunk_GetTShipyardClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A4D0
 // GHIDRA_NAME TShipyardCluster::CreateTradeMoveArrowControlPanel
-// GHIDRA_PROTO undefined CreateTradeMoveArrowControlPanel()
+// GHIDRA_PROTO TShipyardCluster * __cdecl CreateTradeMoveArrowControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled factory helper name
+// GHIDRA_COMMENT_END
 
-TUberCluster * TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
+/* demangled from mangled factory helper name */
+
+TShipyardCluster * __cdecl TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
 
 {
-  TUberCluster *this;
+  TShipyardCluster *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -103,17 +120,17 @@ TUberCluster * TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
   puStack_8 = &LAB_00637a3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x90);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &g_vtblTShipyardCluster;
-    *(undefined4 *)(this + 0x88) = 0;
+  if (this != (TShipyardCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+    this->pVtable = &g_vtblTShipyardCluster;
+    this->selectedMetric88 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TUberCluster *)0x0;
+  return (TShipyardCluster *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A570
@@ -133,43 +150,51 @@ void * __cdecl TShipyardCluster::GetTShipyardClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A590
 // GHIDRA_NAME TShipyardCluster::ConstructTradeMoveArrowControlPanel
-// GHIDRA_PROTO undefined ConstructTradeMoveArrowControlPanel()
+// GHIDRA_PROTO TShipyardCluster * __thiscall ConstructTradeMoveArrowControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled constructor helper name
+// GHIDRA_COMMENT_END
 
-TUberCluster * __fastcall
-TShipyardCluster::ConstructTradeMoveArrowControlPanel(TUberCluster *param_1)
+/* demangled from mangled constructor helper name */
+
+TShipyardCluster * __thiscall
+TShipyardCluster::ConstructTradeMoveArrowControlPanel(TShipyardCluster *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState(param_1);
-  *(undefined ***)param_1 = &g_vtblTShipyardCluster;
-  *(undefined4 *)(param_1 + 0x88) = 0;
-  return param_1;
+  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  this->pVtable = &g_vtblTShipyardCluster;
+  this->selectedMetric88 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A5C0
 // GHIDRA_NAME TShipyardCluster::DestructTShipyardClusterMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTShipyardClusterMaybeFree(void)
+// GHIDRA_PROTO TShipyardCluster * __thiscall DestructTShipyardClusterMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled destructor helper name
+// GHIDRA_COMMENT_END
 
-void __cdecl TShipyardCluster::DestructTShipyardClusterMaybeFree(void)
+/* demangled from mangled destructor helper name */
+
+TShipyardCluster * __thiscall
+TShipyardCluster::DestructTShipyardClusterMaybeFree(TShipyardCluster *this,byte freeSelfFlag)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructEngineerDialogBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull();
   }
-  return;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A610
 // GHIDRA_NAME TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls
 // GHIDRA_PROTO void __thiscall SelectTradeSpecialCommodityAndInitializeControls(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Selects a fixed special trade commodity slot for the active nation, assigns fixed quantity baseline, initializes controls, and resets dependent UI state.
+// GHIDRA_COMMENT demangled from mangled TradeMoveStepCluster method name
 // GHIDRA_COMMENT_END
 
-/* Selects a fixed special trade commodity slot for the active nation, assigns fixed quantity
-   baseline, initializes controls, and resets dependent UI state. */
+/* demangled from mangled TradeMoveStepCluster method name */
 
 void __thiscall
 TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls(TShipyardCluster *this)
@@ -185,10 +210,10 @@ TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls(TShipyardClus
   else {
     iVar1 = *(int *)((int)g_apNationStates[extraout_AX] + 0x894);
   }
-  *(undefined4 *)(this + 0x88) = *(undefined4 *)(iVar1 + 400);
-  *(undefined2 *)(this + 0x8c) = 999;
-  TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls((TAmtBarCluster *)this);
-  (**(code **)(*(int *)this + 0x1d0))(0);
+  this->selectedMetric88 = *(uint *)(iVar1 + 400);
+  this->selectedMetricMode8c = 999;
+  TAmtBarCluster::TAmtBarCluster_VtblSlot055((TAmtBarCluster *)this);
+  (**(code **)((int)this->pVtable + 0x1d0))(0);
   return;
 }
 
@@ -196,11 +221,10 @@ TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls(TShipyardClus
 // GHIDRA_NAME TShipyardCluster::RefreshTradeMoveBarAndTurnControl
 // GHIDRA_PROTO void __thiscall RefreshTradeMoveBarAndTurnControl(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes move bar + turn indicator controls after move value changes; invalidates old/new rects and updates bar thumb metrics.
+// GHIDRA_COMMENT demangled from mangled TradeMoveStepCluster method name
 // GHIDRA_COMMENT_END
 
-/* Refreshes move bar + turn indicator controls after move value changes; invalidates old/new rects
-   and updates bar thumb metrics. */
+/* demangled from mangled TradeMoveStepCluster method name */
 
 void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardCluster *this)
 
@@ -214,7 +238,7 @@ void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardClu
   RECT RStack_30;
   tagRECT atStack_20 [2];
   
-  pcVar1 = *(code **)(*(int *)this + 0x94);
+  pcVar1 = *(code **)((int)this->pVtable + 0x94);
   piVar3 = (int *)(*pcVar1)();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -223,7 +247,7 @@ void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardClu
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0x1e4))();
   (**(code **)(iVar2 + 300))();
-  OffsetRect((LPRECT)&stack0xffffffc0,*(int *)(this + 0x24),*(int *)(this + 0x28));
+  OffsetRect((LPRECT)&stack0xffffffc0,this->ownerOffsetX24,this->ownerOffsetY28);
   RStack_30.top = auStack_3c._0_4_;
   RStack_30.right = auStack_3c._4_4_;
   RStack_30.bottom = LStack_34;
@@ -235,7 +259,7 @@ void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardClu
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  if (*(short *)(this + 0x8c) == 0) {
+  if (this->selectedMetricMode8c == 0) {
     *(undefined2 *)((int)piVar3 + 0x66) = 0x34;
   }
   else {
@@ -244,10 +268,10 @@ void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardClu
   (**(code **)(*piVar3 + 0x1a4))(0);
   (**(code **)(iVar2 + 0xf0))(&stack0xffffffac,1);
   (*pcVar4)(&stack0xffffffac);
-  OffsetRect((LPRECT)&stack0xffffffa8,*(int *)(this + 0x24),*(int *)(this + 0x28));
+  OffsetRect((LPRECT)&stack0xffffffa8,this->ownerOffsetX24,this->ownerOffsetY28);
   CopyRect((LPRECT)(auStack_3c + 4),(RECT *)&stack0xffffffb8);
   thunk_InvalidateCityDialogRectRegion((int)(auStack_3c + 4),1);
-  piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x7475726e);
+  piVar3 = (int *)(**(code **)(*(int *)this->ownerContext20 + 0x94))(0x7475726e);
   if (piVar3 != (int *)0x0) {
     iVar2 = *piVar3;
     (**(code **)(iVar2 + 0x1e4))(0,0);
@@ -255,59 +279,59 @@ void __thiscall TShipyardCluster::RefreshTradeMoveBarAndTurnControl(TShipyardClu
     CopyRect((LPRECT)auStack_3c,(RECT *)&stack0xffffffb4);
     thunk_InvalidateCityDialogRectRegion((int)auStack_3c,1);
   }
-  (**(code **)(**(int **)(this + 0x20) + 0x1d8))();
+  (**(code **)(*(int *)this->ownerContext20 + 0x1d8))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A940
 // GHIDRA_NAME TShipyardCluster::HandleTradeMoveArrowControlEvent
-// GHIDRA_PROTO void __thiscall HandleTradeMoveArrowControlEvent(void)
+// GHIDRA_PROTO void __thiscall HandleTradeMoveArrowControlEvent(int commandId, PanelEventPayload * pPanelEvent, int eventExtra)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade move arrow handler: interprets left/rght control tags and adjusts move amount (+/-1), sharing split-arrow command semantics.
+// GHIDRA_COMMENT demangled from mangled TradeMoveStepCluster method name
 // GHIDRA_COMMENT_END
 
-/* Trade move arrow handler: interprets left/rght control tags and adjusts move amount (+/-1),
-   sharing split-arrow command semantics. */
+/* demangled from mangled TradeMoveStepCluster method name */
 
-void __thiscall TShipyardCluster::HandleTradeMoveArrowControlEvent(TShipyardCluster *this)
+void __thiscall
+TShipyardCluster::HandleTradeMoveArrowControlEvent
+          (TShipyardCluster *this,int commandId,PanelEventPayload *pPanelEvent,int eventExtra)
 
 {
-  int iVar1;
+  void *pvVar1;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x72676874) {
-      iVar1 = *(int *)this;
-      piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+  if (commandId == 10) {
+    if (pPanelEvent->controlTag1c == 0x72676874) {
+      pvVar1 = this->pVtable;
+      piVar2 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x6d6f7665);
       if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       }
       iVar3 = (**(code **)(*piVar2 + 0x1e8))();
-      (**(code **)(iVar1 + 0x1d0))(iVar3 + 1);
+      (**(code **)((int)pvVar1 + 0x1d0))(iVar3 + 1);
       return;
     }
-    if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c656674) {
-      TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
+    if (pPanelEvent->controlTag1c != 0x6c656674) {
+      TAmtBarCluster::TAmtBarCluster_VtblSlot015((TAmtBarCluster *)this,10,pPanelEvent,eventExtra);
       return;
     }
-    iVar1 = *(int *)this;
-    piVar2 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+    pvVar1 = this->pVtable;
+    piVar2 = (int *)(**(code **)((int)pvVar1 + 0x94))(0x6d6f7665);
     if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar3 = (**(code **)(*piVar2 + 0x1e8))();
     if ((short)iVar3 != 0) {
-      (**(code **)(iVar1 + 0x1d0))(iVar3 + -1);
+      (**(code **)((int)pvVar1 + 0x1d0))(iVar3 + -1);
       return;
     }
   }
   else {
-    TAmtBarCluster::thunk_HandleTradeMoveControlAdjustment((TAmtBarCluster *)this);
+    TAmtBarCluster::TAmtBarCluster_VtblSlot015
+              ((TAmtBarCluster *)this,commandId,pPanelEvent,eventExtra);
   }
   return;
 }

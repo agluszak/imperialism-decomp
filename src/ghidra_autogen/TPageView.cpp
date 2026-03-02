@@ -4,15 +4,16 @@
 // Bucket: TPageView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405786
-// GHIDRA_NAME TPageView::thunk_DestructTPageViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPageViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TPageView::thunk_DestructTPageViewAndMaybeFree_At00405786
+// GHIDRA_PROTO void * __thiscall thunk_DestructTPageViewAndMaybeFree_At00405786(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTPageViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTPageViewAndMaybeFree */
 
-void * __thiscall TPageView::thunk_DestructTPageViewAndMaybeFree(TPageView *this,byte freeSelfFlag)
+void * __thiscall
+TPageView::thunk_DestructTPageViewAndMaybeFree_At00405786(TPageView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,15 +23,15 @@ void * __thiscall TPageView::thunk_DestructTPageViewAndMaybeFree(TPageView *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406ADC
-// GHIDRA_NAME TPageView::thunk_GetTPageViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPageViewClassNamePointer(void)
+// GHIDRA_NAME TPageView::thunk_GetTPageViewClassNamePointer_At00406adc
+// GHIDRA_PROTO void * __cdecl thunk_GetTPageViewClassNamePointer_At00406adc(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTPageViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTPageViewClassNamePointer */
 
-void * __cdecl TPageView::thunk_GetTPageViewClassNamePointer(void)
+void * __cdecl TPageView::thunk_GetTPageViewClassNamePointer_At00406adc(void)
 
 {
   void *pvVar1;
@@ -39,77 +40,60 @@ void * __cdecl TPageView::thunk_GetTPageViewClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F8C
-// GHIDRA_NAME TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds
-// GHIDRA_PROTO void __thiscall thunk_InitializeRosterPageLineCollectionsAndBounds(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00435590
+// GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
+// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTPageViewBaseState_At00435590(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Thunk] forwards to InitializeRosterPageLineCollectionsAndBounds.
+// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* [Thunk] forwards to InitializeRosterPageLineCollectionsAndBounds. */
+/* [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1,
+   internal_calls=1, unique_internal=1 */
 
-void __thiscall TPageView::thunk_InitializeRosterPageLineCollectionsAndBounds(TPageView *this)
+void * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(TPageView *this)
 
 {
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 *puStack00000004;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636274;
-  *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  uStack_4 = 0;
-  puStack00000004 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    InitializeRefCountedObjectBaseVtable();
-    uStack_4 = CONCAT31(uStack_4._1_3_,1);
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
-    *puVar1 = &g_vtblTArmyBattle;
-  }
-  uStack_4 = 0xffffffff;
-  *(undefined4 **)(this + 0x7c) = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  puStack00000004 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar1 = &g_vtblRefCountedObjectBase;
-    uStack_4 = 3;
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
-    *puVar1 = &g_vtblTArmyBattle;
-  }
-  uStack_4 = 0xffffffff;
-  *(undefined4 **)(this + 0x78) = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    puVar1[3] = 0;
-    puVar1[4] = 0;
-    puVar1[2] = 0;
-    puVar1[1] = 0;
-    puVar1[5] = 0;
-    puVar1[6] = 10;
-    *puVar1 = &PTR_GetCObjectRuntimeClass_00650a08;
-  }
-  *(int *)(this + 0x74) = *(int *)(this + 0x38) + -1;
-  *(undefined4 **)(this + 0x80) = puVar1;
-  *(undefined4 *)(this + 0x6c) = 0;
-  *(undefined4 *)(this + 0x68) = 0;
-  *(int *)(this + 0x70) = *(int *)(this + 0x34) + -1;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
+  ConstructTPageViewBaseState(this);
+  (this->base).pVtable = &PTR_thunk_GetTTradePageSellViewClassNamePointer_00640f58;
+  this->field84 = -1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00435610
+// GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610
+// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTPageViewBaseState_At00435610(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(TPageView *this)
+
+{
+  ConstructTPageViewBaseState(this);
+  (this->base).pVtable = &PTR_thunk_GetTTradePageBuyViewClassNamePointer_00640d48;
+  this->field84 = -1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004600C0
+// GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
+// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=7, call_insns=1,
+   internal_calls=1, unique_internal=1 */
+
+void * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(TPageView *this)
+
+{
+  ConstructTPageViewBaseState(this);
+  (this->base).pVtable = &PTR_thunk_GetTTechStorePageClassNamePointer_00645ca8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F8E0
@@ -129,15 +113,15 @@ void * __cdecl TPageView::CreateTPageViewInstance(void)
   puStack_8 = &LAB_0063623a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x84);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTPageView;
-    *(undefined4 *)(this + 0x7c) = 0;
-    *(undefined4 *)(this + 0x80) = 0;
-    *(undefined2 *)(this + 0x62) = 0xffff;
-    *(undefined2 *)(this + 100) = 1;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTPageView;
+    this[1].field8_0x1c = 0;
+    this[1].pChildMapView20 = (void *)0x0;
+    *(undefined2 *)((int)&this[1].pVtable + 2) = 0xffff;
+    *(undefined2 *)&this[1].field1_0x4 = 1;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -167,12 +151,12 @@ void * __cdecl TPageView::GetTPageViewClassNamePointer(void)
 void * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTPageView;
-  *(undefined4 *)(this + 0x7c) = 0;
-  *(undefined4 *)(this + 0x80) = 0;
-  *(undefined2 *)(this + 0x62) = 0xffff;
-  *(undefined2 *)(this + 100) = 1;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTPageView;
+  this->field7c = 0;
+  this->field80 = 0;
+  this->field62 = -1;
+  this->field64 = 1;
   return this;
 }
 
@@ -183,84 +167,10 @@ void * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
 void * __thiscall TPageView::DestructTPageViewAndMaybeFree(TPageView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0056FA50
-// GHIDRA_NAME TPageView::InitializeRosterPageLineCollectionsAndBounds
-// GHIDRA_PROTO void __thiscall InitializeRosterPageLineCollectionsAndBounds(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [LowHanging] Shared roster-page helper called from super-army/super-civ/navy roster builders; initializes line collections, list heads, and viewport bounds fields.
-// GHIDRA_COMMENT_END
-
-/* [LowHanging] Shared roster-page helper called from super-army/super-civ/navy roster builders;
-   initializes line collections, list heads, and viewport bounds fields. */
-
-void __thiscall TPageView::InitializeRosterPageLineCollectionsAndBounds(TPageView *this)
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 *puStack00000004;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00636274;
-  *unaff_FS_OFFSET = &local_c;
-  thunk_NoOpUiLifecycleHook();
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  local_4 = 0;
-  puStack00000004 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    InitializeRefCountedObjectBaseVtable();
-    local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
-    *puVar1 = &g_vtblTArmyBattle;
-  }
-  local_4 = 0xffffffff;
-  *(undefined4 **)(this + 0x7c) = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  puStack00000004 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar1 = &g_vtblRefCountedObjectBase;
-    local_4 = 3;
-    InitializeLinkedListSentinelNodeWithOwnerContext(10);
-    *puVar1 = &g_vtblTArmyBattle;
-  }
-  local_4 = 0xffffffff;
-  *(undefined4 **)(this + 0x78) = puVar1;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    puVar1[3] = 0;
-    puVar1[4] = 0;
-    puVar1[2] = 0;
-    puVar1[1] = 0;
-    puVar1[5] = 0;
-    puVar1[6] = 10;
-    *puVar1 = &PTR_GetCObjectRuntimeClass_00650a08;
-  }
-  *(int *)(this + 0x74) = *(int *)(this + 0x38) + -1;
-  *(undefined4 **)(this + 0x80) = puVar1;
-  *(undefined4 *)(this + 0x6c) = 0;
-  *(undefined4 *)(this + 0x68) = 0;
-  *(int *)(this + 0x70) = *(int *)(this + 0x34) + -1;
-  *unaff_FS_OFFSET = local_c;
-  return;
 }
 

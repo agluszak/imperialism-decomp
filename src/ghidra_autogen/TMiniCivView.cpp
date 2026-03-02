@@ -4,37 +4,21 @@
 // Bucket: TMiniCivView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401F2D
-// GHIDRA_NAME TMiniCivView::thunk_GetTMiniCivViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMiniCivViewClassNamePointer(void)
+// GHIDRA_NAME TMiniCivView::thunk_GetTMiniCivViewClassNamePointer_At00401f2d
+// GHIDRA_PROTO void * __cdecl thunk_GetTMiniCivViewClassNamePointer_At00401f2d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMiniCivViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMiniCivViewClassNamePointer */
 
-void * __cdecl TMiniCivView::thunk_GetTMiniCivViewClassNamePointer(void)
+void * __cdecl TMiniCivView::thunk_GetTMiniCivViewClassNamePointer_At00401f2d(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTMiniCivViewClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401FC8
-// GHIDRA_NAME TMiniCivView::thunk_Cluster_TacticalConstDomainHint_004ac000
-// GHIDRA_PROTO undefined thunk_Cluster_TacticalConstDomainHint_004ac000()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_TacticalConstDomainHint_004ac000
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Cluster_TacticalConstDomainHint_004ac000 */
-
-void TMiniCivView::thunk_Cluster_TacticalConstDomainHint_004ac000(void)
-
-{
-  DestructTMiniCivViewAndMaybeFree();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404426
@@ -50,148 +34,143 @@ void __thiscall TMiniCivView::ConstructTMiniCivViewLocalizedLineText(TMiniCivVie
 
 {
   short sVar1;
-  void *pvVar2;
+  undefined1 *puVar2;
   char cVar3;
   short sVar4;
   short sVar5;
   undefined4 *unaff_FS_OFFSET;
   short sStack00000010;
-  undefined1 auStack_30 [8];
-  undefined1 auStack_28 [4];
-  undefined1 auStack_24 [4];
-  undefined1 auStack_20 [4];
-  undefined1 auStack_1c [4];
-  undefined1 auStack_18 [4];
-  undefined1 auStack_14 [4];
-  undefined1 auStack_10 [4];
+  undefined1 auStack_30 [36];
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int iStack_4;
+  void *pvStack_4;
   
-  iStack_4 = 0xffffffff;
+  pvStack_4 = (void *)0xffffffff;
   puStack_8 = &LAB_00630758;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  pvVar2 = _sStack00000010;
-  this[0x21].pVtable = _sStack00000010;
-  this[0x18].pVtable = (void *)0x22;
+  puVar2 = _sStack00000010;
+  this->field123_0x84 = _sStack00000010;
+  this->field90_0x60 = 0x22;
   _sStack00000010 = &stack0xffffffb8;
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(PTR_g_szEmptyString_0064cb18);
-  InitializeAndRunMainRoutine();
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&stack0xffffffb8);
+  TToolBarCluster::InitializeAndRunMainRoutine();
   InitializeSharedStringRefFromEmpty();
-  iStack_4 = 0;
+  pvStack_4 = (void *)0x0;
   InitializeSharedStringRefFromEmpty();
-  iStack_4._0_1_ = 1;
+  pvStack_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
-  iStack_4._0_1_ = 2;
+  pvStack_4._0_1_ = 2;
   InitializeSharedStringRefFromEmpty();
-  iStack_4._0_1_ = 3;
+  pvStack_4._0_1_ = 3;
   InitializeSharedStringRefFromEmpty();
-  sVar1 = *(short *)((int)pvVar2 + 6);
-  iStack_4._0_1_ = 4;
-  ConstructSharedStringFromCStrOrResourceId();
-  iStack_4._0_1_ = 5;
-  StringShared__AssignFromPtr(&stack0x00000008,(int *)&stack0x00000010);
-  iStack_4._0_1_ = 4;
+  sVar1 = *(short *)(puVar2 + 6);
+  pvStack_4._0_1_ = 4;
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0x00000010);
+  pvStack_4._0_1_ = 5;
+  AssignFromPtr(&stack0x00000008,(int *)&stack0x00000010);
+  pvStack_4._0_1_ = 4;
   ReleaseSharedStringRefIfNotEmpty();
-  switch(*(undefined4 *)((int)pvVar2 + 8)) {
+  switch(*(undefined4 *)(puVar2 + 8)) {
   case 1:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
     AssignStringSharedFromRef();
     break;
   case 5:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_28);
-    iStack_4._0_1_ = 6;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
+    pvStack_4._0_1_ = 6;
     AssignStringSharedFromRef();
-    iStack_4._0_1_ = 4;
+    pvStack_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 6:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_24);
-    iStack_4._0_1_ = 7;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
+    pvStack_4._0_1_ = 7;
     AssignStringSharedFromRef();
-    iStack_4._0_1_ = 4;
+    pvStack_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 7:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_20);
-    iStack_4._0_1_ = 8;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
+    pvStack_4._0_1_ = 8;
     AssignStringSharedFromRef();
-    iStack_4._0_1_ = 4;
+    pvStack_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 8:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_1c);
-    iStack_4._0_1_ = 9;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
+    pvStack_4._0_1_ = 9;
     AssignStringSharedFromRef();
-    iStack_4._0_1_ = 4;
+    pvStack_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 10:
-    if ((*(short *)((int)pvVar2 + 4) == 0) &&
-       (cVar3 = (**(code **)(*g_pGlobalMapState + 200))(), cVar3 == '\0')) {
+    if ((*(short *)(puVar2 + 4) == 0) &&
+       (cVar3 = (**(code **)(*(int *)g_pGlobalMapState + 200))(), cVar3 == '\0')) {
       sVar5 = 0;
       _sStack00000010 = (undefined1 *)0x0;
       do {
-        sVar4 = (short)*(char *)(g_pGlobalMapState[3] + (int)sVar5 + 0x11 + sVar1 * 0x24);
+        sVar4 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + (int)sVar5 + 0x11 +
+                                sVar1 * 0x24);
         if ((sVar4 != -1) && ((&g_Build_Civ_Report_Value_006963E8)[sVar4] != '\0')) {
-          (**(code **)(*g_pLocalizationTable + 0x84))(0x2711);
+          (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2711);
           _sStack00000010 = _sStack00000010 + 1;
         }
         sVar5 = sVar5 + 1;
       } while (sVar5 < 2);
       if (sStack00000010 < 2) {
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
         scanBracketExpressions(g_pLocalizationTable,auStack_30,arg1);
       }
       else {
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
         scanBracketExpressions(g_pLocalizationTable,auStack_30,arg1);
       }
-      AssignSharedStringConcatRefAndCStr(auStack_18);
-      iStack_4._0_1_ = 10;
+      AssignSharedStringConcatRefAndCStr();
+      pvStack_4._0_1_ = 10;
       AssignStringSharedFromRef();
-      iStack_4._0_1_ = 4;
+      pvStack_4._0_1_ = 4;
       ReleaseSharedStringRefIfNotEmpty();
     }
-    else if (*(short *)((int)pvVar2 + 4) == 7) {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-      (**(code **)(*g_pLocalizationTable + 0x84))
-                (0x2725,*(undefined2 *)((int)pvVar2 + 4),&stack0x00000000);
+    else if (*(short *)(puVar2 + 4) == 7) {
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))
+                (0x2725,*(undefined2 *)(puVar2 + 4),&stack0x00000000);
       scanBracketExpressions(g_pLocalizationTable,auStack_30,arg1);
-      AssignSharedStringConcatRefAndCStr(auStack_14);
-      iStack_4._0_1_ = 0xb;
+      AssignSharedStringConcatRefAndCStr();
+      pvStack_4._0_1_ = 0xb;
       AssignStringSharedFromRef();
-      iStack_4._0_1_ = 4;
+      pvStack_4._0_1_ = 4;
       ReleaseSharedStringRefIfNotEmpty();
     }
     else {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-      (**(code **)(*g_pLocalizationTable + 0x84))
-                (0x2725,*(undefined2 *)((int)pvVar2 + 4),&stack0x00000000);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))
+                (0x2725,*(undefined2 *)(puVar2 + 4),&stack0x00000000);
       scanBracketExpressions(g_pLocalizationTable,auStack_30,arg1);
-      AssignSharedStringConcatRefAndCStr(auStack_10);
-      iStack_4._0_1_ = 0xc;
+      AssignSharedStringConcatRefAndCStr();
+      pvStack_4._0_1_ = 0xc;
       AssignStringSharedFromRef();
-      iStack_4._0_1_ = 4;
+      pvStack_4._0_1_ = 4;
       ReleaseSharedStringRefIfNotEmpty();
     }
   }
-  StringShared__AssignFromPtr(this + 0x22,(int *)&stack0x00000008);
-  iStack_4._0_1_ = 3;
+  AssignFromPtr(&this->field124_0x88,(int *)&stack0x00000008);
+  pvStack_4._0_1_ = 3;
   ReleaseSharedStringRefIfNotEmpty();
-  iStack_4._0_1_ = 2;
+  pvStack_4._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
-  iStack_4._0_1_ = 1;
+  pvStack_4._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();
-  iStack_4 = (uint)iStack_4._1_3_ << 8;
+  pvStack_4 = (void *)((uint)pvStack_4._1_3_ << 8);
   ReleaseSharedStringRefIfNotEmpty();
-  iStack_4 = 0xffffffff;
+  pvStack_4 = (void *)0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -220,14 +199,14 @@ void * __cdecl TMiniCivView::CreateTMiniCivViewInstance(void)
   puStack_8 = &LAB_006306d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x8c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     InitializeSharedStringRefFromEmpty();
-    *(undefined ***)this = &g_vtblTMiniCivLine;
+    (this->base).pVtable = &g_vtblTMiniCivLine;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -263,37 +242,31 @@ void __thiscall TMiniCivView::ConstructTMiniCivViewBaseState(TMiniCivView *this,
 
 {
   short sVar1;
-  void *pvVar2;
+  undefined1 *puVar2;
   char cVar3;
   short sVar4;
   short sVar5;
   undefined4 *unaff_FS_OFFSET;
   short sStack00000010;
-  undefined1 local_30 [8];
-  undefined1 auStack_28 [4];
-  undefined1 auStack_24 [4];
-  undefined1 auStack_20 [4];
-  undefined1 auStack_1c [4];
-  undefined1 auStack_18 [4];
-  undefined1 auStack_14 [4];
-  undefined1 auStack_10 [4];
+  undefined1 local_30 [36];
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
+  void *local_4;
   
-  local_4 = 0xffffffff;
+  local_4 = (void *)0xffffffff;
   puStack_8 = &LAB_00630758;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  pvVar2 = _sStack00000010;
-  this[0x21].pVtable = _sStack00000010;
-  this[0x18].pVtable = (void *)0x22;
+  puVar2 = _sStack00000010;
+  this->field123_0x84 = _sStack00000010;
+  this->field90_0x60 = 0x22;
   _sStack00000010 = &stack0xffffffb8;
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(PTR_g_szEmptyString_0064cb18);
-  InitializeAndRunMainRoutine();
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&stack0xffffffb8);
+  TToolBarCluster::InitializeAndRunMainRoutine();
   InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
+  local_4 = (void *)0x0;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
@@ -301,110 +274,111 @@ void __thiscall TMiniCivView::ConstructTMiniCivViewBaseState(TMiniCivView *this,
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 3;
   InitializeSharedStringRefFromEmpty();
-  sVar1 = *(short *)((int)pvVar2 + 6);
+  sVar1 = *(short *)(puVar2 + 6);
   local_4._0_1_ = 4;
-  ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0x00000010);
   local_4._0_1_ = 5;
-  StringShared__AssignFromPtr(&stack0x00000008,(int *)&stack0x00000010);
+  AssignFromPtr(&stack0x00000008,(int *)&stack0x00000010);
   local_4._0_1_ = 4;
   ReleaseSharedStringRefIfNotEmpty();
-  switch(*(undefined4 *)((int)pvVar2 + 8)) {
+  switch(*(undefined4 *)(puVar2 + 8)) {
   case 1:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
     AssignStringSharedFromRef();
     break;
   case 5:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_28);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
     local_4._0_1_ = 6;
     AssignStringSharedFromRef();
     local_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 6:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_24);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
     local_4._0_1_ = 7;
     AssignStringSharedFromRef();
     local_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 7:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_20);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
     local_4._0_1_ = 8;
     AssignStringSharedFromRef();
     local_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 8:
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-    AssignSharedStringConcatRefAndCStr(auStack_1c);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+    AssignSharedStringConcatRefAndCStr();
     local_4._0_1_ = 9;
     AssignStringSharedFromRef();
     local_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     break;
   case 10:
-    if ((*(short *)((int)pvVar2 + 4) == 0) &&
-       (cVar3 = (**(code **)(*g_pGlobalMapState + 200))(), cVar3 == '\0')) {
+    if ((*(short *)(puVar2 + 4) == 0) &&
+       (cVar3 = (**(code **)(*(int *)g_pGlobalMapState + 200))(), cVar3 == '\0')) {
       sVar5 = 0;
       _sStack00000010 = (undefined1 *)0x0;
       do {
-        sVar4 = (short)*(char *)(g_pGlobalMapState[3] + (int)sVar5 + 0x11 + sVar1 * 0x24);
+        sVar4 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + (int)sVar5 + 0x11 +
+                                sVar1 * 0x24);
         if ((sVar4 != -1) && ((&g_Build_Civ_Report_Value_006963E8)[sVar4] != '\0')) {
-          (**(code **)(*g_pLocalizationTable + 0x84))(0x2711);
+          (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2711);
           _sStack00000010 = _sStack00000010 + 1;
         }
         sVar5 = sVar5 + 1;
       } while (sVar5 < 2);
       if (sStack00000010 < 2) {
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
         scanBracketExpressions(g_pLocalizationTable,local_30,arg1);
       }
       else {
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
         scanBracketExpressions(g_pLocalizationTable,local_30,arg1);
       }
-      AssignSharedStringConcatRefAndCStr(auStack_18);
+      AssignSharedStringConcatRefAndCStr();
       local_4._0_1_ = 10;
       AssignStringSharedFromRef();
       local_4._0_1_ = 4;
       ReleaseSharedStringRefIfNotEmpty();
     }
-    else if (*(short *)((int)pvVar2 + 4) == 7) {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-      (**(code **)(*g_pLocalizationTable + 0x84))
-                (0x2725,*(undefined2 *)((int)pvVar2 + 4),&stack0x00000000);
+    else if (*(short *)(puVar2 + 4) == 7) {
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))
+                (0x2725,*(undefined2 *)(puVar2 + 4),&stack0x00000000);
       scanBracketExpressions(g_pLocalizationTable,local_30,arg1);
-      AssignSharedStringConcatRefAndCStr(auStack_14);
+      AssignSharedStringConcatRefAndCStr();
       local_4._0_1_ = 0xb;
       AssignStringSharedFromRef();
       local_4._0_1_ = 4;
       ReleaseSharedStringRefIfNotEmpty();
     }
     else {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2724);
-      (**(code **)(*g_pLocalizationTable + 0x84))
-                (0x2725,*(undefined2 *)((int)pvVar2 + 4),&stack0x00000000);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2724);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))
+                (0x2725,*(undefined2 *)(puVar2 + 4),&stack0x00000000);
       scanBracketExpressions(g_pLocalizationTable,local_30,arg1);
-      AssignSharedStringConcatRefAndCStr(auStack_10);
+      AssignSharedStringConcatRefAndCStr();
       local_4._0_1_ = 0xc;
       AssignStringSharedFromRef();
       local_4._0_1_ = 4;
       ReleaseSharedStringRefIfNotEmpty();
     }
   }
-  StringShared__AssignFromPtr(this + 0x22,(int *)&stack0x00000008);
+  AssignFromPtr(&this->field124_0x88,(int *)&stack0x00000008);
   local_4._0_1_ = 3;
   ReleaseSharedStringRefIfNotEmpty();
   local_4._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
   local_4._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();
-  local_4 = (uint)local_4._1_3_ << 8;
+  local_4 = (void *)((uint)local_4._1_3_ << 8);
   ReleaseSharedStringRefIfNotEmpty();
-  local_4 = 0xffffffff;
+  local_4 = (void *)0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -412,7 +386,7 @@ void __thiscall TMiniCivView::ConstructTMiniCivViewBaseState(TMiniCivView *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC000
 // GHIDRA_NAME TMiniCivView::DestructTMiniCivViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMiniCivViewAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTMiniCivViewAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TMiniCivView render path drawing terrain summary text lines and blitting preview tile with tactical/overlay palette state.
 // GHIDRA_COMMENT_END
@@ -420,53 +394,52 @@ void __thiscall TMiniCivView::ConstructTMiniCivViewBaseState(TMiniCivView *this,
 /* [ClassLane] TMiniCivView render path drawing terrain summary text lines and blitting preview tile
    with tactical/overlay palette state. */
 
-void TMiniCivView::DestructTMiniCivViewAndMaybeFree(void)
+void __thiscall TMiniCivView::DestructTMiniCivViewAndMaybeFree(TMiniCivView *this)
 
 {
   short sVar1;
-  void *this;
-  void *this_00;
-  undefined4 *unaff_FS_OFFSET;
+  THQButton *this_00;
+  THQButton *this_01;
+  int *unaff_FS_OFFSET;
   int *piStack_54;
-  int local_48;
-  undefined1 auStack_44 [4];
+  int local_48 [2];
   undefined1 *local_40;
   RECT RStack_3c;
   RECT RStack_2c;
-  undefined4 uStack_1c;
+  int iStack_1c;
   int iStack_14;
   undefined1 uStack_10;
-  undefined4 uStack_c;
+  int iStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  void *local_4;
   
-  local_4 = 0xffffffff;
+  local_4 = (void *)0xffffffff;
   puStack_8 = &LAB_006307b0;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
   piStack_54 = (int *)0x3;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   piStack_54 = (int *)0x4ac039;
   InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
+  local_4 = (void *)0x0;
   piStack_54 = (int *)0x4ac046;
   InitializeSharedStringRefFromEmpty();
-  piStack_54 = &local_48;
-  local_4 = CONCAT31(local_4._1_3_,1);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  piStack_54 = local_48;
+  local_4 = (void *)CONCAT31(local_4._1_3_,1);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x40,0x18);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   InitializeSharedStringRefFromEmpty();
   uStack_10 = 2;
   FormatOverlayTerrainLabelText();
   thunk_AssignSharedStringFromIndexedA8EntryNameField();
-  AssignSharedStringConcatRefAndCStr(&local_40);
+  AssignSharedStringConcatRefAndCStr();
   uStack_10 = 3;
-  AssignSharedStringConcatRefAndRef(auStack_44);
+  AssignSharedStringConcatRefAndRef();
   uStack_10 = 4;
-  StringSharedRef_AssignFromPtr();
+  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)local_48);
   uStack_10 = 5;
-  StringShared__AssignFromPtr(&piStack_54,&local_48);
+  AssignFromPtr(&piStack_54,local_48);
   uStack_10 = 4;
   ReleaseSharedStringRefIfNotEmpty();
   uStack_10 = 3;
@@ -475,10 +448,10 @@ void TMiniCivView::DestructTMiniCivViewAndMaybeFree(void)
   ReleaseSharedStringRefIfNotEmpty();
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x40,0x26);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&piStack_54);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&piStack_54);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x40,0x34);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  sVar1 = (**(code **)(*g_pGlobalMapState + 0x118))();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  sVar1 = (**(code **)(*(int *)g_pGlobalMapState + 0x118))();
   RStack_2c.left = (LONG)sVar1;
   RStack_2c.right = RStack_2c.left + 0x40;
   RStack_3c.left = 0;
@@ -489,18 +462,18 @@ void TMiniCivView::DestructTMiniCivViewAndMaybeFree(void)
   RStack_2c.bottom = 0x40;
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
+            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x66c) + 4),
              (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_2c,&RStack_3c,0x24,
              (astruct_19 *)0x0);
   local_40 = &stack0xffffff9c;
-  SetQuickDrawStrokeColor();
+  TCivDescription::SetQuickDrawStrokeColor();
   iStack_14._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();
   iStack_14 = (uint)iStack_14._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
-  iStack_14 = 0xffffffff;
+  iStack_14 = -1;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uStack_1c;
+  *unaff_FS_OFFSET = iStack_1c;
   return;
 }
 

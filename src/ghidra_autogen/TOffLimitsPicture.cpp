@@ -4,15 +4,15 @@
 // Bucket: TOffLimitsPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040484A
-// GHIDRA_NAME TOffLimitsPicture::thunk_GetTOffLimitsPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTOffLimitsPictureClassNamePointer(void)
+// GHIDRA_NAME TOffLimitsPicture::TOffLimitsPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TOffLimitsPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTOffLimitsPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTOffLimitsPictureClassNamePointer */
 
-void * __cdecl TOffLimitsPicture::thunk_GetTOffLimitsPictureClassNamePointer(void)
+void * __cdecl TOffLimitsPicture::TOffLimitsPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TOffLimitsPicture::thunk_GetTOffLimitsPictureClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040537B
-// GHIDRA_NAME TOffLimitsPicture::thunk_DestructTOffLimitsPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTOffLimitsPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TOffLimitsPicture::TOffLimitsPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TOffLimitsPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTOffLimitsPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,8 +31,7 @@ void * __cdecl TOffLimitsPicture::thunk_GetTOffLimitsPictureClassNamePointer(voi
 /* Single-JMP thunk to DestructTOffLimitsPictureAndMaybeFree */
 
 void * __thiscall
-TOffLimitsPicture::thunk_DestructTOffLimitsPictureAndMaybeFree
-          (TOffLimitsPicture *this,byte freeSelfFlag)
+TOffLimitsPicture::TOffLimitsPicture_VtblSlot001(TOffLimitsPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -42,24 +41,60 @@ TOffLimitsPicture::thunk_DestructTOffLimitsPictureAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004057B8
-// GHIDRA_NAME TOffLimitsPicture::TOffLimitsPicture_VtblSlot55
-// GHIDRA_PROTO void __thiscall TOffLimitsPicture_VtblSlot55(void)
+// GHIDRA_NAME TOffLimitsPicture::TOffLimitsPicture_VtblSlot055
+// GHIDRA_PROTO void __thiscall TOffLimitsPicture_VtblSlot055(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [VtableSlot] Unique TOffLimitsPicture owner, vtable slot 55.
+// GHIDRA_COMMENT Single-JMP thunk to InitializeOffLimitsPictureCachedBrushResources
 // GHIDRA_COMMENT_END
 
-/* [VtableSlot] Unique TOffLimitsPicture owner, vtable slot 55. */
+/* Single-JMP thunk to InitializeOffLimitsPictureCachedBrushResources */
 
-void __thiscall TOffLimitsPicture::TOffLimitsPicture_VtblSlot55(TOffLimitsPicture *this)
+void __thiscall TOffLimitsPicture::TOffLimitsPicture_VtblSlot055(TOffLimitsPicture *this)
 
 {
-  undefined4 extraout_EAX;
+  int arg1;
   
   thunk_NoOpUiLifecycleHook();
   CreateClipStateRegionWrapperObject();
-  *(undefined4 *)(this + 0x90) = extraout_EAX;
-  thunk_ResetClipRegionAndReadBoundingRect();
+  this->field90 = arg1;
+  thunk_ResetClipRegionAndReadBoundingRect(arg1);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004088D7
+// GHIDRA_NAME TOffLimitsPicture::TOffLimitsPicture_VtblSlot007
+// GHIDRA_PROTO void __cdecl TOffLimitsPicture_VtblSlot007(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900 */
+
+void __cdecl TOffLimitsPicture::TOffLimitsPicture_VtblSlot007(void)
+
+{
+  WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D270
+// GHIDRA_NAME TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
+// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTOffLimitsPictureBaseState; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around ConstructTOffLimitsPictureBaseState; instructions=7,
+   call_insns=1, internal_calls=1, unique_internal=1 */
+
+void * __thiscall
+TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
+          (TOffLimitsPicture *this)
+
+{
+  ConstructTOffLimitsPictureBaseState(this);
+  this->field0_0x0 = &g_vtblTMapUberUberPicture;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573710
@@ -79,7 +114,7 @@ void * __cdecl TOffLimitsPicture::CreateTOffLimitsPictureInstance(void)
   puStack_8 = &LAB_006365fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -115,8 +150,8 @@ void * __thiscall TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(TOffLim
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTOffLimitsPicture;
-  *(undefined4 *)(this + 0x90) = 0;
+  this->field0_0x0 = &g_vtblTOffLimitsPicture;
+  this->field90 = 0;
   return this;
 }
 
@@ -130,50 +165,72 @@ TOffLimitsPicture::DestructTOffLimitsPictureAndMaybeFree(TOffLimitsPicture *this
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00573850
-// GHIDRA_NAME TOffLimitsPicture::InitializeOffLimitsPictureCachedBrushResources
-// GHIDRA_PROTO void __thiscall InitializeOffLimitsPictureCachedBrushResources(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00596A80
+// GHIDRA_NAME TOffLimitsPicture::InitializeMapOverlayDialogControlsAndSelectionState
+// GHIDRA_PROTO void __thiscall InitializeMapOverlayDialogControlsAndSelectionState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes OffLimitsPicture cached brush/surface resources.
+// GHIDRA_COMMENT Initializes map-overlay dialog control bindings and runtime pointers, installs current selection context, refreshes task-force/map-action overlays, and updates localized send control state.
 // GHIDRA_COMMENT_END
 
-/* Initializes OffLimitsPicture cached brush/surface resources. */
+/* Initializes map-overlay dialog control bindings and runtime pointers, installs current selection
+   context, refreshes task-force/map-action overlays, and updates localized send control state. */
 
 void __thiscall
-TOffLimitsPicture::InitializeOffLimitsPictureCachedBrushResources(TOffLimitsPicture *this)
+TOffLimitsPicture::InitializeMapOverlayDialogControlsAndSelectionState(TOffLimitsPicture *this)
 
 {
-  undefined4 extraout_EAX;
+  undefined **ppuVar1;
+  code *pcVar2;
+  int *piVar3;
+  int iVar4;
+  int arg1;
+  undefined4 uStack_34;
   
-  thunk_NoOpUiLifecycleHook();
+  TOffLimitsPicture_VtblSlot055(this);
+  ppuVar1 = this->field0_0x0;
+  uStack_34 = 0x444c4f47;
+  pcVar2 = (code *)ppuVar1[0x25];
+  *(TOffLimitsPicture **)((int)g_pGlobalUiRootController + 0x48) = this;
+  piVar3 = (int *)(*pcVar2)();
+  iVar4 = *piVar3;
+  this->pFielda8 = piVar3;
+  (**(code **)(iVar4 + 0xc))();
+  piVar3 = (int *)(*pcVar2)(0x444f4f47);
+  if (piVar3 != (int *)0x0) {
+    iVar4 = *piVar3;
+    this->pFielda4 = piVar3;
+    (**(code **)(iVar4 + 0xc))();
+  }
+  this->fieldac = this->pFielda8;
+  iVar4 = (*pcVar2)(0x75636976);
+  this->fieldb0 = iVar4;
+  iVar4 = (*pcVar2)(0x7561726d);
+  this->fieldb4 = iVar4;
+  iVar4 = (*pcVar2)(0x756e6176);
+  this->fieldb8 = iVar4;
+  this->fieldbc = 0;
+  (**(code **)(*(int *)this->pFielda8 + 300))(&uStack_34);
   CreateClipStateRegionWrapperObject();
-  *(undefined4 *)(this + 0x90) = extraout_EAX;
-  thunk_ResetClipRegionAndReadBoundingRect();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00573900
-// GHIDRA_NAME TOffLimitsPicture::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
-// GHIDRA_PROTO undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_CloseCityDialogChildrenAndReleaseSelf; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_CloseCityDialogChildrenAndReleaseSelf; instructions=11,
-   call_insns=2, internal_calls=1, unique_internal=1 */
-
-void __fastcall
-TOffLimitsPicture::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(int param_1)
-
-{
+  ReplaceClipStateRegionHandleFromRect(arg1,(int)&stack0xffffffd8);
+  (*(code *)ppuVar1[0x73])(arg1);
   DestroyClipStateRegionWrapperObject();
-  *(undefined4 *)(param_1 + 0x90) = 0;
-  thunk_CloseCityDialogChildrenAndReleaseSelf();
+  *(TOffLimitsPicture **)((int)g_pUiRuntimeContext + 0xf0) = this;
+  *(TOffLimitsPicture **)g_pUiTransientObjectRegistry->_pad_02c_02f = this;
+  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+  thunk_RefreshMapActionContextNationOverlaysAndOrderRanks();
+  if (*(int *)((int)g_pLocalizationTable + 0x44) != 0) {
+    piVar3 = (int *)(*pcVar2)(0x73656e64);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xc))();
+    (**(code **)(iVar4 + 0xa8))(1,0);
+    (**(code **)(iVar4 + 0xa4))(1,0);
+    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2742,0xe,piVar3);
+  }
   return;
 }
 

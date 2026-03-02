@@ -4,8 +4,8 @@
 // Bucket: T2PictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004022D9
-// GHIDRA_NAME T2PictureButton::thunk_DestructT2PictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructT2PictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME T2PictureButton::T2PictureButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall T2PictureButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructT2PictureButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructT2PictureButtonAndMaybeFree */
 
 void * __thiscall
-T2PictureButton::thunk_DestructT2PictureButtonAndMaybeFree(T2PictureButton *this,byte freeSelfFlag)
+T2PictureButton::T2PictureButton_VtblSlot001(T2PictureButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,34 +22,16 @@ T2PictureButton::thunk_DestructT2PictureButtonAndMaybeFree(T2PictureButton *this
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004038FA
-// GHIDRA_NAME T2PictureButton::thunk_ConstructUiBattleTabPictureEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiBattleTabPictureEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiBattleTabPictureEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiBattleTabPictureEntry */
-
-void __thiscall T2PictureButton::thunk_ConstructUiBattleTabPictureEntry(T2PictureButton *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)(this + 0x92) = 7000;
-  *(undefined ***)this = &g_vtblT2PictureButton;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00404E80
-// GHIDRA_NAME T2PictureButton::thunk_GetT2PictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetT2PictureButtonClassNamePointer(void)
+// GHIDRA_NAME T2PictureButton::T2PictureButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl T2PictureButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetT2PictureButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetT2PictureButtonClassNamePointer */
 
-void * __cdecl T2PictureButton::thunk_GetT2PictureButtonClassNamePointer(void)
+void * __cdecl T2PictureButton::T2PictureButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -81,7 +63,7 @@ void * __cdecl T2PictureButton::CreateT2PictureButtonInstance(void)
   puStack_8 = &LAB_0063638a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -123,8 +105,8 @@ void __thiscall T2PictureButton::ConstructUiBattleTabPictureEntry(T2PictureButto
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)(this + 0x92) = 7000;
-  *(undefined ***)this = &g_vtblT2PictureButton;
+  this->field143_0x92 = 7000;
+  this->field0_0x0 = &g_vtblT2PictureButton;
   return;
 }
 
@@ -138,7 +120,7 @@ T2PictureButton::DestructT2PictureButtonAndMaybeFree(T2PictureButton *this,byte 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -4,85 +4,22 @@
 // Bucket: CDC.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612682
-// GHIDRA_NAME CDC::ConstructCDC
-// GHIDRA_PROTO void __fastcall ConstructCDC(void * pThis)
+// GHIDRA_NAME CDC::CDC
+// GHIDRA_PROTO void __fastcall CDC(CDC * pThis)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT CDC constructor; initializes base DC wrapper fields and vtable.
+// GHIDRA_COMMENT CDC constructor; initializes base DC wrapper fields and vtable. [FID:FID_single_match_phase1_nodebug]
 // GHIDRA_COMMENT_END
 
-/* CDC constructor; initializes base DC wrapper fields and vtable. */
+/* CDC constructor; initializes base DC wrapper fields and vtable.
+   [FID:FID_single_match_phase1_nodebug] */
 
-void __fastcall CDC::ConstructCDC(void *pThis)
-
-{
-  *(undefined ***)pThis = &g_vtbl_CDC;
-  *(undefined4 *)((int)pThis + 4) = 0;
-  *(undefined4 *)((int)pThis + 8) = 0;
-  *(undefined4 *)((int)pThis + 0xc) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x006130EC
-// GHIDRA_NAME CDC::LineTo
-// GHIDRA_PROTO int __thiscall LineTo(int x, int y)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT FID canonical method name
-// GHIDRA_COMMENT_END
-
-/* FID canonical method name */
-
-int __thiscall CDC::LineTo(CDC *this,int x,int y)
+void __fastcall CDC::CDC(CDC *pThis)
 
 {
-  HDC hdc;
-  BOOL BVar1;
-  
-  hdc = *(HDC *)(this + 8);
-  if ((hdc != (HDC)0x0) && (*(HDC *)(this + 4) != hdc)) {
-    MoveToEx(hdc,x,y,(LPPOINT)0x0);
-  }
-  BVar1 = ::LineTo(*(HDC *)(this + 4),x,y);
-  return BVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00613686
-// GHIDRA_NAME CDC::PlayMetaFile
-// GHIDRA_PROTO int __thiscall PlayMetaFile(void * hMetaFile)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT FID canonical method name
-// GHIDRA_COMMENT_END
-
-/* FID canonical method name */
-
-int __thiscall CDC::PlayMetaFile(CDC *this,void *hMetaFile)
-
-{
-  int iVar1;
-  
-  iVar1 = GetDeviceCaps(*(HDC *)(this + 4),2);
-  if (iVar1 == 5) {
-    iVar1 = ::PlayMetaFile(*(HDC *)(this + 4),hMetaFile);
-  }
-  else {
-    iVar1 = EnumMetaFile(*(HDC *)(this + 4),hMetaFile,AfxEnumMetaFileProc,(LPARAM)this);
-  }
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061F0FA
-// GHIDRA_NAME CDC::FillSolidRect
-// GHIDRA_PROTO void __thiscall FillSolidRect(void * pRect, uint rgbColor)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT FID canonical method name
-// GHIDRA_COMMENT_END
-
-/* FID canonical method name */
-
-void __thiscall CDC::FillSolidRect(CDC *this,void *pRect,uint rgbColor)
-
-{
-  SetBkColor(*(HDC *)(this + 4),rgbColor);
-  ExtTextOutA(*(HDC *)(this + 4),0,0,2,pRect,(LPCSTR)0x0,0,(INT *)0x0);
+  pThis->pVtable = &g_vtblCDC;
+  pThis->field04 = 0;
+  pThis->field08 = 0;
+  pThis[1].pVtable = (void *)0x0;
   return;
 }
 

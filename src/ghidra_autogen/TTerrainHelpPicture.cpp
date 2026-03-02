@@ -4,17 +4,16 @@
 // Bucket: TTerrainHelpPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004080E4
-// GHIDRA_NAME TTerrainHelpPicture::thunk_InitializeTerrainHelpPictureTextBlocks_At004080e4
-// GHIDRA_PROTO void __thiscall thunk_InitializeTerrainHelpPictureTextBlocks_At004080e4(void)
+// GHIDRA_NAME TTerrainHelpPicture::thunk_DestructTTerrainHelpPictureAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTTerrainHelpPictureAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTerrainHelpPictureTextBlocks
+// GHIDRA_COMMENT Single-JMP thunk to InitializeTerrainHelpPictureTextBlocks [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to InitializeTerrainHelpPictureTextBlocks */
+/* Single-JMP thunk to InitializeTerrainHelpPictureTextBlocks [FID:thunk_target_sync] */
 
 void __thiscall
-TTerrainHelpPicture::thunk_InitializeTerrainHelpPictureTextBlocks_At004080e4
-          (TTerrainHelpPicture *this)
+TTerrainHelpPicture::thunk_DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture *this)
 
 {
   DestructTTerrainHelpPictureAndMaybeFree(this);
@@ -36,6 +35,26 @@ void * __cdecl TTerrainHelpPicture::thunk_GetTTerrainHelpPictureClassNamePointer
   void *pvVar1;
   
   pvVar1 = GetTTerrainHelpPictureClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00409426
+// GHIDRA_NAME TTerrainHelpPicture::thunk_scalar_deleting_destructor_00409426
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00409426(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTerrainHelpPicture::thunk_scalar_deleting_destructor_00409426
+          (TTerrainHelpPicture *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
   return pvVar1;
 }
 
@@ -62,7 +81,7 @@ void * __cdecl TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(void)
   puStack_8 = &LAB_006336aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -104,22 +123,17 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
 {
   void *pvVar1;
   int *piVar2;
-  undefined4 *puVar3;
+  undefined1 *puVar3;
   int iVar4;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  short unaff_retaddr;
   undefined4 uStack_74;
   undefined4 uStack_70;
   undefined4 uStack_6c;
   undefined4 uStack_68;
   code *pcStack_64;
   undefined4 uStack_60;
-  short *psStack_5c;
-  undefined4 uStack_58;
-  undefined4 uStack_54;
-  undefined4 uStack_50;
-  undefined4 uStack_4c;
+  undefined4 uVar6;
   short asStack_30 [3];
   undefined1 uStack_2a;
   undefined1 uStack_29;
@@ -144,13 +158,7 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pvVar1 = this->pVtable;
-  uStack_4c = 0x5057c3;
   (**(code **)((int)pvVar1 + 0x58))();
-  uStack_4c = 3;
-  uStack_50 = 0x2b6d;
-  uStack_54 = 0xc;
-  psStack_5c = (short *)auStack_18;
-  uStack_58 = 4;
   uStack_12 = 0;
   uStack_11 = 0;
   uStack_10 = 0;
@@ -164,32 +172,15 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
   uStack_28 = 0;
   uStack_27 = 0;
   uStack_60 = 0x50580a;
-  thunk_InitializeUiTextStyleDescriptor();
-  psStack_5c = (short *)auStack_24;
-  uStack_4c = 3;
-  uStack_50 = 0x2b69;
-  uStack_54 = 0xc;
-  uStack_58 = 4;
+  thunk_InitializeUiTextStyleDescriptor((int)auStack_18,4,0xc,0x2b6d,3);
   uStack_60 = 0x505822;
-  thunk_InitializeUiTextStyleDescriptor();
-  psStack_5c = asStack_30;
-  uStack_4c = 1;
-  uStack_50 = 0x2b67;
-  uStack_54 = 0xc;
-  uStack_58 = 0;
+  thunk_InitializeUiTextStyleDescriptor((int)auStack_24,4,0xc,0x2b69,3);
   uStack_60 = 0x505839;
-  thunk_InitializeUiTextStyleDescriptor();
-  uStack_4c = 0x6974656d;
-  uStack_50 = 0x50584f;
+  thunk_InitializeUiTextStyleDescriptor((int)asStack_30,0,0xc,0x2b67,1);
   piVar2 = (int *)(**(code **)((int)pvVar1 + 0x94))();
-  uStack_50 = 1;
   iVar5 = *piVar2;
-  uStack_54 = CONCAT22(unaff_retaddr >> 0xf,
-                       *(undefined2 *)((int)&this[0x25].pVtable + unaff_retaddr * 2));
-  uStack_58 = 0x2755;
-  psStack_5c = (short *)0x505870;
+  uVar6 = 0x2755;
   (**(code **)(iVar5 + 0x1cc))();
-  psStack_5c = (short *)0x1;
   uStack_60 = 1;
   pcStack_64 = (code *)0x50587c;
   (**(code **)(iVar5 + 0xa4))();
@@ -202,27 +193,26 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
   uStack_74 = 0x505892;
   (**(code **)(iVar5 + 0x1c4))();
   uStack_74 = 0;
-  (**(code **)(iVar5 + 0x1b4))(&uStack_58);
+  (**(code **)(iVar5 + 0x1b4))(&stack0xffffffa8);
   iVar5 = 0;
   do {
     piVar2 = (int *)(*pcStack_64)(iVar5 + 0x69303061);
     iVar4 = (int)asStack_30[0];
-    puVar3 = &uStack_58;
+    puVar3 = &stack0xffffffa8;
     if (iVar4 != iVar5) {
-      puVar3 = &uStack_4c;
+      puVar3 = &stack0xffffffb4;
     }
     (**(code **)(*piVar2 + 0x1b4))(puVar3,1);
     iVar5 = iVar5 + 1;
   } while (iVar5 < 0xc);
   InitializeSharedStringRefFromEmpty();
-  (**(code **)(*g_pLocalizationTable + 0x84))
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))
             (0x2756,CONCAT22((short)((uint)&uStack_68 >> 0x10),
-                             *(short *)((int)&this[0x25].pVtable + iVar4 * 2) + -1),&uStack_68);
-  (**(code **)(*(int *)this[0x24].pVtable + 0x1ec))(&uStack_74,1);
-  (**(code **)(*(int *)this[0x24].pVtable + 0xa4))(1,1);
-  uStack_50 = 0xffffffff;
+                             *(short *)((int)&this[1].pVtable + iVar4 * 2) + -1),&uStack_68);
+  (**(code **)(*(int *)this->field141_0x90 + 0x1ec))(&uStack_74,1);
+  (**(code **)(*(int *)this->field141_0x90 + 0xa4))(1,1);
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uStack_58;
+  *unaff_FS_OFFSET = uVar6;
   return;
 }
 

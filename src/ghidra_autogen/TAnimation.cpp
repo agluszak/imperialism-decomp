@@ -22,48 +22,48 @@ void * __cdecl TAnimation::thunk_GetTAnimationClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040302B
-// GHIDRA_NAME TAnimation::thunk_InitializeAnimationFrameState
-// GHIDRA_PROTO void __thiscall thunk_InitializeAnimationFrameState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// GHIDRA_NAME TAnimation::thunk_ConstructTAnimationBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeAnimationFrameState.
+// GHIDRA_COMMENT Thunk forwarding to InitializeAnimationFrameState. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to InitializeAnimationFrameState. */
+/* Thunk forwarding to InitializeAnimationFrameState. [FID:thunk_target_sync] */
 
 void __thiscall
-TAnimation::thunk_InitializeAnimationFrameState
+TAnimation::thunk_ConstructTAnimationBaseState
           (TAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  this[1].pVtable = (void *)arg1;
-  this[7].pVtable = *(void **)arg2;
-  this[8].pVtable = *(void **)(arg2 + 4);
-  this[9].pVtable = *(void **)(arg2 + 8);
-  this[10].pVtable = *(void **)(arg2 + 0xc);
-  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
-  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
-  *(undefined2 *)&this[2].pVtable = 0;
-  this[4].pVtable = (void *)0x0;
-  this[5].pVtable = (void *)arg5;
-  this[6].pVtable = (void *)arg6;
+  this->field1_0x4 = (void *)arg1;
+  this->field10_0x1c = *(void **)arg2;
+  this->field11_0x20 = *(void **)(arg2 + 4);
+  this->field12_0x24 = *(void **)(arg2 + 8);
+  this->field13_0x28 = *(void **)(arg2 + 0xc);
+  this->field3_0xa = (undefined2)arg3;
+  this->field4_0xc = (undefined2)arg4;
+  this->field2_0x8 = 0;
+  this->field7_0x10 = (void *)0x0;
+  this->field8_0x14 = (void *)arg5;
+  this->field9_0x18 = (void *)arg6;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004089CC
-// GHIDRA_NAME TAnimation::thunk_GetTAnimationRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTAnimationRuntimeClass(void)
+// GHIDRA_NAME TAnimation::thunk_CreateTAnimationInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTAnimationInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTAnimationRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTAnimationRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTAnimationRuntimeClass. */
+/* Thunk forwarding to GetTAnimationRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TAnimation::thunk_GetTAnimationRuntimeClass(TAnimation *this)
+void * __thiscall TAnimation::thunk_CreateTAnimationInstance(TAnimation *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -81,7 +81,7 @@ void * __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -114,17 +114,17 @@ TAnimation::ConstructTAnimationBaseState
           (TAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  this[1].pVtable = (void *)arg1;
-  this[7].pVtable = *(void **)arg2;
-  this[8].pVtable = *(void **)(arg2 + 4);
-  this[9].pVtable = *(void **)(arg2 + 8);
-  this[10].pVtable = *(void **)(arg2 + 0xc);
-  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
-  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
-  *(undefined2 *)&this[2].pVtable = 0;
-  this[4].pVtable = (void *)0x0;
-  this[5].pVtable = (void *)arg5;
-  this[6].pVtable = (void *)arg6;
+  this->field1_0x4 = (void *)arg1;
+  this->field10_0x1c = *(void **)arg2;
+  this->field11_0x20 = *(void **)(arg2 + 4);
+  this->field12_0x24 = *(void **)(arg2 + 8);
+  this->field13_0x28 = *(void **)(arg2 + 0xc);
+  this->field3_0xa = (undefined2)arg3;
+  this->field4_0xc = (undefined2)arg4;
+  this->field2_0x8 = 0;
+  this->field7_0x10 = (void *)0x0;
+  this->field8_0x14 = (void *)arg5;
+  this->field9_0x18 = (void *)arg6;
   return;
 }
 

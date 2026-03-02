@@ -15,44 +15,8 @@
 void __thiscall TBillForeignMinister::thunk_DestructTBillForeignMinister(TBillForeignMinister *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D8E
-// GHIDRA_NAME TBillForeignMinister::thunk_DeletingDestructTBillForeignMinister
-// GHIDRA_PROTO void __thiscall thunk_DeletingDestructTBillForeignMinister(TBillForeignMinister * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeletingDestructTBillForeignMinister
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeletingDestructTBillForeignMinister */
-
-void __thiscall
-TBillForeignMinister::thunk_DeletingDestructTBillForeignMinister
-          (TBillForeignMinister *this,TBillForeignMinister *pThis)
-
-{
-  DeletingDestructTBillForeignMinister(this,pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406FDC
-// GHIDRA_NAME TBillForeignMinister::thunk_GetTBillForeignMinisterTypeName
-// GHIDRA_PROTO void * __cdecl thunk_GetTBillForeignMinisterTypeName(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBillForeignMinisterTypeName
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBillForeignMinisterTypeName */
-
-void * __cdecl TBillForeignMinister::thunk_GetTBillForeignMinisterTypeName(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBillForeignMinisterClassNamePointer();
-  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004081B6
@@ -69,24 +33,24 @@ TBillForeignMinister::thunk_ConstructTBillForeignMinister(TBillForeignMinister *
 
 {
   int iVar1;
-  TBillForeignMinister *pTVar2;
+  undefined4 *puVar2;
   
-  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
-  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
-  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
-  pTVar2 = this + 0x14;
+  this->field64_0x49 = 0x1010101;
+  this->field65_0x4d = 0x101;
+  this->field66_0x4f = 1;
+  puVar2 = (undefined4 *)&this->field67_0x50;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    pTVar2->pVtable = (void *)0x0;
-    pTVar2 = pTVar2 + 1;
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
   }
-  *(undefined2 *)&pTVar2->pVtable = 0;
-  this->pVtable = &PTR_thunk_GetTBillForeignMinisterTypeName_00659e30;
-  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
-  *(undefined1 *)&this[0x20].pVtable = 0;
-  *(undefined1 *)&this[0x12].pVtable = 1;
-  *(undefined2 *)&this[7].pVtable = 1;
-  *(undefined2 *)((int)&this[6].pVtable + 2) = 4;
-  *(undefined2 *)&this[3].pVtable = 4;
+  *(undefined2 *)puVar2 = 0;
+  this->pVtable = &PTR_thunk_GetTBillForeignMinisterClassNamePointer_00659e30;
+  *(undefined2 *)((int)&this->pField14 + 2) = 0;
+  this->field114_0x80 = 0;
+  this->field63_0x48 = 1;
+  this->field20_0x1c = 1;
+  this->field19_0x1a = 4;
+  this->field9_0xc = 4;
   return;
 }
 
@@ -113,39 +77,40 @@ void __thiscall TBillForeignMinister::ConstructTBillForeignMinister(TBillForeign
 
 {
   int iVar1;
-  TBillForeignMinister *pTVar2;
+  undefined4 *puVar2;
   
-  *(undefined4 *)((int)&this[0x12].pVtable + 1) = 0x1010101;
-  *(undefined2 *)((int)&this[0x13].pVtable + 1) = 0x101;
-  *(undefined1 *)((int)&this[0x13].pVtable + 3) = 1;
-  pTVar2 = this + 0x14;
+  this->field64_0x49 = 0x1010101;
+  this->field65_0x4d = 0x101;
+  this->field66_0x4f = 1;
+  puVar2 = (undefined4 *)&this->field67_0x50;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    pTVar2->pVtable = (void *)0x0;
-    pTVar2 = pTVar2 + 1;
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
   }
-  *(undefined2 *)&pTVar2->pVtable = 0;
-  this->pVtable = &PTR_thunk_GetTBillForeignMinisterTypeName_00659e30;
-  *(undefined2 *)((int)&this[5].pVtable + 2) = 0;
-  *(undefined1 *)&this[0x20].pVtable = 0;
-  *(undefined1 *)&this[0x12].pVtable = 1;
-  *(undefined2 *)&this[7].pVtable = 1;
-  *(undefined2 *)((int)&this[6].pVtable + 2) = 4;
-  *(undefined2 *)&this[3].pVtable = 4;
+  *(undefined2 *)puVar2 = 0;
+  this->pVtable = &PTR_thunk_GetTBillForeignMinisterClassNamePointer_00659e30;
+  *(undefined2 *)((int)&this->pField14 + 2) = 0;
+  this->field114_0x80 = 0;
+  this->field63_0x48 = 1;
+  this->field20_0x1c = 1;
+  this->field19_0x1a = 4;
+  this->field9_0xc = 4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531C50
 // GHIDRA_NAME TBillForeignMinister::DeletingDestructTBillForeignMinister
-// GHIDRA_PROTO void __thiscall DeletingDestructTBillForeignMinister(TBillForeignMinister * pThis)
+// GHIDRA_PROTO void __thiscall DeletingDestructTBillForeignMinister(void)
 
 void __thiscall
-TBillForeignMinister::DeletingDestructTBillForeignMinister
-          (TBillForeignMinister *this,TBillForeignMinister *pThis)
+TBillForeignMinister::DeletingDestructTBillForeignMinister(TBillForeignMinister *this)
 
 {
+  byte in_stack_00000004;
+  
   thunk_DestructTBillForeignMinister(this);
-  if (((uint)pThis & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
   return;
 }
@@ -157,7 +122,7 @@ TBillForeignMinister::DeletingDestructTBillForeignMinister
 void __thiscall TBillForeignMinister::DestructTBillForeignMinister(TBillForeignMinister *this)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

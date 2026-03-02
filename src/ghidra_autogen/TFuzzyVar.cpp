@@ -3,22 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TFuzzyVar.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402676
-// GHIDRA_NAME TFuzzyVar::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ff4d0
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ff4d0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004ff4d0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004ff4d0 */
-
-void TFuzzyVar::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ff4d0(void)
-
-{
-  ConstructTFuzzyVarBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00402801
 // GHIDRA_NAME TFuzzyVar::thunk_GetTFuzzyVarClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTFuzzyVarClassNamePointer(void)
@@ -37,22 +21,37 @@ void * __cdecl TFuzzyVar::thunk_GetTFuzzyVarClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004057BD
-// GHIDRA_NAME TFuzzyVar::thunk_GetTFuzzyVarRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTFuzzyVarRuntimeClass(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
+// GHIDRA_NAME TFuzzyVar::CreateTFuzzyVarInstance
+// GHIDRA_PROTO void __thiscall CreateTFuzzyVarInstance(int * pRect)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFuzzyVarRuntimeClass.
+// GHIDRA_COMMENT Blits requested rectangle through GWorld peeker into cached destination surface.
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTFuzzyVarRuntimeClass. */
+/* Blits requested rectangle through GWorld peeker into cached destination surface. */
 
-void * __thiscall TFuzzyVar::thunk_GetTFuzzyVarRuntimeClass(TFuzzyVar *this)
+void __thiscall TFuzzyVar::CreateTFuzzyVarInstance(TFuzzyVar *this,int *pRect)
 
 {
-  void *in_EAX;
+  RECT local_20;
+  RECT local_10;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
-  return in_EAX;
+  if (this->field90_0x60 != (void *)0x0) {
+    local_10.left = *pRect;
+    local_10.top = pRect[1];
+    local_10.right = pRect[2];
+    local_20.left = *pRect;
+    local_10.bottom = pRect[3];
+    local_20.right = pRect[2];
+    local_20.top = pRect[1];
+    local_20.bottom = pRect[3];
+    ResetQuickDrawStrokeState();
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)((int)this->field90_0x60 + 4),
+               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0,
+               (astruct_19 *)0x0);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF490
@@ -72,7 +71,7 @@ void * __cdecl TFuzzyVar::GetTFuzzyVarClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF4D0
 // GHIDRA_NAME TFuzzyVar::ConstructTFuzzyVarBaseState
-// GHIDRA_PROTO undefined ConstructTFuzzyVarBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTFuzzyVarBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -80,31 +79,48 @@ void * __cdecl TFuzzyVar::GetTFuzzyVarClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *param_1,byte param_2)
+void __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this)
 
 {
-  thunk_GetTFuzzyVarRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TFuzzySet::thunk_CreateTFuzzySetInstance((TFuzzySet *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF500
-// GHIDRA_NAME TFuzzyVar::CreateTFuzzySetInstance
-// GHIDRA_PROTO void * __thiscall CreateTFuzzySetInstance(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF7D0
+// GHIDRA_NAME TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+// GHIDRA_PROTO void __thiscall AllocateAndAppendTFuzzyVarRecord_004ff7d0(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TFuzzyVar runtime class descriptor pointer.
+// GHIDRA_COMMENT [Behavior] Allocates TFuzzyVar-like record, sets fields from args, and appends into owner array slot.
 // GHIDRA_COMMENT_END
 
-/* Returns TFuzzyVar runtime class descriptor pointer. */
+/* [Behavior] Allocates TFuzzyVar-like record, sets fields from args, and appends into owner array
+   slot. */
 
-void * __thiscall TFuzzyVar::CreateTFuzzySetInstance(TFuzzyVar *this)
+void __thiscall
+TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+          (TFuzzyVar *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  void *in_EAX;
+  undefined4 *puVar1;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
-  return in_EAX;
+  puVar1 = AllocateWithFallbackHandler();
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &PTR_thunk_GetTFuzzyVarClassNamePointer_00656998;
+  }
+  puVar1[1] = arg1;
+  puVar1[2] = arg2;
+  puVar1[3] = arg3;
+  puVar1[4] = arg4;
+  *(undefined4 **)(&this->field_0x8 + (int)this->field1_0x4 * 4) = puVar1;
+  this->field1_0x4 = (void *)((int)this->field1_0x4 + 1);
+  return;
 }
 

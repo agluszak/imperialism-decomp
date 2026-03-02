@@ -4,34 +4,23 @@
 // Bucket: TColorKeyButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004031A7
-// GHIDRA_NAME TColorKeyButton::thunk_DestructTColorKeyButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTColorKeyButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TColorKeyButton::TColorKeyButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TColorKeyButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTColorKeyButtonAndMaybeFree
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTColorKeyButtonAndMaybeFree */
-
-void * __thiscall
-TColorKeyButton::thunk_DestructTColorKeyButtonAndMaybeFree(TColorKeyButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTColorKeyButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TColorKeyButton */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040729D
-// GHIDRA_NAME TColorKeyButton::thunk_GetTColorKeyButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTColorKeyButtonClassNamePointer(void)
+// GHIDRA_NAME TColorKeyButton::TColorKeyButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TColorKeyButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTColorKeyButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTColorKeyButtonClassNamePointer */
 
-void * __cdecl TColorKeyButton::thunk_GetTColorKeyButtonClassNamePointer(void)
+void * __cdecl TColorKeyButton::TColorKeyButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,12 +47,12 @@ void * __cdecl TColorKeyButton::CreateTColorKeyButtonInstance(void)
   puStack_8 = &LAB_0063648a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TColorKeyPicture *)AllocateWithFallbackHandler(0x9c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TColorKeyPicture *)0x0;
   if (this != (TColorKeyPicture *)0x0) {
     TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(this);
-    *(undefined ***)this = &g_vtblTColorKeyButton;
+    this->field0_0x0 = &g_vtblTColorKeyButton;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -88,27 +77,10 @@ void * __cdecl TColorKeyButton::GetTColorKeyButtonClassNamePointer(void)
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F70
 // GHIDRA_NAME TColorKeyButton::ConstructTColorKeyButtonBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTColorKeyButtonBaseState(void)
-
-void * __thiscall TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
-
-{
-  TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this);
-  *(undefined ***)this = &g_vtblTColorKeyButton;
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TColorKeyButton */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571FA0
 // GHIDRA_NAME TColorKeyButton::DestructTColorKeyButtonAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTColorKeyButtonAndMaybeFree(byte freeSelfFlag)
-
-void * __thiscall
-TColorKeyButton::DestructTColorKeyButtonAndMaybeFree(TColorKeyButton *this,byte freeSelfFlag)
-
-{
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
-  }
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TColorKeyButton */
 

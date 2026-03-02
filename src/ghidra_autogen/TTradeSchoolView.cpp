@@ -3,37 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TTradeSchoolView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401113
-// GHIDRA_NAME TTradeSchoolView::thunk_GetBuildingExpansionViewClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetBuildingExpansionViewClassName(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetBuildingExpansionViewClassName
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetBuildingExpansionViewClassName */
-
-void * __cdecl TTradeSchoolView::thunk_GetBuildingExpansionViewClassName(void)
-
-{
-  return &g_pClassDescTBuildingExpansionView;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040154B
-// GHIDRA_NAME TTradeSchoolView::thunk_DestructBuildingExpansionViewAndMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructBuildingExpansionViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructBuildingExpansionViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructBuildingExpansionViewAndMaybeFree */
-
-void __cdecl TTradeSchoolView::thunk_DestructBuildingExpansionViewAndMaybeFree(void)
-
-{
-  TBuildingExpansionView::DestructBuildingExpansionViewAndMaybeFree();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004030F3
 // GHIDRA_NAME TTradeSchoolView::thunk_ConstructTTradeSchoolViewBaseState
 // GHIDRA_PROTO void * __thiscall thunk_ConstructTTradeSchoolViewBaseState(void)
@@ -47,16 +16,16 @@ void * __thiscall TTradeSchoolView::thunk_ConstructTTradeSchoolViewBaseState(TTr
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined2 *)(this + 0xa4) = 0xffff;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined4 *)(this + 0xa0) = 0;
-  *(undefined ***)this = &g_vtblTTradeSchoolView;
+  this->fielda4 = -1;
+  this->field94 = 0;
+  this->fielda0 = 0;
+  this->field0_0x0 = &g_vtblTTradeSchoolView;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040385A
-// GHIDRA_NAME TTradeSchoolView::thunk_DestructTTradeSchoolViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeSchoolViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTradeSchoolView::TTradeSchoolView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TTradeSchoolView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTradeSchoolViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -64,8 +33,7 @@ void * __thiscall TTradeSchoolView::thunk_ConstructTTradeSchoolViewBaseState(TTr
 /* Single-JMP thunk to DestructTTradeSchoolViewAndMaybeFree */
 
 void * __thiscall
-TTradeSchoolView::thunk_DestructTTradeSchoolViewAndMaybeFree
-          (TTradeSchoolView *this,byte freeSelfFlag)
+TTradeSchoolView::TTradeSchoolView_VtblSlot001(TTradeSchoolView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -75,15 +43,15 @@ TTradeSchoolView::thunk_DestructTTradeSchoolViewAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404782
-// GHIDRA_NAME TTradeSchoolView::thunk_GetTTradeSchoolViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeSchoolViewClassNamePointer(void)
+// GHIDRA_NAME TTradeSchoolView::TTradeSchoolView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TTradeSchoolView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTradeSchoolViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTradeSchoolViewClassNamePointer */
 
-void * __cdecl TTradeSchoolView::thunk_GetTTradeSchoolViewClassNamePointer(void)
+void * __cdecl TTradeSchoolView::TTradeSchoolView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -93,15 +61,15 @@ void * __cdecl TTradeSchoolView::thunk_GetTTradeSchoolViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404C14
-// GHIDRA_NAME TTradeSchoolView::thunk_RefreshCityViewEquipmentSummary
-// GHIDRA_PROTO void __fastcall thunk_RefreshCityViewEquipmentSummary(int * pCityViewDialog)
+// GHIDRA_NAME TTradeSchoolView::TTradeSchoolView_VtblSlot117
+// GHIDRA_PROTO void __fastcall TTradeSchoolView_VtblSlot117(int * pCityViewDialog)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RefreshCityViewEquipmentSummary
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RefreshCityViewEquipmentSummary */
 
-void __fastcall TTradeSchoolView::thunk_RefreshCityViewEquipmentSummary(int *pCityViewDialog)
+void __fastcall TTradeSchoolView::TTradeSchoolView_VtblSlot117(int *pCityViewDialog)
 
 {
   RefreshCityViewEquipmentSummary(pCityViewDialog);
@@ -125,14 +93,14 @@ void * __cdecl TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
   puStack_8 = &LAB_006318fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0xa0) = 0;
-    *(undefined2 *)(this + 0xa4) = 0xffff;
-    *(undefined ***)this = &g_vtblTTradeSchoolView;
+    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
+    *(undefined4 *)&this[1].field_0xf = 0;
+    *(undefined2 *)&this[1].field_0x13 = 0xffff;
+    this->field0_0x0 = &g_vtblTTradeSchoolView;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -163,10 +131,10 @@ void * __thiscall TTradeSchoolView::ConstructTTradeSchoolViewBaseState(TTradeSch
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined2 *)(this + 0xa4) = 0xffff;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined4 *)(this + 0xa0) = 0;
-  *(undefined ***)this = &g_vtblTTradeSchoolView;
+  this->fielda4 = -1;
+  this->field94 = 0;
+  this->fielda0 = 0;
+  this->field0_0x0 = &g_vtblTTradeSchoolView;
   return this;
 }
 
@@ -180,200 +148,8 @@ TTradeSchoolView::DestructTTradeSchoolViewAndMaybeFree(TTradeSchoolView *this,by
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004CD8D0
-// GHIDRA_NAME TTradeSchoolView::RefreshCityViewEquipmentSummary
-// GHIDRA_PROTO void __fastcall RefreshCityViewEquipmentSummary(int * pCityViewDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes equipment and prerequisite summary text blocks for the currently selected city-view production context.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Resolve localized title token for the selected slot.
-// GHIDRA_COMMENT 2. Update equipment requirement rows (equ2..equ5 and related summary fields).
-// GHIDRA_COMMENT 3. Rebuild localized summary strings and assign them to UI controls.
-// GHIDRA_COMMENT 4. Update score/cost summary labels and redraw affected controls.
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - pCityViewDialog: City-view dialog/controller instance.
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT_END
-
-/* Refreshes equipment and prerequisite summary text blocks for the currently selected city-view
-   production context.
-   Algorithm:
-   1. Resolve localized title token for the selected slot.
-   2. Update equipment requirement rows (equ2..equ5 and related summary fields).
-   3. Rebuild localized summary strings and assign them to UI controls.
-   4. Update score/cost summary labels and redraw affected controls.
-   Parameters:
-   - pCityViewDialog: City-view dialog/controller instance.
-   Returns:
-   - void. */
-
-void __fastcall TTradeSchoolView::RefreshCityViewEquipmentSummary(int *pCityViewDialog)
-
-{
-  code *pcVar1;
-  int *piVar2;
-  int iVar3;
-  void *pvVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_ec;
-  undefined **ppuStack_e8;
-  undefined *puStack_e4;
-  undefined4 uVar5;
-  undefined *puStack_d0;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00631958;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  iVar3 = *pCityViewDialog;
-  local_4 = CONCAT31(local_4._1_3_,1);
-  (**(code **)(iVar3 + 0xa8))();
-  thunk_BuildUiTextStyleDescriptor();
-  pcVar1 = *(code **)(iVar3 + 0x94);
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 != (int *)0x0) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-                    /* Load slot-specific title token and apply to summary header. */
-    iVar3 = *piVar2;
-    (**(code **)(iVar3 + 0x1b4))();
-    (**(code **)(iVar3 + 0x1c4))();
-    (**(code **)(iVar3 + 0x1c8))();
-  }
-  ConstructSharedStringFromCStrOrResourceId();
-  StringShared__AssignFromPtr(&stack0xffffffd0,(int *)&stack0xffffffd4);
-  ReleaseSharedStringRefIfNotEmpty();
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
-  iVar3 = (*pcVar1)();
-  if (iVar3 != 0) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
-  }
-  iVar3 = (*pcVar1)();
-                    /* Populate equ2/equ3/equ4/equ5 requirement labels. */
-  if (iVar3 != 0) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
-  }
-  iVar3 = (*pcVar1)();
-  if (iVar3 != 0) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
-  }
-  pvVar4 = (void *)(*pcVar1)();
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2738,0x1f,pvVar4);
-  pvVar4 = (void *)(*pcVar1)();
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2738,0x20,pvVar4);
-  thunk_BuildUiTextStyleDescriptor();
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  (**(code **)(iVar3 + 0x1c8))();
-  ReleaseSharedStringRefIfNotEmpty();
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  (**(code **)(iVar3 + 0x1c8))();
-  ReleaseSharedStringRefIfNotEmpty();
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  (**(code **)(iVar3 + 0x1c8))();
-  ReleaseSharedStringRefIfNotEmpty();
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  (**(code **)(iVar3 + 0x1c8))();
-  ReleaseSharedStringRefIfNotEmpty();
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  (**(code **)(iVar3 + 0x1c8))();
-  ReleaseSharedStringRefIfNotEmpty();
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    puStack_d0 = &UNK_004cdd71;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))();
-  ConstructSharedStringFromCStrOrResourceId();
-  puStack_d0 = (undefined *)0x4cddb7;
-  (**(code **)(iVar3 + 0x1c8))();
-  puStack_d0 = (undefined *)0x4cddc5;
-  ReleaseSharedStringRefIfNotEmpty();
-  puStack_d0 = (undefined *)0x2b67;
-  thunk_BuildUiTextStyleDescriptor();
-  puStack_d0 = (undefined *)0x636f7331;
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    puStack_e4 = &UNK_004cddfd;
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  (**(code **)(*g_pLocalizationTable + 0x74))();
-  iVar3 = *piVar2;
-  uVar5 = 0;
-  puStack_e4 = (undefined *)0x4cde33;
-  (**(code **)(iVar3 + 0x1b4))();
-  ppuStack_e8 = &puStack_d0;
-  puStack_e4 = (undefined *)0x0;
-  uStack_ec = 0x4cde42;
-  (**(code **)(iVar3 + 0x1c8))();
-  uStack_ec = 0x636f7332;
-  piVar2 = (int *)(*pcVar1)();
-  if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  (**(code **)(*g_pLocalizationTable + 0x74))(1000,&stack0xffffff24);
-  iVar3 = *piVar2;
-  (**(code **)(iVar3 + 0x1b4))(&stack0xffffff28,0);
-  (**(code **)(iVar3 + 0x1c8))(&uStack_ec,0);
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uVar5;
-  return;
 }
 

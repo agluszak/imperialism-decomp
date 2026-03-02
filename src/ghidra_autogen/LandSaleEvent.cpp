@@ -4,15 +4,15 @@
 // Bucket: LandSaleEvent.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040508D
-// GHIDRA_NAME LandSaleEvent::thunk_GetLandSaleEventClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetLandSaleEventClassNamePointer(void)
+// GHIDRA_NAME LandSaleEvent::thunk_GetTLandSaleEventClassNamePointer
+// GHIDRA_PROTO void * __cdecl thunk_GetTLandSaleEventClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetLandSaleEventClassNamePointer
+// GHIDRA_COMMENT Single-JMP thunk to GetLandSaleEventClassNamePointer [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetLandSaleEventClassNamePointer */
+/* Single-JMP thunk to GetLandSaleEventClassNamePointer [FID:thunk_target_sync] */
 
-void * __cdecl LandSaleEvent::thunk_GetLandSaleEventClassNamePointer(void)
+void * __cdecl LandSaleEvent::thunk_GetTLandSaleEventClassNamePointer(void)
 
 {
   return &g_pClassDescTLandSaleEvent;
@@ -20,14 +20,14 @@ void * __cdecl LandSaleEvent::thunk_GetLandSaleEventClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408CA1
 // GHIDRA_NAME LandSaleEvent::thunk_DeleteLandSaleEvent
-// GHIDRA_PROTO void * __cdecl thunk_DeleteLandSaleEvent(void * pThis, byte freeSelfFlag)
+// GHIDRA_PROTO void * __cdecl thunk_DeleteLandSaleEvent(LandSaleEvent * pThis, byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DeleteLandSaleEvent
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DeleteLandSaleEvent */
 
-void * __cdecl LandSaleEvent::thunk_DeleteLandSaleEvent(void *pThis,byte freeSelfFlag)
+void * __cdecl LandSaleEvent::thunk_DeleteLandSaleEvent(LandSaleEvent *pThis,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -38,7 +38,7 @@ void * __cdecl LandSaleEvent::thunk_DeleteLandSaleEvent(void *pThis,byte freeSel
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D49A0
 // GHIDRA_NAME LandSaleEvent::DeleteLandSaleEvent
-// GHIDRA_PROTO void * __cdecl DeleteLandSaleEvent(void * pThis, byte freeSelfFlag)
+// GHIDRA_PROTO void * __cdecl DeleteLandSaleEvent(LandSaleEvent * pThis, byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deleting destructor wrapper for TLandSaleEvent: calls DestructLandSaleEventToBase, optionally frees heap object when delete-flag bit is set.
 // GHIDRA_COMMENT_END
@@ -46,7 +46,7 @@ void * __cdecl LandSaleEvent::thunk_DeleteLandSaleEvent(void *pThis,byte freeSel
 /* Deleting destructor wrapper for TLandSaleEvent: calls DestructLandSaleEventToBase, optionally
    frees heap object when delete-flag bit is set. */
 
-void * __cdecl LandSaleEvent::DeleteLandSaleEvent(void *pThis,byte freeSelfFlag)
+void * __cdecl LandSaleEvent::DeleteLandSaleEvent(LandSaleEvent *pThis,byte freeSelfFlag)
 
 {
   void *in_ECX;

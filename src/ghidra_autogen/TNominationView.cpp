@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TNominationView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00405C77
+// GHIDRA_NAME TNominationView::thunk_scalar_deleting_destructor_00405C77
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00405C77(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TNominationView::thunk_scalar_deleting_destructor_00405C77(TNominationView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00406FA0
 // GHIDRA_NAME TNominationView::thunk_GetTNominationViewClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTNominationViewClassNamePointer(void)
@@ -22,55 +41,20 @@ void * __cdecl TNominationView::thunk_GetTNominationViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004073E7
-// GHIDRA_NAME TNominationView::thunk_BuildNominationViewTextBlocksAndStyles_At004073e7
-// GHIDRA_PROTO void __thiscall thunk_BuildNominationViewTextBlocksAndStyles_At004073e7(void)
+// GHIDRA_NAME TNominationView::thunk_ConstructTNominationViewBaseState_At004073e7
+// GHIDRA_PROTO void __thiscall thunk_ConstructTNominationViewBaseState_At004073e7(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildNominationViewTextBlocksAndStyles
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTNominationViewBaseState
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to BuildNominationViewTextBlocksAndStyles */
+/* Single-JMP thunk to ConstructTNominationViewBaseState */
 
 void __thiscall
-TNominationView::thunk_BuildNominationViewTextBlocksAndStyles_At004073e7(TNominationView *this)
+TNominationView::thunk_ConstructTNominationViewBaseState_At004073e7(TNominationView *this)
 
 {
   ConstructTNominationViewBaseState(this);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004FB6E0
-// GHIDRA_NAME TNominationView::ConstructPictureResourceEntry_Vtbl0063ed78
-// GHIDRA_PROTO undefined ConstructPictureResourceEntry_Vtbl0063ed78()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and initializes picture resource entry object with vtable 0x0063ed78.
-// GHIDRA_COMMENT_END
-
-/* Allocates and initializes picture resource entry object with vtable 0x0063ed78. */
-
-undefined4 * TNominationView::ConstructPictureResourceEntry_Vtbl0063ed78(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00632ffa;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
-  local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTNominationViewClassNamePointer_0063ed78;
-    puVar2 = puVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB760
@@ -190,7 +174,7 @@ void __thiscall TNominationView::ConstructTNominationViewBaseState(TNominationVi
   piVar3 = (int *)(*pcVar1)(0x63616e31);
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0xc))();
-  FormatOverlayTerrainLabelText(&puStack_64);
+  FormatOverlayTerrainLabelText();
   (**(code **)(iVar2 + 0x1c8))(&puStack_64,1);
   (**(code **)(iVar2 + 0x1b4))(&puStack_68,1);
   puStack_5c = (undefined4 *)0xffffffff;

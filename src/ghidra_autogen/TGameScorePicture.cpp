@@ -21,6 +21,26 @@ void * __cdecl TGameScorePicture::thunk_GetTGameScorePictureClassNamePointer(voi
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040786A
+// GHIDRA_NAME TGameScorePicture::thunk_scalar_deleting_destructor_0040786A
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040786A(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TGameScorePicture::thunk_scalar_deleting_destructor_0040786A
+          (TGameScorePicture *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B000
 // GHIDRA_NAME TGameScorePicture::CreateTGameScorePictureInstance
 // GHIDRA_PROTO void * __cdecl CreateTGameScorePictureInstance(void)
@@ -44,12 +64,12 @@ void * __cdecl TGameScorePicture::CreateTGameScorePictureInstance(void)
   puStack_8 = &LAB_00636c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &PTR_thunk_GetTGameScorePictureClassNamePointer_00644970;
+    this->field0_0x0 = &PTR_thunk_GetTGameScorePictureClassNamePointer_00644970;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

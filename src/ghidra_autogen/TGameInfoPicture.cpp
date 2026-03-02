@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TGameInfoPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040151E
+// GHIDRA_NAME TGameInfoPicture::thunk_scalar_deleting_destructor_0040151E
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040151E(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TGameInfoPicture::thunk_scalar_deleting_destructor_0040151E
+          (TGameInfoPicture *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004046D8
 // GHIDRA_NAME TGameInfoPicture::thunk_GetTGameInfoPictureClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTGameInfoPictureClassNamePointer(void)
@@ -22,17 +42,16 @@ void * __cdecl TGameInfoPicture::thunk_GetTGameInfoPictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408733
-// GHIDRA_NAME TGameInfoPicture::thunk_InitializeGameInfoPictureLocalizedLabels_At00408733
-// GHIDRA_PROTO void __thiscall thunk_InitializeGameInfoPictureLocalizedLabels_At00408733(int labelSeed)
+// GHIDRA_NAME TGameInfoPicture::thunk_ConstructTGameInfoPictureBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTGameInfoPictureBaseState(int labelSeed)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeGameInfoPictureLocalizedLabels
+// GHIDRA_COMMENT Single-JMP thunk to InitializeGameInfoPictureLocalizedLabels [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to InitializeGameInfoPictureLocalizedLabels */
+/* Single-JMP thunk to InitializeGameInfoPictureLocalizedLabels [FID:thunk_target_sync] */
 
 void __thiscall
-TGameInfoPicture::thunk_InitializeGameInfoPictureLocalizedLabels_At00408733
-          (TGameInfoPicture *this,int labelSeed)
+TGameInfoPicture::thunk_ConstructTGameInfoPictureBaseState(TGameInfoPicture *this,int labelSeed)
 
 {
   ConstructTGameInfoPictureBaseState(this,labelSeed);
@@ -84,7 +103,7 @@ TGameInfoPicture::ConstructTGameInfoPictureBaseState(TGameInfoPicture *this,int 
   local_4 = 0;
   iVar3 = 0;
   do {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2757,iVar3 + 0xf,&labelSeed);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2757,iVar3 + 0xf,&labelSeed);
     thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
@@ -93,7 +112,7 @@ TGameInfoPicture::ConstructTGameInfoPictureBaseState(TGameInfoPicture *this,int 
   do {
     piVar2 = (int *)(*pcVar1)(iVar3 + 0x74787461);
     (**(code **)(*piVar2 + 0xc))();
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2757,iVar3,&stack0x00000000);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2757,iVar3,&stack0x00000000);
     thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);

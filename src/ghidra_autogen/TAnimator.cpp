@@ -4,32 +4,31 @@
 // Bucket: TAnimator.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401D9D
-// GHIDRA_NAME TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50(void * pMessage)
+// GHIDRA_NAME TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50_At00401d9d
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50_At00401d9d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50 */
 
-void __thiscall
-TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50(TAnimator *this,void *pMessage)
+void __cdecl TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50_At00401d9d(void)
 
 {
-  WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50(this,pMessage);
+  WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004023FB
-// GHIDRA_NAME TAnimator::thunk_GetTAnimatorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAnimatorClassNamePointer(void)
+// GHIDRA_NAME TAnimator::thunk_GetTAnimatorClassNamePointer_At004023fb
+// GHIDRA_PROTO void * __cdecl thunk_GetTAnimatorClassNamePointer_At004023fb(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTAnimatorClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTAnimatorClassNamePointer */
 
-void * __cdecl TAnimator::thunk_GetTAnimatorClassNamePointer(void)
+void * __cdecl TAnimator::thunk_GetTAnimatorClassNamePointer_At004023fb(void)
 
 {
   void *pvVar1;
@@ -38,16 +37,33 @@ void * __cdecl TAnimator::thunk_GetTAnimatorClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004042CD
+// GHIDRA_NAME TAnimator::thunk_OrphanCallChain_C2_I13_004a0c00_At004042cd
+// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C2_I13_004a0c00_At004042cd(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C2_I13_004a0c00
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanCallChain_C2_I13_004a0c00 */
+
+void __cdecl TAnimator::thunk_OrphanCallChain_C2_I13_004a0c00_At004042cd(void)
+
+{
+  OrphanCallChain_C2_I13_004a0c00();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404561
-// GHIDRA_NAME TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// GHIDRA_PROTO void __thiscall thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
+// GHIDRA_NAME TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner_At00404561
+// GHIDRA_PROTO void __thiscall thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner_At00404561(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ResetUiViewStateAndReleaseRuntimeSelectionOwner
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ResetUiViewStateAndReleaseRuntimeSelectionOwner */
 
-void __thiscall TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner(TAnimator *this)
+void __thiscall
+TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner_At00404561(TAnimator *this)
 
 {
   ResetUiViewStateAndReleaseRuntimeSelectionOwner(this);
@@ -55,38 +71,56 @@ void __thiscall TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405371
-// GHIDRA_NAME TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10(void * pMessage)
+// GHIDRA_NAME TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10_At00405371
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10_At00405371(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10 */
 
-void __thiscall
-TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10(TAnimator *this,void *pMessage)
+void __cdecl TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10_At00405371(void)
 
 {
-  WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10(this,pMessage);
+  WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040786F
-// GHIDRA_NAME TAnimator::thunk_DestructTAnimatorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTAnimatorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TAnimator::thunk_DestructTAnimatorAndMaybeFree_At0040786f
+// GHIDRA_PROTO void * __thiscall thunk_DestructTAnimatorAndMaybeFree_At0040786f(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTAnimatorAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTAnimatorAndMaybeFree */
 
-void * __thiscall TAnimator::thunk_DestructTAnimatorAndMaybeFree(TAnimator *this,byte freeSelfFlag)
+void * __thiscall
+TAnimator::thunk_DestructTAnimatorAndMaybeFree_At0040786f(TAnimator *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTAnimatorAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407FEF
+// GHIDRA_NAME TAnimator::thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30_At00407fef
+// GHIDRA_PROTO uint __cdecl thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30_At00407fef(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30 */
+
+uint __cdecl TAnimator::thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30_At00407fef(void)
+
+{
+  uint uVar1;
+  
+  uVar1 = Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30();
+  return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A09F0
@@ -111,7 +145,7 @@ void * __cdecl TAnimator::CreateTAnimatorInstance(void)
   puStack_8 = &LAB_0062feba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x30);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_InitializeUiResourceEntryBaseHeaderDefaults();
@@ -141,22 +175,6 @@ void * __cdecl TAnimator::GetTAnimatorClassNamePointer(void)
   return &g_pClassDescTAnimator;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0AA0
-// GHIDRA_NAME TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8
-// GHIDRA_PROTO undefined ConstructUiTransientObjectRegistry_Vtbl0064c4e8()
-
-undefined4 * __fastcall
-TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8(undefined4 *param_1)
-
-{
-  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-  *param_1 = &g_vtblTAnimator;
-  param_1[0xb] = 0;
-  param_1[8] = 0;
-  param_1[9] = 0;
-  return param_1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0AD0
 // GHIDRA_NAME TAnimator::DestructTAnimatorAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTAnimatorAndMaybeFree(byte freeSelfFlag)
@@ -166,7 +184,7 @@ void * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,byte 
 {
   DestructTAnimatorAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -185,54 +203,11 @@ void __thiscall TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner(TAnim
 
 {
   (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(this,0);
-  if (*(int **)(this + 0x24) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x24) + 0x58))();
+  if (this->pField24 != (int *)0x0) {
+    (**(code **)(*(int *)this->pField24 + 0x58))();
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004010e6(this + 0x20);
+  WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
   thunk_ReleaseRuntimeSelectionOwnerAndDestroyObject();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0E10
-// GHIDRA_NAME TAnimator::WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
-
-void __thiscall
-TAnimator::WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10(TAnimator *this,void *pMessage)
-
-{
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = *(int *)pMessage;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x10) = 0x7fffffff;
-  uVar2 = (**(code **)(iVar1 + 0x50))();
-  *(undefined4 *)(this + 0x10) = uVar2;
-  thunk_HandleCityDialogNoOpSlot18();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0E50
-// GHIDRA_NAME TAnimator::WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
-
-void __thiscall
-TAnimator::WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50(TAnimator *this,void *pMessage)
-
-{
-  (**(code **)(*(int *)pMessage + 0x8c))(*(undefined4 *)(this + 0x10));
-  thunk_HandleCityDialogNoOpSlot14();
   return;
 }
 

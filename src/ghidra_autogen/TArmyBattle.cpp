@@ -4,45 +4,25 @@
 // Bucket: TArmyBattle.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403715
-// GHIDRA_NAME TArmyBattle::thunk_CheckArmyBattleRowParitySuppressionCondition
-// GHIDRA_PROTO void __thiscall thunk_CheckArmyBattleRowParitySuppressionCondition(int battleCellIndex)
+// GHIDRA_NAME TArmyBattle::thunk_CreateTArmyBattleInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTArmyBattleInstance(int battleCellIndex)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to CheckArmyBattleRowParitySuppressionCondition.
+// GHIDRA_COMMENT Thunk forwarding to CheckArmyBattleRowParitySuppressionCondition. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to CheckArmyBattleRowParitySuppressionCondition. */
+/* Thunk forwarding to CheckArmyBattleRowParitySuppressionCondition. [FID:thunk_target_sync] */
 
-void __thiscall
-TArmyBattle::thunk_CheckArmyBattleRowParitySuppressionCondition
-          (TArmyBattle *this,int battleCellIndex)
+void __thiscall TArmyBattle::thunk_CreateTArmyBattleInstance(TArmyBattle *this,int battleCellIndex)
 
 {
   uint uVar1;
   
   uVar1 = battleCellIndex / 0x1d;
   if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
-     ((int)((uVar1 & 1) + (battleCellIndex % 0x1d) * 2) / 2 == *(int *)(this + 0x34) + -6)) {
+     ((int)((uVar1 & 1) + (battleCellIndex % 0x1d) * 2) / 2 == this->field34 + -6)) {
     return;
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004073C4
-// GHIDRA_NAME TArmyBattle::thunk_GetTArmyBattleClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyBattleClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyBattleClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyBattleClassNamePointer */
-
-void * __cdecl TArmyBattle::thunk_GetTArmyBattleClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmyBattleClassNamePointer();
-  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F4E
@@ -58,7 +38,7 @@ void * __thiscall TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(TArmyBatt
 
 {
   undefined4 *puVar1;
-  void *pvVar2;
+  void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -68,17 +48,17 @@ void * __thiscall TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(TArmyBatt
   puStack_8 = &LAB_006385c2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
     uStack_4 = 1;
-    pvVar2 = (void *)InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &g_vtblTArmyBattle;
-    *(undefined4 **)(this + 0x20) = puVar1;
+    this->pField20 = puVar1;
     *unaff_FS_OFFSET = uStack_c;
-    return pvVar2;
+    return extraout_EAX;
   }
-  *(undefined4 *)(this + 0x20) = 0;
+  this->pField20 = (void *)0x0;
   *unaff_FS_OFFSET = uStack_c;
   return (void *)0x0;
 }
@@ -97,7 +77,7 @@ void * __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *th
 
 {
   undefined4 *puVar1;
-  void *pvVar2;
+  void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -107,17 +87,17 @@ void * __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *th
   puStack_8 = &LAB_006385c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
     local_4 = 1;
-    pvVar2 = (void *)InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &g_vtblTArmyBattle;
-    *(undefined4 **)(this + 0x20) = puVar1;
+    this->pField20 = puVar1;
     *unaff_FS_OFFSET = local_c;
-    return pvVar2;
+    return extraout_EAX;
   }
-  *(undefined4 *)(this + 0x20) = 0;
+  this->pField20 = (void *)0x0;
   *unaff_FS_OFFSET = local_c;
   return (void *)0x0;
 }
@@ -139,7 +119,7 @@ void __thiscall TArmyBattle::CreateTArmyBattleInstance(TArmyBattle *this,int bat
   
   uVar1 = battleCellIndex / 0x1d;
   if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
-     ((int)((uVar1 & 1) + (battleCellIndex % 0x1d) * 2) / 2 == *(int *)(this + 0x34) + -6)) {
+     ((int)((uVar1 & 1) + (battleCellIndex % 0x1d) * 2) / 2 == this->field34 + -6)) {
     return;
   }
   return;
@@ -173,7 +153,7 @@ void * __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
 
 {
   undefined4 *puVar1;
-  void *pvVar2;
+  void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -183,17 +163,17 @@ void * __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
   puStack_8 = &LAB_006385c2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
     uStack_4 = 1;
-    pvVar2 = (void *)InitializeLinkedListSentinelNodeWithOwnerContext(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &g_vtblTArmyBattle;
-    *(undefined4 **)(this + 0x20) = puVar1;
+    this->pField20 = puVar1;
     *unaff_FS_OFFSET = uStack_c;
-    return pvVar2;
+    return extraout_EAX;
   }
-  *(undefined4 *)(this + 0x20) = 0;
+  this->pField20 = (void *)0x0;
   *unaff_FS_OFFSET = uStack_c;
   return (void *)0x0;
 }

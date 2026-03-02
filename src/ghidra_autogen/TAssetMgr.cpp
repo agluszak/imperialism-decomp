@@ -4,15 +4,15 @@
 // Bucket: TAssetMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040599D
-// GHIDRA_NAME TAssetMgr::thunk_GetTAssetMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAssetMgrClassNamePointer(void)
+// GHIDRA_NAME TAssetMgr::thunk_GetTAssetMgrClassNamePointer_At0040599d
+// GHIDRA_PROTO void * __cdecl thunk_GetTAssetMgrClassNamePointer_At0040599d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTAssetMgrClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTAssetMgrClassNamePointer */
 
-void * __cdecl TAssetMgr::thunk_GetTAssetMgrClassNamePointer(void)
+void * __cdecl TAssetMgr::thunk_GetTAssetMgrClassNamePointer_At0040599d(void)
 
 {
   void *pvVar1;
@@ -22,15 +22,16 @@ void * __cdecl TAssetMgr::thunk_GetTAssetMgrClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407EDC
-// GHIDRA_NAME TAssetMgr::thunk_DestructTAssetMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTAssetMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TAssetMgr::thunk_DestructTAssetMgrAndMaybeFree_At00407edc
+// GHIDRA_PROTO void * __thiscall thunk_DestructTAssetMgrAndMaybeFree_At00407edc(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTAssetMgrAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTAssetMgrAndMaybeFree */
 
-void * __thiscall TAssetMgr::thunk_DestructTAssetMgrAndMaybeFree(TAssetMgr *this,byte freeSelfFlag)
+void * __thiscall
+TAssetMgr::thunk_DestructTAssetMgrAndMaybeFree_At00407edc(TAssetMgr *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -62,7 +63,7 @@ void * __cdecl TAssetMgr::CreateTAssetMgrInstance(void)
   puStack_8 = &LAB_0063a5e2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x58);
+  puVar1 = AllocateWithFallbackHandler();
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
@@ -97,10 +98,47 @@ void * __cdecl TAssetMgr::GetTAssetMgrClassNamePointer(void)
 void * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this,byte freeSelfFlag)
 
 {
-  WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330();
+  int unaff_ESI;
+  int unaff_retaddr;
+  undefined3 in_stack_00000005;
+  int in_stack_00000008;
+  
+  WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
+            (this,unaff_ESI,unaff_retaddr,_freeSelfFlag,in_stack_00000008);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF330
+// GHIDRA_NAME TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
+// GHIDRA_PROTO void __thiscall WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around InvokeCallbackNTimesWithSehGuard; instructions=20, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around InvokeCallbackNTimesWithSehGuard; instructions=20,
+   call_insns=1, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
+          (TAssetMgr *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_0063a628;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
+            ((TDiplomacyMapView *)this,(int)&this->field29_0x20,4,0xd,0x405fa1);
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 

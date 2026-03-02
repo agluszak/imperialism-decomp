@@ -4,8 +4,8 @@
 // Bucket: TBeachheadMission.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402A9F
-// GHIDRA_NAME TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext
-// GHIDRA_PROTO void __thiscall thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
+// GHIDRA_NAME TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext_At00402a9f
+// GHIDRA_PROTO void __thiscall thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext_At00402a9f(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PopulateBeachheadMissionResourceWeightsFromNavyContext
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to PopulateBeachheadMissionResourceWeightsFromNavyContext */
 
 void __thiscall
-TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext
+TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext_At00402a9f
           (TBeachheadMission *this)
 
 {
@@ -22,10 +22,15 @@ TBeachheadMission::thunk_PopulateBeachheadMissionResourceWeightsFromNavyContext
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402EE6
-// GHIDRA_NAME TBeachheadMission::thunk_DestroyTBeachheadMission
-// GHIDRA_PROTO void __cdecl thunk_DestroyTBeachheadMission(void)
+// GHIDRA_NAME TBeachheadMission::thunk_DestroyTBeachheadMission_At00402ee6
+// GHIDRA_PROTO void __cdecl thunk_DestroyTBeachheadMission_At00402ee6(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestroyTBeachheadMission
+// GHIDRA_COMMENT_END
 
-void __cdecl TBeachheadMission::thunk_DestroyTBeachheadMission(void)
+/* Single-JMP thunk to DestroyTBeachheadMission */
+
+void __cdecl TBeachheadMission::thunk_DestroyTBeachheadMission_At00402ee6(void)
 
 {
   DestroyTBeachheadMission();
@@ -33,15 +38,15 @@ void __cdecl TBeachheadMission::thunk_DestroyTBeachheadMission(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403EC2
-// GHIDRA_NAME TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagB
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagB(void)
+// GHIDRA_NAME TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagB_At00403ec2
+// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagB_At00403ec2(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForBeachheadMissionCapabilityFlagB
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReturnFalseForBeachheadMissionCapabilityFlagB */
 
-bool TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagB(void)
+bool TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagB_At00403ec2(void)
 
 {
   bool bVar1;
@@ -51,15 +56,15 @@ bool TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagB(void
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040526D
-// GHIDRA_NAME TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagA(void)
+// GHIDRA_NAME TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d
+// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForBeachheadMissionCapabilityFlagA
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReturnFalseForBeachheadMissionCapabilityFlagA */
 
-bool TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA(void)
+bool TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
 
 {
   bool bVar1;
@@ -69,11 +74,16 @@ bool TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA(void
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004059FC
-// GHIDRA_NAME TBeachheadMission::thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget
-// GHIDRA_PROTO bool __thiscall thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget(void)
+// GHIDRA_NAME TBeachheadMission::thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget_At004059fc
+// GHIDRA_PROTO bool __thiscall thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget_At004059fc(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleBlockadePortMissionActionType2ForBeachheadTarget
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleBlockadePortMissionActionType2ForBeachheadTarget */
 
 bool __thiscall
-TBeachheadMission::thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget
+TBeachheadMission::thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget_At004059fc
           (TBeachheadMission *this)
 
 {
@@ -84,10 +94,15 @@ TBeachheadMission::thunk_HandleBlockadePortMissionActionType2ForBeachheadTarget
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D62
-// GHIDRA_NAME TBeachheadMission::thunk_GetBlockadePortMissionBeachheadChild
-// GHIDRA_PROTO void __cdecl thunk_GetBlockadePortMissionBeachheadChild(void)
+// GHIDRA_NAME TBeachheadMission::thunk_GetBlockadePortMissionBeachheadChild_At00405d62
+// GHIDRA_PROTO void __cdecl thunk_GetBlockadePortMissionBeachheadChild_At00405d62(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetBlockadePortMissionBeachheadChild
+// GHIDRA_COMMENT_END
 
-void __cdecl TBeachheadMission::thunk_GetBlockadePortMissionBeachheadChild(void)
+/* Single-JMP thunk to GetBlockadePortMissionBeachheadChild */
+
+void __cdecl TBeachheadMission::thunk_GetBlockadePortMissionBeachheadChild_At00405d62(void)
 
 {
   GetBlockadePortMissionBeachheadChild();
@@ -95,15 +110,16 @@ void __cdecl TBeachheadMission::thunk_GetBlockadePortMissionBeachheadChild(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004063D9
-// GHIDRA_NAME TBeachheadMission::thunk_TryQueueProvinceOrderFromContextMessage
-// GHIDRA_PROTO void __fastcall thunk_TryQueueProvinceOrderFromContextMessage(int msg_ctx)
+// GHIDRA_NAME TBeachheadMission::thunk_TryQueueProvinceOrderFromContextMessage_At004063d9
+// GHIDRA_PROTO void __fastcall thunk_TryQueueProvinceOrderFromContextMessage_At004063d9(int msg_ctx)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TryQueueProvinceOrderFromContextMessage
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TryQueueProvinceOrderFromContextMessage */
 
-void __fastcall TBeachheadMission::thunk_TryQueueProvinceOrderFromContextMessage(int msg_ctx)
+void __fastcall
+TBeachheadMission::thunk_TryQueueProvinceOrderFromContextMessage_At004063d9(int msg_ctx)
 
 {
   TryQueueProvinceOrderFromContextMessage(msg_ctx);
@@ -111,18 +127,23 @@ void __fastcall TBeachheadMission::thunk_TryQueueProvinceOrderFromContextMessage
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406596
-// GHIDRA_NAME TBeachheadMission::thunk_GetBeachheadMissionClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetBeachheadMissionClassName(void)
+// GHIDRA_NAME TBeachheadMission::thunk_GetTBeachheadMissionClassNamePointer_At00406596
+// GHIDRA_PROTO void * __cdecl thunk_GetTBeachheadMissionClassNamePointer_At00406596(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTBeachheadMissionClassNamePointer
+// GHIDRA_COMMENT_END
 
-void * __cdecl TBeachheadMission::thunk_GetBeachheadMissionClassName(void)
+/* Single-JMP thunk to GetTBeachheadMissionClassNamePointer */
+
+void * __cdecl TBeachheadMission::thunk_GetTBeachheadMissionClassNamePointer_At00406596(void)
 
 {
   return &g_pClassDescTBeachheadMission;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004099DA
-// GHIDRA_NAME TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady
-// GHIDRA_PROTO bool __thiscall thunk_ClearBlockadePortMissionChildOrderLinksIfReady(void)
+// GHIDRA_NAME TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady_At004099da
+// GHIDRA_PROTO bool __thiscall thunk_ClearBlockadePortMissionChildOrderLinksIfReady_At004099da(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ClearBlockadePortMissionChildOrderLinksIfReady
 // GHIDRA_COMMENT_END
@@ -130,7 +151,8 @@ void * __cdecl TBeachheadMission::thunk_GetBeachheadMissionClassName(void)
 /* Single-JMP thunk to ClearBlockadePortMissionChildOrderLinksIfReady */
 
 bool __thiscall
-TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady(TBeachheadMission *this)
+TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady_At004099da
+          (TBeachheadMission *this)
 
 {
   bool bVar1;
@@ -141,7 +163,7 @@ TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady(TBeachhe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A2D0
 // GHIDRA_NAME TBeachheadMission::CreateTBeachheadMission
-// GHIDRA_PROTO undefined CreateTBeachheadMission()
+// GHIDRA_PROTO TBeachheadMission * __cdecl CreateTBeachheadMission(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Allocates and constructs TBeachheadMission object (0x40 bytes) and installs g_vtblTBeachheadMission.
 // GHIDRA_COMMENT_END
@@ -149,10 +171,10 @@ TBeachheadMission::thunk_ClearBlockadePortMissionChildOrderLinksIfReady(TBeachhe
 /* Allocates and constructs TBeachheadMission object (0x40 bytes) and installs
    g_vtblTBeachheadMission. */
 
-TMission * TBeachheadMission::CreateTBeachheadMission(void)
+TBeachheadMission * __cdecl TBeachheadMission::CreateTBeachheadMission(void)
 
 {
-  TMission *this;
+  TBeachheadMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -162,69 +184,27 @@ TMission * TBeachheadMission::CreateTBeachheadMission(void)
   puStack_8 = &LAB_0063438a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMission *)AllocateWithFallbackHandler(0x40);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  if (this != (TMission *)0x0) {
-    TMission::thunk_ConstructTMission(this);
-    this[5].pVtable = (void *)0x0;
-    this[6].pVtable = (void *)0x0;
-    this[7].pVtable = (void *)0x0;
-    this[8].pVtable = (void *)0x0;
-    this[9].pVtable = (void *)0x0;
-    this[10].pVtable = (void *)0x0;
-    this[0xb].pVtable = (void *)0x0;
-    this[0xc].pVtable = (void *)0x0;
-    this[0xd].pVtable = (void *)0x0;
-    this[0xe].pVtable = (void *)0x0;
-    this[0xf].pVtable = (void *)0x0;
-    this->pVtable = &g_vtblTBeachheadMission;
+  if (this != (TBeachheadMission *)0x0) {
+    TMission::thunk_ConstructTMission((TMission *)this);
+    this->field14 = 0;
+    this->pField18 = (undefined4 *)0x0;
+    this->pField1c = (void *)0x0;
+    this->pField20 = (void *)0x0;
+    this->pField24 = (void *)0x0;
+    this->pField28 = (void *)0x0;
+    this->pField2c = (void *)0x0;
+    this->pField30 = (void *)0x0;
+    this->pField34 = (undefined *)0x0;
+    this->fField38 = 0.0;
+    this->pField3c = (void *)0x0;
+    this->field0_0x0 = &g_vtblTBeachheadMission;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TMission *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053A390
-// GHIDRA_NAME TBeachheadMission::ReturnFalseForBeachheadMissionCapabilityFlagA
-// GHIDRA_PROTO bool __stdcall ReturnFalseForBeachheadMissionCapabilityFlagA(void)
-
-bool TBeachheadMission::ReturnFalseForBeachheadMissionCapabilityFlagA(void)
-
-{
-  return false;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053A3B0
-// GHIDRA_NAME TBeachheadMission::ReturnFalseForBeachheadMissionCapabilityFlagB
-// GHIDRA_PROTO bool __stdcall ReturnFalseForBeachheadMissionCapabilityFlagB(void)
-
-bool TBeachheadMission::ReturnFalseForBeachheadMissionCapabilityFlagB(void)
-
-{
-  return false;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053A3D0
-// GHIDRA_NAME TBeachheadMission::DestroyTBeachheadMission
-// GHIDRA_PROTO void __cdecl DestroyTBeachheadMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Scalar-deleting-destructor style wrapper for beachhead mission: reset sentinel vtable then optionally free on flag bit0.
-// GHIDRA_COMMENT_END
-
-/* Scalar-deleting-destructor style wrapper for beachhead mission: reset sentinel vtable then
-   optionally free on flag bit0. */
-
-void __cdecl TBeachheadMission::DestroyTBeachheadMission(void)
-
-{
-  byte in_stack_00000004;
-  
-  thunk_ResetTBeachheadMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return;
+  return (TBeachheadMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A420
@@ -244,7 +224,7 @@ void * __cdecl TBeachheadMission::GetTBeachheadMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A490
 // GHIDRA_NAME TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
-// GHIDRA_PROTO undefined ConstructTBeachheadMissionWithNodeAndParent()
+// GHIDRA_PROTO void * __thiscall ConstructTBeachheadMissionWithNodeAndParent(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructs TBeachheadMission fields from node/parent arguments and installs g_vtblTBeachheadMission.
 // GHIDRA_COMMENT_END
@@ -252,25 +232,27 @@ void * __cdecl TBeachheadMission::GetTBeachheadMissionClassNamePointer(void)
 /* Constructs TBeachheadMission fields from node/parent arguments and installs
    g_vtblTBeachheadMission. */
 
-TMission * __thiscall
-TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
-          (TMission *param_1,void *param_2,void *param_3)
+void * __thiscall
+TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent(TBeachheadMission *this)
 
 {
-  TMission::thunk_ConstructTMission(param_1);
-  param_1[5].pVtable = param_2;
-  param_1[6].pVtable = (void *)0x0;
-  param_1[7].pVtable = (void *)0x0;
-  param_1[8].pVtable = (void *)0x0;
-  param_1[9].pVtable = (void *)0x0;
-  param_1[10].pVtable = (void *)0x0;
-  param_1[0xb].pVtable = (void *)0x0;
-  param_1[0xc].pVtable = (void *)0x0;
-  param_1[0xd].pVtable = (void *)0x0;
-  param_1[0xe].pVtable = (void *)0x0;
-  param_1[0xf].pVtable = param_3;
-  param_1->pVtable = &g_vtblTBeachheadMission;
-  return param_1;
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  
+  TMission::thunk_ConstructTMission((TMission *)this);
+  this->field14 = in_stack_00000004;
+  this->pField18 = (void *)0x0;
+  this->pField1c = (void *)0x0;
+  this->pField20 = (void *)0x0;
+  this->pField24 = (void *)0x0;
+  this->pField28 = (void *)0x0;
+  this->pField2c = (void *)0x0;
+  this->pField30 = (void *)0x0;
+  this->pField34 = (void *)0x0;
+  this->fField38 = 0.0;
+  this->pField3c = in_stack_00000008;
+  this->field0_0x0 = &g_vtblTBeachheadMission;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A500
@@ -288,90 +270,92 @@ void __thiscall
 TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(TBeachheadMission *this)
 
 {
-  undefined2 uVar1;
+  short sVar1;
   ushort uVar2;
   float fVar3;
   float fVar4;
-  float fVar5;
-  char cVar6;
+  char cVar5;
   short extraout_AX;
-  void *pvVar7;
-  uint uVar8;
-  float *pfVar9;
-  ushort *puVar10;
-  int iVar11;
-  TBeachheadMission *pTVar12;
-  float10 fVar13;
+  void *pvVar6;
+  uint uVar7;
+  float *pfVar8;
+  ushort *puVar9;
+  int iVar10;
+  void **ppvVar11;
+  int arg1;
+  int arg1_00;
+  float fVar12;
   float local_10 [4];
   
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
-  iVar11 = *(int *)(this + 0x14);
-  uVar1 = *(undefined2 *)(this + 4);
+  iVar10 = this->field14;
+  sVar1 = this->field04;
   local_10[3] = 0.0;
-  for (pvVar7 = thunk_GetNavyPrimaryOrderListHead(); pvVar7 != (void *)0x0;
-      pvVar7 = *(void **)((int)pvVar7 + 0x24)) {
-    if ((*(int *)((int)pvVar7 + 8) == iVar11) &&
-       (cVar6 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
-                          (uVar1,*(undefined2 *)((int)pvVar7 + 0x14)), cVar6 != '\0')) {
+  for (pvVar6 = thunk_GetNavyPrimaryOrderListHead(); pvVar6 != (void *)0x0;
+      pvVar6 = *(void **)((int)pvVar6 + 0x24)) {
+    if ((*(int *)((int)pvVar6 + 8) == iVar10) &&
+       (cVar5 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
+                          (sVar1,*(undefined2 *)((int)pvVar6 + 0x14)), cVar5 != '\0')) {
       thunk_GetNavyOrderNormalizationBaseByNationType();
-      fVar3 = (float)((int)*(short *)((int)pvVar7 + 0x1c) / (int)extraout_AX);
-      uVar8 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory();
-      local_10[0] = (float)(int)(short)uVar8 * fVar3 + local_10[0];
-      uVar8 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory();
-      local_10[1] = (float)(int)(short)uVar8 * fVar3 + local_10[1];
-      uVar8 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory();
-      local_10[2] = (float)(int)(short)uVar8 * fVar3 + local_10[2];
-      uVar8 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory();
-      local_10[3] = (float)(int)(short)uVar8 + local_10[3];
+      fVar12 = (float)((int)*(short *)((int)pvVar6 + 0x1c) / (int)extraout_AX);
+      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory
+                        ((int)pvVar6,(int)*(short *)((int)pvVar6 + 0x1c) % (int)extraout_AX);
+      local_10[0] = (float)(int)(short)uVar7 * fVar12 + local_10[0];
+      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory
+                        ((int)pvVar6,(int)(short)uVar7);
+      local_10[1] = (float)(int)(short)uVar7 * fVar12 + local_10[1];
+      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory((int)pvVar6,arg1);
+      local_10[2] = (float)(int)(short)uVar7 * fVar12 + local_10[2];
+      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory((int)pvVar6,arg1_00);
+      local_10[3] = (float)(int)(short)uVar7 + local_10[3];
     }
   }
-  pfVar9 = local_10;
-  iVar11 = 4;
+  pfVar8 = local_10;
+  iVar10 = 4;
+  fVar12 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  do {
+    fVar12 = fVar12 + *pfVar8;
+    pfVar8 = pfVar8 + 1;
+    iVar10 = iVar10 + -1;
+  } while (iVar10 != 0);
   fVar3 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  do {
-    fVar3 = fVar3 + *pfVar9;
-    pfVar9 = pfVar9 + 1;
-    iVar11 = iVar11 + -1;
-  } while (iVar11 != 0);
-  fVar4 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  if (fVar3 != (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    puVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-    pfVar9 = local_10;
+  if (fVar12 != (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    puVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+    pfVar8 = local_10;
     do {
-      fVar5 = *pfVar9 / fVar3 -
-              (float)(int)(short)*puVar10 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-      if (fVar5 <= (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-        fVar5 = -fVar5;
+      fVar4 = *pfVar8 / fVar12 -
+              (float)(int)(short)*puVar9 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
+      if (fVar4 <= (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+        fVar4 = -fVar4;
       }
-      fVar4 = fVar4 + fVar5;
-      puVar10 = puVar10 + 1;
-      pfVar9 = pfVar9 + 1;
-    } while ((int)puVar10 < 0x697960);
-    fVar4 = fVar3 * ((float)_g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                    fVar4 * (float)_g_Recompute_Nation_Order_LookupTable_0065AA00);
+      fVar3 = fVar3 + fVar4;
+      puVar9 = puVar9 + 1;
+      pfVar8 = pfVar8 + 1;
+    } while ((int)puVar9 < 0x697960);
+    fVar3 = fVar12 * ((float)_g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                     fVar3 * (float)_g_Recompute_Nation_Order_LookupTable_0065AA00);
   }
-  fVar3 = fVar4 * _g_Populate_Beachhead_Mission_Value_0065A8FC;
-  if (fVar4 * _g_Populate_Beachhead_Mission_Value_0065A8FC ==
+  fVar12 = fVar3 * _g_Populate_Beachhead_Mission_Value_0065A8FC;
+  if (fVar3 * _g_Populate_Beachhead_Mission_Value_0065A8FC ==
       (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    fVar3 = _g_Populate_Beachhead_Mission_Value_0065AA24;
+    fVar12 = _g_Populate_Beachhead_Mission_Value_0065AA24;
   }
-  puVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  pTVar12 = this + 0x2c;
+  puVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+  ppvVar11 = &this->pField2c;
   do {
-    uVar2 = *puVar10;
-    puVar10 = puVar10 + 1;
-    *(float *)pTVar12 =
-         (float)(int)(short)uVar2 * fVar3 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    pTVar12 = pTVar12 + 4;
-  } while ((int)puVar10 < 0x697960);
-  fVar13 = (float10)ComputeInvadeMissionPriorityScore();
-  pvVar7 = thunk_GetNavyContextPointerFromGlobalTableByIndex();
-  fVar3 = ((float)_g_Populate_Beachhead_Mission_Value_0065AA30 / (float)(int)pvVar7) * (float)fVar13
-  ;
-  if (*(float *)(this + 0x38) < fVar3) {
-    *(float *)(this + 0x38) = fVar3;
+    uVar2 = *puVar9;
+    puVar9 = puVar9 + 1;
+    *ppvVar11 = (void *)((float)(int)(short)uVar2 * fVar12 *
+                        (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    ppvVar11 = ppvVar11 + 1;
+  } while ((int)puVar9 < 0x697960);
+  fVar12 = ComputeInvadeMissionPriorityScore();
+  pvVar6 = thunk_GetNavyContextPointerFromGlobalTableByIndex();
+  fVar12 = ((float)_g_Populate_Beachhead_Mission_Value_0065AA30 / (float)(int)pvVar6) * fVar12;
+  if (this->fField38 < fVar12) {
+    this->fField38 = fVar12;
     return;
   }
   return;
@@ -396,89 +380,11 @@ TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget(TBeach
   int in_stack_0000000c;
   
   if ((((in_stack_00000004 == 2) && (in_stack_00000008 != -1)) &&
-      (in_stack_00000008 == *(short *)(*(int *)(this + 0x3c) + 0x30))) &&
-     (in_stack_0000000c == *(int *)(this + 0x14))) {
+      (in_stack_00000008 == *(short *)((int)this->pField3c + 0x30))) &&
+     (in_stack_0000000c == this->field14)) {
     return true;
   }
   return false;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053A800
-// GHIDRA_NAME TBeachheadMission::TryQueueProvinceOrderFromContextMessage
-// GHIDRA_PROTO void __fastcall TryQueueProvinceOrderFromContextMessage(int msg_ctx)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Queues province-target map-order entry from context message.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Behavior:
-// GHIDRA_COMMENT 1. If nation/province predicate (+0x48) passes, queue type 5 using province context pointer.
-// GHIDRA_COMMENT 2. Otherwise run fallback diplomacy/relationship update branch (relation code 0x131) when needed.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - msg_ctx: Context message payload containing province tile reference.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - void.
-// GHIDRA_COMMENT_END
-
-/* Queues province-target map-order entry from context message.
-   
-   Behavior:
-   1. If nation/province predicate (+0x48) passes, queue type 5 using province context pointer.
-   2. Otherwise run fallback diplomacy/relationship update branch (relation code 0x131) when needed.
-   
-   Parameters:
-   - msg_ctx: Context message payload containing province tile reference.
-   
-   Returns:
-   - void. */
-
-void __fastcall TBeachheadMission::TryQueueProvinceOrderFromContextMessage(int msg_ctx)
-
-{
-  bool cVar1;
-  char cVar2;
-  int iVar2;
-  void *unaff_ESI;
-  
-  iVar2 = (int)*(short *)(*(int *)(msg_ctx + 0x3c) + 0x30);
-  cVar1 = (bool)(**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x48))
-                          (CONCAT22((short)((uint)*(int *)(g_pGlobalMapState + 0x10) >> 0x10),
-                                    *(undefined2 *)(msg_ctx + 4)),
-                           CONCAT22((short)((uint)(iVar2 * 0x15) >> 0x10),
-                                    (short)*(char *)(*(int *)(g_pGlobalMapState + 0x10) +
-                                                    iVar2 * 0xa8)));
-  if (cVar1 != false) {
-    thunk_SetMapOrderType5AndQueue
-              (unaff_ESI,
-               *(int *)(g_pGlobalMapState + 0x10) +
-               *(short *)(*(int *)(msg_ctx + 0x3c) + 0x30) * 0xa8);
-    return;
-  }
-  iVar2 = (int)*(short *)(*(int *)(msg_ctx + 0x3c) + 0x30);
-  cVar2 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
-                    (CONCAT22((short)((uint)*(int *)(g_pGlobalMapState + 0x10) >> 0x10),
-                              *(undefined2 *)(msg_ctx + 4)),
-                     CONCAT22((short)((uint)(iVar2 * 0x15) >> 0x10),
-                              (short)*(char *)(*(int *)(g_pGlobalMapState + 0x10) + iVar2 * 0xa8)));
-  if (cVar2 == '\0') {
-    cVar2 = *(char *)(*(int *)(g_pGlobalMapState + 0x10) +
-                     *(short *)(*(int *)(msg_ctx + 0x3c) + 0x30) * 0xa8);
-    if (*(short *)((int)g_apNationStates[*(short *)(msg_ctx + 4)] + (short)cVar2 * 2 + 0xb2) !=
-        0x131) {
-      (**(code **)(*(int *)g_apNationStates[*(short *)(msg_ctx + 4)] + 0x1d0))((int)cVar2,0x131);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053A920
-// GHIDRA_NAME TBeachheadMission::GetBlockadePortMissionBeachheadChild
-// GHIDRA_PROTO void __cdecl GetBlockadePortMissionBeachheadChild(void)
-
-void __cdecl TBeachheadMission::GetBlockadePortMissionBeachheadChild(void)
-
-{
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A940
@@ -497,14 +403,14 @@ TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady(TBeachheadMiss
 {
   int *piVar1;
   
-  if ((this[0x10] == (TBeachheadMission)0x0) && (*(int *)(this + 0x28) != 0)) {
+  if ((this->field10 == 0) && (this->pField28 != (void *)0x0)) {
     return false;
   }
-  piVar1 = *(int **)(this + 0x24);
+  piVar1 = this->pField24;
   while (piVar1 != (int *)0x0) {
-    *(undefined4 *)(**(int **)(this + 0x24) + 0x2c) = 0;
-    piVar1 = thunk_DeleteMapOrderChildLinkAndReturnNext(*(int **)(this + 0x24));
-    *(int **)(this + 0x24) = piVar1;
+    *(undefined4 *)(*(int *)this->pField24 + 0x2c) = 0;
+    piVar1 = thunk_DeleteMapOrderChildLinkAndReturnNext(this->pField24);
+    this->pField24 = piVar1;
   }
   return true;
 }

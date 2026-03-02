@@ -25,6 +25,7 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
 undefined4 thunk_InitializeTradeMoveAndBarControls(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
+undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
                                                  int eventExtra);
@@ -67,9 +68,9 @@ undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
 void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
-void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
-                                                          void* argC, void* dispatchArg,
-                                                          void* arg14);
+void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unusedEdx,
+                                                          int repeatState, void* arg8, void* argC,
+                                                          void* dispatchArg, void* arg14);
 // GHIDRA_NAME: InitializeTradeScreenBitmapControls
 // GHIDRA_PROTO: undefined InitializeTradeScreenBitmapControls()
 /* DECOMPILATION FAILED: Exception while decompiling 004601b0: process: timeout */
@@ -242,6 +243,9 @@ struct TradeMoveStepCluster {
   void SelectTradeSpecialCommodityAndInitializeControls();
   void RefreshTradeMoveBarAndTurnControl();
   void HandleTradeMoveArrowControlEvent(int commandId, TradeControl* sourceControl, int eventExtra);
+  void OrphanTiny_SetWordEcxOffset_8c_00586a60(short value);
+  void OrphanLeaf_NoCall_Ins05_00586a80(int value90, int value94);
+  void OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value);
 };
 
 struct ProductionClusterState {
@@ -478,6 +482,7 @@ static __inline void* CallOwnerPanelSlot58(void* self) {
       self);
 }
 
+static __inline void FailNilPointerWithAssert(const char* sourcePath, int line);
 static __inline void FailNilPointerInUSmallViews(int line);
 
 struct TradeMoveControlState {
@@ -542,7 +547,7 @@ void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TradeControl* se
                                                                 void* arg14) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
-  HandleTradeArrowAutoRepeatTickAndDispatch(self, repeatState, arg8, argC, dispatchArg, arg14);
+  HandleTradeArrowAutoRepeatTickAndDispatch(self, 0, repeatState, arg8, argC, dispatchArg, arg14);
 }
 
 // FUNCTION: IMPERIALISM 0x004032fb
@@ -553,10 +558,14 @@ void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TradeScreenContex
   self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
 }
 
-static __inline void FailNilPointerInUSmallViews(int line) {
+static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
   MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-  ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-      kUSmallViewsCppPath, line);
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath,
+                                                                                         line);
+}
+
+static __inline void FailNilPointerInUSmallViews(int line) {
+  FailNilPointerWithAssert(kUSmallViewsCppPath, line);
 }
 
 static __inline short QueryUiScreenMode(UiRuntimeContext* runtimeContext) {
@@ -666,14 +675,19 @@ unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 /* [Enum] Auto-repeat tick emits EArrowSplitCommandId::LEFT/RIGHT based on hit side/tag and repeat
    timing gates. */
 
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x00583bd0
-void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeatState, void* arg8,
-                                                          void* argC, void* dispatchArg,
-                                                          void* arg14) {
+void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unusedEdx, int repeatState,
+                                                          void* arg8, void* argC,
+                                                          void* dispatchArg, void* arg14) {
   // ORIG_CALLCONV: __thiscall
-  (void)arg14;
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*)>(
-      ::thunk_DispatchPictureResourceCommand)(self, repeatState, arg8, argC, dispatchArg);
+  (void)unusedEdx;
+  reinterpret_cast<void(__fastcall*)(void*, int, int, void*, void*, void*, void*)>(
+      ::thunk_DispatchPictureResourceCommand)(self, 0, repeatState, arg8, argC, dispatchArg,
+                                              arg14);
 
   if (repeatState == 2) {
     return;
@@ -681,7 +695,7 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeat
 
   unsigned int tick = (unsigned int)thunk_GetTickCountDiv16();
   int* repeatDeadline = reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x94);
-  if ((unsigned int)(*repeatDeadline + 5) > tick) {
+  if (tick < (unsigned int)(*repeatDeadline + 5)) {
     return;
   }
 
@@ -691,20 +705,23 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int repeat
     *repeatDeadline = (int)tick + 10;
   }
 
-  void** vtable = *reinterpret_cast<void***>(self);
-  char isActive = reinterpret_cast<char(__fastcall*)(void*)>(vtable[0x16c / 4])(dispatchArg);
+  TradeControl* selfControl = reinterpret_cast<TradeControl*>(self);
+  char isActive = selfControl->CtrlSlot91(dispatchArg);
   if (isActive == '\0') {
     return;
   }
 
   if (*reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x1c) == kControlTagRght) {
-    reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(vtable[0x40 / 4])(self, 100, 0, 0);
+    selfControl->CtrlSlot16(100, 0, 0);
     return;
   }
 
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(vtable[0x40 / 4])(self, 0x65, self,
-                                                                                0);
+  selfControl->CtrlSlot16(0x65, self, 0);
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("y", off)
+#endif
 
 // FUNCTION: IMPERIALISM 0x00585f70
 UnitToolbarClusterState* __cdecl CreateTUnitToolbarClusterInstance(void) {
@@ -1016,27 +1033,32 @@ void __fastcall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForwa
       cluster, commandId, eventArg, eventExtra);
 }
 
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x00586a60
-void __fastcall OrphanTiny_SetWordEcxOffset_8c_00586a60(TradeMoveStepCluster* cluster,
-                                                        int unusedEdx, short value) {
-  (void)unusedEdx;
-  cluster->field_8c = value;
+void TradeMoveStepCluster::OrphanTiny_SetWordEcxOffset_8c_00586a60(short value) {
+  // ORIG_CALLCONV: __thiscall
+  field_8c = value;
 }
 
 // FUNCTION: IMPERIALISM 0x00586a80
-void __fastcall OrphanLeaf_NoCall_Ins05_00586a80(TradeMoveStepCluster* cluster, int unusedEdx,
-                                                 int value90, int value94) {
-  (void)unusedEdx;
-  cluster->field_90 = value90;
-  cluster->field_94 = value94;
+void TradeMoveStepCluster::OrphanLeaf_NoCall_Ins05_00586a80(int value90, int value94) {
+  // ORIG_CALLCONV: __thiscall
+  field_90 = value90;
+  field_94 = value94;
 }
 
 // FUNCTION: IMPERIALISM 0x00586ab0
-void __fastcall OrphanTiny_SetWordEcxOffset_8e_00586ab0(TradeMoveStepCluster* cluster,
-                                                        int unusedEdx, short value) {
-  (void)unusedEdx;
-  cluster->field_8e = value;
+void TradeMoveStepCluster::OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value) {
+  // ORIG_CALLCONV: __thiscall
+  field_8e = value;
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("y", off)
+#endif
 
 // FUNCTION: IMPERIALISM 0x00586ad0
 ClosePictureState* __cdecl CreateTClosePictureInstance(void) {
@@ -1143,9 +1165,7 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
 
   TradeControl* barControl = ResolveOwnerControl(panel, kControlTagBar);
   if (barControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, kAssertLineMoveBarInitNil);
+    FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
   reinterpret_cast<void(__fastcall*)(TradeControl*, int, unsigned int)>(
       (*reinterpret_cast<void***>(barControl))[0xdc / 4])(barControl, 0, styleDescriptor);
@@ -1159,6 +1179,10 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
   return value;
 }
 
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x00586e70
 void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
                                                              int eventExtra) {
@@ -1171,18 +1195,14 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
     TradeControl* moveControl =
         reinterpret_cast<TradeControl*>(resolveByTag(this, kControlTagMove));
     if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-          kUSmallViewsCppPath, kAssertLineMoveAdjustMove);
+      FailNilPointerInUSmallViews(kAssertLineMoveAdjustMove);
     }
     short moveValue = moveControl->QueryValue();
 
     TradeControl* availableControl =
         reinterpret_cast<TradeControl*>(resolveByTag(this, kControlTagAvai));
     if (availableControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-          kUSmallViewsCppPath, kAssertLineMoveAdjustAvai);
+      FailNilPointerInUSmallViews(kAssertLineMoveAdjustAvai);
     }
     short availableValue = (short)availableControl->QueryValue();
     if (moveValue < availableValue) {
@@ -1192,9 +1212,7 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
     TradeControl* moveControl =
         reinterpret_cast<TradeControl*>(resolveByTag(this, kControlTagMove));
     if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-      ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-          kUSmallViewsCppPath, kAssertLineMoveAdjustMoveMinus);
+      FailNilPointerInUSmallViews(kAssertLineMoveAdjustMoveMinus);
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
@@ -1204,6 +1222,10 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
       this, commandId, eventArg, eventExtra);
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("y", off)
+#endif
 
 void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
                                                  int eventExtra) {
@@ -1975,9 +1997,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
 
   TradeControl* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
   if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, 0xb42);
+    FailNilPointerInUSmallViews(0xb42);
   }
 
   moveControl->SetControlValue((int)ReadControlValueFieldPlus4(selectedControl), 0);
@@ -1992,9 +2012,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
 
   TradeControl* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
   if (barControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, 0xb49);
+    FailNilPointerInUSmallViews(0xb49);
   }
 
   TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
@@ -2201,9 +2219,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
 
   TradeControl* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
   if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, 0xcf2);
+    FailNilPointerInUSmallViews(0xcf2);
   }
 
   moveControl->SetControlValue((int)ReadControlValueFieldPlus4(selectedControl), 0);
@@ -2218,9 +2234,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
 
   TradeControl* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
   if (barControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSmallViewsCppPath, 0xcf9);
+    FailNilPointerInUSmallViews(0xcf9);
   }
 
   TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
@@ -2544,9 +2558,7 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
 void TradeScreenContext::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag) {
   TradeControl* toolControl = ResolveControlByTag(0x746f6f6c);
   if (toolControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    ((void(__cdecl*)(const char*, int))TemporarilyClearAndRestoreUiInvalidationFlag)(
-        kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
+    FailNilPointerWithAssert(kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
   }
 
   TradeControl* control = ResolveOwnerControl(toolControl, 0x73656173);

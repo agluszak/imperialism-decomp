@@ -3,6 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TNavyBattle.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401023
+// GHIDRA_NAME TNavyBattle::thunk_FinalizeTacticalTurnStateAndQueueEvent232A
+// GHIDRA_PROTO void __thiscall thunk_FinalizeTacticalTurnStateAndQueueEvent232A(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to FinalizeTacticalTurnStateAndQueueEvent232A
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to FinalizeTacticalTurnStateAndQueueEvent232A */
+
+void __thiscall TNavyBattle::thunk_FinalizeTacticalTurnStateAndQueueEvent232A(TNavyBattle *this)
+
+{
+  TTacArmyView *this_00;
+  undefined4 uVar1;
+  int iVar2;
+  
+  RebuildListFromProviderAndDeduplicateByKey();
+  RebuildListFromProviderAndDeduplicateByKey();
+  (**(code **)(*(int *)this->field14_0x20 + 0x68))(OrphanCallChain_C4_I70_0059f610,this);
+  this->field4_0x10 = 1;
+  if (this->pField08 != (void *)0x0) {
+    this_00 = (TTacArmyView *)
+              (**(code **)(**(int **)((int)this->pField08 + 0x20) + 0x94))(0x746f6f6c);
+    (**(code **)(this_00->field0_0x0 + 0xc))();
+    TTacArmyView::thunk_ConfigureTacticalTargetDoneRetreatAutoControls(this_00,1);
+  }
+  iVar2 = *(int *)this->field14_0x20;
+  uVar1 = (**(code **)(iVar2 + 0x48))();
+  iVar2 = (**(code **)(iVar2 + 0x4c))(uVar1);
+  this->field1c = iVar2;
+  thunk_QueueTacticalEventPacket232A();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00401AF5
 // GHIDRA_NAME TNavyBattle::thunk_GetTNavyBattleClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTNavyBattleClassNamePointer(void)
@@ -21,21 +55,74 @@ void * __cdecl TNavyBattle::thunk_GetTNavyBattleClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040825B
-// GHIDRA_NAME TNavyBattle::thunk_GetTNavyBattleRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTNavyBattleRuntimeClass(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00403445
+// GHIDRA_NAME TNavyBattle::thunk_ComputeReachableTileDistanceByMoveBudget
+// GHIDRA_PROTO void __thiscall thunk_ComputeReachableTileDistanceByMoveBudget(void * param_1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTNavyBattleRuntimeClass.
+// GHIDRA_COMMENT Direct thunk
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTNavyBattleRuntimeClass. */
+/* Direct thunk */
 
-void * __thiscall TNavyBattle::thunk_GetTNavyBattleRuntimeClass(TNavyBattle *this)
+void __thiscall
+TNavyBattle::thunk_ComputeReachableTileDistanceByMoveBudget(TNavyBattle *this,void *param_1)
+
+{
+  ComputeReachableTileDistanceByMoveBudget(this,param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404D27
+// GHIDRA_NAME TNavyBattle::thunk_ResolveTacticalAttackAgainstTileOccupant
+// GHIDRA_PROTO void __thiscall thunk_ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit * pAttackerUnit, int targetTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ResolveTacticalAttackAgainstTileOccupant
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ResolveTacticalAttackAgainstTileOccupant */
+
+void __thiscall
+TNavyBattle::thunk_ResolveTacticalAttackAgainstTileOccupant
+          (TNavyBattle *this,TacticalBattleUnit *pAttackerUnit,int targetTileIndex)
+
+{
+  ResolveTacticalAttackAgainstTileOccupant(this,pAttackerUnit,targetTileIndex);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004063CA
+// GHIDRA_NAME TNavyBattle::thunk_TryPlaceTacticalUnitOnTileAndAdvanceSelection
+// GHIDRA_PROTO void __thiscall thunk_TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit * pUnit, int targetTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to TryPlaceTacticalUnitOnTileAndAdvanceSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to TryPlaceTacticalUnitOnTileAndAdvanceSelection */
+
+void __thiscall
+TNavyBattle::thunk_TryPlaceTacticalUnitOnTileAndAdvanceSelection
+          (TNavyBattle *this,TacticalBattleUnit *pUnit,int targetTileIndex)
+
+{
+  TryPlaceTacticalUnitOnTileAndAdvanceSelection(this,pUnit,targetTileIndex);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040825B
+// GHIDRA_NAME TNavyBattle::thunk_CreateTNavyBattleInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTNavyBattleInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk forwarding to GetTNavyBattleRuntimeClass. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk forwarding to GetTNavyBattleRuntimeClass. [FID:thunk_target_sync] */
+
+void * __thiscall TNavyBattle::thunk_CreateTNavyBattleInstance(TNavyBattle *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -53,7 +140,7 @@ void * __thiscall TNavyBattle::CreateTNavyBattleInstance(TNavyBattle *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -70,5 +157,242 @@ void * __cdecl TNavyBattle::GetTNavyBattleClassNamePointer(void)
 
 {
   return &g_pClassDescTNavyBattle;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A55C0
+// GHIDRA_NAME TNavyBattle::TryPlaceTacticalUnitOnTileAndAdvanceSelection
+// GHIDRA_PROTO void __thiscall TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit * pUnit, int targetTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit *pUnit, int targetTileIndex)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit *pUnit,
+   int targetTileIndex) */
+
+void __thiscall
+TNavyBattle::TryPlaceTacticalUnitOnTileAndAdvanceSelection
+          (TNavyBattle *this,TacticalBattleUnit *pUnit,int targetTileIndex)
+
+{
+  int iVar1;
+  int nextUnitSelection;
+  int extraout_EAX;
+  void *pSideListCursor;
+  int targetRow;
+  bool canPlace;
+  
+  canPlace = true;
+  iVar1 = targetTileIndex / 0x1d;
+  if (pUnit->ownerSideIndex == 0) {
+    if ((this->field34 + -6 <= iVar1) && (iVar1 <= this->field34 + -5)) goto LAB_005a5610;
+  }
+  else if ((iVar1 < 7) && (4 < iVar1)) goto LAB_005a5610;
+  canPlace = false;
+LAB_005a5610:
+  if (*(int *)(targetTileIndex * 0x14 + 4 + this->field04) != 0) {
+    canPlace = false;
+  }
+  if (canPlace) {
+    pUnit->tileIndex = targetTileIndex;
+    *(TacticalBattleUnit **)(targetTileIndex * 0x14 + 4 + this->field04) = pUnit;
+    if (this->pField08 != (int *)0x0) {
+      (**(code **)(*(int *)this->pField08 + 0x1a4))(pUnit);
+    }
+    thunk_SelectNextTacticalUnitForDoneCommand();
+    this->field1c = nextUnitSelection;
+    if (*(char *)(*(int *)(&this->field_0x14 + this->field0c * 4) + 0x10) != '\0') {
+      this->field0c = (uint)(this->field0c == 0);
+      thunk_SelectNextTacticalUnitForDoneCommand();
+      this->field1c = extraout_EAX;
+      if (this->pField08 != (void *)0x0) {
+        pSideListCursor =
+             (void *)(**(code **)(**(int **)((int)this->pField08 + 0x20) + 0x94))(0x746f6f6c);
+        targetRow = *(int *)pSideListCursor;
+        (**(code **)(targetRow + 0xc))();
+        (**(code **)(targetRow + 0x1cc))(this->field1c);
+        (**(code **)(targetRow + 0x13c))();
+      }
+      if ((char)(*(int **)(&this->field_0x14 + this->field0c * 4))[4] != '\0') {
+        thunk_FinalizeTacticalTurnStateAndQueueEvent232A(this);
+        return;
+      }
+      (**(code **)(**(int **)(&this->field_0x14 + this->field0c * 4) + 0x28))();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5730
+// GHIDRA_NAME TNavyBattle::ResolveTacticalAttackAgainstTileOccupant
+// GHIDRA_PROTO void __thiscall ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit * pAttackerUnit, int targetTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit *pAttackerUnit, int targetTileIndex)
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unable to use type for symbol pController */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Setting prototype: void ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit
+   *pAttackerUnit, int targetTileIndex) */
+
+void __thiscall
+TNavyBattle::ResolveTacticalAttackAgainstTileOccupant
+          (TNavyBattle *this,TacticalBattleUnit *pAttackerUnit,int targetTileIndex)
+
+{
+  int damageMode;
+  int rollValue;
+  int iVar1;
+  uint uVar2;
+  float10 fVar3;
+  float10 fVar4;
+  undefined4 uVar5;
+  undefined4 uVar6;
+  int targetDoubleColumn;
+  float targetRow;
+  TacticalBattleUnit *pActiveUnit;
+  TacticalBattleUnit *pController;
+  TacticalBattleUnit *pDefenderUnit;
+  uint attackerRow;
+  float rangeChanceFactor;
+  
+  pController = pAttackerUnit;
+  pDefenderUnit = *(TacticalBattleUnit **)(this->field04 + 4 + targetTileIndex * 0x14);
+  (**(code **)((int)pDefenderUnit->pVtable + 0xc))();
+  attackerRow = pAttackerUnit->tileIndex / 0x1d;
+  iVar1 = (attackerRow & 1) + (pAttackerUnit->tileIndex % 0x1d) * 2;
+  thunk_ConvertHexTileIndexToRowAndDoubleColumn
+            (targetTileIndex,(uint *)&targetRow,&targetDoubleColumn);
+  if (targetDoubleColumn < iVar1) {
+    targetDoubleColumn = iVar1 * 2 - targetDoubleColumn;
+  }
+  if ((int)targetRow < (int)attackerRow) {
+    targetRow = (float)(attackerRow * 2 - (int)targetRow);
+  }
+  pAttackerUnit = (TacticalBattleUnit *)((int)targetRow - attackerRow);
+  rollValue = (targetDoubleColumn - iVar1) - (int)pAttackerUnit;
+  if (0 < rollValue) {
+    pAttackerUnit = (TacticalBattleUnit *)((int)&pAttackerUnit->pVtable + rollValue / 2);
+  }
+  iVar1 = (**(code **)((int)pController->pVtable + 0x2c))();
+  rangeChanceFactor =
+       (float)(int)pAttackerUnit / ((float)iVar1 * (float)_g_Resolve_Tactical_Attack_Value_00669EF8)
+  ;
+  targetRow = (float)(pController->statAttackBase * 5) +
+              _g_Resolve_Tactical_Attack_Value_00669F04 /
+              (rangeChanceFactor * rangeChanceFactor * rangeChanceFactor -
+              _g_Resolve_Tactical_Attack_Value_00669F00);
+  if (this->pField08 != (int *)0x0) {
+    (**(code **)(*(int *)this->pField08 + 0x1b8))
+              (pController->tileIndex,pController->unitKindId + 0xf5a,1);
+  }
+  uVar2 = GenerateThreadLocalRandom15();
+  if (targetRow <= (float)((int)uVar2 % 100)) {
+    if (this->pField08 == (int *)0x0) goto LAB_005a58fd;
+    iVar1 = *(int *)this->pField08;
+    uVar6 = 6;
+    uVar5 = 0xf3c;
+  }
+  else {
+    pActiveUnit = *(TacticalBattleUnit **)(&this->field_0x14 + this->field0c * 4);
+    (**(code **)((int)pActiveUnit->pVtable + 0xc))();
+    damageMode = pActiveUnit->unknown_2c;
+    fVar3 = (float10)(**(code **)((int)pController->pVtable + 0x30))();
+    iVar1 = pController->statHealthA;
+    fVar4 = (float10)(**(code **)((int)pDefenderUnit->pVtable + 0x34))();
+    thunk_ApplyTacticalDamageAndDeathState
+              (pDefenderUnit,(float)(fVar4 * (float10)(float)((float10)iVar1 * fVar3)),damageMode);
+    if (this->pField08 != (int *)0x0) {
+      (**(code **)(*(int *)this->pField08 + 0x1a4))(pDefenderUnit);
+    }
+    if (pDefenderUnit->stateCode != 3) goto LAB_005a58fd;
+    *(undefined4 *)(this->field04 + 4 + pDefenderUnit->tileIndex * 0x14) = 0;
+    pDefenderUnit->tileIndex = -1;
+    if (this->pField08 == (int *)0x0) goto LAB_005a58fd;
+    iVar1 = *(int *)this->pField08;
+    uVar6 = 0xc;
+    uVar5 = 0xf42;
+  }
+  (**(code **)(iVar1 + 0x1b8))(targetTileIndex,uVar5,uVar6);
+LAB_005a58fd:
+  pController->isActionAvailable = 0;
+  thunk_EvaluateTacticalSideStateAndShowBattleSummaryDialog((int)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A59F0
+// GHIDRA_NAME TNavyBattle::ComputeReachableTileDistanceByMoveBudget
+// GHIDRA_PROTO void __thiscall ComputeReachableTileDistanceByMoveBudget(void * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Compute reachable tile distance values under move-budget constraints
+// GHIDRA_COMMENT_END
+
+/* Compute reachable tile distance values under move-budget constraints */
+
+void __thiscall
+TNavyBattle::ComputeReachableTileDistanceByMoveBudget(TNavyBattle *this,void *param_1)
+
+{
+  int iVar1;
+  short *psVar2;
+  short sVar3;
+  int iVar4;
+  short *psVar5;
+  int *piVar6;
+  void **ppvVar7;
+  int local_28;
+  int local_24;
+  int local_1c;
+  int local_18 [6];
+  
+  iVar1 = *(int *)((int)param_1 + 0x28);
+  iVar4 = 0;
+  psVar2 = this->pField24;
+  psVar5 = psVar2;
+  if (0 < this->field3c) {
+    do {
+      *psVar5 = -1;
+      iVar4 = iVar4 + 1;
+      psVar5 = psVar5 + 1;
+    } while (iVar4 < this->field3c);
+  }
+  psVar2[*(int *)((int)param_1 + 8)] = 0;
+  local_1c = 0;
+  if (-1 < iVar1) {
+    do {
+      local_24 = 0;
+      psVar5 = psVar2;
+      if (0 < this->field3c) {
+        do {
+          if (local_1c <= *psVar5) {
+            thunk_ComputeHexNeighborTileIndices_005A0420((int)this,(int)*psVar5,local_24);
+            piVar6 = local_18;
+            ppvVar7 = &this->pField7c;
+            local_28 = 6;
+            do {
+              iVar4 = *piVar6;
+              if ((iVar4 != -1) && (*(int *)(this->field04 + 4 + iVar4 * 0x14) == 0)) {
+                if (*(int *)((int)param_1 + 0xc) < 2) {
+                  sVar3 = *psVar5 + *(short *)ppvVar7;
+                }
+                else {
+                  sVar3 = *psVar5 + 10;
+                }
+                if ((sVar3 <= iVar1) && ((psVar2[iVar4] == -1 || (sVar3 < psVar2[iVar4])))) {
+                  psVar2[iVar4] = sVar3;
+                }
+              }
+              ppvVar7 = ppvVar7 + 1;
+              piVar6 = piVar6 + 1;
+              local_28 = local_28 + -1;
+            } while (local_28 != 0);
+          }
+          local_24 = local_24 + 1;
+          psVar5 = psVar5 + 1;
+        } while (local_24 < this->field3c);
+      }
+      local_1c = local_1c + 10;
+    } while (local_1c <= iVar1);
+  }
+  return;
 }
 

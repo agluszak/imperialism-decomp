@@ -4,15 +4,15 @@
 // Bucket: TGWorldButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040402A
-// GHIDRA_NAME TGWorldButton::thunk_GetTGWorldButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGWorldButtonClassNamePointer(void)
+// GHIDRA_NAME TGWorldButton::TGWorldButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TGWorldButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTGWorldButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTGWorldButtonClassNamePointer */
 
-void * __cdecl TGWorldButton::thunk_GetTGWorldButtonClassNamePointer(void)
+void * __cdecl TGWorldButton::TGWorldButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,17 +21,32 @@ void * __cdecl TGWorldButton::thunk_GetTGWorldButtonClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404089
+// GHIDRA_NAME TGWorldButton::TGWorldButton_VtblSlot068
+// GHIDRA_PROTO void __cdecl TGWorldButton_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00572270
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00572270 */
+
+void __cdecl TGWorldButton::TGWorldButton_VtblSlot068(void)
+
+{
+  Helper_Uses_BlitRectWithOptionalTransparency_At00572270();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405CF4
-// GHIDRA_NAME TGWorldButton::thunk_DestructTGWorldButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTGWorldButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TGWorldButton::TGWorldButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TGWorldButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTGWorldButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTGWorldButtonAndMaybeFree */
 
-void * __thiscall
-TGWorldButton::thunk_DestructTGWorldButtonAndMaybeFree(TGWorldButton *this,byte freeSelfFlag)
+void * __thiscall TGWorldButton::TGWorldButton_VtblSlot001(TGWorldButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -57,12 +72,12 @@ void * __cdecl TGWorldButton::CreateTGWorldButtonInstance(void)
   puStack_8 = &LAB_006364aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x8c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTGWorldButton;
-    *(undefined2 *)(this + 0x84) = 0;
+    (this->base).pVtable = &g_vtblTGWorldButton;
+    *(undefined2 *)&this->field_0x84 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -92,9 +107,9 @@ void * __cdecl TGWorldButton::GetTGWorldButtonClassNamePointer(void)
 void * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorldButton *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  *(undefined ***)this = &g_vtblTGWorldButton;
-  *(undefined2 *)(this + 0x84) = 0;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase(&this->base);
+  (this->base).base.pVtable = &g_vtblTGWorldButton;
+  *(undefined2 *)&(this->base).field_0x84 = 0;
   return this;
 }
 
@@ -106,9 +121,9 @@ void * __thiscall
 TGWorldButton::DestructTGWorldButtonAndMaybeFree(TGWorldButton *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

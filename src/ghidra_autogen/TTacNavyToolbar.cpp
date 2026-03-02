@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TTacNavyToolbar.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040267B
+// GHIDRA_NAME TTacNavyToolbar::thunk_HandleNavyTacticalToolbarModeAndCommandTags
+// GHIDRA_PROTO void __thiscall thunk_HandleNavyTacticalToolbarModeAndCommandTags(int arg1, int arg2, int arg3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleNavyTacticalToolbarModeAndCommandTags
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleNavyTacticalToolbarModeAndCommandTags */
+
+void __thiscall
+TTacNavyToolbar::thunk_HandleNavyTacticalToolbarModeAndCommandTags
+          (TTacNavyToolbar *this,int arg1,int arg2,int arg3)
+
+{
+  TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags
+            ((TacticalBattleView *)this,arg1,arg2,arg3);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00403A99
 // GHIDRA_NAME TTacNavyToolbar::thunk_GetTTacNavyToolbarClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTTacNavyToolbarClassNamePointer(void)
@@ -22,21 +41,39 @@ void * __cdecl TTacNavyToolbar::thunk_GetTTacNavyToolbarClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C36
-// GHIDRA_NAME TTacNavyToolbar::thunk_InitializeTacticalNavyToolbarCommandEntries
-// GHIDRA_PROTO void __thiscall thunk_InitializeTacticalNavyToolbarCommandEntries(int lifecycleContext)
+// GHIDRA_NAME TTacNavyToolbar::thunk_ConstructTTacNavyToolbarBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTacNavyToolbarBaseState(int lifecycleContext)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTacticalNavyToolbarCommandEntries
+// GHIDRA_COMMENT Single-JMP thunk to InitializeTacticalNavyToolbarCommandEntries [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to InitializeTacticalNavyToolbarCommandEntries */
+/* Single-JMP thunk to InitializeTacticalNavyToolbarCommandEntries [FID:thunk_target_sync] */
 
 void __thiscall
-TTacNavyToolbar::thunk_InitializeTacticalNavyToolbarCommandEntries
-          (TTacNavyToolbar *this,int lifecycleContext)
+TTacNavyToolbar::thunk_ConstructTTacNavyToolbarBaseState(TTacNavyToolbar *this,int lifecycleContext)
 
 {
   ConstructTTacNavyToolbarBaseState(this,lifecycleContext);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407770
+// GHIDRA_NAME TTacNavyToolbar::thunk_scalar_deleting_destructor_00407770
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407770(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTacNavyToolbar::thunk_scalar_deleting_destructor_00407770(TTacNavyToolbar *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD160
@@ -69,7 +106,7 @@ TTacNavyToolbar::ConstructTTacNavyToolbarBaseState(TTacNavyToolbar *this,int lif
 
 {
   TTacticalToolbar::ConstructTTacticalToolbarBaseState((TTacticalToolbar *)this);
-  (**(code **)(*(int *)this + 0x1c8))(0x68756c6c);
+  (**(code **)((int)this->field0_0x0 + 0x1c8))(0x68756c6c);
   return;
 }
 

@@ -22,37 +22,21 @@ void * __cdecl TExpansionOrder::thunk_GetTExpansionOrderClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004059CA
-// GHIDRA_NAME TExpansionOrder::thunk_GetTExpansionOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTExpansionOrderRuntimeClass(void)
+// GHIDRA_NAME TExpansionOrder::thunk_DestructTExpansionOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTExpansionOrderAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTExpansionOrderRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTExpansionOrderRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTExpansionOrderRuntimeClass. */
+/* Thunk forwarding to GetTExpansionOrderRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TExpansionOrder::thunk_GetTExpansionOrderRuntimeClass(TExpansionOrder *this)
+void * __thiscall TExpansionOrder::thunk_DestructTExpansionOrderAndMaybeFree(TExpansionOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004071DA
-// GHIDRA_NAME TExpansionOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b8fc0
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b8fc0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b8fc0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b8fc0 */
-
-void TExpansionOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b8fc0(void)
-
-{
-  ConstructTExpansionOrderBaseState();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8F80
@@ -72,7 +56,7 @@ void * __cdecl TExpansionOrder::GetTExpansionOrderClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FC0
 // GHIDRA_NAME TExpansionOrder::ConstructTExpansionOrderBaseState
-// GHIDRA_PROTO undefined ConstructTExpansionOrderBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTExpansionOrderBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -80,15 +64,16 @@ void * __cdecl TExpansionOrder::GetTExpansionOrderClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TExpansionOrder * __thiscall
-TExpansionOrder::ConstructTExpansionOrderBaseState(TExpansionOrder *param_1,byte param_2)
+void __thiscall TExpansionOrder::ConstructTExpansionOrderBaseState(TExpansionOrder *this)
 
 {
-  thunk_GetTExpansionOrderRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTExpansionOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FF0
@@ -105,7 +90,7 @@ void * __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansio
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

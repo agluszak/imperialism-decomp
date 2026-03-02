@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TCivilianButton.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401659
+// GHIDRA_NAME TCivilianButton::TCivilianButton_VtblSlot117
+// GHIDRA_PROTO void __thiscall TCivilianButton_VtblSlot117(int selectedValue)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetSelectionAndEnableByMappedValue
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetSelectionAndEnableByMappedValue */
+
+void __thiscall
+TCivilianButton::TCivilianButton_VtblSlot117(TCivilianButton *this,int selectedValue)
+
+{
+  void *pvVar1;
+  short sVar2;
+  
+  this->hoverTag60 = 0xc;
+  this->selectedValue9c = selectedValue;
+  if (selectedValue != 0) {
+    pvVar1 = this->pVtable;
+    (**(code **)((int)pvVar1 + 0xa4))(1,0);
+    (**(code **)((int)pvVar1 + 0xa8))(1,0);
+    sVar2 = (**(code **)(*(int *)g_pGlobalMapState + 0x118))(selectedValue);
+    this->mappedSelection98 = sVar2;
+    return;
+  }
+  (**(code **)((int)this->pVtable + 0xa4))(0,1);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00401D02
 // GHIDRA_NAME TCivilianButton::thunk_CreateTCivilianButtonInstance
 // GHIDRA_PROTO void * __cdecl thunk_CreateTCivilianButtonInstance(void)
@@ -15,8 +45,8 @@
 void * __cdecl TCivilianButton::thunk_CreateTCivilianButtonInstance(void)
 
 {
-  TRadioPictureButton *this;
-  TRadioPictureButton *pTVar1;
+  TCivilianButton *this;
+  TCivilianButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -26,13 +56,13 @@ void * __cdecl TCivilianButton::thunk_CreateTCivilianButtonInstance(void)
   puStack_8 = &LAB_00637afa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this = (TRadioPictureButton *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   uStack_4 = 0;
-  pTVar1 = (TRadioPictureButton *)0x0;
-  if (this != (TRadioPictureButton *)0x0) {
-    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(this);
-    *(undefined ***)this = &g_vtblTCivilianButton;
-    *(undefined4 *)(this + 0x60) = 0xc;
+  pTVar1 = (TCivilianButton *)0x0;
+  if (this != (TCivilianButton *)0x0) {
+    thunk_ConstructUiClickablePictureResourceEntry(this);
+    this->pVtable = "PV@";
+    this->hoverTag60 = 0xc;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -40,34 +70,34 @@ void * __cdecl TCivilianButton::thunk_CreateTCivilianButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004028A6
-// GHIDRA_NAME TCivilianButton::thunk_DestructTCivilianButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCivilianButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCivilianButton::TCivilianButton_VtblSlot001
+// GHIDRA_PROTO TCivilianButton * __thiscall TCivilianButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCivilianButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCivilianButtonAndMaybeFree */
 
-void * __thiscall
-TCivilianButton::thunk_DestructTCivilianButtonAndMaybeFree(TCivilianButton *this,byte freeSelfFlag)
+TCivilianButton * __thiscall
+TCivilianButton::TCivilianButton_VtblSlot001(TCivilianButton *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TCivilianButton *pTVar1;
   
-  pvVar1 = DestructTCivilianButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTCivilianButtonAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405650
-// GHIDRA_NAME TCivilianButton::thunk_GetTCivilianButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCivilianButtonClassNamePointer(void)
+// GHIDRA_NAME TCivilianButton::TCivilianButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCivilianButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCivilianButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCivilianButtonClassNamePointer */
 
-void * __cdecl TCivilianButton::thunk_GetTCivilianButtonClassNamePointer(void)
+void * __cdecl TCivilianButton::TCivilianButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -76,15 +106,97 @@ void * __cdecl TCivilianButton::thunk_GetTCivilianButtonClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004086E8
+// GHIDRA_NAME TCivilianButton::TCivilianButton_VtblSlot068
+// GHIDRA_PROTO void __thiscall TCivilianButton_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BlitHintOverlayRectWithCtrlModifierPalette
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to BlitHintOverlayRectWithCtrlModifierPalette */
+
+void __thiscall TCivilianButton::TCivilianButton_VtblSlot068(TCivilianButton *this)
+
+{
+  RECT RStack_20;
+  RECT RStack_10;
+  
+  if (*(int *)&this->field_0x4 != 0) {
+    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  }
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  RStack_10.left = (LONG)this->mappedSelection98;
+  RStack_10.top = 0;
+  RStack_10.right = RStack_10.left + 0x40;
+  RStack_20.top = 2;
+  RStack_10.bottom = 0x40;
+  RStack_20.right = 0x40;
+  RStack_20.left = 0;
+  RStack_20.bottom = 0x42;
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x66c) + 4),
+             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_10,&RStack_20,0x24,
+             (astruct_19 *)0x0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00409980
+// GHIDRA_NAME TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
+// GHIDRA_PROTO void __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructUiClickablePictureResourceEntry
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructUiClickablePictureResourceEntry */
+
+void __thiscall
+TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(TCivilianButton *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  this->field140_0x92 = 7000;
+  this->pVtable = &g_vtblTRadioPictureButton;
+  this->hoverTag60 = 0xc;
+  this->field141_0x94 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005717C0
+// GHIDRA_NAME TCivilianButton::ConstructUiClickablePictureResourceEntry
+// GHIDRA_PROTO void __thiscall ConstructUiClickablePictureResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command icon slots in multiple UI builders.
+// GHIDRA_COMMENT_END
+
+/* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
+   icon slots in multiple UI builders. */
+
+void __thiscall TCivilianButton::ConstructUiClickablePictureResourceEntry(TCivilianButton *this)
+
+{
+  thunk_ConstructPictureResourceEntryBase();
+  this->field140_0x92 = 7000;
+  this->pVtable = &g_vtblTRadioPictureButton;
+  this->hoverTag60 = 0xc;
+  this->field141_0x94 = 0;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B340
 // GHIDRA_NAME TCivilianButton::CreateTCivilianButtonInstance
 // GHIDRA_PROTO void * __cdecl CreateTCivilianButtonInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled class factory name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled class factory name */
 
 void * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 
 {
-  TRadioPictureButton *this;
-  TRadioPictureButton *pTVar1;
+  TCivilianButton *this;
+  TCivilianButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -94,13 +206,13 @@ void * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
   puStack_8 = &LAB_00637afa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TRadioPictureButton *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TRadioPictureButton *)0x0;
-  if (this != (TRadioPictureButton *)0x0) {
-    TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry(this);
-    *(undefined ***)this = &g_vtblTCivilianButton;
-    *(undefined4 *)(this + 0x60) = 0xc;
+  pTVar1 = (TCivilianButton *)0x0;
+  if (this != (TCivilianButton *)0x0) {
+    thunk_ConstructUiClickablePictureResourceEntry(this);
+    this->pVtable = "PV@";
+    this->hoverTag60 = 0xc;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -124,29 +236,70 @@ void * __cdecl TCivilianButton::GetTCivilianButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B3E0
 // GHIDRA_NAME TCivilianButton::ConstructTCivilianButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCivilianButtonBaseState(void)
+// GHIDRA_PROTO TCivilianButton * __thiscall ConstructTCivilianButtonBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled constructor name
+// GHIDRA_COMMENT_END
 
-void * __thiscall TCivilianButton::ConstructTCivilianButtonBaseState(TCivilianButton *this)
+/* demangled from mangled constructor name */
+
+TCivilianButton * __thiscall
+TCivilianButton::ConstructTCivilianButtonBaseState(TCivilianButton *this)
 
 {
-  TRadioPictureButton::thunk_ConstructUiClickablePictureResourceEntry((TRadioPictureButton *)this);
-  *(undefined ***)this = &g_vtblTCivilianButton;
-  *(undefined4 *)(this + 0x60) = 0xc;
+  thunk_ConstructUiClickablePictureResourceEntry(this);
+  this->pVtable = "PV@";
+  this->hoverTag60 = 0xc;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B410
 // GHIDRA_NAME TCivilianButton::DestructTCivilianButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCivilianButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TCivilianButton * __thiscall DestructTCivilianButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled destructor name
+// GHIDRA_COMMENT_END
 
-void * __thiscall
+/* demangled from mangled destructor name */
+
+TCivilianButton * __thiscall
 TCivilianButton::DestructTCivilianButtonAndMaybeFree(TCivilianButton *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058B460
+// GHIDRA_NAME TCivilianButton::SetSelectionAndEnableByMappedValue
+// GHIDRA_PROTO void __thiscall SetSelectionAndEnableByMappedValue(int selectedValue)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Set selection value and enabled state; maps non-zero value via global map state slot +0x118
+// GHIDRA_COMMENT_END
+
+/* Set selection value and enabled state; maps non-zero value via global map state slot +0x118 */
+
+void __thiscall
+TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this,int selectedValue)
+
+{
+  void *pvVar1;
+  short sVar2;
+  
+  this->hoverTag60 = 0xc;
+  this->selectedValue9c = selectedValue;
+  if (selectedValue != 0) {
+    pvVar1 = this->pVtable;
+    (**(code **)((int)pvVar1 + 0xa4))(1,0);
+    (**(code **)((int)pvVar1 + 0xa8))(1,0);
+    sVar2 = (**(code **)(*(int *)g_pGlobalMapState + 0x118))(selectedValue);
+    this->mappedSelection98 = sVar2;
+    return;
+  }
+  (**(code **)((int)this->pVtable + 0xa4))(0,1);
+  return;
 }
 

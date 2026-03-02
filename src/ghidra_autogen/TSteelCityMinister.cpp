@@ -3,17 +3,65 @@
 // Program: Imperialism.exe
 // Bucket: TSteelCityMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040134D
+// GHIDRA_NAME TSteelCityMinister::thunk_AppendInteriorMinisterValueGrowShortBuffer
+// GHIDRA_PROTO void __thiscall thunk_AppendInteriorMinisterValueGrowShortBuffer(ushort arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk to AppendInteriorMinisterValueGrowShortBuffer.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Struct "TSteelCityMinister": ignoring multiple overlapping fields */
+/* Thunk to AppendInteriorMinisterValueGrowShortBuffer. */
+
+void __thiscall
+TSteelCityMinister::thunk_AppendInteriorMinisterValueGrowShortBuffer
+          (TSteelCityMinister *this,ushort arg1)
+
+{
+  int iVar1;
+  uint uVar2;
+  uint arg2;
+  void *pvVar3;
+  uint uStack_4;
+  
+  uVar2 = *(uint *)&(this->base).field9_0xc;
+  if (*(uint *)&(this->base).field_0x8 <= uVar2) {
+    iVar1 = uVar2 + 1;
+    arg2 = iVar1 * 2;
+    uStack_4 = arg2;
+    if (0x7fffffff < arg2) {
+      uStack_4 = 0x7fffffff;
+    }
+    pvVar3 = ReallocateHeapBlockWithAllocatorTracking(*(int *)&(this->base).field_0x4,iVar1 * 4);
+    if (pvVar3 == (void *)0x0) {
+      pvVar3 = ReallocateHeapBlockWithAllocatorTracking(*(int *)&(this->base).field_0x4,arg2);
+      *(void **)&(this->base).field_0x4 = pvVar3;
+      *(int *)&(this->base).field_0x8 = iVar1;
+    }
+    else {
+      *(void **)&(this->base).field_0x4 = pvVar3;
+      *(uint *)&(this->base).field_0x8 = uStack_4;
+    }
+  }
+  if (*(uint *)&(this->base).field9_0xc <= uVar2) {
+    *(uint *)&(this->base).field9_0xc = uVar2 + 1;
+  }
+  *(ushort *)(*(int *)&(this->base).field_0x4 + uVar2 * 2) = arg1;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040155A
-// GHIDRA_NAME TSteelCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90
-// GHIDRA_PROTO void __fastcall thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90(TSteelCityMinister * pThis)
+// GHIDRA_NAME TSteelCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90_At0040155a
+// GHIDRA_PROTO void __fastcall thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90_At0040155a(TSteelCityMinister * pThis)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c5a90
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TSteelCityMinister": ignoring multiple overlapping fields */
 /* Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c5a90 */
 
 void __fastcall
-TSteelCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90
+TSteelCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90_At0040155a
           (TSteelCityMinister *pThis)
 
 {
@@ -22,16 +70,17 @@ TSteelCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5a90
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404FF2
-// GHIDRA_NAME TSteelCityMinister::thunk_DestructTSteelCityMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSteelCityMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TSteelCityMinister::thunk_DestructTSteelCityMinisterAndMaybeFree_At00404ff2
+// GHIDRA_PROTO void * __thiscall thunk_DestructTSteelCityMinisterAndMaybeFree_At00404ff2(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTSteelCityMinisterAndMaybeFree
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TSteelCityMinister": ignoring multiple overlapping fields */
 /* Single-JMP thunk to DestructTSteelCityMinisterAndMaybeFree */
 
 void * __thiscall
-TSteelCityMinister::thunk_DestructTSteelCityMinisterAndMaybeFree
+TSteelCityMinister::thunk_DestructTSteelCityMinisterAndMaybeFree_At00404ff2
           (TSteelCityMinister *this,byte freeSelfFlag)
 
 {
@@ -48,31 +97,32 @@ TSteelCityMinister::thunk_DestructTSteelCityMinisterAndMaybeFree
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTSteelCityMinisterBaseState
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TSteelCityMinister": ignoring multiple overlapping fields */
 /* Single-JMP thunk to ConstructTSteelCityMinisterBaseState */
 
 void * __thiscall
 TSteelCityMinister::thunk_ConstructTSteelCityMinisterBaseState(TSteelCityMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTSteelCityMinister;
-  *(undefined2 *)(this + 0x14) = 1;
-  *(undefined2 *)(this + 0x16) = 1;
-  *(undefined4 *)(this + 0x18c) = 0;
-  *(undefined2 *)(this + 0xc) = 0;
+  TMinister::thunk_ConstructTMinister(&this->base);
+  (this->base).pVtable = &g_vtblTSteelCityMinister;
+  (this->base).field16_0x14 = 1;
+  (this->base).field17_0x16 = 1;
+  (this->base).field390_0x18c = 0;
+  (this->base).field9_0xc = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408B4D
-// GHIDRA_NAME TSteelCityMinister::thunk_GetTSteelCityMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSteelCityMinisterClassNamePointer(void)
+// GHIDRA_NAME TSteelCityMinister::thunk_GetTSteelCityMinisterClassNamePointer_At00408b4d
+// GHIDRA_PROTO void * __cdecl thunk_GetTSteelCityMinisterClassNamePointer_At00408b4d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTSteelCityMinisterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTSteelCityMinisterClassNamePointer */
 
-void * __cdecl TSteelCityMinister::thunk_GetTSteelCityMinisterClassNamePointer(void)
+void * __cdecl TSteelCityMinister::thunk_GetTSteelCityMinisterClassNamePointer_At00408b4d(void)
 
 {
   void *pvVar1;
@@ -98,15 +148,15 @@ void * __cdecl TSteelCityMinister::CreateTSteelCityMinisterInstance(void)
   puStack_8 = &LAB_006314aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMinister *)AllocateWithFallbackHandler(0x1c4);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TMinister *)0x0) {
     TMinister::thunk_ConstructTMinister(this);
-    this[99].pVtable = (void *)0x0;
-    *(undefined2 *)&this[5].pVtable = 1;
-    *(undefined2 *)((int)&this[5].pVtable + 2) = 1;
+    this->field390_0x18c = 0;
+    this->field16_0x14 = 1;
+    this->field17_0x16 = 1;
     this->pVtable = &g_vtblTSteelCityMinister;
-    *(undefined2 *)&this[3].pVtable = 0;
+    this->field9_0xc = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -133,21 +183,25 @@ void * __cdecl TSteelCityMinister::GetTSteelCityMinisterClassNamePointer(void)
 // GHIDRA_NAME TSteelCityMinister::ConstructTSteelCityMinisterBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTSteelCityMinisterBaseState(void)
 
+/* WARNING: Struct "TSteelCityMinister": ignoring multiple overlapping fields */
+
 void * __thiscall TSteelCityMinister::ConstructTSteelCityMinisterBaseState(TSteelCityMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTSteelCityMinister;
-  *(undefined2 *)(this + 0x14) = 1;
-  *(undefined2 *)(this + 0x16) = 1;
-  *(undefined4 *)(this + 0x18c) = 0;
-  *(undefined2 *)(this + 0xc) = 0;
+  TMinister::thunk_ConstructTMinister(&this->base);
+  (this->base).pVtable = &g_vtblTSteelCityMinister;
+  (this->base).field16_0x14 = 1;
+  (this->base).field17_0x16 = 1;
+  (this->base).field390_0x18c = 0;
+  (this->base).field9_0xc = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5A20
 // GHIDRA_NAME TSteelCityMinister::DestructTSteelCityMinisterAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTSteelCityMinisterAndMaybeFree(byte freeSelfFlag)
+
+/* WARNING: Struct "TSteelCityMinister": ignoring multiple overlapping fields */
 
 void * __thiscall
 TSteelCityMinister::DestructTSteelCityMinisterAndMaybeFree
@@ -156,52 +210,8 @@ TSteelCityMinister::DestructTSteelCityMinisterAndMaybeFree
 {
   DestructTSteelCityMinisterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C5A90
-// GHIDRA_NAME TSteelCityMinister::ConfigureCityInteriorMinisterPriorityPreset_004c5a90
-// GHIDRA_PROTO void __fastcall ConfigureCityInteriorMinisterPriorityPreset_004c5a90(TSteelCityMinister * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Configures city-interior minister priority queues using fixed action code sequence.
-// GHIDRA_COMMENT_END
-
-/* Configures city-interior minister priority queues using fixed action code sequence. */
-
-void __fastcall
-TSteelCityMinister::ConfigureCityInteriorMinisterPriorityPreset_004c5a90(TSteelCityMinister *pThis)
-
-{
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(0xf);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(0x10);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(0xb);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(0xe);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(9);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(0xc);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(0xd);
-  (**(code **)(**(int **)(pThis + 0x28) + 0x14))(8);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(0);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(0);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(1);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(3);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(4);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(4);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(5);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(3);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(4);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(4);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(5);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(3);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(4);
-  (**(code **)(**(int **)(pThis + 0x2c) + 0x14))(2);
-  return;
 }
 

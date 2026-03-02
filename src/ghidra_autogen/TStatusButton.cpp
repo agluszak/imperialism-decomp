@@ -4,52 +4,31 @@
 // Bucket: TStatusButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404660
-// GHIDRA_NAME TStatusButton::thunk_HandleCityDialogSelectionAndBackControlReset
-// GHIDRA_PROTO void __thiscall thunk_HandleCityDialogSelectionAndBackControlReset(int selectedIndex)
+// GHIDRA_NAME TStatusButton::TStatusButton_VtblSlot015
+// GHIDRA_PROTO void __thiscall TStatusButton_VtblSlot015(int selectedIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleCityDialogSelectionAndBackControlReset
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleCityDialogSelectionAndBackControlReset */
-
-void __thiscall
-TStatusButton::thunk_HandleCityDialogSelectionAndBackControlReset
-          (TStatusButton *this,int selectedIndex)
-
-{
-  HandleCityDialogSelectionAndBackControlReset(this,selectedIndex);
-  return;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field base does not fit in structure TStatusButton */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040655F
-// GHIDRA_NAME TStatusButton::thunk_DestructTStatusButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTStatusButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TStatusButton::TStatusButton_VtblSlot001
+// GHIDRA_PROTO TStatusButton * __thiscall TStatusButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTStatusButtonAndMaybeFree
 // GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTStatusButtonAndMaybeFree */
-
-void * __thiscall
-TStatusButton::thunk_DestructTStatusButtonAndMaybeFree(TStatusButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTStatusButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field base does not fit in structure TStatusButton */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406B40
-// GHIDRA_NAME TStatusButton::thunk_GetTStatusButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTStatusButtonClassNamePointer(void)
+// GHIDRA_NAME TStatusButton::TStatusButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TStatusButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTStatusButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTStatusButtonClassNamePointer */
 
-void * __cdecl TStatusButton::thunk_GetTStatusButtonClassNamePointer(void)
+void * __cdecl TStatusButton::TStatusButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -62,10 +41,10 @@ void * __cdecl TStatusButton::thunk_GetTStatusButtonClassNamePointer(void)
 // GHIDRA_NAME TStatusButton::CreateTStatusButtonInstance
 // GHIDRA_PROTO void * __cdecl CreateTStatusButtonInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TStatusButton derives from TButton (decomp_vtbl_seq_ctor, medium)
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* [InheritanceEvidence] TStatusButton derives from TButton (decomp_vtbl_seq_ctor, medium) */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TStatusButton::CreateTStatusButtonInstance(void)
 
@@ -81,15 +60,15 @@ void * __cdecl TStatusButton::CreateTStatusButtonInstance(void)
   puStack_8 = &LAB_006377f2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x84);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTButton;
+    (this->base).pVtable = &g_vtblTButton;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &g_vtblTStatusButton;
+    (this->base).pVtable = &g_vtblTStatusButton;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -100,10 +79,10 @@ void * __cdecl TStatusButton::CreateTStatusButtonInstance(void)
 // GHIDRA_NAME TStatusButton::GetTStatusButtonClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTStatusButtonClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TStatusButton.
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* Returns class descriptor pointer for TStatusButton. */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TStatusButton::GetTStatusButtonClassNamePointer(void)
 
@@ -113,111 +92,25 @@ void * __cdecl TStatusButton::GetTStatusButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586330
 // GHIDRA_NAME TStatusButton::ConstructTStatusButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTStatusButtonBaseState(void)
+// GHIDRA_PROTO TStatusButton * __thiscall ConstructTStatusButtonBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TStatusButton derives from TButton (decomp_vtbl_seq_ctor, medium)
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
-
-/* [InheritanceEvidence] TStatusButton derives from TButton (decomp_vtbl_seq_ctor, medium) */
-
-void * __thiscall TStatusButton::ConstructTStatusButtonBaseState(TStatusButton *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00637818;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  local_4 = 0;
-  *(undefined ***)this = &g_vtblTButton;
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-  *(undefined ***)this = &g_vtblTStatusButton;
-  *unaff_FS_OFFSET = local_c;
-  return this;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field base does not fit in structure TStatusButton */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005863B0
 // GHIDRA_NAME TStatusButton::DestructTStatusButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTStatusButtonAndMaybeFree(byte freeSelfFlag)
-
-void * __thiscall
-TStatusButton::DestructTStatusButtonAndMaybeFree(TStatusButton *this,byte freeSelfFlag)
-
-{
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
-  }
-  return this;
-}
+// GHIDRA_PROTO TStatusButton * __thiscall DestructTStatusButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+/* DECOMPILATION FAILED: Low-level Error: Field base does not fit in structure TStatusButton */
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586400
 // GHIDRA_NAME TStatusButton::HandleCityDialogSelectionAndBackControlReset
 // GHIDRA_PROTO void __thiscall HandleCityDialogSelectionAndBackControlReset(int selectedIndex)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT When selected city dialog entry is active
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
-
-/* When selected city dialog entry is active */
-
-void __thiscall
-TStatusButton::HandleCityDialogSelectionAndBackControlReset(TStatusButton *this,int selectedIndex)
-
-{
-  int iVar1;
-  char cVar2;
-  int iVar3;
-  int *piVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00637840;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  iVar1 = *(int *)this;
-  local_4 = CONCAT31(local_4._1_3_,1);
-  iVar3 = (**(code **)(iVar1 + 0xbc))();
-  if ((selectedIndex == iVar3) && (cVar2 = (**(code **)(iVar1 + 0x28))(), cVar2 != '\0')) {
-    cVar2 = (**(code **)(iVar1 + 0x1bc))();
-    if (cVar2 != '\0') goto LAB_0058650a;
-    if (g_pActiveCityDialogLegendSelectionOwner != (void *)0x0) {
-      (**(code **)(*(int *)g_pActiveCityDialogLegendSelectionOwner + 0xa0))();
-      g_pActiveCityDialogLegendSelectionOwner = (void *)0x0;
-      g_bCityDialogLegendSelectionInitialized = 0;
-    }
-    piVar4 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x6261636b);
-    if (piVar4 != (int *)0x0) {
-      (**(code **)(*piVar4 + 0x1c))();
-      (**(code **)(**(int **)(this + 0x20) + 0xe4))();
-    }
-    if ((*(int *)(this + 0x1c) != 0x41726d73) && (*(int *)(this + 0x1c) == 0x436c6f73)) {
-      if (g_pActiveCityDialogLegendSelectionOwner != (void *)0x0) {
-        (**(code **)(*(int *)g_pActiveCityDialogLegendSelectionOwner + 0xa0))();
-        g_pActiveCityDialogLegendSelectionOwner = (void *)0x0;
-      }
-      g_bCityDialogLegendSelectionInitialized = 0;
-      piVar4 = (int *)(**(code **)(iVar1 + 0x58))();
-      (**(code **)(*piVar4 + 0xa0))();
-    }
-  }
-  thunk_HandleCityDialogToggleCommandOrForward();
-LAB_0058650a:
-  local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
+/* DECOMPILATION FAILED: Low-level Error: Field base does not fit in structure TStatusButton */
 

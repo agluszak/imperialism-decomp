@@ -11,6 +11,9 @@ Current usage in this repo:
    - `uv run reccmp-reccmp --target IMPERIALISM`
 4. Targeted verbose compare:
    - `uv run reccmp-reccmp --target IMPERIALISM --verbose 0x005882F0`
+5. Reverse sync into Ghidra (names/signatures/types/globals):
+   - `just import-ghidra`
+   - optional debug pass: `just import-ghidra -- --debug`
 
 Operational notes:
 1. Re-run `reccmp-project detect` after each rebuild.

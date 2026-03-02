@@ -4,37 +4,21 @@
 // Bucket: TStream.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404467
-// GHIDRA_NAME TStream::thunk_GetTStreamRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTStreamRuntimeClass(void)
+// GHIDRA_NAME TStream::thunk_DestructTStreamAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTStreamAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTStreamRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTStreamRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTStreamRuntimeClass. */
+/* Thunk forwarding to GetTStreamRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TStream::thunk_GetTStreamRuntimeClass(TStream *this)
+void * __thiscall TStream::thunk_DestructTStreamAndMaybeFree(TStream *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405501
-// GHIDRA_NAME TStream::thunk_WrapperFor_FreeHeapBufferIfNotNull_At00488a10
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00488a10()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At00488a10
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At00488a10 */
-
-void TStream::thunk_WrapperFor_FreeHeapBufferIfNotNull_At00488a10(void)
-
-{
-  ConstructTStreamBaseState();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004095FC
@@ -77,8 +61,8 @@ void __thiscall TStream::CreateTStreamInstance(TStream *this)
   puStack_8 = &LAB_0062ebb8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  DestructCPtrListBaseState(this + 1);
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  DestructCPtrListBaseState(&this->field1_0x4);
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -100,7 +84,7 @@ void * __cdecl TStream::GetTStreamClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A10
 // GHIDRA_NAME TStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined ConstructTStreamBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTStreamBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -108,14 +92,16 @@ void * __cdecl TStream::GetTStreamClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *param_1,byte param_2)
+void __thiscall TStream::ConstructTStreamBaseState(TStream *this)
 
 {
-  thunk_GetTStreamRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTStreamAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A40
@@ -132,7 +118,7 @@ void * __thiscall TStream::DestructTStreamAndMaybeFree(TStream *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

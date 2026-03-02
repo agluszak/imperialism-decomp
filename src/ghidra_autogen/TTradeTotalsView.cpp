@@ -4,15 +4,15 @@
 // Bucket: TTradeTotalsView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401357
-// GHIDRA_NAME TTradeTotalsView::thunk_GetTTradeTotalsViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeTotalsViewClassNamePointer(void)
+// GHIDRA_NAME TTradeTotalsView::thunk_GetTTradeTotalsViewClassNamePointer_At00401357
+// GHIDRA_PROTO void * __cdecl thunk_GetTTradeTotalsViewClassNamePointer_At00401357(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTradeTotalsViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTradeTotalsViewClassNamePointer */
 
-void * __cdecl TTradeTotalsView::thunk_GetTTradeTotalsViewClassNamePointer(void)
+void * __cdecl TTradeTotalsView::thunk_GetTTradeTotalsViewClassNamePointer_At00401357(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TTradeTotalsView::thunk_GetTTradeTotalsViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040881E
-// GHIDRA_NAME TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeTotalsViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e
+// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTradeTotalsViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,7 +31,7 @@ void * __cdecl TTradeTotalsView::thunk_GetTTradeTotalsViewClassNamePointer(void)
 /* Single-JMP thunk to DestructTTradeTotalsViewAndMaybeFree */
 
 void * __thiscall
-TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree
+TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e
           (TTradeTotalsView *this,byte freeSelfFlag)
 
 {
@@ -39,6 +39,22 @@ TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree
   
   pvVar1 = DestructTTradeTotalsViewAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040890E
+// GHIDRA_NAME TTradeTotalsView::thunk_CreateTUnitInstance_At0040890e
+// GHIDRA_PROTO void __thiscall thunk_CreateTUnitInstance_At0040890e(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CreateTUnitInstance
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CreateTUnitInstance */
+
+void __thiscall TTradeTotalsView::thunk_CreateTUnitInstance_At0040890e(TTradeTotalsView *this)
+
+{
+  TUnit::CreateTUnitInstance((TUnit *)this);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1A80
@@ -59,12 +75,12 @@ void * __cdecl TTradeTotalsView::CreateTTradeTotalsViewInstance(void)
   puStack_8 = &LAB_0063987a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTTradeTotalsView;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTTradeTotalsView;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -93,8 +109,8 @@ void * __cdecl TTradeTotalsView::GetTTradeTotalsViewClassNamePointer(void)
 void * __thiscall TTradeTotalsView::ConstructTTradeTotalsViewBaseState(TTradeTotalsView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTTradeTotalsView;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTTradeTotalsView;
   return this;
 }
 
@@ -106,9 +122,9 @@ void * __thiscall
 TTradeTotalsView::DestructTTradeTotalsViewAndMaybeFree(TTradeTotalsView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

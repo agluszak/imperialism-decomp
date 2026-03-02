@@ -4,13 +4,17 @@
 // Bucket: TSelectoText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402662
-// GHIDRA_NAME TSelectoText::thunk_DestructTStaticTextCore
-// GHIDRA_PROTO void __thiscall thunk_DestructTStaticTextCore(void)
+// GHIDRA_NAME TSelectoText::thunk_CreateTSelectoTextInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTSelectoTextInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
 
-void __thiscall TSelectoText::thunk_DestructTStaticTextCore(TSelectoText *this)
+/* [FID:thunk_target_sync] */
+
+void __thiscall TSelectoText::thunk_CreateTSelectoTextInstance(TSelectoText *this)
 
 {
-  void *pvVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -20,21 +24,20 @@ void __thiscall TSelectoText::thunk_DestructTStaticTextCore(TSelectoText *this)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   this->pVtable = &g_vtblTStaticText;
-  pvVar1 = this[0x21].pVtable;
   uStack_4 = 0;
-  if (pvVar1 != (void *)0x0) {
+  if (this->field126_0x84 != (void *)0x0) {
     ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(pvVar1);
+    FreeHeapBufferIfNotNull();
   }
   this->pVtable = &g_vtblTView;
   uStack_4 = 2;
-  if (this[0x11].pVtable != (int *)0x0) {
-    (**(code **)(*(int *)this[0x11].pVtable + 4))(1);
+  if (this->field65_0x44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field65_0x44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this[0x12].pVtable);
+  FreeHeapBufferIfNotNull();
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -64,7 +67,6 @@ void * __cdecl TSelectoText::thunk_GetTSelectoTextClassNamePointer(void)
 void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
 
 {
-  void *pvVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -74,21 +76,20 @@ void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   this->pVtable = &g_vtblTStaticText;
-  pvVar1 = this[0x21].pVtable;
   uStack_4 = 0;
-  if (pvVar1 != (void *)0x0) {
+  if (this->field126_0x84 != (void *)0x0) {
     ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(pvVar1);
+    FreeHeapBufferIfNotNull();
   }
   this->pVtable = &g_vtblTView;
   uStack_4 = 2;
-  if (this[0x11].pVtable != (int *)0x0) {
-    (**(code **)(*(int *)this[0x11].pVtable + 4))(1);
+  if (this->field65_0x44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field65_0x44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(this[0x12].pVtable);
+  FreeHeapBufferIfNotNull();
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -4,17 +4,15 @@
 // Bucket: TBoycottButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004023DD
-// GHIDRA_NAME TBoycottButton::thunk_HandleNonzeroEventAndClearControlTag636c7573ThenForward
-// GHIDRA_PROTO void __thiscall thunk_HandleNonzeroEventAndClearControlTag636c7573ThenForward(int arg1, int arg2)
+// GHIDRA_NAME TBoycottButton::TBoycottButton_VtblSlot116
+// GHIDRA_PROTO void __thiscall TBoycottButton_VtblSlot116(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleNonzeroEventAndClearControlTag636c7573ThenForward
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to HandleNonzeroEventAndClearControlTag636c7573ThenForward */
 
-void __thiscall
-TBoycottButton::thunk_HandleNonzeroEventAndClearControlTag636c7573ThenForward
-          (TBoycottButton *this,int arg1,int arg2)
+void __thiscall TBoycottButton::TBoycottButton_VtblSlot116(TBoycottButton *this,int arg1,int arg2)
 
 {
   HandleNonzeroEventAndClearControlTag636c7573ThenForward(this,arg1,arg2);
@@ -23,32 +21,33 @@ TBoycottButton::thunk_HandleNonzeroEventAndClearControlTag636c7573ThenForward
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404DEA
 // GHIDRA_NAME TBoycottButton::thunk_ConstructTBoycottButtonBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTBoycottButtonBaseState(void)
+// GHIDRA_PROTO TBoycottButton * __thiscall thunk_ConstructTBoycottButtonBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTBoycottButtonBaseState
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ConstructTBoycottButtonBaseState */
 
-void * __thiscall TBoycottButton::thunk_ConstructTBoycottButtonBaseState(TBoycottButton *this)
+TBoycottButton * __thiscall
+TBoycottButton::thunk_ConstructTBoycottButtonBaseState(TBoycottButton *this)
 
 {
-  void *pvVar1;
+  TBoycottButton *pTVar1;
   
-  pvVar1 = ConstructTBoycottButtonBaseState(this);
-  return pvVar1;
+  pTVar1 = ConstructTBoycottButtonBaseState(this);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408030
-// GHIDRA_NAME TBoycottButton::thunk_GetTBoycottButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBoycottButtonClassNamePointer(void)
+// GHIDRA_NAME TBoycottButton::TBoycottButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TBoycottButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTBoycottButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTBoycottButtonClassNamePointer */
 
-void * __cdecl TBoycottButton::thunk_GetTBoycottButtonClassNamePointer(void)
+void * __cdecl TBoycottButton::TBoycottButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -58,22 +57,22 @@ void * __cdecl TBoycottButton::thunk_GetTBoycottButtonClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408D14
-// GHIDRA_NAME TBoycottButton::thunk_DestructTBoycottButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTBoycottButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TBoycottButton::TBoycottButton_VtblSlot001
+// GHIDRA_PROTO TBoycottButton * __thiscall TBoycottButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTBoycottButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTBoycottButtonAndMaybeFree */
 
-void * __thiscall
-TBoycottButton::thunk_DestructTBoycottButtonAndMaybeFree(TBoycottButton *this,byte freeSelfFlag)
+TBoycottButton * __thiscall
+TBoycottButton::TBoycottButton_VtblSlot001(TBoycottButton *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TBoycottButton *pTVar1;
   
-  pvVar1 = DestructTBoycottButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTBoycottButtonAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005846E0
@@ -94,12 +93,12 @@ void * __cdecl TBoycottButton::CreateTBoycottButtonInstance(void)
   puStack_8 = &LAB_0063760a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TToggleButton *)AllocateWithFallbackHandler(0x90);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TToggleButton *)0x0;
   if (this != (TToggleButton *)0x0) {
     TToggleButton::ConstructTToggleButtonBaseState(this);
-    *(undefined ***)this = &g_vtblTBoycottButton;
+    this->field0_0x0 = &g_vtblTBoycottButton;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -123,27 +122,27 @@ void * __cdecl TBoycottButton::GetTBoycottButtonClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584780
 // GHIDRA_NAME TBoycottButton::ConstructTBoycottButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTBoycottButtonBaseState(void)
+// GHIDRA_PROTO TBoycottButton * __thiscall ConstructTBoycottButtonBaseState(void)
 
-void * __thiscall TBoycottButton::ConstructTBoycottButtonBaseState(TBoycottButton *this)
+TBoycottButton * __thiscall TBoycottButton::ConstructTBoycottButtonBaseState(TBoycottButton *this)
 
 {
   TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
-  *(undefined ***)this = &g_vtblTBoycottButton;
+  this->field0_0x0 = &g_vtblTBoycottButton;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005847B0
 // GHIDRA_NAME TBoycottButton::DestructTBoycottButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTBoycottButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TBoycottButton * __thiscall DestructTBoycottButtonAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall
+TBoycottButton * __thiscall
 TBoycottButton::DestructTBoycottButtonAndMaybeFree(TBoycottButton *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -165,7 +164,7 @@ TBoycottButton::HandleNonzeroEventAndClearControlTag636c7573ThenForward
   int *piVar1;
   
   if ((char)arg1 != '\0') {
-    piVar1 = (int *)(**(code **)(*(int *)this + 0x58))();
+    piVar1 = (int *)(*(code *)this->field0_0x0[0x16])();
     piVar1 = (int *)(**(code **)(*piVar1 + 0x94))(0x636c7573);
     if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
@@ -173,7 +172,7 @@ TBoycottButton::HandleNonzeroEventAndClearControlTag636c7573ThenForward
     }
     (**(code **)(*piVar1 + 0x1c8))(0x20202020);
   }
-  TToggleButton::thunk_HandleToggleButtonStateChangeAndRefresh((TToggleButton *)this,arg1,arg2);
+  TToggleButton::TToggleButton_VtblSlot116((TToggleButton *)this,arg1,arg2);
   return;
 }
 

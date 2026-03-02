@@ -4,15 +4,15 @@
 // Bucket: TWindow.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402487
-// GHIDRA_NAME TWindow::thunk_GetTWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTWindowClassNamePointer(void)
+// GHIDRA_NAME TWindow::thunk_GetTWindowClassNamePointer_At00402487
+// GHIDRA_PROTO void * __cdecl thunk_GetTWindowClassNamePointer_At00402487(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTWindowClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTWindowClassNamePointer */
 
-void * __cdecl TWindow::thunk_GetTWindowClassNamePointer(void)
+void * __cdecl TWindow::thunk_GetTWindowClassNamePointer_At00402487(void)
 
 {
   void *pvVar1;
@@ -21,85 +21,17 @@ void * __cdecl TWindow::thunk_GetTWindowClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C43
-// GHIDRA_NAME TWindow::thunk_ConstructUiWindowResourceEntryBase
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiWindowResourceEntryBase(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiWindowResourceEntryBase
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiWindowResourceEntryBase */
-
-void __thiscall TWindow::thunk_ConstructUiWindowResourceEntryBase(TWindow *this)
-
-{
-  void *pvVar1;
-  undefined4 *puVar2;
-  int iVar3;
-  undefined4 *puVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ede3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  uStack_4 = 0;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(this + 0x74));
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined ***)this = &g_vtblTWindow;
-  pvVar1 = g_pWindowRegistryHead;
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  puVar4 = g_pWindowRegistryFreeListHead;
-  if (g_pWindowRegistryFreeListHead == (void *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead
-                      (&g_pWindowRegistryBlockChainHead,g_nWindowRegistryNodesPerBlock,0xc);
-    puVar4 = g_pWindowRegistryFreeListHead;
-    puVar2 = (undefined4 *)(iVar3 + -8 + g_nWindowRegistryNodesPerBlock * 0xc);
-    iVar3 = g_nWindowRegistryNodesPerBlock;
-    if (-1 < g_nWindowRegistryNodesPerBlock + -1) {
-      do {
-        puVar4 = puVar2;
-        *puVar4 = g_pWindowRegistryFreeListHead;
-        iVar3 = iVar3 + -1;
-        g_pWindowRegistryFreeListHead = puVar4;
-        puVar2 = puVar4 + -3;
-      } while (iVar3 != 0);
-    }
-  }
-  g_pWindowRegistryFreeListHead = (void *)*puVar4;
-  puVar4[1] = 0;
-  *puVar4 = pvVar1;
-  g_nWindowRegistryCount = g_nWindowRegistryCount + 1;
-  puVar4[2] = 0;
-  puVar4[2] = this;
-  puVar2 = puVar4;
-  if (g_pWindowRegistryHead != (void *)0x0) {
-    *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar4;
-    puVar2 = g_pWindowRegistryTail;
-  }
-  g_pWindowRegistryTail = puVar2;
-  g_pWindowRegistryHead = puVar4;
-  thunk_SetUiColorDescriptorGoldTriplet();
-  *(TWindow **)(this + 0x7c) = this;
-  *(TWindow **)(this + 100) = this;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00408C2E
-// GHIDRA_NAME TWindow::thunk_DestructTWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TWindow::thunk_DestructTWindowAndMaybeFree_At00408c2e
+// GHIDRA_PROTO void * __thiscall thunk_DestructTWindowAndMaybeFree_At00408c2e(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTWindowAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTWindowAndMaybeFree */
 
-void * __thiscall TWindow::thunk_DestructTWindowAndMaybeFree(TWindow *this,byte freeSelfFlag)
+void * __thiscall
+TWindow::thunk_DestructTWindowAndMaybeFree_At00408c2e(TWindow *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -123,8 +55,9 @@ void * __cdecl TWindow::CreateTWindowInstance(void)
   void *pvVar1;
   undefined4 *puVar2;
   TView *this;
-  int iVar3;
+  void *pvVar3;
   undefined4 *puVar4;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -134,34 +67,33 @@ void * __cdecl TWindow::CreateTWindowInstance(void)
   puStack_8 = &LAB_0062edbd;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
     return (void *)0x0;
   }
-  TView::thunk_ConstructUiResourceEntryBase(this);
+  TView::thunk_ConstructTViewBaseState(this);
   local_4._0_1_ = 1;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(this + 0x74));
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined ***)this = &g_vtblTWindow;
+  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this[1].viewStateDword14);
+  this[1].field15_0x38 = 0;
+  this->pVtable = &g_vtblTWindow;
   pvVar1 = g_pWindowRegistryHead;
   local_4 = CONCAT31(local_4._1_3_,2);
   puVar4 = g_pWindowRegistryFreeListHead;
   if (g_pWindowRegistryFreeListHead == (void *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead
-                      (&g_pWindowRegistryBlockChainHead,g_nWindowRegistryNodesPerBlock,0xc);
+    pvVar3 = AllocateAndLinkBlockHead();
     puVar4 = g_pWindowRegistryFreeListHead;
-    puVar2 = (undefined4 *)(iVar3 + -8 + g_nWindowRegistryNodesPerBlock * 0xc);
-    iVar3 = g_nWindowRegistryNodesPerBlock;
+    puVar2 = (undefined4 *)((int)pvVar3 + g_nWindowRegistryNodesPerBlock * 0xc + -8);
+    iVar5 = g_nWindowRegistryNodesPerBlock;
     if (-1 < g_nWindowRegistryNodesPerBlock + -1) {
       do {
         puVar4 = puVar2;
         *puVar4 = g_pWindowRegistryFreeListHead;
-        iVar3 = iVar3 + -1;
+        iVar5 = iVar5 + -1;
         g_pWindowRegistryFreeListHead = puVar4;
         puVar2 = puVar4 + -3;
-      } while (iVar3 != 0);
+      } while (iVar5 != 0);
     }
   }
   g_pWindowRegistryFreeListHead = (void *)*puVar4;
@@ -178,8 +110,8 @@ void * __cdecl TWindow::CreateTWindowInstance(void)
   g_pWindowRegistryTail = puVar2;
   g_pWindowRegistryHead = puVar4;
   thunk_SetUiColorDescriptorGoldTriplet();
-  *(TView **)(this + 0x7c) = this;
-  *(TView **)(this + 100) = this;
+  this[1].field8_0x1c = (int)this;
+  *(TView **)&this[1].field1_0x4 = this;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -199,93 +131,6 @@ void * __cdecl TWindow::GetTWindowClassNamePointer(void)
   return &g_pClassDescTWindow;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048D500
-// GHIDRA_NAME TWindow::ConstructUiWindowResourceEntryBase
-// GHIDRA_PROTO void __thiscall ConstructUiWindowResourceEntryBase(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Base constructor for tracked UI window resource entries.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Calls ConstructUiResourceEntryBase.
-// GHIDRA_COMMENT 2. Initializes window-entry specific fields and vtable.
-// GHIDRA_COMMENT 3. Links this node into the global window-resource linked list.
-// GHIDRA_COMMENT 4. Applies default color/tag state for subsequent registration.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - this pointer.
-// GHIDRA_COMMENT_END
-
-/* Base constructor for tracked UI window resource entries.
-   
-   Algorithm:
-   1. Calls ConstructUiResourceEntryBase.
-   2. Initializes window-entry specific fields and vtable.
-   3. Links this node into the global window-resource linked list.
-   4. Applies default color/tag state for subsequent registration.
-   
-   Returns:
-   - this pointer. */
-
-void __thiscall TWindow::ConstructUiWindowResourceEntryBase(TWindow *this)
-
-{
-  void *pvVar1;
-  undefined4 *puVar2;
-  int iVar3;
-  undefined4 *puVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062ede3;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  local_4 = 0;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)(this + 0x74));
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined ***)this = &g_vtblTWindow;
-  pvVar1 = g_pWindowRegistryHead;
-  local_4 = CONCAT31(local_4._1_3_,1);
-  puVar4 = g_pWindowRegistryFreeListHead;
-  if (g_pWindowRegistryFreeListHead == (void *)0x0) {
-    iVar3 = AllocateAndLinkBlockHead
-                      (&g_pWindowRegistryBlockChainHead,g_nWindowRegistryNodesPerBlock,0xc);
-    puVar4 = g_pWindowRegistryFreeListHead;
-    puVar2 = (undefined4 *)(iVar3 + -8 + g_nWindowRegistryNodesPerBlock * 0xc);
-    iVar3 = g_nWindowRegistryNodesPerBlock;
-    if (-1 < g_nWindowRegistryNodesPerBlock + -1) {
-      do {
-        puVar4 = puVar2;
-        *puVar4 = g_pWindowRegistryFreeListHead;
-        iVar3 = iVar3 + -1;
-        g_pWindowRegistryFreeListHead = puVar4;
-        puVar2 = puVar4 + -3;
-      } while (iVar3 != 0);
-    }
-  }
-  g_pWindowRegistryFreeListHead = (void *)*puVar4;
-  puVar4[1] = 0;
-  *puVar4 = pvVar1;
-  g_nWindowRegistryCount = g_nWindowRegistryCount + 1;
-  puVar4[2] = 0;
-  puVar4[2] = this;
-  puVar2 = puVar4;
-  if (g_pWindowRegistryHead != (void *)0x0) {
-    *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar4;
-    puVar2 = g_pWindowRegistryTail;
-  }
-  g_pWindowRegistryTail = puVar2;
-  g_pWindowRegistryHead = puVar4;
-  thunk_SetUiColorDescriptorGoldTriplet();
-  *(TWindow **)(this + 0x7c) = this;
-  *(TWindow **)(this + 100) = this;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D640
 // GHIDRA_NAME TWindow::DestructTWindowAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTWindowAndMaybeFree(byte freeSelfFlag)
@@ -295,7 +140,7 @@ void * __thiscall TWindow::DestructTWindowAndMaybeFree(TWindow *this,byte freeSe
 {
   DestructTWindowViewAndUnlinkGlobalLists();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

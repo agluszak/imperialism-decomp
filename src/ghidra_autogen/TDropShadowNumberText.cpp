@@ -4,8 +4,8 @@
 // Bucket: TDropShadowNumberText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040314D
-// GHIDRA_NAME TDropShadowNumberText::thunk_DestructTDropShadowNumberTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDropShadowNumberTextAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDropShadowNumberText::TDropShadowNumberText_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDropShadowNumberText_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDropShadowNumberTextAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to DestructTDropShadowNumberTextAndMaybeFree */
 
 void * __thiscall
-TDropShadowNumberText::thunk_DestructTDropShadowNumberTextAndMaybeFree
+TDropShadowNumberText::TDropShadowNumberText_VtblSlot001
           (TDropShadowNumberText *this,byte freeSelfFlag)
 
 {
@@ -24,15 +24,15 @@ TDropShadowNumberText::thunk_DestructTDropShadowNumberTextAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404043
-// GHIDRA_NAME TDropShadowNumberText::thunk_GetTDropShadowNumberTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDropShadowNumberTextClassNamePointer(void)
+// GHIDRA_NAME TDropShadowNumberText::TDropShadowNumberText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDropShadowNumberText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDropShadowNumberTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDropShadowNumberTextClassNamePointer */
 
-void * __cdecl TDropShadowNumberText::thunk_GetTDropShadowNumberTextClassNamePointer(void)
+void * __cdecl TDropShadowNumberText::TDropShadowNumberText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -42,16 +42,16 @@ void * __cdecl TDropShadowNumberText::thunk_GetTDropShadowNumberTextClassNamePoi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407AF4
-// GHIDRA_NAME TDropShadowNumberText::thunk_RenderDropShadowNumberTextValue
-// GHIDRA_PROTO void __thiscall thunk_RenderDropShadowNumberTextValue(void * arg1)
+// GHIDRA_NAME TDropShadowNumberText::TDropShadowNumberText_VtblSlot068
+// GHIDRA_PROTO void __thiscall TDropShadowNumberText_VtblSlot068(void * arg1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RenderDropShadowNumberTextValue.
+// GHIDRA_COMMENT Single-JMP thunk to RenderDropShadowNumberTextValue
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for RenderDropShadowNumberTextValue. */
+/* Single-JMP thunk to RenderDropShadowNumberTextValue */
 
 void __thiscall
-TDropShadowNumberText::thunk_RenderDropShadowNumberTextValue(TDropShadowNumberText *this,void *arg1)
+TDropShadowNumberText::TDropShadowNumberText_VtblSlot068(TDropShadowNumberText *this,void *arg1)
 
 {
   RenderDropShadowNumberTextValue(this,arg1);
@@ -75,17 +75,18 @@ void * __cdecl TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
   puStack_8 = &LAB_00638eba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TEditText *)AllocateWithFallbackHandler(0xb0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TEditText *)0x0) {
     TEditText::thunk_ConstructUiNumericTextEntryBase(this);
-    *(undefined4 *)&this[1].field_0x4 = 0;
-    this[1].field_0x10 = 0;
-    this[1].field_0x11 = 0;
-    this[1].field_0x12 = 0;
-    this[1].field_0x13 = 0;
-    this->pVtable = &g_vtblTDropShadowNumberText;
-    *(int *)&this[1].field_0x10 = g_DropShadowNumberTextDefaultValue_6A58C8;
+    *(undefined4 *)((int)&this[1].base.base.pVtable + 2) = 0;
+    *(undefined1 *)((int)&this[1].base.base.dialogValueDwordC + 2) = 0;
+    *(undefined1 *)((int)&this[1].base.base.dialogValueDwordC + 3) = 0;
+    *(undefined1 *)&this[1].base.base.dialogValueDword10 = 0;
+    *(undefined1 *)((int)&this[1].base.base.dialogValueDword10 + 1) = 0;
+    (this->base).base.pVtable = &g_vtblTDropShadowNumberText;
+    *(int *)((int)&this[1].base.base.dialogValueDwordC + 2) =
+         g_DropShadowNumberTextDefaultValue_6A58C8;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -116,14 +117,14 @@ void * __thiscall
 TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(TDropShadowNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
-  *(undefined4 *)(this + 0xa0) = 0;
-  this[0xac] = (TDropShadowNumberText)0x0;
-  this[0xad] = (TDropShadowNumberText)0x0;
-  this[0xae] = (TDropShadowNumberText)0x0;
-  this[0xaf] = (TDropShadowNumberText)0x0;
-  *(undefined ***)this = &g_vtblTDropShadowNumberText;
-  *(int *)(this + 0xac) = g_DropShadowNumberTextDefaultValue_6A58C8;
+  TEditText::thunk_ConstructUiNumericTextEntryBase(&this->base);
+  this->fielda0 = 0;
+  *(undefined1 *)&this->fieldac = 0;
+  *(undefined1 *)((int)&this->fieldac + 1) = 0;
+  *(undefined1 *)((int)&this->fieldac + 2) = 0;
+  *(undefined1 *)((int)&this->fieldac + 3) = 0;
+  (this->base).base.base.pVtable = &g_vtblTDropShadowNumberText;
+  this->fieldac = g_DropShadowNumberTextDefaultValue_6A58C8;
   return this;
 }
 
@@ -142,9 +143,9 @@ TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree
           (TDropShadowNumberText *this,byte freeSelfFlag)
 
 {
-  TEditText::DestructTEditTextAndMaybeFree((TEditText *)this);
+  DestructTEditTextAndMaybeFree(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -162,7 +163,7 @@ void __thiscall
 TDropShadowNumberText::RenderDropShadowNumberTextValue(TDropShadowNumberText *this,void *arg1)
 
 {
-  int iVar1;
+  void *pvVar1;
   int unaff_EDI;
   int *unaff_FS_OFFSET;
   int iStack_c;
@@ -174,15 +175,15 @@ TDropShadowNumberText::RenderDropShadowNumberTextValue(TDropShadowNumberText *th
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   thunk_InitializeDialogWindowAndRefreshSelectedNationHeaderStatus(this);
-  thunk_SetQuickDrawColorAndPropagateIfChanged();
+  thunk_SetQuickDrawColorAndPropagateIfChanged(this->fieldac);
   InitializeSharedStringRefFromEmpty();
-  iVar1 = *(int *)this;
+  pvVar1 = (this->base).base.base.pVtable;
   local_4 = 0;
-  (**(code **)(iVar1 + 0x1dc))(&arg1);
-  (**(code **)(iVar1 + 0x1a4))(&stack0xffffffe0);
-  (**(code **)(iVar1 + 0x1d4))
+  (**(code **)((int)pvVar1 + 0x1dc))(&arg1);
+  (**(code **)((int)pvVar1 + 0x1a4))(&stack0xffffffe0);
+  (**(code **)((int)pvVar1 + 0x1d4))
             (local_4,*(undefined4 *)(local_4 + -8),&stack0xffffffdc,
-             CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),*(undefined2 *)(this + 0x90)));
+             CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),(this->base).base.field18_0x90));
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = unaff_EDI + -1;
   return;

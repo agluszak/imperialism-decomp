@@ -4,15 +4,15 @@
 // Bucket: TNoHilitePicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040220C
-// GHIDRA_NAME TNoHilitePicture::thunk_GetTNoHilitePictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNoHilitePictureClassNamePointer(void)
+// GHIDRA_NAME TNoHilitePicture::TNoHilitePicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TNoHilitePicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNoHilitePictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNoHilitePictureClassNamePointer */
 
-void * __cdecl TNoHilitePicture::thunk_GetTNoHilitePictureClassNamePointer(void)
+void * __cdecl TNoHilitePicture::TNoHilitePicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,28 +21,9 @@ void * __cdecl TNoHilitePicture::thunk_GetTNoHilitePictureClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403328
-// GHIDRA_NAME TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8
-// GHIDRA_PROTO void __thiscall thunk_ConstructPictureResourceEntryType606E8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructPictureResourceEntryType606E8
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructPictureResourceEntryType606E8 */
-
-void __thiscall
-TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTNoHilitePicture;
-  this[0x90] = (TNoHilitePicture)0x0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00408C60
-// GHIDRA_NAME TNoHilitePicture::thunk_DestructTNoHilitePictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNoHilitePictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNoHilitePicture::TNoHilitePicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TNoHilitePicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNoHilitePictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -50,8 +31,7 @@ TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(TNoHilitePicture 
 /* Single-JMP thunk to DestructTNoHilitePictureAndMaybeFree */
 
 void * __thiscall
-TNoHilitePicture::thunk_DestructTNoHilitePictureAndMaybeFree
-          (TNoHilitePicture *this,byte freeSelfFlag)
+TNoHilitePicture::TNoHilitePicture_VtblSlot001(TNoHilitePicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -82,7 +62,7 @@ void * __cdecl TNoHilitePicture::CreateTNoHilitePictureInstance(void)
   puStack_8 = &LAB_0063655a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -126,8 +106,8 @@ void __thiscall TNoHilitePicture::ConstructPictureResourceEntryType606E8(TNoHili
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTNoHilitePicture;
-  this[0x90] = (TNoHilitePicture)0x0;
+  this->field0_0x0 = &g_vtblTNoHilitePicture;
+  this->field141_0x90 = 0;
   return;
 }
 
@@ -141,7 +121,7 @@ TNoHilitePicture::DestructTNoHilitePictureAndMaybeFree(TNoHilitePicture *this,by
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

@@ -1766,3 +1766,284 @@
    1. `just inventory`,
    2. `just generate-ignores`,
    3. `just session-loop`.
+
+## 2026-02-25 22:37 UTC - trade_screen targeted shape pass
+
+### Commands
+1. `just build`
+2. `just compare 0x005866b0`
+3. `just compare 0x00586e70`
+4. `just compare 0x00583bd0`
+5. `just compare 0x00586a60`
+6. `just compare 0x00586a80`
+7. `just compare 0x00586ab0`
+8. `just compare`
+9. `just stats`
+
+### Changes
+1. Rewired nil-assert helper path in `src/game/trade_screen.cpp`:
+   1. added `FailNilPointerWithAssert(sourcePath, line)`,
+   2. switched helper dispatch target to `thunk_DestructTShipAndFreeIfOwned` cast with `(file,line)`,
+   3. replaced repeated direct casts in trade-screen fail paths (`USmallViews` and `USuperMap`) with helper calls.
+2. Corrected call-shape for `0x00583BD0` (`HandleTradeArrowAutoRepeatTickAndDispatch`):
+   1. restored stack-arg shape by adding explicit dummy `edx` argument in function signature and thunk forwarding,
+   2. converted initial dispatch thunk call and slot `+0x40` calls to explicit `thiscall`-emulated fastcall signatures.
+3. Converted tiny `0x586A*` wrappers to real `TradeMoveStepCluster` member methods and forced local frame-pointer omission for that micro-cluster:
+   1. `0x00586A60`,
+   2. `0x00586A80`,
+   3. `0x00586AB0`,
+   4. added local `#pragma optimize("y", on/off)` bracket around these three functions.
+
+### Results
+1. Targeted function deltas:
+   1. `0x00583BD0` `HandleTradeArrowAutoRepeatTickAndDispatch`: `58.18% -> 67.77%`.
+   2. `0x00586A60` `OrphanTiny_SetWordEcxOffset_8c_00586a60`: `40.00% -> 100.00%`.
+   3. `0x00586A80` `OrphanLeaf_NoCall_Ins05_00586a80`: `40.00% -> 100.00%`.
+   4. `0x00586AB0` `OrphanTiny_SetWordEcxOffset_8e_00586ab0`: `40.00% -> 100.00%`.
+2. Full-project snapshot after full compare (`just stats`):
+   1. paired functions: `12229` (`100.00%` coverage),
+   2. aligned functions: `63`,
+   3. average similarity: `2.60%`,
+   4. failed-to-match lines: `0`.
+
+## 2026-02-25 22:58 UTC - trade arrow dispatch typed-slot pass
+
+### Commands
+1. `just build`
+2. `just compare 0x00583bd0`
+3. `just compare 0x00586e70`
+4. `just stats`
+
+### Changes
+1. Updated virtual slot typing in `include/game/ui_widget_shared.h` for call-shape fidelity:
+   1. `CtrlSlot16(int commandId, void* eventArg, int eventExtra)` (`+0x40`),
+   2. `CtrlSlot91(void* dispatchArg)` (`+0x16c`).
+2. Reworked `0x00583BD0` (`src/game/trade_screen.cpp`) to use typed virtual calls on `TradeControl` instead of raw vtable casts for the slot `+0x16c` readiness gate and slot `+0x40` command dispatch.
+3. Kept local `#pragma optimize("y", on/off)` for `0x00583BD0` and adjusted the repeat-deadline compare to a branch form closer to original codegen (`tick < deadline+5`).
+4. Attempted deeper tuning for `0x00586E70`; reverted to a compiling baseline after confirming MSVC500 rejects `__thiscall` free-function pointer casts (`C4234`).
+
+### Results
+1. `0x00583BD0` improved from `67.77%` to `82.35%`.
+2. `just stats` global snapshot remained unchanged for aggregate metrics (`aligned=63`, `avg=2.60%`), consistent with a single-function targeted pass.
+
+## 2026-03-01 20:00 UTC - `TCapacityOrder` moved into class-member form
+
+### Commands
+1. `just build`
+2. `UV_CACHE_DIR=/tmp/uv-cache just detect`
+3. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401c0d`
+4. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00404093`
+5. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00405ab5`
+6. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004b8b80`
+7. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004b8cc0`
+8. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004b8d00`
+9. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004b8d30`
+
+### Changes
+1. Converted promoted `TCapacityOrder` wrappers in `src/game/TCapacityOrder.cpp` to real class member methods (`TCapacityOrder::...`).
+2. Kept thunk entrypoints as member wrappers that dispatch to member implementations.
+3. Removed explicit `__thiscall` keywords from member declarations/definitions; this toolchain emits C4234 for explicit keyword usage even though member-call ABI still uses `thiscall`.
+
+### Results
+1. Build is green after conversion.
+2. Per-function compare status:
+   1. `0x00401c0d`: `100.00%`
+   2. `0x00404093`: `0.00%`
+   3. `0x00405ab5`: `100.00%`
+   4. `0x004b8b80`: `30.89%`
+   5. `0x004b8cc0`: `100.00%`
+   6. `0x004b8d00`: `74.07%`
+   7. `0x004b8d30`: `100.00%`
+3. Class checkpoint: `4 / 7` at `100%` after moving into class-member form.
+
+## 2026-03-01 20:09 UTC - `TGreatPower` initial promotion batch
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x00401172 ... --address 0x00405AC9` (23 addresses)
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just build`
+5. `UV_CACHE_DIR=/tmp/uv-cache just detect`
+6. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401172`
+7. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004014A6`
+8. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401AD2`
+9. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00403C15`
+10. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00404CE1`
+11. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00405AC9`
+12. `UV_CACHE_DIR=/tmp/uv-cache just stats`
+
+### Changes
+1. Added new manual class file: `src/game/TGreatPower.cpp`.
+2. Promoted 23 `TGreatPower` addresses from `src/ghidra_autogen/TGreatPower.cpp` with ownership updates.
+3. Replaced raw promoted decompiler blocks with compile-safe first-pass wrappers:
+   1. member-method wrappers for `__thiscall`-style thunks,
+   2. free wrappers for `__cdecl`/`__stdcall`-style thunks,
+   3. direct forwarding to existing stub-backed target symbols (no inline asm).
+4. Added `src/game/TGreatPower.cpp` to `CMakeLists.txt`.
+
+### Results
+1. Full loop is green:
+   1. `just build` passed,
+   2. `just detect` passed.
+2. Targeted compare baseline:
+   1. `0x00401172`: `100.00%`
+   2. `0x004014A6`: `0.00%`
+   3. `0x00401AD2`: `0.00%`
+   4. `0x00403C15`: `0.00%`
+   5. `0x00404CE1`: `0.00%`
+   6. `0x00405AC9`: `0.00%`
+3. Global stats snapshot:
+   1. aligned functions: `79`
+   2. average similarity: `2.57%`
+   3. paired coverage: `100.00%`
+   4. timestamp: `2026-03-01T20:09:37.204279+00:00`
+
+## 2026-03-01 20:17 UTC - `TGreatPower` thunk-to-member routing pass
+
+### Commands
+1. `just build`
+2. `UV_CACHE_DIR=/tmp/uv-cache just detect`
+3. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401172`
+4. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004014A6`
+5. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401AD2`
+6. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00403C15`
+7. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00404CE1`
+8. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00405AC9`
+
+### Changes
+1. Refactored `src/game/TGreatPower.cpp` so selected thunk wrappers call class member methods instead of inline call-through casts in each thunk body.
+2. Moved call-through bridge casts into the corresponding class methods:
+   1. `QueueMapActionMissionFromCandidateAndMarkState`
+   2. `ComputeAdvisoryMapNodeScoreFactorByCaseMetric`
+   3. `ExecuteAdvisoryPromptAndApplyActionType1`
+   4. `TryDispatchNationActionViaUiContextOrFallback`
+   5. `QueueInterNationEventType0FForNationPairContext`
+
+### Results
+1. Build and detect remain green.
+2. Compare snapshot after refactor:
+   1. `0x00401172`: `100.00%` (unchanged)
+   2. `0x004014A6`: `0.00%` (unchanged)
+   3. `0x00401AD2`: `0.00%` (unchanged)
+   4. `0x00403C15`: `0.00%` (regressed from prior `66.67%`)
+   5. `0x00404CE1`: `0.00%` (unchanged)
+   6. `0x00405AC9`: `0.00%` (unchanged)
+3. Interpretation: structural class-routing requirement is now satisfied, but wrapper indirection in this shape hurts at least one thunk; next pass should move these toward direct class-owned body reconstruction (not bridge-only wrappers).
+
+## 2026-03-01 21:50 UTC - `TGreatPower` class-owned first-pass body attempt
+
+### Commands
+1. `just build`
+2. `UV_CACHE_DIR=/tmp/uv-cache just detect`
+3. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401172`
+4. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004014A6`
+5. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00401AD2`
+6. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00403C15`
+7. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00404CE1`
+8. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00405AC9`
+9. `UV_CACHE_DIR=/tmp/uv-cache just stats`
+
+### Changes
+1. Reworked `src/game/TGreatPower.cpp` to keep target functions class-owned while avoiding unresolved-symbol churn:
+   1. switched global-state access in new class bodies to fixed-address reads (`0x6A21BC`, `0x6A4280`, `0x6A43D0`) instead of typed extern globals,
+   2. added first-pass class-owned bodies for:
+      1. `0x00403C15` `thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15`,
+      2. `0x00404CE1` `thunk_TryDispatchNationActionViaUiContextOrFallback_At00404ce1`,
+   3. kept `0x004014A6`, `0x00401AD2`, `0x00405AC9` as class thunks with bridge calls for compile stability.
+2. Fixed compile/link breakages introduced during this pass:
+   1. resolved unresolved externals by removing type-mangled extern globals,
+   2. corrected local call-signature typing (`slot21` return type).
+
+### Results
+1. Full loop is green again (`build`, `detect`, targeted compares, `stats` all succeeded).
+2. Targeted compare status after class-owned body attempt:
+   1. `0x00401172`: `100.00%`
+   2. `0x004014A6`: `0.00%`
+   3. `0x00401AD2`: `0.00%`
+   4. `0x00403C15`: `0.00%`
+   5. `0x00404CE1`: `0.00%`
+   6. `0x00405AC9`: `0.00%`
+3. Global snapshot:
+   1. aligned functions: `79 / 12973`
+   2. average similarity: `2.57%`
+4. Interpretation:
+   1. class-ownership goal was achieved for these methods with a clean build,
+   2. this specific first-pass body shape did not improve similarity on the selected addresses.
+
+## 2026-03-01 22:05 UTC - `TGreatPower` thunk + real-address split
+
+### Commands
+1. `just sync-ownership`
+2. `just regen-stubs`
+3. `just build`
+4. `UV_CACHE_DIR=/tmp/uv-cache just detect`
+5. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00403C15`
+6. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00404CE1`
+7. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x00405AC9`
+8. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004E1D50`
+9. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004DDBB0`
+10. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004DDA90`
+11. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004E8540`
+12. `UV_CACHE_DIR=/tmp/uv-cache just compare 0x004E8750`
+13. `UV_CACHE_DIR=/tmp/uv-cache just stats`
+
+### Changes
+1. Kept thunk indirection at thunk addresses:
+   1. `0x00403C15` (`TGreatPower::thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15`)
+   2. `0x00404CE1` (`TGreatPower::thunk_TryDispatchNationActionViaUiContextOrFallback_At00404ce1`)
+   3. `0x00405AC9` (`TGreatPower::thunk_QueueInterNationEventType0FForNationPairContext_At00405ac9`)
+2. Added real-code addresses from Ghidra with `// FUNCTION` markers:
+   1. `0x004E1D50` (`ExecuteAdvisoryPromptAndApplyActionType1`)
+   2. `0x004DDBB0` (`TryDispatchNationActionViaUiContextOrFallback`)
+   3. `0x004DDA90` (`TGreatPower::QueueInterNationEventType0FForNationPairContext`)
+   4. `0x004E8540` (`TGreatPower::QueueMapActionMissionFromCandidateAndMarkState`)
+   5. `0x004E8750` (`TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric`)
+3. Avoided fragile typed-extern global linkages by reading these globals through symbol-backed fixed addresses:
+   1. `0x006A21BC` (`g_pUiRuntimeContext`)
+   2. `0x006A4280` (`g_apSecondaryNationStateSlots`)
+   3. `0x006A43D0` (`g_pDiplomacyTurnStateManager`)
+
+### Results
+1. Build/detect loop is green again.
+2. Targeted compare snapshot:
+   1. `0x00403C15`: `66.67%`
+   2. `0x00404CE1`: `0.00%`
+   3. `0x00405AC9`: `0.00%`
+   4. `0x004E1D50`: `20.32%`
+   5. `0x004DDBB0`: `35.42%`
+   6. `0x004DDA90`: `0.00%`
+   7. `0x004E8540`: `25.00%`
+   8. `0x004E8750`: `0.00%`
+3. Global metric delta:
+   1. average similarity: `2.59%` (`+0.20 pp` from the broken intermediate state).
+
+## 2026-03-02 17:11 UTC - `TGreatPower` targeted similarity pass (`0x4E8540`, `0x4DDA90`)
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x004E8750`
+4. `just compare 0x004E8540`
+5. `just compare 0x004DDA90`
+6. `just compare 0x004DDBB0`
+
+### Changes
+1. `0x004E8540` (`QueueMapActionMissionFromCandidateAndMarkState`) shape pass:
+   1. removed mission-queue null guard branch,
+   2. restored fail-and-continue nil path with `MessageBoxA` and `thunk_TemporarilyClearAndRestoreUiInvalidationFlag`,
+   3. kept candidate-state updates in original order (`+0x970` / `+0xAF0` writes).
+2. `0x004DDA90` (`QueueInterNationEventType0FForNationPairContext`) shape pass:
+   1. removed queue-manager null guard,
+   2. collapsed to direct thunk dispatch with fixed-address queue manager read.
+3. `0x004E8750` experiment notes:
+   1. attempted broad case expansion (cases `3/4/7`) regressed and was rolled back,
+   2. retained prior higher-scoring baseline implementation.
+4. `0x004DDBB0` experiment notes:
+   1. argument-shape rewrite regressed and was rolled back to guarded baseline.
+
+### Results
+1. `0x004E8540`: `21.58% -> 44.16%` (`+22.58 pp`)
+2. `0x004DDA90`: `20.51% -> 26.67%` (`+6.16 pp`)
+3. `0x004E8750`: `34.25%` (baseline retained after rollback)
+4. `0x004DDBB0`: `37.89%` (higher than pre-pass baseline)
+5. Build/detect loop remains green after all rollbacks and retained changes.

@@ -4,40 +4,59 @@
 // Bucket: TUpDownView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004041C4
-// GHIDRA_NAME TUpDownView::thunk_DestructTUpDownViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUpDownViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TUpDownView::TUpDownView_VtblSlot001
+// GHIDRA_PROTO TUpDownView * __thiscall TUpDownView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTUpDownViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTUpDownViewAndMaybeFree */
 
-void * __thiscall
-TUpDownView::thunk_DestructTUpDownViewAndMaybeFree(TUpDownView *this,byte freeSelfFlag)
+TUpDownView * __thiscall TUpDownView::TUpDownView_VtblSlot001(TUpDownView *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TUpDownView *pTVar1;
   
-  pvVar1 = DestructTUpDownViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTUpDownViewAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408977
-// GHIDRA_NAME TUpDownView::thunk_GetTUpDownViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUpDownViewClassNamePointer(void)
+// GHIDRA_NAME TUpDownView::TUpDownView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TUpDownView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTUpDownViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTUpDownViewClassNamePointer */
 
-void * __cdecl TUpDownView::thunk_GetTUpDownViewClassNamePointer(void)
+void * __cdecl TUpDownView::TUpDownView_VtblSlot000(void)
 
 {
   void *pvVar1;
   
   pvVar1 = GetTUpDownViewClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00409A4D
+// GHIDRA_NAME TUpDownView::TUpDownView_VtblSlot104
+// GHIDRA_PROTO void __thiscall TUpDownView_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset84 */
+
+void __thiscall
+TUpDownView::TUpDownView_VtblSlot104
+          (TUpDownView *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
+            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583C90
@@ -57,12 +76,12 @@ void * __cdecl TUpDownView::CreateTUpDownViewInstance(void)
   puStack_8 = &LAB_0063756a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTUpDownView;
-    *(undefined4 *)(this + 0x84) = 0;
+    (this->base).pVtable = &g_vtblTUpDownView;
+    *(undefined4 *)&this->field_0x84 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -87,28 +106,72 @@ void * __cdecl TUpDownView::GetTUpDownViewClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D50
 // GHIDRA_NAME TUpDownView::ConstructTUpDownViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTUpDownViewBaseState(void)
+// GHIDRA_PROTO TUpDownView * __thiscall ConstructTUpDownViewBaseState(void)
 
-void * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView *this)
+TUpDownView * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView *this)
 
 {
   TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  *(undefined ***)this = &g_vtblTUpDownView;
-  *(undefined4 *)(this + 0x84) = 0;
+  this->field0_0x0 = &g_vtblTUpDownView;
+  this->field84 = 0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D80
 // GHIDRA_NAME TUpDownView::DestructTUpDownViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUpDownViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TUpDownView * __thiscall DestructTUpDownViewAndMaybeFree(byte freeSelfFlag)
 
-void * __thiscall TUpDownView::DestructTUpDownViewAndMaybeFree(TUpDownView *this,byte freeSelfFlag)
+TUpDownView * __thiscall
+TUpDownView::DestructTUpDownViewAndMaybeFree(TUpDownView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00583DD0
+// GHIDRA_NAME TUpDownView::HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
+// GHIDRA_PROTO void __thiscall HandleSplitArrowAutoRepeatTickAndDispatch_Offset84(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x84 timer state).
+// GHIDRA_COMMENT_END
+
+/* [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x84 timer
+   state). */
+
+void __thiscall
+TUpDownView::HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
+          (TUpDownView *this,int nEventType,void *pEventSender,void *pEventDataA,
+          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+
+{
+  undefined **ppuVar1;
+  char cVar2;
+  uint extraout_EAX;
+  int extraout_EAX_00;
+  
+  if (nEventType != 2) {
+    thunk_GetTickCountDiv16();
+    if (this->field84 + 5U <= extraout_EAX) {
+      thunk_GetTickCountDiv16();
+      this->field84 = extraout_EAX_00;
+      if (nEventType == 0) {
+        this->field84 = extraout_EAX_00 + 10;
+      }
+      ppuVar1 = this->field0_0x0;
+      cVar2 = (*(code *)ppuVar1[0x5b])(pHitPayload);
+      if (cVar2 != '\0') {
+        if ((int)pHitPayload->axisCoord4 <= this->field38 / 2) {
+          (*(code *)ppuVar1[0x10])(100);
+          return;
+        }
+        (*(code *)ppuVar1[0x10])(0x65,this,0);
+      }
+    }
+  }
+  return;
 }
 

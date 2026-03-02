@@ -3,9 +3,27 @@
 // Program: Imperialism.exe
 // Bucket: TFileBasedDocument.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403A12
+// GHIDRA_NAME TFileBasedDocument::thunk_GetTCommandHandlerClassNamePointer_At00403a12
+// GHIDRA_PROTO void * __cdecl thunk_GetTCommandHandlerClassNamePointer_At00403a12(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTCommandHandlerClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTCommandHandlerClassNamePointer */
+
+void * __cdecl TFileBasedDocument::thunk_GetTCommandHandlerClassNamePointer_At00403a12(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = TCommandHandler::GetTCommandHandlerClassNamePointer();
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004045BB
-// GHIDRA_NAME TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTFileBasedDocumentAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree_At004045bb
+// GHIDRA_PROTO void * __thiscall thunk_DestructTFileBasedDocumentAndMaybeFree_At004045bb(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTFileBasedDocumentAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +31,7 @@
 /* Single-JMP thunk to DestructTFileBasedDocumentAndMaybeFree */
 
 void * __thiscall
-TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree
+TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree_At004045bb
           (TFileBasedDocument *this,byte freeSelfFlag)
 
 {
@@ -24,21 +42,21 @@ TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040850D
-// GHIDRA_NAME TFileBasedDocument::thunk_GetTFileBasedDocumentRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTFileBasedDocumentRuntimeClass(void)
+// GHIDRA_NAME TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTFileBasedDocumentInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFileBasedDocumentRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTFileBasedDocumentRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTFileBasedDocumentRuntimeClass. */
+/* Thunk forwarding to GetTFileBasedDocumentRuntimeClass. [FID:thunk_target_sync] */
 
 void * __thiscall
-TFileBasedDocument::thunk_GetTFileBasedDocumentRuntimeClass(TFileBasedDocument *this)
+TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
 
 {
   void *in_EAX;
   
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -74,7 +92,7 @@ void * __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBase
 {
   void *in_EAX;
   
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -111,7 +129,7 @@ void * __cdecl TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
   puStack_8 = &LAB_0062ea7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -132,9 +150,9 @@ TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
           (TFileBasedDocument *this,byte freeSelfFlag)
 
 {
-  TCommandHandler::thunk_GetTCommandHandlerRuntimeClass((TCommandHandler *)this);
+  TCommandHandler::thunk_CreateTCommandHandlerInstance((TCommandHandler *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

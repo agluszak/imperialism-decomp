@@ -22,63 +22,63 @@ void * __cdecl TOneTimeAnimation::thunk_GetTOneTimeAnimationClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C34
-// GHIDRA_NAME TOneTimeAnimation::thunk_InitializeOneTimeAnimationState
-// GHIDRA_PROTO void __thiscall thunk_InitializeOneTimeAnimationState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// GHIDRA_NAME TOneTimeAnimation::thunk_ConstructTOneTimeAnimationBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTOneTimeAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeOneTimeAnimationState.
+// GHIDRA_COMMENT Thunk forwarding to InitializeOneTimeAnimationState. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to InitializeOneTimeAnimationState. */
+/* Thunk forwarding to InitializeOneTimeAnimationState. [FID:thunk_target_sync] */
 
 void __thiscall
-TOneTimeAnimation::thunk_InitializeOneTimeAnimationState
+TOneTimeAnimation::thunk_ConstructTOneTimeAnimationBaseState
           (TOneTimeAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  this[1].pVtable = (void *)arg1;
-  this[7].pVtable = *(void **)arg2;
-  this[8].pVtable = *(void **)(arg2 + 4);
-  this[9].pVtable = *(void **)(arg2 + 8);
-  this[10].pVtable = *(void **)(arg2 + 0xc);
-  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
-  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
-  this[5].pVtable = (void *)arg5;
-  this[6].pVtable = (void *)arg6;
-  *(undefined2 *)&this[2].pVtable = 0;
-  this[4].pVtable = (void *)0x0;
-  *(undefined1 *)&this[0xb].pVtable = 0;
+  this->field1_0x4 = (void *)arg1;
+  this->field10_0x1c = *(void **)arg2;
+  this->field11_0x20 = *(void **)(arg2 + 4);
+  this->field12_0x24 = *(void **)(arg2 + 8);
+  this->field13_0x28 = *(void **)(arg2 + 0xc);
+  this->field3_0xa = (short)arg3;
+  this->field4_0xc = (undefined2)arg4;
+  this->field8_0x14 = (void *)arg5;
+  this->field9_0x18 = (void *)arg6;
+  this->field2_0x8 = 0;
+  this->field7_0x10 = (void *)0x0;
+  this->field14_0x2c = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004033FA
-// GHIDRA_NAME TOneTimeAnimation::thunk_GetTOneTimeAnimationRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTOneTimeAnimationRuntimeClass(void)
+// GHIDRA_NAME TOneTimeAnimation::thunk_CreateTOneTimeAnimationInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTOneTimeAnimationInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTOneTimeAnimationRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTOneTimeAnimationRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTOneTimeAnimationRuntimeClass. */
+/* Thunk forwarding to GetTOneTimeAnimationRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TOneTimeAnimation::thunk_GetTOneTimeAnimationRuntimeClass(TOneTimeAnimation *this)
+void * __thiscall TOneTimeAnimation::thunk_CreateTOneTimeAnimationInstance(TOneTimeAnimation *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004067C6
-// GHIDRA_NAME TOneTimeAnimation::thunk_AdvanceOneTimeAnimationFrameAndInvalidateRect
-// GHIDRA_PROTO void __thiscall thunk_AdvanceOneTimeAnimationFrameAndInvalidateRect(void)
+// GHIDRA_NAME TOneTimeAnimation::thunk_DestructTOneTimeAnimationAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTOneTimeAnimationAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
+// GHIDRA_COMMENT Direct thunk [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Direct thunk */
+/* Direct thunk [FID:thunk_target_sync] */
 
 void __thiscall
-TOneTimeAnimation::thunk_AdvanceOneTimeAnimationFrameAndInvalidateRect(TOneTimeAnimation *this)
+TOneTimeAnimation::thunk_DestructTOneTimeAnimationAndMaybeFree(TOneTimeAnimation *this)
 
 {
   DestructTOneTimeAnimationAndMaybeFree(this);
@@ -99,7 +99,7 @@ void * __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(TOneTimeAni
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -132,18 +132,18 @@ TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
           (TOneTimeAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
 
 {
-  this[1].pVtable = (void *)arg1;
-  this[7].pVtable = *(void **)arg2;
-  this[8].pVtable = *(void **)(arg2 + 4);
-  this[9].pVtable = *(void **)(arg2 + 8);
-  this[10].pVtable = *(void **)(arg2 + 0xc);
-  *(undefined2 *)((int)&this[2].pVtable + 2) = (undefined2)arg3;
-  *(undefined2 *)&this[3].pVtable = (undefined2)arg4;
-  this[5].pVtable = (void *)arg5;
-  this[6].pVtable = (void *)arg6;
-  *(undefined2 *)&this[2].pVtable = 0;
-  this[4].pVtable = (void *)0x0;
-  *(undefined1 *)&this[0xb].pVtable = 0;
+  this->field1_0x4 = (void *)arg1;
+  this->field10_0x1c = *(void **)arg2;
+  this->field11_0x20 = *(void **)(arg2 + 4);
+  this->field12_0x24 = *(void **)(arg2 + 8);
+  this->field13_0x28 = *(void **)(arg2 + 0xc);
+  this->field3_0xa = (short)arg3;
+  this->field4_0xc = (undefined2)arg4;
+  this->field8_0x14 = (void *)arg5;
+  this->field9_0x18 = (void *)arg6;
+  this->field2_0x8 = 0;
+  this->field7_0x10 = (void *)0x0;
+  this->field14_0x2c = 0;
   return;
 }
 
@@ -161,7 +161,8 @@ void __thiscall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(TOneTim
 {
   void *pvVar1;
   undefined4 *unaff_FS_OFFSET;
-  tagRECT atStack_34 [2];
+  tagRECT tStack_34;
+  undefined1 local_24 [24];
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -170,21 +171,21 @@ void __thiscall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(TOneTim
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe38;
   *unaff_FS_OFFSET = &local_c;
-  if ((*(char *)&this[0xb].pVtable == '\0') &&
-     (pvVar1 = (void *)((int)this[4].pVtable + 1), this[4].pVtable = pvVar1,
-     pvVar1 == this[5].pVtable)) {
-    thunk_InvalidateCityDialogRectRegion((int)(this + 7),1);
-    thunk_ConstructScopedMapQuickDrawContext();
+  if ((this->field14_0x2c == '\0') &&
+     (pvVar1 = (void *)((int)this->field7_0x10 + 1), this->field7_0x10 = pvVar1,
+     pvVar1 == this->field8_0x14)) {
+    thunk_InvalidateCityDialogRectRegion((int)&this->field10_0x1c,1);
+    thunk_ConstructScopedMapQuickDrawContext(local_24,(int)this->field1_0x4);
     local_4 = 0;
-    (**(code **)(*(int *)this[1].pVtable + 0xf8))();
-    CopyRect(atStack_34,(RECT *)(this + 7));
-    (**(code **)(*(int *)this[1].pVtable + 0x110))(atStack_34);
-    this[4].pVtable = (void *)0x0;
-    if ((int)*(short *)&this[2].pVtable < *(short *)((int)&this[2].pVtable + 2) + -1) {
-      *(short *)&this[2].pVtable = *(short *)&this[2].pVtable + 1;
+    (**(code **)(*(int *)this->field1_0x4 + 0xf8))();
+    CopyRect(&tStack_34,(RECT *)&this->field10_0x1c);
+    (**(code **)(*(int *)this->field1_0x4 + 0x110))(&tStack_34);
+    this->field7_0x10 = (void *)0x0;
+    if ((int)this->field2_0x8 < this->field3_0xa + -1) {
+      this->field2_0x8 = this->field2_0x8 + 1;
     }
     else {
-      *(undefined1 *)&this[0xb].pVtable = 1;
+      this->field14_0x2c = 1;
     }
     local_4 = 0xffffffff;
     thunk_DestroyScopedMapQuickDrawContext();

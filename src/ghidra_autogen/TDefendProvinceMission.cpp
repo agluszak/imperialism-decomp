@@ -3,16 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TDefendProvinceMission.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004013CA
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot033
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot033(void)
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot033(void)
+
+{
+  NoOpMissionVtableSlot84();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401992
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot036
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot036(void)
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot036(void)
+
+{
+  NoOpMissionVtableSlot90Ret4();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00401B68
-// GHIDRA_NAME TDefendProvinceMission::thunk_ReturnInvadeMissionIfMovementClassMatchesTargetTile
-// GHIDRA_PROTO void __cdecl thunk_ReturnInvadeMissionIfMovementClassMatchesTargetTile(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot018
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot018(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReturnInvadeMissionIfMovementClassMatchesTargetTile
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReturnInvadeMissionIfMovementClassMatchesTargetTile */
 
-void __cdecl TDefendProvinceMission::thunk_ReturnInvadeMissionIfMovementClassMatchesTargetTile(void)
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot018(void)
 
 {
   ReturnInvadeMissionIfMovementClassMatchesTargetTile();
@@ -20,8 +42,8 @@ void __cdecl TDefendProvinceMission::thunk_ReturnInvadeMissionIfMovementClassMat
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004028BA
-// GHIDRA_NAME TDefendProvinceMission::thunk_HandleInvadeMissionActionType3ForTargetTile
-// GHIDRA_PROTO bool __thiscall thunk_HandleInvadeMissionActionType3ForTargetTile(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot019
+// GHIDRA_PROTO bool __thiscall TDefendProvinceMission_VtblSlot019(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleInvadeMissionActionType3ForTargetTile
 // GHIDRA_COMMENT_END
@@ -29,8 +51,7 @@ void __cdecl TDefendProvinceMission::thunk_ReturnInvadeMissionIfMovementClassMat
 /* Single-JMP thunk to HandleInvadeMissionActionType3ForTargetTile */
 
 bool __thiscall
-TDefendProvinceMission::thunk_HandleInvadeMissionActionType3ForTargetTile
-          (TDefendProvinceMission *this)
+TDefendProvinceMission::TDefendProvinceMission_VtblSlot019(TDefendProvinceMission *this)
 
 {
   bool bVar1;
@@ -39,9 +60,67 @@ TDefendProvinceMission::thunk_HandleInvadeMissionActionType3ForTargetTile
   return bVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402B5D
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot030
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot030(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ComputeArmyMissionCandidateVectorDistanceScore
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Single-JMP thunk to ComputeArmyMissionCandidateVectorDistanceScore */
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot030(void)
+
+{
+  code *pcVar1;
+  float fVar2;
+  char cVar3;
+  short extraout_AX;
+  float *pfVar4;
+  int *in_ECX;
+  int iVar5;
+  int in_stack_00000004;
+  float afStack_14 [5];
+  
+  if (((double)(int)*(short *)(in_stack_00000004 + 0x34) * _g_Accumulate_Unit_Order_Value_0065AA48 <
+       (double)_g_Compute_Army_Mission_Value_0065AA20) &&
+     (cVar3 = (**(code **)(*in_ECX + 0x28))(), cVar3 == '\0')) {
+    return;
+  }
+  afStack_14[0] = 0.0;
+  pcVar1 = *(code **)(*in_ECX + 0x9c);
+  afStack_14[1] = 0.0;
+  afStack_14[2] = 0.0;
+  afStack_14[3] = 0.0;
+  afStack_14[4] = 0.0;
+  (*pcVar1)();
+  NoOpRuntimeCallback_005c34d0();
+  (*pcVar1)();
+  NoOpRuntimeCallback_005184e0();
+  thunk_AccumulateUnitOrderPriorityVectorContribution
+            (in_stack_00000004,(int)afStack_14,0x3f800000,(int)(float)(int)extraout_AX);
+  fVar2 = 0.0;
+  pfVar4 = afStack_14;
+  iVar5 = 5;
+  do {
+    fVar2 = fVar2 + *pfVar4;
+    pfVar4 = pfVar4 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  if (fVar2 == (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    return;
+  }
+  iVar5 = 5;
+  do {
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C75
-// GHIDRA_NAME TDefendProvinceMission::thunk_CleanupDefendProvinceMissionAndReleaseChildContext
-// GHIDRA_PROTO void __thiscall thunk_CleanupDefendProvinceMissionAndReleaseChildContext(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot007
+// GHIDRA_PROTO void __thiscall TDefendProvinceMission_VtblSlot007(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to CleanupDefendProvinceMissionAndReleaseChildContext
 // GHIDRA_COMMENT_END
@@ -49,28 +128,43 @@ TDefendProvinceMission::thunk_HandleInvadeMissionActionType3ForTargetTile
 /* Single-JMP thunk to CleanupDefendProvinceMissionAndReleaseChildContext */
 
 void __thiscall
-TDefendProvinceMission::thunk_CleanupDefendProvinceMissionAndReleaseChildContext
-          (TDefendProvinceMission *this)
+TDefendProvinceMission::TDefendProvinceMission_VtblSlot007(TDefendProvinceMission *this)
 
 {
   CleanupDefendProvinceMissionAndReleaseChildContext(this);
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004038AA
-// GHIDRA_NAME TDefendProvinceMission::thunk_ClearMissionStateByte11
-// GHIDRA_PROTO void __thiscall thunk_ClearMissionStateByte11(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004034EA
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot035
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot035(void)
 
-void __thiscall TDefendProvinceMission::thunk_ClearMissionStateByte11(TDefendProvinceMission *this)
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot035(void)
 
 {
-  this[0x11] = (TDefendProvinceMission)0x0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004038AA
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot012
+// GHIDRA_PROTO void __thiscall TDefendProvinceMission_VtblSlot012(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ClearMissionStateByte11
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ClearMissionStateByte11 */
+
+void __thiscall
+TDefendProvinceMission::TDefendProvinceMission_VtblSlot012(TDefendProvinceMission *this)
+
+{
+  *(undefined1 *)((int)&this->field10 + 1) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403EA9
-// GHIDRA_NAME TDefendProvinceMission::thunk_UpdateDefendProvinceMissionStateByNationTargetMatch
-// GHIDRA_PROTO void __thiscall thunk_UpdateDefendProvinceMissionStateByNationTargetMatch(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot013
+// GHIDRA_PROTO void __thiscall TDefendProvinceMission_VtblSlot013(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to UpdateDefendProvinceMissionStateByNationTargetMatch
 // GHIDRA_COMMENT_END
@@ -78,24 +172,39 @@ void __thiscall TDefendProvinceMission::thunk_ClearMissionStateByte11(TDefendPro
 /* Single-JMP thunk to UpdateDefendProvinceMissionStateByNationTargetMatch */
 
 void __thiscall
-TDefendProvinceMission::thunk_UpdateDefendProvinceMissionStateByNationTargetMatch
-          (TDefendProvinceMission *this)
+TDefendProvinceMission::TDefendProvinceMission_VtblSlot013(TDefendProvinceMission *this)
 
 {
   UpdateDefendProvinceMissionStateByNationTargetMatch(this);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004041E2
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot028
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot028(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ComputeArmyMissionScoreDeltaAgainstCurrentSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ComputeArmyMissionScoreDeltaAgainstCurrentSelection */
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot028(void)
+
+{
+  ComputeArmyMissionScoreDeltaAgainstCurrentSelection();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040438B
-// GHIDRA_NAME TDefendProvinceMission::thunk_DestroyTDefendProvinceMission
-// GHIDRA_PROTO void __cdecl thunk_DestroyTDefendProvinceMission(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot001
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot001(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestroyTDefendProvinceMission
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestroyTDefendProvinceMission */
 
-void __cdecl TDefendProvinceMission::thunk_DestroyTDefendProvinceMission(void)
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot001(void)
 
 {
   DestroyTDefendProvinceMission();
@@ -103,39 +212,157 @@ void __cdecl TDefendProvinceMission::thunk_DestroyTDefendProvinceMission(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004053A3
-// GHIDRA_NAME TDefendProvinceMission::thunk_GetDefendProvinceMissionClassName
-// GHIDRA_PROTO void * __cdecl thunk_GetDefendProvinceMissionClassName(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDefendProvinceMission_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetDefendProvinceMissionClassName
+// GHIDRA_COMMENT Single-JMP thunk to GetTDefendProvinceMissionClassNamePointer
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetDefendProvinceMissionClassName */
+/* Single-JMP thunk to GetTDefendProvinceMissionClassNamePointer */
 
-void * __cdecl TDefendProvinceMission::thunk_GetDefendProvinceMissionClassName(void)
+void * __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot000(void)
 
 {
   return &g_pClassDescTDefendProvinceMission;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004059F2
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot021
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot021(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseMissionVtableSlot54
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ReturnFalseMissionVtableSlot54 */
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot021(void)
+
+{
+  ReturnFalseMissionVtableSlot54();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F0B
-// GHIDRA_NAME TDefendProvinceMission::thunk_PropagateMissionTargetContextIdToLinkedUnits
-// GHIDRA_PROTO void __cdecl thunk_PropagateMissionTargetContextIdToLinkedUnits(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot017
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot017(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PropagateMissionTargetContextIdToLinkedUnits
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to PropagateMissionTargetContextIdToLinkedUnits */
 
-void __cdecl TDefendProvinceMission::thunk_PropagateMissionTargetContextIdToLinkedUnits(void)
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot017(void)
 
 {
   PropagateMissionTargetContextIdToLinkedUnits();
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00406019
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot020
+// GHIDRA_PROTO bool __cdecl TDefendProvinceMission_VtblSlot020(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForArmyMissionCapabilityFlag
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ReturnTrueForArmyMissionCapabilityFlag */
+
+bool __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot020(void)
+
+{
+  bool bVar1;
+  
+  bVar1 = ReturnTrueForArmyMissionCapabilityFlag();
+  return bVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407126
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot016
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot016(void)
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot016(void)
+
+{
+  InvokeMissionVtableMethods34_38_3C();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040763F
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot038
+// GHIDRA_PROTO bool __cdecl TDefendProvinceMission_VtblSlot038(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EvaluateMissionAndQueueEligibleUnitsByMovementClass
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to EvaluateMissionAndQueueEligibleUnitsByMovementClass */
+
+bool __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot038(void)
+
+{
+  bool bVar1;
+  
+  bVar1 = EvaluateMissionAndQueueEligibleUnitsByMovementClass();
+  return bVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407653
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot006
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot006(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DeserializeTArmyMission
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to DeserializeTArmyMission */
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot006(void)
+
+{
+  undefined1 uVar1;
+  code *pcVar2;
+  code *pcVar3;
+  short sVar4;
+  undefined1 *puVar5;
+  int iVar6;
+  undefined4 uVar7;
+  int in_ECX;
+  int *in_stack_00000004;
+  
+  thunk_DeserializeTMission();
+  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  (*pcVar2)(in_ECX + 0x14,2);
+  if (g_Advance_Turn_Machine_State_00695278 < 0xb) {
+    (*pcVar2)(in_ECX + 0x1c,0x10);
+    *(undefined4 *)(in_ECX + 0x2c) = 0;
+  }
+  else {
+    (*pcVar2)(in_ECX + 0x1c,0x14);
+    puVar5 = (undefined1 *)(in_ECX + 0x1d);
+    iVar6 = 5;
+    do {
+      uVar1 = puVar5[-1];
+      puVar5[-1] = puVar5[2];
+      puVar5[2] = uVar1;
+      uVar1 = *puVar5;
+      *puVar5 = puVar5[1];
+      puVar5[1] = uVar1;
+      puVar5 = puVar5 + 4;
+      iVar6 = iVar6 + -1;
+    } while (iVar6 != 0);
+  }
+  pcVar2 = *(code **)(*in_stack_00000004 + 0x4c);
+  sVar4 = (*pcVar2)();
+  for (iVar6 = (int)sVar4; iVar6 != 0; iVar6 = iVar6 + -1) {
+    pcVar3 = (code *)**(undefined4 **)((int)g_apNationStates[*(short *)(in_ECX + 4)] + 0x44);
+    sVar4 = (*pcVar2)(0);
+    uVar7 = (**(code **)(pcVar3 + 0x4c))((int)sVar4);
+    (*pcVar3)(uVar7);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407A8B
-// GHIDRA_NAME TDefendProvinceMission::thunk_PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext
-// GHIDRA_PROTO void __thiscall thunk_PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot015
+// GHIDRA_PROTO void __thiscall TDefendProvinceMission_VtblSlot015(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext
 // GHIDRA_COMMENT_END
@@ -143,24 +370,99 @@ void __cdecl TDefendProvinceMission::thunk_PropagateMissionTargetContextIdToLink
 /* Single-JMP thunk to PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext */
 
 void __thiscall
-TDefendProvinceMission::thunk_PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext
-          (TDefendProvinceMission *this)
+TDefendProvinceMission::TDefendProvinceMission_VtblSlot015(TDefendProvinceMission *this)
 
 {
   PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext(this);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00407E87
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot011
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot011(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BuildMissionPriorityVectorAndReturnTotal
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to BuildMissionPriorityVectorAndReturnTotal */
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot011(void)
+
+{
+  BuildMissionPriorityVectorAndReturnTotal();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407EC8
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot005
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot005(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SerializeTArmyMission
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SerializeTArmyMission */
+
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot005(void)
+
+{
+  code *pcVar1;
+  undefined1 uVar2;
+  undefined1 uVar3;
+  bool bVar4;
+  undefined4 uVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int in_ECX;
+  undefined4 *puVar6;
+  int *in_stack_00000004;
+  int iVar7;
+  undefined4 uStack_4;
+  
+  thunk_SerializeTMission();
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  (*pcVar1)(in_ECX + 0x14,2);
+  puVar6 = (undefined4 *)(in_ECX + 0x1c);
+  iVar7 = 5;
+  do {
+    uVar5 = *puVar6;
+    uStack_4._0_1_ = (undefined1)uVar5;
+    uVar2 = (undefined1)uStack_4;
+    uStack_4._3_1_ = (undefined1)((uint)uVar5 >> 0x18);
+    uStack_4._2_1_ = (undefined1)((uint)uVar5 >> 0x10);
+    uStack_4._1_1_ = (undefined1)((uint)uVar5 >> 8);
+    uVar3 = uStack_4._1_1_;
+    uStack_4._0_2_ = CONCAT11(uStack_4._2_1_,uStack_4._3_1_);
+    uStack_4 = CONCAT13(uVar2,CONCAT12(uVar3,(undefined2)uStack_4));
+    (*pcVar1)(&uStack_4,4);
+    puVar6 = puVar6 + 1;
+    iVar7 = iVar7 + -1;
+  } while (iVar7 != 0);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x88);
+  uVar5 = (**(code **)(**(int **)(in_ECX + 0x18) + 0x48))();
+  (*pcVar1)(uVar5);
+  thunk_InitializeLinkedListCursorFromOwnerHead();
+  bVar4 = thunk_LinkedListCursorHasCurrent();
+  iVar7 = CONCAT31(extraout_var,bVar4);
+  while (iVar7 != 0) {
+    iVar7 = thunk_FindOneBasedNodeIndexByValueInLinkedList();
+    (*pcVar1)(iVar7);
+    thunk_AdvanceLinkedListCursor();
+    bVar4 = thunk_LinkedListCursorHasCurrent();
+    iVar7 = CONCAT31(extraout_var_00,bVar4);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040831E
-// GHIDRA_NAME TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagA
-// GHIDRA_PROTO bool __stdcall thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot025
+// GHIDRA_PROTO bool __stdcall TDefendProvinceMission_VtblSlot025(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForDefendProvinceMissionCapabilityFlagA
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReturnTrueForDefendProvinceMissionCapabilityFlagA */
 
-bool TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
+bool TDefendProvinceMission::TDefendProvinceMission_VtblSlot025(void)
 
 {
   bool bVar1;
@@ -170,8 +472,8 @@ bool TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityF
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F9E
-// GHIDRA_NAME TDefendProvinceMission::thunk_ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14
-// GHIDRA_PROTO void __thiscall thunk_ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot014
+// GHIDRA_PROTO void __thiscall TDefendProvinceMission_VtblSlot014(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14
 // GHIDRA_COMMENT_END
@@ -179,24 +481,41 @@ bool TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityF
 /* Single-JMP thunk to ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14 */
 
 void __thiscall
-TDefendProvinceMission::thunk_ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14
-          (TDefendProvinceMission *this)
+TDefendProvinceMission::TDefendProvinceMission_VtblSlot014(TDefendProvinceMission *this)
 
 {
   ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14(this);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004090F7
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot023
+// GHIDRA_PROTO int __cdecl TDefendProvinceMission_VtblSlot023(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ReturnZeroForArmyMissionCapabilityFlag
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ReturnZeroForArmyMissionCapabilityFlag */
+
+int __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot023(void)
+
+{
+  int iVar1;
+  
+  iVar1 = ReturnZeroForArmyMissionCapabilityFlag();
+  return iVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040943F
-// GHIDRA_NAME TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagB
-// GHIDRA_PROTO bool __stdcall thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot010
+// GHIDRA_PROTO bool __stdcall TDefendProvinceMission_VtblSlot010(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForDefendProvinceMissionCapabilityFlagB
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ReturnTrueForDefendProvinceMissionCapabilityFlagB */
 
-bool TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
+bool TDefendProvinceMission::TDefendProvinceMission_VtblSlot010(void)
 
 {
   bool bVar1;
@@ -205,67 +524,41 @@ bool TDefendProvinceMission::thunk_ReturnTrueForDefendProvinceMissionCapabilityF
   return bVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00535770
-// GHIDRA_NAME TDefendProvinceMission::PropagateMissionTargetContextIdToLinkedUnits
-// GHIDRA_PROTO void __cdecl PropagateMissionTargetContextIdToLinkedUnits(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0040948A
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot029
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot029(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Propagates mission target context id (+0x14) to linked units/order chain.
+// GHIDRA_COMMENT Single-JMP thunk to ReturnMissionConstantFloatSlot74
 // GHIDRA_COMMENT_END
 
-/* Propagates mission target context id (+0x14) to linked units/order chain. */
+/* Single-JMP thunk to ReturnMissionConstantFloatSlot74 */
 
-void __cdecl TDefendProvinceMission::PropagateMissionTargetContextIdToLinkedUnits(void)
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot029(void)
 
 {
-  thunk_PropagateTargetTileToLinkedUnitsIfDifferent();
+  ReturnMissionConstantFloatSlot74();
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00535790
-// GHIDRA_NAME TDefendProvinceMission::ReturnTrueForDefendProvinceMissionCapabilityFlagA
-// GHIDRA_PROTO bool __stdcall ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
-
-bool TDefendProvinceMission::ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
-
-{
-  return true;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005357B0
-// GHIDRA_NAME TDefendProvinceMission::ReturnTrueForDefendProvinceMissionCapabilityFlagB
-// GHIDRA_PROTO bool __stdcall ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
-
-bool TDefendProvinceMission::ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
-
-{
-  return true;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005357D0
-// GHIDRA_NAME TDefendProvinceMission::DestroyTDefendProvinceMission
-// GHIDRA_PROTO void __cdecl DestroyTDefendProvinceMission(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004098FE
+// GHIDRA_NAME TDefendProvinceMission::TDefendProvinceMission_VtblSlot027
+// GHIDRA_PROTO void __cdecl TDefendProvinceMission_VtblSlot027(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT DefendProvince mission destructor wrapper: reset to sentinel vtable and optionally free object.
+// GHIDRA_COMMENT Single-JMP thunk to ComputeArmyMissionDotProductScore
 // GHIDRA_COMMENT_END
 
-/* DefendProvince mission destructor wrapper: reset to sentinel vtable and optionally free object.
-    */
+/* Single-JMP thunk to ComputeArmyMissionDotProductScore */
 
-void __cdecl TDefendProvinceMission::DestroyTDefendProvinceMission(void)
+void __cdecl TDefendProvinceMission::TDefendProvinceMission_VtblSlot027(void)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_ResetTDefendProvinceMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
+  ComputeArmyMissionDotProductScore();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E5F0
 // GHIDRA_NAME TDefendProvinceMission::CreateTDefendProvinceMission
-// GHIDRA_PROTO undefined CreateTDefendProvinceMission()
+// GHIDRA_PROTO TDefendProvinceMission * __cdecl CreateTDefendProvinceMission(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Allocates and constructs a TDefendProvinceMission object and installs g_vtblTDefendProvinceMission.
 // GHIDRA_COMMENT_END
@@ -273,11 +566,11 @@ void __cdecl TDefendProvinceMission::DestroyTDefendProvinceMission(void)
 /* Allocates and constructs a TDefendProvinceMission object and installs
    g_vtblTDefendProvinceMission. */
 
-TArmyMission * TDefendProvinceMission::CreateTDefendProvinceMission(void)
+TDefendProvinceMission * __cdecl TDefendProvinceMission::CreateTDefendProvinceMission(void)
 
 {
-  TArmyMission *this;
-  TArmyMission *pTVar1;
+  TMission *this;
+  TMission *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -287,16 +580,16 @@ TArmyMission * TDefendProvinceMission::CreateTDefendProvinceMission(void)
   puStack_8 = &LAB_0063447a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TArmyMission *)AllocateWithFallbackHandler(0x30);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TArmyMission *)0x0;
-  if (this != (TArmyMission *)0x0) {
-    TArmyMission::thunk_ConstructTArmyMissionWithNodeKey(this);
-    *(undefined ***)this = &g_vtblTDefendProvinceMission;
+  pTVar1 = (TMission *)0x0;
+  if (this != (TMission *)0x0) {
+    TMission::thunk_ConstructTArmyMissionWithNodeKey(this,-1);
+    this->pVtable = &g_vtblTDefendProvinceMission;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return (TDefendProvinceMission *)pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E670
@@ -321,6 +614,7 @@ void * __cdecl TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer
 // GHIDRA_COMMENT Performs defend mission cleanup, clears transient unit/link state, releases child context, and optionally destroys self.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
 /* Performs defend mission cleanup, clears transient unit/link state, releases child context, and
    optionally destroys self. */
 
@@ -329,6 +623,7 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
           (TDefendProvinceMission *this)
 
 {
+  TAttackProvinceMission *this_00;
   int iVar1;
   bool bVar2;
   int extraout_EAX;
@@ -337,8 +632,9 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
   undefined3 extraout_var_00;
   int iVar3;
   
-  (**(code **)(*(int *)g_apNationStates[*(short *)(this + 4)] + 0xc))();
-  SetMapStateByteFlag970WithRuntimeGate();
+  this_00 = g_apNationStates[this->field04];
+  (**(code **)((int)(this_00->base).pVtable + 0xc))();
+  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(this_00,(int)this->field14,0);
   thunk_InitializeLinkedListCursorFromOwnerHead();
   bVar2 = thunk_LinkedListCursorHasCurrent();
   iVar3 = CONCAT31(extraout_var,bVar2);
@@ -350,13 +646,13 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
     iVar1 = extraout_EAX_00;
     iVar3 = CONCAT31(extraout_var_00,bVar2);
   }
-  (**(code **)(**(int **)(this + 0x18) + 0x5c))();
-  if (*(int **)(this + 0x18) != (int *)0x0) {
-    (**(code **)(**(int **)(this + 0x18) + 0x58))();
+  (**(code **)(*(int *)this->pField18 + 0x5c))();
+  if (this->pField18 != (int *)0x0) {
+    (**(code **)(*(int *)this->pField18 + 0x58))();
   }
-  *(undefined4 *)(this + 0x18) = 0;
+  this->pField18 = (void *)0x0;
   if (this != (TDefendProvinceMission *)0x0) {
-    (**(code **)(*(int *)this + 4))(1);
+    (**(code **)(this->field0_0x0 + 4))(1);
   }
   return;
 }
@@ -377,12 +673,12 @@ TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch
 {
   int iVar1;
   
-  iVar1 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 4)] + 0x40))();
-  if (iVar1 == *(short *)(this + 0x14)) {
-    this[8] = (TDefendProvinceMission)0x0;
+  iVar1 = (**(code **)(*(int *)g_apNationStates[this->field04] + 0x40))();
+  if (iVar1 == this->field14) {
+    this->field08 = 0;
     return;
   }
-  this[8] = (TDefendProvinceMission)0x2;
+  this->field08 = 2;
   return;
 }
 
@@ -414,9 +710,9 @@ TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTil
   
   iVar6 = 0;
   local_c = 0;
-  sVar3 = *(short *)(this + 4);
-  iVar5 = (int)*(short *)(this + 0x14);
-  iVar4 = *(int *)(g_pGlobalMapState + 0x10);
+  sVar3 = this->field04;
+  iVar5 = (int)this->field14;
+  iVar4 = *(int *)((int)g_pGlobalMapState + 0x10);
   local_8 = (float)*(int *)(iVar4 + 0x9c + iVar5 * 0xa8);
   iVar1 = iVar4 + iVar5 * 0xa8;
   if ('\0' < *(char *)(iVar4 + 8 + iVar5 * 0xa8)) {
@@ -433,7 +729,7 @@ TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTil
     local_8 = ((float)local_c / (float)(int)cVar2 -
               (float)_g_Try_Resolve_Attack_LookupTable_0065A9E0) * local_8;
   }
-  *(float *)(this + 0xc) = local_8 / _g_Try_Resolve_Attack_LookupTable_0065A9C0;
+  this->fField0c = local_8 / _g_Try_Resolve_Attack_LookupTable_0065A9C0;
   return;
 }
 
@@ -461,23 +757,25 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
   short extraout_AX_00;
   undefined2 extraout_var;
   ushort *puVar5;
-  TDefendProvinceMission *pTVar6;
+  undefined2 extraout_var_00;
+  void **ppvVar6;
   int iVar7;
   float unaff_EBX;
   int iVar8;
   float10 extraout_ST0;
   float fStack_c;
   
-  piVar2 = g_apNationStates[*(short *)(this + 4)];
+  piVar2 = g_apNationStates[this->field04];
   (**(code **)(*piVar2 + 0xc))();
   fStack_c = (float)piVar2[0x2da];
   if (fStack_c <= (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
     fStack_c = (float)g_Compute_Best_Nation_LookupTable_0065A9B8;
   }
-  bVar3 = thunk_IsMapTileCompatibleWithCurrentTerrainOrActionContext();
+  bVar3 = thunk_IsMapTileCompatibleWithCurrentTerrainOrActionContext
+                    (CONCAT22(extraout_var_00,this->field14));
   if (bVar3) {
     cVar4 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x4c))
-                      (CONCAT22(extraout_var,*(undefined2 *)(this + 4)));
+                      (CONCAT22(extraout_var,this->field04));
     if (cVar4 != '\0') {
       thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore();
       if (unaff_EBX < _g_Compute_Best_Nation_Value_0065A8F8 * (float)extraout_ST0) {
@@ -485,18 +783,17 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
       }
     }
     puVar5 = &g_Recompute_Nation_Order_LookupTable_00697870 +
-             ((*(char *)(*(int *)(g_pGlobalMapState + 0x10) + 3 + *(short *)(this + 0x14) * 0xa8) <
+             ((*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 3 + this->field14 * 0xa8) <
               '\x01') - 1 & 3) * 5;
     iVar7 = 5;
-    pTVar6 = this + 0x1c;
+    ppvVar6 = &this->pField1c;
     do {
       uVar1 = *puVar5;
       puVar5 = puVar5 + 1;
       iVar7 = iVar7 + -1;
-      *(float *)pTVar6 =
-           (float)(int)(short)uVar1 * unaff_EBX *
-           (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-      pTVar6 = pTVar6 + 4;
+      *ppvVar6 = (void *)((float)(int)(short)uVar1 * unaff_EBX *
+                         (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
+      ppvVar6 = ppvVar6 + 1;
     } while (iVar7 != 0);
     return;
   }
@@ -508,29 +805,13 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
     iVar8 = iVar8 + 1;
   } while (iVar8 < 5);
   iVar8 = 0;
-  pTVar6 = this + 0x1c;
+  ppvVar6 = &this->pField1c;
   do {
     thunk_GetNormalizedCityActionResourceCostPercent();
     iVar8 = iVar8 + 1;
-    *(float *)pTVar6 = ((float)(int)extraout_AX_00 * fStack_c) / (float)iVar7;
-    pTVar6 = pTVar6 + 4;
+    *ppvVar6 = (void *)(((float)(int)extraout_AX_00 * fStack_c) / (float)iVar7);
+    ppvVar6 = ppvVar6 + 1;
   } while (iVar8 < 5);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053EFF0
-// GHIDRA_NAME TDefendProvinceMission::ClearMissionStateByte11
-// GHIDRA_PROTO void __thiscall ClearMissionStateByte11(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Clears mission state byte at +0x11 (sets to 0).
-// GHIDRA_COMMENT_END
-
-/* Clears mission state byte at +0x11 (sets to 0). */
-
-void __thiscall TDefendProvinceMission::ClearMissionStateByte11(TDefendProvinceMission *this)
-
-{
-  this[0x11] = (TDefendProvinceMission)0x0;
   return;
 }
 
@@ -551,26 +832,9 @@ TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile(TDefendProvi
   int in_stack_00000004;
   int in_stack_00000008;
   
-  if ((in_stack_00000004 == 3) && (in_stack_00000008 == *(short *)(this + 0x14))) {
+  if ((in_stack_00000004 == 3) && (in_stack_00000008 == this->field14)) {
     return true;
   }
   return false;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0053F040
-// GHIDRA_NAME TDefendProvinceMission::ReturnInvadeMissionIfMovementClassMatchesTargetTile
-// GHIDRA_PROTO void __cdecl ReturnInvadeMissionIfMovementClassMatchesTargetTile(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns this pointer only when cached target tile movement class matches mission movement-class constraint.
-// GHIDRA_COMMENT_END
-
-/* Returns this pointer only when cached target tile movement class matches mission movement-class
-   constraint. */
-
-void __cdecl TDefendProvinceMission::ReturnInvadeMissionIfMovementClassMatchesTargetTile(void)
-
-{
-  thunk_GetTileNormalizedMovementClassId();
-  return;
 }
 

@@ -4,20 +4,20 @@
 // Bucket: TTurnStartEvent.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408A0D
-// GHIDRA_NAME TTurnStartEvent::thunk_GetTTurnStartEventRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTTurnStartEventRuntimeClass(void)
+// GHIDRA_NAME TTurnStartEvent::thunk_CreateTTurnStartEventInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTTurnStartEventInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTurnStartEventRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTTurnStartEventRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTTurnStartEventRuntimeClass. */
+/* Thunk forwarding to GetTTurnStartEventRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TTurnStartEvent::thunk_GetTTurnStartEventRuntimeClass(TTurnStartEvent *this)
+void * __thiscall TTurnStartEvent::thunk_CreateTTurnStartEventInstance(TTurnStartEvent *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -53,7 +53,7 @@ void * __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(TTurnStartEvent
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 

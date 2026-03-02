@@ -4,15 +4,15 @@
 // Bucket: TMiniMapView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E74
-// GHIDRA_NAME TMiniMapView::thunk_GetTMiniMapViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMiniMapViewClassNamePointer(void)
+// GHIDRA_NAME TMiniMapView::TMiniMapView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMiniMapView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMiniMapViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMiniMapViewClassNamePointer */
 
-void * __cdecl TMiniMapView::thunk_GetTMiniMapViewClassNamePointer(void)
+void * __cdecl TMiniMapView::TMiniMapView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,17 +21,32 @@ void * __cdecl TMiniMapView::thunk_GetTMiniMapViewClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403869
+// GHIDRA_NAME TMiniMapView::TMiniMapView_VtblSlot068
+// GHIDRA_PROTO void __cdecl TMiniMapView_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RecomputeAndRenderStrategicMapViewportOverlay
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RecomputeAndRenderStrategicMapViewportOverlay */
+
+void __cdecl TMiniMapView::TMiniMapView_VtblSlot068(void)
+
+{
+  RecomputeAndRenderStrategicMapViewportOverlay();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B67
-// GHIDRA_NAME TMiniMapView::thunk_DestructTMiniMapViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMiniMapViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMiniMapView::TMiniMapView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TMiniMapView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMiniMapViewAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTMiniMapViewAndMaybeFree */
 
-void * __thiscall
-TMiniMapView::thunk_DestructTMiniMapViewAndMaybeFree(TMiniMapView *this,byte freeSelfFlag)
+void * __thiscall TMiniMapView::TMiniMapView_VtblSlot001(TMiniMapView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -57,17 +72,17 @@ void * __cdecl TMiniMapView::CreateTMiniMapViewInstance(void)
   puStack_8 = &LAB_0063850a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TControl *)AllocateWithFallbackHandler(0xa0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TControl *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTMiniMapView;
-    *(undefined4 *)(this + 0x90) = 0;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0x88) = 0;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(int *)(this + 0x98) = (int)g_wMiniMapViewHalfWidth;
-    *(undefined4 *)(this + 0x9c) = 8;
+    (this->base).pVtable = &g_vtblTMiniMapView;
+    this->field90 = (byte *)0x0;
+    this->pField94 = (void *)0x0;
+    *(undefined4 *)&this->field_0x88 = 0;
+    *(undefined4 *)&this->field_0x8c = 0;
+    this->pField98 = (void *)(int)g_wMiniMapViewHalfWidth;
+    *(undefined4 *)&this->field_0x9c = 8;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -98,13 +113,13 @@ void * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *thi
 
 {
   TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  *(undefined ***)this = &g_vtblTMiniMapView;
-  *(undefined4 *)(this + 0x90) = 0;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined4 *)(this + 0x88) = 0;
-  *(undefined4 *)(this + 0x8c) = 0;
-  *(int *)(this + 0x98) = (int)g_wMiniMapViewHalfWidth;
-  *(undefined4 *)(this + 0x9c) = 8;
+  this->field0_0x0 = &g_vtblTMiniMapView;
+  this->field90 = 0;
+  this->field94 = 0;
+  this->field88 = 0;
+  this->field8c = 0;
+  this->field98 = (int)g_wMiniMapViewHalfWidth;
+  *(undefined4 *)&this->field9c = 8;
   return this;
 }
 
@@ -116,9 +131,9 @@ void * __thiscall
 TMiniMapView::DestructTMiniMapViewAndMaybeFree(TMiniMapView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

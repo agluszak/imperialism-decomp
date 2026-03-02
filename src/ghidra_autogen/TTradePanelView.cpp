@@ -3,20 +3,55 @@
 // Program: Imperialism.exe
 // Bucket: TTradePanelView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403279
-// GHIDRA_NAME TTradePanelView::thunk_RenderTradePanelViewHeaderAndOptionRows
-// GHIDRA_PROTO void __thiscall thunk_RenderTradePanelViewHeaderAndOptionRows(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00402900
+// GHIDRA_NAME TTradePanelView::thunk_scalar_deleting_destructor_00402900
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402900(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderTradePanelViewHeaderAndOptionRows
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Thunk to RenderTradePanelViewHeaderAndOptionRows */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
 
-void __thiscall
-TTradePanelView::thunk_RenderTradePanelViewHeaderAndOptionRows(TTradePanelView *this)
+void * __thiscall
+TTradePanelView::thunk_scalar_deleting_destructor_00402900(TTradePanelView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403279
+// GHIDRA_NAME TTradePanelView::thunk_DestructTTradePanelViewAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTTradePanelViewAndMaybeFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk to RenderTradePanelViewHeaderAndOptionRows [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk to RenderTradePanelViewHeaderAndOptionRows [FID:thunk_target_sync] */
+
+void __thiscall TTradePanelView::thunk_DestructTTradePanelViewAndMaybeFree(TTradePanelView *this)
 
 {
   DestructTTradePanelViewAndMaybeFree(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004046C9
+// GHIDRA_NAME TTradePanelView::thunk_BuildDiplomacyTradePolicyRowsFromTraTagBase
+// GHIDRA_PROTO void __thiscall thunk_BuildDiplomacyTradePolicyRowsFromTraTagBase(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BuildDiplomacyTradePolicyRowsFromTraTagBase
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to BuildDiplomacyTradePolicyRowsFromTraTagBase */
+
+void __thiscall
+TTradePanelView::thunk_BuildDiplomacyTradePolicyRowsFromTraTagBase(TTradePanelView *this)
+
+{
+  TToolBarCluster::BuildDiplomacyTradePolicyRowsFromTraTagBase((TToolBarCluster *)this);
   return;
 }
 
@@ -36,6 +71,40 @@ void * __cdecl TTradePanelView::thunk_GetTTradePanelViewClassNamePointer(void)
   
   pvVar1 = GetTTradePanelViewClassNamePointer();
   return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405ADD
+// GHIDRA_NAME TTradePanelView::thunk_HandleDiplomacyTradePolicyTagSelection
+// GHIDRA_PROTO void __thiscall thunk_HandleDiplomacyTradePolicyTagSelection(int commandId, PanelEventPayload * pPanelEvent)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleDiplomacyTradePolicyTagSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleDiplomacyTradePolicyTagSelection */
+
+void __thiscall
+TTradePanelView::thunk_HandleDiplomacyTradePolicyTagSelection
+          (TTradePanelView *this,int commandId,PanelEventPayload *pPanelEvent)
+
+{
+  HandleDiplomacyTradePolicyTagSelection(this,commandId,pPanelEvent);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040752C
+// GHIDRA_NAME TTradePanelView::thunk_EnterDiplomacyTradePolicySelectionMode
+// GHIDRA_PROTO void __thiscall thunk_EnterDiplomacyTradePolicySelectionMode(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to EnterDiplomacyTradePolicySelectionMode
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to EnterDiplomacyTradePolicySelectionMode */
+
+void __thiscall TTradePanelView::thunk_EnterDiplomacyTradePolicySelectionMode(TTradePanelView *this)
+
+{
+  TToolBarCluster::EnterDiplomacyTradePolicySelectionMode((TToolBarCluster *)this);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F86D0
@@ -60,12 +129,12 @@ void * __cdecl TTradePanelView::CreateTTradePanelViewInstance(void)
   puStack_8 = &LAB_00632e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTTradePanelViewClassNamePointer_0063fc68;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x0;
+    this->pVtable = &PTR_thunk_GetTTradePanelViewClassNamePointer_0063fc68;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -103,9 +172,11 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
 {
   short sVar1;
   short extraout_AX;
-  void *this_00;
-  void *this_01;
-  void *this_02;
+  THQButton *this_00;
+  THQButton *this_01;
+  THQButton *this_02;
+  int unaff_EBX;
+  int unaff_EBP;
   int iVar2;
   short sVar3;
   short sVar4;
@@ -121,10 +192,7 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   short asStack_40 [2];
   undefined1 *local_3c;
   short local_34 [10];
-  short local_20 [4];
-  undefined4 local_18;
-  undefined2 local_14;
-  undefined2 local_12;
+  short local_20 [8];
   uint local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -137,13 +205,13 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  sVar4 = *(short *)&this[10].pVtable;
+  sVar4 = this->field33_0x28;
   puVar5 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar4);
-  sVar1 = *(short *)&this[9].pVtable;
+  sVar1 = this->field30_0x24;
   local_34[1] = 0x184;
   local_34[3] = 0x184;
   local_34[5] = 0x184;
-  local_4 = CONCAT31(local_4._1_3_,1);
+  local_4._0_1_ = 1;
   local_44 = 0;
   local_43 = 0;
   local_42 = 0;
@@ -153,9 +221,10 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   local_20[1] = 0x83;
   local_20[2] = 0xb6;
   local_20[3] = 0xea;
-  local_18 = 0x14c011d;
-  local_14 = 0xd5;
-  local_12 = 0x1b5;
+  local_20[4] = 0x11d;
+  local_20[5] = 0x14c;
+  local_20[6] = 0xd5;
+  local_20[7] = 0x1b5;
   local_10 = CONCAT22(local_10._2_2_,0x212);
   local_34[0] = 0x1b7;
   local_34[2] = 0x1b7;
@@ -167,52 +236,94 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&local_44);
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_48);
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   sVar4 = -sVar4;
-  SetQuickDrawColorAndSyncGlobals();
+  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
   thunk_SetQuickDrawTextOriginWithContextOffset(-sVar1 + 0x49,sVar4 + 0x170);
-  thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa8);
-  SetQuickDrawColorAndSyncGlobals();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa8);
+  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
   thunk_SetQuickDrawTextOriginWithContextOffset(-sVar1 + 0x48,sVar4 + 0x16f);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   iVar2 = 0;
   do {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar2 + 0x2b);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,iVar2 + 0x2b);
     sVar3 = asStack_40[iVar2] - (short)puVar5;
     sVar4 = local_34[iVar2 + 4];
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_EBP);
     thunk_SetQuickDrawTextOriginWithContextOffset((sVar4 - sVar1) + 1,sVar3 + 1);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa8);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa8);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar4 - sVar1,sVar3);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
     iVar2 = iVar2 + 1;
     puVar5 = local_48;
   } while (iVar2 < 6);
   local_4c = 6;
   iVar2 = 0;
   do {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,local_4c + 0x2b);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,local_4c + 0x2b);
     sVar3 = *(short *)((int)local_34 + iVar2) - (short)local_48;
     thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     sVar4 = (*(short *)((int)local_20 + iVar2) - extraout_AX / 2) - sVar1;
-    SetQuickDrawColorAndSyncGlobals();
+    SetQuickDrawColorAndSyncGlobals(unaff_EBP);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar4 + 1,sVar3 + 1);
-    thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
-    SetQuickDrawColorAndSyncGlobals();
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
     thunk_SetQuickDrawTextOriginWithContextOffset(sVar4,sVar3);
-    thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa8);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa8);
     iVar2 = iVar2 + 2;
     local_4c = local_4c + 1;
   } while (iVar2 < 6);
   local_48 = &stack0xffffff94;
-  SetQuickDrawFillColor();
+  SetQuickDrawFillColor(0);
   local_10 = local_10 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
   local_10 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = local_18;
+  *unaff_FS_OFFSET = local_20._8_4_;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F8DD0
+// GHIDRA_NAME TTradePanelView::HandleDiplomacyTradePolicyTagSelection
+// GHIDRA_PROTO void __thiscall HandleDiplomacyTradePolicyTagSelection(int commandId, PanelEventPayload * pPanelEvent)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Selects trade-policy action and amount index from policy tag command.\nWrites this+0xC0 = selected policy index.\nAction mapping by selected value: 300 -> action 11, <96 -> action 9, else -> action 10; tag "link" -> action 12.
+// GHIDRA_COMMENT_END
+
+/* Selects trade-policy action and amount index from policy tag command.\nWrites this+0xC0 =
+   selected policy index.\nAction mapping by selected value: 300 -> action 11, <96 -> action 9, else
+   -> action 10; tag "link" -> action 12. */
+
+void __thiscall
+TTradePanelView::HandleDiplomacyTradePolicyTagSelection
+          (TTradePanelView *this,int commandId,PanelEventPayload *pPanelEvent)
+
+{
+  int iVar1;
+  
+  if (commandId == 0xc) {
+    if (pPanelEvent->controlTag1c != 0x6c696e6b) {
+      iVar1 = pPanelEvent->controlTag1c + 0x8b8d9e9f;
+      *(short *)((int)this->field60 + 0xc0) = (short)iVar1;
+      if ((&g_awDiplomacyTradePolicyIconValueTable)[iVar1] == 300) {
+        *(undefined4 *)((int)this->field60 + 0xbc) = 0xb;
+        TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+        return;
+      }
+      if ((short)(&g_awDiplomacyTradePolicyIconValueTable)[iVar1] < 0x60) {
+        *(undefined4 *)((int)this->field60 + 0xbc) = 9;
+        TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+        return;
+      }
+      *(undefined4 *)((int)this->field60 + 0xbc) = 10;
+      TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+      return;
+    }
+    *(undefined4 *)((int)this->field60 + 0xbc) = 0xc;
+  }
+  TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
   return;
 }
 

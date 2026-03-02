@@ -41,34 +41,33 @@ void * __cdecl TCivAnimation::thunk_GetTCivAnimationClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004080AD
-// GHIDRA_NAME TCivAnimation::thunk_GetTCivAnimationRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTCivAnimationRuntimeClass(void)
+// GHIDRA_NAME TCivAnimation::thunk_CreateTCivAnimationInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTCivAnimationInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTCivAnimationRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTCivAnimationRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTCivAnimationRuntimeClass. */
+/* Thunk forwarding to GetTCivAnimationRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TCivAnimation::thunk_GetTCivAnimationRuntimeClass(TCivAnimation *this)
+void * __thiscall TCivAnimation::thunk_CreateTCivAnimationInstance(TCivAnimation *this)
 
 {
   void *in_EAX;
   
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408D9B
-// GHIDRA_NAME TCivAnimation::thunk_AdvanceCivAnimationFrameAndInvalidateOnCycle_At00408d9b
-// GHIDRA_PROTO void __thiscall thunk_AdvanceCivAnimationFrameAndInvalidateOnCycle_At00408d9b(void)
+// GHIDRA_NAME TCivAnimation::thunk_ConstructTCivAnimationBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTCivAnimationBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AdvanceCivAnimationFrameAndInvalidateOnCycle
+// GHIDRA_COMMENT Single-JMP thunk to AdvanceCivAnimationFrameAndInvalidateOnCycle [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to AdvanceCivAnimationFrameAndInvalidateOnCycle */
+/* Single-JMP thunk to AdvanceCivAnimationFrameAndInvalidateOnCycle [FID:thunk_target_sync] */
 
-void __thiscall
-TCivAnimation::thunk_AdvanceCivAnimationFrameAndInvalidateOnCycle_At00408d9b(TCivAnimation *this)
+void __thiscall TCivAnimation::thunk_ConstructTCivAnimationBaseState(TCivAnimation *this)
 
 {
   ConstructTCivAnimationBaseState(this);
@@ -89,7 +88,7 @@ void * __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this
 {
   void *in_EAX;
   
-  *(undefined ***)this = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -120,27 +119,27 @@ void * __cdecl TCivAnimation::GetTCivAnimationClassNamePointer(void)
 void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *this)
 
 {
-  int iVar1;
-  ushort uVar2;
+  uint uVar1;
+  int iVar2;
   
-  iVar1 = *(int *)(this + 0x10);
-  *(int *)(this + 0x10) = iVar1 + 1;
-  if (iVar1 + 1 != *(int *)(this + 0x14)) {
+  iVar2 = this->field10 + 1;
+  this->field10 = iVar2;
+  if (iVar2 != this->field14) {
     return;
   }
-  thunk_InvalidateCityDialogRectRegion((int)(this + 0x1c),1);
-  *(short *)(this + 8) = *(short *)(this + 8) + 1;
-  *(undefined4 *)(this + 0x10) = 0;
-  if (*(short *)(this + 8) != *(short *)(this + 10)) {
-    if (*(short *)(this + 8) != *(short *)(this + 0x2c)) {
+  thunk_InvalidateCityDialogRectRegion((int)&this->pField1c,1);
+  this->field08 = this->field08 + 1;
+  this->field10 = 0;
+  if (this->field08 != this->field0a) {
+    if (this->field08 != this->field2c) {
       return;
     }
-    uVar2 = GenerateThreadLocalRandom15();
-    if (*(short *)(this + 0x2e) <= (short)(uVar2 & 0xf)) {
+    uVar1 = GenerateThreadLocalRandom15();
+    if (this->field2e <= (short)((ushort)uVar1 & 0xf)) {
       return;
     }
   }
-  *(undefined2 *)(this + 8) = 0;
+  this->field08 = 0;
   return;
 }
 
@@ -152,9 +151,9 @@ void * __thiscall
 TCivAnimation::DestructTCivAnimationAndMaybeFree(TCivAnimation *this,byte freeSelfFlag)
 
 {
-  TCivAnimation2::thunk_GetTCivAnimation2RuntimeClass((TCivAnimation2 *)this);
+  TCivAnimation2::thunk_CreateTCivAnimation2Instance((TCivAnimation2 *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

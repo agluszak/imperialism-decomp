@@ -3,16 +3,350 @@
 // Program: Imperialism.exe
 // Bucket: TCivToolbar.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040187F
+// GHIDRA_NAME TCivToolbar::thunk_ShowDisbandCivilianConfirmationDialog
+// GHIDRA_PROTO void __thiscall thunk_ShowDisbandCivilianConfirmationDialog(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ShowDisbandCivilianConfirmationDialog
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ShowDisbandCivilianConfirmationDialog */
+
+void __thiscall TCivToolbar::thunk_ShowDisbandCivilianConfirmationDialog(TCivToolbar *this)
+
+{
+  char extraout_AL;
+  short extraout_AX;
+  undefined1 *extraout_ECX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puStack_38;
+  undefined1 *puStack_34;
+  sdword arg2;
+  char isReplayBypass;
+  undefined1 auStack_1c [8];
+  undefined1 *puStack_14;
+  undefined1 *puStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631be8;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (this->pField04 != (void *)0x0) {
+    InitializeSharedStringRefFromEmpty();
+    uStack_4 = 0;
+    InitializeSharedStringRefFromEmpty();
+    uStack_4._0_1_ = 1;
+    puStack_34 = (undefined1 *)0x4d2d90;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    puStack_34 = &stack0xffffffd8;
+    if (*(short *)((int)this->pField04 + 4) == 7) {
+      puStack_38 = (undefined1 *)0x5;
+    }
+    else {
+      puStack_38 = (undefined1 *)0x4;
+    }
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x274d);
+    puStack_14 = (undefined1 *)&puStack_34;
+    puStack_38 = auStack_1c;
+    puStack_34 = extraout_ECX;
+    thunk_AssignStringSharedRefAndReturnThis();
+    puStack_10 = (undefined1 *)&puStack_38;
+    uStack_4._0_1_ = 2;
+    thunk_AssignStringSharedRefAndReturnThis();
+    uStack_4 = CONCAT31(uStack_4._1_3_,1);
+    thunk_DispatchLocalizedUiMessageWithTemplate();
+    if (extraout_AL != '\0') {
+      if (*(short *)((int)this->pField04 + 4) == 7) {
+        isReplayBypass = '\0';
+        arg2 = 0;
+        thunk_GetActiveNationId();
+        puStack_34 = (undefined1 *)0x4d2e2a;
+        TSimMgr::thunk_QueueInterNationEventType11
+                  ((TSimMgr *)g_pInterNationEventQueueManager,(int)extraout_AX,arg2,isReplayBypass);
+      }
+      (**(code **)(*(int *)this->pField04 + 0x38))();
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1dc))();
+      }
+      if (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
+        thunk_CycleMapInteractionSelectionAfterHandledClick
+                  (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0));
+      }
+    }
+    uStack_4 = uStack_4 & 0xffffff00;
+    ReleaseSharedStringRefIfNotEmpty();
+    uStack_4 = 0xffffffff;
+    ReleaseSharedStringRefIfNotEmpty();
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401D48
+// GHIDRA_NAME TCivToolbar::thunk_QueueImmediateCivilianCommandAndCycleSelection
+// GHIDRA_PROTO void __thiscall thunk_QueueImmediateCivilianCommandAndCycleSelection(int nCommandType)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to QueueImmediateCivilianCommandAndCycleSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to QueueImmediateCivilianCommandAndCycleSelection */
+
+void __thiscall
+TCivToolbar::thunk_QueueImmediateCivilianCommandAndCycleSelection
+          (TCivToolbar *this,int nCommandType)
+
+{
+  if (this->pField04 != (int *)0x0) {
+    (**(code **)(*(int *)this->pField04 + 0x34))(nCommandType,0);
+  }
+  if (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
+    thunk_CycleMapInteractionSelectionAfterHandledClick
+              (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401E47
+// GHIDRA_NAME TCivToolbar::thunk_GetTileUnitEntryByOwner
+// GHIDRA_PROTO int * __thiscall thunk_GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTileUnitEntryByOwner
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTileUnitEntryByOwner */
+
+int * __thiscall
+TCivToolbar::thunk_GetTileUnitEntryByOwner(TCivToolbar *this,short nTileIndex,short nOwnerNationId)
+
+{
+  int *piVar1;
+  
+  for (piVar1 = *(int **)(*(int *)&this->field_0xc + 0x20 + nTileIndex * 0x24);
+      (piVar1 != (int *)0x0 && ((short)piVar1[6] != nOwnerNationId)); piVar1 = (int *)piVar1[5]) {
+  }
+  return piVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402581
+// GHIDRA_NAME TCivToolbar::thunk_RefreshCivilianCommandPanelForSelection
+// GHIDRA_PROTO void __thiscall thunk_RefreshCivilianCommandPanelForSelection(TCivilianOrderState * pSelectedCivilianOrderEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RefreshCivilianCommandPanelForSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RefreshCivilianCommandPanelForSelection */
+
+void __thiscall
+TCivToolbar::thunk_RefreshCivilianCommandPanelForSelection
+          (TCivToolbar *this,TCivilianOrderState *pSelectedCivilianOrderEntry)
+
+{
+  ECivilianClassId EVar1;
+  int iVar2;
+  int *piVar3;
+  TCivDescription *this_00;
+  code *pcVar4;
+  code *unaff_EDI;
+  
+  *(ECivilianClassId *)&this->field88 = pSelectedCivilianOrderEntry->eCivilianClassId;
+  pcVar4 = *(code **)((int)this->field0_0x0 + 0x94);
+  piVar3 = (int *)(*pcVar4)(0x756e6974);
+  if (pSelectedCivilianOrderEntry == (TCivilianOrderState *)0x0) {
+    (**(code **)(*piVar3 + 0xa4))(0,1);
+  }
+  else {
+    iVar2 = *piVar3;
+    (**(code **)(iVar2 + 0x1c8))((short)this->field88 + 0x438,1);
+    (**(code **)(iVar2 + 0xa4))(1,1);
+    pcVar4 = unaff_EDI;
+  }
+  this_00 = (TCivDescription *)(*pcVar4)(0x6261636b);
+  if (pSelectedCivilianOrderEntry == (TCivilianOrderState *)0x0) {
+    this_00->field1_0x60 = ~kCivilianClass_Miner;
+    return;
+  }
+  EVar1 = pSelectedCivilianOrderEntry->eCivilianClassId;
+  if (EVar1 != this_00->field1_0x60) {
+    this_00->field1_0x60 = EVar1;
+    switch(EVar1) {
+    case kCivilianClass_Miner:
+    case kCivilianClass_Prospector:
+    case kCivilianClass_Farmer:
+    case kCivilianClass_Forester:
+    case kCivilianClass_Rancher:
+    case kCivilianClass_Developer:
+    case kCivilianClass_Driller:
+      *(undefined1 *)&this_00->field6c = 0;
+      TCivDescription::thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation
+                (this_00,pSelectedCivilianOrderEntry);
+    }
+    (**(code **)((int)(this_00->base).pVtable + 0xe4))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402612
+// GHIDRA_NAME TCivToolbar::thunk_HandleCivilianReportDecision
+// GHIDRA_PROTO void __thiscall thunk_HandleCivilianReportDecision(TCivilianOrderState * pCivilianOrderState)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleCivilianReportDecision
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleCivilianReportDecision */
+
+void __thiscall
+TCivToolbar::thunk_HandleCivilianReportDecision
+          (TCivToolbar *this,TCivilianOrderState *pCivilianOrderState)
+
+{
+  ECivilianClassId *pEVar1;
+  short nTileIndex;
+  short nTargetTileIndex;
+  TCivilianOrderState *pTVar2;
+  undefined1 *puVar3;
+  TCivToolbar *this_00;
+  TCivilianOrderState *pSelectedCivilianOrderEntry;
+  bool bVar4;
+  char cVar5;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  int *unaff_EBP;
+  int iVar6;
+  
+  pSelectedCivilianOrderEntry = pCivilianOrderState;
+  bVar4 = thunk_ShowCivilianReportDialogAndReturnConfirm(g_pUiRuntimeContext);
+  if (!bVar4) {
+    nTileIndex = pCivilianOrderState->nCurrentTileIndex;
+    nTargetTileIndex = (short)pCivilianOrderState->nOrderTargetTileOrArg;
+    iVar6 = 0;
+    pTVar2 = g_apNationStates[pCivilianOrderState->nOwnerNationId];
+    switch(pCivilianOrderState->eCurrentWorkOrderType) {
+    case kCivWorkOrder_RailSection:
+      iVar6 = *(int *)(&g_adwEngineerRailBuildCostByTerrainType +
+                      *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + nTileIndex * 0x24) * 4);
+      thunk_ApplyEngineerRailCostDeltaForConnectedTiles
+                (g_pGlobalMapState,nTileIndex,nTargetTileIndex);
+      break;
+    case kCivWorkOrder_RailDepot:
+      iVar6 = 2000;
+      break;
+    case kCivWorkOrder_Port:
+      iVar6 = 3000;
+      break;
+    case kCivWorkOrder_ProductiveImprovement:
+      pEVar1 = &pCivilianOrderState->eCivilianClassId;
+      pCivilianOrderState = pTVar2;
+      if ((*pEVar1 == kCivilianClass_Miner) ||
+         (pCivilianOrderState = (TCivilianOrderState *)((uint)pTVar2 & 0xffffff00),
+         *pEVar1 == kCivilianClass_Driller)) {
+        pCivilianOrderState = (TCivilianOrderState *)CONCAT31(pCivilianOrderState._1_3_,1);
+      }
+      cVar5 = (**(code **)(*(int *)g_pGlobalMapState + 200))
+                        (CONCAT22(extraout_var,nTileIndex),pCivilianOrderState);
+      iVar6 = *(int *)(&g_adwCivilianWorkOrderCostByClass + cVar5 * 4);
+      break;
+    case kCivWorkOrder_Fort:
+      iVar6 = (int)*(short *)(&g_awEngineerFortBuildCostByLevel +
+                             *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 3 +
+                                      *(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 +
+                                                nTileIndex * 0x24) * 0xa8) * 2);
+      break;
+    case kCivWorkOrder_DeveloperTilePurchase:
+      iVar6 = thunk_CalculateDeveloperTilePurchaseCost(g_pGlobalMapState,nTileIndex);
+    }
+    *(int *)pTVar2->abUnk10 = *(int *)pTVar2->abUnk10 + iVar6;
+    TacticalBattleView::thunk_RemoveUiTransientRegistryObjectByTag
+              ((TacticalBattleView *)g_pUiTransientObjectRegistry,
+               (sdword)pSelectedCivilianOrderEntry);
+    puVar3 = pSelectedCivilianOrderEntry->pvftable;
+    (**(code **)(puVar3 + 0x34))(0,nTargetTileIndex);
+    if ((nTargetTileIndex != 0) && (nTargetTileIndex != -1)) {
+      (**(code **)(*unaff_EBP + 0x30))(nTargetTileIndex,pSelectedCivilianOrderEntry);
+    }
+    this_00 = *(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0);
+    if (this_00 != (TCivToolbar *)0x0) {
+      thunk_SetMapInteractionMode(this_00,MAP_INTERACTION_MODE_0);
+    }
+    (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+    unaff_EBP[1] = (int)pSelectedCivilianOrderEntry;
+    (**(code **)(*unaff_EBP + 0x34))(pSelectedCivilianOrderEntry);
+    if (pSelectedCivilianOrderEntry != (TCivilianOrderState *)0x0) {
+      (**(code **)(puVar3 + 0x28))
+                (CONCAT22(extraout_var_01,pSelectedCivilianOrderEntry->nCurrentTileIndex));
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))
+                  (CONCAT22(extraout_var_00,pSelectedCivilianOrderEntry->nCurrentTileIndex));
+      }
+      iVar6 = *(int *)((int)g_pUiRuntimeContext + 0xf0);
+      if (iVar6 != 0) {
+        thunk_RefreshCivilianCommandPanelForSelection
+                  (*(TCivToolbar **)(iVar6 + 0xb0 + *(short *)(iVar6 + 0x96) * 4),
+                   pSelectedCivilianOrderEntry);
+      }
+    }
+    if (this_00 != (TCivToolbar *)0x0) {
+      (**(code **)((int)this_00->field0_0x0 + 0x1e8))
+                (pSelectedCivilianOrderEntry->nCurrentTileIndex);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004028B5
+// GHIDRA_NAME TCivToolbar::thunk_CalculateDeveloperTilePurchaseCost
+// GHIDRA_PROTO int __thiscall thunk_CalculateDeveloperTilePurchaseCost(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CalculateDeveloperTilePurchaseCost
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CalculateDeveloperTilePurchaseCost */
+
+int __thiscall
+TCivToolbar::thunk_CalculateDeveloperTilePurchaseCost(TCivToolbar *this,short nTileIndex)
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  
+  iVar3 = 0;
+  iVar4 = 0;
+  do {
+    iVar2 = (int)(short)iVar4 + *(int *)&this->field_0xc;
+    sVar1 = (short)*(char *)(iVar2 + 0x11 + nTileIndex * 0x24);
+    if (sVar1 != -1) {
+      if (sVar1 < 0x11) {
+        sVar1 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))
+                          (CONCAT22((short)((uint)iVar2 >> 0x10),sVar1));
+        iVar3 = iVar3 + sVar1 * 0x14;
+      }
+      else if (sVar1 == 0x15) {
+        iVar3 = iVar3 + 10000;
+      }
+      else if (sVar1 == 0x16) {
+        iVar3 = iVar3 + 4000;
+      }
+    }
+    iVar4 = iVar4 + 1;
+  } while (iVar4 < 2);
+  return iVar3;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004028EC
-// GHIDRA_NAME TCivToolbar::thunk_GetTCivToolbarClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCivToolbarClassNamePointer(void)
+// GHIDRA_NAME TCivToolbar::TCivToolbar_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCivToolbar_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCivToolbarClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCivToolbarClassNamePointer */
 
-void * __cdecl TCivToolbar::thunk_GetTCivToolbarClassNamePointer(void)
+void * __cdecl TCivToolbar::TCivToolbar_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -21,9 +355,438 @@ void * __cdecl TCivToolbar::thunk_GetTCivToolbarClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402EF5
+// GHIDRA_NAME TCivToolbar::thunk_CanAssignCivilianOrderToTile
+// GHIDRA_PROTO bool __thiscall thunk_CanAssignCivilianOrderToTile(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CanAssignCivilianOrderToTile
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CanAssignCivilianOrderToTile */
+
+bool __thiscall TCivToolbar::thunk_CanAssignCivilianOrderToTile(TCivToolbar *this,short nTileIndex)
+
+{
+  int iVar1;
+  void *pvVar2;
+  char cVar3;
+  short sVar4;
+  
+  sVar4 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + nTileIndex * 0x24);
+  iVar1 = *(int *)((int)g_pGlobalMapState + 0xc) + nTileIndex * 0x24;
+  pvVar2 = this->pField04;
+  if (((*(short *)((int)pvVar2 + 6) != nTileIndex) && (*(char *)(iVar1 + 0x13) != '\0')) &&
+     (((*(byte *)(iVar1 + 0x1c) & 1) == 0 || (*(short *)((int)pvVar2 + 4) == 4)))) {
+    if (sVar4 < 7) {
+      return sVar4 == *(short *)((int)pvVar2 + 0x18);
+    }
+    if (*(short *)((int)g_apTerrainTypeDescriptorTable[sVar4] + 0xe) == -1) {
+      sVar4 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+                        ((TControl *)g_pDiplomacyTurnStateManager,*(short *)((int)pvVar2 + 0x18),
+                         sVar4);
+      if ((sVar4 == 2) && (*(short *)((int)this->pField04 + 4) != 4)) {
+        return true;
+      }
+    }
+    else {
+      cVar3 = (**(code **)(*(int *)g_apTerrainTypeDescriptorTable[sVar4] + 0x5c))
+                        ((int)*(short *)((int)pvVar2 + 0x18));
+      if ((cVar3 != '\0') && (*(short *)((int)this->pField04 + 4) != 4)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040327E
+// GHIDRA_NAME TCivToolbar::thunk_RunNationInfoModalAndReturnNonCancel
+// GHIDRA_PROTO bool __thiscall thunk_RunNationInfoModalAndReturnNonCancel(void * pDialogContext)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT JMP thunk
+// GHIDRA_COMMENT_END
+
+/* WARNING: Removing unreachable block (ram,0x005d5f91) */
+/* WARNING: Removing unreachable block (ram,0x005d5fa7) */
+/* WARNING: Removing unreachable block (ram,0x005d5fcc) */
+/* JMP thunk */
+
+bool __thiscall
+TCivToolbar::thunk_RunNationInfoModalAndReturnNonCancel(TCivToolbar *this,void *pDialogContext)
+
+{
+  code *pcVar1;
+  short extraout_AX;
+  short extraout_AX_00;
+  int *piVar2;
+  int iVar3;
+  int *piVar4;
+  code *pcVar5;
+  TTEView *this_00;
+  TScrollView *this_01;
+  int iVar6;
+  code *pcVar7;
+  undefined4 *unaff_FS_OFFSET;
+  int *in_stack_00000014;
+  int iVar8;
+  short sVar9;
+  code *pcStack_5c;
+  int iStack_58;
+  undefined2 uStack_40;
+  uint uStack_3c;
+  int iStack_1c;
+  undefined4 uStack_c;
+  int *piStack_8;
+  undefined4 uStack_4;
+  
+  piStack_8 = (int *)&LAB_0063a05a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStack_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4 = CONCAT31(uStack_4._1_3_,1);
+  uStack_3c = uStack_3c & 0xffff0000;
+  pcStack_5c = (code *)0x0;
+  if (*in_stack_00000014 == -1000) {
+    pcStack_5c = (code *)(uint)*(ushort *)(in_stack_00000014 + 1);
+  }
+  thunk_BuildUiTextStyleDescriptor();
+  if ((short)pcStack_5c == 0) {
+    iVar6 = *(int *)g_pUiViewManager;
+  }
+  else {
+    (**(code **)(*(int *)g_pUiViewManager + 0x30))();
+    iVar6 = *(int *)g_pUiViewManager;
+  }
+  piVar2 = (int *)(**(code **)(iVar6 + 0x28))();
+  if (piVar2 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  iVar6 = *piVar2;
+  (**(code **)(iVar6 + 0x1a0))();
+  iVar3 = (**(code **)(iVar6 + 0x1b8))();
+  if (iVar3 != 0) {
+    *(undefined4 *)(iVar3 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)((int)this->field0_0x0 + 0x44))();
+  (**(code **)(iVar6 + 0xf0))();
+  pcVar1 = *(code **)(iVar6 + 0x94);
+  piVar4 = (int *)(*pcVar1)();
+  iVar6 = *piVar4;
+  piStack_8 = piVar4;
+  (**(code **)(iVar6 + 0xc))();
+  if (piVar4 != (int *)0x0) {
+    (**(code **)(iVar6 + 0x1c8))();
+    piVar4 = (int *)(*pcVar1)();
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    if (piVar4 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    thunk_GetActiveNationId();
+    if ((extraout_AX < 0) || (thunk_GetActiveNationId(), 6 < extraout_AX_00)) {
+      sVar9 = 0;
+      (**(code **)(iVar6 + 0xa4))();
+    }
+    else {
+      sVar9 = 0;
+      thunk_GetActiveNationId();
+      (**(code **)(iVar6 + 0x1c8))();
+    }
+    piVar4 = (int *)(*pcVar1)();
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    pcVar5 = (code *)(iStack_1c + 0x252a);
+    (**(code **)(iVar6 + 0x1c8))(pcVar5,0);
+    piVar4 = (int *)(*pcVar1)(0x72657761);
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    iVar8 = 0;
+    (**(code **)(iVar6 + 0x1c8))();
+    this_00 = (TTEView *)(*pcVar1)(0x696e666f);
+    iVar6 = this_00->field0_0x0;
+    (**(code **)(iVar6 + 0xc))();
+    (**(code **)(iVar6 + 500))(uStack_40,uStack_3c);
+    (**(code **)(iVar6 + 0x1e4))(&stack0xffffff68,0);
+    iVar3 = TTEView::thunk_DestructTTEViewAndMaybeFree(this_00);
+    pcVar7 = pcVar1;
+    if (*(int *)&this_00->field_0x38 < (int)(short)iVar3) {
+      (**(code **)(iVar6 + 300))(&stack0xffffff6c);
+      (**(code **)(iVar6 + 0x168))(&stack0xffffff68,0);
+      if (*(int *)&this_00->field_0x38 < (int)(short)iVar3) {
+        this_01 = AllocateWithFallbackHandler();
+        if (this_01 == (TScrollView *)0x0) {
+          this_01 = (TScrollView *)0x0;
+          pcVar7 = pcVar5;
+        }
+        else {
+          TView::thunk_ConstructTViewBaseState((TView *)this_01);
+          this_01->pVtable = &PTR_thunk_GetTScrollViewClassNamePointer_006417e0;
+          pcVar7 = pcVar5;
+        }
+        TScrollView::ConstructTScrollViewBaseState(this_01);
+        (**(code **)((int)this_01->pVtable + 0xdc))(0);
+        (**(code **)(iVar8 + 0x174))(this_00);
+        (**(code **)((int)this_01->pVtable + 0x170))(this_00,0);
+        (*pcStack_5c)(&stack0xffffff5c,0);
+        this_01->field63_0x60 = this_00;
+        SyncBoundedValueAndToggleControlStates();
+      }
+    }
+    if ((char)uStack_40 != '\0') {
+      piVar4 = (int *)(*pcVar7)(0x636e636c);
+      iVar6 = *piVar4;
+      (**(code **)(iVar6 + 0xc))();
+      (**(code **)(iVar6 + 0xa4))(1,1);
+      (**(code **)(iVar6 + 0xa8))(1,0);
+    }
+    if (*(int *)((int)g_pLocalizationTable + 0x44) != 0) {
+      uStack_40._0_1_ = *(char *)((int)g_pGameFlowState + 0x68);
+      *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
+    }
+    if (sVar9 != 0) {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))
+                (*(undefined2 *)(&stack0xffffff7c + iStack_58 * 2),0,1);
+    }
+    iVar6 = *piVar2;
+    iVar3 = (**(code **)(iVar6 + 0x1ac))();
+    (**(code **)(iVar6 + 0xa0))();
+    (**(code **)(iVar6 + 0x1c))();
+    if (*(int *)((int)g_pLocalizationTable + 0x44) != 0) {
+      *(char *)((int)g_pGameFlowState + 0x68) = (char)uStack_40;
+    }
+    if (iVar3 != 0x636e636c) {
+      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty();
+    }
+    else {
+      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty();
+    }
+    *unaff_FS_OFFSET = pcVar1;
+    return iVar3 != 0x636e636c;
+  }
+                    /* WARNING: Subroutine does not return */
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004032A1
+// GHIDRA_NAME TCivToolbar::thunk_SetMapInteractionMode
+// GHIDRA_PROTO void __thiscall thunk_SetMapInteractionMode(EMapInteractionMode nMode)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetMapInteractionMode
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetMapInteractionMode */
+
+void __thiscall
+TCivToolbar::thunk_SetMapInteractionMode(TCivToolbar *this,EMapInteractionMode nMode)
+
+{
+  EMapInteractionMode EVar1;
+  int iVar2;
+  int *piVar3;
+  int *piVar4;
+  int *unaff_FS_OFFSET;
+  undefined1 auStack_20 [8];
+  int aiStack_18 [2];
+  undefined1 *puStack_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  int iStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  iStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00638360;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  EVar1 = this->field104_0x96;
+  if (EVar1 != nMode) {
+    if (EVar1 == MAP_INTERACTION_MODE_0) {
+      thunk_SetActiveCivilianSelection(g_pSelectedCivilianOrderState,(void *)0x0,0);
+    }
+    else if (EVar1 == MAP_INTERACTION_MODE_1) {
+      thunk_SetActiveProvinceSelection();
+    }
+    piVar3 = (int *)(**(code **)((int)this->field0_0x0 + 0x58))();
+    piVar3 = (int *)(**(code **)(*piVar3 + 0x94))();
+    if (piVar3 != (int *)0x0) {
+      if (this->field104_0x96 == MAP_INTERACTION_MODE_1) {
+        piVar4 = (int *)(**(code **)(*piVar3 + 0x94))();
+        (**(code **)(*piVar4 + 0xc))();
+        piVar4[7] = 0x73656173;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8 = (void *)0x0;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2730,0x12);
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2730,8,&stack0xffffffd0);
+        AssignSharedStringConcatRefAndCStr();
+        iStack_4._0_1_ = 2;
+        AssignSharedStringConcatRefAndRef();
+        iStack_4._0_1_ = 3;
+        TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)aiStack_18);
+        iStack_4._0_1_ = 4;
+        AssignFromPtr(auStack_20,aiStack_18);
+        iStack_4._0_1_ = 3;
+        ReleaseSharedStringRefIfNotEmpty();
+        iStack_4._0_1_ = 2;
+        ReleaseSharedStringRefIfNotEmpty();
+        iStack_4._0_1_ = 1;
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_10 = &stack0xffffffc8;
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_EnableAndProcessFlagWithSharedStringCleanup();
+        iStack_4 = (uint)iStack_4._1_3_ << 8;
+        ReleaseSharedStringRefIfNotEmpty();
+        iStack_4 = 0xffffffff;
+        ReleaseSharedStringRefIfNotEmpty();
+      }
+      else if (nMode == MAP_INTERACTION_MODE_1) {
+        InitializeSharedStringRefFromEmpty();
+        iStack_4 = 5;
+        piVar4 = (int *)(**(code **)(*piVar3 + 0x94))();
+        (**(code **)(*piVar4 + 0xc))();
+        piVar4[7] = 0x666f7263;
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2732,0x11);
+        puStack_10 = &stack0xffffffc8;
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_EnableAndProcessFlagWithSharedStringCleanup();
+        iStack_4 = 0xffffffff;
+        ReleaseSharedStringRefIfNotEmpty();
+      }
+      iVar2 = *piVar3;
+      thunk_GetActiveNationId();
+      (**(code **)(iVar2 + 0x1d0))();
+    }
+    if ((short)nMode == 0) {
+      TacticalBattleView::thunk_EnterMapInteractionOverlayMode((TacticalBattleView *)this,0);
+    }
+    if ((short)this->field104_0x96 < 3) {
+      (**(code **)(**(int **)(&this->field_0xb0 + (short)this->field104_0x96 * 4) + 0xf0))();
+    }
+    this->field104_0x96 = nMode;
+    if ((short)nMode < 3) {
+      (**(code **)(**(int **)(&this->field_0xb0 + (short)nMode * 4) + 0xf0))();
+    }
+  }
+  *unaff_FS_OFFSET = iStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403332
+// GHIDRA_NAME TCivToolbar::thunk_PromptAndQueueDeveloperTilePurchaseOrder
+// GHIDRA_PROTO bool __thiscall thunk_PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to PromptAndQueueDeveloperTilePurchaseOrder
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to PromptAndQueueDeveloperTilePurchaseOrder */
+
+bool __thiscall
+TCivToolbar::thunk_PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nTileIndex)
+
+{
+  uint uVar1;
+  char extraout_AL;
+  short extraout_AX;
+  short extraout_AX_00;
+  int iVar2;
+  int extraout_EAX;
+  int extraout_EAX_00;
+  uint *unaff_FS_OFFSET;
+  undefined1 uStack_49;
+  undefined4 uStack_48;
+  char *pcStack_44;
+  uint uStack_2c;
+  undefined1 auStack_28 [4];
+  int iStack_24;
+  undefined1 *puStack_1c;
+  uint uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631c68;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (uint)&uStack_c;
+  thunk_GetActiveNationId();
+  uStack_2c = (uint)(uint3)uStack_2c;
+  uVar1 = *(int *)((int)g_apNationStates[extraout_AX] + 0x8f0) / 100 +
+          *(int *)((int)g_apNationStates[extraout_AX] + 0x10);
+  pcStack_44 = (char *)0x4d3680;
+  iVar2 = thunk_CalculateDeveloperTilePurchaseCost(g_pGlobalMapState,nTileIndex);
+  InitializeSharedStringRefFromEmpty();
+  uStack_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4._0_1_ = 1;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4._0_1_ = 2;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4._0_1_ = 3;
+  InitializeSharedStringRefFromEmpty();
+  uStack_4 = CONCAT31(uStack_4._1_3_,4);
+  pcStack_44 = (char *)(int)*(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 +
+                                      nTileIndex * 0x24);
+  uStack_48 = 0x4d36e7;
+  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  pcStack_44 = (char *)0x0;
+  uStack_48 = 0x274d;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  uStack_49 = (undefined1)((uint)auStack_28 >> 0x18);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+  if ((int)(((int)uVar1 < 1) - 1 & uVar1) < iVar2) {
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    scanBracketExpressions(g_pLocalizationTable,&uStack_48,pcStack_44);
+    puStack_1c = &stack0xffffff94;
+    thunk_AssignStringSharedRefAndReturnThis();
+    iStack_24._0_1_ = 6;
+    thunk_AssignStringSharedRefAndReturnThis();
+    iStack_24 = CONCAT31(iStack_24._1_3_,4);
+    thunk_DispatchLocalizedUiMessageWithTemplate();
+  }
+  else {
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    scanBracketExpressions(g_pLocalizationTable,&uStack_48,pcStack_44);
+    thunk_AssignStringSharedRefAndReturnThis();
+    iStack_24._0_1_ = 5;
+    thunk_AssignStringSharedRefAndReturnThis();
+    iStack_24 = CONCAT31(iStack_24._1_3_,4);
+    thunk_DispatchLocalizedUiMessageWithTemplate();
+    if (extraout_AL != '\0') {
+      (**(code **)(*(int *)this->pField04 + 0x34))();
+      (**(code **)((int)this->field0_0x0 + 0x30))();
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x2335,0);
+      thunk_GetActiveNationId();
+      (**(code **)(*(int *)g_apNationStates[extraout_AX_00] + 0x38))(-iVar2);
+      (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+      thunk_GetTickCountDiv16();
+      do {
+        thunk_PumpUiMessagesAndBackgroundTasks(1);
+        thunk_GetTickCountDiv16();
+        if (extraout_EAX_00 < extraout_EAX) break;
+      } while (extraout_EAX_00 - extraout_EAX < 0x1e);
+      uStack_49 = 1;
+    }
+  }
+  iStack_24._0_1_ = 3;
+  ReleaseSharedStringRefIfNotEmpty();
+  iStack_24._0_1_ = 2;
+  ReleaseSharedStringRefIfNotEmpty();
+  iStack_24._0_1_ = 1;
+  ReleaseSharedStringRefIfNotEmpty();
+  iStack_24 = (uint)iStack_24._1_3_ << 8;
+  ReleaseSharedStringRefIfNotEmpty();
+  iStack_24 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = uStack_2c;
+  return (bool)uStack_49;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00404282
-// GHIDRA_NAME TCivToolbar::thunk_HandleCivilianMapCommandPanelAction
-// GHIDRA_PROTO void __thiscall thunk_HandleCivilianMapCommandPanelAction(int nEventClass, void * pEventPayload, int nEventFlags)
+// GHIDRA_NAME TCivToolbar::TCivToolbar_VtblSlot015
+// GHIDRA_PROTO void __thiscall TCivToolbar_VtblSlot015(int nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to HandleCivilianMapCommandPanelAction
 // GHIDRA_COMMENT_END
@@ -31,31 +794,1240 @@ void * __cdecl TCivToolbar::thunk_GetTCivToolbarClassNamePointer(void)
 /* Single-JMP thunk to HandleCivilianMapCommandPanelAction */
 
 void __thiscall
-TCivToolbar::thunk_HandleCivilianMapCommandPanelAction
-          (TCivToolbar *this,int nEventClass,void *pEventPayload,int nEventFlags)
+TCivToolbar::TCivToolbar_VtblSlot015
+          (TCivToolbar *this,int nEventClass,PanelEventPayload *pEventPayload,int nEventFlags)
 
 {
   HandleCivilianMapCommandPanelAction(this,nEventClass,pEventPayload,nEventFlags);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00404B38
+// GHIDRA_NAME TCivToolbar::thunk_LookupCivilianTileOrderCursorTokenByActionIndex
+// GHIDRA_PROTO ushort __thiscall thunk_LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex, short nInputHint)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to LookupCivilianTileOrderCursorTokenByActionIndex
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to LookupCivilianTileOrderCursorTokenByActionIndex */
+
+ushort __thiscall
+TCivToolbar::thunk_LookupCivilianTileOrderCursorTokenByActionIndex
+          (TCivToolbar *this,short nTileIndex,short nInputHint)
+
+{
+  int iVar1;
+  
+  iVar1 = thunk_ResolveCivilianTileOrderActionCode(this,nTileIndex,nInputHint);
+  return g_awCivilianTileOrderCursorTokenByActionIndex[iVar1];
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004059A2
+// GHIDRA_NAME TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
+// GHIDRA_PROTO int __thiscall thunk_ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ResolveCivilianTileOrderActionCode
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ResolveCivilianTileOrderActionCode */
+
+int __thiscall
+TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
+          (TCivToolbar *this,short nTileIndex,short nInputHint)
+
+{
+  int iVar1;
+  bool bVar2;
+  short nOwnerNationId;
+  short nOwnerNationId_00;
+  short nOwnerNationId_01;
+  short sVar3;
+  short extraout_AX;
+  int *piVar4;
+  int iVar5;
+  int iVar6;
+  
+  thunk_GetActiveNationId();
+  piVar4 = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nOwnerNationId);
+  iVar6 = (int)nTileIndex;
+  iVar5 = 1;
+  if ((*(char *)((int)g_pGlobalMapState + 0x20) != '\0') &&
+     ((iVar6 % 0x6c == 0 || (iVar6 % 0x6c == 0x6b)))) {
+    return 1;
+  }
+  if (this->pField04 == (int *)0x0) {
+    iVar5 = 0;
+    thunk_GetActiveNationId();
+    piVar4 = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nOwnerNationId_00);
+    if (piVar4 != (int *)0x0) {
+      thunk_GetActiveNationId();
+      piVar4 = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nOwnerNationId_01);
+      bVar2 = thunk_IsCivilianOrderInIdleSelectionState(piVar4);
+      if (!bVar2) {
+        return 10;
+      }
+      if ((nInputHint == 2) ||
+         ((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + iVar6 * 0x24) >> 5 & 1) == 0))
+      {
+        return 2;
+      }
+    }
+  }
+  else {
+    if ((piVar4 != (int *)0x0) && (piVar4 != this->pField04)) {
+      return (-(uint)(piVar4[2] != 0) & 8) + 2;
+    }
+    bVar2 = thunk_IsMappedShortcutKeyPressed(2);
+    if (bVar2) {
+      bVar2 = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+      if (bVar2) {
+        return 3;
+      }
+    }
+    else {
+      iVar6 = iVar6 * 0x24;
+      if (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xe + iVar6) == '\0') {
+        sVar3 = *(short *)((int)this->pField04 + 4);
+        if (sVar3 == 1) {
+          return 8;
+        }
+        if (sVar3 != 4) {
+          if (sVar3 != 7) {
+            return 9;
+          }
+          return 0xb;
+        }
+        sVar3 = *(short *)((int)this->pField04 + 6);
+        if (nTileIndex == sVar3) {
+          return 4;
+        }
+        sVar3 = thunk_GetHexDirectionBetweenTiles(sVar3,nTileIndex);
+        if ((sVar3 != 1) && (sVar3 != 4)) {
+          if ((sVar3 != 0) && (sVar3 != 3)) {
+            return 7;
+          }
+          return 6;
+        }
+        return 5;
+      }
+      iVar1 = *(int *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar6 + 0x20);
+      if (iVar1 != 0) {
+        sVar3 = *(short *)(iVar1 + 0x18);
+        thunk_GetActiveNationId();
+        if (sVar3 == extraout_AX) {
+          bVar2 = thunk_IsCivilianOrderInIdleSelectionState
+                            (*(void **)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + iVar6));
+          return (-(uint)bVar2 & 0xfffffff8) + 10;
+        }
+      }
+      bVar2 = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+      if (bVar2) {
+        iVar5 = 3;
+      }
+    }
+  }
+  return iVar5;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00405BF5
+// GHIDRA_NAME TCivToolbar::thunk_CanDisplayMapOrderEntryInCurrentContext
+// GHIDRA_PROTO void __thiscall thunk_CanDisplayMapOrderEntryInCurrentContext(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CanDisplayMapOrderEntryInCurrentContext
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CanDisplayMapOrderEntryInCurrentContext */
+
+void __thiscall
+TCivToolbar::thunk_CanDisplayMapOrderEntryInCurrentContext(TCivToolbar *this,int arg1,int arg2)
+
+{
+  short extraout_AX;
+  void *pvVar1;
+  
+  if (arg1 == -1) {
+    thunk_GetActiveNationId();
+    arg1 = (int)extraout_AX;
+  }
+  if ((this->field_0x10 & '\x01' << ((byte)arg1 & 0x1f)) != 0) {
+    pvVar1 = thunk_GetNavyPrimaryOrderListHead();
+    if (pvVar1 != (void *)0x0) {
+      while ((((*(TCivToolbar **)((int)pvVar1 + 8) != this ||
+               (*(short *)((int)pvVar1 + 0x14) != arg1)) ||
+              (((char)arg2 == '\0' && (*(int *)((int)pvVar1 + 0x34) != 0)))) ||
+             (*(int *)((int)pvVar1 + 0xc) != 0))) {
+        pvVar1 = *(void **)((int)pvVar1 + 0x24);
+        if (pvVar1 == (void *)0x0) {
+          return;
+        }
+      }
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406555
+// GHIDRA_NAME TCivToolbar::thunk_QueueCivilianWorkOrderWithCostCheck
+// GHIDRA_PROTO bool __thiscall thunk_QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to QueueCivilianWorkOrderWithCostCheck
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to QueueCivilianWorkOrderWithCostCheck */
+
+bool __thiscall
+TCivToolbar::thunk_QueueCivilianWorkOrderWithCostCheck(TCivToolbar *this,short nTileIndex)
+
+{
+  uint uVar1;
+  short sVar2;
+  char cVar3;
+  short extraout_AX;
+  short extraout_AX_00;
+  undefined2 extraout_var;
+  int extraout_EAX;
+  int extraout_EAX_00;
+  bool bVar4;
+  uint *unaff_FS_OFFSET;
+  uint uStack_28;
+  undefined1 auStack_18 [4];
+  undefined4 uStack_14;
+  uint uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631c18;
+  *unaff_FS_OFFSET = (uint)&uStack_c;
+  thunk_GetActiveNationId();
+  bVar4 = false;
+  uVar1 = *(int *)((int)g_apNationStates[extraout_AX] + 0x8f0) / 100 +
+          *(int *)((int)g_apNationStates[extraout_AX] + 0x10);
+  sVar2 = *(short *)((int)this->pField04 + 4);
+  if ((sVar2 == 0) || (uStack_28 = uStack_28 & 0xffffff00, sVar2 == 8)) {
+    uStack_28 = CONCAT31(uStack_28._1_3_,1);
+  }
+  cVar3 = (**(code **)(*(int *)g_pGlobalMapState + 200))();
+  if ((int)(((int)uVar1 < 1) - 1 & uVar1) < *(int *)(&g_adwCivilianWorkOrderCostByClass + cVar3 * 4)
+     ) {
+    InitializeSharedStringRefFromEmpty();
+    uStack_c = 0;
+    InitializeSharedStringRefFromEmpty();
+    uStack_c._0_1_ = 1;
+    InitializeSharedStringRefFromEmpty();
+    uStack_c = CONCAT31(uStack_c._1_3_,2);
+    (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    scanBracketExpressions(g_pLocalizationTable,auStack_18,&stack0xffffffd0);
+    thunk_AssignStringSharedRefAndReturnThis();
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty();
+  }
+  else {
+    (**(code **)(*(int *)this->pField04 + 0x34))();
+    (**(code **)((int)this->field0_0x0 + 0x30))();
+    uStack_28 = CONCAT22(uStack_28._2_2_,0x2339);
+    uStack_14 = CONCAT22(extraout_var,
+                         *(short *)(auStack_18 + *(short *)((int)this->pField04 + 4) * 2 + -0x20));
+    if (*(short *)(auStack_18 + *(short *)((int)this->pField04 + 4) * 2 + -0x20) != 0) {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))();
+    }
+    thunk_GetTickCountDiv16();
+    do {
+      thunk_PumpUiMessagesAndBackgroundTasks(1);
+      thunk_GetTickCountDiv16();
+      if (extraout_EAX_00 < extraout_EAX) break;
+    } while (extraout_EAX_00 - extraout_EAX < 0x1e);
+    *(undefined2 *)((int)this->pField04 + 0x26) = (undefined2)uStack_14;
+    thunk_GetActiveNationId();
+    (**(code **)(*(int *)g_apNationStates[extraout_AX_00] + 0x38))();
+    (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+    bVar4 = true;
+  }
+  *unaff_FS_OFFSET = uStack_28;
+  return bVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406B3B
+// GHIDRA_NAME TCivToolbar::thunk_SetActiveCivilianSelection
+// GHIDRA_PROTO void __thiscall thunk_SetActiveCivilianSelection(void * pSelectedCivilianOrderEntry, int nRefreshCommandPanel)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to SetActiveCivilianSelection
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to SetActiveCivilianSelection */
+
+void __thiscall
+TCivToolbar::thunk_SetActiveCivilianSelection
+          (TCivToolbar *this,void *pSelectedCivilianOrderEntry,int nRefreshCommandPanel)
+
+{
+  int iVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  char unaff_retaddr;
+  
+  this->pField04 = pSelectedCivilianOrderEntry;
+  (**(code **)((int)this->field0_0x0 + 0x34))(pSelectedCivilianOrderEntry);
+  if (pSelectedCivilianOrderEntry != (void *)0x0) {
+    (**(code **)(*(int *)pSelectedCivilianOrderEntry + 0x28))
+              (CONCAT22(extraout_var,*(undefined2 *)((int)pSelectedCivilianOrderEntry + 6)));
+    if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+      (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))
+                (CONCAT22(extraout_var_00,*(undefined2 *)((int)pSelectedCivilianOrderEntry + 6)));
+    }
+    if ((unaff_retaddr != '\0') && (iVar1 = *(int *)((int)g_pUiRuntimeContext + 0xf0), iVar1 != 0))
+    {
+      thunk_RefreshCivilianCommandPanelForSelection
+                (*(TCivToolbar **)(iVar1 + 0xb0 + *(short *)(iVar1 + 0x96) * 4),
+                 pSelectedCivilianOrderEntry);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406CCB
+// GHIDRA_NAME TCivToolbar::thunk_HandleEngineerConstructionAction
+// GHIDRA_PROTO bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex)
+
+bool __thiscall
+TCivToolbar::thunk_HandleEngineerConstructionAction(TCivToolbar *this,short nTileIndex)
+
+{
+  uint uVar1;
+  short sVar2;
+  int *piVar3;
+  short extraout_AX;
+  short extraout_AX_00;
+  short extraout_AX_01;
+  short extraout_AX_02;
+  short extraout_AX_03;
+  short extraout_AX_04;
+  short extraout_AX_05;
+  short extraout_AX_06;
+  int iVar4;
+  int extraout_EAX;
+  int extraout_EAX_00;
+  undefined4 unaff_EBX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar5;
+  undefined2 uVar6;
+  char *pcStack_20;
+  char *pcStack_1c;
+  TCivToolbar *pTStack_18;
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uVar6 = (undefined2)((uint)unaff_EBX >> 0x10);
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631cf0;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  piVar3 = *(int **)((int)g_pSelectedCivilianOrderState + 4);
+  pcStack_20._0_3_ = (uint3)pcStack_20 & 0xffff;
+  pcStack_20 = (char *)(uint)(uint3)pcStack_20;
+  if (nTileIndex == *(short *)((int)this->pField04 + 6)) {
+    iVar4 = (**(code **)(*(int *)g_pUiRuntimeContext + 0xdc))();
+    if (iVar4 == 0x666f7274) {
+      sVar2 = *(short *)(&g_awEngineerFortBuildCostByLevel +
+                        *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 3 +
+                                 *(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 +
+                                           nTileIndex * 0x24) * 0xa8) * 2);
+      thunk_GetActiveNationId();
+      uVar1 = *(int *)((int)g_apNationStates[extraout_AX_03] + 0x8f0) / 100 +
+              *(int *)((int)g_apNationStates[extraout_AX_03] + 0x10);
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < (int)sVar2) {
+        InitializeSharedStringRefFromEmpty();
+        puStack_8 = (undefined1 *)0x6;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8._0_1_ = 7;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8._0_1_ = 8;
+        (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2745);
+        scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pcStack_1c);
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 7;
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_8 = (undefined1 *)0xffffffff;
+        ReleaseSharedStringRefIfNotEmpty();
+        this = pTStack_18;
+        goto finalize_engineer_action_and_refresh;
+      }
+      thunk_GetActiveNationId();
+      *(int *)((int)g_apNationStates[extraout_AX_04] + 0x10) =
+           *(int *)((int)g_apNationStates[extraout_AX_04] + 0x10) - (int)sVar2;
+      (**(code **)(*piVar3 + 0x34))();
+      uVar5 = 0x232c;
+      iVar4 = *(int *)g_pSfxPlaybackSystem;
+      goto LAB_004d40cd;
+    }
+    if (iVar4 == 0x706f7274) {
+      thunk_GetActiveNationId();
+      uVar1 = *(int *)((int)g_apNationStates[extraout_AX_01] + 0x8f0) / 100 +
+              *(int *)((int)g_apNationStates[extraout_AX_01] + 0x10);
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 3000) {
+        InitializeSharedStringRefFromEmpty();
+        puStack_8 = (undefined1 *)0x3;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8._0_1_ = 4;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8._0_1_ = 5;
+        (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2745);
+        scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pcStack_1c);
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 4;
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_8 = (undefined1 *)0xffffffff;
+        ReleaseSharedStringRefIfNotEmpty();
+        this = pTStack_18;
+        goto finalize_engineer_action_and_refresh;
+      }
+      thunk_GetActiveNationId();
+      *(int *)((int)g_apNationStates[extraout_AX_02] + 0x10) =
+           *(int *)((int)g_apNationStates[extraout_AX_02] + 0x10) + -3000;
+      (**(code **)(*piVar3 + 0x34))();
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))();
+      }
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x232b);
+    }
+    else {
+      if (iVar4 != 0x7261696c) goto finalize_engineer_action_and_refresh;
+      thunk_GetActiveNationId();
+      uVar1 = *(int *)((int)g_apNationStates[extraout_AX] + 0x8f0) / 100 +
+              *(int *)((int)g_apNationStates[extraout_AX] + 0x10);
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 2000) {
+        InitializeSharedStringRefFromEmpty();
+        puStack_8 = (undefined1 *)0x0;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8._0_1_ = 1;
+        InitializeSharedStringRefFromEmpty();
+        puStack_8._0_1_ = 2;
+        (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+        (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2745);
+        scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pcStack_20);
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 1;
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+        ReleaseSharedStringRefIfNotEmpty();
+        puStack_8 = (undefined1 *)0xffffffff;
+        ReleaseSharedStringRefIfNotEmpty();
+        goto finalize_engineer_action_and_refresh;
+      }
+      thunk_GetActiveNationId();
+      *(int *)((int)g_apNationStates[extraout_AX_00] + 0x10) =
+           *(int *)((int)g_apNationStates[extraout_AX_00] + 0x10) + -2000;
+      (**(code **)(*piVar3 + 0x34))();
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))();
+      }
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x232a);
+    }
+  }
+  else {
+    iVar4 = *(int *)(&g_adwEngineerRailBuildCostByTerrainType +
+                    *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + nTileIndex * 0x24) * 4);
+    thunk_GetActiveNationId();
+    uVar1 = *(int *)((int)g_apNationStates[extraout_AX_05] + 0x8f0) / 100 +
+            *(int *)((int)g_apNationStates[extraout_AX_05] + 0x10);
+    if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < iVar4) {
+      InitializeSharedStringRefFromEmpty();
+      uStack_4 = 9;
+      InitializeSharedStringRefFromEmpty();
+      uStack_4._0_1_ = 10;
+      InitializeSharedStringRefFromEmpty();
+      uStack_4 = CONCAT31(uStack_4._1_3_,0xb);
+      (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+      (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+      scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pcStack_1c);
+      thunk_AssignStringSharedRefAndReturnThis();
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      puStack_8._0_1_ = 10;
+      ReleaseSharedStringRefIfNotEmpty();
+      puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
+      ReleaseSharedStringRefIfNotEmpty();
+      puStack_8 = (undefined1 *)0xffffffff;
+      ReleaseSharedStringRefIfNotEmpty();
+      this = pTStack_18;
+      goto finalize_engineer_action_and_refresh;
+    }
+    thunk_GetActiveNationId();
+    *(int *)((int)g_apNationStates[extraout_AX_06] + 0x10) =
+         *(int *)((int)g_apNationStates[extraout_AX_06] + 0x10) - iVar4;
+    thunk_ApplyRailSectionEndpointDirectionFlags();
+    (**(code **)(*piVar3 + 0x34))();
+    uVar5 = 0x2329;
+    iVar4 = *(int *)g_pSfxPlaybackSystem;
+LAB_004d40cd:
+    (**(code **)(iVar4 + 0xb8))(uVar5);
+  }
+  uVar6 = 0x101;
+finalize_engineer_action_and_refresh:
+  if ((char)uVar6 != '\0') {
+    (**(code **)((int)this->field0_0x0 + 0x30))();
+    thunk_GetTickCountDiv16();
+    do {
+      thunk_PumpUiMessagesAndBackgroundTasks(1);
+      thunk_GetTickCountDiv16();
+      if (extraout_EAX_00 < extraout_EAX) break;
+    } while (extraout_EAX_00 - extraout_EAX < 0x1e);
+  }
+  if ((char)((ushort)uVar6 >> 8) != '\0') {
+    (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+  }
+  *unaff_FS_OFFSET = uStack_10;
+  return (bool)(char)uVar6;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00408B93
+// GHIDRA_NAME TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick
+// GHIDRA_PROTO void __thiscall thunk_CycleMapInteractionSelectionAfterHandledClick(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CycleMapInteractionSelectionAfterHandledClick
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CycleMapInteractionSelectionAfterHandledClick */
+
+void __thiscall TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(TCivToolbar *this)
+
+{
+  EMapInteractionMode EVar1;
+  void *pvVar2;
+  undefined2 uVar3;
+  uint uVar4;
+  TCivToolbar *pTVar5;
+  char extraout_AL;
+  char extraout_AL_00;
+  char extraout_AL_01;
+  short nNationId;
+  short extraout_AX;
+  int arg1;
+  undefined2 extraout_var;
+  void *pvVar6;
+  undefined1 uVar7;
+  TCivToolbar *pTVar8;
+  bool bVar9;
+  bool bVar10;
+  undefined4 uStack_4;
+  
+  uVar7 = (undefined1)this->field104_0x96;
+  uStack_4 = (uint)(byte)uVar7 << 0x18;
+  thunk_GetActiveNationId();
+  thunk_IsNationSlotEligibleForEventProcessing(arg1);
+  if (extraout_AL == '\0') {
+    uStack_4._2_2_ = (undefined2)(uStack_4 >> 0x10);
+    uStack_4 = CONCAT22(uStack_4._2_2_,0x700);
+  }
+  bVar9 = false;
+  uVar4 = uStack_4;
+  while (uStack_4._1_1_ != '\a') {
+    if (bVar9) goto LAB_00597dbc;
+    uStack_4._3_1_ = (char)(uVar4 >> 0x18);
+    uStack_4 = uVar4;
+    switch(uVar7) {
+    case 0:
+      bVar9 = uStack_4._3_1_ != '\0';
+      if (bVar9) {
+        thunk_GetActiveNationId();
+        thunk_ClearCivilianSelectionHighlightsForNation();
+        uStack_4 = uVar4 | 0x100;
+      }
+      thunk_GetActiveNationId();
+      pvVar6 = thunk_SelectFirstAvailableCivilianForNation(g_pSelectedCivilianOrderState,nNationId);
+      if (pvVar6 == (void *)0x0) {
+        uVar7 = MAP_INTERACTION_MODE_1;
+        uStack_4 = uStack_4 & 0xffffff;
+        bVar9 = false;
+        uVar4 = uStack_4;
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_0) {
+          uStack_4 = uStack_4 | 0x100;
+          uVar4 = uStack_4;
+        }
+      }
+      else {
+        uStack_4._0_3_ = CONCAT12(1,(undefined2)uStack_4);
+        bVar9 = true;
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_0) {
+          TacticalBattleView::thunk_EnterMapInteractionOverlayMode((TacticalBattleView *)this,0);
+          thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_0);
+        }
+        thunk_SetActiveCivilianSelection(g_pSelectedCivilianOrderState,pvVar6,1);
+        pvVar2 = this->field0_0x0;
+        (**(code **)((int)pvVar2 + 0x1e0))(CONCAT22(extraout_var,*(undefined2 *)((int)pvVar6 + 6)));
+        (**(code **)((int)pvVar2 + 0x13c))();
+        uVar4 = uStack_4;
+      }
+      break;
+    case 1:
+      bVar10 = uStack_4._3_1_ != '\x01';
+      if (bVar10) {
+        thunk_GetActiveNationId();
+        thunk_ClearProvinceSelectionHighlightsForNation();
+        uStack_4 = uVar4 | 0x200;
+      }
+      thunk_GetActiveNationId();
+      thunk_FindNextSelectableProvinceForNation();
+      uVar3 = (undefined2)uStack_4;
+      if (extraout_AX == -1) {
+        uVar7 = MAP_INTERACTION_MODE_2;
+        uStack_4 = CONCAT13(1,(undefined3)uStack_4);
+        uVar4 = uStack_4;
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_1) {
+          uStack_4 = CONCAT22(uStack_4._2_2_,uVar3) | 0x200;
+          uVar4 = uStack_4;
+        }
+      }
+      else {
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_1) {
+          thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_1);
+        }
+        thunk_SetActiveProvinceSelection();
+        (**(code **)((int)this->field0_0x0 + 0x1e0))
+                  (CONCAT22((short)((uint)(extraout_AX * 0x15) >> 0x10),
+                            *(undefined2 *)
+                             (*(int *)((int)g_pGlobalMapState + 0x10) + 4 + extraout_AX * 0xa8)));
+        uStack_4._0_3_ = CONCAT12(1,(undefined2)uStack_4);
+        bVar9 = true;
+        uVar4 = uStack_4;
+      }
+      break;
+    case 2:
+      pvVar6 = this->field98;
+      thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+      uStack_4._0_2_ = (undefined2)uVar4;
+      pTVar5 = g_pMapActionContextListHead;
+      if ((pvVar6 != (void *)0x0) &&
+         (pTVar8 = *(TCivToolbar **)((int)pvVar6 + 0x18), pTVar8 != (TCivToolbar *)0x0))
+      goto LAB_00597c66;
+      while (pTVar8 = pTVar5, pTVar8 != (TCivToolbar *)0x0) {
+LAB_00597c66:
+        thunk_CanDisplayMapOrderEntryInCurrentContext(pTVar8,-1,0);
+        if (extraout_AL_00 != '\0') {
+          thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_2);
+          if (this->field102_0x94 == '\0') {
+            thunk_InvalidateMapRegionForOrderEntry((int)this->field98);
+          }
+          this->field98 = pTVar8;
+          thunk_InvalidateMapRegionForEntryIfUiPassive(this,(int)pTVar8);
+          if (pTVar8 == (TCivToolbar *)0x0) {
+            TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+            uStack_4._0_3_ = CONCAT12(1,(undefined2)uStack_4);
+            bVar9 = true;
+            uVar4 = uStack_4;
+          }
+          else {
+            pvVar6 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+            TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,pvVar6);
+            uStack_4._0_3_ = CONCAT12(1,(undefined2)uStack_4);
+            bVar9 = true;
+            uVar4 = uStack_4;
+          }
+          goto switchD_00597ade_default;
+        }
+        pTVar5 = *(TCivToolbar **)&pTVar8->field_0x18;
+      }
+      uVar7 = MAP_INTERACTION_MODE_0;
+      this->field98 = (void *)0x0;
+      uStack_4 = CONCAT22(0x200,(undefined2)uStack_4) | 0x400;
+      uVar4 = uStack_4;
+      break;
+    case 3:
+      uVar7 = MAP_INTERACTION_MODE_0;
+    }
+switchD_00597ade_default:
+    uStack_4 = uVar4;
+    uVar4 = uStack_4;
+  }
+  if (!bVar9) {
+    pvVar6 = this->field98;
+    thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+    pTVar5 = g_pMapActionContextListHead;
+    if ((pvVar6 != (void *)0x0) &&
+       (pTVar8 = *(TCivToolbar **)((int)pvVar6 + 0x18), pTVar8 != (TCivToolbar *)0x0))
+    goto LAB_00597d3c;
+    while (pTVar8 = pTVar5, pTVar8 != (TCivToolbar *)0x0) {
+LAB_00597d3c:
+      thunk_CanDisplayMapOrderEntryInCurrentContext(pTVar8,-1,0);
+      if (extraout_AL_01 != '\0') {
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_2);
+        if (this->field102_0x94 == '\0') {
+          thunk_InvalidateMapRegionForOrderEntry((int)this->field98);
+        }
+        this->field98 = pTVar8;
+        thunk_InvalidateMapRegionForEntryIfUiPassive(this,(int)pTVar8);
+        if (pTVar8 == (TCivToolbar *)0x0) {
+          TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+          bVar9 = true;
+        }
+        else {
+          pvVar6 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+          TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,pvVar6);
+          bVar9 = true;
+        }
+        goto LAB_00597dbc;
+      }
+      pTVar5 = *(TCivToolbar **)&pTVar8->field_0x18;
+    }
+    this->field98 = (void *)0x0;
+  }
+LAB_00597dbc:
+  if (!bVar9) {
+    EVar1 = this->field104_0x96;
+    if (EVar1 == MAP_INTERACTION_MODE_0) {
+      *(undefined4 *)((int)g_pSelectedCivilianOrderState + 4) = 0;
+    }
+    else {
+      if (EVar1 == MAP_INTERACTION_MODE_1) {
+        thunk_SetActiveProvinceSelection();
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_3);
+        return;
+      }
+      if (EVar1 == MAP_INTERACTION_MODE_2) {
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_2);
+        if (this->field102_0x94 == '\0') {
+          thunk_InvalidateMapRegionForOrderEntry((int)this->field98);
+        }
+        this->field98 = (void *)0x0;
+        if (this->field102_0x94 == '\0') {
+          thunk_InvalidateMapRegionForOrderEntry(0);
+        }
+        TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_3);
+        return;
+      }
+    }
+    thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_3);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00409458
+// GHIDRA_NAME TCivToolbar::thunk_InvalidateMapRegionForEntryIfUiPassive
+// GHIDRA_PROTO void __thiscall thunk_InvalidateMapRegionForEntryIfUiPassive(int arg1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InvalidateMapRegionForEntryIfUiPassive
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InvalidateMapRegionForEntryIfUiPassive */
+
+void __thiscall
+TCivToolbar::thunk_InvalidateMapRegionForEntryIfUiPassive(TCivToolbar *this,int arg1)
+
+{
+  if (this->field102_0x94 == '\0') {
+    thunk_InvalidateMapRegionForOrderEntry(arg1);
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00409845
-// GHIDRA_NAME TCivToolbar::thunk_DestructTCivToolbarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCivToolbarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCivToolbar::TCivToolbar_VtblSlot001
+// GHIDRA_PROTO TCivToolbar * __thiscall TCivToolbar_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCivToolbarAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTCivToolbarAndMaybeFree */
 
-void * __thiscall
-TCivToolbar::thunk_DestructTCivToolbarAndMaybeFree(TCivToolbar *this,byte freeSelfFlag)
+TCivToolbar * __thiscall TCivToolbar::TCivToolbar_VtblSlot001(TCivToolbar *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TCivToolbar *pTVar1;
   
-  pvVar1 = DestructTCivToolbarAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTCivToolbarAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2380
+// GHIDRA_NAME TCivToolbar::HandleCivilianTileSelectionOrReportClick
+// GHIDRA_PROTO bool __thiscall HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handles a click on a civilian tile: either select idle civilian or open Civilian Report.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve player nation and fetch tile civilian entry.
+// GHIDRA_COMMENT 2. Classify entry with IsCivilianOrderInIdleSelectionState.
+// GHIDRA_COMMENT 3. Idle path: enforce gate bit rules (unless nClickMode == 2), then select civilian and refresh UI.
+// GHIDRA_COMMENT 4. Working path: open report/rescind/confirm flow via HandleCivilianReportDecision.
+// GHIDRA_COMMENT 5. Play selection SFX when a civilian is selected.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: clicked tile index.
+// GHIDRA_COMMENT - nClickMode: interaction mode; value 2 bypasses tile gate bit 0x20.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true if click was consumed (selection changed or report opened), else false.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - If no civilian for player nation exists on the tile, returns false.
+// GHIDRA_COMMENT_END
+
+/* Handles a click on a civilian tile: either select idle civilian or open Civilian Report.
+   Algorithm:
+   1. Resolve player nation and fetch tile civilian entry.
+   2. Classify entry with IsCivilianOrderInIdleSelectionState.
+   3. Idle path: enforce gate bit rules (unless nClickMode == 2), then select civilian and refresh
+   UI.
+   4. Working path: open report/rescind/confirm flow via HandleCivilianReportDecision.
+   5. Play selection SFX when a civilian is selected.
+   Parameters:
+   - nTileIndex: clicked tile index.
+   - nClickMode: interaction mode; value 2 bypasses tile gate bit 0x20.
+   Returns:
+   - true if click was consumed (selection changed or report opened), else false.
+   Special Cases:
+   - If no civilian for player nation exists on the tile, returns false. */
+
+bool __thiscall
+TCivToolbar::HandleCivilianTileSelectionOrReportClick
+          (TCivToolbar *this,short nTileIndex,short nClickMode)
+
+{
+  TCivilianOrderState *pSelectedCivilianOrderEntry;
+  bool fCivilianIsIdleSelectable;
+  short nPlayerNationId;
+  short nOwnerNationId;
+  int *pTileUnitEntry;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  int nResolvedActionKind;
+  
+  nResolvedActionKind = 0;
+  thunk_GetActiveNationId();
+  pTileUnitEntry = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nPlayerNationId);
+  if (pTileUnitEntry != (int *)0x0) {
+    thunk_GetActiveNationId();
+    pTileUnitEntry = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nOwnerNationId);
+    fCivilianIsIdleSelectable = thunk_IsCivilianOrderInIdleSelectionState(pTileUnitEntry);
+    if (fCivilianIsIdleSelectable) {
+                    /* ClickMode==2 is forced selection mode (ignores tile gate bit 0x20). */
+      if ((nClickMode == 2) ||
+         ((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + nTileIndex * 0x24) & 0x20) == 0
+         )) {
+        nResolvedActionKind = 2;
+      }
+    }
+    else {
+                    /* Non-idle civilian entries route to Civilian Report flow. */
+      nResolvedActionKind = 10;
+    }
+  }
+  if (nResolvedActionKind == 2) {
+    if (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
+      thunk_SetMapInteractionMode
+                (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0),MAP_INTERACTION_MODE_0);
+      pSelectedCivilianOrderEntry =
+           *(TCivilianOrderState **)
+            (*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + nTileIndex * 0x24);
+      this->pField04 = pSelectedCivilianOrderEntry;
+      (**(code **)((int)this->field0_0x0 + 0x34))(pSelectedCivilianOrderEntry);
+      if (pSelectedCivilianOrderEntry != (TCivilianOrderState *)0x0) {
+        (**(code **)(pSelectedCivilianOrderEntry->pvftable + 0x28))
+                  (CONCAT22(extraout_var_00,pSelectedCivilianOrderEntry->nCurrentTileIndex));
+        if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+          (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))
+                    (CONCAT22(extraout_var,pSelectedCivilianOrderEntry->nCurrentTileIndex));
+        }
+        nResolvedActionKind = *(int *)((int)g_pUiRuntimeContext + 0xf0);
+        if (nResolvedActionKind != 0) {
+          thunk_RefreshCivilianCommandPanelForSelection
+                    (*(TCivToolbar **)
+                      (nResolvedActionKind + 0xb0 + *(short *)(nResolvedActionKind + 0x96) * 4),
+                     pSelectedCivilianOrderEntry);
+        }
+      }
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x2338,0,1);
+      return true;
+    }
+  }
+  else if (nResolvedActionKind == 10) {
+    thunk_HandleCivilianReportDecision
+              (this,*(TCivilianOrderState **)
+                     (*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + nTileIndex * 0x24));
+    return true;
+  }
+  return false;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D26D0
+// GHIDRA_NAME TCivToolbar::HandleCivilianTileOrderAction
+// GHIDRA_PROTO bool __thiscall HandleCivilianTileOrderAction(short nTileIndex, short nInputHint)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Main civilian tile-click dispatcher. Uses ResolveCivilianTileOrderActionCode() then routes:
+// GHIDRA_COMMENT 2 select clicked civilian; 3 queue direct move/assign; 4..7 engineer build/rail handler;
+// GHIDRA_COMMENT 8 queue prospecting order type 8 + short feedback loop;
+// GHIDRA_COMMENT 9 queue civilian work order (cost check);
+// GHIDRA_COMMENT 10 civilian report/rescind flow; 11 prompted developer tile-purchase flow (order type 13).
+// GHIDRA_COMMENT_END
+
+/* Main civilian tile-click dispatcher. Uses ResolveCivilianTileOrderActionCode() then routes:
+   2 select clicked civilian; 3 queue direct move/assign; 4..7 engineer build/rail handler;
+   8 queue prospecting order type 8 + short feedback loop;
+   9 queue civilian work order (cost check);
+   10 civilian report/rescind flow; 11 prompted developer tile-purchase flow (order type 13). */
+
+bool __thiscall
+TCivToolbar::HandleCivilianTileOrderAction(TCivToolbar *this,short nTileIndex,short nInputHint)
+
+{
+  TCivilianOrderState *pSelectedCivilianOrderEntry;
+  bool fCanQueueMoveOrder;
+  bool fEngineerConstructionHandled;
+  bool fCivilianWorkOrderQueued;
+  bool fTileActionHandled;
+  int nTileActionCode;
+  undefined2 extraout_var;
+  int nStartTickDiv16;
+  int nCurrentTickDiv16;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 in_stack_00000006;
+  int *pClickedCivilianUnit;
+  int nMapInteractionController;
+  
+  fTileActionHandled = false;
+  nTileActionCode = thunk_ResolveCivilianTileOrderActionCode(this,nTileIndex,nInputHint);
+  switch(nTileActionCode + -2) {
+  case 0:
+                    /* Action 2: select clicked civilian entry and refresh map/cmd panel focus. */
+    pSelectedCivilianOrderEntry =
+         *(TCivilianOrderState **)
+          (*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + nTileIndex * 0x24);
+    this->pField04 = pSelectedCivilianOrderEntry;
+    (**(code **)((int)this->field0_0x0 + 0x34))(pSelectedCivilianOrderEntry);
+    if (pSelectedCivilianOrderEntry != (TCivilianOrderState *)0x0) {
+      (**(code **)(pSelectedCivilianOrderEntry->pvftable + 0x28))
+                (CONCAT22(extraout_var_00,pSelectedCivilianOrderEntry->nCurrentTileIndex));
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))
+                  (CONCAT22(extraout_var,pSelectedCivilianOrderEntry->nCurrentTileIndex));
+      }
+      nMapInteractionController = *(int *)((int)g_pUiRuntimeContext + 0xf0);
+      if (nMapInteractionController != 0) {
+        thunk_RefreshCivilianCommandPanelForSelection
+                  (*(TCivToolbar **)
+                    (nMapInteractionController + 0xb0 +
+                    *(short *)(nMapInteractionController + 0x96) * 4),pSelectedCivilianOrderEntry);
+      }
+    }
+    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x2338,0,1);
+    return false;
+  case 1:
+                    /* Action 3: queue move/no-work assignment for currently selected civilian. */
+    fCanQueueMoveOrder = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+    fTileActionHandled = false;
+    if (fCanQueueMoveOrder) {
+      (**(code **)(*(int *)this->pField04 + 0x34))
+                (1,CONCAT22(extraout_var_01,*(undefined2 *)((int)this->pField04 + 6)));
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(9000,0,1);
+      (**(code **)((int)this->field0_0x0 + 0x30))(_nTileIndex,this->pField04);
+      return true;
+    }
+    break;
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+                    /* Actions 4..7 are delegated to engineer construction resolver/handler. */
+    fEngineerConstructionHandled = thunk_HandleEngineerConstructionAction(this,nTileIndex);
+    return fEngineerConstructionHandled;
+  case 6:
+                    /* Action 8 issues immediate work type 8 and pumps UI briefly for feedback. */
+    (**(code **)(*(int *)this->pField04 + 0x34))
+              (8,CONCAT22((short)((uint)(nTileActionCode + -2) >> 0x10),
+                          *(undefined2 *)((int)this->pField04 + 6)));
+    (**(code **)((int)this->field0_0x0 + 0x30))(_nTileIndex,this->pField04);
+    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x232e,0,1);
+    thunk_GetTickCountDiv16();
+    do {
+      thunk_PumpUiMessagesAndBackgroundTasks(1);
+      thunk_GetTickCountDiv16();
+      if (nCurrentTickDiv16 < nStartTickDiv16) {
+        return true;
+      }
+    } while (nCurrentTickDiv16 - nStartTickDiv16 < 0x1e);
+    return true;
+  case 7:
+    fCivilianWorkOrderQueued = thunk_QueueCivilianWorkOrderWithCostCheck(this,nTileIndex);
+    return fCivilianWorkOrderQueued;
+  case 8:
+                    /* Action 10 opens Civilian Report decision path (confirm vs rescind). */
+    thunk_HandleCivilianReportDecision
+              (this,*(TCivilianOrderState **)
+                     (*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + nTileIndex * 0x24));
+    return false;
+  case 9:
+                    /* Action 11 prompts engineer rail-order UI flow. */
+    fTileActionHandled = thunk_PromptAndQueueDeveloperTilePurchaseOrder(this,nTileIndex);
+  }
+  return fTileActionHandled;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2930
+// GHIDRA_NAME TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex
+// GHIDRA_PROTO ushort __thiscall LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex, short nInputHint)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Returns cursor group-ID token from g_awCivilianTileOrderCursorTokenByActionIndex[actionCode]. Key mappings: 3->1004(move civilian), 4->1003(build improvement), 5->1002(rail horizontal), 6->1018(rail /), 7->1019(rail \), 8->1001(prospect), 10->1011(busy rescind), 11->1025(dev buy tile).
+// GHIDRA_COMMENT_END
+
+/* Returns cursor group-ID token from g_awCivilianTileOrderCursorTokenByActionIndex[actionCode]. Key
+   mappings: 3->1004(move civilian), 4->1003(build improvement), 5->1002(rail horizontal),
+   6->1018(rail /), 7->1019(rail \), 8->1001(prospect), 10->1011(busy rescind), 11->1025(dev buy
+   tile). */
+
+ushort __thiscall
+TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex
+          (TCivToolbar *this,short nTileIndex,short nInputHint)
+
+{
+  int iVar1;
+  
+  iVar1 = thunk_ResolveCivilianTileOrderActionCode(this,nTileIndex,nInputHint);
+  return g_awCivilianTileOrderCursorTokenByActionIndex[iVar1];
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2960
+// GHIDRA_NAME TCivToolbar::ResolveCivilianTileOrderActionCode
+// GHIDRA_PROTO int __thiscall ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resolve civilian tile action code used by click dispatcher and cursor-token lookup.
+// GHIDRA_COMMENT Action->cursor(group): 1->1008(default blocked/none), 2->1004(select civilian), 3->1004(move/assign),
+// GHIDRA_COMMENT 4->1003(engineer same-tile construction menu), 5->1002(rail horizontal), 6->1018(rail diagonal slash),
+// GHIDRA_COMMENT 7->1019(rail diagonal backslash), 8->1001(prospecting), 9->1003(generic improvement/work),
+// GHIDRA_COMMENT 10->1011(busy civilian rescind/report), 11->1025(developer buy tile).
+// GHIDRA_COMMENT Class-id branch notes: class 4 -> engineer (4..7), class 7 -> developer buy tile (11), class 1 -> prospecting (8).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Civilian class-id mapping (dehardcoded via university civ-row anchors):
+// GHIDRA_COMMENT 0=Miner, 1=Prospector, 2=Farmer, 3=Forester, 4=Engineer, 5=Rancher, 7=Developer, 8=Driller.
+// GHIDRA_COMMENT Productive civilian action lane (action 9 / order type 10) includes Miner/Farmer/Forester/Rancher/Driller.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher, 7 Developer, 8 Driller.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Return type dehardcoded to ECivilianTileActionCode (class/action constants now enum-anchored).
+// GHIDRA_COMMENT_END
+
+/* Resolve civilian tile action code used by click dispatcher and cursor-token lookup.
+   Action->cursor(group): 1->1008(default blocked/none), 2->1004(select civilian),
+   3->1004(move/assign),
+   4->1003(engineer same-tile construction menu), 5->1002(rail horizontal), 6->1018(rail diagonal
+   slash),
+   7->1019(rail diagonal backslash), 8->1001(prospecting), 9->1003(generic improvement/work),
+   10->1011(busy civilian rescind/report), 11->1025(developer buy tile).
+   Class-id branch notes: class 4 -> engineer (4..7), class 7 -> developer buy tile (11), class 1 ->
+   prospecting (8).
+   
+   Civilian class-id mapping (dehardcoded via university civ-row anchors):
+   0=Miner, 1=Prospector, 2=Farmer, 3=Forester, 4=Engineer, 5=Rancher, 7=Developer, 8=Driller.
+   Productive civilian action lane (action 9 / order type 10) includes
+   Miner/Farmer/Forester/Rancher/Driller.
+   
+   ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher,
+   7 Developer, 8 Driller.
+   
+   Return type dehardcoded to ECivilianTileActionCode (class/action constants now enum-anchored). */
+
+int __thiscall
+TCivToolbar::ResolveCivilianTileOrderActionCode(TCivToolbar *this,short nTileIndex,short nInputHint)
+
+{
+  short sVar1;
+  bool fCanOpenCivilianReport;
+  bool fShortcutMoveKeyPressed;
+  bool bVar2;
+  bool fCanAssignOrderToTile;
+  bool fCanQueueMoveOrder;
+  short nHexDirection;
+  short nActiveNationId;
+  short nNationOwnerAtTile;
+  int *pClickedTileUnit;
+  short nOwnerNationId;
+  int *pOwnedCivilianEntry;
+  short nOwnerNationId_00;
+  int *pOrderAtClickedTile;
+  int nTileActionCode;
+  int nTileRecordOffset;
+  int nTileDataOffset;
+  int nTileOrderOwnerNationId;
+  int *pClickedTileOrderEntry;
+  
+  thunk_GetActiveNationId();
+  pClickedTileUnit = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nActiveNationId);
+  nTileRecordOffset = (int)nTileIndex;
+  nTileActionCode = 1;
+  if ((*(char *)((int)g_pGlobalMapState + 0x20) != '\0') &&
+     ((nTileRecordOffset % 0x6c == 0 || (nTileRecordOffset % 0x6c == 0x6b)))) {
+    return 1;
+  }
+  if (this->pField04 == (int *)0x0) {
+    nTileActionCode = 0;
+    thunk_GetActiveNationId();
+    pOwnedCivilianEntry = thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nOwnerNationId)
+    ;
+    if (pOwnedCivilianEntry != (int *)0x0) {
+      thunk_GetActiveNationId();
+                    /* No active selection: click on own civilian opens either selection (idle) or
+                       report (active order). */
+      pOrderAtClickedTile =
+           thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,nTileIndex,nOwnerNationId_00);
+      fCanOpenCivilianReport = thunk_IsCivilianOrderInIdleSelectionState(pOrderAtClickedTile);
+      if (!fCanOpenCivilianReport) {
+        return 10;
+      }
+      if ((nInputHint == 2) ||
+         ((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + nTileRecordOffset * 0x24) >> 5
+          & 1) == 0)) {
+        return 2;
+      }
+    }
+  }
+  else {
+    if ((pClickedTileUnit != (int *)0x0) && (pClickedTileUnit != this->pField04)) {
+                    /* Clicking another civilian returns action 2 or 10 depending on target order
+                       activity. */
+      return (-(uint)(pClickedTileUnit[2] != 0) & 8) + 2;
+    }
+    fShortcutMoveKeyPressed = thunk_IsMappedShortcutKeyPressed(2);
+    if (fShortcutMoveKeyPressed) {
+      fCanQueueMoveOrder = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+                    /* With active selection: clicking a different civilian routes to select/report
+                       depending on target order state. */
+      if (fCanQueueMoveOrder) {
+        return 3;
+      }
+    }
+    else {
+      nTileDataOffset = nTileRecordOffset * 0x24;
+      if (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xe + nTileDataOffset) == '\0') {
+        sVar1 = *(short *)((int)this->pField04 + 4);
+        if (sVar1 == 1) {
+          return 8;
+        }
+        if (sVar1 != 4) {
+          if (sVar1 != 7) {
+                    /* Shortcut key path: if terrain assignment is valid, resolve directly to
+                       move/no-work action code 3. */
+            return 9;
+          }
+          return 0xb;
+        }
+        sVar1 = *(short *)((int)this->pField04 + 6);
+        if (nTileIndex == sVar1) {
+          return 4;
+        }
+        nHexDirection = thunk_GetHexDirectionBetweenTiles(sVar1,nTileIndex);
+        if ((nHexDirection != 1) && (nHexDirection != 4)) {
+          if ((nHexDirection != 0) && (nHexDirection != 3)) {
+            return 7;
+          }
+          return 6;
+        }
+                    /* Engineer-specific branch: same tile opens construction options; directional
+                       neighbor selects rail orientation action 5/6/7. */
+        return 5;
+      }
+                    /* Occupied-tile path for same-owner entries: idle entries map to action 2,
+                       active entries to action 10. */
+      pClickedTileOrderEntry =
+           *(int **)(*(int *)((int)g_pGlobalMapState + 0xc) + nTileDataOffset + 0x20);
+      if (pClickedTileOrderEntry != (int *)0x0) {
+        nTileOrderOwnerNationId = pClickedTileOrderEntry[6];
+        thunk_GetActiveNationId();
+        if ((short)nTileOrderOwnerNationId == nNationOwnerAtTile) {
+          bVar2 = thunk_IsCivilianOrderInIdleSelectionState
+                            (*(void **)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 +
+                                       nTileDataOffset));
+          return (-(uint)bVar2 & 0xfffffff8) + 10;
+        }
+      }
+      fCanAssignOrderToTile = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+      if (fCanAssignOrderToTile) {
+        nTileActionCode = 3;
+      }
+    }
+  }
+  return nTileActionCode;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2C60
+// GHIDRA_NAME TCivToolbar::SetActiveCivilianSelection
+// GHIDRA_PROTO void __thiscall SetActiveCivilianSelection(void * pSelectedCivilianOrderEntry, int nRefreshCommandPanel)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sets active civilian selection pointer and propagates selection updates to map UI systems.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Store pSelectedCivilianOrderEntry at this+0x04 and invoke selector callback (+0x34).
+// GHIDRA_COMMENT 2. If selection is non-null, notify the selected order object via callback (+0x28) using entry id +0x06.
+// GHIDRA_COMMENT 3. If strategic map UI exists (g_pUiRuntimeContext+0xF0), notify it via callback (+0x1D8).
+// GHIDRA_COMMENT 4. If nRefreshCommandPanel != 0 and map UI exists, refresh the active civilian command panel.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pSelectedCivilianOrderEntry: selected civilian order entry (NULL clears selection).
+// GHIDRA_COMMENT - nRefreshCommandPanel: non-zero to rebuild command buttons immediately.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - NULL selection only clears pointer/callback state and skips downstream notifications.
+// GHIDRA_COMMENT Decompiler Note:
+// GHIDRA_COMMENT - Some decompilations show nRefreshCommandPanel as unaff_retaddr; disassembly confirms it is [ESP+0xC].
+// GHIDRA_COMMENT_END
+
+/* Sets active civilian selection pointer and propagates selection updates to map UI systems.
+   Algorithm:
+   1. Store pSelectedCivilianOrderEntry at this+0x04 and invoke selector callback (+0x34).
+   2. If selection is non-null, notify the selected order object via callback (+0x28) using entry id
+   +0x06.
+   3. If strategic map UI exists (g_pUiRuntimeContext+0xF0), notify it via callback (+0x1D8).
+   4. If nRefreshCommandPanel != 0 and map UI exists, refresh the active civilian command panel.
+   Parameters:
+   - pSelectedCivilianOrderEntry: selected civilian order entry (NULL clears selection).
+   - nRefreshCommandPanel: non-zero to rebuild command buttons immediately.
+   Returns:
+   - void.
+   Special Cases:
+   - NULL selection only clears pointer/callback state and skips downstream notifications.
+   Decompiler Note:
+   - Some decompilations show nRefreshCommandPanel as unaff_retaddr; disassembly confirms it is
+   [ESP+0xC]. */
+
+void __thiscall
+TCivToolbar::SetActiveCivilianSelection
+          (TCivToolbar *this,void *pSelectedCivilianOrderEntry,int nRefreshCommandPanel)
+
+{
+  int iVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  char unaff_retaddr;
+  
+  this->pField04 = pSelectedCivilianOrderEntry;
+  (**(code **)((int)this->field0_0x0 + 0x34))(pSelectedCivilianOrderEntry);
+  if (pSelectedCivilianOrderEntry != (void *)0x0) {
+    (**(code **)(*(int *)pSelectedCivilianOrderEntry + 0x28))
+              (CONCAT22(extraout_var,*(undefined2 *)((int)pSelectedCivilianOrderEntry + 6)));
+    if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+      (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))
+                (CONCAT22(extraout_var_00,*(undefined2 *)((int)pSelectedCivilianOrderEntry + 6)));
+    }
+                    /* Decompiler may label this as unaff_retaddr; this is nRefreshCommandPanel from
+                       stack. */
+    if ((unaff_retaddr != '\0') && (iVar1 = *(int *)((int)g_pUiRuntimeContext + 0xf0), iVar1 != 0))
+    {
+      thunk_RefreshCivilianCommandPanelForSelection
+                (*(TCivToolbar **)(iVar1 + 0xb0 + *(short *)(iVar1 + 0x96) * 4),
+                 pSelectedCivilianOrderEntry);
+    }
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2CF0
@@ -97,15 +2069,654 @@ void __thiscall
 TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection(TCivToolbar *this,int nCommandType)
 
 {
-  if (*(int **)(this + 4) != (int *)0x0) {
+  if (this->pField04 != (int *)0x0) {
                     /* Dispatches command code directly to selected civilian order entry vfunc
                        +0x34. */
-    (**(code **)(**(int **)(this + 4) + 0x34))(nCommandType,0);
+    (**(code **)(*(int *)this->pField04 + 0x34))(nCommandType,0);
   }
-  if (*(void **)(g_pUiRuntimeContext + 0xf0) != (void *)0x0) {
+  if (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
                     /* Selection cycling occurs immediately when map interaction context is active.
                         */
-    thunk_CycleMapInteractionSelectionAfterHandledClick(*(void **)(g_pUiRuntimeContext + 0xf0));
+    thunk_CycleMapInteractionSelectionAfterHandledClick
+              (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2D30
+// GHIDRA_NAME TCivToolbar::ShowDisbandCivilianConfirmationDialog
+// GHIDRA_PROTO void __thiscall ShowDisbandCivilianConfirmationDialog(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void ShowDisbandCivilianConfirmationDialog(void)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void ShowDisbandCivilianConfirmationDialog(void) */
+
+void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(TCivToolbar *this)
+
+{
+  char extraout_AL;
+  short extraout_AX;
+  undefined1 *extraout_ECX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puStack_38;
+  undefined1 *puStack_34;
+  sdword arg2;
+  char isReplayBypass;
+  undefined1 local_1c [8];
+  undefined1 *puStack_14;
+  undefined1 *puStack_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631be8;
+  *unaff_FS_OFFSET = &local_c;
+  if (this->pField04 != (void *)0x0) {
+    InitializeSharedStringRefFromEmpty();
+    local_4 = 0;
+    InitializeSharedStringRefFromEmpty();
+    local_4._0_1_ = 1;
+    puStack_34 = (undefined1 *)0x4d2d90;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    puStack_34 = &stack0xffffffd8;
+    if (*(short *)((int)this->pField04 + 4) == 7) {
+      puStack_38 = (undefined1 *)0x5;
+    }
+    else {
+      puStack_38 = (undefined1 *)0x4;
+    }
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x274d);
+    puStack_14 = (undefined1 *)&puStack_34;
+    puStack_38 = local_1c;
+    puStack_34 = extraout_ECX;
+    thunk_AssignStringSharedRefAndReturnThis();
+    puStack_10 = (undefined1 *)&puStack_38;
+    local_4._0_1_ = 2;
+    thunk_AssignStringSharedRefAndReturnThis();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    thunk_DispatchLocalizedUiMessageWithTemplate();
+    if (extraout_AL != '\0') {
+      if (*(short *)((int)this->pField04 + 4) == 7) {
+        isReplayBypass = '\0';
+        arg2 = 0;
+        thunk_GetActiveNationId();
+        puStack_34 = (undefined1 *)0x4d2e2a;
+        TSimMgr::thunk_QueueInterNationEventType11
+                  ((TSimMgr *)g_pInterNationEventQueueManager,(int)extraout_AX,arg2,isReplayBypass);
+      }
+      (**(code **)(*(int *)this->pField04 + 0x38))();
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1dc))();
+      }
+      if (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
+        thunk_CycleMapInteractionSelectionAfterHandledClick
+                  (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0));
+      }
+    }
+    local_4 = local_4 & 0xffffff00;
+    ReleaseSharedStringRefIfNotEmpty();
+    local_4 = 0xffffffff;
+    ReleaseSharedStringRefIfNotEmpty();
+  }
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2EF0
+// GHIDRA_NAME TCivToolbar::TryQueueCivilianMoveOrderToTile
+// GHIDRA_PROTO bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Attempts to queue a plain movement order for the currently selected civilian.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Validate destination tile with CanAssignCivilianOrderToTile.
+// GHIDRA_COMMENT 2. If valid, set order type 1 on selected civilian via order callback (+0x34).
+// GHIDRA_COMMENT 3. Play move-order feedback SFX id 9000.
+// GHIDRA_COMMENT 4. Dispatch tile-target callback (+0x30) with nTileIndex and selected civilian entry.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: destination tile index on the strategic map.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true when move order was queued.
+// GHIDRA_COMMENT - false when the tile is not assignable for this civilian.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - Function does not force productive work; non-applicable tiles can still become move-only orders.
+// GHIDRA_COMMENT_END
+
+/* Attempts to queue a plain movement order for the currently selected civilian.
+   Algorithm:
+   1. Validate destination tile with CanAssignCivilianOrderToTile.
+   2. If valid, set order type 1 on selected civilian via order callback (+0x34).
+   3. Play move-order feedback SFX id 9000.
+   4. Dispatch tile-target callback (+0x30) with nTileIndex and selected civilian entry.
+   Parameters:
+   - nTileIndex: destination tile index on the strategic map.
+   Returns:
+   - true when move order was queued.
+   - false when the tile is not assignable for this civilian.
+   Special Cases:
+   - Function does not force productive work; non-applicable tiles can still become move-only
+   orders. */
+
+bool __thiscall TCivToolbar::TryQueueCivilianMoveOrderToTile(TCivToolbar *this,int nTileIndex)
+
+{
+  bool fOrderQueued;
+  undefined2 extraout_var;
+  
+  fOrderQueued = thunk_CanAssignCivilianOrderToTile(this,(short)nTileIndex);
+  if (fOrderQueued) {
+                    /* Order type 1 is the plain move command; productive work is assigned in other
+                       paths. */
+    (**(code **)(*(int *)this->pField04 + 0x34))
+              (1,CONCAT22(extraout_var,*(undefined2 *)((int)this->pField04 + 6)));
+    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(9000,0,1);
+    (**(code **)((int)this->field0_0x0 + 0x30))(nTileIndex,this->pField04);
+  }
+  return fOrderQueued;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2F60
+// GHIDRA_NAME TCivToolbar::CanAssignCivilianOrderToTile
+// GHIDRA_PROTO bool __thiscall CanAssignCivilianOrderToTile(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Validate whether the selected civilian can be assigned to the clicked tile.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Load tile terrain class and per-tile flags from global map state.
+// GHIDRA_COMMENT 2. Reject same-tile reassignments and blocked tiles unless engineer exceptions apply.
+// GHIDRA_COMMENT 3. For base terrain classes (<7), require exact worker-terrain class match.
+// GHIDRA_COMMENT 4. For extended classes, consult terrain descriptors and compatibility matrix.
+// GHIDRA_COMMENT 5. Permit assignment when compatibility resolves to allowed state and unit is not engineer-only blocked.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: Target tile for assignment.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true when assignment is allowed; false otherwise.
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Civilian class-id mapping (dehardcoded via university civ-row anchors):
+// GHIDRA_COMMENT 0=Miner, 1=Prospector, 2=Farmer, 3=Forester, 4=Engineer, 5=Rancher, 7=Developer, 8=Driller.
+// GHIDRA_COMMENT Productive civilian action lane (action 9 / order type 10) includes Miner/Farmer/Forester/Rancher/Driller.
+// GHIDRA_COMMENT_END
+
+/* Validate whether the selected civilian can be assigned to the clicked tile.
+   Algorithm:
+   1. Load tile terrain class and per-tile flags from global map state.
+   2. Reject same-tile reassignments and blocked tiles unless engineer exceptions apply.
+   3. For base terrain classes (<7), require exact worker-terrain class match.
+   4. For extended classes, consult terrain descriptors and compatibility matrix.
+   5. Permit assignment when compatibility resolves to allowed state and unit is not engineer-only
+   blocked.
+   Parameters:
+   - nTileIndex: Target tile for assignment.
+   Returns:
+   - true when assignment is allowed; false otherwise.
+   Notes:
+   - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules.
+   
+   Civilian class-id mapping (dehardcoded via university civ-row anchors):
+   0=Miner, 1=Prospector, 2=Farmer, 3=Forester, 4=Engineer, 5=Rancher, 7=Developer, 8=Driller.
+   Productive civilian action lane (action 9 / order type 10) includes
+   Miner/Farmer/Forester/Rancher/Driller. */
+
+bool __thiscall TCivToolbar::CanAssignCivilianOrderToTile(TCivToolbar *this,short nTileIndex)
+
+{
+  bool fTerrainRuleAllowsUnit;
+  short nCompatibilityMatrixValue;
+  short nTileTerrainClass;
+  int nTileDataOffset;
+  int *pSelectedCivilianOrderEntry;
+  
+  nTileTerrainClass =
+       (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + nTileIndex * 0x24);
+  nTileDataOffset = *(int *)((int)g_pGlobalMapState + 0xc) + nTileIndex * 0x24;
+  pSelectedCivilianOrderEntry = this->pField04;
+  if (((*(short *)((int)pSelectedCivilianOrderEntry + 6) != nTileIndex) &&
+      (*(char *)(nTileDataOffset + 0x13) != '\0')) &&
+     (((*(byte *)(nTileDataOffset + 0x1c) & 1) == 0 || ((short)pSelectedCivilianOrderEntry[1] == 4))
+     )) {
+    if (nTileTerrainClass < 7) {
+                    /* Hard gate: tile must be active/usable and cannot be same-tile reassignment
+                       unless engineer exception path applies. */
+      return nTileTerrainClass == (short)pSelectedCivilianOrderEntry[6];
+    }
+    if (*(short *)((int)g_apTerrainTypeDescriptorTable[nTileTerrainClass] + 0xe) == -1) {
+      nCompatibilityMatrixValue =
+           TControl::thunk_LookupOrderCompatibilityMatrixValue
+                     ((TControl *)g_pDiplomacyTurnStateManager,(short)pSelectedCivilianOrderEntry[6]
+                      ,nTileTerrainClass);
+                    /* Base terrain classes (<7) require exact civilian terrain-class match. */
+      if ((nCompatibilityMatrixValue == 2) && (*(short *)((int)this->pField04 + 4) != 4)) {
+        return true;
+      }
+    }
+    else {
+      fTerrainRuleAllowsUnit =
+           (bool)(**(code **)(*(int *)g_apTerrainTypeDescriptorTable[nTileTerrainClass] + 0x5c))
+                           ((int)(short)pSelectedCivilianOrderEntry[6]);
+      if ((fTerrainRuleAllowsUnit != false) && (*(short *)((int)this->pField04 + 4) != 4)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D3070
+// GHIDRA_NAME TCivToolbar::HandleCivilianReportDecision
+// GHIDRA_PROTO void __thiscall HandleCivilianReportDecision(TCivilianOrderState * pCivilianOrderState)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Civilian report confirm/rescind handler. On rescind, refunds by order type:
+// GHIDRA_COMMENT 5 rail section, 6 rail depot, 7 port, 10 civilian work order, 12 fortification, 13 developer tile purchase.
+// GHIDRA_COMMENT Then clears queued state and refreshes map/selection/controller callbacks.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Civilian class-id mapping (dehardcoded via university civ-row anchors):
+// GHIDRA_COMMENT 0=Miner, 1=Prospector, 2=Farmer, 3=Forester, 4=Engineer, 5=Rancher, 7=Developer, 8=Driller.
+// GHIDRA_COMMENT Productive civilian action lane (action 9 / order type 10) includes Miner/Farmer/Forester/Rancher/Driller.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Hardcoded check `(classId == 0 || classId == 8)` means Miner or Driller share the mining-mode cost/terrain branch.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher, 7 Developer, 8 Driller.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Order state pointer typed as TCivilianOrderState*; order-type branches use ECivilianWorkOrderType semantics.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unable to use type for symbol pOwnerNationState */
+/* Civilian report confirm/rescind handler. On rescind, refunds by order type:
+   5 rail section, 6 rail depot, 7 port, 10 civilian work order, 12 fortification, 13 developer tile
+   purchase.
+   Then clears queued state and refreshes map/selection/controller callbacks.
+   
+   Civilian class-id mapping (dehardcoded via university civ-row anchors):
+   0=Miner, 1=Prospector, 2=Farmer, 3=Forester, 4=Engineer, 5=Rancher, 7=Developer, 8=Driller.
+   Productive civilian action lane (action 9 / order type 10) includes
+   Miner/Farmer/Forester/Rancher/Driller.
+   
+   Hardcoded check `(classId == 0 || classId == 8)` means Miner or Driller share the mining-mode
+   cost/terrain branch.
+   
+   ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher,
+   7 Developer, 8 Driller.
+   
+   Order state pointer typed as TCivilianOrderState*; order-type branches use ECivilianWorkOrderType
+   semantics. */
+
+void __thiscall
+TCivToolbar::HandleCivilianReportDecision
+          (TCivToolbar *this,TCivilianOrderState *pCivilianOrderState)
+
+{
+  int iVar1;
+  TCivilianOrderState *pSelectedCivilianOrderEntry_00;
+  bool fConfirmOrders;
+  byte bWorkOrderCostClass;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  int *pCivilianSelectionStateAlias;
+  int nRefundAmount;
+  short nTargetTileIndex;
+  short nTileIndex;
+  int nOrderEntryVtable;
+  int *pMapInteractionController;
+  TCivilianOrderState *pOwnerNationState;
+  int *pSelectedCivilianOrderEntry;
+  int *pnOrderSubtypeField;
+  
+  pSelectedCivilianOrderEntry_00 = pCivilianOrderState;
+  fConfirmOrders = thunk_ShowCivilianReportDialogAndReturnConfirm(g_pUiRuntimeContext);
+  if (!fConfirmOrders) {
+    nTileIndex = pCivilianOrderState->nCurrentTileIndex;
+    nTargetTileIndex = (short)pCivilianOrderState->nOrderTargetTileOrArg;
+    nRefundAmount = 0;
+    pOwnerNationState = g_apNationStates[pCivilianOrderState->nOwnerNationId];
+    switch(pCivilianOrderState->eCurrentWorkOrderType) {
+    case kCivWorkOrder_RailSection:
+                    /* Order type 13 refund is computed from current engineer rail-build
+                       context/cost. */
+      nRefundAmount =
+           *(int *)(&g_adwEngineerRailBuildCostByTerrainType +
+                   *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + nTileIndex * 0x24) * 4);
+      thunk_ApplyEngineerRailCostDeltaForConnectedTiles
+                (g_pGlobalMapState,nTileIndex,nTargetTileIndex);
+                    /* Rescind applies refund directly to owner nation cash balance. */
+      break;
+    case kCivWorkOrder_RailDepot:
+      nRefundAmount = 2000;
+      break;
+    case kCivWorkOrder_Port:
+                    /* Order type 6 rescind refund: fixed $2000 (Depot). */
+      nRefundAmount = 3000;
+                    /* Order type 7 rescind refund: fixed $3000 (Port). */
+      break;
+    case kCivWorkOrder_ProductiveImprovement:
+      pnOrderSubtypeField = (int *)&pCivilianOrderState->eCivilianClassId;
+                    /* Order type 10 uses terrain/work class callback to select civilian work refund
+                       cost. */
+      pCivilianOrderState = pOwnerNationState;
+      if (((short)*pnOrderSubtypeField == 0) ||
+         (pCivilianOrderState = (TCivilianOrderState *)((uint)pOwnerNationState & 0xffffff00),
+         (short)*pnOrderSubtypeField == 8)) {
+        pCivilianOrderState = (TCivilianOrderState *)CONCAT31(pCivilianOrderState._1_3_,1);
+      }
+      bWorkOrderCostClass =
+           (**(code **)(*(int *)g_pGlobalMapState + 200))
+                     (CONCAT22(extraout_var,nTileIndex),pCivilianOrderState);
+      nRefundAmount = *(int *)(&g_adwCivilianWorkOrderCostByClass + (char)bWorkOrderCostClass * 4);
+      break;
+    case kCivWorkOrder_Fort:
+                    /* Order type 12 refund uses fort level cost table. */
+      nRefundAmount =
+           (int)*(short *)(&g_awEngineerFortBuildCostByLevel +
+                          *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 3 +
+                                   *(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 +
+                                             nTileIndex * 0x24) * 0xa8) * 2);
+      break;
+    case kCivWorkOrder_DeveloperTilePurchase:
+      nRefundAmount = thunk_CalculateDeveloperTilePurchaseCost(g_pGlobalMapState,nTileIndex);
+    }
+    *(int *)pOwnerNationState->abUnk10 = *(int *)pOwnerNationState->abUnk10 + nRefundAmount;
+    TacticalBattleView::thunk_RemoveUiTransientRegistryObjectByTag
+              ((TacticalBattleView *)g_pUiTransientObjectRegistry,
+               (sdword)pSelectedCivilianOrderEntry_00);
+    nOrderEntryVtable = (int)pSelectedCivilianOrderEntry_00->pvftable;
+    (**(code **)(nOrderEntryVtable + 0x34))(0,nTargetTileIndex);
+    if ((nTargetTileIndex != 0) && (nTargetTileIndex != -1)) {
+      (**(code **)(*pCivilianSelectionStateAlias + 0x30))
+                (nTargetTileIndex,pSelectedCivilianOrderEntry_00);
+    }
+    pMapInteractionController = *(int **)((int)g_pUiRuntimeContext + 0xf0);
+    if (pMapInteractionController != (int *)0x0) {
+      thunk_SetMapInteractionMode((TCivToolbar *)pMapInteractionController,MAP_INTERACTION_MODE_0);
+    }
+    (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+    pCivilianSelectionStateAlias[1] = (int)pSelectedCivilianOrderEntry_00;
+                    /* Rebind selected civilian entry after rescind and refresh per-unit state
+                       callbacks. */
+    (**(code **)(*pCivilianSelectionStateAlias + 0x34))(pSelectedCivilianOrderEntry_00);
+    if (pSelectedCivilianOrderEntry_00 != (TCivilianOrderState *)0x0) {
+      (**(code **)(nOrderEntryVtable + 0x28))
+                (CONCAT22(extraout_var_01,pSelectedCivilianOrderEntry_00->nCurrentTileIndex));
+      if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+                    /* Map interaction controller refreshes tile/selection UI for civilian owner
+                       tile. */
+        (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))
+                  (CONCAT22(extraout_var_00,pSelectedCivilianOrderEntry_00->nCurrentTileIndex));
+      }
+      iVar1 = *(int *)((int)g_pUiRuntimeContext + 0xf0);
+      if (iVar1 != 0) {
+        thunk_RefreshCivilianCommandPanelForSelection
+                  (*(TCivToolbar **)(iVar1 + 0xb0 + *(short *)(iVar1 + 0x96) * 4),
+                   pSelectedCivilianOrderEntry_00);
+      }
+    }
+                    /* Final callback notifies map controller of civilian tile focus update. */
+    if (pMapInteractionController != (int *)0x0) {
+      (**(code **)(*pMapInteractionController + 0x1e8))
+                (pSelectedCivilianOrderEntry_00->nCurrentTileIndex);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D3610
+// GHIDRA_NAME TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder
+// GHIDRA_PROTO bool __thiscall PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Prompt and queue developer tile-purchase order (order type 13).
+// GHIDRA_COMMENT Builds localized confirmation with tile name + purchase cost, checks funds,
+// GHIDRA_COMMENT queues order on confirm, deducts cash, and refreshes UI.
+// GHIDRA_COMMENT_END
+
+/* Prompt and queue developer tile-purchase order (order type 13).
+   Builds localized confirmation with tile name + purchase cost, checks funds,
+   queues order on confirm, deducts cash, and refreshes UI. */
+
+bool __thiscall
+TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nTileIndex)
+
+{
+  char cDialogConfirmed;
+  short nActiveNationId;
+  short extraout_AX;
+  int nRailBuildCost;
+  int extraout_EAX;
+  int nCurrentTickDiv16;
+  uint *unaff_FS_OFFSET;
+  bool fOrderQueued;
+  uint dwLocalizationToken;
+  char *szTemplateString;
+  uint dwSavedSehFrame;
+  undefined1 abDialogFormatBuffer [4];
+  uint dwDialogStateMarker;
+  undefined1 *pbDialogScratch;
+  uint dwPrevSehFrame;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  uint dwAvailableNationCash;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631c68;
+  dwPrevSehFrame = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (uint)&dwPrevSehFrame;
+  thunk_GetActiveNationId();
+  dwSavedSehFrame = dwSavedSehFrame & 0xffffff;
+  dwAvailableNationCash =
+       *(int *)((int)g_apNationStates[nActiveNationId] + 0x8f0) / 100 +
+       *(int *)((int)g_apNationStates[nActiveNationId] + 0x10);
+  szTemplateString = (char *)0x4d3680;
+  nRailBuildCost = thunk_CalculateDeveloperTilePurchaseCost(g_pGlobalMapState,nTileIndex);
+  InitializeSharedStringRefFromEmpty();
+  local_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  local_4._0_1_ = 1;
+  InitializeSharedStringRefFromEmpty();
+  local_4._0_1_ = 2;
+  InitializeSharedStringRefFromEmpty();
+  local_4._0_1_ = 3;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = CONCAT31(local_4._1_3_,4);
+  szTemplateString =
+       (char *)(int)*(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 + nTileIndex * 0x24);
+  dwLocalizationToken = 0x4d36e7;
+  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+                    /* Prepare localized prompt context (tile/cost placeholders) before decision
+                       flow. */
+  szTemplateString = (char *)0x0;
+  dwLocalizationToken = 0x274d;
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  fOrderQueued = SUB41((uint)abDialogFormatBuffer >> 0x18,0);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
+                    /* Affordability gate for prompted rail construction. */
+  if ((int)(((int)dwAvailableNationCash < 1) - 1 & dwAvailableNationCash) < nRailBuildCost) {
+                    /* Insufficient-funds warning branch; no order is queued. */
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    scanBracketExpressions(g_pLocalizationTable,&dwLocalizationToken,szTemplateString);
+    pbDialogScratch = &stack0xffffff94;
+    thunk_AssignStringSharedRefAndReturnThis();
+    dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,6);
+    thunk_AssignStringSharedRefAndReturnThis();
+                    /* Dialog formatting/notification helper path used by prompt UI. */
+    dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,4);
+    thunk_DispatchLocalizedUiMessageWithTemplate();
+  }
+  else {
+                    /* Confirmation-dialog branch (sufficient funds). */
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    scanBracketExpressions(g_pLocalizationTable,&dwLocalizationToken,szTemplateString);
+    thunk_AssignStringSharedRefAndReturnThis();
+    dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,5);
+    thunk_AssignStringSharedRefAndReturnThis();
+    dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,4);
+    thunk_DispatchLocalizedUiMessageWithTemplate();
+    if (cDialogConfirmed != '\0') {
+                    /* Insufficient-funds branch: builds localized warning text and exits without
+                       queuing an order. */
+                    /* Confirmed branch queues rail order and applies immediate cost deduction. */
+      (**(code **)(*(int *)this->pField04 + 0x34))();
+      (**(code **)((int)this->field0_0x0 + 0x30))();
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x2335,0);
+      thunk_GetActiveNationId();
+      (**(code **)(*(int *)g_apNationStates[extraout_AX] + 0x38))(-nRailBuildCost);
+      (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+      thunk_GetTickCountDiv16();
+      do {
+        thunk_PumpUiMessagesAndBackgroundTasks(1);
+        thunk_GetTickCountDiv16();
+        if (nCurrentTickDiv16 < extraout_EAX) break;
+      } while (nCurrentTickDiv16 - extraout_EAX < 0x1e);
+      fOrderQueued = true;
+    }
+  }
+  dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,3);
+  ReleaseSharedStringRefIfNotEmpty();
+  dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,2);
+  ReleaseSharedStringRefIfNotEmpty();
+  dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,1);
+  ReleaseSharedStringRefIfNotEmpty();
+  dwDialogStateMarker = dwDialogStateMarker & 0xffffff00;
+  ReleaseSharedStringRefIfNotEmpty();
+  dwDialogStateMarker = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = dwSavedSehFrame;
+  return fOrderQueued;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00514250
+// GHIDRA_NAME TCivToolbar::GetTileUnitEntryByOwner
+// GHIDRA_PROTO int * __thiscall GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Finds the first tile-unit entry owned by a specific nation on a tile.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Read tile-linked unit list head from tile record array.
+// GHIDRA_COMMENT 2. Walk linked list via next pointer field.
+// GHIDRA_COMMENT 3. Compare owner nation id field for each entry.
+// GHIDRA_COMMENT 4. Return first matching entry or NULL.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: Strategic-map tile index.
+// GHIDRA_COMMENT - nOwnerNationId: Nation id to match against entry owner field.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - Pointer to tile-unit entry for the requested owner, or NULL if absent.
+// GHIDRA_COMMENT Data Model:
+// GHIDRA_COMMENT - Tile records are 0x24-byte stride; unit list head is at tile+0x20.
+// GHIDRA_COMMENT - Unit entry next-link is field index [5], owner nation id is low 16 bits of field [6].
+// GHIDRA_COMMENT_END
+
+/* Finds the first tile-unit entry owned by a specific nation on a tile.
+   Algorithm:
+   1. Read tile-linked unit list head from tile record array.
+   2. Walk linked list via next pointer field.
+   3. Compare owner nation id field for each entry.
+   4. Return first matching entry or NULL.
+   Parameters:
+   - nTileIndex: Strategic-map tile index.
+   - nOwnerNationId: Nation id to match against entry owner field.
+   Returns:
+   - Pointer to tile-unit entry for the requested owner, or NULL if absent.
+   Data Model:
+   - Tile records are 0x24-byte stride; unit list head is at tile+0x20.
+   - Unit entry next-link is field index [5], owner nation id is low 16 bits of field [6]. */
+
+int * __thiscall
+TCivToolbar::GetTileUnitEntryByOwner(TCivToolbar *this,short nTileIndex,short nOwnerNationId)
+
+{
+  int *piVar1;
+  
+  for (piVar1 = *(int **)(*(int *)&this->field_0xc + 0x20 + nTileIndex * 0x24);
+      (piVar1 != (int *)0x0 && ((short)piVar1[6] != nOwnerNationId)); piVar1 = (int *)piVar1[5]) {
+  }
+  return piVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00518B40
+// GHIDRA_NAME TCivToolbar::CalculateDeveloperTilePurchaseCost
+// GHIDRA_PROTO int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Compute developer tile-purchase cost for a target tile from adjacent nation ownership links.
+// GHIDRA_COMMENT Per-neighbor relation-based costs are accumulated via diplomacy manager callback (+0x4c);
+// GHIDRA_COMMENT special owner classes 0x15/0x16 apply fixed surcharges (10000/4000).
+// GHIDRA_COMMENT_END
+
+/* Compute developer tile-purchase cost for a target tile from adjacent nation ownership links.
+   Per-neighbor relation-based costs are accumulated via diplomacy manager callback (+0x4c);
+   special owner classes 0x15/0x16 apply fixed surcharges (10000/4000). */
+
+int __thiscall TCivToolbar::CalculateDeveloperTilePurchaseCost(TCivToolbar *this,short nTileIndex)
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  
+  iVar3 = 0;
+  iVar4 = 0;
+  do {
+    iVar2 = (int)(short)iVar4 + *(int *)&this->field_0xc;
+    sVar1 = (short)*(char *)(iVar2 + 0x11 + nTileIndex * 0x24);
+    if (sVar1 != -1) {
+      if (sVar1 < 0x11) {
+        sVar1 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))
+                          (CONCAT22((short)((uint)iVar2 >> 0x10),sVar1));
+        iVar3 = iVar3 + sVar1 * 0x14;
+      }
+      else if (sVar1 == 0x15) {
+        iVar3 = iVar3 + 10000;
+      }
+      else if (sVar1 == 0x16) {
+        iVar3 = iVar3 + 4000;
+      }
+    }
+    iVar4 = iVar4 + 1;
+  } while (iVar4 < 2);
+  return iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00560B00
+// GHIDRA_NAME TCivToolbar::CanDisplayMapOrderEntryInCurrentContext
+// GHIDRA_PROTO void __thiscall CanDisplayMapOrderEntryInCurrentContext(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Checks whether a map-order entry is eligible for display/selection in current context.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Validates entry category/type against active filters and nation/context state.
+// GHIDRA_COMMENT - Returns nonzero when entry should be considered by mode-2 selection traversal.
+// GHIDRA_COMMENT_END
+
+/* Checks whether a map-order entry is eligible for display/selection in current context.
+   
+   Behavior:
+   - Validates entry category/type against active filters and nation/context state.
+   - Returns nonzero when entry should be considered by mode-2 selection traversal. */
+
+void __thiscall
+TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(TCivToolbar *this,int arg1,int arg2)
+
+{
+  short extraout_AX;
+  void *pvVar1;
+  
+  if (arg1 == -1) {
+    thunk_GetActiveNationId();
+    arg1 = (int)extraout_AX;
+  }
+  if ((this->field_0x10 & '\x01' << ((byte)arg1 & 0x1f)) != 0) {
+    pvVar1 = thunk_GetNavyPrimaryOrderListHead();
+    if (pvVar1 != (void *)0x0) {
+      while ((((*(TCivToolbar **)((int)pvVar1 + 8) != this ||
+               (*(short *)((int)pvVar1 + 0x14) != arg1)) ||
+              (((char)arg2 == '\0' && (*(int *)((int)pvVar1 + 0x34) != 0)))) ||
+             (*(int *)((int)pvVar1 + 0xc) != 0))) {
+        pvVar1 = *(void **)((int)pvVar1 + 0x24);
+        if (pvVar1 == (void *)0x0) {
+          return;
+        }
+      }
+      return;
+    }
   }
   return;
 }
@@ -113,6 +2724,11 @@ TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection(TCivToolbar *this,in
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EA00
 // GHIDRA_NAME TCivToolbar::CreateTCivToolbarInstance
 // GHIDRA_PROTO void * __cdecl CreateTCivToolbarInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Demangled from TCivToolbar.cpp symbol.
+// GHIDRA_COMMENT_END
+
+/* Demangled from TCivToolbar.cpp symbol. */
 
 void * __cdecl TCivToolbar::CreateTCivToolbarInstance(void)
 
@@ -128,12 +2744,12 @@ void * __cdecl TCivToolbar::CreateTCivToolbarInstance(void)
   puStack_8 = &LAB_00637e5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x8c);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &g_vtblTCivToolbar;
+    this->field0_0x0 = &g_vtblTCivToolbar;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -157,96 +2773,221 @@ void * __cdecl TCivToolbar::GetTCivToolbarClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EAA0
 // GHIDRA_NAME TCivToolbar::ConstructTCivToolbarBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCivToolbarBaseState(void)
+// GHIDRA_PROTO TCivToolbar * __thiscall ConstructTCivToolbarBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Demangled from TCivToolbar.cpp symbol.
+// GHIDRA_COMMENT_END
 
-void * __thiscall TCivToolbar::ConstructTCivToolbarBaseState(TCivToolbar *this)
+/* Demangled from TCivToolbar.cpp symbol. */
+
+TCivToolbar * __thiscall TCivToolbar::ConstructTCivToolbarBaseState(TCivToolbar *this)
 
 {
   TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  *(undefined ***)this = &g_vtblTCivToolbar;
+  this->field0_0x0 = &g_vtblTCivToolbar;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EAD0
 // GHIDRA_NAME TCivToolbar::DestructTCivToolbarAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCivToolbarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TCivToolbar * __thiscall DestructTCivToolbarAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Demangled from TCivToolbar.cpp symbol.
+// GHIDRA_COMMENT_END
 
-void * __thiscall TCivToolbar::DestructTCivToolbarAndMaybeFree(TCivToolbar *this,byte freeSelfFlag)
+/* Demangled from TCivToolbar.cpp symbol. */
+
+TCivToolbar * __thiscall
+TCivToolbar::DestructTCivToolbarAndMaybeFree(TCivToolbar *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0058EED0
-// GHIDRA_NAME TCivToolbar::HandleCivilianMapCommandPanelAction
-// GHIDRA_PROTO void __thiscall HandleCivilianMapCommandPanelAction(int nEventClass, void * pEventPayload, int nEventFlags)
+// GHIDRA_FUNCTION IMPERIALISM 0x0058EB20
+// GHIDRA_NAME TCivToolbar::RefreshCivilianCommandPanelForSelection
+// GHIDRA_PROTO void __thiscall RefreshCivilianCommandPanelForSelection(TCivilianOrderState * pSelectedCivilianOrderEntry)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles civilian command-panel actions from map UI button clicks and stack-slot picks.
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. For stack-slot event class, detect 'stk0'..'stk5' controls and activate selected civilian slot.
-// GHIDRA_COMMENT 2. For command event class, decode 4CC control tag from payload.
-// GHIDRA_COMMENT 3. Tag 'done': queue immediate command type 4 (No orders this turn).
-// GHIDRA_COMMENT 4. Tag 'dfnd': queue immediate command type 2 (Sleep).
-// GHIDRA_COMMENT 5. Tag 'latr': queue immediate command type 3 (Next Unit).
-// GHIDRA_COMMENT 6. Tag 'garr': if CTRL held, open civilian ledger; otherwise open disband confirmation.
-// GHIDRA_COMMENT 7. Forward event to panel dispatcher after handling branch.
-// GHIDRA_COMMENT Parameters:
-// GHIDRA_COMMENT - nEventClass: Event category discriminator.
-// GHIDRA_COMMENT - pEventPayload: UI payload block containing control tag and control context.
-// GHIDRA_COMMENT - nEventFlags: Additional UI dispatch flags.
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - None.
+// GHIDRA_COMMENT Demangled from TCivToolbar.cpp symbol.
 // GHIDRA_COMMENT_END
 
-/* Handles civilian command-panel actions from map UI button clicks and stack-slot picks.
-   Algorithm:
-   1. For stack-slot event class, detect 'stk0'..'stk5' controls and activate selected civilian
-   slot.
-   2. For command event class, decode 4CC control tag from payload.
-   3. Tag 'done': queue immediate command type 4 (No orders this turn).
-   4. Tag 'dfnd': queue immediate command type 2 (Sleep).
-   5. Tag 'latr': queue immediate command type 3 (Next Unit).
-   6. Tag 'garr': if CTRL held, open civilian ledger; otherwise open disband confirmation.
-   7. Forward event to panel dispatcher after handling branch.
-   Parameters:
-   - nEventClass: Event category discriminator.
-   - pEventPayload: UI payload block containing control tag and control context.
-   - nEventFlags: Additional UI dispatch flags.
-   Returns:
-   - None. */
+/* Demangled from TCivToolbar.cpp symbol. */
+
+void __thiscall
+TCivToolbar::RefreshCivilianCommandPanelForSelection
+          (TCivToolbar *this,TCivilianOrderState *pSelectedCivilianOrderEntry)
+
+{
+  ECivilianClassId EVar1;
+  int *pPanelControl;
+  TCivDescription *this_00;
+  code *pfnFindControlByTag;
+  code *unaff_EDI;
+  int nUnitControlVtable;
+  
+  *(ECivilianClassId *)&this->field88 = pSelectedCivilianOrderEntry->eCivilianClassId;
+  pfnFindControlByTag = *(code **)((int)this->field0_0x0 + 0x94);
+  pPanelControl = (int *)(*pfnFindControlByTag)(0x756e6974);
+  if (pSelectedCivilianOrderEntry == (TCivilianOrderState *)0x0) {
+    (**(code **)(*pPanelControl + 0xa4))(0,1);
+  }
+  else {
+    nUnitControlVtable = *pPanelControl;
+    (**(code **)(nUnitControlVtable + 0x1c8))((short)this->field88 + 0x438,1);
+    (**(code **)(nUnitControlVtable + 0xa4))(1,1);
+    pfnFindControlByTag = unaff_EDI;
+  }
+  this_00 = (TCivDescription *)(*pfnFindControlByTag)(0x6261636b);
+  if (pSelectedCivilianOrderEntry == (TCivilianOrderState *)0x0) {
+    this_00->field1_0x60 = ~kCivilianClass_Miner;
+    return;
+  }
+  EVar1 = pSelectedCivilianOrderEntry->eCivilianClassId;
+  if (EVar1 != this_00->field1_0x60) {
+    this_00->field1_0x60 = EVar1;
+    switch(EVar1) {
+    case kCivilianClass_Miner:
+    case kCivilianClass_Prospector:
+    case kCivilianClass_Farmer:
+    case kCivilianClass_Forester:
+    case kCivilianClass_Rancher:
+    case kCivilianClass_Developer:
+    case kCivilianClass_Driller:
+      *(undefined1 *)&this_00->field6c = 0;
+      TCivDescription::thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation
+                (this_00,pSelectedCivilianOrderEntry);
+    }
+    (**(code **)((int)(this_00->base).pVtable + 0xe4))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058EC50
+// GHIDRA_NAME TCivToolbar::RefreshCivilianStackButtonsForTile
+// GHIDRA_PROTO void __thiscall RefreshCivilianStackButtonsForTile(short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Demangled from TCivToolbar.cpp symbol.
+// GHIDRA_COMMENT_END
+
+/* Demangled from TCivToolbar.cpp symbol. */
+
+void __thiscall TCivToolbar::RefreshCivilianStackButtonsForTile(TCivToolbar *this,short nTileIndex)
+
+{
+  bool fIdleSelectable;
+  int *pCommandButton;
+  int nSlotIndexOrTag;
+  int *pSelectedStackButton;
+  undefined4 dwEnableRefreshFlag;
+  int nButtonVtable;
+  void *pTileCivilianEntry;
+  code *pfnFindControlByTag;
+  
+  pTileCivilianEntry = *(void **)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + nTileIndex * 0x24)
+  ;
+  pSelectedStackButton = (int *)0x0;
+  for (nSlotIndexOrTag = 0; (pTileCivilianEntry != (void *)0x0 && (nSlotIndexOrTag < 6));
+      nSlotIndexOrTag = nSlotIndexOrTag + 1) {
+    pCommandButton =
+         (int *)(**(code **)((int)this->field0_0x0 + 0x94))(nSlotIndexOrTag + 0x73746b30);
+    if (pCommandButton == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    nButtonVtable = *pCommandButton;
+    (**(code **)(nButtonVtable + 0x1d4))(pTileCivilianEntry);
+    dwEnableRefreshFlag = 1;
+    fIdleSelectable = thunk_IsCivilianOrderInIdleSelectionState(pTileCivilianEntry);
+    (**(code **)(nButtonVtable + 0xa8))(fIdleSelectable,dwEnableRefreshFlag);
+    if (pTileCivilianEntry == *(void **)((int)g_pSelectedCivilianOrderState + 4)) {
+      pSelectedStackButton = pCommandButton;
+    }
+    pTileCivilianEntry = *(void **)((int)pTileCivilianEntry + 0x14);
+  }
+  if (nSlotIndexOrTag < 6) {
+    pfnFindControlByTag = *(code **)((int)this->field0_0x0 + 0x94);
+    do {
+      pCommandButton = (int *)(*pfnFindControlByTag)(nSlotIndexOrTag + 0x73746b30);
+      if (pCommandButton == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      }
+      (**(code **)(*pCommandButton + 0x1d4))(0);
+      nSlotIndexOrTag = nSlotIndexOrTag + 1;
+    } while (nSlotIndexOrTag < 6);
+  }
+  nSlotIndexOrTag = 0x6e616461;
+  if (pSelectedStackButton != (int *)0x0) {
+    nSlotIndexOrTag = pSelectedStackButton[7];
+  }
+  pTileCivilianEntry = this->field0_0x0;
+  (**(code **)((int)pTileCivilianEntry + 0x1c8))(nSlotIndexOrTag);
+  pfnFindControlByTag = *(code **)((int)pTileCivilianEntry + 0x94);
+  pCommandButton = (int *)(*pfnFindControlByTag)(0x64666e64);
+  if (pCommandButton == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  nSlotIndexOrTag = (int)(char)pSelectedStackButton;
+  (**(code **)(*pCommandButton + 0xa8))(nSlotIndexOrTag,1);
+  pCommandButton = (int *)(*pfnFindControlByTag)(0x6c617472);
+  if (pCommandButton == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  (**(code **)(*pCommandButton + 0xa8))(nSlotIndexOrTag,1);
+  pCommandButton = (int *)(*pfnFindControlByTag)(0x646f6e65);
+  if (pCommandButton != (int *)0x0) {
+    (**(code **)(*pCommandButton + 0xa8))(nSlotIndexOrTag,1);
+    return;
+  }
+                    /* WARNING: Subroutine does not return */
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058EED0
+// GHIDRA_NAME TCivToolbar::HandleCivilianMapCommandPanelAction
+// GHIDRA_PROTO void __thiscall HandleCivilianMapCommandPanelAction(int nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Demangled from TCivToolbar.cpp symbol.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unable to use type for symbol dwControlTag */
+/* Demangled from TCivToolbar.cpp symbol. */
 
 void __thiscall
 TCivToolbar::HandleCivilianMapCommandPanelAction
-          (TCivToolbar *this,int nEventClass,void *pEventPayload,int nEventFlags)
+          (TCivToolbar *this,int nEventClass,PanelEventPayload *pEventPayload,int nEventFlags)
 
 {
   ushort wCtrlKeyState;
-  uint dwControlTag;
+  EControlTagFourCC dwControlTag;
   
   if (nEventClass == 0xc) {
-    if ((0x73746b2f < *(uint *)((int)pEventPayload + 0x1c)) &&
-       (*(uint *)((int)pEventPayload + 0x1c) < 0x73746b36)) {
+    if ((0x73746b2f < pEventPayload->controlTag1c) && (pEventPayload->controlTag1c < 0x73746b36)) {
       thunk_SetActiveCivilianSelection
-                (g_pSelectedCivilianOrderState,*(void **)((int)pEventPayload + 0x9c),0);
-      thunk_DispatchPanelControlEvent(this,0xc,pEventPayload,nEventFlags);
+                (g_pSelectedCivilianOrderState,pEventPayload->pSelectionPayload9c,0);
+      TMapEditCluster::thunk_DispatchPanelControlEvent
+                ((TMapEditCluster *)this,0xc,pEventPayload,nEventFlags);
       return;
     }
   }
   else if (nEventClass == 10) {
                     /* Control tag is 4CC code from payload+0x1C (e.g. 'done','dfnd','latr','garr').
                         */
-    dwControlTag = *(uint *)((int)pEventPayload + 0x1c);
+    dwControlTag = pEventPayload->controlTag1c;
                     /* Control tag 'done': queue command type 4 (No orders this turn). */
     if (dwControlTag < 0x646f6e66) {
-      if (dwControlTag == 0x646f6e65) {
+      if (dwControlTag == CONTROL_TAG_TAG_ENOD) {
                     /* 'done' branch dispatch: QueueImmediateCivilianCommandAndCycleSelection(...,
                        4). */
         thunk_QueueImmediateCivilianCommandAndCycleSelection(g_pSelectedCivilianOrderState,4);
-        thunk_DispatchPanelControlEvent(this,10,pEventPayload,nEventFlags);
+        TMapEditCluster::thunk_DispatchPanelControlEvent
+                  ((TMapEditCluster *)this,10,pEventPayload,nEventFlags);
         return;
       }
                     /* Control tag 'dfnd': queue command type 2 (Sleep). */
@@ -254,7 +2995,8 @@ TCivToolbar::HandleCivilianMapCommandPanelAction
                     /* 'dfnd' branch dispatch: QueueImmediateCivilianCommandAndCycleSelection(...,
                        2). */
         thunk_QueueImmediateCivilianCommandAndCycleSelection(g_pSelectedCivilianOrderState,2);
-        thunk_DispatchPanelControlEvent(this,10,pEventPayload,nEventFlags);
+        TMapEditCluster::thunk_DispatchPanelControlEvent
+                  ((TMapEditCluster *)this,10,pEventPayload,nEventFlags);
         return;
       }
     }
@@ -267,7 +3009,8 @@ TCivToolbar::HandleCivilianMapCommandPanelAction
                     /* CTRL is held on Disband button: open civilian ledger dialog instead of
                        disband confirmation. */
           thunk_ShowCivilianLedgerDialogAndSelectUnit();
-          thunk_DispatchPanelControlEvent(this,10,pEventPayload,nEventFlags);
+          TMapEditCluster::thunk_DispatchPanelControlEvent
+                    ((TMapEditCluster *)this,10,pEventPayload,nEventFlags);
           return;
         }
         thunk_ShowDisbandCivilianConfirmationDialog(g_pSelectedCivilianOrderState);
@@ -278,13 +3021,517 @@ TCivToolbar::HandleCivilianMapCommandPanelAction
                     /* 'latr' branch dispatch: QueueImmediateCivilianCommandAndCycleSelection(...,
                        3). */
           thunk_QueueImmediateCivilianCommandAndCycleSelection(g_pSelectedCivilianOrderState,3);
-          thunk_DispatchPanelControlEvent(this,10,pEventPayload,nEventFlags);
+          TMapEditCluster::thunk_DispatchPanelControlEvent
+                    ((TMapEditCluster *)this,10,pEventPayload,nEventFlags);
           return;
         }
       }
     }
   }
-  thunk_DispatchPanelControlEvent(this,nEventClass,pEventPayload,nEventFlags);
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,nEventClass,pEventPayload,nEventFlags);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005964B0
+// GHIDRA_NAME TCivToolbar::HandleMapClickByInteractionMode
+// GHIDRA_PROTO void __thiscall HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) */
+
+void __thiscall
+TCivToolbar::HandleMapClickByInteractionMode(TCivToolbar *this,short nTileIndex,int nInputFlags)
+
+{
+  short *psVar1;
+  char fHandled;
+  int nHandlerResult;
+  undefined2 in_stack_00000006;
+  
+  switch(*(undefined2 *)(*(int *)&this->field_0x20 + 0x96)) {
+  case 0:
+                    /* Mode 0/1/2 path starts with map-context pre-handler (vfunc +0x5C). */
+    fHandled = (**(code **)(*(int *)g_pMapContextActionManager + 0x5c))(_nTileIndex,nInputFlags);
+    if ((fHandled != '\0') ||
+       (nHandlerResult =
+             TToolBarCluster::thunk_TryHandleMapContextAction
+                       (g_pNavyOrderManager,nTileIndex,nInputFlags), (char)nHandlerResult != '\0'))
+    {
+LAB_00596555:
+      (**(code **)((int)this->field0_0x0 + 0xe4))();
+      goto switchD_005964c8_default;
+    }
+    fHandled = (**(code **)(*(int *)g_pSelectedCivilianOrderState + 0x2c))(_nTileIndex,nInputFlags);
+    break;
+  case 1:
+    fHandled = (**(code **)(*(int *)g_pMapContextActionManager + 0x5c))(_nTileIndex,nInputFlags);
+    if (((fHandled != '\0') ||
+        (fHandled = (**(code **)(*(int *)g_pSelectedCivilianOrderState + 0x28))
+                              (_nTileIndex,nInputFlags), fHandled != '\0')) ||
+       (nHandlerResult =
+             TToolBarCluster::thunk_TryHandleMapContextAction
+                       (g_pNavyOrderManager,nTileIndex,nInputFlags), (char)nHandlerResult != '\0'))
+    goto LAB_00596555;
+                    /* Mode 1 fallback uses secondary map-context handler (vfunc +0x60). */
+    fHandled = (**(code **)(*(int *)g_pMapContextActionManager + 0x60))(_nTileIndex,nInputFlags);
+    break;
+  case 2:
+    fHandled = (**(code **)(*(int *)g_pMapContextActionManager + 0x5c))(_nTileIndex,nInputFlags);
+    if ((fHandled != '\0') ||
+       (fHandled = (**(code **)(*(int *)g_pSelectedCivilianOrderState + 0x28))
+                             (_nTileIndex,nInputFlags), fHandled != '\0')) {
+      (**(code **)((int)this->field0_0x0 + 0xe4))();
+      goto switchD_005964c8_default;
+    }
+                    /* Mode 2 uses order-queue handler to convert tile click into queued command. */
+    nHandlerResult =
+         thunk_TryQueueMapOrderFromTileAction(g_pNavyOrderManager,nTileIndex,nInputFlags);
+    fHandled = (char)nHandlerResult;
+    break;
+  case 3:
+    fHandled = (**(code **)(*(int *)g_pMapContextActionManager + 0x5c))(_nTileIndex,nInputFlags);
+    if ((fHandled == '\0') &&
+       (fHandled = (**(code **)(*(int *)g_pSelectedCivilianOrderState + 0x28))
+                             (_nTileIndex,nInputFlags), fHandled == '\0')) {
+      TToolBarCluster::thunk_TryHandleMapContextAction(g_pNavyOrderManager,nTileIndex,nInputFlags);
+    }
+  default:
+    goto switchD_005964c8_default;
+  }
+  if (fHandled != '\0') {
+                    /* Any handled click advances civilian/province/order-entry selection cycle. */
+    thunk_CycleMapInteractionSelectionAfterHandledClick(*(TCivToolbar **)&this->field_0x20);
+  }
+switchD_005964c8_default:
+  psVar1 = (short *)((int)&this->field70 + 2);
+  *psVar1 = *psVar1 + 1;
+  if (4 < *(short *)((int)&this->field70 + 2)) {
+    *(undefined2 *)((int)&this->field70 + 2) = 1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00597A80
+// GHIDRA_NAME TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
+// GHIDRA_PROTO void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Cycles map interaction selection after a handled click.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Priority cycle:
+// GHIDRA_COMMENT 1. Next civilian candidate.
+// GHIDRA_COMMENT 2. Next province candidate.
+// GHIDRA_COMMENT 3. Next map-order entry candidate.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT If no candidate remains in current civilian mode, active civilian pointer is cleared (matches 'last unit deselected' behavior).
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unable to use type for symbol wTraversalStateLowWord */
+/* Cycles map interaction selection after a handled click.
+   
+   Priority cycle:
+   1. Next civilian candidate.
+   2. Next province candidate.
+   3. Next map-order entry candidate.
+   
+   If no candidate remains in current civilian mode, active civilian pointer is cleared (matches
+   'last unit deselected' behavior). */
+
+void __thiscall TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(TCivToolbar *this)
+
+{
+  EMapInteractionMode EVar1;
+  bool bVar2;
+  TCivToolbar *pTVar3;
+  bool fHasSelectionCandidate;
+  char extraout_AL;
+  char extraout_AL_00;
+  short nNationId;
+  short extraout_AX;
+  int arg1;
+  void *pSelectedEntryCandidate;
+  undefined2 extraout_var;
+  void *pSelectedOrderContext;
+  byte bModeCursor;
+  short nResolvedProvinceId;
+  TCivToolbar *pTVar4;
+  bool fSelectionResolved;
+  bool fShouldClearProvinceSelection;
+  uint dwModeTraversalState;
+  uint dwModeTraversalMask;
+  void *pMapActionContextCursor;
+  undefined2 wTraversalStateLowWord;
+  
+  bModeCursor = (byte)this->field104_0x96;
+  dwModeTraversalState = (uint)bModeCursor << 0x18;
+  thunk_GetActiveNationId();
+  thunk_IsNationSlotEligibleForEventProcessing(arg1);
+  if (fHasSelectionCandidate == false) {
+    dwModeTraversalState._2_2_ = (undefined2)(dwModeTraversalState >> 0x10);
+    dwModeTraversalState = CONCAT22(dwModeTraversalState._2_2_,0x700);
+  }
+  bVar2 = false;
+  dwModeTraversalMask = dwModeTraversalState;
+  while (dwModeTraversalState._1_1_ != '\a') {
+    if (bVar2) goto LAB_00597dbc;
+    dwModeTraversalState._3_1_ = (char)(dwModeTraversalMask >> 0x18);
+    dwModeTraversalState = dwModeTraversalMask;
+    switch(bModeCursor) {
+    case 0:
+      fSelectionResolved = dwModeTraversalState._3_1_ != '\0';
+      if (fSelectionResolved) {
+        thunk_GetActiveNationId();
+        thunk_ClearCivilianSelectionHighlightsForNation();
+        dwModeTraversalState = dwModeTraversalMask | 0x100;
+      }
+      thunk_GetActiveNationId();
+      pSelectedEntryCandidate =
+           thunk_SelectFirstAvailableCivilianForNation(g_pSelectedCivilianOrderState,nNationId);
+      if (pSelectedEntryCandidate == (void *)0x0) {
+        bModeCursor = 1;
+        dwModeTraversalState = dwModeTraversalState & 0xffffff;
+        bVar2 = false;
+        dwModeTraversalMask = dwModeTraversalState;
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_0) {
+          dwModeTraversalState = dwModeTraversalState | 0x100;
+          dwModeTraversalMask = dwModeTraversalState;
+        }
+      }
+      else {
+        dwModeTraversalState._0_3_ = CONCAT12(1,(undefined2)dwModeTraversalState);
+        bVar2 = true;
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_0) {
+          TacticalBattleView::thunk_EnterMapInteractionOverlayMode((TacticalBattleView *)this,0);
+          thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_0);
+        }
+        thunk_SetActiveCivilianSelection(g_pSelectedCivilianOrderState,pSelectedEntryCandidate,1);
+        pMapActionContextCursor = this->field0_0x0;
+        (**(code **)((int)pMapActionContextCursor + 0x1e0))
+                  (CONCAT22(extraout_var,*(undefined2 *)((int)pSelectedEntryCandidate + 6)));
+        (**(code **)((int)pMapActionContextCursor + 0x13c))();
+        dwModeTraversalMask = dwModeTraversalState;
+      }
+      break;
+    case 1:
+      fShouldClearProvinceSelection = dwModeTraversalState._3_1_ != '\x01';
+      if (fShouldClearProvinceSelection) {
+        thunk_GetActiveNationId();
+        thunk_ClearProvinceSelectionHighlightsForNation();
+        dwModeTraversalState = dwModeTraversalMask | 0x200;
+      }
+      thunk_GetActiveNationId();
+      thunk_FindNextSelectableProvinceForNation();
+      wTraversalStateLowWord = (undefined2)dwModeTraversalState;
+      if (extraout_AX == -1) {
+        bModeCursor = 2;
+        dwModeTraversalState = CONCAT13(1,(undefined3)dwModeTraversalState);
+        dwModeTraversalMask = dwModeTraversalState;
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_1) {
+          dwModeTraversalState = CONCAT22(dwModeTraversalState._2_2_,wTraversalStateLowWord) | 0x200
+          ;
+          dwModeTraversalMask = dwModeTraversalState;
+        }
+      }
+      else {
+        if (this->field104_0x96 != MAP_INTERACTION_MODE_1) {
+          thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_1);
+        }
+        thunk_SetActiveProvinceSelection();
+        (**(code **)((int)this->field0_0x0 + 0x1e0))
+                  (CONCAT22((short)((uint)(extraout_AX * 0x15) >> 0x10),
+                            *(undefined2 *)
+                             (*(int *)((int)g_pGlobalMapState + 0x10) + 4 + extraout_AX * 0xa8)));
+        dwModeTraversalState._0_3_ = CONCAT12(1,(undefined2)dwModeTraversalState);
+        bVar2 = true;
+        dwModeTraversalMask = dwModeTraversalState;
+      }
+      break;
+    case 2:
+      pSelectedOrderContext = this->field98;
+      thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+      dwModeTraversalState._0_2_ = (undefined2)dwModeTraversalMask;
+      pTVar3 = g_pMapActionContextListHead;
+      if ((pSelectedOrderContext != (void *)0x0) &&
+         (pTVar4 = *(TCivToolbar **)((int)pSelectedOrderContext + 0x18),
+         pTVar4 != (TCivToolbar *)0x0)) goto LAB_00597c66;
+      while (pTVar4 = pTVar3, pTVar4 != (TCivToolbar *)0x0) {
+LAB_00597c66:
+        thunk_CanDisplayMapOrderEntryInCurrentContext(pTVar4,-1,0);
+        if (extraout_AL != '\0') {
+          thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_2);
+          if (this->field102_0x94 == '\0') {
+            thunk_InvalidateMapRegionForOrderEntry((int)this->field98);
+          }
+          this->field98 = pTVar4;
+          thunk_InvalidateMapRegionForEntryIfUiPassive(this,(int)pTVar4);
+          if (pTVar4 == (TCivToolbar *)0x0) {
+            TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+            dwModeTraversalState._0_3_ = CONCAT12(1,(undefined2)dwModeTraversalState);
+            bVar2 = true;
+            dwModeTraversalMask = dwModeTraversalState;
+          }
+          else {
+            pSelectedOrderContext = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+            TToolBarCluster::thunk_RefreshMapOrderEntryPanel
+                      ((TToolBarCluster *)this,pSelectedOrderContext);
+            dwModeTraversalState._0_3_ = CONCAT12(1,(undefined2)dwModeTraversalState);
+            bVar2 = true;
+            dwModeTraversalMask = dwModeTraversalState;
+          }
+          goto switchD_00597ade_default;
+        }
+        pTVar3 = *(TCivToolbar **)&pTVar4->field_0x18;
+      }
+      bModeCursor = 0;
+      this->field98 = (void *)0x0;
+      dwModeTraversalState = CONCAT22(0x200,(undefined2)dwModeTraversalState) | 0x400;
+      dwModeTraversalMask = dwModeTraversalState;
+      break;
+    case 3:
+      bModeCursor = 0;
+    }
+switchD_00597ade_default:
+    dwModeTraversalState = dwModeTraversalMask;
+    dwModeTraversalMask = dwModeTraversalState;
+  }
+  if (!bVar2) {
+    pSelectedOrderContext = this->field98;
+    thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+    pTVar3 = g_pMapActionContextListHead;
+    if ((pSelectedOrderContext != (void *)0x0) &&
+       (pTVar4 = *(TCivToolbar **)((int)pSelectedOrderContext + 0x18), pTVar4 != (TCivToolbar *)0x0)
+       ) goto LAB_00597d3c;
+    while (pTVar4 = pTVar3, pTVar4 != (TCivToolbar *)0x0) {
+LAB_00597d3c:
+      thunk_CanDisplayMapOrderEntryInCurrentContext(pTVar4,-1,0);
+      if (extraout_AL_00 != '\0') {
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_2);
+        if (this->field102_0x94 == '\0') {
+          thunk_InvalidateMapRegionForOrderEntry((int)this->field98);
+        }
+        this->field98 = pTVar4;
+        thunk_InvalidateMapRegionForEntryIfUiPassive(this,(int)pTVar4);
+        if (pTVar4 == (TCivToolbar *)0x0) {
+          TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+          bVar2 = true;
+        }
+        else {
+          pSelectedOrderContext = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh();
+          TToolBarCluster::thunk_RefreshMapOrderEntryPanel
+                    ((TToolBarCluster *)this,pSelectedOrderContext);
+          bVar2 = true;
+        }
+        goto LAB_00597dbc;
+      }
+      pTVar3 = *(TCivToolbar **)&pTVar4->field_0x18;
+    }
+    this->field98 = (void *)0x0;
+  }
+LAB_00597dbc:
+  if (!bVar2) {
+    EVar1 = this->field104_0x96;
+    if (EVar1 == MAP_INTERACTION_MODE_0) {
+                    /* When no selectable civilians remain, active civilian pointer is cleared (last
+                       unit deselect behavior). */
+      *(undefined4 *)((int)g_pSelectedCivilianOrderState + 4) = 0;
+    }
+    else {
+      if (EVar1 == MAP_INTERACTION_MODE_1) {
+        thunk_SetActiveProvinceSelection();
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_3);
+        return;
+      }
+      if (EVar1 == MAP_INTERACTION_MODE_2) {
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_2);
+        if (this->field102_0x94 == '\0') {
+          thunk_InvalidateMapRegionForOrderEntry((int)this->field98);
+        }
+        this->field98 = (void *)0x0;
+        if (this->field102_0x94 == '\0') {
+          thunk_InvalidateMapRegionForOrderEntry(0);
+        }
+        TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+        thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_3);
+        return;
+      }
+    }
+    thunk_SetMapInteractionMode(this,MAP_INTERACTION_MODE_3);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005D5D30
+// GHIDRA_NAME TCivToolbar::RunNationInfoModalAndReturnNonCancel
+// GHIDRA_PROTO bool __thiscall RunNationInfoModalAndReturnNonCancel(void * pDialogContext)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Runs nation info modal with okay/cncl and returns true unless cancel
+// GHIDRA_COMMENT_END
+
+/* WARNING: Removing unreachable block (ram,0x005d5f91) */
+/* WARNING: Removing unreachable block (ram,0x005d5fa7) */
+/* WARNING: Removing unreachable block (ram,0x005d5fcc) */
+/* Runs nation info modal with okay/cncl and returns true unless cancel */
+
+bool __thiscall
+TCivToolbar::RunNationInfoModalAndReturnNonCancel(TCivToolbar *this,void *pDialogContext)
+
+{
+  code *pcVar1;
+  short extraout_AX;
+  short extraout_AX_00;
+  int *piVar2;
+  int iVar3;
+  int *piVar4;
+  code *pcVar5;
+  TTEView *this_00;
+  TScrollView *this_01;
+  int iVar6;
+  code *pcVar7;
+  undefined4 *unaff_FS_OFFSET;
+  int *in_stack_00000014;
+  int iVar8;
+  short sVar9;
+  code *local_5c;
+  int iStack_58;
+  undefined2 uStack_40;
+  uint local_3c;
+  int iStack_1c;
+  undefined4 uStack_c;
+  int *piStack_8;
+  undefined4 local_4;
+  
+  piStack_8 = (int *)&LAB_0063a05a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = CONCAT31(local_4._1_3_,1);
+  local_3c = local_3c & 0xffff0000;
+  local_5c = (code *)0x0;
+  if (*in_stack_00000014 == -1000) {
+    local_5c = (code *)(uint)*(ushort *)(in_stack_00000014 + 1);
+  }
+  thunk_BuildUiTextStyleDescriptor();
+  if ((short)local_5c == 0) {
+    iVar6 = *(int *)g_pUiViewManager;
+  }
+  else {
+    (**(code **)(*(int *)g_pUiViewManager + 0x30))();
+    iVar6 = *(int *)g_pUiViewManager;
+  }
+  piVar2 = (int *)(**(code **)(iVar6 + 0x28))();
+  if (piVar2 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  iVar6 = *piVar2;
+  (**(code **)(iVar6 + 0x1a0))();
+  iVar3 = (**(code **)(iVar6 + 0x1b8))();
+  if (iVar3 != 0) {
+    *(undefined4 *)(iVar3 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)((int)this->field0_0x0 + 0x44))();
+  (**(code **)(iVar6 + 0xf0))();
+  pcVar1 = *(code **)(iVar6 + 0x94);
+  piVar4 = (int *)(*pcVar1)();
+  iVar6 = *piVar4;
+  piStack_8 = piVar4;
+  (**(code **)(iVar6 + 0xc))();
+  if (piVar4 != (int *)0x0) {
+    (**(code **)(iVar6 + 0x1c8))();
+    piVar4 = (int *)(*pcVar1)();
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    if (piVar4 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    thunk_GetActiveNationId();
+    if ((extraout_AX < 0) || (thunk_GetActiveNationId(), 6 < extraout_AX_00)) {
+      sVar9 = 0;
+      (**(code **)(iVar6 + 0xa4))();
+    }
+    else {
+      sVar9 = 0;
+      thunk_GetActiveNationId();
+      (**(code **)(iVar6 + 0x1c8))();
+    }
+    piVar4 = (int *)(*pcVar1)();
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    pcVar5 = (code *)(iStack_1c + 0x252a);
+    (**(code **)(iVar6 + 0x1c8))(pcVar5,0);
+    piVar4 = (int *)(*pcVar1)(0x72657761);
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    iVar8 = 0;
+    (**(code **)(iVar6 + 0x1c8))();
+    this_00 = (TTEView *)(*pcVar1)(0x696e666f);
+    iVar6 = this_00->field0_0x0;
+    (**(code **)(iVar6 + 0xc))();
+    (**(code **)(iVar6 + 500))(uStack_40,local_3c);
+    (**(code **)(iVar6 + 0x1e4))(&stack0xffffff68,0);
+    iVar3 = TTEView::thunk_DestructTTEViewAndMaybeFree(this_00);
+    pcVar7 = pcVar1;
+    if (*(int *)&this_00->field_0x38 < (int)(short)iVar3) {
+      (**(code **)(iVar6 + 300))(&stack0xffffff6c);
+      (**(code **)(iVar6 + 0x168))(&stack0xffffff68,0);
+      if (*(int *)&this_00->field_0x38 < (int)(short)iVar3) {
+        this_01 = AllocateWithFallbackHandler();
+        if (this_01 == (TScrollView *)0x0) {
+          this_01 = (TScrollView *)0x0;
+          pcVar7 = pcVar5;
+        }
+        else {
+          TView::thunk_ConstructTViewBaseState((TView *)this_01);
+          this_01->pVtable = &PTR_thunk_GetTScrollViewClassNamePointer_006417e0;
+          pcVar7 = pcVar5;
+        }
+        TScrollView::ConstructTScrollViewBaseState(this_01);
+        (**(code **)((int)this_01->pVtable + 0xdc))(0);
+        (**(code **)(iVar8 + 0x174))(this_00);
+        (**(code **)((int)this_01->pVtable + 0x170))(this_00,0);
+        (*local_5c)(&stack0xffffff5c,0);
+        this_01->field63_0x60 = this_00;
+        SyncBoundedValueAndToggleControlStates();
+      }
+    }
+    if ((char)uStack_40 != '\0') {
+      piVar4 = (int *)(*pcVar7)(0x636e636c);
+      iVar6 = *piVar4;
+      (**(code **)(iVar6 + 0xc))();
+      (**(code **)(iVar6 + 0xa4))(1,1);
+      (**(code **)(iVar6 + 0xa8))(1,0);
+    }
+    if (*(int *)((int)g_pLocalizationTable + 0x44) != 0) {
+      uStack_40._0_1_ = *(char *)((int)g_pGameFlowState + 0x68);
+      *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
+    }
+    if (sVar9 != 0) {
+      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))
+                (*(undefined2 *)(&stack0xffffff7c + iStack_58 * 2),0,1);
+    }
+    iVar6 = *piVar2;
+    iVar3 = (**(code **)(iVar6 + 0x1ac))();
+    (**(code **)(iVar6 + 0xa0))();
+    (**(code **)(iVar6 + 0x1c))();
+    if (*(int *)((int)g_pLocalizationTable + 0x44) != 0) {
+      *(char *)((int)g_pGameFlowState + 0x68) = (char)uStack_40;
+    }
+    if (iVar3 != 0x636e636c) {
+      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty();
+    }
+    else {
+      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty();
+    }
+    *unaff_FS_OFFSET = pcVar1;
+    return iVar3 != 0x636e636c;
+  }
+                    /* WARNING: Subroutine does not return */
+  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 

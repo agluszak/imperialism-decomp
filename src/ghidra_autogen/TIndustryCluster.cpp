@@ -3,14 +3,76 @@
 // Program: Imperialism.exe
 // Bucket: TIndustryCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00588A30
-// GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
-// GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
+// GHIDRA_FUNCTION IMPERIALISM 0x00401AA0
+// GHIDRA_NAME TIndustryCluster::thunk_DestructTIndustryClusterMaybeFree_At00401aa0
+// GHIDRA_PROTO TIndustryCluster * __thiscall thunk_DestructTIndustryClusterMaybeFree_At00401aa0(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to DestructTIndustryClusterMaybeFree
+// GHIDRA_COMMENT_END
 
-TUberCluster * TIndustryCluster::CreateTradeMoveStepControlPanel(void)
+/* Single-JMP thunk to DestructTIndustryClusterMaybeFree */
+
+TIndustryCluster * __thiscall
+TIndustryCluster::thunk_DestructTIndustryClusterMaybeFree_At00401aa0
+          (TIndustryCluster *this,byte freeSelfFlag)
 
 {
-  TUberCluster *this;
+  TIndustryCluster *pTVar1;
+  
+  pTVar1 = DestructTIndustryClusterMaybeFree(this,freeSelfFlag);
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00401D11
+// GHIDRA_NAME TIndustryCluster::thunk_ConstructTradeMoveStepControlPanel
+// GHIDRA_PROTO TIndustryCluster * __thiscall thunk_ConstructTradeMoveStepControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConstructTradeMoveStepControlPanel
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to ConstructTradeMoveStepControlPanel */
+
+TIndustryCluster * __thiscall
+TIndustryCluster::thunk_ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
+
+{
+  TUberCluster::ConstructTUberClusterBaseState(&this->base);
+  (this->base).field0_0x0 = &g_vtblTAmtBar_Slot130_Slot0208;
+  this->selectedMetric88 = 0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040535D
+// GHIDRA_NAME TIndustryCluster::thunk_GetTIndustryClusterClassNamePointer_At0040535d
+// GHIDRA_PROTO void * __cdecl thunk_GetTIndustryClusterClassNamePointer_At0040535d(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to GetTIndustryClusterClassNamePointer
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to GetTIndustryClusterClassNamePointer */
+
+void * __cdecl TIndustryCluster::thunk_GetTIndustryClusterClassNamePointer_At0040535d(void)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = GetTIndustryClusterClassNamePointer();
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588A30
+// GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
+// GHIDRA_PROTO TIndustryCluster * __cdecl CreateTradeMoveStepControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled factory helper name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled factory helper name */
+
+TIndustryCluster * __cdecl TIndustryCluster::CreateTradeMoveStepControlPanel(void)
+
+{
+  TIndustryCluster *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,17 +82,17 @@ TUberCluster * TIndustryCluster::CreateTradeMoveStepControlPanel(void)
   puStack_8 = &LAB_0063793a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x90);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &PTR_thunk_GetLiteralTypeName_TIndustryCluster_00665ed0;
-    *(undefined4 *)(this + 0x88) = 0;
+  if (this != (TIndustryCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState(&this->base);
+    (this->base).field0_0x0 = &g_vtblTAmtBar_Slot130_Slot0208;
+    this->selectedMetric88 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TUberCluster *)0x0;
+  return (TIndustryCluster *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588AD0
@@ -48,19 +110,42 @@ void * __cdecl TIndustryCluster::GetTIndustryClusterClassNamePointer(void)
   return &g_pClassDescTIndustryCluster;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00588B20
-// GHIDRA_NAME TIndustryCluster::DestructTIndustryClusterMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTIndustryClusterMaybeFree(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00588AF0
+// GHIDRA_NAME TIndustryCluster::ConstructTradeMoveStepControlPanel
+// GHIDRA_PROTO TIndustryCluster * __thiscall ConstructTradeMoveStepControlPanel(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void __cdecl TIndustryCluster::DestructTIndustryClusterMaybeFree(void)
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TIndustryCluster * __thiscall
+TIndustryCluster::ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructEngineerDialogBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
+  TUberCluster::ConstructTUberClusterBaseState(&this->base);
+  (this->base).field0_0x0 = &g_vtblTAmtBar_Slot130_Slot0208;
+  this->selectedMetric88 = 0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00588B20
+// GHIDRA_NAME TIndustryCluster::DestructTIndustryClusterMaybeFree
+// GHIDRA_PROTO TIndustryCluster * __thiscall DestructTIndustryClusterMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT demangled from mangled destructor helper name
+// GHIDRA_COMMENT_END
+
+/* demangled from mangled destructor helper name */
+
+TIndustryCluster * __thiscall
+TIndustryCluster::DestructTIndustryClusterMaybeFree(TIndustryCluster *this,byte freeSelfFlag)
+
+{
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull();
   }
-  return;
+  return this;
 }
 

@@ -17,30 +17,32 @@ TBismarckMinister::thunk_ConstructTBismarckMinisterBaseState(TBismarckMinister *
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTBismarckMinister;
-  *(undefined2 *)(this + 0xc) = 1;
+  this->field0_0x0 = &g_vtblTBismarckMinister;
+  this->field0c = 1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405821
-// GHIDRA_NAME TBismarckMinister::thunk_GetBismarckMinisterSignedPreferenceScalar_At00405821
-// GHIDRA_PROTO undefined thunk_GetBismarckMinisterSignedPreferenceScalar_At00405821()
+// GHIDRA_NAME TBismarckMinister::TBismarckMinister_VtblSlot024
+// GHIDRA_PROTO TBismarckMinister * __cdecl TBismarckMinister_VtblSlot024(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetBismarckMinisterSignedPreferenceScalar
+// GHIDRA_COMMENT Single-JMP thunk to CreateTBismarckMinisterInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetBismarckMinisterSignedPreferenceScalar */
+/* Single-JMP thunk to CreateTBismarckMinisterInstance */
 
-void TBismarckMinister::thunk_GetBismarckMinisterSignedPreferenceScalar_At00405821(void)
+TBismarckMinister * __cdecl TBismarckMinister::TBismarckMinister_VtblSlot024(void)
 
 {
-  CreateTBismarckMinisterInstance();
-  return;
+  TBismarckMinister *pTVar1;
+  
+  pTVar1 = CreateTBismarckMinisterInstance();
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406CD5
-// GHIDRA_NAME TBismarckMinister::thunk_DestructTBismarckMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTBismarckMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TBismarckMinister::TBismarckMinister_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TBismarckMinister_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTBismarckMinisterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -48,8 +50,7 @@ void TBismarckMinister::thunk_GetBismarckMinisterSignedPreferenceScalar_At004058
 /* Single-JMP thunk to DestructTBismarckMinisterAndMaybeFree */
 
 void * __thiscall
-TBismarckMinister::thunk_DestructTBismarckMinisterAndMaybeFree
-          (TBismarckMinister *this,byte freeSelfFlag)
+TBismarckMinister::TBismarckMinister_VtblSlot001(TBismarckMinister *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -59,16 +60,15 @@ TBismarckMinister::thunk_DestructTBismarckMinisterAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407699
-// GHIDRA_NAME TBismarckMinister::thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5
-// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
+// GHIDRA_NAME TBismarckMinister::TBismarckMinister_VtblSlot017
+// GHIDRA_PROTO void __thiscall TBismarckMinister_VtblSlot017(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternB_Type2x2_Bonus5
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternB_Type2x2_Bonus5 */
 
-void __thiscall
-TBismarckMinister::thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(TBismarckMinister *this)
+void __thiscall TBismarckMinister::TBismarckMinister_VtblSlot017(TBismarckMinister *this)
 
 {
   InitializeRecruitQueuePatternB_Type2x2_Bonus5(this);
@@ -76,15 +76,15 @@ TBismarckMinister::thunk_InitializeRecruitQueuePatternB_Type2x2_Bonus5(TBismarck
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408071
-// GHIDRA_NAME TBismarckMinister::thunk_GetTBismarckMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBismarckMinisterClassNamePointer(void)
+// GHIDRA_NAME TBismarckMinister::TBismarckMinister_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TBismarckMinister_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTBismarckMinisterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTBismarckMinisterClassNamePointer */
 
-void * __cdecl TBismarckMinister::thunk_GetTBismarckMinisterClassNamePointer(void)
+void * __cdecl TBismarckMinister::TBismarckMinister_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -95,21 +95,25 @@ void * __cdecl TBismarckMinister::thunk_GetTBismarckMinisterClassNamePointer(voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED7C0
 // GHIDRA_NAME TBismarckMinister::CreateTBismarckMinisterInstance
-// GHIDRA_PROTO undefined CreateTBismarckMinisterInstance()
+// GHIDRA_PROTO TBismarckMinister * __cdecl CreateTBismarckMinisterInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Returns Bismarck minister signed preference scalar selected by polarity flag.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Returns Bismarck minister signed preference scalar selected by polarity flag. */
 
-float10 TBismarckMinister::CreateTBismarckMinisterInstance(char param_1)
+TBismarckMinister * __cdecl TBismarckMinister::CreateTBismarckMinisterInstance(void)
 
 {
-  if (param_1 != '\0') {
-    return (float10)_g_TBismarck_Minister_Instance_Value_006548F8;
+  undefined4 in_EAX;
+  TBismarckMinister *pTVar1;
+  char in_stack_00000004;
+  
+  pTVar1 = (TBismarckMinister *)CONCAT31((int3)((uint)in_EAX >> 8),in_stack_00000004);
+  if (in_stack_00000004 != '\0') {
+    return pTVar1;
   }
-  return (float10)_g_TBismarck_Minister_Instance_Value_00654900;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED7F0
@@ -135,8 +139,8 @@ void * __thiscall TBismarckMinister::ConstructTBismarckMinisterBaseState(TBismar
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTBismarckMinister;
-  *(undefined2 *)(this + 0xc) = 1;
+  this->field0_0x0 = &g_vtblTBismarckMinister;
+  this->field0c = 1;
   return this;
 }
 
@@ -150,7 +154,7 @@ TBismarckMinister::DestructTBismarckMinisterAndMaybeFree(TBismarckMinister *this
 {
   DestructTBismarckMinisterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -169,7 +173,7 @@ void __thiscall
 TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5(TBismarckMinister *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -186,12 +190,12 @@ TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5(TBismarckMinist
   *(undefined2 *)(in_stack_00000004 + 0x62) = 1;
   iVar2 = 2;
   do {
-    iVar1 = AllocateWithFallbackHandler(0x44);
-    if (iVar1 != 0) {
+    pvVar1 = AllocateWithFallbackHandler();
+    if (pvVar1 != (void *)0x0) {
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
+    this->field18 = this->field18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 5;

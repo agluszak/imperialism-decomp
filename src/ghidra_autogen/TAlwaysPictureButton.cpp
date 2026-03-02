@@ -3,9 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TAlwaysPictureButton.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402C1B
+// GHIDRA_NAME TAlwaysPictureButton::TAlwaysPictureButton_VtblSlot116
+// GHIDRA_PROTO void __thiscall TAlwaysPictureButton_VtblSlot116(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0 */
+
+void __thiscall
+TAlwaysPictureButton::TAlwaysPictureButton_VtblSlot116(TAlwaysPictureButton *this,int arg1,int arg2)
+
+{
+  WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(this,arg1,arg2);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040457F
-// GHIDRA_NAME TAlwaysPictureButton::thunk_DestructTAlwaysPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTAlwaysPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TAlwaysPictureButton::TAlwaysPictureButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TAlwaysPictureButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTAlwaysPictureButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,8 +30,7 @@
 /* Single-JMP thunk to DestructTAlwaysPictureButtonAndMaybeFree */
 
 void * __thiscall
-TAlwaysPictureButton::thunk_DestructTAlwaysPictureButtonAndMaybeFree
-          (TAlwaysPictureButton *this,byte freeSelfFlag)
+TAlwaysPictureButton::TAlwaysPictureButton_VtblSlot001(TAlwaysPictureButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -24,15 +40,15 @@ TAlwaysPictureButton::thunk_DestructTAlwaysPictureButtonAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407AD6
-// GHIDRA_NAME TAlwaysPictureButton::thunk_GetTAlwaysPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAlwaysPictureButtonClassNamePointer(void)
+// GHIDRA_NAME TAlwaysPictureButton::TAlwaysPictureButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TAlwaysPictureButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTAlwaysPictureButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTAlwaysPictureButtonClassNamePointer */
 
-void * __cdecl TAlwaysPictureButton::thunk_GetTAlwaysPictureButtonClassNamePointer(void)
+void * __cdecl TAlwaysPictureButton::TAlwaysPictureButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -59,7 +75,7 @@ void * __cdecl TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(void)
   puStack_8 = &LAB_0063636a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -96,8 +112,8 @@ TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(TAlwaysPictureButto
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined2 *)(this + 0x92) = 7000;
-  *(undefined ***)this = &g_vtblTAlwaysPictureButton;
+  this->field140_0x92 = 7000;
+  this->field0_0x0 = &g_vtblTAlwaysPictureButton;
   return this;
 }
 
@@ -112,8 +128,28 @@ TAlwaysPictureButton::DestructTAlwaysPictureButtonAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570AE0
+// GHIDRA_NAME TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(int arg1, int arg2)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_SetControlActiveFlagAndRefreshIfChanged; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around thunk_SetControlActiveFlagAndRefreshIfChanged;
+   instructions=6, call_insns=1, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
+          (TAlwaysPictureButton *this,int arg1,int arg2)
+
+{
+  TControl::thunk_SetControlActiveFlagAndRefreshIfChanged
+            ((TControl *)this,(int)(char)arg1,(int)(char)arg2);
+  return;
 }
 

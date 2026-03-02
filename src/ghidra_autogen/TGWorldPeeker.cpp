@@ -3,41 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldPeeker.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004028B0
-// GHIDRA_NAME TGWorldPeeker::thunk_BlitGWorldPeekerRectToCachedSurface_At004028b0
-// GHIDRA_PROTO void __thiscall thunk_BlitGWorldPeekerRectToCachedSurface_At004028b0(int * pRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BlitGWorldPeekerRectToCachedSurface
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BlitGWorldPeekerRectToCachedSurface */
-
-void __thiscall
-TGWorldPeeker::thunk_BlitGWorldPeekerRectToCachedSurface_At004028b0(TGWorldPeeker *this,int *pRect)
-
-{
-  CreateTFuzzyVarInstance(this,pRect);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409219
-// GHIDRA_NAME TGWorldPeeker::thunk_GetTGWorldPeekerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGWorldPeekerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGWorldPeekerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGWorldPeekerClassNamePointer */
-
-void * __cdecl TGWorldPeeker::thunk_GetTGWorldPeekerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGWorldPeekerClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2D0
 // GHIDRA_NAME TGWorldPeeker::GetTGWorldPeekerClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTGWorldPeekerClassNamePointer(void)
@@ -51,38 +16,5 @@ void * __cdecl TGWorldPeeker::GetTGWorldPeekerClassNamePointer(void)
 
 {
   return &g_pClassDescTGWorldPeeker;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
-// GHIDRA_NAME TGWorldPeeker::CreateTFuzzyVarInstance
-// GHIDRA_PROTO void __thiscall CreateTFuzzyVarInstance(int * pRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Blits requested rectangle through GWorld peeker into cached destination surface.
-// GHIDRA_COMMENT_END
-
-/* Blits requested rectangle through GWorld peeker into cached destination surface. */
-
-void __thiscall TGWorldPeeker::CreateTFuzzyVarInstance(TGWorldPeeker *this,int *pRect)
-
-{
-  RECT local_20;
-  RECT local_10;
-  
-  if (this[0x18].pVtable != (void *)0x0) {
-    local_10.left = *pRect;
-    local_10.top = pRect[1];
-    local_10.right = pRect[2];
-    local_20.left = *pRect;
-    local_10.bottom = pRect[3];
-    local_20.right = pRect[2];
-    local_20.top = pRect[1];
-    local_20.bottom = pRect[3];
-    ResetQuickDrawStrokeState();
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)this[0x18].pVtable + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0,
-               (astruct_19 *)0x0);
-  }
-  return;
 }
 

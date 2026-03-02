@@ -3,16 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TFileStream.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004010D2
+// GHIDRA_NAME TFileStream::thunk_WrapperFor_operator_At00489360_At004010d2
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_operator_At00489360_At004010d2(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_operator_At00489360
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_operator_At00489360 */
+
+void __cdecl TFileStream::thunk_WrapperFor_operator_At00489360_At004010d2(void)
+
+{
+  WrapperFor_operator_At00489360();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004015B4
-// GHIDRA_NAME TFileStream::thunk_GetTFileStreamClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTFileStreamClassNamePointer(void)
+// GHIDRA_NAME TFileStream::thunk_GetTFileStreamClassNamePointer_At004015b4
+// GHIDRA_PROTO void * __cdecl thunk_GetTFileStreamClassNamePointer_At004015b4(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTFileStreamClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTFileStreamClassNamePointer */
 
-void * __cdecl TFileStream::thunk_GetTFileStreamClassNamePointer(void)
+void * __cdecl TFileStream::thunk_GetTFileStreamClassNamePointer_At004015b4(void)
 
 {
   void *pvVar1;
@@ -21,9 +37,79 @@ void * __cdecl TFileStream::thunk_GetTFileStreamClassNamePointer(void)
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401677
+// GHIDRA_NAME TFileStream::thunk_WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330_At00401677
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330_At00401677(void * objectRef)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330 */
+
+void __thiscall
+TFileStream::thunk_WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330_At00401677
+          (TFileStream *this,void *objectRef)
+
+{
+  WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330(this,objectRef);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402C25
+// GHIDRA_NAME TFileStream::thunk_WrapperFor_WriteBytesToSerializedBuffer_At00489290_At00402c25
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_WriteBytesToSerializedBuffer_At00489290_At00402c25(void * source, uint byteCount)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_WriteBytesToSerializedBuffer_At00489290
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_WriteBytesToSerializedBuffer_At00489290 */
+
+void __thiscall
+TFileStream::thunk_WrapperFor_WriteBytesToSerializedBuffer_At00489290_At00402c25
+          (TFileStream *this,void *source,uint byteCount)
+
+{
+  WrapperFor_WriteBytesToSerializedBuffer_At00489290(this,source,byteCount);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403BA7
+// GHIDRA_NAME TFileStream::thunk_CreateTCountingStreamInstance_At00403ba7
+// GHIDRA_PROTO TCountingStream * __cdecl thunk_CreateTCountingStreamInstance_At00403ba7(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to CreateTCountingStreamInstance
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to CreateTCountingStreamInstance */
+
+TCountingStream * __cdecl TFileStream::thunk_CreateTCountingStreamInstance_At00403ba7(void)
+
+{
+  TCountingStream *pTVar1;
+  
+  pTVar1 = TCountingStream::CreateTCountingStreamInstance();
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404F34
+// GHIDRA_NAME TFileStream::thunk_OrphanCallChain_C1_I08_004891f0_At00404f34
+// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I08_004891f0_At00404f34(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I08_004891f0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanCallChain_C1_I08_004891f0 */
+
+void __cdecl TFileStream::thunk_OrphanCallChain_C1_I08_004891f0_At00404f34(void)
+
+{
+  OrphanCallChain_C1_I08_004891f0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00405FD3
-// GHIDRA_NAME TFileStream::thunk_DestructTFileStreamAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTFileStreamAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TFileStream::thunk_DestructTFileStreamAndMaybeFree_At00405fd3
+// GHIDRA_PROTO void * __thiscall thunk_DestructTFileStreamAndMaybeFree_At00405fd3(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTFileStreamAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,7 +117,7 @@ void * __cdecl TFileStream::thunk_GetTFileStreamClassNamePointer(void)
 /* Single-JMP thunk to DestructTFileStreamAndMaybeFree */
 
 void * __thiscall
-TFileStream::thunk_DestructTFileStreamAndMaybeFree(TFileStream *this,byte freeSelfFlag)
+TFileStream::thunk_DestructTFileStreamAndMaybeFree_At00405fd3(TFileStream *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -41,16 +127,15 @@ TFileStream::thunk_DestructTFileStreamAndMaybeFree(TFileStream *this,byte freeSe
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004073B5
-// GHIDRA_NAME TFileStream::thunk_WriteCStringToFileStream_At004073b5
-// GHIDRA_PROTO void __thiscall thunk_WriteCStringToFileStream_At004073b5(char * pText)
+// GHIDRA_NAME TFileStream::thunk_CreateTFileStreamInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTFileStreamInstance(char * pText)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WriteCStringToFileStream
+// GHIDRA_COMMENT Single-JMP thunk to WriteCStringToFileStream [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WriteCStringToFileStream */
+/* Single-JMP thunk to WriteCStringToFileStream [FID:thunk_target_sync] */
 
-void __thiscall
-TFileStream::thunk_WriteCStringToFileStream_At004073b5(TFileStream *this,char *pText)
+void __thiscall TFileStream::thunk_CreateTFileStreamInstance(TFileStream *this,char *pText)
 
 {
   CreateTFileStreamInstance(this,pText);
@@ -59,35 +144,59 @@ TFileStream::thunk_WriteCStringToFileStream_At004073b5(TFileStream *this,char *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004075C2
 // GHIDRA_NAME TFileStream::thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At004075c2
-// GHIDRA_PROTO undefined thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At004075c2()
+// GHIDRA_PROTO int __thiscall thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At004075c2(void * destination, uint requestedCount)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ReadBytesFromSerializedBuffer_At00489220
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to WrapperFor_ReadBytesFromSerializedBuffer_At00489220 */
 
-void TFileStream::thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At004075c2(void)
+int __thiscall
+TFileStream::thunk_WrapperFor_ReadBytesFromSerializedBuffer_At00489220_At004075c2
+          (TFileStream *this,void *destination,uint requestedCount)
 
 {
-  WrapperFor_ReadBytesFromSerializedBuffer_At00489220();
+  int iVar1;
+  
+  iVar1 = WrapperFor_ReadBytesFromSerializedBuffer_At00489220(this,destination,requestedCount);
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040844A
+// GHIDRA_NAME TFileStream::thunk_OrphanCallChain_C1_I09_004891c0_At0040844a
+// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I09_004891c0_At0040844a(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I09_004891c0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanCallChain_C1_I09_004891c0 */
+
+void __cdecl TFileStream::thunk_OrphanCallChain_C1_I09_004891c0_At0040844a(void)
+
+{
+  OrphanCallChain_C1_I09_004891c0();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004092F0
-// GHIDRA_NAME TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(void)
+// GHIDRA_NAME TFileStream::thunk_WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300_At004092f0
+// GHIDRA_PROTO void * __thiscall thunk_WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300_At004092f0(void * runtimeClassOrFactory)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0061225e_At00489300
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0061225e_At00489300 */
+/* Single-JMP thunk to WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300 */
 
-void __thiscall
-TFileStream::thunk_WrapperFor_Cluster_MapTileHint_0061225e_At00489300(TFileStream *this)
+void * __thiscall
+TFileStream::thunk_WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300_At004092f0
+          (TFileStream *this,void *runtimeClassOrFactory)
 
 {
-  WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(this);
-  return;
+  void *pvVar1;
+  
+  pvVar1 = WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
+                     (this,runtimeClassOrFactory);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489070
@@ -103,12 +212,12 @@ void __thiscall TFileStream::CreateTFileStreamInstance(TFileStream *this,char *p
 
 {
   char cVar1;
-  int iVar2;
+  undefined **ppuVar2;
   uint uVar3;
   char *pcVar4;
   
   uVar3 = 0xffffffff;
-  iVar2 = *(int *)this;
+  ppuVar2 = this->field0_0x0;
   pcVar4 = pText;
   do {
     if (uVar3 == 0) break;
@@ -116,8 +225,8 @@ void __thiscall TFileStream::CreateTFileStreamInstance(TFileStream *this,char *p
     cVar1 = *pcVar4;
     pcVar4 = pcVar4 + 1;
   } while (cVar1 != '\0');
-  (**(code **)(iVar2 + 0x88))(~uVar3 - 1);
-  (**(code **)(iVar2 + 0x78))(pText,~uVar3 - 1);
+  (*(code *)ppuVar2[0x22])(~uVar3 - 1);
+  (*(code *)ppuVar2[0x1e])(pText,~uVar3 - 1);
   return;
 }
 
@@ -143,8 +252,8 @@ void * __cdecl TFileStream::GetTFileStreamClassNamePointer(void)
 void __fastcall TFileStream::ConstructTFileStreamBaseState(TFileStream *pThis)
 
 {
-  *(undefined ***)pThis = &g_vtblTFileStream;
-  *(undefined4 *)(pThis + 4) = 0;
+  pThis->field0_0x0 = &g_vtblTFileStream;
+  pThis->field04 = 0;
   return;
 }
 
@@ -155,16 +264,16 @@ void __fastcall TFileStream::ConstructTFileStreamBaseState(TFileStream *pThis)
 void * __thiscall TFileStream::DestructTFileStreamAndMaybeFree(TFileStream *this,byte freeSelfFlag)
 
 {
-  TObject::thunk_GetTObjectRuntimeClass((TObject *)this);
+  TObject::thunk_DestructTObjectAndMaybeFree((TObject *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489220
 // GHIDRA_NAME TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
-// GHIDRA_PROTO undefined WrapperFor_ReadBytesFromSerializedBuffer_At00489220()
+// GHIDRA_PROTO int __thiscall WrapperFor_ReadBytesFromSerializedBuffer_At00489220(void * destination, uint requestedCount)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around ReadBytesFromSerializedBuffer; instructions=19, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -172,22 +281,48 @@ void * __thiscall TFileStream::DestructTFileStreamAndMaybeFree(TFileStream *this
 /* [WrapperShape] small wrapper around ReadBytesFromSerializedBuffer; instructions=19, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-void __thiscall
+int __thiscall
 TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
-          (int param_1,void *param_2,uint param_3)
+          (TFileStream *this,void *destination,uint requestedCount)
 
 {
-  if (*(int *)(param_1 + 4) == 0) {
+  int iVar1;
+  
+  if (this->field04 == 0) {
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  ReadBytesFromSerializedBuffer(*(void **)(*(int *)(param_1 + 4) + 4),param_2,param_3);
+  iVar1 = TNetMgr::ReadBytesFromSerializedBuffer
+                    (*(TNetMgr **)(this->field04 + 4),destination,requestedCount);
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489290
+// GHIDRA_NAME TFileStream::WrapperFor_WriteBytesToSerializedBuffer_At00489290
+// GHIDRA_PROTO void __thiscall WrapperFor_WriteBytesToSerializedBuffer_At00489290(void * source, uint byteCount)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around WriteBytesToSerializedBuffer; instructions=19, call_insns=2, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around WriteBytesToSerializedBuffer; instructions=19, call_insns=2,
+   internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TFileStream::WrapperFor_WriteBytesToSerializedBuffer_At00489290
+          (TFileStream *this,void *source,uint byteCount)
+
+{
+  if (this->field04 == 0) {
+                    /* WARNING: Subroutine does not return */
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  }
+  TNetMgr::WriteBytesToSerializedBuffer(*(TNetMgr **)(this->field04 + 4),source,byteCount);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489300
 // GHIDRA_NAME TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
-// GHIDRA_PROTO void __thiscall WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
+// GHIDRA_PROTO void * __thiscall WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void * runtimeClassOrFactory)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around ResolveOrInstantiateSerializedObjectReference; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -195,16 +330,34 @@ TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
 /* [WrapperShape] small wrapper around ResolveOrInstantiateSerializedObjectReference;
    instructions=8, call_insns=1, internal_calls=1, unique_internal=1 */
 
-void __thiscall
-TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(TFileStream *this)
+void * __thiscall
+TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
+          (TFileStream *this,void *runtimeClassOrFactory)
 
 {
   void *pvVar1;
-  undefined4 *in_stack_00000004;
   
-  pvVar1 = ResolveOrInstantiateSerializedObjectReference
-                     (*(void **)(*(int *)(this + 4) + 4),(void *)0x0);
-  *in_stack_00000004 = pvVar1;
+  pvVar1 = ReadObject(*(void **)(this->field04 + 4),(void *)0x0);
+  *(void **)runtimeClassOrFactory = pvVar1;
+  return (void *)CONCAT31((int3)((uint)pvVar1 >> 8),1);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489330
+// GHIDRA_NAME TFileStream::WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
+// GHIDRA_PROTO void __thiscall WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330(void * objectRef)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [WrapperShape] small wrapper around SerializePolymorphicObjectReferenceAndPayload; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT_END
+
+/* [WrapperShape] small wrapper around SerializePolymorphicObjectReferenceAndPayload;
+   instructions=6, call_insns=1, internal_calls=1, unique_internal=1 */
+
+void __thiscall
+TFileStream::WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
+          (TFileStream *this,void *objectRef)
+
+{
+  TNetMgr::WriteObject(*(TNetMgr **)(this->field04 + 4),objectRef);
   return;
 }
 

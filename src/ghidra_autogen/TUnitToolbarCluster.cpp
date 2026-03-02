@@ -4,15 +4,15 @@
 // Bucket: TUnitToolbarCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004016E0
-// GHIDRA_NAME TUnitToolbarCluster::thunk_GetTUnitToolbarClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUnitToolbarClusterClassNamePointer(void)
+// GHIDRA_NAME TUnitToolbarCluster::TUnitToolbarCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TUnitToolbarCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTUnitToolbarClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTUnitToolbarClusterClassNamePointer */
 
-void * __cdecl TUnitToolbarCluster::thunk_GetTUnitToolbarClusterClassNamePointer(void)
+void * __cdecl TUnitToolbarCluster::TUnitToolbarCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,45 +22,83 @@ void * __cdecl TUnitToolbarCluster::thunk_GetTUnitToolbarClusterClassNamePointer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040334B
-// GHIDRA_NAME TUnitToolbarCluster::thunk_DestructTUnitToolbarClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUnitToolbarClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TUnitToolbarCluster::TUnitToolbarCluster_VtblSlot001
+// GHIDRA_PROTO TUnitToolbarCluster * __thiscall TUnitToolbarCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTUnitToolbarClusterAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTUnitToolbarClusterAndMaybeFree */
 
-void * __thiscall
-TUnitToolbarCluster::thunk_DestructTUnitToolbarClusterAndMaybeFree
-          (TUnitToolbarCluster *this,byte freeSelfFlag)
+TUnitToolbarCluster * __thiscall
+TUnitToolbarCluster::TUnitToolbarCluster_VtblSlot001(TUnitToolbarCluster *this,byte freeSelfFlag)
 
 {
-  void *pvVar1;
+  TUnitToolbarCluster *pTVar1;
   
-  pvVar1 = DestructTUnitToolbarClusterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  pTVar1 = DestructTUnitToolbarClusterAndMaybeFree(this,freeSelfFlag);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405FF6
-// GHIDRA_NAME TUnitToolbarCluster::thunk_Cluster_GameStateEventHint_00586090
-// GHIDRA_PROTO void __thiscall thunk_Cluster_GameStateEventHint_00586090(void)
+// GHIDRA_NAME TUnitToolbarCluster::TUnitToolbarCluster_VtblSlot015
+// GHIDRA_PROTO void __thiscall TUnitToolbarCluster_VtblSlot015(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_GameStateEventHint_00586090
+// GHIDRA_COMMENT Single-JMP thunk to Cluster_GameStateEventHint_00586090 [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_GameStateEventHint_00586090 */
+/* Single-JMP thunk to Cluster_GameStateEventHint_00586090 [FID:thunk_target_sync] */
 
 void __thiscall
-TUnitToolbarCluster::thunk_Cluster_GameStateEventHint_00586090(TUnitToolbarCluster *this)
+TUnitToolbarCluster::TUnitToolbarCluster_VtblSlot015
+          (TUnitToolbarCluster *this,int arg1,int arg2,int arg3)
 
 {
-  WrapperFor_thunk_DispatchPanelControlEvent_At00586090(this);
+  WrapperFor_thunk_DispatchPanelControlEvent_At00586090(this,arg1,arg2,arg3);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407A36
+// GHIDRA_NAME TUnitToolbarCluster::thunk_UpdateTradeResourceSelectionByIndex
+// GHIDRA_PROTO void __thiscall thunk_UpdateTradeResourceSelectionByIndex(int nResourceIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to UpdateTradeResourceSelectionByIndex
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to UpdateTradeResourceSelectionByIndex */
+
+void __thiscall
+TUnitToolbarCluster::thunk_UpdateTradeResourceSelectionByIndex
+          (TUnitToolbarCluster *this,int nResourceIndex)
+
+{
+  UpdateTradeResourceSelectionByIndex(this,nResourceIndex);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004086CF
+// GHIDRA_NAME TUnitToolbarCluster::thunk_OrphanVtableAssignStub_00586150
+// GHIDRA_PROTO byte __cdecl thunk_OrphanVtableAssignStub_00586150(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OrphanVtableAssignStub_00586150
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OrphanVtableAssignStub_00586150 */
+
+byte __cdecl TUnitToolbarCluster::thunk_OrphanVtableAssignStub_00586150(void)
+
+{
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585F70
 // GHIDRA_NAME TUnitToolbarCluster::CreateTUnitToolbarClusterInstance
 // GHIDRA_PROTO void * __cdecl CreateTUnitToolbarClusterInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
 
@@ -76,12 +114,12 @@ void * __cdecl TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
   puStack_8 = &LAB_006377ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TUberCluster *)0x0;
   if (this != (TUberCluster *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState(this);
-    *(undefined ***)this = &g_vtblTUnitToolbarCluster;
+    this->field0_0x0 = &g_vtblTUnitToolbarCluster;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -92,10 +130,10 @@ void * __cdecl TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
 // GHIDRA_NAME TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTUnitToolbarClusterClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUnitToolbarCluster.
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* Returns class descriptor pointer for TUnitToolbarCluster. */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void * __cdecl TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer(void)
 
@@ -105,64 +143,139 @@ void * __cdecl TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586010
 // GHIDRA_NAME TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTUnitToolbarClusterBaseState(void)
+// GHIDRA_PROTO TUnitToolbarCluster * __thiscall ConstructTUnitToolbarClusterBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void * __thiscall
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TUnitToolbarCluster * __thiscall
 TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(TUnitToolbarCluster *this)
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  *(undefined ***)this = &g_vtblTUnitToolbarCluster;
+  this->field0_0x0 = &g_vtblTUnitToolbarCluster;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586040
 // GHIDRA_NAME TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUnitToolbarClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO TUnitToolbarCluster * __thiscall DestructTUnitToolbarClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
 
-void * __thiscall
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+TUnitToolbarCluster * __thiscall
 TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
           (TUnitToolbarCluster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586090
 // GHIDRA_NAME TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(int arg1, int arg2, int arg3)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=49, call_insns=5, internal_calls=1, unique_internal=1
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
 // GHIDRA_COMMENT_END
 
-/* [WrapperShape] small wrapper around thunk_DispatchPanelControlEvent; instructions=49,
-   call_insns=5, internal_calls=1, unique_internal=1 */
+/* imported from redecomp:src/game/trade_screen.cpp */
 
 void __thiscall
 TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
-          (TUnitToolbarCluster *this)
+          (TUnitToolbarCluster *this,int arg1,int arg2,int arg3)
 
 {
   int *piVar1;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   
-  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
-  if ((((*(int *)((int)g_pApplicationUiRootController + 0x24) == 1) && (in_stack_00000004 == 0x68))
-      || (in_stack_00000004 == 0x67)) || ((in_stack_00000004 == 10 || (in_stack_00000004 == 0xc))))
-  {
-    piVar1 = (int *)(**(code **)(*(int *)this + 0x58))();
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,arg1,(PanelEventPayload *)arg2,arg3);
+  if ((((*(int *)((int)g_pApplicationUiRootController + 0x24) == 1) && (arg1 == 0x68)) ||
+      (arg1 == 0x67)) || ((arg1 == 10 || (arg1 == 0xc)))) {
+    piVar1 = (int *)(*(code *)this->field0_0x0[0x16])();
     piVar1 = (int *)(**(code **)(*piVar1 + 0x94))(0x6d61696e);
     if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
-    (**(code **)(*piVar1 + 0x3c))();
+    (**(code **)(*piVar1 + 0x3c))(arg1,arg2,arg3);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586150
+// GHIDRA_NAME TUnitToolbarCluster::OrphanVtableAssignStub_00586150
+// GHIDRA_PROTO byte __cdecl OrphanVtableAssignStub_00586150(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+byte __cdecl TUnitToolbarCluster::OrphanVtableAssignStub_00586150(void)
+
+{
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586170
+// GHIDRA_NAME TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex
+// GHIDRA_PROTO void __thiscall UpdateTradeResourceSelectionByIndex(int nResourceIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
+// GHIDRA_COMMENT_END
+
+/* imported from redecomp:src/game/trade_screen.cpp */
+
+void __thiscall
+TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex
+          (TUnitToolbarCluster *this,int nResourceIndex)
+
+{
+  int *pCurrentEntry;
+  int fIteratorValid;
+  int iVar1;
+  int *extraout_EAX;
+  int extraout_EAX_00;
+  int *piVar2;
+  int *pMatchedEntry;
+  
+  thunk_InitializeSelectableTextOptionEntryIteratorContext();
+  pMatchedEntry = (int *)0x0;
+  thunk_BeginSelectableTextOptionEntryIterator();
+  thunk_IsSelectableTextOptionEntryIteratorValid();
+  piVar2 = pCurrentEntry;
+  iVar1 = fIteratorValid;
+  while (iVar1 != 0) {
+    if (piVar2[7] == nResourceIndex) {
+      (**(code **)(*piVar2 + 0x3c))(0x1f,this,0);
+      pMatchedEntry = piVar2;
+    }
+    else {
+      (**(code **)(*piVar2 + 0x3c))(0x20,this,0);
+    }
+    thunk_AdvanceSelectableTextOptionEntryIterator();
+    thunk_IsSelectableTextOptionEntryIteratorValid();
+    piVar2 = extraout_EAX;
+    iVar1 = extraout_EAX_00;
+  }
+  this->field84 = nResourceIndex;
+  if (pMatchedEntry != (int *)0x0) {
+    piVar2 = (int *)(*(code *)this->field0_0x0[0x16])();
+    piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x444c4f47);
+    if (piVar2 == (int *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    }
+    (**(code **)(*piVar2 + 0x3c))(0xc,pMatchedEntry,0);
   }
   return;
 }

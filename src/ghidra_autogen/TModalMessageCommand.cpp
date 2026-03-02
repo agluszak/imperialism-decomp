@@ -3,16 +3,34 @@
 // Program: Imperialism.exe
 // Bucket: TModalMessageCommand.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004038EB
+// GHIDRA_NAME TModalMessageCommand::thunk_DispatchTurnStateLocalizedMessageForControlId
+// GHIDRA_PROTO void __thiscall thunk_DispatchTurnStateLocalizedMessageForControlId(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Direct thunk
+// GHIDRA_COMMENT_END
+
+/* Direct thunk */
+
+void __thiscall
+TModalMessageCommand::thunk_DispatchTurnStateLocalizedMessageForControlId
+          (TModalMessageCommand *this)
+
+{
+  DispatchTurnStateLocalizedMessageForControlId(this);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004060C8
-// GHIDRA_NAME TModalMessageCommand::thunk_GetTModalMessageCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTModalMessageCommandClassNamePointer(void)
+// GHIDRA_NAME TModalMessageCommand::thunk_GetTModalMessageCommandClassNamePointer_At004060c8
+// GHIDRA_PROTO void * __cdecl thunk_GetTModalMessageCommandClassNamePointer_At004060c8(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTModalMessageCommandClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTModalMessageCommandClassNamePointer */
 
-void * __cdecl TModalMessageCommand::thunk_GetTModalMessageCommandClassNamePointer(void)
+void * __cdecl TModalMessageCommand::thunk_GetTModalMessageCommandClassNamePointer_At004060c8(void)
 
 {
   void *pvVar1;
@@ -21,9 +39,39 @@ void * __cdecl TModalMessageCommand::thunk_GetTModalMessageCommandClassNamePoint
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005DCD10
+// GHIDRA_NAME TModalMessageCommand::DispatchTurnStateLocalizedMessageForControlId
+// GHIDRA_PROTO void __thiscall DispatchTurnStateLocalizedMessageForControlId(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Build and dispatch localized turn-state message for control id
+// GHIDRA_COMMENT_END
+
+/* Build and dispatch localized turn-state message for control id */
+
+void __thiscall
+TModalMessageCommand::DispatchTurnStateLocalizedMessageForControlId(TModalMessageCommand *this)
+
+{
+  undefined4 in_EAX;
+  TModalMessageCommand *pTStack_14;
+  int *piStack_10;
+  undefined4 uStack_c;
+  undefined4 uStack_8;
+  undefined1 *local_4;
+  
+  uStack_c = CONCAT22((short)((uint)in_EAX >> 0x10),this->field1c);
+  uStack_8 = 0;
+  piStack_10 = &g_ShLocalizedPromptDialogMessageRef;
+  local_4 = (undefined1 *)&pTStack_14;
+  pTStack_14 = this;
+  thunk_AssignStringSharedRefAndReturnThis();
+  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD80
 // GHIDRA_NAME TModalMessageCommand::CreateTModalMessageCommandInstance
-// GHIDRA_PROTO undefined CreateTModalMessageCommandInstance()
+// GHIDRA_PROTO TModalMessageCommand * __cdecl CreateTModalMessageCommandInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around ReleaseSharedStringRefIfNotEmpty; instructions=16, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -31,9 +79,11 @@ void * __cdecl TModalMessageCommand::thunk_GetTModalMessageCommandClassNamePoint
 /* [WrapperShape] small wrapper around ReleaseSharedStringRefIfNotEmpty; instructions=16,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
-void __fastcall TModalMessageCommand::CreateTModalMessageCommandInstance(undefined4 *param_1)
+TModalMessageCommand * __cdecl TModalMessageCommand::CreateTModalMessageCommandInstance(void)
 
 {
+  TModalMessageCommand *extraout_EAX;
+  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -44,9 +94,9 @@ void __fastcall TModalMessageCommand::CreateTModalMessageCommandInstance(undefin
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_0066fec4;
+  *in_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
-  return;
+  return extraout_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCDD0

@@ -3,68 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402423
-// GHIDRA_NAME TCluster::thunk_RunRegisteredDialogFactoriesByEventCode
-// GHIDRA_PROTO int * __thiscall thunk_RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunRegisteredDialogFactoriesByEventCode
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RunRegisteredDialogFactoriesByEventCode */
-
-int * __thiscall
-TCluster::thunk_RunRegisteredDialogFactoriesByEventCode
-          (TCluster *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  int *piVar1;
-  
-  piVar1 = RunRegisteredDialogFactoriesByEventCode
-                     (this,nContextId,pEventPacket,nEventCode,pAnchorPoint);
-  return piVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042C8
-// GHIDRA_NAME TCluster::thunk_ConstructUiResourceEntryType4B0C0
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiResourceEntryType4B0C0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiResourceEntryType4B0C0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiResourceEntryType4B0C0 */
-
-void __thiscall TCluster::thunk_ConstructUiResourceEntryType4B0C0(TCluster *this)
-
-{
-  ushort uVar1;
-  
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined4 *)(this + 0x60) = 1;
-  this[100] = (TCluster)0x0;
-  *(undefined4 *)(this + 0x68) = 0;
-  *(undefined4 *)(this + 0x6c) = 0;
-  *(undefined4 *)(this + 0x70) = 0;
-  *(undefined4 *)(this + 0x74) = 0;
-  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
-  uVar1 = g_wUiResourceEntryDefaultParam2;
-  *(undefined ***)this = &g_vtblTCluster;
-  *(undefined4 *)(this + 0x84) = 0x20202020;
-  *(ushort *)(this + 0x80) = uVar1;
-  *(undefined4 *)(this + 0x60) = 5;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004047FF
-// GHIDRA_NAME TCluster::thunk_GetTClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTClusterClassNamePointer(void)
+// GHIDRA_NAME TCluster::TCluster_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCluster_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTClusterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTClusterClassNamePointer */
 
-void * __cdecl TCluster::thunk_GetTClusterClassNamePointer(void)
+void * __cdecl TCluster::TCluster_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -73,36 +21,16 @@ void * __cdecl TCluster::thunk_GetTClusterClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040587B
-// GHIDRA_NAME TCluster::thunk_InvokeDialogFactoryFromPacket
-// GHIDRA_PROTO int * __thiscall thunk_InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InvokeDialogFactoryFromPacket
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InvokeDialogFactoryFromPacket */
-
-int * __thiscall
-TCluster::thunk_InvokeDialogFactoryFromPacket
-          (TCluster *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  int *piVar1;
-  
-  piVar1 = InvokeDialogFactoryFromPacket(this,nContextId,pEventPacket,nEventCode,pAnchorPoint);
-  return piVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F5D
-// GHIDRA_NAME TCluster::thunk_DestructTClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCluster::TCluster_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TCluster_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTClusterAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTClusterAndMaybeFree */
 
-void * __thiscall TCluster::thunk_DestructTClusterAndMaybeFree(TCluster *this,byte freeSelfFlag)
+void * __thiscall TCluster::TCluster_VtblSlot001(TCluster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -134,23 +62,23 @@ void * __cdecl TCluster::CreateTClusterInstance(void)
   puStack_8 = &LAB_0062f28a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x88);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined4 *)(this + 0x60) = 1;
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].pVtable = (void *)0x1;
+    this[1].field1_0x4 = 0;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *(undefined ***)this = &g_vtblTCluster;
-    *(undefined4 *)(this + 0x84) = 0x20202020;
-    *(ushort *)(this + 0x80) = uVar1;
-    *(undefined4 *)(this + 0x60) = 5;
+    this->pVtable = &g_vtblTCluster;
+    this[1].field10_0x24 = 0x20202020;
+    *(ushort *)&this[1].pChildMapView20 = uVar1;
+    this[1].pVtable = (void *)0x5;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -182,20 +110,20 @@ void __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this)
 {
   ushort uVar1;
   
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined4 *)(this + 0x60) = 1;
-  this[100] = (TCluster)0x0;
-  *(undefined4 *)(this + 0x68) = 0;
-  *(undefined4 *)(this + 0x6c) = 0;
-  *(undefined4 *)(this + 0x70) = 0;
-  *(undefined4 *)(this + 0x74) = 0;
-  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->field55_0x60 = 1;
+  this->field56_0x64 = 0;
+  this->field60_0x68 = 0;
+  this->field61_0x6c = 0;
+  this->field62_0x70 = 0;
+  this->field63_0x74 = 0;
+  this->field64_0x78 = g_nUiResourceEntryDefaultParam0;
+  this->field65_0x7c = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *(undefined ***)this = &g_vtblTCluster;
-  *(undefined4 *)(this + 0x84) = 0x20202020;
-  *(ushort *)(this + 0x80) = uVar1;
-  *(undefined4 *)(this + 0x60) = 5;
+  this->field0_0x0 = &g_vtblTCluster;
+  this->field69_0x84 = 0x20202020;
+  this->field66_0x80 = uVar1;
+  this->field55_0x60 = 5;
   return;
 }
 
@@ -208,85 +136,8 @@ void * __thiscall TCluster::DestructTClusterAndMaybeFree(TCluster *this,byte fre
 {
   DestructTClusterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491CC0
-// GHIDRA_NAME TCluster::RunRegisteredDialogFactoriesByEventCode
-// GHIDRA_PROTO int * __thiscall RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Iterates registered dialog factory callbacks and invokes each with nEventCode until one returns a UI resource object; applies packet association and anchor offset if provided.
-// GHIDRA_COMMENT_END
-
-/* Iterates registered dialog factory callbacks and invokes each with nEventCode until one returns a
-   UI resource object; applies packet association and anchor offset if provided. */
-
-int * __thiscall
-TCluster::RunRegisteredDialogFactoriesByEventCode
-          (TCluster *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  int *piVar3;
-  int iStack_8;
-  int iStack_4;
-  
-  piVar3 = (int *)0x0;
-  puVar2 = *(undefined4 **)(this + 8);
-  do {
-    if (puVar2 == (undefined4 *)0x0) {
-      if (piVar3 == (int *)0x0) {
-        return (int *)0x0;
-      }
-      break;
-    }
-    puVar1 = (undefined4 *)*puVar2;
-    piVar3 = (int *)(*(code *)puVar2[2])(0,nEventCode);
-    puVar2 = puVar1;
-  } while (piVar3 == (int *)0x0);
-  if (pEventPacket != (int *)0x0) {
-    (**(code **)(*pEventPacket + 0x170))(piVar3,0);
-  }
-  if ((pAnchorPoint[1] != 0) || (*pAnchorPoint != 0)) {
-    iStack_8 = *pAnchorPoint + piVar3[9];
-    iStack_4 = piVar3[10] + pAnchorPoint[1];
-    (**(code **)(*piVar3 + 0xf0))(&iStack_8,0);
-  }
-  return piVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491D80
-// GHIDRA_NAME TCluster::InvokeDialogFactoryFromPacket
-// GHIDRA_PROTO int * __thiscall InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Factory wrapper that forwards nEventCode to callback iterator (vfunc +0x30) and performs post-create initialization on returned UI resource object.
-// GHIDRA_COMMENT_END
-
-/* Factory wrapper that forwards nEventCode to callback iterator (vfunc +0x30) and performs
-   post-create initialization on returned UI resource object. */
-
-int * __thiscall
-TCluster::InvokeDialogFactoryFromPacket
-          (TCluster *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  int iVar1;
-  int iVar2;
-  int *piVar3;
-  
-  iVar2 = g_Invoke_Dialog_Factory_State_006950AC;
-  g_Invoke_Dialog_Factory_State_006950AC = 0;
-  piVar3 = (int *)(**(code **)(*(int *)this + 0x30))
-                            (nContextId,pEventPacket,nEventCode,pAnchorPoint);
-  if (piVar3 != (int *)0x0) {
-    iVar1 = *piVar3;
-    (**(code **)(iVar1 + 0xd8))(nContextId);
-    (**(code **)(iVar1 + 0xe0))();
-  }
-  g_Invoke_Dialog_Factory_State_006950AC = iVar2;
-  return piVar3;
 }
 

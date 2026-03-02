@@ -4,8 +4,8 @@
 // Bucket: TTerrainInfoDialog.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040812F
-// GHIDRA_NAME TTerrainInfoDialog::thunk_DestructTTerrainInfoDialogAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTerrainInfoDialogAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TTerrainInfoDialog_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTerrainInfoDialogAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,8 +13,7 @@
 /* Single-JMP thunk to DestructTTerrainInfoDialogAndMaybeFree */
 
 void * __thiscall
-TTerrainInfoDialog::thunk_DestructTTerrainInfoDialogAndMaybeFree
-          (TTerrainInfoDialog *this,byte freeSelfFlag)
+TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot001(TTerrainInfoDialog *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -24,15 +23,15 @@ TTerrainInfoDialog::thunk_DestructTTerrainInfoDialogAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004090FC
-// GHIDRA_NAME TTerrainInfoDialog::thunk_GetTTerrainInfoDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTerrainInfoDialogClassNamePointer(void)
+// GHIDRA_NAME TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TTerrainInfoDialog_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTerrainInfoDialogClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTerrainInfoDialogClassNamePointer */
 
-void * __cdecl TTerrainInfoDialog::thunk_GetTTerrainInfoDialogClassNamePointer(void)
+void * __cdecl TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -59,12 +58,12 @@ void * __cdecl TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
   puStack_8 = &LAB_00633dda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
     TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &g_vtblTTerrainInfoDialog;
+    this->field0_0x0 = &g_vtblTTerrainInfoDialog;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -94,7 +93,7 @@ void * __thiscall TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerr
 
 {
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined ***)this = &g_vtblTTerrainInfoDialog;
+  this->field0_0x0 = &g_vtblTTerrainInfoDialog;
   return this;
 }
 
@@ -109,7 +108,7 @@ TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

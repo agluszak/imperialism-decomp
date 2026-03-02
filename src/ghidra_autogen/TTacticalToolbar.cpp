@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalToolbar.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00403BED
+// GHIDRA_NAME TTacticalToolbar::thunk_scalar_deleting_destructor_00403BED
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403BED(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTacticalToolbar::thunk_scalar_deleting_destructor_00403BED
+          (TTacticalToolbar *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040403E
 // GHIDRA_NAME TTacticalToolbar::thunk_GetTTacticalToolbarClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTTacticalToolbarClassNamePointer(void)
@@ -21,17 +41,34 @@ void * __cdecl TTacticalToolbar::thunk_GetTTacticalToolbarClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004070A4
-// GHIDRA_NAME TTacticalToolbar::thunk_RenderTacticalToolbarStrengthMeter_At004070a4
-// GHIDRA_PROTO int __thiscall thunk_RenderTacticalToolbarStrengthMeter_At004070a4(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x00405358
+// GHIDRA_NAME TTacticalToolbar::thunk_UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+// GHIDRA_PROTO void __thiscall thunk_UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void * param_1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderTacticalToolbarStrengthMeter
+// GHIDRA_COMMENT Thunk wrapper for UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel.
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to RenderTacticalToolbarStrengthMeter */
+/* Thunk wrapper for UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel. */
 
-int __thiscall
-TTacticalToolbar::thunk_RenderTacticalToolbarStrengthMeter_At004070a4(TTacticalToolbar *this)
+void __thiscall
+TTacticalToolbar::thunk_UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+          (TTacticalToolbar *this,void *param_1)
+
+{
+  UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(this,param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004070A4
+// GHIDRA_NAME TTacticalToolbar::thunk_DestructTTacticalToolbarAndMaybeFree
+// GHIDRA_PROTO int __thiscall thunk_DestructTTacticalToolbarAndMaybeFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RenderTacticalToolbarStrengthMeter [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RenderTacticalToolbarStrengthMeter [FID:thunk_target_sync] */
+
+int __thiscall TTacticalToolbar::thunk_DestructTTacticalToolbarAndMaybeFree(TTacticalToolbar *this)
 
 {
   int iVar1;
@@ -62,15 +99,15 @@ void * __cdecl TTacticalToolbar::CreateTTacticalToolbarInstance(void)
   puStack_8 = &LAB_006387da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TCluster *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TCluster *)0x0) {
     TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    *(undefined ***)this = &PTR_thunk_GetTTacticalToolbarClassNamePointer_00644d98;
-    *(undefined4 *)(this + 0x88) = 0;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0x90) = 0;
+    this->field0_0x0 = &PTR_thunk_GetTTacticalToolbarClassNamePointer_00644d98;
+    this[1].field0_0x0 = (undefined **)0x0;
+    *(undefined4 *)&this[1].field_0x4 = 0;
+    this[1].field9_0xc = 0;
+    *(undefined4 *)&this[1].field_0x8 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -121,10 +158,12 @@ void __thiscall TTacticalToolbar::ConstructTTacticalToolbarBaseState(TTacticalTo
   thunk_LoadUiStringByGroupAndIndexToControlObject(0x273d,0x23,pvVar2);
   pvVar2 = (void *)(*pcVar1)();
   thunk_LoadUiStringByGroupAndIndexToControlObject(0x273d,0x24,pvVar2);
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(&g_szEmptyString);
-  InitializeAndRunMainRoutine();
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&stack0xffffffdc);
+  TToolBarCluster::InitializeAndRunMainRoutine();
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&stack0xffffffdc);
+  TToolBarCluster::InitializeAndRunMainRoutine();
   return;
 }
 
@@ -143,11 +182,13 @@ int __thiscall TTacticalToolbar::DestructTTacticalToolbarAndMaybeFree(TTacticalT
   void *pvVar1;
   int iVar2;
   int iVar3;
+  int extraout_EAX;
+  int extraout_EAX_00;
   short sVar4;
   RECT local_20;
   RECT local_10;
   
-  pvVar1 = this[0x23].pVtable;
+  pvVar1 = this->pField8c;
   iVar3 = 0;
   if (pvVar1 != (void *)0x0) {
     iVar2 = (int)*(short *)(*(int *)((int)pvVar1 + 0x38) + 0x38);
@@ -167,16 +208,17 @@ int __thiscall TTacticalToolbar::DestructTTacticalToolbarAndMaybeFree(TTacticalT
       local_20.bottom = 0x123;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x694) + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0x24,
                  (astruct_19 *)0x0);
-      iVar3 = SetQuickDrawStrokeColor(0x13);
+      TCivDescription::SetQuickDrawStrokeColor();
+      iVar3 = extraout_EAX;
     }
   }
-  pvVar1 = this[0x24].pVtable;
-  if (pvVar1 != (void *)0x0) {
-    sVar4 = (short)*(undefined4 *)((int)pvVar1 + 0x10) * 0xb;
-    iVar2 = (int)*(short *)(*(int *)((int)pvVar1 + 0x38) + 0x38);
+  iVar2 = this->field131_0x90;
+  if (iVar2 != 0) {
+    sVar4 = (short)*(undefined4 *)(iVar2 + 0x10) * 0xb;
+    iVar2 = (int)*(short *)(*(int *)(iVar2 + 0x38) + 0x38);
     iVar3 = iVar2 / 100;
     if (0x31 < iVar2 % 100) {
       sVar4 = sVar4 + 5;
@@ -192,12 +234,63 @@ int __thiscall TTacticalToolbar::DestructTTacticalToolbarAndMaybeFree(TTacticalT
       local_20.bottom = 0x163;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x694) + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0x24,
                  (astruct_19 *)0x0);
-      iVar3 = SetQuickDrawStrokeColor(0x13);
+      TCivDescription::SetQuickDrawStrokeColor();
+      iVar3 = extraout_EAX_00;
     }
   }
   return iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005ACB50
+// GHIDRA_NAME TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+// GHIDRA_PROTO void __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void * param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Update current diplomacy counterparty control state and refresh dialog label text.
+// GHIDRA_COMMENT_END
+
+/* Update current diplomacy counterparty control state and refresh dialog label text. */
+
+void __thiscall
+TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+          (TTacticalToolbar *this,void *param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int *piVar3;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_18;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006387f8;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->pField8c = param_1;
+  piVar3 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x63757272);
+  iVar2 = *piVar3;
+  (**(code **)(iVar2 + 0xc))();
+  if (param_1 != (void *)0x0) {
+    iVar1 = *(int *)((int)param_1 + 0xc) * 2 + 0xf1e;
+    (**(code **)(iVar2 + 0x1c8))
+              (CONCAT22((short)((uint)iVar1 >> 0x10),(short)iVar1 + *(short *)((int)param_1 + 0x20))
+               ,1);
+  }
+  (**(code **)(iVar2 + 0xa4))(param_1 != (void *)0x0,1);
+  thunk_InvalidateCityDialogRectRegion((int)&stack0xffffffd8,1);
+  InitializeSharedStringRefFromEmpty();
+  if (param_1 != (void *)0x0) {
+    (**(code **)(*(int *)param_1 + 0xc))();
+    AssignFromPtr(&puStack_8,(int *)(*(int *)((int)param_1 + 0x38) + 0x24));
+  }
+  thunk_AssignSharedStringToTaggedControlAndProcessState();
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = uStack_18;
+  return;
 }
 

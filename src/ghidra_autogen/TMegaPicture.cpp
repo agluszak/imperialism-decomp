@@ -4,15 +4,15 @@
 // Bucket: TMegaPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004046F6
-// GHIDRA_NAME TMegaPicture::thunk_GetTMegaPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMegaPictureClassNamePointer(void)
+// GHIDRA_NAME TMegaPicture::TMegaPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMegaPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMegaPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMegaPictureClassNamePointer */
 
-void * __cdecl TMegaPicture::thunk_GetTMegaPictureClassNamePointer(void)
+void * __cdecl TMegaPicture::TMegaPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,16 +22,15 @@ void * __cdecl TMegaPicture::thunk_GetTMegaPictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040996C
-// GHIDRA_NAME TMegaPicture::thunk_DestructTMegaPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMegaPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMegaPicture::TMegaPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TMegaPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMegaPictureAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTMegaPictureAndMaybeFree */
 
-void * __thiscall
-TMegaPicture::thunk_DestructTMegaPictureAndMaybeFree(TMegaPicture *this,byte freeSelfFlag)
+void * __thiscall TMegaPicture::TMegaPicture_VtblSlot001(TMegaPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -57,7 +56,7 @@ void * __cdecl TMegaPicture::CreateTMegaPictureInstance(void)
   puStack_8 = &LAB_006365da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -95,10 +94,10 @@ void * __thiscall TMegaPicture::ConstructTMegaPictureBaseState(TMegaPicture *thi
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTMegaPicture;
-  this[0x90] = (TMegaPicture)0x0;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined2 *)(this + 0x98) = 0;
+  this->field0_0x0 = &g_vtblTMegaPicture;
+  this->field141_0x90 = 0;
+  this->field94 = 0;
+  this->field98 = 0;
   return this;
 }
 
@@ -112,7 +111,7 @@ TMegaPicture::DestructTMegaPictureAndMaybeFree(TMegaPicture *this,byte freeSelfF
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

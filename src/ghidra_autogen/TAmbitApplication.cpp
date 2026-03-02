@@ -3,24 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TAmbitApplication.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408B34
-// GHIDRA_NAME TAmbitApplication::thunk_GetTAmbitApplicationClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAmbitApplicationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAmbitApplicationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAmbitApplicationClassNamePointer */
-
-void * __cdecl TAmbitApplication::thunk_GetTAmbitApplicationClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAmbitApplicationClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DEB0
 // GHIDRA_NAME TAmbitApplication::GetTAmbitApplicationClassNamePointer
 // GHIDRA_PROTO void * __cdecl GetTAmbitApplicationClassNamePointer(void)

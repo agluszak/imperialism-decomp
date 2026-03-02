@@ -21,18 +21,37 @@ void * __cdecl TTacMapUberPicture::thunk_GetTTacMapUberPictureClassNamePointer(v
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040966F
-// GHIDRA_NAME TTacMapUberPicture::thunk_InitializeTacMapUberPictureDialogHandle_At0040966f
-// GHIDRA_PROTO void __thiscall thunk_InitializeTacMapUberPictureDialogHandle_At0040966f(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004078FB
+// GHIDRA_NAME TTacMapUberPicture::thunk_scalar_deleting_destructor_004078FB
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004078FB(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTacMapUberPictureDialogHandle
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to InitializeTacMapUberPictureDialogHandle */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TTacMapUberPicture::thunk_scalar_deleting_destructor_004078FB
+          (TTacMapUberPicture *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040966F
+// GHIDRA_NAME TTacMapUberPicture::thunk_ConstructTTacMapUberPictureBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTTacMapUberPictureBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InitializeTacMapUberPictureDialogHandle [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InitializeTacMapUberPictureDialogHandle [FID:thunk_target_sync] */
 
 void __thiscall
-TTacMapUberPicture::thunk_InitializeTacMapUberPictureDialogHandle_At0040966f
-          (TTacMapUberPicture *this)
+TTacMapUberPicture::thunk_ConstructTTacMapUberPictureBaseState(TTacMapUberPicture *this)
 
 {
   ConstructTTacMapUberPictureBaseState(this);
@@ -40,16 +59,16 @@ TTacMapUberPicture::thunk_InitializeTacMapUberPictureDialogHandle_At0040966f
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040970A
-// GHIDRA_NAME TTacMapUberPicture::thunk_ApplyTacMapUberPictureDialogModeValue_At0040970a
-// GHIDRA_PROTO void __thiscall thunk_ApplyTacMapUberPictureDialogModeValue_At0040970a(int modeValue)
+// GHIDRA_NAME TTacMapUberPicture::thunk_DestructTTacMapUberPictureAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTTacMapUberPictureAndMaybeFree(int modeValue)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyTacMapUberPictureDialogModeValue
+// GHIDRA_COMMENT Single-JMP thunk to ApplyTacMapUberPictureDialogModeValue [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ApplyTacMapUberPictureDialogModeValue */
+/* Single-JMP thunk to ApplyTacMapUberPictureDialogModeValue [FID:thunk_target_sync] */
 
 void __thiscall
-TTacMapUberPicture::thunk_ApplyTacMapUberPictureDialogModeValue_At0040970a
+TTacMapUberPicture::thunk_DestructTTacMapUberPictureAndMaybeFree
           (TTacMapUberPicture *this,int modeValue)
 
 {
@@ -79,12 +98,12 @@ void * __cdecl TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
   puStack_8 = &LAB_0063883a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0x98);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TOffLimitsPicture *)0x0) {
     TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-    *(undefined ***)this = &PTR_thunk_GetTTacMapUberPictureClassNamePointer_006451f0;
-    *(undefined4 *)(this + 0x94) = 0;
+    this->field0_0x0 = &PTR_thunk_GetTTacMapUberPictureClassNamePointer_006451f0;
+    *(undefined4 *)&this->field_0x94 = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -121,10 +140,10 @@ void __thiscall TTacMapUberPicture::ConstructTTacMapUberPictureBaseState(TTacMap
 {
   int *piVar1;
   
-  TMapUberUberPicture::TMapUberUberPicture_VtblSlot55((TMapUberUberPicture *)this);
+  TMapUberUberPicture::TMapUberUberPicture_VtblSlot055((TMapUberUberPicture *)this);
   piVar1 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x444c4f47);
   (**(code **)(*piVar1 + 0xc))();
-  this[0x25].pVtable = piVar1;
+  this->field94 = piVar1;
   return;
 }
 

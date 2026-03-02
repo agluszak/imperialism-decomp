@@ -4,33 +4,31 @@
 // Bucket: TBackgroundPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401AFA
-// GHIDRA_NAME TBackgroundPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
+// GHIDRA_NAME TBackgroundPicture::TBackgroundPicture_VtblSlot068
+// GHIDRA_PROTO void __thiscall TBackgroundPicture_VtblSlot068(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00572d00
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At00572d00 */
+/* Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00 */
 
-void __thiscall
-TBackgroundPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-          (TBackgroundPicture *this)
+void __thiscall TBackgroundPicture::TBackgroundPicture_VtblSlot068(TBackgroundPicture *this)
 
 {
-  WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(this);
+  THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00((THQButton *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401B63
-// GHIDRA_NAME TBackgroundPicture::thunk_GetTBackgroundPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBackgroundPictureClassNamePointer(void)
+// GHIDRA_NAME TBackgroundPicture::TBackgroundPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TBackgroundPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTBackgroundPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTBackgroundPictureClassNamePointer */
 
-void * __cdecl TBackgroundPicture::thunk_GetTBackgroundPictureClassNamePointer(void)
+void * __cdecl TBackgroundPicture::TBackgroundPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -40,8 +38,8 @@ void * __cdecl TBackgroundPicture::thunk_GetTBackgroundPictureClassNamePointer(v
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403990
-// GHIDRA_NAME TBackgroundPicture::thunk_DestructTBackgroundPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTBackgroundPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TBackgroundPicture::TBackgroundPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TBackgroundPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTBackgroundPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -49,8 +47,7 @@ void * __cdecl TBackgroundPicture::thunk_GetTBackgroundPictureClassNamePointer(v
 /* Single-JMP thunk to DestructTBackgroundPictureAndMaybeFree */
 
 void * __thiscall
-TBackgroundPicture::thunk_DestructTBackgroundPictureAndMaybeFree
-          (TBackgroundPicture *this,byte freeSelfFlag)
+TBackgroundPicture::TBackgroundPicture_VtblSlot001(TBackgroundPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -76,7 +73,7 @@ void * __cdecl TBackgroundPicture::CreateTBackgroundPictureInstance(void)
   puStack_8 = &LAB_0063657a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -112,8 +109,8 @@ void * __thiscall TBackgroundPicture::ConstructTBackgroundPictureBaseState(TBack
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  this[0x90] = (TBackgroundPicture)0x0;
-  *(undefined ***)this = &g_vtblTBackgroundPicture;
+  this->field141_0x90 = 0;
+  this->field0_0x0 = &g_vtblTBackgroundPicture;
   return this;
 }
 
@@ -128,27 +125,8 @@ TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00572D00
-// GHIDRA_NAME TBackgroundPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
-   instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TBackgroundPicture::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-          (TBackgroundPicture *this)
-
-{
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  return;
 }
 

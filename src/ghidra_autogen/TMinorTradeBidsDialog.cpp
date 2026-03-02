@@ -3,6 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TMinorTradeBidsDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401EA6
+// GHIDRA_NAME TMinorTradeBidsDialog::thunk_scalar_deleting_destructor_00401EA6
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00401EA6(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TMinorTradeBidsDialog::thunk_scalar_deleting_destructor_00401EA6
+          (TMinorTradeBidsDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00403CB0
 // GHIDRA_NAME TMinorTradeBidsDialog::thunk_GetTMinorTradeBidsDialogClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTMinorTradeBidsDialogClassNamePointer(void)
@@ -22,17 +42,17 @@ void * __cdecl TMinorTradeBidsDialog::thunk_GetTMinorTradeBidsDialogClassNamePoi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004097CD
-// GHIDRA_NAME TMinorTradeBidsDialog::thunk_PopulateMinorTradeBidsDialogControlValuesFromNationState_At004097cd
-// GHIDRA_PROTO void __thiscall thunk_PopulateMinorTradeBidsDialogControlValuesFromNationState_At004097cd(void)
+// GHIDRA_NAME TMinorTradeBidsDialog::thunk_ConstructTMinorTradeBidsDialogBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTMinorTradeBidsDialogBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateMinorTradeBidsDialogControlValuesFromNationState
+// GHIDRA_COMMENT Single-JMP thunk to PopulateMinorTradeBidsDialogControlValuesFromNationState [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to PopulateMinorTradeBidsDialogControlValuesFromNationState */
+/* Single-JMP thunk to PopulateMinorTradeBidsDialogControlValuesFromNationState
+   [FID:thunk_target_sync] */
 
 void __thiscall
-TMinorTradeBidsDialog::thunk_PopulateMinorTradeBidsDialogControlValuesFromNationState_At004097cd
-          (TMinorTradeBidsDialog *this)
+TMinorTradeBidsDialog::thunk_ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDialog *this)
 
 {
   ConstructTMinorTradeBidsDialogBaseState(this);
@@ -131,18 +151,18 @@ TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2CA0
 // GHIDRA_NAME TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMinorTradeBidsDialogAndMaybeFree()
+// GHIDRA_PROTO void __thiscall DestructTMinorTradeBidsDialogAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Allocates and constructs minor-trade-bids dialog adorner/view instance.
 // GHIDRA_COMMENT_END
 
 /* Allocates and constructs minor-trade-bids dialog adorner/view instance. */
 
-TView * TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(void)
+void __thiscall
+TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(TMinorTradeBidsDialog *this)
 
 {
-  TView *this;
-  TView *pTVar1;
+  TView *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -152,18 +172,16 @@ TView * TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(void)
   puStack_8 = &LAB_00638c02;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x60);
+  this_00 = AllocateWithFallbackHandler();
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
+  if (this_00 != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this_00);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *(undefined ***)this = &g_vtblTAdorner;
+    this_00->pVtable = &g_vtblTAdorner;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    *(undefined ***)this = &PTR_thunk_GetTRelationshipDialogClassNamePointer_0066b998;
-    pTVar1 = this;
+    this_00->pVtable = &PTR_thunk_GetTRelationshipDialogClassNamePointer_0066b998;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return;
 }
 

@@ -22,15 +22,15 @@ void * __cdecl TLaborPool::thunk_GetTLaborPoolClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401A00
-// GHIDRA_NAME TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues
-// GHIDRA_PROTO void __thiscall thunk_RefreshLaborPoolOverlayResourceValues(void)
+// GHIDRA_NAME TLaborPool::thunk_CreateTLaborPoolInstance
+// GHIDRA_PROTO void __thiscall thunk_CreateTLaborPoolInstance(int arg1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Thunk] forwards to RefreshLaborPoolOverlayResourceValues.
+// GHIDRA_COMMENT [Thunk] forwards to RefreshLaborPoolOverlayResourceValues. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* [Thunk] forwards to RefreshLaborPoolOverlayResourceValues. */
+/* [Thunk] forwards to RefreshLaborPoolOverlayResourceValues. [FID:thunk_target_sync] */
 
-void __thiscall TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(TLaborPool *this)
+void __thiscall TLaborPool::thunk_CreateTLaborPoolInstance(TLaborPool *this,int arg1)
 
 {
   void *pvVar1;
@@ -38,7 +38,6 @@ void __thiscall TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(TLaborPo
   short sVar3;
   int *piVar4;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uVar5;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -48,7 +47,7 @@ void __thiscall TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(TLaborPo
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630e08;
   *unaff_FS_OFFSET = &uStack_c;
-  pvVar1 = g_apNationStates[in_stack_00000004];
+  pvVar1 = g_apNationStates[arg1];
   InitializeSharedStringRefFromEmpty();
   uStack_4 = 0;
   pcVar2 = *(code **)((int)this->pVtable + 0x94);
@@ -57,7 +56,7 @@ void __thiscall TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(TLaborPo
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  FormatOverlayTerrainLabelText(&stack0x00000000);
+  FormatOverlayTerrainLabelText();
   (**(code **)(*piVar4 + 0x1c8))(&stack0x00000000,1);
   piVar4 = (int *)(*pcVar2)(0x74726561);
   if (piVar4 == (int *)0x0) {
@@ -101,43 +100,61 @@ void __thiscall TLaborPool::thunk_RefreshLaborPoolOverlayResourceValues(TLaborPo
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402FD1
-// GHIDRA_NAME TLaborPool::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b2160
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b2160()
+// GHIDRA_FUNCTION IMPERIALISM 0x00403CE2
+// GHIDRA_NAME TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(void * pMessage)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b2160
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b2160 */
+/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0 */
 
-void TLaborPool::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b2160(void)
+void __thiscall
+TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,void *pMessage)
 
 {
-  ConstructTLaborPoolBaseState();
+  WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(this,pMessage);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403DA5
+// GHIDRA_NAME TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(void * pMessage)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b2220 */
+
+void __thiscall
+TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,void *pMessage)
+
+{
+  WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(this,pMessage);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040852B
-// GHIDRA_NAME TLaborPool::thunk_GetTLaborPoolRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTLaborPoolRuntimeClass(void)
+// GHIDRA_NAME TLaborPool::thunk_DestructTLaborPoolAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTLaborPoolAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTLaborPoolRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTLaborPoolRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTLaborPoolRuntimeClass. */
+/* Thunk forwarding to GetTLaborPoolRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TLaborPool::thunk_GetTLaborPoolRuntimeClass(TLaborPool *this)
+void * __thiscall TLaborPool::thunk_DestructTLaborPoolAndMaybeFree(TLaborPool *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1CB0
 // GHIDRA_NAME TLaborPool::CreateTLaborPoolInstance
-// GHIDRA_PROTO void __thiscall CreateTLaborPoolInstance(void)
+// GHIDRA_PROTO void __thiscall CreateTLaborPoolInstance(int arg1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [LowHanging] TLaborPool method that resolves resource tags (name/trea/elas/crup/etc.) and writes current nation/labor values into overlay entries.
 // GHIDRA_COMMENT_END
@@ -145,7 +162,7 @@ void * __thiscall TLaborPool::thunk_GetTLaborPoolRuntimeClass(TLaborPool *this)
 /* [LowHanging] TLaborPool method that resolves resource tags (name/trea/elas/crup/etc.) and writes
    current nation/labor values into overlay entries. */
 
-void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this)
+void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this,int arg1)
 
 {
   void *pvVar1;
@@ -153,7 +170,6 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this)
   short sVar3;
   int *piVar4;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uVar5;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -163,7 +179,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630e08;
   *unaff_FS_OFFSET = &uStack_c;
-  pvVar1 = g_apNationStates[in_stack_00000004];
+  pvVar1 = g_apNationStates[arg1];
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   pcVar2 = *(code **)((int)this->pVtable + 0x94);
@@ -172,7 +188,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this)
                     /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  FormatOverlayTerrainLabelText(&stack0x00000000);
+  FormatOverlayTerrainLabelText();
   (**(code **)(*piVar4 + 0x1c8))(&stack0x00000000,1);
   piVar4 = (int *)(*pcVar2)(0x74726561);
   if (piVar4 == (int *)0x0) {
@@ -233,7 +249,7 @@ void * __cdecl TLaborPool::GetTLaborPoolClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2160
 // GHIDRA_NAME TLaborPool::ConstructTLaborPoolBaseState
-// GHIDRA_PROTO undefined ConstructTLaborPoolBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTLaborPoolBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -241,14 +257,16 @@ void * __cdecl TLaborPool::GetTLaborPoolClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *param_1,byte param_2)
+void __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *this)
 
 {
-  thunk_GetTLaborPoolRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTLaborPoolAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2190
@@ -265,7 +283,53 @@ void * __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B21D0
+// GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(void * pMessage)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
+// GHIDRA_COMMENT_END
+
+/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
+
+void __thiscall
+TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,void *pMessage)
+
+{
+  code *pcVar1;
+  
+  TradeControl::thunk_HandleCityDialogNoOpSlot14();
+  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
+  (*pcVar1)(&this->field1_0x4,2);
+  (*pcVar1)(&this->field3_0x6,2);
+  (*pcVar1)(&this->field4_0x8,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B2220
+// GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(void * pMessage)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
+// GHIDRA_COMMENT_END
+
+/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
+
+void __thiscall
+TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,void *pMessage)
+
+{
+  code *pcVar1;
+  
+  TradeControl::thunk_HandleCityDialogNoOpSlot18();
+  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
+  (*pcVar1)(&this->field1_0x4,2);
+  (*pcVar1)(&this->field3_0x6,2);
+  (*pcVar1)(&this->field4_0x8,2);
+  return;
 }
 

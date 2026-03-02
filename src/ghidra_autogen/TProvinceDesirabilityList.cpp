@@ -53,8 +53,8 @@ TProvinceDesirabilityList::thunk_DestructTProvinceDesirabilityListAndMaybeFree
 void * __cdecl TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance(void)
 
 {
-  CObArray *this;
-  CObArray *pCVar1;
+  TIndexAndRankList *this;
+  TIndexAndRankList *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -64,16 +64,16 @@ void * __cdecl TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstanc
   puStack_8 = &LAB_00631d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (CObArray *)AllocateWithFallbackHandler(0x18);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pCVar1 = (CObArray *)0x0;
-  if (this != (CObArray *)0x0) {
-    CObArray::CPtrArray_ctor(this);
-    *(undefined ***)this = &PTR_thunk_GetTProvinceDesirabilityListClassNamePointer_00653810;
-    pCVar1 = this;
+  pTVar1 = (TIndexAndRankList *)0x0;
+  if (this != (TIndexAndRankList *)0x0) {
+    TIndexAndRankList::CPtrArray(this);
+    this->pVtable = &PTR_thunk_GetTProvinceDesirabilityListClassNamePointer_00653810;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pCVar1;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6570
@@ -102,9 +102,9 @@ TProvinceDesirabilityList::DestructTProvinceDesirabilityListAndMaybeFree
 {
   TIndexAndRankList *unaff_ESI;
   
-  CObArray::thunk_DestructCObArray_004D65F0(unaff_ESI);
+  CObArray::thunk_DestructCObArray(unaff_ESI);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

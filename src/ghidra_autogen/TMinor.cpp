@@ -4,15 +4,16 @@
 // Bucket: TMinor.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406988
-// GHIDRA_NAME TMinor::thunk_DestructTMinorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMinorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMinor::thunk_DestructTMinorAndMaybeFree_At00406988
+// GHIDRA_PROTO void * __thiscall thunk_DestructTMinorAndMaybeFree_At00406988(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMinorAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTMinorAndMaybeFree */
 
-void * __thiscall TMinor::thunk_DestructTMinorAndMaybeFree(TMinor *this,byte freeSelfFlag)
+void * __thiscall
+TMinor::thunk_DestructTMinorAndMaybeFree_At00406988(TMinor *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -22,15 +23,15 @@ void * __thiscall TMinor::thunk_DestructTMinorAndMaybeFree(TMinor *this,byte fre
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406EE7
-// GHIDRA_NAME TMinor::thunk_GetTMinorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMinorClassNamePointer(void)
+// GHIDRA_NAME TMinor::thunk_GetTMinorClassNamePointer_At00406ee7
+// GHIDRA_PROTO void * __cdecl thunk_GetTMinorClassNamePointer_At00406ee7(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMinorClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMinorClassNamePointer */
 
-void * __cdecl TMinor::thunk_GetTMinorClassNamePointer(void)
+void * __cdecl TMinor::thunk_GetTMinorClassNamePointer_At00406ee7(void)
 
 {
   void *pvVar1;
@@ -62,7 +63,7 @@ void * __cdecl TMinor::CreateTMinorInstance(void)
   puStack_8 = &LAB_0063243d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x2dc);
+  puVar1 = AllocateWithFallbackHandler();
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &g_vtblRefCountedObjectBase;
@@ -102,7 +103,7 @@ void * __thiscall TMinor::DestructTMinorAndMaybeFree(TMinor *this,byte freeSelfF
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

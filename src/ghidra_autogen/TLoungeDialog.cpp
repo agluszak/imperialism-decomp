@@ -3,6 +3,79 @@
 // Program: Imperialism.exe
 // Bucket: TLoungeDialog.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00402324
+// GHIDRA_NAME TLoungeDialog::thunk_HandleNationStatusDialogCommand
+// GHIDRA_PROTO void __thiscall thunk_HandleNationStatusDialogCommand(int commandId, PanelEventPayload * pPanelEvent, int commandArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to HandleNationStatusDialogCommand
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to HandleNationStatusDialogCommand */
+
+void __thiscall
+TLoungeDialog::thunk_HandleNationStatusDialogCommand
+          (TLoungeDialog *this,int commandId,PanelEventPayload *pPanelEvent,int commandArg)
+
+{
+  HandleNationStatusDialogCommand(this,commandId,pPanelEvent,commandArg);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00402CFC
+// GHIDRA_NAME TLoungeDialog::thunk_OpenNationStatusDialogAndInitializeRows
+// GHIDRA_PROTO void __thiscall thunk_OpenNationStatusDialogAndInitializeRows(int dialogArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to OpenNationStatusDialogAndInitializeRows
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to OpenNationStatusDialogAndInitializeRows */
+
+void __thiscall
+TLoungeDialog::thunk_OpenNationStatusDialogAndInitializeRows(TLoungeDialog *this,int dialogArg)
+
+{
+  OpenNationStatusDialogAndInitializeRows(this,dialogArg);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00403DE6
+// GHIDRA_NAME TLoungeDialog::thunk_scalar_deleting_destructor_00403DE6
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403DE6(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TLoungeDialog::thunk_scalar_deleting_destructor_00403DE6(TLoungeDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404FCA
+// GHIDRA_NAME TLoungeDialog::thunk_RefreshNationStatusDialogRowsAndSummaryMessage
+// GHIDRA_PROTO int __thiscall thunk_RefreshNationStatusDialogRowsAndSummaryMessage(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to RefreshNationStatusDialogRowsAndSummaryMessage
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to RefreshNationStatusDialogRowsAndSummaryMessage */
+
+int __thiscall
+TLoungeDialog::thunk_RefreshNationStatusDialogRowsAndSummaryMessage(TLoungeDialog *this)
+
+{
+  int iVar1;
+  
+  iVar1 = RefreshNationStatusDialogRowsAndSummaryMessage(this);
+  return iVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004066E5
 // GHIDRA_NAME TLoungeDialog::thunk_GetTLoungeDialogClassNamePointer
 // GHIDRA_PROTO void * __cdecl thunk_GetTLoungeDialogClassNamePointer(void)
@@ -21,40 +94,27 @@ void * __cdecl TLoungeDialog::thunk_GetTLoungeDialogClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054D650
-// GHIDRA_NAME TLoungeDialog::AllocateAndConstructTLoungeDialog
-// GHIDRA_PROTO undefined AllocateAndConstructTLoungeDialog()
+// GHIDRA_FUNCTION IMPERIALISM 0x00408481
+// GHIDRA_NAME TLoungeDialog::thunk_IsSpecialNationDialogModeActive
+// GHIDRA_PROTO bool __thiscall thunk_IsSpecialNationDialogModeActive(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x98-byte dialog object, runs picture-resource-entry ctor, and assigns TLoungeDialog vtable.
+// GHIDRA_COMMENT Single-JMP thunk to IsSpecialNationDialogModeActive
 // GHIDRA_COMMENT_END
 
-/* Allocates 0x98-byte dialog object, runs picture-resource-entry ctor, and assigns TLoungeDialog
-   vtable. */
+/* Single-JMP thunk to IsSpecialNationDialogModeActive */
 
-TNoHilitePicture * TLoungeDialog::AllocateAndConstructTLoungeDialog(void)
+bool __thiscall TLoungeDialog::thunk_IsSpecialNationDialogModeActive(TLoungeDialog *this)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
+  short extraout_AX;
   
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00634e7a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x98);
-  local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined ***)this = &PTR_thunk_GetTLoungeDialogClassNamePointer_006433b8;
-    pTVar1 = this;
+  if (this->fieldd8 == 0x676f696e) {
+    thunk_GetActiveNationId();
+    if (extraout_AX != -1) {
+      return true;
+    }
   }
-  *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return false;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D6D0
@@ -70,5 +130,376 @@ void * __cdecl TLoungeDialog::GetTLoungeDialogClassNamePointer(void)
 
 {
   return &g_pClassDescTLoungeDialog;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054D730
+// GHIDRA_NAME TLoungeDialog::OpenNationStatusDialogAndInitializeRows
+// GHIDRA_PROTO void __thiscall OpenNationStatusDialogAndInitializeRows(int dialogArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Creates/initializes nation-status dialog controls and message rows, then populates row state depending on special-mode predicate and localization mode.
+// GHIDRA_COMMENT_END
+
+/* Creates/initializes nation-status dialog controls and message rows, then populates row state
+   depending on special-mode predicate and localization mode. */
+
+void __thiscall
+TLoungeDialog::OpenNationStatusDialogAndInitializeRows(TLoungeDialog *this,int dialogArg)
+
+{
+  bool bVar1;
+  int *pControl;
+  int extraout_EAX;
+  int *piVar2;
+  int extraout_EAX_00;
+  int extraout_EAX_01;
+  void *pvVar3;
+  int iVar4;
+  int iVar5;
+  int themeCode;
+  int styleCode;
+  int stringGroup;
+  int stringIndex;
+  undefined4 uVar6;
+  code *pcVar7;
+  
+  thunk_NoOpUiLifecycleHook();
+  TMultiplayerMgr::thunk_EnableDiplomacyQueueRoutingAndSetContextField44
+            (g_pGameFlowState,(int)this,1);
+  pvVar3 = this->pVtable;
+  (**(code **)((int)pvVar3 + 0x54))(3);
+  g_pCursorControlPanel = (void *)(**(code **)((int)pvVar3 + 0x94))(0x6c61626c);
+  (**(code **)(*(int *)g_pCursorControlPanel + 0xc))();
+  pcVar7 = (code *)0x0;
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x1e0))(0,0xe,0x2b6b);
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x204))(0x2b6b);
+  (**(code **)(*(int *)g_pCursorControlPanel + 0x1c4))(1,0);
+  InitializeMainRoutineContextAndRun();
+  iVar4 = 0x6e616d30;
+  do {
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,6,iVar4 + 0x3fff700);
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,7,iVar4 + 0x207fe00);
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,8,iVar4);
+    thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
+    (**(code **)(*pControl + 0xc))();
+    thunk_ApplyUiTextStyleAndThemeFlags(pControl,0,0xe,0x2b6b,0x2b6c);
+    iVar5 = iVar4 + -0x6e616d2f;
+    iVar4 = iVar4 + 1;
+  } while (iVar5 < 7);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xb,0x6d617020);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xd,0x746e616d);
+  thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xe,0x73656e64);
+  bVar1 = thunk_IsSpecialNationDialogModeActive(g_pGameFlowState);
+  if (bVar1) {
+    TToolBarCluster::thunk_RefreshNationStatusLabelsAndCodesForSlotOrAll(g_pGameFlowState,-1);
+    thunk_GetNationStatusCodeForSlotOrActiveNation(-1);
+    if (extraout_EAX == 0x62757379) {
+      iVar4 = 0x12;
+    }
+    else {
+      iVar4 = 0x11;
+    }
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,iVar4,0x636e636c);
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xc,0x6d657373);
+    piVar2 = (int *)(*pcVar7)(0x636f6174);
+    iVar4 = *piVar2;
+    (**(code **)(iVar4 + 0xc))();
+    uVar6 = 0;
+    thunk_GetActiveNationId();
+    (**(code **)(iVar4 + 0x1c8))(extraout_EAX_00 + 0x120a,uVar6);
+    (**(code **)(iVar4 + 0xa4))(1,0);
+    thunk_GetNationStatusCodeForSlotOrActiveNation(-1);
+    if (extraout_EAX_01 != 0x62757379) {
+      (**(code **)((int)pvVar3 + 0x1c8))(0x11f9,0);
+    }
+    thunk_RefreshMapAndMessageControlsForCurrentContext(this);
+  }
+  else {
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,9,0x636e636c);
+    thunk_ResetNationStatusSlotsAndInitializeNameControls(g_pGameFlowState,(int)this);
+    if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
+      thunk_SetDialogModeTagInitAndInvokeNoOpHook();
+      thunk_RefreshMapAndMessageControlsForCurrentContext(this);
+      thunk_DispatchTurnEventCode9WithTwoTextTokens();
+      TSimMgr::thunk_EmitTurnEventEAnd9SessionContextPackets(g_pGameFlowState,0);
+    }
+    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xc,0x6d657373);
+  }
+  this->pField94 = (void *)0xffffffff;
+  (**(code **)((int)pvVar3 + 0x4c))(1);
+  bVar1 = thunk_IsSpecialNationDialogModeActive(g_pGameFlowState);
+  if (bVar1) {
+    thunk_GetNationStatusCodeForSlotOrActiveNation(-1);
+  }
+  stringIndex = 0x2742;
+  stringGroup = 1;
+  styleCode = 0x2b6c;
+  themeCode = 0xe;
+  iVar5 = 0;
+  iVar4 = 0x6d657373;
+  pvVar3 = (void *)(*(code *)0x2b6c)();
+  thunk_ConfigureUiControlStyleValueAndCaptionFromStringResource
+            (pvVar3,iVar4,iVar5,themeCode,styleCode,stringGroup,stringIndex);
+  thunk_NoOpUiLifecycleHook();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054DB40
+// GHIDRA_NAME TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage
+// GHIDRA_PROTO int __thiscall RefreshNationStatusDialogRowsAndSummaryMessage(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Refreshes nation-status dialog row icons/labels and summary message based on per-slot status codes and game-flow state.
+// GHIDRA_COMMENT_END
+
+/* Refreshes nation-status dialog row icons/labels and summary message based on per-slot status
+   codes and game-flow state. */
+
+int __thiscall TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage(TLoungeDialog *this)
+
+{
+  int iVar1;
+  code *pcVar2;
+  bool bVar3;
+  uint extraout_EAX;
+  int *piVar4;
+  int *dst_ref_ptr;
+  int iVar5;
+  int extraout_EAX_00;
+  uint extraout_EAX_01;
+  undefined2 extraout_var;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  int iVar7;
+  char cStack_2e;
+  int iStack_28;
+  int local_24;
+  int iStack_20;
+  code *local_1c;
+  code *local_18;
+  void *local_14;
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634eb0;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_14 = this->pVtable;
+  local_18 = *(code **)((int)local_14 + 0x94);
+  local_1c = (code *)0x0;
+  local_24 = 0x48;
+  do {
+    pcVar2 = local_1c;
+    iVar6 = 0;
+    if (*(int *)((int)g_pGameFlowState + local_24) == 0) {
+      iVar6 = 2;
+    }
+    else if (*(int *)((int)g_pGameFlowState + local_24) == -2) {
+      iVar6 = 3;
+    }
+    else {
+      thunk_GetNationStatusCodeForSlotOrActiveNation((int)local_1c);
+      if (extraout_EAX < 0x6275737a) {
+        if (extraout_EAX == 0x62757379) {
+          iVar6 = 0;
+        }
+        else if (extraout_EAX == 0x61776f6c) {
+          iVar6 = 3;
+        }
+      }
+      else if (extraout_EAX < 0x64656362) {
+        if (extraout_EAX == 0x64656361) {
+          iVar6 = 4;
+        }
+        else if (extraout_EAX == 0x64656164) {
+          iVar6 = 4;
+        }
+      }
+      else if (extraout_EAX == 0x72656479) {
+        iVar6 = 1;
+      }
+      else if (extraout_EAX == 0x756e6173) {
+        iVar6 = 2;
+      }
+    }
+    piVar4 = (int *)(*local_18)(pcVar2 + 0x72616430);
+    iVar7 = *piVar4;
+    (**(code **)(iVar7 + 0xc))();
+    if ((int)(short)piVar4[0x21] != *(int *)(&UNK_0065c168 + iVar6 * 4)) {
+      (**(code **)(iVar7 + 0x1c8))
+                (CONCAT22(extraout_var,*(undefined2 *)(&UNK_0065c168 + iVar6 * 4)),1);
+    }
+    thunk_TouchSessionActiveNationId();
+    piVar4 = (int *)(*local_1c)(pcVar2 + 0x6e616d30);
+    iVar7 = *piVar4;
+    (**(code **)(iVar7 + 0xc))();
+    InitializeSharedStringRefFromEmpty();
+    uStack_c = 0;
+    InitializeSharedStringRefFromEmpty();
+    uStack_c = CONCAT31(uStack_c._1_3_,1);
+    (**(code **)(iVar7 + 0x1d0))(&iStack_28);
+    iVar1 = local_24;
+    thunk_NormalizeRuntimeCredentialNameToken();
+    uStack_4._0_1_ = 2;
+    AssignFromPtr(&iStack_28,dst_ref_ptr);
+    uStack_4 = CONCAT31(uStack_4._1_3_,1);
+    ReleaseSharedStringRefIfNotEmpty();
+    iVar5 = CompareAnsiStringsWithMbcsAwareness(iStack_20,iStack_28);
+    if (iVar5 != 0) {
+      (**(code **)(iVar7 + 0x1c8))(&iStack_28,1);
+      if (iVar6 == 4) {
+        iVar7 = 0x2b6a;
+        iVar6 = 0x2b67;
+      }
+      else if (cStack_2e == '\0') {
+        iVar7 = 0x2b6c;
+        iVar6 = 0x2b6b;
+      }
+      else {
+        iVar7 = 0x2b6b;
+        iVar6 = 0x2b6c;
+      }
+      thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0xe,iVar6,iVar7);
+    }
+    uStack_4 = uStack_4 & 0xffffff00;
+    ReleaseSharedStringRefIfNotEmpty();
+    uStack_4 = 0xffffffff;
+    ReleaseSharedStringRefIfNotEmpty();
+    local_24 = iVar1 + 4;
+    local_1c = local_1c + 1;
+  } while (local_24 < 100);
+  bVar3 = thunk_IsSpecialNationDialogModeActive(g_pGameFlowState);
+  if (bVar3) {
+    thunk_GetNationStatusCodeForSlotOrActiveNation(-1);
+    if ((extraout_EAX_00 == 0x62757379) && (*(char *)((int)g_pGameFlowState + 0xf4) != '\0')) {
+      if (this->field84 != 0x11f8) {
+        (**(code **)((int)local_14 + 0x1c8))(0x11f8,1);
+      }
+    }
+    else if (this->field84 != 0x11f9) {
+      (**(code **)((int)local_14 + 0x1c8))(0x11f9,1);
+    }
+  }
+  InitializeSharedStringRefFromEmpty();
+  uStack_4 = 3;
+  thunk_LoadUiStringResourceByGroupAndIndex();
+  piVar4 = (int *)(*local_18)(0x6d657373);
+  iVar6 = *piVar4;
+  (**(code **)(iVar6 + 0xc))();
+  (**(code **)(iVar6 + 0x1c8))(&iStack_20,1);
+  uStack_10 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = local_18;
+  return extraout_EAX_01 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054E1F0
+// GHIDRA_NAME TLoungeDialog::HandleNationStatusDialogCommand
+// GHIDRA_PROTO void __thiscall HandleNationStatusDialogCommand(int commandId, PanelEventPayload * pPanelEvent, int commandArg)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Nation-status dialog command router.
+// GHIDRA_COMMENT Dispatches button/tag commands and triggers per-slot state replacement/event emissions.
+// GHIDRA_COMMENT Control tags are raw FourCC values (EControlTagFourCC), not semantic equivalents.
+// GHIDRA_COMMENT_END
+
+/* Nation-status dialog command router.
+   Dispatches button/tag commands and triggers per-slot state replacement/event emissions.
+   Control tags are raw FourCC values (EControlTagFourCC), not semantic equivalents. */
+
+void __thiscall
+TLoungeDialog::HandleNationStatusDialogCommand
+          (TLoungeDialog *this,int commandId,PanelEventPayload *pPanelEvent,int commandArg)
+
+{
+  EControlTagFourCC EVar1;
+  int iVar2;
+  bool bVar3;
+  char cVar4;
+  int *piVar5;
+  int extraout_EAX;
+  int extraout_EAX_00;
+  int iVar6;
+  
+  if (commandId == 0x29a) {
+    piVar5 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x6f6b6179);
+    iVar6 = *piVar5;
+    (**(code **)(iVar6 + 0xc))();
+    (**(code **)(iVar6 + 0xa8))(0,0);
+    (**(code **)(iVar6 + 0xa4))(0,0);
+  }
+  if (commandId == 0x7069636b) {
+    (**(code **)(*(int *)pPanelEvent + 0xc))();
+    thunk_TryInvokeNationStateReplacementForSlot(*(int *)&pPanelEvent->field_0x6c);
+  }
+  if ((((commandId != 0x14) && (commandId != 10)) && (commandId != 0x22)) && (commandId != 0xd))
+  goto LAB_0054e36b;
+  EVar1 = pPanelEvent->controlTag1c;
+  if (EVar1 < 0x636e636d) {
+    if ((EVar1 == 0x636e636c) || (EVar1 == 0x63616e63)) {
+      bVar3 = thunk_IsSpecialNationDialogModeActive(g_pGameFlowState);
+      if (bVar3) {
+        thunk_GetNationStatusCodeForSlotOrActiveNation(-1);
+        if (extraout_EAX == 0x62757379) {
+          (**(code **)(*(int *)g_pLocalizationTable + 0x44))();
+        }
+        else {
+          cVar4 = thunk_DispatchGameStateEventIfLocalizedPromptAccepted();
+          if (cVar4 != '\0') {
+            thunk_CreateAndQueueTurnEventPacketTagGWEN();
+          }
+        }
+      }
+      else {
+        bVar3 = false;
+        iVar6 = 0x48;
+        do {
+          iVar2 = *(int *)((int)g_pGameFlowState + iVar6);
+          if ((iVar2 != 0) && (thunk_TouchSessionActiveNationId(), iVar2 != extraout_EAX_00)) {
+            bVar3 = true;
+          }
+          iVar6 = iVar6 + 4;
+        } while (iVar6 < 100);
+        if (((*(int *)((int)g_pLocalizationTable + 0x44) != 1) || (!bVar3)) ||
+           (cVar4 = thunk_DispatchGameStateEventIfLocalizedPromptAccepted(), cVar4 != '\0')) {
+          if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
+            thunk_DispatchTaggedGameStateEvent1F20();
+          }
+          thunk_ResetLocalUiStateAndPostTurnEvent5E5();
+        }
+      }
+      goto LAB_0054e36b;
+    }
+  }
+  else {
+    if (EVar1 == 0x6a656469) {
+      thunk_EmitTurnEvent10ForFlaggedNationSlots();
+      goto LAB_0054e36b;
+    }
+    if (EVar1 == CONTROL_TAG_TAG_YAKO) {
+      thunk_ResetDialogContextField40AndEmitTurnEvent3Mode18();
+      goto LAB_0054e36b;
+    }
+    if (EVar1 == 0x73656e64) {
+      thunk_DispatchSimpleTurnEventEsopWithParam(-1);
+      goto LAB_0054e36b;
+    }
+  }
+  if ((EVar1 < 0x72616430) || (0x72616436 < EVar1)) {
+    if ((EVar1 < 0x6e616d30) || (0x6e616d36 < EVar1)) {
+      if ((0x70696b2f < EVar1) && (EVar1 < 0x70696b37)) {
+        thunk_TryInvokeNationStateReplacementForSlot(EVar1 + 0x8f9694d0);
+      }
+    }
+    else {
+      thunk_TryInvokeNationStateReplacementForSlot(EVar1 + 0x919e92d0);
+    }
+  }
+  else {
+    thunk_TryInvokeNationStateReplacementForSlot(EVar1 + 0x8d9e9bd0);
+  }
+LAB_0054e36b:
+  thunk_HandleCityDialogToggleCommandOrForward();
+  return;
 }
 

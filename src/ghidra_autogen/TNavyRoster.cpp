@@ -4,15 +4,15 @@
 // Bucket: TNavyRoster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401771
-// GHIDRA_NAME TNavyRoster::thunk_GetTNavyRosterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNavyRosterClassNamePointer(void)
+// GHIDRA_NAME TNavyRoster::thunk_GetTNavyRosterClassNamePointer_At00401771
+// GHIDRA_PROTO void * __cdecl thunk_GetTNavyRosterClassNamePointer_At00401771(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTNavyRosterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTNavyRosterClassNamePointer */
 
-void * __cdecl TNavyRoster::thunk_GetTNavyRosterClassNamePointer(void)
+void * __cdecl TNavyRoster::thunk_GetTNavyRosterClassNamePointer_At00401771(void)
 
 {
   void *pvVar1;
@@ -22,24 +22,26 @@ void * __cdecl TNavyRoster::thunk_GetTNavyRosterClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401DA2
-// GHIDRA_NAME TNavyRoster::thunk_Cluster_DispatchHint_00564fe0
-// GHIDRA_PROTO void __cdecl thunk_Cluster_DispatchHint_00564fe0(void)
+// GHIDRA_NAME TNavyRoster::thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0_At00401da2
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0_At00401da2(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_DispatchHint_00564fe0
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_DispatchHint_00564fe0 */
+/* Single-JMP thunk to WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0 */
 
-void __cdecl TNavyRoster::thunk_Cluster_DispatchHint_00564fe0(void)
+void __thiscall
+TNavyRoster::thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0_At00401da2
+          (TNavyRoster *this)
 
 {
-  WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0();
+  WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405155
-// GHIDRA_NAME TNavyRoster::thunk_DestructTNavyRosterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNavyRosterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TNavyRoster::thunk_DestructTNavyRosterAndMaybeFree_At00405155
+// GHIDRA_PROTO void * __thiscall thunk_DestructTNavyRosterAndMaybeFree_At00405155(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTNavyRosterAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -47,7 +49,7 @@ void __cdecl TNavyRoster::thunk_Cluster_DispatchHint_00564fe0(void)
 /* Single-JMP thunk to DestructTNavyRosterAndMaybeFree */
 
 void * __thiscall
-TNavyRoster::thunk_DestructTNavyRosterAndMaybeFree(TNavyRoster *this,byte freeSelfFlag)
+TNavyRoster::thunk_DestructTNavyRosterAndMaybeFree_At00405155(TNavyRoster *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -68,16 +70,109 @@ TNavyRoster::thunk_DestructTNavyRosterAndMaybeFree(TNavyRoster *this,byte freeSe
 void * __thiscall TNavyRoster::thunk_ConstructTNavyRosterBaseState(TNavyRoster *this)
 
 {
-  TPageView::ConstructTPageViewBaseState((TPageView *)this);
-  *(undefined ***)this = &g_vtblTNavyRoster;
-  *(undefined4 *)(this + 0x84) = 0;
-  *(undefined4 *)(this + 0x88) = 0;
-  *(undefined4 *)(this + 0x8c) = 0;
-  *(undefined4 *)(this + 0x90) = 0;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined4 *)(this + 0x9c) = 0;
+  TPageView::ConstructTPageViewBaseState(&this->base);
+  (this->base).base.pVtable = &g_vtblTNavyRoster;
+  *(undefined4 *)&(this->base).field84 = 0;
+  this->field88 = 0;
+  this->field8c = 0;
+  this->field90 = (void *)0x0;
+  this->field94 = 0;
+  this->field98 = 0;
+  this->field9c = 0;
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040950C
+// GHIDRA_NAME TNavyRoster::thunk_InitializePagedListLineDataControlsAndHeaderBitmap_At0040950c
+// GHIDRA_PROTO void __thiscall thunk_InitializePagedListLineDataControlsAndHeaderBitmap_At0040950c(int param_1)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to InitializePagedListLineDataControlsAndHeaderBitmap
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to InitializePagedListLineDataControlsAndHeaderBitmap */
+
+void __thiscall
+TNavyRoster::thunk_InitializePagedListLineDataControlsAndHeaderBitmap_At0040950c
+          (TNavyRoster *this,int param_1)
+
+{
+  TLineData::InitializePagedListLineDataControlsAndHeaderBitmap((TLineData *)this,param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00447353
+// GHIDRA_NAME TNavyRoster::BuildNavyRosterDialogUiResourceTree
+// GHIDRA_PROTO int * __thiscall BuildNavyRosterDialogUiResourceTree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [UiBuilder] Constructs navy-roster dialog UI resource tree (includes 'okay' command picture and TNavyRoster payload entry), then propagates resource context.
+// GHIDRA_COMMENT_END
+
+/* [UiBuilder] Constructs navy-roster dialog UI resource tree (includes 'okay' command picture and
+   TNavyRoster payload entry), then propagates resource context. */
+
+int * __thiscall TNavyRoster::BuildNavyRosterDialogUiResourceTree(TNavyRoster *this)
+
+{
+  int *piVar1;
+  TNavyRoster *this_00;
+  TNavyRoster *this_01;
+  TNavyRoster *this_02;
+  TNavyRoster *this_03;
+  TNavyRoster *unaff_EBX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000094;
+  
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX);
+  thunk_ApplyUiResourceLayoutFromContext();
+  thunk_ClearUiResourceContext();
+  thunk_AllocateUiResourceNode();
+  if (this_00 != unaff_EBX) {
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this_00);
+  }
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(0x22,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX);
+  thunk_ApplyUiResourceLayoutFromContext();
+  thunk_ClearUiResourceContext();
+  thunk_PopUiResourcePoolNode();
+  thunk_AllocateUiResourceNode();
+  if (this_01 != unaff_EBX) {
+    thunk_ConstructTNavyRosterBaseState(this_01);
+  }
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_ClearUiResourceContext();
+  thunk_PopUiResourcePoolNode();
+  thunk_AllocateUiResourceNode();
+  if (this_02 != unaff_EBX) {
+    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this_02);
+  }
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX);
+  thunk_ApplyUiResourceLayoutFromContext();
+  thunk_ClearUiResourceContext();
+  thunk_PopUiResourcePoolNode();
+  thunk_AllocateUiResourceNode();
+  if (this_03 != unaff_EBX) {
+    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this_03);
+  }
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX);
+  thunk_ApplyUiResourceLayoutFromContext();
+  thunk_ClearUiResourceContext();
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+  if ((TNavyRoster *)g_pUiResourceHead != unaff_EBX) {
+    thunk_PropagateUiResourceContextRecursive();
+  }
+  piVar1 = g_pUiResourceHead;
+  *unaff_FS_OFFSET = in_stack_00000094;
+  return piVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564C30
@@ -97,18 +192,18 @@ void * __cdecl TNavyRoster::CreateTNavyRosterInstance(void)
   puStack_8 = &LAB_006358fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TPageView *)AllocateWithFallbackHandler(0xd0);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TPageView *)0x0) {
     TPageView::ConstructTPageViewBaseState(this);
-    *(undefined4 *)(this + 0x84) = 0;
-    *(undefined ***)this = &g_vtblTNavyRoster;
-    *(undefined4 *)(this + 0x88) = 0;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(undefined4 *)(this + 0x90) = 0;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0x98) = 0;
-    *(undefined4 *)(this + 0x9c) = 0;
+    *(undefined4 *)&this->field84 = 0;
+    (this->base).pVtable = &g_vtblTNavyRoster;
+    *(undefined4 *)((int)&this[1].base.pVtable + 2) = 0;
+    *(undefined4 *)((int)&this[1].base.field2_0x5 + 1) = 0;
+    *(undefined4 *)((int)&this[1].base.field3_0x8 + 2) = 0;
+    *(undefined4 *)((int)&this[1].base.dialogValueDwordC + 2) = 0;
+    *(undefined4 *)((int)&this[1].base.dialogValueDword10 + 2) = 0;
+    *(undefined4 *)((int)&this[1].base.viewStateDword14 + 2) = 0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -138,15 +233,15 @@ void * __cdecl TNavyRoster::GetTNavyRosterClassNamePointer(void)
 void * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster *this)
 
 {
-  TPageView::ConstructTPageViewBaseState((TPageView *)this);
-  *(undefined ***)this = &g_vtblTNavyRoster;
-  *(undefined4 *)(this + 0x84) = 0;
-  *(undefined4 *)(this + 0x88) = 0;
-  *(undefined4 *)(this + 0x8c) = 0;
-  *(undefined4 *)(this + 0x90) = 0;
-  *(undefined4 *)(this + 0x94) = 0;
-  *(undefined4 *)(this + 0x98) = 0;
-  *(undefined4 *)(this + 0x9c) = 0;
+  TPageView::ConstructTPageViewBaseState(&this->base);
+  (this->base).base.pVtable = &g_vtblTNavyRoster;
+  *(undefined4 *)&(this->base).field84 = 0;
+  this->field88 = 0;
+  this->field8c = 0;
+  this->field90 = (void *)0x0;
+  this->field94 = 0;
+  this->field98 = 0;
+  this->field9c = 0;
   return this;
 }
 
@@ -157,16 +252,16 @@ void * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster *this)
 void * __thiscall TNavyRoster::DestructTNavyRosterAndMaybeFree(TNavyRoster *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState((TView *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564FE0
 // GHIDRA_NAME TNavyRoster::WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0
-// GHIDRA_PROTO void __cdecl WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0(void)
+// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -174,16 +269,17 @@ void * __thiscall TNavyRoster::DestructTNavyRosterAndMaybeFree(TNavyRoster *this
 /* [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44;
    instructions=11, call_insns=2, internal_calls=1, unique_internal=1 */
 
-void __cdecl TNavyRoster::WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0(void)
+void __thiscall
+TNavyRoster::WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564fe0(TNavyRoster *this)
 
 {
   int *piVar1;
   
-  thunk_DispatchVfuncA0ToLinkedChildListSlot44();
-  piVar1 = *(int **)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0xa8);
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
+  piVar1 = *(int **)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
   (**(code **)(*piVar1 + 0x1f8))();
-  *(undefined4 *)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0xa0) = 0;
+  *(undefined4 *)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xa0) = 0;
   return;
 }
 

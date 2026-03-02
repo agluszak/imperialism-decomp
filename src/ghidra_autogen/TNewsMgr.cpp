@@ -64,23 +64,23 @@ void * __cdecl TNewsMgr::GetTNewsMgrClassNamePointer(void)
 void __thiscall TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries(TNewsMgr *this)
 
 {
-  TNewsMgr *pTVar1;
+  int **ppiVar1;
   int iVar2;
   
-  pTVar1 = this + 0x3b5;
+  ppiVar1 = &this->field3790_0xed4;
   iVar2 = 7;
   do {
-    if (pTVar1->pVtable != (int *)0x0) {
-      (**(code **)(*(int *)pTVar1->pVtable + 0x24))();
+    if (*ppiVar1 != (int *)0x0) {
+      (**(code **)(**ppiVar1 + 0x24))();
     }
-    if (pTVar1[8].pVtable != (void *)0x0) {
-      FreeHeapBufferIfNotNull(pTVar1[8].pVtable);
+    if (ppiVar1[8] != (int *)0x0) {
+      FreeHeapBufferIfNotNull();
     }
-    pTVar1 = pTVar1 + 1;
+    ppiVar1 = ppiVar1 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
-  if (this[0x3bc].pVtable != (int *)0x0) {
-    (**(code **)(*(int *)this[0x3bc].pVtable + 0x24))();
+  if (this->field3815_0xef0 != (int *)0x0) {
+    (**(code **)(*this->field3815_0xef0 + 0x24))();
   }
   if (this != (TNewsMgr *)0x0) {
     (**(code **)((int)this->pVtable + 4))(1);

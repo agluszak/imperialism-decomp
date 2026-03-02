@@ -4,20 +4,39 @@
 // Bucket: TMadnessButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402AB8
-// GHIDRA_NAME TMadnessButton::thunk_UpdateMadnessButtonStateAndOptionalRedraw
-// GHIDRA_PROTO void __thiscall thunk_UpdateMadnessButtonStateAndOptionalRedraw(byte arg1)
+// GHIDRA_NAME TMadnessButton::thunk_DestructTMadnessButtonAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTMadnessButtonAndMaybeFree(byte arg1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
+// GHIDRA_COMMENT Direct thunk [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Direct thunk */
+/* Direct thunk [FID:thunk_target_sync] */
 
 void __thiscall
-TMadnessButton::thunk_UpdateMadnessButtonStateAndOptionalRedraw(TMadnessButton *this,byte arg1)
+TMadnessButton::thunk_DestructTMadnessButtonAndMaybeFree(TMadnessButton *this,byte arg1)
 
 {
   DestructTMadnessButtonAndMaybeFree(this,arg1);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406299
+// GHIDRA_NAME TMadnessButton::thunk_scalar_deleting_destructor_00406299
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406299(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TMadnessButton::thunk_scalar_deleting_destructor_00406299(TMadnessButton *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004066FE
@@ -36,42 +55,6 @@ void * __cdecl TMadnessButton::thunk_GetTMadnessButtonClassNamePointer(void)
   
   pvVar1 = GetTMadnessButtonClassNamePointer();
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0054EA30
-// GHIDRA_NAME TMadnessButton::AllocateAndConstructTMadnessButton
-// GHIDRA_PROTO undefined AllocateAndConstructTMadnessButton()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x9C-byte object, runs button-like base ctor, initializes field +0x26, and assigns TMadnessButton vtable.
-// GHIDRA_COMMENT_END
-
-/* Allocates 0x9C-byte object, runs button-like base ctor, initializes field +0x26, and assigns
-   TMadnessButton vtable. */
-
-TCzechBox * TMadnessButton::AllocateAndConstructTMadnessButton(void)
-
-{
-  TCzechBox *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00634f6a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  this = (TCzechBox *)AllocateWithFallbackHandler(0x9c);
-  local_4 = 0;
-  if (this != (TCzechBox *)0x0) {
-    TCzechBox::ConstructTCzechBoxBaseState(this);
-    *(undefined4 *)(this + 0x98) = 0;
-    *(undefined ***)this = &PTR_thunk_GetTMadnessButtonClassNamePointer_00641df0;
-    *unaff_FS_OFFSET = local_c;
-    return this;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (TCzechBox *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
@@ -105,7 +88,8 @@ void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(TMadnessButto
   char cVar2;
   void *pvVar3;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_34 [40];
+  undefined1 auStack_34 [12];
+  undefined1 auStack_28 [28];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -115,7 +99,7 @@ void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(TMadnessButto
   puStack_8 = &LAB_00634f88;
   *unaff_FS_OFFSET = &uStack_c;
   pvVar1 = this->pVtable;
-  pvVar3 = this[0x26].pVtable;
+  pvVar3 = this->field148_0x98;
   cVar2 = (**(code **)((int)pvVar1 + 0x28))();
   if (cVar2 == '\0') {
     pvVar3 = (void *)((int)pvVar3 + 4);
@@ -125,15 +109,15 @@ void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(TMadnessButto
     if (cVar2 == '\0') {
       pvVar3 = (void *)((int)pvVar3 + 2);
     }
-    if (*(char *)&this[0x19].pVtable != '\0') {
+    if (this->field97_0x64 != '\0') {
       pvVar3 = (void *)((int)pvVar3 + 1);
     }
   }
-  if ((void *)(int)*(short *)&this[0x21].pVtable != pvVar3) {
+  if ((void *)(int)this->field129_0x84 != pvVar3) {
     (**(code **)((int)pvVar1 + 0x1c8))(pvVar3,0);
     if (arg1 != 0) {
       (**(code **)((int)pvVar1 + 0x128))(auStack_34);
-      thunk_ConstructScopedMapQuickDrawContext();
+      thunk_ConstructScopedMapQuickDrawContext(auStack_28,(int)this);
       puStack_8 = (undefined1 *)0x0;
       (**(code **)((int)pvVar1 + 0x110))(&stack0xffffffc8);
       uStack_4 = 0xffffffff;

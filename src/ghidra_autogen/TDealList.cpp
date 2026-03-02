@@ -39,6 +39,79 @@ void * __thiscall TDealList::thunk_DestructTDealListAndMaybeFree(TDealList *this
   return pvVar1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005B7A90
+// GHIDRA_NAME TDealList::InitializeNationInteractionStateManagerDefaults
+// GHIDRA_PROTO void __thiscall InitializeNationInteractionStateManagerDefaults(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes 0x11 per-nation interaction rows, each with 0x17 pairwise slots and backing CObArray buckets.
+// GHIDRA_COMMENT_END
+
+/* Initializes 0x11 per-nation interaction rows, each with 0x17 pairwise slots and backing CObArray
+   buckets. */
+
+void __thiscall TDealList::InitializeNationInteractionStateManagerDefaults(TDealList *this)
+
+{
+  ushort uVar1;
+  TIndexAndRankList *this_00;
+  undefined2 *puVar2;
+  int iVar3;
+  TIndexAndRankList **ppTVar4;
+  undefined2 *puVar5;
+  undefined4 *unaff_FS_OFFSET;
+  ushort *local_18;
+  int local_14;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0063907a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_18 = &g_Nation_Interaction_Manager_WordState_0069A910;
+  ppTVar4 = &this->field2706_0xaa8;
+  puVar5 = (undefined2 *)((int)&this->field0c + 2);
+  local_14 = 0x11;
+  do {
+    local_4 = 0xffffffff;
+    puVar5[-1] = 0;
+    *puVar5 = 0;
+    puVar5[5] = 0;
+    *(undefined4 *)(puVar5 + 1) = 0;
+    *(undefined4 *)(puVar5 + 3) = 0;
+    uVar1 = *local_18;
+    puVar5[-3] = uVar1;
+    puVar5[-2] = uVar1;
+    puVar5[6] = puVar5[-3];
+    this_00 = AllocateWithFallbackHandler();
+    local_4 = 0;
+    if (this_00 == (TIndexAndRankList *)0x0) {
+      this_00 = (TIndexAndRankList *)0x0;
+    }
+    else {
+      TIndexAndRankList::CPtrArray(this_00);
+      this_00->pVtable = &g_vtblTDealList;
+    }
+    *(undefined2 *)&this_00->field_0x14 = 0x10;
+    *ppTVar4 = this_00;
+    puVar2 = puVar5 + 0x35;
+    iVar3 = 0x17;
+    do {
+      puVar2[-0x2e] = 0;
+      *puVar2 = 0;
+      puVar2[-0x17] = 0;
+      puVar2 = puVar2 + 1;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+    ppTVar4 = ppTVar4 + 1;
+    local_18 = local_18 + 1;
+    puVar5 = puVar5 + 0x50;
+    local_14 = local_14 + -1;
+  } while (local_14 != 0);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA130
 // GHIDRA_NAME TDealList::CreateTDealListInstance
 // GHIDRA_PROTO void * __cdecl CreateTDealListInstance(void)
@@ -46,8 +119,8 @@ void * __thiscall TDealList::thunk_DestructTDealListAndMaybeFree(TDealList *this
 void * __cdecl TDealList::CreateTDealListInstance(void)
 
 {
-  CObArray *this;
-  CObArray *pCVar1;
+  TIndexAndRankList *this;
+  TIndexAndRankList *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,16 +130,16 @@ void * __cdecl TDealList::CreateTDealListInstance(void)
   puStack_8 = &LAB_0063909a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (CObArray *)AllocateWithFallbackHandler(0x18);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
-  pCVar1 = (CObArray *)0x0;
-  if (this != (CObArray *)0x0) {
-    CObArray::CPtrArray_ctor(this);
-    *(undefined ***)this = &g_vtblTDealList;
-    pCVar1 = this;
+  pTVar1 = (TIndexAndRankList *)0x0;
+  if (this != (TIndexAndRankList *)0x0) {
+    TIndexAndRankList::CPtrArray(this);
+    this->pVtable = &g_vtblTDealList;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return pCVar1;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1A0
@@ -91,8 +164,8 @@ void * __cdecl TDealList::GetTDealListClassNamePointer(void)
 void * __fastcall TDealList::ConstructTDealListBaseState(TDealList *pThis)
 
 {
-  CObArray::CPtrArray_ctor((CObArray *)pThis);
-  *(undefined ***)pThis = &g_vtblTDealList;
+  TIndexAndRankList::CPtrArray((TIndexAndRankList *)pThis);
+  pThis->pField00 = &g_vtblTDealList;
   return pThis;
 }
 
@@ -105,9 +178,9 @@ void * __thiscall TDealList::DestructTDealListAndMaybeFree(TDealList *this,byte 
 {
   TIndexAndRankList *unaff_ESI;
   
-  CObArray::thunk_DestructCObArray_005BA220(unaff_ESI);
+  CObArray::thunk_DestructCObArray(unaff_ESI);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

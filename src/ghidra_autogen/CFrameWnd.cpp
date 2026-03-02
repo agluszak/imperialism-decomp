@@ -3,23 +3,73 @@
 // Program: Imperialism.exe
 // Bucket: CFrameWnd.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0061F45C
-// GHIDRA_NAME CFrameWnd::SetMfcThreadStateFlagDword30
-// GHIDRA_PROTO undefined SetMfcThreadStateFlagDword30()
+// GHIDRA_FUNCTION IMPERIALISM 0x006074F9
+// GHIDRA_NAME CFrameWnd::ShowWindow
+// GHIDRA_PROTO void __thiscall ShowWindow(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Writes thread-state field +0x30 in MFC module-thread storage. Used as a simple per-thread startup/DDE state flag.
+// GHIDRA_COMMENT Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards to site virtual Show handler (+0xA8). [FID:FID_single_match_phase1_nodebug]
 // GHIDRA_COMMENT_END
 
-/* Writes thread-state field +0x30 in MFC module-thread storage. Used as a simple per-thread
-   startup/DDE state flag. */
+/* Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards
+   to site virtual Show handler (+0xA8). [FID:FID_single_match_phase1_nodebug] */
 
-void CFrameWnd::SetMfcThreadStateFlagDword30(undefined4 param_1)
+void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this)
 
 {
-  int iVar1;
+  int in_stack_00000004;
   
-  iVar1 = GetOrCreateMfcModuleThreadState();
-  *(undefined4 *)(iVar1 + 0x30) = param_1;
+  if (*(int **)&this->field_0x38 == (int *)0x0) {
+    ::ShowWindow(this->field25_0x1c,in_stack_00000004);
+  }
+  else {
+    (**(code **)(**(int **)&this->field_0x38 + 0xa8))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061DDC2
+// GHIDRA_NAME CFrameWnd::OnEnterIdle_61ddc2
+// GHIDRA_PROTO void __thiscall OnEnterIdle_61ddc2(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  OnEnterIdle
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    OnEnterIdle
+   
+   Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall CFrameWnd::OnEnterIdle_61ddc2(CFrameWnd *this)
+
+{
+  int in_stack_00000004;
+  
+  OnEnterIdle();
+  if ((in_stack_00000004 == 2) && (this->field123_0x90 != this->field124_0x94)) {
+    SetMessageText(this);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061DE0A
+// GHIDRA_NAME CFrameWnd::SetMessageText
+// GHIDRA_PROTO void __thiscall SetMessageText(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND.
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall CFrameWnd::SetMessageText(CFrameWnd *this)
+
+{
+  WPARAM in_stack_00000004;
+  
+  SendMessageA(this->field25_0x1c,0x362,in_stack_00000004,0);
   return;
 }
 

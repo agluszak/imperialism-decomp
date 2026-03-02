@@ -54,10 +54,10 @@ void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
 {
   int iVar1;
   
-  iVar1 = *(int *)(this + 0xc);
+  iVar1 = this->field0c;
   while (iVar1 != 0) {
-    (**(code **)(**(int **)(*(int *)(this + 4) + 8) + 0x1c))();
-    iVar1 = *(int *)(this + 0xc);
+    (**(code **)(**(int **)(this->field04 + 8) + 0x1c))();
+    iVar1 = this->field0c;
   }
   return;
 }
@@ -87,7 +87,7 @@ TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte freeSe
 {
   DestructTEventHandlerAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

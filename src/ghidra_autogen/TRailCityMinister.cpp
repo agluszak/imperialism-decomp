@@ -3,6 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TRailCityMinister.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00401EDD
+// GHIDRA_NAME TRailCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c63a0_At00401edd
+// GHIDRA_PROTO void __fastcall thunk_ConfigureCityInteriorMinisterPriorityPreset_004c63a0_At00401edd(TRailCityMinister * pThis)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c63a0
+// GHIDRA_COMMENT_END
+
+/* WARNING: Struct "TRailCityMinister": ignoring multiple overlapping fields */
+/* Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c63a0 */
+
+void __fastcall
+TRailCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c63a0_At00401edd
+          (TRailCityMinister *pThis)
+
+{
+  ConfigureCityInteriorMinisterPriorityPreset_004c63a0(pThis);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C2F
 // GHIDRA_NAME TRailCityMinister::thunk_ConstructTRailCityMinisterBaseState
 // GHIDRA_PROTO void * __thiscall thunk_ConstructTRailCityMinisterBaseState(void)
@@ -10,31 +29,32 @@
 // GHIDRA_COMMENT Single-JMP thunk to ConstructTRailCityMinisterBaseState
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TRailCityMinister": ignoring multiple overlapping fields */
 /* Single-JMP thunk to ConstructTRailCityMinisterBaseState */
 
 void * __thiscall
 TRailCityMinister::thunk_ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined4 *)(this + 0x18c) = 0;
-  *(undefined2 *)(this + 0x14) = 1;
-  *(undefined2 *)(this + 0x16) = 1;
-  *(undefined2 *)(this + 0xc) = 1;
-  *(undefined ***)this = &g_vtblTRailCityMinister;
+  TMinister::thunk_ConstructTMinister(&this->base);
+  (this->base).field390_0x18c = 0;
+  (this->base).field16_0x14 = 1;
+  (this->base).field17_0x16 = 1;
+  (this->base).field9_0xc = 1;
+  (this->base).pVtable = &g_vtblTRailCityMinister;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040352B
-// GHIDRA_NAME TRailCityMinister::thunk_GetTRailCityMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRailCityMinisterClassNamePointer(void)
+// GHIDRA_NAME TRailCityMinister::thunk_GetTRailCityMinisterClassNamePointer_At0040352b
+// GHIDRA_PROTO void * __cdecl thunk_GetTRailCityMinisterClassNamePointer_At0040352b(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTRailCityMinisterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTRailCityMinisterClassNamePointer */
 
-void * __cdecl TRailCityMinister::thunk_GetTRailCityMinisterClassNamePointer(void)
+void * __cdecl TRailCityMinister::thunk_GetTRailCityMinisterClassNamePointer_At0040352b(void)
 
 {
   void *pvVar1;
@@ -44,16 +64,17 @@ void * __cdecl TRailCityMinister::thunk_GetTRailCityMinisterClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403ACB
-// GHIDRA_NAME TRailCityMinister::thunk_DestructTRailCityMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTRailCityMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TRailCityMinister::thunk_DestructTRailCityMinisterAndMaybeFree_At00403acb
+// GHIDRA_PROTO void * __thiscall thunk_DestructTRailCityMinisterAndMaybeFree_At00403acb(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTRailCityMinisterAndMaybeFree
 // GHIDRA_COMMENT_END
 
+/* WARNING: Struct "TRailCityMinister": ignoring multiple overlapping fields */
 /* Single-JMP thunk to DestructTRailCityMinisterAndMaybeFree */
 
 void * __thiscall
-TRailCityMinister::thunk_DestructTRailCityMinisterAndMaybeFree
+TRailCityMinister::thunk_DestructTRailCityMinisterAndMaybeFree_At00403acb
           (TRailCityMinister *this,byte freeSelfFlag)
 
 {
@@ -80,14 +101,14 @@ void * __cdecl TRailCityMinister::CreateTRailCityMinisterInstance(void)
   puStack_8 = &LAB_0063150a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TMinister *)AllocateWithFallbackHandler(0x1c4);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TMinister *)0x0) {
     TMinister::thunk_ConstructTMinister(this);
-    this[99].pVtable = (void *)0x0;
-    *(undefined2 *)&this[5].pVtable = 1;
-    *(undefined2 *)((int)&this[5].pVtable + 2) = 1;
-    *(undefined2 *)&this[3].pVtable = 1;
+    this->field390_0x18c = 0;
+    this->field16_0x14 = 1;
+    this->field17_0x16 = 1;
+    this->field9_0xc = 1;
     this->pVtable = &g_vtblTRailCityMinister;
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -115,15 +136,17 @@ void * __cdecl TRailCityMinister::GetTRailCityMinisterClassNamePointer(void)
 // GHIDRA_NAME TRailCityMinister::ConstructTRailCityMinisterBaseState
 // GHIDRA_PROTO void * __thiscall ConstructTRailCityMinisterBaseState(void)
 
+/* WARNING: Struct "TRailCityMinister": ignoring multiple overlapping fields */
+
 void * __thiscall TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined4 *)(this + 0x18c) = 0;
-  *(undefined2 *)(this + 0x14) = 1;
-  *(undefined2 *)(this + 0x16) = 1;
-  *(undefined2 *)(this + 0xc) = 1;
-  *(undefined ***)this = &g_vtblTRailCityMinister;
+  TMinister::thunk_ConstructTMinister(&this->base);
+  (this->base).field390_0x18c = 0;
+  (this->base).field16_0x14 = 1;
+  (this->base).field17_0x16 = 1;
+  (this->base).field9_0xc = 1;
+  (this->base).pVtable = &g_vtblTRailCityMinister;
   return this;
 }
 
@@ -131,13 +154,15 @@ void * __thiscall TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCi
 // GHIDRA_NAME TRailCityMinister::DestructTRailCityMinisterAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTRailCityMinisterAndMaybeFree(byte freeSelfFlag)
 
+/* WARNING: Struct "TRailCityMinister": ignoring multiple overlapping fields */
+
 void * __thiscall
 TRailCityMinister::DestructTRailCityMinisterAndMaybeFree(TRailCityMinister *this,byte freeSelfFlag)
 
 {
   DestructTRailCityMinisterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

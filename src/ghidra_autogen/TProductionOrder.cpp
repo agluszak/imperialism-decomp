@@ -4,8 +4,8 @@
 // Bucket: TProductionOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040204F
-// GHIDRA_NAME TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void * pMessage)
+// GHIDRA_NAME TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060_At0040204f
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060_At0040204f(void * pMessage)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
 // GHIDRA_COMMENT_END
@@ -13,7 +13,7 @@
 /* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b5060 */
 
 void __thiscall
-TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
+TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060_At0040204f
           (TProductionOrder *this,void *pMessage)
 
 {
@@ -21,80 +21,9 @@ TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004034DB
-// GHIDRA_NAME TProductionOrder::thunk_GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTProductionOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTProductionOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTProductionOrderClassNamePointer */
-
-void * __cdecl TProductionOrder::thunk_GetTProductionOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTProductionOrderClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403F49
-// GHIDRA_NAME TProductionOrder::thunk_InitializeBasicCityOrderContext
-// GHIDRA_PROTO void __thiscall thunk_InitializeBasicCityOrderContext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeBasicCityOrderContext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeBasicCityOrderContext */
-
-void __thiscall TProductionOrder::thunk_InitializeBasicCityOrderContext(TProductionOrder *this)
-
-{
-  int iVar1;
-  TProductionOrder *pTVar2;
-  int in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  *(int *)(this + 8) = in_stack_00000004;
-  *(undefined4 *)(this + 0xc) = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)(this + 0x48) = in_stack_00000008;
-  *(undefined2 *)(this + 4) = 0;
-  pTVar2 = this + 0x10;
-  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *(undefined4 *)pTVar2 = 0;
-    pTVar2 = pTVar2 + 4;
-  }
-  *(undefined2 *)pTVar2 = 0;
-  *(undefined4 *)(this + 0x44) = 0;
-  *(undefined2 *)(this + 0x40) = 0;
-  *(undefined2 *)(this + 0x3e) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004053A8
-// GHIDRA_NAME TProductionOrder::thunk_DestructTProductionOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTProductionOrderAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTProductionOrderAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTProductionOrderAndMaybeFree */
-
-void * __thiscall
-TProductionOrder::thunk_DestructTProductionOrderAndMaybeFree
-          (TProductionOrder *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTProductionOrderAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00405B96
-// GHIDRA_NAME TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(void * pMessage)
+// GHIDRA_NAME TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0_At00405b96
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0_At00405b96(void * pMessage)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
 // GHIDRA_COMMENT_END
@@ -102,7 +31,7 @@ TProductionOrder::thunk_DestructTProductionOrderAndMaybeFree
 /* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0 */
 
 void __thiscall
-TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
+TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0_At00405b96
           (TProductionOrder *this,void *pMessage)
 
 {
@@ -110,48 +39,34 @@ TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B9B
-// GHIDRA_NAME TProductionOrder::thunk_ConstructTProductionOrderBaseState
-// GHIDRA_PROTO void __fastcall thunk_ConstructTProductionOrderBaseState(TProductionOrder * pThis)
+// GHIDRA_FUNCTION IMPERIALISM 0x00405F92
+// GHIDRA_NAME TProductionOrder::thunk_OrphanCallChain_C1_I16_004b5100_At00405f92
+// GHIDRA_PROTO int __cdecl thunk_OrphanCallChain_C1_I16_004b5100_At00405f92(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTProductionOrderBaseState
+// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I16_004b5100
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ConstructTProductionOrderBaseState */
+/* Single-JMP thunk to OrphanCallChain_C1_I16_004b5100 */
 
-void __fastcall TProductionOrder::thunk_ConstructTProductionOrderBaseState(TProductionOrder *pThis)
-
-{
-  *(undefined ***)pThis = &g_vtblTProductionOrder;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004074F5
-// GHIDRA_NAME TProductionOrder::thunk_InitializeCityOrderItemWorkingBuffers
-// GHIDRA_PROTO void __cdecl thunk_InitializeCityOrderItemWorkingBuffers(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeCityOrderItemWorkingBuffers
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeCityOrderItemWorkingBuffers */
-
-void __cdecl TProductionOrder::thunk_InitializeCityOrderItemWorkingBuffers(void)
+int __cdecl TProductionOrder::thunk_OrphanCallChain_C1_I16_004b5100_At00405f92(void)
 
 {
-  InitializeCityOrderItemWorkingBuffers();
-  return;
+  int iVar1;
+  
+  iVar1 = OrphanCallChain_C1_I16_004b5100();
+  return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408C8D
-// GHIDRA_NAME TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO void __cdecl thunk_ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_NAME TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d
+// GHIDRA_PROTO void __cdecl thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to ResetCityOrderItemDerivedStateNoop
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to ResetCityOrderItemDerivedStateNoop */
 
-void __cdecl TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop(void)
+void __cdecl TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d(void)
 
 {
   return;
@@ -193,122 +108,8 @@ TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this,by
 {
   DestructTProductionOrderAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B4F70
-// GHIDRA_NAME TProductionOrder::InitializeBasicCityOrderContext
-// GHIDRA_PROTO void __thiscall InitializeBasicCityOrderContext(void)
-
-void __thiscall TProductionOrder::InitializeBasicCityOrderContext(TProductionOrder *this)
-
-{
-  int iVar1;
-  TProductionOrder *pTVar2;
-  int in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  *(int *)(this + 8) = in_stack_00000004;
-  *(undefined4 *)(this + 0xc) = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)(this + 0x48) = in_stack_00000008;
-  *(undefined2 *)(this + 4) = 0;
-  pTVar2 = this + 0x10;
-  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *(undefined4 *)pTVar2 = 0;
-    pTVar2 = pTVar2 + 4;
-  }
-  *(undefined2 *)pTVar2 = 0;
-  *(undefined4 *)(this + 0x44) = 0;
-  *(undefined2 *)(this + 0x40) = 0;
-  *(undefined2 *)(this + 0x3e) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B4FE0
-// GHIDRA_NAME TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
-
-void __thiscall
-TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
-          (TProductionOrder *this,void *pMessage)
-
-{
-  code *pcVar1;
-  
-  thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  (*pcVar1)(this + 0x48,2);
-  (*pcVar1)(this + 4,2);
-  (*pcVar1)(this + 0x40,2);
-  (*pcVar1)(this + 0x48,2);
-  (*pcVar1)(this + 0x10,0x2e);
-  (*pcVar1)(this + 0x44,4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B5060
-// GHIDRA_NAME TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
-
-void __thiscall
-TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
-          (TProductionOrder *this,void *pMessage)
-
-{
-  code *pcVar1;
-  
-  thunk_HandleCityDialogNoOpSlot18();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
-  (*pcVar1)(this + 0x48,2);
-  (*pcVar1)(this + 4,2);
-  (*pcVar1)(this + 0x40,2);
-  (*pcVar1)(this + 0x48,2);
-  (*pcVar1)(this + 0x10,0x2e);
-  (*pcVar1)(this + 0x44,4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B5140
-// GHIDRA_NAME TProductionOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO void __cdecl ResetCityOrderItemDerivedStateNoop(void)
-
-void __cdecl TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B5180
-// GHIDRA_NAME TProductionOrder::InitializeCityOrderItemWorkingBuffers
-// GHIDRA_PROTO void __cdecl InitializeCityOrderItemWorkingBuffers(void)
-
-void __cdecl TProductionOrder::InitializeCityOrderItemWorkingBuffers(void)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-  undefined4 *in_stack_00000004;
-  
-  puVar2 = in_stack_00000004;
-  for (iVar1 = 0x1e; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
-  }
-  *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)in_stack_00000004 + 0x7a) = 0;
-  *(undefined2 *)(in_stack_00000004 + 0x1f) = 0;
-  return;
 }
 

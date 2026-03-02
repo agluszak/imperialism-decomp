@@ -3,27 +3,17 @@
 // Program: Imperialism.exe
 // Bucket: TNumberText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406D0C
-// GHIDRA_NAME TNumberText::thunk_NumericEntryMethod_00406d0c
-// GHIDRA_PROTO void * __cdecl thunk_NumericEntryMethod_00406d0c(void)
-
-void * __cdecl TNumberText::thunk_NumericEntryMethod_00406d0c(void)
-
-{
-  return &g_pClassDescTNumberText;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00407153
-// GHIDRA_NAME TNumberText::thunk_SetNumberTextValueAndRefresh
-// GHIDRA_PROTO void __thiscall thunk_SetNumberTextValueAndRefresh(int value, uint refreshToken)
+// GHIDRA_NAME TNumberText::thunk_DestructTNumberTextAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTNumberTextAndMaybeFree(int value, uint refreshToken)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Thunk] Direct JMP thunk to SetNumberTextValueAndRefresh.
+// GHIDRA_COMMENT [Thunk] Direct JMP thunk to SetNumberTextValueAndRefresh. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* [Thunk] Direct JMP thunk to SetNumberTextValueAndRefresh. */
+/* [Thunk] Direct JMP thunk to SetNumberTextValueAndRefresh. [FID:thunk_target_sync] */
 
 void __thiscall
-TNumberText::thunk_SetNumberTextValueAndRefresh(TNumberText *this,int value,uint refreshToken)
+TNumberText::thunk_DestructTNumberTextAndMaybeFree(TNumberText *this,int value,uint refreshToken)
 
 {
   DestructTNumberTextAndMaybeFree(this,value,refreshToken);
@@ -31,29 +21,28 @@ TNumberText::thunk_SetNumberTextValueAndRefresh(TNumberText *this,int value,uint
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040970F
-// GHIDRA_NAME TNumberText::thunk_InitializeNumberTextEntryAndLayoutMetrics
-// GHIDRA_PROTO void __thiscall thunk_InitializeNumberTextEntryAndLayoutMetrics(void)
+// GHIDRA_NAME TNumberText::thunk_ConstructTNumberTextBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTNumberTextBaseState(int arg1, int arg2, int arg3, int arg4, int arg5)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeNumberTextEntryAndLayoutMetrics.
+// GHIDRA_COMMENT Thunk forwarding to InitializeNumberTextEntryAndLayoutMetrics. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to InitializeNumberTextEntryAndLayoutMetrics. */
+/* Thunk forwarding to InitializeNumberTextEntryAndLayoutMetrics. [FID:thunk_target_sync] */
 
-void __thiscall TNumberText::thunk_InitializeNumberTextEntryAndLayoutMetrics(TNumberText *this)
+void __thiscall
+TNumberText::thunk_ConstructTNumberTextBaseState
+          (TNumberText *this,int arg1,int arg2,int arg3,int arg4,int arg5)
 
 {
   int iVar1;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
-  undefined4 in_stack_00000014;
   
   thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  iVar1 = *(int *)this;
-  *(undefined2 *)(this + 0x9c) = 0xff;
+  iVar1 = this->field0_0x0;
+  this->field9c = 0xff;
   (**(code **)(iVar1 + 0x2c))(1);
-  *(undefined4 *)(this + 0xa8) = in_stack_00000014;
-  *(undefined4 *)(this + 0xa4) = in_stack_00000010;
-  (**(code **)(iVar1 + 0x1e4))(in_stack_0000000c,0);
+  this->fielda8 = arg5;
+  this->fielda4 = arg4;
+  (**(code **)(iVar1 + 0x1e4))(arg3,0);
   return;
 }
 
@@ -70,8 +59,8 @@ void * __cdecl TNumberText::CreateTNumberTextInstance(void)
 
 {
   TView *this;
-  int iVar1;
-  undefined4 uVar2;
+  void *pvVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -81,42 +70,42 @@ void * __cdecl TNumberText::CreateTNumberTextInstance(void)
   puStack_8 = &LAB_0062f22d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0xac);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    this[100] = (TView)0x0;
-    *(undefined4 *)(this + 0x60) = 1;
-    *(undefined4 *)(this + 0x68) = 0;
-    *(undefined4 *)(this + 0x6c) = 0;
-    *(undefined4 *)(this + 0x70) = 0;
-    *(undefined4 *)(this + 0x74) = 0;
-    *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
-    *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(this + 0x80) = g_wUiResourceEntryDefaultParam2;
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].field1_0x4 = 0;
+    this[1].pVtable = (void *)0x1;
+    this[1].field3_0x8 = 0;
+    this[1].dialogValueDwordC = 0;
+    this[1].dialogValueDword10 = 0;
+    this[1].viewStateDword14 = 0;
+    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
+    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    *(undefined4 *)(this + 0x84) = 0;
-    *(undefined4 *)(this + 0x88) = 0xffffffff;
-    *(undefined4 *)(this + 0x8c) = 0;
-    *(undefined2 *)(this + 0x90) = 0;
-    *(undefined ***)this = &g_vtblTStaticText;
-    *(undefined4 *)(this + 0x60) = 0xd;
-    iVar1 = AllocateWithFallbackHandler(4);
+    this[1].field10_0x24 = 0;
+    this[1].field11_0x28 = -1;
+    this[1].cachedPosX2c = 0;
+    *(undefined2 *)&this[1].cachedPosY30 = 0;
+    this->pVtable = &g_vtblTStaticText;
+    this[1].pVtable = (void *)0xd;
+    pvVar1 = AllocateWithFallbackHandler();
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar1 == 0) {
-      uVar2 = 0;
+    if (pvVar1 == (void *)0x0) {
+      piVar2 = (int *)0x0;
     }
     else {
-      uVar2 = InitializeSharedStringRefFromEmpty();
+      piVar2 = InitializeSharedStringRefFromEmpty();
     }
-    *(undefined4 *)(this + 0x84) = uVar2;
-    *(undefined4 *)(this + 0x94) = 0;
-    *(undefined4 *)(this + 0x98) = 0;
-    *(undefined2 *)(this + 0x9c) = 0xff;
-    *(undefined4 *)(this + 0x60) = 6;
-    this[0x4d] = (TView)0x0;
-    *(undefined4 *)(this + 0xa0) = 0;
-    *(undefined ***)this = &g_vtblFamily_NumericEntryDialogCore_Root;
+    this[1].field10_0x24 = (int)piVar2;
+    this[1].field14_0x34 = 0;
+    this[1].field15_0x38 = 0;
+    *(undefined2 *)&this[1].viewFlags3c = 0xff;
+    this[1].pVtable = (void *)0x6;
+    this->renderEnableFlag4d = 0;
+    *(undefined4 *)&this[1].field_0x40 = 0;
+    this->pVtable = &g_vtblFamily_NumericEntryDialogCore_Root;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -141,28 +130,27 @@ void * __cdecl TNumberText::GetTNumberTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491060
 // GHIDRA_NAME TNumberText::ConstructTNumberTextBaseState
-// GHIDRA_PROTO void __thiscall ConstructTNumberTextBaseState(void)
+// GHIDRA_PROTO void __thiscall ConstructTNumberTextBaseState(int arg1, int arg2, int arg3, int arg4, int arg5)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes number-text entry base, default formatting state, and layout metric fields.
 // GHIDRA_COMMENT_END
 
 /* Initializes number-text entry base, default formatting state, and layout metric fields. */
 
-void __thiscall TNumberText::ConstructTNumberTextBaseState(TNumberText *this)
+void __thiscall
+TNumberText::ConstructTNumberTextBaseState
+          (TNumberText *this,int arg1,int arg2,int arg3,int arg4,int arg5)
 
 {
   int iVar1;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
-  undefined4 in_stack_00000014;
   
   thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  iVar1 = *(int *)this;
-  *(undefined2 *)(this + 0x9c) = 0xff;
+  iVar1 = this->field0_0x0;
+  this->field9c = 0xff;
   (**(code **)(iVar1 + 0x2c))(1);
-  *(undefined4 *)(this + 0xa8) = in_stack_00000014;
-  *(undefined4 *)(this + 0xa4) = in_stack_00000010;
-  (**(code **)(iVar1 + 0x1e4))(in_stack_0000000c,0);
+  this->fielda8 = arg5;
+  this->fielda4 = arg4;
+  (**(code **)(iVar1 + 0x1e4))(arg3,0);
   return;
 }
 
@@ -179,27 +167,25 @@ void __thiscall
 TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this,int value,uint refreshToken)
 
 {
-  int iVar1;
   uint unaff_ESI;
   uint *unaff_FS_OFFSET;
   TNumberText *local_10;
   uint uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  int local_4;
   
-  iVar1 = value;
-  local_4 = 0xffffffff;
+  local_4 = -1;
   puStack_8 = &LAB_0062f250;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (uint)&uStack_c;
-  *(int *)(this + 0xa0) = value;
+  this->fielda0 = value;
   local_10 = this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&value,&g_szDecimalFormat,iVar1);
-  StringSharedRef_AssignFromPtr(&value);
+  FormatStringWithVarArgsToSharedRef();
+  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&local_10);
   local_4 = CONCAT31(local_4._1_3_,1);
-  (**(code **)(*(int *)this + 0x1e0))(&local_10,refreshToken);
+  (**(code **)(this->field0_0x0 + 0x1e0))(&local_10,refreshToken);
   uStack_c = uStack_c & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
   uStack_c = 0xffffffff;

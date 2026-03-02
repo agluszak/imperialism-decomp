@@ -4,32 +4,33 @@
 // Bucket: TTextPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401BBD
-// GHIDRA_NAME TTextPictureButton::thunk_RenderTextPictureButtonCaptionWithPressedOffset
-// GHIDRA_PROTO void __thiscall thunk_RenderTextPictureButtonCaptionWithPressedOffset(void)
+// GHIDRA_NAME TTextPictureButton::thunk_RenderTextPictureButtonCaptionWithPressedOffset_At00401bbd
+// GHIDRA_PROTO void __thiscall thunk_RenderTextPictureButtonCaptionWithPressedOffset_At00401bbd(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RenderTextPictureButtonCaptionWithPressedOffset.
+// GHIDRA_COMMENT Single-JMP thunk to RenderTextPictureButtonCaptionWithPressedOffset
 // GHIDRA_COMMENT_END
 
-/* Thunk wrapper for RenderTextPictureButtonCaptionWithPressedOffset. */
+/* Single-JMP thunk to RenderTextPictureButtonCaptionWithPressedOffset */
 
 void __thiscall
-TTextPictureButton::thunk_RenderTextPictureButtonCaptionWithPressedOffset(TTextPictureButton *this)
+TTextPictureButton::thunk_RenderTextPictureButtonCaptionWithPressedOffset_At00401bbd
+          (TTextPictureButton *this)
 
 {
-  RenderTextPictureButtonCaptionWithPressedOffset(this);
+  THQButton::RenderTextPictureButtonCaptionWithPressedOffset((THQButton *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402482
-// GHIDRA_NAME TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTextPictureButtonClassNamePointer(void)
+// GHIDRA_NAME TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer_At00402482
+// GHIDRA_PROTO void * __cdecl thunk_GetTTextPictureButtonClassNamePointer_At00402482(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTTextPictureButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTTextPictureButtonClassNamePointer */
 
-void * __cdecl TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer(void)
+void * __cdecl TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer_At00402482(void)
 
 {
   void *pvVar1;
@@ -38,39 +39,9 @@ void * __cdecl TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer(v
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040610E
-// GHIDRA_NAME TTextPictureButton::thunk_ConstructPictureScreenVariantEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructPictureScreenVariantEntry(void)
-
-void __thiscall
-TTextPictureButton::thunk_ConstructPictureScreenVariantEntry(TTextPictureButton *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636518;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTUpDownPictureButton;
-  *(undefined2 *)(this + 0x92) = 7000;
-  uStack_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  *(undefined2 *)(this + 0x98) = 0;
-  *(undefined2 *)(this + 0x9a) = 0;
-  *(undefined2 *)(this + 0x9c) = 0;
-  *(undefined ***)this = &g_vtblTTextPictureButton;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004061CC
-// GHIDRA_NAME TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTextPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree_At004061cc
+// GHIDRA_PROTO void * __thiscall thunk_DestructTTextPictureButtonAndMaybeFree_At004061cc(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTTextPictureButtonAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -78,7 +49,7 @@ TTextPictureButton::thunk_ConstructPictureScreenVariantEntry(TTextPictureButton 
 /* Single-JMP thunk to DestructTTextPictureButtonAndMaybeFree */
 
 void * __thiscall
-TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree
+TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree_At004061cc
           (TTextPictureButton *this,byte freeSelfFlag)
 
 {
@@ -86,48 +57,6 @@ TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree
   
   pvVar1 = DestructTTextPictureButtonAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005724E0
-// GHIDRA_NAME TTextPictureButton::CreatePictureScreenVariantEntry
-// GHIDRA_PROTO undefined CreatePictureScreenVariantEntry()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
-
-/* [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor,
-   medium) */
-
-undefined4 * TTextPictureButton::CreatePictureScreenVariantEntry(void)
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_006364f2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
-  local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTUpDownPictureButton;
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeSharedStringRefFromEmpty();
-    *puVar1 = &g_vtblTTextPictureButton;
-    *(undefined2 *)(puVar1 + 0x26) = 0;
-    *(undefined2 *)((int)puVar1 + 0x9a) = 0;
-    *(undefined2 *)(puVar1 + 0x27) = 0;
-    *unaff_FS_OFFSET = local_c;
-    return puVar1;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005725B0
@@ -145,41 +74,6 @@ void * __cdecl TTextPictureButton::GetTTextPictureButtonClassNamePointer(void)
   return &g_pClassDescTTextPictureButton;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005725D0
-// GHIDRA_NAME TTextPictureButton::ConstructPictureScreenVariantEntry
-// GHIDRA_PROTO void __thiscall ConstructPictureScreenVariantEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
-
-/* [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor,
-   medium) */
-
-void __thiscall TTextPictureButton::ConstructPictureScreenVariantEntry(TTextPictureButton *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00636518;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTUpDownPictureButton;
-  *(undefined2 *)(this + 0x92) = 7000;
-  local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  *(undefined2 *)(this + 0x98) = 0;
-  *(undefined2 *)(this + 0x9a) = 0;
-  *(undefined2 *)(this + 0x9c) = 0;
-  *(undefined ***)this = &g_vtblTTextPictureButton;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00572670
 // GHIDRA_NAME TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
 // GHIDRA_PROTO void * __thiscall DestructTTextPictureButtonAndMaybeFree(byte freeSelfFlag)
@@ -191,59 +85,8 @@ TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
 {
   DestructTTextPictureButtonAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00572790
-// GHIDRA_NAME TTextPictureButton::RenderTextPictureButtonCaptionWithPressedOffset
-// GHIDRA_PROTO void __thiscall RenderTextPictureButtonCaptionWithPressedOffset(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render centered button caption with pressed-state shadow offset.
-// GHIDRA_COMMENT_END
-
-/* Render centered button caption with pressed-state shadow offset. */
-
-void __thiscall
-TTextPictureButton::RenderTextPictureButtonCaptionWithPressedOffset(TTextPictureButton *this)
-
-{
-  short extraout_AX;
-  undefined2 extraout_var;
-  int extraout_EAX;
-  int iVar1;
-  void *this_00;
-  undefined2 extraout_var_00;
-  void *this_01;
-  bool bVar2;
-  undefined4 uStack00000004;
-  tagSIZE local_8;
-  
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  bVar2 = this[100] != (TTextPictureButton)0x0;
-  uStack00000004 = 0;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_MapUiThemeCodeToStyleFlags
-            (CONCAT22(extraout_var,*(undefined2 *)(this + 0x9c)),(int)&stack0x00000004);
-  SetQuickDrawColorAndSyncGlobals();
-  thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-  thunk_NoOpQuickDrawContextSelectionHook();
-  GetTextExtentPointA(*(HDC *)(extraout_EAX + 8),*(LPCSTR *)(this + 0x94),
-                      *(int *)(*(LPCSTR *)(this + 0x94) + -8),&local_8);
-  iVar1 = (int)(local_8.cy + (local_8.cy >> 0x1f & 3U)) >> 2;
-  local_8.cx = -iVar1;
-  thunk_SetQuickDrawTextOriginWithContextOffset
-            (((short)(*(int *)(this + 0x34) / 2) - extraout_AX / 2) + 1 + (ushort)bVar2,
-             (short)(*(int *)(this + 0x38) / 2) + (short)iVar1 + 1 + (ushort)bVar2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  thunk_MapUiThemeCodeToStyleFlags
-            (CONCAT22(extraout_var_00,*(undefined2 *)(this + 0x9a)),(int)&stack0x00000004);
-  SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset
-            (((short)(*(int *)(this + 0x34) / 2) - extraout_AX / 2) + (ushort)bVar2,
-             ((short)(*(int *)(this + 0x38) / 2) - (short)local_8.cx) + (ushort)bVar2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-  return;
 }
 

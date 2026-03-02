@@ -4,16 +4,15 @@
 // Bucket: TItemBoyView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004020BD
-// GHIDRA_NAME TItemBoyView::thunk_UpdateItemBoyViewLocalizedSummaryAndRender_At004020bd
-// GHIDRA_PROTO void __thiscall thunk_UpdateItemBoyViewLocalizedSummaryAndRender_At004020bd(void)
+// GHIDRA_NAME TItemBoyView::thunk_ConstructTItemBoyViewBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTItemBoyViewBaseState(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateItemBoyViewLocalizedSummaryAndRender
+// GHIDRA_COMMENT Single-JMP thunk to UpdateItemBoyViewLocalizedSummaryAndRender [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to UpdateItemBoyViewLocalizedSummaryAndRender */
+/* Single-JMP thunk to UpdateItemBoyViewLocalizedSummaryAndRender [FID:thunk_target_sync] */
 
-void __thiscall
-TItemBoyView::thunk_UpdateItemBoyViewLocalizedSummaryAndRender_At004020bd(TItemBoyView *this)
+void __thiscall TItemBoyView::thunk_ConstructTItemBoyViewBaseState(TItemBoyView *this)
 
 {
   ConstructTItemBoyViewBaseState(this);
@@ -21,19 +20,19 @@ TItemBoyView::thunk_UpdateItemBoyViewLocalizedSummaryAndRender_At004020bd(TItemB
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004031E3
-// GHIDRA_NAME TItemBoyView::thunk_RenderItemBoyViewColumnBarsAndText
-// GHIDRA_PROTO void __thiscall thunk_RenderItemBoyViewColumnBarsAndText(void)
+// GHIDRA_NAME TItemBoyView::thunk_DestructTItemBoyViewAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTItemBoyViewAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to RenderItemBoyViewColumnBarsAndText.
+// GHIDRA_COMMENT Thunk forwarding to RenderItemBoyViewColumnBarsAndText. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to RenderItemBoyViewColumnBarsAndText. */
+/* Thunk forwarding to RenderItemBoyViewColumnBarsAndText. [FID:thunk_target_sync] */
 
-void __thiscall TItemBoyView::thunk_RenderItemBoyViewColumnBarsAndText(TItemBoyView *this)
+void __thiscall TItemBoyView::thunk_DestructTItemBoyViewAndMaybeFree(TItemBoyView *this)
 
 {
   int iVar1;
-  void *this_00;
+  THQButton *this_00;
   short *psVar2;
   int iVar3;
   int iVar4;
@@ -42,9 +41,9 @@ void __thiscall TItemBoyView::thunk_RenderItemBoyViewColumnBarsAndText(TItemBoyV
   
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  psVar2 = this[0x18].pVtable;
-  iVar1 = ((int)this[0xd].pVtable + -0x3a) / (int)psVar2[1];
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  psVar2 = this->field90_0x60;
+  iVar1 = (this->field49_0x34 + -0x3a) / (int)psVar2[1];
   if (0x20 < iVar1) {
     iVar1 = 0x20;
   }
@@ -62,16 +61,35 @@ void __thiscall TItemBoyView::thunk_RenderItemBoyViewColumnBarsAndText(TItemBoyV
       RStack_20.right = iVar3;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_10,&RStack_20,
                  0x24,(astruct_19 *)0x0);
-      psVar2 = this[0x18].pVtable;
+      psVar2 = this->field90_0x60;
       iVar4 = iVar4 + 1;
       iVar3 = iVar3 + iVar1;
     } while (iVar4 < psVar2[1]);
   }
-  SetQuickDrawStrokeColor(0x13);
+  TCivDescription::SetQuickDrawStrokeColor();
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0040892C
+// GHIDRA_NAME TItemBoyView::thunk_scalar_deleting_destructor_0040892C
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040892C(byte freeSelfFlag)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TItemBoyView::thunk_scalar_deleting_destructor_0040892C(TItemBoyView *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409AA7
@@ -142,16 +160,15 @@ void __thiscall TItemBoyView::ConstructTItemBoyViewBaseState(TItemBoyView *this)
   InitializeSharedStringRefFromEmpty();
   puStack_24 = local_14;
   local_4 = CONCAT31(local_4._1_3_,2);
-  (**(code **)(*g_pLocalizationTable + 0x7c))
-            (CONCAT22((short)((uint)this[0x18].pVtable >> 0x10),*(undefined2 *)this[0x18].pVtable));
-  FormatStringWithVarArgsToSharedRef
-            (&stack0xffffffe0,&g_szDecimalFormat,(int)*(short *)((int)this[0x18].pVtable + 2));
+  (**(code **)(*(int *)g_pLocalizationTable + 0x7c))
+            (CONCAT22((short)((uint)this->field90_0x60 >> 0x10),*(undefined2 *)this->field90_0x60));
+  FormatStringWithVarArgsToSharedRef();
   InitializeSharedStringRefFromEmpty();
   input_str = (char *)0x1d;
   uStack_c = CONCAT31(uStack_c._1_3_,3);
-  (**(code **)(*g_pLocalizationTable + 0x84))(0x273c,0x1d,&puStack_24);
+  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273c,0x1d,&puStack_24);
   scanBracketExpressions(g_pLocalizationTable,&puStack_24,input_str);
-  thunk_RenderItemBoyViewColumnBarsAndText(this);
+  thunk_DestructTItemBoyViewAndMaybeFree(this);
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
@@ -173,7 +190,7 @@ void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *thi
 
 {
   int iVar1;
-  void *this_00;
+  THQButton *this_00;
   short *psVar2;
   int iVar3;
   int iVar4;
@@ -182,9 +199,9 @@ void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *thi
   
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  psVar2 = this[0x18].pVtable;
-  iVar1 = ((int)this[0xd].pVtable + -0x3a) / (int)psVar2[1];
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  psVar2 = this->field90_0x60;
+  iVar1 = (this->field49_0x34 + -0x3a) / (int)psVar2[1];
   if (0x20 < iVar1) {
     iVar1 = 0x20;
   }
@@ -202,15 +219,15 @@ void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *thi
       local_20.right = iVar3;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
                  (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0x24,
                  (astruct_19 *)0x0);
-      psVar2 = this[0x18].pVtable;
+      psVar2 = this->field90_0x60;
       iVar4 = iVar4 + 1;
       iVar3 = iVar3 + iVar1;
     } while (iVar4 < psVar2[1]);
   }
-  SetQuickDrawStrokeColor(0x13);
+  TCivDescription::SetQuickDrawStrokeColor();
   return;
 }
 

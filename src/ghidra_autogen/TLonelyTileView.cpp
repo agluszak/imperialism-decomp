@@ -4,8 +4,8 @@
 // Bucket: TLonelyTileView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401046
-// GHIDRA_NAME TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTLonelyTileViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree_At00401046
+// GHIDRA_PROTO void * __thiscall thunk_DestructTLonelyTileViewAndMaybeFree_At00401046(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTLonelyTileViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,8 @@
 /* Single-JMP thunk to DestructTLonelyTileViewAndMaybeFree */
 
 void * __thiscall
-TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree(TLonelyTileView *this,byte freeSelfFlag)
+TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree_At00401046
+          (TLonelyTileView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -23,15 +24,15 @@ TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree(TLonelyTileView *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004014C9
-// GHIDRA_NAME TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTLonelyTileViewClassNamePointer(void)
+// GHIDRA_NAME TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer_At004014c9
+// GHIDRA_PROTO void * __cdecl thunk_GetTLonelyTileViewClassNamePointer_At004014c9(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTLonelyTileViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTLonelyTileViewClassNamePointer */
 
-void * __cdecl TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer(void)
+void * __cdecl TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer_At004014c9(void)
 
 {
   void *pvVar1;
@@ -52,9 +53,26 @@ void * __cdecl TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer(void)
 void * __thiscall TLonelyTileView::thunk_ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTLonelyTileView;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTLonelyTileView;
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00406A9B
+// GHIDRA_NAME TLonelyTileView::thunk_Helper_Uses_BlitRectWithOptionalTransparency_At00505b60_At00406a9b
+// GHIDRA_PROTO void __cdecl thunk_Helper_Uses_BlitRectWithOptionalTransparency_At00505b60_At00406a9b(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00505b60
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00505b60 */
+
+void __cdecl
+TLonelyTileView::thunk_Helper_Uses_BlitRectWithOptionalTransparency_At00505b60_At00406a9b(void)
+
+{
+  Helper_Uses_BlitRectWithOptionalTransparency_At00505b60();
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505A50
@@ -75,12 +93,12 @@ void * __cdecl TLonelyTileView::CreateTLonelyTileViewInstance(void)
   puStack_8 = &LAB_0063374a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(100);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructUiResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTLonelyTileView;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->pVtable = &g_vtblTLonelyTileView;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -109,8 +127,8 @@ void * __cdecl TLonelyTileView::GetTLonelyTileViewClassNamePointer(void)
 void * __thiscall TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 
 {
-  TView::thunk_ConstructUiResourceEntryBase((TView *)this);
-  *(undefined ***)this = &g_vtblTLonelyTileView;
+  TView::thunk_ConstructTViewBaseState(&this->base);
+  (this->base).pVtable = &g_vtblTLonelyTileView;
   return this;
 }
 
@@ -122,9 +140,9 @@ void * __thiscall
 TLonelyTileView::DestructTLonelyTileViewAndMaybeFree(TLonelyTileView *this,byte freeSelfFlag)
 
 {
-  thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructTViewBaseState(&this->base);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

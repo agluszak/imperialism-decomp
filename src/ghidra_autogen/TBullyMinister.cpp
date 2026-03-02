@@ -4,32 +4,33 @@
 // Bucket: TBullyMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402B76
-// GHIDRA_NAME TBullyMinister::thunk_GetBullyMinisterSignedPreferenceScalar_At00402b76
-// GHIDRA_PROTO undefined thunk_GetBullyMinisterSignedPreferenceScalar_At00402b76()
+// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot024
+// GHIDRA_PROTO TBullyMinister * __cdecl TBullyMinister_VtblSlot024(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetBullyMinisterSignedPreferenceScalar
+// GHIDRA_COMMENT Single-JMP thunk to CreateTBullyMinisterInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetBullyMinisterSignedPreferenceScalar */
+/* Single-JMP thunk to CreateTBullyMinisterInstance */
 
-void TBullyMinister::thunk_GetBullyMinisterSignedPreferenceScalar_At00402b76(void)
+TBullyMinister * __cdecl TBullyMinister::TBullyMinister_VtblSlot024(void)
 
 {
-  CreateTBullyMinisterInstance();
-  return;
+  TBullyMinister *pTVar1;
+  
+  pTVar1 = CreateTBullyMinisterInstance();
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406230
-// GHIDRA_NAME TBullyMinister::thunk_DestructTBullyMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTBullyMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TBullyMinister_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTBullyMinisterAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTBullyMinisterAndMaybeFree */
 
-void * __thiscall
-TBullyMinister::thunk_DestructTBullyMinisterAndMaybeFree(TBullyMinister *this,byte freeSelfFlag)
+void * __thiscall TBullyMinister::TBullyMinister_VtblSlot001(TBullyMinister *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -51,21 +52,21 @@ void * __thiscall TBullyMinister::thunk_ConstructTBullyMinisterBaseState(TBullyM
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTBullyMinister;
-  *(undefined2 *)(this + 0xc) = 4;
+  this->field0_0x0 = &g_vtblTBullyMinister;
+  this->field0c = 4;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409156
-// GHIDRA_NAME TBullyMinister::thunk_GetTBullyMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBullyMinisterClassNamePointer(void)
+// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TBullyMinister_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTBullyMinisterClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTBullyMinisterClassNamePointer */
 
-void * __cdecl TBullyMinister::thunk_GetTBullyMinisterClassNamePointer(void)
+void * __cdecl TBullyMinister::TBullyMinister_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -75,17 +76,15 @@ void * __cdecl TBullyMinister::thunk_GetTBullyMinisterClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409949
-// GHIDRA_NAME TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot017
+// GHIDRA_PROTO void __thiscall TBullyMinister_VtblSlot017(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3 */
 
-void __thiscall
-TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-          (TBullyMinister *this)
+void __thiscall TBullyMinister::TBullyMinister_VtblSlot017(TBullyMinister *this)
 
 {
   InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(this);
@@ -94,21 +93,25 @@ TBullyMinister::thunk_InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE080
 // GHIDRA_NAME TBullyMinister::CreateTBullyMinisterInstance
-// GHIDRA_PROTO undefined CreateTBullyMinisterInstance()
+// GHIDRA_PROTO TBullyMinister * __cdecl CreateTBullyMinisterInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Returns Bully minister signed preference scalar selected by polarity flag.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Returns Bully minister signed preference scalar selected by polarity flag. */
 
-float10 TBullyMinister::CreateTBullyMinisterInstance(char param_1)
+TBullyMinister * __cdecl TBullyMinister::CreateTBullyMinisterInstance(void)
 
 {
-  if (param_1 != '\0') {
-    return (float10)_g_TBully_Minister_Instance_Value_00654910;
+  undefined4 in_EAX;
+  TBullyMinister *pTVar1;
+  char in_stack_00000004;
+  
+  pTVar1 = (TBullyMinister *)CONCAT31((int3)((uint)in_EAX >> 8),in_stack_00000004);
+  if (in_stack_00000004 != '\0') {
+    return pTVar1;
   }
-  return (float10)_g_TBully_Minister_Instance_Value_00654918;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE0B0
@@ -134,8 +137,8 @@ void * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBullyMiniste
 
 {
   TMinister::thunk_ConstructTMinister((TMinister *)this);
-  *(undefined ***)this = &g_vtblTBullyMinister;
-  *(undefined2 *)(this + 0xc) = 4;
+  this->field0_0x0 = &g_vtblTBullyMinister;
+  this->field0c = 4;
   return this;
 }
 
@@ -149,7 +152,7 @@ TBullyMinister::DestructTBullyMinisterAndMaybeFree(TBullyMinister *this,byte fre
 {
   DestructTBullyMinisterAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
@@ -168,7 +171,7 @@ void __thiscall
 TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBullyMinister *this)
 
 {
-  int iVar1;
+  void *pvVar1;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -185,22 +188,22 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBul
   *(undefined2 *)(in_stack_00000004 + 100) = 2;
   iVar2 = 2;
   do {
-    iVar1 = AllocateWithFallbackHandler(0x44);
-    if (iVar1 != 0) {
+    pvVar1 = AllocateWithFallbackHandler();
+    if (pvVar1 != (void *)0x0) {
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(this + 0x18) = *(short *)(this + 0x18) + 1;
+    this->field18 = this->field18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   iVar2 = 3;
   do {
-    iVar1 = AllocateWithFallbackHandler(0x44);
-    if (iVar1 != 0) {
+    pvVar1 = AllocateWithFallbackHandler();
+    if (pvVar1 != (void *)0x0) {
       thunk_InitializeMilitaryUnitOrderObject();
     }
     thunk_InitializeMilitaryRecruitOrderState();
-    *(short *)(this + 0x1c) = *(short *)(this + 0x1c) + 1;
+    this->field1c = this->field1c + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   *(undefined2 *)((int)piStack_8 + 0xd6) = 2;

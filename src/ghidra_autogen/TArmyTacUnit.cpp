@@ -3,16 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TArmyTacUnit.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0040120D
+// GHIDRA_NAME TArmyTacUnit::thunk_WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0_At0040120d
+// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0_At0040120d(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0 */
+
+void __cdecl TArmyTacUnit::thunk_WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0_At0040120d(void)
+
+{
+  WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0040141F
-// GHIDRA_NAME TArmyTacUnit::thunk_GetTArmyTacUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyTacUnitClassNamePointer(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_GetTArmyTacUnitClassNamePointer_At0040141f
+// GHIDRA_PROTO void * __cdecl thunk_GetTArmyTacUnitClassNamePointer_At0040141f(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTArmyTacUnitClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTArmyTacUnitClassNamePointer */
 
-void * __cdecl TArmyTacUnit::thunk_GetTArmyTacUnitClassNamePointer(void)
+void * __cdecl TArmyTacUnit::thunk_GetTArmyTacUnitClassNamePointer_At0040141f(void)
 
 {
   void *pvVar1;
@@ -21,33 +37,16 @@ void * __cdecl TArmyTacUnit::thunk_GetTArmyTacUnitClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401CE9
-// GHIDRA_NAME TArmyTacUnit::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO void __thiscall thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange */
-
-void __thiscall
-TArmyTacUnit::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TArmyTacUnit *this)
-
-{
-  DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040258B
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot03(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03_At0040258b
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot03_At0040258b(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot03
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot03 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03_At0040258b(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot03(this);
@@ -55,15 +54,15 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot03(TArmyTacUnit *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402A13
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot05(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05_At00402a13
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot05_At00402a13(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot05
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot05 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05_At00402a13(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot05(this);
@@ -71,31 +70,101 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot05(TArmyTacUnit *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402BE4
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot09(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09_At00402be4
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot09_At00402be4(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot09
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot09 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot09_At00402be4(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot09(this);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004033E6
+// GHIDRA_NAME TArmyTacUnit::thunk_SelectBestTacticalTileByWeightedHeuristics
+// GHIDRA_PROTO int __thiscall thunk_SelectBestTacticalTileByWeightedHeuristics(int tacticalContext, int * pScoreWeights)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Direct thunk wrapper.
+// GHIDRA_COMMENT_END
+
+/* Direct thunk wrapper. */
+
+int __thiscall
+TArmyTacUnit::thunk_SelectBestTacticalTileByWeightedHeuristics
+          (TArmyTacUnit *this,int tacticalContext,int *pScoreWeights)
+
+{
+  int iVar1;
+  int iVar2;
+  int *piVar3;
+  int in_EDX;
+  int iVar4;
+  int iVar5;
+  int iStack_10;
+  int iStack_c;
+  int iStack_8;
+  int iStack_4;
+  
+  iVar1 = pScoreWeights[8];
+  iStack_4 = -1;
+  iStack_8 = -99999;
+  if (0 < iVar1) {
+    thunk_BuildTacticalDistanceFieldForSide((int)this->field14,in_EDX);
+  }
+  piVar3 = this->field14;
+  iVar5 = 0;
+  if (0 < piVar3[0xf]) {
+    iStack_c = -2;
+    do {
+      if ((*(short *)(piVar3[9] + iVar5 * 2) == -1) ||
+         ((0 >= iVar1 && ((iVar5 % 0x1d == 0 || (iVar5 % 0x1d == piVar3[0xd] + -1)))))) {
+        *(undefined4 *)(piVar3[0xb] + iVar5 * 4) = 0;
+      }
+      else {
+        iVar4 = 0;
+        iStack_10 = 0xf;
+        piVar3 = pScoreWeights;
+        do {
+          if (*piVar3 != 0) {
+            iVar2 = (**(code **)(((int)&g_apfnTacticalTileScoreTermEvaluators - (int)pScoreWeights)
+                                + (int)piVar3))(tacticalContext,iVar5);
+            iVar4 = iVar4 + iVar2 * *piVar3;
+          }
+          piVar3 = piVar3 + 1;
+          iStack_10 = iStack_10 + -1;
+        } while (iStack_10 != 0);
+        if ((iStack_8 < iVar4) ||
+           ((iVar4 == iStack_8 &&
+            (*(short *)(this->field14[9] + iVar5 * 2) < *(short *)(iStack_c + this->field14[9])))))
+        {
+          iStack_c = iVar5 * 2;
+          iStack_8 = iVar4;
+          iStack_4 = iVar5;
+        }
+        *(int *)(this->field14[0xb] + iVar5 * 4) = iVar4;
+      }
+      piVar3 = this->field14;
+      iVar5 = iVar5 + 1;
+    } while (iVar5 < piVar3[0xf]);
+  }
+  return iStack_4;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004034D6
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot07(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07_At004034d6
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot07_At004034d6(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot07
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot07 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07_At004034d6(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot07(this);
@@ -103,30 +172,30 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403891
-// GHIDRA_NAME TArmyTacUnit::thunk_NoOpArmyTacUnitHook
-// GHIDRA_PROTO void __thiscall thunk_NoOpArmyTacUnitHook(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_NoOpArmyTacUnitHook_At00403891
+// GHIDRA_PROTO void __thiscall thunk_NoOpArmyTacUnitHook_At00403891(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to NoOpArmyTacUnitHook.
+// GHIDRA_COMMENT Single-JMP thunk to NoOpArmyTacUnitHook
 // GHIDRA_COMMENT_END
 
-/* Thunk to NoOpArmyTacUnitHook. */
+/* Single-JMP thunk to NoOpArmyTacUnitHook */
 
-void __thiscall TArmyTacUnit::thunk_NoOpArmyTacUnitHook(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_NoOpArmyTacUnitHook_At00403891(TArmyTacUnit *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403B84
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot04
-// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot04(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot04_At00403b84
+// GHIDRA_PROTO void __cdecl thunk_TArmyTacUnit_VtblSlot04_At00403b84(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot04
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot04 */
 
-void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot04(void)
+void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot04_At00403b84(void)
 
 {
   TArmyTacUnit_VtblSlot04();
@@ -134,93 +203,62 @@ void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot04(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403F26
-// GHIDRA_NAME TArmyTacUnit::thunk_InitializeArmyTacUnitFromSourceRecord
-// GHIDRA_PROTO void __thiscall thunk_InitializeArmyTacUnitFromSourceRecord(void * arg1)
+// GHIDRA_NAME TArmyTacUnit::thunk_ConstructTArmyTacUnitBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTArmyTacUnitBaseState(void * arg1)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to InitializeArmyTacUnitFromSourceRecord.
+// GHIDRA_COMMENT Thunk to InitializeArmyTacUnitFromSourceRecord. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk to InitializeArmyTacUnitFromSourceRecord. */
+/* Thunk to InitializeArmyTacUnitFromSourceRecord. [FID:thunk_target_sync] */
 
-void __thiscall
-TArmyTacUnit::thunk_InitializeArmyTacUnitFromSourceRecord(TArmyTacUnit *this,void *arg1)
+void __thiscall TArmyTacUnit::thunk_ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,void *arg1)
 
 {
   short sVar1;
-  undefined4 uVar2;
-  TArmyTacUnit TVar3;
+  int iVar2;
+  undefined1 uVar3;
   
-  TVar3 = (TArmyTacUnit)0x0;
-  *(int *)(this + 0xc) = (int)*(short *)((int)arg1 + 4);
-  *(undefined4 *)(this + 8) = 0xfffffffe;
-  this[0x18] = (TArmyTacUnit)0x0;
-  *(undefined4 *)(this + 0x1c) = 0;
-  uVar2 = (**(code **)(*(int *)this + 0x28))();
-  *(undefined4 *)(this + 0x28) = uVar2;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
+  uVar3 = 0;
+  iVar2 = (int)*(short *)((int)arg1 + 4);
+  this->field3_0xc = (char)iVar2;
+  this->field_0xd = (char)((uint)iVar2 >> 8);
+  this->field5_0xe = (char)((uint)iVar2 >> 0x10);
+  this->field6_0xf = (char)((uint)iVar2 >> 0x18);
+  this->field08 = (int *)0xfffffffe;
+  this->field9_0x18 = 0;
+  this->field1c = (HWND)0x0;
+  iVar2 = (**(code **)(this->field0_0x0 + 0x28))();
+  this->field28 = iVar2;
+  this->field2c = 0.0;
+  this->field30 = 0.0;
   sVar1 = *(short *)((int)arg1 + 0x34);
-  *(int *)(this + 4) = (int)sVar1;
-  *(int *)(this + 0x34) = (int)sVar1;
+  this->field04 = (int *)(int)sVar1;
+  this->field34 = (int)sVar1;
   sVar1 = *(short *)((int)arg1 + 0x38);
-  *(int *)(this + 0x10) =
+  this->field10 =
        (int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
                    (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f));
-  *(int *)(this + 0x14) = (int)*(short *)((int)arg1 + 0x18);
-  *(undefined4 *)(this + 0x40) = 0xffffffff;
-  *(void **)(this + 0x38) = arg1;
+  this->field14 = (int *)(int)*(short *)((int)arg1 + 0x18);
+  this->field40 = -1;
+  this->pField38 = arg1;
   if ((*(int *)((int)arg1 + 8) == 2) &&
-     (*(short *)(&g_TArmy_Tac_Unit_Value_00669858 + *(int *)(this + 0xc) * 2) == 0)) {
-    TVar3 = (TArmyTacUnit)0x1;
+     (*(short *)(&g_TArmy_Tac_Unit_Value_00669858 + *(int *)&this->field3_0xc * 2) == 0)) {
+    uVar3 = 1;
   }
-  this[0x3c] = TVar3;
+  *(undefined1 *)&this->field3c = uVar3;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403F30
-// GHIDRA_NAME TArmyTacUnit::thunk_AddOrderNodeToHeadAndReassignNationCounters
-// GHIDRA_PROTO void __thiscall thunk_AddOrderNodeToHeadAndReassignNationCounters(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AddOrderNodeToHeadAndReassignNationCounters
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AddOrderNodeToHeadAndReassignNationCounters */
-
-void __thiscall TArmyTacUnit::thunk_AddOrderNodeToHeadAndReassignNationCounters(TArmyTacUnit *this)
-
-{
-  AddOrderNodeToHeadAndReassignNationCounters(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042FA
-// GHIDRA_NAME TArmyTacUnit::thunk_GetOrderNodeDescriptorWord0CAsIntByResourceType
-// GHIDRA_PROTO int __stdcall thunk_GetOrderNodeDescriptorWord0CAsIntByResourceType(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetOrderNodeDescriptorWord0CAsIntByResourceType
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetOrderNodeDescriptorWord0CAsIntByResourceType */
-
-int TArmyTacUnit::thunk_GetOrderNodeDescriptorWord0CAsIntByResourceType(void)
-
-{
-  int iVar1;
-  
-  iVar1 = GetOrderNodeDescriptorWord0CAsIntByResourceType();
-  return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404408
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot02(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02_At00404408
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot02_At00404408(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot02
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot02 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02_At00404408(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot02(this);
@@ -228,15 +266,15 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot02(TArmyTacUnit *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404BF6
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot01(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01_At00404bf6
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot01_At00404bf6(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot01
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot01 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01_At00404bf6(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot01(this);
@@ -244,15 +282,15 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004056EB
-// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06
-// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot06(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06_At004056eb
+// GHIDRA_PROTO void __thiscall thunk_TArmyTacUnit_VtblSlot06_At004056eb(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to TArmyTacUnit_VtblSlot06
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to TArmyTacUnit_VtblSlot06 */
 
-void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06_At004056eb(TArmyTacUnit *this)
 
 {
   TArmyTacUnit_VtblSlot06(this);
@@ -260,8 +298,8 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040634D
-// GHIDRA_NAME TArmyTacUnit::thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
-// GHIDRA_PROTO void __thiscall thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead_At0040634d
+// GHIDRA_PROTO void __thiscall thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead_At0040634d(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
 // GHIDRA_COMMENT_END
@@ -269,7 +307,8 @@ void __thiscall TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 /* Single-JMP thunk to DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead */
 
 void __thiscall
-TArmyTacUnit::thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(TArmyTacUnit *this)
+TArmyTacUnit::thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead_At0040634d
+          (TArmyTacUnit *this)
 
 {
   DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(this);
@@ -277,16 +316,16 @@ TArmyTacUnit::thunk_DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406D34
-// GHIDRA_NAME TArmyTacUnit::thunk_RecomputeArmyTacUnitProjectionScalars
-// GHIDRA_PROTO void __thiscall thunk_RecomputeArmyTacUnitProjectionScalars(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_DestructTArmyTacUnitAndMaybeFree
+// GHIDRA_PROTO void __thiscall thunk_DestructTArmyTacUnitAndMaybeFree(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RecomputeArmyTacUnitProjectionScalars.
+// GHIDRA_COMMENT Thunk to RecomputeArmyTacUnitProjectionScalars. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* Thunk to RecomputeArmyTacUnitProjectionScalars. */
+/* Thunk to RecomputeArmyTacUnitProjectionScalars. [FID:thunk_target_sync] */
 
-void __thiscall TArmyTacUnit::thunk_RecomputeArmyTacUnitProjectionScalars(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::thunk_DestructTArmyTacUnitAndMaybeFree(TArmyTacUnit *this)
 
 {
   short sVar1;
@@ -299,24 +338,24 @@ void __thiscall TArmyTacUnit::thunk_RecomputeArmyTacUnitProjectionScalars(TArmyT
   short extraout_AX_02;
   short extraout_AX_03;
   
-  sVar1 = *(short *)(*(int *)(this + 0x38) + 0x38);
+  sVar1 = *(short *)((int)this->pField38 + 0x38);
   fVar2 = (float)_g_Destruct_TArmy_Tac_Value_00669EC8;
   fVar3 = (float)_g_Destruct_TArmy_Tac_Value_00669ED0;
   NoOpRuntimeCallback_005c3530();
-  fVar4 = (float)*(int *)(this + 4) * _g_Destruct_TArmy_Tac_Value_00669F0C;
+  fVar4 = (float)(int)this->field04 * _g_Destruct_TArmy_Tac_Value_00669F0C;
   fVar2 = fVar4 * (fVar3 - (float)(int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
                                               (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) *
                            fVar2);
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x44) = (float)(int)extraout_AX * fVar2 * fVar4 * 1.0;
+  this->fField44 = (TMacViewMgr *)((float)(int)extraout_AX * fVar2 * fVar4 * 1.0);
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x48) = (float)(int)extraout_AX_00 * fVar2 * 1.0;
+  this->fField48 = (float)(int)extraout_AX_00 * fVar2 * 1.0;
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x4c) = (float)(int)extraout_AX_01 * fVar2;
+  this->fField4c = (float)(int)extraout_AX_01 * fVar2;
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x50) = (float)(int)extraout_AX_02 * fVar2;
+  this->fField50 = (float)(int)extraout_AX_02 * fVar2;
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x54) = (float)(int)extraout_AX_03 * fVar2 * 1.0;
+  this->fField54 = (float)(int)extraout_AX_03 * fVar2 * 1.0;
   return;
 }
 
@@ -336,15 +375,16 @@ void __cdecl TArmyTacUnit::thunk_TArmyTacUnit_VtblSlot00(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004087C4
-// GHIDRA_NAME TArmyTacUnit::thunk_RunTacticalAutoTurnControllerForActiveUnit
-// GHIDRA_PROTO void __thiscall thunk_RunTacticalAutoTurnControllerForActiveUnit(void)
+// GHIDRA_NAME TArmyTacUnit::thunk_RunTacticalAutoTurnControllerForActiveUnit_At004087c4
+// GHIDRA_PROTO void __thiscall thunk_RunTacticalAutoTurnControllerForActiveUnit_At004087c4(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to RunTacticalAutoTurnControllerForActiveUnit
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to RunTacticalAutoTurnControllerForActiveUnit */
 
-void __thiscall TArmyTacUnit::thunk_RunTacticalAutoTurnControllerForActiveUnit(TArmyTacUnit *this)
+void __thiscall
+TArmyTacUnit::thunk_RunTacticalAutoTurnControllerForActiveUnit_At004087c4(TArmyTacUnit *this)
 
 {
   RunTacticalAutoTurnControllerForActiveUnit(this);
@@ -352,48 +392,18 @@ void __thiscall TArmyTacUnit::thunk_RunTacticalAutoTurnControllerForActiveUnit(T
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408EEA
-// GHIDRA_NAME TArmyTacUnit::thunk_ToggleArmyTacUnitStateFlag20_At00408eea
-// GHIDRA_PROTO void __fastcall thunk_ToggleArmyTacUnitStateFlag20_At00408eea(void * pThis)
+// GHIDRA_NAME TArmyTacUnit::thunk_CreateTArmyTacUnitInstance_At00408eea
+// GHIDRA_PROTO void __fastcall thunk_CreateTArmyTacUnitInstance_At00408eea(TArmyTacUnit * pThis)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ToggleArmyTacUnitStateFlag20
+// GHIDRA_COMMENT Single-JMP thunk to CreateTArmyTacUnitInstance
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to ToggleArmyTacUnitStateFlag20 */
+/* Single-JMP thunk to CreateTArmyTacUnitInstance */
 
-void __fastcall TArmyTacUnit::thunk_ToggleArmyTacUnitStateFlag20_At00408eea(void *pThis)
+void __fastcall TArmyTacUnit::thunk_CreateTArmyTacUnitInstance_At00408eea(TArmyTacUnit *pThis)
 
 {
   CreateTArmyTacUnitInstance(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059ADB0
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot00
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot00(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Method slot 00 from vtable rooted at 0x00669620 (TArmyTacUnit family).
-// GHIDRA_COMMENT_END
-
-/* Method slot 00 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
-
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot00(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059ADF0
-// GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot04
-// GHIDRA_PROTO void __cdecl TArmyTacUnit_VtblSlot04(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Method slot 04 from vtable rooted at 0x00669620 (TArmyTacUnit family).
-// GHIDRA_COMMENT_END
-
-/* Method slot 04 from vtable rooted at 0x00669620 (TArmyTacUnit family). */
-
-void __cdecl TArmyTacUnit::TArmyTacUnit_VtblSlot04(void)
-
-{
   return;
 }
 
@@ -422,7 +432,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
   undefined3 extraout_var_02;
   int iVar4;
   
-  iVar3 = (**(code **)(**(int **)(this + 4) + 0x48))();
+  iVar3 = (**(code **)(*this->field04 + 0x48))();
   if (0 < iVar3) {
     thunk_InitializeLinkedListCursorFromOwnerHead();
     bVar2 = thunk_LinkedListCursorHasCurrent();
@@ -440,7 +450,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
       iVar4 = CONCAT31(extraout_var_00,bVar2);
     }
   }
-  iVar3 = (**(code **)(**(int **)(this + 8) + 0x48))();
+  iVar3 = (**(code **)(*this->field08 + 0x48))();
   if (0 < iVar3) {
     thunk_InitializeLinkedListCursorFromOwnerHead();
     bVar2 = thunk_LinkedListCursorHasCurrent();
@@ -473,14 +483,16 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot01(TArmyTacUnit *this)
 void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot02(TArmyTacUnit *this)
 
 {
+  int *piVar1;
   int extraout_EAX;
   int in_stack_00000004;
   
-  FindListNodeByKeyFromNodeOrHead((void *)(*(int *)(this + 4) + 4),in_stack_00000004,0);
+  piVar1 = this->field04;
+  TAutoGreatPower::Find((TAutoGreatPower *)(piVar1 + 1),in_stack_00000004,0);
   if (extraout_EAX != 0) {
-    RemoveListNodeAndRecycle(extraout_EAX);
+    TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)(piVar1 + 1));
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0(*(undefined4 *)(in_stack_00000004 + 0x38));
+  WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0();
   return;
 }
 
@@ -499,12 +511,12 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot03(TArmyTacUnit *this)
   int *piVar1;
   int *in_stack_00000004;
   
-  AddHead(in_stack_00000004);
+  TArmyStack::AddHead((TArmyStack *)(this->field04 + 1));
   (**(code **)(*in_stack_00000004 + 0x3c))();
   piVar1 = (int *)in_stack_00000004[0xe];
-  *(short *)(piVar1 + 6) = (short)*(undefined4 *)(this + 0x1c);
-  (**(code **)(*piVar1 + 0x28))(*(undefined4 *)(*(int *)(this + 0x14) + 0x38));
-  WrapperFor_AllocateWithFallbackHandler_At004a7b20(piVar1);
+  *(short *)(piVar1 + 6) = (short)this->field1c;
+  (**(code **)(*piVar1 + 0x28))(this->field14[0xe]);
+  WrapperFor_AllocateWithFallbackHandler_At004a7b20();
   in_stack_00000004[0xd] = in_stack_00000004[1];
   return;
 }
@@ -522,21 +534,20 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 
 {
   int extraout_EAX;
-  int iVar1;
-  TArmyTacUnit *unaff_EDI;
+  undefined8 uVar1;
   
-  TArmyTacUnit_VtblSlot06_Impl(*(TArmyTacUnit **)(this + 0x14),unaff_EDI);
-  iVar1 = (**(code **)(**(int **)(this + 4) + 0x48))();
-  if (extraout_EAX < iVar1) {
-    RecomputeTacticalCursorProjectionScoresAndPruneList(extraout_EAX);
+  TArmyTacUnit_VtblSlot06_Impl((TArmyTacUnit *)this->field14);
+  uVar1 = (**(code **)(*this->field04 + 0x48))();
+  if (extraout_EAX < (int)uVar1) {
+    RecomputeTacticalCursorProjectionScoresAndPruneList((int)this,(int)((ulonglong)uVar1 >> 0x20));
   }
-  if (this[0xc] != (TArmyTacUnit)0x0) {
+  if (this->field3_0xc != '\0') {
     BuildTacticalActionPriorityBucketsWithGridGuard();
-    this[0x10] = (TArmyTacUnit)0x1;
+    *(undefined1 *)&this->field10 = 1;
     return;
   }
   DispatchTacticalActionClassSelectionAcrossCursorList();
-  this[0x10] = (TArmyTacUnit)0x1;
+  *(undefined1 *)&this->field10 = 1;
   return;
 }
 
@@ -559,87 +570,18 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
   
   iVar3 = 1;
   do {
-    iVar1 = (**(code **)(**(int **)(this + 4) + 0x4c))(iVar3);
+    iVar1 = (**(code **)(*this->field04 + 0x4c))(iVar3);
     iVar3 = iVar3 + 1;
     if (*(int *)(iVar1 + 8) == -2) break;
-    iVar2 = (**(code **)(**(int **)(this + 4) + 0x48))();
+    iVar2 = (**(code **)(*this->field04 + 0x48))();
   } while (iVar3 <= iVar2);
-  iVar2 = (**(code **)(**(int **)(this + 4) + 0x48))();
+  iVar2 = (**(code **)(*this->field04 + 0x48))();
   if (iVar2 < iVar3) {
-    this[0x10] = (TArmyTacUnit)0x1;
+    *(undefined1 *)&this->field10 = 1;
     return;
   }
-  (**(code **)(**(int **)(this + 0x14) + 0x30))(iVar1,in_stack_00000004);
+  (**(code **)(*this->field14 + 0x30))(iVar1,in_stack_00000004);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059D530
-// GHIDRA_NAME TArmyTacUnit::SelectBestTacticalTileByWeightedHeuristics
-// GHIDRA_PROTO int __thiscall SelectBestTacticalTileByWeightedHeuristics(int tacticalContext, int * pScoreWeights)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds tactical distance context when needed
-// GHIDRA_COMMENT_END
-
-/* Builds tactical distance context when needed */
-
-int __thiscall
-TArmyTacUnit::SelectBestTacticalTileByWeightedHeuristics
-          (TArmyTacUnit *this,int tacticalContext,int *pScoreWeights)
-
-{
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int *piVar4;
-  int iVar5;
-  int local_10;
-  int local_c;
-  int local_8;
-  int local_4;
-  
-  iVar1 = pScoreWeights[8];
-  local_4 = -1;
-  local_8 = -99999;
-  if (0 < iVar1) {
-    thunk_BuildTacticalDistanceFieldForSide();
-  }
-  iVar3 = *(int *)(this + 0x14);
-  iVar5 = 0;
-  if (0 < *(int *)(iVar3 + 0x3c)) {
-    local_c = -2;
-    do {
-      if ((*(short *)(*(int *)(iVar3 + 0x24) + iVar5 * 2) == -1) ||
-         ((0 >= iVar1 && ((iVar5 % 0x1d == 0 || (iVar5 % 0x1d == *(int *)(iVar3 + 0x34) + -1)))))) {
-        *(undefined4 *)(*(int *)(iVar3 + 0x2c) + iVar5 * 4) = 0;
-      }
-      else {
-        iVar3 = 0;
-        local_10 = 0xf;
-        piVar4 = pScoreWeights;
-        do {
-          if (*piVar4 != 0) {
-            iVar2 = (**(code **)(((int)&g_apfnTacticalTileScoreTermEvaluators - (int)pScoreWeights)
-                                + (int)piVar4))(tacticalContext,iVar5);
-            iVar3 = iVar3 + iVar2 * *piVar4;
-          }
-          piVar4 = piVar4 + 1;
-          local_10 = local_10 + -1;
-        } while (local_10 != 0);
-        if ((local_8 < iVar3) ||
-           ((iVar3 == local_8 &&
-            (*(short *)(*(int *)(*(int *)(this + 0x14) + 0x24) + iVar5 * 2) <
-             *(short *)(local_c + *(int *)(*(int *)(this + 0x14) + 0x24)))))) {
-          local_c = iVar5 * 2;
-          local_8 = iVar3;
-          local_4 = iVar5;
-        }
-        *(int *)(*(int *)(*(int *)(this + 0x14) + 0x2c) + iVar5 * 4) = iVar3;
-      }
-      iVar3 = *(int *)(this + 0x14);
-      iVar5 = iVar5 + 1;
-    } while (iVar5 < *(int *)(iVar3 + 0x3c));
-  }
-  return local_4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059E4F0
@@ -665,7 +607,7 @@ void __thiscall TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit(TArmyTa
   int *piVar7;
   int local_18 [6];
   
-  tacticalContext = *(int *)(*(int *)(this + 0x14) + 0x1c);
+  tacticalContext = this->field14[7];
   if ((g_aeTacticalUnitActionClassBySlot[*(int *)(tacticalContext + 0xc)] !=
        TACTICAL_ACTION_CLASS_2_ARTILLERY) || (*(int *)(tacticalContext + 0x20) == 1)) {
     thunk_SelectAndApplyTacticalCursorModeProfile((int)this);
@@ -674,21 +616,21 @@ void __thiscall TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit(TArmyTa
   EVar2 = g_aeTacticalUnitCategoryBySlot[*(int *)(tacticalContext + 0xc)];
   iVar5 = iVar6;
   if ((EVar2 == TACTICAL_CATEGORY_8) && (*(int *)(tacticalContext + 0x2c) != 0xc)) {
-    bVar4 = thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(*(int *)(this + 0x14));
+    bVar4 = thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff((int)this->field14);
     if (bVar4) {
       piVar7 = (int *)&g_aiTacticalTileScoreWeightsPresetA;
     }
     else {
-      if ((*(char *)(*(int *)(*(int *)(this + 0x14) + 4) + 0x10 + iVar6 * 0x14) != '\0') ||
-         (*(char *)(*(int *)(*(int *)(this + 0x14) + 0x28) + iVar6) != '\0')) goto LAB_0059e5be;
+      if ((*(char *)(this->field14[1] + 0x10 + iVar6 * 0x14) != '\0') ||
+         (*(char *)(this->field14[10] + iVar6) != '\0')) goto LAB_0059e5be;
       piVar7 = (int *)&g_aiTacticalTileScoreWeightsPresetB;
     }
   }
   else {
     iVar3 = *(int *)(tacticalContext + 0x2c);
     if (((iVar3 == 5) || ((iVar3 == 2 || (EVar2 == TACTICAL_CATEGORY_4)))) &&
-       (*(int *)(*(int *)(this + 0x14) + 0x74) < 2)) goto LAB_0059e5be;
-    if ((EVar2 == TACTICAL_CATEGORY_6) && (*(int *)(*(int *)(this + 0x14) + 0x74) < 2)) {
+       (this->field14[0x1d] < 2)) goto LAB_0059e5be;
+    if ((EVar2 == TACTICAL_CATEGORY_6) && (this->field14[0x1d] < 2)) {
       piVar7 = (int *)&g_aiTacticalTileScoreWeightsPresetC;
     }
     else {
@@ -701,19 +643,18 @@ LAB_0059e5be:
     iVar5 = *(int *)(tacticalContext + 8);
   }
   if (iVar5 != *(int *)(tacticalContext + 8)) {
-    piVar7 = *(int **)(this + 0x14);
+    piVar7 = this->field14;
     cVar1 = (char)piVar7[0x12];
     iVar3 = 200;
     while ((((cVar1 != '\0' && (*(int *)(tacticalContext + 0x1c) == 0)) &&
             (*(int *)(tacticalContext + 8) != iVar5)) && (iVar3 != 0))) {
       (**(code **)(*piVar7 + 0x34))(tacticalContext,iVar5);
-      piVar7 = *(int **)(this + 0x14);
+      piVar7 = this->field14;
       cVar1 = (char)piVar7[0x12];
       iVar3 = iVar3 + -1;
     }
   }
-  if ((*(char *)(*(int *)(this + 0x14) + 0x48) != '\0') && (*(int *)(tacticalContext + 0x1c) == 0))
-  {
+  if (((char)this->field14[0x12] != '\0') && (*(int *)(tacticalContext + 0x1c) == 0)) {
     iVar5 = *(int *)(tacticalContext + 0xc);
     if (iVar5 < 0x1b) {
       if (g_aeTacticalUnitCategoryBySlot[iVar5] == TACTICAL_CATEGORY_8) {
@@ -722,13 +663,13 @@ LAB_0059e5be:
             *(int *)(tacticalContext + 0x28))) {
           do {
             iVar5 = *(int *)(tacticalContext + 8) + 1;
-            iVar6 = (*(int **)(this + 0x14))[1] + iVar5 * 0x14;
+            iVar6 = this->field14[1] + iVar5 * 0x14;
             if (1 < *(int *)(iVar6 + 8)) {
-              (**(code **)(**(int **)(this + 0x14) + 0x5c))(tacticalContext,iVar5);
+              (**(code **)(*this->field14 + 0x5c))(tacticalContext,iVar5);
               return;
             }
             if ((*(int *)(iVar6 + 4) == 0) && (*(char *)(iVar6 + 0x10) == '\0')) {
-              (**(code **)(**(int **)(this + 0x14) + 0x60))(tacticalContext,iVar5);
+              (**(code **)(*this->field14 + 0x60))(tacticalContext,iVar5);
             }
           } while ((int)*(short *)(&g_Run_Tactical_Auto_Value_006693F8 +
                                   *(int *)(tacticalContext + 0xc) * 2) / 2 <=
@@ -739,12 +680,11 @@ LAB_0059e5be:
         iVar6 = 0;
         iVar5 = thunk_SelectBestTacticalTargetTileByActionHeuristics();
         if (iVar5 != -1) {
-          iVar6 = *(int *)(*(int *)(*(int *)(this + 0x14) + 4) + 4 + iVar5 * 0x14);
+          iVar6 = *(int *)(this->field14[1] + 4 + iVar5 * 0x14);
         }
         if ((((iVar6 != 0) &&
-             ((**(code **)(**(int **)(this + 0x14) + 0x3c))
-                        (tacticalContext,*(undefined4 *)(iVar6 + 8)),
-             *(char *)(*(int *)(this + 0x14) + 0x48) != '\0')) &&
+             ((**(code **)(*this->field14 + 0x3c))(tacticalContext,*(undefined4 *)(iVar6 + 8)),
+             (char)this->field14[0x12] != '\0')) &&
             ((g_aeTacticalUnitActionClassBySlot[*(int *)(tacticalContext + 0xc)] ==
               TACTICAL_ACTION_CLASS_1 && (*(int *)(tacticalContext + 0x28) != 0)))) &&
            ((((iVar6 = *(int *)(tacticalContext + 0x2c), iVar6 == 2 || (iVar6 == 5)) ||
@@ -753,13 +693,13 @@ LAB_0059e5be:
                                (this,tacticalContext,
                                 (int *)(&g_aiTacticalTileScoreWeightsSecondaryByModeId +
                                        iVar6 * 0x3c)), iVar6 != *(int *)(tacticalContext + 8))))) {
-          piVar7 = *(int **)(this + 0x14);
+          piVar7 = this->field14;
           iVar5 = piVar7[7];
           iVar3 = 200;
           while (((iVar5 == tacticalContext && (*(int *)(tacticalContext + 0x1c) == 0)) &&
                  ((*(int *)(tacticalContext + 8) != iVar6 && (iVar3 != 0))))) {
             (**(code **)(*piVar7 + 0x34))(tacticalContext,iVar6);
-            piVar7 = *(int **)(this + 0x14);
+            piVar7 = this->field14;
             iVar5 = piVar7[7];
             iVar3 = iVar3 + -1;
           }
@@ -768,14 +708,15 @@ LAB_0059e5be:
     }
     else {
       iVar6 = 0;
-      thunk_ComputeHexNeighborTileIndices();
+      thunk_ComputeHexNeighborTileIndices_005A0420
+                ((int)this->field14,(int)local_18,*(int *)(tacticalContext + 8));
       iVar5 = 0;
       piVar7 = local_18;
       do {
         if (5 < iVar5) break;
         if ((((*piVar7 != -1) &&
-             (iVar3 = *(int *)(*(int *)(*(int *)(this + 0x14) + 4) + 4 + *piVar7 * 0x14), iVar3 != 0
-             )) && (*(int *)(iVar3 + 0x20) == *(int *)(tacticalContext + 0x20))) &&
+             (iVar3 = *(int *)(this->field14[1] + 4 + *piVar7 * 0x14), iVar3 != 0)) &&
+            (*(int *)(iVar3 + 0x20) == *(int *)(tacticalContext + 0x20))) &&
            (*(int *)(iVar3 + 0x34) < *(int *)(iVar3 + 4))) {
           iVar6 = iVar3;
         }
@@ -783,11 +724,11 @@ LAB_0059e5be:
         piVar7 = piVar7 + 1;
       } while (iVar6 == 0);
       if (iVar6 != 0) {
-        (**(code **)(**(int **)(this + 0x14) + 0x58))(tacticalContext,iVar6);
+        (**(code **)(*this->field14 + 0x58))(tacticalContext,iVar6);
       }
     }
   }
-  if (*(char *)(*(int *)(this + 0x14) + 0x48) != '\0') {
+  if ((char)this->field14[0x12] != '\0') {
     thunk_QueueTacticalEventPacket232A();
   }
   return;
@@ -825,7 +766,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00638568;
   *unaff_FS_OFFSET = &local_c;
-  if (this[0xe] != (TArmyTacUnit)0x0) {
+  if (this->field5_0xe != '\0') {
     puStack_1c = (undefined1 *)0x59ea89;
     InitializeSharedStringRefFromEmpty();
     puStack_1c = local_14;
@@ -833,7 +774,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
     uStack_24 = 0x273d;
     local_4 = 0;
     uStack_28 = 0x59eaab;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
     uStack_28 = 1;
     uStack_2c = 1;
     puStack_30 = &g_TArmy_Tac_Unit_Value_006A4650;
@@ -862,229 +803,21 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
 void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot05(TArmyTacUnit *this)
 
 {
-  if (this[0x10] == (TArmyTacUnit)0x0) {
-    (**(code **)(*(int *)this + 0x48))();
+  if ((char)this->field10 == '\0') {
+    (**(code **)(this->field0_0x0 + 0x48))();
     return;
   }
-  if (this[0xe] == (TArmyTacUnit)0x0) {
-    this[0xe] = (TArmyTacUnit)0x1;
+  if (this->field5_0xe == '\0') {
+    this->field5_0xe = 1;
     thunk_SelectAndApplyTacticalCursorModeProfile((int)this);
-    (**(code **)(*(int *)this + 0x2c))();
+    (**(code **)(this->field0_0x0 + 0x2c))();
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059EDD0
-// GHIDRA_NAME TArmyTacUnit::DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
-// GHIDRA_PROTO void __thiscall DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Iterates task-force child order nodes, decrements each required-count bucket, marks owner dirty, then prunes inactive task-force order head nodes.
-// GHIDRA_COMMENT_END
-
-/* Iterates task-force child order nodes, decrements each required-count bucket, marks owner dirty,
-   then prunes inactive task-force order head nodes. */
-
-void __thiscall
-TArmyTacUnit::DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(TArmyTacUnit *this)
-
-{
-  int *piVar1;
-  bool bVar2;
-  int *extraout_EAX;
-  undefined3 extraout_var;
-  int *extraout_EAX_00;
-  undefined3 extraout_var_00;
-  int iVar3;
-  
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar2 = thunk_LinkedListCursorHasCurrent();
-  iVar3 = CONCAT31(extraout_var,bVar2);
-  piVar1 = extraout_EAX;
-  while (iVar3 != 0) {
-    (**(code **)(*piVar1 + 0x40))();
-    thunk_DecrementOrderNodeRequiredCount();
-    thunk_AdvanceLinkedListCursor();
-    bVar2 = thunk_LinkedListCursorHasCurrent();
-    piVar1 = extraout_EAX_00;
-    iVar3 = CONCAT31(extraout_var_00,bVar2);
-  }
-  *(undefined1 *)(*(int *)(this + 0x28) + 0x26) = 1;
-  thunk_PruneInactiveTaskForceOrderHead();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059EEA0
-// GHIDRA_NAME TArmyTacUnit::AddOrderNodeToHeadAndReassignNationCounters
-// GHIDRA_PROTO void __thiscall AddOrderNodeToHeadAndReassignNationCounters(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Adds order node to head list, invokes node lifecycle callbacks, then reassigns nation ownership/counters for parent linkage consistency.
-// GHIDRA_COMMENT_END
-
-/* Adds order node to head list, invokes node lifecycle callbacks, then reassigns nation
-   ownership/counters for parent linkage consistency. */
-
-void __thiscall TArmyTacUnit::AddOrderNodeToHeadAndReassignNationCounters(TArmyTacUnit *this)
-
-{
-  int iVar1;
-  int *in_stack_00000004;
-  
-  AddHead(in_stack_00000004);
-  iVar1 = *in_stack_00000004;
-  (**(code **)(iVar1 + 0x3c))();
-  (**(code **)(iVar1 + 0x40))();
-  thunk_ReassignOrderNodeNationAndRebindParentCounters();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0059F160
-// GHIDRA_NAME TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO void __thiscall DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when target becomes reachable.
-// GHIDRA_COMMENT_END
-
-/* Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when
-   target becomes reachable. */
-
-void __thiscall
-TArmyTacUnit::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TArmyTacUnit *this)
-
-{
-  code *pcVar1;
-  bool bVar2;
-  int iVar3;
-  int *piVar4;
-  int extraout_EAX;
-  undefined3 extraout_var;
-  int iVar6;
-  int extraout_EAX_00;
-  undefined3 extraout_var_00;
-  int iVar7;
-  int iVar8;
-  int unaff_EBX;
-  int *piVar9;
-  int fromTileIndex;
-  int iStack_20;
-  int *piStack_18;
-  int iVar5;
-  
-  if (this[0xc] == (TArmyTacUnit)0x0) {
-    piVar9 = *(int **)(*(int *)(*(int *)(this + 0x14) + 0x14) + 4);
-  }
-  else {
-    piVar9 = *(int **)(*(int *)(*(int *)(this + 0x14) + 0x18) + 4);
-  }
-  iVar7 = *piVar9;
-  pcVar1 = *(code **)(iVar7 + 0x48);
-  iVar3 = (*pcVar1)();
-  piVar4 = (int *)AllocateWithFallbackHandler(iVar3 << 2);
-  iVar3 = *(int *)(*(int *)(*(int *)(this + 0x14) + 0x1c) + 8);
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar2 = thunk_LinkedListCursorHasCurrent();
-  iVar5 = CONCAT31(extraout_var,bVar2);
-  piVar9 = piVar4;
-  iVar6 = extraout_EAX;
-  while (iVar5 != 0) {
-    iVar6 = thunk_ComputeHexTileDistanceFromIndices(iVar3,*(int *)(iVar6 + 8));
-    *piVar9 = iVar6;
-    piVar9 = piVar9 + 1;
-    thunk_AdvanceLinkedListCursor();
-    bVar2 = thunk_LinkedListCursorHasCurrent();
-    iVar6 = extraout_EAX_00;
-    iVar5 = CONCAT31(extraout_var_00,bVar2);
-  }
-  piStack_18 = (int *)0xffffffff;
-  iStack_20 = 999;
-  piVar9 = (int *)0x0;
-  iVar6 = (*pcVar1)();
-  if (0 < iVar6) {
-    do {
-      if (*piVar4 < iStack_20) {
-        iStack_20 = *piVar4;
-        piStack_18 = piVar9;
-      }
-      piVar9 = (int *)((int)piVar9 + 1);
-      piVar4 = piVar4 + 1;
-      iVar6 = (*pcVar1)();
-    } while ((int)piVar9 < iVar6);
-  }
-  iVar7 = (**(code **)(iVar7 + 0x4c))((int)piStack_18 + 1);
-  iVar7 = *(int *)(iVar7 + 8);
-  iVar8 = thunk_ComputeHexTileDistanceFromIndices(unaff_EBX,iVar7);
-  iVar6 = *(int *)(this + 0x14);
-  fromTileIndex = 0;
-  iVar5 = unaff_EBX;
-  if (0 < *(int *)(iVar6 + 0x3c)) {
-    do {
-      if ((*(short *)(*(int *)(iVar6 + 0x24) + fromTileIndex * 2) != -1) &&
-         (iVar6 = thunk_ComputeHexTileDistanceFromIndices(fromTileIndex,iVar7), iVar6 < iVar8)) {
-        iVar5 = fromTileIndex;
-        iVar8 = iVar6;
-      }
-      iVar6 = *(int *)(this + 0x14);
-      fromTileIndex = fromTileIndex + 1;
-    } while (fromTileIndex < *(int *)(iVar6 + 0x3c));
-  }
-  if (iVar5 != unaff_EBX) {
-    piVar9 = *(int **)(this + 0x14);
-    piVar4 = (int *)piVar9[7];
-    while ((piVar4 == piStack_18 && (piStack_18[2] != iVar5))) {
-      (**(code **)(*piVar9 + 0x34))(piStack_18,iVar5);
-      piVar9 = *(int **)(this + 0x14);
-      piVar4 = (int *)piVar9[7];
-    }
-  }
-  iVar6 = (**(code **)(*piStack_18 + 0x2c))();
-  if ((iVar8 <= iVar6) && ((int *)(*(int **)(this + 0x14))[7] == piStack_18)) {
-    (**(code **)(**(int **)(this + 0x14) + 0x40))(piStack_18,iVar7);
-  }
-  FreeHeapBufferIfNotNull(iVar3);
-  if (*(int **)(*(int *)(this + 0x14) + 0x1c) == piStack_18) {
-    thunk_QueueTacticalEventPacket232A();
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A39A0
-// GHIDRA_NAME TArmyTacUnit::ComputeHexTileDistanceFromIndices
-// GHIDRA_PROTO int __cdecl ComputeHexTileDistanceFromIndices(int fromTileIndex, int toTileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes hex-grid distance between two tile indices on 0x1d-column tactical map.
-// GHIDRA_COMMENT_END
-
-/* Computes hex-grid distance between two tile indices on 0x1d-column tactical map. */
-
-int __cdecl TArmyTacUnit::ComputeHexTileDistanceFromIndices(int fromTileIndex,int toTileIndex)
-
-{
-  uint uVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  uint uVar5;
-  
-  uVar1 = fromTileIndex / 0x1d;
-  iVar2 = (uVar1 & 1) + (fromTileIndex % 0x1d) * 2;
-  uVar5 = toTileIndex / 0x1d;
-  iVar4 = (uVar5 & 1) + (toTileIndex % 0x1d) * 2;
-  if (iVar4 < iVar2) {
-    iVar4 = iVar2 * 2 - iVar4;
-  }
-  if ((int)uVar5 < (int)uVar1) {
-    uVar5 = uVar1 * 2 - uVar5;
-  }
-  iVar3 = uVar5 - uVar1;
-  iVar2 = (iVar4 - iVar3) - iVar2;
-  if (0 < iVar2) {
-    return iVar2 / 2 + iVar3;
-  }
-  return iVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4240
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl
-// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit * pThis)
+// GHIDRA_PROTO void __thiscall TArmyTacUnit_VtblSlot06_Impl(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_005a4240 with single named caller TArmyTacUnit_VtblSlot06@0x0059bc80
 // GHIDRA_COMMENT_END
@@ -1092,33 +825,33 @@ int __cdecl TArmyTacUnit::ComputeHexTileDistanceFromIndices(int fromTileIndex,in
 /* [ThunkBridge] promoted from thunk_FUN_005a4240 with single named caller
    TArmyTacUnit_VtblSlot06@0x0059bc80 */
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit *this,TArmyTacUnit *pThis)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit *this)
 
 {
   int iVar1;
   
   iVar1 = 0;
-  if (0 < *(int *)(this + 0x3c)) {
+  if (0 < this->field3c) {
     do {
       iVar1 = iVar1 + 1;
-    } while (iVar1 < *(int *)(this + 0x3c));
+    } while (iVar1 < this->field3c);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5EB0
 // GHIDRA_NAME TArmyTacUnit::CreateTArmyTacUnitInstance
-// GHIDRA_PROTO void __fastcall CreateTArmyTacUnitInstance(void * pThis)
+// GHIDRA_PROTO void __fastcall CreateTArmyTacUnitInstance(TArmyTacUnit * pThis)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Toggles ArmyTacUnit state flag at offset +0x20.
 // GHIDRA_COMMENT_END
 
 /* Toggles ArmyTacUnit state flag at offset +0x20. */
 
-void __fastcall TArmyTacUnit::CreateTArmyTacUnitInstance(void *pThis)
+void __fastcall TArmyTacUnit::CreateTArmyTacUnitInstance(TArmyTacUnit *pThis)
 
 {
-  *(uint *)((int)pThis + 0x20) = (uint)(*(int *)((int)pThis + 0x20) == 0);
+  pThis->field20 = (uint)(pThis->field20 == 0);
   return;
 }
 
@@ -1150,33 +883,37 @@ void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,
 
 {
   short sVar1;
-  undefined4 uVar2;
-  TArmyTacUnit TVar3;
+  int iVar2;
+  undefined1 uVar3;
   
-  TVar3 = (TArmyTacUnit)0x0;
-  *(int *)(this + 0xc) = (int)*(short *)((int)arg1 + 4);
-  *(undefined4 *)(this + 8) = 0xfffffffe;
-  this[0x18] = (TArmyTacUnit)0x0;
-  *(undefined4 *)(this + 0x1c) = 0;
-  uVar2 = (**(code **)(*(int *)this + 0x28))();
-  *(undefined4 *)(this + 0x28) = uVar2;
-  *(undefined4 *)(this + 0x2c) = 0;
-  *(undefined4 *)(this + 0x30) = 0;
+  uVar3 = 0;
+  iVar2 = (int)*(short *)((int)arg1 + 4);
+  this->field3_0xc = (char)iVar2;
+  this->field_0xd = (char)((uint)iVar2 >> 8);
+  this->field5_0xe = (char)((uint)iVar2 >> 0x10);
+  this->field6_0xf = (char)((uint)iVar2 >> 0x18);
+  this->field08 = (int *)0xfffffffe;
+  this->field9_0x18 = 0;
+  this->field1c = (HWND)0x0;
+  iVar2 = (**(code **)(this->field0_0x0 + 0x28))();
+  this->field28 = iVar2;
+  this->field2c = 0.0;
+  this->field30 = 0.0;
   sVar1 = *(short *)((int)arg1 + 0x34);
-  *(int *)(this + 4) = (int)sVar1;
-  *(int *)(this + 0x34) = (int)sVar1;
+  this->field04 = (int *)(int)sVar1;
+  this->field34 = (int)sVar1;
   sVar1 = *(short *)((int)arg1 + 0x38);
-  *(int *)(this + 0x10) =
+  this->field10 =
        (int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
                    (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f));
-  *(int *)(this + 0x14) = (int)*(short *)((int)arg1 + 0x18);
-  *(undefined4 *)(this + 0x40) = 0xffffffff;
-  *(void **)(this + 0x38) = arg1;
+  this->field14 = (int *)(int)*(short *)((int)arg1 + 0x18);
+  this->field40 = -1;
+  this->pField38 = arg1;
   if ((*(int *)((int)arg1 + 8) == 2) &&
-     (*(short *)(&g_TArmy_Tac_Unit_Value_00669858 + *(int *)(this + 0xc) * 2) == 0)) {
-    TVar3 = (TArmyTacUnit)0x1;
+     (*(short *)(&g_TArmy_Tac_Unit_Value_00669858 + *(int *)&this->field3_0xc * 2) == 0)) {
+    uVar3 = 1;
   }
-  this[0x3c] = TVar3;
+  *(undefined1 *)&this->field3c = uVar3;
   return;
 }
 
@@ -1203,72 +940,546 @@ void __thiscall TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree(TArmyTacUnit *thi
   short extraout_AX_02;
   short extraout_AX_03;
   
-  sVar1 = *(short *)(*(int *)(this + 0x38) + 0x38);
+  sVar1 = *(short *)((int)this->pField38 + 0x38);
   fVar2 = (float)_g_Destruct_TArmy_Tac_Value_00669EC8;
   fVar3 = (float)_g_Destruct_TArmy_Tac_Value_00669ED0;
   NoOpRuntimeCallback_005c3530();
-  fVar4 = (float)*(int *)(this + 4) * _g_Destruct_TArmy_Tac_Value_00669F0C;
+  fVar4 = (float)(int)this->field04 * _g_Destruct_TArmy_Tac_Value_00669F0C;
   fVar2 = fVar4 * (fVar3 - (float)(int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
                                               (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) *
                            fVar2);
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x44) = (float)(int)extraout_AX * fVar2 * fVar4 * 1.0;
+  this->fField44 = (TMacViewMgr *)((float)(int)extraout_AX * fVar2 * fVar4 * 1.0);
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x48) = (float)(int)extraout_AX_00 * fVar2 * 1.0;
+  this->fField48 = (float)(int)extraout_AX_00 * fVar2 * 1.0;
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x4c) = (float)(int)extraout_AX_01 * fVar2;
+  this->fField4c = (float)(int)extraout_AX_01 * fVar2;
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x50) = (float)(int)extraout_AX_02 * fVar2;
+  this->fField50 = (float)(int)extraout_AX_02 * fVar2;
   NoOpRuntimeCallback_005c3530();
-  *(float *)(this + 0x54) = (float)(int)extraout_AX_03 * fVar2 * 1.0;
+  this->fField54 = (float)(int)extraout_AX_03 * fVar2 * 1.0;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A6120
-// GHIDRA_NAME TArmyTacUnit::NoOpArmyTacUnitHook
-// GHIDRA_PROTO void __thiscall NoOpArmyTacUnitHook(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0060962A
+// GHIDRA_NAME TArmyTacUnit::SetScrollRange
+// GHIDRA_PROTO void __thiscall SetScrollRange(int arg1, int arg2, int arg3, int arg4)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op tactical unit hook implementation.
+// GHIDRA_COMMENT Sets scroll range on local window or forwarded parent/site scrollbar handle. [FID:FID_single_match_phase1_nodebug]
 // GHIDRA_COMMENT_END
 
-/* No-op tactical unit hook implementation. */
+/* Sets scroll range on local window or forwarded parent/site scrollbar handle.
+   [FID:FID_single_match_phase1_nodebug] */
 
-void __thiscall TArmyTacUnit::NoOpArmyTacUnitHook(TArmyTacUnit *this)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A6330
-// GHIDRA_NAME TArmyTacUnit::GetOrderNodeDescriptorWord0CAsIntByResourceType
-// GHIDRA_PROTO int __stdcall GetOrderNodeDescriptorWord0CAsIntByResourceType(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Type-widening wrapper that returns descriptor word0C for resource type as int.
-// GHIDRA_COMMENT_END
-
-/* Type-widening wrapper that returns descriptor word0C for resource type as int. */
-
-int TArmyTacUnit::GetOrderNodeDescriptorWord0CAsIntByResourceType(void)
+void __thiscall TArmyTacUnit::SetScrollRange(TArmyTacUnit *this,int arg1,int arg2,int arg3,int arg4)
 
 {
-  short sVar1;
+  int iVar1;
+  HWND hWnd;
   
-  sVar1 = thunk_GetOrderNodeDescriptorWord0CByResourceType();
-  return (int)sVar1;
+  iVar1 = (**(code **)(this->field0_0x0 + 0x70))(arg1);
+  if (iVar1 == 0) {
+    hWnd = this->field1c;
+  }
+  else {
+    arg1 = 2;
+    hWnd = *(HWND *)(iVar1 + 0x1c);
+  }
+  ::SetScrollRange(hWnd,arg1,arg2,arg3,arg4);
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005C3530
-// GHIDRA_NAME TArmyTacUnit::NoOpRuntimeCallback_005c3530
-// GHIDRA_PROTO void __cdecl NoOpRuntimeCallback_005c3530(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0060968D
+// GHIDRA_NAME TArmyTacUnit::EnableScrollBarCtrl
+// GHIDRA_PROTO void __thiscall EnableScrollBarCtrl(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Intentional no-op callback/helper stub.
+// GHIDRA_COMMENT Shows/hides target scrollbar; forwards to parent/site scrollbar when available. [FID:FID_single_match_phase1_nodebug]
 // GHIDRA_COMMENT_END
 
-/* Intentional no-op callback/helper stub. */
+/* Shows/hides target scrollbar; forwards to parent/site scrollbar when available.
+   [FID:FID_single_match_phase1_nodebug] */
 
-void __cdecl TArmyTacUnit::NoOpRuntimeCallback_005c3530(void)
+void __thiscall TArmyTacUnit::EnableScrollBarCtrl(TArmyTacUnit *this,int arg1,int arg2)
 
 {
+  int iVar1;
+  int wBar;
+  int bEnable;
+  
+  wBar = arg1;
+  if (arg1 == 3) {
+    EnableScrollBarCtrl(this,0,arg2);
+    wBar = 1;
+  }
+  bEnable = wBar;
+  iVar1 = (**(code **)(this->field0_0x0 + 0x70))();
+  if (iVar1 == 0) {
+    ShowScrollBar(this->field1c,wBar,arg1);
+  }
+  else {
+    EnableWindow((HWND)arg1,bEnable);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006097AE
+// GHIDRA_NAME TArmyTacUnit::ScrollWindow
+// GHIDRA_PROTO void __thiscall ScrollWindow(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Scrolls client area by delta or repositions child windows when invisible/no clip rects.
+// GHIDRA_COMMENT Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60). [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Scrolls client area by delta or repositions child windows when invisible/no clip rects.
+   Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60).
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall TArmyTacUnit::ScrollWindow(TArmyTacUnit *this,int arg1,int arg2,int arg3,int arg4)
+
+{
+  BOOL BVar1;
+  HWND hWnd;
+  undefined1 local_14 [16];
+  
+  BVar1 = IsWindowVisible(this->field1c);
+  if (((BVar1 == 0) && (arg3 == 0)) && (arg4 == 0)) {
+    for (hWnd = GetWindow(this->field1c,5); hWnd != (HWND)0x0; hWnd = GetWindow(hWnd,2)) {
+      GetWindowRect(hWnd,(LPRECT)local_14);
+      ScreenToClient(this->field1c,(LPPOINT)local_14);
+      ScreenToClient(this->field1c,(LPPOINT)(local_14 + 8));
+      SetWindowPos(hWnd,(HWND)0x0,local_14._0_4_ + arg1,local_14._4_4_ + arg2,0,0,0x15);
+    }
+  }
+  else {
+    ::ScrollWindow(this->field1c,arg1,arg2,(RECT *)arg3,(RECT *)arg4);
+  }
+  if (((int *)this->field34 != (int *)0x0) && (arg3 == 0)) {
+    (**(code **)(*(int *)this->field34 + 0x60))(arg1,arg2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00614F95
+// GHIDRA_NAME TArmyTacUnit::SetScaleToFitSize
+// GHIDRA_PROTO void __thiscall SetScaleToFitSize(TMacViewMgr * thisObj, int extentX, int extentY)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sets scale-to-fit sentinel/extents, updates scroll ranges, recalculates layout, and invalidates window. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Sets scale-to-fit sentinel/extents, updates scroll ranges, recalculates layout, and invalidates
+   window. [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall
+TArmyTacUnit::SetScaleToFitSize(TArmyTacUnit *this,TMacViewMgr *thisObj,int extentX,int extentY)
+
+{
+  uint uVar1;
+  TMacViewMgr *unaff_EDI;
+  tagRECT local_14;
+  
+  this->field40 = -1;
+  this->fField44 = thisObj;
+  this->fField48 = (float)extentX;
+  if (this->field1c != (HWND)0x0) {
+    uVar1 = GetStyle();
+    if ((uVar1 & 0x300000) != 0) {
+      SetScrollPos();
+      SetScrollPos();
+      EnableScrollBarCtrl(this,3,0);
+    }
+  }
+  GetClientRect(this->field1c,&local_14);
+  this->fField4c = (float)(local_14.right - local_14.left);
+  this->fField50 = (float)(local_14.bottom - local_14.top);
+  if (this->field1c != (HWND)0x0) {
+    UpdateBars(this,unaff_EDI);
+    InvalidateRect(this->field1c,(RECT *)0x0,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615020
+// GHIDRA_NAME TArmyTacUnit::SetScrollSizes
+// GHIDRA_PROTO void __thiscall SetScrollSizes(TMacViewMgr * thisObj, int mapMode, int * sizeTotal, int * sizePage, int * sizeLine)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sets map mode + scroll size/page/line metrics (logical->device), then recalculates scrollbars/layout. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Sets map mode + scroll size/page/line metrics (logical->device), then recalculates
+   scrollbars/layout. [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall
+TArmyTacUnit::SetScrollSizes
+          (TArmyTacUnit *this,TMacViewMgr *thisObj,int mapMode,int *sizeTotal,int *sizePage,
+          int *sizeLine)
+
+{
+  float *lppt;
+  int arg1;
+  HDC pHVar1;
+  float *pfVar2;
+  undefined4 *puVar3;
+  TArmyTacUnit *this_00;
+  int unaff_EBP;
+  TMacViewMgr *unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(int *)(unaff_EBP + -0x10) = this_00->field40;
+  this_00->field40 = *(int *)(unaff_EBP + 8);
+  this_00->fField44 = *(TMacViewMgr **)(unaff_EBP + 0xc);
+  this_00->fField48 = *(float *)(unaff_EBP + 0x10);
+  CWindowDC();
+  arg1 = this_00->field40;
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  SetMapMode((void *)(unaff_EBP + -0x24),arg1);
+  pHVar1 = *(HDC *)(unaff_EBP + -0x1c);
+  this_00->fField4c = (float)this_00->fField44;
+  this_00->fField50 = this_00->fField48;
+  LPtoDP(pHVar1,(LPPOINT)&this_00->fField4c,1);
+  pfVar2 = *(float **)(unaff_EBP + 0x14);
+  lppt = &this_00->fField54;
+  pHVar1 = *(HDC *)(unaff_EBP + -0x1c);
+  *lppt = *pfVar2;
+  *(float *)&this_00->field_0x58 = pfVar2[1];
+  LPtoDP(pHVar1,(LPPOINT)lppt,1);
+  puVar3 = *(undefined4 **)(unaff_EBP + 0x18);
+  pHVar1 = *(HDC *)(unaff_EBP + -0x1c);
+  *(undefined4 *)&this_00->field_0x5c = *puVar3;
+  *(undefined4 *)&this_00->field_0x60 = puVar3[1];
+  LPtoDP(pHVar1,(LPPOINT)&this_00->field_0x5c,1);
+  if ((int)this_00->fField50 < 0) {
+    this_00->fField50 = (float)-(int)this_00->fField50;
+  }
+  if (*(int *)&this_00->field_0x58 < 0) {
+    *(int *)&this_00->field_0x58 = -*(int *)&this_00->field_0x58;
+  }
+  if (*(int *)&this_00->field_0x60 < 0) {
+    *(int *)&this_00->field_0x60 = -*(int *)&this_00->field_0x60;
+  }
+  *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+  DestroyCWindowDCAndReleaseHandle();
+  if (*lppt == 0.0) {
+    *lppt = (float)((int)this_00->fField4c / 10);
+  }
+  if (*(int *)&this_00->field_0x58 == 0) {
+    *(int *)&this_00->field_0x58 = (int)this_00->fField50 / 10;
+  }
+  if (*(int *)&this_00->field_0x5c == 0) {
+    *(int *)&this_00->field_0x5c = (int)*lppt / 10;
+  }
+  if (*(int *)&this_00->field_0x60 == 0) {
+    *(int *)&this_00->field_0x60 = *(int *)&this_00->field_0x58 / 10;
+  }
+  if (this_00->field1c != (HWND)0x0) {
+    UpdateBars(this_00,unaff_EDI);
+    if (*(int *)(unaff_EBP + -0x10) != this_00->field40) {
+      InvalidateRect(this_00->field1c,(RECT *)0x0,1);
+    }
+  }
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006151D6
+// GHIDRA_NAME TArmyTacUnit::ScrollToPosition
+// GHIDRA_PROTO void __thiscall ScrollToPosition(TMacViewMgr * thisObj, int * ptLogical)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Clamps requested logical position to range and applies resulting device scroll offset. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Clamps requested logical position to range and applies resulting device scroll offset.
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall
+TArmyTacUnit::ScrollToPosition(TArmyTacUnit *this,TMacViewMgr *thisObj,int *ptLogical)
+
+{
+  int iVar1;
+  int iVar2;
+  TArmyTacUnit *this_00;
+  int unaff_EBP;
+  int unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  if (this_00->field40 != 1) {
+    CWindowDC();
+    iVar1 = this_00->field40;
+    *(undefined4 *)(unaff_EBP + -4) = 0;
+    SetMapMode((void *)(unaff_EBP + -0x20),iVar1);
+    LPtoDP(*(HDC *)(unaff_EBP + -0x18),(LPPOINT)(unaff_EBP + 8),1);
+    *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
+    DestroyCWindowDCAndReleaseHandle();
+  }
+  iVar1 = GetScrollLimit();
+  iVar2 = GetScrollLimit();
+  if (*(int *)(unaff_EBP + 8) < 0) {
+    *(undefined4 *)(unaff_EBP + 8) = 0;
+  }
+  else if (iVar1 < *(int *)(unaff_EBP + 8)) {
+    *(int *)(unaff_EBP + 8) = iVar1;
+  }
+  if (*(int *)(unaff_EBP + 0xc) < 0) {
+    *(undefined4 *)(unaff_EBP + 0xc) = 0;
+  }
+  else if (iVar2 < *(int *)(unaff_EBP + 0xc)) {
+    *(int *)(unaff_EBP + 0xc) = iVar2;
+  }
+  ScrollToDevicePosition
+            (this_00,*(TMacViewMgr **)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc),unaff_EDI);
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615329
+// GHIDRA_NAME TArmyTacUnit::ScrollToDevicePosition
+// GHIDRA_PROTO void __thiscall ScrollToDevicePosition(TMacViewMgr * thisObj, int xPos, int yPos)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Sets device scroll positions and scrolls/repositions child content by delta. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Sets device scroll positions and scrolls/repositions child content by delta.
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall
+TArmyTacUnit::ScrollToDevicePosition(TArmyTacUnit *this,TMacViewMgr *thisObj,int xPos,int yPos)
+
+{
+  int iVar1;
+  int iVar2;
+  int unaff_EDI;
+  
+  iVar1 = GetScrollPos((HWND)0x0,unaff_EDI);
+  SetScrollPos();
+  iVar2 = GetScrollPos((HWND)0x1,unaff_EDI);
+  SetScrollPos();
+  ScrollWindow(this,iVar1 - (int)thisObj,iVar2 - xPos,0,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006155ED
+// GHIDRA_NAME TArmyTacUnit::GetScrollBarSizes
+// GHIDRA_PROTO void __thiscall GetScrollBarSizes(TMacViewMgr * thisObj, int * outSize)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Computes scrollbar size adjustments for horizontal/vertical bars based on style/state. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Computes scrollbar size adjustments for horizontal/vertical bars based on style/state.
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall
+TArmyTacUnit::GetScrollBarSizes(TArmyTacUnit *this,TMacViewMgr *thisObj,int *outSize)
+
+{
+  code *pcVar1;
+  uint uVar2;
+  int iVar3;
+  
+  *(undefined4 *)&thisObj->field_0x4 = 0;
+  thisObj->vftable = (undefined *)0x0;
+  uVar2 = GetStyle();
+  pcVar1 = *(code **)(this->field0_0x0 + 0x70);
+  iVar3 = (*pcVar1)(1);
+  if ((iVar3 == 0) &&
+     (thisObj->vftable = (undefined *)g_nMfcScrollMetricXPlus1, (uVar2 & 0x800000) != 0)) {
+    thisObj->vftable = thisObj->vftable + -1;
+  }
+  iVar3 = (*pcVar1)(0);
+  if ((iVar3 == 0) &&
+     (*(uint *)&thisObj->field_0x4 = g_nMfcScrollMetricYPlus1, (uVar2 & 0x800000) != 0)) {
+    *(int *)&thisObj->field_0x4 = *(int *)&thisObj->field_0x4 + -1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615647
+// GHIDRA_NAME TArmyTacUnit::GetTrueClientSize
+// GHIDRA_PROTO int __thiscall GetTrueClientSize(TMacViewMgr * thisObj, int * outClientSize, int * outScrollBarSize)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Computes effective client size and reports scrollbar size adjustments/fit status. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Computes effective client size and reports scrollbar size adjustments/fit status.
+   [FID:FID_single_match_phase1_nodebug] */
+
+int __thiscall
+TArmyTacUnit::GetTrueClientSize
+          (TArmyTacUnit *this,TMacViewMgr *thisObj,int *outClientSize,int *outScrollBarSize)
+
+{
+  uint uVar1;
+  int iVar2;
+  int *unaff_EDI;
+  tagRECT local_14;
+  
+  GetClientRect(this->field1c,&local_14);
+  thisObj->vftable = (undefined *)local_14.right;
+  *(LONG *)&thisObj->field_0x4 = local_14.bottom;
+  uVar1 = GetStyle();
+  GetScrollBarSizes(this,(TMacViewMgr *)outClientSize,unaff_EDI);
+  if ((*outClientSize != 0) && ((uVar1 & 0x200000) != 0)) {
+    thisObj->vftable = thisObj->vftable + *outClientSize;
+  }
+  if ((outClientSize[1] != 0) && ((uVar1 & 0x100000) != 0)) {
+    *(int *)&thisObj->field_0x4 = *(int *)&thisObj->field_0x4 + outClientSize[1];
+  }
+  if ((*outClientSize < (int)thisObj->vftable) && (outClientSize[1] < *(int *)&thisObj->field_0x4))
+  {
+    iVar2 = 1;
+  }
+  else {
+    iVar2 = 0;
+  }
+  return iVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006156BC
+// GHIDRA_NAME TArmyTacUnit::GetScrollBarState
+// GHIDRA_PROTO void __thiscall GetScrollBarState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Computes scrollbar visibility flags and layout deltas from content/client sizes. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* Computes scrollbar visibility flags and layout deltas from content/client sizes.
+   [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall
+TArmyTacUnit::GetScrollBarState
+          (TArmyTacUnit *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
+
+{
+  float fVar1;
+  int iVar2;
+  int iVar3;
+  undefined4 *extraout_EAX;
+  uint uVar4;
+  uint uVar5;
+  int *unaff_EDI;
+  TArmyTacUnit *local_c;
+  TArmyTacUnit *local_8;
+  
+  local_c = this;
+  local_8 = this;
+  GetScrollBarSizes(this,(TMacViewMgr *)&local_c,unaff_EDI);
+  iVar3 = arg4;
+  fVar1 = this->fField50;
+  *(int *)arg4 = (int)this->fField4c - arg1;
+  *(int *)(arg4 + 4) = (int)fVar1 - arg2;
+  TControl::GetDeviceScrollPosition((TControl *)this,(TMacViewMgr *)&arg1,unaff_EDI);
+  *(undefined4 *)arg5 = *extraout_EAX;
+  *(undefined4 *)(arg5 + 4) = extraout_EAX[1];
+  uVar4 = (uint)(0 < *(int *)iVar3);
+  if (uVar4 == 0) {
+    *(undefined4 *)arg5 = 0;
+  }
+  else if (arg6 != 0) {
+    *(int *)(iVar3 + 4) = (int)&local_8->field0_0x0 + *(int *)(iVar3 + 4);
+  }
+  uVar5 = (uint)(0 < *(int *)(iVar3 + 4));
+  if (uVar5 == 0) {
+    *(undefined4 *)(arg5 + 4) = 0;
+  }
+  else if (arg6 != 0) {
+    *(int *)iVar3 = (int)&local_c->field0_0x0 + *(int *)iVar3;
+  }
+  if (((uVar5 != 0) && (uVar4 == 0)) && (0 < *(int *)iVar3)) {
+    *(int *)(iVar3 + 4) = (int)&local_8->field0_0x0 + *(int *)(iVar3 + 4);
+    uVar4 = 1;
+  }
+  iVar2 = *(int *)iVar3;
+  if ((0 < iVar2) && (iVar2 <= *(int *)arg5)) {
+    *(int *)arg5 = iVar2;
+  }
+  iVar3 = *(int *)(iVar3 + 4);
+  if ((0 < iVar3) && (iVar3 <= *(int *)(arg5 + 4))) {
+    *(int *)(arg5 + 4) = iVar3;
+  }
+  *(uint *)arg3 = uVar4;
+  *(uint *)(arg3 + 4) = uVar5;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00615778
+// GHIDRA_NAME TArmyTacUnit::UpdateBars
+// GHIDRA_PROTO void __thiscall UpdateBars(TMacViewMgr * thisObj)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT_END
+
+/* [FID:FID_single_match_phase1_nodebug] */
+
+void __thiscall TArmyTacUnit::UpdateBars(TArmyTacUnit *this,TMacViewMgr *thisObj)
+
+{
+  void *pvVar1;
+  LRESULT LVar2;
+  int iVar3;
+  int extraout_EAX;
+  int extraout_EAX_00;
+  int *unaff_EDI;
+  tagRECT local_50;
+  int local_40;
+  int local_3c;
+  int local_38;
+  int local_34;
+  int local_30;
+  int local_2c;
+  TMacViewMgr *local_28;
+  int local_24;
+  undefined *local_20;
+  int local_1c;
+  int local_18;
+  int local_14;
+  undefined *local_10;
+  int local_c;
+  int local_8;
+  
+  if (this->field47_0x68 != 0) {
+    return;
+  }
+  this->field47_0x68 = 1;
+  local_8 = 1;
+  GetParent(this->field1c);
+  pvVar1 = FromHandle();
+  if ((pvVar1 != (void *)0x0) &&
+     (LVar2 = SendMessageA(*(HWND *)((int)pvVar1 + 0x1c),0x368,0,(LPARAM)&local_40), LVar2 != 0)) {
+    local_8 = 0;
+  }
+  if (local_8 == 0) {
+    GetScrollBarSizes(this,(TMacViewMgr *)&local_20,unaff_EDI);
+    local_10 = (undefined *)(local_38 - local_40);
+    local_c = local_34 - local_3c;
+  }
+  else {
+    iVar3 = GetTrueClientSize(this,(TMacViewMgr *)&local_10,(int *)&local_20,unaff_EDI);
+    if (iVar3 == 0) {
+      GetClientRect(this->field1c,&local_50);
+      if ((0 < local_50.right) && (0 < local_50.bottom)) {
+        EnableScrollBarCtrl(this,3,0);
+      }
+      goto LAB_006158e6;
+    }
+  }
+  GetScrollBarState(this,(int)local_10,local_c,(int)&local_18,(int)&local_30,(int)&local_28,local_8)
+  ;
+  if (local_18 != 0) {
+    local_c = local_c - local_1c;
+  }
+  if (local_14 != 0) {
+    local_10 = local_10 + -(int)local_20;
+  }
+  ScrollToDevicePosition(this,local_28,local_24,(int)unaff_EDI);
+  EnableScrollBarCtrl(this,0,local_18);
+  if ((local_18 != 0) && (SetScrollInfo(), extraout_EAX == 0)) {
+    SetScrollRange(this,0,0,local_30,1);
+  }
+  EnableScrollBarCtrl(this,1,local_14);
+  if ((local_14 != 0) && (SetScrollInfo(), extraout_EAX_00 == 0)) {
+    SetScrollRange(this,1,0,local_2c,1);
+  }
+LAB_006158e6:
+  this->field47_0x68 = 0;
   return;
 }
 

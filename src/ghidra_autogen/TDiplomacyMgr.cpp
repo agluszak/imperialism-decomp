@@ -3,61 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TDiplomacyMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405079
-// GHIDRA_NAME TDiplomacyMgr::thunk_DestructTDiplomacyMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDiplomacyMgrAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDiplomacyMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDiplomacyMgrAndMaybeFree */
-
-void * __thiscall
-TDiplomacyMgr::thunk_DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDiplomacyMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040556F
-// GHIDRA_NAME TDiplomacyMgr::thunk_CompareShortFieldAtOffset2WithRandomTieBreak
-// GHIDRA_PROTO int __cdecl thunk_CompareShortFieldAtOffset2WithRandomTieBreak(int entryA, int entryB)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CompareShortFieldAtOffset2WithRandomTieBreak
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CompareShortFieldAtOffset2WithRandomTieBreak */
-
-int __cdecl TDiplomacyMgr::thunk_CompareShortFieldAtOffset2WithRandomTieBreak(int entryA,int entryB)
-
-{
-  int iVar1;
-  
-  iVar1 = CreateTDiplomacyMgrInstance(entryA,entryB);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004069C9
-// GHIDRA_NAME TDiplomacyMgr::thunk_GetTDiplomacyMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDiplomacyMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDiplomacyMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDiplomacyMgrClassNamePointer */
-
-void * __cdecl TDiplomacyMgr::thunk_GetTDiplomacyMgrClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDiplomacyMgrClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE5E0
 // GHIDRA_NAME TDiplomacyMgr::CreateTDiplomacyMgrInstance
 // GHIDRA_PROTO int __cdecl CreateTDiplomacyMgrInstance(int entryA, int entryB)
@@ -112,7 +57,7 @@ TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this,byte freeSe
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004ee730();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

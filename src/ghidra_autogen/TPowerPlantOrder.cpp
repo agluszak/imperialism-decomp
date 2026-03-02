@@ -21,38 +21,59 @@ void * __cdecl TPowerPlantOrder::thunk_GetTPowerPlantOrderClassNamePointer(void)
   return pvVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004087B0
-// GHIDRA_NAME TPowerPlantOrder::thunk_GetTPowerPlantOrderRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTPowerPlantOrderRuntimeClass(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004035A8
+// GHIDRA_NAME TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(void * pMessage)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTPowerPlantOrderRuntimeClass.
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTPowerPlantOrderRuntimeClass. */
+/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0 */
 
-void * __thiscall TPowerPlantOrder::thunk_GetTPowerPlantOrderRuntimeClass(TPowerPlantOrder *this)
+void __thiscall
+TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+          (TPowerPlantOrder *this,void *pMessage)
+
+{
+  WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(this,pMessage);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00407162
+// GHIDRA_NAME TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(void * pMessage)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40 */
+
+void __thiscall
+TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+          (TPowerPlantOrder *this,void *pMessage)
+
+{
+  WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(this,pMessage);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004087B0
+// GHIDRA_NAME TPowerPlantOrder::thunk_DestructTPowerPlantOrderAndMaybeFree
+// GHIDRA_PROTO void * __thiscall thunk_DestructTPowerPlantOrderAndMaybeFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Thunk forwarding to GetTPowerPlantOrderRuntimeClass. [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Thunk forwarding to GetTPowerPlantOrderRuntimeClass. [FID:thunk_target_sync] */
+
+void * __thiscall
+TPowerPlantOrder::thunk_DestructTPowerPlantOrderAndMaybeFree(TPowerPlantOrder *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408C65
-// GHIDRA_NAME TPowerPlantOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b7a60
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b7a60()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b7a60
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004b7a60 */
-
-void TPowerPlantOrder::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004b7a60(void)
-
-{
-  ConstructTPowerPlantOrderBaseState();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A20
@@ -72,7 +93,7 @@ void * __cdecl TPowerPlantOrder::GetTPowerPlantOrderClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A60
 // GHIDRA_NAME TPowerPlantOrder::ConstructTPowerPlantOrderBaseState
-// GHIDRA_PROTO undefined ConstructTPowerPlantOrderBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTPowerPlantOrderBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -80,15 +101,16 @@ void * __cdecl TPowerPlantOrder::GetTPowerPlantOrderClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TPowerPlantOrder * __thiscall
-TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *param_1,byte param_2)
+void __thiscall TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *this)
 
 {
-  thunk_GetTPowerPlantOrderRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructTPowerPlantOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A90
@@ -105,7 +127,63 @@ void * __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(TPowerP
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B7CC0
+// GHIDRA_NAME TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(void * pMessage)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
+// GHIDRA_COMMENT_END
+
+/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
+
+void __thiscall
+TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+          (TPowerPlantOrder *this,void *pMessage)
+
+{
+  code *pcVar1;
+  
+  TradeControl::thunk_HandleCityDialogNoOpSlot14();
+  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
+  (*pcVar1)(&this->field60_0x48,2);
+  (*pcVar1)(&this->field1_0x4,2);
+  (*pcVar1)(&this->field58_0x40,2);
+  (*pcVar1)(&this->field60_0x48,2);
+  (*pcVar1)(&this->field13_0x10,0x2e);
+  (*pcVar1)(&this->field59_0x44,4);
+  (*pcVar1)(&this->field61_0x4c,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B7D40
+// GHIDRA_NAME TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(void * pMessage)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
+// GHIDRA_COMMENT_END
+
+/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
+
+void __thiscall
+TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+          (TPowerPlantOrder *this,void *pMessage)
+
+{
+  code *pcVar1;
+  
+  TradeControl::thunk_HandleCityDialogNoOpSlot18();
+  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
+  (*pcVar1)(&this->field60_0x48,2);
+  (*pcVar1)(&this->field1_0x4,2);
+  (*pcVar1)(&this->field58_0x40,2);
+  (*pcVar1)(&this->field60_0x48,2);
+  (*pcVar1)(&this->field13_0x10,0x2e);
+  (*pcVar1)(&this->field59_0x44,4);
+  (*pcVar1)(&this->field61_0x4c,2);
+  return;
 }
 

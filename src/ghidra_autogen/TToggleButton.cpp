@@ -4,15 +4,15 @@
 // Bucket: TToggleButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402CA2
-// GHIDRA_NAME TToggleButton::thunk_GetTToggleButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTToggleButtonClassNamePointer(void)
+// GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TToggleButton_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTToggleButtonClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTToggleButtonClassNamePointer */
 
-void * __cdecl TToggleButton::thunk_GetTToggleButtonClassNamePointer(void)
+void * __cdecl TToggleButton::TToggleButton_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,42 +22,40 @@ void * __cdecl TToggleButton::thunk_GetTToggleButtonClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F8D
-// GHIDRA_NAME TToggleButton::thunk_HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO void __thiscall thunk_HandleToggleButtonStateChangeAndRefresh(int isPressed, int notifyParent)
+// GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot116
+// GHIDRA_PROTO void __thiscall TToggleButton_VtblSlot116(int isPressed, int notifyParent)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct JMP thunk to HandleToggleButtonStateChangeAndRefresh.
+// GHIDRA_COMMENT Single-JMP thunk to HandleToggleButtonStateChangeAndRefresh
 // GHIDRA_COMMENT_END
 
-/* Direct JMP thunk to HandleToggleButtonStateChangeAndRefresh. */
+/* Single-JMP thunk to HandleToggleButtonStateChangeAndRefresh */
 
 void __thiscall
-TToggleButton::thunk_HandleToggleButtonStateChangeAndRefresh
-          (TToggleButton *this,int isPressed,int notifyParent)
+TToggleButton::TToggleButton_VtblSlot116(TToggleButton *this,int isPressed,int notifyParent)
 
 {
-  int iVar1;
+  undefined **ppuVar1;
   
-  iVar1 = *(int *)this;
-  (**(code **)(iVar1 + 0xa4))((int)(char)isPressed,(int)(char)notifyParent);
+  ppuVar1 = this->field0_0x0;
+  (*(code *)ppuVar1[0x29])((int)(char)isPressed,(int)(char)notifyParent);
   if ((char)isPressed != '\0') {
-    (**(code **)(**(int **)(this + 0x20) + 0x1c8))(*(undefined4 *)(this + 0x1c));
+    (**(code **)(*(int *)this->pField20 + 0x1c8))(this->field1c);
   }
-  (**(code **)(iVar1 + 0xf8))();
-  (**(code **)(iVar1 + 0x114))(0);
+  (*(code *)ppuVar1[0x3e])();
+  (*(code *)ppuVar1[0x45])(0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409566
-// GHIDRA_NAME TToggleButton::thunk_DestructTToggleButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTToggleButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TToggleButton_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTToggleButtonAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTToggleButtonAndMaybeFree */
 
-void * __thiscall
-TToggleButton::thunk_DestructTToggleButtonAndMaybeFree(TToggleButton *this,byte freeSelfFlag)
+void * __thiscall TToggleButton::TToggleButton_VtblSlot001(TToggleButton *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -84,7 +82,7 @@ void * __cdecl TToggleButton::CreateTToggleButtonInstance(void)
   puStack_8 = &LAB_006363ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
@@ -119,7 +117,7 @@ void * __thiscall TToggleButton::ConstructTToggleButtonBaseState(TToggleButton *
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTToggleButton;
+  this->field0_0x0 = &g_vtblTToggleButton;
   return this;
 }
 
@@ -133,35 +131,8 @@ TToggleButton::DestructTToggleButtonAndMaybeFree(TToggleButton *this,byte freeSe
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00571350
-// GHIDRA_NAME TToggleButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO void __thiscall HandleToggleButtonStateChangeAndRefresh(int isPressed, int notifyParent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies toggle state, optionally notifies parent control, then refreshes visual/interaction state.
-// GHIDRA_COMMENT_END
-
-/* Applies toggle state, optionally notifies parent control, then refreshes visual/interaction
-   state. */
-
-void __thiscall
-TToggleButton::HandleToggleButtonStateChangeAndRefresh
-          (TToggleButton *this,int isPressed,int notifyParent)
-
-{
-  int iVar1;
-  
-  iVar1 = *(int *)this;
-  (**(code **)(iVar1 + 0xa4))((int)(char)isPressed,(int)(char)notifyParent);
-  if ((char)isPressed != '\0') {
-    (**(code **)(**(int **)(this + 0x20) + 0x1c8))(*(undefined4 *)(this + 0x1c));
-  }
-  (**(code **)(iVar1 + 0xf8))();
-  (**(code **)(iVar1 + 0x114))(0);
-  return;
 }
 

@@ -3,17 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TAutomatedPlayDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004046AB
-// GHIDRA_NAME TAutomatedPlayDialog::thunk_Cluster_DispatchHint_005b46c0
-// GHIDRA_PROTO void __thiscall thunk_Cluster_DispatchHint_005b46c0(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0040236F
+// GHIDRA_NAME TAutomatedPlayDialog::thunk_scalar_deleting_destructor_0040236F
+// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040236F(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_DispatchHint_005b46c0
+// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_DispatchHint_005b46c0 */
+/* Single-JMP thunk to `scalar_deleting_destructor' */
+
+void * __thiscall
+TAutomatedPlayDialog::thunk_scalar_deleting_destructor_0040236F
+          (TAutomatedPlayDialog *this,byte freeSelfFlag)
+
+{
+  void *pvVar1;
+  
+  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
+  return pvVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004046AB
+// GHIDRA_NAME TAutomatedPlayDialog::thunk_ConstructTAutomatedPlayDialogBaseState
+// GHIDRA_PROTO void __thiscall thunk_ConstructTAutomatedPlayDialogBaseState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to Cluster_DispatchHint_005b46c0 [FID:thunk_target_sync]
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to Cluster_DispatchHint_005b46c0 [FID:thunk_target_sync] */
 
 void __thiscall
-TAutomatedPlayDialog::thunk_Cluster_DispatchHint_005b46c0(TAutomatedPlayDialog *this)
+TAutomatedPlayDialog::thunk_ConstructTAutomatedPlayDialogBaseState(TAutomatedPlayDialog *this)
 
 {
   ConstructTAutomatedPlayDialogBaseState(this);
@@ -76,11 +96,11 @@ TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(TAutomatedPlayDialo
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   g_wTurnFlowCooldownCounter = (**(code **)(*piVar1 + 0x1e8))();
-  _g_Advance_Turn_Machine_State_00698B10 = (undefined2)g_pLocalizationTable[2];
+  _g_Advance_Turn_Machine_State_00698B10 = *(undefined2 *)((int)g_pLocalizationTable + 8);
   if (0 < (short)g_wTurnFlowCooldownCounter) {
-    (**(code **)(*g_pLocalizationTable + 0x44))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x44))();
   }
-  thunk_DispatchVfuncA0ToLinkedChildListSlot44();
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
   return;
 }
 

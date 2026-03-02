@@ -4,50 +4,49 @@
 // Bucket: TDealBookPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004039B8
-// GHIDRA_NAME TDealBookPicture::thunk_UpdateDealBookResourceSelectionAndToggleControls
-// GHIDRA_PROTO void __thiscall thunk_UpdateDealBookResourceSelectionAndToggleControls(int arg1, int arg2)
+// GHIDRA_NAME TDealBookPicture::TDealBookPicture_VtblSlot115
+// GHIDRA_PROTO void __thiscall TDealBookPicture_VtblSlot115(int arg1, int arg2)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to UpdateDealBookResourceSelectionAndToggleControls
+// GHIDRA_COMMENT Single-JMP thunk to UpdateDealBookResourceSelectionAndToggleControls
 // GHIDRA_COMMENT_END
 
-/* Thunk to UpdateDealBookResourceSelectionAndToggleControls */
+/* Single-JMP thunk to UpdateDealBookResourceSelectionAndToggleControls */
 
 void __thiscall
-TDealBookPicture::thunk_UpdateDealBookResourceSelectionAndToggleControls
-          (TDealBookPicture *this,int arg1,int arg2)
+TDealBookPicture::TDealBookPicture_VtblSlot115(TDealBookPicture *this,int arg1,int arg2)
 
 {
-  UpdateDealBookResourceSelectionAndToggleControls(this,arg1,arg2);
+  TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
+            ((TToolBarCluster *)this,arg1,arg2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004074C8
-// GHIDRA_NAME TDealBookPicture::thunk_BuildSelectedNationOrderCapabilityRows
-// GHIDRA_PROTO void __thiscall thunk_BuildSelectedNationOrderCapabilityRows(void)
+// GHIDRA_NAME TDealBookPicture::TDealBookPicture_VtblSlot116
+// GHIDRA_PROTO void __thiscall TDealBookPicture_VtblSlot116(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to BuildSelectedNationOrderCapabilityRows
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to BuildSelectedNationOrderCapabilityRows */
 
-void __thiscall
-TDealBookPicture::thunk_BuildSelectedNationOrderCapabilityRows(TDealBookPicture *this)
+void __thiscall TDealBookPicture::TDealBookPicture_VtblSlot116(TDealBookPicture *this)
 
 {
-  BuildSelectedNationOrderCapabilityRows(this);
+  TLineData::BuildSelectedNationOrderCapabilityRows((TLineData *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408D8C
-// GHIDRA_NAME TDealBookPicture::thunk_GetTDealBookPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDealBookPictureClassNamePointer(void)
+// GHIDRA_NAME TDealBookPicture::TDealBookPicture_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TDealBookPicture_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTDealBookPictureClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTDealBookPictureClassNamePointer */
 
-void * __cdecl TDealBookPicture::thunk_GetTDealBookPictureClassNamePointer(void)
+void * __cdecl TDealBookPicture::TDealBookPicture_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -57,8 +56,8 @@ void * __cdecl TDealBookPicture::thunk_GetTDealBookPictureClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408F3A
-// GHIDRA_NAME TDealBookPicture::thunk_DestructTDealBookPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDealBookPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TDealBookPicture::TDealBookPicture_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TDealBookPicture_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTDealBookPictureAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -66,8 +65,7 @@ void * __cdecl TDealBookPicture::thunk_GetTDealBookPictureClassNamePointer(void)
 /* Single-JMP thunk to DestructTDealBookPictureAndMaybeFree */
 
 void * __thiscall
-TDealBookPicture::thunk_DestructTDealBookPictureAndMaybeFree
-          (TDealBookPicture *this,byte freeSelfFlag)
+TDealBookPicture::TDealBookPicture_VtblSlot001(TDealBookPicture *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -77,18 +75,20 @@ TDealBookPicture::thunk_DestructTDealBookPictureAndMaybeFree
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040909D
-// GHIDRA_NAME TDealBookPicture::thunk_Cluster_ArmyNavyHint_005bbc30
-// GHIDRA_PROTO void __thiscall thunk_Cluster_ArmyNavyHint_005bbc30(void)
+// GHIDRA_NAME TDealBookPicture::TDealBookPicture_VtblSlot015
+// GHIDRA_PROTO void __thiscall TDealBookPicture_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent, int forwardArg)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_ArmyNavyHint_005bbc30
+// GHIDRA_COMMENT Single-JMP thunk to HandleDealBookTradeCommandAndRefreshNationLines
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to Cluster_ArmyNavyHint_005bbc30 */
+/* Single-JMP thunk to HandleDealBookTradeCommandAndRefreshNationLines */
 
-void __thiscall TDealBookPicture::thunk_Cluster_ArmyNavyHint_005bbc30(TDealBookPicture *this)
+void __thiscall
+TDealBookPicture::TDealBookPicture_VtblSlot015
+          (TDealBookPicture *this,int commandId,PanelEventPayload *pPanelEvent,int forwardArg)
 
 {
-  HandleDealBookTradeCommandAndRefreshNationLines(this);
+  HandleDealBookTradeCommandAndRefreshNationLines(this,commandId,pPanelEvent,forwardArg);
   return;
 }
 
@@ -109,7 +109,7 @@ void * __cdecl TDealBookPicture::CreateTDealBookPictureInstance(void)
   puStack_8 = &LAB_0063911a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb4);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
@@ -146,9 +146,9 @@ void * __thiscall TDealBookPicture::ConstructTDealBookPictureBaseState(TDealBook
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTDealBookPicture;
-  this[0xb2] = (TDealBookPicture)0x0;
-  *(undefined2 *)(this + 0x90) = 8;
+  this->field0_0x0 = &g_vtblTDealBookPicture;
+  this->field154_0xb2 = 0;
+  this->field90 = 8;
   return this;
 }
 
@@ -162,438 +162,14 @@ TDealBookPicture::DestructTDealBookPictureAndMaybeFree(TDealBookPicture *this,by
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005BAF70
-// GHIDRA_NAME TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls
-// GHIDRA_PROTO void __thiscall UpdateDealBookResourceSelectionAndToggleControls(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Updates selected resource row in deal-book view, toggles related controls, and dispatches localized status text update.
-// GHIDRA_COMMENT_END
-
-/* [ClassLane] Updates selected resource row in deal-book view, toggles related controls, and
-   dispatches localized status text update. */
-
-void __thiscall
-TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls
-          (TDealBookPicture *this,int arg1,int arg2)
-
-{
-  int iVar1;
-  code *pcVar2;
-  int *piVar3;
-  int *piVar4;
-  short sVar5;
-  undefined4 *unaff_FS_OFFSET;
-  undefined1 *puStack_5c;
-  undefined4 uStack_58;
-  undefined4 *puStack_28;
-  int iStack_24;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00639148;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  iStack_24 = 0x5baf95;
-  InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
-  if ((short)arg2 != *(short *)(this + 0x90)) {
-    *(short *)(this + 0x90) = (short)arg2;
-    iStack_24 = 0x5bafbc;
-    (**(code **)(*(int *)this + 0x1d0))();
-  }
-  *(short *)(this + 0x94) = (short)arg1;
-  iStack_24 = arg1 + 1;
-  sVar5 = (short)iStack_24;
-  iVar1 = **(int **)(this + 0xac);
-  if ((short)(*(int **)(this + 0xac))[0x18] < sVar5) {
-    iStack_24 = 1;
-    puStack_28 = (undefined4 *)0x0;
-    (**(code **)(iVar1 + 0xa4))();
-  }
-  else {
-    puStack_28 = (undefined4 *)0x5bafdd;
-    (**(code **)(iVar1 + 0x1b0))();
-    puStack_28 = (undefined4 *)0x0;
-    (**(code **)(**(int **)(this + 0xac) + 0xa4))();
-  }
-  iVar1 = **(int **)(this + 0xa8);
-  if ((short)(*(int **)(this + 0xa8))[0x18] < sVar5) {
-    (**(code **)(iVar1 + 0xa4))();
-  }
-  else {
-    (**(code **)(iVar1 + 0x1b0))();
-    (**(code **)(**(int **)(this + 0xa8) + 0xa4))();
-  }
-  pcVar2 = *(code **)(*(int *)this + 0x94);
-  piVar3 = (int *)(*pcVar2)();
-  if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  piVar4 = (int *)(*pcVar2)();
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar1 = *piVar3;
-  if (*(short *)(this + 0x94) == 0) {
-    (**(code **)(iVar1 + 0xa4))();
-    (**(code **)(iVar1 + 0xa8))();
-    uStack_58 = 0x5bb0cf;
-    ConstructSharedStringFromCStrOrResourceId();
-    uStack_58 = 0x5bb0e2;
-    StringShared__AssignFromPtr(&stack0xffffffc0,(int *)&puStack_28);
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  else {
-    (**(code **)(iVar1 + 0xa4))();
-    (**(code **)(iVar1 + 0xa8))();
-    uStack_58 = 0xb;
-    puStack_5c = (undefined1 *)0x2730;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-  }
-  puStack_28 = &uStack_58;
-  puStack_5c = &stack0xffffffc0;
-  thunk_AssignStringSharedRefAndReturnThis();
-  puStack_5c = (undefined1 *)0x5bb146;
-  thunk_EnableAndProcessFlagWithSharedStringCleanup();
-  if ((*(short *)(this + 0x94) == *(short *)(this + 0x92)) || (*(short *)(this + 0x92) == 0)) {
-    iVar1 = *piVar4;
-    uStack_58 = 0;
-    puStack_5c = (undefined1 *)0x5bb1b1;
-    (**(code **)(iVar1 + 0xa4))();
-    puStack_5c = (undefined1 *)0x1;
-    (**(code **)(iVar1 + 0xa8))();
-    ConstructSharedStringFromCStrOrResourceId();
-    StringShared__AssignFromPtr(&puStack_5c,(int *)&stack0xffffffbc);
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  else {
-    iVar1 = *piVar4;
-    uStack_58 = 1;
-    puStack_5c = (undefined1 *)0x5bb16d;
-    (**(code **)(iVar1 + 0xa4))();
-    puStack_5c = (undefined1 *)0x1;
-    (**(code **)(iVar1 + 0xa8))();
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-  }
-  thunk_AssignStringSharedRefAndReturnThis();
-  thunk_EnableAndProcessFlagWithSharedStringCleanup();
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uStack_58;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005BB2E0
-// GHIDRA_NAME TDealBookPicture::BuildSelectedNationOrderCapabilityRows
-// GHIDRA_PROTO void __thiscall BuildSelectedNationOrderCapabilityRows(void)
-
-/* WARNING: Type propagation algorithm not settling */
-
-void __thiscall TDealBookPicture::BuildSelectedNationOrderCapabilityRows(TDealBookPicture *this)
-
-{
-  short sVar1;
-  int iVar2;
-  TLineData *pTVar3;
-  void *pvVar4;
-  int *dst_ref_ptr;
-  undefined4 uVar5;
-  int *piVar6;
-  TLineData *this_00;
-  undefined2 uVar7;
-  int iVar8;
-  int *unaff_FS_OFFSET;
-  undefined1 *puVar9;
-  undefined1 auStack_6c [2];
-  undefined1 auStack_6a [2];
-  int local_68 [2];
-  undefined1 auStack_60 [4];
-  void **ppvStack_5c;
-  TLineData *pTStack_58;
-  undefined4 uStack_54;
-  TLineData *pTStack_50;
-  int iStack_48;
-  int iStack_44;
-  int aiStack_40 [2];
-  TLineData *pTStack_38;
-  undefined1 auStack_34 [4];
-  TTextLine *pTStack_30;
-  undefined4 uStack_2c;
-  int aiStack_28 [5];
-  undefined1 local_12;
-  undefined1 local_11;
-  undefined1 local_10;
-  undefined1 local_f;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006391d8;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  local_12 = 0;
-  local_11 = 0;
-  this[0xb0] = (TDealBookPicture)0x1;
-  local_10 = 0;
-  local_f = 0;
-  iVar8 = 0;
-  local_68[1] = 0;
-  local_68[0] = 0;
-  if ((char)*(int *)((int)g_apNationStates[*(short *)(this + 0x90)] + 0x8fc) < '\x01') {
-    iVar2 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x180))();
-    if (iVar2 == 0) goto LAB_005bb355;
-  }
-  this[0xb0] = (TDealBookPicture)0x0;
-LAB_005bb355:
-  do {
-    sVar1 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x1b4))(iVar8);
-    if (sVar1 != 0) {
-      this[0xb0] = (TDealBookPicture)0x0;
-      puVar9 = auStack_6c;
-      (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x1bc))
-                (iVar8,1,auStack_6a,auStack_6c,puVar9,auStack_34);
-      uVar7 = (undefined2)iVar8;
-      if ((short)((uint)puVar9 >> 0x10) == 1) {
-        this[0xb0] = (TDealBookPicture)0x0;
-        pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
-        aiStack_28[3] = 0;
-        pTStack_50 = pTVar3;
-        if (pTVar3 == (TLineData *)0x0) {
-          pTVar3 = (TLineData *)0x0;
-        }
-        else {
-          TLineData::ConstructTLineDataBaseState(pTVar3);
-          *(undefined ***)pTVar3 = &g_vtblTCommodityLine;
-        }
-        aiStack_28[3] = 0xffffffff;
-        iStack_48 = 200;
-        iStack_44 = 0x1e;
-        thunk_SetLineDataRowAndBounds(pTVar3,0,0x1e,&iStack_48);
-        *(undefined2 *)(pTVar3 + 0x10) = uVar7;
-        (**(code **)(**(int **)(this + 0x98) + 0x1a4))(pTVar3);
-        iStack_48 = (int)sVar1;
-        sVar1 = 1;
-        do {
-          pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x18);
-          uStack_4 = 1;
-          pTStack_38 = pTVar3;
-          if (pTVar3 == (TLineData *)0x0) {
-            pTVar3 = (TLineData *)0x0;
-          }
-          else {
-            TLineData::ConstructTLineDataBaseState(pTVar3);
-            *(undefined ***)pTVar3 = &g_vtblTDealLine;
-          }
-          iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)(this + 0x90));
-          uStack_4 = 0xffffffff;
-          aiStack_40[0] = 200;
-          aiStack_40[1] = 0x1e;
-          thunk_SetLineDataRowAndBounds(pTVar3,(ushort)local_68[1],0,aiStack_40);
-          *(undefined2 *)(pTVar3 + 0x10) = uVar7;
-          *(undefined2 *)(pTVar3 + 0x12) = (undefined2)iStack_44;
-          *(short *)(pTVar3 + 0x14) = sVar1;
-          (**(code **)(**(int **)(this + 0x98) + 0x1a0))(pTVar3);
-          sVar1 = sVar1 + 1;
-          iStack_48 = iStack_48 + -1;
-        } while (iStack_48 != 0);
-        iStack_48 = 0;
-      }
-      else {
-        this[0xb0] = (TDealBookPicture)0x0;
-        pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
-        aiStack_28[3] = 2;
-        pTStack_50 = pTVar3;
-        if (pTVar3 == (TLineData *)0x0) {
-          pTVar3 = (TLineData *)0x0;
-        }
-        else {
-          TLineData::ConstructTLineDataBaseState(pTVar3);
-          *(undefined ***)pTVar3 = &g_vtblTCommodityLine;
-        }
-        aiStack_28[3] = 0xffffffff;
-        local_68[0] = 200;
-        local_68[1] = 0x1e;
-        thunk_SetLineDataRowAndBounds(pTVar3,0,0x1e,local_68);
-        *(undefined2 *)(pTVar3 + 0x10) = uVar7;
-        (**(code **)(**(int **)(this + 0x9c) + 0x1a4))(pTVar3);
-        iStack_48 = (int)sVar1;
-        sVar1 = 1;
-        do {
-          pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x18);
-          uStack_4 = 3;
-          pTStack_38 = pTVar3;
-          if (pTVar3 == (TLineData *)0x0) {
-            pTVar3 = (TLineData *)0x0;
-          }
-          else {
-            TLineData::ConstructTLineDataBaseState(pTVar3);
-            *(undefined ***)pTVar3 = &g_vtblTDealLine;
-          }
-          iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)(this + 0x90));
-          uStack_4 = 0xffffffff;
-          pTStack_58 = (TLineData *)0xc8;
-          uStack_54 = 0x1e;
-          thunk_SetLineDataRowAndBounds(pTVar3,(ushort)local_68[0],0,(int *)&pTStack_58);
-          *(undefined2 *)(pTVar3 + 0x10) = uVar7;
-          *(undefined2 *)(pTVar3 + 0x12) = (undefined2)iStack_44;
-          *(short *)(pTVar3 + 0x14) = sVar1;
-          (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pTVar3);
-          sVar1 = sVar1 + 1;
-          iStack_48 = iStack_48 + -1;
-        } while (iStack_48 != 0);
-      }
-    }
-    iVar8 = iVar8 + 1;
-  } while ((short)iVar8 < 0x11);
-  iVar8 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x17c))();
-  if (iVar8 != 0) {
-    InitializeSharedStringRefFromEmpty();
-    uStack_4 = 4;
-    this[0xb0] = (TDealBookPicture)0x0;
-    pTStack_38 = (TLineData *)AllocateWithFallbackHandler(0x20);
-    uStack_4._0_1_ = 5;
-    if (pTStack_38 == (TLineData *)0x0) {
-      pvVar4 = (void *)0x0;
-    }
-    else {
-      pvVar4 = TTextLine::ConstructTTextLineBaseState((TTextLine *)pTStack_38);
-    }
-    uStack_4 = CONCAT31(uStack_4._1_3_,4);
-    pTStack_30 = (TTextLine *)0xc8;
-    uStack_2c = 0x1e;
-    WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0x3c,&pTStack_30,0xffffffff,0);
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2741,7,&iStack_48);
-    WrapperFor_StringShared_AssignFromPtr_At00570420(&uStack_54);
-    thunk_BuildUiTextStyleDescriptor();
-    CopyTwoDwordsAndWordToObjectOffset14();
-    SetObjectField1EWord();
-    (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pvVar4);
-    iStack_44 = 0;
-    pTStack_50 = (TLineData *)0x0;
-    do {
-      iVar8 = iStack_44;
-      iVar2 = (**(code **)(*(int *)g_apNationStates[*(short *)(this + 0x90)] + 0x178))(iStack_44);
-      if (iVar2 != 0) {
-        local_68[0] = local_68[0] + 1;
-        this[0xb0] = (TDealBookPicture)0x0;
-        pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
-        uStack_4._0_1_ = 6;
-        if (pTVar3 == (TLineData *)0x0) {
-          this_00 = (TLineData *)0x0;
-          pTStack_58 = pTVar3;
-        }
-        else {
-          pTStack_58 = pTVar3;
-          TLineData::ConstructTLineDataBaseState(pTVar3);
-          *(undefined ***)pTVar3 = &g_vtblTCommodityLine;
-          this_00 = pTVar3;
-        }
-        uStack_4 = CONCAT31(uStack_4._1_3_,4);
-        aiStack_28[0] = 200;
-        aiStack_28[1] = 0x1e;
-        thunk_SetLineDataRowAndBounds(this_00,0,0x1e,aiStack_28);
-        *(short *)(this_00 + 0x10) = (short)iVar8;
-        (**(code **)(**(int **)(this + 0x9c) + 0x1a4))(this_00);
-        sVar1 = 7;
-        pTStack_58 = (TLineData *)0xa1;
-        ppvStack_5c = g_apTerrainTypeDescriptorTable + 7;
-        do {
-          if ((*ppvStack_5c != (void *)0x0) &&
-             (iVar2 = *(int *)((int)g_apNationStates[*(short *)(this + 0x90)] +
-                              (int)(pTStack_50 + (int)pTStack_58) * 4 + -4), iVar2 != 0)) {
-            InitializeSharedStringRefFromEmpty();
-            uStack_4._0_1_ = 7;
-            InitializeSharedStringRefFromEmpty();
-            uStack_4._0_1_ = 8;
-            pTStack_30 = (TTextLine *)AllocateWithFallbackHandler(0x20);
-            uStack_4._0_1_ = 9;
-            if (pTStack_30 == (TTextLine *)0x0) {
-              pvVar4 = (void *)0x0;
-            }
-            else {
-              pvVar4 = TTextLine::ConstructTTextLineBaseState(pTStack_30);
-            }
-            uStack_4._0_1_ = 8;
-            aiStack_28[2] = 200;
-            aiStack_28[3] = 0x1e;
-            WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
-                      (local_68[0],0,aiStack_28 + 2,0xffffffff,0);
-            thunk_AssignNormalizedCredentialTokenToIndexedSlot();
-            uStack_4._0_1_ = 10;
-            StringShared__AssignFromPtr(local_68 + 1,dst_ref_ptr);
-            uStack_4._0_1_ = 8;
-            ReleaseSharedStringRefIfNotEmpty();
-            (**(code **)(*g_pLocalizationTable + 0x74))(iVar2,auStack_60);
-            uVar5 = AssignSharedStringConcatCStrAndRef
-                              (aiStack_40,&g_Build_Combat_Report_LookupTable_00699320,local_68);
-            iStack_c._0_1_ = 0xb;
-            AssignStringSharedFromRef(uVar5);
-            iStack_c = CONCAT31(iStack_c._1_3_,8);
-            ReleaseSharedStringRefIfNotEmpty();
-            WrapperFor_StringShared_AssignFromPtr_At00570420(auStack_6c);
-            (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pvVar4);
-            uStack_4._0_1_ = 7;
-            ReleaseSharedStringRefIfNotEmpty();
-            uStack_4 = CONCAT31(uStack_4._1_3_,4);
-            ReleaseSharedStringRefIfNotEmpty();
-            iVar8 = iStack_44;
-          }
-          sVar1 = sVar1 + 1;
-          ppvStack_5c = ppvStack_5c + 1;
-          pTStack_58 = pTStack_58 + 0x17;
-        } while (sVar1 < 0x17);
-      }
-      iStack_44 = iVar8 + 1;
-      pTStack_50 = pTStack_50 + 1;
-    } while ((short)iStack_44 < 0x17);
-    uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x14);
-  uStack_4 = 0xe;
-  pTStack_30 = (TTextLine *)pTVar3;
-  if (pTVar3 == (TLineData *)0x0) {
-    pTVar3 = (TLineData *)0x0;
-  }
-  else {
-    TLineData::ConstructTLineDataBaseState(pTVar3);
-    *(undefined ***)pTVar3 = &g_vtblTTradeTotalsLine;
-  }
-  sVar1 = *(short *)(this + 0x90);
-  uStack_4 = 0xffffffff;
-  aiStack_28[2] = 200;
-  aiStack_28[3] = (('\0' < *(char *)((int)g_apNationStates[sVar1] + 0x8fc)) + 4) * 0x1e;
-  thunk_SetLineDataRowAndBounds(pTVar3,0,0,aiStack_28 + 2);
-  *(short *)(pTVar3 + 0x10) = sVar1;
-  (**(code **)(**(int **)(this + 0x9c) + 0x1a0))(pTVar3);
-  (**(code **)(**(int **)(this + 0x98) + 0x1ac))();
-  (**(code **)(**(int **)(this + 0x9c) + 0x1ac))();
-  if (*(short *)(*(int *)(this + 0x9c) + 0x60) < *(short *)(*(int *)(this + 0x98) + 0x60)) {
-    *(short *)(this + 0x92) = *(short *)(*(int *)(this + 0x98) + 0x60) + -1;
-  }
-  else {
-    *(short *)(this + 0x92) = *(short *)(*(int *)(this + 0x9c) + 0x60) + -1;
-  }
-  piVar6 = (int *)(**(code **)(*(int *)this + 0x94))(0x74616273);
-  iVar8 = *piVar6;
-  (**(code **)(iVar8 + 0xc))();
-  (**(code **)(iVar8 + 0x1c4))(0x2266,*(undefined1 *)(g_pCityOrderCapabilityState + 0x193));
-  *unaff_FS_OFFSET = aiStack_28[3];
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BBC30
 // GHIDRA_NAME TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
-// GHIDRA_PROTO void __thiscall HandleDealBookTradeCommandAndRefreshNationLines(void)
+// GHIDRA_PROTO void __thiscall HandleDealBookTradeCommandAndRefreshNationLines(int commandId, PanelEventPayload * pPanelEvent, int forwardArg)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [ClassLane] TDealBookPicture command handler/refresh path for trade sell/buy nation lines, mark toggles, and title updates.
 // GHIDRA_COMMENT_END
@@ -603,167 +179,152 @@ LAB_005bb355:
    toggles, and title updates. */
 
 void __thiscall
-TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines(TDealBookPicture *this)
+TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
+          (TDealBookPicture *this,int commandId,PanelEventPayload *pPanelEvent,int forwardArg)
 
 {
-  code *pcVar1;
-  char cVar2;
-  int *piVar3;
-  undefined4 uVar4;
-  int iVar5;
-  LONG LVar6;
+  EControlTagFourCC EVar1;
+  code *pcVar2;
+  char cVar3;
+  int *piVar4;
+  PanelEventPayload *pPVar5;
+  int iVar6;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  LONG LStack_8c;
-  undefined4 uStack_88;
-  LONG LStack_84;
+  int aiStack_8c [2];
+  void *pvStack_84;
   undefined1 *puStack_80;
   undefined4 uStack_7c;
-  int iStack_78;
-  LONG *pLStack_74;
-  LONG LStack_70;
-  LONG LStack_58;
+  void *pvStack_78;
+  PanelEventPayload *pPStack_74;
+  int iVar7;
+  void *pvStack_58;
   RECT RStack_54;
   tagRECT tStack_44;
   undefined1 uStack_34;
   undefined1 uStack_30;
-  undefined4 local_c;
+  HWND local_c;
   undefined1 *puStack_8;
-  int iStack_4;
+  uint uStack_4;
   
-  local_c = *unaff_FS_OFFSET;
-  iStack_4 = 0xffffffff;
+  local_c = (HWND)*unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00639250;
   *unaff_FS_OFFSET = &local_c;
-  iVar5 = *(int *)(in_stack_00000008 + 0x1c);
-  if (in_stack_00000004 < 11000) {
-    if (in_stack_00000004 == 10) {
-      if ((iVar5 == 0x6c636f72) &&
-         (in_stack_00000008 =
-               CONCAT22((short)((uint)in_stack_00000008 >> 0x10),*(short *)(this + 0x94)),
-         0 < *(short *)(this + 0x94))) {
-        LStack_70 = CONCAT22(0x6c63,*(undefined2 *)(this + 0x90));
-        pLStack_74 = (LONG *)(in_stack_00000008 + -1);
-        iStack_78 = 0x5bbf66;
-        (**(code **)(*(int *)this + 0x1cc))();
+  EVar1 = pPanelEvent->controlTag1c;
+  if (commandId < 11000) {
+    if (commandId == 10) {
+      pPVar5 = pPanelEvent;
+      if ((EVar1 == 0x6c636f72) &&
+         (pPVar5 = (PanelEventPayload *)CONCAT22((short)((uint)pPanelEvent >> 0x10),this->field94),
+         0 < this->field94)) {
+        pPStack_74 = (PanelEventPayload *)((int)&pPVar5[-1].pSelectionPayload9c + 3);
+        pvStack_78 = (void *)0x5bbf66;
+        (**(code **)((int)this->field0_0x0 + 0x1cc))();
       }
-      else if ((iVar5 == 0x72636f72) && (*(short *)(this + 0x94) < *(short *)(this + 0x92))) {
-        LStack_70 = CONCAT22(0x7263,*(undefined2 *)(this + 0x90));
-        pLStack_74 = (LONG *)(CONCAT22((short)((uint)in_stack_00000008 >> 0x10),
-                                       *(short *)(this + 0x94)) + 1);
-        iStack_78 = 0x5bbf94;
-        (**(code **)(*(int *)this + 0x1cc))();
+      else if ((EVar1 == 0x72636f72) && (this->field94 < this->field92)) {
+        pPStack_74 = (PanelEventPayload *)
+                     (CONCAT22((short)((uint)pPVar5 >> 0x10),this->field94) + 1);
+        pvStack_78 = (void *)0x5bbf94;
+        (**(code **)((int)this->field0_0x0 + 0x1cc))();
       }
-      else if ((iVar5 == 0x6d61726b) && (this[0xb1] != (TDealBookPicture)0x0)) {
-        LStack_70 = 0x5bbfaf;
+      else if ((EVar1 == 0x6d61726b) && (this->fieldb1 != false)) {
         thunk_RefreshTradeSelectionHeaderAndNationOfferBidLines(this);
       }
     }
   }
   else {
-    iVar5 = in_stack_00000004 + *(char *)(g_pCityOrderCapabilityState + 0x193) * 0x10;
-    LVar6 = CONCAT22((short)((uint)iVar5 >> 0x10),
+    iVar6 = commandId + *(char *)((int)g_pCityOrderCapabilityState + 0x193) * 0x10;
+    iVar7 = CONCAT22((short)((uint)iVar6 >> 0x10),
                      *(short *)(&g_Deal_Book_Trade_Value_00668568 +
-                               (*(char *)(g_pCityOrderCapabilityState + 0x193) + iVar5) * 2));
+                               (*(char *)((int)g_pCityOrderCapabilityState + 0x193) + iVar6) * 2));
     if (*(short *)(&g_Deal_Book_Trade_Value_00668568 +
-                  (*(char *)(g_pCityOrderCapabilityState + 0x193) + iVar5) * 2) == -1)
+                  (*(char *)((int)g_pCityOrderCapabilityState + 0x193) + iVar6) * 2) == -1)
     goto LAB_005bbfc1;
-    pLStack_74 = (LONG *)0x5bbc9d;
-    LStack_70 = LVar6;
-    RStack_54.bottom = LVar6;
-    TTradePageSellView::thunk_RefreshTradeSellPageNationOfferLinesForSelection
-              (*(TTradePageSellView **)(this + 0xa4));
-    pLStack_74 = (LONG *)0x5bbca9;
-    LStack_70 = LVar6;
-    TTradePageBuyView::thunk_RefreshTradeBuyPageNationBidLinesForSelection
-              (*(TTradePageBuyView **)(this + 0xa0));
-    if (this[0xb1] == (TDealBookPicture)0x0) {
-      LStack_70 = 0x5bbcba;
+    pPStack_74 = (PanelEventPayload *)0x5bbc9d;
+    RStack_54.bottom = iVar7;
+    TTradePageSellView::thunk_ConstructTTradePageSellViewBaseState(this->pFielda4,iVar7);
+    pPStack_74 = (PanelEventPayload *)0x5bbca9;
+    TTradePageBuyView::thunk_ConstructTTradePageBuyViewBaseState(this->pFielda0,iVar7);
+    if (this->fieldb1 == false) {
       thunk_RefreshTradeSelectionHeaderAndNationOfferBidLines(this);
     }
-    LStack_70 = 0x7469744c;
-    pcVar1 = *(code **)(*(int *)this + 0x94);
-    pLStack_74 = (LONG *)0x5bbccb;
-    piVar3 = (int *)(*pcVar1)();
-    iVar5 = *piVar3;
-    pLStack_74 = (LONG *)0x5bbcd4;
-    (**(code **)(iVar5 + 0xc))();
-    pLStack_74 = (LONG *)0x5bbcdd;
+    iVar7 = 0x7469744c;
+    pcVar2 = *(code **)((int)this->field0_0x0 + 0x94);
+    pPStack_74 = (PanelEventPayload *)0x5bbccb;
+    piVar4 = (int *)(*pcVar2)();
+    iVar6 = *piVar4;
+    pPStack_74 = (PanelEventPayload *)0x5bbcd4;
+    (**(code **)(iVar6 + 0xc))();
+    pPStack_74 = (PanelEventPayload *)0x5bbcdd;
     InitializeSharedStringRefFromEmpty();
     puStack_8 = (undefined1 *)0x0;
-    pLStack_74 = (LONG *)0x5bbcee;
+    pPStack_74 = (PanelEventPayload *)0x5bbcee;
     InitializeSharedStringRefFromEmpty();
     puStack_8._0_1_ = 1;
-    pLStack_74 = (LONG *)0x5bbcfc;
+    pPStack_74 = (PanelEventPayload *)0x5bbcfc;
     InitializeSharedStringRefFromEmpty();
-    pLStack_74 = &LStack_58;
-    iStack_78 = 3;
+    pPStack_74 = (PanelEventPayload *)&pvStack_58;
+    pvStack_78 = (void *)0x3;
     uStack_7c = 0x2741;
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
     puStack_80 = (undefined1 *)0x5bbd1b;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
     puStack_80 = &stack0xffffffa0;
-    LStack_84 = LStack_58;
-    uStack_88 = 0x2711;
-    LStack_8c = 0x5bbd38;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-    LStack_8c = LStack_70;
+    pvStack_84 = pvStack_58;
+    aiStack_8c[1] = 0x2711;
+    aiStack_8c[0] = 0x5bbd38;
+    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    aiStack_8c[0] = iVar7;
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffff98,unaff_EDI);
-    LStack_8c = 0;
-    (**(code **)(iVar5 + 0x1c8))(&stack0xffffff98);
-    (**(code **)(iVar5 + 300))(&stack0xffffffa0);
-    RStack_54.bottom = LStack_58;
+    aiStack_8c[0] = 0;
+    (**(code **)(iVar6 + 0x1c8))(&stack0xffffff98);
+    (**(code **)(iVar6 + 300))(&stack0xffffffa0);
+    RStack_54.bottom = (LONG)pvStack_58;
     CopyRect(&tStack_44,&RStack_54);
     thunk_InvalidateCityDialogRectRegion((int)&tStack_44,1);
-    piVar3 = (int *)(*pcVar1)(0x7274696c);
-    iVar5 = *piVar3;
-    (**(code **)(iVar5 + 0xc))();
-    cVar2 = (**(code **)(iVar5 + 0xec))();
-    if (cVar2 == '\0') {
-      thunk_ApplyUiTextStyleAndThemeFlags(piVar3,0,0x12,0x2b6b,0x2b6c);
+    piVar4 = (int *)(*pcVar2)(0x7274696c);
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0x12,0x2b6b,0x2b6c);
       InitializeSharedStringRefFromEmpty();
       uStack_30 = 3;
       InitializeSharedStringRefFromEmpty();
       uStack_30 = 4;
-      FormatStringWithVarArgsToSharedRef
-                (&LStack_84,&g_szDecimalFormat,
-                 (short)((int)((int)(short)g_pLocalizationTable[0xb] +
-                              ((int)(short)g_pLocalizationTable[0xb] >> 0x1f & 3U)) >> 2) + 0x717);
-      (**(code **)(*g_pLocalizationTable + 0x34))(&uStack_88);
-      uVar4 = AssignSharedStringConcatRefAndCStr
-                        (&LStack_70,&LStack_8c,&g_Build_Map_Order_LookupTable_00695794);
+      FormatStringWithVarArgsToSharedRef();
+      (**(code **)(*(int *)g_pLocalizationTable + 0x34))(aiStack_8c + 1);
+      AssignSharedStringConcatRefAndCStr();
       uStack_34 = 5;
-      uVar4 = AssignSharedStringConcatRefAndRef(&pLStack_74,uVar4,&uStack_88);
+      AssignSharedStringConcatRefAndRef();
       uStack_34 = 6;
-      StringSharedRef_AssignFromPtr(uVar4);
+      TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&pvStack_78);
       uStack_34 = 7;
-      StringShared__AssignFromPtr(&LStack_8c,&iStack_78);
+      AssignFromPtr(aiStack_8c,(int *)&pvStack_78);
       uStack_34 = 6;
       ReleaseSharedStringRefIfNotEmpty();
       uStack_34 = 5;
       ReleaseSharedStringRefIfNotEmpty();
       uStack_34 = 4;
       ReleaseSharedStringRefIfNotEmpty();
-      (**(code **)(iVar5 + 0x1c8))(&LStack_8c,0);
-      (**(code **)(iVar5 + 0xa4))(1,1);
+      (**(code **)(iVar6 + 0x1c8))(aiStack_8c,0);
+      (**(code **)(iVar6 + 0xa4))(1,1);
       uStack_30 = 3;
       ReleaseSharedStringRefIfNotEmpty();
       uStack_30 = 2;
       ReleaseSharedStringRefIfNotEmpty();
     }
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
-    iStack_4._0_1_ = 1;
-    LStack_70 = 0x5bbf14;
+    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
+    uStack_4._0_1_ = 1;
     ReleaseSharedStringRefIfNotEmpty();
-    iStack_4 = (uint)iStack_4._1_3_ << 8;
-    LStack_70 = 0x5bbf22;
+    uStack_4 = (uint)uStack_4._1_3_ << 8;
     ReleaseSharedStringRefIfNotEmpty();
-    iStack_4 = 0xffffffff;
-    LStack_70 = 0x5bbf33;
+    uStack_4 = 0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
   }
+  pPStack_74 = pPanelEvent;
+  pvStack_78 = (void *)commandId;
   uStack_7c = 0x5bbfc1;
   thunk_HandleCityDialogToggleCommandOrForward();
 LAB_005bbfc1:

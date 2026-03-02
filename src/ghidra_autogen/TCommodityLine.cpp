@@ -4,8 +4,8 @@
 // Bucket: TCommodityLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402C48
-// GHIDRA_NAME TCommodityLine::thunk_DestructTCommodityLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCommodityLine::thunk_DestructTCommodityLineAndMaybeFree_At00402c48
+// GHIDRA_PROTO void * __thiscall thunk_DestructTCommodityLineAndMaybeFree_At00402c48(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCommodityLineAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -13,7 +13,8 @@
 /* Single-JMP thunk to DestructTCommodityLineAndMaybeFree */
 
 void * __thiscall
-TCommodityLine::thunk_DestructTCommodityLineAndMaybeFree(TCommodityLine *this,byte freeSelfFlag)
+TCommodityLine::thunk_DestructTCommodityLineAndMaybeFree_At00402c48
+          (TCommodityLine *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
@@ -41,15 +42,15 @@ void * __thiscall TCommodityLine::thunk_ConstructTCommodityLineBaseState(TCommod
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409AA2
-// GHIDRA_NAME TCommodityLine::thunk_GetTCommodityLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCommodityLineClassNamePointer(void)
+// GHIDRA_NAME TCommodityLine::thunk_GetTCommodityLineClassNamePointer_At00409aa2
+// GHIDRA_PROTO void * __cdecl thunk_GetTCommodityLineClassNamePointer_At00409aa2(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCommodityLineClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCommodityLineClassNamePointer */
 
-void * __cdecl TCommodityLine::thunk_GetTCommodityLineClassNamePointer(void)
+void * __cdecl TCommodityLine::thunk_GetTCommodityLineClassNamePointer_At00409aa2(void)
 
 {
   void *pvVar1;
@@ -76,12 +77,12 @@ void * __cdecl TCommodityLine::CreateTCommodityLineInstance(void)
   puStack_8 = &LAB_006397aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = (TLineData *)AllocateWithFallbackHandler(0x14);
+  pThis = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TLineData *)0x0;
   if (pThis != (TLineData *)0x0) {
     TLineData::ConstructTLineDataBaseState(pThis);
-    *(undefined ***)pThis = &g_vtblTCommodityLine;
+    pThis->field0_0x0 = &g_vtblTCommodityLine;
     pTVar1 = pThis;
   }
   *unaff_FS_OFFSET = local_c;
@@ -111,7 +112,7 @@ void * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCommodityLin
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  *(undefined ***)this = &g_vtblTCommodityLine;
+  this->field0_0x0 = &g_vtblTCommodityLine;
   return this;
 }
 
@@ -125,7 +126,7 @@ TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this,byte fre
 {
   DestructTCommodityLineAndMaybeFree_Impl();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }

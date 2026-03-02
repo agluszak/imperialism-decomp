@@ -4,15 +4,15 @@
 // Bucket: TCombatReportView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401C76
-// GHIDRA_NAME TCombatReportView::thunk_GetTCombatReportViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCombatReportViewClassNamePointer(void)
+// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TCombatReportView_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTCombatReportViewClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTCombatReportViewClassNamePointer */
 
-void * __cdecl TCombatReportView::thunk_GetTCombatReportViewClassNamePointer(void)
+void * __cdecl TCombatReportView::TCombatReportView_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,8 +22,8 @@ void * __cdecl TCombatReportView::thunk_GetTCombatReportViewClassNamePointer(voi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004026D5
-// GHIDRA_NAME TCombatReportView::thunk_DestructTCombatReportViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCombatReportViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TCombatReportView_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTCombatReportViewAndMaybeFree
 // GHIDRA_COMMENT_END
@@ -31,19 +31,19 @@ void * __cdecl TCombatReportView::thunk_GetTCombatReportViewClassNamePointer(voi
 /* Single-JMP thunk to DestructTCombatReportViewAndMaybeFree */
 
 void * __thiscall
-TCombatReportView::thunk_DestructTCombatReportViewAndMaybeFree
-          (TCombatReportView *this,byte freeSelfFlag)
+TCombatReportView::TCombatReportView_VtblSlot001(TCombatReportView *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
-  pvVar1 = DestructTCombatReportViewAndMaybeFree(this,freeSelfFlag);
+  pvVar1 = _DestructTCombatReportViewAndMaybeFree__YIPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12_HE_Z
+                     (this,freeSelfFlag);
   return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403F80
-// GHIDRA_NAME TCombatReportView::thunk_HandleCombatReportPageNavigationAndRefreshText
-// GHIDRA_PROTO void __thiscall thunk_HandleCombatReportPageNavigationAndRefreshText(void * arg1, void * arg2)
+// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot015
+// GHIDRA_PROTO void __thiscall TCombatReportView_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk to HandleCombatReportPageNavigationAndRefreshText
 // GHIDRA_COMMENT_END
@@ -51,19 +51,55 @@ TCombatReportView::thunk_DestructTCombatReportViewAndMaybeFree
 /* Thunk to HandleCombatReportPageNavigationAndRefreshText */
 
 void __thiscall
-TCombatReportView::thunk_HandleCombatReportPageNavigationAndRefreshText
-          (TCombatReportView *this,void *arg1,void *arg2)
+TCombatReportView::TCombatReportView_VtblSlot015
+          (TCombatReportView *this,int commandId,PanelEventPayload *pPanelEvent)
 
 {
-  HandleCombatReportPageNavigationAndRefreshText(this,arg1,arg2);
+  TNumberedArrowButton::HandleCombatReportPageNavigationAndRefreshText
+            ((TNumberedArrowButton *)this,commandId,pPanelEvent);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404183
+// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot068
+// GHIDRA_PROTO void __cdecl TCombatReportView_VtblSlot068(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to RenderBoundedValueProgressWithStyledOverlayText
+// GHIDRA_COMMENT_END
+
+/* [ThunkJmp] single JMP thunk to RenderBoundedValueProgressWithStyledOverlayText */
+
+void __cdecl TCombatReportView::TCombatReportView_VtblSlot068(void)
+
+{
+  RenderBoundedValueProgressWithStyledOverlayText();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00404CAA
+// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot115
+// GHIDRA_PROTO void __cdecl TCombatReportView_VtblSlot115(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Single-JMP thunk to BuildCombatReportLossesSummaryText
+// GHIDRA_COMMENT_END
+
+/* Single-JMP thunk to BuildCombatReportLossesSummaryText */
+
+void __cdecl TCombatReportView::TCombatReportView_VtblSlot115(void)
+
+{
+  BuildCombatReportLossesSummaryText();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C830
-// GHIDRA_NAME TCombatReportView::CreateTCombatReportViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTCombatReportViewInstance(void)
+// GHIDRA_NAME TCombatReportView::?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@XZ
+// GHIDRA_PROTO void * __cdecl ?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@XZ(void)
 
-void * __cdecl TCombatReportView::CreateTCombatReportViewInstance(void)
+void * __cdecl
+TCombatReportView::
+_CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__XZ
+          (void)
 
 {
   undefined4 *puVar1;
@@ -77,12 +113,12 @@ void * __cdecl TCombatReportView::CreateTCombatReportViewInstance(void)
   puStack_8 = &LAB_00637bfa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  puVar1 = AllocateWithFallbackHandler();
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTCombatReportView;
+    *puVar1 = "v\x1c@";
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -105,180 +141,34 @@ void * __cdecl TCombatReportView::GetTCombatReportViewClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C8D0
-// GHIDRA_NAME TCombatReportView::ConstructTCombatReportViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCombatReportViewBaseState(void)
+// GHIDRA_NAME TCombatReportView::?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@@Z
+// GHIDRA_PROTO void * __thiscall ?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@@Z(void)
 
-void * __thiscall TCombatReportView::ConstructTCombatReportViewBaseState(TCombatReportView *this)
+void * __thiscall
+TCombatReportView::
+_ConstructTCombatReportViewBaseState__YIPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12__Z
+          (TCombatReportView *this)
 
 {
   thunk_ConstructPictureResourceEntryBase();
-  *(undefined ***)this = &g_vtblTCombatReportView;
+  this->field0_0x0 = "v\x1c@";
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C900
-// GHIDRA_NAME TCombatReportView::DestructTCombatReportViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCombatReportViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCombatReportView::?DestructTCombatReportViewAndMaybeFree@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z
+// GHIDRA_PROTO void * __thiscall ?DestructTCombatReportViewAndMaybeFree@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z(byte freeSelfFlag)
 
 void * __thiscall
-TCombatReportView::DestructTCombatReportViewAndMaybeFree(TCombatReportView *this,byte freeSelfFlag)
+TCombatReportView::
+_DestructTCombatReportViewAndMaybeFree__YIPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12_HE_Z
+          (TCombatReportView *this,byte freeSelfFlag)
 
 {
   thunk_DestructCityDialogSharedBaseState();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0058D950
-// GHIDRA_NAME TCombatReportView::HandleCombatReportPageNavigationAndRefreshText
-// GHIDRA_PROTO void __thiscall HandleCombatReportPageNavigationAndRefreshText(void * arg1, void * arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Handles pgup/pgdn page navigation controls in combat report and rebuilds page text content before invalidation.
-// GHIDRA_COMMENT_END
-
-/* [ClassLane] Handles pgup/pgdn page navigation controls in combat report and rebuilds page text
-   content before invalidation. */
-
-void __thiscall
-TCombatReportView::HandleCombatReportPageNavigationAndRefreshText
-          (TCombatReportView *this,void *arg1,void *arg2)
-
-{
-  short sVar1;
-  code *pcVar2;
-  int *piVar3;
-  undefined4 uVar4;
-  int iVar5;
-  char *pcVar6;
-  undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_40 [4];
-  undefined1 auStack_3c [4];
-  int iStack_38;
-  undefined1 auStack_34 [4];
-  undefined1 auStack_30 [4];
-  RECT RStack_2c;
-  tagRECT tStack_1c;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  int iStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  iStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00637d28;
-  *unaff_FS_OFFSET = &uStack_c;
-  if (arg1 != (void *)0xa) goto LAB_0058dd08;
-  if (*(int *)((int)arg2 + 0x1c) == 0x70677570) {
-    if (*(short *)(this + 0x94) < 2) {
-      *(undefined2 *)(this + 0x94) = 0;
-      pcVar6 = s_ltitoperssoledro_00698ed0;
-      iVar5 = 4;
-      pcVar2 = *(code **)(*(int *)this + 0x94);
-      do {
-        piVar3 = (int *)(*pcVar2)(*(undefined4 *)pcVar6);
-        if (piVar3 != (int *)0x0) {
-          (**(code **)(*piVar3 + 0xa4))(1,1);
-        }
-        pcVar6 = pcVar6 + 4;
-        iVar5 = iVar5 + -1;
-      } while (iVar5 != 0);
-      piVar3 = (int *)(*pcVar2)(0x70677570);
-      if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      }
-      (**(code **)(*piVar3 + 0xa4))(0,1);
-    }
-    else {
-      *(short *)(this + 0x94) = *(short *)(this + 0x94) + -1;
-    }
-    piVar3 = (int *)(**(code **)(*(int *)this + 0x94))(0x7067646e);
-    if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    }
-    (**(code **)(*piVar3 + 0xa4))(1,1);
-    RStack_2c.top = 0x9f;
-    RStack_2c.right = 0xe1;
-    RStack_2c.left = 4;
-    RStack_2c.bottom = 0x149;
-    CopyRect(&tStack_1c,&RStack_2c);
-LAB_0058dbdf:
-    thunk_InvalidateCityDialogRectRegion((int)&tStack_1c,1);
-  }
-  else if (*(int *)((int)arg2 + 0x1c) == 0x7067646e) {
-    sVar1 = *(short *)(this + 0x94);
-    if (sVar1 == 0) {
-      *(undefined2 *)(this + 0x94) = 1;
-      pcVar6 = s_ltitoperssoledro_00698ed0;
-      iVar5 = 4;
-      pcVar2 = *(code **)(*(int *)this + 0x94);
-      do {
-        piVar3 = (int *)(*pcVar2)(*(undefined4 *)pcVar6);
-        if (piVar3 != (int *)0x0) {
-          (**(code **)(*piVar3 + 0xa4))(0,1);
-        }
-        pcVar6 = pcVar6 + 4;
-        iVar5 = iVar5 + -1;
-      } while (iVar5 != 0);
-      piVar3 = (int *)(*pcVar2)(0x70677570);
-      if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      }
-      (**(code **)(*piVar3 + 0xa4))(1,1);
-    }
-    else if (sVar1 < *(short *)(this + 0x96)) {
-      *(short *)(this + 0x94) = sVar1 + 1;
-    }
-    if (*(short *)(this + 0x94) == *(short *)(this + 0x96)) {
-      piVar3 = (int *)(**(code **)(*(int *)this + 0x94))(0x7067646e);
-      if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      }
-      (**(code **)(*piVar3 + 0xa4))(0,1);
-    }
-    RStack_2c.top = 0x9f;
-    RStack_2c.right = 0xe1;
-    RStack_2c.left = 4;
-    RStack_2c.bottom = 0x149;
-    CopyRect(&tStack_1c,&RStack_2c);
-    goto LAB_0058dbdf;
-  }
-  piVar3 = (int *)(**(code **)(*(int *)this + 0x94))(0x70616765);
-  if (piVar3 != (int *)0x0) {
-    InitializeSharedStringRefFromEmpty();
-    iStack_4 = 0;
-    InitializeSharedStringRefFromEmpty();
-    iStack_4._0_1_ = 1;
-    FormatStringWithVarArgsToSharedRef(auStack_40,&g_szDecimalFormat,*(short *)(this + 0x94) + 1);
-    uVar4 = AssignSharedStringConcatCStrAndRef(auStack_30,s_Page_00699318,auStack_40);
-    iStack_4._0_1_ = 2;
-    uVar4 = AssignSharedStringConcatRefAndCStr
-                      (auStack_34,uVar4,&g_Build_Combat_Report_Value_00698448);
-    iStack_4._0_1_ = 3;
-    StringSharedRef_AssignFromPtr(uVar4);
-    iStack_4._0_1_ = 4;
-    StringShared__AssignFromPtr(auStack_3c,&iStack_38);
-    iStack_4._0_1_ = 3;
-    ReleaseSharedStringRefIfNotEmpty();
-    iStack_4._0_1_ = 2;
-    ReleaseSharedStringRefIfNotEmpty();
-    iStack_4._0_1_ = 1;
-    ReleaseSharedStringRefIfNotEmpty();
-    FormatStringWithVarArgsToSharedRef(auStack_40,&g_szDecimalFormat,*(short *)(this + 0x96) + 1);
-    AssignStringSharedFromRef(auStack_40);
-    (**(code **)(*piVar3 + 0x1c8))(auStack_3c,1);
-    iStack_4 = (uint)iStack_4._1_3_ << 8;
-    ReleaseSharedStringRefIfNotEmpty();
-    iStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-LAB_0058dd08:
-  thunk_HandleCityDialogToggleCommandOrForward();
-  *unaff_FS_OFFSET = uStack_c;
-  return;
 }
 

@@ -22,37 +22,21 @@ void * __cdecl TDocument::thunk_GetTDocumentClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406226
-// GHIDRA_NAME TDocument::thunk_GetTDocumentRuntimeClass
-// GHIDRA_PROTO void * __thiscall thunk_GetTDocumentRuntimeClass(void)
+// GHIDRA_NAME TDocument::thunk_CreateTDocumentInstance
+// GHIDRA_PROTO void * __thiscall thunk_CreateTDocumentInstance(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTDocumentRuntimeClass.
+// GHIDRA_COMMENT Thunk forwarding to GetTDocumentRuntimeClass. [FID:thunk_target_sync]
 // GHIDRA_COMMENT_END
 
-/* Thunk forwarding to GetTDocumentRuntimeClass. */
+/* Thunk forwarding to GetTDocumentRuntimeClass. [FID:thunk_target_sync] */
 
-void * __thiscall TDocument::thunk_GetTDocumentRuntimeClass(TDocument *this)
+void * __thiscall TDocument::thunk_CreateTDocumentInstance(TDocument *this)
 
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004085C6
-// GHIDRA_NAME TDocument::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004863f0
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At004863f0()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004863f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004863f0 */
-
-void TDocument::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004863f0(void)
-
-{
-  ConstructTDocumentBaseState();
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486380
@@ -69,7 +53,7 @@ void * __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
 {
   void *in_EAX;
   
-  this->pVtable = &PTR_GetCObjectRuntimeClass_0066fec4;
+  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return in_EAX;
 }
 
@@ -90,7 +74,7 @@ void * __cdecl TDocument::GetTDocumentClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863F0
 // GHIDRA_NAME TDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO undefined ConstructTDocumentBaseState()
+// GHIDRA_PROTO void __thiscall ConstructTDocumentBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
@@ -98,14 +82,15 @@ void * __cdecl TDocument::GetTDocumentClassNamePointer(void)
 /* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
    internal_calls=1, unique_internal=1 */
 
-TFileBasedDocument * __thiscall
-TDocument::ConstructTDocumentBaseState(TFileBasedDocument *param_1,byte param_2)
+void __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this)
 
 {
-  TFileBasedDocument::thunk_GetTFileBasedDocumentRuntimeClass(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull();
   }
-  return param_1;
+  return;
 }
 

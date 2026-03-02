@@ -4,15 +4,15 @@
 // Bucket: TMyStaticText.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404516
-// GHIDRA_NAME TMyStaticText::thunk_GetTMyStaticTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMyStaticTextClassNamePointer(void)
+// GHIDRA_NAME TMyStaticText::TMyStaticText_VtblSlot000
+// GHIDRA_PROTO void * __cdecl TMyStaticText_VtblSlot000(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to GetTMyStaticTextClassNamePointer
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to GetTMyStaticTextClassNamePointer */
 
-void * __cdecl TMyStaticText::thunk_GetTMyStaticTextClassNamePointer(void)
+void * __cdecl TMyStaticText::TMyStaticText_VtblSlot000(void)
 
 {
   void *pvVar1;
@@ -22,39 +22,21 @@ void * __cdecl TMyStaticText::thunk_GetTMyStaticTextClassNamePointer(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406AC3
-// GHIDRA_NAME TMyStaticText::thunk_DestructTMyStaticTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMyStaticTextAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TMyStaticText::TMyStaticText_VtblSlot001
+// GHIDRA_PROTO void * __thiscall TMyStaticText_VtblSlot001(byte freeSelfFlag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Single-JMP thunk to DestructTMyStaticTextAndMaybeFree
 // GHIDRA_COMMENT_END
 
 /* Single-JMP thunk to DestructTMyStaticTextAndMaybeFree */
 
-void * __thiscall
-TMyStaticText::thunk_DestructTMyStaticTextAndMaybeFree(TMyStaticText *this,byte freeSelfFlag)
+void * __thiscall TMyStaticText::TMyStaticText_VtblSlot001(TMyStaticText *this,byte freeSelfFlag)
 
 {
   void *pvVar1;
   
   pvVar1 = DestructTMyStaticTextAndMaybeFree(this,freeSelfFlag);
   return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408814
-// GHIDRA_NAME TMyStaticText::thunk_ConstructUiTextResourceEntry_Vtbl0066cbc8
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiTextResourceEntry_Vtbl0066cbc8
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiTextResourceEntry_Vtbl0066cbc8 */
-
-void __thiscall TMyStaticText::thunk_ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
-
-{
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  *(undefined ***)this = &g_vtblTMyStaticText;
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5380
@@ -80,12 +62,12 @@ void * __cdecl TMyStaticText::CreateTMyStaticTextInstance(void)
   puStack_8 = &LAB_00638e4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  this = AllocateWithFallbackHandler();
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    *(undefined ***)this = &g_vtblTMyStaticText;
+    (this->base).pVtable = &g_vtblTMyStaticText;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -115,7 +97,7 @@ void __thiscall TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStat
 
 {
   TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  *(undefined ***)this = &g_vtblTMyStaticText;
+  this->field0_0x0 = &g_vtblTMyStaticText;
   return;
 }
 
@@ -134,7 +116,7 @@ TMyStaticText::DestructTMyStaticTextAndMaybeFree(TMyStaticText *this,byte freeSe
 {
   TStaticText::DestructTStaticTextCore((TStaticText *)this);
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(this);
+    FreeHeapBufferIfNotNull();
   }
   return this;
 }
