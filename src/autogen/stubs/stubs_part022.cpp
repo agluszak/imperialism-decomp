@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DoModal
-// ghidra_proto int __fastcall DoModal(void)
-// FUNCTION: IMPERIALISM 0x005ff5e1
-undefined4 DoModal(void)
-{
-  return 0;
-}
-
-// ghidra_name GetPathName
-// ghidra_proto int __cdecl GetPathName(void)
-// FUNCTION: IMPERIALISM 0x005ff69e
-undefined4 GetPathName(void)
-{
-  return 0;
-}
-
 // ghidra_name GetFileName
 // ghidra_proto int __cdecl GetFileName(void)
 // FUNCTION: IMPERIALISM 0x005ff7ac
@@ -3999,6 +3983,22 @@ undefined4 FillOutsideRect(void)
 // ghidra_proto void __thiscall ResizeParentToFit(TMacViewMgr * thisObj, int shrinkOnly)
 // FUNCTION: IMPERIALISM 0x006153fe
 undefined4 ResizeParentToFit(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::OnSize
+// ghidra_proto void __thiscall OnSize(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x00615517
+undefined4 OnSize(void)
+{
+  return 0;
+}
+
+// ghidra_name CenterOnPoint
+// ghidra_proto void __thiscall CenterOnPoint(TMacViewMgr * thisObj, int xCenter, int yCenter)
+// FUNCTION: IMPERIALISM 0x0061553f
+undefined4 CenterOnPoint(void)
 {
   return 0;
 }

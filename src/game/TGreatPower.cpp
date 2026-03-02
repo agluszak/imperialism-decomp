@@ -13,7 +13,6 @@ undefined4 BuildCityInfluenceLevelMap(void);
 undefined4 OrphanCallChain_C2_I10_004e03a0(void);
 undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel1(void);
 undefined4 ProcessPendingDiplomacyProposalQueue(void);
-undefined4 UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
 undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel2(void);
 undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void);
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
@@ -86,6 +85,9 @@ undefined4 CPtrList(void);
 undefined4 thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(void);
 undefined4 thunk_ConstructFrogCityMarker(void);
 undefined4 thunk_InitializeCivUnitOrderObject(void);
+undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
+undefined4 thunk_SetGlobalRegionDevelopmentStageByte(void);
+undefined4 thunk_DispatchCityRedrawInvalidateEvent(void);
 
 struct TDiplomacyTurnStateManager {
   void* vftable;
@@ -97,12 +99,19 @@ static const unsigned int kAddrDiplomacyTurnStateManagerPtr = 0x006A43D0;
 static const unsigned int kAddrGlobalMapStatePtr = 0x006A43D4;
 static const unsigned int kAddrInterNationEventQueueManagerPtr = 0x006A43E8;
 static const unsigned int kAddrEligibilityManagerPtr = 0x006A43E0;
+static const unsigned int kAddrCityOrderCapabilityStatePtr = 0x006A43D8;
 static const unsigned int kAddrLocalizationTablePtr = 0x006A20F8;
 static const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 static const unsigned int kAddrTerrainTypeDescriptorTableEnd = 0x006A436C;
 static const unsigned int kAddrNationStates = 0x006A4370;
 static const unsigned int kAddrNationStatesEnd = 0x006A438C;
 static const unsigned int kAddrCompileGreatPowerValue = 0x00653528;
+static const unsigned int kAddrNationBasePressureByLocale = 0x00653498;
+static const unsigned int kAddrGreatPowerPressureMinFloor = 0x006534B0;
+static const unsigned int kAddrGreatPowerPressureRiseCap = 0x006534E0;
+static const unsigned int kAddrGreatPowerPressureDecayStep = 0x006534F8;
+static const unsigned int kAddrGreatPowerPressureRiseStep = 0x00653510;
+static const unsigned int kAddrGreatPowerPressureHardAlertThreshold = 0x00653540;
 static const unsigned int kAddrNationRuntimeSubsystemCache = 0x00653558;
 static const unsigned int kAddrAdvanceTurnMachineState = 0x00695278;
 static const unsigned int kAddrVtblRefCountedObjectBase = 0x006485C0;
@@ -117,6 +126,73 @@ public:
   void** field00;
   unsigned char pad_04[8];
   short field0c;
+  short field0e;
+  int field10;
+  unsigned char pad_14[0x44 - 0x14];
+  void* pField44;
+  unsigned char pad_48[0x88 - 0x48];
+  short field88;
+  unsigned char pad_8a[0x90 - 0x8a];
+  void* pField90;
+  void* pField94;
+  void* pField98;
+  void* pField9c;
+  unsigned char fieldA0;
+  unsigned char pad_a1;
+  short fieldA2;
+  short fieldA4;
+  short fieldA6;
+  short fieldA8;
+  unsigned char pad_aa[2];
+  int fieldAC;
+  short fieldB0;
+  short fieldB2[0x17];
+  short fieldE0[0x17];
+  short field10e[0x17];
+  short field13c[0x17];
+  short field16a[0x17];
+  short field198[0x17];
+  short field1c6[0x17];
+  short field1f4[0x17];
+  short field222[0x17];
+  short field250[0x17];
+  int field280[0x170];
+  int field840;
+  int field844;
+  void* pField848;
+  void* pField84c;
+  void* pField850[0x11];
+  void* pField894;
+  void* pField898;
+  void* pField89c;
+  void* pField8a0;
+  int field8a4;
+  int field8a8;
+  int field8ac;
+  short field8b0;
+  short field8b2;
+  short field8b4;
+  short field8b6;
+  unsigned char pad_8b8[0x8d0 - 0x8b8];
+  signed char field8d0;
+  unsigned char pad_8d1[0x8d6 - 0x8d1];
+  short field8d6[0x0d];
+  int field8f0;
+  signed char field8f4;
+  unsigned char pad_8f5[3];
+  void* pField8f8;
+  signed char field8fc;
+  unsigned char pad_8fd[3];
+  int field900;
+  unsigned char field904;
+  unsigned char pad_905[3];
+  void* pField908;
+  void* pField90c;
+  int field910;
+  int field914;
+  unsigned char field918[0x17];
+  unsigned char pad_92f[0x960 - 0x92f];
+  void* pField960;
 
   unsigned int thunk_ComputeMapActionContextNodeValueAverage(void);
   char* thunk_BuildCityInfluenceLevelMap(void);
@@ -184,6 +260,8 @@ public:
   void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
   void DispatchTurnEvent2103WithNationFromRecord(void);
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1);
+  void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
+  void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   void WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage);
   void QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg2);
   void ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int arg1, int arg2);
@@ -207,6 +285,10 @@ typedef void(__fastcall* GreatPowerBridge1Fn)(TGreatPower*, int, int);
 
 static __inline void* ReadGlobalPointer(unsigned int address) {
   return *reinterpret_cast<void**>(address);
+}
+
+static __inline signed char ReadLocaleByteStep(unsigned int baseAddress, int localeIndex) {
+  return *reinterpret_cast<signed char*>(baseAddress + localeIndex * 4);
 }
 
 static __inline void SwapShortArrayBytes(void* base, int count) {
@@ -275,7 +357,7 @@ void TGreatPower::thunk_ProcessPendingDiplomacyProposalQueue_At00401cbc(void) {
 
 // FUNCTION: IMPERIALISM 0x00402185
 void TGreatPower::thunk_UpdateGreatPowerPressureStateAndDispatchEscalationMessage_At00402185(void) {
-  UpdateGreatPowerPressureStateAndDispatchEscalationMessage();
+  this->UpdateGreatPowerPressureStateAndDispatchEscalationMessage();
 }
 
 // FUNCTION: IMPERIALISM 0x00402919
@@ -788,101 +870,99 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
   typedef void(__fastcall * ReleaseAt58Fn)(void*, int);
   typedef void(__fastcall * DeleteSelfFn)(TGreatPower*, int, int);
 
-  unsigned char* self = reinterpret_cast<unsigned char*>(this);
-
-  void* pField894 = *reinterpret_cast<void**>(self + 0x894);
+  void* pField894 = this->pField894;
   if (pField894 != 0) {
     void** pField894Vtable = *reinterpret_cast<void***>(pField894);
     reinterpret_cast<ReleaseAt1CFn>(pField894Vtable[0x1C / 4])(pField894, 0);
   }
-  *reinterpret_cast<void**>(self + 0x894) = 0;
+  this->pField894 = 0;
 
-  void* pField848 = *reinterpret_cast<void**>(self + 0x848);
+  void* pField848 = this->pField848;
   if (pField848 != 0) {
     void** pField848Vtable = *reinterpret_cast<void***>(pField848);
     reinterpret_cast<ReleaseAt24Fn>(pField848Vtable[0x24 / 4])(pField848, 0);
   }
-  *reinterpret_cast<void**>(self + 0x848) = 0;
+  this->pField848 = 0;
 
-  void* pField84c = *reinterpret_cast<void**>(self + 0x84C);
+  void* pField84c = this->pField84c;
   if (pField84c != 0) {
     void** pField84cVtable = *reinterpret_cast<void***>(pField84c);
     reinterpret_cast<ReleaseAt24Fn>(pField84cVtable[0x24 / 4])(pField84c, 0);
   }
-  *reinterpret_cast<void**>(self + 0x84C) = 0;
+  this->pField84c = 0;
 
-  void* pField94 = *reinterpret_cast<void**>(self + 0x94);
+  void* pField94 = this->pField94;
   if (pField94 != 0) {
     void** pField94Vtable = *reinterpret_cast<void***>(pField94);
     reinterpret_cast<ReleaseAt1CFn>(pField94Vtable[0x1C / 4])(pField94, 0);
   }
-  *reinterpret_cast<void**>(self + 0x94) = 0;
+  this->pField94 = 0;
 
-  void* pField98 = *reinterpret_cast<void**>(self + 0x98);
+  void* pField98 = this->pField98;
   if (pField98 != 0) {
     void** pField98Vtable = *reinterpret_cast<void***>(pField98);
     reinterpret_cast<ReleaseAt1CFn>(pField98Vtable[0x1C / 4])(pField98, 0);
   }
-  *reinterpret_cast<void**>(self + 0x98) = 0;
+  this->pField98 = 0;
 
-  void* pField9c = *reinterpret_cast<void**>(self + 0x9C);
+  void* pField9c = this->pField9c;
   if (pField9c != 0) {
     void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
     reinterpret_cast<ReleaseAt1CFn>(pField9cVtable[0x1C / 4])(pField9c, 0);
   }
-  *reinterpret_cast<void**>(self + 0x9C) = 0;
+  this->pField9c = 0;
 
   int listIndex = 0;
   while (listIndex < 0x11) {
-    void* pField850Item = *reinterpret_cast<void**>(self + 0x850 + listIndex * 4);
+    void* pField850Item = this->pField850[listIndex];
     if (pField850Item != 0) {
       void** pField850Vtable = *reinterpret_cast<void***>(pField850Item);
       reinterpret_cast<ReleaseAt24Fn>(pField850Vtable[0x24 / 4])(pField850Item, 0);
     }
-    *reinterpret_cast<void**>(self + 0x850 + listIndex * 4) = 0;
+    this->pField850[listIndex] = 0;
     ++listIndex;
   }
 
-  void* pField898 = *reinterpret_cast<void**>(self + 0x898);
+  void* pField898 = this->pField898;
   if (pField898 != 0) {
     void** pField898Vtable = *reinterpret_cast<void***>(pField898);
     reinterpret_cast<ReleaseAt58Fn>(pField898Vtable[0x58 / 4])(pField898, 0);
   }
-  *reinterpret_cast<void**>(self + 0x898) = 0;
+  this->pField898 = 0;
 
-  void* pField89c = *reinterpret_cast<void**>(self + 0x89C);
+  void* pField89c = this->pField89c;
   if (pField89c != 0) {
     void** pField89cVtable = *reinterpret_cast<void***>(pField89c);
     reinterpret_cast<ReleaseAt58Fn>(pField89cVtable[0x58 / 4])(pField89c, 0);
   }
-  *reinterpret_cast<void**>(self + 0x89C) = 0;
+  this->pField89c = 0;
 
-  void* pField908 = *reinterpret_cast<void**>(self + 0x908);
+  void* pField908 = this->pField908;
   if (pField908 != 0) {
     void** pField908Vtable = *reinterpret_cast<void***>(pField908);
     reinterpret_cast<ReleaseAt24Fn>(pField908Vtable[0x24 / 4])(pField908, 0);
   }
-  *reinterpret_cast<void**>(self + 0x908) = 0;
+  this->pField908 = 0;
 
-  void* pField90c = *reinterpret_cast<void**>(self + 0x90C);
+  void* pField90c = this->pField90c;
   if (pField90c != 0) {
     void** pField90cVtable = *reinterpret_cast<void***>(pField90c);
     reinterpret_cast<ReleaseAt58Fn>(pField90cVtable[0x58 / 4])(pField90c, 0);
   }
-  *reinterpret_cast<void**>(self + 0x90C) = 0;
+  this->pField90c = 0;
 
-  void* pField44 = *reinterpret_cast<void**>(self + 0x44);
+  void* pField44 = this->pField44;
   if (pField44 != 0) {
     void** pField44Vtable = *reinterpret_cast<void***>(pField44);
     reinterpret_cast<ReleaseAt58Fn>(pField44Vtable[0x58 / 4])(pField44, 0);
   }
-  *reinterpret_cast<void**>(self + 0x44) = 0;
+  this->pField44 = 0;
 
-  void* pField90 = *reinterpret_cast<void**>(self + 0x90);
+  void* pField90 = this->pField90;
   if (pField90 != 0) {
     void** pField90Vtable = *reinterpret_cast<void***>(pField90);
     reinterpret_cast<ReleaseAt38Fn>(pField90Vtable[0x38 / 4])(pField90, 0);
-    *reinterpret_cast<void**>(self + 0x90) = 0;
+    this->pField90 = 0;
   }
 
   if (this != 0) {
@@ -904,7 +984,6 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   typedef void(__fastcall * ConstructNoArgFn)(void*, int);
   typedef void*(__fastcall * ConstructDefenseMinisterFn)(void*, int);
 
-  unsigned char* self = reinterpret_cast<unsigned char*>(this);
   int advanceTurnState = *reinterpret_cast<int*>(kAddrAdvanceTurnMachineState);
 
   reinterpret_cast<DeserializeRecruitFn>(
@@ -926,53 +1005,53 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       streamSlot3C(stream, 0);
       ++i;
     }
-    SwapShortArrayBytes(self + 0xB2, 0x17);
+    SwapShortArrayBytes(this->fieldB2, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0xE0, 0x17);
+    SwapShortArrayBytes(this->fieldE0, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x10E, 0x17);
+    SwapShortArrayBytes(this->field10e, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x13C, 0x17);
+    SwapShortArrayBytes(this->field13c, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x16A, 0x17);
+    SwapShortArrayBytes(this->field16a, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x198, 0x17);
+    SwapShortArrayBytes(this->field198, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x1C6, 0x17);
+    SwapShortArrayBytes(this->field1c6, 0x17);
 
     if (advanceTurnState > 0x16) {
       streamSlot3C(stream, 0);
-      SwapShortArrayBytes(self + 0x1F4, 0x17);
+      SwapShortArrayBytes(this->field1f4, 0x17);
     }
 
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x222, 0x17);
+    SwapShortArrayBytes(this->field222, 0x17);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x250, 0x17);
+    SwapShortArrayBytes(this->field250, 0x17);
 
     streamSlot3C(stream, 0);
     streamSlot3C(stream, 0);
     streamSlot3C(stream, 0);
-    ReverseDwordArrayBytes(self + 0x280, 0x170);
+    ReverseDwordArrayBytes(this->field280, 0x170);
 
     streamSlot3C(stream, 0);
     streamSlot3C(stream, 0);
-    SwapShortArrayBytes(self + 0x8D6, 0x0D);
+    SwapShortArrayBytes(this->field8d6, 0x0D);
   }
 
-  void* pField848 = *reinterpret_cast<void**>(self + 0x848);
+  void* pField848 = this->pField848;
   if (pField848 != 0) {
     void** pField848Vtable = *reinterpret_cast<void***>(pField848);
     reinterpret_cast<ObjNoArgFn>(pField848Vtable[0x18 / 4])(pField848, 0);
   }
-  void* pField84c = *reinterpret_cast<void**>(self + 0x84C);
+  void* pField84c = this->pField84c;
   if (pField84c != 0) {
     void** pField84cVtable = *reinterpret_cast<void***>(pField84c);
     reinterpret_cast<ObjNoArgFn>(pField84cVtable[0x18 / 4])(pField84c, 0);
   }
   int listIndex = 0;
   while (listIndex < 0x11) {
-    void* listObj = *reinterpret_cast<void**>(self + 0x850 + listIndex * 4);
+    void* listObj = this->pField850[listIndex];
     if (listObj != 0) {
       void** listVtable = *reinterpret_cast<void***>(listObj);
       reinterpret_cast<ObjNoArgFn>(listVtable[0x18 / 4])(listObj, 0);
@@ -981,78 +1060,78 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   if (advanceTurnState < 0x1D) {
-    if (*reinterpret_cast<short*>(self + 0x0E) == -1) {
+    if (this->field0e == -1) {
       GreatPowerSlot28Fn slot28 = reinterpret_cast<GreatPowerSlot28Fn>(this->field00[0x28]);
       char gate = slot28 != 0 ? slot28(this, 0) : 0;
       if (gate == 0) {
-        void* pField94 = *reinterpret_cast<void**>(self + 0x94);
+        void* pField94 = this->pField94;
         if (pField94 != 0) {
           void** pField94Vtable = *reinterpret_cast<void***>(pField94);
           reinterpret_cast<ObjNoArgFn>(pField94Vtable[0x18 / 4])(pField94, 0);
         }
-        void* pField98 = *reinterpret_cast<void**>(self + 0x98);
+        void* pField98 = this->pField98;
         if (pField98 != 0) {
           void** pField98Vtable = *reinterpret_cast<void***>(pField98);
           reinterpret_cast<ObjNoArgFn>(pField98Vtable[0x18 / 4])(pField98, 0);
         }
-        void* pField9c = *reinterpret_cast<void**>(self + 0x9C);
+        void* pField9c = this->pField9c;
         if (pField9c != 0) {
           void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
           reinterpret_cast<ObjNoArgFn>(pField9cVtable[0x18 / 4])(pField9c, 0);
         }
       }
-      void* pField894 = *reinterpret_cast<void**>(self + 0x894);
+      void* pField894 = this->pField894;
       if (pField894 != 0) {
         void** pField894Vtable = *reinterpret_cast<void***>(pField894);
         reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x18 / 4])(pField894, 0);
       }
     } else {
-      void* pField94 = *reinterpret_cast<void**>(self + 0x94);
+      void* pField94 = this->pField94;
       if (pField94 != 0) {
         void** pField94Vtable = *reinterpret_cast<void***>(pField94);
         reinterpret_cast<ObjNoArgFn>(pField94Vtable[0x1C / 4])(pField94, 0);
       }
-      *reinterpret_cast<void**>(self + 0x94) = 0;
+      this->pField94 = 0;
 
-      void* pField98 = *reinterpret_cast<void**>(self + 0x98);
+      void* pField98 = this->pField98;
       if (pField98 != 0) {
         void** pField98Vtable = *reinterpret_cast<void***>(pField98);
         reinterpret_cast<ObjNoArgFn>(pField98Vtable[0x1C / 4])(pField98, 0);
       }
-      *reinterpret_cast<void**>(self + 0x98) = 0;
+      this->pField98 = 0;
 
-      void* pField9c = *reinterpret_cast<void**>(self + 0x9C);
+      void* pField9c = this->pField9c;
       if (pField9c != 0) {
         void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
         reinterpret_cast<ObjNoArgFn>(pField9cVtable[0x1C / 4])(pField9c, 0);
       }
-      *reinterpret_cast<void**>(self + 0x9C) = 0;
+      this->pField9c = 0;
 
-      void* pField894 = *reinterpret_cast<void**>(self + 0x894);
+      void* pField894 = this->pField894;
       if (pField894 != 0) {
         void** pField894Vtable = *reinterpret_cast<void***>(pField894);
         reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x1C / 4])(pField894, 0);
       }
-      *reinterpret_cast<void**>(self + 0x894) = 0;
+      this->pField894 = 0;
     }
   } else {
     int ministerMask = streamSlot40 != 0 ? streamSlot40(stream, 0) : 0;
 
     if ((ministerMask & 1) == 0) {
-      void* pField94 = *reinterpret_cast<void**>(self + 0x94);
+      void* pField94 = this->pField94;
       if (pField94 != 0) {
         void** pField94Vtable = *reinterpret_cast<void***>(pField94);
         reinterpret_cast<ObjNoArgFn>(pField94Vtable[0x1C / 4])(pField94, 0);
       }
-      *reinterpret_cast<void**>(self + 0x94) = 0;
+      this->pField94 = 0;
     } else {
-      void* pField94 = *reinterpret_cast<void**>(self + 0x94);
+      void* pField94 = this->pField94;
       if (pField94 == 0) {
         pField94 = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
         if (pField94 != 0) {
           reinterpret_cast<ConstructNoArgFn>(thunk_ConstructTForeignMinister)(pField94, 0);
         }
-        *reinterpret_cast<void**>(self + 0x94) = pField94;
+        this->pField94 = pField94;
         reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeTForeignMinisterStateAndCounters)();
       }
       if (pField94 != 0) {
@@ -1062,14 +1141,14 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     }
 
     if ((ministerMask & 2) == 0) {
-      void* pField98 = *reinterpret_cast<void**>(self + 0x98);
+      void* pField98 = this->pField98;
       if (pField98 != 0) {
         void** pField98Vtable = *reinterpret_cast<void***>(pField98);
         reinterpret_cast<ObjNoArgFn>(pField98Vtable[0x1C / 4])(pField98, 0);
       }
-      *reinterpret_cast<void**>(self + 0x98) = 0;
+      this->pField98 = 0;
     } else {
-      void* pField98 = *reinterpret_cast<void**>(self + 0x98);
+      void* pField98 = this->pField98;
       if (pField98 == 0) {
         pField98 = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
         if (pField98 != 0) {
@@ -1077,7 +1156,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
               pField98, 0);
         }
         reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeCityInteriorMinister)();
-        *reinterpret_cast<void**>(self + 0x98) = pField98;
+        this->pField98 = pField98;
       }
       if (pField98 != 0) {
         void** pField98Vtable = *reinterpret_cast<void***>(pField98);
@@ -1086,14 +1165,14 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     }
 
     if ((ministerMask & 4) == 0) {
-      void* pField9c = *reinterpret_cast<void**>(self + 0x9C);
+      void* pField9c = this->pField9c;
       if (pField9c != 0) {
         void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
         reinterpret_cast<ObjNoArgFn>(pField9cVtable[0x1C / 4])(pField9c, 0);
       }
-      *reinterpret_cast<void**>(self + 0x9C) = 0;
+      this->pField9c = 0;
     } else {
-      void* pField9c = *reinterpret_cast<void**>(self + 0x9C);
+      void* pField9c = this->pField9c;
       if (pField9c == 0) {
         pField9c = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
         if (pField9c != 0) {
@@ -1101,7 +1180,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
               thunk_ConstructTDefenseMinisterBaseState)(pField9c, 0);
         }
         reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeTMinisterBaseOrderArrayMetrics)();
-        *reinterpret_cast<void**>(self + 0x9C) = pField9c;
+        this->pField9c = pField9c;
       }
       if (pField9c != 0) {
         void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
@@ -1109,20 +1188,20 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       }
     }
 
-    void* pField894 = *reinterpret_cast<void**>(self + 0x894);
+    void* pField894 = this->pField894;
     if ((ministerMask & 8) == 0) {
       if (pField894 != 0) {
         void** pField894Vtable = *reinterpret_cast<void***>(pField894);
         reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x1C / 4])(pField894, 0);
       }
-      *reinterpret_cast<void**>(self + 0x894) = 0;
+      this->pField894 = 0;
     } else if (pField894 != 0) {
       void** pField894Vtable = *reinterpret_cast<void***>(pField894);
       reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x18 / 4])(pField894, 0);
     }
   }
 
-  void* pField898 = *reinterpret_cast<void**>(self + 0x898);
+  void* pField898 = this->pField898;
   if (pField898 != 0) {
     void** pField898Vtable = *reinterpret_cast<void***>(pField898);
     int hasItems = reinterpret_cast<ObjQueryFn>(pField898Vtable[0x48 / 4])(pField898, 0);
@@ -1152,7 +1231,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     }
   }
 
-  void* pField894 = *reinterpret_cast<void**>(self + 0x894);
+  void* pField894 = this->pField894;
   if (arg1 > 0 && pField898 != 0 && pField894 != 0) {
     void** pField898Vtable = *reinterpret_cast<void***>(pField898);
     reinterpret_cast<ObjNoArgFn>(pField898Vtable[0x4C / 4])(pField898, 0);
@@ -1160,7 +1239,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x44 / 4])(pField894, 0);
   }
 
-  void* pField89c = *reinterpret_cast<void**>(self + 0x89C);
+  void* pField89c = this->pField89c;
   if (pField89c != 0) {
     void** pField89cVtable = *reinterpret_cast<void***>(pField89c);
     int hasItems = reinterpret_cast<ObjQueryFn>(pField89cVtable[0x48 / 4])(pField89c, 0);
@@ -1187,16 +1266,16 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   if (streamRead != 0) {
-    streamRead(stream, 0, self + 0x8F0, 4);
-    streamRead(stream, 0, self + 0x8F4, 1);
-    streamRead(stream, 0, self + 0x8F8, 4);
-    streamRead(stream, 0, self + 0x8FC, 1);
-    streamRead(stream, 0, self + 0x900, 4);
-    streamRead(stream, 0, self + 0x904, 1);
+    streamRead(stream, 0, &this->field8f0, 4);
+    streamRead(stream, 0, &this->field8f4, 1);
+    streamRead(stream, 0, &this->pField8f8, 4);
+    streamRead(stream, 0, &this->field8fc, 1);
+    streamRead(stream, 0, &this->field900, 4);
+    streamRead(stream, 0, &this->field904, 1);
   }
 
   if (advanceTurnState > 0x0E) {
-    void* pField90c = *reinterpret_cast<void**>(self + 0x90C);
+    void* pField90c = this->pField90c;
     if (pField90c != 0) {
       void** pField90cVtable = *reinterpret_cast<void***>(pField90c);
       reinterpret_cast<ObjIntFn>(pField90cVtable[0x18 / 4])(pField90c, 0, arg1);
@@ -1222,48 +1301,150 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   if (advanceTurnState > 0x25 && streamRead != 0) {
-    streamRead(stream, 0, self + 0x910, 4);
-    streamRead(stream, 0, self + 0x914, 4);
+    streamRead(stream, 0, &this->field910, 4);
+    streamRead(stream, 0, &this->field914, 4);
   }
   if (advanceTurnState > 0x2F && streamRead != 0) {
-    streamRead(stream, 0, self + 0x918, 0x17);
+    streamRead(stream, 0, this->field918, 0x17);
   }
   if (advanceTurnState > 0x34 && streamRead != 0) {
-    streamRead(stream, 0, self + 0x960, 4);
+    streamRead(stream, 0, &this->pField960, 4);
   }
+}
+
+// Updates Great Power pressure/escalation state and propagates summary messages when thresholds
+// cross.
+// FUNCTION: IMPERIALISM 0x004DB380
+void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+  typedef int(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
+
+  void* localizationTable = ReadGlobalPointer(kAddrLocalizationTablePtr);
+  int localeIndex = 0;
+  if (localizationTable != 0) {
+    localeIndex =
+        *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(localizationTable) + 0x40);
+  }
+
+  GreatPowerNoArgFn getBasePressure = reinterpret_cast<GreatPowerNoArgFn>(this->field00[0x5F]);
+  int pressureBase = 0;
+  if (getBasePressure != 0) {
+    pressureBase = getBasePressure(this, 0);
+  }
+
+  pressureBase += static_cast<int>(this->field13c[0x15]) * 200;
+  pressureBase += static_cast<int>(this->field13c[0x14]) * 500;
+  pressureBase += this->field840;
+
+  int minPressure = *reinterpret_cast<int*>(kAddrNationBasePressureByLocale + localeIndex * 4);
+  if (pressureBase < minPressure) {
+    pressureBase = minPressure;
+  }
+
+  int pressureBlend = (this->field8f0 * 0x5A + pressureBase * 1000) / 100;
+  this->field8f0 = pressureBlend;
+  int pressureTier = pressureBlend / 100;
+  int relationValue = this->field10;
+  signed char* pressureGauge = &this->field8f4;
+  signed char* escalationLevel = &this->field8fc;
+
+  if (relationValue < 0) {
+    if (-(pressureTier / 2) == relationValue || -relationValue < pressureTier / 2) {
+      *escalationLevel = 1;
+    } else if (-pressureTier == relationValue || -relationValue < pressureTier) {
+      if (*escalationLevel > 1) {
+        int nextPressure = static_cast<int>(*pressureGauge) +
+                           ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex);
+        int pressureCap = *reinterpret_cast<int*>(kAddrGreatPowerPressureRiseCap + localeIndex * 4);
+        if (nextPressure > pressureCap) {
+          nextPressure = pressureCap;
+        }
+        *pressureGauge = static_cast<signed char>(nextPressure);
+      }
+      *escalationLevel = 2;
+    } else {
+      int nextPressure = static_cast<int>(*pressureGauge) +
+                         ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex);
+      int pressureCap = *reinterpret_cast<int*>(kAddrGreatPowerPressureRiseCap + localeIndex * 4);
+      if (nextPressure > pressureCap) {
+        nextPressure = pressureCap;
+      }
+      *pressureGauge = static_cast<signed char>(nextPressure);
+
+      if (*escalationLevel < 3) {
+        *escalationLevel = 3;
+      } else {
+        *escalationLevel = static_cast<signed char>(*escalationLevel + 1);
+      }
+
+      int escalationValue = static_cast<int>(*escalationLevel);
+      int hardThreshold =
+          *reinterpret_cast<int*>(kAddrGreatPowerPressureHardAlertThreshold + localeIndex * 4);
+      int softThreshold = *reinterpret_cast<int*>(kAddrCompileGreatPowerValue + localeIndex * 4);
+      if (escalationValue >= hardThreshold || escalationValue >= softThreshold) {
+        BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage();
+      }
+    }
+  } else {
+    if (*escalationLevel != 0) {
+      int nextPressure = static_cast<int>(*pressureGauge) -
+                         ReadLocaleByteStep(kAddrGreatPowerPressureDecayStep, localeIndex);
+      int minFloor = *reinterpret_cast<int*>(kAddrGreatPowerPressureMinFloor + localeIndex * 4);
+      if (nextPressure < minFloor) {
+        nextPressure = minFloor;
+      }
+      *pressureGauge = static_cast<signed char>(nextPressure);
+    }
+    *escalationLevel = 0;
+  }
+
+  relationValue = this->field10;
+  if (relationValue >= 0) {
+    this->pField8f8 = 0;
+    return;
+  }
+
+  int pressureDrain = (199 - static_cast<int>(*pressureGauge) * relationValue) / 200;
+  this->pField8f8 = reinterpret_cast<void*>(pressureDrain);
+  this->field10 = relationValue - pressureDrain;
 }
 
 // FUNCTION: IMPERIALISM 0x004DBD20
 void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
-  typedef char(__fastcall * GlobalMapMetricFn)(void*, int, int, int);
-  typedef void(__fastcall * GreatPowerNeedUpdateFn)(TGreatPower*, int, int, int);
+  typedef char(__fastcall * GlobalMapMetricProc)(void*, int, int, int);
+  typedef void(__fastcall * GreatPowerNeedUpdateProc)(TGreatPower*, int, int, int);
 
-  unsigned char* self = reinterpret_cast<unsigned char*>(this);
-  short* currentNeedByType = reinterpret_cast<short*>(self + 0x10E);
-  short* developmentByType = reinterpret_cast<short*>(self + 0x11C);
-  short* targetNeedByType = reinterpret_cast<short*>(self + 0x13C);
+  const int kNeedTypeCount = 0x17;
+  const int kMapRegionSlots = 0x1950;
+  const int kTerrainRecordStride = 0x24;
+  const int kCityRecordStride = 0xA8;
+
+  short* currentNeedByType = this->field10e;
+  short* developmentByType = this->field10e + 7; // +0x11c overlays this runtime array.
+  short* targetNeedByType = this->field13c;
+  short& controlledRegionCount = this->field10e[0x13]; // +0x134
   char* influenceByRegion = thunk_BuildCityInfluenceLevelMap();
   int* globalMapState = reinterpret_cast<int*>(ReadGlobalPointer(kAddrGlobalMapStatePtr));
   int regionOffset = 0;
   int nationSlot = 0;
 
-  for (int i = 0; i < 0x17; ++i) {
+  for (int i = 0; i < kNeedTypeCount; ++i) {
     currentNeedByType[i] = 0;
   }
-  *reinterpret_cast<short*>(self + 0x134) = 0;
+  controlledRegionCount = 0;
 
   if (influenceByRegion != 0 && globalMapState != 0) {
     int terrainStateTable = globalMapState[3];
     int cityStateTable = globalMapState[4];
     void** globalMapVtable = *reinterpret_cast<void***>(globalMapState);
-    GlobalMapMetricFn mapMetric = reinterpret_cast<GlobalMapMetricFn>(globalMapVtable[0xC4 / 4]);
+    GlobalMapMetricProc mapMetric =
+        reinterpret_cast<GlobalMapMetricProc>(globalMapVtable[0xC4 / 4]);
 
-    while (static_cast<short>(nationSlot) < 0x1950) {
+    while (static_cast<short>(nationSlot) < kMapRegionSlots) {
       char influence = *influenceByRegion;
       if (influence != 0) {
         if (*reinterpret_cast<char*>(terrainStateTable + 0x13 + regionOffset) == 0) {
           if (influence == 2) {
-            ++(*reinterpret_cast<short*>(self + 0x134));
+            ++controlledRegionCount;
           }
         } else {
           for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
@@ -1278,12 +1459,12 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
           if (*reinterpret_cast<char*>(terrainStateTable + 2 + regionOffset) != 0 &&
               influence == 2) {
-            ++(*reinterpret_cast<short*>(self + 0x134));
+            ++controlledRegionCount;
           }
 
           int cityRecordOffset =
               static_cast<int>(*reinterpret_cast<short*>(terrainStateTable + 0x14 + regionOffset)) *
-              0xA8;
+              kCityRecordStride;
           if (*reinterpret_cast<short*>(cityStateTable + cityRecordOffset + 4) ==
               static_cast<short>(nationSlot)) {
             for (int devIdx = 0; devIdx < 10; ++devIdx) {
@@ -1297,15 +1478,203 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
       ++nationSlot;
       ++influenceByRegion;
-      regionOffset += 0x24;
+      regionOffset += kTerrainRecordStride;
     }
   }
 
-  GreatPowerNeedUpdateFn updateNeed = reinterpret_cast<GreatPowerNeedUpdateFn>(this->field00[0x45]);
-  for (int typeIndex = 0; typeIndex < 0x17; ++typeIndex) {
+  GreatPowerNeedUpdateProc updateNeed =
+      reinterpret_cast<GreatPowerNeedUpdateProc>(this->field00[0x45]);
+  for (int typeIndex = 0; typeIndex < kNeedTypeCount; ++typeIndex) {
     if (currentNeedByType[typeIndex] < targetNeedByType[typeIndex]) {
       updateNeed(this, 0, typeIndex, currentNeedByType[typeIndex]);
     }
+  }
+}
+
+// Advances per-region development counters and emits diplomacy/map events when stage changes.
+// FUNCTION: IMPERIALISM 0x004DBF00
+void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
+  typedef int(__fastcall * RegionListCountFn)(void*, int);
+  typedef int(__fastcall * RegionListGetByOrdinalFn)(void*, int, int);
+  typedef short(__fastcall * LocalizationTickFn)(void*, int);
+  typedef char(__fastcall * GlobalMapMetricFn)(void*, int, int, int);
+  typedef int(__fastcall * GreatPowerDispatchEventFn)(TGreatPower*, int, int, int);
+  typedef int(__cdecl * CityProductionFn)(void*, int);
+  typedef void(__cdecl * RegionStageSetterFn)(short, unsigned char);
+  typedef void(__cdecl * RegionRedrawFn)(short);
+
+  void* regionList = this->pField90;
+  if (regionList == 0) {
+    return;
+  }
+
+  RegionListCountFn getRegionCount =
+      reinterpret_cast<RegionListCountFn>((*reinterpret_cast<void***>(regionList))[0x28 / 4]);
+  RegionListGetByOrdinalFn getRegionByOrdinal = reinterpret_cast<RegionListGetByOrdinalFn>(
+      (*reinterpret_cast<void***>(regionList))[0x24 / 4]);
+  CityProductionFn getProduction =
+      reinterpret_cast<CityProductionFn>(thunk_GetCityBuildingProductionValueBySlot);
+  RegionStageSetterFn setRegionStage =
+      reinterpret_cast<RegionStageSetterFn>(thunk_SetGlobalRegionDevelopmentStageByte);
+  RegionRedrawFn dispatchRedraw =
+      reinterpret_cast<RegionRedrawFn>(thunk_DispatchCityRedrawInvalidateEvent);
+  GreatPowerDispatchEventFn dispatchNationEvent =
+      reinterpret_cast<GreatPowerDispatchEventFn>(this->field00[0x2E]);
+
+  int totalRegions = getRegionCount(regionList, 0);
+  int regionOrdinal = 1;
+  while (regionOrdinal <= totalRegions) {
+    short regionId = static_cast<short>(getRegionByOrdinal(regionList, 0, regionOrdinal));
+    unsigned char pendingStage = 0;
+    unsigned char needsRedraw = 0;
+
+    void* globalMapState = ReadGlobalPointer(kAddrGlobalMapStatePtr);
+    void* localizationTable = ReadGlobalPointer(kAddrLocalizationTablePtr);
+    if (globalMapState != 0 && localizationTable != 0) {
+      char* cityTable =
+          *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(globalMapState) + 0x10);
+      char* terrainTable =
+          *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(globalMapState) + 0x0C);
+      if (cityTable != 0 && terrainTable != 0) {
+        char* cityRecord = cityTable + regionId * 0xA8;
+        short ownerSlot = this->field88;
+        if (*reinterpret_cast<short*>(cityRecord + 4) != ownerSlot) {
+          LocalizationTickFn getTurnTick = reinterpret_cast<LocalizationTickFn>(
+              (*reinterpret_cast<void***>(localizationTable))[0x3C / 4]);
+          unsigned int turnDelta = static_cast<unsigned int>(
+              static_cast<int>(getTurnTick(localizationTable, 0)) -
+              static_cast<int>(*reinterpret_cast<short*>(cityRecord + 6)));
+
+          if (turnDelta > 4) {
+            int resourceSums[0x17];
+            int i = 0;
+            while (i < 0x17) {
+              resourceSums[i] = 0;
+              ++i;
+            }
+
+            int linkedCount = static_cast<signed char>(*(cityRecord + 0x3A));
+            int linkedIndex = 0;
+            GlobalMapMetricFn mapMetric = reinterpret_cast<GlobalMapMetricFn>(
+                (*reinterpret_cast<void***>(globalMapState))[0xC4 / 4]);
+            while (linkedIndex < linkedCount) {
+              short linkedRegion = *reinterpret_cast<short*>(cityRecord + 0x42 + linkedIndex * 2);
+              int edge = 0;
+              while (edge < 2) {
+                signed char resourceType = *reinterpret_cast<signed char*>(
+                    terrainTable + 0x11 + edge + linkedRegion * 0x24);
+                if (resourceType != -1) {
+                  resourceSums[resourceType] +=
+                      static_cast<int>(mapMetric(globalMapState, 0, linkedRegion, edge));
+                }
+                ++edge;
+              }
+              ++linkedIndex;
+            }
+
+            if ((turnDelta & 1U) == 0) {
+              int sum01 = resourceSums[0] + resourceSums[1];
+              if (sum01 != 0) {
+                int prod = getProduction(cityRecord, 1);
+                short* counter = reinterpret_cast<short*>(cityRecord + 0x84);
+                int limit =
+                    (static_cast<int>(*counter) + ((static_cast<int>(*counter) >> 0x1f) & 3U)) >> 2;
+                int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+                if (limit < prodLimit && static_cast<int>(*counter) < sum01 / 2) {
+                  pendingStage = 1;
+                  *counter = static_cast<short>(*counter + 1);
+                  needsRedraw = 1;
+                }
+              }
+
+              if (resourceSums[2] != 0) {
+                int prod = getProduction(cityRecord, 5);
+                short* counter = reinterpret_cast<short*>(cityRecord + 0x86);
+                int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+                if (static_cast<int>(*counter) < prodLimit &&
+                    static_cast<int>(*counter) < resourceSums[2] / 2) {
+                  pendingStage = 1;
+                  *counter = static_cast<short>(*counter + 1);
+                  needsRedraw = 1;
+                }
+              }
+
+              if (resourceSums[3] != 0) {
+                int prod = getProduction(cityRecord, 3);
+                short* counter = reinterpret_cast<short*>(cityRecord + 0x8A);
+                int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+                if (static_cast<int>(*counter) < prodLimit &&
+                    static_cast<int>(*counter) < resourceSums[3] / 2) {
+                  pendingStage = 1;
+                  *counter = static_cast<short>(*counter + 1);
+                  needsRedraw = 1;
+                }
+              }
+
+              void* orderCapabilityState = ReadGlobalPointer(kAddrCityOrderCapabilityStatePtr);
+              int capabilityScore = getProduction(cityRecord, 7);
+              if (capabilityScore != 0 && orderCapabilityState != 0 &&
+                  *reinterpret_cast<unsigned char*>(
+                      reinterpret_cast<unsigned char*>(orderCapabilityState) + 0x193) != 0) {
+                short* counter = reinterpret_cast<short*>(cityRecord + 0x8C);
+                if (static_cast<int>(*counter) < capabilityScore / 2) {
+                  pendingStage = 1;
+                  *counter = static_cast<short>(*counter + 1);
+                  needsRedraw = 1;
+                }
+              }
+            }
+
+            if (turnDelta > 9 && (turnDelta & 1U) != 0) {
+              if (*reinterpret_cast<short*>(cityRecord + 0x84) != 0 &&
+                  static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x8E)) <
+                      static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x84)) / 2) {
+                pendingStage = 2;
+                *reinterpret_cast<short*>(cityRecord + 0x8E) =
+                    static_cast<short>(*reinterpret_cast<short*>(cityRecord + 0x8E) + 1);
+                needsRedraw = 1;
+              }
+              if (*reinterpret_cast<short*>(cityRecord + 0x86) != 0 &&
+                  static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x90)) <
+                      static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x86)) / 2) {
+                pendingStage = 2;
+                *reinterpret_cast<short*>(cityRecord + 0x90) =
+                    static_cast<short>(*reinterpret_cast<short*>(cityRecord + 0x90) + 1);
+                needsRedraw = 1;
+              }
+              if (*reinterpret_cast<short*>(cityRecord + 0x8A) != 0 &&
+                  static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x92)) <
+                      static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x8A)) / 2) {
+                pendingStage = 2;
+                *reinterpret_cast<short*>(cityRecord + 0x92) =
+                    static_cast<short>(*reinterpret_cast<short*>(cityRecord + 0x92) + 1);
+                needsRedraw = 1;
+              }
+            }
+
+            if (*reinterpret_cast<unsigned char*>(cityRecord + 2) < pendingStage) {
+              setRegionStage(regionId, pendingStage);
+              if (pendingStage == 2) {
+                dispatchNationEvent(this, 0, 4, regionId);
+              } else {
+                dispatchNationEvent(this, 0, 3, regionId);
+                if (this->field8d0 < 0x33) {
+                  dispatchNationEvent(this, 0, 8, -1);
+                }
+              }
+            }
+          }
+
+          if (*reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(localizationTable) + 0x44) !=
+                  0 &&
+              needsRedraw != 0) {
+            dispatchRedraw(regionId);
+          }
+        }
+      }
+    }
+
+    ++regionOrdinal;
   }
 }
 

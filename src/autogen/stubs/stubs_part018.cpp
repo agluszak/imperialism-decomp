@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CopyTwoDwordsAndWordToObjectOffset14
-// ghidra_proto void __cdecl CopyTwoDwordsAndWordToObjectOffset14(void)
-// FUNCTION: IMPERIALISM 0x00570440
-undefined4 CopyTwoDwordsAndWordToObjectOffset14(void)
-{
-  return 0;
-}
-
-// ghidra_name SetObjectField1EWord
-// ghidra_proto void __cdecl SetObjectField1EWord(void)
-// FUNCTION: IMPERIALISM 0x005704e0
-undefined4 SetObjectField1EWord(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500
 // ghidra_proto void __cdecl Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500(void)
 // FUNCTION: IMPERIALISM 0x00570500
@@ -3999,6 +3983,22 @@ undefined4 RenderWrappedMapQuickDrawOverlayFromStridedRecords(void)
 // ghidra_proto void __thiscall InvokeDialogHooks1D8ThenE4(void)
 // FUNCTION: IMPERIALISM 0x00596270
 undefined4 InvokeDialogHooks1D8ThenE4(void)
+{
+  return 0;
+}
+
+// ghidra_name HandleMapTileClickSetOrderContextAndDispatchEvent79
+// ghidra_proto void __thiscall HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005962a0
+undefined4 HandleMapTileClickSetOrderContextAndDispatchEvent79(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AllocateWithFallbackHandler_At005963d0
+// ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005963d0
+undefined4 WrapperFor_AllocateWithFallbackHandler_At005963d0(void)
 {
   return 0;
 }

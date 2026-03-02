@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel2
-// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
-// FUNCTION: IMPERIALISM 0x004e00d0
-undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel1
-// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
-// FUNCTION: IMPERIALISM 0x004e0140
-undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel0
 // ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
 // FUNCTION: IMPERIALISM 0x004e01b0
@@ -3999,6 +3983,22 @@ undefined4 DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
 // ghidra_proto void __cdecl ShowPeriodicCapabilityReminderIfNeeded(void)
 // FUNCTION: IMPERIALISM 0x00501a20
 undefined4 ShowPeriodicCapabilityReminderIfNeeded(void)
+{
+  return 0;
+}
+
+// ghidra_name ShowPeriodicNationComparisonAdvisoryIfNeeded
+// ghidra_proto void __cdecl ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
+// FUNCTION: IMPERIALISM 0x00501be0
+undefined4 ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
+{
+  return 0;
+}
+
+// ghidra_name ShowTurnAlertsForActiveNation
+// ghidra_proto void __cdecl ShowTurnAlertsForActiveNation(void)
+// FUNCTION: IMPERIALISM 0x00502b60
+undefined4 ShowTurnAlertsForActiveNation(void)
 {
   return 0;
 }

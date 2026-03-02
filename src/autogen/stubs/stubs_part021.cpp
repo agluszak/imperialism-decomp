@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0
-// ghidra_proto void __cdecl thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0(void)
-// FUNCTION: IMPERIALISM 0x005e4dc0
-undefined4 thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0(void)
-{
-  return 0;
-}
-
-// ghidra_name InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0
-// ghidra_proto void __cdecl InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
-// FUNCTION: IMPERIALISM 0x005e4de0
-undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_SendMciCommand804IfDeviceOpenAndClearHandle
 // ghidra_proto void __cdecl thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
 // FUNCTION: IMPERIALISM 0x005e4e15
@@ -3999,6 +3983,22 @@ undefined4 CFileDialog(void)
 // ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
 // FUNCTION: IMPERIALISM 0x005ff5c5
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5(void)
+{
+  return 0;
+}
+
+// ghidra_name DoModal
+// ghidra_proto int __fastcall DoModal(void)
+// FUNCTION: IMPERIALISM 0x005ff5e1
+undefined4 DoModal(void)
+{
+  return 0;
+}
+
+// ghidra_name GetPathName
+// ghidra_proto int __cdecl GetPathName(void)
+// FUNCTION: IMPERIALISM 0x005ff69e
+undefined4 GetPathName(void)
 {
   return 0;
 }

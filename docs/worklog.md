@@ -2468,3 +2468,73 @@
 2. `0x00405DE4`: remained `100.00%` after dispatch conversion.
 3. `0x004D8CC0`: remained `32.14%`.
 4. `just stats`: aggregate unchanged (`aligned 90`, average similarity `2.73%`).
+
+## 2026-03-02 19:37 UTC - `TGreatPower` typed field-layout extraction pass
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004D92E0`
+5. `just compare 0x004DB380`
+6. `just compare 0x004DBF00`
+
+### Changes
+1. Expanded `class TGreatPower` from a minimal shell to an offset-accurate layout covering the active runtime region up to `+0x960`, with typed members and explicit padding gaps.
+2. Migrated class-state access from raw `self + offset` expressions to typed members in high-impact methods:
+   1. `ReleaseOwnedGreatPowerObjectsAndDeleteSelf` (`0x004D9160`)
+   2. `InitializeGreatPowerMinisterRosterAndScenarioState` (`0x004D92E0`)
+   3. `UpdateGreatPowerPressureStateAndDispatchEscalationMessage` (`0x004DB380`)
+   4. `AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents` (`0x004DBF00`)
+3. Kept function bodies compile-safe and shape-preserving (no inline asm / no callconv hacks), while replacing owned fields with named members (`pField848`, `field8f0`, `fieldB2`, etc.).
+
+### Results
+1. Build/detect loop is stable after the layout migration.
+2. `0x004D92E0`: unchanged at `3.12%` (expected for a layout-only refactor).
+3. `0x004DB380` and `0x004DBF00`: still unresolved in compare (`Failed to find a match at address`), which is currently a pairing/reachability issue rather than compilation.
+
+## 2026-03-02 19:52 UTC - fixed reccmp pairing for `0x004DB380` and `0x004DBF00`
+
+### Commands
+1. `just build`
+2. `just detect`
+3. `just compare 0x004DB380`
+4. `just compare 0x004DBF00`
+
+### Root cause
+1. `// FUNCTION:` markers for these two methods had descriptive comment lines between marker and signature.
+2. reccmp parsed the next line as function identity and used the comment text as function name, causing `Failed to match function` / `Failed to find a match at address`.
+
+### Fix
+1. Moved descriptive comments above each marker and kept marker directly adjacent to function signature in `src/game/TGreatPower.cpp`.
+
+### Results
+1. `0x004DB380`: now paired and compared at `14.47%`.
+2. `0x004DBF00`: now paired and compared at `27.79%`.
+
+## 2026-03-02 20:40 UTC - readability pass with score guardrails (`TGreatPower`)
+
+### Commands
+1. `just compare 0x004D92E0`
+2. `just compare 0x004DB380`
+3. `just compare 0x004DBD20`
+4. `just compare 0x004DBF00`
+5. `just format src/game/TGreatPower.cpp`
+6. `just build`
+7. `just compare 0x004D92E0`
+8. `just compare 0x004DB380`
+9. `just compare 0x004DBD20`
+10. `just compare 0x004DBF00`
+
+### Changes
+1. Tried a typed-view cleanup in `0x004DBD20`; score dropped (`13.74% -> 11.76%`), so reverted it.
+2. Kept only naming-level cleanup in `0x004DBF00`:
+   1. clearer typedef names (`RegionListCountFn`, `GlobalMapMetricFn`, etc.),
+   2. clearer local names (`regionOrdinal`, `pendingStage`, `needsRedraw`, `orderCapabilityState`).
+3. No control-flow or call-shape changes kept in final code.
+
+### Results
+1. `0x004D92E0`: `3.12%` (unchanged).
+2. `0x004DB380`: `14.47%` (unchanged).
+3. `0x004DBD20`: `13.74%` (restored to baseline).
+4. `0x004DBF00`: `27.79%` (unchanged).

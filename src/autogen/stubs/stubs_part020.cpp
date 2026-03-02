@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNoHiliteText::GetTNoHiliteTextClassNamePointer
-// ghidra_proto void * __cdecl GetTNoHiliteTextClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005b69e0
-undefined4 GetTNoHiliteTextClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHiliteText::ConstructUiStatusListTextEntry
-// ghidra_proto void __thiscall ConstructUiStatusListTextEntry(void)
-// FUNCTION: IMPERIALISM 0x005b6a00
-undefined4 ConstructUiStatusListTextEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name TNoHiliteText::DestructTNoHiliteTextAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNoHiliteTextAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005b6a30
@@ -3999,6 +3983,22 @@ undefined4 WrapperFor_ftol_At005e4d50(void)
 // ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
 // FUNCTION: IMPERIALISM 0x005e4d80
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0
+// ghidra_proto void __cdecl thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0(void)
+// FUNCTION: IMPERIALISM 0x005e4dc0
+undefined4 thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0(void)
+{
+  return 0;
+}
+
+// ghidra_name InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0
+// ghidra_proto void __cdecl InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
+// FUNCTION: IMPERIALISM 0x005e4de0
+undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
 {
   return 0;
 }

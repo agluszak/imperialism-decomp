@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ResetForeignMinisterVtableSlot9CSharedState
-// ghidra_proto void __cdecl ResetForeignMinisterVtableSlot9CSharedState(void)
-// FUNCTION: IMPERIALISM 0x0052fcc0
-undefined4 ResetForeignMinisterVtableSlot9CSharedState(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshForeignMinisterStateByLocalizationMode
-// ghidra_proto void __cdecl RefreshForeignMinisterStateByLocalizationMode(void)
-// FUNCTION: IMPERIALISM 0x0052fd10
-undefined4 RefreshForeignMinisterStateByLocalizationMode(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpForeignMinisterSlot24Handler
 // ghidra_proto void __cdecl NoOpForeignMinisterSlot24Handler(void)
 // FUNCTION: IMPERIALISM 0x0052fd80
@@ -3999,6 +3983,22 @@ undefined4 GetTPoseMessageDialogClassNamePointer(void)
 // ghidra_proto void __cdecl DispatchSimpleTurnEventEsopWithParam(int arg1)
 // FUNCTION: IMPERIALISM 0x0054b0f0
 undefined4 DispatchSimpleTurnEventEsopWithParam(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshPoseMessageDialogNationSelectionControls
+// ghidra_proto void __cdecl RefreshPoseMessageDialogNationSelectionControls(void)
+// FUNCTION: IMPERIALISM 0x0054b1b0
+undefined4 RefreshPoseMessageDialogNationSelectionControls(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchTurnEventCode9WithTwoTextTokens
+// ghidra_proto void __cdecl DispatchTurnEventCode9WithTwoTextTokens(void)
+// FUNCTION: IMPERIALISM 0x0054b4c0
+undefined4 DispatchTurnEventCode9WithTwoTextTokens(void)
 {
   return 0;
 }

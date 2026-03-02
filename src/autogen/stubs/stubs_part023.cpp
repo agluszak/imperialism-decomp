@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNewGameCommand::OnSize
-// ghidra_proto void __thiscall OnSize(TMacViewMgr * thisObj)
-// FUNCTION: IMPERIALISM 0x00615517
-undefined4 OnSize(void)
-{
-  return 0;
-}
-
-// ghidra_name CenterOnPoint
-// ghidra_proto void __thiscall CenterOnPoint(TMacViewMgr * thisObj, int xCenter, int yCenter)
-// FUNCTION: IMPERIALISM 0x0061553f
-undefined4 CenterOnPoint(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit::GetScrollBarSizes
 // ghidra_proto void __thiscall GetScrollBarSizes(TMacViewMgr * thisObj, int * outSize)
 // FUNCTION: IMPERIALISM 0x006155ed
@@ -3999,6 +3983,22 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fc7d(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fca7(void)
 // FUNCTION: IMPERIALISM 0x0062fca7
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fca7(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcd7
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcd7(void)
+// FUNCTION: IMPERIALISM 0x0062fcd7
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcd7(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcff
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcff(void)
+// FUNCTION: IMPERIALISM 0x0062fcff
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcff(void)
 {
   return 0;
 }

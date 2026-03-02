@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name HandleMapTileClickSetOrderContextAndDispatchEvent79
-// ghidra_proto void __thiscall HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005962a0
-undefined4 HandleMapTileClickSetOrderContextAndDispatchEvent79(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At005963d0
-// ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005963d0
-undefined4 WrapperFor_AllocateWithFallbackHandler_At005963d0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AllocateWithFallbackHandler_At00596440
 // ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00596440
@@ -3999,6 +3983,22 @@ undefined4 OrphanLeaf_NoCall_Ins04_005b6930(void)
 // ghidra_proto void * __cdecl CreateTNoHiliteTextInstance(void)
 // FUNCTION: IMPERIALISM 0x005b6960
 undefined4 CreateTNoHiliteTextInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHiliteText::GetTNoHiliteTextClassNamePointer
+// ghidra_proto void * __cdecl GetTNoHiliteTextClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005b69e0
+undefined4 GetTNoHiliteTextClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHiliteText::ConstructUiStatusListTextEntry
+// ghidra_proto void __thiscall ConstructUiStatusListTextEntry(void)
+// FUNCTION: IMPERIALISM 0x005b6a00
+undefined4 ConstructUiStatusListTextEntry(void)
 {
   return 0;
 }

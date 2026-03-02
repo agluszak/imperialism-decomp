@@ -3331,14 +3331,6 @@ undefined4 CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
-// ghidra_proto void __thiscall UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
-// FUNCTION: IMPERIALISM 0x004db380
-undefined4 UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateOrderEntryAvailabilityByConnectedRegionMask
 // ghidra_proto void __cdecl UpdateOrderEntryAvailabilityByConnectedRegionMask(void)
 // FUNCTION: IMPERIALISM 0x004db7d0
@@ -3359,14 +3351,6 @@ undefined4 MarkConnectedOwnedRegionsInMaskRecursive(void)
 // ghidra_proto char * __thiscall BuildCityInfluenceLevelMap(void)
 // FUNCTION: IMPERIALISM 0x004dbbb0
 undefined4 BuildCityInfluenceLevelMap(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents
-// ghidra_proto void __thiscall AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void)
-// FUNCTION: IMPERIALISM 0x004dbf00
-undefined4 AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void)
 {
   return 0;
 }
@@ -3999,6 +3983,22 @@ undefined4 CreateAndQueueFrogCityMarkerForNationTile(void)
 // ghidra_proto void __cdecl RefreshNationCivilianWorkOrdersForTurn(void)
 // FUNCTION: IMPERIALISM 0x004dfd30
 undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel2
+// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
+// FUNCTION: IMPERIALISM 0x004e00d0
+undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel1
+// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
+// FUNCTION: IMPERIALISM 0x004e0140
+undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
 {
   return 0;
 }

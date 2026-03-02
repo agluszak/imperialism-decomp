@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ShowPeriodicNationComparisonAdvisoryIfNeeded
-// ghidra_proto void __cdecl ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
-// FUNCTION: IMPERIALISM 0x00501be0
-undefined4 ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowTurnAlertsForActiveNation
-// ghidra_proto void __cdecl ShowTurnAlertsForActiveNation(void)
-// FUNCTION: IMPERIALISM 0x00502b60
-undefined4 ShowTurnAlertsForActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name HandlePendingEventActivationByCode
 // ghidra_proto void __fastcall HandlePendingEventActivationByCode(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x005031c0
@@ -3999,6 +3983,22 @@ undefined4 RunForeignMinisterVtableSlot94Shared(void)
 // ghidra_proto void __cdecl RunForeignMinisterAmountDispatchShared(void)
 // FUNCTION: IMPERIALISM 0x0052fba0
 undefined4 RunForeignMinisterAmountDispatchShared(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetForeignMinisterVtableSlot9CSharedState
+// ghidra_proto void __cdecl ResetForeignMinisterVtableSlot9CSharedState(void)
+// FUNCTION: IMPERIALISM 0x0052fcc0
+undefined4 ResetForeignMinisterVtableSlot9CSharedState(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshForeignMinisterStateByLocalizationMode
+// ghidra_proto void __cdecl RefreshForeignMinisterStateByLocalizationMode(void)
+// FUNCTION: IMPERIALISM 0x0052fd10
+undefined4 RefreshForeignMinisterStateByLocalizationMode(void)
 {
   return 0;
 }

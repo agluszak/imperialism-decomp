@@ -578,6 +578,51 @@ Project snapshot (`just stats`):
 3. average similarity: `2.60%`
 4. paired coverage: `100.00%`
 
+## 2026-03-02 19:37 UTC checkpoint - `TGreatPower` field-layout extraction
+
+Focused update:
+1. Introduced a typed in-class layout for `TGreatPower` (offsets through `+0x960`) and migrated major methods away from raw `self + offset` reads/writes.
+
+What changed:
+1. Added typed members + padding gaps directly in `src/game/TGreatPower.cpp` class definition.
+2. Converted the largest active bodies in this class to typed field access:
+   1. `0x004D9160`
+   2. `0x004D92E0`
+   3. `0x004DB380`
+   4. `0x004DBF00`
+3. Kept compare markers and ownership intact; no inline asm.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. `just compare 0x004D92E0`: `3.12%` (stable)
+4. `just compare 0x004DB380`: unresolved pairing (`Failed to find a match at address`)
+5. `just compare 0x004DBF00`: unresolved pairing (`Failed to find a match at address`)
+
+Next action:
+1. Fix pair/reachability for `0x004DB380` and `0x004DBF00` first.
+2. Continue field extraction on neighboring methods (`0x004D8CC0`, `0x004DBD20`) once those addresses are visible in compare again.
+
+## 2026-03-02 19:52 UTC checkpoint - pairing fix landed
+
+Focused update:
+1. Re-enabled reccmp pairing for `0x004DB380` and `0x004DBF00` by correcting marker placement.
+
+What changed:
+1. Removed intervening descriptive comment lines between `// FUNCTION:` and method signatures for:
+   1. `TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage`
+   2. `TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents`
+2. Kept description comments above markers so reccmp sees signature immediately after marker.
+
+Validation:
+1. `just build`: pass
+2. `just detect`: pass
+3. `just compare 0x004DB380`: `14.47%`
+4. `just compare 0x004DBF00`: `27.79%`
+
+Current next action:
+1. Continue field extraction and shape/data passes on these now-paired methods.
+
 ## 2026-03-02 18:38 UTC checkpoint - `TGreatPower` incremental port batch
 
 Focused update:
