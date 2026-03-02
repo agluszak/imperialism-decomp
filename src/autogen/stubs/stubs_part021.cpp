@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_SendMciCommand804IfDeviceOpenAndClearHandle
-// ghidra_proto void __cdecl thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
-// FUNCTION: IMPERIALISM 0x005e4e15
-undefined4 thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists
-// ghidra_proto void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int arg1)
-// FUNCTION: IMPERIALISM 0x005e4e70
-undefined4 InitializeSoundSubsystemAndAllocateChannelLists(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantTrue_SoundPredicate
-// ghidra_proto int __cdecl ReturnConstantTrue_SoundPredicate(void)
-// FUNCTION: IMPERIALISM 0x005e4f60
-undefined4 ReturnConstantTrue_SoundPredicate(void)
-{
-  return 0;
-}
-
-// ghidra_name RequestDirectSoundInitIfAllowed
-// ghidra_proto void __cdecl RequestDirectSoundInitIfAllowed(void)
-// FUNCTION: IMPERIALISM 0x005e4f80
-undefined4 RequestDirectSoundInitIfAllowed(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantFalse_SoundPredicate
-// ghidra_proto int __cdecl ReturnConstantFalse_SoundPredicate(void)
-// FUNCTION: IMPERIALISM 0x005e4fb0
-undefined4 ReturnConstantFalse_SoundPredicate(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearDirectSoundInitPendingAndResetState
-// ghidra_proto void __cdecl ClearDirectSoundInitPendingAndResetState(void)
-// FUNCTION: IMPERIALISM 0x005e4fd0
-undefined4 ClearDirectSoundInitPendingAndResetState(void)
-{
-  return 0;
-}
-
 // ghidra_name NotifyGlobalAudioObjectsViaVslot48
 // ghidra_proto void __cdecl NotifyGlobalAudioObjectsViaVslot48(void)
 // FUNCTION: IMPERIALISM 0x005e4ff0
@@ -3999,6 +3951,54 @@ undefined4 DoModal(void)
 // ghidra_proto int __cdecl GetPathName(void)
 // FUNCTION: IMPERIALISM 0x005ff69e
 undefined4 GetPathName(void)
+{
+  return 0;
+}
+
+// ghidra_name GetFileName
+// ghidra_proto int __cdecl GetFileName(void)
+// FUNCTION: IMPERIALISM 0x005ff7ac
+undefined4 GetFileName(void)
+{
+  return 0;
+}
+
+// ghidra_name GetFolderPath
+// ghidra_proto int __cdecl GetFolderPath(void)
+// FUNCTION: IMPERIALISM 0x005ffc15
+undefined4 GetFolderPath(void)
+{
+  return 0;
+}
+
+// ghidra_name CenterWindowWithinParentFromHandleField1C
+// ghidra_proto void __fastcall CenterWindowWithinParentFromHandleField1C(void)
+// FUNCTION: IMPERIALISM 0x005ffd2d
+undefined4 CenterWindowWithinParentFromHandleField1C(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::DispatchNegativeCommandRangeToFrameHandlers
+// ghidra_proto uint __thiscall DispatchNegativeCommandRangeToFrameHandlers(uint messageCode, int pNotify, void * pResult)
+// FUNCTION: IMPERIALISM 0x005ffd49
+undefined4 DispatchNegativeCommandRangeToFrameHandlers(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommdlgLbSelChangedNotifyMessage
+// ghidra_proto void __cdecl thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe27
+undefined4 thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommdlgLbSelChangedNotifyMessage
+// ghidra_proto void __cdecl RegisterCommdlgLbSelChangedNotifyMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe2c
+undefined4 RegisterCommdlgLbSelChangedNotifyMessage(void)
 {
   return 0;
 }

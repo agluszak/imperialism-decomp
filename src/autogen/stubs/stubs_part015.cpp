@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name HandlePendingEventActivationByCode
-// ghidra_proto void __fastcall HandlePendingEventActivationByCode(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x005031c0
-undefined4 HandlePendingEventActivationByCode(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectAndActivatePendingEventType1A0A
-// ghidra_proto void __cdecl SelectAndActivatePendingEventType1A0A(void)
-// FUNCTION: IMPERIALISM 0x00503320
-undefined4 SelectAndActivatePendingEventType1A0A(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectAndActivatePendingEventTypeOffsetFrom1A0B
-// ghidra_proto void __cdecl SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
-// FUNCTION: IMPERIALISM 0x00503370
-undefined4 SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDiplomacyPolicyStateChangedHook
-// ghidra_proto void __cdecl NoOpDiplomacyPolicyStateChangedHook(void)
-// FUNCTION: IMPERIALISM 0x005033e0
-undefined4 NoOpDiplomacyPolicyStateChangedHook(void)
-{
-  return 0;
-}
-
-// ghidra_name HandlePostPendingEventActivationNoOp
-// ghidra_proto void __cdecl HandlePostPendingEventActivationNoOp(void)
-// FUNCTION: IMPERIALISM 0x00503400
-undefined4 HandlePostPendingEventActivationNoOp(void)
-{
-  return 0;
-}
-
-// ghidra_name ActivatePendingEventAndRefreshView
-// ghidra_proto void __cdecl ActivatePendingEventAndRefreshView(void)
-// FUNCTION: IMPERIALISM 0x00503420
-undefined4 ActivatePendingEventAndRefreshView(void)
-{
-  return 0;
-}
-
 // ghidra_name TryShowCivilianCompletionMilestoneNotification
 // ghidra_proto void __thiscall TryShowCivilianCompletionMilestoneNotification(int * pCivilianOrderEntry)
 // FUNCTION: IMPERIALISM 0x005038b0
@@ -3999,6 +3951,54 @@ undefined4 ResetForeignMinisterVtableSlot9CSharedState(void)
 // ghidra_proto void __cdecl RefreshForeignMinisterStateByLocalizationMode(void)
 // FUNCTION: IMPERIALISM 0x0052fd10
 undefined4 RefreshForeignMinisterStateByLocalizationMode(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpForeignMinisterSlot24Handler
+// ghidra_proto void __cdecl NoOpForeignMinisterSlot24Handler(void)
+// FUNCTION: IMPERIALISM 0x0052fd80
+undefined4 NoOpForeignMinisterSlot24Handler(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpForeignMinisterSlot25Handler
+// ghidra_proto void __cdecl NoOpForeignMinisterSlot25Handler(void)
+// FUNCTION: IMPERIALISM 0x0052fda0
+undefined4 NoOpForeignMinisterSlot25Handler(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateNationInteractionEnableFlagsByTerrainAndRelation
+// ghidra_proto void __cdecl UpdateNationInteractionEnableFlagsByTerrainAndRelation(void)
+// FUNCTION: IMPERIALISM 0x0052fdc0
+undefined4 UpdateNationInteractionEnableFlagsByTerrainAndRelation(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::AllocateDiplomacyAidBudgetAcrossTargets
+// ghidra_proto void __thiscall AllocateDiplomacyAidBudgetAcrossTargets(void)
+// FUNCTION: IMPERIALISM 0x0052fe90
+undefined4 AllocateDiplomacyAidBudgetAcrossTargets(void)
+{
+  return 0;
+}
+
+// ghidra_name QueueTurnEventHintActionsByNationMetricsAndCompatibility
+// ghidra_proto void __cdecl QueueTurnEventHintActionsByNationMetricsAndCompatibility(void)
+// FUNCTION: IMPERIALISM 0x00530200
+undefined4 QueueTurnEventHintActionsByNationMetricsAndCompatibility(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateLocalizedScoreThresholdPredicateForNationValue
+// ghidra_proto void __cdecl EvaluateLocalizedScoreThresholdPredicateForNationValue(void)
+// FUNCTION: IMPERIALISM 0x005308b0
+undefined4 EvaluateLocalizedScoreThresholdPredicateForNationValue(void)
 {
   return 0;
 }

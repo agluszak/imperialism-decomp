@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNoHiliteText::DestructTNoHiliteTextAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNoHiliteTextAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005b6a30
-undefined4 DestructTNoHiliteTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::CreateTTownInstance
-// ghidra_proto void __cdecl CreateTTownInstance(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005b6a80
-undefined4 CreateTTownInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At005b6be0
-// ghidra_proto void __cdecl WrapperFor_ftol_At005b6be0(void)
-// FUNCTION: IMPERIALISM 0x005b6be0
-undefined4 WrapperFor_ftol_At005b6be0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::GetTTownClassNamePointer
-// ghidra_proto void * __cdecl GetTTownClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005b6c40
-undefined4 GetTTownClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::ConstructFrogCityMarker
-// ghidra_proto void __thiscall ConstructFrogCityMarker(void)
-// FUNCTION: IMPERIALISM 0x005b6c60
-undefined4 ConstructFrogCityMarker(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::DestructTTownAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTownAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005b6c80
-undefined4 DestructTTownAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTTownAndMaybeFree_Impl
 // ghidra_proto void __cdecl DestructTTownAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005b6cb0
@@ -3999,6 +3951,54 @@ undefined4 thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0(void)
 // ghidra_proto void __cdecl InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
 // FUNCTION: IMPERIALISM 0x005e4de0
 undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SendMciCommand804IfDeviceOpenAndClearHandle
+// ghidra_proto void __cdecl thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
+// FUNCTION: IMPERIALISM 0x005e4e15
+undefined4 thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists
+// ghidra_proto void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int arg1)
+// FUNCTION: IMPERIALISM 0x005e4e70
+undefined4 InitializeSoundSubsystemAndAllocateChannelLists(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnConstantTrue_SoundPredicate
+// ghidra_proto int __cdecl ReturnConstantTrue_SoundPredicate(void)
+// FUNCTION: IMPERIALISM 0x005e4f60
+undefined4 ReturnConstantTrue_SoundPredicate(void)
+{
+  return 0;
+}
+
+// ghidra_name RequestDirectSoundInitIfAllowed
+// ghidra_proto void __cdecl RequestDirectSoundInitIfAllowed(void)
+// FUNCTION: IMPERIALISM 0x005e4f80
+undefined4 RequestDirectSoundInitIfAllowed(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnConstantFalse_SoundPredicate
+// ghidra_proto int __cdecl ReturnConstantFalse_SoundPredicate(void)
+// FUNCTION: IMPERIALISM 0x005e4fb0
+undefined4 ReturnConstantFalse_SoundPredicate(void)
+{
+  return 0;
+}
+
+// ghidra_name ClearDirectSoundInitPendingAndResetState
+// ghidra_proto void __cdecl ClearDirectSoundInitPendingAndResetState(void)
+// FUNCTION: IMPERIALISM 0x005e4fd0
+undefined4 ClearDirectSoundInitPendingAndResetState(void)
 {
   return 0;
 }

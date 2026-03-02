@@ -27,6 +27,17 @@
 5. Run `just build`, `just detect`, `just compare 0xADDR`.
 6. If score moves, keep it and move on; if stuck, move to next function.
 
+## Similarity Improvement Notes
+
+1. Run `just compare 0xADDR` once before heavy rewrite to confirm whether the target is a real body or a thunk/trampoline.
+2. If diff shows `jmp OtherFunction`, implement a call-through wrapper first (and keep heavy logic in the destination function).
+3. In deserializer functions, do not reuse pointer params as scalar counts; use return values from stream-vtable reads for loop bounds.
+4. Preserve original short/int loop semantics (`short` counts, `static_cast<short>(idx)` loop exits) when Ghidra shape clearly indicates truncation.
+5. When Ghidra shows `InitializeSharedStringRefFromEmpty` / `ReleaseSharedStringRefIfNotEmpty` envelopes, keep them in manual code if they are in the same function.
+6. Avoid adding defensive null-guards in hot legacy deserialization paths unless evidence shows they exist in the original; extra guards usually hurt similarity.
+7. Keep cast-heavy vtable/thunk calls in small typed helper wrappers; keep target function bodies mostly cast-free so shape/data edits stay maintainable.
+8. `just promote` output is raw Ghidra text; convert it immediately to compile-safe member-method C++ and then run `just sync-ownership`, `just regen-stubs`, and `just build` before comparing.
+
 ## Known reccmp Failure Modes
 
 1. `Failed to find a match at address 0x...`:

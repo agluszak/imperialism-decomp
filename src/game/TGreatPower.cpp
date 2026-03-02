@@ -7,12 +7,15 @@ class TGreatPower;
 typedef void* hwnd_t;
 extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
                                      unsigned int type);
+int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
+void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
 
 undefined4 ComputeMapActionContextNodeValueAverage(void);
 undefined4 BuildCityInfluenceLevelMap(void);
 undefined4 OrphanCallChain_C2_I10_004e03a0(void);
 undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel1(void);
 undefined4 ProcessPendingDiplomacyProposalQueue(void);
+undefined4 CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
 undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel2(void);
 undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void);
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
@@ -31,6 +34,7 @@ undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 thunk_GetInt32Field30(void);
+undefined4 thunk_LookupOrderCompatibilityMatrixValue(void);
 undefined4 thunk_ComputeWeightedNeighborLinkScoreForNode(void);
 undefined4 thunk_SumWeightedNeighborLinkScoreForLinkedNodes(void);
 undefined4 thunk_SumNavyOrderPriorityForNationAndNodeType(void);
@@ -193,6 +197,10 @@ public:
   unsigned char field918[0x17];
   unsigned char pad_92f[0x960 - 0x92f];
   void* pField960;
+  short field964[6];
+  unsigned char field970[0x180];
+  unsigned char fieldAF0[0x70];
+  void* pFieldB60;
 
   unsigned int thunk_ComputeMapActionContextNodeValueAverage(void);
   char* thunk_BuildCityInfluenceLevelMap(void);
@@ -249,14 +257,23 @@ public:
   void InitializeGreatPowerMinisterRosterAndScenarioState(int arg1);
   void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3, int arg4);
   void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
+  void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
+  void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);
+  void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
+  bool CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+                                             unsigned short proposedGrantEntry);
+  bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost);
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
-  float ComputeMapActionContextCompositeScoreForNation(int arg1);
-  float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int arg1, int arg2, int arg3, int arg4);
+  float ComputeMapActionContextCompositeScoreForNation(int nodeType);
+  float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
+                                                      int relationTargetNation,
+                                                      int selectedNationSlot);
   void ApplyImmediateDiplomacyPolicySideEffects(int arg1, int arg2);
   void ProcessPendingDiplomacyProposalQueue(void);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void QueueDiplomacyProposalCodeForTargetNation(void);
+  void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);
   void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
   void DispatchTurnEvent2103WithNationFromRecord(void);
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1);
@@ -285,6 +302,14 @@ typedef void(__fastcall* GreatPowerBridge1Fn)(TGreatPower*, int, int);
 
 static __inline void* ReadGlobalPointer(unsigned int address) {
   return *reinterpret_cast<void**>(address);
+}
+
+static __inline void** ReadGlobalPointerArray(unsigned int address) {
+  return reinterpret_cast<void**>(address);
+}
+
+static __inline void* ReadGlobalPointerArraySlot(unsigned int address, int index) {
+  return ReadGlobalPointerArray(address)[index];
 }
 
 static __inline signed char ReadLocaleByteStep(unsigned int baseAddress, int localeIndex) {
@@ -316,6 +341,372 @@ static __inline void ReverseDwordArrayBytes(void* base, int count) {
     bytes += 4;
     ++i;
   }
+}
+
+static __inline short ProposalQueue_GetCount(void* queue) {
+  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(queue) + 8);
+}
+
+static __inline short* ProposalQueue_GetEntryAt1Based(void* queue, int queueIndex) {
+  typedef short*(__fastcall * QueueSlot2CFn)(void*, int, int);
+  void** queueVtable = *reinterpret_cast<void***>(queue);
+  QueueSlot2CFn queueSlot2C = reinterpret_cast<QueueSlot2CFn>(queueVtable[0x2C / 4]);
+  return queueSlot2C(queue, 0, queueIndex);
+}
+
+static __inline short Diplomacy_GetRelationTier(void* diplomacyManager, int sourceNation,
+                                                int targetNation) {
+  typedef short(__fastcall * DipSlot70Fn)(void*, int, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot70Fn dipSlot70 = reinterpret_cast<DipSlot70Fn>(diplomacyVtable[0x70 / 4]);
+  return dipSlot70(diplomacyManager, sourceNation, targetNation, 0);
+}
+
+static __inline char Diplomacy_HasPolicyWithNation(void* diplomacyManager, int sourceNation,
+                                                   int targetNation) {
+  typedef char(__fastcall * DipSlot44Fn)(void*, int, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot44Fn dipSlot44 = reinterpret_cast<DipSlot44Fn>(diplomacyVtable[0x44 / 4]);
+  return dipSlot44(diplomacyManager, sourceNation, targetNation, 0);
+}
+
+static __inline char UiRuntime_RequestDiplomacyDecision(void* uiRuntimeContext, int sourceNation,
+                                                        int targetNation, int proposalCode) {
+  typedef char(__fastcall * UiSlot90Fn)(void*, int, int, int, int);
+  void** uiVtable = *reinterpret_cast<void***>(uiRuntimeContext);
+  UiSlot90Fn uiSlot90 = reinterpret_cast<UiSlot90Fn>(uiVtable[0x90 / 4]);
+  return uiSlot90(uiRuntimeContext, 0, sourceNation, targetNation, proposalCode);
+}
+
+static __inline char IsTurnCooldownCounterActiveOrResetFlagAsChar(void) {
+  typedef char(__cdecl * CooldownActiveFn)(void);
+  CooldownActiveFn isTurnCooldownActive =
+      reinterpret_cast<CooldownActiveFn>(thunk_IsTurnCooldownCounterActiveOrResetFlag);
+  return isTurnCooldownActive();
+}
+
+static __inline void GreatPower_CommitProposalByIndex(TGreatPower* self, int proposalIndex) {
+  typedef void(__fastcall * GreatPowerSlot7BFn)(TGreatPower*, int, int);
+  GreatPowerSlot7BFn applyProposalByIndex =
+      reinterpret_cast<GreatPowerSlot7BFn>(self->field00[0x7B]);
+  applyProposalByIndex(self, 0, proposalIndex);
+}
+
+static __inline void GreatPower_RemoveProposalByIndex(TGreatPower* self, int proposalIndex) {
+  typedef void(__fastcall * GreatPowerSlot7CFn)(TGreatPower*, int, int);
+  GreatPowerSlot7CFn removeProposalByIndex =
+      reinterpret_cast<GreatPowerSlot7CFn>(self->field00[0x7C]);
+  removeProposalByIndex(self, 0, proposalIndex);
+}
+
+static __inline void GreatPower_ApplyMutualDefenseWithNation(TGreatPower* self, int checkNation,
+                                                             int sourceNation) {
+  typedef void(__fastcall * GreatPowerSlotA1ApplyFn)(TGreatPower*, int, int, int, int);
+  GreatPowerSlotA1ApplyFn applyPolicyToNation =
+      reinterpret_cast<GreatPowerSlotA1ApplyFn>(self->field00[0xA1]);
+  applyPolicyToNation(self, 0, checkNation, 0x132, sourceNation);
+}
+
+static __inline void GreatPower_FinalizeProposalQueue(TGreatPower* self) {
+  typedef void(__fastcall * GreatPowerSlot73Fn)(TGreatPower*, int);
+  GreatPowerSlot73Fn slot73 = reinterpret_cast<GreatPowerSlot73Fn>(self->field00[0x73]);
+  slot73(self, 0);
+}
+
+static __inline void QueueObject_WritePackedIntAtSlot38(void* queue, int* packedValue) {
+  typedef void(__fastcall * QueueSlot38Fn)(void*, int, int*);
+  void** queueVtable = *reinterpret_cast<void***>(queue);
+  QueueSlot38Fn queueSlot38 = reinterpret_cast<QueueSlot38Fn>(queueVtable[0x38 / 4]);
+  queueSlot38(queue, 0, packedValue);
+}
+
+static __inline char GreatPower_ShouldDispatchImmediately(TGreatPower* self) {
+  typedef char(__fastcall * GreatPowerSlot28Fn)(TGreatPower*, int);
+  GreatPowerSlot28Fn slot28 = reinterpret_cast<GreatPowerSlot28Fn>(self->field00[0x28]);
+  return slot28(self, 0);
+}
+
+static __inline void QueueInterNationEventWithPayload(int sourceNation, void* payload) {
+  typedef void(__fastcall * QueueInterNationEventFn)(void*, int, int, int, char);
+  void* queueManager = ReadGlobalPointer(kAddrInterNationEventQueueManagerPtr);
+  QueueInterNationEventFn queueInterNationEvent =
+      reinterpret_cast<QueueInterNationEventFn>(QueueInterNationEventIntoNationBucket);
+  queueInterNationEvent(queueManager, 0, sourceNation, reinterpret_cast<int>(payload), '\0');
+}
+
+static __inline void SendTurnEvent13WithPayload(int sourceNation, void* payload) {
+  typedef void(__fastcall * SendTurnEvent13Fn)(void*, int, int);
+  SendTurnEvent13Fn sendTurnEvent13 =
+      reinterpret_cast<SendTurnEvent13Fn>(thunk_CreateAndSendTurnEvent13_NationAndNineDwords);
+  sendTurnEvent13(0, sourceNation, reinterpret_cast<int>(payload));
+}
+
+static __inline int IsNationSlotEligibleForEventProcessingFast(int nationSlot) {
+  typedef int(__fastcall * IsEligibleFn)(void*, int, int);
+  IsEligibleFn isNationEligible =
+      reinterpret_cast<IsEligibleFn>(thunk_IsNationSlotEligibleForEventProcessing);
+  return isNationEligible(0, 0, nationSlot);
+}
+
+static __inline char Diplomacy_HasFlag84ForNation(void* diplomacyManager, int nationSlot) {
+  typedef char(__fastcall * DipSlot84Fn)(void*, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot84Fn slot84 = reinterpret_cast<DipSlot84Fn>(diplomacyVtable[0x84 / 4]);
+  return slot84(diplomacyManager, 0, nationSlot);
+}
+
+static __inline void Diplomacy_SetRelationState(void* diplomacyManager, int sourceNation,
+                                                int targetNation, int relationState) {
+  typedef void(__fastcall * DipSlot7CFn)(void*, int, int, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot7CFn slot7C = reinterpret_cast<DipSlot7CFn>(diplomacyVtable[0x7C / 4]);
+  slot7C(diplomacyManager, sourceNation, targetNation, relationState, 0);
+}
+
+static __inline void GreatPower_ApplyPolicyForNation(TGreatPower* self, int targetNation,
+                                                     int policyCode, int sourceNation) {
+  typedef void(__fastcall * GreatPowerSlotA1ApplyFn)(TGreatPower*, int, int, int, int);
+  GreatPowerSlotA1ApplyFn applyPolicy =
+      reinterpret_cast<GreatPowerSlotA1ApplyFn>(self->field00[0xA1]);
+  applyPolicy(self, 0, targetNation, policyCode, sourceNation);
+}
+
+static __inline void ReleaseObjectAtSlot1C(void* obj) {
+  typedef void(__fastcall * ReleaseObjFn)(void*, int);
+  void** objectVtable = *reinterpret_cast<void***>(obj);
+  ReleaseObjFn releaseFn = reinterpret_cast<ReleaseObjFn>(objectVtable[0x1C / 4]);
+  releaseFn(obj, 0);
+}
+
+static __inline void TerrainDescriptor_SetResetLevel(void* terrainDescriptor, int sourceNation,
+                                                     int resetLevel) {
+  typedef void(__fastcall * TerrainSlot68Fn)(void*, int, int, int);
+  void** terrainVtable = *reinterpret_cast<void***>(terrainDescriptor);
+  TerrainSlot68Fn slot68 = reinterpret_cast<TerrainSlot68Fn>(terrainVtable[0x68 / 4]);
+  slot68(terrainDescriptor, 0, sourceNation, resetLevel);
+}
+
+static __inline void NationState_NotifyAction131(void* nationState, int sourceNation) {
+  typedef void(__fastcall * NationSlot94Fn)(void*, int, int, int);
+  void** nationVtable = *reinterpret_cast<void***>(nationState);
+  NationSlot94Fn slot94 = reinterpret_cast<NationSlot94Fn>(nationVtable[0x94 / 4]);
+  slot94(nationState, 0, sourceNation, 0x131);
+}
+
+static __inline void NationState_NotifyActionCode(void* nationState, int sourceNation,
+                                                  int actionCode) {
+  typedef void(__fastcall * NationSlot94Fn)(void*, int, int, int);
+  void** nationVtable = *reinterpret_cast<void***>(nationState);
+  NationSlot94Fn slot94 = reinterpret_cast<NationSlot94Fn>(nationVtable[0x94 / 4]);
+  slot94(nationState, 0, sourceNation, actionCode);
+}
+
+static __inline void NationState_AssignNeedSlotFromSource(void* nationState, int needSlot,
+                                                          int sourceNation) {
+  typedef void(__fastcall * NationSlot19CFn)(void*, int, int, int);
+  void** nationVtable = *reinterpret_cast<void***>(nationState);
+  NationSlot19CFn slot19C = reinterpret_cast<NationSlot19CFn>(nationVtable[0x19C / 4]);
+  slot19C(nationState, 0, needSlot, sourceNation);
+}
+
+static __inline char NationState_IsBusyA0(void* nationState) {
+  return *reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(nationState) + 0xA0);
+}
+
+static __inline short GreatPower_GetNeedSlotValue(TGreatPower* self, int needSlot) {
+  typedef short(__fastcall * GreatPowerSlot1FFn)(TGreatPower*, int, int);
+  GreatPowerSlot1FFn slot1F = reinterpret_cast<GreatPowerSlot1FFn>(self->field00[0x1F]);
+  return slot1F(self, 0, needSlot);
+}
+
+static __inline void Object_CallSlot8CNoArgs(void* obj) {
+  typedef void(__fastcall * ObjectSlot8CFn)(void*, int);
+  void** objectVtable = *reinterpret_cast<void***>(obj);
+  ObjectSlot8CFn slot8C = reinterpret_cast<ObjectSlot8CFn>(objectVtable[0x8C / 4]);
+  slot8C(obj, 0);
+}
+
+static __inline void SecondaryState_ResetDiplomacyLevel(void* secondaryState, int sourceNation,
+                                                        int resetLevel) {
+  typedef void(__fastcall * SecondarySlot48Fn)(void*, int, int, int);
+  void** secondaryVtable = *reinterpret_cast<void***>(secondaryState);
+  SecondarySlot48Fn slot48 = reinterpret_cast<SecondarySlot48Fn>(secondaryVtable[0x48 / 4]);
+  slot48(secondaryState, 0, sourceNation, resetLevel);
+}
+
+static __inline void GreatPower_ResetDiplomacyLevelForNation(TGreatPower* self, int nationSlot,
+                                                             int resetLevel) {
+  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
+  GreatPowerSetValueFn slot12 = reinterpret_cast<GreatPowerSetValueFn>(self->field00[0x12]);
+  slot12(self, 0, nationSlot, resetLevel);
+}
+
+static __inline void GreatPower_ResetPolicyForNation(TGreatPower* self, int nationSlot,
+                                                     int resetPolicyCode) {
+  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
+  GreatPowerSetValueFn slot75 = reinterpret_cast<GreatPowerSetValueFn>(self->field00[0x75]);
+  slot75(self, 0, nationSlot, resetPolicyCode);
+}
+
+static __inline void GreatPower_CallSlot13(TGreatPower* self, int arg1, int arg2) {
+  typedef void(__fastcall * GreatPowerSlot13Fn)(TGreatPower*, int, int, int);
+  GreatPowerSlot13Fn slot13 = reinterpret_cast<GreatPowerSlot13Fn>(self->field00[0x13]);
+  slot13(self, 0, arg1, arg2);
+}
+
+static __inline void GreatPower_SetPolicyForNation(TGreatPower* self, int nationSlot,
+                                                   int policyCode) {
+  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
+  GreatPowerSetValueFn slot74 = reinterpret_cast<GreatPowerSetValueFn>(self->field00[0x74]);
+  slot74(self, 0, nationSlot, policyCode);
+}
+
+static __inline int GreatPower_CanPayAmount(TGreatPower* self, int amount) {
+  typedef int(__fastcall * GreatPowerCanPayFn)(TGreatPower*, int, int);
+  GreatPowerCanPayFn slot7A = reinterpret_cast<GreatPowerCanPayFn>(self->field00[0x7A]);
+  return slot7A(self, 0, amount);
+}
+
+static __inline void GreatPower_AdjustTreasury(TGreatPower* self, int amount) {
+  typedef void(__fastcall * GreatPowerAdjustTreasuryFn)(TGreatPower*, int, int);
+  GreatPowerAdjustTreasuryFn slot0E =
+      reinterpret_cast<GreatPowerAdjustTreasuryFn>(self->field00[0x0E]);
+  slot0E(self, 0, amount);
+}
+
+static __inline char GreatPower_CanSetGrantValue(TGreatPower* self, int grantValue) {
+  typedef char(__fastcall * GreatPowerCanSetGrantFn)(TGreatPower*, int, int);
+  GreatPowerCanSetGrantFn slot77 = reinterpret_cast<GreatPowerCanSetGrantFn>(self->field00[0x77]);
+  return slot77(self, 0, grantValue);
+}
+
+static __inline short Diplomacy_ReadRelationMatrix79C(void* diplomacyManager, int sourceNation,
+                                                      int targetNation) {
+  int matrixIndex = sourceNation * 0x17 + targetNation;
+  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(diplomacyManager) + 0x79C +
+                                   matrixIndex * 2);
+}
+
+static __inline short LookupOrderCompatibility(short sourceNationSlot, short targetNationSlot) {
+  typedef short(__fastcall * LookupOrderCompatibilityFn)(void*, int, int, int);
+  LookupOrderCompatibilityFn lookupOrderCompatibility =
+      reinterpret_cast<LookupOrderCompatibilityFn>(thunk_LookupOrderCompatibilityMatrixValue);
+  return lookupOrderCompatibility(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr), 0,
+                                  sourceNationSlot, targetNationSlot);
+}
+
+static __inline short TerrainDescriptor_GetEncodedNationSlot(void* terrainDescriptor) {
+  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(terrainDescriptor) + 0x0E);
+}
+
+static __inline short TerrainDescriptor_GetFallbackNationSlot(void* terrainDescriptor) {
+  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(terrainDescriptor) + 0x0C);
+}
+
+static __inline int DecodeTerrainNationSlot(short encodedNationSlot, void* terrainDescriptor) {
+  if (encodedNationSlot < 200) {
+    if (encodedNationSlot < 100) {
+      return TerrainDescriptor_GetFallbackNationSlot(terrainDescriptor);
+    }
+    return encodedNationSlot - 100;
+  }
+  return encodedNationSlot - 200;
+}
+
+static __inline void GreatPower_CallSlot5C(TGreatPower* self) {
+  typedef void(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
+  GreatPowerNoArgFn slot5C = reinterpret_cast<GreatPowerNoArgFn>(self->field00[0x5C]);
+  slot5C(self, 0);
+}
+
+static __inline void GreatPower_CallSlotA5(TGreatPower* self) {
+  typedef void(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
+  GreatPowerNoArgFn slotA5 = reinterpret_cast<GreatPowerNoArgFn>(self->field00[0xA5]);
+  slotA5(self, 0);
+}
+
+static __inline void Diplomacy_SetFlag74(void* diplomacyManager, int sourceNation, int targetNation,
+                                         int flagValue) {
+  typedef void(__fastcall * DipSlot74Fn)(void*, int, int, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot74Fn slot74 = reinterpret_cast<DipSlot74Fn>(diplomacyVtable[0x74 / 4]);
+  slot74(diplomacyManager, 0, sourceNation, targetNation, flagValue);
+}
+
+static __inline void Diplomacy_SetFlag28(void* diplomacyManager, int sourceNation, int targetNation,
+                                         int flagValue) {
+  typedef void(__fastcall * DipSlot28Fn)(void*, int, int, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot28Fn slot28 = reinterpret_cast<DipSlot28Fn>(diplomacyVtable[0x28 / 4]);
+  slot28(diplomacyManager, 0, sourceNation, targetNation, flagValue);
+}
+
+static __inline void Diplomacy_SetRelationCode78(void* diplomacyManager, int sourceNation,
+                                                 int targetNation, int relationCode) {
+  typedef void(__fastcall * DipSlot78Fn)(void*, int, int, int);
+  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot78Fn slot78 = reinterpret_cast<DipSlot78Fn>(diplomacyVtable[0x78 / 4]);
+  slot78(diplomacyManager, sourceNation, targetNation, relationCode);
+}
+
+static __inline void QueueInterNationEventRecordDedup(int eventCode, int sourceNation,
+                                                      int targetNation) {
+  typedef void(__fastcall * QueueInterNationEventDedupFn)(void*, int, int, int, int, char);
+  QueueInterNationEventDedupFn queueInterNationEventDedup =
+      reinterpret_cast<QueueInterNationEventDedupFn>(thunk_QueueInterNationEventRecordDeduped);
+  queueInterNationEventDedup(ReadGlobalPointer(kAddrInterNationEventQueueManagerPtr), 0, eventCode,
+                             sourceNation, targetNation, '\0');
+}
+
+static __inline void TerrainDescriptor_CallSlot4C(void* terrainDescriptor, int sourceNation,
+                                                  int modeValue) {
+  typedef void(__fastcall * TerrainSlot4CFn)(void*, int, int, int);
+  void** terrainVtable = *reinterpret_cast<void***>(terrainDescriptor);
+  TerrainSlot4CFn slot4C = reinterpret_cast<TerrainSlot4CFn>(terrainVtable[0x4C / 4]);
+  slot4C(terrainDescriptor, 0, sourceNation, modeValue);
+}
+
+static __inline void TerrainDescriptor_CallSlot38(void* terrainDescriptor, int delta) {
+  typedef void(__fastcall * TerrainSlot38Fn)(void*, int, int);
+  void** terrainVtable = *reinterpret_cast<void***>(terrainDescriptor);
+  TerrainSlot38Fn slot38 = reinterpret_cast<TerrainSlot38Fn>(terrainVtable[0x38 / 4]);
+  slot38(terrainDescriptor, 0, delta);
+}
+
+static __inline int ClampNonNegative(int value) {
+  return (value < 0) ? 0 : value;
+}
+
+static __inline int DecodeGrantValue14Bit(short rawGrantEntry) {
+  const unsigned short kGrantMask = 0x3FFF;
+  return static_cast<int>(
+      static_cast<short>(static_cast<unsigned short>(rawGrantEntry) & kGrantMask));
+}
+
+static __inline int DecodeActiveGrantValue(short rawGrantEntry) {
+  if (rawGrantEntry <= 0) {
+    return 0;
+  }
+  return DecodeGrantValue14Bit(rawGrantEntry);
+}
+
+static __inline int ComputeGrantInfluenceDelta(int grantValue) {
+  switch (grantValue) {
+  case 1000:
+    return 2;
+  case 3000:
+    return 4;
+  case 5000:
+    return 6;
+  case 10000:
+    return 10;
+  default:
+    return 0;
+  }
+}
+
+static __inline int ComputeAvailableDiplomacyBudget(const TGreatPower* self) {
+  return ClampNonNegative(self->field10 + self->field8f0 / 100);
 }
 
 // FUNCTION: IMPERIALISM 0x00401172
@@ -503,51 +894,8 @@ void TGreatPower::thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9
 
 // FUNCTION: IMPERIALISM 0x00406CA3
 void TGreatPower::BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void) {
-  typedef char(__fastcall * GreatPowerSlot28Fn)(TGreatPower*, int);
-
-  int* localizationTable = reinterpret_cast<int*>(ReadGlobalPointer(kAddrLocalizationTablePtr));
-  if (localizationTable == 0) {
-    return;
-  }
-
-  GreatPowerSlot28Fn slot28 = reinterpret_cast<GreatPowerSlot28Fn>(this->field00[0x28]);
-  if (slot28(this, 0) != 0) {
-    return;
-  }
-
-  int compileThreshold =
-      *reinterpret_cast<int*>(kAddrCompileGreatPowerValue + localizationTable[0x40 / 4] * 4);
-  unsigned char* self = reinterpret_cast<unsigned char*>(this);
-  if (static_cast<int>(*reinterpret_cast<signed char*>(self + 0x8FC)) <= compileThreshold) {
-    return;
-  }
-
-  TDiplomacyTurnStateManager* diplomacyState = reinterpret_cast<TDiplomacyTurnStateManager*>(
-      ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr));
-  if (diplomacyState == 0) {
-    return;
-  }
-
-  short* relationMatrix =
-      reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(diplomacyState) + 0x79C);
-  int positiveCount = 0;
-  int hostileCount = 0;
-  int slot = 0;
-  while (slot < 0x17) {
-    if (slot != this->field0c) {
-      short relationValue = relationMatrix[this->field0c * 0x17 + slot];
-      if (relationValue > 0xF9) {
-        ++positiveCount;
-      }
-      if (relationValue < 0x10) {
-        ++hostileCount;
-      }
-    }
-    ++slot;
-  }
-
-  *reinterpret_cast<short*>(self + 0x8B4) = static_cast<short>(hostileCount);
-  *reinterpret_cast<short*>(self + 0x8B6) = static_cast<short>(positiveCount);
+  reinterpret_cast<void(__fastcall*)(TGreatPower*, int)>(
+      CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage)(this, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00406FE1
@@ -973,6 +1321,7 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
 // FUNCTION: IMPERIALISM 0x004D92E0
 void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   typedef void(__fastcall * DeserializeRecruitFn)(void*, int, int);
+  typedef void(__fastcall * StreamReadAt3CFn)(void*, int, void*, int);
   typedef int(__fastcall * StreamNoArgFn)(void*, int);
   typedef void(__fastcall * StreamReadFn)(void*, int, void*, int);
   typedef char(__fastcall * StreamReadByteFn)(void*, int, void*);
@@ -985,106 +1334,95 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   typedef void*(__fastcall * ConstructDefenseMinisterFn)(void*, int);
 
   int advanceTurnState = *reinterpret_cast<int*>(kAddrAdvanceTurnMachineState);
+  const int streamHandle = arg1;
 
   reinterpret_cast<DeserializeRecruitFn>(
       thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089)(this, 0, arg1);
 
-  void* stream = reinterpret_cast<void*>(arg1);
-  void** streamVtable = stream != 0 ? *reinterpret_cast<void***>(stream) : (void**)0;
-  StreamNoArgFn streamSlot3C =
-      streamVtable != 0 ? reinterpret_cast<StreamNoArgFn>(streamVtable[0x3C / 4]) : 0;
-  StreamNoArgFn streamSlot40 =
-      streamVtable != 0 ? reinterpret_cast<StreamNoArgFn>(streamVtable[0x40 / 4]) : 0;
-  StreamReadFn streamRead = streamVtable != 0 ? reinterpret_cast<StreamReadFn>(streamVtable[0]) : 0;
-  StreamReadByteFn streamSlotB0 =
-      streamVtable != 0 ? reinterpret_cast<StreamReadByteFn>(streamVtable[0xB0 / 4]) : 0;
+  void* stream = reinterpret_cast<void*>(streamHandle);
+  void** streamVtable = *reinterpret_cast<void***>(stream);
+  StreamReadAt3CFn streamSlot3C = reinterpret_cast<StreamReadAt3CFn>(streamVtable[0x3C / 4]);
+  StreamNoArgFn streamSlot40 = reinterpret_cast<StreamNoArgFn>(streamVtable[0x40 / 4]);
+  StreamReadFn streamRead = reinterpret_cast<StreamReadFn>(streamVtable[0]);
+  StreamReadByteFn streamSlotB0 = reinterpret_cast<StreamReadByteFn>(streamVtable[0xB0 / 4]);
 
-  if (streamSlot3C != 0) {
-    int i = 0;
-    while (i < 8) {
-      streamSlot3C(stream, 0);
-      ++i;
-    }
-    SwapShortArrayBytes(this->fieldB2, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->fieldE0, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field10e, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field13c, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field16a, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field198, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field1c6, 0x17);
-
-    if (advanceTurnState > 0x16) {
-      streamSlot3C(stream, 0);
-      SwapShortArrayBytes(this->field1f4, 0x17);
-    }
-
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field222, 0x17);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field250, 0x17);
-
-    streamSlot3C(stream, 0);
-    streamSlot3C(stream, 0);
-    streamSlot3C(stream, 0);
-    ReverseDwordArrayBytes(this->field280, 0x170);
-
-    streamSlot3C(stream, 0);
-    streamSlot3C(stream, 0);
-    SwapShortArrayBytes(this->field8d6, 0x0D);
+  streamSlot3C(stream, 0, &this->fieldA0, 1);
+  streamSlot3C(stream, 0, &this->fieldA2, 2);
+  streamSlot3C(stream, 0, &this->fieldA4, 2);
+  streamSlot3C(stream, 0, &this->fieldA6, 2);
+  streamSlot3C(stream, 0, &this->fieldA8, 2);
+  if (advanceTurnState < 0x3E) {
+    streamSlot3C(stream, 0, &this->fieldAC, 2);
+  } else {
+    streamSlot3C(stream, 0, &this->fieldAC, 4);
   }
+  streamSlot3C(stream, 0, &this->fieldB0, 2);
+  streamSlot3C(stream, 0, this->fieldB2, 0x2E);
+  SwapShortArrayBytes(this->fieldB2, 0x17);
+  streamSlot3C(stream, 0, this->fieldE0, 0x2E);
+  SwapShortArrayBytes(this->fieldE0, 0x17);
+  streamSlot3C(stream, 0, this->field10e, 0x2E);
+  SwapShortArrayBytes(this->field10e, 0x17);
+  streamSlot3C(stream, 0, this->field13c, 0x2E);
+  SwapShortArrayBytes(this->field13c, 0x17);
+  streamSlot3C(stream, 0, this->field16a, 0x2E);
+  SwapShortArrayBytes(this->field16a, 0x17);
+  streamSlot3C(stream, 0, this->field198, 0x2E);
+  SwapShortArrayBytes(this->field198, 0x17);
+  streamSlot3C(stream, 0, this->field1c6, 0x2E);
+  SwapShortArrayBytes(this->field1c6, 0x17);
+
+  if (advanceTurnState > 0x16) {
+    streamSlot3C(stream, 0, this->field1f4, 0x2E);
+    SwapShortArrayBytes(this->field1f4, 0x17);
+  }
+
+  streamSlot3C(stream, 0, this->field222, 0x2E);
+  SwapShortArrayBytes(this->field222, 0x17);
+  streamSlot3C(stream, 0, this->field250, 0x2E);
+  SwapShortArrayBytes(this->field250, 0x17);
+
+  streamSlot3C(stream, 0, &this->field840, 4);
+  streamSlot3C(stream, 0, &this->field844, 4);
+  streamSlot3C(stream, 0, this->field280, 0x5C0);
+  ReverseDwordArrayBytes(this->field280, 0x170);
+
+  streamSlot3C(stream, 0, reinterpret_cast<unsigned char*>(this) + 0x8C8, 0x0D);
+  streamSlot3C(stream, 0, this->field8d6, 0x1A);
+  SwapShortArrayBytes(this->field8d6, 0x0D);
 
   void* pField848 = this->pField848;
-  if (pField848 != 0) {
-    void** pField848Vtable = *reinterpret_cast<void***>(pField848);
-    reinterpret_cast<ObjNoArgFn>(pField848Vtable[0x18 / 4])(pField848, 0);
-  }
+  void** pField848Vtable = *reinterpret_cast<void***>(pField848);
+  reinterpret_cast<ObjNoArgFn>(pField848Vtable[0x18 / 4])(pField848, 0);
   void* pField84c = this->pField84c;
-  if (pField84c != 0) {
-    void** pField84cVtable = *reinterpret_cast<void***>(pField84c);
-    reinterpret_cast<ObjNoArgFn>(pField84cVtable[0x18 / 4])(pField84c, 0);
-  }
+  void** pField84cVtable = *reinterpret_cast<void***>(pField84c);
+  reinterpret_cast<ObjNoArgFn>(pField84cVtable[0x18 / 4])(pField84c, 0);
   int listIndex = 0;
   while (listIndex < 0x11) {
     void* listObj = this->pField850[listIndex];
-    if (listObj != 0) {
-      void** listVtable = *reinterpret_cast<void***>(listObj);
-      reinterpret_cast<ObjNoArgFn>(listVtable[0x18 / 4])(listObj, 0);
-    }
+    void** listVtable = *reinterpret_cast<void***>(listObj);
+    reinterpret_cast<ObjNoArgFn>(listVtable[0x18 / 4])(listObj, 0);
     ++listIndex;
   }
 
   if (advanceTurnState < 0x1D) {
     if (this->field0e == -1) {
       GreatPowerSlot28Fn slot28 = reinterpret_cast<GreatPowerSlot28Fn>(this->field00[0x28]);
-      char gate = slot28 != 0 ? slot28(this, 0) : 0;
+      char gate = slot28(this, 0);
       if (gate == 0) {
         void* pField94 = this->pField94;
-        if (pField94 != 0) {
-          void** pField94Vtable = *reinterpret_cast<void***>(pField94);
-          reinterpret_cast<ObjNoArgFn>(pField94Vtable[0x18 / 4])(pField94, 0);
-        }
+        void** pField94Vtable = *reinterpret_cast<void***>(pField94);
+        reinterpret_cast<ObjNoArgFn>(pField94Vtable[0x18 / 4])(pField94, 0);
         void* pField98 = this->pField98;
-        if (pField98 != 0) {
-          void** pField98Vtable = *reinterpret_cast<void***>(pField98);
-          reinterpret_cast<ObjNoArgFn>(pField98Vtable[0x18 / 4])(pField98, 0);
-        }
+        void** pField98Vtable = *reinterpret_cast<void***>(pField98);
+        reinterpret_cast<ObjNoArgFn>(pField98Vtable[0x18 / 4])(pField98, 0);
         void* pField9c = this->pField9c;
-        if (pField9c != 0) {
-          void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
-          reinterpret_cast<ObjNoArgFn>(pField9cVtable[0x18 / 4])(pField9c, 0);
-        }
+        void** pField9cVtable = *reinterpret_cast<void***>(pField9c);
+        reinterpret_cast<ObjNoArgFn>(pField9cVtable[0x18 / 4])(pField9c, 0);
       }
       void* pField894 = this->pField894;
-      if (pField894 != 0) {
-        void** pField894Vtable = *reinterpret_cast<void***>(pField894);
-        reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x18 / 4])(pField894, 0);
-      }
+      void** pField894Vtable = *reinterpret_cast<void***>(pField894);
+      reinterpret_cast<ObjNoArgFn>(pField894Vtable[0x18 / 4])(pField894, 0);
     } else {
       void* pField94 = this->pField94;
       if (pField94 != 0) {
@@ -1115,7 +1453,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       this->pField894 = 0;
     }
   } else {
-    int ministerMask = streamSlot40 != 0 ? streamSlot40(stream, 0) : 0;
+    int ministerMask = streamSlot40(stream, 0);
 
     if ((ministerMask & 1) == 0) {
       void* pField94 = this->pField94;
@@ -1202,24 +1540,21 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   void* pField898 = this->pField898;
-  if (pField898 != 0) {
-    void** pField898Vtable = *reinterpret_cast<void***>(pField898);
-    int hasItems = reinterpret_cast<ObjQueryFn>(pField898Vtable[0x48 / 4])(pField898, 0);
-    if (hasItems != 0) {
-      reinterpret_cast<ObjNoArgFn>(pField898Vtable[0x54 / 4])(pField898, 0);
-    }
-    reinterpret_cast<ObjNoArgFn>(pField898Vtable[0x18 / 4])(pField898, 0);
+  void** pField898Vtable = *reinterpret_cast<void***>(pField898);
+  int hasItems = reinterpret_cast<ObjQueryFn>(pField898Vtable[0x48 / 4])(pField898, 0);
+  if (hasItems != 0) {
+    reinterpret_cast<ObjNoArgFn>(pField898Vtable[0x54 / 4])(pField898, 0);
   }
+  reinterpret_cast<ObjNoArgFn>(pField898Vtable[0x18 / 4])(pField898, 0);
 
-  if (streamSlot3C != 0) {
-    streamSlot3C(stream, 0);
-  }
+  int townCount = 0;
+  streamSlot3C(stream, 0, &townCount, 4);
 
-  if (arg1 > 0 && pField898 != 0) {
+  if (townCount > 0) {
     void** pField898Vtable = *reinterpret_cast<void***>(pField898);
     ObjPtrFn pField898Slot30 = reinterpret_cast<ObjPtrFn>(pField898Vtable[0x30 / 4]);
     int townOrdinal = 1;
-    while (townOrdinal <= arg1) {
+    while (townOrdinal <= townCount) {
       void* townMarker = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
       if (townMarker != 0) {
         reinterpret_cast<ConstructNoArgFn>(thunk_ConstructFrogCityMarker)(townMarker, 0);
@@ -1232,7 +1567,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   void* pField894 = this->pField894;
-  if (arg1 > 0 && pField898 != 0 && pField894 != 0) {
+  if (townCount > 0) {
     void** pField898Vtable = *reinterpret_cast<void***>(pField898);
     reinterpret_cast<ObjNoArgFn>(pField898Vtable[0x4C / 4])(pField898, 0);
     void** pField894Vtable = *reinterpret_cast<void***>(pField894);
@@ -1240,18 +1575,15 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   void* pField89c = this->pField89c;
-  if (pField89c != 0) {
-    void** pField89cVtable = *reinterpret_cast<void***>(pField89c);
-    int hasItems = reinterpret_cast<ObjQueryFn>(pField89cVtable[0x48 / 4])(pField89c, 0);
-    if (hasItems != 0) {
-      reinterpret_cast<ObjNoArgFn>(pField89cVtable[0x54 / 4])(pField89c, 0);
-    }
-    reinterpret_cast<ObjNoArgFn>(pField89cVtable[0x18 / 4])(pField89c, 0);
+  void** pField89cVtable = *reinterpret_cast<void***>(pField89c);
+  hasItems = reinterpret_cast<ObjQueryFn>(pField89cVtable[0x48 / 4])(pField89c, 0);
+  if (hasItems != 0) {
+    reinterpret_cast<ObjNoArgFn>(pField89cVtable[0x54 / 4])(pField89c, 0);
   }
+  reinterpret_cast<ObjNoArgFn>(pField89cVtable[0x18 / 4])(pField89c, 0);
 
-  if (streamSlot3C != 0) {
-    streamSlot3C(stream, 0);
-  }
+  int unusedOrderCount = 0;
+  streamSlot3C(stream, 0, &unusedOrderCount, 4);
 
   int orderOrdinal = 1;
   while (orderOrdinal < 5) {
@@ -1265,28 +1597,21 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     ++orderOrdinal;
   }
 
-  if (streamRead != 0) {
-    streamRead(stream, 0, &this->field8f0, 4);
-    streamRead(stream, 0, &this->field8f4, 1);
-    streamRead(stream, 0, &this->pField8f8, 4);
-    streamRead(stream, 0, &this->field8fc, 1);
-    streamRead(stream, 0, &this->field900, 4);
-    streamRead(stream, 0, &this->field904, 1);
-  }
+  streamRead(stream, 0, &this->field8f0, 4);
+  streamRead(stream, 0, &this->field8f4, 1);
+  streamRead(stream, 0, &this->pField8f8, 4);
+  streamRead(stream, 0, &this->field8fc, 1);
+  streamRead(stream, 0, &this->field900, 4);
+  streamRead(stream, 0, &this->field904, 1);
 
   if (advanceTurnState > 0x0E) {
     void* pField90c = this->pField90c;
-    if (pField90c != 0) {
-      void** pField90cVtable = *reinterpret_cast<void***>(pField90c);
-      reinterpret_cast<ObjIntFn>(pField90cVtable[0x18 / 4])(pField90c, 0, arg1);
-    }
+    void** pField90cVtable = *reinterpret_cast<void***>(pField90c);
+    reinterpret_cast<ObjIntFn>(pField90cVtable[0x18 / 4])(pField90c, 0, streamHandle);
 
     int nodeCount = 0;
-    if (streamRead != 0) {
-      streamRead(stream, 0, &nodeCount, 4);
-    }
-    if (nodeCount > 0 && streamSlotB0 != 0 && pField90c != 0) {
-      void** pField90cVtable = *reinterpret_cast<void***>(pField90c);
+    streamRead(stream, 0, &nodeCount, 4);
+    if (nodeCount > 0) {
       ObjPtrFn pField90cSlot30 = reinterpret_cast<ObjPtrFn>(pField90cVtable[0x30 / 4]);
       int nodeOrdinal = 1;
       while (nodeOrdinal <= nodeCount) {
@@ -1300,23 +1625,24 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     }
   }
 
-  if (advanceTurnState > 0x25 && streamRead != 0) {
+  if (advanceTurnState > 0x25) {
     streamRead(stream, 0, &this->field910, 4);
     streamRead(stream, 0, &this->field914, 4);
   }
-  if (advanceTurnState > 0x2F && streamRead != 0) {
+  if (advanceTurnState > 0x2F) {
     streamRead(stream, 0, this->field918, 0x17);
   }
-  if (advanceTurnState > 0x34 && streamRead != 0) {
+  if (advanceTurnState > 0x34) {
     streamRead(stream, 0, &this->pField960, 4);
   }
 }
 
 // Updates Great Power pressure/escalation state and propagates summary messages when thresholds
 // cross.
+
 // FUNCTION: IMPERIALISM 0x004DB380
 void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  typedef int(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
+  typedef int(__fastcall * GreatPowerGetIntFn)(TGreatPower*, int);
 
   void* localizationTable = ReadGlobalPointer(kAddrLocalizationTablePtr);
   int localeIndex = 0;
@@ -1325,58 +1651,58 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(localizationTable) + 0x40);
   }
 
-  GreatPowerNoArgFn getBasePressure = reinterpret_cast<GreatPowerNoArgFn>(this->field00[0x5F]);
-  int pressureBase = 0;
+  GreatPowerGetIntFn getBasePressure = reinterpret_cast<GreatPowerGetIntFn>(this->field00[0x5F]);
+  int basePressure = 0;
   if (getBasePressure != 0) {
-    pressureBase = getBasePressure(this, 0);
+    basePressure = getBasePressure(this, 0);
   }
 
-  pressureBase += static_cast<int>(this->field13c[0x15]) * 200;
-  pressureBase += static_cast<int>(this->field13c[0x14]) * 500;
-  pressureBase += this->field840;
+  basePressure += static_cast<int>(this->field13c[0x15]) * 200;
+  basePressure += static_cast<int>(this->field13c[0x14]) * 500;
+  basePressure += this->field840;
 
   int minPressure = *reinterpret_cast<int*>(kAddrNationBasePressureByLocale + localeIndex * 4);
-  if (pressureBase < minPressure) {
-    pressureBase = minPressure;
+  if (basePressure < minPressure) {
+    basePressure = minPressure;
   }
 
-  int pressureBlend = (this->field8f0 * 0x5A + pressureBase * 1000) / 100;
-  this->field8f0 = pressureBlend;
-  int pressureTier = pressureBlend / 100;
-  int relationValue = this->field10;
-  signed char* pressureGauge = &this->field8f4;
-  signed char* escalationLevel = &this->field8fc;
+  int blendedPressure = (this->field8f0 * 0x5A + basePressure * 1000) / 100;
+  this->field8f0 = blendedPressure;
+  int pressureBand = blendedPressure / 100;
+  int relationScore = this->field10;
+  signed char* pressureCounter = &this->field8f4;
+  signed char* escalationCounter = &this->field8fc;
 
-  if (relationValue < 0) {
-    if (-(pressureTier / 2) == relationValue || -relationValue < pressureTier / 2) {
-      *escalationLevel = 1;
-    } else if (-pressureTier == relationValue || -relationValue < pressureTier) {
-      if (*escalationLevel > 1) {
-        int nextPressure = static_cast<int>(*pressureGauge) +
+  if (relationScore < 0) {
+    if (-(pressureBand / 2) == relationScore || -relationScore < pressureBand / 2) {
+      *escalationCounter = 1;
+    } else if (-pressureBand == relationScore || -relationScore < pressureBand) {
+      if (*escalationCounter > 1) {
+        int nextPressure = static_cast<int>(*pressureCounter) +
                            ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex);
         int pressureCap = *reinterpret_cast<int*>(kAddrGreatPowerPressureRiseCap + localeIndex * 4);
         if (nextPressure > pressureCap) {
           nextPressure = pressureCap;
         }
-        *pressureGauge = static_cast<signed char>(nextPressure);
+        *pressureCounter = static_cast<signed char>(nextPressure);
       }
-      *escalationLevel = 2;
+      *escalationCounter = 2;
     } else {
-      int nextPressure = static_cast<int>(*pressureGauge) +
+      int nextPressure = static_cast<int>(*pressureCounter) +
                          ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex);
       int pressureCap = *reinterpret_cast<int*>(kAddrGreatPowerPressureRiseCap + localeIndex * 4);
       if (nextPressure > pressureCap) {
         nextPressure = pressureCap;
       }
-      *pressureGauge = static_cast<signed char>(nextPressure);
+      *pressureCounter = static_cast<signed char>(nextPressure);
 
-      if (*escalationLevel < 3) {
-        *escalationLevel = 3;
+      if (*escalationCounter < 3) {
+        *escalationCounter = 3;
       } else {
-        *escalationLevel = static_cast<signed char>(*escalationLevel + 1);
+        *escalationCounter = static_cast<signed char>(*escalationCounter + 1);
       }
 
-      int escalationValue = static_cast<int>(*escalationLevel);
+      int escalationValue = static_cast<int>(*escalationCounter);
       int hardThreshold =
           *reinterpret_cast<int*>(kAddrGreatPowerPressureHardAlertThreshold + localeIndex * 4);
       int softThreshold = *reinterpret_cast<int*>(kAddrCompileGreatPowerValue + localeIndex * 4);
@@ -1385,27 +1711,27 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       }
     }
   } else {
-    if (*escalationLevel != 0) {
-      int nextPressure = static_cast<int>(*pressureGauge) -
+    if (*escalationCounter != 0) {
+      int nextPressure = static_cast<int>(*pressureCounter) -
                          ReadLocaleByteStep(kAddrGreatPowerPressureDecayStep, localeIndex);
       int minFloor = *reinterpret_cast<int*>(kAddrGreatPowerPressureMinFloor + localeIndex * 4);
       if (nextPressure < minFloor) {
         nextPressure = minFloor;
       }
-      *pressureGauge = static_cast<signed char>(nextPressure);
+      *pressureCounter = static_cast<signed char>(nextPressure);
     }
-    *escalationLevel = 0;
+    *escalationCounter = 0;
   }
 
-  relationValue = this->field10;
-  if (relationValue >= 0) {
+  relationScore = this->field10;
+  if (relationScore >= 0) {
     this->pField8f8 = 0;
     return;
   }
 
-  int pressureDrain = (199 - static_cast<int>(*pressureGauge) * relationValue) / 200;
-  this->pField8f8 = reinterpret_cast<void*>(pressureDrain);
-  this->field10 = relationValue - pressureDrain;
+  int drainAmount = (199 - static_cast<int>(*pressureCounter) * relationScore) / 200;
+  this->pField8f8 = reinterpret_cast<void*>(drainAmount);
+  this->field10 = relationScore - drainAmount;
 }
 
 // FUNCTION: IMPERIALISM 0x004DBD20
@@ -1417,6 +1743,12 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   const int kMapRegionSlots = 0x1950;
   const int kTerrainRecordStride = 0x24;
   const int kCityRecordStride = 0xA8;
+  const int kTerrainResourceTypeOffset = 0x11;
+  const int kTerrainGateFlagOffset = 0x13;
+  const int kTerrainCityIndexOffset = 0x14;
+  const int kTerrainRoadFlagOffset = 2;
+  const int kCityOwnerSlotOffset = 4;
+  const int kCityDevelopmentBaseOffset = 0x82;
 
   short* currentNeedByType = this->field10e;
   short* developmentByType = this->field10e + 7; // +0x11c overlays this runtime array.
@@ -1442,14 +1774,15 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
     while (static_cast<short>(nationSlot) < kMapRegionSlots) {
       char influence = *influenceByRegion;
       if (influence != 0) {
-        if (*reinterpret_cast<char*>(terrainStateTable + 0x13 + regionOffset) == 0) {
+        if (*reinterpret_cast<char*>(terrainStateTable + kTerrainGateFlagOffset + regionOffset) ==
+            0) {
           if (influence == 2) {
             ++controlledRegionCount;
           }
         } else {
           for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
-            short resourceType = static_cast<short>(
-                *reinterpret_cast<char*>(terrainStateTable + regionOffset + 0x11 + edgeIndex));
+            short resourceType = static_cast<short>(*reinterpret_cast<char*>(
+                terrainStateTable + regionOffset + kTerrainResourceTypeOffset + edgeIndex));
             if (resourceType != -1) {
               char contribution = mapMetric(globalMapState, 0, nationSlot, edgeIndex);
               currentNeedByType[resourceType] = static_cast<short>(
@@ -1457,20 +1790,22 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
             }
           }
 
-          if (*reinterpret_cast<char*>(terrainStateTable + 2 + regionOffset) != 0 &&
+          if (*reinterpret_cast<char*>(terrainStateTable + kTerrainRoadFlagOffset + regionOffset) !=
+                  0 &&
               influence == 2) {
             ++controlledRegionCount;
           }
 
-          int cityRecordOffset =
-              static_cast<int>(*reinterpret_cast<short*>(terrainStateTable + 0x14 + regionOffset)) *
-              kCityRecordStride;
-          if (*reinterpret_cast<short*>(cityStateTable + cityRecordOffset + 4) ==
+          int cityRecordOffset = static_cast<int>(*reinterpret_cast<short*>(
+                                     terrainStateTable + kTerrainCityIndexOffset + regionOffset)) *
+                                 kCityRecordStride;
+          if (*reinterpret_cast<short*>(cityStateTable + cityRecordOffset + kCityOwnerSlotOffset) ==
               static_cast<short>(nationSlot)) {
             for (int devIdx = 0; devIdx < 10; ++devIdx) {
               developmentByType[devIdx] = static_cast<short>(
                   developmentByType[devIdx] +
-                  *reinterpret_cast<short*>(cityStateTable + cityRecordOffset + 0x82 + devIdx * 2));
+                  *reinterpret_cast<short*>(cityStateTable + cityRecordOffset +
+                                            kCityDevelopmentBaseOffset + devIdx * 2));
             }
           }
         }
@@ -1492,6 +1827,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 }
 
 // Advances per-region development counters and emits diplomacy/map events when stage changes.
+
 // FUNCTION: IMPERIALISM 0x004DBF00
 void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
   typedef int(__fastcall * RegionListCountFn)(void*, int);
@@ -1572,41 +1908,47 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
               ++linkedIndex;
             }
 
+            short* stage1CounterA = reinterpret_cast<short*>(cityRecord + 0x84);
+            short* stage1CounterB = reinterpret_cast<short*>(cityRecord + 0x86);
+            short* stage1CounterC = reinterpret_cast<short*>(cityRecord + 0x8A);
+            short* stage1CounterD = reinterpret_cast<short*>(cityRecord + 0x8C);
+            short* stage2CounterA = reinterpret_cast<short*>(cityRecord + 0x8E);
+            short* stage2CounterB = reinterpret_cast<short*>(cityRecord + 0x90);
+            short* stage2CounterC = reinterpret_cast<short*>(cityRecord + 0x92);
+
             if ((turnDelta & 1U) == 0) {
               int sum01 = resourceSums[0] + resourceSums[1];
               if (sum01 != 0) {
                 int prod = getProduction(cityRecord, 1);
-                short* counter = reinterpret_cast<short*>(cityRecord + 0x84);
-                int limit =
-                    (static_cast<int>(*counter) + ((static_cast<int>(*counter) >> 0x1f) & 3U)) >> 2;
+                int limit = (static_cast<int>(*stage1CounterA) +
+                             ((static_cast<int>(*stage1CounterA) >> 0x1f) & 3U)) >>
+                            2;
                 int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
-                if (limit < prodLimit && static_cast<int>(*counter) < sum01 / 2) {
+                if (limit < prodLimit && static_cast<int>(*stage1CounterA) < sum01 / 2) {
                   pendingStage = 1;
-                  *counter = static_cast<short>(*counter + 1);
+                  *stage1CounterA = static_cast<short>(*stage1CounterA + 1);
                   needsRedraw = 1;
                 }
               }
 
               if (resourceSums[2] != 0) {
                 int prod = getProduction(cityRecord, 5);
-                short* counter = reinterpret_cast<short*>(cityRecord + 0x86);
                 int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
-                if (static_cast<int>(*counter) < prodLimit &&
-                    static_cast<int>(*counter) < resourceSums[2] / 2) {
+                if (static_cast<int>(*stage1CounterB) < prodLimit &&
+                    static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
                   pendingStage = 1;
-                  *counter = static_cast<short>(*counter + 1);
+                  *stage1CounterB = static_cast<short>(*stage1CounterB + 1);
                   needsRedraw = 1;
                 }
               }
 
               if (resourceSums[3] != 0) {
                 int prod = getProduction(cityRecord, 3);
-                short* counter = reinterpret_cast<short*>(cityRecord + 0x8A);
                 int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
-                if (static_cast<int>(*counter) < prodLimit &&
-                    static_cast<int>(*counter) < resourceSums[3] / 2) {
+                if (static_cast<int>(*stage1CounterC) < prodLimit &&
+                    static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
                   pendingStage = 1;
-                  *counter = static_cast<short>(*counter + 1);
+                  *stage1CounterC = static_cast<short>(*stage1CounterC + 1);
                   needsRedraw = 1;
                 }
               }
@@ -1616,38 +1958,31 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
               if (capabilityScore != 0 && orderCapabilityState != 0 &&
                   *reinterpret_cast<unsigned char*>(
                       reinterpret_cast<unsigned char*>(orderCapabilityState) + 0x193) != 0) {
-                short* counter = reinterpret_cast<short*>(cityRecord + 0x8C);
-                if (static_cast<int>(*counter) < capabilityScore / 2) {
+                if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
                   pendingStage = 1;
-                  *counter = static_cast<short>(*counter + 1);
+                  *stage1CounterD = static_cast<short>(*stage1CounterD + 1);
                   needsRedraw = 1;
                 }
               }
             }
 
             if (turnDelta > 9 && (turnDelta & 1U) != 0) {
-              if (*reinterpret_cast<short*>(cityRecord + 0x84) != 0 &&
-                  static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x8E)) <
-                      static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x84)) / 2) {
+              if (*stage1CounterA != 0 &&
+                  static_cast<int>(*stage2CounterA) < static_cast<int>(*stage1CounterA) / 2) {
                 pendingStage = 2;
-                *reinterpret_cast<short*>(cityRecord + 0x8E) =
-                    static_cast<short>(*reinterpret_cast<short*>(cityRecord + 0x8E) + 1);
+                *stage2CounterA = static_cast<short>(*stage2CounterA + 1);
                 needsRedraw = 1;
               }
-              if (*reinterpret_cast<short*>(cityRecord + 0x86) != 0 &&
-                  static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x90)) <
-                      static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x86)) / 2) {
+              if (*stage1CounterB != 0 &&
+                  static_cast<int>(*stage2CounterB) < static_cast<int>(*stage1CounterB) / 2) {
                 pendingStage = 2;
-                *reinterpret_cast<short*>(cityRecord + 0x90) =
-                    static_cast<short>(*reinterpret_cast<short*>(cityRecord + 0x90) + 1);
+                *stage2CounterB = static_cast<short>(*stage2CounterB + 1);
                 needsRedraw = 1;
               }
-              if (*reinterpret_cast<short*>(cityRecord + 0x8A) != 0 &&
-                  static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x92)) <
-                      static_cast<int>(*reinterpret_cast<short*>(cityRecord + 0x8A)) / 2) {
+              if (*stage1CounterC != 0 &&
+                  static_cast<int>(*stage2CounterC) < static_cast<int>(*stage1CounterC) / 2) {
                 pendingStage = 2;
-                *reinterpret_cast<short*>(cityRecord + 0x92) =
-                    static_cast<short>(*reinterpret_cast<short*>(cityRecord + 0x92) + 1);
+                *stage2CounterC = static_cast<short>(*stage2CounterC + 1);
                 needsRedraw = 1;
               }
             }
@@ -1723,6 +2058,83 @@ void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
   refreshNeedPanels(this, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x004DD4E0
+void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
+  const int kMajorNationCount = 7;
+  const int kNeedSlotStart = 7;
+  const int kNeedSlotEndExclusive = 12;
+  const int kNeedSlotFallback = 5;
+
+  if (this->fieldA0 == 0) {
+    if (this->pField94 != 0) {
+      Object_CallSlot8CNoArgs(this->pField94);
+    }
+    return;
+  }
+
+  void** nationStates = reinterpret_cast<void**>(kAddrNationStates);
+  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+
+  bool hasUnfilledNeed = false;
+  for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
+    if (GreatPower_GetNeedSlotValue(this, needSlot) < 0) {
+      hasUnfilledNeed = true;
+      break;
+    }
+  }
+
+  if (hasUnfilledNeed) {
+    for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
+      if (GreatPower_GetNeedSlotValue(this, needSlot) >= 0) {
+        continue;
+      }
+
+      int selectedNation = -1;
+      for (int majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
+        if (majorNation == this->field0c) {
+          continue;
+        }
+        void* nationState = nationStates[majorNation];
+        if (nationState == 0 || NationState_IsBusyA0(nationState) != 0) {
+          continue;
+        }
+        selectedNation = majorNation;
+        break;
+      }
+
+      if (selectedNation >= 0) {
+        void* selectedNationState = nationStates[selectedNation];
+        if (selectedNationState != 0) {
+          NationState_AssignNeedSlotFromSource(selectedNationState, needSlot, this->field0c);
+        }
+      }
+    }
+  }
+
+  if (GreatPower_GetNeedSlotValue(this, kNeedSlotFallback) != -1) {
+    return;
+  }
+
+  for (int majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
+    if (majorNation == this->field0c) {
+      continue;
+    }
+    if (IsNationSlotEligibleForEventProcessingFast(majorNation) == 0) {
+      continue;
+    }
+    if (diplomacyManager != 0 &&
+        Diplomacy_HasPolicyWithNation(diplomacyManager, majorNation, this->field0c) != 0) {
+      continue;
+    }
+
+    void* nationState = nationStates[majorNation];
+    if (nationState != 0) {
+      NationState_AssignNeedSlotFromSource(nationState, kNeedSlotFallback, this->field0c);
+    }
+    break;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004DDA90
 void TGreatPower::QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                                   short sourceNationSlot) {
@@ -1762,67 +2174,235 @@ void TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
 
 // FUNCTION: IMPERIALISM 0x004DDFC0
 void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
-  typedef int(__fastcall * GreatPowerCanPayFn)(TGreatPower*, int, int);
-  typedef void(__fastcall * GreatPowerIntFn)(TGreatPower*, int, int);
-  typedef void(__fastcall * GreatPowerInt2Fn)(TGreatPower*, int, int, int);
-  typedef void(__fastcall * GreatPowerInt3Fn)(TGreatPower*, int, int, int, int);
-
-  unsigned char* self = reinterpret_cast<unsigned char*>(this);
   short targetClass = static_cast<short>(arg1);
   short policyCode = static_cast<short>(arg2);
-  short* policyByNation = reinterpret_cast<short*>(self + 0xB2);
-  short previousPolicy = policyByNation[targetClass];
-  bool shouldApply = true;
-  void** vtable = this->field00;
+  char shouldApply = 1;
 
-  if (policyCode == -1) {
-    if (previousPolicy == 0x133) {
-      reinterpret_cast<GreatPowerIntFn>(vtable[0x0E])(this, 0, 500);
-    } else if (previousPolicy == 0x134) {
-      reinterpret_cast<GreatPowerIntFn>(vtable[0x0E])(this, 0, 5000);
+  if (policyCode < 0x12E) {
+    if (policyCode != 0x12D) {
+      if (policyCode == -1) {
+        short previousPolicy = this->fieldB2[targetClass];
+        if (previousPolicy == 0x133) {
+          GreatPower_AdjustTreasury(this, 500);
+        } else if (previousPolicy == 0x134) {
+          GreatPower_AdjustTreasury(this, 5000);
+        }
+      }
+      goto APPLY_POLICY_IF_ALLOWED;
     }
-  } else if (policyCode == 0x133) {
-    int canPay = reinterpret_cast<GreatPowerCanPayFn>(vtable[0x7A])(this, 0, 500);
-    if (canPay != 0) {
-      reinterpret_cast<GreatPowerIntFn>(vtable[0x0E])(this, 0, 0xFFFFFE0C);
-    } else {
-      shouldApply = false;
+    if (LookupOrderCompatibility(this->field0c, targetClass) != 2) {
+      shouldApply = 0;
     }
-  } else if (policyCode == 0x134) {
-    int canPay = reinterpret_cast<GreatPowerCanPayFn>(vtable[0x7A])(this, 0, 5000);
-    if (canPay != 0) {
-      reinterpret_cast<GreatPowerIntFn>(vtable[0x0E])(this, 0, 0xFFFFEC78);
-    } else {
-      shouldApply = false;
-    }
-  } else if (policyCode == 0x131) {
-    reinterpret_cast<GreatPowerInt3Fn>(vtable[0xA1])(this, 0, targetClass, 4, -1);
-    if (*reinterpret_cast<char*>(self + 0xA0) != 0) {
-      reinterpret_cast<GreatPowerInt2Fn>(vtable[0x75])(this, 0, arg1, -1);
-    }
+    goto APPLY_POLICY_IF_ALLOWED;
   }
 
+  switch (policyCode - 0x12E) {
+  case 0:
+  case 1:
+    if (LookupOrderCompatibility(this->field0c, targetClass) != 2) {
+      shouldApply = 0;
+    }
+    break;
+
+  case 3: {
+    int* localizationTable = reinterpret_cast<int*>(ReadGlobalPointer(kAddrLocalizationTablePtr));
+    if (localizationTable != 0 && localizationTable[0x08 / 4] == 6) {
+      GreatPower_ApplyPolicyForNation(this, targetClass, 4, -1);
+    }
+
+    void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+    short relationTier = Diplomacy_GetRelationTier(diplomacyManager, targetClass, this->field0c);
+    if (relationTier == 2) {
+      Diplomacy_SetRelationState(diplomacyManager, this->field0c, targetClass, 1);
+    }
+
+    void** terrainTypeDescriptorTable = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+    void* terrainDescriptor = terrainTypeDescriptorTable[targetClass];
+    if (terrainDescriptor != 0) {
+      short encodedNationSlot = TerrainDescriptor_GetEncodedNationSlot(terrainDescriptor);
+      if (encodedNationSlot > 199) {
+        int resolvedNationSlot = DecodeTerrainNationSlot(encodedNationSlot, terrainDescriptor);
+        if (Diplomacy_HasPolicyWithNation(diplomacyManager, this->field0c, resolvedNationSlot) ==
+            0) {
+          GreatPower_SetPolicyForNation(this, resolvedNationSlot, 0x131);
+        }
+      }
+    }
+
+    if (this->fieldA0 != 0) {
+      GreatPower_ResetPolicyForNation(this, targetClass, -1);
+    }
+    break;
+  }
+
+  case 5:
+    if (GreatPower_CanPayAmount(this, 500) != 0) {
+      GreatPower_AdjustTreasury(this, 0xFFFFFE0C);
+    } else {
+      shouldApply = 0;
+    }
+    break;
+
+  case 6:
+    if (GreatPower_CanPayAmount(this, 5000) != 0) {
+      GreatPower_AdjustTreasury(this, 0xFFFFEC78);
+    } else {
+      shouldApply = 0;
+    }
+    break;
+
+  default:
+    break;
+  }
+
+APPLY_POLICY_IF_ALLOWED:
   if (shouldApply) {
-    policyByNation[targetClass] = policyCode;
+    this->fieldB2[targetClass] = policyCode;
   }
-  if (*reinterpret_cast<char*>(self + 0xA0) != 0) {
+  if (this->fieldA0 != 0) {
     thunk_NoOpDiplomacyPolicyStateChangedHook();
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004DE340
+void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2) {
+  const unsigned short kGrantClear = 0xFFFF;
+  const unsigned short kGrantMask = 0x3FFF;
+  const short kMinorNationStart = 7;
+  const short kInfluenceAlertThreshold = 0x00FA;
+
+  short targetNation = static_cast<short>(arg1);
+  unsigned short newGrantRaw = static_cast<unsigned short>(arg2);
+  unsigned short oldGrantRaw = static_cast<unsigned short>(this->fieldE0[targetNation]);
+  bool accepted = true;
+
+  if (newGrantRaw != oldGrantRaw) {
+    if (newGrantRaw != kGrantClear && GreatPower_CanSetGrantValue(this, newGrantRaw) == 0) {
+      accepted = false;
+    } else {
+      if (oldGrantRaw != kGrantClear) {
+        int oldGrantValue = static_cast<short>(oldGrantRaw & kGrantMask);
+        this->fieldAC -= oldGrantValue;
+        GreatPower_AdjustTreasury(this, oldGrantValue);
+      }
+
+      if (newGrantRaw != kGrantClear) {
+        int newGrantValue = static_cast<short>(newGrantRaw & kGrantMask);
+        this->fieldAC += newGrantValue;
+        GreatPower_AdjustTreasury(this, -newGrantValue);
+      }
+
+      this->fieldE0[targetNation] = static_cast<short>(newGrantRaw);
+    }
+  }
+
+  if (this->fieldA0 == 0) {
+    return;
+  }
+
+  thunk_NoOpDiplomacyPolicyStateChangedHook();
+
+  if (!accepted || newGrantRaw == kGrantClear || targetNation < kMinorNationStart) {
+    return;
+  }
+
+  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+  if (diplomacyManager == 0) {
+    return;
+  }
+
+  bool shouldDispatchAlert = false;
+  for (int majorNation = 0; majorNation < kMinorNationStart; ++majorNation) {
+    if (majorNation == this->field0c) {
+      continue;
+    }
+    short relationValue =
+        Diplomacy_ReadRelationMatrix79C(diplomacyManager, majorNation, targetNation);
+    if (relationValue >= kInfluenceAlertThreshold) {
+      shouldDispatchAlert = true;
+      break;
+    }
+  }
+
+  if (!shouldDispatchAlert) {
+    return;
+  }
+
+  int msgRefA = 0;
+  int msgRefB = 0;
+  InitializeSharedStringRefFromEmpty(&msgRefA);
+  InitializeSharedStringRefFromEmpty(&msgRefB);
+  thunk_NoOpDiplomacyPolicyStateChangedHook();
+  ReleaseSharedStringRefIfNotEmpty(&msgRefB);
+  ReleaseSharedStringRefIfNotEmpty(&msgRefA);
+}
+
+// FUNCTION: IMPERIALISM 0x004DE5E0
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1) {
+  short targetNation = static_cast<short>(arg1);
+  int grantValue = DecodeActiveGrantValue(this->fieldE0[targetNation]);
+  if (grantValue <= 0) {
+    return;
+  }
+
+  void* terrainDescriptor =
+      ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, targetNation);
+  TerrainDescriptor_CallSlot38(terrainDescriptor, grantValue);
+
+  this->fieldAC -= grantValue;
+
+  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+  if (LookupOrderCompatibility(targetNation, this->field0c) != 2) {
+    return;
+  }
+
+  int sourceNation = this->field0c;
+  int relationCode = static_cast<int>(
+      Diplomacy_ReadRelationMatrix79C(diplomacyManager, sourceNation, targetNation));
+  int relationDelta = ComputeGrantInfluenceDelta(grantValue);
+  Diplomacy_SetFlag28(diplomacyManager, sourceNation, targetNation, relationCode + relationDelta);
+}
+
+// FUNCTION: IMPERIALISM 0x004DE700
+bool TGreatPower::CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+                                                        unsigned short proposedGrantEntry) {
+  int proposedGrantValue = DecodeGrantValue14Bit(static_cast<short>(proposedGrantEntry));
+  if (proposedGrantValue < 0) {
+    return true;
+  }
+
+  int currentGrant = DecodeActiveGrantValue(this->fieldE0[targetNationId]);
+
+  int availableBudget = ComputeAvailableDiplomacyBudget(this);
+  int remainingBudget = currentGrant - proposedGrantValue + availableBudget;
+  return remainingBudget >= 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004DE790
+bool TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost) {
+  int availableBudget = ComputeAvailableDiplomacyBudget(this);
+  int remainingBudget = availableBudget - this->fieldAC - static_cast<int>(additionalCost);
+  return remainingBudget >= 0;
+}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x004DE860
 void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   typedef void(__fastcall * QueueInterNationEventDedupFn)(void*, int, int, int, int, char);
-  typedef void(__fastcall * TerrainSlot68Fn)(void*, int, int, int);
   typedef int(__fastcall * EligibilityFn)(void*, int, int);
-  typedef void(__fastcall * ReleaseObjFn)(void*, int);
-  typedef void(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
-  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
-  typedef void(__fastcall * DipSlot74Fn)(void*, int, int, int, int);
-  typedef void(__fastcall * DipSlot28Fn)(void*, int, int, int, int);
-  typedef void(__fastcall * NationSlot94Fn)(void*, int, int, int);
-  typedef void(__fastcall * SecondarySlot48Fn)(void*, int, int, int);
   typedef void(__fastcall * ApplyJoinEmpireResetImplFn)(void*, int, int);
+  const int kResetDiplomacyLevel = 100;
+  const int kResetPolicyCode = -1;
+  const int kPrimaryNationCount = 7;
+  const int kNationSlotCount = 0x17;
+  const int kDipFlagRelation = 6;
+  const int kDipFlagPolicy = 0x31;
+  const int kNationActionCode = 0x131;
 
   QueueInterNationEventDedupFn queueInterNationEventDedup =
       reinterpret_cast<QueueInterNationEventDedupFn>(thunk_QueueInterNationEventRecordDeduped);
@@ -1830,22 +2410,21 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
                              this->field0c, 7, '\0');
   reinterpret_cast<void(__cdecl*)(void)>(thunk_RebuildMinorNationDispositionLookupTables)();
 
-  unsigned char* self = reinterpret_cast<unsigned char*>(this);
-  *reinterpret_cast<short*>(self + 0x0E) = static_cast<short>(arg1 + 100);
+  unsigned char* selfBytes = reinterpret_cast<unsigned char*>(this);
+  this->field0e = static_cast<short>(arg1 + 100);
 
   EligibilityFn isNationEligible =
       reinterpret_cast<EligibilityFn>(thunk_IsNationSlotEligibleForEventProcessing);
+  void* eligibilityManager = ReadGlobalPointer(kAddrEligibilityManagerPtr);
   void** terrainTypeDescriptorCursor = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   int nationSlot = 0;
   while (reinterpret_cast<unsigned int>(terrainTypeDescriptorCursor) <
          kAddrTerrainTypeDescriptorTableEnd) {
-    if (isNationEligible(ReadGlobalPointer(kAddrEligibilityManagerPtr), 0, nationSlot) != 0 &&
-        nationSlot != this->field0c && nationSlot != arg1) {
+    if (isNationEligible(eligibilityManager, 0, nationSlot) != 0 && nationSlot != this->field0c &&
+        nationSlot != arg1) {
       void* terrainTypeDescriptor = *terrainTypeDescriptorCursor;
       if (terrainTypeDescriptor != 0) {
-        void** terrainVtable = *reinterpret_cast<void***>(terrainTypeDescriptor);
-        TerrainSlot68Fn terrainSlot68 = reinterpret_cast<TerrainSlot68Fn>(terrainVtable[0x68 / 4]);
-        terrainSlot68(terrainTypeDescriptor, 0, this->field0c, 100);
+        TerrainDescriptor_SetResetLevel(terrainTypeDescriptor, this->field0c, kResetDiplomacyLevel);
       }
     }
     ++terrainTypeDescriptorCursor;
@@ -1854,117 +2433,95 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
 
   reinterpret_cast<void(__cdecl*)(void)>(ResetTerrainAdjacencyMatrixRowAndSymmetricLink)();
 
-  *reinterpret_cast<int*>(self + 0x10) = 0;
+  this->field10 = 0;
 
-  int releaseOffsets[3];
-  releaseOffsets[0] = 0x94;
-  releaseOffsets[1] = 0x98;
-  releaseOffsets[2] = 0x9C;
+  void** releaseTargets[3];
+  releaseTargets[0] = &this->pField94;
+  releaseTargets[1] = &this->pField98;
+  releaseTargets[2] = &this->pField9c;
   int releaseIndex;
   for (releaseIndex = 0; releaseIndex < 3; ++releaseIndex) {
-    void* obj = *reinterpret_cast<void**>(self + releaseOffsets[releaseIndex]);
+    void* obj = *releaseTargets[releaseIndex];
     if (obj != 0) {
-      void** objVtable = *reinterpret_cast<void***>(obj);
-      reinterpret_cast<ReleaseObjFn>(objVtable[0x1C / 4])(obj, 0);
-      *reinterpret_cast<void**>(self + releaseOffsets[releaseIndex]) = 0;
+      ReleaseObjectAtSlot1C(obj);
+      *releaseTargets[releaseIndex] = 0;
     }
   }
 
-  *reinterpret_cast<short*>(self + 0xA2) = 0;
-  *reinterpret_cast<short*>(self + 0xA4) = 0;
-  *reinterpret_cast<short*>(self + 0xA6) = 0;
-  *reinterpret_cast<short*>(self + 0xA8) = 0;
-  *reinterpret_cast<int*>(self + 0xAC) = 0;
-  *reinterpret_cast<short*>(self + 0xB0) = 0;
+  this->fieldA2 = 0;
+  this->fieldA4 = 0;
+  this->fieldA6 = 0;
+  this->fieldA8 = 0;
+  this->fieldAC = 0;
+  this->fieldB0 = 0;
 
   int idx;
-  for (idx = 0; idx < 0x17; ++idx) {
-    *reinterpret_cast<short*>(self + 0xB2 + idx * 2) = static_cast<short>(-1);
-    *reinterpret_cast<short*>(self + 0xE0 + idx * 2) = static_cast<short>(-1);
-    *reinterpret_cast<unsigned char*>(self + 0x8A0 + idx) = 0;
-    *reinterpret_cast<short*>(self + 0x14 + idx * 2) = 100;
+  for (idx = 0; idx < kNationSlotCount; ++idx) {
+    this->fieldB2[idx] = static_cast<short>(-1);
+    this->fieldE0[idx] = static_cast<short>(-1);
+    *reinterpret_cast<unsigned char*>(selfBytes + 0x8A0 + idx) = 0;
+    *reinterpret_cast<short*>(selfBytes + 0x14 + idx * 2) = 100;
   }
 
-  for (idx = 0; idx < 0x17; ++idx) {
-    *reinterpret_cast<short*>(self + 0x10E + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x13C + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x16A + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x198 + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x1C6 + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x1F4 + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x222 + idx * 2) = 0;
-    *reinterpret_cast<short*>(self + 0x250 + idx * 2) = 0;
+  for (idx = 0; idx < kNationSlotCount; ++idx) {
+    this->field10e[idx] = 0;
+    this->field13c[idx] = 0;
+    this->field16a[idx] = 0;
+    this->field198[idx] = 0;
+    this->field1c6[idx] = 0;
+    this->field1f4[idx] = 0;
+    this->field222[idx] = 0;
+    this->field250[idx] = 0;
     int col;
     for (col = 0; col < 0x10; ++col) {
       int matrixIndex = col * 0x17 + idx;
-      *reinterpret_cast<void**>(self + 0x280 + matrixIndex * 4) = 0;
+      this->field280[matrixIndex] = 0;
     }
   }
 
-  *reinterpret_cast<int*>(self + 0x840) = 0;
-  *reinterpret_cast<int*>(self + 0x844) = 0;
+  this->field840 = 0;
+  this->field844 = 0;
 
-  void* proposalQueue = *reinterpret_cast<void**>(self + 0x84C);
+  void* proposalQueue = this->pField84c;
   if (proposalQueue != 0) {
-    void** proposalQueueVtable = *reinterpret_cast<void***>(proposalQueue);
-    reinterpret_cast<ReleaseObjFn>(proposalQueueVtable[0x1C / 4])(proposalQueue, 0);
+    ReleaseObjectAtSlot1C(proposalQueue);
   }
-  void* turnEventQueue = *reinterpret_cast<void**>(self + 0x848);
+  void* turnEventQueue = this->pField848;
   if (turnEventQueue != 0) {
-    void** turnEventQueueVtable = *reinterpret_cast<void***>(turnEventQueue);
-    reinterpret_cast<ReleaseObjFn>(turnEventQueueVtable[0x1C / 4])(turnEventQueue, 0);
+    ReleaseObjectAtSlot1C(turnEventQueue);
   }
 
-  GreatPowerNoArgFn slot5C = reinterpret_cast<GreatPowerNoArgFn>(this->field00[0x5C]);
-  slot5C(this, 0);
+  GreatPower_CallSlot5C(this);
 
-  void* relationPanelManager = *reinterpret_cast<void**>(self + 0x894);
+  void* relationPanelManager = this->pField894;
   if (relationPanelManager != 0) {
-    void** relationPanelVtable = *reinterpret_cast<void***>(relationPanelManager);
-    reinterpret_cast<ReleaseObjFn>(relationPanelVtable[0x1C / 4])(relationPanelManager, 0);
+    ReleaseObjectAtSlot1C(relationPanelManager);
   }
-  *reinterpret_cast<void**>(self + 0x894) = 0;
+  this->pField894 = 0;
 
-  GreatPowerNoArgFn slotA5 = reinterpret_cast<GreatPowerNoArgFn>(this->field00[0xA5]);
-  slotA5(this, 0);
+  GreatPower_CallSlotA5(this);
 
   void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
-  void** diplomacyVtable =
-      diplomacyManager != 0 ? *reinterpret_cast<void***>(diplomacyManager) : (void**)0;
-  GreatPowerSetValueFn slot12 = reinterpret_cast<GreatPowerSetValueFn>(this->field00[0x12]);
-  GreatPowerSetValueFn slot75 = reinterpret_cast<GreatPowerSetValueFn>(this->field00[0x75]);
-  DipSlot74Fn dipSlot74 =
-      diplomacyVtable != 0 ? reinterpret_cast<DipSlot74Fn>(diplomacyVtable[0x74 / 4]) : 0;
-  DipSlot28Fn dipSlot28 =
-      diplomacyVtable != 0 ? reinterpret_cast<DipSlot28Fn>(diplomacyVtable[0x28 / 4]) : 0;
-
   void** nationStateCursor = reinterpret_cast<void**>(kAddrNationStates);
   nationSlot = 0;
   while (reinterpret_cast<unsigned int>(nationStateCursor) < kAddrNationStatesEnd) {
-    if (nationSlot != this->field0c &&
-        isNationEligible(ReadGlobalPointer(kAddrEligibilityManagerPtr), 0, nationSlot) != 0) {
-      if (dipSlot74 != 0) {
-        dipSlot74(diplomacyManager, 0, this->field0c, nationSlot, 6);
-      }
-      if (dipSlot28 != 0) {
-        dipSlot28(diplomacyManager, 0, this->field0c, nationSlot, 0x31);
-      }
+    if (nationSlot != this->field0c && isNationEligible(eligibilityManager, 0, nationSlot) != 0) {
+      Diplomacy_SetFlag74(diplomacyManager, this->field0c, nationSlot, kDipFlagRelation);
+      Diplomacy_SetFlag28(diplomacyManager, this->field0c, nationSlot, kDipFlagPolicy);
       void* nationState = *nationStateCursor;
       if (nationState != 0 &&
           *reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(nationState) + 0xA0) == 0) {
-        void** nationVtable = *reinterpret_cast<void***>(nationState);
-        NationSlot94Fn nationSlot94 = reinterpret_cast<NationSlot94Fn>(nationVtable[0x94 / 4]);
-        nationSlot94(nationState, 0, this->field0c, 0x131);
+        NationState_NotifyAction131(nationState, this->field0c);
       }
-      slot12(this, 0, nationSlot, 100);
-      slot75(this, 0, nationSlot, -1);
+      GreatPower_ResetDiplomacyLevelForNation(this, nationSlot, kResetDiplomacyLevel);
+      GreatPower_ResetPolicyForNation(this, nationSlot, kResetPolicyCode);
     }
     ++nationStateCursor;
     ++nationSlot;
   }
 
   int secondarySlot;
-  for (secondarySlot = 7; secondarySlot < 0x17; ++secondarySlot) {
+  for (secondarySlot = kPrimaryNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
     void** secondarySlots = reinterpret_cast<void**>(kAddrSecondaryNationStateSlots);
     void* secondaryState = secondarySlots[secondarySlot];
     bool directReset = true;
@@ -1972,36 +2529,24 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
       short ownerNation =
           *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(secondaryState) + 0x0E);
       if (ownerNation >= 200) {
-        if (ownerNation < 100) {
-          ownerNation =
-              *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(secondaryState) + 0x0C);
-        } else if (ownerNation < 200) {
-          ownerNation = static_cast<short>(ownerNation - 100);
-        } else {
-          ownerNation = static_cast<short>(ownerNation - 200);
-        }
+        // Preserve existing effective behavior: for encoded >=200 states, normalize by subtracting
+        // 200 before owner comparison.
+        ownerNation = static_cast<short>(ownerNation - 200);
         directReset = ownerNation == this->field0c;
       }
     }
 
     if (!directReset) {
-      if (dipSlot74 != 0) {
-        dipSlot74(diplomacyManager, 0, this->field0c, secondarySlot, 6);
-      }
-      if (dipSlot28 != 0) {
-        dipSlot28(diplomacyManager, 0, this->field0c, secondarySlot, 0x31);
-      }
+      Diplomacy_SetFlag74(diplomacyManager, this->field0c, secondarySlot, kDipFlagRelation);
+      Diplomacy_SetFlag28(diplomacyManager, this->field0c, secondarySlot, kDipFlagPolicy);
     }
 
-    slot12(this, 0, secondarySlot, 100);
-    slot75(this, 0, secondarySlot, -1);
+    GreatPower_ResetDiplomacyLevelForNation(this, secondarySlot, kResetDiplomacyLevel);
+    GreatPower_ResetPolicyForNation(this, secondarySlot, kResetPolicyCode);
 
     void** terrainTypeDescriptorTable = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     if (terrainTypeDescriptorTable[secondarySlot] != 0 && secondaryState != 0) {
-      void** secondaryVtable = *reinterpret_cast<void***>(secondaryState);
-      SecondarySlot48Fn secondarySlot48 =
-          reinterpret_cast<SecondarySlot48Fn>(secondaryVtable[0x48 / 4]);
-      secondarySlot48(secondaryState, 0, this->field0c, 100);
+      SecondaryState_ResetDiplomacyLevel(secondaryState, this->field0c, kResetDiplomacyLevel);
     }
   }
 
@@ -2022,35 +2567,23 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
 #pragma optimize("y", on)
 #endif
 void TGreatPower::ApplyImmediateDiplomacyPolicySideEffects(int arg1, int arg2) {
-  typedef void(__fastcall * QueueSlot38Fn)(void*, int, int*);
-  typedef char(__fastcall * GreatPowerSlot28Fn)(TGreatPower*, int);
-  typedef void(__fastcall * QueueInterNationEventFn)(void*, int, int, int, char);
-  typedef void(__fastcall * SendTurnEvent13Fn)(void*, int, int);
-  typedef char(__fastcall * DipSlot84Fn)(void*, int, int);
-  typedef short(__fastcall * DipSlot70Fn)(void*, int, int, int);
-  typedef char(__fastcall * DipSlot44Fn)(void*, int, int, int);
-  typedef void(__fastcall * DipSlot7CFn)(void*, int, int, int, int);
-  typedef int(__fastcall * IsEligibleFn)(void*, int, int);
-  typedef void(__fastcall * GreatPowerSlotA1ApplyFn)(TGreatPower*, int, int, int, int);
-
   struct Event13Payload {
     int marker0;
     int nationMask;
     int marker1;
     int targetMask;
   };
+  const int kMajorNationCount = 7;
+  const short kPolicyMutualDefense = 0x130;
+  const short kPolicyTradeEmbargo = 0x12E;
 
-  unsigned char* selfBytes = reinterpret_cast<unsigned char*>(this);
   short policyCode = static_cast<short>(arg2);
 
-  if (*reinterpret_cast<unsigned char*>(selfBytes + 0xA0) != 0) {
+  if (this->fieldA0 != 0) {
     int packedCode = (static_cast<int>(static_cast<unsigned short>(arg1)) << 16) |
                      static_cast<unsigned short>(arg2);
-    void* diplomacyQueue = *reinterpret_cast<void**>(selfBytes + 0x848);
-    if (diplomacyQueue != 0) {
-      void** queueVtable = *reinterpret_cast<void***>(diplomacyQueue);
-      reinterpret_cast<QueueSlot38Fn>(queueVtable[0x38 / 4])(diplomacyQueue, 0, &packedCode);
-    }
+    void* diplomacyQueue = this->pField848;
+    QueueObject_WritePackedIntAtSlot38(diplomacyQueue, &packedCode);
 
     Event13Payload payload;
     payload.marker0 = 1;
@@ -2058,67 +2591,50 @@ void TGreatPower::ApplyImmediateDiplomacyPolicySideEffects(int arg1, int arg2) {
     payload.marker1 = 1;
     payload.targetMask = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
 
-    char immediateDispatch = reinterpret_cast<GreatPowerSlot28Fn>(this->field00[0x28])(this, 0);
+    char immediateDispatch = GreatPower_ShouldDispatchImmediately(this);
     if (immediateDispatch == 0) {
-      void* queueManager = ReadGlobalPointer(kAddrInterNationEventQueueManagerPtr);
-      reinterpret_cast<QueueInterNationEventFn>(QueueInterNationEventIntoNationBucket)(
-          queueManager, 0, static_cast<int>(this->field0c), reinterpret_cast<int>(&payload), '\0');
+      QueueInterNationEventWithPayload(static_cast<int>(this->field0c), &payload);
     } else {
-      reinterpret_cast<SendTurnEvent13Fn>(thunk_CreateAndSendTurnEvent13_NationAndNineDwords)(
-          0, static_cast<int>(this->field0c), reinterpret_cast<int>(&payload));
+      SendTurnEvent13WithPayload(static_cast<int>(this->field0c), &payload);
     }
   }
 
-  TDiplomacyTurnStateManager* diplomacyState = reinterpret_cast<TDiplomacyTurnStateManager*>(
-      ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr));
-  if (diplomacyState == 0) {
-    return;
-  }
-
-  void** diplomacyVtable = reinterpret_cast<void**>(diplomacyState->vftable);
+  void* diplomacyState = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
   int nationSlot = static_cast<int>(this->field0c);
 
-  if (policyCode == 0x130 &&
-      reinterpret_cast<DipSlot84Fn>(diplomacyVtable[0x84 / 4])(diplomacyState, 0, arg1) != 0) {
-    for (int slot = 0; slot < 7; ++slot) {
-      if (reinterpret_cast<IsEligibleFn>(thunk_IsNationSlotEligibleForEventProcessing)(0, 0,
-                                                                                       slot) == 0) {
+  if (policyCode == kPolicyMutualDefense &&
+      Diplomacy_HasFlag84ForNation(diplomacyState, arg1) != 0) {
+    for (int slot = 0; slot < kMajorNationCount; ++slot) {
+      if (IsNationSlotEligibleForEventProcessingFast(slot) == 0) {
         continue;
       }
 
-      short relationState = reinterpret_cast<DipSlot70Fn>(diplomacyVtable[0x70 / 4])(
-          diplomacyState, nationSlot, slot, 0);
+      short relationState = Diplomacy_GetRelationTier(diplomacyState, nationSlot, slot);
       if (relationState != 2) {
         continue;
       }
 
-      if (reinterpret_cast<DipSlot44Fn>(diplomacyVtable[0x44 / 4])(diplomacyState, slot, arg1, 0) !=
-          0) {
-        reinterpret_cast<DipSlot7CFn>(diplomacyVtable[0x7C / 4])(diplomacyState, nationSlot, slot,
-                                                                 1, 0);
+      if (Diplomacy_HasPolicyWithNation(diplomacyState, slot, arg1) != 0) {
+        Diplomacy_SetRelationState(diplomacyState, nationSlot, slot, 1);
       }
     }
   }
 
-  if (policyCode != 0x12E) {
+  if (policyCode != kPolicyTradeEmbargo) {
     return;
   }
 
-  for (int slot = 0; slot < 7; ++slot) {
-    if (reinterpret_cast<IsEligibleFn>(thunk_IsNationSlotEligibleForEventProcessing)(0, 0, slot) ==
-        0) {
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    if (IsNationSlotEligibleForEventProcessingFast(slot) == 0) {
       continue;
     }
 
-    if (reinterpret_cast<DipSlot44Fn>(diplomacyVtable[0x44 / 4])(diplomacyState, slot, arg1, 0) ==
-        0) {
+    if (Diplomacy_HasPolicyWithNation(diplomacyState, slot, arg1) == 0) {
       continue;
     }
 
-    if (reinterpret_cast<DipSlot44Fn>(diplomacyVtable[0x44 / 4])(diplomacyState, slot, nationSlot,
-                                                                 0) == 0) {
-      reinterpret_cast<GreatPowerSlotA1ApplyFn>(this->field00[0xA1])(this, 0, slot, 2,
-                                                                     static_cast<short>(arg1));
+    if (Diplomacy_HasPolicyWithNation(diplomacyState, slot, nationSlot) == 0) {
+      GreatPower_ApplyPolicyForNation(this, slot, 2, static_cast<short>(arg1));
     }
   }
 }
@@ -2130,17 +2646,104 @@ void TGreatPower::ApplyImmediateDiplomacyPolicySideEffects(int arg1, int arg2) {
 void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(void) {
   typedef void(__fastcall * QueueSlot38Fn)(void*, int, void*);
 
-  void* proposalQueue = *reinterpret_cast<void**>(reinterpret_cast<unsigned char*>(this) + 0x84C);
+  void* proposalQueue = this->pField84c;
   if (proposalQueue == 0) {
     return;
   }
 
-  int payloadWords[2];
-  payloadWords[0] = 0;
-  payloadWords[1] = 0;
+  int payloadWords[2] = {0, 0};
 
   void** queueVtable = *reinterpret_cast<void***>(proposalQueue);
   reinterpret_cast<QueueSlot38Fn>(queueVtable[0x38 / 4])(proposalQueue, 0, payloadWords);
+}
+
+// FUNCTION: IMPERIALISM 0x004DF010
+void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
+  const int kMajorNationCount = 7;
+  const int kEventDiplomacyReset = 3;
+  const int kEventAlliance = 4;
+  const int kEventNonAggression = 5;
+  const int kEventWar = 2;
+
+  int scratchA = 0;
+  int scratchB = 0;
+  int scratchC = 0;
+  InitializeSharedStringRefFromEmpty(&scratchA);
+  InitializeSharedStringRefFromEmpty(&scratchB);
+  InitializeSharedStringRefFromEmpty(&scratchC);
+
+  short* proposalEntry = ProposalQueue_GetEntryAt1Based(this->pField84c, proposalIndex);
+  short proposalCode = proposalEntry[0];
+  short targetNation = proposalEntry[1];
+  int sourceNation = this->field0c;
+  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+
+  switch (proposalCode - 0x12D) {
+  case 0:
+    GreatPower_CallSlot13(this, targetNation, 1);
+    QueueInterNationEventRecordDedup(kEventDiplomacyReset, sourceNation, targetNation);
+    break;
+
+  case 1: {
+    Diplomacy_SetRelationCode78(diplomacyManager, sourceNation, targetNation, 2);
+    QueueInterNationEventRecordDedup(kEventAlliance, sourceNation, targetNation);
+    int nationSlot = 0;
+    for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+      if (Diplomacy_HasPolicyWithNation(diplomacyManager, nationSlot, targetNation) != 0 &&
+          Diplomacy_HasPolicyWithNation(diplomacyManager, sourceNation, nationSlot) == 0) {
+        GreatPower_ApplyPolicyForNation(this, nationSlot, 2, targetNation);
+      }
+    }
+    break;
+  }
+
+  case 2:
+    Diplomacy_SetRelationCode78(diplomacyManager, sourceNation, targetNation, 3);
+    QueueInterNationEventRecordDedup(kEventNonAggression, sourceNation, targetNation);
+    break;
+
+  case 3: {
+    Diplomacy_SetRelationCode78(diplomacyManager, sourceNation, targetNation, 4);
+    QueueInterNationEventRecordDedup(kEventWar, sourceNation, targetNation);
+    if (Diplomacy_HasFlag84ForNation(diplomacyManager, targetNation) != 0) {
+      int nationSlot = 0;
+      for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+        if (IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0 &&
+            Diplomacy_GetRelationTier(diplomacyManager, sourceNation, nationSlot) == 2 &&
+            Diplomacy_HasPolicyWithNation(diplomacyManager, nationSlot, targetNation) != 0) {
+          Diplomacy_SetRelationState(diplomacyManager, sourceNation, nationSlot, 1);
+        }
+      }
+    }
+    break;
+  }
+
+  case 5: {
+    void** terrainTypeDescriptorTable = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+    void* terrainDescriptor = terrainTypeDescriptorTable[targetNation];
+    if (terrainDescriptor != 0) {
+      TerrainDescriptor_CallSlot4C(terrainDescriptor, sourceNation, 1);
+    }
+    QueueInterNationEventRecordDedup(kEventDiplomacyReset, targetNation, sourceNation);
+    break;
+  }
+
+  default:
+    break;
+  }
+
+  if (Diplomacy_HasFlag84ForNation(diplomacyManager, targetNation) != 0 &&
+      IsNationSlotEligibleForEventProcessingFast(targetNation) != 0) {
+    void** nationStates = reinterpret_cast<void**>(kAddrNationStates);
+    void* nationState = nationStates[targetNation];
+    if (nationState != 0) {
+      NationState_NotifyActionCode(nationState, sourceNation, proposalCode);
+    }
+  }
+
+  ReleaseSharedStringRefIfNotEmpty(&scratchC);
+  ReleaseSharedStringRefIfNotEmpty(&scratchB);
+  ReleaseSharedStringRefIfNotEmpty(&scratchA);
 }
 
 // FUNCTION: IMPERIALISM 0x004DF5C0
@@ -2159,98 +2762,72 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
 
 // FUNCTION: IMPERIALISM 0x004DF5F0
 void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
-  typedef short*(__fastcall * QueueSlot2CFn)(void*, int, int);
-  typedef char(__cdecl * CooldownActiveFn)(void);
-  typedef short(__fastcall * DipSlot70Fn)(void*, int, int, int);
-  typedef char(__fastcall * DipSlot44Fn)(void*, int, int, int);
-  typedef char(__fastcall * UiSlot90Fn)(void*, int, int, int, int);
-  typedef void(__fastcall * GreatPowerSlot7BFn)(TGreatPower*, int, int);
-  typedef void(__fastcall * GreatPowerSlot7CFn)(TGreatPower*, int, int);
-  typedef void(__fastcall * GreatPowerSlotA1Fn)(TGreatPower*, int, int, int, int);
-  typedef void(__fastcall * GreatPowerSlot73Fn)(TGreatPower*, int);
+  const int kMajorNationCount = 7;
+  const short kProposalTradeEmbargo = 0x12E;
+  const short kProposalMutualDefense = 0x132;
+  int proposalSummaryRef = 0;
+  int proposalScratchRef = 0;
+  int proposalIndex = 0;
+  int queueIndex = 0;
 
-  void* proposalQueue = *reinterpret_cast<void**>(reinterpret_cast<unsigned char*>(this) + 0x84C);
-  if (proposalQueue != 0) {
-    int proposalCount =
-        *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(proposalQueue) + 8);
-    int queueOrdinal = 1;
-    int proposalOrdinal = 1;
+  InitializeSharedStringRefFromEmpty(&proposalSummaryRef);
+  InitializeSharedStringRefFromEmpty(&proposalScratchRef);
 
-    if (proposalCount > 0) {
-      void** queueVtable = *reinterpret_cast<void***>(proposalQueue);
-      QueueSlot2CFn queueSlot2C = reinterpret_cast<QueueSlot2CFn>(queueVtable[0x2C / 4]);
-      CooldownActiveFn isTurnCooldownActive =
-          reinterpret_cast<CooldownActiveFn>(thunk_IsTurnCooldownCounterActiveOrResetFlag);
-      GreatPowerSlot7BFn slot7B = reinterpret_cast<GreatPowerSlot7BFn>(this->field00[0x7B]);
-      GreatPowerSlot7CFn slot7C = reinterpret_cast<GreatPowerSlot7CFn>(this->field00[0x7C]);
-      GreatPowerSlotA1Fn slotA1 = reinterpret_cast<GreatPowerSlotA1Fn>(this->field00[0xA1]);
-      void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
-      void** diplomacyVtable =
-          diplomacyManager != 0 ? *reinterpret_cast<void***>(diplomacyManager) : (void**)0;
-      DipSlot70Fn dipSlot70 =
-          diplomacyVtable != 0 ? reinterpret_cast<DipSlot70Fn>(diplomacyVtable[0x70 / 4]) : 0;
-      DipSlot44Fn dipSlot44 =
-          diplomacyVtable != 0 ? reinterpret_cast<DipSlot44Fn>(diplomacyVtable[0x44 / 4]) : 0;
-      void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
-      void** uiVtable =
-          uiRuntimeContext != 0 ? *reinterpret_cast<void***>(uiRuntimeContext) : (void**)0;
-      UiSlot90Fn uiSlot90 = uiVtable != 0 ? reinterpret_cast<UiSlot90Fn>(uiVtable[0x90 / 4]) : 0;
+  void* proposalQueue = this->pField84c;
+  short proposalCount = ProposalQueue_GetCount(proposalQueue);
+  if (proposalCount != 0 && proposalCount > 0) {
+    proposalIndex = 1;
+    queueIndex = 1;
+    void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+    void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
 
-      while (proposalOrdinal <= proposalCount) {
-        short* proposalEntry = queueSlot2C(proposalQueue, 0, queueOrdinal);
-        if (proposalEntry == 0) {
-          break;
-        }
+    do {
+      short* proposalEntry = ProposalQueue_GetEntryAt1Based(proposalQueue, queueIndex);
+      short proposalCode = proposalEntry[0];
+      short targetNation = proposalEntry[1];
+      char shouldApplyProposal;
 
-        short proposalCode = proposalEntry[0];
-        short targetNation = proposalEntry[1];
-        char shouldCommit = '\0';
-
-        if (isTurnCooldownActive() == '\0') {
-          short currentProposal = *reinterpret_cast<short*>(
-              reinterpret_cast<unsigned char*>(this) + 0xB2 + static_cast<int>(targetNation) * 2);
-          if (currentProposal == proposalCode) {
-            shouldCommit = '\x01';
+      if (IsTurnCooldownCounterActiveOrResetFlagAsChar() == 0) {
+        if (this->fieldB2[targetNation] == proposalCode) {
+          shouldApplyProposal = 1;
+        } else if (proposalCode == kProposalTradeEmbargo) {
+          if (Diplomacy_GetRelationTier(diplomacyManager, this->field0c, targetNation) != 4) {
+            shouldApplyProposal = 0;
           } else {
-            short uiProposalCode = proposalCode;
-            if (proposalCode == 0x12E) {
-              if (dipSlot70 == 0 ||
-                  dipSlot70(diplomacyManager, this->field0c, targetNation, 0) != 4) {
-                shouldCommit = '\0';
-              } else if (uiSlot90 != 0) {
-                shouldCommit =
-                    uiSlot90(uiRuntimeContext, 0, this->field0c, targetNation, uiProposalCode);
-              }
-            } else if (uiSlot90 != 0) {
-              shouldCommit =
-                  uiSlot90(uiRuntimeContext, 0, this->field0c, targetNation, uiProposalCode);
-            }
-          }
-        }
-
-        if (shouldCommit == '\0') {
-          slot7C(this, 0, proposalOrdinal);
-        } else if (proposalCode == 0x132 && dipSlot44 != 0) {
-          int checkNation = 0;
-          while (checkNation < 7) {
-            if (dipSlot44(diplomacyManager, targetNation, checkNation, 0) != '\0' &&
-                dipSlot44(diplomacyManager, this->field0c, checkNation, 0) == '\0') {
-              slotA1(this, 0, checkNation, 0x132, targetNation);
-            }
-            ++checkNation;
+            shouldApplyProposal = UiRuntime_RequestDiplomacyDecision(
+                uiRuntimeContext, this->field0c, targetNation, kProposalTradeEmbargo);
           }
         } else {
-          slot7B(this, 0, proposalOrdinal);
+          shouldApplyProposal = UiRuntime_RequestDiplomacyDecision(uiRuntimeContext, this->field0c,
+                                                                   targetNation, proposalCode);
         }
 
-        ++proposalOrdinal;
-        ++queueOrdinal;
+        if (shouldApplyProposal == 0) {
+          GreatPower_RemoveProposalByIndex(this, proposalIndex);
+        } else if (proposalCode == kProposalMutualDefense) {
+          int checkNation = 0;
+          do {
+            if (Diplomacy_HasPolicyWithNation(diplomacyManager, targetNation, checkNation) != 0 &&
+                Diplomacy_HasPolicyWithNation(diplomacyManager, this->field0c, checkNation) == 0) {
+              GreatPower_ApplyMutualDefenseWithNation(this, checkNation, targetNation);
+            }
+            ++checkNation;
+          } while (checkNation < kMajorNationCount);
+        } else {
+          GreatPower_CommitProposalByIndex(this, proposalIndex);
+        }
+      } else {
+        GreatPower_RemoveProposalByIndex(this, proposalIndex);
       }
-    }
+
+      ++proposalIndex;
+      ++queueIndex;
+    } while (static_cast<short>(proposalIndex) <= proposalCount);
   }
 
-  GreatPowerSlot73Fn slot73 = reinterpret_cast<GreatPowerSlot73Fn>(this->field00[0x73]);
-  slot73(this, 0);
+  GreatPower_FinalizeProposalQueue(this);
+  ReleaseSharedStringRefIfNotEmpty(&proposalScratchRef);
+  ReleaseSharedStringRefIfNotEmpty(&proposalSummaryRef);
 }
 
 // FUNCTION: IMPERIALISM 0x004E1D50
@@ -2333,14 +2910,14 @@ void TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* 
   void** messageVtable = *reinterpret_cast<void***>(pMessage);
   MessageAppendWordFn appendWord = reinterpret_cast<MessageAppendWordFn>(messageVtable[0x78 / 4]);
   for (int i = 0; i < 6; ++i) {
-    short value = *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(this) + 0x964 + i * 2);
+    short value = this->field964[i];
     appendWord(pMessage, 0, &value);
   }
 
-  appendWord(pMessage, 0, reinterpret_cast<unsigned char*>(this) + 0x970);
-  appendWord(pMessage, 0, reinterpret_cast<unsigned char*>(this) + 0xAF0);
+  appendWord(pMessage, 0, this->field970);
+  appendWord(pMessage, 0, this->fieldAF0);
 
-  void* missionQueue = *reinterpret_cast<void**>(reinterpret_cast<unsigned char*>(this) + 0xB60);
+  void* missionQueue = this->pFieldB60;
   void** queueVtable = *reinterpret_cast<void***>(missionQueue);
   reinterpret_cast<QueueApplyMessageFn>(queueVtable[0x14 / 4])(missionQueue, 0, pMessage);
   reinterpret_cast<QueueRefreshFn>(queueVtable[0x48 / 4])(missionQueue, 0);
@@ -2398,7 +2975,11 @@ void TGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int 
 // FUNCTION: IMPERIALISM 0x004E8540
 void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3,
                                                                  int arg4) {
-  if (arg2 != -1 && *(reinterpret_cast<unsigned char*>(this) + 0x970 + arg2) != 1) {
+  typedef void(__fastcall * QueuePushMissionFn)(void*, int, void*);
+  const unsigned char kNodeStateAvailable = 1;
+  const unsigned char kNodeStateQueued = 2;
+
+  if (arg2 != -1 && this->field970[arg2] != kNodeStateAvailable) {
     return;
   }
 
@@ -2406,7 +2987,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     GetShortAtOffset14Fn getShortAtOffset14 =
         reinterpret_cast<GetShortAtOffset14Fn>(thunk_GetShortAtOffset14OrInvalid);
     short index = getShortAtOffset14();
-    if (*(reinterpret_cast<unsigned char*>(this) + 0xAF0 + index) != 1) {
+    if (this->fieldAF0[index] != kNodeStateAvailable) {
       return;
     }
   }
@@ -2428,31 +3009,30 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     uiInvalidationAssert(kUCountryAutoCppPath, kAssertLineQueueMapAction);
   }
 
-  void* missionQueue = *reinterpret_cast<void**>(reinterpret_cast<unsigned char*>(this) + 0xB60);
+  void* missionQueue = this->pFieldB60;
   void* queueVtable = *reinterpret_cast<void**>(missionQueue);
-  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(*reinterpret_cast<void**>(
-      reinterpret_cast<unsigned char*>(queueVtable) + 0x30))(missionQueue, 0, missionObj);
+  QueuePushMissionFn pushMission =
+      *reinterpret_cast<QueuePushMissionFn*>(reinterpret_cast<unsigned char*>(queueVtable) + 0x30);
+  pushMission(missionQueue, 0, missionObj);
 
   if (arg2 != -1) {
-    *(reinterpret_cast<unsigned char*>(this) + 0x970 + arg2) = 2;
+    this->field970[arg2] = kNodeStateQueued;
   }
   if (arg3 != 0) {
     if (arg3 == -1) {
       GetShortAtOffset14Fn getShortAtOffset14 =
           reinterpret_cast<GetShortAtOffset14Fn>(thunk_GetShortAtOffset14OrInvalid);
       short index = getShortAtOffset14();
-      *(reinterpret_cast<unsigned char*>(this) + 0xAF0 + index) = 2;
+      this->fieldAF0[index] = kNodeStateQueued;
     }
     if (arg3 != -1) {
-      *(reinterpret_cast<unsigned char*>(this) + 0x970 + arg3) = 2;
+      this->field970[arg3] = kNodeStateQueued;
     }
   }
 }
 
 static const double kMinusSix = -6.0;
-static const double kMinusHundred = -100.0;
 static const float kOne = 1.0f;
-static const float kBonusMultiplier = 2.0f;
 
 typedef float(__fastcall* MetricVirtualFn)(void*);
 typedef unsigned char(__fastcall* EligibilityThunkFn)(void*, int, int);
@@ -2516,18 +3096,18 @@ static __inline int CallVirtualIntAtOffset(void* obj, int offsetBytes) {
 }
 
 static __inline float ComputeMetricRatioViaVirtualDispatch(int targetSlot, bool use240Virtual) {
+  const int kNationSlotCount = 0x17;
   int slot = 0;
   float selected = 0.0f;
   float sum = 0.0f;
-  void** nationObjCursor = reinterpret_cast<void**>(0x006A4330);
-  void** nationObjCursorEnd = reinterpret_cast<void**>(0x006A438C);
+  void** nationObjects = ReadGlobalPointerArray(kAddrNationStates);
 
-  for (; nationObjCursor < nationObjCursorEnd; ++nationObjCursor, ++slot) {
+  for (; slot < kNationSlotCount; ++slot) {
     if (!CallEligibilityThunkWithManager(slot)) {
       continue;
     }
 
-    void* nationObj = *nationObjCursor;
+    void* nationObj = nationObjects[slot];
     float slotValue = use240Virtual ? CallVFunc240(nationObj) : CallVFunc23C(nationObj);
     sum += slotValue;
     if (slot == targetSlot) {
@@ -2549,14 +3129,15 @@ static __inline float ComputeMetricRatioViaVirtualDispatch(int targetSlot, bool 
 #pragma optimize("gt", on) // global optimizations (more likely to jump-table a dense switch)
 
 // FUNCTION: IMPERIALISM 0x004E8750
-float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metric, int arg2, int arg3,
-                                                                 int arg4) {
-  switch (metric - 1) {
+float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
+                                                                 int relationTargetNation,
+                                                                 int selectedNationSlot) {
+  switch (metricCase - 1) {
   case 0: {
-    return ComputeMetricRatioViaVirtualDispatch(arg4, false);
+    return ComputeMetricRatioViaVirtualDispatch(selectedNationSlot, false);
   }
   case 1: {
-    return ComputeMetricRatioViaVirtualDispatch(arg4, true);
+    return ComputeMetricRatioViaVirtualDispatch(selectedNationSlot, true);
   }
   case 2:
   case 3:
@@ -2567,7 +3148,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metric, int
     if (mgr == 0) {
       return kOne;
     }
-    int relationIndex = (int)this->field0c * 0x17 + arg3;
+    int relationIndex = (int)this->field0c * 0x17 + relationTargetNation;
     short relationValue = *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(mgr) + 0x79C +
                                                     relationIndex * 2);
     if (relationValue == 0) {
@@ -2586,8 +3167,8 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metric, int
     if (mapState10 == 0 || total == 0) {
       return kOne;
     }
-    int cityValue =
-        *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(mapState10) + 0x9C + arg2 * 0xA8);
+    int cityValue = *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(mapState10) + 0x9C +
+                                            cityIndex * 0xA8);
     return (float)cityValue / (float)total;
   }
   case 6:
@@ -2597,7 +3178,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metric, int
 }
 
 // FUNCTION: IMPERIALISM 0x004E9060
-float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int arg1) {
+float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) {
   typedef void(__fastcall * ConstructRelationshipListFn)(void*, int);
   typedef void(__fastcall * ManagerSlot88Fn)(void*, int, int, int, void*);
   typedef void*(__fastcall * ListSlot2CFn)(void*, int, int);
@@ -2654,11 +3235,11 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int arg1) {
       navyPriorities[i] = 0;
     }
 
-    void** nationStates = reinterpret_cast<void**>(0x006A4330);
+    void** nationStates = ReadGlobalPointerArray(kAddrNationStates);
     for (i = 0; i < 7; ++i) {
       if (candidateFlags[i] != 0) {
-        navyPriorities[i] =
-            static_cast<short>(CallSumNavyOrderPriorityForNationAndNodeType(nationStates[i], arg1));
+        navyPriorities[i] = static_cast<short>(
+            CallSumNavyOrderPriorityForNationAndNodeType(nationStates[i], nodeType));
       }
     }
 
@@ -2674,14 +3255,14 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int arg1) {
   }
 
   if (compositeScore == 0.0f) {
-    float factor2 =
-        thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(2, -1, arg1, selectedCandidateIndex);
-    float factor4 =
-        thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(4, -1, arg1, selectedCandidateIndex);
-    float factor5 =
-        thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, -1, arg1, selectedCandidateIndex);
-    float factor7 =
-        thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(7, -1, arg1, selectedCandidateIndex);
+    float factor2 = thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(2, -1, nodeType,
+                                                                        selectedCandidateIndex);
+    float factor4 = thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(4, -1, nodeType,
+                                                                        selectedCandidateIndex);
+    float factor5 = thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, -1, nodeType,
+                                                                        selectedCandidateIndex);
+    float factor7 = thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(7, -1, nodeType,
+                                                                        selectedCandidateIndex);
     compositeScore = factor2 * factor4 * factor5 * factor7;
   }
 

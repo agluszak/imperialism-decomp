@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchTurnEventCode32NoPayload
-// ghidra_proto void __cdecl DispatchTurnEventCode32NoPayload(void)
-// FUNCTION: IMPERIALISM 0x0054b5b0
-undefined4 DispatchTurnEventCode32NoPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitNationDiplomacyNeedStateSnapshotEvent15
-// ghidra_proto void __cdecl EmitNationDiplomacyNeedStateSnapshotEvent15(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0054b5d0
-undefined4 EmitNationDiplomacyNeedStateSnapshotEvent15(void)
-{
-  return 0;
-}
-
-// ghidra_name SetNationStatusCodeForSlotOrActiveAndEmitEvent25
-// ghidra_proto void __cdecl SetNationStatusCodeForSlotOrActiveAndEmitEvent25(void)
-// FUNCTION: IMPERIALISM 0x0054b7e0
-undefined4 SetNationStatusCodeForSlotOrActiveAndEmitEvent25(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNationStatusCodeForSlotOrActiveNation
-// ghidra_proto void __cdecl GetNationStatusCodeForSlotOrActiveNation(int arg1)
-// FUNCTION: IMPERIALISM 0x0054b8c0
-undefined4 GetNationStatusCodeForSlotOrActiveNation(void)
-{
-  return 0;
-}
-
-// ghidra_name SetNationStatusAwolByNationIdAndDispatchNotices
-// ghidra_proto void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(int arg1)
-// FUNCTION: IMPERIALISM 0x0054b930
-undefined4 SetNationStatusAwolByNationIdAndDispatchNotices(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeNationStatusEvent25PayloadDefaults
-// ghidra_proto void __thiscall InitializeNationStatusEvent25PayloadDefaults(void)
-// FUNCTION: IMPERIALISM 0x0054bce0
-undefined4 InitializeNationStatusEvent25PayloadDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name ReplaceNationStateForSlotAndRefreshStatus
 // ghidra_proto void __thiscall ReplaceNationStateForSlotAndRefreshStatus(int slotNationId)
 // FUNCTION: IMPERIALISM 0x0054bd20
@@ -3999,6 +3951,54 @@ undefined4 CopyTwoDwordsAndWordToObjectOffset14(void)
 // ghidra_proto void __cdecl SetObjectField1EWord(void)
 // FUNCTION: IMPERIALISM 0x005704e0
 undefined4 SetObjectField1EWord(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500
+// ghidra_proto void __cdecl Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500(void)
+// FUNCTION: IMPERIALISM 0x00570500
+undefined4 Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00570720
+// ghidra_proto void __cdecl WrapperFor_ftol_At00570720(void)
+// FUNCTION: IMPERIALISM 0x00570720
+undefined4 WrapperFor_ftol_At00570720(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureButton::CreateTPictureButtonInstance
+// ghidra_proto void * __cdecl CreateTPictureButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00570750
+undefined4 CreateTPictureButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureButton::GetTPictureButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTPictureButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005707d0
+undefined4 GetTPictureButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureButton::ConstructUiTabCursorPictureEntry
+// ghidra_proto void __thiscall ConstructUiTabCursorPictureEntry(void)
+// FUNCTION: IMPERIALISM 0x005707f0
+undefined4 ConstructUiTabCursorPictureEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureButton::DestructTPictureButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00570820
+undefined4 DestructTPictureButtonAndMaybeFree(void)
 {
   return 0;
 }

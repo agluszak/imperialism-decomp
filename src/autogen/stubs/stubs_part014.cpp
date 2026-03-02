@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel0
-// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
-// FUNCTION: IMPERIALISM 0x004e01b0
-undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
-{
-  return 0;
-}
-
-// ghidra_name IterateLinkedListCursorEntries_004e0220
-// ghidra_proto void __cdecl IterateLinkedListCursorEntries_004e0220(void)
-// FUNCTION: IMPERIALISM 0x004e0220
-undefined4 IterateLinkedListCursorEntries_004e0220(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C5_I70_004e0290
-// ghidra_proto void __cdecl OrphanCallChain_C5_I70_004e0290(void)
-// FUNCTION: IMPERIALISM 0x004e0290
-undefined4 OrphanCallChain_C5_I70_004e0290(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I10_004e03a0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I10_004e03a0(void)
-// FUNCTION: IMPERIALISM 0x004e03a0
-undefined4 OrphanCallChain_C2_I10_004e03a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins09_004e03d0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_004e03d0(void)
-// FUNCTION: IMPERIALISM 0x004e03d0
-undefined4 OrphanLeaf_NoCall_Ins09_004e03d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004e0400
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004e0400(void)
-// FUNCTION: IMPERIALISM 0x004e0400
-undefined4 OrphanLeaf_NoCall_Ins02_004e0400(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpDiplomacyTargetTransitionCallback
 // ghidra_proto void __cdecl NoOpDiplomacyTargetTransitionCallback(void)
 // FUNCTION: IMPERIALISM 0x004e0420
@@ -3999,6 +3951,54 @@ undefined4 ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
 // ghidra_proto void __cdecl ShowTurnAlertsForActiveNation(void)
 // FUNCTION: IMPERIALISM 0x00502b60
 undefined4 ShowTurnAlertsForActiveNation(void)
+{
+  return 0;
+}
+
+// ghidra_name HandlePendingEventActivationByCode
+// ghidra_proto void __fastcall HandlePendingEventActivationByCode(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x005031c0
+undefined4 HandlePendingEventActivationByCode(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectAndActivatePendingEventType1A0A
+// ghidra_proto void __cdecl SelectAndActivatePendingEventType1A0A(void)
+// FUNCTION: IMPERIALISM 0x00503320
+undefined4 SelectAndActivatePendingEventType1A0A(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectAndActivatePendingEventTypeOffsetFrom1A0B
+// ghidra_proto void __cdecl SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
+// FUNCTION: IMPERIALISM 0x00503370
+undefined4 SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpDiplomacyPolicyStateChangedHook
+// ghidra_proto void __cdecl NoOpDiplomacyPolicyStateChangedHook(void)
+// FUNCTION: IMPERIALISM 0x005033e0
+undefined4 NoOpDiplomacyPolicyStateChangedHook(void)
+{
+  return 0;
+}
+
+// ghidra_name HandlePostPendingEventActivationNoOp
+// ghidra_proto void __cdecl HandlePostPendingEventActivationNoOp(void)
+// FUNCTION: IMPERIALISM 0x00503400
+undefined4 HandlePostPendingEventActivationNoOp(void)
+{
+  return 0;
+}
+
+// ghidra_name ActivatePendingEventAndRefreshView
+// ghidra_proto void __cdecl ActivatePendingEventAndRefreshView(void)
+// FUNCTION: IMPERIALISM 0x00503420
+undefined4 ActivatePendingEventAndRefreshView(void)
 {
   return 0;
 }

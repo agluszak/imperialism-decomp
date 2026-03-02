@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500
-// ghidra_proto void __cdecl Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500(void)
-// FUNCTION: IMPERIALISM 0x00570500
-undefined4 Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At00570720
-// ghidra_proto void __cdecl WrapperFor_ftol_At00570720(void)
-// FUNCTION: IMPERIALISM 0x00570720
-undefined4 WrapperFor_ftol_At00570720(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureButton::CreateTPictureButtonInstance
-// ghidra_proto void * __cdecl CreateTPictureButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00570750
-undefined4 CreateTPictureButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureButton::GetTPictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTPictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005707d0
-undefined4 GetTPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureButton::ConstructUiTabCursorPictureEntry
-// ghidra_proto void __thiscall ConstructUiTabCursorPictureEntry(void)
-// FUNCTION: IMPERIALISM 0x005707f0
-undefined4 ConstructUiTabCursorPictureEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureButton::DestructTPictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570820
-undefined4 DestructTPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I24_00570870
 // ghidra_proto void __cdecl OrphanCallChain_C2_I24_00570870(void)
 // FUNCTION: IMPERIALISM 0x00570870
@@ -3999,6 +3951,54 @@ undefined4 HandleMapTileClickSetOrderContextAndDispatchEvent79(void)
 // ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005963d0
 undefined4 WrapperFor_AllocateWithFallbackHandler_At005963d0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AllocateWithFallbackHandler_At00596440
+// ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00596440
+undefined4 WrapperFor_AllocateWithFallbackHandler_At00596440(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivToolbar::HandleMapClickByInteractionMode
+// ghidra_proto void __thiscall HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
+// FUNCTION: IMPERIALISM 0x005964b0
+undefined4 HandleMapClickByInteractionMode(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00596680
+// ghidra_proto void __cdecl OrphanRetStub_00596680(void)
+// FUNCTION: IMPERIALISM 0x00596680
+undefined4 OrphanRetStub_00596680(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005966a0
+// ghidra_proto void __cdecl OrphanRetStub_005966a0(void)
+// FUNCTION: IMPERIALISM 0x005966a0
+undefined4 OrphanRetStub_005966a0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005966c0
+// ghidra_proto void __cdecl OrphanRetStub_005966c0(void)
+// FUNCTION: IMPERIALISM 0x005966c0
+undefined4 OrphanRetStub_005966c0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins02_005966e0
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_005966e0(void)
+// FUNCTION: IMPERIALISM 0x005966e0
+undefined4 OrphanLeaf_NoCall_Ins02_005966e0(void)
 {
   return 0;
 }

@@ -3603,14 +3603,6 @@ undefined4 ComputeRemainingDiplomacyAidBudget(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
-// ghidra_proto void __thiscall AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void)
-// FUNCTION: IMPERIALISM 0x004dd4e0
-undefined4 AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void)
-{
-  return 0;
-}
-
 // ghidra_name TGreatPower::GetDiplomacyExternalStateB6ByTarget
 // ghidra_proto void __thiscall GetDiplomacyExternalStateB6ByTarget(void)
 // FUNCTION: IMPERIALISM 0x004dd740
@@ -3859,38 +3851,6 @@ undefined4 ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
-// ghidra_proto void __thiscall SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004de340
-undefined4 SetDiplomacyGrantEntryForTargetAndUpdateTreasury(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence
-// ghidra_proto void __thiscall RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1)
-// FUNCTION: IMPERIALISM 0x004de5e0
-undefined4 RevokeDiplomacyGrantForTargetAndAdjustInfluence(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::CanAffordDiplomacyGrantEntryForTarget
-// ghidra_proto bool __thiscall CanAffordDiplomacyGrantEntryForTarget(short targetNationId, ushort proposedGrantEntry)
-// FUNCTION: IMPERIALISM 0x004de700
-undefined4 CanAffordDiplomacyGrantEntryForTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments
-// ghidra_proto bool __thiscall CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost)
-// FUNCTION: IMPERIALISM 0x004de790
-undefined4 CanAffordAdditionalDiplomacyCostAfterCommitments(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins09_004de7e0
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_004de7e0(void)
 // FUNCTION: IMPERIALISM 0x004de7e0
@@ -3911,14 +3871,6 @@ undefined4 ReleaseAllTrackedObjectsFromList89C(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins24_004deca0(void)
 // FUNCTION: IMPERIALISM 0x004deca0
 undefined4 OrphanLeaf_NoCall_Ins24_004deca0(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::ApplyAcceptedDiplomacyProposalCode
-// ghidra_proto void __thiscall ApplyAcceptedDiplomacyProposalCode(short proposalIndex)
-// FUNCTION: IMPERIALISM 0x004df010
-undefined4 ApplyAcceptedDiplomacyProposalCode(void)
 {
   return 0;
 }
@@ -3999,6 +3951,54 @@ undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
 // ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
 // FUNCTION: IMPERIALISM 0x004e0140
 undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel0
+// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
+// FUNCTION: IMPERIALISM 0x004e01b0
+undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorEntries_004e0220
+// ghidra_proto void __cdecl IterateLinkedListCursorEntries_004e0220(void)
+// FUNCTION: IMPERIALISM 0x004e0220
+undefined4 IterateLinkedListCursorEntries_004e0220(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C5_I70_004e0290
+// ghidra_proto void __cdecl OrphanCallChain_C5_I70_004e0290(void)
+// FUNCTION: IMPERIALISM 0x004e0290
+undefined4 OrphanCallChain_C5_I70_004e0290(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I10_004e03a0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I10_004e03a0(void)
+// FUNCTION: IMPERIALISM 0x004e03a0
+undefined4 OrphanCallChain_C2_I10_004e03a0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins09_004e03d0
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_004e03d0(void)
+// FUNCTION: IMPERIALISM 0x004e03d0
+undefined4 OrphanLeaf_NoCall_Ins09_004e03d0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins02_004e0400
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004e0400(void)
+// FUNCTION: IMPERIALISM 0x004e0400
+undefined4 OrphanLeaf_NoCall_Ins02_004e0400(void)
 {
   return 0;
 }

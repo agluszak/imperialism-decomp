@@ -40,6 +40,41 @@ Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
    2. average similarity: `2.73%`
    3. status: stalled globally, but local class ownership and non-zero body coverage increased.
 
+Latest incremental checkpoint (`2026-03-02 22:40 UTC`):
+1. `TGreatPower` grant-path ownership expansion:
+   1. `0x004DE5E0` (`RevokeDiplomacyGrantForTargetAndAdjustInfluence`) promoted and converted to compile-safe member body (`32.35%`).
+   2. `0x004DE700` (`CanAffordDiplomacyGrantEntryForTarget`) promoted and converted (`47.46%`).
+   3. `0x004DE790` (`CanAffordAdditionalDiplomacyCostAfterCommitments`) promoted and converted (`65.12%`).
+2. Regression anchors held after promotion pass:
+   1. `0x004DF5F0`: `30.15%`
+   2. `0x004DF010`: `12.79%`
+   3. `0x004DDFC0`: `19.94%`
+3. Required workflow ordering remains:
+   1. after each `just promote`, run `just sync-ownership && just regen-stubs && just build` before compare.
+4. Global signal from `just stats`:
+   1. aligned functions `90` (unchanged),
+   2. average similarity `2.76%` (`+0.01pp`).
+
+Latest incremental checkpoint (`2026-03-02 22:44 UTC`):
+1. Existing-code tuning pass (no new promotions):
+   1. `0x004DE700` improved from `47.46%` to `59.74%` using closer arithmetic/cast shape.
+   2. `0x004DE790` bitmask-clamp probe regressed (`65.12%` -> `61.22%`) and was reverted to keep `65.12%`.
+2. Adjacent anchors stayed stable:
+   1. `0x004DE5E0`: `32.35%`
+   2. `0x004DF5F0`: `30.15%`
+3. Loop guidance reinforced:
+   1. keep probing one function at a time,
+   2. keep regressions only when there is a net gain or readability benefit,
+   3. otherwise revert immediately and move on.
+
+Latest incremental checkpoint (`2026-03-02 22:47 UTC`):
+1. Existing-function cleanup pass:
+   1. `0x004DE5E0` improved from `32.35%` to `33.00%` by removing non-original null guards and using signed `<= 0` gate on masked grant value.
+   2. `0x004DE700` remained at `59.74%`.
+   3. `0x004DE790` remained at `65.12%`.
+2. No local regressions observed on checked anchor:
+   1. `0x004DF5F0`: `30.15%`.
+
 ## Current Baseline
 From latest fresh import + rebuild + reccmp run:
 

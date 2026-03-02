@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetFileName
-// ghidra_proto int __cdecl GetFileName(void)
-// FUNCTION: IMPERIALISM 0x005ff7ac
-undefined4 GetFileName(void)
-{
-  return 0;
-}
-
-// ghidra_name GetFolderPath
-// ghidra_proto int __cdecl GetFolderPath(void)
-// FUNCTION: IMPERIALISM 0x005ffc15
-undefined4 GetFolderPath(void)
-{
-  return 0;
-}
-
-// ghidra_name CenterWindowWithinParentFromHandleField1C
-// ghidra_proto void __fastcall CenterWindowWithinParentFromHandleField1C(void)
-// FUNCTION: IMPERIALISM 0x005ffd2d
-undefined4 CenterWindowWithinParentFromHandleField1C(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::DispatchNegativeCommandRangeToFrameHandlers
-// ghidra_proto uint __thiscall DispatchNegativeCommandRangeToFrameHandlers(uint messageCode, int pNotify, void * pResult)
-// FUNCTION: IMPERIALISM 0x005ffd49
-undefined4 DispatchNegativeCommandRangeToFrameHandlers(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RegisterCommdlgLbSelChangedNotifyMessage
-// ghidra_proto void __cdecl thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
-// FUNCTION: IMPERIALISM 0x005ffe27
-undefined4 thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name RegisterCommdlgLbSelChangedNotifyMessage
-// ghidra_proto void __cdecl RegisterCommdlgLbSelChangedNotifyMessage(void)
-// FUNCTION: IMPERIALISM 0x005ffe2c
-undefined4 RegisterCommdlgLbSelChangedNotifyMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_RegisterCommdlgShareViolationMessage
 // ghidra_proto void __cdecl thunk_RegisterCommdlgShareViolationMessage(void)
 // FUNCTION: IMPERIALISM 0x005ffe3d
@@ -3999,6 +3951,54 @@ undefined4 OnSize(void)
 // ghidra_proto void __thiscall CenterOnPoint(TMacViewMgr * thisObj, int xCenter, int yCenter)
 // FUNCTION: IMPERIALISM 0x0061553f
 undefined4 CenterOnPoint(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::GetScrollBarSizes
+// ghidra_proto void __thiscall GetScrollBarSizes(TMacViewMgr * thisObj, int * outSize)
+// FUNCTION: IMPERIALISM 0x006155ed
+undefined4 GetScrollBarSizes(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::GetTrueClientSize
+// ghidra_proto int __thiscall GetTrueClientSize(TMacViewMgr * thisObj, int * outClientSize, int * outScrollBarSize)
+// FUNCTION: IMPERIALISM 0x00615647
+undefined4 GetTrueClientSize(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::GetScrollBarState
+// ghidra_proto void __thiscall GetScrollBarState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// FUNCTION: IMPERIALISM 0x006156bc
+undefined4 GetScrollBarState(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::UpdateBars
+// ghidra_proto void __thiscall UpdateBars(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x00615778
+undefined4 UpdateBars(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::CalcWindowRect_6158ee
+// ghidra_proto void __thiscall CalcWindowRect_6158ee(TMacViewMgr * thisObj, pointer rect, int adjustType)
+// FUNCTION: IMPERIALISM 0x006158ee
+undefined4 CalcWindowRect_6158ee(void)
+{
+  return 0;
+}
+
+// ghidra_name OnHScroll
+// ghidra_proto void __thiscall OnHScroll(TMacViewMgr * thisObj, int scrollCode, int scrollPos, int routeFlag)
+// FUNCTION: IMPERIALISM 0x00615975
+undefined4 OnHScroll(void)
 {
   return 0;
 }

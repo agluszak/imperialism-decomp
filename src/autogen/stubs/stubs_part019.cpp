@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At00596440
-// ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00596440
-undefined4 WrapperFor_AllocateWithFallbackHandler_At00596440(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::HandleMapClickByInteractionMode
-// ghidra_proto void __thiscall HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
-// FUNCTION: IMPERIALISM 0x005964b0
-undefined4 HandleMapClickByInteractionMode(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00596680
-// ghidra_proto void __cdecl OrphanRetStub_00596680(void)
-// FUNCTION: IMPERIALISM 0x00596680
-undefined4 OrphanRetStub_00596680(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005966a0
-// ghidra_proto void __cdecl OrphanRetStub_005966a0(void)
-// FUNCTION: IMPERIALISM 0x005966a0
-undefined4 OrphanRetStub_005966a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005966c0
-// ghidra_proto void __cdecl OrphanRetStub_005966c0(void)
-// FUNCTION: IMPERIALISM 0x005966c0
-undefined4 OrphanRetStub_005966c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_005966e0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_005966e0(void)
-// FUNCTION: IMPERIALISM 0x005966e0
-undefined4 OrphanLeaf_NoCall_Ins02_005966e0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C6_I29_00596700
 // ghidra_proto void __cdecl OrphanCallChain_C6_I29_00596700(void)
 // FUNCTION: IMPERIALISM 0x00596700
@@ -3999,6 +3951,54 @@ undefined4 GetTNoHiliteTextClassNamePointer(void)
 // ghidra_proto void __thiscall ConstructUiStatusListTextEntry(void)
 // FUNCTION: IMPERIALISM 0x005b6a00
 undefined4 ConstructUiStatusListTextEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHiliteText::DestructTNoHiliteTextAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNoHiliteTextAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005b6a30
+undefined4 DestructTNoHiliteTextAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::CreateTTownInstance
+// ghidra_proto void __cdecl CreateTTownInstance(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005b6a80
+undefined4 CreateTTownInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At005b6be0
+// ghidra_proto void __cdecl WrapperFor_ftol_At005b6be0(void)
+// FUNCTION: IMPERIALISM 0x005b6be0
+undefined4 WrapperFor_ftol_At005b6be0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::GetTTownClassNamePointer
+// ghidra_proto void * __cdecl GetTTownClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005b6c40
+undefined4 GetTTownClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::ConstructFrogCityMarker
+// ghidra_proto void __thiscall ConstructFrogCityMarker(void)
+// FUNCTION: IMPERIALISM 0x005b6c60
+undefined4 ConstructFrogCityMarker(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::DestructTTownAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTownAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005b6c80
+undefined4 DestructTTownAndMaybeFree(void)
 {
   return 0;
 }

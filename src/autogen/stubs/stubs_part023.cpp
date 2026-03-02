@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyTacUnit::GetScrollBarSizes
-// ghidra_proto void __thiscall GetScrollBarSizes(TMacViewMgr * thisObj, int * outSize)
-// FUNCTION: IMPERIALISM 0x006155ed
-undefined4 GetScrollBarSizes(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::GetTrueClientSize
-// ghidra_proto int __thiscall GetTrueClientSize(TMacViewMgr * thisObj, int * outClientSize, int * outScrollBarSize)
-// FUNCTION: IMPERIALISM 0x00615647
-undefined4 GetTrueClientSize(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::GetScrollBarState
-// ghidra_proto void __thiscall GetScrollBarState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// FUNCTION: IMPERIALISM 0x006156bc
-undefined4 GetScrollBarState(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::UpdateBars
-// ghidra_proto void __thiscall UpdateBars(TMacViewMgr * thisObj)
-// FUNCTION: IMPERIALISM 0x00615778
-undefined4 UpdateBars(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::CalcWindowRect_6158ee
-// ghidra_proto void __thiscall CalcWindowRect_6158ee(TMacViewMgr * thisObj, pointer rect, int adjustType)
-// FUNCTION: IMPERIALISM 0x006158ee
-undefined4 CalcWindowRect_6158ee(void)
-{
-  return 0;
-}
-
-// ghidra_name OnHScroll
-// ghidra_proto void __thiscall OnHScroll(TMacViewMgr * thisObj, int scrollCode, int scrollPos, int routeFlag)
-// FUNCTION: IMPERIALISM 0x00615975
-undefined4 OnHScroll(void)
-{
-  return 0;
-}
-
 // ghidra_name OnVScroll
 // ghidra_proto void __thiscall OnVScroll(TMacViewMgr * thisObj, int scrollCode, int scrollPos, int routeFlag)
 // FUNCTION: IMPERIALISM 0x006159b9
@@ -3999,6 +3951,54 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcd7(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcff(void)
 // FUNCTION: IMPERIALISM 0x0062fcff
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fcff(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fd1f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fd1f(void)
+// FUNCTION: IMPERIALISM 0x0062fd1f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fd1f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fd85
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fd85(void)
+// FUNCTION: IMPERIALISM 0x0062fd85
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fd85(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fdaf
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fdaf(void)
+// FUNCTION: IMPERIALISM 0x0062fdaf
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fdaf(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fde7
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fde7(void)
+// FUNCTION: IMPERIALISM 0x0062fde7
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fde7(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fe17
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fe17(void)
+// FUNCTION: IMPERIALISM 0x0062fe17
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fe17(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fe3d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fe3d(void)
+// FUNCTION: IMPERIALISM 0x0062fe3d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fe3d(void)
 {
   return 0;
 }

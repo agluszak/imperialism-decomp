@@ -2538,3 +2538,486 @@
 2. `0x004DB380`: `14.47%` (unchanged).
 3. `0x004DBD20`: `13.74%` (restored to baseline).
 4. `0x004DBF00`: `27.79%` (unchanged).
+
+## 2026-03-02 20:48 UTC - post-commit readability iteration (`TGreatPower`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DDFC0`
+4. `just compare 0x004D92E0`
+5. `just compare 0x004DB380`
+6. `just compare 0x004DBD20`
+7. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DB380` (`UpdateGreatPowerPressureStateAndDispatchEscalationMessage`):
+   1. renamed internal typedef/locals for intent (`GreatPowerGetIntFn`, `basePressure`, `pressureBand`, `pressureCounter`, `escalationCounter`, `drainAmount`).
+2. `0x004DBF00` (`AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents`):
+   1. introduced named aliases for stage counters (`stage1CounterA/B/C/D`, `stage2CounterA/B/C`) and reused them in stage checks/updates.
+3. `0x004DBD20` (`RebuildNationResourceYieldCountersAndDevelopmentTargets`):
+   1. replaced raw terrain/city offsets with named constants (`kTerrainResourceTypeOffset`, `kTerrainGateFlagOffset`, etc.).
+4. `0x004DDFC0` (`ApplyDiplomacyPolicyStateForTargetWithCostChecks`):
+   1. removed raw self-offset accesses in favor of typed members (`fieldB2`, `fieldA0`).
+
+### Results
+1. `0x004DDFC0`: `25.77%` -> `25.77%` (unchanged).
+2. Anchors unchanged:
+   1. `0x004D92E0`: `3.12%`
+   2. `0x004DB380`: `14.47%`
+   3. `0x004DBD20`: `13.74%`
+   4. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 20:55 UTC - cleanup pass on `0x004DE860` and `0x004DEDF0`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE860`
+4. `just compare 0x004DEDF0`
+5. `just compare 0x004DDFC0`
+6. `just compare 0x004DB380`
+7. `just compare 0x004DBD20`
+8. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DE860` (`ApplyJoinEmpireMode0GlobalDiplomacyReset`):
+   1. replaced a large `self + offset` block with typed member access (`field0e`, `field10`, `pField94/pField98/pField9c`, `fieldA2..fieldB0`, `fieldB2`, `fieldE0`, `field10e..field250`, `field280`, `field840/field844`, `pField84c`, `pField848`, `pField894`),
+   2. kept unknown byte-slices (`+0x14`, `+0x8A0`) as raw memory access only,
+   3. added local constants for repeated diplomacy/policy literals.
+2. `0x004DEDF0` (`ApplyImmediateDiplomacyPolicySideEffects`):
+   1. removed raw `self +` reads for `fieldA0` and `pField848`,
+   2. added local constants for policy codes and loop bounds.
+
+### Results
+1. `0x004DE860`: `26.16%` -> `26.42%` (improved).
+2. `0x004DEDF0`: `19.93%` -> `19.93%` (unchanged).
+3. Other tracked functions unchanged:
+   1. `0x004DDFC0`: `25.77%`
+   2. `0x004DB380`: `14.47%`
+   3. `0x004DBD20`: `13.74%`
+   4. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 20:57 UTC - small typed-member cleanup (`0x004DEFD0`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DEFD0`
+4. `just compare 0x004DE860`
+5. `just compare 0x004DEDF0`
+6. `just compare 0x004DB380`
+7. `just compare 0x004DBD20`
+8. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DEFD0` (`QueueDiplomacyProposalCodeForTargetNation`):
+   1. replaced raw `this + 0x84C` with `this->pField84c`.
+
+### Results
+1. `0x004DEFD0`: `29.63%` (new tracked local score; no observed regression from this cleanup).
+2. Existing tracked scores remained unchanged:
+   1. `0x004DE860`: `26.42%`
+   2. `0x004DEDF0`: `19.93%`
+   3. `0x004DB380`: `14.47%`
+   4. `0x004DBD20`: `13.74%`
+   5. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 20:59 UTC - typed-member cleanup in `0x004DF5F0`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DF5F0`
+4. `just compare 0x004DEFD0`
+5. `just compare 0x004DE860`
+6. `just compare 0x004DEDF0`
+7. `just compare 0x004DB380`
+8. `just compare 0x004DBD20`
+9. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DF5F0` (`ProcessPendingDiplomacyProposalQueue`):
+   1. replaced raw queue pointer load (`this + 0x84C`) with `this->pField84c`,
+   2. replaced raw policy lookup (`this + 0xB2 + idx*2`) with `this->fieldB2[idx]`.
+
+### Results
+1. `0x004DF5F0`: remained `9.49%`.
+2. Tracked neighboring scores remained unchanged:
+   1. `0x004DEFD0`: `29.63%`
+   2. `0x004DE860`: `26.42%`
+   3. `0x004DEDF0`: `19.93%`
+   4. `0x004DB380`: `14.47%`
+   5. `0x004DBD20`: `13.74%`
+   6. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 21:03 UTC - batched cleanup pass (`0x004E73F0`, `0x004DF5F0`, `0x004DE860`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004E73F0`
+4. `just compare 0x004DF5F0`
+5. `just compare 0x004DEFD0`
+6. `just compare 0x004DE860`
+7. `just compare 0x004DEDF0`
+8. `just compare 0x004DB380`
+9. `just compare 0x004DBD20`
+10. `just compare 0x004DBF00`
+
+### Changes
+1. Extended `TGreatPower` tail layout past `+0x960`:
+   1. `field964[6]`,
+   2. `field970[0x180]`,
+   3. `fieldAF0[0x70]`,
+   4. `pFieldB60`.
+2. `0x004E73F0` (`WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0`):
+   1. replaced raw offsets `+0x964`, `+0x970`, `+0xAF0`, `+0xB60` with typed members.
+3. `0x004DE860` (`ApplyJoinEmpireMode0GlobalDiplomacyReset`):
+   1. replaced remaining `0x17` loop bound with `kNationSlotCount`.
+4. `0x004DEFD0` (`QueueDiplomacyProposalCodeForTargetNation`):
+   1. simplified payload initialization to `{0, 0}`.
+5. `0x004DF5F0` (`ProcessPendingDiplomacyProposalQueue`):
+   1. introduced local constants for major nation count and policy codes,
+   2. replaced char-literal control flags with `0/1`,
+   3. kept call/branch shape unchanged.
+
+### Results
+1. New tracked function:
+   1. `0x004E73F0`: `9.66%`.
+2. Existing tracked functions unchanged:
+   1. `0x004DF5F0`: `9.49%`
+   2. `0x004DEFD0`: `29.63%`
+   3. `0x004DE860`: `26.42%`
+   4. `0x004DEDF0`: `19.93%`
+   5. `0x004DB380`: `14.47%`
+   6. `0x004DBD20`: `13.74%`
+   7. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 21:05 UTC - second batched cleanup pass (`0x004DF5F0` naming + literals)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DF5F0`
+4. `just compare 0x004E73F0`
+5. `just compare 0x004DE860`
+6. `just compare 0x004DEDF0`
+7. `just compare 0x004DB380`
+8. `just compare 0x004DBD20`
+9. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DF5F0` (`ProcessPendingDiplomacyProposalQueue`):
+   1. renamed queue/proposal counters and handler fn locals for readability (`queueIndex`, `proposalIndex`, `applyProposalByIndex`, `removeProposalByIndex`, `applyPolicyToNation`),
+   2. normalized commit flag usage to `0/1`,
+   3. added local constants for proposal codes and major-nation loop bound.
+2. No control-flow or call-order changes.
+
+### Results
+1. Scores unchanged on touched and anchor functions:
+   1. `0x004DF5F0`: `9.49%`
+   2. `0x004E73F0`: `9.66%`
+   3. `0x004DE860`: `26.42%`
+   4. `0x004DEDF0`: `19.93%`
+   5. `0x004DB380`: `14.47%`
+   6. `0x004DBD20`: `13.74%`
+   7. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 21:07 UTC - logic-shape cleanup in `0x004DE860`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE860`
+4. `just compare 0x004DF5F0`
+5. `just compare 0x004E73F0`
+6. `just compare 0x004DB380`
+7. `just compare 0x004DBD20`
+8. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DE860` (`ApplyJoinEmpireMode0GlobalDiplomacyReset`):
+   1. removed dead/unreachable normalization branches in secondary-owner handling,
+   2. kept effective behavior explicit: when encoded owner state is `>= 200`, normalize via `-200` before ownership comparison.
+2. This is a behavior-preserving control-flow cleanup of already-equivalent logic, not just naming.
+
+### Results
+1. `0x004DE860`: `26.42%` -> `28.52%` (improved).
+2. Other tracked functions remained unchanged:
+   1. `0x004DF5F0`: `9.49%`
+   2. `0x004E73F0`: `9.66%`
+   3. `0x004DEDF0`: `19.93%`
+   4. `0x004DB380`: `14.47%`
+   5. `0x004DBD20`: `13.74%`
+   6. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 21:10 UTC - structural cleanup in `0x004DEDF0` (beyond naming)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DEDF0`
+4. `just compare 0x004DE860`
+5. `just compare 0x004DF5F0`
+6. `just compare 0x004E73F0`
+7. `just compare 0x004DB380`
+8. `just compare 0x004DBD20`
+9. `just compare 0x004DBF00`
+
+### Changes
+1. `0x004DEDF0` (`ApplyImmediateDiplomacyPolicySideEffects`):
+   1. hoisted repeated thunk/vtable casts into local typed callables (`isNationEligible`, `hasDipFlag84`, `getDipRelation`, `hasDipRelation`, `setDipState`, `applyPolicyToNation`),
+   2. reused those callables across both policy loops to remove repeated cast-heavy expressions.
+2. `0x004DE860` and `0x004DF5F0` remain on the new typed-member/constant shape from prior passes.
+
+### Results
+1. `0x004DEDF0`: `19.93%` -> `26.90%` (large improvement).
+2. Other tracked scores unchanged:
+   1. `0x004DE860`: `28.52%`
+   2. `0x004DF5F0`: `9.49%`
+   3. `0x004E73F0`: `9.66%`
+   4. `0x004DB380`: `14.47%`
+   5. `0x004DBD20`: `13.74%`
+   6. `0x004DBF00`: `27.79%`
+
+## 2026-03-02 21:24 UTC - deserializer/proposal-queue shape pass + thunk correction
+
+### Commands
+1. `just session-loop 20 200 20`
+2. `just format src/game/TGreatPower.cpp`
+3. `just build`
+4. `just compare 0x004D92E0`
+5. `just compare 0x004DF5F0`
+6. `just compare 0x00406CA3`
+
+### Changes
+1. `0x004D92E0` (`InitializeGreatPowerMinisterRosterAndScenarioState`):
+   1. corrected stream/count shape: parameter is treated as stream handle, and town loop count now comes from stream slot `+0x3C` return instead of pointer-value reuse,
+   2. updated dependent branches (`townCount > 0`) and kept stream-handle pass-through to `pField90c` slot `+0x18`.
+2. `0x004DF5F0` (`ProcessPendingDiplomacyProposalQueue`):
+   1. added shared-string init/release envelope (`InitializeSharedStringRefFromEmpty` / `ReleaseSharedStringRefIfNotEmpty`) matching Ghidra shape,
+   2. switched queue gating to short proposal count semantics and `static_cast<short>(proposalIndex)` loop exit,
+   3. aligned embargo/mutual-defense decision flow closer to Ghidra branch shape.
+3. `0x00406CA3` (`BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage`):
+   1. replaced incorrect full-body rewrite with a call-through wrapper to `CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage` (thunk shape).
+
+### Results
+1. `0x00406CA3`: `0.00%` -> `66.67%` (major fix; was implemented as wrong function kind).
+2. `0x004DF5F0`: `9.49%` -> `10.60%`.
+3. `0x004D92E0`: `3.12%` -> `3.13%` (small positive movement).
+4. No regressions observed on sampled neighboring `TGreatPower` anchors in this pass:
+   1. `0x004DE860`: `28.52%`
+   2. `0x004DEDF0`: `26.90%`
+
+## 2026-03-02 21:29 UTC - high-impact stream-shape pass in `0x004D92E0`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004D92E0`
+4. `just compare 0x004DF5F0`
+5. `just compare 0x00406CA3`
+6. `just compare 0x004DE860`
+7. `just compare 0x004DEDF0`
+8. `just stats`
+
+### Changes
+1. `0x004D92E0` (`InitializeGreatPowerMinisterRosterAndScenarioState`):
+   1. removed stream/vtable null-guard branches and made stream slot reads unconditional (closer to original deserializer assumptions),
+   2. kept previously-fixed `townCount` behavior (count from stream slot `+0x3C`) and short/int loop shape.
+2. `0x004DF5F0` and `0x00406CA3` left on the prior improved shapes for regression checks.
+
+### Results
+1. `0x004D92E0`: `3.13%` -> `13.51%` (major improvement).
+2. `0x004DF5F0`: `10.60%` (unchanged).
+3. `0x00406CA3`: `66.67%` (unchanged).
+4. `0x004DE860`: `28.52%` (unchanged).
+5. `0x004DEDF0`: `26.90%` (unchanged).
+6. Global `just stats` summary remained stable on aligned count (`90`) after this pass.
+
+## 2026-03-02 22:00 UTC - cast-isolation + shape pass in `0x004DF5F0` and `0x004DEDF0`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DF5F0`
+4. `just compare 0x004DEDF0`
+5. `just compare 0x004DE860`
+6. `just compare 0x004D92E0`
+
+### Changes
+1. Added typed helper bridges at file scope for queue/diplomacy/UI calls:
+   1. proposal queue slot reads and count,
+   2. diplomacy slots `+0x44`, `+0x70`, `+0x7C`, `+0x84`,
+   3. UI slot `+0x90`,
+   4. event queue + turn-event13 dispatch,
+   5. `field00` slot calls (`0x28`, `0x73`, `0x7B`, `0x7C`, `0xA1`).
+2. `0x004DF5F0` (`ProcessPendingDiplomacyProposalQueue`):
+   1. removed nested inline cast chains from the body and switched to helper calls,
+   2. preserved queue/proposal loop and cooldown/embargo/mutual-defense branch shape.
+3. `0x004DEDF0` (`ApplyImmediateDiplomacyPolicySideEffects`):
+   1. switched cast-heavy body calls to typed helpers,
+   2. removed defensive null-gates in the hot path where original shape calls directly (`pField848` queue write and diplomacy manager usage),
+   3. kept policy branch semantics (`0x130`/`0x12E`) and slot-loop behavior.
+
+### Results
+1. `0x004DF5F0`: `10.60%` -> `30.15%`.
+2. `0x004DEDF0`: `26.90%` -> `31.65%`.
+3. Anchors checked for regressions:
+   1. `0x004DE860`: `28.52%` (unchanged),
+   2. `0x004D92E0`: `21.80%` (unchanged).
+
+## 2026-03-02 22:03 UTC - helper extraction pass in `0x004DE860`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE860`
+4. `just compare 0x004DEDF0`
+5. `just compare 0x004DF5F0`
+
+### Changes
+1. Added typed helper bridges for repeated call patterns in `TGreatPower`:
+   1. object release at vtable slot `+0x1C`,
+   2. terrain/nation/secondary reset dispatches (`+0x68`, `+0x94`, `+0x48`),
+   3. `field00` slots `0x5C`, `0xA5`, `0x12`, `0x75`,
+   4. diplomacy slots `+0x74` and `+0x28`.
+2. Rewired `0x004DE860` (`ApplyJoinEmpireMode0GlobalDiplomacyReset`) to use those helpers and removed branchy null-gate wrappers around diplomacy slot calls in the hot reset loops.
+3. Preserved loop/control structure and reset constants; this was a cast-isolation/shape pass, not a semantic rewrite.
+
+### Results
+1. `0x004DE860`: `28.52%` -> `28.73%`.
+2. Regression checks:
+   1. `0x004DEDF0`: `31.65%` (unchanged),
+   2. `0x004DF5F0`: `30.15%` (unchanged).
+
+## 2026-03-02 22:35 UTC - reapply fuller `0x004DDFC0` + promote `0x004DF010` into real C++
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DDFC0`
+4. `just promote src/game/TGreatPower.cpp --address 0x004DF010`
+5. `just sync-ownership`
+6. `just regen-stubs`
+7. `just build`
+8. `just compare 0x004DF010`
+9. `just compare 0x004DDFC0`
+10. `just compare 0x004DF5F0`
+
+### Changes
+1. Reapplied fuller branch coverage in `0x004DDFC0` (`ApplyDiplomacyPolicyStateForTargetWithCostChecks`) with explicit compatibility checks and policy-path handling.
+2. Promoted `0x004DF010` with `just promote`, then replaced raw Ghidra output with compile-safe member-method C++:
+   1. added `TGreatPower::ApplyAcceptedDiplomacyProposalCode(short)` declaration,
+   2. added typed helper wrappers for this path (`slot13`, diplomacy `slot78`, event dedup queue, terrain `slot4C`, generic nation-state notify),
+   3. preserved proposal switch shape and major side-effect paths (relation code updates, event queueing, alliance propagation loop, target nation callback).
+3. Synced ownership and regenerated stubs so `0x004DF010` is owned only in manual source (no duplicate stub annotation).
+
+### Results
+1. `0x004DF010` (`ApplyAcceptedDiplomacyProposalCode`): now compiles and compares at `12.79%` (previously stub/zero-grade).
+2. `0x004DDFC0`: `19.94%` after fuller reapply.
+3. `0x004DF5F0`: `30.15%` unchanged (regression check).
+
+## 2026-03-02 22:40 UTC - grant-path promotion pass in `TGreatPower`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just sync-ownership`
+3. `just regen-stubs`
+4. `just build`
+5. `just compare 0x004DE5E0`
+6. `just compare 0x004DF010`
+7. `just compare 0x004DF5F0`
+8. `just compare 0x004DDFC0`
+9. `just promote src/game/TGreatPower.cpp --address 0x004DE700`
+10. `just promote src/game/TGreatPower.cpp --address 0x004DE790`
+11. `just format src/game/TGreatPower.cpp`
+12. `just sync-ownership`
+13. `just regen-stubs`
+14. `just build`
+15. `just compare 0x004DE700`
+16. `just compare 0x004DE790`
+17. `just compare 0x004DE5E0`
+18. `just compare 0x004DF5F0`
+19. `just stats`
+
+### Changes
+1. Converted promoted raw block `0x004DE5E0` into compile-safe member method:
+   1. `RevokeDiplomacyGrantForTargetAndAdjustInfluence(int)`.
+   2. Added typed terrain helper for vtable slot `+0x38`.
+2. Promoted and converted two adjacent affordability methods from stubs:
+   1. `0x004DE700` `CanAffordDiplomacyGrantEntryForTarget(short, unsigned short)`.
+   2. `0x004DE790` `CanAffordAdditionalDiplomacyCostAfterCommitments(short)`.
+3. Added corresponding method declarations to `TGreatPower` class and removed raw GHIDRA function bodies/comments.
+4. Synced ownership and regenerated stubs after each promotion so manual ownership remains single-source per address.
+
+### Results
+1. `0x004DE5E0`: `32.35%` (new non-zero owned body).
+2. `0x004DE700`: `47.46%` (new non-zero owned body).
+3. `0x004DE790`: `65.12%` (new non-zero owned body).
+4. Regression anchors remained stable:
+   1. `0x004DF5F0`: `30.15%`.
+   2. `0x004DF010`: `12.79%`.
+   3. `0x004DDFC0`: `19.94%`.
+5. Aggregate `just stats`:
+   1. aligned functions: `90` (unchanged),
+   2. average similarity: `2.76%` (`+0.01pp`).
+
+## 2026-03-02 22:44 UTC - existing-code shape tuning for grant affordability helpers
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE700`
+4. `just compare 0x004DE790`
+5. `just compare 0x004DE5E0`
+6. `just compare 0x004DF5F0`
+7. `just format src/game/TGreatPower.cpp`
+8. `just build`
+9. `just compare 0x004DE700`
+10. `just compare 0x004DE790`
+11. `just compare 0x004DF5F0`
+12. `just stats`
+
+### Changes
+1. Focused on improving existing owned bodies, not adding new promotions.
+2. `0x004DE700` (`CanAffordDiplomacyGrantEntryForTarget`):
+   1. reshaped arithmetic to closer original form (`0x3FFF` mask first, early sign gate branch, bitmask-style positive-budget clamp).
+3. `0x004DE790` (`CanAffordAdditionalDiplomacyCostAfterCommitments`):
+   1. tried the same bitmask-clamp form, then reverted this method to its previous branch-clamp shape because it regressed.
+4. No changes to neighboring heavy functions in this pass.
+
+### Results
+1. `0x004DE700`: `47.46%` -> `59.74%`.
+2. `0x004DE790`: temporary `65.12%` -> `61.22%` during probe, then restored to `65.12%` after revert.
+3. Regression anchors:
+   1. `0x004DE5E0`: `32.35%` (unchanged),
+   2. `0x004DF5F0`: `30.15%` (unchanged).
+4. Aggregate `just stats` stayed stable:
+   1. aligned functions: `90`,
+   2. average similarity: `2.76%`.
+
+## 2026-03-02 22:47 UTC - existing-code cleanup and targeted guard removal
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE5E0`
+4. `just compare 0x004DE700`
+5. `just compare 0x004DE790`
+6. `just compare 0x004DF5F0`
+
+### Changes
+1. Kept `INSTRUCTIONS.md` general-only (removed function-specific heuristics added in the previous pass).
+2. `0x004DE5E0` (`RevokeDiplomacyGrantForTargetAndAdjustInfluence`):
+   1. removed extra defensive null guards not present in original hot path,
+   2. switched grant gate to signed `<= 0` shape after mask.
+3. Kept recent `0x004DE700`/`0x004DE790` tuning state unchanged.
+
+### Results
+1. `0x004DE5E0`: `32.35%` -> `33.00%`.
+2. `0x004DE700`: `59.74%` (unchanged).
+3. `0x004DE790`: `65.12%` (unchanged).
+4. Regression anchor:
+   1. `0x004DF5F0`: `30.15%` (unchanged).
