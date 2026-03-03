@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMiniMapView::ConstructTMiniMapViewBaseState
-// ghidra_proto void * __thiscall ConstructTMiniMapViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0059a380
-undefined4 ConstructTMiniMapViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TMiniMapView::DestructTMiniMapViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTMiniMapViewAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0059a3f0
@@ -3999,6 +3991,14 @@ undefined4 SelectPreferredNationMetricCodeFromLookup(void)
 // ghidra_proto void __cdecl BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(void)
 // FUNCTION: IMPERIALISM 0x005ba0e0
 undefined4 BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealList::CreateTDealListInstance
+// ghidra_proto void * __cdecl CreateTDealListInstance(void)
+// FUNCTION: IMPERIALISM 0x005ba130
+undefined4 CreateTDealListInstance(void)
 {
   return 0;
 }

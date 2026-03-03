@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TOnOffRadioButton::CreateTOnOffRadioButtonInstance
-// ghidra_proto void * __cdecl CreateTOnOffRadioButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00571930
-undefined4 CreateTOnOffRadioButtonInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTOnOffRadioButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005719d0
@@ -3999,6 +3991,14 @@ undefined4 CreateTMiniMapViewInstance(void)
 // ghidra_proto void * __cdecl GetTMiniMapViewClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0059a360
 undefined4 GetTMiniMapViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniMapView::ConstructTMiniMapViewBaseState
+// ghidra_proto void * __thiscall ConstructTMiniMapViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x0059a380
+undefined4 ConstructTMiniMapViewBaseState(void)
 {
   return 0;
 }

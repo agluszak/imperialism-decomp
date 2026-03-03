@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealList::CreateTDealListInstance
-// ghidra_proto void * __cdecl CreateTDealListInstance(void)
-// FUNCTION: IMPERIALISM 0x005ba130
-undefined4 CreateTDealListInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealList::GetTDealListClassNamePointer
 // ghidra_proto void * __cdecl GetTDealListClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005ba1a0
@@ -3999,6 +3991,14 @@ undefined4 GetItemImage(void)
 // ghidra_proto void __stdcall GetItemState(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e6155
 undefined4 GetItemState(void)
+{
+  return 0;
+}
+
+// ghidra_name GetItemData_5e618d
+// ghidra_proto int __thiscall GetItemData_5e618d(void)
+// FUNCTION: IMPERIALISM 0x005e618d
+undefined4 GetItemData_5e618d(void)
 {
   return 0;
 }

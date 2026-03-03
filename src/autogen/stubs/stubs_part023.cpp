@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CFileException::CMemFile
-// ghidra_proto void * __thiscall CMemFile(void)
-// FUNCTION: IMPERIALISM 0x00619aac
-undefined4 CMemFile(void)
-{
-  return 0;
-}
-
 // ghidra_name CFileException::CMemFile_619af8
 // ghidra_proto void * __thiscall CMemFile_619af8(void)
 // FUNCTION: IMPERIALISM 0x00619af8
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063080f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063082f(void)
 // FUNCTION: IMPERIALISM 0x0063082f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063082f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063084f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063084f(void)
+// FUNCTION: IMPERIALISM 0x0063084f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063084f(void)
 {
   return 0;
 }

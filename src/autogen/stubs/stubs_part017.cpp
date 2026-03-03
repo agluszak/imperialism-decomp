@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TShip::DestructTShip
-// ghidra_proto void __thiscall DestructTShip(void)
-// FUNCTION: IMPERIALISM 0x0054f5f0
-undefined4 DestructTShip(void)
-{
-  return 0;
-}
-
 // ghidra_name TShip::DestroyAndUnlinkNavyPrimaryOrderNode
 // ghidra_proto void __thiscall DestroyAndUnlinkNavyPrimaryOrderNode(void)
 // FUNCTION: IMPERIALISM 0x0054f640
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850(void)
 // ghidra_proto void __cdecl OrphanCallChain_C2_I16_005718f0(void)
 // FUNCTION: IMPERIALISM 0x005718f0
 undefined4 OrphanCallChain_C2_I16_005718f0(void)
+{
+  return 0;
+}
+
+// ghidra_name TOnOffRadioButton::CreateTOnOffRadioButtonInstance
+// ghidra_proto void * __cdecl CreateTOnOffRadioButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00571930
+undefined4 CreateTOnOffRadioButtonInstance(void)
 {
   return 0;
 }

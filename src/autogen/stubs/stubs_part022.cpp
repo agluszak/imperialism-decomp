@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CMapStringToPtr_ctor
-// ghidra_proto void __thiscall CMapStringToPtr_ctor(int nBlockSize)
-// FUNCTION: IMPERIALISM 0x0060366f
-undefined4 CMapStringToPtr_ctor(void)
-{
-  return 0;
-}
-
 // ghidra_name CDocTemplate::InitHashTable_6036b2
 // ghidra_proto void __thiscall InitHashTable_6036b2(void)
 // FUNCTION: IMPERIALISM 0x006036b2
@@ -3999,6 +3991,14 @@ undefined4 ProcessHelpMsg(void)
 // ghidra_proto int __cdecl MapClientArea(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x006199fd
 undefined4 MapClientArea(void)
+{
+  return 0;
+}
+
+// ghidra_name CFileException::CMemFile
+// ghidra_proto void * __thiscall CMemFile(void)
+// FUNCTION: IMPERIALISM 0x00619aac
+undefined4 CMemFile(void)
 {
   return 0;
 }

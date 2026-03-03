@@ -3795,3 +3795,35 @@
    5. `0x004E1D50`: `22.95%`
    6. `0x004EA300`: `25.64%`
    7. `0x004E72C0`: `30.87%`
+
+## 2026-03-03 08:42 UTC - `TGreatPower` score-shape pass (`0x004DC540`, `0x004DC660`, `0x004DC840`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004dc540`
+4. `just compare 0x004dc660`
+5. `just compare 0x004dc840`
+6. `just compare 0x004dd740`
+
+### Changes
+1. Reworked `0x004DC540` `CompareMissionScoreVariantsByMode` from a placeholder metric pair into a call-shape closer first-pass body:
+   1. mode 0 now uses slot `0x40` node lookup + defend-province score thunks.
+   2. mode 1 now uses port-context discovery, capacity bootstrap, and navy similarity score pair.
+2. Fixed semantic mismatch in `0x004DC660` by using map-action context list entries (`g_pMapActionContextListHead`) and per-entry `nationMask` instead of `this->field914`.
+3. Added map-context slot helper (`slot 0x2C`) and explicit shared-ref locals in the `0x004DC660` message emission path.
+4. Refined `0x004DC840` to scan nation-state message flags (`+0x4C/+0x4D`) with explicit shared-ref envelope.
+5. Extracted/renamed field:
+   1. `field914` -> `aidAllocationTotal`.
+6. Added typed view structs for these paths:
+   1. `TMapActionContextListEntryView`,
+   2. `TPortZoneContextVectorView`,
+   3. `TNationStateEventMessageFlagsView`.
+
+### Results
+1. Build: green.
+2. Targeted compare snapshot:
+   1. `0x004DC540`: `43.06%` (up from `9.09%`)
+   2. `0x004DC660`: `19.18%` (up from `14.29%` before this pass, up from `11.76%` intermediate)
+   3. `0x004DC840`: `13.14%` (up from `11.61%`)
+   4. `0x004DD740`: `0.00%` (still thunk/size-shape mismatch; left as-is)

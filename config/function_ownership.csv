@@ -98,9 +98,9 @@ address|target_cpp|ownership|note
 4db380|src/game/TGreatPower.cpp|manual|marker_sync
 4dbd20|src/game/TGreatPower.cpp|manual|marker_sync
 4dbf00|src/game/TGreatPower.cpp|manual|marker_sync
-4dc540|src/game/TGreatPower.cpp|manual|marker_sync
-4dc660|src/game/TGreatPower.cpp|manual|marker_sync
-4dc840|src/game/TGreatPower.cpp|manual|marker_sync
+4dc540|src/game/TGreatPower.cpp|manual|promoted_from_autogen
+4dc660|src/game/TGreatPower.cpp|manual|promoted_from_autogen
+4dc840|src/game/TGreatPower.cpp|manual|promoted_from_autogen
 4dc9f0|src/game/TGreatPower.cpp|manual|marker_sync
 4dcd10|src/game/TGreatPower.cpp|manual|marker_sync
 4dce10|src/game/TGreatPower.cpp|manual|marker_sync
@@ -114,7 +114,7 @@ address|target_cpp|ownership|note
 4dd430|src/game/TGreatPower.cpp|manual|marker_sync
 4dd470|src/game/TGreatPower.cpp|manual|marker_sync
 4dd4e0|src/game/TGreatPower.cpp|manual|marker_sync
-4dd740|src/game/TGreatPower.cpp|manual|marker_sync
+4dd740|src/game/TGreatPower.cpp|manual|promoted_from_autogen
 4dda20|src/game/TGreatPower.cpp|manual|marker_sync
 4dda90|src/game/TGreatPower.cpp|manual|marker_sync
 4ddbb0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -142,6 +142,7 @@ address|target_cpp|ownership|note
 4e2330|src/game/TGreatPower.cpp|manual|marker_sync
 4e2500|src/game/TGreatPower.cpp|manual|marker_sync
 4e27b0|src/game/TGreatPower.cpp|manual|marker_sync
+4e27f0|src/game/TGreatPower.cpp|manual|marker_sync
 4e2b70|src/game/TGreatPower.cpp|manual|marker_sync
 4e72c0|src/game/TGreatPower.cpp|manual|marker_sync
 4e73f0|src/game/TGreatPower.cpp|manual|marker_sync

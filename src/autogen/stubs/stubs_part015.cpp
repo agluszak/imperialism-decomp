@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C2_I15_00506110
-// ghidra_proto void __cdecl OrphanCallChain_C2_I15_00506110(void)
-// FUNCTION: IMPERIALISM 0x00506110
-undefined4 OrphanCallChain_C2_I15_00506110(void)
-{
-  return 0;
-}
-
 // ghidra_name TIconBar::RenderIconBarEntryStrip
 // ghidra_proto void __thiscall RenderIconBarEntryStrip(void)
 // FUNCTION: IMPERIALISM 0x00506150
@@ -3999,6 +3991,14 @@ undefined4 DestructTTextileForeignMinister(void)
 // ghidra_proto void __cdecl InitializeTextileForeignMinisterOrderCandidates(void)
 // FUNCTION: IMPERIALISM 0x005331d0
 undefined4 InitializeTextileForeignMinisterOrderCandidates(void)
+{
+  return 0;
+}
+
+// ghidra_name RunForeignMinisterPolicySlot28VariantB
+// ghidra_proto void __fastcall RunForeignMinisterPolicySlot28VariantB(void)
+// FUNCTION: IMPERIALISM 0x00533380
+undefined4 RunForeignMinisterPolicySlot28VariantB(void)
 {
   return 0;
 }

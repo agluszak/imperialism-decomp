@@ -115,14 +115,6 @@ undefined4 ApplyMinorNationCapabilityActionType4(void)
   return 0;
 }
 
-// ghidra_name QueueWarTransitionAndNotifyThirdPartyIfNeeded
-// ghidra_proto void QueueWarTransitionAndNotifyThirdPartyIfNeeded(DiplomacyTurnStateManager * pManager, short targetNationSlot, short proposalCode, int minorNationIndex)
-// FUNCTION: IMPERIALISM 0x004e27f0
-undefined4 QueueWarTransitionAndNotifyThirdPartyIfNeeded(void)
-{
-  return 0;
-}
-
 // ghidra_name ClassifyNationProductionTotalAgainstGlobalDistribution
 // ghidra_proto void __cdecl ClassifyNationProductionTotalAgainstGlobalDistribution(void)
 // FUNCTION: IMPERIALISM 0x004e2880
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_thunk_SetPictureResourceIdAndRefresh_At005060c0(void)
 // ghidra_proto void __cdecl OrphanTiny_SetWordEcxOffset_96_005060f0(void)
 // FUNCTION: IMPERIALISM 0x005060f0
 undefined4 OrphanTiny_SetWordEcxOffset_96_005060f0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I15_00506110
+// ghidra_proto void __cdecl OrphanCallChain_C2_I15_00506110(void)
+// FUNCTION: IMPERIALISM 0x00506110
+undefined4 OrphanCallChain_C2_I15_00506110(void)
 {
   return 0;
 }

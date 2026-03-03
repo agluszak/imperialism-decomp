@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetItemData_5e618d
-// ghidra_proto int __thiscall GetItemData_5e618d(void)
-// FUNCTION: IMPERIALISM 0x005e618d
-undefined4 GetItemData_5e618d(void)
-{
-  return 0;
-}
-
 // ghidra_name ItemHasChildren
 // ghidra_proto int __thiscall ItemHasChildren(void)
 // FUNCTION: IMPERIALISM 0x005e61bb
@@ -3999,6 +3991,14 @@ undefined4 GetOrCreateHandleMapEntryValueByKey(void)
 // ghidra_proto int __thiscall RemoveKey(void)
 // FUNCTION: IMPERIALISM 0x006035bb
 undefined4 RemoveKey(void)
+{
+  return 0;
+}
+
+// ghidra_name CMapStringToPtr_ctor
+// ghidra_proto void __thiscall CMapStringToPtr_ctor(int nBlockSize)
+// FUNCTION: IMPERIALISM 0x0060366f
+undefined4 CMapStringToPtr_ctor(void)
 {
   return 0;
 }
