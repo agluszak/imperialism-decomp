@@ -56,6 +56,17 @@ Latest incremental checkpoint (`2026-03-03 04:03 UTC`):
    2. not aligned vs original: `12882`
    3. average similarity: `2.94%`
 
+Latest incremental checkpoint (`2026-03-03 04:04 UTC`):
+1. Existing-code typing pass in `ApplyNationResourceNeedTargetsToOrderState`:
+   1. introduced `TRelationManagerNeedRefreshView`,
+   2. replaced raw `+0xE0/+0xE2` relation-manager writes with typed fields.
+2. Targeted check:
+   1. `0x004DCD10`: `38.33%` (still mismatch-heavy but cleaner structure).
+3. Snapshot (`just stats`, `2026-03-03T04:04:16Z`):
+   1. aligned functions: `93` (recovered from `91`)
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.91%`
+
 Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
 1. `TGreatPower` large-body ownership pass:
    1. `0x004D8CC0` `InitializeNationStateRuntimeSubsystems`: first-pass real body landed at `32.14%`.

@@ -220,6 +220,12 @@ struct TCityOrderCapabilityStateView {
   unsigned char hasProductionOrder193;
 };
 
+struct TRelationManagerNeedRefreshView {
+  unsigned char pad00[0xE0];
+  short relationNeedSlotE0;
+  short relationNeedSlotE2;
+};
+
 struct TCivWorkOrderStateBaseView {
   void* vftable;
   unsigned char pad04[0x20];
@@ -2472,16 +2478,20 @@ void TGreatPower::ApplyNationResourceNeedTargetsToOrderState(void) {
 
   void* relationManager = this->pField894;
   if (relationManager != 0) {
+    TRelationManagerNeedRefreshView* relationView =
+        static_cast<TRelationManagerNeedRefreshView*>(relationManager);
     void** relationManagerVtable = *reinterpret_cast<void***>(relationManager);
     relationRefresh = reinterpret_cast<RelationMgrSlot80Fn>(relationManagerVtable[0x80 / 4]);
-    *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(relationManager) + 0xE0) = 0;
+    relationView->relationNeedSlotE0 = 0;
     relationRefresh(relationManager, 0);
   }
 
   applyTreasuryDelta(this, 0, static_cast<int>(this->field13c[0x16]) * 200);
 
   if (relationManager != 0) {
-    *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(relationManager) + 0xE2) = 0;
+    TRelationManagerNeedRefreshView* relationView =
+        static_cast<TRelationManagerNeedRefreshView*>(relationManager);
+    relationView->relationNeedSlotE2 = 0;
     relationRefresh(relationManager, 0);
   }
 
