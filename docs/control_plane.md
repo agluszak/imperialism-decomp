@@ -40,6 +40,42 @@ Latest incremental checkpoint (`2026-03-03 11:24 UTC`):
    2. `0x004DBD20`: `12.40%`
    3. `0x004DC540`: `42.18%`
 
+Latest incremental checkpoint (`2026-03-03 11:43 UTC`):
+1. Second vcall-facade reduction batch in `src/game/TGreatPower.cpp`:
+   1. migrated additional class slot calls (`0x21`, `0x6C`, `0x66`, `0x45`, `0x64`, `0x5F`, `0x69`,
+      `0x6A`, `0x1D`, delete slot `1`) to generated wrappers,
+   2. removed the corresponding local `TGreatPower` vtable typedef blocks/casts in affected methods.
+2. Registry/generator updates:
+   1. `config/vtable_slots.csv` expanded and regenerated (`just gen-vcall-facades`) to `65` wrappers.
+3. Pattern count in `src/game/TGreatPower.cpp`:
+   1. `typedef .*Fn|reinterpret_cast<.*Fn|vftable[` reduced from `150` to `123`.
+4. Verification:
+   1. `just build`: success,
+   2. `just detect`: success,
+   3. `just stats`: aligned `92`, average similarity `2.88%`.
+5. Touched-address spot checks:
+   1. `0x00406FE1`: `0.00%`
+   2. `0x004DBD20`: `14.01%` (up from `12.40%`)
+   3. `0x004DC540`: `42.18%`
+
+Latest incremental checkpoint (`2026-03-03 11:52 UTC`):
+1. Third vcall-facade cleanup slice:
+   1. replaced raw vtable calls in:
+      1. `DispatchTurnEvent2103WithNationFromRecord` (`ui slot 0x4C/4`),
+      2. `QueueDiplomacyProposalCodeWithAllianceGuards` (`diplomacy slot 0x60/4`).
+   2. added/regen wrappers:
+      1. `VCall_UiRuntime_DispatchEventSlot4C`,
+      2. `VCall_Diplomacy_HasAllianceGuardSlot60`.
+2. Pattern count in `src/game/TGreatPower.cpp`:
+   1. `typedef .*Fn|reinterpret_cast<.*Fn|vftable[` reduced from `123` to `119`.
+3. Verification:
+   1. `just build`: success,
+   2. `just detect`: success,
+   3. `just stats`: aligned `92`, average similarity `2.88%`.
+4. Touched-address checks:
+   1. `0x004DF5C0`: `20.69%`
+   2. `0x004E7B50`: `25.97%`
+
 Latest incremental checkpoint (`2026-03-03 03:57 UTC`):
 1. `TGreatPower` shape pass for low performers:
    1. `0x005C2940` (`InitializeCivWorkOrderState`) moved from `0%` to `90.91%` by restoring register-and-clear flow (`+0x24/+0x26`) and owner-manager registration call shape.

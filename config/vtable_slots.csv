@@ -14,7 +14,9 @@ src/game/TGreatPower.cpp|VCall_ObArray_GetShortValueByOrdinalSlot2C|void*|0x2C /
 src/game/TGreatPower.cpp|VCall_Diplomacy_BuildRelationshipListSlot88|void|0x88 / 4|int,int,void*|high|build relation list
 src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|int,int|high|relation tier
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasPolicyWithNationSlot44|char|0x44 / 4|int,int|high|policy gate
+src/game/TGreatPower.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard
 src/game/TGreatPower.cpp|VCall_UiRuntime_RequestDiplomacyDecisionSlot90|char|0x90 / 4|int,int,int|high|ui decision request
+src/game/TGreatPower.cpp|VCall_UiRuntime_DispatchEventSlot4C|void|0x4C / 4|int,int|high|ui dispatch event
 src/game/TGreatPower.cpp|VCall_GreatPower_CommitProposalByIndexSlot7B|void|0x7B|int|high|great power proposal commit
 src/game/TGreatPower.cpp|VCall_GreatPower_RemoveProposalByIndexSlot7C|void|0x7C|int|high|great power proposal remove
 src/game/TGreatPower.cpp|VCall_GreatPower_ApplyPolicyForNationSlotA1|void|0xA1|int,int,int|high|great power policy apply
@@ -33,7 +35,18 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot13|void|0x13|int,int|high|grea
 src/game/TGreatPower.cpp|VCall_GreatPower_SetPolicyForNationSlot74|void|0x74|int,int|high|great power set policy
 src/game/TGreatPower.cpp|VCall_GreatPower_CanPayAmountSlot7A|int|0x7A|int|high|budget guard
 src/game/TGreatPower.cpp|VCall_GreatPower_AdjustTreasurySlot0E|void|0x0E|int|high|treasury adjust
+src/game/TGreatPower.cpp|VCall_GreatPower_AdjustResourceDeltaSlot66|void|0x66|int|high|adjust delta slot66
 src/game/TGreatPower.cpp|VCall_GreatPower_CanSetGrantValueSlot77|char|0x77|int|high|grant guard
+src/game/TGreatPower.cpp|VCall_GreatPower_DeleteSelfSlot01|void|1|int|high|delete self slot
+src/game/TGreatPower.cpp|VCall_GreatPower_CanDispatchViaUiSlot21|char|0x21||high|dispatch gate slot21
+src/game/TGreatPower.cpp|VCall_GreatPower_DispatchFallbackActionSlot6C|void|0x6C|int,int,int|high|fallback dispatch slot6C
+src/game/TGreatPower.cpp|VCall_GreatPower_NeedUpdateSlot45|void|0x45|int,int|high|need update slot45
+src/game/TGreatPower.cpp|VCall_GreatPower_GetNodeContextSlot40|int|0x40 / 4||high|node context slot40
+src/game/TGreatPower.cpp|VCall_GreatPower_ApplyNeedTargetSlot64|void|0x64|int,int|high|apply need target slot64
+src/game/TGreatPower.cpp|VCall_GreatPower_GetBaseBudgetSlot5F|int|0x5F||high|base budget slot5F
+src/game/TGreatPower.cpp|VCall_GreatPower_SetNeedSlot69|void|0x69|int,int|high|set need slot69
+src/game/TGreatPower.cpp|VCall_GreatPower_RefreshNeedPanelsSlot6A|void|0x6A||high|refresh need panels slot6A
+src/game/TGreatPower.cpp|VCall_GreatPower_GetCounterSlot1D|short|0x1D||high|get counter slot1D
 src/game/TGreatPower.cpp|VCall_GlobalMapState_CallMetricSlotC4|char|0xC4 / 4|int,int|high|map metric
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot5C|void|0x5C||high|slot5C
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5

@@ -5,13 +5,19 @@
 #include "game/vcall_runtime.h"
 
 // build relation list
-static __inline void VCall_Diplomacy_BuildRelationshipListSlot88(void* object, int arg0, int arg1, void* arg2) {
+static __inline void VCall_Diplomacy_BuildRelationshipListSlot88(void* object, int arg0, int arg1,
+                                                                 void* arg2) {
   vcall_runtime::fastcall3v(object, static_cast<unsigned int>(0x88 / 4), arg0, arg1, arg2);
 }
 
 // relation tier
 static __inline short VCall_Diplomacy_GetRelationTierSlot70(void* object, int arg0, int arg1) {
   return vcall_runtime::fastcall2<short>(object, static_cast<unsigned int>(0x70 / 4), arg0, arg1);
+}
+
+// alliance guard
+static __inline char VCall_Diplomacy_HasAllianceGuardSlot60(void* object, int arg0, int arg1) {
+  return vcall_runtime::fastcall2<char>(object, static_cast<unsigned int>(0x60 / 4), arg0, arg1);
 }
 
 // diplomacy flag gate
@@ -39,13 +45,24 @@ static __inline char VCall_GlobalMapState_CallMetricSlotC4(void* object, int arg
   return vcall_runtime::fastcall2<char>(object, static_cast<unsigned int>(0xC4 / 4), arg0, arg1);
 }
 
+// adjust delta slot66
+static __inline void VCall_GreatPower_AdjustResourceDeltaSlot66(void* object, int arg0) {
+  vcall_runtime::fastcall1v(object, static_cast<unsigned int>(0x66), arg0);
+}
+
 // treasury adjust
 static __inline void VCall_GreatPower_AdjustTreasurySlot0E(void* object, int arg0) {
   vcall_runtime::fastcall1v(object, static_cast<unsigned int>(0x0E), arg0);
 }
 
+// apply need target slot64
+static __inline void VCall_GreatPower_ApplyNeedTargetSlot64(void* object, int arg0, int arg1) {
+  vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x64), arg0, arg1);
+}
+
 // great power policy apply
-static __inline void VCall_GreatPower_ApplyPolicyForNationSlotA1(void* object, int arg0, int arg1, int arg2) {
+static __inline void VCall_GreatPower_ApplyPolicyForNationSlotA1(void* object, int arg0, int arg1,
+                                                                 int arg2) {
   vcall_runtime::fastcall3v(object, static_cast<unsigned int>(0xA1), arg0, arg1, arg2);
 }
 
@@ -94,6 +111,11 @@ static __inline void VCall_GreatPower_CallSlotB3(void* object) {
   vcall_runtime::fastcall0v(object, static_cast<unsigned int>(0xB3));
 }
 
+// dispatch gate slot21
+static __inline char VCall_GreatPower_CanDispatchViaUiSlot21(void* object) {
+  return vcall_runtime::fastcall0<char>(object, static_cast<unsigned int>(0x21));
+}
+
 // budget guard
 static __inline int VCall_GreatPower_CanPayAmountSlot7A(void* object, int arg0) {
   return vcall_runtime::fastcall1<int>(object, static_cast<unsigned int>(0x7A), arg0);
@@ -109,9 +131,20 @@ static __inline void VCall_GreatPower_CommitProposalByIndexSlot7B(void* object, 
   vcall_runtime::fastcall1v(object, static_cast<unsigned int>(0x7B), arg0);
 }
 
+// delete self slot
+static __inline void VCall_GreatPower_DeleteSelfSlot01(void* object, int arg0) {
+  vcall_runtime::fastcall1v(object, static_cast<unsigned int>(1), arg0);
+}
+
 // dispatch event
 static __inline void VCall_GreatPower_DispatchEventSlot2E(void* object, int arg0, int arg1) {
   vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x2E), arg0, arg1);
+}
+
+// fallback dispatch slot6C
+static __inline void VCall_GreatPower_DispatchFallbackActionSlot6C(void* object, int arg0, int arg1,
+                                                                   int arg2) {
+  vcall_runtime::fastcall3v(object, static_cast<unsigned int>(0x6C), arg0, arg1, arg2);
 }
 
 // proposal finalize
@@ -119,9 +152,34 @@ static __inline void VCall_GreatPower_FinalizeProposalQueueSlot73(void* object) 
   vcall_runtime::fastcall0v(object, static_cast<unsigned int>(0x73));
 }
 
+// base budget slot5F
+static __inline int VCall_GreatPower_GetBaseBudgetSlot5F(void* object) {
+  return vcall_runtime::fastcall0<int>(object, static_cast<unsigned int>(0x5F));
+}
+
+// get counter slot1D
+static __inline short VCall_GreatPower_GetCounterSlot1D(void* object) {
+  return vcall_runtime::fastcall0<short>(object, static_cast<unsigned int>(0x1D));
+}
+
 // need slot query
 static __inline short VCall_GreatPower_GetNeedSlotValueSlot1F(void* object, int arg0) {
   return vcall_runtime::fastcall1<short>(object, static_cast<unsigned int>(0x1F), arg0);
+}
+
+// node context slot40
+static __inline int VCall_GreatPower_GetNodeContextSlot40(void* object) {
+  return vcall_runtime::fastcall0<int>(object, static_cast<unsigned int>(0x40 / 4));
+}
+
+// need update slot45
+static __inline void VCall_GreatPower_NeedUpdateSlot45(void* object, int arg0, int arg1) {
+  vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x45), arg0, arg1);
+}
+
+// refresh need panels slot6A
+static __inline void VCall_GreatPower_RefreshNeedPanelsSlot6A(void* object) {
+  vcall_runtime::fastcall0v(object, static_cast<unsigned int>(0x6A));
 }
 
 // great power proposal remove
@@ -130,13 +188,19 @@ static __inline void VCall_GreatPower_RemoveProposalByIndexSlot7C(void* object, 
 }
 
 // great power reset level
-static __inline void VCall_GreatPower_ResetDiplomacyLevelForNationSlot12(void* object, int arg0, int arg1) {
+static __inline void VCall_GreatPower_ResetDiplomacyLevelForNationSlot12(void* object, int arg0,
+                                                                         int arg1) {
   vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x12), arg0, arg1);
 }
 
 // great power reset policy
 static __inline void VCall_GreatPower_ResetPolicyForNationSlot75(void* object, int arg0, int arg1) {
   vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x75), arg0, arg1);
+}
+
+// set need slot69
+static __inline void VCall_GreatPower_SetNeedSlot69(void* object, int arg0, int arg1) {
+  vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x69), arg0, arg1);
 }
 
 // great power set policy
@@ -185,7 +249,8 @@ static __inline void VCall_MapActionContext_AssignDisplayRefFromSlot2C(void* obj
 }
 
 // need slot assign
-static __inline void VCall_NationState_AssignNeedSlotFromSourceSlot19C(void* object, int arg0, int arg1) {
+static __inline void VCall_NationState_AssignNeedSlotFromSourceSlot19C(void* object, int arg0,
+                                                                       int arg1) {
   vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x19C / 4), arg0, arg1);
 }
 
@@ -225,7 +290,8 @@ static __inline char VCall_SecondaryState_HasNationFlag5C(void* object, int arg0
 }
 
 // secondary reset
-static __inline void VCall_SecondaryState_ResetDiplomacyLevelSlot48(void* object, int arg0, int arg1) {
+static __inline void VCall_SecondaryState_ResetDiplomacyLevelSlot48(void* object, int arg0,
+                                                                    int arg1) {
   vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x48 / 4), arg0, arg1);
 }
 
@@ -269,7 +335,14 @@ static __inline void VCall_TerrainDescriptor_SetResetLevelSlot68(void* object, i
   vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x68 / 4), arg0, arg1);
 }
 
+// ui dispatch event
+static __inline void VCall_UiRuntime_DispatchEventSlot4C(void* object, int arg0, int arg1) {
+  vcall_runtime::fastcall2v(object, static_cast<unsigned int>(0x4C / 4), arg0, arg1);
+}
+
 // ui decision request
-static __inline char VCall_UiRuntime_RequestDiplomacyDecisionSlot90(void* object, int arg0, int arg1, int arg2) {
-  return vcall_runtime::fastcall3<char>(object, static_cast<unsigned int>(0x90 / 4), arg0, arg1, arg2);
+static __inline char VCall_UiRuntime_RequestDiplomacyDecisionSlot90(void* object, int arg0,
+                                                                    int arg1, int arg2) {
+  return vcall_runtime::fastcall3<char>(object, static_cast<unsigned int>(0x90 / 4), arg0, arg1,
+                                        arg2);
 }

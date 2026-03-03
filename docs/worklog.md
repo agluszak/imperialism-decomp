@@ -30,6 +30,63 @@
    3. stats snapshot: aligned `92`, average similarity `2.88%`,
    4. spot checks: `0x00406FE1=0.00%`, `0x004DBD20=12.40%`, `0x004DC540=42.18%`.
 
+### TGreatPower vtable-facade cleanup pass (batch 2)
+1. Goal: continue removing direct class-vtable typedef/cast usage after the first facade landing.
+2. Added wrapper coverage in `config/vtable_slots.csv` + regenerated `include/game/generated/vcall_facades.h`:
+   1. class slots: `0x21`, `0x6C`, `0x66`, `0x45`, `0x64`, `0x5F`, `0x69`, `0x6A`, `0x1D`,
+      delete slot `1`.
+3. Refactor scope in `src/game/TGreatPower.cpp`:
+   1. replaced direct class vtable casts in:
+      1. `thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392`,
+      2. `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`,
+      3. `InitializeGreatPowerMinisterRosterAndScenarioState`,
+      4. `CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`,
+      5. `RebuildNationResourceYieldCountersAndDevelopmentTargets`,
+      6. `CompareMissionScoreVariantsByMode`,
+      7. `ApplyNationResourceNeedTargetsToOrderState`,
+      8. `TryIncrementNationResourceNeedTargetTowardCurrent`,
+      9. `ComputeRemainingDiplomacyAidBudget`,
+      10. `ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`,
+      11. `TryDispatchNationActionViaUiContextOrFallback`,
+      12. `IsDiplomacyState1C6UnsetAndCounterPositiveForTarget`.
+4. Verification sequence:
+   1. `just gen-vcall-facades`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x00406fe1`
+   5. `just compare 0x004dbd20`
+   6. `just compare 0x004dc540`
+   7. `just stats`
+5. Results:
+   1. pattern count in `src/game/TGreatPower.cpp` (`typedef .*Fn|reinterpret_cast<.*Fn|vftable[`) dropped from `150` to `123`,
+   2. build/detect/stats all pass,
+   3. `0x004DBD20`: `12.40% -> 14.01%`,
+   4. `0x004DC540`: `42.18%` (stable),
+   5. `0x00406FE1`: `0.00%` (unchanged).
+
+### TGreatPower vtable-facade cleanup pass (batch 3)
+1. Goal: continue trimming raw vtable typedef/cast sites in owned methods.
+2. Added wrapper coverage in `config/vtable_slots.csv` + regenerated `include/game/generated/vcall_facades.h`:
+   1. `VCall_UiRuntime_DispatchEventSlot4C`
+   2. `VCall_Diplomacy_HasAllianceGuardSlot60`
+3. Refactor scope in `src/game/TGreatPower.cpp`:
+   1. removed local typedef/cast vtable calls in:
+      1. `DispatchTurnEvent2103WithNationFromRecord`
+      2. `QueueDiplomacyProposalCodeWithAllianceGuards`
+4. Verification sequence:
+   1. `just format src/game/TGreatPower.cpp include/game/generated/vcall_facades.h`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x004df5c0`
+   5. `just compare 0x004e7b50`
+   6. `just stats`
+   7. `rg -n "typedef .*Fn|reinterpret_cast<.*Fn|vftable\\[" src/game/TGreatPower.cpp | wc -l`
+5. Results:
+   1. pattern count in `src/game/TGreatPower.cpp` dropped from `123` to `119`,
+   2. `0x004DF5C0`: `20.69%`,
+   3. `0x004E7B50`: `25.97%`,
+   4. global snapshot stable: aligned `92`, average similarity `2.88%`.
+
 ## 2026-03-02
 
 ### TGreatPower zero-cleanup pass (`0x00404A9D`, `0x00405DE4`, `0x00406B2C`, `0x00406C49`, `0x00406C9E`)
