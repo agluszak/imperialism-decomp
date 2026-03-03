@@ -3639,3 +3639,159 @@
    1. aligned functions: `93`
    2. not aligned vs original: `12880`
    3. average similarity: `2.91%`
+
+## 2026-03-03 04:22 UTC - `TGreatPower` readability/typing pass (existing code only)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004DC9F0`
+5. `just compare 0x004DCD10`
+6. `just compare 0x004E22B0`
+7. `just compare 0x004E2500`
+8. `just compare 0x004DBD20`
+9. `just compare 0x004DC840`
+10. `just compare 0x004DD0C0`
+11. `just compare 0x004DD310`
+12. `just stats`
+
+### Changes
+1. Kept work scoped to existing `TGreatPower` bodies (no new ownership promotion).
+2. Replaced remaining `pad` usage with typed fields:
+   1. `pad_8b7` -> `field8b7_scenarioInitFlag`,
+   2. `pad_8d1[3]` -> `field8d4_expansionEventGate`.
+3. Added reusable typed helpers and reused them across existing functions:
+   1. list helpers (`slot14/28/48/4C`),
+   2. relation-manager refresh helpers (`slot28`, `slot80`, typed `E0/E2` resets),
+   3. object slot helpers (`slot30`, `slot1C`),
+   4. secondary-state policy helpers (`slot5C`, `slot48`),
+   5. shared string-ref lifecycle helper.
+4. Refactored existing methods to reduce inline cast noise and magic literals:
+   1. `RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`,
+   2. `ApplyNationResourceNeedTargetsToOrderState`,
+   3. `AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet`,
+   4. `ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries`,
+   5. `BuildGreatPowerMapContextTriggeredNationEventMessages`,
+   6. `BuildGreatPowerEligibleNationEventMessagesFromLinkedList`,
+   7. `SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations`,
+   8. `RebuildNationResourceYieldCountersAndDevelopmentTargets`,
+   9. `ReleaseDiplomacyTrackedObjectSlots850`,
+   10. `BuildGreatPowerTurnMessageSummaryAndDispatch`.
+5. For `0x004DBD20`, restored the previous higher-scoring loop/data shape after a readability-only variant regressed similarity.
+6. Added typed `LocalizationRuntime_GetTurnTick` helper and switched queue-summary path to shared queue helpers (`List_GetCountSlot48`, `ProposalQueue_GetEntryAt1Based`).
+
+### Results
+1. Build/detect: green.
+2. Targeted compare snapshot:
+   1. `0x004DC9F0`: `48.98%`
+   2. `0x004DCD10`: `25.21%`
+   3. `0x004E22B0`: `18.18%`
+   4. `0x004E2500`: `24.16%`
+   5. `0x004DBD20`: `17.12%` (recovered after shape restore)
+   6. `0x004DC840`: `11.61%`
+   7. `0x004DD0C0`: `22.99%`
+   8. `0x004DD310`: `82.76%`
+   9. `0x004E2B70`: `14.04%`
+3. Project stats (`2026-03-03T04:22:00Z`):
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.90%`
+
+## 2026-03-03 04:49 UTC - `TGreatPower` subsystem adapter refactor batches
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004D92E0`
+5. `just compare 0x004DBF00`
+6. `just compare 0x004DE860`
+7. `just compare 0x004E8540`
+8. `just compare 0x004D9160`
+9. `just compare 0x004D8CC0`
+10. `just compare 0x004DDFC0`
+11. `just compare 0x004DF010`
+12. `just stats`
+
+### Changes
+1. Added generic internal adapters in `src/game/TGreatPower.cpp`:
+   1. object slot/query adapters (`Obj_QueryIntAtSlot`, `Obj_CallNoArgAtSlot`, `Obj_CallIntArgAtSlot`, `Obj_CallPtrArgAtSlot`, `Obj_ReleaseAndClearSlot`),
+   2. stream adapters (`Stream_ReadAtSlot3C`, `Stream_ReadIntAtSlot40`, `Stream_ReadRawAtSlot00`, `Stream_ReadByteAtSlotB0`),
+   3. list/global-map adapters (`List_GetIntByOrdinalSlot24`, `GlobalMapState_CallMetricC4`).
+2. Refactored large priority functions to use subsystem adapters while preserving branch/call order:
+   1. `0x004D9160` `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`,
+   2. `0x004D92E0` `InitializeGreatPowerMinisterRosterAndScenarioState`,
+   3. `0x004DBF00` `AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents`,
+   4. `0x004DE860` `ApplyJoinEmpireMode0GlobalDiplomacyReset`.
+3. Additional cleanup in adjacent owned functions:
+   1. `0x004DF010` switched shared-ref init/release boilerplate to dedicated helpers and replaced terrain descriptor table indexing with `ReadGlobalPointerArraySlot`,
+   2. `0x004DEFD0` switched queue write boilerplate to `QueueObject_WritePackedIntAtSlot38`,
+   3. `0x004E8540` switched mission queue push boilerplate to `Obj_CallPtrArgAtSlot`.
+4. Added shared ref triplet helpers:
+   1. `InitializeThreeSharedRefs`,
+   2. `ReleaseThreeSharedRefs`.
+
+### Results
+1. Build/detect: green through all batches.
+2. Priority compare snapshot:
+   1. `0x004D92E0`: `29.96%` (up from `22.09%` before this refactor series)
+   2. `0x004DBF00`: `29.14%` (up from `27.79%`)
+   3. `0x004DE860`: `26.83%` (up from `25.44%`)
+   4. `0x004E8540`: `38.96%` (stable)
+   5. `0x004D9160`: `31.19%` (down from `35.51%`, accepted in this pass for adapter consolidation)
+   6. `0x004D8CC0`: `31.98%` (stable)
+   7. `0x004DDFC0`: `19.94%` (stable)
+   8. `0x004DF010`: `12.79%` (stable)
+3. Project stats (`2026-03-03T04:49:00Z`):
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.90%`
+
+## 2026-03-03 07:49 UTC - `TGreatPower` deep helper refactor (typed global slots + queue/list cleanup)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just stats`
+5. `just compare 0x00406fe1`
+6. `just compare 0x004dd0c0`
+7. `just compare 0x004dd4e0`
+8. `just compare 0x004de860`
+9. `just compare 0x004e1d50`
+10. `just compare 0x004ea300`
+11. `just compare 0x004e72c0`
+
+### Changes
+1. Added reusable typed global slot helpers in `src/game/TGreatPower.cpp`:
+   1. `ReadNationStateSlot`,
+   2. `ReadSecondaryNationStateSlot`,
+   3. `ReadTerrainDescriptorSlot`,
+   4. `SecondaryState_CallSlot4C`.
+2. Replaced raw pointer-array and vtable call blocks with typed helpers in real bodies:
+   1. `0x00406FE1` `thunk_QueueWarTransitionAndNotifyThirdPartyIfNeeded_At00406fe1`,
+   2. `0x004DD0C0` `SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations`,
+   3. `0x004DD4E0` `AssignFallbackNationsToUnfilledDiplomacyNeedSlots`,
+   4. `0x004DE860` `ApplyJoinEmpireMode0GlobalDiplomacyReset`,
+   5. `0x004E1D50` `ExecuteAdvisoryPromptAndApplyActionType1`,
+   6. `0x004EA300` `MarkNationPortZoneAndLinkedTilesForActionFlag`.
+3. Simplified stream/queue plumbing in `0x004E72C0` `InitializeMapActionCandidateStateAndQueueMission`:
+   1. switched raw stream-vtable reads to `Stream_ReadAtSlot3C`,
+   2. switched queue count/clear/load to `Obj_QueryIntAtSlot`, `Obj_CallNoArgAtSlot`, `Obj_CallIntArgAtSlot`.
+4. Removed now-unused address constants and typedef clutter tied to removed raw-pointer paths.
+
+### Results
+1. Build/detect/stats: green.
+2. Project stats (`2026-03-03T07:49:00Z`):
+   1. aligned functions: `92`
+   2. paired coverage: `100.00%`
+   3. average similarity: `2.90%` (unchanged)
+3. Targeted compare snapshot after refactor:
+   1. `0x00406FE1`: `0.00%`
+   2. `0x004DD0C0`: `22.99%`
+   3. `0x004DD4E0`: `10.57%`
+   4. `0x004DE860`: `26.83%`
+   5. `0x004E1D50`: `22.95%`
+   6. `0x004EA300`: `25.64%`
+   7. `0x004E72C0`: `30.87%`

@@ -38,6 +38,46 @@ Latest incremental checkpoint (`2026-03-03 03:57 UTC`):
    2. not aligned vs original: `12880`
    3. average similarity: `2.91%`
 
+Latest incremental checkpoint (`2026-03-03 04:22 UTC`):
+1. Existing-code readability and typing pass in `TGreatPower`:
+   1. replaced remaining local `pad` accesses with typed fields (`field8b7_scenarioInitFlag`, `field8d4_expansionEventGate`),
+   2. introduced reusable typed helpers for list/object/relation-manager/secondary-state virtual slots,
+   3. applied helper cleanup across existing functions only (no new ownership promotions),
+   4. moved turn-summary queue path (`0x004E2B70`) to shared helpers and typed localization tick accessor.
+2. Score guardrail applied:
+   1. a readability variant of `0x004DBD20` regressed, so the loop/data shape was restored to recover the previous score.
+3. Key targeted snapshot after cleanup:
+   1. `0x004DC9F0`: `48.98%`
+   2. `0x004DCD10`: `25.21%`
+   3. `0x004E22B0`: `18.18%`
+   4. `0x004E2500`: `24.16%`
+   5. `0x004DBD20`: `17.12%`
+   6. `0x004DD310`: `82.76%`
+   7. `0x004E2B70`: `14.04%`
+4. Snapshot (`just stats`, `2026-03-03T04:22:00Z`):
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.90%`
+
+Latest incremental checkpoint (`2026-03-03 04:49 UTC`):
+1. Landed subsystem adapter refactor batches in `TGreatPower.cpp` (cpp-only):
+   1. added generic object/stream/list/global-map adapters to remove repeated vtable boilerplate,
+   2. rewired priority large functions to use those adapters while preserving function ownership and marker placement.
+2. Priority-function impact:
+   1. `0x004D92E0` improved to `29.96%` (from low-20s baseline before this batch),
+   2. `0x004DBF00` improved to `29.14%`,
+   3. `0x004DE860` improved to `26.83%`,
+   4. `0x004D9160` moved down to `31.19%` (accepted for this readability/adapter consolidation pass),
+   5. `0x004E8540`, `0x004D8CC0`, `0x004DDFC0`, `0x004DF010` remained stable.
+3. Adjacent cleanup landed:
+   1. shared-ref triplet helpers for proposal paths,
+   2. queue push/write paths switched to shared adapters,
+   3. terrain/list accessor normalization via shared pointer helpers.
+4. Snapshot (`just stats`, `2026-03-03T04:49:00Z`):
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.90%`
+
 Latest incremental checkpoint (`2026-03-03 04:03 UTC`):
 1. Existing-code cleanup (no new promoted addresses):
    1. replaced repeated cast-heavy slot calls with reusable typed helper wrappers (`A1`, `2E`, `84`, `85`, `A8`, `A9`, `B3`),
