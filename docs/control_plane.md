@@ -1172,3 +1172,13 @@ Project snapshot (`just stats`):
 2. aligned functions: `63`
 3. average similarity: `2.60%`
 4. paired coverage: `100.00%`
+
+## 2026-03-03 09:57 UTC mini-checkpoint (`TGreatPower`)
+
+1. Keep active focus on medium-size class-owned bodies with low-but-movable similarity (`0x004DD4E0`, `0x004DC660`, `0x004DC840`).
+2. Latest high-impact gain came from shape-first restoration of list/slot/random loops from Ghidra in `0x004DD4E0`.
+3. Current quick canaries:
+   1. `0x004DD4E0`: `29.94%`
+   2. `0x004DC540`: `43.06%`
+   3. `0x004DC660`: `19.18%`
+   4. `0x004DC840`: `13.14%`

@@ -118,6 +118,7 @@ undefined4 thunk_InitializeCivUnitOrderObject(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 undefined4 thunk_SetGlobalRegionDevelopmentStageByte(void);
 undefined4 thunk_DispatchCityRedrawInvalidateEvent(void);
+undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 struct TDiplomacyTurnStateManager {
@@ -743,6 +744,27 @@ static __inline TTrackedObjectListEntryView* List_GetTrackedEntrySlot4C(void* li
   void** listVtable = *reinterpret_cast<void***>(list);
   ListSlot4CGetFn slot4C = reinterpret_cast<ListSlot4CGetFn>(listVtable[0x4C / 4]);
   return slot4C(list, 0, ordinal);
+}
+
+static __inline int ObArray_GetCountAtOffset8(void* list) {
+  return *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(list) + 8);
+}
+
+static __inline short ObArray_GetShortValueByOrdinal1Based(void* list, int ordinal) {
+  typedef short*(__fastcall * ListSlot2CGetFn)(void*, int, int);
+  void** listVtable = *reinterpret_cast<void***>(list);
+  ListSlot2CGetFn slot2C = reinterpret_cast<ListSlot2CGetFn>(listVtable[0x2C / 4]);
+  short* value = slot2C(list, 0, ordinal);
+  return (value != 0) ? *value : static_cast<short>(-1);
+}
+
+static __inline void Diplomacy_BuildRelationshipListForNation(void* diplomacyManager,
+                                                              int sourceNation, int mode,
+                                                              void* outList) {
+  typedef void(__fastcall * DipSlot88Fn)(void*, int, int, int, void*);
+  void** vtable = *reinterpret_cast<void***>(diplomacyManager);
+  DipSlot88Fn slot88 = reinterpret_cast<DipSlot88Fn>(vtable[0x88 / 4]);
+  slot88(diplomacyManager, 0, sourceNation, mode, outList);
 }
 
 static __inline short Diplomacy_GetRelationTier(void* diplomacyManager, int sourceNation,
@@ -2739,7 +2761,6 @@ void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
 
 // FUNCTION: IMPERIALISM 0x004dd4e0
 void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
-  const int kMajorNationCount = 7;
   const int kNeedSlotStart = 7;
   const int kNeedSlotEndExclusive = 12;
   const int kNeedSlotFallback = 5;
@@ -2752,64 +2773,73 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
   }
 
   void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
-
-  bool hasUnfilledNeed = false;
+  bool hasUnfilledNeedSlot = false;
   for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
     if (GreatPower_GetNeedSlotValue(this, needSlot) < 0) {
-      hasUnfilledNeed = true;
-      break;
+      hasUnfilledNeedSlot = true;
     }
   }
 
-  if (hasUnfilledNeed) {
+  if (hasUnfilledNeedSlot) {
+    short selectedNation = static_cast<short>(-1);
+    void* relationshipList = AllocateObArrayWithMode(0);
+    if (diplomacyManager != 0 && relationshipList != 0) {
+      Diplomacy_BuildRelationshipListForNation(diplomacyManager, this->nationSlot, 1,
+                                               relationshipList);
+    }
+
     for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
-      if (GreatPower_GetNeedSlotValue(this, needSlot) >= 0) {
-        continue;
-      }
+      if (GreatPower_GetNeedSlotValue(this, needSlot) < 0) {
+        int listIndex = ObArray_GetCountAtOffset8(relationshipList);
+        if (selectedNation < 0) {
+          while (listIndex >= 1) {
+            selectedNation = ObArray_GetShortValueByOrdinal1Based(relationshipList, listIndex);
+            --listIndex;
+            void* candidateState = ReadNationStateSlot(selectedNation);
+            if (candidateState != 0 && NationState_IsBusyA0(candidateState) != 0) {
+              selectedNation = static_cast<short>(-1);
+            }
+            if (selectedNation >= 0) {
+              break;
+            }
+          }
+        }
 
-      int selectedNation = -1;
-      for (int majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
-        if (majorNation == this->nationSlot) {
-          continue;
+        if (selectedNation >= 0) {
+          void* selectedNationState = ReadNationStateSlot(selectedNation);
+          if (selectedNationState != 0) {
+            NationState_AssignNeedSlotFromSource(selectedNationState, needSlot, this->nationSlot);
+          }
         }
-        void* nationState = ReadNationStateSlot(majorNation);
-        if (nationState == 0 || NationState_IsBusyA0(nationState) != 0) {
-          continue;
-        }
-        selectedNation = majorNation;
-        break;
       }
+    }
 
-      if (selectedNation >= 0) {
-        void* selectedNationState = ReadNationStateSlot(selectedNation);
-        if (selectedNationState != 0) {
-          NationState_AssignNeedSlotFromSource(selectedNationState, needSlot, this->nationSlot);
-        }
-      }
+    if (relationshipList != 0) {
+      Obj_CallNoArgAtSlot(relationshipList, 0x24);
     }
   }
 
-  if (GreatPower_GetNeedSlotValue(this, kNeedSlotFallback) != -1) {
-    return;
-  }
+  if (GreatPower_GetNeedSlotValue(this, kNeedSlotFallback) == -1) {
+    bool foundFallbackNation = false;
+    int fallbackNationSlot = -1;
+    while (!foundFallbackNation) {
+      typedef unsigned int(__cdecl * GenerateRandom15Fn)(void);
+      GenerateRandom15Fn random15 =
+          reinterpret_cast<GenerateRandom15Fn>(GenerateThreadLocalRandom15);
+      fallbackNationSlot = static_cast<int>(random15() % 7);
+      if (IsNationSlotEligibleForEventProcessingFast(fallbackNationSlot) != 0 &&
+          Diplomacy_HasPolicyWithNation(diplomacyManager, fallbackNationSlot, this->nationSlot) ==
+              0 &&
+          fallbackNationSlot != this->nationSlot) {
+        foundFallbackNation = true;
+      }
+    }
 
-  for (int majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
-    if (majorNation == this->nationSlot) {
-      continue;
+    void* fallbackNationState = ReadNationStateSlot(fallbackNationSlot);
+    if (fallbackNationState != 0) {
+      NationState_AssignNeedSlotFromSource(fallbackNationState, kNeedSlotFallback,
+                                           this->nationSlot);
     }
-    if (IsNationSlotEligibleForEventProcessingFast(majorNation) == 0) {
-      continue;
-    }
-    if (diplomacyManager != 0 &&
-        Diplomacy_HasPolicyWithNation(diplomacyManager, majorNation, this->nationSlot) != 0) {
-      continue;
-    }
-
-    void* nationState = ReadNationStateSlot(majorNation);
-    if (nationState != 0) {
-      NationState_AssignNeedSlotFromSource(nationState, kNeedSlotFallback, this->nationSlot);
-    }
-    break;
   }
 }
 

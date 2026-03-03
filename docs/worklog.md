@@ -3827,3 +3827,32 @@
    2. `0x004DC660`: `19.18%` (up from `14.29%` before this pass, up from `11.76%` intermediate)
    3. `0x004DC840`: `13.14%` (up from `11.61%`)
    4. `0x004DD740`: `0.00%` (still thunk/size-shape mismatch; left as-is)
+
+## 2026-03-03 09:57 UTC - `TGreatPower` fallback-slot shape pass (`0x004DD4E0`)
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004dd4e0`
+4. `just compare 0x004dc540`
+5. `just compare 0x004dc660`
+6. `just compare 0x004dc840`
+
+### Changes
+1. Reworked `0x004DD4E0` (`AssignFallbackNationsToUnfilledDiplomacyNeedSlots`) to follow Ghidra body shape:
+   1. explicit scan for unfilled slots `7..11`,
+   2. candidate relationship list via diplomacy manager slot `0x88`,
+   3. cached selected nation from list `slot 0x2C`,
+   4. randomized fallback loop for slot `5` using `GenerateThreadLocalRandom15() % 7` + eligibility and diplomacy checks.
+2. Added/used helper plumbing for this path in `src/game/TGreatPower.cpp`:
+   1. `ObArray_GetCountAtOffset8`,
+   2. `ObArray_GetShortValueByOrdinal1Based`,
+   3. `Diplomacy_BuildRelationshipListForNation`.
+
+### Results
+1. Build: green.
+2. Targeted compare snapshot:
+   1. `0x004DD4E0`: `29.94%` (up from `11.38%`)
+   2. `0x004DC540`: `43.06%` (stable)
+   3. `0x004DC660`: `19.18%` (stable)
+   4. `0x004DC840`: `13.14%` (stable)
