@@ -3,7 +3,7 @@
 ## Hard Rules
 
 1. No inline assembly.
-2. Use `just` targets for normal workflow (`build`, `detect`, `compare`, `stats`, `promote`, `sync-ownership`, `regen-stubs`).
+2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`, `compare`, `stats`, `promote`, `sync-ownership`, `regen-stubs`).
 3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function declaration.
 4. Do not place any other comment or blank line between `// FUNCTION` and the declaration.
 5. One owned implementation per address in manual source.
@@ -23,6 +23,9 @@
 16. For vtable calls in manual code, do not introduce local `typedef ...Fn` + `reinterpret_cast` blocks; call through generated facades in `include/game/generated/vcall_facades.h`.
 17. Keep low-level slot-cast mechanics isolated in `include/game/vcall_runtime.h`; gameplay code should not index vtables directly.
 18. If `config/vtable_slots.csv` changes, regenerate with `just gen-vcall-facades` before build/compare.
+19. `config/vtable_slots.csv` is the single source of truth for generated vcall wrappers project-wide.
+20. The raw-vtable gate (`just vtable-gate`) must pass; do not introduce new raw-vtable patterns in files that are not already baseline-tracked.
+21. `just session-loop` mutates `reccmp-project.yml` ignore lists; run it only when you explicitly want to rewrite ignore configuration.
 
 ## Promotion Loop
 
@@ -31,7 +34,8 @@
 3. Make compile-safe C++ first; do not micro-tune immediately.
 4. Run ownership/stub sync.
 5. Run `just build`, `just detect`, `just compare 0xADDR`.
-6. If score moves, keep it and move on; if stuck, move to next function.
+6. Run `just compare-canaries` after each accepted iteration to ensure no unresolved regression debt on tracked anchors.
+7. If score moves, keep it and move on; if stuck, move to next function.
 
 ## Similarity Improvement Notes
 
@@ -47,6 +51,15 @@
 10. Newly promoted GHIDRA blocks with `void __thiscall ... (TGreatPower* this, ...)` must be rewritten to real member signatures before build; leaving raw form causes MSVC parse failures and address pairing loss.
 11. When a class method name collides with an existing global symbol, use explicit `this->Method(...)` in bridges and verify link output; unresolved externals often come from accidental global resolution.
 12. Prefer typed global-slot helpers (`ReadNationStateSlot`, `ReadSecondaryNationStateSlot`, `ReadTerrainDescriptorSlot`) over raw address cursor loops; this avoids pointer-step bugs and keeps ownership loops maintainable.
+13. For serialized stream/message blocks, preserve aggregate read/write sizes from Ghidra (`0x0C`, `0x180`, `0x70`, etc.) instead of expanding into element-by-element loops unless the original clearly does so.
+14. When a wrapper function in Ghidra feeds queue state from stream records, keep the refill stage (stream read marker + conditional queue push) in place even if a simplified version compiles; omitting it can hold similarity in the low 20s/30s range.
+15. If `reccmp --verbose` shows `ret 0x10`/`ret 0x0C` but C++ emits `ret 8`/`ret 4`, treat it as a signature mismatch first (missing stack args) before micro-tuning locals.
+16. When Ghidra shows `extraout_AL` driving a branch after a call, model that call as returning a flag (or use a typed call cast at callsite); pre-checking with a different helper usually destroys call shape.
+17. For nation-eligibility checks, pass the real manager from `0x006A43E0` and use a `char`/flag return in C++; `int` wrappers with null `ecx` often emit the wrong branch shape.
+18. For UI dispatch wrappers, avoid adding defensive null/function-pointer guards unless present in the original shape; load globals only in the taken branch to keep register/stack flow closer.
+19. For turn-event dispatcher thunks, verify both calling convention and payload order; several paths are `__stdcall` with prepended `this->nationSlot`, and using `__cdecl` (or omitting the nation arg) introduces stack-cleanup/call-shape drift.
+20. For tiny getter-like functions, trust `reccmp --verbose` on `ret` size and field offset: if original shows `ret 4` and `this+0xXYZ`, align method signature/arg count and use an explicit typed offset view when class-field offsets are still fluid.
+21. If a function clearly needs `this+0xXYZ` but current class members compile to a different offset, use a local typed offset-view struct for that function and keep class-wide field renames for a dedicated layout pass.
 
 ## Known reccmp Failure Modes
 

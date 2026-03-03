@@ -228,3 +228,79 @@
    3. `just stats`: pass, unchanged vs immediate pre-pass baseline:
       1. aligned functions: `91`
       2. average similarity: `2.92%`
+
+### TGreatPower targeted score pass (`0x004DE340`, `0x004DD740`, `0x00601F1D`)
+
+1. Scope:
+   1. Kept work inside `src/game/TGreatPower.cpp` and `config/vtable_slots.csv`.
+   2. Added localization slot facades for slot `0x84`:
+      1. `VCall_LocalizationRuntime_CallSlot84`
+      2. `VCall_LocalizationRuntime_CallSlot84WithId`
+2. `0x004DE340` `SetDiplomacyGrantEntryForTargetAndUpdateTreasury`:
+   1. Refined body shape around grant-accept path and shared-ref message dispatch.
+   2. Wired localization slot calls through generated facades (instead of ad-hoc casts).
+   3. Kept higher-scoring variant after an attempted `__try/__finally` pass regressed.
+   4. Delta: `9.62% -> 12.31%`.
+3. `0x004DD740` `GetDiplomacyExternalStateB6ByTarget`:
+   1. Verbose diff showed original shape uses `ret 4` and reads `this+0x894`.
+   2. Changed method to one-arg getter-style signature and used explicit `+0x894` typed offset view.
+   3. Delta: `0.00% -> 22.22%`.
+4. `0x00601F1D` `CPtrList`:
+   1. Tested alternate shape; retained prior variant because newer rewrite regressed.
+   2. Current: `9.09%`.
+5. Validation loop:
+   1. `just format src/game/TGreatPower.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x004de340`
+   5. `just compare 0x004dd740`
+   6. `just compare 0x00601f1d`
+   7. `just compare-canaries`
+   8. `just stats`
+6. Guardrails / snapshot:
+   1. `just vtable-gate`: pass.
+   2. `just compare-canaries`: pass (`below_floor=0`).
+   3. `just stats`: aligned `91`, average similarity `2.93%`.
+
+### TGreatPower iterative body pass (`0x004DB380`, `0x004DAF30`, `0x004DE340`)
+
+1. Scope:
+   1. `src/game/TGreatPower.cpp`.
+   2. Added one explicit global pointer constant: `kAddrNationInteractionStateManagerPtr = 0x006A43CC`.
+   3. Added `TGreatPowerPressureUpdateView` for stable offset-based access in pressure/escalation code.
+2. `0x004DB380` `UpdateGreatPowerPressureStateAndDispatchEscalationMessage`:
+   1. Replaced prior simplified branch with a shape closer to Ghidra:
+      1. weighted base-pressure computation (`slot 0x5F` + `this+0x166/0x168/0x840`),
+      2. smoothing update at `+0x8F0`,
+      3. tier transitions around `+0x8FC`,
+      4. pressure value rise/decay at `+0x8F4`,
+      5. final drain equation writing `+0x900`.
+   2. Kept localized dispatch path in C++ (no asm/raw slot offsets in gameplay body).
+   3. Delta: `12.24% -> 24.38%`.
+3. `0x004DAF30` `CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`:
+   1. Replaced previous small payload-only body with a larger ordered-slot scan:
+      1. fixed nation priority list,
+      2. external-state delta zeroing at `+0xB6 + slot*2`,
+      3. manager refresh/call path (`+0x80`, `+0x4C`),
+      4. localized dispatch envelope.
+   2. Corrected threshold gate to read `+0x8FC` via typed view (not provisional class member offset drift).
+   3. Delta: `13.86% -> 13.53%` (small regression accepted for now in exchange for real body extraction).
+4. `0x004DE340` safety check:
+   1. Tried an alternative shaping pass (char flags + direct matrix indexing + explicit shared-ref locals) that regressed to `7.56%`.
+   2. Reverted only that function to the previous better variant.
+   3. Final remains: `12.31%`.
+5. Validation commands (repeated through the pass):
+   1. `just format src/game/TGreatPower.cpp`
+   2. `just build`
+   3. `just detect`
+   4. `just compare 0x004db380`
+   5. `just compare 0x004daf30`
+   6. `just compare 0x004de340`
+   7. `just compare-canaries`
+   8. `just stats`
+6. Current checkpoint:
+   1. `0x004DB380`: `24.38%`
+   2. `0x004DAF30`: `13.53%`
+   3. `0x004DE340`: `12.31%`
+   4. `just compare-canaries`: pass (`below_floor=0`)
+   5. `just stats`: aligned functions `91`, average similarity `2.93%`.

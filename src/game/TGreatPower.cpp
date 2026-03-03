@@ -268,6 +268,26 @@ struct TRelationManagerNeedRefreshView {
   short relationNeedSlotE2;
 };
 
+struct TGreatPowerDiplomacyExternalStateView {
+  unsigned char pad00[0x894];
+  void* diplomacyExternalState894;
+};
+
+struct TGreatPowerPressureUpdateView {
+  unsigned char pad00[0x166];
+  short pressureFactor166;
+  short pressureFactor168;
+  unsigned char pad16a[0x840 - 0x16A];
+  int pressureOffset840;
+  unsigned char pad844[0x8F0 - 0x844];
+  int smoothedPressure8f0;
+  signed char pressureValue8f4;
+  unsigned char pad8f5[7];
+  signed char pressureTier8fc;
+  unsigned char pad8fd[3];
+  int pendingDrain900;
+};
+
 struct TTerrainDescriptorLinkedNodesView {
   unsigned char pad00[0x90];
   void* linkedNodeList;
@@ -284,7 +304,8 @@ struct CPtrListSentinelView {
   void* vftable;
   int field04;
   int field08;
-  int field0c;
+  short field0c;
+  short field0e;
   int field10;
   void* pField14;
   int field18;
@@ -296,6 +317,7 @@ struct TRefCountedListOwnerView {
 };
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
+static const unsigned int kAddrNationInteractionStateManagerPtr = 0x006A43CC;
 static const unsigned int kAddrSecondaryNationStateSlots = 0x006A4280;
 static const unsigned int kAddrMapActionContextListHead = 0x006A3FC8;
 static const unsigned int kAddrDiplomacyTurnStateManagerPtr = 0x006A43D0;
@@ -490,7 +512,7 @@ public:
   int SumAidAllocationMatrixColumnForTarget(short targetNationId);
   int SumAidAllocationMatrixAllCells(void);
   int ComputeRemainingDiplomacyAidBudget(void);
-  void GetDiplomacyExternalStateB6ByTarget(void);
+  int GetDiplomacyExternalStateB6ByTarget(int targetNationSlot);
   void DecrementDiplomacyCounterA2ByValue(int delta);
   void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);
   void ResetNationDiplomacyProposalQueue(void);
@@ -1220,6 +1242,21 @@ static __inline void InitializeAndReleaseSharedMessageRefs(void) {
   ReleaseSharedStringRefIfNotEmpty(&messageRef);
 }
 
+struct SharedRefPairScope {
+  int first;
+  int second;
+
+  SharedRefPairScope() : first(0), second(0) {
+    InitializeSharedStringRefFromEmpty(&first);
+    InitializeSharedStringRefFromEmpty(&second);
+  }
+
+  ~SharedRefPairScope() {
+    ReleaseSharedStringRefIfNotEmpty(&second);
+    ReleaseSharedStringRefIfNotEmpty(&first);
+  }
+};
+
 static __inline void InitializeThreeSharedRefs(int* firstRef, int* secondRef, int* thirdRef) {
   InitializeSharedStringRefFromEmpty(firstRef);
   InitializeSharedStringRefFromEmpty(secondRef);
@@ -1703,7 +1740,7 @@ TGreatPower::TGreatPower(int arg1, int arg2) {
   Obj_ReleaseAndClearSlot(&(SELF_PTR)->trackedObjectList, 0x58);                                   \
   Obj_ReleaseAndClearSlot(&(SELF_PTR)->turnSummaryQueue, 0x24);                                    \
   Obj_ReleaseAndClearSlot(&(SELF_PTR)->missionNodeQueue, 0x58);                                    \
-  Obj_ReleaseAndClearSlot(&(SELF_PTR)->pad_44_ptr, 0x58);                                           \
+  Obj_ReleaseAndClearSlot(&(SELF_PTR)->pad_44_ptr, 0x58);                                          \
   if ((SELF_PTR)->ownedRegionList != 0) {                                                          \
     Obj_CallNoArgAtSlot((SELF_PTR)->ownedRegionList, 0x38);                                        \
     (SELF_PTR)->ownedRegionList = 0;                                                               \
@@ -2076,106 +2113,193 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
 
 // FUNCTION: IMPERIALISM 0x004DAF30
 void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void) {
-  if (VCall_GreatPower_ShouldDispatchImmediatelySlot28(this) != 0) {
+  static const short kNationPriorityOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
+                                               0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
+
+  if (GreatPower_ShouldDispatchImmediately(this) != 0) {
     return;
   }
 
   TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
+  TGreatPowerPressureUpdateView* pressureView =
+      reinterpret_cast<TGreatPowerPressureUpdateView*>(this);
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
   }
-  if (this->pressureCounter < ReadLocaleByteStep(kAddrCompileGreatPowerValue, localeIndex)) {
+  int compileThreshold = ReadGlobalIntStep(kAddrCompileGreatPowerValue, localeIndex);
+  if (compileThreshold > static_cast<int>(pressureView->pressureTier8fc)) {
     return;
   }
 
-  int strongestNation = -1;
-  int strongestAbsDelta = 0;
-  int signedDeltaTotal = 0;
+  int relationDeltaByNation[0x17];
+  for (int idx = 0; idx < 0x17; ++idx) {
+    relationDeltaByNation[idx] = 0;
+  }
 
-  for (int nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-    short previousDelta = this->relationDeltaSnapshot[nationSlot];
-    short currentDelta = this->relationDeltaCurrent[nationSlot];
-    short delta = static_cast<short>(currentDelta - previousDelta);
-    if (delta == 0) {
+  int summaryMessageRef = 0;
+  InitializeSharedStringRefFromEmpty(&summaryMessageRef);
+
+  TGreatPowerDiplomacyExternalStateView* diplomacyExternal =
+      reinterpret_cast<TGreatPowerDiplomacyExternalStateView*>(this);
+  int interactionScore = 0;
+
+  const short* nationCursor = kNationPriorityOrder;
+  while (*nationCursor != -1) {
+    if (interactionScore + this->pressureScore >= 0) {
+      break;
+    }
+
+    short nationSlot = *nationCursor;
+    unsigned char* externalBytes =
+        reinterpret_cast<unsigned char*>(diplomacyExternal->diplomacyExternalState894);
+    if (externalBytes == 0) {
+      ++nationCursor;
       continue;
     }
 
-    this->relationDeltaSnapshot[nationSlot] = currentDelta;
-    signedDeltaTotal += static_cast<int>(delta);
+    short* relationDeltaPtr =
+        reinterpret_cast<short*>(externalBytes + 0xB6 + static_cast<int>(nationSlot) * 2);
+    short relationDelta = *relationDeltaPtr;
+    if (relationDelta > 0) {
+      *relationDeltaPtr = 0;
+      relationDeltaByNation[nationSlot] = static_cast<int>(relationDelta);
 
-    int absDelta = (delta < 0) ? -static_cast<int>(delta) : static_cast<int>(delta);
-    if (absDelta > strongestAbsDelta) {
-      strongestAbsDelta = absDelta;
-      strongestNation = nationSlot;
+      RelationManager_RefreshSlot80(diplomacyExternal->diplomacyExternalState894);
+
+      void* nationInteractionState = ReadGlobalPointer(kAddrNationInteractionStateManagerPtr);
+      if (nationInteractionState != 0) {
+        interactionScore = Obj_QueryIntAtSlot(nationInteractionState, 0x4C);
+      }
     }
+
+    ++nationCursor;
   }
 
-  if (strongestNation < 0) {
-    return;
+  VCall_GreatPower_AdjustTreasurySlot0E(this, 0);
+
+  if (interactionScore > 0) {
+    SharedRefPairScope localizedRefs;
+    if (localizationRuntime != 0) {
+      VCall_LocalizationRuntime_CallSlot84(localizationRuntime);
+      VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, interactionScore);
+    }
+    thunk_AssignStringSharedRefAndReturnThis();
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   }
 
-  int payload = (strongestNation & 0xFFFF) | ((signedDeltaTotal & 0xFFFF) << 16);
-  this->QueueInterNationEventIntoNationBucket(0x13A0, payload, '\0');
+  ReleaseSharedStringRefIfNotEmpty(&summaryMessageRef);
 }
 
 // FUNCTION: IMPERIALISM 0x004DB380
 void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+  TGreatPowerPressureUpdateView* pressureView =
+      reinterpret_cast<TGreatPowerPressureUpdateView*>(this);
   TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
   }
 
-  signed char& pressureCounter = this->pressureCounter;
-  signed char& escalationCounter = this->escalationCounter;
-  int relationScore = this->pressureScore;
-
-  if (relationScore < 0) {
-    int nextPressure = static_cast<int>(pressureCounter) +
-                       ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex);
-    int pressureRiseCap = ReadGlobalIntStep(kAddrGreatPowerPressureRiseCap, localeIndex);
-    if (nextPressure > pressureRiseCap) {
-      nextPressure = pressureRiseCap;
-    }
-    pressureCounter = static_cast<signed char>(nextPressure);
-
-    if (pressureCounter > 0) {
-      if (escalationCounter < 3) {
-        escalationCounter = 3;
-      } else {
-        escalationCounter = static_cast<signed char>(escalationCounter + 1);
-      }
-
-      int escalationValue = static_cast<int>(escalationCounter);
-      int hardThreshold = ReadGlobalIntStep(kAddrGreatPowerPressureHardAlertThreshold, localeIndex);
-      int softThreshold = ReadGlobalIntStep(kAddrCompileGreatPowerValue, localeIndex);
-      if (escalationValue >= hardThreshold || escalationValue >= softThreshold) {
-        this->BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage();
-      }
-    }
-  } else {
-    if (escalationCounter != 0) {
-      int nextPressure = static_cast<int>(pressureCounter) -
-                         ReadLocaleByteStep(kAddrGreatPowerPressureDecayStep, localeIndex);
-      int minFloor = ReadGlobalIntStep(kAddrGreatPowerPressureMinFloor, localeIndex);
-      if (nextPressure < minFloor) {
-        nextPressure = minFloor;
-      }
-      pressureCounter = static_cast<signed char>(nextPressure);
-    }
-    escalationCounter = 0;
+  int pressureScore = this->pressureScore;
+  int basePressure = VCall_GreatPower_GetBaseBudgetSlot5F(this);
+  basePressure += static_cast<int>(pressureView->pressureFactor168) * 200;
+  basePressure += static_cast<int>(pressureView->pressureFactor166) * 500;
+  basePressure += pressureView->pressureOffset840;
+  int pressureFloor = ReadGlobalIntStep(kAddrNationBasePressureByLocale, localeIndex);
+  if (basePressure < pressureFloor) {
+    basePressure = pressureFloor;
   }
 
-  relationScore = this->pressureScore;
-  if (relationScore >= 0) {
-    this->pendingCommitmentCost = 0;
+  int smoothedPressure = (pressureView->smoothedPressure8f0 * 0x5A + basePressure * 1000) / 100;
+  pressureView->smoothedPressure8f0 = smoothedPressure;
+  int pressureBand = smoothedPressure / 100;
+
+  if (pressureScore < 0) {
+    int halfBand = pressureBand / 2;
+    if ((-halfBand == pressureScore) || (-pressureScore < halfBand)) {
+      pressureView->pressureTier8fc = 1;
+    } else if ((-pressureBand == pressureScore) || (-pressureScore < pressureBand)) {
+      if (pressureView->pressureTier8fc > 1) {
+        int nextPressureValue =
+            static_cast<int>(pressureView->pressureValue8f4) +
+            static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex));
+        int pressureRiseCap = ReadGlobalIntStep(kAddrGreatPowerPressureRiseCap, localeIndex);
+        if (nextPressureValue > pressureRiseCap) {
+          nextPressureValue = pressureRiseCap;
+        }
+        pressureView->pressureValue8f4 = static_cast<signed char>(nextPressureValue);
+      }
+      pressureView->pressureTier8fc = 2;
+    } else {
+      int sharedMessageRef = 0;
+      InitializeSharedStringRefFromEmpty(&sharedMessageRef);
+      int nextPressureValue =
+          static_cast<int>(pressureView->pressureValue8f4) +
+          static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex));
+      int pressureRiseCap = ReadGlobalIntStep(kAddrGreatPowerPressureRiseCap, localeIndex);
+      if (nextPressureValue > pressureRiseCap) {
+        nextPressureValue = pressureRiseCap;
+      }
+      pressureView->pressureValue8f4 = static_cast<signed char>(nextPressureValue);
+
+      if (pressureView->pressureTier8fc < 3) {
+        pressureView->pressureTier8fc = 3;
+      } else {
+        pressureView->pressureTier8fc = static_cast<signed char>(pressureView->pressureTier8fc + 1);
+      }
+
+      int pressureTier = static_cast<int>(pressureView->pressureTier8fc);
+      int hardThreshold = ReadGlobalIntStep(kAddrGreatPowerPressureHardAlertThreshold, localeIndex);
+      int compileThreshold = ReadGlobalIntStep(kAddrCompileGreatPowerValue, localeIndex);
+
+      if (hardThreshold <= pressureTier) {
+        if (localizationRuntime != 0) {
+          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, 4);
+        }
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        ReleaseSharedStringRefIfNotEmpty(&sharedMessageRef);
+        return;
+      }
+
+      if (pressureTier < compileThreshold) {
+        if (localizationRuntime != 0) {
+          int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
+          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, statusId);
+        }
+        DispatchQuarterlyGreatPowerPressureMessage(1);
+      } else {
+        if (localizationRuntime != 0) {
+          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, 1);
+        }
+        DispatchQuarterlyGreatPowerPressureMessage(2);
+      }
+      ReleaseSharedStringRefIfNotEmpty(&sharedMessageRef);
+    }
+  } else {
+    if (pressureView->pressureTier8fc != 0) {
+      int nextPressureValue =
+          static_cast<int>(pressureView->pressureValue8f4) -
+          static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureDecayStep, localeIndex));
+      int pressureMinFloor = ReadGlobalIntStep(kAddrGreatPowerPressureMinFloor, localeIndex);
+      if (nextPressureValue < pressureMinFloor) {
+        nextPressureValue = pressureMinFloor;
+      }
+      pressureView->pressureValue8f4 = static_cast<signed char>(nextPressureValue);
+      pressureView->pressureTier8fc = 0;
+    }
+  }
+
+  pressureScore = this->pressureScore;
+  if (pressureScore >= 0) {
+    pressureView->pendingDrain900 = 0;
     return;
   }
 
-  int drainAmount = (199 - static_cast<int>(pressureCounter) * relationScore) / 200;
-  this->pendingCommitmentCost = drainAmount;
-  this->pressureScore = relationScore - drainAmount;
+  int drainAmount = (0xC7 - static_cast<int>(pressureView->pressureValue8f4) * pressureScore) / 200;
+  pressureView->pendingDrain900 = drainAmount;
+  this->pressureScore = pressureScore - drainAmount;
 }
 
 // FUNCTION: IMPERIALISM 0x004dbd20
@@ -2785,10 +2909,15 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dd740
-void TGreatPower::GetDiplomacyExternalStateB6ByTarget(void) {
-  if (this->relationManager == 0) {
-    return;
+int TGreatPower::GetDiplomacyExternalStateB6ByTarget(int targetNationSlot) {
+  (void)targetNationSlot;
+  const TGreatPowerDiplomacyExternalStateView* externalStateView =
+      reinterpret_cast<const TGreatPowerDiplomacyExternalStateView*>(this);
+  int externalState = reinterpret_cast<int>(externalStateView->diplomacyExternalState894);
+  if (externalState == 0) {
+    return 0;
   }
+  return externalState;
 }
 
 // FUNCTION: IMPERIALISM 0x004dda20
@@ -2967,13 +3096,13 @@ void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(voi
 void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2) {
   const unsigned short kGrantClear = 0xFFFF;
   const unsigned short kGrantMask = 0x3FFF;
-  const short kMinorNationStart = 7;
   const short kInfluenceAlertThreshold = 0x00FA;
 
   short targetNation = static_cast<short>(arg1);
-  unsigned short newGrantRaw = static_cast<unsigned short>(arg2);
+  int targetIndex = static_cast<int>(targetNation);
   unsigned short oldGrantRaw =
-      static_cast<unsigned short>(this->diplomacyGrantByNation[targetNation]);
+      static_cast<unsigned short>(this->diplomacyGrantByNation[targetIndex]);
+  unsigned short newGrantRaw = static_cast<unsigned short>(arg2);
   bool accepted = true;
 
   if (newGrantRaw != oldGrantRaw) {
@@ -2992,49 +3121,44 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         GreatPower_AdjustTreasury(this, -newGrantValue);
       }
 
-      this->diplomacyGrantByNation[targetNation] = static_cast<short>(newGrantRaw);
+      this->diplomacyGrantByNation[targetIndex] = static_cast<short>(newGrantRaw);
     }
   }
 
-  if (this->scenarioLoadFlag == 0) {
-    return;
-  }
+  if (this->scenarioLoadFlag != 0) {
+    thunk_NoOpDiplomacyPolicyStateChangedHook();
 
-  thunk_NoOpDiplomacyPolicyStateChangedHook();
+    if (accepted && newGrantRaw != kGrantClear && targetNation > 6) {
+      bool shouldDispatchAlert = false;
+      void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+      if (diplomacyManager != 0) {
+        int majorNation = 0;
+        while (majorNation < 7) {
+          if (majorNation != this->nationSlot) {
+            short relationValue =
+                Diplomacy_ReadRelationMatrix79C(diplomacyManager, majorNation, targetIndex);
+            if (relationValue > kInfluenceAlertThreshold) {
+              shouldDispatchAlert = true;
+              break;
+            }
+          }
+          ++majorNation;
+        }
+      }
 
-  if (!accepted || newGrantRaw == kGrantClear || targetNation < kMinorNationStart) {
-    return;
-  }
-
-  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
-  if (diplomacyManager == 0) {
-    return;
-  }
-
-  bool shouldDispatchAlert = false;
-  for (int majorNation = 0; majorNation < kMinorNationStart; ++majorNation) {
-    if (majorNation == this->nationSlot) {
-      continue;
+      if (shouldDispatchAlert) {
+        SharedRefPairScope sharedRefs;
+        void* localizationRuntime = ReadLocalizationRuntimeView();
+        if (localizationRuntime != 0) {
+          VCall_LocalizationRuntime_CallSlot84(localizationRuntime);
+          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, 0x2753);
+        }
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      }
     }
-    short relationValue =
-        Diplomacy_ReadRelationMatrix79C(diplomacyManager, majorNation, targetNation);
-    if (relationValue >= kInfluenceAlertThreshold) {
-      shouldDispatchAlert = true;
-      break;
-    }
   }
-
-  if (!shouldDispatchAlert) {
-    return;
-  }
-
-  int msgRefA = 0;
-  int msgRefB = 0;
-  InitializeSharedStringRefFromEmpty(&msgRefA);
-  InitializeSharedStringRefFromEmpty(&msgRefB);
-  thunk_NoOpDiplomacyPolicyStateChangedHook();
-  ReleaseSharedStringRefIfNotEmpty(&msgRefB);
-  ReleaseSharedStringRefIfNotEmpty(&msgRefA);
 }
 
 // FUNCTION: IMPERIALISM 0x004de5e0
@@ -4541,6 +4665,7 @@ void TGreatPower::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
 void TGreatPower::CPtrList(int ownerContext) {
   CPtrListSentinelView* list = reinterpret_cast<CPtrListSentinelView*>(this);
   list->field0c = 0;
+  list->field0e = 0;
   list->field10 = 0;
   list->field08 = 0;
   list->field04 = 0;
