@@ -3321,3 +3321,45 @@
 1. Build: green.
 2. Similarity unchanged:
    1. `0x004DD0C0`: `20.00%`.
+
+## 2026-03-03 00:16 UTC - promoted 4 more `TGreatPower` methods and restored green pipeline
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004E22B0 --address 0x004E2330 --address 0x004E2500 --address 0x004E27B0`
+2. `just normalize-markers`
+3. `just format src/game/TGreatPower.cpp`
+4. `just sync-ownership`
+5. `just regen-stubs`
+6. `just build`
+7. `just detect`
+8. `just compare 0x004E22B0`
+9. `just compare 0x004E2330`
+10. `just compare 0x004E2500`
+11. `just compare 0x004E27B0`
+12. `just compare 0x004EA470`
+13. `just stats`
+
+### Changes
+1. Promoted and converted four new member functions from autogen into compile-safe C++:
+   1. `AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet` (`0x004E22B0`)
+   2. `ApplyDiplomacyTargetTransitionAndClearGrantEntry` (`0x004E2330`)
+   3. `ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries` (`0x004E2500`)
+   4. `DispatchNationDiplomacySlotActionByMode` (`0x004E27B0`)
+2. Added missing class declarations for the four promoted methods.
+3. Replaced raw GHIDRA `__thiscall`/`code*` bodies with member-method implementations and typed helper usage.
+4. Fixed MSVC loop-scope redeclaration issue (`index`) in `ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries`.
+5. Synced ownership and regenerated stubs to keep address ownership consistent.
+
+### Results
+1. Build: green.
+2. Compare snapshot:
+   1. `0x004E22B0`: `17.86%`
+   2. `0x004E2330`: `33.49%`
+   3. `0x004E2500`: `17.22%`
+   4. `0x004E27B0`: `25.81%`
+   5. anchor `0x004EA470`: `100%`
+3. Project stats (`just stats`) improved and returned to expected baseline:
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.83%`
+   4. signal: `GOOD`

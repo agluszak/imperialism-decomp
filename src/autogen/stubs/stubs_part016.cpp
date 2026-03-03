@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TBillForeignMinister::ConstructTBillForeignMinister
-// ghidra_proto void __thiscall ConstructTBillForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x00531be0
-undefined4 ConstructTBillForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TBillForeignMinister::DeletingDestructTBillForeignMinister
-// ghidra_proto void __thiscall DeletingDestructTBillForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x00531c50
-undefined4 DeletingDestructTBillForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TBillForeignMinister::DestructTBillForeignMinister
-// ghidra_proto void __thiscall DestructTBillForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x00531c80
-undefined4 DestructTBillForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeTBillForeignMinisterStateWithOrderFlagByte
-// ghidra_proto void __cdecl DeserializeTBillForeignMinisterStateWithOrderFlagByte(void)
-// FUNCTION: IMPERIALISM 0x00531ca0
-undefined4 DeserializeTBillForeignMinisterStateWithOrderFlagByte(void)
-{
-  return 0;
-}
-
 // ghidra_name SerializeTBillForeignMinisterStateWithOrderFlagByte
 // ghidra_proto void __cdecl SerializeTBillForeignMinisterStateWithOrderFlagByte(void)
 // FUNCTION: IMPERIALISM 0x00531ce0
@@ -3999,6 +3967,38 @@ undefined4 EmitTurnEvent19NationStateArraysForSlot(void)
 // ghidra_proto void * __cdecl CreateAndSendTurnEvent2D_TableRowShortArray(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x0054d3d0
 undefined4 CreateAndSendTurnEvent2D_TableRowShortArray(void)
+{
+  return 0;
+}
+
+// ghidra_name TrySaveGameAndMaybeShowFailureDialog
+// ghidra_proto void __cdecl TrySaveGameAndMaybeShowFailureDialog(void)
+// FUNCTION: IMPERIALISM 0x0054d4e0
+undefined4 TrySaveGameAndMaybeShowFailureDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At0054d620
+// ghidra_proto void __cdecl WrapperFor_ftol_At0054d620(void)
+// FUNCTION: IMPERIALISM 0x0054d620
+undefined4 WrapperFor_ftol_At0054d620(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateAndConstructTLoungeDialog
+// ghidra_proto void * __cdecl AllocateAndConstructTLoungeDialog(void)
+// FUNCTION: IMPERIALISM 0x0054d650
+undefined4 AllocateAndConstructTLoungeDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name TLoungeDialog::GetTLoungeDialogClassNamePointer
+// ghidra_proto void * __cdecl GetTLoungeDialogClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0054d6d0
+undefined4 GetTLoungeDialogClassNamePointer(void)
 {
   return 0;
 }

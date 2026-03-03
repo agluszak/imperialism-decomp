@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4fc
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4fc(void)
-// FUNCTION: IMPERIALISM 0x0063b4fc
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4fc(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b514
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b514(void)
-// FUNCTION: IMPERIALISM 0x0063b514
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b514(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b521
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b521(void)
-// FUNCTION: IMPERIALISM 0x0063b521
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b521(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b53f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b53f(void)
-// FUNCTION: IMPERIALISM 0x0063b53f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b53f(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b552
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b552(void)
 // FUNCTION: IMPERIALISM 0x0063b552

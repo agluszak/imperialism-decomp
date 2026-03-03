@@ -636,6 +636,30 @@ Next moves:
 2. Continue cast-reduction in helpers and typed views around `0x004DBD20` paths first, then retest.
 3. Defer deep prologue/epilogue tuning for `0x004DD0C0` until more adjacent layout/type certainty is available.
 
+## 2026-03-03 00:16 UTC checkpoint - new promoted `TGreatPower` bodies integrated
+
+Promoted and owned in `src/game/TGreatPower.cpp`:
+1. `0x004E22B0`
+2. `0x004E2330`
+3. `0x004E2500`
+4. `0x004E27B0`
+
+Current anchor/target snapshot:
+1. `0x004EA470`: `100%`
+2. `0x004E2330`: `33.49%`
+3. `0x004E27B0`: `25.81%`
+4. `0x004E22B0`: `17.86%`
+5. `0x004E2500`: `17.22%`
+
+Current metrics (`just stats`):
+1. aligned functions: `92 / 12973`
+2. average similarity: `2.83%`
+3. signal: `GOOD`
+
+Next immediate loop:
+1. Promote next batch of unmoved `TGreatPower` addresses (prefer larger bodies with real logic).
+2. Keep compile-safe first, then do a cleanup pass for casts/field typing.
+
 ## 2026-03-02 19:37 UTC checkpoint - `TGreatPower` field-layout extraction
 
 Focused update:

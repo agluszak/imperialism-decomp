@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name THelpWindow::ConstructUiWindowResourceEntryType572C0
-// ghidra_proto void __thiscall ConstructUiWindowResourceEntryType572C0(void)
-// FUNCTION: IMPERIALISM 0x00504bf0
-undefined4 ConstructUiWindowResourceEntryType572C0(void)
-{
-  return 0;
-}
-
-// ghidra_name THelpWindow::DestructTHelpWindowAndMaybeFree
-// ghidra_proto void * __thiscall DestructTHelpWindowAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00504c20
-undefined4 DestructTHelpWindowAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
-// ghidra_proto void __cdecl WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
-// FUNCTION: IMPERIALISM 0x00504c70
-undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::CreateTTerrainHelpWindowInstance
-// ghidra_proto void * __cdecl CreateTTerrainHelpWindowInstance(void)
-// FUNCTION: IMPERIALISM 0x00504ca0
-undefined4 CreateTTerrainHelpWindowInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer
 // ghidra_proto void * __cdecl GetTTerrainHelpWindowClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00504d20
@@ -3999,6 +3967,38 @@ undefined4 SetTedCounter60ToThree(void)
 // ghidra_proto void * __cdecl GetTBillForeignMinisterClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00531bc0
 undefined4 GetTBillForeignMinisterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TBillForeignMinister::ConstructTBillForeignMinister
+// ghidra_proto void __thiscall ConstructTBillForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x00531be0
+undefined4 ConstructTBillForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TBillForeignMinister::DeletingDestructTBillForeignMinister
+// ghidra_proto void __thiscall DeletingDestructTBillForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x00531c50
+undefined4 DeletingDestructTBillForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TBillForeignMinister::DestructTBillForeignMinister
+// ghidra_proto void __thiscall DestructTBillForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x00531c80
+undefined4 DestructTBillForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name DeserializeTBillForeignMinisterStateWithOrderFlagByte
+// ghidra_proto void __cdecl DeserializeTBillForeignMinisterStateWithOrderFlagByte(void)
+// FUNCTION: IMPERIALISM 0x00531ca0
+undefined4 DeserializeTBillForeignMinisterStateWithOrderFlagByte(void)
 {
   return 0;
 }

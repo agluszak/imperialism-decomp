@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TPictureRadioButton::GetTPictureRadioButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTPictureRadioButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00570d40
-undefined4 GetTPictureRadioButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureRadioButton::ConstructTPictureRadioButtonBaseState
-// ghidra_proto void * __thiscall ConstructTPictureRadioButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x00570d60
-undefined4 ConstructTPictureRadioButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTPictureRadioButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570d90
-undefined4 DestructTPictureRadioButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-// ghidra_proto void __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00570de0
-undefined4 WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
 // ghidra_proto void __cdecl WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
 // FUNCTION: IMPERIALISM 0x00570ea0
@@ -3999,6 +3967,38 @@ undefined4 HandleMapOverlayDialogCommandTagsAndForward(void)
 // ghidra_proto void __cdecl Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
 // FUNCTION: IMPERIALISM 0x005974a4
 undefined4 Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
+{
+  return 0;
+}
+
+// ghidra_name ReinitializeGameFlowAndPostTurnEvent5DD
+// ghidra_proto void __cdecl ReinitializeGameFlowAndPostTurnEvent5DD(void)
+// FUNCTION: IMPERIALISM 0x005974eb
+undefined4 ReinitializeGameFlowAndPostTurnEvent5DD(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconBar::WrapperFor_GetActiveNationId_At00597600
+// ghidra_proto void __thiscall WrapperFor_GetActiveNationId_At00597600(int arg1)
+// FUNCTION: IMPERIALISM 0x00597600
+undefined4 WrapperFor_GetActiveNationId_At00597600(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I08_00597770
+// ghidra_proto void __cdecl OrphanCallChain_C1_I08_00597770(void)
+// FUNCTION: IMPERIALISM 0x00597770
+undefined4 OrphanCallChain_C1_I08_00597770(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C3_I22_005977a0
+// ghidra_proto void __cdecl OrphanCallChain_C3_I22_005977a0(void)
+// FUNCTION: IMPERIALISM 0x005977a0
+undefined4 OrphanCallChain_C3_I22_005977a0(void)
 {
   return 0;
 }

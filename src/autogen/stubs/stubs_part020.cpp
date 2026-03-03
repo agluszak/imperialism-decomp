@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealList::InitializeNationInteractionStateManagerDefaults
-// ghidra_proto void __thiscall InitializeNationInteractionStateManagerDefaults(void)
-// FUNCTION: IMPERIALISM 0x005b7a90
-undefined4 InitializeNationInteractionStateManagerDefaults(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I25_005b7bc0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I25_005b7bc0(void)
-// FUNCTION: IMPERIALISM 0x005b7bc0
-undefined4 OrphanCallChain_C2_I25_005b7bc0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
-// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void * pMessage)
-// FUNCTION: IMPERIALISM 0x005b7c10
-undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90
-// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void * pMessage)
-// FUNCTION: IMPERIALISM 0x005b7d90
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl
 // ghidra_proto void __cdecl ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void)
 // FUNCTION: IMPERIALISM 0x005b7f50
@@ -3999,6 +3967,38 @@ undefined4 CreateObject_5e540c(void)
 // ghidra_proto int * __cdecl WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
 // FUNCTION: IMPERIALISM 0x005e5440
 undefined4 WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
+{
+  return 0;
+}
+
+// ghidra_name DestroyTurnStateObjectWithModuleHandleFinalizer
+// ghidra_proto void * __thiscall DestroyTurnStateObjectWithModuleHandleFinalizer(void * param_1, byte param_2)
+// FUNCTION: IMPERIALISM 0x005e5455
+undefined4 DestroyTurnStateObjectWithModuleHandleFinalizer(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470
+// ghidra_proto int * __cdecl WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470(void)
+// FUNCTION: IMPERIALISM 0x005e5470
+undefined4 WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485
+// ghidra_proto void * __thiscall WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485(void)
+// FUNCTION: IMPERIALISM 0x005e5485
+undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateObject_5e54a0
+// ghidra_proto void __cdecl CreateObject_5e54a0(void)
+// FUNCTION: IMPERIALISM 0x005e54a0
+undefined4 CreateObject_5e54a0(void)
 {
   return 0;
 }

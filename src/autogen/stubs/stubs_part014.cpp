@@ -187,30 +187,6 @@ undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet
-// ghidra_proto void __thiscall AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void)
-// FUNCTION: IMPERIALISM 0x004e22b0
-undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry
-// ghidra_proto void __thiscall ApplyDiplomacyTargetTransitionAndClearGrantEntry(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004e2330
-undefined4 ApplyDiplomacyTargetTransitionAndClearGrantEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries
-// ghidra_proto void __thiscall ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int arg1)
-// FUNCTION: IMPERIALISM 0x004e2500
-undefined4 ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNationDiplomacySlotsAndMarkRelatedNations
 // ghidra_proto void __thiscall ResetNationDiplomacySlotsAndMarkRelatedNations(void)
 // FUNCTION: IMPERIALISM 0x004e25c0
@@ -231,14 +207,6 @@ undefined4 ApplyMinorNationCapabilityActionType6(void)
 // ghidra_proto void __cdecl ApplyMinorNationCapabilityActionType4(void)
 // FUNCTION: IMPERIALISM 0x004e2720
 undefined4 ApplyMinorNationCapabilityActionType4(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::DispatchNationDiplomacySlotActionByMode
-// ghidra_proto void __thiscall DispatchNationDiplomacySlotActionByMode(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004e27b0
-undefined4 DispatchNationDiplomacySlotActionByMode(void)
 {
   return 0;
 }
@@ -3999,6 +3967,38 @@ undefined4 CreateTHelpWindowInstance(void)
 // ghidra_proto void * __cdecl GetTHelpWindowClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00504bd0
 undefined4 GetTHelpWindowClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name THelpWindow::ConstructUiWindowResourceEntryType572C0
+// ghidra_proto void __thiscall ConstructUiWindowResourceEntryType572C0(void)
+// FUNCTION: IMPERIALISM 0x00504bf0
+undefined4 ConstructUiWindowResourceEntryType572C0(void)
+{
+  return 0;
+}
+
+// ghidra_name THelpWindow::DestructTHelpWindowAndMaybeFree
+// ghidra_proto void * __thiscall DestructTHelpWindowAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00504c20
+undefined4 DestructTHelpWindowAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
+// ghidra_proto void __cdecl WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
+// FUNCTION: IMPERIALISM 0x00504c70
+undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
+{
+  return 0;
+}
+
+// ghidra_name TTerrainHelpWindow::CreateTTerrainHelpWindowInstance
+// ghidra_proto void * __cdecl CreateTTerrainHelpWindowInstance(void)
+// FUNCTION: IMPERIALISM 0x00504ca0
+undefined4 CreateTTerrainHelpWindowInstance(void)
 {
   return 0;
 }

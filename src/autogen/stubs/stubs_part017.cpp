@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TrySaveGameAndMaybeShowFailureDialog
-// ghidra_proto void __cdecl TrySaveGameAndMaybeShowFailureDialog(void)
-// FUNCTION: IMPERIALISM 0x0054d4e0
-undefined4 TrySaveGameAndMaybeShowFailureDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At0054d620
-// ghidra_proto void __cdecl WrapperFor_ftol_At0054d620(void)
-// FUNCTION: IMPERIALISM 0x0054d620
-undefined4 WrapperFor_ftol_At0054d620(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateAndConstructTLoungeDialog
-// ghidra_proto void * __cdecl AllocateAndConstructTLoungeDialog(void)
-// FUNCTION: IMPERIALISM 0x0054d650
-undefined4 AllocateAndConstructTLoungeDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::GetTLoungeDialogClassNamePointer
-// ghidra_proto void * __cdecl GetTLoungeDialogClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0054d6d0
-undefined4 GetTLoungeDialogClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name CloseTLoungeDialogAndReleaseChildren
 // ghidra_proto void __cdecl CloseTLoungeDialogAndReleaseChildren(void)
 // FUNCTION: IMPERIALISM 0x0054d6f0
@@ -3999,6 +3967,38 @@ undefined4 OrphanCallChain_C3_I43_00570c30(void)
 // ghidra_proto void * __cdecl CreateTPictureRadioButtonInstance(void)
 // FUNCTION: IMPERIALISM 0x00570cc0
 undefined4 CreateTPictureRadioButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureRadioButton::GetTPictureRadioButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTPictureRadioButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00570d40
+undefined4 GetTPictureRadioButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureRadioButton::ConstructTPictureRadioButtonBaseState
+// ghidra_proto void * __thiscall ConstructTPictureRadioButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x00570d60
+undefined4 ConstructTPictureRadioButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTPictureRadioButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00570d90
+undefined4 DestructTPictureRadioButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
+// ghidra_proto void __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00570de0
+undefined4 WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(void)
 {
   return 0;
 }

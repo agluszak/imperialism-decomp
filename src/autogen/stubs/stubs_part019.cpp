@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReinitializeGameFlowAndPostTurnEvent5DD
-// ghidra_proto void __cdecl ReinitializeGameFlowAndPostTurnEvent5DD(void)
-// FUNCTION: IMPERIALISM 0x005974eb
-undefined4 ReinitializeGameFlowAndPostTurnEvent5DD(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconBar::WrapperFor_GetActiveNationId_At00597600
-// ghidra_proto void __thiscall WrapperFor_GetActiveNationId_At00597600(int arg1)
-// FUNCTION: IMPERIALISM 0x00597600
-undefined4 WrapperFor_GetActiveNationId_At00597600(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_00597770
-// ghidra_proto void __cdecl OrphanCallChain_C1_I08_00597770(void)
-// FUNCTION: IMPERIALISM 0x00597770
-undefined4 OrphanCallChain_C1_I08_00597770(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I22_005977a0
-// ghidra_proto void __cdecl OrphanCallChain_C3_I22_005977a0(void)
-// FUNCTION: IMPERIALISM 0x005977a0
-undefined4 OrphanCallChain_C3_I22_005977a0(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::RefreshMapOrderEntryPanel
 // ghidra_proto void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x00597810
@@ -3999,6 +3967,38 @@ undefined4 DestructTTradeMgrAndMaybeFree(void)
 // ghidra_proto void __thiscall DestructTTradeMgrAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005b7a70
 undefined4 DestructTTradeMgrAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealList::InitializeNationInteractionStateManagerDefaults
+// ghidra_proto void __thiscall InitializeNationInteractionStateManagerDefaults(void)
+// FUNCTION: IMPERIALISM 0x005b7a90
+undefined4 InitializeNationInteractionStateManagerDefaults(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I25_005b7bc0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I25_005b7bc0(void)
+// FUNCTION: IMPERIALISM 0x005b7bc0
+undefined4 OrphanCallChain_C2_I25_005b7bc0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
+// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void * pMessage)
+// FUNCTION: IMPERIALISM 0x005b7c10
+undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90
+// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void * pMessage)
+// FUNCTION: IMPERIALISM 0x005b7d90
+undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)
 {
   return 0;
 }

@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d
-// ghidra_proto void * __thiscall WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d(void)
-// FUNCTION: IMPERIALISM 0x0060038d
-undefined4 WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de
-// ghidra_proto void * __thiscall WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de(void)
-// FUNCTION: IMPERIALISM 0x006003de
-undefined4 WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringFromLoadedResource
-// ghidra_proto void * __thiscall AssignSharedStringFromLoadedResource(void * pTarget, uint resourceId)
-// FUNCTION: IMPERIALISM 0x0060042f
-undefined4 AssignSharedStringFromLoadedResource(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringFromLoadedResourceAlt
-// ghidra_proto void * __thiscall AssignSharedStringFromLoadedResourceAlt(void * pTarget, uint resourceId)
-// FUNCTION: IMPERIALISM 0x0060048b
-undefined4 AssignSharedStringFromLoadedResourceAlt(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndLinkBlockHead
 // ghidra_proto void * __cdecl AllocateAndLinkBlockHead(void)
 // FUNCTION: IMPERIALISM 0x00601b74
@@ -3999,6 +3967,38 @@ undefined4 thunk_NoOpVirtualStub_00618753(void)
 // ghidra_proto void __cdecl NoOpVirtualStub_00618753(void)
 // FUNCTION: IMPERIALISM 0x00618753
 undefined4 NoOpVirtualStub_00618753(void)
+{
+  return 0;
+}
+
+// ghidra_name AddDocTemplate
+// ghidra_proto void __cdecl AddDocTemplate(void)
+// FUNCTION: IMPERIALISM 0x0061878f
+undefined4 AddDocTemplate(void)
+{
+  return 0;
+}
+
+// ghidra_name PrepareCtrl
+// ghidra_proto void __thiscall PrepareCtrl(void)
+// FUNCTION: IMPERIALISM 0x006189dc
+undefined4 PrepareCtrl(void)
+{
+  return 0;
+}
+
+// ghidra_name Fail
+// ghidra_proto void __cdecl Fail(void)
+// FUNCTION: IMPERIALISM 0x00618a0b
+undefined4 Fail(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text
+// ghidra_proto void __stdcall DDX_Text(void * pDX, int nIDC, byte * pValue)
+// FUNCTION: IMPERIALISM 0x00618a40
+undefined4 DDX_Text(void)
 {
   return 0;
 }

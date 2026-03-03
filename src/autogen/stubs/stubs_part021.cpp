@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestroyTurnStateObjectWithModuleHandleFinalizer
-// ghidra_proto void * __thiscall DestroyTurnStateObjectWithModuleHandleFinalizer(void * param_1, byte param_2)
-// FUNCTION: IMPERIALISM 0x005e5455
-undefined4 DestroyTurnStateObjectWithModuleHandleFinalizer(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470
-// ghidra_proto int * __cdecl WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470(void)
-// FUNCTION: IMPERIALISM 0x005e5470
-undefined4 WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485
-// ghidra_proto void * __thiscall WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485(void)
-// FUNCTION: IMPERIALISM 0x005e5485
-undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateObject_5e54a0
-// ghidra_proto void __cdecl CreateObject_5e54a0(void)
-// FUNCTION: IMPERIALISM 0x005e54a0
-undefined4 CreateObject_5e54a0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_Ordinal13_FromField1C_At005e5561
 // ghidra_proto void __fastcall WrapperFor_Ordinal13_FromField1C_At005e5561(void)
 // FUNCTION: IMPERIALISM 0x005e5561
@@ -3999,6 +3967,38 @@ undefined4 GetLocalTm(void)
 // ghidra_proto void * __thiscall FormatSharedStringFromResourceId(void * pTarget, uint resourceId)
 // FUNCTION: IMPERIALISM 0x00600331
 undefined4 FormatSharedStringFromResourceId(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d
+// ghidra_proto void * __thiscall WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d(void)
+// FUNCTION: IMPERIALISM 0x0060038d
+undefined4 WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de
+// ghidra_proto void * __thiscall WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de(void)
+// FUNCTION: IMPERIALISM 0x006003de
+undefined4 WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de(void)
+{
+  return 0;
+}
+
+// ghidra_name AssignSharedStringFromLoadedResource
+// ghidra_proto void * __thiscall AssignSharedStringFromLoadedResource(void * pTarget, uint resourceId)
+// FUNCTION: IMPERIALISM 0x0060042f
+undefined4 AssignSharedStringFromLoadedResource(void)
+{
+  return 0;
+}
+
+// ghidra_name AssignSharedStringFromLoadedResourceAlt
+// ghidra_proto void * __thiscall AssignSharedStringFromLoadedResourceAlt(void * pTarget, uint resourceId)
+// FUNCTION: IMPERIALISM 0x0060048b
+undefined4 AssignSharedStringFromLoadedResourceAlt(void)
 {
   return 0;
 }
