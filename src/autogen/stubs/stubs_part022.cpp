@@ -3,190 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RemoveAt
-// ghidra_proto void __cdecl RemoveAt(void)
-// FUNCTION: IMPERIALISM 0x00601e9f
-undefined4 RemoveAt(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::CPtrList
-// ghidra_proto void __thiscall CPtrList(void)
-// FUNCTION: IMPERIALISM 0x00601f1d
-undefined4 CPtrList(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructCPtrListAndMaybeFree
-// ghidra_proto void * __thiscall DestructCPtrListAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00601f40
-undefined4 DestructCPtrListAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructCPtrListBaseState
-// ghidra_proto void __thiscall DestructCPtrListBaseState(void)
-// FUNCTION: IMPERIALISM 0x00601f7c
-undefined4 DestructCPtrListBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name NewNode
-// ghidra_proto void * __cdecl NewNode(void)
-// FUNCTION: IMPERIALISM 0x00601faf
-undefined4 NewNode(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::FreeNode
-// ghidra_proto void __thiscall FreeNode(void)
-// FUNCTION: IMPERIALISM 0x00602004
-undefined4 FreeNode(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveHead
-// ghidra_proto int __fastcall RemoveHead(void)
-// FUNCTION: IMPERIALISM 0x006020b9
-undefined4 RemoveHead(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveTailNodeAndReturnPayload
-// ghidra_proto int __fastcall RemoveTailNodeAndReturnPayload(void)
-// FUNCTION: IMPERIALISM 0x006020dd
-undefined4 RemoveTailNodeAndReturnPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertNodeBeforeAndSetPayload
-// ghidra_proto void __thiscall InsertNodeBeforeAndSetPayload(void)
-// FUNCTION: IMPERIALISM 0x00602101
-undefined4 InsertNodeBeforeAndSetPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertNodeAfterAndSetPayload
-// ghidra_proto void __thiscall InsertNodeAfterAndSetPayload(void)
-// FUNCTION: IMPERIALISM 0x00602140
-undefined4 InsertNodeAfterAndSetPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::RemoveAt_60217d
-// ghidra_proto void __thiscall RemoveAt_60217d(void)
-// FUNCTION: IMPERIALISM 0x0060217d
-undefined4 RemoveAt_60217d(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::Find
-// ghidra_proto void __thiscall Find(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006021d6
-undefined4 Find(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::CMapPtrToPtr_ctor
-// ghidra_proto void __thiscall CMapPtrToPtr_ctor(int nBlockSize)
-// FUNCTION: IMPERIALISM 0x0060339a
-undefined4 CMapPtrToPtr_ctor(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006033c1
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
-// FUNCTION: IMPERIALISM 0x006033c1
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::InitHashTable
-// ghidra_proto void __thiscall InitHashTable(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006033dd
-undefined4 InitHashTable(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveAll_603423
-// ghidra_proto void __fastcall RemoveAll_603423(void)
-// FUNCTION: IMPERIALISM 0x00603423
-undefined4 RemoveAll_603423(void)
-{
-  return 0;
-}
-
-// ghidra_name NewAssoc
-// ghidra_proto void * __cdecl NewAssoc(void)
-// FUNCTION: IMPERIALISM 0x00603481
-undefined4 NewAssoc(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeAssoc
-// ghidra_proto void __cdecl FreeAssoc(void)
-// FUNCTION: IMPERIALISM 0x006034cb
-undefined4 FreeAssoc(void)
-{
-  return 0;
-}
-
-// ghidra_name GetAssocAt
-// ghidra_proto void __stdcall GetAssocAt(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006034e4
-undefined4 GetAssocAt(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::GetValueAt
-// ghidra_proto int __thiscall GetValueAt(void)
-// FUNCTION: IMPERIALISM 0x00603516
-undefined4 GetValueAt(void)
-{
-  return 0;
-}
-
-// ghidra_name TryGetHandleMapEntryValueByKey
-// ghidra_proto void __stdcall TryGetHandleMapEntryValueByKey(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00603549
-undefined4 TryGetHandleMapEntryValueByKey(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::GetOrCreateHandleMapEntryValueByKey
-// ghidra_proto int * __thiscall GetOrCreateHandleMapEntryValueByKey(void)
-// FUNCTION: IMPERIALISM 0x0060356b
-undefined4 GetOrCreateHandleMapEntryValueByKey(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::RemoveKey
-// ghidra_proto int __thiscall RemoveKey(void)
-// FUNCTION: IMPERIALISM 0x006035bb
-undefined4 RemoveKey(void)
-{
-  return 0;
-}
-
 // ghidra_name CMapStringToPtr_ctor
 // ghidra_proto void __thiscall CMapStringToPtr_ctor(int nBlockSize)
 // FUNCTION: IMPERIALISM 0x0060366f
@@ -3999,6 +3815,190 @@ undefined4 DDX_Text_618cbd(void)
 // ghidra_proto void * __cdecl DDX_Check(void)
 // FUNCTION: IMPERIALISM 0x00618d0f
 undefined4 DDX_Check(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Radio
+// ghidra_proto int __cdecl DDX_Radio(void)
+// FUNCTION: IMPERIALISM 0x00618d61
+undefined4 DDX_Radio(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectListBoxStringExactIfPresent
+// ghidra_proto void __cdecl SelectListBoxStringExactIfPresent(void)
+// FUNCTION: IMPERIALISM 0x00618ea6
+undefined4 SelectListBoxStringExactIfPresent(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_CBString
+// ghidra_proto void __cdecl DDX_CBString(void)
+// FUNCTION: IMPERIALISM 0x00618ec3
+undefined4 DDX_CBString(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_CBStringExact
+// ghidra_proto void __cdecl DDX_CBStringExact(void)
+// FUNCTION: IMPERIALISM 0x00618f43
+undefined4 DDX_CBStringExact(void)
+{
+  return 0;
+}
+
+// ghidra_name GetOrSetListBoxCurrentSelection
+// ghidra_proto void * __cdecl GetOrSetListBoxCurrentSelection(void)
+// FUNCTION: IMPERIALISM 0x00618f94
+undefined4 GetOrSetListBoxCurrentSelection(void)
+{
+  return 0;
+}
+
+// ghidra_name GetOrSetComboBoxCurrentSelection
+// ghidra_proto void __cdecl GetOrSetComboBoxCurrentSelection(void)
+// FUNCTION: IMPERIALISM 0x00618fd6
+undefined4 GetOrSetComboBoxCurrentSelection(void)
+{
+  return 0;
+}
+
+// ghidra_name DDV_MinMaxByte
+// ghidra_proto void __thiscall DDV_MinMaxByte(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00619053
+undefined4 DDV_MinMaxByte(void)
+{
+  return 0;
+}
+
+// ghidra_name FailMinMaxWithFormat
+// ghidra_proto void __thiscall FailMinMaxWithFormat(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00619083
+undefined4 FailMinMaxWithFormat(void)
+{
+  return 0;
+}
+
+// ghidra_name DDV_MinMaxShort
+// ghidra_proto void __thiscall DDV_MinMaxShort(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00619116
+undefined4 DDV_MinMaxShort(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149
+// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00619149
+undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175
+// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00619175
+undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1
+// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x006191a1
+undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd
+// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x006191cd
+undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd(void)
+{
+  return 0;
+}
+
+// ghidra_name DDV_MaxChars
+// ghidra_proto bool __cdecl DDV_MaxChars(void)
+// FUNCTION: IMPERIALISM 0x006191f9
+undefined4 DDV_MaxChars(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Control
+// ghidra_proto void __cdecl DDX_Control(void)
+// FUNCTION: IMPERIALISM 0x006192a1
+undefined4 DDX_Control(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxFailMaxChars
+// ghidra_proto void __cdecl AfxFailMaxChars(void)
+// FUNCTION: IMPERIALISM 0x006192ed
+undefined4 AfxFailMaxChars(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxFailRadio
+// ghidra_proto void __cdecl AfxFailRadio(void)
+// FUNCTION: IMPERIALISM 0x00619365
+undefined4 AfxFailRadio(void)
+{
+  return 0;
+}
+
+// ghidra_name OnHelp
+// ghidra_proto void __fastcall OnHelp(void)
+// FUNCTION: IMPERIALISM 0x006193c5
+undefined4 OnHelp(void)
+{
+  return 0;
+}
+
+// ghidra_name OnHelp_619467
+// ghidra_proto void __fastcall OnHelp_619467(void)
+// FUNCTION: IMPERIALISM 0x00619467
+undefined4 OnHelp_619467(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_OnCommand_ID_E143_E147
+// ghidra_proto void __cdecl TMacViewMgr_OnCommand_ID_E143_E147(void)
+// FUNCTION: IMPERIALISM 0x006194b1
+undefined4 TMacViewMgr_OnCommand_ID_E143_E147(void)
+{
+  return 0;
+}
+
+// ghidra_name OnContextHelp
+// ghidra_proto void __fastcall OnContextHelp(void)
+// FUNCTION: IMPERIALISM 0x00619539
+undefined4 OnContextHelp(void)
+{
+  return 0;
+}
+
+// ghidra_name ProcessHelpMsg
+// ghidra_proto int __thiscall ProcessHelpMsg(void)
+// FUNCTION: IMPERIALISM 0x006197f7
+undefined4 ProcessHelpMsg(void)
+{
+  return 0;
+}
+
+// ghidra_name MapClientArea
+// ghidra_proto int __cdecl MapClientArea(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x006199fd
+undefined4 MapClientArea(void)
 {
   return 0;
 }

@@ -3147,22 +3147,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::CreateTGreatPowerInstance
-// ghidra_proto void * __cdecl CreateTGreatPowerInstance(void)
-// FUNCTION: IMPERIALISM 0x004d8950
-undefined4 CreateTGreatPowerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::GetTGreatPowerClassNamePointer
-// ghidra_proto void * __cdecl GetTGreatPowerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004d89d0
-undefined4 GetTGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TAutoGreatPower::ConstructNationStateBase_Vtbl653938
 // ghidra_proto void __thiscall ConstructNationStateBase_Vtbl653938(void)
 // FUNCTION: IMPERIALISM 0x004d89f0
@@ -3323,14 +3307,6 @@ undefined4 DispatchTurnEvent11F8WithNoPayload(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
-// ghidra_proto void __thiscall CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void)
-// FUNCTION: IMPERIALISM 0x004daf30
-undefined4 CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateOrderEntryAvailabilityByConnectedRegionMask
 // ghidra_proto void __cdecl UpdateOrderEntryAvailabilityByConnectedRegionMask(void)
 // FUNCTION: IMPERIALISM 0x004db7d0
@@ -3447,14 +3423,6 @@ undefined4 IsNationResourceNeedCurrentAtTargetByType(void)
 // ghidra_proto void __cdecl GetNationResourceNeedTargetByType(void)
 // FUNCTION: IMPERIALISM 0x004dce70
 undefined4 GetNationResourceNeedTargetByType(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6
-// ghidra_proto void __thiscall IsNationResourceNeedCurrentSumExceedingCapA6(void)
-// FUNCTION: IMPERIALISM 0x004dcf10
-undefined4 IsNationResourceNeedCurrentSumExceedingCapA6(void)
 {
   return 0;
 }
@@ -3659,14 +3627,6 @@ undefined4 AddShortDeltaToNationCounterAtOffset198(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::OrphanVtableAssignStub_004ddd20
-// ghidra_proto void __thiscall OrphanVtableAssignStub_004ddd20(void)
-// FUNCTION: IMPERIALISM 0x004ddd20
-undefined4 OrphanVtableAssignStub_004ddd20(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I33_004ddd90
 // ghidra_proto void __cdecl OrphanCallChain_C2_I33_004ddd90(void)
 // FUNCTION: IMPERIALISM 0x004ddd90
@@ -3791,30 +3751,6 @@ undefined4 CreateAndQueueFrogCityMarkerForNationTile(void)
 // ghidra_proto void __cdecl RefreshNationCivilianWorkOrdersForTurn(void)
 // FUNCTION: IMPERIALISM 0x004dfd30
 undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel2
-// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
-// FUNCTION: IMPERIALISM 0x004e00d0
-undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel2(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel1
-// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
-// FUNCTION: IMPERIALISM 0x004e0140
-undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel1(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchGreatPowerQuarterlyStatusMessageLevel0
-// ghidra_proto void __cdecl DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
-// FUNCTION: IMPERIALISM 0x004e01b0
-undefined4 DispatchGreatPowerQuarterlyStatusMessageLevel0(void)
 {
   return 0;
 }
@@ -3999,6 +3935,70 @@ undefined4 ComputeCityOrderCapabilityAggregateScore(void)
 // ghidra_proto float __cdecl OrphanCallChain_C6_I54_004e0b20(void)
 // FUNCTION: IMPERIALISM 0x004e0b20
 undefined4 OrphanCallChain_C6_I54_004e0b20(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase00Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase00Metric(void)
+// FUNCTION: IMPERIALISM 0x004e0c10
+undefined4 ComputeAdvisoryHandlerCase00Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase01Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase01Metric(void)
+// FUNCTION: IMPERIALISM 0x004e0d80
+undefined4 ComputeAdvisoryHandlerCase01Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase02Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase02Metric(void)
+// FUNCTION: IMPERIALISM 0x004e0e70
+undefined4 ComputeAdvisoryHandlerCase02Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers
+// ghidra_proto void __cdecl ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(void)
+// FUNCTION: IMPERIALISM 0x004e0fe0
+undefined4 ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryMatrixRatio23CByTargetSlot
+// ghidra_proto void __cdecl ComputeAdvisoryMatrixRatio23CByTargetSlot(void)
+// FUNCTION: IMPERIALISM 0x004e1170
+undefined4 ComputeAdvisoryMatrixRatio23CByTargetSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryMetric240NormalizedBySelectionAndPeers
+// ghidra_proto void __cdecl ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(void)
+// FUNCTION: IMPERIALISM 0x004e1300
+undefined4 ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryMatrixRatio240ByTargetSlot
+// ghidra_proto void __cdecl ComputeAdvisoryMatrixRatio240ByTargetSlot(void)
+// FUNCTION: IMPERIALISM 0x004e1490
+undefined4 ComputeAdvisoryMatrixRatio240ByTargetSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase07Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase07Metric(void)
+// FUNCTION: IMPERIALISM 0x004e1620
+undefined4 ComputeAdvisoryHandlerCase07Metric(void)
 {
   return 0;
 }

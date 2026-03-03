@@ -1,6 +1,6 @@
 # Imperialism Decomp Control Plane
 
-Last updated: 2026-03-02
+Last updated: 2026-03-03
 
 ## Purpose
 This file is the single source of truth for:
@@ -21,6 +21,23 @@ This file is the single source of truth for:
    2. targeted `just compare 0xADDR`,
    3. move on if score stays `0%`.
 
+Latest incremental checkpoint (`2026-03-03 03:57 UTC`):
+1. `TGreatPower` shape pass for low performers:
+   1. `0x005C2940` (`InitializeCivWorkOrderState`) moved from `0%` to `90.91%` by restoring register-and-clear flow (`+0x24/+0x26`) and owner-manager registration call shape.
+   2. `0x00601F1D` (`CPtrList`) remains `0%`; current mismatch indicates calling-convention/register ordering is still off relative to original.
+2. Promoted and landed three non-trivial quarterly status dispatch bodies:
+   1. `0x004E00D0` (`12.12%`)
+   2. `0x004E0140` (`12.12%`)
+   3. `0x004E01B0` (`9.23%`)
+3. Descriptor getter shape improved:
+   1. `0x004D89D0` now at `50.00%`.
+4. Stability anchor held:
+   1. `0x004EA470`: `100%`.
+5. Snapshot (`just stats`, `2026-03-03T03:56:57Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.91%`
+
 Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
 1. `TGreatPower` large-body ownership pass:
    1. `0x004D8CC0` `InitializeNationStateRuntimeSubsystems`: first-pass real body landed at `32.14%`.
@@ -39,6 +56,36 @@ Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
    1. aligned functions: `90`
    2. average similarity: `2.73%`
    3. status: stalled globally, but local class ownership and non-zero body coverage increased.
+
+Latest incremental checkpoint (`2026-03-03 03:15 UTC`):
+1. `TGreatPower` ownership expansion (6 addresses):
+   1. `0x004D8950` `CreateTGreatPowerInstance` (`25.00%`)
+   2. `0x004D89D0` `GetTGreatPowerClassNamePointer` (`0.00%`)
+   3. `0x004DAF30` `CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage` (`13.86%`)
+   4. `0x004DB380` `UpdateGreatPowerPressureStateAndDispatchEscalationMessage` (`12.24%`)
+   5. `0x004DCF10` `IsNationResourceNeedCurrentSumExceedingCapA6` (`43.90%`)
+   6. `0x004E2B70` `BuildGreatPowerTurnMessageSummaryAndDispatch` (`13.45%`)
+2. Added the required legacy global helper body for `GetTGreatPowerClassNamePointer` to keep older call-throughs linkable after stub ownership transfer.
+3. Loop guardrail confirmed:
+   1. always run `just sync-ownership && just regen-stubs` after manual marker updates to avoid duplicate-address compare drift.
+4. Snapshot (`just stats`, `2026-03-03T00:37:37Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.86%`
+
+Latest incremental checkpoint (`2026-03-03 03:40 UTC`):
+1. `TGreatPower` ownership expansion (additional 6 addresses):
+   1. `0x004E72C0` `InitializeMapActionCandidateStateAndQueueMission` (`17.95%`)
+   2. `0x004E9A50` `SelectAndQueueAdvisoryMapMissionsCase16` (`14.75%`)
+   3. `0x004EA300` `MarkNationPortZoneAndLinkedTilesForActionFlag` (`20.69%`)
+   4. `0x00540AC0` `QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16` (`26.09%`)
+   5. `0x005416B0` `ApplyClientGreatPowerCommand69AndEmitTurnEvent1E` (`11.11%`)
+   6. `0x0055F140` `ComputeMapActionContextNodeValueAverage` (`20.45%`)
+2. `0x004EA470` remained stable at `100%` after this promotion batch.
+3. Snapshot (`just stats`, `2026-03-03T03:40:13Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.87%`
 
 Latest incremental checkpoint (`2026-03-02 22:40 UTC`):
 1. `TGreatPower` grant-path ownership expansion:

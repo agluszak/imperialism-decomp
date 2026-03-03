@@ -3421,3 +3421,139 @@
    1. aligned functions: `92`
    2. not aligned vs original: `12881`
    3. average similarity: `2.85%`
+
+## 2026-03-03 03:15 UTC - `TGreatPower` ownership pass (6 methods)
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004D8950 --address 0x004D89D0 --address 0x004DAF30 --address 0x004DCF10 --address 0x004E2B70`
+2. `just format src/game/TGreatPower.cpp`
+3. `just build`
+4. `just sync-ownership`
+5. `just regen-stubs`
+6. `just build`
+7. `just detect`
+8. `just compare 0x004D8950`
+9. `just compare 0x004D89D0`
+10. `just compare 0x004DAF30`
+11. `just compare 0x004DB380`
+12. `just compare 0x004DCF10`
+13. `just compare 0x004E2B70`
+14. `just compare 0x004EA470`
+15. `just stats`
+
+### Changes
+1. Promoted and normalized six `TGreatPower` methods:
+   1. `0x004D8950` `CreateTGreatPowerInstance`
+   2. `0x004D89D0` `GetTGreatPowerClassNamePointer`
+   3. `0x004DAF30` `CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`
+   4. `0x004DB380` `UpdateGreatPowerPressureStateAndDispatchEscalationMessage` (re-added missing body after replacement)
+   5. `0x004DCF10` `IsNationResourceNeedCurrentSumExceedingCapA6`
+   6. `0x004E2B70` `BuildGreatPowerTurnMessageSummaryAndDispatch`
+2. Added missing member declarations for these methods in the local `TGreatPower` class surface.
+3. Added a required legacy global helper definition:
+   1. `unsigned int __cdecl GetTGreatPowerClassNamePointer(void)` to satisfy existing thunk/call-through linkage.
+4. Ran ownership sync + stub regeneration to remove duplicate address mapping to autogen stubs.
+
+### Results
+1. Build/detect: green.
+2. Compare snapshot:
+   1. `0x004D8950`: `25.00%`
+   2. `0x004D89D0`: `0.00%`
+   3. `0x004DAF30`: `13.86%`
+   4. `0x004DB380`: `12.24%`
+   5. `0x004DCF10`: `43.90%`
+   6. `0x004E2B70`: `13.45%`
+   7. anchor `0x004EA470`: `100%`
+3. Project stats (`2026-03-03T00:37:37Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.86%`
+
+## 2026-03-03 03:40 UTC - `TGreatPower` ownership pass (6 additional methods)
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004E72C0 --address 0x004E9A50 --address 0x004EA300 --address 0x00540AC0 --address 0x005416B0 --address 0x0055F140`
+2. `just format src/game/TGreatPower.cpp`
+3. `just build`
+4. `just sync-ownership`
+5. `just regen-stubs`
+6. `just build`
+7. `just detect`
+8. `just compare 0x004E72C0`
+9. `just compare 0x004E9A50`
+10. `just compare 0x004EA300`
+11. `just compare 0x00540AC0`
+12. `just compare 0x005416B0`
+13. `just compare 0x0055F140`
+14. `just compare 0x004EA470`
+15. `just stats`
+
+### Changes
+1. Promoted and normalized additional non-trivial `TGreatPower` methods:
+   1. `0x004E72C0` `InitializeMapActionCandidateStateAndQueueMission`
+   2. `0x004E9A50` `SelectAndQueueAdvisoryMapMissionsCase16`
+   3. `0x004EA300` `MarkNationPortZoneAndLinkedTilesForActionFlag`
+   4. `0x00540AC0` `QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16`
+   5. `0x005416B0` `ApplyClientGreatPowerCommand69AndEmitTurnEvent1E`
+   6. `0x0055F140` `ComputeMapActionContextNodeValueAverage`
+2. Added member declarations for these methods and converted raw promoted output into compile-safe class code paths.
+3. Synced ownership and regenerated stubs after marker updates (no duplicate-address drops).
+
+### Results
+1. Build/detect: green.
+2. Compare snapshot:
+   1. `0x004E72C0`: `17.95%`
+   2. `0x004E9A50`: `14.75%`
+   3. `0x004EA300`: `20.69%`
+   4. `0x00540AC0`: `26.09%`
+   5. `0x005416B0`: `11.11%`
+   6. `0x0055F140`: `20.45%`
+   7. anchor `0x004EA470`: `100%`
+3. Project stats (`2026-03-03T03:40:13Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.87%`
+
+## 2026-03-03 03:57 UTC - `TGreatPower` shape pass + quarterly-message promotion
+
+### Commands
+1. `just compare 0x005C2940`
+2. `just compare 0x00601F1D`
+3. `just compare 0x004EA470`
+4. `just stats`
+5. `just promote src/game/TGreatPower.cpp --address 0x004E00D0 --address 0x004E0140 --address 0x004E01B0`
+6. `just sync-ownership`
+7. `just regen-stubs`
+8. `just build`
+9. `just detect`
+10. `just compare 0x004E00D0`
+11. `just compare 0x004E0140`
+12. `just compare 0x004E01B0`
+13. `just compare 0x005C2940`
+14. `just compare 0x004EA470`
+15. `just stats`
+
+### Changes
+1. Reworked `0x005C2940` `InitializeCivWorkOrderState` to GHIDRA-consistent registration + clear-at-`0x24/0x26` shape.
+2. Reworked `0x00601F1D` `CPtrList` into a dedicated sentinel view shape with explicit owner-context arg and field initialization order.
+3. Adjusted class descriptor getter shape:
+   1. `0x004D89D0` now returns class-desc address constant directly.
+4. Promoted three real quarterly dispatch bodies and converted them into compile-safe functions:
+   1. `0x004E00D0` `DispatchGreatPowerQuarterlyStatusMessageLevel2`
+   2. `0x004E0140` `DispatchGreatPowerQuarterlyStatusMessageLevel1`
+   3. `0x004E01B0` `DispatchGreatPowerQuarterlyStatusMessageLevel0`
+5. Added reusable helpers for quarterly gate and pressure-message dispatch to keep promoted bodies readable and rebuild-safe.
+
+### Results
+1. Targeted compare snapshot:
+   1. `0x004D89D0`: `50.00%`
+   2. `0x005C2940`: `90.91%`
+   3. `0x00601F1D`: `0.00%` (still mismatch on register/stack shape around this-pointer usage)
+   4. `0x004E00D0`: `12.12%`
+   5. `0x004E0140`: `12.12%`
+   6. `0x004E01B0`: `9.23%`
+   7. anchor `0x004EA470`: `100%`
+2. Project stats (`2026-03-03T03:56:57Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.91%`

@@ -3,174 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C6_I52_005712a0
-// ghidra_proto int __cdecl OrphanCallChain_C6_I52_005712a0(void)
-// FUNCTION: IMPERIALISM 0x005712a0
-undefined4 OrphanCallChain_C6_I52_005712a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_VcallForward_Slot_ec_00571330
-// ghidra_proto void __cdecl OrphanTiny_VcallForward_Slot_ec_00571330(void)
-// FUNCTION: IMPERIALISM 0x00571330
-undefined4 OrphanTiny_VcallForward_Slot_ec_00571330(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleToggleButtonStateChangeAndRefresh
-// ghidra_proto void __thiscall HandleToggleButtonStateChangeAndRefresh(int isPressed, int notifyParent)
-// FUNCTION: IMPERIALISM 0x00571350
-undefined4 HandleToggleButtonStateChangeAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::CreateTUberClusterInstance
-// ghidra_proto void * __cdecl CreateTUberClusterInstance(void)
-// FUNCTION: IMPERIALISM 0x005713c0
-undefined4 CreateTUberClusterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::GetTUberClusterClassNamePointer
-// ghidra_proto void * __cdecl GetTUberClusterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00571440
-undefined4 GetTUberClusterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::ConstructTUberClusterBaseState
-// ghidra_proto void * __thiscall ConstructTUberClusterBaseState(void)
-// FUNCTION: IMPERIALISM 0x00571460
-undefined4 ConstructTUberClusterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::DestructTUberClusterAndMaybeFree
-// ghidra_proto void * __thiscall DestructTUberClusterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571490
-undefined4 DestructTUberClusterAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_005714e0
-// ghidra_proto void __thiscall OrphanVtableAssignStub_005714e0(void)
-// FUNCTION: IMPERIALISM 0x005714e0
-undefined4 OrphanVtableAssignStub_005714e0(void)
-{
-  return 0;
-}
-
-// ghidra_name CreatePictureScreenResourceEntry
-// ghidra_proto void * __cdecl CreatePictureScreenResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x00571500
-undefined4 CreatePictureScreenResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTUpDownPictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00571580
-undefined4 GetTUpDownPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// ghidra_proto void __thiscall ConstructPictureScreenResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x005715a0
-undefined4 ConstructPictureScreenResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTUpDownPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005715d0
-undefined4 DestructTUpDownPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name SetPressedStateAdjustPictureBitmapByOne
-// ghidra_proto void __cdecl SetPressedStateAdjustPictureBitmapByOne(void)
-// FUNCTION: IMPERIALISM 0x00571620
-undefined4 SetPressedStateAdjustPictureBitmapByOne(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00571690
-// ghidra_proto void __cdecl OrphanCallChain_C1_I05_00571690(void)
-// FUNCTION: IMPERIALISM 0x00571690
-undefined4 OrphanCallChain_C1_I05_00571690(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::PlayControlSoundAndBeginMouseCapture_Field92_B
-// ghidra_proto void __thiscall PlayControlSoundAndBeginMouseCapture_Field92_B(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x005716b0
-undefined4 PlayControlSoundAndBeginMouseCapture_Field92_B(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioPictureButton::CreateTRadioPictureButtonInstance
-// ghidra_proto void * __cdecl CreateTRadioPictureButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00571700
-undefined4 CreateTRadioPictureButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioPictureButton::GetTRadioPictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTRadioPictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005717a0
-undefined4 GetTRadioPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivilianButton::ConstructUiClickablePictureResourceEntry
-// ghidra_proto void __thiscall ConstructUiClickablePictureResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x005717c0
-undefined4 ConstructUiClickablePictureResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTRadioPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571800
-undefined4 DestructTRadioPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850(void)
-// FUNCTION: IMPERIALISM 0x00571850
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I16_005718f0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I16_005718f0(void)
-// FUNCTION: IMPERIALISM 0x005718f0
-undefined4 OrphanCallChain_C2_I16_005718f0(void)
-{
-  return 0;
-}
-
 // ghidra_name TOnOffRadioButton::CreateTOnOffRadioButtonInstance
 // ghidra_proto void * __cdecl CreateTOnOffRadioButtonInstance(void)
 // FUNCTION: IMPERIALISM 0x00571930
@@ -3999,6 +3831,174 @@ undefined4 InvalidateMapRegionForEntryIfUiPassive(void)
 // ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
 // FUNCTION: IMPERIALISM 0x00598870
 undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I18_005988c0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I18_005988c0(void)
+// FUNCTION: IMPERIALISM 0x005988c0
+undefined4 OrphanCallChain_C2_I18_005988c0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I11_00598910
+// ghidra_proto void __cdecl OrphanCallChain_C2_I11_00598910(void)
+// FUNCTION: IMPERIALISM 0x00598910
+undefined4 OrphanCallChain_C2_I11_00598910(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins09_00598950
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_00598950(void)
+// FUNCTION: IMPERIALISM 0x00598950
+undefined4 OrphanLeaf_NoCall_Ins09_00598950(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I14_00598990
+// ghidra_proto void __cdecl OrphanCallChain_C2_I14_00598990(void)
+// FUNCTION: IMPERIALISM 0x00598990
+undefined4 OrphanCallChain_C2_I14_00598990(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I16_005989d0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I16_005989d0(void)
+// FUNCTION: IMPERIALISM 0x005989d0
+undefined4 OrphanCallChain_C2_I16_005989d0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I06_00598a20
+// ghidra_proto void __cdecl OrphanCallChain_C1_I06_00598a20(void)
+// FUNCTION: IMPERIALISM 0x00598a20
+undefined4 OrphanCallChain_C1_I06_00598a20(void)
+{
+  return 0;
+}
+
+// ghidra_name PromptAndQueueMilitaryProvincePurgeOrders
+// ghidra_proto void __cdecl PromptAndQueueMilitaryProvincePurgeOrders(void)
+// FUNCTION: IMPERIALISM 0x00598a50
+undefined4 PromptAndQueueMilitaryProvincePurgeOrders(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateCivilianWorkOrderAndRegisterSelection
+// ghidra_proto void __cdecl CreateCivilianWorkOrderAndRegisterSelection(void)
+// FUNCTION: IMPERIALISM 0x00598d70
+undefined4 CreateCivilianWorkOrderAndRegisterSelection(void)
+{
+  return 0;
+}
+
+// ghidra_name RunNavyPrimaryOrderCreationDialogAndApplyResults
+// ghidra_proto void __cdecl RunNavyPrimaryOrderCreationDialogAndApplyResults(void)
+// FUNCTION: IMPERIALISM 0x00598e10
+undefined4 RunNavyPrimaryOrderCreationDialogAndApplyResults(void)
+{
+  return 0;
+}
+
+// ghidra_name OpenMapContextActionDialogByType
+// ghidra_proto void __cdecl OpenMapContextActionDialogByType(void)
+// FUNCTION: IMPERIALISM 0x00599090
+undefined4 OpenMapContextActionDialogByType(void)
+{
+  return 0;
+}
+
+// ghidra_name TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
+// ghidra_proto void __thiscall SelectNextValidMapOrderEntryFromCursor(void * pMapInteractionState, byte fStartAfterCurrent)
+// FUNCTION: IMPERIALISM 0x00599770
+undefined4 SelectNextValidMapOrderEntryFromCursor(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::TrySelectNextValidMapOrderEntry
+// ghidra_proto byte __thiscall TrySelectNextValidMapOrderEntry(void * pMapInteractionState, byte fStartAfterCurrent)
+// FUNCTION: IMPERIALISM 0x005998a0
+undefined4 TrySelectNextValidMapOrderEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetMapInteractionToCivilianMode
+// ghidra_proto void __thiscall ResetMapInteractionToCivilianMode(void * pMapInteractionState)
+// FUNCTION: IMPERIALISM 0x005999f0
+undefined4 ResetMapInteractionToCivilianMode(void)
+{
+  return 0;
+}
+
+// ghidra_name NotifyTaskForceSelectionListenerByWord62
+// ghidra_proto void __thiscall NotifyTaskForceSelectionListenerByWord62(void)
+// FUNCTION: IMPERIALISM 0x00599a20
+undefined4 NotifyTaskForceSelectionListenerByWord62(void)
+{
+  return 0;
+}
+
+// ghidra_name TacticalBattleView::EnterMapInteractionOverlayMode
+// ghidra_proto void __thiscall EnterMapInteractionOverlayMode(int arg1)
+// FUNCTION: IMPERIALISM 0x00599a50
+undefined4 EnterMapInteractionOverlayMode(void)
+{
+  return 0;
+}
+
+// ghidra_name CommitPendingUiModeChangeAndRefreshViews
+// ghidra_proto void __fastcall CommitPendingUiModeChangeAndRefreshViews(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00599b90
+undefined4 CommitPendingUiModeChangeAndRefreshViews(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateToolWindow_00599CF0
+// ghidra_proto void __fastcall CreateToolWindow_00599CF0(astruct_20 * this_obj)
+// FUNCTION: IMPERIALISM 0x00599cf0
+undefined4 CreateToolWindow_00599CF0(void)
+{
+  return 0;
+}
+
+// ghidra_name InvokeViewSlotE4IfContextPresent
+// ghidra_proto void __cdecl InvokeViewSlotE4IfContextPresent(void)
+// FUNCTION: IMPERIALISM 0x00599fa0
+undefined4 InvokeViewSlotE4IfContextPresent(void)
+{
+  return 0;
+}
+
+// ghidra_name SwapToolInfoSubviewAndRefreshClipRegion
+// ghidra_proto void __cdecl SwapToolInfoSubviewAndRefreshClipRegion(void)
+// FUNCTION: IMPERIALISM 0x00599fd0
+undefined4 SwapToolInfoSubviewAndRefreshClipRegion(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniMapView::CreateTMiniMapViewInstance
+// ghidra_proto void * __cdecl CreateTMiniMapViewInstance(void)
+// FUNCTION: IMPERIALISM 0x0059a290
+undefined4 CreateTMiniMapViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniMapView::GetTMiniMapViewClassNamePointer
+// ghidra_proto void * __cdecl GetTMiniMapViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0059a360
+undefined4 GetTMiniMapViewClassNamePointer(void)
 {
   return 0;
 }

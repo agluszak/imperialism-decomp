@@ -3,182 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AddBitmap
-// ghidra_proto int __thiscall AddBitmap(int nButtons, void * pBitmap)
-// FUNCTION: IMPERIALISM 0x005e591c
-undefined4 AddBitmap(void)
-{
-  return 0;
-}
-
-// ghidra_name AddBitmap
-// ghidra_proto void __stdcall AddBitmap(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e5950
-undefined4 AddBitmap_005E5950(void)
-{
-  return 0;
-}
-
-// ghidra_name SaveState
-// ghidra_proto void __thiscall SaveState(void * pKey, char * pszSubKey, char * pszValueName)
-// FUNCTION: IMPERIALISM 0x005e5987
-undefined4 SaveState(void)
-{
-  return 0;
-}
-
-// ghidra_name RestoreState
-// ghidra_proto void __thiscall RestoreState(void * pKey, char * pszSubKey, char * pszValueName)
-// FUNCTION: IMPERIALISM 0x005e59b7
-undefined4 RestoreState(void)
-{
-  return 0;
-}
-
-// ghidra_name AddString
-// ghidra_proto void __thiscall AddString(void)
-// FUNCTION: IMPERIALISM 0x005e59e7
-undefined4 AddString(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e5a6f
-undefined4 CHotKeyCtrl_005E5A6F(void)
-{
-  return 0;
-}
-
-// ghidra_name GetText
-// ghidra_proto int __cdecl GetText(void)
-// FUNCTION: IMPERIALISM 0x005e5ad2
-undefined4 GetText(void)
-{
-  return 0;
-}
-
-// ghidra_name GetBorders
-// ghidra_proto int __thiscall GetBorders(int * pnHBorder, int * pnVBorder, int * pnSpacing)
-// FUNCTION: IMPERIALISM 0x005e5b9a
-undefined4 GetBorders(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7
-// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7(uint messageCode, int wParam, int lParam, void * pResult)
-// FUNCTION: IMPERIALISM 0x005e5bd7
-undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e5c44
-undefined4 CHotKeyCtrl_005E5C44(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertColumn
-// ghidra_proto void __thiscall InsertColumn(uint wParam, uint optionDataA, uint optionDataB, int optionalIndexA, int optionalIndexB)
-// FUNCTION: IMPERIALISM 0x005e5c9c
-undefined4 InsertColumn(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertItem
-// ghidra_proto void __thiscall InsertItem(void)
-// FUNCTION: IMPERIALISM 0x005e5cef
-undefined4 InsertItem(void)
-{
-  return 0;
-}
-
-// ghidra_name HitTest
-// ghidra_proto int __thiscall HitTest(int x, int y, uint * pFlags)
-// FUNCTION: IMPERIALISM 0x005e5d3b
-undefined4 HitTest(void)
-{
-  return 0;
-}
-
-// ghidra_name GetItemText
-// ghidra_proto int __cdecl GetItemText(void)
-// FUNCTION: IMPERIALISM 0x005e5dbf
-undefined4 GetItemText(void)
-{
-  return 0;
-}
-
-// ghidra_name GetItemText_5e5e64
-// ghidra_proto void __stdcall GetItemText_5e5e64(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x005e5e64
-undefined4 GetItemText_5e5e64(void)
-{
-  return 0;
-}
-
-// ghidra_name CDocTemplate::GetItemData
-// ghidra_proto int __thiscall GetItemData(void)
-// FUNCTION: IMPERIALISM 0x005e5ea9
-undefined4 GetItemData(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee
-// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee(uint messageCode, int wParam, int lParam, void * pResult)
-// FUNCTION: IMPERIALISM 0x005e5eee
-undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveImageList
-// ghidra_proto void __thiscall RemoveImageList(void)
-// FUNCTION: IMPERIALISM 0x005e5f1c
-undefined4 RemoveImageList(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e601e
-undefined4 CHotKeyCtrl_005E601E(void)
-{
-  return 0;
-}
-
-// ghidra_name GetItemText_5e6076
-// ghidra_proto void __thiscall GetItemText_5e6076(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e6076
-undefined4 GetItemText_5e6076(void)
-{
-  return 0;
-}
-
-// ghidra_name GetItemImage
-// ghidra_proto void __thiscall GetItemImage(void)
-// FUNCTION: IMPERIALISM 0x005e6116
-undefined4 GetItemImage(void)
-{
-  return 0;
-}
-
-// ghidra_name GetItemState
-// ghidra_proto void __stdcall GetItemState(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e6155
-undefined4 GetItemState(void)
-{
-  return 0;
-}
-
 // ghidra_name GetItemData_5e618d
 // ghidra_proto int __thiscall GetItemData_5e618d(void)
 // FUNCTION: IMPERIALISM 0x005e618d
@@ -3999,6 +3823,182 @@ undefined4 SetAtGrow(void)
 // ghidra_proto void __thiscall InsertAt(int insertIndex, void * insertValue, int repeatCount)
 // FUNCTION: IMPERIALISM 0x00601e0a
 undefined4 InsertAt(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveAt
+// ghidra_proto void __cdecl RemoveAt(void)
+// FUNCTION: IMPERIALISM 0x00601e9f
+undefined4 RemoveAt(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructCPtrListAndMaybeFree
+// ghidra_proto void * __thiscall DestructCPtrListAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00601f40
+undefined4 DestructCPtrListAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructCPtrListBaseState
+// ghidra_proto void __thiscall DestructCPtrListBaseState(void)
+// FUNCTION: IMPERIALISM 0x00601f7c
+undefined4 DestructCPtrListBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name NewNode
+// ghidra_proto void * __cdecl NewNode(void)
+// FUNCTION: IMPERIALISM 0x00601faf
+undefined4 NewNode(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower::FreeNode
+// ghidra_proto void __thiscall FreeNode(void)
+// FUNCTION: IMPERIALISM 0x00602004
+undefined4 FreeNode(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveHead
+// ghidra_proto int __fastcall RemoveHead(void)
+// FUNCTION: IMPERIALISM 0x006020b9
+undefined4 RemoveHead(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveTailNodeAndReturnPayload
+// ghidra_proto int __fastcall RemoveTailNodeAndReturnPayload(void)
+// FUNCTION: IMPERIALISM 0x006020dd
+undefined4 RemoveTailNodeAndReturnPayload(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertNodeBeforeAndSetPayload
+// ghidra_proto void __thiscall InsertNodeBeforeAndSetPayload(void)
+// FUNCTION: IMPERIALISM 0x00602101
+undefined4 InsertNodeBeforeAndSetPayload(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertNodeAfterAndSetPayload
+// ghidra_proto void __thiscall InsertNodeAfterAndSetPayload(void)
+// FUNCTION: IMPERIALISM 0x00602140
+undefined4 InsertNodeAfterAndSetPayload(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower::RemoveAt_60217d
+// ghidra_proto void __thiscall RemoveAt_60217d(void)
+// FUNCTION: IMPERIALISM 0x0060217d
+undefined4 RemoveAt_60217d(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutoGreatPower::Find
+// ghidra_proto void __thiscall Find(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006021d6
+undefined4 Find(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::CMapPtrToPtr_ctor
+// ghidra_proto void __thiscall CMapPtrToPtr_ctor(int nBlockSize)
+// FUNCTION: IMPERIALISM 0x0060339a
+undefined4 CMapPtrToPtr_ctor(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006033c1
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
+// FUNCTION: IMPERIALISM 0x006033c1
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::InitHashTable
+// ghidra_proto void __thiscall InitHashTable(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006033dd
+undefined4 InitHashTable(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveAll_603423
+// ghidra_proto void __fastcall RemoveAll_603423(void)
+// FUNCTION: IMPERIALISM 0x00603423
+undefined4 RemoveAll_603423(void)
+{
+  return 0;
+}
+
+// ghidra_name NewAssoc
+// ghidra_proto void * __cdecl NewAssoc(void)
+// FUNCTION: IMPERIALISM 0x00603481
+undefined4 NewAssoc(void)
+{
+  return 0;
+}
+
+// ghidra_name FreeAssoc
+// ghidra_proto void __cdecl FreeAssoc(void)
+// FUNCTION: IMPERIALISM 0x006034cb
+undefined4 FreeAssoc(void)
+{
+  return 0;
+}
+
+// ghidra_name GetAssocAt
+// ghidra_proto void __stdcall GetAssocAt(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006034e4
+undefined4 GetAssocAt(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::GetValueAt
+// ghidra_proto int __thiscall GetValueAt(void)
+// FUNCTION: IMPERIALISM 0x00603516
+undefined4 GetValueAt(void)
+{
+  return 0;
+}
+
+// ghidra_name TryGetHandleMapEntryValueByKey
+// ghidra_proto void __stdcall TryGetHandleMapEntryValueByKey(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00603549
+undefined4 TryGetHandleMapEntryValueByKey(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::GetOrCreateHandleMapEntryValueByKey
+// ghidra_proto int * __thiscall GetOrCreateHandleMapEntryValueByKey(void)
+// FUNCTION: IMPERIALISM 0x0060356b
+undefined4 GetOrCreateHandleMapEntryValueByKey(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::RemoveKey
+// ghidra_proto int __thiscall RemoveKey(void)
+// FUNCTION: IMPERIALISM 0x006035bb
+undefined4 RemoveKey(void)
 {
   return 0;
 }

@@ -3,174 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradeMgr::GetNationMetricRosterWordAtOffset0E
-// ghidra_proto ushort __thiscall GetNationMetricRosterWordAtOffset0E(short rowIndex)
-// FUNCTION: IMPERIALISM 0x005b8f80
-undefined4 GetNationMetricRosterWordAtOffset0E(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::GetNationMetricRosterWordAtOffset0C
-// ghidra_proto ushort __thiscall GetNationMetricRosterWordAtOffset0C(short rowIndex)
-// FUNCTION: IMPERIALISM 0x005b8fb0
-undefined4 GetNationMetricRosterWordAtOffset0C(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A
-// ghidra_proto ushort __thiscall ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(short codeOrRowIndex)
-// FUNCTION: IMPERIALISM 0x005b8fe0
-undefined4 ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::GetNationMetricBucketValueByIndex
-// ghidra_proto ushort __thiscall GetNationMetricBucketValueByIndex(short rowIndex)
-// FUNCTION: IMPERIALISM 0x005b9030
-undefined4 GetNationMetricBucketValueByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
-// ghidra_proto void __thiscall ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(int nationSlot)
-// FUNCTION: IMPERIALISM 0x005b9060
-undefined4 ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190
-// ghidra_proto void __thiscall WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(void)
-// FUNCTION: IMPERIALISM 0x005b9190
-undefined4 WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(void)
-{
-  return 0;
-}
-
-// ghidra_name ProcessPendingDiplomacyTransferEntriesUntilBlocked
-// ghidra_proto void __thiscall ProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
-// FUNCTION: IMPERIALISM 0x005b91e0
-undefined4 ProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshNationStateAndEmitTurnEvent3Mode18
-// ghidra_proto void __cdecl RefreshNationStateAndEmitTurnEvent3Mode18(void)
-// FUNCTION: IMPERIALISM 0x005b9370
-undefined4 RefreshNationStateAndEmitTurnEvent3Mode18(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline
-// ghidra_proto void __thiscall RebuildNationMetricPassesAndClampRowsByBaseline(void)
-// FUNCTION: IMPERIALISM 0x005b9410
-undefined4 RebuildNationMetricPassesAndClampRowsByBaseline(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
-// ghidra_proto void __cdecl ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
-// FUNCTION: IMPERIALISM 0x005b94d0
-undefined4 ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::SetNationMetricCellValueByIndex
-// ghidra_proto void __thiscall SetNationMetricCellValueByIndex(short cellIndex, ushort cellValue)
-// FUNCTION: IMPERIALISM 0x005b9790
-undefined4 SetNationMetricCellValueByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
-// ghidra_proto void __thiscall RunNationUpdatePassesAndResetTransitionFlags(void)
-// FUNCTION: IMPERIALISM 0x005b97c0
-undefined4 RunNationUpdatePassesAndResetTransitionFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
-// ghidra_proto void __thiscall RunNationMetricPreUpdatePassAcrossSecondaryNations(void)
-// FUNCTION: IMPERIALISM 0x005b9890
-undefined4 RunNationMetricPreUpdatePassAcrossSecondaryNations(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores
-// ghidra_proto void __thiscall BuildEligibleNationMetricBucketsAndWeightedTrendScores(void)
-// FUNCTION: IMPERIALISM 0x005b98d0
-undefined4 BuildEligibleNationMetricBucketsAndWeightedTrendScores(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores
-// ghidra_proto void __thiscall BuildSecondaryNationMetricBucketsAndWeightedTrendScores(void)
-// FUNCTION: IMPERIALISM 0x005b9b30
-undefined4 BuildSecondaryNationMetricBucketsAndWeightedTrendScores(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNationMetricPowerScale
-// ghidra_proto float __cdecl ComputeNationMetricPowerScale(void)
-// FUNCTION: IMPERIALISM 0x005b9f30
-undefined4 ComputeNationMetricPowerScale(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::IsNationMetricCellNegative
-// ghidra_proto bool __thiscall IsNationMetricCellNegative(int groupIndex, int entryIndex)
-// FUNCTION: IMPERIALISM 0x005b9f70
-undefined4 IsNationMetricCellNegative(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::IsNationMetricCellPositive
-// ghidra_proto bool __thiscall IsNationMetricCellPositive(int groupIndex, int entryIndex)
-// FUNCTION: IMPERIALISM 0x005b9fa0
-undefined4 IsNationMetricCellPositive(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter
-// ghidra_proto int * __thiscall AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterIndex, int filterValue)
-// FUNCTION: IMPERIALISM 0x005b9fd0
-undefined4 AllocateAndPopulateLinkedValueCollectionFromRosterFilter(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectPreferredNationMetricCodeFromLookup
-// ghidra_proto ushort __stdcall SelectPreferredNationMetricCodeFromLookup(ushort firstCode, ushort secondCode)
-// FUNCTION: IMPERIALISM 0x005ba090
-undefined4 SelectPreferredNationMetricCodeFromLookup(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildInterNationEventSummaryRowsForAdvisorDialog_Impl
-// ghidra_proto void __cdecl BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(void)
-// FUNCTION: IMPERIALISM 0x005ba0e0
-undefined4 BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealList::CreateTDealListInstance
 // ghidra_proto void * __cdecl CreateTDealListInstance(void)
 // FUNCTION: IMPERIALISM 0x005ba130
@@ -1087,14 +919,6 @@ undefined4 DestroyCivUnitOrderObject(void)
 // ghidra_proto void __cdecl DestroyCivUnitOrderObject_Impl(void)
 // FUNCTION: IMPERIALISM 0x005c2920
 undefined4 DestroyCivUnitOrderObject_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::InitializeCivWorkOrderState
-// ghidra_proto void __thiscall InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)
-// FUNCTION: IMPERIALISM 0x005c2940
-undefined4 InitializeCivWorkOrderState(void)
 {
   return 0;
 }
@@ -3999,6 +3823,182 @@ undefined4 DrawSingle(void)
 // ghidra_proto void __cdecl ~CHotKeyCtrl(void)
 // FUNCTION: IMPERIALISM 0x005e58e4
 undefined4 CHotKeyCtrl(void)
+{
+  return 0;
+}
+
+// ghidra_name AddBitmap
+// ghidra_proto int __thiscall AddBitmap(int nButtons, void * pBitmap)
+// FUNCTION: IMPERIALISM 0x005e591c
+undefined4 AddBitmap(void)
+{
+  return 0;
+}
+
+// ghidra_name AddBitmap
+// ghidra_proto void __stdcall AddBitmap(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e5950
+undefined4 AddBitmap_005E5950(void)
+{
+  return 0;
+}
+
+// ghidra_name SaveState
+// ghidra_proto void __thiscall SaveState(void * pKey, char * pszSubKey, char * pszValueName)
+// FUNCTION: IMPERIALISM 0x005e5987
+undefined4 SaveState(void)
+{
+  return 0;
+}
+
+// ghidra_name RestoreState
+// ghidra_proto void __thiscall RestoreState(void * pKey, char * pszSubKey, char * pszValueName)
+// FUNCTION: IMPERIALISM 0x005e59b7
+undefined4 RestoreState(void)
+{
+  return 0;
+}
+
+// ghidra_name AddString
+// ghidra_proto void __thiscall AddString(void)
+// FUNCTION: IMPERIALISM 0x005e59e7
+undefined4 AddString(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e5a6f
+undefined4 CHotKeyCtrl_005E5A6F(void)
+{
+  return 0;
+}
+
+// ghidra_name GetText
+// ghidra_proto int __cdecl GetText(void)
+// FUNCTION: IMPERIALISM 0x005e5ad2
+undefined4 GetText(void)
+{
+  return 0;
+}
+
+// ghidra_name GetBorders
+// ghidra_proto int __thiscall GetBorders(int * pnHBorder, int * pnVBorder, int * pnSpacing)
+// FUNCTION: IMPERIALISM 0x005e5b9a
+undefined4 GetBorders(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7
+// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7(uint messageCode, int wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x005e5bd7
+undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e5c44
+undefined4 CHotKeyCtrl_005E5C44(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertColumn
+// ghidra_proto void __thiscall InsertColumn(uint wParam, uint optionDataA, uint optionDataB, int optionalIndexA, int optionalIndexB)
+// FUNCTION: IMPERIALISM 0x005e5c9c
+undefined4 InsertColumn(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertItem
+// ghidra_proto void __thiscall InsertItem(void)
+// FUNCTION: IMPERIALISM 0x005e5cef
+undefined4 InsertItem(void)
+{
+  return 0;
+}
+
+// ghidra_name HitTest
+// ghidra_proto int __thiscall HitTest(int x, int y, uint * pFlags)
+// FUNCTION: IMPERIALISM 0x005e5d3b
+undefined4 HitTest(void)
+{
+  return 0;
+}
+
+// ghidra_name GetItemText
+// ghidra_proto int __cdecl GetItemText(void)
+// FUNCTION: IMPERIALISM 0x005e5dbf
+undefined4 GetItemText(void)
+{
+  return 0;
+}
+
+// ghidra_name GetItemText_5e5e64
+// ghidra_proto void __stdcall GetItemText_5e5e64(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x005e5e64
+undefined4 GetItemText_5e5e64(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocTemplate::GetItemData
+// ghidra_proto int __thiscall GetItemData(void)
+// FUNCTION: IMPERIALISM 0x005e5ea9
+undefined4 GetItemData(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee
+// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee(uint messageCode, int wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x005e5eee
+undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveImageList
+// ghidra_proto void __thiscall RemoveImageList(void)
+// FUNCTION: IMPERIALISM 0x005e5f1c
+undefined4 RemoveImageList(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e601e
+undefined4 CHotKeyCtrl_005E601E(void)
+{
+  return 0;
+}
+
+// ghidra_name GetItemText_5e6076
+// ghidra_proto void __thiscall GetItemText_5e6076(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e6076
+undefined4 GetItemText_5e6076(void)
+{
+  return 0;
+}
+
+// ghidra_name GetItemImage
+// ghidra_proto void __thiscall GetItemImage(void)
+// FUNCTION: IMPERIALISM 0x005e6116
+undefined4 GetItemImage(void)
+{
+  return 0;
+}
+
+// ghidra_name GetItemState
+// ghidra_proto void __stdcall GetItemState(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e6155
+undefined4 GetItemState(void)
 {
   return 0;
 }
