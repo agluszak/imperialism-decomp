@@ -65,3 +65,4 @@ Baseline reference before this control-plane trim:
 4. Use generated vcall facades instead of local vtable typedef/cast blocks.
 5. Prefer reusable tooling over one-off scripts; wire it through `just` when stable.
 6. Keep strict layout asserts only on proven-stable `TGreatPower` core offsets; keep tail offsets as non-fatal probes until tail stabilization.
+7. During class reconstruction, assert failures are often expected drift signals while size/structure are still in flux; treat them as investigation cues, not automatic regressions.

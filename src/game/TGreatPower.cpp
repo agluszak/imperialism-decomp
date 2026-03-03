@@ -551,6 +551,8 @@ public:
 };
 
 // C++98-compatible compile-time layout guards for the known TGreatPower core block.
+// NOTE: class size/shape is still evolving. A failing guard is a useful drift signal,
+// not automatically a correctness bug, unless it breaks a proven-stable core contract.
 #define TG_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
 TG_LAYOUT_ASSERT(TGreatPower_Offset_nationSlot_0x0C, offsetof(TGreatPower, nationSlot) == 0x0C);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_ownedRegionList_0x90,
@@ -564,6 +566,7 @@ TG_LAYOUT_ASSERT(TGreatPower_Size_AtLeast_0x964, sizeof(TGreatPower) >= 0x964);
 
 // Tail offsets are still fluid while mixed-method promotions are being merged.
 // Keep these as non-fatal probes until the class tail is stabilized.
+// Drift here is expected during iterative extraction and is not treated as a hard failure.
 enum {
   kTGreatPowerOffset_turnEventQueue = offsetof(TGreatPower, turnEventQueue),
   kTGreatPowerOffset_pendingAidTotal = offsetof(TGreatPower, pendingAidTotal),
