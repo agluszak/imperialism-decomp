@@ -1,0 +1,5 @@
+address|name|priority|floor|stretch
+0x004DC540|CompareMissionScoreVariantsByMode|P1|40.0|45.0
+0x004DE860|ApplyJoinEmpireMode0GlobalDiplomacyReset|P1|17.0|25.0
+0x004E73F0|WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0|P1|17.0|20.0
+0x004E9060|ComputeMapActionContextCompositeScoreForNation|P2|34.0|38.0

@@ -1,0 +1,20 @@
+kind|entry|source|note
+module|tools.ghidra.sync_exports|just:sync-ghidra|Primary Ghidra export entrypoint
+module|tools.stubgen|just:regen-stubs|Autogen stubs regeneration
+module|tools.workflow.sync_function_ownership|just:sync-ownership|Marker to ownership sync
+module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
+module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass
+module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String annotation pass
+module|tools.workflow.generate_vcall_facades|just:gen-vcall-facades|Generate typed vcall wrappers
+module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
+module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
+module|tools.reccmp.compare_canaries|just:compare-canaries|Targeted canary compare loop
+module|tools.reccmp.progress_stats|just:stats|Progress + alignment stats
+module|tools.reccmp.library_inventory|just:inventory|Library/wrapper inventory
+module|tools.reccmp.generate_ignore_functions|just:generate-ignores|Ignore-function update
+module|tools.reccmp.session_loop|just:session-loop|Top-impact session queue
+module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies from autogen
+module|tools.workflow.format_cpp|just:format|Formatting helper
+module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
+module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
+file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper

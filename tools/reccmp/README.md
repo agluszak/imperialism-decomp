@@ -1,101 +1,25 @@
-# reccmp Usage
+# reccmp Workflow
 
-`reccmp` is installed in the project environment from your fork via `pyproject.toml`.
-Use it directly with `uv run`.
+`reccmp` is installed from the pinned fork in `pyproject.toml` and executed with `uv run`.
 
-## Bootstrap project files
+Primary workflow uses `just` wrappers:
+
+1. `just detect`
+2. `just compare 0xADDR` (or `just compare`)
+3. `just stats`
+4. `just compare-canaries`
+5. `just session-loop`
+
+Bootstrap project metadata once:
 
 ```bash
-uv run reccmp-project create \
-  --originals /absolute/path/to/Imperialism.exe \
-  --scm
+uv run reccmp-project create --originals /absolute/path/to/Imperialism.exe --scm
 ```
 
-## Run reccmp tools
+Direct CLI (if needed):
 
 ```bash
 uv run reccmp-project --help
 uv run reccmp-reccmp --help
 uv run reccmp-ghidra-import --help
 ```
-
-Typical flow after building:
-
-```bash
-(cd build-msvc500 && uv run reccmp-project detect --what recompiled)
-(cd build-msvc500 && uv run reccmp-reccmp --target IMPERIALISM)
-```
-
-## Progress stats script
-
-Use this to get one-line-direction deltas (better/worse/stalled) between runs:
-
-```bash
-uv run python -m tools.reccmp.progress_stats --target IMPERIALISM
-```
-
-If you already have `reccmp_roadmap.csv` and `reccmp_report.json` generated and only want to recompute/print:
-
-```bash
-uv run python -m tools.reccmp.progress_stats --target IMPERIALISM --no-run
-```
-
-## Core impact ranking
-
-Rank core work by `size * (1 - similarity)` while excluding known non-core buckets
-(CRT/MFC/DirectX/wrappers/thunks by default):
-
-```bash
-uv run python -m tools.reccmp.core_impact_ranking \
-  --target IMPERIALISM \
-  --top 50 \
-  --csv-out build-msvc500/core_impact.csv \
-  --json-out build-msvc500/core_impact.json
-```
-
-This also prints wrapper relabel candidates to keep library adapters out of core metrics.
-
-## Session loop (one command)
-
-Generate the working queue for the next coding session:
-
-```bash
-uv run python -m tools.reccmp.session_loop \
-  --target IMPERIALISM \
-  --pick 8 \
-  --top 50 \
-  --min-size 1
-```
-
-Outputs:
-
-- `build-msvc500/next_loop.md`
-- `build-msvc500/next_loop.json`
-- refreshed `build-msvc500/core_impact.{json,csv}`
-
-## Flag Sweep
-
-Sweep candidate MSVC optimization profiles and score them with `reccmp`:
-
-```bash
-uv run python -m tools.reccmp.flag_sweep \
-  --target IMPERIALISM \
-  --docker-image imperialism-msvc500 \
-  --build-root build-flag-sweep \
-  --address 0x00606fc0 \
-  --address 0x00606fd2 \
-  --json-out build-flag-sweep/results.json
-```
-
-The sweep uses CMake cache variables:
-
-- `IMPERIALISM_MATCH_FLAGS_CSV`
-- `IMPERIALISM_MATCH_LINK_FLAGS_CSV`
-
-Both accept comma-separated flag lists, for example `/O2,/Ob2,/Oy`.
-
-Current recommendation from the latest sweep:
-
-- Keep baseline `RelWithDebInfo` defaults (`/O2 /Ob1` from CMake's MSVC profile).
-- Do not force `/O1` or `/Ob2` globally; they reduced average similarity and/or aligned count.
-- Use per-function experiments with `IMPERIALISM_MATCH_FLAGS_CSV` only when a specific function improves.

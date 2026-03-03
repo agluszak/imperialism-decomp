@@ -21,19 +21,6 @@ From `objdump -p` and `strings` on:
 - Extra section present: `.patch` (likely distributor patching layer)
 - Rich header: not present in DOS stub (`e_lfanew = 0x80`, no `Rich`/`DanS` marker before PE header)
 
-Re-check command:
-
-```bash
-uv run python -m tools.forensics.check_rich_header /home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG\ Games/Imperialism/Imperialism.exe
-```
-
-Observed output:
-
-- `e_lfanew: 0x80`
-- `rich_in_dos_region: False`
-- `dans_in_dos_region: False`
-- `rich_offsets_before_pe_header: []`
-
 Interpretation:
 
 - Missing Rich header means VC++ 4.2 is not ruled out by that signal.

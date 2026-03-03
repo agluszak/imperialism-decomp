@@ -1,0 +1,6 @@
+file|raw_vtable_index|fn_typedef_cast|vftable_index|total
+src/game/TCapacityOrder.cpp|0|1|0|1
+src/game/TCivDescription.cpp|0|2|0|2
+src/game/TPlacard.cpp|3|0|0|3
+src/game/object_pool.cpp|0|5|0|5
+src/game/trade_screen.cpp|30|0|0|30

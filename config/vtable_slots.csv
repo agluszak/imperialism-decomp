@@ -1,5 +1,7 @@
-owner_file|wrapper_name|return_type|slot_expr|arg_types|confidence|notes
+owner_file|wrapper_name|return_type|slot_expr|arg_types|confidence|notes|slot_unit|callconv|edx_mode|edx_value|status|class_name
 src/game/TGreatPower.cpp|VCall_LocalizationRuntime_GetTurnTick|short|0x3C / 4||high|TLocalizationRuntime::slot3C
+src/game/TGreatPower.cpp|VCall_LocalizationRuntime_CallSlot84|void|0x84 / 4||high|localization dispatch slot84 no-arg
+src/game/TGreatPower.cpp|VCall_LocalizationRuntime_CallSlot84WithId|void|0x84 / 4|int|high|localization dispatch slot84 with message id
 src/game/TGreatPower.cpp|VCall_Stream_ReadAtSlot3C|void|0x3C / 4|void*,int|high|stream read buffer
 src/game/TGreatPower.cpp|VCall_Stream_ReadIntAtSlot40|int|0x40 / 4||high|stream read dword
 src/game/TGreatPower.cpp|VCall_Stream_ReadRawAtSlot00|void|0|void*,int|high|stream raw read
@@ -10,6 +12,8 @@ src/game/TGreatPower.cpp|VCall_List_GetCountSlot28|int|0x28 / 4||high|list count
 src/game/TGreatPower.cpp|VCall_List_GetIntByOrdinalSlot24|int|0x24 / 4|int|high|list ordinal value
 src/game/TGreatPower.cpp|VCall_List_GetCountSlot48|int|0x48 / 4||high|list count slot48
 src/game/TGreatPower.cpp|VCall_List_GetTrackedEntrySlot4C|void*|0x4C / 4|int|high|tracked entry accessor
+src/game/TGreatPower.cpp|VCall_List_GetNodeByOrdinalSlot2C|void*|0x2C / 4|int,int|high|list node accessor with mode
+src/game/TGreatPower.cpp|VCall_List_ReleaseSlot24|void|0x24 / 4||high|list release slot24
 src/game/TGreatPower.cpp|VCall_ObArray_GetShortValueByOrdinalSlot2C|void*|0x2C / 4|int|high|ob array short accessor
 src/game/TGreatPower.cpp|VCall_Diplomacy_BuildRelationshipListSlot88|void|0x88 / 4|int,int,void*|high|build relation list
 src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|int,int|high|relation tier
@@ -22,6 +26,9 @@ src/game/TGreatPower.cpp|VCall_GreatPower_RemoveProposalByIndexSlot7C|void|0x7C|
 src/game/TGreatPower.cpp|VCall_GreatPower_ApplyPolicyForNationSlotA1|void|0xA1|int,int,int|high|great power policy apply
 src/game/TGreatPower.cpp|VCall_GreatPower_FinalizeProposalQueueSlot73|void|0x73||high|proposal finalize
 src/game/TGreatPower.cpp|VCall_QueueObject_WritePackedIntAtSlot38|void|0x38 / 4|int*|high|queue packed int write
+src/game/TGreatPower.cpp|VCall_Queue_ApplyMessageSlot14|void|0x14 / 4|void*|high|queue apply message
+src/game/TGreatPower.cpp|VCall_Queue_RefreshSlot48|void|0x48 / 4||high|queue refresh
+src/game/TGreatPower.cpp|VCall_Queue_ReadIndexSlot4C|int|0x4C / 4|int,int|high|queue read index
 src/game/TGreatPower.cpp|VCall_GreatPower_ShouldDispatchImmediatelySlot28|char|0x28||high|dispatch gate
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasFlag84ForNationSlot84|char|0x84 / 4|int|high|diplomacy flag gate
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_SetResetLevelSlot68|void|0x68 / 4|int,int|high|terrain reset
@@ -66,3 +73,6 @@ src/game/TGreatPower.cpp|VCall_MapActionContext_AssignDisplayRefFromSlot2C|void|
 src/game/TGreatPower.cpp|VCall_SecondaryState_HasNationFlag5C|char|0x5C / 4|int|high|secondary flag
 src/game/TGreatPower.cpp|VCall_SecondaryState_SetPolicyValue48|void|0x48 / 4|int,int|high|secondary set policy
 src/game/TGreatPower.cpp|VCall_SecondaryState_CallSlot4C|void|0x4C / 4|int,int|high|secondary slot4C
+src/game/TGreatPower.cpp|VCall_Message_AppendWordSlot78|void|0x78 / 4|const void*|high|message append word
+src/game/TGreatPower.cpp|VCall_Message_AppendBytesSlot78|void|0x78 / 4|const void*,int|high|message append bytes
+src/game/TGreatPower.cpp|VCall_Message_WriteEntrySlotB4|void|0xB4 / 4|int,int|high|message write entry

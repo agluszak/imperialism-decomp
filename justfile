@@ -8,9 +8,14 @@ cmake_flags := env_var_or_default("CMAKE_FLAGS", "-DCMAKE_BUILD_TYPE=RelWithDebI
 ghidra_program_name := env_var_or_default("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
 name_overrides := env_var_or_default("NAME_OVERRIDES", "config/function_name_overrides.csv")
 function_ownership := env_var_or_default("FUNCTION_OWNERSHIP", "config/function_ownership.csv")
+vtable_gate_baseline := env_var_or_default("VTABLE_GATE_BASELINE", "config/vtable_gate_baseline.csv")
+canary_targets := env_var_or_default("CANARY_TARGETS", "config/canary_targets_tgreatpower.csv")
 
 default:
   @just --list
+
+tooling-check:
+  uv run python -m tools.workflow.check_tooling_surface
 
 sync-ghidra:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
@@ -56,7 +61,13 @@ annotate-strings:
   uv run python -m tools.workflow.annotate_strings_from_symbols --paths src/game include/game --write
 
 gen-vcall-facades:
-  uv run python -m tools.workflow.generate_vcall_facades --owner-file src/game/TGreatPower.cpp
+  uv run python -m tools.workflow.generate_vcall_facades
+
+vtable-gate:
+  uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}"
+
+vtable-gate-update:
+  uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
 
 normalize-markers:
   uv run python -m tools.workflow.normalize_reccmp_markers --paths src include --write
@@ -65,6 +76,8 @@ docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
 
 build:
+  just gen-vcall-facades
+  just vtable-gate
   mkdir -p "{{build_dir}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{cmake_flags}}" \
@@ -77,6 +90,9 @@ detect:
 
 compare addr='':
   if [[ -n "{{addr}}" ]]; then (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}" --verbose "{{addr}}"); else (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}"); fi
+
+compare-canaries:
+  uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"
 
 stats:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled
@@ -107,6 +123,7 @@ promote-range target_cpp start end:
     --range "{{start}}:{{end}}"
 
 full-sync-build:
+  just tooling-check
   just sync-ghidra
   just sync-ownership
   just regen-stubs
