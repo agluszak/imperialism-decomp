@@ -3557,3 +3557,44 @@
    1. aligned functions: `93`
    2. not aligned vs original: `12880`
    3. average similarity: `2.91%`
+
+## 2026-03-03 04:03 UTC - cleanup pass on existing `TGreatPower` code
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004E22B0`
+5. `just compare 0x004E2330`
+6. `just compare 0x004E27B0`
+7. `just compare 0x004E7C50`
+8. `just compare 0x004E9ED0`
+9. `just compare 0x004EA150`
+10. `just compare 0x005C2940`
+11. `just compare 0x004EA470`
+12. `just stats`
+
+### Changes
+1. Refactored existing code only (no new promotions):
+   1. added reusable typed helpers for repeated `TGreatPower` virtual slots (`A1`, `2E`, `84`, `85`, `A8`, `A9`, `B3`),
+   2. replaced repeated cast-heavy slot invocations in existing methods with those helpers.
+2. Improved type clarity:
+   1. `TLocalizationRuntimeView` now exposes `quarterGateTick2c` explicitly instead of raw `+0x2c` reads.
+3. Kept compile/toolchain compatibility:
+   1. attempted `__forceinline` on helper wrappers, reverted because VC5 parser rejects it in this setup.
+
+### Results
+1. Build/detect: green.
+2. Targeted compare snapshot after cleanup:
+   1. `0x004E22B0`: `17.86%`
+   2. `0x004E2330`: `33.49%`
+   3. `0x004E27B0`: `25.81%`
+   4. `0x004E7C50`: `50.00%`
+   5. `0x004E9ED0`: `76.47%`
+   6. `0x004EA150`: `65.31%`
+   7. `0x005C2940`: `90.91%`
+   8. anchor `0x004EA470`: `100%`
+3. Project stats (`2026-03-03T04:02:34Z`):
+   1. aligned functions: `91`
+   2. not aligned vs original: `12882`
+   3. average similarity: `2.94%`

@@ -38,6 +38,24 @@ Latest incremental checkpoint (`2026-03-03 03:57 UTC`):
    2. not aligned vs original: `12880`
    3. average similarity: `2.91%`
 
+Latest incremental checkpoint (`2026-03-03 04:03 UTC`):
+1. Existing-code cleanup (no new promoted addresses):
+   1. replaced repeated cast-heavy slot calls with reusable typed helper wrappers (`A1`, `2E`, `84`, `85`, `A8`, `A9`, `B3`),
+   2. exposed localization quarter-gate tick as typed field (`quarterGateTick2c`) in `TLocalizationRuntimeView`.
+2. Key note:
+   1. `__forceinline` is not accepted by this VC5 setup in this file; keep helper wrappers on `static __inline`.
+3. Targeted function scores in the cleaned region:
+   1. `0x004E22B0`: `17.86%`
+   2. `0x004E2330`: `33.49%`
+   3. `0x004E27B0`: `25.81%`
+   4. `0x004E7C50`: `50.00%`
+   5. `0x004E9ED0`: `76.47%`
+   6. `0x004EA150`: `65.31%`
+4. Snapshot (`just stats`, `2026-03-03T04:02:34Z`):
+   1. aligned functions: `91`
+   2. not aligned vs original: `12882`
+   3. average similarity: `2.94%`
+
 Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
 1. `TGreatPower` large-body ownership pass:
    1. `0x004D8CC0` `InitializeNationStateRuntimeSubsystems`: first-pass real body landed at `32.14%`.

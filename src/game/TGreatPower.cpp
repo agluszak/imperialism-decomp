@@ -143,7 +143,9 @@ struct TLocalizationRuntimeView {
   void* vftable;
   unsigned char pad04[4];
   int mode;
-  unsigned char pad0c[0x40 - 0x0C];
+  unsigned char pad0c[0x2C - 0x0C];
+  short quarterGateTick2c;
+  unsigned char pad2e[0x40 - 0x2E];
   int runtimeSubsystemIndex;
   int redrawEnabled;
 };
@@ -961,14 +963,58 @@ static __inline void RegisterUnitOrderWithOwnerManager(TGreatPower* self, int nO
   registerOrder(self, 0, nOrderType, pOwnerContext, nOrderOwnerNationId, 0);
 }
 
+static __inline void GreatPower_CallSlotA1(TGreatPower* self) {
+  typedef void(__fastcall * GreatPowerSlotA1Fn)(TGreatPower*, int);
+  GreatPowerSlotA1Fn slotA1 = reinterpret_cast<GreatPowerSlotA1Fn>(self->field00[0xA1]);
+  if (slotA1 != 0) {
+    slotA1(self, 0);
+  }
+}
+
+static __inline void GreatPower_DispatchEventSlot2E(TGreatPower* self, int eventCode, int arg) {
+  typedef void(__fastcall * GreatPowerDispatchEventFn)(TGreatPower*, int, int, int);
+  GreatPowerDispatchEventFn dispatchEvent =
+      reinterpret_cast<GreatPowerDispatchEventFn>(self->field00[0x2E]);
+  dispatchEvent(self, 0, eventCode, arg);
+}
+
+static __inline void GreatPower_CallSlot84(TGreatPower* self, int targetNation) {
+  typedef void(__fastcall * GreatPowerSlot84Fn)(TGreatPower*, int, int);
+  GreatPowerSlot84Fn slot84 = reinterpret_cast<GreatPowerSlot84Fn>(self->field00[0x84]);
+  slot84(self, 0, targetNation);
+}
+
+static __inline void GreatPower_CallSlot85(TGreatPower* self, int targetNation) {
+  typedef void(__fastcall * GreatPowerSlot85Fn)(TGreatPower*, int, int);
+  GreatPowerSlot85Fn slot85 = reinterpret_cast<GreatPowerSlot85Fn>(self->field00[0x85]);
+  slot85(self, 0, targetNation);
+}
+
+static __inline void GreatPower_CallSlotA8(TGreatPower* self, int targetNation) {
+  typedef void(__fastcall * GreatPowerSlotA8Fn)(TGreatPower*, int, int);
+  GreatPowerSlotA8Fn slotA8 = reinterpret_cast<GreatPowerSlotA8Fn>(self->field00[0xA8]);
+  slotA8(self, 0, targetNation);
+}
+
+static __inline void GreatPower_CallSlotA9(TGreatPower* self) {
+  typedef void(__fastcall * GreatPowerSlotA9Fn)(TGreatPower*, int);
+  GreatPowerSlotA9Fn slotA9 = reinterpret_cast<GreatPowerSlotA9Fn>(self->field00[0xA9]);
+  slotA9(self, 0);
+}
+
+static __inline void GreatPower_CallSlotB3(TGreatPower* self) {
+  typedef void(__fastcall * GreatPowerSlotB3Fn)(TGreatPower*, int);
+  GreatPowerSlotB3Fn slotB3 = reinterpret_cast<GreatPowerSlotB3Fn>(self->field00[0xB3]);
+  slotB3(self, 0);
+}
+
 static __inline bool IsQuarterlyLocalizationGateOpen(void) {
-  unsigned char* localizationTable =
-      static_cast<unsigned char*>(ReadGlobalPointer(kAddrLocalizationTablePtr));
+  TLocalizationRuntimeView* localizationTable = ReadLocalizationRuntimeView();
   if (localizationTable == 0) {
     return false;
   }
 
-  int localizationTick = static_cast<int>(*reinterpret_cast<short*>(localizationTable + 0x2c));
+  int localizationTick = static_cast<int>(localizationTable->quarterGateTick2c);
   int quarterGate = (localizationTick + ((localizationTick >> 0x1f) & 3)) >> 2;
   return static_cast<short>(quarterGate) != 0;
 }
@@ -3513,10 +3559,7 @@ bool __fastcall ExecuteAdvisoryPromptAndApplyActionType1(TGreatPower* self, int 
   if (result == 0) {
     result = (uiSlot94 != 0) ? uiSlot94(uiRuntimeContext, 0, self->field0c, targetNationSlot) : 0;
     if (result != 0) {
-      GreatPowerSlotA1Fn slotA1 = reinterpret_cast<GreatPowerSlotA1Fn>(self->field00[0xA1]);
-      if (slotA1 != 0) {
-        slotA1(self, 0);
-      }
+      GreatPower_CallSlotA1(self);
       return true;
     }
   } else {
@@ -3545,7 +3588,6 @@ bool __fastcall ExecuteAdvisoryPromptAndApplyActionType1(TGreatPower* self, int 
 void TGreatPower::AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void) {
   typedef void(__fastcall * ListSlot14Fn)(void*, int);
   typedef int(__fastcall * ListSlot28Fn)(void*, int);
-  typedef void(__fastcall * GreatPowerDispatchEventFn)(TGreatPower*, int, int, int);
 
   void* ownedRegionList = this->pField90;
   void** listVtable = *reinterpret_cast<void***>(ownedRegionList);
@@ -3555,18 +3597,13 @@ void TGreatPower::AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfT
   unsigned char pressureGate = this->field8c8_serializedFlags[6];
   unsigned char nationGate = this->pad_8d1[3];
   if (ownedRegionCount > 8 && pressureGate > 0x32 && nationGate < 3) {
-    GreatPowerDispatchEventFn dispatchEvent =
-        reinterpret_cast<GreatPowerDispatchEventFn>(this->field00[0x2E]);
-    dispatchEvent(this, 0, 0x0C, -1);
+    GreatPower_DispatchEventSlot2E(this, 0x0C, -1);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004E2330
 void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
                                                                    int policyCode) {
-  typedef void(__fastcall * GreatPowerSlot84Fn)(TGreatPower*, int, int);
-  typedef void(__fastcall * GreatPowerSlot85Fn)(TGreatPower*, int, int);
-
   short targetNation = static_cast<short>(targetNationSlot);
   if (policyCode == 500 || policyCode != 200) {
     this->field14_needLevelByNation[targetNation] = 100;
@@ -3585,12 +3622,12 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
     void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
     this->fieldB2[targetNation] = -1;
     Diplomacy_SetRelationCode78(diplomacyManager, this->field0c, targetNation, 4);
-    reinterpret_cast<GreatPowerSlot85Fn>(this->field00[0x85])(this, 0, targetNation);
+    GreatPower_CallSlot85(this, targetNation);
     return;
   }
 
   if (policyCode != 200) {
-    reinterpret_cast<GreatPowerSlot84Fn>(this->field00[0x84])(this, 0, targetNation);
+    GreatPower_CallSlot84(this, targetNation);
     return;
   }
 
@@ -3602,13 +3639,13 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
     if (this->field8a0_candidateNationFlags[static_cast<short>(resolvedNation)] == 0) {
       void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
       if (Diplomacy_HasPolicyWithNation(diplomacyManager, this->field0c, resolvedNation) == 0) {
-        reinterpret_cast<GreatPowerSlot85Fn>(this->field00[0x85])(this, 0, targetNation);
+        GreatPower_CallSlot85(this, targetNation);
         return;
       }
     }
   }
 
-  reinterpret_cast<GreatPowerSlot84Fn>(this->field00[0x84])(this, 0, targetNation);
+  GreatPower_CallSlot84(this, targetNation);
 }
 
 // FUNCTION: IMPERIALISM 0x004E2500
@@ -3661,15 +3698,12 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
 
 // FUNCTION: IMPERIALISM 0x004E27B0
 void TGreatPower::DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode) {
-  typedef void(__fastcall * GreatPowerSlotA8Fn)(TGreatPower*, int, int);
-  typedef void(__fastcall * GreatPowerSlotA9Fn)(TGreatPower*, int);
-
   if (static_cast<short>(mode) == 6) {
-    reinterpret_cast<GreatPowerSlotA8Fn>(this->field00[0xA8])(this, 0, targetNationSlot);
+    GreatPower_CallSlotA8(this, targetNationSlot);
     return;
   }
 
-  reinterpret_cast<GreatPowerSlotA9Fn>(this->field00[0xA9])(this, 0);
+  GreatPower_CallSlotA9(this);
 }
 
 // FUNCTION: IMPERIALISM 0x004E2B70
@@ -3844,10 +3878,8 @@ void TGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg
 
 // FUNCTION: IMPERIALISM 0x004e7c50
 void TGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int arg1, int arg2) {
-  typedef void(__fastcall * GreatPowerSlot84Fn)(TGreatPower*, int, int);
-
   if (static_cast<short>(arg2) == 0x131) {
-    reinterpret_cast<GreatPowerSlot84Fn>(this->field00[0x84])(this, 0, static_cast<short>(arg1));
+    GreatPower_CallSlot84(this, static_cast<short>(arg1));
   }
   thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a(arg1, arg2);
 }
@@ -4188,16 +4220,12 @@ void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 
 // FUNCTION: IMPERIALISM 0x004E9ED0
 void TGreatPower::QueueWarTransitionFromAdvisoryAction(int arg1, int arg2) {
-  typedef void(__fastcall * GreatPowerSlot84Fn)(TGreatPower*, int, int);
-
-  reinterpret_cast<GreatPowerSlot84Fn>(this->field00[0x84])(this, 0, arg1);
+  GreatPower_CallSlot84(this, arg1);
   this->thunk_QueueWarTransitionAndNotifyThirdPartyIfNeeded_At00406fe1(arg1, arg1, arg2, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x004EA150
 void TGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1) {
-  typedef void(__fastcall * GreatPowerSlotB3Fn)(TGreatPower*, int);
-
   this->thunk_ApplyJoinEmpireMode0GlobalDiplomacyReset_At004097fa(arg1);
 
   int i = 0;
@@ -4211,7 +4239,7 @@ void TGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1) {
     this->fieldAF0[i] = 0;
   }
 
-  reinterpret_cast<GreatPowerSlotB3Fn>(this->field00[0xB3])(this, 0);
+  GreatPower_CallSlotB3(this);
 }
 
 // FUNCTION: IMPERIALISM 0x004EA290
