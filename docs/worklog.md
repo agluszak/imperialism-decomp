@@ -3619,3 +3619,23 @@
    1. aligned functions: `93` (recovered from previous `91`)
    2. not aligned vs original: `12880`
    3. average similarity: `2.91%`
+
+## 2026-03-03 04:06 UTC - existing-code typed view pass
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just stats`
+
+### Changes
+1. Removed remaining raw offset access in existing code:
+   1. added `TRefCountedListOwnerView` and used `listSentinel` instead of `+4` pointer math in runtime subsystem initialization paths,
+   2. added `TTerrainDescriptorLinkedNodesView` and used `linkedNodeList` instead of `+0x90` pointer math in map-action flagging.
+
+### Results
+1. Build/detect: green.
+2. Project stats (`2026-03-03T04:05:51Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.91%`

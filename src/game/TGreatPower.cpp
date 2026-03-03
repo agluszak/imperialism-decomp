@@ -226,6 +226,11 @@ struct TRelationManagerNeedRefreshView {
   short relationNeedSlotE2;
 };
 
+struct TTerrainDescriptorLinkedNodesView {
+  unsigned char pad00[0x90];
+  void* linkedNodeList;
+};
+
 struct TCivWorkOrderStateBaseView {
   void* vftable;
   unsigned char pad04[0x20];
@@ -241,6 +246,11 @@ struct CPtrListSentinelView {
   int field10;
   void* pField14;
   int field18;
+};
+
+struct TRefCountedListOwnerView {
+  void* vftable;
+  CPtrListSentinelView listSentinel;
 };
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
@@ -1429,10 +1439,12 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   void* trackedObjectList = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (trackedObjectList != 0) {
+    TRefCountedListOwnerView* trackedListView =
+        static_cast<TRefCountedListOwnerView*>(trackedObjectList);
     reinterpret_cast<InitializeLinkedListSentinelFn>(
         WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640)(
-        reinterpret_cast<unsigned char*>(trackedObjectList) + 4, 0);
-    *reinterpret_cast<unsigned int*>(trackedObjectList) = kAddrVtblTArmyBattle;
+        static_cast<void*>(&trackedListView->listSentinel), 0);
+    trackedListView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   this->pField898 = trackedObjectList;
 
@@ -1510,10 +1522,11 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   void* pField89c = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (pField89c != 0) {
-    *reinterpret_cast<unsigned int*>(pField89c) = kAddrVtblRefCountedObjectBase;
+    TRefCountedListOwnerView* listOwnerView = static_cast<TRefCountedListOwnerView*>(pField89c);
+    listOwnerView->vftable = reinterpret_cast<void*>(kAddrVtblRefCountedObjectBase);
     reinterpret_cast<ConstructPtrListFn>(::CPtrList)(
-        reinterpret_cast<unsigned char*>(pField89c) + 4, 0);
-    *reinterpret_cast<unsigned int*>(pField89c) = kAddrVtblTArmyBattle;
+        static_cast<void*>(&listOwnerView->listSentinel), 0);
+    listOwnerView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   this->pField89c = pField89c;
 
@@ -1536,10 +1549,11 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   void* pField90c = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (pField90c != 0) {
-    *reinterpret_cast<unsigned int*>(pField90c) = kAddrVtblRefCountedObjectBase;
+    TRefCountedListOwnerView* listOwnerView = static_cast<TRefCountedListOwnerView*>(pField90c);
+    listOwnerView->vftable = reinterpret_cast<void*>(kAddrVtblRefCountedObjectBase);
     reinterpret_cast<ConstructPtrListFn>(::CPtrList)(
-        reinterpret_cast<unsigned char*>(pField90c) + 4, 0);
-    *reinterpret_cast<unsigned int*>(pField90c) = kAddrVtblTArmyBattle;
+        static_cast<void*>(&listOwnerView->listSentinel), 0);
+    listOwnerView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   this->pField90c = pField90c;
   this->field960 = 0;
@@ -4271,8 +4285,9 @@ void TGreatPower::MarkNationPortZoneAndLinkedTilesForActionFlag(int arg1) {
 
   void* terrainDescriptor = ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, arg1);
   if (terrainDescriptor != 0) {
-    void* linkedNodeList =
-        *reinterpret_cast<void**>(reinterpret_cast<unsigned char*>(terrainDescriptor) + 0x90);
+    TTerrainDescriptorLinkedNodesView* terrainView =
+        static_cast<TTerrainDescriptorLinkedNodesView*>(terrainDescriptor);
+    void* linkedNodeList = terrainView->linkedNodeList;
     if (linkedNodeList != 0) {
       void** listVtable = *reinterpret_cast<void***>(linkedNodeList);
       ListCountFn getCount = reinterpret_cast<ListCountFn>(listVtable[0x28 / 4]);

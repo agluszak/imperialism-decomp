@@ -67,6 +67,15 @@ Latest incremental checkpoint (`2026-03-03 04:04 UTC`):
    2. not aligned vs original: `12880`
    3. average similarity: `2.91%`
 
+Latest incremental checkpoint (`2026-03-03 04:06 UTC`):
+1. Existing-code typed-view cleanup:
+   1. replaced `+4` list-sentinel arithmetic with `TRefCountedListOwnerView::listSentinel`,
+   2. replaced terrain descriptor `+0x90` access with `TTerrainDescriptorLinkedNodesView::linkedNodeList`.
+2. Snapshot (`just stats`, `2026-03-03T04:05:51Z`):
+   1. aligned functions: `93`
+   2. not aligned vs original: `12880`
+   3. average similarity: `2.91%`
+
 Latest incremental checkpoint (`2026-03-02 19:06 UTC`):
 1. `TGreatPower` large-body ownership pass:
    1. `0x004D8CC0` `InitializeNationStateRuntimeSubsystems`: first-pass real body landed at `32.14%`.
