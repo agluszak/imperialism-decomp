@@ -21,6 +21,25 @@ This file is the single source of truth for:
    2. targeted `just compare 0xADDR`,
    3. move on if score stays `0%`.
 
+Latest incremental checkpoint (`2026-03-03 11:24 UTC`):
+1. Introduced typed vcall facade workflow for `TGreatPower`:
+   1. new slot registry: `config/vtable_slots.csv`,
+   2. new runtime cast-isolation helper: `include/game/vcall_runtime.h`,
+   3. new generated wrappers: `include/game/generated/vcall_facades.h`,
+   4. new generator: `tools/workflow/generate_vcall_facades.py`,
+   5. new command: `just gen-vcall-facades`.
+2. Refactored high-density helper region in `src/game/TGreatPower.cpp` from local typedef/cast vtable blocks to generated vcall wrappers + runtime helpers.
+3. Pattern count in `src/game/TGreatPower.cpp`:
+   1. `typedef .*Fn|reinterpret_cast<.*Fn|vftable[` reduced from `281` to `150`.
+4. Verification:
+   1. `just build`: success,
+   2. `just detect`: success,
+   3. `just stats`: aligned `92`, average similarity `2.88%`.
+5. Touched-address spot checks:
+   1. `0x00406FE1`: `0.00%`
+   2. `0x004DBD20`: `12.40%`
+   3. `0x004DC540`: `42.18%`
+
 Latest incremental checkpoint (`2026-03-03 03:57 UTC`):
 1. `TGreatPower` shape pass for low performers:
    1. `0x005C2940` (`InitializeCivWorkOrderState`) moved from `0%` to `90.91%` by restoring register-and-clear flow (`+0x24/+0x26`) and owner-manager registration call shape.

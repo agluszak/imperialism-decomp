@@ -20,6 +20,9 @@
 13. If repeated `this + offset` / `reinterpret_cast` access maps to a stable class region, promote it to a typed class field (or typed view struct) instead of keeping cast-helper indirection.
 14. Keep external thunk declarations in the generic repo form (`undefined4 ... (void)`) and use typed local function-pointer casts at callsites; changing declaration signatures directly can cause MSVC name-mangling linker breaks.
 15. MSVC500 keeps `for` loop variables in function scope; avoid redeclaring the same loop variable name later in the same function.
+16. For vtable calls in manual code, do not introduce local `typedef ...Fn` + `reinterpret_cast` blocks; call through generated facades in `include/game/generated/vcall_facades.h`.
+17. Keep low-level slot-cast mechanics isolated in `include/game/vcall_runtime.h`; gameplay code should not index vtables directly.
+18. If `config/vtable_slots.csv` changes, regenerate with `just gen-vcall-facades` before build/compare.
 
 ## Promotion Loop
 

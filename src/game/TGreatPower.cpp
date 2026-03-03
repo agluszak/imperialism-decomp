@@ -2,6 +2,7 @@
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
 #include "decomp_types.h"
+#include "game/generated/vcall_facades.h"
 
 class TGreatPower;
 typedef void* hwnd_t;
@@ -527,15 +528,12 @@ public:
 
 typedef char(__cdecl* DiplomacyTurnStateSlot44Fn)(short);
 typedef char(__fastcall* UiRuntimeSlot94Fn)(void*, int, int, int);
-typedef void(__fastcall* GreatPowerSlotA1Fn)(TGreatPower*, int);
 typedef char(__fastcall* GreatPowerSlot21Fn)(TGreatPower*, int);
 typedef void(__fastcall* GreatPowerSlot6CFn)(TGreatPower*, int, int, int, int);
 typedef void(__cdecl* UiRuntimeSlot98Fn)(int, int, int, int);
 typedef void(__fastcall* QueueInterNationEventMergeFn)(void*, int, int, int, int, char);
 typedef void*(__cdecl* CreateMissionObjectFn)(int, int, int, int, int);
 typedef short(__cdecl* GetShortAtOffset14Fn)(void);
-typedef void(__fastcall* GreatPowerBridge0Fn)(TGreatPower*, int);
-typedef void(__fastcall* GreatPowerBridge1Fn)(TGreatPower*, int, int);
 
 static __inline void* ReadGlobalPointer(unsigned int address) {
   return *reinterpret_cast<void**>(address);
@@ -602,11 +600,7 @@ static __inline int ReadGlobalIntStep(unsigned int baseAddress, int index) {
 
 static __inline short
 LocalizationRuntime_GetTurnTick(TLocalizationRuntimeView* localizationRuntime) {
-  typedef short(__fastcall * LocalizationTickFn)(void*, int);
-  void** localizationVtable = *reinterpret_cast<void***>(localizationRuntime);
-  LocalizationTickFn getTurnTick =
-      reinterpret_cast<LocalizationTickFn>(localizationVtable[0x3C / 4]);
-  return getTurnTick(localizationRuntime, 0);
+  return VCall_LocalizationRuntime_GetTurnTick(localizationRuntime);
 }
 
 static __inline void SwapShortArrayBytes(void* base, int count) {
@@ -637,31 +631,19 @@ static __inline void ReverseDwordArrayBytes(void* base, int count) {
 }
 
 static __inline int Obj_QueryIntAtSlot(void* obj, int slotOffsetBytes) {
-  typedef int(__fastcall * ObjQueryFn)(void*, int);
-  void** objectVtable = *reinterpret_cast<void***>(obj);
-  ObjQueryFn queryFn = reinterpret_cast<ObjQueryFn>(objectVtable[slotOffsetBytes / 4]);
-  return queryFn(obj, 0);
+  return vcall_runtime::fastcall0<int>(obj, static_cast<unsigned int>(slotOffsetBytes / 4));
 }
 
 static __inline void Obj_CallNoArgAtSlot(void* obj, int slotOffsetBytes) {
-  typedef void(__fastcall * ObjNoArgFn)(void*, int);
-  void** objectVtable = *reinterpret_cast<void***>(obj);
-  ObjNoArgFn callFn = reinterpret_cast<ObjNoArgFn>(objectVtable[slotOffsetBytes / 4]);
-  callFn(obj, 0);
+  vcall_runtime::fastcall0v(obj, static_cast<unsigned int>(slotOffsetBytes / 4));
 }
 
 static __inline void Obj_CallIntArgAtSlot(void* obj, int slotOffsetBytes, int value) {
-  typedef void(__fastcall * ObjIntFn)(void*, int, int);
-  void** objectVtable = *reinterpret_cast<void***>(obj);
-  ObjIntFn callFn = reinterpret_cast<ObjIntFn>(objectVtable[slotOffsetBytes / 4]);
-  callFn(obj, 0, value);
+  vcall_runtime::fastcall1v(obj, static_cast<unsigned int>(slotOffsetBytes / 4), value);
 }
 
 static __inline void Obj_CallPtrArgAtSlot(void* obj, int slotOffsetBytes, void* value) {
-  typedef void(__fastcall * ObjPtrFn)(void*, int, void*);
-  void** objectVtable = *reinterpret_cast<void***>(obj);
-  ObjPtrFn callFn = reinterpret_cast<ObjPtrFn>(objectVtable[slotOffsetBytes / 4]);
-  callFn(obj, 0, value);
+  vcall_runtime::fastcall1v(obj, static_cast<unsigned int>(slotOffsetBytes / 4), value);
 }
 
 static __inline void Obj_ReleaseAndClearSlot(void** objectSlot, int slotOffsetBytes) {
@@ -673,31 +655,19 @@ static __inline void Obj_ReleaseAndClearSlot(void** objectSlot, int slotOffsetBy
 }
 
 static __inline void Stream_ReadAtSlot3C(void* stream, void* outBuf, int sizeBytes) {
-  typedef void(__fastcall * StreamReadAt3CFn)(void*, int, void*, int);
-  void** streamVtable = *reinterpret_cast<void***>(stream);
-  StreamReadAt3CFn readFn = reinterpret_cast<StreamReadAt3CFn>(streamVtable[0x3C / 4]);
-  readFn(stream, 0, outBuf, sizeBytes);
+  VCall_Stream_ReadAtSlot3C(stream, outBuf, sizeBytes);
 }
 
 static __inline int Stream_ReadIntAtSlot40(void* stream) {
-  typedef int(__fastcall * StreamNoArgFn)(void*, int);
-  void** streamVtable = *reinterpret_cast<void***>(stream);
-  StreamNoArgFn readFn = reinterpret_cast<StreamNoArgFn>(streamVtable[0x40 / 4]);
-  return readFn(stream, 0);
+  return VCall_Stream_ReadIntAtSlot40(stream);
 }
 
 static __inline void Stream_ReadRawAtSlot00(void* stream, void* outBuf, int sizeBytes) {
-  typedef void(__fastcall * StreamReadFn)(void*, int, void*, int);
-  void** streamVtable = *reinterpret_cast<void***>(stream);
-  StreamReadFn readFn = reinterpret_cast<StreamReadFn>(streamVtable[0]);
-  readFn(stream, 0, outBuf, sizeBytes);
+  VCall_Stream_ReadRawAtSlot00(stream, outBuf, sizeBytes);
 }
 
 static __inline char Stream_ReadByteAtSlotB0(void* stream, void* outByte) {
-  typedef char(__fastcall * StreamReadByteFn)(void*, int, void*);
-  void** streamVtable = *reinterpret_cast<void***>(stream);
-  StreamReadByteFn readFn = reinterpret_cast<StreamReadByteFn>(streamVtable[0xB0 / 4]);
-  return readFn(stream, 0, outByte);
+  return VCall_Stream_ReadByteAtSlotB0(stream, outByte);
 }
 
 static __inline short ProposalQueue_GetCount(void* queue) {
@@ -705,45 +675,27 @@ static __inline short ProposalQueue_GetCount(void* queue) {
 }
 
 static __inline short* ProposalQueue_GetEntryAt1Based(void* queue, int queueIndex) {
-  typedef short*(__fastcall * QueueSlot2CFn)(void*, int, int);
-  void** queueVtable = *reinterpret_cast<void***>(queue);
-  QueueSlot2CFn queueSlot2C = reinterpret_cast<QueueSlot2CFn>(queueVtable[0x2C / 4]);
-  return queueSlot2C(queue, 0, queueIndex);
+  return static_cast<short*>(VCall_ProposalQueue_GetEntryAt1Based(queue, queueIndex));
 }
 
 static __inline void List_ResetSlot14(void* list) {
-  typedef void(__fastcall * ListSlot14Fn)(void*, int);
-  void** listVtable = *reinterpret_cast<void***>(list);
-  ListSlot14Fn slot14 = reinterpret_cast<ListSlot14Fn>(listVtable[0x14 / 4]);
-  slot14(list, 0);
+  VCall_List_ResetSlot14(list);
 }
 
 static __inline int List_GetCountSlot28(void* list) {
-  typedef int(__fastcall * ListSlot28Fn)(void*, int);
-  void** listVtable = *reinterpret_cast<void***>(list);
-  ListSlot28Fn slot28 = reinterpret_cast<ListSlot28Fn>(listVtable[0x28 / 4]);
-  return slot28(list, 0);
+  return VCall_List_GetCountSlot28(list);
 }
 
 static __inline int List_GetIntByOrdinalSlot24(void* list, int ordinal) {
-  typedef int(__fastcall * ListSlot24Fn)(void*, int, int);
-  void** listVtable = *reinterpret_cast<void***>(list);
-  ListSlot24Fn slot24 = reinterpret_cast<ListSlot24Fn>(listVtable[0x24 / 4]);
-  return slot24(list, 0, ordinal);
+  return VCall_List_GetIntByOrdinalSlot24(list, ordinal);
 }
 
 static __inline int List_GetCountSlot48(void* list) {
-  typedef int(__fastcall * ListSlot48CountFn)(void*, int);
-  void** listVtable = *reinterpret_cast<void***>(list);
-  ListSlot48CountFn slot48 = reinterpret_cast<ListSlot48CountFn>(listVtable[0x48 / 4]);
-  return slot48(list, 0);
+  return VCall_List_GetCountSlot48(list);
 }
 
 static __inline TTrackedObjectListEntryView* List_GetTrackedEntrySlot4C(void* list, int ordinal) {
-  typedef TTrackedObjectListEntryView*(__fastcall * ListSlot4CGetFn)(void*, int, int);
-  void** listVtable = *reinterpret_cast<void***>(list);
-  ListSlot4CGetFn slot4C = reinterpret_cast<ListSlot4CGetFn>(listVtable[0x4C / 4]);
-  return slot4C(list, 0, ordinal);
+  return static_cast<TTrackedObjectListEntryView*>(VCall_List_GetTrackedEntrySlot4C(list, ordinal));
 }
 
 static __inline int ObArray_GetCountAtOffset8(void* list) {
@@ -751,44 +703,30 @@ static __inline int ObArray_GetCountAtOffset8(void* list) {
 }
 
 static __inline short ObArray_GetShortValueByOrdinal1Based(void* list, int ordinal) {
-  typedef short*(__fastcall * ListSlot2CGetFn)(void*, int, int);
-  void** listVtable = *reinterpret_cast<void***>(list);
-  ListSlot2CGetFn slot2C = reinterpret_cast<ListSlot2CGetFn>(listVtable[0x2C / 4]);
-  short* value = slot2C(list, 0, ordinal);
+  short* value = static_cast<short*>(VCall_ObArray_GetShortValueByOrdinalSlot2C(list, ordinal));
   return (value != 0) ? *value : static_cast<short>(-1);
 }
 
 static __inline void Diplomacy_BuildRelationshipListForNation(void* diplomacyManager,
                                                               int sourceNation, int mode,
                                                               void* outList) {
-  typedef void(__fastcall * DipSlot88Fn)(void*, int, int, int, void*);
-  void** vtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot88Fn slot88 = reinterpret_cast<DipSlot88Fn>(vtable[0x88 / 4]);
-  slot88(diplomacyManager, 0, sourceNation, mode, outList);
+  VCall_Diplomacy_BuildRelationshipListSlot88(diplomacyManager, sourceNation, mode, outList);
 }
 
 static __inline short Diplomacy_GetRelationTier(void* diplomacyManager, int sourceNation,
                                                 int targetNation) {
-  typedef short(__fastcall * DipSlot70Fn)(void*, int, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot70Fn dipSlot70 = reinterpret_cast<DipSlot70Fn>(diplomacyVtable[0x70 / 4]);
-  return dipSlot70(diplomacyManager, 0, sourceNation, targetNation);
+  return VCall_Diplomacy_GetRelationTierSlot70(diplomacyManager, sourceNation, targetNation);
 }
 
 static __inline char Diplomacy_HasPolicyWithNation(void* diplomacyManager, int sourceNation,
                                                    int targetNation) {
-  typedef char(__fastcall * DipSlot44Fn)(void*, int, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot44Fn dipSlot44 = reinterpret_cast<DipSlot44Fn>(diplomacyVtable[0x44 / 4]);
-  return dipSlot44(diplomacyManager, 0, sourceNation, targetNation);
+  return VCall_Diplomacy_HasPolicyWithNationSlot44(diplomacyManager, sourceNation, targetNation);
 }
 
 static __inline char UiRuntime_RequestDiplomacyDecision(void* uiRuntimeContext, int sourceNation,
                                                         int targetNation, int proposalCode) {
-  typedef char(__fastcall * UiSlot90Fn)(void*, int, int, int, int);
-  void** uiVtable = *reinterpret_cast<void***>(uiRuntimeContext);
-  UiSlot90Fn uiSlot90 = reinterpret_cast<UiSlot90Fn>(uiVtable[0x90 / 4]);
-  return uiSlot90(uiRuntimeContext, 0, sourceNation, targetNation, proposalCode);
+  return VCall_UiRuntime_RequestDiplomacyDecisionSlot90(uiRuntimeContext, sourceNation,
+                                                        targetNation, proposalCode);
 }
 
 static __inline char IsTurnCooldownCounterActiveOrResetFlagAsChar(void) {
@@ -799,44 +737,28 @@ static __inline char IsTurnCooldownCounterActiveOrResetFlagAsChar(void) {
 }
 
 static __inline void GreatPower_CommitProposalByIndex(TGreatPower* self, int proposalIndex) {
-  typedef void(__fastcall * GreatPowerSlot7BFn)(TGreatPower*, int, int);
-  GreatPowerSlot7BFn applyProposalByIndex =
-      reinterpret_cast<GreatPowerSlot7BFn>(self->vftable[0x7B]);
-  applyProposalByIndex(self, 0, proposalIndex);
+  VCall_GreatPower_CommitProposalByIndexSlot7B(self, proposalIndex);
 }
 
 static __inline void GreatPower_RemoveProposalByIndex(TGreatPower* self, int proposalIndex) {
-  typedef void(__fastcall * GreatPowerSlot7CFn)(TGreatPower*, int, int);
-  GreatPowerSlot7CFn removeProposalByIndex =
-      reinterpret_cast<GreatPowerSlot7CFn>(self->vftable[0x7C]);
-  removeProposalByIndex(self, 0, proposalIndex);
+  VCall_GreatPower_RemoveProposalByIndexSlot7C(self, proposalIndex);
 }
 
 static __inline void GreatPower_ApplyMutualDefenseWithNation(TGreatPower* self, int checkNation,
                                                              int sourceNation) {
-  typedef void(__fastcall * GreatPowerSlotA1ApplyFn)(TGreatPower*, int, int, int, int);
-  GreatPowerSlotA1ApplyFn applyPolicyToNation =
-      reinterpret_cast<GreatPowerSlotA1ApplyFn>(self->vftable[0xA1]);
-  applyPolicyToNation(self, 0, checkNation, 0x132, sourceNation);
+  VCall_GreatPower_ApplyPolicyForNationSlotA1(self, checkNation, 0x132, sourceNation);
 }
 
 static __inline void GreatPower_FinalizeProposalQueue(TGreatPower* self) {
-  typedef void(__fastcall * GreatPowerSlot73Fn)(TGreatPower*, int);
-  GreatPowerSlot73Fn slot73 = reinterpret_cast<GreatPowerSlot73Fn>(self->vftable[0x73]);
-  slot73(self, 0);
+  VCall_GreatPower_FinalizeProposalQueueSlot73(self);
 }
 
 static __inline void QueueObject_WritePackedIntAtSlot38(void* queue, int* packedValue) {
-  typedef void(__fastcall * QueueSlot38Fn)(void*, int, int*);
-  void** queueVtable = *reinterpret_cast<void***>(queue);
-  QueueSlot38Fn queueSlot38 = reinterpret_cast<QueueSlot38Fn>(queueVtable[0x38 / 4]);
-  queueSlot38(queue, 0, packedValue);
+  VCall_QueueObject_WritePackedIntAtSlot38(queue, packedValue);
 }
 
 static __inline char GreatPower_ShouldDispatchImmediately(TGreatPower* self) {
-  typedef char(__fastcall * GreatPowerSlot28Fn)(TGreatPower*, int);
-  GreatPowerSlot28Fn slot28 = reinterpret_cast<GreatPowerSlot28Fn>(self->vftable[0x28]);
-  return slot28(self, 0);
+  return VCall_GreatPower_ShouldDispatchImmediatelySlot28(self);
 }
 
 static __inline void QueueInterNationEventWithPayload(int sourceNation, void* payload) {
@@ -862,26 +784,18 @@ static __inline int IsNationSlotEligibleForEventProcessingFast(int nationSlot) {
 }
 
 static __inline char Diplomacy_HasFlag84ForNation(void* diplomacyManager, int nationSlot) {
-  typedef char(__fastcall * DipSlot84Fn)(void*, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot84Fn slot84 = reinterpret_cast<DipSlot84Fn>(diplomacyVtable[0x84 / 4]);
-  return slot84(diplomacyManager, 0, nationSlot);
+  return VCall_Diplomacy_HasFlag84ForNationSlot84(diplomacyManager, nationSlot);
 }
 
 static __inline void Diplomacy_SetRelationState(void* diplomacyManager, int sourceNation,
                                                 int targetNation, int relationState) {
-  typedef void(__fastcall * DipSlot7CFn)(void*, int, int, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot7CFn slot7C = reinterpret_cast<DipSlot7CFn>(diplomacyVtable[0x7C / 4]);
-  slot7C(diplomacyManager, sourceNation, targetNation, relationState, 0);
+  vcall_runtime::fastcall3v_with_edx(diplomacyManager, static_cast<unsigned int>(0x7C / 4),
+                                     sourceNation, targetNation, relationState, 0);
 }
 
 static __inline void GreatPower_ApplyPolicyForNation(TGreatPower* self, int targetNation,
                                                      int policyCode, int sourceNation) {
-  typedef void(__fastcall * GreatPowerSlotA1ApplyFn)(TGreatPower*, int, int, int, int);
-  GreatPowerSlotA1ApplyFn applyPolicy =
-      reinterpret_cast<GreatPowerSlotA1ApplyFn>(self->vftable[0xA1]);
-  applyPolicy(self, 0, targetNation, policyCode, sourceNation);
+  VCall_GreatPower_ApplyPolicyForNationSlotA1(self, targetNation, policyCode, sourceNation);
 }
 
 static __inline void ReleaseObjectAtSlot1C(void* obj) {
@@ -894,33 +808,21 @@ static __inline void Object_CallSlot30NoArgs(void* obj) {
 
 static __inline void TerrainDescriptor_SetResetLevel(void* terrainDescriptor, int sourceNation,
                                                      int resetLevel) {
-  typedef void(__fastcall * TerrainSlot68Fn)(void*, int, int, int);
-  void** terrainVtable = *reinterpret_cast<void***>(terrainDescriptor);
-  TerrainSlot68Fn slot68 = reinterpret_cast<TerrainSlot68Fn>(terrainVtable[0x68 / 4]);
-  slot68(terrainDescriptor, 0, sourceNation, resetLevel);
+  VCall_TerrainDescriptor_SetResetLevelSlot68(terrainDescriptor, sourceNation, resetLevel);
 }
 
 static __inline void NationState_NotifyAction131(void* nationState, int sourceNation) {
-  typedef void(__fastcall * NationSlot94Fn)(void*, int, int, int);
-  void** nationVtable = *reinterpret_cast<void***>(nationState);
-  NationSlot94Fn slot94 = reinterpret_cast<NationSlot94Fn>(nationVtable[0x94 / 4]);
-  slot94(nationState, 0, sourceNation, 0x131);
+  VCall_NationState_NotifyActionSlot94(nationState, sourceNation, 0x131);
 }
 
 static __inline void NationState_NotifyActionCode(void* nationState, int sourceNation,
                                                   int actionCode) {
-  typedef void(__fastcall * NationSlot94Fn)(void*, int, int, int);
-  void** nationVtable = *reinterpret_cast<void***>(nationState);
-  NationSlot94Fn slot94 = reinterpret_cast<NationSlot94Fn>(nationVtable[0x94 / 4]);
-  slot94(nationState, 0, sourceNation, actionCode);
+  VCall_NationState_NotifyActionSlot94(nationState, sourceNation, actionCode);
 }
 
 static __inline void NationState_AssignNeedSlotFromSource(void* nationState, int needSlot,
                                                           int sourceNation) {
-  typedef void(__fastcall * NationSlot19CFn)(void*, int, int, int);
-  void** nationVtable = *reinterpret_cast<void***>(nationState);
-  NationSlot19CFn slot19C = reinterpret_cast<NationSlot19CFn>(nationVtable[0x19C / 4]);
-  slot19C(nationState, 0, needSlot, sourceNation);
+  VCall_NationState_AssignNeedSlotFromSourceSlot19C(nationState, needSlot, sourceNation);
 }
 
 static __inline char NationState_IsBusyA0(void* nationState) {
@@ -930,9 +832,7 @@ static __inline char NationState_IsBusyA0(void* nationState) {
 }
 
 static __inline short GreatPower_GetNeedSlotValue(TGreatPower* self, int needSlot) {
-  typedef short(__fastcall * GreatPowerSlot1FFn)(TGreatPower*, int, int);
-  GreatPowerSlot1FFn slot1F = reinterpret_cast<GreatPowerSlot1FFn>(self->vftable[0x1F]);
-  return slot1F(self, 0, needSlot);
+  return VCall_GreatPower_GetNeedSlotValueSlot1F(self, needSlot);
 }
 
 static __inline void Object_CallSlot8CNoArgs(void* obj) {
@@ -941,56 +841,38 @@ static __inline void Object_CallSlot8CNoArgs(void* obj) {
 
 static __inline void SecondaryState_ResetDiplomacyLevel(void* secondaryState, int sourceNation,
                                                         int resetLevel) {
-  typedef void(__fastcall * SecondarySlot48Fn)(void*, int, int, int);
-  void** secondaryVtable = *reinterpret_cast<void***>(secondaryState);
-  SecondarySlot48Fn slot48 = reinterpret_cast<SecondarySlot48Fn>(secondaryVtable[0x48 / 4]);
-  slot48(secondaryState, 0, sourceNation, resetLevel);
+  VCall_SecondaryState_ResetDiplomacyLevelSlot48(secondaryState, sourceNation, resetLevel);
 }
 
 static __inline void GreatPower_ResetDiplomacyLevelForNation(TGreatPower* self, int nationSlot,
                                                              int resetLevel) {
-  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
-  GreatPowerSetValueFn slot12 = reinterpret_cast<GreatPowerSetValueFn>(self->vftable[0x12]);
-  slot12(self, 0, nationSlot, resetLevel);
+  VCall_GreatPower_ResetDiplomacyLevelForNationSlot12(self, nationSlot, resetLevel);
 }
 
 static __inline void GreatPower_ResetPolicyForNation(TGreatPower* self, int nationSlot,
                                                      int resetPolicyCode) {
-  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
-  GreatPowerSetValueFn slot75 = reinterpret_cast<GreatPowerSetValueFn>(self->vftable[0x75]);
-  slot75(self, 0, nationSlot, resetPolicyCode);
+  VCall_GreatPower_ResetPolicyForNationSlot75(self, nationSlot, resetPolicyCode);
 }
 
 static __inline void GreatPower_CallSlot13(TGreatPower* self, int arg1, int arg2) {
-  typedef void(__fastcall * GreatPowerSlot13Fn)(TGreatPower*, int, int, int);
-  GreatPowerSlot13Fn slot13 = reinterpret_cast<GreatPowerSlot13Fn>(self->vftable[0x13]);
-  slot13(self, 0, arg1, arg2);
+  VCall_GreatPower_CallSlot13(self, arg1, arg2);
 }
 
 static __inline void GreatPower_SetPolicyForNation(TGreatPower* self, int nationSlot,
                                                    int policyCode) {
-  typedef void(__fastcall * GreatPowerSetValueFn)(TGreatPower*, int, int, int);
-  GreatPowerSetValueFn slot74 = reinterpret_cast<GreatPowerSetValueFn>(self->vftable[0x74]);
-  slot74(self, 0, nationSlot, policyCode);
+  VCall_GreatPower_SetPolicyForNationSlot74(self, nationSlot, policyCode);
 }
 
 static __inline int GreatPower_CanPayAmount(TGreatPower* self, int amount) {
-  typedef int(__fastcall * GreatPowerCanPayFn)(TGreatPower*, int, int);
-  GreatPowerCanPayFn slot7A = reinterpret_cast<GreatPowerCanPayFn>(self->vftable[0x7A]);
-  return slot7A(self, 0, amount);
+  return VCall_GreatPower_CanPayAmountSlot7A(self, amount);
 }
 
 static __inline void GreatPower_AdjustTreasury(TGreatPower* self, int amount) {
-  typedef void(__fastcall * GreatPowerAdjustTreasuryFn)(TGreatPower*, int, int);
-  GreatPowerAdjustTreasuryFn slot0E =
-      reinterpret_cast<GreatPowerAdjustTreasuryFn>(self->vftable[0x0E]);
-  slot0E(self, 0, amount);
+  VCall_GreatPower_AdjustTreasurySlot0E(self, amount);
 }
 
 static __inline char GreatPower_CanSetGrantValue(TGreatPower* self, int grantValue) {
-  typedef char(__fastcall * GreatPowerCanSetGrantFn)(TGreatPower*, int, int);
-  GreatPowerCanSetGrantFn slot77 = reinterpret_cast<GreatPowerCanSetGrantFn>(self->vftable[0x77]);
-  return slot77(self, 0, grantValue);
+  return VCall_GreatPower_CanSetGrantValueSlot77(self, grantValue);
 }
 
 static __inline short Diplomacy_ReadRelationMatrix79C(void* diplomacyManager, int sourceNation,
@@ -1003,10 +885,7 @@ static __inline short Diplomacy_ReadRelationMatrix79C(void* diplomacyManager, in
 
 static __inline char GlobalMapState_CallMetricC4(void* globalMapState, int regionIndex,
                                                  int edgeIndex) {
-  typedef char(__fastcall * GlobalMapMetricFn)(void*, int, int, int);
-  void** globalMapVtable = *reinterpret_cast<void***>(globalMapState);
-  GlobalMapMetricFn metricFn = reinterpret_cast<GlobalMapMetricFn>(globalMapVtable[0xC4 / 4]);
-  return metricFn(globalMapState, 0, regionIndex, edgeIndex);
+  return VCall_GlobalMapState_CallMetricSlotC4(globalMapState, regionIndex, edgeIndex);
 }
 
 static __inline short LookupOrderCompatibility(short sourceNationSlot, short targetNationSlot) {
@@ -1062,39 +941,27 @@ DecodeSecondaryNationOwnerSlot(const TSecondaryNationStateOwnerView* secondaryNa
 }
 
 static __inline void GreatPower_CallSlot5C(TGreatPower* self) {
-  typedef void(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
-  GreatPowerNoArgFn slot5C = reinterpret_cast<GreatPowerNoArgFn>(self->vftable[0x5C]);
-  slot5C(self, 0);
+  VCall_GreatPower_CallSlot5C(self);
 }
 
 static __inline void GreatPower_CallSlotA5(TGreatPower* self) {
-  typedef void(__fastcall * GreatPowerNoArgFn)(TGreatPower*, int);
-  GreatPowerNoArgFn slotA5 = reinterpret_cast<GreatPowerNoArgFn>(self->vftable[0xA5]);
-  slotA5(self, 0);
+  VCall_GreatPower_CallSlotA5(self);
 }
 
 static __inline void Diplomacy_SetFlag74(void* diplomacyManager, int sourceNation, int targetNation,
                                          int flagValue) {
-  typedef void(__fastcall * DipSlot74Fn)(void*, int, int, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot74Fn slot74 = reinterpret_cast<DipSlot74Fn>(diplomacyVtable[0x74 / 4]);
-  slot74(diplomacyManager, 0, sourceNation, targetNation, flagValue);
+  VCall_Diplomacy_SetFlag74(diplomacyManager, sourceNation, targetNation, flagValue);
 }
 
 static __inline void Diplomacy_SetFlag28(void* diplomacyManager, int sourceNation, int targetNation,
                                          int flagValue) {
-  typedef void(__fastcall * DipSlot28Fn)(void*, int, int, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot28Fn slot28 = reinterpret_cast<DipSlot28Fn>(diplomacyVtable[0x28 / 4]);
-  slot28(diplomacyManager, 0, sourceNation, targetNation, flagValue);
+  VCall_Diplomacy_SetFlag28(diplomacyManager, sourceNation, targetNation, flagValue);
 }
 
 static __inline void Diplomacy_SetRelationCode78(void* diplomacyManager, int sourceNation,
                                                  int targetNation, int relationCode) {
-  typedef void(__fastcall * DipSlot78Fn)(void*, int, int, int);
-  void** diplomacyVtable = *reinterpret_cast<void***>(diplomacyManager);
-  DipSlot78Fn slot78 = reinterpret_cast<DipSlot78Fn>(diplomacyVtable[0x78 / 4]);
-  slot78(diplomacyManager, sourceNation, targetNation, relationCode);
+  vcall_runtime::fastcall2v_with_edx(diplomacyManager, static_cast<unsigned int>(0x78 / 4),
+                                     sourceNation, targetNation, relationCode);
 }
 
 static __inline void QueueInterNationEventRecordDedup(int eventCode, int sourceNation,
@@ -1108,17 +975,11 @@ static __inline void QueueInterNationEventRecordDedup(int eventCode, int sourceN
 
 static __inline void TerrainDescriptor_CallSlot4C(void* terrainDescriptor, int sourceNation,
                                                   int modeValue) {
-  typedef void(__fastcall * TerrainSlot4CFn)(void*, int, int, int);
-  void** terrainVtable = *reinterpret_cast<void***>(terrainDescriptor);
-  TerrainSlot4CFn slot4C = reinterpret_cast<TerrainSlot4CFn>(terrainVtable[0x4C / 4]);
-  slot4C(terrainDescriptor, 0, sourceNation, modeValue);
+  VCall_TerrainDescriptor_CallSlot4C(terrainDescriptor, sourceNation, modeValue);
 }
 
 static __inline void TerrainDescriptor_CallSlot38(void* terrainDescriptor, int delta) {
-  typedef void(__fastcall * TerrainSlot38Fn)(void*, int, int);
-  void** terrainVtable = *reinterpret_cast<void***>(terrainDescriptor);
-  TerrainSlot38Fn slot38 = reinterpret_cast<TerrainSlot38Fn>(terrainVtable[0x38 / 4]);
-  slot38(terrainDescriptor, 0, delta);
+  VCall_TerrainDescriptor_CallSlot38(terrainDescriptor, delta);
 }
 
 static __inline int ClampNonNegative(int value) {
@@ -1166,70 +1027,43 @@ static __inline void RegisterUnitOrderWithOwnerManager(TGreatPower* self, int nO
 }
 
 static __inline void GreatPower_CallSlotA1(TGreatPower* self) {
-  typedef void(__fastcall * GreatPowerSlotA1Fn)(TGreatPower*, int);
-  GreatPowerSlotA1Fn slotA1 = reinterpret_cast<GreatPowerSlotA1Fn>(self->vftable[0xA1]);
-  if (slotA1 != 0) {
-    slotA1(self, 0);
-  }
+  VCall_GreatPower_CallSlotA1_NoArgs(self);
 }
 
 static __inline void GreatPower_DispatchEventSlot2E(TGreatPower* self, int eventCode, int arg) {
-  typedef void(__fastcall * GreatPowerDispatchEventFn)(TGreatPower*, int, int, int);
-  GreatPowerDispatchEventFn dispatchEvent =
-      reinterpret_cast<GreatPowerDispatchEventFn>(self->vftable[0x2E]);
-  dispatchEvent(self, 0, eventCode, arg);
+  VCall_GreatPower_DispatchEventSlot2E(self, eventCode, arg);
 }
 
 static __inline void GreatPower_CallSlot84(TGreatPower* self, int targetNation) {
-  typedef void(__fastcall * GreatPowerSlot84Fn)(TGreatPower*, int, int);
-  GreatPowerSlot84Fn slot84 = reinterpret_cast<GreatPowerSlot84Fn>(self->vftable[0x84]);
-  slot84(self, 0, targetNation);
+  VCall_GreatPower_CallSlot84(self, targetNation);
 }
 
 static __inline void GreatPower_CallSlot85(TGreatPower* self, int targetNation) {
-  typedef void(__fastcall * GreatPowerSlot85Fn)(TGreatPower*, int, int);
-  GreatPowerSlot85Fn slot85 = reinterpret_cast<GreatPowerSlot85Fn>(self->vftable[0x85]);
-  slot85(self, 0, targetNation);
+  VCall_GreatPower_CallSlot85(self, targetNation);
 }
 
 static __inline void GreatPower_CallSlotA8(TGreatPower* self, int targetNation) {
-  typedef void(__fastcall * GreatPowerSlotA8Fn)(TGreatPower*, int, int);
-  GreatPowerSlotA8Fn slotA8 = reinterpret_cast<GreatPowerSlotA8Fn>(self->vftable[0xA8]);
-  slotA8(self, 0, targetNation);
+  VCall_GreatPower_CallSlotA8(self, targetNation);
 }
 
 static __inline void GreatPower_CallSlotA9(TGreatPower* self) {
-  typedef void(__fastcall * GreatPowerSlotA9Fn)(TGreatPower*, int);
-  GreatPowerSlotA9Fn slotA9 = reinterpret_cast<GreatPowerSlotA9Fn>(self->vftable[0xA9]);
-  slotA9(self, 0);
+  VCall_GreatPower_CallSlotA9(self);
 }
 
 static __inline void GreatPower_CallSlotB3(TGreatPower* self) {
-  typedef void(__fastcall * GreatPowerSlotB3Fn)(TGreatPower*, int);
-  GreatPowerSlotB3Fn slotB3 = reinterpret_cast<GreatPowerSlotB3Fn>(self->vftable[0xB3]);
-  slotB3(self, 0);
+  VCall_GreatPower_CallSlotB3(self);
 }
 
 static __inline void GreatPower_CallNoArgVirtual(TGreatPower* self, int slotIndex) {
-  typedef void(__fastcall * GreatPowerNoArgFn)(TGreatPower*);
-  GreatPowerNoArgFn slot = reinterpret_cast<GreatPowerNoArgFn>(self->vftable[slotIndex]);
-  slot(self);
+  vcall_runtime::thiscall0v(self, static_cast<unsigned int>(slotIndex));
 }
 
 static __inline void RelationManager_RefreshSlot80(void* relationManager) {
-  typedef void(__fastcall * RelationMgrSlot80Fn)(void*, int);
-  void** relationManagerVtable = *reinterpret_cast<void***>(relationManager);
-  RelationMgrSlot80Fn slot80 =
-      reinterpret_cast<RelationMgrSlot80Fn>(relationManagerVtable[0x80 / 4]);
-  slot80(relationManager, 0);
+  VCall_RelationManager_RefreshSlot80(relationManager);
 }
 
 static __inline void RelationManager_CallSlot28NoArgs(void* relationManager) {
-  typedef void(__fastcall * RelationMgrSlot28Fn)(void*);
-  void** relationManagerVtable = *reinterpret_cast<void***>(relationManager);
-  RelationMgrSlot28Fn slot28 =
-      reinterpret_cast<RelationMgrSlot28Fn>(relationManagerVtable[0x28 / 4]);
-  slot28(relationManager);
+  vcall_runtime::thiscall0v(relationManager, static_cast<unsigned int>(0x28 / 4));
 }
 
 static __inline void RelationManager_ClearNeedSlotE0AndRefresh(void* relationManager) {
@@ -1349,33 +1183,21 @@ static __inline void ReleaseThreeSharedRefs(int* firstRef, int* secondRef, int* 
 
 static __inline void
 MapActionContext_AssignDisplayRefFromSlot2C(TMapActionContextListEntryView* entry, int* outRef) {
-  typedef void(__fastcall * MapActionContextSlot2CFn)(TMapActionContextListEntryView*, int, int*);
-  void** vtable = *reinterpret_cast<void***>(entry);
-  MapActionContextSlot2CFn slot2C = reinterpret_cast<MapActionContextSlot2CFn>(vtable[0x2C / 4]);
-  slot2C(entry, 0, outRef);
+  VCall_MapActionContext_AssignDisplayRefFromSlot2C(entry, outRef);
 }
 
 static __inline char SecondaryState_HasNationFlag5C(void* secondaryState, int nationSlot) {
-  typedef char(__fastcall * SecondarySlot5CFn)(void*, int, int);
-  void** secondaryVtable = *reinterpret_cast<void***>(secondaryState);
-  SecondarySlot5CFn slot5C = reinterpret_cast<SecondarySlot5CFn>(secondaryVtable[0x5C / 4]);
-  return slot5C(secondaryState, 0, nationSlot);
+  return VCall_SecondaryState_HasNationFlag5C(secondaryState, nationSlot);
 }
 
 static __inline void SecondaryState_SetPolicyValue48(void* secondaryState, int targetNationSlot,
                                                      int policyValue) {
-  typedef void(__fastcall * SecondarySlot48Fn)(void*, int, int, int);
-  void** secondaryVtable = *reinterpret_cast<void***>(secondaryState);
-  SecondarySlot48Fn slot48 = reinterpret_cast<SecondarySlot48Fn>(secondaryVtable[0x48 / 4]);
-  slot48(secondaryState, 0, targetNationSlot, policyValue);
+  VCall_SecondaryState_SetPolicyValue48(secondaryState, targetNationSlot, policyValue);
 }
 
 static __inline void SecondaryState_CallSlot4C(void* secondaryState, int sourceNation,
                                                int modeValue) {
-  typedef void(__fastcall * SecondarySlot4CFn)(void*, int, int, int);
-  void** secondaryVtable = *reinterpret_cast<void***>(secondaryState);
-  SecondarySlot4CFn slot4C = reinterpret_cast<SecondarySlot4CFn>(secondaryVtable[0x4C / 4]);
-  slot4C(secondaryState, 0, sourceNation, modeValue);
+  VCall_SecondaryState_CallSlot4C(secondaryState, sourceNation, modeValue);
 }
 
 // FUNCTION: IMPERIALISM 0x00401172

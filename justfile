@@ -55,6 +55,9 @@ annotate-vtables:
 annotate-strings:
   uv run python -m tools.workflow.annotate_strings_from_symbols --paths src/game include/game --write
 
+gen-vcall-facades:
+  uv run python -m tools.workflow.generate_vcall_facades --owner-file src/game/TGreatPower.cpp
+
 normalize-markers:
   uv run python -m tools.workflow.normalize_reccmp_markers --paths src include --write
 
