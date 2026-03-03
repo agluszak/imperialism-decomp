@@ -3,126 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestructTTownAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTTownAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005b6cb0
-undefined4 DestructTTownAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeFrogCityMarkerFields
-// ghidra_proto void __cdecl InitializeFrogCityMarkerFields(void)
-// FUNCTION: IMPERIALISM 0x005b6cd0
-undefined4 InitializeFrogCityMarkerFields(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void * pMessage)
-// FUNCTION: IMPERIALISM 0x005b6d70
-undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void * pMessage)
-// FUNCTION: IMPERIALISM 0x005b6e60
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::RecomputeTownAdjacentTileYieldTotals
-// ghidra_proto void __thiscall RecomputeTownAdjacentTileYieldTotals(void)
-// FUNCTION: IMPERIALISM 0x005b6f70
-undefined4 RecomputeTownAdjacentTileYieldTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::RecomputeTownAdjacentResourceSupplyTotals
-// ghidra_proto void __thiscall RecomputeTownAdjacentResourceSupplyTotals(void)
-// FUNCTION: IMPERIALISM 0x005b7140
-undefined4 RecomputeTownAdjacentResourceSupplyTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::RecomputeTownAdjacentUniversityWeightedTotals
-// ghidra_proto void __thiscall RecomputeTownAdjacentUniversityWeightedTotals(void)
-// FUNCTION: IMPERIALISM 0x005b73e0
-undefined4 RecomputeTownAdjacentUniversityWeightedTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::IncrementProductionDerivedCountersWithTurnParityRules
-// ghidra_proto void __thiscall IncrementProductionDerivedCountersWithTurnParityRules(void)
-// FUNCTION: IMPERIALISM 0x005b7570
-undefined4 IncrementProductionDerivedCountersWithTurnParityRules(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins29_005b77e0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins29_005b77e0(void)
-// FUNCTION: IMPERIALISM 0x005b77e0
-undefined4 OrphanLeaf_NoCall_Ins29_005b77e0(void)
-{
-  return 0;
-}
-
-// ghidra_name IsOrderEntryTransportLinkedAndEnabled
-// ghidra_proto void __cdecl IsOrderEntryTransportLinkedAndEnabled(void)
-// FUNCTION: IMPERIALISM 0x005b7830
-undefined4 IsOrderEntryTransportLinkedAndEnabled(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At005b79a0
-// ghidra_proto void __cdecl WrapperFor_ftol_At005b79a0(void)
-// FUNCTION: IMPERIALISM 0x005b79a0
-undefined4 WrapperFor_ftol_At005b79a0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::GetTTradeMgrClassNamePointer
-// ghidra_proto void * __cdecl GetTTradeMgrClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005b7a00
-undefined4 GetTTradeMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructNationInteractionStateManager_Vtbl0066d990
-// ghidra_proto void __cdecl ConstructNationInteractionStateManager_Vtbl0066d990(void)
-// FUNCTION: IMPERIALISM 0x005b7a20
-undefined4 ConstructNationInteractionStateManager_Vtbl0066d990(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::DestructTTradeMgrAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTradeMgrAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005b7a40
-undefined4 DestructTTradeMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl
-// ghidra_proto void __thiscall DestructTTradeMgrAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005b7a70
-undefined4 DestructTTradeMgrAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealList::InitializeNationInteractionStateManagerDefaults
 // ghidra_proto void __thiscall InitializeNationInteractionStateManagerDefaults(void)
 // FUNCTION: IMPERIALISM 0x005b7a90
@@ -3999,6 +3879,126 @@ undefined4 ReturnConstantFalse_SoundPredicate(void)
 // ghidra_proto void __cdecl ClearDirectSoundInitPendingAndResetState(void)
 // FUNCTION: IMPERIALISM 0x005e4fd0
 undefined4 ClearDirectSoundInitPendingAndResetState(void)
+{
+  return 0;
+}
+
+// ghidra_name NotifyGlobalAudioObjectsViaVslot48
+// ghidra_proto void __cdecl NotifyGlobalAudioObjectsViaVslot48(void)
+// FUNCTION: IMPERIALISM 0x005e4ff0
+undefined4 NotifyGlobalAudioObjectsViaVslot48(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At005e5020
+// ghidra_proto void __cdecl WrapperFor_ftol_At005e5020(void)
+// FUNCTION: IMPERIALISM 0x005e5020
+undefined4 WrapperFor_ftol_At005e5020(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpAudioTickCallback_005e50a0
+// ghidra_proto void __stdcall NoOpAudioTickCallback_005e50a0(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e50a0
+undefined4 NoOpAudioTickCallback_005e50a0(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState
+// ghidra_proto int __cdecl UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(void)
+// FUNCTION: IMPERIALISM 0x005e50c0
+undefined4 UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardActionToVslotB4WithFlag1
+// ghidra_proto int __cdecl ForwardActionToVslotB4WithFlag1(void)
+// FUNCTION: IMPERIALISM 0x005e5140
+undefined4 ForwardActionToVslotB4WithFlag1(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnConstantZero_005e5170
+// ghidra_proto int __cdecl ReturnConstantZero_005e5170(void)
+// FUNCTION: IMPERIALISM 0x005e5170
+undefined4 ReturnConstantZero_005e5170(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnConstantZero_005e5190
+// ghidra_proto int __cdecl ReturnConstantZero_005e5190(void)
+// FUNCTION: IMPERIALISM 0x005e5190
+undefined4 ReturnConstantZero_005e5190(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0
+// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
+// FUNCTION: IMPERIALISM 0x005e51b0
+undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
+{
+  return 0;
+}
+
+// ghidra_name TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
+// ghidra_proto void __thiscall ReleaseRuntimeSelectionPeersAndResetOwner(void)
+// FUNCTION: IMPERIALISM 0x005e51d0
+undefined4 ReleaseRuntimeSelectionPeersAndResetOwner(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_MCIWndCreateA
+// ghidra_proto void __cdecl thunk_MCIWndCreateA(void)
+// FUNCTION: IMPERIALISM 0x005e536e
+undefined4 thunk_MCIWndCreateA(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxGetMainWnd
+// ghidra_proto int __cdecl AfxGetMainWnd(void)
+// FUNCTION: IMPERIALISM 0x005e539c
+undefined4 AfxGetMainWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc
+// ghidra_proto void __cdecl WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc(void * hMem)
+// FUNCTION: IMPERIALISM 0x005e53bc
+undefined4 WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateObject
+// ghidra_proto void * __cdecl CreateObject(void)
+// FUNCTION: IMPERIALISM 0x005e53d8
+undefined4 CreateObject(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateObject_5e540c
+// ghidra_proto void * __cdecl CreateObject_5e540c(void)
+// FUNCTION: IMPERIALISM 0x005e540c
+undefined4 CreateObject_5e540c(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440
+// ghidra_proto int * __cdecl WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
+// FUNCTION: IMPERIALISM 0x005e5440
+undefined4 WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
 {
   return 0;
 }

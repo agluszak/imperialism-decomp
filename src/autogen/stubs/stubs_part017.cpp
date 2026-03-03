@@ -3,126 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReplaceNationStateForSlotAndRefreshStatus
-// ghidra_proto void __thiscall ReplaceNationStateForSlotAndRefreshStatus(int slotNationId)
-// FUNCTION: IMPERIALISM 0x0054bd20
-undefined4 ReplaceNationStateForSlotAndRefreshStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent26DiplomacyMatrixSnapshot
-// ghidra_proto void __cdecl EmitTurnEvent26DiplomacyMatrixSnapshot(void)
-// FUNCTION: IMPERIALISM 0x0054c480
-undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchJoinEmpireModeEventPacket24_27
-// ghidra_proto void __cdecl DispatchJoinEmpireModeEventPacket24_27(void)
-// FUNCTION: IMPERIALISM 0x0054c5a0
-undefined4 DispatchJoinEmpireModeEventPacket24_27(void)
-{
-  return 0;
-}
-
-// ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
-// ghidra_proto void __cdecl SetDialogModeTagInitAndInvokeNoOpHook(void)
-// FUNCTION: IMPERIALISM 0x0054c630
-undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet4
-// ghidra_proto void __cdecl NoOpCallbackRet4(void)
-// FUNCTION: IMPERIALISM 0x0054c660
-undefined4 NoOpCallbackRet4(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet10
-// ghidra_proto void __stdcall NoOpCallbackRet10(int arg0, int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x0054c680
-undefined4 NoOpCallbackRet10(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet18
-// ghidra_proto void __stdcall NoOpCallbackRet18(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x0054c6a0
-undefined4 NoOpCallbackRet18(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetNationStatusArraysAndTurnEventContext
-// ghidra_proto void __thiscall ResetNationStatusArraysAndTurnEventContext(void)
-// FUNCTION: IMPERIALISM 0x0054c6e0
-undefined4 ResetNationStatusArraysAndTurnEventContext(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleActiveNationAwolTransitionOrRecovery
-// ghidra_proto void __cdecl HandleActiveNationAwolTransitionOrRecovery(void)
-// FUNCTION: IMPERIALISM 0x0054c800
-undefined4 HandleActiveNationAwolTransitionOrRecovery(void)
-{
-  return 0;
-}
-
-// ghidra_name TSimMgr::EmitTurnEventEAnd9SessionContextPackets
-// ghidra_proto void __thiscall EmitTurnEventEAnd9SessionContextPackets(int arg1)
-// FUNCTION: IMPERIALISM 0x0054c8e0
-undefined4 EmitTurnEventEAnd9SessionContextPackets(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll
-// ghidra_proto void __thiscall RefreshNationStatusLabelsAndCodesForSlotOrAll(int slotNationId)
-// FUNCTION: IMPERIALISM 0x0054cc00
-undefined4 RefreshNationStatusLabelsAndCodesForSlotOrAll(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndQueueTurnEventPacketTagPOGC
-// ghidra_proto void __cdecl CreateAndQueueTurnEventPacketTagPOGC(void)
-// FUNCTION: IMPERIALISM 0x0054cde0
-undefined4 CreateAndQueueTurnEventPacketTagPOGC(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent2CNationStateCompositeForSlot
-// ghidra_proto void __cdecl EmitTurnEvent2CNationStateCompositeForSlot(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0054ce80
-undefined4 EmitTurnEvent2CNationStateCompositeForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent19NationStateArraysForSlot
-// ghidra_proto void __cdecl EmitTurnEvent19NationStateArraysForSlot(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0054d1f0
-undefined4 EmitTurnEvent19NationStateArraysForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndSendTurnEvent2D_TableRowShortArray
-// ghidra_proto void * __cdecl CreateAndSendTurnEvent2D_TableRowShortArray(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0054d3d0
-undefined4 CreateAndSendTurnEvent2D_TableRowShortArray(void)
-{
-  return 0;
-}
-
 // ghidra_name TrySaveGameAndMaybeShowFailureDialog
 // ghidra_proto void __cdecl TrySaveGameAndMaybeShowFailureDialog(void)
 // FUNCTION: IMPERIALISM 0x0054d4e0
@@ -3999,6 +3879,126 @@ undefined4 ConstructUiTabCursorPictureEntry(void)
 // ghidra_proto void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00570820
 undefined4 DestructTPictureButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I24_00570870
+// ghidra_proto void __cdecl OrphanCallChain_C2_I24_00570870(void)
+// FUNCTION: IMPERIALISM 0x00570870
+undefined4 OrphanCallChain_C2_I24_00570870(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I18_005708c0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I18_005708c0(void)
+// FUNCTION: IMPERIALISM 0x005708c0
+undefined4 OrphanCallChain_C2_I18_005708c0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::PlayControlSoundAndBeginMouseCapture_Field92_A
+// ghidra_proto void __thiscall PlayControlSoundAndBeginMouseCapture_Field92_A(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00570900
+undefined4 PlayControlSoundAndBeginMouseCapture_Field92_A(void)
+{
+  return 0;
+}
+
+// ghidra_name TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance
+// ghidra_proto void * __cdecl CreateTAlwaysPictureButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00570950
+undefined4 CreateTAlwaysPictureButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TAlwaysPictureButton::GetTAlwaysPictureButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTAlwaysPictureButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005709d0
+undefined4 GetTAlwaysPictureButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState
+// ghidra_proto void * __thiscall ConstructTAlwaysPictureButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x005709f0
+undefined4 ConstructTAlwaysPictureButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TAlwaysPictureButton::DestructTAlwaysPictureButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTAlwaysPictureButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00570a20
+undefined4 DestructTAlwaysPictureButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I28_00570a70
+// ghidra_proto void __cdecl OrphanCallChain_C2_I28_00570a70(void)
+// FUNCTION: IMPERIALISM 0x00570a70
+undefined4 OrphanCallChain_C2_I28_00570a70(void)
+{
+  return 0;
+}
+
+// ghidra_name TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
+// ghidra_proto void __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00570ae0
+undefined4 WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(void)
+{
+  return 0;
+}
+
+// ghidra_name T2PictureButton::CreateT2PictureButtonInstance
+// ghidra_proto void * __cdecl CreateT2PictureButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00570b10
+undefined4 CreateT2PictureButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name T2PictureButton::GetT2PictureButtonClassNamePointer
+// ghidra_proto void * __cdecl GetT2PictureButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00570b90
+undefined4 GetT2PictureButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name T2PictureButton::ConstructUiBattleTabPictureEntry
+// ghidra_proto void __thiscall ConstructUiBattleTabPictureEntry(void)
+// FUNCTION: IMPERIALISM 0x00570bb0
+undefined4 ConstructUiBattleTabPictureEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name T2PictureButton::DestructT2PictureButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructT2PictureButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00570be0
+undefined4 DestructT2PictureButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C3_I43_00570c30
+// ghidra_proto void __cdecl OrphanCallChain_C3_I43_00570c30(void)
+// FUNCTION: IMPERIALISM 0x00570c30
+undefined4 OrphanCallChain_C3_I43_00570c30(void)
+{
+  return 0;
+}
+
+// ghidra_name TPictureRadioButton::CreateTPictureRadioButtonInstance
+// ghidra_proto void * __cdecl CreateTPictureRadioButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00570cc0
+undefined4 CreateTPictureRadioButtonInstance(void)
 {
   return 0;
 }

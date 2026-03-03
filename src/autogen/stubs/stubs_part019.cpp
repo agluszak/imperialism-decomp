@@ -3,126 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C6_I29_00596700
-// ghidra_proto void __cdecl OrphanCallChain_C6_I29_00596700(void)
-// FUNCTION: IMPERIALISM 0x00596700
-undefined4 OrphanCallChain_C6_I29_00596700(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberUberPicture::CreateTMapUberUberPictureInstance
-// ghidra_proto void * __cdecl CreateTMapUberUberPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00596770
-undefined4 CreateTMapUberUberPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTMapUberUberPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005967f0
-undefined4 GetTMapUberUberPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberUberPicture::ConstructTMapUberUberPictureBaseState
-// ghidra_proto void __thiscall ConstructTMapUberUberPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x00596810
-undefined4 ConstructTMapUberUberPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree
-// ghidra_proto void __cdecl DestructTMapUberUberPictureAndMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x00596840
-undefined4 DestructTMapUberUberPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberPicture::CreateTMapUberPictureInstance
-// ghidra_proto void * __cdecl CreateTMapUberPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00596900
-undefined4 CreateTMapUberPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberPicture::GetTMapUberPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTMapUberPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005969c0
-undefined4 GetTMapUberPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberPicture::ConstructTMapUberPictureBaseState
-// ghidra_proto void * __thiscall ConstructTMapUberPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x005969e0
-undefined4 ConstructTMapUberPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberPicture::DestructTMapUberPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTMapUberPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00596a30
-undefined4 DestructTMapUberPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffLimitsPicture::InitializeMapOverlayDialogControlsAndSelectionState
-// ghidra_proto void __thiscall InitializeMapOverlayDialogControlsAndSelectionState(void)
-// FUNCTION: IMPERIALISM 0x00596a80
-undefined4 InitializeMapOverlayDialogControlsAndSelectionState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins14_00596c60
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins14_00596c60(void)
-// FUNCTION: IMPERIALISM 0x00596c60
-undefined4 OrphanLeaf_NoCall_Ins14_00596c60(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SetMapInteractionMode
-// ghidra_proto void __thiscall SetMapInteractionMode(EMapInteractionMode nMode)
-// FUNCTION: IMPERIALISM 0x00596cb0
-undefined4 SetMapInteractionMode(void)
-{
-  return 0;
-}
-
-// ghidra_name ComposeAndDispatchTurnSummaryLocalizedMessage
-// ghidra_proto void __cdecl ComposeAndDispatchTurnSummaryLocalizedMessage(void)
-// FUNCTION: IMPERIALISM 0x00597020
-undefined4 ComposeAndDispatchTurnSummaryLocalizedMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleMapOverlayDialogCommandTagsAndForward
-// ghidra_proto void __cdecl HandleMapOverlayDialogCommandTagsAndForward(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00597340
-undefined4 HandleMapOverlayDialogCommandTagsAndForward(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4
-// ghidra_proto void __cdecl Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
-// FUNCTION: IMPERIALISM 0x005974a4
-undefined4 Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
-{
-  return 0;
-}
-
 // ghidra_name ReinitializeGameFlowAndPostTurnEvent5DD
 // ghidra_proto void __cdecl ReinitializeGameFlowAndPostTurnEvent5DD(void)
 // FUNCTION: IMPERIALISM 0x005974eb
@@ -3999,6 +3879,126 @@ undefined4 ConstructFrogCityMarker(void)
 // ghidra_proto void * __thiscall DestructTTownAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005b6c80
 undefined4 DestructTTownAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTTownAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTTownAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005b6cb0
+undefined4 DestructTTownAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeFrogCityMarkerFields
+// ghidra_proto void __cdecl InitializeFrogCityMarkerFields(void)
+// FUNCTION: IMPERIALISM 0x005b6cd0
+undefined4 InitializeFrogCityMarkerFields(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
+// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void * pMessage)
+// FUNCTION: IMPERIALISM 0x005b6d70
+undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
+// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void * pMessage)
+// FUNCTION: IMPERIALISM 0x005b6e60
+undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::RecomputeTownAdjacentTileYieldTotals
+// ghidra_proto void __thiscall RecomputeTownAdjacentTileYieldTotals(void)
+// FUNCTION: IMPERIALISM 0x005b6f70
+undefined4 RecomputeTownAdjacentTileYieldTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::RecomputeTownAdjacentResourceSupplyTotals
+// ghidra_proto void __thiscall RecomputeTownAdjacentResourceSupplyTotals(void)
+// FUNCTION: IMPERIALISM 0x005b7140
+undefined4 RecomputeTownAdjacentResourceSupplyTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::RecomputeTownAdjacentUniversityWeightedTotals
+// ghidra_proto void __thiscall RecomputeTownAdjacentUniversityWeightedTotals(void)
+// FUNCTION: IMPERIALISM 0x005b73e0
+undefined4 RecomputeTownAdjacentUniversityWeightedTotals(void)
+{
+  return 0;
+}
+
+// ghidra_name TTown::IncrementProductionDerivedCountersWithTurnParityRules
+// ghidra_proto void __thiscall IncrementProductionDerivedCountersWithTurnParityRules(void)
+// FUNCTION: IMPERIALISM 0x005b7570
+undefined4 IncrementProductionDerivedCountersWithTurnParityRules(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins29_005b77e0
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins29_005b77e0(void)
+// FUNCTION: IMPERIALISM 0x005b77e0
+undefined4 OrphanLeaf_NoCall_Ins29_005b77e0(void)
+{
+  return 0;
+}
+
+// ghidra_name IsOrderEntryTransportLinkedAndEnabled
+// ghidra_proto void __cdecl IsOrderEntryTransportLinkedAndEnabled(void)
+// FUNCTION: IMPERIALISM 0x005b7830
+undefined4 IsOrderEntryTransportLinkedAndEnabled(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At005b79a0
+// ghidra_proto void __cdecl WrapperFor_ftol_At005b79a0(void)
+// FUNCTION: IMPERIALISM 0x005b79a0
+undefined4 WrapperFor_ftol_At005b79a0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::GetTTradeMgrClassNamePointer
+// ghidra_proto void * __cdecl GetTTradeMgrClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005b7a00
+undefined4 GetTTradeMgrClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name ConstructNationInteractionStateManager_Vtbl0066d990
+// ghidra_proto void __cdecl ConstructNationInteractionStateManager_Vtbl0066d990(void)
+// FUNCTION: IMPERIALISM 0x005b7a20
+undefined4 ConstructNationInteractionStateManager_Vtbl0066d990(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::DestructTTradeMgrAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTradeMgrAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005b7a40
+undefined4 DestructTTradeMgrAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl
+// ghidra_proto void __thiscall DestructTTradeMgrAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005b7a70
+undefined4 DestructTTradeMgrAndMaybeFree_Impl(void)
 {
   return 0;
 }

@@ -3,126 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C2_I24_00570870
-// ghidra_proto void __cdecl OrphanCallChain_C2_I24_00570870(void)
-// FUNCTION: IMPERIALISM 0x00570870
-undefined4 OrphanCallChain_C2_I24_00570870(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I18_005708c0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I18_005708c0(void)
-// FUNCTION: IMPERIALISM 0x005708c0
-undefined4 OrphanCallChain_C2_I18_005708c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::PlayControlSoundAndBeginMouseCapture_Field92_A
-// ghidra_proto void __thiscall PlayControlSoundAndBeginMouseCapture_Field92_A(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x00570900
-undefined4 PlayControlSoundAndBeginMouseCapture_Field92_A(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance
-// ghidra_proto void * __cdecl CreateTAlwaysPictureButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00570950
-undefined4 CreateTAlwaysPictureButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::GetTAlwaysPictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTAlwaysPictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005709d0
-undefined4 GetTAlwaysPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState
-// ghidra_proto void * __thiscall ConstructTAlwaysPictureButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x005709f0
-undefined4 ConstructTAlwaysPictureButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::DestructTAlwaysPictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTAlwaysPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570a20
-undefined4 DestructTAlwaysPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I28_00570a70
-// ghidra_proto void __cdecl OrphanCallChain_C2_I28_00570a70(void)
-// FUNCTION: IMPERIALISM 0x00570a70
-undefined4 OrphanCallChain_C2_I28_00570a70(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-// ghidra_proto void __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00570ae0
-undefined4 WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::CreateT2PictureButtonInstance
-// ghidra_proto void * __cdecl CreateT2PictureButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00570b10
-undefined4 CreateT2PictureButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::GetT2PictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetT2PictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00570b90
-undefined4 GetT2PictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::ConstructUiBattleTabPictureEntry
-// ghidra_proto void __thiscall ConstructUiBattleTabPictureEntry(void)
-// FUNCTION: IMPERIALISM 0x00570bb0
-undefined4 ConstructUiBattleTabPictureEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::DestructT2PictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructT2PictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570be0
-undefined4 DestructT2PictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I43_00570c30
-// ghidra_proto void __cdecl OrphanCallChain_C3_I43_00570c30(void)
-// FUNCTION: IMPERIALISM 0x00570c30
-undefined4 OrphanCallChain_C3_I43_00570c30(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureRadioButton::CreateTPictureRadioButtonInstance
-// ghidra_proto void * __cdecl CreateTPictureRadioButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00570cc0
-undefined4 CreateTPictureRadioButtonInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TPictureRadioButton::GetTPictureRadioButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTPictureRadioButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00570d40
@@ -3999,6 +3879,126 @@ undefined4 OrphanRetStub_005966c0(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_005966e0(void)
 // FUNCTION: IMPERIALISM 0x005966e0
 undefined4 OrphanLeaf_NoCall_Ins02_005966e0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C6_I29_00596700
+// ghidra_proto void __cdecl OrphanCallChain_C6_I29_00596700(void)
+// FUNCTION: IMPERIALISM 0x00596700
+undefined4 OrphanCallChain_C6_I29_00596700(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberUberPicture::CreateTMapUberUberPictureInstance
+// ghidra_proto void * __cdecl CreateTMapUberUberPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00596770
+undefined4 CreateTMapUberUberPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTMapUberUberPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005967f0
+undefined4 GetTMapUberUberPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberUberPicture::ConstructTMapUberUberPictureBaseState
+// ghidra_proto void __thiscall ConstructTMapUberUberPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x00596810
+undefined4 ConstructTMapUberUberPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree
+// ghidra_proto void __cdecl DestructTMapUberUberPictureAndMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x00596840
+undefined4 DestructTMapUberUberPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberPicture::CreateTMapUberPictureInstance
+// ghidra_proto void * __cdecl CreateTMapUberPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00596900
+undefined4 CreateTMapUberPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberPicture::GetTMapUberPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTMapUberPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005969c0
+undefined4 GetTMapUberPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberPicture::ConstructTMapUberPictureBaseState
+// ghidra_proto void * __thiscall ConstructTMapUberPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x005969e0
+undefined4 ConstructTMapUberPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberPicture::DestructTMapUberPictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTMapUberPictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00596a30
+undefined4 DestructTMapUberPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffLimitsPicture::InitializeMapOverlayDialogControlsAndSelectionState
+// ghidra_proto void __thiscall InitializeMapOverlayDialogControlsAndSelectionState(void)
+// FUNCTION: IMPERIALISM 0x00596a80
+undefined4 InitializeMapOverlayDialogControlsAndSelectionState(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins14_00596c60
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins14_00596c60(void)
+// FUNCTION: IMPERIALISM 0x00596c60
+undefined4 OrphanLeaf_NoCall_Ins14_00596c60(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::SetMapInteractionMode
+// ghidra_proto void __thiscall SetMapInteractionMode(EMapInteractionMode nMode)
+// FUNCTION: IMPERIALISM 0x00596cb0
+undefined4 SetMapInteractionMode(void)
+{
+  return 0;
+}
+
+// ghidra_name ComposeAndDispatchTurnSummaryLocalizedMessage
+// ghidra_proto void __cdecl ComposeAndDispatchTurnSummaryLocalizedMessage(void)
+// FUNCTION: IMPERIALISM 0x00597020
+undefined4 ComposeAndDispatchTurnSummaryLocalizedMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name HandleMapOverlayDialogCommandTagsAndForward
+// ghidra_proto void __cdecl HandleMapOverlayDialogCommandTagsAndForward(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00597340
+undefined4 HandleMapOverlayDialogCommandTagsAndForward(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4
+// ghidra_proto void __cdecl Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
+// FUNCTION: IMPERIALISM 0x005974a4
+undefined4 Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4(void)
 {
   return 0;
 }

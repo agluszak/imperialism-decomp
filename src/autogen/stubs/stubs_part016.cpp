@@ -3,126 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchAction210ToFirstEligibleNationIfIdle
-// ghidra_proto void __cdecl DispatchAction210ToFirstEligibleNationIfIdle(void)
-// FUNCTION: IMPERIALISM 0x00530b30
-undefined4 DispatchAction210ToFirstEligibleNationIfIdle(void)
-{
-  return 0;
-}
-
-// ghidra_name QueueForeignMinisterActionCodesByNationStateAndCompatibility
-// ghidra_proto void __cdecl QueueForeignMinisterActionCodesByNationStateAndCompatibility(void)
-// FUNCTION: IMPERIALISM 0x00530bb0
-undefined4 QueueForeignMinisterActionCodesByNationStateAndCompatibility(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ValidateProposalSelectionAndQueueEvent1C
-// ghidra_proto void __thiscall ValidateProposalSelectionAndQueueEvent1C(word proposalQueueIndex)
-// FUNCTION: IMPERIALISM 0x00530fa0
-undefined4 ValidateProposalSelectionAndQueueEvent1C(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpForeignMinisterSlot32Handler
-// ghidra_proto void __cdecl NoOpForeignMinisterSlot32Handler(void)
-// FUNCTION: IMPERIALISM 0x00531110
-undefined4 NoOpForeignMinisterSlot32Handler(void)
-{
-  return 0;
-}
-
-// ghidra_name TTedForeignMinister::GetTTedForeignMinisterClassNamePointer
-// ghidra_proto void * __cdecl GetTTedForeignMinisterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005311b0
-undefined4 GetTTedForeignMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTedForeignMinister::ConstructTTedForeignMinister
-// ghidra_proto void __thiscall ConstructTTedForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x005311d0
-undefined4 ConstructTTedForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TTedForeignMinister::DeletingDestructTTedForeignMinister
-// ghidra_proto void __thiscall DeletingDestructTTedForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x00531240
-undefined4 DeletingDestructTTedForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TTedForeignMinister::DestructTTedForeignMinister
-// ghidra_proto void __thiscall DestructTTedForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x00531270
-undefined4 DestructTTedForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTedForeignMinisterOrderCandidates
-// ghidra_proto void __cdecl InitializeTedForeignMinisterOrderCandidates(void)
-// FUNCTION: IMPERIALISM 0x00531290
-undefined4 InitializeTedForeignMinisterOrderCandidates(void)
-{
-  return 0;
-}
-
-// ghidra_name RunForeignMinisterVtableSlot90TedVariant
-// ghidra_proto void __fastcall RunForeignMinisterVtableSlot90TedVariant(void)
-// FUNCTION: IMPERIALISM 0x00531550
-undefined4 RunForeignMinisterVtableSlot90TedVariant(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchNationInteractionAmountByModePolicyA
-// ghidra_proto void __cdecl DispatchNationInteractionAmountByModePolicyA(void)
-// FUNCTION: IMPERIALISM 0x00531770
-undefined4 DispatchNationInteractionAmountByModePolicyA(void)
-{
-  return 0;
-}
-
-// ghidra_name QueueTedFourRandomAvailableTerrainActionsCode133
-// ghidra_proto void __cdecl QueueTedFourRandomAvailableTerrainActionsCode133(void)
-// FUNCTION: IMPERIALISM 0x00531a10
-undefined4 QueueTedFourRandomAvailableTerrainActionsCode133(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpTedForeignMinisterSlot25Handler
-// ghidra_proto void __cdecl NoOpTedForeignMinisterSlot25Handler(void)
-// FUNCTION: IMPERIALISM 0x00531af0
-undefined4 NoOpTedForeignMinisterSlot25Handler(void)
-{
-  return 0;
-}
-
-// ghidra_name SetTedCounter60ToThree
-// ghidra_proto void __cdecl SetTedCounter60ToThree(void)
-// FUNCTION: IMPERIALISM 0x00531b10
-undefined4 SetTedCounter60ToThree(void)
-{
-  return 0;
-}
-
-// ghidra_name TBillForeignMinister::GetTBillForeignMinisterClassNamePointer
-// ghidra_proto void * __cdecl GetTBillForeignMinisterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00531bc0
-undefined4 GetTBillForeignMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TBillForeignMinister::ConstructTBillForeignMinister
 // ghidra_proto void __thiscall ConstructTBillForeignMinister(void)
 // FUNCTION: IMPERIALISM 0x00531be0
@@ -3999,6 +3879,126 @@ undefined4 SetNationStatusAwolByNationIdAndDispatchNotices(void)
 // ghidra_proto void __thiscall InitializeNationStatusEvent25PayloadDefaults(void)
 // FUNCTION: IMPERIALISM 0x0054bce0
 undefined4 InitializeNationStatusEvent25PayloadDefaults(void)
+{
+  return 0;
+}
+
+// ghidra_name ReplaceNationStateForSlotAndRefreshStatus
+// ghidra_proto void __thiscall ReplaceNationStateForSlotAndRefreshStatus(int slotNationId)
+// FUNCTION: IMPERIALISM 0x0054bd20
+undefined4 ReplaceNationStateForSlotAndRefreshStatus(void)
+{
+  return 0;
+}
+
+// ghidra_name EmitTurnEvent26DiplomacyMatrixSnapshot
+// ghidra_proto void __cdecl EmitTurnEvent26DiplomacyMatrixSnapshot(void)
+// FUNCTION: IMPERIALISM 0x0054c480
+undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchJoinEmpireModeEventPacket24_27
+// ghidra_proto void __cdecl DispatchJoinEmpireModeEventPacket24_27(void)
+// FUNCTION: IMPERIALISM 0x0054c5a0
+undefined4 DispatchJoinEmpireModeEventPacket24_27(void)
+{
+  return 0;
+}
+
+// ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
+// ghidra_proto void __cdecl SetDialogModeTagInitAndInvokeNoOpHook(void)
+// FUNCTION: IMPERIALISM 0x0054c630
+undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallbackRet4
+// ghidra_proto void __cdecl NoOpCallbackRet4(void)
+// FUNCTION: IMPERIALISM 0x0054c660
+undefined4 NoOpCallbackRet4(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallbackRet10
+// ghidra_proto void __stdcall NoOpCallbackRet10(int arg0, int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x0054c680
+undefined4 NoOpCallbackRet10(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallbackRet18
+// ghidra_proto void __stdcall NoOpCallbackRet18(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x0054c6a0
+undefined4 NoOpCallbackRet18(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetNationStatusArraysAndTurnEventContext
+// ghidra_proto void __thiscall ResetNationStatusArraysAndTurnEventContext(void)
+// FUNCTION: IMPERIALISM 0x0054c6e0
+undefined4 ResetNationStatusArraysAndTurnEventContext(void)
+{
+  return 0;
+}
+
+// ghidra_name HandleActiveNationAwolTransitionOrRecovery
+// ghidra_proto void __cdecl HandleActiveNationAwolTransitionOrRecovery(void)
+// FUNCTION: IMPERIALISM 0x0054c800
+undefined4 HandleActiveNationAwolTransitionOrRecovery(void)
+{
+  return 0;
+}
+
+// ghidra_name TSimMgr::EmitTurnEventEAnd9SessionContextPackets
+// ghidra_proto void __thiscall EmitTurnEventEAnd9SessionContextPackets(int arg1)
+// FUNCTION: IMPERIALISM 0x0054c8e0
+undefined4 EmitTurnEventEAnd9SessionContextPackets(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll
+// ghidra_proto void __thiscall RefreshNationStatusLabelsAndCodesForSlotOrAll(int slotNationId)
+// FUNCTION: IMPERIALISM 0x0054cc00
+undefined4 RefreshNationStatusLabelsAndCodesForSlotOrAll(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateAndQueueTurnEventPacketTagPOGC
+// ghidra_proto void __cdecl CreateAndQueueTurnEventPacketTagPOGC(void)
+// FUNCTION: IMPERIALISM 0x0054cde0
+undefined4 CreateAndQueueTurnEventPacketTagPOGC(void)
+{
+  return 0;
+}
+
+// ghidra_name EmitTurnEvent2CNationStateCompositeForSlot
+// ghidra_proto void __cdecl EmitTurnEvent2CNationStateCompositeForSlot(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0054ce80
+undefined4 EmitTurnEvent2CNationStateCompositeForSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name EmitTurnEvent19NationStateArraysForSlot
+// ghidra_proto void __cdecl EmitTurnEvent19NationStateArraysForSlot(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0054d1f0
+undefined4 EmitTurnEvent19NationStateArraysForSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateAndSendTurnEvent2D_TableRowShortArray
+// ghidra_proto void * __cdecl CreateAndSendTurnEvent2D_TableRowShortArray(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0054d3d0
+undefined4 CreateAndSendTurnEvent2D_TableRowShortArray(void)
 {
   return 0;
 }

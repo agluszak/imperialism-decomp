@@ -3,126 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name NotifyGlobalAudioObjectsViaVslot48
-// ghidra_proto void __cdecl NotifyGlobalAudioObjectsViaVslot48(void)
-// FUNCTION: IMPERIALISM 0x005e4ff0
-undefined4 NotifyGlobalAudioObjectsViaVslot48(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At005e5020
-// ghidra_proto void __cdecl WrapperFor_ftol_At005e5020(void)
-// FUNCTION: IMPERIALISM 0x005e5020
-undefined4 WrapperFor_ftol_At005e5020(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpAudioTickCallback_005e50a0
-// ghidra_proto void __stdcall NoOpAudioTickCallback_005e50a0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e50a0
-undefined4 NoOpAudioTickCallback_005e50a0(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState
-// ghidra_proto int __cdecl UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(void)
-// FUNCTION: IMPERIALISM 0x005e50c0
-undefined4 UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardActionToVslotB4WithFlag1
-// ghidra_proto int __cdecl ForwardActionToVslotB4WithFlag1(void)
-// FUNCTION: IMPERIALISM 0x005e5140
-undefined4 ForwardActionToVslotB4WithFlag1(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantZero_005e5170
-// ghidra_proto int __cdecl ReturnConstantZero_005e5170(void)
-// FUNCTION: IMPERIALISM 0x005e5170
-undefined4 ReturnConstantZero_005e5170(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantZero_005e5190
-// ghidra_proto int __cdecl ReturnConstantZero_005e5190(void)
-// FUNCTION: IMPERIALISM 0x005e5190
-undefined4 ReturnConstantZero_005e5190(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0
-// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
-// FUNCTION: IMPERIALISM 0x005e51b0
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
-// ghidra_proto void __thiscall ReleaseRuntimeSelectionPeersAndResetOwner(void)
-// FUNCTION: IMPERIALISM 0x005e51d0
-undefined4 ReleaseRuntimeSelectionPeersAndResetOwner(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_MCIWndCreateA
-// ghidra_proto void __cdecl thunk_MCIWndCreateA(void)
-// FUNCTION: IMPERIALISM 0x005e536e
-undefined4 thunk_MCIWndCreateA(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxGetMainWnd
-// ghidra_proto int __cdecl AfxGetMainWnd(void)
-// FUNCTION: IMPERIALISM 0x005e539c
-undefined4 AfxGetMainWnd(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc
-// ghidra_proto void __cdecl WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc(void * hMem)
-// FUNCTION: IMPERIALISM 0x005e53bc
-undefined4 WrapperFor_FreeLocalAllocHandleIfNotNull_At005e53bc(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateObject
-// ghidra_proto void * __cdecl CreateObject(void)
-// FUNCTION: IMPERIALISM 0x005e53d8
-undefined4 CreateObject(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateObject_5e540c
-// ghidra_proto void * __cdecl CreateObject_5e540c(void)
-// FUNCTION: IMPERIALISM 0x005e540c
-undefined4 CreateObject_5e540c(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440
-// ghidra_proto int * __cdecl WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
-// FUNCTION: IMPERIALISM 0x005e5440
-undefined4 WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5440(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyTurnStateObjectWithModuleHandleFinalizer
 // ghidra_proto void * __thiscall DestroyTurnStateObjectWithModuleHandleFinalizer(void * param_1, byte param_2)
 // FUNCTION: IMPERIALISM 0x005e5455
@@ -3999,6 +3879,126 @@ undefined4 thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
 // ghidra_proto void __cdecl RegisterCommdlgLbSelChangedNotifyMessage(void)
 // FUNCTION: IMPERIALISM 0x005ffe2c
 undefined4 RegisterCommdlgLbSelChangedNotifyMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommdlgShareViolationMessage
+// ghidra_proto void __cdecl thunk_RegisterCommdlgShareViolationMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe3d
+undefined4 thunk_RegisterCommdlgShareViolationMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommdlgShareViolationMessage
+// ghidra_proto void __cdecl RegisterCommdlgShareViolationMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe42
+undefined4 RegisterCommdlgShareViolationMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommdlgFileNameOkMessage
+// ghidra_proto void __cdecl thunk_RegisterCommdlgFileNameOkMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe53
+undefined4 thunk_RegisterCommdlgFileNameOkMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommdlgFileNameOkMessage
+// ghidra_proto void __cdecl RegisterCommdlgFileNameOkMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe58
+undefined4 RegisterCommdlgFileNameOkMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommdlgColorOkMessage
+// ghidra_proto void __cdecl thunk_RegisterCommdlgColorOkMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe69
+undefined4 thunk_RegisterCommdlgColorOkMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommdlgColorOkMessage
+// ghidra_proto void __cdecl RegisterCommdlgColorOkMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe6e
+undefined4 RegisterCommdlgColorOkMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommdlgHelpMessage
+// ghidra_proto void __cdecl thunk_RegisterCommdlgHelpMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe7f
+undefined4 thunk_RegisterCommdlgHelpMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommdlgHelpMessage
+// ghidra_proto void __cdecl RegisterCommdlgHelpMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe84
+undefined4 RegisterCommdlgHelpMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommdlgSetRgbColorMessage
+// ghidra_proto void __cdecl thunk_RegisterCommdlgSetRgbColorMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe95
+undefined4 thunk_RegisterCommdlgSetRgbColorMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommdlgSetRgbColorMessage
+// ghidra_proto void __cdecl RegisterCommdlgSetRgbColorMessage(void)
+// FUNCTION: IMPERIALISM 0x005ffe9a
+undefined4 RegisterCommdlgSetRgbColorMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name LinkedListQueryOwner::AfxCommDlgProc
+// ghidra_proto void __thiscall AfxCommDlgProc(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x005ffeb1
+undefined4 AfxCommDlgProc(void)
+{
+  return 0;
+}
+
+// ghidra_name OnOK
+// ghidra_proto void __fastcall OnOK(void)
+// FUNCTION: IMPERIALISM 0x005fffe6
+undefined4 OnOK(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::thunk_Default
+// ghidra_proto void __thiscall thunk_Default(void)
+// FUNCTION: IMPERIALISM 0x005ffffd
+undefined4 thunk_Default(void)
+{
+  return 0;
+}
+
+// ghidra_name GetLocalTm
+// ghidra_proto void * __thiscall GetLocalTm(uint param_1, void * pOut)
+// FUNCTION: IMPERIALISM 0x00600196
+undefined4 GetLocalTm(void)
+{
+  return 0;
+}
+
+// ghidra_name FormatSharedStringFromResourceId
+// ghidra_proto void * __thiscall FormatSharedStringFromResourceId(void * pTarget, uint resourceId)
+// FUNCTION: IMPERIALISM 0x00600331
+undefined4 FormatSharedStringFromResourceId(void)
 {
   return 0;
 }

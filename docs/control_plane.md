@@ -613,6 +613,29 @@ Project snapshot (`just stats`):
 3. average similarity: `2.60%`
 4. paired coverage: `100.00%`
 
+## 2026-03-03 00:08 UTC checkpoint - current `TGreatPower` cleanup strategy
+
+Current focus:
+1. Keep `TGreatPower` as the active cleanup/matching surface.
+2. Prefer typed field/view promotion and cast removal that does not regress current anchor scores.
+3. Only keep local readability changes in target bodies when `just compare` confirms no meaningful drop.
+
+Current anchors:
+1. `0x004EA470`: `100%`
+2. `0x004DDD50`: `59.09%`
+3. `0x004DD0C0`: `20.00%`
+4. `0x004DBD20`: `17.12%`
+
+Current project metrics (`just stats`):
+1. aligned functions: `92 / 12973`
+2. average similarity: `2.82%`
+3. signal: `STALLED`
+
+Next moves:
+1. Keep `0x004DDD50` body shape as-is (recent simplification regressed it).
+2. Continue cast-reduction in helpers and typed views around `0x004DBD20` paths first, then retest.
+3. Defer deep prologue/epilogue tuning for `0x004DD0C0` until more adjacent layout/type certainty is available.
+
 ## 2026-03-02 19:37 UTC checkpoint - `TGreatPower` field-layout extraction
 
 Focused update:

@@ -3021,3 +3021,303 @@
 3. `0x004DE790`: `65.12%` (unchanged).
 4. Regression anchor:
    1. `0x004DF5F0`: `30.15%` (unchanged).
+
+## 2026-03-02 23:04 UTC - pointer arithmetic cleanup pass in `TGreatPower`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE860`
+4. `just compare 0x004E8750`
+5. `just compare 0x004E9060`
+6. `just stats`
+
+### Changes
+1. Added typed memory views for repeated raw-offset access:
+   1. `TDiplomacyTurnStateManagerRelationView` (`0x79C` relation matrix),
+   2. `TTerrainDescriptorNationSlotView` (`0x0C`/`0x0E` nation slots),
+   3. `TGlobalMapStateScoreView` and `TGlobalMapCityScoreRecord` (city score table/value).
+2. Replaced pointer arithmetic helpers with typed accessors:
+   1. `Diplomacy_ReadRelationMatrix79C`,
+   2. `TerrainDescriptor_GetEncodedNationSlot`,
+   3. `TerrainDescriptor_GetFallbackNationSlot`,
+   4. new global map helpers (`ReadGlobalMapStateScoreView`, `GlobalMapState_ReadCityScoreValue`).
+3. Reworked `ApplyJoinEmpireMode0GlobalDiplomacyReset` setup loops to remove direct `this + offset` writes:
+   1. candidate flags now use `GreatPower_GetCandidateNationFlags(this)`,
+   2. baseline needs now use `GreatPower_GetNeedLevelByNation(this)`,
+   3. terrain descriptor traversal switched from raw cursor comparison to indexed table iteration.
+4. Removed remaining local raw-offset reads in:
+   1. `ComputeAdvisoryMapNodeScoreFactorByCaseMetric`,
+   2. `ComputeMapActionContextCompositeScoreForNation`.
+
+### Results
+1. Build: green.
+2. Targeted compares:
+   1. `0x004DE860`: `25.04%`,
+   2. `0x004E8750`: `34.25%` (no regression),
+   3. `0x004E9060`: `31.69%` (no regression).
+3. Aggregate `just stats` unchanged:
+   1. aligned functions: `90`,
+   2. average similarity: `2.76%`.
+
+## 2026-03-02 23:14 UTC - replaced helper-casts with real typed class fields
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DE860`
+4. `just compare 0x004E8750`
+5. `just compare 0x004E9060`
+
+### Changes
+1. Removed stopgap helper-casts:
+   1. `GreatPower_GetCandidateNationFlags`,
+   2. `GreatPower_GetNeedLevelByNation`.
+2. Promoted layout to typed fields in `TGreatPower`:
+   1. `field14_needLevelByNation[0x17]` (plus `field42` tail),
+   2. `field8a0_candidateNationFlags[0x17]` (plus `pad_8b7`).
+3. Updated call sites to use direct typed fields instead of `reinterpret_cast` and `this + offset` access.
+
+### Results
+1. Build: green.
+2. Targeted compares unchanged:
+   1. `0x004DE860`: `25.04%`,
+   2. `0x004E8750`: `34.25%`,
+   3. `0x004E9060`: `31.69%`.
+
+## 2026-03-02 23:20 UTC - codified typed-field rule and scanned for remaining cast-layout cases
+
+### Commands
+1. `rg -n "return reinterpret_cast...|self + 0x..." src`
+2. `just format src/game/TGreatPower.cpp`
+3. `just build`
+4. `just compare 0x00407392`
+5. `just compare 0x004DC9F0`
+
+### Changes
+1. Added new general rule in `INSTRUCTIONS.md`:
+   1. promote repeated offset/cast access into typed class fields or typed view structs when layout is stable.
+2. Converted two immediate `TGreatPower` cases from `this + offset` to direct typed field access:
+   1. `thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392`:
+      1. `field198`, `field844`, `field840`, `field910`,
+   2. `RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`:
+      1. `pField894`.
+3. Repo scan identified remaining high-volume cast-layout hotspots:
+   1. `src/game/TGreatPower.cpp` (constructor/reset-heavy blocks),
+   2. `src/game/trade_screen.cpp`,
+   3. `src/game/TCivDescription.cpp`,
+   4. `src/game/object_pool.cpp`.
+
+### Results
+1. Build: green.
+2. `0x004DC9F0`: `100%` match retained.
+3. `0x00407392`: remains non-matching (`0.00%`) and currently decompiled as full body rather than original jump-thunk shape.
+
+## 2026-03-02 23:39 UTC - TGreatPower typed-view cleanup without score regression on core anchors
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just compare 0x004DBD20`
+4. `just compare 0x004DBF00`
+5. `just compare 0x004DE860`
+6. `just compare 0x004E1D50`
+
+### Changes
+1. Added typed external-layout views used repeatedly by `TGreatPower`:
+   1. `TSecondaryNationStateOwnerView`,
+   2. `TNationStateFlagsView`,
+   3. `TLocalizationRuntimeView`,
+   4. `TObArrayModeView`,
+   5. `TTerrainStateRecordView`,
+   6. extended `TGlobalMapStateScoreView` and `TGlobalMapCityScoreRecord`,
+   7. `TCityOrderCapabilityStateView`.
+2. Added typed helpers:
+   1. `ReadLocalizationRuntimeView`,
+   2. `GlobalMapState_GetTerrainRecord`,
+   3. `GlobalMapState_GetCityRecord`,
+   4. `DecodeSecondaryNationOwnerSlot`.
+3. Replaced repeated raw offset access with typed fields/views in active code paths:
+   1. nation busy flag (`+0xA0`) now via `NationState_IsBusyA0` typed view,
+   2. secondary owner decode (`+0x0C/+0x0E`) now via typed helper in war-transition/advisory/join-empire paths,
+   3. localization runtime index (`+0x40`) now via `TLocalizationRuntimeView`,
+   4. ob-array mode writes (`+0x14`) now via `TObArrayModeView`,
+   5. selected vtable byte-offset fetches converted to indexed vtable slots (`0x94/0x98/0x4C/0x30`).
+4. Kept `0x004DBD20` body in its previous shape after testing to avoid a similarity drop.
+
+### Results
+1. Build: green.
+2. Targeted compare results:
+   1. `0x004DBD20`: `13.74%` (restored, no regression),
+   2. `0x004DBF00`: `27.79%` (unchanged),
+   3. `0x004DE860`: `25.04%` -> `25.44%`,
+   4. `0x004E1D50`: `20.32%` (tracked during typed-view conversion).
+
+## 2026-03-02 23:55 UTC - promoted additional TGreatPower aid/policy helpers and removed one remaining `this+offset` read
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004DCE10 --address 0x004DCE90 --address 0x004DD340 --address 0x004DD3B0 --address 0x004DD3F0 --address 0x004DD430`
+2. `just format src/game/TGreatPower.cpp`
+3. `just sync-ownership`
+4. `just regen-stubs`
+5. `just build`
+6. `just detect`
+7. `just compare 0x004DCE10`
+8. `just compare 0x004DCE90`
+9. `just compare 0x004DD340`
+10. `just compare 0x004DD3B0`
+11. `just compare 0x004DD3F0`
+12. `just compare 0x004DD430`
+13. `just promote src/game/TGreatPower.cpp --address 0x004DD740 --address 0x004DDA20 --address 0x004DE2D0 --address 0x004DF580`
+14. `just format src/game/TGreatPower.cpp`
+15. `just sync-ownership`
+16. `just regen-stubs`
+17. `just build`
+18. `just detect`
+19. `just compare 0x004DD740`
+20. `just compare 0x004DDA20`
+21. `just compare 0x004DE2D0`
+22. `just compare 0x004DF580`
+
+### Changes
+1. Promoted and converted 10 new `TGreatPower` member functions from autogen to compile-safe manual C++:
+   1. `SetNationResourceNeedCurrentByType` (`0x004DCE10`)
+   2. `TryIncrementNationResourceNeedTargetTowardCurrent` (`0x004DCE90`)
+   3. `AddAmountToAidAllocationMatrixCellAndTotal` (`0x004DD340`)
+   4. `SumAidAllocationMatrixColumnForTarget` (`0x004DD3B0`)
+   5. `SumAidAllocationMatrixAllCells` (`0x004DD3F0`)
+   6. `ComputeRemainingDiplomacyAidBudget` (`0x004DD430`)
+   7. `GetDiplomacyExternalStateB6ByTarget` (`0x004DD740`)
+   8. `DecrementDiplomacyCounterA2ByValue` (`0x004DDA20`)
+   9. `ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants` (`0x004DE2D0`)
+   10. `ResetNationDiplomacyProposalQueue` (`0x004DF580`)
+2. Added missing method declarations for the above in the `TGreatPower` class section.
+3. Added matrix constants used by the aid-allocation helpers:
+   1. `kAidAllocationRowCount = 0x10`
+   2. `kAidAllocationColumnCount = 0x17`
+4. Removed one remaining direct object-offset stream read by modeling the field directly:
+   1. split `pad_8b8` to include `field8c8_serializedFlags[0x0D]`
+   2. replaced `reinterpret_cast<unsigned char*>(this) + 0x8C8` with `this->field8c8_serializedFlags`.
+
+### Results
+1. Build: green after both promotion batches and ownership/stub sync.
+2. Newly promoted function similarities:
+   1. `0x004DCE10`: `30.77%`
+   2. `0x004DCE90`: `16.67%`
+   3. `0x004DD340`: `23.33%`
+   4. `0x004DD3B0`: `73.33%`
+   5. `0x004DD3F0`: `100% match`
+   6. `0x004DD430`: `48.65%`
+   7. `0x004DD740`: `0.00%`
+   8. `0x004DDA20`: `40.00%`
+   9. `0x004DE2D0`: `47.89%`
+   10. `0x004DF580`: `40.00%`
+
+### Project-level checkpoint
+1. `just stats` after this iteration:
+   1. aligned functions: `91` (`+1`),
+   2. not aligned vs original: `12882` (`-1`),
+   3. average similarity: `2.80%` (`+0.03 pp`).
+
+## 2026-03-02 23:54 UTC - field reconstruction and cast-reduction pass in `TGreatPower`
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004DD0C0 --address 0x004DD310 --address 0x004DDD50 --address 0x004DF370 --address 0x004EA470`
+2. `just format src/game/TGreatPower.cpp`
+3. `just sync-ownership`
+4. `just regen-stubs`
+5. `just build`
+6. `just detect`
+7. `just compare 0x004DD0C0`
+8. `just compare 0x004DD310`
+9. `just compare 0x004DDD50`
+10. `just compare 0x004DF370`
+11. `just compare 0x004EA470`
+12. `just stats`
+
+### Changes
+1. Promoted and converted new `TGreatPower` bodies from autogen:
+   1. `0x004DD0C0` `SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations`
+   2. `0x004DD310` `ReleaseDiplomacyTrackedObjectSlots850`
+   3. `0x004DDD50` `IsDiplomacyState1C6UnsetAndCounterPositiveForTarget`
+   4. `0x004DF370` `QueueInterNationEventForProposalCode12D_130`
+   5. `0x004EA470` `RebuildNationResourceYieldsAndRollField134Into136`
+2. Reconstructed two obvious non-pointer fields and removed related casts:
+   1. `pField8f8` -> `field8f8` (`int`)
+   2. `pField960` -> `field960` (`int`)
+3. Removed raw `this + 0x8C8` style state usage from prior pass by keeping typed `field8c8_serializedFlags`.
+4. Reduced cast-heavy queue metadata access by introducing typed view:
+   1. `TProposalQueueCountView`
+   2. `ProposalQueue_GetCount` now reads typed `count` field.
+5. Reduced pointer-arithmetic casts inside `RebuildNationResourceYieldCountersAndDevelopmentTargets`:
+   1. switched to typed `TTerrainStateRecordView` / `TGlobalMapCityScoreRecord` table access,
+   2. added helper `CityRecord_ReadDevelopmentAccumulatorAt82` to isolate legacy overlapping layout reads.
+
+### Results
+1. Build: green.
+2. Targeted comparisons after this pass:
+   1. `0x004EA470`: `100% match`
+   2. `0x004DD310`: `82.76%`
+   3. `0x004DF370`: `42.45%`
+   4. `0x004DDD50`: `33.33%`
+   5. `0x004DD0C0`: `17.98%`
+   6. `0x004DBD20`: `17.12%` (tracked after typed-table rewrite)
+3. Project stats (`just stats`):
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.82%`
+
+## 2026-03-03 00:05 UTC - cast cleanup + typed table pointers in `TGreatPower`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004DBD20`
+5. `just compare 0x004DD0C0`
+6. `just compare 0x004DDD50`
+7. `just compare 0x004EA470`
+8. `just stats`
+
+### Changes
+1. Reconstructed `TGlobalMapStateScoreView` table fields to typed pointers:
+   1. `terrainStateTable` -> `TTerrainStateRecordView*`
+   2. `cityScoreTable` -> `TGlobalMapCityScoreRecord*`
+2. Removed cast-only accessors in table helpers:
+   1. `GlobalMapState_GetTerrainRecord` now does direct typed indexing.
+   2. `GlobalMapState_GetCityRecord` now does direct typed indexing.
+   3. `CityRecord_ReadDevelopmentAccumulatorAt82` now reads via `linkedRegionIds[0x20 + i]`.
+3. Removed pointer-to-int payload casts from event wrappers by fixing function-pointer signatures:
+   1. `QueueInterNationEventWithPayload`
+   2. `SendTurnEvent13WithPayload`
+4. Kept higher-scoring body shape for `0x004DDD50` after a failed simplification attempt.
+
+### Results
+1. Build: green.
+2. Anchor compares after pass:
+   1. `0x004EA470`: `100%`
+   2. `0x004DDD50`: `59.09%` (restored from regressed `35.90%`)
+   3. `0x004DD0C0`: `20.00%`
+   4. `0x004DBD20`: `17.12%`
+3. Project stats unchanged:
+   1. aligned functions: `92`
+   2. average similarity: `2.82%`
+
+## 2026-03-03 00:07 UTC - loop-shape trial for `0x004DD0C0`
+
+### Commands
+1. `just format src/game/TGreatPower.cpp`
+2. `just build`
+3. `just detect`
+4. `just compare 0x004DD0C0`
+
+### Changes
+1. Reworked minor-nation iteration in
+   `SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations` to explicit
+   address-cursor form (`0x006A429C..0x006A42DC`) to better mimic original
+   loop shape.
+
+### Results
+1. Build: green.
+2. Similarity unchanged:
+   1. `0x004DD0C0`: `20.00%`.
