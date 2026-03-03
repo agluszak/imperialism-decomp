@@ -3,70 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AllocateAndLinkBlockHead
-// ghidra_proto void * __cdecl AllocateAndLinkBlockHead(void)
-// FUNCTION: IMPERIALISM 0x00601b74
-undefined4 AllocateAndLinkBlockHead(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeDataChain
-// ghidra_proto void __cdecl FreeDataChain(void)
-// FUNCTION: IMPERIALISM 0x00601b94
-undefined4 FreeDataChain(void)
-{
-  return 0;
-}
-
-// ghidra_name TIndexAndRankList::CPtrArray
-// ghidra_proto void __thiscall CPtrArray(void)
-// FUNCTION: IMPERIALISM 0x00601baa
-undefined4 CPtrArray(void)
-{
-  return 0;
-}
-
-// ghidra_name TIndexAndRankList::DestructCObArrayAndMaybeFree
-// ghidra_proto void * __thiscall DestructCObArrayAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00601bc1
-undefined4 DestructCObArrayAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name CObArray::DestructCObArray
-// ghidra_proto void __cdecl DestructCObArray(TIndexAndRankList * pThis)
-// FUNCTION: IMPERIALISM 0x00601bdd
-undefined4 DestructCObArray(void)
-{
-  return 0;
-}
-
-// ghidra_name SetSize
-// ghidra_proto void __fastcall SetSize(int ecxArg, int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00601c14
-undefined4 SetSize(void)
-{
-  return 0;
-}
-
-// ghidra_name SetAtGrow
-// ghidra_proto void __cdecl SetAtGrow(void)
-// FUNCTION: IMPERIALISM 0x00601de3
-undefined4 SetAtGrow(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertAt
-// ghidra_proto void __thiscall InsertAt(int insertIndex, void * insertValue, int repeatCount)
-// FUNCTION: IMPERIALISM 0x00601e0a
-undefined4 InsertAt(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveAt
 // ghidra_proto void __cdecl RemoveAt(void)
 // FUNCTION: IMPERIALISM 0x00601e9f
@@ -3999,6 +3935,70 @@ undefined4 Fail(void)
 // ghidra_proto void __stdcall DDX_Text(void * pDX, int nIDC, byte * pValue)
 // FUNCTION: IMPERIALISM 0x00618a40
 undefined4 DDX_Text(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxSimpleScanf
+// ghidra_proto int __cdecl AfxSimpleScanf(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00618b21
+undefined4 AfxSimpleScanf(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text_618bc6
+// ghidra_proto void __stdcall DDX_Text_618bc6(void * pDX, int nIDC, short * pValue)
+// FUNCTION: IMPERIALISM 0x00618bc6
+undefined4 DDX_Text_618bc6(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text_618c01
+// ghidra_proto void __cdecl DDX_Text_618c01(void)
+// FUNCTION: IMPERIALISM 0x00618c01
+undefined4 DDX_Text_618c01(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text_618c30
+// ghidra_proto void __stdcall DDX_Text_618c30(void * pDX, int nIDC, uint * pValue)
+// FUNCTION: IMPERIALISM 0x00618c30
+undefined4 DDX_Text_618c30(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text_618c5f
+// ghidra_proto void __stdcall DDX_Text_618c5f(void * pDX, int nIDC, int * pValue)
+// FUNCTION: IMPERIALISM 0x00618c5f
+undefined4 DDX_Text_618c5f(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text_618c8e
+// ghidra_proto void __stdcall DDX_Text_618c8e(void * pDX, int nIDC, uint * pValue)
+// FUNCTION: IMPERIALISM 0x00618c8e
+undefined4 DDX_Text_618c8e(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Text_618cbd
+// ghidra_proto void __stdcall DDX_Text_618cbd(void * pDX, int nIDC, void * pValue)
+// FUNCTION: IMPERIALISM 0x00618cbd
+undefined4 DDX_Text_618cbd(void)
+{
+  return 0;
+}
+
+// ghidra_name DDX_Check
+// ghidra_proto void * __cdecl DDX_Check(void)
+// FUNCTION: IMPERIALISM 0x00618d0f
+undefined4 DDX_Check(void)
 {
   return 0;
 }

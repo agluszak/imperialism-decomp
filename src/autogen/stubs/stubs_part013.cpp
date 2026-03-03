@@ -3379,30 +3379,6 @@ undefined4 OrphanCallChain_C1_I32_004dc4c0(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::CompareMissionScoreVariantsByMode
-// ghidra_proto void __thiscall CompareMissionScoreVariantsByMode(int arg1)
-// FUNCTION: IMPERIALISM 0x004dc540
-undefined4 CompareMissionScoreVariantsByMode(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages
-// ghidra_proto void __thiscall BuildGreatPowerMapContextTriggeredNationEventMessages(void)
-// FUNCTION: IMPERIALISM 0x004dc660
-undefined4 BuildGreatPowerMapContextTriggeredNationEventMessages(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList
-// ghidra_proto void __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
-// FUNCTION: IMPERIALISM 0x004dc840
-undefined4 BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins06_004dca60
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins06_004dca60(void)
 // FUNCTION: IMPERIALISM 0x004dca60
@@ -3447,14 +3423,6 @@ undefined4 OrphanCallChain_C1_I24_004dcc50(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I31_004dcca0(void)
 // FUNCTION: IMPERIALISM 0x004dcca0
 undefined4 OrphanCallChain_C1_I31_004dcca0(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::ApplyNationResourceNeedTargetsToOrderState
-// ghidra_proto void __thiscall ApplyNationResourceNeedTargetsToOrderState(void)
-// FUNCTION: IMPERIALISM 0x004dcd10
-undefined4 ApplyNationResourceNeedTargetsToOrderState(void)
 {
   return 0;
 }
@@ -3999,6 +3967,38 @@ undefined4 GetNationRuntimeCityBuildingProductionValueBySlot(void)
 // ghidra_proto void __cdecl ComputeNationRuntimeAdvisoryMetricCase6(void)
 // FUNCTION: IMPERIALISM 0x004e0770
 undefined4 ComputeNationRuntimeAdvisoryMetricCase6(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorEntries_004e07b0
+// ghidra_proto int __cdecl IterateLinkedListCursorEntries_004e07b0(void)
+// FUNCTION: IMPERIALISM 0x004e07b0
+undefined4 IterateLinkedListCursorEntries_004e07b0(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890
+// ghidra_proto float __cdecl IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void)
+// FUNCTION: IMPERIALISM 0x004e0890
+undefined4 IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeCityOrderCapabilityAggregateScore
+// ghidra_proto float __cdecl ComputeCityOrderCapabilityAggregateScore(void)
+// FUNCTION: IMPERIALISM 0x004e09a0
+undefined4 ComputeCityOrderCapabilityAggregateScore(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C6_I54_004e0b20
+// ghidra_proto float __cdecl OrphanCallChain_C6_I54_004e0b20(void)
+// FUNCTION: IMPERIALISM 0x004e0b20
+undefined4 OrphanCallChain_C6_I54_004e0b20(void)
 {
   return 0;
 }

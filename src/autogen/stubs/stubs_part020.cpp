@@ -3,70 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl
-// ghidra_proto void __cdecl ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void)
-// FUNCTION: IMPERIALISM 0x005b7f50
-undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I50_005b7fc0
-// ghidra_proto void __cdecl OrphanCallChain_C3_I50_005b7fc0(void)
-// FUNCTION: IMPERIALISM 0x005b7fc0
-undefined4 OrphanCallChain_C3_I50_005b7fc0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents
-// ghidra_proto void __thiscall AccumulateDiplomacyRelationChangesAndQueueEvents(void)
-// FUNCTION: IMPERIALISM 0x005b8080
-undefined4 AccumulateDiplomacyRelationChangesAndQueueEvents(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchNationMetricUpdatePassForAllSlots
-// ghidra_proto void __fastcall DispatchNationMetricUpdatePassForAllSlots(void * pThis)
-// FUNCTION: IMPERIALISM 0x005b8aa0
-undefined4 DispatchNationMetricUpdatePassForAllSlots(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::ComputeNationMetricBaselineValueForSlot
-// ghidra_proto void __thiscall ComputeNationMetricBaselineValueForSlot(short slotIndex)
-// FUNCTION: IMPERIALISM 0x005b8ad0
-undefined4 ComputeNationMetricBaselineValueForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::GetNationMetricWeightedScoreForSlot
-// ghidra_proto double __thiscall GetNationMetricWeightedScoreForSlot(short slotIndex)
-// FUNCTION: IMPERIALISM 0x005b8d40
-undefined4 GetNationMetricWeightedScoreForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::GetNationMetricAuxWordForSlot
-// ghidra_proto ushort __thiscall GetNationMetricAuxWordForSlot(short slotIndex)
-// FUNCTION: IMPERIALISM 0x005b8d70
-undefined4 GetNationMetricAuxWordForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNationMetricDispatchScoreAndResolveScale
-// ghidra_proto int __stdcall ComputeNationMetricDispatchScoreAndResolveScale(int leftIndex, int rightIndex, int leftValue, int rightValue)
-// FUNCTION: IMPERIALISM 0x005b8da0
-undefined4 ComputeNationMetricDispatchScoreAndResolveScale(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeMgr::GetNationMetricRosterWordAtOffset0E
 // ghidra_proto ushort __thiscall GetNationMetricRosterWordAtOffset0E(short rowIndex)
 // FUNCTION: IMPERIALISM 0x005b8f80
@@ -3999,6 +3935,70 @@ undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e5485(void)
 // ghidra_proto void __cdecl CreateObject_5e54a0(void)
 // FUNCTION: IMPERIALISM 0x005e54a0
 undefined4 CreateObject_5e54a0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_Ordinal13_FromField1C_At005e5561
+// ghidra_proto void __fastcall WrapperFor_Ordinal13_FromField1C_At005e5561(void)
+// FUNCTION: IMPERIALISM 0x005e5561
+undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b
+// ghidra_proto int __thiscall WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b(void)
+// FUNCTION: IMPERIALISM 0x005e556b
+undefined4 WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchCallbackD8_WithMinusOne_At005e5597
+// ghidra_proto void __fastcall DispatchCallbackD8_WithMinusOne_At005e5597(void)
+// FUNCTION: IMPERIALISM 0x005e5597
+undefined4 DispatchCallbackD8_WithMinusOne_At005e5597(void)
+{
+  return 0;
+}
+
+// ghidra_name Dropped
+// ghidra_proto void __cdecl Dropped(void)
+// FUNCTION: IMPERIALISM 0x005e55ee
+undefined4 Dropped(void)
+{
+  return 0;
+}
+
+// ghidra_name MoveListBoxEntryPreserveItemData
+// ghidra_proto void __cdecl MoveListBoxEntryPreserveItemData(void)
+// FUNCTION: IMPERIALISM 0x005e5661
+undefined4 MoveListBoxEntryPreserveItemData(void)
+{
+  return 0;
+}
+
+// ghidra_name DrawInsert
+// ghidra_proto void __cdecl DrawInsert(void)
+// FUNCTION: IMPERIALISM 0x005e56cd
+undefined4 DrawInsert(void)
+{
+  return 0;
+}
+
+// ghidra_name DrawSingle
+// ghidra_proto void __cdecl DrawSingle(void)
+// FUNCTION: IMPERIALISM 0x005e56f2
+undefined4 DrawSingle(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e58e4
+undefined4 CHotKeyCtrl(void)
 {
   return 0;
 }

@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer
-// ghidra_proto void * __cdecl GetTTerrainHelpWindowClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00504d20
-undefined4 GetTTerrainHelpWindowClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
-// ghidra_proto void * __thiscall ConstructTTerrainHelpWindowBaseState(void)
-// FUNCTION: IMPERIALISM 0x00504d40
-undefined4 ConstructTTerrainHelpWindowBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTerrainHelpWindowAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00504d70
-undefined4 DestructTTerrainHelpWindowAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
-// ghidra_proto void __cdecl WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
-// FUNCTION: IMPERIALISM 0x00504dc0
-undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
-{
-  return 0;
-}
-
 // ghidra_name TTerrainHelpPicture::CreateTTerrainHelpPictureInstance
 // ghidra_proto void * __cdecl CreateTTerrainHelpPictureInstance(void)
 // FUNCTION: IMPERIALISM 0x00504df0
@@ -3999,6 +3967,38 @@ undefined4 DestructTBillForeignMinister(void)
 // ghidra_proto void __cdecl DeserializeTBillForeignMinisterStateWithOrderFlagByte(void)
 // FUNCTION: IMPERIALISM 0x00531ca0
 undefined4 DeserializeTBillForeignMinisterStateWithOrderFlagByte(void)
+{
+  return 0;
+}
+
+// ghidra_name SerializeTBillForeignMinisterStateWithOrderFlagByte
+// ghidra_proto void __cdecl SerializeTBillForeignMinisterStateWithOrderFlagByte(void)
+// FUNCTION: IMPERIALISM 0x00531ce0
+undefined4 SerializeTBillForeignMinisterStateWithOrderFlagByte(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeBillForeignMinisterOrderCandidates
+// ghidra_proto void __cdecl InitializeBillForeignMinisterOrderCandidates(void)
+// FUNCTION: IMPERIALISM 0x00531d20
+undefined4 InitializeBillForeignMinisterOrderCandidates(void)
+{
+  return 0;
+}
+
+// ghidra_name RunForeignMinisterVtableSlot90BillVariant
+// ghidra_proto void __fastcall RunForeignMinisterVtableSlot90BillVariant(void)
+// FUNCTION: IMPERIALISM 0x00531e50
+undefined4 RunForeignMinisterVtableSlot90BillVariant(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchNationInteractionAmountByModePolicyB
+// ghidra_proto void __cdecl DispatchNationInteractionAmountByModePolicyB(void)
+// FUNCTION: IMPERIALISM 0x00532190
+undefined4 DispatchNationInteractionAmountByModePolicyB(void)
 {
   return 0;
 }

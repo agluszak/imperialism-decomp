@@ -3363,3 +3363,61 @@
    2. not aligned vs original: `12881`
    3. average similarity: `2.83%`
    4. signal: `GOOD`
+
+## 2026-03-03 00:25 UTC - additional `TGreatPower` promotion batches (8 methods)
+
+### Commands
+1. `just promote src/game/TGreatPower.cpp --address 0x004DC540 --address 0x004DC660 --address 0x004DC840 --address 0x004DCD10`
+2. `just format src/game/TGreatPower.cpp`
+3. `just sync-ownership`
+4. `just regen-stubs`
+5. `just build`
+6. `just detect`
+7. `just compare 0x004DC540`
+8. `just compare 0x004DC660`
+9. `just compare 0x004DC840`
+10. `just compare 0x004DCD10`
+11. `just promote src/game/TGreatPower.cpp --address 0x00541080 --address 0x005410F0 --address 0x0055C970 --address 0x0055CBD0`
+12. `just format src/game/TGreatPower.cpp`
+13. `just sync-ownership`
+14. `just regen-stubs`
+15. `just build`
+16. `just detect`
+17. `just compare 0x00541080`
+18. `just compare 0x005410F0`
+19. `just compare 0x0055C970`
+20. `just compare 0x0055CBD0`
+21. `just compare 0x004EA470`
+22. `just stats`
+
+### Changes
+1. Promoted and converted first batch of map-context/resource functions:
+   1. `CompareMissionScoreVariantsByMode` (`0x004DC540`)
+   2. `BuildGreatPowerMapContextTriggeredNationEventMessages` (`0x004DC660`)
+   3. `BuildGreatPowerEligibleNationEventMessagesFromLinkedList` (`0x004DC840`)
+   4. `ApplyNationResourceNeedTargetsToOrderState` (`0x004DCD10`)
+2. Added/used typed helper view `TTrackedObjectListEntryView` earlier in file so linked-list message paths compile without raw pointer arithmetic.
+3. Promoted and converted second batch of event-dispatch functions:
+   1. `TryDispatchNationActionViaUiThenTurnEvent` (`0x00541080`)
+   2. `ProcessPendingDiplomacyThenDispatchTurnEvent29A` (`0x005410F0`)
+   3. `QueueInterNationEventIntoNationBucket` (`0x0055C970`)
+   4. `QueueInterNationEventType0FWithBitmaskMerge` (`0x0055CBD0`)
+4. Added class declarations for all eight methods.
+5. Fixed bridge/overload linkage by forwarding the thunk wrapper with args and retaining a legacy no-arg free-function symbol used by existing callsites.
+
+### Results
+1. Build: green after both batches.
+2. Compare snapshot:
+   1. `0x004DC540`: `9.09%`
+   2. `0x004DC660`: `14.29%`
+   3. `0x004DC840`: `11.39%`
+   4. `0x004DCD10`: `38.33%`
+   5. `0x00541080`: `19.35%`
+   6. `0x005410F0`: `12.50%`
+   7. `0x0055C970`: `25.45%`
+   8. `0x0055CBD0`: `11.49%`
+   9. anchor `0x004EA470`: `100%`
+3. Project stats:
+   1. aligned functions: `92`
+   2. not aligned vs original: `12881`
+   3. average similarity: `2.85%`

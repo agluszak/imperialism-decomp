@@ -3,70 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TToolBarCluster::RefreshMapOrderEntryPanel
-// ghidra_proto void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00597810
-undefined4 RefreshMapOrderEntryPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SetActiveMapOrderEntry
-// ghidra_proto void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00597950
-undefined4 SetActiveMapOrderEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name GetActiveMapOrderEntry
-// ghidra_proto void * __thiscall GetActiveMapOrderEntry(void)
-// FUNCTION: IMPERIALISM 0x005979f0
-undefined4 GetActiveMapOrderEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins23_00597a10
-// ghidra_proto bool __cdecl OrphanLeaf_NoCall_Ins23_00597a10(void)
-// FUNCTION: IMPERIALISM 0x00597a10
-undefined4 OrphanLeaf_NoCall_Ins23_00597a10(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
-// ghidra_proto void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)
-// FUNCTION: IMPERIALISM 0x00597a80
-undefined4 CycleMapInteractionSelectionAfterHandledClick(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenMapEntryOrderDialog
-// ghidra_proto void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00597f80
-undefined4 OpenMapEntryOrderDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive
-// ghidra_proto void __thiscall InvalidateMapRegionForEntryIfUiPassive(int arg1)
-// FUNCTION: IMPERIALISM 0x00598840
-undefined4 InvalidateMapRegionForEntryIfUiPassive(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
-// ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
-// FUNCTION: IMPERIALISM 0x00598870
-undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I18_005988c0
 // ghidra_proto void __cdecl OrphanCallChain_C2_I18_005988c0(void)
 // FUNCTION: IMPERIALISM 0x005988c0
@@ -3999,6 +3935,70 @@ undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void)
 // ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void * pMessage)
 // FUNCTION: IMPERIALISM 0x005b7d90
 undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl
+// ghidra_proto void __cdecl ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void)
+// FUNCTION: IMPERIALISM 0x005b7f50
+undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C3_I50_005b7fc0
+// ghidra_proto void __cdecl OrphanCallChain_C3_I50_005b7fc0(void)
+// FUNCTION: IMPERIALISM 0x005b7fc0
+undefined4 OrphanCallChain_C3_I50_005b7fc0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents
+// ghidra_proto void __thiscall AccumulateDiplomacyRelationChangesAndQueueEvents(void)
+// FUNCTION: IMPERIALISM 0x005b8080
+undefined4 AccumulateDiplomacyRelationChangesAndQueueEvents(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchNationMetricUpdatePassForAllSlots
+// ghidra_proto void __fastcall DispatchNationMetricUpdatePassForAllSlots(void * pThis)
+// FUNCTION: IMPERIALISM 0x005b8aa0
+undefined4 DispatchNationMetricUpdatePassForAllSlots(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::ComputeNationMetricBaselineValueForSlot
+// ghidra_proto void __thiscall ComputeNationMetricBaselineValueForSlot(short slotIndex)
+// FUNCTION: IMPERIALISM 0x005b8ad0
+undefined4 ComputeNationMetricBaselineValueForSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::GetNationMetricWeightedScoreForSlot
+// ghidra_proto double __thiscall GetNationMetricWeightedScoreForSlot(short slotIndex)
+// FUNCTION: IMPERIALISM 0x005b8d40
+undefined4 GetNationMetricWeightedScoreForSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeMgr::GetNationMetricAuxWordForSlot
+// ghidra_proto ushort __thiscall GetNationMetricAuxWordForSlot(short slotIndex)
+// FUNCTION: IMPERIALISM 0x005b8d70
+undefined4 GetNationMetricAuxWordForSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeNationMetricDispatchScoreAndResolveScale
+// ghidra_proto int __stdcall ComputeNationMetricDispatchScoreAndResolveScale(int leftIndex, int rightIndex, int leftValue, int rightValue)
+// FUNCTION: IMPERIALISM 0x005b8da0
+undefined4 ComputeNationMetricDispatchScoreAndResolveScale(void)
 {
   return 0;
 }

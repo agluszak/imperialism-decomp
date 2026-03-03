@@ -40,6 +40,7 @@
 8. `just promote` output is raw Ghidra text; convert it immediately to compile-safe member-method C++ and then run `just sync-ownership`, `just regen-stubs`, and `just build` before comparing.
 9. If a readability simplification causes a meaningful similarity drop on a target function, restore the higher-scoring body shape and keep the cleanup in helpers/typed views instead.
 10. Newly promoted GHIDRA blocks with `void __thiscall ... (TGreatPower* this, ...)` must be rewritten to real member signatures before build; leaving raw form causes MSVC parse failures and address pairing loss.
+11. When a class method name collides with an existing global symbol, use explicit `this->Method(...)` in bridges and verify link output; unresolved externals often come from accidental global resolution.
 
 ## Known reccmp Failure Modes
 

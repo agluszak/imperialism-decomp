@@ -3,70 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_Ordinal13_FromField1C_At005e5561
-// ghidra_proto void __fastcall WrapperFor_Ordinal13_FromField1C_At005e5561(void)
-// FUNCTION: IMPERIALISM 0x005e5561
-undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b
-// ghidra_proto int __thiscall WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b(void)
-// FUNCTION: IMPERIALISM 0x005e556b
-undefined4 WrapperFor_Ordinal14_AndDispatchCallbackD8_At005e556b(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchCallbackD8_WithMinusOne_At005e5597
-// ghidra_proto void __fastcall DispatchCallbackD8_WithMinusOne_At005e5597(void)
-// FUNCTION: IMPERIALISM 0x005e5597
-undefined4 DispatchCallbackD8_WithMinusOne_At005e5597(void)
-{
-  return 0;
-}
-
-// ghidra_name Dropped
-// ghidra_proto void __cdecl Dropped(void)
-// FUNCTION: IMPERIALISM 0x005e55ee
-undefined4 Dropped(void)
-{
-  return 0;
-}
-
-// ghidra_name MoveListBoxEntryPreserveItemData
-// ghidra_proto void __cdecl MoveListBoxEntryPreserveItemData(void)
-// FUNCTION: IMPERIALISM 0x005e5661
-undefined4 MoveListBoxEntryPreserveItemData(void)
-{
-  return 0;
-}
-
-// ghidra_name DrawInsert
-// ghidra_proto void __cdecl DrawInsert(void)
-// FUNCTION: IMPERIALISM 0x005e56cd
-undefined4 DrawInsert(void)
-{
-  return 0;
-}
-
-// ghidra_name DrawSingle
-// ghidra_proto void __cdecl DrawSingle(void)
-// FUNCTION: IMPERIALISM 0x005e56f2
-undefined4 DrawSingle(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e58e4
-undefined4 CHotKeyCtrl(void)
-{
-  return 0;
-}
-
 // ghidra_name AddBitmap
 // ghidra_proto int __thiscall AddBitmap(int nButtons, void * pBitmap)
 // FUNCTION: IMPERIALISM 0x005e591c
@@ -3999,6 +3935,70 @@ undefined4 AssignSharedStringFromLoadedResource(void)
 // ghidra_proto void * __thiscall AssignSharedStringFromLoadedResourceAlt(void * pTarget, uint resourceId)
 // FUNCTION: IMPERIALISM 0x0060048b
 undefined4 AssignSharedStringFromLoadedResourceAlt(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateAndLinkBlockHead
+// ghidra_proto void * __cdecl AllocateAndLinkBlockHead(void)
+// FUNCTION: IMPERIALISM 0x00601b74
+undefined4 AllocateAndLinkBlockHead(void)
+{
+  return 0;
+}
+
+// ghidra_name FreeDataChain
+// ghidra_proto void __cdecl FreeDataChain(void)
+// FUNCTION: IMPERIALISM 0x00601b94
+undefined4 FreeDataChain(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndexAndRankList::CPtrArray
+// ghidra_proto void __thiscall CPtrArray(void)
+// FUNCTION: IMPERIALISM 0x00601baa
+undefined4 CPtrArray(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndexAndRankList::DestructCObArrayAndMaybeFree
+// ghidra_proto void * __thiscall DestructCObArrayAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00601bc1
+undefined4 DestructCObArrayAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name CObArray::DestructCObArray
+// ghidra_proto void __cdecl DestructCObArray(TIndexAndRankList * pThis)
+// FUNCTION: IMPERIALISM 0x00601bdd
+undefined4 DestructCObArray(void)
+{
+  return 0;
+}
+
+// ghidra_name SetSize
+// ghidra_proto void __fastcall SetSize(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00601c14
+undefined4 SetSize(void)
+{
+  return 0;
+}
+
+// ghidra_name SetAtGrow
+// ghidra_proto void __cdecl SetAtGrow(void)
+// FUNCTION: IMPERIALISM 0x00601de3
+undefined4 SetAtGrow(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertAt
+// ghidra_proto void __thiscall InsertAt(int insertIndex, void * insertValue, int repeatCount)
+// FUNCTION: IMPERIALISM 0x00601e0a
+undefined4 InsertAt(void)
 {
   return 0;
 }

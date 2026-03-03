@@ -95,7 +95,11 @@ address|target_cpp|ownership|note
 4db380|src/game/TGreatPower.cpp|manual|marker_sync
 4dbd20|src/game/TGreatPower.cpp|manual|marker_sync
 4dbf00|src/game/TGreatPower.cpp|manual|marker_sync
+4dc540|src/game/TGreatPower.cpp|manual|marker_sync
+4dc660|src/game/TGreatPower.cpp|manual|marker_sync
+4dc840|src/game/TGreatPower.cpp|manual|marker_sync
 4dc9f0|src/game/TGreatPower.cpp|manual|marker_sync
+4dcd10|src/game/TGreatPower.cpp|manual|marker_sync
 4dce10|src/game/TGreatPower.cpp|manual|marker_sync
 4dce90|src/game/TGreatPower.cpp|manual|marker_sync
 4dd0c0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -139,6 +143,8 @@ address|target_cpp|ownership|note
 4ea470|src/game/TGreatPower.cpp|manual|marker_sync
 500200|src/game/noop_slots.cpp|manual|marker_sync
 500220|src/game/noop_slots.cpp|manual|marker_sync
+541080|src/game/TGreatPower.cpp|manual|marker_sync
+5410f0|src/game/TGreatPower.cpp|manual|marker_sync
 550f80|src/game/object_pool.cpp|manual|marker_sync
 550ff0|src/game/object_pool.cpp|manual|marker_sync
 552510|src/game/object_pool.cpp|manual|marker_sync
@@ -147,6 +153,8 @@ address|target_cpp|ownership|note
 5526e0|src/game/object_pool.cpp|manual|marker_sync
 5528c0|src/game/object_pool.cpp|manual|marker_sync
 5528e0|src/game/object_pool.cpp|manual|marker_sync
+55c970|src/game/TGreatPower.cpp|manual|marker_sync
+55cbd0|src/game/TGreatPower.cpp|manual|marker_sync
 55fc40|src/game/input_state.cpp|manual|marker_sync
 572bb0|src/game/noop_slots.cpp|manual|marker_sync
 583bd0|src/game/trade_screen.cpp|manual|marker_sync

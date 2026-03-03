@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CloseTLoungeDialogAndReleaseChildren
-// ghidra_proto void __cdecl CloseTLoungeDialogAndReleaseChildren(void)
-// FUNCTION: IMPERIALISM 0x0054d6f0
-undefined4 CloseTLoungeDialogAndReleaseChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::OpenNationStatusDialogAndInitializeRows
-// ghidra_proto void __thiscall OpenNationStatusDialogAndInitializeRows(int dialogArg)
-// FUNCTION: IMPERIALISM 0x0054d730
-undefined4 OpenNationStatusDialogAndInitializeRows(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage
-// ghidra_proto int __thiscall RefreshNationStatusDialogRowsAndSummaryMessage(void)
-// FUNCTION: IMPERIALISM 0x0054db40
-undefined4 RefreshNationStatusDialogRowsAndSummaryMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name TryInvokeNationStateReplacementForSlot
-// ghidra_proto void __cdecl TryInvokeNationStateReplacementForSlot(int arg1)
-// FUNCTION: IMPERIALISM 0x0054dfc0
-undefined4 TryInvokeNationStateReplacementForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::HandleNationStatusDialogCommand
-// ghidra_proto void __thiscall HandleNationStatusDialogCommand(int commandId, PanelEventPayload * pPanelEvent, int commandArg)
-// FUNCTION: IMPERIALISM 0x0054e1f0
-undefined4 HandleNationStatusDialogCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapAndMessageControlsForCurrentContext
-// ghidra_proto void __fastcall RefreshMapAndMessageControlsForCurrentContext(void * pContextHolder)
-// FUNCTION: IMPERIALISM 0x0054e4c0
-undefined4 RefreshMapAndMessageControlsForCurrentContext(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndConstructTJoinSelectorDialog
 // ghidra_proto void * __cdecl AllocateAndConstructTJoinSelectorDialog(void)
 // FUNCTION: IMPERIALISM 0x0054e690
@@ -1475,26 +1427,10 @@ undefined4 BuildNationActionOptionCardsFromRelationTable(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::QueueInterNationEventIntoNationBucket
-// ghidra_proto void __thiscall QueueInterNationEventIntoNationBucket(InterNationEventCode eventCode, sdword payloadOrNation, char isReplayBypass)
-// FUNCTION: IMPERIALISM 0x0055c970
-undefined4 QueueInterNationEventIntoNationBucket(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::QueueInterNationEventRecordDeduped
 // ghidra_proto void __thiscall QueueInterNationEventRecordDeduped(InterNationEventCode eventCode, sdword nationA, sdword nationB, char isReplayBypass)
 // FUNCTION: IMPERIALISM 0x0055c9f0
 undefined4 QueueInterNationEventRecordDeduped(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::QueueInterNationEventType0FWithBitmaskMerge
-// ghidra_proto void __thiscall QueueInterNationEventType0FWithBitmaskMerge(InterNationEventCode eventCode, sdword nationA, sdword nationB, char isReplayBypass)
-// FUNCTION: IMPERIALISM 0x0055cbd0
-undefined4 QueueInterNationEventType0FWithBitmaskMerge(void)
 {
   return 0;
 }
@@ -3999,6 +3935,70 @@ undefined4 DestructTPictureRadioButtonAndMaybeFree(void)
 // ghidra_proto void __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00570de0
 undefined4 WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
+// ghidra_proto void __cdecl WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
+// FUNCTION: IMPERIALISM 0x00570ea0
+undefined4 WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C5_I31_00570f40
+// ghidra_proto void __cdecl OrphanCallChain_C5_I31_00570f40(void)
+// FUNCTION: IMPERIALISM 0x00570f40
+undefined4 OrphanCallChain_C5_I31_00570f40(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C7_I61_00570fb0
+// ghidra_proto int __cdecl OrphanCallChain_C7_I61_00570fb0(void)
+// FUNCTION: IMPERIALISM 0x00570fb0
+undefined4 OrphanCallChain_C7_I61_00570fb0(void)
+{
+  return 0;
+}
+
+// ghidra_name TToggleButton::CreateTToggleButtonInstance
+// ghidra_proto void * __cdecl CreateTToggleButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00571050
+undefined4 CreateTToggleButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TToggleButton::GetTToggleButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTToggleButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005710d0
+undefined4 GetTToggleButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TToggleButton::ConstructTToggleButtonBaseState
+// ghidra_proto void * __thiscall ConstructTToggleButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x005710f0
+undefined4 ConstructTToggleButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TToggleButton::DestructTToggleButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTToggleButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00571120
+undefined4 DestructTToggleButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170
+// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
+// FUNCTION: IMPERIALISM 0x00571170
+undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
 {
   return 0;
 }

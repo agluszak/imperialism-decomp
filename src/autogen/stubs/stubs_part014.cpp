@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name IterateLinkedListCursorEntries_004e07b0
-// ghidra_proto int __cdecl IterateLinkedListCursorEntries_004e07b0(void)
-// FUNCTION: IMPERIALISM 0x004e07b0
-undefined4 IterateLinkedListCursorEntries_004e07b0(void)
-{
-  return 0;
-}
-
-// ghidra_name IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890
-// ghidra_proto float __cdecl IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void)
-// FUNCTION: IMPERIALISM 0x004e0890
-undefined4 IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeCityOrderCapabilityAggregateScore
-// ghidra_proto float __cdecl ComputeCityOrderCapabilityAggregateScore(void)
-// FUNCTION: IMPERIALISM 0x004e09a0
-undefined4 ComputeCityOrderCapabilityAggregateScore(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C6_I54_004e0b20
-// ghidra_proto float __cdecl OrphanCallChain_C6_I54_004e0b20(void)
-// FUNCTION: IMPERIALISM 0x004e0b20
-undefined4 OrphanCallChain_C6_I54_004e0b20(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAdvisoryHandlerCase00Metric
 // ghidra_proto void __cdecl ComputeAdvisoryHandlerCase00Metric(void)
 // FUNCTION: IMPERIALISM 0x004e0c10
@@ -3999,6 +3967,38 @@ undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
 // ghidra_proto void * __cdecl CreateTTerrainHelpWindowInstance(void)
 // FUNCTION: IMPERIALISM 0x00504ca0
 undefined4 CreateTTerrainHelpWindowInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer
+// ghidra_proto void * __cdecl GetTTerrainHelpWindowClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00504d20
+undefined4 GetTTerrainHelpWindowClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
+// ghidra_proto void * __thiscall ConstructTTerrainHelpWindowBaseState(void)
+// FUNCTION: IMPERIALISM 0x00504d40
+undefined4 ConstructTTerrainHelpWindowBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTerrainHelpWindowAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00504d70
+undefined4 DestructTTerrainHelpWindowAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
+// ghidra_proto void __cdecl WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
+// FUNCTION: IMPERIALISM 0x00504dc0
+undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
 {
   return 0;
 }

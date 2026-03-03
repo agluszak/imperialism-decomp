@@ -3,70 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
-// ghidra_proto void __cdecl WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
-// FUNCTION: IMPERIALISM 0x00570ea0
-undefined4 WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C5_I31_00570f40
-// ghidra_proto void __cdecl OrphanCallChain_C5_I31_00570f40(void)
-// FUNCTION: IMPERIALISM 0x00570f40
-undefined4 OrphanCallChain_C5_I31_00570f40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C7_I61_00570fb0
-// ghidra_proto int __cdecl OrphanCallChain_C7_I61_00570fb0(void)
-// FUNCTION: IMPERIALISM 0x00570fb0
-undefined4 OrphanCallChain_C7_I61_00570fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::CreateTToggleButtonInstance
-// ghidra_proto void * __cdecl CreateTToggleButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00571050
-undefined4 CreateTToggleButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::GetTToggleButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTToggleButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005710d0
-undefined4 GetTToggleButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::ConstructTToggleButtonBaseState
-// ghidra_proto void * __thiscall ConstructTToggleButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x005710f0
-undefined4 ConstructTToggleButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::DestructTToggleButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTToggleButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571120
-undefined4 DestructTToggleButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
-// FUNCTION: IMPERIALISM 0x00571170
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C6_I52_005712a0
 // ghidra_proto int __cdecl OrphanCallChain_C6_I52_005712a0(void)
 // FUNCTION: IMPERIALISM 0x005712a0
@@ -3999,6 +3935,70 @@ undefined4 OrphanCallChain_C1_I08_00597770(void)
 // ghidra_proto void __cdecl OrphanCallChain_C3_I22_005977a0(void)
 // FUNCTION: IMPERIALISM 0x005977a0
 undefined4 OrphanCallChain_C3_I22_005977a0(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::RefreshMapOrderEntryPanel
+// ghidra_proto void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00597810
+undefined4 RefreshMapOrderEntryPanel(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::SetActiveMapOrderEntry
+// ghidra_proto void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00597950
+undefined4 SetActiveMapOrderEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name GetActiveMapOrderEntry
+// ghidra_proto void * __thiscall GetActiveMapOrderEntry(void)
+// FUNCTION: IMPERIALISM 0x005979f0
+undefined4 GetActiveMapOrderEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins23_00597a10
+// ghidra_proto bool __cdecl OrphanLeaf_NoCall_Ins23_00597a10(void)
+// FUNCTION: IMPERIALISM 0x00597a10
+undefined4 OrphanLeaf_NoCall_Ins23_00597a10(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
+// ghidra_proto void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)
+// FUNCTION: IMPERIALISM 0x00597a80
+undefined4 CycleMapInteractionSelectionAfterHandledClick(void)
+{
+  return 0;
+}
+
+// ghidra_name OpenMapEntryOrderDialog
+// ghidra_proto void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00597f80
+undefined4 OpenMapEntryOrderDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive
+// ghidra_proto void __thiscall InvalidateMapRegionForEntryIfUiPassive(int arg1)
+// FUNCTION: IMPERIALISM 0x00598840
+undefined4 InvalidateMapRegionForEntryIfUiPassive(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
+// ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
+// FUNCTION: IMPERIALISM 0x00598870
+undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
 {
   return 0;
 }

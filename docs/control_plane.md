@@ -660,6 +660,34 @@ Next immediate loop:
 1. Promote next batch of unmoved `TGreatPower` addresses (prefer larger bodies with real logic).
 2. Keep compile-safe first, then do a cleanup pass for casts/field typing.
 
+## 2026-03-03 00:25 UTC checkpoint - 8 more `TGreatPower` addresses owned
+
+Newly owned this cycle:
+1. `0x004DC540`
+2. `0x004DC660`
+3. `0x004DC840`
+4. `0x004DCD10`
+5. `0x00541080`
+6. `0x005410F0`
+7. `0x0055C970`
+8. `0x0055CBD0`
+
+Current anchors:
+1. `0x004EA470`: `100%`
+2. `0x004DCD10`: `38.33%`
+3. `0x0055C970`: `25.45%`
+
+Current metrics (`just stats`):
+1. aligned functions: `92 / 12973`
+2. average similarity: `2.85%`
+3. signal: `STALLED` (no aligned count movement, slight similarity gain)
+
+Next immediate loop:
+1. Cleanup pass in newly promoted methods:
+   1. remove avoidable cast-heavy access,
+   2. tighten call shapes where easy (`slot` call ordering and branch shape).
+2. Promote another 2-4 medium `TGreatPower` methods from remaining backlog.
+
 ## 2026-03-02 19:37 UTC checkpoint - `TGreatPower` field-layout extraction
 
 Focused update:

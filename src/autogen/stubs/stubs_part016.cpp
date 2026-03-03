@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SerializeTBillForeignMinisterStateWithOrderFlagByte
-// ghidra_proto void __cdecl SerializeTBillForeignMinisterStateWithOrderFlagByte(void)
-// FUNCTION: IMPERIALISM 0x00531ce0
-undefined4 SerializeTBillForeignMinisterStateWithOrderFlagByte(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeBillForeignMinisterOrderCandidates
-// ghidra_proto void __cdecl InitializeBillForeignMinisterOrderCandidates(void)
-// FUNCTION: IMPERIALISM 0x00531d20
-undefined4 InitializeBillForeignMinisterOrderCandidates(void)
-{
-  return 0;
-}
-
-// ghidra_name RunForeignMinisterVtableSlot90BillVariant
-// ghidra_proto void __fastcall RunForeignMinisterVtableSlot90BillVariant(void)
-// FUNCTION: IMPERIALISM 0x00531e50
-undefined4 RunForeignMinisterVtableSlot90BillVariant(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchNationInteractionAmountByModePolicyB
-// ghidra_proto void __cdecl DispatchNationInteractionAmountByModePolicyB(void)
-// FUNCTION: IMPERIALISM 0x00532190
-undefined4 DispatchNationInteractionAmountByModePolicyB(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133
 // ghidra_proto void __thiscall QueueDiplomatTwoRandomAvailableTerrainActionsCode133(void)
 // FUNCTION: IMPERIALISM 0x00532520
@@ -2787,22 +2755,6 @@ undefined4 UpdateHostGreatPowerStatePathBAndSetLossFlag(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::TryDispatchNationActionViaUiThenTurnEvent
-// ghidra_proto void __thiscall TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00541080
-undefined4 TryDispatchNationActionViaUiThenTurnEvent(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A
-// ghidra_proto void __thiscall ProcessPendingDiplomacyThenDispatchTurnEvent29A(void)
-// FUNCTION: IMPERIALISM 0x005410f0
-undefined4 ProcessPendingDiplomacyThenDispatchTurnEvent29A(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleHostGreatPowerLostStateAndNotifyOrEndSession
 // ghidra_proto void __cdecl HandleHostGreatPowerLostStateAndNotifyOrEndSession(void)
 // FUNCTION: IMPERIALISM 0x00541170
@@ -3999,6 +3951,54 @@ undefined4 AllocateAndConstructTLoungeDialog(void)
 // ghidra_proto void * __cdecl GetTLoungeDialogClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0054d6d0
 undefined4 GetTLoungeDialogClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name CloseTLoungeDialogAndReleaseChildren
+// ghidra_proto void __cdecl CloseTLoungeDialogAndReleaseChildren(void)
+// FUNCTION: IMPERIALISM 0x0054d6f0
+undefined4 CloseTLoungeDialogAndReleaseChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name TLoungeDialog::OpenNationStatusDialogAndInitializeRows
+// ghidra_proto void __thiscall OpenNationStatusDialogAndInitializeRows(int dialogArg)
+// FUNCTION: IMPERIALISM 0x0054d730
+undefined4 OpenNationStatusDialogAndInitializeRows(void)
+{
+  return 0;
+}
+
+// ghidra_name TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage
+// ghidra_proto int __thiscall RefreshNationStatusDialogRowsAndSummaryMessage(void)
+// FUNCTION: IMPERIALISM 0x0054db40
+undefined4 RefreshNationStatusDialogRowsAndSummaryMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name TryInvokeNationStateReplacementForSlot
+// ghidra_proto void __cdecl TryInvokeNationStateReplacementForSlot(int arg1)
+// FUNCTION: IMPERIALISM 0x0054dfc0
+undefined4 TryInvokeNationStateReplacementForSlot(void)
+{
+  return 0;
+}
+
+// ghidra_name TLoungeDialog::HandleNationStatusDialogCommand
+// ghidra_proto void __thiscall HandleNationStatusDialogCommand(int commandId, PanelEventPayload * pPanelEvent, int commandArg)
+// FUNCTION: IMPERIALISM 0x0054e1f0
+undefined4 HandleNationStatusDialogCommand(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshMapAndMessageControlsForCurrentContext
+// ghidra_proto void __fastcall RefreshMapAndMessageControlsForCurrentContext(void * pContextHolder)
+// FUNCTION: IMPERIALISM 0x0054e4c0
+undefined4 RefreshMapAndMessageControlsForCurrentContext(void)
 {
   return 0;
 }
