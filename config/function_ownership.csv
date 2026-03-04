@@ -85,6 +85,7 @@ address|target_cpp|ownership|note
 48a8e0|src/game/TView.cpp|manual|marker_sync
 48e520|src/game/TControl.cpp|manual|marker_sync
 4b5140|src/game/noop_slots.cpp|manual|marker_sync
+4b73b0|src/game/TGreatPower.cpp|manual|marker_sync
 4b8b80|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8cc0|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d00|src/game/TCapacityOrder.cpp|manual|marker_sync
@@ -98,9 +99,9 @@ address|target_cpp|ownership|note
 4db380|src/game/TGreatPower.cpp|manual|marker_sync
 4dbd20|src/game/TGreatPower.cpp|manual|marker_sync
 4dbf00|src/game/TGreatPower.cpp|manual|marker_sync
-4dc540|src/game/TGreatPower.cpp|manual|promoted_from_autogen
-4dc660|src/game/TGreatPower.cpp|manual|promoted_from_autogen
-4dc840|src/game/TGreatPower.cpp|manual|promoted_from_autogen
+4dc540|src/game/TGreatPower.cpp|manual|marker_sync
+4dc660|src/game/TGreatPower.cpp|manual|marker_sync
+4dc840|src/game/TGreatPower.cpp|manual|marker_sync
 4dc9f0|src/game/TGreatPower.cpp|manual|marker_sync
 4dcd10|src/game/TGreatPower.cpp|manual|marker_sync
 4dce10|src/game/TGreatPower.cpp|manual|marker_sync
@@ -114,7 +115,7 @@ address|target_cpp|ownership|note
 4dd430|src/game/TGreatPower.cpp|manual|marker_sync
 4dd470|src/game/TGreatPower.cpp|manual|marker_sync
 4dd4e0|src/game/TGreatPower.cpp|manual|marker_sync
-4dd740|src/game/TGreatPower.cpp|manual|promoted_from_autogen
+4dd740|src/game/TGreatPower.cpp|manual|marker_sync
 4dda20|src/game/TGreatPower.cpp|manual|marker_sync
 4dda90|src/game/TGreatPower.cpp|manual|marker_sync
 4ddbb0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -179,6 +180,7 @@ address|target_cpp|ownership|note
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
 55fc40|src/game/input_state.cpp|manual|marker_sync
 572bb0|src/game/noop_slots.cpp|manual|marker_sync
+582630|src/game/TGreatPower.cpp|manual|marker_sync
 583bd0|src/game/trade_screen.cpp|manual|marker_sync
 585f70|src/game/trade_screen.cpp|manual|marker_sync
 585ff0|src/game/trade_screen.cpp|manual|marker_sync
@@ -400,8 +402,12 @@ address|target_cpp|ownership|note
 605a29|src/game/string_shared.cpp|manual|marker_sync
 605a78|src/game/string_shared.cpp|manual|marker_sync
 605ae0|src/game/string_shared.cpp|manual|marker_sync
+605b21|src/game/string_shared.cpp|manual|marker_sync
+605b87|src/game/string_shared.cpp|manual|marker_sync
+605bfb|src/game/string_shared.cpp|manual|marker_sync
 605c6f|src/game/string_shared.cpp|manual|marker_sync
 605cce|src/game/string_shared.cpp|manual|marker_sync
+605cf5|src/game/string_shared.cpp|manual|marker_sync
 605d0a|src/game/string_shared.cpp|manual|marker_sync
 605d22|src/game/string_shared.cpp|manual|marker_sync
 605d71|src/game/string_shared.cpp|manual|marker_sync

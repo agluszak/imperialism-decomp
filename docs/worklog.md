@@ -2,6 +2,34 @@
 
 ## 2026-03-03
 
+### Class discovery pipeline (read-only)
+
+1. Added `tools/workflow/class_discovery.py`:
+   1. Runs class-inference lanes (`infer_class_from_callers`, `infer_class_from_decomp`, `infer_class_from_this_passing`, `infer_class_from_indirect_refs`).
+   2. Runs vtable discovery lanes (`scan_windows_static_vtables`, `attribute_vtables_from_slot_func_names`).
+   3. Runs `run_windows_class_recovery_wave` without `--apply` and stores all outputs in a class-scoped run dir.
+   4. Resolves class anchor addresses (`g_vtbl<Class>`, `g_pClassDesc<Class>`) from `config/symbols.csv`.
+   5. Exports:
+      1. `candidate_methods.csv` (ranked class-candidate methods)
+      2. `vtable_report.csv` (winner/current/reason/anchors)
+      3. `constructor_report.csv` (constructor vtable writes from xrefs)
+      4. `summary.json` (run metadata and counts)
+2. Wired command entrypoint:
+   1. `just class-discovery` (defaults to `CLASS_DISCOVERY_CLASSES` from env, fallback `TGreatPower,TAutoGreatPower`).
+3. Updated tooling inventory:
+   1. `config/tooling_surface.csv` now tracks `tools.workflow.class_discovery`.
+4. Updated `.env.example`:
+   1. Added `CLASS_DISCOVERY_CLASSES` example variable.
+
+### TGreatPower/TAutoGreatPower vtable mapping lock
+
+1. Resolved ambiguous class/vtable pairing using constructor-write evidence:
+   1. `0x00653938` <- `0x004D89F0` (`ConstructNationStateBase_Vtbl653938`) => `TGreatPower`
+   2. `0x00654088` <- `0x004E6A70`/`0x004E6B50` (`CreateAutoGreatPowerNationState`/`ConstructTAutoGreatPowerBaseState`) => `TAutoGreatPower`
+2. Persisted this as explicit overrides in `config/vtable_annotation_overrides.csv`:
+   1. `TGreatPower|653938`
+   2. `TAutoGreatPower|654088`
+
 ### Tooling surface hardening + prune
 
 1. Added tooling manifest: `config/tooling_surface.csv`.
@@ -304,3 +332,143 @@
    3. `0x004DE340`: `12.31%`
    4. `just compare-canaries`: pass (`below_floor=0`)
    5. `just stats`: aligned functions `91`, average similarity `2.93%`.
+
+### Ghidra refresh from `imperialism_knowledge` + TGreatPower aid-matrix offset fix
+
+1. Source refresh:
+   1. Ran `just sync-ghidra` against:
+      1. `GHIDRA_PROJECT_DIR=/home/agluszak/code/personal/imperialism_knowledge`
+      2. `GHIDRA_PROJECT_NAME=imperialism-decomp`
+      3. `GHIDRA_PROGRAM_NAME=Imperialism.exe`
+   2. Export result:
+      1. functions: `12975`
+      2. globals: `9631`
+      3. decomp files: `483`
+      4. type headers: `18`
+2. Repo sync/build:
+   1. `just sync-ownership`
+   2. `just regen-stubs`
+   3. `just build`
+   4. `just detect`
+   5. `just stats`
+3. Targeted function fix:
+   1. Address: `0x004DD340` (`TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal`).
+   2. Change in `src/game/TGreatPower.cpp`:
+      1. switched to explicit offset-based writes for this function:
+         1. aid matrix cell at `this + 0x280 + index*4`
+         2. aid total at `this + 0x914`
+      2. kept class-wide layout untouched (local offset-view strategy).
+4. Validation loop:
+   1. `just format src/game/TGreatPower.cpp`
+   2. `just build`
+   3. `just compare 0x004dd340`
+   4. `just compare-canaries`
+   5. `just stats`
+5. Result deltas:
+   1. `0x004DD340`: `23.33% -> 30.00%` (improved)
+   2. canaries: all floors met (`below_floor=0`)
+   3. global aligned count: `91` (unchanged)
+   4. global avg similarity: `2.93%` (unchanged)
+
+### Ordered follow-up: TGreatPower/TAutoGreatPower discovery + promoted pair verification
+
+1. Step 1 (lock vtable ambiguity decisions):
+   1. Added explicit lock overrides in `config/vtable_annotation_overrides.csv`:
+      1. `TAutoGreatPower|654088|locked-by-ctor-writes-004e6a70-and-004e6b50`
+      2. `TGreatPower|653938|locked-by-ctor-write-004d89f0`
+2. Step 2 (verify promoted pair with full loop):
+   1. Commands:
+      1. `just detect`
+      2. `just compare 0x004b73b0`
+      3. `just compare 0x00582630`
+      4. `just stats`
+   2. Results:
+      1. `0x004B73B0` (`CommitCityRecruitmentOrderDelta`): `5.10%`
+      2. `0x00582630` (`HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder`): `2.30%`
+      3. global checkpoint unchanged: aligned `91`, average similarity `2.93%`
+3. Step 3 (tighten class discovery queue):
+   1. Updated `tools/workflow/class_discovery.py`:
+      1. reads ownership map (`--ownership-csv`, default `config/function_ownership.csv`)
+      2. excludes non-autogen/manual-owned addresses from `candidate_methods.csv` by default
+      3. keeps opt-out via `--include-owned-candidates`
+      4. emits priority bucket column (`priority`: `P0/P1/P2`) based on score/lane density/confidence
+      5. writes exclusion count in `summary.json`
+   2. Updated `justfile`:
+      1. `just class-discovery` now passes `--ownership-csv {{function_ownership}}`
+   3. Validation:
+      1. `just class-discovery`
+      2. output now shows:
+         1. excluded owned addresses: `419`
+         2. candidate rows saved: `9`
+         3. owned candidates filtered out: `4`
+
+### TGreatPower loop: map-context event message functions (`0x004DC660`, `0x004DC840`)
+
+1. Scope:
+   1. `src/game/TGreatPower.cpp`
+   2. Function focus:
+      1. `BuildGreatPowerMapContextTriggeredNationEventMessages` (`0x004DC660`)
+      2. `BuildGreatPowerEligibleNationEventMessagesFromLinkedList` (`0x004DC840`)
+2. Changes:
+   1. Added missing shared-string message construction calls in `0x004DC840` path:
+      1. `thunk_AssignSharedStringFromIndexedA8EntryNameField`
+      2. `AssignSharedStringConcatCStrAndRef`
+      3. `AssignStringSharedFromRef(this_ptr, src_ref_ptr)` using typed local refs
+   2. Kept `0x004DC660` at prior shape after a regression attempt:
+      1. tested adding extra shared-string assignment calls
+      2. reverted those two lines because it lowered score
+   3. Added function declarations needed by the `0x004DC840` message path:
+      1. `thunk_AssignSharedStringFromIndexedA8EntryNameField`
+      2. `AssignSharedStringConcatCStrAndRef`
+      3. `AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr)`
+3. Validation commands:
+   1. `just build`
+   2. `just detect`
+   3. `just compare 0x004dc660`
+   4. `just compare 0x004dc840`
+   5. `just compare-canaries`
+   6. `just stats`
+4. Result deltas:
+   1. `0x004DC660`: `20.00% -> 20.00%` (restored baseline)
+   2. `0x004DC840`: `14.39% -> 15.48%` (improved)
+   3. canaries: pass (`below_floor=0`)
+   4. global checkpoint unchanged: aligned `91`, average similarity `2.93%`
+
+### Shared-string pass: promote missing helpers + compile-safe bodies
+
+1. Scope:
+   1. `src/game/string_shared.cpp`
+   2. `include/game/string_shared.h`
+   3. ownership/stub sync for shared-string addresses
+2. Promotions and ownership:
+   1. `just promote src/game/string_shared.cpp --address 0x00605B21 --address 0x00605B87 --address 0x00605CF5`
+   2. `just promote src/game/string_shared.cpp --address 0x00605BFB`
+   3. `just sync-ownership`
+   4. `just regen-stubs`
+3. Code changes:
+   1. Replaced raw GHIDRA promoted blocks with compile-safe implementations for:
+      1. `AssignSharedStringConcatRefAndRef` (`0x00605B21`)
+      2. `AssignSharedStringConcatRefAndCStr` (`0x00605B87`)
+      3. `AssignSharedStringConcatCStrAndRef` (`0x00605BFB`)
+      4. `AppendSingleByteToSharedStringFromArg` (`0x00605CF5`)
+   2. Improved `ReleaseSharedStringRefIfNotEmpty` (`0x006058E2`) to inline release/decrement/free path.
+   3. Added missing shared-string helper declarations in `include/game/string_shared.h`.
+   4. Updated `src/game/TGreatPower.cpp` local declaration/callsite for `AssignSharedStringConcatCStrAndRef`.
+4. Validation loop:
+   1. `just build`
+   2. `just detect`
+   3. `just compare 0x006058E2`
+   4. `just compare 0x00605B21`
+   5. `just compare 0x00605B87`
+   6. `just compare 0x00605BFB`
+   7. `just compare 0x00605CF5`
+   8. `just stats`
+5. Targeted compare results (moved from zero to non-zero in verbose compare loop):
+   1. `0x006058E2`: `27.27%`
+   2. `0x00605B21`: `20.51%`
+   3. `0x00605B87`: `7.69%`
+   4. `0x00605BFB`: `22.22%`
+   5. `0x00605CF5`: `42.86%`
+6. Note:
+   1. `just stats` aggregate metrics stayed flat (`aligned=91`, avg similarity `2.94%`).
+   2. For this pass, authoritative per-function checkpoints are the targeted `just compare 0xADDR` results above.

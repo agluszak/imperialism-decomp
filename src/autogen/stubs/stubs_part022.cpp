@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CDocTemplate::InitHashTable_6036b2
-// ghidra_proto void __thiscall InitHashTable_6036b2(void)
-// FUNCTION: IMPERIALISM 0x006036b2
-undefined4 InitHashTable_6036b2(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveAll_6036f8
-// ghidra_proto void __fastcall RemoveAll_6036f8(void)
-// FUNCTION: IMPERIALISM 0x006036f8
-undefined4 RemoveAll_6036f8(void)
-{
-  return 0;
-}
-
 // ghidra_name SehProlog_RemoveAllCollection_Wrapper
 // ghidra_proto void __cdecl SehProlog_RemoveAllCollection_Wrapper(void)
 // FUNCTION: IMPERIALISM 0x0060374a
@@ -279,38 +263,6 @@ undefined4 DispatchVirtualSlot18OnImplicitObject(void)
 // ghidra_proto void __cdecl Empty(void)
 // FUNCTION: IMPERIALISM 0x0060586d
 undefined4 Empty(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringConcatRefAndRef
-// ghidra_proto void __cdecl AssignSharedStringConcatRefAndRef(void)
-// FUNCTION: IMPERIALISM 0x00605b21
-undefined4 AssignSharedStringConcatRefAndRef(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringConcatRefAndCStr
-// ghidra_proto void __cdecl AssignSharedStringConcatRefAndCStr(void)
-// FUNCTION: IMPERIALISM 0x00605b87
-undefined4 AssignSharedStringConcatRefAndCStr(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringConcatCStrAndRef
-// ghidra_proto void __cdecl AssignSharedStringConcatCStrAndRef(void)
-// FUNCTION: IMPERIALISM 0x00605bfb
-undefined4 AssignSharedStringConcatCStrAndRef(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendSingleByteToSharedStringFromArg
-// ghidra_proto int __fastcall AppendSingleByteToSharedStringFromArg(void)
-// FUNCTION: IMPERIALISM 0x00605cf5
-undefined4 AppendSingleByteToSharedStringFromArg(void)
 {
   return 0;
 }
@@ -3999,6 +3951,54 @@ undefined4 MapClientArea(void)
 // ghidra_proto void * __thiscall CMemFile(void)
 // FUNCTION: IMPERIALISM 0x00619aac
 undefined4 CMemFile(void)
+{
+  return 0;
+}
+
+// ghidra_name CFileException::CMemFile_619af8
+// ghidra_proto void * __thiscall CMemFile_619af8(void)
+// FUNCTION: IMPERIALISM 0x00619af8
+undefined4 CMemFile_619af8(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructCMemFileLikeStateWithCloseIfOpen
+// ghidra_proto void __cdecl DestructCMemFileLikeStateWithCloseIfOpen(void)
+// FUNCTION: IMPERIALISM 0x00619b71
+undefined4 DestructCMemFileLikeStateWithCloseIfOpen(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AllocateWithGlobalNewMode_At00619bbd
+// ghidra_proto void * __cdecl WrapperFor_AllocateWithGlobalNewMode_At00619bbd(uint size)
+// FUNCTION: IMPERIALISM 0x00619bbd
+undefined4 WrapperFor_AllocateWithGlobalNewMode_At00619bbd(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca
+// ghidra_proto void * __cdecl WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
+// FUNCTION: IMPERIALISM 0x00619bca
+undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
+// FUNCTION: IMPERIALISM 0x00619c01
+undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
+{
+  return 0;
+}
+
+// ghidra_name SetWriteCursorWithCapacityClamp_00619c6b
+// ghidra_proto void __thiscall SetWriteCursorWithCapacityClamp_00619c6b(uint arg1)
+// FUNCTION: IMPERIALISM 0x00619c6b
+undefined4 SetWriteCursorWithCapacityClamp_00619c6b(void)
 {
   return 0;
 }

@@ -111,6 +111,9 @@ undefined4 thunk_SetEventPayloadNationIdFromSlotIndex(void);
 undefined4 thunk_EnqueueOrSendTurnEventPacketToNation(void);
 undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
 undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
+undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
+void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, const char* lhs_text, int* rhs_ref_ptr);
+undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
 
 // Legacy free-function symbol retained for old callsites that still reference
 // the no-arg form; class-owned event queue methods are implemented below.
@@ -562,6 +565,8 @@ public:
   void ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2);
   void QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
                                              char isReplayBypass);
+  void CommitCityRecruitmentOrderDelta(void);
+  void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
   void QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,
                                                    char isReplayBypass);
@@ -1750,6 +1755,84 @@ TGreatPower::~TGreatPower() {
   TGREATPOWER_RELEASE_OWNED_OBJECTS_BODY(this);
 }
 
+struct TRecruitmentDeltaContextView {
+  unsigned char pad_00[0x04];
+  short pendingDelta;
+  unsigned char pad_06[0x08 - 0x06];
+  void* cityContext;
+  unsigned char pad_0c[0x48 - 0x0c];
+  short entryId;
+  unsigned char pad_4a[0x58 - 0x4a];
+  unsigned char specialistMode;
+};
+
+// FUNCTION: IMPERIALISM 0x004B73B0
+void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
+  /* Commits pending university/city recruitment delta into persistent city/nation state.
+     Algorithm:
+     1. Read pending delta count from context field +0x04; return if zero.
+     2. Branch on specialist mode flag (+0x58): civilian branch vs specialist branch.
+     3. Civilian branch: add pending count into city recruitment queue slot (city +0x4A[entryId])
+     and spawn per-unit civilian order objects.
+     4. Specialist branch: spawn military recruit order objects and apply nation progression gate
+     updates for unlock tiers.
+     5. Emit nation notification callback (+0x2C0) with mode 2 (civilian) or 3 (specialist).
+     6. Clear pending delta (+0x04) after commit.
+     7. For entryId==0, increment city counter at city+0x0A.
+     Parameters:
+     - this (IMPLICIT): City recruitment order context.
+     Returns:
+     - None.
+     Persistence:
+     - Pending delta: context +0x04.
+     - Committed queue count: city +0x4A[entryId]. */
+  TRecruitmentDeltaContextView* ctx = reinterpret_cast<TRecruitmentDeltaContextView*>(this);
+  short pendingDelta = ctx->pendingDelta;
+  if (pendingDelta <= 0 || ctx->cityContext == 0) {
+    return;
+  }
+
+  int sharedRefA = 0;
+  int sharedRefB = 0;
+  InitializeSharedStringRefFromEmpty(&sharedRefA);
+  InitializeSharedStringRefFromEmpty(&sharedRefB);
+
+  TLocalizationRuntimeView* localization = ReadLocalizationRuntimeView();
+  if (localization != 0) {
+    VCall_LocalizationRuntime_CallSlot84WithId(localization,
+                                               (ctx->specialistMode == 0) ? 0x2718 : 0x2717);
+  }
+
+  short* cityQueueBase =
+      reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ctx->cityContext) + 0x4A);
+  cityQueueBase[ctx->entryId] = static_cast<short>(cityQueueBase[ctx->entryId] + pendingDelta);
+
+  int ownerState =
+      *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(ctx->cityContext) + 0xAC);
+  short ownerNationSlot = 0;
+  if (ownerState != 0) {
+    ownerNationSlot =
+        *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerState) + 0x0C);
+  }
+
+  for (short i = 0; i < pendingDelta; ++i) {
+    void* orderObject = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
+    if (orderObject == 0) {
+      continue;
+    }
+    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCivUnitOrderObject)(orderObject,
+                                                                                        0);
+
+    short packedOrderType = static_cast<short>(ctx->entryId);
+    reinterpret_cast<TGreatPower*>(orderObject)
+        ->InitializeCivWorkOrderState(packedOrderType, i, ownerNationSlot);
+  }
+
+  ctx->pendingDelta = 0;
+  ReleaseSharedStringRefIfNotEmpty(&sharedRefB);
+  ReleaseSharedStringRefIfNotEmpty(&sharedRefA);
+}
+
 // FUNCTION: IMPERIALISM 0x004D8950
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
   void* instance = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x964));
@@ -2671,7 +2754,10 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
       int messageRef = 0;
       int scratchRef = 0;
       InitializeSharedStringRefFromEmpty(&messageRef);
+      thunk_AssignSharedStringFromIndexedA8EntryNameField();
       InitializeSharedStringRefFromEmpty(&scratchRef);
+      AssignSharedStringConcatCStrAndRef(&scratchRef, "\n", &messageRef);
+      AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef), &messageRef);
       ReleaseSharedStringRefIfNotEmpty(&scratchRef);
       ReleaseSharedStringRefIfNotEmpty(&messageRef);
     }
@@ -2769,8 +2855,9 @@ void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short c
       static_cast<int>(rowIndex) * kAidAllocationColumnCount + static_cast<int>(columnIndex);
 
   GreatPower_AdjustTreasury(this, amount);
-  this->aidAllocationMatrix[matrixIndex] += amount;
-  this->aidAllocationTotal += amount;
+  *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + matrixIndex * 4 + 0x280) +=
+      amount;
+  *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + 0x914) += amount;
 }
 
 // FUNCTION: IMPERIALISM 0x004dd3b0
@@ -4650,6 +4737,46 @@ unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
   }
 
   return totalValue / selectedCount;
+}
+
+struct STurnInstructionCiviCursorView {
+  unsigned int* tokenCursor;
+};
+
+// FUNCTION: IMPERIALISM 0x00582630
+void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
+  STurnInstructionCiviCursorView* instruction =
+      reinterpret_cast<STurnInstructionCiviCursorView*>(pInstructionRaw);
+  if (instruction == 0 || instruction->tokenCursor == 0) {
+    return;
+  }
+
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token0 = *cursor++;
+  unsigned int token1 = *cursor++;
+  instruction->tokenCursor = cursor;
+
+  short workOrderType = static_cast<short>((token0 >> 0x10) & 0xFFFF);
+  short ownerNationSlot = static_cast<short>((token1 >> 0x10) & 0xFFFF);
+
+  int mapState = reinterpret_cast<int>(ReadGlobalPointer(kAddrGlobalMapStatePtr));
+  signed char cityOwnerTag = 0;
+  if (mapState != 0) {
+    int cityTable = *reinterpret_cast<int*>(mapState + 0x0C);
+    if (cityTable != 0) {
+      cityOwnerTag = *reinterpret_cast<signed char*>(cityTable + 4 + ownerNationSlot * 0x24);
+    }
+  }
+
+  void* orderObject = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
+  if (orderObject == 0) {
+    return;
+  }
+
+  reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCivUnitOrderObject)(orderObject,
+                                                                                      0);
+  reinterpret_cast<TGreatPower*>(orderObject)
+      ->InitializeCivWorkOrderState(workOrderType, ownerNationSlot, static_cast<int>(cityOwnerTag));
 }
 
 // FUNCTION: IMPERIALISM 0x005C2940

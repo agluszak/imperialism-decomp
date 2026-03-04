@@ -84,6 +84,7 @@ void __cdecl DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
 }
 
 // GHIDRA comment: small wrapper around "release + allocate" branch for shared strings.
+
 // FUNCTION: IMPERIALISM 0x0060588b
 void __fastcall EnsureUniqueSharedStringBuffer(int* ref_ptr) {
   int old_data_ptr = *ref_ptr;
@@ -99,6 +100,7 @@ void __fastcall EnsureUniqueSharedStringBuffer(int* ref_ptr) {
 }
 
 // GHIDRA [WrapperShape]: small wrapper around AllocateSharedStringBufferForLength.
+
 // FUNCTION: IMPERIALISM 0x006058b9
 void WrapperFor_AllocateSharedStringBufferForLength_At006058b9(int* ref_ptr,
                                                                int required_capacity) {
@@ -112,10 +114,17 @@ void WrapperFor_AllocateSharedStringBufferForLength_At006058b9(int* ref_ptr,
 
 // FUNCTION: IMPERIALISM 0x006058e2
 void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr) {
-  DecrementSharedStringRefCountAndFree(reinterpret_cast<LONG*>(*ref_ptr - kSharedStringHeaderSize));
+  LONG* ref_count_ptr = reinterpret_cast<LONG*>(*ref_ptr - kSharedStringHeaderSize);
+  if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
+    LONG ref_count = InterlockedDecrement(ref_count_ptr);
+    if (ref_count < 1) {
+      FreeHeapBufferIfNotNull(PtrToInt(ref_count_ptr));
+    }
+  }
 }
 
 // GHIDRA comment: Initializes from either C-string or low-word resource-id.
+
 // FUNCTION: IMPERIALISM 0x00605950
 int* ConstructSharedStringFromCStrOrResourceId(int* dst_ref_ptr, LPCSTR text_or_resource_id) {
   int* shared_empty_ref = reinterpret_cast<int*>(GetSharedEmptyStringRef());
@@ -142,6 +151,7 @@ int* ConstructSharedStringFromCStrOrResourceId(int* dst_ref_ptr, LPCSTR text_or_
 }
 
 // GHIDRA [WrapperShape]: small wrapper around copy + length/terminator update.
+
 // FUNCTION: IMPERIALISM 0x006059fc
 void WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc(int* ref_ptr, int new_length,
                                                          LPCSTR src_text) {
@@ -197,6 +207,56 @@ void ConcatenateTwoBuffersToSharedString(int* ref_ptr, int lhs_len, LPCSTR lhs_t
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00605b21
+void AssignSharedStringConcatRefAndRef(int* dst_ref_ptr, int* lhs_ref_ptr, int* rhs_ref_ptr) {
+  int concat_ref = 0;
+  InitializeSharedStringRefFromEmpty(&concat_ref);
+
+  int lhs_data_ptr = *lhs_ref_ptr;
+  int rhs_data_ptr = *rhs_ref_ptr;
+  ConcatenateTwoBuffersToSharedString(&concat_ref, GetSharedStringHeader(lhs_data_ptr)->text_length,
+                                      reinterpret_cast<LPCSTR>(lhs_data_ptr),
+                                      GetSharedStringHeader(rhs_data_ptr)->text_length,
+                                      reinterpret_cast<LPCSTR>(rhs_data_ptr));
+  StringSharedRef_AssignFromPtr(dst_ref_ptr, &concat_ref);
+  ReleaseSharedStringRefIfNotEmpty(&concat_ref);
+}
+
+// FUNCTION: IMPERIALISM 0x00605b87
+void AssignSharedStringConcatRefAndCStr(int* dst_ref_ptr, int* lhs_ref_ptr, LPCSTR rhs_text) {
+  int concat_ref = 0;
+  InitializeSharedStringRefFromEmpty(&concat_ref);
+
+  int rhs_length = 0;
+  if (rhs_text != 0) {
+    rhs_length = lstrlenA(rhs_text);
+  }
+
+  int lhs_data_ptr = *lhs_ref_ptr;
+  ConcatenateTwoBuffersToSharedString(&concat_ref, GetSharedStringHeader(lhs_data_ptr)->text_length,
+                                      reinterpret_cast<LPCSTR>(lhs_data_ptr), rhs_length, rhs_text);
+  StringSharedRef_AssignFromPtr(dst_ref_ptr, &concat_ref);
+  ReleaseSharedStringRefIfNotEmpty(&concat_ref);
+}
+
+// FUNCTION: IMPERIALISM 0x00605bfb
+void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, LPCSTR lhs_text, int* rhs_ref_ptr) {
+  int concat_ref = 0;
+  InitializeSharedStringRefFromEmpty(&concat_ref);
+
+  int lhs_length = 0;
+  if (lhs_text != 0) {
+    lhs_length = lstrlenA(lhs_text);
+  }
+
+  int rhs_data_ptr = *rhs_ref_ptr;
+  ConcatenateTwoBuffersToSharedString(&concat_ref, lhs_length, lhs_text,
+                                      GetSharedStringHeader(rhs_data_ptr)->text_length,
+                                      reinterpret_cast<LPCSTR>(rhs_data_ptr));
+  StringSharedRef_AssignFromPtr(dst_ref_ptr, &concat_ref);
+  ReleaseSharedStringRefIfNotEmpty(&concat_ref);
+}
+
 // FUNCTION: IMPERIALISM 0x00605c6f
 void AppendBufferToSharedString(int* ref_ptr, int append_len, LPCSTR append_text) {
   if (append_len == 0) {
@@ -228,6 +288,15 @@ undefined4 AssignStringSharedFromCStr(undefined4 this_ptr, LPCSTR text) {
   }
   AppendBufferToSharedString(reinterpret_cast<int*>(this_ptr), text_len, text);
   return this_ptr;
+}
+
+// FUNCTION: IMPERIALISM 0x00605cf5
+int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int, int append_byte) {
+  char append_text[2];
+  append_text[0] = static_cast<char>(append_byte);
+  append_text[1] = '\0';
+  AppendBufferToSharedString(ref_ptr, 1, append_text);
+  return PtrToInt(ref_ptr);
 }
 
 // FUNCTION: IMPERIALISM 0x00605d0a
@@ -270,6 +339,7 @@ void SetSharedStringLengthAndTerminator(int* ref_ptr, int new_length) {
 }
 
 // GHIDRA [WrapperShape]: small wrapper around EnsureSharedStringCapacityPreserveLength.
+
 // FUNCTION: IMPERIALISM 0x00605d99
 int WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99(int* ref_ptr, int new_length) {
   EnsureSharedStringCapacityPreserveLength(ref_ptr, new_length);

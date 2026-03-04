@@ -1,6 +1,6 @@
 # Imperialism Decomp Control Plane
 
-Last updated: 2026-03-03 (late PM)
+Last updated: 2026-03-04
 
 ## Purpose
 
@@ -21,6 +21,9 @@ This file tracks:
 5. Use canary compares to catch local regressions before broad tuning.
 6. Track globals and non-function entities in stats (not only functions).
 7. Keep vcall facades generated as direct slot-call wrappers (avoid extra runtime-helper call layers in hot paths).
+8. Use read-only class discovery (`just class-discovery`) to rank class ownership/vtable candidates before attach/rename writes.
+9. Treat class-discovery candidate queue as "new work only": exclude manual-owned addresses by default and prioritize queue rows (`P0/P1/P2`) from lane score+density.
+10. For subsystem pushes (e.g. shared-string helpers), use targeted `just compare 0xADDR` as the acceptance gate for touched functions; treat aggregate `just stats` as macro trend only.
 
 ## Canonical Commands
 
@@ -48,6 +51,7 @@ Maintenance:
 2. `just generate-ignores`
 3. `just normalize-markers`
 4. `just vtable-gate`
+5. `just class-discovery`
 
 ## Baseline Snapshot
 
@@ -56,6 +60,7 @@ Baseline reference before this control-plane trim:
 1. Aligned functions: `91`
 2. Average similarity: `2.92%`
 3. Focus area: `TGreatPower` large-body conversion and cleanup
+4. Current sub-focus: shared-string helper family in `src/game/string_shared.cpp` (`0x6058E2`, `0x605B21`, `0x605B87`, `0x605BFB`, `0x605CF5`)
 
 ## Active Constraints
 
