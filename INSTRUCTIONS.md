@@ -60,6 +60,7 @@
 19. For turn-event dispatcher thunks, verify both calling convention and payload order; several paths are `__stdcall` with prepended `this->nationSlot`, and using `__cdecl` (or omitting the nation arg) introduces stack-cleanup/call-shape drift.
 20. For tiny getter-like functions, trust `reccmp --verbose` on `ret` size and field offset: if original shows `ret 4` and `this+0xXYZ`, align method signature/arg count and use an explicit typed offset view when class-field offsets are still fluid.
 21. If a function clearly needs `this+0xXYZ` but current class members compile to a different offset, use a local typed offset-view struct for that function and keep class-wide field renames for a dedicated layout pass.
+22. In hot matching functions, avoid introducing helper calls for simple field reads (`ref->data_ptr`, `header->text_length`); prefer direct typed overlay access in-place so MSVC emits memory loads instead of extra call sites.
 
 ## Known reccmp Failure Modes
 

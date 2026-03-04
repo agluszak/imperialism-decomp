@@ -448,7 +448,6 @@ void __cdecl thunk_GetCityActionGateValueBySlot(void)
 /* WARNING: Removing unreachable block (ram,0x005e4089) */
 /* WARNING: Removing unreachable block (ram,0x005e406e) */
 /* WARNING: Recovered jumptable eliminated as dead code */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to PopNextTurnEventPacketOrProcessSpecialQueueRecords */
 
 void __cdecl thunk_PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
@@ -457,31 +456,31 @@ void __cdecl thunk_PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
   int *piVar1;
   int extraout_EAX;
   
-  piVar1 = _g_pDeferredTurnEventPacketQueueHead;
+  piVar1 = g_pDeferredTurnEventPacketQueueHead;
   if (g_pRuntimeTurnEventQueueManager == (void *)0x0) {
     return;
   }
   if (g_nDeferredTurnEventPacketQueueCount != 0) {
-    _g_pDeferredTurnEventPacketQueueHead = (int *)*_g_pDeferredTurnEventPacketQueueHead;
-    if (_g_pDeferredTurnEventPacketQueueHead == (undefined4 *)0x0) {
-      _g_pDeferredTurnEventPacketQueueTail = 0;
+    g_pDeferredTurnEventPacketQueueHead = (int *)*g_pDeferredTurnEventPacketQueueHead;
+    if (g_pDeferredTurnEventPacketQueueHead == (undefined4 *)0x0) {
+      g_pDeferredTurnEventPacketQueueTail = 0;
     }
     else {
-      _g_pDeferredTurnEventPacketQueueHead[1] = 0;
+      g_pDeferredTurnEventPacketQueueHead[1] = 0;
     }
     *piVar1 = (int)g_pDeferredTurnEventPacketFreeNodeList;
     g_pDeferredTurnEventPacketFreeNodeList = piVar1;
     g_nDeferredTurnEventPacketQueueCount = g_nDeferredTurnEventPacketQueueCount + -1;
     if (g_nDeferredTurnEventPacketQueueCount == 0) {
-      for (; _g_pDeferredTurnEventPacketQueueHead != (undefined4 *)0x0;
-          _g_pDeferredTurnEventPacketQueueHead = (int *)*_g_pDeferredTurnEventPacketQueueHead) {
+      for (; g_pDeferredTurnEventPacketQueueHead != (undefined4 *)0x0;
+          g_pDeferredTurnEventPacketQueueHead = (int *)*g_pDeferredTurnEventPacketQueueHead) {
       }
       g_nDeferredTurnEventPacketQueueCount = 0;
       g_pDeferredTurnEventPacketFreeNodeList = (void *)0x0;
-      _g_pDeferredTurnEventPacketQueueTail = 0;
-      _g_pDeferredTurnEventPacketQueueHead = (undefined4 *)0x0;
+      g_pDeferredTurnEventPacketQueueTail = 0;
+      g_pDeferredTurnEventPacketQueueHead = (undefined4 *)0x0;
       FreeDataChain();
-      _g_pDeferredTurnEventPacketNodeBlockChain = 0;
+      g_pDeferredTurnEventPacketNodeBlockChain = 0;
     }
     return;
   }
@@ -1427,7 +1426,6 @@ void __cdecl thunk_ReturnTrueRemoteMinorCapabilityStub(void)
 // GHIDRA_COMMENT Single-JMP thunk to RebuildUMapperRouteRecordsAndActiveMapRects
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to RebuildUMapperRouteRecordsAndActiveMapRects */
 
 void __cdecl thunk_RebuildUMapperRouteRecordsAndActiveMapRects(void)
@@ -1451,10 +1449,10 @@ void __cdecl thunk_RebuildUMapperRouteRecordsAndActiveMapRects(void)
   
   iVar10 = 0;
   uVar11 = 0;
-  if (_g_uOverlaySpanRecordArray18Count != 0) {
-    uVar7 = _g_uOverlaySpanRecordArray18Count;
+  if (g_uOverlaySpanRecordArray18Count != 0) {
+    uVar7 = g_uOverlaySpanRecordArray18Count;
     pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-    if (_g_uOverlaySpanRecordArray18Count == 0) {
+    if (g_uOverlaySpanRecordArray18Count == 0) {
       iVar6 = 0;
       goto LAB_0052e386;
     }
@@ -1482,7 +1480,7 @@ LAB_0052e386:
         puVar2[8] = 0xffff;
         *(undefined4 *)(puVar2 + 6) = 0xffffffff;
         *(undefined4 *)(puVar2 + 4) = 0xffffffff;
-        uVar7 = _g_uOverlaySpanRecordArray18Count;
+        uVar7 = g_uOverlaySpanRecordArray18Count;
         pTVar4 = g_pOverlaySpanRecordArray18Buffer;
       }
       uVar11 = uVar11 + 1;
@@ -1493,11 +1491,11 @@ LAB_0052e386:
   sVar9 = 0;
   uVar11 = 0;
   uVar8 = extraout_var;
-  if (_g_uOverlaySpanRecordArray18Count != 0) {
+  if (g_uOverlaySpanRecordArray18Count != 0) {
     iVar10 = 0;
     pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-    uVar7 = _g_uOverlaySpanRecordArray18Count;
-    if (_g_uOverlaySpanRecordArray18Count == 0) {
+    uVar7 = g_uOverlaySpanRecordArray18Count;
+    if (g_uOverlaySpanRecordArray18Count == 0) {
       psVar5 = (short *)0x0;
       goto LAB_0052e443;
     }
@@ -1526,10 +1524,10 @@ LAB_0052e443:
           }
           if (*(short *)(iVar6 + 0x12) != -1) goto LAB_0052e4af;
         }
-        if (_g_Rebuild_UMapper_Route_Value_006A3914 == 0) {
+        if (g_Rebuild_UMapper_Route_Value_006A3914 == 0) {
           thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
           pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
       }
 LAB_0052e4af:
@@ -1546,14 +1544,14 @@ LAB_0052e4af:
         iVar6 = 0;
       }
       if ((char)iVar6 == '\0') {
-        if (_g_uOverlaySpanRecordArray18Capacity <= uVar11) {
+        if (g_uOverlaySpanRecordArray18Capacity <= uVar11) {
           thunk_ReserveOverlaySpanRecordArray18Capacity(&g_OverlaySpanRecordArray18State,uVar11 + 1)
           ;
           pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
         if (uVar7 <= uVar11) {
-          _g_uOverlaySpanRecordArray18Count = uVar11 + 1;
+          g_uOverlaySpanRecordArray18Count = uVar11 + 1;
         }
         CRect::CRect(&CStack_10,(int)*(short *)((int)&pTVar4->sStartX + iVar10),
                      (int)*(short *)((int)&pTVar4->sStartY + iVar10),
@@ -1568,7 +1566,7 @@ LAB_0052e4af:
         piVar3[3] = CStack_10.field3_0xc;
         pTVar4 = g_pOverlaySpanRecordArray18Buffer;
         iVar6 = CStack_10.field2_0x8;
-        uVar7 = _g_uOverlaySpanRecordArray18Count;
+        uVar7 = g_uOverlaySpanRecordArray18Count;
       }
       uVar8 = (undefined2)((uint)iVar6 >> 0x10);
       uVar11 = uVar11 + 1;
@@ -1578,10 +1576,10 @@ LAB_0052e4af:
   InputState::thunk_InitializeMapActionContextsForNationCountUsingCostField
             (g_pActiveMapOrderContext,CONCAT22(uVar8,*(undefined2 *)(in_ECX + 0x2a4)));
   uVar11 = 0;
-  if (0 < (int)_g_uOverlaySpanRecordArray18Count) {
+  if (0 < (int)g_uOverlaySpanRecordArray18Count) {
     iVar10 = 0;
-    bVar12 = _g_uOverlaySpanRecordArray18Count != 0;
-    uVar7 = _g_uOverlaySpanRecordArray18Count;
+    bVar12 = g_uOverlaySpanRecordArray18Count != 0;
+    uVar7 = g_uOverlaySpanRecordArray18Count;
     do {
       if (bVar12) {
         psVar5 = (short *)((int)&g_pOverlaySpanRecordArray18Buffer->sStartX + iVar10);
@@ -1596,22 +1594,22 @@ LAB_0052e4af:
         bVar12 = false;
       }
       if (!bVar12) {
-        if (_g_uOverlaySpanRecordArray18Capacity <= uVar11) {
+        if (g_uOverlaySpanRecordArray18Capacity <= uVar11) {
           thunk_ReserveOverlaySpanRecordArray18Capacity(&g_OverlaySpanRecordArray18State,uVar11 + 1)
           ;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
         if (uVar7 <= uVar11) {
           uVar7 = uVar11 + 1;
-          _g_uOverlaySpanRecordArray18Count = uVar7;
+          g_uOverlaySpanRecordArray18Count = uVar7;
         }
-        if (_g_uOverlaySpanRecordArray18Capacity <= uVar11) {
+        if (g_uOverlaySpanRecordArray18Capacity <= uVar11) {
           thunk_ReserveOverlaySpanRecordArray18Capacity(&g_OverlaySpanRecordArray18State,uVar11 + 1)
           ;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
         if (uVar7 <= uVar11) {
-          _g_uOverlaySpanRecordArray18Count = uVar11 + 1;
+          g_uOverlaySpanRecordArray18Count = uVar11 + 1;
         }
         thunk_GetMapActionContextEntryByIndex();
         thunk_GetMapActionContextEntryByIndex();
@@ -1621,7 +1619,7 @@ LAB_0052e4af:
         thunk_GetOrCreateOverlaySpanRecordArray18Entry(&g_OverlaySpanRecordArray18State,uVar11);
         thunk_GetMapActionContextEntryByIndex();
         thunk_DispatchMapActionContextCallbackViaField24();
-        uVar7 = _g_uOverlaySpanRecordArray18Count;
+        uVar7 = g_uOverlaySpanRecordArray18Count;
       }
       uVar11 = uVar11 + 1;
       iVar10 = iVar10 + 0x18;
@@ -4511,7 +4509,7 @@ void __cdecl thunk_HandleCrossUArmyViewsNameCommand(void)
   int unaff_ESI;
   int unaff_EDI;
   int *unaff_FS_OFFSET;
-  undefined *puStack_50;
+  int iStack_50;
   int *piVar6;
   int iVar7;
   int iStack_28;
@@ -4529,7 +4527,7 @@ void __cdecl thunk_HandleCrossUArmyViewsNameCommand(void)
     puStack_8 = (undefined1 *)0x0;
     InitializeSharedStringRefFromEmpty();
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-    puStack_50 = (undefined *)0x4a9d41;
+    iStack_50 = 0x4a9d41;
     thunk_BuildUiTextStyleDescriptor();
     iVar1 = *piVar4;
     pcVar2 = *(code **)(iVar1 + 0x94);
@@ -4537,9 +4535,9 @@ void __cdecl thunk_HandleCrossUArmyViewsNameCommand(void)
     (**(code **)(*piVar4 + 0xc))();
     iVar7 = 1;
     piVar6 = (int *)&DAT_00002746;
-    puStack_50 = (undefined *)0x4a9d71;
+    iStack_50 = 0x4a9d71;
     (**(code **)(*piVar4 + 0x1cc))();
-    puStack_50 = (undefined *)0x6e616d65;
+    iStack_50 = 0x6e616d65;
     piVar4[0x1e] = unaff_EBX;
     piVar4[0x1f] = iStack_28;
     *(undefined2 *)(piVar4 + 0x20) = in_CX;
@@ -4559,11 +4557,11 @@ void __cdecl thunk_HandleCrossUArmyViewsNameCommand(void)
     }
     (**(code **)(iVar1 + 0x1ac))();
     (**(code **)(iVar3 + 0x1dc))(&stack0xffffffbc);
-    AssignFromPtr(&puStack_50,(int *)&stack0xffffffb8);
+    AssignFromPtr(&iStack_50,(int *)&stack0xffffffb8);
     (**(code **)(iVar1 + 0xa0))();
     (**(code **)(iVar1 + 0x1c))();
     if (iVar7 != 0x636e636c) {
-      AssignFromPtr((void *)(piVar6[0x18] + 0x24),(int *)&puStack_50);
+      AssignFromPtr((void *)(piVar6[0x18] + 0x24),&iStack_50);
     }
     (**(code **)(*piVar6 + 0xe4))();
     ReleaseSharedStringRefIfNotEmpty();
@@ -4572,7 +4570,7 @@ void __cdecl thunk_HandleCrossUArmyViewsNameCommand(void)
     return;
   }
                     /* WARNING: Subroutine does not return */
-  puStack_50 = &UNK_004a9ce9;
+  iStack_50 = 0x4a9ce9;
   MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 
@@ -4642,7 +4640,7 @@ thunk_RefundTechItemPurchaseCostAndClearState(void *this,int itemIndex,int natio
 
 {
   (**(code **)(*(int *)g_apNationStates[nationIndex] + 0x38))
-            (*(undefined4 *)(&g_aiTechItemCostDeltaByIndex + itemIndex * 4));
+            (*(undefined4 *)(&UNK_0066aac8.field_0x20 + itemIndex * 4));
   *(undefined1 *)((int)this + nationIndex * 0x1d + itemIndex + 0x268) = 0;
   *(undefined2 *)((int)this + (itemIndex + nationIndex * 0x1d) * 2 + 0x4a6) = 0;
   return;
@@ -4747,7 +4745,7 @@ void __cdecl thunk_GenerateMappedFlavorTextByCurrentContextNation(void *pDstShar
     sVar1 = (short)*(undefined4 *)((int)g_pLanguageManager + 0x30);
   }
   thunk_GenerateMappedFlavorTextUntilValidationPasses
-            (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + sVar1 * 4));
+            (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + sVar1 * 4 + 4));
   return;
 }
 
@@ -6495,7 +6493,7 @@ int __thiscall thunk_CalculateMissionOrderPriorityScore(void *this,int nScorePro
       sVar3 = (short)(((int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                                    [*(short *)((int)this + 4) * 9] *
                        (int)*(short *)((int)this + 0x1c) * 10000) /
-                     (*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                     (*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
                                 *(short *)((int)this + 4) * 0x24) * iVar2));
       break;
     case 2:
@@ -6691,7 +6689,10 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
   HWND pHStack_724;
   undefined *puStack_720;
   undefined *puStack_71c;
-  byte *apbStack_718 [17];
+  byte *apbStack_718 [14];
+  undefined *puStack_6e0;
+  undefined *puStack_6dc;
+  undefined1 *puStack_6d8;
   undefined *puStack_6d4;
   undefined *puStack_6d0;
   undefined *puStack_6cc;
@@ -7055,9 +7056,9 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
     apbStack_718[0xb] = &g_Build_Map_Context_LookupTable_0069AC14;
     apbStack_718[0xc] = &g_Build_Map_Context_LookupTable_0069AC24;
     apbStack_718[0xd] = &g_Build_Map_Context_LookupTable_0069AC2C;
-    apbStack_718[0xe] = &g_Build_Map_Context_LookupTable_0069AC48;
-    apbStack_718[0xf] = &g_Build_Map_Context_LookupTable_0069B0A0;
-    apbStack_718[0x10] = &g_Generate_Mapped_Flavor_LookupTable_0069B290;
+    puStack_6e0 = &g_Build_Map_Context_LookupTable_0069AC48;
+    puStack_6dc = &g_Build_Map_Context_LookupTable_0069B0A0;
+    puStack_6d8 = &g_Generate_Mapped_Flavor_LookupTable_0069B290;
     puStack_6d4 = &g_Build_Map_Context_LookupTable_0069AC28;
     puStack_6d0 = &g_Build_Map_Context_LookupTable_0069AC4C;
     puStack_6cc = &g_Generate_Mapped_Flavor_LookupTable_0069B28C;
@@ -7119,7 +7120,7 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
       auStack_790._8_4_ = ZEXT14(auStack_790._8_4_ == 0);
       if (auStack_790._8_4_ == 0) {
         iStack_75c = 9;
-        piStack_758 = (int *)0x9;
+        piStack_758 = (int *)&DAT_00000009;
         g_uMapContextStatusRngState = g_uMapContextStatusRngState * 0x15a4e35 + 1;
         puStack_750 = &g_Build_Map_Context_LookupTable_0069AB2C;
         apuStack_74c[0] = &g_Build_Random_Map_LookupTable_0069AB24;
@@ -7575,9 +7576,9 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
     apbStack_718[10] = (undefined *)0xa;
     apbStack_718[0xb] = (undefined *)0xa;
     apbStack_718[0xc] = (undefined *)0xa;
-    apbStack_718[0xd] = (undefined *)0x9;
-    apbStack_718[0xe] = (undefined *)0x9;
-    apbStack_718[0xf] = (undefined *)0x9;
+    apbStack_718[0xd] = &DAT_00000009;
+    puStack_6e0 = (undefined *)0x9;
+    puStack_6dc = (undefined *)0x9;
     puStack_6d4 = (undefined *)0x6;
     puStack_6d0 = (undefined *)0x6;
     puStack_6cc = (undefined *)0x6;
@@ -7603,7 +7604,7 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
     puStack_6c0 = &DAT_00000005;
     puStack_6bc = (undefined *)0x5;
     puStack_6b8 = &DAT_00000005;
-    apbStack_718[0x10] = &DAT_00000008;
+    puStack_6d8 = &DAT_00000008;
     puStack_6b4 = (undefined *)0x4;
     puStack_6b0 = (undefined *)0x4;
     puStack_6ac = &DAT_00000004;

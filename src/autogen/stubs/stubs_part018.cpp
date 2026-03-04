@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTOnOffRadioButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005719d0
-undefined4 GetTOnOffRadioButtonClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
 // ghidra_proto void * __thiscall ConstructTOnOffRadioButtonBaseState(void)
 // FUNCTION: IMPERIALISM 0x005719f0
@@ -2203,14 +2195,6 @@ undefined4 HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder
-// ghidra_proto void __thiscall HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(STurnInstruction_Civi * pInstruction)
-// FUNCTION: IMPERIALISM 0x00582630
-undefined4 HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders
 // ghidra_proto void __thiscall HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(STurnInstruction_Ship * pInstruction)
 // FUNCTION: IMPERIALISM 0x00582720
@@ -3999,6 +3983,22 @@ undefined4 GetTMiniMapViewClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTMiniMapViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x0059a380
 undefined4 ConstructTMiniMapViewBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniMapView::DestructTMiniMapViewAndMaybeFree
+// ghidra_proto void * __thiscall DestructTMiniMapViewAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0059a3f0
+undefined4 DestructTMiniMapViewAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeAndRenderStrategicMapViewportOverlay
+// ghidra_proto void __cdecl RecomputeAndRenderStrategicMapViewportOverlay(void)
+// FUNCTION: IMPERIALISM 0x0059a540
+undefined4 RecomputeAndRenderStrategicMapViewportOverlay(void)
 {
   return 0;
 }

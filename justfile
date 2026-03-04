@@ -10,6 +10,7 @@ name_overrides := env_var_or_default("NAME_OVERRIDES", "config/function_name_ove
 function_ownership := env_var_or_default("FUNCTION_OWNERSHIP", "config/function_ownership.csv")
 vtable_gate_baseline := env_var_or_default("VTABLE_GATE_BASELINE", "config/vtable_gate_baseline.csv")
 canary_targets := env_var_or_default("CANARY_TARGETS", "config/canary_targets_tgreatpower.csv")
+class_discovery_classes := env_var_or_default("CLASS_DISCOVERY_CLASSES", "TGreatPower,TAutoGreatPower")
 
 default:
   @just --list
@@ -105,6 +106,15 @@ generate-ignores:
 
 session-loop pick='8' top='50' min_size='1':
   uv run python -m tools.reccmp.session_loop --target "{{target}}" --pick "{{pick}}" --top "{{top}}" --min-size "{{min_size}}"
+
+class-discovery classes='':
+  : "${GHIDRA_PROJECT_DIR:?Set GHIDRA_PROJECT_DIR in .env}"
+  discovery_classes="{{class_discovery_classes}}"; \
+  if [[ -n "{{classes}}" ]]; then discovery_classes="{{classes}}"; fi; \
+  uv run python -m tools.workflow.class_discovery \
+    --knowledge-root "$GHIDRA_PROJECT_DIR" \
+    --classes "$discovery_classes" \
+    --ownership-csv "{{function_ownership}}"
 
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"

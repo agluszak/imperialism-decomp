@@ -7,9 +7,11 @@ Family_CityDialogPayloadStateCore_Slot03|63eb30|auto-first-from-duplicates
 Family_CityDialogPayloadStateCore_Slot04|63eb34|auto-first-from-duplicates
 Family_CityDialogPayloadStateCore_Slot05|63eb38|auto-first-from-duplicates
 TArmyMission|648f78|auto-first-from-duplicates
+TAutoGreatPower|654088|locked-by-ctor-writes-004e6a70-and-004e6b50
 TButton|64a2b8|auto-first-from-duplicates
 TCloseParentButton|64a2b8|auto-first-from-duplicates
 TCtlMgr|64a2b8|auto-first-from-duplicates
+TGreatPower|653938|locked-by-ctor-write-004d89f0
 TMapKey|6406d8|auto-first-from-duplicates
 TStatusButton|64a2b8|auto-first-from-duplicates
 TTechHistoryView|6406d8|auto-first-from-duplicates

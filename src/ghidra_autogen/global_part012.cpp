@@ -10,7 +10,6 @@
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -20,7 +19,7 @@ void __cdecl WrapperFor_ftol_At004933a0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1c38 = (short)iVar1;
+  DAT_006a1b60._216_2_ = (short)iVar1;
   return;
 }
 
@@ -497,7 +496,7 @@ void __cdecl AppendStatusPointerAndDispatchMessageFallback(void)
   
   if ((g_bMessageFallbackInitCallbackRegistered & 1) == 0) {
     g_bMessageFallbackInitCallbackRegistered = g_bMessageFallbackInitCallbackRegistered | 1;
-    thunk_InitializeEventThunkFields_00648590_At00408cb5(&g_Append_Status_Pointer_Value_006A1C40);
+    thunk_InitializeEventThunkFields_00648590_At00408cb5(&UNK_006a1c3d.field_0x3);
     AppendPointerToGlobalVectorAsStatus();
   }
   CWnd::Default(in_ECX);
@@ -559,7 +558,6 @@ void __cdecl RegisterAmbitMcWindowClass(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -569,7 +567,7 @@ void __cdecl WrapperFor_ftol_At00493f30(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1d88 = (short)iVar1;
+  DAT_006a1d88._0_2_ = (short)iVar1;
   return;
 }
 
@@ -603,7 +601,7 @@ void __cdecl DestroyDefaultQuickDrawSurfaceContextAtExit(void)
 void __cdecl InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0(void)
 
 {
-  CBrush::thunk_InitializeGlobalClipRegionHandleState((CBrush *)&g_clipRegionHandle);
+  CBrush::thunk_InitializeGlobalClipRegionHandleState((CBrush *)((int)&UNK_006a1d57 + 1));
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -832,7 +830,6 @@ void __cdecl ReleaseQuickDrawCachedFontHandleIfPresent_At00494430(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=11, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=11,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
@@ -843,7 +840,7 @@ void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460(void)
   g_wGlobalFontPresetWord0 = 0xc;
   g_wGlobalFontPresetWord1 = 0xc;
   g_wGlobalFontPresetWord2 = 0xc;
-  _g_globalVectorStatus_006a1cf2 = 0xc;
+  g_globalVectorStatus_006a1cf2 = 0xc;
   g_bGlobalFontPresetDirty = 1;
   AppendPointerToGlobalVectorAsStatus();
   return;
@@ -1593,7 +1590,7 @@ void __cdecl ResetQuickDrawStrokeState(void)
 {
   g_nQuickDrawStrokeStylePrimary = g_Reset_Quick_Draw_Value_0064B8F0;
   g_nQuickDrawStrokeStyleSecondary = g_Reset_Quick_Draw_Value_0064B8F4;
-  _g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
+  g_Reset_Quick_Draw_State_006A1D10._0_2_ = g_Reset_Quick_Draw_WordState_0064B8F8;
   _g_bQuickDrawStrokePairDirty = 1;
   return;
 }
@@ -5717,13 +5714,11 @@ void ComputeBucketIndexAndScanNodeByKey(int arg1,int arg2)
 // GHIDRA_NAME ResetGlobalPair6A1E20And6A1E24
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1E20And6A1E24(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1E20And6A1E24(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1E20 = 0;
-  _g_Reset_Pair6_A1_State_006A1E24 = 0;
+  UNK_006a1dd0._80_4_ = 0;
+  UNK_006a1dd0._84_4_ = 0;
   return;
 }
 
@@ -5731,13 +5726,11 @@ void __cdecl ResetGlobalPair6A1E20And6A1E24(void)
 // GHIDRA_NAME ResetGlobalPair6A1E48And6A1E4C
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1E48And6A1E4C(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1E48And6A1E4C(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1E48 = 0;
-  _g_Reset_Pair6_A1_State_006A1E4C = 0;
+  UNK_006a1dd0._120_4_ = 0;
+  UNK_006a1dd0._124_4_ = 0;
   return;
 }
 
@@ -5745,15 +5738,13 @@ void __cdecl ResetGlobalPair6A1E48And6A1E4C(void)
 // GHIDRA_NAME ResetGlobalQuad6A1E28To6A1E34
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1E28To6A1E34(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1E28To6A1E34(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1E28 = 0;
-  _g_Reset_Quad6_A1_State_006A1E2C = 0;
-  _g_Reset_Quad6_A1_State_006A1E30 = 0;
-  _g_Reset_Quad6_A1_State_006A1E34 = 0;
+  UNK_006a1dd0._88_4_ = 0;
+  UNK_006a1dd0._92_4_ = 0;
+  UNK_006a1dd0._96_4_ = 0;
+  UNK_006a1dd0._100_4_ = 0;
   return;
 }
 
@@ -5761,15 +5752,13 @@ void __cdecl ResetGlobalQuad6A1E28To6A1E34(void)
 // GHIDRA_NAME ResetGlobalQuad6A1E38To6A1E44
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1E38To6A1E44(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1E38To6A1E44(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1E38 = 0;
-  _g_Reset_Quad6_A1_State_006A1E3C = 0;
-  _g_Reset_Quad6_A1_State_006A1E40 = 0;
-  _g_Reset_Quad6_A1_State_006A1E44 = 0;
+  UNK_006a1dd0._104_4_ = 0;
+  UNK_006a1dd0._108_4_ = 0;
+  UNK_006a1dd0._112_4_ = 0;
+  UNK_006a1dd0._116_4_ = 0;
   return;
 }
 
@@ -5777,12 +5766,10 @@ void __cdecl ResetGlobalQuad6A1E38To6A1E44(void)
 // GHIDRA_NAME ResetGlobalDword6A1E18
 // GHIDRA_PROTO void __cdecl ResetGlobalDword6A1E18(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalDword6A1E18(void)
 
 {
-  _g_Reset_Dword6_A1_State_006A1E18 = 0;
+  UNK_006a1dd0._72_4_ = 0;
   return;
 }
 
@@ -5847,13 +5834,11 @@ void __cdecl DestructStaticDialogTemplateD0Object(void)
 // GHIDRA_NAME ResetGlobalPair6A1E70And6A1E74
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1E70And6A1E74(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1E70And6A1E74(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1E70 = 0;
-  _g_Reset_Pair6_A1_State_006A1E74 = 0;
+  UNK_006a1dd0._160_4_ = 0;
+  UNK_006a1dd0._164_4_ = 0;
   return;
 }
 
@@ -5861,13 +5846,11 @@ void __cdecl ResetGlobalPair6A1E70And6A1E74(void)
 // GHIDRA_NAME ResetGlobalPair6A1F38And6A1F3C
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1F38And6A1F3C(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1F38And6A1F3C(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1F38 = 0;
-  _g_Reset_Pair6_A1_State_006A1F3C = 0;
+  UNK_006a1e79._191_4_ = 0;
+  UNK_006a1e79._195_4_ = 0;
   return;
 }
 
@@ -5875,15 +5858,13 @@ void __cdecl ResetGlobalPair6A1F38And6A1F3C(void)
 // GHIDRA_NAME ResetGlobalQuad6A1F18To6A1F24
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1F18To6A1F24(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1F18To6A1F24(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1F18 = 0;
-  _g_Reset_Quad6_A1_State_006A1F1C = 0;
-  _g_Reset_Quad6_A1_State_006A1F20 = 0;
-  _g_Reset_Quad6_A1_State_006A1F24 = 0;
+  UNK_006a1e79._159_4_ = 0;
+  UNK_006a1e79._163_4_ = 0;
+  UNK_006a1e79._167_4_ = 0;
+  UNK_006a1e79._171_4_ = 0;
   return;
 }
 
@@ -5891,15 +5872,13 @@ void __cdecl ResetGlobalQuad6A1F18To6A1F24(void)
 // GHIDRA_NAME ResetGlobalQuad6A1F28To6A1F34
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1F28To6A1F34(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1F28To6A1F34(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1F28 = 0;
-  _g_Reset_Quad6_A1_State_006A1F2C = 0;
-  _g_Reset_Quad6_A1_State_006A1F30 = 0;
-  _g_Reset_Quad6_A1_State_006A1F34 = 0;
+  UNK_006a1e79._175_4_ = 0;
+  UNK_006a1e79._179_4_ = 0;
+  UNK_006a1e79._183_4_ = 0;
+  UNK_006a1e79._187_4_ = 0;
   return;
 }
 
@@ -5907,12 +5886,10 @@ void __cdecl ResetGlobalQuad6A1F28To6A1F34(void)
 // GHIDRA_NAME ResetGlobalDword6A1E68
 // GHIDRA_PROTO void __cdecl ResetGlobalDword6A1E68(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalDword6A1E68(void)
 
 {
-  _g_Reset_Dword6_A1_State_006A1E68 = 0;
+  UNK_006a1dd0._152_4_ = 0;
   return;
 }
 
@@ -6085,13 +6062,11 @@ void __cdecl WrapperFor_ShowWindowOrForwardToSite_At0049bfd0(void)
 // GHIDRA_NAME ResetGlobalPair6A1F78And6A1F7C
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1F78And6A1F7C(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1F78And6A1F7C(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1F78 = 0;
-  _g_Reset_Pair6_A1_State_006A1F7C = 0;
+  UNK_006a1e79._255_4_ = 0;
+  UNK_006a1e79._259_4_ = 0;
   return;
 }
 
@@ -6099,13 +6074,11 @@ void __cdecl ResetGlobalPair6A1F78And6A1F7C(void)
 // GHIDRA_NAME ResetGlobalPair6A1FA8And6A1FAC
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1FA8And6A1FAC(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1FA8And6A1FAC(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1FA8 = 0;
-  _g_Reset_Pair6_A1_State_006A1FAC = 0;
+  UNK_006a1f84._36_4_ = 0;
+  UNK_006a1f84._40_4_ = 0;
   return;
 }
 
@@ -6113,15 +6086,13 @@ void __cdecl ResetGlobalPair6A1FA8And6A1FAC(void)
 // GHIDRA_NAME ResetGlobalQuad6A1F88To6A1F94
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1F88To6A1F94(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1F88To6A1F94(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1F88 = 0;
-  _g_Reset_Quad6_A1_State_006A1F8C = 0;
-  _g_Reset_Quad6_A1_State_006A1F90 = 0;
-  _g_Reset_Quad6_A1_State_006A1F94 = 0;
+  UNK_006a1f84._4_4_ = 0;
+  UNK_006a1f84._8_4_ = 0;
+  UNK_006a1f84._12_4_ = 0;
+  UNK_006a1f84._16_4_ = 0;
   return;
 }
 
@@ -6129,15 +6100,13 @@ void __cdecl ResetGlobalQuad6A1F88To6A1F94(void)
 // GHIDRA_NAME ResetGlobalQuad6A1F98To6A1FA4
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1F98To6A1FA4(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1F98To6A1FA4(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1F98 = 0;
-  _g_Reset_Quad6_A1_State_006A1F9C = 0;
-  _g_Reset_Quad6_A1_State_006A1FA0 = 0;
-  _g_Reset_Quad6_A1_State_006A1FA4 = 0;
+  UNK_006a1f84._20_4_ = 0;
+  UNK_006a1f84._24_4_ = 0;
+  UNK_006a1f84._28_4_ = 0;
+  UNK_006a1f84._32_4_ = 0;
   return;
 }
 
@@ -6145,12 +6114,10 @@ void __cdecl ResetGlobalQuad6A1F98To6A1FA4(void)
 // GHIDRA_NAME ResetGlobalDword6A1F70
 // GHIDRA_PROTO void __cdecl ResetGlobalDword6A1F70(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalDword6A1F70(void)
 
 {
-  _g_Reset_Dword6_A1_State_006A1F70 = 0;
+  UNK_006a1e79._247_4_ = 0;
   return;
 }
 
@@ -6158,13 +6125,11 @@ void __cdecl ResetGlobalDword6A1F70(void)
 // GHIDRA_NAME InitializeGlobalPair6A1FE8And6A1FECDefault
 // GHIDRA_PROTO void __cdecl InitializeGlobalPair6A1FE8And6A1FECDefault(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl InitializeGlobalPair6A1FE8And6A1FECDefault(void)
 
 {
-  _g_Pair6_A1_FE8_State_006A1FE8 = 0;
-  _g_Pair6_A1_FE8_State_006A1FEC = 0x3f900000;
+  g_Reset_Dword6_A1_State_006A1FC8._32_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._36_4_ = 0x3f900000;
   return;
 }
 
@@ -6698,13 +6663,11 @@ void __cdecl ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void)
 // GHIDRA_NAME ResetGlobalPair6A1FD0And6A1FD4
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A1FD0And6A1FD4(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A1FD0And6A1FD4(void)
 
 {
-  _g_Reset_Pair6_A1_State_006A1FD0 = 0;
-  _g_Reset_Pair6_A1_State_006A1FD4 = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._8_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._12_4_ = 0;
   return;
 }
 
@@ -6712,13 +6675,11 @@ void __cdecl ResetGlobalPair6A1FD0And6A1FD4(void)
 // GHIDRA_NAME ResetGlobalPair6A2000And6A2004
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A2000And6A2004(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A2000And6A2004(void)
 
 {
-  _g_Reset_Pair6_A2000_State_006A2000 = 0;
-  _g_Reset_Pair6_A2000_State_006A2004 = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._56_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._60_4_ = 0;
   return;
 }
 
@@ -6726,15 +6687,13 @@ void __cdecl ResetGlobalPair6A2000And6A2004(void)
 // GHIDRA_NAME ResetGlobalQuad6A1FD8To6A1FE4
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1FD8To6A1FE4(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1FD8To6A1FE4(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1FD8 = 0;
-  _g_Reset_Quad6_A1_State_006A1FDC = 0;
-  _g_Reset_Quad6_A1_State_006A1FE0 = 0;
-  _g_Reset_Quad6_A1_State_006A1FE4 = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._16_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._20_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._24_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._28_4_ = 0;
   return;
 }
 
@@ -6742,15 +6701,13 @@ void __cdecl ResetGlobalQuad6A1FD8To6A1FE4(void)
 // GHIDRA_NAME ResetGlobalQuad6A1FF0To6A1FFC
 // GHIDRA_PROTO void __cdecl ResetGlobalQuad6A1FF0To6A1FFC(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalQuad6A1FF0To6A1FFC(void)
 
 {
-  _g_Reset_Quad6_A1_State_006A1FF0 = 0;
-  _g_Reset_Quad6_A1_State_006A1FF4 = 0;
-  _g_Reset_Quad6_A1_State_006A1FF8 = 0;
-  _g_Reset_Quad6_A1_State_006A1FFC = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._40_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._44_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._48_4_ = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._52_4_ = 0;
   return;
 }
 
@@ -6758,12 +6715,10 @@ void __cdecl ResetGlobalQuad6A1FF0To6A1FFC(void)
 // GHIDRA_NAME ResetGlobalDword6A1FC8
 // GHIDRA_PROTO void __cdecl ResetGlobalDword6A1FC8(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalDword6A1FC8(void)
 
 {
-  _g_Reset_Dword6_A1_State_006A1FC8 = 0;
+  g_Reset_Dword6_A1_State_006A1FC8._0_4_ = 0;
   return;
 }
 
@@ -7158,13 +7113,11 @@ void __cdecl PaintStoredBitmapToWindowClientDc(void)
 // GHIDRA_NAME ResetGlobalPair6A2020And6A2024
 // GHIDRA_PROTO void __cdecl ResetGlobalPair6A2020And6A2024(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl ResetGlobalPair6A2020And6A2024(void)
 
 {
-  _g_Reset_Pair6_A2020_State_006A2020 = 0;
-  _g_Reset_Pair6_A2020_State_006A2024 = 0;
+  DAT_006a201c._4_4_ = 0;
+  DAT_006a201c._8_4_ = 0;
   return;
 }
 
@@ -7486,7 +7439,6 @@ void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -7496,7 +7448,7 @@ void __cdecl WrapperFor_ftol_At0049db60(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a21ac = (short)iVar1;
+  DAT_006a21ac._0_2_ = (short)iVar1;
   return;
 }
 
@@ -8089,7 +8041,7 @@ void __cdecl SaveGlobalSystemsToStream(TAmbitFileBasedDocument *pThis)
   void **ppvVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_50;
-  void *pvStack_4c;
+  undefined1 *puStack_4c;
   undefined1 *puStack_48;
   int iStack_44;
   undefined *puStack_40;
@@ -8132,9 +8084,9 @@ void __cdecl SaveGlobalSystemsToStream(TAmbitFileBasedDocument *pThis)
   (*pcVar1)();
   puStack_48 = &stack0xffffffd8;
   iStack_44 = 4;
-  pvStack_4c = (void *)0x49ebbc;
+  puStack_4c = (void *)0x49ebbc;
   (*pcVar1)();
-  pvStack_4c = (void *)0x20;
+  puStack_4c = &DAT_00000020;
   uStack_50 = g_szSaveSlotDisplayLabel;
   (*pcVar1)();
   puVar2 = AllocateWithFallbackHandler();
@@ -8221,7 +8173,6 @@ void AssertUAmbitLine1335(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -8231,7 +8182,7 @@ void __cdecl WrapperFor_ftol_At0049efd0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2248 = (short)iVar1;
+  DAT_006a2230._24_2_ = (short)iVar1;
   return;
 }
 

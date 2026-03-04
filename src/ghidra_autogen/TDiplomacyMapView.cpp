@@ -982,7 +982,7 @@ LAB_004f4343:
       *(short *)&pTStack_d4->field90 = extraout_AX_01;
       pTStack_d4->field98 = extraout_AX_01;
       pTStack_d4->fieldc2 = extraout_AX_01;
-      pTStack_d4->pFieldbc = (void *)0xd;
+      pTStack_d4->pFieldbc = &DAT_0000000d;
       *unaff_FS_OFFSET = uStack_c;
       return;
     }
@@ -1731,7 +1731,7 @@ LAB_004f4343:
       *(short *)&local_d4->field90 = extraout_AX_01;
       local_d4->field98 = extraout_AX_01;
       local_d4->fieldc2 = extraout_AX_01;
-      local_d4->pFieldbc = (void *)0xd;
+      local_d4->pFieldbc = &DAT_0000000d;
       *unaff_FS_OFFSET = uStack_c;
       return;
     }

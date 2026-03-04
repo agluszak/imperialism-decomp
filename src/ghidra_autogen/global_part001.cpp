@@ -3387,7 +3387,7 @@ void __cdecl thunk_OpenMapContextActionDialogByType(void)
   char *pcStack_7c;
   undefined4 uStack_78;
   undefined1 *puStack_74;
-  undefined *puStack_70;
+  undefined4 uStack_70;
   void *pvStack_48;
   undefined1 auStack_44 [8];
   undefined1 auStack_3c [6];
@@ -3427,17 +3427,17 @@ void __cdecl thunk_OpenMapContextActionDialogByType(void)
   uStack_1e = 0;
   uStack_1d = 0;
   piStack_1c = (int *)((uint)piStack_1c & 0xffff0000);
-  puStack_70 = (undefined *)0x599111;
+  uStack_70 = 0x599111;
   thunk_InitializeUiTextStyleDescriptor((int)auStack_18,0,0xe,0x2b67,1);
   thunk_BuildUiTextStyleDescriptor();
-  puStack_70 = (undefined *)0x59913f;
+  uStack_70 = 0x59913f;
   thunk_InitializeUiTextStyleDescriptor((int)auStack_3c,0,10,0x2b67,3);
-  puStack_70 = (undefined *)0x599157;
+  uStack_70 = 0x599157;
   thunk_InitializeUiTextStyleDescriptor((int)auStack_24,2,10,0x2b67,3);
   piVar4 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))();
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_70 = &UNK_00599183;
+    uStack_70 = 0x599183;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar1 = *piVar4;
@@ -3451,10 +3451,10 @@ void __cdecl thunk_OpenMapContextActionDialogByType(void)
   iVar1 = *piVar5;
   (**(code **)(iVar1 + 0xc))();
   FormatOverlayTerrainLabelText();
-  puStack_70 = (undefined *)0x5991fd;
+  uStack_70 = 0x5991fd;
   (**(code **)(iVar1 + 0x1c8))();
   puStack_74 = auStack_44;
-  puStack_70 = (undefined *)0x0;
+  uStack_70 = 0;
   uStack_78 = 0x59920c;
   (**(code **)(iVar1 + 0x1b4))();
   uStack_78 = 0x7a6f6e65;
@@ -5319,7 +5319,6 @@ void __cdecl thunk_NoOpMissionVtableSlot3C(void)
 // GHIDRA_COMMENT Single-JMP thunk to BuildOverlaySpanRecordsFromQuadBorderLinks
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to BuildOverlaySpanRecordsFromQuadBorderLinks */
 
 void __cdecl thunk_BuildOverlaySpanRecordsFromQuadBorderLinks(void)
@@ -5350,53 +5349,53 @@ void __cdecl thunk_BuildOverlaySpanRecordsFromQuadBorderLinks(void)
     FreeHeapBlockWithAllocatorTracking();
   }
   entryIndex = 0;
-  if (_g_uOverlayQuadBorderLinkArray16Count != 0) {
+  if (g_uOverlayQuadBorderLinkArray16Count != 0) {
     do {
-      if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+      if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
         thunk_ReserveOverlayQuadRecordArrayCapacity
                   (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
       }
-      if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-        _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+      if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+        g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
       }
       if (g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId == -1) {
         entryIndex = entryIndex + 1;
       }
       else {
-        if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+        if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
           thunk_ReserveOverlayQuadRecordArrayCapacity
                     (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
         }
-        if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-          _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+        if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+          g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
         }
-        if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+        if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
           thunk_ReserveOverlayQuadRecordArrayCapacity
                     (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
         }
-        if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-          _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+        if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+          g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
         }
         entryIndex_00 = entryIndex + 1;
         uStack_34 = 0xffffffff;
         uStack_2c = 0xffffffff;
-        if (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count) {
+        if (entryIndex_00 < g_uOverlayQuadBorderLinkArray16Count) {
           arg1_00 = entryIndex + 2;
           iVar5 = entryIndex_00 * 0x10;
           do {
-            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+            if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
               thunk_ReserveOverlayQuadRecordArrayCapacity
                         (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
             }
-            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-              _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+            if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+              g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
             }
-            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+            if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
               thunk_ReserveOverlayQuadRecordArrayCapacity
                         (&g_OverlayQuadBorderLinkArray16State,arg1_00);
             }
-            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
-              _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+            if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+              g_uOverlayQuadBorderLinkArray16Count = arg1_00;
             }
             if ((g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeVertexA ==
                  *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeVertexA + iVar5)) &&
@@ -5408,19 +5407,19 @@ void __cdecl thunk_BuildOverlaySpanRecordsFromQuadBorderLinks(void)
               bVar1 = false;
             }
             if (bVar1) {
-              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+              if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
                 thunk_ReserveOverlayQuadRecordArrayCapacity
                           (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
               }
-              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-                _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+              if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+                g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
               }
-              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+              if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
                 thunk_ReserveOverlayQuadRecordArrayCapacity
                           (&g_OverlayQuadBorderLinkArray16State,arg1_00);
               }
-              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
-                _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+              if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                g_uOverlayQuadBorderLinkArray16Count = arg1_00;
               }
               iVar4 = ((*(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeDirection + iVar5
                                 ) - g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeDirection
@@ -5433,19 +5432,19 @@ void __cdecl thunk_BuildOverlaySpanRecordsFromQuadBorderLinks(void)
               }
               if (bVar1) {
                 if (uStack_34 != 0xffffffff) {
-                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+                  if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
                     thunk_ReserveOverlayQuadRecordArrayCapacity
                               (&g_OverlayQuadBorderLinkArray16State,arg1_00);
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
-                    _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+                  if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                    g_uOverlayQuadBorderLinkArray16Count = arg1_00;
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+                  if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
                     thunk_ReserveOverlayQuadRecordArrayCapacity
                               (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-                    _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+                  if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+                    g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
                   }
                   iVar4 = *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nQuadCellId + iVar5)
                   ;
@@ -5493,7 +5492,7 @@ LAB_0052ce49:
             entryIndex_00 = entryIndex_00 + 1;
             arg1_00 = arg1_00 + 1;
             iVar5 = iVar5 + 0x10;
-          } while (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count);
+          } while (entryIndex_00 < g_uOverlayQuadBorderLinkArray16Count);
         }
         if ((uStack_34 == 0xffffffff) && (uStack_34 = uStack_2c, uStack_2c == 0xffffffff)) {
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
@@ -5517,7 +5516,7 @@ LAB_0052ce49:
             puVar2 = puVar2 + 1;
             puVar6 = puVar6 + 1;
           }
-          (*(code *)*_g_OverlaySpanRecordArray18State)();
+          (*(code *)*g_OverlaySpanRecordArray18State)();
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
                              (&g_OverlayQuadBorderLinkArray16State,entryIndex);
           *puVar2 = 0xffffffff;
@@ -5530,7 +5529,7 @@ LAB_0052ce49:
           puVar2[1] = 0xffffffff;
         }
       }
-    } while (entryIndex < _g_uOverlayQuadBorderLinkArray16Count);
+    } while (entryIndex < g_uOverlayQuadBorderLinkArray16Count);
   }
   return;
 }
@@ -5749,7 +5748,7 @@ void __cdecl thunk_UpdatePersistentTopTenNationScores(void)
     piVar3 = piVar3 + 1;
   } while ((int)pcVar9 < 10);
   if ((int)pcVar9 < 10) {
-    if (pcVar9 != (char *)0x9) {
+    if (pcVar9 != &DAT_00000009) {
       iVar4 = 9 - (int)pcVar9;
       piVar3 = aiStack_180 + 9;
       pcVar7 = acStack_38;
@@ -6167,7 +6166,6 @@ void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004820e0(void)
 // GHIDRA_COMMENT Single-JMP thunk to BuildCityRegionBorderOverlaySegments
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to BuildCityRegionBorderOverlaySegments */
 
 void __cdecl thunk_BuildCityRegionBorderOverlaySegments(void)
@@ -6252,7 +6250,7 @@ LAB_0052c23f:
       iVar5 = 2;
       thunk_ConvertTileIndexToOverlayCoord216BySide();
       thunk_InitializeOverlaySpanRecordSorted(&uStack_40,arg1,iVar8,iVar4,iVar5);
-      (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_40,uStack_3c,uStack_38,uStack_34);
+      (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_40,uStack_3c,uStack_38,uStack_34);
     }
     iVar6 = iVar6 + 0x24;
     iVar7 = iVar7 + 1;
@@ -6348,21 +6346,21 @@ LAB_0052c411:
         if (arg3 == -1) {
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_40,arg1_00,(int)puStack_50,iVar8,iVar4);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_40,uStack_3c,uStack_38,uStack_34);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_40,uStack_3c,uStack_38,uStack_34);
         }
         else {
           iVar5 = iVar8;
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_30,arg1_01,(int)puStack_50,iVar5,iVar4);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
           iVar4 = unaff_EDI;
           iVar5 = arg3;
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_30,arg1_02,iVar4,iVar5,arg4_00);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_30,arg1_03,iVar8,arg3,arg4);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
         }
       }
       iVar6 = iVar6 + 0x24;

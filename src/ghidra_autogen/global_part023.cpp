@@ -1397,7 +1397,6 @@ void __cdecl SendMciCommand808ToDeviceWithParam(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1407,7 +1406,7 @@ void __cdecl WrapperFor_ftol_At005e1b90(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5e28 = (short)iVar1;
+  UNK_006a5d28._256_2_ = (short)iVar1;
   return;
 }
 
@@ -1840,7 +1839,6 @@ void __cdecl SendMessage808IfSelectionStateActive(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1850,7 +1848,7 @@ void __cdecl WrapperFor_ftol_At005e26a0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5f3c = (short)iVar1;
+  DAT_006a5f3c._0_2_ = (short)iVar1;
   return;
 }
 
@@ -1863,7 +1861,7 @@ void __cdecl InitializeRuntimeClassState_0066FA50_AndRegisterAtExit(void)
 {
   TRuntimeLinkedBlockChainState_0066FA50::
   thunk_InitializeRuntimeClassVtablePointer_0066FA50_State_At004056e6
-            ((TRuntimeLinkedBlockChainState_0066FA50 *)&g_RuntimeLinkedBlockChainState_006A5F40,10);
+            ((TRuntimeLinkedBlockChainState_0066FA50 *)((int)&DAT_006a5f3c + 4),10);
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -1877,7 +1875,7 @@ void __cdecl DestroyRuntimeClassState_0066FA50_AtExit(void)
 {
   TRuntimeLinkedBlockChainState_0066FA50::
   DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-            ((TRuntimeLinkedBlockChainState_0066FA50 *)&g_RuntimeLinkedBlockChainState_006A5F40);
+            ((TRuntimeLinkedBlockChainState_0066FA50 *)((int)&DAT_006a5f3c + 4));
   return;
 }
 
@@ -1891,8 +1889,7 @@ InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At0
 {
   TRuntimeHeapBufferOwnerState_0066FA68::
   thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7
-            ((TRuntimeHeapBufferOwnerState_0066FA68 *)
-             &g_Destruct_Runtime_Selection_RuntimeCache_006A5F28);
+            ((TRuntimeHeapBufferOwnerState_0066FA68 *)((int)&UNK_006a5f20 + 8));
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -2826,7 +2823,7 @@ OpenJoinGameRuntimeSelectionAndStartSession(void *pJoinContext,int *pSourceToken
              (**(code **)(*(int *)g_pRuntimeTurnEventQueueManager + 0x30))
                        (g_pRuntimeTurnEventQueueManager,0,
                         thunk_WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900,
-                        &g_RuntimeSelectionRecordBufferState,0x10);
+                        0x6a5f60,0x10);
         if ((-1 < g_nRuntimeNetworkLastStatusCode) && (g_nDefaultTurnEventTargetNationId != 0)) {
           return true;
         }
@@ -2843,7 +2840,6 @@ OpenJoinGameRuntimeSelectionAndStartSession(void *pJoinContext,int *pSourceToken
 // GHIDRA_COMMENT Populates packet sender field, then either enqueues packet in deferred queue or sends immediately to target nation; on send failure reports network error and returns false.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Populates packet sender field, then either enqueues packet in deferred queue or sends immediately
    to target nation; on send failure reports network error and returns false. */
 
@@ -2875,7 +2871,7 @@ void __cdecl EnqueueOrSendTurnEventPacketToNation(int arg1,int arg2)
       arg1 = (int)(arg1 + 4);
       puVar6 = puVar6 + 1;
     }
-    for (uVar8 = uVar8 & 3; puVar1 = _g_pDeferredTurnEventPacketQueueTail, uVar8 != 0;
+    for (uVar8 = uVar8 & 3; puVar1 = g_pDeferredTurnEventPacketQueueTail, uVar8 != 0;
         uVar8 = uVar8 - 1) {
       *(undefined1 *)puVar6 = *(undefined1 *)arg1;
       arg1 = (int)(arg1 + 1);
@@ -2885,9 +2881,9 @@ void __cdecl EnqueueOrSendTurnEventPacketToNation(int arg1,int arg2)
     if (g_pDeferredTurnEventPacketFreeNodeList == (void *)0x0) {
       pvVar5 = AllocateAndLinkBlockHead();
       puVar6 = g_pDeferredTurnEventPacketFreeNodeList;
-      puVar2 = (undefined4 *)((int)pvVar5 + _g_nDeferredTurnEventPacketNodesPerBlock * 0xc + -8);
-      iVar9 = _g_nDeferredTurnEventPacketNodesPerBlock;
-      if (-1 < _g_nDeferredTurnEventPacketNodesPerBlock + -1) {
+      puVar2 = (undefined4 *)((int)pvVar5 + g_nDeferredTurnEventPacketNodesPerBlock * 0xc + -8);
+      iVar9 = g_nDeferredTurnEventPacketNodesPerBlock;
+      if (-1 < g_nDeferredTurnEventPacketNodesPerBlock + -1) {
         do {
           puVar6 = puVar2;
           *puVar6 = g_pDeferredTurnEventPacketFreeNodeList;
@@ -2904,12 +2900,12 @@ void __cdecl EnqueueOrSendTurnEventPacketToNation(int arg1,int arg2)
     puVar6[2] = 0;
     puVar6[2] = puVar4;
     puVar4 = puVar6;
-    if (_g_pDeferredTurnEventPacketQueueTail != (undefined4 *)0x0) {
-      *_g_pDeferredTurnEventPacketQueueTail = puVar6;
-      puVar4 = _g_pDeferredTurnEventPacketQueueHead;
+    if (g_pDeferredTurnEventPacketQueueTail != (undefined4 *)0x0) {
+      *g_pDeferredTurnEventPacketQueueTail = puVar6;
+      puVar4 = g_pDeferredTurnEventPacketQueueHead;
     }
-    _g_pDeferredTurnEventPacketQueueHead = puVar4;
-    _g_pDeferredTurnEventPacketQueueTail = puVar6;
+    g_pDeferredTurnEventPacketQueueHead = puVar4;
+    g_pDeferredTurnEventPacketQueueTail = puVar6;
     if (iVar3 == g_sessionActiveNationId) {
       return;
     }
@@ -2977,7 +2973,6 @@ void __cdecl FreeTurnEventPacketBuffer(int arg1)
 /* WARNING: Removing unreachable block (ram,0x005e4089) */
 /* WARNING: Removing unreachable block (ram,0x005e406e) */
 /* WARNING: Recovered jumptable eliminated as dead code */
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Pops next packet from global/deferred turn-event queues and handles special packet types inline
    before returning next actionable packet (or null). */
 
@@ -2987,31 +2982,31 @@ void __cdecl PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
   int *piVar1;
   int extraout_EAX;
   
-  piVar1 = _g_pDeferredTurnEventPacketQueueHead;
+  piVar1 = g_pDeferredTurnEventPacketQueueHead;
   if (g_pRuntimeTurnEventQueueManager == (void *)0x0) {
     return;
   }
   if (g_nDeferredTurnEventPacketQueueCount != 0) {
-    _g_pDeferredTurnEventPacketQueueHead = (int *)*_g_pDeferredTurnEventPacketQueueHead;
-    if (_g_pDeferredTurnEventPacketQueueHead == (undefined4 *)0x0) {
-      _g_pDeferredTurnEventPacketQueueTail = 0;
+    g_pDeferredTurnEventPacketQueueHead = (int *)*g_pDeferredTurnEventPacketQueueHead;
+    if (g_pDeferredTurnEventPacketQueueHead == (undefined4 *)0x0) {
+      g_pDeferredTurnEventPacketQueueTail = 0;
     }
     else {
-      _g_pDeferredTurnEventPacketQueueHead[1] = 0;
+      g_pDeferredTurnEventPacketQueueHead[1] = 0;
     }
     *piVar1 = (int)g_pDeferredTurnEventPacketFreeNodeList;
     g_pDeferredTurnEventPacketFreeNodeList = piVar1;
     g_nDeferredTurnEventPacketQueueCount = g_nDeferredTurnEventPacketQueueCount + -1;
     if (g_nDeferredTurnEventPacketQueueCount == 0) {
-      for (; _g_pDeferredTurnEventPacketQueueHead != (undefined4 *)0x0;
-          _g_pDeferredTurnEventPacketQueueHead = (int *)*_g_pDeferredTurnEventPacketQueueHead) {
+      for (; g_pDeferredTurnEventPacketQueueHead != (undefined4 *)0x0;
+          g_pDeferredTurnEventPacketQueueHead = (int *)*g_pDeferredTurnEventPacketQueueHead) {
       }
       g_nDeferredTurnEventPacketQueueCount = 0;
       g_pDeferredTurnEventPacketFreeNodeList = (void *)0x0;
-      _g_pDeferredTurnEventPacketQueueTail = 0;
-      _g_pDeferredTurnEventPacketQueueHead = (undefined4 *)0x0;
+      g_pDeferredTurnEventPacketQueueTail = 0;
+      g_pDeferredTurnEventPacketQueueHead = (undefined4 *)0x0;
       FreeDataChain();
-      _g_pDeferredTurnEventPacketNodeBlockChain = 0;
+      g_pDeferredTurnEventPacketNodeBlockChain = 0;
     }
     return;
   }
@@ -3525,7 +3520,6 @@ void __fastcall ResizeDwordPointerArrayAndZeroNewSlots(int ecxArg,int arg1,int a
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -3535,7 +3529,7 @@ void __cdecl WrapperFor_ftol_At005e4d50(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a60b8 = (short)iVar1;
+  UNK_006a6024._148_2_ = (short)iVar1;
   return;
 }
 
@@ -3546,7 +3540,6 @@ void __cdecl WrapperFor_ftol_At005e4d50(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=12, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=12,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
@@ -3557,7 +3550,7 @@ void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80(void)
   int *piVar2;
   
   g_RuntimeLocalizationAudioSlotState = 0;
-  _g_globalVectorStatus_006a60f0 = 0;
+  UNK_006a60cc._36_4_ = 0;
   piVar2 = &g_Notify_Audio_Objects_Value_006A60C4;
   for (iVar1 = 6; iVar1 != 0; iVar1 = iVar1 + -1) {
     *piVar2 = 0;
@@ -6020,7 +6013,7 @@ int __cdecl WrapperFor_memcmp_At005e713a(void *_Buf1,void *_Buf2,size_t _Size)
 {
   int iVar1;
   
-  iVar1 = memcmp(_Buf2,&g_memcmpBuffer_006736a0,0x10);
+  iVar1 = memcmp(_Buf2,(void *)((int)&UNK_0067369c + 4),0x10);
   if ((iVar1 != 0) && (iVar1 = memcmp(_Buf2,&g_memcmpBuffer_006736b0,0x10), iVar1 != 0)) {
     return -0x7fffbffe;
   }
@@ -6200,7 +6193,6 @@ int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e72f1(void *this)
 // GHIDRA_COMMENT Library: Visual Studio 1998 Release [FID:FID_single_match_phase1_nodebug]
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Library Function - Single Match
     __fpmath
    
@@ -6213,7 +6205,7 @@ void __cdecl fpmath(int param_1)
   
   InitializeFpmathAmsgExitHandlerTable();
   ProbeProcessorFeatureApiOrFallbackInit();
-  _g_fpmath_State_006A7FA8 = extraout_EAX;
+  g_uMsgCommdlgSetRgbColor._8_4_ = extraout_EAX;
   setdefaultprecision();
   return;
 }

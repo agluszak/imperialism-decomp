@@ -255,7 +255,7 @@ void * __thiscall TShipLine::ConstructTShipLineBaseState(TShipLine *this,int arg
   local_10 = (undefined1 *)0x0;
   TArmyCheckBox::ConstructTArmyCheckBoxBaseState
             ((TArmyCheckBox *)this_01,(int)this_00,(int)&local_14,(int)&local_24,5,5,local_1c,
-             (int)*(short *)(&g_TShip_Line_Base_Value_006985E8 +
+             (int)*(short *)((int)&g_TShip_Line_Base_Value_006985E8 +
                             *(short *)((int)this->pField10 + 4) * 2));
   pvVar1 = (this_01->base).pVtable;
   (this_01->base).field8_0x1c = 0x63686563;

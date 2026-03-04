@@ -1399,7 +1399,6 @@ void __thiscall WritePaletteChunkToMmioFromPaletteHandle(void *this,int hmmio)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1409,7 +1408,7 @@ void __cdecl WrapperFor_ftol_At0047f250(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a15c8 = (short)iVar1;
+  DAT_006a1484._324_2_ = (short)iVar1;
   return;
 }
 
@@ -1621,8 +1620,7 @@ WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620(int 
 void __cdecl InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit(void)
 
 {
-  thunk_InitializeRuntimeSelectionRecordArrayRuntimeClassFields(&g_RuntimeSelectionRecordArrayState)
-  ;
+  thunk_InitializeRuntimeSelectionRecordArrayRuntimeClassFields(&UNK_006a15d0.field_0x10);
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -1635,7 +1633,7 @@ void __cdecl DestroyRuntimeSelectionRecordArrayStateAtExit(void)
 
 {
   DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass
-            ((RuntimeClassState_00646FB0 *)&g_RuntimeSelectionRecordArrayState);
+            ((RuntimeClassState_00646FB0 *)&UNK_006a15d0.field_0x10);
   return;
 }
 
@@ -1721,7 +1719,6 @@ void __cdecl OrphanCallChain_C2_I17_0047f870(void)
 // GHIDRA_COMMENT Appends a 4-dword runtime selection record into dynamic vector DAT_006A15E4 (count DAT_006A15E8). Records are later exposed through list item-data selection dialogs.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Appends a 4-dword runtime selection record into dynamic vector DAT_006A15E4 (count DAT_006A15E8).
    Records are later exposed through list item-data selection dialogs. */
 
@@ -1785,8 +1782,8 @@ void __cdecl AppendRuntimeSelectionRecordEntry(int arg1)
       }
     }
     else if (g_nRuntimeSelectionRecordCapacity < (int)uVar1) {
-      iVar5 = _g_nRuntimeSelectionRecordGrowthStep;
-      if (_g_nRuntimeSelectionRecordGrowthStep == 0) {
+      iVar5 = g_nRuntimeSelectionRecordGrowthStep;
+      if (g_nRuntimeSelectionRecordGrowthStep == 0) {
         iVar5 = (int)(g_nRuntimeSelectionRecordCount + (g_nRuntimeSelectionRecordCount >> 0x1f & 7U)
                      ) >> 3;
         if (iVar5 < 4) {
@@ -3001,7 +2998,6 @@ void __fastcall ResizeDynamicPointerArrayWithGrowthStep(int ecxArg,int arg1,int 
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -3011,7 +3007,7 @@ void __cdecl WrapperFor_ftol_At004810c0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1680 = (short)iVar1;
+  DAT_006a15f4._140_2_ = (short)iVar1;
   return;
 }
 
@@ -3125,7 +3121,6 @@ WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220(int 
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -3135,7 +3130,7 @@ void __cdecl WrapperFor_ftol_At00481370(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a16d8 = (short)iVar1;
+  DAT_006a15f4._228_2_ = (short)iVar1;
   return;
 }
 
@@ -3953,7 +3948,6 @@ void __thiscall OrphanVtableAssignStub_00482440(void *this)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -3963,7 +3957,7 @@ void __cdecl WrapperFor_ftol_At00482730(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a177c = (short)iVar1;
+  DAT_006a15f4._392_2_ = (short)iVar1;
   return;
 }
 
@@ -5063,7 +5057,6 @@ void __cdecl ForwardBlitSurfaceRectSkippingTransparentColor(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5073,7 +5066,7 @@ void __cdecl WrapperFor_ftol_At00484ac0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1830 = (short)iVar1;
+  UNK_006a17c8._104_2_ = (short)iVar1;
   return;
 }
 
@@ -5659,7 +5652,7 @@ void __cdecl WrapperFor_SwitchActiveFrameAndNotifyHandlers_At00485c60(int arg1,i
 void __cdecl WrapperFor_AFX_CLASSINIT_At00485e40(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a1870);
+  AFX_CLASSINIT(&UNK_006a183c.field_0x34);
   return;
 }
 
@@ -6313,7 +6306,6 @@ void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00486f60(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -6323,7 +6315,7 @@ void __cdecl WrapperFor_ftol_At00487150(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1938 = (short)iVar1;
+  UNK_006a18e4._84_2_ = (short)iVar1;
   return;
 }
 

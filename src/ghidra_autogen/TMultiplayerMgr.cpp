@@ -908,7 +908,7 @@ TMultiplayerMgr::thunk_ProcessDiplomacyTurnStateEventStateMachine(TMultiplayerMg
   char *pcStack_1c0;
   char *pcStack_1bc;
   int aiStack_1b8 [3];
-  void *pvStack_1ac;
+  undefined1 *puStack_1ac;
   undefined4 uStack_1a8;
   undefined4 uStack_1a0;
   void *pvStack_19c;
@@ -992,7 +992,7 @@ LAB_00546c48:
       thunk_GetActiveNationId();
       aiStack_1b8[1] = 0;
       aiStack_1b8[0] = 0x25;
-      pvStack_1ac = (void *)0x34;
+      puStack_1ac = (void *)0x34;
       puVar26 = &uStack_1a0;
       for (iVar37 = 7; iVar37 != 0; iVar37 = iVar37 + -1) {
         *puVar26 = 0x756e6b6e;
@@ -1029,7 +1029,7 @@ LAB_00546c48:
         } while (cVar1 != '\0');
         uVar30 = ~uVar30;
         aiStack_1b8[2] = 0;
-        pvStack_1ac = (void *)0x64;
+        puStack_1ac = (void *)0x64;
         aiStack_1b8[0] = 9;
         uStack_1a0 = CONCAT31(uStack_1a0._1_3_,cVar9);
         pbVar31 = (byte *)(pcVar29 + -uVar30);
@@ -1136,7 +1136,7 @@ LAB_00546c48:
         } while (cVar9 != '\0');
         uVar30 = ~uVar30;
         pvStack_19c = (void *)0x0;
-        pvStack_1ac = (void *)0x64;
+        puStack_1ac = (void *)0x64;
         aiStack_1b8[0] = 9;
         pbVar31 = (byte *)(pcVar29 + -uVar30);
         pbVar39 = abStack_198;
@@ -1196,7 +1196,7 @@ LAB_00546c48:
       aiStack_1b8[0] = 9;
       uVar30 = ~uVar30;
       aiStack_1b8[2] = 0;
-      pvStack_1ac = (void *)0x64;
+      puStack_1ac = (void *)0x64;
       uStack_1a0 = CONCAT31(uStack_1a0._1_3_,(char)pcVar11);
       pbVar31 = (byte *)(pcVar36 + -uVar30);
       pbVar39 = abStack_198;
@@ -1260,7 +1260,7 @@ LAB_00546c48:
         aiStack_1b8[1] = 0;
         uVar30 = ~uVar30;
         aiStack_1b8[2] = 0;
-        pvStack_1ac = (void *)0x64;
+        puStack_1ac = (void *)0x64;
         pbVar31 = (byte *)(pcVar36 + -uVar30);
         pbVar39 = abStack_198;
         for (uVar20 = uVar30 >> 2; uVar20 != 0; uVar20 = uVar20 - 1) {
@@ -1723,7 +1723,7 @@ LAB_005464fd:
     thunk_InitializeEmitEventHeaderWithActiveNation();
     uStack_1a0 = *(uint *)&this->field_0xe8;
 LAB_00545aa0:
-    pvStack_1ac = (void *)0x1c;
+    puStack_1ac = (void *)0x1c;
     aiStack_1b8[2] = 0;
     aiStack_1b8[1] = 0;
     aiStack_1b8[0] = 1;
@@ -1782,7 +1782,7 @@ LAB_00545aa0:
       }
       aiStack_1b8[1] = 0;
       aiStack_1b8[0] = 0x11;
-      pvStack_1ac = (void *)0x28;
+      puStack_1ac = (void *)0x28;
       aiStack_1b8[2] = 0;
       thunk_EnqueueOrSendTurnEventPacketToNation((int)aiStack_1b8,0);
     }
@@ -2191,7 +2191,7 @@ LAB_00545aa0:
           aiStack_1b8[0] = 9;
           uVar20 = ~uVar20;
           aiStack_1b8[2] = 0;
-          pvStack_1ac = (void *)0x64;
+          puStack_1ac = (void *)0x64;
           uStack_1a0 = CONCAT31(uStack_1a0._1_3_,(sbyte)uVar30);
           pbVar31 = pbVar39 + -uVar20;
           pbVar39 = abStack_198;
@@ -2287,7 +2287,7 @@ LAB_00545aa0:
           aiStack_1b8[2] = *(int *)(arg1 + 4);
           aiStack_1b8[1] = 0;
           aiStack_1b8[0] = 0x1f;
-          pvStack_1ac = (void *)0x20;
+          puStack_1ac = &DAT_00000020;
           uStack_1a0 = 0x666f6666;
           pvStack_19c = (void *)0x29;
           thunk_EnqueueOrSendTurnEventPacketToNation((int)aiStack_1b8,0);
@@ -2515,7 +2515,7 @@ LAB_0054833b:
       aiStack_1b8[1] = 0;
       aiStack_1b8[2] = 0;
       uStack_1a0 = uStack_1a0 & 0xffffff00;
-      pvStack_1ac = (void *)0x1c;
+      puStack_1ac = (void *)0x1c;
       thunk_GetActiveNationId();
       aiStack_1b8[2] = *(int *)(arg1 + 4);
       uStack_1a0._0_2_ = CONCAT11(extraout_AL_00,(undefined1)uStack_1a0);

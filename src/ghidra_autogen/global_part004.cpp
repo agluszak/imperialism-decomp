@@ -617,8 +617,9 @@ thunk_SelectEligibleMapOrderInteractionForNationAndContext
     if (piStack_298 != (int *)0x0) {
       for (piVar20 = (int *)piStack_298[4]; piVar20 != (int *)0x0; piVar20 = (int *)piVar20[1]) {
         if ((*(short *)(*piVar20 + 0x1c) <
-             *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(*piVar20 + 4) * 0x24))
-           || (uVar9 = GenerateThreadLocalRandom15(), (int)sVar19 <= (int)uVar9 % 100)) {
+             *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                       *(short *)(*piVar20 + 4) * 0x24 + 4)) ||
+           (uVar9 = GenerateThreadLocalRandom15(), (int)sVar19 <= (int)uVar9 % 100)) {
           uVar4 = 0;
         }
         else {
@@ -754,7 +755,7 @@ LAB_00558249:
                                      + (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                                                    [iVar11 * 9]) * 100 +
                                     (int)*(short *)(iVar18 + 0x1c)) /
-                                    (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                                    (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
                                                    iVar11 * 0x24);
                 }
                 iVar16 = 0;
@@ -775,7 +776,7 @@ LAB_00558249:
                                      + (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                                                    [iVar12 * 9]) * 100 +
                                     (int)*(short *)(iVar11 + 0x1c)) /
-                                    (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                                    (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
                                                    iVar12 * 0x24);
                 }
                 bVar21 = iVar13 * 3 < iVar16;
@@ -4891,7 +4892,7 @@ short __cdecl thunk_GetResourceDescriptorWeightWord0ByType(void)
 {
   short in_stack_00000004;
   
-  return *(short *)(&g_Resource_Descriptor_Weight_Value_0069811C + in_stack_00000004 * 0x24);
+  return *(short *)((int)&g_Resource_Descriptor_Weight_Value_0069811C + in_stack_00000004 * 0x24);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404D3B
@@ -7761,7 +7762,7 @@ void __cdecl thunk_GenerateMappedFlavorTextByTableSlot(void *pDstSharedRef,short
 
 {
   thunk_GenerateMappedFlavorTextUntilValidationPasses
-            (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + nTableSlot * 4));
+            (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + nTableSlot * 4 + 4));
   return;
 }
 
@@ -9003,7 +9004,6 @@ void __cdecl thunk_AssignRandomMapContextStatusBaseString(void)
 // GHIDRA_COMMENT Single-JMP thunk to PopUiResourcePoolNode
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to PopUiResourcePoolNode */
 
 void __cdecl thunk_PopUiResourcePoolNode(void)
@@ -9014,24 +9014,24 @@ void __cdecl thunk_PopUiResourcePoolNode(void)
   pvVar1 = g_pUiResourcePoolChainTop;
   g_pUiResourcePoolChainTop = *(void **)((int)g_pUiResourcePoolChainTop + 4);
   if (g_pUiResourcePoolChainTop == (undefined4 *)0x0) {
-    _g_pUiResourcePoolChainHead = (undefined4 *)0x0;
+    g_pUiResourcePoolChainHead = (undefined4 *)0x0;
   }
   else {
     *(undefined4 *)g_pUiResourcePoolChainTop = 0;
   }
   *(void **)pvVar1 = g_pUiResourcePoolFreeListHead;
   g_pUiResourcePoolFreeListHead = pvVar1;
-  _g_nUiResourcePoolDepth = _g_nUiResourcePoolDepth + -1;
-  if (_g_nUiResourcePoolDepth == 0) {
-    for (; _g_pUiResourcePoolChainHead != (undefined4 *)0x0;
-        _g_pUiResourcePoolChainHead = (undefined4 *)*_g_pUiResourcePoolChainHead) {
+  g_nUiResourcePoolDepth = g_nUiResourcePoolDepth + -1;
+  if (g_nUiResourcePoolDepth == 0) {
+    for (; g_pUiResourcePoolChainHead != (undefined4 *)0x0;
+        g_pUiResourcePoolChainHead = (undefined4 *)*g_pUiResourcePoolChainHead) {
     }
-    _g_nUiResourcePoolDepth = 0;
+    g_nUiResourcePoolDepth = 0;
     g_pUiResourcePoolFreeListHead = (void *)0x0;
     g_pUiResourcePoolChainTop = (void *)0x0;
-    _g_pUiResourcePoolChainHead = (undefined4 *)0x0;
+    g_pUiResourcePoolChainHead = (undefined4 *)0x0;
     FreeDataChain();
-    _g_pUiResourcePoolBlockChainHead = 0;
+    g_pUiResourcePoolBlockChainHead = 0;
   }
   return;
 }

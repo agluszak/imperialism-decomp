@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CFileException::CMemFile_619af8
-// ghidra_proto void * __thiscall CMemFile_619af8(void)
-// FUNCTION: IMPERIALISM 0x00619af8
-undefined4 CMemFile_619af8(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructCMemFileLikeStateWithCloseIfOpen
-// ghidra_proto void __cdecl DestructCMemFileLikeStateWithCloseIfOpen(void)
-// FUNCTION: IMPERIALISM 0x00619b71
-undefined4 DestructCMemFileLikeStateWithCloseIfOpen(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AllocateWithGlobalNewMode_At00619bbd
-// ghidra_proto void * __cdecl WrapperFor_AllocateWithGlobalNewMode_At00619bbd(uint size)
-// FUNCTION: IMPERIALISM 0x00619bbd
-undefined4 WrapperFor_AllocateWithGlobalNewMode_At00619bbd(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca
-// ghidra_proto void * __cdecl WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
-// FUNCTION: IMPERIALISM 0x00619bca
-undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
-// FUNCTION: IMPERIALISM 0x00619c01
-undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
-{
-  return 0;
-}
-
-// ghidra_name SetWriteCursorWithCapacityClamp_00619c6b
-// ghidra_proto void __thiscall SetWriteCursorWithCapacityClamp_00619c6b(uint arg1)
-// FUNCTION: IMPERIALISM 0x00619c6b
-undefined4 SetWriteCursorWithCapacityClamp_00619c6b(void)
-{
-  return 0;
-}
-
 // ghidra_name CopyIntoStreamBufferFromSourceWithClamp_00619ca0
 // ghidra_proto int __thiscall CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
 // FUNCTION: IMPERIALISM 0x00619ca0
@@ -3999,6 +3951,54 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063082f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063084f(void)
 // FUNCTION: IMPERIALISM 0x0063084f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063084f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063086d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063086d(void)
+// FUNCTION: IMPERIALISM 0x0063086d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063086d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630895
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630895(void)
+// FUNCTION: IMPERIALISM 0x00630895
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630895(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006308f5
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006308f5(void)
+// FUNCTION: IMPERIALISM 0x006308f5
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006308f5(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063091f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063091f(void)
+// FUNCTION: IMPERIALISM 0x0063091f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063091f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063093f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063093f(void)
+// FUNCTION: IMPERIALISM 0x0063093f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063093f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630975
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630975(void)
+// FUNCTION: IMPERIALISM 0x00630975
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630975(void)
 {
   return 0;
 }

@@ -1817,7 +1817,6 @@ void __thiscall HandleTurnEventVtableSlot24CopyPayloadBuffer(void *this)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1827,7 +1826,7 @@ void __cdecl WrapperFor_ftol_At00415df0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1418 = (short)iVar1;
+  UNK_006a13fc._28_2_ = (short)iVar1;
   return;
 }
 
@@ -1838,7 +1837,7 @@ void __cdecl WrapperFor_ftol_At00415df0(void)
 void __cdecl InitializeUiResourcePoolStateAndRegisterAtExit(void)
 
 {
-  thunk_InitializeUiResourcePoolRuntimeClassFields(&g_UiResourcePoolState);
+  thunk_InitializeUiResourcePoolRuntimeClassFields(&UNK_006a13a2.field_0x3e);
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -1852,7 +1851,7 @@ void __cdecl DestroyUiResourcePoolStateAtExit(void)
 {
   TRuntimeLinkedBlockChainState_0063E880::
   DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
-            ((TRuntimeLinkedBlockChainState_0063E880 *)&g_UiResourcePoolState);
+            ((TRuntimeLinkedBlockChainState_0063E880 *)&UNK_006a13a2.field_0x3e);
   return;
 }
 
@@ -4345,8 +4344,6 @@ void __cdecl AllocateUiResourceNode(void)
 // GHIDRA_NAME RegisterUiResourceEntry
 // GHIDRA_PROTO void __cdecl RegisterUiResourceEntry(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __cdecl RegisterUiResourceEntry(void)
 
 {
@@ -4370,9 +4367,9 @@ void __cdecl RegisterUiResourceEntry(void)
   if (g_pUiResourcePoolFreeListHead == (void *)0x0) {
     pvVar3 = AllocateAndLinkBlockHead();
     puVar4 = g_pUiResourcePoolFreeListHead;
-    puVar2 = (undefined4 *)((int)pvVar3 + _g_nUiResourcePoolNodesPerBlock * 0xc + -8);
-    iVar5 = _g_nUiResourcePoolNodesPerBlock;
-    if (-1 < _g_nUiResourcePoolNodesPerBlock + -1) {
+    puVar2 = (undefined4 *)((int)pvVar3 + g_nUiResourcePoolNodesPerBlock * 0xc + -8);
+    iVar5 = g_nUiResourcePoolNodesPerBlock;
+    if (-1 < g_nUiResourcePoolNodesPerBlock + -1) {
       do {
         puVar4 = puVar2;
         *puVar4 = g_pUiResourcePoolFreeListHead;
@@ -4385,15 +4382,15 @@ void __cdecl RegisterUiResourceEntry(void)
   g_pUiResourcePoolFreeListHead = (void *)*puVar4;
   puVar4[1] = pvVar1;
   *puVar4 = 0;
-  _g_nUiResourcePoolDepth = _g_nUiResourcePoolDepth + 1;
+  g_nUiResourcePoolDepth = g_nUiResourcePoolDepth + 1;
   RegisterUiResourceEntry_Impl((int)(puVar4 + 2),1);
   puVar4[2] = in_stack_0000000c;
   puVar2 = puVar4;
   if (g_pUiResourcePoolChainTop != (void *)0x0) {
     *(undefined4 **)g_pUiResourcePoolChainTop = puVar4;
-    puVar2 = _g_pUiResourcePoolChainHead;
+    puVar2 = g_pUiResourcePoolChainHead;
   }
-  _g_pUiResourcePoolChainHead = puVar2;
+  g_pUiResourcePoolChainHead = puVar2;
   g_pUiResourcePoolChainTop = puVar4;
   thunk_InitializeUiResourceEntryFrameAndParent();
   iVar5 = *in_stack_0000000c;
@@ -4585,7 +4582,6 @@ void __cdecl ClearUiResourceContext(void)
 // GHIDRA_COMMENT When the pool counter reaches zero, clears global pool pointers and releases backing storage.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Pops the current node from the temporary UI resource pool list.
    
    When the pool counter reaches zero, clears global pool pointers and releases backing storage. */
@@ -4598,24 +4594,24 @@ void __cdecl PopUiResourcePoolNode(void)
   pvVar1 = g_pUiResourcePoolChainTop;
   g_pUiResourcePoolChainTop = *(void **)((int)g_pUiResourcePoolChainTop + 4);
   if (g_pUiResourcePoolChainTop == (undefined4 *)0x0) {
-    _g_pUiResourcePoolChainHead = (undefined4 *)0x0;
+    g_pUiResourcePoolChainHead = (undefined4 *)0x0;
   }
   else {
     *(undefined4 *)g_pUiResourcePoolChainTop = 0;
   }
   *(void **)pvVar1 = g_pUiResourcePoolFreeListHead;
   g_pUiResourcePoolFreeListHead = pvVar1;
-  _g_nUiResourcePoolDepth = _g_nUiResourcePoolDepth + -1;
-  if (_g_nUiResourcePoolDepth == 0) {
-    for (; _g_pUiResourcePoolChainHead != (undefined4 *)0x0;
-        _g_pUiResourcePoolChainHead = (undefined4 *)*_g_pUiResourcePoolChainHead) {
+  g_nUiResourcePoolDepth = g_nUiResourcePoolDepth + -1;
+  if (g_nUiResourcePoolDepth == 0) {
+    for (; g_pUiResourcePoolChainHead != (undefined4 *)0x0;
+        g_pUiResourcePoolChainHead = (undefined4 *)*g_pUiResourcePoolChainHead) {
     }
-    _g_nUiResourcePoolDepth = 0;
+    g_nUiResourcePoolDepth = 0;
     g_pUiResourcePoolFreeListHead = (void *)0x0;
     g_pUiResourcePoolChainTop = (void *)0x0;
-    _g_pUiResourcePoolChainHead = (undefined4 *)0x0;
+    g_pUiResourcePoolChainHead = (undefined4 *)0x0;
     FreeDataChain();
-    _g_pUiResourcePoolBlockChainHead = 0;
+    g_pUiResourcePoolBlockChainHead = 0;
   }
   return;
 }
@@ -43315,7 +43311,7 @@ int * __cdecl WrapperFor_AllocateWithFallbackHandler_At00479e40(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At00479ef0(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a1460);
+  AFX_CLASSINIT(&DAT_006a1440.field_0x20);
   return;
 }
 
@@ -45358,7 +45354,6 @@ void __cdecl ForwardMciStatusCommand814IgnoreFailure(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -45368,7 +45363,7 @@ void __cdecl WrapperFor_ftol_At0047cfa0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1528 = (short)iVar1;
+  DAT_006a1484._164_2_ = (short)iVar1;
   return;
 }
 

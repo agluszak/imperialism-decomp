@@ -4965,11 +4965,11 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
   short sVar7;
   int iVar8;
   int *piVar9;
-  void *pvStack_98;
-  int iStack_8c;
-  int iStack_88;
-  undefined4 uStack_84;
-  undefined1 auStack_80 [34];
+  void *local_98;
+  int local_8c;
+  int local_88;
+  undefined4 local_84;
+  undefined1 local_80 [34];
   short sStack_5e;
   short sStack_5c;
   short sStack_14;
@@ -4978,18 +4978,18 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
   short sStack_8;
   
   if (*(int *)((int)this + 4) == 0) {
-    pvStack_98 = (void *)0x0;
+    local_98 = (void *)0x0;
   }
   else {
-    pvStack_98 = *(void **)(*(int *)((int)this + 4) + 0x894);
+    local_98 = *(void **)(*(int *)((int)this + 4) + 0x894);
   }
-  uStack_84 = *(undefined4 *)((int)pvStack_98 + 0x1d8);
+  local_84 = *(undefined4 *)((int)local_98 + 0x1d8);
   iVar6 = (int)resourceIndex;
-  piVar2 = *(int **)((int)pvStack_98 + iVar6 * 4 + 0xe4);
-  iStack_88 = iVar6;
+  piVar2 = *(int **)((int)local_98 + iVar6 * 4 + 0xe4);
+  local_88 = iVar6;
   if ((resourceIndex < 0x17) && (resourceIndex != 7)) {
     (**(code **)(*piVar2 + 0xc))();
-    iVar5 = thunk_GetCityBuildingProductionValueBySlot(pvStack_98,*(short *)((int)piVar2 + 0x52));
+    iVar5 = thunk_GetCityBuildingProductionValueBySlot(local_98,*(short *)((int)piVar2 + 0x52));
     sVar4 = (short)iVar5 * 2 + 2;
     if (sVar4 < *(short *)((int)this + iVar6 * 2 + 0x40)) {
       *(short *)((int)this + iVar6 * 2 + 0x40) = sVar4;
@@ -4999,17 +4999,17 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
     *(short *)((int)this + 0x4e) = *(short *)((int)this + 0xb8);
   }
   iVar5 = CONCAT22(resourceIndex >> 0xf,*(undefined2 *)((int)this + iVar6 * 2 + 0x40));
-  iStack_8c = *piVar2;
-  (**(code **)(iStack_8c + 0x40))(auStack_80,iVar5);
+  local_8c = *piVar2;
+  (**(code **)(local_8c + 0x40))(local_80,iVar5);
   iVar6 = *(int *)this;
   sVar4 = (**(code **)(iVar6 + 0x110))(uStack_e);
   if (sVar4 < sStack_12) {
     iVar5 = (int)sVar4 / 2;
-    (*unaff_ESI)(&iStack_8c,iVar5);
+    (*unaff_ESI)(&local_8c,iVar5);
   }
   if (sStack_8 == 8) {
     pcVar3 = *(code **)(iVar6 + 0x118);
-    iVar6 = iStack_8c * 2;
+    iVar6 = local_8c * 2;
     (*pcVar3)(0,iVar6,7);
     sVar4 = *(short *)((int)unaff_EBP + 0xb6) + (short)unaff_EBP[0x2e];
     if (sVar4 < (short)iVar6) {
@@ -5017,7 +5017,7 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
     }
   }
   else {
-    piVar9 = &iStack_8c;
+    piVar9 = &local_8c;
     iVar8 = 0;
     do {
       if ((short)*piVar9 != 0) {
@@ -5036,7 +5036,7 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
   if (*(short *)(piVar2[4] + 8) < sStack_5c) {
     *(short *)((int)this + 0x70) = sStack_5c - *(short *)(piVar2[4] + 8);
   }
-  iVar8 = (**(code **)((int)pvStack_98 + 0x30))();
+  iVar8 = (**(code **)((int)local_98 + 0x30))();
   iVar6 = iVar5;
   if ((short)iVar8 < (short)iVar5) {
     iVar6 = iVar8;
@@ -5053,7 +5053,7 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
       }
     }
     else {
-      (**(code **)((int)pvStack_98 + 0xc))();
+      (**(code **)((int)local_98 + 0xc))();
       if (sRam00000040 == 2) {
         psVar1 = (short *)((int)this + sRam00000052 * 2 + 0xdc);
         *psVar1 = *psVar1 + ((short)iVar5 - (short)iVar8);
@@ -5062,14 +5062,14 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(void *this,short
       }
     }
   }
-  (**(code **)((int)pvStack_98 + 0x2c))(iVar6);
+  (**(code **)((int)local_98 + 0x2c))(iVar6);
   if (0 < (short)unaff_EBP) {
     *(short *)((int)this + 0xda) = *(short *)((int)this + 0xda) + (short)unaff_EBP;
   }
-  psVar1 = (short *)((int)this + (int)pvStack_98 * 2 + 0x40);
+  psVar1 = (short *)((int)this + (int)local_98 * 2 + 0x40);
   *psVar1 = *psVar1 - (short)iVar6;
-  if (*(short *)((int)this + (int)pvStack_98 * 2 + 0x40) < 0) {
-    *(undefined2 *)((int)this + (int)pvStack_98 * 2 + 0x40) = 0;
+  if (*(short *)((int)this + (int)local_98 * 2 + 0x40) < 0) {
+    *(undefined2 *)((int)this + (int)local_98 * 2 + 0x40) = 0;
   }
   return;
 }
@@ -6012,7 +6012,6 @@ void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -6022,7 +6021,7 @@ void __cdecl WrapperFor_ftol_At004c6cb0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2d00 = (short)iVar1;
+  DAT_006a2cc0._64_2_ = (short)iVar1;
   return;
 }
 
@@ -6763,7 +6762,7 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
   int iStack_74;
   code *pcStack_70;
   undefined1 *puStack_6c;
-  undefined *puStack_68;
+  int iStack_68;
   short sVar3;
   int nRecruitControlTag;
   char nCapabilityRecruitIndex;
@@ -6809,7 +6808,7 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
         pUiControlResource = (int *)(*pGetControlByTag)();
         pControlResource = *pUiControlResource;
         (**(code **)(pControlResource + 0xc))();
-        puStack_68 = (undefined *)0x0;
+        iStack_68 = 0;
         puStack_6c = (undefined1 *)0x4cae5a;
         (**(code **)(pControlResource + 0xa8))();
                     /* Entry missing or unavailable: clear row state and disable count widget. */
@@ -6819,15 +6818,15 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
         pUiControlResource = (int *)(**(code **)(pControlResource + 0x94))();
         if (pUiControlResource == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-          puStack_68 = &UNK_004cae99;
+          iStack_68 = 0x4cae99;
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         }
         pControlResource = *pUiControlResource;
         (**(code **)(pControlResource + 0xa8))();
-        puStack_68 = (undefined *)0x4caec8;
+        iStack_68 = 0x4caec8;
         (**(code **)(pControlResource + 0x1b4))();
         puStack_6c = (undefined1 *)(int)*(short *)(pRecruitOrderEntry + 4);
-        puStack_68 = (undefined *)0x1;
+        iStack_68 = 1;
         pcStack_70 = (code *)0x4caed7;
         (**(code **)(pControlResource + 0x1e4))();
       }
@@ -6848,7 +6847,7 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
       pControlResource = *pUiControlResource;
       (**(code **)(pControlResource + 0xc))();
       (**(code **)(pControlResource + 0x1b4))();
-      puStack_68 = (undefined *)0x4caf91;
+      iStack_68 = 0x4caf91;
       thunk_BuildUiTextStyleDescriptor();
       pControlResource = 0;
       do {
@@ -6857,13 +6856,13 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
         pControlObject = *pUiControlResource;
         (**(code **)(pControlObject + 0xc))();
         (**(code **)(pControlObject + 0x1b4))();
-        puStack_68 = (undefined *)(pRecruitOrderEntry + 0xb);
+        iStack_68 = pRecruitOrderEntry + 0xb;
         puStack_6c = (undefined1 *)0x2723;
         pcStack_70 = (code *)0x4cafdc;
         (**(code **)(pControlObject + 0x1cc))();
         pControlResource = pControlResource + 1;
       } while ((short)pControlResource < 2);
-      puStack_68 = (undefined *)0x4cb007;
+      iStack_68 = 0x4cb007;
       thunk_BuildUiTextStyleDescriptor();
       pRecruitOrderEntry = 0x64657363;
       pUiControlResource = (int *)(*pGetControlByTag)();
@@ -6873,13 +6872,13 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
       pControlResource = 0;
       do {
                     /* Populate three-line description/help text region. */
-        puStack_68 = (undefined *)0x4cb044;
+        iStack_68 = 0x4cb044;
         pUiControlResource = (int *)(*pGetControlByTag)();
         pControlObject = *pUiControlResource;
-        puStack_68 = (undefined *)0x4cb04d;
+        iStack_68 = 0x4cb04d;
         (**(code **)(pControlObject + 0xc))();
         puStack_6c = &stack0xffffffc0;
-        puStack_68 = (undefined *)0x1;
+        iStack_68 = 1;
         pcStack_70 = (code *)0x4cb05c;
         (**(code **)(pControlObject + 0x1b4))();
         pcStack_70 = (code *)0x1;
@@ -6892,18 +6891,18 @@ void __fastcall RefreshUniversityRecruitmentDialog(int *pCityViewDialog)
         (**(code **)(pControlObject + 0x1c4))(1,0);
         pControlResource = pControlResource + 1;
       } while ((short)pControlResource < 3);
-      puStack_68 = (undefined *)0xa;
+      iStack_68 = 10;
       pcStack_70 = (code *)&stack0xffffffc4;
       puStack_6c = (undefined1 *)0x0;
       iStack_74 = 0x4cb0b6;
       thunk_BuildUiTextStyleDescriptor();
-      puStack_68 = (undefined *)0x4cb0c2;
+      iStack_68 = 0x4cb0c2;
       pUiControlResource = (int *)(*pGetControlByTag)();
       pControlResource = *pUiControlResource;
-      puStack_68 = (undefined *)0x4cb0cb;
+      iStack_68 = 0x4cb0cb;
       (**(code **)(pControlResource + 0xc))();
       puStack_6c = &stack0xffffffc0;
-      puStack_68 = (undefined *)0x1;
+      iStack_68 = 1;
       pcStack_70 = (code *)0x4cb0da;
       (**(code **)(pControlResource + 0x1b4))();
       pcStack_70 = (code *)0x74726561;
@@ -7459,7 +7458,7 @@ void __fastcall RefreshCityViewActionAvailability(int *pCityViewDialog)
   uStack_48 = (uint)(ushort)uStack_48;
   if ((short)pCityViewDialog[0x29] < 1) {
     if (*(short *)((int)pCityViewDialog + 0x9e) == 0xe) {
-      local_3c = (code *)0x9;
+      local_3c = (code *)&DAT_00000009;
       local_38 = (void *)0xb;
       if (*(short *)(iVar7 + 200) < 1) {
         uStack_48._0_3_ = CONCAT12(1,uVar5);
@@ -7736,10 +7735,10 @@ void __fastcall RefreshCityViewEquipmentSummary(int *pCityViewDialog)
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_ec;
-  undefined **ppuStack_e8;
-  undefined *puStack_e4;
+  undefined4 *puStack_e8;
+  undefined4 uStack_e4;
   undefined4 uVar5;
-  undefined *puStack_d0;
+  undefined4 uStack_d0;
   byte **ppbStack_4c;
   undefined1 *puStack_48;
   byte *pbStack_38;
@@ -7886,32 +7885,32 @@ void __fastcall RefreshCityViewEquipmentSummary(int *pCityViewDialog)
   piVar2 = (int *)(*pcVar1)();
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_d0 = &UNK_004cdd71;
+    uStack_d0 = 0x4cdd71;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar4 = *piVar2;
   (**(code **)(iVar4 + 0x1b4))();
   TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0xffffff50);
-  puStack_d0 = (undefined *)0x4cddb7;
+  uStack_d0 = 0x4cddb7;
   (**(code **)(iVar4 + 0x1c8))();
-  puStack_d0 = (undefined *)0x4cddc5;
+  uStack_d0 = 0x4cddc5;
   ReleaseSharedStringRefIfNotEmpty();
-  puStack_d0 = (undefined *)0x2b67;
+  uStack_d0 = 0x2b67;
   thunk_BuildUiTextStyleDescriptor();
-  puStack_d0 = (undefined *)0x636f7331;
+  uStack_d0 = 0x636f7331;
   piVar2 = (int *)(*pcVar1)();
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_e4 = &UNK_004cddfd;
+    uStack_e4 = 0x4cddfd;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
   iVar4 = *piVar2;
   uVar5 = 0;
-  puStack_e4 = (undefined *)0x4cde33;
+  uStack_e4 = 0x4cde33;
   (**(code **)(iVar4 + 0x1b4))();
-  ppuStack_e8 = &puStack_d0;
-  puStack_e4 = (undefined *)0x0;
+  puStack_e8 = &uStack_d0;
+  uStack_e4 = 0;
   uStack_ec = 0x4cde42;
   (**(code **)(iVar4 + 0x1c8))();
   uStack_ec = 0x636f7332;
@@ -8995,7 +8994,7 @@ void __fastcall RefreshUniversityAdvancedRecruitmentDialog(int *pCityViewDialog)
   undefined1 *puStack_64;
   int *piStack_60;
   int iStack_5c;
-  undefined *puStack_58;
+  undefined1 *puStack_58;
   int iVar7;
   int iStack_34;
   int dwCountControlTag;
@@ -9024,14 +9023,14 @@ void __fastcall RefreshUniversityAdvancedRecruitmentDialog(int *pCityViewDialog)
     piVar3 = (int *)(**(code **)(*piVar3 + 0x94))();
     if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-      puStack_58 = &UNK_004cef7b;
+      puStack_58 = (undefined1 *)0x4cef7b;
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar6 = *piVar3;
     (**(code **)(iVar6 + 0xa8))();
-    puStack_58 = (undefined *)0x4cefaa;
+    puStack_58 = (undefined1 *)0x4cefaa;
     (**(code **)(iVar6 + 0x1b4))();
-    puStack_58 = (undefined *)0x1;
+    puStack_58 = (undefined1 *)0x1;
     iStack_5c = (int)*(short *)(iVar7 + 4);
     piStack_60 = (int *)0x4cefbd;
     (**(code **)(iVar6 + 0x1e4))();
@@ -9052,15 +9051,15 @@ void __fastcall RefreshUniversityAdvancedRecruitmentDialog(int *pCityViewDialog)
   piVar3 = (int *)(*pcVar1)();
   iVar7 = *piVar3;
   (**(code **)(iVar7 + 0xc))();
-  puStack_58 = (undefined *)0x4cf058;
+  puStack_58 = (undefined1 *)0x4cf058;
   (**(code **)(iVar7 + 0x1b4))();
-  puStack_58 = (undefined *)0x2b6b;
+  puStack_58 = (undefined1 *)0x2b6b;
   iStack_5c = 10;
   puStack_64 = &stack0xffffffd0;
   piStack_60 = (int *)0x0;
   uStack_68 = 0x4cf06b;
   thunk_BuildUiTextStyleDescriptor();
-  puStack_58 = (undefined *)0x636f7374;
+  puStack_58 = (undefined1 *)0x636f7374;
   iStack_5c = 0x4cf077;
   piVar3 = (int *)(*pcVar1)();
   iVar7 = *piVar3;
@@ -9660,7 +9659,6 @@ void __cdecl RenderEngineerDialogBackground(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -9670,7 +9668,7 @@ void __cdecl WrapperFor_ftol_At004d1fb0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2d80 = (short)iVar1;
+  DAT_006a2d44._60_2_ = (short)iVar1;
   return;
 }
 
@@ -11491,7 +11489,6 @@ void __thiscall BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(void *this,int arg
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -11501,7 +11498,7 @@ void __cdecl WrapperFor_ftol_At004d64d0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2e28 = (short)iVar1;
+  DAT_006a2df4._52_2_ = (short)iVar1;
   return;
 }
 

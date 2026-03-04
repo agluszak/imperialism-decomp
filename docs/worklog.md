@@ -472,3 +472,27 @@
 6. Note:
    1. `just stats` aggregate metrics stayed flat (`aligned=91`, avg similarity `2.94%`).
    2. For this pass, authoritative per-function checkpoints are the targeted `just compare 0xADDR` results above.
+
+### Shared-string field extraction pass (`0x00605B87` focus)
+
+1. Scope:
+   1. `src/game/string_shared.cpp`
+   2. Target: `AssignSharedStringConcatRefAndCStr` (`0x00605B87`)
+2. Changes:
+   1. Added typed overlay struct:
+      1. `SharedStringRefView { int data_ptr; }`
+   2. Replaced raw `*int` ref accesses with field access through `SharedStringRefView` in:
+      1. `InitializeSharedStringRefFromEmpty`
+      2. `StringSharedRef_AssignFromPtr`
+      3. `AssignSharedStringConcatRefAndRef`
+      4. `AssignSharedStringConcatRefAndCStr`
+      5. `AssignSharedStringConcatCStrAndRef`
+   3. Kept `0x00605B87` length load as direct typed overlay read from `(data_ptr - 0x0C)->text_length` to preserve push/load shape.
+3. Validation:
+   1. `just format src/game/string_shared.cpp`
+   2. `just build`
+   3. `just compare 0x00605B87`
+4. Result:
+   1. Intermediate attempt with out-of-line helpers regressed heavily (17.95% / 8.33%) and was removed.
+   2. Final field-overlay shape restored the prior checkpoint:
+      1. `0x00605B87`: `35.82%`

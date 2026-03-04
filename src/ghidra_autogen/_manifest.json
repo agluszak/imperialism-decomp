@@ -1,6 +1,6 @@
 {
-  "failed_count": 27,
-  "function_count": 12974,
+  "failed_count": 28,
+  "function_count": 12975,
   "generated_cpp_files": [
     "CBrush.cpp",
     "CDC.cpp",

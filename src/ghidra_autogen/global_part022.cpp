@@ -17,7 +17,7 @@ void __thiscall ApplyTechItemPurchaseCostAndState(void *this,int itemIndex,int n
 
 {
   (**(code **)(*(int *)g_apNationStates[nationIndex] + 0x38))
-            (-*(int *)(&g_aiTechItemCostDeltaByIndex + itemIndex * 4));
+            (-*(int *)(&UNK_0066aac8.field_0x20 + itemIndex * 4));
   *(undefined1 *)((int)this + nationIndex * 0x1d + itemIndex + 0x268) = 1;
   *(short *)((int)this + (itemIndex + nationIndex * 0x1d) * 2 + 0x4a6) =
        (short)((int)((int)*(short *)((int)g_pLocalizationTable + 0x2c) +
@@ -39,7 +39,7 @@ void __thiscall RefundTechItemPurchaseCostAndClearState(void *this,int itemIndex
 
 {
   (**(code **)(*(int *)g_apNationStates[nationIndex] + 0x38))
-            (*(undefined4 *)(&g_aiTechItemCostDeltaByIndex + itemIndex * 4));
+            (*(undefined4 *)(&UNK_0066aac8.field_0x20 + itemIndex * 4));
   *(undefined1 *)((int)this + nationIndex * 0x1d + itemIndex + 0x268) = 0;
   *(undefined2 *)((int)this + (itemIndex + nationIndex * 0x1d) * 2 + 0x4a6) = 0;
   return;
@@ -133,7 +133,6 @@ char __thiscall GetNationFortLevelCap(void *this,int nNationId)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -143,7 +142,7 @@ void __cdecl WrapperFor_ftol_At005b0e40(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5858 = (short)iVar1;
+  DAT_006a57cc._140_2_ = (short)iVar1;
   return;
 }
 
@@ -173,7 +172,6 @@ void __cdecl DestructTTechStorePageAndMaybeFree_Impl(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -183,7 +181,7 @@ void __cdecl WrapperFor_ftol_At005b2710(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a58b0 = (short)iVar1;
+  DAT_006a57cc._228_2_ = (short)iVar1;
   return;
 }
 
@@ -338,7 +336,6 @@ void __cdecl HandleCitySiteShowAnimation_TailEpilogueRetC(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -348,7 +345,7 @@ void __cdecl WrapperFor_ftol_At005b4ee0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5908 = (short)iVar1;
+  UNK_006a58cc._60_2_ = (short)iVar1;
   return;
 }
 
@@ -910,7 +907,6 @@ void __cdecl OrphanLeaf_NoCall_Ins04_005b6930(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -920,7 +916,7 @@ void __cdecl WrapperFor_ftol_At005b6be0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5968 = (short)iVar1;
+  UNK_006a5910._88_2_ = (short)iVar1;
   return;
 }
 
@@ -1095,7 +1091,6 @@ void __cdecl IsOrderEntryTransportLinkedAndEnabled(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1105,7 +1100,7 @@ void __cdecl WrapperFor_ftol_At005b79a0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a59c0 = (short)iVar1;
+  UNK_006a5910._176_2_ = (short)iVar1;
   return;
 }
 
@@ -1731,7 +1726,6 @@ void __cdecl ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1741,7 +1735,7 @@ void __cdecl WrapperFor_ftol_At005ba600(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5a20 = (short)iVar1;
+  DAT_006a5a08._24_2_ = (short)iVar1;
   return;
 }
 
@@ -2923,7 +2917,6 @@ void __cdecl Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -2933,7 +2926,7 @@ void __cdecl WrapperFor_ftol_At005c2400(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5a90 = (short)iVar1;
+  UNK_006a5a30._96_2_ = (short)iVar1;
   return;
 }
 
@@ -4250,7 +4243,6 @@ void __cdecl InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -4260,7 +4252,7 @@ void __cdecl WrapperFor_ftol_At005c3ad0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5ae8 = (short)iVar1;
+  UNK_006a5a30._184_2_ = (short)iVar1;
   return;
 }
 
@@ -5355,7 +5347,7 @@ void __cdecl BuildMapContextStatusStringVariantA(void *pOutSharedString)
   local_2ec = (undefined *)0x13;
   local_2e8[0] = (undefined *)0x2;
   local_2e8[1] = (undefined *)0x4;
-  local_2e8[2] = (undefined *)0xd;
+  local_2e8[2] = &DAT_0000000d;
   local_2e8[3] = (undefined *)0x2;
   local_2d8 = 1;
   local_2d4 = 1;
@@ -5704,7 +5696,26 @@ void __cdecl BuildMapContextStatusStringVariantB(void *pOutSharedString)
   undefined *local_114;
   undefined *local_110;
   undefined4 local_10c;
-  void *local_108 [39];
+  void *local_108 [20];
+  undefined4 local_b8;
+  undefined4 local_b4;
+  undefined4 local_b0;
+  undefined4 local_ac;
+  undefined4 local_a8;
+  undefined4 local_a4;
+  undefined4 local_a0;
+  undefined4 local_9c;
+  undefined4 local_98;
+  undefined4 local_94;
+  undefined4 local_90;
+  undefined4 local_8c;
+  undefined4 local_88;
+  void *local_84;
+  undefined4 local_80;
+  undefined4 local_7c;
+  undefined4 local_78;
+  undefined4 local_74;
+  undefined *local_70;
   undefined *local_6c;
   undefined *local_68;
   undefined *local_64;
@@ -5847,7 +5858,7 @@ void __cdecl BuildMapContextStatusStringVariantB(void *pOutSharedString)
       break;
     case 'k':
       g_uMapContextStatusRngState = uVar9 * 0x15a4e35 + 1;
-      local_108[0x26] = &g_Build_Map_Context_LookupTable_0069AB40;
+      local_70 = &g_Build_Map_Context_LookupTable_0069AB40;
       local_6c = &g_Build_Map_Context_LookupTable_0069AB70;
       local_68 = &g_Build_Map_Context_LookupTable_0069ACE4;
       local_64 = &g_Build_Random_Map_LookupTable_0069ABD0;
@@ -5878,25 +5889,25 @@ void __cdecl BuildMapContextStatusStringVariantB(void *pOutSharedString)
       local_108[0x10] = (void *)0x1;
       local_108[0x11] = (void *)0x2;
       local_108[0x12] = (void *)0x4;
-      local_108[0x13] = (void *)0x9;
-      local_108[0x14] = (void *)0x2;
-      local_108[0x15] = (void *)0x1;
-      local_108[0x16] = (void *)0x1;
-      local_108[0x17] = (void *)0x1;
-      local_108[0x18] = (void *)0x1;
-      local_108[0x19] = (void *)0x2;
-      local_108[0x1a] = (void *)0x1;
-      local_108[0x1b] = (void *)0x3;
-      local_108[0x1c] = (void *)0x1;
-      local_108[0x1d] = (void *)0x1;
-      local_108[0x1e] = (void *)0x1;
-      local_108[0x1f] = (void *)0x1;
-      local_108[0x20] = (void *)0x1;
-      local_108[0x21] = (void *)0x1;
-      local_108[0x22] = (void *)0x1;
-      local_108[0x23] = (void *)0x1;
-      local_108[0x24] = (void *)0x1;
-      local_108[0x25] = (void *)0x1;
+      local_108[0x13] = &DAT_00000009;
+      local_b8 = 2;
+      local_b4 = 1;
+      local_b0 = 1;
+      local_ac = 1;
+      local_a8 = 1;
+      local_a4 = 2;
+      local_a0 = 1;
+      local_9c = 3;
+      local_98 = 1;
+      local_94 = 1;
+      local_90 = 1;
+      local_8c = 1;
+      local_88 = 1;
+      local_84 = (void *)0x1;
+      local_80 = 1;
+      local_7c = 1;
+      local_78 = 1;
+      local_74 = 1;
       iVar10 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x35 - 5;
       if (-1 < iVar10) {
         ppvVar5 = local_108 + 0xd;
@@ -6312,7 +6323,7 @@ void __cdecl BuildMapContextStatusStringVariantC(void *pOutSharedString)
       break;
     case 'v':
       g_uMapContextStatusRngState = uVar13 * 0x15a4e35 + 1;
-      local_214[3] = (char *)0x9;
+      local_214[3] = &DAT_00000009;
       local_214[4] = (char *)0x9;
       local_1f4 = &g_Build_Map_Context_LookupTable_0069AB2C;
       local_1f0[0] = (int *)&g_Build_Map_Context_LookupTable_0069AB28;
@@ -7402,7 +7413,7 @@ void __cdecl BuildMapContextStatusStringVariantF(void *pOutSharedString)
       local_190[2] = (void *)0xe;
       local_190[3] = (void *)0x9;
       local_190[4] = &DAT_0000001b;
-      local_17c = (HWND)0xd;
+      local_17c = (HWND)&DAT_0000000d;
       iVar10 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x4c - 1;
       if (-1 < iVar10) {
         piVar7 = local_1a0 + 3;
@@ -7561,7 +7572,7 @@ void __cdecl BuildMapContextStatusStringVariantG(void *pOutSharedString)
   undefined *local_334;
   undefined1 *local_330 [4];
   undefined *local_320;
-  undefined *local_31c;
+  undefined1 *local_31c;
   HWND local_318;
   undefined *local_314;
   undefined *local_310;
@@ -7735,7 +7746,7 @@ void __cdecl BuildMapContextStatusStringVariantG(void *pOutSharedString)
   local_330[1] = (undefined *)0xb;
   local_330[2] = (undefined *)0x1;
   local_330[3] = &DAT_00000005;
-  local_31c = (undefined *)0x9;
+  local_31c = &DAT_00000009;
   local_318 = (HWND)0x1;
   local_314 = (undefined *)0x1;
   local_310 = (undefined *)0x6;
@@ -8161,7 +8172,7 @@ void __cdecl BuildMapContextStatusStringVariantH(void *pOutSharedString)
   undefined4 local_290;
   void *local_28c;
   undefined4 local_288;
-  void *local_284;
+  undefined1 *local_284;
   undefined4 local_280;
   undefined4 local_27c;
   void *local_278;
@@ -8553,7 +8564,7 @@ void __cdecl BuildMapContextStatusStringVariantH(void *pOutSharedString)
       local_290 = 0x13;
       local_28c = (void *)0x1;
       local_288 = 4;
-      local_284 = (void *)0x9;
+      local_284 = &DAT_00000009;
       local_27c = 6;
       local_274 = 1;
       local_270 = 1;
@@ -9094,7 +9105,7 @@ void __cdecl BuildMapContextStatusStringVariantJ(void *pOutSharedString)
       local_ec = &g_Build_Map_Context_LookupTable_0069ACEC;
       local_e8 = &g_Build_Map_Context_Value_0069B0E4;
       local_e4 = 2;
-      local_e0[0] = (void *)0x9;
+      local_e0[0] = &DAT_00000009;
       local_e0[1] = (void *)0x3;
       local_e0[2] = (void *)0x1;
       local_e0[3] = (void *)0x1;
@@ -9525,7 +9536,7 @@ void __cdecl BuildMapContextStatusStringVariantK(void *pOutSharedString)
       local_214._3_1_ = 0;
       iVar8 = (g_uMapContextStatusRngState >> 0xc & 0x1f) - 9;
       local_210[0] = (void *)0x2;
-      local_210[1] = (void *)0xd;
+      local_210[1] = &DAT_0000000d;
       local_210[2] = (void *)0x1;
       local_210[3] = (void *)0x1;
       local_210[4] = (void *)0x6;
@@ -9861,7 +9872,7 @@ void __cdecl BuildMapContextStatusStringVariantL(void *pOutSharedString)
       local_a4 = &g_Build_Map_Context_LookupTable_0069AC0C;
       local_a0 = &g_Build_Map_Context_LookupTable_0069AC2C;
       local_ec = &DAT_00000008;
-      local_e8 = (byte *)0x9;
+      local_e8 = &DAT_00000009;
       local_e4 = 2;
       local_e0 = 1;
       local_dc = 1;
@@ -10040,7 +10051,9 @@ void __cdecl GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
   undefined *local_44c;
   undefined *local_448;
   undefined *local_444;
-  HWND local_440 [10];
+  HWND local_440 [8];
+  undefined *local_420;
+  undefined *local_41c;
   byte *local_418;
   byte *local_414;
   undefined4 *local_410;
@@ -10272,7 +10285,7 @@ void __cdecl GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
     local_440[4] = (HWND)0xa;
     local_440[5] = (HWND)0xa;
     local_440[6] = (HWND)0xa;
-    local_440[9] = (HWND)0x6;
+    local_41c = (undefined *)0x6;
     local_418 = (byte *)0x6;
     local_3d4 = &g_Build_Map_Context_LookupTable_0069AC58;
     local_414 = &DAT_00000005;
@@ -10309,8 +10322,8 @@ void __cdecl GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
     local_440[0] = (HWND)0x16;
     local_440[1] = (HWND)0x10;
     local_440[2] = (HWND)0xb;
-    local_440[7] = (HWND)0x9;
-    local_440[8] = (HWND)0x8;
+    local_440[7] = (HWND)&DAT_00000009;
+    local_420 = (undefined *)0x8;
     local_40c = (undefined *)0x4;
     local_408 = (undefined *)0x4;
     local_404 = (undefined *)0x4;
@@ -10619,8 +10632,8 @@ void __cdecl GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
     local_440[5] = (HWND)&g_Build_Random_Map_Value_0069B16C;
     local_440[6] = (HWND)&g_Build_Map_Context_LookupTable_00696D10;
     local_440[7] = (HWND)&g_Generate_Mapped_Flavor_LookupTable_0069AB90;
-    local_440[8] = (HWND)&g_Build_Random_Map_LookupTable_0069ADAC;
-    local_440[9] = (HWND)&g_Build_Map_Context_LookupTable_0069AB3C;
+    local_420 = &g_Build_Random_Map_LookupTable_0069ADAC;
+    local_41c = &g_Build_Map_Context_LookupTable_0069AB3C;
     local_418 = &g_Build_Map_Context_LookupTable_0069ABC0;
     local_414 = &g_Generate_Mapped_Flavor_Value_0069B168;
     local_410 = (undefined4 *)&g_Build_Map_Context_LookupTable_00697238;
@@ -10955,7 +10968,7 @@ void __cdecl BuildRandomMapContextStatusBaseString(int arg1)
     local_1a8 = 0x1c;
     local_1a4 = (int *)0x1a;
     local_1a0 = 0xf;
-    local_198 = (undefined1 *)0xd;
+    local_198 = &DAT_0000000d;
     local_194 = 0xc;
     local_190 = 8;
     iVar6 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x39c - 0x80;
@@ -11349,7 +11362,7 @@ void __cdecl GenerateMappedFlavorTextVariantC_005cf1b0(int arg1)
   undefined4 local_100;
   undefined4 local_fc;
   void *local_f8;
-  void *local_f4;
+  undefined1 *local_f4;
   undefined4 local_f0;
   undefined4 local_ec;
   undefined4 local_e8;
@@ -11547,7 +11560,7 @@ void __cdecl GenerateMappedFlavorTextVariantC_005cf1b0(int arg1)
         local_1a0[1] = (undefined *)0x4c;
         local_1a0[2] = (undefined *)0x46;
         local_1a0[3] = (undefined *)0x12;
-        local_1a0[4] = (undefined1 *)0xd;
+        local_1a0[4] = &DAT_0000000d;
         iVar7 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x17a - 0x7a;
         if (-1 < iVar7) {
           ppuVar5 = &local_1a4;
@@ -11617,7 +11630,7 @@ void __cdecl GenerateMappedFlavorTextVariantC_005cf1b0(int arg1)
         local_100 = 0x10;
         local_fc = 0x10;
         local_f8 = (void *)0xf;
-        local_f4 = (void *)0xd;
+        local_f4 = &DAT_0000000d;
         local_e8 = 0xb;
         local_dc = 8;
         local_d8 = &DAT_00000007;
@@ -12418,7 +12431,10 @@ void __cdecl GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
   HWND local_724;
   undefined *local_720;
   undefined *local_71c;
-  byte *local_718 [17];
+  byte *local_718 [14];
+  undefined *local_6e0;
+  undefined *local_6dc;
+  undefined1 *local_6d8;
   undefined *local_6d4;
   undefined *local_6d0;
   undefined *local_6cc;
@@ -12782,9 +12798,9 @@ void __cdecl GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
     local_718[0xb] = &g_Build_Map_Context_LookupTable_0069AC14;
     local_718[0xc] = &g_Build_Map_Context_LookupTable_0069AC24;
     local_718[0xd] = &g_Build_Map_Context_LookupTable_0069AC2C;
-    local_718[0xe] = &g_Build_Map_Context_LookupTable_0069AC48;
-    local_718[0xf] = &g_Build_Map_Context_LookupTable_0069B0A0;
-    local_718[0x10] = &g_Generate_Mapped_Flavor_LookupTable_0069B290;
+    local_6e0 = &g_Build_Map_Context_LookupTable_0069AC48;
+    local_6dc = &g_Build_Map_Context_LookupTable_0069B0A0;
+    local_6d8 = &g_Generate_Mapped_Flavor_LookupTable_0069B290;
     local_6d4 = &g_Build_Map_Context_LookupTable_0069AC28;
     local_6d0 = &g_Build_Map_Context_LookupTable_0069AC4C;
     local_6cc = &g_Generate_Mapped_Flavor_LookupTable_0069B28C;
@@ -12846,7 +12862,7 @@ void __cdecl GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
       local_790._8_4_ = ZEXT14(local_790._8_4_ == 0);
       if (local_790._8_4_ == 0) {
         local_75c = 9;
-        local_758 = (int *)0x9;
+        local_758 = (int *)&DAT_00000009;
         g_uMapContextStatusRngState = g_uMapContextStatusRngState * 0x15a4e35 + 1;
         local_750 = &g_Build_Map_Context_LookupTable_0069AB2C;
         local_74c[0] = &g_Build_Random_Map_LookupTable_0069AB24;
@@ -13302,9 +13318,9 @@ void __cdecl GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
     local_718[10] = (undefined *)0xa;
     local_718[0xb] = (undefined *)0xa;
     local_718[0xc] = (undefined *)0xa;
-    local_718[0xd] = (undefined *)0x9;
-    local_718[0xe] = (undefined *)0x9;
-    local_718[0xf] = (undefined *)0x9;
+    local_718[0xd] = &DAT_00000009;
+    local_6e0 = (undefined *)0x9;
+    local_6dc = (undefined *)0x9;
     local_6d4 = (undefined *)0x6;
     local_6d0 = (undefined *)0x6;
     local_6cc = (undefined *)0x6;
@@ -13330,7 +13346,7 @@ void __cdecl GenerateMappedFlavorTextVariantA_005d13d0(int arg1)
     local_6c0 = &DAT_00000005;
     local_6bc = (undefined *)0x5;
     local_6b8 = &DAT_00000005;
-    local_718[0x10] = &DAT_00000008;
+    local_6d8 = &DAT_00000008;
     local_6b4 = (undefined *)0x4;
     local_6b0 = (undefined *)0x4;
     local_6ac = &DAT_00000004;
@@ -13488,14 +13504,30 @@ void __cdecl GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
   undefined *local_1f4;
   undefined *local_1f0;
   void *local_1ec;
-  void *local_1e8 [14];
+  void *local_1e8 [8];
+  void *local_1c8;
+  void *local_1c4;
+  undefined1 *local_1c0;
+  undefined4 local_1bc;
+  undefined4 local_1b8;
+  undefined1 *local_1b4;
   undefined4 local_1b0;
   void *local_1ac;
   undefined4 local_1a8;
   void *local_1a4;
   void *local_1a0;
   int local_19c;
-  void *local_198 [18];
+  void *local_198 [8];
+  undefined4 local_178;
+  undefined4 local_174;
+  undefined4 local_170;
+  undefined4 local_16c;
+  undefined4 local_168;
+  undefined4 local_164;
+  undefined4 local_160;
+  undefined4 local_15c;
+  undefined4 local_158;
+  undefined1 *local_154;
   undefined4 local_150;
   undefined1 *local_14c;
   undefined4 local_148;
@@ -13689,13 +13721,13 @@ void __cdecl GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
     local_1e8[2] = (void *)0x14;
     local_1e8[3] = (void *)0x13;
     local_1e8[6] = (void *)0x11;
-    local_1e8[7] = (void *)0xd;
-    local_1e8[8] = (void *)0xc;
-    local_1e8[9] = (void *)0xa;
-    local_1e8[10] = (void *)0x9;
-    local_1e8[0xb] = (void *)0x8;
-    local_1e8[0xc] = (void *)0x6;
-    local_1e8[0xd] = &DAT_00000004;
+    local_1e8[7] = &DAT_0000000d;
+    local_1c8 = (void *)0xc;
+    local_1c4 = (void *)0xa;
+    local_1c0 = &DAT_00000009;
+    local_1bc = 8;
+    local_1b8 = 6;
+    local_1b4 = &DAT_00000004;
     local_1b0 = 4;
     local_1ac = (void *)0x3;
     local_1a8 = 3;
@@ -13729,7 +13761,7 @@ void __cdecl GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
         local_274[1] = (undefined *)0x88;
         local_274[2] = (undefined *)0x5f;
         local_274[3] = (undefined *)0x18;
-        local_274[4] = (undefined1 *)0xd;
+        local_274[4] = &DAT_0000000d;
         local_260 = 0xc;
         iVar7 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x23f - 0xa1;
         if (-1 < iVar7) {
@@ -13742,14 +13774,14 @@ void __cdecl GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
       }
       else {
         local_d4 = &g_Build_Map_Context_LookupTable_0069AB70;
-        local_198[0xc] = (void *)0xb;
-        local_198[0xd] = (void *)0xb;
+        local_168 = 0xb;
+        local_164 = 0xb;
         local_d0 = &g_Build_Map_Context_LookupTable_00696D10;
-        local_198[0xe] = (void *)0x9;
-        local_198[0xf] = (void *)0x9;
+        local_160 = 9;
+        local_15c = 9;
         local_cc = &g_Build_Map_Context_LookupTable_0069ADD8;
-        local_198[0x10] = (void *)0x8;
-        local_198[0x11] = &DAT_00000008;
+        local_158 = 8;
+        local_154 = &DAT_00000008;
         local_150 = 8;
         local_14c = &DAT_00000007;
         local_148 = 7;
@@ -13811,11 +13843,11 @@ void __cdecl GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
         local_198[4] = (void *)0x16;
         local_198[5] = (void *)0x12;
         local_198[6] = (void *)0xf;
-        local_198[7] = (void *)0xd;
-        local_198[8] = (void *)0xd;
-        local_198[9] = (void *)0xd;
-        local_198[10] = (void *)0xd;
-        local_198[0xb] = (void *)0xc;
+        local_198[7] = &DAT_0000000d;
+        local_178 = 0xd;
+        local_174 = 0xd;
+        local_170 = 0xd;
+        local_16c = 0xc;
         local_138 = 5;
         local_134 = 5;
         local_130 = 5;
@@ -14033,13 +14065,12 @@ void __cdecl SetSharedStringFromMappedFlavorTextWithLengthClamp(void *pDstShared
   *unaff_FS_OFFSET = &local_c;
   if (*(char *)((int)g_pLocalizationTable + 0x68) == '\0') {
     thunk_GenerateMappedFlavorTextUntilValidationPasses
-              (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + (short)nTableSlot * 4));
+              (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + (short)nTableSlot * 4 + 4));
     if (g_bScenarioSetupModeActive == 0) {
       iVar1 = *(int *)(*(int *)pDstSharedRef + -8);
       while (0xc < iVar1) {
         thunk_GenerateMappedFlavorTextUntilValidationPasses
-                  (pDstSharedRef,
-                   *(short *)(&g_adwFlavorTextMappedCodeBySlot + (short)nTableSlot * 4));
+                  (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + (short)nTableSlot * 4 + 4));
         iVar1 = *(int *)(*(int *)pDstSharedRef + -8);
       }
     }
@@ -14130,7 +14161,7 @@ void __cdecl SetSharedStringFromRotatingFlavorTextBySlot(void *pDstSharedRef,int
     return;
   }
   thunk_GenerateMappedFlavorTextUntilValidationPasses
-            (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + sVar2 * 4));
+            (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + sVar2 * 4 + 4));
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -14164,7 +14195,7 @@ void __cdecl GenerateMappedFlavorTextByTableSlot(void *pDstSharedRef,short nTabl
 
 {
   thunk_GenerateMappedFlavorTextUntilValidationPasses
-            (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + nTableSlot * 4));
+            (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + nTableSlot * 4 + 4));
   return;
 }
 
@@ -14205,7 +14236,7 @@ void __cdecl GenerateMappedFlavorTextByCurrentContextNation(void *pDstSharedRef)
     sVar1 = (short)*(undefined4 *)((int)g_pLanguageManager + 0x30);
   }
   thunk_GenerateMappedFlavorTextUntilValidationPasses
-            (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + sVar1 * 4));
+            (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + sVar1 * 4 + 4));
   return;
 }
 
@@ -14359,7 +14390,7 @@ void __cdecl FormatAndAssignTurnStateSharedTextFromTemplate(void)
   int extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
   int arg1;
-  undefined *arg2;
+  int arg2;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
@@ -14395,11 +14426,11 @@ void __cdecl FormatAndAssignTurnStateSharedTextFromTemplate(void)
   AssignStringSharedFromCStr();
   AssignStringSharedFromCStr();
   AssignStringSharedFromCStr();
-  arg2 = &g_Format_Assign_Turn_Value_006A5AB0;
+  arg2 = 0x6a5ab0;
   arg1 = extraout_ECX;
   thunk_AssignStringSharedRefAndReturnThis();
-  TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-            (g_pUiRuntimeContext,arg1,(int)arg2);
+  TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage(g_pUiRuntimeContext,arg1,arg2)
+  ;
   local_4._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
   local_4._0_1_ = 1;
@@ -14515,7 +14546,6 @@ void __cdecl DeleteFileWithErrorReporting(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -14525,7 +14555,7 @@ void __cdecl WrapperFor_ftol_At005d4f00(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5ba8 = (short)iVar1;
+  DAT_006a5b60._72_2_ = (short)iVar1;
   return;
 }
 
@@ -15937,8 +15967,7 @@ void __cdecl HandleTurnEventVtableSlot88BuildStatusText(void)
   (**(code **)(*(int *)g_pCursorControlPanel + 0x204))();
   uStack_60 = 1;
   uStack_64 = CONCAT22(extraout_var,
-                       *(short *)(&g_Turn_Event_Vtable_Value_0066F058 + (short)iStack_18 * 2) +
-                       0x897);
+                       *(short *)((int)&UNK_0066f054 + (short)iStack_18 * 2 + 4) + 0x897);
   uStack_68 = 0x5d8ac1;
   (**(code **)(unaff_EDI + 0x1c8))();
   uStack_68 = 0x74657874;
@@ -16249,7 +16278,7 @@ void __cdecl HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(void)
   piVar6 = (int *)(*pcVar1)();
   if (piVar6 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    pbStack_158 = &UNK_005d9327;
+    pbStack_158 = (byte *)0x5d9327;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   if ((short)((short)piVar4[0x31] + *(short *)((int)piVar4 + 0xde) + (short)piVar4[0x36] +
@@ -17041,7 +17070,7 @@ void __cdecl HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(void)
                     /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
-    this = (TCivToolbar *)0x9;
+    this = (TCivToolbar *)&DAT_00000009;
     (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
     thunk_AssignStringSharedRefAndReturnThis();
     TToolBarCluster::InitializeAndRunMainRoutine();
@@ -17487,7 +17516,7 @@ void __cdecl BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   piVar3 = (int *)(*pcVar1)();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_50 = (undefined4 *)&UNK_005dbed7;
+    puStack_50 = (undefined4 *)0x5dbed7;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   puStack_50 = (undefined4 *)0x5dbefc;
@@ -17941,7 +17970,6 @@ void __cdecl HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -17951,7 +17979,7 @@ void __cdecl WrapperFor_ftol_At005dcc60(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5c18 = (short)iVar1;
+  DAT_006a5be4._52_2_ = (short)iVar1;
   return;
 }
 
@@ -18388,7 +18416,7 @@ int * __cdecl RunTaggedOptionDialogAndReturnSelectionTag(void)
   piVar3 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    pHStack_58 = (HWND)&UNK_005de069;
+    pHStack_58 = (HWND)0x5de069;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar1 = *piVar3;
@@ -18756,7 +18784,6 @@ char __cdecl DispatchGameStateEventIfLocalizedPromptAccepted(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -18766,7 +18793,7 @@ void __cdecl WrapperFor_ftol_At005dee20(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5c70 = (short)iVar1;
+  DAT_006a5be4._140_2_ = (short)iVar1;
   return;
 }
 
@@ -18896,7 +18923,6 @@ void __cdecl NoOpOnPaintWithCPaintDCScope_005df040(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -18906,7 +18932,7 @@ void __cdecl WrapperFor_ftol_At005df1a0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a5cf0 = (short)iVar1;
+  DAT_006a5cc0._48_2_ = (short)iVar1;
   return;
 }
 

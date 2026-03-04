@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchNationInteractionAmountWithAvailableCap
-// ghidra_proto void __cdecl DispatchNationInteractionAmountWithAvailableCap(void)
-// FUNCTION: IMPERIALISM 0x00533670
-undefined4 DispatchNationInteractionAmountWithAvailableCap(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateTextileProgressFromProductionSlots1And2
 // ghidra_proto void __cdecl UpdateTextileProgressFromProductionSlots1And2(int arg1)
 // FUNCTION: IMPERIALISM 0x00533780
@@ -3999,6 +3991,14 @@ undefined4 DestructTShipAndFreeIfOwned(void)
 // ghidra_proto void __thiscall DestructTShip(void)
 // FUNCTION: IMPERIALISM 0x0054f5f0
 undefined4 DestructTShip(void)
+{
+  return 0;
+}
+
+// ghidra_name TShip::DestroyAndUnlinkNavyPrimaryOrderNode
+// ghidra_proto void __thiscall DestroyAndUnlinkNavyPrimaryOrderNode(void)
+// FUNCTION: IMPERIALISM 0x0054f640
+undefined4 DestroyAndUnlinkNavyPrimaryOrderNode(void)
 {
   return 0;
 }

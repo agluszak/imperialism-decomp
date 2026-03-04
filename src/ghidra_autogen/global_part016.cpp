@@ -386,7 +386,6 @@ LAB_004ff8d0:
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -396,7 +395,7 @@ void __cdecl WrapperFor_ftol_At004ffb00(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3160 = (short)iVar1;
+  UNK_006a30b8._168_2_ = (short)iVar1;
   return;
 }
 
@@ -498,7 +497,6 @@ void AssertUGameWindowLines634And639(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -508,7 +506,7 @@ void __cdecl WrapperFor_ftol_At00500520(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a31b8 = (short)iVar1;
+  DAT_006a3184._52_2_ = (short)iVar1;
   return;
 }
 
@@ -1858,7 +1856,7 @@ void __cdecl ActivatePendingEventAndRefreshView(void)
   int in_stack_00000004;
   undefined4 uStack_6c;
   int iStack_68;
-  undefined *puStack_64;
+  undefined4 uStack_64;
   uint uVar6;
   int iStack_28;
   undefined1 auStack_18 [6];
@@ -1921,7 +1919,7 @@ void __cdecl ActivatePendingEventAndRefreshView(void)
   (**(code **)(iVar2 + 0xc))();
   if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_64 = &UNK_005035d7;
+    uStack_64 = 0x5035d7;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   thunk_GetActiveNationId();
@@ -1938,7 +1936,7 @@ void __cdecl ActivatePendingEventAndRefreshView(void)
   (**(code **)(iVar2 + 0xa4))();
 LAB_00503638:
   piVar5 = (int *)(**(code **)(iVar4 + 0x94))();
-  puStack_64 = (undefined *)0x1;
+  uStack_64 = 1;
   iVar4 = *piVar5;
   iStack_68 = 0x503655;
   (**(code **)(iVar4 + 0xa4))();
@@ -2733,7 +2731,6 @@ void __cdecl Helper_Uses_BlitRectWithOptionalTransparency_At00505b60(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -2743,7 +2740,7 @@ void __cdecl WrapperFor_ftol_At00505f20(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3220 = (short)iVar1;
+  UNK_006a31c4._92_2_ = (short)iVar1;
   return;
 }
 
@@ -3337,7 +3334,6 @@ void __cdecl RenderIndexedSpriteCellWithFormattedValue(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -3347,7 +3343,7 @@ void __cdecl WrapperFor_ftol_At00507b90(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3278 = (short)iVar1;
+  UNK_006a31c4._180_2_ = (short)iVar1;
   return;
 }
 
@@ -3902,7 +3898,6 @@ void __cdecl NormalizeRuntimeCredentialNameToken(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -3912,7 +3907,7 @@ void __cdecl WrapperFor_ftol_At00508ee0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a32e0 = (short)iVar1;
+  UNK_006a3280._96_2_ = (short)iVar1;
   return;
 }
 
@@ -5912,7 +5907,6 @@ BlitStrategicMapUnitActivityOverlayFrame
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5922,7 +5916,7 @@ void __cdecl WrapperFor_ftol_At0050e290(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3348 = (short)iVar1;
+  UNK_006a333c._12_2_ = (short)iVar1;
   return;
 }
 
@@ -12680,7 +12674,7 @@ void __cdecl PopulateMapContextInfoPanelStringsByTileSelection(void)
   piVar3 = (int *)(**(code **)(*in_ECX + 0x94))();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_64 = &UNK_0051b24b;
+    puStack_64 = (undefined *)0x51b24b;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   pcVar6 = (code *)&stack0xffffffc0;

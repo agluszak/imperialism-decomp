@@ -260,7 +260,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined1 **ppuStack_b8;
   undefined1 *apuStack_a4 [2];
   undefined4 uStack_9c;
-  undefined *puStack_98;
+  undefined4 uStack_98;
   undefined4 uVar13;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -326,14 +326,14 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   piVar4 = (int *)(*pcVar8)();
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_98 = &UNK_004ca06c;
+    uStack_98 = 0x4ca06c;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar5 = *piVar4;
   (**(code **)(iVar5 + 0x1b4))();
-  puStack_98 = (undefined *)0x4ca09b;
+  uStack_98 = 0x4ca09b;
   (**(code **)(iVar5 + 0x1c4))();
-  puStack_98 = (undefined *)0x1;
+  uStack_98 = 1;
   uStack_9c = 2;
   apuStack_a4[0] = (undefined1 *)0x4ca0ac;
   (**(code **)(iVar5 + 0x1cc))();
@@ -364,7 +364,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     piVar4 = (int *)(*pcVar8)();
     if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-      puStack_e0 = (undefined4 *)&UNK_004ca19e;
+      puStack_e0 = (undefined4 *)0x4ca19e;
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     iVar5 = *piVar4;
@@ -442,7 +442,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
       piVar4 = (int *)(*pcVar8)();
       if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-        pcStack_13c = (code *)&UNK_004ca41b;
+        pcStack_13c = (code *)0x4ca41b;
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       }
                     /* Compute OK-button availability for University slot 11. */
@@ -480,7 +480,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
         piVar6 = *(int **)((int)this->pField90 + (short)(this->field94 + 0x35) * 4 + 0xe4);
         if (piVar6 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-          pcStack_13c = (code *)&UNK_004ca540;
+          pcStack_13c = (code *)0x4ca540;
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         }
         this_00 = this->pField90;
@@ -538,7 +538,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
                     /* WARNING: Subroutine does not return */
-  ppuStack_b8 = (undefined1 **)&UNK_004ca121;
+  ppuStack_b8 = (undefined1 **)0x4ca121;
   MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 

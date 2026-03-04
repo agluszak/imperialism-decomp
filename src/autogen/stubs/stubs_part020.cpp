@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealList::GetTDealListClassNamePointer
-// ghidra_proto void * __cdecl GetTDealListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005ba1a0
-undefined4 GetTDealListClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealList::ConstructTDealListBaseState
-// ghidra_proto void * __fastcall ConstructTDealListBaseState(TDealList * pThis)
-// FUNCTION: IMPERIALISM 0x005ba1c0
-undefined4 ConstructTDealListBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealList::DestructTDealListAndMaybeFree
 // ghidra_proto void * __thiscall DestructTDealListAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005ba1f0
@@ -3999,6 +3983,22 @@ undefined4 GetItemState(void)
 // ghidra_proto int __thiscall GetItemData_5e618d(void)
 // FUNCTION: IMPERIALISM 0x005e618d
 undefined4 GetItemData_5e618d(void)
+{
+  return 0;
+}
+
+// ghidra_name ItemHasChildren
+// ghidra_proto int __thiscall ItemHasChildren(void)
+// FUNCTION: IMPERIALISM 0x005e61bb
+undefined4 ItemHasChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertItem_5e6237
+// ghidra_proto void __thiscall InsertItem_5e6237(void)
+// FUNCTION: IMPERIALISM 0x005e6237
+undefined4 InsertItem_5e6237(void)
 {
   return 0;
 }

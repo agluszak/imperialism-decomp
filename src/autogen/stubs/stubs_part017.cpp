@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TShip::DestroyAndUnlinkNavyPrimaryOrderNode
-// ghidra_proto void __thiscall DestroyAndUnlinkNavyPrimaryOrderNode(void)
-// FUNCTION: IMPERIALISM 0x0054f640
-undefined4 DestroyAndUnlinkNavyPrimaryOrderNode(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateNavyPrimaryOrderNodeAndAssignDisplayName
 // ghidra_proto void * __cdecl CreateNavyPrimaryOrderNodeAndAssignDisplayName(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x0054f8e0
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C2_I16_005718f0(void)
 // ghidra_proto void * __cdecl CreateTOnOffRadioButtonInstance(void)
 // FUNCTION: IMPERIALISM 0x00571930
 undefined4 CreateTOnOffRadioButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTOnOffRadioButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005719d0
+undefined4 GetTOnOffRadioButtonClassNamePointer(void)
 {
   return 0;
 }

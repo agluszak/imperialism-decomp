@@ -3555,14 +3555,6 @@ undefined4 AccumulateCityEntryCostsByAmount(void)
   return 0;
 }
 
-// ghidra_name CommitCityRecruitmentOrderDelta
-// ghidra_proto void __thiscall CommitCityRecruitmentOrderDelta(void)
-// FUNCTION: IMPERIALISM 0x004b73b0
-undefined4 CommitCityRecruitmentOrderDelta(void)
-{
-  return 0;
-}
-
 // ghidra_name UIState_ActivateSlotAndUpdateUI_Impl
 // ghidra_proto void __cdecl UIState_ActivateSlotAndUpdateUI_Impl(void)
 // FUNCTION: IMPERIALISM 0x004b77e0
@@ -3999,6 +3991,14 @@ undefined4 thunk_InitializeCityBuildingLayoutData(void)
 // ghidra_proto void __cdecl InitializeCityBuildingLayoutData(void)
 // FUNCTION: IMPERIALISM 0x004b98b0
 undefined4 InitializeCityBuildingLayoutData(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateCityProductionView
+// ghidra_proto void * __cdecl CreateCityProductionView(void)
+// FUNCTION: IMPERIALISM 0x004ba240
+undefined4 CreateCityProductionView(void)
 {
   return 0;
 }

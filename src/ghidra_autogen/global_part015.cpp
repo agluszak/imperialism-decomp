@@ -4589,7 +4589,6 @@ void __cdecl ShowLandSaleTransferNotification(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -4599,7 +4598,7 @@ void __cdecl WrapperFor_ftol_At004e6a40(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2e80 = (short)iVar1;
+  DAT_006a2df4._140_2_ = (short)iVar1;
   return;
 }
 
@@ -5938,7 +5937,6 @@ void __cdecl OrphanRetStub_004ea450(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5948,7 +5946,7 @@ void __cdecl WrapperFor_ftol_At004ea5e0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2ee8 = (short)iVar1;
+  g_cachedAiCityActionContextBias1._68_2_ = (short)iVar1;
   return;
 }
 
@@ -6045,8 +6043,8 @@ void __cdecl GetCachedAiCityActionContextBias(void)
     (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(7);
     (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(10);
     sVar1 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(10);
-    _g_cachedAiCityActionContextBias1 = unaff_ESI + 1.96182e-44;
-    _g_cachedAiCityActionContextBias2 = (float)(sVar1 * 2 + 1000) + unaff_ESI + 1.96182e-44;
+    g_cachedAiCityActionContextBias1._0_4_ = unaff_ESI + 1.96182e-44;
+    g_cachedAiCityActionContextBias1._4_4_ = (float)(sVar1 * 2 + 1000) + unaff_ESI + 1.96182e-44;
     _g_cachedAiCityActionContextBiasNationId = *(undefined2 *)(in_ECX + 0xc);
     g_cachedAiCityActionContextBias0 = unaff_ESI;
     g_cachedAiCityActionContextBiasTurnKey = (**(code **)(*(int *)g_pLocalizationTable + 0x3c))();
@@ -6781,7 +6779,6 @@ TAutoGreatPower::thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner(TAutoGreat
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -6791,7 +6788,7 @@ void __cdecl WrapperFor_ftol_At004ebff0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2f48 = (short)iVar1;
+  g_cachedAiCityActionContextBias1._164_2_ = (short)iVar1;
   return;
 }
 
@@ -7792,7 +7789,6 @@ void __cdecl InitializeMinisterOrderArrayPreset_25_10_20_50(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -7802,7 +7798,7 @@ void __cdecl WrapperFor_ftol_At004ee480(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2fa0 = (short)iVar1;
+  g_cachedAiCityActionContextBias1._252_2_ = (short)iVar1;
   return;
 }
 
@@ -9159,7 +9155,6 @@ DeserializeRelationshipSortedListBuffersFromStreamSwapBytes_Impl(int arg1,int ar
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -9169,7 +9164,7 @@ void __cdecl WrapperFor_ftol_At004f2b10(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3018 = (short)iVar1;
+  DAT_006a2fe4._52_2_ = (short)iVar1;
   return;
 }
 
@@ -11143,7 +11138,6 @@ void * __cdecl Helper_Uses_thunk_ConstructTViewBaseState_At004fe1d0(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -11153,7 +11147,7 @@ void __cdecl WrapperFor_ftol_At004fe670(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a30a0 = (short)iVar1;
+  DAT_006a3024._124_2_ = (short)iVar1;
   return;
 }
 

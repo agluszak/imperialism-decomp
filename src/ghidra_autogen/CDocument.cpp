@@ -368,7 +368,7 @@ CDocument::ReportSaveLoadException
           else if (piVar1 == (int *)&DAT_00000005) {
             resourceId = (*(int *)(unaff_EBP + 0x10) != 0) + 0xf123;
           }
-          else if (piVar1 == (int *)0xd) {
+          else if (piVar1 == (int *)&DAT_0000000d) {
             resourceId = 0xf122;
           }
         }

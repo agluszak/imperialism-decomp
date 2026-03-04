@@ -4482,7 +4482,7 @@ address|name|prototype|file|status
 4a0570|TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree|void __thiscall DestructTTransFocusAnimationAndMaybeFree(void)|TTransFocusAnimation.cpp|ok
 4a05c0|TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip|void __thiscall BlitTransientSurfaceToPrimaryRenderContextWithClip(void)|TTransFocusAnimation.cpp|ok
 4a0770|TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw|void __thiscall RenderFocusAnimationFrameWithScopedQuickDraw(void)|TTransFocusAnimation.cpp|ok
-4ba3b0|TTransFocusAnimation::InitializeCityBuildingControlRegions|void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)|TTransFocusAnimation.cpp|ok
+4ba3b0|TTransFocusAnimation::InitializeCityBuildingControlRegions|void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)|TTransFocusAnimation.cpp|failed
 607840|TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840|void __thiscall WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840(int arg1, int arg2, int arg3, int arg4, int arg5)|TTransFocusAnimation.cpp|ok
 60785a|TTransFocusAnimation::AfxModifyStyle|void __thiscall AfxModifyStyle(int arg1, int arg2, int arg3, int arg4, int arg5)|TTransFocusAnimation.cpp|ok
 6078a9|TTransFocusAnimation::ModifyStyleEx_6078a9|void __thiscall ModifyStyleEx_6078a9(int arg1, int arg2, int arg3, int arg4, int arg5)|TTransFocusAnimation.cpp|ok
@@ -11063,7 +11063,7 @@ address|name|prototype|file|status
 6058b9|AllocBeforeWrite|void __thiscall AllocBeforeWrite(void)|global_part025.cpp|ok
 6058e2|ReleaseSharedStringRefIfNotEmpty|void __cdecl ReleaseSharedStringRefIfNotEmpty(void)|global_part025.cpp|ok
 6059fc|AssignCopy|void __thiscall AssignCopy(void)|global_part025.cpp|ok
-605a29|AssignFromPtr|int * __thiscall AssignFromPtr(int * dst_ref_ptr)|global_part025.cpp|ok
+605a29|AssignFromPtr|void * __thiscall AssignFromPtr(int * dst_ref_ptr)|global_part025.cpp|ok
 605a78|WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78|void __cdecl WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(void)|global_part025.cpp|ok
 605ae0|ConcatCopy|void __thiscall ConcatCopy(int arg1, int arg2, int arg3, int arg4)|global_part025.cpp|ok
 605b21|AssignSharedStringConcatRefAndRef|void __cdecl AssignSharedStringConcatRefAndRef(void)|global_part025.cpp|ok
@@ -11432,7 +11432,7 @@ address|name|prototype|file|status
 618d0f|DDX_Check|void * __cdecl DDX_Check(void)|global_part027.cpp|ok
 618d61|DDX_Radio|int __cdecl DDX_Radio(void)|global_part027.cpp|ok
 618df2|DDX_LBString|void __stdcall DDX_LBString(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)|global_part027.cpp|ok
-618e72|DDX_LBStringExact|void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)|global_part027.cpp|ok
+618e72|DDX_LBStringExact|void __stdcall DDX_LBStringExact(astruct_1 * state_flag, undefined4 owner_id, LPARAM * lparam_in)|global_part027.cpp|ok
 618ea6|SelectListBoxStringExactIfPresent|void __cdecl SelectListBoxStringExactIfPresent(void)|global_part027.cpp|ok
 618ec3|DDX_CBString|void __cdecl DDX_CBString(void)|global_part027.cpp|ok
 618f43|DDX_CBStringExact|void __cdecl DDX_CBStringExact(void)|global_part027.cpp|ok
@@ -12972,4 +12972,5 @@ address|name|prototype|file|status
 63bf49|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf49|int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf49(void)|global_part033.cpp|ok
 63bf5e|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e|int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e(void)|global_part033.cpp|ok
 63bf71|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71|int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71(void)|global_part033.cpp|ok
+695794|g_Build_Map_Order_LookupTable_00695794|undefined __fastcall g_Build_Map_Order_LookupTable_00695794(byte * param_1, byte * param_2)|global_part033.cpp|ok
 707081|InitializeWinmmImportBindings|void __cdecl InitializeWinmmImportBindings(void)|global_part033.cpp|ok

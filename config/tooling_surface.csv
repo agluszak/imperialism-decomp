@@ -8,6 +8,7 @@ module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String
 module|tools.workflow.generate_vcall_facades|just:gen-vcall-facades|Generate typed vcall wrappers
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
+module|tools.workflow.class_discovery|just:class-discovery|Read-only class/vtable discovery pipeline
 module|tools.reccmp.compare_canaries|just:compare-canaries|Targeted canary compare loop
 module|tools.reccmp.progress_stats|just:stats|Progress + alignment stats
 module|tools.reccmp.library_inventory|just:inventory|Library/wrapper inventory

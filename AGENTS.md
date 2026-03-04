@@ -47,3 +47,10 @@ Use `just` targets by default for project workflows.
    - `just promote <target> --address 0x...`
 2. Do not run raw `docker`, `uv run reccmp-*`, or direct workflow scripts when an equivalent `just` target exists.
 3. Use direct commands only when there is no `just` target for the required action; if so, keep it minimal and add/update a `just` target afterward.
+
+## MSVC500 Calling Convention Guardrail
+
+- Never use `__thiscall` casts on free functions or function pointers.
+- If a desired call shape is `thiscall`, convert it to a real class method call.
+- Implement/route through a typed method and call that method from callsites.
+- Keep only ABI bridge wrappers where unavoidable, and keep those wrappers out of primary method bodies.

@@ -1957,7 +1957,6 @@ void __cdecl OrphanRetStub_004899a0(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1967,7 +1966,7 @@ void __cdecl WrapperFor_ftol_At00489a20(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1ab8 = (short)iVar1;
+  DAT_006a1ab8._0_2_ = (short)iVar1;
   return;
 }
 
@@ -2966,7 +2965,7 @@ void __cdecl InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit(void)
 
 {
   thunk_InitializeViewModalStateNodeBlockChainRuntimeClassFields
-            (&g_ViewModalStateNodeBlockChainState_006A1AC0,10);
+            ((void *)((int)&DAT_006a1ab8 + 8),10);
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -2979,7 +2978,7 @@ void __cdecl DestroyViewModalStateNodeBlockChainAtExit(void)
 
 {
   DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-            ((RuntimeClassState_0064B580 *)&g_ViewModalStateNodeBlockChainState_006A1AC0);
+            ((RuntimeClassState_0064B580 *)((int)&DAT_006a1ab8 + 8));
   return;
 }
 
@@ -3008,8 +3007,7 @@ thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
 void __cdecl InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit(void)
 
 {
-  thunk_InitializeViewModalStateNodeBlockChainRuntimeClassFields
-            (&g_TWindowUnlinkDestructState_006A1A40,10);
+  thunk_InitializeViewModalStateNodeBlockChainRuntimeClassFields(&UNK_006a1a29.field_0x17,10);
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -3025,7 +3023,7 @@ void __cdecl DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce(void)
     g_TWindowUnlinkDestructStateAtExitGuard_006A1A28 =
          g_TWindowUnlinkDestructStateAtExitGuard_006A1A28 | 1;
     DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-              ((RuntimeClassState_0064B580 *)&g_TWindowUnlinkDestructState_006A1A40);
+              ((RuntimeClassState_0064B580 *)&UNK_006a1a29.field_0x17);
     return;
   }
   return;
@@ -3330,7 +3328,6 @@ void __cdecl OrphanLeaf_NoCall_Ins03_0048da40(void)
 // GHIDRA_COMMENT Push current view state node to global chain, execute callback, then pop/free node
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Push current view state node to global chain, execute callback, then pop/free node */
 
 int __thiscall ExecuteViewModalStateWithPushPopChain(void *this)
@@ -3358,34 +3355,34 @@ int __thiscall ExecuteViewModalStateWithPushPopChain(void *this)
     EnableWindow((HWND)0x0,unaff_EDI);
   }
   pvVar3 = g_pViewModalStateNodeChainHead;
-  piVar7 = _g_pViewModalStateNodeFreeList;
-  if (_g_pViewModalStateNodeFreeList == (int *)0x0) {
+  piVar7 = g_pViewModalStateNodeFreeList;
+  if (g_pViewModalStateNodeFreeList == (int *)0x0) {
     pvVar6 = AllocateAndLinkBlockHead();
-    piVar4 = (int *)((int)pvVar6 + _g_nViewModalStateNodesPerBlock * 0xc + -8);
-    piVar7 = _g_pViewModalStateNodeFreeList;
-    iVar8 = _g_nViewModalStateNodesPerBlock;
-    if (-1 < _g_nViewModalStateNodesPerBlock + -1) {
+    piVar4 = (int *)((int)pvVar6 + g_nViewModalStateNodesPerBlock * 0xc + -8);
+    piVar7 = g_pViewModalStateNodeFreeList;
+    iVar8 = g_nViewModalStateNodesPerBlock;
+    if (-1 < g_nViewModalStateNodesPerBlock + -1) {
       do {
         piVar7 = piVar4;
-        *piVar7 = (int)_g_pViewModalStateNodeFreeList;
+        *piVar7 = (int)g_pViewModalStateNodeFreeList;
         iVar8 = iVar8 + -1;
         piVar4 = piVar7 + -3;
-        _g_pViewModalStateNodeFreeList = piVar7;
+        g_pViewModalStateNodeFreeList = piVar7;
       } while (iVar8 != 0);
     }
   }
-  _g_pViewModalStateNodeFreeList = (int *)*piVar7;
+  g_pViewModalStateNodeFreeList = (int *)*piVar7;
   piVar7[1] = 0;
   *piVar7 = (int)pvVar3;
-  _g_nViewModalStateDepth = _g_nViewModalStateDepth + 1;
+  g_nViewModalStateDepth = g_nViewModalStateDepth + 1;
   piVar7[2] = 0;
   piVar7[2] = (int)this;
   piVar4 = piVar7;
   if (g_pViewModalStateNodeChainHead != (void *)0x0) {
     *(int **)((int)g_pViewModalStateNodeChainHead + 4) = piVar7;
-    piVar4 = _g_pViewModalStateNodeChainTail;
+    piVar4 = g_pViewModalStateNodeChainTail;
   }
-  _g_pViewModalStateNodeChainTail = piVar4;
+  g_pViewModalStateNodeChainTail = piVar4;
   g_pViewModalStateNodeChainHead = piVar7;
   (**(code **)(*piVar5 + 0x48))();
   iVar8 = piVar5[7];
@@ -3401,9 +3398,9 @@ LAB_0048db5a:
     else {
       *(int *)piVar5[1] = *piVar5;
     }
-    if (piVar5 == _g_pViewModalStateNodeChainTail) {
+    if (piVar5 == g_pViewModalStateNodeChainTail) {
       piVar7 = (int *)piVar5[1];
-      _g_pViewModalStateNodeChainTail = piVar7;
+      g_pViewModalStateNodeChainTail = piVar7;
     }
     else {
       piVar7 = (int *)piVar5[1];

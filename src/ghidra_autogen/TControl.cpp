@@ -5800,7 +5800,7 @@ TControl::OpenCityViewProductionDialog
   pNameTextControl = (int *)(*pfnGetControlByTag)();
   if (pNameTextControl == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_64 = (uint *)&UNK_004ce68d;
+    puStack_64 = (uint *)0x4ce68d;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   nCapacityControlStyleId = 0;
@@ -5821,7 +5821,7 @@ TControl::OpenCityViewProductionDialog
   pCostTextControl = (int *)(*pfnGetControlByTag)();
   if (pCostTextControl == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_8c = (uint *)&UNK_004ce712;
+    puStack_8c = (uint *)0x4ce712;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   nCostControlStyleId = 0;

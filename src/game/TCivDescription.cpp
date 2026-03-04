@@ -2,14 +2,13 @@
 
 #include "decomp_types.h"
 #include "game/TView.h"
+#include "game/string_shared.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(void);
 undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
 undefined4 thunk_RenderCivilianTargetLegendVariantA(void);
 undefined4 thunk_RenderCivilianTargetLegendVariantB(void);
-int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
-void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
 undefined4 InitializeUiTextStyleDescriptorAndApplyQuickDraw(void);
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
@@ -326,8 +325,9 @@ UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* con
           remainingSlots = 5;
           targetCountSlot = &context->targetTileCountsBySlot[0];
           do {
-            if (tileProfileId == reinterpret_cast<short*>(kAddrTargetTileProfileByCivilianClassAndSlot)
-                                     [classSlotOrdinal + context->cachedCivilianClassId * 5]) {
+            if (tileProfileId ==
+                reinterpret_cast<short*>(kAddrTargetTileProfileByCivilianClassAndSlot)
+                    [classSlotOrdinal + context->cachedCivilianClassId * 5]) {
               *targetCountSlot = (short)(*targetCountSlot + 1);
             }
             classSlotOrdinal = classSlotOrdinal + 1;
@@ -354,7 +354,8 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
   Rect32* legendRect;
   int stylePrimary;
   int styleSecondary;
-  int localizedTextRef;
+  StringShared localizedTextRef;
+  int* localizedTextRefPtr = reinterpret_cast<int*>(&localizedTextRef);
   void** localizationTable;
   short selectedClass;
   short textWidth;
@@ -388,21 +389,21 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
   }
 
   context->legendInitialized = 1;
-  InitializeSharedStringRefFromEmpty(&localizedTextRef);
+  localizedTextRef.InitFromEmpty();
   if (selectedClass != (short)-1) {
     stylePrimary = 0;
     styleSecondary = 0;
-    localizedTextRef = 0;
+    localizedTextRef.InitFromEmpty();
 
-    reinterpret_cast<void(__cdecl*)(int, int, int)>(InitializeUiTextStyleDescriptorAndApplyQuickDraw)(
-        0, 0xc, 0x2b68);
+    reinterpret_cast<void(__cdecl*)(int, int, int)>(
+        InitializeUiTextStyleDescriptorAndApplyQuickDraw)(0, 0xc, 0x2b68);
     reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
         0x2b6c, reinterpret_cast<int>(&stylePrimary));
     reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
         0x2b67, reinterpret_cast<int>(&styleSecondary));
     localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
     reinterpret_cast<LocalizationFormatFn>(localizationTable[0x21])(0x2718, selectedClass,
-                                                                    &localizedTextRef);
+                                                                    localizedTextRefPtr);
 
     textWidth = static_cast<short>(
         reinterpret_cast<int(__cdecl*)(void)>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
@@ -413,14 +414,14 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
     reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
         static_cast<short>(textOriginX + 1), 0x47);
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        &localizedTextRef, 0);
+        localizedTextRefPtr, 0);
     SetQuickDrawColorAndSyncGlobals();
     reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
         textOriginX, 0x46);
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        &localizedTextRef, 0);
+        localizedTextRefPtr, 0);
   }
-  ReleaseSharedStringRefIfNotEmpty(&localizedTextRef);
+  localizedTextRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x0058f7b0

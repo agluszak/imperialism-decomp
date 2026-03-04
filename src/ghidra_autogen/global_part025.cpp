@@ -2833,7 +2833,9 @@ int __cdecl CompareLocaleStringsWithCodePageFallback(void)
   if (g_nLocaleCompareStringApiMode == 0) {
     iVar1 = CompareStringA(0,0,"",1,"",1);
     if (iVar1 == 0) {
-      iVar1 = CompareStringW(0,0,L"",1,L"",1);
+      iVar1 = CompareStringW(0,0,(PCNZWCH)((int)&g_Compare_Locale_Strings_RuntimeCache_00673E24 + 4)
+                             ,1,(PCNZWCH)((int)&g_Compare_Locale_Strings_RuntimeCache_00673E24 + 4),
+                             1);
       if (iVar1 == 0) {
         return 0;
       }
@@ -4835,13 +4837,12 @@ void __cdecl RegisterCommdlgHelpMessage(void)
 // GHIDRA_COMMENT Single-JMP thunk to RegisterCommdlgSetRgbColorMessage
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to RegisterCommdlgSetRgbColorMessage */
 
 void __cdecl thunk_RegisterCommdlgSetRgbColorMessage(void)
 
 {
-  _g_uMsgCommdlgSetRgbColor = RegisterWindowMessageA("commdlg_SetRGBColor");
+  g_uMsgCommdlgSetRgbColor._0_4_ = RegisterWindowMessageA("commdlg_SetRGBColor");
   return;
 }
 
@@ -4852,13 +4853,12 @@ void __cdecl thunk_RegisterCommdlgSetRgbColorMessage(void)
 // GHIDRA_COMMENT RegisterWindowMessageA for commdlg_SetRGBColor.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* RegisterWindowMessageA for commdlg_SetRGBColor. */
 
 void __cdecl RegisterCommdlgSetRgbColorMessage(void)
 
 {
-  _g_uMsgCommdlgSetRgbColor = RegisterWindowMessageA("commdlg_SetRGBColor");
+  g_uMsgCommdlgSetRgbColor._0_4_ = RegisterWindowMessageA("commdlg_SetRGBColor");
   return;
 }
 
@@ -6812,9 +6812,9 @@ void __thiscall AssignCopy(void *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605A29
 // GHIDRA_NAME AssignFromPtr
-// GHIDRA_PROTO int * __thiscall AssignFromPtr(int * dst_ref_ptr)
+// GHIDRA_PROTO void * __thiscall AssignFromPtr(int * dst_ref_ptr)
 
-int * __thiscall AssignFromPtr(void *this,int *dst_ref_ptr)
+void * __thiscall AssignFromPtr(void *this,int *dst_ref_ptr)
 
 {
   int iVar1;

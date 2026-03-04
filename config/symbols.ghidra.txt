@@ -18978,7 +18978,7 @@ g_awCivilianMapCursorTokenByStateIndex 695680 l
 g_szTypeNameTArmyMgr 695730 l
 g_Build_Army_Action_LookupTable_00695760 695760 l
 g_Format_Diplomacy_Notice_LookupTable_00695788 695788 l
-g_Build_Map_Order_LookupTable_00695794 695794 l
+g_Build_Map_Order_LookupTable_00695794 695794 f
 g_Build_Map_Hint_LookupTable_00695798 695798 l
 g_szTypeNameTMiniCivView 69579C l
 g_szTypeNameTMiniCivLine 6957AC l

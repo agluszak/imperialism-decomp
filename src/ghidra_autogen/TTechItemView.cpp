@@ -295,7 +295,7 @@ TTechItemView::ConstructTTechItemViewBaseState
       }
       else {
         (**(code **)(*(int *)g_pLocalizationTable + 0x74))
-                  (*(undefined4 *)(&g_aiTechItemCostByIndex + arg5 * 4),&stack0xffffff7c);
+                  (*(undefined4 *)(&UNK_0066ad50.field_0x8 + arg5 * 4),&stack0xffffff7c);
         iVar6 = 9;
       }
       local_2c = AllocateWithFallbackHandler();
@@ -440,8 +440,8 @@ TTechItemView::DestructTTechItemViewAndMaybeFree(TTechItemView *this,int command
     thunk_GetActiveNationId();
     uVar4 = *(int *)((int)g_apNationStates[extraout_AX] + 0x8f0) / 100 +
             *(int *)((int)g_apNationStates[extraout_AX] + 0x10);
-    if (*(int *)(&g_aiTechItemCostByIndex + this->field64 * 4) <=
-        (int)(((int)uVar4 < 1) - 1 & uVar4)) {
+    if (*(int *)(&UNK_0066ad50.field_0x8 + this->field64 * 4) <= (int)(((int)uVar4 < 1) - 1 & uVar4)
+       ) {
       (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
       thunk_ApplyTechItemPurchaseCostAndState
                 (g_pCityOrderCapabilityState,this->field64,this->field60);

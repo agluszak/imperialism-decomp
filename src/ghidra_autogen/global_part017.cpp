@@ -1711,7 +1711,6 @@ void __cdecl OrphanLeaf_NoCall_Ins177_00524e70(int arg1,int arg2,int arg3,int ar
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1721,7 +1720,7 @@ void __cdecl WrapperFor_ftol_At005258c0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a38f4 = (short)iVar1;
+  DAT_006a38f4._0_2_ = (short)iVar1;
   return;
 }
 
@@ -2244,8 +2243,6 @@ void __fastcall BuildFineGridRegionOverlayFromCoarseState(void)
 // GHIDRA_NAME GenerateCoarseAndFineRegionSeedMap
 // GHIDRA_PROTO void __fastcall GenerateCoarseAndFineRegionSeedMap(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __fastcall GenerateCoarseAndFineRegionSeedMap(void)
 
 {
@@ -2267,9 +2264,9 @@ void __fastcall GenerateCoarseAndFineRegionSeedMap(void)
   int local_18;
   uint local_c;
   
-  iVar13 = _g_nMapGenQuotaTokenF;
-  iVar7 = _g_nMapGenQuotaTokenS;
-  local_18 = _g_nMapGenQuotaTokenH;
+  iVar13 = g_nMapGenQuotaTokenF;
+  iVar7 = g_nMapGenQuotaTokenS;
+  local_18 = g_nMapGenQuotaTokenH;
   for (uVar12 = g_nMapGenQuotaTokenM; 0 < (int)uVar12; uVar12 = uVar12 - iVar5) {
     uVar8 = g_uMapGenerationRngState * 0x15a4e35 + 1;
     uVar4 = uVar8 >> 0xc;
@@ -2359,7 +2356,7 @@ LAB_00527893:
       g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
       iVar6 = (*pcVar1)((g_uMapGenerationRngState >> 0xc & 0x7fff) % 0x1950,7,local_c);
       iVar13 = iVar13 - iVar6;
-      if (iVar13 < (_g_nMapGenQuotaTokenF * 2) / 3) {
+      if (iVar13 < (g_nMapGenQuotaTokenF * 2) / 3) {
         local_c = CONCAT31(local_c._1_3_,1);
       }
     } while (0 < iVar13);
@@ -2443,8 +2440,6 @@ LAB_00527ad7:
 // GHIDRA_NAME PickRandomType3SeedAndAttemptExpansion
 // GHIDRA_PROTO uint __fastcall PickRandomType3SeedAndAttemptExpansion(void)
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 uint __fastcall PickRandomType3SeedAndAttemptExpansion(void)
 
 {
@@ -2460,7 +2455,7 @@ uint __fastcall PickRandomType3SeedAndAttemptExpansion(void)
   undefined1 *local_c;
   
   local_c = &LAB_004c4b40;
-  iVar1 = _g_nMapGenType3ExpansionAttempts;
+  iVar1 = g_nMapGenType3ExpansionAttempts;
   do {
     if (iVar1 == 0) {
       return 0;
@@ -3159,7 +3154,6 @@ void __fastcall OrphanDeadLeaf_NoRefs_0052a0a0(void)
 // GHIDRA_COMMENT Seeds city-region ids on city tiles, then propagates ids through neighbors until all reachable city tiles are labeled.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Seeds city-region ids on city tiles, then propagates ids through neighbors until all reachable
    city tiles are labeled. */
 
@@ -3195,10 +3189,10 @@ void __thiscall GenerateCityRegionIdsBySeedAndNeighborPropagation(void *this)
   } while (iVar3 < 0x1950);
   *(undefined4 *)((int)this + 0x2a4) = 0;
   local_1c = 0;
-  if (0 < _g_nMapGenCityRegionSeedParamTokenC_A) {
+  if (0 < g_nMapGenCityRegionSeedParamTokenC_A) {
     local_24 = 0;
-    iVar3 = _g_nMapGenCityRegionSeedParamTokenC_B;
-    iVar8 = _g_nMapGenCityRegionSeedParamTokenC_A;
+    iVar3 = g_nMapGenCityRegionSeedParamTokenC_B;
+    iVar8 = g_nMapGenCityRegionSeedParamTokenC_A;
     do {
       local_20 = 0;
       if (0 < iVar3) {
@@ -3242,9 +3236,9 @@ void __thiscall GenerateCityRegionIdsBySeedAndNeighborPropagation(void *this)
           }
           local_20 = local_20 + 1;
           local_28 = (short *)((int)local_28 + 0x6c);
-          iVar3 = _g_nMapGenCityRegionSeedParamTokenC_B;
-          iVar8 = _g_nMapGenCityRegionSeedParamTokenC_A;
-        } while ((int)local_20 < _g_nMapGenCityRegionSeedParamTokenC_B);
+          iVar3 = g_nMapGenCityRegionSeedParamTokenC_B;
+          iVar8 = g_nMapGenCityRegionSeedParamTokenC_A;
+        } while ((int)local_20 < g_nMapGenCityRegionSeedParamTokenC_B);
       }
       local_1c = local_1c + 1;
       local_24 = local_24 + 0x6c;
@@ -3371,7 +3365,6 @@ void __cdecl WrapExtendedMapXCoordinateInPlace(int arg1)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=9, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=9,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
@@ -3379,9 +3372,9 @@ void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720(void)
 
 {
   g_pOverlaySpanRecordArray18Buffer = (TOverlaySpanRecord24 *)0x0;
-  _g_uOverlaySpanRecordArray18Capacity = 0;
-  _g_uOverlaySpanRecordArray18Count = 0;
-  _g_OverlaySpanRecordArray18State = &PTR_thunk_AppendSixDwordsToDynamicRecordArray_0065999c;
+  g_uOverlaySpanRecordArray18Capacity = 0;
+  g_uOverlaySpanRecordArray18Count = 0;
+  g_OverlaySpanRecordArray18State = &PTR_thunk_AppendSixDwordsToDynamicRecordArray_0065999c;
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -3437,14 +3430,13 @@ void __fastcall AppendSixDwordsToDynamicRecordArray(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBlockWithAllocatorTracking; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around FreeHeapBlockWithAllocatorTracking; instructions=8,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
 void __cdecl WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820(void)
 
 {
-  _g_OverlaySpanRecordArray18State = &PTR_thunk_AppendSixDwordsToDynamicRecordArray_0065999c;
+  g_OverlaySpanRecordArray18State = &PTR_thunk_AppendSixDwordsToDynamicRecordArray_0065999c;
   if (g_pOverlaySpanRecordArray18Buffer != (TOverlaySpanRecord24 *)0x0) {
     FreeHeapBlockWithAllocatorTracking();
   }
@@ -3685,7 +3677,6 @@ void __thiscall DetachAndResetOverlaySpanRecordArray18Buffer(void *this)
 // GHIDRA_COMMENT [UMapper] Uses g_OverlaySpanRecordArray18State.uSuppressRoutePointPairMismatchAssert as a guard before invoking the mismatch assertion path while resolving scanline span pairing.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [UMapper] Uses g_OverlaySpanRecordArray18State.uSuppressRoutePointPairMismatchAssert as a guard
    before invoking the mismatch assertion path while resolving scanline span pairing. */
 
@@ -3739,11 +3730,11 @@ void __thiscall AssignCityRegionIdsFromOverlayScanlineIntersections(void *this,v
     local_60 = (short *)0x0;
     local_58 = 0;
     psVar6 = (short *)0x0;
-    if (_g_uOverlaySpanRecordArray18Count != 0) {
+    if (g_uOverlaySpanRecordArray18Count != 0) {
       local_64 = 0;
       iVar8 = (local_5c & 1) + iVar8 * 2;
       iVar1 = (local_5c & 1) + local_4c * 2;
-      if (_g_uOverlaySpanRecordArray18Count == 0) {
+      if (g_uOverlaySpanRecordArray18Count == 0) {
         psVar6 = (short *)0x0;
         goto LAB_0052ba25;
       }
@@ -3803,7 +3794,7 @@ LAB_0052bca9:
             local_60 = thunk_GetOverlaySpanRecordByIndex(&g_OverlaySpanRecordArray18State,local_58);
           }
           else {
-            if (local_58 < _g_uOverlaySpanRecordArray18Count) {
+            if (local_58 < g_uOverlaySpanRecordArray18Count) {
               psVar6 = (short *)((int)&g_pOverlaySpanRecordArray18Buffer->sStartX + local_64);
             }
             else {
@@ -3818,14 +3809,14 @@ LAB_0052bca9:
             local_1c = (int)local_60[1];
             thunk_WrapExtendedMapXCoordinateInPlace((int)&local_20);
             if ((extraout_EAX_00[1] == iVar10) && (*extraout_EAX_00 == iVar9)) {
-              if (local_58 < _g_uOverlaySpanRecordArray18Count) {
+              if (local_58 < g_uOverlaySpanRecordArray18Count) {
                 iVar9 = (int)&g_pOverlaySpanRecordArray18Buffer->sStartX + local_64;
               }
               else {
                 iVar9 = 0;
               }
               if (*(ushort *)(iVar9 + 0x14) < (ushort)local_60[10]) {
-                if (local_58 < _g_uOverlaySpanRecordArray18Count) {
+                if (local_58 < g_uOverlaySpanRecordArray18Count) {
                   local_60 = (short *)((int)&g_pOverlaySpanRecordArray18Buffer->sStartX + local_64);
                 }
                 else {
@@ -3834,7 +3825,7 @@ LAB_0052bca9:
               }
             }
             else {
-              if (local_58 < _g_uOverlaySpanRecordArray18Count) {
+              if (local_58 < g_uOverlaySpanRecordArray18Count) {
                 iVar9 = (int)&g_pOverlaySpanRecordArray18Buffer->sStartX + local_64;
               }
               else {
@@ -3848,7 +3839,7 @@ LAB_0052bca9:
               thunk_ExtractWrappedEndpointFromSpanRecordBySide(local_60,(int)local_8,0);
               thunk_AreRoutePointPairsEqual();
               if (extraout_EAX_02 == 0) {
-                if (_g_Assign_City_Region_Value_006A3910 == 0) {
+                if (g_Assign_City_Region_Value_006A3910 == 0) {
                   thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
                 }
               }
@@ -3864,7 +3855,7 @@ LAB_0052bca9:
         local_64 = local_64 + 0x18;
         psVar6 = local_60;
         iVar9 = local_38;
-      } while (local_58 < _g_uOverlaySpanRecordArray18Count);
+      } while (local_58 < g_uOverlaySpanRecordArray18Count);
     }
     if ((psVar6 != (short *)0x0) &&
        (thunk_SelectSpanEndpointXByThreshold(psVar6), local_3c = extraout_EAX_03, local_48 < 0)) {
@@ -3976,7 +3967,6 @@ void * __thiscall GetOverlaySpanRecordByIndex(void *this,uint entryIndex)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=9, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around AppendPointerToGlobalVectorAsStatus; instructions=9,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
@@ -3984,9 +3974,9 @@ void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060(void)
 
 {
   g_pOverlayQuadBorderLinkArray16Buffer = (TOverlayQuadBorderLinkRecord16 *)0x0;
-  _g_uOverlayQuadBorderLinkArray16Capacity = 0;
-  _g_uOverlayQuadBorderLinkArray16Count = 0;
-  _g_OverlayQuadBorderLinkArray16State = &PTR_thunk_AppendOverlayQuadRecord_006599a0;
+  g_uOverlayQuadBorderLinkArray16Capacity = 0;
+  g_uOverlayQuadBorderLinkArray16Count = 0;
+  g_OverlayQuadBorderLinkArray16State = &PTR_thunk_AppendOverlayQuadRecord_006599a0;
   AppendPointerToGlobalVectorAsStatus();
   return;
 }
@@ -4045,14 +4035,13 @@ void __thiscall AppendOverlayQuadRecord(void *this,int arg1,int arg2,int arg3,in
 // GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBlockWithAllocatorTracking; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around FreeHeapBlockWithAllocatorTracking; instructions=8,
    call_insns=1, internal_calls=1, unique_internal=1 */
 
 void __cdecl WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170(void)
 
 {
-  _g_OverlayQuadBorderLinkArray16State = &PTR_thunk_AppendOverlayQuadRecord_006599a0;
+  g_OverlayQuadBorderLinkArray16State = &PTR_thunk_AppendOverlayQuadRecord_006599a0;
   if (g_pOverlayQuadBorderLinkArray16Buffer != (TOverlayQuadBorderLinkRecord16 *)0x0) {
     FreeHeapBlockWithAllocatorTracking();
   }
@@ -4076,7 +4065,6 @@ void __cdecl WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170(void)
 // GHIDRA_COMMENT - Uses region class derived from city tile field tile+0x04.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Builds city-region border overlay segments from neighboring region transitions.
    Algorithm:
    1. For each tile, compare city region ID against selected hex neighbors.
@@ -4171,7 +4159,7 @@ LAB_0052c23f:
       iVar5 = 2;
       thunk_ConvertTileIndexToOverlayCoord216BySide();
       thunk_InitializeOverlaySpanRecordSorted(&local_40,arg1,iVar8,iVar4,iVar5);
-      (*(code *)*_g_OverlayQuadBorderLinkArray16State)(local_40,local_3c,local_38,local_34);
+      (*(code *)*g_OverlayQuadBorderLinkArray16State)(local_40,local_3c,local_38,local_34);
     }
     iVar6 = iVar6 + 0x24;
     iVar7 = iVar7 + 1;
@@ -4267,21 +4255,21 @@ LAB_0052c411:
         if (arg3 == -1) {
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&local_40,arg1_00,(int)puStack_50,iVar8,iVar4);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(local_40,local_3c,local_38,local_34);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(local_40,local_3c,local_38,local_34);
         }
         else {
           iVar5 = iVar8;
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_30,arg1_01,(int)puStack_50,iVar5,iVar4);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
           iVar4 = unaff_EDI;
           iVar5 = arg3;
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_30,arg1_02,iVar4,iVar5,arg4_00);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
           thunk_ConvertTileIndexToOverlayCoord216BySide();
           thunk_InitializeOverlaySpanRecordSorted(&uStack_30,arg1_03,iVar8,arg3,arg4);
-          (*(code *)*_g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
+          (*(code *)*g_OverlayQuadBorderLinkArray16State)(uStack_30,uStack_2c,uStack_28,uStack_24);
         }
       }
       iVar6 = iVar6 + 0x24;
@@ -4412,7 +4400,6 @@ void __thiscall DetachAndResetOverlayQuadRecordArrayBuffer(void *this)
 // GHIDRA_COMMENT Computes overlay edge coordinate from tile+side and emits sorted segment bounds to renderer callback.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Computes overlay edge coordinate from tile+side and emits sorted segment bounds to renderer
    callback. */
 
@@ -4438,7 +4425,7 @@ void __thiscall EmitOverlaySegmentFromTileEdgeSorted(void *this,int arg1,int arg
     iVar2 = arg3;
     arg3 = arg4;
   }
-  (*(code *)*_g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,arg3,iVar2);
+  (*(code *)*g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,arg3,iVar2);
   return;
 }
 
@@ -4449,7 +4436,6 @@ void __thiscall EmitOverlaySegmentFromTileEdgeSorted(void *this,int arg1,int arg
 // GHIDRA_COMMENT Builds/refreshes overlay span records from quad-border link records, selecting preferred pairings by wrapped delta metric.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Builds/refreshes overlay span records from quad-border link records, selecting preferred pairings
    by wrapped delta metric. */
 
@@ -4481,53 +4467,53 @@ void __cdecl BuildOverlaySpanRecordsFromQuadBorderLinks(void)
     FreeHeapBlockWithAllocatorTracking();
   }
   entryIndex = 0;
-  if (_g_uOverlayQuadBorderLinkArray16Count != 0) {
+  if (g_uOverlayQuadBorderLinkArray16Count != 0) {
     do {
-      if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+      if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
         thunk_ReserveOverlayQuadRecordArrayCapacity
                   (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
       }
-      if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-        _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+      if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+        g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
       }
       if (g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nQuadCellId == -1) {
         entryIndex = entryIndex + 1;
       }
       else {
-        if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+        if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
           thunk_ReserveOverlayQuadRecordArrayCapacity
                     (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
         }
-        if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-          _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+        if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+          g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
         }
-        if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+        if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
           thunk_ReserveOverlayQuadRecordArrayCapacity
                     (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
         }
-        if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-          _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+        if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+          g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
         }
         entryIndex_00 = entryIndex + 1;
         local_34 = 0xffffffff;
         local_2c = 0xffffffff;
-        if (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count) {
+        if (entryIndex_00 < g_uOverlayQuadBorderLinkArray16Count) {
           arg1_00 = entryIndex + 2;
           iVar5 = entryIndex_00 * 0x10;
           do {
-            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+            if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
               thunk_ReserveOverlayQuadRecordArrayCapacity
                         (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
             }
-            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-              _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+            if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+              g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
             }
-            if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+            if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
               thunk_ReserveOverlayQuadRecordArrayCapacity
                         (&g_OverlayQuadBorderLinkArray16State,arg1_00);
             }
-            if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
-              _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+            if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+              g_uOverlayQuadBorderLinkArray16Count = arg1_00;
             }
             if ((g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeVertexA ==
                  *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeVertexA + iVar5)) &&
@@ -4539,19 +4525,19 @@ void __cdecl BuildOverlaySpanRecordsFromQuadBorderLinks(void)
               bVar1 = false;
             }
             if (bVar1) {
-              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+              if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
                 thunk_ReserveOverlayQuadRecordArrayCapacity
                           (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
               }
-              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-                _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+              if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+                g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
               }
-              if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+              if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
                 thunk_ReserveOverlayQuadRecordArrayCapacity
                           (&g_OverlayQuadBorderLinkArray16State,arg1_00);
               }
-              if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
-                _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+              if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                g_uOverlayQuadBorderLinkArray16Count = arg1_00;
               }
               iVar4 = ((*(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nEdgeDirection + iVar5
                                 ) - g_pOverlayQuadBorderLinkArray16Buffer[entryIndex].nEdgeDirection
@@ -4564,19 +4550,19 @@ void __cdecl BuildOverlaySpanRecordsFromQuadBorderLinks(void)
               }
               if (bVar1) {
                 if (local_34 != 0xffffffff) {
-                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
+                  if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex_00) {
                     thunk_ReserveOverlayQuadRecordArrayCapacity
                               (&g_OverlayQuadBorderLinkArray16State,arg1_00);
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
-                    _g_uOverlayQuadBorderLinkArray16Count = arg1_00;
+                  if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex_00) {
+                    g_uOverlayQuadBorderLinkArray16Count = arg1_00;
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
+                  if (g_uOverlayQuadBorderLinkArray16Capacity <= entryIndex) {
                     thunk_ReserveOverlayQuadRecordArrayCapacity
                               (&g_OverlayQuadBorderLinkArray16State,entryIndex + 1);
                   }
-                  if (_g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
-                    _g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
+                  if (g_uOverlayQuadBorderLinkArray16Count <= entryIndex) {
+                    g_uOverlayQuadBorderLinkArray16Count = entryIndex + 1;
                   }
                   iVar4 = *(int *)((int)&g_pOverlayQuadBorderLinkArray16Buffer->nQuadCellId + iVar5)
                   ;
@@ -4624,7 +4610,7 @@ LAB_0052ce49:
             entryIndex_00 = entryIndex_00 + 1;
             arg1_00 = arg1_00 + 1;
             iVar5 = iVar5 + 0x10;
-          } while (entryIndex_00 < _g_uOverlayQuadBorderLinkArray16Count);
+          } while (entryIndex_00 < g_uOverlayQuadBorderLinkArray16Count);
         }
         if ((local_34 == 0xffffffff) && (local_34 = local_2c, local_2c == 0xffffffff)) {
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
@@ -4648,7 +4634,7 @@ LAB_0052ce49:
             puVar2 = puVar2 + 1;
             puVar6 = puVar6 + 1;
           }
-          (*(code *)*_g_OverlaySpanRecordArray18State)();
+          (*(code *)*g_OverlaySpanRecordArray18State)();
           puVar2 = thunk_GetOrCreateOverlayQuadRecordByIndex
                              (&g_OverlayQuadBorderLinkArray16State,entryIndex);
           *puVar2 = 0xffffffff;
@@ -4661,7 +4647,7 @@ LAB_0052ce49:
           puVar2[1] = 0xffffffff;
         }
       }
-    } while (entryIndex < _g_uOverlayQuadBorderLinkArray16Count);
+    } while (entryIndex < g_uOverlayQuadBorderLinkArray16Count);
   }
   return;
 }
@@ -5064,7 +5050,6 @@ int __thiscall OrphanDeadLeaf_NoRefs_0052d6b0(void *this)
 // GHIDRA_COMMENT - Region IDs are stored as tile+0x04 values offset by +0x17.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Merges undersized city regions into adjacent regions and compacts region IDs.
    Algorithm:
    1. Count tile membership per region ID.
@@ -5157,15 +5142,15 @@ void __cdecl MergeSmallCityRegionsAndCompactIds(void)
       iVar7 = -1;
       local_20 = -1;
       local_14 = 0xffffffff;
-      if (_g_uOverlaySpanRecordArray18Count != 0) {
+      if (g_uOverlaySpanRecordArray18Count != 0) {
         iVar16 = 0;
         do {
-          if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+          if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
             thunk_ReserveOverlaySpanRecordArray18Capacity
                       (&g_OverlaySpanRecordArray18State,uVar17 + 1);
           }
-          if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-            _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+            g_uOverlaySpanRecordArray18Count = uVar17 + 1;
           }
           uVar3 = *(ushort *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdA + iVar16);
           if (uVar3 == (byte)local_28) {
@@ -5176,12 +5161,12 @@ void __cdecl MergeSmallCityRegionsAndCompactIds(void)
             uVar3 = 0xfffe;
           }
           if (-1 < (short)uVar3) {
-            if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+            if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
               thunk_ReserveOverlaySpanRecordArray18Capacity
                         (&g_OverlaySpanRecordArray18State,uVar17 + 1);
             }
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             iVar8 = ftol();
             if (iVar7 < iVar8) {
@@ -5192,7 +5177,7 @@ void __cdecl MergeSmallCityRegionsAndCompactIds(void)
           }
           uVar17 = uVar17 + 1;
           iVar16 = iVar16 + 0x18;
-        } while (uVar17 < _g_uOverlaySpanRecordArray18Count);
+        } while (uVar17 < g_uOverlaySpanRecordArray18Count);
       }
       bVar20 = false;
       if (local_20 == -1) {
@@ -5303,8 +5288,8 @@ LAB_0052da86:
         } while (iVar7 < 0x38f40);
         if (-1 < (int)local_14) {
           pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-          uVar17 = _g_uOverlaySpanRecordArray18Capacity;
-          if (_g_uOverlaySpanRecordArray18Capacity <= local_14) {
+          uVar17 = g_uOverlaySpanRecordArray18Capacity;
+          if (g_uOverlaySpanRecordArray18Capacity <= local_14) {
             uVar17 = (local_14 + 1) * 2;
             if (0x7fffffff < uVar17) {
               uVar17 = 0x7fffffff;
@@ -5314,13 +5299,13 @@ LAB_0052da86:
             if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
               thunk_ReallocateRouteRecordBufferByCountStride18();
               pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-              uVar17 = _g_uOverlaySpanRecordArray18Capacity;
+              uVar17 = g_uOverlaySpanRecordArray18Capacity;
             }
           }
-          _g_uOverlaySpanRecordArray18Capacity = uVar17;
+          g_uOverlaySpanRecordArray18Capacity = uVar17;
           g_pOverlaySpanRecordArray18Buffer = pTVar10;
-          if (_g_uOverlaySpanRecordArray18Count <= local_14) {
-            _g_uOverlaySpanRecordArray18Count = local_14 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= local_14) {
+            g_uOverlaySpanRecordArray18Count = local_14 + 1;
           }
           pTVar10 = g_pOverlaySpanRecordArray18Buffer + local_14;
           pTVar10->sEndY = 0;
@@ -5333,14 +5318,14 @@ LAB_0052da86:
           pTVar10->nRouteNodeIndexA = -1;
         }
         uVar17 = 0;
-        if (_g_uOverlaySpanRecordArray18Count != 0) {
+        if (g_uOverlaySpanRecordArray18Count != 0) {
           iVar7 = 0;
           local_14 = 0x30;
           uVar15 = 2;
           do {
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar18 = _g_uOverlaySpanRecordArray18Capacity;
-            if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+            uVar18 = g_uOverlaySpanRecordArray18Capacity;
+            if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
               uVar18 = uVar15;
               if (0x7fffffff < uVar15) {
                 uVar18 = 0x7fffffff;
@@ -5350,28 +5335,28 @@ LAB_0052da86:
               if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
                 thunk_ReallocateRouteRecordBufferByCountStride18();
                 pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-                uVar18 = _g_uOverlaySpanRecordArray18Capacity;
+                uVar18 = g_uOverlaySpanRecordArray18Capacity;
               }
             }
-            _g_uOverlaySpanRecordArray18Capacity = uVar18;
+            g_uOverlaySpanRecordArray18Capacity = uVar18;
             g_pOverlaySpanRecordArray18Buffer = pTVar10;
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             if (*(short *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdA + iVar7) == iVar6) {
-              if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+              if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
                 thunk_ReserveOverlaySpanRecordArray18Capacity
                           (&g_OverlaySpanRecordArray18State,uVar17 + 1);
               }
-              if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-                _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+              if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+                g_uOverlaySpanRecordArray18Count = uVar17 + 1;
               }
               *(undefined2 *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdA + iVar7) =
                    (undefined2)local_20;
             }
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar18 = _g_uOverlaySpanRecordArray18Capacity;
-            if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+            uVar18 = g_uOverlaySpanRecordArray18Capacity;
+            if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
               uVar18 = uVar15;
               if (0x7fffffff < uVar15) {
                 uVar18 = 0x7fffffff;
@@ -5381,21 +5366,21 @@ LAB_0052da86:
               if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
                 thunk_ReallocateRouteRecordBufferByCountStride18();
                 pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-                uVar18 = _g_uOverlaySpanRecordArray18Capacity;
+                uVar18 = g_uOverlaySpanRecordArray18Capacity;
               }
             }
-            _g_uOverlaySpanRecordArray18Capacity = uVar18;
+            g_uOverlaySpanRecordArray18Capacity = uVar18;
             g_pOverlaySpanRecordArray18Buffer = pTVar10;
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             if (*(short *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdB + iVar7) == iVar6) {
-              if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+              if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
                 thunk_ReserveOverlaySpanRecordArray18Capacity
                           (&g_OverlaySpanRecordArray18State,uVar17 + 1);
               }
-              if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-                _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+              if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+                g_uOverlaySpanRecordArray18Count = uVar17 + 1;
               }
               *(undefined2 *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdB + iVar7) =
                    (undefined2)local_20;
@@ -5404,7 +5389,7 @@ LAB_0052da86:
             uVar15 = uVar15 + 2;
             local_14 = local_14 + 0x30;
             iVar7 = iVar7 + 0x18;
-          } while (uVar17 < _g_uOverlaySpanRecordArray18Count);
+          } while (uVar17 < g_uOverlaySpanRecordArray18Count);
         }
       }
     }
@@ -5428,15 +5413,15 @@ LAB_0052da86:
         iVar7 = iVar7 + 0x24;
       } while (iVar7 < 0x38f40);
       uVar17 = 0;
-      if (_g_uOverlaySpanRecordArray18Count != 0) {
+      if (g_uOverlaySpanRecordArray18Count != 0) {
         iVar7 = 0;
         local_20 = 0x30;
         uVar18 = 2;
         pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-        uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+        uVar15 = g_uOverlaySpanRecordArray18Capacity;
         do {
           pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-          uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+          uVar19 = g_uOverlaySpanRecordArray18Capacity;
           if (uVar15 <= uVar17) {
             uVar15 = uVar18;
             if (0x7fffffff < uVar18) {
@@ -5453,15 +5438,15 @@ LAB_0052da86:
               uVar19 = uVar15;
             }
           }
-          _g_uOverlaySpanRecordArray18Capacity = uVar19;
+          g_uOverlaySpanRecordArray18Capacity = uVar19;
           g_pOverlaySpanRecordArray18Buffer = pTVar2;
-          if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-            _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+            g_uOverlaySpanRecordArray18Count = uVar17 + 1;
           }
           local_28 = (undefined2)iVar6;
           if ((int)*(short *)((int)&pTVar10->sRegionIdA + iVar7) == *(int *)(in_ECX + 0x2a4)) {
             pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-            uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+            uVar19 = g_uOverlaySpanRecordArray18Capacity;
             if (uVar15 <= uVar17) {
               uVar19 = uVar18;
               if (0x7fffffff < uVar18) {
@@ -5473,20 +5458,20 @@ LAB_0052da86:
                 thunk_ReallocateRouteRecordBufferByCountStride18();
                 pTVar10 = g_pOverlaySpanRecordArray18Buffer;
                 pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-                uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+                uVar19 = g_uOverlaySpanRecordArray18Capacity;
               }
             }
-            _g_uOverlaySpanRecordArray18Capacity = uVar19;
+            g_uOverlaySpanRecordArray18Capacity = uVar19;
             g_pOverlaySpanRecordArray18Buffer = pTVar2;
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             *(undefined2 *)((int)&pTVar10->sRegionIdA + iVar7) = local_28;
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+            uVar15 = g_uOverlaySpanRecordArray18Capacity;
           }
           pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-          uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+          uVar19 = g_uOverlaySpanRecordArray18Capacity;
           if (uVar15 <= uVar17) {
             uVar15 = uVar18;
             if (0x7fffffff < uVar18) {
@@ -5498,15 +5483,15 @@ LAB_0052da86:
             if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
               thunk_ReallocateRouteRecordBufferByCountStride18();
               pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-              uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+              uVar15 = g_uOverlaySpanRecordArray18Capacity;
               pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-              uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+              uVar19 = g_uOverlaySpanRecordArray18Capacity;
             }
           }
-          _g_uOverlaySpanRecordArray18Capacity = uVar19;
+          g_uOverlaySpanRecordArray18Capacity = uVar19;
           g_pOverlaySpanRecordArray18Buffer = pTVar2;
-          if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-            _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+            g_uOverlaySpanRecordArray18Count = uVar17 + 1;
           }
           if ((int)*(short *)((int)&pTVar10->sRegionIdB + iVar7) == *(int *)(in_ECX + 0x2a4)) {
             if (uVar15 <= uVar17) {
@@ -5514,18 +5499,18 @@ LAB_0052da86:
                         (&g_OverlaySpanRecordArray18State,uVar17 + 1);
               pTVar10 = g_pOverlaySpanRecordArray18Buffer;
             }
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             *(undefined2 *)((int)&pTVar10->sRegionIdB + iVar7) = local_28;
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+            uVar15 = g_uOverlaySpanRecordArray18Capacity;
           }
           uVar17 = uVar17 + 1;
           local_20 = local_20 + 0x30;
           uVar18 = uVar18 + 2;
           iVar7 = iVar7 + 0x18;
-        } while (uVar17 < _g_uOverlaySpanRecordArray18Count);
+        } while (uVar17 < g_uOverlaySpanRecordArray18Count);
       }
     }
   } while( true );
@@ -5555,7 +5540,6 @@ void __cdecl ReallocateRouteRecordBufferByCountStride18(void)
 // GHIDRA_COMMENT [UMapper] Uses g_OverlaySpanRecordArray18State.uSuppressSpanEndpointLinkAssert as a guard before invoking the endpoint-link assertion path during span/route rebuild.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [UMapper] Uses g_OverlaySpanRecordArray18State.uSuppressSpanEndpointLinkAssert as a guard before
    invoking the endpoint-link assertion path during span/route rebuild. */
 
@@ -5580,10 +5564,10 @@ void __cdecl RebuildUMapperRouteRecordsAndActiveMapRects(void)
   
   iVar10 = 0;
   uVar11 = 0;
-  if (_g_uOverlaySpanRecordArray18Count != 0) {
-    uVar7 = _g_uOverlaySpanRecordArray18Count;
+  if (g_uOverlaySpanRecordArray18Count != 0) {
+    uVar7 = g_uOverlaySpanRecordArray18Count;
     pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-    if (_g_uOverlaySpanRecordArray18Count == 0) {
+    if (g_uOverlaySpanRecordArray18Count == 0) {
       iVar6 = 0;
       goto LAB_0052e386;
     }
@@ -5611,7 +5595,7 @@ LAB_0052e386:
         puVar2[8] = 0xffff;
         *(undefined4 *)(puVar2 + 6) = 0xffffffff;
         *(undefined4 *)(puVar2 + 4) = 0xffffffff;
-        uVar7 = _g_uOverlaySpanRecordArray18Count;
+        uVar7 = g_uOverlaySpanRecordArray18Count;
         pTVar4 = g_pOverlaySpanRecordArray18Buffer;
       }
       uVar11 = uVar11 + 1;
@@ -5622,11 +5606,11 @@ LAB_0052e386:
   sVar9 = 0;
   uVar11 = 0;
   uVar8 = extraout_var;
-  if (_g_uOverlaySpanRecordArray18Count != 0) {
+  if (g_uOverlaySpanRecordArray18Count != 0) {
     iVar10 = 0;
     pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-    uVar7 = _g_uOverlaySpanRecordArray18Count;
-    if (_g_uOverlaySpanRecordArray18Count == 0) {
+    uVar7 = g_uOverlaySpanRecordArray18Count;
+    if (g_uOverlaySpanRecordArray18Count == 0) {
       psVar5 = (short *)0x0;
       goto LAB_0052e443;
     }
@@ -5655,10 +5639,10 @@ LAB_0052e443:
           }
           if (*(short *)(iVar6 + 0x12) != -1) goto LAB_0052e4af;
         }
-        if (_g_Rebuild_UMapper_Route_Value_006A3914 == 0) {
+        if (g_Rebuild_UMapper_Route_Value_006A3914 == 0) {
           thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
           pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
       }
 LAB_0052e4af:
@@ -5675,14 +5659,14 @@ LAB_0052e4af:
         iVar6 = 0;
       }
       if ((char)iVar6 == '\0') {
-        if (_g_uOverlaySpanRecordArray18Capacity <= uVar11) {
+        if (g_uOverlaySpanRecordArray18Capacity <= uVar11) {
           thunk_ReserveOverlaySpanRecordArray18Capacity(&g_OverlaySpanRecordArray18State,uVar11 + 1)
           ;
           pTVar4 = g_pOverlaySpanRecordArray18Buffer;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
         if (uVar7 <= uVar11) {
-          _g_uOverlaySpanRecordArray18Count = uVar11 + 1;
+          g_uOverlaySpanRecordArray18Count = uVar11 + 1;
         }
         CRect::CRect(&local_10,(int)*(short *)((int)&pTVar4->sStartX + iVar10),
                      (int)*(short *)((int)&pTVar4->sStartY + iVar10),
@@ -5697,7 +5681,7 @@ LAB_0052e4af:
         piVar3[3] = local_10.field3_0xc;
         pTVar4 = g_pOverlaySpanRecordArray18Buffer;
         iVar6 = local_10.field2_0x8;
-        uVar7 = _g_uOverlaySpanRecordArray18Count;
+        uVar7 = g_uOverlaySpanRecordArray18Count;
       }
       uVar8 = (undefined2)((uint)iVar6 >> 0x10);
       uVar11 = uVar11 + 1;
@@ -5707,10 +5691,10 @@ LAB_0052e4af:
   InputState::thunk_InitializeMapActionContextsForNationCountUsingCostField
             (g_pActiveMapOrderContext,CONCAT22(uVar8,*(undefined2 *)(in_ECX + 0x2a4)));
   uVar11 = 0;
-  if (0 < (int)_g_uOverlaySpanRecordArray18Count) {
+  if (0 < (int)g_uOverlaySpanRecordArray18Count) {
     iVar10 = 0;
-    bVar12 = _g_uOverlaySpanRecordArray18Count != 0;
-    uVar7 = _g_uOverlaySpanRecordArray18Count;
+    bVar12 = g_uOverlaySpanRecordArray18Count != 0;
+    uVar7 = g_uOverlaySpanRecordArray18Count;
     do {
       if (bVar12) {
         psVar5 = (short *)((int)&g_pOverlaySpanRecordArray18Buffer->sStartX + iVar10);
@@ -5725,22 +5709,22 @@ LAB_0052e4af:
         bVar12 = false;
       }
       if (!bVar12) {
-        if (_g_uOverlaySpanRecordArray18Capacity <= uVar11) {
+        if (g_uOverlaySpanRecordArray18Capacity <= uVar11) {
           thunk_ReserveOverlaySpanRecordArray18Capacity(&g_OverlaySpanRecordArray18State,uVar11 + 1)
           ;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
         if (uVar7 <= uVar11) {
           uVar7 = uVar11 + 1;
-          _g_uOverlaySpanRecordArray18Count = uVar7;
+          g_uOverlaySpanRecordArray18Count = uVar7;
         }
-        if (_g_uOverlaySpanRecordArray18Capacity <= uVar11) {
+        if (g_uOverlaySpanRecordArray18Capacity <= uVar11) {
           thunk_ReserveOverlaySpanRecordArray18Capacity(&g_OverlaySpanRecordArray18State,uVar11 + 1)
           ;
-          uVar7 = _g_uOverlaySpanRecordArray18Count;
+          uVar7 = g_uOverlaySpanRecordArray18Count;
         }
         if (uVar7 <= uVar11) {
-          _g_uOverlaySpanRecordArray18Count = uVar11 + 1;
+          g_uOverlaySpanRecordArray18Count = uVar11 + 1;
         }
         thunk_GetMapActionContextEntryByIndex();
         thunk_GetMapActionContextEntryByIndex();
@@ -5750,7 +5734,7 @@ LAB_0052e4af:
         thunk_GetOrCreateOverlaySpanRecordArray18Entry(&g_OverlaySpanRecordArray18State,uVar11);
         thunk_GetMapActionContextEntryByIndex();
         thunk_DispatchMapActionContextCallbackViaField24();
-        uVar7 = _g_uOverlaySpanRecordArray18Count;
+        uVar7 = g_uOverlaySpanRecordArray18Count;
       }
       uVar11 = uVar11 + 1;
       iVar10 = iVar10 + 0x18;
@@ -5927,7 +5911,6 @@ void __cdecl AreRoutePointPairsEqual(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5937,7 +5920,7 @@ void __cdecl WrapperFor_ftol_At0052eb00(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3a50 = (short)iVar1;
+  UNK_006a3918._312_2_ = (short)iVar1;
   return;
 }
 
@@ -6986,8 +6969,7 @@ void __cdecl QueueTurnEventHintActionsByNationMetricsAndCompatibility(void)
   }
   uVar2 = (short)*(ushort *)((int)g_pLocalizationTable + 0x2c) >> 0xf;
   if ((ushort)(((*(ushort *)((int)g_pLocalizationTable + 0x2c) ^ uVar2) - uVar2 & 3 ^ uVar2) - uVar2
-              ) == *(short *)(&g_Queue_Turn_Event_Value_00697818 + (short)((int *)in_ECX[1])[3] * 2)
-     ) {
+              ) == *(short *)((int)&UNK_00697810 + (short)((int *)in_ECX[1])[3] * 2 + 8)) {
     (**(code **)(*(int *)in_ECX[1] + 0x23c))();
     ppvStack_38 = (void **)ftol();
     if ((int)ppvStack_38 < 2) {
@@ -9295,7 +9277,6 @@ void __cdecl CompareIndexAndRankEntriesByField2Descending(int arg1,int arg2)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -9305,7 +9286,7 @@ void __cdecl WrapperFor_ftol_At00534a80(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3b80 = (short)iVar1;
+  UNK_006a3b6c._20_2_ = (short)iVar1;
   return;
 }
 
@@ -10543,7 +10524,6 @@ short __cdecl CompareMissionOrderEntriesByPriorityScore(int arg1,int arg2)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -10553,7 +10533,7 @@ void __cdecl WrapperFor_ftol_At00536290(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3c64 = (short)iVar1;
+  g_afxClassInit_006a3ba4._192_2_ = (short)iVar1;
   return;
 }
 
@@ -10608,7 +10588,7 @@ void __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(voi
 void __cdecl WrapperFor_AFX_CLASSINIT_At00536470(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c60);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0xbc);
   return;
 }
 
@@ -10975,7 +10955,7 @@ void __cdecl UpdateMissionOrderSelectionStateByNationSimilarityThresholds(void)
       fVar2 = fVar2 + SQRT(*pfVar5 * fVar1);
       pfVar5 = pfVar5 + 1;
     } while (iVar4 != 0);
-    if (_g_Mission_Order_Selection_LookupTable_0065A8F0 <= fVar2 / fVar3) {
+    if (ram0x0065a8f0 <= fVar2 / fVar3) {
       thunk_BuildNavyOrderCategoryVectorForNationWithExclusion();
       fVar2 = 0.0;
       fVar3 = 0.0;
@@ -10990,7 +10970,7 @@ void __cdecl UpdateMissionOrderSelectionStateByNationSimilarityThresholds(void)
         fVar2 = fVar2 + SQRT(fVar1 * *pfVar5);
         pfVar5 = pfVar5 + 1;
       } while (iVar4 != 0);
-      if (_g_Mission_Order_Selection_LookupTable_0065A8F0 <= fVar2 / fVar3) goto LAB_00536cd3;
+      if (ram0x0065a8f0 <= fVar2 / fVar3) goto LAB_00536cd3;
       in_ECX[10] = 1;
     }
   }
@@ -12112,7 +12092,7 @@ float __thiscall ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(void 
 void __cdecl WrapperFor_AFX_CLASSINIT_At005387a0(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c50);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0xac);
   return;
 }
 

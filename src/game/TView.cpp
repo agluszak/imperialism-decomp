@@ -2,8 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "game/TView.h"
-
-int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
+#include "game/string_shared.h"
 
 namespace {
 
@@ -35,7 +34,7 @@ void TView::ConstructUiResourceEntryBase() {
   field4e = 0xffff;
   field50 = 0;
   field54 = 1;
-  InitializeSharedStringRefFromEmpty(&sharedStringRef);
+  reinterpret_cast<StringShared*>(&sharedStringRef)->InitFromEmpty();
   field5c = 0;
   vftable = reinterpret_cast<void*>(kAddrVtblTView);
 }

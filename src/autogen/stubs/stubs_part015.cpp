@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TIconBar::RenderIconBarEntryStrip
-// ghidra_proto void __thiscall RenderIconBarEntryStrip(void)
-// FUNCTION: IMPERIALISM 0x00506150
-undefined4 RenderIconBarEntryStrip(void)
-{
-  return 0;
-}
-
 // ghidra_name TIconSlider::CreateTIconSliderInstance
 // ghidra_proto void * __cdecl CreateTIconSliderInstance(void)
 // FUNCTION: IMPERIALISM 0x005062d0
@@ -3999,6 +3991,14 @@ undefined4 InitializeTextileForeignMinisterOrderCandidates(void)
 // ghidra_proto void __fastcall RunForeignMinisterPolicySlot28VariantB(void)
 // FUNCTION: IMPERIALISM 0x00533380
 undefined4 RunForeignMinisterPolicySlot28VariantB(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchNationInteractionAmountWithAvailableCap
+// ghidra_proto void __cdecl DispatchNationInteractionAmountWithAvailableCap(void)
+// FUNCTION: IMPERIALISM 0x00533670
+undefined4 DispatchNationInteractionAmountWithAvailableCap(void)
 {
   return 0;
 }

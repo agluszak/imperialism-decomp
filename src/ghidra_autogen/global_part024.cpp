@@ -686,12 +686,12 @@ void __cdecl GetCurrentLocalEpochSecondsWithTimezoneCache(void)
   }
   g_wRuntimeTimeCacheYear = local_cc.wYear;
   g_Current_Local_Epoch_WordState_006A7FBA = local_cc.wMonth;
-  _g_Current_Local_Epoch_State_006A7FBC = local_cc.wDayOfWeek;
+  g_Current_Local_Epoch_State_006A7FBC = local_cc.wDayOfWeek;
   g_Current_Local_Epoch_WordState_006A7FBE = local_cc.wDay;
   g_wRuntimeTimeCacheHour = local_cc.wHour;
   g_Current_Local_Epoch_WordState_006A7FC2 = local_cc.wMinute;
-  _g_Current_Local_Epoch_State_006A7FC4 = local_cc.wSecond;
-  g_Current_Local_Epoch_State_006A7FC4_2 = local_cc.wMilliseconds;
+  g_Current_Local_Epoch_State_006A7FC4._0_2_ = local_cc.wSecond;
+  g_Current_Local_Epoch_State_006A7FC4._2_2_ = local_cc.wMilliseconds;
 LAB_005e8faf:
   iVar2 = ConvertBrokenDownLocalTimeToEpochSeconds();
   if (in_stack_00000004 != (int *)0x0) {
@@ -1406,8 +1406,8 @@ void __cdecl WrapperFor_fpmath_At005e9b60(void)
   if (PTR_fpmath_0069c708 != (undefined *)0x0) {
     (*(code *)PTR_fpmath_0069c708)();
   }
-  InvokeNonNullFunctionPointerRange(&g_DAT_Value_00693718,&g_DAT_00693a2c_Value_00693A2C);
-  InvokeNonNullFunctionPointerRange(&g_DAT_Value_00692000,&g_DAT_Value_00693614);
+  InvokeNonNullFunctionPointerRange(&UNK_006934cc.field_0x24c,&g_DAT_00693a2c_Value_00693A2C);
+  InvokeNonNullFunctionPointerRange(&g_DAT_Value_00692000,&UNK_006934cc.field_0x148);
   return;
 }
 
@@ -1459,7 +1459,6 @@ void __cdecl exit(int _Code)
 // GHIDRA_COMMENT Runs registered exit handlers/terminators and then exits (or terminates process immediately if forced).
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* CRT exit core routine.
    Runs registered exit handlers/terminators and then exits (or terminates process immediately if
    forced). */
@@ -1478,8 +1477,8 @@ void __cdecl RunCrtExitHandlersAndTerminate(int arg1,int arg2,int arg3)
     hProcess = GetCurrentProcess();
     TerminateProcess(hProcess,uExitCode);
   }
-  _g_Run_Crt_Exit_RuntimeCache_006A8010 = 1;
-  g_Run_Crt_Exit_RuntimeCache_006A800C = (undefined1)arg3;
+  UNK_006a8008._8_4_ = 1;
+  UNK_006a8008._4_1_ = (undefined1)arg3;
   if (arg2 == 0) {
     if ((g_pCrtExitHandlerVectorBase != (void *)0x0) &&
        (puVar2 = (undefined4 *)((int)g_pCrtExitHandlerVectorNext + -4),
@@ -3597,7 +3596,7 @@ void * __cdecl ConvertEpochSecondsToTmFieldsThreadLocal(int *pEpochSeconds)
   void *pvVar2;
   void *pvVar3;
   int iVar4;
-  int *piVar5;
+  Alignment *pAVar5;
   int *piVar6;
   int *piVar7;
   int iVar8;
@@ -3613,10 +3612,10 @@ void * __cdecl ConvertEpochSecondsToTmFieldsThreadLocal(int *pEpochSeconds)
   if (*(int *)((int)pvVar2 + 0x40) == 0) {
     pvVar3 = AllocateWithGlobalNewMode(0x24);
     *(void **)((int)pvVar2 + 0x40) = pvVar3;
-    piVar5 = (int *)&g_Convert_Epoch_Seconds_Value_006A8138;
+    pAVar5 = &g_Convert_Epoch_Seconds_Value_006A8138;
     if (pvVar3 == (void *)0x0) goto LAB_005eb49f;
   }
-  piVar5 = *(int **)((int)pvVar2 + 0x40);
+  pAVar5 = *(Alignment **)((int)pvVar2 + 0x40);
 LAB_005eb49f:
   iVar8 = iVar10 % 0x7861f80;
   iVar10 = (iVar10 / 0x7861f80) * 4;
@@ -3637,8 +3636,8 @@ LAB_005eb49f:
       }
     }
   }
-  piVar5[5] = iVar4;
-  piVar5[7] = iVar9 / 0x15180;
+  *(int *)&pAVar5->field_0x14 = iVar4;
+  *(int *)&pAVar5->field_0x1c = iVar9 / 0x15180;
   piVar7 = (int *)&g_Configure_Dst_Transition_Value_0069EFC0;
   if (!bVar1) {
     piVar7 = &g_Convert_Epoch_Seconds_LookupTable_0069EFF8;
@@ -3646,21 +3645,21 @@ LAB_005eb49f:
   piVar6 = piVar7 + 1;
   iVar4 = 1;
   iVar10 = *piVar6;
-  while (iVar10 < piVar5[7]) {
+  while (iVar10 < *(int *)&pAVar5->field_0x1c) {
     piVar6 = piVar6 + 1;
     iVar4 = iVar4 + 1;
     iVar10 = *piVar6;
   }
-  piVar5[4] = iVar4 + -1;
-  piVar5[3] = piVar5[7] - piVar7[iVar4 + -1];
+  *(int *)&pAVar5->field_0x10 = iVar4 + -1;
+  *(int *)&pAVar5->field_0xc = *(int *)&pAVar5->field_0x1c - piVar7[iVar4 + -1];
   iVar10 = *pEpochSeconds;
-  piVar5[8] = 0;
-  piVar5[6] = (iVar10 / 0x15180 + 4) % 7;
-  piVar5[2] = (iVar9 % 0x15180) / 0xe10;
+  *(undefined4 *)&pAVar5->field_0x20 = 0;
+  *(int *)&pAVar5->field_0x18 = (iVar10 / 0x15180 + 4) % 7;
+  *(int *)&pAVar5->field_0x8 = (iVar9 % 0x15180) / 0xe10;
   iVar10 = (iVar9 % 0x15180) % 0xe10;
-  piVar5[1] = iVar10 / 0x3c;
-  *piVar5 = iVar10 % 0x3c;
-  return piVar5;
+  *(int *)&pAVar5->field_0x4 = iVar10 / 0x3c;
+  *(int *)pAVar5 = iVar10 % 0x3c;
+  return pAVar5;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005EBB20
@@ -4247,7 +4246,7 @@ void __cdecl setdefaultprecision(void)
 bool __cdecl IsRuntimeFloatThresholdNegative_006739C8(void)
 
 {
-  if (_g_Runtime_Float_Threshold_RuntimeCache_006739C8 < 0.0) {
+  if (ram0x006739c8 < 0.0) {
     return true;
   }
   return false;
@@ -4334,13 +4333,13 @@ void __cdecl
 WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850(int arg1,int arg2,int arg3)
 
 {
-  undefined4 uStack_8;
-  undefined4 uStack_4;
+  undefined4 local_8;
+  undefined4 local_4;
   
   if (arg1 != 0) {
     ParseDecimalTextAndConvertWithProfileA();
-    *(undefined4 *)arg2 = uStack_8;
-    *(undefined4 *)(arg2 + 4) = uStack_4;
+    *(undefined4 *)arg2 = local_8;
+    *(undefined4 *)(arg2 + 4) = local_4;
     return;
   }
   ParseDecimalTextAndConvertWithProfileB();
@@ -5503,15 +5502,15 @@ void __cdecl EnterIndexedCriticalSectionWithLazyInit(int arg1)
 {
   LPCRITICAL_SECTION lpCriticalSection;
   
-  if (*(int *)(&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4) == 0) {
+  if (*(int *)((int)&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4) == 0) {
     lpCriticalSection = AllocateWithGlobalNewMode(0x18);
     if (lpCriticalSection == (LPCRITICAL_SECTION)0x0) {
       amsg_exit(0x11);
     }
     EnterIndexedCriticalSectionWithLazyInit(0x11);
-    if (*(int *)(&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4) == 0) {
+    if (*(int *)((int)&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4) == 0) {
       InitializeCriticalSection(lpCriticalSection);
-      *(LPCRITICAL_SECTION *)(&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4) =
+      *(LPCRITICAL_SECTION *)((int)&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4) =
            lpCriticalSection;
     }
     else {
@@ -5520,7 +5519,8 @@ void __cdecl EnterIndexedCriticalSectionWithLazyInit(int arg1)
     LeaveIndexedCriticalSection();
   }
   EnterCriticalSection
-            (*(LPCRITICAL_SECTION *)(&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4));
+            (*(LPCRITICAL_SECTION *)((int)&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + arg1 * 4)
+            );
   return;
 }
 
@@ -5540,7 +5540,7 @@ void __cdecl LeaveIndexedCriticalSection(void)
   
   LeaveCriticalSection
             (*(LPCRITICAL_SECTION *)
-              (&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + in_stack_00000004 * 4));
+              ((int)&g_Enter_Indexed_Critical_LookupTable_0069CAA8 + in_stack_00000004 * 4));
   return;
 }
 
@@ -10107,7 +10107,8 @@ uint __cdecl LocaleMapStringWideWithAnsiFallback(void)
   UINT in_stack_0000001c;
   
   if (g_nLcMapStringWideApiMode == 0) {
-    iVar1 = LCMapStringW(0,0x100,L"",1,(LPWSTR)0x0,0);
+    iVar1 = LCMapStringW(0,0x100,(LPCWSTR)((int)&g_Compare_Locale_Strings_RuntimeCache_00673E24 + 4)
+                         ,1,(LPWSTR)0x0,0);
     if (iVar1 == 0) {
       iVar1 = LCMapStringA(0,0x100,"",1,(LPSTR)0x0,0);
       if (iVar1 == 0) {
@@ -10226,7 +10227,8 @@ MapStringWithLocaleAndMbcFallback
   if (g_nLcMapStringAnsiApiMode == 0) {
     iVar1 = LCMapStringA(0,0x100,"",1,(LPSTR)0x0,0);
     if (iVar1 == 0) {
-      iVar1 = LCMapStringW(0,0x100,L"",1,(LPWSTR)0x0,0);
+      iVar1 = LCMapStringW(0,0x100,(LPCWSTR)((int)&g_Compare_Locale_Strings_RuntimeCache_00673E24 +
+                                            4),1,(LPWSTR)0x0,0);
       if (iVar1 == 0) {
         return 0;
       }
@@ -10799,7 +10801,8 @@ int __cdecl GetStringTypeWideWithAnsiFallback(int arg1,int arg2,int arg3,int arg
   BOOL local_4;
   
   if (g_nGetStringTypeWideApiMode == 0) {
-    BVar1 = GetStringTypeW(1,L"",1,(LPWORD)&local_4);
+    BVar1 = GetStringTypeW(1,(LPCWSTR)((int)&g_Compare_Locale_Strings_RuntimeCache_00673E24 + 4),1,
+                           (LPWORD)&local_4);
     if (BVar1 == 0) {
       BVar1 = GetStringTypeA(0,1,"",1,(LPWORD)&local_4);
       if (BVar1 == 0) {
@@ -10874,7 +10877,8 @@ int __cdecl GetStringTypeWithCodePageFallback(int arg1,int arg2,int arg3,int arg
   if (g_nGetStringTypeApiMode == 0) {
     BVar1 = GetStringTypeA(0,1,"",1,&local_2);
     if (BVar1 == 0) {
-      BVar1 = GetStringTypeW(1,L"",1,&local_2);
+      BVar1 = GetStringTypeW(1,(LPCWSTR)((int)&g_Compare_Locale_Strings_RuntimeCache_00673E24 + 4),1
+                             ,&local_2);
       if (BVar1 == 0) {
         return 0;
       }

@@ -3,6 +3,16 @@
 #include "game/string_shared.h"
 #include "game/ui_widget_shared.h"
 
+struct tagRECT {
+  int left;
+  int top;
+  int right;
+  int bottom;
+};
+typedef tagRECT RECT;
+
+extern "C" int __stdcall CopyRect(RECT* lprcDst, const RECT* lprcSrc);
+
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
@@ -106,16 +116,18 @@ void PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(in
 
 // FUNCTION: IMPERIALISM 0x0058bc60
 void PlacardState::RenderPlacardValueTextWithShadow() {
-  int sharedStringRef = 0;
+  StringShared sharedStringRef;
+  int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
   int themeColorPrimary = 0;
   int themeColorSecondary = 0;
   PlacardViewLayout* layout = reinterpret_cast<PlacardViewLayout*>(this);
 
-  InitializeSharedStringRefFromEmpty(&sharedStringRef);
+  sharedStringRef.InitFromEmpty();
   reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(this);
   reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
   reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(
-      &sharedStringRef, reinterpret_cast<const char*>(kAddrDecimalFormat), (int)placardValue);
+      sharedStringRefPtr, reinterpret_cast<const char*>(kAddrDecimalFormat),
+      static_cast<int>(placardValue));
 
   short originX = 0;
   if (placardValue < 10) {
@@ -136,14 +148,14 @@ void PlacardState::RenderPlacardValueTextWithShadow() {
   reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
       (short)(originX + 1), (short)(baselineY - 1));
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-      &sharedStringRef);
+      sharedStringRefPtr);
 
   reinterpret_cast<void(__cdecl*)()>(SetQuickDrawColorAndSyncGlobals)();
   reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
       originX, (short)(baselineY - 2));
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-      &sharedStringRef);
+      sharedStringRefPtr);
 
   reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
-  ReleaseSharedStringRefIfNotEmpty(&sharedStringRef);
+  sharedStringRef.ReleaseSharedStringRefIfNotEmpty();
 }

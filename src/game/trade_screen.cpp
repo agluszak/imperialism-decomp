@@ -2,6 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
+#include "game/string_shared.h"
 #include "game/ui_widget_shared.h"
 
 typedef void* hwnd_t;
@@ -66,8 +67,6 @@ undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 undefined4 FormatStringWithVarArgsToSharedRef(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
-int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
-void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
 void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unusedEdx,
                                                           int repeatState, void* arg8, void* argC,
                                                           void* dispatchArg, void* arg14);
@@ -561,7 +560,7 @@ void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TradeScreenContex
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
   MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
   reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath,
-                                                                                         line);
+                                                                                        line);
 }
 
 static __inline void FailNilPointerInUSmallViews(int line) {
@@ -680,14 +679,13 @@ unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 #endif
 
 // FUNCTION: IMPERIALISM 0x00583bd0
-void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unusedEdx, int repeatState,
-                                                          void* arg8, void* argC,
+void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unusedEdx,
+                                                          int repeatState, void* arg8, void* argC,
                                                           void* dispatchArg, void* arg14) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   reinterpret_cast<void(__fastcall*)(void*, int, int, void*, void*, void*, void*)>(
-      ::thunk_DispatchPictureResourceCommand)(self, 0, repeatState, arg8, argC, dispatchArg,
-                                              arg14);
+      ::thunk_DispatchPictureResourceCommand)(self, 0, repeatState, arg8, argC, dispatchArg, arg14);
 
   if (repeatState == 2) {
     return;
@@ -2524,8 +2522,9 @@ void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* contro
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
 void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control) {
-  int sharedStringRef = 0;
-  InitializeSharedStringRefFromEmpty(&sharedStringRef);
+  StringShared sharedStringRef;
+  int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
+  sharedStringRef.InitFromEmpty();
 
   reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
       control);
@@ -2533,8 +2532,8 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
   if (control->placardValue != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
     reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(
-        &sharedStringRef, reinterpret_cast<const char*>(kAddrDecimalFormat),
-        (int)control->placardValue);
+        sharedStringRefPtr, reinterpret_cast<const char*>(kAddrDecimalFormat),
+        static_cast<int>(control->placardValue));
 
     short textWidth =
         reinterpret_cast<short(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)();
@@ -2543,15 +2542,15 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
     short textY = (short)(*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38) - 2);
     SetQuickDrawTextOrigin(textX, textY);
     reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        &sharedStringRef);
+        sharedStringRefPtr);
 
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
     SetQuickDrawTextOrigin((short)(textX - 1), (short)(textY - 1));
     reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        &sharedStringRef);
+        sharedStringRefPtr);
   }
 
-  ReleaseSharedStringRefIfNotEmpty(&sharedStringRef);
+  sharedStringRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180

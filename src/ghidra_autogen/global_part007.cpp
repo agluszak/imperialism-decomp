@@ -1690,7 +1690,7 @@ int * __cdecl thunk_RunTaggedOptionDialogAndReturnSelectionTag(void)
   piVar3 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    pHStack_58 = (HWND)&UNK_005de069;
+    pHStack_58 = (HWND)0x5de069;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar1 = *piVar3;
@@ -6650,7 +6650,7 @@ short __cdecl thunk_GetResourceDescriptorWord14ByType(void)
 {
   short in_stack_00000004;
   
-  return *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + in_stack_00000004 * 0x24);
+  return *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + in_stack_00000004 * 0x24 + 4);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E14
@@ -7473,8 +7473,8 @@ void __cdecl thunk_GetCachedAiCityActionContextBias(void)
     (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(7);
     (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(10);
     sVar1 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(10);
-    _g_cachedAiCityActionContextBias1 = unaff_ESI + 1.96182e-44;
-    _g_cachedAiCityActionContextBias2 = (float)(sVar1 * 2 + 1000) + unaff_ESI + 1.96182e-44;
+    g_cachedAiCityActionContextBias1._0_4_ = unaff_ESI + 1.96182e-44;
+    g_cachedAiCityActionContextBias1._4_4_ = (float)(sVar1 * 2 + 1000) + unaff_ESI + 1.96182e-44;
     _g_cachedAiCityActionContextBiasNationId = *(undefined2 *)(in_ECX + 0xc);
     g_cachedAiCityActionContextBias0 = unaff_ESI;
     g_cachedAiCityActionContextBiasTurnKey = (**(code **)(*(int *)g_pLocalizationTable + 0x3c))();
@@ -7977,7 +7977,7 @@ void __cdecl thunk_BuildRandomMapContextStatusBaseString(int arg1)
     iStack_1a8 = 0x1c;
     piStack_1a4 = (int *)0x1a;
     uStack_1a0 = 0xf;
-    puStack_198 = (undefined1 *)0xd;
+    puStack_198 = &DAT_0000000d;
     uStack_194 = 0xc;
     uStack_190 = 8;
     iVar6 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x39c - 0x80;
@@ -10428,7 +10428,6 @@ void __thiscall TShipOrder::thunk_ConstructTShipOrderBaseState(TShipOrder *this)
 // GHIDRA_COMMENT Single-JMP thunk to MergeSmallCityRegionsAndCompactIds
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to MergeSmallCityRegionsAndCompactIds */
 
 void __cdecl thunk_MergeSmallCityRegionsAndCompactIds(void)
@@ -10510,15 +10509,15 @@ void __cdecl thunk_MergeSmallCityRegionsAndCompactIds(void)
       iVar7 = -1;
       iStack_20 = -1;
       uStack_14 = 0xffffffff;
-      if (_g_uOverlaySpanRecordArray18Count != 0) {
+      if (g_uOverlaySpanRecordArray18Count != 0) {
         iVar16 = 0;
         do {
-          if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+          if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
             thunk_ReserveOverlaySpanRecordArray18Capacity
                       (&g_OverlaySpanRecordArray18State,uVar17 + 1);
           }
-          if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-            _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+            g_uOverlaySpanRecordArray18Count = uVar17 + 1;
           }
           uVar3 = *(ushort *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdA + iVar16);
           if (uVar3 == (byte)uStack_28) {
@@ -10529,12 +10528,12 @@ void __cdecl thunk_MergeSmallCityRegionsAndCompactIds(void)
             uVar3 = 0xfffe;
           }
           if (-1 < (short)uVar3) {
-            if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+            if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
               thunk_ReserveOverlaySpanRecordArray18Capacity
                         (&g_OverlaySpanRecordArray18State,uVar17 + 1);
             }
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             iVar8 = ftol();
             if (iVar7 < iVar8) {
@@ -10545,7 +10544,7 @@ void __cdecl thunk_MergeSmallCityRegionsAndCompactIds(void)
           }
           uVar17 = uVar17 + 1;
           iVar16 = iVar16 + 0x18;
-        } while (uVar17 < _g_uOverlaySpanRecordArray18Count);
+        } while (uVar17 < g_uOverlaySpanRecordArray18Count);
       }
       bVar20 = false;
       if (iStack_20 == -1) {
@@ -10656,8 +10655,8 @@ LAB_0052da86:
         } while (iVar7 < 0x38f40);
         if (-1 < (int)uStack_14) {
           pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-          uVar17 = _g_uOverlaySpanRecordArray18Capacity;
-          if (_g_uOverlaySpanRecordArray18Capacity <= uStack_14) {
+          uVar17 = g_uOverlaySpanRecordArray18Capacity;
+          if (g_uOverlaySpanRecordArray18Capacity <= uStack_14) {
             uVar17 = (uStack_14 + 1) * 2;
             if (0x7fffffff < uVar17) {
               uVar17 = 0x7fffffff;
@@ -10667,13 +10666,13 @@ LAB_0052da86:
             if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
               thunk_ReallocateRouteRecordBufferByCountStride18();
               pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-              uVar17 = _g_uOverlaySpanRecordArray18Capacity;
+              uVar17 = g_uOverlaySpanRecordArray18Capacity;
             }
           }
-          _g_uOverlaySpanRecordArray18Capacity = uVar17;
+          g_uOverlaySpanRecordArray18Capacity = uVar17;
           g_pOverlaySpanRecordArray18Buffer = pTVar10;
-          if (_g_uOverlaySpanRecordArray18Count <= uStack_14) {
-            _g_uOverlaySpanRecordArray18Count = uStack_14 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uStack_14) {
+            g_uOverlaySpanRecordArray18Count = uStack_14 + 1;
           }
           pTVar10 = g_pOverlaySpanRecordArray18Buffer + uStack_14;
           pTVar10->sEndY = 0;
@@ -10686,14 +10685,14 @@ LAB_0052da86:
           pTVar10->nRouteNodeIndexA = -1;
         }
         uVar17 = 0;
-        if (_g_uOverlaySpanRecordArray18Count != 0) {
+        if (g_uOverlaySpanRecordArray18Count != 0) {
           iVar7 = 0;
           uStack_14 = 0x30;
           uVar15 = 2;
           do {
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar18 = _g_uOverlaySpanRecordArray18Capacity;
-            if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+            uVar18 = g_uOverlaySpanRecordArray18Capacity;
+            if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
               uVar18 = uVar15;
               if (0x7fffffff < uVar15) {
                 uVar18 = 0x7fffffff;
@@ -10703,28 +10702,28 @@ LAB_0052da86:
               if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
                 thunk_ReallocateRouteRecordBufferByCountStride18();
                 pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-                uVar18 = _g_uOverlaySpanRecordArray18Capacity;
+                uVar18 = g_uOverlaySpanRecordArray18Capacity;
               }
             }
-            _g_uOverlaySpanRecordArray18Capacity = uVar18;
+            g_uOverlaySpanRecordArray18Capacity = uVar18;
             g_pOverlaySpanRecordArray18Buffer = pTVar10;
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             if (*(short *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdA + iVar7) == iVar6) {
-              if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+              if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
                 thunk_ReserveOverlaySpanRecordArray18Capacity
                           (&g_OverlaySpanRecordArray18State,uVar17 + 1);
               }
-              if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-                _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+              if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+                g_uOverlaySpanRecordArray18Count = uVar17 + 1;
               }
               *(undefined2 *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdA + iVar7) =
                    (undefined2)iStack_20;
             }
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar18 = _g_uOverlaySpanRecordArray18Capacity;
-            if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+            uVar18 = g_uOverlaySpanRecordArray18Capacity;
+            if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
               uVar18 = uVar15;
               if (0x7fffffff < uVar15) {
                 uVar18 = 0x7fffffff;
@@ -10734,21 +10733,21 @@ LAB_0052da86:
               if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
                 thunk_ReallocateRouteRecordBufferByCountStride18();
                 pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-                uVar18 = _g_uOverlaySpanRecordArray18Capacity;
+                uVar18 = g_uOverlaySpanRecordArray18Capacity;
               }
             }
-            _g_uOverlaySpanRecordArray18Capacity = uVar18;
+            g_uOverlaySpanRecordArray18Capacity = uVar18;
             g_pOverlaySpanRecordArray18Buffer = pTVar10;
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             if (*(short *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdB + iVar7) == iVar6) {
-              if (_g_uOverlaySpanRecordArray18Capacity <= uVar17) {
+              if (g_uOverlaySpanRecordArray18Capacity <= uVar17) {
                 thunk_ReserveOverlaySpanRecordArray18Capacity
                           (&g_OverlaySpanRecordArray18State,uVar17 + 1);
               }
-              if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-                _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+              if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+                g_uOverlaySpanRecordArray18Count = uVar17 + 1;
               }
               *(undefined2 *)((int)&g_pOverlaySpanRecordArray18Buffer->sRegionIdB + iVar7) =
                    (undefined2)iStack_20;
@@ -10757,7 +10756,7 @@ LAB_0052da86:
             uVar15 = uVar15 + 2;
             uStack_14 = uStack_14 + 0x30;
             iVar7 = iVar7 + 0x18;
-          } while (uVar17 < _g_uOverlaySpanRecordArray18Count);
+          } while (uVar17 < g_uOverlaySpanRecordArray18Count);
         }
       }
     }
@@ -10781,15 +10780,15 @@ LAB_0052da86:
         iVar7 = iVar7 + 0x24;
       } while (iVar7 < 0x38f40);
       uVar17 = 0;
-      if (_g_uOverlaySpanRecordArray18Count != 0) {
+      if (g_uOverlaySpanRecordArray18Count != 0) {
         iVar7 = 0;
         iStack_20 = 0x30;
         uVar18 = 2;
         pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-        uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+        uVar15 = g_uOverlaySpanRecordArray18Capacity;
         do {
           pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-          uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+          uVar19 = g_uOverlaySpanRecordArray18Capacity;
           if (uVar15 <= uVar17) {
             uVar15 = uVar18;
             if (0x7fffffff < uVar18) {
@@ -10806,15 +10805,15 @@ LAB_0052da86:
               uVar19 = uVar15;
             }
           }
-          _g_uOverlaySpanRecordArray18Capacity = uVar19;
+          g_uOverlaySpanRecordArray18Capacity = uVar19;
           g_pOverlaySpanRecordArray18Buffer = pTVar2;
-          if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-            _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+            g_uOverlaySpanRecordArray18Count = uVar17 + 1;
           }
           uStack_28 = (undefined2)iVar6;
           if ((int)*(short *)((int)&pTVar10->sRegionIdA + iVar7) == *(int *)(in_ECX + 0x2a4)) {
             pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-            uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+            uVar19 = g_uOverlaySpanRecordArray18Capacity;
             if (uVar15 <= uVar17) {
               uVar19 = uVar18;
               if (0x7fffffff < uVar18) {
@@ -10826,20 +10825,20 @@ LAB_0052da86:
                 thunk_ReallocateRouteRecordBufferByCountStride18();
                 pTVar10 = g_pOverlaySpanRecordArray18Buffer;
                 pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-                uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+                uVar19 = g_uOverlaySpanRecordArray18Capacity;
               }
             }
-            _g_uOverlaySpanRecordArray18Capacity = uVar19;
+            g_uOverlaySpanRecordArray18Capacity = uVar19;
             g_pOverlaySpanRecordArray18Buffer = pTVar2;
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             *(undefined2 *)((int)&pTVar10->sRegionIdA + iVar7) = uStack_28;
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+            uVar15 = g_uOverlaySpanRecordArray18Capacity;
           }
           pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-          uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+          uVar19 = g_uOverlaySpanRecordArray18Capacity;
           if (uVar15 <= uVar17) {
             uVar15 = uVar18;
             if (0x7fffffff < uVar18) {
@@ -10851,15 +10850,15 @@ LAB_0052da86:
             if (pTVar10 == (TOverlaySpanRecord24 *)0x0) {
               thunk_ReallocateRouteRecordBufferByCountStride18();
               pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-              uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+              uVar15 = g_uOverlaySpanRecordArray18Capacity;
               pTVar2 = g_pOverlaySpanRecordArray18Buffer;
-              uVar19 = _g_uOverlaySpanRecordArray18Capacity;
+              uVar19 = g_uOverlaySpanRecordArray18Capacity;
             }
           }
-          _g_uOverlaySpanRecordArray18Capacity = uVar19;
+          g_uOverlaySpanRecordArray18Capacity = uVar19;
           g_pOverlaySpanRecordArray18Buffer = pTVar2;
-          if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-            _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+          if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+            g_uOverlaySpanRecordArray18Count = uVar17 + 1;
           }
           if ((int)*(short *)((int)&pTVar10->sRegionIdB + iVar7) == *(int *)(in_ECX + 0x2a4)) {
             if (uVar15 <= uVar17) {
@@ -10867,18 +10866,18 @@ LAB_0052da86:
                         (&g_OverlaySpanRecordArray18State,uVar17 + 1);
               pTVar10 = g_pOverlaySpanRecordArray18Buffer;
             }
-            if (_g_uOverlaySpanRecordArray18Count <= uVar17) {
-              _g_uOverlaySpanRecordArray18Count = uVar17 + 1;
+            if (g_uOverlaySpanRecordArray18Count <= uVar17) {
+              g_uOverlaySpanRecordArray18Count = uVar17 + 1;
             }
             *(undefined2 *)((int)&pTVar10->sRegionIdB + iVar7) = uStack_28;
             pTVar10 = g_pOverlaySpanRecordArray18Buffer;
-            uVar15 = _g_uOverlaySpanRecordArray18Capacity;
+            uVar15 = g_uOverlaySpanRecordArray18Capacity;
           }
           uVar17 = uVar17 + 1;
           iStack_20 = iStack_20 + 0x30;
           uVar18 = uVar18 + 2;
           iVar7 = iVar7 + 0x18;
-        } while (uVar17 < _g_uOverlaySpanRecordArray18Count);
+        } while (uVar17 < g_uOverlaySpanRecordArray18Count);
       }
     }
   } while( true );
@@ -11155,7 +11154,7 @@ int __cdecl thunk_ComputeOrderNodeCompositeEconomicScore(void)
                        (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) +
           (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)[iVar3 * 9]) * 100 +
          (int)*(short *)(in_ECX + 0x1c)) /
-         (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24);
+         (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004085C6
@@ -12450,7 +12449,7 @@ void __cdecl thunk_SetSharedStringFromRotatingFlavorTextBySlot(void *pDstSharedR
     return;
   }
   thunk_GenerateMappedFlavorTextUntilValidationPasses
-            (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + sVar2 * 4));
+            (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + sVar2 * 4 + 4));
   *unaff_FS_OFFSET = pvStack_c;
   return;
 }

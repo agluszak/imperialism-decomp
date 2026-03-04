@@ -119,7 +119,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   piVar5 = (int *)(*(code *)ppuVar1[0x16])();
   if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    pTStack_78 = (TNumberedItem *)&UNK_004d1934;
+    pTStack_78 = (TNumberedItem *)0x4d1934;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   tStack_3c.left = *piVar5;

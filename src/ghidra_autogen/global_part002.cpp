@@ -2244,7 +2244,7 @@ void __thiscall thunk_ApplyTechItemPurchaseCostAndState(void *this,int itemIndex
 
 {
   (**(code **)(*(int *)g_apNationStates[nationIndex] + 0x38))
-            (-*(int *)(&g_aiTechItemCostDeltaByIndex + itemIndex * 4));
+            (-*(int *)(&UNK_0066aac8.field_0x20 + itemIndex * 4));
   *(undefined1 *)((int)this + nationIndex * 0x1d + itemIndex + 0x268) = 1;
   *(short *)((int)this + (itemIndex + nationIndex * 0x1d) * 2 + 0x4a6) =
        (short)((int)((int)*(short *)((int)g_pLocalizationTable + 0x2c) +
@@ -2893,7 +2893,7 @@ void __cdecl thunk_BuildMapHintOverlayTextAndDispatchUiMessages(int hintContext)
   piVar3 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_80 = &UNK_004a6876;
+    puStack_80 = (undefined1 *)0x4a6876;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar1 = *piVar3;
@@ -7070,7 +7070,7 @@ void __cdecl thunk_ActivatePendingEventAndRefreshView(void)
   int in_stack_00000004;
   undefined4 uStack_6c;
   int iStack_68;
-  undefined *puStack_64;
+  undefined4 uStack_64;
   uint uVar6;
   int iStack_28;
   undefined1 auStack_18 [6];
@@ -7133,7 +7133,7 @@ void __cdecl thunk_ActivatePendingEventAndRefreshView(void)
   (**(code **)(iVar2 + 0xc))();
   if (piVar5 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_64 = &UNK_005035d7;
+    uStack_64 = 0x5035d7;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   thunk_GetActiveNationId();
@@ -7150,7 +7150,7 @@ void __cdecl thunk_ActivatePendingEventAndRefreshView(void)
   (**(code **)(iVar2 + 0xa4))();
 LAB_00503638:
   piVar5 = (int *)(**(code **)(iVar4 + 0x94))();
-  puStack_64 = (undefined *)0x1;
+  uStack_64 = 1;
   iVar4 = *piVar5;
   iStack_68 = 0x503655;
   (**(code **)(iVar4 + 0xa4))();

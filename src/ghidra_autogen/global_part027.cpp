@@ -1093,28 +1093,28 @@ void DDX_LBString(astruct_1 *itemCountPtr,undefined4 controlId,LPARAM *itemDataP
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618E72
 // GHIDRA_NAME DDX_LBStringExact
-// GHIDRA_PROTO void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)
+// GHIDRA_PROTO void __stdcall DDX_LBStringExact(astruct_1 * state_flag, undefined4 owner_id, LPARAM * lparam_in)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT [FID:FID_single_match_phase1_nodebug]
 // GHIDRA_COMMENT_END
 
 /* [FID:FID_single_match_phase1_nodebug] */
 
-void DDX_LBStringExact(int *state_flag,undefined4 owner_id,LPARAM *lparam_in)
+void DDX_LBStringExact(astruct_1 *state_flag,undefined4 owner_id,LPARAM *lparam_in)
 
 {
   HWND target_hwnd;
   WPARAM item_index;
   
   PrepareCtrl(state_flag);
-  if (*state_flag == 0) {
+  if (state_flag->field0_0x0 == 0) {
     item_index = SendMessageA(target_hwnd,0x1a2,0xffffffff,*lparam_in);
     if (-1 < (int)item_index) {
       SendMessageA(target_hwnd,0x186,item_index,0);
     }
   }
   else {
-    DDX_LBString((astruct_1 *)state_flag,owner_id,lparam_in);
+    DDX_LBString(state_flag,owner_id,lparam_in);
   }
   return;
 }
@@ -4708,8 +4708,7 @@ void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96(void)
 void __cdecl thunk_thunk_CProcessLocalObject_At00622aa2(void)
 
 {
-  CProcessLocalObject::thunk_CProcessLocalObject
-            ((CProcessLocalObject *)&g_CtlColorDispatchBridgeState);
+  CProcessLocalObject::thunk_CProcessLocalObject((CProcessLocalObject *)&UNK_006a60fc.field_0x20);
   return;
 }
 

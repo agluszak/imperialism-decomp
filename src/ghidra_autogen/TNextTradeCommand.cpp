@@ -333,7 +333,7 @@ TNextTradeCommand::HandleTradeCommandTagsAndSelectionUpdates
   }
   else {
     uVar1 = *(undefined2 *)
-             (&g_Deal_Book_Trade_Value_00668568 +
+             (&UNK_00668528.field_0x40 +
              (commandId + *(char *)((int)g_pCityOrderCapabilityState + 0x193) * 0x11) * 2);
     if (this->field133_0x9e == 0) {
       TToolBarCluster::thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged

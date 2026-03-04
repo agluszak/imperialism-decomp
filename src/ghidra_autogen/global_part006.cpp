@@ -786,7 +786,6 @@ void __cdecl thunk_AssertMcAppUILine2756(void)
 // GHIDRA_COMMENT Single-JMP thunk to EmitOverlaySegmentFromTileEdgeSorted
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to EmitOverlaySegmentFromTileEdgeSorted */
 
 void __thiscall
@@ -812,7 +811,7 @@ thunk_EmitOverlaySegmentFromTileEdgeSorted(void *this,int arg1,int arg2,int arg3
     iVar2 = arg3;
     arg3 = arg4;
   }
-  (*(code *)*_g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,arg3,iVar2);
+  (*(code *)*g_OverlayQuadBorderLinkArray16State)(iVar3 + uVar1 * 0xd8,arg3,iVar2);
   return;
 }
 
@@ -9112,7 +9111,7 @@ short __cdecl thunk_ComputeMapOrderEntryHeuristicScore(void)
                                (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) +
                   (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)[iVar3 * 9]) * 100 +
                  (int)*(short *)(in_ECX + 0x1c)) /
-                (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24));
+                (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407360

@@ -614,7 +614,6 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
 // GHIDRA_COMMENT - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw paths rather than a single direct switch in this function.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Render one strategic-map tile cell including terrain/city base, route overlays, unit glyphs, and
    state/selection markers.
    
@@ -704,10 +703,10 @@ void __thiscall TCivDescription::RenderStrategicMapTileCell(TCivDescription *thi
   local_4 = 0;
   if ((g_bStrategicTileRenderStaticBoundsInit & 1) == 0) {
     g_bStrategicTileRenderStaticBoundsInit = g_bStrategicTileRenderStaticBoundsInit | 1;
-    _g_Render_Strategic_Map_State_006A33E0 = 0;
-    _g_Render_Strategic_Map_State_006A33E4 = 0;
-    _g_Render_Strategic_Map_State_006A33E8 = 0x200;
-    _g_Render_Strategic_Map_State_006A33EC = 0x1c0;
+    UNK_006a33dd._3_4_ = 0;
+    UNK_006a33dd._7_4_ = 0;
+    UNK_006a33dd._11_4_ = 0x200;
+    UNK_006a33dd._15_4_ = 0x1c0;
     AppendPointerToGlobalVectorAsStatus();
   }
   piVar9 = this->pField350;

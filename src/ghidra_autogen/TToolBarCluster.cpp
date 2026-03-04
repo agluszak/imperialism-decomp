@@ -166,7 +166,7 @@ TToolBarCluster::thunk_InitializeDiplomacyMinisterActionControlsAndLabels(TToolB
     *ppvVar4 = pvVar1;
     if (pvVar1 == (void *)0x0) {
                     /* WARNING: Subroutine does not return */
-      puStackY_3c = &UNK_004f468e;
+      puStackY_3c = (void *)0x4f468e;
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     ppvVar4 = ppvVar4 + 1;
@@ -1582,7 +1582,7 @@ TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int arg1,i
   char *pcStack_6c;
   int iStack_68;
   int iStack_64;
-  undefined *puStack_60;
+  undefined4 uStack_60;
   char *input_str;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -1613,8 +1613,8 @@ TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int arg1,i
   do {
     cVar3 = (**(code **)(**(int **)&this->field94 + 0x68))();
     if (cVar3 != '\0') {
-      puStack_60._0_2_ = this->field94;
-      puStack_60._2_2_ = this->field96;
+      uStack_60._0_2_ = this->field94;
+      uStack_60._2_2_ = this->field96;
       iStack_68 = 0x4bb88f;
       iStack_64 = iVar8;
       pvVar4 = (void *)(**(code **)(*(int *)g_pStrategicMapViewSystem + 0x50))();
@@ -1628,12 +1628,12 @@ TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int arg1,i
   iVar5 = (*pcVar1)();
   if (iVar5 == 0) {
                     /* WARNING: Subroutine does not return */
-    puStack_60 = &UNK_004bb8d9;
+    uStack_60 = 0x4bb8d9;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   input_str = &stack0xffffffc4;
-  puStack_60 = (undefined *)0x1f;
+  uStack_60 = 0x1f;
   iStack_64 = 0x2734;
   iStack_68 = 0x4bb91f;
   (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
@@ -1886,7 +1886,7 @@ TToolBarCluster::RefreshCityViewProductionSummaryPanelTextsAndFlags(TToolBarClus
   ppvStack_cc = (void *)0x4c73f3;
   (**(code **)(iVar2 + 0x1c4))();
   ppvStack_cc = (void **)(auStack_bc + 1);
-  ppvStack_d0 = (void **)0xd;
+  ppvStack_d0 = (void **)&DAT_0000000d;
   pvStack_d4 = (void *)0x2719;
   pvStack_d8 = (void *)0x4c740d;
   (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
@@ -2029,7 +2029,7 @@ TToolBarCluster::RefreshCityViewProductionSummaryPanelTextsAndFlags(TToolBarClus
   puStack_f0 = (undefined *)0x4c7730;
   InitializeAndRunMainRoutine();
   pTStack_e8 = (TToolBarCluster *)auStack_bc;
-  ppcStack_ec = (code **)0x20;
+  ppcStack_ec = (code **)&DAT_00000020;
   puStack_f0 = (undefined *)0x2734;
   ppvStack_f4 = (void **)0x4c774d;
   (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
@@ -2483,7 +2483,7 @@ TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels(TToolBarClus
     *ppvVar4 = pvVar1;
     if (pvVar1 == (void *)0x0) {
                     /* WARNING: Subroutine does not return */
-      puStackY_3c = &UNK_004f468e;
+      puStackY_3c = (void *)0x4f468e;
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
     ppvVar4 = ppvVar4 + 1;
@@ -2860,7 +2860,7 @@ TToolBarCluster::InitializeDiplomacyAcceptRejectControlsAndPrompts(TToolBarClust
   undefined1 *puStack_5c;
   undefined4 uStack_58;
   undefined4 uStack_54;
-  undefined *puStack_50;
+  undefined4 uStack_50;
   undefined1 *puVar6;
   undefined1 local_24 [4];
   undefined1 local_20;
@@ -2904,19 +2904,19 @@ TToolBarCluster::InitializeDiplomacyAcceptRejectControlsAndPrompts(TToolBarClust
   this->field6c = pHVar4;
   if (pHVar4 == (HWND)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_50 = &UNK_004f90c3;
+    uStack_50 = 0x4f90c3;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   *(undefined2 *)((int)this->field68 + 0x92) = 5000;
   *(undefined2 *)((int)&this->field6c[0x24].unused + 2) = 5000;
-  puStack_50 = (undefined *)0x4f9100;
+  uStack_50 = 0x4f9100;
   thunk_BuildUiTextStyleDescriptor();
   piVar5 = (int *)(*pcVar1)();
   iVar2 = *piVar5;
   (**(code **)(iVar2 + 0xc))();
   puVar6 = local_24;
   (**(code **)(iVar2 + 0x1e4))();
-  puStack_50 = (undefined *)0x1;
+  uStack_50 = 1;
   piVar5[0x27] = unaff_EDI;
   *(undefined1 *)(piVar5 + 0x28) = 1;
   uStack_54 = 0x4f913f;
@@ -3205,17 +3205,17 @@ TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarClust
   *(undefined2 *)((int)&this->field08 + 2) = 0;
   ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_20);
   local_4 = 1;
-  AssignFromPtr(&g_Turn_Order_Navigation_Value_006A30A4,(int *)&local_20);
+  AssignFromPtr(&DAT_006a3024.field_0x80,(int *)&local_20);
   local_4 = -1;
   ReleaseSharedStringRefIfNotEmpty();
   ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_20);
   local_4 = 2;
-  AssignFromPtr(&g_Turn_Order_Navigation_Value_006A3060,(int *)&local_20);
+  AssignFromPtr(&DAT_006a3024.field_0x3c,(int *)&local_20);
   local_4 = -1;
   ReleaseSharedStringRefIfNotEmpty();
   ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_20);
   local_4 = 3;
-  AssignFromPtr(&g_Turn_Order_Navigation_Value_006A3080,(int *)&local_20);
+  AssignFromPtr(&DAT_006a3024.field_0x5c,(int *)&local_20);
   local_4 = -1;
   ReleaseSharedStringRefIfNotEmpty();
   InitializeGlobalRectDefaultsIfUninitialized();
@@ -5284,7 +5284,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   undefined1 **ppuStack_b4;
   undefined1 *puStack_9c;
   int iStack_98;
-  undefined *puStack_94;
+  undefined1 *puStack_94;
   code *pcVar3;
   code *local_68;
   undefined1 local_64;
@@ -5345,18 +5345,18 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   local_11 = 0;
   local_10 = 0;
   local_f = 0;
-  puStack_94 = (undefined *)0x5916e6;
+  puStack_94 = (undefined1 *)0x5916e6;
   thunk_InitializeUiTextStyleDescriptor((int)local_24,0,0xe,0x2b67,1);
   thunk_BuildUiTextStyleDescriptor();
-  puStack_94 = (undefined *)0x591712;
+  puStack_94 = (undefined1 *)0x591712;
   thunk_InitializeUiTextStyleDescriptor((int)local_3c,0,10,0x2b67,3);
-  puStack_94 = (undefined *)0x59172a;
+  puStack_94 = (undefined1 *)0x59172a;
   thunk_InitializeUiTextStyleDescriptor((int)local_18,2,10,0x2b67,3);
   local_68 = *(code **)((int)this->pField00 + 0x94);
   piVar1 = (int *)(*local_68)();
   if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_94 = &UNK_0059175c;
+    puStack_94 = (undefined1 *)0x59175c;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   pcVar3 = (code *)0xb;
@@ -5371,7 +5371,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   piVar1 = (int *)(*pcVar3)();
   if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    ppuStack_b4 = (undefined1 **)&UNK_005917cb;
+    ppuStack_b4 = (undefined1 **)0x5917cb;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   pcVar3 = (code *)0xc;
@@ -5386,10 +5386,10 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   piVar1 = (int *)(*pcVar3)();
   if (piVar1 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    ppuStack_d4 = (undefined4 **)&UNK_0059183a;
+    ppuStack_d4 = (undefined4 **)0x59183a;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
-  pcVar3 = (code *)0xd;
+  pcVar3 = (code *)&DAT_0000000d;
   (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
   iVar2 = *piVar1;
   ppuStack_d4 = &ppcStack_bc;
@@ -5503,11 +5503,11 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
   int *piVar4;
   int *unaff_FS_OFFSET;
   int iStack_70;
-  undefined *puStack_6c;
+  void *pvStack_6c;
   undefined1 *puVar5;
   void *pvStack_50;
   int iStack_4c;
-  undefined *puStack_48;
+  int iStack_48;
   void *pvStack_c;
   undefined1 *puStack_8;
   byte *pbStack_4;
@@ -5524,16 +5524,16 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
   (**(code **)(iVar2 + 0xc))();
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_48 = &UNK_00592aee;
+    iStack_48 = 0x592aee;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   (**(code **)(iVar2 + 0x1b4))();
   ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0xffffffd4);
-  puStack_48 = (undefined *)0x592b34;
+  iStack_48 = 0x592b34;
   (**(code **)(iVar2 + 0x1c8))();
-  puStack_48 = (undefined *)0x592b45;
+  iStack_48 = 0x592b45;
   ReleaseSharedStringRefIfNotEmpty();
-  puStack_48 = (undefined *)0x0;
+  iStack_48 = 0;
   iStack_4c = 1;
   pvStack_50 = (void *)0x592b51;
   (**(code **)(iVar2 + 0x1c4))();
@@ -5544,17 +5544,17 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
   (**(code **)(iVar2 + 0xc))();
   if (piVar4 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_6c = &UNK_00592b86;
+    pvStack_6c = (void *)0x592b86;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   puVar5 = &stack0xffffffc0;
   (**(code **)(iVar2 + 0x1b4))();
   ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&pvStack_50);
-  puStack_6c = (void *)0x592bcc;
+  pvStack_6c = (void *)0x592bcc;
   (**(code **)(iVar2 + 0x1c8))();
-  puStack_6c = (void *)0x592bdd;
+  pvStack_6c = (void *)0x592bdd;
   ReleaseSharedStringRefIfNotEmpty();
-  puStack_6c = (void *)0x0;
+  pvStack_6c = (void *)0x0;
   iStack_70 = 1;
   (**(code **)(iVar2 + 0xa4))();
   piVar4 = (int *)(*pcVar1)();
@@ -5578,7 +5578,7 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
     (**(code **)(iVar2 + 0x1b4))(&iStack_70,0);
     ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0xffffff84);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
-    puStack_6c = (void *)0xffffffff;
+    pvStack_6c = (void *)0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar4 = (int *)(*pcVar1)(0x70696331);
@@ -5602,7 +5602,7 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
     (**(code **)(iVar2 + 0x1b4))(&iStack_70,0);
     ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0xffffff84);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
-    puStack_6c = (void *)0xffffffff;
+    pvStack_6c = (void *)0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar4 = (int *)(*pcVar1)(0x70696334);
@@ -5626,7 +5626,7 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
     (**(code **)(iVar2 + 0x1b4))(&iStack_70,0);
     ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0xffffff84);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
-    puStack_6c = (void *)0xffffffff;
+    pvStack_6c = (void *)0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar4 = (int *)(*pcVar1)(0x70696332);
@@ -5650,7 +5650,7 @@ void __thiscall TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt(TTool
     (**(code **)(iVar2 + 0x1b4))(&iStack_70,0);
     ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0xffffff84);
     (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
-    puStack_6c = (void *)0xffffffff;
+    pvStack_6c = (void *)0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
     (**(code **)(iVar2 + 0xa4))(1,0);
     piVar4 = (int *)(*pcVar1)(0x70696333);

@@ -77,7 +77,7 @@ TAttackProvinceMission::thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUni
     fVar3 = fVar3 + SQRT(fVar1 * (float)*ppvVar8);
     ppvVar8 = ppvVar8 + 1;
   } while (iVar10 != 0);
-  if (_g_Mission_Order_Selection_LookupTable_0065A8F0 < fVar3 / fVar4) {
+  if (ram0x0065a8f0 < fVar3 / fVar4) {
     iVar10 = (int)*(short *)&(this->base).field21_0x30;
     cVar6 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x48))
                       (CONCAT22((short)((uint)*(int *)((int)g_pGlobalMapState + 0x10) >> 0x10),
@@ -890,7 +890,7 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
       fVar3 = fVar3 + SQRT((float)*ppvVar6 * fVar1);
       ppvVar6 = ppvVar6 + 1;
     } while (iVar9 != 0);
-    if (_g_Mission_Order_Selection_LookupTable_0065A8F0 < fVar3 / fVar4) {
+    if (ram0x0065a8f0 < fVar3 / fVar4) {
       thunk_InitializeLinkedListCursorFromOwnerHead();
       bVar5 = thunk_LinkedListCursorHasCurrent();
       iVar7 = CONCAT31(extraout_var,bVar5);

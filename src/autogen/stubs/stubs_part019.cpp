@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMiniMapView::DestructTMiniMapViewAndMaybeFree
-// ghidra_proto void * __thiscall DestructTMiniMapViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0059a3f0
-undefined4 DestructTMiniMapViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeAndRenderStrategicMapViewportOverlay
-// ghidra_proto void __cdecl RecomputeAndRenderStrategicMapViewportOverlay(void)
-// FUNCTION: IMPERIALISM 0x0059a540
-undefined4 RecomputeAndRenderStrategicMapViewportOverlay(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C5_I103_0059a920
 // ghidra_proto void __cdecl OrphanCallChain_C5_I103_0059a920(void)
 // FUNCTION: IMPERIALISM 0x0059a920
@@ -3999,6 +3983,22 @@ undefined4 BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(void)
 // ghidra_proto void * __cdecl CreateTDealListInstance(void)
 // FUNCTION: IMPERIALISM 0x005ba130
 undefined4 CreateTDealListInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealList::GetTDealListClassNamePointer
+// ghidra_proto void * __cdecl GetTDealListClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005ba1a0
+undefined4 GetTDealListClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealList::ConstructTDealListBaseState
+// ghidra_proto void * __fastcall ConstructTDealListBaseState(TDealList * pThis)
+// FUNCTION: IMPERIALISM 0x005ba1c0
+undefined4 ConstructTDealListBaseState(void)
 {
   return 0;
 }

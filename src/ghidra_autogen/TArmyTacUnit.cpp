@@ -750,7 +750,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
   undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined1 auStack_34 [4];
-  undefined *puStack_30;
+  undefined4 uStack_30;
   undefined4 uStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
@@ -777,7 +777,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
     (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
     uStack_28 = 1;
     uStack_2c = 1;
-    puStack_30 = &g_TArmy_Tac_Unit_Value_006A4650;
+    uStack_30 = 0x6a4650;
     puStack_1c = auStack_34;
     thunk_AssignStringSharedRefAndReturnThis();
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();

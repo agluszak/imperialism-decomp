@@ -10932,7 +10932,7 @@ address|name|size|type|prototype
 6058e2|ReleaseSharedStringRefIfNotEmpty|41|function|void __cdecl ReleaseSharedStringRefIfNotEmpty(void)
 605950|TToolBarCluster::ConstructSharedStringFromCStrOrResourceId|94|function|void __thiscall ConstructSharedStringFromCStrOrResourceId(void)
 6059fc|AssignCopy|45|function|void __thiscall AssignCopy(void)
-605a29|AssignFromPtr|79|function|int * __thiscall AssignFromPtr(int * dst_ref_ptr)
+605a29|AssignFromPtr|79|function|void * __thiscall AssignFromPtr(int * dst_ref_ptr)
 605a78|WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78|39|function|void __cdecl WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(void)
 605ae0|ConcatCopy|65|function|void __thiscall ConcatCopy(int arg1, int arg2, int arg3, int arg4)
 605b21|AssignSharedStringConcatRefAndRef|102|function|void __cdecl AssignSharedStringConcatRefAndRef(void)
@@ -11392,7 +11392,7 @@ address|name|size|type|prototype
 618d0f|DDX_Check|82|function|void * __cdecl DDX_Check(void)
 618d61|DDX_Radio|145|function|int __cdecl DDX_Radio(void)
 618df2|DDX_LBString|128|function|void __stdcall DDX_LBString(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)
-618e72|DDX_LBStringExact|52|function|void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)
+618e72|DDX_LBStringExact|52|function|void __stdcall DDX_LBStringExact(astruct_1 * state_flag, undefined4 owner_id, LPARAM * lparam_in)
 618ea6|SelectListBoxStringExactIfPresent|29|function|void __cdecl SelectListBoxStringExactIfPresent(void)
 618ec3|DDX_CBString|128|function|void __cdecl DDX_CBString(void)
 618f43|DDX_CBStringExact|81|function|void __cdecl DDX_CBStringExact(void)
@@ -12972,6 +12972,7 @@ address|name|size|type|prototype
 63bf5e|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e|5|function|int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e(void)
 63bf71|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71|5|function|int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71(void)
 63de95|TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe|39|function|void __thiscall DispatchHandleMapLookupWithReadPtrProbe(void)
+695794|g_Build_Map_Order_LookupTable_00695794|1|function|undefined __fastcall g_Build_Map_Order_LookupTable_00695794(byte * param_1, byte * param_2)
 707081|InitializeWinmmImportBindings|150|function|void __cdecl InitializeWinmmImportBindings(void)
 4010a0|TMacViewMgr_Slot03_Target||global|
 40132a|TMacViewMgr_MsgEntry16_Handler||global|
@@ -19573,7 +19574,6 @@ address|name|size|type|prototype
 695730|g_szTypeNameTArmyMgr||global|
 695760|g_Build_Army_Action_LookupTable_00695760||global|
 695788|g_Format_Diplomacy_Notice_LookupTable_00695788||global|
-695794|g_Build_Map_Order_LookupTable_00695794||global|
 695798|g_Build_Map_Hint_LookupTable_00695798||global|
 69579c|sTypeName_TMiniCivView||global|
 69579c|g_szTypeNameTMiniCivView||global|

@@ -932,7 +932,7 @@ TMapMgr::WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(TMapMgr *this,void *pM
   pcVar6 = pcVar5 + 0xa4;
   do {
     (*(code *)ppvVar7)(pcVar5,0xa4);
-    (*(code *)0x20)(pcVar6,0x20);
+    (*(code *)&DAT_00000020)(pcVar6,0x20);
     pcVar5 = pcVar5 + 0xa8;
     pcVar6 = pcVar6 + 0xa8;
     iVar8 = iVar8 + -1;

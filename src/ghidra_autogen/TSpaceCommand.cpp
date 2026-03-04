@@ -261,7 +261,6 @@ TSpaceCommand::thunk_GenerateRandomMapAndRefreshSetupPreview(TSpaceCommand *this
 // GHIDRA_COMMENT Single-JMP thunk to GenerateMapFromTuningStringAndApplyScenarioOverrides
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to GenerateMapFromTuningStringAndApplyScenarioOverrides */
 
 void __thiscall
@@ -293,14 +292,14 @@ TSpaceCommand::thunk_GenerateMapFromTuningStringAndApplyScenarioOverrides
   iVar12 = 0x96;
   iVar9 = 0xfa;
   this->field0c = (char *)arg2;
-  _g_MapMakerGenerationState = 200;
+  g_MapMakerGenerationState = 200;
   g_nMapGenQuotaTokenM = 0x96;
-  _g_nMapGenQuotaTokenH = 0xfa;
-  _g_nMapGenQuotaTokenF = 0xfa;
-  _g_nMapGenQuotaTokenS = 0x96;
-  _g_nMapGenType3ExpansionAttempts = 10;
-  _g_nMapGenCityRegionSeedParamTokenC_A = 0xe;
-  _g_nMapGenCityRegionSeedParamTokenC_B = 8;
+  g_nMapGenQuotaTokenH = 0xfa;
+  g_nMapGenQuotaTokenF = 0xfa;
+  g_nMapGenQuotaTokenS = 0x96;
+  g_nMapGenType3ExpansionAttempts = 10;
+  g_nMapGenCityRegionSeedParamTokenC_A = 0xe;
+  g_nMapGenCityRegionSeedParamTokenC_B = 8;
   pcVar7 = *(char **)arg3;
   bVar13 = false;
   uVar11 = 1000;
@@ -311,18 +310,18 @@ TSpaceCommand::thunk_GenerateMapFromTuningStringAndApplyScenarioOverrides
 LAB_00525acd:
       switch(cVar2) {
       case 'C':
-        _g_nMapGenCityRegionSeedParamTokenC_A = 10;
-        _g_nMapGenCityRegionSeedParamTokenC_B = 6;
+        g_nMapGenCityRegionSeedParamTokenC_A = 10;
+        g_nMapGenCityRegionSeedParamTokenC_B = 6;
         break;
       case 'D':
-        _g_MapMakerGenerationState = 300;
+        g_MapMakerGenerationState = 300;
         break;
       case 'F':
         iVar9 = 500;
-        _g_nMapGenQuotaTokenF = 500;
+        g_nMapGenQuotaTokenF = 500;
         break;
       case 'H':
-        _g_nMapGenQuotaTokenH = 500;
+        g_nMapGenQuotaTokenH = 500;
         break;
       case 'M':
         g_nMapGenQuotaTokenM = 300;
@@ -331,25 +330,25 @@ LAB_00525acd:
         uVar11 = 0x2ee;
         break;
       case 'R':
-        _g_nMapGenType3ExpansionAttempts = 0x14;
+        g_nMapGenType3ExpansionAttempts = 0x14;
         break;
       case 'S':
         iVar12 = 300;
-        _g_nMapGenQuotaTokenS = 300;
+        g_nMapGenQuotaTokenS = 300;
         break;
       case 'c':
-        _g_nMapGenCityRegionSeedParamTokenC_A = 0x12;
-        _g_nMapGenCityRegionSeedParamTokenC_B = 10;
+        g_nMapGenCityRegionSeedParamTokenC_A = 0x12;
+        g_nMapGenCityRegionSeedParamTokenC_B = 10;
         break;
       case 'd':
-        _g_MapMakerGenerationState = 100;
+        g_MapMakerGenerationState = 100;
         break;
       case 'f':
         iVar9 = 100;
-        _g_nMapGenQuotaTokenF = 100;
+        g_nMapGenQuotaTokenF = 100;
         break;
       case 'h':
-        _g_nMapGenQuotaTokenH = 100;
+        g_nMapGenQuotaTokenH = 100;
         break;
       case 'm':
         g_nMapGenQuotaTokenM = 100;
@@ -358,11 +357,11 @@ LAB_00525acd:
         uVar11 = 0x5dc;
         break;
       case 'r':
-        _g_nMapGenType3ExpansionAttempts = 5;
+        g_nMapGenType3ExpansionAttempts = 5;
         break;
       case 's':
         iVar12 = 100;
-        _g_nMapGenQuotaTokenS = 100;
+        g_nMapGenQuotaTokenS = 100;
       }
     }
     else {
@@ -380,15 +379,14 @@ LAB_00525acd:
     pcVar7 = pcVar6 + 1;
     cVar2 = pcVar6[1];
   }
-  uVar8 = iVar12 + _g_nMapGenQuotaTokenH + iVar9 + _g_MapMakerGenerationState + g_nMapGenQuotaTokenM
-  ;
+  uVar8 = iVar12 + g_nMapGenQuotaTokenH + iVar9 + g_MapMakerGenerationState + g_nMapGenQuotaTokenM;
   if (uVar8 != uVar11) {
-    _g_MapMakerGenerationState = (uVar11 * _g_MapMakerGenerationState) / uVar8;
+    g_MapMakerGenerationState = (uVar11 * g_MapMakerGenerationState) / uVar8;
     g_nMapGenQuotaTokenM = (uVar11 * g_nMapGenQuotaTokenM) / uVar8;
-    _g_nMapGenQuotaTokenH = (uVar11 * _g_nMapGenQuotaTokenH) / uVar8;
-    _g_nMapGenQuotaTokenF =
+    g_nMapGenQuotaTokenH = (uVar11 * g_nMapGenQuotaTokenH) / uVar8;
+    g_nMapGenQuotaTokenF =
          (undefined4)((ulonglong)(uVar11 * iVar9) / (ulonglong)(longlong)(int)uVar8);
-    _g_nMapGenQuotaTokenS =
+    g_nMapGenQuotaTokenS =
          (undefined4)((ulonglong)(uVar11 * iVar12) / (ulonglong)(longlong)(int)uVar8);
   }
   g_uMapGenerationRngState = 0x6e616461;
@@ -1316,7 +1314,6 @@ TSpaceCommand::thunk_RebuildTileOwnerNeighborCachesAndFallbackAssignments(TSpace
 // GHIDRA_COMMENT Single-JMP thunk to GenerateCityRegionIdsBySeedAndNeighborPropagation
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Single-JMP thunk to GenerateCityRegionIdsBySeedAndNeighborPropagation */
 
 void __thiscall
@@ -1352,10 +1349,10 @@ TSpaceCommand::thunk_GenerateCityRegionIdsBySeedAndNeighborPropagation(TSpaceCom
   } while (iVar3 < 0x1950);
   this->field2a4 = 0;
   iStack_1c = 0;
-  if (0 < _g_nMapGenCityRegionSeedParamTokenC_A) {
+  if (0 < g_nMapGenCityRegionSeedParamTokenC_A) {
     iStack_24 = 0;
-    iVar3 = _g_nMapGenCityRegionSeedParamTokenC_B;
-    iVar8 = _g_nMapGenCityRegionSeedParamTokenC_A;
+    iVar3 = g_nMapGenCityRegionSeedParamTokenC_B;
+    iVar8 = g_nMapGenCityRegionSeedParamTokenC_A;
     do {
       uStack_20 = 0;
       if (0 < iVar3) {
@@ -1400,9 +1397,9 @@ TSpaceCommand::thunk_GenerateCityRegionIdsBySeedAndNeighborPropagation(TSpaceCom
           }
           uStack_20 = uStack_20 + 1;
           psStack_28 = (short *)((int)psStack_28 + 0x6c);
-          iVar3 = _g_nMapGenCityRegionSeedParamTokenC_B;
-          iVar8 = _g_nMapGenCityRegionSeedParamTokenC_A;
-        } while ((int)uStack_20 < _g_nMapGenCityRegionSeedParamTokenC_B);
+          iVar3 = g_nMapGenCityRegionSeedParamTokenC_B;
+          iVar8 = g_nMapGenCityRegionSeedParamTokenC_A;
+        } while ((int)uStack_20 < g_nMapGenCityRegionSeedParamTokenC_B);
       }
       iStack_1c = iStack_1c + 1;
       iStack_24 = iStack_24 + 0x6c;
@@ -1723,7 +1720,6 @@ TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this,int 
 // GHIDRA_COMMENT Parses map tuning tokens from input string, runs generation passes until valid, recenters columns, then applies scenario-name terrain overrides.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Parses map tuning tokens from input string, runs generation passes until valid, recenters
    columns, then applies scenario-name terrain overrides. */
 
@@ -1756,14 +1752,14 @@ TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
   iVar12 = 0x96;
   iVar9 = 0xfa;
   this->field0c = (char *)arg2;
-  _g_MapMakerGenerationState = 200;
+  g_MapMakerGenerationState = 200;
   g_nMapGenQuotaTokenM = 0x96;
-  _g_nMapGenQuotaTokenH = 0xfa;
-  _g_nMapGenQuotaTokenF = 0xfa;
-  _g_nMapGenQuotaTokenS = 0x96;
-  _g_nMapGenType3ExpansionAttempts = 10;
-  _g_nMapGenCityRegionSeedParamTokenC_A = 0xe;
-  _g_nMapGenCityRegionSeedParamTokenC_B = 8;
+  g_nMapGenQuotaTokenH = 0xfa;
+  g_nMapGenQuotaTokenF = 0xfa;
+  g_nMapGenQuotaTokenS = 0x96;
+  g_nMapGenType3ExpansionAttempts = 10;
+  g_nMapGenCityRegionSeedParamTokenC_A = 0xe;
+  g_nMapGenCityRegionSeedParamTokenC_B = 8;
   pcVar7 = *(char **)arg3;
   bVar13 = false;
   uVar11 = 1000;
@@ -1774,18 +1770,18 @@ TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
 LAB_00525acd:
       switch(cVar2) {
       case 'C':
-        _g_nMapGenCityRegionSeedParamTokenC_A = 10;
-        _g_nMapGenCityRegionSeedParamTokenC_B = 6;
+        g_nMapGenCityRegionSeedParamTokenC_A = 10;
+        g_nMapGenCityRegionSeedParamTokenC_B = 6;
         break;
       case 'D':
-        _g_MapMakerGenerationState = 300;
+        g_MapMakerGenerationState = 300;
         break;
       case 'F':
         iVar9 = 500;
-        _g_nMapGenQuotaTokenF = 500;
+        g_nMapGenQuotaTokenF = 500;
         break;
       case 'H':
-        _g_nMapGenQuotaTokenH = 500;
+        g_nMapGenQuotaTokenH = 500;
         break;
       case 'M':
         g_nMapGenQuotaTokenM = 300;
@@ -1794,25 +1790,25 @@ LAB_00525acd:
         uVar11 = 0x2ee;
         break;
       case 'R':
-        _g_nMapGenType3ExpansionAttempts = 0x14;
+        g_nMapGenType3ExpansionAttempts = 0x14;
         break;
       case 'S':
         iVar12 = 300;
-        _g_nMapGenQuotaTokenS = 300;
+        g_nMapGenQuotaTokenS = 300;
         break;
       case 'c':
-        _g_nMapGenCityRegionSeedParamTokenC_A = 0x12;
-        _g_nMapGenCityRegionSeedParamTokenC_B = 10;
+        g_nMapGenCityRegionSeedParamTokenC_A = 0x12;
+        g_nMapGenCityRegionSeedParamTokenC_B = 10;
         break;
       case 'd':
-        _g_MapMakerGenerationState = 100;
+        g_MapMakerGenerationState = 100;
         break;
       case 'f':
         iVar9 = 100;
-        _g_nMapGenQuotaTokenF = 100;
+        g_nMapGenQuotaTokenF = 100;
         break;
       case 'h':
-        _g_nMapGenQuotaTokenH = 100;
+        g_nMapGenQuotaTokenH = 100;
         break;
       case 'm':
         g_nMapGenQuotaTokenM = 100;
@@ -1821,11 +1817,11 @@ LAB_00525acd:
         uVar11 = 0x5dc;
         break;
       case 'r':
-        _g_nMapGenType3ExpansionAttempts = 5;
+        g_nMapGenType3ExpansionAttempts = 5;
         break;
       case 's':
         iVar12 = 100;
-        _g_nMapGenQuotaTokenS = 100;
+        g_nMapGenQuotaTokenS = 100;
       }
     }
     else {
@@ -1843,15 +1839,14 @@ LAB_00525acd:
     pcVar7 = pcVar6 + 1;
     cVar2 = pcVar6[1];
   }
-  uVar8 = iVar12 + _g_nMapGenQuotaTokenH + iVar9 + _g_MapMakerGenerationState + g_nMapGenQuotaTokenM
-  ;
+  uVar8 = iVar12 + g_nMapGenQuotaTokenH + iVar9 + g_MapMakerGenerationState + g_nMapGenQuotaTokenM;
   if (uVar8 != uVar11) {
-    _g_MapMakerGenerationState = (uVar11 * _g_MapMakerGenerationState) / uVar8;
+    g_MapMakerGenerationState = (uVar11 * g_MapMakerGenerationState) / uVar8;
     g_nMapGenQuotaTokenM = (uVar11 * g_nMapGenQuotaTokenM) / uVar8;
-    _g_nMapGenQuotaTokenH = (uVar11 * _g_nMapGenQuotaTokenH) / uVar8;
-    _g_nMapGenQuotaTokenF =
+    g_nMapGenQuotaTokenH = (uVar11 * g_nMapGenQuotaTokenH) / uVar8;
+    g_nMapGenQuotaTokenF =
          (undefined4)((ulonglong)(uVar11 * iVar9) / (ulonglong)(longlong)(int)uVar8);
-    _g_nMapGenQuotaTokenS =
+    g_nMapGenQuotaTokenS =
          (undefined4)((ulonglong)(uVar11 * iVar12) / (ulonglong)(longlong)(int)uVar8);
   }
   g_uMapGenerationRngState = 0x6e616461;

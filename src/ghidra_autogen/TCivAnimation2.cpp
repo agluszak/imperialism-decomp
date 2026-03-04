@@ -402,7 +402,6 @@ int * __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(TCivAnimation2 
 // GHIDRA_COMMENT Renders map-interaction preview slots and transient sprites onto mode-4 preview surface context.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Renders map-interaction preview slots and transient sprites onto mode-4 preview surface context.
     */
 
@@ -550,8 +549,8 @@ TCivAnimation2::RenderMapInteractionPreviewSlotsAndTransientSprites(TCivAnimatio
                 nTileIndex = (short)iVar3;
                 iVar5 = nTileIndex * 0x24;
                 if (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x10 + iVar5) == -1) {
-                  _g_Render_Map_Interaction_State_006A3454 =
-                       _g_Render_Map_Interaction_State_006A3454 + 1;
+                  g_Render_Map_Interaction_State_006A3454._0_2_ =
+                       g_Render_Map_Interaction_State_006A3454._0_2_ + 1;
                   bVar10 = false;
                   sVar2 = (short)local_90;
                   while ((sVar2 < 0x5a && (!bVar10))) {

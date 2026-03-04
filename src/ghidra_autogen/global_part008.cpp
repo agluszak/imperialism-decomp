@@ -362,13 +362,12 @@ thunk_SetSharedStringFromMappedFlavorTextWithLengthClamp(void *pDstSharedRef,int
   *unaff_FS_OFFSET = &uStack_c;
   if (*(char *)((int)g_pLocalizationTable + 0x68) == '\0') {
     thunk_GenerateMappedFlavorTextUntilValidationPasses
-              (pDstSharedRef,*(short *)(&g_adwFlavorTextMappedCodeBySlot + (short)nTableSlot * 4));
+              (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + (short)nTableSlot * 4 + 4));
     if (g_bScenarioSetupModeActive == 0) {
       iVar1 = *(int *)(*(int *)pDstSharedRef + -8);
       while (0xc < iVar1) {
         thunk_GenerateMappedFlavorTextUntilValidationPasses
-                  (pDstSharedRef,
-                   *(short *)(&g_adwFlavorTextMappedCodeBySlot + (short)nTableSlot * 4));
+                  (pDstSharedRef,*(short *)((int)&UNK_0066ef2c + (short)nTableSlot * 4 + 4));
         iVar1 = *(int *)(*(int *)pDstSharedRef + -8);
       }
     }
@@ -563,14 +562,30 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
   undefined *puStack_1f4;
   undefined *puStack_1f0;
   void *pvStack_1ec;
-  void *apvStack_1e8 [14];
+  void *apvStack_1e8 [8];
+  void *pvStack_1c8;
+  void *pvStack_1c4;
+  undefined1 *puStack_1c0;
+  undefined4 uStack_1bc;
+  undefined4 uStack_1b8;
+  undefined1 *puStack_1b4;
   undefined4 uStack_1b0;
   void *pvStack_1ac;
   undefined4 uStack_1a8;
   void *pvStack_1a4;
   void *pvStack_1a0;
   int iStack_19c;
-  void *apvStack_198 [18];
+  void *apvStack_198 [8];
+  undefined4 uStack_178;
+  undefined4 uStack_174;
+  undefined4 uStack_170;
+  undefined4 uStack_16c;
+  undefined4 uStack_168;
+  undefined4 uStack_164;
+  undefined4 uStack_160;
+  undefined4 uStack_15c;
+  undefined4 uStack_158;
+  undefined1 *puStack_154;
   undefined4 uStack_150;
   undefined1 *puStack_14c;
   undefined4 uStack_148;
@@ -764,13 +779,13 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
     apvStack_1e8[2] = (void *)0x14;
     apvStack_1e8[3] = (void *)0x13;
     apvStack_1e8[6] = (void *)0x11;
-    apvStack_1e8[7] = (void *)0xd;
-    apvStack_1e8[8] = (void *)0xc;
-    apvStack_1e8[9] = (void *)0xa;
-    apvStack_1e8[10] = (void *)0x9;
-    apvStack_1e8[0xb] = (void *)0x8;
-    apvStack_1e8[0xc] = (void *)0x6;
-    apvStack_1e8[0xd] = &DAT_00000004;
+    apvStack_1e8[7] = &DAT_0000000d;
+    pvStack_1c8 = (void *)0xc;
+    pvStack_1c4 = (void *)0xa;
+    puStack_1c0 = &DAT_00000009;
+    uStack_1bc = 8;
+    uStack_1b8 = 6;
+    puStack_1b4 = &DAT_00000004;
     uStack_1b0 = 4;
     pvStack_1ac = (void *)0x3;
     uStack_1a8 = 3;
@@ -804,7 +819,7 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
         apuStack_274[1] = (undefined *)0x88;
         apuStack_274[2] = (undefined *)0x5f;
         apuStack_274[3] = (undefined *)0x18;
-        apuStack_274[4] = (undefined1 *)0xd;
+        apuStack_274[4] = &DAT_0000000d;
         iStack_260 = 0xc;
         iVar7 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % 0x23f - 0xa1;
         if (-1 < iVar7) {
@@ -817,14 +832,14 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
       }
       else {
         puStack_d4 = &g_Build_Map_Context_LookupTable_0069AB70;
-        apvStack_198[0xc] = (void *)0xb;
-        apvStack_198[0xd] = (void *)0xb;
+        uStack_168 = 0xb;
+        uStack_164 = 0xb;
         puStack_d0 = &g_Build_Map_Context_LookupTable_00696D10;
-        apvStack_198[0xe] = (void *)0x9;
-        apvStack_198[0xf] = (void *)0x9;
+        uStack_160 = 9;
+        uStack_15c = 9;
         puStack_cc = &g_Build_Map_Context_LookupTable_0069ADD8;
-        apvStack_198[0x10] = (void *)0x8;
-        apvStack_198[0x11] = &DAT_00000008;
+        uStack_158 = 8;
+        puStack_154 = &DAT_00000008;
         uStack_150 = 8;
         puStack_14c = &DAT_00000007;
         uStack_148 = 7;
@@ -886,11 +901,11 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantD_005d33a0(int arg1)
         apvStack_198[4] = (void *)0x16;
         apvStack_198[5] = (void *)0x12;
         apvStack_198[6] = (void *)0xf;
-        apvStack_198[7] = (void *)0xd;
-        apvStack_198[8] = (void *)0xd;
-        apvStack_198[9] = (void *)0xd;
-        apvStack_198[10] = (void *)0xd;
-        apvStack_198[0xb] = (void *)0xc;
+        apvStack_198[7] = &DAT_0000000d;
+        uStack_178 = 0xd;
+        uStack_174 = 0xd;
+        uStack_170 = 0xd;
+        uStack_16c = 0xc;
         uStack_138 = 5;
         uStack_134 = 5;
         uStack_130 = 5;
@@ -1471,7 +1486,7 @@ int __cdecl thunk_SelectBestTacticalTargetTileByActionHeuristics(void)
   do {
     if (iVar3 == 0) {
       if (((iStack_58 == -1) && (in_stack_00000004[8] == 0)) &&
-         ((*(float *)(&g_Evaluate_Tactical_Tile_LookupTable_00669390 +
+         ((*(float *)(&UNK_00669334.field_0x5c +
                      (short)g_aeTacticalUnitCategoryBySlot[in_stack_00000004[3]] * 4) ==
            _g_Select_Best_Tactical_Value_00669500 &&
           (bVar2 = thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(*(int *)(in_ECX + 0x14)),
@@ -2570,40 +2585,39 @@ TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPict
 void __fastcall thunk_ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
 
 {
-  int iVar1;
-  int *piVar2;
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
   
   if (*(char *)((int)pMapOrderEntry + 0x26) == '\0') {
-    iVar1 = *(int *)((int)pMapOrderEntry + 8);
-    if (iVar1 != 1) {
-      if (iVar1 == 5) {
+    iVar3 = *(int *)((int)pMapOrderEntry + 8);
+    if (iVar3 != 1) {
+      if (iVar3 == 5) {
         *(byte *)(*(int *)((int)pMapOrderEntry + 0xc) + 0xa1) =
              *(byte *)(*(int *)((int)pMapOrderEntry + 0xc) + 0xa1) |
              '\x01' << ((byte)*(undefined2 *)((int)pMapOrderEntry + 0x1c) & 0x1f);
         if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
-          iVar1 = thunk_GetCityIndexFromCityStatePointer(*(int *)((int)pMapOrderEntry + 0xc));
-          thunk_DispatchCityRedrawInvalidateEvent((short)iVar1);
+          iVar3 = thunk_GetCityIndexFromCityStatePointer(*(int *)((int)pMapOrderEntry + 0xc));
+          thunk_DispatchCityRedrawInvalidateEvent((short)iVar3);
         }
       }
-      else if (iVar1 == 8) {
-        piVar2 = *(int **)((int)pMapOrderEntry + 0x10);
-        if (piVar2 != (int *)0x0) {
+      else if (iVar3 == 8) {
+        piVar4 = *(int **)((int)pMapOrderEntry + 0x10);
+        if (piVar4 != (int *)0x0) {
           do {
-            iVar1 = *piVar2;
-            *(short *)(iVar1 + 0x1c) =
-                 *(short *)(iVar1 + 0x1c) +
-                 (short)((int)((int)*(short *)(&g_Apply_Map_Order_LookupTable_00698114 +
-                                              *(short *)(iVar1 + 4) * 0x24) +
-                              ((int)*(short *)(&g_Apply_Map_Order_LookupTable_00698114 +
-                                              *(short *)(iVar1 + 4) * 0x24) >> 0x1f & 3U)) >> 2);
-            if (*(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(iVar1 + 4) * 0x24) <
-                *(short *)(iVar1 + 0x1c)) {
-              *(short *)(iVar1 + 0x1c) =
-                   *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(iVar1 + 4) * 0x24
-                             );
+            iVar3 = *piVar4;
+            iVar2 = (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                                   *(short *)(iVar3 + 4) * 0x24 + 4);
+            *(short *)(iVar3 + 0x1c) =
+                 *(short *)(iVar3 + 0x1c) + (short)((int)(iVar2 + (iVar2 >> 0x1f & 3U)) >> 2);
+            sVar1 = *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                              *(short *)(iVar3 + 4) * 0x24 + 4);
+            if (sVar1 < *(short *)(iVar3 + 0x1c)) {
+              *(short *)(iVar3 + 0x1c) = sVar1;
             }
-            piVar2 = (int *)piVar2[1];
-          } while (piVar2 != (int *)0x0);
+            piVar4 = (int *)piVar4[1];
+          } while (piVar4 != (int *)0x0);
           *(undefined1 *)((int)pMapOrderEntry + 0x26) = 1;
           return;
         }
@@ -2616,9 +2630,9 @@ void __fastcall thunk_ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
       *(undefined1 *)((int)pMapOrderEntry + 0x26) = 1;
       return;
     }
-    for (piVar2 = *(int **)((int)pMapOrderEntry + 0x10); piVar2 != (int *)0x0;
-        piVar2 = (int *)piVar2[1]) {
-      *(undefined4 *)(*piVar2 + 8) = *(undefined4 *)((int)pMapOrderEntry + 0xc);
+    for (piVar4 = *(int **)((int)pMapOrderEntry + 0x10); piVar4 != (int *)0x0;
+        piVar4 = (int *)piVar4[1]) {
+      *(undefined4 *)(*piVar4 + 8) = *(undefined4 *)((int)pMapOrderEntry + 0xc);
     }
   }
   return;
@@ -2777,7 +2791,9 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
   undefined *puStack_44c;
   undefined *puStack_448;
   undefined *puStack_444;
-  HWND apHStack_440 [10];
+  HWND apHStack_440 [8];
+  undefined *puStack_420;
+  undefined *puStack_41c;
   byte *pbStack_418;
   byte *pbStack_414;
   undefined4 *puStack_410;
@@ -3009,7 +3025,7 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
     apHStack_440[4] = (HWND)0xa;
     apHStack_440[5] = (HWND)0xa;
     apHStack_440[6] = (HWND)0xa;
-    apHStack_440[9] = (HWND)0x6;
+    puStack_41c = (undefined *)0x6;
     pbStack_418 = (byte *)0x6;
     puStack_3d4 = &g_Build_Map_Context_LookupTable_0069AC58;
     pbStack_414 = &DAT_00000005;
@@ -3046,8 +3062,8 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
     apHStack_440[0] = (HWND)0x16;
     apHStack_440[1] = (HWND)0x10;
     apHStack_440[2] = (HWND)0xb;
-    apHStack_440[7] = (HWND)0x9;
-    apHStack_440[8] = (HWND)0x8;
+    apHStack_440[7] = (HWND)&DAT_00000009;
+    puStack_420 = (undefined *)0x8;
     puStack_40c = (undefined *)0x4;
     puStack_408 = (undefined *)0x4;
     puStack_404 = (undefined *)0x4;
@@ -3356,8 +3372,8 @@ void __cdecl thunk_GenerateMappedFlavorTextVariantE_005ccce0(int arg1)
     apHStack_440[5] = (HWND)&g_Build_Random_Map_Value_0069B16C;
     apHStack_440[6] = (HWND)&g_Build_Map_Context_LookupTable_00696D10;
     apHStack_440[7] = (HWND)&g_Generate_Mapped_Flavor_LookupTable_0069AB90;
-    apHStack_440[8] = (HWND)&g_Build_Random_Map_LookupTable_0069ADAC;
-    apHStack_440[9] = (HWND)&g_Build_Map_Context_LookupTable_0069AB3C;
+    puStack_420 = &g_Build_Random_Map_LookupTable_0069ADAC;
+    puStack_41c = &g_Build_Map_Context_LookupTable_0069AB3C;
     pbStack_418 = &g_Build_Map_Context_LookupTable_0069ABC0;
     pbStack_414 = &g_Generate_Mapped_Flavor_Value_0069B168;
     puStack_410 = (undefined4 *)&g_Build_Map_Context_LookupTable_00697238;
@@ -4369,7 +4385,7 @@ void __cdecl thunk_SelectAndScheduleRandomAudioCue(void)
         if (*(short *)(in_ECX + 0x74) < 1) {
           *(short *)(in_ECX + 0x74) = sVar5;
           TSimMgr::thunk_ApplyMciPlaybackRangeFromAudioManager
-                    ((TSimMgr *)&g_AudioManagerGlobalState,(int)sVar5);
+                    ((TSimMgr *)&UNK_006a6024.field_0x98,(int)sVar5);
           thunk_ApplyAuxOutputVolumeFromScalar
                     ((int)*(short *)((int)g_pLocalizationTable + 0x4e) << 8);
           *(undefined1 *)(in_ECX + 0x78) = 1;
@@ -5750,7 +5766,7 @@ thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(int arg1,int arg2,int arg3,
     ReleaseSharedStringRefIfNotEmpty();
   }
   *(undefined2 *)((int)pvVar4 + 0x1c) =
-       *(undefined2 *)(&g_Apply_Map_Order_LookupTable_00698114 + iVar3 * 0x24);
+       *(undefined2 *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24 + 4);
   if (*(InputState **)((int)pvVar4 + 8) != (InputState *)0x0) {
     InputState::HandleKeyDown(*(InputState **)((int)pvVar4 + 8),key_id);
   }
@@ -10581,7 +10597,6 @@ void __cdecl thunk_NotifyGlobalCaptureOwnerState1WithCachedCoords(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -10591,7 +10606,7 @@ void __cdecl WrapperFor_ftol_At004125d0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a1340 = (short)iVar1;
+  UNK_006a1230._272_2_ = (short)iVar1;
   return;
 }
 
@@ -11004,7 +11019,6 @@ void __cdecl OrphanCallChain_C1_I05_00412d90(void)
 // GHIDRA_COMMENT Returns 1 on successful startup, 0 on failure path.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Imperialism application InitInstance-equivalent (vtable slot +0x58 from PTR_LAB_0063e2d0).
    Performs main game startup: registry/settings handling, resource package initialization, font
    loading, manager/system object construction, thread/UI preparation, and initial WM_COMMAND
@@ -11052,7 +11066,7 @@ void __cdecl InitializeImperialismApplicationInstance(void)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   SetGlobalCallback6A7FACAndReturnPrevious();
-  _g_Imperialism_Application_Instance_State_006A1354 = extraout_EAX;
+  g_Imperialism_Application_Instance_State_006A1350._4_4_ = extraout_EAX;
   TControl::SetRegistryKey(in_ECX);
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
@@ -11091,7 +11105,8 @@ void __cdecl InitializeImperialismApplicationInstance(void)
         local_4._0_1_ = 7;
       }
       else {
-        _g_Imperialism_Application_Instance_State_006A1350 = ShowAutoResolutionDialogIfNeeded();
+        g_Imperialism_Application_Instance_State_006A1350._0_4_ = ShowAutoResolutionDialogIfNeeded()
+        ;
         thunk_ApplyAutoResolutionModeAndPersist();
         TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog
                   (g_pModuleLibraryCacheState,*(char **)&in_ECX->field_0xd0,0);
@@ -11136,7 +11151,7 @@ void __cdecl InitializeImperialismApplicationInstance(void)
               else {
                 iVar4 = ProcessShellCommand();
                 if (iVar4 != 0) {
-                  g_pImperialismAppConfigRoot = &g_ImperialismAppSingletonGlobal;
+                  g_pImperialismAppConfigRoot = &UNK_0069ff78.field_0x1298;
                   this = AllocateWithFallbackHandler();
                   local_4._0_1_ = 0xe;
                   local_54 = (undefined1  [4])this;

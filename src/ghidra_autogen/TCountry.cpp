@@ -348,7 +348,7 @@ TCountry::thunk_ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,vo
 {
   char cVar1;
   BOOL BVar2;
-  void *pvVar3;
+  undefined1 *puVar3;
   void **ppvVar4;
   int iVar5;
   undefined1 auStack_18 [8];
@@ -360,11 +360,11 @@ TCountry::thunk_ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,vo
     RStack_10.top = 0x2d;
     RStack_10.right = 0x24d;
     RStack_10.bottom = 0x159;
-    CopyRect((LPRECT)&g_rcDiplomacyNationMatrixHitBounds,&RStack_10);
+    CopyRect((LPRECT)&DAT_006a2fe4.field_0x24,&RStack_10);
     AppendPointerToGlobalVectorAsStatus();
   }
-  pvVar3 = (void *)0x0;
-  BVar2 = PtInRect((RECT *)&g_rcDiplomacyNationMatrixHitBounds,*(POINT *)pCursorPoint);
+  puVar3 = (undefined1 *)0x0;
+  BVar2 = PtInRect((RECT *)&DAT_006a2fe4.field_0x24,*(POINT *)pCursorPoint);
   if (BVar2 == 0) {
     return 0;
   }
@@ -383,16 +383,16 @@ TCountry::thunk_ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,vo
     iVar5 = iVar5 + 1;
   } while ((int)ppvVar4 < 0x6a436c);
   if (iVar5 < 0x17) {
-    pvVar3 = this->pFieldbc;
+    puVar3 = this->pFieldbc;
     *(short *)&this->pFieldc2 = (short)iVar5;
-    if ((pvVar3 != (void *)0xd) && (iVar5 == *(short *)&this->pField90)) {
+    if ((puVar3 != &DAT_0000000d) && (iVar5 == *(short *)&this->pField90)) {
       return 1;
     }
   }
   else {
     *(undefined2 *)&this->pFieldc2 = 0xffff;
   }
-  return (EDiplomacyProposalCodeRaw)pvVar3;
+  return (EDiplomacyProposalCodeRaw)puVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406FA5
@@ -2914,7 +2914,7 @@ TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,void *pC
 {
   char cVar1;
   BOOL BVar2;
-  void *pvVar3;
+  undefined1 *puVar3;
   void **ppvVar4;
   int iVar5;
   undefined1 local_18 [8];
@@ -2926,11 +2926,11 @@ TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,void *pC
     local_10.top = 0x2d;
     local_10.right = 0x24d;
     local_10.bottom = 0x159;
-    CopyRect((LPRECT)&g_rcDiplomacyNationMatrixHitBounds,&local_10);
+    CopyRect((LPRECT)&DAT_006a2fe4.field_0x24,&local_10);
     AppendPointerToGlobalVectorAsStatus();
   }
-  pvVar3 = (void *)0x0;
-  BVar2 = PtInRect((RECT *)&g_rcDiplomacyNationMatrixHitBounds,*(POINT *)pCursorPoint);
+  puVar3 = (undefined1 *)0x0;
+  BVar2 = PtInRect((RECT *)&DAT_006a2fe4.field_0x24,*(POINT *)pCursorPoint);
   if (BVar2 == 0) {
     return 0;
   }
@@ -2949,16 +2949,16 @@ TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,void *pC
     iVar5 = iVar5 + 1;
   } while ((int)ppvVar4 < 0x6a436c);
   if (iVar5 < 0x17) {
-    pvVar3 = this->pFieldbc;
+    puVar3 = this->pFieldbc;
     *(short *)&this->pFieldc2 = (short)iVar5;
-    if ((pvVar3 != (void *)0xd) && (iVar5 == *(short *)&this->pField90)) {
+    if ((puVar3 != &DAT_0000000d) && (iVar5 == *(short *)&this->pField90)) {
       return 1;
     }
   }
   else {
     *(undefined2 *)&this->pFieldc2 = 0xffff;
   }
-  return (EDiplomacyProposalCodeRaw)pvVar3;
+  return (EDiplomacyProposalCodeRaw)puVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055C9F0

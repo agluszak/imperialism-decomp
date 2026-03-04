@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ItemHasChildren
-// ghidra_proto int __thiscall ItemHasChildren(void)
-// FUNCTION: IMPERIALISM 0x005e61bb
-undefined4 ItemHasChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertItem_5e6237
-// ghidra_proto void __thiscall InsertItem_5e6237(void)
-// FUNCTION: IMPERIALISM 0x005e6237
-undefined4 InsertItem_5e6237(void)
-{
-  return 0;
-}
-
 // ghidra_name HitTest_005E628B
 // ghidra_proto void * __thiscall HitTest_005E628B(int x, int y, uint * pFlags)
 // FUNCTION: IMPERIALISM 0x005e628b
@@ -3999,6 +3983,22 @@ undefined4 RemoveKey(void)
 // ghidra_proto void __thiscall CMapStringToPtr_ctor(int nBlockSize)
 // FUNCTION: IMPERIALISM 0x0060366f
 undefined4 CMapStringToPtr_ctor(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocTemplate::InitHashTable_6036b2
+// ghidra_proto void __thiscall InitHashTable_6036b2(void)
+// FUNCTION: IMPERIALISM 0x006036b2
+undefined4 InitHashTable_6036b2(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveAll_6036f8
+// ghidra_proto void __fastcall RemoveAll_6036f8(void)
+// FUNCTION: IMPERIALISM 0x006036f8
+undefined4 RemoveAll_6036f8(void)
 {
   return 0;
 }

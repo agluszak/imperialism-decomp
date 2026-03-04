@@ -197,8 +197,8 @@ TacticalBattleView::thunk_ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
     uVar2 = TCivDescription::thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
                       ((TCivDescription *)this,iVar1,unaff_EDI);
     iVar1 = *(int *)(tacticalView + 0x20) + ((int)(short)uVar2 + iVar4 * 7) * 2;
-    OffsetRect((LPRECT)tacticalEntry,*(int *)(&g_aTacticalUnitFacingOffsetPairs + iVar1 * 8),
-               *(int *)(&g_aTacticalUnitFacingOffsetPairsYLane + iVar1 * 8));
+    OffsetRect((LPRECT)tacticalEntry,*(int *)(&UNK_006a4760.field_0x20 + iVar1 * 8),
+               *(int *)(&UNK_006a4760.field_0x24 + iVar1 * 8));
     return;
   }
   if ((*(char *)(iVar4 + 0x10) != '\0') &&
@@ -1388,8 +1388,8 @@ TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
     uVar2 = TCivDescription::thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
                       ((TCivDescription *)this,iVar1,unaff_EDI);
     iVar1 = *(int *)(tacticalView + 0x20) + ((int)(short)uVar2 + iVar4 * 7) * 2;
-    OffsetRect((LPRECT)tacticalEntry,*(int *)(&g_aTacticalUnitFacingOffsetPairs + iVar1 * 8),
-               *(int *)(&g_aTacticalUnitFacingOffsetPairsYLane + iVar1 * 8));
+    OffsetRect((LPRECT)tacticalEntry,*(int *)(&UNK_006a4760.field_0x20 + iVar1 * 8),
+               *(int *)(&UNK_006a4760.field_0x24 + iVar1 * 8));
     return;
   }
   if ((*(char *)(iVar4 + 0x10) != '\0') &&

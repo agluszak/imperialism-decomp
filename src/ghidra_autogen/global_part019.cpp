@@ -91,7 +91,7 @@ short __cdecl GetResourceDescriptorWord10ByType(void)
 {
   short in_stack_00000004;
   
-  return *(short *)(&g_Task_Force_Order_LookupTable_00698110 + in_stack_00000004 * 0x24);
+  return *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + in_stack_00000004 * 0x24);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550E10
@@ -103,7 +103,7 @@ short __cdecl GetResourceDescriptorWord14ByType(void)
 {
   short in_stack_00000004;
   
-  return *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + in_stack_00000004 * 0x24);
+  return *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + in_stack_00000004 * 0x24 + 4);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550E40
@@ -132,7 +132,7 @@ short __cdecl GetResourceDescriptorWeightWord0ByType(void)
 {
   short in_stack_00000004;
   
-  return *(short *)(&g_Resource_Descriptor_Weight_Value_0069811C + in_stack_00000004 * 0x24);
+  return *(short *)((int)&g_Resource_Descriptor_Weight_Value_0069811C + in_stack_00000004 * 0x24);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550EA0
@@ -3292,40 +3292,39 @@ void __cdecl ComputeTaskForceOrderAggregateScore(void)
 void __fastcall ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
 
 {
-  int iVar1;
-  int *piVar2;
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
   
   if (*(char *)((int)pMapOrderEntry + 0x26) == '\0') {
-    iVar1 = *(int *)((int)pMapOrderEntry + 8);
-    if (iVar1 != 1) {
-      if (iVar1 == 5) {
+    iVar3 = *(int *)((int)pMapOrderEntry + 8);
+    if (iVar3 != 1) {
+      if (iVar3 == 5) {
         *(byte *)(*(int *)((int)pMapOrderEntry + 0xc) + 0xa1) =
              *(byte *)(*(int *)((int)pMapOrderEntry + 0xc) + 0xa1) |
              '\x01' << ((byte)*(undefined2 *)((int)pMapOrderEntry + 0x1c) & 0x1f);
         if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
-          iVar1 = thunk_GetCityIndexFromCityStatePointer(*(int *)((int)pMapOrderEntry + 0xc));
-          thunk_DispatchCityRedrawInvalidateEvent((short)iVar1);
+          iVar3 = thunk_GetCityIndexFromCityStatePointer(*(int *)((int)pMapOrderEntry + 0xc));
+          thunk_DispatchCityRedrawInvalidateEvent((short)iVar3);
         }
       }
-      else if (iVar1 == 8) {
-        piVar2 = *(int **)((int)pMapOrderEntry + 0x10);
-        if (piVar2 != (int *)0x0) {
+      else if (iVar3 == 8) {
+        piVar4 = *(int **)((int)pMapOrderEntry + 0x10);
+        if (piVar4 != (int *)0x0) {
           do {
-            iVar1 = *piVar2;
-            *(short *)(iVar1 + 0x1c) =
-                 *(short *)(iVar1 + 0x1c) +
-                 (short)((int)((int)*(short *)(&g_Apply_Map_Order_LookupTable_00698114 +
-                                              *(short *)(iVar1 + 4) * 0x24) +
-                              ((int)*(short *)(&g_Apply_Map_Order_LookupTable_00698114 +
-                                              *(short *)(iVar1 + 4) * 0x24) >> 0x1f & 3U)) >> 2);
-            if (*(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(iVar1 + 4) * 0x24) <
-                *(short *)(iVar1 + 0x1c)) {
-              *(short *)(iVar1 + 0x1c) =
-                   *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(iVar1 + 4) * 0x24
-                             );
+            iVar3 = *piVar4;
+            iVar2 = (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                                   *(short *)(iVar3 + 4) * 0x24 + 4);
+            *(short *)(iVar3 + 0x1c) =
+                 *(short *)(iVar3 + 0x1c) + (short)((int)(iVar2 + (iVar2 >> 0x1f & 3U)) >> 2);
+            sVar1 = *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                              *(short *)(iVar3 + 4) * 0x24 + 4);
+            if (sVar1 < *(short *)(iVar3 + 0x1c)) {
+              *(short *)(iVar3 + 0x1c) = sVar1;
             }
-            piVar2 = (int *)piVar2[1];
-          } while (piVar2 != (int *)0x0);
+            piVar4 = (int *)piVar4[1];
+          } while (piVar4 != (int *)0x0);
           *(undefined1 *)((int)pMapOrderEntry + 0x26) = 1;
           return;
         }
@@ -3338,9 +3337,9 @@ void __fastcall ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
       *(undefined1 *)((int)pMapOrderEntry + 0x26) = 1;
       return;
     }
-    for (piVar2 = *(int **)((int)pMapOrderEntry + 0x10); piVar2 != (int *)0x0;
-        piVar2 = (int *)piVar2[1]) {
-      *(undefined4 *)(*piVar2 + 8) = *(undefined4 *)((int)pMapOrderEntry + 0xc);
+    for (piVar4 = *(int **)((int)pMapOrderEntry + 0x10); piVar4 != (int *)0x0;
+        piVar4 = (int *)piVar4[1]) {
+      *(undefined4 *)(*piVar4 + 8) = *(undefined4 *)((int)pMapOrderEntry + 0xc);
     }
   }
   return;
@@ -4433,8 +4432,8 @@ void __cdecl RevalidateAndRequeueMapOrdersForTurn(void)
           for (piVar3 = (int *)pOrderEntry[4]; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[1]) {
             *(bool *)(piVar3 + 3) =
                  *(short *)(*piVar3 + 0x1c) <
-                 *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(*piVar3 + 4) * 0x24
-                           );
+                 *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                           *(short *)(*piVar3 + 4) * 0x24 + 4);
           }
           pOrderEntry[2] = 8;
           thunk_RequeueMapOrderEntry(pOrderEntry);
@@ -4868,8 +4867,9 @@ int __thiscall UpdateType7NavyOrderChildSelectionByChanceThreshold(void *this)
     if (iVar4 != 0) {
       for (piVar1 = *(int **)(iVar4 + 0x10); piVar1 != (int *)0x0; piVar1 = (int *)piVar1[1]) {
         if ((*(short *)(*piVar1 + 0x1c) <
-             *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(*piVar1 + 4) * 0x24))
-           || (uVar3 = GenerateThreadLocalRandom15(), (int)in_stack_00000008 <= (int)uVar3 % 100)) {
+             *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                       *(short *)(*piVar1 + 4) * 0x24 + 4)) ||
+           (uVar3 = GenerateThreadLocalRandom15(), (int)in_stack_00000008 <= (int)uVar3 % 100)) {
           uVar2 = 0;
         }
         else {
@@ -4965,8 +4965,9 @@ SelectEligibleMapOrderInteractionForNationAndContext(void *this,int arg1,int arg
     if (local_298 != (int *)0x0) {
       for (piVar20 = (int *)local_298[4]; piVar20 != (int *)0x0; piVar20 = (int *)piVar20[1]) {
         if ((*(short *)(*piVar20 + 0x1c) <
-             *(short *)(&g_Apply_Map_Order_LookupTable_00698114 + *(short *)(*piVar20 + 4) * 0x24))
-           || (uVar9 = GenerateThreadLocalRandom15(), (int)sVar19 <= (int)uVar9 % 100)) {
+             *(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                       *(short *)(*piVar20 + 4) * 0x24 + 4)) ||
+           (uVar9 = GenerateThreadLocalRandom15(), (int)sVar19 <= (int)uVar9 % 100)) {
           uVar4 = 0;
         }
         else {
@@ -5102,7 +5103,7 @@ LAB_00558249:
                                      + (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                                                    [iVar11 * 9]) * 100 +
                                     (int)*(short *)(iVar18 + 0x1c)) /
-                                    (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                                    (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
                                                    iVar11 * 0x24);
                 }
                 iVar16 = 0;
@@ -5123,7 +5124,7 @@ LAB_00558249:
                                      + (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                                                    [iVar12 * 9]) * 100 +
                                     (int)*(short *)(iVar11 + 0x1c)) /
-                                    (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                                    (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
                                                    iVar12 * 0x24);
                 }
                 bVar21 = iVar13 * 3 < iVar16;
@@ -6835,7 +6836,6 @@ LAB_0055b160:
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -6845,7 +6845,7 @@ void __cdecl WrapperFor_ftol_At0055b640(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3f60 = (short)iVar1;
+  UNK_006a3ee4._124_2_ = (short)iVar1;
   return;
 }
 
@@ -8292,7 +8292,6 @@ void __cdecl AppendInterNationEventSummaryTextEntry(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -8302,7 +8301,7 @@ void __cdecl WrapperFor_ftol_At0055e330(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3fb8 = (short)iVar1;
+  UNK_006a3ee4._212_2_ = (short)iVar1;
   return;
 }
 
@@ -11403,7 +11402,6 @@ int __cdecl EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -11413,7 +11411,7 @@ void __cdecl WrapperFor_ftol_At005647d0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4028 = (short)iVar1;
+  DAT_006a3ff8._48_2_ = (short)iVar1;
   return;
 }
 
@@ -12719,7 +12717,6 @@ void __cdecl RenderNavyOrderNormalizationGaugeAndNationMarker(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -12729,7 +12726,7 @@ void __cdecl WrapperFor_ftol_At0056a4e0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4080 = (short)iVar1;
+  DAT_006a404c._52_2_ = (short)iVar1;
   return;
 }
 
@@ -13721,7 +13718,6 @@ void __cdecl ToggleTaggedControlsCredCre2WithBitmapIdsFb2Fb3AndForwardCommand(vo
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -13731,7 +13727,7 @@ void __cdecl WrapperFor_ftol_At0056f330(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a40e0 = (short)iVar1;
+  UNK_006a4088._88_2_ = (short)iVar1;
   return;
 }
 

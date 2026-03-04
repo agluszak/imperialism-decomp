@@ -29,7 +29,7 @@ void __cdecl ResetTEscortMissionToSentinelVtable(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At005399d0(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c18);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0x74);
   return;
 }
 
@@ -187,7 +187,7 @@ void __cdecl ResetTBeachheadMissionToSentinelVtable(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053a440(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c38);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0x94);
   return;
 }
 
@@ -316,7 +316,7 @@ void __cdecl ResetTBlockadePortMissionToSentinelVtable(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053ab00(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3bf0);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0x4c);
   return;
 }
 
@@ -594,7 +594,7 @@ void __cdecl QueueMapOrderType6FromContextPointer(int arg1)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053bb40(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c6c);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0xc8);
   return;
 }
 
@@ -714,7 +714,7 @@ void * __cdecl AllocateAndConstructTArmyMissionWithNodeKey(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053c050(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c3c);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0x98);
   return;
 }
 
@@ -1711,7 +1711,7 @@ bool ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053d730(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c08);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0x64);
   return;
 }
 
@@ -1878,7 +1878,7 @@ void __thiscall RefreshAttackProvinceMissionTargetAndMaybeQueueUnits(void *this)
     fVar3 = fVar3 + SQRT(fVar1 * *pfVar8);
     pfVar8 = pfVar8 + 1;
   } while (iVar10 != 0);
-  if (_g_Mission_Order_Selection_LookupTable_0065A8F0 < fVar3 / fVar4) {
+  if (ram0x0065a8f0 < fVar3 / fVar4) {
     cVar6 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x48))
                       (CONCAT22((short)((uint)*(int *)((int)g_pGlobalMapState + 0x10) >> 0x10),
                                 *(undefined2 *)((int)this + 4)),
@@ -2179,7 +2179,7 @@ void __cdecl ComputeDefendProvinceMissionScoreWithEarlyThreatGate(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053e690(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c04);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0x60);
   return;
 }
 
@@ -2446,7 +2446,7 @@ bool ReturnFalseForInvadeMissionCapabilityFlag(void)
 void __cdecl WrapperFor_AFX_CLASSINIT_At0053f280(void)
 
 {
-  AFX_CLASSINIT(&g_afxClassInit_006a3c68);
+  AFX_CLASSINIT(&g_afxClassInit_006a3ba4.field_0xc4);
   return;
 }
 
@@ -2957,7 +2957,6 @@ void __cdecl ComputeBestNationTileDevelopmentScore(int arg1)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -2967,7 +2966,7 @@ void __cdecl WrapperFor_ftol_At00540810(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3cd0 = (short)iVar1;
+  g_afxClassInit_006a3ba4._300_2_ = (short)iVar1;
   return;
 }
 
@@ -3990,7 +3989,6 @@ void __cdecl DeletingDestructTRemoteMinor(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -4000,7 +3998,7 @@ void __cdecl WrapperFor_ftol_At00541f60(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3d50 = (short)iVar1;
+  DAT_006a3d0c._68_2_ = (short)iVar1;
   return;
 }
 
@@ -8617,7 +8615,6 @@ void __cdecl TrySaveGameAndMaybeShowFailureDialog(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -8627,7 +8624,7 @@ void __cdecl WrapperFor_ftol_At0054d620(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3dd0 = (short)iVar1;
+  UNK_006a3d68._104_2_ = (short)iVar1;
   return;
 }
 
@@ -9182,7 +9179,6 @@ LAB_0054edfd:
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -9192,7 +9188,7 @@ void __cdecl WrapperFor_ftol_At0054efb0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a3eb8 = (short)iVar1;
+  UNK_006a3eac._12_2_ = (short)iVar1;
   return;
 }
 
@@ -9479,7 +9475,7 @@ void * __cdecl CreateNavyPrimaryOrderNodeAndAssignDisplayName(int arg1,int arg2,
     ReleaseSharedStringRefIfNotEmpty();
   }
   *(undefined2 *)((int)pvVar4 + 0x1c) =
-       *(undefined2 *)(&g_Apply_Map_Order_LookupTable_00698114 + iVar3 * 0x24);
+       *(undefined2 *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24 + 4);
   if (*(InputState **)((int)pvVar4 + 8) != (InputState *)0x0) {
     InputState::HandleKeyDown(*(InputState **)((int)pvVar4 + 8),key_id);
   }
@@ -9584,8 +9580,9 @@ void __cdecl RecomputeGlobalCapabilityAverages(void)
             break;
           case 1:
             iVar1 = ((int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)[iVar5 * 9] *
-                     (int)*(short *)(&g_Apply_Map_Order_LookupTable_00698114 + iVar5 * 0x24) * 100)
-                    / (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 + iVar5 * 0x24);
+                     (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
+                                    iVar5 * 0x24 + 4) * 100) /
+                    (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar5 * 0x24);
             break;
           case 2:
             iVar1 = (int)(short)(&g_Navy_Order_Priority_LookupTable_00698118)[iVar5 * 9];
@@ -9660,8 +9657,8 @@ uint __fastcall ComputeNavyOrderPriorityContributionPercentByCategory(int ecxArg
   case 1:
     return ((int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                         [*(short *)(ecxArg + 4) * 9] * (int)*(short *)(ecxArg + 0x1c) * 10000) /
-           (*(short *)(&g_Task_Force_Order_LookupTable_00698110 + *(short *)(ecxArg + 4) * 0x24) *
-           iVar3);
+           (*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + *(short *)(ecxArg + 4) * 0x24
+                      ) * iVar3);
   case 2:
     return (*(short *)(&g_Compute_Task_Force_LookupTable_00698124 + *(short *)(ecxArg + 4) * 0x24) *
            100) / iVar3;
@@ -9739,7 +9736,7 @@ int __thiscall CalculateMissionOrderPriorityScore(void *this,int nScoreProfileId
       sVar3 = (short)(((int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)
                                    [*(short *)((int)this + 4) * 9] *
                        (int)*(short *)((int)this + 0x1c) * 10000) /
-                     (*(short *)(&g_Task_Force_Order_LookupTable_00698110 +
+                     (*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 +
                                 *(short *)((int)this + 4) * 0x24) * iVar2));
       break;
     case 2:
@@ -10039,7 +10036,7 @@ short __cdecl ComputeMapOrderEntryHeuristicScore(void)
                                (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) +
                   (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)[iVar3 * 9]) * 100 +
                  (int)*(short *)(in_ECX + 0x1c)) /
-                (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24));
+                (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550B60
@@ -10073,6 +10070,6 @@ int __cdecl ComputeOrderNodeCompositeEconomicScore(void)
                        (short)((longlong)iVar1 * 0x66666667 >> 0x3f)) +
           (int)(short)(&g_Calculate_Mission_Order_LookupTable_0069810C)[iVar3 * 9]) * 100 +
          (int)*(short *)(in_ECX + 0x1c)) /
-         (int)*(short *)(&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24);
+         (int)*(short *)((int)&g_Task_Force_Order_LookupTable_00698110 + iVar3 * 0x24);
 }
 

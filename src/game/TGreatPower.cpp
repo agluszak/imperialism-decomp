@@ -3,6 +3,7 @@
 
 #include "decomp_types.h"
 #include "game/generated/vcall_facades.h"
+#include "game/string_shared.h"
 #include <stddef.h>
 
 class TGreatPower;
@@ -13,9 +14,6 @@ struct TRelationManagerObject;
 typedef void* hwnd_t;
 extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
                                      unsigned int type);
-int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
-void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
-
 undefined4 ComputeMapActionContextNodeValueAverage(void);
 undefined4 BuildCityInfluenceLevelMap(void);
 undefined4 OrphanCallChain_C2_I10_004e03a0(void);
@@ -112,7 +110,6 @@ undefined4 thunk_EnqueueOrSendTurnEventPacketToNation(void);
 undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
 undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
 undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
-void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, const char* lhs_text, int* rhs_ref_ptr);
 undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
 
 // Legacy free-function symbol retained for old callsites that still reference
@@ -1239,56 +1236,58 @@ static const int kMajorNationCount = 7;
 static const int kDiplomacyTrackedSlotCount = 0x11;
 
 static __inline void InitializeAndReleaseSharedMessageRefs(void) {
-  int messageRef = 0;
-  int scratchRef = 0;
-  InitializeSharedStringRefFromEmpty(&messageRef);
-  InitializeSharedStringRefFromEmpty(&scratchRef);
-  ReleaseSharedStringRefIfNotEmpty(&scratchRef);
-  ReleaseSharedStringRefIfNotEmpty(&messageRef);
+  StringShared messageRef;
+  StringShared scratchRef;
+  messageRef.InitFromEmpty();
+  scratchRef.InitFromEmpty();
+  scratchRef.ReleaseSharedStringRefIfNotEmpty();
+  messageRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 struct SharedRefPairScope {
-  int first;
-  int second;
+  StringShared first;
+  StringShared second;
 
-  SharedRefPairScope() : first(0), second(0) {
-    InitializeSharedStringRefFromEmpty(&first);
-    InitializeSharedStringRefFromEmpty(&second);
+  SharedRefPairScope() {
+    first.InitFromEmpty();
+    second.InitFromEmpty();
   }
 
   ~SharedRefPairScope() {
-    ReleaseSharedStringRefIfNotEmpty(&second);
-    ReleaseSharedStringRefIfNotEmpty(&first);
+    second.ReleaseSharedStringRefIfNotEmpty();
+    first.ReleaseSharedStringRefIfNotEmpty();
   }
 };
 
-static __inline void InitializeThreeSharedRefs(int* firstRef, int* secondRef, int* thirdRef) {
-  InitializeSharedStringRefFromEmpty(firstRef);
-  InitializeSharedStringRefFromEmpty(secondRef);
-  InitializeSharedStringRefFromEmpty(thirdRef);
+static __inline void InitializeThreeSharedRefs(StringShared* firstRef, StringShared* secondRef,
+                                               StringShared* thirdRef) {
+  firstRef->InitFromEmpty();
+  secondRef->InitFromEmpty();
+  thirdRef->InitFromEmpty();
 }
 
-static __inline void ReleaseThreeSharedRefs(int* firstRef, int* secondRef, int* thirdRef) {
-  ReleaseSharedStringRefIfNotEmpty(thirdRef);
-  ReleaseSharedStringRefIfNotEmpty(secondRef);
-  ReleaseSharedStringRefIfNotEmpty(firstRef);
+static __inline void ReleaseThreeSharedRefs(StringShared* firstRef, StringShared* secondRef,
+                                            StringShared* thirdRef) {
+  thirdRef->ReleaseSharedStringRefIfNotEmpty();
+  secondRef->ReleaseSharedStringRefIfNotEmpty();
+  firstRef->ReleaseSharedStringRefIfNotEmpty();
 }
 
 struct SharedRefTripleScope {
-  int first;
-  int second;
-  int third;
+  StringShared first;
+  StringShared second;
+  StringShared third;
 
-  SharedRefTripleScope() : first(0), second(0), third(0) {
-    InitializeSharedStringRefFromEmpty(&first);
-    InitializeSharedStringRefFromEmpty(&second);
-    InitializeSharedStringRefFromEmpty(&third);
+  SharedRefTripleScope() {
+    first.InitFromEmpty();
+    second.InitFromEmpty();
+    third.InitFromEmpty();
   }
 
   ~SharedRefTripleScope() {
-    ReleaseSharedStringRefIfNotEmpty(&third);
-    ReleaseSharedStringRefIfNotEmpty(&second);
-    ReleaseSharedStringRefIfNotEmpty(&first);
+    third.ReleaseSharedStringRefIfNotEmpty();
+    second.ReleaseSharedStringRefIfNotEmpty();
+    first.ReleaseSharedStringRefIfNotEmpty();
   }
 };
 
@@ -1792,10 +1791,10 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
     return;
   }
 
-  int sharedRefA = 0;
-  int sharedRefB = 0;
-  InitializeSharedStringRefFromEmpty(&sharedRefA);
-  InitializeSharedStringRefFromEmpty(&sharedRefB);
+  StringShared sharedRefA;
+  StringShared sharedRefB;
+  sharedRefA.InitFromEmpty();
+  sharedRefB.InitFromEmpty();
 
   TLocalizationRuntimeView* localization = ReadLocalizationRuntimeView();
   if (localization != 0) {
@@ -1829,8 +1828,8 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
   }
 
   ctx->pendingDelta = 0;
-  ReleaseSharedStringRefIfNotEmpty(&sharedRefB);
-  ReleaseSharedStringRefIfNotEmpty(&sharedRefA);
+  sharedRefB.ReleaseSharedStringRefIfNotEmpty();
+  sharedRefA.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x004D8950
@@ -2220,8 +2219,8 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     relationDeltaByNation[idx] = 0;
   }
 
-  int summaryMessageRef = 0;
-  InitializeSharedStringRefFromEmpty(&summaryMessageRef);
+  StringShared summaryMessageRef;
+  summaryMessageRef.InitFromEmpty();
 
   TGreatPowerDiplomacyExternalStateView* diplomacyExternal =
       reinterpret_cast<TGreatPowerDiplomacyExternalStateView*>(this);
@@ -2271,7 +2270,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   }
 
-  ReleaseSharedStringRefIfNotEmpty(&summaryMessageRef);
+  summaryMessageRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x004DB380
@@ -2315,8 +2314,8 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       }
       pressureView->pressureTier8fc = 2;
     } else {
-      int sharedMessageRef = 0;
-      InitializeSharedStringRefFromEmpty(&sharedMessageRef);
+      StringShared sharedMessageRef;
+      sharedMessageRef.InitFromEmpty();
       int nextPressureValue =
           static_cast<int>(pressureView->pressureValue8f4) +
           static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex));
@@ -2342,7 +2341,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         }
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        ReleaseSharedStringRefIfNotEmpty(&sharedMessageRef);
+        sharedMessageRef.ReleaseSharedStringRefIfNotEmpty();
         return;
       }
 
@@ -2358,7 +2357,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         }
         DispatchQuarterlyGreatPowerPressureMessage(2);
       }
-      ReleaseSharedStringRefIfNotEmpty(&sharedMessageRef);
+      sharedMessageRef.ReleaseSharedStringRefIfNotEmpty();
     }
   } else {
     if (pressureView->pressureTier8fc != 0) {
@@ -2700,13 +2699,14 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
         unsigned int selfMask = 1u << (this->nationSlot & 0x1f);
         unsigned int contextMask = contextEntry->nationMask;
         if ((contextMask & nationMask) != 0 && (contextMask & selfMask) == 0) {
-          int contextRef = 0;
-          int messageRef = 0;
-          InitializeSharedStringRefFromEmpty(&contextRef);
-          MapActionContext_AssignDisplayRefFromSlot2C(contextEntry, &contextRef);
-          InitializeSharedStringRefFromEmpty(&messageRef);
-          ReleaseSharedStringRefIfNotEmpty(&messageRef);
-          ReleaseSharedStringRefIfNotEmpty(&contextRef);
+          StringShared contextRef;
+          StringShared messageRef;
+          contextRef.InitFromEmpty();
+          MapActionContext_AssignDisplayRefFromSlot2C(contextEntry,
+                                                      reinterpret_cast<int*>(&contextRef));
+          messageRef.InitFromEmpty();
+          messageRef.ReleaseSharedStringRefIfNotEmpty();
+          contextRef.ReleaseSharedStringRefIfNotEmpty();
           emittedMessage = true;
           break;
         }
@@ -2751,15 +2751,16 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     TNationStateEventMessageFlagsView* messageFlags =
         static_cast<TNationStateEventMessageFlagsView*>(nationState);
     if (messageFlags->allowEventMessage4D != 0 && messageFlags->suppressEventMessage4C == 0) {
-      int messageRef = 0;
-      int scratchRef = 0;
-      InitializeSharedStringRefFromEmpty(&messageRef);
+      StringShared messageRef;
+      StringShared scratchRef;
+      messageRef.InitFromEmpty();
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
-      InitializeSharedStringRefFromEmpty(&scratchRef);
-      AssignSharedStringConcatCStrAndRef(&scratchRef, "\n", &messageRef);
-      AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef), &messageRef);
-      ReleaseSharedStringRefIfNotEmpty(&scratchRef);
-      ReleaseSharedStringRefIfNotEmpty(&messageRef);
+      scratchRef.InitFromEmpty();
+      scratchRef.AssignConcatCStrAndRef("\n", messageRef);
+      AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef),
+                                reinterpret_cast<int*>(&messageRef));
+      scratchRef.ReleaseSharedStringRefIfNotEmpty();
+      messageRef.ReleaseSharedStringRefIfNotEmpty();
     }
   }
 }
@@ -3674,13 +3675,13 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
 void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   const short kProposalTradeEmbargo = 0x12E;
   const short kProposalMutualDefense = 0x132;
-  int proposalSummaryRef = 0;
-  int proposalScratchRef = 0;
+  StringShared proposalSummaryRef;
+  StringShared proposalScratchRef;
   int proposalIndex = 0;
   int queueIndex = 0;
 
-  InitializeSharedStringRefFromEmpty(&proposalSummaryRef);
-  InitializeSharedStringRefFromEmpty(&proposalScratchRef);
+  proposalSummaryRef.InitFromEmpty();
+  proposalScratchRef.InitFromEmpty();
 
   void* proposalQueue = this->proposalQueue;
   short proposalCount = ProposalQueue_GetCount(proposalQueue);
@@ -3736,8 +3737,8 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   }
 
   GreatPower_FinalizeProposalQueue(this);
-  ReleaseSharedStringRefIfNotEmpty(&proposalScratchRef);
-  ReleaseSharedStringRefIfNotEmpty(&proposalSummaryRef);
+  proposalScratchRef.ReleaseSharedStringRefIfNotEmpty();
+  proposalSummaryRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x004E00D0

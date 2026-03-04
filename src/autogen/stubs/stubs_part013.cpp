@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CreateCityProductionView
-// ghidra_proto void * __cdecl CreateCityProductionView(void)
-// FUNCTION: IMPERIALISM 0x004ba240
-undefined4 CreateCityProductionView(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityProductionView::GetTCityProductionViewClassNamePointer
 // ghidra_proto void * __cdecl GetTCityProductionViewClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004ba2c0
@@ -3999,6 +3991,14 @@ undefined4 ComputeAdvisoryMatrixRatio240ByTargetSlot(void)
 // ghidra_proto void __cdecl ComputeAdvisoryHandlerCase07Metric(void)
 // FUNCTION: IMPERIALISM 0x004e1620
 undefined4 ComputeAdvisoryHandlerCase07Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase08Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase08Metric(void)
+// FUNCTION: IMPERIALISM 0x004e1750
+undefined4 ComputeAdvisoryHandlerCase08Metric(void)
 {
   return 0;
 }

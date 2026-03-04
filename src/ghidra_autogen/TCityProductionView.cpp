@@ -291,8 +291,7 @@ TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProduct
   thunk_SetQuickDrawTextOriginWithContextOffset(originX,sVar2);
   iVar4 = this->fielda8 * 2;
   thunk_DrawCenteredGuideLineOnMapDc
-            (CONCAT22(extraout_var_01,
-                      *(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar4) + originX),
+            (CONCAT22(extraout_var_01,*(short *)((int)&UNK_006961de + iVar4 + 2) + originX),
              CONCAT22(extraout_var,
                       *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar4) + sVar2));
   SetQuickDrawFillColor(0);

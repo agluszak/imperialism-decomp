@@ -147,7 +147,7 @@ TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(TPoseMessageDialo
   char *local_1c0;
   char *local_1bc;
   int local_1b8 [3];
-  void *local_1ac;
+  undefined1 *local_1ac;
   undefined4 local_1a8;
   undefined4 local_1a0;
   void *local_19c;
@@ -1530,7 +1530,7 @@ LAB_00545aa0:
           local_1b8[2] = *(int *)(arg1 + 4);
           local_1b8[1] = 0;
           local_1b8[0] = 0x1f;
-          local_1ac = (void *)0x20;
+          local_1ac = &DAT_00000020;
           local_1a0 = 0x666f6666;
           local_19c = (void *)0x29;
           thunk_EnqueueOrSendTurnEventPacketToNation((int)local_1b8,0);

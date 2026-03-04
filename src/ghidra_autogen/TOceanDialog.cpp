@@ -238,7 +238,7 @@ TOceanDialog::thunk_RequestAudioPresetChangeWithDeferredApply
         if ((allowDeferred == 0) || (sVar1 < 1)) {
           *(short *)&(this->base).field_0x74 = sVar2;
           TSimMgr::thunk_ApplyMciPlaybackRangeFromAudioManager
-                    ((TSimMgr *)&g_AudioManagerGlobalState,(int)sVar2);
+                    ((TSimMgr *)&UNK_006a6024.field_0x98,(int)sVar2);
           thunk_ApplyAuxOutputVolumeFromScalar
                     ((int)*(short *)((int)g_pLocalizationTable + 0x4e) << 8);
           *(undefined1 *)&(this->base).field78 = 1;
@@ -1333,7 +1333,7 @@ TOceanDialog::RequestAudioPresetChangeWithDeferredApply
         if ((allowDeferred == 0) || (sVar1 < 1)) {
           *(short *)&(this->base).field_0x74 = sVar2;
           TSimMgr::thunk_ApplyMciPlaybackRangeFromAudioManager
-                    ((TSimMgr *)&g_AudioManagerGlobalState,(int)sVar2);
+                    ((TSimMgr *)&UNK_006a6024.field_0x98,(int)sVar2);
           thunk_ApplyAuxOutputVolumeFromScalar
                     ((int)*(short *)((int)g_pLocalizationTable + 0x4e) << 8);
           *(undefined1 *)&(this->base).field78 = 1;

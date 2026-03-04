@@ -236,9 +236,9 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
   else {
     iVar6 = commandId + *(char *)((int)g_pCityOrderCapabilityState + 0x193) * 0x10;
     iVar7 = CONCAT22((short)((uint)iVar6 >> 0x10),
-                     *(short *)(&g_Deal_Book_Trade_Value_00668568 +
+                     *(short *)(&UNK_00668528.field_0x40 +
                                (*(char *)((int)g_pCityOrderCapabilityState + 0x193) + iVar6) * 2));
-    if (*(short *)(&g_Deal_Book_Trade_Value_00668568 +
+    if (*(short *)(&UNK_00668528.field_0x40 +
                   (*(char *)((int)g_pCityOrderCapabilityState + 0x193) + iVar6) * 2) == -1)
     goto LAB_005bbfc1;
     pPStack_74 = (PanelEventPayload *)0x5bbc9d;

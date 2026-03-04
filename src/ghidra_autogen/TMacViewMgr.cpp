@@ -1871,8 +1871,7 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
   
   nRemainingCols = thunk_GetSurfaceObjectAtContextOffset24((int *)this[7].init_flag);
   if ((0 < nVariantRow) &&
-     (nOverlaySourceRow =
-           *(short *)(&g_anStrategicMapOverlaySourceRowByIconId + (short)wOverlayIconId * 2),
+     (nOverlaySourceRow = *(short *)((int)&UNK_00696d1d + (short)wOverlayIconId * 2 + 3),
      -1 < nOverlaySourceRow)) {
     wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
     thunk_ReturnConstantTrueQuickDrawFlag();
@@ -2377,10 +2376,10 @@ void __fastcall TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877(i
   BOOL BVar1;
   HWND pHVar2;
   int *piVar3;
-  tagMSG tStack_1c;
+  tagMSG local_1c;
   
   if (*(int *)(context + 0x50) != 0) {
-    BVar1 = PeekMessageA(&tStack_1c,*(HWND *)(context + 0x1c),0x367,0x367,3);
+    BVar1 = PeekMessageA(&local_1c,*(HWND *)(context + 0x1c),0x367,0x367,3);
     if (BVar1 == 0) {
       PostMessageA(*(HWND *)(context + 0x1c),0x367,0,0);
     }

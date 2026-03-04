@@ -1711,7 +1711,7 @@ void __thiscall TSimMgr::SetOutputDevice(TSimMgr *this,int this_ptr)
           if ((skip_queue == '\0') || (this->field74 < 1)) {
             this->field74 = requested_id;
             thunk_ApplyMciPlaybackRangeFromAudioManager
-                      ((TSimMgr *)&g_AudioManagerGlobalState,(int)requested_id);
+                      ((TSimMgr *)&UNK_006a6024.field_0x98,(int)requested_id);
             thunk_ApplyAuxOutputVolumeFromScalar
                       ((int)*(short *)((int)g_pLocalizationTable + 0x4e) << 8);
             this->field78 = 1;

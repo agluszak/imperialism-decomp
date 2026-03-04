@@ -399,7 +399,6 @@ void __cdecl Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -409,7 +408,7 @@ void __cdecl WrapperFor_ftol_At00570720(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4138 = (short)iVar1;
+  UNK_006a4088._176_2_ = (short)iVar1;
   return;
 }
 
@@ -1448,7 +1447,6 @@ void __cdecl WrapperFor_StringShared_AssignFromPtr_At00572710(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1458,7 +1456,7 @@ void __cdecl WrapperFor_ftol_At00572a50(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4190 = (short)iVar1;
+  UNK_006a4088._264_2_ = (short)iVar1;
   return;
 }
 
@@ -1811,7 +1809,6 @@ void __cdecl ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -1821,7 +1818,7 @@ void __cdecl WrapperFor_ftol_At00573bf0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a41f8 = (short)iVar1;
+  UNK_006a4198._96_2_ = (short)iVar1;
   return;
 }
 
@@ -2493,7 +2490,6 @@ void __cdecl RenderStrategicMapViewportBandsAndBlit_Impl(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -2503,7 +2499,7 @@ void __cdecl WrapperFor_ftol_At00575130(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4260 = (short)iVar1;
+  UNK_006a4224._60_2_ = (short)iVar1;
   return;
 }
 
@@ -4172,7 +4168,6 @@ void __cdecl OrphanRetStub_0057b760(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -4182,7 +4177,7 @@ void __cdecl WrapperFor_ftol_At0057b8b0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a43bc = (short)iVar1;
+  DAT_006a43bc._0_2_ = (short)iVar1;
   return;
 }
 
@@ -7180,7 +7175,7 @@ void __cdecl UpdatePersistentTopTenNationScores(void)
     piVar3 = piVar3 + 1;
   } while ((int)pcVar9 < 10);
   if ((int)pcVar9 < 10) {
-    if (pcVar9 != (char *)0x9) {
+    if (pcVar9 != &DAT_00000009) {
       iVar4 = 9 - (int)pcVar9;
       piVar3 = local_180 + 9;
       pcVar7 = acStack_38;
@@ -8969,7 +8964,6 @@ void __cdecl WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At00
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -8979,7 +8973,7 @@ void __cdecl WrapperFor_ftol_At00583880(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4488 = (short)iVar1;
+  DAT_006a4458._48_2_ = (short)iVar1;
   return;
 }
 
@@ -9822,7 +9816,7 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
   undefined *puStack_a8;
   code ***pppcStack_a4;
   uint uVar9;
-  int *piStack_84;
+  code *pcStack_84;
   undefined1 *puStack_80;
   code **ppcStack_7c;
   code **ppcStack_78;
@@ -9831,8 +9825,8 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
   undefined1 *puStack_6c;
   undefined1 **ppuStack_68;
   code *pcStack_64;
-  int *piStack_60;
-  undefined *puStack_5c;
+  code *pcStack_60;
+  void *pvStack_5c;
   undefined1 *puVar10;
   undefined1 *puStack_40;
   undefined1 *puStack_3c;
@@ -9911,19 +9905,19 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
     cVar1 = *in_stack_00000004;
     iVar3 = *(int *)g_pLocalizationTable;
     GenerateThreadLocalRandom15();
-    piStack_60 = (int *)0x58cb6b;
-    puStack_5c = (void *)((cVar1 != extraout_AX) + 0x2721);
+    pcStack_60 = (code *)0x58cb6b;
+    pvStack_5c = (void *)((cVar1 != extraout_AX) + 0x2721);
     (**(code **)(iVar3 + 0x84))();
     pcStack_64 = (code *)&stack0xffffffb4;
-    piStack_60 = (int *)&g_Build_Map_Order_LookupTable_00695794;
+    pcStack_60 = g_Build_Map_Order_LookupTable_00695794;
     ppuStack_68 = &puStack_40;
     puStack_6c = (void *)0x58cb7f;
     AssignSharedStringConcatRefAndCStr();
     pcStack_64 = (code *)0x58cb8e;
     AssignStringSharedFromRef();
-    piStack_60 = (int *)0x58cb9c;
+    pcStack_60 = (code *)0x58cb9c;
     ReleaseSharedStringRefIfNotEmpty();
-    piStack_60 = (int *)&stack0xffffffb4;
+    pcStack_60 = (code *)&stack0xffffffb4;
     iVar3 = *(int *)g_pLocalizationTable;
     pcStack_64 = (code *)0x58cbae;
     uVar5 = GenerateThreadLocalRandom15();
@@ -9967,7 +9961,7 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
     ppcStack_7c = &pcStack_64;
     ppcStack_78 = (code **)&g_Build_Combat_Report_Value_00699330;
     puStack_80 = &stack0xffffffa8;
-    piStack_84 = (int *)0x58cc74;
+    pcStack_84 = (code *)0x58cc74;
     AssignSharedStringConcatRefAndCStr();
     puStack_40._0_1_ = 3;
     ppcStack_7c = (code **)0x58cc83;
@@ -9984,14 +9978,14 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
     uVar5 = GenerateThreadLocalRandom15();
     puStack_80 = (undefined1 *)iVar2;
     ppcStack_7c = (code **)((int)uVar5 % 6);
-    piStack_84 = (int *)0x58ccdf;
+    pcStack_84 = (code *)0x58ccdf;
     (**(code **)(iVar3 + 0x84))();
-    piStack_84 = (int *)&g_Build_Map_Order_LookupTable_00695794;
+    pcStack_84 = g_Build_Map_Order_LookupTable_00695794;
     AssignSharedStringConcatRefAndCStr();
     AssignStringSharedFromRef();
-    piStack_84 = (int *)0x58cd10;
+    pcStack_84 = (code *)0x58cd10;
     ReleaseSharedStringRefIfNotEmpty();
-    piStack_84 = &iStack_70;
+    pcStack_84 = (code *)&iStack_70;
     iVar3 = *(int *)g_pLocalizationTable;
     uVar5 = GenerateThreadLocalRandom15();
     (**(code **)(iVar3 + 0x84))();
@@ -10002,7 +9996,7 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
       (**(code **)(*piVar4 + 0x1c8))();
       TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&ppcStack_7c);
       pcStack_64._0_1_ = 5;
-      AssignFromPtr(&piStack_84,(int *)&ppcStack_7c);
+      AssignFromPtr(&pcStack_84,(int *)&ppcStack_7c);
       pcStack_64._0_1_ = 1;
       ReleaseSharedStringRefIfNotEmpty();
       FormatOverlayTerrainLabelText();
@@ -10082,11 +10076,11 @@ void __cdecl BuildCombatReportLossesSummaryText(void)
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     }
                     /* WARNING: Subroutine does not return */
-    pppcStack_a4 = (code ***)&UNK_0058cd6e;
+    pppcStack_a4 = (code ***)0x58cd6e;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
                     /* WARNING: Subroutine does not return */
-  puStack_5c = &UNK_0058cada;
+  pvStack_5c = (void *)0x58cada;
   MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 
@@ -11172,7 +11166,6 @@ switchD_0059299f_default:
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -11182,7 +11175,7 @@ void __cdecl WrapperFor_ftol_At005931e0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4518 = (short)iVar1;
+  UNK_006a44b8._96_2_ = (short)iVar1;
   return;
 }
 
@@ -11354,7 +11347,7 @@ void __fastcall UpdateTurnAudioPlaybackStateAndScheduleCue(void)
         if (sVar1 != *(short *)(in_ECX + 0x74)) {
           *(short *)(in_ECX + 0x74) = sVar1;
           TSimMgr::thunk_ApplyMciPlaybackRangeFromAudioManager
-                    ((TSimMgr *)&g_AudioManagerGlobalState,(int)sVar1);
+                    ((TSimMgr *)&UNK_006a6024.field_0x98,(int)sVar1);
           thunk_ApplyAuxOutputVolumeFromScalar
                     ((int)*(short *)((int)g_pLocalizationTable + 0x4e) << 8);
           *(undefined1 *)(in_ECX + 0x78) = 1;
@@ -11460,7 +11453,7 @@ void __cdecl SelectAndScheduleRandomAudioCue(void)
         if (*(short *)(in_ECX + 0x74) < 1) {
           *(short *)(in_ECX + 0x74) = sVar5;
           TSimMgr::thunk_ApplyMciPlaybackRangeFromAudioManager
-                    ((TSimMgr *)&g_AudioManagerGlobalState,(int)sVar5);
+                    ((TSimMgr *)&UNK_006a6024.field_0x98,(int)sVar5);
           thunk_ApplyAuxOutputVolumeFromScalar
                     ((int)*(short *)((int)g_pLocalizationTable + 0x4e) << 8);
           *(undefined1 *)(in_ECX + 0x78) = 1;
@@ -11531,7 +11524,6 @@ void __fastcall Helper_Uses_thunk_GetTickCountDiv16_At00593ce0(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -11541,7 +11533,7 @@ void __cdecl WrapperFor_ftol_At00593e50(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a4580 = (short)iVar1;
+  UNK_006a4522._94_2_ = (short)iVar1;
   return;
 }
 

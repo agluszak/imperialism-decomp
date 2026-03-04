@@ -305,7 +305,6 @@ int * __cdecl WrapperFor_AllocateWithFallbackHandler_At004a1130(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -315,7 +314,7 @@ void __cdecl WrapperFor_ftol_At004a1260(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a22d8 = (short)iVar1;
+  DAT_006a228c._76_2_ = (short)iVar1;
   return;
 }
 
@@ -3519,7 +3518,7 @@ void __cdecl BuildMapHintOverlayTextAndDispatchUiMessages(int hintContext)
   piVar3 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))();
   if (piVar3 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    puStack_80 = &UNK_004a6876;
+    puStack_80 = (undefined1 *)0x4a6876;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   iVar1 = *piVar3;
@@ -4793,7 +4792,6 @@ void __cdecl WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -4803,7 +4801,7 @@ void __cdecl WrapperFor_ftol_At004a8740(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2350 = (short)iVar1;
+  DAT_006a231c._52_2_ = (short)iVar1;
   return;
 }
 
@@ -4957,7 +4955,7 @@ void __cdecl HandleCrossUArmyViewsNameCommand(void)
   int unaff_ESI;
   int unaff_EDI;
   int *unaff_FS_OFFSET;
-  undefined *puStack_50;
+  int iStack_50;
   int *piVar6;
   int iVar7;
   int iStack_28;
@@ -4975,7 +4973,7 @@ void __cdecl HandleCrossUArmyViewsNameCommand(void)
     puStack_8 = (undefined1 *)0x0;
     InitializeSharedStringRefFromEmpty();
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-    puStack_50 = (undefined *)0x4a9d41;
+    iStack_50 = 0x4a9d41;
     thunk_BuildUiTextStyleDescriptor();
     iVar1 = *piVar4;
     pcVar2 = *(code **)(iVar1 + 0x94);
@@ -4983,9 +4981,9 @@ void __cdecl HandleCrossUArmyViewsNameCommand(void)
     (**(code **)(*piVar4 + 0xc))();
     iVar7 = 1;
     piVar6 = (int *)&DAT_00002746;
-    puStack_50 = (undefined *)0x4a9d71;
+    iStack_50 = 0x4a9d71;
     (**(code **)(*piVar4 + 0x1cc))();
-    puStack_50 = (undefined *)0x6e616d65;
+    iStack_50 = 0x6e616d65;
     piVar4[0x1e] = unaff_EBX;
     piVar4[0x1f] = iStack_28;
     *(undefined2 *)(piVar4 + 0x20) = in_CX;
@@ -5005,11 +5003,11 @@ void __cdecl HandleCrossUArmyViewsNameCommand(void)
     }
     (**(code **)(iVar1 + 0x1ac))();
     (**(code **)(iVar3 + 0x1dc))(&stack0xffffffbc);
-    AssignFromPtr(&puStack_50,(int *)&stack0xffffffb8);
+    AssignFromPtr(&iStack_50,(int *)&stack0xffffffb8);
     (**(code **)(iVar1 + 0xa0))();
     (**(code **)(iVar1 + 0x1c))();
     if (iVar7 != 0x636e636c) {
-      AssignFromPtr((void *)(piVar6[0x18] + 0x24),(int *)&puStack_50);
+      AssignFromPtr((void *)(piVar6[0x18] + 0x24),&iStack_50);
     }
     (**(code **)(*piVar6 + 0xe4))();
     ReleaseSharedStringRefIfNotEmpty();
@@ -5018,7 +5016,7 @@ void __cdecl HandleCrossUArmyViewsNameCommand(void)
     return;
   }
                     /* WARNING: Subroutine does not return */
-  puStack_50 = &UNK_004a9ce9;
+  iStack_50 = 0x4a9ce9;
   MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
 }
 
@@ -5462,7 +5460,6 @@ void __cdecl AssignSharedStringFromMidSubstring(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5472,7 +5469,7 @@ void __cdecl WrapperFor_ftol_At004ac570(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a23b0 = (short)iVar1;
+  DAT_006a231c._148_2_ = (short)iVar1;
   return;
 }
 
@@ -5662,7 +5659,6 @@ void __cdecl WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5672,7 +5668,7 @@ void __cdecl WrapperFor_ftol_At004b0ac0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2418 = (short)iVar1;
+  UNK_006a23bc._92_2_ = (short)iVar1;
   return;
 }
 
@@ -5858,7 +5854,6 @@ void __cdecl ApplyQuickDrawColorAndSharedStringState_004b1150(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5868,7 +5863,7 @@ void __cdecl WrapperFor_ftol_At004b1370(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2470 = (short)iVar1;
+  UNK_006a23bc._180_2_ = (short)iVar1;
   return;
 }
 
@@ -5983,7 +5978,6 @@ void __cdecl OrphanRetStub_004b1990(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -5993,7 +5987,7 @@ void __cdecl WrapperFor_ftol_At004b20a0(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a24d0 = (short)iVar1;
+  UNK_006a2484._76_2_ = (short)iVar1;
   return;
 }
 
@@ -11261,7 +11255,6 @@ void __cdecl WriteWordArrayToOutputCallbackLE(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -11271,7 +11264,7 @@ void __cdecl WrapperFor_ftol_At004b9570(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2ab8 = (short)iVar1;
+  UNK_006a29ec._204_2_ = (short)iVar1;
   return;
 }
 
@@ -11292,22 +11285,22 @@ void __cdecl InitializeCityBuildingHoverSelectionRects_004b95c0(void)
                (int)(short)g_City_Building_Control_WordState_0069619A,
                g_anCityBuildingSlotCoords + 10,
                (short)g_City_Building_Control_WordState_0069619A + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_0,
+  CRect::CRect((CRect *)&UNK_006a299c.field_0xc,
                (int)(short)g_nCityBuildingHoverRectCoordWord_0069619C,
                (int)(short)g_nCityBuildingHoverRectCoordWord_0069619E,
                (short)g_nCityBuildingHoverRectCoordWord_0069619C + 10,
                (short)g_nCityBuildingHoverRectCoordWord_0069619E + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_1,
+  CRect::CRect((CRect *)&UNK_006a299c.field_0x1c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961A0,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961A2,
                (short)g_nCityBuildingHoverRectCoordWord_006961A0 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961A2 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_2,
+  CRect::CRect((CRect *)&UNK_006a299c.field_0x2c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961A4,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961A6,
                (short)g_nCityBuildingHoverRectCoordWord_006961A4 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961A6 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_3,
+  CRect::CRect((CRect *)&UNK_006a299c.field_0x3c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961A8,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961AA,
                (short)g_nCityBuildingHoverRectCoordWord_006961A8 + 10,
@@ -11317,52 +11310,52 @@ void __cdecl InitializeCityBuildingHoverSelectionRects_004b95c0(void)
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961AE,
                (short)g_nCityBuildingHoverRectCoordWord_006961AC + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961AE + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_4,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0xc,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961B0,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961B2,
                (short)g_nCityBuildingHoverRectCoordWord_006961B0 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961B2 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_5,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x1c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961B4,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961B6,
                (short)g_nCityBuildingHoverRectCoordWord_006961B4 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961B6 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_6,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x2c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961B8,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961BA,
                (short)g_nCityBuildingHoverRectCoordWord_006961B8 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961BA + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_7,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x3c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961BC,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961BE,
                (short)g_nCityBuildingHoverRectCoordWord_006961BC + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961BE + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_8,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x4c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961C0,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961C2,
                (short)g_nCityBuildingHoverRectCoordWord_006961C4 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961C6 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_9,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x5c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961C8,
                (int)(short)g_Render_City_Building_WordState_006961CA,
                (short)g_nCityBuildingHoverRectCoordWord_006961CC + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961CE + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_10,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x6c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961CC,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961CE,
                (short)g_nCityBuildingHoverRectCoordWord_006961CC + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961CE + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_11,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x7c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961D0,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961D2,
                (short)g_nCityBuildingHoverRectCoordWord_006961D0 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961D2 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_12,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x8c,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961D4,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961D6,
                (short)g_nCityBuildingHoverRectCoordWord_006961D4 + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961D6 + 10);
-  CRect::CRect((CRect *)&g_cityBuildHoverRect_13,(int)g_nCityBuildingSlotYOffsetIndex,
+  CRect::CRect((CRect *)&UNK_006a29ec.field_0x9c,(int)g_nCityBuildingSlotYOffsetIndex,
                (int)(short)g_nCityBuildingHoverRectCoordWord_006961DA,
                g_nCityBuildingSlotYOffsetIndex + 10,
                (short)g_nCityBuildingHoverRectCoordWord_006961DA + 10);
@@ -11401,7 +11394,6 @@ void __cdecl thunk_InitializeCityBuildingLayoutData(void)
 // GHIDRA_COMMENT - void.
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Initialize global coordinate/rectangle tables for the city building screen.
    Algorithm:
    1. Populate DAT_006A24E8..DAT_006A2958 with fixed rectangle coordinates.
@@ -11417,200 +11409,200 @@ void __cdecl InitializeCityBuildingLayoutData(void)
 
 {
   g_nCityBuildingActionRect0Bottom = 0x10a;
-  _g_City_Building_Layout_State_006A2524 = 0x10a;
-  _g_aCityBuildingActionRects = 0x110;
+  g_City_Building_Layout_State_006A2508._28_4_ = 0x10a;
+  UNK_006a24d8._16_4_ = 0x110;
   g_nCityBuildingActionRect0Top = 0xfc;
   g_nCityBuildingActionRect0Right = 0x11f;
-  _g_City_Building_Layout_State_006A2518 = 0x110;
-  _g_City_Building_Layout_State_006A251C = 0xfc;
-  _g_City_Building_Layout_State_006A2520 = 0x11f;
-  _g_City_Building_Layout_State_006A2528 = 0xd3;
-  _g_City_Building_Layout_State_006A2548 = 0xd3;
+  g_City_Building_Layout_State_006A2508._16_4_ = 0x110;
+  g_City_Building_Layout_State_006A2508._20_4_ = 0xfc;
+  g_City_Building_Layout_State_006A2508._24_4_ = 0x11f;
+  g_City_Building_Layout_State_006A2508._32_4_ = 0xd3;
+  g_City_Building_Layout_State_006A2508._64_4_ = 0xd3;
   g_nCityBuildingActionRect1Left = 0;
   g_nCityBuildingActionRect1Top = 0;
   g_nCityBuildingActionRect1Right = 0;
   g_nCityBuildingActionRect1Bottom = 0;
-  _g_City_Building_Layout_State_006A2508 = 0;
-  _g_City_Building_Layout_State_006A250C = 0;
-  _g_City_Building_Layout_State_006A2510 = 0;
-  _g_City_Building_Layout_State_006A2514 = 0;
-  _g_City_Building_Layout_State_006A252C = 0xd1;
-  _g_City_Building_Layout_State_006A2530 = 0xe4;
-  _g_City_Building_Layout_State_006A2534 = 0xe0;
-  _g_City_Building_Layout_State_006A2538 = 0;
-  _g_City_Building_Layout_State_006A253C = 0;
-  _g_City_Building_Layout_State_006A2540 = 0;
-  _g_City_Building_Layout_State_006A2544 = 0;
-  _g_City_Building_Layout_State_006A254C = 0xd4;
-  _g_City_Building_Layout_State_006A2550 = 0x111;
-  _g_City_Building_Layout_State_006A2554 = 0x10f;
-  _g_City_Building_Layout_State_006A2558 = 0;
-  _g_City_Building_Layout_State_006A255C = 0;
-  _g_City_Building_Layout_State_006A2560 = 0;
-  _g_City_Building_Layout_State_006A2564 = 0;
-  _g_City_Building_Layout_State_006A2568 = 0;
-  _g_City_Building_Layout_State_006A256C = 0;
-  _g_City_Building_Layout_State_006A2570 = 0;
-  _g_City_Building_Layout_State_006A2574 = 0;
-  _g_City_Building_Layout_State_006A2578 = 0x1b4;
-  _g_City_Building_Layout_State_006A257C = 0x15a;
-  _g_City_Building_Layout_State_006A2580 = 0x1c3;
-  _g_City_Building_Layout_State_006A2584 = 0x169;
-  _g_City_Building_Layout_State_006A2588 = 0;
-  _g_City_Building_Layout_State_006A258C = 0;
-  _g_City_Building_Layout_State_006A2590 = 0;
-  _g_City_Building_Layout_State_006A2594 = 0;
-  _g_City_Building_Layout_State_006A2598 = 0;
-  _g_City_Building_Layout_State_006A259C = 0;
-  _g_City_Building_Layout_State_006A25A0 = 0;
-  _g_City_Building_Layout_State_006A25A4 = 0;
-  _g_City_Building_Layout_State_006A25A8 = 0x1a9;
-  _g_City_Building_Layout_State_006A25AC = 0x14c;
-  _g_City_Building_Layout_State_006A25B0 = 0x1c3;
-  _g_City_Building_Layout_State_006A25B4 = 0x169;
-  _g_City_Building_Layout_State_006A25B8 = 0x16b;
-  _g_City_Building_Layout_State_006A25BC = 0x116;
-  _g_City_Building_Layout_State_006A25C0 = 0x187;
-  _g_City_Building_Layout_State_006A25C4 = 0x131;
-  _g_City_Building_Layout_State_006A25C8 = 0;
-  _g_City_Building_Layout_State_006A25CC = 0;
-  _g_City_Building_Layout_State_006A25D0 = 0;
-  _g_City_Building_Layout_State_006A25D4 = 0;
-  _g_City_Building_Layout_State_006A25D8 = 0x1a9;
-  _g_City_Building_Layout_State_006A25DC = 0x14c;
-  _g_City_Building_Layout_State_006A25E0 = 0x1c3;
-  _g_City_Building_Layout_State_006A25E4 = 0x169;
-  _g_City_Building_Layout_State_006A25E8 = 0x173;
-  _g_City_Building_Layout_State_006A25EC = 0x123;
-  _g_City_Building_Layout_State_006A25F0 = 0x199;
-  _g_City_Building_Layout_State_006A25F4 = 0x14b;
-  _g_City_Building_Layout_State_006A25F8 = 0;
-  _g_City_Building_Layout_State_006A261C = 0xed;
-  _g_City_Building_Layout_State_006A264C = 0xed;
-  _g_City_Building_Layout_State_006A25FC = 0;
-  _g_City_Building_Layout_State_006A2600 = 0;
-  _g_City_Building_Layout_State_006A2604 = 0;
-  _g_City_Building_Layout_State_006A2608 = 0x16c;
-  _g_City_Building_Layout_State_006A260C = 0xb7;
-  _g_City_Building_Layout_State_006A2610 = 0x192;
-  _g_City_Building_Layout_State_006A2614 = 0xeb;
-  _g_City_Building_Layout_State_006A2618 = 0x185;
-  _g_City_Building_Layout_State_006A2620 = 0x1ce;
-  _g_City_Building_Layout_State_006A2624 = 0x10d;
-  _g_City_Building_Layout_State_006A2628 = 0;
-  _g_City_Building_Layout_State_006A262C = 0;
-  _g_City_Building_Layout_State_006A2630 = 0;
-  _g_City_Building_Layout_State_006A2634 = 0;
-  _g_City_Building_Layout_State_006A2638 = 0x155;
-  _g_City_Building_Layout_State_006A263C = 0xb6;
-  _g_City_Building_Layout_State_006A2640 = 0x192;
-  _g_City_Building_Layout_State_006A2644 = 0xf7;
-  _g_City_Building_Layout_State_006A2648 = 0x16f;
-  _g_City_Building_Layout_State_006A2650 = 0x1cd;
-  _g_City_Building_Layout_State_006A2654 = 0x11b;
-  _g_City_Building_Layout_State_006A2658 = 0;
-  _g_City_Building_Layout_State_006A265C = 0;
-  _g_City_Building_Layout_State_006A2660 = 0;
-  _g_City_Building_Layout_State_006A2664 = 0;
-  _g_City_Building_Layout_State_006A2668 = 0x158;
-  _g_City_Building_Layout_State_006A266C = 0xa1;
-  _g_City_Building_Layout_State_006A2670 = 0x166;
-  _g_City_Building_Layout_State_006A2674 = 0xbc;
-  _g_City_Building_Layout_State_006A2678 = 0x171;
-  _g_City_Building_Layout_State_006A267C = 0x107;
-  _g_City_Building_Layout_State_006A2680 = 0x179;
-  _g_City_Building_Layout_State_006A2684 = 0x10f;
-  _g_City_Building_Layout_State_006A2688 = 0x12e;
-  _g_City_Building_Layout_State_006A268C = 0xef;
-  _g_City_Building_Layout_State_006A2690 = 0x13f;
-  _g_City_Building_Layout_State_006A2694 = 0xfa;
-  _g_City_Building_Layout_State_006A2698 = 0x1d8;
-  _g_City_Building_Layout_State_006A269C = 0x11a;
-  _g_City_Building_Layout_State_006A26A0 = 499;
-  _g_City_Building_Layout_State_006A26A4 = 0x14e;
-  _g_City_Building_Layout_State_006A26A8 = 0x1ba;
-  _g_City_Building_Layout_State_006A26AC = 0x13d;
-  _g_City_Building_Layout_State_006A26B0 = 0x1d0;
-  _g_City_Building_Layout_State_006A26B4 = 0x146;
-  _g_City_Building_Layout_State_006A26B8 = 0;
-  _g_City_Building_Layout_State_006A26BC = 0;
-  _g_City_Building_Layout_State_006A26C0 = 0;
-  _g_City_Building_Layout_State_006A26C4 = 0;
-  _g_City_Building_Layout_State_006A26C8 = 0x1df;
-  _g_City_Building_Layout_State_006A26CC = 0x124;
-  _g_City_Building_Layout_State_006A26D0 = 0x1f2;
-  _g_City_Building_Layout_State_006A26D4 = 0x14e;
-  _g_City_Building_Layout_State_006A26D8 = 0x1c6;
-  _g_City_Building_Layout_State_006A26DC = 0xfa;
-  _g_City_Building_Layout_State_006A26E0 = 0x1e3;
-  _g_City_Building_Layout_State_006A26E4 = 0x115;
-  _g_City_Building_Layout_State_006A26E8 = 0;
-  _g_City_Building_Layout_State_006A26EC = 0;
-  _g_City_Building_Layout_State_006A26F0 = 0;
-  _g_City_Building_Layout_State_006A26F4 = 0;
-  _g_City_Building_Layout_State_006A26F8 = 0x1da;
-  _g_City_Building_Layout_State_006A26FC = 0xd5;
-  _g_City_Building_Layout_State_006A2700 = 0x21a;
-  _g_City_Building_Layout_State_006A2704 = 0x113;
-  _g_City_Building_Layout_State_006A2708 = 0x1bb;
-  _g_City_Building_Layout_State_006A270C = 0x121;
-  _g_City_Building_Layout_State_006A2710 = 0x208;
-  _g_City_Building_Layout_State_006A2714 = 0x14c;
-  _g_City_Building_Layout_State_006A2718 = 0;
-  _g_City_Building_Layout_State_006A271C = 0;
-  _g_City_Building_Layout_State_006A2720 = 0;
-  _g_City_Building_Layout_State_006A2724 = 0;
-  _g_City_Building_Layout_State_006A2728 = 0xb3;
-  _g_City_Building_Layout_State_006A272C = 0x144;
-  _g_City_Building_Layout_State_006A2730 = 0xc3;
-  _g_City_Building_Layout_State_006A2734 = 0x156;
-  _g_City_Building_Layout_State_006A2738 = 0xb4;
-  _g_City_Building_Layout_State_006A273C = 0x15e;
-  _g_City_Building_Layout_State_006A2740 = 0xd2;
-  _g_City_Building_Layout_State_006A2744 = 0x173;
-  _g_City_Building_Layout_State_006A2748 = 0;
-  _g_City_Building_Layout_State_006A274C = 0;
-  _g_City_Building_Layout_State_006A2750 = 0;
-  _g_City_Building_Layout_State_006A2754 = 0;
-  _g_City_Building_Layout_State_006A2758 = 0x8d;
-  _g_City_Building_Layout_State_006A275C = 0x124;
-  _g_City_Building_Layout_State_006A2760 = 0xa9;
-  _g_City_Building_Layout_State_006A2764 = 0x141;
-  _g_City_Building_Layout_State_006A2768 = 0xc2;
-  _g_City_Building_Layout_State_006A276C = 0x157;
-  _g_City_Building_Layout_State_006A2770 = 0xda;
-  _g_City_Building_Layout_State_006A2774 = 0x169;
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2778,0x79,0x145,0xa0,0x152);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2788,0xb9,0x159,0xe0,0x17d);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2798,0x5e,0x146,0x92,0x170);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A27A8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A27B8,0x11c,0x176,299,0x184);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A27C8,0x111,0x192,0x142,0x1b7);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A27D8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A27E8,0x12f,0x148,0x147,0x15f);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A27F8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2808,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2818,0x111,0x147,0x126,0x15c);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2828,0x130,0x144,0x148,0x15b);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2838,0x154,0x16a,0x168,0x17d);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2848,0x1b9,0x98,0x1cf,0xaa);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2858,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2868,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2878,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2888,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2898,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A28A8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A28B8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A28C8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A28D8,0x1d0,0x82,0x1e8,0x99);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A28E8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A28F8,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2908,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2918,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2928,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2938,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2948,0,0,0,0);
-  CRect::CRect((CRect *)&g_City_Building_Layout_Value_006A2958,0,0,0,0);
+  g_City_Building_Layout_State_006A2508._0_4_ = 0;
+  g_City_Building_Layout_State_006A2508._4_4_ = 0;
+  g_City_Building_Layout_State_006A2508._8_4_ = 0;
+  g_City_Building_Layout_State_006A2508._12_4_ = 0;
+  g_City_Building_Layout_State_006A2508._36_4_ = 0xd1;
+  g_City_Building_Layout_State_006A2508._40_4_ = 0xe4;
+  g_City_Building_Layout_State_006A2508._44_4_ = 0xe0;
+  g_City_Building_Layout_State_006A2508._48_4_ = 0;
+  g_City_Building_Layout_State_006A2508._52_4_ = 0;
+  g_City_Building_Layout_State_006A2508._56_4_ = 0;
+  g_City_Building_Layout_State_006A2508._60_4_ = 0;
+  g_City_Building_Layout_State_006A2508._68_4_ = 0xd4;
+  g_City_Building_Layout_State_006A2508._72_4_ = 0x111;
+  g_City_Building_Layout_State_006A2508._76_4_ = 0x10f;
+  g_City_Building_Layout_State_006A2508._80_4_ = 0;
+  g_City_Building_Layout_State_006A2508._84_4_ = 0;
+  g_City_Building_Layout_State_006A2508._88_4_ = 0;
+  g_City_Building_Layout_State_006A2508._92_4_ = 0;
+  g_City_Building_Layout_State_006A2508._96_4_ = 0;
+  g_City_Building_Layout_State_006A2508._100_4_ = 0;
+  g_City_Building_Layout_State_006A2508._104_4_ = 0;
+  g_City_Building_Layout_State_006A2508._108_4_ = 0;
+  g_City_Building_Layout_State_006A2508._112_4_ = 0x1b4;
+  g_City_Building_Layout_State_006A2508._116_4_ = 0x15a;
+  g_City_Building_Layout_State_006A2508._120_4_ = 0x1c3;
+  g_City_Building_Layout_State_006A2508._124_4_ = 0x169;
+  g_City_Building_Layout_State_006A2508._128_4_ = 0;
+  g_City_Building_Layout_State_006A2508._132_4_ = 0;
+  g_City_Building_Layout_State_006A2508._136_4_ = 0;
+  g_City_Building_Layout_State_006A2508._140_4_ = 0;
+  g_City_Building_Layout_State_006A2508._144_4_ = 0;
+  g_City_Building_Layout_State_006A2508._148_4_ = 0;
+  g_City_Building_Layout_State_006A2508._152_4_ = 0;
+  g_City_Building_Layout_State_006A2508._156_4_ = 0;
+  g_City_Building_Layout_State_006A2508._160_4_ = 0x1a9;
+  g_City_Building_Layout_State_006A2508._164_4_ = 0x14c;
+  g_City_Building_Layout_State_006A2508._168_4_ = 0x1c3;
+  g_City_Building_Layout_State_006A2508._172_4_ = 0x169;
+  g_City_Building_Layout_State_006A2508._176_4_ = 0x16b;
+  g_City_Building_Layout_State_006A2508._180_4_ = 0x116;
+  g_City_Building_Layout_State_006A2508._184_4_ = 0x187;
+  g_City_Building_Layout_State_006A2508._188_4_ = 0x131;
+  g_City_Building_Layout_State_006A2508._192_4_ = 0;
+  g_City_Building_Layout_State_006A2508._196_4_ = 0;
+  g_City_Building_Layout_State_006A2508._200_4_ = 0;
+  g_City_Building_Layout_State_006A2508._204_4_ = 0;
+  g_City_Building_Layout_State_006A2508._208_4_ = 0x1a9;
+  g_City_Building_Layout_State_006A2508._212_4_ = 0x14c;
+  g_City_Building_Layout_State_006A2508._216_4_ = 0x1c3;
+  g_City_Building_Layout_State_006A2508._220_4_ = 0x169;
+  g_City_Building_Layout_State_006A2508._224_4_ = 0x173;
+  g_City_Building_Layout_State_006A2508._228_4_ = 0x123;
+  g_City_Building_Layout_State_006A2508._232_4_ = 0x199;
+  g_City_Building_Layout_State_006A2508._236_4_ = 0x14b;
+  g_City_Building_Layout_State_006A2508._240_4_ = 0;
+  g_City_Building_Layout_State_006A2508._276_4_ = 0xed;
+  g_City_Building_Layout_State_006A2508._324_4_ = 0xed;
+  g_City_Building_Layout_State_006A2508._244_4_ = 0;
+  g_City_Building_Layout_State_006A2508._248_4_ = 0;
+  g_City_Building_Layout_State_006A2508._252_4_ = 0;
+  g_City_Building_Layout_State_006A2508._256_4_ = 0x16c;
+  g_City_Building_Layout_State_006A2508._260_4_ = 0xb7;
+  g_City_Building_Layout_State_006A2508._264_4_ = 0x192;
+  g_City_Building_Layout_State_006A2508._268_4_ = 0xeb;
+  g_City_Building_Layout_State_006A2508._272_4_ = 0x185;
+  g_City_Building_Layout_State_006A2508._280_4_ = 0x1ce;
+  g_City_Building_Layout_State_006A2508._284_4_ = 0x10d;
+  g_City_Building_Layout_State_006A2508._288_4_ = 0;
+  g_City_Building_Layout_State_006A2508._292_4_ = 0;
+  g_City_Building_Layout_State_006A2508._296_4_ = 0;
+  g_City_Building_Layout_State_006A2508._300_4_ = 0;
+  g_City_Building_Layout_State_006A2508._304_4_ = 0x155;
+  g_City_Building_Layout_State_006A2508._308_4_ = 0xb6;
+  g_City_Building_Layout_State_006A2508._312_4_ = 0x192;
+  g_City_Building_Layout_State_006A2508._316_4_ = 0xf7;
+  g_City_Building_Layout_State_006A2508._320_4_ = 0x16f;
+  g_City_Building_Layout_State_006A2508._328_4_ = 0x1cd;
+  g_City_Building_Layout_State_006A2508._332_4_ = 0x11b;
+  g_City_Building_Layout_State_006A2508._336_4_ = 0;
+  g_City_Building_Layout_State_006A2508._340_4_ = 0;
+  g_City_Building_Layout_State_006A2508._344_4_ = 0;
+  g_City_Building_Layout_State_006A2508._348_4_ = 0;
+  g_City_Building_Layout_State_006A2508._352_4_ = 0x158;
+  g_City_Building_Layout_State_006A2508._356_4_ = 0xa1;
+  g_City_Building_Layout_State_006A2508._360_4_ = 0x166;
+  g_City_Building_Layout_State_006A2508._364_4_ = 0xbc;
+  g_City_Building_Layout_State_006A2508._368_4_ = 0x171;
+  g_City_Building_Layout_State_006A2508._372_4_ = 0x107;
+  g_City_Building_Layout_State_006A2508._376_4_ = 0x179;
+  g_City_Building_Layout_State_006A2508._380_4_ = 0x10f;
+  g_City_Building_Layout_State_006A2508._384_4_ = 0x12e;
+  g_City_Building_Layout_State_006A2508._388_4_ = 0xef;
+  g_City_Building_Layout_State_006A2508._392_4_ = 0x13f;
+  g_City_Building_Layout_State_006A2508._396_4_ = 0xfa;
+  g_City_Building_Layout_State_006A2508._400_4_ = 0x1d8;
+  g_City_Building_Layout_State_006A2508._404_4_ = 0x11a;
+  g_City_Building_Layout_State_006A2508._408_4_ = 499;
+  g_City_Building_Layout_State_006A2508._412_4_ = 0x14e;
+  g_City_Building_Layout_State_006A2508._416_4_ = 0x1ba;
+  g_City_Building_Layout_State_006A2508._420_4_ = 0x13d;
+  g_City_Building_Layout_State_006A2508._424_4_ = 0x1d0;
+  g_City_Building_Layout_State_006A2508._428_4_ = 0x146;
+  g_City_Building_Layout_State_006A2508._432_4_ = 0;
+  g_City_Building_Layout_State_006A2508._436_4_ = 0;
+  g_City_Building_Layout_State_006A2508._440_4_ = 0;
+  g_City_Building_Layout_State_006A2508._444_4_ = 0;
+  g_City_Building_Layout_State_006A2508._448_4_ = 0x1df;
+  g_City_Building_Layout_State_006A2508._452_4_ = 0x124;
+  g_City_Building_Layout_State_006A2508._456_4_ = 0x1f2;
+  g_City_Building_Layout_State_006A2508._460_4_ = 0x14e;
+  g_City_Building_Layout_State_006A2508._464_4_ = 0x1c6;
+  g_City_Building_Layout_State_006A2508._468_4_ = 0xfa;
+  g_City_Building_Layout_State_006A2508._472_4_ = 0x1e3;
+  g_City_Building_Layout_State_006A2508._476_4_ = 0x115;
+  g_City_Building_Layout_State_006A2508._480_4_ = 0;
+  g_City_Building_Layout_State_006A2508._484_4_ = 0;
+  g_City_Building_Layout_State_006A2508._488_4_ = 0;
+  g_City_Building_Layout_State_006A2508._492_4_ = 0;
+  g_City_Building_Layout_State_006A2508._496_4_ = 0x1da;
+  g_City_Building_Layout_State_006A2508._500_4_ = 0xd5;
+  g_City_Building_Layout_State_006A2508._504_4_ = 0x21a;
+  g_City_Building_Layout_State_006A2508._508_4_ = 0x113;
+  g_City_Building_Layout_State_006A2508._512_4_ = 0x1bb;
+  g_City_Building_Layout_State_006A2508._516_4_ = 0x121;
+  g_City_Building_Layout_State_006A2508._520_4_ = 0x208;
+  g_City_Building_Layout_State_006A2508._524_4_ = 0x14c;
+  g_City_Building_Layout_State_006A2508._528_4_ = 0;
+  g_City_Building_Layout_State_006A2508._532_4_ = 0;
+  g_City_Building_Layout_State_006A2508._536_4_ = 0;
+  g_City_Building_Layout_State_006A2508._540_4_ = 0;
+  g_City_Building_Layout_State_006A2508._544_4_ = 0xb3;
+  g_City_Building_Layout_State_006A2508._548_4_ = 0x144;
+  g_City_Building_Layout_State_006A2508._552_4_ = 0xc3;
+  g_City_Building_Layout_State_006A2508._556_4_ = 0x156;
+  g_City_Building_Layout_State_006A2508._560_4_ = 0xb4;
+  g_City_Building_Layout_State_006A2508._564_4_ = 0x15e;
+  g_City_Building_Layout_State_006A2508._568_4_ = 0xd2;
+  g_City_Building_Layout_State_006A2508._572_4_ = 0x173;
+  g_City_Building_Layout_State_006A2508._576_4_ = 0;
+  g_City_Building_Layout_State_006A2508._580_4_ = 0;
+  g_City_Building_Layout_State_006A2508._584_4_ = 0;
+  g_City_Building_Layout_State_006A2508._588_4_ = 0;
+  g_City_Building_Layout_State_006A2508._592_4_ = 0x8d;
+  g_City_Building_Layout_State_006A2508._596_4_ = 0x124;
+  g_City_Building_Layout_State_006A2508._600_4_ = 0xa9;
+  g_City_Building_Layout_State_006A2508._604_4_ = 0x141;
+  g_City_Building_Layout_State_006A2508._608_4_ = 0xc2;
+  g_City_Building_Layout_State_006A2508._612_4_ = 0x157;
+  g_City_Building_Layout_State_006A2508._616_4_ = 0xda;
+  g_City_Building_Layout_State_006A2508._620_4_ = 0x169;
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x270,0x79,0x145,0xa0,0x152);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x280,0xb9,0x159,0xe0,0x17d);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x290,0x5e,0x146,0x92,0x170);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x2a0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x2b0,0x11c,0x176,299,0x184);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x2c0,0x111,0x192,0x142,0x1b7);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x2d0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x2e0,0x12f,0x148,0x147,0x15f);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x2f0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x300,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x310,0x111,0x147,0x126,0x15c);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x320,0x130,0x144,0x148,0x15b);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x330,0x154,0x16a,0x168,0x17d);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x340,0x1b9,0x98,0x1cf,0xaa);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x350,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x360,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x370,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x380,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x390,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x3a0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x3b0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x3c0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x3d0,0x1d0,0x82,0x1e8,0x99);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x3e0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x3f0,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x400,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x410,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x420,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x430,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x440,0,0,0,0);
+  CRect::CRect((CRect *)&g_City_Building_Layout_State_006A2508.field_0x450,0,0,0,0);
   return;
 }
 
@@ -12419,7 +12411,7 @@ void __cdecl BuildCityDialogMinisterControls(void)
   piVar2 = (int *)(**(code **)(iVar1 + 0x58))();
   if (piVar2 == (int *)0x0) {
                     /* WARNING: Subroutine does not return */
-    pcStack_60 = (code *)&UNK_004bd8f2;
+    pcStack_60 = (code *)0x4bd8f2;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
   }
   local_3c.top = *piVar2;
@@ -12535,7 +12527,6 @@ void __cdecl CommitCityDialogNameChange(void)
 // GHIDRA_COMMENT [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1, unique_internal=1
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* [WrapperShape] small wrapper around __ftol; instructions=6, call_insns=1, internal_calls=1,
    unique_internal=1 */
 
@@ -12545,7 +12536,7 @@ void __cdecl WrapperFor_ftol_At004bde50(void)
   int iVar1;
   
   iVar1 = ftol();
-  _DAT_006a2c60 = (short)iVar1;
+  UNK_006a2ac2._414_2_ = (short)iVar1;
   return;
 }
 

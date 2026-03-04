@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ComputeAdvisoryHandlerCase08Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase08Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1750
-undefined4 ComputeAdvisoryHandlerCase08Metric(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAdvisoryHandlerCase09Metric
 // ghidra_proto void __cdecl ComputeAdvisoryHandlerCase09Metric(void)
 // FUNCTION: IMPERIALISM 0x004e1910
@@ -3999,6 +3991,14 @@ undefined4 OrphanTiny_SetWordEcxOffset_96_005060f0(void)
 // ghidra_proto void __cdecl OrphanCallChain_C2_I15_00506110(void)
 // FUNCTION: IMPERIALISM 0x00506110
 undefined4 OrphanCallChain_C2_I15_00506110(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconBar::RenderIconBarEntryStrip
+// ghidra_proto void __thiscall RenderIconBarEntryStrip(void)
+// FUNCTION: IMPERIALISM 0x00506150
+undefined4 RenderIconBarEntryStrip(void)
 {
   return 0;
 }
