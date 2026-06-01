@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_DeletingDestructTHostGreatPower
-// ghidra_proto void __cdecl thunk_DeletingDestructTHostGreatPower(void)
-// FUNCTION: IMPERIALISM 0x00405277
-undefined4 thunk_DeletingDestructTHostGreatPower(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::thunk_RunDiplomacyWaitSheetPopupAndAwaitResponse
 // ghidra_proto void __thiscall thunk_RunDiplomacyWaitSheetPopupAndAwaitResponse(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00405281
@@ -3091,14 +3083,6 @@ undefined4 thunk_DeserializeUnitOrderCoreState(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeRangePairAndResetCursor
-// ghidra_proto void __thiscall thunk_InitializeRangePairAndResetCursor(int rangeStart, int rangeEnd)
-// FUNCTION: IMPERIALISM 0x00405ee3
-undefined4 thunk_InitializeRangePairAndResetCursor(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At00565fc0
 // ghidra_proto void __cdecl thunk_WrapperFor_InvalidateCityDialogRectRegion_At00565fc0(void)
 // FUNCTION: IMPERIALISM 0x00405eed
@@ -3999,6 +3983,22 @@ undefined4 thunk_GetTMinisterClassNamePointer(void)
 // ghidra_proto int __cdecl thunk_ComputeWeightedNeighborLinkScoreForNode(void)
 // FUNCTION: IMPERIALISM 0x00406271
 undefined4 thunk_ComputeWeightedNeighborLinkScoreForNode(void)
+{
+  return 0;
+}
+
+// ghidra_name MilitaryUnitOrderState::thunk_NormalizeUnitOrderStateAfterLoad_At00406276
+// ghidra_proto void __cdecl thunk_NormalizeUnitOrderStateAfterLoad_At00406276(void)
+// FUNCTION: IMPERIALISM 0x00406276
+undefined4 thunk_NormalizeUnitOrderStateAfterLoad_At00406276(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_SyncTripleSelectionStateViaMessage400
+// ghidra_proto void __cdecl thunk_SyncTripleSelectionStateViaMessage400(void)
+// FUNCTION: IMPERIALISM 0x00406280
+undefined4 thunk_SyncTripleSelectionStateViaMessage400(void)
 {
   return 0;
 }

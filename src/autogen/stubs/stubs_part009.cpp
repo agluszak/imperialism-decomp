@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTerrainHelpPicture::thunk_scalar_deleting_destructor_00409426
-// ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00409426(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00409426
-undefined4 thunk_scalar_deleting_destructor_00409426(void)
-{
-  return 0;
-}
-
-// ghidra_name TRemoteGreatPower::thunk_GetTRemoteGreatPowerClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTRemoteGreatPowerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00409430
-undefined4 thunk_GetTRemoteGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemoveTaskForceOrderNodesByNationAndClearSelectionState
-// ghidra_proto void __fastcall thunk_RemoveTaskForceOrderNodesByNationAndClearSelectionState(int ecxArg, int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00409435
-undefined4 thunk_RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefendProvinceMission::TDefendProvinceMission_VtblSlot010
-// ghidra_proto bool __stdcall TDefendProvinceMission_VtblSlot010(void)
-// FUNCTION: IMPERIALISM 0x0040943f
-undefined4 TDefendProvinceMission_VtblSlot010(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ApplyTacticalCursorModeProfile4_ClassAware
 // ghidra_proto void __fastcall thunk_ApplyTacticalCursorModeProfile4_ClassAware(int tacticalSide)
 // FUNCTION: IMPERIALISM 0x00409449
@@ -1039,14 +1007,6 @@ undefined4 thunk_RefreshNationStatusLabelsAndCodesForSlotOrAll(void)
 // ghidra_proto void __cdecl thunk_InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void)
 // FUNCTION: IMPERIALISM 0x00409863
 undefined4 thunk_InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetPtrListEntryByOneBasedIndex
-// ghidra_proto void __cdecl thunk_GetPtrListEntryByOneBasedIndex(void)
-// FUNCTION: IMPERIALISM 0x00409868
-undefined4 thunk_GetPtrListEntryByOneBasedIndex(void)
 {
   return 0;
 }
@@ -3999,6 +3959,46 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d090(void)
 // ghidra_proto void __thiscall DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
 // FUNCTION: IMPERIALISM 0x0047d0c0
 undefined4 DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
+// ghidra_proto void __cdecl WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(void)
+// FUNCTION: IMPERIALISM 0x0047d160
+undefined4 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanVtableAssignStub_0047d1a0
+// ghidra_proto void __thiscall OrphanVtableAssignStub_0047d1a0(void)
+// FUNCTION: IMPERIALISM 0x0047d1a0
+undefined4 OrphanVtableAssignStub_0047d1a0(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeDialogTemplateD2WithTextState
+// ghidra_proto void __cdecl InitializeDialogTemplateD2WithTextState(void)
+// FUNCTION: IMPERIALISM 0x0047d1c0
+undefined4 InitializeDialogTemplateD2WithTextState(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d250
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0047d250(void)
+// FUNCTION: IMPERIALISM 0x0047d250
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d250(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl(void)
+// FUNCTION: IMPERIALISM 0x0047d280
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl(void)
 {
   return 0;
 }

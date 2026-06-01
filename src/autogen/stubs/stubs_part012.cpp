@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReleaseGlobalUiSystemsAndGameFlowState
-// ghidra_proto void __cdecl ReleaseGlobalUiSystemsAndGameFlowState(void)
-// FUNCTION: IMPERIALISM 0x0049e1a0
-undefined4 ReleaseGlobalUiSystemsAndGameFlowState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
-// ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(void * pMessage)
-// FUNCTION: IMPERIALISM 0x0049e280
-undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0(void)
-// FUNCTION: IMPERIALISM 0x0049e2f0
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// ghidra_proto void __thiscall HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0049e320
-undefined4 HandleTurnEventViewportEdgeAutoScroll(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I11_0049e4b0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I11_0049e4b0(void)
-// FUNCTION: IMPERIALISM 0x0049e4b0
-undefined4 OrphanCallChain_C1_I11_0049e4b0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I04_0049e4e0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I04_0049e4e0(void)
-// FUNCTION: IMPERIALISM 0x0049e4e0
-undefined4 OrphanCallChain_C1_I04_0049e4e0(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndQueueTurnEventPacketTagGWEN
-// ghidra_proto void __cdecl CreateAndQueueTurnEventPacketTagGWEN(void)
-// FUNCTION: IMPERIALISM 0x0049e500
-undefined4 CreateAndQueueTurnEventPacketTagGWEN(void)
-{
-  return 0;
-}
-
-// ghidra_name TAmbitFileBasedDocument::GetTAmbitFileBasedDocumentClassNamePointer
-// ghidra_proto void * __cdecl GetTAmbitFileBasedDocumentClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0049e5d0
-undefined4 GetTAmbitFileBasedDocumentClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
-// ghidra_proto void __fastcall ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument * pThis)
-// FUNCTION: IMPERIALISM 0x0049e5f0
-undefined4 ConstructTAmbitFileBasedDocumentBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree
-// ghidra_proto void * __thiscall DestructTAmbitFileBasedDocumentAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0049e610
-undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTAmbitFileBasedDocumentAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x0049e640
-undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0049e660
-// ghidra_proto void __cdecl OrphanRetStub_0049e660(void)
-// FUNCTION: IMPERIALISM 0x0049e660
-undefined4 OrphanRetStub_0049e660(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0049e680
-// ghidra_proto void __cdecl OrphanRetStub_0049e680(void)
-// FUNCTION: IMPERIALISM 0x0049e680
-undefined4 OrphanRetStub_0049e680(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadGlobalSystemsFromSave
-// ghidra_proto void __cdecl LoadGlobalSystemsFromSave(TAmbitFileBasedDocument * pThis)
-// FUNCTION: IMPERIALISM 0x0049e6a0
-undefined4 LoadGlobalSystemsFromSave(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignStringSharedRefAndReturnThis
 // ghidra_proto void __cdecl AssignStringSharedRefAndReturnThis(void)
 // FUNCTION: IMPERIALISM 0x0049eb00
@@ -3999,6 +3887,118 @@ undefined4 RefreshCityDialogSummaryValues(void)
 // ghidra_proto void * __cdecl AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
 // FUNCTION: IMPERIALISM 0x004bcf40
 undefined4 AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
+{
+  return 0;
+}
+
+// ghidra_name TRailheadDialog::GetTRailheadDialogClassNamePointer
+// ghidra_proto void * __cdecl GetTRailheadDialogClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004bd020
+undefined4 GetTRailheadDialogClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TRailheadDialog::ConstructTRailheadDialogBaseState
+// ghidra_proto void __thiscall ConstructTRailheadDialogBaseState(int * pSelectionRecord)
+// FUNCTION: IMPERIALISM 0x004bd040
+undefined4 ConstructTRailheadDialogBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TRailheadDialog::DestructTRailheadDialogAndMaybeFree
+// ghidra_proto void __thiscall DestructTRailheadDialogAndMaybeFree(EControlTagFourCC controlTag)
+// FUNCTION: IMPERIALISM 0x004bd260
+undefined4 DestructTRailheadDialogAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_thunk_ConstructTViewBaseState_At004bd300
+// ghidra_proto void * __cdecl Helper_Uses_thunk_ConstructTViewBaseState_At004bd300(void)
+// FUNCTION: IMPERIALISM 0x004bd300
+undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004bd300(void)
+{
+  return 0;
+}
+
+// ghidra_name TTransportView::GetTTransportViewClassNamePointer
+// ghidra_proto void * __cdecl GetTTransportViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004bd3c0
+undefined4 GetTTransportViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyCityDialogMinisterValues
+// ghidra_proto void __cdecl ApplyCityDialogMinisterValues(void)
+// FUNCTION: IMPERIALISM 0x004bd3e0
+undefined4 ApplyCityDialogMinisterValues(void)
+{
+  return 0;
+}
+
+// ghidra_name CommitCityDialogMinisterValues
+// ghidra_proto void __cdecl CommitCityDialogMinisterValues(void)
+// FUNCTION: IMPERIALISM 0x004bd690
+undefined4 CommitCityDialogMinisterValues(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0
+// ghidra_proto void * __cdecl Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0(void)
+// FUNCTION: IMPERIALISM 0x004bd7a0
+undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewTownView::GetTNewTownViewClassNamePointer
+// ghidra_proto void * __cdecl GetTNewTownViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004bd860
+undefined4 GetTNewTownViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildCityDialogMinisterControls
+// ghidra_proto void __cdecl BuildCityDialogMinisterControls(void)
+// FUNCTION: IMPERIALISM 0x004bd880
+undefined4 BuildCityDialogMinisterControls(void)
+{
+  return 0;
+}
+
+// ghidra_name CommitCityDialogNameChange
+// ghidra_proto void __cdecl CommitCityDialogNameChange(void)
+// FUNCTION: IMPERIALISM 0x004bdc10
+undefined4 CommitCityDialogNameChange(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At004bde50
+// ghidra_proto void __cdecl WrapperFor_ftol_At004bde50(void)
+// FUNCTION: IMPERIALISM 0x004bde50
+undefined4 WrapperFor_ftol_At004bde50(void)
+{
+  return 0;
+}
+
+// ghidra_name InsertScoredTileCandidateWithRandomTieBreak
+// ghidra_proto void __cdecl InsertScoredTileCandidateWithRandomTieBreak(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x004be000
+undefined4 InsertScoredTileCandidateWithRandomTieBreak(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_thunk_ConstructTMinister_At004be0d0
+// ghidra_proto void * __cdecl Helper_Uses_thunk_ConstructTMinister_At004be0d0(void)
+// FUNCTION: IMPERIALISM 0x004be0d0
+undefined4 Helper_Uses_thunk_ConstructTMinister_At004be0d0(void)
 {
   return 0;
 }

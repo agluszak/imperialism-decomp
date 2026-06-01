@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_EvaluateTacticalTileScore_CurrentTileMatchBonus
-// ghidra_proto int __cdecl thunk_EvaluateTacticalTileScore_CurrentTileMatchBonus(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x00404133
-undefined4 thunk_EvaluateTacticalTileScore_CurrentTileMatchBonus(void)
-{
-  return 0;
-}
-
 // ghidra_name TSimMgr::thunk_IsTurnFlowPhaseOutsideRange4To5_At00404138
 // ghidra_proto void __thiscall thunk_IsTurnFlowPhaseOutsideRange4To5_At00404138(void)
 // FUNCTION: IMPERIALISM 0x00404138
@@ -3999,6 +3991,14 @@ undefined4 thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
 // ghidra_proto void __cdecl thunk_AccumulateNavyOrderCategoryVectorWithScale(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00405272
 undefined4 thunk_AccumulateNavyOrderCategoryVectorWithScale(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DeletingDestructTHostGreatPower
+// ghidra_proto void __cdecl thunk_DeletingDestructTHostGreatPower(void)
+// FUNCTION: IMPERIALISM 0x00405277
+undefined4 thunk_DeletingDestructTHostGreatPower(void)
 {
   return 0;
 }

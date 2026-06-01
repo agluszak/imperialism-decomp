@@ -1,5 +1,79 @@
 # Worklog
 
+## 2026-06-02
+
+### TSortedPtrList / array-backed pointer-list recovery
+
+1. Scope:
+   1. `include/game/TPtrList.h`
+   2. `include/game/TIndexAndRankList.h`
+   2. `include/game/TSortedPtrList.h`
+   3. `include/game/TSortedList.h`
+   3. `src/game/TPtrList.cpp`
+   4. `src/game/TIndexAndRankList.cpp`
+   4. `src/game/TSortedPtrList.cpp`
+   5. `src/game/TSortedList.cpp`
+   6. `src/game/diplomacy_state.cpp`
+   7. `CMakeLists.txt`
+   8. `config/function_ownership.csv`
+   9. `src/autogen/stubs/*`
+2. Big picture:
+   1. `TPtrList` / `TSortedList` are the linked-list family backed by an embedded `CPtrList` sentinel.
+   2. The `0x4881xx` cluster is the array-backed sibling backed by `TIndexAndRankList::CPtrArray` (`0x00601baa`), with pointer storage at `+0x04` and count at `+0x08`.
+   3. The `TSortedPtrList` autogen bucket is partially misleading: the helper family is generic pointer-array logic, and at least one nearby factory (`0x00488400`) still writes the generic pointer-list vtable rather than a distinct sorted subclass vtable.
+3. Changes:
+   1. Added real headers for `TPtrList` and `TSortedPtrList` so the recovered list types are declared explicitly instead of being local ad-hoc structs in `.cpp` files.
+   2. Added `TIndexAndRankList` and `TSortedList` headers/translation units so the array-backed base and linked-list sorted owner each have their own manual home.
+   3. Renamed `TPtrList`'s embedded `CPtrListSentinelView` fields to the real list-state roles: `headNode`, `tailNode`, `nodeCount`, `freeNodeList`, `blockChain`, `blockSize`.
+   4. Replaced the old free `CPtrArray` bridge use in `diplomacy_state.cpp` with the typed `TIndexAndRankList::CPtrArray()` base call.
+   5. Promoted `0x00601baa` and `0x00601bc1` into `TIndexAndRankList.cpp`.
+   6. Promoted `0x004883e0` / `0x00488400` into `TSortedPtrList.cpp`.
+   7. Promoted `0x00487a90` / `0x00487b10` into `TSortedList.cpp`.
+   8. Kept the previously promoted `0x00488110`, `0x00488160`, and `0x00407da6` in the same family slice.
+4. Validation:
+   1. `just sync-ownership`
+   2. `just regen-stubs`
+   3. `just build`
+   4. `just compare 0x00407da6`: **100.00%**
+   5. `just compare 0x00409868`: **0.00%**
+   6. `just compare 0x00488110`: **100.00%**
+   7. `just compare 0x00488160`: **100.00%**
+   8. `just compare 0x004883e0`: **100.00%**
+   9. `just compare 0x00487b10`: **100.00%**
+   10. `just compare 0x00601bc1`: **81.82%**
+   11. `just compare 0x00488400`: **52.63%**
+   12. `just compare 0x00487a90`: **51.16%**
+   13. `just compare 0x00601baa`: **13.33%**
+   14. `just compare-canaries`: passed (`below_floor=0`, `parse_error=0`)
+5. Notes:
+   1. `0x00409868` is a stubborn single-JMP thunk to the now-matched `0x00488160`; MSVC500 still lowers the wrapper to `push/call/ret` instead of a tail jump, even when the helper signature preserves the incoming `ecx`/stack arg shape.
+   2. `0x00601baa` / `0x00488400` / `0x00487a90` are now compile-safe typed owners, but they still need a future similarity pass if we want their original EH/factory frame shape exactly.
+
+### TPtrList wrapper recovery and build integration
+
+1. Scope:
+   1. `src/game/TPtrList.cpp`
+   2. `src/game/TGreatPower.cpp`
+   3. `CMakeLists.txt`
+   4. `config/function_ownership.csv`
+   5. `src/autogen/stubs/*`
+2. Changes:
+   1. Added `src/game/TPtrList.cpp` to the build so its owned markers stop colliding with generated stubs during compare.
+   2. Replaced the incorrect Ghidra `TArmyStack::AddHead` wrappers with a real local `TPtrList` definition plus an embedded `CPtrListSentinelView` layout.
+   3. Promoted the embedded list constructor/deleting-destructor helpers into `TPtrList.cpp` so the `TPtrList` wrappers call real member methods instead of casted free-function bridges.
+   4. Removed the old `0x00601F1D` manual body from `TGreatPower.cpp` and let ownership/stub sync move the helper ownership to `TPtrList.cpp`.
+   5. Enabled file-local FPO for `TPtrList.cpp`; this removed the extra frame-setup noise and restored the original 5-instruction wrapper shape for the two `TPtrList` methods.
+3. Validation:
+   1. `just sync-ownership`
+   2. `just regen-stubs`
+   3. `just build`
+   4. `just compare 0x00488510`: **100.00%**
+   5. `just compare 0x004885d0`: **80.00%**
+   6. `just compare 0x004885f0`: **80.00%**
+   7. `just compare-canaries`: passed (`below_floor=0`, `parse_error=0`)
+4. Notes:
+   1. The residual mismatch on `0x004885d0`/`0x004885f0` is now only the paired call target (`<OFFSET1>` in the original vs the current helper symbol in our build); the wrapper bodies themselves now match the original `mov/add/push/call/ret` shape.
+
 ## 2026-06-01
 
 ### TCityProductionView and TDiplomacyMapView Legend Slice Progress

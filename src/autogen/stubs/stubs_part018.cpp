@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TBackgroundPicture::ConstructTBackgroundPictureBaseState
-// ghidra_proto void * __thiscall ConstructTBackgroundPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x00572c80
-undefined4 ConstructTBackgroundPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTBackgroundPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00572cb0
-undefined4 DestructTBackgroundPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
-// FUNCTION: IMPERIALISM 0x00572d00
-undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyPicture::CreateTColorKeyPictureInstance
-// ghidra_proto void * __cdecl CreateTColorKeyPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00572d20
-undefined4 CreateTColorKeyPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyPicture::GetTColorKeyPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTColorKeyPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00572dc0
-undefined4 GetTColorKeyPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// ghidra_proto void __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
-// FUNCTION: IMPERIALISM 0x00572de0
-undefined4 ConstructPictureResourceEntry_Vtbl00660b48(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTColorKeyPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00572e10
-undefined4 DestructTColorKeyPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::BlitPanelBitmapFromMainBackOrGoldTag
-// ghidra_proto void __thiscall BlitPanelBitmapFromMainBackOrGoldTag(void)
-// FUNCTION: IMPERIALISM 0x00572e60
-undefined4 BlitPanelBitmapFromMainBackOrGoldTag(void)
-{
-  return 0;
-}
-
-// ghidra_name SetPictureResourceIdWithHandleReset
-// ghidra_proto void __stdcall SetPictureResourceIdWithHandleReset(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00573040
-undefined4 SetPictureResourceIdWithHandleReset(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090
-// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090(void)
-// FUNCTION: IMPERIALISM 0x00573090
-undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573090(void)
-{
-  return 0;
-}
-
-// ghidra_name TMegaPicture::CreateTMegaPictureInstance
-// ghidra_proto void * __cdecl CreateTMegaPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x005730d0
-undefined4 CreateTMegaPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMegaPicture::GetTMegaPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTMegaPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00573170
-undefined4 GetTMegaPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMegaPicture::ConstructTMegaPictureBaseState
-// ghidra_proto void * __thiscall ConstructTMegaPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x00573190
-undefined4 ConstructTMegaPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TMegaPicture::DestructTMegaPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTMegaPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005731d0
-undefined4 DestructTMegaPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderControlRectWithPaletteAndOptionalBlit
 // ghidra_proto void __fastcall RenderControlRectWithPaletteAndOptionalBlit(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x00573270
@@ -3999,6 +3887,118 @@ undefined4 ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
 // ghidra_proto void __fastcall ApplyTacticalCursorModeProfile3_ClassAware(int tacticalSide)
 // FUNCTION: IMPERIALISM 0x0059ce90
 undefined4 ApplyTacticalCursorModeProfile3_ClassAware(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTacticalCursorModeProfile4_ClassAware
+// ghidra_proto void __fastcall ApplyTacticalCursorModeProfile4_ClassAware(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059d020
+undefined4 ApplyTacticalCursorModeProfile4_ClassAware(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTacticalCursorModeProfile5_ClassAware
+// ghidra_proto void __fastcall ApplyTacticalCursorModeProfile5_ClassAware(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059d1a0
+undefined4 ApplyTacticalCursorModeProfile5_ClassAware(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTacticalCursorModeProfile6_DefaultByActionClass
+// ghidra_proto void __cdecl ApplyTacticalCursorModeProfile6_DefaultByActionClass(void)
+// FUNCTION: IMPERIALISM 0x0059d320
+undefined4 ApplyTacticalCursorModeProfile6_DefaultByActionClass(void)
+{
+  return 0;
+}
+
+// ghidra_name SetLinkedListNodeField2CTo13ForAllNodes
+// ghidra_proto void __cdecl SetLinkedListNodeField2CTo13ForAllNodes(void)
+// FUNCTION: IMPERIALISM 0x0059d400
+undefined4 SetLinkedListNodeField2CTo13ForAllNodes(void)
+{
+  return 0;
+}
+
+// ghidra_name HasReachableActiveArtilleryClassCursorEntry
+// ghidra_proto bool __cdecl HasReachableActiveArtilleryClassCursorEntry(void)
+// FUNCTION: IMPERIALISM 0x0059d470
+undefined4 HasReachableActiveArtilleryClassCursorEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectBestTacticalTileByWeightedHeuristics
+// ghidra_proto int __thiscall SelectBestTacticalTileByWeightedHeuristics(int tacticalContext, int * pScoreWeights)
+// FUNCTION: IMPERIALISM 0x0059d530
+undefined4 SelectBestTacticalTileByWeightedHeuristics(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_CurrentTileMatchBonus
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_CurrentTileMatchBonus(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059d6b0
+undefined4 EvaluateTacticalTileScore_CurrentTileMatchBonus(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059d6e0
+undefined4 EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059d810
+undefined4 EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059d8a0
+undefined4 EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_ReachableCursorEntryCount
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_ReachableCursorEntryCount(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059d940
+undefined4 EvaluateTacticalTileScore_ReachableCursorEntryCount(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_ForwardRowProgressBias
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_ForwardRowProgressBias(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059da20
+undefined4 EvaluateTacticalTileScore_ForwardRowProgressBias(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_TileType1Or2Bonus
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_TileType1Or2Bonus(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059dac0
+undefined4 EvaluateTacticalTileScore_TileType1Or2Bonus(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059db00
+undefined4 EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus(void)
 {
   return 0;
 }

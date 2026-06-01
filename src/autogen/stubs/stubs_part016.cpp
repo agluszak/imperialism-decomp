@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnMissionConstantFloatSlot68
-// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot68(void)
-// FUNCTION: IMPERIALISM 0x00534e10
-undefined4 ReturnMissionConstantFloatSlot68(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionConstantFloatSlot6C
-// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot6C(void)
-// FUNCTION: IMPERIALISM 0x00534e30
-undefined4 ReturnMissionConstantFloatSlot6C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionConstantFloatSlot74
-// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot74(void)
-// FUNCTION: IMPERIALISM 0x00534e50
-undefined4 ReturnMissionConstantFloatSlot74(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionConstantFloatSlot70
-// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot70(void)
-// FUNCTION: IMPERIALISM 0x00534e70
-undefined4 ReturnMissionConstantFloatSlot70(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionConstantFloatSlot7C
-// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot7C(void)
-// FUNCTION: IMPERIALISM 0x00534e90
-undefined4 ReturnMissionConstantFloatSlot7C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionConstantFloatSlot78
-// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot78(void)
-// FUNCTION: IMPERIALISM 0x00534eb0
-undefined4 ReturnMissionConstantFloatSlot78(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot84
-// ghidra_proto void __cdecl NoOpMissionVtableSlot84(void)
-// FUNCTION: IMPERIALISM 0x00534ed0
-undefined4 NoOpMissionVtableSlot84(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot80Ret8
-// ghidra_proto void __cdecl NoOpMissionVtableSlot80Ret8(void)
-// FUNCTION: IMPERIALISM 0x00534ef0
-undefined4 NoOpMissionVtableSlot80Ret8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot8CRet8
-// ghidra_proto void __cdecl NoOpMissionVtableSlot8CRet8(void)
-// FUNCTION: IMPERIALISM 0x00534f10
-undefined4 NoOpMissionVtableSlot8CRet8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot88Ret8
-// ghidra_proto void __cdecl NoOpMissionVtableSlot88Ret8(void)
-// FUNCTION: IMPERIALISM 0x00534f30
-undefined4 NoOpMissionVtableSlot88Ret8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot90Ret4
-// ghidra_proto void __cdecl NoOpMissionVtableSlot90Ret4(void)
-// FUNCTION: IMPERIALISM 0x00534f50
-undefined4 NoOpMissionVtableSlot90Ret4(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMissionField10FromArgSlot94
-// ghidra_proto void __cdecl SetMissionField10FromArgSlot94(void)
-// FUNCTION: IMPERIALISM 0x00534f70
-undefined4 SetMissionField10FromArgSlot94(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot98
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot98(void)
-// FUNCTION: IMPERIALISM 0x00534f90
-undefined4 ReturnFalseMissionVtableSlot98(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::GetTMissionClassNamePointer
-// ghidra_proto void * __cdecl GetTMissionClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00534fb0
-undefined4 GetTMissionClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00534fd0
 // ghidra_proto void __cdecl WrapperFor_AFX_CLASSINIT_At00534fd0(void)
 // FUNCTION: IMPERIALISM 0x00534fd0
@@ -3999,6 +3887,118 @@ undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
 // ghidra_proto int __cdecl FindCumulativeWeightBucketIndex(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005519d0
 undefined4 FindCumulativeWeightBucketIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner
+// ghidra_proto short __cdecl AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner(void)
+// FUNCTION: IMPERIALISM 0x00551a00
+undefined4 AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildNavyOrderResourceDeltaSummaryText
+// ghidra_proto void __cdecl BuildNavyOrderResourceDeltaSummaryText(int arg1)
+// FUNCTION: IMPERIALISM 0x00551be0
+undefined4 BuildNavyOrderResourceDeltaSummaryText(void)
+{
+  return 0;
+}
+
+// ghidra_name SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks
+// ghidra_proto void __cdecl SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void)
+// FUNCTION: IMPERIALISM 0x00552250
+undefined4 SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRecovered_00552336_SelectPreferredOrderLoop
+// ghidra_proto void __cdecl OrphanRecovered_00552336_SelectPreferredOrderLoop(void)
+// FUNCTION: IMPERIALISM 0x00552336
+undefined4 OrphanRecovered_00552336_SelectPreferredOrderLoop(void)
+{
+  return 0;
+}
+
+// ghidra_name ObjectPool::OrphanRecovered_00552340_OverlappingStub
+// ghidra_proto void __thiscall OrphanRecovered_00552340_OverlappingStub(void)
+// FUNCTION: IMPERIALISM 0x00552340
+undefined4 OrphanRecovered_00552340_OverlappingStub(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeNavyOrderSelectionPriorityChain_00552349
+// ghidra_proto void __cdecl RecomputeNavyOrderSelectionPriorityChain_00552349(void)
+// FUNCTION: IMPERIALISM 0x00552349
+undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveDuplicateNavySecondaryOrdersByDisplayName
+// ghidra_proto void __cdecl RemoveDuplicateNavySecondaryOrdersByDisplayName(void)
+// FUNCTION: IMPERIALISM 0x00552450
+undefined4 RemoveDuplicateNavySecondaryOrdersByDisplayName(void)
+{
+  return 0;
+}
+
+// ghidra_name DeleteMapOrderChildLinkAndReturnNext
+// ghidra_proto int * __fastcall DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
+// FUNCTION: IMPERIALISM 0x00552590
+undefined4 DeleteMapOrderChildLinkAndReturnNext(void)
+{
+  return 0;
+}
+
+// ghidra_name TTaskForce::GetTTaskForceClassNamePointer
+// ghidra_proto void * __cdecl GetTTaskForceClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005527e0
+undefined4 GetTTaskForceClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTaskForce::ConstructTTaskForce
+// ghidra_proto void __thiscall ConstructTTaskForce(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00552800
+undefined4 ConstructTTaskForce(void)
+{
+  return 0;
+}
+
+// ghidra_name DestroyTTaskForce
+// ghidra_proto void __cdecl DestroyTTaskForce(void)
+// FUNCTION: IMPERIALISM 0x00552870
+undefined4 DestroyTTaskForce(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetTTaskForceToSentinelVtable
+// ghidra_proto void __cdecl ResetTTaskForceToSentinelVtable(void)
+// FUNCTION: IMPERIALISM 0x005528a0
+undefined4 ResetTTaskForceToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name DeleteMapOrderEntryAndUnlink
+// ghidra_proto void __fastcall DeleteMapOrderEntryAndUnlink(int * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00552930
+undefined4 DeleteMapOrderEntryAndUnlink(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveTaskForceOrderNodesByNationAndClearSelectionState
+// ghidra_proto void __fastcall RemoveTaskForceOrderNodesByNationAndClearSelectionState(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00552a70
+undefined4 RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
 {
   return 0;
 }

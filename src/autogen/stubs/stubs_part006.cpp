@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name MilitaryUnitOrderState::thunk_NormalizeUnitOrderStateAfterLoad_At00406276
-// ghidra_proto void __cdecl thunk_NormalizeUnitOrderStateAfterLoad_At00406276(void)
-// FUNCTION: IMPERIALISM 0x00406276
-undefined4 thunk_NormalizeUnitOrderStateAfterLoad_At00406276(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SyncTripleSelectionStateViaMessage400
-// ghidra_proto void __cdecl thunk_SyncTripleSelectionStateViaMessage400(void)
-// FUNCTION: IMPERIALISM 0x00406280
-undefined4 thunk_SyncTripleSelectionStateViaMessage400(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0_At00406285
 // ghidra_proto void __cdecl thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0_At00406285(void)
 // FUNCTION: IMPERIALISM 0x00406285
@@ -1279,14 +1263,6 @@ undefined4 TShipPlacard_VtblSlot001(void)
 // ghidra_proto void __cdecl thunk_BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
 // FUNCTION: IMPERIALISM 0x00406753
 undefined4 thunk_BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::thunk_QueueInterNationEventRecordDeduped
-// ghidra_proto void __thiscall thunk_QueueInterNationEventRecordDeduped(InterNationEventCode eventCode, sdword nationA, sdword nationB, char isReplayBypass)
-// FUNCTION: IMPERIALISM 0x00406758
-undefined4 thunk_QueueInterNationEventRecordDeduped(void)
 {
   return 0;
 }
@@ -3999,6 +3975,30 @@ undefined4 thunk_ReturnMissionConstantFloatSlot78(void)
 // ghidra_proto void __thiscall thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
 // FUNCTION: IMPERIALISM 0x004073dd
 undefined4 thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055
+// ghidra_proto void __cdecl TNetGameSelectPicture_VtblSlot055(void)
+// FUNCTION: IMPERIALISM 0x004073e2
+undefined4 TNetGameSelectPicture_VtblSlot055(void)
+{
+  return 0;
+}
+
+// ghidra_name TNominationView::thunk_ConstructTNominationViewBaseState_At004073e7
+// ghidra_proto void __thiscall thunk_ConstructTNominationViewBaseState_At004073e7(void)
+// FUNCTION: IMPERIALISM 0x004073e7
+undefined4 thunk_ConstructTNominationViewBaseState_At004073e7(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot001
+// ghidra_proto void * __thiscall TNavyToolbarCluster_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x004073ec
+undefined4 TNavyToolbarCluster_VtblSlot001(void)
 {
   return 0;
 }

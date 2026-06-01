@@ -4766,16 +4766,3 @@ void TGreatPower::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
   orderState->remainingTurns24 = 0;
   orderState->completionMarker26 = static_cast<short>(-1);
 }
-
-// FUNCTION: IMPERIALISM 0x00601F1D
-void TGreatPower::CPtrList(int ownerContext) {
-  CPtrListSentinelView* list = reinterpret_cast<CPtrListSentinelView*>(this);
-  list->field0c = 0;
-  list->field0e = 0;
-  list->field10 = 0;
-  list->field08 = 0;
-  list->field04 = 0;
-  list->pField14 = 0;
-  list->vftable = reinterpret_cast<void*>(kAddrCPtrListRuntimeClassVtable);
-  list->field18 = ownerContext;
-}

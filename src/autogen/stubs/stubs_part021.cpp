@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_NoOpRuntimeCallback_005e717b
-// ghidra_proto void __cdecl thunk_NoOpRuntimeCallback_005e717b(void)
-// FUNCTION: IMPERIALISM 0x005e716d
-undefined4 thunk_NoOpRuntimeCallback_005e717b(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_005e717b
-// ghidra_proto void __cdecl NoOpRuntimeCallback_005e717b(void)
-// FUNCTION: IMPERIALISM 0x005e717b
-undefined4 NoOpRuntimeCallback_005e717b(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e
-// ghidra_proto int __cdecl WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e(void)
-// FUNCTION: IMPERIALISM 0x005e717e
-undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6
-// ghidra_proto int __cdecl WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6(void)
-// FUNCTION: IMPERIALISM 0x005e71d6
-undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6(void)
-{
-  return 0;
-}
-
-// ghidra_name Seek
-// ghidra_proto int __cdecl Seek(void)
-// FUNCTION: IMPERIALISM 0x005e722f
-undefined4 Seek(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e72f1
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e72f1(void)
-// FUNCTION: IMPERIALISM 0x005e72f1
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e72f1(void)
-{
-  return 0;
-}
-
-// ghidra_name fpmath
-// ghidra_proto void __cdecl fpmath(int param_1)
-// FUNCTION: IMPERIALISM 0x005e7350
-undefined4 fpmath(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCrtThreadLifecycleHook
-// ghidra_proto void __cdecl NoOpCrtThreadLifecycleHook(void)
-// FUNCTION: IMPERIALISM 0x005e7370
-undefined4 NoOpCrtThreadLifecycleHook(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeFpmathAmsgExitHandlerTable
-// ghidra_proto void __cdecl InitializeFpmathAmsgExitHandlerTable(void)
-// FUNCTION: IMPERIALISM 0x005e7380
-undefined4 InitializeFpmathAmsgExitHandlerTable(void)
-{
-  return 0;
-}
-
-// ghidra_name ftol
-// ghidra_proto int __cdecl ftol(void)
-// FUNCTION: IMPERIALISM 0x005e73d0
-undefined4 ftol(void)
-{
-  return 0;
-}
-
-// ghidra_name RestoreSehFrameAndJumpIndirect
-// ghidra_proto void __cdecl RestoreSehFrameAndJumpIndirect(void)
-// FUNCTION: IMPERIALISM 0x005e7400
-undefined4 RestoreSehFrameAndJumpIndirect(void)
-{
-  return 0;
-}
-
-// ghidra_name AtomicLockUnlockAndJumpIndirect_A
-// ghidra_proto void __cdecl AtomicLockUnlockAndJumpIndirect_A(void)
-// FUNCTION: IMPERIALISM 0x005e7440
-undefined4 AtomicLockUnlockAndJumpIndirect_A(void)
-{
-  return 0;
-}
-
-// ghidra_name AtomicLockUnlockAndJumpIndirect_B
-// ghidra_proto void __cdecl AtomicLockUnlockAndJumpIndirect_B(void)
-// FUNCTION: IMPERIALISM 0x005e7450
-undefined4 AtomicLockUnlockAndJumpIndirect_B(void)
-{
-  return 0;
-}
-
-// ghidra_name AtomicLockUnlockAndJumpIndirect_C
-// ghidra_proto void __cdecl AtomicLockUnlockAndJumpIndirect_C(void)
-// FUNCTION: IMPERIALISM 0x005e7460
-undefined4 AtomicLockUnlockAndJumpIndirect_C(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_RtlUnwind_At005e7470
 // ghidra_proto void __cdecl WrapperFor_RtlUnwind_At005e7470(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e7470
@@ -3339,22 +3227,6 @@ undefined4 FreeDataChain(void)
   return 0;
 }
 
-// ghidra_name TIndexAndRankList::CPtrArray
-// ghidra_proto void __thiscall CPtrArray(void)
-// FUNCTION: IMPERIALISM 0x00601baa
-undefined4 CPtrArray(void)
-{
-  return 0;
-}
-
-// ghidra_name TIndexAndRankList::DestructCObArrayAndMaybeFree
-// ghidra_proto void * __thiscall DestructCObArrayAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00601bc1
-undefined4 DestructCObArrayAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name CObArray::DestructCObArray
 // ghidra_proto void __cdecl DestructCObArray(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x00601bdd
@@ -3391,14 +3263,6 @@ undefined4 InsertAt(void)
 // ghidra_proto void __cdecl RemoveAt(void)
 // FUNCTION: IMPERIALISM 0x00601e9f
 undefined4 RemoveAt(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructCPtrListAndMaybeFree
-// ghidra_proto void * __thiscall DestructCPtrListAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00601f40
-undefined4 DestructCPtrListAndMaybeFree(void)
 {
   return 0;
 }
@@ -3999,6 +3863,142 @@ undefined4 RunMfcThreadMessageLoopCore(void)
 // ghidra_proto bool __thiscall OnIdle_6064b0(void * pThreadState, int lockMode)
 // FUNCTION: IMPERIALISM 0x006064b0
 undefined4 OnIdle_6064b0(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchMfcMsgFilterHookProc
+// ghidra_proto int __cdecl DispatchMfcMsgFilterHookProc(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x0060674a
+undefined4 DispatchMfcMsgFilterHookProc(void)
+{
+  return 0;
+}
+
+// ghidra_name CWinApp::ProcessMessageFilter
+// ghidra_proto void __thiscall ProcessMessageFilter(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006067a2
+undefined4 ProcessMessageFilter(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_GetOrCreateCWndFromHandle_At00606934
+// ghidra_proto void * __cdecl WrapperFor_GetOrCreateCWndFromHandle_At00606934(void)
+// FUNCTION: IMPERIALISM 0x00606934
+undefined4 WrapperFor_GetOrCreateCWndFromHandle_At00606934(void)
+{
+  return 0;
+}
+
+// ghidra_name PumpMessage
+// ghidra_proto int __fastcall PumpMessage(void)
+// FUNCTION: IMPERIALISM 0x0060694f
+undefined4 PumpMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name CCmdTarget
+// ghidra_proto void __fastcall CCmdTarget(void * pThis)
+// FUNCTION: IMPERIALISM 0x0060698f
+undefined4 CCmdTarget(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EstablishSehFrameProlog_At006069cb
+// ghidra_proto void __cdecl WrapperFor_EstablishSehFrameProlog_At006069cb(void)
+// FUNCTION: IMPERIALISM 0x006069cb
+undefined4 WrapperFor_EstablishSehFrameProlog_At006069cb(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
+// ghidra_proto void __thiscall DispatchCommandToAfxMessageMapChain(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00606a07
+undefined4 DispatchCommandToAfxMessageMapChain(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchCmdMsg
+// ghidra_proto uint __cdecl DispatchCmdMsg(void)
+// FUNCTION: IMPERIALISM 0x00606b1f
+undefined4 DispatchCmdMsg(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot07_Target
+// ghidra_proto void * __stdcall TMacViewMgr_Slot07_Target(void)
+// FUNCTION: IMPERIALISM 0x00606c4e
+undefined4 TMacViewMgr_Slot07_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot08_Target
+// ghidra_proto void * __stdcall TMacViewMgr_Slot08_Target(void)
+// FUNCTION: IMPERIALISM 0x00606c54
+undefined4 TMacViewMgr_Slot08_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot09_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot09_Target(void)
+// FUNCTION: IMPERIALISM 0x00606c59
+undefined4 TMacViewMgr_Slot09_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot10_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot10_Target(void)
+// FUNCTION: IMPERIALISM 0x00606c5c
+undefined4 TMacViewMgr_Slot10_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot11_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot11_Target(void)
+// FUNCTION: IMPERIALISM 0x00606c5f
+undefined4 TMacViewMgr_Slot11_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name RestoreWaitCursor
+// ghidra_proto void * __cdecl RestoreWaitCursor(void)
+// FUNCTION: IMPERIALISM 0x00606c91
+undefined4 RestoreWaitCursor(void)
+{
+  return 0;
+}
+
+// ghidra_name GetCCmdTargetMessageMap
+// ghidra_proto void * __thiscall GetCCmdTargetMessageMap(void)
+// FUNCTION: IMPERIALISM 0x00606ca6
+undefined4 GetCCmdTargetMessageMap(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot14_Target
+// ghidra_proto void * __cdecl TMacViewMgr_Slot14_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cac
+undefined4 TMacViewMgr_Slot14_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot17_Target
+// ghidra_proto void * __cdecl TMacViewMgr_Slot17_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cb2
+undefined4 TMacViewMgr_Slot17_Target(void)
 {
   return 0;
 }

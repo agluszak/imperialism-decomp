@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055
-// ghidra_proto void __cdecl TNetGameSelectPicture_VtblSlot055(void)
-// FUNCTION: IMPERIALISM 0x004073e2
-undefined4 TNetGameSelectPicture_VtblSlot055(void)
-{
-  return 0;
-}
-
-// ghidra_name TNominationView::thunk_ConstructTNominationViewBaseState_At004073e7
-// ghidra_proto void __thiscall thunk_ConstructTNominationViewBaseState_At004073e7(void)
-// FUNCTION: IMPERIALISM 0x004073e7
-undefined4 thunk_ConstructTNominationViewBaseState_At004073e7(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot001
-// ghidra_proto void * __thiscall TNavyToolbarCluster_VtblSlot001(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004073ec
-undefined4 TNavyToolbarCluster_VtblSlot001(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount
 // ghidra_proto int __cdecl thunk_EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount(int tacticalContext, int tileIndex)
 // FUNCTION: IMPERIALISM 0x004073f1
@@ -2475,14 +2451,6 @@ undefined4 thunk_ReindexType5CellsAndRebuildRegionOverlays(void)
   return 0;
 }
 
-// ghidra_name thunk_ResetPtrListAndShrinkCapacity
-// ghidra_proto void __cdecl thunk_ResetPtrListAndShrinkCapacity(void)
-// FUNCTION: IMPERIALISM 0x00407da6
-undefined4 thunk_ResetPtrListAndShrinkCapacity(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivDescription::thunk_RenderCivilianTargetLegendVariantA_At00407db5
 // ghidra_proto void __thiscall thunk_RenderCivilianTargetLegendVariantA_At00407db5(void)
 // FUNCTION: IMPERIALISM 0x00407db5
@@ -3999,6 +3967,38 @@ undefined4 TIconSlider_VtblSlot104(void)
 // ghidra_proto short __cdecl thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
 // FUNCTION: IMPERIALISM 0x004083e6
 undefined4 thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
+{
+  return 0;
+}
+
+// ghidra_name TBattleReportView::thunk_GetTBattleReportViewClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTBattleReportViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004083eb
+undefined4 thunk_GetTBattleReportViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::thunk_RenderCityBuildingIcons
+// ghidra_proto void __thiscall thunk_RenderCityBuildingIcons(tagRECT * pTargetRect)
+// FUNCTION: IMPERIALISM 0x004083ff
+undefined4 thunk_RenderCityBuildingIcons(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyUnitLine::thunk_GetTArmyCheckBoxClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTArmyCheckBoxClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00408409
+undefined4 thunk_GetTArmyCheckBoxClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TScenarioChooser::thunk_DestructTScenarioChooserAndMaybeFree
+// ghidra_proto void __thiscall thunk_DestructTScenarioChooserAndMaybeFree(int commandTag, int payload)
+// FUNCTION: IMPERIALISM 0x0040840e
+undefined4 thunk_DestructTScenarioChooserAndMaybeFree(void)
 {
   return 0;
 }

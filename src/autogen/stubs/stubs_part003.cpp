@@ -3091,14 +3091,6 @@ undefined4 thunk_ConstructTTraderForeignMinister(void)
   return 0;
 }
 
-// ghidra_name thunk_ConstructTurnEventPacketBase
-// ghidra_proto void __thiscall thunk_ConstructTurnEventPacketBase(void)
-// FUNCTION: IMPERIALISM 0x00403d5f
-undefined4 thunk_ConstructTurnEventPacketBase(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00415f90
 // ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void)
 // FUNCTION: IMPERIALISM 0x00403d69
@@ -3999,6 +3991,14 @@ undefined4 thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
 // ghidra_proto bool __fastcall thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(int tacticalSideState)
 // FUNCTION: IMPERIALISM 0x00404129
 undefined4 thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_EvaluateTacticalTileScore_CurrentTileMatchBonus
+// ghidra_proto int __cdecl thunk_EvaluateTacticalTileScore_CurrentTileMatchBonus(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x00404133
+undefined4 thunk_EvaluateTacticalTileScore_CurrentTileMatchBonus(void)
 {
   return 0;
 }

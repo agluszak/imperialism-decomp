@@ -3,142 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchMfcMsgFilterHookProc
-// ghidra_proto int __cdecl DispatchMfcMsgFilterHookProc(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x0060674a
-undefined4 DispatchMfcMsgFilterHookProc(void)
-{
-  return 0;
-}
-
-// ghidra_name CWinApp::ProcessMessageFilter
-// ghidra_proto void __thiscall ProcessMessageFilter(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006067a2
-undefined4 ProcessMessageFilter(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCWndFromHandle_At00606934
-// ghidra_proto void * __cdecl WrapperFor_GetOrCreateCWndFromHandle_At00606934(void)
-// FUNCTION: IMPERIALISM 0x00606934
-undefined4 WrapperFor_GetOrCreateCWndFromHandle_At00606934(void)
-{
-  return 0;
-}
-
-// ghidra_name PumpMessage
-// ghidra_proto int __fastcall PumpMessage(void)
-// FUNCTION: IMPERIALISM 0x0060694f
-undefined4 PumpMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name CCmdTarget
-// ghidra_proto void __fastcall CCmdTarget(void * pThis)
-// FUNCTION: IMPERIALISM 0x0060698f
-undefined4 CCmdTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EstablishSehFrameProlog_At006069cb
-// ghidra_proto void __cdecl WrapperFor_EstablishSehFrameProlog_At006069cb(void)
-// FUNCTION: IMPERIALISM 0x006069cb
-undefined4 WrapperFor_EstablishSehFrameProlog_At006069cb(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
-// ghidra_proto void __thiscall DispatchCommandToAfxMessageMapChain(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x00606a07
-undefined4 DispatchCommandToAfxMessageMapChain(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchCmdMsg
-// ghidra_proto uint __cdecl DispatchCmdMsg(void)
-// FUNCTION: IMPERIALISM 0x00606b1f
-undefined4 DispatchCmdMsg(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot07_Target
-// ghidra_proto void * __stdcall TMacViewMgr_Slot07_Target(void)
-// FUNCTION: IMPERIALISM 0x00606c4e
-undefined4 TMacViewMgr_Slot07_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot08_Target
-// ghidra_proto void * __stdcall TMacViewMgr_Slot08_Target(void)
-// FUNCTION: IMPERIALISM 0x00606c54
-undefined4 TMacViewMgr_Slot08_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot09_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot09_Target(void)
-// FUNCTION: IMPERIALISM 0x00606c59
-undefined4 TMacViewMgr_Slot09_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot10_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot10_Target(void)
-// FUNCTION: IMPERIALISM 0x00606c5c
-undefined4 TMacViewMgr_Slot10_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot11_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot11_Target(void)
-// FUNCTION: IMPERIALISM 0x00606c5f
-undefined4 TMacViewMgr_Slot11_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name RestoreWaitCursor
-// ghidra_proto void * __cdecl RestoreWaitCursor(void)
-// FUNCTION: IMPERIALISM 0x00606c91
-undefined4 RestoreWaitCursor(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCCmdTargetMessageMap
-// ghidra_proto void * __thiscall GetCCmdTargetMessageMap(void)
-// FUNCTION: IMPERIALISM 0x00606ca6
-undefined4 GetCCmdTargetMessageMap(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot14_Target
-// ghidra_proto void * __cdecl TMacViewMgr_Slot14_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cac
-undefined4 TMacViewMgr_Slot14_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot17_Target
-// ghidra_proto void * __cdecl TMacViewMgr_Slot17_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cb2
-undefined4 TMacViewMgr_Slot17_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_Slot16_Target
 // ghidra_proto void * __cdecl TMacViewMgr_Slot16_Target(void)
 // FUNCTION: IMPERIALISM 0x00606cb8
@@ -3999,6 +3863,142 @@ undefined4 CreateWindowWithOptionalMenuResource(void)
 // ghidra_proto void * __cdecl CreateView(void)
 // FUNCTION: IMPERIALISM 0x0061cea3
 undefined4 CreateView(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::WrapperFor_CreateView_At0061cf1b
+// ghidra_proto void * __cdecl WrapperFor_CreateView_At0061cf1b(void)
+// FUNCTION: IMPERIALISM 0x0061cf1b
+undefined4 WrapperFor_CreateView_At0061cf1b(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d
+// ghidra_proto void __stdcall WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0061cf3d
+undefined4 WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(void)
+{
+  return 0;
+}
+
+// ghidra_name OnCreateHelper
+// ghidra_proto void __stdcall OnCreateHelper(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0061cf4c
+undefined4 OnCreateHelper(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::LoadFrame
+// ghidra_proto bool __thiscall LoadFrame(uint resourceId, uint defaultStyle, void * pParentWnd, void * pCreateContext)
+// FUNCTION: IMPERIALISM 0x0061d01e
+undefined4 LoadFrame(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback
+// ghidra_proto void __cdecl SetWindowMenuFromParamOrActiveChildOrFallback(int arg1)
+// FUNCTION: IMPERIALISM 0x0061d109
+undefined4 SetWindowMenuFromParamOrActiveChildOrFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name OnDestroy_61d30e
+// ghidra_proto void __fastcall OnDestroy_61d30e(void)
+// FUNCTION: IMPERIALISM 0x0061d30e
+undefined4 OnDestroy_61d30e(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot005
+// ghidra_proto int __thiscall TMacViewMgr_VtblSlot005(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x0061d37e
+undefined4 TMacViewMgr_VtblSlot005(void)
+{
+  return 0;
+}
+
+// ghidra_name OnActivate
+// ghidra_proto void __thiscall OnActivate(void)
+// FUNCTION: IMPERIALISM 0x0061d4b8
+undefined4 OnActivate(void)
+{
+  return 0;
+}
+
+// ghidra_name OnNcActivate
+// ghidra_proto int __cdecl OnNcActivate(void)
+// FUNCTION: IMPERIALISM 0x0061d58c
+undefined4 OnNcActivate(void)
+{
+  return 0;
+}
+
+// ghidra_name OnSysCommand
+// ghidra_proto void __thiscall OnSysCommand(void)
+// FUNCTION: IMPERIALISM 0x0061d5c3
+undefined4 OnSysCommand(void)
+{
+  return 0;
+}
+
+// ghidra_name OnQueryEndSession
+// ghidra_proto void * __cdecl OnQueryEndSession(void)
+// FUNCTION: IMPERIALISM 0x0061d6d5
+undefined4 OnQueryEndSession(void)
+{
+  return 0;
+}
+
+// ghidra_name OnDDEInitiate
+// ghidra_proto int __cdecl OnDDEInitiate(void)
+// FUNCTION: IMPERIALISM 0x0061d72a
+undefined4 OnDDEInitiate(void)
+{
+  return 0;
+}
+
+// ghidra_name OnDDEExecute
+// ghidra_proto int __thiscall OnDDEExecute(void)
+// FUNCTION: IMPERIALISM 0x0061d7e5
+undefined4 OnDDEExecute(void)
+{
+  return 0;
+}
+
+// ghidra_name GetObjectValueAtOffset98
+// ghidra_proto int __fastcall GetObjectValueAtOffset98(void)
+// FUNCTION: IMPERIALISM 0x0061d89b
+undefined4 GetObjectValueAtOffset98(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917
+// ghidra_proto uint __thiscall WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
+// FUNCTION: IMPERIALISM 0x0061d917
+undefined4 WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
+{
+  return 0;
+}
+
+// ghidra_name OnMenuSelect
+// ghidra_proto void __thiscall OnMenuSelect(void)
+// FUNCTION: IMPERIALISM 0x0061db87
+undefined4 OnMenuSelect(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot051
+// ghidra_proto void __thiscall TMacViewMgr_VtblSlot051(uint stringResourceId)
+// FUNCTION: IMPERIALISM 0x0061dc76
+undefined4 TMacViewMgr_VtblSlot051(void)
 {
   return 0;
 }

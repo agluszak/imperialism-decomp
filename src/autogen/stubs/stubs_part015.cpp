@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name NormalizeRuntimeCredentialNameToken
-// ghidra_proto void __cdecl NormalizeRuntimeCredentialNameToken(void)
-// FUNCTION: IMPERIALISM 0x00508c50
-undefined4 NormalizeRuntimeCredentialNameToken(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At00508ee0
-// ghidra_proto void __cdecl WrapperFor_ftol_At00508ee0(void)
-// FUNCTION: IMPERIALISM 0x00508ee0
-undefined4 WrapperFor_ftol_At00508ee0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildHexNeighborHighlightPolygonForTile
-// ghidra_proto void __cdecl BuildHexNeighborHighlightPolygonForTile(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00508f30
-undefined4 BuildHexNeighborHighlightPolygonForTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::CreateTMacViewMgrInstance
-// ghidra_proto void * __cdecl CreateTMacViewMgrInstance(void)
-// FUNCTION: IMPERIALISM 0x00509c00
-undefined4 CreateTMacViewMgrInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::GetTMacViewMgrClassNamePointer
-// ghidra_proto void * __cdecl GetTMacViewMgrClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00509c80
-undefined4 GetTMacViewMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructStrategicMapViewSystem
-// ghidra_proto void __thiscall ConstructStrategicMapViewSystem(void)
-// FUNCTION: IMPERIALISM 0x00509ca0
-undefined4 ConstructStrategicMapViewSystem(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::DestructTMacViewMgrAndMaybeFree
-// ghidra_proto uint __thiscall DestructTMacViewMgrAndMaybeFree(short arg1)
-// FUNCTION: IMPERIALISM 0x00509e10
-undefined4 DestructTMacViewMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00509e30
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00509e30(void)
-// FUNCTION: IMPERIALISM 0x00509e30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00509e30(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60
-// ghidra_proto void __cdecl WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(void)
-// FUNCTION: IMPERIALISM 0x00509e60
-undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeStrategicMapViewSystem
-// ghidra_proto void __cdecl InitializeStrategicMapViewSystem(void)
-// FUNCTION: IMPERIALISM 0x00509f20
-undefined4 InitializeStrategicMapViewSystem(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyStrategicMapViewSystemResources
-// ghidra_proto void __cdecl DestroyStrategicMapViewSystemResources(void)
-// FUNCTION: IMPERIALISM 0x00509f70
-undefined4 DestroyStrategicMapViewSystemResources(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles
-// ghidra_proto void __thiscall ResetNationStateUiAndRefreshCityCapabilityHandles(void)
-// FUNCTION: IMPERIALISM 0x0050a140
-undefined4 ResetNationStateUiAndRefreshCityCapabilityHandles(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180
-// ghidra_proto void __cdecl WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
-// FUNCTION: IMPERIALISM 0x0050a180
-undefined4 WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildStrategicMapCommodityIconAtlasFrom700To722
-// ghidra_proto void __cdecl BuildStrategicMapCommodityIconAtlasFrom700To722(void)
-// FUNCTION: IMPERIALISM 0x0050a1a0
-undefined4 BuildStrategicMapCommodityIconAtlasFrom700To722(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadStrategicMapUnitIconAtlas750
 // ghidra_proto void __cdecl LoadStrategicMapUnitIconAtlas750(void)
 // FUNCTION: IMPERIALISM 0x0050a3b0
@@ -3999,6 +3887,118 @@ undefined4 ReturnFalseMissionVtableSlot60(void)
 // ghidra_proto void __cdecl ReturnFalseMissionVtableSlot64(void)
 // FUNCTION: IMPERIALISM 0x00534df0
 undefined4 ReturnFalseMissionVtableSlot64(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionConstantFloatSlot68
+// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot68(void)
+// FUNCTION: IMPERIALISM 0x00534e10
+undefined4 ReturnMissionConstantFloatSlot68(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionConstantFloatSlot6C
+// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot6C(void)
+// FUNCTION: IMPERIALISM 0x00534e30
+undefined4 ReturnMissionConstantFloatSlot6C(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionConstantFloatSlot74
+// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot74(void)
+// FUNCTION: IMPERIALISM 0x00534e50
+undefined4 ReturnMissionConstantFloatSlot74(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionConstantFloatSlot70
+// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot70(void)
+// FUNCTION: IMPERIALISM 0x00534e70
+undefined4 ReturnMissionConstantFloatSlot70(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionConstantFloatSlot7C
+// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot7C(void)
+// FUNCTION: IMPERIALISM 0x00534e90
+undefined4 ReturnMissionConstantFloatSlot7C(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionConstantFloatSlot78
+// ghidra_proto void __cdecl ReturnMissionConstantFloatSlot78(void)
+// FUNCTION: IMPERIALISM 0x00534eb0
+undefined4 ReturnMissionConstantFloatSlot78(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot84
+// ghidra_proto void __cdecl NoOpMissionVtableSlot84(void)
+// FUNCTION: IMPERIALISM 0x00534ed0
+undefined4 NoOpMissionVtableSlot84(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot80Ret8
+// ghidra_proto void __cdecl NoOpMissionVtableSlot80Ret8(void)
+// FUNCTION: IMPERIALISM 0x00534ef0
+undefined4 NoOpMissionVtableSlot80Ret8(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot8CRet8
+// ghidra_proto void __cdecl NoOpMissionVtableSlot8CRet8(void)
+// FUNCTION: IMPERIALISM 0x00534f10
+undefined4 NoOpMissionVtableSlot8CRet8(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot88Ret8
+// ghidra_proto void __cdecl NoOpMissionVtableSlot88Ret8(void)
+// FUNCTION: IMPERIALISM 0x00534f30
+undefined4 NoOpMissionVtableSlot88Ret8(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot90Ret4
+// ghidra_proto void __cdecl NoOpMissionVtableSlot90Ret4(void)
+// FUNCTION: IMPERIALISM 0x00534f50
+undefined4 NoOpMissionVtableSlot90Ret4(void)
+{
+  return 0;
+}
+
+// ghidra_name SetMissionField10FromArgSlot94
+// ghidra_proto void __cdecl SetMissionField10FromArgSlot94(void)
+// FUNCTION: IMPERIALISM 0x00534f70
+undefined4 SetMissionField10FromArgSlot94(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot98
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot98(void)
+// FUNCTION: IMPERIALISM 0x00534f90
+undefined4 ReturnFalseMissionVtableSlot98(void)
+{
+  return 0;
+}
+
+// ghidra_name TMission::GetTMissionClassNamePointer
+// ghidra_proto void * __cdecl GetTMissionClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00534fb0
+undefined4 GetTMissionClassNamePointer(void)
 {
   return 0;
 }

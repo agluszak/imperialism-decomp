@@ -4,7 +4,8 @@ targets:
     source_root: .
     hash:
       sha256: 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691
-    data_sources: []
+    data_sources:
+      - config/symbols.csv
     encoding:
     ghidra:
       ignore_types: []

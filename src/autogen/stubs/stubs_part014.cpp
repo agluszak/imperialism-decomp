@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SumDiplomacyGrantEntriesMaskedToValueBits
-// ghidra_proto void __cdecl SumDiplomacyGrantEntriesMaskedToValueBits(void)
-// FUNCTION: IMPERIALISM 0x004e3620
-undefined4 SumDiplomacyGrantEntriesMaskedToValueBits(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::CreateTMinorInstance
-// ghidra_proto void * __cdecl CreateTMinorInstance(void)
-// FUNCTION: IMPERIALISM 0x004e3660
-undefined4 CreateTMinorInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::GetTMinorClassNamePointer
-// ghidra_proto void * __cdecl GetTMinorClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004e36f0
-undefined4 GetTMinorClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructSecondaryNationState
-// ghidra_proto void __cdecl ConstructSecondaryNationState(void)
-// FUNCTION: IMPERIALISM 0x004e3710
-undefined4 ConstructSecondaryNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::DestructTMinorAndMaybeFree
-// ghidra_proto void * __thiscall DestructTMinorAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004e3790
-undefined4 DestructTMinorAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0
-// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0(void)
-// FUNCTION: IMPERIALISM 0x004e37c0
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeSecondaryNationStateAndSelectHomeTile
-// ghidra_proto void __fastcall InitializeSecondaryNationStateAndSelectHomeTile(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x004e3830
-undefined4 InitializeSecondaryNationStateAndSelectHomeTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::DeserializeDiplomacyNationStateFromStream
-// ghidra_proto void __thiscall DeserializeDiplomacyNationStateFromStream(int arg1)
-// FUNCTION: IMPERIALISM 0x004e41c0
-undefined4 DeserializeDiplomacyNationStateFromStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::SerializeDiplomacyNationStateToStream
-// ghidra_proto void __thiscall SerializeDiplomacyNationStateToStream(void)
-// FUNCTION: IMPERIALISM 0x004e4390
-undefined4 SerializeDiplomacyNationStateToStream(void)
-{
-  return 0;
-}
-
-// ghidra_name IsPolicyCodeInSpecialNationPolicySet
-// ghidra_proto void __cdecl IsPolicyCodeInSpecialNationPolicySet(void)
-// FUNCTION: IMPERIALISM 0x004e45f0
-undefined4 IsPolicyCodeInSpecialNationPolicySet(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004e4630
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e4630(void)
-// FUNCTION: IMPERIALISM 0x004e4630
-undefined4 OrphanLeaf_NoCall_Ins07_004e4630(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins03_004e4660
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins03_004e4660(void)
-// FUNCTION: IMPERIALISM 0x004e4660
-undefined4 OrphanLeaf_NoCall_Ins03_004e4660(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins03_004e4680
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins03_004e4680(void)
-// FUNCTION: IMPERIALISM 0x004e4680
-undefined4 OrphanLeaf_NoCall_Ins03_004e4680(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::RebuildDiplomacyEconomicPressureFromMapState
-// ghidra_proto void __thiscall RebuildDiplomacyEconomicPressureFromMapState(void)
-// FUNCTION: IMPERIALISM 0x004e46a0
-undefined4 RebuildDiplomacyEconomicPressureFromMapState(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_ftol_At004e49b0
 // ghidra_proto void __fastcall Helper_Uses_ftol_At004e49b0(int ecxArg, int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004e49b0
@@ -3999,6 +3887,118 @@ undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
 // ghidra_proto void __cdecl ShowCountrySelectionPromptAndReturnNationId(void)
 // FUNCTION: IMPERIALISM 0x00508910
 undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
+{
+  return 0;
+}
+
+// ghidra_name NormalizeRuntimeCredentialNameToken
+// ghidra_proto void __cdecl NormalizeRuntimeCredentialNameToken(void)
+// FUNCTION: IMPERIALISM 0x00508c50
+undefined4 NormalizeRuntimeCredentialNameToken(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00508ee0
+// ghidra_proto void __cdecl WrapperFor_ftol_At00508ee0(void)
+// FUNCTION: IMPERIALISM 0x00508ee0
+undefined4 WrapperFor_ftol_At00508ee0(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildHexNeighborHighlightPolygonForTile
+// ghidra_proto void __cdecl BuildHexNeighborHighlightPolygonForTile(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00508f30
+undefined4 BuildHexNeighborHighlightPolygonForTile(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::CreateTMacViewMgrInstance
+// ghidra_proto void * __cdecl CreateTMacViewMgrInstance(void)
+// FUNCTION: IMPERIALISM 0x00509c00
+undefined4 CreateTMacViewMgrInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::GetTMacViewMgrClassNamePointer
+// ghidra_proto void * __cdecl GetTMacViewMgrClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00509c80
+undefined4 GetTMacViewMgrClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name ConstructStrategicMapViewSystem
+// ghidra_proto void __thiscall ConstructStrategicMapViewSystem(void)
+// FUNCTION: IMPERIALISM 0x00509ca0
+undefined4 ConstructStrategicMapViewSystem(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::DestructTMacViewMgrAndMaybeFree
+// ghidra_proto uint __thiscall DestructTMacViewMgrAndMaybeFree(short arg1)
+// FUNCTION: IMPERIALISM 0x00509e10
+undefined4 DestructTMacViewMgrAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00509e30
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At00509e30(void)
+// FUNCTION: IMPERIALISM 0x00509e30
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00509e30(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60
+// ghidra_proto void __cdecl WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(void)
+// FUNCTION: IMPERIALISM 0x00509e60
+undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeStrategicMapViewSystem
+// ghidra_proto void __cdecl InitializeStrategicMapViewSystem(void)
+// FUNCTION: IMPERIALISM 0x00509f20
+undefined4 InitializeStrategicMapViewSystem(void)
+{
+  return 0;
+}
+
+// ghidra_name DestroyStrategicMapViewSystemResources
+// ghidra_proto void __cdecl DestroyStrategicMapViewSystemResources(void)
+// FUNCTION: IMPERIALISM 0x00509f70
+undefined4 DestroyStrategicMapViewSystemResources(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles
+// ghidra_proto void __thiscall ResetNationStateUiAndRefreshCityCapabilityHandles(void)
+// FUNCTION: IMPERIALISM 0x0050a140
+undefined4 ResetNationStateUiAndRefreshCityCapabilityHandles(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180
+// ghidra_proto void __cdecl WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
+// FUNCTION: IMPERIALISM 0x0050a180
+undefined4 WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildStrategicMapCommodityIconAtlasFrom700To722
+// ghidra_proto void __cdecl BuildStrategicMapCommodityIconAtlasFrom700To722(void)
+// FUNCTION: IMPERIALISM 0x0050a1a0
+undefined4 BuildStrategicMapCommodityIconAtlasFrom700To722(void)
 {
   return 0;
 }

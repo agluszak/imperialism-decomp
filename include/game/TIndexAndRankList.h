@@ -1,0 +1,28 @@
+#pragma once
+
+#include "decomp_types.h"
+
+class TIndexAndRankList {
+ public:
+  virtual void slot00() {}
+  virtual void slot04() {}
+  virtual void slot08() {}
+  virtual void slot0c() {}
+  virtual void slot10() {}
+  virtual void slot14() {}
+  virtual void slot18() {}
+  virtual void ResetPtrListRecordsSlot1C() {}
+  virtual void slot20() {}
+  virtual void slot24() {}
+  virtual void ShrinkCapacitySlot28() {}
+
+  void** entries;
+  int count;
+  int capacity;
+  int growBy;
+
+  void CPtrArray();
+  void* DestructCObArrayAndMaybeFree(byte freeSelfFlag);
+};
+
+typedef char TIndexAndRankListSizeMustMatch[(sizeof(TIndexAndRankList) == 0x14) ? 1 : -1];
