@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnFalseMissionVtableSlot64
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot64(void)
-// FUNCTION: IMPERIALISM 0x00534df0
-undefined4 ReturnFalseMissionVtableSlot64(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnMissionConstantFloatSlot68
 // ghidra_proto void __cdecl ReturnMissionConstantFloatSlot68(void)
 // FUNCTION: IMPERIALISM 0x00534e10
@@ -3999,6 +3991,14 @@ undefined4 DeserializeNavyOrderSelectionStateFromStream(void)
 // ghidra_proto void __cdecl SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
 // FUNCTION: IMPERIALISM 0x00551850
 undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
+{
+  return 0;
+}
+
+// ghidra_name FindCumulativeWeightBucketIndex
+// ghidra_proto int __cdecl FindCumulativeWeightBucketIndex(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005519d0
+undefined4 FindCumulativeWeightBucketIndex(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name FindCumulativeWeightBucketIndex
-// ghidra_proto int __cdecl FindCumulativeWeightBucketIndex(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005519d0
-undefined4 FindCumulativeWeightBucketIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner
 // ghidra_proto short __cdecl AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner(void)
 // FUNCTION: IMPERIALISM 0x00551a00
@@ -3999,6 +3991,14 @@ undefined4 DestructTNoHilitePictureAndMaybeFree(void)
 // ghidra_proto void * __cdecl CreateTBackgroundPictureInstance(void)
 // FUNCTION: IMPERIALISM 0x00572bd0
 undefined4 CreateTBackgroundPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TBackgroundPicture::GetTBackgroundPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTBackgroundPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00572c60
+undefined4 GetTBackgroundPictureClassNamePointer(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CreateView
-// ghidra_proto void * __cdecl CreateView(void)
-// FUNCTION: IMPERIALISM 0x0061cea3
-undefined4 CreateView(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::WrapperFor_CreateView_At0061cf1b
 // ghidra_proto void * __cdecl WrapperFor_CreateView_At0061cf1b(void)
 // FUNCTION: IMPERIALISM 0x0061cf1b
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006312e9(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063130f(void)
 // FUNCTION: IMPERIALISM 0x0063130f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063130f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063132f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063132f(void)
+// FUNCTION: IMPERIALISM 0x0063132f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063132f(void)
 {
   return 0;
 }

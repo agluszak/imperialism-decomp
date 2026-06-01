@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f(void)
-// FUNCTION: IMPERIALISM 0x0063739f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006373d0
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006373d0(void)
 // FUNCTION: IMPERIALISM 0x006373d0
@@ -3999,6 +3991,14 @@ undefined4 DispatchHandleMapLookupWithReadPtrProbe(void)
 // ghidra_proto undefined __fastcall g_Build_Map_Order_LookupTable_00695794(byte * param_1, byte * param_2)
 // FUNCTION: IMPERIALISM 0x00695794
 undefined4 g_Build_Map_Order_LookupTable_00695794(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeWinmmImportBindings
+// ghidra_proto void __cdecl InitializeWinmmImportBindings(void)
+// FUNCTION: IMPERIALISM 0x00707081
+undefined4 InitializeWinmmImportBindings(void)
 {
   return 0;
 }

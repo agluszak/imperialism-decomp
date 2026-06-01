@@ -73,6 +73,9 @@ struct DiplomacyTurnStateManager {
   char IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot, int targetNationSlot);
   char HasAnyWarRelationForNation(int sourceNationSlot);
   char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot);
+  char ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNationSlot,
+                                                                int targetNationSlot,
+                                                                int actionCode);
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
   int GetNationPairDiplomacyStandingTierCode(int sourceNationSlot, int targetNationSlot);
   short GetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot);
@@ -242,6 +245,150 @@ char DiplomacyTurnStateManager::HasAnyWarRelationTurnStampOutOfDateForNation(int
     targetNationSlot++;
   } while (targetNationSlot < 0x17);
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004ef700
+char DiplomacyTurnStateManager::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
+    int sourceNationSlot, int targetNationSlot, int actionCode) {
+  char isValid = 0;
+  short source = static_cast<short>(sourceNationSlot);
+  short target = static_cast<short>(targetNationSlot);
+  if (target == source) {
+    ReadGlobalDiplomacyTurnStateManager()->proposalArrayMode18d8 = 0xe;
+    return isValid;
+  }
+
+  void* targetTerrain = ReadPointerTableSlot(kAddrTerrainTypeDescriptorTable, target);
+  short targetTerrainOwner = *reinterpret_cast<short*>(reinterpret_cast<char*>(targetTerrain) + 0xe);
+  if (targetTerrainOwner != -1) {
+    if (targetTerrainOwner >= 200) {
+      proposalArrayMode18d8 = 0xc;
+      return isValid;
+    }
+    proposalArrayMode18d8 = 0xd;
+    return isValid;
+  }
+
+  int pairIndex = source * kNationSlotCount + target;
+  switch (actionCode) {
+  case 2:
+    if (relationSideEffectMatrix1402[pairIndex] != 2) {
+      proposalArrayMode18d8 = 1;
+      return isValid;
+    }
+    if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) != 0) {
+      proposalArrayMode18d8 = 2;
+      return isValid;
+    }
+    if (target < 7) {
+      proposalArrayMode18d8 = 0x12;
+      return isValid;
+    }
+    break;
+  case 3:
+    if (target > 6) {
+      proposalArrayMode18d8 = 3;
+      return isValid;
+    }
+    if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) != 0) {
+      proposalArrayMode18d8 = 2;
+      return isValid;
+    }
+    if (VCall_Diplomacy_GetRelationTierSlot70(this, sourceNationSlot, targetNationSlot) == 2) {
+      proposalArrayMode18d8 = 0x11;
+      return isValid;
+    }
+    break;
+  case 4:
+    if (relationSideEffectMatrix1402[pairIndex] != 2) {
+      proposalArrayMode18d8 = 1;
+      return isValid;
+    }
+    if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) != 0) {
+      proposalArrayMode18d8 = 2;
+      return isValid;
+    }
+    if (VCall_Diplomacy_GetRelationTierSlot70(this, sourceNationSlot, targetNationSlot) == 3) {
+      proposalArrayMode18d8 = 0x10;
+      return isValid;
+    }
+    if (target < 7) {
+      proposalArrayMode18d8 = 0xf;
+      return isValid;
+    }
+    break;
+  case 5:
+    if (VCall_Diplomacy_HasOutdatedWarRelationSlot48(this, sourceNationSlot, targetNationSlot) ==
+        0) {
+      proposalArrayMode18d8 = 5;
+      return isValid;
+    }
+    break;
+  case 6:
+    if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) != 0) {
+      proposalArrayMode18d8 = 6;
+      return isValid;
+    }
+    break;
+  case 7:
+  case 8:
+    if (relationSideEffectMatrix1402[pairIndex] < 2) {
+      proposalArrayMode18d8 = 1;
+      return isValid;
+    }
+    break;
+  case 9:
+  case 10:
+    if (relationSideEffectMatrix1402[pairIndex] == 0) {
+      proposalArrayMode18d8 = 7;
+      return isValid;
+    }
+    break;
+  case 11:
+    if (VCall_Diplomacy_GetRelationTierSlot70(this, sourceNationSlot, targetNationSlot) == 2) {
+      proposalArrayMode18d8 = 8;
+      return isValid;
+    }
+    break;
+  case 14:
+    if (relationSideEffectMatrix1402[pairIndex] != 0) {
+      proposalArrayMode18d8 = 9;
+      return isValid;
+    }
+    if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) != 0) {
+      proposalArrayMode18d8 = 2;
+      return isValid;
+    }
+    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(
+            ReadPointerTableSlot(kAddrNationStateTable, source)) +
+                                0x10) < 500) {
+      proposalArrayMode18d8 = 0x16;
+      return isValid;
+    }
+    break;
+  case 15:
+    if (relationSideEffectMatrix1402[pairIndex] == 0) {
+      proposalArrayMode18d8 = 0xa;
+      return isValid;
+    }
+    if (relationSideEffectMatrix1402[pairIndex] == 2) {
+      proposalArrayMode18d8 = 0xb;
+      return isValid;
+    }
+    if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) != 0) {
+      proposalArrayMode18d8 = 2;
+      return isValid;
+    }
+    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(
+            ReadPointerTableSlot(kAddrNationStateTable, source)) +
+                                0x10) < 5000) {
+      proposalArrayMode18d8 = 0x15;
+      return isValid;
+    }
+    break;
+  }
+  isValid = 1;
+  return isValid;
 }
 
 // FUNCTION: IMPERIALISM 0x004f09c0

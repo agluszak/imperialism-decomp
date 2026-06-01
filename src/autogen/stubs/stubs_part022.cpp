@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::OnIdle_6064b0
-// ghidra_proto bool __thiscall OnIdle_6064b0(void * pThreadState, int lockMode)
-// FUNCTION: IMPERIALISM 0x006064b0
-undefined4 OnIdle_6064b0(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchMfcMsgFilterHookProc
 // ghidra_proto int __cdecl DispatchMfcMsgFilterHookProc(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x0060674a
@@ -3999,6 +3991,14 @@ undefined4 PreCreateWindow_61cdb3(void)
 // ghidra_proto bool __thiscall CreateWindowWithOptionalMenuResource(void * windowClass, void * windowName, void * windowStyle, void * windowRect, void * parentWindow, int menuResourceId, char * menuResourceName, void * exStyle, void * createContext)
 // FUNCTION: IMPERIALISM 0x0061ce0b
 undefined4 CreateWindowWithOptionalMenuResource(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateView
+// ghidra_proto void * __cdecl CreateView(void)
+// FUNCTION: IMPERIALISM 0x0061cea3
+undefined4 CreateView(void)
 {
   return 0;
 }

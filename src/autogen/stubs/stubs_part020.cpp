@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTradeBidNationLineAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005bdaf0
-undefined4 DestructTTradeBidNationLineAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeBidNationView::CreateTTradeBidNationViewInstance
 // ghidra_proto void * __cdecl CreateTTradeBidNationViewInstance(void)
 // FUNCTION: IMPERIALISM 0x005bdb40
@@ -3999,6 +3991,14 @@ undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
 // ghidra_proto void __cdecl SehProlog_DeleteObjectHandle_Wrapper(void)
 // FUNCTION: IMPERIALISM 0x005e70ea
 undefined4 SehProlog_DeleteObjectHandle_Wrapper(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_memcmp_At005e713a
+// ghidra_proto int __cdecl WrapperFor_memcmp_At005e713a(void * _Buf1, void * _Buf2, size_t _Size)
+// FUNCTION: IMPERIALISM 0x005e713a
+undefined4 WrapperFor_memcmp_At005e713a(void)
 {
   return 0;
 }

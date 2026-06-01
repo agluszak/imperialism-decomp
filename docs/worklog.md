@@ -1344,3 +1344,20 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
    - `just stats`: avg similarity **3.31%**, aligned functions **107**.
+
+### Diplomacy action validator backend slot (2026-06-01, cont.)
+
+1. Promoted `0x004ef700` as `DiplomacyTurnStateManager::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int,int,int)`: stub -> **55.42%**.
+2. Corrected the old Ghidra model: the current project no longer has a function boundary at `0x004ef700`, and the stale autogen prototype says `void`, but bounded disassembly of the original shows an intentional `AL` contract. Failure exits write `proposalArrayMode18d8` reject codes and return `0`; the shared success exit returns `1`.
+3. Confirmed validator dependencies:
+   - target terrain descriptor owner/state at `g_apTerrainTypeDescriptorTable[target]+0x0e`
+   - relation side-effect matrix at `this+0x1402`
+   - manager slots `0x44`, `0x48`, `0x70`
+   - nation-state economy/treasury-like field at `g_apNationStates[source]+0x10`
+4. Moved `VCall_DiplomacyTurnState_ValidateActionSlot5C` ownership from `TDiplomacyMapView.cpp` to `diplomacy_state.cpp` in `config/vtable_slots.csv`.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x004ef700`: **55.42%**.
+   - UI caller guard: `just compare 0x004f5fb0` stayed **40.59%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.31%**, aligned functions **107**.

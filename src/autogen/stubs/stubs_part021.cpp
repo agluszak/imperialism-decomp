@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_memcmp_At005e713a
-// ghidra_proto int __cdecl WrapperFor_memcmp_At005e713a(void * _Buf1, void * _Buf2, size_t _Size)
-// FUNCTION: IMPERIALISM 0x005e713a
-undefined4 WrapperFor_memcmp_At005e713a(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_NoOpRuntimeCallback_005e717b
 // ghidra_proto void __cdecl thunk_NoOpRuntimeCallback_005e717b(void)
 // FUNCTION: IMPERIALISM 0x005e716d
@@ -3999,6 +3991,14 @@ undefined4 DeleteField24ObjectIfPresent_006063b8(void)
 // ghidra_proto void __fastcall RunMfcThreadMessageLoopCore(void)
 // FUNCTION: IMPERIALISM 0x006063cd
 undefined4 RunMfcThreadMessageLoopCore(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::OnIdle_6064b0
+// ghidra_proto bool __thiscall OnIdle_6064b0(void * pThreadState, int lockMode)
+// FUNCTION: IMPERIALISM 0x006064b0
+undefined4 OnIdle_6064b0(void)
 {
   return 0;
 }

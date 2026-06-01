@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ApplyTacticalCursorModeProfile3_ClassAware
-// ghidra_proto void __fastcall ApplyTacticalCursorModeProfile3_ClassAware(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x0059ce90
-undefined4 ApplyTacticalCursorModeProfile3_ClassAware(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTacticalCursorModeProfile4_ClassAware
 // ghidra_proto void __fastcall ApplyTacticalCursorModeProfile4_ClassAware(int tacticalSide)
 // FUNCTION: IMPERIALISM 0x0059d020
@@ -3999,6 +3991,14 @@ undefined4 GetTTradeBidNationLineClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTTradeBidNationLineBaseState(void)
 // FUNCTION: IMPERIALISM 0x005bda20
 undefined4 ConstructTTradeBidNationLineBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTradeBidNationLineAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005bdaf0
+undefined4 DestructTTradeBidNationLineAndMaybeFree(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ShowCountrySelectionPromptAndReturnNationId
-// ghidra_proto void __cdecl ShowCountrySelectionPromptAndReturnNationId(void)
-// FUNCTION: IMPERIALISM 0x00508910
-undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
-{
-  return 0;
-}
-
 // ghidra_name NormalizeRuntimeCredentialNameToken
 // ghidra_proto void __cdecl NormalizeRuntimeCredentialNameToken(void)
 // FUNCTION: IMPERIALISM 0x00508c50
@@ -3999,6 +3991,14 @@ undefined4 ReturnZeroMissionVtableSlot5C(void)
 // ghidra_proto void __cdecl ReturnFalseMissionVtableSlot60(void)
 // FUNCTION: IMPERIALISM 0x00534dd0
 undefined4 ReturnFalseMissionVtableSlot60(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot64
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot64(void)
+// FUNCTION: IMPERIALISM 0x00534df0
+undefined4 ReturnFalseMissionVtableSlot64(void)
 {
   return 0;
 }

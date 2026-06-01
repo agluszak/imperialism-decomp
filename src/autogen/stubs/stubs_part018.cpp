@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TBackgroundPicture::GetTBackgroundPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTBackgroundPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00572c60
-undefined4 GetTBackgroundPictureClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TBackgroundPicture::ConstructTBackgroundPictureBaseState
 // ghidra_proto void * __thiscall ConstructTBackgroundPictureBaseState(void)
 // FUNCTION: IMPERIALISM 0x00572c80
@@ -3999,6 +3991,14 @@ undefined4 IterateLinkedListCursorEntries_0059cc70(void)
 // ghidra_proto void __cdecl ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
 // FUNCTION: IMPERIALISM 0x0059cd00
 undefined4 ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTacticalCursorModeProfile3_ClassAware
+// ghidra_proto void __fastcall ApplyTacticalCursorModeProfile3_ClassAware(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059ce90
+undefined4 ApplyTacticalCursorModeProfile3_ClassAware(void)
 {
   return 0;
 }

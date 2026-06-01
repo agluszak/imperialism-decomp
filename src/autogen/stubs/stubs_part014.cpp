@@ -1403,14 +1403,6 @@ undefined4 IsNationSlotInPrimaryGroupB(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
-// ghidra_proto void __thiscall ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNationSlot, int targetNationSlot, int eProposalCode)
-// FUNCTION: IMPERIALISM 0x004ef700
-undefined4 ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation
 // ghidra_proto void __thiscall HasAsymmetricWarRelationForPrimaryNation(void)
 // FUNCTION: IMPERIALISM 0x004efc30
@@ -3999,6 +3991,14 @@ undefined4 FreeNestedPointerTableRowsAndResetDimensions(void)
 // ghidra_proto void __cdecl LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
 // FUNCTION: IMPERIALISM 0x00508800
 undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name ShowCountrySelectionPromptAndReturnNationId
+// ghidra_proto void __cdecl ShowCountrySelectionPromptAndReturnNationId(void)
+// FUNCTION: IMPERIALISM 0x00508910
+undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
 {
   return 0;
 }
