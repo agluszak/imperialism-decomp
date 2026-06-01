@@ -76,3 +76,4 @@ src/game/TGreatPower.cpp|VCall_SecondaryState_CallSlot4C|void|0x4C / 4|int,int|h
 src/game/TGreatPower.cpp|VCall_Message_AppendWordSlot78|void|0x78 / 4|const void*|high|message append word
 src/game/TGreatPower.cpp|VCall_Message_AppendBytesSlot78|void|0x78 / 4|const void*,int|high|message append bytes
 src/game/TGreatPower.cpp|VCall_Message_WriteEntrySlotB4|void|0xB4 / 4|int,int|high|message write entry
+src/game/TView.cpp|VCall_TView_DeleteSelfSlot01|void|1|int|high|TView delete self

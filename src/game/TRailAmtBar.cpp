@@ -15,7 +15,7 @@ IndustryAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
       reinterpret_cast<IndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void*>(kVtableTRailAmtBar);
+    *reinterpret_cast<void***>(amountBar) = reinterpret_cast<void**>(kVtableTRailAmtBar);
     amountBar->cachedRangeAt60 = 0;
     amountBar->cachedRatioAt62 = 0;
     amountBar->cachedProductionAt64 = 0;
@@ -32,7 +32,7 @@ void* __cdecl GetTRailAmtBarClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00589f90
 IndustryAmtBarState* IndustryAmtBarState::ConstructTRailAmtBarBaseState() {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
-  vftable = reinterpret_cast<void*>(kVtableTRailAmtBar);
+  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kVtableTRailAmtBar);
   cachedRangeAt60 = 0;
   cachedRatioAt62 = 0;
   cachedProductionAt64 = 0;
@@ -40,10 +40,17 @@ IndustryAmtBarState* IndustryAmtBarState::ConstructTRailAmtBarBaseState() {
   return this;
 }
 
+void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar);
+
+// FUNCTION: IMPERIALISM 0x0040173f
+void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar) {
+  amountBar->~TView();
+}
+
 // FUNCTION: IMPERIALISM 0x00589fd0
 IndustryAmtBarState*
 IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
-  thunk_DestructEngineerDialogBaseState();
+  thunk_DestructTViewBaseState_0058A000(this);
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)this);
   }
@@ -53,7 +60,7 @@ IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0058a020
 void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues() {
   NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
-  int summaryTag = ownerPanelContext->summaryTag;
+  int summaryTag = ownerPanelContext()->summaryTag;
 
   short recordIndex = 0;
   if ((unsigned int)summaryTag < 0x706f7076) {
@@ -91,13 +98,13 @@ void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues() {
     cachedRatioAt62 = 9999;
   } else {
     short selectedStep = selectedMetricRecord->QueryStepValue();
-    cachedRatioAt62 = (short)(((int)selectedStep * barRangeRaw) / (int)productionOrCapValue);
+    cachedRatioAt62 = (short)(((int)selectedStep * barRangeRaw()) / (int)productionOrCapValue);
   }
   cachedProductionAt64 = productionOrCapValue;
   if (productionOrCapValue == 0) {
     cachedRangeAt60 = 9999;
   } else {
-    cachedRangeAt60 = (short)((barRangeRaw * (int)selectedMetricRecord->controlValue) /
+    cachedRangeAt60 = (short)((barRangeRaw() * (int)selectedMetricRecord->controlValue) /
                               (int)productionOrCapValue);
   }
   cachedStyleAt66 = 0x3a;

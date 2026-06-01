@@ -55,15 +55,12 @@ Maintenance:
 5. `just class-discovery`
 6. `just slice-discovery TGreatPower 0x004dc540`
 7. `jq . tmp_decomp/slice_discovery/tgreatpower_004dc540/class_candidate.json`
-
 ## Baseline Snapshot
 
-Baseline reference before this control-plane trim:
-
-1. Aligned functions: `91`
-2. Average similarity: `2.92%`
-3. Focus area: `TGreatPower` large-body conversion and cleanup
-4. Current sub-focus: `TGreatPower` vertical-slice reconstruction around `0x004DC540`: separate true member state (`this->nationSlot`, vtable slot `0x40`) from global map/port-zone helpers before broader body rewrites.
+1. Aligned functions: `100`
+2. Average similarity: `3.05%`
+3. Focus area: UI amount-bar class structures and destructors/lifecycles (`TShipAmtBar`, `TTraderAmtBar`, `TRailAmtBar`, `TAmtBar`)
+4. Current sub-focus: Member method alignments, global pointer mapping, and custom __thiscall calling conventions.
 
 ## Active Constraints
 

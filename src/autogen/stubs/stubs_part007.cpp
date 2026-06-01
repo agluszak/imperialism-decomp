@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyStack::thunk_GetTArmyBattleClassNamePointer_At004073c4
-// ghidra_proto void * __cdecl thunk_GetTArmyBattleClassNamePointer_At004073c4(void)
-// FUNCTION: IMPERIALISM 0x004073c4
-undefined4 thunk_GetTArmyBattleClassNamePointer_At004073c4(void)
-{
-  return 0;
-}
-
-// ghidra_name TOrderView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce
-// ghidra_proto void __cdecl thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce(void)
-// FUNCTION: IMPERIALISM 0x004073ce
-undefined4 thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints
-// ghidra_proto void __cdecl thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
-// FUNCTION: IMPERIALISM 0x004073d3
-undefined4 thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ReturnMissionConstantFloatSlot78
 // ghidra_proto void __cdecl thunk_ReturnMissionConstantFloatSlot78(void)
 // FUNCTION: IMPERIALISM 0x004073d8
@@ -3999,6 +3975,30 @@ undefined4 thunk_OrphanRetStub_004899a0_At004083b4(void)
 // ghidra_proto void __cdecl thunk_FormatDiplomacyNoticeTextByPolicyOrGrantCode_At004083b9(int unusedArg, short * pNoticeCode)
 // FUNCTION: IMPERIALISM 0x004083b9
 undefined4 thunk_FormatDiplomacyNoticeTextByPolicyOrGrantCode_At004083b9(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::thunk_SetGlobalMapCellSharedLabel
+// ghidra_proto void __thiscall thunk_SetGlobalMapCellSharedLabel(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004083cd
+undefined4 thunk_SetGlobalMapCellSharedLabel(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetTCityProductionViewClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTCityProductionViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004083d2
+undefined4 thunk_GetTCityProductionViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMiniShipLine::TMiniShipLine_VtblSlot000
+// ghidra_proto void * __cdecl TMiniShipLine_VtblSlot000(void)
+// FUNCTION: IMPERIALISM 0x004083dc
+undefined4 TMiniShipLine_VtblSlot000(void)
 {
   return 0;
 }

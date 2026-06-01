@@ -1,16 +1,15 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/TEventHandler.h"
+#include "game/string_shared.h"
 
 // Runtime thunk exported from the binary for the base UI resource constructor.
 undefined4 thunk_ConstructUiResourceEntryBase(void);
 
 // VTABLE: IMPERIALISM 0x649858
-class TView {
+class TView : public TEventHandler {
 public:
-  void* vftable;
-  unsigned char padding_04_to_0b[0x08];
-  int field0c;
   int field10;
   int field14;
   int field18;
@@ -19,7 +18,8 @@ public:
   unsigned char padding_24_to_2b[0x08];
   int field2c;
   int field30;
-  unsigned char padding_34_to_3b[0x08];
+  int field34;
+  int field38;
   int field3c;
   unsigned char padding_40_to_43[0x04];
   int field44;
@@ -30,9 +30,11 @@ public:
   int field50;
   unsigned short field54;
   unsigned char padding_56_to_57[0x02];
-  int sharedStringRef;
+  StringShared sharedStringRef;
   int field5c;
 
   void thunk_ConstructUiResourceEntryBase();
   void ConstructUiResourceEntryBase();
+  void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
+  virtual ~TView();
 };

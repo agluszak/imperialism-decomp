@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ForwardMciCommand808ToDevice
-// ghidra_proto void __cdecl ForwardMciCommand808ToDevice(void)
-// FUNCTION: IMPERIALISM 0x0047cd80
-undefined4 ForwardMciCommand808ToDevice(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyAuxOutputVolumeFromScalar
-// ghidra_proto byte __cdecl ApplyAuxOutputVolumeFromScalar(int volumeScalar)
-// FUNCTION: IMPERIALISM 0x0047cdd0
-undefined4 ApplyAuxOutputVolumeFromScalar(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardMciStatusCommand814IgnoreFailure
-// ghidra_proto void __cdecl ForwardMciStatusCommand814IgnoreFailure(void)
-// FUNCTION: IMPERIALISM 0x0047cdf0
-undefined4 ForwardMciStatusCommand814IgnoreFailure(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0047cfa0
 // ghidra_proto void __cdecl WrapperFor_ftol_At0047cfa0(void)
 // FUNCTION: IMPERIALISM 0x0047cfa0
@@ -3999,6 +3975,30 @@ undefined4 CtrlSlot33_NoOp_Impl(void)
 // ghidra_proto int __cdecl OrphanTiny_ReturnZero_0048a730(void)
 // FUNCTION: IMPERIALISM 0x0048a730
 undefined4 OrphanTiny_ReturnZero_0048a730(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateUiResourceEntryHeaderCopyFromSource
+// ghidra_proto void __cdecl AllocateUiResourceEntryHeaderCopyFromSource(void)
+// FUNCTION: IMPERIALISM 0x0048a7c0
+undefined4 AllocateUiResourceEntryHeaderCopyFromSource(void)
+{
+  return 0;
+}
+
+// ghidra_name TView::CreateTViewInstance
+// ghidra_proto void * __cdecl CreateTViewInstance(void)
+// FUNCTION: IMPERIALISM 0x0048a840
+undefined4 CreateTViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TView::GetTViewClassNamePointer
+// ghidra_proto void * __cdecl GetTViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0048a8c0
+undefined4 GetTViewClassNamePointer(void)
 {
   return 0;
 }

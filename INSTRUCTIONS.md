@@ -69,6 +69,9 @@
 28. Class labels are provisional. For uncertain clusters, run `slice-discovery` with a synthetic candidate label plus explicit `--vtable`/`--classdesc` anchors and record vptr writes/allocation sizes before trusting current symbol names.
 29. Scalar deleting destructors/lifetime wrappers often return `this` even when surrounding names look like `void` helpers; if original shows `mov eax, esi` before `ret 4`, model the wrapper as returning the object pointer.
 30. In MSVC factory constructors, vptr write order can differ from the reusable base-state constructor. Preserve observed factory ordering (base construction, field initialization, then final vptr write) even if a sibling constructor uses vptr first.
+31. For compiler-generated Relative Calls to Incremental Link Table (ILT) thunks in the original binary, mapping the correct ILT thunk addresses in symbols.csv rather than the final implementation addresses keeps call-sites aligned.
+32. To avoid demangling failures due to anonymous namespace hash names in parameter types (which cause Wine to fail to demangle and prevent pairing), clean up parameter types of thunks to global base types (like TView* instead of anonymous structs).
+33. When calling a member function of a global class instance (such as g_pUiRuntimeContext->GetActiveNationId()) where the original assembly loads the instance pointer in ecx, declare the method as a standard member of that class and map its address in symbols.csv to ensure the compiler generates the correct register-loading instructions.
 
 ## Known reccmp Failure Modes
 

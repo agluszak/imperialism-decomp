@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C5_I103_0059a920
-// ghidra_proto void __cdecl OrphanCallChain_C5_I103_0059a920(void)
-// FUNCTION: IMPERIALISM 0x0059a920
-undefined4 OrphanCallChain_C5_I103_0059a920(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At0059acf0
-// ghidra_proto void __cdecl WrapperFor_ftol_At0059acf0(void)
-// FUNCTION: IMPERIALISM 0x0059acf0
-undefined4 WrapperFor_ftol_At0059acf0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0059ad70
-// ghidra_proto void __cdecl OrphanRetStub_0059ad70(void)
-// FUNCTION: IMPERIALISM 0x0059ad70
-undefined4 OrphanRetStub_0059ad70(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0059ad90
-// ghidra_proto void __cdecl OrphanRetStub_0059ad90(void)
-// FUNCTION: IMPERIALISM 0x0059ad90
-undefined4 OrphanRetStub_0059ad90(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit_VtblSlot00
-// ghidra_proto void __cdecl TArmyTacUnit_VtblSlot00(void)
-// FUNCTION: IMPERIALISM 0x0059adb0
-undefined4 TArmyTacUnit_VtblSlot00(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0059add0
-// ghidra_proto void __cdecl OrphanRetStub_0059add0(void)
-// FUNCTION: IMPERIALISM 0x0059add0
-undefined4 OrphanRetStub_0059add0(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit_VtblSlot04
 // ghidra_proto void __cdecl TArmyTacUnit_VtblSlot04(void)
 // FUNCTION: IMPERIALISM 0x0059adf0
@@ -3999,6 +3951,54 @@ undefined4 GetTDealListClassNamePointer(void)
 // ghidra_proto void * __fastcall ConstructTDealListBaseState(TDealList * pThis)
 // FUNCTION: IMPERIALISM 0x005ba1c0
 undefined4 ConstructTDealListBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealList::DestructTDealListAndMaybeFree
+// ghidra_proto void * __thiscall DestructTDealListAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005ba1f0
+undefined4 DestructTDealListAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestructCObArray
+// ghidra_proto void __cdecl thunk_DestructCObArray(TIndexAndRankList * pThis)
+// FUNCTION: IMPERIALISM 0x005ba220
+undefined4 thunk_DestructCObArray_005BA220(void)
+{
+  return 0;
+}
+
+// ghidra_name CompareNationMetricRowsForSort
+// ghidra_proto int __cdecl CompareNationMetricRowsForSort(short * left, short * right)
+// FUNCTION: IMPERIALISM 0x005ba260
+undefined4 CompareNationMetricRowsForSort(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::CreateTNextTradeCommandInstance
+// ghidra_proto void * __cdecl CreateTNextTradeCommandInstance(void)
+// FUNCTION: IMPERIALISM 0x005ba370
+undefined4 CreateTNextTradeCommandInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::GetTNextTradeCommandClassNamePointer
+// ghidra_proto void * __cdecl GetTNextTradeCommandClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005ba3e0
+undefined4 GetTNextTradeCommandClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::ConstructTNextTradeCommandBaseState
+// ghidra_proto void * __thiscall ConstructTNextTradeCommandBaseState(void)
+// FUNCTION: IMPERIALISM 0x005ba400
+undefined4 ConstructTNextTradeCommandBaseState(void)
 {
   return 0;
 }

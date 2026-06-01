@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TToolBarCluster::thunk_SetGlobalMapCellSharedLabel
-// ghidra_proto void __thiscall thunk_SetGlobalMapCellSharedLabel(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004083cd
-undefined4 thunk_SetGlobalMapCellSharedLabel(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetTCityProductionViewClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTCityProductionViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004083d2
-undefined4 thunk_GetTCityProductionViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMiniShipLine::TMiniShipLine_VtblSlot000
-// ghidra_proto void * __cdecl TMiniShipLine_VtblSlot000(void)
-// FUNCTION: IMPERIALISM 0x004083dc
-undefined4 TMiniShipLine_VtblSlot000(void)
-{
-  return 0;
-}
-
 // ghidra_name TIconSlider::TIconSlider_VtblSlot104
 // ghidra_proto void __cdecl TIconSlider_VtblSlot104(void)
 // FUNCTION: IMPERIALISM 0x004083e1
@@ -3999,6 +3975,30 @@ undefined4 thunk_ResetTNewsMgrToSentinelVtable(void)
 // ghidra_proto void __cdecl thunk_QueueTedFourRandomAvailableTerrainActionsCode133(void)
 // FUNCTION: IMPERIALISM 0x004093f9
 undefined4 thunk_QueueTedFourRandomAvailableTerrainActionsCode133(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityBarCluster::TCityBarCluster_VtblSlot001
+// ghidra_proto TCityBarCluster * __thiscall TCityBarCluster_VtblSlot001(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x004093fe
+undefined4 TCityBarCluster_VtblSlot001(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReserveOverlayQuadRecordArrayCapacity
+// ghidra_proto void __thiscall thunk_ReserveOverlayQuadRecordArrayCapacity(int arg1)
+// FUNCTION: IMPERIALISM 0x00409408
+undefined4 thunk_ReserveOverlayQuadRecordArrayCapacity(void)
+{
+  return 0;
+}
+
+// ghidra_name TacticalBattleView_VtblSlot110
+// ghidra_proto void __cdecl TacticalBattleView_VtblSlot110(void)
+// FUNCTION: IMPERIALISM 0x0040940d
+undefined4 TacticalBattleView_VtblSlot110(void)
 {
   return 0;
 }

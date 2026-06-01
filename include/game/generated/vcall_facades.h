@@ -542,3 +542,10 @@ static __inline char VCall_UiRuntime_RequestDiplomacyDecisionSlot90(void* object
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x90 / 4)));
   return fn(object, 0, arg0, arg1, arg2);
 }
+
+// TView delete self; status=provisional
+static __inline void VCall_TView_DeleteSelfSlot01(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(1)));
+  fn(object, 0, arg0);
+}

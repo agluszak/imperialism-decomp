@@ -5,6 +5,16 @@
 #include "decomp_types.h"
 #include "game/TControl.h"
 
+struct UiRuntimeContext {
+  void* vftable;
+  char pad_04[0x2a];
+  short activeNationIdAt2E;
+
+  short GetActiveNationId(void);
+};
+
+extern "C" UiRuntimeContext* g_pUiRuntimeContext;
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 unsigned int __cdecl thunk_GetActiveNationId(void);

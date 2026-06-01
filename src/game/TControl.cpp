@@ -28,6 +28,6 @@ void TControl::ConstructUiCommandTagResourceEntryBase() {
   field74 = 0;
   commandTagDefaultParam0 = *reinterpret_cast<int*>(kAddrUiResourceEntryDefaultParam0);
   commandTagDefaultParam1 = *reinterpret_cast<int*>(kAddrUiResourceEntryDefaultParam1);
-  vftable = reinterpret_cast<void*>(kAddrVtblTControl);
+  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kAddrVtblTControl);
   commandTagDefaultParam2 = *reinterpret_cast<unsigned short*>(kAddrUiResourceEntryDefaultParam2);
 }

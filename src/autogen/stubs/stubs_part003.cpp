@@ -2563,14 +2563,6 @@ undefined4 thunk_AdvanceGlobalTurnStateMachine_At00403b0c(void)
   return 0;
 }
 
-// ghidra_name thunk_GetActiveNationId
-// ghidra_proto void __cdecl thunk_GetActiveNationId(void)
-// FUNCTION: IMPERIALISM 0x00403b16
-undefined4 thunk_GetActiveNationId(void)
-{
-  return 0;
-}
-
 // ghidra_name TZone::thunk_FindBestCoastalTileForContextAndCityStateByHeuristic_At00403b25
 // ghidra_proto short __thiscall thunk_FindBestCoastalTileForContextAndCityStateByHeuristic_At00403b25(void)
 // FUNCTION: IMPERIALISM 0x00403b25
@@ -3999,6 +3991,14 @@ undefined4 thunk_InvokePtrListResetHook(void)
 // ghidra_proto void * __cdecl thunk_GetTTaskForceClassNamePointer_At00404115(void)
 // FUNCTION: IMPERIALISM 0x00404115
 undefined4 thunk_GetTTaskForceClassNamePointer_At00404115(void)
+{
+  return 0;
+}
+
+// ghidra_name TForeignMinisterView::thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
+// FUNCTION: IMPERIALISM 0x0040411f
+undefined4 thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
 {
   return 0;
 }

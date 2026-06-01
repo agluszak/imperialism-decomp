@@ -1,8 +1,12 @@
 // Manual decompilation file.
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
+#pragma optimize("y", on)
+
 #include "game/TView.h"
 #include "game/string_shared.h"
+#include "game/ui_widget_shared.h"
+#include "game/generated/vcall_facades.h"
 
 namespace {
 
@@ -11,10 +15,12 @@ const unsigned int kAddrVtblGetTEventHandlerClassThunk = 0x006497A0;
 
 } // namespace
 
+
 // FUNCTION: IMPERIALISM 0x004064e2
 void TView::thunk_ConstructUiResourceEntryBase() {
   ConstructUiResourceEntryBase();
 }
+
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
 void TView::ConstructUiResourceEntryBase() {
@@ -22,7 +28,7 @@ void TView::ConstructUiResourceEntryBase() {
   field10 = 0x7fffffff;
   field14 = 0;
   field18 = 0;
-  vftable = reinterpret_cast<void*>(kAddrVtblGetTEventHandlerClassThunk);
+  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kAddrVtblGetTEventHandlerClassThunk);
   field20 = 0;
   field2c = 0;
   field30 = 0;
@@ -34,7 +40,21 @@ void TView::ConstructUiResourceEntryBase() {
   field4e = 0xffff;
   field50 = 0;
   field54 = 1;
-  reinterpret_cast<StringShared*>(&sharedStringRef)->InitFromEmpty();
+  sharedStringRef.InitFromEmpty();
   field5c = 0;
-  vftable = reinterpret_cast<void*>(kAddrVtblTView);
+  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kAddrVtblTView);
 }
+
+
+// FUNCTION: IMPERIALISM 0x0048a9d0
+TView::~TView() {
+  delete reinterpret_cast<TView*>(field44);
+  FreeHeapBufferIfNotNull(field48);
+}
+
+
+// FUNCTION: IMPERIALISM 0x00406ba9
+void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {
+  (void)passthroughArg;
+}
+

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d
-// ghidra_proto bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
-// FUNCTION: IMPERIALISM 0x0040526d
-undefined4 thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_AccumulateNavyOrderCategoryVectorWithScale
 // ghidra_proto void __cdecl thunk_AccumulateNavyOrderCategoryVectorWithScale(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00405272
@@ -2603,14 +2595,6 @@ undefined4 thunk_WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerStat
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00405c72
-undefined4 thunk_DestructTViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNominationView::thunk_scalar_deleting_destructor_00405C77
 // ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00405C77(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00405c77
@@ -3999,6 +3983,22 @@ undefined4 thunk_GetTRadioTextClassNamePointer(void)
 // ghidra_proto void __thiscall thunk_HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(STurnInstruction_Prov * pInstruction)
 // FUNCTION: IMPERIALISM 0x00406253
 undefined4 thunk_HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NoOpMissionVtableSlot88Ret8
+// ghidra_proto void __cdecl thunk_NoOpMissionVtableSlot88Ret8(void)
+// FUNCTION: IMPERIALISM 0x00406258
+undefined4 thunk_NoOpMissionVtableSlot88Ret8(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_GetTMinisterClassNamePointer
+// ghidra_proto void * __cdecl thunk_GetTMinisterClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0040625d
+undefined4 thunk_GetTMinisterClassNamePointer(void)
 {
   return 0;
 }

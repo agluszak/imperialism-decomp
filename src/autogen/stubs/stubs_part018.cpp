@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
-// ghidra_proto void * __thiscall ConstructTOnOffRadioButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x005719f0
-undefined4 ConstructTOnOffRadioButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTOnOffRadioButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571a30
-undefined4 DestructTOnOffRadioButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-// ghidra_proto void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
-// FUNCTION: IMPERIALISM 0x00571a80
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I16_00571b20
-// ghidra_proto void __cdecl OrphanCallChain_C2_I16_00571b20(void)
-// FUNCTION: IMPERIALISM 0x00571b20
-undefined4 OrphanCallChain_C2_I16_00571b20(void)
-{
-  return 0;
-}
-
 // ghidra_name TCzechBox::CreateTCzechBoxInstance
 // ghidra_proto void * __cdecl CreateTCzechBoxInstance(void)
 // FUNCTION: IMPERIALISM 0x00571b60
@@ -2494,7 +2462,7 @@ undefined4 DestructTUpDownViewAndMaybeFree(void)
 // ghidra_name thunk_DestructTViewBaseState
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x00583db0
-undefined4 thunk_DestructTViewBaseState_00583DB0(void)
+undefined4 thunk_DestructTViewBaseState(void)
 {
   return 0;
 }
@@ -3011,8 +2979,8 @@ undefined4 thunk_DestructTViewBaseState_00587110(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
+// ghidra_name thunk_DestructTViewBaseState_005885F0
+// ghidra_proto void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar)
 // FUNCTION: IMPERIALISM 0x005885f0
 undefined4 thunk_DestructTViewBaseState_005885F0(void)
 {
@@ -3045,30 +3013,14 @@ undefined4 thunk_DestructTViewBaseState_00589790(void)
 
 // ghidra_name thunk_DestructTViewBaseState
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058a000
-undefined4 thunk_DestructTViewBaseState_0058A000(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x0058a5f0
 undefined4 thunk_DestructTViewBaseState_0058A5F0(void)
 {
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0058abd0
-undefined4 thunk_DestructTViewBaseState_0058ABD0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructTViewBaseState
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
+// ghidra_name thunk_DestructTViewBaseState_0058AF60
+// ghidra_proto void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)
 // FUNCTION: IMPERIALISM 0x0058af60
 undefined4 thunk_DestructTViewBaseState_0058AF60(void)
 {
@@ -3999,6 +3951,54 @@ undefined4 DestructTMiniMapViewAndMaybeFree(void)
 // ghidra_proto void __cdecl RecomputeAndRenderStrategicMapViewportOverlay(void)
 // FUNCTION: IMPERIALISM 0x0059a540
 undefined4 RecomputeAndRenderStrategicMapViewportOverlay(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C5_I103_0059a920
+// ghidra_proto void __cdecl OrphanCallChain_C5_I103_0059a920(void)
+// FUNCTION: IMPERIALISM 0x0059a920
+undefined4 OrphanCallChain_C5_I103_0059a920(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At0059acf0
+// ghidra_proto void __cdecl WrapperFor_ftol_At0059acf0(void)
+// FUNCTION: IMPERIALISM 0x0059acf0
+undefined4 WrapperFor_ftol_At0059acf0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0059ad70
+// ghidra_proto void __cdecl OrphanRetStub_0059ad70(void)
+// FUNCTION: IMPERIALISM 0x0059ad70
+undefined4 OrphanRetStub_0059ad70(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0059ad90
+// ghidra_proto void __cdecl OrphanRetStub_0059ad90(void)
+// FUNCTION: IMPERIALISM 0x0059ad90
+undefined4 OrphanRetStub_0059ad90(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit_VtblSlot00
+// ghidra_proto void __cdecl TArmyTacUnit_VtblSlot00(void)
+// FUNCTION: IMPERIALISM 0x0059adb0
+undefined4 TArmyTacUnit_VtblSlot00(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0059add0
+// ghidra_proto void __cdecl OrphanRetStub_0059add0(void)
+// FUNCTION: IMPERIALISM 0x0059add0
+undefined4 OrphanRetStub_0059add0(void)
 {
   return 0;
 }

@@ -1,6 +1,9 @@
 // Included by src/game/trade_screen.cpp.
 // Contains trade amount-bar class wrappers (address-ordered).
 
+#pragma optimize("y", on)
+
+
 // FUNCTION: IMPERIALISM 0x0058ae30
 TradeAmountBarLayout* __cdecl CreateTTraderAmtBarInstance(void) {
   TradeAmountBarLayout* amountBar =
@@ -33,16 +36,23 @@ ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmountBarLayout* amountBar) {
   return amountBar;
 }
 
+void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar);
+
 // FUNCTION: IMPERIALISM 0x0058af30
 TradeAmountBarLayout* __fastcall DestructTTraderAmtBarMaybeFree(TradeAmountBarLayout* amountBar,
                                                                 int unusedEdx,
                                                                 unsigned char freeSelfFlag) {
   (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
+  thunk_DestructTViewBaseState_0058AF60(reinterpret_cast<TView*>(amountBar));
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)amountBar);
   }
   return amountBar;
+}
+
+// FUNCTION: IMPERIALISM 0x004064bf
+void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar) {
+  amountBar->~TView();
 }
 
 namespace {

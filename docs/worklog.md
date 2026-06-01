@@ -558,3 +558,50 @@
    1. Intermediate attempt with out-of-line helpers regressed heavily (17.95% / 8.33%) and was removed.
    2. Final field-overlay shape restored the prior checkpoint:
       1. `0x00605B87`: `35.82%`
+
+### UI Amount Bar Class & Destructor Pass
+
+1. Scope:
+   - `src/game/TTraderAmtBar.cpp`
+   - `src/game/TAmtBar.cpp`
+   - `include/game/TEventHandler.h`
+   - `config/function_name_overrides.csv`
+   - `config/symbols.csv`
+2. Changes:
+   - Added forward declaration of `thunk_DestructTViewBaseState_0058AF60` in `TTraderAmtBar.cpp` to resolve build error.
+   - Discovered that `TView`'s virtual destructor `~TView()` was at 96.67% because the base class `TEventHandler` vtable was unmatched. Added `// VTABLE: IMPERIALISM 0x0066FEC4` to `TEventHandler.h` to register it, bringing `TView::~TView()` (`0x0048a9d0`) to a **100%** match.
+   - Identified that `TTraderAmtBar` and `TAmtBar` destructors (`0x0058af30`, `0x005885c0`) call incremental link table (ILT) thunks (`0x004064bf` and `0x00401e65`) in the original binary, which then jump to the actual helpers (`0x0058af60` and `0x005885f0`).
+   - Mapped the helper functions in `symbols.csv` to their ILT thunk addresses (`0x004064bf` and `0x00401e65`) and updated the function markers in `TTraderAmtBar.cpp` and `TAmtBar.cpp` accordingly.
+   - Added `#pragma optimize("y", on)` at the top of `TAmtBar.cpp` and `TTraderAmtBar.cpp` to enable Frame Pointer Optimization (FPO), matching the original call conventions and offsets.
+   - Worked around the MSVC C++ `__thiscall` constraint on free functions by introducing a dummy event handler struct (`DummyEventHandler`) in `TTraderAmtBar.cpp` and calling the thunk using a member function pointer cast. This forced MSVC to pass the pointer in `ecx` (matching `__thiscall`) without generating `xor edx, edx` for the unused `edx` register.
+   - Ran `sync_function_ownership` manually with `--prune-missing-manual` to clean up old helper ownerships and regenerated stubs.
+3. Validation & Results:
+   - Destructors matched perfectly:
+     - `DestructTTraderAmtBarMaybeFree` (`0x0058af30`): **100%**
+     - `DestructTAmtBarAndMaybeFree` (`0x005885c0`): **100%**
+     - `TView::~TView` (`0x0048a9d0`): **100%**
+     - `thunk_DestructTViewBaseState_0058AF60` (`0x004064bf`): **100%**
+   - Aligned functions count increased by 4 to **95**.
+   - Average similarity of compared functions increased to **3.01%**.
+   - Canary targets verified and fully passing (`below_floor=0`).
+
+### UI Amount Bar Member Method & Thunk Alignment Pass
+
+1. **Thunk Parameter Cleanups (`TView*`)**:
+   - Replaced custom `TradeAmountBarLayout*` types with `TView*` in `thunk_DestructTViewBaseState_0058AF60` and `thunk_DestructTViewBaseState_005885F0` signatures.
+   - Updated declarations in `TTraderAmtBar.cpp`, `TAmtBar.cpp`, `symbols.csv`, and `function_name_overrides.csv`.
+   - This eliminates compiler-mangled hashes with anonymous namespaces and prevents demangling crashes under Wine, keeping reccmp comparisons cleanly paired.
+   - Simplified destructor calls to invoke `amountBar->~TView()` directly instead of using `DummyEventHandler` union hacks.
+
+2. **`UiRuntimeContext::GetActiveNationId` Alignment**:
+   - Mapped address `0x00403b16` to a standard member function `short UiRuntimeContext::GetActiveNationId(void)` in `symbols.csv` and `function_name_overrides.csv`.
+   - Declared `UiRuntimeContext` struct in `include/game/ui_widget_shared.h` outside of the anonymous namespace, and defined `g_pUiRuntimeContext` with `extern "C"` linkage.
+   - Updated `SelectTradeSpecialCommodityAndRecomputeBarLimits` (`0x0058abf0`) in `TShipAmtBar.cpp` to call `g_pUiRuntimeContext->GetActiveNationId()`. This forces MSVC to load `ecx` with the global context pointer before executing the relative call to `0x403b16`, matching the original assembly.
+   - Mapped `thunk_NoOpUiLifecycleHook` (`0x00406ba9`) to a member method `TView::thunk_NoOpUiLifecycleHook` to preserve the `__thiscall` calling convention from callers, while maintaining a manual free function wrapper to preserve compiling for other widgets.
+   - Registered `0x00406ba9` as manual-owned in `function_ownership.csv` and regenerated stubs to avoid double-definition linker errors.
+
+3. **Validation & Results**:
+   - Build is fully clean and all compiles succeed.
+   - `SelectTradeSpecialCommodityAndRecomputeBarLimits` similarity rose to **93.33%** (was 87.27%).
+   - Aligned functions count is at **100**, average similarity is **3.05%**.
+   - Canary targets verified and fully passing (`below_floor=0`).

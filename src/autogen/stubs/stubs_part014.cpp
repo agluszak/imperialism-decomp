@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ComputeAdvisoryHandlerCase09Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase09Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1910
-undefined4 ComputeAdvisoryHandlerCase09Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase10Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase10Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1a40
-undefined4 ComputeAdvisoryHandlerCase10Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseNoOpAdvisoryHandler
-// ghidra_proto bool __stdcall ReturnFalseNoOpAdvisoryHandler(void)
-// FUNCTION: IMPERIALISM 0x004e1c00
-undefined4 ReturnFalseNoOpAdvisoryHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name TryValidateProposalAndQueueInterNationEvent1C
-// ghidra_proto void __cdecl TryValidateProposalAndQueueInterNationEvent1C(void)
-// FUNCTION: IMPERIALISM 0x004e1c20
-undefined4 TryValidateProposalAndQueueInterNationEvent1C(void)
-{
-  return 0;
-}
-
 // ghidra_name ExecuteAdvisoryPromptAndApplyActionType2OrFallback
 // ghidra_proto bool __thiscall ExecuteAdvisoryPromptAndApplyActionType2OrFallback(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x004e1e40
@@ -3999,6 +3967,38 @@ undefined4 OrphanCallChain_C2_I15_00506110(void)
 // ghidra_proto void __thiscall RenderIconBarEntryStrip(void)
 // FUNCTION: IMPERIALISM 0x00506150
 undefined4 RenderIconBarEntryStrip(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::CreateTIconSliderInstance
+// ghidra_proto void * __cdecl CreateTIconSliderInstance(void)
+// FUNCTION: IMPERIALISM 0x005062d0
+undefined4 CreateTIconSliderInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::GetTIconSliderClassNamePointer
+// ghidra_proto void * __cdecl GetTIconSliderClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005063a0
+undefined4 GetTIconSliderClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::ConstructTIconSliderBaseState
+// ghidra_proto void * __thiscall ConstructTIconSliderBaseState(void)
+// FUNCTION: IMPERIALISM 0x005063c0
+undefined4 ConstructTIconSliderBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::DestructTIconSliderAndMaybeFree
+// ghidra_proto void * __thiscall DestructTIconSliderAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00506430
+undefined4 DestructTIconSliderAndMaybeFree(void)
 {
   return 0;
 }

@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_NoOpMissionVtableSlot88Ret8
-// ghidra_proto void __cdecl thunk_NoOpMissionVtableSlot88Ret8(void)
-// FUNCTION: IMPERIALISM 0x00406258
-undefined4 thunk_NoOpMissionVtableSlot88Ret8(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetTMinisterClassNamePointer
-// ghidra_proto void * __cdecl thunk_GetTMinisterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0040625d
-undefined4 thunk_GetTMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ComputeWeightedNeighborLinkScoreForNode
 // ghidra_proto int __cdecl thunk_ComputeWeightedNeighborLinkScoreForNode(void)
 // FUNCTION: IMPERIALISM 0x00406271
@@ -2195,14 +2179,6 @@ undefined4 thunk_ForwardBlitSurfaceRectSkippingTransparentColor(void)
   return 0;
 }
 
-// ghidra_name thunk_NoOpUiLifecycleHook
-// ghidra_proto void __cdecl thunk_NoOpUiLifecycleHook(void)
-// FUNCTION: IMPERIALISM 0x00406ba9
-undefined4 thunk_NoOpUiLifecycleHook(void)
-{
-  return 0;
-}
-
 // ghidra_name TRailCluster::thunk_DestructTRailClusterMaybeFree_At00406bae
 // ghidra_proto TRailCluster * __thiscall thunk_DestructTRailClusterMaybeFree_At00406bae(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00406bae
@@ -3999,6 +3975,30 @@ undefined4 thunk_CreateTFileStreamInstance(void)
 // ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(void)
 // FUNCTION: IMPERIALISM 0x004073ba
 undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyStack::thunk_GetTArmyBattleClassNamePointer_At004073c4
+// ghidra_proto void * __cdecl thunk_GetTArmyBattleClassNamePointer_At004073c4(void)
+// FUNCTION: IMPERIALISM 0x004073c4
+undefined4 thunk_GetTArmyBattleClassNamePointer_At004073c4(void)
+{
+  return 0;
+}
+
+// ghidra_name TOrderView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce
+// ghidra_proto void __cdecl thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce(void)
+// FUNCTION: IMPERIALISM 0x004073ce
+undefined4 thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints
+// ghidra_proto void __cdecl thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
+// FUNCTION: IMPERIALISM 0x004073d3
+undefined4 thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
 {
   return 0;
 }

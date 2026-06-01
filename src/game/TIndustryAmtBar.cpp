@@ -61,7 +61,7 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
   NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  while (mappedTag != amountBar->ownerPanelContext->summaryTag) {
+  while (mappedTag != amountBar->ownerPanelContext()->summaryTag) {
     summaryTagIndex = (short)(summaryTagIndex + 1);
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   }
@@ -73,11 +73,11 @@ void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarSt
 
   short stepValue = amountBar->selectedMetricRecord->QueryStepValue();
   amountBar->cachedRatioAt62 =
-      (short)((stepValue * amountBar->barRangeRaw) / amountBar->cachedProductionAt64);
+      (short)((stepValue * amountBar->barRangeRaw()) / amountBar->cachedProductionAt64);
 
   amountBar->cachedStyleAt66 = 0x3a;
   amountBar->cachedRangeAt60 =
-      (short)((amountBar->selectedMetricRecord->controlValue * amountBar->barRangeRaw) /
+      (short)((amountBar->selectedMetricRecord->controlValue * amountBar->barRangeRaw()) /
               amountBar->cachedProductionAt64);
 
   thunk_NoOpUiLifecycleHook();

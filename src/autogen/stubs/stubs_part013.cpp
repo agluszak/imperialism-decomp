@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCityProductionView::GetTCityProductionViewClassNamePointer
-// ghidra_proto void * __cdecl GetTCityProductionViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004ba2c0
-undefined4 GetTCityProductionViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityProductionView
-// ghidra_proto void __cdecl InitializeCityProductionView(void)
-// FUNCTION: IMPERIALISM 0x004ba2e0
-undefined4 InitializeCityProductionView(void)
-{
-  return 0;
-}
-
-// ghidra_name TCityProductionView::DestructTCityProductionViewAndMaybeFree
-// ghidra_proto void * __thiscall DestructTCityProductionViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004ba360
-undefined4 DestructTCityProductionViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTransFocusAnimation::InitializeCityBuildingControlRegions
-// ghidra_proto void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)
-// FUNCTION: IMPERIALISM 0x004ba3b0
-undefined4 InitializeCityBuildingControlRegions(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityProductionView::ReleaseCityBuildingControls
 // ghidra_proto void __thiscall ReleaseCityBuildingControls(void)
 // FUNCTION: IMPERIALISM 0x004ba740
@@ -3999,6 +3967,38 @@ undefined4 ComputeAdvisoryHandlerCase07Metric(void)
 // ghidra_proto void __cdecl ComputeAdvisoryHandlerCase08Metric(void)
 // FUNCTION: IMPERIALISM 0x004e1750
 undefined4 ComputeAdvisoryHandlerCase08Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase09Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase09Metric(void)
+// FUNCTION: IMPERIALISM 0x004e1910
+undefined4 ComputeAdvisoryHandlerCase09Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryHandlerCase10Metric
+// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase10Metric(void)
+// FUNCTION: IMPERIALISM 0x004e1a40
+undefined4 ComputeAdvisoryHandlerCase10Metric(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseNoOpAdvisoryHandler
+// ghidra_proto bool __stdcall ReturnFalseNoOpAdvisoryHandler(void)
+// FUNCTION: IMPERIALISM 0x004e1c00
+undefined4 ReturnFalseNoOpAdvisoryHandler(void)
+{
+  return 0;
+}
+
+// ghidra_name TryValidateProposalAndQueueInterNationEvent1C
+// ghidra_proto void __cdecl TryValidateProposalAndQueueInterNationEvent1C(void)
+// FUNCTION: IMPERIALISM 0x004e1c20
+undefined4 TryValidateProposalAndQueueInterNationEvent1C(void)
 {
   return 0;
 }

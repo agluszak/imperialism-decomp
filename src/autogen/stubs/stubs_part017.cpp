@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CreateNavyPrimaryOrderNodeAndAssignDisplayName
-// ghidra_proto void * __cdecl CreateNavyPrimaryOrderNodeAndAssignDisplayName(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x0054f8e0
-undefined4 CreateNavyPrimaryOrderNodeAndAssignDisplayName(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::SerializeNavyPrimaryOrderNodeToStream
-// ghidra_proto void __thiscall SerializeNavyPrimaryOrderNodeToStream(void)
-// FUNCTION: IMPERIALISM 0x0054fab0
-undefined4 SerializeNavyPrimaryOrderNodeToStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::DeserializeNavyPrimaryOrderNodeFromStream
-// ghidra_proto void __thiscall DeserializeNavyPrimaryOrderNodeFromStream(void)
-// FUNCTION: IMPERIALISM 0x0054fb50
-undefined4 DeserializeNavyPrimaryOrderNodeFromStream(void)
-{
-  return 0;
-}
-
-// ghidra_name RegenerateNavyPrimaryOrderDisplayNameUntilUnique
-// ghidra_proto void __cdecl RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
-// FUNCTION: IMPERIALISM 0x0054fbf0
-undefined4 RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeGlobalCapabilityAverages
 // ghidra_proto void __cdecl RecomputeGlobalCapabilityAverages(void)
 // FUNCTION: IMPERIALISM 0x0054fd50
@@ -3999,6 +3967,38 @@ undefined4 CreateTOnOffRadioButtonInstance(void)
 // ghidra_proto void * __cdecl GetTOnOffRadioButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005719d0
 undefined4 GetTOnOffRadioButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
+// ghidra_proto void * __thiscall ConstructTOnOffRadioButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x005719f0
+undefined4 ConstructTOnOffRadioButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTOnOffRadioButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00571a30
+undefined4 DestructTOnOffRadioButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
+// ghidra_proto void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
+// FUNCTION: IMPERIALISM 0x00571a80
+undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I16_00571b20
+// ghidra_proto void __cdecl OrphanCallChain_C2_I16_00571b20(void)
+// FUNCTION: IMPERIALISM 0x00571b20
+undefined4 OrphanCallChain_C2_I16_00571b20(void)
 {
   return 0;
 }

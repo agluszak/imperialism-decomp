@@ -76,7 +76,7 @@ if(MSVC)
     # Baseline flags for old-MSVC bring-up.
     target_compile_options(Imperialism PRIVATE
         /W3
-        /EHsc-
+        /GX
         /GR-
     )
     target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)

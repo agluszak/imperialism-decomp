@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SehProlog_RemoveAllCollection_Wrapper
-// ghidra_proto void __cdecl SehProlog_RemoveAllCollection_Wrapper(void)
-// FUNCTION: IMPERIALISM 0x0060374a
-undefined4 SehProlog_RemoveAllCollection_Wrapper(void)
-{
-  return 0;
-}
-
-// ghidra_name NewAssoc_60377d
-// ghidra_proto void * __cdecl NewAssoc_60377d(void)
-// FUNCTION: IMPERIALISM 0x0060377d
-undefined4 NewAssoc_60377d(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeAssoc_6037dd
-// ghidra_proto void __cdecl FreeAssoc_6037dd(void)
-// FUNCTION: IMPERIALISM 0x006037dd
-undefined4 FreeAssoc_6037dd(void)
-{
-  return 0;
-}
-
-// ghidra_name GetAssocAt_603806
-// ghidra_proto int * __thiscall GetAssocAt_603806(void)
-// FUNCTION: IMPERIALISM 0x00603806
-undefined4 GetAssocAt_603806(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveKey_603906
-// ghidra_proto int __thiscall RemoveKey_603906(void)
-// FUNCTION: IMPERIALISM 0x00603906
-undefined4 RemoveKey_603906(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxDlgProc
-// ghidra_proto void __stdcall AfxDlgProc(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x00604b68
-undefined4 AfxDlgProc(void)
-{
-  return 0;
-}
-
 // ghidra_name TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
 // ghidra_proto void __thiscall PreTranslateMessageForDialogAndDispatchHotkey(void)
 // FUNCTION: IMPERIALISM 0x00604ba8
@@ -3999,6 +3951,54 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
 // ghidra_proto void __thiscall SetWriteCursorWithCapacityClamp_00619c6b(uint arg1)
 // FUNCTION: IMPERIALISM 0x00619c6b
 undefined4 SetWriteCursorWithCapacityClamp_00619c6b(void)
+{
+  return 0;
+}
+
+// ghidra_name CopyIntoStreamBufferFromSourceWithClamp_00619ca0
+// ghidra_proto int __thiscall CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
+// FUNCTION: IMPERIALISM 0x00619ca0
+undefined4 CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NoOpVirtualStub_00619cca
+// ghidra_proto void __cdecl thunk_NoOpVirtualStub_00619cca(void)
+// FUNCTION: IMPERIALISM 0x00619ca6
+undefined4 thunk_NoOpVirtualStub_00619cca(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpVirtualStub_00619cca
+// ghidra_proto void __cdecl NoOpVirtualStub_00619cca(void)
+// FUNCTION: IMPERIALISM 0x00619cca
+undefined4 NoOpVirtualStub_00619cca(void)
+{
+  return 0;
+}
+
+// ghidra_name AppendToStreamBufferWithGrowth_00619ccf
+// ghidra_proto void __thiscall AppendToStreamBufferWithGrowth_00619ccf(void * arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00619ccf
+undefined4 AppendToStreamBufferWithGrowth_00619ccf(void)
+{
+  return 0;
+}
+
+// ghidra_name Seek_619d11
+// ghidra_proto int __thiscall Seek_619d11(void)
+// FUNCTION: IMPERIALISM 0x00619d11
+undefined4 Seek_619d11(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchVirtualSlot54_NoArgs
+// ghidra_proto void __fastcall DispatchVirtualSlot54_NoArgs(void)
+// FUNCTION: IMPERIALISM 0x00619d82
+undefined4 DispatchVirtualSlot54_NoArgs(void)
 {
   return 0;
 }

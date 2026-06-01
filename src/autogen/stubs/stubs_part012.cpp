@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
-// ghidra_proto void __cdecl WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
-// FUNCTION: IMPERIALISM 0x0049da50
-undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
-// ghidra_proto void __cdecl WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
-// FUNCTION: IMPERIALISM 0x0049da80
-undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
-// FUNCTION: IMPERIALISM 0x0049dab0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
-// FUNCTION: IMPERIALISM 0x0049dae0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0049db60
 // ghidra_proto void __cdecl WrapperFor_ftol_At0049db60(void)
 // FUNCTION: IMPERIALISM 0x0049db60
@@ -3999,6 +3967,38 @@ undefined4 InitializeCityBuildingLayoutData(void)
 // ghidra_proto void * __cdecl CreateCityProductionView(void)
 // FUNCTION: IMPERIALISM 0x004ba240
 undefined4 CreateCityProductionView(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::GetTCityProductionViewClassNamePointer
+// ghidra_proto void * __cdecl GetTCityProductionViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004ba2c0
+undefined4 GetTCityProductionViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeCityProductionView
+// ghidra_proto void __cdecl InitializeCityProductionView(void)
+// FUNCTION: IMPERIALISM 0x004ba2e0
+undefined4 InitializeCityProductionView(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::DestructTCityProductionViewAndMaybeFree
+// ghidra_proto void * __thiscall DestructTCityProductionViewAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x004ba360
+undefined4 DestructTCityProductionViewAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTransFocusAnimation::InitializeCityBuildingControlRegions
+// ghidra_proto void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)
+// FUNCTION: IMPERIALISM 0x004ba3b0
+undefined4 InitializeCityBuildingControlRegions(void)
 {
   return 0;
 }

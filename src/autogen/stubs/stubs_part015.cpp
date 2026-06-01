@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TIconSlider::CreateTIconSliderInstance
-// ghidra_proto void * __cdecl CreateTIconSliderInstance(void)
-// FUNCTION: IMPERIALISM 0x005062d0
-undefined4 CreateTIconSliderInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconSlider::GetTIconSliderClassNamePointer
-// ghidra_proto void * __cdecl GetTIconSliderClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005063a0
-undefined4 GetTIconSliderClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconSlider::ConstructTIconSliderBaseState
-// ghidra_proto void * __thiscall ConstructTIconSliderBaseState(void)
-// FUNCTION: IMPERIALISM 0x005063c0
-undefined4 ConstructTIconSliderBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconSlider::DestructTIconSliderAndMaybeFree
-// ghidra_proto void * __thiscall DestructTIconSliderAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00506430
-undefined4 DestructTIconSliderAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480
 // ghidra_proto void __cdecl Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480(void)
 // FUNCTION: IMPERIALISM 0x00506480
@@ -3999,6 +3967,38 @@ undefined4 RunForeignMinisterPolicySlot28VariantB(void)
 // ghidra_proto void __cdecl DispatchNationInteractionAmountWithAvailableCap(void)
 // FUNCTION: IMPERIALISM 0x00533670
 undefined4 DispatchNationInteractionAmountWithAvailableCap(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateTextileProgressFromProductionSlots1And2
+// ghidra_proto void __cdecl UpdateTextileProgressFromProductionSlots1And2(int arg1)
+// FUNCTION: IMPERIALISM 0x00533780
+undefined4 UpdateTextileProgressFromProductionSlots1And2(void)
+{
+  return 0;
+}
+
+// ghidra_name TTraderForeignMinister::GetTTraderForeignMinisterClassNamePointer
+// ghidra_proto void * __cdecl GetTTraderForeignMinisterClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00533880
+undefined4 GetTTraderForeignMinisterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTraderForeignMinister::ConstructTTraderForeignMinister
+// ghidra_proto void __thiscall ConstructTTraderForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x005338a0
+undefined4 ConstructTTraderForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TTraderForeignMinister::DeletingDestructTTraderForeignMinister
+// ghidra_proto void __thiscall DeletingDestructTTraderForeignMinister(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00533910
+undefined4 DeletingDestructTTraderForeignMinister(void)
 {
   return 0;
 }

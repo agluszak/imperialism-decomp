@@ -1240,8 +1240,6 @@ static __inline void InitializeAndReleaseSharedMessageRefs(void) {
   StringShared scratchRef;
   messageRef.InitFromEmpty();
   scratchRef.InitFromEmpty();
-  scratchRef.ReleaseSharedStringRefIfNotEmpty();
-  messageRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 struct SharedRefPairScope {
@@ -1254,8 +1252,6 @@ struct SharedRefPairScope {
   }
 
   ~SharedRefPairScope() {
-    second.ReleaseSharedStringRefIfNotEmpty();
-    first.ReleaseSharedStringRefIfNotEmpty();
   }
 };
 
@@ -1268,9 +1264,9 @@ static __inline void InitializeThreeSharedRefs(StringShared* firstRef, StringSha
 
 static __inline void ReleaseThreeSharedRefs(StringShared* firstRef, StringShared* secondRef,
                                             StringShared* thirdRef) {
-  thirdRef->ReleaseSharedStringRefIfNotEmpty();
-  secondRef->ReleaseSharedStringRefIfNotEmpty();
-  firstRef->ReleaseSharedStringRefIfNotEmpty();
+  thirdRef->~StringShared();
+  secondRef->~StringShared();
+  firstRef->~StringShared();
 }
 
 struct SharedRefTripleScope {
@@ -1285,9 +1281,6 @@ struct SharedRefTripleScope {
   }
 
   ~SharedRefTripleScope() {
-    third.ReleaseSharedStringRefIfNotEmpty();
-    second.ReleaseSharedStringRefIfNotEmpty();
-    first.ReleaseSharedStringRefIfNotEmpty();
   }
 };
 
@@ -1828,8 +1821,6 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
   }
 
   ctx->pendingDelta = 0;
-  sharedRefB.ReleaseSharedStringRefIfNotEmpty();
-  sharedRefA.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x004D8950
@@ -2269,8 +2260,6 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     thunk_AssignStringSharedRefAndReturnThis();
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   }
-
-  summaryMessageRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x004DB380
@@ -2341,7 +2330,6 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         }
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        sharedMessageRef.ReleaseSharedStringRefIfNotEmpty();
         return;
       }
 
@@ -2357,7 +2345,6 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         }
         DispatchQuarterlyGreatPowerPressureMessage(2);
       }
-      sharedMessageRef.ReleaseSharedStringRefIfNotEmpty();
     }
   } else {
     if (pressureView->pressureTier8fc != 0) {
@@ -2702,8 +2689,6 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
           MapActionContext_AssignDisplayRefFromSlot2C(contextEntry,
                                                       reinterpret_cast<int*>(&contextRef));
           messageRef.InitFromEmpty();
-          messageRef.ReleaseSharedStringRefIfNotEmpty();
-          contextRef.ReleaseSharedStringRefIfNotEmpty();
           emittedMessage = true;
           break;
         }
@@ -2756,8 +2741,6 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
       scratchRef.AssignConcatCStrAndRef("\n", messageRef);
       AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef),
                                 reinterpret_cast<int*>(&messageRef));
-      scratchRef.ReleaseSharedStringRefIfNotEmpty();
-      messageRef.ReleaseSharedStringRefIfNotEmpty();
     }
   }
 }
@@ -3734,8 +3717,6 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   }
 
   GreatPower_FinalizeProposalQueue(this);
-  proposalScratchRef.ReleaseSharedStringRefIfNotEmpty();
-  proposalSummaryRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x004E00D0

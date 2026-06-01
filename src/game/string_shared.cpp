@@ -116,7 +116,7 @@ void StringShared::EnsureUniqueSharedStringBuffer() {
   SharedStringHeader* old_header = Header();
   if (old_header->ref_count > 1) {
     int old_text_length = old_header->text_length;
-    ReleaseSharedStringRefIfNotEmpty();
+    this->~StringShared();
     AllocateBufferForLength(old_text_length);
 
     reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
@@ -128,7 +128,7 @@ void StringShared::EnsureUniqueSharedStringBuffer() {
 void StringShared::EnsureCapacityOrAllocate(int required_capacity) {
   SharedStringHeader* header = Header();
   if ((header->ref_count > 1) || (header->capacity < required_capacity)) {
-    ReleaseSharedStringRefIfNotEmpty();
+    this->~StringShared();
     AllocateBufferForLength(required_capacity);
   }
 }
@@ -141,7 +141,7 @@ void WrapperFor_AllocateSharedStringBufferForLength_At006058b9(int* ref_ptr,
 }
 
 // FUNCTION: IMPERIALISM 0x006058e2
-void StringShared::ReleaseSharedStringRefIfNotEmpty() {
+StringShared::~StringShared() {
   LONG* ref_count_ptr = reinterpret_cast<LONG*>(data_ptr - kSharedStringHeaderSize);
   if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
     LONG ref_count = InterlockedDecrement(ref_count_ptr);
@@ -152,7 +152,7 @@ void StringShared::ReleaseSharedStringRefIfNotEmpty() {
 }
 
 void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr) {
-  reinterpret_cast<StringShared*>(ref_ptr)->ReleaseSharedStringRefIfNotEmpty();
+  reinterpret_cast<StringShared*>(ref_ptr)->~StringShared();
 }
 
 // GHIDRA comment: Initializes from either C-string or low-word resource-id.
@@ -217,7 +217,7 @@ StringShared* StringShared::AssignFromPtr(const StringShared& src_ref) {
           &data_ptr, GetSharedStringHeader(new_data_ptr)->text_length,
           reinterpret_cast<const char*>(new_data_ptr));
     } else {
-      ReleaseSharedStringRefIfNotEmpty();
+      this->~StringShared();
       new_data_ptr = src_ref.data_ptr;
       data_ptr = new_data_ptr;
       InterlockedIncrement(reinterpret_cast<LONG*>(new_data_ptr - kSharedStringHeaderSize));
@@ -268,7 +268,6 @@ void StringShared::AssignConcatRefAndRef(const StringShared& lhs_ref, const Stri
 
   concat_ref.ConcatenateBuffers(lhs_ref.Length(), lhs_ref.Text(), rhs_ref.Length(), rhs_ref.Text());
   AssignFromRef(concat_ref);
-  concat_ref.ReleaseSharedStringRefIfNotEmpty();
 }
 
 void StringShared::AssignConcatRefAndCStr(const StringShared& lhs_ref, const char* rhs_text) {
@@ -282,7 +281,6 @@ void StringShared::AssignConcatRefAndCStr(const StringShared& lhs_ref, const cha
 
   concat_ref.ConcatenateBuffers(lhs_ref.Length(), lhs_ref.Text(), rhs_length, rhs_text);
   AssignFromRef(concat_ref);
-  concat_ref.ReleaseSharedStringRefIfNotEmpty();
 }
 
 void StringShared::AssignConcatCStrAndRef(const char* lhs_text, const StringShared& rhs_ref) {
@@ -296,7 +294,6 @@ void StringShared::AssignConcatCStrAndRef(const char* lhs_text, const StringShar
 
   concat_ref.ConcatenateBuffers(lhs_length, lhs_text, rhs_ref.Length(), rhs_ref.Text());
   AssignFromRef(concat_ref);
-  concat_ref.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x00605b21

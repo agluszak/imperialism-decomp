@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCityBarCluster::TCityBarCluster_VtblSlot001
-// ghidra_proto TCityBarCluster * __thiscall TCityBarCluster_VtblSlot001(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004093fe
-undefined4 TCityBarCluster_VtblSlot001(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ReserveOverlayQuadRecordArrayCapacity
-// ghidra_proto void __thiscall thunk_ReserveOverlayQuadRecordArrayCapacity(int arg1)
-// FUNCTION: IMPERIALISM 0x00409408
-undefined4 thunk_ReserveOverlayQuadRecordArrayCapacity(void)
-{
-  return 0;
-}
-
-// ghidra_name TacticalBattleView_VtblSlot110
-// ghidra_proto void __cdecl TacticalBattleView_VtblSlot110(void)
-// FUNCTION: IMPERIALISM 0x0040940d
-undefined4 TacticalBattleView_VtblSlot110(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource
 // ghidra_proto void __cdecl thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
 // FUNCTION: IMPERIALISM 0x00409412
@@ -3999,6 +3975,30 @@ undefined4 SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge(void)
 // ghidra_proto void __thiscall ApplyMciPlaybackRangeFromAudioManager(int trackIndex)
 // FUNCTION: IMPERIALISM 0x0047cd60
 undefined4 ApplyMciPlaybackRangeFromAudioManager(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardMciCommand808ToDevice
+// ghidra_proto void __cdecl ForwardMciCommand808ToDevice(void)
+// FUNCTION: IMPERIALISM 0x0047cd80
+undefined4 ForwardMciCommand808ToDevice(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyAuxOutputVolumeFromScalar
+// ghidra_proto byte __cdecl ApplyAuxOutputVolumeFromScalar(int volumeScalar)
+// FUNCTION: IMPERIALISM 0x0047cdd0
+undefined4 ApplyAuxOutputVolumeFromScalar(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardMciStatusCommand814IgnoreFailure
+// ghidra_proto void __cdecl ForwardMciStatusCommand814IgnoreFailure(void)
+// FUNCTION: IMPERIALISM 0x0047cdf0
+undefined4 ForwardMciStatusCommand814IgnoreFailure(void)
 {
   return 0;
 }

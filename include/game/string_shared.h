@@ -37,6 +37,7 @@ class StringShared {
 public:
   int data_ptr;
 
+  ~StringShared();
   StringShared* InitFromEmpty();
   undefined4 LoadResourceStringToSharedBuffer(unsigned int resource_id);
   void AllocateBufferForLength(int text_length);
@@ -48,7 +49,6 @@ public:
   StringShared* AssignFromRef(const StringShared& src_ref);
   StringShared* CopyFromCStr(const char* src_text);
   void ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len, const char* rhs_text);
-  void ReleaseSharedStringRefIfNotEmpty();
   void EnsureUniqueSharedStringBuffer();
   void AssignConcatRefAndRef(const StringShared& lhs_ref, const StringShared& rhs_ref);
   void AssignConcatRefAndCStr(const StringShared& lhs_ref, const char* rhs_text);

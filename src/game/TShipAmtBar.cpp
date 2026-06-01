@@ -1,6 +1,10 @@
 // Included by src/game/trade_screen.cpp.
 // Contains trade amount-bar class wrappers (address-ordered).
 
+#pragma optimize("y", on)
+
+
+
 // FUNCTION: IMPERIALISM 0x0058aaa0
 IndustryAmtBarState* __cdecl CreateTShipAmtBarInstance(void) {
   IndustryAmtBarState* amountBar =
@@ -11,7 +15,7 @@ IndustryAmtBarState* __cdecl CreateTShipAmtBarInstance(void) {
     amountBar->cachedRatioAt62 = 0;
     amountBar->cachedProductionAt64 = 0;
     amountBar->cachedStyleAt66 = 0;
-    amountBar->vftable = reinterpret_cast<void*>(&g_vtblTShipAmtBar);
+    *reinterpret_cast<void***>(amountBar) = reinterpret_cast<void**>(&g_vtblTShipAmtBar);
   }
   return amountBar;
 }
@@ -24,7 +28,7 @@ void* __cdecl GetTShipAmtBarClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058ab60
 IndustryAmtBarState* IndustryAmtBarState::ConstructTShipAmtBarBaseState() {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
-  vftable = reinterpret_cast<void*>(&g_vtblTShipAmtBar);
+  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(&g_vtblTShipAmtBar);
   cachedRangeAt60 = 0;
   cachedRatioAt62 = 0;
   cachedProductionAt64 = 0;
@@ -32,10 +36,17 @@ IndustryAmtBarState* IndustryAmtBarState::ConstructTShipAmtBarBaseState() {
   return this;
 }
 
+void __fastcall thunk_DestructTViewBaseState_0058ABD0(TView* amountBar);
+
+// FUNCTION: IMPERIALISM 0x004041e7
+void __fastcall thunk_DestructTViewBaseState_0058ABD0(TView* amountBar) {
+  amountBar->~TView();
+}
+
 // FUNCTION: IMPERIALISM 0x0058aba0
 IndustryAmtBarState*
 IndustryAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
-  thunk_DestructEngineerDialogBaseState();
+  thunk_DestructTViewBaseState_0058ABD0(this);
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)this);
   }
@@ -45,15 +56,14 @@ IndustryAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0058abf0
 void IndustryAmtBarState::SelectTradeSpecialCommodityAndRecomputeBarLimits(int passthroughArg) {
   NationState* nationState =
-      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[QueryActiveNationId()];
+      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
   NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
   selectedMetricRecord = cityState->specialCommodityRecordAt190;
   short productionCap =
       *(short*)(reinterpret_cast<char*>(cityState->scenarioTradeDescriptor) + 0x1c);
-  cachedRatioAt62 = (short)barRangeRaw;
+  cachedRatioAt62 = (short)barRangeRaw();
   cachedProductionAt64 = productionCap;
   cachedStyleAt66 = 0x3a;
   cachedRangeAt60 = (short)(0 / (int)productionCap);
-  reinterpret_cast<void(__fastcall*)(IndustryAmtBarState*, int)>(::thunk_NoOpUiLifecycleHook)(
-      this, passthroughArg);
+  thunk_NoOpUiLifecycleHook(passthroughArg);
 }

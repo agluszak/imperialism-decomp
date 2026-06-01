@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name UpdateTextileProgressFromProductionSlots1And2
-// ghidra_proto void __cdecl UpdateTextileProgressFromProductionSlots1And2(int arg1)
-// FUNCTION: IMPERIALISM 0x00533780
-undefined4 UpdateTextileProgressFromProductionSlots1And2(void)
-{
-  return 0;
-}
-
-// ghidra_name TTraderForeignMinister::GetTTraderForeignMinisterClassNamePointer
-// ghidra_proto void * __cdecl GetTTraderForeignMinisterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00533880
-undefined4 GetTTraderForeignMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTraderForeignMinister::ConstructTTraderForeignMinister
-// ghidra_proto void __thiscall ConstructTTraderForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x005338a0
-undefined4 ConstructTTraderForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TTraderForeignMinister::DeletingDestructTTraderForeignMinister
-// ghidra_proto void __thiscall DeletingDestructTTraderForeignMinister(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00533910
-undefined4 DeletingDestructTTraderForeignMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TTraderForeignMinister::DestructTTraderForeignMinister
 // ghidra_proto void __thiscall DestructTTraderForeignMinister(void)
 // FUNCTION: IMPERIALISM 0x00533940
@@ -3999,6 +3967,38 @@ undefined4 DestructTShip(void)
 // ghidra_proto void __thiscall DestroyAndUnlinkNavyPrimaryOrderNode(void)
 // FUNCTION: IMPERIALISM 0x0054f640
 undefined4 DestroyAndUnlinkNavyPrimaryOrderNode(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateNavyPrimaryOrderNodeAndAssignDisplayName
+// ghidra_proto void * __cdecl CreateNavyPrimaryOrderNodeAndAssignDisplayName(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x0054f8e0
+undefined4 CreateNavyPrimaryOrderNodeAndAssignDisplayName(void)
+{
+  return 0;
+}
+
+// ghidra_name TShip::SerializeNavyPrimaryOrderNodeToStream
+// ghidra_proto void __thiscall SerializeNavyPrimaryOrderNodeToStream(void)
+// FUNCTION: IMPERIALISM 0x0054fab0
+undefined4 SerializeNavyPrimaryOrderNodeToStream(void)
+{
+  return 0;
+}
+
+// ghidra_name TShip::DeserializeNavyPrimaryOrderNodeFromStream
+// ghidra_proto void __thiscall DeserializeNavyPrimaryOrderNodeFromStream(void)
+// FUNCTION: IMPERIALISM 0x0054fb50
+undefined4 DeserializeNavyPrimaryOrderNodeFromStream(void)
+{
+  return 0;
+}
+
+// ghidra_name RegenerateNavyPrimaryOrderDisplayNameUntilUnique
+// ghidra_proto void __cdecl RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
+// FUNCTION: IMPERIALISM 0x0054fbf0
+undefined4 RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
 {
   return 0;
 }

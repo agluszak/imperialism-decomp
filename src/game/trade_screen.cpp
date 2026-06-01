@@ -4,6 +4,7 @@
 #include "decomp_types.h"
 #include "game/string_shared.h"
 #include "game/ui_widget_shared.h"
+#include "game/TView.h"
 
 typedef void* hwnd_t;
 typedef void code(void);
@@ -73,6 +74,19 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unused
 // GHIDRA_NAME: InitializeTradeScreenBitmapControls
 // GHIDRA_PROTO: undefined InitializeTradeScreenBitmapControls()
 /* DECOMPILATION FAILED: Exception while decompiling 004601b0: process: timeout */
+
+// Symbol placeholders to preserve OFFSET-style codegen in ctor/dtor wrappers.
+// GLOBAL: IMPERIALISM 0x666998
+extern "C" char g_vtblTShipAmtBar = 0;
+// GLOBAL: IMPERIALISM 0x663010
+extern "C" char g_pClassDescTShipAmtBar = 0;
+// GLOBAL: IMPERIALISM 0x666ba0
+extern "C" char g_vtblTTraderAmtBar = 0;
+// GLOBAL: IMPERIALISM 0x663028
+extern "C" char g_pClassDescTTraderAmtBar = 0;
+// GLOBAL: IMPERIALISM 0x662f68
+extern "C" char g_pClassDescTTradeCluster = 0;
+extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 
 namespace {
 
@@ -168,17 +182,6 @@ const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
 const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
 
-// Symbol placeholders to preserve OFFSET-style codegen in ctor/dtor wrappers.
-// GLOBAL: IMPERIALISM 0x666998
-char g_vtblTShipAmtBar;
-// GLOBAL: IMPERIALISM 0x663010
-char g_pClassDescTShipAmtBar;
-char g_vtblTTraderAmtBar;
-// GLOBAL: IMPERIALISM 0x663028
-char g_pClassDescTTraderAmtBar;
-// GLOBAL: IMPERIALISM 0x662f68
-char g_pClassDescTTradeCluster;
-char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70;
 
 const short kTradeBitmapBidStateA = 0x083f;
 const short kTradeBitmapBidStateB = 0x084d;
@@ -196,7 +199,6 @@ const int kTradeSellPropagationTags[] = {
 };
 const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
-struct UiRuntimeContext;
 struct NationCityTradeState;
 struct TradeMovePanelContext;
 struct TradeCommodityMetricRecord;
@@ -275,18 +277,19 @@ struct ClosePictureState {
   char pad_20[0x74];
 };
 
-struct IndustryAmtBarState {
-  void* vftable;
-  char pad_04[0x1c];
-  TradeMovePanelContext* ownerPanelContext;
-  char pad_24[0x10];
-  int barRangeRaw;
-  char pad_38[0x28];
+struct IndustryAmtBarState : public TView {
   short cachedRangeAt60;
   short cachedRatioAt62;
   short cachedProductionAt64;
   short cachedStyleAt66;
   TradeCommodityMetricRecord* selectedMetricRecord;
+
+  TradeMovePanelContext*& ownerPanelContext() {
+    return *reinterpret_cast<TradeMovePanelContext**>(&field20);
+  }
+  int& barRangeRaw() {
+    return *reinterpret_cast<int*>(&field34);
+  }
 
   IndustryAmtBarState* ConstructTRailAmtBarBaseState();
   IndustryAmtBarState* DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag);
@@ -355,10 +358,6 @@ struct TradeScreenContext {
   void SetTradeOfferSecondaryBitmapState();
   void UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax);
   void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
-};
-
-struct UiRuntimeContext {
-  void* vftable;
 };
 
 struct ApplicationUiRootControllerState {
@@ -609,8 +608,6 @@ static __inline TradeControl* ResolveOwnerControl(void* owner, int controlTag) {
   return CallResolveControlByTagSlot94(owner, controlTag);
 }
 
-extern UiRuntimeContext* g_pUiRuntimeContext;
-
 static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {
   if (g_pUiRuntimeContext == 0) {
     return;
@@ -644,8 +641,6 @@ static __inline int ReadIntAt(unsigned int address) {
   return *reinterpret_cast<int*>(address);
 }
 
-// GLOBAL: IMPERIALISM 0x6a21bc
-UiRuntimeContext* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x6a18e0
 ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x6a44b0
@@ -654,6 +649,22 @@ void* g_pActiveCityDialogLegendSelectionOwner = 0;
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
 } // namespace
+
+// GLOBAL: IMPERIALISM 0x6a21bc
+extern "C" UiRuntimeContext* g_pUiRuntimeContext = 0;
+
+// FUNCTION: IMPERIALISM 0x00403b16
+short UiRuntimeContext::GetActiveNationId(void) {
+  return activeNationIdAt2E;
+}
+
+unsigned int __cdecl thunk_GetActiveNationId(void) {
+  return g_pUiRuntimeContext->GetActiveNationId();
+}
+
+undefined4 thunk_NoOpUiLifecycleHook(void) {
+  return 0;
+}
 
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
@@ -2550,7 +2561,7 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
         sharedStringRefPtr);
   }
 
-  sharedStringRef.ReleaseSharedStringRefIfNotEmpty();
+  sharedStringRef.~StringShared();
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180

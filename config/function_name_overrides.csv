@@ -1,1 +1,7 @@
 address|name|prototype
+0x0058af60|thunk_DestructTViewBaseState_0058AF60|void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)
+0x005885f0|thunk_DestructTViewBaseState_005885F0|void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar)
+0x004041e7|thunk_DestructTViewBaseState_0058ABD0|void __fastcall thunk_DestructTViewBaseState_0058ABD0(TView* amountBar)
+0x0040173f|thunk_DestructTViewBaseState_0058A000|void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar)
+0x00403b16|UiRuntimeContext::GetActiveNationId|short __thiscall GetActiveNationId(void)
+

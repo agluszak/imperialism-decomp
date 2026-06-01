@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name HitTest_005E628B
-// ghidra_proto void * __thiscall HitTest_005E628B(int x, int y, uint * pFlags)
-// FUNCTION: IMPERIALISM 0x005e628b
-undefined4 HitTest_005E628B(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveImageList_5e62c1
-// ghidra_proto void __thiscall RemoveImageList_5e62c1(void)
-// FUNCTION: IMPERIALISM 0x005e62c1
-undefined4 RemoveImageList_5e62c1(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e63b2
-undefined4 CHotKeyCtrl_005E63B2(void)
-{
-  return 0;
-}
-
-// ghidra_name SetRange
-// ghidra_proto void __thiscall SetRange(void)
-// FUNCTION: IMPERIALISM 0x005e64be
-undefined4 SetRange(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e6590
-undefined4 CHotKeyCtrl_005E6590(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e6601
-undefined4 CHotKeyCtrl_005E6601(void)
-{
-  return 0;
-}
-
 // ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c
 // ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c(uint messageCode, int wParam, int lParam, void * pResult)
 // FUNCTION: IMPERIALISM 0x005e663c
@@ -3999,6 +3951,54 @@ undefined4 InitHashTable_6036b2(void)
 // ghidra_proto void __fastcall RemoveAll_6036f8(void)
 // FUNCTION: IMPERIALISM 0x006036f8
 undefined4 RemoveAll_6036f8(void)
+{
+  return 0;
+}
+
+// ghidra_name SehProlog_RemoveAllCollection_Wrapper
+// ghidra_proto void __cdecl SehProlog_RemoveAllCollection_Wrapper(void)
+// FUNCTION: IMPERIALISM 0x0060374a
+undefined4 SehProlog_RemoveAllCollection_Wrapper(void)
+{
+  return 0;
+}
+
+// ghidra_name NewAssoc_60377d
+// ghidra_proto void * __cdecl NewAssoc_60377d(void)
+// FUNCTION: IMPERIALISM 0x0060377d
+undefined4 NewAssoc_60377d(void)
+{
+  return 0;
+}
+
+// ghidra_name FreeAssoc_6037dd
+// ghidra_proto void __cdecl FreeAssoc_6037dd(void)
+// FUNCTION: IMPERIALISM 0x006037dd
+undefined4 FreeAssoc_6037dd(void)
+{
+  return 0;
+}
+
+// ghidra_name GetAssocAt_603806
+// ghidra_proto int * __thiscall GetAssocAt_603806(void)
+// FUNCTION: IMPERIALISM 0x00603806
+undefined4 GetAssocAt_603806(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveKey_603906
+// ghidra_proto int __thiscall RemoveKey_603906(void)
+// FUNCTION: IMPERIALISM 0x00603906
+undefined4 RemoveKey_603906(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxDlgProc
+// ghidra_proto void __stdcall AfxDlgProc(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00604b68
+undefined4 AfxDlgProc(void)
 {
   return 0;
 }

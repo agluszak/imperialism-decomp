@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CopyIntoStreamBufferFromSourceWithClamp_00619ca0
-// ghidra_proto int __thiscall CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
-// FUNCTION: IMPERIALISM 0x00619ca0
-undefined4 CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpVirtualStub_00619cca
-// ghidra_proto void __cdecl thunk_NoOpVirtualStub_00619cca(void)
-// FUNCTION: IMPERIALISM 0x00619ca6
-undefined4 thunk_NoOpVirtualStub_00619cca(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpVirtualStub_00619cca
-// ghidra_proto void __cdecl NoOpVirtualStub_00619cca(void)
-// FUNCTION: IMPERIALISM 0x00619cca
-undefined4 NoOpVirtualStub_00619cca(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendToStreamBufferWithGrowth_00619ccf
-// ghidra_proto void __thiscall AppendToStreamBufferWithGrowth_00619ccf(void * arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00619ccf
-undefined4 AppendToStreamBufferWithGrowth_00619ccf(void)
-{
-  return 0;
-}
-
-// ghidra_name Seek_619d11
-// ghidra_proto int __thiscall Seek_619d11(void)
-// FUNCTION: IMPERIALISM 0x00619d11
-undefined4 Seek_619d11(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchVirtualSlot54_NoArgs
-// ghidra_proto void __fastcall DispatchVirtualSlot54_NoArgs(void)
-// FUNCTION: IMPERIALISM 0x00619d82
-undefined4 DispatchVirtualSlot54_NoArgs(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AfxThrowNotSupportedException_At00619d87
 // ghidra_proto void __cdecl WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
 // FUNCTION: IMPERIALISM 0x00619d87
@@ -3999,6 +3951,54 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063093f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630975(void)
 // FUNCTION: IMPERIALISM 0x00630975
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630975(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063099f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063099f(void)
+// FUNCTION: IMPERIALISM 0x0063099f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063099f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a10
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a10(void)
+// FUNCTION: IMPERIALISM 0x00630a10
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a10(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a3f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a3f(void)
+// FUNCTION: IMPERIALISM 0x00630a3f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a3f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a65
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a65(void)
+// FUNCTION: IMPERIALISM 0x00630a65
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a65(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a7f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a7f(void)
+// FUNCTION: IMPERIALISM 0x00630a7f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630a7f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ab5
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ab5(void)
+// FUNCTION: IMPERIALISM 0x00630ab5
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ab5(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TForeignMinisterView::thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f
-// ghidra_proto void __cdecl thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
-// FUNCTION: IMPERIALISM 0x0040411f
-undefined4 thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff
 // ghidra_proto bool __fastcall thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(int tacticalSideState)
 // FUNCTION: IMPERIALISM 0x00404129
@@ -3999,6 +3991,14 @@ undefined4 thunk_ConstructTMapPreviewViewBaseState(void)
 // ghidra_proto void __cdecl thunk_ConstructPictureResourceEntry_Vtbl00640258(void)
 // FUNCTION: IMPERIALISM 0x0040524f
 undefined4 thunk_ConstructPictureResourceEntry_Vtbl00640258(void)
+{
+  return 0;
+}
+
+// ghidra_name TBeachheadMission::thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d
+// ghidra_proto bool __stdcall thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
+// FUNCTION: IMPERIALISM 0x0040526d
+undefined4 thunk_ReturnFalseForBeachheadMissionCapabilityFlagA_At0040526d(void)
 {
   return 0;
 }

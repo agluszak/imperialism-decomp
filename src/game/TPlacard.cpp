@@ -157,5 +157,4 @@ void PlacardState::RenderPlacardValueTextWithShadow() {
       sharedStringRefPtr);
 
   reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
-  sharedStringRef.ReleaseSharedStringRefIfNotEmpty();
 }

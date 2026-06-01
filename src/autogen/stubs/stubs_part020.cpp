@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealList::DestructTDealListAndMaybeFree
-// ghidra_proto void * __thiscall DestructTDealListAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005ba1f0
-undefined4 DestructTDealListAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_DestructCObArray
-// ghidra_proto void __cdecl thunk_DestructCObArray(TIndexAndRankList * pThis)
-// FUNCTION: IMPERIALISM 0x005ba220
-undefined4 thunk_DestructCObArray_005BA220(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareNationMetricRowsForSort
-// ghidra_proto int __cdecl CompareNationMetricRowsForSort(short * left, short * right)
-// FUNCTION: IMPERIALISM 0x005ba260
-undefined4 CompareNationMetricRowsForSort(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::CreateTNextTradeCommandInstance
-// ghidra_proto void * __cdecl CreateTNextTradeCommandInstance(void)
-// FUNCTION: IMPERIALISM 0x005ba370
-undefined4 CreateTNextTradeCommandInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::GetTNextTradeCommandClassNamePointer
-// ghidra_proto void * __cdecl GetTNextTradeCommandClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005ba3e0
-undefined4 GetTNextTradeCommandClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::ConstructTNextTradeCommandBaseState
-// ghidra_proto void * __thiscall ConstructTNextTradeCommandBaseState(void)
-// FUNCTION: IMPERIALISM 0x005ba400
-undefined4 ConstructTNextTradeCommandBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNextTradeCommandAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005ba430
@@ -3999,6 +3951,54 @@ undefined4 ItemHasChildren(void)
 // ghidra_proto void __thiscall InsertItem_5e6237(void)
 // FUNCTION: IMPERIALISM 0x005e6237
 undefined4 InsertItem_5e6237(void)
+{
+  return 0;
+}
+
+// ghidra_name HitTest_005E628B
+// ghidra_proto void * __thiscall HitTest_005E628B(int x, int y, uint * pFlags)
+// FUNCTION: IMPERIALISM 0x005e628b
+undefined4 HitTest_005E628B(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveImageList_5e62c1
+// ghidra_proto void __thiscall RemoveImageList_5e62c1(void)
+// FUNCTION: IMPERIALISM 0x005e62c1
+undefined4 RemoveImageList_5e62c1(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e63b2
+undefined4 CHotKeyCtrl_005E63B2(void)
+{
+  return 0;
+}
+
+// ghidra_name SetRange
+// ghidra_proto void __thiscall SetRange(void)
+// FUNCTION: IMPERIALISM 0x005e64be
+undefined4 SetRange(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e6590
+undefined4 CHotKeyCtrl_005E6590(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e6601
+undefined4 CHotKeyCtrl_005E6601(void)
 {
   return 0;
 }

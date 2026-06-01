@@ -3,42 +3,10 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AllocateUiResourceEntryHeaderCopyFromSource
-// ghidra_proto void __cdecl AllocateUiResourceEntryHeaderCopyFromSource(void)
-// FUNCTION: IMPERIALISM 0x0048a7c0
-undefined4 AllocateUiResourceEntryHeaderCopyFromSource(void)
-{
-  return 0;
-}
-
-// ghidra_name TView::CreateTViewInstance
-// ghidra_proto void * __cdecl CreateTViewInstance(void)
-// FUNCTION: IMPERIALISM 0x0048a840
-undefined4 CreateTViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TView::GetTViewClassNamePointer
-// ghidra_proto void * __cdecl GetTViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0048a8c0
-undefined4 GetTViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::DestructTViewAndMaybeFree
 // ghidra_proto TView * __thiscall DestructTViewAndMaybeFree(byte arg1)
 // FUNCTION: IMPERIALISM 0x0048a9a0
 undefined4 DestructTViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TView::DestructTViewBaseState
-// ghidra_proto void __thiscall DestructTViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x0048a9d0
-undefined4 DestructTViewBaseState(void)
 {
   return 0;
 }
@@ -3999,6 +3967,38 @@ undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d
 // ghidra_proto void __cdecl WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
 // FUNCTION: IMPERIALISM 0x0049da20
 undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
+// ghidra_proto void __cdecl WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
+// FUNCTION: IMPERIALISM 0x0049da50
+undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
+// ghidra_proto void __cdecl WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
+// FUNCTION: IMPERIALISM 0x0049da80
+undefined4 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
+// FUNCTION: IMPERIALISM 0x0049dab0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
+// FUNCTION: IMPERIALISM 0x0049dae0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
 {
   return 0;
 }

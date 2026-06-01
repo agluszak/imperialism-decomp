@@ -9199,7 +9199,7 @@ TAmtBar::CreateTAmtBarInstance 5884C0 f
 TAmtBar::GetTAmtBarClassNamePointer 588560 f
 TAmtBar::ConstructBaseState 588580 f
 TAmtBar::DestructAndMaybeFree 5885C0 f
-thunk_DestructTViewBaseState 5885F0 f
+thunk_DestructTViewBaseState_005885F0 5885F0 f
 TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610 588610 f
 TAmtBar::UpdateBarValuesAndRefresh 588630 f
 TAmtBar::InvokeSlot1A8NoArg 588670 f
@@ -9260,7 +9260,7 @@ TTraderAmtBar::CreateTTraderAmtBarInstance 58AE30 f
 TTraderAmtBar::GetTTraderAmtBarClassNamePointer 58AED0 f
 TTraderAmtBar::ConstructBaseState 58AEF0 f
 TTraderAmtBar::DestructAndMaybeFree 58AF30 f
-thunk_DestructTViewBaseState 58AF60 f
+thunk_DestructTViewBaseState_0058AF60 58AF60 f
 TTraderAmtBar::UpdateNationStateGaugeValuesFromScenarioRecordCode 58AF80 f
 TTraderAmtBar::WrapperFor_GetActiveNationId_At0058b070 58B070 f
 TTraderAmtBar::RenderControlWithTemporaryRectClipRegionAndChildren 58B0F0 f

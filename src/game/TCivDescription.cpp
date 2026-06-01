@@ -421,7 +421,6 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
         localizedTextRefPtr, 0);
   }
-  localizedTextRef.ReleaseSharedStringRefIfNotEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x0058f7b0

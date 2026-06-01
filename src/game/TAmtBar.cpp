@@ -1,6 +1,9 @@
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
 
+#pragma optimize("y", on)
+
+
 // GHIDRA_NAME InitializeTradeSellControlState
 // GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
 // GHIDRA_COMMENT_BEGIN
@@ -41,17 +44,24 @@ TradeAmountBarLayout* __fastcall ConstructTAmtBarBaseState(TradeAmountBarLayout*
   return amountBar;
 }
 
+void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar);
+
 // FUNCTION: IMPERIALISM 0x005885c0
 TradeAmountBarLayout* __fastcall DestructTAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar,
                                                              int unusedEdx,
                                                              unsigned char freeSelfFlag) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
+  thunk_DestructTViewBaseState_005885F0(reinterpret_cast<TView*>(amountBar));
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)amountBar);
   }
   return amountBar;
+}
+
+// FUNCTION: IMPERIALISM 0x00401e65
+void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar) {
+  amountBar->~TView();
 }
 
 // FUNCTION: IMPERIALISM 0x00588610
