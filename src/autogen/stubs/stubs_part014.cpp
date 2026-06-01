@@ -2211,14 +2211,6 @@ undefined4 WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040
-// ghidra_proto void __stdcall WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x004f7040
-undefined4 WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowDiplomacyActionRejectedNotice
 // ghidra_proto void __cdecl ShowDiplomacyActionRejectedNotice(void)
 // FUNCTION: IMPERIALISM 0x004f7400
@@ -3999,6 +3991,14 @@ undefined4 CreateTNumberedItemInstance(void)
 // ghidra_proto void * __cdecl GetTNumberedItemClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005077a0
 undefined4 GetTNumberedItemClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedItem::ConstructTNumberedItemBaseState
+// ghidra_proto void * __thiscall ConstructTNumberedItemBaseState(void)
+// FUNCTION: IMPERIALISM 0x005077c0
+undefined4 ConstructTNumberedItemBaseState(void)
 {
   return 0;
 }

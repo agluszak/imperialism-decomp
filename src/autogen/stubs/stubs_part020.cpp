@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTradePageSellViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005bcf70
-undefined4 DestructTTradePageSellViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
 // ghidra_proto void __thiscall DestructTTradePageSellViewAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005bcfa0
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e6e7f(void)
 // ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
 // FUNCTION: IMPERIALISM 0x005e6e9b
 undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructClipStateRegionAndMaybeFreeSelf
+// ghidra_proto void __cdecl DestructClipStateRegionAndMaybeFreeSelf(void)
+// FUNCTION: IMPERIALISM 0x005e6ea2
+undefined4 DestructClipStateRegionAndMaybeFreeSelf(void)
 {
   return 0;
 }

@@ -34,6 +34,7 @@ struct TDiplomacyMapViewLayout {
   void UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint, void* dispatchArg);
   void ForwardCityDialogParamToActiveChildOrBase(void* param);
   void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
+  void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -64,6 +65,7 @@ undefined4 DrawCenteredGuideLineOnMapDc(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 thunk_ForwardCityDialogParamToChildSlot48(void);
+undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
 extern int g_pPrimaryRenderSurfaceContext;
 extern int g_pActiveQuickDrawSurfaceContext;
@@ -487,6 +489,16 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f7040
+void TDiplomacyMapViewLayout::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
+                                                             void* arg4) {
+  reinterpret_cast<void(__stdcall*)(int)>(
+      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
+  void* child = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0xb4);
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
+      RunDiplomacyWaitSheetPopupAndAwaitResponse)(child, 0, arg1, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080

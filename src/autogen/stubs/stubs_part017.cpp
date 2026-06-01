@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetResourceDescriptorWord18ByType
-// ghidra_proto short __cdecl GetResourceDescriptorWord18ByType(void)
-// FUNCTION: IMPERIALISM 0x00550e40
-undefined4 GetResourceDescriptorWord18ByType(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWeightWord0ByType
 // ghidra_proto short __cdecl GetResourceDescriptorWeightWord0ByType(void)
 // FUNCTION: IMPERIALISM 0x00550e70
@@ -3999,6 +3991,14 @@ undefined4 CreateTClickZoneInstance(void)
 // ghidra_proto void __cdecl OrphanRetStub_005723d0(void)
 // FUNCTION: IMPERIALISM 0x005723d0
 undefined4 OrphanRetStub_005723d0(void)
+{
+  return 0;
+}
+
+// ghidra_name TClickZone::GetTClickZoneClassNamePointer
+// ghidra_proto void * __cdecl GetTClickZoneClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005723f0
+undefined4 GetTClickZoneClassNamePointer(void)
 {
   return 0;
 }

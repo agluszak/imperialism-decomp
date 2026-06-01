@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNumberedItem::ConstructTNumberedItemBaseState
-// ghidra_proto void * __thiscall ConstructTNumberedItemBaseState(void)
-// FUNCTION: IMPERIALISM 0x005077c0
-undefined4 ConstructTNumberedItemBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNumberedItem::DestructTNumberedItemAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNumberedItemAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00507800
@@ -3999,6 +3991,14 @@ undefined4 DeletingDestructTIndexAndRankList(void)
 // ghidra_proto void __cdecl DestructTIndexAndRankList(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x005348d0
 undefined4 DestructTIndexAndRankList(void)
+{
+  return 0;
+}
+
+// ghidra_name CompareIndexAndRankEntriesByField2Descending
+// ghidra_proto void __cdecl CompareIndexAndRankEntriesByField2Descending(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00534910
+undefined4 CompareIndexAndRankEntriesByField2Descending(void)
 {
   return 0;
 }

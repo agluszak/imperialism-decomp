@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TClickZone::GetTClickZoneClassNamePointer
-// ghidra_proto void * __cdecl GetTClickZoneClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005723f0
-undefined4 GetTClickZoneClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TClickZone::ConstructUiCommandTagResourceEntry
 // ghidra_proto void __thiscall ConstructUiCommandTagResourceEntry(void)
 // FUNCTION: IMPERIALISM 0x00572410
@@ -3999,6 +3991,14 @@ undefined4 BuildTacticalActionPriorityBucketsWithGridGuard(void)
 // ghidra_proto void __cdecl DispatchTacticalActionClassSelectionAcrossCursorList(void)
 // FUNCTION: IMPERIALISM 0x0059bf20
 undefined4 DispatchTacticalActionClassSelectionAcrossCursorList(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectTacticalTileIndexByColumnPriorityVariantA
+// ghidra_proto int __cdecl SelectTacticalTileIndexByColumnPriorityVariantA(void)
+// FUNCTION: IMPERIALISM 0x0059bfe0
+undefined4 SelectTacticalTileIndexByColumnPriorityVariantA(void)
 {
   return 0;
 }

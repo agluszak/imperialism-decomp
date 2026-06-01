@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::Find_605e12
-// ghidra_proto int __thiscall Find_605e12(void)
-// FUNCTION: IMPERIALISM 0x00605e12
-undefined4 Find_605e12(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52
 // ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52(void)
 // FUNCTION: IMPERIALISM 0x00605e52
@@ -3999,6 +3991,14 @@ undefined4 RemoveFrameWnd(void)
 // ghidra_proto bool __thiscall LoadAccelTable(void)
 // FUNCTION: IMPERIALISM 0x0061c76d
 undefined4 LoadAccelTable(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0
+// ghidra_proto int __fastcall ResolveField12ValueFromActiveChildSlotB0(void)
+// FUNCTION: IMPERIALISM 0x0061c793
+undefined4 ResolveField12ValueFromActiveChildSlotB0(void)
 {
   return 0;
 }

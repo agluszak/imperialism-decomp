@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestructClipStateRegionAndMaybeFreeSelf
-// ghidra_proto void __cdecl DestructClipStateRegionAndMaybeFreeSelf(void)
-// FUNCTION: IMPERIALISM 0x005e6ea2
-undefined4 DestructClipStateRegionAndMaybeFreeSelf(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_PtVisible_FromDcField04_At005e6ebe
 // ghidra_proto void __thiscall WrapperFor_PtVisible_FromDcField04_At005e6ebe(void)
 // FUNCTION: IMPERIALISM 0x005e6ebe
@@ -3999,6 +3991,14 @@ undefined4 Empty(void)
 // ghidra_proto void __cdecl LockBuffer(void)
 // FUNCTION: IMPERIALISM 0x00605dec
 undefined4 LockBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::Find_605e12
+// ghidra_proto int __thiscall Find_605e12(void)
+// FUNCTION: IMPERIALISM 0x00605e12
+undefined4 Find_605e12(void)
 {
   return 0;
 }

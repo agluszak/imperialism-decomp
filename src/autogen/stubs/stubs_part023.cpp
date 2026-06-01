@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0
-// ghidra_proto int __fastcall ResolveField12ValueFromActiveChildSlotB0(void)
-// FUNCTION: IMPERIALISM 0x0061c793
-undefined4 ResolveField12ValueFromActiveChildSlotB0(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot038
 // ghidra_proto int __thiscall TMacViewMgr_VtblSlot038(void)
 // FUNCTION: IMPERIALISM 0x0061c7b7
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630fe5(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063102d(void)
 // FUNCTION: IMPERIALISM 0x0063102d
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063102d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063104d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063104d(void)
+// FUNCTION: IMPERIALISM 0x0063104d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063104d(void)
 {
   return 0;
 }
