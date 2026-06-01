@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_RegisterMouseWheelRollMessageForLegacyWindows
-// ghidra_proto void __cdecl thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
-// FUNCTION: IMPERIALISM 0x0061c57c
-undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterMouseWheelRollMessageForLegacyWindows
 // ghidra_proto void __cdecl RegisterMouseWheelRollMessageForLegacyWindows(void)
 // FUNCTION: IMPERIALISM 0x0061c581
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630e0d(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ea7(void)
 // FUNCTION: IMPERIALISM 0x00630ea7
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ea7(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ee9
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ee9(void)
+// FUNCTION: IMPERIALISM 0x00630ee9
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630ee9(void)
 {
   return 0;
 }

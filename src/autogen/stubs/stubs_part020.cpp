@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealTabControl::ConstructTDealTabControlBaseState
-// ghidra_proto void __thiscall ConstructTDealTabControlBaseState(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005bc780
-undefined4 ConstructTDealTabControlBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealTabControl::DestructTDealTabControlAndMaybeFree
 // ghidra_proto void __thiscall DestructTDealTabControlAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x005bc7f0
@@ -3999,6 +3991,14 @@ undefined4 WriteDwordToSerializedBuffer(void)
 // ghidra_proto void * __thiscall ReadWordFromSerializedBuffer(void * outWord)
 // FUNCTION: IMPERIALISM 0x005e6da3
 undefined4 ReadWordFromSerializedBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name NodeScanner::ReadDwordFromSerializedBuffer
+// ghidra_proto void * __thiscall ReadDwordFromSerializedBuffer(void * outDword)
+// FUNCTION: IMPERIALISM 0x005e6dd6
+undefined4 ReadDwordFromSerializedBuffer(void)
 {
   return 0;
 }

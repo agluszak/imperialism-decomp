@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RunImperialismThreadMainLoop
-// ghidra_proto void __fastcall RunImperialismThreadMainLoop(void)
-// FUNCTION: IMPERIALISM 0x006055ae
-undefined4 RunImperialismThreadMainLoop(void)
-{
-  return 0;
-}
-
 // ghidra_name PostCustomMessage36AAndNotifyThread
 // ghidra_proto void __thiscall PostCustomMessage36AAndNotifyThread(void)
 // FUNCTION: IMPERIALISM 0x006055d0
@@ -3999,6 +3991,14 @@ undefined4 thunk_ResetMouseWheelTrackingGlobals(void)
 // ghidra_proto void __cdecl ResetMouseWheelTrackingGlobals(void)
 // FUNCTION: IMPERIALISM 0x0061c55e
 undefined4 ResetMouseWheelTrackingGlobals(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterMouseWheelRollMessageForLegacyWindows
+// ghidra_proto void __cdecl thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
+// FUNCTION: IMPERIALISM 0x0061c57c
+undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AccumulateTacticalCursorActionClassProfileMetrics
-// ghidra_proto void __cdecl AccumulateTacticalCursorActionClassProfileMetrics(void)
-// FUNCTION: IMPERIALISM 0x0059b5b0
-undefined4 AccumulateTacticalCursorActionClassProfileMetrics(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildListFromProviderAndDeduplicateByKey
 // ghidra_proto void __cdecl RebuildListFromProviderAndDeduplicateByKey(void)
 // FUNCTION: IMPERIALISM 0x0059b740
@@ -3999,6 +3991,14 @@ undefined4 CreateTDealTabControlInstance(void)
 // ghidra_proto void * __cdecl GetTDealTabControlClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005bc760
 undefined4 GetTDealTabControlClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealTabControl::ConstructTDealTabControlBaseState
+// ghidra_proto void __thiscall ConstructTDealTabControlBaseState(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005bc780
+undefined4 ConstructTDealTabControlBaseState(void)
 {
   return 0;
 }

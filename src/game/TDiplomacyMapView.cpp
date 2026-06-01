@@ -20,6 +20,7 @@ struct TDiplomacyMapViewLayout {
   void RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot, const RECT* presentRect);
   void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId);
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
+  void BuildCombinedTerrainTypeRegionMaskAndDispatch();
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -39,6 +40,9 @@ undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
 undefined4 thunk_LoadBmpResourceByIdCached(void);
 undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
+undefined4 CreateClipStateRegionWrapperObject(void);
+undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
+undefined4 DestroyClipStateRegionWrapperObject(void);
 
 extern int g_pPrimaryRenderSurfaceContext;
 extern int g_pActiveQuickDrawSurfaceContext;
@@ -458,6 +462,27 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f6440
+void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
+  void* region = reinterpret_cast<void*(__cdecl*)()>(CreateClipStateRegionWrapperObject)();
+
+  short terrainIndex = 0;
+  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+  do {
+    if (*terrainDescriptors != 0) {
+      void* frameRegion = VCall_StrategicMap_GetFrameRegionSlot98(
+          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem), terrainIndex);
+      reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
+          CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
+    }
+    terrainIndex = static_cast<short>(terrainIndex + 1);
+    terrainDescriptors = terrainDescriptors + 1;
+  } while (terrainIndex < 0x17);
+
+  VCall_DiplomacyMapView_ApplyClipRegionSlotC4(this, reinterpret_cast<int>(region));
+  reinterpret_cast<void(__cdecl*)(void*)>(DestroyClipStateRegionWrapperObject)(region);
 }
 
 // FUNCTION: IMPERIALISM 0x004f6b10

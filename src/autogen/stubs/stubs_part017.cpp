@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ComputeMapOrderEntryHeuristicScore
-// ghidra_proto short __cdecl ComputeMapOrderEntryHeuristicScore(void)
-// FUNCTION: IMPERIALISM 0x00550aa0
-undefined4 ComputeMapOrderEntryHeuristicScore(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeOrderNodeCompositeEconomicScore
 // ghidra_proto int __cdecl ComputeOrderNodeCompositeEconomicScore(void)
 // FUNCTION: IMPERIALISM 0x00550b60
@@ -3999,6 +3991,14 @@ undefined4 CreateTGWorldButtonInstance(void)
 // ghidra_proto void * __cdecl GetTGWorldButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00572110
 undefined4 GetTGWorldButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldButton::ConstructTGWorldButtonBaseState
+// ghidra_proto void * __thiscall ConstructTGWorldButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x00572130
+undefined4 ConstructTGWorldButtonBaseState(void)
 {
   return 0;
 }

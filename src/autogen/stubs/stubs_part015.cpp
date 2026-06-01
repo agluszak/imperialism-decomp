@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNumberedIcon::ConstructTNumberedIconBaseState
-// ghidra_proto void * __thiscall ConstructTNumberedIconBaseState(void)
-// FUNCTION: IMPERIALISM 0x005073a0
-undefined4 ConstructTNumberedIconBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNumberedIcon::DestructTNumberedIconAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNumberedIconAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005073d0
@@ -3999,6 +3991,14 @@ undefined4 ConstructTSortByPriceList(void)
 // ghidra_proto void __cdecl DeletingDestructTSortByPriceList(void)
 // FUNCTION: IMPERIALISM 0x00534740
 undefined4 DeletingDestructTSortByPriceList(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortByPriceList::DestructTSortByPriceList
+// ghidra_proto void __cdecl DestructTSortByPriceList(TIndexAndRankList * pThis)
+// FUNCTION: IMPERIALISM 0x00534770
+undefined4 DestructTSortByPriceList(void)
 {
   return 0;
 }

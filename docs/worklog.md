@@ -1090,3 +1090,26 @@
 4. Validation: `just build`/`detect` clean; `just compare 0x004f6b10` stub -> **43.04%**;
    adjacent diplomacy functions unchanged (present **46.30%**, mode4 **37.74%**,
    mask **15.02%**, mode1 **35.53%**, event-palette **25.30%**); canaries `below_floor=0`.
+
+### TDiplomacyMapView combined terrain-region clip build (2026-06-01, cont.)
+
+1. Promoted `0x004f6440` as
+   `TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch()`
+   (thiscall, `ret 0`) from a `0%` stub to **38.10%**. It builds a combined clip
+   region by unioning per-terrain-type frame regions, applies it to the view, and
+   frees it.
+2. New facade + helper vocabulary:
+   - `VCall_DiplomacyMapView_ApplyClipRegionSlotC4` (slot `0xc4`, applies the region
+     to the diplomacy map view) added to `config/vtable_slots.csv` and generated.
+   - Clip-region wrapper lifecycle (`__cdecl`): `CreateClipStateRegionWrapperObject`,
+     `CombineTwoRegionsIntoDestinationAndUpdateBox(dest, src, dest)`,
+     `DestroyClipStateRegionWrapperObject`.
+   - Confirms strategic-map slot `0x98` is single-arg `(index)` here too (consistent
+     with `RenderDiplomacyLegendSurfaceAndPresent`); the early `push region` is the
+     pre-staged `Combine` destination arg, not a slot-`0x98` arg.
+3. Residual gap is register allocation: original keeps `this` in `ebp` with an
+   index-compare loop (`cmp si,0x17`); register pressure from the live `region`
+   pushes MSVC500 to spill `this` and emit a `dec ebp` downcounter instead.
+4. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f6440`
+   stub -> **38.10%**; adjacent diplomacy functions unchanged; canaries
+   `below_floor=0`.

@@ -2211,14 +2211,6 @@ undefined4 UpdateDiplomacyMapHoverCursorFromActionSelection(void)
   return 0;
 }
 
-// ghidra_name BuildCombinedTerrainTypeRegionMaskAndDispatch
-// ghidra_proto void __cdecl BuildCombinedTerrainTypeRegionMaskAndDispatch(void)
-// FUNCTION: IMPERIALISM 0x004f6440
-undefined4 BuildCombinedTerrainTypeRegionMaskAndDispatch(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins05_004f6820
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins05_004f6820(void)
 // FUNCTION: IMPERIALISM 0x004f6820
@@ -3999,6 +3991,14 @@ undefined4 CreateTNumberedIconInstance(void)
 // ghidra_proto void * __cdecl GetTNumberedIconClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00507380
 undefined4 GetTNumberedIconClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedIcon::ConstructTNumberedIconBaseState
+// ghidra_proto void * __thiscall ConstructTNumberedIconBaseState(void)
+// FUNCTION: IMPERIALISM 0x005073a0
+undefined4 ConstructTNumberedIconBaseState(void)
 {
   return 0;
 }

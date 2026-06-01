@@ -25,6 +25,13 @@ static __inline void VCall_DiplomacyLegend_DrawTerrainSlot1E0(void* object, int 
   fn(object, arg0, arg1);
 }
 
+// apply combined terrain clip region to diplomacy map view; class=TDiplomacyMapView; status=provisional
+static __inline void VCall_DiplomacyMapView_ApplyClipRegionSlotC4(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xC4 / 4)));
+  fn(object, arg0);
+}
+
 // relation type/status query; status=provisional
 static __inline short VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
   typedef short (__fastcall * Fn)(void*, int, int, int);

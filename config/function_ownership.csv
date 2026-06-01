@@ -181,6 +181,7 @@ address|target_cpp|ownership|note
 4ea300|src/game/TGreatPower.cpp|manual|marker_sync
 4ea470|src/game/TGreatPower.cpp|manual|marker_sync
 4f6170|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+4f6440|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f64c0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f66c0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f6840|src/game/TDiplomacyMapView.cpp|manual|marker_sync
