@@ -95,3 +95,5 @@ src/game/TDiplomacyMapView.cpp|VCall_UiRuntime_ApplyLegendSplitSlot34|void|0x34 
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_GetFrameRegionSlot98|void*|0x98 / 4|int|medium|strategic map frame region query by view selector|index|thiscall|none||provisional|StrategicMapViewSystem
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_ApplyClipRegionSlotC4|void|0xC4 / 4|int|low|apply combined terrain clip region to diplomacy map view|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_GlobalMapState_QueryIconStripXSlot110|short|0x110 / 4|int|low|query policy-icon strip x offset by code|index|thiscall|none||provisional|GlobalMapState
+src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_TransformPointToLocalSlot148|void|0x148 / 4|int,int|low|transform screen point to diplomacy view-local coords|index|thiscall|none||provisional|TDiplomacyMapView
+src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_HitTestPointSlot90|char|0x90 / 4|int,int|low|hit-test view-local point against terrain region index|index|thiscall|none||provisional|StrategicMapViewSystem

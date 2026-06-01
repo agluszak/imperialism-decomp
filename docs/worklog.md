@@ -1143,3 +1143,28 @@
    hoisting it (31.97% vs 28.68%).
 6. Validation: `just build`/`detect` clean; `just compare 0x004f71a0` stub -> **31.97%**;
    adjacent diplomacy functions unchanged; canaries `below_floor=0`.
+
+### TDiplomacyMapView click hit-test / action resolve (2026-06-01, cont.)
+
+1. Promoted `0x004f5e00` as
+   `TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Point32*)`
+   (thiscall, `ret 4`) from a `0%` stub to **43.27%**. Lazy-inits the nation-matrix hit
+   RECT, PtInRect-gates the click, transforms it to view-local coords (slot `0x148`),
+   hit-tests each terrain region (strategic-map slot `0x90`), and updates the hovered
+   target, returning the pending action code.
+2. Architectural finding: Ghidra assigns `0x4f5e00` to `TCountry`, but `this` is the
+   diplomacy map view (fields `+0x90` selected-target short, `+0x94` mode, `+0xbc`
+   action code, `+0xc2` hovered-target short; vtable slot `0x148`). Modeled as a
+   `TDiplomacyMapViewLayout` method with offset access for the interaction fields; kept
+   the stale owned symbol name.
+3. New facades: `VCall_DiplomacyMapView_TransformPointToLocalSlot148` (slot `0x148`),
+   `VCall_StrategicMap_HitTestPointSlot90` (slot `0x90`). New globals:
+   `g_fDiplomacyNationMatrixRectInitialized` (`0x6a2fbc`),
+   `g_rcDiplomacyNationMatrixHitBounds` (`0x6a3008`).
+4. Tuning: reading the init flag once into a local and writing the modified value back
+   to the literal address (instead of caching a pointer) restored the direct
+   `mov al,[0x6a2fbc]` shape and lifted 38.37% -> 43.27%.
+5. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f5e00`
+   stub -> **43.27%**; canaries `below_floor=0`; stats avg **3.18%**, aligned **102**.
+   Note: `0x4f6bd0` reads 21.05% (was 25.30%) with no source change — reccmp re-pairing
+   noise from added functions in the TU (same effect seen earlier on `0x4f6170`).

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6e32
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6e32(void)
-// FUNCTION: IMPERIALISM 0x005e6e32
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e6e32(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantA
 // ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantA(void)
 // FUNCTION: IMPERIALISM 0x005e6e4e
@@ -3999,6 +3991,14 @@ undefined4 RunImperialismThreadMainLoop(void)
 // ghidra_proto void __thiscall PostCustomMessage36AAndNotifyThread(void)
 // FUNCTION: IMPERIALISM 0x006055d0
 undefined4 PostCustomMessage36AAndNotifyThread(void)
+{
+  return 0;
+}
+
+// ghidra_name HandleWndProcExceptionWithNodeTypeDispatch_00605613
+// ghidra_proto int __fastcall HandleWndProcExceptionWithNodeTypeDispatch_00605613(int * owner, void * msg)
+// FUNCTION: IMPERIALISM 0x00605613
+undefined4 HandleWndProcExceptionWithNodeTypeDispatch_00605613(void)
 {
   return 0;
 }

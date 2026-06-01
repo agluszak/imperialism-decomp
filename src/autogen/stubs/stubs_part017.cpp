@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name FormatLocalizedCommodityCountLabelByIndex
-// ghidra_proto void __cdecl FormatLocalizedCommodityCountLabelByIndex(void)
-// FUNCTION: IMPERIALISM 0x00550c20
-undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceTypeRandomDrawBlockFlag
 // ghidra_proto short __cdecl GetResourceTypeRandomDrawBlockFlag(void)
 // FUNCTION: IMPERIALISM 0x00550d80
@@ -3999,6 +3991,14 @@ undefined4 ConstructTGWorldButtonBaseState(void)
 // ghidra_proto void * __thiscall DestructTGWorldButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00572160
 undefined4 DestructTGWorldButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0
+// ghidra_proto void __cdecl WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
+// FUNCTION: IMPERIALISM 0x005721b0
+undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
 {
   return 0;
 }

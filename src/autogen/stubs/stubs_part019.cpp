@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name UpdateTacticalCursorModeProfileAndMaybeOpenDialog
-// ghidra_proto void __fastcall UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void * pTacticalState)
-// FUNCTION: IMPERIALISM 0x0059b830
-undefined4 UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeTacticalCursorProjectionScoresAndPruneList
 // ghidra_proto void __fastcall RecomputeTacticalCursorProjectionScoresAndPruneList(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x0059b990
@@ -3999,6 +3991,14 @@ undefined4 ConstructTDealTabControlBaseState(void)
 // ghidra_proto void __thiscall DestructTDealTabControlAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x005bc7f0
 undefined4 DestructTDealTabControlAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C7_I84_005bc9f0
+// ghidra_proto void __cdecl OrphanCallChain_C7_I84_005bc9f0(void)
+// FUNCTION: IMPERIALISM 0x005bc9f0
+undefined4 OrphanCallChain_C7_I84_005bc9f0(void)
 {
   return 0;
 }

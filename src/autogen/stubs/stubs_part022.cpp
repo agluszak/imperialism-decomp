@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name HandleWndProcExceptionWithNodeTypeDispatch_00605613
-// ghidra_proto int __fastcall HandleWndProcExceptionWithNodeTypeDispatch_00605613(int * owner, void * msg)
-// FUNCTION: IMPERIALISM 0x00605613
-undefined4 HandleWndProcExceptionWithNodeTypeDispatch_00605613(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DispatchVirtualSlot18OnImplicitObject
 // ghidra_proto void __cdecl thunk_DispatchVirtualSlot18OnImplicitObject(void)
 // FUNCTION: IMPERIALISM 0x0060564e
@@ -3999,6 +3991,14 @@ undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
 // ghidra_proto void __cdecl RegisterMouseWheelRollMessageForLegacyWindows(void)
 // FUNCTION: IMPERIALISM 0x0061c581
 undefined4 RegisterMouseWheelRollMessageForLegacyWindows(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::CFrameWnd
+// ghidra_proto TMacViewMgr * __thiscall CFrameWnd(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x0061c5dc
+undefined4 CFrameWnd(void)
 {
   return 0;
 }

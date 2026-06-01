@@ -8,6 +8,13 @@
 #pragma optimize("y", on)
 #endif
 
+struct Point32 {
+  int x;
+  int y;
+};
+
+extern "C" int __stdcall PtInRect(const RECT* rect, Point32 point);
+
 struct TDiplomacyMapViewLayout {
   void* vftable;
   char pad_04[0x94];
@@ -22,6 +29,7 @@ struct TDiplomacyMapViewLayout {
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void BuildCombinedTerrainTypeRegionMaskAndDispatch();
   void RenderDiplomacyPendingPolicyIconsAndFrames();
+  int ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint);
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -49,6 +57,7 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 DrawFrameRectOrUpdateClipRegion(void);
 undefined4 SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 DrawCenteredGuideLineOnMapDc(void);
+undefined4 AppendPointerToGlobalVectorAsStatus(void);
 
 extern int g_pPrimaryRenderSurfaceContext;
 extern int g_pActiveQuickDrawSurfaceContext;
@@ -59,6 +68,9 @@ const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
+const unsigned int kAddrDiplomacyHitRectInitialized = 0x006A2FBC;
+const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
+const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 } // namespace
 
 struct DiplomacyMaskBufferRun {
@@ -469,6 +481,61 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f5e00
+int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint) {
+  char* self = reinterpret_cast<char*>(this);
+  char initFlags = *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized);
+  if ((initFlags & 1) == 0) {
+    *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized) = static_cast<char>(initFlags | 1);
+    RECT initRect;
+    initRect.left = 0x31;
+    initRect.top = 0x2d;
+    initRect.right = 0x24d;
+    initRect.bottom = 0x159;
+    CopyRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), &initRect);
+    reinterpret_cast<int(__cdecl*)(void*)>(AppendPointerToGlobalVectorAsStatus)(
+        reinterpret_cast<void*>(kAddrResolveDiplomacyActionValue));
+  }
+
+  if (PtInRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), *clickPoint) == 0) {
+    return 0;
+  }
+  if (*reinterpret_cast<int*>(self + 0x94) == 5) {
+    return 0;
+  }
+
+  Point32 localPoint;
+  VCall_DiplomacyMapView_TransformPointToLocalSlot148(this, reinterpret_cast<int>(&localPoint),
+                                                      reinterpret_cast<int>(clickPoint));
+
+  int terrainIndex = 0;
+  int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
+  do {
+    if (*terrainDescriptors != 0) {
+      char hit = VCall_StrategicMap_HitTestPointSlot90(
+          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
+          reinterpret_cast<int>(&localPoint), terrainIndex);
+      if (hit != 0) {
+        break;
+      }
+    }
+    terrainDescriptors += 1;
+    terrainIndex += 1;
+  } while (reinterpret_cast<unsigned int>(terrainDescriptors) < 0x6a436c);
+
+  int actionCode = 0;
+  if (terrainIndex < 0x17) {
+    actionCode = *reinterpret_cast<int*>(self + 0xbc);
+    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(terrainIndex);
+    if (actionCode != 0xd && terrainIndex == *reinterpret_cast<short*>(self + 0x90)) {
+      return 1;
+    }
+  } else {
+    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(0xffff);
+  }
+  return actionCode;
 }
 
 // FUNCTION: IMPERIALISM 0x004f71a0

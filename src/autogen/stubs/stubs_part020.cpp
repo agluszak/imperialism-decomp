@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C7_I84_005bc9f0
-// ghidra_proto void __cdecl OrphanCallChain_C7_I84_005bc9f0(void)
-// FUNCTION: IMPERIALISM 0x005bc9f0
-undefined4 OrphanCallChain_C7_I84_005bc9f0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20
 // ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20(void)
 // FUNCTION: IMPERIALISM 0x005bcb20
@@ -3999,6 +3991,14 @@ undefined4 ReadDwordFromSerializedBuffer(void)
 // ghidra_proto void __cdecl WrapperFor_CException_At005e6e08(void)
 // FUNCTION: IMPERIALISM 0x005e6e08
 undefined4 WrapperFor_CException_At005e6e08(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6e32
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6e32(void)
+// FUNCTION: IMPERIALISM 0x005e6e32
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e6e32(void)
 {
   return 0;
 }

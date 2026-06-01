@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0
-// ghidra_proto void __cdecl WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
-// FUNCTION: IMPERIALISM 0x005721b0
-undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I25_00572200
 // ghidra_proto void __fastcall OrphanCallChain_C2_I25_00572200(int ecxArg, int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00572200
@@ -3999,6 +3991,14 @@ undefined4 AccumulateTacticalCursorActionClassProfileMetrics(void)
 // ghidra_proto void __cdecl RebuildListFromProviderAndDeduplicateByKey(void)
 // FUNCTION: IMPERIALISM 0x0059b740
 undefined4 RebuildListFromProviderAndDeduplicateByKey(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateTacticalCursorModeProfileAndMaybeOpenDialog
+// ghidra_proto void __fastcall UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void * pTacticalState)
+// FUNCTION: IMPERIALISM 0x0059b830
+undefined4 UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void)
 {
   return 0;
 }

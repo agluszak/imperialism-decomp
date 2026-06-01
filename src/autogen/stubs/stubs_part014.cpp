@@ -2187,14 +2187,6 @@ undefined4 HandleDiplomacySelectedNationActionCommand(void)
   return 0;
 }
 
-// ghidra_name TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget
-// ghidra_proto EDiplomacyProposalCodeRaw __thiscall ResolveDiplomacyActionFromClickAndUpdateTarget(void * pCursorPoint)
-// FUNCTION: IMPERIALISM 0x004f5e00
-undefined4 ResolveDiplomacyActionFromClickAndUpdateTarget(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004f5f90
 // ghidra_proto void __cdecl OrphanRetStub_004f5f90(void)
 // FUNCTION: IMPERIALISM 0x004f5f90
@@ -3999,6 +3991,14 @@ undefined4 ConstructTNumberedIconBaseState(void)
 // ghidra_proto void * __thiscall DestructTNumberedIconAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005073d0
 undefined4 DestructTNumberedIconAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0
+// ghidra_proto void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
+// FUNCTION: IMPERIALISM 0x005074e0
+undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
 {
   return 0;
 }

@@ -32,6 +32,13 @@ static __inline void VCall_DiplomacyMapView_ApplyClipRegionSlotC4(void* object, 
   fn(object, arg0);
 }
 
+// transform screen point to diplomacy view-local coords; class=TDiplomacyMapView; status=provisional
+static __inline void VCall_DiplomacyMapView_TransformPointToLocalSlot148(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x148 / 4)));
+  fn(object, arg0, arg1);
+}
+
 // relation type/status query; status=provisional
 static __inline short VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
   typedef short (__fastcall * Fn)(void*, int, int, int);
@@ -51,6 +58,13 @@ static __inline void* VCall_StrategicMap_GetFrameRegionSlot98(void* object, int 
   typedef void* (__fastcall * Fn)(void*, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x98 / 4)));
   return fn(object, arg0);
+}
+
+// hit-test view-local point against terrain region index; class=StrategicMapViewSystem; status=provisional
+static __inline char VCall_StrategicMap_HitTestPointSlot90(void* object, int arg0, int arg1) {
+  typedef char (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x90 / 4)));
+  return fn(object, arg0, arg1);
 }
 
 // runtime legend split/update slot selector; class=UiRuntimeContext; status=provisional

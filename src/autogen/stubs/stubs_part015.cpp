@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0
-// ghidra_proto void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
-// FUNCTION: IMPERIALISM 0x005074e0
-undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
 // ghidra_proto void __cdecl Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
 // FUNCTION: IMPERIALISM 0x00507570
@@ -3999,6 +3991,14 @@ undefined4 DestructTSortByPriceList(void)
 // ghidra_proto void __cdecl CompareSortByPriceListEntriesByField2Ascending(void)
 // FUNCTION: IMPERIALISM 0x005347b0
 undefined4 CompareSortByPriceListEntriesByField2Ascending(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateAndConstructTIndexAndRankList
+// ghidra_proto void * __cdecl AllocateAndConstructTIndexAndRankList(void)
+// FUNCTION: IMPERIALISM 0x005347e0
+undefined4 AllocateAndConstructTIndexAndRankList(void)
 {
   return 0;
 }
