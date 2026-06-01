@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C2_I21_004e2b00
-// ghidra_proto void __cdecl OrphanCallChain_C2_I21_004e2b00(void)
-// FUNCTION: IMPERIALISM 0x004e2b00
-undefined4 OrphanCallChain_C2_I21_004e2b00(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNationNavyOrderWeightedMovementScore
-// ghidra_proto int __fastcall ComputeNationNavyOrderWeightedMovementScore(void * pNationCtx)
-// FUNCTION: IMPERIALISM 0x004e3060
-undefined4 ComputeNationNavyOrderWeightedMovementScore(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeNationComparativePowerMetrics_Impl
 // ghidra_proto void __cdecl RecomputeNationComparativePowerMetrics_Impl(void)
 // FUNCTION: IMPERIALISM 0x004e3220
@@ -2243,14 +2227,6 @@ undefined4 OrphanLeaf_NoCall_Ins05_004f6820(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
-// ghidra_proto void __thiscall RebuildDiplomacyLegendPaletteMode1AndBlit(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004f6840
-undefined4 RebuildDiplomacyLegendPaletteMode1AndBlit(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers
 // ghidra_proto void __thiscall BuildTurnEventMonochromeMaskBuffers(void)
 // FUNCTION: IMPERIALISM 0x004f6b10
@@ -3999,6 +3975,30 @@ undefined4 ConstructTOrderViewBaseState(void)
 // ghidra_proto void * __thiscall DestructTOrderViewAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00506ab0
 undefined4 DestructTOrderViewAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::PopulateDialogControlsFromSelectedProductionEntry
+// ghidra_proto void __thiscall PopulateDialogControlsFromSelectedProductionEntry(void * ownerContext, int selectionIndex)
+// FUNCTION: IMPERIALISM 0x00506b00
+undefined4 PopulateDialogControlsFromSelectedProductionEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::RefreshOrderViewSupplyAndUseControlValues
+// ghidra_proto void __thiscall RefreshOrderViewSupplyAndUseControlValues(void)
+// FUNCTION: IMPERIALISM 0x00506f90
+undefined4 RefreshOrderViewSupplyAndUseControlValues(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240
+// ghidra_proto void __cdecl WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240(void)
+// FUNCTION: IMPERIALISM 0x00507240
+undefined4 WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240(void)
 {
   return 0;
 }

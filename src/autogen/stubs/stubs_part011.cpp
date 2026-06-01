@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TView::DestructTViewAndMaybeFree
-// ghidra_proto TView * __thiscall DestructTViewAndMaybeFree(byte arg1)
-// FUNCTION: IMPERIALISM 0x0048a9a0
-undefined4 DestructTViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeUiResourceEntryFrameAndParent
 // ghidra_proto void __cdecl InitializeUiResourceEntryFrameAndParent(void)
 // FUNCTION: IMPERIALISM 0x0048aa60
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
 // ghidra_proto void __thiscall CreateTNewGameCommandInstance(void)
 // FUNCTION: IMPERIALISM 0x0049de00
 undefined4 CreateTNewGameCommandInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::GetTNewGameCommandClassNamePointer
+// ghidra_proto void * __cdecl GetTNewGameCommandClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0049de20
+undefined4 GetTNewGameCommandClassNamePointer(void)
 {
   return 0;
 }

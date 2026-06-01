@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_ftol_At0047cfa0
-// ghidra_proto void __cdecl WrapperFor_ftol_At0047cfa0(void)
-// FUNCTION: IMPERIALISM 0x0047cfa0
-undefined4 WrapperFor_ftol_At0047cfa0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeDialogTemplateC2WithTextState
 // ghidra_proto void __fastcall InitializeDialogTemplateC2WithTextState(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x0047cfd0
@@ -3999,6 +3991,14 @@ undefined4 CreateTViewInstance(void)
 // ghidra_proto void * __cdecl GetTViewClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0048a8c0
 undefined4 GetTViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TView::DestructTViewAndMaybeFree
+// ghidra_proto TView * __thiscall DestructTViewAndMaybeFree(byte arg1)
+// FUNCTION: IMPERIALISM 0x0048a9a0
+undefined4 DestructTViewAndMaybeFree(void)
 {
   return 0;
 }

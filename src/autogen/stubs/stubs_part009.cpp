@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource
-// ghidra_proto void __cdecl thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
-// FUNCTION: IMPERIALISM 0x00409412
-undefined4 thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_OrphanCallChain_C2_I21_00489030_At00409417
 // ghidra_proto void __cdecl thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
 // FUNCTION: IMPERIALISM 0x00409417
@@ -3999,6 +3991,14 @@ undefined4 ApplyAuxOutputVolumeFromScalar(void)
 // ghidra_proto void __cdecl ForwardMciStatusCommand814IgnoreFailure(void)
 // FUNCTION: IMPERIALISM 0x0047cdf0
 undefined4 ForwardMciStatusCommand814IgnoreFailure(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At0047cfa0
+// ghidra_proto void __cdecl WrapperFor_ftol_At0047cfa0(void)
+// FUNCTION: IMPERIALISM 0x0047cfa0
+undefined4 WrapperFor_ftol_At0047cfa0(void)
 {
   return 0;
 }

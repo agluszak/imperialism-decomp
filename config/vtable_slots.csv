@@ -17,6 +17,7 @@ src/game/TGreatPower.cpp|VCall_List_ReleaseSlot24|void|0x24 / 4||high|list relea
 src/game/TGreatPower.cpp|VCall_ObArray_GetShortValueByOrdinalSlot2C|void*|0x2C / 4|int|high|ob array short accessor
 src/game/TGreatPower.cpp|VCall_Diplomacy_BuildRelationshipListSlot88|void|0x88 / 4|int,int,void*|high|build relation list
 src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|int,int|high|relation tier
+src/game/TDiplomacyMapView.cpp|VCall_Diplomacy_GetRelationTypeSlot68|short|0x68 / 4|int,int|high|relation type/status query
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasPolicyWithNationSlot44|char|0x44 / 4|int,int|high|policy gate
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard
 src/game/TGreatPower.cpp|VCall_UiRuntime_RequestDiplomacyDecisionSlot90|char|0x90 / 4|int,int,int|high|ui decision request
@@ -70,7 +71,7 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA9|void|0xA9||high|slotA9
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotB3|void|0xB3||high|slotB3
 src/game/TGreatPower.cpp|VCall_RelationManager_RefreshSlot80|void|0x80 / 4||high|relation refresh
 src/game/TGreatPower.cpp|VCall_MapActionContext_AssignDisplayRefFromSlot2C|void|0x2C / 4|int*|high|context display ref
-src/game/TGreatPower.cpp|VCall_SecondaryState_HasNationFlag5C|char|0x5C / 4|int|high|secondary flag
+src/game/TGreatPower.cpp|VCall_SecondaryState_HasNationFlag5C|short|0x5C / 4|int|high|secondary flag
 src/game/TGreatPower.cpp|VCall_SecondaryState_SetPolicyValue48|void|0x48 / 4|int,int|high|secondary set policy
 src/game/TGreatPower.cpp|VCall_SecondaryState_CallSlot4C|void|0x4C / 4|int,int|high|secondary slot4C
 src/game/TGreatPower.cpp|VCall_Message_AppendWordSlot78|void|0x78 / 4|const void*|high|message append word

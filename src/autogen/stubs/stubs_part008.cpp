@@ -3411,14 +3411,6 @@ undefined4 TAutoGreatPower_VtblSlot072(void)
   return 0;
 }
 
-// ghidra_name thunk_MapTurnEventCodeToPaletteIndex
-// ghidra_proto void __cdecl thunk_MapTurnEventCodeToPaletteIndex(int arg1)
-// FUNCTION: IMPERIALISM 0x00409205
-undefined4 thunk_MapTurnEventCodeToPaletteIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name UiViewManager::thunk_NoOpRuntimeUiCallback_005df780_At0040920f
 // ghidra_proto void __cdecl thunk_NoOpRuntimeUiCallback_005df780_At0040920f(void)
 // FUNCTION: IMPERIALISM 0x0040920f
@@ -3999,6 +3991,14 @@ undefined4 thunk_ReserveOverlayQuadRecordArrayCapacity(void)
 // ghidra_proto void __cdecl TacticalBattleView_VtblSlot110(void)
 // FUNCTION: IMPERIALISM 0x0040940d
 undefined4 TacticalBattleView_VtblSlot110(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource
+// ghidra_proto void __cdecl thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
+// FUNCTION: IMPERIALISM 0x00409412
+undefined4 thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
 {
   return 0;
 }

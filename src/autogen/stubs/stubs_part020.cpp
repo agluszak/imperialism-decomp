@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TLineData::BuildSelectedNationOrderCapabilityRows
-// ghidra_proto void __thiscall BuildSelectedNationOrderCapabilityRows(void)
-// FUNCTION: IMPERIALISM 0x005bb2e0
-undefined4 BuildSelectedNationOrderCapabilityRows(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
-// ghidra_proto void __thiscall HandleDealBookTradeCommandAndRefreshNationLines(int commandId, PanelEventPayload * pPanelEvent, int forwardArg)
-// FUNCTION: IMPERIALISM 0x005bbc30
-undefined4 HandleDealBookTradeCommandAndRefreshNationLines(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshTradeSelectionHeaderAndNationOfferBidLines
-// ghidra_proto void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(void * pHintContext)
-// FUNCTION: IMPERIALISM 0x005bc0d0
-undefined4 RefreshTradeSelectionHeaderAndNationOfferBidLines(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealTabControl::CreateTDealTabControlInstance
 // ghidra_proto void * __cdecl CreateTDealTabControlInstance(void)
 // FUNCTION: IMPERIALISM 0x005bc690
@@ -3999,6 +3975,30 @@ undefined4 WrapperFor_ImageList_Read_At005e6ad1(void)
 // ghidra_proto void __thiscall WrapperFor_ImageList_Write_At005e6afe(void)
 // FUNCTION: IMPERIALISM 0x005e6afe
 undefined4 WrapperFor_ImageList_Write_At005e6afe(void)
+{
+  return 0;
+}
+
+// ghidra_name GetCurSel
+// ghidra_proto void __fastcall GetCurSel(void)
+// FUNCTION: IMPERIALISM 0x005e6b22
+undefined4 GetCurSel(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e6cf5
+// ghidra_proto void __cdecl WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e6cf5(void)
+// FUNCTION: IMPERIALISM 0x005e6cf5
+undefined4 WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e6cf5(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::WriteWordToSerializedBuffer
+// ghidra_proto void * __thiscall WriteWordToSerializedBuffer(ushort value)
+// FUNCTION: IMPERIALISM 0x005e6d27
+undefined4 WriteWordToSerializedBuffer(void)
 {
   return 0;
 }

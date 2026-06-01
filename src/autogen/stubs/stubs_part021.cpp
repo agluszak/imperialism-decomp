@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetCurSel
-// ghidra_proto void __fastcall GetCurSel(void)
-// FUNCTION: IMPERIALISM 0x005e6b22
-undefined4 GetCurSel(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e6cf5
-// ghidra_proto void __cdecl WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e6cf5(void)
-// FUNCTION: IMPERIALISM 0x005e6cf5
-undefined4 WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e6cf5(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::WriteWordToSerializedBuffer
-// ghidra_proto void * __thiscall WriteWordToSerializedBuffer(ushort value)
-// FUNCTION: IMPERIALISM 0x005e6d27
-undefined4 WriteWordToSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::WriteDwordToSerializedBuffer
 // ghidra_proto void * __thiscall WriteDwordToSerializedBuffer(uint value)
 // FUNCTION: IMPERIALISM 0x005e6d4e
@@ -3999,6 +3975,30 @@ undefined4 PreModal(void)
 // ghidra_proto void __fastcall PostModal(void)
 // FUNCTION: IMPERIALISM 0x0060517b
 undefined4 PostModal(void)
+{
+  return 0;
+}
+
+// ghidra_name DoModal_6051b9
+// ghidra_proto int __cdecl DoModal_6051b9(void)
+// FUNCTION: IMPERIALISM 0x006051b9
+undefined4 DoModal_6051b9(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxHelpEnabled
+// ghidra_proto int __cdecl AfxHelpEnabled(void)
+// FUNCTION: IMPERIALISM 0x006053ee
+undefined4 AfxHelpEnabled(void)
+{
+  return 0;
+}
+
+// ghidra_name OnInitDialog
+// ghidra_proto byte __fastcall OnInitDialog(int pController)
+// FUNCTION: IMPERIALISM 0x00605445
+undefined4 OnInitDialog(void)
 {
   return 0;
 }

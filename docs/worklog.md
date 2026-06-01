@@ -2,6 +2,25 @@
 
 ## 2026-06-01
 
+### TCityProductionView and TDiplomacyMapView Legend Slice Progress
+
+1. Scope:
+   1. `src/game/TCityProductionView.cpp`
+   2. `src/game/TDiplomacyMapView.cpp`
+2. Changes:
+   1. Defined missing global extern arrays `g_apNationStates` and `g_Render_Nation_Header_Value_*` in `TCityProductionView.cpp` to resolve linker LNK2001 errors.
+   2. Corrected stub `(void)` signatures and added appropriate `reinterpret_cast` calls on `thunk_DrawCenteredGuideLineOnMapDc`, `thunk_SetQuickDrawTextOriginWithContextOffset`, `GetCurrentLocalEpochSecondsWithTimezoneCache`, and `ConvertEpochSecondsToLocalTmWithDstAdjust`.
+   3. Promoted and optimized `TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh` (`0x004badd0`) to **72.55%** using ternary comparisons `(sVar2_val == 2) ? ... : ...` to trigger the MSVC branchless `sete/neg/sbb` register allocations.
+   4. Adjusted `TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit` (`0x004f64c0`) and `RebuildDiplomacyLegendPaletteMode1AndBlit` (`0x004f6840`) to nest the `ReturnConstantTrueQuickDrawFlag` call and use field-by-field RECT copying to match the compiler's stack frames and instruction selections. Improved scores to **37.74%** and **35.53%** respectively.
+3. Validation:
+   1. `just build`: passed.
+   2. `just compare 0x004badd0`: `72.55%`.
+   3. `just compare 0x004f64c0`: `37.74%`.
+   4. `just compare 0x004f6840`: `35.53%`.
+   5. `just compare-canaries`: passed.
+   6. `just stats`: average similarity `3.17%`, aligned functions `102`.
+
+
 ### Mac-guided amount-bar method recovery
 
 1. Scope:

@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DoModal_6051b9
-// ghidra_proto int __cdecl DoModal_6051b9(void)
-// FUNCTION: IMPERIALISM 0x006051b9
-undefined4 DoModal_6051b9(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxHelpEnabled
-// ghidra_proto int __cdecl AfxHelpEnabled(void)
-// FUNCTION: IMPERIALISM 0x006053ee
-undefined4 AfxHelpEnabled(void)
-{
-  return 0;
-}
-
-// ghidra_name OnInitDialog
-// ghidra_proto byte __fastcall OnInitDialog(int pController)
-// FUNCTION: IMPERIALISM 0x00605445
-undefined4 OnInitDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::OnOK_6054aa
 // ghidra_proto void __fastcall OnOK_6054aa(void)
 // FUNCTION: IMPERIALISM 0x006054aa
@@ -3999,6 +3975,30 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0061a98d(void)
 // ghidra_proto void __cdecl AfxFormatStrings(void * outString, uint resourceId, void * argArray, int argCount)
 // FUNCTION: IMPERIALISM 0x0061aa0e
 undefined4 AfxFormatStrings(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxFormatStrings_61aa48
+// ghidra_proto void __thiscall AfxFormatStrings_61aa48(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x0061aa48
+undefined4 AfxFormatStrings_61aa48(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxFormatString1
+// ghidra_proto void __cdecl AfxFormatString1(void * outString, uint resourceId, void * arg1)
+// FUNCTION: IMPERIALISM 0x0061ab47
+undefined4 AfxFormatString1(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxFormatString2
+// ghidra_proto void __cdecl AfxFormatString2(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0061ab5e
+undefined4 AfxFormatString2(void)
 {
   return 0;
 }

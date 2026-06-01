@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction
-// ghidra_proto void __thiscall HandleCityBuildingSlotClickAndDispatchAction(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x004bc660
-undefined4 HandleCityBuildingSlotClickAndDispatchAction(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_IsPointInsideHitRegion_At004bc870
-// ghidra_proto void __cdecl WrapperFor_IsPointInsideHitRegion_At004bc870(void)
-// FUNCTION: IMPERIALISM 0x004bc870
-undefined4 WrapperFor_IsPointInsideHitRegion_At004bc870(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C5_I49_004bc910
 // ghidra_proto void __cdecl OrphanCallChain_C5_I49_004bc910(void)
 // FUNCTION: IMPERIALISM 0x004bc910
@@ -3999,6 +3983,22 @@ undefined4 ApplyMinorNationCapabilityActionType4(void)
 // ghidra_proto void __cdecl ClassifyNationProductionTotalAgainstGlobalDistribution(void)
 // FUNCTION: IMPERIALISM 0x004e2880
 undefined4 ClassifyNationProductionTotalAgainstGlobalDistribution(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I21_004e2b00
+// ghidra_proto void __cdecl OrphanCallChain_C2_I21_004e2b00(void)
+// FUNCTION: IMPERIALISM 0x004e2b00
+undefined4 OrphanCallChain_C2_I21_004e2b00(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeNationNavyOrderWeightedMovementScore
+// ghidra_proto int __fastcall ComputeNationNavyOrderWeightedMovementScore(void * pNationCtx)
+// FUNCTION: IMPERIALISM 0x004e3060
+undefined4 ComputeNationNavyOrderWeightedMovementScore(void)
 {
   return 0;
 }

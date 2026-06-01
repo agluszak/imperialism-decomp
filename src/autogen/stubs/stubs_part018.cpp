@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TColorKeyButton::DestructTColorKeyButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTColorKeyButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571fa0
-undefined4 DestructTColorKeyButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I28_00571ff0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I28_00571ff0(void)
-// FUNCTION: IMPERIALISM 0x00571ff0
-undefined4 OrphanCallChain_C2_I28_00571ff0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00572060
-// ghidra_proto void __cdecl OrphanCallChain_C1_I05_00572060(void)
-// FUNCTION: IMPERIALISM 0x00572060
-undefined4 OrphanCallChain_C1_I05_00572060(void)
-{
-  return 0;
-}
-
 // ghidra_name TGWorldButton::CreateTGWorldButtonInstance
 // ghidra_proto void * __cdecl CreateTGWorldButtonInstance(void)
 // FUNCTION: IMPERIALISM 0x00572080
@@ -3999,6 +3975,30 @@ undefined4 GetTArmyPlayerClassNamePointer(void)
 // ghidra_proto void __cdecl InitializeTacticalSideFromArmyUnitList(void)
 // FUNCTION: IMPERIALISM 0x0059b1b0
 undefined4 InitializeTacticalSideFromArmyUnitList(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyPlayer::DestructTArmyPlayerAndMaybeFree
+// ghidra_proto void * __thiscall DestructTArmyPlayerAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0059b390
+undefined4 DestructTArmyPlayerAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTArmyPlayerAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTArmyPlayerAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x0059b3c0
+undefined4 DestructTArmyPlayerAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot01
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot01(void)
+// FUNCTION: IMPERIALISM 0x0059b3e0
+undefined4 TArmyTacUnit_VtblSlot01(void)
 {
   return 0;
 }

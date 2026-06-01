@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyPlayer::DestructTArmyPlayerAndMaybeFree
-// ghidra_proto void * __thiscall DestructTArmyPlayerAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0059b390
-undefined4 DestructTArmyPlayerAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTArmyPlayerAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTArmyPlayerAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x0059b3c0
-undefined4 DestructTArmyPlayerAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot01
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot01(void)
-// FUNCTION: IMPERIALISM 0x0059b3e0
-undefined4 TArmyTacUnit_VtblSlot01(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot02
 // ghidra_proto void __thiscall TArmyTacUnit_VtblSlot02(void)
 // FUNCTION: IMPERIALISM 0x0059b4f0
@@ -3999,6 +3975,30 @@ undefined4 RefreshHudNationTitleControlsAndTheme(void)
 // ghidra_proto void __thiscall UpdateDealBookResourceSelectionAndToggleControls(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005baf70
 undefined4 UpdateDealBookResourceSelectionAndToggleControls(void)
+{
+  return 0;
+}
+
+// ghidra_name TLineData::BuildSelectedNationOrderCapabilityRows
+// ghidra_proto void __thiscall BuildSelectedNationOrderCapabilityRows(void)
+// FUNCTION: IMPERIALISM 0x005bb2e0
+undefined4 BuildSelectedNationOrderCapabilityRows(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
+// ghidra_proto void __thiscall HandleDealBookTradeCommandAndRefreshNationLines(int commandId, PanelEventPayload * pPanelEvent, int forwardArg)
+// FUNCTION: IMPERIALISM 0x005bbc30
+undefined4 HandleDealBookTradeCommandAndRefreshNationLines(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshTradeSelectionHeaderAndNationOfferBidLines
+// ghidra_proto void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(void * pHintContext)
+// FUNCTION: IMPERIALISM 0x005bc0d0
+undefined4 RefreshTradeSelectionHeaderAndNationOfferBidLines(void)
 {
   return 0;
 }

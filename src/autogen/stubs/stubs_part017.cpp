@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
-// ghidra_proto int __thiscall SelectPreferredMapOrderEntryByPriorityRules(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00550670
-undefined4 SelectPreferredMapOrderEntryByPriorityRules(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrderNodeDescriptorWord0CByResourceType
-// ghidra_proto short __cdecl GetOrderNodeDescriptorWord0CByResourceType(void)
-// FUNCTION: IMPERIALISM 0x00550820
-undefined4 GetOrderNodeDescriptorWord0CByResourceType(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeOrderNodeDerivedScoreFromQuantityAndWord18
-// ghidra_proto int __cdecl ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
-// FUNCTION: IMPERIALISM 0x00550840
-undefined4 ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
-{
-  return 0;
-}
-
 // ghidra_name GetIndustryActionCostWeightByResourceType
 // ghidra_proto short __cdecl GetIndustryActionCostWeightByResourceType(void)
 // FUNCTION: IMPERIALISM 0x00550970
@@ -3999,6 +3975,30 @@ undefined4 GetTColorKeyButtonClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTColorKeyButtonBaseState(void)
 // FUNCTION: IMPERIALISM 0x00571f70
 undefined4 ConstructTColorKeyButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TColorKeyButton::DestructTColorKeyButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTColorKeyButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00571fa0
+undefined4 DestructTColorKeyButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I28_00571ff0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I28_00571ff0(void)
+// FUNCTION: IMPERIALISM 0x00571ff0
+undefined4 OrphanCallChain_C2_I28_00571ff0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I05_00572060
+// ghidra_proto void __cdecl OrphanCallChain_C1_I05_00572060(void)
+// FUNCTION: IMPERIALISM 0x00572060
+undefined4 OrphanCallChain_C1_I05_00572060(void)
 {
   return 0;
 }

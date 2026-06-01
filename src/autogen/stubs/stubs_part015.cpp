@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TControl::PopulateDialogControlsFromSelectedProductionEntry
-// ghidra_proto void __thiscall PopulateDialogControlsFromSelectedProductionEntry(void * ownerContext, int selectionIndex)
-// FUNCTION: IMPERIALISM 0x00506b00
-undefined4 PopulateDialogControlsFromSelectedProductionEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::RefreshOrderViewSupplyAndUseControlValues
-// ghidra_proto void __thiscall RefreshOrderViewSupplyAndUseControlValues(void)
-// FUNCTION: IMPERIALISM 0x00506f90
-undefined4 RefreshOrderViewSupplyAndUseControlValues(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240
-// ghidra_proto void __cdecl WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240(void)
-// FUNCTION: IMPERIALISM 0x00507240
-undefined4 WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240(void)
-{
-  return 0;
-}
-
 // ghidra_name TNumberedIcon::CreateTNumberedIconInstance
 // ghidra_proto void * __cdecl CreateTNumberedIconInstance(void)
 // FUNCTION: IMPERIALISM 0x005072e0
@@ -3999,6 +3975,30 @@ undefined4 RunForeignMinisterVtableSlot90ArmsVariant(void)
 // ghidra_proto void __cdecl DispatchNationInteractionAmountWithSharedSplitCache(void)
 // FUNCTION: IMPERIALISM 0x00534450
 undefined4 DispatchNationInteractionAmountWithSharedSplitCache(void)
+{
+  return 0;
+}
+
+// ghidra_name IncrementArmsCounter5EByFive
+// ghidra_proto void __cdecl IncrementArmsCounter5EByFive(void)
+// FUNCTION: IMPERIALISM 0x00534660
+undefined4 IncrementArmsCounter5EByFive(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateAndConstructTSortByPriceList
+// ghidra_proto void * __cdecl AllocateAndConstructTSortByPriceList(void)
+// FUNCTION: IMPERIALISM 0x00534680
+undefined4 AllocateAndConstructTSortByPriceList(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortByPriceList::GetTSortByPriceListClassNamePointer
+// ghidra_proto void * __cdecl GetTSortByPriceListClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005346f0
+undefined4 GetTSortByPriceListClassNamePointer(void)
 {
   return 0;
 }

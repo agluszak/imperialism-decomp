@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name IncrementArmsCounter5EByFive
-// ghidra_proto void __cdecl IncrementArmsCounter5EByFive(void)
-// FUNCTION: IMPERIALISM 0x00534660
-undefined4 IncrementArmsCounter5EByFive(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateAndConstructTSortByPriceList
-// ghidra_proto void * __cdecl AllocateAndConstructTSortByPriceList(void)
-// FUNCTION: IMPERIALISM 0x00534680
-undefined4 AllocateAndConstructTSortByPriceList(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortByPriceList::GetTSortByPriceListClassNamePointer
-// ghidra_proto void * __cdecl GetTSortByPriceListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005346f0
-undefined4 GetTSortByPriceListClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortByPriceList::ConstructTSortByPriceList
 // ghidra_proto void __thiscall ConstructTSortByPriceList(void)
 // FUNCTION: IMPERIALISM 0x00534710
@@ -3999,6 +3975,30 @@ undefined4 GetNavyPrimaryOrderListIndexOfNode(void)
 // ghidra_proto void * __cdecl GetNavyPrimaryOrderNodeByIndex(int arg1)
 // FUNCTION: IMPERIALISM 0x00550640
 undefined4 GetNavyPrimaryOrderNodeByIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
+// ghidra_proto int __thiscall SelectPreferredMapOrderEntryByPriorityRules(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00550670
+undefined4 SelectPreferredMapOrderEntryByPriorityRules(void)
+{
+  return 0;
+}
+
+// ghidra_name GetOrderNodeDescriptorWord0CByResourceType
+// ghidra_proto short __cdecl GetOrderNodeDescriptorWord0CByResourceType(void)
+// FUNCTION: IMPERIALISM 0x00550820
+undefined4 GetOrderNodeDescriptorWord0CByResourceType(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeOrderNodeDerivedScoreFromQuantityAndWord18
+// ghidra_proto int __cdecl ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
+// FUNCTION: IMPERIALISM 0x00550840
+undefined4 ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
 {
   return 0;
 }

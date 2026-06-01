@@ -4,4 +4,6 @@ address|name|prototype
 0x004041e7|thunk_DestructTViewBaseState_0058ABD0|void __fastcall thunk_DestructTViewBaseState_0058ABD0(TView* amountBar)
 0x0040173f|thunk_DestructTViewBaseState_0058A000|void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar)
 0x00403b16|UiRuntimeContext::GetActiveNationId|short __thiscall GetActiveNationId(void)
+0x00409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|int __thiscall MapTurnEventCodeToPaletteIndex(int eventCode)
+
 

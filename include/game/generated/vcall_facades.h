@@ -25,6 +25,13 @@ static __inline void VCall_DiplomacyLegend_DrawTerrainSlot1E0(void* object, int 
   fn(object, arg0, arg1);
 }
 
+// relation type/status query; status=provisional
+static __inline short VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
+  typedef short (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x68 / 4)));
+  return fn(object, 0, arg0, arg1);
+}
+
 // strategic map frame region query by view selector; class=StrategicMapViewSystem; status=provisional
 static __inline void* VCall_StrategicMap_GetFrameRegionSlot98(void* object, int arg0) {
   typedef void* (__fastcall * Fn)(void*, int);
@@ -509,8 +516,8 @@ static __inline void VCall_SecondaryState_CallSlot4C(void* object, int arg0, int
 }
 
 // secondary flag; status=provisional
-static __inline char VCall_SecondaryState_HasNationFlag5C(void* object, int arg0) {
-  typedef char (__fastcall * Fn)(void*, int, int);
+static __inline short VCall_SecondaryState_HasNationFlag5C(void* object, int arg0) {
+  typedef short (__fastcall * Fn)(void*, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x5C / 4)));
   return fn(object, 0, arg0);
 }

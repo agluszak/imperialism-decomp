@@ -68,14 +68,15 @@ Maintenance:
 ## Latest Checkpoint
 
 1. Aligned functions: `102`
-2. Average similarity: `3.15%`
+2. Average similarity: `3.17%`
 3. New matched primitive: `SetQuickDrawFillColor(int)` (`0x00495000`) at **100%**.
 4. New architecture slice: `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (`0x00596100`) promoted from stub to **24.44%**, with `QuickDrawSurfaceGuard` and generated map-overlay vcall facades.
 5. New class slice: `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip` (`0x004a05c0`) promoted from stub to **29.85%** and `TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw` (`0x004a0770`) promoted from stub to **71.19%**, with provisional scoped-context and render/update vcall facades.
 6. Scoped-context sweep: moved `ScopedMapQuickDrawContextGuard` to shared UI scaffolding, promoted `TFocusAnimation::DestructTFocusAnimationAndMaybeFree` (`0x004a0190`) to **81.69%**, promoted `TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree` (`0x0049fde0`) to **75.86%**, and improved `0x004a0770` to **84.75%** with the 24-byte guard layout.
 7. Slider/control slice: promoted Mac-guided `TTwoPicSlider` draw/track methods: `0x0056e370` to **46.84%** and `0x0056e640` to **45.63%**, confirming shared RECT/blit/text/scoped-context patterns and a `ret 0x0c` hidden-stack-arg input shape.
 8. Temporary primary-surface slice: promoted `TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int,int)` (`0x004bc9b0`) to **41.67%**, confirming the same `QuickDrawSurfaceGuard` / active-context swap / slot `0x12c`+`0x110` pattern as a real method with hidden stack args.
-9. Diplomacy-map legend slice: promoted `TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent` (`0x004f6170`) to **46.30%**, `RebuildDiplomacyLegendPaletteMode4AndBlit` (`0x004f64c0`) to **31.33%**, and provisional subobject method `DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface` (`0x004f66c0`) to **15.02%**. This established `this+0x98`, `this+0x524`, mask runs at `this+0x1eac`, packed-color runs at `this+0x2078`, and corrected vcall signatures for slots `0x1e0`, `0x34`, and `0x98`.
+9. Diplomacy-map legend slice: promoted `TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent` (`0x004f6170`) to **46.30%**, `RebuildDiplomacyLegendPaletteMode4AndBlit` (`0x004f64c0`) improved to **37.74%**, `RebuildDiplomacyLegendPaletteMode1AndBlit` (`0x004f6840`) improved to **35.53%**, and provisional subobject method `DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface` (`0x004f66c0`) to **15.02%**. This established `this+0x98`, `this+0x524`, mask runs at `this+0x1eac`, packed-color runs at `this+0x2078`, and corrected vcall signatures for slots `0x1e0`, `0x34`, and `0x98`.
+10. City-production header date slice: promoted `TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh` (`0x004badd0`) to **72.55%** by using branchless ternary conditional assignments to match MSVC compiler optimization choices and resolving missing extern global variables.
 
 ## Active Constraints
 

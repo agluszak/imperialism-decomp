@@ -80,6 +80,7 @@ address|target_cpp|ownership|note
 40862a|src/game/TGreatPower.cpp|manual|marker_sync
 4087fb|src/game/TControl.cpp|manual|marker_sync
 4090b1|src/game/TGreatPower.cpp|manual|marker_sync
+409205|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 409291|src/game/TGreatPower.cpp|manual|marker_sync
 4096c4|src/game/TGreatPower.cpp|manual|marker_sync
 4097fa|src/game/TGreatPower.cpp|manual|marker_sync
@@ -107,6 +108,7 @@ address|target_cpp|ownership|note
 4b8cc0|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d00|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d30|src/game/TCapacityOrder.cpp|manual|marker_sync
+4badd0|src/game/TCityProductionView.cpp|manual|marker_sync
 4bc9b0|src/game/TCityProductionView.cpp|manual|marker_sync
 4d8950|src/game/TGreatPower.cpp|manual|marker_sync
 4d89d0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -181,6 +183,7 @@ address|target_cpp|ownership|note
 4f6170|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f64c0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f66c0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+4f6840|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4ffc10|src/game/TGreatPower.cpp|manual|marker_sync
 500200|src/game/noop_slots.cpp|manual|marker_sync
 500220|src/game/noop_slots.cpp|manual|marker_sync

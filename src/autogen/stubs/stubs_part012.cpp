@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNewGameCommand::GetTNewGameCommandClassNamePointer
-// ghidra_proto void * __cdecl GetTNewGameCommandClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0049de20
-undefined4 GetTNewGameCommandClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::ConstructTNewGameCommandBaseState
 // ghidra_proto void * __cdecl ConstructTNewGameCommandBaseState(void)
 // FUNCTION: IMPERIALISM 0x0049de40
@@ -3955,14 +3947,6 @@ undefined4 BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
   return 0;
 }
 
-// ghidra_name TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
-// ghidra_proto void __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
-// FUNCTION: IMPERIALISM 0x004badd0
-undefined4 RenderNationHeaderDateLabelWithPeriodicRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::HandleCityBuildingHoverSelection
 // ghidra_proto void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)
 // FUNCTION: IMPERIALISM 0x004bafa0
@@ -3999,6 +3983,22 @@ undefined4 RefreshCityBuildingActionAvailabilityIndicators(void)
 // ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610(void)
 // FUNCTION: IMPERIALISM 0x004bc610
 undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction
+// ghidra_proto void __thiscall HandleCityBuildingSlotClickAndDispatchAction(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x004bc660
+undefined4 HandleCityBuildingSlotClickAndDispatchAction(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_IsPointInsideHitRegion_At004bc870
+// ghidra_proto void __cdecl WrapperFor_IsPointInsideHitRegion_At004bc870(void)
+// FUNCTION: IMPERIALISM 0x004bc870
+undefined4 WrapperFor_IsPointInsideHitRegion_At004bc870(void)
 {
   return 0;
 }
