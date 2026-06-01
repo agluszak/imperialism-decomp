@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::PreCreateWindow_61cdb3
-// ghidra_proto bool __thiscall PreCreateWindow_61cdb3(void * pCreateStruct)
-// FUNCTION: IMPERIALISM 0x0061cdb3
-undefined4 PreCreateWindow_61cdb3(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateWindowWithOptionalMenuResource
-// ghidra_proto bool __thiscall CreateWindowWithOptionalMenuResource(void * windowClass, void * windowName, void * windowStyle, void * windowRect, void * parentWindow, int menuResourceId, char * menuResourceName, void * exStyle, void * createContext)
-// FUNCTION: IMPERIALISM 0x0061ce0b
-undefined4 CreateWindowWithOptionalMenuResource(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateView
 // ghidra_proto void * __cdecl CreateView(void)
 // FUNCTION: IMPERIALISM 0x0061cea3
@@ -3999,6 +3983,22 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063129f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006312bf(void)
 // FUNCTION: IMPERIALISM 0x006312bf
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006312bf(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006312e9
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006312e9(void)
+// FUNCTION: IMPERIALISM 0x006312e9
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006312e9(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063130f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063130f(void)
+// FUNCTION: IMPERIALISM 0x0063130f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063130f(void)
 {
   return 0;
 }

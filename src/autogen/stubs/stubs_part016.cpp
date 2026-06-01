@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnZeroMissionVtableSlot5C
-// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot5C(void)
-// FUNCTION: IMPERIALISM 0x00534db0
-undefined4 ReturnZeroMissionVtableSlot5C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot60
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot60(void)
-// FUNCTION: IMPERIALISM 0x00534dd0
-undefined4 ReturnFalseMissionVtableSlot60(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnFalseMissionVtableSlot64
 // ghidra_proto void __cdecl ReturnFalseMissionVtableSlot64(void)
 // FUNCTION: IMPERIALISM 0x00534df0
@@ -3999,6 +3983,22 @@ undefined4 DestroyAndUnlinkNavySecondaryOrderNode(void)
 // ghidra_proto void __cdecl SerializeNavyOrderSelectionStateToStream(void)
 // FUNCTION: IMPERIALISM 0x00551670
 undefined4 SerializeNavyOrderSelectionStateToStream(void)
+{
+  return 0;
+}
+
+// ghidra_name DeserializeNavyOrderSelectionStateFromStream
+// ghidra_proto void __fastcall DeserializeNavyOrderSelectionStateFromStream(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00551700
+undefined4 DeserializeNavyOrderSelectionStateFromStream(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
+// ghidra_proto void __cdecl SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
+// FUNCTION: IMPERIALISM 0x00551850
+undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
 {
   return 0;
 }

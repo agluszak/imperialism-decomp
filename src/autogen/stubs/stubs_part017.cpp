@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DeserializeNavyOrderSelectionStateFromStream
-// ghidra_proto void __fastcall DeserializeNavyOrderSelectionStateFromStream(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x00551700
-undefined4 DeserializeNavyOrderSelectionStateFromStream(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
-// ghidra_proto void __cdecl SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
-// FUNCTION: IMPERIALISM 0x00551850
-undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
-{
-  return 0;
-}
-
 // ghidra_name FindCumulativeWeightBucketIndex
 // ghidra_proto int __cdecl FindCumulativeWeightBucketIndex(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005519d0
@@ -3999,6 +3983,22 @@ undefined4 GetTNoHilitePictureClassNamePointer(void)
 // ghidra_proto void __thiscall ConstructPictureResourceEntryType606E8(void)
 // FUNCTION: IMPERIALISM 0x00572b30
 undefined4 ConstructPictureResourceEntryType606E8(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHilitePicture::DestructTNoHilitePictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNoHilitePictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00572b60
+undefined4 DestructTNoHilitePictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TBackgroundPicture::CreateTBackgroundPictureInstance
+// ghidra_proto void * __cdecl CreateTBackgroundPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00572bd0
+undefined4 CreateTBackgroundPictureInstance(void)
 {
   return 0;
 }

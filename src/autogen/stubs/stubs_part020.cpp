@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer
-// ghidra_proto void * __cdecl GetTTradeBidNationLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005bd9c0
-undefined4 GetTTradeBidNationLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
-// ghidra_proto void * __thiscall ConstructTTradeBidNationLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005bda20
-undefined4 ConstructTTradeBidNationLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTradeBidNationLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005bdaf0
@@ -3999,6 +3983,22 @@ undefined4 WrapperFor_CException_At005e702c(void)
 // ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e7056(void)
 // FUNCTION: IMPERIALISM 0x005e7056
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e7056(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantD
+// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
+// FUNCTION: IMPERIALISM 0x005e7072
+undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
+{
+  return 0;
+}
+
+// ghidra_name SehProlog_DeleteObjectHandle_Wrapper
+// ghidra_proto void __cdecl SehProlog_DeleteObjectHandle_Wrapper(void)
+// FUNCTION: IMPERIALISM 0x005e70ea
+undefined4 SehProlog_DeleteObjectHandle_Wrapper(void)
 {
   return 0;
 }

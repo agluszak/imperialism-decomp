@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name FreeNestedPointerTableRowsAndResetDimensions
-// ghidra_proto void __cdecl FreeNestedPointerTableRowsAndResetDimensions(void)
-// FUNCTION: IMPERIALISM 0x00508760
-undefined4 FreeNestedPointerTableRowsAndResetDimensions(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl
-// ghidra_proto void __cdecl LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
-// FUNCTION: IMPERIALISM 0x00508800
-undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowCountrySelectionPromptAndReturnNationId
 // ghidra_proto void __cdecl ShowCountrySelectionPromptAndReturnNationId(void)
 // FUNCTION: IMPERIALISM 0x00508910
@@ -3999,6 +3983,22 @@ undefined4 ReturnFalseMissionVtableSlot54(void)
 // ghidra_proto void __cdecl ReturnZeroMissionVtableSlot58(void)
 // FUNCTION: IMPERIALISM 0x00534d90
 undefined4 ReturnZeroMissionVtableSlot58(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnZeroMissionVtableSlot5C
+// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot5C(void)
+// FUNCTION: IMPERIALISM 0x00534db0
+undefined4 ReturnZeroMissionVtableSlot5C(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot60
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot60(void)
+// FUNCTION: IMPERIALISM 0x00534dd0
+undefined4 ReturnFalseMissionVtableSlot60(void)
 {
   return 0;
 }

@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da(void)
-// FUNCTION: IMPERIALISM 0x006372da
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366(void)
-// FUNCTION: IMPERIALISM 0x00637366
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f(void)
 // FUNCTION: IMPERIALISM 0x0063739f
@@ -3999,6 +3983,22 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71(void)
 // FUNCTION: IMPERIALISM 0x0063bf71
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71(void)
+{
+  return 0;
+}
+
+// ghidra_name TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe
+// ghidra_proto void __thiscall DispatchHandleMapLookupWithReadPtrProbe(void)
+// FUNCTION: IMPERIALISM 0x0063de95
+undefined4 DispatchHandleMapLookupWithReadPtrProbe(void)
+{
+  return 0;
+}
+
+// ghidra_name g_Build_Map_Order_LookupTable_00695794
+// ghidra_proto undefined __fastcall g_Build_Map_Order_LookupTable_00695794(byte * param_1, byte * param_2)
+// FUNCTION: IMPERIALISM 0x00695794
+undefined4 g_Build_Map_Order_LookupTable_00695794(void)
 {
   return 0;
 }

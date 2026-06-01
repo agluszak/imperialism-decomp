@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNoHilitePicture::DestructTNoHilitePictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNoHilitePictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00572b60
-undefined4 DestructTNoHilitePictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TBackgroundPicture::CreateTBackgroundPictureInstance
-// ghidra_proto void * __cdecl CreateTBackgroundPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00572bd0
-undefined4 CreateTBackgroundPictureInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TBackgroundPicture::GetTBackgroundPictureClassNamePointer
 // ghidra_proto void * __cdecl GetTBackgroundPictureClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00572c60
@@ -3999,6 +3983,22 @@ undefined4 SetLinkedListEntryState2CTo13ForAllNodes(void)
 // ghidra_proto void __cdecl ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
 // FUNCTION: IMPERIALISM 0x0059caf0
 undefined4 ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorEntries_0059cc70
+// ghidra_proto void __cdecl IterateLinkedListCursorEntries_0059cc70(void)
+// FUNCTION: IMPERIALISM 0x0059cc70
+undefined4 IterateLinkedListCursorEntries_0059cc70(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTacticalCursorModeProfile2_ByActionClassCounts
+// ghidra_proto void __cdecl ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
+// FUNCTION: IMPERIALISM 0x0059cd00
+undefined4 ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
 {
   return 0;
 }

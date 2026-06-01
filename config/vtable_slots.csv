@@ -69,6 +69,12 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot94|int|0x94 / 4|int,int,int|medium|set/query relation dispatch code and return owner nation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_SetStandingScoreSlot28|void|0x28 / 4|int,int,int|medium|set diplomacy standing score for nation pair|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_PropagateRelationSideEffectSlot80|void|0x80 / 4|int,int,int|medium|post relation side-effect propagation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_NationState_NotifyRelationCodeSlot2A8|void|0x2A8 / 4|int,int|medium|notify nation-state relation-code change|index|thiscall|zero||provisional|NationState
+src/game/diplomacy_state.cpp|VCall_NationState_NotifyAllianceSlot214|void|0x214 / 4|int|medium|notify nation-state alliance relation|index|thiscall|zero||provisional|NationState
+src/game/diplomacy_state.cpp|VCall_NationState_NotifyWarResetSlot290|void|0x290 / 4||medium|notify nation-state war relation reset|index|thiscall|zero||provisional|NationState
+src/game/diplomacy_state.cpp|VCall_TerrainDescriptor_SetDiplomacyStandingSlot48|void|0x48 / 4|int,int|medium|set terrain diplomacy standing toward nation|index|thiscall|zero||provisional|TerrainDescriptor
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag28|void|0x28 / 4|int,int,int|high|set flag28
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot4C|void|0x4C / 4|int,int|high|terrain slot4C
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot38|void|0x38 / 4|int|high|terrain slot38

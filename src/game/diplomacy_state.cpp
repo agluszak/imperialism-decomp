@@ -70,12 +70,15 @@ struct DiplomacyTurnStateManager {
   void InitializeDiplomacyTurnStateManagerDefaults();
   void thunk_InitializeDiplomacyTurnStateManagerDefaults();
   char IsNationPairAtWar(int sourceNationSlot, int targetNationSlot);
+  char IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot, int targetNationSlot);
   char HasAnyWarRelationForNation(int sourceNationSlot);
   char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot);
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
   int GetNationPairDiplomacyStandingTierCode(int sourceNationSlot, int targetNationSlot);
   short GetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot);
   char IsPrimaryNationSlotIndex(int nationSlot);
+  void SetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot,
+                                          int relationCode, int updateMode);
   void thunk_ProcessQueuedWarTransitions();
   void ProcessQueuedWarTransitions();
 };
@@ -203,6 +206,19 @@ char DiplomacyTurnStateManager::IsNationPairAtWar(int sourceNationSlot, int targ
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004ef590
+char DiplomacyTurnStateManager::IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot,
+                                                                       int targetNationSlot) {
+  if (VCall_Diplomacy_HasPolicyWithNationSlot44(this, sourceNationSlot, targetNationSlot) == 0) {
+    return 0;
+  }
+  short currentTurn =
+      VCall_LocalizationRuntime_GetTurnTick(ReadGlobalPointer(kAddrLocalizationTable));
+  int source = static_cast<short>(sourceNationSlot);
+  int target = static_cast<short>(targetNationSlot);
+  return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
+}
+
 // FUNCTION: IMPERIALISM 0x004ef600
 char DiplomacyTurnStateManager::HasAnyWarRelationForNation(int sourceNationSlot) {
   int targetNationSlot = 0;
@@ -280,6 +296,101 @@ short DiplomacyTurnStateManager::GetNationPairDiplomacyRelationCode(int sourceNa
 // FUNCTION: IMPERIALISM 0x004f1f50
 char DiplomacyTurnStateManager::IsPrimaryNationSlotIndex(int nationSlot) {
   return static_cast<short>(nationSlot) < 7;
+}
+
+// FUNCTION: IMPERIALISM 0x004f1b70
+void DiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNationSlot,
+                                                                   int targetNationSlot,
+                                                                   int relationCode,
+                                                                   int updateMode) {
+  int source = static_cast<short>(sourceNationSlot);
+  int target = static_cast<short>(targetNationSlot);
+  int forwardIndex = source * kNationSlotCount + target;
+  short newRelationCode = static_cast<short>(relationCode);
+  if (newRelationCode == relationPropagationMatrixBbe[forwardIndex]) {
+    return;
+  }
+
+  relationPropagationMatrixBbe[forwardIndex] = newRelationCode;
+  int reverseIndex = target * kNationSlotCount + source;
+  relationPropagationMatrixBbe[reverseIndex] = newRelationCode;
+  relationTurnStampMatrixFe0[forwardIndex] =
+      VCall_LocalizationRuntime_GetTurnTick(ReadGlobalPointer(kAddrLocalizationTable));
+  relationTurnStampMatrixFe0[reverseIndex] =
+      VCall_LocalizationRuntime_GetTurnTick(ReadGlobalPointer(kAddrLocalizationTable));
+
+  if (VCall_Diplomacy_HasFlag84ForNationSlot84(this, sourceNationSlot) != 0) {
+    VCall_NationState_NotifyRelationCodeSlot2A8(
+        ReadPointerTableSlot(kAddrNationStateTable, source), target, relationCode);
+  }
+  if (VCall_Diplomacy_HasFlag84ForNationSlot84(this, targetNationSlot) != 0) {
+    VCall_NationState_NotifyRelationCodeSlot2A8(
+        ReadPointerTableSlot(kAddrNationStateTable, target), source, relationCode);
+  }
+
+  switch (newRelationCode) {
+  case 0:
+  case 1:
+    break;
+  case 2:
+    QueueInterNationEventRecordDeduped(ReadGlobalPointer(kAddrGlobalCountryState), 0x1a, source,
+                                       target, 0);
+    return;
+  case 3:
+    VCall_Diplomacy_SetStandingScoreSlot28(this, sourceNationSlot, targetNationSlot,
+                                           relationStandingScoreMatrix79c[forwardIndex] + 10);
+    break;
+  case 4:
+    if (relationStandingScoreMatrix79c[forwardIndex] <= 0x31) {
+      VCall_Diplomacy_SetStandingScoreSlot28(this, sourceNationSlot, targetNationSlot, 0x32);
+    }
+    if (VCall_Diplomacy_HasFlag84ForNationSlot84(this, sourceNationSlot) != 0) {
+      VCall_NationState_NotifyAllianceSlot214(ReadPointerTableSlot(kAddrNationStateTable, source),
+                                              target);
+    }
+    if (VCall_Diplomacy_HasFlag84ForNationSlot84(this, targetNationSlot) != 0) {
+      VCall_NationState_NotifyAllianceSlot214(ReadPointerTableSlot(kAddrNationStateTable, target),
+                                              source);
+    }
+    if ((VCall_Diplomacy_HasFlag84ForNationSlot84(this, sourceNationSlot) != 0) &&
+        (VCall_Diplomacy_HasFlag84ForNationSlot84(this, targetNationSlot) != 0)) {
+      relationSideEffectMatrix1402[forwardIndex] = 2;
+      relationSideEffectMatrix1402[reverseIndex] = 2;
+      VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(
+          ReadPointerTableSlot(kAddrTerrainTypeDescriptorTable, source), targetNationSlot, 100);
+      VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(
+          ReadPointerTableSlot(kAddrTerrainTypeDescriptorTable, target), sourceNationSlot, 100);
+      return;
+    }
+    break;
+  case 5:
+    VCall_Diplomacy_SetStandingScoreSlot28(this, sourceNationSlot, targetNationSlot, 0xff);
+    break;
+  case 6: {
+    void* sourceTerrain = ReadPointerTableSlot(kAddrTerrainTypeDescriptorTable, source);
+    void* targetTerrain = ReadPointerTableSlot(kAddrTerrainTypeDescriptorTable, target);
+    if ((*reinterpret_cast<short*>(reinterpret_cast<char*>(sourceTerrain) + 0xe) == -1) &&
+        (*reinterpret_cast<short*>(reinterpret_cast<char*>(targetTerrain) + 0xe) < 200)) {
+      QueueInterNationEventRecordDeduped(ReadGlobalPointer(kAddrGlobalCountryState), 0x19, source,
+                                         target, 0);
+    }
+    VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(sourceTerrain, targetNationSlot, 300);
+    VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(targetTerrain, sourceNationSlot, 300);
+    relationSideEffectMatrix1402[forwardIndex] = 0;
+    relationSideEffectMatrix1402[reverseIndex] = 0;
+    if (VCall_Diplomacy_HasFlag84ForNationSlot84(this, sourceNationSlot) != 0) {
+      VCall_NationState_NotifyWarResetSlot290(ReadPointerTableSlot(kAddrNationStateTable, source));
+    }
+    if (VCall_Diplomacy_HasFlag84ForNationSlot84(this, targetNationSlot) != 0) {
+      VCall_NationState_NotifyWarResetSlot290(ReadPointerTableSlot(kAddrNationStateTable, target));
+    }
+    if (static_cast<char>(updateMode) == 1) {
+      VCall_Diplomacy_PropagateRelationSideEffectSlot80(this, sourceNationSlot, targetNationSlot,
+                                                        1);
+      return;
+    }
+  } break;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f0a10

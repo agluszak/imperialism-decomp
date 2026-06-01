@@ -1387,14 +1387,6 @@ undefined4 SerializeThreeWordPlanesToOutputCallback(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::HasWarRelationTurnStampOutOfDate
-// ghidra_proto void __thiscall HasWarRelationTurnStampOutOfDate(void)
-// FUNCTION: IMPERIALISM 0x004ef590
-undefined4 HasWarRelationTurnStampOutOfDate(void)
-{
-  return 0;
-}
-
 // ghidra_name IsNationSlotInPrimaryGroupA
 // ghidra_proto void __cdecl IsNationSlotInPrimaryGroupA(void)
 // FUNCTION: IMPERIALISM 0x004ef6a0
@@ -1551,14 +1543,6 @@ undefined4 ShowRelationCodeNoticeForNationPairIfRelevant(void)
 // ghidra_proto void __thiscall SetNationPairDiplomacyRelationWithFinalFlag(int sourceNationSlot, int targetNationSlot, int relationCode)
 // FUNCTION: IMPERIALISM 0x004f1b40
 undefined4 SetNationPairDiplomacyRelationWithFinalFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects
-// ghidra_proto void __thiscall SetNationPairDiplomacyRelationAndApplySideEffects(int sourceNationSlot, int targetNationSlot, int relationCode, int finalFlag)
-// FUNCTION: IMPERIALISM 0x004f1b70
-undefined4 SetNationPairDiplomacyRelationAndApplySideEffects(void)
 {
   return 0;
 }
@@ -3999,6 +3983,22 @@ undefined4 BuildMappedSharedStringFromByteStateTable(void)
 // ghidra_proto void __cdecl ReloadPreplutNewsTableAndResources(void)
 // FUNCTION: IMPERIALISM 0x005086a0
 undefined4 ReloadPreplutNewsTableAndResources(void)
+{
+  return 0;
+}
+
+// ghidra_name FreeNestedPointerTableRowsAndResetDimensions
+// ghidra_proto void __cdecl FreeNestedPointerTableRowsAndResetDimensions(void)
+// FUNCTION: IMPERIALISM 0x00508760
+undefined4 FreeNestedPointerTableRowsAndResetDimensions(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl
+// ghidra_proto void __cdecl LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
+// FUNCTION: IMPERIALISM 0x00508800
+undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
 {
   return 0;
 }

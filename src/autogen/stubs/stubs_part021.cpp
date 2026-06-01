@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantD
-// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
-// FUNCTION: IMPERIALISM 0x005e7072
-undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
-{
-  return 0;
-}
-
-// ghidra_name SehProlog_DeleteObjectHandle_Wrapper
-// ghidra_proto void __cdecl SehProlog_DeleteObjectHandle_Wrapper(void)
-// FUNCTION: IMPERIALISM 0x005e70ea
-undefined4 SehProlog_DeleteObjectHandle_Wrapper(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_memcmp_At005e713a
 // ghidra_proto int __cdecl WrapperFor_memcmp_At005e713a(void * _Buf1, void * _Buf2, size_t _Size)
 // FUNCTION: IMPERIALISM 0x005e713a
@@ -3999,6 +3983,22 @@ undefined4 AfxInitThread(void)
 // ghidra_proto void __cdecl AfxTermThread(void)
 // FUNCTION: IMPERIALISM 0x0060625e
 undefined4 AfxTermThread(void)
+{
+  return 0;
+}
+
+// ghidra_name DeleteField24ObjectIfPresent_006063b8
+// ghidra_proto void __fastcall DeleteField24ObjectIfPresent_006063b8(int * obj)
+// FUNCTION: IMPERIALISM 0x006063b8
+undefined4 DeleteField24ObjectIfPresent_006063b8(void)
+{
+  return 0;
+}
+
+// ghidra_name RunMfcThreadMessageLoopCore
+// ghidra_proto void __fastcall RunMfcThreadMessageLoopCore(void)
+// FUNCTION: IMPERIALISM 0x006063cd
+undefined4 RunMfcThreadMessageLoopCore(void)
 {
   return 0;
 }

@@ -1325,3 +1325,22 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just build`, `just detect`, `just vtable-gate`: clean.
    - `just compare-canaries`: `below_floor=0`.
    - `just stats`: avg similarity **3.30%**, aligned functions **107** (`+3`).
+
+### Diplomacy relation-transition slot pass (2026-06-01, cont.)
+
+1. Promoted two more `DiplomacyTurnStateManager` vtable-slot bodies:
+   - `0x004ef590` `IsNationPairRelationTurnStampOutOfDate(int,int)`: stub -> **58.33%**. This confirms slot `0x48` gates through slot `0x44`, reads the current turn from localization slot `0x3c`, and compares the `+0xfe0` 23x23 relation turn-stamp matrix.
+   - `0x004f1b70` `SetNationPairDiplomacyRelationCode(int,int,int,int)`: stub -> **9.31%** as a first shape pass. Similarity is intentionally low for now, but the body is class-shape-rich: it writes `+0xbbe` symmetrically, updates `+0xfe0` stamps, notifies nation-state slot `0x2a8`, dispatches relation cases 2/3/4/5/6, adjusts standing score via slot `0x28`, updates `+0x1402` side-effect state, calls terrain descriptor slot `0x48`, and optionally propagates through manager slot `0x80`.
+2. Added provisional facades for the connected virtual calls discovered in the relation setter:
+   - `VCall_Diplomacy_SetStandingScoreSlot28`
+   - `VCall_Diplomacy_PropagateRelationSideEffectSlot80`
+   - `VCall_NationState_NotifyRelationCodeSlot2A8`
+   - `VCall_NationState_NotifyAllianceSlot214`
+   - `VCall_NationState_NotifyWarResetSlot290`
+   - `VCall_TerrainDescriptor_SetDiplomacyStandingSlot48`
+3. Validation:
+   - `just build`, `just detect`: clean.
+   - Target compares: `0x004ef590` **58.33%**, `0x004f1b70` **9.31%**, `0x004f09c0` **77.78%**, `0x004f0a10` **41.82%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: avg similarity **3.31%**, aligned functions **107**.

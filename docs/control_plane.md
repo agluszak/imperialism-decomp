@@ -68,7 +68,7 @@ Maintenance:
 ## Latest Checkpoint
 
 1. Aligned functions: `107`
-2. Average similarity: `3.30%`
+2. Average similarity: `3.31%`
 3. New matched primitive: `SetQuickDrawFillColor(int)` (`0x00495000`) at **100%**.
 4. New architecture slice: `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (`0x00596100`) promoted from stub to **24.44%**, with `QuickDrawSurfaceGuard` and generated map-overlay vcall facades.
 5. New class slice: `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip` (`0x004a05c0`) promoted from stub to **29.85%** and `TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw` (`0x004a0770`) promoted from stub to **71.19%**, with provisional scoped-context and render/update vcall facades.
@@ -87,6 +87,7 @@ Maintenance:
 17. Diplomacy backend seed: added `src/game/diplomacy_state.cpp` and promoted `DiplomacyTurnStateManager` constructor/query/enqueue anchors: `0x004ef540` to **75.47%**, `0x004ef600` to **37.33%**, `0x004ef650` to **37.33%**, and `0x004f09c0` to **77.78%**. This establishes manager-as-`ecx` method signatures, vtable `0x00654d90`, queue pointer `this+0x18d4`, and constructor fields around `0x78e..0x798`; constructor `0x004ee6c0` is owned but still a register-order mismatch at **0.00%**.
 18. Diplomacy queued-war processor: promoted `DiplomacyTurnStateManager::ProcessQueuedWarTransitions` (`0x004f0a10`) to **41.82%** as a first shape pass, plus the dispatch chain `0x00406aaf` and `0x004f0db0` at **100%** each. This proves the pending-war queue slots `0x30`/`0x34`, nation-state war propagation slots `0x27c`/`0x280`, global manager wrapper `0x6a43d0`, and the `NeXT` turn-event packet enqueue path.
 19. Diplomacy manager shape pass: moved the default initializer into `DiplomacyTurnStateManager` (`0x004ee7a0` to **23.16%**, thunk `0x00403837` **100%**, constructor thunk `0x00409944` **100%**) and promoted key getter/gate slots: `0x004f19c0` **100%**, `0x004f1b10` **53.33%**, `0x004f1f50` **66.67%**. Current manager field map includes matrices at `+0x04`, `+0x304`, `+0x484`, `+0x79c`, `+0xbbe`, `+0xfe0`, `+0x1402`, and queue pointer `+0x18d4`.
+20. Diplomacy relation-transition slot pass: promoted slot `0x48` (`0x004ef590`) to **58.33%** and slot `0x74` (`0x004f1b70`) to **9.31%** as a broad shape pass. This confirms relation stamps at `+0xfe0`, symmetric relation-code writes at `+0xbbe`, side-effect writes at `+0x1402`, and connected nation/terrain notification slots (`0x2a8`, `0x214`, `0x290`, terrain `0x48`, manager `0x28`/`0x80`). Next high-yield backend target is slot `0x5c` (`0x004ef700`) because the diplomacy-map UI already calls it through `VCall_DiplomacyTurnState_ValidateActionSlot5C`.
 
 Session totals (2026-06-01): the `src/game/TDiplomacyMapView.cpp` slice grew from the 3 legend/palette functions to 8 promoted functions spanning rendering producers (mask blit, event-palette blit, mask-run, terrain-region clip, policy icons) and the click/hover interaction pair, all sharing the `DiplomacyMaskBufferRun`/`DiplomacyPackedColorRun` subobjects and the diplomacy interaction-state field map. The next connected slice is now the `DiplomacyTurnStateManager` backend seeded in `src/game/diplomacy_state.cpp`.
 

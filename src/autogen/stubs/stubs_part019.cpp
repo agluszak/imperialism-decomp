@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name IterateLinkedListCursorEntries_0059cc70
-// ghidra_proto void __cdecl IterateLinkedListCursorEntries_0059cc70(void)
-// FUNCTION: IMPERIALISM 0x0059cc70
-undefined4 IterateLinkedListCursorEntries_0059cc70(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile2_ByActionClassCounts
-// ghidra_proto void __cdecl ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
-// FUNCTION: IMPERIALISM 0x0059cd00
-undefined4 ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTacticalCursorModeProfile3_ClassAware
 // ghidra_proto void __fastcall ApplyTacticalCursorModeProfile3_ClassAware(int tacticalSide)
 // FUNCTION: IMPERIALISM 0x0059ce90
@@ -3999,6 +3983,22 @@ undefined4 DestructTTradePageBuyViewAndMaybeFree_Impl(void)
 // ghidra_proto void * __cdecl CreateTTradeBidNationLineInstance(void)
 // FUNCTION: IMPERIALISM 0x005bd950
 undefined4 CreateTTradeBidNationLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer
+// ghidra_proto void * __cdecl GetTTradeBidNationLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005bd9c0
+undefined4 GetTTradeBidNationLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
+// ghidra_proto void * __thiscall ConstructTTradeBidNationLineBaseState(void)
+// FUNCTION: IMPERIALISM 0x005bda20
+undefined4 ConstructTTradeBidNationLineBaseState(void)
 {
   return 0;
 }

@@ -683,6 +683,13 @@ static __inline char VCall_Diplomacy_HasOutdatedWarRelationSlot48(void* object, 
   return fn(object, 0, arg0, arg1);
 }
 
+// post relation side-effect propagation; class=DiplomacyTurnStateManager; status=provisional
+static __inline void VCall_Diplomacy_PropagateRelationSideEffectSlot80(void* object, int arg0, int arg1, int arg2) {
+  typedef void (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x80 / 4)));
+  fn(object, 0, arg0, arg1, arg2);
+}
+
 // set relation code with update mode flag; class=DiplomacyTurnStateManager; status=provisional
 static __inline void VCall_Diplomacy_SetRelationCodeSlot74WithMode(void* object, int arg0, int arg1, int arg2, int arg3) {
   typedef void (__fastcall * Fn)(void*, int, int, int, int, int);
@@ -695,6 +702,13 @@ static __inline int VCall_Diplomacy_SetRelationCodeSlot94(void* object, int arg0
   typedef int (__fastcall * Fn)(void*, int, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
   return fn(object, 0, arg0, arg1, arg2);
+}
+
+// set diplomacy standing score for nation pair; class=DiplomacyTurnStateManager; status=provisional
+static __inline void VCall_Diplomacy_SetStandingScoreSlot28(void* object, int arg0, int arg1, int arg2) {
+  typedef void (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x28 / 4)));
+  fn(object, 0, arg0, arg1, arg2);
 }
 
 // localization/event table fallback dispatch; class=LocalizationTable; status=provisional
@@ -711,11 +725,39 @@ static __inline int VCall_NationState_CheckTransitionSlot27C(void* object, int a
   return fn(object, 0, arg0, arg1);
 }
 
+// notify nation-state alliance relation; class=NationState; status=provisional
+static __inline void VCall_NationState_NotifyAllianceSlot214(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x214 / 4)));
+  fn(object, 0, arg0);
+}
+
+// notify nation-state relation-code change; class=NationState; status=provisional
+static __inline void VCall_NationState_NotifyRelationCodeSlot2A8(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2A8 / 4)));
+  fn(object, 0, arg0, arg1);
+}
+
+// notify nation-state war relation reset; class=NationState; status=provisional
+static __inline void VCall_NationState_NotifyWarResetSlot290(void* object) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x290 / 4)));
+  fn(object, 0);
+}
+
 // nation-state propagate war transition; class=NationState; status=provisional
 static __inline int VCall_NationState_PropagateWarTransitionSlot280(void* object, int arg0, int arg1, int arg2) {
   typedef int (__fastcall * Fn)(void*, int, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x280 / 4)));
   return fn(object, 0, arg0, arg1, arg2);
+}
+
+// set terrain diplomacy standing toward nation; class=TerrainDescriptor; status=provisional
+static __inline void VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
+  fn(object, 0, arg0, arg1);
 }
 
 // enqueue constructed turn-event packet; class=TurnEventQueue; status=provisional

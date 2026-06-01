@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DeleteField24ObjectIfPresent_006063b8
-// ghidra_proto void __fastcall DeleteField24ObjectIfPresent_006063b8(int * obj)
-// FUNCTION: IMPERIALISM 0x006063b8
-undefined4 DeleteField24ObjectIfPresent_006063b8(void)
-{
-  return 0;
-}
-
-// ghidra_name RunMfcThreadMessageLoopCore
-// ghidra_proto void __fastcall RunMfcThreadMessageLoopCore(void)
-// FUNCTION: IMPERIALISM 0x006063cd
-undefined4 RunMfcThreadMessageLoopCore(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::OnIdle_6064b0
 // ghidra_proto bool __thiscall OnIdle_6064b0(void * pThreadState, int lockMode)
 // FUNCTION: IMPERIALISM 0x006064b0
@@ -3999,6 +3983,22 @@ undefined4 OnEnable(void)
 // ghidra_proto void __cdecl NotifyFloatingWindows(void)
 // FUNCTION: IMPERIALISM 0x0061cd09
 undefined4 NotifyFloatingWindows(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::PreCreateWindow_61cdb3
+// ghidra_proto bool __thiscall PreCreateWindow_61cdb3(void * pCreateStruct)
+// FUNCTION: IMPERIALISM 0x0061cdb3
+undefined4 PreCreateWindow_61cdb3(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateWindowWithOptionalMenuResource
+// ghidra_proto bool __thiscall CreateWindowWithOptionalMenuResource(void * windowClass, void * windowName, void * windowStyle, void * windowRect, void * parentWindow, int menuResourceId, char * menuResourceName, void * exStyle, void * createContext)
+// FUNCTION: IMPERIALISM 0x0061ce0b
+undefined4 CreateWindowWithOptionalMenuResource(void)
 {
   return 0;
 }

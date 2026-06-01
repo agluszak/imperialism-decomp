@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe
-// ghidra_proto void __thiscall DispatchHandleMapLookupWithReadPtrProbe(void)
-// FUNCTION: IMPERIALISM 0x0063de95
-undefined4 DispatchHandleMapLookupWithReadPtrProbe(void)
-{
-  return 0;
-}
-
-// ghidra_name g_Build_Map_Order_LookupTable_00695794
-// ghidra_proto undefined __fastcall g_Build_Map_Order_LookupTable_00695794(byte * param_1, byte * param_2)
-// FUNCTION: IMPERIALISM 0x00695794
-undefined4 g_Build_Map_Order_LookupTable_00695794(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeWinmmImportBindings
 // ghidra_proto void __cdecl InitializeWinmmImportBindings(void)
 // FUNCTION: IMPERIALISM 0x00707081
