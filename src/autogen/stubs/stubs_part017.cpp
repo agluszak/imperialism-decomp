@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetResourceDescriptorWord0CByType
-// ghidra_proto short __cdecl GetResourceDescriptorWord0CByType(void)
-// FUNCTION: IMPERIALISM 0x00550db0
-undefined4 GetResourceDescriptorWord0CByType(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord10ByType
 // ghidra_proto short __cdecl GetResourceDescriptorWord10ByType(void)
 // FUNCTION: IMPERIALISM 0x00550de0
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(v
 // ghidra_proto void __fastcall OrphanCallChain_C2_I25_00572200(int ecxArg, int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00572200
 undefined4 OrphanCallChain_C2_I25_00572200(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_BlitRectWithOptionalTransparency_At00572270
+// ghidra_proto void __cdecl Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
+// FUNCTION: IMPERIALISM 0x00572270
+undefined4 Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
 {
   return 0;
 }

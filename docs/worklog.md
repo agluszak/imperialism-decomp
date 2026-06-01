@@ -1187,3 +1187,17 @@
    (default `0x41b` -> `+0xe0`). Declared Win32 `SetCursor`.
 4. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f5fb0`
    stub -> **40.59%**; adjacent diplomacy functions unchanged; canaries `below_floor=0`.
+
+### TDiplomacyMapView control-tag command dispatcher (2026-06-01, cont.)
+
+1. Promoted `0x004f70c0` as free `__stdcall HandleDiplomacyMapControlTagToggleOrForward`
+   `(int commandId, int panelEvent, void* extra)` (`ret 0xc`) from a `0%` stub to
+   **40.00%**. For command `0x14` it looks up the panel event's control tag
+   (`*(panelEvent+0x1c)`) in the 6-entry table at `0x696978` and forwards the matched
+   tab index to the tab invalidator (`0x4f6d90`); otherwise forwards to
+   `thunk_HandleCityDialogToggleCommandOrForward`.
+2. Architectural note: Ghidra owns this as `TDiplomacyMapView::Handle...` (`__thiscall`),
+   but the body has no `this` (3 stack args, `ret 0xc`) — modeled as a free `__stdcall`
+   function. Residual gap is index-counter register allocation (`ecx` vs `edx`).
+3. Validation: `just build`/`detect` clean; `just compare 0x004f70c0` stub -> **40.00%**;
+   canaries `below_floor=0`; stats avg **3.19%**, aligned **102**.

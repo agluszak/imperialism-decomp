@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bdd1
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bdd1(void)
-// FUNCTION: IMPERIALISM 0x0063bdd1
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bdd1(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bde5
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bde5(void)
 // FUNCTION: IMPERIALISM 0x0063bde5

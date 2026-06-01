@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AddFrameWnd
-// ghidra_proto void __fastcall AddFrameWnd(void)
-// FUNCTION: IMPERIALISM 0x0061c725
-undefined4 AddFrameWnd(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveFrameWnd
 // ghidra_proto void __cdecl RemoveFrameWnd(void)
 // FUNCTION: IMPERIALISM 0x0061c749
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f2f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f69(void)
 // FUNCTION: IMPERIALISM 0x00630f69
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f69(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f8f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f8f(void)
+// FUNCTION: IMPERIALISM 0x00630f8f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f8f(void)
 {
   return 0;
 }

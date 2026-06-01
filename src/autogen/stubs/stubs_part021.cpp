@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_CException_At005e6e55
-// ghidra_proto void __cdecl WrapperFor_CException_At005e6e55(void)
-// FUNCTION: IMPERIALISM 0x005e6e55
-undefined4 WrapperFor_CException_At005e6e55(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6e7f
 // ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6e7f(void)
 // FUNCTION: IMPERIALISM 0x005e6e7f
@@ -3999,6 +3991,14 @@ undefined4 HandleWndProcExceptionWithNodeTypeDispatch_00605613(void)
 // ghidra_proto void __cdecl thunk_DispatchVirtualSlot18OnImplicitObject(void)
 // FUNCTION: IMPERIALISM 0x0060564e
 undefined4 thunk_DispatchVirtualSlot18OnImplicitObject(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchVirtualSlot18OnImplicitObject
+// ghidra_proto void __cdecl DispatchVirtualSlot18OnImplicitObject(void)
+// FUNCTION: IMPERIALISM 0x00605665
+undefined4 DispatchVirtualSlot18OnImplicitObject(void)
 {
   return 0;
 }

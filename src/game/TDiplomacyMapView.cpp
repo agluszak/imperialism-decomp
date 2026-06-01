@@ -60,6 +60,7 @@ undefined4 DrawFrameRectOrUpdateClipRegion(void);
 undefined4 SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 DrawCenteredGuideLineOnMapDc(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
+undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 
 extern int g_pPrimaryRenderSurfaceContext;
 extern int g_pActiveQuickDrawSurfaceContext;
@@ -483,6 +484,30 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f70c0
+void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, int panelEvent,
+                                                           void* extra) {
+  if (commandId == 0x14) {
+    int tabIndex = 0;
+    int* tagTable = reinterpret_cast<int*>(0x00696978);
+    do {
+      if (*reinterpret_cast<int*>(panelEvent + 0x1c) == *tagTable) {
+        break;
+      }
+      tagTable += 1;
+      tabIndex += 1;
+    } while (reinterpret_cast<unsigned int>(tagTable) < 0x696990);
+    if (tabIndex < 6) {
+      reinterpret_cast<void(__stdcall*)(int)>(
+          thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(tabIndex);
+      return;
+    }
+  } else {
+    reinterpret_cast<void(__stdcall*)(int, int, void*)>(
+        thunk_HandleCityDialogToggleCommandOrForward)(commandId, panelEvent, extra);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f5fb0

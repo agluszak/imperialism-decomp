@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchVirtualSlot18OnImplicitObject
-// ghidra_proto void __cdecl DispatchVirtualSlot18OnImplicitObject(void)
-// FUNCTION: IMPERIALISM 0x00605665
-undefined4 DispatchVirtualSlot18OnImplicitObject(void)
-{
-  return 0;
-}
-
 // ghidra_name Empty
 // ghidra_proto void __cdecl Empty(void)
 // FUNCTION: IMPERIALISM 0x0060586d
@@ -3999,6 +3991,14 @@ undefined4 CFrameWnd(void)
 // ghidra_proto void __thiscall DestroyTMacViewMgrBase(TMacViewMgr * thisObj)
 // FUNCTION: IMPERIALISM 0x0061c6be
 undefined4 DestroyTMacViewMgrBase(void)
+{
+  return 0;
+}
+
+// ghidra_name AddFrameWnd
+// ghidra_proto void __fastcall AddFrameWnd(void)
+// FUNCTION: IMPERIALISM 0x0061c725
+undefined4 AddFrameWnd(void)
 {
   return 0;
 }

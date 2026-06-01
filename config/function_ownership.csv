@@ -189,6 +189,7 @@ address|target_cpp|ownership|note
 4f6840|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f6b10|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f6bd0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+4f70c0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f71a0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4ffc10|src/game/TGreatPower.cpp|manual|marker_sync
 500200|src/game/noop_slots.cpp|manual|marker_sync

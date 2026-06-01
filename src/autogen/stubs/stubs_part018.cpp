@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Helper_Uses_BlitRectWithOptionalTransparency_At00572270
-// ghidra_proto void __cdecl Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
-// FUNCTION: IMPERIALISM 0x00572270
-undefined4 Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
-{
-  return 0;
-}
-
 // ghidra_name TClickZone::CreateTClickZoneInstance
 // ghidra_proto void * __cdecl CreateTClickZoneInstance(void)
 // FUNCTION: IMPERIALISM 0x00572350
@@ -3999,6 +3991,14 @@ undefined4 UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void)
 // ghidra_proto void __fastcall RecomputeTacticalCursorProjectionScoresAndPruneList(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x0059b990
 undefined4 RecomputeTacticalCursorProjectionScoresAndPruneList(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot06
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot06(void)
+// FUNCTION: IMPERIALISM 0x0059bc80
+undefined4 TArmyTacUnit_VtblSlot06(void)
 {
   return 0;
 }

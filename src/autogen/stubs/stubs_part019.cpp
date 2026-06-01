@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot06
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot06(void)
-// FUNCTION: IMPERIALISM 0x0059bc80
-undefined4 TArmyTacUnit_VtblSlot06(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTacticalActionPriorityBucketsWithGridGuard
 // ghidra_proto void __cdecl BuildTacticalActionPriorityBucketsWithGridGuard(void)
 // FUNCTION: IMPERIALISM 0x0059bcf0
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C7_I84_005bc9f0(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20(void)
 // FUNCTION: IMPERIALISM 0x005bcb20
 undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageSellView::CreateTTradePageSellViewInstance
+// ghidra_proto void * __cdecl CreateTTradePageSellViewInstance(void)
+// FUNCTION: IMPERIALISM 0x005bcb90
+undefined4 CreateTTradePageSellViewInstance(void)
 {
   return 0;
 }

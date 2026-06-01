@@ -2227,14 +2227,6 @@ undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward
-// ghidra_proto void __thiscall HandleDiplomacyMapControlTagToggleOrForward(int commandId, PanelEventPayload * pPanelEvent)
-// FUNCTION: IMPERIALISM 0x004f70c0
-undefined4 HandleDiplomacyMapControlTagToggleOrForward(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130
 // ghidra_proto void __thiscall WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
 // FUNCTION: IMPERIALISM 0x004f7130
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
 // ghidra_proto void __cdecl Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
 // FUNCTION: IMPERIALISM 0x00507570
 undefined4 Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I10_005076d0
+// ghidra_proto void __cdecl OrphanCallChain_C1_I10_005076d0(void)
+// FUNCTION: IMPERIALISM 0x005076d0
+undefined4 OrphanCallChain_C1_I10_005076d0(void)
 {
   return 0;
 }

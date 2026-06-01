@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C1_I10_005076d0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I10_005076d0(void)
-// FUNCTION: IMPERIALISM 0x005076d0
-undefined4 OrphanCallChain_C1_I10_005076d0(void)
-{
-  return 0;
-}
-
 // ghidra_name TNumberedItem::CreateTNumberedItemInstance
 // ghidra_proto void * __cdecl CreateTNumberedItemInstance(void)
 // FUNCTION: IMPERIALISM 0x00507700
@@ -3999,6 +3991,14 @@ undefined4 AllocateAndConstructTIndexAndRankList(void)
 // ghidra_proto void * __cdecl GetTIndexAndRankListClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00534850
 undefined4 GetTIndexAndRankListClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndexAndRankList::ConstructTIndexAndRankList
+// ghidra_proto void __thiscall ConstructTIndexAndRankList(void)
+// FUNCTION: IMPERIALISM 0x00534870
+undefined4 ConstructTIndexAndRankList(void)
 {
   return 0;
 }
