@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TToolBarCluster::HandleCityBuildingHoverSelection
-// ghidra_proto void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)
-// FUNCTION: IMPERIALISM 0x004bafa0
-undefined4 HandleCityBuildingHoverSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::InitializeCityProductionDialog
-// ghidra_proto void __thiscall InitializeCityProductionDialog(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004bb7a0
-undefined4 InitializeCityProductionDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateCityProductionDialogCommodityValueControls
-// ghidra_proto void __fastcall UpdateCityProductionDialogCommodityValueControls(int * this)
-// FUNCTION: IMPERIALISM 0x004bc0b0
-undefined4 UpdateCityProductionDialogCommodityValueControls(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityBuildingActionAvailabilityIndicators
-// ghidra_proto void __cdecl RefreshCityBuildingActionAvailabilityIndicators(void)
-// FUNCTION: IMPERIALISM 0x004bc500
-undefined4 RefreshCityBuildingActionAvailabilityIndicators(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610(void)
-// FUNCTION: IMPERIALISM 0x004bc610
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction
 // ghidra_proto void __thiscall HandleCityBuildingSlotClickAndDispatchAction(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x004bc660
@@ -63,14 +23,6 @@ undefined4 WrapperFor_IsPointInsideHitRegion_At004bc870(void)
 // ghidra_proto void __cdecl OrphanCallChain_C5_I49_004bc910(void)
 // FUNCTION: IMPERIALISM 0x004bc910
 undefined4 OrphanCallChain_C5_I49_004bc910(void)
-{
-  return 0;
-}
-
-// ghidra_name TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip
-// ghidra_proto void __thiscall RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)
-// FUNCTION: IMPERIALISM 0x004bc9b0
-undefined4 RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)
 {
   return 0;
 }
@@ -3999,6 +3951,54 @@ undefined4 ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
 // ghidra_proto void __cdecl NoOpDiplomacyWarTransitionCallback(void)
 // FUNCTION: IMPERIALISM 0x004e2190
 undefined4 NoOpDiplomacyWarTransitionCallback(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyJoinEmpireAcceptanceSideEffectsForTargetNation
+// ghidra_proto void __cdecl ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(void)
+// FUNCTION: IMPERIALISM 0x004e21b0
+undefined4 ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveRegionIdAndRunTrackedObjectCleanup
+// ghidra_proto void __thiscall RemoveRegionIdAndRunTrackedObjectCleanup(void)
+// FUNCTION: IMPERIALISM 0x004e2270
+undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetNationDiplomacySlotsAndMarkRelatedNations
+// ghidra_proto void __thiscall ResetNationDiplomacySlotsAndMarkRelatedNations(void)
+// FUNCTION: IMPERIALISM 0x004e25c0
+undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyMinorNationCapabilityActionType6
+// ghidra_proto void __cdecl ApplyMinorNationCapabilityActionType6(void)
+// FUNCTION: IMPERIALISM 0x004e2630
+undefined4 ApplyMinorNationCapabilityActionType6(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyMinorNationCapabilityActionType4
+// ghidra_proto void __cdecl ApplyMinorNationCapabilityActionType4(void)
+// FUNCTION: IMPERIALISM 0x004e2720
+undefined4 ApplyMinorNationCapabilityActionType4(void)
+{
+  return 0;
+}
+
+// ghidra_name ClassifyNationProductionTotalAgainstGlobalDistribution
+// ghidra_proto void __cdecl ClassifyNationProductionTotalAgainstGlobalDistribution(void)
+// FUNCTION: IMPERIALISM 0x004e2880
+undefined4 ClassifyNationProductionTotalAgainstGlobalDistribution(void)
 {
   return 0;
 }

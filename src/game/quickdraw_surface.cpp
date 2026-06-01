@@ -22,6 +22,19 @@ int g_nQuickDrawStrokeStyleSecondary = 0;
 int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x6a1da8
 int g_pGlobalClipRegionHandleObject = 0;
+// GLOBAL: IMPERIALISM 0x6950fc
+int g_Quick_Draw_Color_State_006950FC = 0;
+// GLOBAL: IMPERIALISM 0x6a1d52
+int g_uQuickDrawCurrentColor = 0;
+// GLOBAL: IMPERIALISM 0x6a1d60
+int g_pActiveQuickDrawSurfaceContext = 0;
+
+// FUNCTION: IMPERIALISM 0x00495000
+void __cdecl SetQuickDrawFillColor(int fillColor) {
+  g_Quick_Draw_Color_State_006950FC = fillColor;
+  *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x28) = fillColor;
+  g_uQuickDrawCurrentColor = fillColor;
+}
 
 // FUNCTION: IMPERIALISM 0x00495310
 void __cdecl SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB) {

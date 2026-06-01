@@ -3,16 +3,6 @@
 #include "game/string_shared.h"
 #include "game/ui_widget_shared.h"
 
-struct tagRECT {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-typedef tagRECT RECT;
-
-extern "C" int __stdcall CopyRect(RECT* lprcDst, const RECT* lprcSrc);
-
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
@@ -21,7 +11,6 @@ undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
 undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
-undefined4 SetQuickDrawFillColor(void);
 
 namespace {
 const unsigned int kAddrDecimalFormat = 0x0069430c;
@@ -156,5 +145,5 @@ void PlacardState::RenderPlacardValueTextWithShadow() {
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
       sharedStringRefPtr);
 
-  reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+  SetQuickDrawFillColor(0);
 }

@@ -123,7 +123,7 @@ void TradeAmountBarLayout::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   short fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
   SetQuickDrawTextOrigin(fillOrigin, 4);
-  reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+  SetQuickDrawFillColor(0);
   SetQuickDrawStylePair(1, 1);
   DrawCenteredGuideLine(controlWidth, 4);
   SetQuickDrawTextOrigin(stepOrCurrentValue, 0);

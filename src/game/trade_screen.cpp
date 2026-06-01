@@ -10,15 +10,6 @@ typedef void* hwnd_t;
 typedef void code(void);
 extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
                                      unsigned int type);
-struct tagRECT {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-typedef tagRECT RECT;
-extern "C" int __stdcall OffsetRect(RECT* lprc, int dx, int dy);
-extern "C" int __stdcall CopyRect(RECT* lprcDst, const RECT* lprcSrc);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 unsigned int __cdecl thunk_GetActiveNationId(void);
@@ -57,7 +48,6 @@ undefined4 ApplyHitRegionToClipState(void);
 void SnapshotHitRegionToClipCache(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 SetQuickDrawFillColor(void);
 undefined4 ResetQuickDrawStrokeState(void);
 undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
@@ -1939,24 +1929,6 @@ void __fastcall OrphanCallChain_C1_I03_00588670(TradeControl* control, int unuse
   control->InvokeSlot1A8();
 }
 
-// GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
-// GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
-
-// FUNCTION: IMPERIALISM 0x00588690
-void __fastcall RenderPrimarySurfaceOverlayPanelWithClipCache(TradeControl* control) {
-  // ORIG_CALLCONV: __thiscall
-  if (control == 0) {
-    return;
-  }
-  if (control->IsActionable() == 0) {
-    return;
-  }
-  int bounds[4] = {0, 0, 0, 0};
-  control->QueryBounds(bounds);
-  control->CaptureLayout(bounds, 1);
-  control->Refresh();
-}
-
 // FUNCTION: IMPERIALISM 0x00588950
 void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
   int requestedValue = *requestedValuePtr;
@@ -2145,7 +2117,7 @@ void TIndustryAmtBarState::DrawAmt() {
       short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
       short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
       SetQuickDrawTextOrigin(overlayOffsetX, 0);
-      reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+      SetQuickDrawFillColor(0);
       reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
       DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
 
@@ -2374,7 +2346,7 @@ void TRailAmtBarState::DrawAmt() {
       short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
       short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
       SetQuickDrawTextOrigin(overlayOffsetX, 0);
-      reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+      SetQuickDrawFillColor(0);
       reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
       DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
 

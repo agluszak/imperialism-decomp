@@ -4,6 +4,55 @@
 
 #include "game/vcall_runtime.h"
 
+// temporary-surface target rect apply; class=QuickDrawRenderTarget; status=provisional
+static __inline void VCall_QuickDrawTarget_ApplyRectSlot110(void* object, int* arg0) {
+  typedef void (__fastcall * Fn)(void*, int*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x110 / 4)));
+  fn(object, arg0);
+}
+
+// temporary-surface target bounds query; class=QuickDrawRenderTarget; status=provisional
+static __inline void VCall_QuickDrawTarget_QueryBoundsSlot12C(void* object, int* arg0) {
+  typedef void (__fastcall * Fn)(void*, int*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x12C / 4)));
+  fn(object, arg0);
+}
+
+// diplomacy legend terrain/minor draw slot with index and label selector; class=TDiplomacyMapView; status=provisional
+static __inline void VCall_DiplomacyLegend_DrawTerrainSlot1E0(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1E0 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// strategic map frame region query by view selector; class=StrategicMapViewSystem; status=provisional
+static __inline void* VCall_StrategicMap_GetFrameRegionSlot98(void* object, int arg0) {
+  typedef void* (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x98 / 4)));
+  return fn(object, arg0);
+}
+
+// runtime legend split/update slot selector; class=UiRuntimeContext; status=provisional
+static __inline void VCall_UiRuntime_ApplyLegendSplitSlot34(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x34 / 4)));
+  fn(object, arg0);
+}
+
+// focus animation scoped render post slot; class=FocusAnimationRenderTarget; status=provisional
+static __inline void VCall_FocusAnimationView_PostRenderSlotFC(void* object) {
+  typedef void (__fastcall * Fn)(void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xFC / 4)));
+  fn(object);
+}
+
+// focus animation completion/update slot; class=TFocusAnimation; status=provisional
+static __inline void VCall_FocusAnimation_CallSlot2C(void* object, int* arg0) {
+  typedef void (__fastcall * Fn)(void*, int*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
+  fn(object, arg0);
+}
+
 // build relation list; status=provisional
 static __inline void VCall_Diplomacy_BuildRelationshipListSlot88(void* object, int arg0, int arg1, void* arg2) {
   typedef void (__fastcall * Fn)(void*, int, int, int, void*);
@@ -543,9 +592,65 @@ static __inline char VCall_UiRuntime_RequestDiplomacyDecisionSlot90(void* object
   return fn(object, 0, arg0, arg1, arg2);
 }
 
+// focus animation render target rect apply slot; class=FocusAnimationRenderTarget; status=provisional
+static __inline void VCall_FocusAnimationView_ApplyRectSlot110(void* object, int* arg0) {
+  typedef void (__fastcall * Fn)(void*, int*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x110 / 4)));
+  fn(object, arg0);
+}
+
+// trans-focus scoped render target slot; class=FocusAnimationRenderTarget; status=provisional
+static __inline void VCall_FocusAnimationView_RenderSlotF8(void* object) {
+  typedef void (__fastcall * Fn)(void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xF8 / 4)));
+  fn(object);
+}
+
+// trans-focus completion/update slot; class=TTransFocusAnimation; status=provisional
+static __inline void VCall_TransFocusAnimation_CallSlot2C(void* object, int* arg0) {
+  typedef void (__fastcall * Fn)(void*, int*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
+  fn(object, arg0);
+}
+
 // TView delete self; status=provisional
 static __inline void VCall_TView_DeleteSelfSlot01(void* object, int arg0) {
   typedef void (__fastcall * Fn)(void*, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(1)));
   fn(object, 0, arg0);
+}
+
+// wrapped map overlay ctrl-modified draw; class=WrappedMapOverlayView; status=provisional
+static __inline void VCall_MapOverlay_DrawCtrlModifiedSlot1C4(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1C4 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// wrapped map overlay forced/shift draw; class=WrappedMapOverlayView; status=provisional
+static __inline void VCall_MapOverlay_DrawForcedSlot1CC(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1CC / 4)));
+  fn(object, arg0, arg1);
+}
+
+// wrapped map overlay root mode high draw; class=WrappedMapOverlayView; status=provisional
+static __inline void VCall_MapOverlay_DrawRootModeHighSlot1D0(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1D0 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// wrapped map overlay root mode low draw; class=WrappedMapOverlayView; status=provisional
+static __inline void VCall_MapOverlay_DrawRootModeLowSlot1D4(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1D4 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// wrapped map overlay tile query; class=WrappedMapOverlayView; status=provisional
+static __inline void VCall_MapOverlay_QueryWrappedTileSlot1C0(void* object, int arg0, short* arg1, short* arg2, int* arg3) {
+  typedef void (__fastcall * Fn)(void*, int, short*, short*, int*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1C0 / 4)));
+  fn(object, arg0, arg1, arg2, arg3);
 }

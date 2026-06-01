@@ -3,102 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e6825
-undefined4 CHotKeyCtrl_005E6825(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e685d
-undefined4 CHotKeyCtrl_005E685D(void)
-{
-  return 0;
-}
-
-// ghidra_name SehProlog_RemoveHandleMapEntryByKey_Wrapper
-// ghidra_proto void __cdecl SehProlog_RemoveHandleMapEntryByKey_Wrapper(void)
-// FUNCTION: IMPERIALISM 0x005e68be
-undefined4 SehProlog_RemoveHandleMapEntryByKey_Wrapper(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RemoveHandleMapEntryByKey_At005e68f1
-// ghidra_proto int __fastcall WrapperFor_RemoveHandleMapEntryByKey_At005e68f1(void)
-// FUNCTION: IMPERIALISM 0x005e68f1
-undefined4 WrapperFor_RemoveHandleMapEntryByKey_At005e68f1(void)
-{
-  return 0;
-}
-
-// ghidra_name afxMapHIMAGELIST
-// ghidra_proto void * __cdecl afxMapHIMAGELIST(void)
-// FUNCTION: IMPERIALISM 0x005e691b
-undefined4 afxMapHIMAGELIST(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RemoveHandleMapEntryByKey_At005e698b
-// ghidra_proto int __cdecl WrapperFor_RemoveHandleMapEntryByKey_At005e698b(void)
-// FUNCTION: IMPERIALISM 0x005e698b
-undefined4 WrapperFor_RemoveHandleMapEntryByKey_At005e698b(void)
-{
-  return 0;
-}
-
-// ghidra_name DeleteTempMap
-// ghidra_proto void * __cdecl DeleteTempMap(void)
-// FUNCTION: IMPERIALISM 0x005e69a1
-undefined4 DeleteTempMap(void)
-{
-  return 0;
-}
-
-// ghidra_name FromHandlePermanent
-// ghidra_proto int __cdecl FromHandlePermanent(void)
-// FUNCTION: IMPERIALISM 0x005e69cb
-undefined4 FromHandlePermanent(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6a73
-// ghidra_proto void __cdecl WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6a73(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// FUNCTION: IMPERIALISM 0x005e6a73
-undefined4 WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6a73(void)
-{
-  return 0;
-}
-
-// ghidra_name CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4
-// ghidra_proto bool __thiscall WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(void)
-// FUNCTION: IMPERIALISM 0x005e6aa4
-undefined4 WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ImageList_Read_At005e6ad1
-// ghidra_proto bool __thiscall WrapperFor_ImageList_Read_At005e6ad1(void)
-// FUNCTION: IMPERIALISM 0x005e6ad1
-undefined4 WrapperFor_ImageList_Read_At005e6ad1(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ImageList_Write_At005e6afe
-// ghidra_proto void __thiscall WrapperFor_ImageList_Write_At005e6afe(void)
-// FUNCTION: IMPERIALISM 0x005e6afe
-undefined4 WrapperFor_ImageList_Write_At005e6afe(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCurSel
 // ghidra_proto void __fastcall GetCurSel(void)
 // FUNCTION: IMPERIALISM 0x005e6b22
@@ -3999,6 +3903,102 @@ undefined4 thunk_NoOpPaddingStub_00604c3c_00604C32(void)
 // ghidra_proto void __cdecl NoOpPaddingStub_00604c3c(void)
 // FUNCTION: IMPERIALISM 0x00604c3c
 undefined4 NoOpPaddingStub_00604c3c(void)
+{
+  return 0;
+}
+
+// ghidra_name ConstructObjectVtable0066fc2cBase
+// ghidra_proto void * __fastcall ConstructObjectVtable0066fc2cBase(void * pThis)
+// FUNCTION: IMPERIALISM 0x00604cc6
+undefined4 ConstructObjectVtable0066fc2cBase(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateDialogFromResourceNameAndOwner
+// ghidra_proto void __thiscall CreateDialogFromResourceNameAndOwner(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00604d42
+undefined4 CreateDialogFromResourceNameAndOwner(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateIndirect
+// ghidra_proto void * __cdecl CreateIndirect(void)
+// FUNCTION: IMPERIALISM 0x00604da4
+undefined4 CreateIndirect(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateIndirect_604ddd
+// ghidra_proto void __thiscall CreateIndirect_604ddd(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00604ddd
+undefined4 CreateIndirect_604ddd(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateDlg
+// ghidra_proto void __stdcall CreateDlg(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00604e08
+undefined4 CreateDlg(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateDlgIndirect
+// ghidra_proto void __thiscall CreateDlgIndirect(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00604e4c
+undefined4 CreateDlgIndirect(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateDlgIndirect_604e5e
+// ghidra_proto void * __cdecl CreateDlgIndirect_604e5e(void)
+// FUNCTION: IMPERIALISM 0x00604e5e
+undefined4 CreateDlgIndirect_604e5e(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot47_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot47_Target(void)
+// FUNCTION: IMPERIALISM 0x0060507c
+undefined4 TMacViewMgr_Slot47_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocTemplate::ConstructObjectVtable0066fc2cWithArgs
+// ghidra_proto void * __thiscall ConstructObjectVtable0066fc2cWithArgs(void * initA, void * initB)
+// FUNCTION: IMPERIALISM 0x0060508e
+undefined4 ConstructObjectVtable0066fc2cWithArgs(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::InitializeDialogTemplateFromId
+// ghidra_proto void __thiscall InitializeDialogTemplateFromId(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006050d0
+undefined4 InitializeDialogTemplateFromId(void)
+{
+  return 0;
+}
+
+// ghidra_name PreModal
+// ghidra_proto int __fastcall PreModal(void)
+// FUNCTION: IMPERIALISM 0x00605144
+undefined4 PreModal(void)
+{
+  return 0;
+}
+
+// ghidra_name PostModal
+// ghidra_proto void __fastcall PostModal(void)
+// FUNCTION: IMPERIALISM 0x0060517b
+undefined4 PostModal(void)
 {
   return 0;
 }

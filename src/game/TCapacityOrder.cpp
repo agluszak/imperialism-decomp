@@ -6,7 +6,8 @@ void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 
 // GLOBAL: IMPERIALISM 0x64f440
 char g_pClassDescTCapacityOrder;
-// GLOBAL: IMPERIALISM 0x66fec4
+// Runtime-object base vtable placeholder. The address annotation lives on
+// TEventHandler's VTABLE declaration to avoid duplicate reccmp global ownership.
 char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // GLOBAL: IMPERIALISM 0x695b50
 char g_industryActionCostWeightResCode09;

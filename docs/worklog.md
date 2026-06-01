@@ -795,3 +795,219 @@
    `CtrlSlot78(&overlayParams)` buffer arg (kept no-arg to avoid changing 6 working callers),
    and `SetQuickDrawFillColor` arg form. Body is structurally faithful otherwise.
 4. `just compare-canaries` below_floor=0; avg similarity 3.09% -> 3.10%.
+
+### QuickDraw fill-color primitive + wrapped-map overlay slice (2026-06-01, cont.)
+
+1. Ownership/hygiene:
+   - Removed the stale duplicate `0x00588690` marker from `trade_screen.cpp`; the single owned
+     implementation is now `TradeAmountBarLayout::RenderPrimarySurfaceOverlayPanelWithClipCache`
+     in included `TAmtBar.cpp`.
+   - Removed duplicate `0x66fec4` plain-global annotation from `TCapacityOrder.cpp`; the vtable
+     annotation remains on `TEventHandler`.
+2. Shared helper vocabulary:
+   - Implemented `0x00495000` `SetQuickDrawFillColor(int)` in `quickdraw_surface.cpp`.
+   - Added globals `g_Quick_Draw_Color_State_006950FC`, `g_uQuickDrawCurrentColor`, and
+     `g_pActiveQuickDrawSurfaceContext`.
+   - Updated manual callsites in `TAmtBar.cpp`, `TPlacard.cpp`, and `trade_screen.cpp` to pass the
+     explicit fill color instead of no-arg casts.
+   - Result: `just compare 0x00495000` -> **100%**. Amount-bar canary nudges:
+     `0x00588690` **39.73% -> 40.00%**, `0x00589340` **37.44% -> 37.86%**,
+     `0x0058a1b0` **33.33% -> 33.82%**; `0x0058ac80` and `0x0058b0f0` held.
+3. New QuickDraw guard target:
+   - Added `src/game/map_quickdraw_overlay.cpp` and promoted `0x00596100`
+     `RenderWrappedMapQuickDrawOverlayFromStridedRecords`.
+   - Added generated vcall facades for provisional `WrappedMapOverlayView` slots
+     `0x1c0`, `0x1c4`, `0x1cc`, `0x1d0`, and `0x1d4`.
+   - Modeled it as a `QuickDrawSurfaceGuard` EH-RAII body with FPO on. Signature is effectively
+     thiscall-shaped (`__fastcall` bridge) with one stack arg; the stack arg is a record/context
+     pointer and the mode branch reads `arg + 0x24`.
+   - Result: `just compare 0x00596100` **0.00% -> 24.44%**. Residual gaps are register allocation
+     (`ebp` for computed record, `edi` for vtable) and local layout, not missing architecture.
+4. Validation:
+   - `just build`: clean.
+   - `just detect`: updated recompiled detection.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: aligned functions **102** (`+1`), avg similarity **3.11%**, paired globals
+     `+4`, global coverage `+0.04 pp`.
+
+### TTransFocusAnimation scoped QuickDraw slice (2026-06-01, cont.)
+
+1. Added `src/game/TTransFocusAnimation.cpp` and promoted two functions out of stubs:
+   - `0x004a05c0` `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip`
+     -> **29.85%**. This is the transient-surface-to-primary blit path: `QuickDrawSurfaceGuard`,
+     hit-region clip state, destination/source RECT setup, palette/fill-color setup,
+     y-flip adjustment from `g_pPrimaryRenderSurfaceContext` / `this+0x30`, then
+     `BlitRectWithOptionalTransparency`.
+   - `0x004a0770` `TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw`
+     -> **71.19%**. This unlocked a second scoped QuickDraw RAII family using
+     `thunk_ConstructScopedMapQuickDrawContext` / `thunk_DestroyScopedMapQuickDrawContext`.
+2. Added generated provisional vcall facades:
+   - `VCall_FocusAnimationView_RenderSlotF8` for the render target at `this+0x04`.
+   - `VCall_TransFocusAnimation_CallSlot2C` for the completion/update callback on the
+     `TTransFocusAnimation` object.
+3. Layout evidence captured in a local typed view:
+   - `this+0x04` is the scoped render target used by the map QuickDraw context and slot `0xf8`.
+   - `this+0x1c..0x28` are source bounds.
+   - `this+0x30` is the transient surface context used by the blit source.
+   These labels remain provisional; do not infer inheritance from the current class name alone.
+4. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x004a05c0`: **29.85%**.
+   - `just compare 0x004a0770`: **71.19%**.
+   - `just compare 0x00596100`: held at **24.44%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: aligned functions **102**, avg similarity **3.12%**, paired globals **296**
+     (`+1`), dropped duplicate addresses **0**.
+
+### Scoped QuickDraw animation sweep (2026-06-01, cont.)
+
+1. Moved `ScopedMapQuickDrawContextGuard` into `include/game/ui_widget_shared.h` so the
+   scoped map QuickDraw RAII family is shared across animation/render wrappers instead of
+   living only in `TTransFocusAnimation.cpp`.
+2. Corrected the guard storage to 24 bytes (`int storage[6]`):
+   - `0x004a0770` `TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw`
+     improved **71.19% -> 84.75%**.
+   - The common mismatch was stack size (`sub esp,0x20` / `sub esp,0x28`) rather than call
+     ordering.
+3. Added `src/game/TFocusAnimation.cpp` and promoted
+   `0x004a0190` `TFocusAnimation::DestructTFocusAnimationAndMaybeFree`:
+   - Shape: enabled flag at `this+0x2c`, scoped render target at `this+0x04`, render slot
+     `0xf8`, self update slot `0x2c`, post-render slot `0xfc`.
+   - Result: stub -> **81.69%**.
+4. Added `src/game/TOneTimeAnimation.cpp` and promoted
+   `0x0049fde0` `TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree`:
+   - Shape: completion flag at `this+0x2c`, frame tick at `this+0x10`, frame limit at
+     `this+0x14`, invalidation/copy rect from `this+0x1c`, render slot `0xf8`, rect apply
+     slot `0x110`.
+   - Result: stub -> **75.86%**.
+5. Added generated provisional vcall facades:
+   - `VCall_FocusAnimation_CallSlot2C`
+   - `VCall_FocusAnimationView_PostRenderSlotFC`
+   - `VCall_FocusAnimationView_ApplyRectSlot110`
+6. Naming caveat:
+   - Current Ghidra names say `Destruct...AndMaybeFree`, but these bodies behave like
+     animation tick/render callbacks. Do not treat the names as lifecycle evidence.
+7. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x004a0190`: **81.69%**.
+   - `just compare 0x0049fde0`: **75.86%**.
+   - `just compare 0x004a0770`: **84.75%**.
+   - `just compare 0x004a05c0`: held at **29.85%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: aligned functions **102**, avg similarity **3.13%**, dropped duplicate
+     addresses **0**.
+
+### RECT consolidation + TOneTimeAnimation behavior rename (2026-06-01, cont.)
+
+1. Confirmed `0x0049fde0` is not a real destructor despite the stale Ghidra/export name:
+   - no free flag, no base/member teardown, no delete path;
+   - advances `this+0x10` frame tick, checks `this+0x14` tick limit, invalidates the
+     `this+0x1c` rect, renders via scoped QuickDraw slots, then advances `this+0x08`
+     current frame or sets `this+0x2c` complete flag.
+2. Renamed the manual implementation to
+   `AdvanceOneTimeAnimationFrameAndInvalidateTargetRect`. Kept the `0x0049fde0` marker and
+   left `symbols.csv`/autogen names unchanged as historical Ghidra evidence.
+3. Consolidated repeated UI rect declarations:
+   - Added shared `struct RECT`, `CopyRect`, and `OffsetRect` declarations to
+     `include/game/ui_widget_shared.h`.
+   - Removed local duplicate `RECT`/`tagRECT` definitions from `trade_screen.cpp`,
+     `TPlacard.cpp`, `TTransFocusAnimation.cpp`, and `TOneTimeAnimation.cpp`.
+4. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x0049fde0`: held at **75.86%** under the behavioral name.
+   - `just compare 0x004a0190`: held at **81.69%**.
+   - `just compare 0x004a05c0`: held at **29.85%**.
+   - `just compare 0x004a0770`: held at **84.75%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.13%**, dropped duplicate addresses **0**.
+
+### TTwoPicSlider Mac-guided draw/track slice (2026-06-01, cont.)
+
+1. Added `src/game/TTwoPicSlider.cpp` and promoted two Mac-guided methods:
+   - `0x0056e370` as `DrawTwoPicSliderSplitOverlayAndCenteredStatusText`.
+   - `0x0056e640` as `TrackTwoPicSliderMouseAndRefresh`.
+   Mac CodeWarrior evidence names the family methods `Draw(const VRect&)` and
+   `TrackMouse(TrackPhase, VPoint&, VPoint&, VPoint&, unsigned char)`, but the Windows
+   implementation names stay behavioral until class layout is more certain.
+2. Captured provisional `TTwoPicSlider` field evidence:
+   - `this+0x34` / `this+0x38`: width/height.
+   - `this+0x84`, `this+0x88`, `this+0x8c`: lower, upper, and composite QuickDraw surfaces.
+   - `this+0x90`: split position.
+   - `this+0x94`: mode controlling aux volume vs SFX playback update.
+3. Reused the shared UI architecture from the earlier QuickDraw work:
+   - shared `RECT`;
+   - `BlitRectWithOptionalTransparency`;
+   - `StringShared` text lifetime;
+   - `ScopedMapQuickDrawContextGuard`;
+   - generated slot `0xf8` and `0x110` facades.
+4. Signature lesson:
+   - `0x0056e640` is not the two-stack-arg shape implied by the stale Ghidra prototype.
+     Matching the observed `ret 0x0c` requires a `__fastcall` bridge with three stack args:
+     phase, unused/secondary param, and a point-record pointer read at `arg+4`.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x0056e370`: stub -> **46.84%**.
+   - `just compare 0x0056e640`: stub -> **45.63%** with correct `ret 0x0c`.
+   - `just compare 0x004a0770`: held at **84.75%** before this slice.
+   - Adjacent constructor/destructor remain stubs for now:
+     `0x0056e200` **0.00%**, `0x0056e2f0` **0.00%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.14%**, aligned functions **102**, dropped duplicate
+     addresses **0**.
+
+### TCityProductionView temporary primary-surface slice (2026-06-01, cont.)
+
+1. Added `src/game/TCityProductionView.cpp` and promoted
+   `0x004bc9b0` as
+   `TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int,int)`.
+2. Class/calling-convention correction:
+   - Initial free-function bridge reached **42.25%** with FPO enabled, but the original body
+     returns `ret 8`.
+   - Converted it to a real provisional class method with two hidden stack args. Final score is
+     **41.67%**, but the method shape is cleaner evidence for class recovery than a free bridge.
+3. Added generated provisional vcall facades for reusable temporary render targets:
+   - `VCall_QuickDrawTarget_QueryBoundsSlot12C`
+   - `VCall_QuickDrawTarget_ApplyRectSlot110`
+4. Captured reusable render-wrapper pattern:
+   - `QuickDrawSurfaceGuard`;
+   - slot `0x12c` bounds capture;
+   - `ApplyHitRegionToClipState(0)`;
+   - active QuickDraw context save/swap to `g_pPrimaryRenderSurfaceContext`;
+   - rect clip apply;
+   - dirty/refresh byte at `this+0xa6`;
+   - slot `0x110` render/apply;
+   - active context restore and `SnapshotHitRegionToClipCache`.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x004bc9b0`: stub -> **41.67%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.15%**, aligned functions **102**, dropped duplicate
+     addresses **0**.
+
+### TDiplomacyMapView legend/palette slice (2026-06-01, cont.)
+
+1. Added `src/game/TDiplomacyMapView.cpp` and promoted three methods/subobject helpers:
+   - `0x004f6170` as
+     `TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*)`.
+   - `0x004f64c0` as
+     `TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int,const RECT*)`.
+   - `0x004f66c0` as provisional
+     `DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int,int,int*,int)`.
+2. Corrected generated vcall facade signatures from compare evidence:
+   - slot `0x1e0`: terrain/minor draw takes `(terrainIndex, labelSelector)`.
+   - slot `0x34`: UI/runtime legend split takes selector `0x3f`.
+   - slot `0x98`: strategic-map frame-region query takes the short selector at `this+0x98`.
+3. Captured provisional layout evidence:
+   - `TDiplomacyMapViewLayout::frameRegionSelectorAt98`;
+   - `TDiplomacyMapViewLayout::legendSurfaceModeAt524`;
+   - `this+0x1eac`: repeated 0x14-byte mask-buffer runs used as `ecx` for `0x004f66c0`;
+   - `this+0x2078`: repeated 0x30-byte packed-color runs used by
+     `thunk_AppendPackedColorDwordToMaskBuffers`.
+4. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - `just compare 0x004f6170`: stub -> **46.30%** after vcall signature fixes.
+   - `just compare 0x004f64c0`: stub -> **31.33%**.
+   - `just compare 0x004f66c0`: stub -> **15.02%** with correct `ret 0x10`.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.16%**, aligned functions **102**, dropped duplicate
+     addresses **0**.

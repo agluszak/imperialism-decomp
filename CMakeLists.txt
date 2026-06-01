@@ -26,6 +26,13 @@ add_executable(Imperialism
     src/game/string_shared.cpp
     src/game/sprite.cpp
     src/game/quickdraw_surface.cpp
+    src/game/map_quickdraw_overlay.cpp
+    src/game/TFocusAnimation.cpp
+    src/game/TOneTimeAnimation.cpp
+    src/game/TTransFocusAnimation.cpp
+    src/game/TTwoPicSlider.cpp
+    src/game/TCityProductionView.cpp
+    src/game/TDiplomacyMapView.cpp
     src/game/trade_screen.cpp
     src/game/ui_widget_wrappers.cpp
     src/game/TCivilianButton.cpp

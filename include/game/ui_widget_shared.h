@@ -15,6 +15,16 @@ struct UiRuntimeContext {
 
 extern "C" UiRuntimeContext* g_pUiRuntimeContext;
 
+struct RECT {
+  int left;
+  int top;
+  int right;
+  int bottom;
+};
+
+extern "C" int __stdcall CopyRect(RECT* destination, const RECT* source);
+extern "C" int __stdcall OffsetRect(RECT* rect, int dx, int dy);
+
 // Reusable QuickDraw clip-surface guard. The constructor reuses a cached surface
 // wrapper (global free-list head) or allocates a new one; the destructor caches
 // this surface if none is cached, otherwise frees it. Modeled as a stack RAII
@@ -26,6 +36,25 @@ struct QuickDrawSurfaceGuard {
   ~QuickDrawSurfaceGuard();
 };
 
+undefined4 thunk_ConstructScopedMapQuickDrawContext(void);
+undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
+
+// Scoped map QuickDraw context guard. This is a separate RAII family from
+// QuickDrawSurfaceGuard and appears in animation/render wrappers.
+struct ScopedMapQuickDrawContextGuard {
+  int storage[6];
+
+  explicit ScopedMapQuickDrawContextGuard(void* renderTarget) {
+    reinterpret_cast<void(__fastcall*)(ScopedMapQuickDrawContextGuard*, int, int)>(
+        thunk_ConstructScopedMapQuickDrawContext)(this, 0, reinterpret_cast<int>(renderTarget));
+  }
+
+  ~ScopedMapQuickDrawContextGuard() {
+    reinterpret_cast<void(__cdecl*)()>(thunk_DestroyScopedMapQuickDrawContext)();
+  }
+};
+
+void __cdecl SetQuickDrawFillColor(int fillColor);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 unsigned int __cdecl thunk_GetActiveNationId(void);

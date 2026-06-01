@@ -3,102 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTacticalPlayer::GetTTacticalPlayerClassNamePointer
-// ghidra_proto void * __cdecl GetTTacticalPlayerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0059ae80
-undefined4 GetTTacticalPlayerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalPlayer::ConstructTTacticalPlayerBaseState
-// ghidra_proto void __thiscall ConstructTTacticalPlayerBaseState(void)
-// FUNCTION: IMPERIALISM 0x0059aee0
-undefined4 ConstructTTacticalPlayerBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectNextTacticalUnitForDoneCommand
-// ghidra_proto void __cdecl SelectNextTacticalUnitForDoneCommand(void)
-// FUNCTION: IMPERIALISM 0x0059af20
-undefined4 SelectNextTacticalUnitForDoneCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
-// ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
-// FUNCTION: IMPERIALISM 0x0059afa0
-undefined4 Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AddHead_At0059afe0
-// ghidra_proto void __cdecl WrapperFor_AddHead_At0059afe0(void)
-// FUNCTION: IMPERIALISM 0x0059afe0
-undefined4 WrapperFor_AddHead_At0059afe0(void)
-{
-  return 0;
-}
-
-// ghidra_name IsTacticalControllerOwnedByActiveNation
-// ghidra_proto void __cdecl IsTacticalControllerOwnedByActiveNation(void)
-// FUNCTION: IMPERIALISM 0x0059b010
-undefined4 IsTacticalControllerOwnedByActiveNation(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTacticalCommandTag_skip
-// ghidra_proto void __cdecl HandleTacticalCommandTag_skip(void)
-// FUNCTION: IMPERIALISM 0x0059b040
-undefined4 HandleTacticalCommandTag_skip(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareTacticalCursorEntriesByActionClassPriority
-// ghidra_proto void __cdecl CompareTacticalCursorEntriesByActionClassPriority(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0059b070
-undefined4 CompareTacticalCursorEntriesByActionClassPriority(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059b140
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059b140(void)
-// FUNCTION: IMPERIALISM 0x0059b140
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059b140(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyPlayer::CreateTArmyPlayerInstance
-// ghidra_proto void __thiscall CreateTArmyPlayerInstance(void)
-// FUNCTION: IMPERIALISM 0x0059b170
-undefined4 CreateTArmyPlayerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyPlayer::GetTArmyPlayerClassNamePointer
-// ghidra_proto void * __cdecl GetTArmyPlayerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0059b190
-undefined4 GetTArmyPlayerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTacticalSideFromArmyUnitList
-// ghidra_proto void __cdecl InitializeTacticalSideFromArmyUnitList(void)
-// FUNCTION: IMPERIALISM 0x0059b1b0
-undefined4 InitializeTacticalSideFromArmyUnitList(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyPlayer::DestructTArmyPlayerAndMaybeFree
 // ghidra_proto void * __thiscall DestructTArmyPlayerAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0059b390
@@ -3999,6 +3903,102 @@ undefined4 InitializeRangePairFromDiplomacyConstants(void)
 // ghidra_proto void __cdecl ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
 // FUNCTION: IMPERIALISM 0x005ba4b0
 undefined4 ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At005ba600
+// ghidra_proto void __cdecl WrapperFor_ftol_At005ba600(void)
+// FUNCTION: IMPERIALISM 0x005ba600
+undefined4 WrapperFor_ftol_At005ba600(void)
+{
+  return 0;
+}
+
+// ghidra_name TradeScreenPicture::CreateTradeScreenPictureInstance
+// ghidra_proto void * __cdecl CreateTradeScreenPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x005ba680
+undefined4 CreateTradeScreenPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TradeScreenPicture::GetTradeScreenPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTradeScreenPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005ba700
+undefined4 GetTradeScreenPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TradeScreenPicture::ConstructTradeScreenPictureBaseState
+// ghidra_proto void * __thiscall ConstructTradeScreenPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x005ba720
+undefined4 ConstructTradeScreenPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TradeScreenPicture::DestructTradeScreenPictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTradeScreenPictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005ba750
+undefined4 DestructTradeScreenPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TradeScreenPicture::RenderTradeScreenCommoditySummaryRows
+// ghidra_proto void __thiscall RenderTradeScreenCommoditySummaryRows(void * arg1)
+// FUNCTION: IMPERIALISM 0x005ba7a0
+undefined4 RenderTradeScreenCommoditySummaryRows(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealBookPicture::CreateTDealBookPictureInstance
+// ghidra_proto void * __cdecl CreateTDealBookPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x005bab00
+undefined4 CreateTDealBookPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealBookPicture::GetTDealBookPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTDealBookPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005baba0
+undefined4 GetTDealBookPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealBookPicture::ConstructTDealBookPictureBaseState
+// ghidra_proto void * __thiscall ConstructTDealBookPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x005babc0
+undefined4 ConstructTDealBookPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealBookPicture::DestructTDealBookPictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTDealBookPictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005bac00
+undefined4 DestructTDealBookPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshHudNationTitleControlsAndTheme
+// ghidra_proto void __cdecl RefreshHudNationTitleControlsAndTheme(void)
+// FUNCTION: IMPERIALISM 0x005bac50
+undefined4 RefreshHudNationTitleControlsAndTheme(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
+// ghidra_proto void __thiscall UpdateDealBookResourceSelectionAndToggleControls(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005baf70
+undefined4 UpdateDealBookResourceSelectionAndToggleControls(void)
 {
   return 0;
 }

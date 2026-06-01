@@ -3,78 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TIconSlider::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
-// ghidra_proto void __thiscall WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x005065f0
-undefined4 WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconBar::WrapperFor_TIconBar_VtblSlot68_At00506690
-// ghidra_proto void __thiscall WrapperFor_TIconBar_VtblSlot68_At00506690(void)
-// FUNCTION: IMPERIALISM 0x00506690
-undefined4 WrapperFor_TIconBar_VtblSlot68_At00506690(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0
-// ghidra_proto void __cdecl Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)
-// FUNCTION: IMPERIALISM 0x005066c0
-undefined4 Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I36_00506710
-// ghidra_proto void __cdecl OrphanCallChain_C1_I36_00506710(void)
-// FUNCTION: IMPERIALISM 0x00506710
-undefined4 OrphanCallChain_C1_I36_00506710(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateIconBarOffsetAndRecomputeClipRegion
-// ghidra_proto void __cdecl UpdateIconBarOffsetAndRecomputeClipRegion(void)
-// FUNCTION: IMPERIALISM 0x005067a0
-undefined4 UpdateIconBarOffsetAndRecomputeClipRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name TOrderView::CreateTOrderViewInstance
-// ghidra_proto void * __cdecl CreateTOrderViewInstance(void)
-// FUNCTION: IMPERIALISM 0x005069d0
-undefined4 CreateTOrderViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TOrderView::GetTOrderViewClassNamePointer
-// ghidra_proto void * __cdecl GetTOrderViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00506a60
-undefined4 GetTOrderViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TOrderView::ConstructTOrderViewBaseState
-// ghidra_proto void * __thiscall ConstructTOrderViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00506a80
-undefined4 ConstructTOrderViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TOrderView::DestructTOrderViewAndMaybeFree
-// ghidra_proto void * __thiscall DestructTOrderViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00506ab0
-undefined4 DestructTOrderViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::PopulateDialogControlsFromSelectedProductionEntry
 // ghidra_proto void __thiscall PopulateDialogControlsFromSelectedProductionEntry(void * ownerContext, int selectionIndex)
 // FUNCTION: IMPERIALISM 0x00506b00
@@ -3999,6 +3927,78 @@ undefined4 RunForeignMinisterPolicySlot28VariantC(void)
 // ghidra_proto void __cdecl DispatchNationInteractionAmountWithFallbackVariant(void)
 // FUNCTION: IMPERIALISM 0x00533db0
 undefined4 DispatchNationInteractionAmountWithFallbackVariant(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::QueueTraderFourRandomTerrainActionsCode133
+// ghidra_proto void __thiscall QueueTraderFourRandomTerrainActionsCode133(void)
+// FUNCTION: IMPERIALISM 0x00533e90
+undefined4 QueueTraderFourRandomTerrainActionsCode133(void)
+{
+  return 0;
+}
+
+// ghidra_name IncrementTraderCounter60ByThree
+// ghidra_proto void __cdecl IncrementTraderCounter60ByThree(void * pTrader)
+// FUNCTION: IMPERIALISM 0x00533f50
+undefined4 IncrementTraderCounter60ByThree(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmsForeignMinister::GetTArmsForeignMinisterClassNamePointer
+// ghidra_proto void * __cdecl GetTArmsForeignMinisterClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00533ff0
+undefined4 GetTArmsForeignMinisterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmsForeignMinister::ConstructTArmsForeignMinister
+// ghidra_proto void __thiscall ConstructTArmsForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x00534010
+undefined4 ConstructTArmsForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmsForeignMinister::DeletingDestructTArmsForeignMinister
+// ghidra_proto void __thiscall DeletingDestructTArmsForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x00534080
+undefined4 DeletingDestructTArmsForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmsForeignMinister::DestructTArmsForeignMinister
+// ghidra_proto void __thiscall DestructTArmsForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x005340b0
+undefined4 DestructTArmsForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeArmsForeignMinisterOrderCandidates
+// ghidra_proto void __cdecl InitializeArmsForeignMinisterOrderCandidates(void)
+// FUNCTION: IMPERIALISM 0x005340d0
+undefined4 InitializeArmsForeignMinisterOrderCandidates(void)
+{
+  return 0;
+}
+
+// ghidra_name RunForeignMinisterVtableSlot90ArmsVariant
+// ghidra_proto void __fastcall RunForeignMinisterVtableSlot90ArmsVariant(void)
+// FUNCTION: IMPERIALISM 0x00534190
+undefined4 RunForeignMinisterVtableSlot90ArmsVariant(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchNationInteractionAmountWithSharedSplitCache
+// ghidra_proto void __cdecl DispatchNationInteractionAmountWithSharedSplitCache(void)
+// FUNCTION: IMPERIALISM 0x00534450
+undefined4 DispatchNationInteractionAmountWithSharedSplitCache(void)
 {
   return 0;
 }

@@ -2435,14 +2435,6 @@ undefined4 MeasureTextExtentWithCachedQuickDrawStyle(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawFillColor
-// ghidra_proto void __cdecl SetQuickDrawFillColor(int arg1)
-// FUNCTION: IMPERIALISM 0x00495000
-undefined4 SetQuickDrawFillColor(void)
-{
-  return 0;
-}
-
 // ghidra_name SetQuickDrawColorAndPropagateIfChanged
 // ghidra_proto void __cdecl SetQuickDrawColorAndPropagateIfChanged(int arg1)
 // FUNCTION: IMPERIALISM 0x00495030
@@ -3999,6 +3991,14 @@ undefined4 ReinitializeGameFlowWithoutPostingTurnEvent(void)
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
 // FUNCTION: IMPERIALISM 0x0049ddd0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::CreateTNewGameCommandInstance
+// ghidra_proto void __thiscall CreateTNewGameCommandInstance(void)
+// FUNCTION: IMPERIALISM 0x0049de00
+undefined4 CreateTNewGameCommandInstance(void)
 {
   return 0;
 }

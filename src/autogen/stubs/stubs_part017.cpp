@@ -3,78 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CalculateMissionOrderPriorityScore
-// ghidra_proto int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)
-// FUNCTION: IMPERIALISM 0x005501b0
-undefined4 CalculateMissionOrderPriorityScore(void)
-{
-  return 0;
-}
-
-// ghidra_name AdjustMapOrderNodeStatCapped499
-// ghidra_proto void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)
-// FUNCTION: IMPERIALISM 0x00550370
-undefined4 AdjustMapOrderNodeStatCapped499(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
-// ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
-// FUNCTION: IMPERIALISM 0x005503a0
-undefined4 GetOrCreateMissionOrderEntryForNode(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrderNodeDescriptorWord20ByResourceType
-// ghidra_proto short __cdecl GetOrderNodeDescriptorWord20ByResourceType(void)
-// FUNCTION: IMPERIALISM 0x00550510
-undefined4 GetOrderNodeDescriptorWord20ByResourceType(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeOrderNodeDistanceQuotientByDescriptorWord24
-// ghidra_proto int __cdecl ComputeOrderNodeDistanceQuotientByDescriptorWord24(void)
-// FUNCTION: IMPERIALISM 0x00550550
-undefined4 ComputeOrderNodeDistanceQuotientByDescriptorWord24(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyOrderNormalizationBaseByNationType
-// ghidra_proto void __cdecl GetNavyOrderNormalizationBaseByNationType(void)
-// FUNCTION: IMPERIALISM 0x005505a0
-undefined4 GetNavyOrderNormalizationBaseByNationType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyPrimaryOrderListHead
-// ghidra_proto void * __cdecl GetNavyPrimaryOrderListHead(void)
-// FUNCTION: IMPERIALISM 0x005505c0
-undefined4 GetNavyPrimaryOrderListHead(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyPrimaryOrderListIndexOfNode
-// ghidra_proto int __cdecl GetNavyPrimaryOrderListIndexOfNode(void)
-// FUNCTION: IMPERIALISM 0x00550610
-undefined4 GetNavyPrimaryOrderListIndexOfNode(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyPrimaryOrderNodeByIndex
-// ghidra_proto void * __cdecl GetNavyPrimaryOrderNodeByIndex(int arg1)
-// FUNCTION: IMPERIALISM 0x00550640
-undefined4 GetNavyPrimaryOrderNodeByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
 // ghidra_proto int __thiscall SelectPreferredMapOrderEntryByPriorityRules(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00550670
@@ -3075,22 +3003,6 @@ undefined4 DestructTTwoPicSliderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText
-// ghidra_proto void __thiscall RenderSplitOverlaySurfaceAndCenteredStatusText(void)
-// FUNCTION: IMPERIALISM 0x0056e370
-undefined4 RenderSplitOverlaySurfaceAndCenteredStatusText(void)
-{
-  return 0;
-}
-
-// ghidra_name TTwoPicSlider::HandleMapOverlaySliderInputAndRefresh
-// ghidra_proto void __thiscall HandleMapOverlaySliderInputAndRefresh(void * pInput, void * param_2)
-// FUNCTION: IMPERIALISM 0x0056e640
-undefined4 HandleMapOverlaySliderInputAndRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name TQueryFloater::CreateTQueryFloaterInstance
 // ghidra_proto void * __cdecl CreateTQueryFloaterInstance(void)
 // FUNCTION: IMPERIALISM 0x0056e840
@@ -3999,6 +3911,94 @@ undefined4 ConstructTCzechBoxBaseState(void)
 // ghidra_proto void * __thiscall DestructTCzechBoxAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00571c60
 undefined4 DestructTCzechBoxAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
+// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+// FUNCTION: IMPERIALISM 0x00571cb0
+undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeCzechBoxVisualModeDefault
+// ghidra_proto void __thiscall InitializeCzechBoxVisualModeDefault(void)
+// FUNCTION: IMPERIALISM 0x00571cf0
+undefined4 InitializeCzechBoxVisualModeDefault(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I10_00571d10
+// ghidra_proto void __cdecl OrphanCallChain_C1_I10_00571d10(void)
+// FUNCTION: IMPERIALISM 0x00571d10
+undefined4 OrphanCallChain_C1_I10_00571d10(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C4_I45_00571d40
+// ghidra_proto void __cdecl OrphanCallChain_C4_I45_00571d40(void)
+// FUNCTION: IMPERIALISM 0x00571d40
+undefined4 OrphanCallChain_C4_I45_00571d40(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins02_00571de0
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_00571de0(void)
+// FUNCTION: IMPERIALISM 0x00571de0
+undefined4 OrphanLeaf_NoCall_Ins02_00571de0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I10_00571e00
+// ghidra_proto void __cdecl OrphanCallChain_C1_I10_00571e00(void)
+// FUNCTION: IMPERIALISM 0x00571e00
+undefined4 OrphanCallChain_C1_I10_00571e00(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I16_00571e40
+// ghidra_proto void __cdecl OrphanCallChain_C2_I16_00571e40(void)
+// FUNCTION: IMPERIALISM 0x00571e40
+undefined4 OrphanCallChain_C2_I16_00571e40(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C3_I23_00571e80
+// ghidra_proto void __cdecl OrphanCallChain_C3_I23_00571e80(void)
+// FUNCTION: IMPERIALISM 0x00571e80
+undefined4 OrphanCallChain_C3_I23_00571e80(void)
+{
+  return 0;
+}
+
+// ghidra_name TColorKeyButton::CreateTColorKeyButtonInstance
+// ghidra_proto void * __cdecl CreateTColorKeyButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00571ed0
+undefined4 CreateTColorKeyButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TColorKeyButton::GetTColorKeyButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTColorKeyButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00571f50
+undefined4 GetTColorKeyButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TColorKeyButton::ConstructTColorKeyButtonBaseState
+// ghidra_proto void * __thiscall ConstructTColorKeyButtonBaseState(void)
+// FUNCTION: IMPERIALISM 0x00571f70
+undefined4 ConstructTColorKeyButtonBaseState(void)
 {
   return 0;
 }

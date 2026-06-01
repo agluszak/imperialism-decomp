@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
-// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
-// FUNCTION: IMPERIALISM 0x00571cb0
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCzechBoxVisualModeDefault
-// ghidra_proto void __thiscall InitializeCzechBoxVisualModeDefault(void)
-// FUNCTION: IMPERIALISM 0x00571cf0
-undefined4 InitializeCzechBoxVisualModeDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I10_00571d10
-// ghidra_proto void __cdecl OrphanCallChain_C1_I10_00571d10(void)
-// FUNCTION: IMPERIALISM 0x00571d10
-undefined4 OrphanCallChain_C1_I10_00571d10(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C4_I45_00571d40
-// ghidra_proto void __cdecl OrphanCallChain_C4_I45_00571d40(void)
-// FUNCTION: IMPERIALISM 0x00571d40
-undefined4 OrphanCallChain_C4_I45_00571d40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_00571de0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_00571de0(void)
-// FUNCTION: IMPERIALISM 0x00571de0
-undefined4 OrphanLeaf_NoCall_Ins02_00571de0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I10_00571e00
-// ghidra_proto void __cdecl OrphanCallChain_C1_I10_00571e00(void)
-// FUNCTION: IMPERIALISM 0x00571e00
-undefined4 OrphanCallChain_C1_I10_00571e00(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I16_00571e40
-// ghidra_proto void __cdecl OrphanCallChain_C2_I16_00571e40(void)
-// FUNCTION: IMPERIALISM 0x00571e40
-undefined4 OrphanCallChain_C2_I16_00571e40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I23_00571e80
-// ghidra_proto void __cdecl OrphanCallChain_C3_I23_00571e80(void)
-// FUNCTION: IMPERIALISM 0x00571e80
-undefined4 OrphanCallChain_C3_I23_00571e80(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyButton::CreateTColorKeyButtonInstance
-// ghidra_proto void * __cdecl CreateTColorKeyButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00571ed0
-undefined4 CreateTColorKeyButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyButton::GetTColorKeyButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTColorKeyButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00571f50
-undefined4 GetTColorKeyButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyButton::ConstructTColorKeyButtonBaseState
-// ghidra_proto void * __thiscall ConstructTColorKeyButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x00571f70
-undefined4 ConstructTColorKeyButtonBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TColorKeyButton::DestructTColorKeyButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTColorKeyButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00571fa0
@@ -3435,14 +3347,6 @@ undefined4 OrphanRetStub_005960e0(void)
   return 0;
 }
 
-// ghidra_name RenderWrappedMapQuickDrawOverlayFromStridedRecords
-// ghidra_proto void __cdecl RenderWrappedMapQuickDrawOverlayFromStridedRecords(int arg1)
-// FUNCTION: IMPERIALISM 0x00596100
-undefined4 RenderWrappedMapQuickDrawOverlayFromStridedRecords(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeDialogHooks1D8ThenE4
 // ghidra_proto void __thiscall InvokeDialogHooks1D8ThenE4(void)
 // FUNCTION: IMPERIALISM 0x00596270
@@ -3999,6 +3903,102 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
 // ghidra_proto void __thiscall CreateTTacticalPlayerInstance(void)
 // FUNCTION: IMPERIALISM 0x0059ae60
 undefined4 CreateTTacticalPlayerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTacticalPlayer::GetTTacticalPlayerClassNamePointer
+// ghidra_proto void * __cdecl GetTTacticalPlayerClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0059ae80
+undefined4 GetTTacticalPlayerClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTacticalPlayer::ConstructTTacticalPlayerBaseState
+// ghidra_proto void __thiscall ConstructTTacticalPlayerBaseState(void)
+// FUNCTION: IMPERIALISM 0x0059aee0
+undefined4 ConstructTTacticalPlayerBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectNextTacticalUnitForDoneCommand
+// ghidra_proto void __cdecl SelectNextTacticalUnitForDoneCommand(void)
+// FUNCTION: IMPERIALISM 0x0059af20
+undefined4 SelectNextTacticalUnitForDoneCommand(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
+// ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
+// FUNCTION: IMPERIALISM 0x0059afa0
+undefined4 Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AddHead_At0059afe0
+// ghidra_proto void __cdecl WrapperFor_AddHead_At0059afe0(void)
+// FUNCTION: IMPERIALISM 0x0059afe0
+undefined4 WrapperFor_AddHead_At0059afe0(void)
+{
+  return 0;
+}
+
+// ghidra_name IsTacticalControllerOwnedByActiveNation
+// ghidra_proto void __cdecl IsTacticalControllerOwnedByActiveNation(void)
+// FUNCTION: IMPERIALISM 0x0059b010
+undefined4 IsTacticalControllerOwnedByActiveNation(void)
+{
+  return 0;
+}
+
+// ghidra_name HandleTacticalCommandTag_skip
+// ghidra_proto void __cdecl HandleTacticalCommandTag_skip(void)
+// FUNCTION: IMPERIALISM 0x0059b040
+undefined4 HandleTacticalCommandTag_skip(void)
+{
+  return 0;
+}
+
+// ghidra_name CompareTacticalCursorEntriesByActionClassPriority
+// ghidra_proto void __cdecl CompareTacticalCursorEntriesByActionClassPriority(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0059b070
+undefined4 CompareTacticalCursorEntriesByActionClassPriority(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059b140
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059b140(void)
+// FUNCTION: IMPERIALISM 0x0059b140
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059b140(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyPlayer::CreateTArmyPlayerInstance
+// ghidra_proto void __thiscall CreateTArmyPlayerInstance(void)
+// FUNCTION: IMPERIALISM 0x0059b170
+undefined4 CreateTArmyPlayerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyPlayer::GetTArmyPlayerClassNamePointer
+// ghidra_proto void * __cdecl GetTArmyPlayerClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0059b190
+undefined4 GetTArmyPlayerClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeTacticalSideFromArmyUnitList
+// ghidra_proto void __cdecl InitializeTacticalSideFromArmyUnitList(void)
+// FUNCTION: IMPERIALISM 0x0059b1b0
+undefined4 InitializeTacticalSideFromArmyUnitList(void)
 {
   return 0;
 }

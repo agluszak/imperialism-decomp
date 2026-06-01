@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNewGameCommand::CreateTNewGameCommandInstance
-// ghidra_proto void __thiscall CreateTNewGameCommandInstance(void)
-// FUNCTION: IMPERIALISM 0x0049de00
-undefined4 CreateTNewGameCommandInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::GetTNewGameCommandClassNamePointer
 // ghidra_proto void * __cdecl GetTNewGameCommandClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0049de20
@@ -355,14 +347,6 @@ undefined4 ConstructTOneTimeAnimationBaseState(void)
   return 0;
 }
 
-// ghidra_name TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree
-// ghidra_proto void __thiscall DestructTOneTimeAnimationAndMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x0049fde0
-undefined4 DestructTOneTimeAnimationAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049ff20(void)
 // FUNCTION: IMPERIALISM 0x0049ff20
@@ -435,14 +419,6 @@ undefined4 ConstructTFocusAnimationBaseState(void)
   return 0;
 }
 
-// ghidra_name TFocusAnimation::DestructTFocusAnimationAndMaybeFree
-// ghidra_proto void __thiscall DestructTFocusAnimationAndMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x004a0190
-undefined4 DestructTFocusAnimationAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I10_004a0250
 // ghidra_proto void __cdecl OrphanCallChain_C2_I10_004a0250(void)
 // FUNCTION: IMPERIALISM 0x004a0250
@@ -503,22 +479,6 @@ undefined4 ConstructTTransFocusAnimationBaseState(void)
 // ghidra_proto void __thiscall DestructTTransFocusAnimationAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x004a0570
 undefined4 DestructTTransFocusAnimationAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip
-// ghidra_proto void __thiscall BlitTransientSurfaceToPrimaryRenderContextWithClip(void)
-// FUNCTION: IMPERIALISM 0x004a05c0
-undefined4 BlitTransientSurfaceToPrimaryRenderContextWithClip(void)
-{
-  return 0;
-}
-
-// ghidra_name TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw
-// ghidra_proto void __thiscall RenderFocusAnimationFrameWithScopedQuickDraw(void)
-// FUNCTION: IMPERIALISM 0x004a0770
-undefined4 RenderFocusAnimationFrameWithScopedQuickDraw(void)
 {
   return 0;
 }
@@ -3999,6 +3959,46 @@ undefined4 BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
 // ghidra_proto void __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
 // FUNCTION: IMPERIALISM 0x004badd0
 undefined4 RenderNationHeaderDateLabelWithPeriodicRefresh(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::HandleCityBuildingHoverSelection
+// ghidra_proto void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)
+// FUNCTION: IMPERIALISM 0x004bafa0
+undefined4 HandleCityBuildingHoverSelection(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::InitializeCityProductionDialog
+// ghidra_proto void __thiscall InitializeCityProductionDialog(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004bb7a0
+undefined4 InitializeCityProductionDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateCityProductionDialogCommodityValueControls
+// ghidra_proto void __fastcall UpdateCityProductionDialogCommodityValueControls(int * this)
+// FUNCTION: IMPERIALISM 0x004bc0b0
+undefined4 UpdateCityProductionDialogCommodityValueControls(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshCityBuildingActionAvailabilityIndicators
+// ghidra_proto void __cdecl RefreshCityBuildingActionAvailabilityIndicators(void)
+// FUNCTION: IMPERIALISM 0x004bc500
+undefined4 RefreshCityBuildingActionAvailabilityIndicators(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610
+// ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610(void)
+// FUNCTION: IMPERIALISM 0x004bc610
+undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610(void)
 {
   return 0;
 }

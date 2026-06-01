@@ -77,3 +77,18 @@ src/game/TGreatPower.cpp|VCall_Message_AppendWordSlot78|void|0x78 / 4|const void
 src/game/TGreatPower.cpp|VCall_Message_AppendBytesSlot78|void|0x78 / 4|const void*,int|high|message append bytes
 src/game/TGreatPower.cpp|VCall_Message_WriteEntrySlotB4|void|0xB4 / 4|int,int|high|message write entry
 src/game/TView.cpp|VCall_TView_DeleteSelfSlot01|void|1|int|high|TView delete self
+src/game/map_quickdraw_overlay.cpp|VCall_MapOverlay_QueryWrappedTileSlot1C0|void|0x1C0 / 4|int,short*,short*,int*|medium|wrapped map overlay tile query|index|thiscall|none||provisional|WrappedMapOverlayView
+src/game/map_quickdraw_overlay.cpp|VCall_MapOverlay_DrawCtrlModifiedSlot1C4|void|0x1C4 / 4|int,int|medium|wrapped map overlay ctrl-modified draw|index|thiscall|none||provisional|WrappedMapOverlayView
+src/game/map_quickdraw_overlay.cpp|VCall_MapOverlay_DrawForcedSlot1CC|void|0x1CC / 4|int,int|medium|wrapped map overlay forced/shift draw|index|thiscall|none||provisional|WrappedMapOverlayView
+src/game/map_quickdraw_overlay.cpp|VCall_MapOverlay_DrawRootModeHighSlot1D0|void|0x1D0 / 4|int,int|medium|wrapped map overlay root mode high draw|index|thiscall|none||provisional|WrappedMapOverlayView
+src/game/map_quickdraw_overlay.cpp|VCall_MapOverlay_DrawRootModeLowSlot1D4|void|0x1D4 / 4|int,int|medium|wrapped map overlay root mode low draw|index|thiscall|none||provisional|WrappedMapOverlayView
+src/game/TTransFocusAnimation.cpp|VCall_FocusAnimationView_RenderSlotF8|void|0xF8 / 4||medium|trans-focus scoped render target slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
+src/game/TFocusAnimation.cpp|VCall_FocusAnimation_CallSlot2C|void|0x2C / 4|int*|medium|focus animation completion/update slot|index|thiscall|none||provisional|TFocusAnimation
+src/game/TFocusAnimation.cpp|VCall_FocusAnimationView_PostRenderSlotFC|void|0xFC / 4||medium|focus animation scoped render post slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
+src/game/TOneTimeAnimation.cpp|VCall_FocusAnimationView_ApplyRectSlot110|void|0x110 / 4|int*|medium|focus animation render target rect apply slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
+src/game/TTransFocusAnimation.cpp|VCall_TransFocusAnimation_CallSlot2C|void|0x2C / 4|int*|medium|trans-focus completion/update slot|index|thiscall|none||provisional|TTransFocusAnimation
+src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_QueryBoundsSlot12C|void|0x12C / 4|int*|medium|temporary-surface target bounds query|index|thiscall|none||provisional|QuickDrawRenderTarget
+src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_ApplyRectSlot110|void|0x110 / 4|int*|medium|temporary-surface target rect apply|index|thiscall|none||provisional|QuickDrawRenderTarget
+src/game/TDiplomacyMapView.cpp|VCall_DiplomacyLegend_DrawTerrainSlot1E0|void|0x1E0 / 4|int,int|medium|diplomacy legend terrain/minor draw slot with index and label selector|index|thiscall|none||provisional|TDiplomacyMapView
+src/game/TDiplomacyMapView.cpp|VCall_UiRuntime_ApplyLegendSplitSlot34|void|0x34 / 4|int|medium|runtime legend split/update slot selector|index|thiscall|none||provisional|UiRuntimeContext
+src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_GetFrameRegionSlot98|void*|0x98 / 4|int|medium|strategic map frame region query by view selector|index|thiscall|none||provisional|StrategicMapViewSystem
