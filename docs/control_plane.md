@@ -1,6 +1,6 @@
 # Imperialism Decomp Control Plane
 
-Last updated: 2026-03-04
+Last updated: 2026-06-01
 
 ## Purpose
 
@@ -22,8 +22,9 @@ This file tracks:
 6. Track globals and non-function entities in stats (not only functions).
 7. Keep vcall facades generated as direct slot-call wrappers (avoid extra runtime-helper call layers in hot paths).
 8. Use read-only class discovery (`just class-discovery`) to rank class ownership/vtable candidates before attach/rename writes.
-9. Treat class-discovery candidate queue as "new work only": exclude manual-owned addresses by default and prioritize queue rows (`P0/P1/P2`) from lane score+density.
-10. For subsystem pushes (e.g. shared-string helpers), use targeted `just compare 0xADDR` as the acceptance gate for touched functions; treat aggregate `just stats` as macro trend only.
+9. Use local slice discovery (`just slice-discovery <Class> 0xADDR`) before vertical-slice edits to list anchors, actual vcall wrappers, global/helper calls, `this` fields, and the conservative `ClassCandidate` evidence object.
+10. Treat class-discovery candidate queue as "new work only": exclude manual-owned addresses by default and prioritize queue rows (`P0/P1/P2`) from lane score+density.
+11. For subsystem pushes (e.g. shared-string helpers), use targeted `just compare 0xADDR` as the acceptance gate for touched functions; treat aggregate `just stats` as macro trend only.
 
 ## Canonical Commands
 
@@ -52,6 +53,8 @@ Maintenance:
 3. `just normalize-markers`
 4. `just vtable-gate`
 5. `just class-discovery`
+6. `just slice-discovery TGreatPower 0x004dc540`
+7. `jq . tmp_decomp/slice_discovery/tgreatpower_004dc540/class_candidate.json`
 
 ## Baseline Snapshot
 
@@ -60,7 +63,7 @@ Baseline reference before this control-plane trim:
 1. Aligned functions: `91`
 2. Average similarity: `2.92%`
 3. Focus area: `TGreatPower` large-body conversion and cleanup
-4. Current sub-focus: shared-string helper family in `src/game/string_shared.cpp` (`0x6058E2`, `0x605B21`, `0x605B87`, `0x605BFB`, `0x605CF5`)
+4. Current sub-focus: `TGreatPower` vertical-slice reconstruction around `0x004DC540`: separate true member state (`this->nationSlot`, vtable slot `0x40`) from global map/port-zone helpers before broader body rewrites.
 
 ## Active Constraints
 
@@ -71,3 +74,4 @@ Baseline reference before this control-plane trim:
 5. Prefer reusable tooling over one-off scripts; wire it through `just` when stable.
 6. Keep strict layout asserts only on proven-stable `TGreatPower` core offsets; keep tail offsets as non-fatal probes until tail stabilization.
 7. During class reconstruction, assert failures are often expected drift signals while size/structure are still in flux; treat them as investigation cues, not automatic regressions.
+8. Follow `docs/class_recovery.md`: MSVC ABI first, evidence object first, no base edge or class membership from naming alone.

@@ -497,7 +497,7 @@ public:
   void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot, int policyCode);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
-  void CompareMissionScoreVariantsByMode(int mode);
+  char CompareMissionScoreVariantsByMode(int mode);
   void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
   void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
   void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int arg1, int arg2, int arg3, int arg4);
@@ -1334,9 +1334,9 @@ static __inline float ComputeDefendProvinceMissionCrossNationSupportScore(int no
       thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore)(nodeContext);
 }
 
-static __inline TPortZoneContextVectorView* FindFirstPortZoneContextByNation(void) {
-  return reinterpret_cast<TPortZoneContextVectorView*(__cdecl*)(void)>(
-      thunk_FindFirstPortZoneContextByNation)();
+static __inline TPortZoneContextVectorView* FindFirstPortZoneContextByNation(short nationSlot) {
+  return reinterpret_cast<TPortZoneContextVectorView*(__cdecl*)(short)>(
+      thunk_FindFirstPortZoneContextByNation)(nationSlot);
 }
 
 static __inline void* ReallocateBufferWithAllocatorTracking(void* buffer, int sizeBytes) {
@@ -2613,21 +2613,20 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004DC540
-void TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
+char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
   if (mode == 0) {
     int nodeContext = VCall_GreatPower_GetNodeContextSlot40(this);
     float localScore = ComputeDefendProvinceMissionLocalSupportScore(nodeContext);
     float crossNationScore = ComputeDefendProvinceMissionCrossNationSupportScore(nodeContext);
     if (localScore < crossNationScore) {
-      return;
+      return 0;
     }
+    return 1;
   } else {
-    TPortZoneContextVectorView* portZoneContext = FindFirstPortZoneContextByNation();
-    if (portZoneContext == 0) {
-      return;
-    }
+    TPortZoneContextVectorView* portZoneContext =
+        FindFirstPortZoneContextByNation(this->nationSlot);
 
-    if (portZoneContext->entryCount == 0) {
+    if (portZoneContext->entryCount <= 0) {
       void* resizedEntries = ReallocateBufferWithAllocatorTracking(portZoneContext->entries, 8);
       if (resizedEntries == 0) {
         resizedEntries = ReallocateBufferWithAllocatorTracking(portZoneContext->entries, 4);
@@ -2638,22 +2637,20 @@ void TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
         portZoneContext->entryCount = 2;
       }
     }
-    if (portZoneContext->activeEntryCount == 0) {
+    if (portZoneContext->activeEntryCount <= 0) {
       portZoneContext->activeEntryCount = 1;
     }
 
-    int firstEntry = 0;
-    if (portZoneContext->entries != 0) {
-      firstEntry = portZoneContext->entries[0];
-    }
+    int firstEntry = portZoneContext->entries[0];
 
     float exactSourceScore =
         ComputeNavyOrderScoreForExactSourceNation(this->nationSlot, firstEntry);
     float diplomacyFilteredScore =
         ComputeNavyOrderScoreWithDiplomacyFilter(this->nationSlot, firstEntry);
     if (exactSourceScore < diplomacyFilteredScore) {
-      return;
+      return 0;
     }
+    return 1;
   }
 }
 

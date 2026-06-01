@@ -7,11 +7,11 @@ IndustryAmtBarState* __cdecl CreateTShipAmtBarInstance(void) {
       reinterpret_cast<IndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void*>(&g_vtblTShipAmtBar);
     amountBar->cachedRangeAt60 = 0;
     amountBar->cachedRatioAt62 = 0;
     amountBar->cachedProductionAt64 = 0;
     amountBar->cachedStyleAt66 = 0;
+    amountBar->vftable = reinterpret_cast<void*>(&g_vtblTShipAmtBar);
   }
   return amountBar;
 }

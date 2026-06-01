@@ -50,6 +50,12 @@ Interpretation:
 3. Iterate compiler flags before broad source reconstruction.
 4. Record every attempted compiler/version/flags set and observed matching deltas.
 
+## Python/Ghidra Environment Notes
+
+- 2026-06-01: The moved sibling `imperialism_knowledge` checkout now syncs with `uv` using `pyghidra==3.1.0` and `jpype1==1.5.2`.
+- The stale `java-stubs-converted-strings` dependency conflicted with that `jpype1` pin and was removed from the sibling project because the available tooling did not import it.
+- `just class-discovery` still shells through that sibling project, but new vertical-slice analysis should prefer repo-local `uv run python -m tools.workflow.slice_discovery` via `just slice-discovery`.
+
 ## Experiment Log Template
 
 - Date:

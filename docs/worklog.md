@@ -1,5 +1,67 @@
 # Worklog
 
+## 2026-06-01
+
+### Class/tooling detour for vertical-slice work
+
+1. Downgraded the sibling knowledge environment through `uv` so the moved checkout can run again:
+   1. `jpype1==1.5.2` to satisfy `pyghidra==3.1.0`.
+   2. Removed the stale `java-stubs-converted-strings` dependency because it required `jpype1>=1.6.0` and was not imported by the available tooling.
+   3. Added a minimal `impk` compatibility entrypoint in `/home/agluszak/code/decomp/imperialism_knowledge` so existing `just class-discovery` can run while replacement local tooling is built.
+2. Restored `just class-discovery TGreatPower`:
+   1. Output: `/home/agluszak/code/decomp/imperialism_knowledge/tmp_decomp/class_discovery/tgreatpower/summary.json`.
+   2. Anchors: `g_pClassDescTGreatPower=0x00653688`, `g_vtblTGreatPower=0x00653938`.
+   3. Constructor/vtable evidence still points at `0x004D89F0`/`thunk_ConstructNationStateBase_Vtbl653938`; candidate methods are intentionally conservative under the compatibility shim.
+3. Added repo-local vertical-slice tooling:
+   1. `tools/workflow/slice_discovery.py`
+   2. `just slice-discovery <Class> 0xADDR`
+   3. Tool reads local `symbols.csv`, `src/ghidra_autogen/index.csv`, `config/vtable_slots.csv`, and manual source to summarize class anchors, actual function calls, vcall wrappers, and `this` field accesses.
+   4. Tool now also emits `class_candidate.json`, a conservative MSVC `ClassCandidate` evidence object with vtable, constructor/destructor, field-access, and virtual-callsite evidence.
+4. Ran `just slice-discovery TGreatPower 0x004dc540`:
+   1. Output: `tmp_decomp/slice_discovery/tgreatpower_004dc540/summary.md`.
+   2. Slice uses one `this` field: `nationSlot`.
+   3. Slice uses one true vcall wrapper: `VCall_GreatPower_GetNodeContextSlot40`.
+   4. `FindFirstPortZoneContextByNation`, navy score helpers, defend-province score helpers, and allocator calls are global/helper boundaries, not evidence that those objects belong inside `TGreatPower`.
+   5. `class_candidate.json` records MSVC ABI, primary vftable `0x00653938`, no typeinfo yet, constructor candidates `0x004016AE` and `0x004D89F0`, lifetime/destructor candidate `0x004D9160`, field access `nationSlot@0x0C`, and virtual callsite slot index `16`.
+5. Sampled adjacent target `0x004DC660` with `just slice-discovery TGreatPower 0x004dc660` and `just compare 0x004dc660`:
+   1. Current score: `18.63%`.
+   2. Slice uses `this->nationSlot`, diplomacy/global map helper boundaries, and shared-string construction/destruction.
+   3. Original has SEH/shared-string lifetime shape that the current body does not yet preserve, making this a better next vertical slice than further micro-tuning `0x004DC540`.
+6. Added `docs/class_recovery.md` as the current class-recovery operating model:
+   1. MSVC ABI only for this binary.
+   2. Evidence order: RTTI/COL if present, vftables/vptr writes, secondary vftable offsets, virtual callsites/this adjustments, allocation/field offsets, then names.
+   3. No inheritance/class membership from naming alone.
+7. Extended `slice_discovery.py` so class labels can be synthetic:
+   1. Added `--vtable`, `--classdesc`, and `--name-source`.
+   2. Added allocation-size extraction from `AllocateWithFallbackHandler(...)`.
+   3. Added vptr-write evidence when the sliced body assigns a `g_vtbl*` symbol.
+   4. Example synthetic candidates:
+      1. `Candidate_666998` for `0x0058AAA0`, vftable `0x00666998`, allocation size `0x6C`.
+      2. `Candidate_666ba0` for `0x0058AE30`, vftable `0x00666BA0`, allocation size `0x68`.
+8. Sampled non-`TGreatPower` UI/trade lifetime slices:
+   1. `0x0058ABA0` ship amount-bar deleting destructor remained `66.67%`; changing delete flag width did not improve stack-frame shape and was reverted.
+   2. `0x0058AF30` trader amount-bar deleting destructor improved `64.00% -> 66.67%` by changing the wrapper from `void` to returning `TradeAmountBarLayout*`, matching original `mov eax, esi`.
+   3. Factory vptr writes for `0x0058AAA0` and `0x0058AE30` were reordered to match observed factory construction shape: base constructor, zero short fields, final vptr write. Similarity stayed `42.11%` because missing SEH setup dominates those factory bodies.
+
+### Post-move toolchain recovery and first TGreatPower canary pass
+
+1. Verified host Wine install restored normal compare/stat workflow:
+   1. `just compare 0x004de860`: pass, `28.68%`.
+   2. `just stats`: pass, aligned functions `92`, average similarity `2.97%`.
+   3. `just compare-canaries`: pass, `below_floor=0`, `parse_error=0`.
+2. Targeted `0x004DC540` `TGreatPower::CompareMissionScoreVariantsByMode`:
+   1. Changed the method from `void` to `char` return so the original `AL` success/fallthrough shape is represented and score comparisons are not optimized away.
+   2. Corrected `FindFirstPortZoneContextByNation` callsite to pass `this->nationSlot` through a typed cdecl cast, matching the pushed scalar argument visible before the thunk call.
+   3. Removed non-original null fallback paths around the port-zone vector dereference.
+3. Result:
+   1. `0x004DC540`: `43.06% -> 69.77%`.
+   2. `just compare-canaries`: pass; `0x004DC540` now stretch-met.
+   3. `just stats`: average similarity `2.98%`; aligned functions unchanged at `92`.
+4. Rejected one `0x004DBF00` data-pass guess:
+   1. Tried remapping stage counter resource buckets from current Ghidra locals.
+   2. Score regressed `29.27% -> 22.39%`.
+   3. Reverted the change; restored `0x004DBF00` to `29.27%`.
+
 ## 2026-03-03
 
 ### Class discovery pipeline (read-only)

@@ -116,6 +116,9 @@ class-discovery classes='':
     --classes "$discovery_classes" \
     --ownership-csv "{{function_ownership}}"
 
+slice-discovery class address:
+  uv run python -m tools.workflow.slice_discovery "{{class}}" --address "{{address}}"
+
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
   uv run reccmp-project create --originals "$ORIGINAL_BINARY" --scm

@@ -6,6 +6,7 @@ assets/
 build/
 build-*/
 out/
+tmp_decomp/
 *.obj
 *.pdb
 *.ilk
