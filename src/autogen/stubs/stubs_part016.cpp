@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_ftol_At00534a80
-// ghidra_proto void __cdecl WrapperFor_ftol_At00534a80(void)
-// FUNCTION: IMPERIALISM 0x00534a80
-undefined4 WrapperFor_ftol_At00534a80(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot28
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot28(void)
-// FUNCTION: IMPERIALISM 0x00534c00
-undefined4 ReturnFalseMissionVtableSlot28(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnZeroMissionVtableSlot2C
-// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot2C(void)
-// FUNCTION: IMPERIALISM 0x00534c20
-undefined4 ReturnZeroMissionVtableSlot2C(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot30
-// ghidra_proto void __cdecl NoOpMissionVtableSlot30(void)
-// FUNCTION: IMPERIALISM 0x00534c40
-undefined4 NoOpMissionVtableSlot30(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMissionStateByte8To2
-// ghidra_proto void __cdecl SetMissionStateByte8To2(void)
-// FUNCTION: IMPERIALISM 0x00534c60
-undefined4 SetMissionStateByte8To2(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetMissionField0CToZero
 // ghidra_proto void __cdecl ResetMissionField0CToZero(void)
 // FUNCTION: IMPERIALISM 0x00534c80
@@ -3999,6 +3959,46 @@ undefined4 GetResourceDescriptorWord14ByType(void)
 // ghidra_proto short __cdecl GetResourceDescriptorWord18ByType(void)
 // FUNCTION: IMPERIALISM 0x00550e40
 undefined4 GetResourceDescriptorWord18ByType(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceDescriptorWeightWord0ByType
+// ghidra_proto short __cdecl GetResourceDescriptorWeightWord0ByType(void)
+// FUNCTION: IMPERIALISM 0x00550e70
+undefined4 GetResourceDescriptorWeightWord0ByType(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceDescriptorWord20ByType
+// ghidra_proto short __cdecl GetResourceDescriptorWord20ByType(void)
+// FUNCTION: IMPERIALISM 0x00550ea0
+undefined4 GetResourceDescriptorWord20ByType(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceDescriptorWeightWord1ByType
+// ghidra_proto short __cdecl GetResourceDescriptorWeightWord1ByType(void)
+// FUNCTION: IMPERIALISM 0x00550ed0
+undefined4 GetResourceDescriptorWeightWord1ByType(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceDescriptorWord08ByTypeOffset
+// ghidra_proto short __cdecl GetResourceDescriptorWord08ByTypeOffset(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00550f30
+undefined4 GetResourceDescriptorWord08ByTypeOffset(void)
+{
+  return 0;
+}
+
+// ghidra_name InvokeOrderNodeOwnerVfunc38
+// ghidra_proto void __cdecl InvokeOrderNodeOwnerVfunc38(void)
+// FUNCTION: IMPERIALISM 0x00550f60
+undefined4 InvokeOrderNodeOwnerVfunc38(void)
 {
   return 0;
 }

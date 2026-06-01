@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
-// ghidra_proto void __thiscall DestructTTradePageSellViewAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005bcfa0
-undefined4 DestructTTradePageSellViewAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeOfferNationLine::CreateTTradeOfferNationLineInstance
-// ghidra_proto void * __cdecl CreateTTradeOfferNationLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005bcfc0
-undefined4 CreateTTradeOfferNationLineInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeOfferNationLine::GetTTradeOfferNationLineClassNamePointer
-// ghidra_proto void * __cdecl GetTTradeOfferNationLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005bd030
-undefined4 GetTTradeOfferNationLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
-// ghidra_proto void * __thiscall ConstructTTradeOfferNationLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005bd090
-undefined4 ConstructTTradeOfferNationLineBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTradeOfferNationLineAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005bd1a0
-undefined4 DestructTTradeOfferNationLineAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeOfferNationView::CreateTTradeOfferNationViewInstance
 // ghidra_proto void * __cdecl CreateTTradeOfferNationViewInstance(void)
 // FUNCTION: IMPERIALISM 0x005bd1f0
@@ -3999,6 +3959,46 @@ undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
 // ghidra_proto void __cdecl DestructClipStateRegionAndMaybeFreeSelf(void)
 // FUNCTION: IMPERIALISM 0x005e6ea2
 undefined4 DestructClipStateRegionAndMaybeFreeSelf(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_PtVisible_FromDcField04_At005e6ebe
+// ghidra_proto void __thiscall WrapperFor_PtVisible_FromDcField04_At005e6ebe(void)
+// FUNCTION: IMPERIALISM 0x005e6ebe
+undefined4 WrapperFor_PtVisible_FromDcField04_At005e6ebe(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_RectVisible_FromDcField04_At005e6ed2
+// ghidra_proto void __thiscall WrapperFor_RectVisible_FromDcField04_At005e6ed2(void)
+// FUNCTION: IMPERIALISM 0x005e6ed2
+undefined4 WrapperFor_RectVisible_FromDcField04_At005e6ed2(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_TextOutA_FromDcField04_At005e6ee2
+// ghidra_proto void __thiscall WrapperFor_TextOutA_FromDcField04_At005e6ee2(void)
+// FUNCTION: IMPERIALISM 0x005e6ee2
+undefined4 WrapperFor_TextOutA_FromDcField04_At005e6ee2(void)
+{
+  return 0;
+}
+
+// ghidra_name CallExtTextOutAOnStoredHdc
+// ghidra_proto void __thiscall CallExtTextOutAOnStoredHdc(void)
+// FUNCTION: IMPERIALISM 0x005e6efe
+undefined4 CallExtTextOutAOnStoredHdc(void)
+{
+  return 0;
+}
+
+// ghidra_name CallTabbedTextOutAOnStoredHdcAndSplitResult
+// ghidra_proto int * __thiscall CallTabbedTextOutAOnStoredHdcAndSplitResult(void)
+// FUNCTION: IMPERIALISM 0x005e6f23
+undefined4 CallTabbedTextOutAOnStoredHdcAndSplitResult(void)
 {
   return 0;
 }

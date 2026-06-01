@@ -1250,3 +1250,22 @@ session (all from `0%` stubs): `0x4f6bd0` (25.30), `0x4f6b10` (43.04), `0x4f6440
 interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0xc2`/
 `+0x52a`), and 7 new vtable facades. Remaining slice tail: `0x4f6d90` (513-byte invalidator) and `0x4f7400`
 (EH-framed localized notice) — both larger/EH-heavy targets for a later pass.
+
+### DiplomacyTurnStateManager backend seed (2026-06-01, cont.)
+
+1. Added `src/game/diplomacy_state.cpp` and seeded the diplomacy game-logic backend consumed by `TDiplomacyMapView` and `TGreatPower`.
+2. Added `tools/ghidra/listing_one.py` plus `just ghidra-listing` for read-only listing-level evidence. This was needed because Ghidra decompiled these exports as free functions with `in_ECX`, while the listing proves they are `ecx=this` methods.
+3. Promoted five backend anchors:
+   - `0x004ee6c0` `DiplomacyTurnStateManager::ConstructDiplomacyTurnStateManager_Vtbl00654d90`: owned, vtable `0x00654d90`, fields `+0x78e`, `+0x790`, `+0x794`, `+0x798`; still **0.00%** due register-order mismatch.
+   - `0x004ef540` `IsNationPairAtWar(int,int)`: stub -> **75.47%**, `ret 8`.
+   - `0x004ef600` `HasAnyWarRelationForNation(int)`: stub -> **37.33%**, `ret 4`.
+   - `0x004ef650` `HasAnyWarRelationTurnStampOutOfDateForNation(int)`: stub -> **37.33%**, `ret 4`.
+   - `0x004f09c0` `QueueNationPairWarTransition(int,int)`: stub -> **77.78%**, confirms pending-war queue pointer at `this+0x18d4`.
+4. Added provisional facades:
+   - `VCall_Diplomacy_HasOutdatedWarRelationSlot48`
+   - `VCall_WarTransitionQueue_PushPairSlot40`
+   - `VCall_Diplomacy_SetRelationCodeSlot74WithMode`
+5. Validation:
+   - `just build`, `just detect`, `just vtable-gate`: clean.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.24%**, aligned functions **102**, dropped duplicate addresses **0**.

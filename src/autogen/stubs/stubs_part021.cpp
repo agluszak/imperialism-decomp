@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_PtVisible_FromDcField04_At005e6ebe
-// ghidra_proto void __thiscall WrapperFor_PtVisible_FromDcField04_At005e6ebe(void)
-// FUNCTION: IMPERIALISM 0x005e6ebe
-undefined4 WrapperFor_PtVisible_FromDcField04_At005e6ebe(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RectVisible_FromDcField04_At005e6ed2
-// ghidra_proto void __thiscall WrapperFor_RectVisible_FromDcField04_At005e6ed2(void)
-// FUNCTION: IMPERIALISM 0x005e6ed2
-undefined4 WrapperFor_RectVisible_FromDcField04_At005e6ed2(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_TextOutA_FromDcField04_At005e6ee2
-// ghidra_proto void __thiscall WrapperFor_TextOutA_FromDcField04_At005e6ee2(void)
-// FUNCTION: IMPERIALISM 0x005e6ee2
-undefined4 WrapperFor_TextOutA_FromDcField04_At005e6ee2(void)
-{
-  return 0;
-}
-
-// ghidra_name CallExtTextOutAOnStoredHdc
-// ghidra_proto void __thiscall CallExtTextOutAOnStoredHdc(void)
-// FUNCTION: IMPERIALISM 0x005e6efe
-undefined4 CallExtTextOutAOnStoredHdc(void)
-{
-  return 0;
-}
-
-// ghidra_name CallTabbedTextOutAOnStoredHdcAndSplitResult
-// ghidra_proto int * __thiscall CallTabbedTextOutAOnStoredHdcAndSplitResult(void)
-// FUNCTION: IMPERIALISM 0x005e6f23
-undefined4 CallTabbedTextOutAOnStoredHdcAndSplitResult(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DrawTextA_FromDcField04_At005e6f5b
 // ghidra_proto void __thiscall WrapperFor_DrawTextA_FromDcField04_At005e6f5b(void)
 // FUNCTION: IMPERIALISM 0x005e6f5b
@@ -3999,6 +3959,46 @@ undefined4 LockBuffer(void)
 // ghidra_proto int __thiscall Find_605e12(void)
 // FUNCTION: IMPERIALISM 0x00605e12
 undefined4 Find_605e12(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52
+// ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52(void)
+// FUNCTION: IMPERIALISM 0x00605e52
+undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64
+// ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64(void)
+// FUNCTION: IMPERIALISM 0x00605e64
+undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76
+// ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76(void)
+// FUNCTION: IMPERIALISM 0x00605e76
+undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76(void)
+{
+  return 0;
+}
+
+// ghidra_name SetAt
+// ghidra_proto void __cdecl SetAt(void)
+// FUNCTION: IMPERIALISM 0x00605e88
+undefined4 SetAt(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1
+// ghidra_proto void __cdecl WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1(void)
+// FUNCTION: IMPERIALISM 0x00605ea1
+undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1(void)
 {
   return 0;
 }

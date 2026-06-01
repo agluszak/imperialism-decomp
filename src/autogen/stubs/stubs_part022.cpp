@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52
-// ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52(void)
-// FUNCTION: IMPERIALISM 0x00605e52
-undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64
-// ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64(void)
-// FUNCTION: IMPERIALISM 0x00605e64
-undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76
-// ghidra_proto void __fastcall WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76(void)
-// FUNCTION: IMPERIALISM 0x00605e76
-undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76(void)
-{
-  return 0;
-}
-
-// ghidra_name SetAt
-// ghidra_proto void __cdecl SetAt(void)
-// FUNCTION: IMPERIALISM 0x00605e88
-undefined4 SetAt(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1
-// ghidra_proto void __cdecl WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1(void)
-// FUNCTION: IMPERIALISM 0x00605ea1
-undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5
 // ghidra_proto void __cdecl WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5(void)
 // FUNCTION: IMPERIALISM 0x00605eb5
@@ -3999,6 +3959,46 @@ undefined4 LoadAccelTable(void)
 // ghidra_proto int __fastcall ResolveField12ValueFromActiveChildSlotB0(void)
 // FUNCTION: IMPERIALISM 0x0061c793
 undefined4 ResolveField12ValueFromActiveChildSlotB0(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot038
+// ghidra_proto int __thiscall TMacViewMgr_VtblSlot038(void)
+// FUNCTION: IMPERIALISM 0x0061c7b7
+undefined4 TMacViewMgr_VtblSlot038(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot043
+// ghidra_proto void __fastcall TMacViewMgr_VtblSlot043(void)
+// FUNCTION: IMPERIALISM 0x0061c82e
+undefined4 TMacViewMgr_VtblSlot043(void)
+{
+  return 0;
+}
+
+// ghidra_name OnPaletteChanged
+// ghidra_proto void __thiscall OnPaletteChanged(TMacViewMgr * thisObj, int payload)
+// FUNCTION: IMPERIALISM 0x0061c83a
+undefined4 OnPaletteChanged(void)
+{
+  return 0;
+}
+
+// ghidra_name OnQueryNewPalette
+// ghidra_proto int __thiscall OnQueryNewPalette(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x0061c856
+undefined4 OnQueryNewPalette(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877
+// ghidra_proto void __fastcall ReleaseCaptureAndPostMouseRepeatMessages_0061c877(int context)
+// FUNCTION: IMPERIALISM 0x0061c877
+undefined4 ReleaseCaptureAndPostMouseRepeatMessages_0061c877(void)
 {
   return 0;
 }

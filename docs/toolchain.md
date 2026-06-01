@@ -55,6 +55,7 @@ Interpretation:
 - 2026-06-01: The moved sibling `imperialism_knowledge` checkout now syncs with `uv` using `pyghidra==3.1.0` and `jpype1==1.5.2`.
 - The stale `java-stubs-converted-strings` dependency conflicted with that `jpype1` pin and was removed from the sibling project because the available tooling did not import it.
 - `just class-discovery` still shells through that sibling project, but new vertical-slice analysis should prefer repo-local `uv run python -m tools.workflow.slice_discovery` via `just slice-discovery`.
+- `just ghidra-listing 0xADDR [0xADDR ...]` prints read-only listing-level instructions from the configured Ghidra project. Use it when decompiler signatures disagree with `reccmp` calling convention evidence.
 
 ## Experiment Log Template
 

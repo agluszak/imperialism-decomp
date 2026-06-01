@@ -1347,14 +1347,6 @@ undefined4 GetTDiplomacyMgrClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name ConstructDiplomacyTurnStateManager_Vtbl00654d90
-// ghidra_proto void __thiscall ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
-// FUNCTION: IMPERIALISM 0x004ee6c0
-undefined4 ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree
 // ghidra_proto void * __thiscall DestructTDiplomacyMgrAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x004ee700
@@ -1427,34 +1419,10 @@ undefined4 SerializeThreeWordPlanesToOutputCallback(void)
   return 0;
 }
 
-// ghidra_name IsNationPairAtWar
-// ghidra_proto bool IsNationPairAtWar(DiplomacyTurnStateManager * pManager, short sourceNationSlot, short targetNationSlot)
-// FUNCTION: IMPERIALISM 0x004ef540
-undefined4 IsNationPairAtWar(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::HasWarRelationTurnStampOutOfDate
 // ghidra_proto void __thiscall HasWarRelationTurnStampOutOfDate(void)
 // FUNCTION: IMPERIALISM 0x004ef590
 undefined4 HasWarRelationTurnStampOutOfDate(void)
-{
-  return 0;
-}
-
-// ghidra_name HasAnyWarRelationForNation
-// ghidra_proto bool HasAnyWarRelationForNation(DiplomacyTurnStateManager * pManager, short sourceNationSlot)
-// FUNCTION: IMPERIALISM 0x004ef600
-undefined4 HasAnyWarRelationForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::HasAnyWarRelationTurnStampOutOfDateForNation
-// ghidra_proto void __thiscall HasAnyWarRelationTurnStampOutOfDateForNation(void)
-// FUNCTION: IMPERIALISM 0x004ef650
-undefined4 HasAnyWarRelationTurnStampOutOfDateForNation(void)
 {
   return 0;
 }
@@ -1543,14 +1511,6 @@ undefined4 SyncNationField790FromLocalizationStateId(void)
 // ghidra_proto void __thiscall SelectPriorityNationIndicesForMinorCapabilityRows(void)
 // FUNCTION: IMPERIALISM 0x004f05c0
 undefined4 SelectPriorityNationIndicesForMinorCapabilityRows(void)
-{
-  return 0;
-}
-
-// ghidra_name QueueNationPairWarTransition
-// ghidra_proto void QueueNationPairWarTransition(DiplomacyTurnStateManager * pManager, short sourceNationSlot, short targetNationSlot)
-// FUNCTION: IMPERIALISM 0x004f09c0
-undefined4 QueueNationPairWarTransition(void)
 {
   return 0;
 }
@@ -3999,6 +3959,46 @@ undefined4 GetTNumberedItemClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTNumberedItemBaseState(void)
 // FUNCTION: IMPERIALISM 0x005077c0
 undefined4 ConstructTNumberedItemBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedItem::DestructTNumberedItemAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNumberedItemAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00507800
+undefined4 DestructTNumberedItemAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850
+// ghidra_proto void __cdecl WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850(void)
+// FUNCTION: IMPERIALISM 0x00507850
+undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850(void)
+{
+  return 0;
+}
+
+// ghidra_name RenderIndexedSpriteCellWithFormattedValue
+// ghidra_proto void __cdecl RenderIndexedSpriteCellWithFormattedValue(void)
+// FUNCTION: IMPERIALISM 0x005078a0
+undefined4 RenderIndexedSpriteCellWithFormattedValue(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00507b90
+// ghidra_proto void __cdecl WrapperFor_ftol_At00507b90(void)
+// FUNCTION: IMPERIALISM 0x00507b90
+undefined4 WrapperFor_ftol_At00507b90(void)
+{
+  return 0;
+}
+
+// ghidra_name TLanguageMgr::CreateTLanguageMgrInstance
+// ghidra_proto void * __cdecl CreateTLanguageMgrInstance(void)
+// FUNCTION: IMPERIALISM 0x00507bc0
+undefined4 CreateTLanguageMgrInstance(void)
 {
   return 0;
 }

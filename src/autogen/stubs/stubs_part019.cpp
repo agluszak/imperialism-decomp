@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SelectTacticalTileByActionClassAdjacencyPriority
-// ghidra_proto void __cdecl SelectTacticalTileByActionClassAdjacencyPriority(void)
-// FUNCTION: IMPERIALISM 0x0059c140
-undefined4 SelectTacticalTileByActionClassAdjacencyPriority(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectTacticalTileIndexByColumnPriorityVariantB
-// ghidra_proto int __cdecl SelectTacticalTileIndexByColumnPriorityVariantB(void)
-// FUNCTION: IMPERIALISM 0x0059c2a0
-undefined4 SelectTacticalTileIndexByColumnPriorityVariantB(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot07
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot07(void)
-// FUNCTION: IMPERIALISM 0x0059c3c0
-undefined4 TArmyTacUnit_VtblSlot07(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectAndApplyTacticalCursorModeProfile
-// ghidra_proto void __fastcall SelectAndApplyTacticalCursorModeProfile(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x0059c440
-undefined4 SelectAndApplyTacticalCursorModeProfile(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d
-// ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
-// FUNCTION: IMPERIALISM 0x0059c98d
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
-{
-  return 0;
-}
-
 // ghidra_name SetLinkedListEntryState2CForTacticalCategory0
 // ghidra_proto void __cdecl SetLinkedListEntryState2CForTacticalCategory0(void)
 // FUNCTION: IMPERIALISM 0x0059c999
@@ -3999,6 +3959,46 @@ undefined4 ConstructTTradePageSellViewBaseState(void)
 // ghidra_proto void * __thiscall DestructTTradePageSellViewAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005bcf70
 undefined4 DestructTTradePageSellViewAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
+// ghidra_proto void __thiscall DestructTTradePageSellViewAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005bcfa0
+undefined4 DestructTTradePageSellViewAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationLine::CreateTTradeOfferNationLineInstance
+// ghidra_proto void * __cdecl CreateTTradeOfferNationLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005bcfc0
+undefined4 CreateTTradeOfferNationLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationLine::GetTTradeOfferNationLineClassNamePointer
+// ghidra_proto void * __cdecl GetTTradeOfferNationLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005bd030
+undefined4 GetTTradeOfferNationLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
+// ghidra_proto void * __thiscall ConstructTTradeOfferNationLineBaseState(void)
+// FUNCTION: IMPERIALISM 0x005bd090
+undefined4 ConstructTTradeOfferNationLineBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTradeOfferNationLineAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005bd1a0
+undefined4 DestructTTradeOfferNationLineAndMaybeFree(void)
 {
   return 0;
 }

@@ -19,6 +19,7 @@ src/game/TGreatPower.cpp|VCall_Diplomacy_BuildRelationshipListSlot88|void|0x88 /
 src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|int,int|high|relation tier
 src/game/TDiplomacyMapView.cpp|VCall_Diplomacy_GetRelationTypeSlot68|short|0x68 / 4|int,int|high|relation type/status query
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasPolicyWithNationSlot44|char|0x44 / 4|int,int|high|policy gate
+src/game/diplomacy_state.cpp|VCall_Diplomacy_HasOutdatedWarRelationSlot48|char|0x48 / 4|int,int|medium|outdated war relation predicate|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard
 src/game/TGreatPower.cpp|VCall_UiRuntime_RequestDiplomacyDecisionSlot90|char|0x90 / 4|int,int,int|high|ui decision request
 src/game/TGreatPower.cpp|VCall_UiRuntime_DispatchEventSlot4C|void|0x4C / 4|int,int|high|ui dispatch event
@@ -50,6 +51,7 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CanDispatchViaUiSlot21|char|0x21||high
 src/game/TGreatPower.cpp|VCall_GreatPower_DispatchFallbackActionSlot6C|void|0x6C|int,int,int|high|fallback dispatch slot6C
 src/game/TGreatPower.cpp|VCall_GreatPower_NeedUpdateSlot45|void|0x45|int,int|high|need update slot45
 src/game/TGreatPower.cpp|VCall_GreatPower_GetNodeContextSlot40|int|0x40 / 4||high|node context slot40
+src/game/diplomacy_state.cpp|VCall_WarTransitionQueue_PushPairSlot40|void|0x40 / 4|void*|medium|pending war transition queue push pair record|index|thiscall|zero||provisional|WarTransitionQueue
 src/game/TGreatPower.cpp|VCall_GreatPower_ApplyNeedTargetSlot64|void|0x64|int,int|high|apply need target slot64
 src/game/TGreatPower.cpp|VCall_GreatPower_GetBaseBudgetSlot5F|int|0x5F||high|base budget slot5F
 src/game/TGreatPower.cpp|VCall_GreatPower_SetNeedSlot69|void|0x69|int,int|high|set need slot69
@@ -59,6 +61,7 @@ src/game/TGreatPower.cpp|VCall_GlobalMapState_CallMetricSlotC4|char|0xC4 / 4|int
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot5C|void|0x5C||high|slot5C
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
+src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag28|void|0x28 / 4|int,int,int|high|set flag28
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot4C|void|0x4C / 4|int,int|high|terrain slot4C
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot38|void|0x38 / 4|int|high|terrain slot38

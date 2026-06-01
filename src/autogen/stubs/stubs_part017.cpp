@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetResourceDescriptorWeightWord0ByType
-// ghidra_proto short __cdecl GetResourceDescriptorWeightWord0ByType(void)
-// FUNCTION: IMPERIALISM 0x00550e70
-undefined4 GetResourceDescriptorWeightWord0ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord20ByType
-// ghidra_proto short __cdecl GetResourceDescriptorWord20ByType(void)
-// FUNCTION: IMPERIALISM 0x00550ea0
-undefined4 GetResourceDescriptorWord20ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWeightWord1ByType
-// ghidra_proto short __cdecl GetResourceDescriptorWeightWord1ByType(void)
-// FUNCTION: IMPERIALISM 0x00550ed0
-undefined4 GetResourceDescriptorWeightWord1ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord08ByTypeOffset
-// ghidra_proto short __cdecl GetResourceDescriptorWord08ByTypeOffset(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00550f30
-undefined4 GetResourceDescriptorWord08ByTypeOffset(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeOrderNodeOwnerVfunc38
-// ghidra_proto void __cdecl InvokeOrderNodeOwnerVfunc38(void)
-// FUNCTION: IMPERIALISM 0x00550f60
-undefined4 InvokeOrderNodeOwnerVfunc38(void)
-{
-  return 0;
-}
-
 // ghidra_name ReassignOrderNodeNationAndRebindParentCounters
 // ghidra_proto void __fastcall ReassignOrderNodeNationAndRebindParentCounters(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x00551100
@@ -3999,6 +3959,46 @@ undefined4 OrphanRetStub_005723d0(void)
 // ghidra_proto void * __cdecl GetTClickZoneClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005723f0
 undefined4 GetTClickZoneClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TClickZone::ConstructUiCommandTagResourceEntry
+// ghidra_proto void __thiscall ConstructUiCommandTagResourceEntry(void)
+// FUNCTION: IMPERIALISM 0x00572410
+undefined4 ConstructUiCommandTagResourceEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TClickZone::DestructTClickZoneAndMaybeFree
+// ghidra_proto void * __thiscall DestructTClickZoneAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00572440
+undefined4 DestructTClickZoneAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TClickZone::PlayControlSoundAndBeginMouseCapture_Field84
+// ghidra_proto void __thiscall PlayControlSoundAndBeginMouseCapture_Field84(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x00572490
+undefined4 PlayControlSoundAndBeginMouseCapture_Field84(void)
+{
+  return 0;
+}
+
+// ghidra_name CreatePictureScreenVariantEntry
+// ghidra_proto void * __cdecl CreatePictureScreenVariantEntry(void)
+// FUNCTION: IMPERIALISM 0x005724e0
+undefined4 CreatePictureScreenVariantEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TTextPictureButton::GetTTextPictureButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTTextPictureButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005725b0
+undefined4 GetTTextPictureButtonClassNamePointer(void)
 {
   return 0;
 }

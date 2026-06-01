@@ -676,6 +676,27 @@ static __inline void VCall_TView_DeleteSelfSlot01(void* object, int arg0) {
   fn(object, 0, arg0);
 }
 
+// outdated war relation predicate; class=DiplomacyTurnStateManager; status=provisional
+static __inline char VCall_Diplomacy_HasOutdatedWarRelationSlot48(void* object, int arg0, int arg1) {
+  typedef char (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
+  return fn(object, 0, arg0, arg1);
+}
+
+// set relation code with update mode flag; class=DiplomacyTurnStateManager; status=provisional
+static __inline void VCall_Diplomacy_SetRelationCodeSlot74WithMode(void* object, int arg0, int arg1, int arg2, int arg3) {
+  typedef void (__fastcall * Fn)(void*, int, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x74 / 4)));
+  fn(object, 0, arg0, arg1, arg2, arg3);
+}
+
+// pending war transition queue push pair record; class=WarTransitionQueue; status=provisional
+static __inline void VCall_WarTransitionQueue_PushPairSlot40(void* object, void* arg0) {
+  typedef void (__fastcall * Fn)(void*, int, void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
+  fn(object, 0, arg0);
+}
+
 // wrapped map overlay ctrl-modified draw; class=WrappedMapOverlayView; status=provisional
 static __inline void VCall_MapOverlay_DrawCtrlModifiedSlot1C4(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int);

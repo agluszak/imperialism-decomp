@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TClickZone::ConstructUiCommandTagResourceEntry
-// ghidra_proto void __thiscall ConstructUiCommandTagResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x00572410
-undefined4 ConstructUiCommandTagResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TClickZone::DestructTClickZoneAndMaybeFree
-// ghidra_proto void * __thiscall DestructTClickZoneAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00572440
-undefined4 DestructTClickZoneAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TClickZone::PlayControlSoundAndBeginMouseCapture_Field84
-// ghidra_proto void __thiscall PlayControlSoundAndBeginMouseCapture_Field84(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x00572490
-undefined4 PlayControlSoundAndBeginMouseCapture_Field84(void)
-{
-  return 0;
-}
-
-// ghidra_name CreatePictureScreenVariantEntry
-// ghidra_proto void * __cdecl CreatePictureScreenVariantEntry(void)
-// FUNCTION: IMPERIALISM 0x005724e0
-undefined4 CreatePictureScreenVariantEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TTextPictureButton::GetTTextPictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTTextPictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005725b0
-undefined4 GetTTextPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TLineData::ConstructPictureScreenVariantEntry
 // ghidra_proto void __thiscall ConstructPictureScreenVariantEntry(void)
 // FUNCTION: IMPERIALISM 0x005725d0
@@ -3999,6 +3959,46 @@ undefined4 DispatchTacticalActionClassSelectionAcrossCursorList(void)
 // ghidra_proto int __cdecl SelectTacticalTileIndexByColumnPriorityVariantA(void)
 // FUNCTION: IMPERIALISM 0x0059bfe0
 undefined4 SelectTacticalTileIndexByColumnPriorityVariantA(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectTacticalTileByActionClassAdjacencyPriority
+// ghidra_proto void __cdecl SelectTacticalTileByActionClassAdjacencyPriority(void)
+// FUNCTION: IMPERIALISM 0x0059c140
+undefined4 SelectTacticalTileByActionClassAdjacencyPriority(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectTacticalTileIndexByColumnPriorityVariantB
+// ghidra_proto int __cdecl SelectTacticalTileIndexByColumnPriorityVariantB(void)
+// FUNCTION: IMPERIALISM 0x0059c2a0
+undefined4 SelectTacticalTileIndexByColumnPriorityVariantB(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot07
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot07(void)
+// FUNCTION: IMPERIALISM 0x0059c3c0
+undefined4 TArmyTacUnit_VtblSlot07(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectAndApplyTacticalCursorModeProfile
+// ghidra_proto void __fastcall SelectAndApplyTacticalCursorModeProfile(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059c440
+undefined4 SelectAndApplyTacticalCursorModeProfile(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d
+// ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
+// FUNCTION: IMPERIALISM 0x0059c98d
+undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
 {
   return 0;
 }

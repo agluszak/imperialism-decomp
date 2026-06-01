@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNumberedItem::DestructTNumberedItemAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNumberedItemAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00507800
-undefined4 DestructTNumberedItemAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850
-// ghidra_proto void __cdecl WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850(void)
-// FUNCTION: IMPERIALISM 0x00507850
-undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderIndexedSpriteCellWithFormattedValue
-// ghidra_proto void __cdecl RenderIndexedSpriteCellWithFormattedValue(void)
-// FUNCTION: IMPERIALISM 0x005078a0
-undefined4 RenderIndexedSpriteCellWithFormattedValue(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At00507b90
-// ghidra_proto void __cdecl WrapperFor_ftol_At00507b90(void)
-// FUNCTION: IMPERIALISM 0x00507b90
-undefined4 WrapperFor_ftol_At00507b90(void)
-{
-  return 0;
-}
-
-// ghidra_name TLanguageMgr::CreateTLanguageMgrInstance
-// ghidra_proto void * __cdecl CreateTLanguageMgrInstance(void)
-// FUNCTION: IMPERIALISM 0x00507bc0
-undefined4 CreateTLanguageMgrInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TLanguageMgr::GetTLanguageMgrClassNamePointer
 // ghidra_proto void * __cdecl GetTLanguageMgrClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00507c40
@@ -3999,6 +3959,46 @@ undefined4 DestructTIndexAndRankList(void)
 // ghidra_proto void __cdecl CompareIndexAndRankEntriesByField2Descending(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00534910
 undefined4 CompareIndexAndRankEntriesByField2Descending(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00534a80
+// ghidra_proto void __cdecl WrapperFor_ftol_At00534a80(void)
+// FUNCTION: IMPERIALISM 0x00534a80
+undefined4 WrapperFor_ftol_At00534a80(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot28
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot28(void)
+// FUNCTION: IMPERIALISM 0x00534c00
+undefined4 ReturnFalseMissionVtableSlot28(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnZeroMissionVtableSlot2C
+// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot2C(void)
+// FUNCTION: IMPERIALISM 0x00534c20
+undefined4 ReturnZeroMissionVtableSlot2C(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot30
+// ghidra_proto void __cdecl NoOpMissionVtableSlot30(void)
+// FUNCTION: IMPERIALISM 0x00534c40
+undefined4 NoOpMissionVtableSlot30(void)
+{
+  return 0;
+}
+
+// ghidra_name SetMissionStateByte8To2
+// ghidra_proto void __cdecl SetMissionStateByte8To2(void)
+// FUNCTION: IMPERIALISM 0x00534c60
+undefined4 SetMissionStateByte8To2(void)
 {
   return 0;
 }
