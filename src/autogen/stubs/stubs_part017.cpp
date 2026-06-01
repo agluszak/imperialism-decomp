@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetResourceTypeRandomDrawBlockFlag
-// ghidra_proto short __cdecl GetResourceTypeRandomDrawBlockFlag(void)
-// FUNCTION: IMPERIALISM 0x00550d80
-undefined4 GetResourceTypeRandomDrawBlockFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord0CByType
 // ghidra_proto short __cdecl GetResourceDescriptorWord0CByType(void)
 // FUNCTION: IMPERIALISM 0x00550db0
@@ -3999,6 +3991,14 @@ undefined4 DestructTGWorldButtonAndMaybeFree(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
 // FUNCTION: IMPERIALISM 0x005721b0
 undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I25_00572200
+// ghidra_proto void __fastcall OrphanCallChain_C2_I25_00572200(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x00572200
+undefined4 OrphanCallChain_C2_I25_00572200(void)
 {
   return 0;
 }

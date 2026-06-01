@@ -2195,14 +2195,6 @@ undefined4 OrphanRetStub_004f5f90(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::UpdateDiplomacyMapHoverCursorFromActionSelection
-// ghidra_proto void __thiscall UpdateDiplomacyMapHoverCursorFromActionSelection(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004f5fb0
-undefined4 UpdateDiplomacyMapHoverCursorFromActionSelection(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins05_004f6820
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins05_004f6820(void)
 // FUNCTION: IMPERIALISM 0x004f6820
@@ -3999,6 +3991,14 @@ undefined4 DestructTNumberedIconAndMaybeFree(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
 // FUNCTION: IMPERIALISM 0x005074e0
 undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
+// ghidra_proto void __cdecl Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
+// FUNCTION: IMPERIALISM 0x00507570
+undefined4 Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
 {
   return 0;
 }

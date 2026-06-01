@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RecomputeTacticalCursorProjectionScoresAndPruneList
-// ghidra_proto void __fastcall RecomputeTacticalCursorProjectionScoresAndPruneList(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x0059b990
-undefined4 RecomputeTacticalCursorProjectionScoresAndPruneList(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot06
 // ghidra_proto void __thiscall TArmyTacUnit_VtblSlot06(void)
 // FUNCTION: IMPERIALISM 0x0059bc80
@@ -3999,6 +3991,14 @@ undefined4 DestructTDealTabControlAndMaybeFree(void)
 // ghidra_proto void __cdecl OrphanCallChain_C7_I84_005bc9f0(void)
 // FUNCTION: IMPERIALISM 0x005bc9f0
 undefined4 OrphanCallChain_C7_I84_005bc9f0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20
+// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20(void)
+// FUNCTION: IMPERIALISM 0x005bcb20
+undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20(void)
 {
   return 0;
 }

@@ -97,3 +97,4 @@ src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_ApplyClipRegionSlotC4|void
 src/game/TDiplomacyMapView.cpp|VCall_GlobalMapState_QueryIconStripXSlot110|short|0x110 / 4|int|low|query policy-icon strip x offset by code|index|thiscall|none||provisional|GlobalMapState
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_TransformPointToLocalSlot148|void|0x148 / 4|int,int|low|transform screen point to diplomacy view-local coords|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_HitTestPointSlot90|char|0x90 / 4|int,int|low|hit-test view-local point against terrain region index|index|thiscall|none||provisional|StrategicMapViewSystem
+src/game/TDiplomacyMapView.cpp|VCall_DiplomacyTurnState_ValidateActionSlot5C|char|0x5C / 4|int,int,int|low|validate diplomacy action for selected/hovered target pair|index|thiscall|none||provisional|DiplomacyTurnStateManager

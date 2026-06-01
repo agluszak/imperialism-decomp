@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
-// ghidra_proto void __cdecl Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
-// FUNCTION: IMPERIALISM 0x00507570
-undefined4 Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I10_005076d0
 // ghidra_proto void __cdecl OrphanCallChain_C1_I10_005076d0(void)
 // FUNCTION: IMPERIALISM 0x005076d0
@@ -3999,6 +3991,14 @@ undefined4 CompareSortByPriceListEntriesByField2Ascending(void)
 // ghidra_proto void * __cdecl AllocateAndConstructTIndexAndRankList(void)
 // FUNCTION: IMPERIALISM 0x005347e0
 undefined4 AllocateAndConstructTIndexAndRankList(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndexAndRankList::GetTIndexAndRankListClassNamePointer
+// ghidra_proto void * __cdecl GetTIndexAndRankListClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00534850
+undefined4 GetTIndexAndRankListClassNamePointer(void)
 {
   return 0;
 }

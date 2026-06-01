@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C2_I25_00572200
-// ghidra_proto void __fastcall OrphanCallChain_C2_I25_00572200(int ecxArg, int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00572200
-undefined4 OrphanCallChain_C2_I25_00572200(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_BlitRectWithOptionalTransparency_At00572270
 // ghidra_proto void __cdecl Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
 // FUNCTION: IMPERIALISM 0x00572270
@@ -3999,6 +3991,14 @@ undefined4 RebuildListFromProviderAndDeduplicateByKey(void)
 // ghidra_proto void __fastcall UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void * pTacticalState)
 // FUNCTION: IMPERIALISM 0x0059b830
 undefined4 UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeTacticalCursorProjectionScoresAndPruneList
+// ghidra_proto void __fastcall RecomputeTacticalCursorProjectionScoresAndPruneList(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x0059b990
+undefined4 RecomputeTacticalCursorProjectionScoresAndPruneList(void)
 {
   return 0;
 }

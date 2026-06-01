@@ -14,6 +14,7 @@ struct Point32 {
 };
 
 extern "C" int __stdcall PtInRect(const RECT* rect, Point32 point);
+extern "C" void* __stdcall SetCursor(void* hCursor);
 
 struct TDiplomacyMapViewLayout {
   void* vftable;
@@ -30,6 +31,7 @@ struct TDiplomacyMapViewLayout {
   void BuildCombinedTerrainTypeRegionMaskAndDispatch();
   void RenderDiplomacyPendingPolicyIconsAndFrames();
   int ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint);
+  void UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint, void* dispatchArg);
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -481,6 +483,83 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f5fb0
+void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint,
+                                                                               void* dispatchArg) {
+  char* self = reinterpret_cast<char*>(this);
+  Point32 localPoint;
+  localPoint.x = clickPoint->x;
+  localPoint.y = clickPoint->y;
+
+  short cursorTable[16];
+  cursorTable[0] = 0x41b;
+  cursorTable[1] = 0x41b;
+  cursorTable[2] = 0x408;
+  cursorTable[3] = 0x407;
+  cursorTable[4] = 0x406;
+  cursorTable[5] = 0x404;
+  cursorTable[6] = 0x405;
+  cursorTable[7] = 0x411;
+  cursorTable[8] = 0x415;
+  cursorTable[9] = 0x409;
+  cursorTable[10] = 0x41b;
+  cursorTable[11] = 0x40f;
+  cursorTable[12] = 0x410;
+  cursorTable[13] = 0x3f3;
+  cursorTable[14] = 0x419;
+  cursorTable[15] = 0x41a;
+
+  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+  int hitIndex = 0;
+  bool hit = false;
+  do {
+    if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
+      char regionHit = VCall_StrategicMap_HitTestPointSlot90(
+          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
+          reinterpret_cast<int>(&localPoint), hitIndex);
+      if (regionHit != 0) {
+        hit = true;
+        break;
+      }
+    }
+    hitIndex += 1;
+  } while (static_cast<short>(hitIndex) < 0x17);
+
+  void* hCursor;
+  bool applyCursor = false;
+  if (hit) {
+    int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
+    char valid = VCall_DiplomacyTurnState_ValidateActionSlot5C(
+        *reinterpret_cast<void**>(kAddrDiplomacyTurnStateManager),
+        *reinterpret_cast<short*>(self + 0x90), *reinterpret_cast<short*>(self + 0xc2), actionCode);
+
+    short cursorId;
+    if (valid == 0) {
+      cursorId = 0x41b;
+    } else {
+      cursorId = cursorTable[actionCode];
+      if (actionCode == 9 || actionCode == 7 || actionCode == 8) {
+        cursorId = static_cast<short>(cursorId + *reinterpret_cast<short*>(self + 0xc0));
+      }
+    }
+    *reinterpret_cast<short*>(self + 0x52a) = cursorId;
+    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) - 0xf8c +
+                                        cursorId * 4);
+    applyCursor = true;
+  } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
+    *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
+    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xe0);
+    applyCursor = true;
+  }
+
+  if (applyCursor) {
+    SetCursor(hCursor);
+  }
+
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*)>(
+      thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(this, 0, clickPoint, dispatchArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_DispatchVirtualSlot18OnImplicitObject
-// ghidra_proto void __cdecl thunk_DispatchVirtualSlot18OnImplicitObject(void)
-// FUNCTION: IMPERIALISM 0x0060564e
-undefined4 thunk_DispatchVirtualSlot18OnImplicitObject(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchVirtualSlot18OnImplicitObject
 // ghidra_proto void __cdecl DispatchVirtualSlot18OnImplicitObject(void)
 // FUNCTION: IMPERIALISM 0x00605665
@@ -3999,6 +3991,14 @@ undefined4 RegisterMouseWheelRollMessageForLegacyWindows(void)
 // ghidra_proto TMacViewMgr * __thiscall CFrameWnd(TMacViewMgr * thisObj)
 // FUNCTION: IMPERIALISM 0x0061c5dc
 undefined4 CFrameWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::DestroyTMacViewMgrBase
+// ghidra_proto void __thiscall DestroyTMacViewMgrBase(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x0061c6be
+undefined4 DestroyTMacViewMgrBase(void)
 {
   return 0;
 }

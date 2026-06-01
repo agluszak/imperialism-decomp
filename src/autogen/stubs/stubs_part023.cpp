@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::DestroyTMacViewMgrBase
-// ghidra_proto void __thiscall DestroyTMacViewMgrBase(TMacViewMgr * thisObj)
-// FUNCTION: IMPERIALISM 0x0061c6be
-undefined4 DestroyTMacViewMgrBase(void)
-{
-  return 0;
-}
-
 // ghidra_name AddFrameWnd
 // ghidra_proto void __fastcall AddFrameWnd(void)
 // FUNCTION: IMPERIALISM 0x0061c725
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f0d(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f2f(void)
 // FUNCTION: IMPERIALISM 0x00630f2f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f2f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f69
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f69(void)
+// FUNCTION: IMPERIALISM 0x00630f69
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f69(void)
 {
   return 0;
 }

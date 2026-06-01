@@ -1168,3 +1168,22 @@
    stub -> **43.27%**; canaries `below_floor=0`; stats avg **3.18%**, aligned **102**.
    Note: `0x4f6bd0` reads 21.05% (was 25.30%) with no source change — reccmp re-pairing
    noise from added functions in the TU (same effect seen earlier on `0x4f6170`).
+
+### TDiplomacyMapView hover-cursor update (2026-06-01, cont.)
+
+1. Promoted `0x004f5fb0` as
+   `TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(Point32*, void*)`
+   (thiscall, `ret 8`) from a `0%` stub to **40.59%**. Hit-tests the hovered terrain
+   region, resolves the pending action by calling the just-ported `0x4f5e00`, validates
+   the (selected, hovered, action) triple via the turn-state manager's slot `0x5c`, maps
+   the action to a cursor id through a 16-entry stack table (with a `this+0xc0` adjust for
+   actions 7/8/9), sets the cursor from the UI-runtime cursor table, and forwards to the
+   base `TControl::HandleCursorHoverSelectionByChildHitTestAndFallback`.
+2. Completes the interaction pair: `0x4f5fb0` -> `0x4f5e00` is a real intra-slice call
+   (reccmp pairs my method through the ILT thunk). Confirms the shared interaction fields
+   `+0x90`/`+0xc2` and adds `+0xc0` (cursor adjust short) and `+0x52a` (current cursor id).
+3. New facade `VCall_DiplomacyTurnState_ValidateActionSlot5C` (slot `0x5c` on the
+   `0x6a43d0` manager). Cursor handle table at `g_pUiRuntimeContext - 0xf8c + id*4`
+   (default `0x41b` -> `+0xe0`). Declared Win32 `SetCursor`.
+4. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f5fb0`
+   stub -> **40.59%**; adjacent diplomacy functions unchanged; canaries `below_floor=0`.

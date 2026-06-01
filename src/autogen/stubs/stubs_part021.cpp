@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantA
-// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantA(void)
-// FUNCTION: IMPERIALISM 0x005e6e4e
-undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantA(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_CException_At005e6e55
 // ghidra_proto void __cdecl WrapperFor_CException_At005e6e55(void)
 // FUNCTION: IMPERIALISM 0x005e6e55
@@ -3999,6 +3991,14 @@ undefined4 PostCustomMessage36AAndNotifyThread(void)
 // ghidra_proto int __fastcall HandleWndProcExceptionWithNodeTypeDispatch_00605613(int * owner, void * msg)
 // FUNCTION: IMPERIALISM 0x00605613
 undefined4 HandleWndProcExceptionWithNodeTypeDispatch_00605613(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DispatchVirtualSlot18OnImplicitObject
+// ghidra_proto void __cdecl thunk_DispatchVirtualSlot18OnImplicitObject(void)
+// FUNCTION: IMPERIALISM 0x0060564e
+undefined4 thunk_DispatchVirtualSlot18OnImplicitObject(void)
 {
   return 0;
 }

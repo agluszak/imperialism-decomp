@@ -39,6 +39,13 @@ static __inline void VCall_DiplomacyMapView_TransformPointToLocalSlot148(void* o
   fn(object, arg0, arg1);
 }
 
+// validate diplomacy action for selected/hovered target pair; class=DiplomacyTurnStateManager; status=provisional
+static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object, int arg0, int arg1, int arg2) {
+  typedef char (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x5C / 4)));
+  return fn(object, arg0, arg1, arg2);
+}
+
 // relation type/status query; status=provisional
 static __inline short VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
   typedef short (__fastcall * Fn)(void*, int, int, int);

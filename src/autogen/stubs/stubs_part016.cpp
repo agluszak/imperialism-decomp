@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TIndexAndRankList::GetTIndexAndRankListClassNamePointer
-// ghidra_proto void * __cdecl GetTIndexAndRankListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00534850
-undefined4 GetTIndexAndRankListClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TIndexAndRankList::ConstructTIndexAndRankList
 // ghidra_proto void __thiscall ConstructTIndexAndRankList(void)
 // FUNCTION: IMPERIALISM 0x00534870
@@ -3999,6 +3991,14 @@ undefined4 ComputeOrderNodeCompositeEconomicScore(void)
 // ghidra_proto void __cdecl FormatLocalizedCommodityCountLabelByIndex(void)
 // FUNCTION: IMPERIALISM 0x00550c20
 undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceTypeRandomDrawBlockFlag
+// ghidra_proto short __cdecl GetResourceTypeRandomDrawBlockFlag(void)
+// FUNCTION: IMPERIALISM 0x00550d80
+undefined4 GetResourceTypeRandomDrawBlockFlag(void)
 {
   return 0;
 }
