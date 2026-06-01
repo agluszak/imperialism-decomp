@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetResourceDescriptorWord10ByType
-// ghidra_proto short __cdecl GetResourceDescriptorWord10ByType(void)
-// FUNCTION: IMPERIALISM 0x00550de0
-undefined4 GetResourceDescriptorWord10ByType(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord14ByType
 // ghidra_proto short __cdecl GetResourceDescriptorWord14ByType(void)
 // FUNCTION: IMPERIALISM 0x00550e10
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C2_I25_00572200(void)
 // ghidra_proto void __cdecl Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
 // FUNCTION: IMPERIALISM 0x00572270
 undefined4 Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
+{
+  return 0;
+}
+
+// ghidra_name TClickZone::CreateTClickZoneInstance
+// ghidra_proto void * __cdecl CreateTClickZoneInstance(void)
+// FUNCTION: IMPERIALISM 0x00572350
+undefined4 CreateTClickZoneInstance(void)
 {
   return 0;
 }

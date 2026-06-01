@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DeletingDestructTIndexAndRankList
-// ghidra_proto void __cdecl DeletingDestructTIndexAndRankList(void)
-// FUNCTION: IMPERIALISM 0x005348a0
-undefined4 DeletingDestructTIndexAndRankList(void)
-{
-  return 0;
-}
-
 // ghidra_name TIndexAndRankList::DestructTIndexAndRankList
 // ghidra_proto void __cdecl DestructTIndexAndRankList(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x005348d0
@@ -3999,6 +3991,14 @@ undefined4 GetResourceTypeRandomDrawBlockFlag(void)
 // ghidra_proto short __cdecl GetResourceDescriptorWord0CByType(void)
 // FUNCTION: IMPERIALISM 0x00550db0
 undefined4 GetResourceDescriptorWord0CByType(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceDescriptorWord10ByType
+// ghidra_proto short __cdecl GetResourceDescriptorWord10ByType(void)
+// FUNCTION: IMPERIALISM 0x00550de0
+undefined4 GetResourceDescriptorWord10ByType(void)
 {
   return 0;
 }

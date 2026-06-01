@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Empty
-// ghidra_proto void __cdecl Empty(void)
-// FUNCTION: IMPERIALISM 0x0060586d
-undefined4 Empty(void)
-{
-  return 0;
-}
-
 // ghidra_name LockBuffer
 // ghidra_proto void __cdecl LockBuffer(void)
 // FUNCTION: IMPERIALISM 0x00605dec
@@ -3999,6 +3991,14 @@ undefined4 DestroyTMacViewMgrBase(void)
 // ghidra_proto void __fastcall AddFrameWnd(void)
 // FUNCTION: IMPERIALISM 0x0061c725
 undefined4 AddFrameWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name RemoveFrameWnd
+// ghidra_proto void __cdecl RemoveFrameWnd(void)
+// FUNCTION: IMPERIALISM 0x0061c749
+undefined4 RemoveFrameWnd(void)
 {
   return 0;
 }

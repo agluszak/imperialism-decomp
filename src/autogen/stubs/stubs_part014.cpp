@@ -2227,14 +2227,6 @@ undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130
-// ghidra_proto void __thiscall WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
-// FUNCTION: IMPERIALISM 0x004f7130
-undefined4 WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowDiplomacyActionRejectedNotice
 // ghidra_proto void __cdecl ShowDiplomacyActionRejectedNotice(void)
 // FUNCTION: IMPERIALISM 0x004f7400
@@ -3999,6 +3991,14 @@ undefined4 Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I10_005076d0(void)
 // FUNCTION: IMPERIALISM 0x005076d0
 undefined4 OrphanCallChain_C1_I10_005076d0(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedItem::CreateTNumberedItemInstance
+// ghidra_proto void * __cdecl CreateTNumberedItemInstance(void)
+// FUNCTION: IMPERIALISM 0x00507700
+undefined4 CreateTNumberedItemInstance(void)
 {
   return 0;
 }

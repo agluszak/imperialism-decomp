@@ -18,6 +18,13 @@ static __inline void VCall_QuickDrawTarget_QueryBoundsSlot12C(void* object, int*
   fn(object, arg0);
 }
 
+// forward city-dialog param to active diplomacy child control; class=TControl; status=provisional
+static __inline void VCall_DiplomacyChildControl_ForwardParamSlot48(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
+  fn(object, arg0);
+}
+
 // diplomacy legend terrain/minor draw slot with index and label selector; class=TDiplomacyMapView; status=provisional
 static __inline void VCall_DiplomacyLegend_DrawTerrainSlot1E0(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int);

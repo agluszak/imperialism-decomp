@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name BuildTacticalActionPriorityBucketsWithGridGuard
-// ghidra_proto void __cdecl BuildTacticalActionPriorityBucketsWithGridGuard(void)
-// FUNCTION: IMPERIALISM 0x0059bcf0
-undefined4 BuildTacticalActionPriorityBucketsWithGridGuard(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTacticalActionClassSelectionAcrossCursorList
 // ghidra_proto void __cdecl DispatchTacticalActionClassSelectionAcrossCursorList(void)
 // FUNCTION: IMPERIALISM 0x0059bf20
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At005bcb20(voi
 // ghidra_proto void * __cdecl CreateTTradePageSellViewInstance(void)
 // FUNCTION: IMPERIALISM 0x005bcb90
 undefined4 CreateTTradePageSellViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageSellView::GetTTradePageSellViewClassNamePointer
+// ghidra_proto void * __cdecl GetTTradePageSellViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005bcc10
+undefined4 GetTTradePageSellViewClassNamePointer(void)
 {
   return 0;
 }

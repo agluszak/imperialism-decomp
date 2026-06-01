@@ -98,3 +98,4 @@ src/game/TDiplomacyMapView.cpp|VCall_GlobalMapState_QueryIconStripXSlot110|short
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_TransformPointToLocalSlot148|void|0x148 / 4|int,int|low|transform screen point to diplomacy view-local coords|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_HitTestPointSlot90|char|0x90 / 4|int,int|low|hit-test view-local point against terrain region index|index|thiscall|none||provisional|StrategicMapViewSystem
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyTurnState_ValidateActionSlot5C|char|0x5C / 4|int,int,int|low|validate diplomacy action for selected/hovered target pair|index|thiscall|none||provisional|DiplomacyTurnStateManager
+src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_ForwardParamSlot48|void|0x48 / 4|int|low|forward city-dialog param to active diplomacy child control|index|thiscall|none||provisional|TControl
