@@ -58,15 +58,16 @@ Empty fields are acceptable. Invented fields are not.
 
 For a vertical slice:
 
-1. Run `just slice-discovery <Class> 0xADDR`.
-2. Inspect `tmp_decomp/slice_discovery/<class>_<addr>/class_candidate.json`.
-3. Separate the slice into:
+1. Run `just mac-evidence` if the persistent Mac CodeWarrior evidence cache is stale or missing.
+2. Run `just slice-discovery <Class> 0xADDR`.
+3. Inspect `tmp_decomp/slice_discovery/<class>_<addr>/class_candidate.json`.
+4. Separate the slice into:
    1. real `this` field accesses,
    2. generated vcall wrappers,
    3. global/helper boundaries,
    4. constructor/destructor/lifetime evidence.
-4. Only then edit source or vcall metadata.
-5. Verify with targeted `just compare 0xADDR` and adjacent canaries.
+5. Only then edit source or vcall metadata.
+6. Verify with targeted `just compare 0xADDR` and adjacent canaries.
 
 If the class name itself is suspect, use a synthetic label and explicit anchors:
 
@@ -92,6 +93,25 @@ For broader Ghidra-side work:
 6. Apply typed `Class *this` only after the evidence is recorded.
 7. Defer inheritance edges until there is structural evidence.
 
+## Mac CodeWarrior Evidence
+
+The Mac build is a PowerPC PEF compiled with CodeWarrior. Its local evidence
+workspace is deliberately outside git:
+
+```text
+/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior/
+```
+
+Use `just mac-evidence` to normalize `classes.txt`, `cw_symbols.raw`,
+`cw_symbols.demangled`, and `plain_typeish_strings.txt` from the Mac dump into
+persistent CSV/JSON evidence. `just slice-discovery` attaches matching evidence
+under `external_evidence.macos_codewarrior`.
+
+This evidence can guide class names, method names, and likely signatures. It is
+not ABI-compatible with the Windows target and must not directly create Windows
+address mappings, vtable slot assignments, calling-convention decisions, or
+inheritance edges.
+
 ## Guardrails
 
 1. Do not move a helper into a class because a class method calls it.
@@ -100,4 +120,6 @@ For broader Ghidra-side work:
 4. Do not introduce raw vtable indexing in gameplay code; add generated vcall
    facade metadata instead.
 5. Treat Ghidra recovered class output as an oracle to compare against, not as
+   source of truth.
+6. Treat Mac CodeWarrior symbols the same way: useful oracle, not Windows
    source of truth.

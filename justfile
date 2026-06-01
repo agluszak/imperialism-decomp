@@ -11,6 +11,9 @@ function_ownership := env_var_or_default("FUNCTION_OWNERSHIP", "config/function_
 vtable_gate_baseline := env_var_or_default("VTABLE_GATE_BASELINE", "config/vtable_gate_baseline.csv")
 canary_targets := env_var_or_default("CANARY_TARGETS", "config/canary_targets_tgreatpower.csv")
 class_discovery_classes := env_var_or_default("CLASS_DISCOVERY_CLASSES", "TGreatPower,TAutoGreatPower")
+macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "/home/agluszak/Downloads/imperialism.7z/Imperialism/dump")
+macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", "/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior")
+macos_pef_datafork := env_var_or_default("MACOS_PEF_DATAFORK", macos_dump + "/Imperialism.datafork")
 
 default:
   @just --list
@@ -118,6 +121,27 @@ class-discovery classes='':
 
 slice-discovery class address:
   uv run python -m tools.workflow.slice_discovery "{{class}}" --address "{{address}}"
+
+mac-evidence:
+  uv run python -m tools.workflow.macos_evidence \
+    --dump-dir "{{macos_dump}}" \
+    --workspace "{{macos_workspace}}"
+
+mac-evidence-check:
+  uv run python -m tools.workflow.macos_evidence \
+    --workspace "{{macos_workspace}}" \
+    --check
+
+import-macos-pef:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  mkdir -p "{{macos_workspace}}/ghidra"
+  "$GHIDRA_INSTALL_DIR/support/analyzeHeadless" "{{macos_workspace}}/ghidra" imperialism-macos \
+    -import "{{macos_pef_datafork}}" \
+    -overwrite \
+    -processor PowerPC:BE:32:default \
+    -cspec macosx \
+    -postScript PEF_script.java \
+    -postScript FindFunctionsUsingTOCinPEFScript.java
 
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"

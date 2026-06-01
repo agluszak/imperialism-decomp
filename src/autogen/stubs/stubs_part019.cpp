@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyTacUnit_VtblSlot04
-// ghidra_proto void __cdecl TArmyTacUnit_VtblSlot04(void)
-// FUNCTION: IMPERIALISM 0x0059adf0
-undefined4 TArmyTacUnit_VtblSlot04(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0059ae10
-// ghidra_proto void __cdecl OrphanRetStub_0059ae10(void)
-// FUNCTION: IMPERIALISM 0x0059ae10
-undefined4 OrphanRetStub_0059ae10(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
-// FUNCTION: IMPERIALISM 0x0059ae30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalPlayer::CreateTTacticalPlayerInstance
-// ghidra_proto void __thiscall CreateTTacticalPlayerInstance(void)
-// FUNCTION: IMPERIALISM 0x0059ae60
-undefined4 CreateTTacticalPlayerInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTacticalPlayer::GetTTacticalPlayerClassNamePointer
 // ghidra_proto void * __cdecl GetTTacticalPlayerClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0059ae80
@@ -3999,6 +3967,38 @@ undefined4 GetTNextTradeCommandClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTNextTradeCommandBaseState(void)
 // FUNCTION: IMPERIALISM 0x005ba400
 undefined4 ConstructTNextTradeCommandBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNextTradeCommandAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005ba430
+undefined4 DestructTNextTradeCommandAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
+// ghidra_proto void __thiscall DestructTNextTradeCommandAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005ba460
+undefined4 DestructTNextTradeCommandAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeRangePairFromDiplomacyConstants
+// ghidra_proto void __thiscall InitializeRangePairFromDiplomacyConstants(void)
+// FUNCTION: IMPERIALISM 0x005ba480
+undefined4 InitializeRangePairFromDiplomacyConstants(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked
+// ghidra_proto void __cdecl ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
+// FUNCTION: IMPERIALISM 0x005ba4b0
+undefined4 ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
 {
   return 0;
 }

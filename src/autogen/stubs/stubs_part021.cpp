@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c
-// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c(uint messageCode, int wParam, int lParam, void * pResult)
-// FUNCTION: IMPERIALISM 0x005e663c
-undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e66a3
-undefined4 CHotKeyCtrl_005E66A3(void)
-{
-  return 0;
-}
-
-// ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
-// FUNCTION: IMPERIALISM 0x005e6749
-undefined4 CHotKeyCtrl_005E6749(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784
-// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784(uint messageCode, int wParam, int lParam, void * pResult)
-// FUNCTION: IMPERIALISM 0x005e6784
-undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784(void)
-{
-  return 0;
-}
-
 // ghidra_name ~CHotKeyCtrl
 // ghidra_proto void __cdecl ~CHotKeyCtrl(void)
 // FUNCTION: IMPERIALISM 0x005e6825
@@ -3999,6 +3967,38 @@ undefined4 RemoveKey_603906(void)
 // ghidra_proto void __stdcall AfxDlgProc(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00604b68
 undefined4 AfxDlgProc(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
+// ghidra_proto void __thiscall PreTranslateMessageForDialogAndDispatchHotkey(void)
+// FUNCTION: IMPERIALISM 0x00604ba8
+undefined4 PreTranslateMessageForDialogAndDispatchHotkey(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NoOpPaddingStub_00604c3c
+// ghidra_proto void __cdecl thunk_NoOpPaddingStub_00604c3c(void)
+// FUNCTION: IMPERIALISM 0x00604bcd
+undefined4 thunk_NoOpPaddingStub_00604c3c(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_NoOpPaddingStub_00604c3c_00604C32
+// ghidra_proto void __cdecl thunk_NoOpPaddingStub_00604c3c_00604C32(void)
+// FUNCTION: IMPERIALISM 0x00604c32
+undefined4 thunk_NoOpPaddingStub_00604c3c_00604C32(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpPaddingStub_00604c3c
+// ghidra_proto void __cdecl NoOpPaddingStub_00604c3c(void)
+// FUNCTION: IMPERIALISM 0x00604c3c
+undefined4 NoOpPaddingStub_00604c3c(void)
 {
   return 0;
 }

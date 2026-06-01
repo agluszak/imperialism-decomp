@@ -2515,14 +2515,6 @@ undefined4 SetQuickDrawStyleWord_1D4E_AndMarkDirty(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty
-// ghidra_proto void __cdecl SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB)
-// FUNCTION: IMPERIALISM 0x00495310
-undefined4 SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetQuickDrawStrokeState
 // ghidra_proto void __cdecl ResetQuickDrawStrokeState(void)
 // FUNCTION: IMPERIALISM 0x004953a0
@@ -2639,14 +2631,6 @@ undefined4 ReplaceClipStateRegionHandleFromRect(void)
 // ghidra_proto void __cdecl ApplyHitRegionToClipState(int arg1)
 // FUNCTION: IMPERIALISM 0x00495920
 undefined4 ApplyHitRegionToClipState(void)
-{
-  return 0;
-}
-
-// ghidra_name SnapshotHitRegionToClipCache
-// ghidra_proto void __cdecl SnapshotHitRegionToClipCache(void)
-// FUNCTION: IMPERIALISM 0x00495a30
-undefined4 SnapshotHitRegionToClipCache(void)
 {
   return 0;
 }
@@ -2839,22 +2823,6 @@ undefined4 NoOpQuickDrawLifecycleHookB(void)
 // ghidra_proto int * __cdecl GetSurfaceHeaderFromSurfaceObject(int * pSurfaceObject)
 // FUNCTION: IMPERIALISM 0x00497300
 undefined4 GetSurfaceHeaderFromSurfaceObject(void)
-{
-  return 0;
-}
-
-// ghidra_name AcquireReusableQuickDrawSurface
-// ghidra_proto void __cdecl AcquireReusableQuickDrawSurface(void)
-// FUNCTION: IMPERIALISM 0x00497320
-undefined4 AcquireReusableQuickDrawSurface(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseOrCacheQuickDrawSurface
-// ghidra_proto void __cdecl ReleaseOrCacheQuickDrawSurface(void)
-// FUNCTION: IMPERIALISM 0x00497390
-undefined4 ReleaseOrCacheQuickDrawSurface(void)
 {
   return 0;
 }
@@ -3999,6 +3967,38 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
 // FUNCTION: IMPERIALISM 0x0049dae0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At0049db60
+// ghidra_proto void __cdecl WrapperFor_ftol_At0049db60(void)
+// FUNCTION: IMPERIALISM 0x0049db60
+undefined4 WrapperFor_ftol_At0049db60(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateTurnEventPacket_Vtbl0064c130
+// ghidra_proto void * __cdecl CreateTurnEventPacket_Vtbl0064c130(void)
+// FUNCTION: IMPERIALISM 0x0049dd40
+undefined4 CreateTurnEventPacket_Vtbl0064c130(void)
+{
+  return 0;
+}
+
+// ghidra_name ReinitializeGameFlowWithoutPostingTurnEvent
+// ghidra_proto void __cdecl ReinitializeGameFlowWithoutPostingTurnEvent(void)
+// FUNCTION: IMPERIALISM 0x0049ddb0
+undefined4 ReinitializeGameFlowWithoutPostingTurnEvent(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
+// FUNCTION: IMPERIALISM 0x0049ddd0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
 {
   return 0;
 }

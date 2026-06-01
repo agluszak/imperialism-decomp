@@ -92,6 +92,10 @@ address|target_cpp|ownership|note
 48a8e0|src/game/TView.cpp|manual|marker_sync
 48a9d0|src/game/TView.cpp|manual|marker_sync
 48e520|src/game/TControl.cpp|manual|marker_sync
+495310|src/game/quickdraw_surface.cpp|manual|marker_sync
+495a30|src/game/quickdraw_surface.cpp|manual|marker_sync
+497320|src/game/trade_screen.cpp|manual|marker_sync
+497390|src/game/trade_screen.cpp|manual|marker_sync
 4b5140|src/game/noop_slots.cpp|manual|marker_sync
 4b73b0|src/game/TGreatPower.cpp|manual|marker_sync
 4b8b80|src/game/TCapacityOrder.cpp|manual|marker_sync

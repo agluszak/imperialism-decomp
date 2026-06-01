@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RecomputeGlobalCapabilityAverages
-// ghidra_proto void __cdecl RecomputeGlobalCapabilityAverages(void)
-// FUNCTION: IMPERIALISM 0x0054fd50
-undefined4 RecomputeGlobalCapabilityAverages(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyContextPointerFromGlobalTableByIndex
-// ghidra_proto void * __cdecl GetNavyContextPointerFromGlobalTableByIndex(void)
-// FUNCTION: IMPERIALISM 0x0054fee0
-undefined4 GetNavyContextPointerFromGlobalTableByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNavyOrderPriorityContributionPercentByCategory
-// ghidra_proto uint __fastcall ComputeNavyOrderPriorityContributionPercentByCategory(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x0054ff00
-undefined4 ComputeNavyOrderPriorityContributionPercentByCategory(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNormalizedIndustryActionResourceCostPercent
-// ghidra_proto void __cdecl GetNormalizedIndustryActionResourceCostPercent(void)
-// FUNCTION: IMPERIALISM 0x00550090
-undefined4 GetNormalizedIndustryActionResourceCostPercent(void)
-{
-  return 0;
-}
-
 // ghidra_name CalculateMissionOrderPriorityScore
 // ghidra_proto int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)
 // FUNCTION: IMPERIALISM 0x005501b0
@@ -3999,6 +3967,38 @@ undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
 // ghidra_proto void __cdecl OrphanCallChain_C2_I16_00571b20(void)
 // FUNCTION: IMPERIALISM 0x00571b20
 undefined4 OrphanCallChain_C2_I16_00571b20(void)
+{
+  return 0;
+}
+
+// ghidra_name TCzechBox::CreateTCzechBoxInstance
+// ghidra_proto void * __cdecl CreateTCzechBoxInstance(void)
+// FUNCTION: IMPERIALISM 0x00571b60
+undefined4 CreateTCzechBoxInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TCzechBox::GetTCzechBoxClassNamePointer
+// ghidra_proto void * __cdecl GetTCzechBoxClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00571c00
+undefined4 GetTCzechBoxClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TCzechBox::ConstructTCzechBoxBaseState
+// ghidra_proto void * __thiscall ConstructTCzechBoxBaseState(void)
+// FUNCTION: IMPERIALISM 0x00571c20
+undefined4 ConstructTCzechBoxBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TCzechBox::DestructTCzechBoxAndMaybeFree
+// ghidra_proto void * __thiscall DestructTCzechBoxAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00571c60
+undefined4 DestructTCzechBoxAndMaybeFree(void)
 {
   return 0;
 }

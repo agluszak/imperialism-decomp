@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480
-// ghidra_proto void __cdecl Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480(void)
-// FUNCTION: IMPERIALISM 0x00506480
-undefined4 Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins04_00506560
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins04_00506560(void)
-// FUNCTION: IMPERIALISM 0x00506560
-undefined4 OrphanLeaf_NoCall_Ins04_00506560(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_SetWordEcxOffset_96_00506590
-// ghidra_proto void __cdecl OrphanTiny_SetWordEcxOffset_96_00506590(void)
-// FUNCTION: IMPERIALISM 0x00506590
-undefined4 OrphanTiny_SetWordEcxOffset_96_00506590(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I15_005065b0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I15_005065b0(void)
-// FUNCTION: IMPERIALISM 0x005065b0
-undefined4 OrphanCallChain_C2_I15_005065b0(void)
-{
-  return 0;
-}
-
 // ghidra_name TIconSlider::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
 // ghidra_proto void __thiscall WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005065f0
@@ -3999,6 +3967,38 @@ undefined4 ConstructTTraderForeignMinister(void)
 // ghidra_proto void __thiscall DeletingDestructTTraderForeignMinister(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00533910
 undefined4 DeletingDestructTTraderForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TTraderForeignMinister::DestructTTraderForeignMinister
+// ghidra_proto void __thiscall DestructTTraderForeignMinister(void)
+// FUNCTION: IMPERIALISM 0x00533940
+undefined4 DestructTTraderForeignMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::InitializeTraderForeignMinisterOrderCandidates
+// ghidra_proto void __thiscall InitializeTraderForeignMinisterOrderCandidates(void)
+// FUNCTION: IMPERIALISM 0x00533960
+undefined4 InitializeTraderForeignMinisterOrderCandidates(void)
+{
+  return 0;
+}
+
+// ghidra_name RunForeignMinisterPolicySlot28VariantC
+// ghidra_proto void __fastcall RunForeignMinisterPolicySlot28VariantC(void)
+// FUNCTION: IMPERIALISM 0x00533b10
+undefined4 RunForeignMinisterPolicySlot28VariantC(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchNationInteractionAmountWithFallbackVariant
+// ghidra_proto void __cdecl DispatchNationInteractionAmountWithFallbackVariant(void)
+// FUNCTION: IMPERIALISM 0x00533db0
+undefined4 DispatchNationInteractionAmountWithFallbackVariant(void)
 {
   return 0;
 }

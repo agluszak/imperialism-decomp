@@ -72,6 +72,22 @@
 31. For compiler-generated Relative Calls to Incremental Link Table (ILT) thunks in the original binary, mapping the correct ILT thunk addresses in symbols.csv rather than the final implementation addresses keeps call-sites aligned.
 32. To avoid demangling failures due to anonymous namespace hash names in parameter types (which cause Wine to fail to demangle and prevent pairing), clean up parameter types of thunks to global base types (like TView* instead of anonymous structs).
 33. When calling a member function of a global class instance (such as g_pUiRuntimeContext->GetActiveNationId()) where the original assembly loads the instance pointer in ecx, declare the method as a standard member of that class and map its address in symbols.csv to ensure the compiler generates the correct register-loading instructions.
+34. Mac CodeWarrior evidence lives outside git under `/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior`; use `just mac-evidence` and treat it as a name/signature oracle only. It must not directly assign Windows addresses, calling conventions, vtables, or inheritance.
+35. When Mac evidence identifies a method signature with hidden stack args (for example `DoPostCreate(TDocument*)` or `AdjustForZero(short, short)`), test the signature before tuning locals. Correct stack cleanup and member-call shape can improve matching more than expression rewrites.
+36. For class families with repeated Mac methods (`DrawAmt`, `DoPostCreate`, `DrawMax`), attach method names across siblings once the Windows bodies and vtable neighborhoods support the role; keep inheritance/base edges provisional until vptr/offset evidence proves them.
+37. EH-RAII guard pattern (high-yield, architectural): if the original function starts with the MSVC C++ EH prologue (`push -1; push __ehhandler; mov fs:[0]`) and immediately does `lea ecx,[esp+X]; call <ctor>`, it is wrapping a **local RAII guard object**. To reproduce the EH frame + ctor/dtor calls, model a stack `struct Guard { <field(s)>; Guard(); ~Guard(); };` with the ctor/dtor owning the impl addresses, and let the destructor run implicitly at scope exit (do NOT call it explicitly, and do NOT call the acquire/release as free `(void)` functions). MSVC only emits the EH frame for an object with a non-trivial, implicitly-invoked destructor. `tmp_decomp/eh_functions.json` enumerates all 966 EH-prologue functions; cluster by leading ctor to find guard families (shared-string temps dominate at 138, but those already use the `StringShared` dtor and thus already have their frame — the lever is for acquire/release pairs still written as free functions, e.g. the QuickDraw surface guard `0x497320`/`0x497390`).
+38. FPO (`#pragma optimize("y", on)`) is target-dependent — measure both ways:
+    - For **leaf / simple helper** functions (few locals, no EH), the original is
+      FPO and matching it needs FPO on; e.g. `SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty`
+      (`0x495310`) went 53% -> **100%** purely by enabling FPO. Put such helpers in a
+      file with `#pragma optimize("y", on)` at the top (see `src/game/quickdraw_surface.cpp`).
+    - For **complex EH-RAII bodies** (e.g. the amount-bar `DrawAmt`), forcing FPO makes
+      MSVC promote `ebx`/`ebp` as scratch (`xor ebx,ebx; cmp esi,ebx`) and diverge MORE
+      than the kept-frame (`/Oy-`) build. Leave those non-FPO.
+    - When a helper reuses a computed pointer offset (original shows `add eax,0x14; jne`
+      then `[eax+4]`), mirror that reuse in C++ (`int slot = *p + 0x14; ... [slot+4]`)
+      instead of recomputing; recomputation drops the score.
+39. Original intra-module calls route through ILT thunks (`0x40xxxx jmp <impl>`). reccmp does not always auto-follow them in verbose diffs (a real call shows as `<OFFSETn>` against our named target); confirm the true target by disassembling the thunk in Ghidra before assuming a callsite mismatch.
 
 ## Known reccmp Failure Modes
 

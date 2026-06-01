@@ -6,9 +6,9 @@
 
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
-IndustryAmtBarState* __cdecl CreateTShipAmtBarInstance(void) {
-  IndustryAmtBarState* amountBar =
-      reinterpret_cast<IndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
+TShipAmtBarState* __cdecl CreateTShipAmtBarInstance(void) {
+  TShipAmtBarState* amountBar =
+      reinterpret_cast<TShipAmtBarState*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
     amountBar->cachedRangeAt60 = 0;
@@ -26,7 +26,7 @@ void* __cdecl GetTShipAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab60
-IndustryAmtBarState* IndustryAmtBarState::ConstructTShipAmtBarBaseState() {
+TShipAmtBarState* TShipAmtBarState::ConstructTShipAmtBarBaseState() {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
   *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(&g_vtblTShipAmtBar);
   cachedRangeAt60 = 0;
@@ -44,8 +44,7 @@ void __fastcall thunk_DestructTViewBaseState_0058ABD0(TView* amountBar) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058aba0
-IndustryAmtBarState*
-IndustryAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
+TShipAmtBarState* TShipAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
   thunk_DestructTViewBaseState_0058ABD0(this);
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)this);
@@ -54,7 +53,7 @@ IndustryAmtBarState::DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag)
 }
 
 // FUNCTION: IMPERIALISM 0x0058abf0
-void IndustryAmtBarState::SelectTradeSpecialCommodityAndRecomputeBarLimits(int passthroughArg) {
+void TShipAmtBarState::DoPostCreate(TDocument* document) {
   NationState* nationState =
       reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
   NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
@@ -65,5 +64,5 @@ void IndustryAmtBarState::SelectTradeSpecialCommodityAndRecomputeBarLimits(int p
   cachedProductionAt64 = productionCap;
   cachedStyleAt66 = 0x3a;
   cachedRangeAt60 = (short)(0 / (int)productionCap);
-  thunk_NoOpUiLifecycleHook(passthroughArg);
+  this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }

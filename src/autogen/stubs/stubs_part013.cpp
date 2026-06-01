@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCityProductionView::ReleaseCityBuildingControls
-// ghidra_proto void __thiscall ReleaseCityBuildingControls(void)
-// FUNCTION: IMPERIALISM 0x004ba740
-undefined4 ReleaseCityBuildingControls(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::RenderCityBuildingIcons
-// ghidra_proto void __thiscall RenderCityBuildingIcons(tagRECT * pTargetRect)
-// FUNCTION: IMPERIALISM 0x004ba7b0
-undefined4 RenderCityBuildingIcons(void)
-{
-  return 0;
-}
-
-// ghidra_name BlitBitmapResourceRectWithScreenOffsetAndPalette
-// ghidra_proto void __cdecl BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
-// FUNCTION: IMPERIALISM 0x004bac50
-undefined4 BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
-{
-  return 0;
-}
-
-// ghidra_name TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
-// ghidra_proto void __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
-// FUNCTION: IMPERIALISM 0x004badd0
-undefined4 RenderNationHeaderDateLabelWithPeriodicRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::HandleCityBuildingHoverSelection
 // ghidra_proto void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)
 // FUNCTION: IMPERIALISM 0x004bafa0
@@ -3999,6 +3967,38 @@ undefined4 ReturnFalseNoOpAdvisoryHandler(void)
 // ghidra_proto void __cdecl TryValidateProposalAndQueueInterNationEvent1C(void)
 // FUNCTION: IMPERIALISM 0x004e1c20
 undefined4 TryValidateProposalAndQueueInterNationEvent1C(void)
+{
+  return 0;
+}
+
+// ghidra_name ExecuteAdvisoryPromptAndApplyActionType2OrFallback
+// ghidra_proto bool __thiscall ExecuteAdvisoryPromptAndApplyActionType2OrFallback(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x004e1e40
+undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpAdvisoryHandlerReturn
+// ghidra_proto void __cdecl NoOpAdvisoryHandlerReturn(void)
+// FUNCTION: IMPERIALISM 0x004e1f20
+undefined4 NoOpAdvisoryHandlerReturn(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeAdvisoryPeerAdjustedNationMetricRatio
+// ghidra_proto void __cdecl ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
+// FUNCTION: IMPERIALISM 0x004e1f40
+undefined4 ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpDiplomacyWarTransitionCallback
+// ghidra_proto void __cdecl NoOpDiplomacyWarTransitionCallback(void)
+// FUNCTION: IMPERIALISM 0x004e2190
+undefined4 NoOpDiplomacyWarTransitionCallback(void)
 {
   return 0;
 }

@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ExecuteAdvisoryPromptAndApplyActionType2OrFallback
-// ghidra_proto bool __thiscall ExecuteAdvisoryPromptAndApplyActionType2OrFallback(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x004e1e40
-undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpAdvisoryHandlerReturn
-// ghidra_proto void __cdecl NoOpAdvisoryHandlerReturn(void)
-// FUNCTION: IMPERIALISM 0x004e1f20
-undefined4 NoOpAdvisoryHandlerReturn(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryPeerAdjustedNationMetricRatio
-// ghidra_proto void __cdecl ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
-// FUNCTION: IMPERIALISM 0x004e1f40
-undefined4 ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDiplomacyWarTransitionCallback
-// ghidra_proto void __cdecl NoOpDiplomacyWarTransitionCallback(void)
-// FUNCTION: IMPERIALISM 0x004e2190
-undefined4 NoOpDiplomacyWarTransitionCallback(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyJoinEmpireAcceptanceSideEffectsForTargetNation
 // ghidra_proto void __cdecl ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(void)
 // FUNCTION: IMPERIALISM 0x004e21b0
@@ -3999,6 +3967,38 @@ undefined4 ConstructTIconSliderBaseState(void)
 // ghidra_proto void * __thiscall DestructTIconSliderAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00506430
 undefined4 DestructTIconSliderAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480
+// ghidra_proto void __cdecl Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480(void)
+// FUNCTION: IMPERIALISM 0x00506480
+undefined4 Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins04_00506560
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins04_00506560(void)
+// FUNCTION: IMPERIALISM 0x00506560
+undefined4 OrphanLeaf_NoCall_Ins04_00506560(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanTiny_SetWordEcxOffset_96_00506590
+// ghidra_proto void __cdecl OrphanTiny_SetWordEcxOffset_96_00506590(void)
+// FUNCTION: IMPERIALISM 0x00506590
+undefined4 OrphanTiny_SetWordEcxOffset_96_00506590(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I15_005065b0
+// ghidra_proto void __cdecl OrphanCallChain_C2_I15_005065b0(void)
+// FUNCTION: IMPERIALISM 0x005065b0
+undefined4 OrphanCallChain_C2_I15_005065b0(void)
 {
   return 0;
 }

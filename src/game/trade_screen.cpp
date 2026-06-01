@@ -51,10 +51,10 @@ undefined4 thunk_GetTickCountDiv16(void);
 undefined4 thunk_InitializeUiTextStyleDescriptor(void);
 undefined4 thunk_ConstructUiTabCursorPictureEntry(void);
 undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
-undefined4 AcquireReusableQuickDrawSurface(void);
-undefined4 ReleaseOrCacheQuickDrawSurface(void);
+undefined4 CreateClipStateRegionWrapperObject(void);
+undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
 undefined4 ApplyHitRegionToClipState(void);
-undefined4 SnapshotHitRegionToClipCache(void);
+void SnapshotHitRegionToClipCache(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 SetQuickDrawFillColor(void);
@@ -94,6 +94,7 @@ const char kNilPointerText[] = "Nil Pointer";
 const char kFailureCaption[] = "Failure";
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
+const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
 const int kControlTagSell = 0x53656c6c;
 const int kControlTagBar = 0x62617220;
@@ -177,6 +178,7 @@ const unsigned int kAddrClassDescTCityBarCluster = 0x00662f08;
 const unsigned int kAddrTradeSummarySelectionMap = 0x006960e0;
 const unsigned int kAddrDecimalFormat = 0x0069430C;
 const unsigned int kAddrActiveQuickDrawSurfaceContext = 0x006A1D60;
+const unsigned int kAddrPrimaryRenderSurfaceContext = 0x006A30A8;
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
@@ -203,6 +205,7 @@ struct NationCityTradeState;
 struct TradeMovePanelContext;
 struct TradeCommodityMetricRecord;
 struct CityTradeScenarioDescriptor;
+struct TDocument;
 
 struct NationState {
   void* vftable;
@@ -229,6 +232,13 @@ struct TradeAmountBarLayout {
   short auxValueB;
 
   void UpdateNationStateGaugeValuesFromScenarioRecordCode();
+  void RenderPrimarySurfaceOverlayPanelWithClipCache();
+};
+
+struct TTraderAmtBarState : public TradeAmountBarLayout {
+  void DoPostCreate(TDocument* document);
+  short AdjustForZero(short priorResult, short requestedValue);
+  void DrawAmt();
 };
 
 struct TradeMoveStepCluster {
@@ -294,9 +304,27 @@ struct IndustryAmtBarState : public TView {
   IndustryAmtBarState* ConstructTRailAmtBarBaseState();
   IndustryAmtBarState* DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag);
   void SelectTradeSummaryMetricByTagAndUpdateBarValues();
-  IndustryAmtBarState* ConstructTShipAmtBarBaseState();
-  IndustryAmtBarState* DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag);
-  void SelectTradeSpecialCommodityAndRecomputeBarLimits(int passthroughArg);
+};
+
+struct TIndustryAmtBarState : public IndustryAmtBarState {
+  TIndustryAmtBarState* ConstructTIndustryAmtBarBaseState();
+  TIndustryAmtBarState* DestructTIndustryAmtBarAndMaybeFree(unsigned char freeSelfFlag);
+  void DoPostCreate(TDocument* document);
+  void DrawAmt();
+};
+
+struct TRailAmtBarState : public IndustryAmtBarState {
+  TRailAmtBarState* ConstructTRailAmtBarBaseState();
+  TRailAmtBarState* DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag);
+  void DoPostCreate(TDocument* document);
+  void DrawAmt();
+};
+
+struct TShipAmtBarState : public IndustryAmtBarState {
+  TShipAmtBarState* ConstructTShipAmtBarBaseState();
+  TShipAmtBarState* DestructTShipAmtBarAndMaybeFree(unsigned char freeSelfFlag);
+  void DoPostCreate(TDocument* document);
+  void DrawAmt();
 };
 
 struct TradeCommodityMetricRecord {
@@ -649,6 +677,45 @@ void* g_pActiveCityDialogLegendSelectionOwner = 0;
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
 } // namespace
+
+// GLOBAL: IMPERIALISM 0x6a1c98
+void* g_pReusableQuickDrawSurfaceListHead = 0;
+
+// FUNCTION: IMPERIALISM 0x00497320
+QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
+  // ORIG_CALLCONV: __thiscall
+  if (g_pReusableQuickDrawSurfaceListHead != 0) {
+    surfaceWrapper = reinterpret_cast<int>(g_pReusableQuickDrawSurfaceListHead);
+    g_pReusableQuickDrawSurfaceListHead = 0;
+    return;
+  }
+  surfaceWrapper = (int)CreateClipStateRegionWrapperObject();
+  if (surfaceWrapper == 0) {
+    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(
+        kQuickDrawCppPath, 0x7f6);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00497390
+QuickDrawSurfaceGuard::~QuickDrawSurfaceGuard() {
+  // ORIG_CALLCONV: __thiscall
+  if (g_pReusableQuickDrawSurfaceListHead != 0) {
+    int regionWrapper = surfaceWrapper;
+    if (regionWrapper != 0) {
+      int regionHandle = *reinterpret_cast<int*>(regionWrapper);
+      if (regionHandle != 0) {
+        reinterpret_cast<void(__cdecl*)()>(WrapperFor_DeleteRegionHandleFromClipState_At00495520)();
+        FreeHeapBufferIfNotNull(regionHandle);
+      }
+    }
+    FreeHeapBufferIfNotNull(regionWrapper);
+    surfaceWrapper = 0;
+    return;
+  }
+  g_pReusableQuickDrawSurfaceListHead = reinterpret_cast<void*>(surfaceWrapper);
+  surfaceWrapper = 0;
+}
 
 // GLOBAL: IMPERIALISM 0x6a21bc
 extern "C" UiRuntimeContext* g_pUiRuntimeContext = 0;
@@ -2052,9 +2119,10 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void) {
 // GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
 
 // FUNCTION: IMPERIALISM 0x00589340
-void __fastcall RenderQuickDrawControlWithHitRegionClip_A(TradeControl* control) {
-  AcquireReusableQuickDrawSurface();
-  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+void TIndustryAmtBarState::DrawAmt() {
+  QuickDrawSurfaceGuard surface;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -2088,17 +2156,15 @@ void __fastcall RenderQuickDrawControlWithHitRegionClip_A(TradeControl* control)
       }
     }
   }
-
-  ReleaseOrCacheQuickDrawSurface();
 }
 
 // FUNCTION: IMPERIALISM 0x00589540
 void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TradeControl* control, int unusedEdx,
                                                              short selectedValue) {
   (void)unusedEdx;
-  AcquireReusableQuickDrawSurface();
+  QuickDrawSurfaceGuard surface;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -2115,8 +2181,6 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TradeControl* contr
           (int)invalidRect, 1);
     }
   }
-
-  ReleaseOrCacheQuickDrawSurface();
 }
 
 // FUNCTION: IMPERIALISM 0x00589720
@@ -2284,9 +2348,10 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
 #include "TTraderAmtBar.cpp"
 
 // FUNCTION: IMPERIALISM 0x0058a1b0
-void __fastcall RenderQuickDrawControlWithHitRegionClip_B(TradeControl* control) {
-  AcquireReusableQuickDrawSurface();
-  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+void TRailAmtBarState::DrawAmt() {
+  QuickDrawSurfaceGuard surface;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -2321,16 +2386,15 @@ void __fastcall RenderQuickDrawControlWithHitRegionClip_B(TradeControl* control)
     }
   }
 
-  ReleaseOrCacheQuickDrawSurface();
 }
 
 // FUNCTION: IMPERIALISM 0x0058a3b0
 void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* control, int unusedEdx,
                                                              short selectedValue) {
   (void)unusedEdx;
-  AcquireReusableQuickDrawSurface();
+  QuickDrawSurfaceGuard surface;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -2351,13 +2415,13 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* contr
     }
   }
 
-  ReleaseOrCacheQuickDrawSurface();
 }
 
 // FUNCTION: IMPERIALISM 0x0058ac80
-void __fastcall RenderQuickDrawControlWithHitRegionClip_C(TradeControl* control) {
-  AcquireReusableQuickDrawSurface();
-  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+void TShipAmtBarState::DrawAmt() {
+  QuickDrawSurfaceGuard surface;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -2386,13 +2450,13 @@ void __fastcall RenderQuickDrawControlWithHitRegionClip_C(TradeControl* control)
     }
   }
 
-  ReleaseOrCacheQuickDrawSurface();
 }
 
 // FUNCTION: IMPERIALISM 0x0058b0f0
-void __fastcall RenderControlWithTemporaryRectClipRegionAndChildren(TradeControl* control) {
-  AcquireReusableQuickDrawSurface();
-  reinterpret_cast<void(__cdecl*)()>(ApplyHitRegionToClipState)();
+void TTraderAmtBarState::DrawAmt() {
+  QuickDrawSurfaceGuard surface;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -2421,7 +2485,6 @@ void __fastcall RenderControlWithTemporaryRectClipRegionAndChildren(TradeControl
     }
   }
 
-  ReleaseOrCacheQuickDrawSurface();
 }
 
 // FUNCTION: IMPERIALISM 0x0058b460

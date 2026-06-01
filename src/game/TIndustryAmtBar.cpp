@@ -10,16 +10,16 @@
    then initializes move/bar controls baseline. */
 
 // FUNCTION: IMPERIALISM 0x00589110
-TradeAmountBarLayout* __cdecl CreateTIndustryAmtBarInstance(void) {
-  TradeAmountBarLayout* amountBar =
-      reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x6c));
+TIndustryAmtBarState* __cdecl CreateTIndustryAmtBarInstance(void) {
+  TIndustryAmtBarState* amountBar =
+      reinterpret_cast<TIndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void*>(kVtableTIndustryAmtBar);
-    amountBar->rangeOrMaxValue = 0;
-    amountBar->stepOrCurrentValue = 0;
-    amountBar->auxValueA = 0;
-    amountBar->auxValueB = 0;
+    *reinterpret_cast<void***>(amountBar) = reinterpret_cast<void**>(kVtableTIndustryAmtBar);
+    amountBar->cachedRangeAt60 = 0;
+    amountBar->cachedRatioAt62 = 0;
+    amountBar->cachedProductionAt64 = 0;
+    amountBar->cachedStyleAt66 = 0;
   }
   return amountBar;
 }
@@ -30,21 +30,21 @@ void* __cdecl GetTIndustryAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005891d0
-TradeAmountBarLayout* __fastcall
-ConstructTIndustryAmtBarBaseState(TradeAmountBarLayout* amountBar) {
+TIndustryAmtBarState* __fastcall
+ConstructTIndustryAmtBarBaseState(TIndustryAmtBarState* amountBar) {
   // ORIG_CALLCONV: __thiscall
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-  amountBar->vftable = reinterpret_cast<void*>(kVtableTIndustryAmtBar);
-  amountBar->rangeOrMaxValue = 0;
-  amountBar->stepOrCurrentValue = 0;
-  amountBar->auxValueA = 0;
-  amountBar->auxValueB = 0;
+  *reinterpret_cast<void***>(amountBar) = reinterpret_cast<void**>(kVtableTIndustryAmtBar);
+  amountBar->cachedRangeAt60 = 0;
+  amountBar->cachedRatioAt62 = 0;
+  amountBar->cachedProductionAt64 = 0;
+  amountBar->cachedStyleAt66 = 0;
   return amountBar;
 }
 
 // FUNCTION: IMPERIALISM 0x00589210
-TradeAmountBarLayout* __fastcall
-DestructTIndustryAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar, int unusedEdx,
+TIndustryAmtBarState* __fastcall
+DestructTIndustryAmtBarAndMaybeFree(TIndustryAmtBarState* amountBar, int unusedEdx,
                                     unsigned char freeSelfFlag) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
@@ -56,31 +56,32 @@ DestructTIndustryAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar, int unusedE
 }
 
 // FUNCTION: IMPERIALISM 0x00589260
-void __fastcall InitializeTradeBarsFromSelectedCommodityControl(IndustryAmtBarState* amountBar) {
+void TIndustryAmtBarState::DoPostCreate(TDocument* document) {
   // ORIG_CALLCONV: __thiscall
-  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
+  NationState* nationState =
+      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  while (mappedTag != amountBar->ownerPanelContext()->summaryTag) {
+  while (mappedTag != ownerPanelContext()->summaryTag) {
     summaryTagIndex = (short)(summaryTagIndex + 1);
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   }
 
-  amountBar->selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
+  selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
   int productionValue = TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
-      cityState, amountBar->selectedMetricRecord->buildingSlot);
-  amountBar->cachedProductionAt64 = (short)productionValue;
+      cityState, selectedMetricRecord->buildingSlot);
 
-  short stepValue = amountBar->selectedMetricRecord->QueryStepValue();
-  amountBar->cachedRatioAt62 =
-      (short)((stepValue * amountBar->barRangeRaw()) / amountBar->cachedProductionAt64);
+  short stepValue = selectedMetricRecord->QueryStepValue();
+  short productionCap = (short)productionValue;
+  int rangeRaw = barRangeRaw();
+  cachedRatioAt62 = (short)((stepValue * rangeRaw) / productionCap);
 
-  amountBar->cachedStyleAt66 = 0x3a;
-  amountBar->cachedRangeAt60 =
-      (short)((amountBar->selectedMetricRecord->controlValue * amountBar->barRangeRaw()) /
-              amountBar->cachedProductionAt64);
+  cachedProductionAt64 = productionCap;
+  cachedStyleAt66 = 0x3a;
+  cachedRangeAt60 = (short)((selectedMetricRecord->controlValue * rangeRaw) / productionCap);
 
-  thunk_NoOpUiLifecycleHook();
+  this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
 // FUNCTION: IMPERIALISM 0x00589da0

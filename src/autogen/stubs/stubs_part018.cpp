@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCzechBox::CreateTCzechBoxInstance
-// ghidra_proto void * __cdecl CreateTCzechBoxInstance(void)
-// FUNCTION: IMPERIALISM 0x00571b60
-undefined4 CreateTCzechBoxInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TCzechBox::GetTCzechBoxClassNamePointer
-// ghidra_proto void * __cdecl GetTCzechBoxClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00571c00
-undefined4 GetTCzechBoxClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCzechBox::ConstructTCzechBoxBaseState
-// ghidra_proto void * __thiscall ConstructTCzechBoxBaseState(void)
-// FUNCTION: IMPERIALISM 0x00571c20
-undefined4 ConstructTCzechBoxBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TCzechBox::DestructTCzechBoxAndMaybeFree
-// ghidra_proto void * __thiscall DestructTCzechBoxAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571c60
-undefined4 DestructTCzechBoxAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
 // ghidra_proto void __cdecl WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0(void)
 // FUNCTION: IMPERIALISM 0x00571cb0
@@ -3999,6 +3967,38 @@ undefined4 TArmyTacUnit_VtblSlot00(void)
 // ghidra_proto void __cdecl OrphanRetStub_0059add0(void)
 // FUNCTION: IMPERIALISM 0x0059add0
 undefined4 OrphanRetStub_0059add0(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit_VtblSlot04
+// ghidra_proto void __cdecl TArmyTacUnit_VtblSlot04(void)
+// FUNCTION: IMPERIALISM 0x0059adf0
+undefined4 TArmyTacUnit_VtblSlot04(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0059ae10
+// ghidra_proto void __cdecl OrphanRetStub_0059ae10(void)
+// FUNCTION: IMPERIALISM 0x0059ae10
+undefined4 OrphanRetStub_0059ae10(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
+// FUNCTION: IMPERIALISM 0x0059ae30
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
+{
+  return 0;
+}
+
+// ghidra_name TTacticalPlayer::CreateTTacticalPlayerInstance
+// ghidra_proto void __thiscall CreateTTacticalPlayerInstance(void)
+// FUNCTION: IMPERIALISM 0x0059ae60
+undefined4 CreateTTacticalPlayerInstance(void)
 {
   return 0;
 }

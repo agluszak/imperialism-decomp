@@ -10,9 +10,9 @@
    then initializes move/bar controls baseline. */
 
 // FUNCTION: IMPERIALISM 0x00589ed0
-IndustryAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
-  IndustryAmtBarState* amountBar =
-      reinterpret_cast<IndustryAmtBarState*>(AllocateWithFallbackHandler(0x6c));
+TRailAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
+  TRailAmtBarState* amountBar =
+      reinterpret_cast<TRailAmtBarState*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
     *reinterpret_cast<void***>(amountBar) = reinterpret_cast<void**>(kVtableTRailAmtBar);
@@ -30,7 +30,7 @@ void* __cdecl GetTRailAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589f90
-IndustryAmtBarState* IndustryAmtBarState::ConstructTRailAmtBarBaseState() {
+TRailAmtBarState* TRailAmtBarState::ConstructTRailAmtBarBaseState() {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
   *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kVtableTRailAmtBar);
   cachedRangeAt60 = 0;
@@ -48,8 +48,7 @@ void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589fd0
-IndustryAmtBarState*
-IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
+TRailAmtBarState* TRailAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
   thunk_DestructTViewBaseState_0058A000(this);
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)this);
@@ -58,8 +57,10 @@ IndustryAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag)
 }
 
 // FUNCTION: IMPERIALISM 0x0058a020
-void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues() {
-  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
+void TRailAmtBarState::DoPostCreate(TDocument* document) {
+  NationState* nationState =
+      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
   int summaryTag = ownerPanelContext()->summaryTag;
 
   short recordIndex = 0;
@@ -108,5 +109,5 @@ void IndustryAmtBarState::SelectTradeSummaryMetricByTagAndUpdateBarValues() {
                               (int)productionOrCapValue);
   }
   cachedStyleAt66 = 0x3a;
-  thunk_NoOpUiLifecycleHook();
+  this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }

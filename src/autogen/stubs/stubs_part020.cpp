@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNextTradeCommandAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005ba430
-undefined4 DestructTNextTradeCommandAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
-// ghidra_proto void __thiscall DestructTNextTradeCommandAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005ba460
-undefined4 DestructTNextTradeCommandAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRangePairFromDiplomacyConstants
-// ghidra_proto void __thiscall InitializeRangePairFromDiplomacyConstants(void)
-// FUNCTION: IMPERIALISM 0x005ba480
-undefined4 InitializeRangePairFromDiplomacyConstants(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked
-// ghidra_proto void __cdecl ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
-// FUNCTION: IMPERIALISM 0x005ba4b0
-undefined4 ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005ba600
 // ghidra_proto void __cdecl WrapperFor_ftol_At005ba600(void)
 // FUNCTION: IMPERIALISM 0x005ba600
@@ -3999,6 +3967,38 @@ undefined4 CHotKeyCtrl_005E6590(void)
 // ghidra_proto void __cdecl ~CHotKeyCtrl(void)
 // FUNCTION: IMPERIALISM 0x005e6601
 undefined4 CHotKeyCtrl_005E6601(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c
+// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c(uint messageCode, int wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x005e663c
+undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e66a3
+undefined4 CHotKeyCtrl_005E66A3(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x005e6749
+undefined4 CHotKeyCtrl_005E6749(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784
+// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784(uint messageCode, int wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x005e6784
+undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784(void)
 {
   return 0;
 }

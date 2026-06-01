@@ -25,6 +25,7 @@ This file tracks:
 9. Use local slice discovery (`just slice-discovery <Class> 0xADDR`) before vertical-slice edits to list anchors, actual vcall wrappers, global/helper calls, `this` fields, and the conservative `ClassCandidate` evidence object.
 10. Treat class-discovery candidate queue as "new work only": exclude manual-owned addresses by default and prioritize queue rows (`P0/P1/P2`) from lane score+density.
 11. For subsystem pushes (e.g. shared-string helpers), use targeted `just compare 0xADDR` as the acceptance gate for touched functions; treat aggregate `just stats` as macro trend only.
+12. Use persistent Mac CodeWarrior evidence from `/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior` as a class-name and signature oracle, while keeping Windows Ghidra/vptr/reccmp evidence authoritative.
 
 ## Canonical Commands
 
@@ -53,14 +54,16 @@ Maintenance:
 3. `just normalize-markers`
 4. `just vtable-gate`
 5. `just class-discovery`
-6. `just slice-discovery TGreatPower 0x004dc540`
-7. `jq . tmp_decomp/slice_discovery/tgreatpower_004dc540/class_candidate.json`
+6. `just mac-evidence`
+7. `just mac-evidence-check`
+8. `just slice-discovery TGreatPower 0x004dc540`
+9. `jq . tmp_decomp/slice_discovery/tgreatpower_004dc540/class_candidate.json`
 ## Baseline Snapshot
 
 1. Aligned functions: `100`
 2. Average similarity: `3.05%`
-3. Focus area: UI amount-bar class structures and destructors/lifecycles (`TShipAmtBar`, `TTraderAmtBar`, `TRailAmtBar`, `TAmtBar`)
-4. Current sub-focus: Member method alignments, global pointer mapping, and custom __thiscall calling conventions.
+3. Focus area: UI amount-bar class structures and lifecycles (`TShipAmtBar`, `TTraderAmtBar`, `TRailAmtBar`, `TAmtBar`)
+4. Current sub-focus: Mac-guided method signatures and sibling method naming for amount-bar lifecycle, clamp/zero-adjust, and `DrawAmt` virtuals.
 
 ## Active Constraints
 
@@ -72,3 +75,4 @@ Maintenance:
 6. Keep strict layout asserts only on proven-stable `TGreatPower` core offsets; keep tail offsets as non-fatal probes until tail stabilization.
 7. During class reconstruction, assert failures are often expected drift signals while size/structure are still in flux; treat them as investigation cues, not automatic regressions.
 8. Follow `docs/class_recovery.md`: MSVC ABI first, evidence object first, no base edge or class membership from naming alone.
+9. Mac CodeWarrior method names can guide renames and signatures, but cannot directly assign Windows addresses, vtable slots, calling conventions, or inheritance.

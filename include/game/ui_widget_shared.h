@@ -15,6 +15,17 @@ struct UiRuntimeContext {
 
 extern "C" UiRuntimeContext* g_pUiRuntimeContext;
 
+// Reusable QuickDraw clip-surface guard. The constructor reuses a cached surface
+// wrapper (global free-list head) or allocates a new one; the destructor caches
+// this surface if none is cached, otherwise frees it. Modeled as a stack RAII
+// object so MSVC reproduces the original C++ EH frame that wraps QuickDraw
+// drawing bodies. ctor: 0x00497320, dtor: 0x00497390 (defined in trade_screen.cpp).
+struct QuickDrawSurfaceGuard {
+  int surfaceWrapper;
+  QuickDrawSurfaceGuard();
+  ~QuickDrawSurfaceGuard();
+};
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 unsigned int __cdecl thunk_GetActiveNationId(void);
@@ -134,7 +145,7 @@ struct TradeControl {
   virtual char IsActionableSlotEC(void) = 0;
   virtual void CaptureLayoutSlotF0(int* buffer, int modeFlag) = 0;
   virtual void CaptureLayoutSlotF4(int* buffer, int modeFlag) = 0;
-  virtual void RefreshSlotF8(void) = 0;
+  virtual char RefreshSlotF8(void) = 0;
   virtual void CtrlSlot63(void) = 0;
   virtual void CtrlSlot64(void) = 0;
   virtual void CtrlSlot65(void) = 0;
@@ -146,7 +157,7 @@ struct TradeControl {
   virtual void CtrlSlot71(void) = 0;
   virtual void CtrlSlot72(void) = 0;
   virtual void CtrlSlot73(void) = 0;
-  virtual void CtrlSlot74(void) = 0;
+  virtual void QueryContentBoundsSlot128(int* boundsBuffer) = 0;
   virtual void QueryBoundsSlot12C(int* boundsBuffer) = 0;
   virtual void CtrlSlot76(void) = 0;
   virtual void CtrlSlot77(void) = 0;
@@ -211,11 +222,12 @@ struct TradeControl {
   __inline void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
   __inline void SetStyleState(int stateValue, int modeFlag);
   __inline void QueryBounds(int* boundsBuffer);
+  __inline void QueryContentBounds(int* boundsBuffer);
   __inline void ApplyBounds(int* boundsBuffer, int modeFlag);
   __inline void CaptureLayoutF0(int* buffer, int modeFlag);
   __inline void CaptureLayout(int* buffer, int modeFlag);
   __inline void CaptureLayoutPreset11_14();
-  __inline void Refresh();
+  __inline char Refresh();
   __inline void UpdateAfterBitmapChange(int unknownFlag);
   __inline void InvokeSlotE4();
   __inline void InvokeSlot1CC(int value, int modeFlag);
@@ -372,6 +384,10 @@ __inline void TradeControl::QueryBounds(int* boundsBuffer) {
   this->QueryBoundsSlot12C(boundsBuffer);
 }
 
+__inline void TradeControl::QueryContentBounds(int* boundsBuffer) {
+  this->QueryContentBoundsSlot128(boundsBuffer);
+}
+
 __inline void TradeControl::ApplyBounds(int* boundsBuffer, int modeFlag) {
   this->ApplyBoundsSlot168(boundsBuffer, modeFlag);
 }
@@ -389,8 +405,8 @@ __inline void TradeControl::CaptureLayoutPreset11_14() {
   CaptureLayout(layoutCapture, 1);
 }
 
-__inline void TradeControl::Refresh() {
-  this->RefreshSlotF8();
+__inline char TradeControl::Refresh() {
+  return this->RefreshSlotF8();
 }
 
 __inline void TradeControl::UpdateAfterBitmapChange(int unknownFlag) {

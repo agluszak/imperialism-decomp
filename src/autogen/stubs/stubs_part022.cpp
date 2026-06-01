@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
-// ghidra_proto void __thiscall PreTranslateMessageForDialogAndDispatchHotkey(void)
-// FUNCTION: IMPERIALISM 0x00604ba8
-undefined4 PreTranslateMessageForDialogAndDispatchHotkey(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpPaddingStub_00604c3c
-// ghidra_proto void __cdecl thunk_NoOpPaddingStub_00604c3c(void)
-// FUNCTION: IMPERIALISM 0x00604bcd
-undefined4 thunk_NoOpPaddingStub_00604c3c(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NoOpPaddingStub_00604c3c_00604C32
-// ghidra_proto void __cdecl thunk_NoOpPaddingStub_00604c3c_00604C32(void)
-// FUNCTION: IMPERIALISM 0x00604c32
-undefined4 thunk_NoOpPaddingStub_00604c3c_00604C32(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpPaddingStub_00604c3c
-// ghidra_proto void __cdecl NoOpPaddingStub_00604c3c(void)
-// FUNCTION: IMPERIALISM 0x00604c3c
-undefined4 NoOpPaddingStub_00604c3c(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructObjectVtable0066fc2cBase
 // ghidra_proto void * __fastcall ConstructObjectVtable0066fc2cBase(void * pThis)
 // FUNCTION: IMPERIALISM 0x00604cc6
@@ -3999,6 +3967,38 @@ undefined4 Seek_619d11(void)
 // ghidra_proto void __fastcall DispatchVirtualSlot54_NoArgs(void)
 // FUNCTION: IMPERIALISM 0x00619d82
 undefined4 DispatchVirtualSlot54_NoArgs(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AfxThrowNotSupportedException_At00619d87
+// ghidra_proto void __cdecl WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
+// FUNCTION: IMPERIALISM 0x00619d87
+undefined4 WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AfxThrowNotSupportedException_At00619d8f
+// ghidra_proto void __cdecl WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
+// FUNCTION: IMPERIALISM 0x00619d8f
+undefined4 WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97
+// ghidra_proto int __cdecl WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97(void)
+// FUNCTION: IMPERIALISM 0x00619d97
+undefined4 WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97(void)
+{
+  return 0;
+}
+
+// ghidra_name OnInitDialog_619e4e
+// ghidra_proto byte __cdecl OnInitDialog_619e4e(void)
+// FUNCTION: IMPERIALISM 0x00619e4e
+undefined4 OnInitDialog_619e4e(void)
 {
   return 0;
 }

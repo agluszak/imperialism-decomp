@@ -25,6 +25,7 @@ add_executable(Imperialism
     src/game/object_pool.cpp
     src/game/string_shared.cpp
     src/game/sprite.cpp
+    src/game/quickdraw_surface.cpp
     src/game/trade_screen.cpp
     src/game/ui_widget_wrappers.cpp
     src/game/TCivilianButton.cpp

@@ -69,6 +69,69 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
   ((void(__cdecl*)(int))thunk_NoOpUiLifecycleHook)(passthroughArg);
 }
 
+// FUNCTION: IMPERIALISM 0x00588690
+void TradeAmountBarLayout::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+  // ORIG_CALLCONV: __thiscall
+  QuickDrawSurfaceGuard surface;
+  short barRange = rangeOrMaxValue;
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  if (control->IsActionable() == 0 || control->Refresh() == 0) {
+    return;
+  }
+
+  int contentBounds[4];
+  control->QueryContentBounds(contentBounds);
+  ApplyRectClipRegion(contentBounds);
+
+  int frameBounds[4];
+  control->QueryBounds(frameBounds);
+
+  control->CtrlSlot78();
+
+  short controlWidth = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34);
+  short controlHeight = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38);
+
+  RECT panelRect;
+  panelRect.left = frameBounds[0];
+  panelRect.top = frameBounds[1];
+  panelRect.right = frameBounds[0] + (int)controlWidth;
+  panelRect.bottom = frameBounds[1] + (int)controlHeight;
+
+  RECT contentRect;
+  contentRect.left = contentBounds[0];
+  contentRect.top = contentBounds[1];
+  contentRect.right = contentBounds[2];
+  contentRect.bottom = contentBounds[3];
+
+  reinterpret_cast<void(__cdecl*)(void*, void*, RECT*, RECT*, int, int)>(
+      BlitRectWithOptionalTransparency)(
+      reinterpret_cast<void*>(ReadIntAt(kAddrPrimaryRenderSurfaceContext) + 4),
+      reinterpret_cast<void*>(ReadIntAt(kAddrActiveQuickDrawSurfaceContext) + 4), &panelRect,
+      &contentRect, 0, 0);
+
+  short guideValue = 0;
+  if (barRange > 0) {
+    SetQuickDrawTextOrigin(0, 1);
+    CallUiRuntimeSlot34(g_pUiRuntimeContext, auxValueB);
+    SetQuickDrawStylePair(1, 7);
+    guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
+    DrawCenteredGuideLine((short)(guideValue - 1), 1);
+    reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  }
+
+  short fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
+  SetQuickDrawTextOrigin(fillOrigin, 4);
+  reinterpret_cast<void(__cdecl*)()>(SetQuickDrawFillColor)();
+  SetQuickDrawStylePair(1, 1);
+  DrawCenteredGuideLine(controlWidth, 4);
+  SetQuickDrawTextOrigin(stepOrCurrentValue, 0);
+  reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  DrawCenteredGuideLine((short)(stepOrCurrentValue - 1), controlHeight);
+  reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(0);
+}
+
 // GHIDRA_NAME OrphanCallChain_C2_I15_00588630
 // GHIDRA_PROTO undefined OrphanCallChain_C2_I15_00588630()
 // GHIDRA_COMMENT_BEGIN

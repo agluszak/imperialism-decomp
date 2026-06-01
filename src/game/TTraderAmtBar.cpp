@@ -5,9 +5,9 @@
 
 
 // FUNCTION: IMPERIALISM 0x0058ae30
-TradeAmountBarLayout* __cdecl CreateTTraderAmtBarInstance(void) {
-  TradeAmountBarLayout* amountBar =
-      reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x68));
+TTraderAmtBarState* __cdecl CreateTTraderAmtBarInstance(void) {
+  TTraderAmtBarState* amountBar =
+      reinterpret_cast<TTraderAmtBarState*>(AllocateWithFallbackHandler(0x68));
   if (amountBar != 0) {
     TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
     amountBar->rangeOrMaxValue = 0;
@@ -25,8 +25,7 @@ void* __cdecl GetTTraderAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058aef0
-TradeAmountBarLayout* __fastcall
-ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmountBarLayout* amountBar) {
+TTraderAmtBarState* __fastcall ConstructTTraderAmtBarBaseState(TTraderAmtBarState* amountBar) {
   TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
   amountBar->vftable = reinterpret_cast<void*>(&g_vtblTTraderAmtBar);
   amountBar->rangeOrMaxValue = 0;
@@ -39,9 +38,9 @@ ConstructTTraderAmtBar_Vtbl00666ba0(TradeAmountBarLayout* amountBar) {
 void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar);
 
 // FUNCTION: IMPERIALISM 0x0058af30
-TradeAmountBarLayout* __fastcall DestructTTraderAmtBarMaybeFree(TradeAmountBarLayout* amountBar,
-                                                                int unusedEdx,
-                                                                unsigned char freeSelfFlag) {
+TTraderAmtBarState* __fastcall DestructTTraderAmtBarMaybeFree(TTraderAmtBarState* amountBar,
+                                                              int unusedEdx,
+                                                              unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructTViewBaseState_0058AF60(reinterpret_cast<TView*>(amountBar));
   if ((freeSelfFlag & 1) != 0) {
@@ -66,30 +65,31 @@ const int kScenarioRecordTags[] = {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058af80
-void TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode() {
+void TTraderAmtBarState::DoPostCreate(TDocument* document) {
   TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
+  NationState* nationState =
+      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
   int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(state->ownerContext) + 0x1c);
 
-  int recordIndex = 0;
+  short recordIndex = 0;
   while (recordIndex < 0x11) {
     if (kScenarioRecordTags[recordIndex] == scenarioTag) {
       break;
     }
-    recordIndex++;
+    recordIndex = (short)(recordIndex + 1);
   }
 
-  NationState* nationState = GetNationStateBySlot(QueryActiveNationId());
   short tradeCapacity = nationState != 0 ? nationState->tradeCapacity : 0;
   if (tradeCapacity == 0) {
     stepOrCurrentValue = 0;
   } else {
-    short currentValue = CallQueryNationMetricBySlot78(nationState, (short)recordIndex);
+    short currentValue = CallQueryNationMetricBySlot78(nationState, recordIndex);
     stepOrCurrentValue = (short)(((int)currentValue * state->barRangeRaw) / (int)tradeCapacity);
   }
 
   short gaugeValue = 0;
   if (nationState != 0) {
-    gaugeValue = CallQueryNationMetricBySlot7C(nationState, (short)recordIndex);
+    gaugeValue = CallQueryNationMetricBySlot7C(nationState, recordIndex);
   }
   if (tradeCapacity == 0) {
     rangeOrMaxValue = 0;
@@ -99,25 +99,25 @@ void TradeAmountBarLayout::UpdateNationStateGaugeValuesFromScenarioRecordCode() 
 
   auxValueA = tradeCapacity;
   auxValueB = 0x37;
-  thunk_NoOpUiLifecycleHook();
+  reinterpret_cast<TView*>(this)->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
-void __fastcall WrapperFor_GetActiveNationId_At0058b070(TradeAmountBarLayout* amountBar,
-                                                        int unusedEdx, short requestedValue) {
-  (void)unusedEdx;
-  if (requestedValue <= 0) {
-    return;
+short TTraderAmtBarState::AdjustForZero(short priorResult, short requestedValue) {
+  short result = priorResult;
+  if (requestedValue > 0) {
+    NationState* nationState =
+        reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+    short tradeCapacity = nationState->tradeCapacity;
+    if (tradeCapacity != 0) {
+      TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
+      if ((int)requestedValue < (state->barRangeRaw / (int)tradeCapacity)) {
+        TradeControl* sellControl = ResolveOwnerControl(state->ownerContext, kControlTagSell);
+        if (sellControl != 0) {
+          result = 1;
+        }
+      }
+    }
   }
-
-  NationState* nationState = GetNationStateBySlot(QueryActiveNationId());
-  short tradeCapacity = nationState != 0 ? nationState->tradeCapacity : 0;
-  if (tradeCapacity == 0) {
-    return;
-  }
-
-  TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(amountBar);
-  if ((int)requestedValue < (state->barRangeRaw / (int)tradeCapacity)) {
-    ResolveOwnerControl(state->ownerContext, kControlTagSell);
-  }
+  return result;
 }

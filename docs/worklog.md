@@ -2,6 +2,73 @@
 
 ## 2026-06-01
 
+### Mac-guided amount-bar method recovery
+
+1. Scope:
+   1. `src/game/TShipAmtBar.cpp`
+   2. `src/game/TTraderAmtBar.cpp`
+   3. `src/game/TIndustryAmtBar.cpp`
+   4. `src/game/TRailAmtBar.cpp`
+   5. `src/game/trade_screen.cpp`
+   6. `config/symbols.csv`
+2. Mac evidence used:
+   1. `TShipAmtBar`: `_DefaultConstructor`, `DoPostCreate(TDocument*)`, `DrawAmt`, constructor, `GetClassDescDynamic() const`.
+   2. `TTraderAmtBar`: `_DefaultConstructor`, `DoPostCreate(TDocument*)`, `DrawAmt`, `AdjustForZero(short, short)`, constructor, classdesc helpers.
+3. Changes:
+   1. Introduced provisional `TShipAmtBarState` and `TTraderAmtBarState` typed views for this vertical slice.
+   2. Introduced provisional `TIndustryAmtBarState` and `TRailAmtBarState` typed views for sibling lifecycle/name recovery.
+   3. Renamed `0x0058ABF0` from `SelectTradeSpecialCommodityAndRecomputeBarLimits(int)` to `TShipAmtBar::DoPostCreate(TDocument*)`.
+   4. Renamed `0x0058AF80` from generic nation-gauge update to `TTraderAmtBar::DoPostCreate(TDocument*)`.
+   5. Renamed `0x00589260` to `TIndustryAmtBar::DoPostCreate(TDocument*)`.
+   6. Renamed `0x0058A020` to `TRailAmtBar::DoPostCreate(TDocument*)`.
+   7. Renamed and reshaped `0x0058B070` from `WrapperFor_GetActiveNationId_At0058b070` to `TTraderAmtBar::AdjustForZero(short, short)`.
+   8. Renamed the four amount-bar render bodies to sibling `DrawAmt()` methods where Mac evidence lists the method:
+      1. `0x00589340`: `TIndustryAmtBar::DrawAmt`
+      2. `0x0058A1B0`: `TRailAmtBar::DrawAmt`
+      3. `0x0058AC80`: `TShipAmtBar::DrawAmt`
+      4. `0x0058B0F0`: `TTraderAmtBar::DrawAmt`
+   9. Routed lifecycle completion through `TView::thunk_NoOpUiLifecycleHook` to preserve the observed member-call shape.
+4. Validation:
+   1. `just build`: passed.
+   2. `just detect`: passed.
+   3. `just compare 0x0058abf0`: `93.33%`.
+   4. `just compare 0x0058af80`: `57.81%` (up from `16.18%` at start of this pass).
+   5. `just compare 0x0058b070`: `77.61%` (up from `49.12%` at start of this pass).
+   6. `just compare 0x00589260`: `61.26%` (up from `44.90%` at start of this pass).
+   7. `just compare 0x0058a020`: `46.23%` (up from `37.96%` at start of this pass).
+   8. `just compare 0x00589340`: `31.21%`.
+   9. `just compare 0x0058ac80`: `25.68%`.
+   10. `just compare 0x0058b0f0`: `13.70%`.
+   11. `just compare-canaries`: passed, `below_floor=0`, `parse_error=0`.
+   12. `just stats`: aligned functions `100`, average similarity `3.06%`.
+5. Lesson:
+   1. For Mac-guided class slices, first test true method signatures and stack args; this can reveal the correct virtual/lifecycle role before any inheritance decision.
+
+### Mac CodeWarrior evidence integration
+
+1. Added persistent Mac evidence tooling:
+   1. `tools/workflow/macos_evidence.py`
+   2. `just mac-evidence`
+   3. `just mac-evidence-check`
+2. Evidence workspace is outside git at `/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior`.
+3. Extended `slice_discovery.py` so `class_candidate.json` includes `external_evidence.macos_codewarrior` when persistent Mac evidence has been generated.
+4. Evidence policy:
+   1. Mac CodeWarrior symbols guide class names, method names, and likely signatures.
+   2. Windows Ghidra/vptr/vtable/reccmp evidence remains authoritative for addresses, calling conventions, vtable slots, and inheritance.
+5. Generated and validated persistent evidence:
+   1. `just mac-evidence`: `classes=524`, `symbols=6758`, output `/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior/evidence`.
+   2. `just mac-evidence-check`: passed.
+6. Verified slice attachment:
+   1. `just slice-discovery TGreatPower 0x004dc540`: Mac evidence attached for `TGreatPower` with `170` normalized method records.
+   2. Synthetic `Candidate_666998` slice for `0x0058AAA0`/vftable `0x00666998`: Mac evidence attached for `TShipAmtBar` with `5` normalized method records.
+7. Verification:
+   1. `just tooling-check`: passed.
+   2. `uv run python -m compileall tools/workflow/macos_evidence.py tools/workflow/slice_discovery.py`: passed.
+   3. `just build`: passed.
+   4. `just detect`: passed.
+   5. `just compare-canaries`: passed, `below_floor=0`, `parse_error=0`.
+   6. `just stats`: average similarity `3.05%`, aligned functions `100`, no metric movement expected from tooling-only changes.
+
 ### Class/tooling detour for vertical-slice work
 
 1. Downgraded the sibling knowledge environment through `uv` so the moved checkout can run again:
@@ -605,3 +672,126 @@
    - `SelectTradeSpecialCommodityAndRecomputeBarLimits` similarity rose to **93.33%** (was 87.27%).
    - Aligned functions count is at **100**, average similarity is **3.05%**.
    - Canary targets verified and fully passing (`below_floor=0`).
+
+### QuickDraw Surface RAII Guard + EH-RAII Architecture Pass (2026-06-01)
+
+1. Discovery (Ghidra evidence, via `imperialism_knowledge` pyghidra):
+   - The amount-bar `DrawAmt` bodies were low (13-31%) because the original wraps
+     them in an **MSVC C++ EH frame** (`push -1; push __ehhandler; mov fs:[0]`)
+     around a **local RAII guard object**: a QuickDraw "reusable surface" whose
+     thiscall ctor is `AcquireReusableQuickDrawSurface` (`0x00497320`) and thiscall
+     dtor is `ReleaseOrCacheQuickDrawSurface` (`0x00497390`). The manual code called
+     these as free `(void)` functions, so MSVC emitted no EH frame and no object.
+   - Original callsites reach the ctor/dtor/helpers through **ILT thunks**
+     (`0x4021c1->0x497320`, `0x409aac->0x497390`, `0x40232e->0x495920`).
+   - `ApplyHitRegionToClipState` (`0x00495920`) takes the guard's surface-wrapper
+     field as an `int` arg (push of `[esp+8]`).
+2. Implementation (`src/game/trade_screen.cpp`):
+   - Added `struct QuickDrawSurfaceGuard { int surfaceWrapper; ctor; dtor; };`.
+   - Implemented ctor `0x00497320` and dtor `0x00497390` out-of-line (ported from
+     Ghidra), owning those addresses (`just sync-ownership` + `regen-stubs`).
+   - Added global `g_pReusableQuickDrawSurfaceListHead` (`0x6a1c98`) and
+     `kQuickDrawCppPath` ("D:\Ambit\QuickDraw.cpp", assert string at `0x695168`).
+   - Converted all 6 callers (4 `DrawAmt` siblings + 2 `RenderQuickDrawOverlay*`)
+     from free Acquire/Release calls to a stack `QuickDrawSurfaceGuard surface;`
+     plus `ApplyHitRegionToClipState(surface.surfaceWrapper)`; removed the trailing
+     `ReleaseOrCacheQuickDrawSurface()` (dtor now runs implicitly => EH frame).
+3. Results (targeted `just compare`):
+   - NEW (previously 0%/unmatched stubs, now paired+scored): `0x00497320` ctor
+     `0.00% -> 62.75%`; `0x00497390` dtor `0.00% -> 74.58%`. Not yet 100%, so the
+     `aligned` 100%-match count stays 100; aggregate avg similarity `3.05% -> 3.08%`.
+   - `0x00589340` TIndustryAmtBar::DrawAmt `31.21% -> 37.44%`.
+   - `0x0058a1b0` TRailAmtBar::DrawAmt    `~25%   -> 33.33%`.
+   - `0x0058ac80` TShipAmtBar::DrawAmt    `25.68% -> 40.22%`.
+   - `0x0058b0f0` TTraderAmtBar::DrawAmt  `13.70% -> 21.84%`.
+   - `just compare-canaries`: `below_floor=0` (no regressions).
+4. Negative result: forcing FPO on `DrawAmt` via `#pragma optimize("y", on)`
+   *lowered* the score (37.44% -> 33.33%): MSVC then promotes `ebx`/`ebp` as scratch
+   (`xor ebx,ebx; cmp esi,ebx`), diverging more than the kept-frame build even though
+   the original is FPO with only esi/edi. Reverted. Remaining DrawAmt gap is
+   register-allocation / immediate-vs-zero-reg, not structural.
+5. Architecture survey (saved to `tmp_decomp/eh_functions.json`):
+   - **966** functions in the binary use the MSVC C++ EH prologue.
+   - Clustered by the ctor called immediately after the prologue (leading RAII guard):
+     - `InitializeSharedStringRefFromEmpty` (`0x605797`): **112** functions.
+     - `ConstructSharedStringFromCStrOrResourceId` (`0x605950`): **26**.
+     - `AcquireReusableQuickDrawSurface` (`0x497320`): **13** (6 now owned/converted).
+     - smaller clusters: dialog-template inits, scoped map QuickDraw context, etc.
+   - The shared-string clusters (138 fns) already carry their guard: the `StringShared`
+     class has a non-trivial dtor, so those functions ALREADY emit the EH frame; their
+     residual gaps are body-level (e.g. original keeps `this` in `esi`, we get `edi`;
+     differing format-call signatures), not the structural EH gap. The architectural
+     lever applies specifically to acquire/release pairs still modeled as **free
+     functions** (QuickDraw was the live instance).
+
+### QuickDrawSurfaceGuard shared + unowned-target survey (2026-06-01, cont.)
+
+1. Refactor (enables cross-TU reuse):
+   - Moved `struct QuickDrawSurfaceGuard` to `include/game/ui_widget_shared.h`
+     (external linkage); ctor `0x00497320` / dtor `0x00497390` definitions and
+     global `g_pReusableQuickDrawSurfaceListHead` (`0x6a1c98`) moved to file scope
+     in `trade_screen.cpp` (out of the anonymous namespace).
+   - `just build` clean; scores held / improved (ctor `62.75% -> 70.59%` with
+     external linkage; DrawAmt unchanged).
+2. Surveyed the 13 QuickDraw-guard functions: 6 owned+converted; 7 unowned, each a
+   full new decompilation (Ghidra dumps captured). Classified by effort:
+   - `0x00588690` `TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache` (549) —
+     set-up class (TAmtBar.cpp, FPO on); needs vtable slot `+0x128` facade + a
+     two-pass styled-text block + RECT juggling.
+   - `0x00596100` `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (278, cdecl
+     free fn) — needs a home file; FPO `unaff_*` regs + 1 unnamed thunk.
+   - `0x004bc9b0` `TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip`
+     (244) — autogen class only; 3 unnamed thunks.
+   - `0x004a05c0` `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip`
+     (336) — NO manual class file; needs class scaffolding.
+   - `0x004f6170` `TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent` (563).
+   - `0x005d8cc0` `HandleTurnEventVtableSlotA0SyncStatusPanel` (206, cdecl free fn).
+   - `0x005921c0` `TTransportPicture::RenderTransportPictureGaugeAndLabels` (1240) —
+     largest; defer.
+   - Common pattern confirmed: each begins `QuickDrawSurfaceGuard surface;` + the EH
+     frame; bodies reuse the established QuickDraw helper vocabulary
+     (`ApplyHitRegionToClipState`, `SetQuickDrawTextOriginWithContextOffset` 0x497c80,
+     `DrawCenteredGuideLineOnMapDc` 0x497d10, `SetQuickDrawStylePair...` 0x495310,
+     `ApplyRectClipRegionToGlobalClipState` 0x495a80, `BlitRectWithOptionalTransparency`,
+     `SnapshotHitRegionToClipCache`) over globals `g_pPrimaryRenderSurfaceContext`
+     (0x6a30a8), `g_pActiveQuickDrawSurfaceContext` (0x6a1d60).
+   - Reusable Ghidra dump helper at `imperialism_knowledge/` scratch
+     (`/tmp/dump_fn.py`): decompile + listing for any address list.
+
+### QuickDraw shared-helper vocabulary pass (2026-06-01, cont.)
+
+1. New file `src/game/quickdraw_surface.cpp` (added to CMake; `#pragma optimize("y", on)`
+   file-wide because these helpers are FPO in the original). Hosts the shared QuickDraw
+   stroke/clip-state primitives called by every UI DrawAmt/Render body.
+2. Implemented:
+   - `0x00495310` `SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty` (3 global writes) -> **100%**.
+     Globals: `g_nQuickDrawStrokeStylePrimary` (0x6a1d08), `g_nQuickDrawStrokeStyleSecondary`
+     (0x6a1d0c), `g_bQuickDrawStrokePairDirty` (0x6a1db4).
+   - `0x00495a30` `SnapshotHitRegionToClipCache(int* clipDescriptor)` -> 0% -> **37.84%**
+     (prologue + branch now match; residual is push scheduling). Global
+     `g_pGlobalClipRegionHandleObject` (0x6a1da8); import `CombineRgn`. Aligned trade_screen's
+     extern decl to the real `void(int*)` signature (callsites use fn-ptr casts, unaffected).
+3. Findings (-> INSTRUCTIONS #38, expanded):
+   - FPO is target-dependent: enabling it took the leaf helper 53% -> 100%, but it HURT the
+     complex EH-RAII DrawAmt bodies. Decide per function class.
+   - Mirror the compiler's pointer-offset reuse (`add eax,0x14` then `[eax+4]`) in C++ to
+     avoid recompute drift (25% -> 37.84% on Snapshot).
+4. `just stats`: aligned functions (100%) `100 -> 101`; avg similarity `3.08% -> 3.09%`.
+   `just compare-canaries`: `below_floor=0`.
+
+### Promote TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache (2026-06-01, cont.)
+
+1. `0x00588690` `TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache` (549B) promoted into
+   `src/game/TAmtBar.cpp` (FPO on), reusing `QuickDrawSurfaceGuard` and the established
+   QuickDraw helper vocabulary: 0% -> **39.73%**.
+2. Contract refinements (verified safe — all callers ignore returns / unused slot):
+   - `TradeControl::RefreshSlotF8` void -> **char** (+ `Refresh()` returns char); this fn checks
+     the slot-0xF8 draw flag directly (`if (IsActionable() && Refresh())`). DrawAmt callers
+     use it as a statement -> unchanged (0x589340 37.44%, 0x58ac80 40.22%, 0x58b0f0 21.84%).
+   - Renamed unused virtual `CtrlSlot74` (slot 0x128) -> `QueryContentBoundsSlot128(int*)` with
+     `QueryContentBounds()` wrapper; slot 0x128 is a distinct bounds-capture used here.
+   - Added `kAddrPrimaryRenderSurfaceContext` (0x6a30a8).
+3. Known residual gaps (not chased): the original's overlapping-stack RECT aliasing, the
+   `CtrlSlot78(&overlayParams)` buffer arg (kept no-arg to avoid changing 6 working callers),
+   and `SetQuickDrawFillColor` arg form. Body is structurally faithful otherwise.
+4. `just compare-canaries` below_floor=0; avg similarity 3.09% -> 3.10%.

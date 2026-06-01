@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_ftol_At0049db60
-// ghidra_proto void __cdecl WrapperFor_ftol_At0049db60(void)
-// FUNCTION: IMPERIALISM 0x0049db60
-undefined4 WrapperFor_ftol_At0049db60(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTurnEventPacket_Vtbl0064c130
-// ghidra_proto void * __cdecl CreateTurnEventPacket_Vtbl0064c130(void)
-// FUNCTION: IMPERIALISM 0x0049dd40
-undefined4 CreateTurnEventPacket_Vtbl0064c130(void)
-{
-  return 0;
-}
-
-// ghidra_name ReinitializeGameFlowWithoutPostingTurnEvent
-// ghidra_proto void __cdecl ReinitializeGameFlowWithoutPostingTurnEvent(void)
-// FUNCTION: IMPERIALISM 0x0049ddb0
-undefined4 ReinitializeGameFlowWithoutPostingTurnEvent(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
-// FUNCTION: IMPERIALISM 0x0049ddd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::CreateTNewGameCommandInstance
 // ghidra_proto void __thiscall CreateTNewGameCommandInstance(void)
 // FUNCTION: IMPERIALISM 0x0049de00
@@ -3999,6 +3967,38 @@ undefined4 DestructTCityProductionViewAndMaybeFree(void)
 // ghidra_proto void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)
 // FUNCTION: IMPERIALISM 0x004ba3b0
 undefined4 InitializeCityBuildingControlRegions(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::ReleaseCityBuildingControls
+// ghidra_proto void __thiscall ReleaseCityBuildingControls(void)
+// FUNCTION: IMPERIALISM 0x004ba740
+undefined4 ReleaseCityBuildingControls(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::RenderCityBuildingIcons
+// ghidra_proto void __thiscall RenderCityBuildingIcons(tagRECT * pTargetRect)
+// FUNCTION: IMPERIALISM 0x004ba7b0
+undefined4 RenderCityBuildingIcons(void)
+{
+  return 0;
+}
+
+// ghidra_name BlitBitmapResourceRectWithScreenOffsetAndPalette
+// ghidra_proto void __cdecl BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
+// FUNCTION: IMPERIALISM 0x004bac50
+undefined4 BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
+{
+  return 0;
+}
+
+// ghidra_name TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
+// ghidra_proto void __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
+// FUNCTION: IMPERIALISM 0x004badd0
+undefined4 RenderNationHeaderDateLabelWithPeriodicRefresh(void)
 {
   return 0;
 }

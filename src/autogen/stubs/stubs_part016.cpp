@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTraderForeignMinister::DestructTTraderForeignMinister
-// ghidra_proto void __thiscall DestructTTraderForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x00533940
-undefined4 DestructTTraderForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::InitializeTraderForeignMinisterOrderCandidates
-// ghidra_proto void __thiscall InitializeTraderForeignMinisterOrderCandidates(void)
-// FUNCTION: IMPERIALISM 0x00533960
-undefined4 InitializeTraderForeignMinisterOrderCandidates(void)
-{
-  return 0;
-}
-
-// ghidra_name RunForeignMinisterPolicySlot28VariantC
-// ghidra_proto void __fastcall RunForeignMinisterPolicySlot28VariantC(void)
-// FUNCTION: IMPERIALISM 0x00533b10
-undefined4 RunForeignMinisterPolicySlot28VariantC(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchNationInteractionAmountWithFallbackVariant
-// ghidra_proto void __cdecl DispatchNationInteractionAmountWithFallbackVariant(void)
-// FUNCTION: IMPERIALISM 0x00533db0
-undefined4 DispatchNationInteractionAmountWithFallbackVariant(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::QueueTraderFourRandomTerrainActionsCode133
 // ghidra_proto void __thiscall QueueTraderFourRandomTerrainActionsCode133(void)
 // FUNCTION: IMPERIALISM 0x00533e90
@@ -3999,6 +3967,38 @@ undefined4 DeserializeNavyPrimaryOrderNodeFromStream(void)
 // ghidra_proto void __cdecl RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
 // FUNCTION: IMPERIALISM 0x0054fbf0
 undefined4 RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeGlobalCapabilityAverages
+// ghidra_proto void __cdecl RecomputeGlobalCapabilityAverages(void)
+// FUNCTION: IMPERIALISM 0x0054fd50
+undefined4 RecomputeGlobalCapabilityAverages(void)
+{
+  return 0;
+}
+
+// ghidra_name GetNavyContextPointerFromGlobalTableByIndex
+// ghidra_proto void * __cdecl GetNavyContextPointerFromGlobalTableByIndex(void)
+// FUNCTION: IMPERIALISM 0x0054fee0
+undefined4 GetNavyContextPointerFromGlobalTableByIndex(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeNavyOrderPriorityContributionPercentByCategory
+// ghidra_proto uint __fastcall ComputeNavyOrderPriorityContributionPercentByCategory(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x0054ff00
+undefined4 ComputeNavyOrderPriorityContributionPercentByCategory(void)
+{
+  return 0;
+}
+
+// ghidra_name GetNormalizedIndustryActionResourceCostPercent
+// ghidra_proto void __cdecl GetNormalizedIndustryActionResourceCostPercent(void)
+// FUNCTION: IMPERIALISM 0x00550090
+undefined4 GetNormalizedIndustryActionResourceCostPercent(void)
 {
   return 0;
 }
