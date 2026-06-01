@@ -59,6 +59,7 @@ address|target_cpp|ownership|note
 406915|src/game/TGreatPower.cpp|manual|marker_sync
 406965|src/game/TShipyardCluster.cpp|manual|marker_sync
 406a46|src/game/TGreatPower.cpp|manual|marker_sync
+406aaf|src/game/diplomacy_state.cpp|manual|marker_sync
 406b2c|src/game/TGreatPower.cpp|manual|marker_sync
 406ba9|src/game/TView.cpp|manual|marker_sync
 406c49|src/game/TGreatPower.cpp|manual|marker_sync
@@ -185,6 +186,8 @@ address|target_cpp|ownership|note
 4ef600|src/game/diplomacy_state.cpp|manual|marker_sync
 4ef650|src/game/diplomacy_state.cpp|manual|marker_sync
 4f09c0|src/game/diplomacy_state.cpp|manual|marker_sync
+4f0a10|src/game/diplomacy_state.cpp|manual|marker_sync
+4f0db0|src/game/diplomacy_state.cpp|manual|marker_sync
 4f5e00|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f5fb0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f6170|src/game/TDiplomacyMapView.cpp|manual|marker_sync

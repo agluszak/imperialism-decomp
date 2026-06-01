@@ -690,10 +690,59 @@ static __inline void VCall_Diplomacy_SetRelationCodeSlot74WithMode(void* object,
   fn(object, 0, arg0, arg1, arg2, arg3);
 }
 
+// set/query relation dispatch code and return owner nation; class=DiplomacyTurnStateManager; status=provisional
+static __inline int VCall_Diplomacy_SetRelationCodeSlot94(void* object, int arg0, int arg1, int arg2) {
+  typedef int (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
+  return fn(object, 0, arg0, arg1, arg2);
+}
+
+// localization/event table fallback dispatch; class=LocalizationTable; status=provisional
+static __inline void VCall_LocalizationTable_CallSlot44(void* object) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x44 / 4)));
+  fn(object, 0);
+}
+
+// nation-state transition compatibility check; class=NationState; status=provisional
+static __inline int VCall_NationState_CheckTransitionSlot27C(void* object, int arg0, int arg1) {
+  typedef int (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x27C / 4)));
+  return fn(object, 0, arg0, arg1);
+}
+
+// nation-state propagate war transition; class=NationState; status=provisional
+static __inline int VCall_NationState_PropagateWarTransitionSlot280(void* object, int arg0, int arg1, int arg2) {
+  typedef int (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x280 / 4)));
+  return fn(object, 0, arg0, arg1, arg2);
+}
+
+// enqueue constructed turn-event packet; class=TurnEventQueue; status=provisional
+static __inline void VCall_TurnEventQueue_EnqueueSlot38(void* object, void* arg0) {
+  typedef void (__fastcall * Fn)(void*, int, void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
+  fn(object, 0, arg0);
+}
+
+// pending war transition queue first pair record; class=WarTransitionQueue; status=provisional
+static __inline void* VCall_WarTransitionQueue_PeekFirstPairSlot34(void* object) {
+  typedef void* (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x34 / 4)));
+  return fn(object, 0);
+}
+
 // pending war transition queue push pair record; class=WarTransitionQueue; status=provisional
 static __inline void VCall_WarTransitionQueue_PushPairSlot40(void* object, void* arg0) {
   typedef void (__fastcall * Fn)(void*, int, void*);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
+  fn(object, 0, arg0);
+}
+
+// pending war transition queue remove first record; class=WarTransitionQueue; status=provisional
+static __inline void VCall_WarTransitionQueue_RemoveFirstPairSlot30(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x30 / 4)));
   fn(object, 0, arg0);
 }
 

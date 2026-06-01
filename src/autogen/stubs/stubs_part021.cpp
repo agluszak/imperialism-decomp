@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_DrawTextA_FromDcField04_At005e6f5b
-// ghidra_proto void __thiscall WrapperFor_DrawTextA_FromDcField04_At005e6f5b(void)
-// FUNCTION: IMPERIALISM 0x005e6f5b
-undefined4 WrapperFor_DrawTextA_FromDcField04_At005e6f5b(void)
-{
-  return 0;
-}
-
-// ghidra_name CallGrayStringAOnStoredHdcWithOptionalBrush
-// ghidra_proto void __thiscall CallGrayStringAOnStoredHdcWithOptionalBrush(void)
-// FUNCTION: IMPERIALISM 0x005e6f77
-undefined4 CallGrayStringAOnStoredHdcWithOptionalBrush(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Escape_FromDcField04_At005e6fa7
-// ghidra_proto void __thiscall WrapperFor_Escape_FromDcField04_At005e6fa7(void)
-// FUNCTION: IMPERIALISM 0x005e6fa7
-undefined4 WrapperFor_Escape_FromDcField04_At005e6fa7(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3
 // ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3(void)
 // FUNCTION: IMPERIALISM 0x005e6fc3
@@ -3999,6 +3975,30 @@ undefined4 SetAt(void)
 // ghidra_proto void __cdecl WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1(void)
 // FUNCTION: IMPERIALISM 0x00605ea1
 undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605ea1(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5
+// ghidra_proto void __cdecl WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5(void)
+// FUNCTION: IMPERIALISM 0x00605eb5
+undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5(void)
+{
+  return 0;
+}
+
+// ghidra_name wcstombsz
+// ghidra_proto int __cdecl wcstombsz(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00605ec9
+undefined4 wcstombsz(void)
+{
+  return 0;
+}
+
+// ghidra_name mbstowcsz
+// ghidra_proto int __cdecl mbstowcsz(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00605eff
+undefined4 mbstowcsz(void)
 {
   return 0;
 }

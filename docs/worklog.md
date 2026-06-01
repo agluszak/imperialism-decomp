@@ -1269,3 +1269,20 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just build`, `just detect`, `just vtable-gate`: clean.
    - `just compare-canaries`: `below_floor=0`.
    - `just stats`: avg similarity **3.24%**, aligned functions **102**, dropped duplicate addresses **0**.
+
+### Diplomacy queued-war backend processor (2026-06-01, cont.)
+
+1. Promoted the queued-war processor chain in `src/game/diplomacy_state.cpp`:
+   - `0x004f0a10` `DiplomacyTurnStateManager::ProcessQueuedWarTransitions`: stub -> **41.82%**.
+   - `0x00406aaf` `DiplomacyTurnStateManager::thunk_ProcessQueuedWarTransitions`: **100%**.
+   - `0x004f0db0` `DispatchProcessQueuedWarTransitions`: **100%**.
+2. Corrected the calling-convention model after listing evidence: `0x004f0db0` is not a `__fastcall` method body; it is a global wrapper that loads `g_pDiplomacyTurnStateManager` from `0x006a43d0` into `ecx` and jumps to the method-style thunk at `0x00406aaf`.
+3. Added provisional facades for the connected backend:
+   - `VCall_WarTransitionQueue_PeekFirstPairSlot34`
+   - `VCall_WarTransitionQueue_RemoveFirstPairSlot30`
+   - `VCall_Diplomacy_SetRelationCodeSlot94`
+   - `VCall_NationState_CheckTransitionSlot27C`
+   - `VCall_NationState_PropagateWarTransitionSlot280`
+   - `VCall_TurnEventQueue_EnqueueSlot38`
+   - `VCall_LocalizationTable_CallSlot44`
+4. New evidence: the processor drains `pendingWarTransitionQueue18d4`, mutates relation slot `0x74`, queues bidirectional inter-nation event records through `0x00406758`, propagates alliance/war effects through nation-state slots `0x27c`/`0x280`, and enqueues a `NeXT` turn-event packet (`vtable 0x00654e50`) when propagation did not consume the transition.

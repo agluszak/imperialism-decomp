@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNewGameCommand::ConstructTNewGameCommandBaseState
-// ghidra_proto void * __cdecl ConstructTNewGameCommandBaseState(void)
-// FUNCTION: IMPERIALISM 0x0049de40
-undefined4 ConstructTNewGameCommandBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TAmbitApplication::GetTAmbitApplicationClassNamePointer
 // ghidra_proto void * __cdecl GetTAmbitApplicationClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0049deb0
@@ -3999,6 +3991,14 @@ undefined4 HandleCityBuildingSlotClickAndDispatchAction(void)
 // ghidra_proto void __cdecl WrapperFor_IsPointInsideHitRegion_At004bc870(void)
 // FUNCTION: IMPERIALISM 0x004bc870
 undefined4 WrapperFor_IsPointInsideHitRegion_At004bc870(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C5_I49_004bc910
+// ghidra_proto void __cdecl OrphanCallChain_C5_I49_004bc910(void)
+// FUNCTION: IMPERIALISM 0x004bc910
+undefined4 OrphanCallChain_C5_I49_004bc910(void)
 {
   return 0;
 }

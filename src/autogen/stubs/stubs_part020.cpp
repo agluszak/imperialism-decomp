@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradeOfferNationView::CreateTTradeOfferNationViewInstance
-// ghidra_proto void * __cdecl CreateTTradeOfferNationViewInstance(void)
-// FUNCTION: IMPERIALISM 0x005bd1f0
-undefined4 CreateTTradeOfferNationViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer
-// ghidra_proto void * __cdecl GetTTradeOfferNationViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005bd260
-undefined4 GetTTradeOfferNationViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState
-// ghidra_proto void __thiscall ConstructTTradeOfferNationViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x005bd2d0
-undefined4 ConstructTTradeOfferNationViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageBuyView::CreateTTradePageBuyViewInstance
 // ghidra_proto void * __cdecl CreateTTradePageBuyViewInstance(void)
 // FUNCTION: IMPERIALISM 0x005bd5f0
@@ -3999,6 +3975,30 @@ undefined4 CallExtTextOutAOnStoredHdc(void)
 // ghidra_proto int * __thiscall CallTabbedTextOutAOnStoredHdcAndSplitResult(void)
 // FUNCTION: IMPERIALISM 0x005e6f23
 undefined4 CallTabbedTextOutAOnStoredHdcAndSplitResult(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_DrawTextA_FromDcField04_At005e6f5b
+// ghidra_proto void __thiscall WrapperFor_DrawTextA_FromDcField04_At005e6f5b(void)
+// FUNCTION: IMPERIALISM 0x005e6f5b
+undefined4 WrapperFor_DrawTextA_FromDcField04_At005e6f5b(void)
+{
+  return 0;
+}
+
+// ghidra_name CallGrayStringAOnStoredHdcWithOptionalBrush
+// ghidra_proto void __thiscall CallGrayStringAOnStoredHdcWithOptionalBrush(void)
+// FUNCTION: IMPERIALISM 0x005e6f77
+undefined4 CallGrayStringAOnStoredHdcWithOptionalBrush(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_Escape_FromDcField04_At005e6fa7
+// ghidra_proto void __thiscall WrapperFor_Escape_FromDcField04_At005e6fa7(void)
+// FUNCTION: IMPERIALISM 0x005e6fa7
+undefined4 WrapperFor_Escape_FromDcField04_At005e6fa7(void)
 {
   return 0;
 }

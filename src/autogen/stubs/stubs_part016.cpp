@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ResetMissionField0CToZero
-// ghidra_proto void __cdecl ResetMissionField0CToZero(void)
-// FUNCTION: IMPERIALISM 0x00534c80
-undefined4 ResetMissionField0CToZero(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot3C
-// ghidra_proto void __cdecl NoOpMissionVtableSlot3C(void)
-// FUNCTION: IMPERIALISM 0x00534ca0
-undefined4 NoOpMissionVtableSlot3C(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeMissionVtableMethods34_38_3C
-// ghidra_proto void __cdecl InvokeMissionVtableMethods34_38_3C(void)
-// FUNCTION: IMPERIALISM 0x00534cc0
-undefined4 InvokeMissionVtableMethods34_38_3C(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpMissionVtableSlot44
 // ghidra_proto void __cdecl NoOpMissionVtableSlot44(void)
 // FUNCTION: IMPERIALISM 0x00534cf0
@@ -3999,6 +3975,30 @@ undefined4 GetResourceDescriptorWord08ByTypeOffset(void)
 // ghidra_proto void __cdecl InvokeOrderNodeOwnerVfunc38(void)
 // FUNCTION: IMPERIALISM 0x00550f60
 undefined4 InvokeOrderNodeOwnerVfunc38(void)
+{
+  return 0;
+}
+
+// ghidra_name ReassignOrderNodeNationAndRebindParentCounters
+// ghidra_proto void __fastcall ReassignOrderNodeNationAndRebindParentCounters(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00551100
+undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
+{
+  return 0;
+}
+
+// ghidra_name TScatteredShipsMission::SetMapOrderActiveChildEntry
+// ghidra_proto void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
+// FUNCTION: IMPERIALISM 0x00551220
+undefined4 SetMapOrderActiveChildEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateNavySecondaryOrderNodeWithSentinelNation
+// ghidra_proto void * __stdcall CreateNavySecondaryOrderNodeWithSentinelNation(void)
+// FUNCTION: IMPERIALISM 0x005512d0
+undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
 {
   return 0;
 }

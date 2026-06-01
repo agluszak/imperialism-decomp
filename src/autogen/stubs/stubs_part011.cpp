@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeUiResourceEntryFrameAndParent
-// ghidra_proto void __cdecl InitializeUiResourceEntryFrameAndParent(void)
-// FUNCTION: IMPERIALISM 0x0048aa60
-undefined4 InitializeUiResourceEntryFrameAndParent(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::DispatchControlEventToChildrenAndSelf
 // ghidra_proto void __thiscall DispatchControlEventToChildrenAndSelf(int arg1)
 // FUNCTION: IMPERIALISM 0x0048aaf0
@@ -3999,6 +3991,14 @@ undefined4 CreateTNewGameCommandInstance(void)
 // ghidra_proto void * __cdecl GetTNewGameCommandClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0049de20
 undefined4 GetTNewGameCommandClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::ConstructTNewGameCommandBaseState
+// ghidra_proto void * __cdecl ConstructTNewGameCommandBaseState(void)
+// FUNCTION: IMPERIALISM 0x0049de40
+undefined4 ConstructTNewGameCommandBaseState(void)
 {
   return 0;
 }

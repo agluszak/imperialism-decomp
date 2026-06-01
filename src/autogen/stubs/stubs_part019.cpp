@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SetLinkedListEntryState2CForTacticalCategory0
-// ghidra_proto void __cdecl SetLinkedListEntryState2CForTacticalCategory0(void)
-// FUNCTION: IMPERIALISM 0x0059c999
-undefined4 SetLinkedListEntryState2CForTacticalCategory0(void)
-{
-  return 0;
-}
-
-// ghidra_name IterateLinkedListCursorAndAdvanceToEnd_0059c9d7
-// ghidra_proto void __cdecl IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
-// FUNCTION: IMPERIALISM 0x0059c9d7
-undefined4 IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6
-// ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
-// FUNCTION: IMPERIALISM 0x0059c9f6
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02
 // ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02(int tacticalSide)
 // FUNCTION: IMPERIALISM 0x0059ca02
@@ -3999,6 +3975,30 @@ undefined4 ConstructTTradeOfferNationLineBaseState(void)
 // ghidra_proto void * __thiscall DestructTTradeOfferNationLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005bd1a0
 undefined4 DestructTTradeOfferNationLineAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationView::CreateTTradeOfferNationViewInstance
+// ghidra_proto void * __cdecl CreateTTradeOfferNationViewInstance(void)
+// FUNCTION: IMPERIALISM 0x005bd1f0
+undefined4 CreateTTradeOfferNationViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer
+// ghidra_proto void * __cdecl GetTTradeOfferNationViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005bd260
+undefined4 GetTTradeOfferNationViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState
+// ghidra_proto void __thiscall ConstructTTradeOfferNationViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x005bd2d0
+undefined4 ConstructTTradeOfferNationViewBaseState(void)
 {
   return 0;
 }

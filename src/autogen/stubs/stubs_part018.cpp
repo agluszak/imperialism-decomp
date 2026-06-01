@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TLineData::ConstructPictureScreenVariantEntry
-// ghidra_proto void __thiscall ConstructPictureScreenVariantEntry(void)
-// FUNCTION: IMPERIALISM 0x005725d0
-undefined4 ConstructPictureScreenVariantEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTextPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00572670
-undefined4 DestructTTextPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTTextPictureButtonAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTTextPictureButtonAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005726a0
-undefined4 DestructTTextPictureButtonAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_StringShared_AssignFromPtr_At00572710
 // ghidra_proto void __cdecl WrapperFor_StringShared_AssignFromPtr_At00572710(void)
 // FUNCTION: IMPERIALISM 0x00572710
@@ -3999,6 +3975,30 @@ undefined4 SelectAndApplyTacticalCursorModeProfile(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
 // FUNCTION: IMPERIALISM 0x0059c98d
 undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
+{
+  return 0;
+}
+
+// ghidra_name SetLinkedListEntryState2CForTacticalCategory0
+// ghidra_proto void __cdecl SetLinkedListEntryState2CForTacticalCategory0(void)
+// FUNCTION: IMPERIALISM 0x0059c999
+undefined4 SetLinkedListEntryState2CForTacticalCategory0(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorAndAdvanceToEnd_0059c9d7
+// ghidra_proto void __cdecl IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
+// FUNCTION: IMPERIALISM 0x0059c9d7
+undefined4 IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6
+// ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
+// FUNCTION: IMPERIALISM 0x0059c9f6
+undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
 {
   return 0;
 }

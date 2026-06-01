@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RecomputeNationComparativePowerMetrics_Impl
-// ghidra_proto void __cdecl RecomputeNationComparativePowerMetrics_Impl(void)
-// FUNCTION: IMPERIALISM 0x004e3220
-undefined4 RecomputeNationComparativePowerMetrics_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeNationEconomyAndDiplomacySummaryMetrics
 // ghidra_proto void __thiscall RecomputeNationEconomyAndDiplomacySummaryMetrics(void)
 // FUNCTION: IMPERIALISM 0x004e32a0
@@ -1511,22 +1503,6 @@ undefined4 SyncNationField790FromLocalizationStateId(void)
 // ghidra_proto void __thiscall SelectPriorityNationIndicesForMinorCapabilityRows(void)
 // FUNCTION: IMPERIALISM 0x004f05c0
 undefined4 SelectPriorityNationIndicesForMinorCapabilityRows(void)
-{
-  return 0;
-}
-
-// ghidra_name ProcessQueuedWarTransitions
-// ghidra_proto void ProcessQueuedWarTransitions(DiplomacyTurnStateManager * pManager)
-// FUNCTION: IMPERIALISM 0x004f0a10
-undefined4 ProcessQueuedWarTransitions(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchProcessQueuedWarTransitions
-// ghidra_proto void __fastcall DispatchProcessQueuedWarTransitions(TSortedByRelationshipList * pThis)
-// FUNCTION: IMPERIALISM 0x004f0db0
-undefined4 DispatchProcessQueuedWarTransitions(void)
 {
   return 0;
 }
@@ -3999,6 +3975,30 @@ undefined4 WrapperFor_ftol_At00507b90(void)
 // ghidra_proto void * __cdecl CreateTLanguageMgrInstance(void)
 // FUNCTION: IMPERIALISM 0x00507bc0
 undefined4 CreateTLanguageMgrInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TLanguageMgr::GetTLanguageMgrClassNamePointer
+// ghidra_proto void * __cdecl GetTLanguageMgrClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00507c40
+undefined4 GetTLanguageMgrClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TLanguageMgr::ConstructTLanguageMgrBaseState
+// ghidra_proto void * __thiscall ConstructTLanguageMgrBaseState(void)
+// FUNCTION: IMPERIALISM 0x00507c60
+undefined4 ConstructTLanguageMgrBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TLanguageMgr::DestructTLanguageMgrAndMaybeFree
+// ghidra_proto void * __thiscall DestructTLanguageMgrAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00507d80
+undefined4 DestructTLanguageMgrAndMaybeFree(void)
 {
   return 0;
 }

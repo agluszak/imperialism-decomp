@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TIconSlider::TIconSlider_VtblSlot104
-// ghidra_proto void __cdecl TIconSlider_VtblSlot104(void)
-// FUNCTION: IMPERIALISM 0x004083e1
-undefined4 TIconSlider_VtblSlot104(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6
 // ghidra_proto short __cdecl thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
 // FUNCTION: IMPERIALISM 0x004083e6
@@ -3999,6 +3991,14 @@ undefined4 TacticalBattleView_VtblSlot110(void)
 // ghidra_proto void __cdecl thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
 // FUNCTION: IMPERIALISM 0x00409412
 undefined4 thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C2_I21_00489030_At00409417
+// ghidra_proto void __cdecl thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
+// FUNCTION: IMPERIALISM 0x00409417
+undefined4 thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
 {
   return 0;
 }

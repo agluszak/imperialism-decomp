@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TLanguageMgr::GetTLanguageMgrClassNamePointer
-// ghidra_proto void * __cdecl GetTLanguageMgrClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00507c40
-undefined4 GetTLanguageMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TLanguageMgr::ConstructTLanguageMgrBaseState
-// ghidra_proto void * __thiscall ConstructTLanguageMgrBaseState(void)
-// FUNCTION: IMPERIALISM 0x00507c60
-undefined4 ConstructTLanguageMgrBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TLanguageMgr::DestructTLanguageMgrAndMaybeFree
-// ghidra_proto void * __thiscall DestructTLanguageMgrAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00507d80
-undefined4 DestructTLanguageMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0
 // ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
 // FUNCTION: IMPERIALISM 0x00507db0
@@ -3999,6 +3975,30 @@ undefined4 NoOpMissionVtableSlot30(void)
 // ghidra_proto void __cdecl SetMissionStateByte8To2(void)
 // FUNCTION: IMPERIALISM 0x00534c60
 undefined4 SetMissionStateByte8To2(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetMissionField0CToZero
+// ghidra_proto void __cdecl ResetMissionField0CToZero(void)
+// FUNCTION: IMPERIALISM 0x00534c80
+undefined4 ResetMissionField0CToZero(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot3C
+// ghidra_proto void __cdecl NoOpMissionVtableSlot3C(void)
+// FUNCTION: IMPERIALISM 0x00534ca0
+undefined4 NoOpMissionVtableSlot3C(void)
+{
+  return 0;
+}
+
+// ghidra_name InvokeMissionVtableMethods34_38_3C
+// ghidra_proto void __cdecl InvokeMissionVtableMethods34_38_3C(void)
+// FUNCTION: IMPERIALISM 0x00534cc0
+undefined4 InvokeMissionVtableMethods34_38_3C(void)
 {
   return 0;
 }

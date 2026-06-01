@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ReturnMissionConstantFloatSlot78
-// ghidra_proto void __cdecl thunk_ReturnMissionConstantFloatSlot78(void)
-// FUNCTION: IMPERIALISM 0x004073d8
-undefined4 thunk_ReturnMissionConstantFloatSlot78(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd
 // ghidra_proto void __thiscall thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
 // FUNCTION: IMPERIALISM 0x004073dd
@@ -3999,6 +3991,14 @@ undefined4 thunk_GetTCityProductionViewClassNamePointer(void)
 // ghidra_proto void * __cdecl TMiniShipLine_VtblSlot000(void)
 // FUNCTION: IMPERIALISM 0x004083dc
 undefined4 TMiniShipLine_VtblSlot000(void)
+{
+  return 0;
+}
+
+// ghidra_name TIconSlider::TIconSlider_VtblSlot104
+// ghidra_proto void __cdecl TIconSlider_VtblSlot104(void)
+// FUNCTION: IMPERIALISM 0x004083e1
+undefined4 TIconSlider_VtblSlot104(void)
 {
   return 0;
 }

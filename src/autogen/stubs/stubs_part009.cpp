@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_OrphanCallChain_C2_I21_00489030_At00409417
-// ghidra_proto void __cdecl thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
-// FUNCTION: IMPERIALISM 0x00409417
-undefined4 thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InvokeVtableSlot30OnTargetObject
 // ghidra_proto void __cdecl thunk_InvokeVtableSlot30OnTargetObject(void * pTarget)
 // FUNCTION: IMPERIALISM 0x00409421
@@ -3999,6 +3991,14 @@ undefined4 ForwardMciStatusCommand814IgnoreFailure(void)
 // ghidra_proto void __cdecl WrapperFor_ftol_At0047cfa0(void)
 // FUNCTION: IMPERIALISM 0x0047cfa0
 undefined4 WrapperFor_ftol_At0047cfa0(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeDialogTemplateC2WithTextState
+// ghidra_proto void __fastcall InitializeDialogTemplateC2WithTextState(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x0047cfd0
+undefined4 InitializeDialogTemplateC2WithTextState(void)
 {
   return 0;
 }

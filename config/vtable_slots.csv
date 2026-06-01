@@ -52,6 +52,12 @@ src/game/TGreatPower.cpp|VCall_GreatPower_DispatchFallbackActionSlot6C|void|0x6C
 src/game/TGreatPower.cpp|VCall_GreatPower_NeedUpdateSlot45|void|0x45|int,int|high|need update slot45
 src/game/TGreatPower.cpp|VCall_GreatPower_GetNodeContextSlot40|int|0x40 / 4||high|node context slot40
 src/game/diplomacy_state.cpp|VCall_WarTransitionQueue_PushPairSlot40|void|0x40 / 4|void*|medium|pending war transition queue push pair record|index|thiscall|zero||provisional|WarTransitionQueue
+src/game/diplomacy_state.cpp|VCall_WarTransitionQueue_PeekFirstPairSlot34|void*|0x34 / 4||medium|pending war transition queue first pair record|index|thiscall|zero||provisional|WarTransitionQueue
+src/game/diplomacy_state.cpp|VCall_WarTransitionQueue_RemoveFirstPairSlot30|void|0x30 / 4|int|medium|pending war transition queue remove first record|index|thiscall|zero||provisional|WarTransitionQueue
+src/game/diplomacy_state.cpp|VCall_NationState_CheckTransitionSlot27C|int|0x27C / 4|int,int|medium|nation-state transition compatibility check|index|thiscall|zero||provisional|NationState
+src/game/diplomacy_state.cpp|VCall_NationState_PropagateWarTransitionSlot280|int|0x280 / 4|int,int,int|medium|nation-state propagate war transition|index|thiscall|zero||provisional|NationState
+src/game/diplomacy_state.cpp|VCall_TurnEventQueue_EnqueueSlot38|void|0x38 / 4|void*|medium|enqueue constructed turn-event packet|index|thiscall|zero||provisional|TurnEventQueue
+src/game/diplomacy_state.cpp|VCall_LocalizationTable_CallSlot44|void|0x44 / 4||medium|localization/event table fallback dispatch|index|thiscall|zero||provisional|LocalizationTable
 src/game/TGreatPower.cpp|VCall_GreatPower_ApplyNeedTargetSlot64|void|0x64|int,int|high|apply need target slot64
 src/game/TGreatPower.cpp|VCall_GreatPower_GetBaseBudgetSlot5F|int|0x5F||high|base budget slot5F
 src/game/TGreatPower.cpp|VCall_GreatPower_SetNeedSlot69|void|0x69|int,int|high|set need slot69
@@ -62,6 +68,7 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot5C|void|0x5C||high|slot5C
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot94|int|0x94 / 4|int,int,int|medium|set/query relation dispatch code and return owner nation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag28|void|0x28 / 4|int,int,int|high|set flag28
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot4C|void|0x4C / 4|int,int|high|terrain slot4C
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot38|void|0x38 / 4|int|high|terrain slot38

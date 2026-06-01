@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5
-// ghidra_proto void __cdecl WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5(void)
-// FUNCTION: IMPERIALISM 0x00605eb5
-undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605eb5(void)
-{
-  return 0;
-}
-
-// ghidra_name wcstombsz
-// ghidra_proto int __cdecl wcstombsz(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x00605ec9
-undefined4 wcstombsz(void)
-{
-  return 0;
-}
-
-// ghidra_name mbstowcsz
-// ghidra_proto int __cdecl mbstowcsz(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x00605eff
-undefined4 mbstowcsz(void)
-{
-  return 0;
-}
-
 // ghidra_name AfxA2WHelper
 // ghidra_proto void * __cdecl AfxA2WHelper(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00605f34
@@ -3999,6 +3975,30 @@ undefined4 OnQueryNewPalette(void)
 // ghidra_proto void __fastcall ReleaseCaptureAndPostMouseRepeatMessages_0061c877(int context)
 // FUNCTION: IMPERIALISM 0x0061c877
 undefined4 ReleaseCaptureAndPostMouseRepeatMessages_0061c877(void)
+{
+  return 0;
+}
+
+// ghidra_name OnSetCursor
+// ghidra_proto int __thiscall OnSetCursor(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x0061c8e2
+undefined4 OnSetCursor(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchCommandUsingStoredFrameIds
+// ghidra_proto int __thiscall DispatchCommandUsingStoredFrameIds(TMacViewMgr * thisObj, int unusedArg, int command)
+// FUNCTION: IMPERIALISM 0x0061c90c
+undefined4 DispatchCommandUsingStoredFrameIds(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot032
+// ghidra_proto int __thiscall TMacViewMgr_VtblSlot032(void)
+// FUNCTION: IMPERIALISM 0x0061c976
+undefined4 TMacViewMgr_VtblSlot032(void)
 {
   return 0;
 }

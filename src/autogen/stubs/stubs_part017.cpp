@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReassignOrderNodeNationAndRebindParentCounters
-// ghidra_proto void __fastcall ReassignOrderNodeNationAndRebindParentCounters(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x00551100
-undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::SetMapOrderActiveChildEntry
-// ghidra_proto void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
-// FUNCTION: IMPERIALISM 0x00551220
-undefined4 SetMapOrderActiveChildEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateNavySecondaryOrderNodeWithSentinelNation
-// ghidra_proto void * __stdcall CreateNavySecondaryOrderNodeWithSentinelNation(void)
-// FUNCTION: IMPERIALISM 0x005512d0
-undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdmiral::GetTAdmiralClassNamePointer
 // ghidra_proto void * __cdecl GetTAdmiralClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00551410
@@ -3999,6 +3975,30 @@ undefined4 CreatePictureScreenVariantEntry(void)
 // ghidra_proto void * __cdecl GetTTextPictureButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005725b0
 undefined4 GetTTextPictureButtonClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TLineData::ConstructPictureScreenVariantEntry
+// ghidra_proto void __thiscall ConstructPictureScreenVariantEntry(void)
+// FUNCTION: IMPERIALISM 0x005725d0
+undefined4 ConstructPictureScreenVariantEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTextPictureButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00572670
+undefined4 DestructTTextPictureButtonAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTTextPictureButtonAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTTextPictureButtonAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005726a0
+undefined4 DestructTTextPictureButtonAndMaybeFree_Impl(void)
 {
   return 0;
 }

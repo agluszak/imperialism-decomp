@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OnSetCursor
-// ghidra_proto int __thiscall OnSetCursor(TMacViewMgr * thisObj)
-// FUNCTION: IMPERIALISM 0x0061c8e2
-undefined4 OnSetCursor(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchCommandUsingStoredFrameIds
-// ghidra_proto int __thiscall DispatchCommandUsingStoredFrameIds(TMacViewMgr * thisObj, int unusedArg, int command)
-// FUNCTION: IMPERIALISM 0x0061c90c
-undefined4 DispatchCommandUsingStoredFrameIds(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot032
-// ghidra_proto int __thiscall TMacViewMgr_VtblSlot032(void)
-// FUNCTION: IMPERIALISM 0x0061c976
-undefined4 TMacViewMgr_VtblSlot032(void)
-{
-  return 0;
-}
-
 // ghidra_name AfxIsDescendant
 // ghidra_proto int __cdecl AfxIsDescendant(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x0061c9ed
@@ -3999,6 +3975,30 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063111d(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063113f(void)
 // FUNCTION: IMPERIALISM 0x0063113f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063113f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631167
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631167(void)
+// FUNCTION: IMPERIALISM 0x00631167
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631167(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063118d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063118d(void)
+// FUNCTION: IMPERIALISM 0x0063118d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063118d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006311af
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006311af(void)
+// FUNCTION: IMPERIALISM 0x006311af
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006311af(void)
 {
   return 0;
 }

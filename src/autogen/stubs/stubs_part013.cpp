@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C5_I49_004bc910
-// ghidra_proto void __cdecl OrphanCallChain_C5_I49_004bc910(void)
-// FUNCTION: IMPERIALISM 0x004bc910
-undefined4 OrphanCallChain_C5_I49_004bc910(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshCityDialogSummaryValues
 // ghidra_proto void __cdecl RefreshCityDialogSummaryValues(void)
 // FUNCTION: IMPERIALISM 0x004bcaf0
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C2_I21_004e2b00(void)
 // ghidra_proto int __fastcall ComputeNationNavyOrderWeightedMovementScore(void * pNationCtx)
 // FUNCTION: IMPERIALISM 0x004e3060
 undefined4 ComputeNationNavyOrderWeightedMovementScore(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeNationComparativePowerMetrics_Impl
+// ghidra_proto void __cdecl RecomputeNationComparativePowerMetrics_Impl(void)
+// FUNCTION: IMPERIALISM 0x004e3220
+undefined4 RecomputeNationComparativePowerMetrics_Impl(void)
 {
   return 0;
 }

@@ -1947,14 +1947,6 @@ undefined4 TUniversityView_VtblSlot015(void)
   return 0;
 }
 
-// ghidra_name thunk_ProcessQueuedWarTransitions
-// ghidra_proto void thunk_ProcessQueuedWarTransitions(DiplomacyTurnStateManager * pManager)
-// FUNCTION: IMPERIALISM 0x00406aaf
-undefined4 thunk_ProcessQueuedWarTransitions(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ConstructTPageCornerBaseState
 // ghidra_proto void __thiscall thunk_ConstructTPageCornerBaseState(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00406abe
@@ -3999,6 +3991,14 @@ undefined4 thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00
 // ghidra_proto void __cdecl thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
 // FUNCTION: IMPERIALISM 0x004073d3
 undefined4 thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReturnMissionConstantFloatSlot78
+// ghidra_proto void __cdecl thunk_ReturnMissionConstantFloatSlot78(void)
+// FUNCTION: IMPERIALISM 0x004073d8
+undefined4 thunk_ReturnMissionConstantFloatSlot78(void)
 {
   return 0;
 }
