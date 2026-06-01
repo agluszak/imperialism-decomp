@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf00
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf00(void)
-// FUNCTION: IMPERIALISM 0x0063bf00
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf00(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf15
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf15(void)
-// FUNCTION: IMPERIALISM 0x0063bf15
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf15(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf34
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf34(void)
-// FUNCTION: IMPERIALISM 0x0063bf34
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf34(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf49
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf49(void)
-// FUNCTION: IMPERIALISM 0x0063bf49
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf49(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e(void)
-// FUNCTION: IMPERIALISM 0x0063bf5e
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf5e(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71(void)
-// FUNCTION: IMPERIALISM 0x0063bf71
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063bf71(void)
-{
-  return 0;
-}
-
 // ghidra_name TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe
 // ghidra_proto void __thiscall DispatchHandleMapLookupWithReadPtrProbe(void)
 // FUNCTION: IMPERIALISM 0x0063de95

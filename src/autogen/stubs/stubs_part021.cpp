@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3(void)
-// FUNCTION: IMPERIALISM 0x005e6fc3
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CException_At005e6fdf
-// ghidra_proto void __cdecl WrapperFor_CException_At005e6fdf(void)
-// FUNCTION: IMPERIALISM 0x005e6fdf
-undefined4 WrapperFor_CException_At005e6fdf(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e7009
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e7009(void)
-// FUNCTION: IMPERIALISM 0x005e7009
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e7009(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantC
-// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantC(void)
-// FUNCTION: IMPERIALISM 0x005e7025
-undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantC(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CException_At005e702c
-// ghidra_proto void __cdecl WrapperFor_CException_At005e702c(void)
-// FUNCTION: IMPERIALISM 0x005e702c
-undefined4 WrapperFor_CException_At005e702c(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e7056
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e7056(void)
-// FUNCTION: IMPERIALISM 0x005e7056
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e7056(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantD
 // ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
 // FUNCTION: IMPERIALISM 0x005e7072
@@ -3999,6 +3951,54 @@ undefined4 wcstombsz(void)
 // ghidra_proto int __cdecl mbstowcsz(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00605eff
 undefined4 mbstowcsz(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxA2WHelper
+// ghidra_proto void * __cdecl AfxA2WHelper(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x00605f34
+undefined4 AfxA2WHelper(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxThreadEntry
+// ghidra_proto int __cdecl AfxThreadEntry(void)
+// FUNCTION: IMPERIALISM 0x00605f87
+undefined4 AfxThreadEntry(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxBeginThread
+// ghidra_proto int * __cdecl AfxBeginThread(void)
+// FUNCTION: IMPERIALISM 0x00606155
+undefined4 AfxBeginThread(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxEndThread
+// ghidra_proto void __cdecl AfxEndThread(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x006061b7
+undefined4 AfxEndThread(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxInitThread
+// ghidra_proto void __cdecl AfxInitThread(void)
+// FUNCTION: IMPERIALISM 0x006061ff
+undefined4 AfxInitThread(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxTermThread
+// ghidra_proto void __cdecl AfxTermThread(void)
+// FUNCTION: IMPERIALISM 0x0060625e
+undefined4 AfxTermThread(void)
 {
   return 0;
 }

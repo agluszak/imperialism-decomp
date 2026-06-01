@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AfxA2WHelper
-// ghidra_proto void * __cdecl AfxA2WHelper(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x00605f34
-undefined4 AfxA2WHelper(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxThreadEntry
-// ghidra_proto int __cdecl AfxThreadEntry(void)
-// FUNCTION: IMPERIALISM 0x00605f87
-undefined4 AfxThreadEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxBeginThread
-// ghidra_proto int * __cdecl AfxBeginThread(void)
-// FUNCTION: IMPERIALISM 0x00606155
-undefined4 AfxBeginThread(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxEndThread
-// ghidra_proto void __cdecl AfxEndThread(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006061b7
-undefined4 AfxEndThread(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxInitThread
-// ghidra_proto void __cdecl AfxInitThread(void)
-// FUNCTION: IMPERIALISM 0x006061ff
-undefined4 AfxInitThread(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxTermThread
-// ghidra_proto void __cdecl AfxTermThread(void)
-// FUNCTION: IMPERIALISM 0x0060625e
-undefined4 AfxTermThread(void)
-{
-  return 0;
-}
-
 // ghidra_name DeleteField24ObjectIfPresent_006063b8
 // ghidra_proto void __fastcall DeleteField24ObjectIfPresent_006063b8(int * obj)
 // FUNCTION: IMPERIALISM 0x006063b8
@@ -3999,6 +3951,54 @@ undefined4 DispatchCommandUsingStoredFrameIds(void)
 // ghidra_proto int __thiscall TMacViewMgr_VtblSlot032(void)
 // FUNCTION: IMPERIALISM 0x0061c976
 undefined4 TMacViewMgr_VtblSlot032(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxIsDescendant
+// ghidra_proto int __cdecl AfxIsDescendant(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0061c9ed
+undefined4 AfxIsDescendant(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot036
+// ghidra_proto int __fastcall TMacViewMgr_VtblSlot036(void)
+// FUNCTION: IMPERIALISM 0x0061ca0d
+undefined4 TMacViewMgr_VtblSlot036(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::EndModalState
+// ghidra_proto void __thiscall EndModalState(TMacViewMgr * thisObj)
+// FUNCTION: IMPERIALISM 0x0061cb3a
+undefined4 EndModalState(void)
+{
+  return 0;
+}
+
+// ghidra_name ShowOwnedWindows
+// ghidra_proto void __cdecl ShowOwnedWindows(void)
+// FUNCTION: IMPERIALISM 0x0061cba9
+undefined4 ShowOwnedWindows(void)
+{
+  return 0;
+}
+
+// ghidra_name TacticalBattleView::OnEnable
+// ghidra_proto void __thiscall OnEnable(void)
+// FUNCTION: IMPERIALISM 0x0061cc4b
+undefined4 OnEnable(void)
+{
+  return 0;
+}
+
+// ghidra_name NotifyFloatingWindows
+// ghidra_proto void __cdecl NotifyFloatingWindows(void)
+// FUNCTION: IMPERIALISM 0x0061cd09
+undefined4 NotifyFloatingWindows(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd
-// ghidra_proto void __thiscall thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
-// FUNCTION: IMPERIALISM 0x004073dd
-undefined4 thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055
 // ghidra_proto void __cdecl TNetGameSelectPicture_VtblSlot055(void)
 // FUNCTION: IMPERIALISM 0x004073e2
@@ -3999,6 +3991,14 @@ undefined4 TMiniShipLine_VtblSlot000(void)
 // ghidra_proto void __cdecl TIconSlider_VtblSlot104(void)
 // FUNCTION: IMPERIALISM 0x004083e1
 undefined4 TIconSlider_VtblSlot104(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6
+// ghidra_proto short __cdecl thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
+// FUNCTION: IMPERIALISM 0x004083e6
+undefined4 thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
 {
   return 0;
 }

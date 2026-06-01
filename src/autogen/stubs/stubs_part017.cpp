@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TAdmiral::GetTAdmiralClassNamePointer
-// ghidra_proto void * __cdecl GetTAdmiralClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00551410
-undefined4 GetTAdmiralClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::ConstructAndLinkNavySecondaryOrderNode
-// ghidra_proto void * __thiscall ConstructAndLinkNavySecondaryOrderNode(int arg1)
-// FUNCTION: IMPERIALISM 0x00551430
-undefined4 ConstructAndLinkNavySecondaryOrderNode(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::DestructTAdmiralAndFreeIfOwned
-// ghidra_proto void * __thiscall DestructTAdmiralAndFreeIfOwned(void)
-// FUNCTION: IMPERIALISM 0x00551550
-undefined4 DestructTAdmiralAndFreeIfOwned(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::DestructTAdmiral
-// ghidra_proto void __thiscall DestructTAdmiral(void)
-// FUNCTION: IMPERIALISM 0x00551580
-undefined4 DestructTAdmiral(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyAndUnlinkNavySecondaryOrderNode
-// ghidra_proto void __cdecl DestroyAndUnlinkNavySecondaryOrderNode(void)
-// FUNCTION: IMPERIALISM 0x005515d0
-undefined4 DestroyAndUnlinkNavySecondaryOrderNode(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeNavyOrderSelectionStateToStream
-// ghidra_proto void __cdecl SerializeNavyOrderSelectionStateToStream(void)
-// FUNCTION: IMPERIALISM 0x00551670
-undefined4 SerializeNavyOrderSelectionStateToStream(void)
-{
-  return 0;
-}
-
 // ghidra_name DeserializeNavyOrderSelectionStateFromStream
 // ghidra_proto void __fastcall DeserializeNavyOrderSelectionStateFromStream(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x00551700
@@ -3999,6 +3951,54 @@ undefined4 DestructTTextPictureButtonAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTTextPictureButtonAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005726a0
 undefined4 DestructTTextPictureButtonAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_StringShared_AssignFromPtr_At00572710
+// ghidra_proto void __cdecl WrapperFor_StringShared_AssignFromPtr_At00572710(void)
+// FUNCTION: IMPERIALISM 0x00572710
+undefined4 WrapperFor_StringShared_AssignFromPtr_At00572710(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::RenderTextPictureButtonCaptionWithPressedOffset
+// ghidra_proto void __thiscall RenderTextPictureButtonCaptionWithPressedOffset(void)
+// FUNCTION: IMPERIALISM 0x00572790
+undefined4 RenderTextPictureButtonCaptionWithPressedOffset(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00572a50
+// ghidra_proto void __cdecl WrapperFor_ftol_At00572a50(void)
+// FUNCTION: IMPERIALISM 0x00572a50
+undefined4 WrapperFor_ftol_At00572a50(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHilitePicture::CreateTNoHilitePictureInstance
+// ghidra_proto void * __cdecl CreateTNoHilitePictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00572a80
+undefined4 CreateTNoHilitePictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHilitePicture::GetTNoHilitePictureClassNamePointer
+// ghidra_proto void * __cdecl GetTNoHilitePictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00572b10
+undefined4 GetTNoHilitePictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNoHilitePicture::ConstructPictureResourceEntryType606E8
+// ghidra_proto void __thiscall ConstructPictureResourceEntryType606E8(void)
+// FUNCTION: IMPERIALISM 0x00572b30
+undefined4 ConstructPictureResourceEntryType606E8(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_AccumulateNavyOrderCategoryVectorWithScale
-// ghidra_proto void __cdecl thunk_AccumulateNavyOrderCategoryVectorWithScale(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x00405272
-undefined4 thunk_AccumulateNavyOrderCategoryVectorWithScale(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DeletingDestructTHostGreatPower
 // ghidra_proto void __cdecl thunk_DeletingDestructTHostGreatPower(void)
 // FUNCTION: IMPERIALISM 0x00405277
@@ -3999,6 +3991,14 @@ undefined4 thunk_NoOpMissionVtableSlot88Ret8(void)
 // ghidra_proto void * __cdecl thunk_GetTMinisterClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0040625d
 undefined4 thunk_GetTMinisterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ComputeWeightedNeighborLinkScoreForNode
+// ghidra_proto int __cdecl thunk_ComputeWeightedNeighborLinkScoreForNode(void)
+// FUNCTION: IMPERIALISM 0x00406271
+undefined4 thunk_ComputeWeightedNeighborLinkScoreForNode(void)
 {
   return 0;
 }

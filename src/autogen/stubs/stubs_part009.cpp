@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_InvokeVtableSlot30OnTargetObject
-// ghidra_proto void __cdecl thunk_InvokeVtableSlot30OnTargetObject(void * pTarget)
-// FUNCTION: IMPERIALISM 0x00409421
-undefined4 thunk_InvokeVtableSlot30OnTargetObject(void)
-{
-  return 0;
-}
-
 // ghidra_name TTerrainHelpPicture::thunk_scalar_deleting_destructor_00409426
 // ghidra_proto void * __thiscall thunk_scalar_deleting_destructor_00409426(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00409426
@@ -1287,14 +1279,6 @@ undefined4 thunk_HasRenderableParentAndContent(void)
 // ghidra_proto void __cdecl thunk_RefreshNationAdvisorLabelStrings(void)
 // FUNCTION: IMPERIALISM 0x0040993f
 undefined4 thunk_RefreshNationAdvisorLabelStrings(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90
-// ghidra_proto void __thiscall thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
-// FUNCTION: IMPERIALISM 0x00409944
-undefined4 thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
 {
   return 0;
 }
@@ -3999,6 +3983,22 @@ undefined4 WrapperFor_ftol_At0047cfa0(void)
 // ghidra_proto void __fastcall InitializeDialogTemplateC2WithTextState(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x0047cfd0
 undefined4 InitializeDialogTemplateC2WithTextState(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d090
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0047d090(void)
+// FUNCTION: IMPERIALISM 0x0047d090
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d090(void)
+{
+  return 0;
+}
+
+// ghidra_name DestroyDialogWithListBoxAndHotKeyControl_Alias
+// ghidra_proto void __thiscall DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
+// FUNCTION: IMPERIALISM 0x0047d0c0
+undefined4 DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
 {
   return 0;
 }

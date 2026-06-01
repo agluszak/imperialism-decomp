@@ -17,7 +17,7 @@ src/game/TGreatPower.cpp|VCall_List_ReleaseSlot24|void|0x24 / 4||high|list relea
 src/game/TGreatPower.cpp|VCall_ObArray_GetShortValueByOrdinalSlot2C|void*|0x2C / 4|int|high|ob array short accessor
 src/game/TGreatPower.cpp|VCall_Diplomacy_BuildRelationshipListSlot88|void|0x88 / 4|int,int,void*|high|build relation list
 src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|int,int|high|relation tier
-src/game/TDiplomacyMapView.cpp|VCall_Diplomacy_GetRelationTypeSlot68|short|0x68 / 4|int,int|high|relation type/status query
+src/game/TDiplomacyMapView.cpp|VCall_Diplomacy_GetRelationTypeSlot68|int|0x68 / 4|int,int|high|relation type/status query
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasPolicyWithNationSlot44|char|0x44 / 4|int,int|high|policy gate
 src/game/diplomacy_state.cpp|VCall_Diplomacy_HasOutdatedWarRelationSlot48|char|0x48 / 4|int,int|medium|outdated war relation predicate|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard

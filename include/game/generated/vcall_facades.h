@@ -61,8 +61,8 @@ static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object,
 }
 
 // relation type/status query; status=provisional
-static __inline short VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
-  typedef short (__fastcall * Fn)(void*, int, int, int);
+static __inline int VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
+  typedef int (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x68 / 4)));
   return fn(object, 0, arg0, arg1);
 }

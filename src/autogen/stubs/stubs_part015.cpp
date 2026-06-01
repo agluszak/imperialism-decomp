@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0
-// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
-// FUNCTION: IMPERIALISM 0x00507db0
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20
-// ghidra_proto void __cdecl WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20(void)
-// FUNCTION: IMPERIALISM 0x00507e20
-undefined4 WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadNewsTabTexResourcesAndBuildEntries
-// ghidra_proto void __cdecl LoadNewsTabTexResourcesAndBuildEntries(void)
-// FUNCTION: IMPERIALISM 0x00507e50
-undefined4 LoadNewsTabTexResourcesAndBuildEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At005082b0
-// ghidra_proto void __fastcall WrapperFor_AllocateWithFallbackHandler_At005082b0(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x005082b0
-undefined4 WrapperFor_AllocateWithFallbackHandler_At005082b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-// ghidra_proto void __thiscall BuildMappedSharedStringFromByteStateTable(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005083f0
-undefined4 BuildMappedSharedStringFromByteStateTable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReloadPreplutNewsTableAndResources
-// ghidra_proto void __cdecl ReloadPreplutNewsTableAndResources(void)
-// FUNCTION: IMPERIALISM 0x005086a0
-undefined4 ReloadPreplutNewsTableAndResources(void)
-{
-  return 0;
-}
-
 // ghidra_name FreeNestedPointerTableRowsAndResetDimensions
 // ghidra_proto void __cdecl FreeNestedPointerTableRowsAndResetDimensions(void)
 // FUNCTION: IMPERIALISM 0x00508760
@@ -3999,6 +3951,54 @@ undefined4 NoOpMissionVtableSlot3C(void)
 // ghidra_proto void __cdecl InvokeMissionVtableMethods34_38_3C(void)
 // FUNCTION: IMPERIALISM 0x00534cc0
 undefined4 InvokeMissionVtableMethods34_38_3C(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpMissionVtableSlot44
+// ghidra_proto void __cdecl NoOpMissionVtableSlot44(void)
+// FUNCTION: IMPERIALISM 0x00534cf0
+undefined4 NoOpMissionVtableSlot44(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnMissionPointerArgSlot48
+// ghidra_proto void __cdecl ReturnMissionPointerArgSlot48(void)
+// FUNCTION: IMPERIALISM 0x00534d10
+undefined4 ReturnMissionPointerArgSlot48(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot4C
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot4C(void)
+// FUNCTION: IMPERIALISM 0x00534d30
+undefined4 ReturnFalseMissionVtableSlot4C(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot50
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot50(void)
+// FUNCTION: IMPERIALISM 0x00534d50
+undefined4 ReturnFalseMissionVtableSlot50(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionVtableSlot54
+// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot54(void)
+// FUNCTION: IMPERIALISM 0x00534d70
+undefined4 ReturnFalseMissionVtableSlot54(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnZeroMissionVtableSlot58
+// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot58(void)
+// FUNCTION: IMPERIALISM 0x00534d90
+undefined4 ReturnZeroMissionVtableSlot58(void)
 {
   return 0;
 }

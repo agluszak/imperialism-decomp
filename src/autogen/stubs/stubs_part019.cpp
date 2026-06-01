@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02
-// ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x0059ca02
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e
-// ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x0059ca0e
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a
-// ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a(int tacticalSide)
-// FUNCTION: IMPERIALISM 0x0059ca1a
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26
-// ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26(void)
-// FUNCTION: IMPERIALISM 0x0059ca26
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26(void)
-{
-  return 0;
-}
-
-// ghidra_name SetLinkedListEntryState2CTo13ForAllNodes
-// ghidra_proto void __cdecl SetLinkedListEntryState2CTo13ForAllNodes(void)
-// FUNCTION: IMPERIALISM 0x0059ca32
-undefined4 SetLinkedListEntryState2CTo13ForAllNodes(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile0_ByActionClassCounts
-// ghidra_proto void __cdecl ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
-// FUNCTION: IMPERIALISM 0x0059caf0
-undefined4 ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059cc70
 // ghidra_proto void __cdecl IterateLinkedListCursorEntries_0059cc70(void)
 // FUNCTION: IMPERIALISM 0x0059cc70
@@ -3999,6 +3951,54 @@ undefined4 GetTTradeOfferNationViewClassNamePointer(void)
 // ghidra_proto void __thiscall ConstructTTradeOfferNationViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x005bd2d0
 undefined4 ConstructTTradeOfferNationViewBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageBuyView::CreateTTradePageBuyViewInstance
+// ghidra_proto void * __cdecl CreateTTradePageBuyViewInstance(void)
+// FUNCTION: IMPERIALISM 0x005bd5f0
+undefined4 CreateTTradePageBuyViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageBuyView::GetTTradePageBuyViewClassNamePointer
+// ghidra_proto void * __cdecl GetTTradePageBuyViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005bd670
+undefined4 GetTTradePageBuyViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageBuyView::ConstructTTradePageBuyViewBaseState
+// ghidra_proto void * __thiscall ConstructTTradePageBuyViewBaseState(int arg1)
+// FUNCTION: IMPERIALISM 0x005bd690
+undefined4 ConstructTTradePageBuyViewBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree
+// ghidra_proto void * __thiscall DestructTTradePageBuyViewAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005bd900
+undefined4 DestructTTradePageBuyViewAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
+// ghidra_proto void __thiscall DestructTTradePageBuyViewAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005bd930
+undefined4 DestructTTradePageBuyViewAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeBidNationLine::CreateTTradeBidNationLineInstance
+// ghidra_proto void * __cdecl CreateTTradeBidNationLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005bd950
+undefined4 CreateTTradeBidNationLineInstance(void)
 {
   return 0;
 }

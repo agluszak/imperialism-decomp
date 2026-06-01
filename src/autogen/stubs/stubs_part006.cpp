@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ComputeWeightedNeighborLinkScoreForNode
-// ghidra_proto int __cdecl thunk_ComputeWeightedNeighborLinkScoreForNode(void)
-// FUNCTION: IMPERIALISM 0x00406271
-undefined4 thunk_ComputeWeightedNeighborLinkScoreForNode(void)
-{
-  return 0;
-}
-
 // ghidra_name MilitaryUnitOrderState::thunk_NormalizeUnitOrderStateAfterLoad_At00406276
 // ghidra_proto void __cdecl thunk_NormalizeUnitOrderStateAfterLoad_At00406276(void)
 // FUNCTION: IMPERIALISM 0x00406276
@@ -3999,6 +3991,14 @@ undefined4 thunk_ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
 // ghidra_proto void __cdecl thunk_ReturnMissionConstantFloatSlot78(void)
 // FUNCTION: IMPERIALISM 0x004073d8
 undefined4 thunk_ReturnMissionConstantFloatSlot78(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd
+// ghidra_proto void __thiscall thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
+// FUNCTION: IMPERIALISM 0x004073dd
+undefined4 thunk_ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags_At004073dd(void)
 {
   return 0;
 }

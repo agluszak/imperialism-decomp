@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RefreshCityDialogSummaryValues
-// ghidra_proto void __cdecl RefreshCityDialogSummaryValues(void)
-// FUNCTION: IMPERIALISM 0x004bcaf0
-undefined4 RefreshCityDialogSummaryValues(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateUiResourceEntryWithInvalidateGuard_004bcf40
-// ghidra_proto void * __cdecl AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
-// FUNCTION: IMPERIALISM 0x004bcf40
-undefined4 AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
-{
-  return 0;
-}
-
 // ghidra_name TRailheadDialog::GetTRailheadDialogClassNamePointer
 // ghidra_proto void * __cdecl GetTRailheadDialogClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004bd020
@@ -3999,6 +3983,22 @@ undefined4 ComputeNationNavyOrderWeightedMovementScore(void)
 // ghidra_proto void __cdecl RecomputeNationComparativePowerMetrics_Impl(void)
 // FUNCTION: IMPERIALISM 0x004e3220
 undefined4 RecomputeNationComparativePowerMetrics_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeNationEconomyAndDiplomacySummaryMetrics
+// ghidra_proto void __thiscall RecomputeNationEconomyAndDiplomacySummaryMetrics(void)
+// FUNCTION: IMPERIALISM 0x004e32a0
+undefined4 RecomputeNationEconomyAndDiplomacySummaryMetrics(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshMapSystemsAndPrepareOrderExecution_Impl
+// ghidra_proto void __cdecl RefreshMapSystemsAndPrepareOrderExecution_Impl(void)
+// FUNCTION: IMPERIALISM 0x004e3560
+undefined4 RefreshMapSystemsAndPrepareOrderExecution_Impl(void)
 {
   return 0;
 }

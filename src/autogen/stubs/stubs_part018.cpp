@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_StringShared_AssignFromPtr_At00572710
-// ghidra_proto void __cdecl WrapperFor_StringShared_AssignFromPtr_At00572710(void)
-// FUNCTION: IMPERIALISM 0x00572710
-undefined4 WrapperFor_StringShared_AssignFromPtr_At00572710(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::RenderTextPictureButtonCaptionWithPressedOffset
-// ghidra_proto void __thiscall RenderTextPictureButtonCaptionWithPressedOffset(void)
-// FUNCTION: IMPERIALISM 0x00572790
-undefined4 RenderTextPictureButtonCaptionWithPressedOffset(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At00572a50
-// ghidra_proto void __cdecl WrapperFor_ftol_At00572a50(void)
-// FUNCTION: IMPERIALISM 0x00572a50
-undefined4 WrapperFor_ftol_At00572a50(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHilitePicture::CreateTNoHilitePictureInstance
-// ghidra_proto void * __cdecl CreateTNoHilitePictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00572a80
-undefined4 CreateTNoHilitePictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHilitePicture::GetTNoHilitePictureClassNamePointer
-// ghidra_proto void * __cdecl GetTNoHilitePictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00572b10
-undefined4 GetTNoHilitePictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHilitePicture::ConstructPictureResourceEntryType606E8
-// ghidra_proto void __thiscall ConstructPictureResourceEntryType606E8(void)
-// FUNCTION: IMPERIALISM 0x00572b30
-undefined4 ConstructPictureResourceEntryType606E8(void)
-{
-  return 0;
-}
-
 // ghidra_name TNoHilitePicture::DestructTNoHilitePictureAndMaybeFree
 // ghidra_proto void * __thiscall DestructTNoHilitePictureAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00572b60
@@ -3999,6 +3951,54 @@ undefined4 IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
 // FUNCTION: IMPERIALISM 0x0059c9f6
 undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02
+// ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059ca02
+undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e
+// ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059ca0e
+undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a
+// ghidra_proto void __fastcall WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a(int tacticalSide)
+// FUNCTION: IMPERIALISM 0x0059ca1a
+undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26
+// ghidra_proto void __cdecl WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26(void)
+// FUNCTION: IMPERIALISM 0x0059ca26
+undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26(void)
+{
+  return 0;
+}
+
+// ghidra_name SetLinkedListEntryState2CTo13ForAllNodes
+// ghidra_proto void __cdecl SetLinkedListEntryState2CTo13ForAllNodes(void)
+// FUNCTION: IMPERIALISM 0x0059ca32
+undefined4 SetLinkedListEntryState2CTo13ForAllNodes(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTacticalCursorModeProfile0_ByActionClassCounts
+// ghidra_proto void __cdecl ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
+// FUNCTION: IMPERIALISM 0x0059caf0
+undefined4 ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
 {
   return 0;
 }

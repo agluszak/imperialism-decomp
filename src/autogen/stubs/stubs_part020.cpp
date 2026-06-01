@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradePageBuyView::CreateTTradePageBuyViewInstance
-// ghidra_proto void * __cdecl CreateTTradePageBuyViewInstance(void)
-// FUNCTION: IMPERIALISM 0x005bd5f0
-undefined4 CreateTTradePageBuyViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePageBuyView::GetTTradePageBuyViewClassNamePointer
-// ghidra_proto void * __cdecl GetTTradePageBuyViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005bd670
-undefined4 GetTTradePageBuyViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// ghidra_proto void * __thiscall ConstructTTradePageBuyViewBaseState(int arg1)
-// FUNCTION: IMPERIALISM 0x005bd690
-undefined4 ConstructTTradePageBuyViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree
-// ghidra_proto void * __thiscall DestructTTradePageBuyViewAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005bd900
-undefined4 DestructTTradePageBuyViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
-// ghidra_proto void __thiscall DestructTTradePageBuyViewAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005bd930
-undefined4 DestructTTradePageBuyViewAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeBidNationLine::CreateTTradeBidNationLineInstance
-// ghidra_proto void * __cdecl CreateTTradeBidNationLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005bd950
-undefined4 CreateTTradeBidNationLineInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer
 // ghidra_proto void * __cdecl GetTTradeBidNationLineClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005bd9c0
@@ -3999,6 +3951,54 @@ undefined4 CallGrayStringAOnStoredHdcWithOptionalBrush(void)
 // ghidra_proto void __thiscall WrapperFor_Escape_FromDcField04_At005e6fa7(void)
 // FUNCTION: IMPERIALISM 0x005e6fa7
 undefined4 WrapperFor_Escape_FromDcField04_At005e6fa7(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3
+// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3(void)
+// FUNCTION: IMPERIALISM 0x005e6fc3
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e6fc3(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CException_At005e6fdf
+// ghidra_proto void __cdecl WrapperFor_CException_At005e6fdf(void)
+// FUNCTION: IMPERIALISM 0x005e6fdf
+undefined4 WrapperFor_CException_At005e6fdf(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e7009
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e7009(void)
+// FUNCTION: IMPERIALISM 0x005e7009
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e7009(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantC
+// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantC(void)
+// FUNCTION: IMPERIALISM 0x005e7025
+undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantC(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CException_At005e702c
+// ghidra_proto void __cdecl WrapperFor_CException_At005e702c(void)
+// FUNCTION: IMPERIALISM 0x005e702c
+undefined4 WrapperFor_CException_At005e702c(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e7056
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e7056(void)
+// FUNCTION: IMPERIALISM 0x005e7056
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e7056(void)
 {
   return 0;
 }

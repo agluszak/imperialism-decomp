@@ -1891,14 +1891,6 @@ undefined4 thunk_scalar_deleting_destructor_00403832(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::thunk_InitializeDiplomacyTurnStateManagerDefaults
-// ghidra_proto void __thiscall thunk_InitializeDiplomacyTurnStateManagerDefaults(void)
-// FUNCTION: IMPERIALISM 0x00403837
-undefined4 thunk_InitializeDiplomacyTurnStateManagerDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_FreeHeapBufferIfNotNull_At00481480
 // ghidra_proto void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00481480(void)
 // FUNCTION: IMPERIALISM 0x0040383c
@@ -3999,6 +3991,14 @@ undefined4 thunk_GetTTaskForceClassNamePointer_At00404115(void)
 // ghidra_proto void __cdecl thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
 // FUNCTION: IMPERIALISM 0x0040411f
 undefined4 thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff
+// ghidra_proto bool __fastcall thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(int tacticalSideState)
+// FUNCTION: IMPERIALISM 0x00404129
+undefined4 thunk_IsTacticalSideCategoryCoverageIncompleteOrFlagOff(void)
 {
   return 0;
 }

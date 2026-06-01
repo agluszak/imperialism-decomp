@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d090
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0047d090(void)
-// FUNCTION: IMPERIALISM 0x0047d090
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d090(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyDialogWithListBoxAndHotKeyControl_Alias
-// ghidra_proto void __thiscall DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
-// FUNCTION: IMPERIALISM 0x0047d0c0
-undefined4 DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
 // ghidra_proto void __cdecl WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(void)
 // FUNCTION: IMPERIALISM 0x0047d160
@@ -3999,6 +3983,22 @@ undefined4 DestructTViewAndMaybeFree(void)
 // ghidra_proto void __cdecl InitializeUiResourceEntryFrameAndParent(void)
 // FUNCTION: IMPERIALISM 0x0048aa60
 undefined4 InitializeUiResourceEntryFrameAndParent(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::DispatchControlEventToChildrenAndSelf
+// ghidra_proto void __thiscall DispatchControlEventToChildrenAndSelf(int arg1)
+// FUNCTION: IMPERIALISM 0x0048aaf0
+undefined4 DispatchControlEventToChildrenAndSelf(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpUiLifecycleHook
+// ghidra_proto void __cdecl NoOpUiLifecycleHook(void)
+// FUNCTION: IMPERIALISM 0x0048ab70
+undefined4 NoOpUiLifecycleHook(void)
 {
   return 0;
 }

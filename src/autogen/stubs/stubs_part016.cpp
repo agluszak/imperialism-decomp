@@ -3,54 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name NoOpMissionVtableSlot44
-// ghidra_proto void __cdecl NoOpMissionVtableSlot44(void)
-// FUNCTION: IMPERIALISM 0x00534cf0
-undefined4 NoOpMissionVtableSlot44(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnMissionPointerArgSlot48
-// ghidra_proto void __cdecl ReturnMissionPointerArgSlot48(void)
-// FUNCTION: IMPERIALISM 0x00534d10
-undefined4 ReturnMissionPointerArgSlot48(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot4C
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot4C(void)
-// FUNCTION: IMPERIALISM 0x00534d30
-undefined4 ReturnFalseMissionVtableSlot4C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot50
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot50(void)
-// FUNCTION: IMPERIALISM 0x00534d50
-undefined4 ReturnFalseMissionVtableSlot50(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot54
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot54(void)
-// FUNCTION: IMPERIALISM 0x00534d70
-undefined4 ReturnFalseMissionVtableSlot54(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnZeroMissionVtableSlot58
-// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot58(void)
-// FUNCTION: IMPERIALISM 0x00534d90
-undefined4 ReturnZeroMissionVtableSlot58(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnZeroMissionVtableSlot5C
 // ghidra_proto void __cdecl ReturnZeroMissionVtableSlot5C(void)
 // FUNCTION: IMPERIALISM 0x00534db0
@@ -3999,6 +3951,54 @@ undefined4 SetMapOrderActiveChildEntry(void)
 // ghidra_proto void * __stdcall CreateNavySecondaryOrderNodeWithSentinelNation(void)
 // FUNCTION: IMPERIALISM 0x005512d0
 undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
+{
+  return 0;
+}
+
+// ghidra_name TAdmiral::GetTAdmiralClassNamePointer
+// ghidra_proto void * __cdecl GetTAdmiralClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00551410
+undefined4 GetTAdmiralClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TAdmiral::ConstructAndLinkNavySecondaryOrderNode
+// ghidra_proto void * __thiscall ConstructAndLinkNavySecondaryOrderNode(int arg1)
+// FUNCTION: IMPERIALISM 0x00551430
+undefined4 ConstructAndLinkNavySecondaryOrderNode(void)
+{
+  return 0;
+}
+
+// ghidra_name TAdmiral::DestructTAdmiralAndFreeIfOwned
+// ghidra_proto void * __thiscall DestructTAdmiralAndFreeIfOwned(void)
+// FUNCTION: IMPERIALISM 0x00551550
+undefined4 DestructTAdmiralAndFreeIfOwned(void)
+{
+  return 0;
+}
+
+// ghidra_name TAdmiral::DestructTAdmiral
+// ghidra_proto void __thiscall DestructTAdmiral(void)
+// FUNCTION: IMPERIALISM 0x00551580
+undefined4 DestructTAdmiral(void)
+{
+  return 0;
+}
+
+// ghidra_name DestroyAndUnlinkNavySecondaryOrderNode
+// ghidra_proto void __cdecl DestroyAndUnlinkNavySecondaryOrderNode(void)
+// FUNCTION: IMPERIALISM 0x005515d0
+undefined4 DestroyAndUnlinkNavySecondaryOrderNode(void)
+{
+  return 0;
+}
+
+// ghidra_name SerializeNavyOrderSelectionStateToStream
+// ghidra_proto void __cdecl SerializeNavyOrderSelectionStateToStream(void)
+// FUNCTION: IMPERIALISM 0x00551670
+undefined4 SerializeNavyOrderSelectionStateToStream(void)
 {
   return 0;
 }

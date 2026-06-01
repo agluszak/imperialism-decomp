@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6
-// ghidra_proto short __cdecl thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
-// FUNCTION: IMPERIALISM 0x004083e6
-undefined4 thunk_OrphanCallChain_C1_I09_00488bf0_At004083e6(void)
-{
-  return 0;
-}
-
 // ghidra_name TBattleReportView::thunk_GetTBattleReportViewClassNamePointer
 // ghidra_proto void * __cdecl thunk_GetTBattleReportViewClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004083eb
@@ -3999,6 +3991,14 @@ undefined4 thunk_ResetRuntimeProtocolOptionsAndRebuildSelectionSource(void)
 // ghidra_proto void __cdecl thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
 // FUNCTION: IMPERIALISM 0x00409417
 undefined4 thunk_OrphanCallChain_C2_I21_00489030_At00409417(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InvokeVtableSlot30OnTargetObject
+// ghidra_proto void __cdecl thunk_InvokeVtableSlot30OnTargetObject(void * pTarget)
+// FUNCTION: IMPERIALISM 0x00409421
+undefined4 thunk_InvokeVtableSlot30OnTargetObject(void)
 {
   return 0;
 }

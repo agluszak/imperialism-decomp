@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TControl::DispatchControlEventToChildrenAndSelf
-// ghidra_proto void __thiscall DispatchControlEventToChildrenAndSelf(int arg1)
-// FUNCTION: IMPERIALISM 0x0048aaf0
-undefined4 DispatchControlEventToChildrenAndSelf(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpUiLifecycleHook
-// ghidra_proto void __cdecl NoOpUiLifecycleHook(void)
-// FUNCTION: IMPERIALISM 0x0048ab70
-undefined4 NoOpUiLifecycleHook(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::ForwardMapViewVirtualC4IfPresent
 // ghidra_proto void __thiscall ForwardMapViewVirtualC4IfPresent(int arg1)
 // FUNCTION: IMPERIALISM 0x0048ab90
@@ -3999,6 +3983,22 @@ undefined4 GetTNewGameCommandClassNamePointer(void)
 // ghidra_proto void * __cdecl ConstructTNewGameCommandBaseState(void)
 // FUNCTION: IMPERIALISM 0x0049de40
 undefined4 ConstructTNewGameCommandBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TAmbitApplication::GetTAmbitApplicationClassNamePointer
+// ghidra_proto void * __cdecl GetTAmbitApplicationClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0049deb0
+undefined4 GetTAmbitApplicationClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeGlobalRuntimeSystemsFromConfig
+// ghidra_proto void __cdecl InitializeGlobalRuntimeSystemsFromConfig(void)
+// FUNCTION: IMPERIALISM 0x0049ded0
+undefined4 InitializeGlobalRuntimeSystemsFromConfig(void)
 {
   return 0;
 }

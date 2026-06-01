@@ -16,8 +16,14 @@ const unsigned int kAddrGlobalTurnEventQueue = 0x006A1344;
 const unsigned int kAddrPendingEventController = 0x006A43C8;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kVtableDiplomacyTurnStateManager = 0x00654D90;
+const unsigned int kVtableTPtrList = 0x00649068;
 const unsigned int kVtableTurnEventNextPacket = 0x00654E50;
 const unsigned int kTurnEventTagNext = 0x4E655854; // 'NeXT'
+enum {
+  kDiplomacyPairMatrixEntries = 0x180,
+  kNationSlotCount = 0x17,
+  kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
+};
 
 static __inline void* ReadGlobalPointer(unsigned int address) {
   return *reinterpret_cast<void**>(address);
@@ -32,24 +38,44 @@ undefined4 thunk_ConstructTurnEventPacketBase(void);
 undefined4 thunk_InitializeRangePairAndResetCursor(void);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
+undefined4 CPtrArray(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 struct DiplomacyTurnStateManager {
   void* vftable;
-  unsigned char pad04[0x78a];
-  short field78e;
-  short field790;
+  short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
+  unsigned char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
+  short pendingPolicyTierMatrix484[kDiplomacyPairMatrixEntries];
+  short selectedSourceNationSlot784;
+  short selectedTargetNationSlot786;
+  short selectionFlagsA788;
+  short selectionFlagsB78a;
+  short selectionFlagsC78c;
+  short lastProcessedNationSlot78e;
+  short proposalDispatchCounter790;
   unsigned char pad792[2];
-  int field794;
-  int field798;
-  unsigned char pad79c[0x18d4 - 0x79c];
+  int queuedWarTransitionActive794;
+  int queuedWarTransitionPending798;
+  short relationStandingScoreMatrix79c[kNationPairMatrixEntries];
+  short relationPropagationMatrixBbe[kNationPairMatrixEntries];
+  short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
+  short relationSideEffectMatrix1402[kNationPairMatrixEntries];
+  unsigned char pad1824[0x18d4 - 0x1824];
   void* pendingWarTransitionQueue18d4;
+  short proposalArrayMode18d8;
+  unsigned char pad18da[2];
 
   void ConstructDiplomacyTurnStateManager_Vtbl00654d90();
+  void thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90();
+  void InitializeDiplomacyTurnStateManagerDefaults();
+  void thunk_InitializeDiplomacyTurnStateManagerDefaults();
   char IsNationPairAtWar(int sourceNationSlot, int targetNationSlot);
   char HasAnyWarRelationForNation(int sourceNationSlot);
   char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot);
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
+  int GetNationPairDiplomacyStandingTierCode(int sourceNationSlot, int targetNationSlot);
+  short GetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot);
+  char IsPrimaryNationSlotIndex(int nationSlot);
   void thunk_ProcessQueuedWarTransitions();
   void ProcessQueuedWarTransitions();
 };
@@ -96,19 +122,74 @@ static __inline void EmitTurnEvent3Mode18WithActiveNation(void* controller) {
       controller, 0);
 }
 
+static __inline void ConstructTPtrListObject(void* listObject) {
+  reinterpret_cast<void(__fastcall*)(void*, int)>(CPtrArray)(listObject, 0);
+}
+
 static __inline DiplomacyTurnStateManager* ReadGlobalDiplomacyTurnStateManager() {
   return *reinterpret_cast<DiplomacyTurnStateManager**>(kAddrDiplomacyTurnStateManager);
 }
 
 // FUNCTION: IMPERIALISM 0x004ee6c0
 void DiplomacyTurnStateManager::ConstructDiplomacyTurnStateManager_Vtbl00654d90() {
-  char* self = reinterpret_cast<char*>(this);
   int zero = 0;
-  *reinterpret_cast<int*>(self + 0x794) = zero;
-  *reinterpret_cast<int*>(self + 0x798) = zero;
-  *reinterpret_cast<void**>(self) = reinterpret_cast<void*>(kVtableDiplomacyTurnStateManager);
-  *reinterpret_cast<short*>(self + 0x790) = static_cast<short>(zero);
-  *reinterpret_cast<short*>(self + 0x78e) = static_cast<short>(-1);
+  queuedWarTransitionActive794 = zero;
+  queuedWarTransitionPending798 = zero;
+  vftable = reinterpret_cast<void*>(kVtableDiplomacyTurnStateManager);
+  proposalDispatchCounter790 = static_cast<short>(zero);
+  lastProcessedNationSlot78e = static_cast<short>(-1);
+}
+
+// FUNCTION: IMPERIALISM 0x00409944
+void DiplomacyTurnStateManager::thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90() {
+  ConstructDiplomacyTurnStateManager_Vtbl00654d90();
+}
+
+// FUNCTION: IMPERIALISM 0x004ee7a0
+void DiplomacyTurnStateManager::InitializeDiplomacyTurnStateManagerDefaults() {
+  void* queue = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x18));
+  if (queue != 0) {
+    ConstructTPtrListObject(queue);
+    *reinterpret_cast<void**>(queue) = reinterpret_cast<void*>(kVtableTPtrList);
+  }
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(queue) + 0x14) = 4;
+  pendingWarTransitionQueue18d4 = queue;
+
+  int pairIndex = 0;
+  do {
+    relationCodeMatrix04[pairIndex] = 0;
+    pendingPolicyCodeMatrix304[pairIndex] = 0xff;
+    pairIndex++;
+  } while (pairIndex < kDiplomacyPairMatrixEntries);
+
+  selectedSourceNationSlot784 = static_cast<short>(-1);
+  selectedTargetNationSlot786 = static_cast<short>(-1);
+  selectionFlagsA788 = 0;
+  selectionFlagsB78a = 0;
+  selectionFlagsC78c = 0;
+  proposalArrayMode18d8 = 0;
+
+  short* linearTurnStamp = relationTurnStampMatrixFe0;
+  short* rowStart = relationTurnStampMatrixFe0;
+  int row = kNationSlotCount;
+  do {
+    int column = kNationSlotCount;
+    short* transposeTurnStamp = rowStart;
+    do {
+      *linearTurnStamp = static_cast<short>(-1);
+      *transposeTurnStamp = static_cast<short>(-1);
+      ++linearTurnStamp;
+      transposeTurnStamp += kNationSlotCount;
+      --column;
+    } while (column != 0);
+    ++rowStart;
+    --row;
+  } while (row != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x00403837
+void DiplomacyTurnStateManager::thunk_InitializeDiplomacyTurnStateManagerDefaults() {
+  InitializeDiplomacyTurnStateManagerDefaults();
 }
 
 // FUNCTION: IMPERIALISM 0x004ef540
@@ -155,6 +236,50 @@ void DiplomacyTurnStateManager::QueueNationPairWarTransition(int sourceNationSlo
   pair.targetNationSlot = static_cast<short>(targetNationSlot);
   VCall_WarTransitionQueue_PushPairSlot40(pendingWarTransitionQueue18d4, &pair);
   VCall_Diplomacy_SetRelationCodeSlot74WithMode(this, sourceNationSlot, targetNationSlot, 6, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x004f19c0
+int DiplomacyTurnStateManager::GetNationPairDiplomacyStandingTierCode(int sourceNationSlot,
+                                                                      int targetNationSlot) {
+  int source = static_cast<short>(sourceNationSlot);
+  int target = static_cast<short>(targetNationSlot);
+  short standingScore =
+      relationStandingScoreMatrix79c[source * kNationSlotCount + target];
+  if (standingScore <= 0x14) {
+    return 0;
+  }
+  if (standingScore <= 0x31) {
+    return 1;
+  }
+  if (standingScore <= 0x4f) {
+    return 2;
+  }
+  if (standingScore <= 0x64) {
+    return 3;
+  }
+  if (standingScore <= 0x87) {
+    return 4;
+  }
+  if (standingScore <= 0xaa) {
+    return 5;
+  }
+  if (standingScore <= 0xcd) {
+    return 6;
+  }
+  return (standingScore > 0xf0) + 7;
+}
+
+// FUNCTION: IMPERIALISM 0x004f1b10
+short DiplomacyTurnStateManager::GetNationPairDiplomacyRelationCode(int sourceNationSlot,
+                                                                    int targetNationSlot) {
+  int source = static_cast<short>(sourceNationSlot);
+  int target = static_cast<short>(targetNationSlot);
+  return relationPropagationMatrixBbe[source * kNationSlotCount + target];
+}
+
+// FUNCTION: IMPERIALISM 0x004f1f50
+char DiplomacyTurnStateManager::IsPrimaryNationSlotIndex(int nationSlot) {
+  return static_cast<short>(nationSlot) < 7;
 }
 
 // FUNCTION: IMPERIALISM 0x004f0a10
@@ -211,8 +336,8 @@ void DiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
   } else {
     int otherNationSlot = 0;
     void** nationStateCursor = reinterpret_cast<void**>(kAddrNationStateTable);
-    short* targetRelationCursor = reinterpret_cast<short*>(
-        reinterpret_cast<char*>(this) + 0xbbe + (targetNationSlot * 0x2e));
+    short* targetRelationCursor =
+        &relationPropagationMatrixBbe[targetNationSlot * kNationSlotCount];
     do {
       if (*targetRelationCursor == 2 &&
           VCall_Diplomacy_HasPolicyWithNationSlot44(this, otherNationSlot, sourceNationSlot) == 0) {
@@ -227,8 +352,8 @@ void DiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
 
     otherNationSlot = 0;
     nationStateCursor = reinterpret_cast<void**>(kAddrNationStateTable);
-    short* sourceRelationCursor = reinterpret_cast<short*>(
-        reinterpret_cast<char*>(this) + 0xbbe + (sourceNationSlot * 0x2e));
+    short* sourceRelationCursor =
+        &relationPropagationMatrixBbe[sourceNationSlot * kNationSlotCount];
     do {
       if (*sourceRelationCursor == 2 &&
           VCall_Diplomacy_HasPolicyWithNationSlot44(ReadGlobalDiplomacyTurnStateManager(),

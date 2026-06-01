@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RecomputeNationEconomyAndDiplomacySummaryMetrics
-// ghidra_proto void __thiscall RecomputeNationEconomyAndDiplomacySummaryMetrics(void)
-// FUNCTION: IMPERIALISM 0x004e32a0
-undefined4 RecomputeNationEconomyAndDiplomacySummaryMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapSystemsAndPrepareOrderExecution_Impl
-// ghidra_proto void __cdecl RefreshMapSystemsAndPrepareOrderExecution_Impl(void)
-// FUNCTION: IMPERIALISM 0x004e3560
-undefined4 RefreshMapSystemsAndPrepareOrderExecution_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name SumDiplomacyGrantEntriesMaskedToValueBits
 // ghidra_proto void __cdecl SumDiplomacyGrantEntriesMaskedToValueBits(void)
 // FUNCTION: IMPERIALISM 0x004e3620
@@ -1355,14 +1339,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004ee730(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults
-// ghidra_proto void __thiscall InitializeDiplomacyTurnStateManagerDefaults(void)
-// FUNCTION: IMPERIALISM 0x004ee7a0
-undefined4 InitializeDiplomacyTurnStateManagerDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildCivilianOrderCompatibilityMatrices
 // ghidra_proto void __fastcall RebuildCivilianOrderCompatibilityMatrices(void * pNationSlotRuntime)
 // FUNCTION: IMPERIALISM 0x004ee8c0
@@ -1563,26 +1539,10 @@ undefined4 HasState300LinkBetweenNationPair(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::GetNationPairDiplomacyStandingTierCode
-// ghidra_proto void __thiscall GetNationPairDiplomacyStandingTierCode(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004f19c0
-undefined4 GetNationPairDiplomacyStandingTierCode(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::ShowRelationCodeNoticeForNationPairIfRelevant
 // ghidra_proto void __thiscall ShowRelationCodeNoticeForNationPairIfRelevant(void)
 // FUNCTION: IMPERIALISM 0x004f1a80
 undefined4 ShowRelationCodeNoticeForNationPairIfRelevant(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::GetNationPairDiplomacyRelationCode
-// ghidra_proto short __thiscall GetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot)
-// FUNCTION: IMPERIALISM 0x004f1b10
-undefined4 GetNationPairDiplomacyRelationCode(void)
 {
   return 0;
 }
@@ -1607,14 +1567,6 @@ undefined4 SetNationPairDiplomacyRelationAndApplySideEffects(void)
 // ghidra_proto short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass)
 // FUNCTION: IMPERIALISM 0x004f1f20
 undefined4 LookupOrderCompatibilityMatrixValue(void)
-{
-  return 0;
-}
-
-// ghidra_name IsPrimaryNationSlotIndex
-// ghidra_proto void __cdecl IsPrimaryNationSlotIndex(void)
-// FUNCTION: IMPERIALISM 0x004f1f50
-undefined4 IsPrimaryNationSlotIndex(void)
 {
   return 0;
 }
@@ -3999,6 +3951,54 @@ undefined4 ConstructTLanguageMgrBaseState(void)
 // ghidra_proto void * __thiscall DestructTLanguageMgrAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00507d80
 undefined4 DestructTLanguageMgrAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0
+// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
+// FUNCTION: IMPERIALISM 0x00507db0
+undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20
+// ghidra_proto void __cdecl WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20(void)
+// FUNCTION: IMPERIALISM 0x00507e20
+undefined4 WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadNewsTabTexResourcesAndBuildEntries
+// ghidra_proto void __cdecl LoadNewsTabTexResourcesAndBuildEntries(void)
+// FUNCTION: IMPERIALISM 0x00507e50
+undefined4 LoadNewsTabTexResourcesAndBuildEntries(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AllocateWithFallbackHandler_At005082b0
+// ghidra_proto void __fastcall WrapperFor_AllocateWithFallbackHandler_At005082b0(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x005082b0
+undefined4 WrapperFor_AllocateWithFallbackHandler_At005082b0(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::BuildMappedSharedStringFromByteStateTable
+// ghidra_proto void __thiscall BuildMappedSharedStringFromByteStateTable(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005083f0
+undefined4 BuildMappedSharedStringFromByteStateTable(void)
+{
+  return 0;
+}
+
+// ghidra_name ReloadPreplutNewsTableAndResources
+// ghidra_proto void __cdecl ReloadPreplutNewsTableAndResources(void)
+// FUNCTION: IMPERIALISM 0x005086a0
+undefined4 ReloadPreplutNewsTableAndResources(void)
 {
   return 0;
 }

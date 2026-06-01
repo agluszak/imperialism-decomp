@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TAmbitApplication::GetTAmbitApplicationClassNamePointer
-// ghidra_proto void * __cdecl GetTAmbitApplicationClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0049deb0
-undefined4 GetTAmbitApplicationClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalRuntimeSystemsFromConfig
-// ghidra_proto void __cdecl InitializeGlobalRuntimeSystemsFromConfig(void)
-// FUNCTION: IMPERIALISM 0x0049ded0
-undefined4 InitializeGlobalRuntimeSystemsFromConfig(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseGlobalUiSystemsAndGameFlowState
 // ghidra_proto void __cdecl ReleaseGlobalUiSystemsAndGameFlowState(void)
 // FUNCTION: IMPERIALISM 0x0049e1a0
@@ -3999,6 +3983,22 @@ undefined4 WrapperFor_IsPointInsideHitRegion_At004bc870(void)
 // ghidra_proto void __cdecl OrphanCallChain_C5_I49_004bc910(void)
 // FUNCTION: IMPERIALISM 0x004bc910
 undefined4 OrphanCallChain_C5_I49_004bc910(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshCityDialogSummaryValues
+// ghidra_proto void __cdecl RefreshCityDialogSummaryValues(void)
+// FUNCTION: IMPERIALISM 0x004bcaf0
+undefined4 RefreshCityDialogSummaryValues(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateUiResourceEntryWithInvalidateGuard_004bcf40
+// ghidra_proto void * __cdecl AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
+// FUNCTION: IMPERIALISM 0x004bcf40
+undefined4 AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
 {
   return 0;
 }

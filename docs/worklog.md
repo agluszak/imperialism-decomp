@@ -1286,3 +1286,42 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `VCall_TurnEventQueue_EnqueueSlot38`
    - `VCall_LocalizationTable_CallSlot44`
 4. New evidence: the processor drains `pendingWarTransitionQueue18d4`, mutates relation slot `0x74`, queues bidirectional inter-nation event records through `0x00406758`, propagates alliance/war effects through nation-state slots `0x27c`/`0x280`, and enqueues a `NeXT` turn-event packet (`vtable 0x00654e50`) when propagation did not consume the transition.
+
+### DiplomacyTurnStateManager class shape pass (2026-06-01, cont.)
+
+1. Expanded `src/game/diplomacy_state.cpp` from pad-heavy manager fields to a provisional, evidence-backed layout:
+   - `+0x004`: `relationCodeMatrix04[0x180]` (`short`)
+   - `+0x304`: `pendingPolicyCodeMatrix304[0x180]` (`byte`)
+   - `+0x484`: `pendingPolicyTierMatrix484[0x180]` (`short`)
+   - `+0x784..+0x798`: selection/proposal/queued-war state
+   - `+0x79c`: `relationStandingScoreMatrix79c[23*23]` (`short`)
+   - `+0xbbe`: `relationPropagationMatrixBbe[23*23]` (`short`)
+   - `+0xfe0`: `relationTurnStampMatrixFe0[23*23]` (`short`)
+   - `+0x1402`: `relationSideEffectMatrix1402[23*23]` (`short`)
+   - `+0x18d4`: pending-war transition queue pointer
+   - `+0x18d8`: proposal-array mode/state short
+2. Moved the misattributed default initializer into the manager:
+   - `0x004ee7a0` `DiplomacyTurnStateManager::InitializeDiplomacyTurnStateManagerDefaults`: stub -> **23.16%**. It allocates a `0x18` TPtrList/CObArray-like queue (`vtable 0x00649068`), clears `+0x04/+0x304`, initializes selection sentinels, and fills the `+0xfe0` 23x23 turn-stamp matrix with `-1`.
+   - `0x00403837` initializer thunk: **100%**.
+   - `0x00409944` constructor thunk: **100%**.
+3. Dumped `vtbl_DiplomacyTurnStateManager_00654d90` and resolved the important ILT slots:
+   - slot `0x44` -> `0x004ef540`
+   - slot `0x48` -> `0x004ef590`
+   - slot `0x4c` -> `0x004ef600`
+   - slot `0x5c` -> `0x004ef700`
+   - slot `0x60` -> `0x004efc30`
+   - slot `0x68` -> `0x004f19c0`
+   - slot `0x70` -> `0x004f1b10`
+   - slot `0x74` -> `0x004f1b70`
+   - slot `0x84` -> `0x004f1f50`
+   - slot `0x94` -> `0x004f21f0`
+   - slot `0x98` -> `0x004f2100`
+4. Promoted three cheap vtable slot bodies:
+   - `0x004f19c0` `GetNationPairDiplomacyStandingTierCode(int,int)`: stub -> **100%**; proves slot `0x68` returns full `EAX` and reads the `+0x79c` standing-score matrix.
+   - `0x004f1b10` `GetNationPairDiplomacyRelationCode(int,int)`: stub -> **53.33%**; proves slot `0x70` returns `AX` from the `+0xbbe` relation-code matrix.
+   - `0x004f1f50` `IsPrimaryNationSlotIndex(int)`: stub -> **66.67%**; tiny slot `0x84` nation-slot gate (`slot < 7`).
+5. Updated `VCall_Diplomacy_GetRelationTypeSlot68` return type from `short` to `int` after the exact `0x004f19c0` match showed the old facade return width was wrong.
+6. Validation:
+   - `just build`, `just detect`, `just vtable-gate`: clean.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.30%**, aligned functions **107** (`+3`).

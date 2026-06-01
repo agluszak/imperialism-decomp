@@ -106,6 +106,7 @@
 55. Reading a global flag/byte into a *local* once and writing the modified value back to the literal address (`*(char*)0xADDR = local | 1`) matches MSVC500 better than caching a pointer to it (`char* p = (char*)0xADDR; *p |= 1`), which emits an extra `mov reg,0xADDR`. The original reads the global directly (`mov al,[0xADDR]`). Lifted `0x4f5e00` 38% -> 43%.
 56. For backend functions exported with free-function names but decompiled with `in_ECX`, verify the listing with `just ghidra-listing 0xADDR` before choosing a signature. `DiplomacyTurnStateManager` queries at `0x4ef540`/`0x4ef600`/`0x4ef650` are real `ecx=this` methods with stack cleanup (`ret 8` or `ret 4`) even though symbols describe free functions taking an explicit manager pointer.
 57. Treat Ghidra `__fastcall` labels on backend/ILT dispatchers as suspect unless `edx` is live. Follow the listing and thunk chain: `0x4f0db0` is a global wrapper (`mov ecx,[0x6a43d0]; jmp 0x406aaf`), while `0x406aaf` is the real method-style thunk into `DiplomacyTurnStateManager::ProcessQueuedWarTransitions`. Modeling the wrapper and method thunk separately matched both at 100%.
+58. In `DiplomacyTurnStateManager`, let vtable slot bodies define the matrix bands and return widths, not old facade names. Slot `0x68` (`0x4f19c0`) reads the `+0x79c` short matrix and returns full `EAX` standing-tier constants; changing the facade from `short` to `int` made the method 100%. Slot `0x70` (`0x4f1b10`) reads the `+0xbbe` relation-code matrix and returns `AX`.
 
 ## Known reccmp Failure Modes
 

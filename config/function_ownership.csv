@@ -34,6 +34,7 @@ address|target_cpp|ownership|note
 402e5f|src/game/TGreatPower.cpp|manual|marker_sync
 4032fb|src/game/trade_screen.cpp|manual|marker_sync
 40376a|src/game/TGreatPower.cpp|manual|marker_sync
+403837|src/game/diplomacy_state.cpp|manual|marker_sync
 40389b|src/game/TGreatPower.cpp|manual|marker_sync
 403b16|src/game/trade_screen.cpp|manual|marker_sync
 403c15|src/game/TGreatPower.cpp|manual|marker_sync
@@ -86,6 +87,7 @@ address|target_cpp|ownership|note
 4096c4|src/game/TGreatPower.cpp|manual|marker_sync
 4097fa|src/game/TGreatPower.cpp|manual|marker_sync
 4097ff|src/game/TGreatPower.cpp|manual|marker_sync
+409944|src/game/diplomacy_state.cpp|manual|marker_sync
 412bf0|src/game/noop_slots.cpp|manual|marker_sync
 412c10|src/game/noop_slots.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
@@ -182,12 +184,16 @@ address|target_cpp|ownership|note
 4ea300|src/game/TGreatPower.cpp|manual|marker_sync
 4ea470|src/game/TGreatPower.cpp|manual|marker_sync
 4ee6c0|src/game/diplomacy_state.cpp|manual|marker_sync
+4ee7a0|src/game/diplomacy_state.cpp|manual|marker_sync
 4ef540|src/game/diplomacy_state.cpp|manual|marker_sync
 4ef600|src/game/diplomacy_state.cpp|manual|marker_sync
 4ef650|src/game/diplomacy_state.cpp|manual|marker_sync
 4f09c0|src/game/diplomacy_state.cpp|manual|marker_sync
 4f0a10|src/game/diplomacy_state.cpp|manual|marker_sync
 4f0db0|src/game/diplomacy_state.cpp|manual|marker_sync
+4f19c0|src/game/diplomacy_state.cpp|manual|marker_sync
+4f1b10|src/game/diplomacy_state.cpp|manual|marker_sync
+4f1f50|src/game/diplomacy_state.cpp|manual|marker_sync
 4f5e00|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f5fb0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f6170|src/game/TDiplomacyMapView.cpp|manual|marker_sync
