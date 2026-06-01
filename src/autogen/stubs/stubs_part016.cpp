@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TSortByPriceList::ConstructTSortByPriceList
-// ghidra_proto void __thiscall ConstructTSortByPriceList(void)
-// FUNCTION: IMPERIALISM 0x00534710
-undefined4 ConstructTSortByPriceList(void)
-{
-  return 0;
-}
-
 // ghidra_name DeletingDestructTSortByPriceList
 // ghidra_proto void __cdecl DeletingDestructTSortByPriceList(void)
 // FUNCTION: IMPERIALISM 0x00534740
@@ -3999,6 +3991,14 @@ undefined4 GetOrderNodeDescriptorWord0CByResourceType(void)
 // ghidra_proto int __cdecl ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
 // FUNCTION: IMPERIALISM 0x00550840
 undefined4 ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
+{
+  return 0;
+}
+
+// ghidra_name GetIndustryActionCostWeightByResourceType
+// ghidra_proto short __cdecl GetIndustryActionCostWeightByResourceType(void)
+// FUNCTION: IMPERIALISM 0x00550970
+undefined4 GetIndustryActionCostWeightByResourceType(void)
 {
   return 0;
 }

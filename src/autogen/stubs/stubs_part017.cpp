@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetIndustryActionCostWeightByResourceType
-// ghidra_proto short __cdecl GetIndustryActionCostWeightByResourceType(void)
-// FUNCTION: IMPERIALISM 0x00550970
-undefined4 GetIndustryActionCostWeightByResourceType(void)
-{
-  return 0;
-}
-
 // ghidra_name PruneOrPromoteOrderNodeWhenChildCostDepleted
 // ghidra_proto void __cdecl PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
 // FUNCTION: IMPERIALISM 0x005509c0
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C2_I28_00571ff0(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I05_00572060(void)
 // FUNCTION: IMPERIALISM 0x00572060
 undefined4 OrphanCallChain_C1_I05_00572060(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldButton::CreateTGWorldButtonInstance
+// ghidra_proto void * __cdecl CreateTGWorldButtonInstance(void)
+// FUNCTION: IMPERIALISM 0x00572080
+undefined4 CreateTGWorldButtonInstance(void)
 {
   return 0;
 }

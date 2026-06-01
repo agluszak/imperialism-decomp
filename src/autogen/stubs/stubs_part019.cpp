@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot02
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot02(void)
-// FUNCTION: IMPERIALISM 0x0059b4f0
-undefined4 TArmyTacUnit_VtblSlot02(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot03
 // ghidra_proto void __thiscall TArmyTacUnit_VtblSlot03(void)
 // FUNCTION: IMPERIALISM 0x0059b540
@@ -3999,6 +3991,14 @@ undefined4 HandleDealBookTradeCommandAndRefreshNationLines(void)
 // ghidra_proto void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(void * pHintContext)
 // FUNCTION: IMPERIALISM 0x005bc0d0
 undefined4 RefreshTradeSelectionHeaderAndNationOfferBidLines(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealTabControl::CreateTDealTabControlInstance
+// ghidra_proto void * __cdecl CreateTDealTabControlInstance(void)
+// FUNCTION: IMPERIALISM 0x005bc690
+undefined4 CreateTDealTabControlInstance(void)
 {
   return 0;
 }

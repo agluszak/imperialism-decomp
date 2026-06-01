@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TGWorldButton::CreateTGWorldButtonInstance
-// ghidra_proto void * __cdecl CreateTGWorldButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00572080
-undefined4 CreateTGWorldButtonInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TGWorldButton::GetTGWorldButtonClassNamePointer
 // ghidra_proto void * __cdecl GetTGWorldButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00572110
@@ -3999,6 +3991,14 @@ undefined4 DestructTArmyPlayerAndMaybeFree_Impl(void)
 // ghidra_proto void __thiscall TArmyTacUnit_VtblSlot01(void)
 // FUNCTION: IMPERIALISM 0x0059b3e0
 undefined4 TArmyTacUnit_VtblSlot01(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot02
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot02(void)
+// FUNCTION: IMPERIALISM 0x0059b4f0
+undefined4 TArmyTacUnit_VtblSlot02(void)
 {
   return 0;
 }

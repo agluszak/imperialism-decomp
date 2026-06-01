@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNumberedIcon::CreateTNumberedIconInstance
-// ghidra_proto void * __cdecl CreateTNumberedIconInstance(void)
-// FUNCTION: IMPERIALISM 0x005072e0
-undefined4 CreateTNumberedIconInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TNumberedIcon::GetTNumberedIconClassNamePointer
 // ghidra_proto void * __cdecl GetTNumberedIconClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00507380
@@ -3999,6 +3991,14 @@ undefined4 AllocateAndConstructTSortByPriceList(void)
 // ghidra_proto void * __cdecl GetTSortByPriceListClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005346f0
 undefined4 GetTSortByPriceListClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TSortByPriceList::ConstructTSortByPriceList
+// ghidra_proto void __thiscall ConstructTSortByPriceList(void)
+// FUNCTION: IMPERIALISM 0x00534710
+undefined4 ConstructTSortByPriceList(void)
 {
   return 0;
 }

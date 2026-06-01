@@ -1030,3 +1030,41 @@
    - `just compare-canaries`: `below_floor=0`.
    - `just stats`: avg similarity **3.16%**, aligned functions **102**, dropped duplicate
      addresses **0**.
+
+### TDiplomacyMapView event-palette mask blit (2026-06-01, cont.)
+
+1. Promoted `0x004f6bd0` as
+   `TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId)`
+   from a `0%` stub to **25.30%**.
+   - Single-index variant of the mask-run blit family: instead of filling a solid
+     palette byte (`DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface`),
+     it copies pixels from a loaded BMP through the monochrome mask at
+     `this+0x1eac + maskIndex*0x14`, then appends one packed color at
+     `this+0x2078 + maskIndex*0x30`.
+2. New architecture/layout evidence captured:
+   - `ModuleLibraryCacheState` at global `g_pModuleLibraryCacheState` (`0x6a134c`):
+     hash-indexed BMP record cache with `LoadBmpResourceById(id)` (thunk `0x403224`)
+     and `ReleaseRecordByHandle(handle)` (thunk `0x4020fe`), both real thiscall methods.
+   - `DiplomacyPackedColorRun` subobject (`0x30`-byte stride) with thiscall
+     `AppendPackedColorDword(surface, packedColor)` (thunk `0x404a25`) — same target as
+     the sibling mode-1/mode-4 packed-color append, now modeled as a real method call
+     (ecx = packed-color run) matching the original thiscall shape.
+   - BMP record layout: row width at `*(*(bmp+0x10)+4)`, pixel source at `*(bmp+0xc)`.
+   - Active context surface object reached via `*(context+4)` anchor: height at
+     `*(*(*(context+0x20)+0x10)+8)`, row stride `(short)*(context+8)`, base `*(context+4)`.
+3. Residual gap is register allocation: original binds `context+4`->esi and `this`->edi;
+   MSVC500 swaps them here, which cascades through the pixel loop. Branch/loop shape and
+   pointer-advance math match; the swap is the dominant remaining mismatch.
+4. Decompiler caveat: Ghidra modeled the tail `AppendPackedColorDword` call as a 2-arg
+   cdecl thunk; the listing shows it is thiscall (ecx = packed-color cursor, then
+   `push palette; push surface`). The instruction listing was authoritative.
+5. Validation:
+   - `just sync-ownership` (ownership updates: 1), `just regen-stubs`, `just build`,
+     `just detect`: clean.
+   - `just compare 0x004f6bd0`: stub -> **25.30%**.
+   - Adjacent diplomacy functions unchanged: `0x004f6170` **45.06%** (control-plane's
+     prior `46.30%` was stale; verified identical at committed HEAD with my changes
+     stashed), `0x004f64c0` **37.74%**, `0x004f66c0` **15.02%**, `0x004f6840` **35.53%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just stats`: avg similarity **3.17%**, aligned functions **102** (delta 0), paired
+     global count increased, dropped duplicate addresses **0**.

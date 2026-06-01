@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealTabControl::CreateTDealTabControlInstance
-// ghidra_proto void * __cdecl CreateTDealTabControlInstance(void)
-// FUNCTION: IMPERIALISM 0x005bc690
-undefined4 CreateTDealTabControlInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealTabControl::GetTDealTabControlClassNamePointer
 // ghidra_proto void * __cdecl GetTDealTabControlClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005bc760
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e
 // ghidra_proto void * __thiscall WriteWordToSerializedBuffer(ushort value)
 // FUNCTION: IMPERIALISM 0x005e6d27
 undefined4 WriteWordToSerializedBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::WriteDwordToSerializedBuffer
+// ghidra_proto void * __thiscall WriteDwordToSerializedBuffer(uint value)
+// FUNCTION: IMPERIALISM 0x005e6d4e
+undefined4 WriteDwordToSerializedBuffer(void)
 {
   return 0;
 }

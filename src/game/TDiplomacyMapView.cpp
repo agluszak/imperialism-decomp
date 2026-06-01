@@ -18,6 +18,7 @@ struct TDiplomacyMapViewLayout {
   void RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect);
   void RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot, const RECT* presentRect);
   void RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot, const RECT* presentRect);
+  void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId);
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -35,6 +36,8 @@ undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 thunk_SetUiResourceContextTagWord(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
+undefined4 thunk_LoadBmpResourceByIdCached(void);
+undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
 
 extern int g_pPrimaryRenderSurfaceContext;
 extern int g_pActiveQuickDrawSurfaceContext;
@@ -56,6 +59,35 @@ struct DiplomacyMaskBufferRun {
   void BlitMonochromeMaskBytePatternToSurface(int surfaceContext, int paletteByte, int* origin,
                                               int flipVertical);
 };
+
+// Packed-color run subobject at `this+0x2078 + index*0x30` (0x30-byte stride).
+struct DiplomacyPackedColorRun {
+  void AppendPackedColorDword(int surface, int packedColor);
+};
+
+// Cached BMP/library record manager at global `g_pModuleLibraryCacheState` (0x6a134c).
+// Records are loaded by id and released by handle through the hash-indexed cache.
+struct ModuleLibraryCacheState {
+  int LoadBmpResourceById(int bmpId);
+  void ReleaseRecordByHandle(int handle);
+};
+
+// GLOBAL: IMPERIALISM 0x6a134c
+extern "C" ModuleLibraryCacheState* g_pModuleLibraryCacheState = 0;
+
+int ModuleLibraryCacheState::LoadBmpResourceById(int bmpId) {
+  return reinterpret_cast<int(__cdecl*)(void*, int)>(thunk_LoadBmpResourceByIdCached)(this, bmpId);
+}
+
+void ModuleLibraryCacheState::ReleaseRecordByHandle(int handle) {
+  reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_ReleaseHashIndexedRecordByHandle)(this,
+                                                                                       handle);
+}
+
+void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColor) {
+  reinterpret_cast<void(__cdecl*)(void*, int, int)>(thunk_AppendPackedColorDwordToMaskBuffers)(
+      this, surface, packedColor);
+}
 
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
@@ -328,8 +360,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
         int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
         reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
             thunk_AppendPackedColorDwordToMaskBuffers)(
-            packedColorCursor, *reinterpret_cast<unsigned int*>(g_pActiveQuickDrawSurfaceContext + 4),
-            packedColor);
+            packedColorCursor,
+            *reinterpret_cast<unsigned int*>(g_pActiveQuickDrawSurfaceContext + 4), packedColor);
       }
       terrainIndex++;
       terrainDescriptors++;
@@ -352,6 +384,79 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
       reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
       reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
   (void)presentRect;
+}
+
+// FUNCTION: IMPERIALISM 0x004f6bd0
+void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,
+                                                                        int bmpId) {
+  int* surfaceCtx = reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 4);
+  DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
+      reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
+  int bmpHandle = g_pModuleLibraryCacheState->LoadBmpResourceById(bmpId);
+
+  unsigned char* maskCursor = maskRun->maskBytesAt00;
+  if (maskCursor != 0) {
+    int srcRowWidth = *reinterpret_cast<int*>(*reinterpret_cast<int*>(bmpHandle + 0x10) + 4);
+    int srcRowAdvance = (((srcRowWidth + 3) & 0xfffffffc) - maskRun->rightAt0c) + maskRun->leftAt04;
+    int surfaceHeight = *reinterpret_cast<int*>(
+        *reinterpret_cast<int*>(
+            *reinterpret_cast<int*>(reinterpret_cast<char*>(surfaceCtx) + 0x1c) + 0x10) +
+        8);
+    if (surfaceHeight < 1) {
+      surfaceHeight = -surfaceHeight;
+    }
+    int row = maskRun->topAt08;
+    int rowStride = *reinterpret_cast<short*>(reinterpret_cast<char*>(surfaceCtx) + 4);
+    unsigned char* destCursor = reinterpret_cast<unsigned char*>(
+        ((surfaceHeight - row) - 1) * rowStride + *surfaceCtx + maskRun->leftAt04);
+    int destRowAdvance = (maskRun->leftAt04 - maskRun->rightAt0c) - rowStride;
+    unsigned char* srcCursor = *reinterpret_cast<unsigned char**>(bmpHandle + 0xc);
+
+    if (row < maskRun->bottomAt10) {
+      do {
+        int x = maskRun->leftAt04;
+        if (x < maskRun->rightAt0c) {
+          do {
+            if (*maskCursor == 0) {
+              x += 8;
+              destCursor += 8;
+              srcCursor += 8;
+            } else if (*maskCursor == 0xff) {
+              int remaining = 8;
+              x += 8;
+              do {
+                *destCursor = *srcCursor;
+                destCursor += 1;
+                srcCursor += 1;
+                remaining -= 1;
+              } while (remaining != 0);
+            } else {
+              int bit = 1;
+              do {
+                if ((*maskCursor & static_cast<unsigned char>(bit)) != 0) {
+                  *destCursor = *srcCursor;
+                }
+                bit = bit * 2;
+                x += 1;
+                destCursor += 1;
+                srcCursor += 1;
+              } while (bit < 0x100);
+            }
+            maskCursor += 1;
+          } while (x < maskRun->rightAt0c);
+        }
+        row += 1;
+        srcCursor += srcRowAdvance;
+        destCursor += destRowAdvance;
+      } while (row < maskRun->bottomAt10);
+    }
+  }
+
+  g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
+  int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
+  DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
+      reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
+  packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
 }
 
 // FUNCTION: IMPERIALISM 0x00409205

@@ -2235,14 +2235,6 @@ undefined4 BuildTurnEventMonochromeMaskBuffers(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface
-// ghidra_proto void __thiscall BlitDiplomacyMapEventPaletteMaskToSurface(int arg1)
-// FUNCTION: IMPERIALISM 0x004f6bd0
-undefined4 BlitDiplomacyMapEventPaletteMaskToSurface(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 // ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
 // FUNCTION: IMPERIALISM 0x004f6d90
@@ -3999,6 +3991,14 @@ undefined4 RefreshOrderViewSupplyAndUseControlValues(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240(void)
 // FUNCTION: IMPERIALISM 0x00507240
 undefined4 WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedIcon::CreateTNumberedIconInstance
+// ghidra_proto void * __cdecl CreateTNumberedIconInstance(void)
+// FUNCTION: IMPERIALISM 0x005072e0
+undefined4 CreateTNumberedIconInstance(void)
 {
   return 0;
 }

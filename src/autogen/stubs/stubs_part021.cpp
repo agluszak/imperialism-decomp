@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNetMgr::WriteDwordToSerializedBuffer
-// ghidra_proto void * __thiscall WriteDwordToSerializedBuffer(uint value)
-// FUNCTION: IMPERIALISM 0x005e6d4e
-undefined4 WriteDwordToSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name NodeScanner::ReadWordFromSerializedBuffer
 // ghidra_proto void * __thiscall ReadWordFromSerializedBuffer(void * outWord)
 // FUNCTION: IMPERIALISM 0x005e6da3
@@ -3999,6 +3991,14 @@ undefined4 AfxHelpEnabled(void)
 // ghidra_proto byte __fastcall OnInitDialog(int pController)
 // FUNCTION: IMPERIALISM 0x00605445
 undefined4 OnInitDialog(void)
+{
+  return 0;
+}
+
+// ghidra_name TNewGameCommand::OnOK_6054aa
+// ghidra_proto void __fastcall OnOK_6054aa(void)
+// FUNCTION: IMPERIALISM 0x006054aa
+undefined4 OnOK_6054aa(void)
 {
   return 0;
 }
