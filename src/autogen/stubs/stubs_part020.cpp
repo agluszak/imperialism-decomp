@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradePageSellView::ConstructTTradePageSellViewBaseState
-// ghidra_proto void * __thiscall ConstructTTradePageSellViewBaseState(int arg1)
-// FUNCTION: IMPERIALISM 0x005bcc30
-undefined4 ConstructTTradePageSellViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTradePageSellViewAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005bcf70
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_CException_At005e6e55(void)
 // ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6e7f(void)
 // FUNCTION: IMPERIALISM 0x005e6e7f
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e6e7f(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantB
+// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
+// FUNCTION: IMPERIALISM 0x005e6e9b
+undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
 {
   return 0;
 }

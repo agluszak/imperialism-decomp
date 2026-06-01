@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_VariantB
-// ghidra_proto void __cdecl InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
-// FUNCTION: IMPERIALISM 0x005e6e9b
-undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructClipStateRegionAndMaybeFreeSelf
 // ghidra_proto void __cdecl DestructClipStateRegionAndMaybeFreeSelf(void)
 // FUNCTION: IMPERIALISM 0x005e6ea2
@@ -3999,6 +3991,14 @@ undefined4 DispatchVirtualSlot18OnImplicitObject(void)
 // ghidra_proto void __cdecl Empty(void)
 // FUNCTION: IMPERIALISM 0x0060586d
 undefined4 Empty(void)
+{
+  return 0;
+}
+
+// ghidra_name LockBuffer
+// ghidra_proto void __cdecl LockBuffer(void)
+// FUNCTION: IMPERIALISM 0x00605dec
+undefined4 LockBuffer(void)
 {
   return 0;
 }

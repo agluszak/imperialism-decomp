@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TIndexAndRankList::DestructTIndexAndRankList
-// ghidra_proto void __cdecl DestructTIndexAndRankList(TIndexAndRankList * pThis)
-// FUNCTION: IMPERIALISM 0x005348d0
-undefined4 DestructTIndexAndRankList(void)
-{
-  return 0;
-}
-
 // ghidra_name CompareIndexAndRankEntriesByField2Descending
 // ghidra_proto void __cdecl CompareIndexAndRankEntriesByField2Descending(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00534910
@@ -3999,6 +3991,14 @@ undefined4 GetResourceDescriptorWord0CByType(void)
 // ghidra_proto short __cdecl GetResourceDescriptorWord10ByType(void)
 // FUNCTION: IMPERIALISM 0x00550de0
 undefined4 GetResourceDescriptorWord10ByType(void)
+{
+  return 0;
+}
+
+// ghidra_name GetResourceDescriptorWord14ByType
+// ghidra_proto short __cdecl GetResourceDescriptorWord14ByType(void)
+// FUNCTION: IMPERIALISM 0x00550e10
+undefined4 GetResourceDescriptorWord14ByType(void)
 {
   return 0;
 }

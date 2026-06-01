@@ -33,6 +33,7 @@ struct TDiplomacyMapViewLayout {
   int ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint);
   void UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint, void* dispatchArg);
   void ForwardCityDialogParamToActiveChildOrBase(void* param);
+  void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -486,6 +487,16 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f7080
+void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2,
+                                                                   void* arg3) {
+  reinterpret_cast<void(__stdcall*)(int)>(
+      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
+  void* child = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0xb4);
+  VCall_DiplomacyChildControl_SwitchTabSlot1A4(
+      child, reinterpret_cast<int>(arg1), reinterpret_cast<int>(arg2), reinterpret_cast<int>(arg3));
 }
 
 // FUNCTION: IMPERIALISM 0x004f7130

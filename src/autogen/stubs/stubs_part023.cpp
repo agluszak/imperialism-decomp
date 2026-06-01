@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::LoadAccelTable
-// ghidra_proto bool __thiscall LoadAccelTable(void)
-// FUNCTION: IMPERIALISM 0x0061c76d
-undefined4 LoadAccelTable(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0
 // ghidra_proto int __fastcall ResolveField12ValueFromActiveChildSlotB0(void)
 // FUNCTION: IMPERIALISM 0x0061c793
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630f8f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630fe5(void)
 // FUNCTION: IMPERIALISM 0x00630fe5
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630fe5(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063102d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063102d(void)
+// FUNCTION: IMPERIALISM 0x0063102d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063102d(void)
 {
   return 0;
 }

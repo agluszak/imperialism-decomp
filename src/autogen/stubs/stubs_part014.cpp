@@ -2219,14 +2219,6 @@ undefined4 WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
   return 0;
 }
 
-// ghidra_name WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080
-// ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
-// FUNCTION: IMPERIALISM 0x004f7080
-undefined4 WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowDiplomacyActionRejectedNotice
 // ghidra_proto void __cdecl ShowDiplomacyActionRejectedNotice(void)
 // FUNCTION: IMPERIALISM 0x004f7400
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C1_I10_005076d0(void)
 // ghidra_proto void * __cdecl CreateTNumberedItemInstance(void)
 // FUNCTION: IMPERIALISM 0x00507700
 undefined4 CreateTNumberedItemInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedItem::GetTNumberedItemClassNamePointer
+// ghidra_proto void * __cdecl GetTNumberedItemClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005077a0
+undefined4 GetTNumberedItemClassNamePointer(void)
 {
   return 0;
 }

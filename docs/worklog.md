@@ -1216,13 +1216,24 @@
 3. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f7130`
    stub -> **64.00%**; canaries `below_floor=0`; stats avg **3.20%**, aligned **102**.
 
+### TDiplomacyMapView tab-switch child forward (2026-06-01, cont.)
+
+1. Promoted `0x004f7080` as
+   `TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void*, void*, void*)`
+   (thiscall, `ret 0xc`) from a `0%` stub to **92.86%** (near-exact; only a tail
+   diff-alignment artifact remains). Invalidates tab 5 then forwards the tab-switch
+   command to the active child control (`this+0xb4`) via slot `0x1a4`.
+2. Added `VCall_DiplomacyChildControl_SwitchTabSlot1A4` (slot `0x1a4`, 3 args). Reuses
+   the `this+0xb4` child-control layout and the invalidate thunk.
+3. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f7080`
+   stub -> **92.86%**; canaries `below_floor=0`.
+
 ### Session summary (2026-06-01)
-Grew `src/game/TDiplomacyMapView.cpp` from 4 to 11 promoted functions. New this
+Grew `src/game/TDiplomacyMapView.cpp` from 4 to 12 promoted functions. New this
 session (all from `0%` stubs): `0x4f6bd0` (25.30), `0x4f6b10` (43.04), `0x4f6440`
 (38.10), `0x4f71a0` (31.97), `0x4f5e00` (43.27), `0x4f5fb0` (40.59), `0x4f70c0`
-(40.00), `0x4f7130` (64.00). Established the `DiplomacyMaskBufferRun` /
+(40.00), `0x4f7130` (64.00), `0x4f7080` (92.86). Established the `DiplomacyMaskBufferRun` /
 `DiplomacyPackedColorRun` / `ModuleLibraryCacheState` subobjects, the diplomacy
 interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0xc2`/
-`+0x52a`), and 7 new vtable facades. Remaining slice tail: `0x4f6d90` (513-byte
-invalidator), `0x4f7400` (EH-framed localized notice), `0x4f7040`/`0x4f7080`
-(thiscall tab-switch wrappers).
+`+0x52a`), and 7 new vtable facades. Remaining slice tail: `0x4f6d90` (513-byte invalidator), `0x4f7400`
+(EH-framed localized notice), `0x4f7040` (thiscall tab-switch wrapper sibling).

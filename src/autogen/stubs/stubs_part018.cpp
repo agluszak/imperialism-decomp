@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanRetStub_005723d0
-// ghidra_proto void __cdecl OrphanRetStub_005723d0(void)
-// FUNCTION: IMPERIALISM 0x005723d0
-undefined4 OrphanRetStub_005723d0(void)
-{
-  return 0;
-}
-
 // ghidra_name TClickZone::GetTClickZoneClassNamePointer
 // ghidra_proto void * __cdecl GetTClickZoneClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005723f0
@@ -3999,6 +3991,14 @@ undefined4 TArmyTacUnit_VtblSlot06(void)
 // ghidra_proto void __cdecl BuildTacticalActionPriorityBucketsWithGridGuard(void)
 // FUNCTION: IMPERIALISM 0x0059bcf0
 undefined4 BuildTacticalActionPriorityBucketsWithGridGuard(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchTacticalActionClassSelectionAcrossCursorList
+// ghidra_proto void __cdecl DispatchTacticalActionClassSelectionAcrossCursorList(void)
+// FUNCTION: IMPERIALISM 0x0059bf20
+undefined4 DispatchTacticalActionClassSelectionAcrossCursorList(void)
 {
   return 0;
 }

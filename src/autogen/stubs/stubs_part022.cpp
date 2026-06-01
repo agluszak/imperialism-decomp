@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name LockBuffer
-// ghidra_proto void __cdecl LockBuffer(void)
-// FUNCTION: IMPERIALISM 0x00605dec
-undefined4 LockBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::Find_605e12
 // ghidra_proto int __thiscall Find_605e12(void)
 // FUNCTION: IMPERIALISM 0x00605e12
@@ -3999,6 +3991,14 @@ undefined4 AddFrameWnd(void)
 // ghidra_proto void __cdecl RemoveFrameWnd(void)
 // FUNCTION: IMPERIALISM 0x0061c749
 undefined4 RemoveFrameWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::LoadAccelTable
+// ghidra_proto bool __thiscall LoadAccelTable(void)
+// FUNCTION: IMPERIALISM 0x0061c76d
+undefined4 LoadAccelTable(void)
 {
   return 0;
 }

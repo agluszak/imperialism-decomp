@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchTacticalActionClassSelectionAcrossCursorList
-// ghidra_proto void __cdecl DispatchTacticalActionClassSelectionAcrossCursorList(void)
-// FUNCTION: IMPERIALISM 0x0059bf20
-undefined4 DispatchTacticalActionClassSelectionAcrossCursorList(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectTacticalTileIndexByColumnPriorityVariantA
 // ghidra_proto int __cdecl SelectTacticalTileIndexByColumnPriorityVariantA(void)
 // FUNCTION: IMPERIALISM 0x0059bfe0
@@ -3999,6 +3991,14 @@ undefined4 CreateTTradePageSellViewInstance(void)
 // ghidra_proto void * __cdecl GetTTradePageSellViewClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005bcc10
 undefined4 GetTTradePageSellViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradePageSellView::ConstructTTradePageSellViewBaseState
+// ghidra_proto void * __thiscall ConstructTTradePageSellViewBaseState(int arg1)
+// FUNCTION: IMPERIALISM 0x005bcc30
+undefined4 ConstructTTradePageSellViewBaseState(void)
 {
   return 0;
 }
