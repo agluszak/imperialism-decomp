@@ -15,14 +15,14 @@ The single source of truth is `ghidra.toml` in the repository root:
 
 `sync_exports.py` validates both:
 
-- local `pyghidra` version (`3.0.2`)
+- local `pyghidra` version (`3.1.0`)
 - target Ghidra install version/release from `application.properties`
 
 ## Usage
 
 ```bash
 uv run python -m tools.ghidra.sync_exports \
-  --ghidra-install-dir /path/to/ghidra_12.0.2_PUBLIC \
+  --ghidra-install-dir /path/to/ghidra_12.1_PUBLIC \
   --ghidra-project-dir /path/to/ghidra/projects \
   --ghidra-project-name imperialism-decomp \
   --ghidra-program-name Imperialism.exe \

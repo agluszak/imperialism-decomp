@@ -1,7 +1,9 @@
 # reccmp Fork Notes
 
-Local fork location:
-- `/home/agluszak/code/personal/reccmp`
+Source of truth:
+- reccmp is installed from the pinned git commit in `pyproject.toml`
+  (`reccmp @ git+https://github.com/agluszak/reccmp.git@<commit>`); there is no
+  required local checkout. Clone the fork locally only if you are editing reccmp itself.
 
 Current usage in this repo:
 1. Primary CLI is invoked through project `uv` environment (`uv run reccmp-*`).

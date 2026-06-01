@@ -4,9 +4,9 @@ version = "0.1.0"
 description = "Imperialism (1997) decompilation tooling"
 requires-python = ">=3.11"
 dependencies = [
-    "pyghidra==3.0.2",
+    "pyghidra==3.1.0",
     "clang-format==21.1.8",
-    "reccmp @ git+https://github.com/agluszak/reccmp.git@8a9854d2e315cb034c1c008c36138bb0ab60685d",
+    "reccmp @ git+https://github.com/agluszak/reccmp.git@fc974e4f2eb2cb2a9739fc50ed06487a0bb70cdf",
 ]
 
 [tool.uv]

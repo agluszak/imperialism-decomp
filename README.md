@@ -20,8 +20,8 @@ Local-only layout (gitignored):
 
 ## Toolchain Pins
 
-- Ghidra: `12.0.2 PUBLIC` (see `ghidra.toml`)
-- pyghidra: `3.0.2` (see `pyproject.toml`)
+- Ghidra: `12.1 PUBLIC` (see `ghidra.toml`)
+- pyghidra: `3.1.0` (see `pyproject.toml`)
 - reccmp: pinned to fork commit (see `pyproject.toml`)
 
 ## Primary Workflow (`just`)
@@ -48,7 +48,7 @@ Promotion:
 
 Create `.env` (gitignored) with at least:
 
-- `GHIDRA_INSTALL_DIR=.../ghidra_12.0.2_PUBLIC`
+- `GHIDRA_INSTALL_DIR=.../ghidra_12.1_PUBLIC`
 - `GHIDRA_PROJECT_DIR=...`
 - `GHIDRA_PROJECT_NAME=...`
 - `ORIGINAL_BINARY=.../Imperialism.exe`

@@ -21,7 +21,7 @@ from tools.workflow.function_ownership import (
 )
 
 REPO_CONFIG_PATH = "ghidra.toml"
-EXPECTED_PYGHIDRA_VERSION = "3.0.2"
+EXPECTED_PYGHIDRA_VERSION = "3.1.0"
 WS_RE = re.compile(r"\s")
 
 
@@ -31,7 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--ghidra-install-dir",
         default=os.getenv("GHIDRA_INSTALL_DIR"),
-        help="Path to ghidra_12.0.2_PUBLIC installation directory",
+        help="Path to ghidra_12.1_PUBLIC installation directory",
     )
     parser.add_argument(
         "--ghidra-project-dir",

@@ -11,7 +11,7 @@ This document tracks evidence for the compiler/linker used by Imperialism (1997)
 ## Initial Binary Fingerprints (GOG Imperialism.exe)
 
 From `objdump -p` and `strings` on:
-`/home/andrzej.gluszak/Games/gog/imperialism/drive_c/GOG Games/Imperialism/Imperialism.exe`
+`<GOG install>/Imperialism/Imperialism.exe` (GOG-distributed build)
 
 - PE timestamp: `Fri Oct 31 01:07:39 1997`
 - PE linker version: `5.0`

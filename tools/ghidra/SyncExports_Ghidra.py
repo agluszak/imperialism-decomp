@@ -7,10 +7,10 @@
 #   2: decomp_output_dir
 #   3: types_output_dir
 #   4: decomp_max_functions_per_file (optional, default 250)
-#   5: expected_ghidra_version (optional, default 12.0.2)
+#   5: expected_ghidra_version (optional, default 12.1)
 #   6: expected_ghidra_release (optional, default PUBLIC)
 #
-# This script intentionally supports only Ghidra 12.0.2 PUBLIC unless
+# This script intentionally supports only Ghidra 12.1 PUBLIC unless
 # expected version/release args are explicitly changed by the caller.
 
 import json
@@ -33,7 +33,7 @@ from ghidra.program.model.data import (
 from ghidra.program.model.listing import Function
 from ghidra.program.model.symbol import SourceType, SymbolType
 
-DEFAULT_EXPECTED_GHIDRA_VERSION = "12.0.2"
+DEFAULT_EXPECTED_GHIDRA_VERSION = "12.1"
 DEFAULT_EXPECTED_GHIDRA_RELEASE = "PUBLIC"
 DEFAULT_DECOMPILER_TIMEOUT_SECONDS = 60
 DEFAULT_MAX_FUNCTIONS_PER_FILE = 250
