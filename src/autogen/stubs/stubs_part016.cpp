@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CompareSortByPriceListEntriesByField2Ascending
-// ghidra_proto void __cdecl CompareSortByPriceListEntriesByField2Ascending(void)
-// FUNCTION: IMPERIALISM 0x005347b0
-undefined4 CompareSortByPriceListEntriesByField2Ascending(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndConstructTIndexAndRankList
 // ghidra_proto void * __cdecl AllocateAndConstructTIndexAndRankList(void)
 // FUNCTION: IMPERIALISM 0x005347e0
@@ -3999,6 +3991,14 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
 // ghidra_proto short __cdecl ComputeMapOrderEntryHeuristicScore(void)
 // FUNCTION: IMPERIALISM 0x00550aa0
 undefined4 ComputeMapOrderEntryHeuristicScore(void)
+{
+  return 0;
+}
+
+// ghidra_name ComputeOrderNodeCompositeEconomicScore
+// ghidra_proto int __cdecl ComputeOrderNodeCompositeEconomicScore(void)
+// FUNCTION: IMPERIALISM 0x00550b60
+undefined4 ComputeOrderNodeCompositeEconomicScore(void)
 {
   return 0;
 }

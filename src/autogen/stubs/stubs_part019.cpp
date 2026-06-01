@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RebuildListFromProviderAndDeduplicateByKey
-// ghidra_proto void __cdecl RebuildListFromProviderAndDeduplicateByKey(void)
-// FUNCTION: IMPERIALISM 0x0059b740
-undefined4 RebuildListFromProviderAndDeduplicateByKey(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateTacticalCursorModeProfileAndMaybeOpenDialog
 // ghidra_proto void __fastcall UpdateTacticalCursorModeProfileAndMaybeOpenDialog(void * pTacticalState)
 // FUNCTION: IMPERIALISM 0x0059b830
@@ -3999,6 +3991,14 @@ undefined4 GetTDealTabControlClassNamePointer(void)
 // ghidra_proto void __thiscall ConstructTDealTabControlBaseState(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005bc780
 undefined4 ConstructTDealTabControlBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealTabControl::DestructTDealTabControlAndMaybeFree
+// ghidra_proto void __thiscall DestructTDealTabControlAndMaybeFree(void)
+// FUNCTION: IMPERIALISM 0x005bc7f0
+undefined4 DestructTDealTabControlAndMaybeFree(void)
 {
   return 0;
 }

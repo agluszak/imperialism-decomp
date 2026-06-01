@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TGWorldButton::DestructTGWorldButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTGWorldButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00572160
-undefined4 DestructTGWorldButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0
 // ghidra_proto void __cdecl WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
 // FUNCTION: IMPERIALISM 0x005721b0
@@ -3999,6 +3991,14 @@ undefined4 TArmyTacUnit_VtblSlot03(void)
 // ghidra_proto void __cdecl AccumulateTacticalCursorActionClassProfileMetrics(void)
 // FUNCTION: IMPERIALISM 0x0059b5b0
 undefined4 AccumulateTacticalCursorActionClassProfileMetrics(void)
+{
+  return 0;
+}
+
+// ghidra_name RebuildListFromProviderAndDeduplicateByKey
+// ghidra_proto void __cdecl RebuildListFromProviderAndDeduplicateByKey(void)
+// FUNCTION: IMPERIALISM 0x0059b740
+undefined4 RebuildListFromProviderAndDeduplicateByKey(void)
 {
   return 0;
 }

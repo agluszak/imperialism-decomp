@@ -39,6 +39,13 @@ static __inline short VCall_Diplomacy_GetRelationTypeSlot68(void* object, int ar
   return fn(object, 0, arg0, arg1);
 }
 
+// query policy-icon strip x offset by code; class=GlobalMapState; status=provisional
+static __inline short VCall_GlobalMapState_QueryIconStripXSlot110(void* object, int arg0) {
+  typedef short (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x110 / 4)));
+  return fn(object, arg0);
+}
+
 // strategic map frame region query by view selector; class=StrategicMapViewSystem; status=provisional
 static __inline void* VCall_StrategicMap_GetFrameRegionSlot98(void* object, int arg0) {
   typedef void* (__fastcall * Fn)(void*, int);

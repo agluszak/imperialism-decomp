@@ -2259,14 +2259,6 @@ undefined4 WrapperFor_thunk_ForwardCityDialogParamToChildSlot48_At004f7130(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames
-// ghidra_proto void __thiscall RenderDiplomacyPendingPolicyIconsAndFrames(void)
-// FUNCTION: IMPERIALISM 0x004f71a0
-undefined4 RenderDiplomacyPendingPolicyIconsAndFrames(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowDiplomacyActionRejectedNotice
 // ghidra_proto void __cdecl ShowDiplomacyActionRejectedNotice(void)
 // FUNCTION: IMPERIALISM 0x004f7400
@@ -3999,6 +3991,14 @@ undefined4 GetTNumberedIconClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTNumberedIconBaseState(void)
 // FUNCTION: IMPERIALISM 0x005073a0
 undefined4 ConstructTNumberedIconBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedIcon::DestructTNumberedIconAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNumberedIconAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005073d0
+undefined4 DestructTNumberedIconAndMaybeFree(void)
 {
   return 0;
 }

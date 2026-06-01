@@ -1113,3 +1113,33 @@
 4. Validation: `just build`/`detect`/`vtable-gate` clean; `just compare 0x004f6440`
    stub -> **38.10%**; adjacent diplomacy functions unchanged; canaries
    `below_floor=0`.
+
+### TDiplomacyMapView pending-policy icon/frame renderer (2026-06-01, cont.)
+
+1. Promoted `0x004f71a0` as
+   `TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames()`
+   (thiscall, `ret 0`) from a `0%` stub to **31.97%**. Per-policy loop that blits a
+   policy icon from the strategic-map icon strip into each pending-policy RECT, then
+   draws a 1px highlight frame (legend-split color for the selected tier, else white)
+   with corner guide lines.
+2. Reuses established vocabulary: `BlitRectWithOptionalTransparency`, the active-context
+   surface-height vertical-flip idiom (identical to `0x4f6bd0`), `SetQuickDrawFillColor`,
+   slot `0x34` (`VCall_UiRuntime_ApplyLegendSplitSlot34`), `OffsetRect`.
+3. New facade + helpers: `VCall_GlobalMapState_QueryIconStripXSlot110` (slot `0x110`,
+   returns icon strip x by policy code; global `g_pGlobalMapState` `0x6a43d4`);
+   `ResetQuickDrawStrokeState`, `UpdatePaletteIndexWithDefaultFallback`,
+   `DrawFrameRectOrUpdateClipRegion`, `SetQuickDrawTextOriginWithContextOffset`,
+   `DrawCenteredGuideLineOnMapDc`.
+4. New layout evidence: icon-position RECT array at `this+0x6ac` (stride `0x10`),
+   per-policy enable flags at `this+0x52c`, selected-tier short at `this+0x528`; the
+   diplomacy turn-state manager (`0x6a43d0`) holds a per-policy byte array at `+0x304`
+   and a parallel short (tier) array at `+0x484`.
+5. MSVC500 ICE note: the original three parallel induction cursors
+   (policyIndex / tier-short cursor / icon-RECT cursor) under FPO (`optimize("y")`)
+   triggers `fatal error C1001`. Rewrote with a single `policyIndex` induction and
+   computed offsets inline (`+0x484+i*2`, `+0x304+i`, `+0x6ac+i*0x10`); MSVC500
+   re-derives the strength-reduced cursors and compiles. Keeping the `manager` reload
+   *inside* the loop matched the original (per-taken-iteration reload) better than
+   hoisting it (31.97% vs 28.68%).
+6. Validation: `just build`/`detect` clean; `just compare 0x004f71a0` stub -> **31.97%**;
+   adjacent diplomacy functions unchanged; canaries `below_floor=0`.

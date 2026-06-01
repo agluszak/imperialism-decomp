@@ -21,6 +21,7 @@ struct TDiplomacyMapViewLayout {
   void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId);
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void BuildCombinedTerrainTypeRegionMaskAndDispatch();
+  void RenderDiplomacyPendingPolicyIconsAndFrames();
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
@@ -43,6 +44,11 @@ undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
 undefined4 DestroyClipStateRegionWrapperObject(void);
+undefined4 ResetQuickDrawStrokeState(void);
+undefined4 UpdatePaletteIndexWithDefaultFallback(void);
+undefined4 DrawFrameRectOrUpdateClipRegion(void);
+undefined4 SetQuickDrawTextOriginWithContextOffset(void);
+undefined4 DrawCenteredGuideLineOnMapDc(void);
 
 extern int g_pPrimaryRenderSurfaceContext;
 extern int g_pActiveQuickDrawSurfaceContext;
@@ -52,6 +58,7 @@ const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
+const unsigned int kAddrGlobalMapState = 0x006A43D4;
 } // namespace
 
 struct DiplomacyMaskBufferRun {
@@ -462,6 +469,78 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
   packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+}
+
+// FUNCTION: IMPERIALISM 0x004f71a0
+void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
+  reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+
+  char* self = reinterpret_cast<char*>(this);
+  short selectedTier = *reinterpret_cast<short*>(self + 0x528);
+  int policyIndex = 0;
+  do {
+    char* manager = *reinterpret_cast<char**>(kAddrDiplomacyTurnStateManager);
+    short tierValue = *reinterpret_cast<short*>(manager + 0x484 + policyIndex * 2);
+    int iconCode = *reinterpret_cast<signed char*>(manager + 0x304 + policyIndex);
+    if (*reinterpret_cast<char*>(self + 0x52c + policyIndex) != 0 && iconCode != -1 &&
+        tierValue <= selectedTier) {
+      RECT* iconRect = reinterpret_cast<RECT*>(self + 0x6ac + policyIndex * 0x10);
+      short iconX = VCall_GlobalMapState_QueryIconStripXSlot110(
+          *reinterpret_cast<void**>(kAddrGlobalMapState), iconCode);
+
+      RECT srcRect;
+      srcRect.left = iconX;
+      srcRect.right = iconX + 9;
+      srcRect.top = 0;
+      srcRect.bottom = 6;
+
+      RECT destRect;
+      destRect.left = iconRect->left;
+      destRect.top = iconRect->top;
+      destRect.right = iconRect->right;
+      destRect.bottom = iconRect->bottom;
+
+      int surfaceObject = *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x20);
+      if (surfaceObject != 0) {
+        int surfaceHeight =
+            *reinterpret_cast<int*>(*reinterpret_cast<int*>(surfaceObject + 0x10) + 8);
+        if (surfaceHeight < 1) {
+          surfaceHeight = -surfaceHeight;
+        }
+        OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
+      }
+
+      int strategicMapSurface =
+          *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrStrategicMapViewSystem) + 0x6b8);
+      reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
+          BlitRectWithOptionalTransparency)(
+          reinterpret_cast<void*>(strategicMapSurface + 4),
+          reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &srcRect, &destRect, 0x24,
+          0);
+
+      destRect.left = iconRect->left - 1;
+      destRect.top = iconRect->top - 1;
+      destRect.right = iconRect->right + 1;
+      destRect.bottom = iconRect->bottom + 1;
+      if (tierValue == selectedTier) {
+        VCall_UiRuntime_ApplyLegendSplitSlot34(g_pUiRuntimeContext, 6);
+      } else {
+        SetQuickDrawFillColor(0xffffff);
+      }
+      reinterpret_cast<void(__cdecl*)(RECT*)>(DrawFrameRectOrUpdateClipRegion)(&destRect);
+      SetQuickDrawFillColor(0);
+      reinterpret_cast<void(__cdecl*)(short, short)>(SetQuickDrawTextOriginWithContextOffset)(
+          static_cast<short>(destRect.right), static_cast<short>(destRect.top));
+      reinterpret_cast<void(__cdecl*)(int, int)>(DrawCenteredGuideLineOnMapDc)(destRect.right,
+                                                                               destRect.bottom);
+      reinterpret_cast<void(__cdecl*)(int, int)>(DrawCenteredGuideLineOnMapDc)(destRect.left,
+                                                                               destRect.bottom);
+    }
+    policyIndex += 1;
+  } while (policyIndex < 0x180);
+
+  reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x004f6440

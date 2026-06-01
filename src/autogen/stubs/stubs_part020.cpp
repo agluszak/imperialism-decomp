@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealTabControl::DestructTDealTabControlAndMaybeFree
-// ghidra_proto void __thiscall DestructTDealTabControlAndMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x005bc7f0
-undefined4 DestructTDealTabControlAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C7_I84_005bc9f0
 // ghidra_proto void __cdecl OrphanCallChain_C7_I84_005bc9f0(void)
 // FUNCTION: IMPERIALISM 0x005bc9f0
@@ -3999,6 +3991,14 @@ undefined4 ReadWordFromSerializedBuffer(void)
 // ghidra_proto void * __thiscall ReadDwordFromSerializedBuffer(void * outDword)
 // FUNCTION: IMPERIALISM 0x005e6dd6
 undefined4 ReadDwordFromSerializedBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CException_At005e6e08
+// ghidra_proto void __cdecl WrapperFor_CException_At005e6e08(void)
+// FUNCTION: IMPERIALISM 0x005e6e08
+undefined4 WrapperFor_CException_At005e6e08(void)
 {
   return 0;
 }

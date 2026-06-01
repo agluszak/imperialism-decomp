@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name PostCustomMessage36AAndNotifyThread
-// ghidra_proto void __thiscall PostCustomMessage36AAndNotifyThread(void)
-// FUNCTION: IMPERIALISM 0x006055d0
-undefined4 PostCustomMessage36AAndNotifyThread(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleWndProcExceptionWithNodeTypeDispatch_00605613
 // ghidra_proto int __fastcall HandleWndProcExceptionWithNodeTypeDispatch_00605613(int * owner, void * msg)
 // FUNCTION: IMPERIALISM 0x00605613
@@ -3999,6 +3991,14 @@ undefined4 ResetMouseWheelTrackingGlobals(void)
 // ghidra_proto void __cdecl thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
 // FUNCTION: IMPERIALISM 0x0061c57c
 undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterMouseWheelRollMessageForLegacyWindows
+// ghidra_proto void __cdecl RegisterMouseWheelRollMessageForLegacyWindows(void)
+// FUNCTION: IMPERIALISM 0x0061c581
+undefined4 RegisterMouseWheelRollMessageForLegacyWindows(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ComputeOrderNodeCompositeEconomicScore
-// ghidra_proto int __cdecl ComputeOrderNodeCompositeEconomicScore(void)
-// FUNCTION: IMPERIALISM 0x00550b60
-undefined4 ComputeOrderNodeCompositeEconomicScore(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatLocalizedCommodityCountLabelByIndex
 // ghidra_proto void __cdecl FormatLocalizedCommodityCountLabelByIndex(void)
 // FUNCTION: IMPERIALISM 0x00550c20
@@ -3999,6 +3991,14 @@ undefined4 GetTGWorldButtonClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTGWorldButtonBaseState(void)
 // FUNCTION: IMPERIALISM 0x00572130
 undefined4 ConstructTGWorldButtonBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldButton::DestructTGWorldButtonAndMaybeFree
+// ghidra_proto void * __thiscall DestructTGWorldButtonAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00572160
+undefined4 DestructTGWorldButtonAndMaybeFree(void)
 {
   return 0;
 }

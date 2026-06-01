@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_CException_At005e6e08
-// ghidra_proto void __cdecl WrapperFor_CException_At005e6e08(void)
-// FUNCTION: IMPERIALISM 0x005e6e08
-undefined4 WrapperFor_CException_At005e6e08(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e6e32
 // ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e6e32(void)
 // FUNCTION: IMPERIALISM 0x005e6e32
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_EndDialog_At006054c3(void)
 // ghidra_proto void __fastcall RunImperialismThreadMainLoop(void)
 // FUNCTION: IMPERIALISM 0x006055ae
 undefined4 RunImperialismThreadMainLoop(void)
+{
+  return 0;
+}
+
+// ghidra_name PostCustomMessage36AAndNotifyThread
+// ghidra_proto void __thiscall PostCustomMessage36AAndNotifyThread(void)
+// FUNCTION: IMPERIALISM 0x006055d0
+undefined4 PostCustomMessage36AAndNotifyThread(void)
 {
   return 0;
 }
