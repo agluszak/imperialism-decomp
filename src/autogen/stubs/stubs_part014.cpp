@@ -2227,14 +2227,6 @@ undefined4 OrphanLeaf_NoCall_Ins05_004f6820(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers
-// ghidra_proto void __thiscall BuildTurnEventMonochromeMaskBuffers(void)
-// FUNCTION: IMPERIALISM 0x004f6b10
-undefined4 BuildTurnEventMonochromeMaskBuffers(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 // ghidra_proto void __cdecl WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
 // FUNCTION: IMPERIALISM 0x004f6d90
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240
 // ghidra_proto void * __cdecl CreateTNumberedIconInstance(void)
 // FUNCTION: IMPERIALISM 0x005072e0
 undefined4 CreateTNumberedIconInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNumberedIcon::GetTNumberedIconClassNamePointer
+// ghidra_proto void * __cdecl GetTNumberedIconClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00507380
+undefined4 GetTNumberedIconClassNamePointer(void)
 {
   return 0;
 }

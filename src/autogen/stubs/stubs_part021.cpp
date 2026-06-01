@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name NodeScanner::ReadWordFromSerializedBuffer
-// ghidra_proto void * __thiscall ReadWordFromSerializedBuffer(void * outWord)
-// FUNCTION: IMPERIALISM 0x005e6da3
-undefined4 ReadWordFromSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name NodeScanner::ReadDwordFromSerializedBuffer
 // ghidra_proto void * __thiscall ReadDwordFromSerializedBuffer(void * outDword)
 // FUNCTION: IMPERIALISM 0x005e6dd6
@@ -3999,6 +3991,14 @@ undefined4 OnInitDialog(void)
 // ghidra_proto void __fastcall OnOK_6054aa(void)
 // FUNCTION: IMPERIALISM 0x006054aa
 undefined4 OnOK_6054aa(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EndDialog_At006054c3
+// ghidra_proto BOOL __stdcall WrapperFor_EndDialog_At006054c3(HWND hDlg, INT_PTR nResult)
+// FUNCTION: IMPERIALISM 0x006054c3
+undefined4 WrapperFor_EndDialog_At006054c3(void)
 {
   return 0;
 }

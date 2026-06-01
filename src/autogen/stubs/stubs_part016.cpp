@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DeletingDestructTSortByPriceList
-// ghidra_proto void __cdecl DeletingDestructTSortByPriceList(void)
-// FUNCTION: IMPERIALISM 0x00534740
-undefined4 DeletingDestructTSortByPriceList(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortByPriceList::DestructTSortByPriceList
 // ghidra_proto void __cdecl DestructTSortByPriceList(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x00534770
@@ -3999,6 +3991,14 @@ undefined4 ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
 // ghidra_proto short __cdecl GetIndustryActionCostWeightByResourceType(void)
 // FUNCTION: IMPERIALISM 0x00550970
 undefined4 GetIndustryActionCostWeightByResourceType(void)
+{
+  return 0;
+}
+
+// ghidra_name PruneOrPromoteOrderNodeWhenChildCostDepleted
+// ghidra_proto void __cdecl PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
+// FUNCTION: IMPERIALISM 0x005509c0
+undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
 {
   return 0;
 }

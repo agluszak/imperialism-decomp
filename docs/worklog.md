@@ -1068,3 +1068,25 @@
    - `just compare-canaries`: `below_floor=0`.
    - `just stats`: avg similarity **3.17%**, aligned functions **102** (delta 0), paired
      global count increased, dropped duplicate addresses **0**.
+
+### TDiplomacyMapView turn-event mask-run render (2026-06-01, cont.)
+
+1. Promoted `0x004f6b10` as
+   `TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode)`
+   from a `0%` stub to **43.04%**. This is the standalone single-run sibling of the
+   mode-1/mode-4 inner loop body and validates the producer side of the mask-run /
+   packed-color layout (`this+0x1eac + idx*0x14`, `this+0x2078 + idx*0x30`).
+2. Confirmed arg order from the compare: `maskIndex` is arg1 (`esi*5`/`esi*3` index math),
+   `eventCode` is arg2 (fed to `MapTurnEventCodeToPaletteIndex`). `ret 8`.
+3. Helper arities resolved via pyghidra (thunk -> thunked impl):
+   - `MapTurnEventCodeToPaletteIndex` (`0x5d5270`) is `__cdecl(short)`; the member-call
+     form `g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(...)` emits the matching
+     `mov ecx,[uiRuntime]; push code; call`.
+   - `SetUiResourceContextTagWord` (`0x4270e0`) is `__thiscall(int* slot, value)` doing
+     `*slot = value`. In context it fills the stack slot that is then passed as
+     `BlitMonochrome`'s `paletteByte` arg (palette sign-extended via `movsx edx,ax`).
+     The current no-arg model loses that `movsx`/stack-slot idiom — same gap exists in
+     mode-1/mode-4, so modeling it as a typed tag-slot helper is the next deeper unlock.
+4. Validation: `just build`/`detect` clean; `just compare 0x004f6b10` stub -> **43.04%**;
+   adjacent diplomacy functions unchanged (present **46.30%**, mode4 **37.74%**,
+   mask **15.02%**, mode1 **35.53%**, event-palette **25.30%**); canaries `below_floor=0`.

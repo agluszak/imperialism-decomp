@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_EndDialog_At006054c3
-// ghidra_proto BOOL __stdcall WrapperFor_EndDialog_At006054c3(HWND hDlg, INT_PTR nResult)
-// FUNCTION: IMPERIALISM 0x006054c3
-undefined4 WrapperFor_EndDialog_At006054c3(void)
-{
-  return 0;
-}
-
 // ghidra_name RunImperialismThreadMainLoop
 // ghidra_proto void __fastcall RunImperialismThreadMainLoop(void)
 // FUNCTION: IMPERIALISM 0x006055ae
@@ -3999,6 +3991,14 @@ undefined4 AfxFormatString2(void)
 // ghidra_proto void __cdecl thunk_ResetMouseWheelTrackingGlobals(void)
 // FUNCTION: IMPERIALISM 0x0061c559
 undefined4 thunk_ResetMouseWheelTrackingGlobals(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetMouseWheelTrackingGlobals
+// ghidra_proto void __cdecl ResetMouseWheelTrackingGlobals(void)
+// FUNCTION: IMPERIALISM 0x0061c55e
+undefined4 ResetMouseWheelTrackingGlobals(void)
 {
   return 0;
 }

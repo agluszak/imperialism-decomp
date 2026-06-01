@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name PruneOrPromoteOrderNodeWhenChildCostDepleted
-// ghidra_proto void __cdecl PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
-// FUNCTION: IMPERIALISM 0x005509c0
-undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMapOrderEntryHeuristicScore
 // ghidra_proto short __cdecl ComputeMapOrderEntryHeuristicScore(void)
 // FUNCTION: IMPERIALISM 0x00550aa0
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C1_I05_00572060(void)
 // ghidra_proto void * __cdecl CreateTGWorldButtonInstance(void)
 // FUNCTION: IMPERIALISM 0x00572080
 undefined4 CreateTGWorldButtonInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldButton::GetTGWorldButtonClassNamePointer
+// ghidra_proto void * __cdecl GetTGWorldButtonClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00572110
+undefined4 GetTGWorldButtonClassNamePointer(void)
 {
   return 0;
 }

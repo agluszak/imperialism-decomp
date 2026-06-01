@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TDealTabControl::GetTDealTabControlClassNamePointer
-// ghidra_proto void * __cdecl GetTDealTabControlClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005bc760
-undefined4 GetTDealTabControlClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealTabControl::ConstructTDealTabControlBaseState
 // ghidra_proto void __thiscall ConstructTDealTabControlBaseState(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005bc780
@@ -3999,6 +3991,14 @@ undefined4 WriteWordToSerializedBuffer(void)
 // ghidra_proto void * __thiscall WriteDwordToSerializedBuffer(uint value)
 // FUNCTION: IMPERIALISM 0x005e6d4e
 undefined4 WriteDwordToSerializedBuffer(void)
+{
+  return 0;
+}
+
+// ghidra_name NodeScanner::ReadWordFromSerializedBuffer
+// ghidra_proto void * __thiscall ReadWordFromSerializedBuffer(void * outWord)
+// FUNCTION: IMPERIALISM 0x005e6da3
+undefined4 ReadWordFromSerializedBuffer(void)
 {
   return 0;
 }
