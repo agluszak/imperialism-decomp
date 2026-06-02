@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 
+// VTABLE: IMPERIALISM 0x00672eac
 class TIndexAndRankList {
  public:
   virtual void slot00() {}
