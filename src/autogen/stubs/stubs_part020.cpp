@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50
-// ghidra_proto void __cdecl BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
-// FUNCTION: IMPERIALISM 0x005c0e50
-undefined4 BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::CreateTCommodityLineInstance
-// ghidra_proto void * __cdecl CreateTCommodityLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005c1430
-undefined4 CreateTCommodityLineInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::GetTCommodityLineClassNamePointer
-// ghidra_proto void * __cdecl GetTCommodityLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005c14a0
-undefined4 GetTCommodityLineClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommodityLine::ConstructTCommodityLineBaseState
 // ghidra_proto void * __thiscall ConstructTCommodityLineBaseState(void)
 // FUNCTION: IMPERIALISM 0x005c14c0
@@ -3999,6 +3975,30 @@ undefined4 AppendPointerToGlobalVectorLocked(void)
 // ghidra_proto int __cdecl AppendPointerToGlobalVectorAsStatus(void)
 // FUNCTION: IMPERIALISM 0x005e7920
 undefined4 AppendPointerToGlobalVectorAsStatus(void)
+{
+  return 0;
+}
+
+// ghidra_name CompareAnsiStringsWithMbcsAwareness
+// ghidra_proto int __cdecl CompareAnsiStringsWithMbcsAwareness(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7980
+undefined4 CompareAnsiStringsWithMbcsAwareness(void)
+{
+  return 0;
+}
+
+// ghidra_name SetGlobalCallback6A7FACAndReturnPrevious
+// ghidra_proto void __cdecl SetGlobalCallback6A7FACAndReturnPrevious(void)
+// FUNCTION: IMPERIALISM 0x005e7a80
+undefined4 SetGlobalCallback6A7FACAndReturnPrevious(void)
+{
+  return 0;
+}
+
+// ghidra_name InvokeGlobalAllocationFailureCallback
+// ghidra_proto int __cdecl InvokeGlobalAllocationFailureCallback(void)
+// FUNCTION: IMPERIALISM 0x005e7ac0
+undefined4 InvokeGlobalAllocationFailureCallback(void)
 {
   return 0;
 }

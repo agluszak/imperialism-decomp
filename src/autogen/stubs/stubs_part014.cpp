@@ -1339,14 +1339,6 @@ undefined4 LookupOrderCompatibilityMatrixValue(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::CollectMinorNationStandingEntriesForMajorNation
-// ghidra_proto void __thiscall CollectMinorNationStandingEntriesForMajorNation(void)
-// FUNCTION: IMPERIALISM 0x004f1f70
-undefined4 CollectMinorNationStandingEntriesForMajorNation(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::CountNationAllianceRelationsForNation
 // ghidra_proto int __thiscall CountNationAllianceRelationsForNation(int sourceNationSlot)
 // FUNCTION: IMPERIALISM 0x004f2050
@@ -1359,22 +1351,6 @@ undefined4 CountNationAllianceRelationsForNation(void)
 // ghidra_proto void __thiscall GetNthAlliedMajorNationSlotForNation(void)
 // FUNCTION: IMPERIALISM 0x004f2090
 undefined4 GetNthAlliedMajorNationSlotForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::SelectNationSlotFromCollectedStandingEntries
-// ghidra_proto void __thiscall SelectNationSlotFromCollectedStandingEntries(void)
-// FUNCTION: IMPERIALISM 0x004f2100
-undefined4 SelectNationSlotFromCollectedStandingEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::SelectDiplomacyTargetNationFromCandidateSet
-// ghidra_proto void __thiscall SelectDiplomacyTargetNationFromCandidateSet(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x004f21f0
-undefined4 SelectDiplomacyTargetNationFromCandidateSet(void)
 {
   return 0;
 }
@@ -3999,6 +3975,30 @@ undefined4 RebuildMapTileNeighborHighlightPolygonsForAllTiles(void)
 // ghidra_proto void __thiscall RebuildNationClipRegionsAndDispatchMapEvent(void)
 // FUNCTION: IMPERIALISM 0x0050bad0
 undefined4 RebuildNationClipRegionsAndDispatchMapEvent(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C4_I35_0050bbc0
+// ghidra_proto void __cdecl OrphanCallChain_C4_I35_0050bbc0(int arg1, int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x0050bbc0
+undefined4 OrphanCallChain_C4_I35_0050bbc0(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::SyncSellTaggedChildControlWithNationState
+// ghidra_proto void __thiscall SyncSellTaggedChildControlWithNationState(short arg1)
+// FUNCTION: IMPERIALISM 0x0050bc50
+undefined4 SyncSellTaggedChildControlWithNationState(void)
+{
+  return 0;
+}
+
+// ghidra_name ResolveTurnEventDialogOrFailAndInvokeSlot9C
+// ghidra_proto void * __cdecl ResolveTurnEventDialogOrFailAndInvokeSlot9C(void * messageContext)
+// FUNCTION: IMPERIALISM 0x0050be30
+undefined4 ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)
 {
   return 0;
 }

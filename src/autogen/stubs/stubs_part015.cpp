@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C4_I35_0050bbc0
-// ghidra_proto void __cdecl OrphanCallChain_C4_I35_0050bbc0(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x0050bbc0
-undefined4 OrphanCallChain_C4_I35_0050bbc0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::SyncSellTaggedChildControlWithNationState
-// ghidra_proto void __thiscall SyncSellTaggedChildControlWithNationState(short arg1)
-// FUNCTION: IMPERIALISM 0x0050bc50
-undefined4 SyncSellTaggedChildControlWithNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveTurnEventDialogOrFailAndInvokeSlot9C
-// ghidra_proto void * __cdecl ResolveTurnEventDialogOrFailAndInvokeSlot9C(void * messageContext)
-// FUNCTION: IMPERIALISM 0x0050be30
-undefined4 ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshCityProductionDetailPanelAndArrowWidgets
 // ghidra_proto void __cdecl RefreshCityProductionDetailPanelAndArrowWidgets(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x0050bea0
@@ -3999,6 +3975,30 @@ undefined4 ReturnZeroMissionSlot58NavyOverride(void)
 // ghidra_proto int __fastcall ReturnArgMissionSlot5CNavyOverride(void)
 // FUNCTION: IMPERIALISM 0x00535540
 undefined4 ReturnArgMissionSlot5CNavyOverride(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyMission::DestroyTNavyMission
+// ghidra_proto void * __thiscall DestroyTNavyMission(void)
+// FUNCTION: IMPERIALISM 0x00535560
+undefined4 DestroyTNavyMission(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetTNavyMissionToSentinelVtable
+// ghidra_proto void __cdecl ResetTNavyMissionToSentinelVtable(void)
+// FUNCTION: IMPERIALISM 0x00535590
+undefined4 ResetTNavyMissionToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
+// ghidra_proto bool __stdcall ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
+// FUNCTION: IMPERIALISM 0x005355b0
+undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
 {
   return 0;
 }

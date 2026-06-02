@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SetFocus
-// ghidra_proto void __cdecl SetFocus(void)
-// FUNCTION: IMPERIALISM 0x00607562
-undefined4 SetFocus(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::AttachControlSite_607673
-// ghidra_proto void __thiscall AttachControlSite_607673(void)
-// FUNCTION: IMPERIALISM 0x00607673
-undefined4 AttachControlSite_607673(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RegisterCommctrlDragListMessage
-// ghidra_proto void __cdecl thunk_RegisterCommctrlDragListMessage(void)
-// FUNCTION: IMPERIALISM 0x006076b8
-undefined4 thunk_RegisterCommctrlDragListMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name RegisterCommctrlDragListMessage
 // ghidra_proto void __cdecl RegisterCommctrlDragListMessage(void)
 // FUNCTION: IMPERIALISM 0x006076bd
@@ -3999,6 +3975,30 @@ undefined4 FillSolidRect(void)
 // ghidra_proto void __thiscall DeflateRect(void)
 // FUNCTION: IMPERIALISM 0x0061f342
 undefined4 DeflateRect(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxOleCanExitApp
+// ghidra_proto void * __cdecl AfxOleCanExitApp(void)
+// FUNCTION: IMPERIALISM 0x0061f423
+undefined4 AfxOleCanExitApp(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxOleSetUserCtrl
+// ghidra_proto void __cdecl AfxOleSetUserCtrl(void)
+// FUNCTION: IMPERIALISM 0x0061f45c
+undefined4 AfxOleSetUserCtrl(void)
+{
+  return 0;
+}
+
+// ghidra_name GetMfcThreadStateFlagDword30
+// ghidra_proto int __cdecl GetMfcThreadStateFlagDword30(void)
+// FUNCTION: IMPERIALISM 0x0061f46b
+undefined4 GetMfcThreadStateFlagDword30(void)
 {
   return 0;
 }

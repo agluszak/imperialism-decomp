@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot09
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot09(void)
-// FUNCTION: IMPERIALISM 0x0059ea60
-undefined4 TArmyTacUnit_VtblSlot09(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot05
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot05(void)
-// FUNCTION: IMPERIALISM 0x0059eb40
-undefined4 TArmyTacUnit_VtblSlot05(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
-// FUNCTION: IMPERIALISM 0x0059ebb0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
-{
-  return 0;
-}
-
 // ghidra_name TNavyPlayer::CreateTNavyPlayerInstance
 // ghidra_proto void __thiscall CreateTNavyPlayerInstance(void)
 // FUNCTION: IMPERIALISM 0x0059ebe0
@@ -3999,6 +3975,30 @@ undefined4 DestructTDealLineAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTDealLineAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005c0de0
 undefined4 DestructTDealLineAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50
+// ghidra_proto void __cdecl BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
+// FUNCTION: IMPERIALISM 0x005c0e50
+undefined4 BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::CreateTCommodityLineInstance
+// ghidra_proto void * __cdecl CreateTCommodityLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005c1430
+undefined4 CreateTCommodityLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::GetTCommodityLineClassNamePointer
+// ghidra_proto void * __cdecl GetTCommodityLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005c14a0
+undefined4 GetTCommodityLineClassNamePointer(void)
 {
   return 0;
 }

@@ -1616,3 +1616,18 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - Caller guard `just compare 0x004e7b50`: **51.69%** unchanged.
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
+
+### Diplomacy relationship-list selectors (2026-06-02)
+
+1. Promoted three connected `DiplomacyTurnStateManager` vtable-slot bodies:
+   - `0x004f1f70` `BuildRelationshipListSlot88(int,int,void*)`: stub -> **64.15%**. This fills a sorted relationship candidate list with `{nationSlot, standingScore}` pairs, using `g_apTerrainTypeDescriptorTable[n]+0x0e == -1` as the unowned/minor filter and reading standing scores from `this+0x79c`.
+   - `0x004f2100` `SelectNationSlotFromCollectedStandingEntriesSlot98(int,int)`: stub -> **73.77%**. This constructs the `TSortedByRelationshipList` (`vtable 0x00654d38`), sets `relationType=4`, calls slot `0x88`, and returns the nation slot from the last one-based list entry or `-1`.
+   - `0x004f21f0` `SelectDiplomacyTargetNationFromCandidateSetSlot94(int,int,int)`: stub -> **30.06%** first shape pass. If the side-effect arg is zero it delegates through slot `0x98`; otherwise it scans the sorted list backward and returns the first candidate whose `+0x1402` side-effect matrix value matches.
+2. Added generated facades for `TSortedByRelationshipList` slots `0x24`, `0x2c`, and `0x38`, avoiding raw list vtable calls inside the manager methods.
+3. Corrected the provisional manager slot `0x94` name from relation-code setter wording to side-effect target selection, and added the missing slot `0x98`.
+4. Connectivity result: `ProcessQueuedWarTransitions` (`0x004f0a10`) improved from **41.82%** to **89.85%** because the slot `0x94` call now resolves to a real method signature and vtable slot.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004f1f70` **64.15%**, `0x004f2100` **73.77%**, `0x004f21f0` **30.06%**, `0x004f0a10` **89.85%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
