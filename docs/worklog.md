@@ -1893,3 +1893,43 @@ by reccmp function metric), 0 regressions** (verified by full HEAD-vs-WIP 100%-s
    `just compare-canaries` `below_floor=0` (all stretch_met); `just vtable-gate` passed;
    `just stats` aligned **145**, avg similarity **9.67%**, `dropped duplicate addresses: 0`.
    `just sync-ownership` (0 updates) + `just regen-stubs` re-run clean.
+
+### TGreatPower vtable map stabilization: full shared-vs-override survey (2026-06-02, cont.)
+
+Stabilized the `TGreatPower` vtable map before any slot renames. Evidence work only; no
+source changes.
+
+1. **Full vtable dumps.** `just ghidra-vtable-dump TGreatPower 0x00653938` and
+   `... TAutoGreatPower 0x00654088` (184 slots each). Joined the two dumps on slot index to
+   determine, per slot, whether `TAutoGreatPower` shares the `TGreatPower` entry or overrides
+   it (same entry address = shared; different = override).
+2. **Rewrote `docs/tgreatpower_vtable_evidence.csv`** (8 -> 38 rows, now with quoted args and
+   two new columns `autogp_entry_addr` + `autogp_relation`). Covers every provisional slot the
+   skeleton declares. Findings across the priority slots:
+   - **Shared** (TAutoGreatPower uses the TGreatPower entry): `0x0e 0x10 0x12 0x13 0x1d 0x1f
+     0x21 0x28 0x2e 0x45 0x5c 0x5f 0x64 0x66 0x69 0x6c 0x73 0x75 0x77 0x7a 0x7b 0x7c 0xa5 0xa8
+     0xa9`.
+   - **Overridden** by TAutoGreatPower: `0x01` (scalar-deleting dtor, expected),
+     `0x6a` (GP `0x00405efc` / AGP `0x00407211`), `0x74` (GP body `0x004ddfc0` / AGP
+     `0x00405b78`), `0x84` (GP `0x00405a9c` / AGP `0x00407b9e`), `0x85` (GP `0x004090b1` / AGP
+     `0x004051ff`), `0xa1` (GP body `0x004e27f0` / AGP `0x00408bcf`). These get a paired
+     `TAutoGreatPower` row.
+   - **Caution flag:** slot `0xb3` is **NULL in the TGreatPower vtable** (`0x00000000`) but
+     implemented in TAutoGreatPower (`0x0040360c`). Yet `TGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches`
+     calls `this->CallSlotB3_Provisional()`. Either that callsite's receiver is actually a
+     `TAutoGreatPower`, or `0xb3` is past the true end of TGreatPower's own vtable. Do NOT
+     promote `0xb3` until resolved.
+3. **`just class-discovery "TGreatPower,TAutoGreatPower"`** cross-check:
+   - Confirmed anchors (accepted, score 1): vtable `0x00653938` -> TGreatPower,
+     `0x00654088` -> TAutoGreatPower. New: TAutoGreatPower classdesc `0x00653f90`
+     (TGreatPower classdesc `0x00653688`).
+   - Constructor report shows TAutoGreatPower's constructor (`0x004d89f0`) installs the
+     **TGreatPower base vtable `0x653938`** first, grounding the
+     `TAutoGreatPower : TGreatPower` inheritance edge by MSVC ctor-order ABI.
+   - 24 high-confidence (P0, 5-lane: callers/decomp/this-passing/indirect/static) candidate
+     `TAutoGreatPower::*` methods identified (e.g. `0x004e6b10 CreateTAutoGreatPowerInstance`,
+     `0x004e6b80 DestructTAutoGreatPowerAndMaybeFree`, advisory/AI bodies `0x004e7cc0`,
+     `0x004e7ec0`, `0x004e8040`). Saved for Phase 2 (override modeling) / Phase 4.
+4. No build/score impact (evidence-only). Next: promote evidenced **shared** provisional slots
+   to grounded names one at a time, model the six overrides on a `TAutoGreatPower` subclass,
+   and resolve the `0xb3` null/receiver question.
