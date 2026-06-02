@@ -3,6 +3,102 @@
 
 #include "decomp_types.h"
 
+// ghidra_name IsWindowEnabled
+// ghidra_proto int __cdecl IsWindowEnabled(void)
+// FUNCTION: IMPERIALISM 0x00607520
+undefined4 IsWindowEnabled(void)
+{
+  return 0;
+}
+
+// ghidra_name SetFocus
+// ghidra_proto void __cdecl SetFocus(void)
+// FUNCTION: IMPERIALISM 0x00607562
+undefined4 SetFocus(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::AttachControlSite_607673
+// ghidra_proto void __thiscall AttachControlSite_607673(void)
+// FUNCTION: IMPERIALISM 0x00607673
+undefined4 AttachControlSite_607673(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommctrlDragListMessage
+// ghidra_proto void __cdecl thunk_RegisterCommctrlDragListMessage(void)
+// FUNCTION: IMPERIALISM 0x006076b8
+undefined4 thunk_RegisterCommctrlDragListMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommctrlDragListMessage
+// ghidra_proto void __cdecl RegisterCommctrlDragListMessage(void)
+// FUNCTION: IMPERIALISM 0x006076bd
+undefined4 RegisterCommctrlDragListMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_E361_At006076ce
+// ghidra_proto void __cdecl WrapperFor_E361_At006076ce(void)
+// FUNCTION: IMPERIALISM 0x006076ce
+undefined4 WrapperFor_E361_At006076ce(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// FUNCTION: IMPERIALISM 0x006076d3
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// FUNCTION: IMPERIALISM 0x006076e5
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::CWnd
+// ghidra_proto void __thiscall CWnd(void)
+// FUNCTION: IMPERIALISM 0x00607706
+undefined4 CWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_E367_At0060770c
+// ghidra_proto void __cdecl WrapperFor_E367_At0060770c(void)
+// FUNCTION: IMPERIALISM 0x0060770c
+undefined4 WrapperFor_E367_At0060770c(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// FUNCTION: IMPERIALISM 0x00607711
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// FUNCTION: IMPERIALISM 0x00607723
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+{
+  return 0;
+}
+
 // ghidra_name CWnd::CWnd_00607744
 // ghidra_proto void __thiscall CWnd_00607744(void)
 // FUNCTION: IMPERIALISM 0x00607744
@@ -3903,102 +3999,6 @@ undefined4 WrapperFor_AfxDeleteObject_At0061ec0f(void)
 // ghidra_proto void __thiscall FillSolidRect(void * pRect, uint rgbColor)
 // FUNCTION: IMPERIALISM 0x0061f0fa
 undefined4 FillSolidRect(void)
-{
-  return 0;
-}
-
-// ghidra_name TTEView::DeflateRect
-// ghidra_proto void __thiscall DeflateRect(void)
-// FUNCTION: IMPERIALISM 0x0061f342
-undefined4 DeflateRect(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxOleCanExitApp
-// ghidra_proto void * __cdecl AfxOleCanExitApp(void)
-// FUNCTION: IMPERIALISM 0x0061f423
-undefined4 AfxOleCanExitApp(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxOleSetUserCtrl
-// ghidra_proto void __cdecl AfxOleSetUserCtrl(void)
-// FUNCTION: IMPERIALISM 0x0061f45c
-undefined4 AfxOleSetUserCtrl(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMfcThreadStateFlagDword30
-// ghidra_proto int __cdecl GetMfcThreadStateFlagDword30(void)
-// FUNCTION: IMPERIALISM 0x0061f46b
-undefined4 GetMfcThreadStateFlagDword30(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeThreadObjectVtableProxy
-// ghidra_proto void __fastcall InitializeThreadObjectVtableProxy(void * pThis)
-// FUNCTION: IMPERIALISM 0x00622448
-undefined4 InitializeThreadObjectVtableProxy(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyTurnStateObjectWithMfcDeleteFinalizer
-// ghidra_proto void * __thiscall DestroyTurnStateObjectWithMfcDeleteFinalizer(void * param_1, byte param_2)
-// FUNCTION: IMPERIALISM 0x00622451
-undefined4 DestroyTurnStateObjectWithMfcDeleteFinalizer(void)
-{
-  return 0;
-}
-
-// ghidra_name CWinThread::CWinApp
-// ghidra_proto void * __thiscall CWinApp(byte * threadName)
-// FUNCTION: IMPERIALISM 0x0062246c
-undefined4 CWinApp(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00622556
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00622556(void)
-// FUNCTION: IMPERIALISM 0x00622556
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00622556(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeAppDocTemplateManagerAndFlushPending
-// ghidra_proto int __fastcall InitializeAppDocTemplateManagerAndFlushPending(void)
-// FUNCTION: IMPERIALISM 0x00622572
-undefined4 InitializeAppDocTemplateManagerAndFlushPending(void)
-{
-  return 0;
-}
-
-// ghidra_name ParseCommandLine
-// ghidra_proto void __cdecl ParseCommandLine(void)
-// FUNCTION: IMPERIALISM 0x00622632
-undefined4 ParseCommandLine(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommandLineParseContextState_0066FEA4::CCommandLineInfo
-// ghidra_proto void __thiscall CCommandLineInfo(void)
-// FUNCTION: IMPERIALISM 0x00622690
-undefined4 CCommandLineInfo(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext
-// ghidra_proto void __thiscall DestructCommandLineParseContext(void)
-// FUNCTION: IMPERIALISM 0x0062271b
-undefined4 DestructCommandLineParseContext(void)
 {
   return 0;
 }
