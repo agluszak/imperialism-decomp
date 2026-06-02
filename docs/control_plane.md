@@ -107,6 +107,8 @@ Maintenance:
 
 27. TSortedByRelationshipList and TSortByPriceList alignment: Fully matched TSortedByRelationshipList constructor-inlining and factory creation (`0x004ee4b0`) and qualified constructor-base initialization (`0x004ee540`) at **100.00%**. Integrated `TSortByPriceList` (`0x00659ef0` vtable) and aligned all 6 methods (including `AllocateAndConstruct`, `Construct`, `GetClassName`, `Destruct`, and `Compare`) at **100.00%** (or **90.91%** for thunk-routed destructors).
 
+28. Diplomacy list-struct migration: replaced the two misnamed local raw structs in `diplomacy_state.cpp` with the real foundation classes — the queue (`slot 0x18d4`) is a `TSortedPtrList` (vtable `0x00649068`) and the relationship-candidate lists are the real `TSortedByRelationshipList` (vtable `0x00654d38`). Removed `ConstructTPtrListObject`, `kVtableTPtrList`, and the manual vtable writes. `InitializeDiplomacyTurnStateManagerDefaults` (`0x004ee7a0`) rose **67.72% -> 69.29%**, all neighbors held, aligned count steady at **141**. See worklog + INSTRUCTIONS note 74.
+
 Session totals (2026-06-02): Cleaned up MFC foundational class substrate and mapped TSortedByRelationshipList and TSortByPriceList subclasses. Total aligned function count increased to 138 (+8 delta).
 
 ## Active Constraints

@@ -1753,3 +1753,17 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
    - `just stats`: aligned functions **130**, average similarity **9.53%**.
+
+### Diplomacy list-struct migration to real foundation classes (2026-06-02, cont.)
+
+1. Removed the two misnamed local raw structs in `src/game/diplomacy_state.cpp` and replaced them with the grounded foundation classes:
+   - local `struct TSortedByRelationshipList` (installed vtable `0x00649068`) was really a `TSortedPtrList`; the pending-war-transition queue (`slot 0x18d4`) now uses `new TSortedPtrList()`.
+   - local `struct RelationshipCandidateList` (installed vtable `0x00654d38`) was really the `TSortedByRelationshipList`; the candidate lists in slots `0x94`/`0x98` now use `new TSortedByRelationshipList()`.
+2. Deleted the transitional scaffolding: the `ConstructTPtrListObject` placement-new helper, the `kVtableTPtrList` constant, and the per-struct manual vtable assignments. `relationType` is now reached through the real `TSortedPtrList` union member (`->rel.relationType`); `operator new` is inherited from `TSortedPtrList` (`AllocateWithFallbackHandler`).
+3. Score deltas: `0x004ee7a0` (`InitializeDiplomacyTurnStateManagerDefaults`) **67.72% -> 69.29%**; neighbors held at `0x004f2100` **73.77%**, `0x004f21f0` **30.06%**, `0x004f1f70` **64.15%**; ctors `0x004ee4b0`/`0x004ee540` stayed **100%**.
+4. Validation:
+   - `just build`, `just detect`: clean.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: passed (41 baseline-tracked matches across 5 files).
+   - `just stats`: aligned functions **141** (delta 0), average similarity **9.63%** (delta +0.00 pp).
+5. Lesson recorded in `INSTRUCTIONS.md` note 74: ground list-struct type by the installed vtable + field layout, not the struct name; prefer the real two-write `TSortedByRelationshipList` ctor over a one-write local shim.

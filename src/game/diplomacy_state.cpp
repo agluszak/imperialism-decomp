@@ -2,6 +2,8 @@
 
 #include "decomp_types.h"
 #include "game/TIndexAndRankList.h"
+#include "game/TSortedByRelationshipList.h"
+#include "game/TSortedPtrList.h"
 #include "game/generated/vcall_facades.h"
 #include <new>
 
@@ -24,7 +26,6 @@ char g_vtblTSortedByRelationshipList = 0;
 }
 
 namespace {
-const unsigned int kVtableTPtrList = 0x00649068;
 const unsigned int kVtableTurnEventNextPacket = 0x00654E50;
 const unsigned int kTurnEventTagNext = 0x4E655854; // 'NeXT'
 enum {
@@ -38,9 +39,6 @@ undefined4 thunk_InitializeRangePairAndResetCursor(void);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
-static __inline void ConstructTPtrListObject(void* listObject) {
-  new (listObject) TIndexAndRankList();
-}
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 struct TurnEventQueue {
@@ -254,49 +252,15 @@ struct RelationshipRankEntry {
   short standingScore;
 };
 
-struct TSortedByRelationshipList {
-  void* vtable;
-  int field04;
-  int field08;
-  int field0c;
-  int field10;
-  short relationType;
-  short pad16;
-
-  TSortedByRelationshipList() {
-    ConstructTPtrListObject(this);
-    vtable = reinterpret_cast<void*>(kVtableTPtrList);
-  }
-
-  void* operator new(size_t size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    // Empty
-  }
-};
-
-struct RelationshipCandidateList {
-  void* vtable;
-  void** entries;
-  int count;
-  int capacity;
-  int growBy;
-  short relationType;
-  short pad16;
-
-  RelationshipCandidateList() {
-    ConstructTPtrListObject(this);
-    vtable = &g_vtblTSortedByRelationshipList;
-  }
-
-  void* operator new(size_t size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    // Empty
-  }
-};
+// The pending-war-transition queue and the relationship-candidate list were
+// previously modeled as two local raw structs (a TSortedPtrList-shaped
+// `TSortedByRelationshipList` with vtable 0x00649068, and a
+// TSortedByRelationshipList-shaped `RelationshipCandidateList` with vtable
+// 0x00654d38). Both are now the grounded foundation classes:
+//   - queue (slot 0x18d4)     -> TSortedPtrList            (vtable 0x00649068)
+//   - relationship candidates -> TSortedByRelationshipList (vtable 0x00654d38)
+// Evidence: identical field layout (CPtrArray entries/count/capacity/growBy +
+// short relationType/pad16) and the exact vtable each ctor installs.
 
 struct TurnEventPacket {
   void* vftable;
@@ -378,8 +342,8 @@ DiplomacyTurnStateManager* DiplomacyTurnStateManager::thunk_ConstructDiplomacyTu
 
 // FUNCTION: IMPERIALISM 0x004ee7a0
 void DiplomacyTurnStateManager::InitializeDiplomacyTurnStateManagerDefaults() {
-  TSortedByRelationshipList* queue = new TSortedByRelationshipList();
-  queue->relationType = 4;
+  TSortedPtrList* queue = new TSortedPtrList();
+  queue->rel.relationType = 4;
   pendingWarTransitionQueue18d4 = queue;
 
   register int zero = 0;
@@ -952,8 +916,8 @@ void DiplomacyTurnStateManager::BuildRelationshipListSlot88(int sourceNationSlot
 // FUNCTION: IMPERIALISM 0x004f2100
 int DiplomacyTurnStateManager::SelectNationSlotFromCollectedStandingEntriesSlot98(
     int sourceNationSlot, int primaryOnlyFlag) {
-  RelationshipCandidateList* list = new RelationshipCandidateList();
-  list->relationType = 4;
+  TSortedByRelationshipList* list = new TSortedByRelationshipList();
+  list->rel.relationType = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   if (list->count < 1) {
     return -1;
@@ -975,8 +939,8 @@ int DiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot94
     return SelectNationSlotFromCollectedStandingEntriesSlot98(sourceNationSlot, primaryOnlyFlag);
   }
 
-  RelationshipCandidateList* list = new RelationshipCandidateList();
-  list->relationType = 4;
+  TSortedByRelationshipList* list = new TSortedByRelationshipList();
+  list->rel.relationType = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   int entryIndex = list->count;
   if (entryIndex < 1) {
