@@ -333,13 +333,6 @@ static __inline void VCall_GreatPower_SetNeedSlot69(void* object, int arg0, int 
   fn(object, arg0, arg1);
 }
 
-// great power set policy; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_SetPolicyForNationSlot74(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x74)));
-  fn(object, arg0, arg1);
-}
-
 // dispatch gate; class=TGreatPower; status=provisional
 static __inline char VCall_GreatPower_ShouldDispatchImmediatelySlot28(void* object) {
   typedef char (__fastcall * Fn)(void*);

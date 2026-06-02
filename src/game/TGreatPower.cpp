@@ -246,7 +246,6 @@ undefined4 ClearFieldBlock1c6(void);
 undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void);
 undefined4 thunk_QueueNationPairWarTransition(void);
 void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
-void ApplyDiplomacyPolicyStateForTargetWithCostChecks(void);
 void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);
 void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
 void NoOpAdvisoryHandlerReturn(void);
@@ -675,7 +674,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(113);
   TGREATPOWER_VTABLE_SLOT(114);
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);  // slot 0x73
-  virtual void SetPolicyForNationSlot74_Provisional(int nationSlot, int policyCode) = 0;
+  virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);  // slot 0x74
   virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);  // slot 0x75
   TGREATPOWER_VTABLE_SLOT(118);
   virtual char CanSetGrantValueSlot77_Provisional(int grantValue) = 0;
@@ -890,7 +889,6 @@ public:
   void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int policyCode,
                                                      int sourceNationSlot);
   void ApplyNationResourceNeedTargetsToOrderState(void);
-  void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
@@ -1891,7 +1889,7 @@ void TGreatPower::VTableSlotA1_Provisional(int nationSlot, int policyCode, int t
 // FUNCTION: IMPERIALISM 0x004070e5
 void TGreatPower::thunk_ApplyDiplomacyPolicyStateForTargetWithCostChecks_At004070e5(int arg1,
                                                                                     int arg2) {
-  ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
+  this->TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
 }
 
 // FUNCTION: IMPERIALISM 0x00407392
@@ -3378,7 +3376,7 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
         int resolvedNationSlot = DecodeTerrainNationSlot(encodedNationSlot, terrainDescriptor);
         if (Diplomacy_HasPolicyWithNation(diplomacyManager, this->nationSlot, resolvedNationSlot) ==
             0) {
-          this->SetPolicyForNationSlot74_Provisional(resolvedNationSlot, 0x131);
+          this->ApplyDiplomacyPolicyStateForTargetWithCostChecks(resolvedNationSlot, 0x131);
         }
       }
     }

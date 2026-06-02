@@ -37,7 +37,6 @@ src/game/TGreatPower.cpp|VCall_GreatPower_GetNeedSlotValueSlot1F|short|0x1F|int|
 src/game/TGreatPower.cpp|VCall_SecondaryState_ResetDiplomacyLevelSlot48|void|0x48 / 4|int,int|high|secondary reset
 src/game/TGreatPower.cpp|VCall_GreatPower_ResetDiplomacyLevelForNationSlot12|void|0x12|int,int|high|great power reset level|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot13|void|0x13|int,int|high|great power slot13; index 0x13 byte 0x04c|index|thiscall|none||provisional|TGreatPower
-src/game/TGreatPower.cpp|VCall_GreatPower_SetPolicyForNationSlot74|void|0x74|int,int|high|great power set policy|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_AdjustTreasurySlot0E|void|0x0E|int|high|treasury adjust|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_AdjustResourceDeltaSlot66|void|0x66|int|high|adjust delta slot66|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_CanSetGrantValueSlot77|char|0x77|int|high|grant guard|index|thiscall|none||provisional|TGreatPower

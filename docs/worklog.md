@@ -1971,3 +1971,11 @@ source changes.
    aggregate check: build/detect clean, `stats` aligned **145** (delta 0), `compare-canaries`
    `below_floor=0` (incl. `0x004df010` still floor_met). Only `0x74` remains (needs thunk
    qualification).
+6. **Wired the last cluster slot 0x74.** Replaced the provisional slot decl with the real virtual
+   `ApplyDiplomacyPolicyStateForTargetWithCostChecks(int,int)`, removed the redundant non-virtual
+   decl plus a stale orphan free decl, and qualified the slot-0x74 ILT thunk's body call
+   (`this->TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(...)`) so it stays a direct
+   call instead of re-dispatching through the now-real slot. Dropped the last cluster facade (regen
+   130 -> 129). The **whole proposal cluster (0x73/0x74/0x75/0x7a/0x7b/0x7c) is now wired to real
+   virtuals.** build/detect clean; body `0x004ddfc0` held **23.15%**, thunk `0x004070e5` 0%
+   (thunk-shape residual); `stats` aligned **145** (delta 0); `compare-canaries` `below_floor=0`.
