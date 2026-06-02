@@ -51,6 +51,13 @@ ghidra-listing *args:
   : "${GHIDRA_PROJECT_NAME:?Set GHIDRA_PROJECT_NAME in .env}"
   uv run python -m tools.ghidra.listing_one {{args}}
 
+# Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
+# Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
+scan-cdecl-thiscall *args:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  : "${GHIDRA_PROJECT_DIR:?Set GHIDRA_PROJECT_DIR in .env}"
+  uv run python -m tools.ghidra.scan_cdecl_thiscall {{args}}
+
 ghidra-vtable-dump class vtable *args:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
   : "${GHIDRA_PROJECT_DIR:?Set GHIDRA_PROJECT_DIR in .env}"
