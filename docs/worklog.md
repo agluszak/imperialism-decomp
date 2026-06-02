@@ -1767,3 +1767,11 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just vtable-gate`: passed (41 baseline-tracked matches across 5 files).
    - `just stats`: aligned functions **141** (delta 0), average similarity **9.63%** (delta +0.00 pp).
 5. Lesson recorded in `INSTRUCTIONS.md` note 74: ground list-struct type by the installed vtable + field layout, not the struct name; prefer the real two-write `TSortedByRelationshipList` ctor over a one-write local shim.
+
+### TEventHandler VTABLE annotation correction (2026-06-02, cont.)
+
+1. `include/game/TEventHandler.h` annotated `TEventHandler` with `// VTABLE: IMPERIALISM 0x0066FEC4`, which is the CObject root vtable. This collided with the legitimate `CObject` annotation in `cobject.h`, so reccmp emitted `Dropped duplicate address 0x66fec4 on VTABLE annotation` on every compare and silently discarded one entry.
+2. TEventHandler's real vtable is `0x006497a0` (`PTR_thunk_GetTEventHandlerClassNamePointer_006497a0`, confirmed by the ctor/dtor vtable writes in `TView.cpp`, `TCityDialogModalState_00649A50.cpp`, and `global_part005.cpp`). Corrected the annotation to `0x006497a0`.
+3. Validation:
+   - `just stats`: `dropped duplicate addresses: 0` (was non-zero), aligned functions **141** (delta 0), average similarity **9.63%**.
+   - `just compare-canaries`: `below_floor=0`; `just vtable-gate`: passed.

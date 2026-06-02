@@ -1,6 +1,6 @@
 #pragma once
 
-// VTABLE: IMPERIALISM 0x0066FEC4
+// VTABLE: IMPERIALISM 0x006497a0
 class TEventHandler {
 public:
   int field04;
