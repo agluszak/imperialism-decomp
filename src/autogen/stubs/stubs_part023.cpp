@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTEView::DeflateRect
-// ghidra_proto void __thiscall DeflateRect(void)
-// FUNCTION: IMPERIALISM 0x0061f342
-undefined4 DeflateRect(void)
-{
-  return 0;
-}
-
 // ghidra_name AfxOleCanExitApp
 // ghidra_proto void * __cdecl AfxOleCanExitApp(void)
 // FUNCTION: IMPERIALISM 0x0061f423
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b6f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631baf(void)
 // FUNCTION: IMPERIALISM 0x00631baf
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631baf(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631bed
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631bed(void)
+// FUNCTION: IMPERIALISM 0x00631bed
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631bed(void)
 {
   return 0;
 }

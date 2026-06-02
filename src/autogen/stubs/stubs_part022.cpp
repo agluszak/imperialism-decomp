@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name IsWindowEnabled
-// ghidra_proto int __cdecl IsWindowEnabled(void)
-// FUNCTION: IMPERIALISM 0x00607520
-undefined4 IsWindowEnabled(void)
-{
-  return 0;
-}
-
 // ghidra_name SetFocus
 // ghidra_proto void __cdecl SetFocus(void)
 // FUNCTION: IMPERIALISM 0x00607562
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_AfxDeleteObject_At0061ec0f(void)
 // ghidra_proto void __thiscall FillSolidRect(void * pRect, uint rgbColor)
 // FUNCTION: IMPERIALISM 0x0061f0fa
 undefined4 FillSolidRect(void)
+{
+  return 0;
+}
+
+// ghidra_name TTEView::DeflateRect
+// ghidra_proto void __thiscall DeflateRect(void)
+// FUNCTION: IMPERIALISM 0x0061f342
+undefined4 DeflateRect(void)
 {
   return 0;
 }

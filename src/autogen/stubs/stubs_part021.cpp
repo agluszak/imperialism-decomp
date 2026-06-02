@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AppendPointerToGlobalVectorAsStatus
-// ghidra_proto int __cdecl AppendPointerToGlobalVectorAsStatus(void)
-// FUNCTION: IMPERIALISM 0x005e7920
-undefined4 AppendPointerToGlobalVectorAsStatus(void)
-{
-  return 0;
-}
-
 // ghidra_name CompareAnsiStringsWithMbcsAwareness
 // ghidra_proto int __cdecl CompareAnsiStringsWithMbcsAwareness(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e7980
@@ -3999,6 +3991,14 @@ undefined4 SetWindowPos(void)
 // ghidra_proto void __thiscall ShowWindow(void)
 // FUNCTION: IMPERIALISM 0x006074f9
 undefined4 ShowWindow(void)
+{
+  return 0;
+}
+
+// ghidra_name IsWindowEnabled
+// ghidra_proto int __cdecl IsWindowEnabled(void)
+// FUNCTION: IMPERIALISM 0x00607520
+undefined4 IsWindowEnabled(void)
 {
   return 0;
 }

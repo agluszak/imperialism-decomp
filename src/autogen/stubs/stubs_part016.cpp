@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnArgMissionSlot5CNavyOverride
-// ghidra_proto int __fastcall ReturnArgMissionSlot5CNavyOverride(void)
-// FUNCTION: IMPERIALISM 0x00535540
-undefined4 ReturnArgMissionSlot5CNavyOverride(void)
-{
-  return 0;
-}
-
 // ghidra_name TNavyMission::DestroyTNavyMission
 // ghidra_proto void * __thiscall DestroyTNavyMission(void)
 // FUNCTION: IMPERIALISM 0x00535560
@@ -3999,6 +3991,14 @@ undefined4 ApplyTaskForceSelectionModeForCurrentNationOrders(void)
 // ghidra_proto void __cdecl HasNoMapOrderEntryChildrenQueued(void)
 // FUNCTION: IMPERIALISM 0x00553b10
 undefined4 HasNoMapOrderEntryChildrenQueued(void)
+{
+  return 0;
+}
+
+// ghidra_name HasActiveMapOrderEntryChildren
+// ghidra_proto void __cdecl HasActiveMapOrderEntryChildren(void)
+// FUNCTION: IMPERIALISM 0x00553b50
+undefined4 HasActiveMapOrderEntryChildren(void)
 {
   return 0;
 }

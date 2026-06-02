@@ -1203,14 +1203,6 @@ undefined4 IsNationSlotInPrimaryGroupB(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation
-// ghidra_proto void __thiscall HasAsymmetricWarRelationForPrimaryNation(void)
-// FUNCTION: IMPERIALISM 0x004efc30
-undefined4 HasAsymmetricWarRelationForPrimaryNation(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors
 // ghidra_proto void __thiscall SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x004efcb0
@@ -3999,6 +3991,14 @@ undefined4 RenderTurnEventPalettePreviewSurfaceAndProgress(void)
 // ghidra_proto void __fastcall RebuildMapTileNeighborHighlightPolygonsForAllTiles(void * pMapView)
 // FUNCTION: IMPERIALISM 0x0050b9e0
 undefined4 RebuildMapTileNeighborHighlightPolygonsForAllTiles(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
+// ghidra_proto void __thiscall RebuildNationClipRegionsAndDispatchMapEvent(void)
+// FUNCTION: IMPERIALISM 0x0050bad0
+undefined4 RebuildNationClipRegionsAndDispatchMapEvent(void)
 {
   return 0;
 }

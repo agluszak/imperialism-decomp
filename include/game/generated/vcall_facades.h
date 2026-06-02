@@ -116,13 +116,6 @@ static __inline short VCall_Diplomacy_GetRelationTierSlot70(void* object, int ar
   return fn(object, 0, arg0, arg1);
 }
 
-// alliance guard; status=provisional
-static __inline char VCall_Diplomacy_HasAllianceGuardSlot60(void* object, int arg0, int arg1) {
-  typedef char (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x60 / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
 // diplomacy flag gate; status=provisional
 static __inline char VCall_Diplomacy_HasFlag84ForNationSlot84(void* object, int arg0) {
   typedef char (__fastcall * Fn)(void*, int, int);
@@ -695,6 +688,13 @@ static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object,
   typedef char (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x5C / 4)));
   return fn(object, arg0, arg1, arg2);
+}
+
+// alliance guard/asymmetric war relation predicate; class=DiplomacyTurnStateManager; status=provisional
+static __inline char VCall_Diplomacy_HasAllianceGuardSlot60(void* object, int arg0, int arg1) {
+  typedef char (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x60 / 4)));
+  return fn(object, 0, arg0, arg1);
 }
 
 // outdated war relation predicate; class=DiplomacyTurnStateManager; status=provisional

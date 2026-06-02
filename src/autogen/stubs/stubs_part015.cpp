@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
-// ghidra_proto void __thiscall RebuildNationClipRegionsAndDispatchMapEvent(void)
-// FUNCTION: IMPERIALISM 0x0050bad0
-undefined4 RebuildNationClipRegionsAndDispatchMapEvent(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C4_I35_0050bbc0
 // ghidra_proto void __cdecl OrphanCallChain_C4_I35_0050bbc0(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x0050bbc0
@@ -3999,6 +3991,14 @@ undefined4 ReturnFalseMissionCapabilityStub(void)
 // ghidra_proto int __cdecl ReturnZeroMissionSlot58NavyOverride(void)
 // FUNCTION: IMPERIALISM 0x00535520
 undefined4 ReturnZeroMissionSlot58NavyOverride(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnArgMissionSlot5CNavyOverride
+// ghidra_proto int __fastcall ReturnArgMissionSlot5CNavyOverride(void)
+// FUNCTION: IMPERIALISM 0x00535540
+undefined4 ReturnArgMissionSlot5CNavyOverride(void)
 {
   return 0;
 }
