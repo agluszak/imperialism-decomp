@@ -3147,30 +3147,6 @@ undefined4 CreateTFileStreamWithAllocFallback(void)
   return 0;
 }
 
-// ghidra_name TFileStream::GetTFileStreamClassNamePointer
-// ghidra_proto void * __cdecl GetTFileStreamClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004890f0
-undefined4 GetTFileStreamClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileStream::ConstructTFileStreamBaseState
-// ghidra_proto void __fastcall ConstructTFileStreamBaseState(TFileStream * pThis)
-// FUNCTION: IMPERIALISM 0x00489110
-undefined4 ConstructTFileStreamBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileStream::DestructTFileStreamAndMaybeFree
-// ghidra_proto void * __thiscall DestructTFileStreamAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00489130
-undefined4 DestructTFileStreamAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name SetObjectField04
 // ghidra_proto void __cdecl SetObjectField04(void)
 // FUNCTION: IMPERIALISM 0x00489160
@@ -3267,38 +3243,6 @@ undefined4 CreateTCountingStreamWithAllocFallback(void)
   return 0;
 }
 
-// ghidra_name TCountingStream::GetTCountingStreamClassNamePointer
-// ghidra_proto void * __cdecl GetTCountingStreamClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004893f0
-undefined4 GetTCountingStreamClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountingStream::ConstructTCountingStreamBaseState
-// ghidra_proto void __fastcall ConstructTCountingStreamBaseState(TCountingStream * pThis)
-// FUNCTION: IMPERIALISM 0x00489410
-undefined4 ConstructTCountingStreamBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountingStream::DestructTCountingStreamAndMaybeFree
-// ghidra_proto void * __thiscall DestructTCountingStreamAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00489440
-undefined4 DestructTCountingStreamAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTCountingStreamAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTCountingStreamAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x00489470
-undefined4 DestructTCountingStreamAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl
 // ghidra_proto void __cdecl DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
 // FUNCTION: IMPERIALISM 0x00489490
@@ -3351,38 +3295,6 @@ undefined4 CreateTHandleStreamInstance(void)
 // ghidra_proto void * __cdecl CreateTHandleStreamWithAllocFallback(void)
 // FUNCTION: IMPERIALISM 0x00489580
 undefined4 CreateTHandleStreamWithAllocFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name THandleStream::GetTHandleStreamClassNamePointer
-// ghidra_proto void * __cdecl GetTHandleStreamClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004895c0
-undefined4 GetTHandleStreamClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name THandleStream::ConstructTHandleStreamBaseState
-// ghidra_proto void __fastcall ConstructTHandleStreamBaseState(THandleStream * pThis)
-// FUNCTION: IMPERIALISM 0x004895e0
-undefined4 ConstructTHandleStreamBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name THandleStream::DestructTHandleStreamAndMaybeFree
-// ghidra_proto void * __thiscall DestructTHandleStreamAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00489610
-undefined4 DestructTHandleStreamAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTHandleStreamAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTHandleStreamAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x00489640
-undefined4 DestructTHandleStreamAndMaybeFree_Impl(void)
 {
   return 0;
 }
@@ -3999,6 +3911,94 @@ undefined4 SetControlActiveFlagAndRefreshIfChanged(void)
 // ghidra_proto bool __thiscall CanProcessMapViewSlotECUnderWindowState(void)
 // FUNCTION: IMPERIALISM 0x0048b200
 undefined4 CanProcessMapViewSlotECUnderWindowState(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::WrapperFor_InvalidateCityDialogRectRegion_At0048b250
+// ghidra_proto void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0048b250(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0048b250
+undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0048b250(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0
+// ghidra_proto void __thiscall WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(void)
+// FUNCTION: IMPERIALISM 0x0048b2d0
+undefined4 WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::UpdateControlPositionAndInvalidateUnionRect
+// ghidra_proto void __thiscall UpdateControlPositionAndInvalidateUnionRect(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0048b3f0
+undefined4 UpdateControlPositionAndInvalidateUnionRect(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::InvalidateOffsetRegionUsingChildClipRect
+// ghidra_proto void __thiscall InvalidateOffsetRegionUsingChildClipRect(int * arg1)
+// FUNCTION: IMPERIALISM 0x0048b4b0
+undefined4 InvalidateOffsetRegionUsingChildClipRect(void)
+{
+  return 0;
+}
+
+// ghidra_name InvalidateCityDialogRectRegion
+// ghidra_proto void __stdcall InvalidateCityDialogRectRegion(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0048b5f0
+undefined4 InvalidateCityDialogRectRegion(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::ValidateControlRectIfWindowActive
+// ghidra_proto void __thiscall ValidateControlRectIfWindowActive(int * arg1)
+// FUNCTION: IMPERIALISM 0x0048b690
+undefined4 ValidateControlRectIfWindowActive(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0
+// ghidra_proto void __stdcall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0048b6d0
+undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::ResetUiInputCaptureState
+// ghidra_proto void __thiscall ResetUiInputCaptureState(void)
+// FUNCTION: IMPERIALISM 0x0048b700
+undefined4 ResetUiInputCaptureState(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::SetGlobalUiSelectionIfChangedAndNotify
+// ghidra_proto bool __thiscall SetGlobalUiSelectionIfChangedAndNotify(void)
+// FUNCTION: IMPERIALISM 0x0048b770
+undefined4 SetGlobalUiSelectionIfChangedAndNotify(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0
+// ghidra_proto void __cdecl WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0048b7b0
+undefined4 WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0(void)
+{
+  return 0;
+}
+
+// ghidra_name TControl::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl
+// ghidra_proto void __thiscall CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl(int arg1)
+// FUNCTION: IMPERIALISM 0x0048b7e0
+undefined4 CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl(void)
 {
   return 0;
 }

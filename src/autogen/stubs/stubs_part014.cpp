@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Helper_Uses_ftol_At004e49b0
-// ghidra_proto void __fastcall Helper_Uses_ftol_At004e49b0(int ecxArg, int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004e49b0
-undefined4 Helper_Uses_ftol_At004e49b0(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0
-// ghidra_proto void __cdecl Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void)
-// FUNCTION: IMPERIALISM 0x004e4bd0
-undefined4 Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::IsDiplomacyPolicyAllowedForTargetClassState
-// ghidra_proto void __thiscall IsDiplomacyPolicyAllowedForTargetClassState(int arg1)
-// FUNCTION: IMPERIALISM 0x004e4ee0
-undefined4 IsDiplomacyPolicyAllowedForTargetClassState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I27_004e4f50
-// ghidra_proto uint __cdecl OrphanCallChain_C2_I27_004e4f50(void)
-// FUNCTION: IMPERIALISM 0x004e4f50
-undefined4 OrphanCallChain_C2_I27_004e4f50(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::SetNationTradePolicyValueForTargetAndNotify
-// ghidra_proto void __thiscall SetNationTradePolicyValueForTargetAndNotify(int targetNationSlot, short policyValue)
-// FUNCTION: IMPERIALISM 0x004e4fa0
-undefined4 SetNationTradePolicyValueForTargetAndNotify(void)
-{
-  return 0;
-}
-
-// ghidra_name CanInitiateJoinEmpireProposalToTarget
-// ghidra_proto void __cdecl CanInitiateJoinEmpireProposalToTarget(void)
-// FUNCTION: IMPERIALISM 0x004e4ff0
-undefined4 CanInitiateJoinEmpireProposalToTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::ResolveAndApplyDiplomacyPolicyTransition
-// ghidra_proto void __thiscall ResolveAndApplyDiplomacyPolicyTransition(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004e50d0
-undefined4 ResolveAndApplyDiplomacyPolicyTransition(void)
-{
-  return 0;
-}
-
-// ghidra_name TriggerNationWarTransitionHandlersIfNeeded
-// ghidra_proto void __stdcall TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004e5300
-undefined4 TriggerNationWarTransitionHandlersIfNeeded(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::ProcessTurnEventNationStateTransitionAndDiplomacy
-// ghidra_proto void __thiscall ProcessTurnEventNationStateTransitionAndDiplomacy(int turnEventCode)
-// FUNCTION: IMPERIALISM 0x004e5340
-undefined4 ProcessTurnEventNationStateTransitionAndDiplomacy(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::HandleNetworkPortConstructionOrder
-// ghidra_proto void __thiscall HandleNetworkPortConstructionOrder(int nNationId)
-// FUNCTION: IMPERIALISM 0x004e5730
-undefined4 HandleNetworkPortConstructionOrder(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::ApplyNationStateCode200AndQueueEvent1B
-// ghidra_proto void __thiscall ApplyNationStateCode200AndQueueEvent1B(sdword targetNationSlot)
-// FUNCTION: IMPERIALISM 0x004e5840
-undefined4 ApplyNationStateCode200AndQueueEvent1B(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I33_004e59d0
 // ghidra_proto void __cdecl OrphanCallChain_C2_I33_004e59d0(void)
 // FUNCTION: IMPERIALISM 0x004e59d0
@@ -3999,6 +3911,94 @@ undefined4 WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
 // ghidra_proto void __cdecl BuildStrategicMapCommodityIconAtlasFrom700To722(void)
 // FUNCTION: IMPERIALISM 0x0050a1a0
 undefined4 BuildStrategicMapCommodityIconAtlasFrom700To722(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadStrategicMapUnitIconAtlas750
+// ghidra_proto void __cdecl LoadStrategicMapUnitIconAtlas750(void)
+// FUNCTION: IMPERIALISM 0x0050a3b0
+undefined4 LoadStrategicMapUnitIconAtlas750(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadStrategicMapUnitOverlayAtlas751
+// ghidra_proto void __cdecl LoadStrategicMapUnitOverlayAtlas751(void)
+// FUNCTION: IMPERIALISM 0x0050a3e0
+undefined4 LoadStrategicMapUnitOverlayAtlas751(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadStrategicMapOverlayAtlas8699
+// ghidra_proto void __cdecl LoadStrategicMapOverlayAtlas8699(void)
+// FUNCTION: IMPERIALISM 0x0050a410
+undefined4 LoadStrategicMapOverlayAtlas8699(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadStrategicMapMarkerAtlas1372
+// ghidra_proto void __cdecl LoadStrategicMapMarkerAtlas1372(void)
+// FUNCTION: IMPERIALISM 0x0050a440
+undefined4 LoadStrategicMapMarkerAtlas1372(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildStrategicMapGaugeAtlasFrom1422And1423
+// ghidra_proto void __cdecl BuildStrategicMapGaugeAtlasFrom1422And1423(void)
+// FUNCTION: IMPERIALISM 0x0050a470
+undefined4 BuildStrategicMapGaugeAtlasFrom1422And1423(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshCityCapabilityUiHandlesForActiveNation
+// ghidra_proto void __cdecl RefreshCityCapabilityUiHandlesForActiveNation(void)
+// FUNCTION: IMPERIALISM 0x0050a6a0
+undefined4 RefreshCityCapabilityUiHandlesForActiveNation(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildStrategicMapTileOverlayStripSurfaces800To807
+// ghidra_proto void __cdecl BuildStrategicMapTileOverlayStripSurfaces800To807(void)
+// FUNCTION: IMPERIALISM 0x0050a820
+undefined4 BuildStrategicMapTileOverlayStripSurfaces800To807(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext
+// ghidra_proto void __thiscall RenderOffscreenBitmapGridStripAndRestoreContext(void)
+// FUNCTION: IMPERIALISM 0x0050a9f0
+undefined4 RenderOffscreenBitmapGridStripAndRestoreContext(void)
+{
+  return 0;
+}
+
+// ghidra_name ReloadBitmap244AndRefreshUiCaches
+// ghidra_proto void __cdecl ReloadBitmap244AndRefreshUiCaches(void)
+// FUNCTION: IMPERIALISM 0x0050b5b0
+undefined4 ReloadBitmap244AndRefreshUiCaches(void)
+{
+  return 0;
+}
+
+// ghidra_name TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress
+// ghidra_proto void __thiscall RenderTurnEventPalettePreviewSurfaceAndProgress(void)
+// FUNCTION: IMPERIALISM 0x0050b640
+undefined4 RenderTurnEventPalettePreviewSurfaceAndProgress(void)
+{
+  return 0;
+}
+
+// ghidra_name RebuildMapTileNeighborHighlightPolygonsForAllTiles
+// ghidra_proto void __fastcall RebuildMapTileNeighborHighlightPolygonsForAllTiles(void * pMapView)
+// FUNCTION: IMPERIALISM 0x0050b9e0
+undefined4 RebuildMapTileNeighborHighlightPolygonsForAllTiles(void)
 {
   return 0;
 }

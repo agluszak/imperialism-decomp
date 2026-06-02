@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RenderControlRectWithPaletteAndOptionalBlit
-// ghidra_proto void __fastcall RenderControlRectWithPaletteAndOptionalBlit(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x00573270
-undefined4 RenderControlRectWithPaletteAndOptionalBlit(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadPictureResourceRegionAndRefresh
-// ghidra_proto void __cdecl LoadPictureResourceRegionAndRefresh(void)
-// FUNCTION: IMPERIALISM 0x00573430
-undefined4 LoadPictureResourceRegionAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650
-// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650(void)
-// FUNCTION: IMPERIALISM 0x00573650
-undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_00573690
-// ghidra_proto void __cdecl OrphanCallChain_C1_I08_00573690(void)
-// FUNCTION: IMPERIALISM 0x00573690
-undefined4 OrphanCallChain_C1_I08_00573690(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I14_005736c0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I14_005736c0(void)
-// FUNCTION: IMPERIALISM 0x005736c0
-undefined4 OrphanCallChain_C1_I14_005736c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffLimitsPicture::CreateTOffLimitsPictureInstance
-// ghidra_proto void * __cdecl CreateTOffLimitsPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00573710
-undefined4 CreateTOffLimitsPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffLimitsPicture::GetTOffLimitsPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTOffLimitsPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005737b0
-undefined4 GetTOffLimitsPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
-// ghidra_proto void * __thiscall ConstructTOffLimitsPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x005737d0
-undefined4 ConstructTOffLimitsPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffLimitsPicture::DestructTOffLimitsPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTOffLimitsPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00573800
-undefined4 DestructTOffLimitsPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources
-// ghidra_proto void __thiscall InitializeOffLimitsPictureCachedBrushResources(void)
-// FUNCTION: IMPERIALISM 0x00573850
-undefined4 InitializeOffLimitsPictureCachedBrushResources(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderHintOverlayWithCtrlModifierClipRegion
-// ghidra_proto void __cdecl RenderHintOverlayWithCtrlModifierClipRegion(void)
-// FUNCTION: IMPERIALISM 0x00573890
-undefined4 RenderHintOverlayWithCtrlModifierClipRegion(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
 // ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
 // FUNCTION: IMPERIALISM 0x00573900
@@ -3999,6 +3911,94 @@ undefined4 EvaluateTacticalTileScore_TileType1Or2Bonus(void)
 // ghidra_proto int __cdecl EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus(int tacticalContext, int tileIndex)
 // FUNCTION: IMPERIALISM 0x0059db00
 undefined4 EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_InverseDistanceField
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_InverseDistanceField(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059dba0
+undefined4 EvaluateTacticalTileScore_InverseDistanceField(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_ArtilleryClassStandOffDistance
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_ArtilleryClassStandOffDistance(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059dbe0
+undefined4 EvaluateTacticalTileScore_ArtilleryClassStandOffDistance(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_RightwardOpenColumnBias
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_RightwardOpenColumnBias(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059dcd0
+undefined4 EvaluateTacticalTileScore_RightwardOpenColumnBias(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059dd40
+undefined4 EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_ClosestReachableEnemyDistance
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_ClosestReachableEnemyDistance(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059de30
+undefined4 EvaluateTacticalTileScore_ClosestReachableEnemyDistance(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059dfe0
+undefined4 EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus(void)
+{
+  return 0;
+}
+
+// ghidra_name EvaluateTacticalTileScore_InsideBattlefrontWidth
+// ghidra_proto int __cdecl EvaluateTacticalTileScore_InsideBattlefrontWidth(int tacticalContext, int tileIndex)
+// FUNCTION: IMPERIALISM 0x0059e0d0
+undefined4 EvaluateTacticalTileScore_InsideBattlefrontWidth(void)
+{
+  return 0;
+}
+
+// ghidra_name SelectBestTacticalTargetTileByActionHeuristics
+// ghidra_proto int __cdecl SelectBestTacticalTargetTileByActionHeuristics(void)
+// FUNCTION: IMPERIALISM 0x0059e110
+undefined4 SelectBestTacticalTargetTileByActionHeuristics(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket
+// ghidra_proto void __cdecl UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket(void)
+// FUNCTION: IMPERIALISM 0x0059e3e0
+undefined4 UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit
+// ghidra_proto void __thiscall RunTacticalAutoTurnControllerForActiveUnit(void)
+// FUNCTION: IMPERIALISM 0x0059e4f0
+undefined4 RunTacticalAutoTurnControllerForActiveUnit(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildTacticalActionClassAndPositionFlags
+// ghidra_proto uint __thiscall BuildTacticalActionClassAndPositionFlags(void)
+// FUNCTION: IMPERIALISM 0x0059e8a0
+undefined4 BuildTacticalActionClassAndPositionFlags(void)
 {
   return 0;
 }

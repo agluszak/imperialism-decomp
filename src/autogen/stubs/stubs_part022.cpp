@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetDlgItem
-// ghidra_proto void __thiscall GetDlgItem(void)
-// FUNCTION: IMPERIALISM 0x00607111
-undefined4 GetDlgItem(void)
-{
-  return 0;
-}
-
-// ghidra_name GetDlgItem_60713b
-// ghidra_proto HWND __stdcall GetDlgItem_60713b(HWND hDlg, int nIDDlgItem)
-// FUNCTION: IMPERIALISM 0x0060713b
-undefined4 GetDlgItem_60713b(void)
-{
-  return 0;
-}
-
-// ghidra_name GetDlgItemTextOrDelegateHandler
-// ghidra_proto void __thiscall GetDlgItemTextOrDelegateHandler(int controlId, void * pBuffer, int maxChars)
-// FUNCTION: IMPERIALISM 0x0060719b
-undefined4 GetDlgItemTextOrDelegateHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name SendDlgItemMessageOrDelegateHandler
-// ghidra_proto void __thiscall SendDlgItemMessageOrDelegateHandler(int controlId, uint msg, uint wParam, void * lParam)
-// FUNCTION: IMPERIALISM 0x006071d0
-undefined4 SendDlgItemMessageOrDelegateHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5
-// ghidra_proto void __thiscall WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5(void)
-// FUNCTION: IMPERIALISM 0x006072e5
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5(void)
-{
-  return 0;
-}
-
-// ghidra_name GetStyle
-// ghidra_proto uint __cdecl GetStyle(void)
-// FUNCTION: IMPERIALISM 0x00607318
-undefined4 GetStyle(void)
-{
-  return 0;
-}
-
-// ghidra_name GetExStyle
-// ghidra_proto uint __cdecl GetExStyle(void)
-// FUNCTION: IMPERIALISM 0x00607332
-undefined4 GetExStyle(void)
-{
-  return 0;
-}
-
-// ghidra_name ModifyStyle
-// ghidra_proto void __thiscall ModifyStyle(void)
-// FUNCTION: IMPERIALISM 0x0060734c
-undefined4 ModifyStyle(void)
-{
-  return 0;
-}
-
-// ghidra_name ModifyStyleEx
-// ghidra_proto void __thiscall ModifyStyleEx(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x00607380
-undefined4 ModifyStyleEx(void)
-{
-  return 0;
-}
-
-// ghidra_name SetWindowTextOrDelegateToOwner
-// ghidra_proto void __cdecl SetWindowTextOrDelegateToOwner(void)
-// FUNCTION: IMPERIALISM 0x006073b4
-undefined4 SetWindowTextOrDelegateToOwner(void)
-{
-  return 0;
-}
-
-// ghidra_name MoveWindow
-// ghidra_proto void __thiscall MoveWindow(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x00607469
-undefined4 MoveWindow(void)
-{
-  return 0;
-}
-
 // ghidra_name SetWindowPos
 // ghidra_proto void __thiscall SetWindowPos(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 // FUNCTION: IMPERIALISM 0x006074aa
@@ -3999,6 +3911,94 @@ undefined4 CHotKeyCtrl_0061E7BF(void)
 // ghidra_proto int __thiscall CreateButtonClassControl(char * pszCaption, uint dwStyle, void * pRect, void * pParentWnd, uint nControlId)
 // FUNCTION: IMPERIALISM 0x0061e7f7
 undefined4 CreateButtonClassControl(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c
+// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c(uint messageCode, int wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x0061e87c
+undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c(void)
+{
+  return 0;
+}
+
+// ghidra_name Dtor_CListBox_FID_61e8cb
+// ghidra_proto void __thiscall Dtor_CListBox_FID_61e8cb(void)
+// FUNCTION: IMPERIALISM 0x0061e8cb
+undefined4 Dtor_CListBox_FID_61e8cb(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_Default_At0061e911
+// ghidra_proto void __thiscall WrapperFor_Default_At0061e911(void)
+// FUNCTION: IMPERIALISM 0x0061e911
+undefined4 WrapperFor_Default_At0061e911(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_Default_At0061e919
+// ghidra_proto void __thiscall WrapperFor_Default_At0061e919(void)
+// FUNCTION: IMPERIALISM 0x0061e919
+undefined4 WrapperFor_Default_At0061e919(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::OnChildNotify_61e921
+// ghidra_proto uint __thiscall OnChildNotify_61e921(uint message, uint wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x0061e921
+undefined4 OnChildNotify_61e921(void)
+{
+  return 0;
+}
+
+// ghidra_name GetText_61e9ba
+// ghidra_proto void __thiscall GetText_61e9ba(void)
+// FUNCTION: IMPERIALISM 0x0061e9ba
+undefined4 GetText_61e9ba(void)
+{
+  return 0;
+}
+
+// ghidra_name Dtor_CHeaderCtrl_FID_61ea56
+// ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61ea56(void)
+// FUNCTION: IMPERIALISM 0x0061ea56
+undefined4 Dtor_CHeaderCtrl_FID_61ea56(void)
+{
+  return 0;
+}
+
+// ghidra_name TTooltipRelayWindowState::OnChildNotify_61ea9c
+// ghidra_proto uint __thiscall OnChildNotify_61ea9c(uint message, uint wParam, int lParam, void * pResult)
+// FUNCTION: IMPERIALISM 0x0061ea9c
+undefined4 OnChildNotify_61ea9c(void)
+{
+  return 0;
+}
+
+// ghidra_name InvokeDialogCreateVslot5CWithTemplate45
+// ghidra_proto void __thiscall InvokeDialogCreateVslot5CWithTemplate45(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x0061eb46
+undefined4 InvokeDialogCreateVslot5CWithTemplate45(void)
+{
+  return 0;
+}
+
+// ghidra_name Dtor_CHeaderCtrl_FID_61eb67
+// ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61eb67(void)
+// FUNCTION: IMPERIALISM 0x0061eb67
+undefined4 Dtor_CHeaderCtrl_FID_61eb67(void)
+{
+  return 0;
+}
+
+// ghidra_name Dtor_CHeaderCtrl_FID_61ebc0
+// ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61ebc0(void)
+// FUNCTION: IMPERIALISM 0x0061ebc0
+undefined4 Dtor_CHeaderCtrl_FID_61ebc0(void)
 {
   return 0;
 }

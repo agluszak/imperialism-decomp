@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanLeaf_NoCall_Ins02_004be150
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004be150(void)
-// FUNCTION: IMPERIALISM 0x004be150
-undefined4 OrphanLeaf_NoCall_Ins02_004be150(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::CreateTInteriorMinisterInstance
-// ghidra_proto ushort __thiscall CreateTInteriorMinisterInstance(ushort arg1)
-// FUNCTION: IMPERIALISM 0x004be170
-undefined4 CreateTInteriorMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004be190
-// ghidra_proto void __cdecl OrphanRetStub_004be190(void)
-// FUNCTION: IMPERIALISM 0x004be190
-undefined4 OrphanRetStub_004be190(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::GetTInteriorMinisterClassNamePointer
-// ghidra_proto void * __cdecl GetTInteriorMinisterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004be1b0
-undefined4 GetTInteriorMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::ConstructTInteriorMinisterBaseState
-// ghidra_proto void * __thiscall ConstructTInteriorMinisterBaseState(void)
-// FUNCTION: IMPERIALISM 0x004be1d0
-undefined4 ConstructTInteriorMinisterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::DestructTInteriorMinisterAndMaybeFree
-// ghidra_proto void * __thiscall DestructTInteriorMinisterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004be200
-undefined4 DestructTInteriorMinisterAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTInteriorMinisterAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTInteriorMinisterAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x004be230
-undefined4 DestructTInteriorMinisterAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
-// ghidra_proto void __thiscall WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(void * pSerializedStream)
-// FUNCTION: IMPERIALISM 0x004be290
-undefined4 WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
-// ghidra_proto void __thiscall WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void * pSerializedStream)
-// FUNCTION: IMPERIALISM 0x004be320
-undefined4 WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins08_004be3c0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins08_004be3c0(void)
-// FUNCTION: IMPERIALISM 0x004be3c0
-undefined4 OrphanLeaf_NoCall_Ins08_004be3c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004be3f0
-// ghidra_proto void __cdecl OrphanRetStub_004be3f0(void)
-// FUNCTION: IMPERIALISM 0x004be3f0
-undefined4 OrphanRetStub_004be3f0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004be410
 // ghidra_proto void __cdecl OrphanRetStub_004be410(void)
 // FUNCTION: IMPERIALISM 0x004be410
@@ -3999,6 +3911,94 @@ undefined4 OrphanLeaf_NoCall_Ins03_004e4680(void)
 // ghidra_proto void __thiscall RebuildDiplomacyEconomicPressureFromMapState(void)
 // FUNCTION: IMPERIALISM 0x004e46a0
 undefined4 RebuildDiplomacyEconomicPressureFromMapState(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_ftol_At004e49b0
+// ghidra_proto void __fastcall Helper_Uses_ftol_At004e49b0(int ecxArg, int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004e49b0
+undefined4 Helper_Uses_ftol_At004e49b0(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0
+// ghidra_proto void __cdecl Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void)
+// FUNCTION: IMPERIALISM 0x004e4bd0
+undefined4 Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::IsDiplomacyPolicyAllowedForTargetClassState
+// ghidra_proto void __thiscall IsDiplomacyPolicyAllowedForTargetClassState(int arg1)
+// FUNCTION: IMPERIALISM 0x004e4ee0
+undefined4 IsDiplomacyPolicyAllowedForTargetClassState(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C2_I27_004e4f50
+// ghidra_proto uint __cdecl OrphanCallChain_C2_I27_004e4f50(void)
+// FUNCTION: IMPERIALISM 0x004e4f50
+undefined4 OrphanCallChain_C2_I27_004e4f50(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::SetNationTradePolicyValueForTargetAndNotify
+// ghidra_proto void __thiscall SetNationTradePolicyValueForTargetAndNotify(int targetNationSlot, short policyValue)
+// FUNCTION: IMPERIALISM 0x004e4fa0
+undefined4 SetNationTradePolicyValueForTargetAndNotify(void)
+{
+  return 0;
+}
+
+// ghidra_name CanInitiateJoinEmpireProposalToTarget
+// ghidra_proto void __cdecl CanInitiateJoinEmpireProposalToTarget(void)
+// FUNCTION: IMPERIALISM 0x004e4ff0
+undefined4 CanInitiateJoinEmpireProposalToTarget(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::ResolveAndApplyDiplomacyPolicyTransition
+// ghidra_proto void __thiscall ResolveAndApplyDiplomacyPolicyTransition(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004e50d0
+undefined4 ResolveAndApplyDiplomacyPolicyTransition(void)
+{
+  return 0;
+}
+
+// ghidra_name TriggerNationWarTransitionHandlersIfNeeded
+// ghidra_proto void __stdcall TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x004e5300
+undefined4 TriggerNationWarTransitionHandlersIfNeeded(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::ProcessTurnEventNationStateTransitionAndDiplomacy
+// ghidra_proto void __thiscall ProcessTurnEventNationStateTransitionAndDiplomacy(int turnEventCode)
+// FUNCTION: IMPERIALISM 0x004e5340
+undefined4 ProcessTurnEventNationStateTransitionAndDiplomacy(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::HandleNetworkPortConstructionOrder
+// ghidra_proto void __thiscall HandleNetworkPortConstructionOrder(int nNationId)
+// FUNCTION: IMPERIALISM 0x004e5730
+undefined4 HandleNetworkPortConstructionOrder(void)
+{
+  return 0;
+}
+
+// ghidra_name TCountry::ApplyNationStateCode200AndQueueEvent1B
+// ghidra_proto void __thiscall ApplyNationStateCode200AndQueueEvent1B(sdword targetNationSlot)
+// FUNCTION: IMPERIALISM 0x004e5840
+undefined4 ApplyNationStateCode200AndQueueEvent1B(void)
 {
   return 0;
 }

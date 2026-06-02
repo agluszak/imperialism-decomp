@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TToolBarCluster::InitializeTradeScreenControlsLabelsAndNationContext
-// ghidra_proto void __thiscall InitializeTradeScreenControlsLabelsAndNationContext(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x005bea00
-undefined4 InitializeTradeScreenControlsLabelsAndNationContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::HandleTradeCommandTagsAndSelectionUpdates
-// ghidra_proto void __thiscall HandleTradeCommandTagsAndSelectionUpdates(int commandId, PanelEventPayload * pCommandRecord, int forwardArg)
-// FUNCTION: IMPERIALISM 0x005bf740
-undefined4 HandleTradeCommandTagsAndSelectionUpdates(void)
-{
-  return 0;
-}
-
-// ghidra_name TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
-// ghidra_proto void __thiscall HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(int eventRecord)
-// FUNCTION: IMPERIALISM 0x005bf860
-undefined4 HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshSelectedNationOrderCompatibilityInfo
-// ghidra_proto void __cdecl RefreshSelectedNationOrderCompatibilityInfo(void)
-// FUNCTION: IMPERIALISM 0x005bf930
-undefined4 RefreshSelectedNationOrderCompatibilityInfo(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
-// ghidra_proto void __thiscall CreateNextTradeCommandAndFormatPrompt(void)
-// FUNCTION: IMPERIALISM 0x005c04f0
-undefined4 CreateNextTradeCommandAndFormatPrompt(void)
-{
-  return 0;
-}
-
-// ghidra_name TOfferDeskPicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930
-// ghidra_proto void __thiscall WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x005c0930
-undefined4 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
-// ghidra_proto void __thiscall UpdateTradeSelectionStateAndRefreshUiIfChanged(char selectionMode)
-// FUNCTION: IMPERIALISM 0x005c09d0
-undefined4 UpdateTradeSelectionStateAndRefreshUiIfChanged(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealLine::CreateTDealLineInstance
-// ghidra_proto void * __cdecl CreateTDealLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005c0cf0
-undefined4 CreateTDealLineInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealLine::GetTDealLineClassNamePointer
-// ghidra_proto void * __cdecl GetTDealLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005c0d60
-undefined4 GetTDealLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealLine::ConstructTDealLineBaseState
-// ghidra_proto void * __thiscall ConstructTDealLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005c0d80
-undefined4 ConstructTDealLineBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealLine::DestructTDealLineAndMaybeFree
-// ghidra_proto void * __thiscall DestructTDealLineAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005c0db0
-undefined4 DestructTDealLineAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTDealLineAndMaybeFree_Impl
 // ghidra_proto void __cdecl DestructTDealLineAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005c0de0
@@ -3999,6 +3911,94 @@ undefined4 AtomicLockUnlockAndJumpIndirect_B(void)
 // ghidra_proto void __cdecl AtomicLockUnlockAndJumpIndirect_C(void)
 // FUNCTION: IMPERIALISM 0x005e7460
 undefined4 AtomicLockUnlockAndJumpIndirect_C(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_RtlUnwind_At005e7470
+// ghidra_proto void __cdecl WrapperFor_RtlUnwind_At005e7470(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7470
+undefined4 WrapperFor_RtlUnwind_At005e7470(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardStructuredExceptionDispatchThroughFrameInfo
+// ghidra_proto int __cdecl ForwardStructuredExceptionDispatchThroughFrameInfo(void)
+// FUNCTION: IMPERIALISM 0x005e74d0
+undefined4 ForwardStructuredExceptionDispatchThroughFrameInfo(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_CallSettingFrame_12_At005e7530
+// ghidra_proto int __cdecl WrapperFor_CallSettingFrame_12_At005e7530(void)
+// FUNCTION: IMPERIALISM 0x005e7530
+undefined4 WrapperFor_CallSettingFrame_12_At005e7530(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchStructuredExceptionThroughFrameStateContext
+// ghidra_proto void __cdecl DispatchStructuredExceptionThroughFrameStateContext(void)
+// FUNCTION: IMPERIALISM 0x005e7590
+undefined4 DispatchStructuredExceptionThroughFrameStateContext(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchExceptionThroughCrtThreadHandlerFrame
+// ghidra_proto int __cdecl DispatchExceptionThroughCrtThreadHandlerFrame(void)
+// FUNCTION: IMPERIALISM 0x005e75c0
+undefined4 DispatchExceptionThroughCrtThreadHandlerFrame(void)
+{
+  return 0;
+}
+
+// ghidra_name ExecuteCrtHandlerWithOptionalRtlUnwind
+// ghidra_proto int __cdecl ExecuteCrtHandlerWithOptionalRtlUnwind(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7690
+undefined4 ExecuteCrtHandlerWithOptionalRtlUnwind(void)
+{
+  return 0;
+}
+
+// ghidra_name FindFrameRecordRangeByPcAndDepth
+// ghidra_proto int __cdecl FindFrameRecordRangeByPcAndDepth(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x005e7720
+undefined4 FindFrameRecordRangeByPcAndDepth(void)
+{
+  return 0;
+}
+
+// ghidra_name global_unwind2
+// ghidra_proto void __cdecl global_unwind2(void)
+// FUNCTION: IMPERIALISM 0x005e77a0
+undefined4 global_unwind2(void)
+{
+  return 0;
+}
+
+// ghidra_name local_unwind2
+// ghidra_proto void __cdecl local_unwind2(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e77e2
+undefined4 local_unwind2(void)
+{
+  return 0;
+}
+
+// ghidra_name abnormal_termination
+// ghidra_proto int __cdecl abnormal_termination(void)
+// FUNCTION: IMPERIALISM 0x005e784a
+undefined4 abnormal_termination(void)
+{
+  return 0;
+}
+
+// ghidra_name NLG_Notify1
+// ghidra_proto void __fastcall NLG_Notify1(void)
+// FUNCTION: IMPERIALISM 0x005e786d
+undefined4 NLG_Notify1(void)
 {
   return 0;
 }

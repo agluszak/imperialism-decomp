@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TControl::WrapperFor_InvalidateCityDialogRectRegion_At0048b250
-// ghidra_proto void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0048b250(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0048b250
-undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0048b250(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0
-// ghidra_proto void __thiscall WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(void)
-// FUNCTION: IMPERIALISM 0x0048b2d0
-undefined4 WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::UpdateControlPositionAndInvalidateUnionRect
-// ghidra_proto void __thiscall UpdateControlPositionAndInvalidateUnionRect(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0048b3f0
-undefined4 UpdateControlPositionAndInvalidateUnionRect(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::InvalidateOffsetRegionUsingChildClipRect
-// ghidra_proto void __thiscall InvalidateOffsetRegionUsingChildClipRect(int * arg1)
-// FUNCTION: IMPERIALISM 0x0048b4b0
-undefined4 InvalidateOffsetRegionUsingChildClipRect(void)
-{
-  return 0;
-}
-
-// ghidra_name InvalidateCityDialogRectRegion
-// ghidra_proto void __stdcall InvalidateCityDialogRectRegion(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0048b5f0
-undefined4 InvalidateCityDialogRectRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ValidateControlRectIfWindowActive
-// ghidra_proto void __thiscall ValidateControlRectIfWindowActive(int * arg1)
-// FUNCTION: IMPERIALISM 0x0048b690
-undefined4 ValidateControlRectIfWindowActive(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0
-// ghidra_proto void __stdcall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0048b6d0
-undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ResetUiInputCaptureState
-// ghidra_proto void __thiscall ResetUiInputCaptureState(void)
-// FUNCTION: IMPERIALISM 0x0048b700
-undefined4 ResetUiInputCaptureState(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetGlobalUiSelectionIfChangedAndNotify
-// ghidra_proto bool __thiscall SetGlobalUiSelectionIfChangedAndNotify(void)
-// FUNCTION: IMPERIALISM 0x0048b770
-undefined4 SetGlobalUiSelectionIfChangedAndNotify(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0
-// ghidra_proto void __cdecl WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0048b7b0
-undefined4 WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl
-// ghidra_proto void __thiscall CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl(int arg1)
-// FUNCTION: IMPERIALISM 0x0048b7e0
-undefined4 CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::WrapperFor_AllocateWithFallbackHandler_At0048b810
 // ghidra_proto void __thiscall WrapperFor_AllocateWithFallbackHandler_At0048b810(void)
 // FUNCTION: IMPERIALISM 0x0048b810
@@ -3999,6 +3911,94 @@ undefined4 OrphanRetStub_0049e680(void)
 // ghidra_proto void __cdecl LoadGlobalSystemsFromSave(TAmbitFileBasedDocument * pThis)
 // FUNCTION: IMPERIALISM 0x0049e6a0
 undefined4 LoadGlobalSystemsFromSave(void)
+{
+  return 0;
+}
+
+// ghidra_name AssignStringSharedRefAndReturnThis
+// ghidra_proto void __cdecl AssignStringSharedRefAndReturnThis(void)
+// FUNCTION: IMPERIALISM 0x0049eb00
+undefined4 AssignStringSharedRefAndReturnThis(void)
+{
+  return 0;
+}
+
+// ghidra_name SaveGlobalSystemsToStream
+// ghidra_proto void __cdecl SaveGlobalSystemsToStream(TAmbitFileBasedDocument * pThis)
+// FUNCTION: IMPERIALISM 0x0049eb30
+undefined4 SaveGlobalSystemsToStream(void)
+{
+  return 0;
+}
+
+// ghidra_name AssertUAmbitLine1335
+// ghidra_proto void __stdcall AssertUAmbitLine1335(void)
+// FUNCTION: IMPERIALISM 0x0049ee70
+undefined4 AssertUAmbitLine1335(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At0049efd0
+// ghidra_proto void __cdecl WrapperFor_ftol_At0049efd0(void)
+// FUNCTION: IMPERIALISM 0x0049efd0
+undefined4 WrapperFor_ftol_At0049efd0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049f050
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049f050(void)
+// FUNCTION: IMPERIALISM 0x0049f050
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049f050(void)
+{
+  return 0;
+}
+
+// ghidra_name TAnimation::CreateTAnimationInstance
+// ghidra_proto void * __thiscall CreateTAnimationInstance(void)
+// FUNCTION: IMPERIALISM 0x0049f080
+undefined4 CreateTAnimationInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TAnimation::GetTAnimationClassNamePointer
+// ghidra_proto void * __cdecl GetTAnimationClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0049f0a0
+undefined4 GetTAnimationClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TAnimation::ConstructTAnimationBaseState
+// ghidra_proto void __thiscall ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// FUNCTION: IMPERIALISM 0x0049f0c0
+undefined4 ConstructTAnimationBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+// ghidra_proto void __stdcall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0049f140
+undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
+{
+  return 0;
+}
+
+// ghidra_name RenderBattleReportInsetWithPaletteShift
+// ghidra_proto void __thiscall RenderBattleReportInsetWithPaletteShift(int arg1)
+// FUNCTION: IMPERIALISM 0x0049f190
+undefined4 RenderBattleReportInsetWithPaletteShift(void)
+{
+  return 0;
+}
+
+// ghidra_name TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle
+// ghidra_proto void __thiscall RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
+// FUNCTION: IMPERIALISM 0x0049f2d0
+undefined4 RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
 {
   return 0;
 }

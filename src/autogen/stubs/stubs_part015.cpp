@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name LoadStrategicMapUnitIconAtlas750
-// ghidra_proto void __cdecl LoadStrategicMapUnitIconAtlas750(void)
-// FUNCTION: IMPERIALISM 0x0050a3b0
-undefined4 LoadStrategicMapUnitIconAtlas750(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadStrategicMapUnitOverlayAtlas751
-// ghidra_proto void __cdecl LoadStrategicMapUnitOverlayAtlas751(void)
-// FUNCTION: IMPERIALISM 0x0050a3e0
-undefined4 LoadStrategicMapUnitOverlayAtlas751(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadStrategicMapOverlayAtlas8699
-// ghidra_proto void __cdecl LoadStrategicMapOverlayAtlas8699(void)
-// FUNCTION: IMPERIALISM 0x0050a410
-undefined4 LoadStrategicMapOverlayAtlas8699(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadStrategicMapMarkerAtlas1372
-// ghidra_proto void __cdecl LoadStrategicMapMarkerAtlas1372(void)
-// FUNCTION: IMPERIALISM 0x0050a440
-undefined4 LoadStrategicMapMarkerAtlas1372(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildStrategicMapGaugeAtlasFrom1422And1423
-// ghidra_proto void __cdecl BuildStrategicMapGaugeAtlasFrom1422And1423(void)
-// FUNCTION: IMPERIALISM 0x0050a470
-undefined4 BuildStrategicMapGaugeAtlasFrom1422And1423(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityCapabilityUiHandlesForActiveNation
-// ghidra_proto void __cdecl RefreshCityCapabilityUiHandlesForActiveNation(void)
-// FUNCTION: IMPERIALISM 0x0050a6a0
-undefined4 RefreshCityCapabilityUiHandlesForActiveNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildStrategicMapTileOverlayStripSurfaces800To807
-// ghidra_proto void __cdecl BuildStrategicMapTileOverlayStripSurfaces800To807(void)
-// FUNCTION: IMPERIALISM 0x0050a820
-undefined4 BuildStrategicMapTileOverlayStripSurfaces800To807(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext
-// ghidra_proto void __thiscall RenderOffscreenBitmapGridStripAndRestoreContext(void)
-// FUNCTION: IMPERIALISM 0x0050a9f0
-undefined4 RenderOffscreenBitmapGridStripAndRestoreContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ReloadBitmap244AndRefreshUiCaches
-// ghidra_proto void __cdecl ReloadBitmap244AndRefreshUiCaches(void)
-// FUNCTION: IMPERIALISM 0x0050b5b0
-undefined4 ReloadBitmap244AndRefreshUiCaches(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress
-// ghidra_proto void __thiscall RenderTurnEventPalettePreviewSurfaceAndProgress(void)
-// FUNCTION: IMPERIALISM 0x0050b640
-undefined4 RenderTurnEventPalettePreviewSurfaceAndProgress(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildMapTileNeighborHighlightPolygonsForAllTiles
-// ghidra_proto void __fastcall RebuildMapTileNeighborHighlightPolygonsForAllTiles(void * pMapView)
-// FUNCTION: IMPERIALISM 0x0050b9e0
-undefined4 RebuildMapTileNeighborHighlightPolygonsForAllTiles(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
 // ghidra_proto void __thiscall RebuildNationClipRegionsAndDispatchMapEvent(void)
 // FUNCTION: IMPERIALISM 0x0050bad0
@@ -3999,6 +3911,94 @@ undefined4 ReturnFalseMissionVtableSlot98(void)
 // ghidra_proto void * __cdecl GetTMissionClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00534fb0
 undefined4 GetTMissionClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AFX_CLASSINIT_At00534fd0
+// ghidra_proto void __cdecl WrapperFor_AFX_CLASSINIT_At00534fd0(void)
+// FUNCTION: IMPERIALISM 0x00534fd0
+undefined4 WrapperFor_AFX_CLASSINIT_At00534fd0(void)
+{
+  return 0;
+}
+
+// ghidra_name TMission::ConstructTMission
+// ghidra_proto void __thiscall ConstructTMission(void)
+// FUNCTION: IMPERIALISM 0x00535020
+undefined4 ConstructTMission(void)
+{
+  return 0;
+}
+
+// ghidra_name TMission::DeletingDestructTMission
+// ghidra_proto void __thiscall DeletingDestructTMission(void)
+// FUNCTION: IMPERIALISM 0x00535050
+undefined4 DeletingDestructTMission(void)
+{
+  return 0;
+}
+
+// ghidra_name TMission::DestructTMission
+// ghidra_proto void __thiscall DestructTMission(void)
+// FUNCTION: IMPERIALISM 0x00535080
+undefined4 DestructTMission(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeMissionWithNationIdAndResetPathMarker
+// ghidra_proto void __cdecl InitializeMissionWithNationIdAndResetPathMarker(void)
+// FUNCTION: IMPERIALISM 0x005350a0
+undefined4 InitializeMissionWithNationIdAndResetPathMarker(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateMissionObjectByKindAndNodeContext
+// ghidra_proto void * __cdecl CreateMissionObjectByKindAndNodeContext(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x005350d0
+undefined4 CreateMissionObjectByKindAndNodeContext(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyMission::ConstructTNavyMission
+// ghidra_proto void __thiscall ConstructTNavyMission(int arg1)
+// FUNCTION: IMPERIALISM 0x00535470
+undefined4 ConstructTNavyMission(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005354c0
+// ghidra_proto void __cdecl OrphanRetStub_005354c0(void)
+// FUNCTION: IMPERIALISM 0x005354c0
+undefined4 OrphanRetStub_005354c0(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueMissionCapabilityStub
+// ghidra_proto void __cdecl ReturnTrueMissionCapabilityStub(void)
+// FUNCTION: IMPERIALISM 0x005354e0
+undefined4 ReturnTrueMissionCapabilityStub(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionCapabilityStub
+// ghidra_proto void __cdecl ReturnFalseMissionCapabilityStub(void)
+// FUNCTION: IMPERIALISM 0x00535500
+undefined4 ReturnFalseMissionCapabilityStub(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnZeroMissionSlot58NavyOverride
+// ghidra_proto int __cdecl ReturnZeroMissionSlot58NavyOverride(void)
+// FUNCTION: IMPERIALISM 0x00535520
+undefined4 ReturnZeroMissionSlot58NavyOverride(void)
 {
   return 0;
 }

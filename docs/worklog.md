@@ -2,6 +2,35 @@
 
 ## 2026-06-02
 
+### Foundation port: TStream / TFileStream / TCountingStream / THandleStream
+
+1. Scope: `include/game/stream.h` (new), `src/game/stream.cpp` (new), `CMakeLists.txt`,
+   `config/function_ownership.csv`, `src/autogen/stubs/*`.
+2. Ported the serialization stream hierarchy wrappers (factory base-state, class-name
+   accessor, scalar-deleting destructor, and the CObject vtable-reset `_Impl`s):
+   - TFileStream: `GetClassName` (`0x004890f0`), `ConstructBaseState` (`0x00489110`),
+     `DestructAndMaybeFree` (`0x00489130`) — all **100%**.
+   - TCountingStream: `GetClassName` (`0x004893f0`), `ConstructBaseState` (`0x00489410`),
+     `DestructBaseState` (`0x00489470`) — **100%**; `DestructAndMaybeFree` (`0x00489440`)
+     **90.91%**.
+   - THandleStream: `GetClassName` (`0x004895c0`), `ConstructBaseState` (`0x004895e0`),
+     `DestructBaseState` (`0x00489640`) — **100%**; `DestructAndMaybeFree` (`0x00489610`)
+     **90.91%**.
+3. Notes:
+   1. Constructors return `this` (note 61) and install their own vtable; the `_Impl`
+      teardowns reset the vptr to the shared CObject runtime vtable
+      (`PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4` at `0x0066fec4`,
+      already defined in `TCapacityOrder.cpp`).
+   2. TFileStream's destructor calls the TObject base teardown thunk
+      (`thunk_DestructTObjectAndMaybeFree` `0x00407644`) directly, so it matches 100%.
+      The TCounting/THandle destructors route through ILT thunks (`0x00403c1f`→`0x00489470`,
+      `0x004058c1`→`0x00489640`); calling the `_Impl` method directly leaves a single
+      call-target mismatch (90.91%).
+   3. These stream wrappers use favor-speed (`#pragma optimize("y", on)`), unlike the
+      favor-size collection engines.
+4. Validation: `just build` clean; `just compare-canaries` passed; CPtrList/CObArray family
+   unaffected.
+
 ### Foundation port: full CPtrList + CObArray engines (favor-size lever)
 
 1. Scope:

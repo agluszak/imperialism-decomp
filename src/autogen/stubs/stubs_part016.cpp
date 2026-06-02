@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_AFX_CLASSINIT_At00534fd0
-// ghidra_proto void __cdecl WrapperFor_AFX_CLASSINIT_At00534fd0(void)
-// FUNCTION: IMPERIALISM 0x00534fd0
-undefined4 WrapperFor_AFX_CLASSINIT_At00534fd0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::ConstructTMission
-// ghidra_proto void __thiscall ConstructTMission(void)
-// FUNCTION: IMPERIALISM 0x00535020
-undefined4 ConstructTMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::DeletingDestructTMission
-// ghidra_proto void __thiscall DeletingDestructTMission(void)
-// FUNCTION: IMPERIALISM 0x00535050
-undefined4 DeletingDestructTMission(void)
-{
-  return 0;
-}
-
-// ghidra_name TMission::DestructTMission
-// ghidra_proto void __thiscall DestructTMission(void)
-// FUNCTION: IMPERIALISM 0x00535080
-undefined4 DestructTMission(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeMissionWithNationIdAndResetPathMarker
-// ghidra_proto void __cdecl InitializeMissionWithNationIdAndResetPathMarker(void)
-// FUNCTION: IMPERIALISM 0x005350a0
-undefined4 InitializeMissionWithNationIdAndResetPathMarker(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateMissionObjectByKindAndNodeContext
-// ghidra_proto void * __cdecl CreateMissionObjectByKindAndNodeContext(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x005350d0
-undefined4 CreateMissionObjectByKindAndNodeContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyMission::ConstructTNavyMission
-// ghidra_proto void __thiscall ConstructTNavyMission(int arg1)
-// FUNCTION: IMPERIALISM 0x00535470
-undefined4 ConstructTNavyMission(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005354c0
-// ghidra_proto void __cdecl OrphanRetStub_005354c0(void)
-// FUNCTION: IMPERIALISM 0x005354c0
-undefined4 OrphanRetStub_005354c0(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueMissionCapabilityStub
-// ghidra_proto void __cdecl ReturnTrueMissionCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x005354e0
-undefined4 ReturnTrueMissionCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionCapabilityStub
-// ghidra_proto void __cdecl ReturnFalseMissionCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x00535500
-undefined4 ReturnFalseMissionCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnZeroMissionSlot58NavyOverride
-// ghidra_proto int __cdecl ReturnZeroMissionSlot58NavyOverride(void)
-// FUNCTION: IMPERIALISM 0x00535520
-undefined4 ReturnZeroMissionSlot58NavyOverride(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnArgMissionSlot5CNavyOverride
 // ghidra_proto int __fastcall ReturnArgMissionSlot5CNavyOverride(void)
 // FUNCTION: IMPERIALISM 0x00535540
@@ -3999,6 +3911,94 @@ undefined4 DeleteMapOrderEntryAndUnlink(void)
 // ghidra_proto void __fastcall RemoveTaskForceOrderNodesByNationAndClearSelectionState(int ecxArg, int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00552a70
 undefined4 RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
+{
+  return 0;
+}
+
+// ghidra_name TShip::SerializeTaskForceToBinaryStream
+// ghidra_proto void __thiscall SerializeTaskForceToBinaryStream(void)
+// FUNCTION: IMPERIALISM 0x00552b90
+undefined4 SerializeTaskForceToBinaryStream(void)
+{
+  return 0;
+}
+
+// ghidra_name TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers
+// ghidra_proto void __thiscall DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(void)
+// FUNCTION: IMPERIALISM 0x00552d10
+undefined4 DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(void)
+{
+  return 0;
+}
+
+// ghidra_name SetTaskForceOwnerPointer
+// ghidra_proto void __cdecl SetTaskForceOwnerPointer(void)
+// FUNCTION: IMPERIALISM 0x00552f60
+undefined4 SetTaskForceOwnerPointer(void)
+{
+  return 0;
+}
+
+// ghidra_name SetMapOrderType9AndQueue
+// ghidra_proto void __fastcall SetMapOrderType9AndQueue(int * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00552f80
+undefined4 SetMapOrderType9AndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name SetMapOrderType3Or4AndQueue
+// ghidra_proto void __thiscall SetMapOrderType3Or4AndQueue(char fUseType4)
+// FUNCTION: IMPERIALISM 0x005530f0
+undefined4 SetMapOrderType3Or4AndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name PromoteMapOrderChainAndQueue
+// ghidra_proto void __cdecl PromoteMapOrderChainAndQueue(int arg1)
+// FUNCTION: IMPERIALISM 0x005533f0
+undefined4 PromoteMapOrderChainAndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name TControlSeaZoneMission::SetMapOrderType6AndQueue
+// ghidra_proto void __thiscall SetMapOrderType6AndQueue(int nOrderTarget)
+// FUNCTION: IMPERIALISM 0x005536c0
+undefined4 SetMapOrderType6AndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name SetMapOrderType5AndQueue
+// ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
+// FUNCTION: IMPERIALISM 0x00553840
+undefined4 SetMapOrderType5AndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshTaskForceSelectionFlagsForCurrentNationOrders
+// ghidra_proto void __cdecl RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
+// FUNCTION: IMPERIALISM 0x005539c0
+undefined4 RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
+{
+  return 0;
+}
+
+// ghidra_name ApplyTaskForceSelectionModeForCurrentNationOrders
+// ghidra_proto void __cdecl ApplyTaskForceSelectionModeForCurrentNationOrders(void)
+// FUNCTION: IMPERIALISM 0x00553a50
+undefined4 ApplyTaskForceSelectionModeForCurrentNationOrders(void)
+{
+  return 0;
+}
+
+// ghidra_name HasNoMapOrderEntryChildrenQueued
+// ghidra_proto void __cdecl HasNoMapOrderEntryChildrenQueued(void)
+// FUNCTION: IMPERIALISM 0x00553b10
+undefined4 HasNoMapOrderEntryChildrenQueued(void)
 {
   return 0;
 }

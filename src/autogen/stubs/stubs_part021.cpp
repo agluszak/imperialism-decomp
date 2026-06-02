@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_RtlUnwind_At005e7470
-// ghidra_proto void __cdecl WrapperFor_RtlUnwind_At005e7470(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7470
-undefined4 WrapperFor_RtlUnwind_At005e7470(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardStructuredExceptionDispatchThroughFrameInfo
-// ghidra_proto int __cdecl ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-// FUNCTION: IMPERIALISM 0x005e74d0
-undefined4 ForwardStructuredExceptionDispatchThroughFrameInfo(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CallSettingFrame_12_At005e7530
-// ghidra_proto int __cdecl WrapperFor_CallSettingFrame_12_At005e7530(void)
-// FUNCTION: IMPERIALISM 0x005e7530
-undefined4 WrapperFor_CallSettingFrame_12_At005e7530(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchStructuredExceptionThroughFrameStateContext
-// ghidra_proto void __cdecl DispatchStructuredExceptionThroughFrameStateContext(void)
-// FUNCTION: IMPERIALISM 0x005e7590
-undefined4 DispatchStructuredExceptionThroughFrameStateContext(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchExceptionThroughCrtThreadHandlerFrame
-// ghidra_proto int __cdecl DispatchExceptionThroughCrtThreadHandlerFrame(void)
-// FUNCTION: IMPERIALISM 0x005e75c0
-undefined4 DispatchExceptionThroughCrtThreadHandlerFrame(void)
-{
-  return 0;
-}
-
-// ghidra_name ExecuteCrtHandlerWithOptionalRtlUnwind
-// ghidra_proto int __cdecl ExecuteCrtHandlerWithOptionalRtlUnwind(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7690
-undefined4 ExecuteCrtHandlerWithOptionalRtlUnwind(void)
-{
-  return 0;
-}
-
-// ghidra_name FindFrameRecordRangeByPcAndDepth
-// ghidra_proto int __cdecl FindFrameRecordRangeByPcAndDepth(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x005e7720
-undefined4 FindFrameRecordRangeByPcAndDepth(void)
-{
-  return 0;
-}
-
-// ghidra_name global_unwind2
-// ghidra_proto void __cdecl global_unwind2(void)
-// FUNCTION: IMPERIALISM 0x005e77a0
-undefined4 global_unwind2(void)
-{
-  return 0;
-}
-
-// ghidra_name local_unwind2
-// ghidra_proto void __cdecl local_unwind2(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e77e2
-undefined4 local_unwind2(void)
-{
-  return 0;
-}
-
-// ghidra_name abnormal_termination
-// ghidra_proto int __cdecl abnormal_termination(void)
-// FUNCTION: IMPERIALISM 0x005e784a
-undefined4 abnormal_termination(void)
-{
-  return 0;
-}
-
-// ghidra_name NLG_Notify1
-// ghidra_proto void __fastcall NLG_Notify1(void)
-// FUNCTION: IMPERIALISM 0x005e786d
-undefined4 NLG_Notify1(void)
-{
-  return 0;
-}
-
 // ghidra_name CaptureExceptionContextToGlobalSlots
 // ghidra_proto void __cdecl CaptureExceptionContextToGlobalSlots(void)
 // FUNCTION: IMPERIALISM 0x005e7876
@@ -3999,6 +3911,94 @@ undefined4 CreateObject_606ff2(void)
 // ghidra_proto void __thiscall TMacViewMgr_Slot39_Target(void)
 // FUNCTION: IMPERIALISM 0x00607090
 undefined4 TMacViewMgr_Slot39_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name GetDlgItem
+// ghidra_proto void __thiscall GetDlgItem(void)
+// FUNCTION: IMPERIALISM 0x00607111
+undefined4 GetDlgItem(void)
+{
+  return 0;
+}
+
+// ghidra_name GetDlgItem_60713b
+// ghidra_proto HWND __stdcall GetDlgItem_60713b(HWND hDlg, int nIDDlgItem)
+// FUNCTION: IMPERIALISM 0x0060713b
+undefined4 GetDlgItem_60713b(void)
+{
+  return 0;
+}
+
+// ghidra_name GetDlgItemTextOrDelegateHandler
+// ghidra_proto void __thiscall GetDlgItemTextOrDelegateHandler(int controlId, void * pBuffer, int maxChars)
+// FUNCTION: IMPERIALISM 0x0060719b
+undefined4 GetDlgItemTextOrDelegateHandler(void)
+{
+  return 0;
+}
+
+// ghidra_name SendDlgItemMessageOrDelegateHandler
+// ghidra_proto void __thiscall SendDlgItemMessageOrDelegateHandler(int controlId, uint msg, uint wParam, void * lParam)
+// FUNCTION: IMPERIALISM 0x006071d0
+undefined4 SendDlgItemMessageOrDelegateHandler(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5
+// ghidra_proto void __thiscall WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5(void)
+// FUNCTION: IMPERIALISM 0x006072e5
+undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5(void)
+{
+  return 0;
+}
+
+// ghidra_name GetStyle
+// ghidra_proto uint __cdecl GetStyle(void)
+// FUNCTION: IMPERIALISM 0x00607318
+undefined4 GetStyle(void)
+{
+  return 0;
+}
+
+// ghidra_name GetExStyle
+// ghidra_proto uint __cdecl GetExStyle(void)
+// FUNCTION: IMPERIALISM 0x00607332
+undefined4 GetExStyle(void)
+{
+  return 0;
+}
+
+// ghidra_name ModifyStyle
+// ghidra_proto void __thiscall ModifyStyle(void)
+// FUNCTION: IMPERIALISM 0x0060734c
+undefined4 ModifyStyle(void)
+{
+  return 0;
+}
+
+// ghidra_name ModifyStyleEx
+// ghidra_proto void __thiscall ModifyStyleEx(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00607380
+undefined4 ModifyStyleEx(void)
+{
+  return 0;
+}
+
+// ghidra_name SetWindowTextOrDelegateToOwner
+// ghidra_proto void __cdecl SetWindowTextOrDelegateToOwner(void)
+// FUNCTION: IMPERIALISM 0x006073b4
+undefined4 SetWindowTextOrDelegateToOwner(void)
+{
+  return 0;
+}
+
+// ghidra_name MoveWindow
+// ghidra_proto void __thiscall MoveWindow(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x00607469
+undefined4 MoveWindow(void)
 {
   return 0;
 }

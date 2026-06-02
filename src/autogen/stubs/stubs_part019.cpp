@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name EvaluateTacticalTileScore_InverseDistanceField
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_InverseDistanceField(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059dba0
-undefined4 EvaluateTacticalTileScore_InverseDistanceField(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTacticalTileScore_ArtilleryClassStandOffDistance
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_ArtilleryClassStandOffDistance(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059dbe0
-undefined4 EvaluateTacticalTileScore_ArtilleryClassStandOffDistance(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTacticalTileScore_RightwardOpenColumnBias
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_RightwardOpenColumnBias(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059dcd0
-undefined4 EvaluateTacticalTileScore_RightwardOpenColumnBias(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059dd40
-undefined4 EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTacticalTileScore_ClosestReachableEnemyDistance
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_ClosestReachableEnemyDistance(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059de30
-undefined4 EvaluateTacticalTileScore_ClosestReachableEnemyDistance(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059dfe0
-undefined4 EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTacticalTileScore_InsideBattlefrontWidth
-// ghidra_proto int __cdecl EvaluateTacticalTileScore_InsideBattlefrontWidth(int tacticalContext, int tileIndex)
-// FUNCTION: IMPERIALISM 0x0059e0d0
-undefined4 EvaluateTacticalTileScore_InsideBattlefrontWidth(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectBestTacticalTargetTileByActionHeuristics
-// ghidra_proto int __cdecl SelectBestTacticalTargetTileByActionHeuristics(void)
-// FUNCTION: IMPERIALISM 0x0059e110
-undefined4 SelectBestTacticalTargetTileByActionHeuristics(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket
-// ghidra_proto void __cdecl UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket(void)
-// FUNCTION: IMPERIALISM 0x0059e3e0
-undefined4 UpdateTacticalAutoAdvanceStateAndMaybeQueuePacket(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit
-// ghidra_proto void __thiscall RunTacticalAutoTurnControllerForActiveUnit(void)
-// FUNCTION: IMPERIALISM 0x0059e4f0
-undefined4 RunTacticalAutoTurnControllerForActiveUnit(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTacticalActionClassAndPositionFlags
-// ghidra_proto uint __thiscall BuildTacticalActionClassAndPositionFlags(void)
-// FUNCTION: IMPERIALISM 0x0059e8a0
-undefined4 BuildTacticalActionClassAndPositionFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059e9c0
 // ghidra_proto int __cdecl IterateLinkedListCursorEntries_0059e9c0(void)
 // FUNCTION: IMPERIALISM 0x0059e9c0
@@ -3999,6 +3911,94 @@ undefined4 DestructTOfferDeskPictureAndMaybeFree(void)
 // ghidra_proto void __thiscall ConfigureNationStateResponseCommandTagsAndTimers(void)
 // FUNCTION: IMPERIALISM 0x005be600
 undefined4 ConfigureNationStateResponseCommandTagsAndTimers(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::InitializeTradeScreenControlsLabelsAndNationContext
+// ghidra_proto void __thiscall InitializeTradeScreenControlsLabelsAndNationContext(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x005bea00
+undefined4 InitializeTradeScreenControlsLabelsAndNationContext(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::HandleTradeCommandTagsAndSelectionUpdates
+// ghidra_proto void __thiscall HandleTradeCommandTagsAndSelectionUpdates(int commandId, PanelEventPayload * pCommandRecord, int forwardArg)
+// FUNCTION: IMPERIALISM 0x005bf740
+undefined4 HandleTradeCommandTagsAndSelectionUpdates(void)
+{
+  return 0;
+}
+
+// ghidra_name TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
+// ghidra_proto void __thiscall HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(int eventRecord)
+// FUNCTION: IMPERIALISM 0x005bf860
+undefined4 HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshSelectedNationOrderCompatibilityInfo
+// ghidra_proto void __cdecl RefreshSelectedNationOrderCompatibilityInfo(void)
+// FUNCTION: IMPERIALISM 0x005bf930
+undefined4 RefreshSelectedNationOrderCompatibilityInfo(void)
+{
+  return 0;
+}
+
+// ghidra_name TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
+// ghidra_proto void __thiscall CreateNextTradeCommandAndFormatPrompt(void)
+// FUNCTION: IMPERIALISM 0x005c04f0
+undefined4 CreateNextTradeCommandAndFormatPrompt(void)
+{
+  return 0;
+}
+
+// ghidra_name TOfferDeskPicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930
+// ghidra_proto void __thiscall WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x005c0930
+undefined4 WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930(void)
+{
+  return 0;
+}
+
+// ghidra_name TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
+// ghidra_proto void __thiscall UpdateTradeSelectionStateAndRefreshUiIfChanged(char selectionMode)
+// FUNCTION: IMPERIALISM 0x005c09d0
+undefined4 UpdateTradeSelectionStateAndRefreshUiIfChanged(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealLine::CreateTDealLineInstance
+// ghidra_proto void * __cdecl CreateTDealLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005c0cf0
+undefined4 CreateTDealLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealLine::GetTDealLineClassNamePointer
+// ghidra_proto void * __cdecl GetTDealLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005c0d60
+undefined4 GetTDealLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealLine::ConstructTDealLineBaseState
+// ghidra_proto void * __thiscall ConstructTDealLineBaseState(void)
+// FUNCTION: IMPERIALISM 0x005c0d80
+undefined4 ConstructTDealLineBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TDealLine::DestructTDealLineAndMaybeFree
+// ghidra_proto void * __thiscall DestructTDealLineAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005c0db0
+undefined4 DestructTDealLineAndMaybeFree(void)
 {
   return 0;
 }

@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AssignStringSharedRefAndReturnThis
-// ghidra_proto void __cdecl AssignStringSharedRefAndReturnThis(void)
-// FUNCTION: IMPERIALISM 0x0049eb00
-undefined4 AssignStringSharedRefAndReturnThis(void)
-{
-  return 0;
-}
-
-// ghidra_name SaveGlobalSystemsToStream
-// ghidra_proto void __cdecl SaveGlobalSystemsToStream(TAmbitFileBasedDocument * pThis)
-// FUNCTION: IMPERIALISM 0x0049eb30
-undefined4 SaveGlobalSystemsToStream(void)
-{
-  return 0;
-}
-
-// ghidra_name AssertUAmbitLine1335
-// ghidra_proto void __stdcall AssertUAmbitLine1335(void)
-// FUNCTION: IMPERIALISM 0x0049ee70
-undefined4 AssertUAmbitLine1335(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At0049efd0
-// ghidra_proto void __cdecl WrapperFor_ftol_At0049efd0(void)
-// FUNCTION: IMPERIALISM 0x0049efd0
-undefined4 WrapperFor_ftol_At0049efd0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049f050
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049f050(void)
-// FUNCTION: IMPERIALISM 0x0049f050
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049f050(void)
-{
-  return 0;
-}
-
-// ghidra_name TAnimation::CreateTAnimationInstance
-// ghidra_proto void * __thiscall CreateTAnimationInstance(void)
-// FUNCTION: IMPERIALISM 0x0049f080
-undefined4 CreateTAnimationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TAnimation::GetTAnimationClassNamePointer
-// ghidra_proto void * __cdecl GetTAnimationClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0049f0a0
-undefined4 GetTAnimationClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAnimation::ConstructTAnimationBaseState
-// ghidra_proto void __thiscall ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// FUNCTION: IMPERIALISM 0x0049f0c0
-undefined4 ConstructTAnimationBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At0049f140
-// ghidra_proto void __stdcall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0049f140
-undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderBattleReportInsetWithPaletteShift
-// ghidra_proto void __thiscall RenderBattleReportInsetWithPaletteShift(int arg1)
-// FUNCTION: IMPERIALISM 0x0049f190
-undefined4 RenderBattleReportInsetWithPaletteShift(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle
-// ghidra_proto void __thiscall RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
-// FUNCTION: IMPERIALISM 0x0049f2d0
-undefined4 RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049f480
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0049f480(void)
 // FUNCTION: IMPERIALISM 0x0049f480
@@ -3999,6 +3911,94 @@ undefined4 InsertScoredTileCandidateWithRandomTieBreak(void)
 // ghidra_proto void * __cdecl Helper_Uses_thunk_ConstructTMinister_At004be0d0(void)
 // FUNCTION: IMPERIALISM 0x004be0d0
 undefined4 Helper_Uses_thunk_ConstructTMinister_At004be0d0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins02_004be150
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004be150(void)
+// FUNCTION: IMPERIALISM 0x004be150
+undefined4 OrphanLeaf_NoCall_Ins02_004be150(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::CreateTInteriorMinisterInstance
+// ghidra_proto ushort __thiscall CreateTInteriorMinisterInstance(ushort arg1)
+// FUNCTION: IMPERIALISM 0x004be170
+undefined4 CreateTInteriorMinisterInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004be190
+// ghidra_proto void __cdecl OrphanRetStub_004be190(void)
+// FUNCTION: IMPERIALISM 0x004be190
+undefined4 OrphanRetStub_004be190(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::GetTInteriorMinisterClassNamePointer
+// ghidra_proto void * __cdecl GetTInteriorMinisterClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x004be1b0
+undefined4 GetTInteriorMinisterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::ConstructTInteriorMinisterBaseState
+// ghidra_proto void * __thiscall ConstructTInteriorMinisterBaseState(void)
+// FUNCTION: IMPERIALISM 0x004be1d0
+undefined4 ConstructTInteriorMinisterBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::DestructTInteriorMinisterAndMaybeFree
+// ghidra_proto void * __thiscall DestructTInteriorMinisterAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x004be200
+undefined4 DestructTInteriorMinisterAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTInteriorMinisterAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTInteriorMinisterAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x004be230
+undefined4 DestructTInteriorMinisterAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
+// ghidra_proto void __thiscall WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(void * pSerializedStream)
+// FUNCTION: IMPERIALISM 0x004be290
+undefined4 WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(void)
+{
+  return 0;
+}
+
+// ghidra_name TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
+// ghidra_proto void __thiscall WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void * pSerializedStream)
+// FUNCTION: IMPERIALISM 0x004be320
+undefined4 WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins08_004be3c0
+// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins08_004be3c0(void)
+// FUNCTION: IMPERIALISM 0x004be3c0
+undefined4 OrphanLeaf_NoCall_Ins08_004be3c0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004be3f0
+// ghidra_proto void __cdecl OrphanRetStub_004be3f0(void)
+// FUNCTION: IMPERIALISM 0x004be3f0
+undefined4 OrphanRetStub_004be3f0(void)
 {
   return 0;
 }

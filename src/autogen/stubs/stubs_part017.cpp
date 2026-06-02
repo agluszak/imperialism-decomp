@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TShip::SerializeTaskForceToBinaryStream
-// ghidra_proto void __thiscall SerializeTaskForceToBinaryStream(void)
-// FUNCTION: IMPERIALISM 0x00552b90
-undefined4 SerializeTaskForceToBinaryStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers
-// ghidra_proto void __thiscall DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(void)
-// FUNCTION: IMPERIALISM 0x00552d10
-undefined4 DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(void)
-{
-  return 0;
-}
-
-// ghidra_name SetTaskForceOwnerPointer
-// ghidra_proto void __cdecl SetTaskForceOwnerPointer(void)
-// FUNCTION: IMPERIALISM 0x00552f60
-undefined4 SetTaskForceOwnerPointer(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMapOrderType9AndQueue
-// ghidra_proto void __fastcall SetMapOrderType9AndQueue(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00552f80
-undefined4 SetMapOrderType9AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMapOrderType3Or4AndQueue
-// ghidra_proto void __thiscall SetMapOrderType3Or4AndQueue(char fUseType4)
-// FUNCTION: IMPERIALISM 0x005530f0
-undefined4 SetMapOrderType3Or4AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name PromoteMapOrderChainAndQueue
-// ghidra_proto void __cdecl PromoteMapOrderChainAndQueue(int arg1)
-// FUNCTION: IMPERIALISM 0x005533f0
-undefined4 PromoteMapOrderChainAndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::SetMapOrderType6AndQueue
-// ghidra_proto void __thiscall SetMapOrderType6AndQueue(int nOrderTarget)
-// FUNCTION: IMPERIALISM 0x005536c0
-undefined4 SetMapOrderType6AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMapOrderType5AndQueue
-// ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
-// FUNCTION: IMPERIALISM 0x00553840
-undefined4 SetMapOrderType5AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshTaskForceSelectionFlagsForCurrentNationOrders
-// ghidra_proto void __cdecl RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
-// FUNCTION: IMPERIALISM 0x005539c0
-undefined4 RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTaskForceSelectionModeForCurrentNationOrders
-// ghidra_proto void __cdecl ApplyTaskForceSelectionModeForCurrentNationOrders(void)
-// FUNCTION: IMPERIALISM 0x00553a50
-undefined4 ApplyTaskForceSelectionModeForCurrentNationOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name HasNoMapOrderEntryChildrenQueued
-// ghidra_proto void __cdecl HasNoMapOrderEntryChildrenQueued(void)
-// FUNCTION: IMPERIALISM 0x00553b10
-undefined4 HasNoMapOrderEntryChildrenQueued(void)
-{
-  return 0;
-}
-
 // ghidra_name HasActiveMapOrderEntryChildren
 // ghidra_proto void __cdecl HasActiveMapOrderEntryChildren(void)
 // FUNCTION: IMPERIALISM 0x00553b50
@@ -3999,6 +3911,94 @@ undefined4 ConstructTMegaPictureBaseState(void)
 // ghidra_proto void * __thiscall DestructTMegaPictureAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005731d0
 undefined4 DestructTMegaPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name RenderControlRectWithPaletteAndOptionalBlit
+// ghidra_proto void __fastcall RenderControlRectWithPaletteAndOptionalBlit(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00573270
+undefined4 RenderControlRectWithPaletteAndOptionalBlit(void)
+{
+  return 0;
+}
+
+// ghidra_name LoadPictureResourceRegionAndRefresh
+// ghidra_proto void __cdecl LoadPictureResourceRegionAndRefresh(void)
+// FUNCTION: IMPERIALISM 0x00573430
+undefined4 LoadPictureResourceRegionAndRefresh(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650
+// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650(void)
+// FUNCTION: IMPERIALISM 0x00573650
+undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573650(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I08_00573690
+// ghidra_proto void __cdecl OrphanCallChain_C1_I08_00573690(void)
+// FUNCTION: IMPERIALISM 0x00573690
+undefined4 OrphanCallChain_C1_I08_00573690(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C1_I14_005736c0
+// ghidra_proto void __cdecl OrphanCallChain_C1_I14_005736c0(void)
+// FUNCTION: IMPERIALISM 0x005736c0
+undefined4 OrphanCallChain_C1_I14_005736c0(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffLimitsPicture::CreateTOffLimitsPictureInstance
+// ghidra_proto void * __cdecl CreateTOffLimitsPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00573710
+undefined4 CreateTOffLimitsPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffLimitsPicture::GetTOffLimitsPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTOffLimitsPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005737b0
+undefined4 GetTOffLimitsPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
+// ghidra_proto void * __thiscall ConstructTOffLimitsPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x005737d0
+undefined4 ConstructTOffLimitsPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TOffLimitsPicture::DestructTOffLimitsPictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTOffLimitsPictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00573800
+undefined4 DestructTOffLimitsPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources
+// ghidra_proto void __thiscall InitializeOffLimitsPictureCachedBrushResources(void)
+// FUNCTION: IMPERIALISM 0x00573850
+undefined4 InitializeOffLimitsPictureCachedBrushResources(void)
+{
+  return 0;
+}
+
+// ghidra_name RenderHintOverlayWithCtrlModifierClipRegion
+// ghidra_proto void __cdecl RenderHintOverlayWithCtrlModifierClipRegion(void)
+// FUNCTION: IMPERIALISM 0x00573890
+undefined4 RenderHintOverlayWithCtrlModifierClipRegion(void)
 {
   return 0;
 }
