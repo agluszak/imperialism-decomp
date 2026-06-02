@@ -31,3 +31,9 @@ void TControl::ConstructUiCommandTagResourceEntryBase() {
   *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kAddrVtblTControl);
   commandTagDefaultParam2 = *reinterpret_cast<unsigned short*>(kAddrUiResourceEntryDefaultParam2);
 }
+
+undefined4 thunk_InvalidateCityDialogRectRegion(void);
+
+void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
+  reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(rect, flag);
+}

@@ -6,6 +6,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 extern "C" char g_vtblTSortedList;
 
+// VTABLE: IMPERIALISM 0x00648ee0
 struct TSortedList : public TPtrList {
   TSortedList() {
     vftable = reinterpret_cast<void*>(&g_vtblTSortedList);

@@ -2,6 +2,27 @@
 
 ## 2026-06-02
 
+### TSortedByRelationshipList and TSortByPriceList alignment
+
+1. **TSortedByRelationshipList alignment**:
+   - Inlined `TSortedByRelationshipList` constructor in [TSortedByRelationshipList.h](file:///home/agluszak/code/decomp/imperialism-decomp/include/game/TSortedByRelationshipList.h).
+   - Promoted `CreateTSortedByRelationshipListInstance` (`0x004ee4b0`) to **100.00%** match.
+   - Refactored `ConstructObArrayWithVtable654D38` (`0x004ee540`) to use the C++ qualified constructor call `this->TIndexAndRankList::TIndexAndRankList()` to avoid the placement `new` null-check, achieving **100.00%** match.
+   - Aligned `DestructTSortedByRelationshipListAndMaybeFree` (`0x004ee570`) to **90.91%** match (with only incremental link thunk call-pairing residual remaining).
+2. **TSortByPriceList alignment**:
+   - Created [TSortByPriceList.h](file:///home/agluszak/code/decomp/imperialism-decomp/include/game/TSortByPriceList.h) and [TSortByPriceList.cpp](file:///home/agluszak/code/decomp/imperialism-decomp/src/game/TSortByPriceList.cpp) and integrated into the CMake build.
+   - Added class vtable `0x00659ef0` (registered in [symbols.csv](file:///home/agluszak/code/decomp/imperialism-decomp/config/symbols.csv)) and `// VTABLE: IMPERIALISM 0x00659ef0` annotation.
+   - Mapped and fully aligned all 6 functions:
+     - `AllocateAndConstructTSortByPriceList` (`0x00534680`) to **100.00%** match.
+     - `GetTSortByPriceListClassNamePointer` (`0x005346f0`) to **100.00%** match.
+     - `ConstructTSortByPriceList` (`0x00534710`) to **100.00%** match (using the qualified constructor call).
+     - `DeletingDestructTSortByPriceList` (`0x00534740`) to **90.91%** match (call-pairing thunk residual).
+     - `DestructTSortByPriceList` (`0x00534770`) to **100.00%** match.
+     - `CompareSortByPriceListEntriesByField2Ascending` (`0x005347b0`) to **100.00%** match (using `__stdcall` calling convention and inverted comparison condition to leverage compiler optimization pattern).
+3. **VTABLE annotations audit**:
+   - Added missing `// VTABLE:` annotations for `TSortedList` (`0x00648ee0`), `TSortedPtrList` (`0x00649068`), and `RefCountedObjectBase` (`0x006485c0`) in their respective headers to satisfy PDB metadata annotations.
+4. **Outcome**: Cleanly compiled with zero regressions, canaries verified, aligned functions count improved to 138 (+8 delta).
+
 ### Foundational C++ class model cleanup: MFC CPtrArray/CPtrList split and inheritance recovery
 
 1. Renamed MFC-like lowercase files:

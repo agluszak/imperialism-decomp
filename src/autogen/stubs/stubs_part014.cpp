@@ -1059,38 +1059,6 @@ undefined4 WrapperFor_ftol_At004ee480(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::CreateTSortedByRelationshipListInstance
-// ghidra_proto void * __cdecl CreateTSortedByRelationshipListInstance(void)
-// FUNCTION: IMPERIALISM 0x004ee4b0
-undefined4 CreateTSortedByRelationshipListInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer
-// ghidra_proto void * __cdecl GetTSortedByRelationshipListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004ee520
-undefined4 GetTSortedByRelationshipListClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::ConstructObArrayWithVtable654D38
-// ghidra_proto void __thiscall ConstructObArrayWithVtable654D38(void)
-// FUNCTION: IMPERIALISM 0x004ee540
-undefined4 ConstructObArrayWithVtable654D38(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree
-// ghidra_proto void * __thiscall DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004ee570
-undefined4 DestructTSortedByRelationshipListAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructCObArray
 // ghidra_proto void __cdecl thunk_DestructCObArray(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x004ee5a0

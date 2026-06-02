@@ -13233,6 +13233,7 @@ address|name|size|type|prototype
 6444b4|g_vslotTMapKey_Slot01AC_InvokeControlAction||global|
 6444d8|g_vslotTMapKey_Slot01D0_NotifyControlStateChange||global|
 6444dc|g_vslotTMapKey_Slot01D4_NotifyControlSelectionChange||global|
+644778|g_vtblTTextList||global|
 644780|g_vtblCandidate_00644780_len30||global|
 644978|g_vtblCandidate_00644978_len30||global|
 644ba8|g_vtblCandidate_00644ba8_len30||global|
@@ -13335,10 +13336,7 @@ address|name|size|type|prototype
 648f0c|g_vslotTBehavior_Slot01AC_InvokeControlAction||global|
 648f30|g_vslotTBehavior_Slot01D0_NotifyControlStateChange||global|
 648f34|g_vslotTBehavior_Slot01D4_NotifyControlSelectionChange||global|
-648f78|g_vtblTArmyBattle||global|
-648f78|g_vtblTArmyMission||global|
-648f78|g_vtblTArmyPlayer||global|
-648f78|g_vslotTDialogBehavior_Slot01D0_NotifyControlStateChange||global|
+648f78|g_vtblTList||global|
 648f7c|g_vslotTDialogBehavior_Slot01D4_NotifyControlSelectionChange||global|
 649068|g_vtblTSortedPtrList||global|
 6490c8|g_pClassDescTStream||global|
@@ -14438,6 +14436,7 @@ address|name|size|type|prototype
 659b28|g_pClassDescTArmsForeignMinister||global|
 659b40|g_pClassDescTSortByPriceList||global|
 659b58|g_pClassDescTIndexAndRankList||global|
+659ef0|g_vtblTSortByPriceList||global|
 659b88|g_Allocate_Diplomacy_Aid_Value_00659B88||global|
 659b94|g_Queue_Turn_Event_Value_00659B94||global|
 65a468|g_Compare_Mission_Order_LookupTable_0065A468||global|

@@ -67,8 +67,8 @@ Maintenance:
 
 ## Latest Checkpoint
 
-1. Aligned functions: `130`
-2. Average similarity: `9.52%`
+1. Aligned functions: `138`
+2. Average similarity: `9.60%`
 3. New matched primitive: `SetQuickDrawFillColor(int)` (`0x00495000`) at **100%**.
 4. New architecture slice: `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (`0x00596100`) promoted from stub to **24.44%**, with `QuickDrawSurfaceGuard` and generated map-overlay vcall facades.
 5. New class slice: `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip` (`0x004a05c0`) promoted from stub to **29.85%** and `TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw` (`0x004a0770`) promoted from stub to **71.19%**, with provisional scoped-context and render/update vcall facades.
@@ -105,7 +105,9 @@ Maintenance:
 
 25. List ctor/factory matching pass (EH-`new` + RefCountedObjectBase): closed the recurring MFC ctor and `new T()` factory shapes. Constructor return-`this` + vtable-as-data-symbol took `CPtrArray` (`0x00601baa`) and `CPtrList` (`0x00601f1d`) to **100%** (also corrected the embedded list vtable to the real `0x672eec`). The inline-`operator new`/`operator delete`/ctor + `return new T()` recipe reproduces the MSVC EH cleanup frame (`push -1; push __ehhandler`) that was the project-wide ~52% factory ceiling: `0x00488400` → **94.12%** (residual one C++ vptr write from `TIndexAndRankList` virtuals, kept so slot-dispatch sibling `0x00488110` stays 100%). Modeling `RefCountedObjectBase` as a real base of `TPtrList` (inline vtable-installing ctor + non-trivial dtor, matching `InitializeRefCountedObjectBaseVtable` `0x00484970`) added the post-base EH-state transition and took `TSortedList::CreateTSortedListInstance` (`0x00487a90`) to **100%**. See INSTRUCTIONS notes 61-64.
 
-Session totals (2026-06-02): Cleaned up MFC foundational class substrate. Split `CPtrArray` and `CPtrList` from game-specific derived classes `TIndexAndRankList` and `TPtrList`, modeling correct C++ inheritance and constructors compatible with MSVC 5.0 compilation parameters. Total aligned function count increased to 130 (+1 delta).
+27. TSortedByRelationshipList and TSortByPriceList alignment: Fully matched TSortedByRelationshipList constructor-inlining and factory creation (`0x004ee4b0`) and qualified constructor-base initialization (`0x004ee540`) at **100.00%**. Integrated `TSortByPriceList` (`0x00659ef0` vtable) and aligned all 6 methods (including `AllocateAndConstruct`, `Construct`, `GetClassName`, `Destruct`, and `Compare`) at **100.00%** (or **90.91%** for thunk-routed destructors).
+
+Session totals (2026-06-02): Cleaned up MFC foundational class substrate and mapped TSortedByRelationshipList and TSortByPriceList subclasses. Total aligned function count increased to 138 (+8 delta).
 
 ## Active Constraints
 

@@ -3483,54 +3483,6 @@ undefined4 IncrementArmsCounter5EByFive(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTSortByPriceList
-// ghidra_proto void * __cdecl AllocateAndConstructTSortByPriceList(void)
-// FUNCTION: IMPERIALISM 0x00534680
-undefined4 AllocateAndConstructTSortByPriceList(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortByPriceList::GetTSortByPriceListClassNamePointer
-// ghidra_proto void * __cdecl GetTSortByPriceListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005346f0
-undefined4 GetTSortByPriceListClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortByPriceList::ConstructTSortByPriceList
-// ghidra_proto void __thiscall ConstructTSortByPriceList(void)
-// FUNCTION: IMPERIALISM 0x00534710
-undefined4 ConstructTSortByPriceList(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTSortByPriceList
-// ghidra_proto void __cdecl DeletingDestructTSortByPriceList(void)
-// FUNCTION: IMPERIALISM 0x00534740
-undefined4 DeletingDestructTSortByPriceList(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortByPriceList::DestructTSortByPriceList
-// ghidra_proto void __cdecl DestructTSortByPriceList(TIndexAndRankList * pThis)
-// FUNCTION: IMPERIALISM 0x00534770
-undefined4 DestructTSortByPriceList(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareSortByPriceListEntriesByField2Ascending
-// ghidra_proto void __cdecl CompareSortByPriceListEntriesByField2Ascending(void)
-// FUNCTION: IMPERIALISM 0x005347b0
-undefined4 CompareSortByPriceListEntriesByField2Ascending(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndConstructTIndexAndRankList
 // ghidra_proto void * __cdecl AllocateAndConstructTIndexAndRankList(void)
 // FUNCTION: IMPERIALISM 0x005347e0

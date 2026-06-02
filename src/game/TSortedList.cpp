@@ -6,7 +6,6 @@
 
 extern "C" {
 char g_pClassDescTSortedList = 0;
-char g_vtblRefCountedObjectBase = 0;
 char g_vtblTSortedList = 0;
 }
 

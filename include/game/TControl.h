@@ -18,4 +18,5 @@ public:
 
   void thunk_ConstructUiCommandTagResourceEntryBase();
   void ConstructUiCommandTagResourceEntryBase();
+  void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
 };

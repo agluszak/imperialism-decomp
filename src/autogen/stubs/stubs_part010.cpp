@@ -2451,22 +2451,6 @@ undefined4 FindOneBasedNodeIndexByValueInLinkedList(void)
   return 0;
 }
 
-// ghidra_name TList::CreateTListInstance
-// ghidra_proto void * __cdecl CreateTListInstance(void)
-// FUNCTION: IMPERIALISM 0x00487e50
-undefined4 CreateTListInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TList::GetTListClassNamePointer
-// ghidra_proto void * __cdecl GetTListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00487ed0
-undefined4 GetTListClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeLinkedListCursorFromOwnerHead
 // ghidra_proto void __cdecl InitializeLinkedListCursorFromOwnerHead(void)
 // FUNCTION: IMPERIALISM 0x00487ef0

@@ -56,9 +56,14 @@ add_executable(Imperialism
     src/game/TCapacityOrder.cpp
     src/game/TGreatPower.cpp
     src/game/TIndexAndRankList.cpp
+    src/game/RefCountedObjectBase.cpp
     src/game/TPtrList.cpp
+    src/game/TList.cpp
+    src/game/TTextList.cpp
     src/game/TSortedList.cpp
     src/game/TSortedPtrList.cpp
+    src/game/TSortedByRelationshipList.cpp
+    src/game/TSortByPriceList.cpp
     src/game/stream.cpp
     src/game/CDocument.cpp
     src/game/CArchive.cpp

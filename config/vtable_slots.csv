@@ -130,3 +130,8 @@ src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_SwitchTabSlot1A4|void
 src/game/cdocument.cpp|VCall_CDocument_NotifyViewListChangedSlot70|void|0x70 / 4||medium|CDocument slot70 view-list-changed notify|index|thiscall|none||provisional|CDocument
 src/game/carchive.cpp|VCall_CFile_WriteBytesSlot40|void|0x40 / 4|void*,int|medium|CFile write bytes to underlying file|index|thiscall|none||provisional|CFile
 src/game/carchive.cpp|VCall_CFile_GetBufferPtrSlot58|void|0x58 / 4|int,int,void*,void*|medium|CFile get buffer pointer/refill|index|thiscall|none||provisional|CFile
+src/game/TTextList.cpp|VCall_TextList_OnSelectionChange|void|0xe4 / 4||medium|text list selection change callback|index|thiscall|zero||provisional|TTextList
+src/game/TTextList.cpp|VCall_TextList_GetRect|void|0x12c / 4|void*|medium|text list get bounding rect|index|thiscall|zero||provisional|TTextList
+src/game/TTextList.cpp|VCall_TextList_OnSelectionConfirmed|void|0x13c / 4||medium|text list double click/selection confirm callback|index|thiscall|zero||provisional|TTextList
+src/game/TTextList.cpp|VCall_Parent_DispatchEvent|void|0x40 / 4|int,void*,int|medium|parent event dispatcher|index|thiscall|zero||provisional|TView
+

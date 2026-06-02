@@ -641,6 +641,34 @@ static __inline void VCall_FocusAnimationView_ApplyRectSlot110(void* object, int
   fn(object, arg0);
 }
 
+// parent event dispatcher; class=TView; status=provisional
+static __inline void VCall_Parent_DispatchEvent(void* object, int arg0, void* arg1, int arg2) {
+  typedef void (__fastcall * Fn)(void*, int, int, void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
+  fn(object, 0, arg0, arg1, arg2);
+}
+
+// text list get bounding rect; class=TTextList; status=provisional
+static __inline void VCall_TextList_GetRect(void* object, void* arg0) {
+  typedef void (__fastcall * Fn)(void*, int, void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x12c / 4)));
+  fn(object, 0, arg0);
+}
+
+// text list selection change callback; class=TTextList; status=provisional
+static __inline void VCall_TextList_OnSelectionChange(void* object) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xe4 / 4)));
+  fn(object, 0);
+}
+
+// text list double click/selection confirm callback; class=TTextList; status=provisional
+static __inline void VCall_TextList_OnSelectionConfirmed(void* object) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x13c / 4)));
+  fn(object, 0);
+}
+
 // trans-focus scoped render target slot; class=FocusAnimationRenderTarget; status=provisional
 static __inline void VCall_FocusAnimationView_RenderSlotF8(void* object) {
   typedef void (__fastcall * Fn)(void*);

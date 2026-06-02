@@ -867,38 +867,6 @@ undefined4 Helper_Uses_FreeHeapBufferIfNotNull_At0057ab30(void)
   return 0;
 }
 
-// ghidra_name TTextList::CreateTTextListInstance
-// ghidra_proto void * __cdecl CreateTTextListInstance(void)
-// FUNCTION: IMPERIALISM 0x0057ab70
-undefined4 CreateTTextListInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTextList::GetTTextListClassNamePointer
-// ghidra_proto void * __cdecl GetTTextListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0057ac30
-undefined4 GetTTextListClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTextList::ConstructTTextListBaseState
-// ghidra_proto void __thiscall ConstructTTextListBaseState(void)
-// FUNCTION: IMPERIALISM 0x0057acc0
-undefined4 ConstructTTextListBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTextList::DestructTTextListAndMaybeFree
-// ghidra_proto void __thiscall DestructTTextListAndMaybeFree(int * pScrollData)
-// FUNCTION: IMPERIALISM 0x0057af20
-undefined4 DestructTTextListAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TGameScorePicture::CreateTGameScorePictureInstance
 // ghidra_proto void * __cdecl CreateTGameScorePictureInstance(void)
 // FUNCTION: IMPERIALISM 0x0057b000

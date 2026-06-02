@@ -98,6 +98,8 @@ address|target_cpp|ownership|note
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 487a90|src/game/TSortedList.cpp|manual|marker_sync
 487b10|src/game/TSortedList.cpp|manual|marker_sync
+487e50|src/game/TList.cpp|manual|marker_sync
+487ed0|src/game/TList.cpp|manual|marker_sync
 488110|src/game/TSortedPtrList.cpp|manual|marker_sync
 488160|src/game/TSortedPtrList.cpp|manual|marker_sync
 4883e0|src/game/TSortedPtrList.cpp|manual|marker_sync
@@ -208,6 +210,10 @@ address|target_cpp|ownership|note
 4ea290|src/game/TGreatPower.cpp|manual|marker_sync
 4ea300|src/game/TGreatPower.cpp|manual|marker_sync
 4ea470|src/game/TGreatPower.cpp|manual|marker_sync
+4ee4b0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
+4ee520|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
+4ee540|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
+4ee570|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee6c0|src/game/diplomacy_state.cpp|manual|marker_sync
 4ee7a0|src/game/diplomacy_state.cpp|manual|marker_sync
 4ef540|src/game/diplomacy_state.cpp|manual|marker_sync
@@ -250,6 +256,12 @@ address|target_cpp|ownership|note
 4ffc10|src/game/TGreatPower.cpp|manual|marker_sync
 500200|src/game/noop_slots.cpp|manual|marker_sync
 500220|src/game/noop_slots.cpp|manual|marker_sync
+534680|src/game/TSortByPriceList.cpp|manual|marker_sync
+5346f0|src/game/TSortByPriceList.cpp|manual|marker_sync
+534710|src/game/TSortByPriceList.cpp|manual|marker_sync
+534740|src/game/TSortByPriceList.cpp|manual|marker_sync
+534770|src/game/TSortByPriceList.cpp|manual|marker_sync
+5347b0|src/game/TSortByPriceList.cpp|manual|marker_sync
 540ac0|src/game/TGreatPower.cpp|manual|marker_sync
 541080|src/game/TGreatPower.cpp|manual|marker_sync
 5410f0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -269,6 +281,10 @@ address|target_cpp|ownership|note
 56e370|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e640|src/game/TTwoPicSlider.cpp|manual|marker_sync
 572bb0|src/game/noop_slots.cpp|manual|marker_sync
+57ab70|src/game/TTextList.cpp|manual|marker_sync
+57ac30|src/game/TTextList.cpp|manual|marker_sync
+57acc0|src/game/TTextList.cpp|manual|marker_sync
+57af20|src/game/TTextList.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
 583bd0|src/game/trade_screen.cpp|manual|marker_sync
 585f70|src/game/trade_screen.cpp|manual|marker_sync
