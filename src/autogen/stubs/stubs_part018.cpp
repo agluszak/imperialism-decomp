@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
-// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
-// FUNCTION: IMPERIALISM 0x00573900
-undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
-// ghidra_proto void __cdecl ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
-// FUNCTION: IMPERIALISM 0x00573940
-undefined4 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::CreateTSliderPictureInstance
-// ghidra_proto void * __cdecl CreateTSliderPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00573970
-undefined4 CreateTSliderPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::GetTSliderPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTSliderPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00573a00
-undefined4 GetTSliderPictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
-// ghidra_proto void * __thiscall ConstructTSliderPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x00573a20
-undefined4 ConstructTSliderPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::DestructTSliderPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00573a50
-undefined4 DestructTSliderPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
-// FUNCTION: IMPERIALISM 0x00573aa0
-undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At00573bf0
-// ghidra_proto void __cdecl WrapperFor_ftol_At00573bf0(void)
-// FUNCTION: IMPERIALISM 0x00573bf0
-undefined4 WrapperFor_ftol_At00573bf0(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::CreateTScrollViewInstance
-// ghidra_proto void * __cdecl CreateTScrollViewInstance(void)
-// FUNCTION: IMPERIALISM 0x00573c20
-undefined4 CreateTScrollViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::GetTScrollViewClassNamePointer
-// ghidra_proto void * __cdecl GetTScrollViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00573c90
-undefined4 GetTScrollViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::ConstructTScrollViewBaseState
-// ghidra_proto void __thiscall ConstructTScrollViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00573cb0
-undefined4 ConstructTScrollViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TScrollView::DestructTScrollViewAndMaybeFree
 // ghidra_proto void __thiscall DestructTScrollViewAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x00573ce0
@@ -3999,6 +3911,94 @@ undefined4 RunTacticalAutoTurnControllerForActiveUnit(void)
 // ghidra_proto uint __thiscall BuildTacticalActionClassAndPositionFlags(void)
 // FUNCTION: IMPERIALISM 0x0059e8a0
 undefined4 BuildTacticalActionClassAndPositionFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorEntries_0059e9c0
+// ghidra_proto int __cdecl IterateLinkedListCursorEntries_0059e9c0(void)
+// FUNCTION: IMPERIALISM 0x0059e9c0
+undefined4 IterateLinkedListCursorEntries_0059e9c0(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot09
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot09(void)
+// FUNCTION: IMPERIALISM 0x0059ea60
+undefined4 TArmyTacUnit_VtblSlot09(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot05
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot05(void)
+// FUNCTION: IMPERIALISM 0x0059eb40
+undefined4 TArmyTacUnit_VtblSlot05(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
+// FUNCTION: IMPERIALISM 0x0059ebb0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::CreateTNavyPlayerInstance
+// ghidra_proto void __thiscall CreateTNavyPlayerInstance(void)
+// FUNCTION: IMPERIALISM 0x0059ebe0
+undefined4 CreateTNavyPlayerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::GetTNavyPlayerClassNamePointer
+// ghidra_proto void * __cdecl GetTNavyPlayerClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0059ec00
+undefined4 GetTNavyPlayerClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::ConstructTNavyPlayerBaseState
+// ghidra_proto uint __thiscall ConstructTNavyPlayerBaseState(void)
+// FUNCTION: IMPERIALISM 0x0059ed60
+undefined4 ConstructTNavyPlayerBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::DestructTNavyPlayerAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNavyPlayerAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0059ed80
+undefined4 DestructTNavyPlayerAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTNavyPlayerAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTNavyPlayerAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x0059edb0
+undefined4 DestructTNavyPlayerAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
+// ghidra_proto void __thiscall DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
+// FUNCTION: IMPERIALISM 0x0059edd0
+undefined4 DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60
+// ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
+// FUNCTION: IMPERIALISM 0x0059ee60
+undefined4 Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
 {
   return 0;
 }

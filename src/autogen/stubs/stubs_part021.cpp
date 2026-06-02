@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AppendPointerToGlobalVectorAsStatus
-// ghidra_proto int __cdecl AppendPointerToGlobalVectorAsStatus(void)
-// FUNCTION: IMPERIALISM 0x005e7920
-undefined4 AppendPointerToGlobalVectorAsStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareAnsiStringsWithMbcsAwareness
-// ghidra_proto int __cdecl CompareAnsiStringsWithMbcsAwareness(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7980
-undefined4 CompareAnsiStringsWithMbcsAwareness(void)
-{
-  return 0;
-}
-
-// ghidra_name SetGlobalCallback6A7FACAndReturnPrevious
-// ghidra_proto void __cdecl SetGlobalCallback6A7FACAndReturnPrevious(void)
-// FUNCTION: IMPERIALISM 0x005e7a80
-undefined4 SetGlobalCallback6A7FACAndReturnPrevious(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeGlobalAllocationFailureCallback
-// ghidra_proto int __cdecl InvokeGlobalAllocationFailureCallback(void)
-// FUNCTION: IMPERIALISM 0x005e7ac0
-undefined4 InvokeGlobalAllocationFailureCallback(void)
-{
-  return 0;
-}
-
-// ghidra_name FindFirstFileAndPopulateFileInfoRecord
-// ghidra_proto void * __cdecl FindFirstFileAndPopulateFileInfoRecord(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7ae0
-undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
-{
-  return 0;
-}
-
-// ghidra_name FindNextFileAndPopulateFileInfoRecord
-// ghidra_proto int __cdecl FindNextFileAndPopulateFileInfoRecord(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7c10
-undefined4 FindNextFileAndPopulateFileInfoRecord(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
-// ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
-// FUNCTION: IMPERIALISM 0x005e7d30
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
-{
-  return 0;
-}
-
-// ghidra_name ConvertFileTimeToLocalEpochSeconds
-// ghidra_proto int __cdecl ConvertFileTimeToLocalEpochSeconds(int arg1)
-// FUNCTION: IMPERIALISM 0x005e7d60
-undefined4 ConvertFileTimeToLocalEpochSeconds(void)
-{
-  return 0;
-}
-
-// ghidra_name aullshr
-// ghidra_proto uint __fastcall aullshr(void)
-// FUNCTION: IMPERIALISM 0x005e7df0
-undefined4 aullshr(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
-// ghidra_proto void __thiscall InvokeCallbackNTimesWithSehGuard(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x005e7e10
-undefined4 InvokeCallbackNTimesWithSehGuard(void)
-{
-  return 0;
-}
-
-// ghidra_name SehCleanup_InvokeCallbackNTimes
-// ghidra_proto void __cdecl SehCleanup_InvokeCallbackNTimes(void)
-// FUNCTION: IMPERIALISM 0x005e7e89
-undefined4 SehCleanup_InvokeCallbackNTimes(void)
-{
-  return 0;
-}
-
 // ghidra_name CallCallbackNTimes
 // ghidra_proto void __stdcall CallCallbackNTimes(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005e7ec0
@@ -3115,14 +3027,6 @@ undefined4 DestructCObArray(void)
   return 0;
 }
 
-// ghidra_name DestructCPtrListBaseState
-// ghidra_proto void __thiscall DestructCPtrListBaseState(void)
-// FUNCTION: IMPERIALISM 0x00601f7c
-undefined4 DestructCPtrListBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::CMapPtrToPtr_ctor
 // ghidra_proto void __thiscall CMapPtrToPtr_ctor(int nBlockSize)
 // FUNCTION: IMPERIALISM 0x0060339a
@@ -3999,6 +3903,102 @@ undefined4 SetWindowPos(void)
 // ghidra_proto void __thiscall ShowWindow(void)
 // FUNCTION: IMPERIALISM 0x006074f9
 undefined4 ShowWindow(void)
+{
+  return 0;
+}
+
+// ghidra_name IsWindowEnabled
+// ghidra_proto int __cdecl IsWindowEnabled(void)
+// FUNCTION: IMPERIALISM 0x00607520
+undefined4 IsWindowEnabled(void)
+{
+  return 0;
+}
+
+// ghidra_name SetFocus
+// ghidra_proto void __cdecl SetFocus(void)
+// FUNCTION: IMPERIALISM 0x00607562
+undefined4 SetFocus(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::AttachControlSite_607673
+// ghidra_proto void __thiscall AttachControlSite_607673(void)
+// FUNCTION: IMPERIALISM 0x00607673
+undefined4 AttachControlSite_607673(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommctrlDragListMessage
+// ghidra_proto void __cdecl thunk_RegisterCommctrlDragListMessage(void)
+// FUNCTION: IMPERIALISM 0x006076b8
+undefined4 thunk_RegisterCommctrlDragListMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommctrlDragListMessage
+// ghidra_proto void __cdecl RegisterCommctrlDragListMessage(void)
+// FUNCTION: IMPERIALISM 0x006076bd
+undefined4 RegisterCommctrlDragListMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_E361_At006076ce
+// ghidra_proto void __cdecl WrapperFor_E361_At006076ce(void)
+// FUNCTION: IMPERIALISM 0x006076ce
+undefined4 WrapperFor_E361_At006076ce(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// FUNCTION: IMPERIALISM 0x006076d3
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// FUNCTION: IMPERIALISM 0x006076e5
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::CWnd
+// ghidra_proto void __thiscall CWnd(void)
+// FUNCTION: IMPERIALISM 0x00607706
+undefined4 CWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_E367_At0060770c
+// ghidra_proto void __cdecl WrapperFor_E367_At0060770c(void)
+// FUNCTION: IMPERIALISM 0x0060770c
+undefined4 WrapperFor_E367_At0060770c(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// FUNCTION: IMPERIALISM 0x00607711
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// FUNCTION: IMPERIALISM 0x00607723
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 {
   return 0;
 }

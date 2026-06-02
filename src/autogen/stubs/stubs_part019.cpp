@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name IterateLinkedListCursorEntries_0059e9c0
-// ghidra_proto int __cdecl IterateLinkedListCursorEntries_0059e9c0(void)
-// FUNCTION: IMPERIALISM 0x0059e9c0
-undefined4 IterateLinkedListCursorEntries_0059e9c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot09
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot09(void)
-// FUNCTION: IMPERIALISM 0x0059ea60
-undefined4 TArmyTacUnit_VtblSlot09(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot05
-// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot05(void)
-// FUNCTION: IMPERIALISM 0x0059eb40
-undefined4 TArmyTacUnit_VtblSlot05(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
-// FUNCTION: IMPERIALISM 0x0059ebb0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyPlayer::CreateTNavyPlayerInstance
-// ghidra_proto void __thiscall CreateTNavyPlayerInstance(void)
-// FUNCTION: IMPERIALISM 0x0059ebe0
-undefined4 CreateTNavyPlayerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyPlayer::GetTNavyPlayerClassNamePointer
-// ghidra_proto void * __cdecl GetTNavyPlayerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0059ec00
-undefined4 GetTNavyPlayerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyPlayer::ConstructTNavyPlayerBaseState
-// ghidra_proto uint __thiscall ConstructTNavyPlayerBaseState(void)
-// FUNCTION: IMPERIALISM 0x0059ed60
-undefined4 ConstructTNavyPlayerBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyPlayer::DestructTNavyPlayerAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNavyPlayerAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0059ed80
-undefined4 DestructTNavyPlayerAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTNavyPlayerAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTNavyPlayerAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x0059edb0
-undefined4 DestructTNavyPlayerAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
-// ghidra_proto void __thiscall DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
-// FUNCTION: IMPERIALISM 0x0059edd0
-undefined4 DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60
-// ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
-// FUNCTION: IMPERIALISM 0x0059ee60
-undefined4 Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
-{
-  return 0;
-}
-
 // ghidra_name AddOrderNodeToHeadAndReassignNationCounters
 // ghidra_proto void __thiscall AddOrderNodeToHeadAndReassignNationCounters(void)
 // FUNCTION: IMPERIALISM 0x0059eea0
@@ -3999,6 +3911,94 @@ undefined4 ConstructTDealLineBaseState(void)
 // ghidra_proto void * __thiscall DestructTDealLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005c0db0
 undefined4 DestructTDealLineAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTDealLineAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTDealLineAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005c0de0
+undefined4 DestructTDealLineAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50
+// ghidra_proto void __cdecl BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
+// FUNCTION: IMPERIALISM 0x005c0e50
+undefined4 BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::CreateTCommodityLineInstance
+// ghidra_proto void * __cdecl CreateTCommodityLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005c1430
+undefined4 CreateTCommodityLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::GetTCommodityLineClassNamePointer
+// ghidra_proto void * __cdecl GetTCommodityLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005c14a0
+undefined4 GetTCommodityLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::ConstructTCommodityLineBaseState
+// ghidra_proto void * __thiscall ConstructTCommodityLineBaseState(void)
+// FUNCTION: IMPERIALISM 0x005c14c0
+undefined4 ConstructTCommodityLineBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::DestructTCommodityLineAndMaybeFree
+// ghidra_proto void * __thiscall DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005c14f0
+undefined4 DestructTCommodityLineAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTCommodityLineAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTCommodityLineAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005c1520
+undefined4 DestructTCommodityLineAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeCompositeTextPictureResourceEntries_005c1580
+// ghidra_proto void __cdecl InitializeCompositeTextPictureResourceEntries_005c1580(void)
+// FUNCTION: IMPERIALISM 0x005c1580
+undefined4 InitializeCompositeTextPictureResourceEntries_005c1580(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsLine::CreateTTradeTotalsLineInstance
+// ghidra_proto void * __cdecl CreateTTradeTotalsLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005c1870
+undefined4 CreateTTradeTotalsLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer
+// ghidra_proto void * __cdecl GetTTradeTotalsLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005c18e0
+undefined4 GetTTradeTotalsLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
+// ghidra_proto void * __thiscall ConstructTTradeTotalsLineBaseState(void)
+// FUNCTION: IMPERIALISM 0x005c1900
+undefined4 ConstructTTradeTotalsLineBaseState(void)
 {
   return 0;
 }

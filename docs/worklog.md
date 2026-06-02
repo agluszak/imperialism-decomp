@@ -1602,3 +1602,113 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - UI caller guard: `just compare 0x004f5fb0` stayed **40.59%**.
    - `just compare-canaries`: `below_floor=0`.
    - `just stats`: avg similarity **3.31%**, aligned functions **107**.
+
+### Diplomacy alliance-guard slot (2026-06-02)
+
+1. Promoted `0x004efc30` as `DiplomacyTurnStateManager::HasAllianceGuardSlot60(int,int)`: stub -> **86.02%**.
+2. Corrected two stale Ghidra assumptions:
+   - the old bucket/name `TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation` is misleading for this Windows body; `ECX` is the diplomacy turn-state manager and the function returns `AL`;
+   - the method is not no-arg/`void`; listing evidence shows `ret 8` and two stack args, with the caller in `TGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards`.
+3. Promoted manager vtable slot `0x4c` from anonymous `slot_4c()` to `HasAnyWarRelationForNation(int)`. This was necessary to reproduce the original `mov ecx,[g_pDiplomacyTurnStateManager]; push arg; call [vftable+0x4c]` shape inside slot `0x60`.
+4. Validation:
+   - `just build`, `just detect`: clean.
+   - `just compare 0x004efc30`: **86.02%**.
+   - Caller guard `just compare 0x004e7b50`: **51.69%** unchanged.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+
+### Diplomacy relationship-list selectors (2026-06-02)
+
+1. Promoted three connected `DiplomacyTurnStateManager` vtable-slot bodies:
+   - `0x004f1f70` `BuildRelationshipListSlot88(int,int,void*)`: stub -> **64.15%**. This fills a sorted relationship candidate list with `{nationSlot, standingScore}` pairs, using `g_apTerrainTypeDescriptorTable[n]+0x0e == -1` as the unowned/minor filter and reading standing scores from `this+0x79c`.
+   - `0x004f2100` `SelectNationSlotFromCollectedStandingEntriesSlot98(int,int)`: stub -> **73.77%**. This constructs the `TSortedByRelationshipList` (`vtable 0x00654d38`), sets `relationType=4`, calls slot `0x88`, and returns the nation slot from the last one-based list entry or `-1`.
+   - `0x004f21f0` `SelectDiplomacyTargetNationFromCandidateSetSlot94(int,int,int)`: stub -> **30.06%** first shape pass. If the side-effect arg is zero it delegates through slot `0x98`; otherwise it scans the sorted list backward and returns the first candidate whose `+0x1402` side-effect matrix value matches.
+2. Added generated facades for `TSortedByRelationshipList` slots `0x24`, `0x2c`, and `0x38`, avoiding raw list vtable calls inside the manager methods.
+3. Corrected the provisional manager slot `0x94` name from relation-code setter wording to side-effect target selection, and added the missing slot `0x98`.
+4. Connectivity result: `ProcessQueuedWarTransitions` (`0x004f0a10`) improved from **41.82%** to **89.85%** because the slot `0x94` call now resolves to a real method signature and vtable slot.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004f1f70` **64.15%**, `0x004f2100` **73.77%**, `0x004f21f0` **30.06%**, `0x004f0a10` **89.85%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+
+### Diplomacy standing-score setter (2026-06-02)
+
+1. Promoted manager slot `0x28`, `0x004efcb0` `SetStandingScoreSlot28(int,int,int)`: stub -> **34.55%** first shape pass.
+2. Behavior recovered:
+   - clamps negative scores to zero;
+   - clamps non-self scores above `0xff` to `0xff`;
+   - raises very low scores to `0x32` unless slot `0x44` says the pair already has the relevant policy/relation;
+   - writes the standing-score matrix symmetrically at `this+0x79c`;
+   - if either endpoint is a primary nation (`slot 0x84`), scans minor terrain descriptors `7..22`, checks terrain slot `0x5c`, and calls manager slot `0x2c` to propagate minor standing updates.
+3. Added class-shape names:
+   - manager slot `0x2c` -> `UpdateMinorStandingFromMajorPairSlot2c(int,int)`;
+   - terrain descriptor slot `0x5c` -> `HasMinorStandingLinkSlot5C(int)`.
+4. Connectivity result: broad relation setter `0x004f1b70` improved from **9.31%** earlier in the slice to **24.84%** with the real slot `0x28` body in place. `ProcessQueuedWarTransitions` stayed **89.85%**.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004efcb0` **34.55%**, `0x004f1b70` **24.84%**, `0x004f0a10` **89.85%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+
+### Diplomacy standing row/column copy slot (2026-06-02, cont.)
+
+1. Promoted manager slot `0x2c`, `0x004efe30` `CopyDiplomacyStandingMatrixRowAndColumnSlot2c(int,int)`: stub -> **36.07%** first shape pass.
+2. Corrected the provisional slot `0x2c` name from "minor standing propagation" to the concrete matrix operation. The method copies both a full row and matching column inside the `+0x79c` standing-score matrix, using 23 entries and `ret 8`.
+3. Updated slot `0x28` callsites to call the real virtual `CopyDiplomacyStandingMatrixRowAndColumnSlot2c(minorNation, sourceNation)` when a minor terrain descriptor links to a primary nation through terrain slot `0x5c`.
+4. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004efe30` **36.07%**, `0x004efcb0` **34.55%**, `0x004f1b70` **24.84%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+
+### Diplomacy relation side-effect propagation slot (2026-06-02, cont.)
+
+1. Promoted manager slot `0x80`, `0x004eff40` `PropagateRelationSideEffectSlot80(int,int,int)`: stub -> **27.33%** first shape pass.
+2. Corrected the old class bucket: this body is a `DiplomacyTurnStateManager` method reached through relation setter slot `0x74`, not a free `TSortedByRelationshipList` helper. The current live Ghidra project does not expose `0x004eff40` as a function boundary, but `config/symbols.csv`, `src/ghidra_autogen/index.csv`, and reccmp pairing confirm the original body.
+3. Behavior recovered:
+   - reads and updates the `+0x79c` standing-score matrix through slot `0x28`;
+   - branches on the byte form of the third argument for direct relation side effects;
+   - scans all 23 nation slots, gated by `thunk_IsNationSlotEligibleForEventProcessing`;
+   - skips the source/target nations and requires terrain descriptor owner/state `+0x0e == -1`;
+   - uses manager slot `0x84` and terrain descriptor slot `0x90` to choose the propagation divisor before clamping the related standing update.
+4. Connectivity checks stayed stable:
+   - `SetNationPairDiplomacyRelationCode` (`0x004f1b70`) stayed **24.84%** with the real slot `0x80` callsite.
+   - `SetStandingScoreSlot28` (`0x004efcb0`) stayed **34.55%**.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004eff40` **27.33%**, `0x004f1b70` **24.84%**, `0x004efcb0` **34.55%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: aligned functions **128**, average similarity **9.50%**.
+
+### Diplomacy relation/alliance vtable slots (2026-06-02, cont.)
+
+1. Promoted three more `DiplomacyTurnStateManager` vtable-slot methods from the stale `TSortedByRelationshipList` bucket:
+   - `0x004f1b40` slot `0x78` `SetNationPairDiplomacyRelationCodeFinal(int,int,int)`: stub -> **100.00%**. This is the thin `ret 0xc` wrapper that delegates to slot `0x74` with final/update flag `1`.
+   - `0x004f2050` slot `0x8c` `CountMajorAllianceRelationsForNation(int)`: stub -> **100.00%**. This counts relation-code `2` entries across the seven major-nation columns in the `+0xbbe` relation-code matrix.
+   - `0x004f2090` slot `0x90` `GetNthAlliedMajorNationSlotForNation(int,int)`: stub -> **35.71%** first shape pass. It scans major-nation relation-code entries and returns `candidate - 1` when the requested allied ordinal is reached; the signature and return contract are now explicit even though the local register shape still differs.
+2. Added generated facade rows for manager slots `0x78`, `0x8c`, and `0x90`, so future `TGreatPower`/AI caller migrations can use typed manager calls instead of raw vtable offsets.
+3. Validation:
+   - `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004f1b40` **100.00%**, `0x004f2050` **100.00%**, `0x004f2090` **35.71%**, `0x004f1b70` **24.84%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: aligned functions **130**, average similarity **9.52%**.
+
+### Diplomacy relation-code-4 slot (2026-06-02, cont.)
+
+1. Promoted manager slot `0x7c`, `0x004efeb0` `ApplyRelationCode4AndQueueEvent18ForTargetNation(int,int,int)`: stub -> **92.31%**.
+2. Corrected the Ghidra prototype: the autogen bucket says two args and misreads the third stack arg as `unaff_retaddr`, but caller evidence from `TGreatPower`/`TCountry` and the body shape show a real `ret 0xc` manager method taking `(sourceNation, targetNation, updateMode)`.
+3. Behavior recovered:
+   - delegates to confirmed slot `0x78` with relation code `4`;
+   - when `updateMode` byte is `1`, delegates to slot `0x80` with propagation mode `0`;
+   - if the target terrain descriptor exists, calls terrain slot `0x94` with action code `0x139`;
+   - queues inter-nation event `0x18` as `(target, source)`.
+4. Added generated facade rows for manager slot `0x7c` and terrain descriptor slot `0x94`.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004efeb0` **92.31%**, `0x004f1b40` **100.00%**, `0x004eff40` **27.91%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: aligned functions **130**, average similarity **9.53%**.

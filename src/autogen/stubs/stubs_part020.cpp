@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestructTDealLineAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTDealLineAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005c0de0
-undefined4 DestructTDealLineAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50
-// ghidra_proto void __cdecl BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
-// FUNCTION: IMPERIALISM 0x005c0e50
-undefined4 BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::CreateTCommodityLineInstance
-// ghidra_proto void * __cdecl CreateTCommodityLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005c1430
-undefined4 CreateTCommodityLineInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::GetTCommodityLineClassNamePointer
-// ghidra_proto void * __cdecl GetTCommodityLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005c14a0
-undefined4 GetTCommodityLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::ConstructTCommodityLineBaseState
-// ghidra_proto void * __thiscall ConstructTCommodityLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005c14c0
-undefined4 ConstructTCommodityLineBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommodityLine::DestructTCommodityLineAndMaybeFree
-// ghidra_proto void * __thiscall DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005c14f0
-undefined4 DestructTCommodityLineAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTCommodityLineAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTCommodityLineAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005c1520
-undefined4 DestructTCommodityLineAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCompositeTextPictureResourceEntries_005c1580
-// ghidra_proto void __cdecl InitializeCompositeTextPictureResourceEntries_005c1580(void)
-// FUNCTION: IMPERIALISM 0x005c1580
-undefined4 InitializeCompositeTextPictureResourceEntries_005c1580(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsLine::CreateTTradeTotalsLineInstance
-// ghidra_proto void * __cdecl CreateTTradeTotalsLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005c1870
-undefined4 CreateTTradeTotalsLineInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer
-// ghidra_proto void * __cdecl GetTTradeTotalsLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005c18e0
-undefined4 GetTTradeTotalsLineClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
-// ghidra_proto void * __thiscall ConstructTTradeTotalsLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005c1900
-undefined4 ConstructTTradeTotalsLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTradeTotalsLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005c1930
@@ -3999,6 +3911,94 @@ undefined4 CaptureExceptionContextToGlobalSlots(void)
 // ghidra_proto int __cdecl AppendPointerToGlobalVectorLocked(void)
 // FUNCTION: IMPERIALISM 0x005e7890
 undefined4 AppendPointerToGlobalVectorLocked(void)
+{
+  return 0;
+}
+
+// ghidra_name AppendPointerToGlobalVectorAsStatus
+// ghidra_proto int __cdecl AppendPointerToGlobalVectorAsStatus(void)
+// FUNCTION: IMPERIALISM 0x005e7920
+undefined4 AppendPointerToGlobalVectorAsStatus(void)
+{
+  return 0;
+}
+
+// ghidra_name CompareAnsiStringsWithMbcsAwareness
+// ghidra_proto int __cdecl CompareAnsiStringsWithMbcsAwareness(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7980
+undefined4 CompareAnsiStringsWithMbcsAwareness(void)
+{
+  return 0;
+}
+
+// ghidra_name SetGlobalCallback6A7FACAndReturnPrevious
+// ghidra_proto void __cdecl SetGlobalCallback6A7FACAndReturnPrevious(void)
+// FUNCTION: IMPERIALISM 0x005e7a80
+undefined4 SetGlobalCallback6A7FACAndReturnPrevious(void)
+{
+  return 0;
+}
+
+// ghidra_name InvokeGlobalAllocationFailureCallback
+// ghidra_proto int __cdecl InvokeGlobalAllocationFailureCallback(void)
+// FUNCTION: IMPERIALISM 0x005e7ac0
+undefined4 InvokeGlobalAllocationFailureCallback(void)
+{
+  return 0;
+}
+
+// ghidra_name FindFirstFileAndPopulateFileInfoRecord
+// ghidra_proto void * __cdecl FindFirstFileAndPopulateFileInfoRecord(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7ae0
+undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
+{
+  return 0;
+}
+
+// ghidra_name FindNextFileAndPopulateFileInfoRecord
+// ghidra_proto int __cdecl FindNextFileAndPopulateFileInfoRecord(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7c10
+undefined4 FindNextFileAndPopulateFileInfoRecord(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
+// ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
+// FUNCTION: IMPERIALISM 0x005e7d30
+undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
+{
+  return 0;
+}
+
+// ghidra_name ConvertFileTimeToLocalEpochSeconds
+// ghidra_proto int __cdecl ConvertFileTimeToLocalEpochSeconds(int arg1)
+// FUNCTION: IMPERIALISM 0x005e7d60
+undefined4 ConvertFileTimeToLocalEpochSeconds(void)
+{
+  return 0;
+}
+
+// ghidra_name aullshr
+// ghidra_proto uint __fastcall aullshr(void)
+// FUNCTION: IMPERIALISM 0x005e7df0
+undefined4 aullshr(void)
+{
+  return 0;
+}
+
+// ghidra_name TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
+// ghidra_proto void __thiscall InvokeCallbackNTimesWithSehGuard(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x005e7e10
+undefined4 InvokeCallbackNTimesWithSehGuard(void)
+{
+  return 0;
+}
+
+// ghidra_name SehCleanup_InvokeCallbackNTimes
+// ghidra_proto void __cdecl SehCleanup_InvokeCallbackNTimes(void)
+// FUNCTION: IMPERIALISM 0x005e7e89
+undefined4 SehCleanup_InvokeCallbackNTimes(void)
 {
   return 0;
 }

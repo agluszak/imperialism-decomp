@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name HasActiveMapOrderEntryChildren
-// ghidra_proto void __cdecl HasActiveMapOrderEntryChildren(void)
-// FUNCTION: IMPERIALISM 0x00553b50
-undefined4 HasActiveMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrCreateTaskForceOrderNodeByTemplate
-// ghidra_proto void __fastcall GetOrCreateTaskForceOrderNodeByTemplate(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x00553bc0
-undefined4 GetOrCreateTaskForceOrderNodeByTemplate(void)
-{
-  return 0;
-}
-
-// ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
-// ghidra_proto int __thiscall RemoveTaskForceOrderNodeById(void)
-// FUNCTION: IMPERIALISM 0x00553d40
-undefined4 RemoveTaskForceOrderNodeById(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeMapOrderChildAggregateMetric
-// ghidra_proto void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00553e30
-undefined4 RecomputeMapOrderChildAggregateMetric(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildMapOrderEntryChildren
-// ghidra_proto void __cdecl RebuildMapOrderEntryChildren(void)
-// FUNCTION: IMPERIALISM 0x00553f10
-undefined4 RebuildMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name PruneInactiveTaskForceOrderHead
-// ghidra_proto void __cdecl PruneInactiveTaskForceOrderHead(void)
-// FUNCTION: IMPERIALISM 0x00553fe0
-undefined4 PruneInactiveTaskForceOrderHead(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::ApplyMapOrderTypeAndQueue
-// ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
-// FUNCTION: IMPERIALISM 0x005540b0
-undefined4 ApplyMapOrderTypeAndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderCommandFromActionContext
-// ghidra_proto void __thiscall ResolveMapOrderCommandFromActionContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00554300
-undefined4 ResolveMapOrderCommandFromActionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderCommandFromProvinceContext
-// ghidra_proto void __thiscall ResolveMapOrderCommandFromProvinceContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00554460
-undefined4 ResolveMapOrderCommandFromProvinceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name CanQueueMapOrderForProvinceContext
-// ghidra_proto void __thiscall CanQueueMapOrderForProvinceContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00554590
-undefined4 CanQueueMapOrderForProvinceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name RequeueMapOrderEntry
-// ghidra_proto void __fastcall RequeueMapOrderEntry(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00554660
-undefined4 RequeueMapOrderEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name CancelMapOrderEntryAndRestoreActive
 // ghidra_proto void __fastcall CancelMapOrderEntryAndRestoreActive(int * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x005547d0
@@ -3999,6 +3911,94 @@ undefined4 InitializeOffLimitsPictureCachedBrushResources(void)
 // ghidra_proto void __cdecl RenderHintOverlayWithCtrlModifierClipRegion(void)
 // FUNCTION: IMPERIALISM 0x00573890
 undefined4 RenderHintOverlayWithCtrlModifierClipRegion(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
+// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
+// FUNCTION: IMPERIALISM 0x00573900
+undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
+// ghidra_proto void __cdecl ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
+// FUNCTION: IMPERIALISM 0x00573940
+undefined4 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::CreateTSliderPictureInstance
+// ghidra_proto void * __cdecl CreateTSliderPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00573970
+undefined4 CreateTSliderPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::GetTSliderPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTSliderPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00573a00
+undefined4 GetTSliderPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
+// ghidra_proto void * __thiscall ConstructTSliderPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x00573a20
+undefined4 ConstructTSliderPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::DestructTSliderPictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00573a50
+undefined4 DestructTSliderPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
+// ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+// FUNCTION: IMPERIALISM 0x00573aa0
+undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00573bf0
+// ghidra_proto void __cdecl WrapperFor_ftol_At00573bf0(void)
+// FUNCTION: IMPERIALISM 0x00573bf0
+undefined4 WrapperFor_ftol_At00573bf0(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::CreateTScrollViewInstance
+// ghidra_proto void * __cdecl CreateTScrollViewInstance(void)
+// FUNCTION: IMPERIALISM 0x00573c20
+undefined4 CreateTScrollViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::GetTScrollViewClassNamePointer
+// ghidra_proto void * __cdecl GetTScrollViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00573c90
+undefined4 GetTScrollViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::ConstructTScrollViewBaseState
+// ghidra_proto void __thiscall ConstructTScrollViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x00573cb0
+undefined4 ConstructTScrollViewBaseState(void)
 {
   return 0;
 }

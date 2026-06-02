@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
-// ghidra_proto void __thiscall RebuildNationClipRegionsAndDispatchMapEvent(void)
-// FUNCTION: IMPERIALISM 0x0050bad0
-undefined4 RebuildNationClipRegionsAndDispatchMapEvent(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C4_I35_0050bbc0
-// ghidra_proto void __cdecl OrphanCallChain_C4_I35_0050bbc0(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x0050bbc0
-undefined4 OrphanCallChain_C4_I35_0050bbc0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::SyncSellTaggedChildControlWithNationState
-// ghidra_proto void __thiscall SyncSellTaggedChildControlWithNationState(short arg1)
-// FUNCTION: IMPERIALISM 0x0050bc50
-undefined4 SyncSellTaggedChildControlWithNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveTurnEventDialogOrFailAndInvokeSlot9C
-// ghidra_proto void * __cdecl ResolveTurnEventDialogOrFailAndInvokeSlot9C(void * messageContext)
-// FUNCTION: IMPERIALISM 0x0050be30
-undefined4 ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityProductionDetailPanelAndArrowWidgets
-// ghidra_proto void __cdecl RefreshCityProductionDetailPanelAndArrowWidgets(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0050bea0
-undefined4 RefreshCityProductionDetailPanelAndArrowWidgets(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchTurnEvent3B8AndWaitForCompletionFlag
-// ghidra_proto void __cdecl DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
-// FUNCTION: IMPERIALISM 0x0050d310
-undefined4 DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateCityBuildingDialogBySlot
-// ghidra_proto void __stdcall CreateCityBuildingDialogBySlot(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x0050d360
-undefined4 CreateCityBuildingDialogBySlot(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C10_I80_0050d470
-// ghidra_proto int * __cdecl OrphanCallChain_C10_I80_0050d470(void)
-// FUNCTION: IMPERIALISM 0x0050d470
-undefined4 OrphanCallChain_C10_I80_0050d470(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C9_I49_0050d5b0
-// ghidra_proto void __cdecl OrphanCallChain_C9_I49_0050d5b0(void)
-// FUNCTION: IMPERIALISM 0x0050d5b0
-undefined4 OrphanCallChain_C9_I49_0050d5b0(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
-// ghidra_proto void __cdecl EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
-// FUNCTION: IMPERIALISM 0x0050d680
-undefined4 EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_IsPointInsideHitRegion_At0050d6c0
-// ghidra_proto bool __cdecl WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
-// FUNCTION: IMPERIALISM 0x0050d6c0
-undefined4 WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext
 // ghidra_proto void __thiscall RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
 // FUNCTION: IMPERIALISM 0x0050d700
@@ -3999,6 +3911,94 @@ undefined4 ReturnFalseMissionCapabilityStub(void)
 // ghidra_proto int __cdecl ReturnZeroMissionSlot58NavyOverride(void)
 // FUNCTION: IMPERIALISM 0x00535520
 undefined4 ReturnZeroMissionSlot58NavyOverride(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnArgMissionSlot5CNavyOverride
+// ghidra_proto int __fastcall ReturnArgMissionSlot5CNavyOverride(void)
+// FUNCTION: IMPERIALISM 0x00535540
+undefined4 ReturnArgMissionSlot5CNavyOverride(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyMission::DestroyTNavyMission
+// ghidra_proto void * __thiscall DestroyTNavyMission(void)
+// FUNCTION: IMPERIALISM 0x00535560
+undefined4 DestroyTNavyMission(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetTNavyMissionToSentinelVtable
+// ghidra_proto void __cdecl ResetTNavyMissionToSentinelVtable(void)
+// FUNCTION: IMPERIALISM 0x00535590
+undefined4 ResetTNavyMissionToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
+// ghidra_proto bool __stdcall ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
+// FUNCTION: IMPERIALISM 0x005355b0
+undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
+// ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
+// FUNCTION: IMPERIALISM 0x005355d0
+undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
+// ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
+// ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
+// FUNCTION: IMPERIALISM 0x005355f0
+undefined4 DestroyTControlSeaZoneMission(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
+// ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
+// FUNCTION: IMPERIALISM 0x00535620
+undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
+// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
+// FUNCTION: IMPERIALISM 0x00535640
+undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
+// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+// FUNCTION: IMPERIALISM 0x00535660
+undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
+// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionSlot20(void)
+// FUNCTION: IMPERIALISM 0x00535680
+undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
+{
+  return 0;
+}
+
+// ghidra_name TScatteredShipsMission::DestroyTScatteredShipsMission
+// ghidra_proto void * __thiscall DestroyTScatteredShipsMission(void)
+// FUNCTION: IMPERIALISM 0x005356a0
+undefined4 DestroyTScatteredShipsMission(void)
 {
   return 0;
 }

@@ -8,7 +8,6 @@ extern "C" {
 char g_pClassDescTPtrList = 0;
 }
 
-undefined4 DestructCPtrListBaseState(void);
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
@@ -41,14 +40,19 @@ CPtrListSentinelView* CPtrListSentinelView::CPtrList(int ownerContext) {
   this->tailNode = 0;
   this->headNode = 0;
   this->blockChain = 0;
-  this->vftable = reinterpret_cast<void*>(&g_vtblCPtrList);
+  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblCPtrList);
   this->blockSize = ownerContext;
   return this;
 }
 
+// FUNCTION: IMPERIALISM 0x00601F7C
+CPtrListSentinelView::~CPtrListSentinelView() {
+  RemoveAll();
+}
+
 // FUNCTION: IMPERIALISM 0x00601F40
 void* CPtrListSentinelView::DestructCPtrListAndMaybeFree(byte freeSelfFlag) {
-  reinterpret_cast<void(__fastcall*)(void*)>(::DestructCPtrListBaseState)(this);
+  this->CPtrListSentinelView::~CPtrListSentinelView();
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
   }

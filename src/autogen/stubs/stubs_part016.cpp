@@ -3,94 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnArgMissionSlot5CNavyOverride
-// ghidra_proto int __fastcall ReturnArgMissionSlot5CNavyOverride(void)
-// FUNCTION: IMPERIALISM 0x00535540
-undefined4 ReturnArgMissionSlot5CNavyOverride(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyMission::DestroyTNavyMission
-// ghidra_proto void * __thiscall DestroyTNavyMission(void)
-// FUNCTION: IMPERIALISM 0x00535560
-undefined4 DestroyTNavyMission(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTNavyMissionToSentinelVtable
-// ghidra_proto void __cdecl ResetTNavyMissionToSentinelVtable(void)
-// FUNCTION: IMPERIALISM 0x00535590
-undefined4 ResetTNavyMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x005355b0
-undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x005355d0
-undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
-// ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
-// FUNCTION: IMPERIALISM 0x005355f0
-undefined4 DestroyTControlSeaZoneMission(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
-// ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
-// FUNCTION: IMPERIALISM 0x00535620
-undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x00535640
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x00535660
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionSlot20(void)
-// FUNCTION: IMPERIALISM 0x00535680
-undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::DestroyTScatteredShipsMission
-// ghidra_proto void * __thiscall DestroyTScatteredShipsMission(void)
-// FUNCTION: IMPERIALISM 0x005356a0
-undefined4 DestroyTScatteredShipsMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTScatteredShipsMissionToSentinelVtable
 // ghidra_proto void __cdecl ResetTScatteredShipsMissionToSentinelVtable(void)
 // FUNCTION: IMPERIALISM 0x005356d0
@@ -3999,6 +3911,94 @@ undefined4 ApplyTaskForceSelectionModeForCurrentNationOrders(void)
 // ghidra_proto void __cdecl HasNoMapOrderEntryChildrenQueued(void)
 // FUNCTION: IMPERIALISM 0x00553b10
 undefined4 HasNoMapOrderEntryChildrenQueued(void)
+{
+  return 0;
+}
+
+// ghidra_name HasActiveMapOrderEntryChildren
+// ghidra_proto void __cdecl HasActiveMapOrderEntryChildren(void)
+// FUNCTION: IMPERIALISM 0x00553b50
+undefined4 HasActiveMapOrderEntryChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name GetOrCreateTaskForceOrderNodeByTemplate
+// ghidra_proto void __fastcall GetOrCreateTaskForceOrderNodeByTemplate(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00553bc0
+undefined4 GetOrCreateTaskForceOrderNodeByTemplate(void)
+{
+  return 0;
+}
+
+// ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
+// ghidra_proto int __thiscall RemoveTaskForceOrderNodeById(void)
+// FUNCTION: IMPERIALISM 0x00553d40
+undefined4 RemoveTaskForceOrderNodeById(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeMapOrderChildAggregateMetric
+// ghidra_proto void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00553e30
+undefined4 RecomputeMapOrderChildAggregateMetric(void)
+{
+  return 0;
+}
+
+// ghidra_name RebuildMapOrderEntryChildren
+// ghidra_proto void __cdecl RebuildMapOrderEntryChildren(void)
+// FUNCTION: IMPERIALISM 0x00553f10
+undefined4 RebuildMapOrderEntryChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name PruneInactiveTaskForceOrderHead
+// ghidra_proto void __cdecl PruneInactiveTaskForceOrderHead(void)
+// FUNCTION: IMPERIALISM 0x00553fe0
+undefined4 PruneInactiveTaskForceOrderHead(void)
+{
+  return 0;
+}
+
+// ghidra_name TScatteredShipsMission::ApplyMapOrderTypeAndQueue
+// ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
+// FUNCTION: IMPERIALISM 0x005540b0
+undefined4 ApplyMapOrderTypeAndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name ResolveMapOrderCommandFromActionContext
+// ghidra_proto void __thiscall ResolveMapOrderCommandFromActionContext(int arg1)
+// FUNCTION: IMPERIALISM 0x00554300
+undefined4 ResolveMapOrderCommandFromActionContext(void)
+{
+  return 0;
+}
+
+// ghidra_name ResolveMapOrderCommandFromProvinceContext
+// ghidra_proto void __thiscall ResolveMapOrderCommandFromProvinceContext(int arg1)
+// FUNCTION: IMPERIALISM 0x00554460
+undefined4 ResolveMapOrderCommandFromProvinceContext(void)
+{
+  return 0;
+}
+
+// ghidra_name CanQueueMapOrderForProvinceContext
+// ghidra_proto void __thiscall CanQueueMapOrderForProvinceContext(int arg1)
+// FUNCTION: IMPERIALISM 0x00554590
+undefined4 CanQueueMapOrderForProvinceContext(void)
+{
+  return 0;
+}
+
+// ghidra_name RequeueMapOrderEntry
+// ghidra_proto void __fastcall RequeueMapOrderEntry(int * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00554660
+undefined4 RequeueMapOrderEntry(void)
 {
   return 0;
 }

@@ -62,6 +62,7 @@ add_executable(Imperialism
     src/game/stream.cpp
     src/game/cdocument.cpp
     src/game/carchive.cpp
+    src/game/cobject.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
 )
