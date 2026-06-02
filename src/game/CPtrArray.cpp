@@ -40,7 +40,7 @@ CPtrArray::~CPtrArray() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00601C14
+// FUNCTION: IMPERIALISM 0x00601c14
 void CPtrArray::SetSize(int nNewSize, int nGrowBy) {
   if (nGrowBy != -1) {
     this->growBy = nGrowBy;
@@ -82,7 +82,7 @@ void CPtrArray::SetSize(int nNewSize, int nGrowBy) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00601DE3
+// FUNCTION: IMPERIALISM 0x00601de3
 void CPtrArray::SetAtGrow(int nIndex, void* newElement) {
   if (nIndex >= this->count) {
     this->SetSize(nIndex + 1, -1);
@@ -90,7 +90,7 @@ void CPtrArray::SetAtGrow(int nIndex, void* newElement) {
   this->entries[nIndex] = newElement;
 }
 
-// FUNCTION: IMPERIALISM 0x00601E0A
+// FUNCTION: IMPERIALISM 0x00601e0a
 void CPtrArray::InsertAt(int nIndex, void* newElement, int nCount) {
   if (nIndex >= this->count) {
     this->SetSize(nIndex + nCount, -1);
@@ -106,7 +106,7 @@ void CPtrArray::InsertAt(int nIndex, void* newElement, int nCount) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00601E9F
+// FUNCTION: IMPERIALISM 0x00601e9f
 void CPtrArray::RemoveAt(int nIndex, int nCount) {
   int nMoveCount = this->count - nIndex - nCount;
   if (nMoveCount != 0) {

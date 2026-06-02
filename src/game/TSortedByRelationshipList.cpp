@@ -12,19 +12,19 @@ char g_pClassDescTSortedByRelationshipList = 0;
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 undefined4 DestructCObArray(void);
 
-// FUNCTION: IMPERIALISM 0x004EE520
+// FUNCTION: IMPERIALISM 0x004ee520
 void* TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer() {
   return &g_pClassDescTSortedByRelationshipList;
 }
 
-// FUNCTION: IMPERIALISM 0x004EE540
+// FUNCTION: IMPERIALISM 0x004ee540
 TSortedByRelationshipList* TSortedByRelationshipList::ConstructObArrayWithVtable654D38() {
   this->TIndexAndRankList::TIndexAndRankList();
   *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedByRelationshipList);
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x004EE570
+// FUNCTION: IMPERIALISM 0x004ee570
 void* TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag) {
   TSortedByRelationshipList* self = this;
   reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);
@@ -34,7 +34,7 @@ void* TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree(b
   return self;
 }
 
-// FUNCTION: IMPERIALISM 0x004EE4B0
+// FUNCTION: IMPERIALISM 0x004ee4b0
 TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
   return new TSortedByRelationshipList();
 }

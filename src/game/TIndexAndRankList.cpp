@@ -11,12 +11,12 @@ extern "C" {
 char g_vtblTIndexAndRankList = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00601BAA
+// FUNCTION: IMPERIALISM 0x00601baa
 TIndexAndRankList::TIndexAndRankList() : CPtrArray() {
   *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTIndexAndRankList);
 }
 
-// FUNCTION: IMPERIALISM 0x00601BC1
+// FUNCTION: IMPERIALISM 0x00601bc1
 void* TIndexAndRankList::DestructCObArrayAndMaybeFree(byte freeSelfFlag) {
   TIndexAndRankList* self = this;
   reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);

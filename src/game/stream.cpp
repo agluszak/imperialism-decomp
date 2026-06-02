@@ -21,7 +21,7 @@ char g_pClassDescTHandleStream = 0;
 
 // ---- TFileStream ----------------------------------------------------------
 
-// FUNCTION: IMPERIALISM 0x004890F0
+// FUNCTION: IMPERIALISM 0x004890f0
 void* TFileStream::GetTFileStreamClassNamePointer() {
   return &g_pClassDescTFileStream;
 }
@@ -44,7 +44,7 @@ void* TFileStream::DestructTFileStreamAndMaybeFree(byte freeSelfFlag) {
 
 // ---- TCountingStream ------------------------------------------------------
 
-// FUNCTION: IMPERIALISM 0x004893F0
+// FUNCTION: IMPERIALISM 0x004893f0
 void* TCountingStream::GetTCountingStreamClassNamePointer() {
   return &g_pClassDescTCountingStream;
 }
@@ -74,12 +74,12 @@ void* TCountingStream::DestructTCountingStreamAndMaybeFree(byte freeSelfFlag) {
 
 // ---- THandleStream --------------------------------------------------------
 
-// FUNCTION: IMPERIALISM 0x004895C0
+// FUNCTION: IMPERIALISM 0x004895c0
 void* THandleStream::GetTHandleStreamClassNamePointer() {
   return &g_pClassDescTHandleStream;
 }
 
-// FUNCTION: IMPERIALISM 0x004895E0
+// FUNCTION: IMPERIALISM 0x004895e0
 THandleStream* THandleStream::ConstructTHandleStreamBaseState() {
   *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTHandleStream);
   this->field10 = 1;

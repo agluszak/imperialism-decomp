@@ -10,7 +10,7 @@
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 undefined4 DestructCDocumentBaseState(void);
 
-// FUNCTION: IMPERIALISM 0x00610A5F
+// FUNCTION: IMPERIALISM 0x00610a5f
 void CDocument::DisconnectViews() {
   if (m_viewList.nodeCount != 0) {
     do {
@@ -27,7 +27,7 @@ void CDocument::AddView(CView* view) {
   VCall_CDocument_NotifyViewListChangedSlot70(this);
 }
 
-// FUNCTION: IMPERIALISM 0x006109CF
+// FUNCTION: IMPERIALISM 0x006109cf
 void* CDocument::DestructCDocumentBaseStateAndMaybeFree(byte freeSelfFlag) {
   reinterpret_cast<void(__fastcall*)(void*)>(::DestructCDocumentBaseState)(this);
   if ((freeSelfFlag & 1) != 0) {

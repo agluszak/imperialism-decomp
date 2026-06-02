@@ -23,7 +23,7 @@ inline void CopyMemory(void* dst, const void* src, int size) {
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x005E6D04
+// FUNCTION: IMPERIALISM 0x005e6d04
 CArchive* CArchive::WriteByteToSerializedBuffer(unsigned char value) {
   if (m_lpBufCur + 1 > m_lpBufMax) {
     FlushArchive(this);
@@ -33,7 +33,7 @@ CArchive* CArchive::WriteByteToSerializedBuffer(unsigned char value) {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6D27
+// FUNCTION: IMPERIALISM 0x005e6d27
 CArchive* CArchive::WriteWordToSerializedBuffer(unsigned short value) {
   if (m_lpBufCur + 2 > m_lpBufMax) {
     FlushArchive(this);
@@ -43,7 +43,7 @@ CArchive* CArchive::WriteWordToSerializedBuffer(unsigned short value) {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x005E6D4E
+// FUNCTION: IMPERIALISM 0x005e6d4e
 CArchive* CArchive::WriteDwordToSerializedBuffer(unsigned int value) {
   if (m_lpBufCur + 4 > m_lpBufMax) {
     FlushArchive(this);
@@ -53,7 +53,7 @@ CArchive* CArchive::WriteDwordToSerializedBuffer(unsigned int value) {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x00611E34
+// FUNCTION: IMPERIALISM 0x00611e34
 void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount) {
   if (nCount == 0) {
     return;

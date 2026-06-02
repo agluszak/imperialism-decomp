@@ -19,17 +19,17 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
-// FUNCTION: IMPERIALISM 0x0057AB70
+// FUNCTION: IMPERIALISM 0x0057ab70
 TTextList* TTextList::CreateTTextListInstance() {
   return new TTextList();
 }
 
-// FUNCTION: IMPERIALISM 0x0057AC30
+// FUNCTION: IMPERIALISM 0x0057ac30
 void* TTextList::GetTTextListClassNamePointer() {
   return &g_pClassDescTTextList;
 }
 
-// FUNCTION: IMPERIALISM 0x0057ACC0
+// FUNCTION: IMPERIALISM 0x0057acc0
 void TTextList::RenderTextListRowsWithSelectionHighlight() {
   int styleFlags1 = 0;
   int styleFlags2 = 0;
@@ -91,7 +91,7 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0057AF20
+// FUNCTION: IMPERIALISM 0x0057af20
 void TTextList::HandleTextListScrollSelectionChange(int* pScrollData) {
   int index = (pScrollData[1] / itemHeight) + scrollOffset;
   if (index < totalItems) {

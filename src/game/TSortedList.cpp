@@ -9,12 +9,12 @@ char g_pClassDescTSortedList = 0;
 char g_vtblTSortedList = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00487A90
+// FUNCTION: IMPERIALISM 0x00487a90
 TSortedList* TSortedList::CreateTSortedListInstance() {
   return new TSortedList();
 }
 
-// FUNCTION: IMPERIALISM 0x00487B10
+// FUNCTION: IMPERIALISM 0x00487b10
 void* TSortedList::GetTSortedListClassNamePointer() {
   return &g_pClassDescTSortedList;
 }

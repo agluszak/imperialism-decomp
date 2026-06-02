@@ -11,7 +11,7 @@ extern "C" {
 char g_vtblCPtrList = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00601B74
+// FUNCTION: IMPERIALISM 0x00601b74
 void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, int elementSize) {
   void* block = reinterpret_cast<void*>(
       AllocateWithFallbackHandler(static_cast<undefined4>(blockCount * elementSize + 4)));
@@ -20,7 +20,7 @@ void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, i
   return block;
 }
 
-// FUNCTION: IMPERIALISM 0x00601B94
+// FUNCTION: IMPERIALISM 0x00601b94
 void __fastcall FreeLinkedBlockChain(void* blockChainHead) {
   while (blockChainHead != 0) {
     void* next = *reinterpret_cast<void**>(blockChainHead);
@@ -29,7 +29,7 @@ void __fastcall FreeLinkedBlockChain(void* blockChainHead) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00601F1D
+// FUNCTION: IMPERIALISM 0x00601f1d
 CPtrList::CPtrList(int blockSize) {
   this->nodeCount = 0;
   this->freeNodeList = 0;
@@ -40,12 +40,12 @@ CPtrList::CPtrList(int blockSize) {
   this->blockSize = blockSize;
 }
 
-// FUNCTION: IMPERIALISM 0x00601F7C
+// FUNCTION: IMPERIALISM 0x00601f7c
 CPtrList::~CPtrList() {
   RemoveAll();
 }
 
-// FUNCTION: IMPERIALISM 0x00601F40
+// FUNCTION: IMPERIALISM 0x00601f40
 void* CPtrList::DestructCPtrListAndMaybeFree(byte freeSelfFlag) {
   this->CPtrList::~CPtrList();
   if ((freeSelfFlag & 1) != 0) {
@@ -54,7 +54,7 @@ void* CPtrList::DestructCPtrListAndMaybeFree(byte freeSelfFlag) {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x00601F5C
+// FUNCTION: IMPERIALISM 0x00601f5c
 void CPtrList::RemoveAll() {
   void* chain = this->blockChain;
   this->nodeCount = 0;
@@ -65,7 +65,7 @@ void CPtrList::RemoveAll() {
   this->blockChain = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00601FAF
+// FUNCTION: IMPERIALISM 0x00601faf
 CPtrListNode* CPtrList::NewNode(CPtrListNode* pPrev, CPtrListNode* pNext) {
   if (this->freeNodeList == 0) {
     void* plex = AllocateAndLinkBlockHead(&this->blockChain, this->blockSize, sizeof(CPtrListNode));
@@ -95,7 +95,7 @@ void CPtrList::FreeNode(CPtrListNode* pNode) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0060201D
+// FUNCTION: IMPERIALISM 0x0060201d
 CPtrListNode* CPtrList::AddHead(void* value) {
   CPtrListNode* node = this->NewNode(0, this->headNode);
   node->data = value;
@@ -121,7 +121,7 @@ CPtrListNode* CPtrList::AddTail(void* value) {
   return node;
 }
 
-// FUNCTION: IMPERIALISM 0x006020B9
+// FUNCTION: IMPERIALISM 0x006020b9
 void* CPtrList::RemoveHead() {
   CPtrListNode* oldHead = this->headNode;
   CPtrListNode* newHead = oldHead->next;
@@ -136,7 +136,7 @@ void* CPtrList::RemoveHead() {
   return payload;
 }
 
-// FUNCTION: IMPERIALISM 0x006020DD
+// FUNCTION: IMPERIALISM 0x006020dd
 void* CPtrList::RemoveTail() {
   CPtrListNode* oldTail = this->tailNode;
   CPtrListNode* newTail = oldTail->prev;
@@ -183,7 +183,7 @@ CPtrListNode* CPtrList::InsertAfter(CPtrListNode* position, void* value) {
   return node;
 }
 
-// FUNCTION: IMPERIALISM 0x0060217D
+// FUNCTION: IMPERIALISM 0x0060217d
 void CPtrList::RemoveAt(CPtrListNode* pos) {
   if (pos == this->headNode) {
     this->headNode = pos->next;
@@ -198,7 +198,7 @@ void CPtrList::RemoveAt(CPtrListNode* pos) {
   this->FreeNode(pos);
 }
 
-// FUNCTION: IMPERIALISM 0x006021D6
+// FUNCTION: IMPERIALISM 0x006021d6
 CPtrListNode* CPtrList::Find(void* searchValue, CPtrListNode* startAfter) {
   CPtrListNode* node;
   if (startAfter == 0) {

@@ -12,7 +12,7 @@ extern "C" {
 char g_vtblTSortedPtrList = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00407DA6
+// FUNCTION: IMPERIALISM 0x00407da6
 void __fastcall thunk_ResetPtrListAndShrinkCapacity(TSortedPtrList* self) {
   self->ResetPtrListAndShrinkCapacity();
 }
@@ -23,7 +23,7 @@ void* __fastcall thunk_GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int 
   return GetPtrListEntryByOneBasedIndex(self, unusedEdx, oneBasedIndex);
 }
 
-// FUNCTION: IMPERIALISM 0x004883E0
+// FUNCTION: IMPERIALISM 0x004883e0
 void* TSortedPtrList::GetTSortedPtrListClassNamePointer() {
   return &g_pClassDescTSortedPtrList;
 }

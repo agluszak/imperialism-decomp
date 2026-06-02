@@ -18,12 +18,12 @@ void* TPtrList::GetTPtrListClassNamePointer() {
   return &g_pClassDescTPtrList;
 }
 
-// FUNCTION: IMPERIALISM 0x004885D0
+// FUNCTION: IMPERIALISM 0x004885d0
 void TPtrList::ConstructTPtrListBaseState(int ownerContext) {
   new (&this->listState) CPtrList(ownerContext);
 }
 
-// FUNCTION: IMPERIALISM 0x004885F0
+// FUNCTION: IMPERIALISM 0x004885f0
 void* TPtrList::DestructTPtrListAndMaybeFree(byte freeSelfFlag, int, int) {
   return this->listState.DestructCPtrListAndMaybeFree(freeSelfFlag);
 }
