@@ -6,11 +6,17 @@
 // a buffer whose end is m_lpBufMax (+0x28). The insertion operators flush when
 // the next write would overrun the buffer, then append and advance.
 struct CArchive {
-  char pad_00[0x24];
+  char pad_00[0x08];
+  int m_bDirect;
+  char pad_0c[0x10];
+  int m_nBufSize;
+  void* m_pFile;
   unsigned char* m_lpBufCur;
   unsigned char* m_lpBufMax;
+  unsigned char* m_lpBufStart;
 
   CArchive* WriteByteToSerializedBuffer(unsigned char value);
   CArchive* WriteWordToSerializedBuffer(unsigned short value);
   CArchive* WriteDwordToSerializedBuffer(unsigned int value);
+  void WriteBytesToSerializedBuffer(const void* src, unsigned int nCount);
 };

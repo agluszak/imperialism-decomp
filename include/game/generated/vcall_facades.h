@@ -669,6 +669,20 @@ static __inline void VCall_TView_DeleteSelfSlot01(void* object, int arg0) {
   fn(object, 0, arg0);
 }
 
+// CFile get buffer pointer/refill; class=CFile; status=provisional
+static __inline void VCall_CFile_GetBufferPtrSlot58(void* object, int arg0, int arg1, void* arg2, void* arg3) {
+  typedef void (__fastcall * Fn)(void*, int, int, void*, void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x58 / 4)));
+  fn(object, arg0, arg1, arg2, arg3);
+}
+
+// CFile write bytes to underlying file; class=CFile; status=provisional
+static __inline void VCall_CFile_WriteBytesSlot40(void* object, void* arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
+  fn(object, arg0, arg1);
+}
+
 // CDocument slot70 view-list-changed notify; class=CDocument; status=provisional
 static __inline void VCall_CDocument_NotifyViewListChangedSlot70(void* object) {
   typedef void (__fastcall * Fn)(void*);

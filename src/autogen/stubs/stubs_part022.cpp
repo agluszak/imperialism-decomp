@@ -1819,14 +1819,6 @@ undefined4 ReadBytesFromSerializedBuffer(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::WriteBytesToSerializedBuffer
-// ghidra_proto void __thiscall WriteBytesToSerializedBuffer(void * source, uint byteCount)
-// FUNCTION: IMPERIALISM 0x00611e34
-undefined4 WriteBytesToSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name Flush
 // ghidra_proto void __fastcall Flush(void * streamState)
 // FUNCTION: IMPERIALISM 0x00611ec4
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 // ghidra_proto void __cdecl WrapperFor_AfxDeleteObject_At0061ec0f(void)
 // FUNCTION: IMPERIALISM 0x0061ec0f
 undefined4 WrapperFor_AfxDeleteObject_At0061ec0f(void)
+{
+  return 0;
+}
+
+// ghidra_name FillSolidRect
+// ghidra_proto void __thiscall FillSolidRect(void * pRect, uint rgbColor)
+// FUNCTION: IMPERIALISM 0x0061f0fa
+undefined4 FillSolidRect(void)
 {
   return 0;
 }
