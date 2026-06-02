@@ -2555,14 +2555,6 @@ undefined4 LoadNationDisplayNameSharedRefFromField8(void)
   return 0;
 }
 
-// ghidra_name AddToNationMetricAtField10
-// ghidra_proto void __cdecl AddToNationMetricAtField10(void)
-// FUNCTION: IMPERIALISM 0x004d7ae0
-undefined4 AddToNationMetricAtField10(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnFalseNationStateActionStub
 // ghidra_proto void __cdecl ReturnFalseNationStateActionStub(void)
 // FUNCTION: IMPERIALISM 0x004d7b00

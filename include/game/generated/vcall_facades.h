@@ -158,13 +158,6 @@ static __inline void VCall_GreatPower_AdjustResourceDeltaSlot66(void* object, in
   fn(object, arg0);
 }
 
-// treasury adjust; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_AdjustTreasurySlot0E(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x0E)));
-  fn(object, arg0);
-}
-
 // apply need target slot64; class=TGreatPower; status=provisional
 static __inline void VCall_GreatPower_ApplyNeedTargetSlot64(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int);

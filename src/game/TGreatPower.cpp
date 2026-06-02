@@ -569,7 +569,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(11);
   TGREATPOWER_VTABLE_SLOT(12);
   TGREATPOWER_VTABLE_SLOT(13);
-  virtual void AdjustTreasurySlot0E_Provisional(int amount) = 0;
+  virtual void AddToNationMetricAtField10(int amount);  // slot 0x0e
   TGREATPOWER_VTABLE_SLOT(15);
   virtual int GetNodeContextSlot10_Provisional(void) = 0;
   TGREATPOWER_VTABLE_SLOT(17);
@@ -1896,7 +1896,7 @@ void TGreatPower::thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At0040739
   int scaledDelta = static_cast<int>(static_cast<short>(arg3)) * static_cast<int>(delta);
 
   *selectedResource = static_cast<short>(*selectedResource + delta);
-  this->AdjustTreasurySlot0E_Provisional(-scaledDelta);
+  this->AddToNationMetricAtField10(-scaledDelta);
 
   if (delta > 0) {
     this->AdjustResourceDeltaSlot66_Provisional(arg2);
@@ -2095,6 +2095,13 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
 
   ctx->pendingDelta = 0;
 }
+
+// FUNCTION: IMPERIALISM 0x004d7ae0
+#pragma optimize("y", on)
+void TGreatPower::AddToNationMetricAtField10(int amount) {
+  this->pressureScore += amount;
+}
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d8950
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
@@ -2537,7 +2544,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     ++nationCursor;
   }
 
-  this->AdjustTreasurySlot0E_Provisional(0);
+  this->AddToNationMetricAtField10(0);
 
   if (interactionScore > 0) {
     SharedRefPairScope localizedRefs;
@@ -3049,14 +3056,14 @@ void TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
 
 // FUNCTION: IMPERIALISM 0x004dcd10
 void TGreatPower::ApplyNationResourceNeedTargetsToOrderState(void) {
-  this->AdjustTreasurySlot0E_Provisional(static_cast<int>(this->needTargetByType[0x15]) * 500);
+  this->AddToNationMetricAtField10(static_cast<int>(this->needTargetByType[0x15]) * 500);
 
   void* relationManager = this->relationManager;
   if (relationManager != 0) {
     RelationManager_ClearNeedSlotE0AndRefresh(relationManager);
   }
 
-  this->AdjustTreasurySlot0E_Provisional(static_cast<int>(this->needTargetByType[0x16]) * 200);
+  this->AddToNationMetricAtField10(static_cast<int>(this->needTargetByType[0x16]) * 200);
 
   if (relationManager != 0) {
     RelationManager_ClearNeedSlotE2AndRefresh(relationManager);
@@ -3123,7 +3130,7 @@ void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short c
   int matrixIndex =
       static_cast<int>(rowIndex) * kAidAllocationColumnCount + static_cast<int>(columnIndex);
 
-  this->AdjustTreasurySlot0E_Provisional(amount);
+  this->AddToNationMetricAtField10(amount);
   *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + matrixIndex * 4 + 0x280) +=
       amount;
   *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + 0x914) += amount;
@@ -3352,9 +3359,9 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
       if (policyCode == kPolicyClear) {
         short previousPolicy = this->diplomacyPolicyByNation[targetClass];
         if (previousPolicy == kPolicyTreasurySmall) {
-          this->AdjustTreasurySlot0E_Provisional(500);
+          this->AddToNationMetricAtField10(500);
         } else if (previousPolicy == kPolicyTreasuryLarge) {
-          this->AdjustTreasurySlot0E_Provisional(5000);
+          this->AddToNationMetricAtField10(5000);
         }
       }
       goto APPLY_POLICY_IF_ALLOWED;
@@ -3406,7 +3413,7 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
 
   case 5:
     if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500) != 0) {
-      this->AdjustTreasurySlot0E_Provisional(0xFFFFFE0C);
+      this->AddToNationMetricAtField10(0xFFFFFE0C);
     } else {
       shouldApply = 0;
     }
@@ -3414,7 +3421,7 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
 
   case 6:
     if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000) != 0) {
-      this->AdjustTreasurySlot0E_Provisional(0xFFFFEC78);
+      this->AddToNationMetricAtField10(0xFFFFEC78);
     } else {
       shouldApply = 0;
     }
@@ -3473,13 +3480,13 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
       if (oldGrantRaw != kGrantClear) {
         int oldGrantValue = static_cast<short>(oldGrantRaw & kGrantMask);
         this->grantTotalCost -= oldGrantValue;
-        this->AdjustTreasurySlot0E_Provisional(oldGrantValue);
+        this->AddToNationMetricAtField10(oldGrantValue);
       }
 
       if (newGrantRaw != kGrantClear) {
         int newGrantValue = static_cast<short>(newGrantRaw & kGrantMask);
         this->grantTotalCost += newGrantValue;
-        this->AdjustTreasurySlot0E_Provisional(-newGrantValue);
+        this->AddToNationMetricAtField10(-newGrantValue);
       }
 
       this->diplomacyGrantByNation[targetIndex] = static_cast<short>(newGrantRaw);

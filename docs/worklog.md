@@ -2014,3 +2014,15 @@ dead/unwired:
 For both: replaced provisional decls with real virtuals at slot positions, removed redundant
 non-virtual decls, dropped the two dead facades (regen 124 -> 122). Aggregate: build/detect clean,
 `stats` aligned **147 -> 148** (+1, from 0x21), `compare-canaries` `below_floor=0`.
+
+### TGreatPower slot 0x0e: decompiled + wired AddToNationMetricAtField10 (2026-06-02, cont.)
+
+`0x0e` `0x004d7ae0` was a 0% stub: `void AddToNationMetricAtField10(int amount)` =
+`this->pressureScore += amount` (field `0x10`). Decompiled + wired to slot 0x0e (11 callsites
+renamed from the provisional `AdjustTreasurySlot0E`), real `__thiscall` prototype in symbols.csv,
+stub removed (sync-ownership +1), facade dropped (regen 122 -> 121). FPO-wrapped -> **100%**.
+`stats` aligned **148 -> 149**, `compare-canaries` `below_floor=0`.
+
+Note (calling convention): the slot bodies decompiled in this run were all `__thiscall` methods
+mislabeled `__cdecl` in the Ghidra autogen / symbols (they read `this` in ECX). True `__cdecl` in
+this class are the static factories/helpers (e.g. `CreateTGreatPowerInstance` `void* __cdecl`).

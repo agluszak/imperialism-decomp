@@ -6457,7 +6457,7 @@ address|name|size|type|prototype
 4d7930|AssignSharedStringFromDescriptorNameOrDefault|150|function|void __cdecl AssignSharedStringFromDescriptorNameOrDefault(void)
 4d7a00|SetNationDisplayNameAndLocalizationSlotRef|45|function|void __thiscall SetNationDisplayNameAndLocalizationSlotRef(int arg1)
 4d7a40|LoadNationDisplayNameSharedRefFromField8|94|function|void __cdecl LoadNationDisplayNameSharedRefFromField8(void)
-4d7ae0|AddToNationMetricAtField10|15|function|void __cdecl AddToNationMetricAtField10(void)
+4d7ae0|TGreatPower::AddToNationMetricAtField10|15|function|void __thiscall AddToNationMetricAtField10(int amount)
 4d7b00|ReturnFalseNationStateActionStub|5|function|void __cdecl ReturnFalseNationStateActionStub(void)
 4d7b20|TView::ApplyJoinEmpireModeForTargetNation|161|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int arg1, int arg2)
 4d7c00|TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers|97|function|void __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1)

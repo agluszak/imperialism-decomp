@@ -142,6 +142,7 @@ address|target_cpp|ownership|note
 4b8d30|src/game/TCapacityOrder.cpp|manual|marker_sync
 4badd0|src/game/TCityProductionView.cpp|manual|marker_sync
 4bc9b0|src/game/TCityProductionView.cpp|manual|marker_sync
+4d7ae0|src/game/TGreatPower.cpp|manual|marker_sync
 4d8950|src/game/TGreatPower.cpp|manual|marker_sync
 4d89d0|src/game/TGreatPower.cpp|manual|marker_sync
 4d8c00|src/game/TGreatPower.cpp|manual|marker_sync
