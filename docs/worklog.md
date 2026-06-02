@@ -1695,3 +1695,20 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
    - `just stats`: aligned functions **130**, average similarity **9.52%**.
+
+### Diplomacy relation-code-4 slot (2026-06-02, cont.)
+
+1. Promoted manager slot `0x7c`, `0x004efeb0` `ApplyRelationCode4AndQueueEvent18ForTargetNation(int,int,int)`: stub -> **92.31%**.
+2. Corrected the Ghidra prototype: the autogen bucket says two args and misreads the third stack arg as `unaff_retaddr`, but caller evidence from `TGreatPower`/`TCountry` and the body shape show a real `ret 0xc` manager method taking `(sourceNation, targetNation, updateMode)`.
+3. Behavior recovered:
+   - delegates to confirmed slot `0x78` with relation code `4`;
+   - when `updateMode` byte is `1`, delegates to slot `0x80` with propagation mode `0`;
+   - if the target terrain descriptor exists, calls terrain slot `0x94` with action code `0x139`;
+   - queues inter-nation event `0x18` as `(target, source)`.
+4. Added generated facade rows for manager slot `0x7c` and terrain descriptor slot `0x94`.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004efeb0` **92.31%**, `0x004f1b40` **100.00%**, `0x004eff40` **27.91%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: aligned functions **130**, average similarity **9.53%**.

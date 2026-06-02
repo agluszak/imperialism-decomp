@@ -69,6 +69,7 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot78Final|void|0x78 / 4|int,int,int|high|set relation code with final side-effect flag|index|thiscall|zero||confirmed|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_ApplyRelationCode4Slot7C|void|0x7C / 4|int,int,int|high|apply relation code 4 and queue target event|index|thiscall|zero||confirmed|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectTargetBySideEffectSlot94|int|0x94 / 4|int,int,int|medium|select diplomacy target matching side-effect code|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectFromRelationshipListSlot98|int|0x98 / 4|int,int|medium|select nation slot from collected relationship entries|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetStandingScoreSlot28|void|0x28 / 4|int,int,int|medium|set diplomacy standing score for nation pair|index|thiscall|zero||provisional|DiplomacyTurnStateManager
@@ -84,6 +85,7 @@ src/game/diplomacy_state.cpp|VCall_NationState_NotifyAllianceSlot214|void|0x214 
 src/game/diplomacy_state.cpp|VCall_NationState_NotifyWarResetSlot290|void|0x290 / 4||medium|notify nation-state war relation reset|index|thiscall|zero||provisional|NationState
 src/game/diplomacy_state.cpp|VCall_TerrainDescriptor_SetDiplomacyStandingSlot48|void|0x48 / 4|int,int|medium|set terrain diplomacy standing toward nation|index|thiscall|zero||provisional|TerrainDescriptor
 src/game/diplomacy_state.cpp|VCall_TerrainDescriptor_HasStandingPropagationBridgeSlot90|char|0x90 / 4|int|medium|terrain standing propagation bridge query|index|thiscall|zero||provisional|TerrainDescriptor
+src/game/diplomacy_state.cpp|VCall_TerrainDescriptor_NotifyRelationCode4TargetSlot94|void|0x94 / 4|int,int|medium|notify terrain target of relation-code-4 action|index|thiscall|zero||provisional|TerrainDescriptor
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag28|void|0x28 / 4|int,int,int|high|set flag28
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot4C|void|0x4C / 4|int,int|high|terrain slot4C
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot38|void|0x38 / 4|int|high|terrain slot38

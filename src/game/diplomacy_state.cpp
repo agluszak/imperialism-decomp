@@ -86,6 +86,7 @@ struct TerrainDescriptor {
   virtual void td_slot28() = 0; virtual void td_slot29() = 0; virtual void td_slot30() = 0; virtual void td_slot31() = 0;
   virtual void td_slot32() = 0; virtual void td_slot33() = 0; virtual void td_slot34() = 0; virtual void td_slot35() = 0;
   virtual char HasStandingPropagationBridgeSlot90(int targetNation) = 0; // 36 (0x90)
+  virtual void NotifyRelationCode4TargetSlot94(int sourceNation, int actionCode) = 0; // 37 (0x94)
 };
 
 struct NationState {
@@ -180,7 +181,8 @@ struct DiplomacyTurnStateManager {
   virtual void SetRelationCodeSlot74WithMode(int sourceNation, int targetNation, int relationCode, int updateMode) = 0; // 29 (0x74)
   virtual void SetRelationCodeSlot78Final(int sourceNation, int targetNation,
                                           int relationCode) = 0; // 30 (0x78)
-  virtual void slot_7c() = 0; // 31 (0x7c)
+  virtual void ApplyRelationCode4Slot7c(int sourceNation, int targetNation,
+                                        int updateMode) = 0; // 31 (0x7c)
   virtual void PropagateRelationSideEffectSlot80(int sourceNation, int targetNation, int updateMode) = 0; // 32 (0x80)
   virtual char HasFlag84ForNationSlot84(int nation) = 0; // 33 (0x84)
   virtual void BuildRelationshipListSlot88(int sourceNation, int targetNation, void* list) = 0; // 34 (0x88)
@@ -230,6 +232,9 @@ struct DiplomacyTurnStateManager {
   char IsPrimaryNationSlotIndex(int nationSlot);
   void SetNationPairDiplomacyRelationCodeFinal(int sourceNationSlot, int targetNationSlot,
                                                int relationCode);
+  void ApplyRelationCode4AndQueueEvent18ForTargetNation(int sourceNationSlot,
+                                                        int targetNationSlot,
+                                                        int updateMode);
   int CountMajorAllianceRelationsForNation(int sourceNationSlot);
   int GetNthAlliedMajorNationSlotForNation(int nthAllianceIndex, int sourceNationSlot);
   void SetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot,
@@ -848,6 +853,24 @@ short DiplomacyTurnStateManager::GetNationPairDiplomacyRelationCode(int sourceNa
 void DiplomacyTurnStateManager::SetNationPairDiplomacyRelationCodeFinal(
     int sourceNationSlot, int targetNationSlot, int relationCode) {
   SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, relationCode, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x004efeb0
+void DiplomacyTurnStateManager::ApplyRelationCode4AndQueueEvent18ForTargetNation(
+    int sourceNationSlot, int targetNationSlot, int updateMode) {
+  SetRelationCodeSlot78Final(sourceNationSlot, targetNationSlot, 4);
+  if (static_cast<char>(updateMode) == 1) {
+    PropagateRelationSideEffectSlot80(sourceNationSlot, targetNationSlot, 0);
+  }
+
+  TerrainDescriptor* targetTerrain = reinterpret_cast<TerrainDescriptor*>(
+      g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)]);
+  if (targetTerrain != 0) {
+    targetTerrain->NotifyRelationCode4TargetSlot94(sourceNationSlot, 0x139);
+    QueueInterNationEventRecordDeduped(g_pInterNationEventQueueManager, 0x18,
+                                       static_cast<short>(targetNationSlot),
+                                       static_cast<short>(sourceNationSlot), 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f2050

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCommandLineParseContextState_0066FEA4::CCommandLineInfo
-// ghidra_proto void __thiscall CCommandLineInfo(void)
-// FUNCTION: IMPERIALISM 0x00622690
-undefined4 CCommandLineInfo(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext
 // ghidra_proto void __thiscall DestructCommandLineParseContext(void)
 // FUNCTION: IMPERIALISM 0x0062271b
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631dff(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631e2f(void)
 // FUNCTION: IMPERIALISM 0x00631e2f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631e2f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631e8b
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631e8b(void)
+// FUNCTION: IMPERIALISM 0x00631e8b
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631e8b(void)
 {
   return 0;
 }

@@ -1203,14 +1203,6 @@ undefined4 IsNationSlotInPrimaryGroupB(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation
-// ghidra_proto void __thiscall ApplyRelationCode4AndQueueEvent18ForTargetNation(sdword sourceNationSlot, sdword targetNationSlot)
-// FUNCTION: IMPERIALISM 0x004efeb0
-undefined4 ApplyRelationCode4AndQueueEvent18ForTargetNation(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn
 // ghidra_proto void __thiscall ApplyDiplomacyInterNationStatesForTurn(void)
 // FUNCTION: IMPERIALISM 0x004f01e0
@@ -3999,6 +3991,14 @@ undefined4 OrphanCallChain_C9_I49_0050d5b0(void)
 // ghidra_proto void __cdecl EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
 // FUNCTION: IMPERIALISM 0x0050d680
 undefined4 EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_IsPointInsideHitRegion_At0050d6c0
+// ghidra_proto bool __cdecl WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
+// FUNCTION: IMPERIALISM 0x0050d6c0
+undefined4 WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
 {
   return 0;
 }

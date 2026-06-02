@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60
-// ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
-// FUNCTION: IMPERIALISM 0x0059ee60
-undefined4 Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
-{
-  return 0;
-}
-
 // ghidra_name AddOrderNodeToHeadAndReassignNationCounters
 // ghidra_proto void __thiscall AddOrderNodeToHeadAndReassignNationCounters(void)
 // FUNCTION: IMPERIALISM 0x0059eea0
@@ -3999,6 +3991,14 @@ undefined4 CreateTTradeTotalsLineInstance(void)
 // ghidra_proto void * __cdecl GetTTradeTotalsLineClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005c18e0
 undefined4 GetTTradeTotalsLineClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
+// ghidra_proto void * __thiscall ConstructTTradeTotalsLineBaseState(void)
+// FUNCTION: IMPERIALISM 0x005c1900
+undefined4 ConstructTTradeTotalsLineBaseState(void)
 {
   return 0;
 }

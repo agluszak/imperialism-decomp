@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
-// FUNCTION: IMPERIALISM 0x00607711
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
 // ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 // FUNCTION: IMPERIALISM 0x00607723
@@ -3999,6 +3991,14 @@ undefined4 InitializeAppDocTemplateManagerAndFlushPending(void)
 // ghidra_proto void __cdecl ParseCommandLine(void)
 // FUNCTION: IMPERIALISM 0x00622632
 undefined4 ParseCommandLine(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommandLineParseContextState_0066FEA4::CCommandLineInfo
+// ghidra_proto void __thiscall CCommandLineInfo(void)
+// FUNCTION: IMPERIALISM 0x00622690
+undefined4 CCommandLineInfo(void)
 {
   return 0;
 }

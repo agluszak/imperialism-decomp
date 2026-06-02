@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
-// ghidra_proto void * __thiscall ConstructTTradeTotalsLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005c1900
-undefined4 ConstructTTradeTotalsLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTradeTotalsLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005c1930
@@ -3999,6 +3991,14 @@ undefined4 aullshr(void)
 // ghidra_proto void __thiscall InvokeCallbackNTimesWithSehGuard(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005e7e10
 undefined4 InvokeCallbackNTimesWithSehGuard(void)
+{
+  return 0;
+}
+
+// ghidra_name SehCleanup_InvokeCallbackNTimes
+// ghidra_proto void __cdecl SehCleanup_InvokeCallbackNTimes(void)
+// FUNCTION: IMPERIALISM 0x005e7e89
+undefined4 SehCleanup_InvokeCallbackNTimes(void)
 {
   return 0;
 }
