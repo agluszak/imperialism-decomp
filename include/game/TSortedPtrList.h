@@ -9,13 +9,8 @@ extern "C" char g_vtblTSortedPtrList;
 // VTABLE: IMPERIALISM 0x00649068
 class TSortedPtrList : public TIndexAndRankList {
  public:
-  union {
-    int reserved14;
-    struct {
-      short relationType;
-      short pad16;
-    } rel;
-  };
+  short relationType;
+  short pad16;
 
   TSortedPtrList() : TIndexAndRankList() {
     *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedPtrList);

@@ -107,14 +107,6 @@ undefined4 DestructTUnitAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name RegisterUnitOrderWithOwnerManager
-// ghidra_proto void __cdecl RegisterUnitOrderWithOwnerManager(void)
-// FUNCTION: IMPERIALISM 0x005c2530
-undefined4 RegisterUnitOrderWithOwnerManager(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_005c2610
 // ghidra_proto void __cdecl OrphanRetStub_005c2610(void)
 // FUNCTION: IMPERIALISM 0x005c2610

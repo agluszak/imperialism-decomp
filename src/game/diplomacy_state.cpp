@@ -363,7 +363,7 @@ DiplomacyTurnStateManager* DiplomacyTurnStateManager::thunk_ConstructDiplomacyTu
 // FUNCTION: IMPERIALISM 0x004ee7a0
 void DiplomacyTurnStateManager::InitializeDiplomacyTurnStateManagerDefaults() {
   TSortedPtrList* queue = new TSortedPtrList();
-  queue->rel.relationType = 4;
+  queue->relationType = 4;
   pendingWarTransitionQueue18d4 = queue;
 
   register int zero = 0;
@@ -937,7 +937,7 @@ void DiplomacyTurnStateManager::BuildRelationshipListSlot88(int sourceNationSlot
 int DiplomacyTurnStateManager::SelectNationSlotFromCollectedStandingEntriesSlot98(
     int sourceNationSlot, int primaryOnlyFlag) {
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
-  list->rel.relationType = 4;
+  list->relationType = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   if (list->count < 1) {
     return -1;
@@ -960,7 +960,7 @@ int DiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot94
   }
 
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
-  list->rel.relationType = 4;
+  list->relationType = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   int entryIndex = list->count;
   if (entryIndex < 1) {

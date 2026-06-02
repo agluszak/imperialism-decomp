@@ -3675,14 +3675,6 @@ undefined4 thunk_DestroyTBeachheadMission_At00402ee6(void)
   return 0;
 }
 
-// ghidra_name thunk_RegisterUnitOrderWithOwnerManager
-// ghidra_proto void __cdecl thunk_RegisterUnitOrderWithOwnerManager(void)
-// FUNCTION: IMPERIALISM 0x00402eeb
-undefined4 thunk_RegisterUnitOrderWithOwnerManager(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder
 // ghidra_proto void __thiscall thunk_HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(STurnInstruction_Civi * pInstruction)
 // FUNCTION: IMPERIALISM 0x00402ef0

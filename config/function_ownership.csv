@@ -33,6 +33,7 @@ address|target_cpp|ownership|note
 402bda|src/game/TGreatPower.cpp|manual|marker_sync
 402c11|src/game/TShipyardCluster.cpp|manual|marker_sync
 402e5f|src/game/TGreatPower.cpp|manual|marker_sync
+402eeb|src/game/TGreatPower.cpp|manual|marker_sync
 4032fb|src/game/trade_screen.cpp|manual|marker_sync
 40376a|src/game/TGreatPower.cpp|manual|marker_sync
 403837|src/game/diplomacy_state.cpp|manual|marker_sync
@@ -494,6 +495,7 @@ address|target_cpp|ownership|note
 5933e0|src/game/TSoundPlayer.cpp|manual|marker_sync
 596100|src/game/map_quickdraw_overlay.cpp|manual|marker_sync
 59a180|src/game/trade_screen.cpp|manual|marker_sync
+5c2530|src/game/TGreatPower.cpp|manual|marker_sync
 5c2940|src/game/TGreatPower.cpp|manual|marker_sync
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync
 5e2b50|src/game/noop_slots.cpp|manual|marker_sync

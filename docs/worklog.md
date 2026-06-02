@@ -1843,3 +1843,53 @@ Reviewer-guided structural rewrite of `0x004df010`, **20.48% -> 44.49%**:
 2. Promoted `0x004e1d50` from a free `__fastcall` shim to `TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2)`. Its thunk `0x00403c15` now forwards the two stack args from caller `0x005416b0`; the original thunk is a single jump and remains a thunk-shape residual.
 3. Added local vtable-view structs only for non-`TGreatPower` receivers used inside the method (`TDiplomacyManagerAdvisoryVtbl` slot `0x44`, `TUiRuntimeDecisionPromptVtbl` slot `0x94`). These are not pass-through shims; they let the method call other recovered objects with normal virtual syntax.
 4. Validation batched for the cleanup: `just build` and `just detect` clean; `rg "VCall_GreatPower|GreatPower_CallSlot" src/game/TGreatPower.cpp` returns no matches; `0x004e1d50` improved **33.71% -> 40.24%** after dropping false null checks; `0x004dc540` held **72.73%**; `0x005416b0` remains **23.08%**.
+
+### TGreatPower non-self receivers: typed view-class dispatch + TUnitOrderState recovery (2026-06-02, cont.)
+
+Landed the in-flight class-recovery pass that moves `TGreatPower.cpp` off generic
+`vcall_runtime` / `Obj_*AtSlot` helpers for **grounded non-`TGreatPower` receivers**, and
+recovered the `TUnitOrderState` -> `TCivWorkOrderState` hierarchy. Net **+2 aligned (143 -> 145
+by reccmp function metric), 0 regressions** (verified by full HEAD-vs-WIP 100%-set diff).
+
+1. **Typed view-class dispatch.** Replaced the `vcall_runtime`/`Obj_QueryIntAtSlot`/
+   `Obj_CallNoArgAtSlot`/`Obj_CallIntArgAtSlot`/`Obj_CallPtrArgAtSlot`/`Obj_ReleaseAndClearSlot`
+   helper family with `static_cast<View*>(...)->Method()` calls over local abstract view
+   classes: `TStreamView`, `TListObject`, `TQueueObject`, `TMinisterObject`,
+   `TRelationManagerObject`, `TDiplomacyTurnStateManagerView`, `TUiRuntimeContextView`,
+   `TTerrainDescriptorView`, `TSecondaryNationStateView`, `TTrackedObjectView`,
+   `TNationInteractionStateManagerView`. Object release/clear now goes through small typed
+   `ReleaseAndClear1C/24/58<T>` templates. These give the recovered objects normal virtual
+   syntax and supersede Active Constraint #4 for **grounded** receivers (facades still stand
+   in for unknown/unstable receivers).
+2. **TUnitOrderState / TCivWorkOrderState.** Recovered the order-state hierarchy and
+   reassigned ownership in `config/symbols.csv` + `config/function_ownership.csv`:
+   - `0x005c2530` `TUnitOrderState::RegisterUnitOrderWithOwnerManager` (4-arg `thiscall`):
+     **0% stub -> 89.13%** as a real method that resolves the owner manager from
+     `g_apTerrainTypeDescriptorTable[+0x44]` or `g_apNationStates[+0x89c]`, dispatches
+     `TUnitOrderOwnerManagerView::VTableSlot12`, and stamps a unique id off
+     `g_pLocalizationTable[25]`.
+   - `0x005c2940` `TCivWorkOrderState::InitializeCivWorkOrderState`: **96.77% -> 100.00%**
+     (now calls the real base `RegisterUnitOrderWithOwnerManager` instead of a
+     `reinterpret_cast` thunk); callsites in `CommitCityRecruitmentOrderDelta` /
+     `HandleTurnInstruction_Civi_*` cast the order object to `TCivWorkOrderState*`.
+   - Removed the two stubs (`0x00402eeb`, `0x005c2530`) from `stubs_part002/020`. Their ILT
+     thunks (`0x00402eeb`, `0x00404b33`) stay at 0% as the known single-`jmp`-vs-call/ret
+     thunk-shape residual.
+3. **g_pLocalizationTable direct read.** `ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`
+   (`0x004dd470`) now reads `g_pLocalizationTable` directly (dropping the
+   `ReadLocalizationRuntimeView()` null guard the original does not emit): **-> 100.00%**.
+4. **TSortedPtrList layout.** Flattened the `reserved14` union to `short relationType; short pad16;`
+   and updated `diplomacy_state.cpp` callsites (`->rel.relationType` -> `->relationType`).
+5. **Pass completion fixes (this session).** The handed-off tree did not build: re-added the
+   missed `missionQueue` conversions (`GetCountSlot48`/`Call54`/`Call18`/`AddTail30`) in
+   `InitializeMapActionCandidateStateAndQueueMission` and `QueueMapActionMissionFromCandidateAndMarkState`,
+   retyped `pad_44_ptr` to `TListObject*` (same 4-byte size, no layout change), and
+   `#include "game/TIndexAndRankList.h"` so the `relationshipList->slot24()` (byte `0x24`) call
+   resolves to the real foundation class.
+6. **Validation.** `just normalize-markers` + `just build` + `just detect` clean. Targets:
+   `0x004df010` **44.49% -> 45.13%**, `0x004e9ed0` **100%** held, `0x004dd470` **100%**,
+   `0x005c2940` **100%**, `0x005c2530` **89.13%**, `0x004dc540` **72.73%** held. Full
+   HEAD-vs-WIP 100%-set diff: gained `0x004dd470` + `0x005c2940`, **lost none**.
+   `just compare-canaries` `below_floor=0` (all stretch_met); `just vtable-gate` passed;
+   `just stats` aligned **145**, avg similarity **9.67%**, `dropped duplicate addresses: 0`.
+   `just sync-ownership` (0 updates) + `just regen-stubs` re-run clean.
