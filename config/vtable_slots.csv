@@ -38,9 +38,7 @@ src/game/TGreatPower.cpp|VCall_GreatPower_ResetDiplomacyLevelForNationSlot12|voi
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot13|void|0x13|int,int|high|great power slot13; index 0x13 byte 0x04c|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_AdjustTreasurySlot0E|void|0x0E|int|high|treasury adjust|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_AdjustResourceDeltaSlot66|void|0x66|int|high|adjust delta slot66|index|thiscall|none||provisional|TGreatPower
-src/game/TGreatPower.cpp|VCall_GreatPower_CanSetGrantValueSlot77|char|0x77|int|high|grant guard|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_DeleteSelfSlot01|void|1|int|high|delete self slot|index|thiscall|none||provisional|TGreatPower
-src/game/TGreatPower.cpp|VCall_GreatPower_CanDispatchViaUiSlot21|char|0x21||high|dispatch gate slot21|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_DispatchFallbackActionSlot6C|void|0x6C|int,int,int|high|fallback dispatch slot6C|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_NeedUpdateSlot45|void|0x45|int,int|high|need update slot45|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_GetNodeContextSlot40|int|0x40||high|node context slot40|byte_offset|thiscall|none||provisional|TGreatPower

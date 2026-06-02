@@ -591,7 +591,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(30);
   virtual short GetDiplomacyState1C6ByTarget(short targetNationSlot);  // slot 0x1f
   TGREATPOWER_VTABLE_SLOT(32);
-  virtual char CanDispatchViaUiSlot21_Provisional(void) = 0;
+  virtual bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);  // slot 0x21
   TGREATPOWER_VTABLE_SLOT(34);
   TGREATPOWER_VTABLE_SLOT(35);
   TGREATPOWER_VTABLE_SLOT(36);
@@ -677,7 +677,7 @@ public:
   virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);  // slot 0x74
   virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);  // slot 0x75
   TGREATPOWER_VTABLE_SLOT(118);
-  virtual char CanSetGrantValueSlot77_Provisional(int grantValue) = 0;
+  virtual bool CanAffordDiplomacyGrantEntryForTarget(short targetNationId, unsigned short proposedGrantEntry);  // slot 0x77
   TGREATPOWER_VTABLE_SLOT(120);
   TGREATPOWER_VTABLE_SLOT(121);
   virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost);  // slot 0x7a
@@ -902,11 +902,8 @@ public:
   void ResetNationDiplomacyProposalQueue(void);
   void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                     int isBoycottEnabled);
-  bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
   void OrphanVtableAssignStub_004ddd20(void);
   void RebuildNationResourceYieldsAndRollField134Into136(void);
-  bool CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
-                                             unsigned short proposedGrantEntry);
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   void InitializeMapActionCandidateStateAndQueueMission(int arg1);
   void SelectAndQueueAdvisoryMapMissionsCase16(void);
@@ -3329,15 +3326,15 @@ void TGreatPower::OrphanVtableAssignStub_004ddd20(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ddd50
+#pragma optimize("y", on)
 bool TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) {
-  unsigned char result = 1;
-
-  short activeCounter = this->GetDiplomacyCounterA2();
-  if (activeCounter <= 0 || this->diplomacyState1c6[targetNationSlot] >= 0) {
-    result = 0;
+  bool result = true;
+  if (this->GetDiplomacyCounterA2() <= 0 || this->diplomacyState1c6[targetNationSlot] >= 0) {
+    result = false;
   }
-  return result != 0;
+  return result;
 }
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004ddfc0
 void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
@@ -3470,7 +3467,7 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
   bool accepted = true;
 
   if (newGrantRaw != oldGrantRaw) {
-    if (newGrantRaw != kGrantClear && this->CanSetGrantValueSlot77_Provisional(newGrantRaw) == 0) {
+    if (newGrantRaw != kGrantClear && this->CanAffordDiplomacyGrantEntryForTarget(targetNation, newGrantRaw) == 0) {
       accepted = false;
     } else {
       if (oldGrantRaw != kGrantClear) {

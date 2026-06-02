@@ -235,20 +235,6 @@ static __inline void VCall_GreatPower_CallSlotB3(void* object) {
   fn(object);
 }
 
-// dispatch gate slot21; class=TGreatPower; status=provisional
-static __inline char VCall_GreatPower_CanDispatchViaUiSlot21(void* object) {
-  typedef char (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x21)));
-  return fn(object);
-}
-
-// grant guard; class=TGreatPower; status=provisional
-static __inline char VCall_GreatPower_CanSetGrantValueSlot77(void* object, int arg0) {
-  typedef char (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x77)));
-  return fn(object, arg0);
-}
-
 // delete self slot; class=TGreatPower; status=provisional
 static __inline void VCall_GreatPower_DeleteSelfSlot01(void* object, int arg0) {
   typedef void (__fastcall * Fn)(void*, int);

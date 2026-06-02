@@ -6576,7 +6576,7 @@ address|name|size|type|prototype
 4ddc30|TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals|143|function|void __thiscall ApplyIndexedResourceDeltaAndAdjustNationTotals(int arg1, int arg2, int arg3)
 4ddcf0|AddShortDeltaToNationCounterAtOffset198|23|function|void __cdecl AddShortDeltaToNationCounterAtOffset198(void)
 4ddd20|TGreatPower::OrphanVtableAssignStub_004ddd20|18|function|void __thiscall OrphanVtableAssignStub_004ddd20(void)
-4ddd50|TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget|41|function|void __thiscall IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(void)
+4ddd50|TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget|41|function|bool __thiscall IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot)
 4ddd90|OrphanCallChain_C2_I33_004ddd90|118|function|void __cdecl OrphanCallChain_C2_I33_004ddd90(void)
 4dde30|OrphanCallChain_C1_I25_004dde30|60|function|char __cdecl OrphanCallChain_C1_I25_004dde30(void)
 4dde80|OrphanLeaf_NoCall_Ins04_004dde80|19|function|void __cdecl OrphanLeaf_NoCall_Ins04_004dde80(void)

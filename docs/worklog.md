@@ -1998,3 +1998,19 @@ stub (sync-ownership +3, regen-stubs), and dropped the dead facade (regen 127 ->
 Aggregate: build/detect clean, `stats` aligned **145 -> 147** (+2), `compare-canaries`
 `below_floor=0`, `vtable-gate` passed. Lever: small leaf/getter slot bodies that read a single
 field are quick 100%s once FPO-wrapped to match the original's frame-pointer omission.
+
+### TGreatPower slots 0x21/0x77: wired owned bodies + reconciled signatures (2026-06-02, cont.)
+
+Wired the two remaining sig-mismatch cluster-adjacent slots whose bodies were already owned but
+dead/unwired:
+1. `0x21` `0x004ddd50` `IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short)->bool` =
+   `GetDiplomacyCounterA2()>0 && diplomacyState1c6[t]<0`. Fixed the stale `symbols.csv` prototype
+   (`void/void` -> `bool/short`), switched the body to a `bool` result (so the return is `mov al,bl`
+   not `test/setne`) and FPO-wrapped it: **0% slot / 70% body -> 100%**.
+2. `0x77` `0x004de700` `CanAffordDiplomacyGrantEntryForTarget(short targetNationId, unsigned short
+   proposedGrantEntry)->bool`. The provisional was 1-arg; the real method takes 2, so the callsite
+   in slot 0x75's body `0x004de340` now passes `(targetNation, newGrantRaw)`. Body **62%**
+   (model-correct first pass).
+For both: replaced provisional decls with real virtuals at slot positions, removed redundant
+non-virtual decls, dropped the two dead facades (regen 124 -> 122). Aggregate: build/detect clean,
+`stats` aligned **147 -> 148** (+1, from 0x21), `compare-canaries` `below_floor=0`.
