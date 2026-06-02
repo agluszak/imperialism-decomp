@@ -3492,54 +3492,76 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
 #pragma optimize("y", on)
 #endif
 void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
-  const int kEvent03 = 3;
-  const int kEvent04 = 4;
-  const int kEvent05 = 5;
-  const int kEvent02 = 2;
+  struct DiplomacyProposalRecord {
+    short proposalCode;
+    short targetNationSlot;
+  };
 
-  SharedRefTripleScope sharedRefs;
-  short* proposalEntry = ProposalQueue_GetEntryAt1Based(this->proposalQueue, proposalIndex);
-  short proposalCode = proposalEntry[0];
-  short targetNation = proposalEntry[1];
-  int sourceNation = static_cast<int>(this->nationSlot);
-  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+  // Three independent destructible shared-string locals, constructed in order
+  // and released in reverse. Modeling them as one aggregate scope object adds an
+  // EH-state nesting level and reshapes the function; the original has three
+  // separate locals (construct 0/1/2, advance ehstate after each).
+  StringShared tmp0;
+  StringShared tmp1;
+  StringShared tmp2;
+  tmp0.InitFromEmpty();
+  tmp1.InitFromEmpty();
+  tmp2.InitFromEmpty();
 
-  switch (static_cast<int>(proposalCode) - 0x12D) {
+  DiplomacyProposalRecord* proposal = reinterpret_cast<DiplomacyProposalRecord*>(
+      ProposalQueue_GetEntryAt1Based(this->proposalQueue, proposalIndex));
+
+  switch (static_cast<int>(proposal->proposalCode) - 0x12D) {
   case 0:
-    GreatPower_CallSlot13(this, static_cast<int>(targetNation), 1);
-    QueueInterNationEventRecordDedup(kEvent03, sourceNation, static_cast<int>(targetNation));
+    GreatPower_CallSlot13(this, static_cast<int>(proposal->targetNationSlot), 1);
+    QueueInterNationEventRecordDedup(3, this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot));
     break;
 
   case 1: {
-    Diplomacy_SetRelationCode78(diplomacyManager, sourceNation, static_cast<int>(targetNation), 2);
-    QueueInterNationEventRecordDedup(kEvent04, sourceNation, static_cast<int>(targetNation));
-    int nationSlot = 0;
-    for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-      if (Diplomacy_HasPolicyWithNation(diplomacyManager, nationSlot,
-                                        static_cast<int>(targetNation)) != 0 &&
-          Diplomacy_HasPolicyWithNation(diplomacyManager, sourceNation, nationSlot) == 0) {
-        GreatPower_ApplyPolicyForNation(this, nationSlot, 2, static_cast<int>(targetNation));
+    Diplomacy_SetRelationCode78(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                this->nationSlot,
+                                static_cast<int>(proposal->targetNationSlot), 2);
+    QueueInterNationEventRecordDedup(4, this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot));
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+      if (Diplomacy_HasPolicyWithNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                        nationSlot,
+                                        static_cast<int>(proposal->targetNationSlot)) != 0 &&
+          Diplomacy_HasPolicyWithNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                        this->nationSlot, nationSlot) == 0) {
+        GreatPower_ApplyPolicyForNation(this, nationSlot, 2,
+                                        static_cast<int>(proposal->targetNationSlot));
       }
     }
     break;
   }
 
   case 2:
-    Diplomacy_SetRelationCode78(diplomacyManager, sourceNation, static_cast<int>(targetNation), 3);
-    QueueInterNationEventRecordDedup(kEvent05, sourceNation, static_cast<int>(targetNation));
+    Diplomacy_SetRelationCode78(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                this->nationSlot,
+                                static_cast<int>(proposal->targetNationSlot), 3);
+    QueueInterNationEventRecordDedup(5, this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot));
     break;
 
   case 3: {
-    Diplomacy_SetRelationCode78(diplomacyManager, sourceNation, static_cast<int>(targetNation), 4);
-    QueueInterNationEventRecordDedup(kEvent02, sourceNation, static_cast<int>(targetNation));
-    if (Diplomacy_HasFlag84ForNation(diplomacyManager, static_cast<int>(targetNation)) != 0) {
-      int nationSlot = 0;
-      for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    Diplomacy_SetRelationCode78(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                this->nationSlot,
+                                static_cast<int>(proposal->targetNationSlot), 4);
+    QueueInterNationEventRecordDedup(2, this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot));
+    if (Diplomacy_HasFlag84ForNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                     static_cast<int>(proposal->targetNationSlot)) != 0) {
+      for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
         if (IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0 &&
-            Diplomacy_GetRelationTier(diplomacyManager, sourceNation, nationSlot) == 2 &&
-            Diplomacy_HasPolicyWithNation(diplomacyManager, nationSlot,
-                                          static_cast<int>(targetNation)) != 0) {
-          Diplomacy_SetRelationState(diplomacyManager, sourceNation, nationSlot, 1);
+            Diplomacy_GetRelationTier(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                      this->nationSlot, nationSlot) == 2 &&
+            Diplomacy_HasPolicyWithNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                          nationSlot,
+                                          static_cast<int>(proposal->targetNationSlot)) != 0) {
+          Diplomacy_SetRelationState(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                     this->nationSlot, nationSlot, 1);
         }
       }
     }
@@ -3547,9 +3569,11 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   }
 
   case 5: {
-    TerrainDescriptor_CallSlot4C(ReadTerrainDescriptorSlot(static_cast<int>(targetNation)),
-                                 sourceNation, 1);
-    QueueInterNationEventRecordDedup(kEvent03, static_cast<int>(targetNation), sourceNation);
+    TerrainDescriptor_CallSlot4C(
+        ReadTerrainDescriptorSlot(static_cast<int>(proposal->targetNationSlot)), this->nationSlot,
+        1);
+    QueueInterNationEventRecordDedup(3, static_cast<int>(proposal->targetNationSlot),
+                                     this->nationSlot);
     break;
   }
 
@@ -3557,10 +3581,13 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
     break;
   }
 
-  if (Diplomacy_HasFlag84ForNation(diplomacyManager, static_cast<int>(targetNation)) != 0 &&
-      IsNationSlotEligibleForEventProcessingFast(static_cast<int>(targetNation)) != 0) {
-    NationState_NotifyActionCode(ReadNationStateSlot(static_cast<int>(targetNation)), sourceNation,
-                                 proposalCode);
+  if (Diplomacy_HasFlag84ForNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
+                                   static_cast<int>(proposal->targetNationSlot)) != 0 &&
+      IsNationSlotEligibleForEventProcessingFast(
+          static_cast<int>(proposal->targetNationSlot)) != 0) {
+    NationState_NotifyActionCode(
+        ReadNationStateSlot(static_cast<int>(proposal->targetNationSlot)), this->nationSlot,
+        proposal->proposalCode);
   }
 }
 #if defined(_MSC_VER)
