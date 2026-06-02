@@ -697,6 +697,20 @@ static __inline void VCall_Diplomacy_CopyStandingRowColumnSlot2C(void* object, i
   fn(object, 0, arg0, arg1);
 }
 
+// count major-nation alliance relations for source nation; class=DiplomacyTurnStateManager; status=confirmed
+static __inline int VCall_Diplomacy_CountMajorAllianceRelationsSlot8C(void* object, int arg0) {
+  typedef int (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x8C / 4)));
+  return fn(object, 0, arg0);
+}
+
+// get nth allied major-nation slot for source nation; class=DiplomacyTurnStateManager; status=provisional
+static __inline int VCall_Diplomacy_GetNthAlliedMajorNationSlot90(void* object, int arg0, int arg1) {
+  typedef int (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x90 / 4)));
+  return fn(object, 0, arg0, arg1);
+}
+
 // alliance guard/asymmetric war relation predicate; class=DiplomacyTurnStateManager; status=provisional
 static __inline char VCall_Diplomacy_HasAllianceGuardSlot60(void* object, int arg0, int arg1) {
   typedef char (__fastcall * Fn)(void*, int, int, int);
@@ -737,6 +751,13 @@ static __inline void VCall_Diplomacy_SetRelationCodeSlot74WithMode(void* object,
   typedef void (__fastcall * Fn)(void*, int, int, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x74 / 4)));
   fn(object, 0, arg0, arg1, arg2, arg3);
+}
+
+// set relation code with final side-effect flag; class=DiplomacyTurnStateManager; status=confirmed
+static __inline void VCall_Diplomacy_SetRelationCodeSlot78Final(void* object, int arg0, int arg1, int arg2) {
+  typedef void (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x78 / 4)));
+  fn(object, 0, arg0, arg1, arg2);
 }
 
 // set diplomacy standing score for nation pair; class=DiplomacyTurnStateManager; status=provisional

@@ -178,13 +178,15 @@ struct DiplomacyTurnStateManager {
   virtual void slot_6c() = 0; // 27 (0x6c)
   virtual short GetRelationTierSlot70(int sourceNation, int targetNation) = 0; // 28 (0x70)
   virtual void SetRelationCodeSlot74WithMode(int sourceNation, int targetNation, int relationCode, int updateMode) = 0; // 29 (0x74)
-  virtual void slot_78() = 0; // 30 (0x78)
+  virtual void SetRelationCodeSlot78Final(int sourceNation, int targetNation,
+                                          int relationCode) = 0; // 30 (0x78)
   virtual void slot_7c() = 0; // 31 (0x7c)
   virtual void PropagateRelationSideEffectSlot80(int sourceNation, int targetNation, int updateMode) = 0; // 32 (0x80)
   virtual char HasFlag84ForNationSlot84(int nation) = 0; // 33 (0x84)
   virtual void BuildRelationshipListSlot88(int sourceNation, int targetNation, void* list) = 0; // 34 (0x88)
-  virtual void slot_8c() = 0; // 35 (0x8c)
-  virtual void slot_90() = 0; // 36 (0x90)
+  virtual int CountMajorAllianceRelationsSlot8c(int sourceNation) = 0; // 35 (0x8c)
+  virtual int GetNthAlliedMajorNationSlot90(int nthAllianceIndex,
+                                            int sourceNation) = 0; // 36 (0x90)
   virtual int SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceNation, int primaryOnlyFlag,
                                                                 int sideEffectCode) = 0; // 37 (0x94)
   virtual int SelectNationSlotFromCollectedStandingEntriesSlot98(int sourceNation,
@@ -226,6 +228,10 @@ struct DiplomacyTurnStateManager {
   int GetNationPairDiplomacyStandingTierCode(int sourceNationSlot, int targetNationSlot);
   short GetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot);
   char IsPrimaryNationSlotIndex(int nationSlot);
+  void SetNationPairDiplomacyRelationCodeFinal(int sourceNationSlot, int targetNationSlot,
+                                               int relationCode);
+  int CountMajorAllianceRelationsForNation(int sourceNationSlot);
+  int GetNthAlliedMajorNationSlotForNation(int nthAllianceIndex, int sourceNationSlot);
   void SetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot,
                                           int relationCode, int updateMode);
   void thunk_ProcessQueuedWarTransitions();
@@ -836,6 +842,45 @@ short DiplomacyTurnStateManager::GetNationPairDiplomacyRelationCode(int sourceNa
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationPropagationMatrixBbe[source * kNationSlotCount + target];
+}
+
+// FUNCTION: IMPERIALISM 0x004f1b40
+void DiplomacyTurnStateManager::SetNationPairDiplomacyRelationCodeFinal(
+    int sourceNationSlot, int targetNationSlot, int relationCode) {
+  SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, relationCode, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x004f2050
+int DiplomacyTurnStateManager::CountMajorAllianceRelationsForNation(int sourceNationSlot) {
+  int allianceCount = 0;
+  short* relationCursor = &relationPropagationMatrixBbe[sourceNationSlot * kNationSlotCount];
+  int remainingMajorNationSlots = 7;
+  do {
+    if (*relationCursor == 2) {
+      allianceCount++;
+    }
+    relationCursor++;
+    remainingMajorNationSlots--;
+  } while (remainingMajorNationSlots != 0);
+  return allianceCount;
+}
+
+// FUNCTION: IMPERIALISM 0x004f2090
+int DiplomacyTurnStateManager::GetNthAlliedMajorNationSlotForNation(int nthAllianceIndex,
+                                                                    int sourceNationSlot) {
+  int allianceOrdinal = 0;
+  int candidateNationSlot = 0;
+  do {
+    if (allianceOrdinal == nthAllianceIndex + 1) {
+      return candidateNationSlot - 1;
+    }
+    if (relationPropagationMatrixBbe[sourceNationSlot * kNationSlotCount + candidateNationSlot] ==
+        2) {
+      allianceOrdinal++;
+    }
+    candidateNationSlot++;
+  } while (candidateNationSlot < 7);
+  return candidateNationSlot - 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004f1f50

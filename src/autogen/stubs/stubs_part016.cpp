@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x00535640
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x00535660
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionSlot20(void)
-// FUNCTION: IMPERIALISM 0x00535680
-undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::DestroyTScatteredShipsMission
 // ghidra_proto void * __thiscall DestroyTScatteredShipsMission(void)
 // FUNCTION: IMPERIALISM 0x005356a0
@@ -3999,6 +3975,30 @@ undefined4 PruneInactiveTaskForceOrderHead(void)
 // ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
 // FUNCTION: IMPERIALISM 0x005540b0
 undefined4 ApplyMapOrderTypeAndQueue(void)
+{
+  return 0;
+}
+
+// ghidra_name ResolveMapOrderCommandFromActionContext
+// ghidra_proto void __thiscall ResolveMapOrderCommandFromActionContext(int arg1)
+// FUNCTION: IMPERIALISM 0x00554300
+undefined4 ResolveMapOrderCommandFromActionContext(void)
+{
+  return 0;
+}
+
+// ghidra_name ResolveMapOrderCommandFromProvinceContext
+// ghidra_proto void __thiscall ResolveMapOrderCommandFromProvinceContext(int arg1)
+// FUNCTION: IMPERIALISM 0x00554460
+undefined4 ResolveMapOrderCommandFromProvinceContext(void)
+{
+  return 0;
+}
+
+// ghidra_name CanQueueMapOrderForProvinceContext
+// ghidra_proto void __thiscall CanQueueMapOrderForProvinceContext(int arg1)
+// FUNCTION: IMPERIALISM 0x00554590
+undefined4 CanQueueMapOrderForProvinceContext(void)
 {
   return 0;
 }

@@ -1299,34 +1299,10 @@ undefined4 ShowRelationCodeNoticeForNationPairIfRelevant(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::SetNationPairDiplomacyRelationWithFinalFlag
-// ghidra_proto void __thiscall SetNationPairDiplomacyRelationWithFinalFlag(int sourceNationSlot, int targetNationSlot, int relationCode)
-// FUNCTION: IMPERIALISM 0x004f1b40
-undefined4 SetNationPairDiplomacyRelationWithFinalFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::LookupOrderCompatibilityMatrixValue
 // ghidra_proto short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass)
 // FUNCTION: IMPERIALISM 0x004f1f20
 undefined4 LookupOrderCompatibilityMatrixValue(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::CountNationAllianceRelationsForNation
-// ghidra_proto int __thiscall CountNationAllianceRelationsForNation(int sourceNationSlot)
-// FUNCTION: IMPERIALISM 0x004f2050
-undefined4 CountNationAllianceRelationsForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::GetNthAlliedMajorNationSlotForNation
-// ghidra_proto void __thiscall GetNthAlliedMajorNationSlotForNation(void)
-// FUNCTION: IMPERIALISM 0x004f2090
-undefined4 GetNthAlliedMajorNationSlotForNation(void)
 {
   return 0;
 }
@@ -3999,6 +3975,30 @@ undefined4 DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
 // ghidra_proto void __stdcall CreateCityBuildingDialogBySlot(int arg1, int arg2, int arg3, int arg4, int arg5)
 // FUNCTION: IMPERIALISM 0x0050d360
 undefined4 CreateCityBuildingDialogBySlot(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C10_I80_0050d470
+// ghidra_proto int * __cdecl OrphanCallChain_C10_I80_0050d470(void)
+// FUNCTION: IMPERIALISM 0x0050d470
+undefined4 OrphanCallChain_C10_I80_0050d470(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanCallChain_C9_I49_0050d5b0
+// ghidra_proto void __cdecl OrphanCallChain_C9_I49_0050d5b0(void)
+// FUNCTION: IMPERIALISM 0x0050d5b0
+undefined4 OrphanCallChain_C9_I49_0050d5b0(void)
+{
+  return 0;
+}
+
+// ghidra_name EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
+// ghidra_proto void __cdecl EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
+// FUNCTION: IMPERIALISM 0x0050d680
+undefined4 EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
 {
   return 0;
 }
