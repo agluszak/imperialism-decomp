@@ -4,6 +4,7 @@
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
+#include "game/string_shared.h"
 #include "game/generated/vcall_facades.h"
 #include <new>
 
@@ -33,6 +34,15 @@ enum {
   kNationSlotCount = 0x17,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
+// Scratch shared-string RAII local: ctor installs the empty shared-string ref,
+// dtor releases it. ApplyDiplomacyInterNationStatesForTurn declares four of these,
+// which reproduces the MSVC EH cleanup frame and the staged construct/destruct
+// (ehstate 0->1->2->3 up, reverse down) seen in the original 0x004f01e0 body.
+struct ScratchSharedString {
+  StringShared str;
+  ScratchSharedString() { str.InitFromEmpty(); }
+};
+
 } // namespace
 
 undefined4 thunk_InitializeRangePairAndResetCursor(void);
@@ -83,7 +93,8 @@ struct TerrainDescriptor {
   virtual char HasMinorStandingLinkSlot5C(int sourceNation) = 0; // 23 (0x5c)
   virtual void td_slot24() = 0; virtual void td_slot25() = 0; virtual void td_slot26() = 0; virtual void td_slot27() = 0;
   virtual void td_slot28() = 0; virtual void td_slot29() = 0; virtual void td_slot30() = 0; virtual void td_slot31() = 0;
-  virtual void td_slot32() = 0; virtual void td_slot33() = 0; virtual void td_slot34() = 0; virtual void td_slot35() = 0;
+  virtual void td_slot32() = 0; virtual void td_slot33() = 0; virtual void td_slot34() = 0;
+  virtual void ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation, int packedRelationCode) = 0; // 35 (0x8c)
   virtual char HasStandingPropagationBridgeSlot90(int targetNation) = 0; // 36 (0x90)
   virtual void NotifyRelationCode4TargetSlot94(int sourceNation, int actionCode) = 0; // 37 (0x94)
 };
@@ -119,8 +130,13 @@ struct NationState {
   virtual void ns_slot102() = 0; virtual void ns_slot103() = 0; virtual void ns_slot104() = 0; virtual void ns_slot105() = 0;
   virtual void ns_slot106() = 0; virtual void ns_slot107() = 0; virtual void ns_slot108() = 0; virtual void ns_slot109() = 0;
   virtual void ns_slot110() = 0; virtual void ns_slot111() = 0; virtual void ns_slot112() = 0; virtual void ns_slot113() = 0;
-  virtual void ns_slot114() = 0; virtual void ns_slot115() = 0; virtual void ns_slot116() = 0; virtual void ns_slot117() = 0;
-  virtual void ns_slot118() = 0; virtual void ns_slot119() = 0; virtual void ns_slot120() = 0; virtual void ns_slot121() = 0;
+  virtual void BeginTurnDiplomacyPrePassSlot1c8() = 0; // 114 (0x1c8)
+  virtual void RefreshTurnDiplomacyStateSlot1cc() = 0; // 115 (0x1cc)
+  virtual void ns_slot116() = 0; virtual void ns_slot117() = 0;
+  virtual void RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation) = 0; // 118 (0x1d8)
+  virtual void ns_slot119() = 0;
+  virtual void ApplyTurnDiplomacyStateSlot1e0() = 0; // 120 (0x1e0)
+  virtual void ns_slot121() = 0;
   virtual void ns_slot122() = 0; virtual void ns_slot123() = 0; virtual void ns_slot124() = 0; virtual void ns_slot125() = 0;
   virtual void ns_slot126() = 0; virtual void ns_slot127() = 0; virtual void ns_slot128() = 0; virtual void ns_slot129() = 0;
   virtual void ns_slot130() = 0; virtual void ns_slot131() = 0; virtual void ns_slot132() = 0;
@@ -134,7 +150,9 @@ struct NationState {
   virtual void ns_slot158() = 0;
   virtual int CheckTransitionSlot27C(int targetNation, int sourceNation) = 0; // 159 (0x27c)
   virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) = 0; // 160 (0x280)
-  virtual void ns_slot161() = 0; virtual void ns_slot162() = 0; virtual void ns_slot163() = 0;
+  virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNation, int relationCode,
+                                                                    int mode) = 0; // 161 (0x284)
+  virtual void ns_slot162() = 0; virtual void ns_slot163() = 0;
   virtual void NotifyWarResetSlot290() = 0; // 164 (0x290)
   virtual void ns_slot165() = 0; virtual void ns_slot166() = 0; virtual void ns_slot167() = 0; virtual void ns_slot168() = 0;
   virtual void ns_slot169() = 0;
@@ -240,6 +258,8 @@ struct DiplomacyTurnStateManager {
                                           int relationCode, int updateMode);
   void thunk_ProcessQueuedWarTransitions();
   void ProcessQueuedWarTransitions();
+  void ApplyDiplomacyInterNationStatesForTurn();
+  void thunk_ApplyDiplomacyInterNationStatesForTurn();
 };
 
 struct WarTransitionPair {
@@ -964,6 +984,109 @@ int DiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot94
     VCall_RelationshipList_ReleaseSlot24(list);
   }
   return matchedNationSlot;
+}
+
+// FUNCTION: IMPERIALISM 0x004f01e0
+void DiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
+  // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
+  // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
+  if (reinterpret_cast<int*>(g_pLocalizationTable)[0x11] != 2) {
+    void** nationCursor = &g_apNationStates[6];
+    int remaining = 7;
+    do {
+      int* nation = reinterpret_cast<int*>(*nationCursor);
+      if (nation != 0 && static_cast<char>(nation[0x28]) == 0) {
+        reinterpret_cast<NationState*>(nation)->BeginTurnDiplomacyPrePassSlot1c8();
+      }
+      --nationCursor;
+      --remaining;
+    } while (remaining != 0);
+  }
+
+  // Four scratch shared strings held live across the pass (EH-RAII frame).
+  ScratchSharedString scratch0;
+  ScratchSharedString scratch1;
+  ScratchSharedString scratch2;
+  ScratchSharedString scratch3;
+
+  if (reinterpret_cast<int*>(g_pLocalizationTable)[0x11] == 2) {
+    void** nationCursor = &g_apNationStates[6];
+    int remaining = 7;
+    do {
+      if (*nationCursor != 0) {
+        reinterpret_cast<NationState*>(*nationCursor)->RefreshTurnDiplomacyStateSlot1cc();
+      }
+      --nationCursor;
+      --remaining;
+    } while (remaining != 0);
+  } else {
+    void** nationCursor = g_apNationStates;
+    int remaining = 7;
+    do {
+      if (*nationCursor != 0) {
+        reinterpret_cast<NationState*>(*nationCursor)->ApplyTurnDiplomacyStateSlot1e0();
+      }
+      ++nationCursor;
+      --remaining;
+    } while (remaining != 0);
+
+    int row = 0;       // major nation
+    int rowBase = 0;   // row * kNationSlotCount
+    do {
+      if (g_apTerrainTypeDescriptorTable[row] != 0) {
+        int col = 0;          // paired terrain/minor index
+        int colBase = 0;      // col * kNationSlotCount
+        int fieldOffset = 0xb2;
+        do {
+          if (g_apTerrainTypeDescriptorTable[col] != 0) {
+            char* rowNation = reinterpret_cast<char*>(g_apNationStates[row]);
+            short flag = *reinterpret_cast<short*>(rowNation + fieldOffset + 0x2e);
+            if (flag != -1) {
+              if (HasFlag84ForNationSlot84(col) != 0) {
+                // arg0 is the constant 0 (held in [esp+0x10] across the loop in the original).
+                reinterpret_cast<NationState*>(g_apNationStates[col])
+                    ->NotifyActionSlot94(0, flag);
+              }
+              reinterpret_cast<NationState*>(g_apNationStates[row])
+                  ->RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(row);
+            }
+            short relationCode = *reinterpret_cast<short*>(rowNation + fieldOffset);
+            if (relationCode != -1) {
+              if (relationCode == 0x133) {
+                relationSideEffectMatrix1402[rowBase + col] = 1;
+                relationSideEffectMatrix1402[row + colBase] = 1;
+                reinterpret_cast<TCountry*>(g_pInterNationEventQueueManager)
+                    ->thunk_QueueInterNationEventRecordDeduped(0x12, row, col, 0);
+              } else if (relationCode == 0x134) {
+                relationSideEffectMatrix1402[rowBase + col] = 2;
+                relationSideEffectMatrix1402[row + colBase] = 2;
+                reinterpret_cast<TCountry*>(g_pInterNationEventQueueManager)
+                    ->thunk_QueueInterNationEventRecordDeduped(0x14, row, col, 0);
+              } else if (relationCode == 0x131) {
+                if (HasPolicyWithNationSlot44(row, col) == 0) {
+                  reinterpret_cast<NationState*>(g_apNationStates[row])
+                      ->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(col, 4, -1);
+                }
+              } else {
+                reinterpret_cast<TerrainDescriptor*>(g_apTerrainTypeDescriptorTable[col])
+                    ->ApplyTerrainDiplomacyRelationFlagSlot8c(row, relationCode);
+              }
+            }
+          }
+          ++col;
+          fieldOffset += 2;
+          colBase += kNationSlotCount;
+        } while (static_cast<short>(col) < kNationSlotCount);
+      }
+      ++row;
+      rowBase += kNationSlotCount;
+    } while (static_cast<short>(row) < 7);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004020b8
+void DiplomacyTurnStateManager::thunk_ApplyDiplomacyInterNationStatesForTurn() {
+  ApplyDiplomacyInterNationStatesForTurn();
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b70

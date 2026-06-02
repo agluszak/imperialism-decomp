@@ -3971,14 +3971,6 @@ undefined4 thunk_ApplyRelationCode4AndQueueEvent18ForTargetNation(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::thunk_ApplyDiplomacyInterNationStatesForTurn
-// ghidra_proto void __thiscall thunk_ApplyDiplomacyInterNationStatesForTurn(void)
-// FUNCTION: IMPERIALISM 0x004020b8
-undefined4 thunk_ApplyDiplomacyInterNationStatesForTurn(void)
-{
-  return 0;
-}
-
 // ghidra_name TItemBoyView::thunk_ConstructTItemBoyViewBaseState
 // ghidra_proto void __thiscall thunk_ConstructTItemBoyViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x004020bd

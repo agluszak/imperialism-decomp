@@ -109,6 +109,8 @@ Maintenance:
 
 28. Diplomacy list-struct migration: replaced the two misnamed local raw structs in `diplomacy_state.cpp` with the real foundation classes — the queue (`slot 0x18d4`) is a `TSortedPtrList` (vtable `0x00649068`) and the relationship-candidate lists are the real `TSortedByRelationshipList` (vtable `0x00654d38`). Removed `ConstructTPtrListObject`, `kVtableTPtrList`, and the manual vtable writes. `InitializeDiplomacyTurnStateManagerDefaults` (`0x004ee7a0`) rose **67.72% -> 69.29%**, all neighbors held, aligned count steady at **141**. See worklog + INSTRUCTIONS note 74.
 
+29. Diplomacy turn-application reconstruction: promoted `ApplyDiplomacyInterNationStatesForTurn` (`0x004f01e0`, 739 bytes) from a 0% stub to **47.62%** as a `DiplomacyTurnStateManager` method (correcting Ghidra's stale `TSortedByRelationshipList` bucket), thunk `0x004020b8` to **100%** (aligned count 141 -> 142). Recovered the localization-phase gate, the `0x1c8`/`0x1cc`/`0x1e0` per-nation passes, the 7×23 relation loop with `relationSideEffectMatrix1402` symmetric flag writes + `0x12`/`0x14` event queueing, and the four-`StringShared` EH-RAII scratch frame. Residuals are loop-induction register allocation and the EH-state encoding. See worklog + INSTRUCTIONS note 76.
+
 Session totals (2026-06-02): Cleaned up MFC foundational class substrate and mapped TSortedByRelationshipList and TSortByPriceList subclasses. Total aligned function count increased to 138 (+8 delta).
 
 ## Active Constraints

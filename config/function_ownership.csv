@@ -27,6 +27,7 @@ address|target_cpp|ownership|note
 401e2e|src/game/thunks.cpp|manual|marker_sync
 401e65|src/game/TAmtBar.cpp|manual|marker_sync
 401ed8|src/game/thunks.cpp|manual|marker_sync
+4020b8|src/game/diplomacy_state.cpp|manual|marker_sync
 402185|src/game/TGreatPower.cpp|manual|marker_sync
 402919|src/game/TGreatPower.cpp|manual|marker_sync
 402bda|src/game/TGreatPower.cpp|manual|marker_sync
@@ -226,6 +227,7 @@ address|target_cpp|ownership|note
 4efe30|src/game/diplomacy_state.cpp|manual|marker_sync
 4efeb0|src/game/diplomacy_state.cpp|manual|marker_sync
 4eff40|src/game/diplomacy_state.cpp|manual|marker_sync
+4f01e0|src/game/diplomacy_state.cpp|manual|marker_sync
 4f09c0|src/game/diplomacy_state.cpp|manual|marker_sync
 4f0a10|src/game/diplomacy_state.cpp|manual|marker_sync
 4f0db0|src/game/diplomacy_state.cpp|manual|marker_sync

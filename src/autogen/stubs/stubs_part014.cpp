@@ -1171,14 +1171,6 @@ undefined4 IsNationSlotInPrimaryGroupB(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn
-// ghidra_proto void __thiscall ApplyDiplomacyInterNationStatesForTurn(void)
-// FUNCTION: IMPERIALISM 0x004f01e0
-undefined4 ApplyDiplomacyInterNationStatesForTurn(void)
-{
-  return 0;
-}
-
 // ghidra_name SyncNationField790FromLocalizationStateId
 // ghidra_proto void __cdecl SyncNationField790FromLocalizationStateId(void)
 // FUNCTION: IMPERIALISM 0x004f0590
