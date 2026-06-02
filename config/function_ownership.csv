@@ -469,6 +469,9 @@ address|target_cpp|ownership|note
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync
 5e2b50|src/game/noop_slots.cpp|manual|marker_sync
 5e2b70|src/game/noop_slots.cpp|manual|marker_sync
+5e6d04|src/game/carchive.cpp|manual|marker_sync
+5e6d27|src/game/carchive.cpp|manual|marker_sync
+5e6d4e|src/game/carchive.cpp|manual|marker_sync
 601b74|src/game/TPtrList.cpp|manual|marker_sync
 601b94|src/game/TPtrList.cpp|manual|marker_sync
 601baa|src/game/TIndexAndRankList.cpp|manual|marker_sync

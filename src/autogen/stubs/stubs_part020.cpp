@@ -3579,22 +3579,6 @@ undefined4 WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e
   return 0;
 }
 
-// ghidra_name TNetMgr::WriteWordToSerializedBuffer
-// ghidra_proto void * __thiscall WriteWordToSerializedBuffer(ushort value)
-// FUNCTION: IMPERIALISM 0x005e6d27
-undefined4 WriteWordToSerializedBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::WriteDwordToSerializedBuffer
-// ghidra_proto void * __thiscall WriteDwordToSerializedBuffer(uint value)
-// FUNCTION: IMPERIALISM 0x005e6d4e
-undefined4 WriteDwordToSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name NodeScanner::ReadWordFromSerializedBuffer
 // ghidra_proto void * __thiscall ReadWordFromSerializedBuffer(void * outWord)
 // FUNCTION: IMPERIALISM 0x005e6da3
@@ -3999,6 +3983,22 @@ undefined4 abnormal_termination(void)
 // ghidra_proto void __fastcall NLG_Notify1(void)
 // FUNCTION: IMPERIALISM 0x005e786d
 undefined4 NLG_Notify1(void)
+{
+  return 0;
+}
+
+// ghidra_name CaptureExceptionContextToGlobalSlots
+// ghidra_proto void __cdecl CaptureExceptionContextToGlobalSlots(void)
+// FUNCTION: IMPERIALISM 0x005e7876
+undefined4 CaptureExceptionContextToGlobalSlots(void)
+{
+  return 0;
+}
+
+// ghidra_name AppendPointerToGlobalVectorLocked
+// ghidra_proto int __cdecl AppendPointerToGlobalVectorLocked(void)
+// FUNCTION: IMPERIALISM 0x005e7890
+undefined4 AppendPointerToGlobalVectorLocked(void)
 {
   return 0;
 }

@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name NoOpVirtualStub_0061ec02
-// ghidra_proto void __cdecl NoOpVirtualStub_0061ec02(void)
-// FUNCTION: IMPERIALISM 0x0061ec02
-undefined4 NoOpVirtualStub_0061ec02(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
-// FUNCTION: IMPERIALISM 0x0061ec03
-undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AfxDeleteObject_At0061ec0f
 // ghidra_proto void __cdecl WrapperFor_AfxDeleteObject_At0061ec0f(void)
 // FUNCTION: IMPERIALISM 0x0061ec0f
@@ -3999,6 +3983,22 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a0d(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a5d(void)
 // FUNCTION: IMPERIALISM 0x00631a5d
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a5d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a8f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a8f(void)
+// FUNCTION: IMPERIALISM 0x00631a8f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a8f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b30
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b30(void)
+// FUNCTION: IMPERIALISM 0x00631b30
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b30(void)
 {
   return 0;
 }

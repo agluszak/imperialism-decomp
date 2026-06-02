@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SetWindowPos
-// ghidra_proto void __thiscall SetWindowPos(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// FUNCTION: IMPERIALISM 0x006074aa
-undefined4 SetWindowPos(void)
-{
-  return 0;
-}
-
-// ghidra_name CFrameWnd::ShowWindow
-// ghidra_proto void __thiscall ShowWindow(void)
-// FUNCTION: IMPERIALISM 0x006074f9
-undefined4 ShowWindow(void)
-{
-  return 0;
-}
-
 // ghidra_name IsWindowEnabled
 // ghidra_proto int __cdecl IsWindowEnabled(void)
 // FUNCTION: IMPERIALISM 0x00607520
@@ -3999,6 +3983,22 @@ undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 // FUNCTION: IMPERIALISM 0x0061ebfd
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpVirtualStub_0061ec02
+// ghidra_proto void __cdecl NoOpVirtualStub_0061ec02(void)
+// FUNCTION: IMPERIALISM 0x0061ec02
+undefined4 NoOpVirtualStub_0061ec02(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+// FUNCTION: IMPERIALISM 0x0061ec03
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 {
   return 0;
 }

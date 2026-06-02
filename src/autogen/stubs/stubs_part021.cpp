@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CaptureExceptionContextToGlobalSlots
-// ghidra_proto void __cdecl CaptureExceptionContextToGlobalSlots(void)
-// FUNCTION: IMPERIALISM 0x005e7876
-undefined4 CaptureExceptionContextToGlobalSlots(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendPointerToGlobalVectorLocked
-// ghidra_proto int __cdecl AppendPointerToGlobalVectorLocked(void)
-// FUNCTION: IMPERIALISM 0x005e7890
-undefined4 AppendPointerToGlobalVectorLocked(void)
-{
-  return 0;
-}
-
 // ghidra_name AppendPointerToGlobalVectorAsStatus
 // ghidra_proto int __cdecl AppendPointerToGlobalVectorAsStatus(void)
 // FUNCTION: IMPERIALISM 0x005e7920
@@ -3999,6 +3983,22 @@ undefined4 SetWindowTextOrDelegateToOwner(void)
 // ghidra_proto void __thiscall MoveWindow(int arg1, int arg2, int arg3, int arg4, int arg5)
 // FUNCTION: IMPERIALISM 0x00607469
 undefined4 MoveWindow(void)
+{
+  return 0;
+}
+
+// ghidra_name SetWindowPos
+// ghidra_proto void __thiscall SetWindowPos(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// FUNCTION: IMPERIALISM 0x006074aa
+undefined4 SetWindowPos(void)
+{
+  return 0;
+}
+
+// ghidra_name CFrameWnd::ShowWindow
+// ghidra_proto void __thiscall ShowWindow(void)
+// FUNCTION: IMPERIALISM 0x006074f9
+undefined4 ShowWindow(void)
 {
   return 0;
 }

@@ -61,6 +61,7 @@ add_executable(Imperialism
     src/game/TSortedPtrList.cpp
     src/game/stream.cpp
     src/game/cdocument.cpp
+    src/game/carchive.cpp
     src/game/thunks.cpp
     src/game/noop_slots.cpp
 )
