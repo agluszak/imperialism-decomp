@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name AfxOleCanExitApp
-// ghidra_proto void * __cdecl AfxOleCanExitApp(void)
-// FUNCTION: IMPERIALISM 0x0061f423
-undefined4 AfxOleCanExitApp(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxOleSetUserCtrl
-// ghidra_proto void __cdecl AfxOleSetUserCtrl(void)
-// FUNCTION: IMPERIALISM 0x0061f45c
-undefined4 AfxOleSetUserCtrl(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMfcThreadStateFlagDword30
-// ghidra_proto int __cdecl GetMfcThreadStateFlagDword30(void)
-// FUNCTION: IMPERIALISM 0x0061f46b
-undefined4 GetMfcThreadStateFlagDword30(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeThreadObjectVtableProxy
 // ghidra_proto void __fastcall InitializeThreadObjectVtableProxy(void * pThis)
 // FUNCTION: IMPERIALISM 0x00622448
@@ -3999,6 +3975,30 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631baf(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631bed(void)
 // FUNCTION: IMPERIALISM 0x00631bed
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631bed(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c1d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c1d(void)
+// FUNCTION: IMPERIALISM 0x00631c1d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c1d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c6d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c6d(void)
+// FUNCTION: IMPERIALISM 0x00631c6d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c6d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631cf5
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631cf5(void)
+// FUNCTION: IMPERIALISM 0x00631cf5
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631cf5(void)
 {
   return 0;
 }

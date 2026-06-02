@@ -711,18 +711,25 @@ static __inline void VCall_Diplomacy_PropagateRelationSideEffectSlot80(void* obj
   fn(object, 0, arg0, arg1, arg2);
 }
 
+// select nation slot from collected relationship entries; class=DiplomacyTurnStateManager; status=provisional
+static __inline int VCall_Diplomacy_SelectFromRelationshipListSlot98(void* object, int arg0, int arg1) {
+  typedef int (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x98 / 4)));
+  return fn(object, 0, arg0, arg1);
+}
+
+// select diplomacy target matching side-effect code; class=DiplomacyTurnStateManager; status=provisional
+static __inline int VCall_Diplomacy_SelectTargetBySideEffectSlot94(void* object, int arg0, int arg1, int arg2) {
+  typedef int (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
+  return fn(object, 0, arg0, arg1, arg2);
+}
+
 // set relation code with update mode flag; class=DiplomacyTurnStateManager; status=provisional
 static __inline void VCall_Diplomacy_SetRelationCodeSlot74WithMode(void* object, int arg0, int arg1, int arg2, int arg3) {
   typedef void (__fastcall * Fn)(void*, int, int, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x74 / 4)));
   fn(object, 0, arg0, arg1, arg2, arg3);
-}
-
-// set/query relation dispatch code and return owner nation; class=DiplomacyTurnStateManager; status=provisional
-static __inline int VCall_Diplomacy_SetRelationCodeSlot94(void* object, int arg0, int arg1, int arg2) {
-  typedef int (__fastcall * Fn)(void*, int, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
-  return fn(object, 0, arg0, arg1, arg2);
 }
 
 // set diplomacy standing score for nation pair; class=DiplomacyTurnStateManager; status=provisional
@@ -772,6 +779,27 @@ static __inline int VCall_NationState_PropagateWarTransitionSlot280(void* object
   typedef int (__fastcall * Fn)(void*, int, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x280 / 4)));
   return fn(object, 0, arg0, arg1, arg2);
+}
+
+// append/sort relationship candidate entry; class=TSortedByRelationshipList; status=provisional
+static __inline void VCall_RelationshipList_AddEntrySlot38(void* object, void* arg0) {
+  typedef void (__fastcall * Fn)(void*, int, void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
+  fn(object, 0, arg0);
+}
+
+// get one-based relationship candidate entry; class=TSortedByRelationshipList; status=provisional
+static __inline void* VCall_RelationshipList_GetEntrySlot2C(void* object, int arg0) {
+  typedef void* (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
+  return fn(object, 0, arg0);
+}
+
+// release relationship candidate list storage; class=TSortedByRelationshipList; status=provisional
+static __inline void VCall_RelationshipList_ReleaseSlot24(void* object) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x24 / 4)));
+  fn(object, 0);
 }
 
 // set terrain diplomacy standing toward nation; class=TerrainDescriptor; status=provisional

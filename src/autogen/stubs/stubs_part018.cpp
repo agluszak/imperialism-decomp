@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
-// ghidra_proto void __cdecl ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
-// FUNCTION: IMPERIALISM 0x00573940
-undefined4 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::CreateTSliderPictureInstance
-// ghidra_proto void * __cdecl CreateTSliderPictureInstance(void)
-// FUNCTION: IMPERIALISM 0x00573970
-undefined4 CreateTSliderPictureInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::GetTSliderPictureClassNamePointer
-// ghidra_proto void * __cdecl GetTSliderPictureClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00573a00
-undefined4 GetTSliderPictureClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
 // ghidra_proto void * __thiscall ConstructTSliderPictureBaseState(void)
 // FUNCTION: IMPERIALISM 0x00573a20
@@ -3999,6 +3975,30 @@ undefined4 BuildTacticalActionClassAndPositionFlags(void)
 // ghidra_proto int __cdecl IterateLinkedListCursorEntries_0059e9c0(void)
 // FUNCTION: IMPERIALISM 0x0059e9c0
 undefined4 IterateLinkedListCursorEntries_0059e9c0(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot09
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot09(void)
+// FUNCTION: IMPERIALISM 0x0059ea60
+undefined4 TArmyTacUnit_VtblSlot09(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot05
+// ghidra_proto void __thiscall TArmyTacUnit_VtblSlot05(void)
+// FUNCTION: IMPERIALISM 0x0059eb40
+undefined4 TArmyTacUnit_VtblSlot05(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
+// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
+// FUNCTION: IMPERIALISM 0x0059ebb0
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
 {
   return 0;
 }

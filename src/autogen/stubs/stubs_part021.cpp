@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CompareAnsiStringsWithMbcsAwareness
-// ghidra_proto int __cdecl CompareAnsiStringsWithMbcsAwareness(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7980
-undefined4 CompareAnsiStringsWithMbcsAwareness(void)
-{
-  return 0;
-}
-
-// ghidra_name SetGlobalCallback6A7FACAndReturnPrevious
-// ghidra_proto void __cdecl SetGlobalCallback6A7FACAndReturnPrevious(void)
-// FUNCTION: IMPERIALISM 0x005e7a80
-undefined4 SetGlobalCallback6A7FACAndReturnPrevious(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeGlobalAllocationFailureCallback
-// ghidra_proto int __cdecl InvokeGlobalAllocationFailureCallback(void)
-// FUNCTION: IMPERIALISM 0x005e7ac0
-undefined4 InvokeGlobalAllocationFailureCallback(void)
-{
-  return 0;
-}
-
 // ghidra_name FindFirstFileAndPopulateFileInfoRecord
 // ghidra_proto void * __cdecl FindFirstFileAndPopulateFileInfoRecord(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e7ae0
@@ -3999,6 +3975,30 @@ undefined4 ShowWindow(void)
 // ghidra_proto int __cdecl IsWindowEnabled(void)
 // FUNCTION: IMPERIALISM 0x00607520
 undefined4 IsWindowEnabled(void)
+{
+  return 0;
+}
+
+// ghidra_name SetFocus
+// ghidra_proto void __cdecl SetFocus(void)
+// FUNCTION: IMPERIALISM 0x00607562
+undefined4 SetFocus(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::AttachControlSite_607673
+// ghidra_proto void __thiscall AttachControlSite_607673(void)
+// FUNCTION: IMPERIALISM 0x00607673
+undefined4 AttachControlSite_607673(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_RegisterCommctrlDragListMessage
+// ghidra_proto void __cdecl thunk_RegisterCommctrlDragListMessage(void)
+// FUNCTION: IMPERIALISM 0x006076b8
+undefined4 thunk_RegisterCommctrlDragListMessage(void)
 {
   return 0;
 }

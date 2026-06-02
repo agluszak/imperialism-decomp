@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetOrCreateTaskForceOrderNodeByTemplate
-// ghidra_proto void __fastcall GetOrCreateTaskForceOrderNodeByTemplate(int ecxArg, int arg1)
-// FUNCTION: IMPERIALISM 0x00553bc0
-undefined4 GetOrCreateTaskForceOrderNodeByTemplate(void)
-{
-  return 0;
-}
-
-// ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
-// ghidra_proto int __thiscall RemoveTaskForceOrderNodeById(void)
-// FUNCTION: IMPERIALISM 0x00553d40
-undefined4 RemoveTaskForceOrderNodeById(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeMapOrderChildAggregateMetric
-// ghidra_proto void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00553e30
-undefined4 RecomputeMapOrderChildAggregateMetric(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildMapOrderEntryChildren
 // ghidra_proto void __cdecl RebuildMapOrderEntryChildren(void)
 // FUNCTION: IMPERIALISM 0x00553f10
@@ -3999,6 +3975,30 @@ undefined4 RenderHintOverlayWithCtrlModifierClipRegion(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
 // FUNCTION: IMPERIALISM 0x00573900
 undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
+{
+  return 0;
+}
+
+// ghidra_name ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
+// ghidra_proto void __cdecl ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
+// FUNCTION: IMPERIALISM 0x00573940
+undefined4 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::CreateTSliderPictureInstance
+// ghidra_proto void * __cdecl CreateTSliderPictureInstance(void)
+// FUNCTION: IMPERIALISM 0x00573970
+undefined4 CreateTSliderPictureInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::GetTSliderPictureClassNamePointer
+// ghidra_proto void * __cdecl GetTSliderPictureClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00573a00
+undefined4 GetTSliderPictureClassNamePointer(void)
 {
   return 0;
 }

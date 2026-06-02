@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNavyMission::DestroyTNavyMission
-// ghidra_proto void * __thiscall DestroyTNavyMission(void)
-// FUNCTION: IMPERIALISM 0x00535560
-undefined4 DestroyTNavyMission(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTNavyMissionToSentinelVtable
-// ghidra_proto void __cdecl ResetTNavyMissionToSentinelVtable(void)
-// FUNCTION: IMPERIALISM 0x00535590
-undefined4 ResetTNavyMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x005355b0
-undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
 // ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
 // FUNCTION: IMPERIALISM 0x005355d0
@@ -3999,6 +3975,30 @@ undefined4 HasNoMapOrderEntryChildrenQueued(void)
 // ghidra_proto void __cdecl HasActiveMapOrderEntryChildren(void)
 // FUNCTION: IMPERIALISM 0x00553b50
 undefined4 HasActiveMapOrderEntryChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name GetOrCreateTaskForceOrderNodeByTemplate
+// ghidra_proto void __fastcall GetOrCreateTaskForceOrderNodeByTemplate(int ecxArg, int arg1)
+// FUNCTION: IMPERIALISM 0x00553bc0
+undefined4 GetOrCreateTaskForceOrderNodeByTemplate(void)
+{
+  return 0;
+}
+
+// ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
+// ghidra_proto int __thiscall RemoveTaskForceOrderNodeById(void)
+// FUNCTION: IMPERIALISM 0x00553d40
+undefined4 RemoveTaskForceOrderNodeById(void)
+{
+  return 0;
+}
+
+// ghidra_name RecomputeMapOrderChildAggregateMetric
+// ghidra_proto void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00553e30
+undefined4 RecomputeMapOrderChildAggregateMetric(void)
 {
   return 0;
 }

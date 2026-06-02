@@ -68,9 +68,13 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot5C|void|0x5C||high|slot5C
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager
-src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot94|int|0x94 / 4|int,int,int|medium|set/query relation dispatch code and return owner nation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectTargetBySideEffectSlot94|int|0x94 / 4|int,int,int|medium|select diplomacy target matching side-effect code|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectFromRelationshipListSlot98|int|0x98 / 4|int,int|medium|select nation slot from collected relationship entries|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetStandingScoreSlot28|void|0x28 / 4|int,int,int|medium|set diplomacy standing score for nation pair|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_PropagateRelationSideEffectSlot80|void|0x80 / 4|int,int,int|medium|post relation side-effect propagation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_RelationshipList_ReleaseSlot24|void|0x24 / 4||medium|release relationship candidate list storage|index|thiscall|zero||provisional|TSortedByRelationshipList
+src/game/diplomacy_state.cpp|VCall_RelationshipList_GetEntrySlot2C|void*|0x2C / 4|int|medium|get one-based relationship candidate entry|index|thiscall|zero||provisional|TSortedByRelationshipList
+src/game/diplomacy_state.cpp|VCall_RelationshipList_AddEntrySlot38|void|0x38 / 4|void*|medium|append/sort relationship candidate entry|index|thiscall|zero||provisional|TSortedByRelationshipList
 src/game/diplomacy_state.cpp|VCall_NationState_NotifyRelationCodeSlot2A8|void|0x2A8 / 4|int,int|medium|notify nation-state relation-code change|index|thiscall|zero||provisional|NationState
 src/game/diplomacy_state.cpp|VCall_NationState_NotifyAllianceSlot214|void|0x214 / 4|int|medium|notify nation-state alliance relation|index|thiscall|zero||provisional|NationState
 src/game/diplomacy_state.cpp|VCall_NationState_NotifyWarResetSlot290|void|0x290 / 4||medium|notify nation-state war relation reset|index|thiscall|zero||provisional|NationState
