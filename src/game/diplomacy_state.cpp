@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/TIndexAndRankList.h"
 #include "game/generated/vcall_facades.h"
+#include <new>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -38,7 +39,7 @@ undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 static __inline void ConstructTPtrListObject(void* listObject) {
-  reinterpret_cast<TIndexAndRankList*>(listObject)->CPtrArray();
+  new (listObject) TIndexAndRankList();
 }
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 

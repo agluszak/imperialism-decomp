@@ -2,6 +2,26 @@
 
 ## 2026-06-02
 
+### Foundational C++ class model cleanup: MFC CPtrArray/CPtrList split and inheritance recovery
+
+1. Renamed MFC-like lowercase files:
+   - `include/game/cobject.h` -> `CObject.h`
+   - `src/game/cobject.cpp` -> `CObject.cpp`
+   - `include/game/carchive.h` -> `CArchive.h`
+   - `src/game/carchive.cpp` -> `CArchive.cpp`
+   - `include/game/cdocument.h` -> `CDocument.h`
+   - `src/game/cdocument.cpp` -> `CDocument.cpp`
+2. Extracted the MFC `CPtrList` engine from `TPtrList.h` / `TPtrList.cpp` to `include/game/CPtrList.h` and `src/game/CPtrList.cpp`. Restored standard MFC names (`RemoveTail`, `InsertBefore`, `InsertAfter`, `RemoveAt`).
+3. Extracted the MFC `CPtrArray` engine from `TIndexAndRankList.h` / `TIndexAndRankList.cpp` to `include/game/CPtrArray.h` and `src/game/CPtrArray.cpp`.
+4. Recovered clean C++ inheritance and constructors:
+   - `TIndexAndRankList` now derives from `CPtrArray` which derives from `CObject`.
+   - `TSortedPtrList` now derives from `TIndexAndRankList`.
+   - `TPtrList` now uses the extracted `CPtrList`.
+   - `TSortedList` now derives from `TPtrList`.
+5. Fixed MSVC 5.0 compatibility: removed post-C++98 keywords (`nullptr`, `override`, `static_assert`) and replaced size checks with standard array-size typedef compile checks.
+6. Cleaned up duplicate declarations and placement-new patterns in `TGreatPower.cpp` and `diplomacy_state.cpp`.
+7. Outcome: Compiles successfully with zero regressions and aligned functions count improved to 130 (+1 delta).
+
 ### CDocument::AddView + CObject EH-destructor feasibility
 
 1. `CDocument::AddView` (`0x611810`): appends to the view list via

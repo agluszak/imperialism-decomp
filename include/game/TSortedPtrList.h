@@ -10,8 +10,7 @@ class TSortedPtrList : public TIndexAndRankList {
  public:
   int reserved14;
 
-  TSortedPtrList() {
-    CPtrArray();
+  TSortedPtrList() : TIndexAndRankList() {
     *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedPtrList);
   }
   void* operator new(unsigned int size) {

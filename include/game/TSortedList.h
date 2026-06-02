@@ -8,10 +8,6 @@ extern "C" char g_vtblTSortedList;
 
 struct TSortedList : public TPtrList {
   TSortedList() {
-    // RefCountedObjectBase() (base ctor) installs g_vtblRefCountedObjectBase
-    // first, then the member list is constructed and the derived vtable is
-    // installed.
-    listState.CPtrList(10);
     vftable = reinterpret_cast<void*>(&g_vtblTSortedList);
   }
   void* operator new(unsigned int size) {

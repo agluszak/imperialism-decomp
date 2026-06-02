@@ -1,7 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/TPtrList.h"
+#include "game/CPtrList.h"
 
 // MFC CDocument: owns a CPtrList of attached views (m_viewList at +0x28). Each
 // view stores its owning document at +0x3c.
@@ -12,7 +12,7 @@ struct CView {
 
 struct CDocument {
   char pad_00[0x28];
-  CPtrListSentinelView m_viewList;
+  CPtrList m_viewList;
 
   void DisconnectViews();
   void AddView(CView* view);

@@ -5,6 +5,7 @@
 #include "game/generated/vcall_facades.h"
 #include "game/string_shared.h"
 #include <stddef.h>
+#include <new>
 
 class TGreatPower;
 struct TListObject;
@@ -99,7 +100,6 @@ undefined4 thunk_InitializeTMinisterBaseOrderArrayMetrics(void);
 undefined4 thunk_ConstructTForeignMinister(void);
 undefined4 thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void);
 undefined4 thunk_ConstructTDefenseMinisterBaseState(void);
-undefined4 CPtrList(void);
 undefined4 thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(void);
 undefined4 thunk_ConstructFrogCityMarker(void);
 undefined4 thunk_RegisterUnitOrderWithOwnerManager(void);
@@ -123,10 +123,6 @@ unsigned int __cdecl GetTGreatPowerClassNamePointer(void) {
   return 0x00653688;
 }
 
-// Legacy global helper still referenced by constructor-style call-throughs.
-unsigned int __cdecl CPtrList(void) {
-  return 0;
-}
 undefined4 thunk_InitializeCivUnitOrderObject(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 undefined4 thunk_SetGlobalRegionDevelopmentStageByte(void);
@@ -299,22 +295,7 @@ struct TCivWorkOrderStateBaseView {
   short remainingTurns24;
   short completionMarker26;
 };
-
-struct CPtrListSentinelView {
-  void* vftable;
-  int field04;
-  int field08;
-  short field0c;
-  short field0e;
-  int field10;
-  void* pField14;
-  int field18;
-};
-
-struct TRefCountedListOwnerView {
-  void* vftable;
-  CPtrListSentinelView listSentinel;
-};
+#include "game/TPtrList.h"
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
 static const unsigned int kAddrNationInteractionStateManagerPtr = 0x006A43CC;
@@ -571,7 +552,6 @@ public:
                                                        short sourceNationSlot);
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
-  void CPtrList(int ownerContext);
 };
 
 // C++98-compatible compile-time layout guards for the known TGreatPower core block.
@@ -1179,10 +1159,9 @@ static __inline void* AllocateObArrayWithMode(short mode) {
 static __inline void* AllocateBattleListOwnerWithPtrListSentinel(void) {
   void* owner = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (owner != 0) {
-    TRefCountedListOwnerView* ownerView = static_cast<TRefCountedListOwnerView*>(owner);
+    TPtrList* ownerView = static_cast<TPtrList*>(owner);
     ownerView->vftable = reinterpret_cast<void*>(kAddrVtblRefCountedObjectBase);
-    reinterpret_cast<void(__fastcall*)(void*, int)>(::CPtrList)(
-        static_cast<void*>(&ownerView->listSentinel), 0);
+    new (&ownerView->listState) CPtrList(0);
     ownerView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   return owner;
@@ -1191,10 +1170,10 @@ static __inline void* AllocateBattleListOwnerWithPtrListSentinel(void) {
 static __inline void* AllocateBattleListOwnerWithLinkedSentinel(void) {
   void* owner = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (owner != 0) {
-    TRefCountedListOwnerView* ownerView = static_cast<TRefCountedListOwnerView*>(owner);
+    TPtrList* ownerView = static_cast<TPtrList*>(owner);
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640)(
-        static_cast<void*>(&ownerView->listSentinel), 0);
+        static_cast<void*>(&ownerView->listState), 0);
     ownerView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   return owner;
