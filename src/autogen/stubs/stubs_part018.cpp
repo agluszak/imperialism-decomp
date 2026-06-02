@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TSliderPicture::DestructTSliderPictureAndMaybeFree
-// ghidra_proto void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00573a50
-undefined4 DestructTSliderPictureAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
 // ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
 // FUNCTION: IMPERIALISM 0x00573aa0
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
 // ghidra_proto void __thiscall CreateTNavyPlayerInstance(void)
 // FUNCTION: IMPERIALISM 0x0059ebe0
 undefined4 CreateTNavyPlayerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::GetTNavyPlayerClassNamePointer
+// ghidra_proto void * __cdecl GetTNavyPlayerClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x0059ec00
+undefined4 GetTNavyPlayerClassNamePointer(void)
 {
   return 0;
 }

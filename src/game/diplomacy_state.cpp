@@ -153,8 +153,8 @@ struct DiplomacyTurnStateManager {
   virtual void slot_20() = 0; // 8 (0x20)
   virtual void slot_24() = 0; // 9 (0x24)
   virtual void SetStandingScoreSlot28(int sourceNation, int targetNation, int score) = 0; // 10 (0x28)
-  virtual void UpdateMinorStandingFromMajorPairSlot2c(int minorNation,
-                                                      int sourceNation) = 0; // 11 (0x2c)
+  virtual void CopyDiplomacyStandingMatrixRowAndColumnSlot2c(int destinationNation,
+                                                             int sourceNation) = 0; // 11 (0x2c)
   virtual void slot_30() = 0; // 12 (0x30)
   virtual void slot_34() = 0; // 13 (0x34)
   virtual void slot_38() = 0; // 14 (0x38)
@@ -659,7 +659,7 @@ void DiplomacyTurnStateManager::SetStandingScoreSlot28(int sourceNationSlot, int
     do {
       TerrainDescriptor* terrain = reinterpret_cast<TerrainDescriptor*>(*terrainCursor);
       if (terrain != 0 && terrain->HasMinorStandingLinkSlot5C(sourceNationSlot) != 0) {
-        UpdateMinorStandingFromMajorPairSlot2c(minorNationSlot, sourceNationSlot);
+        CopyDiplomacyStandingMatrixRowAndColumnSlot2c(minorNationSlot, sourceNationSlot);
       }
       terrainCursor++;
       minorNationSlot++;
@@ -672,12 +672,38 @@ void DiplomacyTurnStateManager::SetStandingScoreSlot28(int sourceNationSlot, int
     do {
       TerrainDescriptor* terrain = reinterpret_cast<TerrainDescriptor*>(*terrainCursor);
       if (terrain != 0 && terrain->HasMinorStandingLinkSlot5C(targetNationSlot) != 0) {
-        UpdateMinorStandingFromMajorPairSlot2c(minorNationSlot, targetNationSlot);
+        CopyDiplomacyStandingMatrixRowAndColumnSlot2c(minorNationSlot, targetNationSlot);
       }
       terrainCursor++;
       minorNationSlot++;
     } while (reinterpret_cast<int>(terrainCursor) < reinterpret_cast<int>(&g_apTerrainTypeDescriptorTable[23]));
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004efe30
+void DiplomacyTurnStateManager::CopyDiplomacyStandingMatrixRowAndColumnSlot2c(
+    int destinationNationSlot, int sourceNationSlot) {
+  short* destinationColumnCursor =
+      &relationStandingScoreMatrix79c[static_cast<short>(destinationNationSlot)];
+  short* destinationRowCursor =
+      &relationStandingScoreMatrix79c[static_cast<short>(destinationNationSlot) *
+                                      kNationSlotCount];
+  short* sourceRowCursor =
+      &relationStandingScoreMatrix79c[static_cast<short>(sourceNationSlot) *
+                                      kNationSlotCount];
+  short* sourceColumnCursor =
+      &relationStandingScoreMatrix79c[static_cast<short>(sourceNationSlot)];
+
+  int remaining = kNationSlotCount;
+  do {
+    *destinationRowCursor = *sourceRowCursor;
+    sourceRowCursor++;
+    *destinationColumnCursor = *sourceColumnCursor;
+    destinationRowCursor++;
+    sourceColumnCursor += kNationSlotCount;
+    destinationColumnCursor += kNationSlotCount;
+    remaining--;
+  } while (remaining != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004f09c0

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name PruneInactiveTaskForceOrderHead
-// ghidra_proto void __cdecl PruneInactiveTaskForceOrderHead(void)
-// FUNCTION: IMPERIALISM 0x00553fe0
-undefined4 PruneInactiveTaskForceOrderHead(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::ApplyMapOrderTypeAndQueue
 // ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
 // FUNCTION: IMPERIALISM 0x005540b0
@@ -3999,6 +3991,14 @@ undefined4 GetTSliderPictureClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTSliderPictureBaseState(void)
 // FUNCTION: IMPERIALISM 0x00573a20
 undefined4 ConstructTSliderPictureBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::DestructTSliderPictureAndMaybeFree
+// ghidra_proto void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00573a50
+undefined4 DestructTSliderPictureAndMaybeFree(void)
 {
   return 0;
 }

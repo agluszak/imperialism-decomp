@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
-// ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
-// FUNCTION: IMPERIALISM 0x005355f0
-undefined4 DestroyTControlSeaZoneMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
 // ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
 // FUNCTION: IMPERIALISM 0x00535620
@@ -3999,6 +3991,14 @@ undefined4 RecomputeMapOrderChildAggregateMetric(void)
 // ghidra_proto void __cdecl RebuildMapOrderEntryChildren(void)
 // FUNCTION: IMPERIALISM 0x00553f10
 undefined4 RebuildMapOrderEntryChildren(void)
+{
+  return 0;
+}
+
+// ghidra_name PruneInactiveTaskForceOrderHead
+// ghidra_proto void __cdecl PruneInactiveTaskForceOrderHead(void)
+// FUNCTION: IMPERIALISM 0x00553fe0
+undefined4 PruneInactiveTaskForceOrderHead(void)
 {
   return 0;
 }

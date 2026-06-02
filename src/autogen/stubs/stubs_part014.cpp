@@ -1203,14 +1203,6 @@ undefined4 IsNationSlotInPrimaryGroupB(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::CopyDiplomacyStandingMatrixRowAndColumn
-// ghidra_proto void __thiscall CopyDiplomacyStandingMatrixRowAndColumn(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004efe30
-undefined4 CopyDiplomacyStandingMatrixRowAndColumn(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation
 // ghidra_proto void __thiscall ApplyRelationCode4AndQueueEvent18ForTargetNation(sdword sourceNationSlot, sdword targetNationSlot)
 // FUNCTION: IMPERIALISM 0x004efeb0
@@ -3999,6 +3991,14 @@ undefined4 ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)
 // ghidra_proto void __cdecl RefreshCityProductionDetailPanelAndArrowWidgets(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x0050bea0
 undefined4 RefreshCityProductionDetailPanelAndArrowWidgets(void)
+{
+  return 0;
+}
+
+// ghidra_name DispatchTurnEvent3B8AndWaitForCompletionFlag
+// ghidra_proto void __cdecl DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
+// FUNCTION: IMPERIALISM 0x0050d310
+undefined4 DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
 {
   return 0;
 }

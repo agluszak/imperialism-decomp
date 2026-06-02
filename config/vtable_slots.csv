@@ -71,6 +71,7 @@ src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectTargetBySideEffectSlot94|int|0x94 / 4|int,int,int|medium|select diplomacy target matching side-effect code|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectFromRelationshipListSlot98|int|0x98 / 4|int,int|medium|select nation slot from collected relationship entries|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetStandingScoreSlot28|void|0x28 / 4|int,int,int|medium|set diplomacy standing score for nation pair|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_CopyStandingRowColumnSlot2C|void|0x2C / 4|int,int|medium|copy diplomacy standing matrix row and column|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_PropagateRelationSideEffectSlot80|void|0x80 / 4|int,int,int|medium|post relation side-effect propagation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_RelationshipList_ReleaseSlot24|void|0x24 / 4||medium|release relationship candidate list storage|index|thiscall|zero||provisional|TSortedByRelationshipList
 src/game/diplomacy_state.cpp|VCall_RelationshipList_GetEntrySlot2C|void*|0x2C / 4|int|medium|get one-based relationship candidate entry|index|thiscall|zero||provisional|TSortedByRelationshipList

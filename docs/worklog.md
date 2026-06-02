@@ -1650,3 +1650,14 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - Target compares: `0x004efcb0` **34.55%**, `0x004f1b70` **24.84%**, `0x004f0a10` **89.85%**.
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
+
+### Diplomacy standing row/column copy slot (2026-06-02, cont.)
+
+1. Promoted manager slot `0x2c`, `0x004efe30` `CopyDiplomacyStandingMatrixRowAndColumnSlot2c(int,int)`: stub -> **36.07%** first shape pass.
+2. Corrected the provisional slot `0x2c` name from "minor standing propagation" to the concrete matrix operation. The method copies both a full row and matching column inside the `+0x79c` standing-score matrix, using 23 entries and `ret 8`.
+3. Updated slot `0x28` callsites to call the real virtual `CopyDiplomacyStandingMatrixRowAndColumnSlot2c(minorNation, sourceNation)` when a minor terrain descriptor links to a primary nation through terrain slot `0x5c`.
+4. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004efe30` **36.07%**, `0x004efcb0` **34.55%**, `0x004f1b70` **24.84%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.

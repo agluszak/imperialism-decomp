@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestroyTurnStateObjectWithMfcDeleteFinalizer
-// ghidra_proto void * __thiscall DestroyTurnStateObjectWithMfcDeleteFinalizer(void * param_1, byte param_2)
-// FUNCTION: IMPERIALISM 0x00622451
-undefined4 DestroyTurnStateObjectWithMfcDeleteFinalizer(void)
-{
-  return 0;
-}
-
 // ghidra_name CWinThread::CWinApp
 // ghidra_proto void * __thiscall CWinApp(byte * threadName)
 // FUNCTION: IMPERIALISM 0x0062246c
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631cf5(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d2f(void)
 // FUNCTION: IMPERIALISM 0x00631d2f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d2f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d62
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d62(void)
+// FUNCTION: IMPERIALISM 0x00631d62
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d62(void)
 {
   return 0;
 }
