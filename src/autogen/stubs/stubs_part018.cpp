@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
-// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
-// FUNCTION: IMPERIALISM 0x00573900
-undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
-{
-  return 0;
-}
-
 // ghidra_name ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox
 // ghidra_proto void __cdecl ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(void)
 // FUNCTION: IMPERIALISM 0x00573940
@@ -3999,6 +3991,14 @@ undefined4 RunTacticalAutoTurnControllerForActiveUnit(void)
 // ghidra_proto uint __thiscall BuildTacticalActionClassAndPositionFlags(void)
 // FUNCTION: IMPERIALISM 0x0059e8a0
 undefined4 BuildTacticalActionClassAndPositionFlags(void)
+{
+  return 0;
+}
+
+// ghidra_name IterateLinkedListCursorEntries_0059e9c0
+// ghidra_proto int __cdecl IterateLinkedListCursorEntries_0059e9c0(void)
+// FUNCTION: IMPERIALISM 0x0059e9c0
+undefined4 IterateLinkedListCursorEntries_0059e9c0(void)
 {
   return 0;
 }

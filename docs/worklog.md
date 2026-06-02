@@ -1602,3 +1602,17 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - UI caller guard: `just compare 0x004f5fb0` stayed **40.59%**.
    - `just compare-canaries`: `below_floor=0`.
    - `just stats`: avg similarity **3.31%**, aligned functions **107**.
+
+### Diplomacy alliance-guard slot (2026-06-02)
+
+1. Promoted `0x004efc30` as `DiplomacyTurnStateManager::HasAllianceGuardSlot60(int,int)`: stub -> **86.02%**.
+2. Corrected two stale Ghidra assumptions:
+   - the old bucket/name `TSortedByRelationshipList::HasAsymmetricWarRelationForPrimaryNation` is misleading for this Windows body; `ECX` is the diplomacy turn-state manager and the function returns `AL`;
+   - the method is not no-arg/`void`; listing evidence shows `ret 8` and two stack args, with the caller in `TGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards`.
+3. Promoted manager vtable slot `0x4c` from anonymous `slot_4c()` to `HasAnyWarRelationForNation(int)`. This was necessary to reproduce the original `mov ecx,[g_pDiplomacyTurnStateManager]; push arg; call [vftable+0x4c]` shape inside slot `0x60`.
+4. Validation:
+   - `just build`, `just detect`: clean.
+   - `just compare 0x004efc30`: **86.02%**.
+   - Caller guard `just compare 0x004e7b50`: **51.69%** unchanged.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.

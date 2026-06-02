@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestructTDealLineAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTDealLineAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005c0de0
-undefined4 DestructTDealLineAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50
 // ghidra_proto void __cdecl BuildFormattedCredentialTextEntryAndApplyStyle_005c0e50(void)
 // FUNCTION: IMPERIALISM 0x005c0e50
@@ -3999,6 +3991,14 @@ undefined4 CaptureExceptionContextToGlobalSlots(void)
 // ghidra_proto int __cdecl AppendPointerToGlobalVectorLocked(void)
 // FUNCTION: IMPERIALISM 0x005e7890
 undefined4 AppendPointerToGlobalVectorLocked(void)
+{
+  return 0;
+}
+
+// ghidra_name AppendPointerToGlobalVectorAsStatus
+// ghidra_proto int __cdecl AppendPointerToGlobalVectorAsStatus(void)
+// FUNCTION: IMPERIALISM 0x005e7920
+undefined4 AppendPointerToGlobalVectorAsStatus(void)
 {
   return 0;
 }

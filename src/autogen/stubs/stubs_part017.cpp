@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name HasActiveMapOrderEntryChildren
-// ghidra_proto void __cdecl HasActiveMapOrderEntryChildren(void)
-// FUNCTION: IMPERIALISM 0x00553b50
-undefined4 HasActiveMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name GetOrCreateTaskForceOrderNodeByTemplate
 // ghidra_proto void __fastcall GetOrCreateTaskForceOrderNodeByTemplate(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x00553bc0
@@ -3999,6 +3991,14 @@ undefined4 InitializeOffLimitsPictureCachedBrushResources(void)
 // ghidra_proto void __cdecl RenderHintOverlayWithCtrlModifierClipRegion(void)
 // FUNCTION: IMPERIALISM 0x00573890
 undefined4 RenderHintOverlayWithCtrlModifierClipRegion(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900
+// ghidra_proto void __cdecl WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
+// FUNCTION: IMPERIALISM 0x00573900
+undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900(void)
 {
   return 0;
 }

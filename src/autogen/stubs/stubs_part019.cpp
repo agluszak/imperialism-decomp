@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name IterateLinkedListCursorEntries_0059e9c0
-// ghidra_proto int __cdecl IterateLinkedListCursorEntries_0059e9c0(void)
-// FUNCTION: IMPERIALISM 0x0059e9c0
-undefined4 IterateLinkedListCursorEntries_0059e9c0(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot09
 // ghidra_proto void __thiscall TArmyTacUnit_VtblSlot09(void)
 // FUNCTION: IMPERIALISM 0x0059ea60
@@ -3999,6 +3991,14 @@ undefined4 ConstructTDealLineBaseState(void)
 // ghidra_proto void * __thiscall DestructTDealLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005c0db0
 undefined4 DestructTDealLineAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTDealLineAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTDealLineAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x005c0de0
+undefined4 DestructTDealLineAndMaybeFree_Impl(void)
 {
   return 0;
 }

@@ -155,7 +155,7 @@ struct DiplomacyTurnStateManager {
   virtual void slot_40() = 0; // 16 (0x40)
   virtual char HasPolicyWithNationSlot44(int sourceNation, int targetNation) = 0; // 17 (0x44)
   virtual char HasOutdatedWarRelationSlot48(int sourceNation, int targetNation) = 0; // 18 (0x48)
-  virtual void slot_4c() = 0; // 19 (0x4c)
+  virtual char HasAnyWarRelationForNation(int sourceNation) = 0; // 19 (0x4c)
   virtual void slot_50() = 0; // 20 (0x50)
   virtual void slot_54() = 0; // 21 (0x54)
   virtual void slot_58() = 0; // 22 (0x58)
@@ -203,7 +203,6 @@ struct DiplomacyTurnStateManager {
   void thunk_InitializeDiplomacyTurnStateManagerDefaults();
   char IsNationPairAtWar(int sourceNationSlot, int targetNationSlot);
   char IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot, int targetNationSlot);
-  char HasAnyWarRelationForNation(int sourceNationSlot);
   char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot);
   char ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNationSlot,
                                                                 int targetNationSlot,
@@ -565,6 +564,23 @@ char DiplomacyTurnStateManager::ValidateDiplomacyActionTypeAgainstTargetAndSetRe
   }
   isValid = 1;
   return isValid;
+}
+
+// FUNCTION: IMPERIALISM 0x004efc30
+char DiplomacyTurnStateManager::HasAllianceGuardSlot60(int nationSlot, int guardedNationSlot) {
+  if (ReadGlobalDiplomacyTurnStateManager()->HasAnyWarRelationForNation(nationSlot) == 0) {
+    return 0;
+  }
+
+  int primaryNationSlot = 0;
+  do {
+    if (HasPolicyWithNationSlot44(primaryNationSlot, nationSlot) != 0 &&
+        HasPolicyWithNationSlot44(guardedNationSlot, primaryNationSlot) == 0) {
+      return 1;
+    }
+    primaryNationSlot++;
+  } while (primaryNationSlot < 7);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004f09c0

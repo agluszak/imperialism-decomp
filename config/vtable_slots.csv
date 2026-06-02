@@ -20,7 +20,7 @@ src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|in
 src/game/TDiplomacyMapView.cpp|VCall_Diplomacy_GetRelationTypeSlot68|int|0x68 / 4|int,int|high|relation type/status query
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasPolicyWithNationSlot44|char|0x44 / 4|int,int|high|policy gate
 src/game/diplomacy_state.cpp|VCall_Diplomacy_HasOutdatedWarRelationSlot48|char|0x48 / 4|int,int|medium|outdated war relation predicate|index|thiscall|zero||provisional|DiplomacyTurnStateManager
-src/game/TGreatPower.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard
+src/game/diplomacy_state.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard/asymmetric war relation predicate|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/TGreatPower.cpp|VCall_UiRuntime_RequestDiplomacyDecisionSlot90|char|0x90 / 4|int,int,int|high|ui decision request
 src/game/TGreatPower.cpp|VCall_UiRuntime_DispatchEventSlot4C|void|0x4C / 4|int,int|high|ui dispatch event
 src/game/TGreatPower.cpp|VCall_GreatPower_CommitProposalByIndexSlot7B|void|0x7B|int|high|great power proposal commit
