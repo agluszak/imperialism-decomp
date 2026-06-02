@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TScrollView::ConstructTScrollViewBaseState
-// ghidra_proto void __thiscall ConstructTScrollViewBaseState(void)
-// FUNCTION: IMPERIALISM 0x00573cb0
-undefined4 ConstructTScrollViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TScrollView::DestructTScrollViewAndMaybeFree
 // ghidra_proto void __thiscall DestructTScrollViewAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x00573ce0
@@ -3999,6 +3991,14 @@ undefined4 DestructTNavyPlayerAndMaybeFree_Impl(void)
 // ghidra_proto void __thiscall DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
 // FUNCTION: IMPERIALISM 0x0059edd0
 undefined4 DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
+{
+  return 0;
+}
+
+// ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60
+// ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
+// FUNCTION: IMPERIALISM 0x0059ee60
+undefined4 Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
 {
   return 0;
 }

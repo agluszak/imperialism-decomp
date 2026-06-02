@@ -218,6 +218,7 @@ address|target_cpp|ownership|note
 4efc30|src/game/diplomacy_state.cpp|manual|marker_sync
 4efcb0|src/game/diplomacy_state.cpp|manual|marker_sync
 4efe30|src/game/diplomacy_state.cpp|manual|marker_sync
+4efeb0|src/game/diplomacy_state.cpp|manual|marker_sync
 4eff40|src/game/diplomacy_state.cpp|manual|marker_sync
 4f09c0|src/game/diplomacy_state.cpp|manual|marker_sync
 4f0a10|src/game/diplomacy_state.cpp|manual|marker_sync

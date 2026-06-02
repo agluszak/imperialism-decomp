@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_IsPointInsideHitRegion_At0050d6c0
-// ghidra_proto bool __cdecl WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
-// FUNCTION: IMPERIALISM 0x0050d6c0
-undefined4 WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext
 // ghidra_proto void __thiscall RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
 // FUNCTION: IMPERIALISM 0x0050d700
@@ -3999,6 +3991,14 @@ undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
 // ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionSlot20(void)
 // FUNCTION: IMPERIALISM 0x00535680
 undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
+{
+  return 0;
+}
+
+// ghidra_name TScatteredShipsMission::DestroyTScatteredShipsMission
+// ghidra_proto void * __thiscall DestroyTScatteredShipsMission(void)
+// FUNCTION: IMPERIALISM 0x005356a0
+undefined4 DestroyTScatteredShipsMission(void)
 {
   return 0;
 }

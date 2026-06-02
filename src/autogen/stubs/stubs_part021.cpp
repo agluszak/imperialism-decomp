@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name SehCleanup_InvokeCallbackNTimes
-// ghidra_proto void __cdecl SehCleanup_InvokeCallbackNTimes(void)
-// FUNCTION: IMPERIALISM 0x005e7e89
-undefined4 SehCleanup_InvokeCallbackNTimes(void)
-{
-  return 0;
-}
-
 // ghidra_name CallCallbackNTimes
 // ghidra_proto void __stdcall CallCallbackNTimes(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005e7ec0
@@ -3999,6 +3991,14 @@ undefined4 CWnd(void)
 // ghidra_proto void __cdecl WrapperFor_E367_At0060770c(void)
 // FUNCTION: IMPERIALISM 0x0060770c
 undefined4 WrapperFor_E367_At0060770c(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// FUNCTION: IMPERIALISM 0x00607711
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 {
   return 0;
 }

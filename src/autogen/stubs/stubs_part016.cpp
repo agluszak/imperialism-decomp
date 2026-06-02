@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TScatteredShipsMission::DestroyTScatteredShipsMission
-// ghidra_proto void * __thiscall DestroyTScatteredShipsMission(void)
-// FUNCTION: IMPERIALISM 0x005356a0
-undefined4 DestroyTScatteredShipsMission(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTScatteredShipsMissionToSentinelVtable
 // ghidra_proto void __cdecl ResetTScatteredShipsMissionToSentinelVtable(void)
 // FUNCTION: IMPERIALISM 0x005356d0
@@ -3999,6 +3991,14 @@ undefined4 ResolveMapOrderCommandFromProvinceContext(void)
 // ghidra_proto void __thiscall CanQueueMapOrderForProvinceContext(int arg1)
 // FUNCTION: IMPERIALISM 0x00554590
 undefined4 CanQueueMapOrderForProvinceContext(void)
+{
+  return 0;
+}
+
+// ghidra_name RequeueMapOrderEntry
+// ghidra_proto void __fastcall RequeueMapOrderEntry(int * pMapOrderEntry)
+// FUNCTION: IMPERIALISM 0x00554660
+undefined4 RequeueMapOrderEntry(void)
 {
   return 0;
 }

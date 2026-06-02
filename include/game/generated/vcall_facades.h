@@ -690,6 +690,13 @@ static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object,
   return fn(object, arg0, arg1, arg2);
 }
 
+// apply relation code 4 and queue target event; class=DiplomacyTurnStateManager; status=confirmed
+static __inline void VCall_Diplomacy_ApplyRelationCode4Slot7C(void* object, int arg0, int arg1, int arg2) {
+  typedef void (__fastcall * Fn)(void*, int, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x7C / 4)));
+  fn(object, 0, arg0, arg1, arg2);
+}
+
 // copy diplomacy standing matrix row and column; class=DiplomacyTurnStateManager; status=provisional
 static __inline void VCall_Diplomacy_CopyStandingRowColumnSlot2C(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int, int);
@@ -835,6 +842,13 @@ static __inline char VCall_TerrainDescriptor_HasStandingPropagationBridgeSlot90(
   typedef char (__fastcall * Fn)(void*, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x90 / 4)));
   return fn(object, 0, arg0);
+}
+
+// notify terrain target of relation-code-4 action; class=TerrainDescriptor; status=provisional
+static __inline void VCall_TerrainDescriptor_NotifyRelationCode4TargetSlot94(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
+  fn(object, 0, arg0, arg1);
 }
 
 // set terrain diplomacy standing toward nation; class=TerrainDescriptor; status=provisional

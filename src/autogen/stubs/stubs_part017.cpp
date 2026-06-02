@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RequeueMapOrderEntry
-// ghidra_proto void __fastcall RequeueMapOrderEntry(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00554660
-undefined4 RequeueMapOrderEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name CancelMapOrderEntryAndRestoreActive
 // ghidra_proto void __fastcall CancelMapOrderEntryAndRestoreActive(int * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x005547d0
@@ -3999,6 +3991,14 @@ undefined4 CreateTScrollViewInstance(void)
 // ghidra_proto void * __cdecl GetTScrollViewClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00573c90
 undefined4 GetTScrollViewClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::ConstructTScrollViewBaseState
+// ghidra_proto void __thiscall ConstructTScrollViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x00573cb0
+undefined4 ConstructTScrollViewBaseState(void)
 {
   return 0;
 }
