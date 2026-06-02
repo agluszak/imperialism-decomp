@@ -8,13 +8,9 @@ extern "C" {
 char g_pClassDescTSortedPtrList = 0;
 }
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-
-namespace {
-
-const unsigned int kAddrVtblGenericPtrList = 0x00649068;
-
-} // namespace
+extern "C" {
+char g_vtblTSortedPtrList = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x00407DA6
 void __fastcall thunk_ResetPtrListAndShrinkCapacity(TSortedPtrList* self) {
@@ -34,12 +30,7 @@ void* TSortedPtrList::GetTSortedPtrListClassNamePointer() {
 
 // FUNCTION: IMPERIALISM 0x00488400
 TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
-  TSortedPtrList* list = reinterpret_cast<TSortedPtrList*>(AllocateWithFallbackHandler(0x18));
-  if (list != 0) {
-    list->CPtrArray();
-    *reinterpret_cast<void**>(list) = reinterpret_cast<void*>(kAddrVtblGenericPtrList);
-  }
-  return list;
+  return new TSortedPtrList();
 }
 
 // FUNCTION: IMPERIALISM 0x00488110

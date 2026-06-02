@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/RefCountedObjectBase.h"
 
 struct CPtrListSentinelView {
   void* vftable;
@@ -11,14 +12,13 @@ struct CPtrListSentinelView {
   void* blockChain;
   int blockSize;
 
-  void CPtrList(int ownerContext);
+  CPtrListSentinelView* CPtrList(int ownerContext);
   void* DestructCPtrListAndMaybeFree(byte freeSelfFlag);
 };
 
 typedef char CPtrListSentinelViewSizeMustMatch[(sizeof(CPtrListSentinelView) == 0x1C) ? 1 : -1];
 
-struct TPtrList {
-  void* vftable;
+struct TPtrList : public RefCountedObjectBase {
   CPtrListSentinelView listState;
 
   static void* GetTPtrListClassNamePointer();

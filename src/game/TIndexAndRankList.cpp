@@ -7,19 +7,18 @@
 undefined4 DestructCObArray(void);
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 
-namespace {
-
-const unsigned int kAddrVtblTIndexAndRankList = 0x00672EAC;
-
-} // namespace
+extern "C" {
+char g_vtblTIndexAndRankList = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x00601BAA
-void TIndexAndRankList::CPtrArray() {
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(kAddrVtblTIndexAndRankList);
+TIndexAndRankList* TIndexAndRankList::CPtrArray() {
+  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTIndexAndRankList);
   this->entries = 0;
   this->growBy = 0;
   this->capacity = 0;
   this->count = 0;
+  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x00601BC1

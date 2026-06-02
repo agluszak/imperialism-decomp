@@ -13340,6 +13340,7 @@ address|name|size|type|prototype
 648f78|g_vtblTArmyPlayer||global|
 648f78|g_vslotTDialogBehavior_Slot01D0_NotifyControlStateChange||global|
 648f7c|g_vslotTDialogBehavior_Slot01D4_NotifyControlSelectionChange||global|
+649068|g_vtblTSortedPtrList||global|
 6490c8|g_pClassDescTStream||global|
 6490e0|g_pClassDescTFileStream||global|
 6490f8|g_pClassDescTCountingStream||global|
@@ -18065,6 +18066,7 @@ address|name|size|type|prototype
 672c30|sTypeName_CCtrlView||global|
 672c3c|sTypeName_CSplitterWnd||global|
 672eac|g_vtblTIndexAndRankList||global|
+672eec|g_vtblCPtrList||global|
 672f08|g_operator_Value_00672F08||global|
 672f10|g_operator_Value_00672F10||global|
 672f18|g_operator_Value_00672F18||global|

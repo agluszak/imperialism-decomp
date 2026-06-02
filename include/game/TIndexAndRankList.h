@@ -21,7 +21,7 @@ class TIndexAndRankList {
   int capacity;
   int growBy;
 
-  void CPtrArray();
+  TIndexAndRankList* CPtrArray();
   void* DestructCObArrayAndMaybeFree(byte freeSelfFlag);
 };
 

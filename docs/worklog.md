@@ -2,6 +2,65 @@
 
 ## 2026-06-02
 
+### List factory EH-`new` frame recovery + RefCountedObjectBase modeling
+
+1. Scope:
+   1. `include/game/RefCountedObjectBase.h` (new)
+   2. `include/game/TPtrList.h`
+   3. `include/game/TSortedList.h`
+   4. `include/game/TSortedPtrList.h`
+   5. `include/game/TIndexAndRankList.h`
+   6. `src/game/TPtrList.cpp`
+   7. `src/game/TSortedList.cpp`
+   8. `src/game/TSortedPtrList.cpp`
+   9. `src/game/TIndexAndRankList.cpp`
+   10. `config/symbols.csv`
+2. Constructor return-`this` + vtable-as-data-symbol pass (the recurring MFC ctor shape
+   `mov eax,ecx; xor ecx,ecx; ...; mov [eax],<vtbl symbol>`):
+   1. `TIndexAndRankList::CPtrArray` (`0x00601baa`): **13.33% -> 100.00%**. Changed return
+      type to `TIndexAndRankList*` (return `this`) and referenced `&g_vtblTIndexAndRankList`
+      instead of a raw `0x672eac` literal.
+   2. `CPtrListSentinelView::CPtrList` (`0x00601f1d`): **9.52% -> 100.00%**. Same return-`this`
+      change; corrected the embedded list vtable from the stale `0x672ea4` constant to the
+      real `0x672eec` (added `g_vtblCPtrList`).
+3. EH-`new` factory frame (the project-wide ~52% factory ceiling: `push -1; push __ehhandler;
+   mov fs:[0]` cleanup frame emitted by MSVC for `new T()` with a throwing constructor):
+   1. Recipe: give the class an inline `void* operator new(unsigned int){ return
+      AllocateWithFallbackHandler(size); }`, an inline `operator delete`, and an inline
+      constructor (all in the header so MSVC inlines them at the `new` site), then write the
+      factory body as `return new T();`. Out-of-line definitions do NOT inline and score
+      worse than the old plain `Allocate + if` body.
+   2. `TSortedPtrList::ConstructTSortedPtrListBaseState` (`0x00488400`): **52.63% -> 94.12%**.
+      Also converted the installed vtable to the new `g_vtblTSortedPtrList` data symbol
+      (`0x649068`). Residual gap is one extra `mov [esi],<C++ vftable>` write that MSVC emits
+      because `TSortedPtrList` inherits C++ virtuals from `TIndexAndRankList`; keeping those
+      virtuals is what lets the sibling `0x00488110` stay 100% (it caches the vtable in `edi`
+      and calls slots `0x1c`/`0x28`), so the 94% is an accepted trade.
+   3. `TSortedList::CreateTSortedListInstance` (`0x00487a90`): **51.16% -> 100.00%**.
+4. RefCountedObjectBase modeling (closes the `mov byte [esp+0x14],1` EH-state transition):
+   1. Added a real `struct RefCountedObjectBase { void* vftable; ctor; ~dtor; }` whose inline
+      constructor installs `g_vtblRefCountedObjectBase` (matches the standalone
+      `InitializeRefCountedObjectBaseVtable` at `0x00484970`) and whose user-declared
+      destructor is non-trivial.
+   2. Made `TPtrList : public RefCountedObjectBase` (the `vftable` field now lives in the base;
+      layout unchanged: vftable@0, listState@4, size 0x20).
+   3. `TSortedList()` no longer writes the base vtable itself — the base ctor does it first,
+      then the body runs `listState.CPtrList(10)` and installs the derived vtable. The
+      non-trivial base destructor is what makes MSVC emit the post-base EH-state transition,
+      taking `0x00487a90` from 90.91% to **100.00%**.
+5. Validation:
+   1. `just build` clean.
+   2. Family scores after pass: `0x00601baa` **100%**, `0x00601f1d` **100%**,
+      `0x00487a90` **100%**, `0x00487b10` **100%**, `0x004883e0` **100%**,
+      `0x00488110` **100%**, `0x00488160` **100%**, `0x00488510` **100%**,
+      `0x00407da6` **100%**, `0x00488400` **94.12%**, `0x00601bc1` **81.82%**,
+      `0x00601f40` **81.82%**, `0x004885d0`/`0x004885f0` **80.00%** (unchanged ILT
+      call-pairing residual), `0x00409868` **0.00%** (unchanged tail-thunk).
+   3. `just compare-canaries`: passed (`below_floor=0`, `parse_error=0`).
+6. Notes:
+   1. `0x00601f40` residual is a single `pop ecx` (size-opt cdecl arg cleanup) vs our
+      `add esp,4`; not worth risking the file's other 100% matches by changing opt level.
+
 ### TSortedPtrList / array-backed pointer-list recovery
 
 1. Scope:

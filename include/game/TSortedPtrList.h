@@ -2,9 +2,22 @@
 
 #include "game/TIndexAndRankList.h"
 
+int AllocateWithFallbackHandler(undefined4 size_bytes);
+
+extern "C" char g_vtblTSortedPtrList;
+
 class TSortedPtrList : public TIndexAndRankList {
  public:
   int reserved14;
+
+  TSortedPtrList() {
+    CPtrArray();
+    *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedPtrList);
+  }
+  void* operator new(unsigned int size) {
+    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
+  }
+  void operator delete(void* ptr) { (void)ptr; }
 
   static void* GetTSortedPtrListClassNamePointer();
   static TSortedPtrList* ConstructTSortedPtrListBaseState();
