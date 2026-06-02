@@ -2,6 +2,27 @@
 
 ## 2026-06-02
 
+### Foundation breadth: CObject RTTI, CString split, CDocument, CArchive
+
+1. CObject/CRuntimeClass RTTI (`src/game/list_utils.cpp`): `IsKindOf` (`0x606fc0`),
+   `IsDerivedFrom` (`0x607077`), `AfxDynamicDownCast` (`0x606fd2`) were structurally
+   correct but stuck at 27–62%; one `#pragma optimize("ys", on)` took all three to **100%**.
+2. CString split (`src/game/string_shared.cpp`): bracketed favor-size+FPO by default with the
+   build default restored around the functions that regress badly under it (concat-assign
+   wrappers `0x605b21`/`0x605b87`/`0x605bfb`, ref-assign `0x605d0a`). Net big gains
+   (`0x605ae0`→100, `0x6059fc`→86, several to 80) with regressors held at baseline. (A
+   class-vs-bridges file split was started then postponed at the user's request.)
+3. CDocument (`src/game/cdocument.cpp`, new): `DisconnectViews` (`0x610a5f`) — walks the view
+   list through the recovered `CPtrList::RemoveHead`, clearing each view's `m_pDocument`
+   (`+0x3c`) — and the scalar-deleting destructor wrapper `0x6109cf`, both **100%**. The
+   view list is a `CPtrList` at `CDocument+0x28`. EH-framed ctor/base-dtor left stubbed.
+4. CArchive (`src/game/carchive.cpp`, new): buffered insertion operators
+   `WriteByte/Word/Dword ToSerializedBuffer` (`0x5e6d04`/`0x5e6d27`/`0x5e6d4e`), all **100%**.
+   Buffer cursor `m_lpBufCur@0x24`, end `m_lpBufMax@0x28`; flush-on-overrun via `Flush`
+   (`0x611ec4`, extern). The buffered `ReadBytes`/`WriteBytes` (`0x611d26`/`0x611e34`) and
+   `Flush` remain unowned (vtable dispatch on the file object — need facades).
+5. All favor-size; `just compare-canaries` clean throughout; no regressions.
+
 ### Foundation port: TStream / TFileStream / TCountingStream / THandleStream
 
 1. Scope: `include/game/stream.h` (new), `src/game/stream.cpp` (new), `CMakeLists.txt`,
