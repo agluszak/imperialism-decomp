@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeThreadObjectVtableProxy
-// ghidra_proto void __fastcall InitializeThreadObjectVtableProxy(void * pThis)
-// FUNCTION: IMPERIALISM 0x00622448
-undefined4 InitializeThreadObjectVtableProxy(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyTurnStateObjectWithMfcDeleteFinalizer
 // ghidra_proto void * __thiscall DestroyTurnStateObjectWithMfcDeleteFinalizer(void * param_1, byte param_2)
 // FUNCTION: IMPERIALISM 0x00622451
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631c6d(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631cf5(void)
 // FUNCTION: IMPERIALISM 0x00631cf5
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631cf5(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d2f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d2f(void)
+// FUNCTION: IMPERIALISM 0x00631d2f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d2f(void)
 {
   return 0;
 }

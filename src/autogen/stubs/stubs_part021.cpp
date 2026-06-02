@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name FindFirstFileAndPopulateFileInfoRecord
-// ghidra_proto void * __cdecl FindFirstFileAndPopulateFileInfoRecord(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005e7ae0
-undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
-{
-  return 0;
-}
-
 // ghidra_name FindNextFileAndPopulateFileInfoRecord
 // ghidra_proto int __cdecl FindNextFileAndPopulateFileInfoRecord(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e7c10
@@ -3999,6 +3991,14 @@ undefined4 AttachControlSite_607673(void)
 // ghidra_proto void __cdecl thunk_RegisterCommctrlDragListMessage(void)
 // FUNCTION: IMPERIALISM 0x006076b8
 undefined4 thunk_RegisterCommctrlDragListMessage(void)
+{
+  return 0;
+}
+
+// ghidra_name RegisterCommctrlDragListMessage
+// ghidra_proto void __cdecl RegisterCommctrlDragListMessage(void)
+// FUNCTION: IMPERIALISM 0x006076bd
+undefined4 RegisterCommctrlDragListMessage(void)
 {
   return 0;
 }

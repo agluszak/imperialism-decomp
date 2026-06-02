@@ -1631,3 +1631,22 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - Target compares: `0x004f1f70` **64.15%**, `0x004f2100` **73.77%**, `0x004f21f0` **30.06%**, `0x004f0a10` **89.85%**.
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
+
+### Diplomacy standing-score setter (2026-06-02)
+
+1. Promoted manager slot `0x28`, `0x004efcb0` `SetStandingScoreSlot28(int,int,int)`: stub -> **34.55%** first shape pass.
+2. Behavior recovered:
+   - clamps negative scores to zero;
+   - clamps non-self scores above `0xff` to `0xff`;
+   - raises very low scores to `0x32` unless slot `0x44` says the pair already has the relevant policy/relation;
+   - writes the standing-score matrix symmetrically at `this+0x79c`;
+   - if either endpoint is a primary nation (`slot 0x84`), scans minor terrain descriptors `7..22`, checks terrain slot `0x5c`, and calls manager slot `0x2c` to propagate minor standing updates.
+3. Added class-shape names:
+   - manager slot `0x2c` -> `UpdateMinorStandingFromMajorPairSlot2c(int,int)`;
+   - terrain descriptor slot `0x5c` -> `HasMinorStandingLinkSlot5C(int)`.
+4. Connectivity result: broad relation setter `0x004f1b70` improved from **9.31%** earlier in the slice to **24.84%** with the real slot `0x28` body in place. `ProcessQueuedWarTransitions` stayed **89.85%**.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004efcb0` **34.55%**, `0x004f1b70` **24.84%**, `0x004f0a10` **89.85%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.

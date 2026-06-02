@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x005355d0
-undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
 // ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
 // ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
 // FUNCTION: IMPERIALISM 0x005355f0
@@ -3999,6 +3991,14 @@ undefined4 RemoveTaskForceOrderNodeById(void)
 // ghidra_proto void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x00553e30
 undefined4 RecomputeMapOrderChildAggregateMetric(void)
+{
+  return 0;
+}
+
+// ghidra_name RebuildMapOrderEntryChildren
+// ghidra_proto void __cdecl RebuildMapOrderEntryChildren(void)
+// FUNCTION: IMPERIALISM 0x00553f10
+undefined4 RebuildMapOrderEntryChildren(void)
 {
   return 0;
 }

@@ -1203,14 +1203,6 @@ undefined4 IsNationSlotInPrimaryGroupB(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors
-// ghidra_proto void __thiscall SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x004efcb0
-undefined4 SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::CopyDiplomacyStandingMatrixRowAndColumn
 // ghidra_proto void __thiscall CopyDiplomacyStandingMatrixRowAndColumn(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004efe30
@@ -3999,6 +3991,14 @@ undefined4 SyncSellTaggedChildControlWithNationState(void)
 // ghidra_proto void * __cdecl ResolveTurnEventDialogOrFailAndInvokeSlot9C(void * messageContext)
 // FUNCTION: IMPERIALISM 0x0050be30
 undefined4 ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)
+{
+  return 0;
+}
+
+// ghidra_name RefreshCityProductionDetailPanelAndArrowWidgets
+// ghidra_proto void __cdecl RefreshCityProductionDetailPanelAndArrowWidgets(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0050bea0
+undefined4 RefreshCityProductionDetailPanelAndArrowWidgets(void)
 {
   return 0;
 }
