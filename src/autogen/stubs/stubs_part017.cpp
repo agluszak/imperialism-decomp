@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ResolveMapOrderCommandFromActionContext
-// ghidra_proto void __thiscall ResolveMapOrderCommandFromActionContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00554300
-undefined4 ResolveMapOrderCommandFromActionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderCommandFromProvinceContext
-// ghidra_proto void __thiscall ResolveMapOrderCommandFromProvinceContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00554460
-undefined4 ResolveMapOrderCommandFromProvinceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name CanQueueMapOrderForProvinceContext
-// ghidra_proto void __thiscall CanQueueMapOrderForProvinceContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00554590
-undefined4 CanQueueMapOrderForProvinceContext(void)
-{
-  return 0;
-}
-
 // ghidra_name RequeueMapOrderEntry
 // ghidra_proto void __fastcall RequeueMapOrderEntry(int * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x00554660
@@ -3999,6 +3975,30 @@ undefined4 DestructTSliderPictureAndMaybeFree(void)
 // ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
 // FUNCTION: IMPERIALISM 0x00573aa0
 undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ftol_At00573bf0
+// ghidra_proto void __cdecl WrapperFor_ftol_At00573bf0(void)
+// FUNCTION: IMPERIALISM 0x00573bf0
+undefined4 WrapperFor_ftol_At00573bf0(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::CreateTScrollViewInstance
+// ghidra_proto void * __cdecl CreateTScrollViewInstance(void)
+// FUNCTION: IMPERIALISM 0x00573c20
+undefined4 CreateTScrollViewInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TScrollView::GetTScrollViewClassNamePointer
+// ghidra_proto void * __cdecl GetTScrollViewClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00573c90
+undefined4 GetTScrollViewClassNamePointer(void)
 {
   return 0;
 }

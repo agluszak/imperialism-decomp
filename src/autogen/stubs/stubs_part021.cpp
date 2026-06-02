@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ConvertFileTimeToLocalEpochSeconds
-// ghidra_proto int __cdecl ConvertFileTimeToLocalEpochSeconds(int arg1)
-// FUNCTION: IMPERIALISM 0x005e7d60
-undefined4 ConvertFileTimeToLocalEpochSeconds(void)
-{
-  return 0;
-}
-
-// ghidra_name aullshr
-// ghidra_proto uint __fastcall aullshr(void)
-// FUNCTION: IMPERIALISM 0x005e7df0
-undefined4 aullshr(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
-// ghidra_proto void __thiscall InvokeCallbackNTimesWithSehGuard(int arg1, int arg2, int arg3, int arg4)
-// FUNCTION: IMPERIALISM 0x005e7e10
-undefined4 InvokeCallbackNTimesWithSehGuard(void)
-{
-  return 0;
-}
-
 // ghidra_name SehCleanup_InvokeCallbackNTimes
 // ghidra_proto void __cdecl SehCleanup_InvokeCallbackNTimes(void)
 // FUNCTION: IMPERIALISM 0x005e7e89
@@ -3999,6 +3975,30 @@ undefined4 WrapperFor_E361_At006076ce(void)
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 // FUNCTION: IMPERIALISM 0x006076d3
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// FUNCTION: IMPERIALISM 0x006076e5
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+{
+  return 0;
+}
+
+// ghidra_name CWnd::CWnd
+// ghidra_proto void __thiscall CWnd(void)
+// FUNCTION: IMPERIALISM 0x00607706
+undefined4 CWnd(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_E367_At0060770c
+// ghidra_proto void __cdecl WrapperFor_E367_At0060770c(void)
+// FUNCTION: IMPERIALISM 0x0060770c
+undefined4 WrapperFor_E367_At0060770c(void)
 {
   return 0;
 }

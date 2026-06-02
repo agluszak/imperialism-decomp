@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeCompositeTextPictureResourceEntries_005c1580
-// ghidra_proto void __cdecl InitializeCompositeTextPictureResourceEntries_005c1580(void)
-// FUNCTION: IMPERIALISM 0x005c1580
-undefined4 InitializeCompositeTextPictureResourceEntries_005c1580(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsLine::CreateTTradeTotalsLineInstance
-// ghidra_proto void * __cdecl CreateTTradeTotalsLineInstance(void)
-// FUNCTION: IMPERIALISM 0x005c1870
-undefined4 CreateTTradeTotalsLineInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer
-// ghidra_proto void * __cdecl GetTTradeTotalsLineClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005c18e0
-undefined4 GetTTradeTotalsLineClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
 // ghidra_proto void * __thiscall ConstructTTradeTotalsLineBaseState(void)
 // FUNCTION: IMPERIALISM 0x005c1900
@@ -3999,6 +3975,30 @@ undefined4 FindNextFileAndPopulateFileInfoRecord(void)
 // ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
 // FUNCTION: IMPERIALISM 0x005e7d30
 undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
+{
+  return 0;
+}
+
+// ghidra_name ConvertFileTimeToLocalEpochSeconds
+// ghidra_proto int __cdecl ConvertFileTimeToLocalEpochSeconds(int arg1)
+// FUNCTION: IMPERIALISM 0x005e7d60
+undefined4 ConvertFileTimeToLocalEpochSeconds(void)
+{
+  return 0;
+}
+
+// ghidra_name aullshr
+// ghidra_proto uint __fastcall aullshr(void)
+// FUNCTION: IMPERIALISM 0x005e7df0
+undefined4 aullshr(void)
+{
+  return 0;
+}
+
+// ghidra_name TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
+// ghidra_proto void __thiscall InvokeCallbackNTimesWithSehGuard(int arg1, int arg2, int arg3, int arg4)
+// FUNCTION: IMPERIALISM 0x005e7e10
+undefined4 InvokeCallbackNTimesWithSehGuard(void)
 {
   return 0;
 }

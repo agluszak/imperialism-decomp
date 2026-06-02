@@ -68,11 +68,14 @@ src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot5C|void|0x5C||high|slot5C
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot78Final|void|0x78 / 4|int,int,int|high|set relation code with final side-effect flag|index|thiscall|zero||confirmed|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectTargetBySideEffectSlot94|int|0x94 / 4|int,int,int|medium|select diplomacy target matching side-effect code|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SelectFromRelationshipListSlot98|int|0x98 / 4|int,int|medium|select nation slot from collected relationship entries|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetStandingScoreSlot28|void|0x28 / 4|int,int,int|medium|set diplomacy standing score for nation pair|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_CopyStandingRowColumnSlot2C|void|0x2C / 4|int,int|medium|copy diplomacy standing matrix row and column|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_Diplomacy_PropagateRelationSideEffectSlot80|void|0x80 / 4|int,int,int|medium|post relation side-effect propagation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_CountMajorAllianceRelationsSlot8C|int|0x8C / 4|int|high|count major-nation alliance relations for source nation|index|thiscall|zero||confirmed|DiplomacyTurnStateManager
+src/game/diplomacy_state.cpp|VCall_Diplomacy_GetNthAlliedMajorNationSlot90|int|0x90 / 4|int,int|medium|get nth allied major-nation slot for source nation|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/diplomacy_state.cpp|VCall_RelationshipList_ReleaseSlot24|void|0x24 / 4||medium|release relationship candidate list storage|index|thiscall|zero||provisional|TSortedByRelationshipList
 src/game/diplomacy_state.cpp|VCall_RelationshipList_GetEntrySlot2C|void*|0x2C / 4|int|medium|get one-based relationship candidate entry|index|thiscall|zero||provisional|TSortedByRelationshipList
 src/game/diplomacy_state.cpp|VCall_RelationshipList_AddEntrySlot38|void|0x38 / 4|void*|medium|append/sort relationship candidate entry|index|thiscall|zero||provisional|TSortedByRelationshipList

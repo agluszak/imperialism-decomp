@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNavyPlayer::DestructTNavyPlayerAndMaybeFree
-// ghidra_proto void * __thiscall DestructTNavyPlayerAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0059ed80
-undefined4 DestructTNavyPlayerAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTNavyPlayerAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTNavyPlayerAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x0059edb0
-undefined4 DestructTNavyPlayerAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
-// ghidra_proto void __thiscall DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
-// FUNCTION: IMPERIALISM 0x0059edd0
-undefined4 DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60
 // ghidra_proto void __cdecl Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
 // FUNCTION: IMPERIALISM 0x0059ee60
@@ -3999,6 +3975,30 @@ undefined4 DestructTCommodityLineAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTCommodityLineAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005c1520
 undefined4 DestructTCommodityLineAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeCompositeTextPictureResourceEntries_005c1580
+// ghidra_proto void __cdecl InitializeCompositeTextPictureResourceEntries_005c1580(void)
+// FUNCTION: IMPERIALISM 0x005c1580
+undefined4 InitializeCompositeTextPictureResourceEntries_005c1580(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsLine::CreateTTradeTotalsLineInstance
+// ghidra_proto void * __cdecl CreateTTradeTotalsLineInstance(void)
+// FUNCTION: IMPERIALISM 0x005c1870
+undefined4 CreateTTradeTotalsLineInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer
+// ghidra_proto void * __cdecl GetTTradeTotalsLineClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x005c18e0
+undefined4 GetTTradeTotalsLineClassNamePointer(void)
 {
   return 0;
 }

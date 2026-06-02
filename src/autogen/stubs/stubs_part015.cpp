@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C10_I80_0050d470
-// ghidra_proto int * __cdecl OrphanCallChain_C10_I80_0050d470(void)
-// FUNCTION: IMPERIALISM 0x0050d470
-undefined4 OrphanCallChain_C10_I80_0050d470(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C9_I49_0050d5b0
-// ghidra_proto void __cdecl OrphanCallChain_C9_I49_0050d5b0(void)
-// FUNCTION: IMPERIALISM 0x0050d5b0
-undefined4 OrphanCallChain_C9_I49_0050d5b0(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
-// ghidra_proto void __cdecl EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
-// FUNCTION: IMPERIALISM 0x0050d680
-undefined4 EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_IsPointInsideHitRegion_At0050d6c0
 // ghidra_proto bool __cdecl WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)
 // FUNCTION: IMPERIALISM 0x0050d6c0
@@ -3999,6 +3975,30 @@ undefined4 DestroyTControlSeaZoneMission(void)
 // ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
 // FUNCTION: IMPERIALISM 0x00535620
 undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
+// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
+// FUNCTION: IMPERIALISM 0x00535640
+undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
+// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+// FUNCTION: IMPERIALISM 0x00535660
+undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
+// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionSlot20(void)
+// FUNCTION: IMPERIALISM 0x00535680
+undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
 {
   return 0;
 }

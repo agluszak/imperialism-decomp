@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
-// FUNCTION: IMPERIALISM 0x006076e5
-undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::CWnd
-// ghidra_proto void __thiscall CWnd(void)
-// FUNCTION: IMPERIALISM 0x00607706
-undefined4 CWnd(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_E367_At0060770c
-// ghidra_proto void __cdecl WrapperFor_E367_At0060770c(void)
-// FUNCTION: IMPERIALISM 0x0060770c
-undefined4 WrapperFor_E367_At0060770c(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 // FUNCTION: IMPERIALISM 0x00607711
@@ -3999,6 +3975,30 @@ undefined4 DestroyTurnStateObjectWithMfcDeleteFinalizer(void)
 // ghidra_proto void * __thiscall CWinApp(byte * threadName)
 // FUNCTION: IMPERIALISM 0x0062246c
 undefined4 CWinApp(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00622556
+// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00622556(void)
+// FUNCTION: IMPERIALISM 0x00622556
+undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00622556(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeAppDocTemplateManagerAndFlushPending
+// ghidra_proto int __fastcall InitializeAppDocTemplateManagerAndFlushPending(void)
+// FUNCTION: IMPERIALISM 0x00622572
+undefined4 InitializeAppDocTemplateManagerAndFlushPending(void)
+{
+  return 0;
+}
+
+// ghidra_name ParseCommandLine
+// ghidra_proto void __cdecl ParseCommandLine(void)
+// FUNCTION: IMPERIALISM 0x00622632
+undefined4 ParseCommandLine(void)
 {
   return 0;
 }

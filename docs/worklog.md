@@ -1681,3 +1681,17 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
    - `just stats`: aligned functions **128**, average similarity **9.50%**.
+
+### Diplomacy relation/alliance vtable slots (2026-06-02, cont.)
+
+1. Promoted three more `DiplomacyTurnStateManager` vtable-slot methods from the stale `TSortedByRelationshipList` bucket:
+   - `0x004f1b40` slot `0x78` `SetNationPairDiplomacyRelationCodeFinal(int,int,int)`: stub -> **100.00%**. This is the thin `ret 0xc` wrapper that delegates to slot `0x74` with final/update flag `1`.
+   - `0x004f2050` slot `0x8c` `CountMajorAllianceRelationsForNation(int)`: stub -> **100.00%**. This counts relation-code `2` entries across the seven major-nation columns in the `+0xbbe` relation-code matrix.
+   - `0x004f2090` slot `0x90` `GetNthAlliedMajorNationSlotForNation(int,int)`: stub -> **35.71%** first shape pass. It scans major-nation relation-code entries and returns `candidate - 1` when the requested allied ordinal is reached; the signature and return contract are now explicit even though the local register shape still differs.
+2. Added generated facade rows for manager slots `0x78`, `0x8c`, and `0x90`, so future `TGreatPower`/AI caller migrations can use typed manager calls instead of raw vtable offsets.
+3. Validation:
+   - `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004f1b40` **100.00%**, `0x004f2050` **100.00%**, `0x004f2090` **35.71%**, `0x004f1b70` **24.84%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: aligned functions **130**, average similarity **9.52%**.

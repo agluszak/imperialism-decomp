@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_ftol_At00573bf0
-// ghidra_proto void __cdecl WrapperFor_ftol_At00573bf0(void)
-// FUNCTION: IMPERIALISM 0x00573bf0
-undefined4 WrapperFor_ftol_At00573bf0(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::CreateTScrollViewInstance
-// ghidra_proto void * __cdecl CreateTScrollViewInstance(void)
-// FUNCTION: IMPERIALISM 0x00573c20
-undefined4 CreateTScrollViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::GetTScrollViewClassNamePointer
-// ghidra_proto void * __cdecl GetTScrollViewClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00573c90
-undefined4 GetTScrollViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TScrollView::ConstructTScrollViewBaseState
 // ghidra_proto void __thiscall ConstructTScrollViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x00573cb0
@@ -3999,6 +3975,30 @@ undefined4 GetTNavyPlayerClassNamePointer(void)
 // ghidra_proto uint __thiscall ConstructTNavyPlayerBaseState(void)
 // FUNCTION: IMPERIALISM 0x0059ed60
 undefined4 ConstructTNavyPlayerBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::DestructTNavyPlayerAndMaybeFree
+// ghidra_proto void * __thiscall DestructTNavyPlayerAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x0059ed80
+undefined4 DestructTNavyPlayerAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name DestructTNavyPlayerAndMaybeFree_Impl
+// ghidra_proto void __cdecl DestructTNavyPlayerAndMaybeFree_Impl(void)
+// FUNCTION: IMPERIALISM 0x0059edb0
+undefined4 DestructTNavyPlayerAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead
+// ghidra_proto void __thiscall DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
+// FUNCTION: IMPERIALISM 0x0059edd0
+undefined4 DecrementRequiredCountsForTaskForceOrderChildrenAndPruneHead(void)
 {
   return 0;
 }
