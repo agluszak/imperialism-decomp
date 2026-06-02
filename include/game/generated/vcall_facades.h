@@ -186,13 +186,6 @@ static __inline void VCall_GreatPower_CallSlot13(void* object, int arg0, int arg
   fn(object, arg0, arg1);
 }
 
-// slot5C; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlot5C(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x5C)));
-  fn(object);
-}
-
 // slot84; class=TGreatPower; status=provisional
 static __inline void VCall_GreatPower_CallSlot84(void* object, int arg0) {
   typedef void (__fastcall * Fn)(void*, int);
@@ -275,13 +268,6 @@ static __inline void VCall_GreatPower_DispatchFallbackActionSlot6C(void* object,
   typedef void (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x6C)));
   fn(object, arg0, arg1, arg2);
-}
-
-// base budget slot5F; class=TGreatPower; status=provisional
-static __inline int VCall_GreatPower_GetBaseBudgetSlot5F(void* object) {
-  typedef int (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x5F)));
-  return fn(object);
 }
 
 // get counter slot1D; class=TGreatPower; status=provisional

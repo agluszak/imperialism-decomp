@@ -53,12 +53,10 @@ src/game/diplomacy_state.cpp|VCall_NationState_PropagateWarTransitionSlot280|int
 src/game/diplomacy_state.cpp|VCall_TurnEventQueue_EnqueueSlot38|void|0x38 / 4|void*|medium|enqueue constructed turn-event packet|index|thiscall|zero||provisional|TurnEventQueue
 src/game/diplomacy_state.cpp|VCall_LocalizationTable_CallSlot44|void|0x44 / 4||medium|localization/event table fallback dispatch|index|thiscall|zero||provisional|LocalizationTable
 src/game/TGreatPower.cpp|VCall_GreatPower_ApplyNeedTargetSlot64|void|0x64|int,int|high|apply need target slot64|index|thiscall|none||provisional|TGreatPower
-src/game/TGreatPower.cpp|VCall_GreatPower_GetBaseBudgetSlot5F|int|0x5F||high|base budget slot5F|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_SetNeedSlot69|void|0x69|int,int|high|set need slot69|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_RefreshNeedPanelsSlot6A|void|0x6A||high|refresh need panels slot6A|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_GetCounterSlot1D|short|0x1D||high|get counter slot1D|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GlobalMapState_CallMetricSlotC4|char|0xC4 / 4|int,int|high|map metric
-src/game/TGreatPower.cpp|VCall_GreatPower_CallSlot5C|void|0x5C||high|slot5C|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_CallSlotA5|void|0xA5||high|slotA5|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag74|void|0x74 / 4|int,int,int|high|set flag74
 src/game/diplomacy_state.cpp|VCall_Diplomacy_SetRelationCodeSlot74WithMode|void|0x74 / 4|int,int,int,int|medium|set relation code with update mode flag|index|thiscall|zero||provisional|DiplomacyTurnStateManager

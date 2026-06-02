@@ -5,14 +5,14 @@ TGreatPower,0x00653938,0x0e,0x038,0x00403995,AdjustTreasurySlot0E_Provisional,vo
 TGreatPower,0x00653938,0x10,0x040,0x004055d8,GetNodeContextSlot10_Provisional,int,,0x004055d8,shared,provisional,"0x004dc540 calls on ecx=this, no stack args; old facade used byte offset 0x40; TAutoGreatPower shares this entry"
 TGreatPower,0x00653938,0x12,0x048,0x00406be0,ResetDiplomacyLevelForNationSlot12_Provisional,void,"int,int",0x00406be0,shared,provisional,reset diplomacy level for nation; entry thunks to body 0x004dd040; TAutoGreatPower shares this entry
 TGreatPower,0x00653938,0x13,0x04c,0x004015aa,VTableSlot13_Provisional,void,"int,int",0x004015aa,shared,provisional,"0x004df010 calls on ecx=ESI with (targetNationSlot,1); TAutoGreatPower shares this entry"
-TGreatPower,0x00653938,0x1d,0x074,0x00401708,GetCounterSlot1D_Provisional,short,,0x00401708,shared,provisional,byte 0x074; called as no-arg in AdvanceOwnedRegionDevelopmentCounters; TAutoGreatPower shares this entry
-TGreatPower,0x00653938,0x1f,0x07c,0x0040337d,GetNeedSlotValueSlot1F_Provisional,short,int,0x0040337d,shared,provisional,need slot query by index; TAutoGreatPower shares this entry
-TGreatPower,0x00653938,0x21,0x084,0x00405d76,CanDispatchViaUiSlot21_Provisional,char,,0x00405d76,shared,provisional,dispatch gate; TAutoGreatPower shares this entry
+TGreatPower,0x00653938,0x1d,0x074,0x00401708,GetDiplomacyCounterA2 (free fn),short,,0x00401708,shared,body_unowned,"entry 0x00401708 -> 0x004d8c00; owned as FREE function, needs method conversion before wiring"
+TGreatPower,0x00653938,0x1f,0x07c,0x0040337d,GetDiplomacyState1C6ByTarget (free fn),short,int,0x0040337d,shared,body_unowned,entry 0x0040337d -> 0x004ddb20; free function
+TGreatPower,0x00653938,0x21,0x084,0x00405d76,IsDiplomacyState1C6UnsetAndCounterPositiveForTarget,char,,0x00405d76,shared,body_identified,entry 0x00405d76 -> body 0x004ddd50 (owned TGreatPower method); SIG MISMATCH provisional char vs real void return; not wired
 TGreatPower,0x00653938,0x28,0x0a0,0x0040432c,ShouldDispatchImmediatelySlot28_Provisional,char,,0x0040432c,shared,provisional,dispatch-immediately gate; used in serialize roster init; TAutoGreatPower shares this entry
-TGreatPower,0x00653938,0x2e,0x0b8,0x00402784,DispatchEventSlot2E_Provisional,void,"int,int",0x00402784,shared,provisional,dispatch event; TAutoGreatPower shares this entry
+TGreatPower,0x00653938,0x2e,0x0b8,0x00402784,SetNationPendingActionStateAndPayload (free fn),void,"int,int",0x00402784,shared,body_unowned,entry 0x00402784 -> 0x004daa10; free function
 TGreatPower,0x00653938,0x45,0x114,0x00404b88,NeedUpdateSlot45_Provisional,void,"int,int",0x00404b88,shared,provisional,need update; TAutoGreatPower shares this entry
-TGreatPower,0x00653938,0x5c,0x170,0x00404ccd,CallSlot5C_Provisional,void,,0x00404ccd,shared,provisional,slot5C no-arg; TAutoGreatPower shares this entry
-TGreatPower,0x00653938,0x5f,0x17c,0x00402c3e,GetBaseBudgetSlot5F_Provisional,int,,0x00402c3e,shared,provisional,base budget query; TAutoGreatPower shares this entry
+TGreatPower,0x00653938,0x5c,0x170,0x00404ccd,TGreatPower::ReleaseDiplomacyTrackedObjectSlots850,void,,0x00404ccd,shared,wired,entry 0x00404ccd -> body 0x004dd310 (owned); wired void/void
+TGreatPower,0x00653938,0x5f,0x17c,0x00402c3e,TGreatPower::SumAidAllocationMatrixAllCells,int,,0x00402c3e,shared,wired,entry 0x00402c3e -> body 0x004dd3f0 (owned); wired int/int
 TGreatPower,0x00653938,0x64,0x190,0x00405ca9,ApplyNeedTargetSlot64_Provisional,void,"int,int",0x00405ca9,shared,provisional,apply need target; TAutoGreatPower shares this entry
 TGreatPower,0x00653938,0x66,0x198,0x00406dc0,AdjustResourceDeltaSlot66_Provisional,void,int,0x00406dc0,shared,provisional,adjust resource delta; TAutoGreatPower shares this entry
 TGreatPower,0x00653938,0x69,0x1a4,0x0040709f,SetNeedSlot69_Provisional,void,"int,int",0x0040709f,shared,provisional,set need; TAutoGreatPower shares this entry
@@ -23,7 +23,7 @@ TGreatPower,0x00653938,0x73,0x1cc,0x00404c50,ResetDiplomacyPolicyAndGrantEntries
 TGreatPower,0x00653938,0x74,0x1d0,0x004070e5,"ApplyDiplomacyPolicyStateForTargetWithCostChecks(int,int)",void,"int,int",0x00405b78,override,wired,"entry thunk 0x004070e5 -> body 0x004ddfc0 (owned); also has direct non-virtual callers, wired (thunk call qualified to avoid re-dispatch); AGP overrides at 0x00405b78"
 TAutoGreatPower,0x00654088,0x74,0x1d0,0x00405b78,SetPolicyForNationSlot74_Provisional,void,"int,int",,override,provisional,override of TGreatPower slot 0x74 (base entry 0x004070e5)
 TGreatPower,0x00653938,0x75,0x1d4,0x004042ff,"SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int,int)",void,"int,int",0x004042ff,shared,wired,entry thunk 0x004042ff -> body 0x004de340 (owned); has direct non-virtual callers
-TGreatPower,0x00653938,0x77,0x1dc,0x00404160,CanSetGrantValueSlot77_Provisional,char,int,0x00404160,shared,provisional,grant guard; TAutoGreatPower shares this entry
+TGreatPower,0x00653938,0x77,0x1dc,0x00404160,CanAffordDiplomacyGrantEntryForTarget,char,int,0x00404160,shared,body_identified,"entry 0x00404160 -> body 0x004de700 (owned); ARG MISMATCH provisional 1 arg vs real (short,ushort); callsite passes 1 arg; not wired"
 TGreatPower,0x00653938,0x7a,0x1e8,0x0040658c,CanAffordAdditionalDiplomacyCostAfterCommitments(short)->bool,int,int,0x0040658c,shared,wired,entry thunk 0x0040658c -> body 0x004de790 (owned); SIGNATURE MISMATCH: provisional (int)->int vs real (short)->bool; no direct callers; wired to real virtual slot
 TGreatPower,0x00653938,0x7b,0x1ec,0x00403909,ApplyAcceptedDiplomacyProposalCode(short),void,int,0x00403909,shared,wired,"entry thunk 0x00403909 -> body 0x004df010 (owned, canary, 45.13%); wired; provisional (int) vs real (short); no direct callers; wired to real virtual slot"
 TGreatPower,0x00653938,0x7c,0x1f0,0x00404ea3,QueueInterNationEventForProposalCode12D_130(unsigned short),void,int,0x00404ea3,shared,wired,entry thunk 0x00404ea3 -> body 0x004df370 (owned); wired; provisional (int) vs real (word); no direct callers; wired to real virtual slot
@@ -33,7 +33,7 @@ TGreatPower,0x00653938,0x85,0x214,0x004090b1,CallSlot85_Provisional,void,int,0x0
 TAutoGreatPower,0x00654088,0x85,0x214,0x004051ff,CallSlot85_Provisional,void,int,,override,provisional,override of TGreatPower slot 0x85 (base entry 0x004090b1)
 TGreatPower,0x00653938,0xa1,0x284,0x00406fe1,VTableSlotA1_Provisional,void,"int,int,int",0x00408bcf,override,provisional,"0x004df010 calls on ecx=ESI with (nationSlot,2,targetNation); GP entry thunks to body 0x004e27f0; TAutoGreatPower OVERRIDES (entry 0x00408bcf)"
 TAutoGreatPower,0x00654088,0xa1,0x284,0x00408bcf,VTableSlotA1_Provisional,void,"int,int,int",,override,provisional,override of TGreatPower slot 0xa1 (base entry 0x00406fe1)
-TGreatPower,0x00653938,0xa5,0x294,0x00402b0d,CallSlotA5_Provisional,void,,0x00402b0d,shared,provisional,slotA5 no-arg; TAutoGreatPower shares this entry
-TGreatPower,0x00653938,0xa8,0x2a0,0x00403706,CallSlotA8_Provisional,void,int,0x00403706,shared,provisional,"0x004e27b0 mode==6 path, one-arg; TAutoGreatPower shares this entry"
-TGreatPower,0x00653938,0xa9,0x2a4,0x00406e3d,CallSlotA9_Provisional,void,int,0x00406e3d,shared,provisional,"0x004e27b0 default path, one-arg; TAutoGreatPower shares this entry"
+TGreatPower,0x00653938,0xa5,0x294,0x00402b0d,ReleaseAllTrackedObjectsFromList89C (free fn),void,,0x00402b0d,shared,body_unowned,entry 0x00402b0d -> 0x004de810; free function
+TGreatPower,0x00653938,0xa8,0x2a0,0x00403706,ApplyMinorNationCapabilityActionType6 (free fn),void,int,0x00403706,shared,body_unowned,entry 0x00403706 -> 0x004e2630; free function
+TGreatPower,0x00653938,0xa9,0x2a4,0x00406e3d,ApplyMinorNationCapabilityActionType4 (free fn),void,int,0x00406e3d,shared,body_unowned,entry 0x00406e3d -> 0x004e2720; free function
 TGreatPower,0x00653938,0xb3,0x2cc,0x00000000,CallSlotB3_Provisional,void,,0x0040360c,gp_null_autogp_impl,provisional,"slotB3 no-arg; TGreatPower slot is NULL, TAutoGreatPower entry 0x0040360c (autogp-only or tail-of-table)"

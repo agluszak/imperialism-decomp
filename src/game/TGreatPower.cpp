@@ -650,10 +650,10 @@ public:
   TGREATPOWER_VTABLE_SLOT(89);
   TGREATPOWER_VTABLE_SLOT(90);
   TGREATPOWER_VTABLE_SLOT(91);
-  virtual void CallSlot5C_Provisional(void) = 0;
+  virtual void ReleaseDiplomacyTrackedObjectSlots850(void);  // slot 0x5c
   TGREATPOWER_VTABLE_SLOT(93);
   TGREATPOWER_VTABLE_SLOT(94);
-  virtual int GetBaseBudgetSlot5F_Provisional(void) = 0;
+  virtual int SumAidAllocationMatrixAllCells(void);  // slot 0x5f
   TGREATPOWER_VTABLE_SLOT(96);
   TGREATPOWER_VTABLE_SLOT(97);
   TGREATPOWER_VTABLE_SLOT(98);
@@ -896,14 +896,12 @@ public:
   void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
   void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex, short rowIndex);
   int SumAidAllocationMatrixColumnForTarget(short targetNationId);
-  int SumAidAllocationMatrixAllCells(void);
   int ComputeRemainingDiplomacyAidBudget(void);
   int GetDiplomacyExternalStateB6ByTarget(int targetNationSlot);
   void DecrementDiplomacyCounterA2ByValue(int delta);
   void ResetNationDiplomacyProposalQueue(void);
   void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                     int isBoycottEnabled);
-  void ReleaseDiplomacyTrackedObjectSlots850(void);
   bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
   void OrphanVtableAssignStub_004ddd20(void);
   void RebuildNationResourceYieldsAndRollField134Into136(void);
@@ -2551,7 +2549,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   }
 
   int pressureScore = this->pressureScore;
-  int basePressure = this->GetBaseBudgetSlot5F_Provisional();
+  int basePressure = this->SumAidAllocationMatrixAllCells();
   basePressure += static_cast<int>(pressureView->pressureFactor168) * 200;
   basePressure += static_cast<int>(pressureView->pressureFactor166) * 500;
   basePressure += pressureView->pressureOffset840;
@@ -3151,7 +3149,7 @@ int TGreatPower::SumAidAllocationMatrixAllCells(void) {
 int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
   int outstandingCommitments = this->pendingCommitmentCost;
   int pendingAdjustments = this->pendingAidTotal;
-  int baseBudget = this->GetBaseBudgetSlot5F_Provisional();
+  int baseBudget = this->SumAidAllocationMatrixAllCells();
   return baseBudget + this->budgetPoolBase + this->budgetPoolDelta - pendingAdjustments -
          outstandingCommitments;
 }
@@ -3628,7 +3626,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   ReleaseObjectAtSlot1C(this->proposalQueue);
   ReleaseObjectAtSlot1C(this->turnEventQueue);
 
-  this->CallSlot5C_Provisional();
+  this->ReleaseDiplomacyTrackedObjectSlots850();
 
   void* relationPanelManager = this->relationManager;
   if (relationPanelManager != 0) {
