@@ -842,8 +842,8 @@ static __inline char Diplomacy_HasFlag84ForNation(void* diplomacyManager, int na
 
 static __inline void Diplomacy_SetRelationState(void* diplomacyManager, int sourceNation,
                                                 int targetNation, int relationState) {
-  vcall_runtime::fastcall3v_with_edx(diplomacyManager, static_cast<unsigned int>(0x7C / 4),
-                                     sourceNation, targetNation, relationState, 0);
+  VCall_Diplomacy_ApplyRelationCode4Slot7C(diplomacyManager, sourceNation, targetNation,
+                                           relationState);
 }
 
 static __inline void GreatPower_ApplyPolicyForNation(TGreatPower* self, int targetNation,
@@ -1013,8 +1013,8 @@ static __inline void Diplomacy_SetFlag28(void* diplomacyManager, int sourceNatio
 
 static __inline void Diplomacy_SetRelationCode78(void* diplomacyManager, int sourceNation,
                                                  int targetNation, int relationCode) {
-  vcall_runtime::fastcall2v_with_edx(diplomacyManager, static_cast<unsigned int>(0x78 / 4),
-                                     sourceNation, targetNation, relationCode);
+  VCall_Diplomacy_SetRelationCodeSlot78Final(diplomacyManager, sourceNation, targetNation,
+                                             relationCode);
 }
 
 static __inline void QueueInterNationEventRecordDedup(int eventCode, int sourceNation,
@@ -3488,6 +3488,9 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
 }
 
 // FUNCTION: IMPERIALISM 0x004df010
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   const int kEvent03 = 3;
   const int kEvent04 = 4;
@@ -3560,6 +3563,9 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
                                  proposalCode);
   }
 }
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x004df370
 void TGreatPower::QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex) {
