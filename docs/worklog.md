@@ -1827,3 +1827,10 @@ Reviewer-guided structural rewrite of `0x004df010`, **20.48% -> 44.49%**:
 1. Replaced a broader batch of known-`TGreatPower*` `VCall_GreatPower_*` helper/direct calls with real virtual declarations on the `TGreatPower` skeleton. Converted slots through the grounded table range: delete-self `0x01`, treasury `0x0e`, diplomacy reset `0x12`, counters/needs `0x1d`/`0x1f`, gates `0x21`/`0x28`, event dispatch `0x2e`, need/resource/budget slots `0x45`/`0x5c`/`0x5f`/`0x64`/`0x66`/`0x69`/`0x6a`/`0x6c`, proposal slots `0x73`/`0x74`/`0x75`/`0x77`/`0x7a`/`0x7b`/`0x7c`, and one-arg slot `0x85`.
 2. Intentionally left the ambiguous `A1_NoArgs` facade, byte-offset `GetNodeContextSlot40`, and slots beyond the current A1 skeleton (`A5`/`A8`/`A9`/`B3`) on generated facades until their receiver/signature/vtable entries are grounded.
 3. Validation batched once for the chunk: `just build` and `just detect` clean; `0x004df010` held **44.49%**, `0x004e9ed0` held **100.00%**; `just compare-canaries` `below_floor=0`; `just stats` aligned **143**, average similarity **9.66%**.
+
+### TGreatPower virtual-call cleanup: remove pass-through shims (2026-06-02, cont.)
+
+1. Removed the redundant `static __inline GreatPower_*` pass-through layer for class-owned slots. Known `TGreatPower*` receivers now call `this->..._Provisional(...)` or `self->..._Provisional(...)` directly.
+2. Extended the provisional skeleton for slots `0xA5`, `0xA8`, `0xA9`, and `0xB3`; migrated their typed callsites directly. `0xA9` is modeled with the same one-arg shape as `0xA8` based on the `0x004e27b0` listing.
+3. Left only two direct `VCall_GreatPower_*` usages in `TGreatPower.cpp`: `GetNodeContextSlot40` (registry byte-offset/name issue) and `CallSlotA1_NoArgs` in `0x004e1d50` (known bad signature/function-shape issue). These are now intentionally visible as follow-up targets, not hidden behind local shims.
+4. Validation batched for the cleanup: `just build` and `just detect` clean; `0x004e27b0` improved **27.27% -> 36.36%**, `0x004ea150` improved **73.91% -> 78.26%**, and `0x004df010` held **44.49%**.
