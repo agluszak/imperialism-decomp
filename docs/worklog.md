@@ -2026,3 +2026,18 @@ stub removed (sync-ownership +1), facade dropped (regen 122 -> 121). FPO-wrapped
 Note (calling convention): the slot bodies decompiled in this run were all `__thiscall` methods
 mislabeled `__cdecl` in the Ghidra autogen / symbols (they read `this` in ECX). True `__cdecl` in
 this class are the static factories/helpers (e.g. `CreateTGreatPowerInstance` `void* __cdecl`).
+
+### THandleStream constructor field-order fix (2026-06-03 00:30 CEST)
+
+Reordered `THandleStream` fields so `position` is the dword at `this+0x10` and the byte flag stays
+at `this+0x14`, then changed `THandleStream::THandleStream()` to use a plain body in the observed
+write order instead of an initializer-list byte write. This fixes the constructor's pre-vtable
+write mismatch.
+
+Commands:
+1. `just build` — passed; regenerated vcall facades unchanged, vtable gate passed, MSVC500 build
+   completed.
+2. `just compare 0x004895e0` — `THandleStream::ConstructTHandleStreamBaseState` **100%**.
+3. Adjacent checks: `0x004895c0` **100%**, `0x00489640` **100%**, `0x00489610` still **90.91%**
+   with only the existing call-target pairing residual (`<OFFSET1>` vs
+   `DestructTHandleStreamAndMaybeFree_Impl`).
