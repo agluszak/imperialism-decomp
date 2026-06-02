@@ -2,6 +2,13 @@
 
 #include <windows.h>
 
+// Most CString shared-buffer routines match best favor-size + FPO ("ys"); a
+// few (the concat-assign wrappers and the ref-assign path) regress badly under
+// it and are bracketed back to the build default below.
+#if defined(_MSC_VER)
+#pragma optimize("ys", on)
+#endif
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 CopyMemoryPossiblyOverlapping(void);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
@@ -296,6 +303,10 @@ void StringShared::AssignConcatCStrAndRef(const char* lhs_text, const StringShar
   AssignFromRef(concat_ref);
 }
 
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x00605b21
 void AssignSharedStringConcatRefAndRef(int* dst_ref_ptr, int* lhs_ref_ptr, int* rhs_ref_ptr) {
   StringShared* dst_ref = reinterpret_cast<StringShared*>(dst_ref_ptr);
@@ -318,6 +329,10 @@ void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, const char* lhs_text, 
   StringShared* rhs_ref = reinterpret_cast<StringShared*>(rhs_ref_ptr);
   dst_ref->AssignConcatCStrAndRef(lhs_text, *rhs_ref);
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("ys", on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x00605c6f
 void StringShared::AppendBuffer(int append_len, const char* append_text) {
@@ -371,6 +386,10 @@ int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int, int appe
   return PtrToInt(ref_ptr);
 }
 
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x00605d0a
 undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr) {
   return reinterpret_cast<StringShared*>(this_ptr)->AssignFromSharedRef(
@@ -381,6 +400,10 @@ undefined4 StringShared::AssignFromSharedRef(const StringShared& src_ref) {
   AppendBuffer(src_ref.Length(), src_ref.Text());
   return reinterpret_cast<undefined4>(this);
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("ys", on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x00605d22
 int StringShared::EnsureCapacityPreserveLength(int min_capacity) {
