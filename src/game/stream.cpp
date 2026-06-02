@@ -11,33 +11,28 @@ undefined4 thunk_DestructTObjectAndMaybeFree(void);
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 
 extern "C" {
-char g_vtblTFileStream = 0;
 char g_pClassDescTFileStream = 0;
-char g_vtblTCountingStream = 0;
 char g_pClassDescTCountingStream = 0;
-char g_vtblTHandleStream = 0;
 char g_pClassDescTHandleStream = 0;
 }
 
 // ---- TFileStream ----------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x004890f0
-void* TFileStream::GetTFileStreamClassNamePointer() {
+void* TFileStream::GetRuntimeClass() {
   return &g_pClassDescTFileStream;
 }
 
 // FUNCTION: IMPERIALISM 0x00489110
-TFileStream* TFileStream::ConstructTFileStreamBaseState() {
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTFileStream);
-  this->field04 = 0;
-  return this;
+TFileStream::TFileStream() {
+  backingArchiveOrStream = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00489130
-void* TFileStream::DestructTFileStreamAndMaybeFree(byte freeSelfFlag) {
-  reinterpret_cast<void(__fastcall*)(void*)>(::thunk_DestructTObjectAndMaybeFree)(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
+// SYNTHETIC: IMPERIALISM 0x00489130
+void* TFileStream::DestructTFileStreamAndMaybeFree(unsigned int flags) {
+  ::thunk_DestructTObjectAndMaybeFree(); // or whatever the real complete teardown is
+  if ((flags & 1) != 0) {
+    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(this));
   }
   return this;
 }
@@ -45,22 +40,19 @@ void* TFileStream::DestructTFileStreamAndMaybeFree(byte freeSelfFlag) {
 // ---- TCountingStream ------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x004893f0
-void* TCountingStream::GetTCountingStreamClassNamePointer() {
+void* TCountingStream::GetRuntimeClass() {
   return &g_pClassDescTCountingStream;
 }
 
 // FUNCTION: IMPERIALISM 0x00489410
-TCountingStream* TCountingStream::ConstructTCountingStreamBaseState() {
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTCountingStream);
-  this->field04 = 0;
-  this->field08 = 0;
-  return this;
+TCountingStream::TCountingStream() {
+  this->maxExtentOrLimit = 0;
+  this->positionOrByteCount = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00489470
 void TCountingStream::DestructTCountingStreamBaseState() {
-  *reinterpret_cast<void**>(this) =
-      reinterpret_cast<void*>(&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4);
+  ::thunk_DestructTObjectAndMaybeFree();
 }
 
 // FUNCTION: IMPERIALISM 0x00489440
@@ -75,19 +67,17 @@ void* TCountingStream::DestructTCountingStreamAndMaybeFree(byte freeSelfFlag) {
 // ---- THandleStream --------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x004895c0
-void* THandleStream::GetTHandleStreamClassNamePointer() {
+void* THandleStream::GetRuntimeClass() {
   return &g_pClassDescTHandleStream;
 }
 
 // FUNCTION: IMPERIALISM 0x004895e0
-THandleStream* THandleStream::ConstructTHandleStreamBaseState() {
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTHandleStream);
-  this->field10 = 1;
-  this->field04 = 0;
-  this->field08 = 0;
-  this->field14 = 0;
-  this->field0c = 0;
-  return this;
+THandleStream::THandleStream() {
+  this->position = 1;
+  this->directionOrMode = 0;
+  this->highWatermark = 0;
+  this->ownsHandleOrDirty = 0;
+  this->handleOrBuffer = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00489640

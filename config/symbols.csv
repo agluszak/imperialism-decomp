@@ -13345,9 +13345,6 @@ address|name|size|type|prototype
 649110|g_pClassDescTHandleStream||global|
 649148|g_vslotTArmyBattle_Slot01D0_NotifyControlStateChange||global|
 64914c|g_vslotTArmyBattle_Slot01D4_NotifyControlSelectionChange||global|
-649230|g_vtblTFileStream||global|
-649320|g_vtblTCountingStream||global|
-649410|g_vtblTHandleStream||global|
 649570|g_pClassDescTEvent||global|
 649588|g_pClassDescTEventHandler||global|
 6495a0|g_pClassDescTView||global|
