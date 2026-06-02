@@ -1834,3 +1834,12 @@ Reviewer-guided structural rewrite of `0x004df010`, **20.48% -> 44.49%**:
 2. Extended the provisional skeleton for slots `0xA5`, `0xA8`, `0xA9`, and `0xB3`; migrated their typed callsites directly. `0xA9` is modeled with the same one-arg shape as `0xA8` based on the `0x004e27b0` listing.
 3. Left only two direct `VCall_GreatPower_*` usages in `TGreatPower.cpp`: `GetNodeContextSlot40` (registry byte-offset/name issue) and `CallSlotA1_NoArgs` in `0x004e1d50` (known bad signature/function-shape issue). These are now intentionally visible as follow-up targets, not hidden behind local shims.
 4. Validation batched for the cleanup: `just build` and `just detect` clean; `0x004e27b0` improved **27.27% -> 36.36%**, `0x004ea150` improved **73.91% -> 78.26%**, and `0x004df010` held **44.49%**.
+
+### TGreatPower remaining self-facade cleanup (2026-06-02, cont.)
+
+1. Removed the final two `VCall_GreatPower_*` usages from `TGreatPower.cpp`.
+   - `GetNodeContextSlot40` became real virtual slot index `0x10` / byte `0x040`: `this->GetNodeContextSlot10_Provisional()`.
+   - `CallSlotA1_NoArgs` in `0x004e1d50` was replaced with the grounded three-arg `this->VTableSlotA1_Provisional(arg2, 1, arg1)` call.
+2. Promoted `0x004e1d50` from a free `__fastcall` shim to `TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2)`. Its thunk `0x00403c15` now forwards the two stack args from caller `0x005416b0`; the original thunk is a single jump and remains a thunk-shape residual.
+3. Added local vtable-view structs only for non-`TGreatPower` receivers used inside the method (`TDiplomacyManagerAdvisoryVtbl` slot `0x44`, `TUiRuntimeDecisionPromptVtbl` slot `0x94`). These are not pass-through shims; they let the method call other recovered objects with normal virtual syntax.
+4. Validation batched for the cleanup: `just build` and `just detect` clean; `rg "VCall_GreatPower|GreatPower_CallSlot" src/game/TGreatPower.cpp` returns no matches; `0x004e1d50` improved **33.71% -> 40.24%** after dropping false null checks; `0x004dc540` held **72.73%**; `0x005416b0` remains **23.08%**.

@@ -25,7 +25,7 @@ void DispatchGreatPowerQuarterlyStatusMessageLevel2(void);
 undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void);
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
 undefined4 DispatchTurnEvent11F8WithNoPayload(void);
-bool __fastcall ExecuteAdvisoryPromptAndApplyActionType1(TGreatPower* self, int unusedEdx);
+struct TUiRuntimeDecisionPromptVtbl;
 undefined4 BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 undefined4 QueueInterNationEventIntoNationBucket(void);
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
@@ -351,7 +351,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(13);
   virtual void AdjustTreasurySlot0E_Provisional(int amount) = 0;
   TGREATPOWER_VTABLE_SLOT(15);
-  TGREATPOWER_VTABLE_SLOT(16);
+  virtual int GetNodeContextSlot10_Provisional(void) = 0;
   TGREATPOWER_VTABLE_SLOT(17);
   virtual void ResetDiplomacyLevelForNationSlot12_Provisional(int nationSlot,
                                                               int resetLevel) = 0;
@@ -608,7 +608,7 @@ public:
                                                                            int arg3);
   void thunk_PopulateCase16AdvisoryMapNodeCandidateState(void);
   void thunk_InitializeGreatPowerMinisterRosterAndScenarioState(int arg1);
-  bool thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15(void);
+  bool thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15(int arg1, int arg2);
   void thunk_BuildGreatPowerTurnMessageSummaryAndDispatch_At00403e04(void);
   void thunk_QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
                                                    char isReplayBypass);
@@ -672,6 +672,7 @@ public:
                                                      int sourceNationSlot);
   void ApplyNationResourceNeedTargetsToOrderState(void);
   void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
+  bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
   void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
@@ -1557,8 +1558,8 @@ void thunk_DispatchTurnEvent11F8WithNoPayload_At0040389b(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00403c15
-bool TGreatPower::thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15(void) {
-  return ExecuteAdvisoryPromptAndApplyActionType1(this, 0);
+bool TGreatPower::thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15(int arg1, int arg2) {
+  return this->ExecuteAdvisoryPromptAndApplyActionType1(arg1, arg2);
 }
 
 // FUNCTION: IMPERIALISM 0x00403e04
@@ -2672,7 +2673,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
 // FUNCTION: IMPERIALISM 0x004DC540
 char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
   if (mode == 0) {
-    int nodeContext = VCall_GreatPower_GetNodeContextSlot40(this);
+    int nodeContext = this->GetNodeContextSlot10_Provisional();
     float localScore = ComputeDefendProvinceMissionLocalSupportScore(nodeContext);
     float crossNationScore = ComputeDefendProvinceMissionCrossNationSupportScore(nodeContext);
     if (localScore < crossNationScore) {
@@ -3899,49 +3900,55 @@ void DispatchGreatPowerQuarterlyStatusMessageLevel0(void) {
   DispatchQuarterlyGreatPowerPressureMessage(0);
 }
 
+struct TUiRuntimeDecisionPromptVtbl {
+  virtual void s000() = 0; virtual void s001() = 0; virtual void s002() = 0; virtual void s003() = 0;
+  virtual void s004() = 0; virtual void s005() = 0; virtual void s006() = 0; virtual void s007() = 0;
+  virtual void s008() = 0; virtual void s009() = 0; virtual void s010() = 0; virtual void s011() = 0;
+  virtual void s012() = 0; virtual void s013() = 0; virtual void s014() = 0; virtual void s015() = 0;
+  virtual void s016() = 0; virtual void s017() = 0; virtual void s018() = 0; virtual void s019() = 0;
+  virtual void s020() = 0; virtual void s021() = 0; virtual void s022() = 0; virtual void s023() = 0;
+  virtual void s024() = 0; virtual void s025() = 0; virtual void s026() = 0; virtual void s027() = 0;
+  virtual void s028() = 0; virtual void s029() = 0; virtual void s030() = 0; virtual void s031() = 0;
+  virtual void s032() = 0; virtual void s033() = 0; virtual void s034() = 0; virtual void s035() = 0;
+  virtual void s036() = 0;
+  virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int promptCode) = 0;
+};
+
+struct TDiplomacyManagerAdvisoryVtbl {
+  virtual void s000() = 0; virtual void s001() = 0; virtual void s002() = 0; virtual void s003() = 0;
+  virtual void s004() = 0; virtual void s005() = 0; virtual void s006() = 0; virtual void s007() = 0;
+  virtual void s008() = 0; virtual void s009() = 0; virtual void s010() = 0; virtual void s011() = 0;
+  virtual void s012() = 0; virtual void s013() = 0; virtual void s014() = 0; virtual void s015() = 0;
+  virtual void s016() = 0;
+  virtual char HasPolicySlot44(int sourceNation, int targetNation) = 0;
+};
+
 // FUNCTION: IMPERIALISM 0x004e1d50
-bool __fastcall ExecuteAdvisoryPromptAndApplyActionType1(TGreatPower* self, int unusedEdx) {
-  (void)unusedEdx;
-  const int targetNationSlot = 0;
+bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
   char result = 0;
-  TDiplomacyTurnStateManager* diplomacyTurnStateManager =
-      reinterpret_cast<TDiplomacyTurnStateManager*>(
-          ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr));
-  void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
+  TDiplomacyManagerAdvisoryVtbl* diplomacyTurnStateManager =
+      static_cast<TDiplomacyManagerAdvisoryVtbl*>(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr));
+  TUiRuntimeDecisionPromptVtbl* uiRuntimeContext =
+      static_cast<TUiRuntimeDecisionPromptVtbl*>(ReadGlobalPointer(kAddrUiRuntimeContextPtr));
 
-  if (diplomacyTurnStateManager != 0 && diplomacyTurnStateManager->vftable != 0) {
-    void** diplomacyVtable = reinterpret_cast<void**>(diplomacyTurnStateManager->vftable);
-    char(__cdecl * diplomacySlot44)(short) =
-        reinterpret_cast<char(__cdecl*)(short)>(diplomacyVtable[0x44 / 4]);
-    if (diplomacySlot44 != 0) {
-      result = diplomacySlot44(self->nationSlot);
-    }
-  }
-
-  char(__fastcall * uiSlot94)(void*, int, int, int) = 0;
-  if (uiRuntimeContext != 0) {
-    void** uiVtable = *reinterpret_cast<void***>(uiRuntimeContext);
-    uiSlot94 = reinterpret_cast<char(__fastcall*)(void*, int, int, int)>(uiVtable[0x94 / 4]);
-  }
+  result = diplomacyTurnStateManager->HasPolicySlot44(this->nationSlot, arg2);
 
   if (result == 0) {
-    result =
-        (uiSlot94 != 0) ? uiSlot94(uiRuntimeContext, 0, self->nationSlot, targetNationSlot) : 0;
+    result = uiRuntimeContext->RequestDecisionSlot94(this->nationSlot, arg1, arg2, 0x0A);
     if (result != 0) {
-      VCall_GreatPower_CallSlotA1_NoArgs(self);
+      this->VTableSlotA1_Provisional(arg2, 1, arg1);
       return true;
     }
   } else {
-    result =
-        (uiSlot94 != 0) ? uiSlot94(uiRuntimeContext, 0, self->nationSlot, targetNationSlot) : 0;
+    result = uiRuntimeContext->RequestDecisionSlot94(this->nationSlot, arg1, arg2, 0x0B);
     if (result != 0) {
-      void* secondaryNationState = ReadSecondaryNationStateSlot(targetNationSlot);
+      void* secondaryNationState = ReadSecondaryNationStateSlot(arg1);
       if (secondaryNationState != 0) {
         const TSecondaryNationStateOwnerView* secondaryNationStateView =
             static_cast<const TSecondaryNationStateOwnerView*>(secondaryNationState);
         short stateValue = DecodeSecondaryNationOwnerSlot(secondaryNationStateView);
-        if (stateValue != self->nationSlot) {
-          SecondaryState_CallSlot4C(secondaryNationState, self->nationSlot, 1);
+        if (stateValue != this->nationSlot) {
+          SecondaryState_CallSlot4C(secondaryNationState, this->nationSlot, 1);
         }
       }
     }
@@ -4757,7 +4764,7 @@ void TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int
     unsigned char acceptedFlag;
   };
 
-  bool accepted = this->thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15();
+  bool accepted = this->thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15(arg1, arg2);
   TurnEvent1EPacketPayload packetPayload;
   packetPayload.packetTag = 0x74696D65;
   reinterpret_cast<void(__cdecl*)(void)>(thunk_GetActiveNationId)();
