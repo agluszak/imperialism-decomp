@@ -2,6 +2,32 @@
 
 ## 2026-06-02
 
+### CDocument::AddView + CObject EH-destructor feasibility
+
+1. `CDocument::AddView` (`0x611810`): appends to the view list via
+   `CPtrList::AddTail`, sets `view->m_pDocument` (`+0x3c`), fires the slot-0x70
+   notification through a new facade `VCall_CDocument_NotifyViewListChangedSlot70`
+   (thiscall, `edx_mode=none` to avoid a spurious `xor edx,edx`). **100% effective**
+   (only a behaviorally-irrelevant store reorder).
+2. CObject virtual-destructor investigation (requested unlock for the `__EH_prolog`
+   `Destruct…BaseState` family):
+   - The project already models CObject as `TEventHandler` (`// VTABLE: 0x0066fec4`,
+     `virtual ~`) and `TView : TEventHandler` (`// VTABLE: 0x649858`). `TView::~TView`
+     (`0x48a9d0`) is a real C++ virtual destructor and **matches 93.33%** with the EH
+     frame — so the pattern is supported and works.
+   - BLOCKERS for the specific deferred destructors: (a) `__EH_prolog` can only be
+     emitted by the C++ compiler from real destructors (no inline asm, rule #1);
+     (b) `CObArray`/`CPtrList` need a 4-byte CObject base (data at `+4`) but
+     `TEventHandler` is `0x10` bytes and already owns vtable `0x66fec4` — two classes
+     can't share that vtable; (c) adding a `virtual ~` to the manual-vtable
+     `TIndexAndRankList` would collide with `g_vtblTIndexAndRankList` at `0x672eac`
+     and/or shift the vtable slots the matched `0x488110` vcall relies on.
+   - Conclusion: matching `0x601bdd`/`0x601f7c`/`0x6109eb` needs a focused migration
+     of the manual-vtable list/array hierarchy to the C++ `// VTABLE:` inheritance
+     pattern (with a 4-byte CObject base distinct from `TEventHandler`), not an
+     incremental edit. Deferred to avoid regressing the ~18 matched manual-vtable
+     functions.
+
 ### Foundation breadth: CObject RTTI, CString split, CDocument, CArchive
 
 1. CObject/CRuntimeClass RTTI (`src/game/list_utils.cpp`): `IsKindOf` (`0x606fc0`),
