@@ -3,3 +3,7 @@ address|name|priority|floor|stretch
 0x004DE860|ApplyJoinEmpireMode0GlobalDiplomacyReset|P1|17.0|25.0
 0x004E73F0|WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0|P1|17.0|20.0
 0x004E9060|ComputeMapActionContextCompositeScoreForNation|P2|34.0|38.0
+0x004DF010|ApplyAcceptedDiplomacyProposalCode|P1|44.0|50.0
+0x004E9ED0|QueueWarTransitionFromAdvisoryAction|P1|99.0|100.0
+0x005C2530|RegisterUnitOrderWithOwnerManager|P2|85.0|90.0
+0x005C2940|InitializeCivWorkOrderState|P2|99.0|100.0
