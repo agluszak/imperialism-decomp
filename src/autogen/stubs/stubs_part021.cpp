@@ -3027,14 +3027,6 @@ undefined4 DestructCObArray(void)
   return 0;
 }
 
-// ghidra_name DestructCPtrListBaseState
-// ghidra_proto void __thiscall DestructCPtrListBaseState(void)
-// FUNCTION: IMPERIALISM 0x00601f7c
-undefined4 DestructCPtrListBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::CMapPtrToPtr_ctor
 // ghidra_proto void __thiscall CMapPtrToPtr_ctor(int nBlockSize)
 // FUNCTION: IMPERIALISM 0x0060339a
@@ -3999,6 +3991,14 @@ undefined4 WrapperFor_E367_At0060770c(void)
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 // FUNCTION: IMPERIALISM 0x00607711
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// FUNCTION: IMPERIALISM 0x00607723
+undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 {
   return 0;
 }

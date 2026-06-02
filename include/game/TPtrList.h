@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/RefCountedObjectBase.h"
+#include "game/cobject.h"
 
 // MFC CPtrList CNode (m_pNext, m_pPrev, data) — 12 bytes.
 struct CPtrListNode {
@@ -14,8 +15,9 @@ struct CPtrListNode {
 void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, int elementSize);
 void __fastcall FreeLinkedBlockChain(void* blockChainHead);
 
-struct CPtrListSentinelView {
-  void* vftable;
+// VTABLE: IMPERIALISM 0x00672eec
+class CPtrListSentinelView : public CObject {
+ public:
   CPtrListNode* headNode;
   CPtrListNode* tailNode;
   int nodeCount;
@@ -25,6 +27,7 @@ struct CPtrListSentinelView {
 
   CPtrListSentinelView* CPtrList(int ownerContext);
   void* DestructCPtrListAndMaybeFree(byte freeSelfFlag);
+  virtual ~CPtrListSentinelView();
 
   void RemoveAll();
   CPtrListNode* NewNode(CPtrListNode* pPrev, CPtrListNode* pNext);
