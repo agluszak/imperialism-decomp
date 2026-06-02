@@ -3487,6 +3487,104 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
   QueueObject_WritePackedIntAtSlot38(this->proposalQueue, reinterpret_cast<int*>(&proposalRecord));
 }
 
+// Typed vtable views for the diplomacy objects reached by opaque pointer in
+// ApplyAcceptedDiplomacyProposalCode. Real (thiscall, no-edx) virtual dispatch
+// matches the original `mov ecx,obj; call [vtbl+slot]` shape better than the
+// generated VCall_* facades, which carry a spurious edx=0 argument.
+struct DiplomacyManagerVtbl {
+  virtual void s00() = 0; virtual void s01() = 0; virtual void s02() = 0; virtual void s03() = 0;
+  virtual void s04() = 0; virtual void s05() = 0; virtual void s06() = 0; virtual void s07() = 0;
+  virtual void s08() = 0; virtual void s09() = 0; virtual void s10() = 0; virtual void s11() = 0;
+  virtual void s12() = 0; virtual void s13() = 0; virtual void s14() = 0; virtual void s15() = 0;
+  virtual void s16() = 0;
+  virtual char HasPolicyWithNationSlot44(int sourceNation, int targetNation) = 0; // 17 (0x44)
+  virtual void s18() = 0; virtual void s19() = 0; virtual void s20() = 0; virtual void s21() = 0;
+  virtual void s22() = 0; virtual void s23() = 0; virtual void s24() = 0; virtual void s25() = 0;
+  virtual void s26() = 0; virtual void s27() = 0;
+  virtual short GetRelationTierSlot70(int sourceNation, int targetNation) = 0; // 28 (0x70)
+  virtual void s29() = 0;
+  virtual void SetRelationCodeSlot78Final(int sourceNation, int targetNation,
+                                          int relationCode) = 0; // 30 (0x78)
+  virtual void ApplyRelationCode4Slot7c(int sourceNation, int targetNation,
+                                        int updateMode) = 0; // 31 (0x7c)
+  virtual void s32() = 0;
+  virtual char HasFlag84ForNationSlot84(int nationSlot) = 0; // 33 (0x84)
+};
+
+struct TerrainDescriptorVtbl {
+  virtual void s00() = 0; virtual void s01() = 0; virtual void s02() = 0; virtual void s03() = 0;
+  virtual void s04() = 0; virtual void s05() = 0; virtual void s06() = 0; virtual void s07() = 0;
+  virtual void s08() = 0; virtual void s09() = 0; virtual void s10() = 0; virtual void s11() = 0;
+  virtual void s12() = 0; virtual void s13() = 0; virtual void s14() = 0; virtual void s15() = 0;
+  virtual void s16() = 0; virtual void s17() = 0; virtual void s18() = 0;
+  virtual void SetDiplomacyStandingSlot4c(int sourceNation, int mode) = 0; // 19 (0x4c)
+};
+
+struct NationStateVtbl {
+  virtual void s00() = 0; virtual void s01() = 0; virtual void s02() = 0; virtual void s03() = 0;
+  virtual void s04() = 0; virtual void s05() = 0; virtual void s06() = 0; virtual void s07() = 0;
+  virtual void s08() = 0; virtual void s09() = 0; virtual void s10() = 0; virtual void s11() = 0;
+  virtual void s12() = 0; virtual void s13() = 0; virtual void s14() = 0; virtual void s15() = 0;
+  virtual void s16() = 0; virtual void s17() = 0; virtual void s18() = 0; virtual void s19() = 0;
+  virtual void s20() = 0; virtual void s21() = 0; virtual void s22() = 0; virtual void s23() = 0;
+  virtual void s24() = 0; virtual void s25() = 0; virtual void s26() = 0; virtual void s27() = 0;
+  virtual void s28() = 0; virtual void s29() = 0; virtual void s30() = 0; virtual void s31() = 0;
+  virtual void s32() = 0; virtual void s33() = 0; virtual void s34() = 0; virtual void s35() = 0;
+  virtual void s36() = 0;
+  virtual void NotifyActionSlot94(int sourceNation, int actionCode) = 0; // 37 (0x94)
+};
+
+// `this` view for TGreatPower's own vtable slots. Casting `this` to this struct
+// (vptr at offset 0, same as TGreatPower::vftable) makes the self-dispatches
+// real thiscall virtual calls instead of edx-carrying facade wrappers, without
+// converting the whole TGreatPower class to polymorphic.
+struct GreatPowerSelfVtbl {
+  virtual void s000() = 0; virtual void s001() = 0; virtual void s002() = 0; virtual void s003() = 0;
+  virtual void s004() = 0; virtual void s005() = 0; virtual void s006() = 0; virtual void s007() = 0;
+  virtual void s008() = 0; virtual void s009() = 0; virtual void s010() = 0; virtual void s011() = 0;
+  virtual void s012() = 0; virtual void s013() = 0; virtual void s014() = 0; virtual void s015() = 0;
+  virtual void s016() = 0; virtual void s017() = 0; virtual void s018() = 0;
+  virtual void CallSlot13(int targetNationSlot, int mode) = 0; // 19 (0x4c)
+  virtual void s020() = 0; virtual void s021() = 0; virtual void s022() = 0; virtual void s023() = 0;
+  virtual void s024() = 0; virtual void s025() = 0; virtual void s026() = 0; virtual void s027() = 0;
+  virtual void s028() = 0; virtual void s029() = 0; virtual void s030() = 0; virtual void s031() = 0;
+  virtual void s032() = 0; virtual void s033() = 0; virtual void s034() = 0; virtual void s035() = 0;
+  virtual void s036() = 0; virtual void s037() = 0; virtual void s038() = 0; virtual void s039() = 0;
+  virtual void s040() = 0; virtual void s041() = 0; virtual void s042() = 0; virtual void s043() = 0;
+  virtual void s044() = 0; virtual void s045() = 0; virtual void s046() = 0; virtual void s047() = 0;
+  virtual void s048() = 0; virtual void s049() = 0; virtual void s050() = 0; virtual void s051() = 0;
+  virtual void s052() = 0; virtual void s053() = 0; virtual void s054() = 0; virtual void s055() = 0;
+  virtual void s056() = 0; virtual void s057() = 0; virtual void s058() = 0; virtual void s059() = 0;
+  virtual void s060() = 0; virtual void s061() = 0; virtual void s062() = 0; virtual void s063() = 0;
+  virtual void s064() = 0; virtual void s065() = 0; virtual void s066() = 0; virtual void s067() = 0;
+  virtual void s068() = 0; virtual void s069() = 0; virtual void s070() = 0; virtual void s071() = 0;
+  virtual void s072() = 0; virtual void s073() = 0; virtual void s074() = 0; virtual void s075() = 0;
+  virtual void s076() = 0; virtual void s077() = 0; virtual void s078() = 0; virtual void s079() = 0;
+  virtual void s080() = 0; virtual void s081() = 0; virtual void s082() = 0; virtual void s083() = 0;
+  virtual void s084() = 0; virtual void s085() = 0; virtual void s086() = 0; virtual void s087() = 0;
+  virtual void s088() = 0; virtual void s089() = 0; virtual void s090() = 0; virtual void s091() = 0;
+  virtual void s092() = 0; virtual void s093() = 0; virtual void s094() = 0; virtual void s095() = 0;
+  virtual void s096() = 0; virtual void s097() = 0; virtual void s098() = 0; virtual void s099() = 0;
+  virtual void s100() = 0; virtual void s101() = 0; virtual void s102() = 0; virtual void s103() = 0;
+  virtual void s104() = 0; virtual void s105() = 0; virtual void s106() = 0; virtual void s107() = 0;
+  virtual void s108() = 0; virtual void s109() = 0; virtual void s110() = 0; virtual void s111() = 0;
+  virtual void s112() = 0; virtual void s113() = 0; virtual void s114() = 0; virtual void s115() = 0;
+  virtual void s116() = 0; virtual void s117() = 0; virtual void s118() = 0; virtual void s119() = 0;
+  virtual void s120() = 0; virtual void s121() = 0; virtual void s122() = 0; virtual void s123() = 0;
+  virtual void s124() = 0; virtual void s125() = 0; virtual void s126() = 0; virtual void s127() = 0;
+  virtual void s128() = 0; virtual void s129() = 0; virtual void s130() = 0; virtual void s131() = 0;
+  virtual void s132() = 0; virtual void s133() = 0; virtual void s134() = 0; virtual void s135() = 0;
+  virtual void s136() = 0; virtual void s137() = 0; virtual void s138() = 0; virtual void s139() = 0;
+  virtual void s140() = 0; virtual void s141() = 0; virtual void s142() = 0; virtual void s143() = 0;
+  virtual void s144() = 0; virtual void s145() = 0; virtual void s146() = 0; virtual void s147() = 0;
+  virtual void s148() = 0; virtual void s149() = 0; virtual void s150() = 0; virtual void s151() = 0;
+  virtual void s152() = 0; virtual void s153() = 0; virtual void s154() = 0; virtual void s155() = 0;
+  virtual void s156() = 0; virtual void s157() = 0; virtual void s158() = 0; virtual void s159() = 0;
+  virtual void s160() = 0;
+  virtual void ApplyPolicyForNationSlotA1(int targetNation, int policyCode,
+                                          int sourceNation) = 0; // 161 (0x284)
+};
+
 // FUNCTION: IMPERIALISM 0x004df010
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -3513,55 +3611,62 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
 
   switch (static_cast<int>(proposal->proposalCode) - 0x12D) {
   case 0:
-    GreatPower_CallSlot13(this, static_cast<int>(proposal->targetNationSlot), 1);
+    reinterpret_cast<GreatPowerSelfVtbl*>(this)->CallSlot13(
+        static_cast<int>(proposal->targetNationSlot), 1);
     QueueInterNationEventRecordDedup(3, this->nationSlot,
                                      static_cast<int>(proposal->targetNationSlot));
     break;
 
   case 1: {
-    Diplomacy_SetRelationCode78(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                this->nationSlot,
-                                static_cast<int>(proposal->targetNationSlot), 2);
+    reinterpret_cast<DiplomacyManagerVtbl*>(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+        ->SetRelationCodeSlot78Final(this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot), 2);
     QueueInterNationEventRecordDedup(4, this->nationSlot,
                                      static_cast<int>(proposal->targetNationSlot));
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-      if (Diplomacy_HasPolicyWithNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                        nationSlot,
-                                        static_cast<int>(proposal->targetNationSlot)) != 0 &&
-          Diplomacy_HasPolicyWithNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                        this->nationSlot, nationSlot) == 0) {
-        GreatPower_ApplyPolicyForNation(this, nationSlot, 2,
-                                        static_cast<int>(proposal->targetNationSlot));
+      if (reinterpret_cast<DiplomacyManagerVtbl*>(
+              ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+                  ->HasPolicyWithNationSlot44(
+                      nationSlot, static_cast<int>(proposal->targetNationSlot)) != 0 &&
+          reinterpret_cast<DiplomacyManagerVtbl*>(
+              ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+                  ->HasPolicyWithNationSlot44(this->nationSlot, nationSlot) == 0) {
+        reinterpret_cast<GreatPowerSelfVtbl*>(this)->ApplyPolicyForNationSlotA1(
+            nationSlot, 2, static_cast<int>(proposal->targetNationSlot));
       }
     }
     break;
   }
 
   case 2:
-    Diplomacy_SetRelationCode78(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                this->nationSlot,
-                                static_cast<int>(proposal->targetNationSlot), 3);
+    reinterpret_cast<DiplomacyManagerVtbl*>(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+        ->SetRelationCodeSlot78Final(this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot), 3);
     QueueInterNationEventRecordDedup(5, this->nationSlot,
                                      static_cast<int>(proposal->targetNationSlot));
     break;
 
   case 3: {
-    Diplomacy_SetRelationCode78(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                this->nationSlot,
-                                static_cast<int>(proposal->targetNationSlot), 4);
+    reinterpret_cast<DiplomacyManagerVtbl*>(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+        ->SetRelationCodeSlot78Final(this->nationSlot,
+                                     static_cast<int>(proposal->targetNationSlot), 4);
     QueueInterNationEventRecordDedup(2, this->nationSlot,
                                      static_cast<int>(proposal->targetNationSlot));
-    if (Diplomacy_HasFlag84ForNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                     static_cast<int>(proposal->targetNationSlot)) != 0) {
+    if (reinterpret_cast<DiplomacyManagerVtbl*>(
+            ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+                ->HasFlag84ForNationSlot84(static_cast<int>(proposal->targetNationSlot)) != 0) {
       for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
         if (IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0 &&
-            Diplomacy_GetRelationTier(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                      this->nationSlot, nationSlot) == 2 &&
-            Diplomacy_HasPolicyWithNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                          nationSlot,
-                                          static_cast<int>(proposal->targetNationSlot)) != 0) {
-          Diplomacy_SetRelationState(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                     this->nationSlot, nationSlot, 1);
+            reinterpret_cast<DiplomacyManagerVtbl*>(
+                ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+                    ->GetRelationTierSlot70(this->nationSlot, nationSlot) == 2 &&
+            reinterpret_cast<DiplomacyManagerVtbl*>(
+                ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+                    ->HasPolicyWithNationSlot44(
+                        nationSlot, static_cast<int>(proposal->targetNationSlot)) != 0) {
+          reinterpret_cast<DiplomacyManagerVtbl*>(
+              ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+              ->ApplyRelationCode4Slot7c(this->nationSlot, nationSlot, 1);
         }
       }
     }
@@ -3569,9 +3674,9 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   }
 
   case 5: {
-    TerrainDescriptor_CallSlot4C(
-        ReadTerrainDescriptorSlot(static_cast<int>(proposal->targetNationSlot)), this->nationSlot,
-        1);
+    reinterpret_cast<TerrainDescriptorVtbl*>(
+        ReadTerrainDescriptorSlot(static_cast<int>(proposal->targetNationSlot)))
+        ->SetDiplomacyStandingSlot4c(this->nationSlot, 1);
     QueueInterNationEventRecordDedup(3, static_cast<int>(proposal->targetNationSlot),
                                      this->nationSlot);
     break;
@@ -3581,13 +3686,13 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
     break;
   }
 
-  if (Diplomacy_HasFlag84ForNation(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr),
-                                   static_cast<int>(proposal->targetNationSlot)) != 0 &&
+  if (reinterpret_cast<DiplomacyManagerVtbl*>(ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
+              ->HasFlag84ForNationSlot84(static_cast<int>(proposal->targetNationSlot)) != 0 &&
       IsNationSlotEligibleForEventProcessingFast(
           static_cast<int>(proposal->targetNationSlot)) != 0) {
-    NationState_NotifyActionCode(
-        ReadNationStateSlot(static_cast<int>(proposal->targetNationSlot)), this->nationSlot,
-        proposal->proposalCode);
+    reinterpret_cast<NationStateVtbl*>(
+        ReadNationStateSlot(static_cast<int>(proposal->targetNationSlot)))
+        ->NotifyActionSlot94(this->nationSlot, proposal->proposalCode);
   }
 }
 #if defined(_MSC_VER)
