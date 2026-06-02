@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RefreshCityProductionDetailPanelAndArrowWidgets
-// ghidra_proto void __cdecl RefreshCityProductionDetailPanelAndArrowWidgets(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0050bea0
-undefined4 RefreshCityProductionDetailPanelAndArrowWidgets(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTurnEvent3B8AndWaitForCompletionFlag
 // ghidra_proto void __cdecl DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
 // FUNCTION: IMPERIALISM 0x0050d310
@@ -3999,6 +3991,14 @@ undefined4 ResetTNavyMissionToSentinelVtable(void)
 // ghidra_proto bool __stdcall ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
 // FUNCTION: IMPERIALISM 0x005355b0
 undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
+// ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
+// FUNCTION: IMPERIALISM 0x005355d0
+undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
 {
   return 0;
 }

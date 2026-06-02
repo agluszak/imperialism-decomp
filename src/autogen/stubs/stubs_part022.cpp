@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RegisterCommctrlDragListMessage
-// ghidra_proto void __cdecl RegisterCommctrlDragListMessage(void)
-// FUNCTION: IMPERIALISM 0x006076bd
-undefined4 RegisterCommctrlDragListMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_E361_At006076ce
 // ghidra_proto void __cdecl WrapperFor_E361_At006076ce(void)
 // FUNCTION: IMPERIALISM 0x006076ce
@@ -3999,6 +3991,14 @@ undefined4 AfxOleSetUserCtrl(void)
 // ghidra_proto int __cdecl GetMfcThreadStateFlagDword30(void)
 // FUNCTION: IMPERIALISM 0x0061f46b
 undefined4 GetMfcThreadStateFlagDword30(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeThreadObjectVtableProxy
+// ghidra_proto void __fastcall InitializeThreadObjectVtableProxy(void * pThis)
+// FUNCTION: IMPERIALISM 0x00622448
+undefined4 InitializeThreadObjectVtableProxy(void)
 {
   return 0;
 }

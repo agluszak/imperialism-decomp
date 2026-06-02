@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RebuildMapOrderEntryChildren
-// ghidra_proto void __cdecl RebuildMapOrderEntryChildren(void)
-// FUNCTION: IMPERIALISM 0x00553f10
-undefined4 RebuildMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name PruneInactiveTaskForceOrderHead
 // ghidra_proto void __cdecl PruneInactiveTaskForceOrderHead(void)
 // FUNCTION: IMPERIALISM 0x00553fe0
@@ -3999,6 +3991,14 @@ undefined4 CreateTSliderPictureInstance(void)
 // ghidra_proto void * __cdecl GetTSliderPictureClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00573a00
 undefined4 GetTSliderPictureClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
+// ghidra_proto void * __thiscall ConstructTSliderPictureBaseState(void)
+// FUNCTION: IMPERIALISM 0x00573a20
+undefined4 ConstructTSliderPictureBaseState(void)
 {
   return 0;
 }

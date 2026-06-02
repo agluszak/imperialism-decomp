@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
-// ghidra_proto void * __thiscall ConstructTSliderPictureBaseState(void)
-// FUNCTION: IMPERIALISM 0x00573a20
-undefined4 ConstructTSliderPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TSliderPicture::DestructTSliderPictureAndMaybeFree
 // ghidra_proto void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00573a50
@@ -3999,6 +3991,14 @@ undefined4 TArmyTacUnit_VtblSlot05(void)
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
 // FUNCTION: IMPERIALISM 0x0059ebb0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::CreateTNavyPlayerInstance
+// ghidra_proto void __thiscall CreateTNavyPlayerInstance(void)
+// FUNCTION: IMPERIALISM 0x0059ebe0
+undefined4 CreateTNavyPlayerInstance(void)
 {
   return 0;
 }

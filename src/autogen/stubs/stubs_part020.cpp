@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCommodityLine::ConstructTCommodityLineBaseState
-// ghidra_proto void * __thiscall ConstructTCommodityLineBaseState(void)
-// FUNCTION: IMPERIALISM 0x005c14c0
-undefined4 ConstructTCommodityLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommodityLine::DestructTCommodityLineAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005c14f0
@@ -3999,6 +3991,14 @@ undefined4 SetGlobalCallback6A7FACAndReturnPrevious(void)
 // ghidra_proto int __cdecl InvokeGlobalAllocationFailureCallback(void)
 // FUNCTION: IMPERIALISM 0x005e7ac0
 undefined4 InvokeGlobalAllocationFailureCallback(void)
+{
+  return 0;
+}
+
+// ghidra_name FindFirstFileAndPopulateFileInfoRecord
+// ghidra_proto void * __cdecl FindFirstFileAndPopulateFileInfoRecord(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7ae0
+undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
 {
   return 0;
 }
