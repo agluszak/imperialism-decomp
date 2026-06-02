@@ -1775,3 +1775,10 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
 3. Validation:
    - `just stats`: `dropped duplicate addresses: 0` (was non-zero), aligned functions **141** (delta 0), average similarity **9.63%**.
    - `just compare-canaries`: `below_floor=0`; `just vtable-gate`: passed.
+
+### TView base-state ctor: return-this + DATA vtable symbol (2026-06-02, cont.)
+
+1. Applied INSTRUCTIONS note 61 to `TView::ConstructUiResourceEntryBase` (`0x0048a8e0`): declared it returning `TView*` with `return this;` (matches the original `mov eax, esi`), and referenced the final vptr write through the `g_vtblTView` DATA symbol (`extern "C" char g_vtblTView = 0;`) instead of the raw `0x00649858` literal so reccmp pairs it as `(DATA)`.
+2. Score: `0x0048a8e0` **67.65% -> 69.57%**; dtor `0x0048a9d0` held **93.33%**, thunk `0x004064e2` held **100%**.
+3. Remaining gap is entirely the MSVC C++ EH cleanup frame (`push -1; push __ehhandler; fs:[0]` setup/teardown + `[esp+0x14]` ehstate var) emitted because the `StringShared sharedStringRef` member at `+0x58` has a non-trivial destructor. This is the strong signal that the original `0x0048a8e0` is a real constructor, not a plain method (see investigation note below).
+4. Validation: `just build`/`detect` clean; `compare-canaries` `below_floor=0`; `vtable-gate` passed; `stats` aligned **141** (delta 0), `dropped duplicate addresses: 0`.

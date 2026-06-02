@@ -8,9 +8,13 @@
 #include "game/ui_widget_shared.h"
 #include "game/generated/vcall_facades.h"
 
+// TView vtable (0x00649858) referenced as a data symbol so reccmp pairs the
+// constructor's final vptr write (note 61: reccmp only pairs the (DATA) form,
+// not raw address literals).
+extern "C" char g_vtblTView = 0;
+
 namespace {
 
-const unsigned int kAddrVtblTView = 0x00649858;
 const unsigned int kAddrVtblGetTEventHandlerClassThunk = 0x006497A0;
 
 } // namespace
@@ -23,7 +27,7 @@ void TView::thunk_ConstructUiResourceEntryBase() {
 
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
-void TView::ConstructUiResourceEntryBase() {
+TView* TView::ConstructUiResourceEntryBase() {
   field0c = 0;
   field10 = 0x7fffffff;
   field14 = 0;
@@ -42,7 +46,8 @@ void TView::ConstructUiResourceEntryBase() {
   field54 = 1;
   sharedStringRef.InitFromEmpty();
   field5c = 0;
-  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kAddrVtblTView);
+  *reinterpret_cast<void**>(this) = &g_vtblTView;
+  return this;
 }
 
 

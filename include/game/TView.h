@@ -34,7 +34,7 @@ public:
   int field5c;
 
   void thunk_ConstructUiResourceEntryBase();
-  void ConstructUiResourceEntryBase();
+  TView* ConstructUiResourceEntryBase();
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
   virtual ~TView();
 };
