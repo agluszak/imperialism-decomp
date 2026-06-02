@@ -1579,14 +1579,6 @@ undefined4 CDocument(void)
   return 0;
 }
 
-// ghidra_name DestructCDocumentBaseStateAndMaybeFree
-// ghidra_proto void * __thiscall DestructCDocumentBaseStateAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x006109cf
-undefined4 DestructCDocumentBaseStateAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name CDocument::DestructCDocumentBaseState
 // ghidra_proto void __thiscall DestructCDocumentBaseState(void)
 // FUNCTION: IMPERIALISM 0x006109eb
@@ -1599,14 +1591,6 @@ undefined4 DestructCDocumentBaseState(void)
 // ghidra_proto void * __thiscall DispatchViaVtableSlot84FromSlot06(void)
 // FUNCTION: IMPERIALISM 0x00610a57
 undefined4 DispatchViaVtableSlot84FromSlot06(void)
-{
-  return 0;
-}
-
-// ghidra_name DisconnectViews
-// ghidra_proto void __cdecl DisconnectViews(void)
-// FUNCTION: IMPERIALISM 0x00610a5f
-undefined4 DisconnectViews(void)
 {
   return 0;
 }
@@ -3999,6 +3983,22 @@ undefined4 Dtor_CHeaderCtrl_FID_61eb67(void)
 // ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61ebc0(void)
 // FUNCTION: IMPERIALISM 0x0061ebc0
 undefined4 Dtor_CHeaderCtrl_FID_61ebc0(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8
+// ghidra_proto void __cdecl WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
+// FUNCTION: IMPERIALISM 0x0061ebf8
+undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+// FUNCTION: IMPERIALISM 0x0061ebfd
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 {
   return 0;
 }
