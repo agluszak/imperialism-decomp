@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
-// FUNCTION: IMPERIALISM 0x006076d3
-undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
 // ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 // FUNCTION: IMPERIALISM 0x006076e5
@@ -3999,6 +3991,14 @@ undefined4 InitializeThreadObjectVtableProxy(void)
 // ghidra_proto void * __thiscall DestroyTurnStateObjectWithMfcDeleteFinalizer(void * param_1, byte param_2)
 // FUNCTION: IMPERIALISM 0x00622451
 undefined4 DestroyTurnStateObjectWithMfcDeleteFinalizer(void)
+{
+  return 0;
+}
+
+// ghidra_name CWinThread::CWinApp
+// ghidra_proto void * __thiscall CWinApp(byte * threadName)
+// FUNCTION: IMPERIALISM 0x0062246c
+undefined4 CWinApp(void)
 {
   return 0;
 }

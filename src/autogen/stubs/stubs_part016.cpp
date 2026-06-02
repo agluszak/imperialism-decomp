@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
-// ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
-// FUNCTION: IMPERIALISM 0x00535620
-undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
 // ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
 // FUNCTION: IMPERIALISM 0x00535640
@@ -3999,6 +3991,14 @@ undefined4 RebuildMapOrderEntryChildren(void)
 // ghidra_proto void __cdecl PruneInactiveTaskForceOrderHead(void)
 // FUNCTION: IMPERIALISM 0x00553fe0
 undefined4 PruneInactiveTaskForceOrderHead(void)
+{
+  return 0;
+}
+
+// ghidra_name TScatteredShipsMission::ApplyMapOrderTypeAndQueue
+// ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
+// FUNCTION: IMPERIALISM 0x005540b0
+undefined4 ApplyMapOrderTypeAndQueue(void)
 {
   return 0;
 }

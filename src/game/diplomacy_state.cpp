@@ -36,6 +36,7 @@ enum {
 undefined4 thunk_InitializeRangePairAndResetCursor(void);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
+undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 static __inline void ConstructTPtrListObject(void* listObject) {
   reinterpret_cast<TIndexAndRankList*>(listObject)->CPtrArray();
 }
@@ -81,6 +82,10 @@ struct TerrainDescriptor {
   virtual void td_slot21() = 0; // 21 (0x54)
   virtual void td_slot22() = 0; // 22 (0x58)
   virtual char HasMinorStandingLinkSlot5C(int sourceNation) = 0; // 23 (0x5c)
+  virtual void td_slot24() = 0; virtual void td_slot25() = 0; virtual void td_slot26() = 0; virtual void td_slot27() = 0;
+  virtual void td_slot28() = 0; virtual void td_slot29() = 0; virtual void td_slot30() = 0; virtual void td_slot31() = 0;
+  virtual void td_slot32() = 0; virtual void td_slot33() = 0; virtual void td_slot34() = 0; virtual void td_slot35() = 0;
+  virtual char HasStandingPropagationBridgeSlot90(int targetNation) = 0; // 36 (0x90)
 };
 
 struct NationState {
@@ -310,6 +315,11 @@ static __inline void QueueInterNationEventRecordDeduped(void* countryState, int 
                                                        char isReplayBypass) {
   reinterpret_cast<TCountry*>(countryState)->thunk_QueueInterNationEventRecordDeduped(
       eventCode, nationA, nationB, isReplayBypass);
+}
+
+static __inline char IsNationSlotEligibleForEventProcessingFast(int nationSlot) {
+  return reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(
+      nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x00406758
@@ -704,6 +714,79 @@ void DiplomacyTurnStateManager::CopyDiplomacyStandingMatrixRowAndColumnSlot2c(
     destinationColumnCursor += kNationSlotCount;
     remaining--;
   } while (remaining != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x004eff40
+void DiplomacyTurnStateManager::PropagateRelationSideEffectSlot80(int sourceNationSlot,
+                                                                  int targetNationSlot,
+                                                                  int updateMode) {
+  int source = static_cast<short>(sourceNationSlot);
+  int target = static_cast<short>(targetNationSlot);
+  short sourceTargetStanding =
+      relationStandingScoreMatrix79c[source * kNationSlotCount + target];
+
+  if (static_cast<char>(updateMode) == 1) {
+    if (sourceTargetStanding - 0x32 < 0x31) {
+      SetStandingScoreSlot28(sourceNationSlot, targetNationSlot, sourceTargetStanding - 0x32);
+    } else {
+      SetStandingScoreSlot28(sourceNationSlot, targetNationSlot, 0x31);
+    }
+  } else {
+    int adjustment = ((0x5a - sourceTargetStanding) * sourceTargetStanding) / 200;
+    if (static_cast<short>(adjustment) < 0) {
+      SetStandingScoreSlot28(sourceNationSlot, targetNationSlot,
+                             sourceTargetStanding + adjustment);
+    }
+  }
+
+  int candidateNationSlot = 0;
+  int candidateOrdinal = 0;
+  void** terrainCursor = g_apTerrainTypeDescriptorTable;
+  do {
+    TerrainDescriptor* candidateTerrain = reinterpret_cast<TerrainDescriptor*>(*terrainCursor);
+    if (IsNationSlotEligibleForEventProcessingFast(candidateNationSlot) != 0 &&
+        static_cast<short>(candidateNationSlot) != static_cast<short>(sourceNationSlot) &&
+        static_cast<short>(candidateNationSlot) != static_cast<short>(targetNationSlot) &&
+        *reinterpret_cast<short*>(reinterpret_cast<char*>(candidateTerrain) + 0xe) == -1) {
+      int divisorTier;
+      if (HasFlag84ForNationSlot84(targetNationSlot) == 0) {
+        if (HasFlag84ForNationSlot84(candidateNationSlot) == 0) {
+          divisorTier =
+              candidateTerrain->HasStandingPropagationBridgeSlot90(sourceNationSlot) != 0 ? 2 : 4;
+        } else {
+          divisorTier = 8;
+        }
+      } else {
+        divisorTier = HasFlag84ForNationSlot84(candidateNationSlot) != 0 ? 4 : 8;
+      }
+
+      short currentStanding =
+          relationStandingScoreMatrix79c[source * kNationSlotCount + candidateNationSlot];
+      short targetCandidateStanding =
+          relationStandingScoreMatrix79c[target * kNationSlotCount + candidateNationSlot];
+      int candidateAdjustment =
+          ((0x5a - targetCandidateStanding) * candidateOrdinal) / (divisorTier * 0x32);
+      if (static_cast<char>(sourceNationSlot) == 0) {
+        candidateAdjustment = static_cast<short>(candidateAdjustment) / 2;
+      }
+
+      short delta = static_cast<short>(candidateAdjustment);
+      int appliedDelta = delta;
+      if (currentStanding < 0x32) {
+        if (delta > 0 && currentStanding + delta > 0x31) {
+          appliedDelta = 0x31 - currentStanding;
+        }
+      } else if (currentStanding + delta < 0x32) {
+        appliedDelta = 0x32 - currentStanding;
+      }
+      SetStandingScoreSlot28(sourceNationSlot, candidateNationSlot,
+                             currentStanding + appliedDelta);
+    }
+
+    candidateNationSlot++;
+    candidateOrdinal++;
+    terrainCursor++;
+  } while (static_cast<short>(candidateNationSlot) <= 0x16);
 }
 
 // FUNCTION: IMPERIALISM 0x004f09c0

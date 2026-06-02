@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TScatteredShipsMission::ApplyMapOrderTypeAndQueue
-// ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
-// FUNCTION: IMPERIALISM 0x005540b0
-undefined4 ApplyMapOrderTypeAndQueue(void)
-{
-  return 0;
-}
-
 // ghidra_name ResolveMapOrderCommandFromActionContext
 // ghidra_proto void __thiscall ResolveMapOrderCommandFromActionContext(int arg1)
 // FUNCTION: IMPERIALISM 0x00554300
@@ -3999,6 +3991,14 @@ undefined4 ConstructTSliderPictureBaseState(void)
 // ghidra_proto void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00573a50
 undefined4 DestructTSliderPictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
+// ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
+// FUNCTION: IMPERIALISM 0x00573aa0
+undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
 {
   return 0;
 }

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
-// ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
-// FUNCTION: IMPERIALISM 0x005e7d30
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
-{
-  return 0;
-}
-
 // ghidra_name ConvertFileTimeToLocalEpochSeconds
 // ghidra_proto int __cdecl ConvertFileTimeToLocalEpochSeconds(int arg1)
 // FUNCTION: IMPERIALISM 0x005e7d60
@@ -3999,6 +3991,14 @@ undefined4 RegisterCommctrlDragListMessage(void)
 // ghidra_proto void __cdecl WrapperFor_E361_At006076ce(void)
 // FUNCTION: IMPERIALISM 0x006076ce
 undefined4 WrapperFor_E361_At006076ce(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// FUNCTION: IMPERIALISM 0x006076d3
+undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 {
   return 0;
 }
