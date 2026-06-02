@@ -8,6 +8,7 @@ old MSVC line/debug section limits with very large single translation units.
 from __future__ import annotations
 
 import argparse
+import bisect
 import json
 import re
 from pathlib import Path
@@ -102,6 +103,37 @@ def clean_old_outputs(output_dir: Path, manifest_path: Path) -> None:
                 path.rmdir()
             except OSError:
                 pass
+
+
+def read_existing_assignments(output_dir: Path, target: str) -> dict[int, str]:
+    assignments: dict[int, str] = {}
+    annotation_re = function_marker_regex(target)
+
+    manifest_path = output_dir / "_manifest.json"
+    files_to_read: list[Path] = []
+    if manifest_path.is_file():
+        try:
+            payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+            files = payload.get("generated_cpp_files", [])
+            if isinstance(files, list):
+                files_to_read = [output_dir / x for x in files]
+        except Exception:
+            pass
+
+    if not files_to_read:
+        files_to_read = sorted(output_dir.glob("stubs_part*.cpp"))
+
+    for path in files_to_read:
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore")
+            for match in annotation_re.finditer(text):
+                addr = int(match.group(1), 16)
+                assignments[addr] = path.name
+        except OSError:
+            continue
+    return assignments
 
 
 def collect_defined_addresses(target: str, source_dir: Path, output_dir: Path) -> set[int]:
@@ -286,27 +318,63 @@ def main() -> int:
     function_rows.sort(key=lambda r: r[0])
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = output_dir / "_manifest.json"
+
+    existing_assignments = read_existing_assignments(output_dir, target)
+
     clean_old_outputs(output_dir=output_dir, manifest_path=manifest_path)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    chunks = chunked_rows(function_rows, args.max_functions_per_file)
     seen_idents: set[str] = set()
     generated_files: list[str] = []
 
-    for idx, chunk in enumerate(chunks, start=1):
-        relpath = "stubs_part{:03d}.cpp".format(idx)
-        out_file = output_dir / relpath
-        out_file.write_text(
-            render_chunk(
-                chunk_rows=chunk,
-                seen_idents=seen_idents,
-                target=target,
-                annotation_kind=args.annotation_kind,
-                use_prototypes=args.use_prototypes,
-            ),
-            encoding="utf-8",
-        )
-        generated_files.append(relpath)
+    if existing_assignments:
+        sorted_assigned_addrs = sorted(existing_assignments.keys())
+        assigned_chunks: dict[str, list[tuple[int, str, str]]] = {}
+        for address, name, prototype in function_rows:
+            if address in existing_assignments:
+                fname = existing_assignments[address]
+            else:
+                idx = bisect.bisect_right(sorted_assigned_addrs, address)
+                if idx == 0:
+                    ref_addr = sorted_assigned_addrs[0]
+                else:
+                    ref_addr = sorted_assigned_addrs[idx - 1]
+                fname = existing_assignments[ref_addr]
+            if fname not in assigned_chunks:
+                assigned_chunks[fname] = []
+            assigned_chunks[fname].append((address, name, prototype))
+
+        for fname in sorted(assigned_chunks.keys()):
+            chunk = assigned_chunks[fname]
+            chunk.sort(key=lambda r: r[0])
+            out_file = output_dir / fname
+            out_file.write_text(
+                render_chunk(
+                    chunk_rows=chunk,
+                    seen_idents=seen_idents,
+                    target=target,
+                    annotation_kind=args.annotation_kind,
+                    use_prototypes=args.use_prototypes,
+                ),
+                encoding="utf-8",
+            )
+            generated_files.append(fname)
+    else:
+        chunks = chunked_rows(function_rows, args.max_functions_per_file)
+        for idx, chunk in enumerate(chunks, start=1):
+            relpath = "stubs_part{:03d}.cpp".format(idx)
+            out_file = output_dir / relpath
+            out_file.write_text(
+                render_chunk(
+                    chunk_rows=chunk,
+                    seen_idents=seen_idents,
+                    target=target,
+                    annotation_kind=args.annotation_kind,
+                    use_prototypes=args.use_prototypes,
+                ),
+                encoding="utf-8",
+            )
+            generated_files.append(relpath)
 
     manifest_payload = {
         "generated_cpp_files": generated_files,
