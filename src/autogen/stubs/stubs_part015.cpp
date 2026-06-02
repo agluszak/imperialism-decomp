@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DispatchTurnEvent3B8AndWaitForCompletionFlag
-// ghidra_proto void __cdecl DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
-// FUNCTION: IMPERIALISM 0x0050d310
-undefined4 DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateCityBuildingDialogBySlot
 // ghidra_proto void __stdcall CreateCityBuildingDialogBySlot(int arg1, int arg2, int arg3, int arg4, int arg5)
 // FUNCTION: IMPERIALISM 0x0050d360
@@ -3999,6 +3991,14 @@ undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
 // ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
 // FUNCTION: IMPERIALISM 0x005355d0
 undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
+// ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
+// ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
+// FUNCTION: IMPERIALISM 0x005355f0
+undefined4 DestroyTControlSeaZoneMission(void)
 {
   return 0;
 }

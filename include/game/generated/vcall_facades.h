@@ -690,6 +690,13 @@ static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object,
   return fn(object, arg0, arg1, arg2);
 }
 
+// copy diplomacy standing matrix row and column; class=DiplomacyTurnStateManager; status=provisional
+static __inline void VCall_Diplomacy_CopyStandingRowColumnSlot2C(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
+  fn(object, 0, arg0, arg1);
+}
+
 // alliance guard/asymmetric war relation predicate; class=DiplomacyTurnStateManager; status=provisional
 static __inline char VCall_Diplomacy_HasAllianceGuardSlot60(void* object, int arg0, int arg1) {
   typedef char (__fastcall * Fn)(void*, int, int, int);

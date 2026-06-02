@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TNavyPlayer::GetTNavyPlayerClassNamePointer
-// ghidra_proto void * __cdecl GetTNavyPlayerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0059ec00
-undefined4 GetTNavyPlayerClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TNavyPlayer::ConstructTNavyPlayerBaseState
 // ghidra_proto uint __thiscall ConstructTNavyPlayerBaseState(void)
 // FUNCTION: IMPERIALISM 0x0059ed60
@@ -3999,6 +3991,14 @@ undefined4 GetTCommodityLineClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTCommodityLineBaseState(void)
 // FUNCTION: IMPERIALISM 0x005c14c0
 undefined4 ConstructTCommodityLineBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommodityLine::DestructTCommodityLineAndMaybeFree
+// ghidra_proto void * __thiscall DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x005c14f0
+undefined4 DestructTCommodityLineAndMaybeFree(void)
 {
   return 0;
 }

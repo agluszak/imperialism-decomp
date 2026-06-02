@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_E361_At006076ce
-// ghidra_proto void __cdecl WrapperFor_E361_At006076ce(void)
-// FUNCTION: IMPERIALISM 0x006076ce
-undefined4 WrapperFor_E361_At006076ce(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 // FUNCTION: IMPERIALISM 0x006076d3
@@ -3999,6 +3991,14 @@ undefined4 GetMfcThreadStateFlagDword30(void)
 // ghidra_proto void __fastcall InitializeThreadObjectVtableProxy(void * pThis)
 // FUNCTION: IMPERIALISM 0x00622448
 undefined4 InitializeThreadObjectVtableProxy(void)
+{
+  return 0;
+}
+
+// ghidra_name DestroyTurnStateObjectWithMfcDeleteFinalizer
+// ghidra_proto void * __thiscall DestroyTurnStateObjectWithMfcDeleteFinalizer(void * param_1, byte param_2)
+// FUNCTION: IMPERIALISM 0x00622451
+undefined4 DestroyTurnStateObjectWithMfcDeleteFinalizer(void)
 {
   return 0;
 }

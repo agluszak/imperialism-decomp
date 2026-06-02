@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TCommodityLine::DestructTCommodityLineAndMaybeFree
-// ghidra_proto void * __thiscall DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005c14f0
-undefined4 DestructTCommodityLineAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTCommodityLineAndMaybeFree_Impl
 // ghidra_proto void __cdecl DestructTCommodityLineAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005c1520
@@ -3999,6 +3991,14 @@ undefined4 InvokeGlobalAllocationFailureCallback(void)
 // ghidra_proto void * __cdecl FindFirstFileAndPopulateFileInfoRecord(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e7ae0
 undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
+{
+  return 0;
+}
+
+// ghidra_name FindNextFileAndPopulateFileInfoRecord
+// ghidra_proto int __cdecl FindNextFileAndPopulateFileInfoRecord(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x005e7c10
+undefined4 FindNextFileAndPopulateFileInfoRecord(void)
 {
   return 0;
 }
