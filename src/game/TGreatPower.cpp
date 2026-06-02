@@ -676,14 +676,14 @@ public:
   TGREATPOWER_VTABLE_SLOT(114);
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);  // slot 0x73
   virtual void SetPolicyForNationSlot74_Provisional(int nationSlot, int policyCode) = 0;
-  virtual void ResetPolicyForNationSlot75_Provisional(int nationSlot, int resetPolicyCode) = 0;
+  virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);  // slot 0x75
   TGREATPOWER_VTABLE_SLOT(118);
   virtual char CanSetGrantValueSlot77_Provisional(int grantValue) = 0;
   TGREATPOWER_VTABLE_SLOT(120);
   TGREATPOWER_VTABLE_SLOT(121);
-  virtual int CanPayAmountSlot7A_Provisional(int amount) = 0;
-  virtual void CommitProposalByIndexSlot7B_Provisional(int proposalIndex) = 0;
-  virtual void RemoveProposalByIndexSlot7C_Provisional(int proposalIndex) = 0;
+  virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost);  // slot 0x7a
+  virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);  // slot 0x7b
+  virtual void QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex);  // slot 0x7c
   TGREATPOWER_VTABLE_SLOT(125);
   TGREATPOWER_VTABLE_SLOT(126);
   TGREATPOWER_VTABLE_SLOT(127);
@@ -893,7 +893,6 @@ public:
   void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
-  void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
@@ -909,11 +908,9 @@ public:
   void ReleaseDiplomacyTrackedObjectSlots850(void);
   bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
   void OrphanVtableAssignStub_004ddd20(void);
-  void QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex);
   void RebuildNationResourceYieldsAndRollField134Into136(void);
   bool CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
                                              unsigned short proposedGrantEntry);
-  bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost);
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   void InitializeMapActionCandidateStateAndQueueMission(int arg1);
   void SelectAndQueueAdvisoryMapMissionsCase16(void);
@@ -928,7 +925,6 @@ public:
   void ProcessPendingDiplomacyProposalQueue(void);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
-  void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);
   void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
   void DispatchTurnEvent2103WithNationFromRecord(void);
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1);
@@ -3388,13 +3384,13 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     }
 
     if (this->scenarioLoadFlag != 0) {
-      this->ResetPolicyForNationSlot75_Provisional(targetClass, -1);
+      this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetClass, -1);
     }
     break;
   }
 
   case 5:
-    if (this->CanPayAmountSlot7A_Provisional(500) != 0) {
+    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500) != 0) {
       this->AdjustTreasurySlot0E_Provisional(0xFFFFFE0C);
     } else {
       shouldApply = 0;
@@ -3402,7 +3398,7 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     break;
 
   case 6:
-    if (this->CanPayAmountSlot7A_Provisional(5000) != 0) {
+    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000) != 0) {
       this->AdjustTreasurySlot0E_Provisional(0xFFFFEC78);
     } else {
       shouldApply = 0;
@@ -3435,7 +3431,7 @@ void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(voi
         static_cast<unsigned short>(this->diplomacyGrantByNation[targetNation]);
     this->diplomacyGrantByNation[targetNation] = static_cast<short>(kResetValue);
     if (grantEntry != kResetValue && (grantEntry & kRecurringGrantMask) != 0) {
-      this->ResetPolicyForNationSlot75_Provisional(targetNation, grantEntry);
+      this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, grantEntry);
     }
 
     ++targetNation;
@@ -3655,7 +3651,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
         NationState_NotifyAction131(nationState, this->nationSlot);
       }
       this->ResetDiplomacyLevelForNationSlot12_Provisional(nationSlot, kResetDiplomacyLevel);
-      this->ResetPolicyForNationSlot75_Provisional(nationSlot, kResetPolicyCode);
+      this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, kResetPolicyCode);
     }
   }
 
@@ -3677,7 +3673,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
     }
 
     this->ResetDiplomacyLevelForNationSlot12_Provisional(secondarySlot, kResetDiplomacyLevel);
-    this->ResetPolicyForNationSlot75_Provisional(secondarySlot, kResetPolicyCode);
+    this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(secondarySlot, kResetPolicyCode);
 
     if (ReadTerrainDescriptorSlot(secondarySlot) != 0) {
       SecondaryState_ResetDiplomacyLevel(secondaryState, this->nationSlot, kResetDiplomacyLevel);
@@ -4061,7 +4057,7 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
         }
 
         if (shouldApplyProposal == 0) {
-          this->RemoveProposalByIndexSlot7C_Provisional(proposalIndex);
+          this->QueueInterNationEventForProposalCode12D_130(proposalIndex);
         } else if (proposalCode == kProposalMutualDefense) {
           int checkNation = 0;
           do {
@@ -4073,10 +4069,10 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
             ++checkNation;
           } while (checkNation < kMajorNationCount);
         } else {
-          this->CommitProposalByIndexSlot7B_Provisional(proposalIndex);
+          this->ApplyAcceptedDiplomacyProposalCode(proposalIndex);
         }
       } else {
-        this->RemoveProposalByIndexSlot7C_Provisional(proposalIndex);
+        this->QueueInterNationEventForProposalCode12D_130(proposalIndex);
       }
 
       ++proposalIndex;

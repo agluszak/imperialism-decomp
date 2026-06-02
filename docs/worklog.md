@@ -1961,3 +1961,13 @@ source changes.
    each needs its thunk call qualified (`this->TGreatPower::Method(...)`) plus provisional-callsite
    signature reconciliation (0x7a/0x7b/0x7c are provisional `(int)` vs real `(short)/(word)`).
    Deferred to per-slot passes.
+5. **Wired four more cluster slots in one batch** (0x75/0x7a/0x7b/0x7c). A direct-callsite sweep
+   showed only `0x74` is entangled (its ILT thunk `0x004070e5` is an owned function doing a direct
+   call); the other four thunks were never defined as functions, so the bodies had **no direct
+   callers** and wire cleanly like 0x73. Replaced each provisional slot decl with the real method
+   declared virtual at the slot position (real signatures: `0x7a (short)->bool`, `0x7b (short)`,
+   `0x7c (unsigned short)`), removed the redundant non-virtual decls, renamed the virtual callsites
+   to the real method names, and dropped the four now-dead facades (regen 134 -> 130). Single
+   aggregate check: build/detect clean, `stats` aligned **145** (delta 0), `compare-canaries`
+   `below_floor=0` (incl. `0x004df010` still floor_met). Only `0x74` remains (needs thunk
+   qualification).

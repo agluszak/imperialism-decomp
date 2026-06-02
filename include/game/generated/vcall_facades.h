@@ -249,25 +249,11 @@ static __inline char VCall_GreatPower_CanDispatchViaUiSlot21(void* object) {
   return fn(object);
 }
 
-// budget guard; class=TGreatPower; status=provisional
-static __inline int VCall_GreatPower_CanPayAmountSlot7A(void* object, int arg0) {
-  typedef int (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x7A)));
-  return fn(object, arg0);
-}
-
 // grant guard; class=TGreatPower; status=provisional
 static __inline char VCall_GreatPower_CanSetGrantValueSlot77(void* object, int arg0) {
   typedef char (__fastcall * Fn)(void*, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x77)));
   return fn(object, arg0);
-}
-
-// great power proposal commit; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CommitProposalByIndexSlot7B(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x7B)));
-  fn(object, arg0);
 }
 
 // delete self slot; class=TGreatPower; status=provisional
@@ -333,24 +319,10 @@ static __inline void VCall_GreatPower_RefreshNeedPanelsSlot6A(void* object) {
   fn(object);
 }
 
-// great power proposal remove; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_RemoveProposalByIndexSlot7C(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x7C)));
-  fn(object, arg0);
-}
-
 // great power reset level; class=TGreatPower; status=provisional
 static __inline void VCall_GreatPower_ResetDiplomacyLevelForNationSlot12(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x12)));
-  fn(object, arg0, arg1);
-}
-
-// great power reset policy; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_ResetPolicyForNationSlot75(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x75)));
   fn(object, arg0, arg1);
 }
 
