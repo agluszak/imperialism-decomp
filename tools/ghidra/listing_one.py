@@ -47,7 +47,31 @@ def main() -> int:
       fn = fm.getFunctionContaining(addr)
       print("=" * 72)
       if fn is None:
-        print(f"0x{addr_int:08x}: no function")
+        # Not inside a defined function: print the single instruction (e.g. an
+        # ILT `jmp` thunk) and follow unconditional flow to the final target so
+        # vtable-entry thunks can be resolved to their real method bodies.
+        ins = listing.getInstructionAt(addr)
+        if ins is None:
+          print(f"0x{addr_int:08x}: no function, no instruction")
+          continue
+        print(f"0x{addr_int:08x}  (no function) {ins}")
+        cur = ins
+        for _ in range(8):
+          flows = cur.getFlows()
+          mnem = cur.getMnemonicString().lower()
+          if mnem != "jmp" or len(flows) != 1:
+            break
+          tgt = flows[0]
+          tfn = fm.getFunctionContaining(tgt)
+          if tfn is not None:
+            print(f"  -> {tgt}  {tfn.getName()}  entry={tfn.getEntryPoint()} size={tfn.getBody().getNumAddresses()}")
+            break
+          nxt = listing.getInstructionAt(tgt)
+          if nxt is None:
+            print(f"  -> {tgt}  (no function, no instruction)")
+            break
+          print(f"  -> {tgt}  {nxt}")
+          cur = nxt
         continue
       print(f"0x{addr_int:08x}  {fn.getName()}  entry={fn.getEntryPoint()} size={fn.getBody().getNumAddresses()}")
       it = listing.getInstructions(fn.getBody(), True)

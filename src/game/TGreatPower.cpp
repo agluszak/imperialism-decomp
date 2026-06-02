@@ -674,7 +674,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(112);
   TGREATPOWER_VTABLE_SLOT(113);
   TGREATPOWER_VTABLE_SLOT(114);
-  virtual void FinalizeProposalQueueSlot73_Provisional(void) = 0;
+  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);  // slot 0x73
   virtual void SetPolicyForNationSlot74_Provisional(int nationSlot, int policyCode) = 0;
   virtual void ResetPolicyForNationSlot75_Provisional(int nationSlot, int resetPolicyCode) = 0;
   TGREATPOWER_VTABLE_SLOT(118);
@@ -903,7 +903,6 @@ public:
   int ComputeRemainingDiplomacyAidBudget(void);
   int GetDiplomacyExternalStateB6ByTarget(int targetNationSlot);
   void DecrementDiplomacyCounterA2ByValue(int delta);
-  void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);
   void ResetNationDiplomacyProposalQueue(void);
   void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                     int isBoycottEnabled);
@@ -4085,7 +4084,7 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
     } while (static_cast<short>(proposalIndex) <= proposalCount);
   }
 
-  this->FinalizeProposalQueueSlot73_Provisional();
+  this->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
 }
 
 // FUNCTION: IMPERIALISM 0x004e00d0

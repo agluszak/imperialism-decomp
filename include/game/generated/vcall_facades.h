@@ -291,13 +291,6 @@ static __inline void VCall_GreatPower_DispatchFallbackActionSlot6C(void* object,
   fn(object, arg0, arg1, arg2);
 }
 
-// proposal finalize; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_FinalizeProposalQueueSlot73(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x73)));
-  fn(object);
-}
-
 // base budget slot5F; class=TGreatPower; status=provisional
 static __inline int VCall_GreatPower_GetBaseBudgetSlot5F(void* object) {
   typedef int (__fastcall * Fn)(void*);

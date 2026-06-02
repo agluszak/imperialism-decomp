@@ -1933,3 +1933,31 @@ source changes.
 4. No build/score impact (evidence-only). Next: promote evidenced **shared** provisional slots
    to grounded names one at a time, model the six overrides on a `TAutoGreatPower` subclass,
    and resolve the `0xb3` null/receiver question.
+
+### TGreatPower proposal-queue cluster: slot bodies resolved + slot 0x73 wired (2026-06-02, cont.)
+
+1. **Tooling:** extended `tools/ghidra/listing_one.py` (`just ghidra-listing`) to print the raw
+   instruction and follow unconditional `jmp` flow when an address is not inside a defined
+   function, so an ILT vtable-entry thunk resolves to its real method body.
+2. **Resolved the proposal cluster slot -> body map** (entry thunk -> body, all bodies already
+   owned with grounded names):
+   - `0x73` `0x00404c50 -> 0x004de2d0` `ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants`
+   - `0x74` `0x004070e5 -> 0x004ddfc0` `ApplyDiplomacyPolicyStateForTargetWithCostChecks(int,int)` (AGP override `0x00405b78`)
+   - `0x75` `0x004042ff -> 0x004de340` `SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int,int)`
+   - `0x7a` `0x0040658c -> 0x004de790` `CanAffordAdditionalDiplomacyCostAfterCommitments(short)->bool`
+   - `0x7b` `0x00403909 -> 0x004df010` `ApplyAcceptedDiplomacyProposalCode(short)` (canary)
+   - `0x7c` `0x00404ea3 -> 0x004df370` `QueueInterNationEventForProposalCode12D_130(unsigned short)`
+   Recorded in `docs/tgreatpower_vtable_evidence.csv` (current_name + status `body_identified`).
+3. **Wired slot 0x73** (the clean case: real method had no direct callers and a matching
+   void/void signature). Replaced the pure-virtual `FinalizeProposalQueueSlot73_Provisional`
+   placeholder with the real method declared virtual at the slot position, removed its redundant
+   non-virtual declaration, and pointed the caller (`0x004df5f0`) at it. Removed the now-dead
+   `VCall_GreatPower_FinalizeProposalQueueSlot73` facade row and regenerated facades (135 -> 134).
+   Zero codegen impact: body `0x004de2d0` held **63.33%**, caller `0x004df5f0` held **18.77%**;
+   `compare-canaries` `below_floor=0`; `vtable-gate` passed; `stats` aligned **145** (delta 0).
+4. **Blocker for 0x74/0x75/0x7a/0x7b/0x7c:** each real body is reached by its own ILT thunk via a
+   *direct* (non-virtual) call (e.g. `thunk_...At004070e5` calls the body). Promoting the slot to a
+   real virtual would turn that thunk call into a re-dispatch through the same slot (recursion), so
+   each needs its thunk call qualified (`this->TGreatPower::Method(...)`) plus provisional-callsite
+   signature reconciliation (0x7a/0x7b/0x7c are provisional `(int)` vs real `(short)/(word)`).
+   Deferred to per-slot passes.

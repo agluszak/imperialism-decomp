@@ -26,7 +26,6 @@ src/game/TGreatPower.cpp|VCall_UiRuntime_DispatchEventSlot4C|void|0x4C / 4|int,i
 src/game/TGreatPower.cpp|VCall_GreatPower_CommitProposalByIndexSlot7B|void|0x7B|int|high|great power proposal commit|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_RemoveProposalByIndexSlot7C|void|0x7C|int|high|great power proposal remove|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_GreatPower_ApplyPolicyForNationSlotA1|void|0xA1|int,int,int|high|provisional GreatPower slot A1; index 0xa1 byte 0x284; entry 0x00406fe1 thunks to 0x004e27f0|index|thiscall|none||provisional|TGreatPower
-src/game/TGreatPower.cpp|VCall_GreatPower_FinalizeProposalQueueSlot73|void|0x73||high|proposal finalize|index|thiscall|none||provisional|TGreatPower
 src/game/TGreatPower.cpp|VCall_QueueObject_WritePackedIntAtSlot38|void|0x38 / 4|int*|high|queue packed int write
 src/game/TGreatPower.cpp|VCall_Queue_ApplyMessageSlot14|void|0x14 / 4|void*|high|queue apply message
 src/game/TGreatPower.cpp|VCall_Queue_RefreshSlot48|void|0x48 / 4||high|queue refresh
