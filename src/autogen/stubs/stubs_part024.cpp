@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063158f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063158f(void)
-// FUNCTION: IMPERIALISM 0x0063158f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063158f(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006315f8
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006315f8(void)
-// FUNCTION: IMPERIALISM 0x006315f8
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006315f8(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063162f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063162f(void)
-// FUNCTION: IMPERIALISM 0x0063162f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063162f(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063164f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063164f(void)
-// FUNCTION: IMPERIALISM 0x0063164f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063164f(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063166f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063166f(void)
-// FUNCTION: IMPERIALISM 0x0063166f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063166f(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063169d
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063169d(void)
-// FUNCTION: IMPERIALISM 0x0063169d
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063169d(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006316c0
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006316c0(void)
-// FUNCTION: IMPERIALISM 0x006316c0
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006316c0(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006316f5
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006316f5(void)
-// FUNCTION: IMPERIALISM 0x006316f5
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006316f5(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063171d
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063171d(void)
-// FUNCTION: IMPERIALISM 0x0063171d
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063171d(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063173f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063173f(void)
-// FUNCTION: IMPERIALISM 0x0063173f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063173f(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063177d
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063177d(void)
-// FUNCTION: IMPERIALISM 0x0063177d
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063177d(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063179f
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063179f(void)
-// FUNCTION: IMPERIALISM 0x0063179f
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063179f(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006317bf
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006317bf(void)
-// FUNCTION: IMPERIALISM 0x006317bf
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006317bf(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006317e5
-// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006317e5(void)
-// FUNCTION: IMPERIALISM 0x006317e5
-undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006317e5(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631805
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631805(void)
 // FUNCTION: IMPERIALISM 0x00631805
@@ -3999,6 +3887,118 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063760f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063762f(void)
 // FUNCTION: IMPERIALISM 0x0063762f
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063762f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f(void)
+// FUNCTION: IMPERIALISM 0x0063764f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677(void)
+// FUNCTION: IMPERIALISM 0x00637677
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d(void)
+// FUNCTION: IMPERIALISM 0x0063769d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf(void)
+// FUNCTION: IMPERIALISM 0x006376bf
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd(void)
+// FUNCTION: IMPERIALISM 0x006376dd
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725(void)
+// FUNCTION: IMPERIALISM 0x00637725
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785(void)
+// FUNCTION: IMPERIALISM 0x00637785
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5(void)
+// FUNCTION: IMPERIALISM 0x006377b5
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf(void)
+// FUNCTION: IMPERIALISM 0x006377cf
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7(void)
+// FUNCTION: IMPERIALISM 0x006377f7
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d(void)
+// FUNCTION: IMPERIALISM 0x0063781d
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845(void)
+// FUNCTION: IMPERIALISM 0x00637845
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f(void)
+// FUNCTION: IMPERIALISM 0x0063785f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f(void)
+// FUNCTION: IMPERIALISM 0x0063787f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f(void)
 {
   return 0;
 }

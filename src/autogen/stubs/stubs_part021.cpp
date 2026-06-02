@@ -3211,22 +3211,6 @@ undefined4 AssignSharedStringFromLoadedResourceAlt(void)
   return 0;
 }
 
-// ghidra_name AllocateAndLinkBlockHead
-// ghidra_proto void * __cdecl AllocateAndLinkBlockHead(void)
-// FUNCTION: IMPERIALISM 0x00601b74
-undefined4 AllocateAndLinkBlockHead(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeDataChain
-// ghidra_proto void __cdecl FreeDataChain(void)
-// FUNCTION: IMPERIALISM 0x00601b94
-undefined4 FreeDataChain(void)
-{
-  return 0;
-}
-
 // ghidra_name CObArray::DestructCObArray
 // ghidra_proto void __cdecl DestructCObArray(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x00601bdd
@@ -3235,106 +3219,10 @@ undefined4 DestructCObArray(void)
   return 0;
 }
 
-// ghidra_name SetSize
-// ghidra_proto void __fastcall SetSize(int ecxArg, int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00601c14
-undefined4 SetSize(void)
-{
-  return 0;
-}
-
-// ghidra_name SetAtGrow
-// ghidra_proto void __cdecl SetAtGrow(void)
-// FUNCTION: IMPERIALISM 0x00601de3
-undefined4 SetAtGrow(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertAt
-// ghidra_proto void __thiscall InsertAt(int insertIndex, void * insertValue, int repeatCount)
-// FUNCTION: IMPERIALISM 0x00601e0a
-undefined4 InsertAt(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveAt
-// ghidra_proto void __cdecl RemoveAt(void)
-// FUNCTION: IMPERIALISM 0x00601e9f
-undefined4 RemoveAt(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructCPtrListBaseState
 // ghidra_proto void __thiscall DestructCPtrListBaseState(void)
 // FUNCTION: IMPERIALISM 0x00601f7c
 undefined4 DestructCPtrListBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name NewNode
-// ghidra_proto void * __cdecl NewNode(void)
-// FUNCTION: IMPERIALISM 0x00601faf
-undefined4 NewNode(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::FreeNode
-// ghidra_proto void __thiscall FreeNode(void)
-// FUNCTION: IMPERIALISM 0x00602004
-undefined4 FreeNode(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveHead
-// ghidra_proto int __fastcall RemoveHead(void)
-// FUNCTION: IMPERIALISM 0x006020b9
-undefined4 RemoveHead(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveTailNodeAndReturnPayload
-// ghidra_proto int __fastcall RemoveTailNodeAndReturnPayload(void)
-// FUNCTION: IMPERIALISM 0x006020dd
-undefined4 RemoveTailNodeAndReturnPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertNodeBeforeAndSetPayload
-// ghidra_proto void __thiscall InsertNodeBeforeAndSetPayload(void)
-// FUNCTION: IMPERIALISM 0x00602101
-undefined4 InsertNodeBeforeAndSetPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertNodeAfterAndSetPayload
-// ghidra_proto void __thiscall InsertNodeAfterAndSetPayload(void)
-// FUNCTION: IMPERIALISM 0x00602140
-undefined4 InsertNodeAfterAndSetPayload(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::RemoveAt_60217d
-// ghidra_proto void __thiscall RemoveAt_60217d(void)
-// FUNCTION: IMPERIALISM 0x0060217d
-undefined4 RemoveAt_60217d(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::Find
-// ghidra_proto void __thiscall Find(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006021d6
-undefined4 Find(void)
 {
   return 0;
 }
@@ -3999,6 +3887,118 @@ undefined4 TMacViewMgr_Slot14_Target(void)
 // ghidra_proto void * __cdecl TMacViewMgr_Slot17_Target(void)
 // FUNCTION: IMPERIALISM 0x00606cb2
 undefined4 TMacViewMgr_Slot17_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot16_Target
+// ghidra_proto void * __cdecl TMacViewMgr_Slot16_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cb8
+undefined4 TMacViewMgr_Slot16_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot18_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot18_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cf0
+undefined4 TMacViewMgr_Slot18_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot19_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot19_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cf4
+undefined4 TMacViewMgr_Slot19_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot15_Target
+// ghidra_proto void * __cdecl TMacViewMgr_Slot15_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cf9
+undefined4 TMacViewMgr_Slot15_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot21_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot21_Target(void)
+// FUNCTION: IMPERIALISM 0x00606cff
+undefined4 TMacViewMgr_Slot21_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot20_Target
+// ghidra_proto int __cdecl TMacViewMgr_Slot20_Target(void)
+// FUNCTION: IMPERIALISM 0x00606d04
+undefined4 TMacViewMgr_Slot20_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot13_Target
+// ghidra_proto void * __cdecl TMacViewMgr_Slot13_Target(void)
+// FUNCTION: IMPERIALISM 0x00606d09
+undefined4 TMacViewMgr_Slot13_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b
+// ghidra_proto int __cdecl WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b(void)
+// FUNCTION: IMPERIALISM 0x00606d1b
+undefined4 WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b(void)
+{
+  return 0;
+}
+
+// ghidra_name Enable
+// ghidra_proto void __thiscall Enable(void)
+// FUNCTION: IMPERIALISM 0x00606d4d
+undefined4 Enable(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_ThrowMfcResourceException_At00606f4e
+// ghidra_proto int __cdecl WrapperFor_ThrowMfcResourceException_At00606f4e(void)
+// FUNCTION: IMPERIALISM 0x00606f4e
+undefined4 WrapperFor_ThrowMfcResourceException_At00606f4e(void)
+{
+  return 0;
+}
+
+// ghidra_name AfxSetNewHandler
+// ghidra_proto void * __cdecl AfxSetNewHandler(void * pNewMapContext)
+// FUNCTION: IMPERIALISM 0x00606f5f
+undefined4 AfxSetNewHandler(void)
+{
+  return 0;
+}
+
+// ghidra_name TNetMgr::GetCObjectRuntimeClass
+// ghidra_proto void * __thiscall GetCObjectRuntimeClass(void)
+// FUNCTION: IMPERIALISM 0x00606fba
+undefined4 GetCObjectRuntimeClass(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateObject_606ff2
+// ghidra_proto int __cdecl CreateObject_606ff2(void)
+// FUNCTION: IMPERIALISM 0x00606ff2
+undefined4 CreateObject_606ff2(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr_Slot39_Target
+// ghidra_proto void __thiscall TMacViewMgr_Slot39_Target(void)
+// FUNCTION: IMPERIALISM 0x00607090
+undefined4 TMacViewMgr_Slot39_Target(void)
 {
   return 0;
 }

@@ -3,118 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TMacViewMgr_Slot16_Target
-// ghidra_proto void * __cdecl TMacViewMgr_Slot16_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cb8
-undefined4 TMacViewMgr_Slot16_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot18_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot18_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cf0
-undefined4 TMacViewMgr_Slot18_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot19_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot19_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cf4
-undefined4 TMacViewMgr_Slot19_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot15_Target
-// ghidra_proto void * __cdecl TMacViewMgr_Slot15_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cf9
-undefined4 TMacViewMgr_Slot15_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot21_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot21_Target(void)
-// FUNCTION: IMPERIALISM 0x00606cff
-undefined4 TMacViewMgr_Slot21_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot20_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot20_Target(void)
-// FUNCTION: IMPERIALISM 0x00606d04
-undefined4 TMacViewMgr_Slot20_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot13_Target
-// ghidra_proto void * __cdecl TMacViewMgr_Slot13_Target(void)
-// FUNCTION: IMPERIALISM 0x00606d09
-undefined4 TMacViewMgr_Slot13_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b
-// ghidra_proto int __cdecl WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b(void)
-// FUNCTION: IMPERIALISM 0x00606d1b
-undefined4 WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b(void)
-{
-  return 0;
-}
-
-// ghidra_name Enable
-// ghidra_proto void __thiscall Enable(void)
-// FUNCTION: IMPERIALISM 0x00606d4d
-undefined4 Enable(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ThrowMfcResourceException_At00606f4e
-// ghidra_proto int __cdecl WrapperFor_ThrowMfcResourceException_At00606f4e(void)
-// FUNCTION: IMPERIALISM 0x00606f4e
-undefined4 WrapperFor_ThrowMfcResourceException_At00606f4e(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxSetNewHandler
-// ghidra_proto void * __cdecl AfxSetNewHandler(void * pNewMapContext)
-// FUNCTION: IMPERIALISM 0x00606f5f
-undefined4 AfxSetNewHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::GetCObjectRuntimeClass
-// ghidra_proto void * __thiscall GetCObjectRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x00606fba
-undefined4 GetCObjectRuntimeClass(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateObject_606ff2
-// ghidra_proto int __cdecl CreateObject_606ff2(void)
-// FUNCTION: IMPERIALISM 0x00606ff2
-undefined4 CreateObject_606ff2(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot39_Target
-// ghidra_proto void __thiscall TMacViewMgr_Slot39_Target(void)
-// FUNCTION: IMPERIALISM 0x00607090
-undefined4 TMacViewMgr_Slot39_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name GetDlgItem
 // ghidra_proto void __thiscall GetDlgItem(void)
 // FUNCTION: IMPERIALISM 0x00607111
@@ -3999,6 +3887,118 @@ undefined4 OnMenuSelect(void)
 // ghidra_proto void __thiscall TMacViewMgr_VtblSlot051(uint stringResourceId)
 // FUNCTION: IMPERIALISM 0x0061dc76
 undefined4 TMacViewMgr_VtblSlot051(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::WrapperFor_GetDescendantWindow_At0061ddb2
+// ghidra_proto void __thiscall WrapperFor_GetDescendantWindow_At0061ddb2(void)
+// FUNCTION: IMPERIALISM 0x0061ddb2
+undefined4 WrapperFor_GetDescendantWindow_At0061ddb2(void)
+{
+  return 0;
+}
+
+// ghidra_name CFrameWnd::OnEnterIdle_61ddc2
+// ghidra_proto void __thiscall OnEnterIdle_61ddc2(void)
+// FUNCTION: IMPERIALISM 0x0061ddc2
+undefined4 OnEnterIdle_61ddc2(void)
+{
+  return 0;
+}
+
+// ghidra_name CFrameWnd::SetMessageText
+// ghidra_proto void __thiscall SetMessageText(void)
+// FUNCTION: IMPERIALISM 0x0061de0a
+undefined4 SetMessageText(void)
+{
+  return 0;
+}
+
+// ghidra_name OnToolTipText
+// ghidra_proto void __cdecl OnToolTipText(void)
+// FUNCTION: IMPERIALISM 0x0061df4c
+undefined4 OnToolTipText(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::OnSetPreviewMode
+// ghidra_proto void __cdecl OnSetPreviewMode(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0061e1fe
+undefined4 OnSetPreviewMode(void)
+{
+  return 0;
+}
+
+// ghidra_name OnIdleUpdateCmdUI
+// ghidra_proto void __fastcall OnIdleUpdateCmdUI(void)
+// FUNCTION: IMPERIALISM 0x0061e42d
+undefined4 OnIdleUpdateCmdUI(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot050
+// ghidra_proto void * __thiscall TMacViewMgr_VtblSlot050(void)
+// FUNCTION: IMPERIALISM 0x0061e49c
+undefined4 TMacViewMgr_VtblSlot050(void)
+{
+  return 0;
+}
+
+// ghidra_name OnSize_61e606
+// ghidra_proto void __thiscall OnSize_61e606(TMacViewMgr * thisObj, int code)
+// FUNCTION: IMPERIALISM 0x0061e606
+undefined4 OnSize_61e606(void)
+{
+  return 0;
+}
+
+// ghidra_name OnRegisteredMouseWheel
+// ghidra_proto void __stdcall OnRegisteredMouseWheel(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0061e63b
+undefined4 OnRegisteredMouseWheel(void)
+{
+  return 0;
+}
+
+// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot053
+// ghidra_proto void __thiscall TMacViewMgr_VtblSlot053(int showCommand)
+// FUNCTION: IMPERIALISM 0x0061e6e3
+undefined4 TMacViewMgr_VtblSlot053(void)
+{
+  return 0;
+}
+
+// ghidra_name GetDockingFrame
+// ghidra_proto int __cdecl GetDockingFrame(void)
+// FUNCTION: IMPERIALISM 0x0061e762
+undefined4 GetDockingFrame(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateStaticClassControl
+// ghidra_proto int __thiscall CreateStaticClassControl(char * pszCaption, uint dwStyle, void * pRect, void * pParentWnd, uint nControlId)
+// FUNCTION: IMPERIALISM 0x0061e79d
+undefined4 CreateStaticClassControl(void)
+{
+  return 0;
+}
+
+// ghidra_name ~CHotKeyCtrl
+// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// FUNCTION: IMPERIALISM 0x0061e7bf
+undefined4 CHotKeyCtrl_0061E7BF(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateButtonClassControl
+// ghidra_proto int __thiscall CreateButtonClassControl(char * pszCaption, uint dwStyle, void * pRect, void * pParentWnd, uint nControlId)
+// FUNCTION: IMPERIALISM 0x0061e7f7
+undefined4 CreateButtonClassControl(void)
 {
   return 0;
 }

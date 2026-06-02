@@ -23,6 +23,11 @@ class TIndexAndRankList {
 
   TIndexAndRankList* CPtrArray();
   void* DestructCObArrayAndMaybeFree(byte freeSelfFlag);
+
+  void SetSize(int nNewSize, int nGrowBy);
+  void SetAtGrow(int nIndex, void* newElement);
+  void InsertAt(int nIndex, void* newElement, int nCount);
+  void RemoveAt(int nIndex, int nCount);
 };
 
 typedef char TIndexAndRankListSizeMustMatch[(sizeof(TIndexAndRankList) == 0x14) ? 1 : -1];

@@ -2,6 +2,38 @@
 
 ## 2026-06-02
 
+### Foundation port: full CPtrList + CObArray engines (favor-size lever)
+
+1. Scope:
+   1. `include/game/TPtrList.h`, `src/game/TPtrList.cpp`
+   2. `include/game/TIndexAndRankList.h`, `src/game/TIndexAndRankList.cpp`
+   3. `config/function_ownership.csv`, `src/autogen/stubs/*`
+2. Ported the complete MFC `CPtrList` linked-list engine as real `CPtrListSentinelView`
+   methods plus the `CPlex` block helpers: `AllocateAndLinkBlockHead` (`0x00601b74`),
+   `FreeLinkedBlockChain` (`0x00601b94`), `RemoveAll` (`0x00601f5c`), `NewNode`
+   (`0x00601faf`), `FreeNode` (`0x00602004`), `AddHead` (`0x0060201d`), `AddTail`
+   (`0x00602047`), `RemoveHead` (`0x006020b9`), `RemoveTailNodeAndReturnPayload`
+   (`0x006020dd`), `InsertNodeBeforeAndSetPayload` (`0x00602101`),
+   `InsertNodeAfterAndSetPayload` (`0x00602140`), `RemoveAt_60217d` (`0x0060217d`),
+   `Find` (`0x006021d6`). Node layout `{next@0,prev@4,data@8}`.
+3. Ported the MFC `CObArray`/`CPtrArray` engine as `TIndexAndRankList` methods:
+   `SetSize` (`0x00601c14`), `SetAtGrow` (`0x00601de3`), `InsertAt` (`0x00601e0a`),
+   `RemoveAt` (`0x00601e9f`). Array layout `{m_pData@4,m_nSize@8,m_nMaxSize@0xc,m_nGrowBy@0x10}`.
+4. KEY LEVER: the original MFC collection code is favor-size, not favor-speed. Setting the
+   list engine regions to `#pragma optimize("ys", on)` (FPO + favor-size) took the whole
+   CPtrList node family from 29–78% to **100%** in a single flag and lifted the previously
+   deferred destructors `0x00601f40` (CPtrList dtor) and `0x00601bc1` (CObArray dtor wrapper)
+   from 81.82% to **100%**. The outer `TPtrList` wrappers want favor-speed, so they are
+   bracketed `#pragma optimize("yt", on)` and the file switches back to `("ys", on)` for the
+   engine. See INSTRUCTIONS notes 65–67.
+5. Results: 15 functions at **100%** (`0x00601b74` 100% effective), plus the two destructors
+   to 100%. `SetSize` **72.17%** and `InsertAt` **47.62%** carry compiler-internal residuals
+   (register allocation + the `(a-b)*4` → `b*0x3fffffff + a` byte-offset fusion); both are
+   behaviorally correct and large gains from 0% stubs. `mem*` helpers: `memset` `0x005e9a90`,
+   `CopyMemoryPossiblyOverlapping` `0x005e9cf0`, `MoveMemoryOverlapSafe` `0x005e8420`.
+6. Validation: `just build` clean; `just compare-canaries` passed (`below_floor=0`,
+   `parse_error=0`). No regressions in the previously-100% list/factory family.
+
 ### List factory EH-`new` frame recovery + RefCountedObjectBase modeling
 
 1. Scope:
