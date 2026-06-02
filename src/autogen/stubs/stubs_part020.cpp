@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name DestructTCommodityLineAndMaybeFree_Impl
-// ghidra_proto void __cdecl DestructTCommodityLineAndMaybeFree_Impl(void)
-// FUNCTION: IMPERIALISM 0x005c1520
-undefined4 DestructTCommodityLineAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCompositeTextPictureResourceEntries_005c1580
 // ghidra_proto void __cdecl InitializeCompositeTextPictureResourceEntries_005c1580(void)
 // FUNCTION: IMPERIALISM 0x005c1580
@@ -3999,6 +3991,14 @@ undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
 // ghidra_proto int __cdecl FindNextFileAndPopulateFileInfoRecord(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x005e7c10
 undefined4 FindNextFileAndPopulateFileInfoRecord(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
+// ghidra_proto int __cdecl WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
+// FUNCTION: IMPERIALISM 0x005e7d30
+undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
 {
   return 0;
 }

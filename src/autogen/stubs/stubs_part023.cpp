@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CWinThread::CWinApp
-// ghidra_proto void * __thiscall CWinApp(byte * threadName)
-// FUNCTION: IMPERIALISM 0x0062246c
-undefined4 CWinApp(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00622556
 // ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00622556(void)
 // FUNCTION: IMPERIALISM 0x00622556
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d2f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d62(void)
 // FUNCTION: IMPERIALISM 0x00631d62
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d62(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d88
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d88(void)
+// FUNCTION: IMPERIALISM 0x00631d88
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631d88(void)
 {
   return 0;
 }

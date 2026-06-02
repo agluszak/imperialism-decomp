@@ -809,6 +809,13 @@ static __inline void VCall_RelationshipList_ReleaseSlot24(void* object) {
   fn(object, 0);
 }
 
+// terrain standing propagation bridge query; class=TerrainDescriptor; status=provisional
+static __inline char VCall_TerrainDescriptor_HasStandingPropagationBridgeSlot90(void* object, int arg0) {
+  typedef char (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x90 / 4)));
+  return fn(object, 0, arg0);
+}
+
 // set terrain diplomacy standing toward nation; class=TerrainDescriptor; status=provisional
 static __inline void VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int, int);

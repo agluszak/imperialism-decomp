@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// ghidra_proto void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
-// FUNCTION: IMPERIALISM 0x00573aa0
-undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00573bf0
 // ghidra_proto void __cdecl WrapperFor_ftol_At00573bf0(void)
 // FUNCTION: IMPERIALISM 0x00573bf0
@@ -3999,6 +3991,14 @@ undefined4 CreateTNavyPlayerInstance(void)
 // ghidra_proto void * __cdecl GetTNavyPlayerClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0059ec00
 undefined4 GetTNavyPlayerClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyPlayer::ConstructTNavyPlayerBaseState
+// ghidra_proto uint __thiscall ConstructTNavyPlayerBaseState(void)
+// FUNCTION: IMPERIALISM 0x0059ed60
+undefined4 ConstructTNavyPlayerBaseState(void)
 {
   return 0;
 }

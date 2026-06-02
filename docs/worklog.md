@@ -1661,3 +1661,23 @@ interaction-state field map (`+0x90`/`+0x94`/`+0xb4`/`+0xb8`/`+0xbc`/`+0xc0`/`+0
    - Target compares: `0x004efe30` **36.07%**, `0x004efcb0` **34.55%**, `0x004f1b70` **24.84%**.
    - `just compare-canaries`: `below_floor=0`.
    - `just vtable-gate`: clean.
+
+### Diplomacy relation side-effect propagation slot (2026-06-02, cont.)
+
+1. Promoted manager slot `0x80`, `0x004eff40` `PropagateRelationSideEffectSlot80(int,int,int)`: stub -> **27.33%** first shape pass.
+2. Corrected the old class bucket: this body is a `DiplomacyTurnStateManager` method reached through relation setter slot `0x74`, not a free `TSortedByRelationshipList` helper. The current live Ghidra project does not expose `0x004eff40` as a function boundary, but `config/symbols.csv`, `src/ghidra_autogen/index.csv`, and reccmp pairing confirm the original body.
+3. Behavior recovered:
+   - reads and updates the `+0x79c` standing-score matrix through slot `0x28`;
+   - branches on the byte form of the third argument for direct relation side effects;
+   - scans all 23 nation slots, gated by `thunk_IsNationSlotEligibleForEventProcessing`;
+   - skips the source/target nations and requires terrain descriptor owner/state `+0x0e == -1`;
+   - uses manager slot `0x84` and terrain descriptor slot `0x90` to choose the propagation divisor before clamping the related standing update.
+4. Connectivity checks stayed stable:
+   - `SetNationPairDiplomacyRelationCode` (`0x004f1b70`) stayed **24.84%** with the real slot `0x80` callsite.
+   - `SetStandingScoreSlot28` (`0x004efcb0`) stayed **34.55%**.
+5. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Target compares: `0x004eff40` **27.33%**, `0x004f1b70` **24.84%**, `0x004efcb0` **34.55%**.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: clean.
+   - `just stats`: aligned functions **128**, average similarity **9.50%**.

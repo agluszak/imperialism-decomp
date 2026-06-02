@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name CreateCityBuildingDialogBySlot
-// ghidra_proto void __stdcall CreateCityBuildingDialogBySlot(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x0050d360
-undefined4 CreateCityBuildingDialogBySlot(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C10_I80_0050d470
 // ghidra_proto int * __cdecl OrphanCallChain_C10_I80_0050d470(void)
 // FUNCTION: IMPERIALISM 0x0050d470
@@ -3999,6 +3991,14 @@ undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
 // ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
 // FUNCTION: IMPERIALISM 0x005355f0
 undefined4 DestroyTControlSeaZoneMission(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
+// ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
+// FUNCTION: IMPERIALISM 0x00535620
+undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
 {
   return 0;
 }

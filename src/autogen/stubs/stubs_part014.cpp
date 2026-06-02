@@ -1211,14 +1211,6 @@ undefined4 ApplyRelationCode4AndQueueEvent18ForTargetNation(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate
-// ghidra_proto void __thiscall AdjustNationPairDiplomacyStandingAndPropagate(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x004eff40
-undefined4 AdjustNationPairDiplomacyStandingAndPropagate(void)
-{
-  return 0;
-}
-
 // ghidra_name TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn
 // ghidra_proto void __thiscall ApplyDiplomacyInterNationStatesForTurn(void)
 // FUNCTION: IMPERIALISM 0x004f01e0
@@ -3999,6 +3991,14 @@ undefined4 RefreshCityProductionDetailPanelAndArrowWidgets(void)
 // ghidra_proto void __cdecl DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
 // FUNCTION: IMPERIALISM 0x0050d310
 undefined4 DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
+{
+  return 0;
+}
+
+// ghidra_name CreateCityBuildingDialogBySlot
+// ghidra_proto void __stdcall CreateCityBuildingDialogBySlot(int arg1, int arg2, int arg3, int arg4, int arg5)
+// FUNCTION: IMPERIALISM 0x0050d360
+undefined4 CreateCityBuildingDialogBySlot(void)
 {
   return 0;
 }
