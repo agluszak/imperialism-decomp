@@ -669,6 +669,13 @@ static __inline void VCall_TView_DeleteSelfSlot01(void* object, int arg0) {
   fn(object, 0, arg0);
 }
 
+// CDocument slot70 view-list-changed notify; class=CDocument; status=provisional
+static __inline void VCall_CDocument_NotifyViewListChangedSlot70(void* object) {
+  typedef void (__fastcall * Fn)(void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x70 / 4)));
+  fn(object);
+}
+
 // validate diplomacy action for selected/hovered target pair and set reject code; class=DiplomacyTurnStateManager; status=provisional
 static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object, int arg0, int arg1, int arg2) {
   typedef char (__fastcall * Fn)(void*, int, int, int);

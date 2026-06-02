@@ -15,5 +15,6 @@ struct CDocument {
   CPtrListSentinelView m_viewList;
 
   void DisconnectViews();
+  void AddView(CView* view);
   void* DestructCDocumentBaseStateAndMaybeFree(byte freeSelfFlag);
 };

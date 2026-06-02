@@ -526,5 +526,6 @@ address|target_cpp|ownership|note
 607077|src/game/list_utils.cpp|manual|marker_sync
 6109cf|src/game/cdocument.cpp|manual|marker_sync
 610a5f|src/game/cdocument.cpp|manual|marker_sync
+611810|src/game/cdocument.cpp|manual|marker_sync
 618df2|src/game/list_box.cpp|manual|marker_sync
 618e72|src/game/list_box.cpp|manual|marker_sync

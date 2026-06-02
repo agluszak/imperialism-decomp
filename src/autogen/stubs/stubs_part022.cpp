@@ -1739,14 +1739,6 @@ undefined4 NoOpVirtualStub_0061180f(void)
   return 0;
 }
 
-// ghidra_name AddView
-// ghidra_proto void __cdecl AddView(void)
-// FUNCTION: IMPERIALISM 0x00611810
-undefined4 AddView(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed
 // ghidra_proto void __stdcall WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x006118ed
@@ -3999,6 +3991,14 @@ undefined4 NoOpVirtualStub_0061ec02(void)
 // ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 // FUNCTION: IMPERIALISM 0x0061ec03
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+{
+  return 0;
+}
+
+// ghidra_name WrapperFor_AfxDeleteObject_At0061ec0f
+// ghidra_proto void __cdecl WrapperFor_AfxDeleteObject_At0061ec0f(void)
+// FUNCTION: IMPERIALISM 0x0061ec0f
+undefined4 WrapperFor_AfxDeleteObject_At0061ec0f(void)
 {
   return 0;
 }

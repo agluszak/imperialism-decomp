@@ -1,5 +1,7 @@
 #include "game/cdocument.h"
 
+#include "game/generated/vcall_facades.h"
+
 // MFC CDocument code was compiled favor-size in the original.
 #if defined(_MSC_VER)
 #pragma optimize("ys", on)
@@ -16,6 +18,13 @@ void CDocument::DisconnectViews() {
       view->m_pDocument = 0;
     } while (m_viewList.nodeCount != 0);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00611810
+void CDocument::AddView(CView* view) {
+  m_viewList.AddTail(view);
+  view->m_pDocument = this;
+  VCall_CDocument_NotifyViewListChangedSlot70(this);
 }
 
 // FUNCTION: IMPERIALISM 0x006109CF

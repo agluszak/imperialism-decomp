@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_AfxDeleteObject_At0061ec0f
-// ghidra_proto void __cdecl WrapperFor_AfxDeleteObject_At0061ec0f(void)
-// FUNCTION: IMPERIALISM 0x0061ec0f
-undefined4 WrapperFor_AfxDeleteObject_At0061ec0f(void)
-{
-  return 0;
-}
-
 // ghidra_name FillSolidRect
 // ghidra_proto void __thiscall FillSolidRect(void * pRect, uint rgbColor)
 // FUNCTION: IMPERIALISM 0x0061f0fa
@@ -3999,6 +3991,14 @@ undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631a8f(v
 // ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b30(void)
 // FUNCTION: IMPERIALISM 0x00631b30
 undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b30(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b6f
+// ghidra_proto int __cdecl thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b6f(void)
+// FUNCTION: IMPERIALISM 0x00631b6f
+undefined4 thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00631b6f(void)
 {
   return 0;
 }
