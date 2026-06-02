@@ -1,4 +1,9 @@
-// Manual reconstruction of small linked-list helper routines from GHIDRA snapshot.
+// MFC CObject / CRuntimeClass RTTI core (IsKindOf / IsDerivedFrom /
+// AfxDynamicDownCast), compiled favor-size in the original.
+
+#if defined(_MSC_VER)
+#pragma optimize("ys", on)
+#endif
 
 class NodeScanner {
 public:
