@@ -256,32 +256,11 @@ static __inline void VCall_GreatPower_DeleteSelfSlot01(void* object, int arg0) {
   fn(object, arg0);
 }
 
-// dispatch event; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_DispatchEventSlot2E(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2E)));
-  fn(object, arg0, arg1);
-}
-
 // fallback dispatch slot6C; class=TGreatPower; status=provisional
 static __inline void VCall_GreatPower_DispatchFallbackActionSlot6C(void* object, int arg0, int arg1, int arg2) {
   typedef void (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x6C)));
   fn(object, arg0, arg1, arg2);
-}
-
-// get counter slot1D; class=TGreatPower; status=provisional
-static __inline short VCall_GreatPower_GetCounterSlot1D(void* object) {
-  typedef short (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1D)));
-  return fn(object);
-}
-
-// need slot query; class=TGreatPower; status=provisional
-static __inline short VCall_GreatPower_GetNeedSlotValueSlot1F(void* object, int arg0) {
-  typedef short (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1F)));
-  return fn(object, arg0);
 }
 
 // node context slot40; class=TGreatPower; status=provisional

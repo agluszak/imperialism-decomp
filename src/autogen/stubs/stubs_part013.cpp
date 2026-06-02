@@ -2811,14 +2811,6 @@ undefined4 OrphanRetStub_004d8be0(void)
   return 0;
 }
 
-// ghidra_name GetDiplomacyCounterA2
-// ghidra_proto void __cdecl GetDiplomacyCounterA2(void)
-// FUNCTION: IMPERIALISM 0x004d8c00
-undefined4 GetDiplomacyCounterA2(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004d8c20
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At004d8c20(void)
 // FUNCTION: IMPERIALISM 0x004d8c20
@@ -2887,14 +2879,6 @@ undefined4 PromoteNationPendingActionSlot5IfCapabilityActive(void)
 // ghidra_proto void __cdecl AdvanceNationPendingActionStateMachine(void)
 // FUNCTION: IMPERIALISM 0x004da8a0
 undefined4 AdvanceNationPendingActionStateMachine(void)
-{
-  return 0;
-}
-
-// ghidra_name SetNationPendingActionStateAndPayload
-// ghidra_proto void __cdecl SetNationPendingActionStateAndPayload(void)
-// FUNCTION: IMPERIALISM 0x004daa10
-undefined4 SetNationPendingActionStateAndPayload(void)
 {
   return 0;
 }
@@ -3223,14 +3207,6 @@ undefined4 SumDiplomacyStateArrays198And1C6ForTarget(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins22_004ddad0(void)
 // FUNCTION: IMPERIALISM 0x004ddad0
 undefined4 OrphanLeaf_NoCall_Ins22_004ddad0(void)
-{
-  return 0;
-}
-
-// ghidra_name GetDiplomacyState1C6ByTarget
-// ghidra_proto void __cdecl GetDiplomacyState1C6ByTarget(void)
-// FUNCTION: IMPERIALISM 0x004ddb20
-undefined4 GetDiplomacyState1C6ByTarget(void)
 {
   return 0;
 }

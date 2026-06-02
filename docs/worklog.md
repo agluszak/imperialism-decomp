@@ -1979,3 +1979,22 @@ source changes.
    130 -> 129). The **whole proposal cluster (0x73/0x74/0x75/0x7a/0x7b/0x7c) is now wired to real
    virtuals.** build/detect clean; body `0x004ddfc0` held **23.15%**, thunk `0x004070e5` 0%
    (thunk-shape residual); `stats` aligned **145** (delta 0); `compare-canaries` `below_floor=0`.
+
+### TGreatPower slots 0x1d/0x1f/0x2e: decompiled stubs + wired (2026-06-02, cont.)
+
+Batch-decompiled three 0% stubs into real `TGreatPower` virtual methods at their slots
+(the slot bodies were `stubs_part013.cpp` stubs, not free functions as first thought):
+1. `0x1d` `0x004d8c00` `GetDiplomacyCounterA2()` -> `return this->diplomacyCounterA2;` **100%**.
+2. `0x1f` `0x004ddb20` `GetDiplomacyState1C6ByTarget(short)` -> `return this->diplomacyState1c6[idx];`
+   **100%** after a `#pragma optimize("y", on)` FPO wrap (original omits the frame pointer; build is `/Oy-`).
+3. `0x2e` `0x004daa10` `SetNationPendingActionStateAndPayload(int index, short payload)` -> gated on
+   `g_AdvanceTurnMachineState != -3`, writes `serializedStatusFlags[index]=0x32` and
+   `field8d6[index]=payload`. **0% -> 71%** (also FPO-wrapped). Residual: the struct places the
+   `field8d6` short array ~6 bytes too high (real base `0x8d6`); deferred since other field8d6
+   users depend on the current layout.
+For each: replaced the provisional pure-virtual decl with the real virtual at the slot position,
+renamed callsites, updated `config/symbols.csv` to the real `__thiscall` prototype, removed the
+stub (sync-ownership +3, regen-stubs), and dropped the dead facade (regen 127 -> 124).
+Aggregate: build/detect clean, `stats` aligned **145 -> 147** (+2), `compare-canaries`
+`below_floor=0`, `vtable-gate` passed. Lever: small leaf/getter slot bodies that read a single
+field are quick 100%s once FPO-wrapped to match the original's frame-pointer omission.

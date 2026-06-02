@@ -587,9 +587,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(26);
   TGREATPOWER_VTABLE_SLOT(27);
   TGREATPOWER_VTABLE_SLOT(28);
-  virtual short GetCounterSlot1D_Provisional(void) = 0;
+  virtual short GetDiplomacyCounterA2(void);  // slot 0x1d
   TGREATPOWER_VTABLE_SLOT(30);
-  virtual short GetNeedSlotValueSlot1F_Provisional(int needSlot) = 0;
+  virtual short GetDiplomacyState1C6ByTarget(short targetNationSlot);  // slot 0x1f
   TGREATPOWER_VTABLE_SLOT(32);
   virtual char CanDispatchViaUiSlot21_Provisional(void) = 0;
   TGREATPOWER_VTABLE_SLOT(34);
@@ -604,7 +604,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(43);
   TGREATPOWER_VTABLE_SLOT(44);
   TGREATPOWER_VTABLE_SLOT(45);
-  virtual void DispatchEventSlot2E_Provisional(int eventCode, int arg) = 0;
+  virtual void SetNationPendingActionStateAndPayload(int index, short payload);  // slot 0x2e
   TGREATPOWER_VTABLE_SLOT(47);
   TGREATPOWER_VTABLE_SLOT(48);
   TGREATPOWER_VTABLE_SLOT(49);
@@ -2117,6 +2117,11 @@ void* __cdecl TGreatPower::GetTGreatPowerClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTGreatPower);
 }
 
+// FUNCTION: IMPERIALISM 0x004d8c00
+short TGreatPower::GetDiplomacyCounterA2(void) {
+  return this->diplomacyCounterA2;
+}
+
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   reinterpret_cast<void(__fastcall*)(int, int)>(
@@ -2456,6 +2461,16 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     VCall_Stream_ReadRawAtSlot00(stream, &this->pendingAidTotal, 4);
   }
 }
+
+// FUNCTION: IMPERIALISM 0x004daa10
+#pragma optimize("y", on)
+void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload) {
+  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) != -3) {
+    this->serializedStatusFlags[index] = 0x32;
+    this->field8d6[index] = payload;
+  }
+}
+#pragma optimize("", on)
 
 // Updates Great Power pressure/escalation state and propagates summary messages when thresholds
 // cross.
@@ -2830,7 +2845,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
           }
 
           if (turnDelta > 9 && (turnDelta & 1U) != 0) {
-            this->GetCounterSlot1D_Provisional();
+            this->GetDiplomacyCounterA2();
 
             if (*stage1CounterA != 0 &&
                 static_cast<int>(*stage2CounterA) < static_cast<int>(*stage1CounterA) / 2) {
@@ -2855,11 +2870,11 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
           if (cityRecord->developmentStage < pendingStage) {
             SetGlobalRegionDevelopmentStageByte(regionId, pendingStage);
             if (pendingStage == 2) {
-              this->DispatchEventSlot2E_Provisional(4, regionId);
+              this->SetNationPendingActionStateAndPayload(4, regionId);
             } else {
-              this->DispatchEventSlot2E_Provisional(3, regionId);
+              this->SetNationPendingActionStateAndPayload(3, regionId);
               if (this->expansionAlertCounter < 0x33) {
-                this->DispatchEventSlot2E_Provisional(8, -1);
+                this->SetNationPendingActionStateAndPayload(8, -1);
               }
             }
           }
@@ -3185,7 +3200,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
   void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
   bool hasUnfilledNeedSlot = false;
   for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
-    if (this->GetNeedSlotValueSlot1F_Provisional(needSlot) < 0) {
+    if (this->GetDiplomacyState1C6ByTarget(needSlot) < 0) {
       hasUnfilledNeedSlot = true;
     }
   }
@@ -3199,7 +3214,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     }
 
     for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
-      if (this->GetNeedSlotValueSlot1F_Provisional(needSlot) < 0) {
+      if (this->GetDiplomacyState1C6ByTarget(needSlot) < 0) {
         int listIndex = ObArray_GetCountAtOffset8(relationshipList);
         if (selectedNation < 0) {
           while (listIndex >= 1) {
@@ -3229,7 +3244,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     }
   }
 
-  if (this->GetNeedSlotValueSlot1F_Provisional(kNeedSlotFallback) == -1) {
+  if (this->GetDiplomacyState1C6ByTarget(kNeedSlotFallback) == -1) {
     bool foundFallbackNation = false;
     int fallbackNationSlot = -1;
     while (!foundFallbackNation) {
@@ -3278,6 +3293,13 @@ void TGreatPower::QueueInterNationEventType0FForNationPairContext(short targetNa
           sourceNationSlot, targetNationSlot, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x004ddb20
+#pragma optimize("y", on)
+short TGreatPower::GetDiplomacyState1C6ByTarget(short targetNationSlot) {
+  return this->diplomacyState1c6[targetNationSlot];
+}
+#pragma optimize("", on)
+
 // FUNCTION: IMPERIALISM 0x004ddbb0
 char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                 int arg4) {
@@ -3310,7 +3332,7 @@ void TGreatPower::OrphanVtableAssignStub_004ddd20(void) {
 bool TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) {
   unsigned char result = 1;
 
-  short activeCounter = this->GetCounterSlot1D_Provisional();
+  short activeCounter = this->GetDiplomacyCounterA2();
   if (activeCounter <= 0 || this->diplomacyState1c6[targetNationSlot] >= 0) {
     result = 0;
   }
@@ -4168,7 +4190,7 @@ void TGreatPower::AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfT
   unsigned char pressureGate = this->serializedStatusFlags[6];
   unsigned char nationGate = this->expansionEventGate;
   if (ownedRegionCount > 8 && pressureGate > 0x32 && nationGate < 3) {
-    this->DispatchEventSlot2E_Provisional(0x0C, -1);
+    this->SetNationPendingActionStateAndPayload(0x0C, -1);
   }
 }
 

@@ -144,9 +144,11 @@ address|target_cpp|ownership|note
 4bc9b0|src/game/TCityProductionView.cpp|manual|marker_sync
 4d8950|src/game/TGreatPower.cpp|manual|marker_sync
 4d89d0|src/game/TGreatPower.cpp|manual|marker_sync
+4d8c00|src/game/TGreatPower.cpp|manual|marker_sync
 4d8cc0|src/game/TGreatPower.cpp|manual|marker_sync
 4d9160|src/game/TGreatPower.cpp|manual|marker_sync
 4d92e0|src/game/TGreatPower.cpp|manual|marker_sync
+4daa10|src/game/TGreatPower.cpp|manual|marker_sync
 4daf30|src/game/TGreatPower.cpp|manual|marker_sync
 4db380|src/game/TGreatPower.cpp|manual|marker_sync
 4dbd20|src/game/TGreatPower.cpp|manual|marker_sync
@@ -170,6 +172,7 @@ address|target_cpp|ownership|note
 4dd740|src/game/TGreatPower.cpp|manual|marker_sync
 4dda20|src/game/TGreatPower.cpp|manual|marker_sync
 4dda90|src/game/TGreatPower.cpp|manual|marker_sync
+4ddb20|src/game/TGreatPower.cpp|manual|marker_sync
 4ddbb0|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd20|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd50|src/game/TGreatPower.cpp|manual|marker_sync
