@@ -1802,3 +1802,22 @@ Reviewer-guided structural rewrite of `0x004df010`, **20.48% -> 44.49%**:
 3. Step 5b (-> 44.49%): the two TGreatPower self-slots (0x4c `CallSlot13`, 0x284 `ApplyPolicyForNationSlotA1`) via a `GreatPowerSelfVtbl` struct cast over `this` (vptr at offset 0) — no need to make TGreatPower itself polymorphic. Case 0 now matches the original exactly (`mov eax,[esi]; push 1; push ecx; mov ecx,esi; call [eax+0x4c]`).
 4. Residual: the three string locals still register one combined ehstate (=2) instead of the original progressive 0/1/2, and carry extra `ebx` register pressure. Reproducing the progressive states needs `StringShared`'s ctor to BE `InitFromEmpty` (would affect other string sites) — left as the remaining compiler-internal residual.
 5. Validation: build clean; neighbors held (`0x004ddfc0` 20.57%, `0x004dedf0` 29.37%, `0x004e2330` 34.98%); `compare-canaries` below_floor=0; `vtable-gate` passed; `stats` aligned **142**.
+
+### TGreatPower vtable skeleton and first real self-virtuals (2026-06-02, cont.)
+
+1. Added `tools/ghidra/vtable_dump.py` plus `just ghidra-vtable-dump` to dump MSVC vtable evidence as CSV: index, byte offset, entry address, current symbol, entry xrefs, and vtable-slot xrefs. This is the repeatable path for separating class descriptors from vtable anchors.
+2. Corrected the anchor model for `TGreatPower`: `0x00653688` is the class descriptor, while the real vtable starts at `0x00653938`. Added `docs/tgreatpower_vtable_evidence.csv` with the initial grounded rows.
+3. Converted `TGreatPower` from an explicit `void** vftable` layout to a real polymorphic skeleton annotated `// VTABLE: IMPERIALISM 0x00653938`. Added placeholder slots through index `0xA1`, then promoted known slots:
+   - index `0x13` / byte `0x04c`: `VTableSlot13_Provisional(int,int)`, used by `0x004df010`.
+   - index `0x84` / byte `0x210`: `VTableSlot84_Provisional(int)`, used by `0x004e9ed0`.
+   - index `0xA1` / byte `0x284`: `VTableSlotA1_Provisional(int,int,int)`, vtable entry `0x00406fe1` thunking to body `0x004e27f0`.
+4. Replaced the temporary `GreatPowerSelfVtbl` cast block in `0x004df010` with real virtual calls on `this`. The accepted-proposal path still scores **44.49%**, but the two GreatPower self-calls now compile as true `thiscall` virtual dispatch (`mov ecx, esi; call [eax+0x4c/0x284]`) without the bridge struct.
+5. Fixed the stale `0x004e9ed0` signature from two stack args to three and migrated its slot `0x84` call to the real virtual. Result: `TGreatPower::QueueWarTransitionFromAdvisoryAction` (`0x004e9ed0`) is now **100.00%** (+1 aligned function).
+6. Corrected the `0x004e27f0` body signature to the real three-arg `thiscall` shape (`ret 0x0c`) and made it read `g_pDiplomacyTurnStateManager` directly for the war-transition queue. It remains a first-pass body at **32.91%**; the residual is prologue/register layout, not signature.
+7. The vtable thunk `0x00406fe1` still compiles as a small call/ret wrapper rather than the original single `jmp 0x004e27f0`; left for later because the important class/slot/call-convention model is now established.
+8. Validation:
+   - `just gen-vcall-facades`, `just build`, `just detect`: clean.
+   - Target compares: `0x004df010` **44.49%**, `0x004e9ed0` **100.00%**, `0x004e27f0` **32.91%**, `0x00406fe1` **0.00%** thunk-shape residual.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: passed.
+   - `just stats`: aligned functions **143** (+1), average similarity **9.65%**.

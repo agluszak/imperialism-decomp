@@ -26,6 +26,7 @@ This file tracks:
 10. Treat class-discovery candidate queue as "new work only": exclude manual-owned addresses by default and prioritize queue rows (`P0/P1/P2`) from lane score+density.
 11. For subsystem pushes (e.g. shared-string helpers), use targeted `just compare 0xADDR` as the acceptance gate for touched functions; treat aggregate `just stats` as macro trend only.
 12. Use persistent Mac CodeWarrior evidence from `/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior` as a class-name and signature oracle, while keeping Windows Ghidra/vptr/reccmp evidence authoritative.
+13. For `TGreatPower`, use the recovered vtable skeleton (`classdesc 0x00653688`, vtable `0x00653938`) as the migration target: known `TGreatPower*` receivers should become real virtual method calls, while generated facades stay only for unknown receivers or unstable signatures.
 
 ## Canonical Commands
 
@@ -67,9 +68,9 @@ Maintenance:
 
 ## Latest Checkpoint
 
-1. Aligned functions: `138`
-2. Average similarity: `9.60%`
-3. New matched primitive: `SetQuickDrawFillColor(int)` (`0x00495000`) at **100%**.
+1. Aligned functions: `143`
+2. Average similarity: `9.65%`
+3. New matched `TGreatPower` advisory caller: `QueueWarTransitionFromAdvisoryAction` (`0x004e9ed0`) at **100%** after correcting it to a three-arg `thiscall` method and moving slot `0x84` to a real virtual.
 4. New architecture slice: `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (`0x00596100`) promoted from stub to **24.44%**, with `QuickDrawSurfaceGuard` and generated map-overlay vcall facades.
 5. New class slice: `TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip` (`0x004a05c0`) promoted from stub to **29.85%** and `TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw` (`0x004a0770`) promoted from stub to **71.19%**, with provisional scoped-context and render/update vcall facades.
 6. Scoped-context sweep: moved `ScopedMapQuickDrawContextGuard` to shared UI scaffolding, promoted `TFocusAnimation::DestructTFocusAnimationAndMaybeFree` (`0x004a0190`) to **81.69%**, promoted `TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree` (`0x0049fde0`) to **75.86%**, and improved `0x004a0770` to **84.75%** with the 24-byte guard layout.
@@ -100,6 +101,7 @@ Maintenance:
 30. Diplomacy side-effect propagation: promoted manager slot `0x80` (`0x004eff40`) to **27.33%** as a first broad shape pass. This locks in the relation-side-effect path from slot `0x74` through slot `0x80`, manager slot `0x84`, terrain slot `0x90`, and standing-score slot `0x28`. Do not micro-tune this function yet; the next high-yield diplomacy moves are the adjacent relation-event helpers around `0x004efeb0`/`0x004f01e0` and any remaining slot signatures that clarify the manager vtable.
 31. Diplomacy relation/alliance slot cleanup: promoted manager slot `0x78` (`0x004f1b40`) and slot `0x8c` (`0x004f2050`) to **100.00%**, and promoted slot `0x90` (`0x004f2090`) to **35.71%** as a signature-correct first pass. This confirms the manager relation-code final wrapper and the major-alliance count/Nth-allied-major selectors used by AI/economy callers. Next high-yield diplomacy work should migrate raw/provisional callers of slots `0x78`/`0x8c`/`0x90` in `TGreatPower`/`TCountry` where they are already in manual source, then move to the remaining relation-event helper `0x004efeb0` or the broader turn application path.
 32. Diplomacy relation-code-4 wrapper: promoted manager slot `0x7c` (`0x004efeb0`) to **92.31%**, proving it is a three-arg `ret 0xc` method despite the stale two-arg Ghidra prototype. The slot delegates to `0x78` with relation code `4`, optionally calls `0x80`, then notifies target terrain slot `0x94` and queues event `0x18`. The mid-range manager vtable is now shaped through `0x98` except the older anonymous/non-diplomacy-looking slots below `0x44` and `0x64`/`0x68`/`0x6c`; next high-yield work can either migrate manual `TGreatPower`/`TCountry` callers to the confirmed facades or start the broad `0x004f01e0` turn-application pass with its adjacent nation-state slots.
+33. TGreatPower vtable skeleton: added a repeatable Ghidra vtable-dump helper and started migrating known `TGreatPower` receivers away from facade/self-vtable bridges. Correct anchors: class descriptor `0x00653688`, vtable `0x00653938`; evidence table is `docs/tgreatpower_vtable_evidence.csv`. Confirmed slots so far: `0x13`/byte `0x04c`, `0x84`/byte `0x210`, and `0xA1`/byte `0x284` (`0x00406fe1 -> 0x004e27f0`). `0x004e9ed0` is now 100%; `0x004df010` keeps the desired virtual call shape for slots `0x13` and `0xA1`.
 
 26. Foundation engine port (CPtrList + CObArray, favor-size lever): ported the full MFC `CPtrList` linked-list (`NewNode`/`FreeNode`/`AddHead`/`AddTail`/`RemoveHead`/`RemoveTail`/`InsertBefore`/`InsertAfter`/`RemoveAt`/`Find`/`RemoveAll` + `CPlex` block helpers) and the `CObArray` engine (`SetSize`/`SetAtGrow`/`InsertAt`/`RemoveAt`) as real methods. **15 functions at 100%** plus the two list/array destructors lifted 81.82%→**100%**. The lever: MFC foundation code is favor-size — `#pragma optimize("ys", on)` (FPO + favor-size) on the engine regions; outer wrappers stay favor-speed (`"yt"`). `SetSize` 72.17% / `InsertAt` 47.62% retain compiler-internal residuals. See INSTRUCTIONS notes 65–67.
 
@@ -124,3 +126,4 @@ Session totals (2026-06-02): Cleaned up MFC foundational class substrate and map
 7. During class reconstruction, assert failures are often expected drift signals while size/structure are still in flux; treat them as investigation cues, not automatic regressions.
 8. Follow `docs/class_recovery.md`: MSVC ABI first, evidence object first, no base edge or class membership from naming alone.
 9. Mac CodeWarrior method names can guide renames and signatures, but cannot directly assign Windows addresses, vtable slots, calling conventions, or inheritance.
+10. In `TGreatPower`, record both vtable index and byte offset. Existing facade names may use raw indices (`0xA1` means byte offset `0x284`), while instruction listings use byte offsets (`[eax+0x284]`).

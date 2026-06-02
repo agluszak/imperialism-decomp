@@ -51,6 +51,12 @@ ghidra-listing *args:
   : "${GHIDRA_PROJECT_NAME:?Set GHIDRA_PROJECT_NAME in .env}"
   uv run python -m tools.ghidra.listing_one {{args}}
 
+ghidra-vtable-dump class vtable *args:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  : "${GHIDRA_PROJECT_DIR:?Set GHIDRA_PROJECT_DIR in .env}"
+  : "${GHIDRA_PROJECT_NAME:?Set GHIDRA_PROJECT_NAME in .env}"
+  uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
+
 regen-stubs:
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \

@@ -1,0 +1,6 @@
+class_name,vtable_addr,index,byte_offset,entry_addr,current_name,return_type,args,evidence_status,evidence
+TGreatPower,0x00653938,0x13,0x04c,0x004015aa,VTableSlot13_Provisional,void,int,int,provisional,"0x004df010 calls this on ecx=ESI with targetNationSlot,1; TAutoGreatPower shares the same entry"
+TGreatPower,0x00653938,0x84,0x210,0x00405a9c,VTableSlot84_Provisional,void,int,provisional,"0x004e9ed0 calls this on ecx=ESI with one targetNation argument; return value ignored"
+TGreatPower,0x00653938,0xA1,0x284,0x00406fe1,VTableSlotA1_Provisional,void,int,int,int,provisional,"0x004df010 calls this on ecx=ESI with nationSlot,2,targetNation; entry thunks to 0x004e27f0; TAutoGreatPower has a different entry at the same index"
+TAutoGreatPower,0x00654088,0x13,0x04c,0x004015aa,VTableSlot13_Provisional,void,int,int,provisional,"same entry as TGreatPower at index 0x13"
+TAutoGreatPower,0x00654088,0xA1,0x284,0x00408bcf,VTableSlotA1_Provisional,void,int,int,int,provisional,"different entry than TGreatPower at index 0xA1; override evidence only"

@@ -330,9 +330,180 @@ static const char kFailureCaption[] = "Failure";
 static const char kUCountryAutoCppPath[] = "D:\\Ambit\\Cross\\UCountryAuto.cpp";
 static const int kAssertLineQueueMapAction = 0x5ED;
 
+#define TGREATPOWER_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) = 0
+
+// VTABLE: IMPERIALISM 0x00653938
 class TGreatPower {
 public:
-  void** vftable;
+  TGREATPOWER_VTABLE_SLOT(00);
+  TGREATPOWER_VTABLE_SLOT(01);
+  TGREATPOWER_VTABLE_SLOT(02);
+  TGREATPOWER_VTABLE_SLOT(03);
+  TGREATPOWER_VTABLE_SLOT(04);
+  TGREATPOWER_VTABLE_SLOT(05);
+  TGREATPOWER_VTABLE_SLOT(06);
+  virtual void TGreatPower_VtblSlot07(void);
+  TGREATPOWER_VTABLE_SLOT(08);
+  TGREATPOWER_VTABLE_SLOT(09);
+  TGREATPOWER_VTABLE_SLOT(10);
+  TGREATPOWER_VTABLE_SLOT(11);
+  TGREATPOWER_VTABLE_SLOT(12);
+  TGREATPOWER_VTABLE_SLOT(13);
+  TGREATPOWER_VTABLE_SLOT(14);
+  TGREATPOWER_VTABLE_SLOT(15);
+  TGREATPOWER_VTABLE_SLOT(16);
+  TGREATPOWER_VTABLE_SLOT(17);
+  TGREATPOWER_VTABLE_SLOT(18);
+  // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
+  // with (targetNationSlot, 1); return value ignored.
+  virtual void VTableSlot13_Provisional(int targetNationSlot, int mode) = 0;
+  TGREATPOWER_VTABLE_SLOT(20);
+  TGREATPOWER_VTABLE_SLOT(21);
+  TGREATPOWER_VTABLE_SLOT(22);
+  TGREATPOWER_VTABLE_SLOT(23);
+  TGREATPOWER_VTABLE_SLOT(24);
+  TGREATPOWER_VTABLE_SLOT(25);
+  TGREATPOWER_VTABLE_SLOT(26);
+  TGREATPOWER_VTABLE_SLOT(27);
+  TGREATPOWER_VTABLE_SLOT(28);
+  TGREATPOWER_VTABLE_SLOT(29);
+  TGREATPOWER_VTABLE_SLOT(30);
+  TGREATPOWER_VTABLE_SLOT(31);
+  TGREATPOWER_VTABLE_SLOT(32);
+  TGREATPOWER_VTABLE_SLOT(33);
+  TGREATPOWER_VTABLE_SLOT(34);
+  TGREATPOWER_VTABLE_SLOT(35);
+  TGREATPOWER_VTABLE_SLOT(36);
+  TGREATPOWER_VTABLE_SLOT(37);
+  TGREATPOWER_VTABLE_SLOT(38);
+  TGREATPOWER_VTABLE_SLOT(39);
+  TGREATPOWER_VTABLE_SLOT(40);
+  TGREATPOWER_VTABLE_SLOT(41);
+  TGREATPOWER_VTABLE_SLOT(42);
+  TGREATPOWER_VTABLE_SLOT(43);
+  TGREATPOWER_VTABLE_SLOT(44);
+  TGREATPOWER_VTABLE_SLOT(45);
+  TGREATPOWER_VTABLE_SLOT(46);
+  TGREATPOWER_VTABLE_SLOT(47);
+  TGREATPOWER_VTABLE_SLOT(48);
+  TGREATPOWER_VTABLE_SLOT(49);
+  TGREATPOWER_VTABLE_SLOT(50);
+  TGREATPOWER_VTABLE_SLOT(51);
+  TGREATPOWER_VTABLE_SLOT(52);
+  TGREATPOWER_VTABLE_SLOT(53);
+  TGREATPOWER_VTABLE_SLOT(54);
+  TGREATPOWER_VTABLE_SLOT(55);
+  TGREATPOWER_VTABLE_SLOT(56);
+  TGREATPOWER_VTABLE_SLOT(57);
+  TGREATPOWER_VTABLE_SLOT(58);
+  TGREATPOWER_VTABLE_SLOT(59);
+  TGREATPOWER_VTABLE_SLOT(60);
+  TGREATPOWER_VTABLE_SLOT(61);
+  TGREATPOWER_VTABLE_SLOT(62);
+  TGREATPOWER_VTABLE_SLOT(63);
+  TGREATPOWER_VTABLE_SLOT(64);
+  TGREATPOWER_VTABLE_SLOT(65);
+  TGREATPOWER_VTABLE_SLOT(66);
+  TGREATPOWER_VTABLE_SLOT(67);
+  TGREATPOWER_VTABLE_SLOT(68);
+  TGREATPOWER_VTABLE_SLOT(69);
+  TGREATPOWER_VTABLE_SLOT(70);
+  TGREATPOWER_VTABLE_SLOT(71);
+  TGREATPOWER_VTABLE_SLOT(72);
+  TGREATPOWER_VTABLE_SLOT(73);
+  TGREATPOWER_VTABLE_SLOT(74);
+  TGREATPOWER_VTABLE_SLOT(75);
+  TGREATPOWER_VTABLE_SLOT(76);
+  TGREATPOWER_VTABLE_SLOT(77);
+  TGREATPOWER_VTABLE_SLOT(78);
+  TGREATPOWER_VTABLE_SLOT(79);
+  TGREATPOWER_VTABLE_SLOT(80);
+  TGREATPOWER_VTABLE_SLOT(81);
+  TGREATPOWER_VTABLE_SLOT(82);
+  TGREATPOWER_VTABLE_SLOT(83);
+  TGREATPOWER_VTABLE_SLOT(84);
+  TGREATPOWER_VTABLE_SLOT(85);
+  TGREATPOWER_VTABLE_SLOT(86);
+  TGREATPOWER_VTABLE_SLOT(87);
+  TGREATPOWER_VTABLE_SLOT(88);
+  TGREATPOWER_VTABLE_SLOT(89);
+  TGREATPOWER_VTABLE_SLOT(90);
+  TGREATPOWER_VTABLE_SLOT(91);
+  TGREATPOWER_VTABLE_SLOT(92);
+  TGREATPOWER_VTABLE_SLOT(93);
+  TGREATPOWER_VTABLE_SLOT(94);
+  TGREATPOWER_VTABLE_SLOT(95);
+  TGREATPOWER_VTABLE_SLOT(96);
+  TGREATPOWER_VTABLE_SLOT(97);
+  TGREATPOWER_VTABLE_SLOT(98);
+  TGREATPOWER_VTABLE_SLOT(99);
+  TGREATPOWER_VTABLE_SLOT(100);
+  TGREATPOWER_VTABLE_SLOT(101);
+  TGREATPOWER_VTABLE_SLOT(102);
+  TGREATPOWER_VTABLE_SLOT(103);
+  TGREATPOWER_VTABLE_SLOT(104);
+  TGREATPOWER_VTABLE_SLOT(105);
+  TGREATPOWER_VTABLE_SLOT(106);
+  TGREATPOWER_VTABLE_SLOT(107);
+  TGREATPOWER_VTABLE_SLOT(108);
+  TGREATPOWER_VTABLE_SLOT(109);
+  TGREATPOWER_VTABLE_SLOT(110);
+  TGREATPOWER_VTABLE_SLOT(111);
+  TGREATPOWER_VTABLE_SLOT(112);
+  TGREATPOWER_VTABLE_SLOT(113);
+  TGREATPOWER_VTABLE_SLOT(114);
+  TGREATPOWER_VTABLE_SLOT(115);
+  TGREATPOWER_VTABLE_SLOT(116);
+  TGREATPOWER_VTABLE_SLOT(117);
+  TGREATPOWER_VTABLE_SLOT(118);
+  TGREATPOWER_VTABLE_SLOT(119);
+  TGREATPOWER_VTABLE_SLOT(120);
+  TGREATPOWER_VTABLE_SLOT(121);
+  TGREATPOWER_VTABLE_SLOT(122);
+  TGREATPOWER_VTABLE_SLOT(123);
+  TGREATPOWER_VTABLE_SLOT(124);
+  TGREATPOWER_VTABLE_SLOT(125);
+  TGREATPOWER_VTABLE_SLOT(126);
+  TGREATPOWER_VTABLE_SLOT(127);
+  TGREATPOWER_VTABLE_SLOT(128);
+  TGREATPOWER_VTABLE_SLOT(129);
+  TGREATPOWER_VTABLE_SLOT(130);
+  TGREATPOWER_VTABLE_SLOT(131);
+  // index 0x84 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
+  // with one target-nation argument; return value ignored.
+  virtual void VTableSlot84_Provisional(int targetNation) = 0;
+  TGREATPOWER_VTABLE_SLOT(133);
+  TGREATPOWER_VTABLE_SLOT(134);
+  TGREATPOWER_VTABLE_SLOT(135);
+  TGREATPOWER_VTABLE_SLOT(136);
+  TGREATPOWER_VTABLE_SLOT(137);
+  TGREATPOWER_VTABLE_SLOT(138);
+  TGREATPOWER_VTABLE_SLOT(139);
+  TGREATPOWER_VTABLE_SLOT(140);
+  TGREATPOWER_VTABLE_SLOT(141);
+  TGREATPOWER_VTABLE_SLOT(142);
+  TGREATPOWER_VTABLE_SLOT(143);
+  TGREATPOWER_VTABLE_SLOT(144);
+  TGREATPOWER_VTABLE_SLOT(145);
+  TGREATPOWER_VTABLE_SLOT(146);
+  TGREATPOWER_VTABLE_SLOT(147);
+  TGREATPOWER_VTABLE_SLOT(148);
+  TGREATPOWER_VTABLE_SLOT(149);
+  TGREATPOWER_VTABLE_SLOT(150);
+  TGREATPOWER_VTABLE_SLOT(151);
+  TGREATPOWER_VTABLE_SLOT(152);
+  TGREATPOWER_VTABLE_SLOT(153);
+  TGREATPOWER_VTABLE_SLOT(154);
+  TGREATPOWER_VTABLE_SLOT(155);
+  TGREATPOWER_VTABLE_SLOT(156);
+  TGREATPOWER_VTABLE_SLOT(157);
+  TGREATPOWER_VTABLE_SLOT(158);
+  TGREATPOWER_VTABLE_SLOT(159);
+  TGREATPOWER_VTABLE_SLOT(160);
+  // index 0xa1 / vtable+0x284. Evidence: 0x004df010 calls this on `this`
+  // with (nationSlot, 2, targetNation); entry 0x00406fe1 thunks to 0x004e27f0.
+  virtual void VTableSlotA1_Provisional(int nationSlot, int policyCode, int targetNation);
+
   unsigned char pad_04[8];
   short nationSlot;
   short encodedNationSlot;
@@ -432,15 +603,12 @@ public:
                                                                       int arg4);
   void thunk_QueueInterNationEventType0FForNationPairContext_At00405ac9(short targetNationSlot,
                                                                         short sourceNationSlot);
-  void TGreatPower_VtblSlot07(void);
   float thunk_ComputeMapActionContextCompositeScoreForNation(int arg1);
   void thunk_OrphanCallChain_C2_I21_004e2b00_At00406a46(void);
   void thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c(void);
   void thunk_ClearFieldBlock1c6_At00406c49(void);
   void thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e(void);
   void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
-  void thunk_QueueWarTransitionAndNotifyThirdPartyIfNeeded_At00406fe1(int arg1, int arg2, int arg3,
-                                                                      int arg4);
   void thunk_ApplyDiplomacyPolicyStateForTargetWithCostChecks_At004070e5(int arg1, int arg2);
   void thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392(int arg1, int arg2,
                                                                        int arg3);
@@ -481,7 +649,8 @@ public:
   char CompareMissionScoreVariantsByMode(int mode);
   void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
   void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
-  void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int arg1, int arg2, int arg3, int arg4);
+  void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int policyCode,
+                                                     int sourceNationSlot);
   void ApplyNationResourceNeedTargetsToOrderState(void);
   void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
   void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
@@ -532,7 +701,7 @@ public:
   void WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg2, int arg3);
   void ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
   void ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int arg1, int arg2);
-  void QueueWarTransitionFromAdvisoryAction(int arg1, int arg2);
+  void QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3);
   void ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1);
   void AddRegionToNationAndQueueMapActionMission(int arg1);
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3, int arg4);
@@ -553,6 +722,8 @@ public:
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
 };
+
+#undef TGREATPOWER_VTABLE_SLOT
 
 // C++98-compatible compile-time layout guards for the known TGreatPower core block.
 // NOTE: class size/shape is still evolving. A failing guard is a useful drift signal,
@@ -798,7 +969,7 @@ static __inline void GreatPower_RemoveProposalByIndex(TGreatPower* self, int pro
 
 static __inline void GreatPower_ApplyMutualDefenseWithNation(TGreatPower* self, int checkNation,
                                                              int sourceNation) {
-  VCall_GreatPower_ApplyPolicyForNationSlotA1(self, checkNation, 0x132, sourceNation);
+  self->VTableSlotA1_Provisional(checkNation, 0x132, sourceNation);
 }
 
 static __inline void GreatPower_FinalizeProposalQueue(TGreatPower* self) {
@@ -848,7 +1019,7 @@ static __inline void Diplomacy_SetRelationState(void* diplomacyManager, int sour
 
 static __inline void GreatPower_ApplyPolicyForNation(TGreatPower* self, int targetNation,
                                                      int policyCode, int sourceNation) {
-  VCall_GreatPower_ApplyPolicyForNationSlotA1(self, targetNation, policyCode, sourceNation);
+  self->VTableSlotA1_Provisional(targetNation, policyCode, sourceNation);
 }
 
 static __inline void ReleaseObjectAtSlot1C(void* obj) {
@@ -908,7 +1079,7 @@ static __inline void GreatPower_ResetPolicyForNation(TGreatPower* self, int nati
 }
 
 static __inline void GreatPower_CallSlot13(TGreatPower* self, int arg1, int arg2) {
-  VCall_GreatPower_CallSlot13(self, arg1, arg2);
+  self->VTableSlot13_Provisional(arg1, arg2);
 }
 
 static __inline void GreatPower_SetPolicyForNation(TGreatPower* self, int nationSlot,
@@ -1096,7 +1267,7 @@ static __inline void GreatPower_DispatchEventSlot2E(TGreatPower* self, int event
 }
 
 static __inline void GreatPower_CallSlot84(TGreatPower* self, int targetNation) {
-  VCall_GreatPower_CallSlot84(self, targetNation);
+  self->VTableSlot84_Provisional(targetNation);
 }
 
 static __inline void GreatPower_CallSlot85(TGreatPower* self, int targetNation) {
@@ -1578,10 +1749,8 @@ void TGreatPower::BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void
 #if defined(_MSC_VER)
 #pragma optimize("agsy", on)
 #endif
-void TGreatPower::thunk_QueueWarTransitionAndNotifyThirdPartyIfNeeded_At00406fe1(int arg1, int arg2,
-                                                                                 int arg3,
-                                                                                 int arg4) {
-  QueueWarTransitionAndNotifyThirdPartyIfNeeded(arg1, arg2, arg3, arg4);
+void TGreatPower::VTableSlotA1_Provisional(int nationSlot, int policyCode, int targetNation) {
+  QueueWarTransitionAndNotifyThirdPartyIfNeeded(nationSlot, policyCode, targetNation);
 }
 #if defined(_MSC_VER)
 #pragma optimize("", on)
@@ -3534,57 +3703,6 @@ struct NationStateVtbl {
   virtual void NotifyActionSlot94(int sourceNation, int actionCode) = 0; // 37 (0x94)
 };
 
-// `this` view for TGreatPower's own vtable slots. Casting `this` to this struct
-// (vptr at offset 0, same as TGreatPower::vftable) makes the self-dispatches
-// real thiscall virtual calls instead of edx-carrying facade wrappers, without
-// converting the whole TGreatPower class to polymorphic.
-struct GreatPowerSelfVtbl {
-  virtual void s000() = 0; virtual void s001() = 0; virtual void s002() = 0; virtual void s003() = 0;
-  virtual void s004() = 0; virtual void s005() = 0; virtual void s006() = 0; virtual void s007() = 0;
-  virtual void s008() = 0; virtual void s009() = 0; virtual void s010() = 0; virtual void s011() = 0;
-  virtual void s012() = 0; virtual void s013() = 0; virtual void s014() = 0; virtual void s015() = 0;
-  virtual void s016() = 0; virtual void s017() = 0; virtual void s018() = 0;
-  virtual void CallSlot13(int targetNationSlot, int mode) = 0; // 19 (0x4c)
-  virtual void s020() = 0; virtual void s021() = 0; virtual void s022() = 0; virtual void s023() = 0;
-  virtual void s024() = 0; virtual void s025() = 0; virtual void s026() = 0; virtual void s027() = 0;
-  virtual void s028() = 0; virtual void s029() = 0; virtual void s030() = 0; virtual void s031() = 0;
-  virtual void s032() = 0; virtual void s033() = 0; virtual void s034() = 0; virtual void s035() = 0;
-  virtual void s036() = 0; virtual void s037() = 0; virtual void s038() = 0; virtual void s039() = 0;
-  virtual void s040() = 0; virtual void s041() = 0; virtual void s042() = 0; virtual void s043() = 0;
-  virtual void s044() = 0; virtual void s045() = 0; virtual void s046() = 0; virtual void s047() = 0;
-  virtual void s048() = 0; virtual void s049() = 0; virtual void s050() = 0; virtual void s051() = 0;
-  virtual void s052() = 0; virtual void s053() = 0; virtual void s054() = 0; virtual void s055() = 0;
-  virtual void s056() = 0; virtual void s057() = 0; virtual void s058() = 0; virtual void s059() = 0;
-  virtual void s060() = 0; virtual void s061() = 0; virtual void s062() = 0; virtual void s063() = 0;
-  virtual void s064() = 0; virtual void s065() = 0; virtual void s066() = 0; virtual void s067() = 0;
-  virtual void s068() = 0; virtual void s069() = 0; virtual void s070() = 0; virtual void s071() = 0;
-  virtual void s072() = 0; virtual void s073() = 0; virtual void s074() = 0; virtual void s075() = 0;
-  virtual void s076() = 0; virtual void s077() = 0; virtual void s078() = 0; virtual void s079() = 0;
-  virtual void s080() = 0; virtual void s081() = 0; virtual void s082() = 0; virtual void s083() = 0;
-  virtual void s084() = 0; virtual void s085() = 0; virtual void s086() = 0; virtual void s087() = 0;
-  virtual void s088() = 0; virtual void s089() = 0; virtual void s090() = 0; virtual void s091() = 0;
-  virtual void s092() = 0; virtual void s093() = 0; virtual void s094() = 0; virtual void s095() = 0;
-  virtual void s096() = 0; virtual void s097() = 0; virtual void s098() = 0; virtual void s099() = 0;
-  virtual void s100() = 0; virtual void s101() = 0; virtual void s102() = 0; virtual void s103() = 0;
-  virtual void s104() = 0; virtual void s105() = 0; virtual void s106() = 0; virtual void s107() = 0;
-  virtual void s108() = 0; virtual void s109() = 0; virtual void s110() = 0; virtual void s111() = 0;
-  virtual void s112() = 0; virtual void s113() = 0; virtual void s114() = 0; virtual void s115() = 0;
-  virtual void s116() = 0; virtual void s117() = 0; virtual void s118() = 0; virtual void s119() = 0;
-  virtual void s120() = 0; virtual void s121() = 0; virtual void s122() = 0; virtual void s123() = 0;
-  virtual void s124() = 0; virtual void s125() = 0; virtual void s126() = 0; virtual void s127() = 0;
-  virtual void s128() = 0; virtual void s129() = 0; virtual void s130() = 0; virtual void s131() = 0;
-  virtual void s132() = 0; virtual void s133() = 0; virtual void s134() = 0; virtual void s135() = 0;
-  virtual void s136() = 0; virtual void s137() = 0; virtual void s138() = 0; virtual void s139() = 0;
-  virtual void s140() = 0; virtual void s141() = 0; virtual void s142() = 0; virtual void s143() = 0;
-  virtual void s144() = 0; virtual void s145() = 0; virtual void s146() = 0; virtual void s147() = 0;
-  virtual void s148() = 0; virtual void s149() = 0; virtual void s150() = 0; virtual void s151() = 0;
-  virtual void s152() = 0; virtual void s153() = 0; virtual void s154() = 0; virtual void s155() = 0;
-  virtual void s156() = 0; virtual void s157() = 0; virtual void s158() = 0; virtual void s159() = 0;
-  virtual void s160() = 0;
-  virtual void ApplyPolicyForNationSlotA1(int targetNation, int policyCode,
-                                          int sourceNation) = 0; // 161 (0x284)
-};
-
 // FUNCTION: IMPERIALISM 0x004df010
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -3611,8 +3729,7 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
 
   switch (static_cast<int>(proposal->proposalCode) - 0x12D) {
   case 0:
-    reinterpret_cast<GreatPowerSelfVtbl*>(this)->CallSlot13(
-        static_cast<int>(proposal->targetNationSlot), 1);
+    this->VTableSlot13_Provisional(static_cast<int>(proposal->targetNationSlot), 1);
     QueueInterNationEventRecordDedup(3, this->nationSlot,
                                      static_cast<int>(proposal->targetNationSlot));
     break;
@@ -3631,8 +3748,8 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
           reinterpret_cast<DiplomacyManagerVtbl*>(
               ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
                   ->HasPolicyWithNationSlot44(this->nationSlot, nationSlot) == 0) {
-        reinterpret_cast<GreatPowerSelfVtbl*>(this)->ApplyPolicyForNationSlotA1(
-            nationSlot, 2, static_cast<int>(proposal->targetNationSlot));
+        this->VTableSlotA1_Provisional(nationSlot, 2,
+                                       static_cast<int>(proposal->targetNationSlot));
       }
     }
     break;
@@ -4007,18 +4124,18 @@ void TGreatPower::DispatchNationDiplomacySlotActionByMode(int targetNationSlot, 
 }
 
 // FUNCTION: IMPERIALISM 0x004E27F0
-void TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int arg1, int arg2, int arg3,
-                                                                int arg4) {
-  QueueNationPairWarTransition(reinterpret_cast<void*>(arg1), this->nationSlot,
-                               static_cast<short>(arg2));
+void TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int policyCode,
+                                                                int sourceNationSlot) {
+  void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
+  QueueNationPairWarTransition(diplomacyManager, this->nationSlot,
+                               static_cast<short>(targetNationSlot));
 
-  short proposalCode = static_cast<short>(arg3);
+  short proposalCode = static_cast<short>(policyCode);
   if ((proposalCode != 1) && (proposalCode != 0x132)) {
-    (void)arg4;
     return;
   }
 
-  void* secondaryNationState = ReadSecondaryNationStateSlot(static_cast<unsigned char>(arg2));
+  void* secondaryNationState = ReadSecondaryNationStateSlot(sourceNationSlot);
   if (secondaryNationState == 0) {
     return;
   }
@@ -4563,9 +4680,9 @@ void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004E9ED0
-void TGreatPower::QueueWarTransitionFromAdvisoryAction(int arg1, int arg2) {
+void TGreatPower::QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3) {
   GreatPower_CallSlot84(this, arg1);
-  this->thunk_QueueWarTransitionAndNotifyThirdPartyIfNeeded_At00406fe1(arg1, arg1, arg2, arg1);
+  this->TGreatPower::VTableSlotA1_Provisional(arg1, arg2, arg3);
 }
 
 // FUNCTION: IMPERIALISM 0x004EA150
