@@ -117,3 +117,5 @@ src/game/diplomacy_state.cpp|VCall_DiplomacyTurnState_ValidateActionSlot5C|char|
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_ForwardParamSlot48|void|0x48 / 4|int|low|forward city-dialog param to active diplomacy child control|index|thiscall|none||provisional|TControl
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_SwitchTabSlot1A4|void|0x1A4 / 4|int,int,int|low|forward tab-switch command to active diplomacy child control|index|thiscall|none||provisional|TControl
 src/game/cdocument.cpp|VCall_CDocument_NotifyViewListChangedSlot70|void|0x70 / 4||medium|CDocument slot70 view-list-changed notify|index|thiscall|none||provisional|CDocument
+src/game/carchive.cpp|VCall_CFile_WriteBytesSlot40|void|0x40 / 4|void*,int|medium|CFile write bytes to underlying file|index|thiscall|none||provisional|CFile
+src/game/carchive.cpp|VCall_CFile_GetBufferPtrSlot58|void|0x58 / 4|int,int,void*,void*|medium|CFile get buffer pointer/refill|index|thiscall|none||provisional|CFile
