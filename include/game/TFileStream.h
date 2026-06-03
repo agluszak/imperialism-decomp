@@ -26,4 +26,8 @@ class TFileStream : public TStream {
   // out-param and returns a success byte.
   char ReadObjectFromBackingArchive(void* outObject);
   void WriteObjectToBackingArchive(void* objectRef);
+
+  // 0x00489070: serialize a length-prefixed C-string — write the length through
+  // virtual slot 0x22, then the bytes through slot 0x1e.
+  void WriteLengthPrefixedCString(char* text);
 };

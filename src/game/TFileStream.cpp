@@ -1,6 +1,10 @@
 #include "game/TFileStream.h"
 
+#include "game/generated/vcall_facades.h"
+
+extern "C" unsigned int __cdecl strlen(const char* s);
 #if defined(_MSC_VER)
+#pragma intrinsic(strlen)
 #pragma optimize("y", on)
 #endif
 
@@ -76,4 +80,11 @@ char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
 // FUNCTION: IMPERIALISM 0x00489330
 void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
   BackingArchive(this->backingArchiveOrStream)->WriteObject(objectRef);
+}
+
+// FUNCTION: IMPERIALISM 0x00489070
+void TFileStream::WriteLengthPrefixedCString(char* text) {
+  unsigned int length = strlen(text);
+  VCall_Stream_WriteCountSlot88(this, length);
+  VCall_Stream_WriteBytesSlot78(this, text, length);
 }
