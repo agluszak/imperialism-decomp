@@ -111,6 +111,25 @@ void* CArchive::ReadObject(void* runtimeClassOrFactory) {
   return 0;
 }
 
+// Guards object-map counter growth; raises archive exception 5 once the counter
+// reaches the safe ceiling. Used by the object serializer.
+// FUNCTION: IMPERIALISM 0x006121cd
+void CArchive::CheckCount() {
+  if (m_nMapCount >= 0x3ffffffe) {
+    ThrowArchiveException(5, m_pExceptionContext);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00612000
+void CArchive::WriteCount(unsigned int count) {
+  if (count < 0xffff) {
+    WriteWordToSerializedBuffer(static_cast<unsigned short>(count));
+  } else {
+    WriteWordToSerializedBuffer(0xffff);
+    WriteDwordToSerializedBuffer(count);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00611f3e
 void CArchive::FillBuffer(unsigned int requiredBytes) {
   unsigned int avail = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);

@@ -1819,14 +1819,6 @@ undefined4 Flush(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::WriteCount
-// ghidra_proto void __thiscall WriteCount(void * pArchive, uint value)
-// FUNCTION: IMPERIALISM 0x00612000
-undefined4 WriteCount(void)
-{
-  return 0;
-}
-
 // ghidra_name ReadString
 // ghidra_proto int __cdecl ReadString(void)
 // FUNCTION: IMPERIALISM 0x0061207b
@@ -1839,14 +1831,6 @@ undefined4 ReadString(void)
 // ghidra_proto bool __thiscall ReadString_612132(void * pSharedString)
 // FUNCTION: IMPERIALISM 0x00612132
 undefined4 ReadString_612132(void)
-{
-  return 0;
-}
-
-// ghidra_name CheckCount
-// ghidra_proto void __fastcall CheckCount(void * stateContext)
-// FUNCTION: IMPERIALISM 0x006121cd
-undefined4 CheckCount(void)
 {
   return 0;
 }

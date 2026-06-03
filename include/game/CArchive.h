@@ -8,12 +8,17 @@
 struct CArchive {
   char pad_00[0x08];
   int m_bDirect;
-  char pad_0c[0x10];
+  char pad_0c[0x04];
+  // Passed as the name/context argument to AfxThrowArchiveException.
+  void* m_pExceptionContext;
+  char pad_14[0x08];
   int m_nBufSize;
   void* m_pFile;
   unsigned char* m_lpBufCur;
   unsigned char* m_lpBufMax;
   unsigned char* m_lpBufStart;
+  // Object-map reference counter; guarded by CheckCount before each growth.
+  unsigned int m_nMapCount;
 
   CArchive* WriteByteToSerializedBuffer(unsigned char value);
   CArchive* WriteWordToSerializedBuffer(unsigned short value);
@@ -33,4 +38,12 @@ struct CArchive {
   // link against the 0x006121e1 / 0x0061225e addresses by name.
   void WriteObject(void* objectRef);
   void* ReadObject(void* runtimeClassOrFactory);
+
+  // Serialize a count: 16-bit fast path, with a 0xFFFF escape + dword for large
+  // values. (0x00612000)
+  void WriteCount(unsigned int count);
+
+  // Guards object-map counter growth; raises archive exception 5 once the
+  // counter reaches the safe ceiling. (0x006121cd)
+  void CheckCount();
 };
