@@ -1,6 +1,6 @@
 // UI wrapper class quads extracted from trade_screen.
 
-#include "game/string_shared.h"
+#include "game/CString.h"
 #include "game/ui_widget_shared.h"
 
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
@@ -105,7 +105,7 @@ void PlacardState::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(in
 
 // FUNCTION: IMPERIALISM 0x0058bc60
 void PlacardState::RenderPlacardValueTextWithShadow() {
-  StringShared sharedStringRef;
+  CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
   int themeColorPrimary = 0;
   int themeColorSecondary = 0;

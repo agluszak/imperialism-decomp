@@ -347,9 +347,9 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
 // FUNCTION: IMPERIALISM 0x004f6840
 void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,
                                                                         const RECT* presentRect) {
-  StringShared str1;
-  StringShared str2;
-  StringShared str3;
+  CString str1;
+  CString str2;
+  CString str3;
   QuickDrawSurfaceGuard surface;
   frameRegionSelectorAt98 = (short)activeNationSlot;
 

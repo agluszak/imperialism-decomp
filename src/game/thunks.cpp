@@ -2,7 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 
 undefined4 RefreshStrategicMapStatusIconsForActiveNation(void);
 undefined4 HandleTurnEventDialogFactorySlotB4(void);
@@ -117,7 +117,7 @@ undefined4 GetOrCreateMfcModuleThreadState(void) {
   return 0;
 }
 
-undefined4 StringShared::LoadResourceStringToSharedBuffer(unsigned int resource_id) {
+undefined4 CString::LoadResourceStringToSharedBuffer(unsigned int resource_id) {
   (void)resource_id;
   return 0;
 }

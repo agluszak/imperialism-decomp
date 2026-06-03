@@ -2,7 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 #include "game/ui_widget_shared.h"
 #include "game/TView.h"
 
@@ -2568,7 +2568,7 @@ void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* contro
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
 void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control) {
-  StringShared sharedStringRef;
+  CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
   sharedStringRef.InitFromEmpty();
 
@@ -2596,7 +2596,7 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
         sharedStringRefPtr);
   }
 
-  sharedStringRef.~StringShared();
+  sharedStringRef.~CString();
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180

@@ -3,7 +3,7 @@
 
 #include "decomp_types.h"
 #include "game/generated/vcall_facades.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 #include <stddef.h>
 #include <new>
 
@@ -1511,15 +1511,15 @@ static const int kMajorNationCount = 7;
 static const int kDiplomacyTrackedSlotCount = 0x11;
 
 static __inline void InitializeAndReleaseSharedMessageRefs(void) {
-  StringShared messageRef;
-  StringShared scratchRef;
+  CString messageRef;
+  CString scratchRef;
   messageRef.InitFromEmpty();
   scratchRef.InitFromEmpty();
 }
 
 struct SharedRefPairScope {
-  StringShared first;
-  StringShared second;
+  CString first;
+  CString second;
 
   SharedRefPairScope() {
     first.InitFromEmpty();
@@ -1530,24 +1530,24 @@ struct SharedRefPairScope {
   }
 };
 
-static __inline void InitializeThreeSharedRefs(StringShared* firstRef, StringShared* secondRef,
-                                               StringShared* thirdRef) {
+static __inline void InitializeThreeSharedRefs(CString* firstRef, CString* secondRef,
+                                               CString* thirdRef) {
   firstRef->InitFromEmpty();
   secondRef->InitFromEmpty();
   thirdRef->InitFromEmpty();
 }
 
-static __inline void ReleaseThreeSharedRefs(StringShared* firstRef, StringShared* secondRef,
-                                            StringShared* thirdRef) {
-  thirdRef->~StringShared();
-  secondRef->~StringShared();
-  firstRef->~StringShared();
+static __inline void ReleaseThreeSharedRefs(CString* firstRef, CString* secondRef,
+                                            CString* thirdRef) {
+  thirdRef->~CString();
+  secondRef->~CString();
+  firstRef->~CString();
 }
 
 struct SharedRefTripleScope {
-  StringShared first;
-  StringShared second;
-  StringShared third;
+  CString first;
+  CString second;
+  CString third;
 
   SharedRefTripleScope() {
     first.InitFromEmpty();
@@ -2057,8 +2057,8 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
     return;
   }
 
-  StringShared sharedRefA;
-  StringShared sharedRefB;
+  CString sharedRefA;
+  CString sharedRefB;
   sharedRefA.InitFromEmpty();
   sharedRefB.InitFromEmpty();
 
@@ -2505,7 +2505,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     relationDeltaByNation[idx] = 0;
   }
 
-  StringShared summaryMessageRef;
+  CString summaryMessageRef;
   summaryMessageRef.InitFromEmpty();
 
   TGreatPowerDiplomacyExternalStateView* diplomacyExternal =
@@ -2598,7 +2598,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       }
       pressureView->pressureTier8fc = 2;
     } else {
-      StringShared sharedMessageRef;
+      CString sharedMessageRef;
       sharedMessageRef.InitFromEmpty();
       int nextPressureValue =
           static_cast<int>(pressureView->pressureValue8f4) +
@@ -2978,8 +2978,8 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
         unsigned int selfMask = 1u << (this->nationSlot & 0x1f);
         unsigned int contextMask = contextEntry->nationMask;
         if ((contextMask & nationMask) != 0 && (contextMask & selfMask) == 0) {
-          StringShared contextRef;
-          StringShared messageRef;
+          CString contextRef;
+          CString messageRef;
           contextRef.InitFromEmpty();
           MapActionContext_AssignDisplayRefFromSlot2C(contextEntry,
                                                       reinterpret_cast<int*>(&contextRef));
@@ -3028,8 +3028,8 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     TNationStateEventMessageFlagsView* messageFlags =
         static_cast<TNationStateEventMessageFlagsView*>(nationState);
     if (messageFlags->allowEventMessage4D != 0 && messageFlags->suppressEventMessage4C == 0) {
-      StringShared messageRef;
-      StringShared scratchRef;
+      CString messageRef;
+      CString scratchRef;
       messageRef.InitFromEmpty();
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
       scratchRef.InitFromEmpty();
@@ -3869,9 +3869,9 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   // and released in reverse. Modeling them as one aggregate scope object adds an
   // EH-state nesting level and reshapes the function; the original has three
   // separate locals (construct 0/1/2, advance ehstate after each).
-  StringShared tmp0;
-  StringShared tmp1;
-  StringShared tmp2;
+  CString tmp0;
+  CString tmp1;
+  CString tmp2;
   tmp0.InitFromEmpty();
   tmp1.InitFromEmpty();
   tmp2.InitFromEmpty();
@@ -4041,8 +4041,8 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
 void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   const short kProposalTradeEmbargo = 0x12E;
   const short kProposalMutualDefense = 0x132;
-  StringShared proposalSummaryRef;
-  StringShared proposalScratchRef;
+  CString proposalSummaryRef;
+  CString proposalScratchRef;
   int proposalIndex = 0;
   int queueIndex = 0;
 

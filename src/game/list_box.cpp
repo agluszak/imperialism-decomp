@@ -2,10 +2,10 @@
 
 // MFC DDX_LBString / DDX_LBStringExact. Ghidra invented receiver classes
 // (ListBoxControlWindowResolver / ListBoxSharedStringRef) for these; the real
-// receivers are CDataExchange (the DDX cursor) and CString (our StringShared).
+// receivers are CDataExchange (the DDX cursor) and CString (our CString class).
 //
 // CString::GetBufferSetLength (0x605d99) and CString::ReleaseBuffer (0x605d71)
-// are the already-ported StringShared methods EnsureCapacityAndSetLength /
+// are the already-ported CString methods EnsureCapacityAndSetLength /
 // SetLengthAndTerminator and are called directly. CDataExchange::PrepareCtrl
 // (0x6189dc) and CString::Empty (0x60586d) are not yet ported, so they go
 // through __fastcall ABI bridges kept out of the function bodies.
@@ -22,14 +22,14 @@ inline HWND PrepareDdxControl(CDataExchange* pDX, undefined4 nIDC) {
 }
 
 // CString::Empty() (thiscall).
-inline void StringEmpty(StringShared* value) {
-  reinterpret_cast<void(__fastcall*)(StringShared*)>(::Empty)(value);
+inline void StringEmpty(CString* value) {
+  reinterpret_cast<void(__fastcall*)(CString*)>(::Empty)(value);
 }
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00618df2
-void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, StringShared* value) {
+void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, CString* value) {
   HWND listbox = PrepareDdxControl(pDX, nIDC);
   if (pDX->m_bSaveAndValidate == 0) {
     SendMessageA(listbox, 0x18c, static_cast<WPARAM>(0xffffffff), value->data_ptr);
@@ -47,7 +47,7 @@ void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, StringShared* v
 }
 
 // FUNCTION: IMPERIALISM 0x00618e72
-void __stdcall DDX_LBStringExact(CDataExchange* pDX, undefined4 nIDC, StringShared* value) {
+void __stdcall DDX_LBStringExact(CDataExchange* pDX, undefined4 nIDC, CString* value) {
   HWND target = PrepareDdxControl(pDX, nIDC);
   if (pDX->m_bSaveAndValidate == 0) {
     WPARAM index = SendMessageA(target, 0x1a2, static_cast<WPARAM>(0xffffffff), value->data_ptr);

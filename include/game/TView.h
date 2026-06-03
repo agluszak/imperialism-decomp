@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/TEventHandler.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 
 // Runtime thunk exported from the binary for the base UI resource constructor.
 undefined4 thunk_ConstructUiResourceEntryBase(void);
@@ -30,7 +30,7 @@ public:
   int field50;
   unsigned short field54;
   unsigned char padding_56_to_57[0x02];
-  StringShared sharedStringRef;
+  CString sharedStringRef;
   int field5c;
 
   void thunk_ConstructUiResourceEntryBase();

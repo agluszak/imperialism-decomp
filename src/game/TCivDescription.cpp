@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/TView.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(void);
@@ -354,7 +354,7 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
   Rect32* legendRect;
   int stylePrimary;
   int styleSecondary;
-  StringShared localizedTextRef;
+  CString localizedTextRef;
   int* localizedTextRefPtr = reinterpret_cast<int*>(&localizedTextRef);
   void** localizationTable;
   short selectedClass;

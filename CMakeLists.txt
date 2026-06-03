@@ -23,7 +23,7 @@ add_executable(Imperialism
     src/game/list_box.cpp
     src/game/mfc_helpers.cpp
     src/game/object_pool.cpp
-    src/game/string_shared.cpp
+    src/game/CString.cpp
     src/game/sprite.cpp
     src/game/quickdraw_surface.cpp
     src/game/map_quickdraw_overlay.cpp

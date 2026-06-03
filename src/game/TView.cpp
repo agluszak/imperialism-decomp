@@ -4,7 +4,7 @@
 #pragma optimize("y", on)
 
 #include "game/TView.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 #include "game/ui_widget_shared.h"
 #include "game/generated/vcall_facades.h"
 

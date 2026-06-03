@@ -4,7 +4,7 @@
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 #include "game/generated/vcall_facades.h"
 #include <new>
 
@@ -39,7 +39,7 @@ enum {
 // which reproduces the MSVC EH cleanup frame and the staged construct/destruct
 // (ehstate 0->1->2->3 up, reverse down) seen in the original 0x004f01e0 body.
 struct ScratchSharedString {
-  StringShared str;
+  CString str;
   ScratchSharedString() { str.InitFromEmpty(); }
 };
 

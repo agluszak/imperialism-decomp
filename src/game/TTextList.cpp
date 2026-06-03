@@ -46,7 +46,7 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
     int idx = startIdx;
     
     while (idx < totalItems) {
-      StringShared tempString;
+      CString tempString;
       tempString.ConstructFromCStrOrResourceId(pItem->text);
       
       if (idx == selectedIndex) {
@@ -63,7 +63,7 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
       }
       
       int textWidth = 0;
-      reinterpret_cast<int(__cdecl*)(StringShared*, int*)>(
+      reinterpret_cast<int(__cdecl*)(CString*, int*)>(
           thunk_MeasureTextExtentWithCachedQuickDrawStyle)(&tempString, &textWidth);
       
       short textX = static_cast<short>(field34 / 2) - static_cast<short>(textWidth / 2);

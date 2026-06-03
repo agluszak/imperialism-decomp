@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/generated/vcall_facades.h"
-#include "game/string_shared.h"
+#include "game/CString.h"
 #include "game/ui_widget_shared.h"
 
 #if defined(_MSC_VER)
@@ -105,7 +105,7 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
         0);
 
     if (slider->splitPositionAt90 < 0x0c) {
-      StringShared statusText;
+      CString statusText;
       int* statusTextRef = reinterpret_cast<int*>(&statusText);
       int textShadowColor = 0;
       int textMainColor = 0;
