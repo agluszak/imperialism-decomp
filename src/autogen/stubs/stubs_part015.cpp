@@ -2779,14 +2779,6 @@ undefined4 GetPreferenceTerrainTypeByEntryIndex(void)
   return 0;
 }
 
-// ghidra_name NoOpForeignMinisterUtilityStub
-// ghidra_proto void __cdecl NoOpForeignMinisterUtilityStub(void)
-// FUNCTION: IMPERIALISM 0x0052efb0
-undefined4 NoOpForeignMinisterUtilityStub(void)
-{
-  return 0;
-}
-
 // ghidra_name TForeignMinister::GetTForeignMinisterClassNamePointer
 // ghidra_proto void * __cdecl GetTForeignMinisterClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x0052f050
@@ -2947,22 +2939,6 @@ undefined4 RefreshForeignMinisterStateByLocalizationMode(void)
   return 0;
 }
 
-// ghidra_name NoOpForeignMinisterSlot24Handler
-// ghidra_proto void __cdecl NoOpForeignMinisterSlot24Handler(void)
-// FUNCTION: IMPERIALISM 0x0052fd80
-undefined4 NoOpForeignMinisterSlot24Handler(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpForeignMinisterSlot25Handler
-// ghidra_proto void __cdecl NoOpForeignMinisterSlot25Handler(void)
-// FUNCTION: IMPERIALISM 0x0052fda0
-undefined4 NoOpForeignMinisterSlot25Handler(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateNationInteractionEnableFlagsByTerrainAndRelation
 // ghidra_proto void __cdecl UpdateNationInteractionEnableFlagsByTerrainAndRelation(void)
 // FUNCTION: IMPERIALISM 0x0052fdc0
@@ -3015,14 +2991,6 @@ undefined4 QueueForeignMinisterActionCodesByNationStateAndCompatibility(void)
 // ghidra_proto void __thiscall ValidateProposalSelectionAndQueueEvent1C(word proposalQueueIndex)
 // FUNCTION: IMPERIALISM 0x00530fa0
 undefined4 ValidateProposalSelectionAndQueueEvent1C(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpForeignMinisterSlot32Handler
-// ghidra_proto void __cdecl NoOpForeignMinisterSlot32Handler(void)
-// FUNCTION: IMPERIALISM 0x00531110
-undefined4 NoOpForeignMinisterSlot32Handler(void)
 {
   return 0;
 }
@@ -3087,14 +3055,6 @@ undefined4 DispatchNationInteractionAmountByModePolicyA(void)
 // ghidra_proto void __cdecl QueueTedFourRandomAvailableTerrainActionsCode133(void)
 // FUNCTION: IMPERIALISM 0x00531a10
 undefined4 QueueTedFourRandomAvailableTerrainActionsCode133(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpTedForeignMinisterSlot25Handler
-// ghidra_proto void __cdecl NoOpTedForeignMinisterSlot25Handler(void)
-// FUNCTION: IMPERIALISM 0x00531af0
-undefined4 NoOpTedForeignMinisterSlot25Handler(void)
 {
   return 0;
 }
@@ -3555,14 +3515,6 @@ undefined4 ReturnZeroMissionVtableSlot2C(void)
   return 0;
 }
 
-// ghidra_name NoOpMissionVtableSlot30
-// ghidra_proto void __cdecl NoOpMissionVtableSlot30(void)
-// FUNCTION: IMPERIALISM 0x00534c40
-undefined4 NoOpMissionVtableSlot30(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMissionStateByte8To2
 // ghidra_proto void __cdecl SetMissionStateByte8To2(void)
 // FUNCTION: IMPERIALISM 0x00534c60
@@ -3579,26 +3531,10 @@ undefined4 ResetMissionField0CToZero(void)
   return 0;
 }
 
-// ghidra_name NoOpMissionVtableSlot3C
-// ghidra_proto void __cdecl NoOpMissionVtableSlot3C(void)
-// FUNCTION: IMPERIALISM 0x00534ca0
-undefined4 NoOpMissionVtableSlot3C(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeMissionVtableMethods34_38_3C
 // ghidra_proto void __cdecl InvokeMissionVtableMethods34_38_3C(void)
 // FUNCTION: IMPERIALISM 0x00534cc0
 undefined4 InvokeMissionVtableMethods34_38_3C(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot44
-// ghidra_proto void __cdecl NoOpMissionVtableSlot44(void)
-// FUNCTION: IMPERIALISM 0x00534cf0
-undefined4 NoOpMissionVtableSlot44(void)
 {
   return 0;
 }
@@ -3711,46 +3647,6 @@ undefined4 ReturnMissionConstantFloatSlot7C(void)
 // ghidra_proto void __cdecl ReturnMissionConstantFloatSlot78(void)
 // FUNCTION: IMPERIALISM 0x00534eb0
 undefined4 ReturnMissionConstantFloatSlot78(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot84
-// ghidra_proto void __cdecl NoOpMissionVtableSlot84(void)
-// FUNCTION: IMPERIALISM 0x00534ed0
-undefined4 NoOpMissionVtableSlot84(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot80Ret8
-// ghidra_proto void __cdecl NoOpMissionVtableSlot80Ret8(void)
-// FUNCTION: IMPERIALISM 0x00534ef0
-undefined4 NoOpMissionVtableSlot80Ret8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot8CRet8
-// ghidra_proto void __cdecl NoOpMissionVtableSlot8CRet8(void)
-// FUNCTION: IMPERIALISM 0x00534f10
-undefined4 NoOpMissionVtableSlot8CRet8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot88Ret8
-// ghidra_proto void __cdecl NoOpMissionVtableSlot88Ret8(void)
-// FUNCTION: IMPERIALISM 0x00534f30
-undefined4 NoOpMissionVtableSlot88Ret8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpMissionVtableSlot90Ret4
-// ghidra_proto void __cdecl NoOpMissionVtableSlot90Ret4(void)
-// FUNCTION: IMPERIALISM 0x00534f50
-undefined4 NoOpMissionVtableSlot90Ret4(void)
 {
   return 0;
 }

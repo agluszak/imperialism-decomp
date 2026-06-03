@@ -2346,3 +2346,28 @@ Skipped `0x00606fba` `GetCObjectRuntimeClass` for now: its returned pointer
 
 Commands: `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`,
 targeted `just compare` (both **100%**), `just vtable-gate` (passed).
+
+### Empty no-op slot batch — 49 functions to 100% (2026-06-04)
+
+Bulk-ported 49 empty vtable-slot / callback no-ops (free functions) into
+`src/game/noop_slots.cpp`, all **100%**. Method: classify every unowned free
+`__cdecl`/`__stdcall` "NoOp" candidate by its original epilogue via reccmp:
+- plain `ret` → `void Name(void) {}`
+- `ret N` → `void __stdcall Name(<N/4 int params>) {}` (callee-cleaned args)
+
+Key finding: the originals are **FPO** (no frame pointer) even when they take
+callee-cleaned stack args, but the global match flags use `/Oy-`, which wraps
+`ret N` bodies in a `push ebp; mov ebp,esp; pop ebp` frame (40% similar). Added a
+file-level `#pragma optimize("y", on)` to force frame-pointer omission; that took
+every `__stdcall` no-op to 100% **and** repaired a pre-existing 40% entry
+(`0x00412c10 NoOpTurnEventStateVtableSlot10`). Plain `void(void)` no-ops already
+matched (empty body → bare `ret`).
+
+Excluded 5 candidates (`0x4e0420`, `0x4e0440`, `0x4e1f20`, `0x4e2190`, `0x5d6e30`)
+that are called by existing thunk wrappers under the generic `undefined4 (void)`
+form (rule 9): their real `ret`/`ret N` ABI conflicts with the caller's mangling,
+so they stay stubbed pending a callsite-cast follow-up. Note `sync-ownership` is
+additive — removing functions from source needs a manual ownership-row prune.
+
+Stats: aligned/original **+0.39 pp** (1.58%), paired globals **+1**, average
+similarity **+0.39 pp**. `just vtable-gate` passed.

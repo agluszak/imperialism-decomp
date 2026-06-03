@@ -2571,14 +2571,6 @@ undefined4 ReturnConstantTrueQuickDrawFlag(void)
   return 0;
 }
 
-// ghidra_name NoOpQuickDrawLifecycleHookB
-// ghidra_proto void __cdecl NoOpQuickDrawLifecycleHookB(void)
-// FUNCTION: IMPERIALISM 0x004972e0
-undefined4 NoOpQuickDrawLifecycleHookB(void)
-{
-  return 0;
-}
-
 // ghidra_name GetSurfaceHeaderFromSurfaceObject
 // ghidra_proto int * __cdecl GetSurfaceHeaderFromSurfaceObject(int * pSurfaceObject)
 // FUNCTION: IMPERIALISM 0x00497300
@@ -2807,14 +2799,6 @@ undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void)
 // ghidra_proto void __cdecl RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
 // FUNCTION: IMPERIALISM 0x00498c80
 undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallback_00498ca0
-// ghidra_proto void __cdecl NoOpCallback_00498ca0(void)
-// FUNCTION: IMPERIALISM 0x00498ca0
-undefined4 NoOpCallback_00498ca0(void)
 {
   return 0;
 }

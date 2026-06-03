@@ -2139,22 +2139,6 @@ undefined4 DispatchRemoteGreatPowerCallbackSlot1CC(void)
   return 0;
 }
 
-// ghidra_name NoOpDiplomacyTargetTransitionCallbackAlt
-// ghidra_proto void __cdecl NoOpDiplomacyTargetTransitionCallbackAlt(void)
-// FUNCTION: IMPERIALISM 0x00541a00
-undefined4 NoOpDiplomacyTargetTransitionCallbackAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpGreatPowerCommandHandlerRet4
-// ghidra_proto void __cdecl NoOpGreatPowerCommandHandlerRet4(void)
-// FUNCTION: IMPERIALISM 0x00541a20
-undefined4 NoOpGreatPowerCommandHandlerRet4(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_00541a40
 // ghidra_proto void __cdecl OrphanRetStub_00541a40(void)
 // FUNCTION: IMPERIALISM 0x00541a40
@@ -2991,30 +2975,6 @@ undefined4 DispatchJoinEmpireModeEventPacket24_27(void)
 // ghidra_proto void __cdecl SetDialogModeTagInitAndInvokeNoOpHook(void)
 // FUNCTION: IMPERIALISM 0x0054c630
 undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet4
-// ghidra_proto void __cdecl NoOpCallbackRet4(void)
-// FUNCTION: IMPERIALISM 0x0054c660
-undefined4 NoOpCallbackRet4(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet10
-// ghidra_proto void __stdcall NoOpCallbackRet10(int arg0, int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x0054c680
-undefined4 NoOpCallbackRet10(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet18
-// ghidra_proto void __stdcall NoOpCallbackRet18(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x0054c6a0
-undefined4 NoOpCallbackRet18(void)
 {
   return 0;
 }

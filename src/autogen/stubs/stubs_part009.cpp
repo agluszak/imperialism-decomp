@@ -1683,14 +1683,6 @@ undefined4 ConstructImperialismApplicationSingleton(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot02_NoOpRet4
-// ghidra_proto void __cdecl TMacViewMgr_Slot02_NoOpRet4(void)
-// FUNCTION: IMPERIALISM 0x00412bd0
-undefined4 TMacViewMgr_Slot02_NoOpRet4(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseImperialismApplicationSingleton
 // ghidra_proto void __cdecl ReleaseImperialismApplicationSingleton(int arg1)
 // FUNCTION: IMPERIALISM 0x00412c30
@@ -2351,14 +2343,6 @@ undefined4 PushUiLinkedListNodeWithPayload(void)
 // ghidra_proto void __cdecl GetUiLinkedListNodePayload(void)
 // FUNCTION: IMPERIALISM 0x00426f60
 undefined4 GetUiLinkedListNodePayload(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeCallback_00426f80
-// ghidra_proto void __cdecl NoOpRuntimeCallback_00426f80(void)
-// FUNCTION: IMPERIALISM 0x00426f80
-undefined4 NoOpRuntimeCallback_00426f80(void)
 {
   return 0;
 }

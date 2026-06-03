@@ -1603,14 +1603,6 @@ undefined4 RenumberAndActivateVisibleDocumentFrames(void)
   return 0;
 }
 
-// ghidra_name NoOpVirtualStub_00610c08
-// ghidra_proto void __cdecl NoOpVirtualStub_00610c08(void)
-// FUNCTION: IMPERIALISM 0x00610c08
-undefined4 NoOpVirtualStub_00610c08(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeVslot84IfVslot98ReturnsNonZero
 // ghidra_proto void __fastcall InvokeVslot84IfVslot98ReturnsNonZero(void)
 // FUNCTION: IMPERIALISM 0x00610c87
@@ -1727,14 +1719,6 @@ undefined4 OnOpenDocument(void)
 // ghidra_proto bool __thiscall OnSaveDocument(void)
 // FUNCTION: IMPERIALISM 0x0061160e
 undefined4 OnSaveDocument(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpVirtualStub_0061180f
-// ghidra_proto void __cdecl NoOpVirtualStub_0061180f(void)
-// FUNCTION: IMPERIALISM 0x0061180f
-undefined4 NoOpVirtualStub_0061180f(void)
 {
   return 0;
 }
@@ -2799,14 +2783,6 @@ undefined4 CallField80VirtualSlot38OrReturnFalse_0061873c(void)
 // ghidra_proto void __cdecl thunk_NoOpVirtualStub_00618753(void)
 // FUNCTION: IMPERIALISM 0x0061874f
 undefined4 thunk_NoOpVirtualStub_00618753(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpVirtualStub_00618753
-// ghidra_proto void __cdecl NoOpVirtualStub_00618753(void)
-// FUNCTION: IMPERIALISM 0x00618753
-undefined4 NoOpVirtualStub_00618753(void)
 {
   return 0;
 }
@@ -3911,14 +3887,6 @@ undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 // FUNCTION: IMPERIALISM 0x0061ebfd
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpVirtualStub_0061ec02
-// ghidra_proto void __cdecl NoOpVirtualStub_0061ec02(void)
-// FUNCTION: IMPERIALISM 0x0061ec02
-undefined4 NoOpVirtualStub_0061ec02(void)
 {
   return 0;
 }

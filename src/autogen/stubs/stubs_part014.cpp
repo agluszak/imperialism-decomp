@@ -2907,22 +2907,6 @@ undefined4 SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
   return 0;
 }
 
-// ghidra_name NoOpDiplomacyPolicyStateChangedHook
-// ghidra_proto void __cdecl NoOpDiplomacyPolicyStateChangedHook(void)
-// FUNCTION: IMPERIALISM 0x005033e0
-undefined4 NoOpDiplomacyPolicyStateChangedHook(void)
-{
-  return 0;
-}
-
-// ghidra_name HandlePostPendingEventActivationNoOp
-// ghidra_proto void __cdecl HandlePostPendingEventActivationNoOp(void)
-// FUNCTION: IMPERIALISM 0x00503400
-undefined4 HandlePostPendingEventActivationNoOp(void)
-{
-  return 0;
-}
-
 // ghidra_name ActivatePendingEventAndRefreshView
 // ghidra_proto void __cdecl ActivatePendingEventAndRefreshView(void)
 // FUNCTION: IMPERIALISM 0x00503420

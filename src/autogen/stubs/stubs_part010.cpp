@@ -1915,14 +1915,6 @@ undefined4 CallThisVslot1B4NoArgs(void)
   return 0;
 }
 
-// ghidra_name NoOpTextPostLayoutHook
-// ghidra_proto void __cdecl NoOpTextPostLayoutHook(void)
-// FUNCTION: IMPERIALISM 0x00486300
-undefined4 NoOpTextPostLayoutHook(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AllocateWithFallbackHandler_At00486320
 // ghidra_proto void * __cdecl WrapperFor_AllocateWithFallbackHandler_At00486320(void)
 // FUNCTION: IMPERIALISM 0x00486320
@@ -2479,14 +2471,6 @@ undefined4 AdvanceLinkedListCursor(void)
 // ghidra_proto void __cdecl OrphanRetStub_00487f70(void)
 // FUNCTION: IMPERIALISM 0x00487f70
 undefined4 OrphanRetStub_00487f70(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpLinkedValueListHook20
-// ghidra_proto void __cdecl NoOpLinkedValueListHook20(void)
-// FUNCTION: IMPERIALISM 0x00487f90
-undefined4 NoOpLinkedValueListHook20(void)
 {
   return 0;
 }
@@ -3727,14 +3711,6 @@ undefined4 InitializeUiResourceEntryFrameAndParent(void)
 // ghidra_proto void __thiscall DispatchControlEventToChildrenAndSelf(int arg1)
 // FUNCTION: IMPERIALISM 0x0048aaf0
 undefined4 DispatchControlEventToChildrenAndSelf(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpUiLifecycleHook
-// ghidra_proto void __cdecl NoOpUiLifecycleHook(void)
-// FUNCTION: IMPERIALISM 0x0048ab70
-undefined4 NoOpUiLifecycleHook(void)
 {
   return 0;
 }
