@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pyghidra
 
-PROJECT_LOCATION = os.getenv("GHIDRA_PROJECT_DIR", "/home/agluszak/code/decomp/imperialism_knowledge")
+PROJECT_LOCATION = os.getenv("GHIDRA_PROJECT_DIR", str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra"))
 PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
 PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
 INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")

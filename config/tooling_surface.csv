@@ -19,5 +19,11 @@ module|tools.reccmp.session_loop|just:session-loop|Top-impact session queue
 module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies from autogen
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
+module|tools.ghidra.listing_one|just:ghidra-listing|Read-only pyghidra instruction listing
+module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
+module|tools.ghidra.vtable_dump|just:ghidra-vtable-dump|Dump a class vtable slot->function map
+module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
+module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
 module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
+module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-repo class-discovery evidence CLI (formerly external impk)
 file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper

@@ -64,7 +64,7 @@ def load_csv_if_exists(path: Path) -> list[dict[str, str]]:
 
 
 def default_macos_evidence_dir(repo_root: Path) -> Path:
-    return (repo_root.parent / "imperialism_knowledge" / "macos_codewarrior" / "evidence").resolve()
+    return (repo_root / "vendor" / "macos_codewarrior" / "evidence").resolve()
 
 
 def candidate_classes_from_vtable_symbols(vtable_symbol_names: list[str]) -> list[str]:

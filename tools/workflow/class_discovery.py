@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run read-only class/vtable discovery against imperialism_knowledge via impk."""
+"""Run read-only class/vtable discovery from in-repo evidence via impk_compat."""
 
 from __future__ import annotations
 
@@ -94,11 +94,9 @@ def run_impk(
     capture_output: bool = False,
 ) -> str:
     cmd = [
-        "uv",
-        "run",
-        "--project",
-        str(knowledge_root),
-        "impk",
+        sys.executable,
+        "-m",
+        "tools.workflow.impk_compat",
         *impk_args,
     ]
     return run_command(cmd, knowledge_root, capture_output=capture_output)
@@ -120,10 +118,8 @@ def write_csv_rows(path: Path, fieldnames: list[str], rows: list[dict[str, str]]
 
 
 def resolve_default_knowledge_root(repo_root: Path) -> Path:
-    from_env = os.environ.get("GHIDRA_PROJECT_DIR", "").strip()
-    if from_env:
-        return Path(from_env).expanduser().resolve()
-    return (repo_root.parent / "imperialism_knowledge").resolve()
+    # Evidence and output now live in-repo; impk_compat reads this repo's CSVs.
+    return repo_root.resolve()
 
 
 def resolve_anchor_addresses(
@@ -404,12 +400,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--knowledge-root",
         default=str(default_knowledge_root),
-        help="Path to imperialism_knowledge repository (default: GHIDRA_PROJECT_DIR or ../imperialism_knowledge).",
+        help="Root for evidence I/O (default: this repo root).",
     )
     parser.add_argument(
         "--project-root",
         default="",
-        help="Ghidra project root passed to impk commands (default: --knowledge-root).",
+        help="Repo root passed to impk_compat commands (default: --knowledge-root).",
     )
     parser.add_argument(
         "--symbols-csv",

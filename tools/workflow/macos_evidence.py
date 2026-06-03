@@ -33,7 +33,7 @@ class SymbolRecord:
 
 
 def default_workspace(repo_root: Path) -> Path:
-    return (repo_root.parent / "imperialism_knowledge" / "macos_codewarrior").resolve()
+    return (repo_root / "vendor" / "macos_codewarrior").resolve()
 
 
 def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, object]]) -> None:

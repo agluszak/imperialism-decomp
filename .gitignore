@@ -35,3 +35,10 @@ reccmp-build.yml
 
 # Local environment config
 .env
+
+# Vendored Ghidra: keep the portable archive (vendor/ghidra/exports/*.gzf, via LFS);
+# the live working project is regenerable from it via `just restore-project`.
+vendor/ghidra/*.rep/
+vendor/ghidra/*.gpr
+vendor/ghidra/*.lock
+vendor/ghidra/*.rep.bak

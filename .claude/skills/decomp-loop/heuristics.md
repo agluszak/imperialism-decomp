@@ -1,43 +1,9 @@
-# Imperialism Decomp Instructions
+# Similarity Improvement Notes
 
-## Hard Rules
-
-1. No inline assembly.
-2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`, `compare`, `stats`, `promote`, `sync-ownership`, `regen-stubs`).
-3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function declaration.
-4. Do not place any other comment or blank line between `// FUNCTION` and the declaration.
-5. One owned implementation per address in manual source.
-6. No duplicate `// FUNCTION` for the same address across manual files and stubs.
-7. If you edit markers/ownership, run:
-   1. `just sync-ownership`
-   2. `just regen-stubs`
-   3. `just build`
-8. Keep naming from Ghidra unless there is a concrete semantic reason to rename.
-9. Do not rename for style-only reasons.
-10. Keep class-owned functions in `src/game/<ClassName>.cpp`.
-11. Keep non-class/global trade code in `src/game/trade_screen.cpp`.
-12. For free-function bridges in this toolchain, prefer `__fastcall`; avoid `__thiscall` casts in free function pointer typedefs.
-13. If repeated `this + offset` / `reinterpret_cast` access maps to a stable class region, promote it to a typed class field (or typed view struct) instead of keeping cast-helper indirection.
-14. Keep external thunk declarations in the generic repo form (`undefined4 ... (void)`) and use typed local function-pointer casts at callsites; changing declaration signatures directly can cause MSVC name-mangling linker breaks.
-15. MSVC500 keeps `for` loop variables in function scope; avoid redeclaring the same loop variable name later in the same function.
-16. For vtable calls in manual code, do not introduce local `typedef ...Fn` + `reinterpret_cast` blocks; call through generated facades in `include/game/generated/vcall_facades.h`.
-17. Keep low-level slot-cast mechanics isolated in `include/game/vcall_runtime.h`; gameplay code should not index vtables directly.
-18. If `config/vtable_slots.csv` changes, regenerate with `just gen-vcall-facades` before build/compare.
-19. `config/vtable_slots.csv` is the single source of truth for generated vcall wrappers project-wide.
-20. The raw-vtable gate (`just vtable-gate`) must pass; do not introduce new raw-vtable patterns in files that are not already baseline-tracked.
-21. `just session-loop` mutates `reccmp-project.yml` ignore lists; run it only when you explicitly want to rewrite ignore configuration.
-
-## Promotion Loop
-
-1. Pick one function or a tight neighbor pair.
-2. Promote with `just promote ...` (or `just promote-range ...`).
-3. Make compile-safe C++ first; do not micro-tune immediately.
-4. Run ownership/stub sync.
-5. Run `just build`, `just detect`, `just compare 0xADDR`.
-6. Run `just compare-canaries` after each accepted iteration to ensure no unresolved regression debt on tracked anchors.
-7. If score moves, keep it and move on; if stuck, move to next function.
-
-## Similarity Improvement Notes
+The matching playbook: concrete heuristics learned while raising `reccmp` scores on
+`Imperialism.exe`. Append a new numbered note whenever you learn a transferable
+lesson (decomp-loop step 9). These are tactics, not rules — the Hard Rules live in
+`AGENTS.md`.
 
 1. Run `just compare 0xADDR` once before heavy rewrite to confirm whether the target is a real body or a thunk/trampoline.
 2. If diff shows `jmp OtherFunction`, implement a call-through wrapper first (and keep heavy logic in the destination function).
@@ -72,7 +38,7 @@
 31. For compiler-generated Relative Calls to Incremental Link Table (ILT) thunks in the original binary, mapping the correct ILT thunk addresses in symbols.csv rather than the final implementation addresses keeps call-sites aligned.
 32. To avoid demangling failures due to anonymous namespace hash names in parameter types (which cause Wine to fail to demangle and prevent pairing), clean up parameter types of thunks to global base types (like TView* instead of anonymous structs).
 33. When calling a member function of a global class instance (such as g_pUiRuntimeContext->GetActiveNationId()) where the original assembly loads the instance pointer in ecx, declare the method as a standard member of that class and map its address in symbols.csv to ensure the compiler generates the correct register-loading instructions.
-34. Mac CodeWarrior evidence lives outside git under `/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior`; use `just mac-evidence` and treat it as a name/signature oracle only. It must not directly assign Windows addresses, calling conventions, vtables, or inheritance.
+34. Mac CodeWarrior evidence lives in-repo under `vendor/macos_codewarrior`; use `just mac-evidence` and treat it as a name/signature oracle only. It must not directly assign Windows addresses, calling conventions, vtables, or inheritance.
 35. When Mac evidence identifies a method signature with hidden stack args (for example `DoPostCreate(TDocument*)` or `AdjustForZero(short, short)`), test the signature before tuning locals. Correct stack cleanup and member-call shape can improve matching more than expression rewrites.
 36. For class families with repeated Mac methods (`DrawAmt`, `DoPostCreate`, `DrawMax`), attach method names across siblings once the Windows bodies and vtable neighborhoods support the role; keep inheritance/base edges provisional until vptr/offset evidence proves them.
 37. EH-RAII guard pattern (high-yield, architectural): if the original function starts with the MSVC C++ EH prologue (`push -1; push __ehhandler; mov fs:[0]`) and immediately does `lea ecx,[esp+X]; call <ctor>`, it is wrapping a **local RAII guard object**. To reproduce the EH frame + ctor/dtor calls, model a stack `struct Guard { <field(s)>; Guard(); ~Guard(); };` with the ctor/dtor owning the impl addresses, and let the destructor run implicitly at scope exit (do NOT call it explicitly, and do NOT call the acquire/release as free `(void)` functions). MSVC only emits the EH frame for an object with a non-trivial, implicitly-invoked destructor. `tmp_decomp/eh_functions.json` enumerates all 966 EH-prologue functions; cluster by leading ctor to find guard families (shared-string temps dominate at 138, but those already use the `StringShared` dtor and thus already have their frame — the lever is for acquire/release pairs still written as free functions, e.g. the QuickDraw surface guard `0x497320`/`0x497390`).
@@ -128,9 +94,7 @@
 73. `DiplomacyTurnStateManager` slot `0x7c` (`0x004efeb0`) is another stale-boundary/stale-prototype case: live `just ghidra-listing` can report no function and autogen shows only two args, but callers push three args and the original returns with `ret 0xc`. Model it as `ApplyRelationCode4Slot7c(source,target,updateMode)`: call slot `0x78` with relation code `4`, call slot `0x80(source,target,0)` only when `updateMode` byte is `1`, then notify terrain descriptor slot `0x94(source,0x139)` and queue event `0x18` as `(target,source)`.
 74. Watch for local raw list structs whose *name* contradicts their installed vtable. In `diplomacy_state.cpp` the local `struct TSortedByRelationshipList` actually installed vtable `0x00649068` (= `TSortedPtrList`), while the local `struct RelationshipCandidateList` installed `0x00654d38` (= the real `TSortedByRelationshipList`). Ground the type by the vtable the ctor writes and the field layout, not the struct name. Replacing both with the real foundation classes (`new TSortedPtrList()` / `new TSortedByRelationshipList()`, accessing `relationType` as `->rel.relationType`) removed the `ConstructTPtrListObject`+manual-vtable scaffolding and lifted `0x004ee7a0` 67.72% -> 69.29% with every neighbor held (`0x004f2100` 73.77%, `0x004f21f0` 30.06%, `0x004f1f70` 64.15%, ctors `0x004ee4b0`/`0x004ee540` 100%). The real `TSortedByRelationshipList` ctor writes the vtable twice (base `0x649068` then `0x654d38`); this did not regress the inlined `new`-callsite scores, so prefer the real two-write ctor over a one-write local shim.
 75. Why the `ConstructXBaseState` functions are flat return-`this` methods and not C++ constructors, even when the binary clearly shows a constructor (e.g. `TView::ConstructUiResourceEntryBase`/`ConstructTViewBaseState` `0x0048a8e0`): (a) the base-state ctor must stay a named, addressable, thunk-able symbol — it is called by name from derived widgets (`TControl`, `TTextList`, the amount bars, `TCivDescription`), has a jmp-thunk (`thunk_ConstructTViewBaseState` `0x004064e2`), and is wrapped by many `Helper_Uses_thunk_ConstructTViewBaseState_At*`/`WrapperFor_*` sites; C++ forbids `&TView::TView`, jmp-to-ctor, or calling a ctor as a free function. (b) The binary uses *manual* MFC-style vptr management — it writes the base vtable (`0x6497a0`) mid-body and the derived vtable (`g_vtblTView` `0x649858`) dead last, after all field inits; a real polymorphic C++ ctor would instead emit compiler vptr writes base-then-derived near the top, which cannot match that order. The cost is the MSVC C++ EH cleanup frame (`push -1; push __ehhandler`, `[esp+0x14]` ehstate) that the original ctor carries because the `StringShared` member at `+0x58` has a non-trivial dtor; a flat method cannot reproduce it (member lifetime is only compiler-tracked inside a real ctor body). Getting both the EH frame and the manual ordering would require making `TView`/`TEventHandler` non-polymorphic (vtable as raw data only), turning the body into a real `TView::TView()`, and routing the named callers through placement-new — a separate, higher-risk slice. Until then, apply note 61 (return `this` + DATA-symbol vtable writes) and accept the EH-frame residual.
-
 76. Reconstructing a big diplomacy "turn pass" from a stub (`ApplyDiplomacyInterNationStatesForTurn` `0x004f01e0`): it is a `DiplomacyTurnStateManager` method despite Ghidra's `TSortedByRelationshipList` bucket — confirm via `this->field00[idx]` self-vtable calls (`[0x21]`=slot 0x84, `[0x11]`=slot 0x44 are manager slots). Ghidra field name `specialRelationFlagsMatrix17x17` (offset `0x1402`) is the same storage as the existing `relationSideEffectMatrix1402`; the 23×23 symmetric write is `[row*0x17+col]` / `[row+col*0x17]`. Two decompiler traps fixed here: (a) `unaff_EBX`/lost args are often a loop-invariant constant held on the stack — slot 0x94's arg0 was the constant `0` from `[esp+0x10]`, not a loop var; read the actual `push`/`[esp+X]` setup to recover it. (b) A run of `InitializeSharedStringRefFromEmpty()`/`ReleaseSharedStringRefIfNotEmpty()` with an incrementing ehstate (`0,1,2,3`) is N scratch `StringShared` locals whose **constructor** is the (thiscall) `InitFromEmpty` — model with a tiny RAII local (ctor calls `StringShared::InitFromEmpty`) to get the `push -1; push __ehhandler` frame and the staged init/release. Caveat: wrapping a `StringShared` member adds a member-cleanup EH sub-level, so the ehstate values won't equal the original's flat `0/1/2/3`; matching that exactly needs a `StringShared` whose own default/tagged ctor calls `InitFromEmpty`, which risks other matched string sites — accept the encoding residual instead. First pass: stub -> 47.62%.
-
 77. Turning facade vtable calls into real thiscall virtual dispatch (raises matches because `VCall_*` facades carry a spurious `edx=0` that a real `__thiscall` virtual does not): declare a local "vtable-view" struct of pure virtuals up to the needed slot (index = byte-offset/4 for most objects; some generated GreatPower facades use a RAW index, e.g. `resolve_slot(obj, 0x13)` -> slot 0x4c, `0xA1` -> 0x284 — check the facade body), then `reinterpret_cast<View*>(obj)->Slot(...)`. This works for opaque pointers AND for `this` itself: cast `this` to a `...SelfVtbl` view (vptr is at offset 0, same as the explicit `void** vftable` field) to get `mov ecx,this; mov eax,[this]; call [eax+slot]` WITHOUT converting the whole class to polymorphic. Used on `TGreatPower::ApplyAcceptedDiplomacyProposalCode` (`0x004df010`): manager/terrain/nation + two self-slots, 34% -> 44%. The struct never needs a real ctor/vtable since objects come from casts, so the pure-virtual class emits no compiler vtable.
 78. The two big codegen-hostile patterns in "cleaned up" decompiled functions (both seen on `0x004df010`, 20%->44%): (a) **aggregate RAII wrappers** — one scope object holding N `StringShared` members adds an EH-state nesting level and reshapes the function; use N independent `StringShared` locals instead. (b) **caching field reads into long-lived locals** (`short code = entry[0]; int src = this->nationSlot; void* mgr = ...`) inflates register pressure so MSVC saves an extra callee reg (ebx) and spills; the original re-reads through the object pointer each use. Keep a single typed record pointer and read `ptr->field` / `this->field` at each use site. Residual after both: N plain `StringShared` locals still emit one combined ehstate rather than progressive 0/1/2 (the original's ctor IS `InitFromEmpty`); reproducing that exactly would need to change `StringShared`'s ctor globally — usually not worth it.
 79. For `TGreatPower`, treat `0x00653688` as the class descriptor and `0x00653938` as the vtable. Record both raw vtable index and byte offset: facade names like `SlotA1` are indices (`0xA1`), while listings show byte offsets (`[eax+0x284]`). Once a known `TGreatPower*` receiver and stable signature are proven, prefer a real virtual method on the `TGreatPower` skeleton over a `VCall_*` facade or temporary self-vtable cast. Keep generated facades for unknown receivers or contradictory signatures only. First grounded slots: index `0x13` / byte `0x04c`, index `0x84` / byte `0x210`, and index `0xA1` / byte `0x284` (`0x00406fe1 -> 0x004e27f0`).
@@ -146,22 +110,3 @@
     the `-1` test; this gives the original `mov ax; cmp ax,0xffff` shape and took `0x004dd1b0` to
     a 100% effective match.
 85. Header-splitting / type promotion is matching-neutral only when symbol names are preserved. Two distinct cases: (a) **global-scope scaffolding** (extern "C", free `extern` declarations, plain global structs) can be relocated into separate headers freely — names are stable, codegen and reccmp scores are unchanged. (b) **anonymous-namespace types** are different: MSVC500 keys anonymous-namespace mangling on the *defining source file*, so moving such a type (or a function returning/taking it) to another file — or promoting it out of the anon namespace — renames every dependent factory/ctor symbol and desyncs it from `config/symbols.csv` (the recovered names embed `...ui_widget_shared.h<hash>...`). Promoting one anon type to global to fix a cross-TU ODR clash (e.g. `TradeControl` -> `include/game/TradeControl.h`, so real trade headers can return `TradeControl*`) is safe **because reccmp pairs owned functions by the `// FUNCTION` address marker, not by name**; but do not relocate the per-class anon state-struct block (`CivilianButtonState`/`HQButtonState`/`PlacardState`/`NumberedArrowButtonState`/`CombatReportViewState`, their `g_vtbl*`/`g_pClassDesc*` placeholders, `TradeScreenRuntimeBridge`) without re-running the Ghidra/`symbols.csv` resync in the same pass. Build matcher jitter is ~±3 aligned; confirm a suspected regression by re-measuring the isolated change, and trust `compare-canaries` `below_floor`.
-
-## Known reccmp Failure Modes
-
-1. `Failed to find a match at address 0x...`:
-   1. Check marker placement (rule #3/#4).
-   2. Check duplicate address ownership (rule #5/#6).
-   3. Run `just sync-ownership` + `just regen-stubs` + `just detect`.
-2. `Dropped duplicate address ...`:
-   1. Same address is still annotated in a stub shard or another manual file.
-3. Compare name looks like a sentence/comment:
-   1. A comment line is between marker and declaration.
-4. Build breaks on `__thiscall` in free typedef:
-   1. Replace with `__fastcall` bridge shape.
-
-## Logging Policy
-
-1. Keep execution details in `docs/worklog.md`.
-2. Update `docs/control_plane.md` only when strategy changes.
-3. Do not duplicate the same long status in multiple places.

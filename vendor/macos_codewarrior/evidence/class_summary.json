@@ -1,0 +1,128 @@
+{
+  "classes": 524,
+  "owners": 589,
+  "symbols": 6758,
+  "top_owners": [
+    {
+      "class_name": "TView",
+      "method_count": 181
+    },
+    {
+      "class_name": "TGreatPower",
+      "method_count": 170
+    },
+    {
+      "class_name": "TMapMgr",
+      "method_count": 129
+    },
+    {
+      "class_name": "TApplication",
+      "method_count": 109
+    },
+    {
+      "class_name": "TSimMgr",
+      "method_count": 88
+    },
+    {
+      "class_name": "TMultiplayerMgr",
+      "method_count": 83
+    },
+    {
+      "class_name": "TViewMgr",
+      "method_count": 83
+    },
+    {
+      "class_name": "TWindow",
+      "method_count": 75
+    },
+    {
+      "class_name": "TFile",
+      "method_count": 73
+    },
+    {
+      "class_name": "TTEView",
+      "method_count": 70
+    },
+    {
+      "class_name": "TStdPrintHandler",
+      "method_count": 67
+    },
+    {
+      "class_name": "TAutoGreatPower",
+      "method_count": 66
+    },
+    {
+      "class_name": "TTaskForce",
+      "method_count": 64
+    },
+    {
+      "class_name": "TEventHandler",
+      "method_count": 63
+    },
+    {
+      "class_name": "TTacticalBattle",
+      "method_count": 61
+    },
+    {
+      "class_name": "TMapDialog",
+      "method_count": 56
+    },
+    {
+      "class_name": "TCityInteriorMinister",
+      "method_count": 55
+    },
+    {
+      "class_name": "TGridView",
+      "method_count": 55
+    },
+    {
+      "class_name": "TShip",
+      "method_count": 52
+    },
+    {
+      "class_name": "TStream",
+      "method_count": 51
+    },
+    {
+      "class_name": "TDiplomacyMgr",
+      "method_count": 49
+    },
+    {
+      "class_name": "TArmyMgr",
+      "method_count": 48
+    },
+    {
+      "class_name": "TCountry",
+      "method_count": 48
+    },
+    {
+      "class_name": "TMapMaker",
+      "method_count": 48
+    },
+    {
+      "class_name": "TZone",
+      "method_count": 48
+    },
+    {
+      "class_name": "TArmyPlayer",
+      "method_count": 47
+    },
+    {
+      "class_name": "TDocument",
+      "method_count": 46
+    },
+    {
+      "class_name": "TMission",
+      "method_count": 42
+    },
+    {
+      "class_name": "TMacViewMgr",
+      "method_count": 41
+    },
+    {
+      "class_name": "TCtlMgr",
+      "method_count": 40
+    }
+  ],
+  "workspace": "/home/agluszak/code/decomp/imperialism_knowledge/macos_codewarrior"
+}

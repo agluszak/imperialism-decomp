@@ -26,39 +26,36 @@ Local-only layout (gitignored):
 
 ## Primary Workflow (`just`)
 
-1. `just tooling-check`
-2. `just sync-ghidra`
-3. `just sync-ownership`
-4. `just regen-stubs`
-5. `just build`
-6. `just detect`
-7. `just stats`
+```sh
+just tooling-check
+just build && just detect && just stats   # rebuild + measure
+just compare 0x004E73F0                    # targeted verbose compare
+just compare-canaries                      # regression check
+```
 
-Targeted compare:
-
-- `just compare 0x004E73F0`
-- `just compare-canaries`
-
-Promotion:
-
-- `just promote src/game/TGreatPower.cpp --address 0x004E73F0`
-- `just promote-range src/game/TGreatPower.cpp 0x004E72C0 0x004E73F0`
+The full per-workflow guidance lives in `AGENTS.md` and the skills under
+`.claude/skills/` (`decomp-loop`, `ghidra`, `quality-control`, `class-recovery`).
 
 ## Environment
 
-Create `.env` (gitignored) with at least:
+First-time / fresh clone (the Ghidra program ships as a vendored `.gzf` via Git LFS):
 
-- `GHIDRA_INSTALL_DIR=.../ghidra_12.1_PUBLIC`
-- `GHIDRA_PROJECT_DIR=...`
-- `GHIDRA_PROJECT_NAME=...`
-- `ORIGINAL_BINARY=.../Imperialism.exe`
+```sh
+git lfs pull            # fetch vendor/ghidra/exports/*.gzf
+just restore-project    # recreate the live Ghidra project from the archive
+```
 
-Optional overrides:
+`.env` (gitignored) only needs the two machine-specific paths:
 
-- `BUILD_DIR`
-- `DOCKER_IMAGE`
-- `CMAKE_FLAGS`
-- `TARGET`
+- `GHIDRA_INSTALL_DIR=.../ghidra_12.1_PUBLIC` — your Ghidra install.
+- `ORIGINAL_BINARY=.../Imperialism.exe` — your own legally obtained copy (for the
+  reccmp original side / `just bootstrap-reccmp`).
+
+The Ghidra project itself is vendored at `vendor/ghidra` and is wired into the `just`
+targets — you do **not** set `GHIDRA_PROJECT_DIR`/`GHIDRA_PROJECT_NAME`. After making
+Ghidra-side changes, refresh the committed archive with `just export-project` and
+commit it. Build knobs (`BUILD_DIR`, `DOCKER_IMAGE`, `CMAKE_FLAGS`, `TARGET`) have sane
+defaults and can be overridden via env if needed.
 
 ## Repo Layout
 
@@ -69,12 +66,13 @@ Optional overrides:
 - `include/ghidra_autogen/` regenerated datatype headers
 - `config/` symbols, ownership, vtable slot registry, workflow manifests
 - `tools/` Python tooling (`ghidra`, `workflow`, `reccmp`, shared helpers)
-- `docs/control_plane.md` current strategy + canonical command set
-- `docs/worklog.md` concise chronological execution log
+- `vendor/` vendored binary assets (Ghidra `.gzf` archive via LFS, Mac CodeWarrior evidence)
+- `.claude/skills/` per-workflow guides (`decomp-loop`, `ghidra`, `quality-control`, `class-recovery`)
+- `docs/worklog.md` chronological execution log; `docs/toolchain.md` toolchain forensics; `docs/reference/` layout + game-domain references
 
 ## Policy
 
-- Follow `INSTRUCTIONS.md` and `AGENTS.md`.
+- Follow `AGENTS.md` (the contract) and the relevant skill under `.claude/skills/`.
 - Use `just` targets for standard operations.
 - Keep `// FUNCTION: IMPERIALISM 0x...` marker immediately above declaration.
 - Do not hand-edit generated files under `src/ghidra_autogen/`, `src/autogen/stubs/`, or `include/ghidra_autogen/`.

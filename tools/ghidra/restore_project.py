@@ -18,17 +18,29 @@ from pathlib import Path
 
 import pyghidra
 
-PROJECT_DIR = os.getenv("GHIDRA_PROJECT_DIR", "/home/agluszak/code/decomp/imperialism_knowledge")
+_VENDOR_GHIDRA = Path(__file__).resolve().parents[2] / "vendor" / "ghidra"
+PROJECT_DIR = os.getenv("GHIDRA_PROJECT_DIR", str(_VENDOR_GHIDRA))
 PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
 PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
 INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
-DEFAULT_GZF = "/home/agluszak/code/decomp/imperialism_knowledge/exports/Imperialism-20260217_003824.gzf"
+EXPORTS_DIR = _VENDOR_GHIDRA / "exports"
+DEFAULT_GZF = EXPORTS_DIR / "Imperialism.gzf"
+
+
+def resolve_gzf() -> Path | None:
+    if len(sys.argv) > 1:
+        return Path(sys.argv[1])
+    if DEFAULT_GZF.is_file():
+        return DEFAULT_GZF
+    # Fall back to the newest archive in the exports dir.
+    candidates = sorted(EXPORTS_DIR.glob("*.gzf"), key=lambda p: p.stat().st_mtime)
+    return candidates[-1] if candidates else None
 
 
 def main() -> int:
-    gzf = Path(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_GZF)
-    if not gzf.is_file():
-        print(f"ERROR: export not found: {gzf}", file=sys.stderr)
+    gzf = resolve_gzf()
+    if gzf is None or not gzf.is_file():
+        print(f"ERROR: no .gzf export found in {EXPORTS_DIR}", file=sys.stderr)
         return 2
 
     pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)

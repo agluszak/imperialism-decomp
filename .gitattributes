@@ -1,0 +1,4 @@
+# Vendored Ghidra program archive (authoritative, portable form of the project DB).
+# The live working project (vendor/ghidra/*.rep, *.gpr) is gitignored and recreated
+# from this archive via `just restore-project`.
+vendor/ghidra/exports/*.gzf filter=lfs diff=lfs merge=lfs -text

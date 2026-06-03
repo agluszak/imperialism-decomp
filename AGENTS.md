@@ -1,56 +1,84 @@
-# Agent Notes
+# Imperialism Decomp — Agent Guide
 
-Project-specific execution rules are defined in:
+Decompilation workspace for the Windows game **Imperialism (1997)**. We reverse the
+binary into matching C++, rebuild it with the original MSVC500 toolchain in
+Docker/Wine, and track per-function similarity with `reccmp`. The goal is a
+byte-faithful, reproducible-in-git rebuild.
 
-- `INSTRUCTIONS.md`
+This file is the contract: the invariants below hold for all work. Per-workflow
+detail lives in **skills** (`.claude/skills/`); read the relevant skill before
+starting that kind of task.
 
-Any agent working in this repository must follow `INSTRUCTIONS.md` for naming, export-sync, and source-of-truth policy.
+## Skills (how to do each workflow)
 
-## Mandatory Decomp Loop
+- **`decomp-loop`** — the core function-porting loop (promote → shape pass → data
+  pass → build → compare). Its `heuristics.md` is the 85-entry matching playbook.
+- **`ghidra`** — inspect `Imperialism.exe` via pyghidra (listing, decompile, vtable
+  dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
+- **`quality-control`** — build, reccmp detect/compare/stats, canaries, gates,
+  formatting, and reccmp pairing-failure diagnosis.
+- **`class-recovery`** — class/vtable reconstruction, Mac evidence, the vcall facade
+  registry, and facade→virtual migration.
 
-Run this as a continuous loop during active matching work:
+## Docs (the durable record)
 
-1. Pick one target function (or a tightly-coupled neighbor pair).
-2. Do a `shape pass` first:
-   - preserve call order, branching shape, and fail-and-continue behavior from Ghidra.
-   - prefer real virtual-call wrappers (no inline asm, no raw address+offset calls).
-3. Do a `data pass`:
-   - align local types (`short`/`int`), clamp behavior, and float/int conversion order.
-4. Rebuild with Docker MSVC500 and run targeted `reccmp --verbose` only for touched functions.
-5. Verify no regressions on adjacent functions.
-6. Record concrete lessons/heuristics in `INSTRUCTIONS.md` (`Similarity Improvement Notes`).
-7. Update docs:
-   - `docs/control_plane.md` with current strategy + checkpoints.
-   - `docs/worklog.md` with timestamped changes, commands, and score deltas.
-8. Repeat immediately with the next highest-impact mismatch.
+- `docs/worklog.md` — chronological execution log (timestamps, commands, score
+  deltas). The ground truth for what happened.
+- `docs/toolchain.md` — compiler/linker forensics and reproduction decisions.
+- `docs/reference/` — layout/contract and game-domain references (struct layouts,
+  function/entry-chain map, bitmap IDs, tech unlocks).
 
-## Docs To Keep In Sync
+## Hard Rules
 
-- `docs/control_plane.md`: active strategy, baseline/checkpoint metrics, canonical commands.
-- `docs/worklog.md`: chronological execution log and outcome deltas.
-- `docs/toolchain.md`: compiler/toolchain forensics and decisions.
-- `docs/reccmp_fork.md`: local fork integration and command usage.
-- `docs/vtable_strategy.md`: facade registry schema, wrapper lifecycle, and vtable migration policy.
+1. No inline assembly.
+2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`,
+   `compare`, `stats`, `promote`, `sync-ownership`, `regen-stubs`). Do not run raw
+   `docker` or `uv run reccmp-*` when a `just` target exists; if no target exists,
+   keep the direct command minimal and add a target afterward.
+3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function
+   declaration — no comment or blank line between them.
+4. One owned implementation per address in manual source; no duplicate `// FUNCTION`
+   for the same address across manual files and stubs.
+5. After editing markers/ownership, run `just sync-ownership` → `just regen-stubs` →
+   `just build`.
+6. Keep naming from Ghidra unless there is a concrete semantic reason to rename; never
+   rename for style only.
+7. Keep class-owned functions in `src/game/<ClassName>.cpp`; non-class/global trade
+   code in `src/game/trade_screen.cpp`. Do not hand-edit generated files under
+   `src/ghidra_autogen/`, `src/autogen/stubs/`, or `include/ghidra_autogen/`.
+8. Promote repeated `this + offset` / `reinterpret_cast` access that maps to a stable
+   class region into a typed class field (or typed view struct) instead of cast-helper
+   indirection.
+9. Keep external thunk declarations in the generic repo form (`undefined4 ...(void)`)
+   and use typed local function-pointer casts at callsites; changing thunk
+   declaration signatures directly causes MSVC name-mangling linker breaks.
+10. MSVC500 keeps `for` loop variables in function scope; do not redeclare the same
+    loop variable name later in the same function.
+11. For vtable calls in manual code, call through generated facades in
+    `include/game/generated/vcall_facades.h` (or real virtuals) — no local
+    `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing. Keep
+    low-level slot-cast mechanics isolated in `include/game/vcall_runtime.h`.
+12. `config/vtable_slots.csv` is the single source of truth for generated vcall
+    wrappers; after changing it, run `just gen-vcall-facades` before build/compare.
+13. The raw-vtable gate (`just vtable-gate`) must pass; do not add new raw-vtable
+    patterns in files not already baseline-tracked.
+14. `just session-loop` mutates `reccmp-project.yml` ignore lists; run it only when you
+    explicitly intend to rewrite ignore configuration.
+15. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
+    name/signature **oracle only** — it must never assign Windows addresses, calling
+    conventions, vtables, or inheritance.
 
-## Command Policy
-
-Use `just` targets by default for project workflows.
-
-1. Prefer:
-   - `just tooling-check`
-   - `just build`
-   - `just detect`
-   - `just stats`
-   - `just compare <addr>`
-   - `just compare-canaries`
-   - `just sync-ownership`
-   - `just promote <target> --address 0x...`
-2. Do not run raw `docker`, `uv run reccmp-*`, or direct workflow scripts when an equivalent `just` target exists.
-3. Use direct commands only when there is no `just` target for the required action; if so, keep it minimal and add/update a `just` target afterward.
-
-## MSVC500 Calling Convention Guardrail
+## MSVC500 calling-convention guardrail
 
 - Never use `__thiscall` casts on free functions or function pointers.
-- If a desired call shape is `thiscall`, convert it to a real class method call.
-- Implement/route through a typed method and call that method from callsites.
-- Keep only ABI bridge wrappers where unavoidable, and keep those wrappers out of primary method bodies.
+- If a call shape is `thiscall`, implement it as a real class method and call that
+  method from callsites. For unavoidable free-function bridges, prefer `__fastcall`
+  and keep the bridge out of primary method bodies.
+
+## Logging policy
+
+- Keep execution detail in `docs/worklog.md` (one timestamped entry per session/change
+  with commands and score deltas).
+- Don't duplicate the same long status across multiple files.
+- Persist transferable matching lessons as numbered notes in
+  `.claude/skills/decomp-loop/heuristics.md`.

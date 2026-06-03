@@ -1,33 +1,26 @@
 ---
 name: knowledge-db-impk-external
-description: class-discovery depends on an external impk CLI + separate imperialism_knowledge repo that isn't installed
+description: class-discovery used to depend on an external impk CLI; now folded in-repo as impk_compat (2026-06-03)
 metadata:
   type: project
 ---
 
-`just class-discovery` (`tools/workflow/class_discovery.py`) shells out via
-`uv run --project <knowledge_root> impk ...` against the SEPARATE repo `imperialism_knowledge`
-at /home/agluszak/code/decomp/imperialism_knowledge. Confirmed dead 2026-06-01, three
-independent reasons:
-1. There is NO `impk` entrypoint — not in that repo's `pyproject.toml` `[project.scripts]`,
-   not in `scripts/`, not in `.venv/bin`. The user recalls `impk` was just a personal shell
-   ALIAS for the knowledge repo on the old machine — but class_discovery calls it via
-   subprocess (no shell), so a shell alias never resolved through that code path anyway.
-2. The knowledge repo's own deps don't resolve: it pins `pyghidra==3.0.2` (needs
-   `jpype1==1.5.2`) against `jpype1==1.6.0` — uv reports unsatisfiable.
-3. It's still pinned to PRE-migration versions (`pyghidra==3.0.2`, `ghidra-stubs==12.0.2`),
-   not the 12.1 / 3.1.0 this repo moved to.
+RESOLVED 2026-06-03 (doc-consolidation pass). `just class-discovery`
+(`tools/workflow/class_discovery.py`) previously shelled out via
+`uv run --project <knowledge_root> impk ...` against the separate `imperialism_knowledge`
+repo — confirmed dead 2026-06-01 (no real `impk` entrypoint; the old "impk" was a personal
+shell alias; the knowledge repo's deps were also unresolvable / pre-migration pinned).
 
-**Why:** This is the heavyweight class/vtable inference subsystem ("the knowledge DB"). It is
-distinct from the in-repo export pipeline (`symbols.csv` + `src/ghidra_autogen/`), which is the
-live source of truth and works without impk. control_plane.md strategy items #8/#9 still assume
-this tool is available.
+Fix: the self-contained compat shim was vendored into the repo as
+`tools/workflow/impk_compat.py` (reads only this repo's `config/symbols.csv` +
+`src/ghidra_autogen/index.csv` — no Ghidra DB, no sibling). `run_impk` now invokes
+`python -m tools.workflow.impk_compat`, and `--knowledge-root` defaults to the repo root.
+`just class-discovery` runs fully in-repo (verified: summary.json + candidates emitted).
+See [[repo-layout-skills-and-vendor]].
 
-**How to apply:** Reviving class-discovery is real work, not a path fix: define an actual
-`impk` console-script in imperialism_knowledge, repair its dep pins, and migrate it to
-12.1/3.1.0. Until then treat class-discovery as deprecated and rely on the in-repo
-`symbols.csv` + `src/ghidra_autogen/` pipeline, which is self-contained and works.
-See [[pyghidra-version-gate]].
+**How to apply:** class-discovery is a compat-grade evidence ranker (static `g_vtbl*`
+symbols + `::`-named autogen functions), not the old heavyweight live-Ghidra inference. For
+deeper per-function evidence prefer `just slice-discovery`. See [[pyghidra-version-gate]].
 
 Separately, on the original binary: `reccmp-user.yml` (gitignored, holds the ORIGINAL exe
 path) does NOT currently exist — only `build-msvc500/reccmp-build.yml` (recompiled side) is
