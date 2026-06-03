@@ -15,7 +15,9 @@ function_ownership := env_var_or_default("FUNCTION_OWNERSHIP", "config/function_
 vtable_gate_baseline := env_var_or_default("VTABLE_GATE_BASELINE", "config/vtable_gate_baseline.csv")
 canary_targets := env_var_or_default("CANARY_TARGETS", "config/canary_targets_tgreatpower.csv")
 class_discovery_classes := env_var_or_default("CLASS_DISCOVERY_CLASSES", "TGreatPower,TAutoGreatPower")
-macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "/home/agluszak/Downloads/imperialism.7z/Imperialism/dump")
+# External, machine-specific: the extracted macOS CodeWarrior dump dir. Only needed to
+# REGENERATE Mac evidence (already vendored under vendor/macos_codewarrior/evidence).
+macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "")
 macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", justfile_directory() / "vendor/macos_codewarrior")
 macos_pef_datafork := env_var_or_default("MACOS_PEF_DATAFORK", macos_dump + "/Imperialism.datafork")
 
@@ -145,6 +147,7 @@ slice-discovery class address:
   uv run python -m tools.workflow.slice_discovery "{{class}}" --address "{{address}}"
 
 mac-evidence:
+  : "${MACOS_IMPERIALISM_DUMP:?Set MACOS_IMPERIALISM_DUMP in .env (extracted macOS dump dir); only needed to regenerate the vendored evidence}"
   uv run python -m tools.workflow.macos_evidence \
     --dump-dir "{{macos_dump}}" \
     --workspace "{{macos_workspace}}"
@@ -156,6 +159,7 @@ mac-evidence-check:
 
 import-macos-pef:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  : "${MACOS_IMPERIALISM_DUMP:?Set MACOS_IMPERIALISM_DUMP in .env (extracted macOS dump dir holding Imperialism.datafork)}"
   mkdir -p "{{macos_workspace}}/ghidra"
   "$GHIDRA_INSTALL_DIR/support/analyzeHeadless" "{{macos_workspace}}/ghidra" imperialism-macos \
     -import "{{macos_pef_datafork}}" \

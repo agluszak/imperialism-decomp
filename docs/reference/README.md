@@ -24,3 +24,6 @@ workflow guides (those are in `.claude/skills/`) and not the execution log
   — game cursor types, resource mapping, control semantics.
 - `gob-stringtable-workflow.md`, `tabsenu-gob-findings.md` — GOB resource/string-table
   structure and extraction notes.
+- `strenu-strings.tsv` (+ `strenu-index-sample.txt`) — extracted UI/localization string
+  table (`id`, `block`, `index`, `text`); the fastest text→resource-ID lookup.
+- `manual_text.txt` — extracted game manual; baseline gameplay/mechanics reference.

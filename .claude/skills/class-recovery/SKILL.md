@@ -32,9 +32,9 @@ tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36
 
 ## Discovery workflow (per vertical slice)
 
-1. `just mac-evidence` if the persistent Mac CodeWarrior evidence cache is stale
-   (vendored at `vendor/macos_codewarrior/evidence/`; `just mac-evidence-check`
-   validates it).
+1. The Mac CodeWarrior evidence is vendored at `vendor/macos_codewarrior/evidence/`;
+   `just mac-evidence-check` validates it. Regenerating it (`just mac-evidence`) is
+   rarely needed and requires `MACOS_IMPERIALISM_DUMP` in `.env` (the external dump).
 2. `just class-discovery [Classes]` — rank class/vtable ownership candidates from
    in-repo evidence before any attach/rename (excludes already-owned addresses).
 3. `just slice-discovery <Class> 0xADDR` — emits

@@ -16,7 +16,9 @@ from pathlib import Path
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 
-DEFAULT_DUMP_DIR = Path("/home/agluszak/Downloads/imperialism.7z/Imperialism/dump")
+# External, machine-specific dump dir; supply via --dump-dir or MACOS_IMPERIALISM_DUMP.
+# Only needed to regenerate the vendored Mac evidence (--check reads the workspace only).
+DEFAULT_DUMP_DIR = os.environ.get("MACOS_IMPERIALISM_DUMP", "")
 
 
 @dataclass(frozen=True)
@@ -289,7 +291,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--dump-dir",
-        default=os.environ.get("MACOS_IMPERIALISM_DUMP", str(DEFAULT_DUMP_DIR)),
+        default=DEFAULT_DUMP_DIR,
         help="Directory containing Mac dump files.",
     )
     parser.add_argument(
