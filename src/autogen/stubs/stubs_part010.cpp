@@ -1955,14 +1955,6 @@ undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventViewportEdgeAutoScroll_Impl
-// ghidra_proto void __cdecl HandleTurnEventViewportEdgeAutoScroll_Impl(void)
-// FUNCTION: IMPERIALISM 0x00486990
-undefined4 HandleTurnEventViewportEdgeAutoScroll_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_AllocateAndLinkBlockHead_At004869b0
 // ghidra_proto void __fastcall Helper_Uses_AllocateAndLinkBlockHead_At004869b0(int ecxArg, int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004869b0
@@ -2955,14 +2947,6 @@ undefined4 CreateTCountingStreamWithAllocFallback(void)
   return 0;
 }
 
-// ghidra_name DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl
-// ghidra_proto void __cdecl DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
-// FUNCTION: IMPERIALISM 0x00489490
-undefined4 DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanTiny_GetDwordEcxOffset_4_004894b0
 // ghidra_proto int __cdecl OrphanTiny_GetDwordEcxOffset_4_004894b0(void)
 // FUNCTION: IMPERIALISM 0x004894b0
@@ -3071,14 +3055,6 @@ undefined4 WrapperFor_MoveMemoryOverlapSafe_At004897a0(void)
 // ghidra_proto void __cdecl WrapperFor_MoveMemoryOverlapSafe_At00489810(void)
 // FUNCTION: IMPERIALISM 0x00489810
 undefined4 WrapperFor_MoveMemoryOverlapSafe_At00489810(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_00489980
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_00489980(void)
-// FUNCTION: IMPERIALISM 0x00489980
-undefined4 OrphanLeaf_NoCall_Ins02_00489980(void)
 {
   return 0;
 }

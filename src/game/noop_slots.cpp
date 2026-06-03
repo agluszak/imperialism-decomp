@@ -1235,3 +1235,106 @@ bool ReturnTrueRuntimeCredentialInitStub(void) {
 bool ReturnTrueRuntimeCredentialFinalizeStub(void) {
   return true;
 }
+
+// --- More trivial stubs found by scanning autogen bodies (beyond the Stub/NoOp
+//     names): bare ret / ret N, plus 8-bit (bool) and 16-bit (short) zero returns. ---
+
+// FUNCTION: IMPERIALISM 0x00415030
+void __stdcall ExecuteNoOpNewGameCommand(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00486990
+void __stdcall HandleTurnEventViewportEdgeAutoScroll_Impl(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00489490
+void DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00489980
+bool __stdcall OrphanLeaf_NoCall_Ins02_00489980(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00498c60
+void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00498c80
+void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b50e0
+unsigned short OrphanLeaf_NoCall_Ins02_004b50e0(void) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d20c0
+void NoOpCivilianMapInteractionManagerVirtualHook(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d4bd0
+void __stdcall DiscardTileTokenArgumentAndReturn(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7ee0
+unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7ee0(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f00
+unsigned short OrphanLeaf_NoCall_Ins02_004d7f00(void) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f20
+unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f20(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f40
+unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f40(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7fc0
+bool __stdcall OrphanLeaf_NoCall_Ins02_004d7fc0(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0400
+bool OrphanLeaf_NoCall_Ins02_004e0400(void) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005966e0
+bool __stdcall OrphanLeaf_NoCall_Ins02_005966e0(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0059adb0
+void __stdcall TArmyTacUnit_VtblSlot00(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005aec80
+void InitializeCityProductionState_Impl_At005aec80(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005e3490
+bool __stdcall DefaultUnhandledTurnEventHookReturnsFalse(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00607bda
+void TMacViewMgr_Slot22_Target(void) {
+  return;
+}

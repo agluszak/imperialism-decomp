@@ -1739,14 +1739,6 @@ undefined4 WrapperFor_DestructCPtrListBaseState_At005aec30(void)
   return 0;
 }
 
-// ghidra_name InitializeCityProductionState_Impl_At005aec80
-// ghidra_proto void __cdecl InitializeCityProductionState_Impl_At005aec80(void)
-// FUNCTION: IMPERIALISM 0x005aec80
-undefined4 InitializeCityProductionState_Impl_At005aec80(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchCityProductionQueueCommand
 // ghidra_proto void __thiscall DispatchCityProductionQueueCommand(void * pCommandQueue)
 // FUNCTION: IMPERIALISM 0x005aeca0

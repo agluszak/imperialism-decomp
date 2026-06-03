@@ -2755,22 +2755,6 @@ undefined4 WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0(void)
   return 0;
 }
 
-// ghidra_name RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl
-// ghidra_proto void __cdecl RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void)
-// FUNCTION: IMPERIALISM 0x00498c60
-undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80
-// ghidra_proto void __cdecl RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
-// FUNCTION: IMPERIALISM 0x00498c80
-undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowDialogTemplateE0ModalAndReleaseCapture
 // ghidra_proto void __cdecl ShowDialogTemplateE0ModalAndReleaseCapture(void)
 // FUNCTION: IMPERIALISM 0x00498cc0

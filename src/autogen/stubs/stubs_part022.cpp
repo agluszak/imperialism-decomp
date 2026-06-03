@@ -299,14 +299,6 @@ undefined4 DetachWindowHandleFromMap(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot22_Target
-// ghidra_proto void __cdecl TMacViewMgr_Slot22_Target(void)
-// FUNCTION: IMPERIALISM 0x00607bda
-undefined4 TMacViewMgr_Slot22_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name AfxWndProc
 // ghidra_proto void __cdecl AfxWndProc(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00607bdb
