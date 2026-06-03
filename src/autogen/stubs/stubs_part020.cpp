@@ -2507,14 +2507,6 @@ undefined4 DefaultUnhandledTurnEventHookReturnsFalse(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueRuntimeCredentialInitStub
-// ghidra_proto void __cdecl ReturnTrueRuntimeCredentialInitStub(void)
-// FUNCTION: IMPERIALISM 0x005e34b0
-undefined4 ReturnTrueRuntimeCredentialInitStub(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetRuntimeSelectionRecordBufferAndReturnTrue
 // ghidra_proto void __cdecl ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
 // FUNCTION: IMPERIALISM 0x005e34d0
@@ -2551,14 +2543,6 @@ undefined4 OpenRuntimeSelectionSourceByIndexAndCopyPath(void)
 // ghidra_proto void __cdecl OpenRuntimeSelectionSourceAndApplyActiveNationState(void)
 // FUNCTION: IMPERIALISM 0x005e3ad0
 undefined4 OpenRuntimeSelectionSourceAndApplyActiveNationState(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueRuntimeCredentialFinalizeStub
-// ghidra_proto void __cdecl ReturnTrueRuntimeCredentialFinalizeStub(void)
-// FUNCTION: IMPERIALISM 0x005e3c00
-undefined4 ReturnTrueRuntimeCredentialFinalizeStub(void)
 {
   return 0;
 }

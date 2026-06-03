@@ -723,46 +723,6 @@ undefined4 ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForZoneCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForZoneCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x0055e820
-undefined4 ReturnTrueForZoneCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForZoneCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForZoneCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x0055e840
-undefined4 ReturnFalseForZoneCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForZoneCapabilityFlagC
-// ghidra_proto bool __stdcall ReturnFalseForZoneCapabilityFlagC(void)
-// FUNCTION: IMPERIALISM 0x0055e860
-undefined4 ReturnFalseForZoneCapabilityFlagC(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForZoneCapabilityFlagD
-// ghidra_proto bool __stdcall ReturnFalseForZoneCapabilityFlagD(void)
-// FUNCTION: IMPERIALISM 0x0055e880
-undefined4 ReturnFalseForZoneCapabilityFlagD(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForZoneCapabilityFlagE
-// ghidra_proto bool __stdcall ReturnFalseForZoneCapabilityFlagE(void)
-// FUNCTION: IMPERIALISM 0x0055e8a0
-undefined4 ReturnFalseForZoneCapabilityFlagE(void)
-{
-  return 0;
-}
-
 // ghidra_name TZone::HasZoneActiveChildCount
 // ghidra_proto bool __thiscall HasZoneActiveChildCount(void)
 // FUNCTION: IMPERIALISM 0x0055e8c0
@@ -1079,30 +1039,6 @@ undefined4 HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(void)
 // ghidra_proto TPortZone * __cdecl CreateTPortZone(void)
 // FUNCTION: IMPERIALISM 0x005615e0
 undefined4 CreateTPortZone(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForPortZoneCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForPortZoneCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x00561660
-undefined4 ReturnTrueForPortZoneCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForPortZoneCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnTrueForPortZoneCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x00561680
-undefined4 ReturnTrueForPortZoneCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForPortZoneCapabilityFlagC
-// ghidra_proto bool __stdcall ReturnFalseForPortZoneCapabilityFlagC(void)
-// FUNCTION: IMPERIALISM 0x005616a0
-undefined4 ReturnFalseForPortZoneCapabilityFlagC(void)
 {
   return 0;
 }
