@@ -509,6 +509,7 @@ address|target_cpp|ownership|note
 5e6d4e|src/game/CArchive.cpp|manual|marker_sync
 5e6da3|src/game/CArchive.cpp|manual|marker_sync
 5e6dd6|src/game/CArchive.cpp|manual|marker_sync
+611d26|src/game/CArchive.cpp|manual|marker_sync
 611f3e|src/game/CArchive.cpp|manual|marker_sync
 601b74|src/game/CPtrList.cpp|manual|marker_sync
 601b94|src/game/CPtrList.cpp|manual|marker_sync

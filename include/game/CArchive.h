@@ -25,4 +25,5 @@ struct CArchive {
   void FillBuffer(unsigned int requiredBytes);
   CArchive* ReadWordFromSerializedBuffer(void* outWord);
   CArchive* ReadDwordFromSerializedBuffer(void* outDword);
+  int ReadBytesFromSerializedBuffer(void* destination, unsigned int requestedCount);
 };

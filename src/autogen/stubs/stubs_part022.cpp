@@ -1811,14 +1811,6 @@ undefined4 FlushSerializedArchiveBufferAndResetStreamCount(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::ReadBytesFromSerializedBuffer
-// ghidra_proto int __thiscall ReadBytesFromSerializedBuffer(void * destination, uint requestedCount)
-// FUNCTION: IMPERIALISM 0x00611d26
-undefined4 ReadBytesFromSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name Flush
 // ghidra_proto void __fastcall Flush(void * streamState)
 // FUNCTION: IMPERIALISM 0x00611ec4

@@ -149,3 +149,67 @@ CArchive* CArchive::ReadDwordFromSerializedBuffer(void* outDword) {
   m_lpBufCur += 4;
   return this;
 }
+
+// FUNCTION: IMPERIALISM 0x00611d26
+int CArchive::ReadBytesFromSerializedBuffer(void* destination, unsigned int requestedCount) {
+  unsigned int remaining;
+  if (requestedCount == 0) {
+    return 0;
+  }
+
+  unsigned int fromBuffer = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);
+  if (requestedCount < fromBuffer) {
+    fromBuffer = requestedCount;
+  }
+  CopyMemory(destination, m_lpBufCur, fromBuffer);
+  m_lpBufCur += fromBuffer;
+  destination = reinterpret_cast<char*>(destination) + fromBuffer;
+  remaining = requestedCount - fromBuffer;
+  if (remaining != 0) {
+    int fullChunk = remaining - remaining % m_nBufSize;
+    int directDone = 0;
+    int room = fullChunk;
+    do {
+      int got = VCall_CFile_ReadBytesSlot3C(m_pFile, destination, room);
+      destination = reinterpret_cast<char*>(destination) + got;
+      directDone += got;
+      room -= got;
+      if (got == 0) {
+        break;
+      }
+    } while (room != 0);
+    remaining -= directDone;
+    if (directDone == fullChunk) {
+      if (m_bDirect == 0) {
+        unsigned int want = remaining;
+        if (want <= static_cast<unsigned int>(m_nBufSize)) {
+          want = m_nBufSize;
+        }
+        unsigned char* cur = m_lpBufStart;
+        unsigned int filled = 0;
+        do {
+          int got = VCall_CFile_ReadBytesSlot3C(m_pFile, cur, want);
+          cur += got;
+          want -= got;
+          filled += got;
+          if (got == 0 || want == 0) {
+            break;
+          }
+        } while (filled < remaining);
+        m_lpBufCur = m_lpBufStart;
+        m_lpBufMax = m_lpBufStart + filled;
+      } else {
+        VCall_CFile_GetBufferPtrSlot58(m_pFile, 0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+        m_lpBufCur = m_lpBufStart;
+      }
+      unsigned int chunk = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);
+      if (remaining < chunk) {
+        chunk = remaining;
+      }
+      CopyMemory(destination, m_lpBufStart, chunk);
+      m_lpBufCur += chunk;
+      remaining -= chunk;
+    }
+  }
+  return requestedCount - remaining;
+}

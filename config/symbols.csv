@@ -11249,7 +11249,7 @@ address|name|size|type|prototype
 611c90|CDocument::ReleaseSerializedArchiveBufferState|70|function|void __thiscall ReleaseSerializedArchiveBufferState(void)
 611cd6|Abort_611cd6|66|function|void __thiscall Abort_611cd6(void)
 611d18|TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount|14|function|void __thiscall FlushSerializedArchiveBufferAndResetStreamCount(void)
-611d26|TNetMgr::ReadBytesFromSerializedBuffer|270|function|int __thiscall ReadBytesFromSerializedBuffer(void * destination, uint requestedCount)
+611d26|CArchive::ReadBytesFromSerializedBuffer|270|function|int __thiscall ReadBytesFromSerializedBuffer(void * destination, uint requestedCount)
 611e34|TNetMgr::WriteBytesToSerializedBuffer|144|function|void __thiscall WriteBytesToSerializedBuffer(void * source, uint byteCount)
 611ec4|Flush|122|function|void __fastcall Flush(void * streamState)
 611f3e|CArchive::FillBuffer|194|function|void __thiscall FillBuffer(uint requiredBytes)
