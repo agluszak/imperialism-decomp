@@ -100,6 +100,7 @@ address|target_cpp|ownership|note
 412c10|src/game/noop_slots.cpp|manual|marker_sync
 4136c0|src/game/noop_slots.cpp|manual|marker_sync
 414770|src/game/noop_slots.cpp|manual|marker_sync
+415030|src/game/noop_slots.cpp|manual|marker_sync
 426f80|src/game/noop_slots.cpp|manual|marker_sync
 430550|src/game/noop_slots.cpp|manual|marker_sync
 4305c0|src/game/noop_slots.cpp|manual|marker_sync
@@ -129,6 +130,7 @@ address|target_cpp|ownership|note
 486300|src/game/noop_slots.cpp|manual|marker_sync
 486530|src/game/noop_slots.cpp|manual|marker_sync
 486550|src/game/noop_slots.cpp|manual|marker_sync
+486990|src/game/noop_slots.cpp|manual|marker_sync
 4872e0|src/game/noop_slots.cpp|manual|marker_sync
 487a00|src/game/noop_slots.cpp|manual|marker_sync
 487a90|src/game/TSortedList.cpp|manual|marker_sync
@@ -162,11 +164,13 @@ address|target_cpp|ownership|note
 489410|src/game/TCountingStream.cpp|manual|marker_sync
 489440|src/game/TCountingStream.cpp|manual|marker_sync
 489470|src/game/TCountingStream.cpp|manual|marker_sync
+489490|src/game/noop_slots.cpp|manual|marker_sync
 489550|src/game/THandleStream.cpp|manual|marker_sync
 4895c0|src/game/THandleStream.cpp|manual|marker_sync
 4895e0|src/game/THandleStream.cpp|manual|marker_sync
 489610|src/game/THandleStream.cpp|manual|marker_sync
 489640|src/game/THandleStream.cpp|manual|marker_sync
+489980|src/game/noop_slots.cpp|manual|marker_sync
 4899a0|src/game/noop_slots.cpp|manual|marker_sync
 48a650|src/game/noop_slots.cpp|manual|marker_sync
 48a690|src/game/noop_slots.cpp|manual|marker_sync
@@ -184,6 +188,8 @@ address|target_cpp|ownership|note
 4972e0|src/game/noop_slots.cpp|manual|marker_sync
 497320|src/game/trade_screen.cpp|manual|marker_sync
 497390|src/game/trade_screen.cpp|manual|marker_sync
+498c60|src/game/noop_slots.cpp|manual|marker_sync
+498c80|src/game/noop_slots.cpp|manual|marker_sync
 498ca0|src/game/noop_slots.cpp|manual|marker_sync
 49bfb0|src/game/noop_slots.cpp|manual|marker_sync
 49e660|src/game/noop_slots.cpp|manual|marker_sync
@@ -197,6 +203,7 @@ address|target_cpp|ownership|note
 4b1410|src/game/noop_slots.cpp|manual|marker_sync
 4b1990|src/game/noop_slots.cpp|manual|marker_sync
 4b4210|src/game/noop_slots.cpp|manual|marker_sync
+4b50e0|src/game/noop_slots.cpp|manual|marker_sync
 4b5140|src/game/noop_slots.cpp|manual|marker_sync
 4b5160|src/game/noop_slots.cpp|manual|marker_sync
 4b6f00|src/game/noop_slots.cpp|manual|marker_sync
@@ -219,6 +226,8 @@ address|target_cpp|ownership|note
 4c6fb0|src/game/noop_slots.cpp|manual|marker_sync
 4c6fd0|src/game/noop_slots.cpp|manual|marker_sync
 4cc470|src/game/noop_slots.cpp|manual|marker_sync
+4d20c0|src/game/noop_slots.cpp|manual|marker_sync
+4d4bd0|src/game/noop_slots.cpp|manual|marker_sync
 4d6730|src/game/noop_slots.cpp|manual|marker_sync
 4d6750|src/game/noop_slots.cpp|manual|marker_sync
 4d6770|src/game/noop_slots.cpp|manual|marker_sync
@@ -226,9 +235,14 @@ address|target_cpp|ownership|note
 4d7ae0|src/game/TGreatPower.cpp|manual|marker_sync
 4d7b00|src/game/noop_slots.cpp|manual|marker_sync
 4d7e90|src/game/noop_slots.cpp|manual|marker_sync
+4d7ee0|src/game/noop_slots.cpp|manual|marker_sync
+4d7f00|src/game/noop_slots.cpp|manual|marker_sync
+4d7f20|src/game/noop_slots.cpp|manual|marker_sync
+4d7f40|src/game/noop_slots.cpp|manual|marker_sync
 4d7f60|src/game/noop_slots.cpp|manual|marker_sync
 4d7f80|src/game/noop_slots.cpp|manual|marker_sync
 4d7fa0|src/game/noop_slots.cpp|manual|marker_sync
+4d7fc0|src/game/noop_slots.cpp|manual|marker_sync
 4d7fe0|src/game/noop_slots.cpp|manual|marker_sync
 4d8950|src/game/TGreatPower.cpp|manual|marker_sync
 4d89d0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -291,6 +305,7 @@ address|target_cpp|ownership|note
 4e00d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0140|src/game/TGreatPower.cpp|manual|marker_sync
 4e01b0|src/game/TGreatPower.cpp|manual|marker_sync
+4e0400|src/game/noop_slots.cpp|manual|marker_sync
 4e1d50|src/game/TGreatPower.cpp|manual|marker_sync
 4e22b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e2330|src/game/TGreatPower.cpp|manual|marker_sync
@@ -711,15 +726,18 @@ address|target_cpp|ownership|note
 596680|src/game/noop_slots.cpp|manual|marker_sync
 5966a0|src/game/noop_slots.cpp|manual|marker_sync
 5966c0|src/game/noop_slots.cpp|manual|marker_sync
+5966e0|src/game/noop_slots.cpp|manual|marker_sync
 59a180|src/game/trade_screen.cpp|manual|marker_sync
 59ad70|src/game/noop_slots.cpp|manual|marker_sync
 59ad90|src/game/noop_slots.cpp|manual|marker_sync
+59adb0|src/game/noop_slots.cpp|manual|marker_sync
 59add0|src/game/noop_slots.cpp|manual|marker_sync
 59ae10|src/game/noop_slots.cpp|manual|marker_sync
 59f710|src/game/noop_slots.cpp|manual|marker_sync
 5a83c0|src/game/noop_slots.cpp|manual|marker_sync
 5ad0d0|src/game/noop_slots.cpp|manual|marker_sync
 5ad0f0|src/game/noop_slots.cpp|manual|marker_sync
+5aec80|src/game/noop_slots.cpp|manual|marker_sync
 5b2860|src/game/noop_slots.cpp|manual|marker_sync
 5c2470|src/game/noop_slots.cpp|manual|marker_sync
 5c2530|src/game/TGreatPower.cpp|manual|marker_sync
@@ -736,6 +754,7 @@ address|target_cpp|ownership|note
 5e2b70|src/game/noop_slots.cpp|manual|marker_sync
 5e33c0|src/game/CArchive.cpp|manual|marker_sync
 5e3450|src/game/noop_slots.cpp|manual|marker_sync
+5e3490|src/game/noop_slots.cpp|manual|marker_sync
 5e34b0|src/game/noop_slots.cpp|manual|marker_sync
 5e3c00|src/game/noop_slots.cpp|manual|marker_sync
 5e42a0|src/game/noop_slots.cpp|manual|marker_sync
@@ -800,6 +819,7 @@ address|target_cpp|ownership|note
 606fc0|src/game/list_utils.cpp|manual|marker_sync
 606fd2|src/game/list_utils.cpp|manual|marker_sync
 607077|src/game/list_utils.cpp|manual|marker_sync
+607bda|src/game/noop_slots.cpp|manual|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 610a5f|src/game/CDocument.cpp|manual|marker_sync
 610c08|src/game/noop_slots.cpp|manual|marker_sync

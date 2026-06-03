@@ -2499,14 +2499,6 @@ undefined4 ReleaseObjectIfNonNullViaVslot04(void)
   return 0;
 }
 
-// ghidra_name DefaultUnhandledTurnEventHookReturnsFalse
-// ghidra_proto void __cdecl DefaultUnhandledTurnEventHookReturnsFalse(void)
-// FUNCTION: IMPERIALISM 0x005e3490
-undefined4 DefaultUnhandledTurnEventHookReturnsFalse(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetRuntimeSelectionRecordBufferAndReturnTrue
 // ghidra_proto void __cdecl ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
 // FUNCTION: IMPERIALISM 0x005e34d0

@@ -2747,14 +2747,6 @@ undefined4 HandleMapClickByInteractionMode(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins02_005966e0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_005966e0(void)
-// FUNCTION: IMPERIALISM 0x005966e0
-undefined4 OrphanLeaf_NoCall_Ins02_005966e0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C6_I29_00596700
 // ghidra_proto void __cdecl OrphanCallChain_C6_I29_00596700(void)
 // FUNCTION: IMPERIALISM 0x00596700
@@ -3175,14 +3167,6 @@ undefined4 OrphanCallChain_C5_I103_0059a920(void)
 // ghidra_proto void __cdecl WrapperFor_ftol_At0059acf0(void)
 // FUNCTION: IMPERIALISM 0x0059acf0
 undefined4 WrapperFor_ftol_At0059acf0(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit_VtblSlot00
-// ghidra_proto void __cdecl TArmyTacUnit_VtblSlot00(void)
-// FUNCTION: IMPERIALISM 0x0059adb0
-undefined4 TArmyTacUnit_VtblSlot00(void)
 {
   return 0;
 }

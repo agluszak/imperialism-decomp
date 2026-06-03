@@ -2405,3 +2405,17 @@ Cumulative this session: 235 functions to 100% — 3 CArchive ports (CheckCount 
 real method, Close, GetTNetMgrClassNamePointer) plus 232 trivial stubs across three
 `noop_slots.cpp` batches (49 empty no-ops, 131 empty/return-0 stubs, 52 const-bool).
 aligned/original 1.18% → 2.99%.
+
+### Autogen-body trivial sweep — 20 more to 100% (2026-06-04)
+
+Broadened past name patterns by scanning `src/ghidra_autogen/*.cpp` for functions
+whose decompiled body is a lone `return;`/`return <const>;`. That over-counts
+(Ghidra renders terse getters the same way), so I re-classified each free candidate
+by its real epilogue via reccmp and kept only the genuinely-trivial 20: bare `ret`
+/`ret N`, plus **8-bit (`bool`)** and **16-bit (`unsigned short`)** zero returns —
+`xor ax,ax` needs a `short`-width return type, `xor al,al` a `bool`. All 20 **100%**,
+`just vtable-gate` passed. The 5 known thunk-referenced conflicts were re-excluded
+automatically. After this, the trivial-empty/const-return vein is largely exhausted;
+remaining trivial-looking autogen bodies are real getters (`mov eax,[ecx+..]`),
+pointer/float-constant returns (`mov eax,<offset>` / `fld [g_..]`), or identity
+(`mov eax,ecx`) — separate veins.

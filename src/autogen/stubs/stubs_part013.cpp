@@ -1899,14 +1899,6 @@ undefined4 InitializeCivilianMapInteractionManagerBaseVtable(void)
   return 0;
 }
 
-// ghidra_name NoOpCivilianMapInteractionManagerVirtualHook
-// ghidra_proto void __thiscall NoOpCivilianMapInteractionManagerVirtualHook(void)
-// FUNCTION: IMPERIALISM 0x004d20c0
-undefined4 NoOpCivilianMapInteractionManagerVirtualHook(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearCivilianSelectionHighlightsForNation
 // ghidra_proto void __cdecl ClearCivilianSelectionHighlightsForNation(void)
 // FUNCTION: IMPERIALISM 0x004d20e0
@@ -2103,14 +2095,6 @@ undefined4 HandleMapHotkeyW_ResetSelectedActionableObjects(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins15_004d4b90(void)
 // FUNCTION: IMPERIALISM 0x004d4b90
 undefined4 OrphanLeaf_NoCall_Ins15_004d4b90(void)
-{
-  return 0;
-}
-
-// ghidra_name DiscardTileTokenArgumentAndReturn
-// ghidra_proto void __cdecl DiscardTileTokenArgumentAndReturn(int tileToken)
-// FUNCTION: IMPERIALISM 0x004d4bd0
-undefined4 DiscardTileTokenArgumentAndReturn(void)
 {
   return 0;
 }
@@ -2535,46 +2519,6 @@ undefined4 SetNationPercentFieldByModeAndDescriptorLinks(void)
 // ghidra_proto void __thiscall GenerateMappedFlavorTextByNationSlotField0C(int arg1)
 // FUNCTION: IMPERIALISM 0x004d7eb0
 undefined4 GenerateMappedFlavorTextByNationSlotField0C(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004d7ee0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7ee0(void)
-// FUNCTION: IMPERIALISM 0x004d7ee0
-undefined4 OrphanLeaf_NoCall_Ins02_004d7ee0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004d7f00
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7f00(void)
-// FUNCTION: IMPERIALISM 0x004d7f00
-undefined4 OrphanLeaf_NoCall_Ins02_004d7f00(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004d7f20
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7f20(void)
-// FUNCTION: IMPERIALISM 0x004d7f20
-undefined4 OrphanLeaf_NoCall_Ins02_004d7f20(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004d7f40
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7f40(void)
-// FUNCTION: IMPERIALISM 0x004d7f40
-undefined4 OrphanLeaf_NoCall_Ins02_004d7f40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004d7fc0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7fc0(void)
-// FUNCTION: IMPERIALISM 0x004d7fc0
-undefined4 OrphanLeaf_NoCall_Ins02_004d7fc0(void)
 {
   return 0;
 }
@@ -3175,14 +3119,6 @@ undefined4 OrphanCallChain_C2_I10_004e03a0(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_004e03d0(void)
 // FUNCTION: IMPERIALISM 0x004e03d0
 undefined4 OrphanLeaf_NoCall_Ins09_004e03d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004e0400
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004e0400(void)
-// FUNCTION: IMPERIALISM 0x004e0400
-undefined4 OrphanLeaf_NoCall_Ins02_004e0400(void)
 {
   return 0;
 }

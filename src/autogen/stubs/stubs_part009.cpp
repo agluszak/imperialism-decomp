@@ -1995,14 +1995,6 @@ undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000(void)
   return 0;
 }
 
-// ghidra_name ExecuteNoOpNewGameCommand
-// ghidra_proto void __thiscall ExecuteNoOpNewGameCommand(void)
-// FUNCTION: IMPERIALISM 0x00415030
-undefined4 ExecuteNoOpNewGameCommand(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I05_00415050
 // ghidra_proto void __cdecl OrphanCallChain_C1_I05_00415050(void)
 // FUNCTION: IMPERIALISM 0x00415050

@@ -2723,14 +2723,6 @@ undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins02_004b50e0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004b50e0(void)
-// FUNCTION: IMPERIALISM 0x004b50e0
-undefined4 OrphanLeaf_NoCall_Ins02_004b50e0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I16_004b5100
 // ghidra_proto int __cdecl OrphanCallChain_C1_I16_004b5100(void)
 // FUNCTION: IMPERIALISM 0x004b5100
