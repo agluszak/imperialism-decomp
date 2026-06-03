@@ -3043,14 +3043,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::InitHashTable
-// ghidra_proto void __thiscall InitHashTable(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006033dd
-undefined4 InitHashTable(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveAll_603423
 // ghidra_proto void __fastcall RemoveAll_603423(void)
 // FUNCTION: IMPERIALISM 0x00603423
@@ -3059,26 +3051,10 @@ undefined4 RemoveAll_603423(void)
   return 0;
 }
 
-// ghidra_name NewAssoc
-// ghidra_proto void * __cdecl NewAssoc(void)
-// FUNCTION: IMPERIALISM 0x00603481
-undefined4 NewAssoc(void)
-{
-  return 0;
-}
-
 // ghidra_name FreeAssoc
 // ghidra_proto void __cdecl FreeAssoc(void)
 // FUNCTION: IMPERIALISM 0x006034cb
 undefined4 FreeAssoc(void)
-{
-  return 0;
-}
-
-// ghidra_name GetAssocAt
-// ghidra_proto void __stdcall GetAssocAt(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x006034e4
-undefined4 GetAssocAt(void)
 {
   return 0;
 }
@@ -3095,14 +3071,6 @@ undefined4 GetValueAt(void)
 // ghidra_proto void __stdcall TryGetHandleMapEntryValueByKey(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00603549
 undefined4 TryGetHandleMapEntryValueByKey(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::GetOrCreateHandleMapEntryValueByKey
-// ghidra_proto int * __thiscall GetOrCreateHandleMapEntryValueByKey(void)
-// FUNCTION: IMPERIALISM 0x0060356b
-undefined4 GetOrCreateHandleMapEntryValueByKey(void)
 {
   return 0;
 }

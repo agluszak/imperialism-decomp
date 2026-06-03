@@ -2419,3 +2419,34 @@ automatically. After this, the trivial-empty/const-return vein is largely exhaus
 remaining trivial-looking autogen bodies are real getters (`mov eax,[ecx+..]`),
 pointer/float-constant returns (`mov eax,<offset>` / `fld [g_..]`), or identity
 (`mov eax,ecx`) — separate veins.
+
+### CMapPtrToPtr class recovery + CArchive::WriteObject keystone (2026-06-04)
+
+Ghidra archaeology on the CArchive object-serialization cluster. The autogen
+modeled the embedded object map under the provisional "TNetMgr"; it is MFC's
+**CMapPtrToPtr** (the CArchive store map, CObject* -> handle index). Recovered it
+as a real class (`include/game/CMapPtrToPtr.h` + `src/game/CMapPtrToPtr.cpp`,
+favor-size `optimize("ys")`), with 4 methods as real thiscall members — all
+**100%**:
+- `0x006033dd` InitHashTable — needed `call memset` (project's 0x5e9a90), not the
+  favor-size rep-stosd intrinsic; use the repo memset thunk + typed callsite cast.
+- `0x006034e4` GetAssocAt (hash `(key>>4) % size`, bucket walk)
+- `0x00603481` NewAssoc (CPlex block grow via AllocateAndLinkBlockHead + freelist)
+- `0x0060356b` GetOrCreateValueSlot (operator[] insert path)
+
+Layout: `+4` m_pHashTable, `+8` m_nHashTableSize, `+0xc` m_nCount, `+0x10`
+m_pFreeList, `+0x14` m_pBlocks, `+0x18` m_nBlockSize; CAssoc{next,key,value}=12B.
+
+KEY LESSON: these map methods are dead-code-eliminated unless a live caller exists
+(all their callers were stubs). The unlock was porting **CArchive::WriteObject**
+(`0x006121e1`, vtable-live), which references GetOrCreateValueSlot -> the whole
+chain links and pairs. Added `m_pStoreMap` (CMapPtrToPtr*) at CArchive +0x34, and
+two object-virtual facades (CObject GetRuntimeClass slot0, Serialize slot8). Owned
+`MapObject` (0x612315) and `WriteClass` (0x61240d) as CArchive methods with
+pending bodies so WriteObject links/pairs.
+
+WriteObject itself is at **51%** (deliberately not chased): structure + all call
+pairings (MapObject, GetOrCreate x2, WriteClass, CheckCount, the two virtuals) are
+correct; remaining diffs are facade `xor edx,edx` (edx_mode=zero should be none),
+the object vtable not cached in one register, and the `objectRef==0` branch reusing
+the arg register vs a separate epilogue.

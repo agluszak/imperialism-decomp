@@ -69,6 +69,7 @@ add_executable(Imperialism
     src/game/THandleStream.cpp
     src/game/CDocument.cpp
     src/game/CArchive.cpp
+    src/game/CMapPtrToPtr.cpp
     src/game/CObject.cpp
     src/game/CPtrArray.cpp
     src/game/CPtrList.cpp

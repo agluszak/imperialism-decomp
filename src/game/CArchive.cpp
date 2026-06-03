@@ -1,5 +1,6 @@
 #include "game/CArchive.h"
 
+#include "game/CMapPtrToPtr.h"
 #include "game/generated/vcall_facades.h"
 
 // MFC CArchive code was compiled favor-size in the original.
@@ -113,15 +114,49 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
 
 // FUNCTION: IMPERIALISM 0x006121e1
 void CArchive::WriteObject(void* objectRef) {
-  (void)objectRef;
-  // TODO(port): handle-map polymorphic write.
+  MapObject(0);
+  unsigned int nIndex;
+  if (objectRef == 0) {
+    nIndex = 0;
+  } else {
+    nIndex = *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(objectRef));
+    if (nIndex == 0) {
+      // First time this object is seen: emit its class, then serialize it.
+      void* runtimeClass = VCall_CObject_GetRuntimeClassSlot0(objectRef);
+      WriteClass(runtimeClass);
+      CheckCount();
+      *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(objectRef)) = m_nMapCount;
+      m_nMapCount = m_nMapCount + 1;
+      VCall_CObject_SerializeSlot8(objectRef, this);
+      return;
+    }
+    if (nIndex > 0x7ffe) {
+      WriteWordToSerializedBuffer(0x7fff);
+      WriteDwordToSerializedBuffer(nIndex);
+      return;
+    }
+  }
+  WriteWordToSerializedBuffer(static_cast<unsigned short>(nIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x0061225e
 void* CArchive::ReadObject(void* runtimeClassOrFactory) {
   (void)runtimeClassOrFactory;
-  // TODO(port): handle-map polymorphic read.
+  // TODO(port): handle-map polymorphic read (NodeScanner::ReadClass + load array).
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00612315
+void CArchive::MapObject(void* referenceNode) {
+  (void)referenceNode;
+  // TODO(port): SEH-framed lazy alloc of m_pStoreMap (write) / load CObArray
+  // (read) and reference registration. Owned here so WriteObject links/pairs.
+}
+
+// FUNCTION: IMPERIALISM 0x0061240d
+void CArchive::WriteClass(void* runtimeClass) {
+  (void)runtimeClass;
+  // TODO(port): serialize the class token via the store map.
 }
 
 // Guards object-map counter growth; raises archive exception 5 once the counter
