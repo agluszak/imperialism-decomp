@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 #include "game/RefCountedObjectBase.h"
 #include "game/CPtrList.h"
@@ -12,4 +13,4 @@ struct TPtrList : public RefCountedObjectBase {
   void* DestructTPtrListAndMaybeFree(byte freeSelfFlag, int unused1, int unused2);
 };
 
-typedef char TPtrListSizeMustMatch[(sizeof(TPtrList) == 0x20) ? 1 : -1];
+ASSERT_SIZE(TPtrList, 0x20);

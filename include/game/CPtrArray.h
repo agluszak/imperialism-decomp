@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 #include "game/CObject.h"
 
@@ -21,4 +22,4 @@ class CPtrArray : public CObject {
   void RemoveAt(int nIndex, int nCount = 1);
 };
 
-typedef char CPtrArraySizeMustMatch[(sizeof(CPtrArray) == 0x14) ? 1 : -1];
+ASSERT_SIZE(CPtrArray, 0x14);

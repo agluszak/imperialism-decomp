@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 #include "game/CObject.h"
 
@@ -42,4 +43,4 @@ class CPtrList : public CObject {
   CPtrListNode* Find(void* value, CPtrListNode* startAfter = 0);
 };
 
-typedef char CPtrListSizeMustMatch[(sizeof(CPtrList) == 0x1c) ? 1 : -1];
+ASSERT_SIZE(CPtrList, 0x1c);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TPtrList.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -20,4 +21,4 @@ struct TList : public TPtrList {
   static void* GetTListClassNamePointer();
 };
 
-typedef char TListSizeMustMatch[(sizeof(TList) == 0x20) ? 1 : -1];
+ASSERT_SIZE(TList, 0x20);

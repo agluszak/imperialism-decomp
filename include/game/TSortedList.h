@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TPtrList.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -20,4 +21,4 @@ struct TSortedList : public TPtrList {
   static void* GetTSortedListClassNamePointer();
 };
 
-typedef char TSortedListSizeMustMatch[(sizeof(TSortedList) == 0x20) ? 1 : -1];
+ASSERT_SIZE(TSortedList, 0x20);

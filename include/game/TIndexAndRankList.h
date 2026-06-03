@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/CPtrArray.h"
 
 // VTABLE: IMPERIALISM 0x00672eac
@@ -23,4 +24,4 @@ class TIndexAndRankList : public CPtrArray {
   virtual void ShrinkCapacitySlot28();
 };
 
-typedef char TIndexAndRankListSizeMustMatch[(sizeof(TIndexAndRankList) == 0x14) ? 1 : -1];
+ASSERT_SIZE(TIndexAndRankList, 0x14);

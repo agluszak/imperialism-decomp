@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TView.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -40,4 +41,4 @@ public:
   void HandleTextListScrollSelectionChange(int* pScrollData);
 };
 
-typedef char TTextListSizeMustMatch[(sizeof(TTextList) == 0x1070) ? 1 : -1];
+ASSERT_SIZE(TTextList, 0x1070);

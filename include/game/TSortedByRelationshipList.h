@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TSortedPtrList.h"
 
 extern "C" char g_vtblTSortedByRelationshipList;
@@ -18,5 +19,4 @@ class TSortedByRelationshipList : public TSortedPtrList {
   void* DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag);
 };
 
-typedef char TSortedByRelationshipListSizeMustMatch[
-    (sizeof(TSortedByRelationshipList) == 0x18) ? 1 : -1];
+ASSERT_SIZE(TSortedByRelationshipList, 0x18);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TIndexAndRankList.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -27,4 +28,4 @@ class TSortByPriceList : public TIndexAndRankList {
   TSortByPriceList* ConstructTSortByPriceList();
 };
 
-typedef char TSortByPriceListSizeMustMatch[(sizeof(TSortByPriceList) == 0x18) ? 1 : -1];
+ASSERT_SIZE(TSortByPriceList, 0x18);

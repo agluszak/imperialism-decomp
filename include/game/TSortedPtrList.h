@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TIndexAndRankList.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -26,7 +27,7 @@ class TSortedPtrList : public TIndexAndRankList {
   void* GetPtrListEntryByOneBasedIndex(int oneBasedIndex);
 };
 
-typedef char TSortedPtrListSizeMustMatch[(sizeof(TSortedPtrList) == 0x18) ? 1 : -1];
+ASSERT_SIZE(TSortedPtrList, 0x18);
 
 void* __fastcall GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int unusedEdx,
                                                 int oneBasedIndex);
