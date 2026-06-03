@@ -1,5 +1,118 @@
 # Worklog
 
+## 2026-06-03
+
+### TStream family — TFileStream byte wrappers + THandleStream extent advance
+
+Depth pass on the stream serialization cluster. Ported three previously-stubbed
+functions out of `src/autogen/stubs` into `src/game/stream.cpp` (markers added,
+`just sync-ownership` → `just regen-stubs` → `just build`):
+
+- `TFileStream::ReadBytesFromBackingArchive` (`0x00489220`) → **100.00%**.
+- `TFileStream::WriteBytesToBackingArchive` (`0x00489290`) → **100.00%**.
+- `THandleStream::AdvanceExtent` (`0x00489550`) → **100.00%**.
+
+Matching notes:
+- The two byte wrappers guard on the backing pointer with the game nil-pointer
+  assert: `MessageBoxA(0, "Nil Pointer", "Failure", 0x30)` then
+  `thunk_TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", line)`
+  (read line `0x3cc`, write line `0x410`). Modeled as a `static __inline
+  FailNilPointer(int line)`.
+- Two codegen levers were decisive: (1) declare `MessageBoxA` as
+  `__declspec(dllimport)` so the call is the indirect import form, and (2) use raw
+  string literals (not named `const char[]` arrays) so they pool to the original
+  STRING addresses — string pooling is enabled in the match build.
+- Backing archive access inlined via `static __inline CArchive*` reading `*(+4)`.
+- `THandleStream` field `directionOrMode`→`currentExtent` (behavior-derived: advanced
+  by delta, bounded by `highWatermark`). Names remain provisional.
+
+Canaries: 0 below floor (no regression).
+
+Then: `0x00489070` (calls vtable slots `0x1e`/`0x22` — needs facade registration).
+
+### TNetMgr↔CArchive reconciliation + TFileStream object wrappers
+
+The autogen's provisional `TNetMgr` class is the same class as our `CArchive` (its
+`ReadBytes`/`WriteBytes` already own `0x611d26`/`0x611e34` as CArchive methods). The
+two object-serialization callees belong to it too:
+
+- `CArchive::WriteObject` (`0x006121e1`, autogen `TNetMgr::WriteObject`)
+- `CArchive::ReadObject` (`0x0061225e`, autogen models it as a *free* `ReadObject`).
+
+Owned both as real `CArchive` members in `CArchive.cpp` (declared in `CArchive.h`),
+with TODO bodies — the internal handle-map/class-token machinery (MapObject,
+WriteClass, CheckCount, NodeScanner::ReadClass, CreateObject, InsertAt, vtable
+slot-2 dispatch) is not yet ported. With real members in place, the wrappers match
+exactly:
+
+- `TFileStream::ReadObjectFromBackingArchive` (`0x00489300`) → **100.00%** (returns a
+  success byte: `char` return so MSVC emits `mov al,1` over the call result, matching
+  the original `CONCAT31(result>>8, 1)`).
+- `TFileStream::WriteObjectToBackingArchive` (`0x00489330`) → **100.00%**.
+
+Process notes (lessons):
+- **No call-conv cast bridges.** A first attempt called the free `ReadObject` via a
+  `__fastcall` `reinterpret_cast` bridge — wrong dispatch model, and it tripped
+  `just vtable-gate`. Correct fix: model the callee as a real class method.
+- `tools/stubgen.py` only emits *free* `undefined4 Name(void)` stubs and cannot
+  promote a free function to a member (chunk only includes `decomp_types.h`); a name
+  override does not help. Own such methods in the class `.cpp`.
+- After several `just build`/`regen-stubs` cycles, `compare-canaries` reported
+  `parse_error` for all rows — stale `build-msvc500/reccmp-build.yml`. `just detect`
+  refreshes it. Canaries then clean (0 below floor).
+
+Deferred: `0x00489070` (vtable slots `0x1e`/`0x22` — facade registration), and the
+full bodies of `CArchive::WriteObject`/`ReadObject`.
+
+### Split stream.{h,cpp} into per-class files (rule 7)
+
+Replaced the combined `include/game/stream.h` + `src/game/stream.cpp` with per-class
+files:
+
+- `TStream.h` (base), `TFileStream.{h,cpp}`, `TCountingStream.{h,cpp}`,
+  `THandleStream.{h,cpp}`.
+- Per-class descriptor globals (`g_pClassDescT*`) and helpers (`FailNilPointer`,
+  `BackingArchive`) moved into the owning class's `.cpp` (only `TFileStream` uses the
+  assert/archive helpers). CMake updated; `stream.cpp`/`stream.h` removed.
+- Gotcha: `override` is a `compat.h` macro under MSVC500, so every stream header
+  needs `#include "compat.h"`.
+
+`just sync-ownership` reattributed 16 markers to the new files. All 15 stream
+functions remain **100%**; vtable gate passes; canaries clean.
+
+### Foundation/list g_vtbl cleanup (real vtables, not manual writes)
+
+Followed the stream-class recipe (commit f6a0588) to replace the manual
+`*(void**)this = &g_vtbl<Class>` ctor writes with compiler-emitted vtables. The
+**critical** step is deleting the `<addr>|g_vtbl<Class>||global|` DATA row from
+`config/symbols.csv` so the `// VTABLE:` annotation owns the address; otherwise
+reccmp flags the recompiled `Class::`vftable' (VTABLE)` against the original's
+`g_vtbl<Class> (DATA)` and the ctor drops (~90.91%). (Earlier I wrongly concluded
+this couldn't be done — the cleanup works and even fixes broken ctors.)
+
+Cleaned (manual write + C++ global + symbols row removed):
+- `CPtrList::CPtrList` (`0x00601f1d`) — **100%** (family 0x00601f40/5c/7c/af all 100%).
+- `TIndexAndRankList::TIndexAndRankList` (`0x00601baa`) — **13.33% -> 100%**. Required
+  inlining the base: moved `CPtrArray::CPtrArray` into `CPtrArray.h` as a header inline
+  (its field-zero order `entries/growBy/capacity/count` = the original's
+  `+4/+0x10/+0xc/+8`), so MSVC emits one vtable write + inlined zeroes instead of a
+  `CPtrArray::CPtrArray` call.
+- `TSortByPriceList::TSortByPriceList` (`0x00534710`) — converted the `Construct*` flat
+  method into a real ctor; **100%** (factory `0x00534680` `new` site stays 100%).
+- `TSortedPtrList::TSortedPtrList` (`0x00649068`) — inline ctor cleaned; **100%**
+  (factory `0x00488400` and the relationship-list sites stay 100%).
+
+Left manual (cannot convert):
+- `TSortedByRelationshipList` (`0x00654d38`) — its `ConstructObArrayWithVtable654D38`
+  (`0x004ee540`) deliberately calls the **grandparent** `TIndexAndRankList` ctor,
+  skipping `TSortedPtrList`, and is thunk-called from `TGreatPower`. A real ctor can't
+  skip a base or be taken by address, so it keeps the manual write + DATA symbols row.
+
+Plus the dozens of UI classes using the raw `obj->vftable = &g_vtbl*` field pattern are
+a separate, larger slice (left untouched). Canaries unchanged (0 below floor); vtable
+gate passes. Heuristic note 86 records the full recipe and the two non-convertible
+cases.
+
 ## 2026-06-02
 
 ### TSortedByRelationshipList and TSortByPriceList alignment

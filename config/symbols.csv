@@ -13338,7 +13338,6 @@ address|name|size|type|prototype
 648f34|g_vslotTBehavior_Slot01D4_NotifyControlSelectionChange||global|
 648f78|g_vtblTList||global|
 648f7c|g_vslotTDialogBehavior_Slot01D4_NotifyControlSelectionChange||global|
-649068|g_vtblTSortedPtrList||global|
 6490c8|g_pClassDescTStream||global|
 6490e0|g_pClassDescTFileStream||global|
 6490f8|g_pClassDescTCountingStream||global|
@@ -14433,7 +14432,6 @@ address|name|size|type|prototype
 659b28|g_pClassDescTArmsForeignMinister||global|
 659b40|g_pClassDescTSortByPriceList||global|
 659b58|g_pClassDescTIndexAndRankList||global|
-659ef0|g_vtblTSortByPriceList||global|
 659b88|g_Allocate_Diplomacy_Aid_Value_00659B88||global|
 659b94|g_Queue_Turn_Event_Value_00659B94||global|
 65a468|g_Compare_Mission_Order_LookupTable_0065A468||global|
@@ -18061,8 +18059,6 @@ address|name|size|type|prototype
 6728b8|sTypeName_CFileDialog||global|
 672c30|sTypeName_CCtrlView||global|
 672c3c|sTypeName_CSplitterWnd||global|
-672eac|g_vtblTIndexAndRankList||global|
-672eec|g_vtblCPtrList||global|
 672f08|g_operator_Value_00672F08||global|
 672f10|g_operator_Value_00672F10||global|
 672f18|g_operator_Value_00672F18||global|

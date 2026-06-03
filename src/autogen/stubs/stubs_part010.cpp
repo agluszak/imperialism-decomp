@@ -3171,38 +3171,6 @@ undefined4 OrphanCallChain_C1_I08_004891f0(void)
   return 0;
 }
 
-// ghidra_name TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
-// ghidra_proto int __thiscall WrapperFor_ReadBytesFromSerializedBuffer_At00489220(void * destination, uint requestedCount)
-// FUNCTION: IMPERIALISM 0x00489220
-undefined4 WrapperFor_ReadBytesFromSerializedBuffer_At00489220(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileStream::WrapperFor_WriteBytesToSerializedBuffer_At00489290
-// ghidra_proto void __thiscall WrapperFor_WriteBytesToSerializedBuffer_At00489290(void * source, uint byteCount)
-// FUNCTION: IMPERIALISM 0x00489290
-undefined4 WrapperFor_WriteBytesToSerializedBuffer_At00489290(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
-// ghidra_proto void * __thiscall WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void * runtimeClassOrFactory)
-// FUNCTION: IMPERIALISM 0x00489300
-undefined4 WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileStream::WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
-// ghidra_proto void __thiscall WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330(void * objectRef)
-// FUNCTION: IMPERIALISM 0x00489330
-undefined4 WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_operator_At00489360
 // ghidra_proto void __cdecl WrapperFor_operator_At00489360(void)
 // FUNCTION: IMPERIALISM 0x00489360
@@ -3263,14 +3231,6 @@ undefined4 OrphanTiny_GetDwordEcxOffset_8_00489500(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_00489520(void)
 // FUNCTION: IMPERIALISM 0x00489520
 undefined4 OrphanLeaf_NoCall_Ins07_00489520(void)
-{
-  return 0;
-}
-
-// ghidra_name THandleStream::CreateTHandleStreamInstance
-// ghidra_proto void __thiscall CreateTHandleStreamInstance(int handle, int delta)
-// FUNCTION: IMPERIALISM 0x00489550
-undefined4 CreateTHandleStreamInstance(void)
 {
   return 0;
 }

@@ -64,7 +64,9 @@ add_executable(Imperialism
     src/game/TSortedPtrList.cpp
     src/game/TSortedByRelationshipList.cpp
     src/game/TSortByPriceList.cpp
-    src/game/stream.cpp
+    src/game/TFileStream.cpp
+    src/game/TCountingStream.cpp
+    src/game/THandleStream.cpp
     src/game/CDocument.cpp
     src/game/CArchive.cpp
     src/game/CObject.cpp

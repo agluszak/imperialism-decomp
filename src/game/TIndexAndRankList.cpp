@@ -7,14 +7,8 @@
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 undefined4 DestructCObArray(void);
 
-extern "C" {
-char g_vtblTIndexAndRankList = 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00601baa
-TIndexAndRankList::TIndexAndRankList() : CPtrArray() {
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTIndexAndRankList);
-}
+TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
 
 // FUNCTION: IMPERIALISM 0x00601bc1
 void* TIndexAndRankList::DestructCObArrayAndMaybeFree(byte freeSelfFlag) {
