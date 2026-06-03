@@ -118,8 +118,24 @@ build:
 detect:
   (cd "{{build_dir}}" && uv run reccmp-project detect --what recompiled)
 
-compare addr='':
-  if [[ -n "{{addr}}" ]]; then (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}" --verbose "{{addr}}"); else (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}"); fi
+# Compare functions against the original.
+#   just compare                  -> full reccmp summary (all functions)
+#   just compare 0xADDR           -> verbose asm diff for one function
+#   just compare 0xA 0xB 0xC ...  -> batch score table (single PDB parse)
+#   just compare --file src/game/foo.cpp [more.cpp]  -> score every // FUNCTION in the file(s)
+# Batch/file mode runs one `reccmp --json` parse (~4s for all ~9600 funcs) instead
+# of one cold PDB parse per address.
+compare *args:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  args=({{args}})
+  if [[ ${#args[@]} -eq 0 ]]; then
+    (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}")
+  elif [[ ${#args[@]} -eq 1 && "${args[0]}" != "--file" ]]; then
+    (cd "{{build_dir}}" && uv run reccmp-reccmp --target "{{target}}" --verbose "${args[0]}")
+  else
+    uv run python -m tools.reccmp.compare_batch --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
+  fi
 
 compare-canaries:
   uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"
