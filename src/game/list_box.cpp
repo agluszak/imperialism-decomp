@@ -1,103 +1,60 @@
 #include "game/list_box.h"
 
+// MFC DDX_LBString / DDX_LBStringExact. Ghidra invented receiver classes
+// (ListBoxControlWindowResolver / ListBoxSharedStringRef) for these; the real
+// receivers are CDataExchange (the DDX cursor) and CString (our StringShared).
+//
+// CString::GetBufferSetLength (0x605d99) and CString::ReleaseBuffer (0x605d71)
+// are the already-ported StringShared methods EnsureCapacityAndSetLength /
+// SetLengthAndTerminator and are called directly. CDataExchange::PrepareCtrl
+// (0x6189dc) and CString::Empty (0x60586d) are not yet ported, so they go
+// through __fastcall ABI bridges kept out of the function bodies.
+
+undefined4 PrepareCtrl(void);
+undefined4 Empty(void);
+
 namespace {
 
-static const unsigned int kGetControlWindowAddr = 0x006189dc;
-static const unsigned int kEnsureSelectionAvailableAddr = 0x0060586d;
-static const unsigned int kNormalizeItemDataAddr = 0x00605d99;
-static const unsigned int kReleaseTempSharedRefAddr = 0x00605d71;
+// CDataExchange::PrepareCtrl(nIDC) -> HWND of the control (thiscall).
+inline HWND PrepareDdxControl(CDataExchange* pDX, undefined4 nIDC) {
+  return reinterpret_cast<HWND(__fastcall*)(CDataExchange*, int, undefined4)>(::PrepareCtrl)(
+      pDX, 0, nIDC);
+}
 
-struct ListBoxControlWindowResolver {
-  HWND ResolveControlWindow(undefined4 control_id);
-};
-
-struct ListBoxSharedStringRef {
-  void EnsureSelectionAvailable();
-  LPARAM NormalizeItemData(LRESULT raw_item_data);
-  void ReleaseTempSharedRef(int value);
-};
-
-typedef HWND (ListBoxControlWindowResolver::*ResolveControlWindowMethod)(undefined4);
-typedef void (ListBoxSharedStringRef::*EnsureSelectionAvailableMethod)();
-typedef LPARAM (ListBoxSharedStringRef::*NormalizeItemDataMethod)(LRESULT);
-typedef void (ListBoxSharedStringRef::*ReleaseTempSharedRefMethod)(int);
-
-union ResolveControlWindowCast {
-  unsigned int addr;
-  ResolveControlWindowMethod method;
-};
-
-union EnsureSelectionAvailableCast {
-  unsigned int addr;
-  EnsureSelectionAvailableMethod method;
-};
-
-union NormalizeItemDataCast {
-  unsigned int addr;
-  NormalizeItemDataMethod method;
-};
-
-union ReleaseTempSharedRefCast {
-  unsigned int addr;
-  ReleaseTempSharedRefMethod method;
-};
+// CString::Empty() (thiscall).
+inline void StringEmpty(StringShared* value) {
+  reinterpret_cast<void(__fastcall*)(StringShared*)>(::Empty)(value);
+}
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00618df2
-void __stdcall ListBox::AddOrUpdateItemData(ListBoxItemCount* item_count_ptr, undefined4 control_id,
-                                            LPARAM* item_data_ptr) {
-  ResolveControlWindowCast get_control_window;
-  EnsureSelectionAvailableCast ensure_selection_available;
-  NormalizeItemDataCast normalize_item_data;
-  ReleaseTempSharedRefCast release_temp_shared_ref;
-  ListBoxControlWindowResolver* window_resolver;
-  ListBoxSharedStringRef* shared_ref;
-  HWND listbox_hwnd;
-  WPARAM sel_index;
-  LRESULT raw_item_data;
-  LPARAM normalized_item_data;
-
-  get_control_window.addr = kGetControlWindowAddr;
-  window_resolver = (ListBoxControlWindowResolver*)item_count_ptr;
-  listbox_hwnd = (window_resolver->*(get_control_window.method))(control_id);
-  shared_ref = (ListBoxSharedStringRef*)item_data_ptr;
-  if (item_count_ptr->value == 0) {
-    SendMessageA(listbox_hwnd, 0x18c, (WPARAM)0xffffffff, *item_data_ptr);
+void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, StringShared* value) {
+  HWND listbox = PrepareDdxControl(pDX, nIDC);
+  if (pDX->m_bSaveAndValidate == 0) {
+    SendMessageA(listbox, 0x18c, static_cast<WPARAM>(0xffffffff), value->data_ptr);
   } else {
-    sel_index = SendMessageA(listbox_hwnd, 0x188, 0, 0);
-    if (sel_index == (WPARAM)0xffffffff) {
-      ensure_selection_available.addr = kEnsureSelectionAvailableAddr;
-      (shared_ref->*(ensure_selection_available.method))();
+    WPARAM selection = SendMessageA(listbox, 0x188, 0, 0);
+    if (selection == static_cast<WPARAM>(0xffffffff)) {
+      StringEmpty(value);
     } else {
-      raw_item_data = SendMessageA(listbox_hwnd, 0x18a, sel_index, 0);
-      normalize_item_data.addr = kNormalizeItemDataAddr;
-      normalized_item_data = (shared_ref->*(normalize_item_data.method))(raw_item_data);
-      SendMessageA(listbox_hwnd, 0x189, sel_index, normalized_item_data);
+      LRESULT rawItemData = SendMessageA(listbox, 0x18a, selection, 0);
+      LPARAM normalized = value->EnsureCapacityAndSetLength(static_cast<int>(rawItemData));
+      SendMessageA(listbox, 0x189, selection, normalized);
     }
-
-    release_temp_shared_ref.addr = kReleaseTempSharedRefAddr;
-    (shared_ref->*(release_temp_shared_ref.method))(0xffffffff);
+    value->SetLengthAndTerminator(static_cast<int>(0xffffffff));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00618e72
-void __stdcall SelectComboBoxItemByParam(int* state_flag, undefined4 owner_id, LPARAM* lparam_in) {
-  ResolveControlWindowCast get_control_window;
-  ListBoxControlWindowResolver* window_resolver;
-  HWND target_hwnd;
-  WPARAM item_index;
-
-  get_control_window.addr = kGetControlWindowAddr;
-  window_resolver = (ListBoxControlWindowResolver*)state_flag;
-  target_hwnd = (window_resolver->*(get_control_window.method))(owner_id);
-  if (*state_flag == 0) {
-    item_index = SendMessageA(target_hwnd, 0x1a2, (WPARAM)0xffffffff, *lparam_in);
-    if (item_index != (WPARAM)0xffffffff) {
-      SendMessageA(target_hwnd, 0x186, item_index, 0);
+void __stdcall DDX_LBStringExact(CDataExchange* pDX, undefined4 nIDC, StringShared* value) {
+  HWND target = PrepareDdxControl(pDX, nIDC);
+  if (pDX->m_bSaveAndValidate == 0) {
+    WPARAM index = SendMessageA(target, 0x1a2, static_cast<WPARAM>(0xffffffff), value->data_ptr);
+    if (index != static_cast<WPARAM>(0xffffffff)) {
+      SendMessageA(target, 0x186, index, 0);
     }
   } else {
-    ListBox::AddOrUpdateItemData(reinterpret_cast<ListBoxItemCount*>(state_flag), owner_id,
-                                 lparam_in);
+    DDX_LBString(pDX, nIDC, value);
   }
 }

@@ -1,22 +1,12 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/CDataExchange.h"
+#include "game/string_shared.h"
 
 #include <windows.h>
 
-struct ListBoxItemCount {
-  int value;
-};
-
-class ListBox {
-public:
-  static void __stdcall AddOrUpdateItemData(
-      ListBoxItemCount *item_count_ptr,
-      undefined4 control_id,
-      LPARAM *item_data_ptr);
-};
-
-void __stdcall SelectComboBoxItemByParam(
-    int *state_flag,
-    undefined4 owner_id,
-    LPARAM *lparam_in);
+// MFC dialog data-exchange (DDX) helpers for list/combo-box controls. These
+// exchange the selected item between the control and a CString (StringShared).
+void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, StringShared* value);
+void __stdcall DDX_LBStringExact(CDataExchange* pDX, undefined4 nIDC, StringShared* value);
