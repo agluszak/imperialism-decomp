@@ -5,17 +5,14 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-extern "C" char g_vtblTSortedPtrList;
-
 // VTABLE: IMPERIALISM 0x00649068
 class TSortedPtrList : public TIndexAndRankList {
  public:
   short relationType;
   short pad16;
 
-  TSortedPtrList() : TIndexAndRankList() {
-    *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedPtrList);
-  }
+  // Compiler emits the 0x649068 vtable write.
+  TSortedPtrList() : TIndexAndRankList() {}
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }

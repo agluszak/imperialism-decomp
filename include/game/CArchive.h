@@ -26,4 +26,11 @@ struct CArchive {
   CArchive* ReadWordFromSerializedBuffer(void* outWord);
   CArchive* ReadDwordFromSerializedBuffer(void* outDword);
   int ReadBytesFromSerializedBuffer(void* destination, unsigned int requestedCount);
+
+  // Polymorphic object serialization (the autogen models these under the
+  // provisional class name "TNetMgr" / a free "ReadObject"; they belong to this
+  // same archive class). Bodies are still stub-owned; declared here so callers
+  // link against the 0x006121e1 / 0x0061225e addresses by name.
+  void WriteObject(void* objectRef);
+  void* ReadObject(void* runtimeClassOrFactory);
 };

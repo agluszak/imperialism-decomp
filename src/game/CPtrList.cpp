@@ -7,10 +7,6 @@
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-extern "C" {
-char g_vtblCPtrList = 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00601b74
 void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, int elementSize) {
   void* block = reinterpret_cast<void*>(
@@ -36,7 +32,6 @@ CPtrList::CPtrList(int blockSize) {
   this->tailNode = 0;
   this->headNode = 0;
   this->blockChain = 0;
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblCPtrList);
   this->blockSize = blockSize;
 }
 

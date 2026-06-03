@@ -11,7 +11,14 @@ class CPtrArray : public CObject {
   int capacity;
   int growBy;
 
-  CPtrArray();
+  // Inline (MFC collection ctors are inline): derived ctors such as
+  // TIndexAndRankList inline this as a single vtable write + field zeroing.
+  CPtrArray() {
+    this->entries = 0;
+    this->growBy = 0;
+    this->capacity = 0;
+    this->count = 0;
+  }
   virtual ~CPtrArray();
 
   void* DestructCObArrayAndMaybeFree(byte freeSelfFlag);

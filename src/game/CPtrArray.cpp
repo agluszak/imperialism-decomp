@@ -27,13 +27,6 @@ inline void MoveMemory(void* dst, const void* src, int size) {
 
 } // namespace
 
-CPtrArray::CPtrArray() {
-  this->entries = 0;
-  this->growBy = 0;
-  this->capacity = 0;
-  this->count = 0;
-}
-
 CPtrArray::~CPtrArray() {
   if (this->entries != 0) {
     FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this->entries)));

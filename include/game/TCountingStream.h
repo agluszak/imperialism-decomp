@@ -1,0 +1,17 @@
+#pragma once
+
+#include "TStream.h"
+#include "compat.h"
+#include "decomp_types.h"
+
+// VTABLE: IMPERIALISM 0x649320
+class TCountingStream : public TStream {
+ public:
+  int positionOrByteCount;
+  int maxExtentOrLimit;
+
+  void* GetRuntimeClass() override;
+  TCountingStream();
+  void DestructTCountingStreamBaseState();
+  void* DestructTCountingStreamAndMaybeFree(byte freeSelfFlag);
+};

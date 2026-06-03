@@ -7,7 +7,6 @@
 
 extern "C" {
 char g_pClassDescTSortByPriceList = 0;
-char g_vtblTSortByPriceList = 0;
 }
 
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
@@ -19,11 +18,7 @@ void* TSortByPriceList::GetTSortByPriceListClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x00534710
-TSortByPriceList* TSortByPriceList::ConstructTSortByPriceList() {
-  this->TIndexAndRankList::TIndexAndRankList();
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortByPriceList);
-  return this;
-}
+TSortByPriceList::TSortByPriceList() : TIndexAndRankList() {}
 
 // FUNCTION: IMPERIALISM 0x00534740
 void* TSortByPriceList::DeletingDestructTSortByPriceList(byte freeSelfFlag) {

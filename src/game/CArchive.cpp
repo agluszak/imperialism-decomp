@@ -91,6 +91,26 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
   m_lpBufCur += nCount;
 }
 
+// Polymorphic object serialization. The autogen models the write side under the
+// provisional class name "TNetMgr" and the read side as a free "ReadObject", but
+// both are thiscall methods on this archive class. Owned here as real members so
+// callers dispatch through the vtable-free member ABI instead of a cast bridge.
+// Bodies are not yet ported (handle-map / class-token machinery: MapObject,
+// WriteClass, CheckCount, NodeScanner::ReadClass, CreateObject, InsertAt ...).
+
+// FUNCTION: IMPERIALISM 0x006121e1
+void CArchive::WriteObject(void* objectRef) {
+  (void)objectRef;
+  // TODO(port): handle-map polymorphic write.
+}
+
+// FUNCTION: IMPERIALISM 0x0061225e
+void* CArchive::ReadObject(void* runtimeClassOrFactory) {
+  (void)runtimeClassOrFactory;
+  // TODO(port): handle-map polymorphic read.
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00611f3e
 void CArchive::FillBuffer(unsigned int requiredBytes) {
   unsigned int avail = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);

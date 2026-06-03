@@ -8,10 +8,6 @@ extern "C" {
 char g_pClassDescTSortedPtrList = 0;
 }
 
-extern "C" {
-char g_vtblTSortedPtrList = 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00407da6
 void __fastcall thunk_ResetPtrListAndShrinkCapacity(TSortedPtrList* self) {
   self->ResetPtrListAndShrinkCapacity();

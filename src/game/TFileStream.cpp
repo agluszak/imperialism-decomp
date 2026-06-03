@@ -1,0 +1,79 @@
+#include "game/TFileStream.h"
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
+typedef void* hwnd_t;
+extern "C" __declspec(dllimport) int __stdcall MessageBoxA(hwnd_t hWnd, const char* text,
+                                                           const char* caption, unsigned int type);
+
+void FreeHeapBufferIfNotNull(undefined4 ptrValue);
+undefined4 thunk_DestructTObjectAndMaybeFree(void);
+undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
+
+extern "C" {
+char g_pClassDescTFileStream = 0;
+}
+
+// Nil-pointer assert: pop a message box, then forward to the game's assert
+// reporter with the source path and line.
+static __inline void FailNilPointer(int line) {
+  MessageBoxA(0, "Nil Pointer", "Failure", 0x30);
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\McAppStream.cpp", line);
+}
+
+// The backing pointer references a wrapper object whose +4 field holds the
+// CArchive that actually moves bytes.
+static __inline CArchive* BackingArchive(void* backingArchiveOrStream) {
+  return *reinterpret_cast<CArchive**>(reinterpret_cast<char*>(backingArchiveOrStream) + 4);
+}
+
+// FUNCTION: IMPERIALISM 0x004890f0
+void* TFileStream::GetRuntimeClass() {
+  return &g_pClassDescTFileStream;
+}
+
+// FUNCTION: IMPERIALISM 0x00489110
+TFileStream::TFileStream() {
+  backingArchiveOrStream = 0;
+}
+
+// SYNTHETIC: IMPERIALISM 0x00489130
+void* TFileStream::DestructTFileStreamAndMaybeFree(unsigned int flags) {
+  ::thunk_DestructTObjectAndMaybeFree(); // or whatever the real complete teardown is
+  if ((flags & 1) != 0) {
+    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(this));
+  }
+  return this;
+}
+
+// FUNCTION: IMPERIALISM 0x00489220
+int TFileStream::ReadBytesFromBackingArchive(void* destination, unsigned int requestedCount) {
+  if (this->backingArchiveOrStream == 0) {
+    FailNilPointer(0x3cc);
+  }
+  return BackingArchive(this->backingArchiveOrStream)
+      ->ReadBytesFromSerializedBuffer(destination, requestedCount);
+}
+
+// FUNCTION: IMPERIALISM 0x00489290
+void TFileStream::WriteBytesToBackingArchive(const void* source, unsigned int byteCount) {
+  if (this->backingArchiveOrStream == 0) {
+    FailNilPointer(0x410);
+  }
+  BackingArchive(this->backingArchiveOrStream)->WriteBytesToSerializedBuffer(source, byteCount);
+}
+
+// FUNCTION: IMPERIALISM 0x00489300
+char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
+  *reinterpret_cast<void**>(outObject) =
+      BackingArchive(this->backingArchiveOrStream)->ReadObject(0);
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00489330
+void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
+  BackingArchive(this->backingArchiveOrStream)->WriteObject(objectRef);
+}

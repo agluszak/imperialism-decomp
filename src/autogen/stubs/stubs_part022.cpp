@@ -1851,22 +1851,6 @@ undefined4 CheckCount(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::WriteObject
-// ghidra_proto void __thiscall WriteObject(void * objectRef)
-// FUNCTION: IMPERIALISM 0x006121e1
-undefined4 WriteObject(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadObject
-// ghidra_proto void * __thiscall ReadObject(void * runtimeClassOrFactory)
-// FUNCTION: IMPERIALISM 0x0061225e
-undefined4 ReadObject(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::MapObject
 // ghidra_proto void __thiscall MapObject(void * referenceNode)
 // FUNCTION: IMPERIALISM 0x00612315

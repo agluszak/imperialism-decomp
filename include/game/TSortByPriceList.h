@@ -5,16 +5,13 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-extern "C" char g_vtblTSortByPriceList;
-
 // VTABLE: IMPERIALISM 0x00659ef0
 class TSortByPriceList : public TIndexAndRankList {
  public:
   int reserved14;
 
-  TSortByPriceList() : TIndexAndRankList() {
-    *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortByPriceList);
-  }
+  // 0x00534710: real ctor; compiler emits the 0x659ef0 vtable write.
+  TSortByPriceList();
   void* DeletingDestructTSortByPriceList(byte freeSelfFlag);
   void DestructTSortByPriceList();
 
@@ -25,7 +22,6 @@ class TSortByPriceList : public TIndexAndRankList {
 
   static void* GetTSortByPriceListClassNamePointer();
   static TSortByPriceList* AllocateAndConstructTSortByPriceList();
-  TSortByPriceList* ConstructTSortByPriceList();
 };
 
 ASSERT_SIZE(TSortByPriceList, 0x18);
