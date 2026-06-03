@@ -8,29 +8,16 @@ struct SharedStringHeader {
   int capacity;
 };
 
+// Free functions that own original addresses (CString globals / operator+ /
+// DDV helpers). The C-style explicit-pointer forwarder shims that used to sit
+// here were unused and have been removed in favour of the StringShared methods.
 undefined** GetSharedEmptyStringRef(void);
-int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr);
-int* StringSharedRef_AssignFromPtr(int* dst_ref_ptr, int* src_ref_ptr);
-void AllocateSharedStringBufferForLength(int* ref_ptr, int text_length);
 void __cdecl DecrementSharedStringRefCountAndFree(long* ref_count_ptr);
-void WrapperFor_AllocateSharedStringBufferForLength_At006058b9(int* ref_ptr, int required_capacity);
-void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr);
-int* ConstructSharedStringFromCStrOrResourceId(int* dst_ref_ptr, const char* text_or_resource_id);
-void WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc(int* ref_ptr, int new_length,
-                                                         const char* src_text);
-int* WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(int* ref_ptr, const char* src_text);
-void ConcatenateTwoBuffersToSharedString(int* ref_ptr, int lhs_len, const char* lhs_text,
-                                         int rhs_len, const char* rhs_text);
 void AssignSharedStringConcatRefAndRef(int* dst_ref_ptr, int* lhs_ref_ptr, int* rhs_ref_ptr);
 void __stdcall AssignSharedStringConcatRefAndCStr(int* dst_ref_ptr, int* lhs_ref_ptr,
                                                   const char* rhs_text);
 void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, const char* lhs_text, int* rhs_ref_ptr);
-void AppendBufferToSharedString(int* ref_ptr, int append_len, const char* append_text);
 int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int unused_edx, int append_byte);
-int EnsureSharedStringCapacityPreserveLength(int* ref_ptr, int min_capacity);
-void SetSharedStringLengthAndTerminator(int* ref_ptr, int new_length);
-int WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99(int* ref_ptr, int new_length);
-undefined4 AssignStringSharedFromCStr(undefined4 this_ptr, const char* text);
 undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
 
 class StringShared {

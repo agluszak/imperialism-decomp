@@ -91,20 +91,6 @@ StringShared* StringShared::StringSharedRef_AssignFromPtr(const StringShared& sr
   return this;
 }
 
-int* InitializeSharedStringRefFromEmpty(int* dst_ref_ptr) {
-  return reinterpret_cast<int*>(reinterpret_cast<StringShared*>(dst_ref_ptr)->InitFromEmpty());
-}
-
-int* StringSharedRef_AssignFromPtr(int* dst_ref_ptr, int* src_ref_ptr) {
-  return reinterpret_cast<int*>(
-      reinterpret_cast<StringShared*>(dst_ref_ptr)
-          ->StringSharedRef_AssignFromPtr(*reinterpret_cast<StringShared*>(src_ref_ptr)));
-}
-
-void AllocateSharedStringBufferForLength(int* ref_ptr, int text_length) {
-  reinterpret_cast<StringShared*>(ref_ptr)->AllocateBufferForLength(text_length);
-}
-
 // FUNCTION: IMPERIALISM 0x0060584a
 void __cdecl DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
   if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
@@ -140,13 +126,6 @@ void StringShared::EnsureCapacityOrAllocate(int required_capacity) {
   }
 }
 
-// GHIDRA [WrapperShape]: small wrapper around AllocateSharedStringBufferForLength.
-
-void WrapperFor_AllocateSharedStringBufferForLength_At006058b9(int* ref_ptr,
-                                                               int required_capacity) {
-  reinterpret_cast<StringShared*>(ref_ptr)->EnsureCapacityOrAllocate(required_capacity);
-}
-
 // FUNCTION: IMPERIALISM 0x006058e2
 StringShared::~StringShared() {
   LONG* ref_count_ptr = reinterpret_cast<LONG*>(data_ptr - kSharedStringHeaderSize);
@@ -156,10 +135,6 @@ StringShared::~StringShared() {
       FreeHeapBufferIfNotNull(PtrToInt(ref_count_ptr));
     }
   }
-}
-
-void ReleaseSharedStringRefIfNotEmpty(int* ref_ptr) {
-  reinterpret_cast<StringShared*>(ref_ptr)->~StringShared();
 }
 
 // GHIDRA comment: Initializes from either C-string or low-word resource-id.
@@ -187,12 +162,6 @@ StringShared* StringShared::ConstructFromCStrOrResourceId(const char* text_or_re
   return this;
 }
 
-// Wrapper for legacy explicit-pointer callsites.
-int* ConstructSharedStringFromCStrOrResourceId(int* dst_ref_ptr, const char* text_or_resource_id) {
-  return reinterpret_cast<int*>(reinterpret_cast<StringShared*>(dst_ref_ptr)
-                                    ->ConstructFromCStrOrResourceId(text_or_resource_id));
-}
-
 // GHIDRA [WrapperShape]: small wrapper around copy + length/terminator update.
 
 // FUNCTION: IMPERIALISM 0x006059fc
@@ -206,12 +175,6 @@ void StringShared::CopyBufferAndSetLength(int new_length, const char* src_text) 
   reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
 }
 
-// Wrapper for legacy explicit-pointer callsites.
-void WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc(int* ref_ptr, int new_length,
-                                                         const char* src_text) {
-  reinterpret_cast<StringShared*>(ref_ptr)->CopyBufferAndSetLength(new_length, src_text);
-}
-
 // FUNCTION: IMPERIALISM 0x00605a29
 StringShared* StringShared::AssignFromPtr(const StringShared& src_ref) {
   int new_data_ptr = src_ref.data_ptr;
@@ -220,9 +183,8 @@ StringShared* StringShared::AssignFromPtr(const StringShared& src_ref) {
     if (((old_header->ref_count < 0) &&
          (old_header != reinterpret_cast<SharedStringHeader*>(kSharedEmptyHeaderAddr))) ||
         (GetSharedStringHeader(new_data_ptr)->ref_count < 0)) {
-      WrapperFor_CopyMemoryPossiblyOverlapping_At006059fc(
-          &data_ptr, GetSharedStringHeader(new_data_ptr)->text_length,
-          reinterpret_cast<const char*>(new_data_ptr));
+      CopyBufferAndSetLength(GetSharedStringHeader(new_data_ptr)->text_length,
+                             reinterpret_cast<const char*>(new_data_ptr));
     } else {
       this->~StringShared();
       new_data_ptr = src_ref.data_ptr;
@@ -247,10 +209,6 @@ StringShared* StringShared::CopyFromCStr(const char* src_text) {
   return this;
 }
 
-int* WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(int* ref_ptr, const char* src_text) {
-  return reinterpret_cast<int*>(reinterpret_cast<StringShared*>(ref_ptr)->CopyFromCStr(src_text));
-}
-
 // FUNCTION: IMPERIALISM 0x00605ae0
 void StringShared::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len,
                                       const char* rhs_text) {
@@ -261,12 +219,6 @@ void StringShared::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs
     reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
         data_ptr + lhs_len, rhs_text, rhs_len);
   }
-}
-
-void ConcatenateTwoBuffersToSharedString(int* ref_ptr, int lhs_len, const char* lhs_text,
-                                         int rhs_len, const char* rhs_text) {
-  reinterpret_cast<StringShared*>(ref_ptr)->ConcatenateBuffers(lhs_len, lhs_text, rhs_len,
-                                                               rhs_text);
 }
 
 void StringShared::AssignConcatRefAndRef(const StringShared& lhs_ref, const StringShared& rhs_ref) {
@@ -358,10 +310,6 @@ void StringShared::AppendBuffer(int append_len, const char* append_text) {
       reinterpret_cast<LONG*>(old_data_ptr - kSharedStringHeaderSize));
 }
 
-void AppendBufferToSharedString(int* ref_ptr, int append_len, const char* append_text) {
-  reinterpret_cast<StringShared*>(ref_ptr)->AppendBuffer(append_len, append_text);
-}
-
 // FUNCTION: IMPERIALISM 0x00605cce
 undefined4 StringShared::AssignFromCStr(const char* text) {
   int text_len = 0;
@@ -372,17 +320,12 @@ undefined4 StringShared::AssignFromCStr(const char* text) {
   return reinterpret_cast<undefined4>(this);
 }
 
-// Wrapper for legacy explicit-pointer callsites.
-undefined4 AssignStringSharedFromCStr(undefined4 this_ptr, const char* text) {
-  return reinterpret_cast<StringShared*>(this_ptr)->AssignFromCStr(text);
-}
-
 // FUNCTION: IMPERIALISM 0x00605cf5
 int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int, int append_byte) {
   char append_text[2];
   append_text[0] = static_cast<char>(append_byte);
   append_text[1] = '\0';
-  AppendBufferToSharedString(ref_ptr, 1, append_text);
+  reinterpret_cast<StringShared*>(ref_ptr)->AppendBuffer(1, append_text);
   return PtrToInt(ref_ptr);
 }
 
@@ -425,10 +368,6 @@ int StringShared::EnsureCapacityPreserveLength(int min_capacity) {
   return data_ptr;
 }
 
-int EnsureSharedStringCapacityPreserveLength(int* ref_ptr, int min_capacity) {
-  return reinterpret_cast<StringShared*>(ref_ptr)->EnsureCapacityPreserveLength(min_capacity);
-}
-
 // FUNCTION: IMPERIALISM 0x00605d99
 int StringShared::EnsureCapacityAndSetLength(int new_length) {
   EnsureCapacityPreserveLength(new_length);
@@ -447,12 +386,3 @@ void StringShared::SetLengthAndTerminator(int new_length) {
   reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
 }
 
-void SetSharedStringLengthAndTerminator(int* ref_ptr, int new_length) {
-  reinterpret_cast<StringShared*>(ref_ptr)->SetLengthAndTerminator(new_length);
-}
-
-// GHIDRA [WrapperShape]: small wrapper around EnsureSharedStringCapacityPreserveLength.
-
-int WrapperFor_EnsureSharedStringCapacityPreserveLength_At00605d99(int* ref_ptr, int new_length) {
-  return reinterpret_cast<StringShared*>(ref_ptr)->EnsureCapacityAndSetLength(new_length);
-}
