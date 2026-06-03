@@ -33,6 +33,16 @@ inline void ThrowArchiveException(int errorCode, void* context) {
 
 } // namespace
 
+extern "C" {
+// MFC CRuntimeClass descriptor for the archive/net-manager class (0x0066f978).
+char g_pClassDescTNetMgr = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e33c0
+void* GetTNetMgrClassNamePointer() {
+  return &g_pClassDescTNetMgr;
+}
+
 // FUNCTION: IMPERIALISM 0x005e6d04
 CArchive* CArchive::WriteByteToSerializedBuffer(unsigned char value) {
   if (m_lpBufCur + 1 > m_lpBufMax) {
@@ -118,6 +128,16 @@ void CArchive::CheckCount() {
   if (m_nMapCount >= 0x3ffffffe) {
     ThrowArchiveException(5, m_pExceptionContext);
   }
+}
+
+// Flush the pending write buffer to the backing file, then detach the file so
+// the archive can no longer be written through. (Ghidra named this
+// "FlushSerializedArchiveBufferAndResetStreamCount"; the zeroed field at +0x20
+// is m_pFile, not a count.)
+// FUNCTION: IMPERIALISM 0x00611d18
+void CArchive::Close() {
+  FlushArchive(this);
+  m_pFile = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00612000

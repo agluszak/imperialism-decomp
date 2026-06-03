@@ -2531,14 +2531,6 @@ undefined4 CreateTNetMgrInstance(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::GetTNetMgrClassNamePointer
-// ghidra_proto void * __cdecl GetTNetMgrClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005e33c0
-undefined4 GetTNetMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::ConstructGlobalTurnEventQueueManager
 // ghidra_proto void __thiscall ConstructGlobalTurnEventQueueManager(void)
 // FUNCTION: IMPERIALISM 0x005e33e0
