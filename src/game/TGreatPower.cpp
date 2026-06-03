@@ -139,13 +139,21 @@ public:
   virtual void dummy8() = 0; virtual void dummy9() = 0; virtual void dummy10() = 0;
   virtual void dummy11() = 0; virtual void dummy12() = 0; virtual void dummy13() = 0;
   virtual void dummy14() = 0; virtual void dummy15() = 0; virtual void dummy16() = 0;
-  virtual void dummy17() = 0; virtual void dummy18() = 0; virtual void dummy19() = 0;
+  virtual void dummy17() = 0; virtual void dummy18() = 0; virtual void Call4C() = 0;
   virtual void dummy20() = 0; virtual void dummy21() = 0; virtual void dummy22() = 0;
   virtual void dummy23() = 0; virtual void dummy24() = 0; virtual void dummy25() = 0;
   virtual void dummy26() = 0; virtual void dummy27() = 0; virtual void dummy28() = 0;
   virtual void dummy29() = 0; virtual void dummy30() = 0; virtual void dummy31() = 0;
   virtual void dummy32() = 0; virtual void dummy33() = 0; virtual void dummy34() = 0;
   virtual void Call8C() = 0; // slot 8C
+  virtual void Call90() = 0;
+  virtual void Call94() = 0;
+  virtual void dummy38() = 0; virtual void dummy39() = 0; virtual void dummy40() = 0;
+  virtual void dummy41() = 0; virtual void dummy42() = 0; virtual void dummy43() = 0;
+  virtual void dummy44() = 0; virtual void dummy45() = 0; virtual void dummy46() = 0;
+  virtual void dummy47() = 0; virtual void dummy48() = 0; virtual void dummy49() = 0;
+  virtual void dummy50() = 0; virtual void dummy51() = 0; virtual void dummy52() = 0;
+  virtual void CallD4() = 0;
 };
 
 class TRelationManagerObject {
@@ -947,6 +955,9 @@ public:
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
+  void DispatchNationField98CallbackD4(void);
+  void DispatchNationField9CCallback4C(void);
+  void DispatchNationField94Callbacks90And94(void);
 };
 
 #undef TGREATPOWER_VTABLE_SLOT
@@ -4412,6 +4423,22 @@ void TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg
   this->thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392(arg1, arg2, arg3);
 }
 
+// FUNCTION: IMPERIALISM 0x004e78d0
+void TGreatPower::DispatchNationField98CallbackD4(void) {
+  this->interiorMinister->CallD4();
+}
+
+// FUNCTION: IMPERIALISM 0x004e78f0
+void TGreatPower::DispatchNationField9CCallback4C(void) {
+  this->defenseMinister->Call4C();
+}
+
+// FUNCTION: IMPERIALISM 0x004e7990
+void TGreatPower::DispatchNationField94Callbacks90And94(void) {
+  this->foreignMinister->Call90();
+  this->foreignMinister->Call94();
+}
+
 // FUNCTION: IMPERIALISM 0x004e7b20
 void TGreatPower::ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
   this->thunk_ApplyDiplomacyPolicyStateForTargetWithCostChecks_At004070e5(arg1, arg2);
@@ -5202,4 +5229,3 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   this->field_20 = uniqueId;
 }
 #pragma optimize("gyt", off)
-

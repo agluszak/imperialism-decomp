@@ -259,22 +259,6 @@ undefined4 RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::DispatchNationField98CallbackD4
-// ghidra_proto void __thiscall DispatchNationField98CallbackD4(void)
-// FUNCTION: IMPERIALISM 0x004e78d0
-undefined4 DispatchNationField98CallbackD4(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::DispatchNationField9CCallback4C
-// ghidra_proto void __thiscall DispatchNationField9CCallback4C(void)
-// FUNCTION: IMPERIALISM 0x004e78f0
-undefined4 DispatchNationField9CCallback4C(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004e7910
 // ghidra_proto void __cdecl OrphanRetStub_004e7910(void)
 // FUNCTION: IMPERIALISM 0x004e7910
@@ -303,14 +287,6 @@ undefined4 OrphanRetStub_004e7950(void)
 // ghidra_proto void __cdecl OrphanRetStub_004e7970(void)
 // FUNCTION: IMPERIALISM 0x004e7970
 undefined4 OrphanRetStub_004e7970(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::DispatchNationField94Callbacks90And94
-// ghidra_proto void __thiscall DispatchNationField94Callbacks90And94(void)
-// FUNCTION: IMPERIALISM 0x004e7990
-undefined4 DispatchNationField94Callbacks90And94(void)
 {
   return 0;
 }

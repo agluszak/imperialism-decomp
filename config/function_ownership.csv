@@ -204,6 +204,9 @@ address|target_cpp|ownership|note
 4e72c0|src/game/TGreatPower.cpp|manual|marker_sync
 4e73f0|src/game/TGreatPower.cpp|manual|marker_sync
 4e7630|src/game/TGreatPower.cpp|manual|marker_sync
+4e78d0|src/game/TGreatPower.cpp|manual|marker_sync
+4e78f0|src/game/TGreatPower.cpp|manual|marker_sync
+4e7990|src/game/TGreatPower.cpp|manual|marker_sync
 4e7b20|src/game/TGreatPower.cpp|manual|marker_sync
 4e7b50|src/game/TGreatPower.cpp|manual|marker_sync
 4e7c50|src/game/TGreatPower.cpp|manual|marker_sync
@@ -509,8 +512,6 @@ address|target_cpp|ownership|note
 5e6d4e|src/game/CArchive.cpp|manual|marker_sync
 5e6da3|src/game/CArchive.cpp|manual|marker_sync
 5e6dd6|src/game/CArchive.cpp|manual|marker_sync
-611d26|src/game/CArchive.cpp|manual|marker_sync
-611f3e|src/game/CArchive.cpp|manual|marker_sync
 601b74|src/game/CPtrList.cpp|manual|marker_sync
 601b94|src/game/CPtrList.cpp|manual|marker_sync
 601baa|src/game/TIndexAndRankList.cpp|manual|marker_sync
@@ -567,6 +568,8 @@ address|target_cpp|ownership|note
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 610a5f|src/game/CDocument.cpp|manual|marker_sync
 611810|src/game/CDocument.cpp|manual|marker_sync
+611d26|src/game/CArchive.cpp|manual|marker_sync
 611e34|src/game/CArchive.cpp|manual|marker_sync
+611f3e|src/game/CArchive.cpp|manual|marker_sync
 618df2|src/game/list_box.cpp|manual|marker_sync
 618e72|src/game/list_box.cpp|manual|marker_sync
