@@ -1427,14 +1427,6 @@ undefined4 ConstructTMiniArmyLineBaseState(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004aad20
-// ghidra_proto void __cdecl OrphanRetStub_004aad20(void)
-// FUNCTION: IMPERIALISM 0x004aad20
-undefined4 OrphanRetStub_004aad20(void)
-{
-  return 0;
-}
-
 // ghidra_name TMiniArmyLine::DestructTMiniArmyLineAndMaybeFree
 // ghidra_proto void * __thiscall DestructTMiniArmyLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x004aad40
@@ -1543,14 +1535,6 @@ undefined4 GetTMiniCivLineClassNamePointer(void)
 // ghidra_proto void * __thiscall ConstructTMiniCivLineBaseState(int arg1)
 // FUNCTION: IMPERIALISM 0x004ab740
 undefined4 ConstructTMiniCivLineBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004ab800
-// ghidra_proto void __cdecl OrphanRetStub_004ab800(void)
-// FUNCTION: IMPERIALISM 0x004ab800
-undefined4 OrphanRetStub_004ab800(void)
 {
   return 0;
 }
@@ -2243,14 +2227,6 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004b13a0(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004b1410
-// ghidra_proto void __cdecl OrphanRetStub_004b1410(void)
-// FUNCTION: IMPERIALISM 0x004b1410
-undefined4 OrphanRetStub_004b1410(void)
-{
-  return 0;
-}
-
 // ghidra_name TCheater::GetTCheaterClassNamePointer
 // ghidra_proto void * __cdecl GetTCheaterClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004b1480
@@ -2295,14 +2271,6 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004b1880(void)
 // ghidra_proto void * __cdecl GetTTechCheaterClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004b1940
 undefined4 GetTTechCheaterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004b1990
-// ghidra_proto void __cdecl OrphanRetStub_004b1990(void)
-// FUNCTION: IMPERIALISM 0x004b1990
-undefined4 OrphanRetStub_004b1990(void)
 {
   return 0;
 }
@@ -2563,14 +2531,6 @@ undefined4 SanitizeCityCounterArray(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004b4210
-// ghidra_proto void __cdecl OrphanRetStub_004b4210(void)
-// FUNCTION: IMPERIALISM 0x004b4210
-undefined4 OrphanRetStub_004b4210(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins07_004b4230
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004b4230(void)
 // FUNCTION: IMPERIALISM 0x004b4230
@@ -2775,14 +2735,6 @@ undefined4 OrphanLeaf_NoCall_Ins02_004b50e0(void)
 // ghidra_proto int __cdecl OrphanCallChain_C1_I16_004b5100(void)
 // FUNCTION: IMPERIALISM 0x004b5100
 undefined4 OrphanCallChain_C1_I16_004b5100(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004b5160
-// ghidra_proto void __cdecl OrphanRetStub_004b5160(void)
-// FUNCTION: IMPERIALISM 0x004b5160
-undefined4 OrphanRetStub_004b5160(void)
 {
   return 0;
 }
@@ -3155,14 +3107,6 @@ undefined4 CreateTUnitOrderInstance(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004b6f00
-// ghidra_proto void __cdecl OrphanRetStub_004b6f00(void)
-// FUNCTION: IMPERIALISM 0x004b6f00
-undefined4 OrphanRetStub_004b6f00(void)
-{
-  return 0;
-}
-
 // ghidra_name TUnitOrder::GetTUnitOrderClassNamePointer
 // ghidra_proto void * __cdecl GetTUnitOrderClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004b6f50
@@ -3291,14 +3235,6 @@ undefined4 OrphanCallChain_C3_I63_004b7b30(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004b7c20
-// ghidra_proto void __cdecl OrphanRetStub_004b7c20(void)
-// FUNCTION: IMPERIALISM 0x004b7c20
-undefined4 OrphanRetStub_004b7c20(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C3_I25_004b7c40
 // ghidra_proto void __cdecl OrphanCallChain_C3_I25_004b7c40(void)
 // FUNCTION: IMPERIALISM 0x004b7c40
@@ -3387,14 +3323,6 @@ undefined4 OrphanCallChain_C1_I12_004b8060(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004b80a0
-// ghidra_proto void __cdecl OrphanRetStub_004b80a0(void)
-// FUNCTION: IMPERIALISM 0x004b80a0
-undefined4 OrphanRetStub_004b80a0(void)
-{
-  return 0;
-}
-
 // ghidra_name TPopGrowthOrder::CreateTPopGrowthOrderInstance
 // ghidra_proto void __thiscall CreateTPopGrowthOrderInstance(int * pTargetCity, ushort span)
 // FUNCTION: IMPERIALISM 0x004b80c0
@@ -3439,14 +3367,6 @@ undefined4 OrphanCallChain_C5_I45_004b8230(void)
 // ghidra_proto void __cdecl OrphanCallChain_C4_I73_004b82f0(void)
 // FUNCTION: IMPERIALISM 0x004b82f0
 undefined4 OrphanCallChain_C4_I73_004b82f0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004b8420
-// ghidra_proto void __cdecl OrphanRetStub_004b8420(void)
-// FUNCTION: IMPERIALISM 0x004b8420
-undefined4 OrphanRetStub_004b8420(void)
 {
   return 0;
 }
@@ -3931,14 +3851,6 @@ undefined4 CreateTInteriorMinisterInstance(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004be190
-// ghidra_proto void __cdecl OrphanRetStub_004be190(void)
-// FUNCTION: IMPERIALISM 0x004be190
-undefined4 OrphanRetStub_004be190(void)
-{
-  return 0;
-}
-
 // ghidra_name TInteriorMinister::GetTInteriorMinisterClassNamePointer
 // ghidra_proto void * __cdecl GetTInteriorMinisterClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004be1b0
@@ -3991,14 +3903,6 @@ undefined4 WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins08_004be3c0(void)
 // FUNCTION: IMPERIALISM 0x004be3c0
 undefined4 OrphanLeaf_NoCall_Ins08_004be3c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004be3f0
-// ghidra_proto void __cdecl OrphanRetStub_004be3f0(void)
-// FUNCTION: IMPERIALISM 0x004be3f0
-undefined4 OrphanRetStub_004be3f0(void)
 {
   return 0;
 }

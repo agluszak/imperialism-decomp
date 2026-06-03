@@ -1779,14 +1779,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004135f0(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004136c0
-// ghidra_proto void __cdecl OrphanRetStub_004136c0(void)
-// FUNCTION: IMPERIALISM 0x004136c0
-undefined4 OrphanRetStub_004136c0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_004136e0
 // ghidra_proto void __thiscall OrphanVtableAssignStub_004136e0(void)
 // FUNCTION: IMPERIALISM 0x004136e0
@@ -1967,14 +1959,6 @@ undefined4 PostWmCloseToMainThreadWindow(void)
 // ghidra_proto void __cdecl PostTurnEventCodeMessage2420(int arg1)
 // FUNCTION: IMPERIALISM 0x00414720
 undefined4 PostTurnEventCodeMessage2420(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00414770
-// ghidra_proto void __cdecl OrphanRetStub_00414770(void)
-// FUNCTION: IMPERIALISM 0x00414770
-undefined4 OrphanRetStub_00414770(void)
 {
   return 0;
 }
@@ -2611,22 +2595,6 @@ undefined4 ConstructUiResourceEntry_Vtbl00640060(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00430550
-// ghidra_proto void __cdecl OrphanRetStub_00430550(void)
-// FUNCTION: IMPERIALISM 0x00430550
-undefined4 OrphanRetStub_00430550(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004305c0
-// ghidra_proto void __cdecl OrphanRetStub_004305c0(void)
-// FUNCTION: IMPERIALISM 0x004305c0
-undefined4 OrphanRetStub_004305c0(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructPictureResourceEntry_Vtbl00640258
 // ghidra_proto void __cdecl ConstructPictureResourceEntry_Vtbl00640258(void)
 // FUNCTION: IMPERIALISM 0x00430630
@@ -2735,22 +2703,6 @@ undefined4 ConstructUiResourceEntry_Vtbl00640940(void)
 // ghidra_proto bool __cdecl ReturnZeroStatus(void)
 // FUNCTION: IMPERIALISM 0x00430bd0
 undefined4 ReturnZeroStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00430bf0
-// ghidra_proto void __cdecl OrphanRetStub_00430bf0(void)
-// FUNCTION: IMPERIALISM 0x00430bf0
-undefined4 OrphanRetStub_00430bf0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00430c10
-// ghidra_proto void __cdecl OrphanRetStub_00430c10(void)
-// FUNCTION: IMPERIALISM 0x00430c10
-undefined4 OrphanRetStub_00430c10(void)
 {
   return 0;
 }
@@ -2879,14 +2831,6 @@ undefined4 ConstructSelectableTextOptionEntry(void)
 // ghidra_proto int * __fastcall ConstructTurnEventMainPictureEntry_104F(int * pEntry)
 // FUNCTION: IMPERIALISM 0x0043d9c0
 undefined4 ConstructTurnEventMainPictureEntry_104F(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0043d9f0
-// ghidra_proto void __cdecl OrphanRetStub_0043d9f0(void)
-// FUNCTION: IMPERIALISM 0x0043d9f0
-undefined4 OrphanRetStub_0043d9f0(void)
 {
   return 0;
 }
@@ -3115,14 +3059,6 @@ undefined4 InitializeOrderStateUiResourceTreeAndControlEntries(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0045acb0
-// ghidra_proto void __cdecl OrphanRetStub_0045acb0(void)
-// FUNCTION: IMPERIALISM 0x0045acb0
-undefined4 OrphanRetStub_0045acb0(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
 // ghidra_proto void __thiscall WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
 // FUNCTION: IMPERIALISM 0x0045ad20
@@ -3135,14 +3071,6 @@ undefined4 WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At0045ad70(void)
 // FUNCTION: IMPERIALISM 0x0045ad70
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0045ad70(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0045ada0
-// ghidra_proto void __cdecl OrphanRetStub_0045ada0(void)
-// FUNCTION: IMPERIALISM 0x0045ada0
-undefined4 OrphanRetStub_0045ada0(void)
 {
   return 0;
 }
@@ -3207,14 +3135,6 @@ undefined4 InitializeTacticalBattleViewToolbarAndDialogControls(void)
 // ghidra_proto void * __thiscall WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
 // FUNCTION: IMPERIALISM 0x0045d270
 undefined4 WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0045d2a0
-// ghidra_proto void __cdecl OrphanRetStub_0045d2a0(void)
-// FUNCTION: IMPERIALISM 0x0045d2a0
-undefined4 OrphanRetStub_0045d2a0(void)
 {
   return 0;
 }

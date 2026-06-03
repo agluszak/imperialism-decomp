@@ -1803,22 +1803,6 @@ undefined4 EmitTurnEvent14ForProxyGreatPowerAction(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00540aa0
-// ghidra_proto void __cdecl OrphanRetStub_00540aa0(void)
-// FUNCTION: IMPERIALISM 0x00540aa0
-undefined4 OrphanRetStub_00540aa0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00540b80
-// ghidra_proto void __cdecl OrphanRetStub_00540b80(void)
-// FUNCTION: IMPERIALISM 0x00540b80
-undefined4 OrphanRetStub_00540b80(void)
-{
-  return 0;
-}
-
 // ghidra_name TryDispatchNationActionViaTurnEventOrFallback
 // ghidra_proto void __cdecl TryDispatchNationActionViaTurnEventOrFallback(void)
 // FUNCTION: IMPERIALISM 0x00540ba0
@@ -2043,114 +2027,10 @@ undefined4 ReturnFalseRemoteGreatPowerCapabilityStub(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00541880
-// ghidra_proto void __cdecl OrphanRetStub_00541880(void)
-// FUNCTION: IMPERIALISM 0x00541880
-undefined4 OrphanRetStub_00541880(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005418a0
-// ghidra_proto void __cdecl OrphanRetStub_005418a0(void)
-// FUNCTION: IMPERIALISM 0x005418a0
-undefined4 OrphanRetStub_005418a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005418c0
-// ghidra_proto void __cdecl OrphanRetStub_005418c0(void)
-// FUNCTION: IMPERIALISM 0x005418c0
-undefined4 OrphanRetStub_005418c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005418e0
-// ghidra_proto void __cdecl OrphanRetStub_005418e0(void)
-// FUNCTION: IMPERIALISM 0x005418e0
-undefined4 OrphanRetStub_005418e0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541900
-// ghidra_proto void __cdecl OrphanRetStub_00541900(void)
-// FUNCTION: IMPERIALISM 0x00541900
-undefined4 OrphanRetStub_00541900(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541920
-// ghidra_proto void __cdecl OrphanRetStub_00541920(void)
-// FUNCTION: IMPERIALISM 0x00541920
-undefined4 OrphanRetStub_00541920(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541940
-// ghidra_proto void __cdecl OrphanRetStub_00541940(void)
-// FUNCTION: IMPERIALISM 0x00541940
-undefined4 OrphanRetStub_00541940(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541960
-// ghidra_proto void __cdecl OrphanRetStub_00541960(void)
-// FUNCTION: IMPERIALISM 0x00541960
-undefined4 OrphanRetStub_00541960(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541980
-// ghidra_proto void __cdecl OrphanRetStub_00541980(void)
-// FUNCTION: IMPERIALISM 0x00541980
-undefined4 OrphanRetStub_00541980(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005419a0
-// ghidra_proto void __cdecl OrphanRetStub_005419a0(void)
-// FUNCTION: IMPERIALISM 0x005419a0
-undefined4 OrphanRetStub_005419a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005419c0
-// ghidra_proto void __cdecl OrphanRetStub_005419c0(void)
-// FUNCTION: IMPERIALISM 0x005419c0
-undefined4 OrphanRetStub_005419c0(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchRemoteGreatPowerCallbackSlot1CC
 // ghidra_proto void __cdecl DispatchRemoteGreatPowerCallbackSlot1CC(void)
 // FUNCTION: IMPERIALISM 0x005419e0
 undefined4 DispatchRemoteGreatPowerCallbackSlot1CC(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541a40
-// ghidra_proto void __cdecl OrphanRetStub_00541a40(void)
-// FUNCTION: IMPERIALISM 0x00541a40
-undefined4 OrphanRetStub_00541a40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541a60
-// ghidra_proto void __cdecl OrphanRetStub_00541a60(void)
-// FUNCTION: IMPERIALISM 0x00541a60
-undefined4 OrphanRetStub_00541a60(void)
 {
   return 0;
 }
@@ -2207,14 +2087,6 @@ undefined4 AllocateAndConstructTRemoteMinor(void)
 // ghidra_proto void __cdecl ReturnTrueRemoteMinorCapabilityStub(void)
 // FUNCTION: IMPERIALISM 0x00541c90
 undefined4 ReturnTrueRemoteMinorCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541cb0
-// ghidra_proto void __cdecl OrphanRetStub_00541cb0(void)
-// FUNCTION: IMPERIALISM 0x00541cb0
-undefined4 OrphanRetStub_00541cb0(void)
 {
   return 0;
 }

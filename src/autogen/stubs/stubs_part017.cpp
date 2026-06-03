@@ -2163,14 +2163,6 @@ undefined4 ConstructTMiniShipLineBaseState(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00569d50
-// ghidra_proto void __cdecl OrphanRetStub_00569d50(void)
-// FUNCTION: IMPERIALISM 0x00569d50
-undefined4 OrphanRetStub_00569d50(void)
-{
-  return 0;
-}
-
 // ghidra_name TMiniShipLine::DestructTMiniShipLineAndMaybeFree
 // ghidra_proto void * __thiscall DestructTMiniShipLineAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00569d70
@@ -2591,22 +2583,6 @@ undefined4 DestructTLineDataAndMaybeFree_Impl(void)
 // ghidra_proto void __thiscall SetLineDataRowAndBounds(ushort primaryIndex, ushort secondaryIndex, int * pRect)
 // FUNCTION: IMPERIALISM 0x0056f420
 undefined4 SetLineDataRowAndBounds(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0056f460
-// ghidra_proto void __cdecl OrphanRetStub_0056f460(void)
-// FUNCTION: IMPERIALISM 0x0056f460
-undefined4 OrphanRetStub_0056f460(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0056f480
-// ghidra_proto void __cdecl OrphanRetStub_0056f480(void)
-// FUNCTION: IMPERIALISM 0x0056f480
-undefined4 OrphanRetStub_0056f480(void)
 {
   return 0;
 }
@@ -3559,14 +3535,6 @@ undefined4 Helper_Uses_BlitRectWithOptionalTransparency_At00572270(void)
 // ghidra_proto void * __cdecl CreateTClickZoneInstance(void)
 // FUNCTION: IMPERIALISM 0x00572350
 undefined4 CreateTClickZoneInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005723d0
-// ghidra_proto void __cdecl OrphanRetStub_005723d0(void)
-// FUNCTION: IMPERIALISM 0x005723d0
-undefined4 OrphanRetStub_005723d0(void)
 {
   return 0;
 }

@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanRetStub_004be410
-// ghidra_proto void __cdecl OrphanRetStub_004be410(void)
-// FUNCTION: IMPERIALISM 0x004be410
-undefined4 OrphanRetStub_004be410(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004be430
-// ghidra_proto void __cdecl OrphanRetStub_004be430(void)
-// FUNCTION: IMPERIALISM 0x004be430
-undefined4 OrphanRetStub_004be430(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins05_004be450
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins05_004be450(void)
 // FUNCTION: IMPERIALISM 0x004be450
@@ -79,14 +63,6 @@ undefined4 OrphanCallChain_C2_I17_004be650(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I13_004be690(void)
 // FUNCTION: IMPERIALISM 0x004be690
 undefined4 OrphanCallChain_C1_I13_004be690(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004be6d0
-// ghidra_proto void __cdecl OrphanRetStub_004be6d0(void)
-// FUNCTION: IMPERIALISM 0x004be6d0
-undefined4 OrphanRetStub_004be6d0(void)
 {
   return 0;
 }
@@ -287,14 +263,6 @@ undefined4 OrphanCallChain_C7_I65_004bfa50(void)
 // ghidra_proto void __thiscall QueueCityProductionRebalanceCommandsByThresholds(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004bfb20
 undefined4 QueueCityProductionRebalanceCommandsByThresholds(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004bff60
-// ghidra_proto void __cdecl OrphanRetStub_004bff60(void)
-// FUNCTION: IMPERIALISM 0x004bff60
-undefined4 OrphanRetStub_004bff60(void)
 {
   return 0;
 }
@@ -1003,22 +971,6 @@ undefined4 ApplyCityViewSelectionPayloadAndRefreshControls(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004c6fb0
-// ghidra_proto void __cdecl OrphanRetStub_004c6fb0(void)
-// FUNCTION: IMPERIALISM 0x004c6fb0
-undefined4 OrphanRetStub_004c6fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004c6fd0
-// ghidra_proto void __cdecl OrphanRetStub_004c6fd0(void)
-// FUNCTION: IMPERIALISM 0x004c6fd0
-undefined4 OrphanRetStub_004c6fd0(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::SetUniversityDialogTextAndRefresh
 // ghidra_proto void __thiscall SetUniversityDialogTextAndRefresh(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004c6ff0
@@ -1471,14 +1423,6 @@ undefined4 DestructTPurchaseClusterAndMaybeFree(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I08_004cc440(void)
 // FUNCTION: IMPERIALISM 0x004cc440
 undefined4 OrphanCallChain_C1_I08_004cc440(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004cc470
-// ghidra_proto void __cdecl OrphanRetStub_004cc470(void)
-// FUNCTION: IMPERIALISM 0x004cc470
-undefined4 OrphanRetStub_004cc470(void)
 {
   return 0;
 }
@@ -2619,14 +2563,6 @@ undefined4 SetNationPercentFieldByModeAndDescriptorLinks(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004d7e90
-// ghidra_proto void __cdecl OrphanRetStub_004d7e90(void)
-// FUNCTION: IMPERIALISM 0x004d7e90
-undefined4 OrphanRetStub_004d7e90(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
 // ghidra_proto void __thiscall GenerateMappedFlavorTextByNationSlotField0C(int arg1)
 // FUNCTION: IMPERIALISM 0x004d7eb0
@@ -2675,34 +2611,10 @@ undefined4 ReturnFalseNationStateCapabilityFlag90(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004d7f80
-// ghidra_proto void __cdecl OrphanRetStub_004d7f80(void)
-// FUNCTION: IMPERIALISM 0x004d7f80
-undefined4 OrphanRetStub_004d7f80(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004d7fa0
-// ghidra_proto void __cdecl OrphanRetStub_004d7fa0(void)
-// FUNCTION: IMPERIALISM 0x004d7fa0
-undefined4 OrphanRetStub_004d7fa0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins02_004d7fc0
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7fc0(void)
 // FUNCTION: IMPERIALISM 0x004d7fc0
 undefined4 OrphanLeaf_NoCall_Ins02_004d7fc0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004d7fe0
-// ghidra_proto void __cdecl OrphanRetStub_004d7fe0(void)
-// FUNCTION: IMPERIALISM 0x004d7fe0
-undefined4 OrphanRetStub_004d7fe0(void)
 {
   return 0;
 }
@@ -2775,22 +2687,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
 // ghidra_proto void __thiscall ConstructNationStateBase_Vtbl653938(void)
 // FUNCTION: IMPERIALISM 0x004d89f0
 undefined4 ConstructNationStateBase_Vtbl653938(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004d8bc0
-// ghidra_proto void __cdecl OrphanRetStub_004d8bc0(void)
-// FUNCTION: IMPERIALISM 0x004d8bc0
-undefined4 OrphanRetStub_004d8bc0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004d8be0
-// ghidra_proto void __cdecl OrphanRetStub_004d8be0(void)
-// FUNCTION: IMPERIALISM 0x004d8be0
-undefined4 OrphanRetStub_004d8be0(void)
 {
   return 0;
 }
@@ -2955,26 +2851,10 @@ undefined4 OrphanLeaf_NoCall_Ins06_004dca60(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004dca80
-// ghidra_proto void __cdecl OrphanRetStub_004dca80(void)
-// FUNCTION: IMPERIALISM 0x004dca80
-undefined4 OrphanRetStub_004dca80(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C6_I98_004dcaa0
 // ghidra_proto uint __cdecl OrphanCallChain_C6_I98_004dcaa0(void)
 // FUNCTION: IMPERIALISM 0x004dcaa0
 undefined4 OrphanCallChain_C6_I98_004dcaa0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004dcc30
-// ghidra_proto void __cdecl OrphanRetStub_004dcc30(void)
-// FUNCTION: IMPERIALISM 0x004dcc30
-undefined4 OrphanRetStub_004dcc30(void)
 {
   return 0;
 }
@@ -3231,14 +3111,6 @@ undefined4 OrphanCallChain_C1_I29_004ddf20(void)
 // ghidra_proto void __thiscall ClearFieldBlock1c6(void)
 // FUNCTION: IMPERIALISM 0x004ddf90
 undefined4 ClearFieldBlock1c6(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004de2b0
-// ghidra_proto void __cdecl OrphanRetStub_004de2b0(void)
-// FUNCTION: IMPERIALISM 0x004de2b0
-undefined4 OrphanRetStub_004de2b0(void)
 {
   return 0;
 }
