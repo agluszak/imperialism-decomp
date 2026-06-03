@@ -3,6 +3,6 @@
 CObject::~CObject() {}
 
 void* CObject::GetRuntimeClass() { return 0; }
-int CObject::AssertValidOrSlot08() { return 0; }
-void CObject::DumpOrSlot0c() {}
-void CObject::SerializeOrSlot10() {}
+void CObject::Serialize(CArchive*) {}
+int CObject::AssertValidOrSlot0c() { return 0; }
+void CObject::DumpOrSlot10() {}

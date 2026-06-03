@@ -4,20 +4,6 @@
 
 #include "game/vcall_runtime.h"
 
-// CObject::GetRuntimeClass; CArchive::WriteObject; status=provisional
-static __inline void* VCall_CObject_GetRuntimeClassSlot0(void* object) {
-  typedef void* (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x0 / 4)));
-  return fn(object, 0);
-}
-
-// CObject::Serialize(CArchive*); CArchive::WriteObject; status=provisional
-static __inline void VCall_CObject_SerializeSlot8(void* object, void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x8 / 4)));
-  fn(object, 0, arg0);
-}
-
 // temporary-surface target rect apply; class=QuickDrawRenderTarget; status=provisional
 static __inline void VCall_QuickDrawTarget_ApplyRectSlot110(void* object, int* arg0) {
   typedef void (__fastcall * Fn)(void*, int*);

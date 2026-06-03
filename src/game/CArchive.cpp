@@ -1,6 +1,7 @@
 #include "game/CArchive.h"
 
 #include "game/CMapPtrToPtr.h"
+#include "game/CObject.h"
 #include "game/generated/vcall_facades.h"
 
 // MFC CArchive code was compiled favor-size in the original.
@@ -109,34 +110,41 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
 // provisional class name "TNetMgr" and the read side as a free "ReadObject", but
 // both are thiscall methods on this archive class. Owned here as real members so
 // callers dispatch through the vtable-free member ABI instead of a cast bridge.
-// Bodies are not yet ported (handle-map / class-token machinery: MapObject,
-// WriteClass, CheckCount, NodeScanner::ReadClass, CreateObject, InsertAt ...).
+// The object's own virtuals (GetRuntimeClass slot 0, Serialize slot +0x8) are
+// called through a real CObject*, so the compiler caches the vtable in a register
+// across both calls exactly like the original (no facade/edx indirection).
+// Some helpers are still stubs (MapObject, WriteClass, ReadObject, NodeScanner::
+// ReadClass, CreateObject, InsertAt ...).
 
 // FUNCTION: IMPERIALISM 0x006121e1
 void CArchive::WriteObject(void* objectRef) {
   MapObject(0);
+  CObject* pOb = reinterpret_cast<CObject*>(objectRef);
   unsigned int nIndex;
-  if (objectRef == 0) {
+  if (pOb == 0) {
+    // NULL serializes as the reserved index 0.
     nIndex = 0;
+  } else if ((nIndex = *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pOb))) != 0) {
+    // Already serialized: fall through and emit its handle index below.
   } else {
-    nIndex = *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(objectRef));
-    if (nIndex == 0) {
-      // First time this object is seen: emit its class, then serialize it.
-      void* runtimeClass = VCall_CObject_GetRuntimeClassSlot0(objectRef);
-      WriteClass(runtimeClass);
-      CheckCount();
-      *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(objectRef)) = m_nMapCount;
-      m_nMapCount = m_nMapCount + 1;
-      VCall_CObject_SerializeSlot8(objectRef, this);
-      return;
-    }
-    if (nIndex > 0x7ffe) {
-      WriteWordToSerializedBuffer(0x7fff);
-      WriteDwordToSerializedBuffer(nIndex);
-      return;
-    }
+    // First time this object is seen: emit its class, register a handle, then
+    // serialize it.
+    WriteClass(pOb->GetRuntimeClass());
+    CheckCount();
+    *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pOb)) = m_nMapCount;
+    m_nMapCount = m_nMapCount + 1;
+    pOb->Serialize(this);
+    return;
   }
-  WriteWordToSerializedBuffer(static_cast<unsigned short>(nIndex));
+
+  // Write the tag: a 16-bit index, with a 0x7fff escape + 32-bit index for
+  // values that do not fit.
+  if (nIndex < 0x7fff) {
+    WriteWordToSerializedBuffer(static_cast<unsigned short>(nIndex));
+  } else {
+    WriteWordToSerializedBuffer(0x7fff);
+    WriteDwordToSerializedBuffer(nIndex);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0061225e
