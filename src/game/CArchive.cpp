@@ -78,9 +78,12 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
   if (nCount == 0) {
     return;
   }
-  unsigned int avail = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);
-  unsigned int copyLen = (nCount < avail) ? nCount : avail;
-  CopyMemory(m_lpBufCur, src, copyLen);
+  unsigned char* cur = m_lpBufCur;
+  unsigned int copyLen = static_cast<unsigned int>(m_lpBufMax - cur);
+  if (nCount < copyLen) {
+    copyLen = nCount;
+  }
+  CopyMemory(cur, src, copyLen);
   m_lpBufCur += copyLen;
   src = reinterpret_cast<const char*>(src) + copyLen;
   nCount -= copyLen;
@@ -191,7 +194,7 @@ void CArchive::FillBuffer(unsigned int requiredBytes) {
 
 // FUNCTION: IMPERIALISM 0x005e6da3
 CArchive* CArchive::ReadWordFromSerializedBuffer(void* outWord) {
-  if (m_lpBufMax < m_lpBufCur + 2) {
+  if (m_lpBufCur + 2 > m_lpBufMax) {
     FillBuffer(static_cast<unsigned int>(m_lpBufCur + 2 - m_lpBufMax));
   }
   *reinterpret_cast<unsigned short*>(outWord) = *reinterpret_cast<unsigned short*>(m_lpBufCur);
@@ -201,7 +204,7 @@ CArchive* CArchive::ReadWordFromSerializedBuffer(void* outWord) {
 
 // FUNCTION: IMPERIALISM 0x005e6dd6
 CArchive* CArchive::ReadDwordFromSerializedBuffer(void* outDword) {
-  if (m_lpBufMax < m_lpBufCur + 4) {
+  if (m_lpBufCur + 4 > m_lpBufMax) {
     FillBuffer(static_cast<unsigned int>(m_lpBufCur + 4 - m_lpBufMax));
   }
   *reinterpret_cast<unsigned int*>(outDword) = *reinterpret_cast<unsigned int*>(m_lpBufCur);
