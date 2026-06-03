@@ -2285,10 +2285,6 @@ Also resolved a popped WIP stash (`THandleStream` ctor/vtable) whose changes wer
 already superseded by committed work; took the current HEAD version for
 `stream.cpp`/`stream.h`/`symbols.csv` and dropped the obsolete stash.
 
-||||||| original
-
-=======
-
 ### TGreatPower diplomacy need-score reset slice (2026-06-03 06:50 CEST)
 
 Promoted three adjacent `TGreatPower` diplomacy/aid-budget methods from stubs into the real class
@@ -2311,4 +2307,24 @@ Commands: `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`
 `just compare` for all three addresses, `just compare-canaries` (`below_floor=0`), `just stats`
 (aligned **+20**, paired **+41**, average similarity **+0.29 pp**).
 
->>>>>>> theirs
+### CArchive CheckCount → real method (2026-06-03)
+
+Ported `0x006121cd` `CArchive::CheckCount` from a `__fastcall` free-function bridge into
+a real class method — **100% match**. Removed the calling-convention reinterpret-cast
+shape per the MSVC500 guardrail. Named the two touched fields: `m_pExceptionContext`
+(+0x10, the name/context argument to `AfxThrowArchiveException`) and `m_nMapCount`
+(+0x30, the object-map reference counter). Corrected the guard to `m_nMapCount >=
+0x3ffffffe` so the emitted `cmp 0x3ffffffe; jb` matches the original (was `> 0x3ffffffd`
+→ `jbe`).
+
+Root-cause for the pairing failure after the method conversion: a Rule 3 violation — two
+description comment lines sat between the `// FUNCTION` marker and the declaration, so
+reccmp could not associate the marker with `CArchive::CheckCount`. Moving the comment
+above the marker restored pairing. `0x00612000` `WriteCount` still 100%.
+
+Also resolved a pre-existing unresolved merge conflict in this worklog (the
+`||||||| original` / `=======` / `>>>>>>> theirs` block above), keeping both adjacent
+entries.
+
+Commands: `just build`, `just detect`, `just compare 0x006121cd` (**100%**),
+`just compare 0x00612000` (**100%**), `just vtable-gate` (passed).
