@@ -1,5 +1,25 @@
 # Worklog
 
+## 2026-06-04
+
+**CArchive::WriteObject (0x006121e1): 51% -> 94.23%** by modeling the object's real
+C++ virtuals instead of the vcall_runtime facades. Replaced
+`VCall_CObject_GetRuntimeClassSlot0`/`VCall_CObject_SerializeSlot8` with calls
+through a real `CObject*` (`pOb->GetRuntimeClass()`, `pOb->Serialize(this)`) and
+removed both rows from `config/vtable_slots.csv` (regen-vcall-facades: 127->125
+wrappers). This eliminated the facade `xor edx,edx` and let MSVC cache the object
+vtable in one register across both virtual calls (`mov ebx,[edi]; call [ebx]; ...
+call [ebx+8]`), exactly matching the original. Also restructured the body to the
+genuine MFC `WriteObject` shape (three-way `if/else if/else`, first-time path
+returns, shared tag-write trailer with the `0x7fff` escape) — that single shape
+change was worth 58.82%->94.23%. Remaining 6% is one optimizer-specialized null
+block (original reuses `edi`=0 and skips the size `cmp`); not chased.
+
+Corrected `CObject` vtable order to canonical MFC (`GetRuntimeClass`, `~CObject`,
+`Serialize`@+0x8, `AssertValid`@+0xc, `Dump`@+0x10); the header had `Serialize` at
++0x10. Proven by WriteObject calling slot +0x8 with `this` as the only arg.
+Canaries clean (below_floor=0).
+
 ## 2026-06-03
 
 ### TStream family — TFileStream byte wrappers + THandleStream extent advance

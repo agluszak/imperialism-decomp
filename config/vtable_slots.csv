@@ -124,5 +124,3 @@ src/game/TTextList.cpp|VCall_TextList_OnSelectionConfirmed|void|0x13c / 4||mediu
 src/game/TTextList.cpp|VCall_Parent_DispatchEvent|void|0x40 / 4|int,void*,int|medium|parent event dispatcher|index|thiscall|zero||provisional|TView
 src/game/TFileStream.cpp|VCall_Stream_WriteCountSlot88|void|0x88 / 4|int|medium|stream write count/length prefix|index|thiscall|none||provisional|TStream
 src/game/TFileStream.cpp|VCall_Stream_WriteBytesSlot78|void|0x78 / 4|void*,int|medium|stream write raw bytes|index|thiscall|none||provisional|TStream
-src/game/CArchive.cpp|VCall_CObject_GetRuntimeClassSlot0|void*|0x0 / 4||high|CObject::GetRuntimeClass; CArchive::WriteObject
-src/game/CArchive.cpp|VCall_CObject_SerializeSlot8|void|0x8 / 4|void*|high|CObject::Serialize(CArchive*); CArchive::WriteObject
