@@ -1,80 +1,24 @@
 #pragma once
 
-// Shared UI-wrapper scaffolding extracted from widget class files.
+// Shared UI-wrapper scaffolding for the widget class files.
+//
+// The globally-named scaffolding (UI runtime context, RECT helpers, QuickDraw
+// guards, the loose ABI thunks, and the now-global TradeControl) has been split
+// into focused headers and is re-exported here. The per-widget state structs,
+// their vtable/class-descriptor address placeholders, the runtime bridge, and
+// the local constants stay in this header's anonymous namespace: MSVC500 keys
+// anonymous-namespace mangling on the defining file, so relocating them to other
+// files would rename every factory/ctor symbol and desync it from the recovered
+// symbol database. They remain here until that database is re-synced.
 
 #include "decomp_types.h"
 #include "game/TControl.h"
-
-struct UiRuntimeContext {
-  void* vftable;
-  char pad_04[0x2a];
-  short activeNationIdAt2E;
-
-  short GetActiveNationId(void);
-  int MapTurnEventCodeToPaletteIndex(int eventCode);
-};
-
-extern "C" UiRuntimeContext* g_pUiRuntimeContext;
-
-struct RECT {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-
-extern "C" int __stdcall CopyRect(RECT* destination, const RECT* source);
-extern "C" int __stdcall OffsetRect(RECT* rect, int dx, int dy);
-
-// Reusable QuickDraw clip-surface guard. The constructor reuses a cached surface
-// wrapper (global free-list head) or allocates a new one; the destructor caches
-// this surface if none is cached, otherwise frees it. Modeled as a stack RAII
-// object so MSVC reproduces the original C++ EH frame that wraps QuickDraw
-// drawing bodies. ctor: 0x00497320, dtor: 0x00497390 (defined in trade_screen.cpp).
-struct QuickDrawSurfaceGuard {
-  int surfaceWrapper;
-  QuickDrawSurfaceGuard();
-  ~QuickDrawSurfaceGuard();
-};
-
-undefined4 thunk_ConstructScopedMapQuickDrawContext(void);
-undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
-
-// Scoped map QuickDraw context guard. This is a separate RAII family from
-// QuickDrawSurfaceGuard and appears in animation/render wrappers.
-struct ScopedMapQuickDrawContextGuard {
-  int storage[6];
-
-  explicit ScopedMapQuickDrawContextGuard(void* renderTarget) {
-    reinterpret_cast<void(__fastcall*)(ScopedMapQuickDrawContextGuard*, int, int)>(
-        thunk_ConstructScopedMapQuickDrawContext)(this, 0, reinterpret_cast<int>(renderTarget));
-  }
-
-  ~ScopedMapQuickDrawContextGuard() {
-    reinterpret_cast<void(__cdecl*)()>(thunk_DestroyScopedMapQuickDrawContext)();
-  }
-};
-
-void __cdecl SetQuickDrawFillColor(int fillColor);
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-unsigned int __cdecl thunk_GetActiveNationId(void);
-undefined4 thunk_NoOpUiLifecycleHook(void);
-undefined4 thunk_HandleCityDialogToggleCommandOrForward(void);
-undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void);
-undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
-undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
-undefined4 ConstructTUberClusterBaseState(void);
-undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
-undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
-undefined4 thunk_ConstructPictureResourceEntryBase(void);
-void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx = 0,
-                                                  unsigned int styleSeed = 0);
-void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
-                                                 int eventExtra);
-undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
-undefined4 thunk_DestructEngineerDialogBaseState(void);
-undefined4 thunk_DestructCityDialogSharedBaseState(void);
+#include "game/TView.h"
+#include "game/TradeControl.h"
+#include "game/UiRuntimeContext.h"
+#include "game/win_rect.h"
+#include "game/quickdraw_guards.h"
+#include "game/ui_widget_thunks.h"
 
 namespace {
 
@@ -106,164 +50,6 @@ static char g_pClassDescTNumberedArrowButton;
 static char g_vtblTCombatReportView;
 // GLOBAL: IMPERIALISM 0x6630b8
 static char g_pClassDescTCombatReportView;
-
-struct TradeControl {
-  char pad_04[0x18];
-  int controlTag;
-  char pad_20[0x64];
-  short bitmapId;
-
-  virtual void CtrlSlot00(void) = 0;
-  virtual void CtrlSlot01(void) = 0;
-  virtual void CtrlSlot02(void) = 0;
-  virtual void CtrlSlot03(void) = 0;
-  virtual void CtrlSlot04(void) = 0;
-  virtual void CtrlSlot05(void) = 0;
-  virtual void CtrlSlot06(void) = 0;
-  virtual void CtrlSlot07(void) = 0;
-  virtual void CtrlSlot08(void) = 0;
-  virtual void CtrlSlot09(void) = 0;
-  virtual void CtrlSlot10(void) = 0;
-  virtual void SetControlValueSlot2C(int value) = 0;
-  virtual short QueryStepValueSlot30(void) = 0;
-  virtual void CtrlSlot13(void) = 0;
-  virtual void CtrlSlot14(void) = 0;
-  virtual void CtrlSlot15(void) = 0;
-  virtual void CtrlSlot16(int commandId, void* eventArg, int eventExtra) = 0;
-  virtual void CtrlSlot17(void) = 0;
-  virtual void CtrlSlot18(void) = 0;
-  virtual void CtrlSlot19(void) = 0;
-  virtual void CtrlSlot20(void) = 0;
-  virtual void CtrlSlot21(void) = 0;
-  virtual void CtrlSlot22(void) = 0;
-  virtual void CtrlSlot23(void) = 0;
-  virtual void CtrlSlot24(void) = 0;
-  virtual void CtrlSlot25(void) = 0;
-  virtual void CtrlSlot26(void) = 0;
-  virtual void CtrlSlot27(void) = 0;
-  virtual void CtrlSlot28(void) = 0;
-  virtual void CtrlSlot29(void) = 0;
-  virtual void CtrlSlot30(void) = 0;
-  virtual void CtrlSlot31(void) = 0;
-  virtual void CtrlSlot32(void) = 0;
-  virtual void CtrlSlot33(void) = 0;
-  virtual void CtrlSlot34(void) = 0;
-  virtual void CtrlSlot35(void) = 0;
-  virtual void CtrlSlot36(void) = 0;
-  virtual void CtrlSlot37(void) = 0;
-  virtual void CtrlSlot38(void) = 0;
-  virtual void CtrlSlot39(void) = 0;
-  virtual void CtrlSlot40(void) = 0;
-  virtual void SetEnabledSlotA4(int enabled, int unknownFlag) = 0;
-  virtual void SetStateSlotA8(int enabled, int unknownFlag) = 0;
-  virtual void CtrlSlot43(void) = 0;
-  virtual void CtrlSlot44(void) = 0;
-  virtual void CtrlSlot45(void) = 0;
-  virtual void CtrlSlot46(void) = 0;
-  virtual void CtrlSlot47(void) = 0;
-  virtual void CtrlSlot48(void) = 0;
-  virtual void CtrlSlot49(void) = 0;
-  virtual void CtrlSlot50(void) = 0;
-  virtual void CtrlSlot51(void) = 0;
-  virtual void CtrlSlot52(void) = 0;
-  virtual void CtrlSlot53(void) = 0;
-  virtual void CtrlSlot54(void) = 0;
-  virtual void CtrlSlot55(void) = 0;
-  virtual void CtrlSlot56(void) = 0;
-  virtual void CtrlSlot57(void) = 0;
-  virtual void CtrlSlot58(void) = 0;
-  virtual char IsActionableSlotEC(void) = 0;
-  virtual void CaptureLayoutSlotF0(int* buffer, int modeFlag) = 0;
-  virtual void CaptureLayoutSlotF4(int* buffer, int modeFlag) = 0;
-  virtual char RefreshSlotF8(void) = 0;
-  virtual void CtrlSlot63(void) = 0;
-  virtual void CtrlSlot64(void) = 0;
-  virtual void CtrlSlot65(void) = 0;
-  virtual void CtrlSlot66(void) = 0;
-  virtual void CtrlSlot67(void) = 0;
-  virtual void CtrlSlot68(void) = 0;
-  virtual void UpdateAfterBitmapChangeSlot114(int unknownFlag) = 0;
-  virtual void CtrlSlot70(void) = 0;
-  virtual void CtrlSlot71(void) = 0;
-  virtual void CtrlSlot72(void) = 0;
-  virtual void CtrlSlot73(void) = 0;
-  virtual void QueryContentBoundsSlot128(int* boundsBuffer) = 0;
-  virtual void QueryBoundsSlot12C(int* boundsBuffer) = 0;
-  virtual void CtrlSlot76(void) = 0;
-  virtual void CtrlSlot77(void) = 0;
-  virtual void CtrlSlot78(void) = 0;
-  virtual void CtrlSlot79(void) = 0;
-  virtual void CtrlSlot80(void) = 0;
-  virtual void CtrlSlot81(void) = 0;
-  virtual void CtrlSlot82(void) = 0;
-  virtual void CtrlSlot83(void) = 0;
-  virtual void CtrlSlot84(void) = 0;
-  virtual void CtrlSlot85(void) = 0;
-  virtual void CtrlSlot86(void) = 0;
-  virtual void CtrlSlot87(void) = 0;
-  virtual void CtrlSlot88(void) = 0;
-  virtual void CtrlSlot89(void) = 0;
-  virtual void ApplyBoundsSlot168(int* boundsBuffer, int modeFlag) = 0;
-  virtual char CtrlSlot91(void* dispatchArg) = 0;
-  virtual void CtrlSlot92(void) = 0;
-  virtual void CtrlSlot93(void) = 0;
-  virtual void CtrlSlot94(void) = 0;
-  virtual void CtrlSlot95(void) = 0;
-  virtual void CtrlSlot96(void) = 0;
-  virtual void CtrlSlot97(void) = 0;
-  virtual void CtrlSlot98(void) = 0;
-  virtual void CtrlSlot99(void) = 0;
-  virtual void CtrlSlot100(void) = 0;
-  virtual void CtrlSlot101(void) = 0;
-  virtual void CtrlSlot102(void) = 0;
-  virtual void CtrlSlot103(void) = 0;
-  virtual int ApplyMoveClampSlot1A0(int baseValue, int requestedValue) = 0;
-  virtual void SetBarMetricSlot1A4(int value, int range) = 0;
-  virtual void CtrlSlot106(void) = 0;
-  virtual void SetBarMetricRatioSlot1AC(int value) = 0;
-  virtual void CtrlSlot108(void) = 0;
-  virtual void ApplyStyleDescriptorSlot1B4(void* descriptorBuffer, int modeFlag) = 0;
-  virtual void CtrlSlot110(void) = 0;
-  virtual void CtrlSlot111(void) = 0;
-  virtual void CtrlSlot112(void) = 0;
-  virtual void SetStyleStateSlot1C4(int stateValue, int modeFlag) = 0;
-  virtual void SetBitmapSlot1C8(int bitmapIdValue, int unknownFlag) = 0;
-  virtual void InvokeSlot1CCVirtual(int value, int modeFlag) = 0;
-  virtual void CtrlSlot116(void) = 0;
-  virtual void CtrlSlot117(void) = 0;
-  virtual void CtrlSlot118(void) = 0;
-  virtual void CtrlSlot119(void) = 0;
-  virtual void CtrlSlot120(void) = 0;
-  virtual void SetControlValueSlot1E4(int value, int updateFlag) = 0;
-  virtual int QueryValueSlot1E8(void) = 0;
-
-  __inline int QueryValue();
-  __inline short QueryStepValue();
-  __inline char IsActionable();
-  __inline void SetEnabledSingle(int enabled);
-  __inline void SetEnabledPair(int enabled, int unknownFlag);
-  __inline void SetStatePair(int enabled, int unknownFlag);
-  __inline void SetBitmap(int bitmapIdValue, int unknownFlag);
-  __inline void SetBarMetric(int value, int range);
-  __inline void SetBarMetricRatio(int value);
-  __inline int ApplyMoveClamp(int baseValue, int requestedValue);
-  __inline void SetControlValue(int value, int updateFlag);
-  __inline void SetControlValueRaw(int value);
-  __inline void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
-  __inline void SetStyleState(int stateValue, int modeFlag);
-  __inline void QueryBounds(int* boundsBuffer);
-  __inline void QueryContentBounds(int* boundsBuffer);
-  __inline void ApplyBounds(int* boundsBuffer, int modeFlag);
-  __inline void CaptureLayoutF0(int* buffer, int modeFlag);
-  __inline void CaptureLayout(int* buffer, int modeFlag);
-  __inline void CaptureLayoutPreset11_14();
-  __inline char Refresh();
-  __inline void UpdateAfterBitmapChange(int unknownFlag);
-  __inline void InvokeSlotE4();
-  __inline void InvokeSlot1CC(int value, int modeFlag);
-  __inline void InvokeSlot13C();
-  __inline void InvokeSlot1A8();
-};
 
 struct CivilianButtonState {
   void* vftable;
@@ -353,111 +139,6 @@ public:
     reinterpret_cast<void(__fastcall*)(void*)>(::thunk_DestructCityDialogSharedBaseState)(self);
   }
 };
-
-__inline int TradeControl::QueryValue() {
-  return this->QueryValueSlot1E8();
-}
-
-__inline short TradeControl::QueryStepValue() {
-  return this->QueryStepValueSlot30();
-}
-
-__inline char TradeControl::IsActionable() {
-  return this->IsActionableSlotEC();
-}
-
-__inline void TradeControl::SetEnabledSingle(int enabled) {
-  this->SetEnabledSlotA4(enabled, 1);
-}
-
-__inline void TradeControl::SetEnabledPair(int enabled, int unknownFlag) {
-  this->SetEnabledSlotA4(enabled, unknownFlag);
-}
-
-__inline void TradeControl::SetStatePair(int enabled, int unknownFlag) {
-  this->SetStateSlotA8(enabled, unknownFlag);
-}
-
-__inline void TradeControl::SetBitmap(int bitmapIdValue, int unknownFlag) {
-  this->SetBitmapSlot1C8(bitmapIdValue, unknownFlag);
-}
-
-__inline void TradeControl::SetBarMetric(int value, int range) {
-  this->SetBarMetricSlot1A4(value, range);
-}
-
-__inline void TradeControl::SetBarMetricRatio(int value) {
-  this->SetBarMetricRatioSlot1AC(value);
-}
-
-__inline int TradeControl::ApplyMoveClamp(int baseValue, int requestedValue) {
-  return this->ApplyMoveClampSlot1A0(baseValue, requestedValue);
-}
-
-__inline void TradeControl::SetControlValue(int value, int updateFlag) {
-  this->SetControlValueSlot1E4(value, updateFlag);
-}
-
-__inline void TradeControl::SetControlValueRaw(int value) {
-  this->SetControlValueSlot2C(value);
-}
-
-__inline void TradeControl::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {
-  this->ApplyStyleDescriptorSlot1B4(descriptorBuffer, modeFlag);
-}
-
-__inline void TradeControl::SetStyleState(int stateValue, int modeFlag) {
-  this->SetStyleStateSlot1C4(stateValue, modeFlag);
-}
-
-__inline void TradeControl::QueryBounds(int* boundsBuffer) {
-  this->QueryBoundsSlot12C(boundsBuffer);
-}
-
-__inline void TradeControl::QueryContentBounds(int* boundsBuffer) {
-  this->QueryContentBoundsSlot128(boundsBuffer);
-}
-
-__inline void TradeControl::ApplyBounds(int* boundsBuffer, int modeFlag) {
-  this->ApplyBoundsSlot168(boundsBuffer, modeFlag);
-}
-
-__inline void TradeControl::CaptureLayoutF0(int* buffer, int modeFlag) {
-  this->CaptureLayoutSlotF0(buffer, modeFlag);
-}
-
-__inline void TradeControl::CaptureLayout(int* buffer, int modeFlag) {
-  this->CaptureLayoutSlotF4(buffer, modeFlag);
-}
-
-__inline void TradeControl::CaptureLayoutPreset11_14() {
-  int layoutCapture[2] = {0x11, 0x14};
-  CaptureLayout(layoutCapture, 1);
-}
-
-__inline char TradeControl::Refresh() {
-  return this->RefreshSlotF8();
-}
-
-__inline void TradeControl::UpdateAfterBitmapChange(int unknownFlag) {
-  this->UpdateAfterBitmapChangeSlot114(unknownFlag);
-}
-
-__inline void TradeControl::InvokeSlotE4() {
-  this->CtrlSlot57();
-}
-
-__inline void TradeControl::InvokeSlot1CC(int value, int modeFlag) {
-  this->InvokeSlot1CCVirtual(value, modeFlag);
-}
-
-__inline void TradeControl::InvokeSlot13C() {
-  this->CtrlSlot79();
-}
-
-__inline void TradeControl::InvokeSlot1A8() {
-  this->CtrlSlot106();
-}
 
 static __inline short QueryActiveNationId(void) {
   return (short)thunk_GetActiveNationId();
