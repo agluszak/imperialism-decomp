@@ -2071,3 +2071,25 @@ Then promoted the three small, grounded minister-field dispatch callbacks in rep
    `foreignMinister->Call90(); Call94()` — **100%**.
 
 Commands: `just build`, `just detect`, targeted `just compare` for all three addresses.
+
+### TGreatPower diplomacy need-score reset slice (2026-06-03 06:50 CEST)
+
+Promoted three adjacent `TGreatPower` diplomacy/aid-budget methods from stubs into the real class
+model:
+1. `0x004dd140` `RecomputeDiplomacyAidBudgetScoreFromResourceWeights` — **84.62%**. This names
+   vtable index `0x59` / byte offset `0x164` as a real virtual method and confirms the relation
+   manager weight band at `relationManager+0x5c`.
+2. `0x004dd1b0` `ResetDiplomacyNeedScoresAndClearAidAllocationMatrix` — **100% effective match**.
+   This calls slot `0x59`, resets `diplomacyCounterB0`, `budgetPoolBase`, `budgetPoolDelta`, and
+   clears aid-allocation columns.
+3. `0x004dd270` `RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix` — **93.02%**. Same
+   per-nation baseline refresh/aid-column clear path without the full accumulator reset preamble.
+
+Also replaced vtable index `0x1e` / byte `0x078` with
+`GetDiplomacyNeedScoreSlot1E_Provisional(int)`, grounded by both reset loops caching that vtable
+entry and calling it for each nation. No static self-call shims were added; known `TGreatPower*`
+receivers use direct virtual syntax.
+
+Commands: `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`, targeted
+`just compare` for all three addresses, `just compare-canaries` (`below_floor=0`), `just stats`
+(aligned **+20**, paired **+41**, average similarity **+0.29 pp**).
