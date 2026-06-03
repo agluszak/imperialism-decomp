@@ -2390,3 +2390,18 @@ single `ret N` = stdcall; `xor al,al`/`mov al,1` = bool return; `xor eax,eax;
 ret N` = `int` return 0 (this last one masquerades as bare-ret against the stub).
 
 `just vtable-gate` passed.
+
+### Constant-bool stub batch — 52 more to 100% (2026-06-04)
+
+Third no-op-lever batch: free functions whose original is `xor al,al; ret[ N]`
+(return false) or `mov al,1; ret[ N]` (return true). Ported all 52 into
+`noop_slots.cpp` as `bool Name(...) { return false|true; }` — the 1-byte `bool`
+return reproduces the `al`-width load (an `int`/`unsigned int` return would emit a
+dword `xor eax,eax`/`mov eax,1` and miss). `__stdcall` for the `ret N` arg-cleaning
+variants; FPO pragma keeps them frameless. No thunk-caller conflicts. All 52
+verified **100%**; `just vtable-gate` passed.
+
+Cumulative this session: 235 functions to 100% — 3 CArchive ports (CheckCount as a
+real method, Close, GetTNetMgrClassNamePointer) plus 232 trivial stubs across three
+`noop_slots.cpp` batches (49 empty no-ops, 131 empty/return-0 stubs, 52 const-bool).
+aligned/original 1.18% → 2.99%.

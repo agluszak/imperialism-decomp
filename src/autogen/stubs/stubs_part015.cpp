@@ -3483,14 +3483,6 @@ undefined4 WrapperFor_ftol_At00534a80(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseMissionVtableSlot28
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot28(void)
-// FUNCTION: IMPERIALISM 0x00534c00
-undefined4 ReturnFalseMissionVtableSlot28(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMissionStateByte8To2
 // ghidra_proto void __cdecl SetMissionStateByte8To2(void)
 // FUNCTION: IMPERIALISM 0x00534c60
@@ -3523,30 +3515,6 @@ undefined4 ReturnMissionPointerArgSlot48(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseMissionVtableSlot4C
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot4C(void)
-// FUNCTION: IMPERIALISM 0x00534d30
-undefined4 ReturnFalseMissionVtableSlot4C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot50
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot50(void)
-// FUNCTION: IMPERIALISM 0x00534d50
-undefined4 ReturnFalseMissionVtableSlot50(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot54
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot54(void)
-// FUNCTION: IMPERIALISM 0x00534d70
-undefined4 ReturnFalseMissionVtableSlot54(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnZeroMissionVtableSlot58
 // ghidra_proto void __cdecl ReturnZeroMissionVtableSlot58(void)
 // FUNCTION: IMPERIALISM 0x00534d90
@@ -3559,22 +3527,6 @@ undefined4 ReturnZeroMissionVtableSlot58(void)
 // ghidra_proto void __cdecl ReturnZeroMissionVtableSlot5C(void)
 // FUNCTION: IMPERIALISM 0x00534db0
 undefined4 ReturnZeroMissionVtableSlot5C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot60
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot60(void)
-// FUNCTION: IMPERIALISM 0x00534dd0
-undefined4 ReturnFalseMissionVtableSlot60(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot64
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot64(void)
-// FUNCTION: IMPERIALISM 0x00534df0
-undefined4 ReturnFalseMissionVtableSlot64(void)
 {
   return 0;
 }
@@ -3631,14 +3583,6 @@ undefined4 ReturnMissionConstantFloatSlot78(void)
 // ghidra_proto void __cdecl SetMissionField10FromArgSlot94(void)
 // FUNCTION: IMPERIALISM 0x00534f70
 undefined4 SetMissionField10FromArgSlot94(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionVtableSlot98
-// ghidra_proto void __cdecl ReturnFalseMissionVtableSlot98(void)
-// FUNCTION: IMPERIALISM 0x00534f90
-undefined4 ReturnFalseMissionVtableSlot98(void)
 {
   return 0;
 }
@@ -3707,22 +3651,6 @@ undefined4 ConstructTNavyMission(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueMissionCapabilityStub
-// ghidra_proto void __cdecl ReturnTrueMissionCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x005354e0
-undefined4 ReturnTrueMissionCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseMissionCapabilityStub
-// ghidra_proto void __cdecl ReturnFalseMissionCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x00535500
-undefined4 ReturnFalseMissionCapabilityStub(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnZeroMissionSlot58NavyOverride
 // ghidra_proto int __cdecl ReturnZeroMissionSlot58NavyOverride(void)
 // FUNCTION: IMPERIALISM 0x00535520
@@ -3755,22 +3683,6 @@ undefined4 ResetTNavyMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x005355b0
-undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x005355d0
-undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
 // ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
 // ghidra_proto void * __thiscall DestroyTControlSeaZoneMission(void)
 // FUNCTION: IMPERIALISM 0x005355f0
@@ -3783,30 +3695,6 @@ undefined4 DestroyTControlSeaZoneMission(void)
 // ghidra_proto void __cdecl ResetTControlSeaZoneMissionToSentinelVtable(void)
 // FUNCTION: IMPERIALISM 0x00535620
 undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x00535640
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x00535660
-undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
-// ghidra_proto bool __stdcall ReturnTrueForScatteredShipsMissionSlot20(void)
-// FUNCTION: IMPERIALISM 0x00535680
-undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
 {
   return 0;
 }

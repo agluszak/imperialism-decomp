@@ -971,3 +971,267 @@ void OrphanRetStub_005c2470(void) {
 void __stdcall OrphanRetStub_005c2610(int) {
   return;
 }
+
+// --- Constant-bool stubs: original is `xor al,al; ret[ N]` (return false) or
+//     `mov al,1; ret[ N]` (return true). 1-byte bool return reproduces the
+//     al-width load; FPO pragma above keeps ret N frameless. ---
+
+// FUNCTION: IMPERIALISM 0x004d6730
+bool ReturnFalseNationStateCapabilityFlag98(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d6750
+bool ReturnFalseNationStateCapabilityFlag9C(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d6770
+bool ReturnFalseNationStateCapabilityFlagA0(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7b00
+bool __stdcall ReturnFalseNationStateActionStub(int, int, int, int) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f60
+bool __stdcall ReturnFalseNationStateCapabilityFlag90(int) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534c00
+bool ReturnFalseMissionVtableSlot28(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534d30
+bool __stdcall ReturnFalseMissionVtableSlot4C(int, int, int) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534d50
+bool ReturnFalseMissionVtableSlot50(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534d70
+bool ReturnFalseMissionVtableSlot54(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534dd0
+bool ReturnFalseMissionVtableSlot60(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534df0
+bool ReturnFalseMissionVtableSlot64(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00534f90
+bool ReturnFalseMissionVtableSlot98(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x005354e0
+bool ReturnTrueMissionCapabilityStub(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00535500
+bool ReturnFalseMissionCapabilityStub(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x005355b0
+bool ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005355d0
+bool ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00535640
+bool ReturnTrueForScatteredShipsMissionCapabilityFlagA(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00535660
+bool ReturnTrueForScatteredShipsMissionCapabilityFlagB(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00535680
+bool ReturnTrueForScatteredShipsMissionSlot20(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005356f0
+bool ReturnTrueForArmyMissionCapabilityFlag(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00535790
+bool ReturnTrueForDefendProvinceMissionCapabilityFlagA(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005357b0
+bool ReturnTrueForDefendProvinceMissionCapabilityFlagB(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00539920
+bool ReturnTrueForEscortMissionCapabilityFlagA(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00539940
+bool ReturnFalseForEscortMissionCapabilityFlagB(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053a390
+bool ReturnFalseForBeachheadMissionCapabilityFlagA(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053a3b0
+bool ReturnFalseForBeachheadMissionCapabilityFlagB(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053aa50
+bool ReturnFalseForBlockadePortMissionCapabilityFlagA(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053aa70
+bool ReturnFalseForBlockadePortMissionCapabilityFlagB(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053c1b0
+bool ReturnFalseForArmyAttackInvadeCapabilityFlag(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053d6f0
+bool ReturnFalseForAttackProvinceMissionCapabilityFlag(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053f140
+bool ReturnTrueForInvadeMissionCapabilityFlagAlt(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x0053f240
+bool ReturnFalseForInvadeMissionCapabilityFlag(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0053faa0
+bool ReturnTrueForInvadeMissionCapabilityFlag(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005408c0
+bool ReturnTrueNationStateCapabilityFlag98(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005408e0
+bool ReturnTrueNationStateCapabilityFlagA0(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00540920
+bool ReturnFalseProxyGreatPowerCapabilityStub(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00540f20
+bool ReturnTrueNationStateCapabilityFlag9C(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005412b0
+bool ReturnTrueNationStateCapabilityFlag98Alt(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005412d0
+bool ReturnFalseNationStateCapabilityFlagA0Alt(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00541840
+bool ReturnTrueNationStateCapabilityFlagA0Alt(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00541860
+bool ReturnFalseRemoteGreatPowerCapabilityStub(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00541c90
+bool ReturnTrueRemoteMinorCapabilityStub(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e820
+bool ReturnTrueForZoneCapabilityFlagA(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e840
+bool ReturnFalseForZoneCapabilityFlagB(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e860
+bool ReturnFalseForZoneCapabilityFlagC(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e880
+bool __stdcall ReturnFalseForZoneCapabilityFlagD(int) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e8a0
+bool __stdcall ReturnFalseForZoneCapabilityFlagE(int) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00561660
+bool ReturnTrueForPortZoneCapabilityFlagA(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00561680
+bool ReturnTrueForPortZoneCapabilityFlagB(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005616a0
+bool ReturnFalseForPortZoneCapabilityFlagC(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x005e34b0
+bool ReturnTrueRuntimeCredentialInitStub(void) {
+  return true;
+}
+
+// FUNCTION: IMPERIALISM 0x005e3c00
+bool ReturnTrueRuntimeCredentialFinalizeStub(void) {
+  return true;
+}

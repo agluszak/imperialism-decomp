@@ -2315,30 +2315,6 @@ undefined4 Helper_Uses_AllocateWithFallbackHandler_At004d66a0(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseNationStateCapabilityFlag98
-// ghidra_proto void __cdecl ReturnFalseNationStateCapabilityFlag98(void)
-// FUNCTION: IMPERIALISM 0x004d6730
-undefined4 ReturnFalseNationStateCapabilityFlag98(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseNationStateCapabilityFlag9C
-// ghidra_proto void __cdecl ReturnFalseNationStateCapabilityFlag9C(void)
-// FUNCTION: IMPERIALISM 0x004d6750
-undefined4 ReturnFalseNationStateCapabilityFlag9C(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseNationStateCapabilityFlagA0
-// ghidra_proto void __cdecl ReturnFalseNationStateCapabilityFlagA0(void)
-// FUNCTION: IMPERIALISM 0x004d6770
-undefined4 ReturnFalseNationStateCapabilityFlagA0(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::GetTCountryClassNamePointer
 // ghidra_proto void * __cdecl GetTCountryClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004d67b0
@@ -2491,14 +2467,6 @@ undefined4 LoadNationDisplayNameSharedRefFromField8(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseNationStateActionStub
-// ghidra_proto void __cdecl ReturnFalseNationStateActionStub(void)
-// FUNCTION: IMPERIALISM 0x004d7b00
-undefined4 ReturnFalseNationStateActionStub(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::ApplyJoinEmpireModeForTargetNation
 // ghidra_proto void __thiscall ApplyJoinEmpireModeForTargetNation(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004d7b20
@@ -2599,14 +2567,6 @@ undefined4 OrphanLeaf_NoCall_Ins02_004d7f20(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins02_004d7f40(void)
 // FUNCTION: IMPERIALISM 0x004d7f40
 undefined4 OrphanLeaf_NoCall_Ins02_004d7f40(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseNationStateCapabilityFlag90
-// ghidra_proto void __cdecl ReturnFalseNationStateCapabilityFlag90(void)
-// FUNCTION: IMPERIALISM 0x004d7f60
-undefined4 ReturnFalseNationStateCapabilityFlag90(void)
 {
   return 0;
 }

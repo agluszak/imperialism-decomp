@@ -11,14 +11,6 @@ undefined4 ResetTScatteredShipsMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForArmyMissionCapabilityFlag
-// ghidra_proto bool __cdecl ReturnTrueForArmyMissionCapabilityFlag(void)
-// FUNCTION: IMPERIALISM 0x005356f0
-undefined4 ReturnTrueForArmyMissionCapabilityFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnMissionSelfPointer
 // ghidra_proto void __cdecl ReturnMissionSelfPointer(void)
 // FUNCTION: IMPERIALISM 0x00535710
@@ -47,22 +39,6 @@ undefined4 GetMissionTargetContextIdFromField14(void)
 // ghidra_proto void __cdecl PropagateMissionTargetContextIdToLinkedUnits(void)
 // FUNCTION: IMPERIALISM 0x00535770
 undefined4 PropagateMissionTargetContextIdToLinkedUnits(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForDefendProvinceMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x00535790
-undefined4 ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueForDefendProvinceMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x005357b0
-undefined4 ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
 {
   return 0;
 }
@@ -539,22 +515,6 @@ undefined4 ReturnEscortMissionArgPassthrough(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForEscortMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnTrueForEscortMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x00539920
-undefined4 ReturnTrueForEscortMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForEscortMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForEscortMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x00539940
-undefined4 ReturnFalseForEscortMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
 // ghidra_name TEscortMission::DestroyTEscortMission
 // ghidra_proto void * __thiscall DestroyTEscortMission(void)
 // FUNCTION: IMPERIALISM 0x00539960
@@ -651,22 +611,6 @@ undefined4 CreateTBeachheadMission(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseForBeachheadMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnFalseForBeachheadMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x0053a390
-undefined4 ReturnFalseForBeachheadMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForBeachheadMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForBeachheadMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x0053a3b0
-undefined4 ReturnFalseForBeachheadMissionCapabilityFlagB(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyTBeachheadMission
 // ghidra_proto void __cdecl DestroyTBeachheadMission(void)
 // FUNCTION: IMPERIALISM 0x0053a3d0
@@ -751,22 +695,6 @@ undefined4 ClearBlockadePortMissionChildOrderLinksIfReady(void)
 // ghidra_proto TBlockadePortMission * __cdecl CreateTBlockadePortMission(void)
 // FUNCTION: IMPERIALISM 0x0053a990
 undefined4 CreateTBlockadePortMission(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForBlockadePortMissionCapabilityFlagA
-// ghidra_proto bool __stdcall ReturnFalseForBlockadePortMissionCapabilityFlagA(void)
-// FUNCTION: IMPERIALISM 0x0053aa50
-undefined4 ReturnFalseForBlockadePortMissionCapabilityFlagA(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForBlockadePortMissionCapabilityFlagB
-// ghidra_proto bool __stdcall ReturnFalseForBlockadePortMissionCapabilityFlagB(void)
-// FUNCTION: IMPERIALISM 0x0053aa70
-undefined4 ReturnFalseForBlockadePortMissionCapabilityFlagB(void)
 {
   return 0;
 }
@@ -1019,14 +947,6 @@ undefined4 ConstructTArmyMissionWithNodeKey(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseForArmyAttackInvadeCapabilityFlag
-// ghidra_proto bool __cdecl ReturnFalseForArmyAttackInvadeCapabilityFlag(void)
-// FUNCTION: IMPERIALISM 0x0053c1b0
-undefined4 ReturnFalseForArmyAttackInvadeCapabilityFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyMission::DestroyTArmyMission
 // ghidra_proto void * __thiscall DestroyTArmyMission(void)
 // FUNCTION: IMPERIALISM 0x0053c1d0
@@ -1207,14 +1127,6 @@ undefined4 ReturnMissionIfMovementClassMatchesTargetTile(void)
 // ghidra_proto void * __stdcall CreateTAttackProvinceMission(void)
 // FUNCTION: IMPERIALISM 0x0053d670
 undefined4 CreateTAttackProvinceMission(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForAttackProvinceMissionCapabilityFlag
-// ghidra_proto bool __stdcall ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
-// FUNCTION: IMPERIALISM 0x0053d6f0
-undefined4 ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
 {
   return 0;
 }
@@ -1475,14 +1387,6 @@ undefined4 GetInvadeMissionBeachheadChild(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForInvadeMissionCapabilityFlagAlt
-// ghidra_proto bool __stdcall ReturnTrueForInvadeMissionCapabilityFlagAlt(void)
-// FUNCTION: IMPERIALISM 0x0053f140
-undefined4 ReturnTrueForInvadeMissionCapabilityFlagAlt(void)
-{
-  return 0;
-}
-
 // ghidra_name TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90
 // ghidra_proto void __thiscall ForwardInvadeMissionArgToBeachheadSlot90(void)
 // FUNCTION: IMPERIALISM 0x0053f160
@@ -1511,14 +1415,6 @@ undefined4 ForwardInvadeMissionArgsToBeachheadSlot8C(void)
 // ghidra_proto void __thiscall ComputeInvadeMissionCompositeScoreWithBeachhead(void)
 // FUNCTION: IMPERIALISM 0x0053f1f0
 undefined4 ComputeInvadeMissionCompositeScoreWithBeachhead(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseForInvadeMissionCapabilityFlag
-// ghidra_proto bool __stdcall ReturnFalseForInvadeMissionCapabilityFlag(void)
-// FUNCTION: IMPERIALISM 0x0053f240
-undefined4 ReturnFalseForInvadeMissionCapabilityFlag(void)
 {
   return 0;
 }
@@ -1643,14 +1539,6 @@ undefined4 ComputeInvadeMissionPriorityScore(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueForInvadeMissionCapabilityFlag
-// ghidra_proto bool __stdcall ReturnTrueForInvadeMissionCapabilityFlag(void)
-// FUNCTION: IMPERIALISM 0x0053faa0
-undefined4 ReturnTrueForInvadeMissionCapabilityFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name TInvadeMission::ComputeInvadeMissionWeightedScoreDelta
 // ghidra_proto void __thiscall ComputeInvadeMissionWeightedScoreDelta(void)
 // FUNCTION: IMPERIALISM 0x0053fac0
@@ -1739,34 +1627,10 @@ undefined4 CreateNationStateVariantVtable65B078(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlag98
-// ghidra_proto void __cdecl ReturnTrueNationStateCapabilityFlag98(void)
-// FUNCTION: IMPERIALISM 0x005408c0
-undefined4 ReturnTrueNationStateCapabilityFlag98(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueNationStateCapabilityFlagA0
-// ghidra_proto void __cdecl ReturnTrueNationStateCapabilityFlagA0(void)
-// FUNCTION: IMPERIALISM 0x005408e0
-undefined4 ReturnTrueNationStateCapabilityFlagA0(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchProxyGreatPowerCallbackSlot1CC
 // ghidra_proto void __cdecl DispatchProxyGreatPowerCallbackSlot1CC(void)
 // FUNCTION: IMPERIALISM 0x00540900
 undefined4 DispatchProxyGreatPowerCallbackSlot1CC(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseProxyGreatPowerCapabilityStub
-// ghidra_proto void __cdecl ReturnFalseProxyGreatPowerCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x00540920
-undefined4 ReturnFalseProxyGreatPowerCapabilityStub(void)
 {
   return 0;
 }
@@ -1859,14 +1723,6 @@ undefined4 CreateNationStateVariantVtable65B3D0(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlag9C
-// ghidra_proto void __cdecl ReturnTrueNationStateCapabilityFlag9C(void)
-// FUNCTION: IMPERIALISM 0x00540f20
-undefined4 ReturnTrueNationStateCapabilityFlag9C(void)
-{
-  return 0;
-}
-
 // ghidra_name DeletingDestructTHostGreatPower
 // ghidra_proto void __cdecl DeletingDestructTHostGreatPower(void)
 // FUNCTION: IMPERIALISM 0x00540f40
@@ -1919,22 +1775,6 @@ undefined4 HandleHostGreatPowerLostStateAndNotifyOrEndSession(void)
 // ghidra_proto void * __cdecl CreateNationStateVariantVtable65B728(void)
 // FUNCTION: IMPERIALISM 0x00541230
 undefined4 CreateNationStateVariantVtable65B728(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueNationStateCapabilityFlag98Alt
-// ghidra_proto void __cdecl ReturnTrueNationStateCapabilityFlag98Alt(void)
-// FUNCTION: IMPERIALISM 0x005412b0
-undefined4 ReturnTrueNationStateCapabilityFlag98Alt(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseNationStateCapabilityFlagA0Alt
-// ghidra_proto void __cdecl ReturnFalseNationStateCapabilityFlagA0Alt(void)
-// FUNCTION: IMPERIALISM 0x005412d0
-undefined4 ReturnFalseNationStateCapabilityFlagA0Alt(void)
 {
   return 0;
 }
@@ -2011,22 +1851,6 @@ undefined4 CreateNationStateVariantVtable65BA80(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlagA0Alt
-// ghidra_proto void __cdecl ReturnTrueNationStateCapabilityFlagA0Alt(void)
-// FUNCTION: IMPERIALISM 0x00541840
-undefined4 ReturnTrueNationStateCapabilityFlagA0Alt(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseRemoteGreatPowerCapabilityStub
-// ghidra_proto void __cdecl ReturnFalseRemoteGreatPowerCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x00541860
-undefined4 ReturnFalseRemoteGreatPowerCapabilityStub(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchRemoteGreatPowerCallbackSlot1CC
 // ghidra_proto void __cdecl DispatchRemoteGreatPowerCallbackSlot1CC(void)
 // FUNCTION: IMPERIALISM 0x005419e0
@@ -2079,14 +1903,6 @@ undefined4 RemoveRemoteGreatPowerNationSlotAndNotifyPeers(void)
 // ghidra_proto void * __cdecl AllocateAndConstructTRemoteMinor(void)
 // FUNCTION: IMPERIALISM 0x00541c10
 undefined4 AllocateAndConstructTRemoteMinor(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueRemoteMinorCapabilityStub
-// ghidra_proto void __cdecl ReturnTrueRemoteMinorCapabilityStub(void)
-// FUNCTION: IMPERIALISM 0x00541c90
-undefined4 ReturnTrueRemoteMinorCapabilityStub(void)
 {
   return 0;
 }
