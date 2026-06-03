@@ -139,13 +139,21 @@ public:
   virtual void dummy8() = 0; virtual void dummy9() = 0; virtual void dummy10() = 0;
   virtual void dummy11() = 0; virtual void dummy12() = 0; virtual void dummy13() = 0;
   virtual void dummy14() = 0; virtual void dummy15() = 0; virtual void dummy16() = 0;
-  virtual void dummy17() = 0; virtual void dummy18() = 0; virtual void dummy19() = 0;
+  virtual void dummy17() = 0; virtual void dummy18() = 0; virtual void Call4C() = 0;
   virtual void dummy20() = 0; virtual void dummy21() = 0; virtual void dummy22() = 0;
   virtual void dummy23() = 0; virtual void dummy24() = 0; virtual void dummy25() = 0;
   virtual void dummy26() = 0; virtual void dummy27() = 0; virtual void dummy28() = 0;
   virtual void dummy29() = 0; virtual void dummy30() = 0; virtual void dummy31() = 0;
   virtual void dummy32() = 0; virtual void dummy33() = 0; virtual void dummy34() = 0;
   virtual void Call8C() = 0; // slot 8C
+  virtual void Call90() = 0;
+  virtual void Call94() = 0;
+  virtual void dummy38() = 0; virtual void dummy39() = 0; virtual void dummy40() = 0;
+  virtual void dummy41() = 0; virtual void dummy42() = 0; virtual void dummy43() = 0;
+  virtual void dummy44() = 0; virtual void dummy45() = 0; virtual void dummy46() = 0;
+  virtual void dummy47() = 0; virtual void dummy48() = 0; virtual void dummy49() = 0;
+  virtual void dummy50() = 0; virtual void dummy51() = 0; virtual void dummy52() = 0;
+  virtual void CallD4() = 0;
 };
 
 class TRelationManagerObject {
@@ -290,6 +298,7 @@ undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
 undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
 undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
 undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
+undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void);
 
 // Legacy free-function symbol retained for old callsites that still reference
 // the no-arg form; class-owned event queue methods are implemented below.
@@ -588,7 +597,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(27);
   TGREATPOWER_VTABLE_SLOT(28);
   virtual short GetDiplomacyCounterA2(void);  // slot 0x1d
-  TGREATPOWER_VTABLE_SLOT(30);
+  // index 0x1e / vtable+0x078. Evidence: 0x004dd1b0 and 0x004dd270 call this
+  // for each nation while recomputing diplomacy need baselines; returns AX.
+  virtual short GetDiplomacyNeedScoreSlot1E_Provisional(int nationSlot) = 0;
   virtual short GetDiplomacyState1C6ByTarget(short targetNationSlot);  // slot 0x1f
   TGREATPOWER_VTABLE_SLOT(32);
   virtual bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);  // slot 0x21
@@ -647,7 +658,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(86);
   TGREATPOWER_VTABLE_SLOT(87);
   TGREATPOWER_VTABLE_SLOT(88);
-  TGREATPOWER_VTABLE_SLOT(89);
+  // index 0x59 / vtable+0x164. Evidence: 0x004dd1b0 invokes this before
+  // resetting diplomacy aid budget state; implementation at 0x004dd140.
+  virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
   TGREATPOWER_VTABLE_SLOT(90);
   TGREATPOWER_VTABLE_SLOT(91);
   virtual void ReleaseDiplomacyTrackedObjectSlots850(void);  // slot 0x5c
@@ -891,6 +904,8 @@ public:
   void ApplyNationResourceNeedTargetsToOrderState(void);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
+  void ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
+  void RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
@@ -947,6 +962,9 @@ public:
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
+  void DispatchNationField98CallbackD4(void);
+  void DispatchNationField9CCallback4C(void);
+  void DispatchNationField94Callbacks90And94(void);
 };
 
 #undef TGREATPOWER_VTABLE_SLOT
@@ -3116,6 +3134,74 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
   }
 }
 
+#pragma optimize("y", on)
+// FUNCTION: IMPERIALISM 0x004dd140
+void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
+  int total = 0;
+  for (int resourceType = 0; resourceType < 0x0E; ++resourceType) {
+    short resourceWeight =
+        reinterpret_cast<short(__cdecl*)(int)>(thunk_GetResourceDescriptorWeightWord0ByType)(
+            resourceType);
+    short relationWeight = *reinterpret_cast<short*>(
+        reinterpret_cast<unsigned char*>(this->relationManager) + 0x5C + resourceType * 2);
+    total += static_cast<short>(resourceWeight * relationWeight);
+  }
+
+  this->diplomacyCounterA4 = static_cast<short>(total);
+  this->diplomacyCounterA2 = static_cast<short>(total);
+}
+#pragma optimize("", on)
+
+#pragma optimize("y", on)
+// FUNCTION: IMPERIALISM 0x004dd1b0
+void TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
+  this->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+
+  this->diplomacyCounterB0 = 0;
+  this->budgetPoolDelta = 0;
+  this->budgetPoolBase = 0;
+
+  for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
+    short snapshotValue = this->diplomacyState250[nationIndex];
+    if (snapshotValue == -1) {
+      ++this->diplomacyCounterB0;
+    }
+    this->diplomacyState1c6[nationIndex] = snapshotValue;
+
+    short needScore = this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+    if (needScore < this->diplomacyState1c6[nationIndex]) {
+      this->diplomacyState1c6[nationIndex] =
+          this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+    }
+
+    for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
+      this->aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + nationIndex] = 0;
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004dd270
+void TGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
+  for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
+    short snapshotValue = this->diplomacyState250[nationIndex];
+    if (snapshotValue == -1) {
+      ++this->diplomacyCounterB0;
+    }
+    this->diplomacyState1c6[nationIndex] = snapshotValue;
+
+    short needScore = this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+    if (needScore < this->diplomacyState1c6[nationIndex]) {
+      this->diplomacyState1c6[nationIndex] =
+          this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+    }
+
+    for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
+      this->aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + nationIndex] = 0;
+    }
+  }
+}
+#pragma optimize("", on)
+
 // FUNCTION: IMPERIALISM 0x004dd310
 void TGreatPower::ReleaseDiplomacyTrackedObjectSlots850(void) {
   for (int listIndex = 0; listIndex < kDiplomacyTrackedSlotCount; ++listIndex) {
@@ -4412,6 +4498,22 @@ void TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg
   this->thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392(arg1, arg2, arg3);
 }
 
+// FUNCTION: IMPERIALISM 0x004e78d0
+void TGreatPower::DispatchNationField98CallbackD4(void) {
+  this->interiorMinister->CallD4();
+}
+
+// FUNCTION: IMPERIALISM 0x004e78f0
+void TGreatPower::DispatchNationField9CCallback4C(void) {
+  this->defenseMinister->Call4C();
+}
+
+// FUNCTION: IMPERIALISM 0x004e7990
+void TGreatPower::DispatchNationField94Callbacks90And94(void) {
+  this->foreignMinister->Call90();
+  this->foreignMinister->Call94();
+}
+
 // FUNCTION: IMPERIALISM 0x004e7b20
 void TGreatPower::ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
   this->thunk_ApplyDiplomacyPolicyStateForTargetWithCostChecks_At004070e5(arg1, arg2);
@@ -5202,4 +5304,3 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   this->field_20 = uniqueId;
 }
 #pragma optimize("gyt", off)
-

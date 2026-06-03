@@ -2042,6 +2042,57 @@ Commands:
    with only the existing call-target pairing residual (`<OFFSET1>` vs
    `DestructTHandleStreamAndMaybeFree_Impl`).
 
+### TGreatPower vtable programmatic mapping & candidate discovery (2026-06-03)
+
+Analyzed the vtables of `TGreatPower` (`0x00653938`) and `TAutoGreatPower` (`0x00654088`) in Ghidra by tracking `this` register propagation to distinguish base-class `TGreatPower` state fields (offsets `< 0x964`) from subclass `TAutoGreatPower` overrides (offsets `>= 0x964`).
+Key outcomes:
+1. Programmatically resolved Ghidra's defined function thunks as well as raw jump assembly thunk structures (e.g. `jmp` / `jmpn`) via `Instruction.getFlows()`.
+2. Discovered 19 unique unowned functions in `TGreatPower`'s vtable that belong physically to the base `TGreatPower` class state. Notable examples:
+   - `0x004D9C70`: Misnamed `TCountry::HandleCityDialogHintClusterUpdate` in Ghidra but operates directly on base offsets up to `0x918`.
+   - `0x004DF810` (`RebuildPrimaryNationStateForSlot_Impl`): Operates on `this` offsets `0x014` and `0x0A0` but was annotated as a free `__cdecl` function.
+   - `0x004E1E40` (`ExecuteAdvisoryPromptAndApplyActionType2OrFallback`): Accesses offset `0x284` but was labeled as a free function.
+   - `0x004DD040` (`SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant`), `0x004DDF90` (`ClearFieldBlock1c6`), `0x004E2270` (`RemoveRegionIdAndRunTrackedObjectCleanup`), `0x004E25C0` (`ResetNationDiplomacySlotsAndMarkRelatedNations`), and others.
+3. The candidate list was recorded in these session notes; no separate `research_notes.md` file was
+   left in the repo.
+
+### TGreatPower cleanup after broken vtable-promotion batch (2026-06-03)
+
+Cleaned up the prior in-progress `TGreatPower` attempt that had pasted raw Ghidra output into
+manual source (`__thiscall` definitions, `undefined` temporaries, raw vtable indexing, and
+unverified ownership/stub removals). Restored the source/stub/ownership state to a buildable
+baseline and kept the vtable scan as candidate evidence only.
+
+Then promoted the three small, grounded minister-field dispatch callbacks in repo style:
+1. `0x004e78d0` `DispatchNationField98CallbackD4`: `this+0x98` / `interiorMinister->CallD4()` —
+   **100%**.
+2. `0x004e78f0` `DispatchNationField9CCallback4C`: `this+0x9c` / `defenseMinister->Call4C()` —
+   **100%**.
+3. `0x004e7990` `DispatchNationField94Callbacks90And94`: `this+0x94` /
+   `foreignMinister->Call90(); Call94()` — **100%**.
+
+Commands: `just build`, `just detect`, targeted `just compare` for all three addresses.
+
+### TGreatPower diplomacy need-score reset slice (2026-06-03 06:50 CEST)
+
+Promoted three adjacent `TGreatPower` diplomacy/aid-budget methods from stubs into the real class
+model:
+1. `0x004dd140` `RecomputeDiplomacyAidBudgetScoreFromResourceWeights` — **84.62%**. This names
+   vtable index `0x59` / byte offset `0x164` as a real virtual method and confirms the relation
+   manager weight band at `relationManager+0x5c`.
+2. `0x004dd1b0` `ResetDiplomacyNeedScoresAndClearAidAllocationMatrix` — **100% effective match**.
+   This calls slot `0x59`, resets `diplomacyCounterB0`, `budgetPoolBase`, `budgetPoolDelta`, and
+   clears aid-allocation columns.
+3. `0x004dd270` `RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix` — **93.02%**. Same
+   per-nation baseline refresh/aid-column clear path without the full accumulator reset preamble.
+
+Also replaced vtable index `0x1e` / byte `0x078` with
+`GetDiplomacyNeedScoreSlot1E_Provisional(int)`, grounded by both reset loops caching that vtable
+entry and calling it for each nation. No static self-call shims were added; known `TGreatPower*`
+receivers use direct virtual syntax.
+
+Commands: `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`, targeted
+`just compare` for all three addresses, `just compare-canaries` (`below_floor=0`), `just stats`
+(aligned **+20**, paired **+41**, average similarity **+0.29 pp**).
 ### TradeControl promotion + ui_widget_shared.h scaffolding split (2026-06-03)
 
 Promoted `TradeControl` out of `include/game/ui_widget_shared.h`'s anonymous

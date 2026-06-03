@@ -3067,30 +3067,6 @@ undefined4 SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights
-// ghidra_proto void __thiscall RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void)
-// FUNCTION: IMPERIALISM 0x004dd140
-undefined4 RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix
-// ghidra_proto void __thiscall ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
-// FUNCTION: IMPERIALISM 0x004dd1b0
-undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix
-// ghidra_proto void __thiscall RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
-// FUNCTION: IMPERIALISM 0x004dd270
-undefined4 RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I07_004dd770
 // ghidra_proto void __cdecl OrphanCallChain_C1_I07_004dd770(void)
 // FUNCTION: IMPERIALISM 0x004dd770

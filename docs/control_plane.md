@@ -121,6 +121,17 @@ Maintenance:
 
 Session totals (2026-06-02): Cleaned up MFC foundational class substrate and mapped TSortedByRelationshipList and TSortByPriceList subclasses. Total aligned function count increased to 138 (+8 delta).
 
+35. TGreatPower vtable programmatic mapping & candidate discovery (2026-06-03): Scanned `TGreatPower` (`0x00653938`) and `TAutoGreatPower` (`0x00654088`) vtables in Ghidra. Traced register-based `this` offset accesses (identifying the base class boundary at offset `< 0x964`), programmatically resolving recursive thunks and raw jump instructions (using `Instruction.getFlows()`). Identified 19 unowned candidate functions (such as `0x004D9C70` misattributed as `TCountry::HandleCityDialogHintClusterUpdate`, `0x004DF810` labeled as a free function, `0x004E1E40`, and others) that belong to base `TGreatPower` namespace. Keep this as candidate evidence only until each function is rebuilt in repo style and verified.
+
+36. TGreatPower cleanup + safe callback promotions (2026-06-03): Removed the broken raw-Ghidra source promotion batch and kept only verified repo-style work. Promoted the three minister-field dispatch callbacks `0x004e78d0`, `0x004e78f0`, and `0x004e7990`; all are **100%** and use typed `TMinisterObject` virtual dispatch rather than raw vtable calls. Next high-yield continuation: promote adjacent small callbacks from the vtable evidence only when the receiver field and slot signature are grounded.
+37. TGreatPower diplomacy reset slice (2026-06-03): Promoted the adjacent need-score/aid-budget
+    cluster `0x004dd140` (**84.62%**), `0x004dd1b0` (**100% effective**), and `0x004dd270`
+    (**93.02%**). This grounds vtable index `0x1e` / byte `0x078` as
+    `GetDiplomacyNeedScoreSlot1E_Provisional(int)` and index `0x59` / byte `0x164` as
+    `RecomputeDiplomacyAidBudgetScoreFromResourceWeights()`. Continue TGreatPower by promoting
+    connected diplomacy/resource state methods around `0x004dd340`/`0x004dd3b0`/`0x004ddc30`,
+    while keeping real virtual calls for known `TGreatPower*` receivers.
+
 ## Active Constraints
 
 1. No inline assembly.
