@@ -1803,14 +1803,6 @@ undefined4 Abort_611cd6(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount
-// ghidra_proto void __thiscall FlushSerializedArchiveBufferAndResetStreamCount(void)
-// FUNCTION: IMPERIALISM 0x00611d18
-undefined4 FlushSerializedArchiveBufferAndResetStreamCount(void)
-{
-  return 0;
-}
-
 // ghidra_name Flush
 // ghidra_proto void __fastcall Flush(void * streamState)
 // FUNCTION: IMPERIALISM 0x00611ec4

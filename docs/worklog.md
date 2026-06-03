@@ -2328,3 +2328,21 @@ entries.
 
 Commands: `just build`, `just detect`, `just compare 0x006121cd` (**100%**),
 `just compare 0x00612000` (**100%**), `just vtable-gate` (passed).
+
+### CArchive Close + class-name getter (2026-06-03)
+
+Two more archive-class leaves to **100%**:
+- `0x00611d18` `CArchive::Close` — `Flush(this); m_pFile = 0`. Ground-truth disasm
+  (`and dword ptr [esi+0x20], 0`) shows the zeroed field at +0x20 is `m_pFile`, not the
+  "StreamCount" the provisional Ghidra name implied; `m_pFile = 0` reproduced the
+  favor-size `and mem,0` exactly.
+- `0x005e33c0` `GetTNetMgrClassNamePointer` — free `__cdecl` returning
+  `&g_pClassDescTNetMgr` (data symbol at 0x0066f978); defined the global locally with
+  the established `extern "C" { char g_pClassDescX = 0; }` pattern so the relocation
+  pairs.
+
+Skipped `0x00606fba` `GetCObjectRuntimeClass` for now: its returned pointer
+(0x006706e0) has no named data symbol, so reccmp can't yet pair the relocation.
+
+Commands: `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`,
+targeted `just compare` (both **100%**), `just vtable-gate` (passed).

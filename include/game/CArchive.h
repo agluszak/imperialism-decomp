@@ -46,4 +46,7 @@ struct CArchive {
   // Guards object-map counter growth; raises archive exception 5 once the
   // counter reaches the safe ceiling. (0x006121cd)
   void CheckCount();
+
+  // Flush the pending write buffer and detach the backing file. (0x00611d18)
+  void Close();
 };

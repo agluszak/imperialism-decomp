@@ -516,6 +516,7 @@ address|target_cpp|ownership|note
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync
 5e2b50|src/game/noop_slots.cpp|manual|marker_sync
 5e2b70|src/game/noop_slots.cpp|manual|marker_sync
+5e33c0|src/game/CArchive.cpp|manual|marker_sync
 5e6d04|src/game/CArchive.cpp|manual|marker_sync
 5e6d27|src/game/CArchive.cpp|manual|marker_sync
 5e6d4e|src/game/CArchive.cpp|manual|marker_sync
@@ -577,6 +578,7 @@ address|target_cpp|ownership|note
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 610a5f|src/game/CDocument.cpp|manual|marker_sync
 611810|src/game/CDocument.cpp|manual|marker_sync
+611d18|src/game/CArchive.cpp|manual|marker_sync
 611d26|src/game/CArchive.cpp|manual|marker_sync
 611e34|src/game/CArchive.cpp|manual|marker_sync
 611f3e|src/game/CArchive.cpp|manual|marker_sync
