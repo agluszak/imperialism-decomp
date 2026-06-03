@@ -70,10 +70,30 @@ starting that kind of task.
 
 ## MSVC500 calling-convention guardrail
 
-- Never use `__thiscall` casts on free functions or function pointers.
-- If a call shape is `thiscall`, implement it as a real class method and call that
-  method from callsites. For unavoidable free-function bridges, prefer `__fastcall`
-  and keep the bridge out of primary method bodies.
+- **Ghidra's calling-convention attribution is frequently WRONG** (it default-labels
+  unknown functions `__cdecl`; ~33% of "defined `__cdecl`" are really `__thiscall`, and
+  it mislabels `__fastcall`/`__thiscall`/vtable dispatch). Treat every convention from
+  Ghidra/decompiler output as a hypothesis to verify against the assembly (who sets
+  `ecx`/`edx`, who cleans the stack), never as ground truth.
+- **Model real classes with real methods/virtuals — do not fake calling conventions
+  with `reinterpret_cast` to paper over Ghidra's labels.** This is the single most
+  repeated correction.
+  - If a call is `thiscall`, the callee is a class method: declare it as a real method
+    on the real class and call `obj->Method(args)`. Do NOT cast a free-function pointer
+    to a fake `__fastcall(void*, int /*edx*/, ...)` shape with a dummy `edx`.
+  - If a call is a **vtable dispatch**, model the real C++ class with real `virtual`
+    methods (in the correct slot order — verify the slot offset in the disassembly) and
+    call `obj->Virtual(args)`. Do NOT route it through the `vcall_runtime` /
+    `VCall_*` facades; those inject a spurious `xor edx,edx` and reload the vtable per
+    call. Owning the real virtual lets MSVC cache the vtable in a register across calls,
+    matching the original. (The `vcall_runtime` facade layer is legacy scaffolding we
+    intend to delete entirely — do not add to it; migrate off it.)
+- A `reinterpret_cast` that only adjusts a return type or argument types of a genuinely
+  same-convention free function (e.g. a real `__cdecl(void)` thunk) is fine. Faking the
+  *convention* (esp. thiscall-as-fastcall-with-dummy-edx) is not.
+- For an unavoidable free-function bridge where no class can yet be modeled, prefer
+  `__fastcall` and keep the bridge out of primary method bodies — but first ask whether
+  the right fix is to recover the owning class.
 
 ## Logging policy
 

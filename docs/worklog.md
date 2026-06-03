@@ -20,6 +20,21 @@ Corrected `CObject` vtable order to canonical MFC (`GetRuntimeClass`, `~CObject`
 +0x10. Proven by WriteObject calling slot +0x8 with `this` as the only arg.
 Canaries clean (below_floor=0).
 
+**CArchive::WriteClass (0x0061240d): stub -> 100%** and **CRuntimeClass::Store
+(0x00611b7c): newly owned -> 100%.** WriteClass is the MFC class-token serializer
+(throw-on-0xFFFF-schema, MapObject, store-map lookup, new-class `0xffff` tag +
+`Store` + register, or already-stored handle with the `0x8000`/`0x80000000` class
+tag bits). Per repeated user guidance, modeled `Store` as a **real
+`CRuntimeClass::Store(CArchive*)` method** (new `CRuntimeClass` class) and call it
+as `pClassRef->Store(this)` — NOT a thiscall-as-fastcall cast bridge. Store body:
+`lstrlenA` + two chained `WriteWord`s (schema, len) + `WriteBytes(name, (WORD)len)`;
+needed `#pragma optimize("ys")` (FPO+favor-size) and a `(unsigned short)` cast (not
+`& 0xffff`, which emits `and` instead of `movzx`) to reach 100%. Owned via marker +
+`sync-ownership`/`regen-stubs`; added `src/game/CRuntimeClass.{h,cpp}` to CMake.
+Strengthened the AGENTS.md calling-convention guardrail (Ghidra callconvs are
+unreliable; model real classes/virtuals; the `vcall_runtime` facade layer is legacy
+to be removed).
+
 ## 2026-06-03
 
 ### TStream family — TFileStream byte wrappers + THandleStream extent advance

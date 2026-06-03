@@ -71,6 +71,7 @@ add_executable(Imperialism
     src/game/CArchive.cpp
     src/game/CMapPtrToPtr.cpp
     src/game/CObject.cpp
+    src/game/CRuntimeClass.cpp
     src/game/CPtrArray.cpp
     src/game/CPtrList.cpp
     src/game/thunks.cpp
