@@ -99,14 +99,6 @@ undefined4 OrphanCallChain_C4_I70_0059f610(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0059f710
-// ghidra_proto void __cdecl OrphanRetStub_0059f710(void)
-// FUNCTION: IMPERIALISM 0x0059f710
-undefined4 OrphanRetStub_0059f710(void)
-{
-  return 0;
-}
-
 // ghidra_name TTacticalBattle::CreateTTacticalBattleInstance
 // ghidra_proto void __thiscall CreateTTacticalBattleInstance(void)
 // FUNCTION: IMPERIALISM 0x0059f730
@@ -1051,14 +1043,6 @@ undefined4 ConstructTacticalBattleViewBaseState(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_005a83c0
-// ghidra_proto void __cdecl OrphanRetStub_005a83c0(void)
-// FUNCTION: IMPERIALISM 0x005a83c0
-undefined4 OrphanRetStub_005a83c0(void)
-{
-  return 0;
-}
-
 // ghidra_name TacticalBattleView::DestructTacticalBattleViewAndMaybeFree
 // ghidra_proto void * __thiscall DestructTacticalBattleViewAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005a83e0
@@ -1375,22 +1359,6 @@ undefined4 HandleArmyTacticalToolbarCommandTags(void)
 // ghidra_proto int * __cdecl Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030(void)
 // FUNCTION: IMPERIALISM 0x005ad030
 undefined4 Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005ad0d0
-// ghidra_proto void __cdecl OrphanRetStub_005ad0d0(void)
-// FUNCTION: IMPERIALISM 0x005ad0d0
-undefined4 OrphanRetStub_005ad0d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005ad0f0
-// ghidra_proto void __cdecl OrphanRetStub_005ad0f0(void)
-// FUNCTION: IMPERIALISM 0x005ad0f0
-undefined4 OrphanRetStub_005ad0f0(void)
 {
   return 0;
 }
@@ -2135,14 +2103,6 @@ undefined4 DestructTTechHistoryViewAndMaybeFree(void)
 // ghidra_proto void * __cdecl GetTGameSetupDialogClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005b2820
 undefined4 GetTGameSetupDialogClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005b2860
-// ghidra_proto void __cdecl OrphanRetStub_005b2860(void)
-// FUNCTION: IMPERIALISM 0x005b2860
-undefined4 OrphanRetStub_005b2860(void)
 {
   return 0;
 }

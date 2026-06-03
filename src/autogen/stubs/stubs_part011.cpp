@@ -1715,38 +1715,6 @@ undefined4 OrphanTiny_ReturnThis_00492ce0(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00492d00
-// ghidra_proto void __cdecl OrphanRetStub_00492d00(void)
-// FUNCTION: IMPERIALISM 0x00492d00
-undefined4 OrphanRetStub_00492d00(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00492d20
-// ghidra_proto void __cdecl OrphanRetStub_00492d20(void)
-// FUNCTION: IMPERIALISM 0x00492d20
-undefined4 OrphanRetStub_00492d20(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00492d40
-// ghidra_proto void __cdecl OrphanRetStub_00492d40(void)
-// FUNCTION: IMPERIALISM 0x00492d40
-undefined4 OrphanRetStub_00492d40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00492d60
-// ghidra_proto void __cdecl OrphanRetStub_00492d60(void)
-// FUNCTION: IMPERIALISM 0x00492d60
-undefined4 OrphanRetStub_00492d60(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80
 // ghidra_proto void __cdecl WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80(void)
 // FUNCTION: IMPERIALISM 0x00492d80
@@ -3251,14 +3219,6 @@ undefined4 OrphanVtableAssignStub_0049bf90(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0049bfb0
-// ghidra_proto void __cdecl OrphanRetStub_0049bfb0(void)
-// FUNCTION: IMPERIALISM 0x0049bfb0
-undefined4 OrphanRetStub_0049bfb0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ShowWindowOrForwardToSite_At0049bfd0
 // ghidra_proto void __cdecl WrapperFor_ShowWindowOrForwardToSite_At0049bfd0(void)
 // FUNCTION: IMPERIALISM 0x0049bfd0
@@ -3871,22 +3831,6 @@ undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x0049e640
 undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0049e660
-// ghidra_proto void __cdecl OrphanRetStub_0049e660(void)
-// FUNCTION: IMPERIALISM 0x0049e660
-undefined4 OrphanRetStub_0049e660(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0049e680
-// ghidra_proto void __cdecl OrphanRetStub_0049e680(void)
-// FUNCTION: IMPERIALISM 0x0049e680
-undefined4 OrphanRetStub_0049e680(void)
 {
   return 0;
 }

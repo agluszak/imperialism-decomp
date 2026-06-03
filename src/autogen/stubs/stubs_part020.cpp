@@ -75,14 +75,6 @@ undefined4 WrapperFor_ftol_At005c2400(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_005c2470
-// ghidra_proto void __cdecl OrphanRetStub_005c2470(void)
-// FUNCTION: IMPERIALISM 0x005c2470
-undefined4 OrphanRetStub_005c2470(void)
-{
-  return 0;
-}
-
 // ghidra_name TUnit::GetTUnitClassNamePointer
 // ghidra_proto void * __cdecl GetTUnitClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005c2490
@@ -103,14 +95,6 @@ undefined4 ConstructTUnitBaseState(void)
 // ghidra_proto void * __thiscall DestructTUnitAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x005c2510
 undefined4 DestructTUnitAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005c2610
-// ghidra_proto void __cdecl OrphanRetStub_005c2610(void)
-// FUNCTION: IMPERIALISM 0x005c2610
-undefined4 OrphanRetStub_005c2610(void)
 {
   return 0;
 }

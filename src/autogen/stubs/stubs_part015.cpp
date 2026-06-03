@@ -875,14 +875,6 @@ undefined4 ClearPerTileByte0FForAllMapTiles(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00515de0
-// ghidra_proto void __cdecl OrphanRetStub_00515de0(void)
-// FUNCTION: IMPERIALISM 0x00515de0
-undefined4 OrphanRetStub_00515de0(void)
-{
-  return 0;
-}
-
 // ghidra_name InputState::SetMapTileStateByteAndNotifyObserver
 // ghidra_proto void __cdecl SetMapTileStateByteAndNotifyObserver(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00515e00
@@ -3203,14 +3195,6 @@ undefined4 QueueDiplomatWeightedTerrainActionRunCode133(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_005328d0
-// ghidra_proto void __cdecl OrphanRetStub_005328d0(void)
-// FUNCTION: IMPERIALISM 0x005328d0
-undefined4 OrphanRetStub_005328d0(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectNationInteractionModePriorityTriplet
 // ghidra_proto void __cdecl SelectNationInteractionModePriorityTriplet(void)
 // FUNCTION: IMPERIALISM 0x005328f0
@@ -3507,14 +3491,6 @@ undefined4 ReturnFalseMissionVtableSlot28(void)
   return 0;
 }
 
-// ghidra_name ReturnZeroMissionVtableSlot2C
-// ghidra_proto void __cdecl ReturnZeroMissionVtableSlot2C(void)
-// FUNCTION: IMPERIALISM 0x00534c20
-undefined4 ReturnZeroMissionVtableSlot2C(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMissionStateByte8To2
 // ghidra_proto void __cdecl SetMissionStateByte8To2(void)
 // FUNCTION: IMPERIALISM 0x00534c60
@@ -3727,14 +3703,6 @@ undefined4 CreateMissionObjectByKindAndNodeContext(void)
 // ghidra_proto void __thiscall ConstructTNavyMission(int arg1)
 // FUNCTION: IMPERIALISM 0x00535470
 undefined4 ConstructTNavyMission(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005354c0
-// ghidra_proto void __cdecl OrphanRetStub_005354c0(void)
-// FUNCTION: IMPERIALISM 0x005354c0
-undefined4 OrphanRetStub_005354c0(void)
 {
   return 0;
 }

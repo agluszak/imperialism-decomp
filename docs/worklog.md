@@ -2371,3 +2371,22 @@ additive — removing functions from source needs a manual ownership-row prune.
 
 Stats: aligned/original **+0.39 pp** (1.58%), paired globals **+1**, average
 similarity **+0.39 pp**. `just vtable-gate` passed.
+
+### Trivial-stub batch — 131 more functions to 100% (2026-06-04)
+
+Extended the no-op lever to free `Stub`/`Return`/`Dummy`/`Ret*`-named functions:
+classified 204 unowned candidates by original epilogue, ported the 131 that are a
+bare `ret` (`void(void)`) or callee-cleaned `ret N` (`void __stdcall(<N/4 int>)`)
+into `noop_slots.cpp`, all **100%**. No thunk-caller conflicts in this set. Two
+candidates initially misclassified as bare-`ret` were actually `xor eax,eax; ret N`
+(return 0): `0x0047fd70 ReturnFalseRuntimeSelectionAuxStatus` and `0x00534c20
+ReturnZeroMissionVtableSlot2C` — fixed to `int __stdcall ...{ return 0; }`. The
+FPO `#pragma optimize("y", on)` (added in the prior batch) keeps every `ret N`
+epilogue frameless.
+
+Method note for next time: classify the orig epilogue with one targeted compare
+and bucket on the captured instruction string — `n=0 | 66.67%` = bare `ret`;
+single `ret N` = stdcall; `xor al,al`/`mov al,1` = bool return; `xor eax,eax;
+ret N` = `int` return 0 (this last one masquerades as bare-ret against the stub).
+
+`just vtable-gate` passed.

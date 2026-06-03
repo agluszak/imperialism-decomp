@@ -312,3 +312,662 @@ void NoOpPaddingStub_00624491(void) {
 void NoOpPaddingStub_006244b7(void) {
   return;
 }
+
+// --- Trivial empty stubs (Stub/Return/Dummy-named free functions whose original
+//     is a bare `ret` or callee-cleaned `ret N`). Batch port; FPO pragma above
+//     keeps the `ret N` epilogues frameless. ---
+
+// FUNCTION: IMPERIALISM 0x004136c0
+void __stdcall OrphanRetStub_004136c0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00414770
+void OrphanRetStub_00414770(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00430550
+void OrphanRetStub_00430550(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004305c0
+void OrphanRetStub_004305c0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00430bf0
+void __stdcall OrphanRetStub_00430bf0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00430c10
+void __stdcall OrphanRetStub_00430c10(int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0043d9f0
+void OrphanRetStub_0043d9f0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0045acb0
+void OrphanRetStub_0045acb0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0045ada0
+void OrphanRetStub_0045ada0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0045d2a0
+void __stdcall OrphanRetStub_0045d2a0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0047d5b0
+void __stdcall OrphanRetStub_0047d5b0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0047df90
+void __stdcall OrphanRetStub_0047df90(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0047f2b0
+void __stdcall OrphanRetStub_0047f2b0(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0047f320
+void __stdcall OrphanRetStub_0047f320(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0047f410
+void __stdcall OrphanRetStub_0047f410(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0047fd70
+int __stdcall ReturnFalseRuntimeSelectionAuxStatus(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004811e0
+void __stdcall OrphanRetStub_004811e0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00481670
+void __stdcall OrphanRetStub_00481670(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00481730
+void __stdcall OrphanRetStub_00481730(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00481970
+void __stdcall OrphanRetStub_00481970(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00481a30
+void __stdcall OrphanRetStub_00481a30(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00481af0
+void __stdcall OrphanRetStub_00481af0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00481d80
+void __stdcall OrphanRetStub_00481d80(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00482010
+void __stdcall OrphanRetStub_00482010(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004822e0
+void OrphanRetStub_004822e0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00482420
+void __stdcall OrphanRetStub_00482420(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00486530
+void __stdcall OrphanRetStub_00486530(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00486550
+void __stdcall OrphanRetStub_00486550(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004872e0
+void __stdcall OrphanRetStub_004872e0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00487a00
+void OrphanRetStub_00487a00(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00487f70
+void __stdcall OrphanRetStub_00487f70(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00488800
+void __stdcall OrphanRetStub_00488800(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00488820
+void __stdcall OrphanRetStub_00488820(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00488b40
+void __stdcall OrphanRetStub_00488b40(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00488e30
+void __stdcall OrphanRetStub_00488e30(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00488e50
+void __stdcall OrphanRetStub_00488e50(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00488e70
+void __stdcall OrphanRetStub_00488e70(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004899a0
+void __stdcall OrphanRetStub_004899a0(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00492d00
+void __stdcall OrphanRetStub_00492d00(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00492d20
+void __stdcall OrphanRetStub_00492d20(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00492d40
+void __stdcall OrphanRetStub_00492d40(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00492d60
+void __stdcall OrphanRetStub_00492d60(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0049bfb0
+void OrphanRetStub_0049bfb0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0049e660
+void __stdcall OrphanRetStub_0049e660(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0049e680
+void __stdcall OrphanRetStub_0049e680(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004aad20
+void OrphanRetStub_004aad20(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004ab800
+void OrphanRetStub_004ab800(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b1410
+void OrphanRetStub_004b1410(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b1990
+void OrphanRetStub_004b1990(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b4210
+void OrphanRetStub_004b4210(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b5160
+void OrphanRetStub_004b5160(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b6f00
+void OrphanRetStub_004b6f00(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b7c20
+void OrphanRetStub_004b7c20(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b80a0
+void OrphanRetStub_004b80a0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b8420
+void OrphanRetStub_004b8420(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004be190
+void __stdcall OrphanRetStub_004be190(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004be3f0
+void __stdcall OrphanRetStub_004be3f0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004be410
+void __stdcall OrphanRetStub_004be410(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004be430
+void __stdcall OrphanRetStub_004be430(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004be6d0
+void __stdcall OrphanRetStub_004be6d0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004bff60
+void __stdcall OrphanRetStub_004bff60(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004c6fb0
+void OrphanRetStub_004c6fb0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004c6fd0
+void OrphanRetStub_004c6fd0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004cc470
+void __stdcall OrphanRetStub_004cc470(int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7e90
+void __stdcall OrphanRetStub_004d7e90(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f80
+void __stdcall OrphanRetStub_004d7f80(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7fa0
+void __stdcall OrphanRetStub_004d7fa0(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7fe0
+void __stdcall OrphanRetStub_004d7fe0(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d8bc0
+void OrphanRetStub_004d8bc0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d8be0
+void __stdcall OrphanRetStub_004d8be0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004dca80
+void __stdcall OrphanRetStub_004dca80(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004dcc30
+void OrphanRetStub_004dcc30(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004de2b0
+void OrphanRetStub_004de2b0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e6610
+void OrphanRetStub_004e6610(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e7910
+void __stdcall OrphanRetStub_004e7910(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e7930
+void __stdcall OrphanRetStub_004e7930(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e7950
+void __stdcall OrphanRetStub_004e7950(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e7970
+void OrphanRetStub_004e7970(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e7ca0
+void OrphanRetStub_004e7ca0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004ea430
+void __stdcall OrphanRetStub_004ea430(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004ea450
+void OrphanRetStub_004ea450(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004f3220
+void OrphanRetStub_004f3220(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004f5f90
+void __stdcall OrphanRetStub_004f5f90(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004fed50
+void __stdcall OrphanRetStub_004fed50(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00515de0
+void __stdcall OrphanRetStub_00515de0(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005328d0
+void OrphanRetStub_005328d0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00534c20
+int __stdcall ReturnZeroMissionVtableSlot2C(int, int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005354c0
+void __stdcall OrphanRetStub_005354c0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00540aa0
+void OrphanRetStub_00540aa0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00540b80
+void OrphanRetStub_00540b80(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541880
+void OrphanRetStub_00541880(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005418a0
+void OrphanRetStub_005418a0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005418c0
+void OrphanRetStub_005418c0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005418e0
+void OrphanRetStub_005418e0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541900
+void OrphanRetStub_00541900(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541920
+void OrphanRetStub_00541920(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541940
+void __stdcall OrphanRetStub_00541940(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541960
+void OrphanRetStub_00541960(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541980
+void OrphanRetStub_00541980(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005419a0
+void OrphanRetStub_005419a0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005419c0
+void OrphanRetStub_005419c0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541a40
+void OrphanRetStub_00541a40(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541a60
+void __stdcall OrphanRetStub_00541a60(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541cb0
+void __stdcall OrphanRetStub_00541cb0(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00569d50
+void OrphanRetStub_00569d50(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0056f460
+void __stdcall OrphanRetStub_0056f460(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0056f480
+void OrphanRetStub_0056f480(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005723d0
+void OrphanRetStub_005723d0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00574fc0
+void __stdcall OrphanRetStub_00574fc0(int, int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0057b760
+void OrphanRetStub_0057b760(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00594fc0
+void __stdcall OrphanRetStub_00594fc0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00596020
+void __stdcall OrphanRetStub_00596020(int, int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00596040
+void __stdcall OrphanRetStub_00596040(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00596060
+void __stdcall OrphanRetStub_00596060(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00596080
+void OrphanRetStub_00596080(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005960c0
+void __stdcall OrphanRetStub_005960c0(int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005960e0
+void __stdcall OrphanRetStub_005960e0(int, int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00596680
+void __stdcall OrphanRetStub_00596680(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005966a0
+void __stdcall OrphanRetStub_005966a0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005966c0
+void __stdcall OrphanRetStub_005966c0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059ad70
+void OrphanRetStub_0059ad70(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059ad90
+void OrphanRetStub_0059ad90(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059add0
+void __stdcall OrphanRetStub_0059add0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059ae10
+void OrphanRetStub_0059ae10(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059f710
+void __stdcall OrphanRetStub_0059f710(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005a83c0
+void __stdcall OrphanRetStub_005a83c0(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005ad0d0
+void __stdcall OrphanRetStub_005ad0d0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005ad0f0
+void __stdcall OrphanRetStub_005ad0f0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005b2860
+void OrphanRetStub_005b2860(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005c2470
+void OrphanRetStub_005c2470(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005c2610
+void __stdcall OrphanRetStub_005c2610(int) {
+  return;
+}

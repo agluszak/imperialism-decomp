@@ -83,14 +83,6 @@ undefined4 RelinkTileUnitsToCountryOrderManager(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004e6610
-// ghidra_proto void __cdecl OrphanRetStub_004e6610(void)
-// FUNCTION: IMPERIALISM 0x004e6610
-undefined4 OrphanRetStub_004e6610(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004e6630
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At004e6630(void)
 // FUNCTION: IMPERIALISM 0x004e6630
@@ -259,38 +251,6 @@ undefined4 RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004e7910
-// ghidra_proto void __cdecl OrphanRetStub_004e7910(void)
-// FUNCTION: IMPERIALISM 0x004e7910
-undefined4 OrphanRetStub_004e7910(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004e7930
-// ghidra_proto void __cdecl OrphanRetStub_004e7930(void)
-// FUNCTION: IMPERIALISM 0x004e7930
-undefined4 OrphanRetStub_004e7930(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004e7950
-// ghidra_proto void __cdecl OrphanRetStub_004e7950(void)
-// FUNCTION: IMPERIALISM 0x004e7950
-undefined4 OrphanRetStub_004e7950(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004e7970
-// ghidra_proto void __cdecl OrphanRetStub_004e7970(void)
-// FUNCTION: IMPERIALISM 0x004e7970
-undefined4 OrphanRetStub_004e7970(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C3_I38_004e79d0
 // ghidra_proto uint __cdecl OrphanCallChain_C3_I38_004e79d0(void)
 // FUNCTION: IMPERIALISM 0x004e79d0
@@ -319,14 +279,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004e7af0(void)
 // ghidra_proto void __thiscall ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
 // FUNCTION: IMPERIALISM 0x004e7be0
 undefined4 ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004e7ca0
-// ghidra_proto void __cdecl OrphanRetStub_004e7ca0(void)
-// FUNCTION: IMPERIALISM 0x004e7ca0
-undefined4 OrphanRetStub_004e7ca0(void)
 {
   return 0;
 }
@@ -431,22 +383,6 @@ undefined4 ClearNationAndPortZonePresenceFlags(void)
 // ghidra_proto void __cdecl RemoveFirstTrackedObjectMatchingPredicateAndClearFlag(void)
 // FUNCTION: IMPERIALISM 0x004ea1c0
 undefined4 RemoveFirstTrackedObjectMatchingPredicateAndClearFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004ea430
-// ghidra_proto void __cdecl OrphanRetStub_004ea430(void)
-// FUNCTION: IMPERIALISM 0x004ea430
-undefined4 OrphanRetStub_004ea430(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004ea450
-// ghidra_proto void __cdecl OrphanRetStub_004ea450(void)
-// FUNCTION: IMPERIALISM 0x004ea450
-undefined4 OrphanRetStub_004ea450(void)
 {
   return 0;
 }
@@ -1443,14 +1379,6 @@ undefined4 OrphanCallChain_C3_I22_004f31d0(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004f3220
-// ghidra_proto void __cdecl OrphanRetStub_004f3220(void)
-// FUNCTION: IMPERIALISM 0x004f3220
-undefined4 OrphanRetStub_004f3220(void)
-{
-  return 0;
-}
-
 // ghidra_name TDefenseMinisterView::CreateTDefenseMinisterViewInstance
 // ghidra_proto void * __cdecl CreateTDefenseMinisterViewInstance(void)
 // FUNCTION: IMPERIALISM 0x004f3240
@@ -1695,14 +1623,6 @@ undefined4 RenderDiplomacyMatrixRowStatusIcons(void)
 // ghidra_proto void __thiscall HandleDiplomacySelectedNationActionCommand(void * pCursorPoint)
 // FUNCTION: IMPERIALISM 0x004f5410
 undefined4 HandleDiplomacySelectedNationActionCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004f5f90
-// ghidra_proto void __cdecl OrphanRetStub_004f5f90(void)
-// FUNCTION: IMPERIALISM 0x004f5f90
-undefined4 OrphanRetStub_004f5f90(void)
 {
   return 0;
 }
@@ -2439,14 +2359,6 @@ undefined4 DispatchDisplayManagerControlStringMessage(void)
 // ghidra_proto void __cdecl WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(void)
 // FUNCTION: IMPERIALISM 0x004fed00
 undefined4 WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004fed50
-// ghidra_proto void __cdecl OrphanRetStub_004fed50(void)
-// FUNCTION: IMPERIALISM 0x004fed50
-undefined4 OrphanRetStub_004fed50(void)
 {
   return 0;
 }
