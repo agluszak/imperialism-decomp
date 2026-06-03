@@ -788,6 +788,10 @@ address|target_cpp|ownership|note
 602140|src/game/CPtrList.cpp|manual|marker_sync
 60217d|src/game/CPtrList.cpp|manual|marker_sync
 6021d6|src/game/CPtrList.cpp|manual|marker_sync
+6033dd|src/game/CMapPtrToPtr.cpp|manual|marker_sync
+603481|src/game/CMapPtrToPtr.cpp|manual|marker_sync
+6034e4|src/game/CMapPtrToPtr.cpp|manual|marker_sync
+60356b|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 605791|src/game/CString.cpp|manual|marker_sync
 605797|src/game/CString.cpp|manual|marker_sync
 6057a7|src/game/CString.cpp|manual|marker_sync
@@ -833,6 +837,8 @@ address|target_cpp|ownership|note
 6121cd|src/game/CArchive.cpp|manual|marker_sync
 6121e1|src/game/CArchive.cpp|manual|marker_sync
 61225e|src/game/CArchive.cpp|manual|marker_sync
+612315|src/game/CArchive.cpp|manual|marker_sync
+61240d|src/game/CArchive.cpp|manual|marker_sync
 618753|src/game/noop_slots.cpp|manual|marker_sync
 618df2|src/game/list_box.cpp|manual|marker_sync
 618e72|src/game/list_box.cpp|manual|marker_sync

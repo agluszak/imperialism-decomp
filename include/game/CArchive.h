@@ -2,6 +2,8 @@
 
 #include "decomp_types.h"
 
+struct CMapPtrToPtr;
+
 // MFC CArchive serialization buffer: a write cursor (m_lpBufCur at +0x24) into
 // a buffer whose end is m_lpBufMax (+0x28). The insertion operators flush when
 // the next write would overrun the buffer, then append and advance.
@@ -19,6 +21,9 @@ struct CArchive {
   unsigned char* m_lpBufStart;
   // Object-map reference counter; guarded by CheckCount before each growth.
   unsigned int m_nMapCount;
+  // Store side: CObject* -> serialized handle index. Lazily allocated by
+  // MapObject. (Read side reuses this slot for a CObArray; see MapObject.)
+  CMapPtrToPtr* m_pStoreMap;
 
   CArchive* WriteByteToSerializedBuffer(unsigned char value);
   CArchive* WriteWordToSerializedBuffer(unsigned short value);
@@ -38,6 +43,12 @@ struct CArchive {
   // link against the 0x006121e1 / 0x0061225e addresses by name.
   void WriteObject(void* objectRef);
   void* ReadObject(void* runtimeClassOrFactory);
+
+  // Lazily allocate the store map / load array and register a reference.
+  // (0x00612315) Body still pending; declared so WriteObject/ReadObject link.
+  void MapObject(void* referenceNode);
+  // Serialize an object's class token via the store map. (0x0061240d) Pending.
+  void WriteClass(void* runtimeClass);
 
   // Serialize a count: 16-bit fast path, with a 0xFFFF escape + dword for large
   // values. (0x00612000)

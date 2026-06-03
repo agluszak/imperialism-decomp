@@ -1803,22 +1803,6 @@ undefined4 ReadString_612132(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::MapObject
-// ghidra_proto void __thiscall MapObject(void * referenceNode)
-// FUNCTION: IMPERIALISM 0x00612315
-undefined4 MapObject(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetMgr::WriteClass
-// ghidra_proto void __thiscall WriteClass(void * objectRef)
-// FUNCTION: IMPERIALISM 0x0061240d
-undefined4 WriteClass(void)
-{
-  return 0;
-}
-
 // ghidra_name NodeScanner::ReadClass
 // ghidra_proto void * __thiscall ReadClass(void * expectedNode, uint * outLookupKey, uint * outRawToken)
 // FUNCTION: IMPERIALISM 0x0061249e
