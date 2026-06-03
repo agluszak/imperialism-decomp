@@ -1,6 +1,7 @@
 // TCivDescription wrapper class pair extracted from Ghidra autogen.
 
 #include "decomp_types.h"
+#include "game/Point32.h"
 #include "game/TView.h"
 #include "game/CString.h"
 
@@ -65,10 +66,6 @@ struct CivilianClassCacheContext {
   unsigned char pad_6e_to_6f[0x02];
 };
 
-struct Point32 {
-  int x;
-  int y;
-};
 
 struct Rect32 {
   int left;

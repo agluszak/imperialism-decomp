@@ -60,7 +60,7 @@ TRailAmtBarState* TRailAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned cha
 void TRailAmtBarState::DoPostCreate(TDocument* document) {
   NationState* nationState =
       reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
+  NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
   int summaryTag = ownerPanelContext()->summaryTag;
 
   short recordIndex = 0;

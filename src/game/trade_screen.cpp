@@ -2,6 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
+#include "game/NationState.h"
 #include "game/CString.h"
 #include "game/ui_widget_shared.h"
 #include "game/TView.h"
@@ -197,13 +198,6 @@ struct TradeCommodityMetricRecord;
 struct CityTradeScenarioDescriptor;
 struct TDocument;
 
-struct NationState {
-  void* vftable;
-  char pad_04[0xa0];
-  short tradeCapacity;
-  char pad_a6[0x7ee];
-  NationCityTradeState* cityState;
-};
 
 struct TradeBarControlLayout {
   void* vftable;
@@ -605,7 +599,7 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   if (nationState == 0) {
     return 0;
   }
-  return nationState->cityState;
+  return reinterpret_cast<NationCityTradeState*>(nationState->cityState);
 }
 
 static __inline int GetTradeSummarySelectionTagByIndex(short index) {
@@ -1979,7 +1973,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
   short activeNationId = QueryActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationId);
   void* cityState =
-      activeNationState == 0 ? 0 : reinterpret_cast<void*>(activeNationState->cityState);
+      activeNationState == 0 ? 0 : activeNationState->cityState;
 
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != context->summaryTag) {
@@ -2170,7 +2164,7 @@ SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* con
   (void)unusedEdx;
   short activeNationId = QueryActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationId);
-  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
+  NationCityTradeState* cityState = activeNationState == 0 ? 0 : reinterpret_cast<NationCityTradeState*>(activeNationState->cityState);
 
   unsigned int summaryTag = (unsigned int)context->summaryTag;
   int scenarioDescriptor = *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8);

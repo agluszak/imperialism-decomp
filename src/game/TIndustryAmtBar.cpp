@@ -60,7 +60,7 @@ void TIndustryAmtBarState::DoPostCreate(TDocument* document) {
   // ORIG_CALLCONV: __thiscall
   NationState* nationState =
       reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
+  NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   while (mappedTag != ownerPanelContext()->summaryTag) {

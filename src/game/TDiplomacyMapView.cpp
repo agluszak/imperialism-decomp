@@ -1,6 +1,7 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
 #include "decomp_types.h"
+#include "game/Point32.h"
 #include "game/generated/vcall_facades.h"
 #include "game/ui_widget_shared.h"
 
@@ -8,10 +9,6 @@
 #pragma optimize("y", on)
 #endif
 
-struct Point32 {
-  int x;
-  int y;
-};
 
 extern "C" int __stdcall PtInRect(const RECT* rect, Point32 point);
 extern "C" void* __stdcall SetCursor(void* hCursor);
