@@ -2,6 +2,7 @@
 
 #include "game/CMapPtrToPtr.h"
 #include "game/CObject.h"
+#include "game/CRuntimeClass.h"
 #include "game/generated/vcall_facades.h"
 
 // MFC CArchive code was compiled favor-size in the original.
@@ -13,6 +14,7 @@ undefined4 Flush(void);
 undefined4 CopyMemoryPossiblyOverlapping(void);
 undefined4 MoveMemoryOverlapSafe(void);
 undefined4 AfxThrowArchiveException(void);
+undefined4 AfxThrowNotSupportedException(void);
 
 namespace {
 
@@ -31,6 +33,10 @@ inline void MoveMemory(void* dst, const void* src, int size) {
 
 inline void ThrowArchiveException(int errorCode, void* context) {
   reinterpret_cast<void(__stdcall*)(int, void*)>(::AfxThrowArchiveException)(errorCode, context);
+}
+
+inline void ThrowNotSupported() {
+  reinterpret_cast<void(__cdecl*)()>(::AfxThrowNotSupportedException)();
 }
 
 } // namespace
@@ -163,8 +169,29 @@ void CArchive::MapObject(void* referenceNode) {
 
 // FUNCTION: IMPERIALISM 0x0061240d
 void CArchive::WriteClass(void* runtimeClass) {
-  (void)runtimeClass;
-  // TODO(port): serialize the class token via the store map.
+  CRuntimeClass* pClassRef = reinterpret_cast<CRuntimeClass*>(runtimeClass);
+  if (pClassRef->m_wSchema == 0xffff) {
+    ThrowNotSupported();
+  }
+  MapObject(0);
+  unsigned int nIndex =
+      *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pClassRef));
+  if (nIndex != 0) {
+    // Already emitted: write its handle with the class tag bit set.
+    if (nIndex < 0x7fff) {
+      WriteWordToSerializedBuffer(static_cast<unsigned short>(nIndex | 0x8000));
+    } else {
+      WriteWordToSerializedBuffer(0x7fff);
+      WriteDwordToSerializedBuffer(nIndex | 0x80000000);
+    }
+    return;
+  }
+  // First time: emit the new-class tag, store the class descriptor, register it.
+  WriteWordToSerializedBuffer(0xffff);
+  pClassRef->Store(this);
+  CheckCount();
+  *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pClassRef)) = m_nMapCount;
+  m_nMapCount = m_nMapCount + 1;
 }
 
 // Guards object-map counter growth; raises archive exception 5 once the counter

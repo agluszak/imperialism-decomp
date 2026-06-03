@@ -1747,14 +1747,6 @@ undefined4 FindThreadHandleMapEntryBySerializedName(void)
   return 0;
 }
 
-// ghidra_name Store
-// ghidra_proto void __fastcall Store(void * runtimeClassRecord)
-// FUNCTION: IMPERIALISM 0x00611b7c
-undefined4 Store(void)
-{
-  return 0;
-}
-
 // ghidra_name CDocument::CArchive
 // ghidra_proto void __thiscall CArchive(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00611bb4

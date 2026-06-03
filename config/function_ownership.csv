@@ -829,6 +829,7 @@ address|target_cpp|ownership|note
 610c08|src/game/noop_slots.cpp|manual|marker_sync
 61180f|src/game/noop_slots.cpp|manual|marker_sync
 611810|src/game/CDocument.cpp|manual|marker_sync
+611b7c|src/game/CRuntimeClass.cpp|manual|marker_sync
 611d18|src/game/CArchive.cpp|manual|marker_sync
 611d26|src/game/CArchive.cpp|manual|marker_sync
 611e34|src/game/CArchive.cpp|manual|marker_sync
