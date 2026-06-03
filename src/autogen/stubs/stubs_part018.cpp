@@ -1027,14 +1027,6 @@ undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(void)
   return 0;
 }
 
-// ghidra_name NoOpVirtualStub_0057c390
-// ghidra_proto void __cdecl NoOpVirtualStub_0057c390(void)
-// FUNCTION: IMPERIALISM 0x0057c390
-undefined4 NoOpVirtualStub_0057c390(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildGlobalOrderManagersAndCapabilityState
 // ghidra_proto void __fastcall RebuildGlobalOrderManagersAndCapabilityState(int ecxArg, int arg1)
 // FUNCTION: IMPERIALISM 0x0057c3b0

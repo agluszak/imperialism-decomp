@@ -2395,14 +2395,6 @@ undefined4 ReturnFalseNationStateCapabilityFlagA0(void)
   return 0;
 }
 
-// ghidra_name NoOpNationSelectedRegionAndMapCellLabelHook
-// ghidra_proto void __cdecl NoOpNationSelectedRegionAndMapCellLabelHook(void)
-// FUNCTION: IMPERIALISM 0x004d6790
-undefined4 NoOpNationSelectedRegionAndMapCellLabelHook(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::GetTCountryClassNamePointer
 // ghidra_proto void * __cdecl GetTCountryClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004d67b0
@@ -2843,14 +2835,6 @@ undefined4 SerializeNationOrderStateToArchive(void)
   return 0;
 }
 
-// ghidra_name NoOpNationPendingActionHook
-// ghidra_proto void __cdecl NoOpNationPendingActionHook(void)
-// FUNCTION: IMPERIALISM 0x004da5c0
-undefined4 NoOpNationPendingActionHook(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchNationPendingActionEventCodes
 // ghidra_proto void __cdecl DispatchNationPendingActionEventCodes(void)
 // FUNCTION: IMPERIALISM 0x004da5e0
@@ -2887,14 +2871,6 @@ undefined4 QueueNationOrderManagerPayloadObject(void)
 // ghidra_proto void __cdecl ClearQueuedNationOrdersAndResetOrderManager(void)
 // FUNCTION: IMPERIALISM 0x004daa80
 undefined4 ClearQueuedNationOrdersAndResetOrderManager(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpNationQueuedOrderHook
-// ghidra_proto void __cdecl NoOpNationQueuedOrderHook(void)
-// FUNCTION: IMPERIALISM 0x004dab00
-undefined4 NoOpNationQueuedOrderHook(void)
 {
   return 0;
 }

@@ -147,14 +147,6 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96(void)
   return 0;
 }
 
-// ghidra_name NoOpThreadInitializationStub
-// ghidra_proto void __cdecl NoOpThreadInitializationStub(void)
-// FUNCTION: IMPERIALISM 0x00622a95
-undefined4 NoOpThreadInitializationStub(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96
 // ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96(void)
 // FUNCTION: IMPERIALISM 0x00622a96
@@ -683,14 +675,6 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492(void)
   return 0;
 }
 
-// ghidra_name NoOpPaddingStub_00624491
-// ghidra_proto void __cdecl NoOpPaddingStub_00624491(void)
-// FUNCTION: IMPERIALISM 0x00624491
-undefined4 NoOpPaddingStub_00624491(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492
 // ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492(void)
 // FUNCTION: IMPERIALISM 0x00624492
@@ -719,14 +703,6 @@ undefined4 CThreadLocalObject(void)
 // ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8(void)
 // FUNCTION: IMPERIALISM 0x006244b2
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpPaddingStub_006244b7
-// ghidra_proto void __cdecl NoOpPaddingStub_006244b7(void)
-// FUNCTION: IMPERIALISM 0x006244b7
-undefined4 NoOpPaddingStub_006244b7(void)
 {
   return 0;
 }
