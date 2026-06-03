@@ -2040,7 +2040,7 @@ Commands:
 2. `just compare 0x004895e0` — `THandleStream::ConstructTHandleStreamBaseState` **100%**.
 3. Adjacent checks: `0x004895c0` **100%**, `0x00489640` **100%**, `0x00489610` still **90.91%**
    with only the existing call-target pairing residual (`<OFFSET1>` vs
-   `DestructTHandleStreamAndMaybeFree_Impl`).
+   `DestructTHandleStreamAndMaybeFree_Impl`).<<<<<<< ours
 
 ### TGreatPower vtable programmatic mapping & candidate discovery (2026-06-03)
 
@@ -2129,3 +2129,37 @@ Commands:
 Also resolved a popped WIP stash (`THandleStream` ctor/vtable) whose changes were
 already superseded by committed work; took the current HEAD version for
 `stream.cpp`/`stream.h`/`symbols.csv` and dropped the obsolete stash.
+||||||| original
+
+=======
+
+### TGreatPower vtable programmatic mapping & candidate discovery (2026-06-03)
+
+Analyzed the vtables of `TGreatPower` (`0x00653938`) and `TAutoGreatPower` (`0x00654088`) in Ghidra by tracking `this` register propagation to distinguish base-class `TGreatPower` state fields (offsets `< 0x964`) from subclass `TAutoGreatPower` overrides (offsets `>= 0x964`).
+Key outcomes:
+1. Programmatically resolved Ghidra's defined function thunks as well as raw jump assembly thunk structures (e.g. `jmp` / `jmpn`) via `Instruction.getFlows()`.
+2. Discovered 19 unique unowned functions in `TGreatPower`'s vtable that belong physically to the base `TGreatPower` class state. Notable examples:
+   - `0x004D9C70`: Misnamed `TCountry::HandleCityDialogHintClusterUpdate` in Ghidra but operates directly on base offsets up to `0x918`.
+   - `0x004DF810` (`RebuildPrimaryNationStateForSlot_Impl`): Operates on `this` offsets `0x014` and `0x0A0` but was annotated as a free `__cdecl` function.
+   - `0x004E1E40` (`ExecuteAdvisoryPromptAndApplyActionType2OrFallback`): Accesses offset `0x284` but was labeled as a free function.
+   - `0x004DD040` (`SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant`), `0x004DDF90` (`ClearFieldBlock1c6`), `0x004E2270` (`RemoveRegionIdAndRunTrackedObjectCleanup`), `0x004E25C0` (`ResetNationDiplomacySlotsAndMarkRelatedNations`), and others.
+3. The candidate list was recorded in these session notes; no separate `research_notes.md` file was
+   left in the repo.
+
+### TGreatPower cleanup after broken vtable-promotion batch (2026-06-03)
+
+Cleaned up the prior in-progress `TGreatPower` attempt that had pasted raw Ghidra output into
+manual source (`__thiscall` definitions, `undefined` temporaries, raw vtable indexing, and
+unverified ownership/stub removals). Restored the source/stub/ownership state to a buildable
+baseline and kept the vtable scan as candidate evidence only.
+
+Then promoted the three small, grounded minister-field dispatch callbacks in repo style:
+1. `0x004e78d0` `DispatchNationField98CallbackD4`: `this+0x98` / `interiorMinister->CallD4()` —
+   **100%**.
+2. `0x004e78f0` `DispatchNationField9CCallback4C`: `this+0x9c` / `defenseMinister->Call4C()` —
+   **100%**.
+3. `0x004e7990` `DispatchNationField94Callbacks90And94`: `this+0x94` /
+   `foreignMinister->Call90(); Call94()` — **100%**.
+
+Commands: `just build`, `just detect`, targeted `just compare` for all three addresses.
+>>>>>>> theirs
