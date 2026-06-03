@@ -109,6 +109,7 @@ address|target_cpp|ownership|note
 488510|src/game/TPtrList.cpp|manual|marker_sync
 4885d0|src/game/TPtrList.cpp|manual|marker_sync
 4885f0|src/game/TPtrList.cpp|manual|marker_sync
+489070|src/game/TFileStream.cpp|manual|marker_sync
 4890f0|src/game/TFileStream.cpp|manual|marker_sync
 489110|src/game/TFileStream.cpp|manual|marker_sync
 489130|src/game/TFileStream.cpp|manual|marker_sync

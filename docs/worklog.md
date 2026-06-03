@@ -113,6 +113,18 @@ a separate, larger slice (left untouched). Canaries unchanged (0 below floor); v
 gate passes. Heuristic note 86 records the full recipe and the two non-convertible
 cases.
 
+### TFileStream::WriteLengthPrefixedCString (0x00489070) — last stream fn
+
+Serializes a length-prefixed C-string: write the length through virtual slot 0x22
+(byte 0x88), then the bytes through slot 0x1e (byte 0x78). Registered two clean
+`thiscall|none` write-slot facades in `config/vtable_slots.csv`
+(`VCall_Stream_WriteCountSlot88`, `VCall_Stream_WriteBytesSlot78`) +
+`just gen-vcall-facades`. Decisive: the original computes the length with `repne
+scasb` (MSVC intrinsic `strlen`), not a hand loop — declaring `strlen` + `#pragma
+intrinsic(strlen)` and calling it produced the exact `repne scasb` and let the vtable
+load cache into a register across both slot calls. **28.57% (hand loop) -> 100%**.
+The whole `TFileStream` is now ported and 100%.
+
 ## 2026-06-02
 
 ### TSortedByRelationshipList and TSortByPriceList alignment

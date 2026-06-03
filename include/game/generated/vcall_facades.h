@@ -88,6 +88,20 @@ static __inline void VCall_UiRuntime_ApplyLegendSplitSlot34(void* object, int ar
   fn(object, arg0);
 }
 
+// stream write raw bytes; class=TStream; status=provisional
+static __inline void VCall_Stream_WriteBytesSlot78(void* object, void* arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x78 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// stream write count/length prefix; class=TStream; status=provisional
+static __inline void VCall_Stream_WriteCountSlot88(void* object, int arg0) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x88 / 4)));
+  fn(object, arg0);
+}
+
 // focus animation scoped render post slot; class=FocusAnimationRenderTarget; status=provisional
 static __inline void VCall_FocusAnimationView_PostRenderSlotFC(void* object) {
   typedef void (__fastcall * Fn)(void*);
