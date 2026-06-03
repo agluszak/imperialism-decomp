@@ -2041,3 +2041,40 @@ Commands:
 3. Adjacent checks: `0x004895c0` **100%**, `0x00489640` **100%**, `0x00489610` still **90.91%**
    with only the existing call-target pairing residual (`<OFFSET1>` vs
    `DestructTHandleStreamAndMaybeFree_Impl`).
+
+### TradeControl promotion + ui_widget_shared.h scaffolding split (2026-06-03)
+
+Promoted `TradeControl` out of `include/game/ui_widget_shared.h`'s anonymous
+namespace into a single global header `include/game/TradeControl.h` (struct +
+inline slot wrappers, verbatim). The per-TU anon copies were the last blocker to
+globalizing the real trade-class headers (`TradeScreenContext`, etc.) that hand
+back `TradeControl*`. Then split the global-scope scaffolding out of
+`ui_widget_shared.h` into focused headers, leaving it a thin aggregator:
+
+- `UiRuntimeContext.h` — `UiRuntimeContext` + `g_pUiRuntimeContext`.
+- `win_rect.h` — `RECT` + `CopyRect`/`OffsetRect`.
+- `quickdraw_guards.h` — `QuickDrawSurfaceGuard`, `ScopedMapQuickDrawContextGuard`
+  + their construct/destroy thunks + `SetQuickDrawFillColor`.
+- `ui_widget_thunks.h` — the loose ABI/lifecycle thunk declarations.
+
+Kept the anonymous-namespace block (the 5 per-widget state structs, their
+`g_vtbl*`/`g_pClassDesc*` placeholders, `TradeScreenRuntimeBridge`, control-tag
+constants, `QueryActiveNationId`) inline in `ui_widget_shared.h`: relocating
+anon-namespace types changes MSVC500's file-keyed mangling and would desync
+`config/symbols.csv`. That extraction is deferred to a dedicated pass that also
+re-runs the Ghidra/symbols resync (see INSTRUCTIONS note 84).
+
+Investigation note: an intermediate per-class extraction (state structs moved to
+their own headers / out of the anon namespace) was tried and reverted; a stray
+`152` aligned reading turned out to be matcher jitter — HEAD, TradeControl-only,
+and the shipped split all re-measure at **149** repeatably.
+
+Commands:
+1. `just build` — passed (links 100%).
+2. `just stats` — aligned **149 (delta 0)**, coverage 99.98% (delta 0.00 pp).
+3. `just compare-canaries` — `below_floor=0` (8/8).
+4. `just format-check` on all touched headers — clean.
+
+Also resolved a popped WIP stash (`THandleStream` ctor/vtable) whose changes were
+already superseded by committed work; took the current HEAD version for
+`stream.cpp`/`stream.h`/`symbols.csv` and dropped the obsolete stash.
