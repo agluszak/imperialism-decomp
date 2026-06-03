@@ -599,6 +599,20 @@ static __inline void VCall_CFile_GetBufferPtrSlot58(void* object, int arg0, int 
   fn(object, arg0, arg1, arg2, arg3);
 }
 
+// CFile read bytes from underlying file; class=CFile; status=provisional
+static __inline int VCall_CFile_ReadBytesSlot3C(void* object, void* arg0, int arg1) {
+  typedef int (__fastcall * Fn)(void*, void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x3C / 4)));
+  return fn(object, arg0, arg1);
+}
+
+// CFile seek within underlying file; class=CFile; status=provisional
+static __inline void VCall_CFile_SeekSlot30(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x30 / 4)));
+  fn(object, arg0, arg1);
+}
+
 // CFile write bytes to underlying file; class=CFile; status=provisional
 static __inline void VCall_CFile_WriteBytesSlot40(void* object, void* arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, void*, int);

@@ -9,6 +9,8 @@
 
 undefined4 Flush(void);
 undefined4 CopyMemoryPossiblyOverlapping(void);
+undefined4 MoveMemoryOverlapSafe(void);
+undefined4 AfxThrowArchiveException(void);
 
 namespace {
 
@@ -19,6 +21,14 @@ inline void FlushArchive(CArchive* archive) {
 inline void CopyMemory(void* dst, const void* src, int size) {
   reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::CopyMemoryPossiblyOverlapping)(
       dst, src, size);
+}
+
+inline void MoveMemory(void* dst, const void* src, int size) {
+  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src, size);
+}
+
+inline void ThrowArchiveException(int errorCode, void* context) {
+  reinterpret_cast<void(__stdcall*)(int, void*)>(::AfxThrowArchiveException)(errorCode, context);
 }
 
 } // namespace
@@ -79,4 +89,63 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
   }
   CopyMemory(m_lpBufCur, src, nCount);
   m_lpBufCur += nCount;
+}
+
+// FUNCTION: IMPERIALISM 0x00611f3e
+void CArchive::FillBuffer(unsigned int requiredBytes) {
+  unsigned int avail = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);
+  unsigned int wanted = requiredBytes + avail;
+  if (m_bDirect == 0) {
+    unsigned char* dst = m_lpBufStart;
+    if (dst < m_lpBufCur) {
+      if (static_cast<int>(avail) > 0) {
+        MoveMemory(dst, m_lpBufCur, static_cast<int>(avail));
+        dst = m_lpBufStart;
+        m_lpBufCur = dst;
+        m_lpBufMax = dst + avail;
+      }
+      int room = m_nBufSize - static_cast<int>(avail);
+      dst = dst + avail;
+      do {
+        int got = VCall_CFile_ReadBytesSlot3C(m_pFile, dst, room);
+        avail += got;
+        dst += got;
+        room -= got;
+        if (got == 0 || room == 0) {
+          break;
+        }
+      } while (avail < requiredBytes);
+      m_lpBufCur = m_lpBufStart;
+      m_lpBufMax = m_lpBufStart + avail;
+    }
+  } else {
+    if (avail != 0) {
+      VCall_CFile_SeekSlot30(m_pFile, -static_cast<int>(avail), 1);
+    }
+    VCall_CFile_GetBufferPtrSlot58(m_pFile, 0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+    m_lpBufCur = m_lpBufStart;
+  }
+  if (static_cast<unsigned int>(m_lpBufMax - m_lpBufCur) < wanted) {
+    ThrowArchiveException(3, 0);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005e6da3
+CArchive* CArchive::ReadWordFromSerializedBuffer(void* outWord) {
+  if (m_lpBufMax < m_lpBufCur + 2) {
+    FillBuffer(static_cast<unsigned int>(m_lpBufCur + 2 - m_lpBufMax));
+  }
+  *reinterpret_cast<unsigned short*>(outWord) = *reinterpret_cast<unsigned short*>(m_lpBufCur);
+  m_lpBufCur += 2;
+  return this;
+}
+
+// FUNCTION: IMPERIALISM 0x005e6dd6
+CArchive* CArchive::ReadDwordFromSerializedBuffer(void* outDword) {
+  if (m_lpBufMax < m_lpBufCur + 4) {
+    FillBuffer(static_cast<unsigned int>(m_lpBufCur + 4 - m_lpBufMax));
+  }
+  *reinterpret_cast<unsigned int*>(outDword) = *reinterpret_cast<unsigned int*>(m_lpBufCur);
+  m_lpBufCur += 4;
+  return this;
 }

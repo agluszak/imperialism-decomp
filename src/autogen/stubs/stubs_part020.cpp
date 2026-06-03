@@ -3483,22 +3483,6 @@ undefined4 WrapperFor_WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78_At005e
   return 0;
 }
 
-// ghidra_name NodeScanner::ReadWordFromSerializedBuffer
-// ghidra_proto void * __thiscall ReadWordFromSerializedBuffer(void * outWord)
-// FUNCTION: IMPERIALISM 0x005e6da3
-undefined4 ReadWordFromSerializedBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name NodeScanner::ReadDwordFromSerializedBuffer
-// ghidra_proto void * __thiscall ReadDwordFromSerializedBuffer(void * outDword)
-// FUNCTION: IMPERIALISM 0x005e6dd6
-undefined4 ReadDwordFromSerializedBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_CException_At005e6e08
 // ghidra_proto void __cdecl WrapperFor_CException_At005e6e08(void)
 // FUNCTION: IMPERIALISM 0x005e6e08

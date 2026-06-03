@@ -1827,14 +1827,6 @@ undefined4 Flush(void)
   return 0;
 }
 
-// ghidra_name NodeScanner::FillBuffer
-// ghidra_proto void __thiscall FillBuffer(uint requiredBytes)
-// FUNCTION: IMPERIALISM 0x00611f3e
-undefined4 FillBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::WriteCount
 // ghidra_proto void __thiscall WriteCount(void * pArchive, uint value)
 // FUNCTION: IMPERIALISM 0x00612000

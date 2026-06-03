@@ -19,4 +19,10 @@ struct CArchive {
   CArchive* WriteWordToSerializedBuffer(unsigned short value);
   CArchive* WriteDwordToSerializedBuffer(unsigned int value);
   void WriteBytesToSerializedBuffer(const void* src, unsigned int nCount);
+
+  // Read side (symmetric to the write cursor): refill the buffer from the
+  // backing CFile when the cursor would underrun, then extract and advance.
+  void FillBuffer(unsigned int requiredBytes);
+  CArchive* ReadWordFromSerializedBuffer(void* outWord);
+  CArchive* ReadDwordFromSerializedBuffer(void* outDword);
 };
