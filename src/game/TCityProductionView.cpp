@@ -1,6 +1,7 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
-#include "decomp_types.h"
+#include "game/UiRuntimeContext.h"
+#include "game/UiRuntimeContext_Virtuals.h"
 #include "game/generated/vcall_facades.h"
 #include "game/ui_widget_shared.h"
 
@@ -121,7 +122,7 @@ void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh()
   }
 
   reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
-  VCall_UiRuntime_ApplyLegendSplitSlot34(g_pUiRuntimeContext, 1);
+  reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)->ApplyLegendSplitSlot34(1);
   reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
       originX, sVar2);
 

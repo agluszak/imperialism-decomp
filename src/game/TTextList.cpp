@@ -1,6 +1,9 @@
 #include "game/TTextList.h"
 #include "game/generated/vcall_facades.h"
+#include "game/TTextList_Virtuals.h"
 #include "game/ui_widget_shared.h"
+#include "game/UiRuntimeContext.h"
+#include "game/UiRuntimeContext_Virtuals.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -50,7 +53,7 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
       tempString.ConstructFromCStrOrResourceId(pItem->text);
       
       if (idx == selectedIndex) {
-        VCall_UiRuntime_ApplyLegendSplitSlot34(g_pUiRuntimeContext, 5);
+        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)->ApplyLegendSplitSlot34(5);
         
         RECT rect;
         rect.left = 0;
@@ -97,18 +100,17 @@ void TTextList::HandleTextListScrollSelectionChange(int* pScrollData) {
   if (index < totalItems) {
     selectedIndex = index;
     
-    VCall_TextList_OnSelectionChange(this);
+    reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionChangeSlotE4();
     
     RECT rect;
-    VCall_TextList_GetRect(this, &rect);
+    reinterpret_cast<TTextList_Virtuals*>(this)->GetRectSlot12C(&rect);
     
     RECT localRect;
     CopyRect(&localRect, &rect);
     
     reinterpret_cast<TControl*>(this->field20)->InvalidateCityDialogRectRegion(&localRect, 1);
-        
-    VCall_TextList_OnSelectionConfirmed(this);
+        reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionConfirmedSlot13C();
     
-    VCall_Parent_DispatchEvent(reinterpret_cast<void*>(this->field20), 4, this, 0);
+    reinterpret_cast<TTextList_Virtuals*>(this->field20)->DispatchEventSlot40(4, this, 0);
   }
 }
