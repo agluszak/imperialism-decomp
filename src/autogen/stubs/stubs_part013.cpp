@@ -2835,14 +2835,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins22_004ddad0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins22_004ddad0(void)
-// FUNCTION: IMPERIALISM 0x004ddad0
-undefined4 OrphanLeaf_NoCall_Ins22_004ddad0(void)
-{
-  return 0;
-}
-
 // ghidra_name AddShortDeltaToNationCounterAtOffset198
 // ghidra_proto void __cdecl AddShortDeltaToNationCounterAtOffset198(void)
 // FUNCTION: IMPERIALISM 0x004ddcf0
@@ -2863,14 +2855,6 @@ undefined4 OrphanCallChain_C2_I33_004ddd90(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I19_004ddeb0(void)
 // FUNCTION: IMPERIALISM 0x004ddeb0
 undefined4 OrphanCallChain_C1_I19_004ddeb0(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearFieldBlock1c6
-// ghidra_proto void __thiscall ClearFieldBlock1c6(void)
-// FUNCTION: IMPERIALISM 0x004ddf90
-undefined4 ClearFieldBlock1c6(void)
 {
   return 0;
 }

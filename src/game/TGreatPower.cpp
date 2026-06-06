@@ -442,7 +442,6 @@ void TGreatPower_VtblSlot07(void);
 float ComputeMapActionContextCompositeScoreForNation(void);
 void OrphanCallChain_C2_I21_004e2b00(void);
 undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void);
-undefined4 ClearFieldBlock1c6(void);
 undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void);
 undefined4 thunk_QueueNationPairWarTransition(void);
 void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
@@ -1680,7 +1679,7 @@ void TGreatPower::thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c(void
 
 // FUNCTION: IMPERIALISM 0x00406c49
 void TGreatPower::thunk_ClearFieldBlock1c6_At00406c49(void) {
-  ClearFieldBlock1c6();
+  this->TGreatPower::ClearDiplomacyState1c6Block();
 }
 
 // FUNCTION: IMPERIALISM 0x00406c9e
@@ -3203,6 +3202,33 @@ int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildin
         GetCityBuildingProductionValueBySlot(this->relationManager, buildingSlot));
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004ddf90
+void TGreatPower::ClearDiplomacyState1c6Block(void) {
+  int* cursor = reinterpret_cast<int*>(this->diplomacyState1c6);
+  for (int remaining = 0xb; remaining != 0; --remaining) {
+    *cursor = 0;
+    ++cursor;
+  }
+  *reinterpret_cast<short*>(cursor) = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004ddad0
+char TGreatPower::AreDiplomacyState1c6Slots13To16AllNonPositive(void) {
+  char result = 1;
+  short nationSlot = 0xd;
+  do {
+    if (nationSlot > 0x10) {
+      return result;
+    }
+    short state = this->diplomacyState1c6[nationSlot];
+    if (state > 0 && this->relationDeltaSnapshot[nationSlot] + state > 0) {
+      result = 0;
+    }
+    ++nationSlot;
+  } while (result != 0);
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004dd740

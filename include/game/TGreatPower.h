@@ -126,7 +126,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(101);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta); // slot 0x66
   TGREATPOWER_VTABLE_SLOT(103);
-  TGREATPOWER_VTABLE_SLOT(104);
+  virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void); // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
   TGREATPOWER_VTABLE_SLOT(107);
@@ -136,7 +136,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(111);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload); // slot 0x70
-  TGREATPOWER_VTABLE_SLOT(113);
+  virtual void ClearDiplomacyState1c6Block(void); // slot 0x71
   TGREATPOWER_VTABLE_SLOT(114);
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // slot 0x73
   virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // slot 0x74
