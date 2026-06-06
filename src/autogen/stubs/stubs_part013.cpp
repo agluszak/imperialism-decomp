@@ -2755,22 +2755,6 @@ undefined4 OrphanCallChain_C6_I98_004dcaa0(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I24_004dcc50
-// ghidra_proto void __cdecl OrphanCallChain_C1_I24_004dcc50(void)
-// FUNCTION: IMPERIALISM 0x004dcc50
-undefined4 OrphanCallChain_C1_I24_004dcc50(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I31_004dcca0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I31_004dcca0(void)
-// FUNCTION: IMPERIALISM 0x004dcca0
-undefined4 OrphanCallChain_C1_I31_004dcca0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C4_I35_004dcf60
 // ghidra_proto short __cdecl OrphanCallChain_C4_I35_004dcf60(void)
 // FUNCTION: IMPERIALISM 0x004dcf60

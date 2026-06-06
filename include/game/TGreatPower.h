@@ -85,8 +85,8 @@ public:
   TGREATPOWER_VTABLE_SLOT(62);
   TGREATPOWER_VTABLE_SLOT(63);
   TGREATPOWER_VTABLE_SLOT(64);
-  TGREATPOWER_VTABLE_SLOT(65);
-  TGREATPOWER_VTABLE_SLOT(66);
+  virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);          // slot 0x41
+  virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void);      // slot 0x42
   TGREATPOWER_VTABLE_SLOT(67);
   TGREATPOWER_VTABLE_SLOT(68);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45

@@ -3205,6 +3205,28 @@ int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildin
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004dcc50
+void TGreatPower::ApplyDiplomacyState222ToRelationManagerAndClear(void) {
+  for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    this->AddToRelationManagerFieldB6AndRefresh(nationSlot, this->diplomacyState222[nationSlot]);
+    this->diplomacyState222[nationSlot] = 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004dcca0
+void TGreatPower::ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void) {
+  for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    this->AddToRelationManagerFieldB6AndRefresh(nationSlot, this->relationDeltaCurrent[nationSlot]);
+    if (this->diplomacyState250[nationSlot] == -1 && this->relationDeltaCurrent[nationSlot] == 0) {
+      this->diplomacyState1f4[nationSlot] =
+          static_cast<short>(this->diplomacyState1f4[nationSlot] + 1);
+    } else {
+      this->diplomacyState1f4[nationSlot] = 0;
+    }
+    this->relationDeltaCurrent[nationSlot] = 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004dcdd0
 void TGreatPower::UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value) {
   short* target = &this->needTargetByType[needIndex];

@@ -266,6 +266,8 @@ address|target_cpp|ownership|note
 4dc9f0|src/game/TGreatPower.cpp|manual|marker_sync
 4dca80|src/game/noop_slots.cpp|manual|marker_sync
 4dcc30|src/game/noop_slots.cpp|manual|marker_sync
+4dcc50|src/game/TGreatPower.cpp|manual|marker_sync
+4dcca0|src/game/TGreatPower.cpp|manual|marker_sync
 4dcd10|src/game/TGreatPower.cpp|manual|marker_sync
 4dcdd0|src/game/TGreatPower.cpp|manual|marker_sync
 4dce10|src/game/TGreatPower.cpp|manual|marker_sync
