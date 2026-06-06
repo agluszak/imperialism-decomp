@@ -43,10 +43,10 @@ public:
   TGREATPOWER_VTABLE_SLOT(26);
   TGREATPOWER_VTABLE_SLOT(27);
   virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot); // slot 0x1c
-  virtual short GetDiplomacyCounterA2(void); // slot 0x1d
+  virtual short GetDiplomacyCounterA2(void);                                  // slot 0x1d
   // index 0x1e / vtable+0x078. Evidence: 0x004dd1b0 and 0x004dd270 call this
   // for each nation while recomputing diplomacy need baselines; returns AX.
-  virtual short GetRelationManagerFieldB6(short nationSlot); // slot 0x1e
+  virtual short GetRelationManagerFieldB6(short nationSlot);          // slot 0x1e
   virtual short GetDiplomacyState1C6ByTarget(short targetNationSlot); // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
@@ -62,7 +62,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(39);
   virtual char ShouldDispatchImmediatelySlot28_Provisional(void) = 0;
   TGREATPOWER_VTABLE_SLOT(41);
-  TGREATPOWER_VTABLE_SLOT(42);
+  virtual void VTableIndex42_Provisional(void) = 0; // slot 0x2a
   TGREATPOWER_VTABLE_SLOT(43);
   TGREATPOWER_VTABLE_SLOT(44);
   TGREATPOWER_VTABLE_SLOT(45);
@@ -85,20 +85,20 @@ public:
   TGREATPOWER_VTABLE_SLOT(62);
   TGREATPOWER_VTABLE_SLOT(63);
   TGREATPOWER_VTABLE_SLOT(64);
-  virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);          // slot 0x41
-  virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void);      // slot 0x42
-  TGREATPOWER_VTABLE_SLOT(67);
+  virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);      // slot 0x41
+  virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void); // slot 0x42
+  virtual void VTableIndex67_Provisional(void) = 0;                        // slot 0x43
   TGREATPOWER_VTABLE_SLOT(68);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
-  virtual bool IsNeedTargetEqualCurrent(short needIndex); // slot 0x46
-  virtual short GetNeedTargetByType(short needIndex); // slot 0x47
+  virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
+  virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
   TGREATPOWER_VTABLE_SLOT(72);
   TGREATPOWER_VTABLE_SLOT(73);
-  virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
-  virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
-  TGREATPOWER_VTABLE_SLOT(76);
-  TGREATPOWER_VTABLE_SLOT(77);
-  TGREATPOWER_VTABLE_SLOT(78);
+  virtual short TryDecayRelationNeedScores9AndB(void);           // slot 0x4a
+  virtual short TryDecayRelationNeedScores9And8(void);           // slot 0x4b
+  virtual void VTableIndex76_Provisional(void) = 0;              // slot 0x4c
+  virtual void VTableIndex77_Provisional(void) = 0;              // slot 0x4d
+  virtual void VTableIndex78_Provisional(void) = 0;              // slot 0x4e
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
   TGREATPOWER_VTABLE_SLOT(80);
   TGREATPOWER_VTABLE_SLOT(81);
@@ -126,17 +126,18 @@ public:
   TGREATPOWER_VTABLE_SLOT(101);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta); // slot 0x66
   TGREATPOWER_VTABLE_SLOT(103);
-  virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void); // slot 0x68
+  virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
   TGREATPOWER_VTABLE_SLOT(107);
-  virtual void DispatchFallbackActionSlot6C_Provisional(int arg0, int arg1, int arg2) = 0;
-  virtual short GetTrackedSlotEntryCountLow(short targetSlot);    // slot 0x6d
+  virtual void DispatchFallbackActionSlot6C_Provisional(int mode, int actionArg, int payload,
+                                                        int targetNation, int flags) = 0;
+  virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   TGREATPOWER_VTABLE_SLOT(111);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload); // slot 0x70
-  virtual void ClearDiplomacyState1c6Block(void); // slot 0x71
+  virtual void ClearDiplomacyState1c6Block(void);                          // slot 0x71
   TGREATPOWER_VTABLE_SLOT(114);
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // slot 0x73
   virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // slot 0x74
@@ -146,7 +147,7 @@ public:
   CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
                                         unsigned short proposedGrantEntry); // slot 0x77
   TGREATPOWER_VTABLE_SLOT(120);
-  virtual void DecrementNeedLevelByNationStep(short nationSlot); // slot 0x79
+  virtual void DecrementNeedLevelByNationStep(short nationSlot);                       // slot 0x79
   virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // slot 0x7a
   virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // slot 0x7b
   virtual void
@@ -163,12 +164,12 @@ public:
   virtual void VTableSlot84_Provisional(int targetNation) = 0;
   virtual void CallSlot85_Provisional(int targetNation) = 0;
   TGREATPOWER_VTABLE_SLOT(134);
-  virtual int CountMapActionContextNodesWithNationBit(void);       // slot 0x87
-  virtual double ComputeMinisterSkillFloatSlot88(void);            // slot 0x88
-  virtual double ComputeMinisterSkillFloatSlot89(void);            // slot 0x89
-  virtual double ComputeMinisterSkillFloatSlot8A(void);            // slot 0x8a
-  virtual double ComputeMinisterSkillFloatSlot8B(void);            // slot 0x8b
-  virtual double ComputeMinisterSkillFloatSlot8C(void);            // slot 0x8c
+  virtual int CountMapActionContextNodesWithNationBit(void);                         // slot 0x87
+  virtual double ComputeMinisterSkillFloatSlot88(void);                              // slot 0x88
+  virtual double ComputeMinisterSkillFloatSlot89(void);                              // slot 0x89
+  virtual double ComputeMinisterSkillFloatSlot8A(void);                              // slot 0x8a
+  virtual double ComputeMinisterSkillFloatSlot8B(void);                              // slot 0x8b
+  virtual double ComputeMinisterSkillFloatSlot8C(void);                              // slot 0x8c
   virtual int GetCityBuildingProductionViaRelationManagerSlot8D(short buildingSlot); // slot 0x8d
   TGREATPOWER_VTABLE_SLOT(142);
   TGREATPOWER_VTABLE_SLOT(143);

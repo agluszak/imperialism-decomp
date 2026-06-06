@@ -2667,3 +2667,18 @@ Residual: 3/5 floats at 42% from a separate MSVC x87 commutative-operand-order i
 data symbol. canaries below_floor=0, vtable-gate ok. Heuristic note 45 records the recipe. This
 unblocks the EH bodies' direct global loads (g_pCivilianTerrainCompatibilityMatrix etc. can now be
 defined the same way).
+
+### TGreatPower virtual-call cleanup (2026-06-07)
+
+Removed the fake-vtable helper layer for grounded TGreatPower/NationState/GlobalMap/RelationManager dispatches:
+- `0x004dc9f0` now calls `this->VTableIndex77_Provisional()`, `this->VTableIndex78_Provisional()`, `this->VTableIndex67_Provisional()`, `this->relationManager->Call28()`, and `this->VTableIndex42_Provisional()` directly instead of `vcall_runtime::thiscall0v` wrappers.
+- Added typed virtual views for `TNationStateView` slots `0x94`, `0x19c`, `0x21c`, `0x23c`, `0x240`; `TLocalizationRuntimeView` slot `0x3c`; and `TGlobalMapStateScoreView` slot `0xc4`, replacing the corresponding generated facades/runtime offset calls in TGreatPower.
+- Removed the erroneous duplicate `// FUNCTION: IMPERIALISM 0x004dd740` marker from `GetRelationManagerFieldB6`; the durable vtable evidence says slot `0x1e` is entry `0x00404b5b`, which remains an autogen-owned stale symbol until deliberately promoted.
+
+Validation:
+- `just format src/game/TGreatPower.cpp include/game/TGreatPower.h`
+- `just sync-ownership && just regen-stubs && just build` (clean; vtable gate passed as part of build).
+- `just compare 0x004dc9f0 0x004dd740 0x004ddbb0 0x004de340 0x004df010 0x004df5c0 0x004e8750 0x0055cbd0`: `0x004dc9f0` is now 100%; no duplicate-marker warning; remaining targets below 100% as expected.
+- `just compare-canaries`: total=8, below_floor=0, parse_error=0.
+
+Deferred intentionally: remaining `__fastcall` casts in this file are constructor/helper/external-manager thunk boundaries or queue/message/list/localization-slot84 facades whose owning class/signature is not yet recovered. Do not replace them with another cast shape; migrate each only when the receiver class and slot signature are grounded.
