@@ -53,13 +53,6 @@ static __inline void VCall_DiplomacyMapView_TransformPointToLocalSlot148(void* o
   fn(object, arg0, arg1);
 }
 
-// relation type/status query; status=provisional
-static __inline int VCall_Diplomacy_GetRelationTypeSlot68(void* object, int arg0, int arg1) {
-  typedef int (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x68 / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
 // query policy-icon strip x offset by code; class=GlobalMapState; status=provisional
 static __inline short VCall_GlobalMapState_QueryIconStripXSlot110(void* object, int arg0) {
   typedef short (__fastcall * Fn)(void*, int);
@@ -109,13 +102,6 @@ static __inline void VCall_Diplomacy_BuildRelationshipListSlot88(void* object, i
   fn(object, 0, arg0, arg1, arg2);
 }
 
-// relation tier; status=provisional
-static __inline short VCall_Diplomacy_GetRelationTierSlot70(void* object, int arg0, int arg1) {
-  typedef short (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x70 / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
 // diplomacy flag gate; status=provisional
 static __inline char VCall_Diplomacy_HasFlag84ForNationSlot84(void* object, int arg0) {
   typedef char (__fastcall * Fn)(void*, int, int);
@@ -151,55 +137,6 @@ static __inline char VCall_GlobalMapState_CallMetricSlotC4(void* object, int arg
   return fn(object, 0, arg0, arg1);
 }
 
-// list count; status=provisional
-static __inline int VCall_List_GetCountSlot28(void* object) {
-  typedef int (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x28 / 4)));
-  return fn(object, 0);
-}
-
-// list count slot48; status=provisional
-static __inline int VCall_List_GetCountSlot48(void* object) {
-  typedef int (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  return fn(object, 0);
-}
-
-// list ordinal value; status=provisional
-static __inline int VCall_List_GetIntByOrdinalSlot24(void* object, int arg0) {
-  typedef int (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x24 / 4)));
-  return fn(object, 0, arg0);
-}
-
-// list node accessor with mode; status=provisional
-static __inline void* VCall_List_GetNodeByOrdinalSlot2C(void* object, int arg0, int arg1) {
-  typedef void* (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
-// tracked entry accessor; status=provisional
-static __inline void* VCall_List_GetTrackedEntrySlot4C(void* object, int arg0) {
-  typedef void* (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x4C / 4)));
-  return fn(object, 0, arg0);
-}
-
-// list release slot24; status=provisional
-static __inline void VCall_List_ReleaseSlot24(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x24 / 4)));
-  fn(object, 0);
-}
-
-// list reset; status=provisional
-static __inline void VCall_List_ResetSlot14(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x14 / 4)));
-  fn(object, 0);
-}
-
 // localization dispatch slot84 no-arg; status=provisional
 static __inline void VCall_LocalizationRuntime_CallSlot84(void* object) {
   typedef void (__fastcall * Fn)(void*, int);
@@ -228,27 +165,6 @@ static __inline void VCall_MapActionContext_AssignDisplayRefFromSlot2C(void* obj
   fn(object, 0, arg0);
 }
 
-// message append bytes; status=provisional
-static __inline void VCall_Message_AppendBytesSlot78(void* object, const void* arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, const void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x78 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// message append word; status=provisional
-static __inline void VCall_Message_AppendWordSlot78(void* object, const void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, const void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x78 / 4)));
-  fn(object, 0, arg0);
-}
-
-// message write entry; status=provisional
-static __inline void VCall_Message_WriteEntrySlotB4(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xB4 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
 // need slot assign; status=provisional
 static __inline void VCall_NationState_AssignNeedSlotFromSourceSlot19C(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int, int);
@@ -261,48 +177,6 @@ static __inline void VCall_NationState_NotifyActionSlot94(void* object, int arg0
   typedef void (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
   fn(object, 0, arg0, arg1);
-}
-
-// ob array short accessor; status=provisional
-static __inline void* VCall_ObArray_GetShortValueByOrdinalSlot2C(void* object, int arg0) {
-  typedef void* (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
-  return fn(object, 0, arg0);
-}
-
-// proposal queue entry accessor; status=provisional
-static __inline void* VCall_ProposalQueue_GetEntryAt1Based(void* object, int arg0) {
-  typedef void* (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
-  return fn(object, 0, arg0);
-}
-
-// queue packed int write; status=provisional
-static __inline void VCall_QueueObject_WritePackedIntAtSlot38(void* object, int* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
-  fn(object, 0, arg0);
-}
-
-// queue apply message; status=provisional
-static __inline void VCall_Queue_ApplyMessageSlot14(void* object, void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x14 / 4)));
-  fn(object, 0, arg0);
-}
-
-// queue read index; status=provisional
-static __inline int VCall_Queue_ReadIndexSlot4C(void* object, int arg0, int arg1) {
-  typedef int (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x4C / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
-// queue refresh; status=provisional
-static __inline void VCall_Queue_RefreshSlot48(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  fn(object, 0);
 }
 
 // relation refresh; status=provisional
@@ -571,27 +445,6 @@ static __inline int VCall_NationState_PropagateWarTransitionSlot280(void* object
   return fn(object, 0, arg0, arg1, arg2);
 }
 
-// append/sort relationship candidate entry; class=TSortedByRelationshipList; status=provisional
-static __inline void VCall_RelationshipList_AddEntrySlot38(void* object, void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
-  fn(object, 0, arg0);
-}
-
-// get one-based relationship candidate entry; class=TSortedByRelationshipList; status=provisional
-static __inline void* VCall_RelationshipList_GetEntrySlot2C(void* object, int arg0) {
-  typedef void* (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
-  return fn(object, 0, arg0);
-}
-
-// release relationship candidate list storage; class=TSortedByRelationshipList; status=provisional
-static __inline void VCall_RelationshipList_ReleaseSlot24(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x24 / 4)));
-  fn(object, 0);
-}
-
 // terrain standing propagation bridge query; class=TerrainDescriptor; status=provisional
 static __inline char VCall_TerrainDescriptor_HasStandingPropagationBridgeSlot90(void* object, int arg0) {
   typedef char (__fastcall * Fn)(void*, int, int);
@@ -611,34 +464,6 @@ static __inline void VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(void* ob
   typedef void (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
   fn(object, 0, arg0, arg1);
-}
-
-// enqueue constructed turn-event packet; class=TurnEventQueue; status=provisional
-static __inline void VCall_TurnEventQueue_EnqueueSlot38(void* object, void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
-  fn(object, 0, arg0);
-}
-
-// pending war transition queue first pair record; class=WarTransitionQueue; status=provisional
-static __inline void* VCall_WarTransitionQueue_PeekFirstPairSlot34(void* object) {
-  typedef void* (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x34 / 4)));
-  return fn(object, 0);
-}
-
-// pending war transition queue push pair record; class=WarTransitionQueue; status=provisional
-static __inline void VCall_WarTransitionQueue_PushPairSlot40(void* object, void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
-  fn(object, 0, arg0);
-}
-
-// pending war transition queue remove first record; class=WarTransitionQueue; status=provisional
-static __inline void VCall_WarTransitionQueue_RemoveFirstPairSlot30(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x30 / 4)));
-  fn(object, 0, arg0);
 }
 
 // wrapped map overlay ctrl-modified draw; class=WrappedMapOverlayView; status=provisional

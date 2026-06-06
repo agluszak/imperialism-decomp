@@ -16,11 +16,14 @@ public:
   virtual void Release1C() = 0;
   virtual void VTableSlot20_Provisional() = 0;
   virtual int GetIntByOrdinalSlot24(int ordinal) = 0;
+  virtual void ReleaseSlot24() = 0; // overload for slot 24
   virtual int GetCountSlot28() = 0;
-  virtual void VTableSlot2C_Provisional() = 0;
+  virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal) = 0;
+  virtual void* GetEntrySlot2C(int index) = 0; // slot 2C overload
   virtual void AddTail30(void* item) = 0;
   virtual void VTableSlot34_Provisional() = 0;
   virtual void Call38() = 0;
+  virtual void AddEntrySlot38(void* entry) = 0; // slot 38 overload
   virtual void VTableSlot3C_Provisional() = 0;
   virtual void VTableSlot40_Provisional() = 0;
   virtual void VTableSlot44_Provisional() = 0;

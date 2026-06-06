@@ -303,27 +303,7 @@ public:
   short fieldB6[0x17];
 };
 
-class TQueueObject {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void Call18() = 0;    // slot 18
-  virtual void Release1C() = 0; // slot 1C
-  virtual void dummy8() = 0;
-  virtual void Call24() = 0; // slot 24 (destructor)
-  virtual void dummy10() = 0;
-  virtual void* GetEntryAt1BasedSlot2C(int index) = 0; // slot 2C
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void WritePackedIntSlot38(int* packedValue) = 0; // slot 38
-
-  unsigned char pad04[8 - 4];
-  int entryCount; // +8
-};
+// TQueueObject moved to include/game/TQueueObject.h
 
 // Entry record returned by TQueueObject::GetEntryAt1BasedSlot2C for the
 // diplomacy tracked-slot queues.
@@ -925,6 +905,10 @@ public:
   void thunk_InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
                                          int nOrderOwnerNationId);
 };
+#include "game/TMessageObject.h"
+#include "game/TObArray.h"
+#include "game/TQueueObject.h"
+#include "game/TStream.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TPtrList.h"
 
@@ -1160,7 +1144,7 @@ static __inline int ObArray_GetCountAtOffset8(void* list) {
 }
 
 static __inline short ObArray_GetShortValueByOrdinal1Based(void* list, int ordinal) {
-  short* value = static_cast<short*>(VCall_ObArray_GetShortValueByOrdinalSlot2C(list, ordinal));
+  short* value = static_cast<short*>(reinterpret_cast<TObArray*>(list)->GetShortValueByOrdinalSlot2C(ordinal));
   return (value != 0) ? *value : static_cast<short>(-1);
 }
 
@@ -1623,35 +1607,35 @@ static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* pa
 }
 
 static __inline void Message_AppendWordSlot78(void* message, const void* data) {
-  VCall_Message_AppendWordSlot78(message, data);
+  reinterpret_cast<TMessageObject*>(message)->AppendWordSlot78(data);
 }
 
 static __inline void Message_AppendBytesSlot78(void* message, const void* data, int sizeBytes) {
-  VCall_Message_AppendBytesSlot78(message, data, sizeBytes);
+  reinterpret_cast<TMessageObject*>(message)->AppendBytesSlot7C(data, sizeBytes);
 }
 
 static __inline void Message_WriteEntrySlotB4(void* message, int value, int flags) {
-  VCall_Message_WriteEntrySlotB4(message, value, flags);
+  reinterpret_cast<TMessageObject*>(message)->WriteEntrySlotB4(value, flags);
 }
 
 static __inline void Queue_ApplyMessageSlot14(void* queue, void* message) {
-  VCall_Queue_ApplyMessageSlot14(queue, message);
+  reinterpret_cast<TQueueObject*>(queue)->ApplyMessageSlot14(message);
 }
 
 static __inline void Queue_RefreshSlot48(void* queue) {
-  VCall_Queue_RefreshSlot48(queue);
+  reinterpret_cast<TQueueObject*>(queue)->RefreshSlot48();
 }
 
 static __inline int Queue_ReadIndexSlot4C(void* queue, int mode, int index) {
-  return VCall_Queue_ReadIndexSlot4C(queue, mode, index);
+  return reinterpret_cast<TQueueObject*>(queue)->ReadIndexSlot4C(mode, index);
 }
 
 static __inline void* List_GetNodeByOrdinalSlot2C(void* list, int mode, int ordinal) {
-  return VCall_List_GetNodeByOrdinalSlot2C(list, mode, ordinal);
+  return reinterpret_cast<TListObject*>(list)->GetNodeByOrdinalSlot2C(mode, ordinal);
 }
 
 static __inline void List_ReleaseSlot24(void* list) {
-  VCall_List_ReleaseSlot24(list);
+  reinterpret_cast<TListObject*>(list)->ReleaseSlot24();
 }
 
 // FUNCTION: IMPERIALISM 0x00401172

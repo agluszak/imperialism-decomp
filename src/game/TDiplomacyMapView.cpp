@@ -231,9 +231,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
       if (nationIndex == static_cast<short>(activeNationSlot)) {
         eventCode = 0x40;
       } else {
-        short relationTier = VCall_Diplomacy_GetRelationTierSlot70(
-            g_pDiplomacyTurnStateManager, activeNationSlot,
-            nationIndex);
+        short relationTier = g_pDiplomacyTurnStateManager->GetRelationTierSlot70(
+            activeNationSlot, nationIndex);
         eventCode = static_cast<short>(
             reinterpret_cast<unsigned char*>(kAddrDiplomacyRelationPaletteMap)[relationTier]);
       }
@@ -375,9 +374,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     do {
       if (*terrainDescriptors != 0) {
-        short eventCode = VCall_Diplomacy_GetRelationTypeSlot68(
-            g_pDiplomacyTurnStateManager, activeNationSlot,
-            terrainIndex);
+        short eventCode = g_pDiplomacyTurnStateManager->GetRelationTypeSlot68(
+            activeNationSlot, terrainIndex);
 
         maskState[0] = 0;
         maskState[1] = 0;

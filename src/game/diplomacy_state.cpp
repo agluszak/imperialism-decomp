@@ -7,6 +7,8 @@
 #include "game/CString.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/NationState.h"
+#include "game/TQueueObject.h"
+#include "game/TListObject.h"
 #include "game/generated/vcall_facades.h"
 #include <new>
 
@@ -630,7 +632,7 @@ void TDiplomacyTurnStateManager::QueueNationPairWarTransition(int sourceNationSl
   WarTransitionPair pair;
   pair.sourceNationSlot = static_cast<short>(sourceNationSlot);
   pair.targetNationSlot = static_cast<short>(targetNationSlot);
-  VCall_WarTransitionQueue_PushPairSlot40(pendingWarTransitionQueue18d4, &pair);
+  reinterpret_cast<TQueueObject*>(pendingWarTransitionQueue18d4)->PushPairSlot40(&pair);
   SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 1);
 }
 
@@ -764,7 +766,7 @@ void TDiplomacyTurnStateManager::BuildRelationshipListSlot88(int sourceNationSlo
       int source = static_cast<short>(sourceNationSlot);
       entry.standingScore =
           relationStandingScoreMatrix79c[source * kNationSlotCount + candidateIndex];
-      VCall_RelationshipList_AddEntrySlot38(list, &entry);
+      reinterpret_cast<TListObject*>(list)->AddEntrySlot38(&entry);
     }
     candidateNationSlot++;
     candidateIndex++;
@@ -783,10 +785,10 @@ int TDiplomacyTurnStateManager::SelectNationSlotFromCollectedStandingEntriesSlot
   }
 
   RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
-      VCall_RelationshipList_GetEntrySlot2C(list, list->count));
+      reinterpret_cast<TListObject*>(list)->GetEntrySlot2C(list->count));
   int nationSlot = entry->nationSlot;
   if (list != 0) {
-    VCall_RelationshipList_ReleaseSlot24(list);
+    reinterpret_cast<TListObject*>(list)->ReleaseSlot24();
   }
   return nationSlot;
 }
@@ -809,7 +811,7 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
   int matchedNationSlot = -1;
   while (entryIndex > 0 && matchedNationSlot == -1) {
     RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
-        VCall_RelationshipList_GetEntrySlot2C(list, entryIndex));
+        reinterpret_cast<TListObject*>(list)->GetEntrySlot2C(entryIndex));
     int candidateNationSlot = entry->nationSlot;
     int source = static_cast<short>(sourceNationSlot);
     if (relationSideEffectMatrix1402[source * kNationSlotCount + candidateNationSlot] ==
@@ -820,7 +822,7 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
   }
 
   if (list != 0) {
-    VCall_RelationshipList_ReleaseSlot24(list);
+    reinterpret_cast<TListObject*>(list)->ReleaseSlot24();
   }
   return matchedNationSlot;
 }
