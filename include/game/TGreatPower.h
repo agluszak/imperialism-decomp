@@ -131,10 +131,11 @@ public:
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
   TGREATPOWER_VTABLE_SLOT(107);
   virtual void DispatchFallbackActionSlot6C_Provisional(int arg0, int arg1, int arg2) = 0;
-  TGREATPOWER_VTABLE_SLOT(109);
-  TGREATPOWER_VTABLE_SLOT(110);
+  virtual short GetTrackedSlotEntryCountLow(short targetSlot);    // slot 0x6d
+  virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   TGREATPOWER_VTABLE_SLOT(111);
-  TGREATPOWER_VTABLE_SLOT(112);
+  virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
+                                                             int payload); // slot 0x70
   TGREATPOWER_VTABLE_SLOT(113);
   TGREATPOWER_VTABLE_SLOT(114);
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // slot 0x73

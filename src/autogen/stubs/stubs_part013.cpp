@@ -2931,34 +2931,10 @@ undefined4 OrphanCallChain_C2_I33_004ddd90(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I25_004dde30
-// ghidra_proto char __cdecl OrphanCallChain_C1_I25_004dde30(void)
-// FUNCTION: IMPERIALISM 0x004dde30
-undefined4 OrphanCallChain_C1_I25_004dde30(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins04_004dde80
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins04_004dde80(void)
-// FUNCTION: IMPERIALISM 0x004dde80
-undefined4 OrphanLeaf_NoCall_Ins04_004dde80(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I19_004ddeb0
 // ghidra_proto void __cdecl OrphanCallChain_C1_I19_004ddeb0(void)
 // FUNCTION: IMPERIALISM 0x004ddeb0
 undefined4 OrphanCallChain_C1_I19_004ddeb0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I29_004ddf20
-// ghidra_proto void __cdecl OrphanCallChain_C1_I29_004ddf20(void)
-// FUNCTION: IMPERIALISM 0x004ddf20
-undefined4 OrphanCallChain_C1_I29_004ddf20(void)
 {
   return 0;
 }

@@ -340,6 +340,19 @@ public:
   virtual void dummy12() = 0;
   virtual void dummy13() = 0;
   virtual void WritePackedIntSlot38(int* packedValue) = 0; // slot 38
+
+  unsigned char pad04[8 - 4];
+  int entryCount; // +8
+};
+
+// Entry record returned by TQueueObject::GetEntryAt1BasedSlot2C for the
+// diplomacy tracked-slot queues.
+struct TDiplomacyTrackedEntry {
+  short field0;
+  short field2;
+  short field4;
+  short field6;
+  int field8;
 };
 
 class TNationInteractionStateManagerView {
@@ -3078,7 +3091,48 @@ void TGreatPower::DecrementDiplomacyCounterA2Slot66(int delta) {
   this->diplomacyCounterA2 =
       static_cast<short>(this->diplomacyCounterA2 - static_cast<short>(delta));
 }
+
+// FUNCTION: IMPERIALISM 0x004dde80
+short TGreatPower::GetTrackedSlotEntryCountLow(short targetSlot) {
+  return static_cast<short>(this->diplomacyTrackedSlots[targetSlot]->entryCount);
+}
 #pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dde30
+char TGreatPower::AnyTrackedSlotEntryHasZeroField4(short targetSlot) {
+  char found = 0;
+  for (short entryIndex = 1; found == 0; ++entryIndex) {
+    TQueueObject* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
+    if (entryIndex > trackedSlot->entryCount) {
+      return found;
+    }
+    TDiplomacyTrackedEntry* entry =
+        static_cast<TDiplomacyTrackedEntry*>(trackedSlot->GetEntryAt1BasedSlot2C(entryIndex));
+    if (entry->field4 == 0) {
+      found = 1;
+    }
+  }
+  return found;
+}
+
+// FUNCTION: IMPERIALISM 0x004ddf20
+void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
+                                                                int payload) {
+  bool matched = false;
+  for (int entryIndex = 1; !matched; ++entryIndex) {
+    TQueueObject* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
+    if (entryIndex > trackedSlot->entryCount) {
+      return;
+    }
+    TDiplomacyTrackedEntry* entry =
+        static_cast<TDiplomacyTrackedEntry*>(trackedSlot->GetEntryAt1BasedSlot2C(entryIndex));
+    if (entry->field2 == matchKey) {
+      matched = true;
+      entry->field8 = payload;
+      entry->field4 = 0;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004dd4e0
 void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
