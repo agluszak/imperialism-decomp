@@ -121,10 +121,10 @@ public:
   TGREATPOWER_VTABLE_SLOT(96);
   TGREATPOWER_VTABLE_SLOT(97);
   TGREATPOWER_VTABLE_SLOT(98);
-  TGREATPOWER_VTABLE_SLOT(99);
-  virtual void ApplyNeedTargetSlot64_Provisional(int needIndex, int targetValue) = 0;
+  virtual void SetRelationManagerFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
+  virtual void AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
   TGREATPOWER_VTABLE_SLOT(101);
-  virtual void AdjustResourceDeltaSlot66_Provisional(int amount) = 0;
+  virtual void DecrementDiplomacyCounterA2Slot66(int delta); // slot 0x66
   TGREATPOWER_VTABLE_SLOT(103);
   TGREATPOWER_VTABLE_SLOT(104);
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69

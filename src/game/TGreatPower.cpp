@@ -318,9 +318,9 @@ public:
   virtual void dummy31() = 0;
   virtual void Refresh80() = 0; // slot 80
 
-  unsigned char pad04[0xE0 - 4];
-  short relationNeedSlotE0;
-  short relationNeedSlotE2;
+  unsigned char pad04[0xB6 - 4];
+  // 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2 (relationNeedSlotE0/E2).
+  short fieldB6[0x17];
 };
 
 class TQueueObject {
@@ -2852,7 +2852,7 @@ void TGreatPower::ApplyNationResourceNeedTargetsToOrderState(void) {
   }
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
-    this->ApplyNeedTargetSlot64_Provisional(needIndex, this->needTargetByType[needIndex]);
+    this->AddToRelationManagerFieldB6AndRefresh(static_cast<short>(needIndex), this->needTargetByType[needIndex]);
   }
 }
 
@@ -3057,6 +3057,29 @@ void TGreatPower::SnapshotDiplomacyState1c6Into250(void) {
   }
 }
 
+#pragma optimize("y", on)
+// FUNCTION: IMPERIALISM 0x004dd770
+void TGreatPower::SetRelationManagerFieldB6AndRefresh(short targetSlot, short value) {
+  TRelationManagerObject* relationManager = this->relationManager;
+  relationManager->fieldB6[targetSlot] = value;
+  relationManager->Refresh80();
+}
+
+// FUNCTION: IMPERIALISM 0x004dd7b0
+void TGreatPower::AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value) {
+  TRelationManagerObject* relationManager = this->relationManager;
+  relationManager->fieldB6[targetSlot] =
+      static_cast<short>(relationManager->fieldB6[targetSlot] + value);
+  relationManager->Refresh80();
+}
+
+// FUNCTION: IMPERIALISM 0x004dda40
+void TGreatPower::DecrementDiplomacyCounterA2Slot66(int delta) {
+  this->diplomacyCounterA2 =
+      static_cast<short>(this->diplomacyCounterA2 - static_cast<short>(delta));
+}
+#pragma optimize("", on)
+
 // FUNCTION: IMPERIALISM 0x004dd4e0
 void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
   const int kNeedSlotStart = 7;
@@ -3211,7 +3234,7 @@ void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceInd
   this->AddToNationMetricAtField10(-scaledDelta);
 
   if (deltaWord > 0) {
-    this->AdjustResourceDeltaSlot66_Provisional(delta);
+    this->DecrementDiplomacyCounterA2Slot66(delta);
     this->budgetPoolDelta -= scaledDelta;
     return;
   }

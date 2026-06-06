@@ -2827,22 +2827,6 @@ undefined4 SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I07_004dd770
-// ghidra_proto void __cdecl OrphanCallChain_C1_I07_004dd770(void)
-// FUNCTION: IMPERIALISM 0x004dd770
-undefined4 OrphanCallChain_C1_I07_004dd770(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_004dd7b0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I08_004dd7b0(void)
-// FUNCTION: IMPERIALISM 0x004dd7b0
-undefined4 OrphanCallChain_C1_I08_004dd7b0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I42_004dd7f0
 // ghidra_proto uint __cdecl OrphanCallChain_C1_I42_004dd7f0(void)
 // FUNCTION: IMPERIALISM 0x004dd7f0
@@ -2911,14 +2895,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackF(void)
 // ghidra_proto int __cdecl GetCityProductionValueTimesTwoCallbackG(void)
 // FUNCTION: IMPERIALISM 0x004dd893
 undefined4 GetCityProductionValueTimesTwoCallbackG(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins03_004dda40
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins03_004dda40(void)
-// FUNCTION: IMPERIALISM 0x004dda40
-undefined4 OrphanLeaf_NoCall_Ins03_004dda40(void)
 {
   return 0;
 }
