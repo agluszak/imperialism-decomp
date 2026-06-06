@@ -155,22 +155,6 @@ undefined4 CreateTAutoGreatPowerInstance(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::GetTAutoGreatPowerClassNamePointer
-// ghidra_proto void * __cdecl GetTAutoGreatPowerClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004e6b30
-undefined4 GetTAutoGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::ConstructTAutoGreatPowerBaseState
-// ghidra_proto void * __thiscall ConstructTAutoGreatPowerBaseState(void)
-// FUNCTION: IMPERIALISM 0x004e6b50
-undefined4 ConstructTAutoGreatPowerBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TAutoGreatPower::DestructTAutoGreatPowerAndMaybeFree
 // ghidra_proto void * __thiscall DestructTAutoGreatPowerAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x004e6b80
@@ -243,14 +227,6 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004e7680(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix
-// ghidra_proto void __thiscall RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
-// FUNCTION: IMPERIALISM 0x004e7810
-undefined4 RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C3_I38_004e79d0
 // ghidra_proto uint __cdecl OrphanCallChain_C3_I38_004e79d0(void)
 // FUNCTION: IMPERIALISM 0x004e79d0
@@ -271,14 +247,6 @@ undefined4 OrphanCallChain_C4_I46_004e7a50(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e7af0(void)
 // FUNCTION: IMPERIALISM 0x004e7af0
 undefined4 OrphanLeaf_NoCall_Ins07_004e7af0(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::ReplayQueuedDiplomacyProposalRowsAndProcessQueue
-// ghidra_proto void __thiscall ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
-// FUNCTION: IMPERIALISM 0x004e7be0
-undefined4 ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void)
 {
   return 0;
 }

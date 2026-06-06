@@ -55,6 +55,7 @@ add_executable(Imperialism
     src/game/TControl.cpp
     src/game/TCapacityOrder.cpp
     src/game/TGreatPower.cpp
+    src/game/TAutoGreatPower.cpp
     src/game/TIndexAndRankList.cpp
     src/game/RefCountedObjectBase.cpp
     src/game/TPtrList.cpp

@@ -61,6 +61,10 @@ ghidra-listing *args:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
   uv run python -m tools.ghidra.listing_one {{args}}
 
+ghidra-function-slice *args:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  uv run python -m tools.ghidra.function_slice {{args}}
+
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
 scan-cdecl-thiscall *args:

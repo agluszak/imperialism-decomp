@@ -5,6 +5,9 @@
 #include "game/RefCountedObjectBase.h"
 #include "game/CPtrList.h"
 
+// Non-polymorphic common state for the game list wrappers. Concrete leaves such
+// as TList and TSortedList install their own vtables; no constructor evidence
+// writes a standalone TPtrList vtable address.
 struct TPtrList : public RefCountedObjectBase {
   CPtrList listState;
 

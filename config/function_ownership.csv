@@ -285,6 +285,7 @@ address|target_cpp|ownership|note
 4dda90|src/game/TGreatPower.cpp|manual|marker_sync
 4ddb20|src/game/TGreatPower.cpp|manual|marker_sync
 4ddbb0|src/game/TGreatPower.cpp|manual|marker_sync
+4ddc30|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd20|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd50|src/game/TGreatPower.cpp|manual|marker_sync
 4ddfc0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -314,9 +315,12 @@ address|target_cpp|ownership|note
 4e27f0|src/game/TGreatPower.cpp|manual|marker_sync
 4e2b70|src/game/TGreatPower.cpp|manual|marker_sync
 4e6610|src/game/noop_slots.cpp|manual|marker_sync
+4e6b30|src/game/TAutoGreatPower.cpp|manual|marker_sync
+4e6b50|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e72c0|src/game/TGreatPower.cpp|manual|marker_sync
 4e73f0|src/game/TGreatPower.cpp|manual|marker_sync
 4e7630|src/game/TGreatPower.cpp|manual|marker_sync
+4e7810|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e78d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e78f0|src/game/TGreatPower.cpp|manual|marker_sync
 4e7910|src/game/noop_slots.cpp|manual|marker_sync
@@ -326,6 +330,7 @@ address|target_cpp|ownership|note
 4e7990|src/game/TGreatPower.cpp|manual|marker_sync
 4e7b20|src/game/TGreatPower.cpp|manual|marker_sync
 4e7b50|src/game/TGreatPower.cpp|manual|marker_sync
+4e7be0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e7c50|src/game/TGreatPower.cpp|manual|marker_sync
 4e7ca0|src/game/noop_slots.cpp|manual|marker_sync
 4e8540|src/game/TGreatPower.cpp|manual|marker_sync

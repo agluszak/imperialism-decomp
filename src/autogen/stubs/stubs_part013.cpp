@@ -2955,14 +2955,6 @@ undefined4 OrphanLeaf_NoCall_Ins08_004ddb80(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals
-// ghidra_proto void __thiscall ApplyIndexedResourceDeltaAndAdjustNationTotals(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x004ddc30
-undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals(void)
-{
-  return 0;
-}
-
 // ghidra_name AddShortDeltaToNationCounterAtOffset198
 // ghidra_proto void __cdecl AddShortDeltaToNationCounterAtOffset198(void)
 // FUNCTION: IMPERIALISM 0x004ddcf0

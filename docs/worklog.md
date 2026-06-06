@@ -1,5 +1,36 @@
 # Worklog
 
+## 2026-06-06
+
+### TGreatPower/TAutoGreatPower class split and vtable-grounded slot 0x20 pass
+
+1. Promoted the misbucketed base vtable slot `0x20`:
+   - `TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals` now owns body `0x004DDC30`.
+   - Slot evidence: base vtable entry `0x00407392 -> 0x004DDC30`, TAuto override entry `0x00409971`.
+   - Body evidence from Ghidra: self-vtable calls at byte offsets `0x38` and `0x198`, field writes at `+0x198`, `+0x840`, `+0x844`, `+0x910`.
+2. Split class declarations out of `TGreatPower.cpp`:
+   - Added `include/game/TGreatPower.h` for the base virtual skeleton and current field layout.
+   - Added `include/game/TAutoGreatPower.h` and `src/game/TAutoGreatPower.cpp` for the derived class substrate.
+   - Added `src/game/TAutoGreatPower.cpp` to `CMakeLists.txt`.
+3. Seeded `TAutoGreatPower` with small, connected bodies:
+   - `0x004E6B30` `GetTAutoGreatPowerClassNamePointer`.
+   - `0x004E6B50` `ConstructTAutoGreatPowerBaseState`.
+   - `0x004E7810` `RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix`.
+   - `0x004E7BE0` `ReplayQueuedDiplomacyProposalRowsAndProcessQueue`.
+4. Added read-only Ghidra helper:
+   - `tools/ghidra/function_slice.py` plus `just ghidra-function-slice`.
+   - Emits direct callers/callees, indirect vtable-like calls, likely vptr writes, and memory refs for selected functions.
+5. Updated `docs/tgreatpower_vtable_evidence.csv` with missing rows for slots `0x1e`, `0x20`, and `0x59`.
+6. Validation:
+   - `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`: clean.
+   - Compare batch: `0x004DDC30` `63.16%`, `0x004E6B30` `50.00%`, `0x004E6B50` `70.59%`, `0x004E7810` `90.91%`, `0x004E7BE0` `81.63%`.
+   - `just compare-canaries`: `below_floor=0`.
+   - `just vtable-gate`: passed.
+   - `just stats`: aligned unchanged, average similarity `+0.03 pp`.
+7. Next high-yield follow-up:
+   - Do not tune `0x004DDC30` immediately unless it blocks a caller.
+   - Continue TAuto substrate with `0x004E9FF0`/`0x004EA0E0` flag methods and `0x004E8680`/`0x004EAE70`/`0x004EB0D0` once `autoTrackedListB60` list shape is confirmed.
+
 ## 2026-06-04
 
 **CArchive::WriteObject (0x006121e1): 51% -> 94.23%** by modeling the object's real
@@ -2485,3 +2516,42 @@ pairings (MapObject, GetOrCreate x2, WriteClass, CheckCount, the two virtuals) a
 correct; remaining diffs are facade `xor edx,edx` (edx_mode=zero should be none),
 the object vtable not cached in one register, and the `objectRef==0` branch reusing
 the arg register vs a separate epilogue.
+
+### TGreatPower/TAutoGreatPower header split and TList hierarchy cleanup (2026-06-06)
+
+Split the in-progress GreatPower class declarations into headers and moved the
+TAutoGreatPower bodies into their own TU:
+- `include/game/TGreatPower.h`
+- `include/game/TAutoGreatPower.h`
+- `src/game/TAutoGreatPower.cpp`
+
+Added `tools/ghidra/function_slice.py` plus `just ghidra-function-slice` for quick
+caller/callee/vptr-write/vcall evidence on class-recovery targets.
+
+Promoted the current TAutoGreatPower slice:
+- `0x004e6b30` class descriptor getter: **50.00%**
+- `0x004e6b50` base-state constructor: **70.59%**
+- `0x004e7810` aid-budget recompute/reset: **90.91%**
+- `0x004e7be0` proposal replay/process queue: **81.63%**
+
+Promoted `TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals`
+(`0x004ddc30`) as a real virtual method at slot index `0x20` / byte offset
+`0x80`; current score **63.16%** and canaries remain clean.
+
+For the list foundation cleanup, confirmed from vptr-write evidence that
+`RefCountedObjectBase` is a separate game-object root from MFC `CObject`.
+`TPtrList` is the non-polymorphic common state wrapper
+(`RefCountedObjectBase` vfptr at +0, embedded `CPtrList` at +4). `TList` and
+`TSortedList` are the concrete polymorphic leaves, with vtables `0x00648f78` and
+`0x00648ee0`; no constructor writes a standalone `TPtrList` vtable. Extracted the
+former local `TListObject` virtual-call view into `include/game/TListObject.h` so
+TAutoGreatPower/TGreatPower no longer carry a third ad-hoc list type in their
+implementation file.
+
+Validation:
+- `just sync-ownership && just regen-stubs && just build`: clean
+- `just detect`: clean
+- targeted list constructor compares: `0x00487e50`, `0x00487a90`,
+  `0x00488400`, `0x004ee4b0`, `0x004ee540` all **100.00%**
+- `just compare-canaries`: `below_floor=0`
+- `just vtable-gate`: passed via build
