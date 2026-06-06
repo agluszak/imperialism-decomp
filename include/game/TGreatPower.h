@@ -163,13 +163,13 @@ public:
   virtual void VTableSlot84_Provisional(int targetNation) = 0;
   virtual void CallSlot85_Provisional(int targetNation) = 0;
   TGREATPOWER_VTABLE_SLOT(134);
-  TGREATPOWER_VTABLE_SLOT(135);
-  TGREATPOWER_VTABLE_SLOT(136);
-  TGREATPOWER_VTABLE_SLOT(137);
-  TGREATPOWER_VTABLE_SLOT(138);
-  TGREATPOWER_VTABLE_SLOT(139);
-  TGREATPOWER_VTABLE_SLOT(140);
-  TGREATPOWER_VTABLE_SLOT(141);
+  virtual int CountMapActionContextNodesWithNationBit(void);       // slot 0x87
+  virtual double ComputeMinisterSkillFloatSlot88(void);            // slot 0x88
+  virtual double ComputeMinisterSkillFloatSlot89(void);            // slot 0x89
+  virtual double ComputeMinisterSkillFloatSlot8A(void);            // slot 0x8a
+  virtual double ComputeMinisterSkillFloatSlot8B(void);            // slot 0x8b
+  virtual double ComputeMinisterSkillFloatSlot8C(void);            // slot 0x8c
+  virtual int GetCityBuildingProductionViaRelationManagerSlot8D(short buildingSlot); // slot 0x8d
   TGREATPOWER_VTABLE_SLOT(142);
   TGREATPOWER_VTABLE_SLOT(143);
   TGREATPOWER_VTABLE_SLOT(144);

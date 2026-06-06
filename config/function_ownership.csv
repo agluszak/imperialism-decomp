@@ -315,6 +315,13 @@ address|target_cpp|ownership|note
 4e0140|src/game/TGreatPower.cpp|manual|marker_sync
 4e01b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0400|src/game/noop_slots.cpp|manual|marker_sync
+4e0550|src/game/TGreatPower.cpp|manual|marker_sync
+4e0590|src/game/TGreatPower.cpp|manual|marker_sync
+4e05d0|src/game/TGreatPower.cpp|manual|marker_sync
+4e0610|src/game/TGreatPower.cpp|manual|marker_sync
+4e0650|src/game/TGreatPower.cpp|manual|marker_sync
+4e0690|src/game/TGreatPower.cpp|manual|marker_sync
+4e0740|src/game/TGreatPower.cpp|manual|marker_sync
 4e1d50|src/game/TGreatPower.cpp|manual|marker_sync
 4e22b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e2330|src/game/TGreatPower.cpp|manual|marker_sync

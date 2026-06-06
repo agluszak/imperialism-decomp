@@ -3091,66 +3091,10 @@ undefined4 ComputeNavyOrderIndustryCostWeightSumForNation(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins16_004e0550
-// ghidra_proto int __cdecl OrphanLeaf_NoCall_Ins16_004e0550(void)
-// FUNCTION: IMPERIALISM 0x004e0550
-undefined4 OrphanLeaf_NoCall_Ins16_004e0550(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004e0590
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e0590(void)
-// FUNCTION: IMPERIALISM 0x004e0590
-undefined4 OrphanLeaf_NoCall_Ins07_004e0590(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004e05d0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e05d0(void)
-// FUNCTION: IMPERIALISM 0x004e05d0
-undefined4 OrphanLeaf_NoCall_Ins07_004e05d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004e0610
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e0610(void)
-// FUNCTION: IMPERIALISM 0x004e0610
-undefined4 OrphanLeaf_NoCall_Ins07_004e0610(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004e0650
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e0650(void)
-// FUNCTION: IMPERIALISM 0x004e0650
-undefined4 OrphanLeaf_NoCall_Ins07_004e0650(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004e0690
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e0690(void)
-// FUNCTION: IMPERIALISM 0x004e0690
-undefined4 OrphanLeaf_NoCall_Ins07_004e0690(void)
-{
-  return 0;
-}
-
 // ghidra_name SumNationRuntimeFiveBucketValue44
 // ghidra_proto void __cdecl SumNationRuntimeFiveBucketValue44(void)
 // FUNCTION: IMPERIALISM 0x004e06d0
 undefined4 SumNationRuntimeFiveBucketValue44(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNationRuntimeCityBuildingProductionValueBySlot
-// ghidra_proto void __cdecl GetNationRuntimeCityBuildingProductionValueBySlot(void)
-// FUNCTION: IMPERIALISM 0x004e0740
-undefined4 GetNationRuntimeCityBuildingProductionValueBySlot(void)
 {
   return 0;
 }

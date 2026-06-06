@@ -280,6 +280,9 @@ public:
   virtual void dummy51() = 0;
   virtual void dummy52() = 0;
   virtual void CallD4() = 0;
+
+  unsigned char pad04[0xC - 4];
+  short skillIndexC; // +0xC
 };
 
 class TRelationManagerObject {
@@ -354,6 +357,19 @@ struct TDiplomacyTrackedEntry {
   short field6;
   int field8;
 };
+
+// Singly-linked global map-action-context node list (head at 0x006A3FC8).
+struct MapActionContextNode {
+  unsigned char pad00[0x10];
+  unsigned char flags10; // +0x10
+  unsigned char pad11[0x18 - 0x11];
+  MapActionContextNode* next18; // +0x18
+};
+
+// Minister-skill-indexed float coefficient table lookup (DAT_0065xxxx tables).
+static __inline double MinisterSkillFloat(unsigned int tableAddr, TMinisterObject* minister) {
+  return reinterpret_cast<const float*>(tableAddr)[minister->skillIndexC];
+}
 
 class TNationInteractionStateManagerView {
 public:
@@ -3132,6 +3148,61 @@ void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, 
       entry->field4 = 0;
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004e0550
+int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
+  int count = 0;
+  MapActionContextNode* node =
+      static_cast<MapActionContextNode*>(ReadGlobalPointer(kAddrMapActionContextListHead));
+  if (node != 0) {
+    do {
+      if ((node->flags10 & (1 << (this->nationSlot & 0x1f))) != 0) {
+        ++count;
+      }
+      node = node->next18;
+    } while (node != 0);
+  }
+  return count;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0590
+double TGreatPower::ComputeMinisterSkillFloatSlot88(void) {
+  return MinisterSkillFloat(0x00653308, this->foreignMinister) +
+         MinisterSkillFloat(0x00653328, this->defenseMinister);
+}
+
+// FUNCTION: IMPERIALISM 0x004e05d0
+double TGreatPower::ComputeMinisterSkillFloatSlot89(void) {
+  return MinisterSkillFloat(0x00653360, this->defenseMinister) +
+         MinisterSkillFloat(0x00653340, this->foreignMinister);
+}
+
+// FUNCTION: IMPERIALISM 0x004e0610
+double TGreatPower::ComputeMinisterSkillFloatSlot8A(void) {
+  return MinisterSkillFloat(0x00653398, this->defenseMinister) +
+         MinisterSkillFloat(0x00653378, this->foreignMinister);
+}
+
+// FUNCTION: IMPERIALISM 0x004e0650
+double TGreatPower::ComputeMinisterSkillFloatSlot8B(void) {
+  return MinisterSkillFloat(0x006533b0, this->foreignMinister) +
+         MinisterSkillFloat(0x006533d0, this->defenseMinister);
+}
+
+// FUNCTION: IMPERIALISM 0x004e0690
+double TGreatPower::ComputeMinisterSkillFloatSlot8C(void) {
+  return MinisterSkillFloat(0x00653408, this->defenseMinister) +
+         MinisterSkillFloat(0x006533e8, this->foreignMinister);
+}
+
+// FUNCTION: IMPERIALISM 0x004e0740
+int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildingSlot) {
+  if (this->relationManager != 0) {
+    return static_cast<short>(
+        GetCityBuildingProductionValueBySlot(this->relationManager, buildingSlot));
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004dd4e0
