@@ -2960,10 +2960,10 @@ void TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
     }
     this->diplomacyState1c6[nationIndex] = snapshotValue;
 
-    short needScore = this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+    short needScore = this->GetRelationManagerFieldB6(nationIndex);
     if (needScore < this->diplomacyState1c6[nationIndex]) {
       this->diplomacyState1c6[nationIndex] =
-          this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+          this->GetRelationManagerFieldB6(nationIndex);
     }
 
     for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
@@ -2981,10 +2981,10 @@ void TGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
     }
     this->diplomacyState1c6[nationIndex] = snapshotValue;
 
-    short needScore = this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+    short needScore = this->GetRelationManagerFieldB6(nationIndex);
     if (needScore < this->diplomacyState1c6[nationIndex]) {
       this->diplomacyState1c6[nationIndex] =
-          this->GetDiplomacyNeedScoreSlot1E_Provisional(nationIndex);
+          this->GetRelationManagerFieldB6(nationIndex);
     }
 
     for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
@@ -3201,6 +3201,67 @@ int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildin
   if (this->relationManager != 0) {
     return static_cast<short>(
         GetCityBuildingProductionValueBySlot(this->relationManager, buildingSlot));
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004dd740
+short TGreatPower::GetRelationManagerFieldB6(short nationSlot) {
+  TRelationManagerObject* relationManager = this->relationManager;
+  if (relationManager == 0) {
+    return 0;
+  }
+  return relationManager->fieldB6[nationSlot];
+}
+
+// FUNCTION: IMPERIALISM 0x004dda60
+int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
+  return this->diplomacyState1c6[nationSlot] + this->relationDeltaSnapshot[nationSlot];
+}
+
+// FUNCTION: IMPERIALISM 0x004deca0
+void TGreatPower::DecrementNeedLevelByNationStep(short nationSlot) {
+  short* needLevel = &this->needLevelByNation[nationSlot];
+  switch (*needLevel) {
+  case 0x4b:
+    if (this->pressureScore > 10000) {
+      *needLevel = 0x32;
+    }
+    break;
+  case 0x5a:
+    *needLevel = 0x4b;
+    return;
+  case 0x5f:
+    *needLevel = 0x5a;
+    return;
+  case 100:
+    *needLevel = 0x5f;
+    return;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004dcf60
+short TGreatPower::TryDecayRelationNeedScores9AndB(void) {
+  if (this->GetRelationManagerFieldB6(9) != 0) {
+    if (this->GetRelationManagerFieldB6(0xb) != 0) {
+      this->AddToRelationManagerFieldB6AndRefresh(9, -1);
+      this->AddToRelationManagerFieldB6AndRefresh(0xb, -1);
+      this->needCapA6 = static_cast<short>(this->needCapA6 + 1);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004dcfd0
+short TGreatPower::TryDecayRelationNeedScores9And8(void) {
+  if (this->GetRelationManagerFieldB6(9) > 2) {
+    if (this->GetRelationManagerFieldB6(8) != 0) {
+      this->AddToRelationManagerFieldB6AndRefresh(9, -3);
+      this->AddToRelationManagerFieldB6AndRefresh(8, -1);
+      this->diplomacyCounterA4 = static_cast<short>(this->diplomacyCounterA4 + 1);
+      return 1;
+    }
   }
   return 0;
 }

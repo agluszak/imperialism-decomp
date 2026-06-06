@@ -2755,22 +2755,6 @@ undefined4 OrphanCallChain_C6_I98_004dcaa0(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C4_I35_004dcf60
-// ghidra_proto short __cdecl OrphanCallChain_C4_I35_004dcf60(void)
-// FUNCTION: IMPERIALISM 0x004dcf60
-undefined4 OrphanCallChain_C4_I35_004dcf60(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C4_I35_004dcfd0
-// ghidra_proto short __cdecl OrphanCallChain_C4_I35_004dcfd0(void)
-// FUNCTION: IMPERIALISM 0x004dcfd0
-undefined4 OrphanCallChain_C4_I35_004dcfd0(void)
-{
-  return 0;
-}
-
 // ghidra_name SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant
 // ghidra_proto void __thiscall SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant(int targetNationSlot, short policyValue)
 // FUNCTION: IMPERIALISM 0x004dd040
@@ -2851,14 +2835,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
   return 0;
 }
 
-// ghidra_name SumDiplomacyStateArrays198And1C6ForTarget
-// ghidra_proto void __cdecl SumDiplomacyStateArrays198And1C6ForTarget(void)
-// FUNCTION: IMPERIALISM 0x004dda60
-undefined4 SumDiplomacyStateArrays198And1C6ForTarget(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins22_004ddad0
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins22_004ddad0(void)
 // FUNCTION: IMPERIALISM 0x004ddad0
@@ -2911,14 +2887,6 @@ undefined4 OrphanLeaf_NoCall_Ins09_004de7e0(void)
 // ghidra_proto void __cdecl ReleaseAllTrackedObjectsFromList89C(void)
 // FUNCTION: IMPERIALISM 0x004de810
 undefined4 ReleaseAllTrackedObjectsFromList89C(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins24_004deca0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins24_004deca0(void)
-// FUNCTION: IMPERIALISM 0x004deca0
-undefined4 OrphanLeaf_NoCall_Ins24_004deca0(void)
 {
   return 0;
 }

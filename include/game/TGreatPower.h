@@ -42,11 +42,11 @@ public:
   TGREATPOWER_VTABLE_SLOT(25);
   TGREATPOWER_VTABLE_SLOT(26);
   TGREATPOWER_VTABLE_SLOT(27);
-  TGREATPOWER_VTABLE_SLOT(28);
+  virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot); // slot 0x1c
   virtual short GetDiplomacyCounterA2(void); // slot 0x1d
   // index 0x1e / vtable+0x078. Evidence: 0x004dd1b0 and 0x004dd270 call this
   // for each nation while recomputing diplomacy need baselines; returns AX.
-  virtual short GetDiplomacyNeedScoreSlot1E_Provisional(int nationSlot) = 0;
+  virtual short GetRelationManagerFieldB6(short nationSlot); // slot 0x1e
   virtual short GetDiplomacyState1C6ByTarget(short targetNationSlot); // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
@@ -94,8 +94,8 @@ public:
   virtual short GetNeedTargetByType(short needIndex); // slot 0x47
   TGREATPOWER_VTABLE_SLOT(72);
   TGREATPOWER_VTABLE_SLOT(73);
-  TGREATPOWER_VTABLE_SLOT(74);
-  TGREATPOWER_VTABLE_SLOT(75);
+  virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
+  virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
   TGREATPOWER_VTABLE_SLOT(76);
   TGREATPOWER_VTABLE_SLOT(77);
   TGREATPOWER_VTABLE_SLOT(78);
@@ -146,7 +146,7 @@ public:
   CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
                                         unsigned short proposedGrantEntry); // slot 0x77
   TGREATPOWER_VTABLE_SLOT(120);
-  TGREATPOWER_VTABLE_SLOT(121);
+  virtual void DecrementNeedLevelByNationStep(short nationSlot); // slot 0x79
   virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // slot 0x7a
   virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // slot 0x7b
   virtual void
