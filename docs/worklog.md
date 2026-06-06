@@ -2604,3 +2604,27 @@ Wired vtable slots from provisional pure-virtuals to real TGreatPower virtuals:
 Net: 6 slots to 100%, 2 logic-complete (FPO-only gap). `compare-canaries` below_floor=0.
 Remaining unowned GP-region vtable bodies: ~91 (was ~98). Next: continue clusters;
 an FPO sweep would close the two partials.
+
+### TGreatPower structural pass — minister/need/state clusters (2026-06-06, cont.)
+
+Exported the vendored Ghidra .gzf with the 61 created slot bodies. Continued wiring
+vtable slots to real virtuals (bigger batches):
+- minister-skill float family 0x88-0x8c (0x004e0590..0x690): logic-correct, 42-71%, capped
+  by unmapped `g_DAT_Value_006533xx` float-table data symbols (no named-data-global mechanism
+  in the codebase — see below).
+- 0x87 CountMapActionContextNodesWithNationBit (64.7%, named-global direct-load + data symbol).
+- 0x8d GetCityBuildingProductionViaRelationManagerSlot8D (46%, FPO).
+- need-target slots 0x45/0x46/0x47/0x4f (0x004dcdd0/0x004dce40/0x004dce70/0x004dc3f0): pure-this,
+  logic-correct, FPO-capped (0x46 fixed sete->branch shape 9.5%->76%).
+- state-application loop slots 0x41/0x42 (0x004dcc50/0x004dcca0): dispatch the real slot-0x64
+  virtual per nation; confirmed MSVC caches the virtual ptr across the loop. FPO-capped (57%).
+
+**Systemic finding:** nearly every remaining leaf/medium slot is FPO in the original; with
+`/Oy-` the only diff is the frame (ebp spill vs ebp-as-register). Per request FPO is ignored,
+so these land logic-correct but partial; wrapping the new-slot region in `#pragma optimize("y", on)`
+would close most to ~100% in a later sweep. **Data-symbol gap:** float-coefficient tables and some
+named global pointers can't pair because the codebase has no mechanism to declare/map read-only
+data globals (`g_DAT_Value_*`) — solving this would unlock the float/coefficient slots.
+
+Session total: ~21 slots wired (6 at 100%: 0x63,0x64,0x66,0x69,0x6a,0x6d; rest logic-correct,
+FPO/data-symbol-gapped). Remaining unowned GP-region bodies: ~77. canaries below_floor=0, vtable-gate ok.
