@@ -677,36 +677,11 @@ public:
   int field_64;
 };
 
-class TUnitOrderState {
-public:
-  virtual void s00() = 0;
-  virtual void s01() = 0;
-  virtual void s02() = 0;
-  virtual void s03() = 0;
-  virtual void s04() = 0;
-  virtual void s05() = 0;
-  virtual void s06() = 0;
-  virtual void s07() = 0;
-  virtual void s08() = 0;
-  virtual void s09() = 0;
-  virtual void VTableSlot10(int pOwnerContext) = 0; // slot 10 at 0x28
+#include "game/TUnitOrderState.h"
+#include "game/TCivWorkOrderState.h"
 
-  short orderType;         // 0x04
-  unsigned char pad06[2];  // 0x06
-  int field_8;             // 0x08
-  short field_C;           // 0x0c
-  unsigned char pad0e[10]; // 0x0e
-  short field_18;          // 0x18
-  short field_1A;          // 0x1a
-  unsigned char field_1C;  // 0x1c
-  unsigned char pad1d[3];  // 0x1d
-  int field_20;            // 0x20
 
-  void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                         short nOrderOwnerNationId, short arg3);
-  void thunk_RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                               short nOrderOwnerNationId, short arg3);
-};
+
 
 struct TUnitOrderOwnerManagerView {
   virtual void s00() = 0;
@@ -896,15 +871,7 @@ struct TTerrainDescriptorLinkedNodesView {
   void* linkedNodeList;
 };
 
-class TCivWorkOrderState : public TUnitOrderState {
-public:
-  short remainingTurns24;   // 0x24
-  short completionMarker26; // 0x26
 
-  void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
-  void thunk_InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
-                                         int nOrderOwnerNationId);
-};
 #include "game/TMessageObject.h"
 #include "game/TObArray.h"
 #include "game/TQueueObject.h"
@@ -1743,11 +1710,6 @@ void* TGreatPower::ReplyToDiplomacyOffers(void) {
   return reinterpret_cast<void*>(GetTGreatPowerClassNamePointer());
 }
 
-// FUNCTION: IMPERIALISM 0x00404b33
-void TCivWorkOrderState::thunk_InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
-                                                           int nOrderOwnerNationId) {
-  this->InitializeCivWorkOrderState(nOrderType, pOwnerContext, nOrderOwnerNationId);
-}
 
 // FUNCTION: IMPERIALISM 0x00404ce1
 #if defined(_MSC_VER)
@@ -5560,57 +5522,3 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
   reinterpret_cast<TCivWorkOrderState*>(orderObject)
       ->InitializeCivWorkOrderState(workOrderType, ownerNationSlot, static_cast<int>(cityOwnerTag));
 }
-
-// FUNCTION: IMPERIALISM 0x005c2940
-void TCivWorkOrderState::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
-                                                     int nOrderOwnerNationId) {
-  this->thunk_RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, 0);
-  this->remainingTurns24 = 0;
-  this->completionMarker26 = static_cast<short>(-1);
-}
-
-// FUNCTION: IMPERIALISM 0x00402eeb
-#pragma optimize("gyt", on)
-void TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                                              short nOrderOwnerNationId,
-                                                              short arg3) {
-  this->RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, arg3);
-}
-
-// FUNCTION: IMPERIALISM 0x005c2530
-void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                                        short nOrderOwnerNationId, short arg3) {
-  this->orderType = nOrderType;
-  this->field_8 = 0;
-  this->VTableSlot10(pOwnerContext);
-
-  TUnitOrderOwnerManagerView* ownerManager = 0;
-  if (this->field_1C != 0) {
-    void* terrain = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId];
-    ownerManager =
-        *reinterpret_cast<TUnitOrderOwnerManagerView**>(reinterpret_cast<char*>(terrain) + 0x44);
-  } else {
-    void* nation = g_apNationStates[nOrderOwnerNationId];
-    ownerManager =
-        *reinterpret_cast<TUnitOrderOwnerManagerView**>(reinterpret_cast<char*>(nation) + 0x89c);
-  }
-
-  if (ownerManager == 0) {
-    MessageBoxA(0, "Nil Pointer", "Failure", 0x30);
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\UUnit.cpp", 287);
-  }
-
-  ownerManager->VTableSlot12(this);
-
-  this->field_18 = nOrderOwnerNationId;
-  this->field_1A = arg3;
-  this->field_C = static_cast<short>(-1);
-
-  void* const locTable = g_pLocalizationTable;
-  int* pLoc = reinterpret_cast<int*>(locTable);
-  int uniqueId = pLoc[25] + 1;
-  pLoc[25] = uniqueId;
-  this->field_20 = uniqueId;
-}
-#pragma optimize("gyt", off)

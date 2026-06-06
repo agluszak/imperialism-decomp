@@ -1,15 +1,12 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
-src/game/CArchive.cpp|0|0|0|8|8
-src/game/CDocument.cpp|0|0|0|1|1
 src/game/TCapacityOrder.cpp|0|1|0|0|1
-src/game/TCityProductionView.cpp|0|0|0|4|4
+src/game/TCityProductionView.cpp|0|0|0|3|3
 src/game/TCivDescription.cpp|0|2|0|0|2
-src/game/TDiplomacyMapView.cpp|0|0|0|15|15
+src/game/TDiplomacyMapView.cpp|0|0|0|13|13
 src/game/TFocusAnimation.cpp|0|0|0|3|3
 src/game/TGreatPower.cpp|0|0|0|9|9
 src/game/TOneTimeAnimation.cpp|0|0|0|2|2
 src/game/TPlacard.cpp|3|0|0|0|3
-src/game/TTextList.cpp|0|0|0|5|5
 src/game/TTransFocusAnimation.cpp|0|0|0|2|2
 src/game/TTwoPicSlider.cpp|0|0|0|2|2
 src/game/diplomacy_state.cpp|0|0|0|3|3
