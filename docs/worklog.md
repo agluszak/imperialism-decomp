@@ -2647,3 +2647,23 @@ FPO or the data-symbol infra). The remaining unowned bodies are now dominated by
 noop_slots), the float/global-data region (blocked on data-symbol infra — under research), and the
 large/EH bodies (0x05=1520B, 0x0c=1153B, 0x32=661B EH). Clean pure-`this` integer wins are largely
 exhausted; next sessions should target the large/EH bodies or wait on the data-symbol infra.
+
+### Named-data-global pairing infrastructure (2026-06-06, cont.)
+
+Built the mechanism to pair reccmp references to named read-only data globals (the blocker
+for the float/global-data region). Added `src/game/global_data_tables.cpp` (extern "C" defs)
++ CMakeLists entry. reccmp pairs the recomp PDB symbol to config/symbols.csv by name (C-linkage
+underscore stripped); values are irrelevant — same mechanism as diplomacy_state.cpp's g_p* block,
+generalized to data arrays.
+
+Validated end-to-end:
+- 10 minister-skill float tables `g_DAT_Value_006533xx` defined + referenced by name in slots
+  0x88-0x8c; data symbols now pair on both sides (slots 0x8a/0x8c -> 100%).
+- `g_pMapActionContextListHead` defined; slot 0x87 reads it via direct absolute load instead of
+  ReadGlobalPointer(imm) (64.7% -> 72.7%; the load instruction now pairs).
+
+Residual: 3/5 floats at 42% from a separate MSVC x87 commutative-operand-order issue (address
+-sensitive which-operand-fld-first), and slot 0x87's 8-bit-shift codegen — both independent of the
+data symbol. canaries below_floor=0, vtable-gate ok. Heuristic note 45 records the recipe. This
+unblocks the EH bodies' direct global loads (g_pCivilianTerrainCompatibilityMatrix etc. can now be
+defined the same way).
