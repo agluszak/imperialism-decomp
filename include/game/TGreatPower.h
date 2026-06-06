@@ -89,9 +89,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(66);
   TGREATPOWER_VTABLE_SLOT(67);
   TGREATPOWER_VTABLE_SLOT(68);
-  virtual void NeedUpdateSlot45_Provisional(int needType, int value) = 0;
-  TGREATPOWER_VTABLE_SLOT(70);
-  TGREATPOWER_VTABLE_SLOT(71);
+  virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
+  virtual bool IsNeedTargetEqualCurrent(short needIndex); // slot 0x46
+  virtual short GetNeedTargetByType(short needIndex); // slot 0x47
   TGREATPOWER_VTABLE_SLOT(72);
   TGREATPOWER_VTABLE_SLOT(73);
   TGREATPOWER_VTABLE_SLOT(74);
@@ -99,7 +99,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(76);
   TGREATPOWER_VTABLE_SLOT(77);
   TGREATPOWER_VTABLE_SLOT(78);
-  TGREATPOWER_VTABLE_SLOT(79);
+  virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
   TGREATPOWER_VTABLE_SLOT(80);
   TGREATPOWER_VTABLE_SLOT(81);
   TGREATPOWER_VTABLE_SLOT(82);

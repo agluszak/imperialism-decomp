@@ -2540,7 +2540,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
   for (int typeIndex = 0; typeIndex < kNationSlotCount; ++typeIndex) {
     if (currentNeedByType[typeIndex] < targetNeedByType[typeIndex]) {
-      this->NeedUpdateSlot45_Provisional(typeIndex, currentNeedByType[typeIndex]);
+      this->UpdateNeedTargetAndAccumulateOverCap(typeIndex, currentNeedByType[typeIndex]);
     }
   }
 }
@@ -2897,7 +2897,7 @@ void TGreatPower::TryIncrementNationResourceNeedTargetTowardCurrent(int needType
   short targetValue = this->needTargetByType[needIndex];
   short currentValue = this->needCurrentByType[needIndex];
   if (targetValue < currentValue) {
-    this->NeedUpdateSlot45_Provisional(needType, static_cast<int>(targetValue) + 1);
+    this->UpdateNeedTargetAndAccumulateOverCap(needType, static_cast<int>(targetValue) + 1);
   }
 }
 
@@ -3203,6 +3203,43 @@ int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildin
         GetCityBuildingProductionValueBySlot(this->relationManager, buildingSlot));
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004dcdd0
+void TGreatPower::UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value) {
+  short* target = &this->needTargetByType[needIndex];
+  this->needsOverCapFlag = static_cast<short>(this->needsOverCapFlag + (value - *target));
+  *target = value;
+}
+
+// FUNCTION: IMPERIALISM 0x004dce40
+bool TGreatPower::IsNeedTargetEqualCurrent(short needIndex) {
+  bool result = false;
+  if (this->needTargetByType[needIndex] == this->needCurrentByType[needIndex]) {
+    result = true;
+  }
+  return result;
+}
+
+// FUNCTION: IMPERIALISM 0x004dce70
+short TGreatPower::GetNeedTargetByType(short needIndex) {
+  return this->needTargetByType[needIndex];
+}
+
+// FUNCTION: IMPERIALISM 0x004dc3f0
+char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
+  char result = 0;
+  if (this->needCapA6 != this->needsOverCapFlag) {
+    short needIndex = 0;
+    while (this->needCurrentByType[needIndex] <= this->needTargetByType[needIndex]) {
+      ++needIndex;
+      if (needIndex > 0x16) {
+        return result;
+      }
+    }
+    result = 1;
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004dd4e0

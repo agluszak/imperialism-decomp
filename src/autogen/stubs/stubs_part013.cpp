@@ -2723,14 +2723,6 @@ undefined4 BuildCityInfluenceLevelMap(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins21_004dc3f0
-// ghidra_proto byte __cdecl OrphanLeaf_NoCall_Ins21_004dc3f0(void)
-// FUNCTION: IMPERIALISM 0x004dc3f0
-undefined4 OrphanLeaf_NoCall_Ins21_004dc3f0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I35_004dc440
 // ghidra_proto int __cdecl OrphanCallChain_C1_I35_004dc440(void)
 // FUNCTION: IMPERIALISM 0x004dc440
@@ -2775,30 +2767,6 @@ undefined4 OrphanCallChain_C1_I24_004dcc50(void)
 // ghidra_proto void __cdecl OrphanCallChain_C1_I31_004dcca0(void)
 // FUNCTION: IMPERIALISM 0x004dcca0
 undefined4 OrphanCallChain_C1_I31_004dcca0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins10_004dcdd0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins10_004dcdd0(void)
-// FUNCTION: IMPERIALISM 0x004dcdd0
-undefined4 OrphanLeaf_NoCall_Ins10_004dcdd0(void)
-{
-  return 0;
-}
-
-// ghidra_name IsNationResourceNeedCurrentAtTargetByType
-// ghidra_proto void __cdecl IsNationResourceNeedCurrentAtTargetByType(void)
-// FUNCTION: IMPERIALISM 0x004dce40
-undefined4 IsNationResourceNeedCurrentAtTargetByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNationResourceNeedTargetByType
-// ghidra_proto void __cdecl GetNationResourceNeedTargetByType(void)
-// FUNCTION: IMPERIALISM 0x004dce70
-undefined4 GetNationResourceNeedTargetByType(void)
 {
   return 0;
 }
