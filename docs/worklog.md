@@ -2628,3 +2628,22 @@ data globals (`g_DAT_Value_*`) — solving this would unlock the float/coefficie
 
 Session total: ~21 slots wired (6 at 100%: 0x63,0x64,0x66,0x69,0x6a,0x6d; rest logic-correct,
 FPO/data-symbol-gapped). Remaining unowned GP-region bodies: ~77. canaries below_floor=0, vtable-gate ok.
+
+### TGreatPower structural pass — relation-need + 1c6 clusters (2026-06-06, cont.)
+
+Continued breadth-first wiring of pure-`this`/relation-manager integer slots to real virtuals:
+- 0x1e GetRelationManagerFieldB6 (relationManager.fieldB6 getter; renamed provisional + 4 callsites)
+  — unblocked 0x4a/0x4b which dispatch it (85-88%, FPO-only).
+- 0x1c, 0x79 (logic-correct partials; word-load/switch-lowering codegen + FPO).
+- 0x68 char-return scan (79%), 0x71 ClearDiplomacyState1c6Block (70%; rewired its
+  thunk_ClearFieldBlock1c6_At00406c49 to a qualified non-virtual call so the thunk stays 100%).
+
+Lesson: when a slot body had a named free-fn stub fronted by a manual JMP-thunk wrapper, after
+promoting the body to a virtual the thunk must call `this->TGreatPower::Method()` (qualified,
+non-virtual) — a plain `this->Method()` compiles to a vtable dispatch and drops the thunk to 0%.
+
+Cumulative this session: ~28 slots wired to real virtuals (8 at 100%; rest logic-correct, gated by
+FPO or the data-symbol infra). The remaining unowned bodies are now dominated by: no-ops (already in
+noop_slots), the float/global-data region (blocked on data-symbol infra — under research), and the
+large/EH bodies (0x05=1520B, 0x0c=1153B, 0x32=661B EH). Clean pure-`this` integer wins are largely
+exhausted; next sessions should target the large/EH bodies or wait on the data-symbol infra.
