@@ -2555,3 +2555,27 @@ Validation:
   `0x00488400`, `0x004ee4b0`, `0x004ee540` all **100.00%**
 - `just compare-canaries`: `below_floor=0`
 - `just vtable-gate`: passed via build
+
+### TGreatPower vtable scope assessment + first leaf-slot wins (2026-06-06)
+
+Inspected what remains to port for `TGreatPower`. Findings (ground truth from the
+178-slot vtable `0x00653938` cross-referenced against `config/function_ownership.csv`
+and `build-msvc500/reccmp_report.json`):
+
+- 143 fns owned in `src/game/TGreatPower.cpp`: 35 at 100%, 104 partial, 4 pairing-fail.
+- Of 178 vtable bodies: 77 owned (62 TGreatPower.cpp + 15 noop_slots.cpp), **101 unowned
+  (~98 genuine GP-region virtuals 0x004d7xxx–0x004e2xxx + 3 shared-low)**. These ~98 are
+  the bulk of "the rest"; currently stubbed as `TAutoGreatPower_VtblSlotXXX` in
+  `src/autogen/stubs/` (Ghidra mis-attributes inherited base virtuals to the derived class).
+- False positives in the bucket: `0x00601f1d`→CPtrList; the 3 shared-low + the `return 0`
+  no-op slots (0x004d7f60, 0x004e0400) already owned by noop_slots.cpp.
+- Structural blocker: most remaining slot bodies self-dispatch to *sibling* slots (e.g.
+  slot 0x56 `0x004e03a0` calls vtable+0x130/+0x154 = slots 0x4c/0x55, both unowned). To
+  match these without facades they want the whole vtable declared as real virtuals together.
+
+Ported (promote → real virtual → build → compare):
+- slot 0x6a `0x004ddb80` `SnapshotDiplomacyState1c6Into250` → **100%** (1c6→250 array copy).
+- slot 0x69 `0x004ddb40` `SetDiplomacyState1c6ClampedToCounterA4` → 68.97% → **100%** after
+  `#pragma optimize("y", on)` (leaf FPO, heuristic 38). Renamed provisional callsites in
+  `ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
+- `just compare-canaries`: below_floor=0.
