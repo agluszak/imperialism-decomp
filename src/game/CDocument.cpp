@@ -1,5 +1,6 @@
 #include "game/CDocument.h"
 
+#include "game/CDocument_Virtuals.h"
 #include "game/generated/vcall_facades.h"
 
 // MFC CDocument code was compiled favor-size in the original.
@@ -24,7 +25,7 @@ void CDocument::DisconnectViews() {
 void CDocument::AddView(CView* view) {
   m_viewList.AddTail(view);
   view->m_pDocument = this;
-  VCall_CDocument_NotifyViewListChangedSlot70(this);
+  reinterpret_cast<CDocument_Virtuals*>(this)->NotifyViewListChangedSlot70();
 }
 
 // FUNCTION: IMPERIALISM 0x006109cf

@@ -104,7 +104,7 @@ src/game/TTransFocusAnimation.cpp|VCall_TransFocusAnimation_CallSlot2C|void|0x2C
 src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_QueryBoundsSlot12C|void|0x12C / 4|int*|medium|temporary-surface target bounds query|index|thiscall|none||provisional|QuickDrawRenderTarget
 src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_ApplyRectSlot110|void|0x110 / 4|int*|medium|temporary-surface target rect apply|index|thiscall|none||provisional|QuickDrawRenderTarget
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyLegend_DrawTerrainSlot1E0|void|0x1E0 / 4|int,int|medium|diplomacy legend terrain/minor draw slot with index and label selector|index|thiscall|none||provisional|TDiplomacyMapView
-src/game/TDiplomacyMapView.cpp|VCall_UiRuntime_ApplyLegendSplitSlot34|void|0x34 / 4|int|medium|runtime legend split/update slot selector|index|thiscall|none||native_migrated|UiRuntimeContext
+src/game/TDiplomacyMapView.cpp|VCall_UiRuntime_ApplyLegendSplitSlot34|void|0x34 / 4|int|medium|runtime legend split/update slot selector|index|thiscall|none|||UiRuntimeContext
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_GetFrameRegionSlot98|void*|0x98 / 4|int|medium|strategic map frame region query by view selector|index|thiscall|none||provisional|StrategicMapViewSystem
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_ApplyClipRegionSlotC4|void|0xC4 / 4|int|low|apply combined terrain clip region to diplomacy map view|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_GlobalMapState_QueryIconStripXSlot110|short|0x110 / 4|int|low|query policy-icon strip x offset by code|index|thiscall|none||provisional|GlobalMapState
@@ -113,14 +113,14 @@ src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_HitTestPointSlot90|char|0x90 /
 src/game/diplomacy_state.cpp|VCall_DiplomacyTurnState_ValidateActionSlot5C|char|0x5C / 4|int,int,int|medium|validate diplomacy action for selected/hovered target pair and set reject code|index|thiscall|none||provisional|DiplomacyTurnStateManager
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_ForwardParamSlot48|void|0x48 / 4|int|low|forward city-dialog param to active diplomacy child control|index|thiscall|none||provisional|TControl
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_SwitchTabSlot1A4|void|0x1A4 / 4|int,int,int|low|forward tab-switch command to active diplomacy child control|index|thiscall|none||provisional|TControl
-src/game/cdocument.cpp|VCall_CDocument_NotifyViewListChangedSlot70|void|0x70 / 4||medium|CDocument slot70 view-list-changed notify|index|thiscall|none||provisional|CDocument
-src/game/carchive.cpp|VCall_CFile_WriteBytesSlot40|void|0x40 / 4|void*,int|medium|CFile write bytes to underlying file|index|thiscall|none||provisional|CFile
-src/game/carchive.cpp|VCall_CFile_GetBufferPtrSlot58|void|0x58 / 4|int,int,void*,void*|medium|CFile get buffer pointer/refill|index|thiscall|none||provisional|CFile
-src/game/carchive.cpp|VCall_CFile_ReadBytesSlot3C|int|0x3C / 4|void*,int|medium|CFile read bytes from underlying file|index|thiscall|none||provisional|CFile
-src/game/carchive.cpp|VCall_CFile_SeekSlot30|void|0x30 / 4|int,int|medium|CFile seek within underlying file|index|thiscall|none||provisional|CFile
-src/game/TTextList.cpp|VCall_TextList_OnSelectionChange|void|0xe4 / 4||medium|text list selection change callback|index|thiscall|zero||native_migrated|TTextList
-src/game/TTextList.cpp|VCall_TextList_GetRect|void|0x12c / 4|void*|medium|text list get bounding rect|index|thiscall|zero||native_migrated|TTextList
-src/game/TTextList.cpp|VCall_TextList_OnSelectionConfirmed|void|0x13c / 4||medium|text list double click/selection confirm callback|index|thiscall|zero||native_migrated|TTextList
-src/game/TTextList.cpp|VCall_Parent_DispatchEvent|void|0x40 / 4|int,void*,int|medium|parent event dispatcher|index|thiscall|zero||native_migrated|TView
-src/game/TFileStream.cpp|VCall_Stream_WriteCountSlot88|void|0x88 / 4|int|medium|stream write count/length prefix|index|thiscall|none|||TStream
-src/game/TFileStream.cpp|VCall_Stream_WriteBytesSlot78|void|0x78 / 4|void*,int|medium|stream write raw bytes|index|thiscall|none|||TStream
+src/game/cdocument.cpp|VCall_CDocument_NotifyViewListChangedSlot70|void|0x70 / 4||medium|CDocument slot70 view-list-changed notify|index|thiscall|none||native_migrated|CDocument
+src/game/carchive.cpp|VCall_CFile_WriteBytesSlot40|void|0x40 / 4|void*,int|medium|CFile write bytes to underlying file|index|thiscall|none||native_migrated|CFile
+src/game/carchive.cpp|VCall_CFile_GetBufferPtrSlot58|void|0x58 / 4|int,int,void*,void*|medium|CFile get buffer pointer/refill|index|thiscall|none||native_migrated|CFile
+src/game/carchive.cpp|VCall_CFile_ReadBytesSlot3C|int|0x3C / 4|void*,int|medium|CFile read bytes from underlying file|index|thiscall|none||native_migrated|CFile
+src/game/carchive.cpp|VCall_CFile_SeekSlot30|void|0x30 / 4|int,int|medium|CFile seek within underlying file|index|thiscall|none||native_migrated|CFile
+src/game/TTextList.cpp|VCall_TextList_OnSelectionChange|void|0xe4 / 4||medium|text list selection change callback|index|thiscall|zero|||TTextList
+src/game/TTextList.cpp|VCall_TextList_GetRect|void|0x12c / 4|void*|medium|text list get bounding rect|index|thiscall|zero|||TTextList
+src/game/TTextList.cpp|VCall_TextList_OnSelectionConfirmed|void|0x13c / 4||medium|text list double click/selection confirm callback|index|thiscall|zero|||TTextList
+src/game/TTextList.cpp|VCall_Parent_DispatchEvent|void|0x40 / 4|int,void*,int|medium|parent event dispatcher|index|thiscall|zero|||TView
+src/game/TFileStream.cpp|VCall_Stream_WriteCountSlot88|void|0x88 / 4|int|medium|stream write count/length prefix|index|thiscall|none||native_migrated|TStream
+src/game/TFileStream.cpp|VCall_Stream_WriteBytesSlot78|void|0x78 / 4|void*,int|medium|stream write raw bytes|index|thiscall|none||native_migrated|TStream

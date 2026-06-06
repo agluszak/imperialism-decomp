@@ -3,6 +3,7 @@
 #include "game/CMapPtrToPtr.h"
 #include "game/CObject.h"
 #include "game/CRuntimeClass.h"
+#include "game/CFile_Virtuals.h"
 #include "game/generated/vcall_facades.h"
 
 // MFC CArchive code was compiled favor-size in the original.
@@ -101,11 +102,11 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
 
   FlushArchive(this);
   unsigned int fullChunk = nCount - (nCount % m_nBufSize);
-  VCall_CFile_WriteBytesSlot40(m_pFile, const_cast<void*>(src), fullChunk);
+  reinterpret_cast<CFile_Virtuals*>(m_pFile)->WriteBytesSlot40(const_cast<void*>(src), fullChunk);
   src = reinterpret_cast<const char*>(src) + fullChunk;
   nCount -= fullChunk;
   if (m_bDirect != 0) {
-    VCall_CFile_GetBufferPtrSlot58(m_pFile, 1, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(1, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
     m_lpBufCur = m_lpBufStart;
   }
   CopyMemory(m_lpBufCur, src, nCount);
@@ -239,7 +240,7 @@ void CArchive::FillBuffer(unsigned int requiredBytes) {
       int room = m_nBufSize - static_cast<int>(avail);
       dst = dst + avail;
       do {
-        int got = VCall_CFile_ReadBytesSlot3C(m_pFile, dst, room);
+        int got = reinterpret_cast<CFile_Virtuals*>(m_pFile)->ReadBytesSlot3C(dst, room);
         avail += got;
         dst += got;
         room -= got;
@@ -252,9 +253,9 @@ void CArchive::FillBuffer(unsigned int requiredBytes) {
     }
   } else {
     if (avail != 0) {
-      VCall_CFile_SeekSlot30(m_pFile, -static_cast<int>(avail), 1);
+      reinterpret_cast<CFile_Virtuals*>(m_pFile)->SeekSlot30(-static_cast<int>(avail), 1);
     }
-    VCall_CFile_GetBufferPtrSlot58(m_pFile, 0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
     m_lpBufCur = m_lpBufStart;
   }
   if (static_cast<unsigned int>(m_lpBufMax - m_lpBufCur) < wanted) {
@@ -302,7 +303,7 @@ int CArchive::ReadBytesFromSerializedBuffer(void* destination, unsigned int requ
     int directDone = 0;
     int room = fullChunk;
     do {
-      int got = VCall_CFile_ReadBytesSlot3C(m_pFile, destination, room);
+      int got = reinterpret_cast<CFile_Virtuals*>(m_pFile)->ReadBytesSlot3C(destination, room);
       destination = reinterpret_cast<char*>(destination) + got;
       directDone += got;
       room -= got;
@@ -320,7 +321,7 @@ int CArchive::ReadBytesFromSerializedBuffer(void* destination, unsigned int requ
         unsigned char* cur = m_lpBufStart;
         unsigned int filled = 0;
         do {
-          int got = VCall_CFile_ReadBytesSlot3C(m_pFile, cur, want);
+          int got = reinterpret_cast<CFile_Virtuals*>(m_pFile)->ReadBytesSlot3C(cur, want);
           cur += got;
           want -= got;
           filled += got;
@@ -331,7 +332,7 @@ int CArchive::ReadBytesFromSerializedBuffer(void* destination, unsigned int requ
         m_lpBufCur = m_lpBufStart;
         m_lpBufMax = m_lpBufStart + filled;
       } else {
-        VCall_CFile_GetBufferPtrSlot58(m_pFile, 0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+        reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
         m_lpBufCur = m_lpBufStart;
       }
       unsigned int chunk = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);
