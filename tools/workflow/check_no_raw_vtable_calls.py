@@ -19,6 +19,7 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("raw_vtable_index", re.compile(r"\(\*reinterpret_cast<void\*\*\*>\([^)]+\)\)\s*\[")),
     ("fn_typedef_cast", re.compile(r"reinterpret_cast<[^>]*Fn[^>]*>")),
     ("vftable_index", re.compile(r"\bvftable\s*\[")),
+    ("vcall_facade", re.compile(r"\bVCall_[A-Za-z0-9_]+\s*\(")),
 )
 
 INFRA_ALLOWLIST: set[str] = {
