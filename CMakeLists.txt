@@ -17,6 +17,7 @@ set(
 
 add_executable(Imperialism
     src/main.cpp
+    src/game/global_data_tables.cpp
     src/game/config.cpp
     src/game/list_utils.cpp
     src/game/input_state.cpp

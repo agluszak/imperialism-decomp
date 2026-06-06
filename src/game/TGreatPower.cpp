@@ -10,6 +10,21 @@
 
 extern "C" void* g_pLocalizationTable;
 
+// Minister-skill float coefficient tables (defined in global_data_tables.cpp).
+extern "C" {
+extern float g_DAT_Value_00653308[];
+extern float g_DAT_Value_00653328[];
+extern float g_DAT_Value_00653340[];
+extern float g_DAT_Value_00653360[];
+extern float g_DAT_Value_00653378[];
+extern float g_DAT_Value_00653398[];
+extern float g_DAT_006533b0_Value_006533B0[];
+extern float g_DAT_006533d0_Value_006533D0[];
+extern float g_DAT_006533e8_Value_006533E8[];
+extern float g_DAT_Value_00653408[];
+extern void* g_pMapActionContextListHead;
+}
+
 // Abstract View Classes for Native Virtual Method Dispatches (MSVC 5.0 compatible __thiscall
 // dispatches)
 
@@ -367,8 +382,8 @@ struct MapActionContextNode {
 };
 
 // Minister-skill-indexed float coefficient table lookup (DAT_0065xxxx tables).
-static __inline double MinisterSkillFloat(unsigned int tableAddr, TMinisterObject* minister) {
-  return reinterpret_cast<const float*>(tableAddr)[minister->skillIndexC];
+static __inline double MinisterSkillFloat(const float* table, TMinisterObject* minister) {
+  return table[minister->skillIndexC];
 }
 
 class TNationInteractionStateManagerView {
@@ -3153,7 +3168,7 @@ void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, 
 int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
   int count = 0;
   MapActionContextNode* node =
-      static_cast<MapActionContextNode*>(ReadGlobalPointer(kAddrMapActionContextListHead));
+      static_cast<MapActionContextNode*>(g_pMapActionContextListHead);
   if (node != 0) {
     do {
       if ((node->flags10 & (1 << (this->nationSlot & 0x1f))) != 0) {
@@ -3167,32 +3182,32 @@ int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
 
 // FUNCTION: IMPERIALISM 0x004e0590
 double TGreatPower::ComputeMinisterSkillFloatSlot88(void) {
-  return MinisterSkillFloat(0x00653308, this->foreignMinister) +
-         MinisterSkillFloat(0x00653328, this->defenseMinister);
+  return MinisterSkillFloat(g_DAT_Value_00653308, this->foreignMinister) +
+         MinisterSkillFloat(g_DAT_Value_00653328, this->defenseMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x004e05d0
 double TGreatPower::ComputeMinisterSkillFloatSlot89(void) {
-  return MinisterSkillFloat(0x00653360, this->defenseMinister) +
-         MinisterSkillFloat(0x00653340, this->foreignMinister);
+  return MinisterSkillFloat(g_DAT_Value_00653360, this->defenseMinister) +
+         MinisterSkillFloat(g_DAT_Value_00653340, this->foreignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0610
 double TGreatPower::ComputeMinisterSkillFloatSlot8A(void) {
-  return MinisterSkillFloat(0x00653398, this->defenseMinister) +
-         MinisterSkillFloat(0x00653378, this->foreignMinister);
+  return MinisterSkillFloat(g_DAT_Value_00653398, this->defenseMinister) +
+         MinisterSkillFloat(g_DAT_Value_00653378, this->foreignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0650
 double TGreatPower::ComputeMinisterSkillFloatSlot8B(void) {
-  return MinisterSkillFloat(0x006533b0, this->foreignMinister) +
-         MinisterSkillFloat(0x006533d0, this->defenseMinister);
+  return MinisterSkillFloat(g_DAT_006533b0_Value_006533B0, this->foreignMinister) +
+         MinisterSkillFloat(g_DAT_006533d0_Value_006533D0, this->defenseMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0690
 double TGreatPower::ComputeMinisterSkillFloatSlot8C(void) {
-  return MinisterSkillFloat(0x00653408, this->defenseMinister) +
-         MinisterSkillFloat(0x006533e8, this->foreignMinister);
+  return MinisterSkillFloat(g_DAT_Value_00653408, this->defenseMinister) +
+         MinisterSkillFloat(g_DAT_006533e8_Value_006533E8, this->foreignMinister);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0740
