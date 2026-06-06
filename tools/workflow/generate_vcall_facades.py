@@ -238,6 +238,10 @@ def build_header(rows: list[dict[str, str]]) -> str:
 
     seen_wrappers: set[str] = set()
     for row in rows:
+        status = parse_optional(row, "status", "provisional")
+        if status == "native_migrated":
+            continue
+        
         wrapper_name = (row.get("wrapper_name") or "").strip()
         return_type = (row.get("return_type") or "").strip()
         slot_expr = (row.get("slot_expr") or "").strip()
@@ -247,7 +251,6 @@ def build_header(rows: list[dict[str, str]]) -> str:
         slot_unit = parse_optional(row, "slot_unit", "expr")
         edx_mode = parse_optional(row, "edx_mode", "zero")
         edx_value = parse_optional(row, "edx_value", "")
-        status = parse_optional(row, "status", "provisional")
         class_name = parse_optional(row, "class_name", "")
 
         if not wrapper_name:

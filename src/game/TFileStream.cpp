@@ -1,4 +1,5 @@
 #include "game/TFileStream.h"
+#include "game/CString.h"
 
 #include "game/generated/vcall_facades.h"
 
@@ -85,6 +86,13 @@ void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
 // FUNCTION: IMPERIALISM 0x00489070
 void TFileStream::WriteLengthPrefixedCString(char* text) {
   unsigned int length = strlen(text);
-  VCall_Stream_WriteCountSlot88(this, length);
-  VCall_Stream_WriteBytesSlot78(this, text, length);
+  this->WriteCountSlot88(length);
+  this->WriteBytesSlot78(text, length);
+}
+
+// FUNCTION: IMPERIALISM 0x00489030
+void TFileStream::WriteCString(const CString& text) {
+  int length = reinterpret_cast<SharedStringHeader*>(text.data_ptr - sizeof(SharedStringHeader))->text_length;
+  this->WriteCountSlot88(length);
+  this->WriteBytesSlot78(reinterpret_cast<void*>(text.data_ptr), length);
 }

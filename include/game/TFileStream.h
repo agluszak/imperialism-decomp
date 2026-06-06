@@ -5,6 +5,8 @@
 #include "compat.h"
 #include "decomp_types.h"
 
+class CString;
+
 // VTABLE: IMPERIALISM 0x00649230
 class TFileStream : public TStream {
  public:
@@ -30,4 +32,5 @@ class TFileStream : public TStream {
   // 0x00489070: serialize a length-prefixed C-string — write the length through
   // virtual slot 0x22, then the bytes through slot 0x1e.
   void WriteLengthPrefixedCString(char* text);
+  void WriteCString(const CString& text);
 };

@@ -4,6 +4,7 @@
 #include "game/Point32.h"
 #include "game/generated/vcall_facades.h"
 #include "game/ui_widget_shared.h"
+#include "game/TDiplomacyTurnStateManager.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -231,7 +232,7 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
         eventCode = 0x40;
       } else {
         short relationTier = VCall_Diplomacy_GetRelationTierSlot70(
-            *reinterpret_cast<void**>(kAddrDiplomacyTurnStateManager), activeNationSlot,
+            g_pDiplomacyTurnStateManager, activeNationSlot,
             nationIndex);
         eventCode = static_cast<short>(
             reinterpret_cast<unsigned char*>(kAddrDiplomacyRelationPaletteMap)[relationTier]);
@@ -375,7 +376,7 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
     do {
       if (*terrainDescriptors != 0) {
         short eventCode = VCall_Diplomacy_GetRelationTypeSlot68(
-            *reinterpret_cast<void**>(kAddrDiplomacyTurnStateManager), activeNationSlot,
+            g_pDiplomacyTurnStateManager, activeNationSlot,
             terrainIndex);
 
         maskState[0] = 0;
@@ -591,7 +592,7 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(P
   if (hit) {
     int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
     char valid = VCall_DiplomacyTurnState_ValidateActionSlot5C(
-        *reinterpret_cast<void**>(kAddrDiplomacyTurnStateManager),
+        g_pDiplomacyTurnStateManager,
         *reinterpret_cast<short*>(self + 0x90), *reinterpret_cast<short*>(self + 0xc2), actionCode);
 
     short cursorId;
@@ -685,7 +686,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
   short selectedTier = *reinterpret_cast<short*>(self + 0x528);
   int policyIndex = 0;
   do {
-    char* manager = *reinterpret_cast<char**>(kAddrDiplomacyTurnStateManager);
+    char* manager = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
     short tierValue = *reinterpret_cast<short*>(manager + 0x484 + policyIndex * 2);
     int iconCode = *reinterpret_cast<signed char*>(manager + 0x304 + policyIndex);
     if (*reinterpret_cast<char*>(self + 0x52c + policyIndex) != 0 && iconCode != -1 &&

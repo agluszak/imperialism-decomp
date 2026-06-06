@@ -2,11 +2,11 @@
 
 #include "decomp_types.h"
 
-// MFC-style diplomacy backend. The global TDiplomacyTurnStateManager (vtable
+// MFC-style diplomacy backend. The global TTDiplomacyTurnStateManager (vtable
 // 0x00654d90) holds the per-nation-pair relation / standing / propagation
 // matrices and the per-turn relationship-processing logic. The pure-virtual
 // slots model its native vtable; the non-virtual methods are the recovered
-// behaviour. Constructed once and reached via g_pDiplomacyTurnStateManager.
+// behaviour. Constructed once and reached via g_pTDiplomacyTurnStateManager.
 
 enum {
   kDiplomacyPairMatrixEntries = 0x180,
@@ -14,7 +14,7 @@ enum {
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
 
-struct DiplomacyTurnStateManager {
+struct TDiplomacyTurnStateManager {
   // Native virtual functions layout
   virtual void slot_00() = 0; // 0 (0x00)
   virtual void slot_04() = 0; // 1 (0x04)
@@ -43,7 +43,7 @@ struct DiplomacyTurnStateManager {
   virtual char ValidateDiplomacyActionSlot5c(int sourceNation, int targetNation, int actionCode) = 0; // 23 (0x5c)
   virtual char HasAllianceGuardSlot60(int sourceNation, int targetNation) = 0; // 24 (0x60)
   virtual void slot_64() = 0; // 25 (0x64)
-  virtual void slot_68() = 0; // 26 (0x68)
+  virtual int GetRelationTypeSlot68(int sourceNation, int targetNation) = 0; // 26 (0x68)
   virtual void slot_6c() = 0; // 27 (0x6c)
   virtual short GetRelationTierSlot70(int sourceNation, int targetNation) = 0; // 28 (0x70)
   virtual void SetRelationCodeSlot74WithMode(int sourceNation, int targetNation, int relationCode, int updateMode) = 0; // 29 (0x74)
@@ -84,10 +84,10 @@ struct DiplomacyTurnStateManager {
   short proposalArrayMode18d8;
   unsigned char pad18da[2];
 
-  DiplomacyTurnStateManager* ConstructDiplomacyTurnStateManager_Vtbl00654d90();
-  DiplomacyTurnStateManager* thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90();
-  void InitializeDiplomacyTurnStateManagerDefaults();
-  void thunk_InitializeDiplomacyTurnStateManagerDefaults();
+  TDiplomacyTurnStateManager* ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
+  TDiplomacyTurnStateManager* thunk_ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
+  void InitializeTDiplomacyTurnStateManagerDefaults();
+  void thunk_InitializeTDiplomacyTurnStateManagerDefaults();
   char IsNationPairAtWar(int sourceNationSlot, int targetNationSlot);
   char IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot, int targetNationSlot);
   char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot);
@@ -113,3 +113,5 @@ struct DiplomacyTurnStateManager {
   void thunk_ApplyDiplomacyInterNationStatesForTurn();
 };
 
+
+extern "C" TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager;

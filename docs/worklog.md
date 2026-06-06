@@ -2682,3 +2682,22 @@ Validation:
 - `just compare-canaries`: total=8, below_floor=0, parse_error=0.
 
 Deferred intentionally: remaining `__fastcall` casts in this file are constructor/helper/external-manager thunk boundaries or queue/message/list/localization-slot84 facades whose owning class/signature is not yet recovered. Do not replace them with another cast shape; migrate each only when the receiver class and slot signature are grounded.
+
+### Diplomacy and Stream VCall Facade Cleanup (2026-06-07)
+
+Completed Slices 2 and 3 of the VCall facade migration out of `TGreatPower`, `TDiplomacyMapView`, and `TFileStream`.
+
+1. **Slice 2 (DiplomacyTurnStateManager):**
+   - Grounded `TDiplomacyTurnStateManager` globally as `g_pDiplomacyTurnStateManager`.
+   - Replaced `TDiplomacyTurnStateManagerView` and `TDiplomacyTurnStateManagerRelationView` casts and their local helper shims in `TGreatPower` and `TDiplomacyMapView` with direct calls on the global.
+   - Updated `config/vtable_slots.csv` to mark the 10 diplomacy-related `VCall_` wrappers as `native_migrated`.
+2. **Slice 3 (Stream Wrappers):**
+   - Added virtual slots to `TStream` (`WriteBytesSlot78`, `WriteCountSlot88`, and dummy padding matching `CObject` inheritance rules + offsets) in `include/game/TStream.h`.
+   - Replaced `VCall_Stream_WriteCountSlot88` and `VCall_Stream_WriteBytesSlot78` in `TFileStream::WriteLengthPrefixedCString` (`0x00489070`) with real virtual calls.
+   - Ported `0x00489030` (`TFileStream::WriteCString(const CString& text)`) from `stubs_part010.cpp` into `TFileStream.cpp`. Cleanly reconstructed the CString inline pointer math `(text_length = data_ptr[-2])`. Match is 100%.
+   - Updated `config/vtable_slots.csv` to mark all 6 `VCall_Stream_` wrappers as `native_migrated`.
+
+Validation:
+- `just sync-ownership && just regen-stubs` correctly orphaned the old `0x00489030` stub.
+- `just gen-vcall-facades` stripped the stream and diplomacy wrappers from `vcall_facades.h`.
+- `just build && just compare 0x00489070 0x00489030`: Build succeeds, vtable gate passed, both targets are 100%.

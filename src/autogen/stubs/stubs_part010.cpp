@@ -2867,14 +2867,6 @@ undefined4 OrphanCallChain_C2_I18_00488ff0(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C2_I21_00489030
-// ghidra_proto void __cdecl OrphanCallChain_C2_I21_00489030(void)
-// FUNCTION: IMPERIALISM 0x00489030
-undefined4 OrphanCallChain_C2_I21_00489030(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateTFileStreamWithAllocFallback
 // ghidra_proto void * __cdecl CreateTFileStreamWithAllocFallback(void)
 // FUNCTION: IMPERIALISM 0x004890c0

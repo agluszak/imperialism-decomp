@@ -152,6 +152,7 @@ address|target_cpp|ownership|note
 488e30|src/game/noop_slots.cpp|manual|marker_sync
 488e50|src/game/noop_slots.cpp|manual|marker_sync
 488e70|src/game/noop_slots.cpp|manual|marker_sync
+489030|src/game/TFileStream.cpp|manual|marker_sync
 489070|src/game/TFileStream.cpp|manual|marker_sync
 4890f0|src/game/TFileStream.cpp|manual|marker_sync
 489110|src/game/TFileStream.cpp|manual|marker_sync

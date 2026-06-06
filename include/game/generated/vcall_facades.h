@@ -88,20 +88,6 @@ static __inline void VCall_UiRuntime_ApplyLegendSplitSlot34(void* object, int ar
   fn(object, arg0);
 }
 
-// stream write raw bytes; class=TStream; status=provisional
-static __inline void VCall_Stream_WriteBytesSlot78(void* object, void* arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x78 / 4)));
-  fn(object, arg0, arg1);
-}
-
-// stream write count/length prefix; class=TStream; status=provisional
-static __inline void VCall_Stream_WriteCountSlot88(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x88 / 4)));
-  fn(object, arg0);
-}
-
 // focus animation scoped render post slot; class=FocusAnimationRenderTarget; status=provisional
 static __inline void VCall_FocusAnimationView_PostRenderSlotFC(void* object) {
   typedef void (__fastcall * Fn)(void*);
@@ -163,139 +149,6 @@ static __inline char VCall_GlobalMapState_CallMetricSlotC4(void* object, int arg
   typedef char (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xC4 / 4)));
   return fn(object, 0, arg0, arg1);
-}
-
-// adjust delta slot66; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_AdjustResourceDeltaSlot66(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x66)));
-  fn(object, arg0);
-}
-
-// apply need target slot64; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_ApplyNeedTargetSlot64(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x64)));
-  fn(object, arg0, arg1);
-}
-
-// provisional GreatPower slot A1; index 0xa1 byte 0x284; entry 0x00406fe1 thunks to 0x004e27f0; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_ApplyPolicyForNationSlotA1(void* object, int arg0, int arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA1)));
-  fn(object, arg0, arg1, arg2);
-}
-
-// great power slot13; index 0x13 byte 0x04c; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlot13(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x13)));
-  fn(object, arg0, arg1);
-}
-
-// slot84; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlot84(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x84)));
-  fn(object, arg0);
-}
-
-// slot85; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlot85(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x85)));
-  fn(object, arg0);
-}
-
-// ambiguous slot shape in decomp; same index as ApplyPolicyForNation, keep facade until caller resolved; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlotA1_NoArgs(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA1)));
-  fn(object);
-}
-
-// slotA5; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlotA5(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA5)));
-  fn(object);
-}
-
-// slotA8; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlotA8(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA8)));
-  fn(object, arg0);
-}
-
-// slotA9; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlotA9(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA9)));
-  fn(object);
-}
-
-// slotB3; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_CallSlotB3(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xB3)));
-  fn(object);
-}
-
-// delete self slot; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_DeleteSelfSlot01(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(1)));
-  fn(object, arg0);
-}
-
-// fallback dispatch slot6C; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_DispatchFallbackActionSlot6C(void* object, int arg0, int arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x6C)));
-  fn(object, arg0, arg1, arg2);
-}
-
-// node context slot40; class=TGreatPower; status=provisional
-static __inline int VCall_GreatPower_GetNodeContextSlot40(void* object) {
-  typedef int (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>((0x40) / 4)));
-  return fn(object);
-}
-
-// need update slot45; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_NeedUpdateSlot45(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x45)));
-  fn(object, arg0, arg1);
-}
-
-// refresh need panels slot6A; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_RefreshNeedPanelsSlot6A(void* object) {
-  typedef void (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x6A)));
-  fn(object);
-}
-
-// great power reset level; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_ResetDiplomacyLevelForNationSlot12(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x12)));
-  fn(object, arg0, arg1);
-}
-
-// set need slot69; class=TGreatPower; status=provisional
-static __inline void VCall_GreatPower_SetNeedSlot69(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x69)));
-  fn(object, arg0, arg1);
-}
-
-// dispatch gate; class=TGreatPower; status=provisional
-static __inline char VCall_GreatPower_ShouldDispatchImmediatelySlot28(void* object) {
-  typedef char (__fastcall * Fn)(void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x28)));
-  return fn(object);
 }
 
 // list count; status=provisional
@@ -487,34 +340,6 @@ static __inline void VCall_SecondaryState_SetPolicyValue48(void* object, int arg
   fn(object, 0, arg0, arg1);
 }
 
-// stream read buffer; status=provisional
-static __inline void VCall_Stream_ReadAtSlot3C(void* object, void* arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x3C / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// stream read byte; status=provisional
-static __inline char VCall_Stream_ReadByteAtSlotB0(void* object, void* arg0) {
-  typedef char (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xB0 / 4)));
-  return fn(object, 0, arg0);
-}
-
-// stream read dword; status=provisional
-static __inline int VCall_Stream_ReadIntAtSlot40(void* object) {
-  typedef int (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
-  return fn(object, 0);
-}
-
-// stream raw read; status=provisional
-static __inline void VCall_Stream_ReadRawAtSlot00(void* object, void* arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0)));
-  fn(object, 0, arg0, arg1);
-}
-
 // terrain slot38; status=provisional
 static __inline void VCall_TerrainDescriptor_CallSlot38(void* object, int arg0) {
   typedef void (__fastcall * Fn)(void*, int, int);
@@ -648,13 +473,6 @@ static __inline char VCall_DiplomacyTurnState_ValidateActionSlot5C(void* object,
   return fn(object, arg0, arg1, arg2);
 }
 
-// apply relation code 4 and queue target event; class=DiplomacyTurnStateManager; status=confirmed
-static __inline void VCall_Diplomacy_ApplyRelationCode4Slot7C(void* object, int arg0, int arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x7C / 4)));
-  fn(object, 0, arg0, arg1, arg2);
-}
-
 // copy diplomacy standing matrix row and column; class=DiplomacyTurnStateManager; status=provisional
 static __inline void VCall_Diplomacy_CopyStandingRowColumnSlot2C(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int, int);
@@ -709,27 +527,6 @@ static __inline int VCall_Diplomacy_SelectTargetBySideEffectSlot94(void* object,
   typedef int (__fastcall * Fn)(void*, int, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
   return fn(object, 0, arg0, arg1, arg2);
-}
-
-// set relation code with update mode flag; class=DiplomacyTurnStateManager; status=provisional
-static __inline void VCall_Diplomacy_SetRelationCodeSlot74WithMode(void* object, int arg0, int arg1, int arg2, int arg3) {
-  typedef void (__fastcall * Fn)(void*, int, int, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x74 / 4)));
-  fn(object, 0, arg0, arg1, arg2, arg3);
-}
-
-// set relation code with final side-effect flag; class=DiplomacyTurnStateManager; status=confirmed
-static __inline void VCall_Diplomacy_SetRelationCodeSlot78Final(void* object, int arg0, int arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x78 / 4)));
-  fn(object, 0, arg0, arg1, arg2);
-}
-
-// set diplomacy standing score for nation pair; class=DiplomacyTurnStateManager; status=provisional
-static __inline void VCall_Diplomacy_SetStandingScoreSlot28(void* object, int arg0, int arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x28 / 4)));
-  fn(object, 0, arg0, arg1, arg2);
 }
 
 // localization/event table fallback dispatch; class=LocalizationTable; status=provisional
