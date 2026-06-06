@@ -2939,22 +2939,6 @@ undefined4 OrphanLeaf_NoCall_Ins22_004ddad0(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins13_004ddb40
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins13_004ddb40(void)
-// FUNCTION: IMPERIALISM 0x004ddb40
-undefined4 OrphanLeaf_NoCall_Ins13_004ddb40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins08_004ddb80
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins08_004ddb80(void)
-// FUNCTION: IMPERIALISM 0x004ddb80
-undefined4 OrphanLeaf_NoCall_Ins08_004ddb80(void)
-{
-  return 0;
-}
-
 // ghidra_name AddShortDeltaToNationCounterAtOffset198
 // ghidra_proto void __cdecl AddShortDeltaToNationCounterAtOffset198(void)
 // FUNCTION: IMPERIALISM 0x004ddcf0

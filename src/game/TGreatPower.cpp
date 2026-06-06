@@ -3030,11 +3030,31 @@ void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
     return;
   }
 
-  this->SetNeedSlot69_Provisional(7, -1);
-  this->SetNeedSlot69_Provisional(0, -1);
-  this->SetNeedSlot69_Provisional(1, -1);
-  this->SetNeedSlot69_Provisional(2, -1);
-  this->RefreshNeedPanelsSlot6A_Provisional();
+  this->SetDiplomacyState1c6ClampedToCounterA4(7, -1);
+  this->SetDiplomacyState1c6ClampedToCounterA4(0, -1);
+  this->SetDiplomacyState1c6ClampedToCounterA4(1, -1);
+  this->SetDiplomacyState1c6ClampedToCounterA4(2, -1);
+  this->SnapshotDiplomacyState1c6Into250();
+}
+
+#pragma optimize("y", on)
+// FUNCTION: IMPERIALISM 0x004ddb40
+void TGreatPower::SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value) {
+  if (targetSlot != -10) {
+    short clamped = this->diplomacyCounterA4;
+    if (value <= this->diplomacyCounterA4) {
+      clamped = value;
+    }
+    this->diplomacyState1c6[targetSlot] = clamped;
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004ddb80
+void TGreatPower::SnapshotDiplomacyState1c6Into250(void) {
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    this->diplomacyState250[nationSlot] = this->diplomacyState1c6[nationSlot];
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004dd4e0

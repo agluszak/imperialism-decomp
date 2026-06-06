@@ -127,8 +127,8 @@ public:
   virtual void AdjustResourceDeltaSlot66_Provisional(int amount) = 0;
   TGREATPOWER_VTABLE_SLOT(103);
   TGREATPOWER_VTABLE_SLOT(104);
-  virtual void SetNeedSlot69_Provisional(int needType, int value) = 0;
-  virtual void RefreshNeedPanelsSlot6A_Provisional(void) = 0;
+  virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
+  virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
   TGREATPOWER_VTABLE_SLOT(107);
   virtual void DispatchFallbackActionSlot6C_Provisional(int arg0, int arg1, int arg2) = 0;
   TGREATPOWER_VTABLE_SLOT(109);
