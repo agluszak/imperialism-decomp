@@ -2579,3 +2579,28 @@ Ported (promote → real virtual → build → compare):
   `#pragma optimize("y", on)` (leaf FPO, heuristic 38). Renamed provisional callsites in
   `ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
 - `just compare-canaries`: below_floor=0.
+
+### TGreatPower structural pass — first vtable-virtual clusters (2026-06-06, cont.)
+
+Ran `tools/ghidra/create_vtable_body_functions.py` (writable Ghidra pass) to
+CreateFunction the 61 undefined TGreatPower vtable-slot bodies (saved to the live
+vendored project; re-runnable, idempotent — required before decompiling these bodies).
+
+Wired vtable slots from provisional pure-virtuals to real TGreatPower virtuals:
+- 0x69 `0x004ddb40` SetDiplomacyState1c6ClampedToCounterA4 -> 100% (FPO)
+- 0x6a `0x004ddb80` SnapshotDiplomacyState1c6Into250 -> 100%
+- 0x63 `0x004dd770` / 0x64 `0x004dd7b0` relationManager fieldB6 set/add -> 100% each.
+  Key: added `fieldB6[0x17]` to TRelationManagerObject and called the real `Refresh80`
+  virtual instead of the `RelationManager_RefreshSlot80` vcall_runtime facade — that
+  removed the facade's spurious `xor edx,edx`; CSE'ing the manager pointer into a local
+  removed the double-load. (Confirms heuristic: real virtuals beat facades.)
+- 0x66 `0x004dda40` DecrementDiplomacyCounterA2Slot66 -> 100% (FPO leaf)
+- 0x6d `0x004dde80` GetTrackedSlotEntryCountLow -> 100%
+- 0x6e `0x004dde30` AnyTrackedSlotEntryHasZeroField4 -> 90.6% (logic-complete; FPO gap)
+- 0x70 `0x004ddf20` AssignPayloadToTrackedSlotEntryMatchingField2 -> 64.5% (logic-complete; FPO gap)
+  Added TQueueObject.entryCount(+8) + TDiplomacyTrackedEntry record; entries via real
+  GetEntryAt1BasedSlot2C virtual.
+
+Net: 6 slots to 100%, 2 logic-complete (FPO-only gap). `compare-canaries` below_floor=0.
+Remaining unowned GP-region vtable bodies: ~91 (was ~98). Next: continue clusters;
+an FPO sweep would close the two partials.
