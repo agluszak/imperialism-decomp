@@ -1,5 +1,6 @@
 #include "game/CString.h"
 
+#include <new>
 #include <windows.h>
 
 // Most CString shared-buffer routines match best favor-size + FPO ("ys"); a
@@ -52,7 +53,7 @@ int CString::Capacity() const {
 // FUNCTION: IMPERIALISM 0x006057de
 void CString::AllocateBufferForLength(int text_length) {
   if (text_length == 0) {
-    InitFromEmpty();
+    new (this) CString(); // re-init this (already released by caller) -> 0x00605797
     return;
   }
 
@@ -71,10 +72,9 @@ undefined** GetSharedEmptyStringRef(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00605797
-CString* CString::InitFromEmpty() {
+CString::CString() {
   int* shared_empty_ref = reinterpret_cast<int*>(GetSharedEmptyStringRef());
   data_ptr = *shared_empty_ref;
-  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x006057a7
@@ -139,7 +139,7 @@ CString::~CString() {
 
 // GHIDRA comment: Initializes from either C-string or low-word resource-id.
 // FUNCTION: IMPERIALISM 0x00605950
-CString* CString::ConstructFromCStrOrResourceId(const char* text_or_resource_id) {
+CString::CString(const char* text_or_resource_id) {
   int* shared_empty_ref = reinterpret_cast<int*>(GetSharedEmptyStringRef());
   data_ptr = *shared_empty_ref;
 
@@ -147,7 +147,7 @@ CString* CString::ConstructFromCStrOrResourceId(const char* text_or_resource_id)
       static_cast<unsigned int>(reinterpret_cast<unsigned long>(text_or_resource_id));
   if ((text_ptr != 0) && ((text_ptr >> 16) == 0)) {
     LoadResourceStringToSharedBuffer(text_ptr & 0xffff);
-    return this;
+    return;
   }
 
   int text_len = 0;
@@ -159,7 +159,6 @@ CString* CString::ConstructFromCStrOrResourceId(const char* text_or_resource_id)
     reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
         data_ptr, text_or_resource_id, text_len);
   }
-  return this;
 }
 
 // GHIDRA [WrapperShape]: small wrapper around copy + length/terminator update.
@@ -223,7 +222,6 @@ void CString::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len,
 
 void CString::AssignConcatRefAndRef(const CString& lhs_ref, const CString& rhs_ref) {
   CString concat_ref;
-  concat_ref.InitFromEmpty();
 
   concat_ref.ConcatenateBuffers(lhs_ref.Length(), lhs_ref.Text(), rhs_ref.Length(), rhs_ref.Text());
   AssignFromRef(concat_ref);
@@ -231,7 +229,6 @@ void CString::AssignConcatRefAndRef(const CString& lhs_ref, const CString& rhs_r
 
 void CString::AssignConcatRefAndCStr(const CString& lhs_ref, const char* rhs_text) {
   CString concat_ref;
-  concat_ref.InitFromEmpty();
 
   int rhs_length = 0;
   if (rhs_text != 0) {
@@ -244,7 +241,6 @@ void CString::AssignConcatRefAndCStr(const CString& lhs_ref, const char* rhs_tex
 
 void CString::AssignConcatCStrAndRef(const char* lhs_text, const CString& rhs_ref) {
   CString concat_ref;
-  concat_ref.InitFromEmpty();
 
   int lhs_length = 0;
   if (lhs_text != 0) {

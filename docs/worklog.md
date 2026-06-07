@@ -2802,3 +2802,61 @@ frames in slots 0x05/0x0c/0x32 that depend on them) cannot match until CString i
 C++ constructor/operator= semantics — a separate, large, cross-cutting lever. Left the military/navy
 new+ctor on the isolated __fastcall bridges (Hard-Rule allowance) and corrected the bridge comments;
 recorded the full split as heuristic 91.
+
+## 2026-06-07 — CString real ctors + TView/TControl real ctors + military order ctor (member-init-list lever)
+
+Converted CString to real C++ constructors (default 0x605797, `const char*` 0x605950, dtor
+0x6058e2; declared `CString();`/`CString(const char*);`/`~CString();`) and migrated all compiled
+call sites off the old method names `InitFromEmpty`/`ConstructFromCStrOrResourceId` (TTextList,
+TTwoPicSlider, TPlacard, diplomacy_state, trade_screen, TCivDescription, the order ctors). Added
+`char g_szEmptyString[1]` global. This unblocks the "BLOCKED on CString" conclusion of heuristic 91.
+
+Converted the TView base ctor (0x0048a8e0) from a manual-vtable init-method to a real
+`TView : TEventHandler` constructor: **72.5% -> 100%**. The fix was the member-initializer-list
+discipline (new heuristic 92) — with body assignments MSVC forced the `CString sharedStringRef`
+member to construct before the scalar stores; moving the scalars into a declaration-order
+member-init-list pushed the member construct + derived vptr to where the original emits them. Also
+deleted the `g_vtblTView`/`g_vtblTControl` rows AND the colliding `..._Slot000_CtrlSlot00` DATA rows
+at the vtable base from config/symbols.csv (note 86: a DATA symbol on the vtable address makes
+reccmp resolve the orig vptr write to `(DATA)` vs the recomp `(VTABLE)`). `TEventHandler() :
+field0c(0)` so the base field initializes during base construction.
+
+TControl (0x0048e520) converted to a real `TControl : TView` ctor (member-init-list, named DATA
+globals `g_nUiResourceEntryDefaultParam0/1/2` per note 45). Architecturally correct but its
+standalone ctor is currently inlined/folded away (no symbolic out-of-line caller yet), so reccmp
+can't find 0x48e520; the durable fix is converting TControl's real derived classes to real
+inheritance (heuristic 93). The two ILT jmp-thunks 0x4064e2/0x4087fb are non-semantic
+incremental-link artifacts and are NOT chased from C++ (heuristic 93).
+
+Military recruit-order ctor `TMilitaryUnitOrderState::TMilitaryUnitOrderState` (0x5c2df0):
+**69% -> 86%** via `#pragma optimize("y", on)` (FPO: dropped a spurious `push ebp`) + member-init-list
+(`name24()` + field_38/3A/3C/40 in the list; field_1C/field_34/field_36 stay in the body where the
+original writes them after the derived vptr). Residual ~14% is the EH partial-construction state
+machine (`[esp+0x20]`/`[esp+0x1c]` state IDs) + one `field_8` base store civ needs — EH-frame detail,
+not chased per guidance.
+
+Verification: build clean; `just vtable-gate` passed; `compare-canaries` below_floor=0 (civ order
+canaries 0x5c2940 100% / 0x5c2530 89% intact); TCivWorkOrderState 0x5c28c0 still 100%. Recorded
+heuristics 92 (member-init-list placement) and 93 (ILT thunks as linker artifacts).
+
+### Navy order class (TAdmiral 0x551430) recovered as a real class
+
+Recovered the navy task-force secondary order node as a real class `TAdmiral : RefCountedObjectBase`
+(new `include/game/TAdmiral.h` + `src/game/TAdmiral.cpp`): vtable 0x0065c498, `CString displayName`
+at +0xc, real EH ctor at 0x551430 (member-init-list + `#pragma optimize("y", on)`), full body logic
+(head-insert into `g_pNavySecondaryOrderListHead`, back-link, terrain-descriptor display-name
+generation, dedup loop), `new TAdmiral(nationSlot)` at the TGreatPower slot-0x32 call site (replacing
+the `AllocateNavySecondaryOrderNode` bridge). Updated symbols.csv (ctor row + deleted the
+`g_vtblTAdmiral` DATA row); `g_pNavySecondaryOrderListHead` defined in TAdmiral.cpp.
+**69%-area bridge -> 82.6%** as a real class. Materializing the dedup compare into a local bool
+(`int sameDisplayName = (Compare(...) == 0)`) matched the original `neg;sbb;inc` idiom (+4%).
+
+KNOWN GAP (next): the derived vtable write (orig `mov [esi],0x65c498`) is NOT emitted because
+`RefCountedObjectBase` models its vtable as a plain `void* vftable` member (non-polymorphic), shared
+by the whole TPtrList/TList list family. The fix is to make `RefCountedObjectBase` a real polymorphic
+base (real virtuals + `// VTABLE`) and convert the family leaves (TPtrList/TList/TSortedList/TAdmiral)
+to compiler-emitted vtables — there is no such thing as a legitimate "manual vtable install by
+design"; that was wrong. In progress.
+
+Verification at this commit: build clean; `just vtable-gate` passed; `compare-canaries`
+below_floor=0; civ 0x5c28c0 100%, military 0x5c2df0 85.7%, navy 0x551430 82.6%.

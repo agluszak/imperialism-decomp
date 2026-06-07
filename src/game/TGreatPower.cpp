@@ -185,7 +185,6 @@ undefined4 thunk_InitializeMilitaryRecruitOrderState(void);
 undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
 undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
 undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void);
-undefined4 thunk_ConstructAndLinkNavySecondaryOrderNode(void);
 
 // EH-body order/state globals (defined in global_data_tables.cpp). Direct absolute
 // loads in the original; declaring them as real symbols lets reccmp pair the loads.
@@ -204,6 +203,7 @@ struct TTerrainDescriptorNationSlotView {
 
 #include "game/TUnitOrderState.h"
 #include "game/TCivWorkOrderState.h"
+#include "game/TAdmiral.h"
 
 struct TUnitOrderOwnerManagerView {
   virtual void s00() = 0;
@@ -844,8 +844,6 @@ static const int kDiplomacyTrackedSlotCount = 0x11;
 static __inline void InitializeAndReleaseSharedMessageRefs(void) {
   CString messageRef;
   CString scratchRef;
-  messageRef.InitFromEmpty();
-  scratchRef.InitFromEmpty();
 }
 
 struct SharedRefPairScope {
@@ -853,8 +851,6 @@ struct SharedRefPairScope {
   CString second;
 
   SharedRefPairScope() {
-    first.InitFromEmpty();
-    second.InitFromEmpty();
   }
 
   ~SharedRefPairScope() {}
@@ -862,9 +858,6 @@ struct SharedRefPairScope {
 
 static __inline void InitializeThreeSharedRefs(CString* firstRef, CString* secondRef,
                                                CString* thirdRef) {
-  firstRef->InitFromEmpty();
-  secondRef->InitFromEmpty();
-  thirdRef->InitFromEmpty();
 }
 
 static __inline void ReleaseThreeSharedRefs(CString* firstRef, CString* secondRef,
@@ -880,9 +873,6 @@ struct SharedRefTripleScope {
   CString third;
 
   SharedRefTripleScope() {
-    first.InitFromEmpty();
-    second.InitFromEmpty();
-    third.InitFromEmpty();
   }
 
   ~SharedRefTripleScope() {}
@@ -1370,8 +1360,6 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
 
   CString sharedRefA;
   CString sharedRefB;
-  sharedRefA.InitFromEmpty();
-  sharedRefB.InitFromEmpty();
 
   TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
   if (localization != 0) {
@@ -1819,18 +1807,6 @@ static __inline void InitializeMilitaryRecruitOrder(void* obj, short capValue, i
       thunk_InitializeMilitaryRecruitOrderState)(obj, capValue, nodeContext, nationSlot, 0);
 }
 
-// new(0x1c) + navy task-force secondary order node ctor (0x00551430). Derives from
-// RefCountedObjectBase (vtable 0x006485c0), derived vtable 0x0065c498, with a CString
-// member at +0xc -> EH-framed ctor; blocked on the same CString real-ctor lever (NOT
-// TAdmiral — that was a guess in heuristic 47, corrected in 91).
-static __inline void* AllocateNavySecondaryOrderNode(short nationSlot) {
-  void* obj = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x1c));
-  if (obj != 0) {
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructAndLinkNavySecondaryOrderNode)(
-        obj, nationSlot);
-  }
-  return obj;
-}
 
 // g_pCityOrderCapabilityState accessors (read-only data table, not a class region).
 static __inline short CityOrderCapForNation(short nationSlot) {
@@ -1879,7 +1855,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
         static_cast<TRelationManagerOrderCountView*>(relationManager);
     ++orderCounts->recruitZoneCount5c[CityOrderActiveZoneIndex()];
 
-    void* secondaryNode = AllocateNavySecondaryOrderNode(nationSlot);
+    void* secondaryNode = new TAdmiral(nationSlot);
     reinterpret_cast<void(__fastcall*)(void*)>(
         thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks)(secondaryNode);
 
@@ -1966,7 +1942,6 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   }
 
   CString summaryMessageRef;
-  summaryMessageRef.InitFromEmpty();
 
   TGreatPowerDiplomacyExternalStateView* diplomacyExternal =
       reinterpret_cast<TGreatPowerDiplomacyExternalStateView*>(this);
@@ -2060,7 +2035,6 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       pressureView->pressureTier8fc = 2;
     } else {
       CString sharedMessageRef;
-      sharedMessageRef.InitFromEmpty();
       int nextPressureValue =
           static_cast<int>(pressureView->pressureValue8f4) +
           static_cast<int>(ReadLocaleByteStep(kAddrGreatPowerPressureRiseStep, localeIndex));
@@ -2458,10 +2432,8 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
         if ((contextMask & nationMask) != 0 && (contextMask & selfMask) == 0) {
           CString contextRef;
           CString messageRef;
-          contextRef.InitFromEmpty();
           MapActionContext_AssignDisplayRefFromSlot2C(contextEntry,
                                                       reinterpret_cast<int*>(&contextRef));
-          messageRef.InitFromEmpty();
           emittedMessage = true;
           break;
         }
@@ -2509,9 +2481,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     if (messageFlags->allowEventMessage4D != 0 && messageFlags->suppressEventMessage4C == 0) {
       CString messageRef;
       CString scratchRef;
-      messageRef.InitFromEmpty();
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
-      scratchRef.InitFromEmpty();
       scratchRef.AssignConcatCStrAndRef("\n", messageRef);
       AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef),
                                 reinterpret_cast<int*>(&messageRef));
@@ -3723,9 +3693,6 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   CString tmp0;
   CString tmp1;
   CString tmp2;
-  tmp0.InitFromEmpty();
-  tmp1.InitFromEmpty();
-  tmp2.InitFromEmpty();
 
   DiplomacyProposalRecord* proposal = reinterpret_cast<DiplomacyProposalRecord*>(
       ProposalQueue_GetEntryAt1Based(this->proposalQueue, proposalIndex));
@@ -3897,8 +3864,6 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   int proposalIndex = 0;
   int queueIndex = 0;
 
-  proposalSummaryRef.InitFromEmpty();
-  proposalScratchRef.InitFromEmpty();
 
   void* proposalQueue = this->proposalQueue;
   short proposalCount = ProposalQueue_GetCount(proposalQueue);

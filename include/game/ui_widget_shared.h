@@ -119,7 +119,7 @@ public:
   }
 
   static __inline void ConstructUiCommandTagResourceEntryBase(void* self) {
-    reinterpret_cast<TControl*>(self)->ConstructUiCommandTagResourceEntryBase();
+    reinterpret_cast<TControl*>(self)->thunk_ConstructUiCommandTagResourceEntryBase();
   }
 
   static __inline void ConstructPictureResourceEntryBase(void* self) {

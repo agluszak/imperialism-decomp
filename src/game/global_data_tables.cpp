@@ -29,6 +29,10 @@ float g_DAT_Value_00653408[8] = {0};
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 void* g_pMapActionContextListHead = 0;
 
+// Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
+// compares). Defined so reccmp pairs the address reference as a DATA symbol.
+char g_szEmptyString[1] = {0};
+
 // EH-body order/state globals (referenced by TGreatPower vtable slots 0x05/0x0c/0x32
 // "pending action" state machines). Defined as real symbols so reccmp pairs the direct
 // absolute loads (`mov reg, [g_pX]`) instead of bare immediates.
@@ -40,5 +44,11 @@ void* g_pGlobalMapState = 0;
 // slot-0x32 loop scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing
 // the array to 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
 void* g_apMinorNationCapabilityObjects[16] = {0};
+
+// UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
+// Named so reccmp pairs the direct absolute loads in the TControl ctor.
+int g_nUiResourceEntryDefaultParam0 = 0;
+int g_nUiResourceEntryDefaultParam1 = 0;
+unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 } // extern "C"

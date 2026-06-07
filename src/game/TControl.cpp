@@ -3,34 +3,39 @@
 
 #include "game/TControl.h"
 
-namespace {
+extern "C" {
+extern int g_nUiResourceEntryDefaultParam0;
+extern int g_nUiResourceEntryDefaultParam1;
+extern unsigned short g_wUiResourceEntryDefaultParam2;
+}
 
-const unsigned int kAddrVtblTControl = 0x0064A098;
-const unsigned int kAddrUiResourceEntryDefaultParam0 = 0x006A1D90;
-const unsigned int kAddrUiResourceEntryDefaultParam1 = 0x006A1D94;
-const unsigned int kAddrUiResourceEntryDefaultParam2 = 0x006A1D98;
+#include <new>
 
-} // namespace
-
+// KNOWN LINKER ARTIFACT (heuristic 93): 0x004087fb is a 5-byte incremental-link
+// `jmp TControl::TControl` thunk with no clean C++ source equivalent here — not expected
+// to match, and the same-TU placement-new inlines the (light, non-EH) ctor so the
+// standalone TControl::TControl is not emitted. Both are fixed by converting TControl's
+// derived classes to real inheritance (symbolic base-ctor ref). Do NOT chase this thunk.
 // FUNCTION: IMPERIALISM 0x004087fb
 void TControl::thunk_ConstructUiCommandTagResourceEntryBase() {
-  ConstructUiCommandTagResourceEntryBase();
+  new (this) TControl();
 }
 
+// Real ctor: the TView base ctor runs first (constructs the TView subobject +
+// its CString member), then MSVC writes this class's vptr (0x0064a098). Fields
+// are member-initializers so they emit in declaration order. No manual vtable
+// writes — the // VTABLE: annotation owns 0x0064a098.
 // FUNCTION: IMPERIALISM 0x0048e520
-void TControl::ConstructUiCommandTagResourceEntryBase() {
-  TView::thunk_ConstructUiResourceEntryBase();
-  hasCommandTagResource = 1;
-  commandTagResourceByte = 0;
-  field68 = 0;
-  field6C = 0;
-  field70 = 0;
-  field74 = 0;
-  commandTagDefaultParam0 = *reinterpret_cast<int*>(kAddrUiResourceEntryDefaultParam0);
-  commandTagDefaultParam1 = *reinterpret_cast<int*>(kAddrUiResourceEntryDefaultParam1);
-  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kAddrVtblTControl);
-  commandTagDefaultParam2 = *reinterpret_cast<unsigned short*>(kAddrUiResourceEntryDefaultParam2);
-}
+TControl::TControl()
+    : hasCommandTagResource(1),
+      commandTagResourceByte(0),
+      field68(0),
+      field6C(0),
+      field70(0),
+      field74(0),
+      commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
+      commandTagDefaultParam1(g_nUiResourceEntryDefaultParam1),
+      commandTagDefaultParam2(g_wUiResourceEntryDefaultParam2) {}
 
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 

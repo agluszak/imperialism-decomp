@@ -251,14 +251,6 @@ undefined4 GetTMilitaryUnitClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name InitializeMilitaryUnitOrderObject
-// ghidra_proto void __cdecl InitializeMilitaryUnitOrderObject(void)
-// FUNCTION: IMPERIALISM 0x005c2df0
-undefined4 InitializeMilitaryUnitOrderObject(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyMilitaryUnitOrderObject
 // ghidra_proto void __cdecl DestroyMilitaryUnitOrderObject(void)
 // FUNCTION: IMPERIALISM 0x005c2ed0

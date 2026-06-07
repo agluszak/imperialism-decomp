@@ -3299,14 +3299,6 @@ undefined4 GetTAdmiralClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TAdmiral::ConstructAndLinkNavySecondaryOrderNode
-// ghidra_proto void * __thiscall ConstructAndLinkNavySecondaryOrderNode(int arg1)
-// FUNCTION: IMPERIALISM 0x00551430
-undefined4 ConstructAndLinkNavySecondaryOrderNode(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdmiral::DestructTAdmiralAndFreeIfOwned
 // ghidra_proto void * __thiscall DestructTAdmiralAndFreeIfOwned(void)
 // FUNCTION: IMPERIALISM 0x00551550

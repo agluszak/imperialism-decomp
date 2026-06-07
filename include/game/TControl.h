@@ -16,7 +16,7 @@ public:
   int commandTagDefaultParam1;
   unsigned short commandTagDefaultParam2;
 
+  TControl();
   void thunk_ConstructUiCommandTagResourceEntryBase();
-  void ConstructUiCommandTagResourceEntryBase();
   void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
 };

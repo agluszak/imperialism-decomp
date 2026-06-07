@@ -8212,7 +8212,7 @@ address|name|size|type|prototype
 551220|TScatteredShipsMission::SetMapOrderActiveChildEntry|67|function|void __thiscall SetMapOrderActiveChildEntry(int * pActiveChildEntry)
 5512d0|CreateNavySecondaryOrderNodeWithSentinelNation|246|function|void * __stdcall CreateNavySecondaryOrderNodeWithSentinelNation(void)
 551410|TAdmiral::GetTAdmiralClassNamePointer|6|function|void * __cdecl GetTAdmiralClassNamePointer(void)
-551430|TAdmiral::ConstructAndLinkNavySecondaryOrderNode|210|function|void * __thiscall ConstructAndLinkNavySecondaryOrderNode(int arg1)
+551430|TAdmiral::TAdmiral|210|function|void __thiscall TAdmiral(short)
 551550|TAdmiral::DestructTAdmiralAndFreeIfOwned|30|function|void * __thiscall DestructTAdmiralAndFreeIfOwned(void)
 551580|TAdmiral::DestructTAdmiral|62|function|void __thiscall DestructTAdmiral(void)
 5515d0|DestroyAndUnlinkNavySecondaryOrderNode|68|function|void __cdecl DestroyAndUnlinkNavySecondaryOrderNode(void)
@@ -10012,7 +10012,7 @@ address|name|size|type|prototype
 5c2c60|ResetCivWorkOrderAndRefreshCounters|62|function|void __fastcall ResetCivWorkOrderAndRefreshCounters(int * pCivUnitOrderState)
 5c2cb0|TMilitaryUnit::CreateTMilitaryUnitInstance|217|function|void * __cdecl CreateTMilitaryUnitInstance(void)
 5c2dd0|TMilitaryUnit::GetTMilitaryUnitClassNamePointer|6|function|void * __cdecl GetTMilitaryUnitClassNamePointer(void)
-5c2df0|InitializeMilitaryUnitOrderObject|175|function|void __cdecl InitializeMilitaryUnitOrderObject(void)
+5c2df0|TMilitaryUnitOrderState::TMilitaryUnitOrderState|175|function|void __thiscall TMilitaryUnitOrderState(void)
 5c2ed0|DestroyMilitaryUnitOrderObject|30|function|void __cdecl DestroyMilitaryUnitOrderObject(void)
 5c2f00|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00|62|function|void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00(void)
 5c2f50|InitializeMilitaryRecruitOrderState|96|function|void __cdecl InitializeMilitaryRecruitOrderState(void)
@@ -13360,8 +13360,6 @@ address|name|size|type|prototype
 6496a8|g_pClassDescTNumberText||global|
 6496c0|g_pClassDescTCluster||global|
 6496d8|g_pClassDescTFloatWindow||global|
-649858|g_vtblTView||global|
-649858|g_vtblTView_Slot000_CtrlSlot00||global|
 64985c|g_vtblTView_Slot001_CtrlSlot01||global|
 649860|g_vtblCandidate_00649860_len30||global|
 649860|g_vtblTView_Slot002_CtrlSlot02||global|
@@ -13493,8 +13491,6 @@ address|name|size|type|prototype
 649eec|g_vslotTWindow_Slot0094_ResolveControlByTag||global|
 64a004|g_vslotTWindow_Slot01AC_InvokeControlAction||global|
 64a02c|g_vslotTWindow_Slot01D4_NotifyControlSelectionChange||global|
-64a098|g_vtblTControl||global|
-64a098|g_vtblTControl_Slot000_CtrlSlot00||global|
 64a09c|g_vtblTControl_Slot001_CtrlSlot01||global|
 64a0a0|g_vtblTControl_Slot002_CtrlSlot02||global|
 64a0a4|g_vtblTControl_Slot003_CtrlSlot03||global|
@@ -14552,7 +14548,6 @@ address|name|size|type|prototype
 65c3d0|g_Resolve_Map_Order_Value_0065C3D0||global|
 65c3d8|g_Resolve_Map_Order_Value_0065C3D8||global|
 65c438|g_vtblTShip||global|
-65c498|g_vtblTAdmiral||global|
 65c4c8|g_vtblTNavyMgr||global|
 65c530|g_pClassDescTNewsMgr||global|
 65c548|g_pClassDescTNewspaperView||global|

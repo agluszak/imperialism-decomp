@@ -2528,7 +2528,6 @@ void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* contro
 void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control) {
   CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
-  sharedStringRef.InitFromEmpty();
 
   reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
       control);

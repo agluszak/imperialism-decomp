@@ -1,0 +1,35 @@
+#pragma once
+
+#include "decomp_types.h"
+#include "game/CString.h"
+#include "game/RefCountedObjectBase.h"
+
+int AllocateWithFallbackHandler(undefined4 size_bytes);
+
+// Navy task-force secondary order node (the slot-0x32 "navy" branch). new(0x1c) + the
+// EH ctor 0x00551430 links the node at the head of the global g_pNavySecondaryOrderListHead
+// doubly-linked list, then (for a real terrain-type index) generates a display name from
+// g_apTerrainTypeDescriptorTable[type] and removes earlier list entries with the same name.
+// EH-framed because the CString member at +0xc has a non-trivial dtor. Derives from
+// RefCountedObjectBase (base vtable 0x006485c0); derived vtable 0x0065c498.
+// VTABLE: IMPERIALISM 0x0065c498
+class TAdmiral : public RefCountedObjectBase {
+public:
+  short terrainType;      // 0x04 (index into g_apTerrainTypeDescriptorTable; 0xffff = none)
+  unsigned char pad06[2]; // 0x06
+  int field_8;            // 0x08
+  CString displayName;    // 0x0c
+  short field_10;         // 0x10
+  unsigned char pad12[2]; // 0x12
+  TAdmiral* next;         // 0x14 (toward older entries)
+  TAdmiral* prev;         // 0x18 (toward newer entries)
+
+  TAdmiral(short terrainTypeIndex);
+
+  void* operator new(unsigned int size) {
+    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
+  }
+  void operator delete(void* ptr) {
+    (void)ptr;
+  }
+};

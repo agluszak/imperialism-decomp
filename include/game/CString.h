@@ -24,12 +24,12 @@ class CString {
 public:
   int data_ptr;
 
-  ~CString();
-  CString* InitFromEmpty();
+  CString();                                // 0x00605797 (init to the shared empty buffer)
+  CString(const char* text_or_resource_id); // 0x00605950 (from C-string or low-word resource id)
+  ~CString();                               // 0x006058e2
   undefined4 LoadResourceStringToSharedBuffer(unsigned int resource_id);
   void AllocateBufferForLength(int text_length);
   void EnsureCapacityOrAllocate(int required_capacity);
-  CString* ConstructFromCStrOrResourceId(const char* text_or_resource_id);
   void CopyBufferAndSetLength(int new_length, const char* src_text);
   CString* StringSharedRef_AssignFromPtr(const CString& src_ref);
   CString* AssignFromPtr(const CString& src_ref);

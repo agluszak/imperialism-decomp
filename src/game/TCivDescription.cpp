@@ -1,5 +1,7 @@
 // TCivDescription wrapper class pair extracted from Ghidra autogen.
 
+#include <new>
+
 #include "decomp_types.h"
 #include "game/Point32.h"
 #include "game/TView.h"
@@ -386,11 +388,10 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
   }
 
   context->legendInitialized = 1;
-  localizedTextRef.InitFromEmpty();
   if (selectedClass != (short)-1) {
     stylePrimary = 0;
     styleSecondary = 0;
-    localizedTextRef.InitFromEmpty();
+    new (&localizedTextRef) CString(); // reset to empty -> 0x00605797
 
     reinterpret_cast<void(__cdecl*)(int, int, int)>(
         InitializeUiTextStyleDescriptorAndApplyQuickDraw)(0, 0xc, 0x2b68);

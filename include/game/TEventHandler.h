@@ -7,7 +7,7 @@ public:
   unsigned char padding_08_to_0b[0x04];
   int field0c;
 
-  TEventHandler() {}
+  TEventHandler() : field0c(0) {}
   virtual void* GetTEventHandlerClassNamePointer() { return 0; }
   virtual ~TEventHandler() {}
 };

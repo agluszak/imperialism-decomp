@@ -49,8 +49,7 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
     int idx = startIdx;
     
     while (idx < totalItems) {
-      CString tempString;
-      tempString.ConstructFromCStrOrResourceId(pItem->text);
+      CString tempString(pItem->text);
       
       if (idx == selectedIndex) {
         reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)->ApplyLegendSplitSlot34(5);

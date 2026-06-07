@@ -111,7 +111,6 @@ void PlacardState::RenderPlacardValueTextWithShadow() {
   int themeColorSecondary = 0;
   PlacardViewLayout* layout = reinterpret_cast<PlacardViewLayout*>(this);
 
-  sharedStringRef.InitFromEmpty();
   reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(this);
   reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
   reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(

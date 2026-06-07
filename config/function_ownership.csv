@@ -512,6 +512,7 @@ address|target_cpp|ownership|note
 54c6a0|src/game/noop_slots.cpp|manual|marker_sync
 550f80|src/game/object_pool.cpp|manual|marker_sync
 550ff0|src/game/object_pool.cpp|manual|marker_sync
+551430|src/game/TAdmiral.cpp|manual|marker_sync
 552510|src/game/object_pool.cpp|manual|marker_sync
 5525d0|src/game/object_pool.cpp|manual|marker_sync
 552650|src/game/object_pool.cpp|manual|marker_sync
@@ -778,6 +779,7 @@ address|target_cpp|ownership|note
 5c2610|src/game/noop_slots.cpp|manual|marker_sync
 5c28c0|src/game/TCivWorkOrderState.cpp|manual|marker_sync
 5c2940|src/game/TCivWorkOrderState.cpp|manual|marker_sync
+5c2df0|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5d7190|src/game/noop_slots.cpp|manual|marker_sync
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync
 5dee80|src/game/noop_slots.cpp|manual|marker_sync

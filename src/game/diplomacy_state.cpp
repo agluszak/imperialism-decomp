@@ -39,7 +39,7 @@ const unsigned int kTurnEventTagNext = 0x4E655854; // 'NeXT'
 // (ehstate 0->1->2->3 up, reverse down) seen in the original 0x004f01e0 body.
 struct ScratchSharedString {
   CString str;
-  ScratchSharedString() { str.InitFromEmpty(); }
+  ScratchSharedString() {}
 };
 
 } // namespace

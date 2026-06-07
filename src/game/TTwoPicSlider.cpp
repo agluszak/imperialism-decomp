@@ -110,7 +110,6 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
       int textShadowColor = 0;
       int textMainColor = 0;
 
-      statusText.InitFromEmpty();
       void** localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
       reinterpret_cast<void(__cdecl*)(int, int, int*)>(localizationTable[0x21])(
           0x2743, 0x3b, statusTextRef);
