@@ -13,6 +13,7 @@
 #include "game/TRailAmtBar.h"
 #include "game/TShipAmtBar.h"
 #include "game/TStatusButton.h"
+#include "game/vcall_runtime.h"
 
 typedef void code(void);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
@@ -291,13 +292,11 @@ static __inline void CallControlActionSlot1E0(TradeControl* control) {
 }
 
 static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
-  return reinterpret_cast<short(__fastcall*)(NationState*, short)>(
-      (*reinterpret_cast<void***>(nationState))[0x78 / 4])(nationState, metricSlot);
+  return nationState->QueryNationMetricBySlot78(metricSlot);
 }
 
 static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, short metricSlot) {
-  return reinterpret_cast<short(__fastcall*)(NationState*, short)>(
-      (*reinterpret_cast<void***>(nationState))[0x7c / 4])(nationState, metricSlot);
+  return nationState->QueryNationMetricBySlot7C(metricSlot);
 }
 
 static __inline int CallQuerySelectedIndexSlotBC(void* self) {
