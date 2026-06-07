@@ -1,3 +1,10 @@
+#include "game/TStreamView.h"
+#include "game/TStream.h"
+#include "game/TTerrainDescriptor.h"
+#include "game/TSecondaryNationState.h"
+#include "game/TTrackedObject.h"
+#include "game/TNationInteractionStateManager.h"
+#include "game/TLocalizationRuntime.h"
 #include "game/TNationState.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/TRelationManager.h"
@@ -34,132 +41,11 @@ extern void* g_pMapActionContextListHead;
 // Abstract View Classes for Native Virtual Method Dispatches (MSVC 5.0 compatible __thiscall
 // dispatches)
 
-class TStreamView {
-public:
-  virtual void ReadRaw00(void* outBuf, int sizeBytes) = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void dummy6() = 0;
-  virtual void dummy7() = 0;
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void ReadAt3C(void* outBuf, int sizeBytes) = 0;
-  virtual int ReadInt40() = 0;
-  virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
-  virtual void dummy19() = 0;
-  virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
-  virtual void dummy23() = 0;
-  virtual void dummy24() = 0;
-  virtual void dummy25() = 0;
-  virtual void dummy26() = 0;
-  virtual void dummy27() = 0;
-  virtual void dummy28() = 0;
-  virtual void dummy29() = 0;
-  virtual void dummy30() = 0;
-  virtual void dummy31() = 0;
-  virtual void dummy32() = 0;
-  virtual void dummy33() = 0;
-  virtual void dummy34() = 0;
-  virtual void dummy35() = 0;
-  virtual void dummy36() = 0;
-  virtual void dummy37() = 0;
-  virtual void dummy38() = 0;
-  virtual void dummy39() = 0;
-  virtual void dummy40() = 0;
-  virtual void dummy41() = 0;
-  virtual void dummy42() = 0;
-  virtual void dummy43() = 0;
-  virtual char ReadByteB0(void* outByte) = 0;
-};
 
 
 
-class TTerrainDescriptorView {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void dummy6() = 0;
-  virtual void dummy7() = 0;
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void CallSlot38(int delta) = 0; // slot 38
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
-  virtual void CallSlot4C(int sourceNation, int modeValue) = 0; // slot 4C
-  virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
-  virtual void dummy23() = 0;
-  virtual void dummy24() = 0;
-  virtual void dummy25() = 0;
-  virtual void SetResetLevelSlot68(int sourceNation, int resetLevel) = 0; // slot 68
-};
 
-class TSecondaryNationStateView {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void dummy6() = 0;
-  virtual void dummy7() = 0;
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
-  virtual void SetPolicyOrResetLevel48(int arg0, int arg1) = 0; // slot 48
-  virtual void CallSlot4C(int arg0, int arg1) = 0;              // slot 4C
-  virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
-  virtual short HasNationFlag5C(int arg0) = 0; // slot 5C
-};
 
-class TTrackedObjectView {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void dummy6() = 0;
-  virtual void Release1C() = 0; // slot 1C
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void Call30() = 0; // slot 30
-};
 
 
 
@@ -188,29 +74,6 @@ static __inline double MinisterSkillFloat(const float* table, TMinister* ministe
   return table[minister->skillIndexC];
 }
 
-class TNationInteractionStateManagerView {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void dummy6() = 0;
-  virtual void dummy7() = 0;
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
-  virtual int QueryInt4C() = 0; // slot 4C
-};
 typedef void* hwnd_t;
 extern "C" __declspec(dllimport) int __stdcall MessageBoxA(hwnd_t hWnd, const char* text,
                                                            const char* caption, unsigned int type);
@@ -335,37 +198,7 @@ struct TTerrainDescriptorNationSlotView {
 };
 
 
-#define TLOCALIZATION_VTABLE_SLOT(n) virtual void LocalizationDummy##n(void) = 0
 
-class TLocalizationRuntimeView {
-public:
-  TLOCALIZATION_VTABLE_SLOT(00);
-  TLOCALIZATION_VTABLE_SLOT(01);
-  TLOCALIZATION_VTABLE_SLOT(02);
-  TLOCALIZATION_VTABLE_SLOT(03);
-  TLOCALIZATION_VTABLE_SLOT(04);
-  TLOCALIZATION_VTABLE_SLOT(05);
-  TLOCALIZATION_VTABLE_SLOT(06);
-  TLOCALIZATION_VTABLE_SLOT(07);
-  TLOCALIZATION_VTABLE_SLOT(08);
-  TLOCALIZATION_VTABLE_SLOT(09);
-  TLOCALIZATION_VTABLE_SLOT(10);
-  TLOCALIZATION_VTABLE_SLOT(11);
-  TLOCALIZATION_VTABLE_SLOT(12);
-  TLOCALIZATION_VTABLE_SLOT(13);
-  TLOCALIZATION_VTABLE_SLOT(14);
-  virtual short GetTurnTickSlot3C(void) = 0;
-
-  unsigned char pad04[4];
-  int mode;
-  unsigned char pad0c[0x2C - 0x0C];
-  short quarterGateTick2c;
-  unsigned char pad2e[0x40 - 0x2E];
-  int runtimeSubsystemIndex;
-  int redrawEnabled;
-  unsigned char pad48[0x64 - 0x48];
-  int field_64;
-};
 
 #include "game/TUnitOrderState.h"
 #include "game/TCivWorkOrderState.h"
@@ -557,12 +390,12 @@ static __inline TGlobalMapState* ReadGlobalMapStateScoreView(void) {
   return static_cast<TGlobalMapState*>(ReadGlobalPointer(kAddrGlobalMapStatePtr));
 }
 
-static __inline TLocalizationRuntimeView* ReadLocalizationRuntimeView(void) {
-  return static_cast<TLocalizationRuntimeView*>(ReadGlobalPointer(kAddrLocalizationTablePtr));
+static __inline TLocalizationRuntime* ReadLocalizationRuntimeView(void) {
+  return static_cast<TLocalizationRuntime*>(ReadGlobalPointer(kAddrLocalizationTablePtr));
 }
 
 static __inline unsigned char
-LocalizationRuntime_ReadGateFlag7A(const TLocalizationRuntimeView* localizationRuntime) {
+LocalizationRuntime_ReadGateFlag7A(const TLocalizationRuntime* localizationRuntime) {
   return *reinterpret_cast<const unsigned char*>(
       reinterpret_cast<const unsigned char*>(localizationRuntime) + 0x7A);
 }
@@ -603,7 +436,7 @@ static __inline int ReadGlobalIntStep(unsigned int baseAddress, int index) {
 }
 
 static __inline short
-LocalizationRuntime_GetTurnTick(TLocalizationRuntimeView* localizationRuntime) {
+LocalizationRuntime_GetTurnTick(TLocalizationRuntime* localizationRuntime) {
   return localizationRuntime->GetTurnTickSlot3C();
 }
 
@@ -755,19 +588,19 @@ static __inline char IsNationSlotEligibleForEventProcessingFast(int nationSlot) 
 
 static __inline void ReleaseObjectAtSlot1C(void* obj) {
   if (obj != 0) {
-    static_cast<TTrackedObjectView*>(obj)->Release1C();
+    static_cast<TTrackedObject*>(obj)->Release1C();
   }
 }
 
 static __inline void Object_CallSlot30NoArgs(void* obj) {
   if (obj != 0) {
-    static_cast<TTrackedObjectView*>(obj)->Call30();
+    static_cast<TTrackedObject*>(obj)->Call30();
   }
 }
 
 static __inline void TerrainDescriptor_SetResetLevel(void* terrainDescriptor, int sourceNation,
                                                      int resetLevel) {
-  static_cast<TTerrainDescriptorView*>(terrainDescriptor)
+  static_cast<TTerrainDescriptor*>(terrainDescriptor)
       ->SetResetLevelSlot68(sourceNation, resetLevel);
 }
 
@@ -800,7 +633,7 @@ static __inline void Object_CallSlot8CNoArgs(void* obj) {
 
 static __inline void SecondaryState_ResetDiplomacyLevel(void* secondaryState, int sourceNation,
                                                         int resetLevel) {
-  static_cast<TSecondaryNationStateView*>(secondaryState)
+  static_cast<TSecondaryNationState*>(secondaryState)
       ->SetPolicyOrResetLevel48(sourceNation, resetLevel);
 }
 
@@ -885,11 +718,11 @@ static __inline void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void*
 
 static __inline void TerrainDescriptor_CallSlot4C(void* terrainDescriptor, int sourceNation,
                                                   int modeValue) {
-  static_cast<TTerrainDescriptorView*>(terrainDescriptor)->CallSlot4C(sourceNation, modeValue);
+  static_cast<TTerrainDescriptor*>(terrainDescriptor)->CallSlot4C(sourceNation, modeValue);
 }
 
 static __inline void TerrainDescriptor_CallSlot38(void* terrainDescriptor, int delta) {
-  static_cast<TTerrainDescriptorView*>(terrainDescriptor)->CallSlot38(delta);
+  static_cast<TTerrainDescriptor*>(terrainDescriptor)->CallSlot38(delta);
 }
 
 static __inline int ClampNonNegative(int value) {
@@ -990,7 +823,7 @@ static __inline void* AllocateBattleListOwnerWithLinkedSentinel(void) {
 }
 
 static __inline bool IsQuarterlyLocalizationGateOpen(void) {
-  TLocalizationRuntimeView* localizationTable = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
   if (localizationTable == 0) {
     return false;
   }
@@ -1076,18 +909,18 @@ MapActionContext_AssignDisplayRefFromSlot2C(TMapActionContextListEntryView* entr
 }
 
 static __inline char SecondaryState_HasNationFlag5C(void* secondaryState, int nationSlot) {
-  return static_cast<TSecondaryNationStateView*>(secondaryState)->HasNationFlag5C(nationSlot);
+  return static_cast<TSecondaryNationState*>(secondaryState)->HasNationFlag5C(nationSlot);
 }
 
 static __inline void SecondaryState_SetPolicyValue48(void* secondaryState, int targetNationSlot,
                                                      int policyValue) {
-  static_cast<TSecondaryNationStateView*>(secondaryState)
+  static_cast<TSecondaryNationState*>(secondaryState)
       ->SetPolicyOrResetLevel48(targetNationSlot, policyValue);
 }
 
 static __inline void SecondaryState_CallSlot4C(void* secondaryState, int sourceNation,
                                                int modeValue) {
-  static_cast<TSecondaryNationStateView*>(secondaryState)->CallSlot4C(sourceNation, modeValue);
+  static_cast<TSecondaryNationState*>(secondaryState)->CallSlot4C(sourceNation, modeValue);
 }
 
 static __inline int GetCityBuildingProductionValueBySlot(void* cityRecord, int slot) {
@@ -1555,7 +1388,7 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
   sharedRefA.InitFromEmpty();
   sharedRefB.InitFromEmpty();
 
-  TLocalizationRuntimeView* localization = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
   if (localization != 0) {
     VCall_LocalizationRuntime_CallSlot84WithId(localization,
                                                (ctx->specialistMode == 0) ? 0x2718 : 0x2717);
@@ -1624,7 +1457,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   reinterpret_cast<void(__fastcall*)(int, int)>(
       thunk_InitializeNationStateIdentityAndOwnedRegionList)(reinterpret_cast<int>(this), arg1);
 
-  TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
   if (localizationRuntime != 0) {
     int runtimeIndex = localizationRuntime->runtimeSubsystemIndex;
     this->pressureScore = ReadGlobalIntStep(kAddrNationRuntimeSubsystemCache, runtimeIndex);
@@ -1982,7 +1815,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     return;
   }
 
-  TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
   TGreatPowerPressureUpdateView* pressureView =
       reinterpret_cast<TGreatPowerPressureUpdateView*>(this);
   int localeIndex = 0;
@@ -2032,7 +1865,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       void* nationInteractionState = ReadGlobalPointer(kAddrNationInteractionStateManagerPtr);
       if (nationInteractionState != 0) {
         interactionScore =
-            static_cast<TNationInteractionStateManagerView*>(nationInteractionState)->QueryInt4C();
+            static_cast<TNationInteractionStateManager*>(nationInteractionState)->QueryInt4C();
       }
     }
 
@@ -2056,7 +1889,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
   TGreatPowerPressureUpdateView* pressureView =
       reinterpret_cast<TGreatPowerPressureUpdateView*>(this);
-  TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -2246,7 +2079,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     unsigned char needsRedraw = 0;
 
     TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
-    TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
+    TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
       TGlobalMapCityScoreRecord* cityTable =
@@ -2736,8 +2569,8 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
-  TLocalizationRuntimeView* localizationTable =
-      static_cast<TLocalizationRuntimeView*>(g_pLocalizationTable);
+  TLocalizationRuntime* localizationTable =
+      static_cast<TLocalizationRuntime*>(g_pLocalizationTable);
   if (localizationTable->runtimeSubsystemIndex != 0 || localizationTable->mode != 2) {
     return;
   }
@@ -3244,7 +3077,7 @@ void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     break;
 
   case 3: {
-    TLocalizationRuntimeView* localizationTable = ReadLocalizationRuntimeView();
+    TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
     if (localizationTable != 0 && localizationTable->mode == 6) {
       this->VTableSlotA1_Provisional(targetClass, 4, -1);
     }
@@ -3571,7 +3404,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(ReadGlobalPointer(kAddrGlobalMapStatePtr),
                                                this->nationSlot);
 
-  TLocalizationRuntimeView* localizationTable = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
     reinterpret_cast<void(__cdecl*)(void)>(thunk_DispatchTaggedGameStateEvent1F20)();
   }
@@ -4287,7 +4120,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 
   short activeTurn = 0;
-  TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
   if (localizationRuntime != 0) {
     activeTurn = static_cast<short>(LocalizationRuntime_GetTurnTick(localizationRuntime) - 1);
   }
@@ -4982,7 +4815,7 @@ void TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int
 // FUNCTION: IMPERIALISM 0x0055c970
 void TGreatPower::QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
                                                         char isReplayBypass) {
-  TLocalizationRuntimeView* localizationTable = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
   if (localizationTable == 0) {
     return;
   }
@@ -5010,7 +4843,7 @@ struct TInterNationEventType0FMergePayload {
 // FUNCTION: IMPERIALISM 0x0055cbd0
 void TGreatPower::QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA,
                                                               int nationB, char isReplayBypass) {
-  TLocalizationRuntimeView* localizationTable = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
   if (localizationTable == 0) {
     return;
   }
