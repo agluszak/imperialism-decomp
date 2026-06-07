@@ -2851,38 +2851,6 @@ undefined4 PlayControlSoundAndBeginMouseCapture_Field92_A(void)
   return 0;
 }
 
-// ghidra_name TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance
-// ghidra_proto void * __cdecl CreateTAlwaysPictureButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00570950
-undefined4 CreateTAlwaysPictureButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::GetTAlwaysPictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTAlwaysPictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005709d0
-undefined4 GetTAlwaysPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState
-// ghidra_proto void * __thiscall ConstructTAlwaysPictureButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x005709f0
-undefined4 ConstructTAlwaysPictureButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::DestructTAlwaysPictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTAlwaysPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570a20
-undefined4 DestructTAlwaysPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I28_00570a70
 // ghidra_proto void __cdecl OrphanCallChain_C2_I28_00570a70(void)
 // FUNCTION: IMPERIALISM 0x00570a70
@@ -2967,38 +2935,6 @@ undefined4 OrphanCallChain_C5_I31_00570f40(void)
 // ghidra_proto int __cdecl OrphanCallChain_C7_I61_00570fb0(void)
 // FUNCTION: IMPERIALISM 0x00570fb0
 undefined4 OrphanCallChain_C7_I61_00570fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::CreateTToggleButtonInstance
-// ghidra_proto void * __cdecl CreateTToggleButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00571050
-undefined4 CreateTToggleButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::GetTToggleButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTToggleButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005710d0
-undefined4 GetTToggleButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::ConstructTToggleButtonBaseState
-// ghidra_proto void * __thiscall ConstructTToggleButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x005710f0
-undefined4 ConstructTToggleButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TToggleButton::DestructTToggleButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructTToggleButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571120
-undefined4 DestructTToggleButtonAndMaybeFree(void)
 {
   return 0;
 }

@@ -48,6 +48,8 @@ add_executable(Imperialism
     src/game/TPictureResourceEntryBase.cpp
     src/game/TPictureButton.cpp
     src/game/T2PictureButton.cpp
+    src/game/TAlwaysPictureButton.cpp
+    src/game/TToggleButton.cpp
     src/game/TRadioPictureButton.cpp
     src/game/TButton.cpp
     src/game/TStatusButton.cpp
