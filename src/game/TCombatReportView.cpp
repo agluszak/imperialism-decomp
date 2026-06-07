@@ -1,20 +1,10 @@
-// UI wrapper class quads extracted from trade_screen.
+#include "game/TCombatReportView.h"
 
-#include "game/ui_widget_shared.h"
-
-#if defined(_MSC_VER)
-#pragma auto_inline(off)
-#endif
+int g_pClassDescTCombatReportView;
 
 // FUNCTION: IMPERIALISM 0x0058c830
-CombatReportViewState* __cdecl CreateTCombatReportViewInstance(void) {
-  CombatReportViewState* view =
-      reinterpret_cast<CombatReportViewState*>(AllocateWithFallbackHandler(0xa0));
-  if (view != 0) {
-    TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(view);
-    view->vftable = reinterpret_cast<void*>(&g_vtblTCombatReportView);
-  }
-  return view;
+void* __cdecl CreateTCombatReportViewInstance(void) {
+  return new TCombatReportView();
 }
 
 // FUNCTION: IMPERIALISM 0x0058c8b0
@@ -23,24 +13,9 @@ void* __cdecl GetTCombatReportViewClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c8d0
-CombatReportViewState* __fastcall ConstructTCombatReportViewBaseState(CombatReportViewState* view) {
-  TradeScreenRuntimeBridge::ConstructPictureResourceEntryBase(view);
-  view->vftable = reinterpret_cast<void*>(&g_vtblTCombatReportView);
-  return view;
+TCombatReportView::TCombatReportView() : TPictureButton() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c900
-CombatReportViewState* __fastcall
-DestructTCombatReportViewAndMaybeFree(CombatReportViewState* view, int unusedEdx,
-                                      unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  TradeScreenRuntimeBridge::DestructCityDialogSharedBaseState(view);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)view);
-  }
-  return view;
+TCombatReportView::~TCombatReportView() {
 }
-
-#if defined(_MSC_VER)
-#pragma auto_inline(on)
-#endif

@@ -1,21 +1,11 @@
-// UI wrapper class quads extracted from trade_screen.
+#include "game/TCivilianButton.h"
+#include "game/generated/vcall_facades.h"
 
-#include "game/ui_widget_shared.h"
-
-#if defined(_MSC_VER)
-#pragma auto_inline(off)
-#endif
+int g_pClassDescTCivilianButton;
 
 // FUNCTION: IMPERIALISM 0x0058b340
-CivilianButtonState* __cdecl CreateTCivilianButtonInstance(void) {
-  CivilianButtonState* button =
-      reinterpret_cast<CivilianButtonState*>(AllocateWithFallbackHandler(0xa0));
-  if (button != 0) {
-    TradeScreenRuntimeBridge::ConstructUiClickablePictureResourceEntry(button);
-    button->vftable = reinterpret_cast<void*>(&g_vtblTCivilianButton);
-    button->buttonTag = 0xc;
-  }
-  return button;
+void* __cdecl CreateTCivilianButtonInstance(void) {
+  return new TCivilianButton();
 }
 
 // FUNCTION: IMPERIALISM 0x0058b3c0
@@ -24,23 +14,33 @@ void* __cdecl GetTCivilianButtonClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b3e0
-CivilianButtonState* __fastcall ConstructTCivilianButtonBaseState(CivilianButtonState* button) {
-  TradeScreenRuntimeBridge::ConstructUiClickablePictureResourceEntry(button);
-  button->vftable = reinterpret_cast<void*>(&g_vtblTCivilianButton);
-  button->buttonTag = 0xc;
-  return button;
+TCivilianButton::TCivilianButton() : TRadioPictureButton() {
+  this->hasCommandTagResource = 0xc;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b410
-CivilianButtonState* __fastcall DestructTCivilianButtonAndMaybeFree(CivilianButtonState* button,
-                                                                    int unusedEdx,
-                                                                    unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  TradeScreenRuntimeBridge::DestructCityDialogSharedBaseState(button);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)button);
+TCivilianButton::~TCivilianButton() {
+}
+
+#if defined(_MSC_VER)
+#pragma auto_inline(off)
+#endif
+
+// FUNCTION: IMPERIALISM 0x0058B460
+void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
+  this->hasCommandTagResource = 0xc;
+  this->selectedValue9c = (short)selectedValue;
+  if (selectedValue != 0) {
+    VCall_TRadioPictureButton_SlotA4(this, 1, 0);
+    VCall_TRadioPictureButton_SlotA8(this, 1, 0);
+    
+    char* globalMapState = reinterpret_cast<char**>(0x00693a10)[0]; // g_pGlobalMapState
+    short mappedValue = reinterpret_cast<short(__fastcall*)(int)>(
+        *reinterpret_cast<int*>(globalMapState + 0x118))(selectedValue);
+    this->mappedSelection98 = mappedValue;
+    return;
   }
-  return button;
+  VCall_TRadioPictureButton_SlotA4(this, 0, 1);
 }
 
 #if defined(_MSC_VER)

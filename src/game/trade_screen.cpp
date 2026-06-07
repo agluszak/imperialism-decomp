@@ -2417,26 +2417,6 @@ void TShipAmtBarState::DrawAmt() {
 
 }
 
-// FUNCTION: IMPERIALISM 0x0058b460
-void __fastcall OrphanCallChain_C4_I34_0058b460(NumberedArrowButtonState* control, int unusedEdx,
-                                                int selectedValue) {
-  (void)unusedEdx;
-  control->hoverTag4e = 0xc;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 0x9c) = selectedValue;
-  if (selectedValue != 0) {
-    reinterpret_cast<TradeControl*>(control)->SetEnabledPair(1, 0);
-    reinterpret_cast<TradeControl*>(control)->SetStatePair(1, 0);
-    short mappedValue = (short)selectedValue;
-    void* globalMapState = ReadPointerAt(kAddrGlobalMapState);
-    if (globalMapState != 0) {
-      mappedValue = reinterpret_cast<short(__fastcall*)(void*, int)>(
-          (*reinterpret_cast<void***>(globalMapState))[0x118 / 4])(globalMapState, selectedValue);
-    }
-    *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98) = mappedValue;
-    return;
-  }
-  reinterpret_cast<TradeControl*>(control)->SetEnabledPair(0, 1);
-}
 
 // FUNCTION: IMPERIALISM 0x0058b4f0
 void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
@@ -2532,11 +2512,11 @@ void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control
   reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
       control);
 
-  if (control->placardValue != 0) {
+  if (control->glyph90 != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
     reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(
         sharedStringRefPtr, reinterpret_cast<const char*>(kAddrDecimalFormat),
-        static_cast<int>(control->placardValue));
+        static_cast<int>(control->glyph90));
 
     short textWidth =
         reinterpret_cast<short(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)();

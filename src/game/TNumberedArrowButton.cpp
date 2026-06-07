@@ -1,22 +1,16 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/ui_widget_shared.h"
+#include "game/TNumberedArrowButton.h"
+int g_pClassDescTNumberedArrowButton;
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)
 #endif
 
 // FUNCTION: IMPERIALISM 0x0058c1e0
-NumberedArrowButtonState* __cdecl CreateTNumberedArrowButtonInstance(void) {
-  NumberedArrowButtonState* button =
-      reinterpret_cast<NumberedArrowButtonState*>(AllocateWithFallbackHandler(0x88));
-  if (button != 0) {
-    TradeScreenRuntimeBridge::ConstructUiCommandTagResourceEntryBase(button);
-    button->vftable = reinterpret_cast<void*>(&g_vtblTNumberedArrowButton);
-    button->value84 = 0;
-    button->value86 = 0;
-  }
-  return button;
+TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
+  return new TNumberedArrowButton();
 }
 
 // FUNCTION: IMPERIALISM 0x0058c280
@@ -25,26 +19,13 @@ void* __cdecl GetTNumberedArrowButtonClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
-NumberedArrowButtonState* __fastcall
-ConstructTNumberedArrowButtonBaseState(NumberedArrowButtonState* button) {
-  TradeScreenRuntimeBridge::ConstructUiCommandTagResourceEntryBase(button);
-  button->vftable = reinterpret_cast<void*>(&g_vtblTNumberedArrowButton);
-  button->value84 = 0;
-  button->value86 = 0;
-  return button;
-}
+TNumberedArrowButton::TNumberedArrowButton()
+    : TControl(),
+      value84(0),
+      value86(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058c2e0
-NumberedArrowButtonState* __fastcall
-DestructTNumberedArrowButtonAndMaybeFree(NumberedArrowButtonState* button, int unusedEdx,
-                                         unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)button);
-  }
-  return button;
-}
+TNumberedArrowButton::~TNumberedArrowButton() {}
 
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
