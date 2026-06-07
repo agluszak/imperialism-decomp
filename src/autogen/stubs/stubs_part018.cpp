@@ -2003,38 +2003,6 @@ undefined4 HandleNonzeroEventAndClearControlTag636c7573ThenForward(void)
   return 0;
 }
 
-// ghidra_name T2PictToggleButton::CreateT2PictToggleButtonInstance
-// ghidra_proto void * __cdecl CreateT2PictToggleButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00584890
-undefined4 CreateT2PictToggleButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictToggleButton::GetT2PictToggleButtonClassNamePointer
-// ghidra_proto void * __cdecl GetT2PictToggleButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00584910
-undefined4 GetT2PictToggleButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictToggleButton::ConstructT2PictToggleButtonBaseState
-// ghidra_proto T2PictToggleButton * __thiscall ConstructT2PictToggleButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x00584930
-undefined4 ConstructT2PictToggleButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictToggleButton::DestructT2PictToggleButtonAndMaybeFree
-// ghidra_proto T2PictToggleButton * __thiscall DestructT2PictToggleButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00584960
-undefined4 DestructT2PictToggleButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name T2PictToggleButton::IsField3cWithinShortLimit84
 // ghidra_proto void __cdecl IsField3cWithinShortLimit84(void)
 // FUNCTION: IMPERIALISM 0x005849b0

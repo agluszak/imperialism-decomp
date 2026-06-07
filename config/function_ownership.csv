@@ -569,6 +569,10 @@ address|target_cpp|ownership|note
 57c390|src/game/noop_slots.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
 583bd0|src/game/trade_screen.cpp|manual|marker_sync
+584890|src/game/T2PictToggleButton.cpp|manual|marker_sync
+584910|src/game/T2PictToggleButton.cpp|manual|marker_sync
+584930|src/game/T2PictToggleButton.cpp|manual|marker_sync
+584960|src/game/T2PictToggleButton.cpp|manual|marker_sync
 585f70|src/game/trade_screen.cpp|manual|marker_sync
 585ff0|src/game/trade_screen.cpp|manual|marker_sync
 586010|src/game/trade_screen.cpp|manual|marker_sync
