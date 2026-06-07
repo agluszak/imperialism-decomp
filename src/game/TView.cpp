@@ -18,22 +18,9 @@
 // annotation owns it.
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : field10(0x7fffffff),
-      field14(0),
-      field18(0),
-      field20(0),
-      field2c(0),
-      field30(0),
-      field3c(0),
-      field44(0),
-      field48(0),
-      flag4c(1),
-      flag4d(1),
-      field4e(0xffff),
-      field50(0),
-      field54(1),
-      sharedStringRef(),
-      field5c(0) {}
+    : field10(0x7fffffff), field14(0), field18(0), field20(0), field2c(0), field30(0), field3c(0),
+      field44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), field50(0), field54(1),
+      sharedStringRef(), field5c(0) {}
 
 // KNOWN LINKER ARTIFACT (heuristic 93): 0x004064e2 is a 5-byte incremental-link
 // `jmp TView::TView` thunk with no clean C++ source equivalent in this non-incremental
@@ -45,13 +32,11 @@ void TView::thunk_ConstructUiResourceEntryBase() {
   new (this) TView();
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
   delete reinterpret_cast<TView*>(field44);
   FreeHeapBufferIfNotNull(field48);
 }
-
 
 // FUNCTION: IMPERIALISM 0x00406ba9
 void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {

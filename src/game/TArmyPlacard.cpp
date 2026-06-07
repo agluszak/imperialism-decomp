@@ -18,5 +18,4 @@ TArmyPlacard::TArmyPlacard() : TPictureButton() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058bf00
-TArmyPlacard::~TArmyPlacard() {
-}
+TArmyPlacard::~TArmyPlacard() {}

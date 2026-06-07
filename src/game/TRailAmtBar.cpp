@@ -10,8 +10,7 @@
 
 // FUNCTION: IMPERIALISM 0x00589ed0
 TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
-  TRailAmtBar* amountBar =
-      reinterpret_cast<TRailAmtBar*>(AllocateWithFallbackHandler(0x6c));
+  TRailAmtBar* amountBar = reinterpret_cast<TRailAmtBar*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     new (amountBar) TRailAmtBar;
   }
@@ -24,18 +23,17 @@ void* __cdecl GetTRailAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589f90
-TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {
-}
+TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x00589fd0
-TRailAmtBar::~TRailAmtBar() {
-}
+TRailAmtBar::~TRailAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(TDocument* document) {
-  NationState* nationState =
-      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
+  NationState* nationState = reinterpret_cast<NationState**>(
+      kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  NationCityTradeState* cityState =
+      nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
 
   short recordIndex = 0;

@@ -7,7 +7,7 @@ extern "C" char g_vtblTSortedByRelationshipList;
 
 // VTABLE: IMPERIALISM 0x00654d38
 class TSortedByRelationshipList : public TSortedPtrList {
- public:
+public:
   TSortedByRelationshipList() : TSortedPtrList() {
     *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedByRelationshipList);
   }

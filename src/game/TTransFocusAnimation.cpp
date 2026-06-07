@@ -39,8 +39,9 @@ void __cdecl SnapshotHitRegionToClipCache(int* clipDescriptor);
 int g_pPrimaryRenderSurfaceContext = 0;
 
 // FUNCTION: IMPERIALISM 0x004a05c0
-void __fastcall BlitTransientSurfaceToPrimaryRenderContextWithClip(
-    TTransFocusAnimationLayout* focusAnimation, int unusedEdx) {
+void __fastcall
+BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransFocusAnimationLayout* focusAnimation,
+                                                   int unusedEdx) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   QuickDrawSurfaceGuard surface;
@@ -63,7 +64,7 @@ void __fastcall BlitTransientSurfaceToPrimaryRenderContextWithClip(
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
 
-  int (__stdcall* offsetRect)(RECT*, int, int) = OffsetRect;
+  int(__stdcall * offsetRect)(RECT*, int, int) = OffsetRect;
   int primaryFlipDescriptor = *reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext + 0x20);
   if (primaryFlipDescriptor != 0) {
     int primaryFlipHeight =
@@ -87,15 +88,16 @@ void __fastcall BlitTransientSurfaceToPrimaryRenderContextWithClip(
   }
 
   reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
-      reinterpret_cast<void*>(transientContext + 4), &sourceRect, &destinationRect, 0, 0);
+      BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
+                                        reinterpret_cast<void*>(transientContext + 4), &sourceRect,
+                                        &destinationRect, 0, 0);
   reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(surface.surfaceWrapper);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0770
-void __fastcall RenderFocusAnimationFrameWithScopedQuickDraw(
-    TTransFocusAnimationLayout* focusAnimation, int unusedEdx) {
+void __fastcall
+RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAnimationLayout* focusAnimation,
+                                             int unusedEdx) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   ScopedMapQuickDrawContextGuard quickDrawContext(focusAnimation->scopedRenderTarget);

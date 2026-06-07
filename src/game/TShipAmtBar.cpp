@@ -14,8 +14,7 @@ extern "C" char g_pClassDescTShipAmtBar;
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
-  TShipAmtBar* amountBar =
-      reinterpret_cast<TShipAmtBar*>(AllocateWithFallbackHandler(0x6c));
+  TShipAmtBar* amountBar = reinterpret_cast<TShipAmtBar*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
     new (amountBar) TShipAmtBar;
   }
@@ -28,18 +27,17 @@ void* __cdecl GetTShipAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab60
-TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {
-}
+TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058aba0
-TShipAmtBar::~TShipAmtBar() {
-}
+TShipAmtBar::~TShipAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(TDocument* document) {
-  NationState* nationState =
-      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
+  NationState* nationState = reinterpret_cast<NationState**>(
+      kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  NationCityTradeState* cityState =
+      nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
   selectedMetricRecord = cityState->specialCommodityRecordAt190;
   short productionCap =
       *(short*)(reinterpret_cast<char*>(cityState->scenarioTradeDescriptor) + 0x1c);

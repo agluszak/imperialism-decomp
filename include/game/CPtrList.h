@@ -17,7 +17,7 @@ void __fastcall FreeLinkedBlockChain(void* blockChainHead);
 
 // VTABLE: IMPERIALISM 0x00672eec
 class CPtrList : public CObject {
- public:
+public:
   CPtrListNode* headNode;
   CPtrListNode* tailNode;
   int nodeCount;

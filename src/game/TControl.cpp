@@ -27,18 +27,14 @@ void TControl::thunk_ConstructUiCommandTagResourceEntryBase() {
 // writes — the // VTABLE: annotation owns 0x0064a098.
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : hasCommandTagResource(1),
-      commandTagResourceByte(0),
-      field68(0),
-      field6C(0),
-      field70(0),
-      field74(0),
-      commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
+    : hasCommandTagResource(1), commandTagResourceByte(0), field68(0), field6C(0), field70(0),
+      field74(0), commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
       commandTagDefaultParam1(g_nUiResourceEntryDefaultParam1),
       commandTagDefaultParam2(g_wUiResourceEntryDefaultParam2) {}
 
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
-  reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(rect, flag);
+  reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(rect,
+                                                                                              flag);
 }

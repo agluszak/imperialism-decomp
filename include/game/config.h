@@ -4,7 +4,7 @@
 
 class Config {
 public:
-  void *vtable_ptr;
+  void* vtable_ptr;
   char pad_04[0x1c];
   int callback_block_20[8];
   int field_40;
@@ -22,5 +22,5 @@ public:
   char pad_dc[0x18];
   int field_f4;
 
-  int *__fastcall InitDefaults();
+  int* __fastcall InitDefaults();
 };

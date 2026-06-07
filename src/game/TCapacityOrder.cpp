@@ -66,55 +66,49 @@ void* __cdecl TCapacityOrder::thunk_GetTCapacityOrderClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x004b8b80
 void TCapacityOrder::CreateTCapacityOrderInstance(void* pTargetOrder) {
-  typedef void(__fastcall* Slot3CFn)(TCapacityOrder* self, int unusedEdx, void* arg);
+  typedef void(__fastcall * Slot3CFn)(TCapacityOrder * self, int unusedEdx, void* arg);
   const short quantity = static_cast<short>(reinterpret_cast<unsigned int>(pTargetOrder));
   short value = 0;
 
   (reinterpret_cast<Slot3CFn>(reinterpret_cast<int*>(this->pVtable)[0x0f]))(this, 0, pTargetOrder);
 
-  value =
-      static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->field69_0x48) *
-                         quantity);
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->field69_0x48) *
+                             quantity);
   WriteShort(pTargetOrder, 0x12, value);
   if (value < 0) {
     WriteShort(pTargetOrder, 0x12, 0);
   }
 
-  value =
-      static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->field69_0x48) *
-                         quantity);
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->field69_0x48) *
+                             quantity);
   WriteShort(pTargetOrder, 0x10, value);
   if (value < 0) {
     WriteShort(pTargetOrder, 0x10, 0);
   }
 
-  value =
-      static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->field69_0x48) *
-                         quantity);
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->field69_0x48) *
+                             quantity);
   WriteShort(pTargetOrder, 0x20, value);
   if (ReadShort(pTargetOrder, 0x12) < 0) {
     WriteShort(pTargetOrder, 0x12, 0);
   }
 
-  value =
-      static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->field69_0x48) *
-                         quantity);
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->field69_0x48) *
+                             quantity);
   WriteShort(pTargetOrder, 0x16, value);
   if (value < 0) {
     WriteShort(pTargetOrder, 0x16, 0);
   }
 
-  value =
-      static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->field69_0x48) *
-                         quantity);
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->field69_0x48) *
+                             quantity);
   WriteShort(pTargetOrder, 0x18, value);
   if (value < 0) {
     WriteShort(pTargetOrder, 0x18, 0);
   }
 
-  value =
-      static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->field69_0x48) *
-                         quantity);
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->field69_0x48) *
+                             quantity);
   WriteShort(pTargetOrder, 0x18, value);
   if (value < 0) {
     WriteShort(pTargetOrder, 0x18, 0);

@@ -19,10 +19,7 @@ void* __cdecl GetTNumberedArrowButtonClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
-TNumberedArrowButton::TNumberedArrowButton()
-    : TControl(),
-      value84(0),
-      value86(0) {}
+TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058c2e0
 TNumberedArrowButton::~TNumberedArrowButton() {}

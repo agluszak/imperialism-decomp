@@ -20,7 +20,8 @@ void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, i
 void __fastcall FreeLinkedBlockChain(void* blockChainHead) {
   while (blockChainHead != 0) {
     void* next = *reinterpret_cast<void**>(blockChainHead);
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(blockChainHead)));
+    FreeHeapBufferIfNotNull(
+        static_cast<undefined4>(reinterpret_cast<unsigned int>(blockChainHead)));
     blockChainHead = next;
   }
 }

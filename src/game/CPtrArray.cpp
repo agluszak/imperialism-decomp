@@ -22,7 +22,8 @@ inline void CopyMemory(void* dst, const void* src, int size) {
 }
 
 inline void MoveMemory(void* dst, const void* src, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src, size);
+  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src,
+                                                                                     size);
 }
 
 } // namespace
@@ -90,8 +91,7 @@ void CPtrArray::InsertAt(int nIndex, void* newElement, int nCount) {
   } else {
     int nOldSize = this->count;
     this->SetSize(this->count + nCount, -1);
-    MoveMemory(&this->entries[nIndex + nCount], &this->entries[nIndex],
-               (nOldSize - nIndex) * 4);
+    MoveMemory(&this->entries[nIndex + nCount], &this->entries[nIndex], (nOldSize - nIndex) * 4);
     FillMemory(&this->entries[nIndex], 0, nCount * 4);
   }
   while (nCount-- != 0) {

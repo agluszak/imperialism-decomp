@@ -6,7 +6,7 @@
 
 // VTABLE: IMPERIALISM 0x649410
 class THandleStream : public TStream {
- public:
+public:
   // Behavior-derived: 0x00489550 advances currentExtent by a delta and tracks
   // highWatermark as its running maximum. Field names remain provisional.
   int currentExtent;

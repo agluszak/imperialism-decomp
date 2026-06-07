@@ -17,7 +17,8 @@ undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 
 static __inline void SetQuickDrawTextOrigin(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(x, y);
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(x,
+                                                                                                y);
 }
 
 static __inline void DrawCenteredGuideLine(short x, short y) {
@@ -40,10 +41,12 @@ static __inline void CallUiRuntimeSlot34(UiRuntimeContext* runtimeContext, int s
   reinterpret_cast<void(__fastcall*)(UiRuntimeContext*, int)>(
       (*reinterpret_cast<void***>(runtimeContext))[0x34 / 4])(runtimeContext, styleIndex);
 }
-void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg, int eventExtra);
+void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
+                                                 int eventExtra);
 
 typedef void* hwnd_t;
-extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption, unsigned int type);
+extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
+                                     unsigned int type);
 
 const char kNilPointerText[] = "Nil Pointer";
 const char kFailureCaption[] = "Failure";
@@ -78,10 +81,9 @@ static __inline void* ReadPointerAt(unsigned int address) {
 }
 
 static __inline void CallApplyMoveValueSlot1D0(void* context, int value) {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(context))[0x1d0 / 4])(context, value);
+  reinterpret_cast<void(__fastcall*)(void*, int)>((*reinterpret_cast<void***>(context))[0x1d0 / 4])(
+      context, value);
 }
-
 
 struct CityTradeProductionSlots {
   char pad_00[4];
@@ -112,10 +114,9 @@ const unsigned int kAddrClassDescTShipAmtBar = 0x00663010; // Guessed based on p
 const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
 static __inline struct NationState* GetActiveNationState(void) {
-  return reinterpret_cast<struct NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  return reinterpret_cast<struct NationState**>(
+      kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
 }
-
-
 
 struct TradeSummarySelectionMap {
   int summaryTags[32];
@@ -130,7 +131,8 @@ static __inline int GetTradeSummarySelectionTagByIndex(short index) {
 }
 
 static __inline void* CallOwnerPanelSlot58(void* self) {
-  return reinterpret_cast<void*(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x58 / 4])(self);
+  return reinterpret_cast<void*(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x58 / 4])(
+      self);
 }
 
 static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {

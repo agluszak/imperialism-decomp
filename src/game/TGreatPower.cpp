@@ -850,15 +850,13 @@ struct SharedRefPairScope {
   CString first;
   CString second;
 
-  SharedRefPairScope() {
-  }
+  SharedRefPairScope() {}
 
   ~SharedRefPairScope() {}
 };
 
 static __inline void InitializeThreeSharedRefs(CString* firstRef, CString* secondRef,
-                                               CString* thirdRef) {
-}
+                                               CString* thirdRef) {}
 
 static __inline void ReleaseThreeSharedRefs(CString* firstRef, CString* secondRef,
                                             CString* thirdRef) {
@@ -872,8 +870,7 @@ struct SharedRefTripleScope {
   CString second;
   CString third;
 
-  SharedRefTripleScope() {
-  }
+  SharedRefTripleScope() {}
 
   ~SharedRefTripleScope() {}
 };
@@ -1806,7 +1803,6 @@ static __inline void InitializeMilitaryRecruitOrder(void* obj, short capValue, i
   reinterpret_cast<void(__fastcall*)(void*, int, int, int, int)>(
       thunk_InitializeMilitaryRecruitOrderState)(obj, capValue, nodeContext, nationSlot, 0);
 }
-
 
 // g_pCityOrderCapabilityState accessors (read-only data table, not a class region).
 static __inline short CityOrderCapForNation(short nationSlot) {
@@ -3863,7 +3859,6 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   CString proposalScratchRef;
   int proposalIndex = 0;
   int queueIndex = 0;
-
 
   void* proposalQueue = this->proposalQueue;
   short proposalCount = ProposalQueue_GetCount(proposalQueue);

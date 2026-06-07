@@ -6,7 +6,7 @@
 
 // VTABLE: IMPERIALISM 0x649320
 class TCountingStream : public TStream {
- public:
+public:
   int positionOrByteCount;
   int maxExtentOrLimit;
 

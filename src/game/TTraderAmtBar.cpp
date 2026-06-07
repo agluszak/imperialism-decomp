@@ -27,62 +27,110 @@ namespace {
 extern "C" char g_pClassDescTTraderAmtBar;
 
 struct TradeControlOwnerSlotView {
-  virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
-  virtual void Slot0C(void) = 0; virtual void Slot10(void) = 0; virtual void Slot14(void) = 0;
-  virtual void Slot18(void) = 0; virtual void Slot1C(void) = 0; virtual void Slot20(void) = 0;
-  virtual void Slot24(void) = 0; virtual void Slot28(void) = 0; virtual void Slot2C(void) = 0;
-  virtual void Slot30(void) = 0; virtual void Slot34(void) = 0; virtual void Slot38(void) = 0;
-  virtual void Slot3C(void) = 0; virtual void Slot40(void) = 0; virtual void Slot44(void) = 0;
-  virtual void Slot48(void) = 0; virtual void Slot4C(void) = 0; virtual void Slot50(void) = 0;
+  virtual void Slot00(void) = 0;
+  virtual void Slot04(void) = 0;
+  virtual void Slot08(void) = 0;
+  virtual void Slot0C(void) = 0;
+  virtual void Slot10(void) = 0;
+  virtual void Slot14(void) = 0;
+  virtual void Slot18(void) = 0;
+  virtual void Slot1C(void) = 0;
+  virtual void Slot20(void) = 0;
+  virtual void Slot24(void) = 0;
+  virtual void Slot28(void) = 0;
+  virtual void Slot2C(void) = 0;
+  virtual void Slot30(void) = 0;
+  virtual void Slot34(void) = 0;
+  virtual void Slot38(void) = 0;
+  virtual void Slot3C(void) = 0;
+  virtual void Slot40(void) = 0;
+  virtual void Slot44(void) = 0;
+  virtual void Slot48(void) = 0;
+  virtual void Slot4C(void) = 0;
+  virtual void Slot50(void) = 0;
   virtual void Slot54(void) = 0;
   virtual void* OwnerPanelSlot58(void) = 0;
 };
 
 struct TradeControlResolverView : public TradeControlOwnerSlotView {
-  virtual void Slot5C(void) = 0; virtual void Slot60(void) = 0; virtual void Slot64(void) = 0;
-  virtual void Slot68(void) = 0; virtual void Slot6C(void) = 0; virtual void Slot70(void) = 0;
-  virtual void Slot74(void) = 0; virtual void Slot78(void) = 0; virtual void Slot7C(void) = 0;
-  virtual void Slot80(void) = 0; virtual void Slot84(void) = 0; virtual void Slot88(void) = 0;
-  virtual void Slot8C(void) = 0; virtual void Slot90(void) = 0;
+  virtual void Slot5C(void) = 0;
+  virtual void Slot60(void) = 0;
+  virtual void Slot64(void) = 0;
+  virtual void Slot68(void) = 0;
+  virtual void Slot6C(void) = 0;
+  virtual void Slot70(void) = 0;
+  virtual void Slot74(void) = 0;
+  virtual void Slot78(void) = 0;
+  virtual void Slot7C(void) = 0;
+  virtual void Slot80(void) = 0;
+  virtual void Slot84(void) = 0;
+  virtual void Slot88(void) = 0;
+  virtual void Slot8C(void) = 0;
+  virtual void Slot90(void) = 0;
   virtual TradeControl* ResolveControlByTagSlot94(int controlTag) = 0;
 };
 
 struct TradeNationMetricView {
-  virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
-  virtual void Slot0C(void) = 0; virtual void Slot10(void) = 0; virtual void Slot14(void) = 0;
-  virtual void Slot18(void) = 0; virtual void Slot1C(void) = 0; virtual void Slot20(void) = 0;
-  virtual void Slot24(void) = 0; virtual void Slot28(void) = 0; virtual void Slot2C(void) = 0;
-  virtual void Slot30(void) = 0; virtual void Slot34(void) = 0; virtual void Slot38(void) = 0;
-  virtual void Slot3C(void) = 0; virtual void Slot40(void) = 0; virtual void Slot44(void) = 0;
-  virtual void Slot48(void) = 0; virtual void Slot4C(void) = 0; virtual void Slot50(void) = 0;
-  virtual void Slot54(void) = 0; virtual void Slot58(void) = 0; virtual void Slot5C(void) = 0;
-  virtual void Slot60(void) = 0; virtual void Slot64(void) = 0; virtual void Slot68(void) = 0;
-  virtual void Slot6C(void) = 0; virtual void Slot70(void) = 0; virtual void Slot74(void) = 0;
+  virtual void Slot00(void) = 0;
+  virtual void Slot04(void) = 0;
+  virtual void Slot08(void) = 0;
+  virtual void Slot0C(void) = 0;
+  virtual void Slot10(void) = 0;
+  virtual void Slot14(void) = 0;
+  virtual void Slot18(void) = 0;
+  virtual void Slot1C(void) = 0;
+  virtual void Slot20(void) = 0;
+  virtual void Slot24(void) = 0;
+  virtual void Slot28(void) = 0;
+  virtual void Slot2C(void) = 0;
+  virtual void Slot30(void) = 0;
+  virtual void Slot34(void) = 0;
+  virtual void Slot38(void) = 0;
+  virtual void Slot3C(void) = 0;
+  virtual void Slot40(void) = 0;
+  virtual void Slot44(void) = 0;
+  virtual void Slot48(void) = 0;
+  virtual void Slot4C(void) = 0;
+  virtual void Slot50(void) = 0;
+  virtual void Slot54(void) = 0;
+  virtual void Slot58(void) = 0;
+  virtual void Slot5C(void) = 0;
+  virtual void Slot60(void) = 0;
+  virtual void Slot64(void) = 0;
+  virtual void Slot68(void) = 0;
+  virtual void Slot6C(void) = 0;
+  virtual void Slot70(void) = 0;
+  virtual void Slot74(void) = 0;
   virtual short QueryNationMetricBySlot78(short metricSlot) = 0;
   virtual short QueryNationMetricBySlot7C(short metricSlot) = 0;
 };
 
 struct UiRuntimeStyleView {
-  virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
-  virtual void Slot0C(void) = 0; virtual void Slot10(void) = 0; virtual void Slot14(void) = 0;
-  virtual void Slot18(void) = 0; virtual void Slot1C(void) = 0; virtual void Slot20(void) = 0;
-  virtual void Slot24(void) = 0; virtual void Slot28(void) = 0; virtual void Slot2C(void) = 0;
+  virtual void Slot00(void) = 0;
+  virtual void Slot04(void) = 0;
+  virtual void Slot08(void) = 0;
+  virtual void Slot0C(void) = 0;
+  virtual void Slot10(void) = 0;
+  virtual void Slot14(void) = 0;
+  virtual void Slot18(void) = 0;
+  virtual void Slot1C(void) = 0;
+  virtual void Slot20(void) = 0;
+  virtual void Slot24(void) = 0;
+  virtual void Slot28(void) = 0;
+  virtual void Slot2C(void) = 0;
   virtual void Slot30(void) = 0;
   virtual void ApplyQuickDrawStyleSlot34(int styleIndex) = 0;
 };
 
-
-
 static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
-  return reinterpret_cast<TradeNationMetricView*>(nationState)->QueryNationMetricBySlot78(
-      metricSlot);
+  return reinterpret_cast<TradeNationMetricView*>(nationState)
+      ->QueryNationMetricBySlot78(metricSlot);
 }
 
 static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, short metricSlot) {
-  return reinterpret_cast<TradeNationMetricView*>(nationState)->QueryNationMetricBySlot7C(
-      metricSlot);
+  return reinterpret_cast<TradeNationMetricView*>(nationState)
+      ->QueryNationMetricBySlot7C(metricSlot);
 }
-
 
 const int kScenarioRecordTags[] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
@@ -96,8 +144,7 @@ TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058ae30
 TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
-  TTraderAmtBar* amountBar =
-      reinterpret_cast<TTraderAmtBar*>(AllocateWithFallbackHandler(0x68));
+  TTraderAmtBar* amountBar = reinterpret_cast<TTraderAmtBar*>(AllocateWithFallbackHandler(0x68));
   if (amountBar != 0) {
     new (amountBar) TTraderAmtBar;
   }
@@ -110,8 +157,7 @@ void* __cdecl GetTTraderAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058af30
-TTraderAmtBar::~TTraderAmtBar() {
-}
+TTraderAmtBar::~TTraderAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(TDocument* document) {
@@ -131,7 +177,8 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
     stepOrCurrentValue = 0;
   } else {
     short currentValue = CallQueryNationMetricBySlot78(nationState, recordIndex);
-    stepOrCurrentValue = (short)((((int)tradeCapacity - (int)currentValue) * this->field34) / (int)tradeCapacity);
+    stepOrCurrentValue =
+        (short)((((int)tradeCapacity - (int)currentValue) * this->field34) / (int)tradeCapacity);
   }
 
   short gaugeValue = 0;
@@ -157,7 +204,8 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
       if ((int)requestedValue < (this->field38 / (int)tradeCapacity)) {
-        TradeControl* sellControl = ResolveOwnerControl(reinterpret_cast<void*>(this->field20), kControlTagSell);
+        TradeControl* sellControl =
+            ResolveOwnerControl(reinterpret_cast<void*>(this->field20), kControlTagSell);
         if (sellControl != 0) {
           result = 1;
         }

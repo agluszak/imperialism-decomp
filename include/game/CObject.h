@@ -9,7 +9,7 @@ struct CArchive;
 // Vtable order is the canonical MFC layout, confirmed by CArchive::WriteObject
 // (0x006121e1) calling slot 0 = GetRuntimeClass and slot +0x8 = Serialize.
 class CObject {
- public:
+public:
   virtual void* GetRuntimeClass();
   virtual ~CObject();
   virtual void Serialize(CArchive* ar);

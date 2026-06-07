@@ -146,7 +146,8 @@ static __inline void thiscall0v(void* object, unsigned int slot_index) {
   fn(object);
 }
 
-template <typename A0> static __inline void thiscall1v(void* object, unsigned int slot_index, A0 a0) {
+template <typename A0>
+static __inline void thiscall1v(void* object, unsigned int slot_index, A0 a0) {
   fastcall1v(object, slot_index, a0);
 }
 

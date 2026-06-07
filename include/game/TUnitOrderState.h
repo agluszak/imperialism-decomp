@@ -25,7 +25,9 @@ public:
   virtual void s07() {}
   virtual void s08() {}
   virtual void s09() {}
-  virtual void VTableSlot10(int pOwnerContext) { (void)pOwnerContext; } // slot 10 at 0x28
+  virtual void VTableSlot10(int pOwnerContext) {
+    (void)pOwnerContext;
+  } // slot 10 at 0x28
 
   short orderType;        // 0x04
   short field_6;          // 0x06 (init 0xffff)

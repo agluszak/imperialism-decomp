@@ -68,7 +68,6 @@ struct CivilianClassCacheContext {
   unsigned char pad_6e_to_6f[0x02];
 };
 
-
 struct Rect32 {
   int left;
   int top;

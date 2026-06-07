@@ -5,7 +5,6 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-
 // Sorted game list leaf sharing the TPtrList storage layout. Mac CodeWarrior
 // names this as TSortedList, but Windows vtable membership is grounded by the
 // constructor write to 0x00648ee0.

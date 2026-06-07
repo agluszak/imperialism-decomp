@@ -27,14 +27,14 @@
 // unique typedef name from __LINE__ so multiple asserts can share a scope.
 #define COMPAT_ASSERT_CONCAT_(a, b) a##b
 #define COMPAT_ASSERT_CONCAT(a, b) COMPAT_ASSERT_CONCAT_(a, b)
-#define static_assert(expr, msg) \
+#define static_assert(expr, msg)                                                                   \
   typedef char COMPAT_ASSERT_CONCAT(compat_static_assert_, __LINE__)[(expr) ? 1 : -1]
 #endif
 
 // Assert that a class/struct has an exact byte size. Works on both modern
 // compilers (real static_assert) and MSVC 5.0 (polyfill above). Use this to pin
 // recovered class layouts to their original sizes.
-#define ASSERT_SIZE(type, size) \
+#define ASSERT_SIZE(type, size)                                                                    \
   static_assert(sizeof(type) == (size), #type " must be " #size " bytes")
 
 #endif // COMPAT_H

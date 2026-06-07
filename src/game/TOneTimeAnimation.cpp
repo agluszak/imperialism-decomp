@@ -25,8 +25,9 @@ struct TOneTimeAnimationLayout {
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 // FUNCTION: IMPERIALISM 0x0049fde0
-void __fastcall AdvanceOneTimeAnimationFrameAndInvalidateTargetRect(
-    TOneTimeAnimationLayout* oneTimeAnimation, int unusedEdx) {
+void __fastcall
+AdvanceOneTimeAnimationFrameAndInvalidateTargetRect(TOneTimeAnimationLayout* oneTimeAnimation,
+                                                    int unusedEdx) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   if (oneTimeAnimation->completeFlag == 0) {

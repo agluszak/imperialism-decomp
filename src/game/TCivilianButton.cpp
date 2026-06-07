@@ -19,8 +19,7 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b410
-TCivilianButton::~TCivilianButton() {
-}
+TCivilianButton::~TCivilianButton() {}
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)
@@ -33,7 +32,7 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
   if (selectedValue != 0) {
     VCall_TRadioPictureButton_SlotA4(this, 1, 0);
     VCall_TRadioPictureButton_SlotA8(this, 1, 0);
-    
+
     char* globalMapState = reinterpret_cast<char**>(0x00693a10)[0]; // g_pGlobalMapState
     short mappedValue = reinterpret_cast<short(__fastcall*)(int)>(
         *reinterpret_cast<int*>(globalMapState + 0x118))(selectedValue);

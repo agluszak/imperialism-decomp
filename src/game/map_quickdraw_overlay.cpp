@@ -19,8 +19,7 @@ undefined4 ComputeStridedRecordAddress6C(void);
 int g_pGlobalUiRootController = 0;
 
 // FUNCTION: IMPERIALISM 0x00596100
-void __fastcall RenderWrappedMapQuickDrawOverlayFromStridedRecords(void* overlayView,
-                                                                   int unusedEdx,
+void __fastcall RenderWrappedMapQuickDrawOverlayFromStridedRecords(void* overlayView, int unusedEdx,
                                                                    int overlayRecord) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
@@ -34,9 +33,8 @@ void __fastcall RenderWrappedMapQuickDrawOverlayFromStridedRecords(void* overlay
   reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(&tileX,
                                                                                          &tileY);
 
-  int stridedRecord =
-      reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)((int)tileX,
-                                                                               (int)tileY);
+  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
+      (int)tileX, (int)tileY);
   if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
     VCall_MapOverlay_DrawForcedSlot1CC(overlayView, stridedRecord, dispatchContext);
     return;

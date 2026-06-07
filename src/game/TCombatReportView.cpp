@@ -13,9 +13,7 @@ void* __cdecl GetTCombatReportViewClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c8d0
-TCombatReportView::TCombatReportView() : TPictureButton() {
-}
+TCombatReportView::TCombatReportView() : TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058c900
-TCombatReportView::~TCombatReportView() {
-}
+TCombatReportView::~TCombatReportView() {}

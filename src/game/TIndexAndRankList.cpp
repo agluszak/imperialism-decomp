@@ -22,8 +22,12 @@ void* TIndexAndRankList::DestructCObArrayAndMaybeFree(byte freeSelfFlag) {
 
 TIndexAndRankList::~TIndexAndRankList() {}
 
-void* TIndexAndRankList::GetRuntimeClass() { return 0; }
-int TIndexAndRankList::AssertValidOrSlot08() { return 0; }
+void* TIndexAndRankList::GetRuntimeClass() {
+  return 0;
+}
+int TIndexAndRankList::AssertValidOrSlot08() {
+  return 0;
+}
 void TIndexAndRankList::DumpOrSlot0c() {}
 void TIndexAndRankList::SerializeOrSlot10() {}
 

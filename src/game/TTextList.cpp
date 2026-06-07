@@ -36,9 +36,11 @@ void* TTextList::GetTTextListClassNamePointer() {
 void TTextList::RenderTextListRowsWithSelectionHighlight() {
   int styleFlags1 = 0;
   int styleFlags2 = 0;
-  reinterpret_cast<void(__cdecl*)(int, int*)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6C, &styleFlags1);
-  reinterpret_cast<void(__cdecl*)(int, int*)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6A, &styleFlags2);
-  
+  reinterpret_cast<void(__cdecl*)(int, int*)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6C,
+                                                                                &styleFlags1);
+  reinterpret_cast<void(__cdecl*)(int, int*)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6A,
+                                                                                &styleFlags2);
+
   reinterpret_cast<void(__cdecl*)(int, int, int)>(
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0, 0x0e, 0x2b6c);
 
@@ -47,45 +49,46 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
     int startIdx = scrollOffset;
     TTextListItem* pItem = &items[startIdx];
     int idx = startIdx;
-    
+
     while (idx < totalItems) {
       CString tempString(pItem->text);
-      
+
       if (idx == selectedIndex) {
-        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)->ApplyLegendSplitSlot34(5);
-        
+        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)
+            ->ApplyLegendSplitSlot34(5);
+
         RECT rect;
         rect.left = 0;
         rect.top = currentY;
         rect.right = field34;
         rect.bottom = currentY + itemHeight;
-        
-        reinterpret_cast<void(__cdecl*)(RECT*)>(
-            thunk_FillRectWithQuickDrawBrushAndContextOffset)(&rect);
+
+        reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_FillRectWithQuickDrawBrushAndContextOffset)(
+            &rect);
       }
-      
+
       int textWidth = 0;
       reinterpret_cast<int(__cdecl*)(CString*, int*)>(
           thunk_MeasureTextExtentWithCachedQuickDrawStyle)(&tempString, &textWidth);
-      
+
       short textX = static_cast<short>(field34 / 2) - static_cast<short>(textWidth / 2);
-      
+
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags2);
-      reinterpret_cast<void(__cdecl*)(short, short)>(
-          thunk_SetQuickDrawTextOriginWithContextOffset)(textX + 1, currentY + 12);
-      reinterpret_cast<void(__fastcall*)(void*, int)>(
-          thunk_DrawTextWithCachedQuickDrawStyleState)(&tempString, 0);
-          
+      reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
+          textX + 1, currentY + 12);
+      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+          &tempString, 0);
+
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags1);
-      reinterpret_cast<void(__cdecl*)(short, short)>(
-          thunk_SetQuickDrawTextOriginWithContextOffset)(textX, currentY + 11);
-      reinterpret_cast<void(__fastcall*)(void*, int)>(
-          thunk_DrawTextWithCachedQuickDrawStyleState)(&tempString, 0);
-          
+      reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
+          textX, currentY + 11);
+      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+          &tempString, 0);
+
       currentY += itemHeight;
       idx++;
       pItem++;
-      
+
       if (itemHeight + currentY >= field38) {
         break;
       }
@@ -98,18 +101,18 @@ void TTextList::HandleTextListScrollSelectionChange(int* pScrollData) {
   int index = (pScrollData[1] / itemHeight) + scrollOffset;
   if (index < totalItems) {
     selectedIndex = index;
-    
+
     reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionChangeSlotE4();
-    
+
     RECT rect;
     reinterpret_cast<TTextList_Virtuals*>(this)->GetRectSlot12C(&rect);
-    
+
     RECT localRect;
     CopyRect(&localRect, &rect);
-    
+
     reinterpret_cast<TControl*>(this->field20)->InvalidateCityDialogRectRegion(&localRect, 1);
-        reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionConfirmedSlot13C();
-    
+    reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionConfirmedSlot13C();
+
     reinterpret_cast<TTextList_Virtuals*>(this->field20)->DispatchEventSlot40(4, this, 0);
   }
 }

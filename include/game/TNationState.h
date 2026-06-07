@@ -172,4 +172,3 @@ struct TNationStateEventMessageFlags {
 };
 
 #define TLOCALIZATION_VTABLE_SLOT(n) virtual void LocalizationDummy##n(void) = 0
-

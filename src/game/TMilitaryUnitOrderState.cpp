@@ -13,11 +13,7 @@
 // partial-construction state markers.
 // FUNCTION: IMPERIALISM 0x005c2df0
 TMilitaryUnitOrderState::TMilitaryUnitOrderState()
-    : name24(),
-      field_38(0),
-      field_3A(0),
-      field_3C(0),
-      field_40(0) {
+    : name24(), field_38(0), field_3A(0), field_3C(0), field_40(0) {
   field_1C = 1;
   field_34 = 0x1f4;
   field_36 = 0;

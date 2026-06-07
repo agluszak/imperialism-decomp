@@ -7,5 +7,4 @@ TRadioPictureButton::TRadioPictureButton() : TPictureButton() {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x94) = 0;
 }
 
-TRadioPictureButton::~TRadioPictureButton() {
-}
+TRadioPictureButton::~TRadioPictureButton() {}

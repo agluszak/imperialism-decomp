@@ -16,12 +16,10 @@ void* __cdecl GetTHQButtonClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b660
-THQButton::THQButton() : TPictureButton() {
-}
+THQButton::THQButton() : TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b690
-THQButton::~THQButton() {
-}
+THQButton::~THQButton() {}
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)

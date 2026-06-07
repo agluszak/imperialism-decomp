@@ -51,6 +51,6 @@ void __cdecl SnapshotHitRegionToClipCache(int* clipDescriptor) {
     CombineRgn(*reinterpret_cast<void**>(clipObject + 4), 0, 0, 5);
     return;
   }
-  CombineRgn(*reinterpret_cast<void**>(clipObject + 4),
-             *reinterpret_cast<void**>(regionSlot + 4), 0, 5);
+  CombineRgn(*reinterpret_cast<void**>(clipObject + 4), *reinterpret_cast<void**>(regionSlot + 4),
+             0, 5);
 }

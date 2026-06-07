@@ -17,8 +17,8 @@ namespace {
 
 // CDataExchange::PrepareCtrl(nIDC) -> HWND of the control (thiscall).
 inline HWND PrepareDdxControl(CDataExchange* pDX, undefined4 nIDC) {
-  return reinterpret_cast<HWND(__fastcall*)(CDataExchange*, int, undefined4)>(::PrepareCtrl)(
-      pDX, 0, nIDC);
+  return reinterpret_cast<HWND(__fastcall*)(CDataExchange*, int, undefined4)>(::PrepareCtrl)(pDX, 0,
+                                                                                             nIDC);
 }
 
 // CString::Empty() (thiscall).

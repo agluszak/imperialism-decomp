@@ -210,7 +210,7 @@ CString* CString::CopyFromCStr(const char* src_text) {
 
 // FUNCTION: IMPERIALISM 0x00605ae0
 void CString::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len,
-                                      const char* rhs_text) {
+                                 const char* rhs_text) {
   if ((lhs_len + rhs_len) != 0) {
     AllocateBufferForLength(lhs_len + rhs_len);
     reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
@@ -381,4 +381,3 @@ void CString::SetLengthAndTerminator(int new_length) {
   Header()->text_length = new_length;
   reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
 }
-

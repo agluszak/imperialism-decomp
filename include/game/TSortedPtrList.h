@@ -7,7 +7,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // VTABLE: IMPERIALISM 0x00649068
 class TSortedPtrList : public TIndexAndRankList {
- public:
+public:
   short relationType;
   short pad16;
 
@@ -16,7 +16,9 @@ class TSortedPtrList : public TIndexAndRankList {
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }
-  void operator delete(void* ptr) { (void)ptr; }
+  void operator delete(void* ptr) {
+    (void)ptr;
+  }
 
   static void* GetTSortedPtrListClassNamePointer();
   static TSortedPtrList* ConstructTSortedPtrListBaseState();

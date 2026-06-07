@@ -6,7 +6,6 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-
 // Concrete game list leaf: RefCountedObjectBase vfptr at +0, CPtrList state at
 // +4 through TPtrList, and the TList virtual interface described by TListObject.
 // VTABLE: IMPERIALISM 0x00648f78

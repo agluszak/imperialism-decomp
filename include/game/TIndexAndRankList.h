@@ -5,7 +5,7 @@
 
 // VTABLE: IMPERIALISM 0x00672eac
 class TIndexAndRankList : public CPtrArray {
- public:
+public:
   TIndexAndRankList();
   virtual ~TIndexAndRankList();
 

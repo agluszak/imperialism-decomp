@@ -29,7 +29,8 @@ inline void CopyMemory(void* dst, const void* src, int size) {
 }
 
 inline void MoveMemory(void* dst, const void* src, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src, size);
+  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src,
+                                                                                     size);
 }
 
 inline void ThrowArchiveException(int errorCode, void* context) {
@@ -106,7 +107,8 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
   src = reinterpret_cast<const char*>(src) + fullChunk;
   nCount -= fullChunk;
   if (m_bDirect != 0) {
-    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(1, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(1, m_nBufSize, &m_lpBufStart,
+                                                                   &m_lpBufMax);
     m_lpBufCur = m_lpBufStart;
   }
   CopyMemory(m_lpBufCur, src, nCount);
@@ -131,7 +133,8 @@ void CArchive::WriteObject(void* objectRef) {
   if (pOb == 0) {
     // NULL serializes as the reserved index 0.
     nIndex = 0;
-  } else if ((nIndex = *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pOb))) != 0) {
+  } else if ((nIndex = *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pOb))) !=
+             0) {
     // Already serialized: fall through and emit its handle index below.
   } else {
     // First time this object is seen: emit its class, register a handle, then
@@ -255,7 +258,8 @@ void CArchive::FillBuffer(unsigned int requiredBytes) {
     if (avail != 0) {
       reinterpret_cast<CFile_Virtuals*>(m_pFile)->SeekSlot30(-static_cast<int>(avail), 1);
     }
-    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart,
+                                                                   &m_lpBufMax);
     m_lpBufCur = m_lpBufStart;
   }
   if (static_cast<unsigned int>(m_lpBufMax - m_lpBufCur) < wanted) {
@@ -332,7 +336,8 @@ int CArchive::ReadBytesFromSerializedBuffer(void* destination, unsigned int requ
         m_lpBufCur = m_lpBufStart;
         m_lpBufMax = m_lpBufStart + filled;
       } else {
-        reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart, &m_lpBufMax);
+        reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart,
+                                                                       &m_lpBufMax);
         m_lpBufCur = m_lpBufStart;
       }
       unsigned int chunk = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);

@@ -10,9 +10,11 @@ extern "C" void* g_apTerrainTypeDescriptorTable[];
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 
 // Generic-form external thunks (rule 9), typed-cast at the callsite.
-undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void);   // 0x0040231a (descriptor thiscall)
-undefined4 thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName(void); // 0x004058f3 (this thiscall)
-undefined4 CompareAnsiStringsWithMbcsAwareness(void);                 // 0x005e7980 (int __cdecl(int,int))
+undefined4
+thunk_GenerateMappedFlavorTextByNationSlotField0C(void); // 0x0040231a (descriptor thiscall)
+undefined4
+thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName(void); // 0x004058f3 (this thiscall)
+undefined4 CompareAnsiStringsWithMbcsAwareness(void);        // 0x005e7980 (int __cdecl(int,int))
 
 // Real EH ctor. The scalar fields + the CString member displayName are member-initializers
 // (heuristic 92) so they emit in declaration order before the body, with the base
@@ -21,12 +23,8 @@ undefined4 CompareAnsiStringsWithMbcsAwareness(void);                 // 0x005e7
 // the old list head before the body re-points the head at this node.
 // FUNCTION: IMPERIALISM 0x00551430
 TAdmiral::TAdmiral(short terrainTypeIndex)
-    : terrainType(terrainTypeIndex),
-      field_8(0),
-      displayName(),
-      field_10(0),
-      next(g_pNavySecondaryOrderListHead),
-      prev(0) {
+    : terrainType(terrainTypeIndex), field_8(0), displayName(), field_10(0),
+      next(g_pNavySecondaryOrderListHead), prev(0) {
   g_pNavySecondaryOrderListHead = this;
   if (next != 0) {
     next->prev = this;

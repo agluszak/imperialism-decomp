@@ -11,7 +11,6 @@
 #pragma optimize("y", on)
 #endif
 
-
 extern "C" int __stdcall PtInRect(const RECT* rect, Point32 point);
 extern "C" void* __stdcall SetCursor(void* hCursor);
 
@@ -232,8 +231,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
       if (nationIndex == static_cast<short>(activeNationSlot)) {
         eventCode = 0x40;
       } else {
-        short relationTier = g_pDiplomacyTurnStateManager->GetRelationTierSlot70(
-            activeNationSlot, nationIndex);
+        short relationTier =
+            g_pDiplomacyTurnStateManager->GetRelationTierSlot70(activeNationSlot, nationIndex);
         eventCode = static_cast<short>(
             reinterpret_cast<unsigned char*>(kAddrDiplomacyRelationPaletteMap)[relationTier]);
       }
@@ -375,8 +374,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     do {
       if (*terrainDescriptors != 0) {
-        short eventCode = g_pDiplomacyTurnStateManager->GetRelationTypeSlot68(
-            activeNationSlot, terrainIndex);
+        short eventCode =
+            g_pDiplomacyTurnStateManager->GetRelationTypeSlot68(activeNationSlot, terrainIndex);
 
         maskState[0] = 0;
         maskState[1] = 0;
@@ -591,8 +590,8 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(P
   if (hit) {
     int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
     char valid = VCall_DiplomacyTurnState_ValidateActionSlot5C(
-        g_pDiplomacyTurnStateManager,
-        *reinterpret_cast<short*>(self + 0x90), *reinterpret_cast<short*>(self + 0xc2), actionCode);
+        g_pDiplomacyTurnStateManager, *reinterpret_cast<short*>(self + 0x90),
+        *reinterpret_cast<short*>(self + 0xc2), actionCode);
 
     short cursorId;
     if (valid == 0) {
@@ -729,7 +728,8 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
       destRect.right = iconRect->right + 1;
       destRect.bottom = iconRect->bottom + 1;
       if (tierValue == selectedTier) {
-        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)->ApplyLegendSplitSlot34(6);
+        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)
+            ->ApplyLegendSplitSlot34(6);
       } else {
         SetQuickDrawFillColor(0xffffff);
       }

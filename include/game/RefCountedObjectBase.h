@@ -2,7 +2,6 @@
 
 #include "decomp_types.h"
 
-
 // Game object root used by the TPtrList/TList wrapper family. This is distinct
 // from MFC CObject: list wrappers store this vfptr at +0 and embed the MFC
 // CPtrList engine at +4.

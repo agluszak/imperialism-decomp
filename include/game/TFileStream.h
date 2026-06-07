@@ -9,10 +9,10 @@ class CString;
 
 // VTABLE: IMPERIALISM 0x00649230
 class TFileStream : public TStream {
- public:
+public:
   // Provisional name. Points at a wrapper object whose +4 field is the
   // backing CArchive used by the serialization wrappers below.
-  void* backingArchiveOrStream;  // name only after grounding
+  void* backingArchiveOrStream; // name only after grounding
 
   void* GetRuntimeClass() override;
   TFileStream();

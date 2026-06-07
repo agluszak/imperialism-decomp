@@ -5,8 +5,6 @@ unsigned int __cdecl thunk_ConstructPictureResourceEntryBase(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048efc0
-TPictureButton::TPictureButton() : TControl() {
-}
+TPictureButton::TPictureButton() : TControl() {}
 
-TPictureButton::~TPictureButton() {
-}
+TPictureButton::~TPictureButton() {}

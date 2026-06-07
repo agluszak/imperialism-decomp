@@ -18,5 +18,4 @@ TPlacard::TPlacard() : TPictureButton() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ba40
-TPlacard::~TPlacard() {
-}
+TPlacard::~TPlacard() {}

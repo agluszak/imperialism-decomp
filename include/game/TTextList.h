@@ -32,7 +32,9 @@ public:
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }
-  void operator delete(void* ptr) { (void)ptr; }
+  void operator delete(void* ptr) {
+    (void)ptr;
+  }
 
   static TTextList* CreateTTextListInstance();
   static void* GetTTextListClassNamePointer();

@@ -100,7 +100,8 @@ void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh()
 
   if (currentMonthAtA8 < 0) {
     int epochSeconds;
-    reinterpret_cast<void(__cdecl*)(int*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(&epochSeconds);
+    reinterpret_cast<void(__cdecl*)(int*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(
+        &epochSeconds);
     RuntimeLocalTime* tm = reinterpret_cast<RuntimeLocalTime*(__cdecl*)(const int*)>(
         ConvertEpochSecondsToLocalTmWithDstAdjust)(&epochSeconds);
 

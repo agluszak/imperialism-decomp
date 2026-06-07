@@ -5,7 +5,7 @@
 #include "game/CObject.h"
 
 class CPtrArray : public CObject {
- public:
+public:
   void** entries;
   int count;
   int capacity;

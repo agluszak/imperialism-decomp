@@ -64,11 +64,11 @@ static __inline int SliderScaledValue(TTwoPicSliderLayout* slider, int scale) {
   }
   return (adjustedSplit * scale) / static_cast<int>(static_cast<short>(slider->heightAt38 - 0x0c));
 }
-}
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0056e370
-void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
-    TTwoPicSliderLayout* slider, int unusedEdx) {
+void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(TTwoPicSliderLayout* slider,
+                                                                  int unusedEdx) {
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::Draw.
   (void)unusedEdx;
   if ((slider->lowerSurfaceAt84 != 0) && (slider->upperSurfaceAt88 != 0) &&
@@ -83,16 +83,16 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
 
     reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(
-        reinterpret_cast<void*>(slider->lowerSurfaceAt84 + 4),
-        reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4), &blitRect, &blitRect, 0, 0);
+        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->lowerSurfaceAt84 + 4),
+                                          reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4),
+                                          &blitRect, &blitRect, 0, 0);
 
     blitRect.bottom = blitRect.top;
     blitRect.top = 0;
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(
-        reinterpret_cast<void*>(slider->upperSurfaceAt88 + 4),
-        reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4), &blitRect, &blitRect, 0, 0);
+        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->upperSurfaceAt88 + 4),
+                                          reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4),
+                                          &blitRect, &blitRect, 0, 0);
 
     blitRect.right = slider->widthAt34;
     blitRect.bottom = slider->heightAt38;
@@ -101,8 +101,7 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
         BlitRectWithOptionalTransparency)(
         reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4),
-        reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0,
-        0);
+        reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
 
     if (slider->splitPositionAt90 < 0x0c) {
       CString statusText;
@@ -111,8 +110,8 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
       int textMainColor = 0;
 
       void** localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
-      reinterpret_cast<void(__cdecl*)(int, int, int*)>(localizationTable[0x21])(
-          0x2743, 0x3b, statusTextRef);
+      reinterpret_cast<void(__cdecl*)(int, int, int*)>(localizationTable[0x21])(0x2743, 0x3b,
+                                                                                statusTextRef);
       reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
       reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
           0x2b6c, reinterpret_cast<int>(&textShadowColor));
@@ -141,8 +140,7 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(
 
 // FUNCTION: IMPERIALISM 0x0056e640
 void __fastcall TrackTwoPicSliderMouseAndRefresh(TTwoPicSliderLayout* slider, int unusedEdx,
-                                                 int inputPhase, void* param2,
-                                                 int pointRecord) {
+                                                 int inputPhase, void* param2, int pointRecord) {
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
   (void)unusedEdx;
   (void)param2;
@@ -167,10 +165,9 @@ void __fastcall TrackTwoPicSliderMouseAndRefresh(TTwoPicSliderLayout* slider, in
 
       if (slider->modeAt94 == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);
-        reinterpret_cast<void(__cdecl*)(int)>(WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0)(
-            volumeScalar);
-        *reinterpret_cast<short*>(kAddrLocalizationTable + 0x4e) =
-            static_cast<short>(volumeScalar);
+        reinterpret_cast<void(__cdecl*)(int)>(
+            WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0)(volumeScalar);
+        *reinterpret_cast<short*>(kAddrLocalizationTable + 0x4e) = static_cast<short>(volumeScalar);
       }
     }
   }

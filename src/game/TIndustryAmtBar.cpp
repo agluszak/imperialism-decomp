@@ -9,8 +9,6 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-
-
 // FUNCTION: IMPERIALISM 0x00589110
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
   TIndustryAmtBar* amountBar =
@@ -27,19 +25,18 @@ void* __cdecl GetTIndustryAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005891d0
-TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {
-}
+TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 
 // FUNCTION: IMPERIALISM 0x00589210
-TIndustryAmtBar::~TIndustryAmtBar() {
-}
+TIndustryAmtBar::~TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   // ORIG_CALLCONV: __thiscall
-  NationState* nationState =
-      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
+  NationState* nationState = reinterpret_cast<NationState**>(
+      kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  NationCityTradeState* cityState =
+      nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
@@ -103,4 +100,3 @@ void TIndustryAmtBar::DrawAmt() {
     }
   }
 }
-

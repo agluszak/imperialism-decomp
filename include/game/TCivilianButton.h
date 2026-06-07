@@ -13,6 +13,6 @@ public:
 
   TCivilianButton();
   virtual ~TCivilianButton();
-  
+
   void SetSelectionAndEnableByMappedValue(int selectedValue);
 };
