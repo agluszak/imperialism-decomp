@@ -1,5 +1,14 @@
 #pragma once
 
+#include "decomp_types.h"
+
+undefined4 thunk_InitializeTForeignMinisterStateAndCounters(void);
+undefined4 thunk_InitializeCityInteriorMinister(void);
+undefined4 thunk_InitializeTMinisterBaseOrderArrayMetrics(void);
+undefined4 thunk_ConstructTForeignMinister(void);
+undefined4 thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void);
+undefined4 thunk_ConstructTDefenseMinisterBaseState(void);
+
 class TMinister {
 public:
   virtual void dummy0() = 0;

@@ -153,12 +153,7 @@ undefined4 thunk_InitializeNationStateIdentityAndOwnedRegionList(void);
 undefined4 thunk_InitializeCityModel(void);
 undefined4 thunk_InitializeCityProductionState(void);
 undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void);
-undefined4 thunk_InitializeTForeignMinisterStateAndCounters(void);
-undefined4 thunk_InitializeCityInteriorMinister(void);
-undefined4 thunk_InitializeTMinisterBaseOrderArrayMetrics(void);
-undefined4 thunk_ConstructTForeignMinister(void);
-undefined4 thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void);
-undefined4 thunk_ConstructTDefenseMinisterBaseState(void);
+
 undefined4 thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(void);
 undefined4 thunk_ConstructFrogCityMarker(void);
 undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
