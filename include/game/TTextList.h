@@ -5,8 +5,6 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-extern "C" char g_vtblTTextList;
-
 struct TTextListItem {
   char text[64];
 };
@@ -21,9 +19,7 @@ public:
   short itemHeight;
   char padding_106e[2];
 
-  TTextList() {
-    this->TView::thunk_ConstructUiResourceEntryBase();
-    *reinterpret_cast<void**>(this) = &g_vtblTTextList;
+  TTextList() : TView() {
     itemHeight = 0x10;
     totalItems = 0;
     scrollOffset = 0;

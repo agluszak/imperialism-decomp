@@ -859,14 +859,6 @@ undefined4 GetTButtonClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TButton::ConstructTButtonBaseState
-// ghidra_proto void * __cdecl ConstructTButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x0048ece0
-undefined4 ConstructTButtonBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TButton::DestructTButtonAndMaybeFree
 // ghidra_proto void * __thiscall DestructTButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0048edd0

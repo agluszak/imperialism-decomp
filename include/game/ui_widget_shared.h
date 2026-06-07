@@ -35,10 +35,6 @@ public:
     reinterpret_cast<void(__fastcall*)(void*)>(::ConstructTUberClusterBaseState)(self);
   }
 
-  static __inline void ConstructUiResourceEntryBase(void* self) {
-    reinterpret_cast<TView*>(self)->thunk_ConstructUiResourceEntryBase();
-  }
-
   static __inline void ConstructUiResourceEntryType4B0C0(void* self) {
     reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiResourceEntryType4B0C0)(self);
   }
@@ -46,10 +42,6 @@ public:
   static __inline void ConstructUiClickablePictureResourceEntry(void* self) {
     reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiClickablePictureResourceEntry)(
         self);
-  }
-
-  static __inline void ConstructUiCommandTagResourceEntryBase(void* self) {
-    reinterpret_cast<TControl*>(self)->thunk_ConstructUiCommandTagResourceEntryBase();
   }
 
   static __inline void ConstructPictureResourceEntryBase(void* self) {

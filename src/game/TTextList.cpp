@@ -1,9 +1,10 @@
 #include "game/TTextList.h"
+#include "game/TControl.h"
 #include "game/generated/vcall_facades.h"
 #include "game/TTextList_Virtuals.h"
-#include "game/ui_widget_shared.h"
 #include "game/UiRuntimeContext.h"
 #include "game/UiRuntimeContext_Virtuals.h"
+#include "game/win_rect.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

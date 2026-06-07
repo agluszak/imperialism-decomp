@@ -3,38 +3,40 @@
 #include "decomp_types.h"
 #include "game/TView.h"
 
+#include <new>
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 
 namespace {
 
-// GLOBAL: IMPERIALISM 0x667d08
-char g_vtblTStratReportView;
 // GLOBAL: IMPERIALISM 0x6630e8
 char g_pClassDescTStratReportView;
 
-struct StratReportViewState {
-  void* vftable;
-  char pad_04[0x60];
-};
-
-class RuntimeBridge {
+// VTABLE: IMPERIALISM 0x667d08
+class TStratReportView : public TView {
 public:
-  static __inline void ConstructUiResourceEntryBase(void* self) {
-    reinterpret_cast<TView*>(self)->thunk_ConstructUiResourceEntryBase();
+  char pad_60_to_63[0x04];
+
+  TStratReportView();
+
+  void* operator new(unsigned int size) {
+    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
+  }
+  void operator delete(void* ptr) {
+    (void)ptr;
   }
 };
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058e330
-StratReportViewState* __cdecl CreateTStratReportViewInstance(void) {
-  StratReportViewState* view =
-      reinterpret_cast<StratReportViewState*>(AllocateWithFallbackHandler(100));
+TStratReportView* __cdecl CreateTStratReportViewInstance(void) {
+  TStratReportView* view =
+      reinterpret_cast<TStratReportView*>(AllocateWithFallbackHandler(sizeof(TStratReportView)));
   if (view != 0) {
-    RuntimeBridge::ConstructUiResourceEntryBase(view);
-    view->vftable = reinterpret_cast<void*>(&g_vtblTStratReportView);
+    ::new (view) TStratReportView();
   }
   return view;
 }
@@ -45,16 +47,12 @@ void* __cdecl GetTStratReportViewClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058e3c0
-StratReportViewState* __fastcall ConstructTStratReportViewBaseState(StratReportViewState* view) {
-  RuntimeBridge::ConstructUiResourceEntryBase(view);
-  view->vftable = reinterpret_cast<void*>(&g_vtblTStratReportView);
-  return view;
-}
+TStratReportView::TStratReportView() : TView() {}
 
 // FUNCTION: IMPERIALISM 0x0058e3f0
-StratReportViewState* __fastcall DestructTStratReportViewAndMaybeFree(StratReportViewState* view,
-                                                                      int unusedEdx,
-                                                                      unsigned char freeSelfFlag) {
+TStratReportView* __fastcall DestructTStratReportViewAndMaybeFree(TStratReportView* view,
+                                                                  int unusedEdx,
+                                                                  unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
   if ((freeSelfFlag & 1) != 0) {

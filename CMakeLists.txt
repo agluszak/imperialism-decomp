@@ -47,6 +47,8 @@ add_executable(Imperialism
     src/game/THQButton.cpp
     src/game/TPictureButton.cpp
     src/game/TRadioPictureButton.cpp
+    src/game/TButton.cpp
+    src/game/TStatusButton.cpp
     src/game/TPlacard.cpp
     src/game/TArmyPlacard.cpp
     src/game/TNumberedArrowButton.cpp

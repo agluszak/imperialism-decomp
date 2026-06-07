@@ -12,6 +12,7 @@
 #include "game/TIndustryAmtBar.h"
 #include "game/TRailAmtBar.h"
 #include "game/TShipAmtBar.h"
+#include "game/TStatusButton.h"
 
 typedef void code(void);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
@@ -138,9 +139,6 @@ const unsigned int kVtableTShipyardCluster = 0x00666760;
 const unsigned int kAddrClassDescTShipyardCluster = 0x00662ff8;
 const unsigned int kVtableTUnitToolbarCluster = 0x00664d38;
 const unsigned int kAddrClassDescTUnitToolbarCluster = 0x00662ed8;
-const unsigned int kVtableTButton = 0x0064a2b8;
-const unsigned int kVtableTStatusButton = 0x00664f68;
-const unsigned int kAddrClassDescTStatusButton = 0x00662ef0;
 const unsigned int kVtableTCityBarCluster = 0x00665190;
 const unsigned int kAddrClassDescTCityBarCluster = 0x00662f08;
 const unsigned int kAddrDecimalFormat = 0x0069430C;
@@ -254,14 +252,6 @@ struct ApplicationUiRootControllerState {
 struct UnitToolbarClusterState {
   void* vftable;
   char pad_04[0x84];
-};
-
-struct StatusButtonState {
-  void* vftable;
-  char pad_04[0x18];
-  int controlTagAt1c;
-  void* ownerPanelAt20;
-  char pad_24[0x60];
 };
 
 struct CityBarClusterState {
@@ -683,39 +673,18 @@ void UpdateTradeResourceSelectionByIndex(void* self, int nResourceIndex)
 }
 
 // FUNCTION: IMPERIALISM 0x00586280
-StatusButtonState* __cdecl CreateTStatusButtonInstance(void) {
-  StatusButtonState* button =
-      reinterpret_cast<StatusButtonState*>(AllocateWithFallbackHandler(0x84));
-  if (button != 0) {
-    reinterpret_cast<TControl*>(button)->thunk_ConstructUiCommandTagResourceEntryBase();
-    button->vftable = reinterpret_cast<void*>(kVtableTButton);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
-    button->vftable = reinterpret_cast<void*>(kVtableTStatusButton);
-  }
-  return button;
+TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
+  return new TStatusButton();
 }
 
 // FUNCTION: IMPERIALISM 0x00586310
 void* __cdecl GetTStatusButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTStatusButton);
-}
-
-// FUNCTION: IMPERIALISM 0x00586330
-StatusButtonState* __fastcall ConstructTStatusButtonBaseState(StatusButtonState* button,
-                                                              int unusedEdx) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  reinterpret_cast<TControl*>(button)->thunk_ConstructUiCommandTagResourceEntryBase();
-  button->vftable = reinterpret_cast<void*>(kVtableTButton);
-  TemporarilyClearAndRestoreUiInvalidationFlag();
-  button->vftable = reinterpret_cast<void*>(kVtableTStatusButton);
-  return button;
+  return reinterpret_cast<void*>(&g_pClassDescTStatusButton);
 }
 
 // FUNCTION: IMPERIALISM 0x005863b0
-StatusButtonState* __fastcall DestructTStatusButtonAndMaybeFree(StatusButtonState* button,
-                                                                int unusedEdx,
-                                                                unsigned char freeSelfFlag) {
+TStatusButton* __fastcall DestructTStatusButtonAndMaybeFree(TStatusButton* button, int unusedEdx,
+                                                            unsigned char freeSelfFlag) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
@@ -726,8 +695,8 @@ StatusButtonState* __fastcall DestructTStatusButtonAndMaybeFree(StatusButtonStat
 }
 
 // FUNCTION: IMPERIALISM 0x00586400
-void __fastcall HandleCityDialogSelectionAndBackControlReset(StatusButtonState* button,
-                                                             int unusedEdx, int selectedIndex) {
+void __fastcall HandleCityDialogSelectionAndBackControlReset(TStatusButton* button, int unusedEdx,
+                                                             int selectedIndex) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
 
@@ -740,13 +709,13 @@ void __fastcall HandleCityDialogSelectionAndBackControlReset(StatusButtonState* 
       }
 
       TradeControl* backControl =
-          CallResolveControlByTagSlot94(button->ownerPanelAt20, kControlTagBack);
+          CallResolveControlByTagSlot94(button->OwnerPanel(), kControlTagBack);
       if (backControl != 0) {
         CallVoidSlot1C(backControl);
-        CallVoidSlotE4(button->ownerPanelAt20);
+        CallVoidSlotE4(button->OwnerPanel());
       }
 
-      if (button->controlTagAt1c != kControlTagArms && button->controlTagAt1c == kControlTagClos) {
+      if (button->ControlTag() != kControlTagArms && button->ControlTag() == kControlTagClos) {
         if (g_pActiveCityDialogLegendSelectionOwner != 0) {
           CallVoidSlotA0(g_pActiveCityDialogLegendSelectionOwner);
           g_pActiveCityDialogLegendSelectionOwner = 0;

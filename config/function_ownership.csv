@@ -179,6 +179,7 @@ address|target_cpp|ownership|note
 48a9d0|src/game/TView.cpp|manual|marker_sync
 48ab70|src/game/noop_slots.cpp|manual|marker_sync
 48e520|src/game/TControl.cpp|manual|marker_sync
+48ece0|src/game/TButton.cpp|manual|marker_sync
 48efc0|src/game/TPictureButton.cpp|manual|marker_sync
 48f710|TStaticText|manual|promoted_from_autogen
 48f870|TStaticText|manual|promoted_from_autogen
@@ -563,7 +564,7 @@ address|target_cpp|ownership|note
 586170|src/game/trade_screen.cpp|manual|marker_sync
 586280|src/game/trade_screen.cpp|manual|marker_sync
 586310|src/game/trade_screen.cpp|manual|marker_sync
-586330|src/game/trade_screen.cpp|manual|marker_sync
+586330|src/game/TStatusButton.cpp|manual|marker_sync
 5863b0|src/game/trade_screen.cpp|manual|marker_sync
 586400|src/game/trade_screen.cpp|manual|marker_sync
 586590|src/game/trade_screen.cpp|manual|marker_sync

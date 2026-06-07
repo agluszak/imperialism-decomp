@@ -4,6 +4,7 @@
 
 #include "decomp_types.h"
 #include "game/Point32.h"
+#include "game/TCivDescription.h"
 #include "game/TView.h"
 #include "game/CString.h"
 
@@ -21,8 +22,6 @@ undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
 namespace {
 
-// GLOBAL: IMPERIALISM 0x668130
-char g_vtblTCivDescription;
 // GLOBAL: IMPERIALISM 0x663118
 char g_pClassDescTCivDescription;
 const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
@@ -32,15 +31,7 @@ const unsigned int kAddrLocalizationTable = 0x006A20F8;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrCivilianLegendSelectionCountsBySlot = 0x006A4490;
 
-struct CivDescriptionState {
-  void* vftable;
-  unsigned char pad_04_to_5f[0x5c];
-  short selectedCivilianClass;
-  unsigned char pad_62_to_6b[0x0a];
-  unsigned char legendInitialized;
-  unsigned char pad_6d_to_6f[0x03];
-  unsigned char pad_70_to_16f[0x100];
-};
+typedef TCivDescription CivDescriptionState;
 
 enum ECivilianClassId {
   kCivilianClass_Miner = 0,
@@ -107,15 +98,7 @@ UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* con
 
 // FUNCTION: IMPERIALISM 0x0058f050
 CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
-  CivDescriptionState* civDescription =
-      reinterpret_cast<CivDescriptionState*>(AllocateWithFallbackHandler(0x170));
-  if (civDescription != 0) {
-    reinterpret_cast<TView*>(civDescription)->thunk_ConstructUiResourceEntryBase();
-    civDescription->vftable = reinterpret_cast<void*>(&g_vtblTCivDescription);
-    civDescription->selectedCivilianClass = -1;
-    civDescription->legendInitialized = 0;
-  }
-  return civDescription;
+  return new TCivDescription();
 }
 
 // FUNCTION: IMPERIALISM 0x0058f0f0
@@ -153,7 +136,7 @@ void __fastcall UpdateCivilianOrderClassAndRefreshTargetCounts(CivilianClassCach
           thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation)(context, 0, orderState);
       break;
     }
-    reinterpret_cast<void(__fastcall*)(void*)>(reinterpret_cast<int*>(context->vftable)[0x39])(
+    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x39])(
         context);
   }
 }
@@ -376,13 +359,13 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
 
   selectedClass = context->selectedCivilianClass;
   if (selectedClass == kCivilianClass_Prospector) {
-    reinterpret_cast<void(__fastcall*)(void*)>(reinterpret_cast<int*>(context->vftable)[0x68])(
+    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x68])(
         context);
   } else if (selectedClass == kCivilianClass_Engineer) {
-    reinterpret_cast<void(__fastcall*)(void*)>(reinterpret_cast<int*>(context->vftable)[0x69])(
+    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x69])(
         context);
   } else if (selectedClass != kCivilianClass_Developer) {
-    reinterpret_cast<void(__fastcall*)(void*)>(reinterpret_cast<int*>(context->vftable)[0x6a])(
+    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x6a])(
         context);
   }
 
