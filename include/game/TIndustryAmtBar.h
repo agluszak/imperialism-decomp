@@ -1,12 +1,12 @@
 #pragma once
 
 #include "game/TAmtBar.h"
-struct TradeCommodityMetricRecord; // for TradeCommodityMetricRecord if needed
+#include "game/TradeCommodityMetricRecord.h"
 
 // VTABLE: IMPERIALISM 0x666110
 class TIndustryAmtBar : public TAmtBar {
 public:
-  struct TradeCommodityMetricRecord* selectedMetricRecord;
+  TradeCommodityMetricRecord* selectedMetricRecord;
 
   TIndustryAmtBar();
   virtual ~TIndustryAmtBar();

@@ -1,19 +1,11 @@
-// Included by src/game/trade_screen.cpp.
-// Contains trade-screen core logic functions (address-ordered).
-
-// GHIDRA_NAME InitializeTradeSellControlState
-// GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
-// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
-/* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
-   then initializes move/bar controls baseline. */
-
 #include "game/TRailAmtBar.h"
+#include "game/trade_quickdraw.h"
+#include "game/TradeCommodityMetricRecord.h"
+#include "game/NationState.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
-#include "game/win_rect.h"
+#include "game/quickdraw_guards.h"
 #include <new>
 
 // FUNCTION: IMPERIALISM 0x00589ed0
@@ -40,11 +32,11 @@ TRailAmtBar::~TRailAmtBar() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a020
-void TRailAmtBarState::DoPostCreate(TDocument* document) {
+void TRailAmtBar::DoPostCreate(TDocument* document) {
   NationState* nationState =
       reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
   NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
-  int summaryTag = ownerPanelContext()->summaryTag;
+  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
 
   short recordIndex = 0;
   if ((unsigned int)summaryTag < 0x706f7076) {
@@ -82,19 +74,21 @@ void TRailAmtBarState::DoPostCreate(TDocument* document) {
     stepOrCurrentValue = 9999;
   } else {
     short selectedStep = selectedMetricRecord->QueryStepValue();
-    stepOrCurrentValue = (short)(((int)selectedStep * barRangeRaw()) / (int)productionOrCapValue);
+    stepOrCurrentValue = (short)(((int)selectedStep * this->field34) / (int)productionOrCapValue);
   }
   auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue = (short)((barRangeRaw() * (int)selectedMetricRecord->controlValue) /
+    rangeOrMaxValue = (short)((this->field34 * (int)selectedMetricRecord->controlValue) /
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
   this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
-void TRailAmtBarState::DrawAmt() {
+
+// FUNCTION: IMPERIALISM 0x0058a1c0
+void TRailAmtBar::DrawAmt() {
   QuickDrawSurfaceGuard surface;
   TradeControl* control = reinterpret_cast<TradeControl*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
@@ -131,35 +125,4 @@ void TRailAmtBarState::DrawAmt() {
       }
     }
   }
-
 }
-
-// FUNCTION: IMPERIALISM 0x0058a3b0
-void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
-  QuickDrawSurfaceGuard surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
-
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
-      int boundsRect[4] = {0, 0, 0, 0};
-      control->QueryBounds(boundsRect);
-      control->CtrlSlot78();
-
-      RECT invalidRect;
-      invalidRect.left = boundsRect[0];
-      invalidRect.top = boundsRect[1];
-      invalidRect.right =
-          boundsRect[0] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect.bottom =
-          boundsRect[1] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
-          &invalidRect, 1);
-    }
-  }
-
-}
-

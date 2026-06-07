@@ -1,4 +1,5 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
+include/game/trade_quickdraw.h|4|0|0|0|4
 src/game/TCapacityOrder.cpp|0|1|0|0|1
 src/game/TCityProductionView.cpp|0|0|0|3|3
 src/game/TCivDescription.cpp|0|2|0|0|2
@@ -12,5 +13,4 @@ src/game/TTwoPicSlider.cpp|0|0|0|2|2
 src/game/diplomacy_state.cpp|0|0|0|3|3
 src/game/map_quickdraw_overlay.cpp|0|0|0|6|6
 src/game/object_pool.cpp|0|5|0|0|5
-src/game/trade_screen.cpp|30|0|0|0|30
-include/game/trade_quickdraw.h,1
+src/game/trade_screen.cpp|28|0|0|0|28

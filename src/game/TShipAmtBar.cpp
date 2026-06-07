@@ -1,16 +1,16 @@
-// Included by src/game/trade_screen.cpp.
-// Contains trade amount-bar class wrappers (address-ordered).
-
-#pragma optimize("y", on)
-
-
-
 #include "game/TShipAmtBar.h"
+#include "game/trade_quickdraw.h"
+#include "game/TradeCommodityMetricRecord.h"
+#include "game/NationState.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
-#include "game/win_rect.h"
+#include "game/quickdraw_guards.h"
 #include <new>
+
+#pragma optimize("y", on)
+
+extern "C" char g_pClassDescTShipAmtBar;
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
@@ -43,13 +43,15 @@ void TShipAmtBar::DoPostCreate(TDocument* document) {
   selectedMetricRecord = cityState->specialCommodityRecordAt190;
   short productionCap =
       *(short*)(reinterpret_cast<char*>(cityState->scenarioTradeDescriptor) + 0x1c);
-  stepOrCurrentValue = (short)barRangeRaw();
+  stepOrCurrentValue = (short)this->field34;
   auxValueA = productionCap;
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)(0 / (int)productionCap);
   this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
-void TShipAmtBarState::DrawAmt() {
+
+// FUNCTION: IMPERIALISM 0x0058ac80
+void TShipAmtBar::DrawAmt() {
   QuickDrawSurfaceGuard surface;
   TradeControl* control = reinterpret_cast<TradeControl*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
@@ -68,9 +70,23 @@ void TShipAmtBarState::DrawAmt() {
         short styleValueAt66 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x66);
         SetQuickDrawTextOrigin(0, 1);
         ApplyQuickDrawStyleFromRuntime(styleValueAt66);
-      reinterpret_cast<void*>(*reinterpret_cast<int*>(strategicMapViewSystem + 0x66c) + 4),
-      reinterpret_cast<void*>(activeQuickDrawSurfaceContext + 4), &srcRect, &dstRect, 0x24, 0);
+        SetQuickDrawStylePair(1, 4);
+        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
 
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+      short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
+      short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      SetQuickDrawTextOrigin(overlayOffsetX, 0);
+      SetQuickDrawFillColor(0);
+      reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
 }
-

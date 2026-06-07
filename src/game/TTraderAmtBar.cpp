@@ -1,3 +1,6 @@
+#include "game/trade_quickdraw.h"
+#include "game/TradeCommodityMetricRecord.h"
+#include "game/NationState.h"
 #pragma once
 
 #include "decomp_types.h"
@@ -13,7 +16,6 @@
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 ResetQuickDrawStrokeState(void);
-void SnapshotHitRegionToClipCache(int* clipDescriptor);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
@@ -22,8 +24,7 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
 
-const int kControlTagSell = 0x53656c6c;
-const unsigned int kAddrGlobalNationStates = 0x006A4370;
+extern "C" char g_pClassDescTTraderAmtBar;
 
 struct TradeControlOwnerSlotView {
   virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
@@ -70,13 +71,7 @@ struct UiRuntimeStyleView {
   virtual void ApplyQuickDrawStyleSlot34(int styleIndex) = 0;
 };
 
-static __inline NationState* GetActiveNationState(void) {
-  return reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-}
 
-static __inline TradeControl* ResolveOwnerControl(void* owner, int controlTag) {
-  return reinterpret_cast<TradeControlResolverView*>(owner)->ResolveControlByTagSlot94(controlTag);
-}
 
 static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
   return reinterpret_cast<TradeNationMetricView*>(nationState)->QueryNationMetricBySlot78(
@@ -88,31 +83,6 @@ static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, sh
       metricSlot);
 }
 
-static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {
-  if (g_pUiRuntimeContext == 0) {
-    return;
-  }
-  reinterpret_cast<UiRuntimeStyleView*>(g_pUiRuntimeContext)->ApplyQuickDrawStyleSlot34(
-      styleIndex);
-}
-
-static __inline void SetQuickDrawTextOrigin(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(x,
-                                                                                                y);
-}
-
-static __inline void DrawCenteredGuideLine(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(x, y);
-}
-
-static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(
-      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty)(styleA, styleB);
-}
-
-static __inline void* CallOwnerPanelSlot58(void* self) {
-  return reinterpret_cast<TradeControlOwnerSlotView*>(self)->OwnerPanelSlot58();
-}
 
 const int kScenarioRecordTags[] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
@@ -145,9 +115,8 @@ TTraderAmtBar::~TTraderAmtBar() {
 
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(TDocument* document) {
-  TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
   NationState* nationState = GetActiveNationState();
-  int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(state->ownerContext) + 0x1c);
+  int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
 
   short recordIndex = 0;
   while (recordIndex < 0x11) {
@@ -162,7 +131,7 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
     stepOrCurrentValue = 0;
   } else {
     short currentValue = CallQueryNationMetricBySlot78(nationState, recordIndex);
-    stepOrCurrentValue = (short)(((int)currentValue * state->barRangeRaw) / (int)tradeCapacity);
+    stepOrCurrentValue = (short)((((int)tradeCapacity - (int)currentValue) * this->field34) / (int)tradeCapacity);
   }
 
   short gaugeValue = 0;
@@ -172,7 +141,7 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
   if (tradeCapacity == 0) {
     rangeOrMaxValue = 0;
   } else {
-    rangeOrMaxValue = (short)((state->barRangeRaw * (int)gaugeValue) / (int)tradeCapacity);
+    rangeOrMaxValue = (short)((this->field38 * (int)gaugeValue) / (int)tradeCapacity);
   }
 
   auxValueA = tradeCapacity;
@@ -187,9 +156,8 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
     NationState* nationState = GetActiveNationState();
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
-      TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
-      if ((int)requestedValue < (state->barRangeRaw / (int)tradeCapacity)) {
-        TradeControl* sellControl = ResolveOwnerControl(state->ownerContext, kControlTagSell);
+      if ((int)requestedValue < (this->field38 / (int)tradeCapacity)) {
+        TradeControl* sellControl = ResolveOwnerControl(reinterpret_cast<void*>(this->field20), kControlTagSell);
         if (sellControl != 0) {
           result = 1;
         }
@@ -197,6 +165,12 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
     }
   }
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x0058b040
+void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
+  this->field34 = scaleValue;
+  this->field38 = ratioValue;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b0f0

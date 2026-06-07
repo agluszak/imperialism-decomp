@@ -11,17 +11,22 @@ void * __cdecl CreateTStaticTextInstance(void) {
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F870
-void * __cdecl GetTStaticTextClassNamePointer(void) {
+void* __cdecl GetTStaticTextClassNamePointer(void) {
   return &g_pClassDescTStaticText;
+}
+
+void* TStaticText::GetTEventHandlerClassNamePointer() {
+  return GetTStaticTextClassNamePointer();
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F890
 TStaticText::TStaticText()
     : TControl(),
-      field84(),
-      field16_0x88((void*)0xffffffff),
-      field17_0x8c(0),
-      field18_0x90(0) {
+      text(),
+      field88((void*)0xffffffff),
+      field8C(0),
+      field90(0) {
+  hasCommandTagResource = 13;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FC30

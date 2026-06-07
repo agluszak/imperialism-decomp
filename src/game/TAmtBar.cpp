@@ -2,6 +2,8 @@
 // Contains trade-screen core logic functions (address-ordered).
 
 #include <new>
+#include "game/TAmtBar.h"
+#include "game/trade_quickdraw.h"
 
 #pragma optimize("y", on)
 
@@ -130,7 +132,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
 
 // FUNCTION: IMPERIALISM 0x00588ff0
-void TradeMovePanelContext::HandleTradeMoveStepCommand(int commandId, void* eventArg,
+void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg,
                                                        int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   void* owner = this;

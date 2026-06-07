@@ -6,11 +6,14 @@
 #include "game/CString.h"
 #include "game/ui_widget_shared.h"
 #include "game/TView.h"
+#include "game/trade_quickdraw.h"
+#include "game/TAmtBar.h"
+#include "game/TTraderAmtBar.h"
+#include "game/TIndustryAmtBar.h"
+#include "game/TRailAmtBar.h"
+#include "game/TShipAmtBar.h"
 
-typedef void* hwnd_t;
 typedef void code(void);
-extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
-                                     unsigned int type);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 unsigned int __cdecl thunk_GetActiveNationId(void);
@@ -69,15 +72,11 @@ extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 
 namespace {
 
-const char kNilPointerText[] = "Nil Pointer";
-const char kFailureCaption[] = "Failure";
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
-const int kControlTagSell = 0x53656c6c;
 const int kControlTagBar = 0x62617220;
-const int kControlTagMove = 0x6d6f7665;
 const int kControlTagAvai = 0x61766169;
 const int kControlTagCard = 0x63617264;
 const int kControlTagBack = 0x6261636b;
@@ -87,12 +86,6 @@ const int kControlTagLeft = 0x6c656674;
 const int kControlTagRght = 0x72676874;
 const int kControlTagArms = 0x41726d73;
 const int kControlTagClos = 0x436c6f73;
-const int kSummaryTagFood = 0x666f6f64;
-const int kSummaryTagPopu = 0x706f7075;
-const int kSummaryTagProf = 0x70726f66;
-const int kSummaryTagPowe = 0x706f7765;
-const int kSummaryTagRail = 0x7261696c;
-const int kSummaryTagIart = 0x74726169;
 const int kAssertLineBidSecondary = 0x907;
 const int kAssertLineBidActionable = 0x8de;
 const int kAssertLineOfferActionable = 0x8f2;
@@ -132,11 +125,8 @@ const int kAssertLineToolSubcontrolToggle = 0xac7;
 const unsigned int kVtableTIndustryCluster = 0x00665ed0;
 const unsigned int kAddrClassDescTIndustryCluster = 0x00662f98;
 const unsigned int kVtableTIndustryAmtBar = 0x00666110;
-const unsigned int kAddrClassDescTIndustryAmtBar = 0x00662fb0;
 const unsigned int kVtableTAmtBar = 0x00665cc8;
-const unsigned int kAddrClassDescTAmtBar = 0x00662f80;
 const unsigned int kVtableTAmtBarCluster = 0x00665838;
-const unsigned int kAddrClassDescTAmtBarCluster = 0x00662f50;
 const unsigned int kVtableTProductionCluster = 0x006653c8;
 const unsigned int kAddrClassDescTProductionCluster = 0x00662f20;
 const unsigned int kVtableTClosePicture = 0x00665608;
@@ -144,7 +134,6 @@ const unsigned int kAddrClassDescTClosePicture = 0x00662f38;
 const unsigned int kVtableTRailCluster = 0x00666318;
 const unsigned int kAddrClassDescTRailCluster = 0x00662fc8;
 const unsigned int kVtableTRailAmtBar = 0x00666558;
-const unsigned int kAddrClassDescTRailAmtBar = 0x00662fe0;
 const unsigned int kVtableTShipyardCluster = 0x00666760;
 const unsigned int kAddrClassDescTShipyardCluster = 0x00662ff8;
 const unsigned int kVtableTUnitToolbarCluster = 0x00664d38;
@@ -154,10 +143,7 @@ const unsigned int kVtableTStatusButton = 0x00664f68;
 const unsigned int kAddrClassDescTStatusButton = 0x00662ef0;
 const unsigned int kVtableTCityBarCluster = 0x00665190;
 const unsigned int kAddrClassDescTCityBarCluster = 0x00662f08;
-const unsigned int kAddrTradeSummarySelectionMap = 0x006960e0;
 const unsigned int kAddrDecimalFormat = 0x0069430C;
-const unsigned int kAddrActiveQuickDrawSurfaceContext = 0x006A1D60;
-const unsigned int kAddrPrimaryRenderSurfaceContext = 0x006A30A8;
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
@@ -178,11 +164,8 @@ const int kTradeSellPropagationTags[] = {
     0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
 };
-const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
-struct NationCityTradeState;
 struct TradeMovePanelContext;
-struct TradeCommodityMetricRecord;
 struct CityTradeScenarioDescriptor;
 struct TDocument;
 
@@ -246,42 +229,7 @@ struct ClosePictureState {
 
 
 
-struct TradeCommodityMetricRecord {
-  void* vftable;
-  short controlValue;
-  char pad_06[0x4c];
-  short buildingSlot;
 
-  __inline short QueryStepValue();
-};
-
-struct NationCityTradeState {
-  char pad_00[0xe4];
-  TradeCommodityMetricRecord* tradeCommodityRecordPtrs[32];
-  char pad_164[0x2c];
-  TradeCommodityMetricRecord* specialCommodityRecordAt190;
-  char pad_194[0x44];
-  CityTradeScenarioDescriptor* scenarioTradeDescriptor;
-};
-
-struct CityTradeProductionSlots {
-  char pad_00[4];
-  short valueAt4;
-  short valueAt6;
-  short valueAt8;
-};
-
-struct CityTradeScenarioDescriptor {
-  char pad_00[0x10];
-  CityTradeProductionSlots* productionSlots;
-  char pad_14[0xa];
-  short extraAt1E;
-};
-
-struct TradeSummarySelectionMap {
-  char pad_00[0x28];
-  int summaryTags[32];
-};
 
 struct TradeMovePanelContext;
 
@@ -330,15 +278,7 @@ struct CityBarClusterState {
   char pad_04[0x84];
 };
 
-static __inline TradeControl* CallResolveControlByTagSlot94(void* context, int controlTag) {
-  return reinterpret_cast<TradeControl*(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(context))[0x94 / 4])(context, controlTag);
-}
 
-static __inline void CallApplyMoveValueSlot1D0(void* context, int value) {
-  reinterpret_cast<void(__fastcall*)(void*, int)>((*reinterpret_cast<void***>(context))[0x1d0 / 4])(
-      context, value);
-}
 
 static __inline void CallPostMoveValueSlot1D4(void* context, int value, int commitFlag) {
   reinterpret_cast<void(__fastcall*)(void*, int, int)>(
@@ -416,10 +356,6 @@ static __inline void CallVoidSlotE4(void* self) {
   reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xe4 / 4])(self);
 }
 
-static __inline void* CallOwnerPanelSlot58(void* self) {
-  return reinterpret_cast<void*(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x58 / 4])(
-      self);
-}
 
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line);
 static __inline void FailNilPointerInUSmallViews(int line);
@@ -458,9 +394,6 @@ struct TradeMovePanelContext {
   void UpdateTradeBarFromSelectedMetricRatio_A(void);
 };
 
-__inline short TradeCommodityMetricRecord::QueryStepValue() {
-  return reinterpret_cast<TradeControl*>(this)->QueryStepValueSlot30();
-}
 
 __inline TradeControl* TradeScreenContext::ResolveControlByTag(int controlTag) {
   return CallResolveControlByTagSlot94(this, controlTag);
@@ -531,11 +464,6 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   return reinterpret_cast<NationCityTradeState*>(nationState->cityState);
 }
 
-static __inline int GetTradeSummarySelectionTagByIndex(short index) {
-  TradeSummarySelectionMap* selectionMap =
-      reinterpret_cast<TradeSummarySelectionMap*>(kAddrTradeSummarySelectionMap);
-  return selectionMap->summaryTags[index];
-}
 
 static __inline short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
   return CallQueryNationMetricBySlot78(nationState, metricSlot);
@@ -545,24 +473,6 @@ static __inline short QueryNationTradeCapacity(NationState* nationState) {
   return nationState->tradeCapacity;
 }
 
-static __inline TradeControl* ResolveOwnerControl(void* owner, int controlTag) {
-  return CallResolveControlByTagSlot94(owner, controlTag);
-}
-
-static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {
-  if (g_pUiRuntimeContext == 0) {
-    return;
-  }
-  CallUiRuntimeSlot34(g_pUiRuntimeContext, styleIndex);
-}
-
-static __inline void* ReadPointerAt(unsigned int address) {
-  return *reinterpret_cast<void**>(address);
-}
-
-static __inline int ReadIntAt(unsigned int address) {
-  return *reinterpret_cast<int*>(address);
-}
 
 // GLOBAL: IMPERIALISM 0x6a18e0
 ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;

@@ -11,4 +11,5 @@ public:
   void DoPostCreate(struct TDocument* document);
   short AdjustForZero(short priorResult, short requestedValue);
   void DrawAmt();
+  void UpdateFromScaleOrRatio(int scaleValue, int ratioValue);
 };

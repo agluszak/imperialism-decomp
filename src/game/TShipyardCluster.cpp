@@ -1,3 +1,4 @@
+#include "game/trade_quickdraw.h"
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
 
@@ -116,7 +117,7 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
     MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
   }
 
-  TradeAmountBarLayout* barLayout = reinterpret_cast<TradeAmountBarLayout*>(barControl);
+  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   barLayout->auxValueB = (field_8c == 0) ? 0x34 : 0x3a;
   barControl->SetBarMetric(0, 0);
 

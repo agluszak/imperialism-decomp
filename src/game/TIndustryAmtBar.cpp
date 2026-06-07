@@ -1,20 +1,15 @@
-// Included by src/game/trade_screen.cpp.
-// Contains trade-screen core logic functions (address-ordered).
-
-// GHIDRA_NAME InitializeTradeSellControlState
-// GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
-// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
-/* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
-   then initializes move/bar controls baseline. */
-
 #include "game/TIndustryAmtBar.h"
+#include "game/trade_quickdraw.h"
+#include "game/TradeCommodityMetricRecord.h"
+#include "game/NationState.h"
+#include "game/ui_widget_shared.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
-#include "game/win_rect.h"
+#include "game/quickdraw_guards.h"
 #include <new>
+
+
 
 // FUNCTION: IMPERIALISM 0x00589110
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
@@ -47,7 +42,8 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   NationCityTradeState* cityState = nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  while (mappedTag != ownerPanelContext()->summaryTag) {
+  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
+  while (mappedTag != summaryTag) {
     summaryTagIndex = (short)(summaryTagIndex + 1);
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   }
@@ -58,7 +54,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
 
   short stepValue = selectedMetricRecord->QueryStepValue();
   short productionCap = (short)productionValue;
-  int rangeRaw = barRangeRaw();
+  int rangeRaw = this->field34;
   stepOrCurrentValue = (short)((stepValue * rangeRaw) / productionCap);
 
   auxValueA = productionCap;
@@ -68,32 +64,8 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
-// FUNCTION: IMPERIALISM 0x00589da0
-void TradeMoveStepCluster::HandleTradeMovePageStepCommand(int commandId, void* eventArg,
-                                                          int eventExtra) {
-  // ORIG_CALLCONV: __thiscall
-  void* owner = this;
-  if (commandId == 100) {
-    TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
-    if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-    }
-    short moveValue = (short)moveControl->QueryValue();
-    CallApplyMoveValueSlot1D0(owner, (int)field_8e + (int)moveValue);
-    return;
-  }
-  if (commandId != 0x65) {
-    HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
-    return;
-  }
-  TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
-  if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
-  }
-  short moveValue = (short)moveControl->QueryValue();
-  CallApplyMoveValueSlot1D0(owner, (int)moveValue - (int)field_8e);
-}
-void TIndustryAmtBarState::DrawAmt() {
+// FUNCTION: IMPERIALISM 0x00589dd0
+void TIndustryAmtBar::DrawAmt() {
   QuickDrawSurfaceGuard surface;
   TradeControl* control = reinterpret_cast<TradeControl*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
@@ -132,34 +104,3 @@ void TIndustryAmtBarState::DrawAmt() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00589540
-void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TradeControl* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
-  QuickDrawSurfaceGuard surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
-
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
-      int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
-      int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
-      int invalidRect[4] = {cachedX, cachedY, 0, 0};
-      control->CtrlSlot78();
-      invalidRect[2] =
-          cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect[3] =
-          cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-          (int)invalidRect, 1);
-    }
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x00589720
-void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
-  cluster->vftable = reinterpret_cast<void*>(kVtableTRailCluster);
-  cluster->field_88 = 0;
-  cluster->field_8e = 0;
