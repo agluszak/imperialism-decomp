@@ -87,7 +87,6 @@ src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_ApplyRectSlot110|void|0x1
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyLegend_DrawTerrainSlot1E0|void|0x1E0 / 4|int,int|medium|diplomacy legend terrain/minor draw slot with index and label selector|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_UiRuntime_ApplyLegendSplitSlot34|void|0x34 / 4|int|medium|runtime legend split/update slot selector|index|thiscall|none|||UiRuntimeContext
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_GetFrameRegionSlot98|void*|0x98 / 4|int|medium|strategic map frame region query by view selector|index|thiscall|none||provisional|StrategicMapViewSystem
-src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_ApplyClipRegionSlotC4|void|0xC4 / 4|int|low|apply combined terrain clip region to diplomacy map view|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_GlobalMapState_QueryIconStripXSlot110|short|0x110 / 4|int|low|query policy-icon strip x offset by code|index|thiscall|none||provisional|GlobalMapState
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_TransformPointToLocalSlot148|void|0x148 / 4|int,int|low|transform screen point to diplomacy view-local coords|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_HitTestPointSlot90|char|0x90 / 4|int,int|low|hit-test view-local point against terrain region index|index|thiscall|none||provisional|StrategicMapViewSystem
@@ -107,3 +106,10 @@ src/game/TFileStream.cpp|VCall_Stream_WriteCountSlot88|void|0x88 / 4|int|medium|
 src/game/TFileStream.cpp|VCall_Stream_WriteBytesSlot78|void|0x78 / 4|void*,int|medium|stream write raw bytes|index|thiscall|none||native_migrated|TStream
 src/game/TCivilianButton.cpp|VCall_TRadioPictureButton_SlotA4|void|0xA4 / 4|int,int|low|||thiscall|none||provisional|TCivilianButton
 src/game/TCivilianButton.cpp|VCall_TRadioPictureButton_SlotA8|void|0xA8 / 4|int,int|low|||thiscall|none||provisional|TCivilianButton
+src/game/TToggleButton.cpp|VCall_TToggleButton_SlotA4|void|0xA4 / 4|char,char|low|||thiscall|none||provisional|TToggleButton
+src/game/TToggleButton.cpp|VCall_TToggleButton_SlotF8|void|0xF8 / 4||low|||cdecl|none||provisional|TToggleButton
+src/game/TToggleButton.cpp|VCall_TToggleButton_Slot114|void|0x114 / 4|int|low|||cdecl|none||provisional|TToggleButton
+src/game/TToggleButton.cpp|VCall_TToggleButton_Slot1C8|void|0x1C8 / 4|int,int|low|||thiscall|none||provisional|TToggleButton
+src/game/TBoycottButton.cpp|VCall_TBoycottButton_Slot58|void*|0x58 / 4||low|||cdecl|none||provisional|TBoycottButton
+src/game/TBoycottButton.cpp|VCall_TBoycottButton_Slot94|void*|0x94 / 4|int,int|low|||thiscall|none||provisional|TBoycottButton
+src/game/TBoycottButton.cpp|VCall_TBoycottButton_Slot1C8|void|0x1C8 / 4|int,int|low|||thiscall|none||provisional|TBoycottButton

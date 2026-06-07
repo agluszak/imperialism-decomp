@@ -3267,14 +3267,6 @@ undefined4 thunk_CopyUnitCurrentTileIntoOrderTargets_At00405f88(void)
   return 0;
 }
 
-// ghidra_name TToggleButton::TToggleButton_VtblSlot116
-// ghidra_proto void __thiscall TToggleButton_VtblSlot116(int isPressed, int notifyParent)
-// FUNCTION: IMPERIALISM 0x00405f8d
-undefined4 TToggleButton_VtblSlot116(void)
-{
-  return 0;
-}
-
 // ghidra_name TProductionOrder::thunk_OrphanCallChain_C1_I16_004b5100_At00405f92
 // ghidra_proto int __cdecl thunk_OrphanCallChain_C1_I16_004b5100_At00405f92(void)
 // FUNCTION: IMPERIALISM 0x00405f92

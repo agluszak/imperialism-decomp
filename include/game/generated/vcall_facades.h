@@ -4,6 +4,27 @@
 
 #include "game/vcall_runtime.h"
 
+// class=TBoycottButton; status=provisional
+static __inline void VCall_TBoycottButton_Slot1C8(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1C8 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// class=TBoycottButton; status=provisional
+static __inline void* VCall_TBoycottButton_Slot58(void* object) {
+  typedef void* (__cdecl * Fn)(void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x58 / 4)));
+  return fn(object);
+}
+
+// class=TBoycottButton; status=provisional
+static __inline void* VCall_TBoycottButton_Slot94(void* object, int arg0, int arg1) {
+  typedef void* (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
+  return fn(object, arg0, arg1);
+}
+
 // temporary-surface target rect apply; class=QuickDrawRenderTarget; status=provisional
 static __inline void VCall_QuickDrawTarget_ApplyRectSlot110(void* object, int* arg0) {
   typedef void (__fastcall * Fn)(void*, int*);
@@ -51,13 +72,6 @@ static __inline void VCall_DiplomacyLegend_DrawTerrainSlot1E0(void* object, int 
   typedef void (__fastcall * Fn)(void*, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1E0 / 4)));
   fn(object, arg0, arg1);
-}
-
-// apply combined terrain clip region to diplomacy map view; class=TDiplomacyMapView; status=provisional
-static __inline void VCall_DiplomacyMapView_ApplyClipRegionSlotC4(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xC4 / 4)));
-  fn(object, arg0);
 }
 
 // transform screen point to diplomacy view-local coords; class=TDiplomacyMapView; status=provisional
@@ -450,6 +464,34 @@ static __inline void VCall_TextList_OnSelectionConfirmed(void* object) {
   typedef void (__fastcall * Fn)(void*, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x13c / 4)));
   fn(object, 0);
+}
+
+// class=TToggleButton; status=provisional
+static __inline void VCall_TToggleButton_Slot114(void* object, int arg0) {
+  typedef void (__cdecl * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x114 / 4)));
+  fn(object, arg0);
+}
+
+// class=TToggleButton; status=provisional
+static __inline void VCall_TToggleButton_Slot1C8(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1C8 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// class=TToggleButton; status=provisional
+static __inline void VCall_TToggleButton_SlotA4(void* object, char arg0, char arg1) {
+  typedef void (__fastcall * Fn)(void*, char, char);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA4 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// class=TToggleButton; status=provisional
+static __inline void VCall_TToggleButton_SlotF8(void* object) {
+  typedef void (__cdecl * Fn)(void*);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xF8 / 4)));
+  fn(object);
 }
 
 // trans-focus scoped render target slot; class=FocusAnimationRenderTarget; status=provisional

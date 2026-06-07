@@ -13,8 +13,21 @@
 extern "C" int __stdcall PtInRect(const RECT* rect, Point32 point);
 extern "C" void* __stdcall SetCursor(void* hCursor);
 
+#define DUMMY_VIRTUAL(n) virtual void Dummy##n() = 0;
+
 struct TDiplomacyMapViewLayout {
-  void* vftable;
+  DUMMY_VIRTUAL(0) DUMMY_VIRTUAL(1) DUMMY_VIRTUAL(2) DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4)
+  DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9)
+  DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12) DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14)
+  DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17) DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19)
+  DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22) DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24)
+  DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26) DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29)
+  DUMMY_VIRTUAL(30) DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34)
+  DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38) DUMMY_VIRTUAL(39)
+  DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41) DUMMY_VIRTUAL(42) DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44)
+  DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47) DUMMY_VIRTUAL(48)
+  virtual void ApplyClipRegionSlotC4(int region) = 0; // slot 49 (0xC4)
+
   char pad_04[0x94];
   short frameRegionSelectorAt98;
   char pad_9a[0x48a];
@@ -763,7 +776,7 @@ void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
     terrainDescriptors = terrainDescriptors + 1;
   } while (terrainIndex < 0x17);
 
-  VCall_DiplomacyMapView_ApplyClipRegionSlotC4(this, reinterpret_cast<int>(region));
+  this->ApplyClipRegionSlotC4(reinterpret_cast<int>(region));
   reinterpret_cast<void(__cdecl*)(void*)>(DestroyClipStateRegionWrapperObject)(region);
 }
 

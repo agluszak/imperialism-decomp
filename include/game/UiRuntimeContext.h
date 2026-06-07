@@ -20,6 +20,19 @@ struct UiRuntimeContext {
   virtual void dummy2C() = 0;
   virtual void dummy30() = 0;
   virtual void ApplyLegendSplitSlot34(int split) = 0; // 0x34
+  virtual void dummy38() = 0;
+  virtual void dummy3c() = 0;
+  virtual void dummy40() = 0;
+  virtual void dummy44() = 0;
+  virtual void dummy48() = 0;
+  virtual void dummy4c() = 0;
+  virtual void dummy50() = 0;
+  virtual short QueryUiScreenModeSlot54() = 0; // 0x54
+  virtual void dummy58() = 0;
+  virtual void dummy5c() = 0;
+  virtual void dummy60() = 0;
+  virtual void dummy64() = 0;
+  virtual void ApplyUiRuntimeSlot68(int modeValue) = 0; // 0x68
 
   // Data layout. The C++ vptr occupies offset 0, matching the native object's
   // vtable pointer; explicit fields follow.

@@ -8,6 +8,8 @@ class TToggleButton : public TPictureResourceEntryBase {
 public:
   TToggleButton();
   virtual ~TToggleButton();
+
+  virtual void TToggleButton_VtblSlot116(int isPressed, int notifyParent);
 };
 
 ASSERT_SIZE(TToggleButton, 0x90);

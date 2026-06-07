@@ -1963,62 +1963,6 @@ undefined4 HandleCardOrOfferTagClickAndDispatchTradeActions(void)
   return 0;
 }
 
-// ghidra_name TBoycottButton::CreateTBoycottButtonInstance
-// ghidra_proto void * __cdecl CreateTBoycottButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x005846e0
-undefined4 CreateTBoycottButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TBoycottButton::GetTBoycottButtonClassNamePointer
-// ghidra_proto void * __cdecl GetTBoycottButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00584760
-undefined4 GetTBoycottButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TBoycottButton::ConstructTBoycottButtonBaseState
-// ghidra_proto TBoycottButton * __thiscall ConstructTBoycottButtonBaseState(void)
-// FUNCTION: IMPERIALISM 0x00584780
-undefined4 ConstructTBoycottButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TBoycottButton::DestructTBoycottButtonAndMaybeFree
-// ghidra_proto TBoycottButton * __thiscall DestructTBoycottButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x005847b0
-undefined4 DestructTBoycottButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TBoycottButton::HandleNonzeroEventAndClearControlTag636c7573ThenForward
-// ghidra_proto void __thiscall HandleNonzeroEventAndClearControlTag636c7573ThenForward(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00584800
-undefined4 HandleNonzeroEventAndClearControlTag636c7573ThenForward(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictToggleButton::IsField3cWithinShortLimit84
-// ghidra_proto void __cdecl IsField3cWithinShortLimit84(void)
-// FUNCTION: IMPERIALISM 0x005849b0
-undefined4 IsField3cWithinShortLimit84(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh
-// ghidra_proto void __thiscall SyncField0fTowardsField21ByDirectionAndRefresh(void)
-// FUNCTION: IMPERIALISM 0x005849d0
-undefined4 SyncField0fTowardsField21ByDirectionAndRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name TCloseButton::CreateTCloseButtonInstance
 // ghidra_proto void * __cdecl CreateTCloseButtonInstance(void)
 // FUNCTION: IMPERIALISM 0x00584a50

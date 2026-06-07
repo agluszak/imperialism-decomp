@@ -271,15 +271,6 @@ static __inline short ReadControlValueFieldPlus4(TradeControl* control) {
   return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
 }
 
-static __inline short CallQueryUiScreenModeSlot54(UiRuntimeContext* runtimeContext) {
-  return reinterpret_cast<short(__fastcall*)(UiRuntimeContext*)>(
-      (*reinterpret_cast<void***>(runtimeContext))[0x54 / 4])(runtimeContext);
-}
-
-static __inline void CallUiRuntimeSlot68(UiRuntimeContext* runtimeContext, int modeValue) {
-  reinterpret_cast<void(__fastcall*)(UiRuntimeContext*, int)>(
-      (*reinterpret_cast<void***>(runtimeContext))[0x68 / 4])(runtimeContext, modeValue);
-}
 
 static __inline char CallControlFlagSlot1D8(TradeControl* control) {
   return reinterpret_cast<char(__fastcall*)(TradeControl*)>(
@@ -413,15 +404,15 @@ static __inline void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert(kUSmallViewsCppPath, line);
 }
 
-static __inline short QueryUiScreenMode(UiRuntimeContext* runtimeContext) {
+static __inline short QueryUiScreenModeSafe(UiRuntimeContext* runtimeContext) {
   if (runtimeContext == 0 || *reinterpret_cast<void**>(runtimeContext) == 0) {
     return 4;
   }
-  return CallQueryUiScreenModeSlot54(runtimeContext);
+  return runtimeContext->QueryUiScreenModeSlot54();
 }
 
 static __inline short QueryUiScreenModeRaw(UiRuntimeContext* runtimeContext) {
-  return CallQueryUiScreenModeSlot54(runtimeContext);
+  return runtimeContext->QueryUiScreenModeSlot54();
 }
 
 static __inline NationState* GetNationStateBySlot(short slotId) {
@@ -1206,7 +1197,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
     break;
   }
   case 0x67:
-    CallUiRuntimeSlot68(g_pUiRuntimeContext, -1);
+    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(-1);
     if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 3) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
@@ -1220,7 +1211,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
     }
     break;
   case 0x68:
-    CallUiRuntimeSlot68(g_pUiRuntimeContext, 1);
+    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(1);
     if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 4) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
