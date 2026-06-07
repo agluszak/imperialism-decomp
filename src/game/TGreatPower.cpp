@@ -1,3 +1,4 @@
+#include "game/TRelationManager.h"
 #include "game/TMinister.h"
 #include "game/TGlobalMapState.h"
 // Manual decompilation file.
@@ -204,46 +205,6 @@ public:
 };
 
 
-class TRelationManagerObject {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void Call18(int arg1 = 0) = 0; // slot 18
-  virtual void Call1C() = 0;             // slot 1C
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void Call28() = 0; // slot 28
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void Call44() = 0; // slot 44
-  virtual void dummy18() = 0;
-  virtual void dummy19() = 0;
-  virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
-  virtual void dummy23() = 0;
-  virtual void dummy24() = 0;
-  virtual void dummy25() = 0;
-  virtual void dummy26() = 0;
-  virtual void dummy27() = 0;
-  virtual void dummy28() = 0;
-  virtual void dummy29() = 0;
-  virtual void dummy30() = 0;
-  virtual void dummy31() = 0;
-  virtual void Refresh80() = 0; // slot 80
-
-  unsigned char pad04[0xB6 - 4];
-  // 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2 (relationNeedSlotE0/E2).
-  short fieldB6[0x17];
-};
 
 // TQueueObject moved to include/game/TQueueObject.h
 
@@ -1186,7 +1147,7 @@ static __inline char IsSpecialNationInteractionResource(short resourceIndex) {
 }
 
 static __inline void RelationManager_RefreshSlot80(void* relationManager) {
-  static_cast<TRelationManagerObject*>(relationManager)->Refresh80();
+  static_cast<TRelationManager*>(relationManager)->Refresh80();
 }
 
 static __inline void RelationManager_ClearNeedSlotE0AndRefresh(void* relationManager) {
@@ -1892,7 +1853,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
     reinterpret_cast<void(__fastcall*)(int, int)>(thunk_InitializeCityProductionState)(
         reinterpret_cast<int>(cityModel), arg1);
   }
-  this->relationManager = static_cast<TRelationManagerObject*>(cityModel);
+  this->relationManager = static_cast<TRelationManager*>(cityModel);
 
   void* townMarkerListOwner = AllocateBattleListOwnerWithLinkedSentinel();
   this->townMarkerList = static_cast<TListObject*>(townMarkerListOwner);
@@ -2117,7 +2078,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     } else {
       void* relationManager = this->relationManager;
       if (relationManager != 0) {
-        static_cast<TRelationManagerObject*>(relationManager)->Call18();
+        static_cast<TRelationManager*>(relationManager)->Call18();
       }
     }
   }
@@ -3024,14 +2985,14 @@ void TGreatPower::SnapshotDiplomacyState1c6Into250(void) {
 #pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x004dd770
 void TGreatPower::SetRelationManagerFieldB6AndRefresh(short targetSlot, short value) {
-  TRelationManagerObject* relationManager = this->relationManager;
+  TRelationManager* relationManager = this->relationManager;
   relationManager->fieldB6[targetSlot] = value;
   relationManager->Refresh80();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
 void TGreatPower::AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value) {
-  TRelationManagerObject* relationManager = this->relationManager;
+  TRelationManager* relationManager = this->relationManager;
   relationManager->fieldB6[targetSlot] =
       static_cast<short>(relationManager->fieldB6[targetSlot] + value);
   relationManager->Refresh80();
@@ -3167,7 +3128,7 @@ char TGreatPower::AreDiplomacyState1c6Slots13To16AllNonPositive(void) {
 }
 
 short TGreatPower::GetRelationManagerFieldB6(short nationSlot) {
-  TRelationManagerObject* relationManager = this->relationManager;
+  TRelationManager* relationManager = this->relationManager;
   if (relationManager == 0) {
     return 0;
   }

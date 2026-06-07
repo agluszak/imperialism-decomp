@@ -5,7 +5,7 @@
 
 class TMinister;
 class TQueueObject;
-class TRelationManagerObject;
+class TRelationManager;
 
 #define TGREATPOWER_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) = 0
 
@@ -251,7 +251,7 @@ public:
   TQueueObject* turnEventQueue;
   TQueueObject* proposalQueue;
   TQueueObject* diplomacyTrackedSlots[0x11];
-  TRelationManagerObject* relationManager;
+  TRelationManager* relationManager;
   TListObject* townMarkerList;
   TListObject* trackedObjectList;
   unsigned char candidateNationFlags[0x17];
