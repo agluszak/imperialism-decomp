@@ -907,14 +907,6 @@ undefined4 GetTPictureClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name ConstructPictureResourceEntryBase
-// ghidra_proto void __cdecl ConstructPictureResourceEntryBase(void)
-// FUNCTION: IMPERIALISM 0x0048efc0
-undefined4 ConstructPictureResourceEntryBase(void)
-{
-  return 0;
-}
-
 // ghidra_name TPicture::DestructTPictureAndMaybeFree
 // ghidra_proto void * __thiscall DestructTPictureAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x0048f050
@@ -987,38 +979,6 @@ undefined4 CloneCityDialogExtendedStateToNewInstance(void)
   return 0;
 }
 
-// ghidra_name TStaticText::CreateTStaticTextInstance
-// ghidra_proto void * __cdecl CreateTStaticTextInstance(void)
-// FUNCTION: IMPERIALISM 0x0048f710
-undefined4 CreateTStaticTextInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TStaticText::GetTStaticTextClassNamePointer
-// ghidra_proto void * __cdecl GetTStaticTextClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0048f870
-undefined4 GetTStaticTextClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TStaticText::ConstructUiTextResourceEntryBase
-// ghidra_proto void __thiscall ConstructUiTextResourceEntryBase(void)
-// FUNCTION: IMPERIALISM 0x0048f890
-undefined4 ConstructUiTextResourceEntryBase(void)
-{
-  return 0;
-}
-
-// ghidra_name TStaticText::DestructTStaticTextAndMaybeFree
-// ghidra_proto void * __thiscall DestructTStaticTextAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x0048f9a0
-undefined4 DestructTStaticTextAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TMyNumberText::CloneCityDialogStateWithSharedStringInit
 // ghidra_proto void * __thiscall CloneCityDialogStateWithSharedStringInit(void)
 // FUNCTION: IMPERIALISM 0x0048f9d0
@@ -1039,14 +999,6 @@ undefined4 CopyExtendedCityDialogControllerState(void)
 // ghidra_proto int __cdecl DispatchVslot24ThenCopyExtendedCityDialogControllerState(void)
 // FUNCTION: IMPERIALISM 0x0048fc00
 undefined4 DispatchVslot24ThenCopyExtendedCityDialogControllerState(void)
-{
-  return 0;
-}
-
-// ghidra_name TStaticText::DestroyStaticTextAndReleaseOwnedResources
-// ghidra_proto void __thiscall DestroyStaticTextAndReleaseOwnedResources(void)
-// FUNCTION: IMPERIALISM 0x0048fc30
-undefined4 DestroyStaticTextAndReleaseOwnedResources(void)
 {
   return 0;
 }

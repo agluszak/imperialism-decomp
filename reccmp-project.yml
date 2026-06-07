@@ -5,7 +5,7 @@ targets:
     hash:
       sha256: 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691
     data_sources:
-      - config/symbols.csv
+    - config/symbols.csv
     encoding:
     ghidra:
       ignore_types: []
@@ -105,6 +105,10 @@ targets:
       - AllocateMfcModuleStateNode_1074
       - AllocateWithGlobalNewMode
       - AllocateWithNewHandlerLoop
+      - CArchive::FillBuffer
+      - CArchive::ReadBytesFromSerializedBuffer
+      - CArchive::ReadDwordFromSerializedBuffer
+      - CArchive::ReadWordFromSerializedBuffer
       - CBrush::AttachRegionHandleToClipStateAndRegister
       - CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0
       - CBrush::InitializeGlobalClipRegionHandleState
@@ -119,9 +123,11 @@ targets:
       - CDocTemplate::OpenDocumentFile_614603
       - CDocTemplate::StartDocAFromContextWithDocName
       - CDocTemplate::memset
+      - CDocument::AddView
       - CDocument::CArchive
       - CDocument::CDocument
       - CDocument::DestructCDocumentBaseState
+      - CDocument::DisconnectViews
       - CDocument::DoSaveDocumentWithPromptAndReplace
       - CDocument::GetFile
       - CDocument::OnOpenDocument
@@ -145,6 +151,9 @@ targets:
       - CObArray::thunk_DestructCObArray
       - CProcessLocalObject::thunk_CProcessLocalObject
       - CProcessLocalObject::thunk_~CProcessLocalObject
+      - CPtrArray::RemoveAt
+      - CPtrArray::SetAtGrow
+      - CPtrList::NewNode
       - CScrollView::DoMouseWheel
       - CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
       - CWinApp::CloseAllDocuments_618704
@@ -336,7 +345,6 @@ targets:
       - MapWin32ErrorToCrtErrno
       - NewAssoc
       - NewAssoc_60377d
-      - NewNode
       - NoOpCrtThreadLifecycleHook
       - OnFileNew
       - OnFileNew_61a8dd
@@ -415,7 +423,6 @@ targets:
       - TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx
       - TArmyMgr::thunk_DestructTArmyMgrAndMaybeFree
       - TArmyMgr::thunk_SelectMovableUnitOnCurrentTileAndPlaySfx
-      - TArmyPlacard::DestructTArmyPlacardAndMaybeFree
       - TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
       - TArmyPlayer::DestructTArmyPlayerAndMaybeFree
       - TArmyPlayer::thunk_DestructTArmyPlayerAndMaybeFree_At00406f2d
@@ -489,7 +496,6 @@ targets:
       - TCivAnimation::thunk_DestructTCivAnimationAndMaybeFree
       - TCivReport::?DestructTCivReportAndMaybeFree@@YIPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@PAU12@HE@Z
       - TCivToolbar::DestructTCivToolbarAndMaybeFree
-      - TCivilianButton::DestructTCivilianButtonAndMaybeFree
       - TClickZone::DestructTClickZoneAndMaybeFree
       - TClickZone::PlayControlSoundAndBeginMouseCapture_Field84
       - TCloseButton::DestructTCloseButtonAndMaybeFree
@@ -621,7 +627,6 @@ targets:
       - TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0
       - TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630
       - TGreatPower::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004d8c20_At004085ee
-      - THQButton::DestructTHQButtonAndMaybeFree
       - THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
       - THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
       - THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
@@ -813,7 +818,6 @@ targets:
       - TNoHiliteText::DestructTNoHiliteTextAndMaybeFree
       - TNumberText::DestructTNumberTextAndMaybeFree
       - TNumberText::thunk_DestructTNumberTextAndMaybeFree
-      - TNumberedArrowButton::?DestructTNumberedArrowButtonAndMaybeFree@@YIPAUNumberedArrowButtonState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z
       - TNumberedIcon::DestructTNumberedIconAndMaybeFree
       - TNumberedItem::DestructTNumberedItemAndMaybeFree
       - TObject::DestructTObjectAndMaybeFree
@@ -847,7 +851,6 @@ targets:
       - TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
       - TPageView::thunk_DestructTPageViewAndMaybeFree_At00405786
       - TPicture::DestructTPictureAndMaybeFree
-      - TPictureButton::DestructTPictureButtonAndMaybeFree
       - TPictureLine::DestructTPictureLineAndMaybeFree
       - TPictureLine::thunk_DestructTPictureLineAndMaybeFree
       - TPictureNumberText::DestructTPictureNumberTextAndMaybeFree
@@ -856,7 +859,6 @@ targets:
       - TPictureText::DestructTPictureTextAndMaybeFree
       - TPirateMinister::DestructTPirateMinisterAndMaybeFree
       - TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree_At004065f0
-      - TPlacard::DestructTPlacardAndMaybeFree
       - TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
       - TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
       - TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree
@@ -883,7 +885,6 @@ targets:
       - TPtrList::DestructTPtrListAndMaybeFree
       - TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree
       - TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
-      - TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
       - TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree
       - TRailAmtBar::DestructAndMaybeFree
       - TRailCityMinister::DestructTRailCityMinisterAndMaybeFree
@@ -975,7 +976,6 @@ targets:
       - TSoundPlayer::thunk_WrapperFor_ftol_At005e5020_At00404bd8
       - TSpaceCommand::WrapperFor_thunk_GenerateRandomMapAndRefreshSetupPreview_At005751f0
       - TSpaceCommand::thunk_WrapperFor_thunk_GenerateRandomMapAndRefreshSetupPreview_At005751f0
-      - TStaticText::DestructTStaticTextAndMaybeFree
       - TStatusButton::DestructTStatusButtonAndMaybeFree
       - TStatusPicture::DestructTStatusPictureAndMaybeFree
       - TSteelCityMinister::DestructTSteelCityMinisterAndMaybeFree
@@ -1076,7 +1076,6 @@ targets:
       - TTradeTotalsView::DestructTTradeTotalsViewAndMaybeFree
       - TTradeTotalsView::thunk_DestructTTradeTotalsViewAndMaybeFree_At0040881e
       - TTraderAmtBar::DestructAndMaybeFree
-      - TTraderAmtBar::WrapperFor_GetActiveNationId_At0058b070
       - TTrainingOrder::DestructTTrainingOrderAndMaybeFree
       - TTrainingOrder::thunk_DestructTTrainingOrderAndMaybeFree
       - TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree

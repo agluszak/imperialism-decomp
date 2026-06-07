@@ -9,17 +9,19 @@
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
+#include "game/TRailAmtBar.h"
+#include "game/TradeControl.h"
+#include "game/UiRuntimeContext.h"
+#include "game/ui_widget_thunks.h"
+#include "game/win_rect.h"
+#include <new>
+
 // FUNCTION: IMPERIALISM 0x00589ed0
-TRailAmtBarState* __cdecl CreateTRailAmtBarInstance(void) {
-  TRailAmtBarState* amountBar =
-      reinterpret_cast<TRailAmtBarState*>(AllocateWithFallbackHandler(0x6c));
+TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
+  TRailAmtBar* amountBar =
+      reinterpret_cast<TRailAmtBar*>(AllocateWithFallbackHandler(0x6c));
   if (amountBar != 0) {
-    TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    *reinterpret_cast<void***>(amountBar) = reinterpret_cast<void**>(kVtableTRailAmtBar);
-    amountBar->cachedRangeAt60 = 0;
-    amountBar->cachedRatioAt62 = 0;
-    amountBar->cachedProductionAt64 = 0;
-    amountBar->cachedStyleAt66 = 0;
+    new (amountBar) TRailAmtBar;
   }
   return amountBar;
 }
@@ -30,30 +32,11 @@ void* __cdecl GetTRailAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589f90
-TRailAmtBarState* TRailAmtBarState::ConstructTRailAmtBarBaseState() {
-  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(this);
-  *reinterpret_cast<void***>(this) = reinterpret_cast<void**>(kVtableTRailAmtBar);
-  cachedRangeAt60 = 0;
-  cachedRatioAt62 = 0;
-  cachedProductionAt64 = 0;
-  cachedStyleAt66 = 0;
-  return this;
-}
-
-void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar);
-
-// FUNCTION: IMPERIALISM 0x0040173f
-void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar) {
-  amountBar->~TView();
+TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {
 }
 
 // FUNCTION: IMPERIALISM 0x00589fd0
-TRailAmtBarState* TRailAmtBarState::DestructTRailAmtBarAndMaybeFree(unsigned char freeSelfFlag) {
-  thunk_DestructTViewBaseState_0058A000(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)this);
-  }
-  return this;
+TRailAmtBar::~TRailAmtBar() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a020
@@ -96,18 +79,87 @@ void TRailAmtBarState::DoPostCreate(TDocument* document) {
   }
 
   if (productionOrCapValue == 0) {
-    cachedRatioAt62 = 9999;
+    stepOrCurrentValue = 9999;
   } else {
     short selectedStep = selectedMetricRecord->QueryStepValue();
-    cachedRatioAt62 = (short)(((int)selectedStep * barRangeRaw()) / (int)productionOrCapValue);
+    stepOrCurrentValue = (short)(((int)selectedStep * barRangeRaw()) / (int)productionOrCapValue);
   }
-  cachedProductionAt64 = productionOrCapValue;
+  auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
-    cachedRangeAt60 = 9999;
+    rangeOrMaxValue = 9999;
   } else {
-    cachedRangeAt60 = (short)((barRangeRaw() * (int)selectedMetricRecord->controlValue) /
+    rangeOrMaxValue = (short)((barRangeRaw() * (int)selectedMetricRecord->controlValue) /
                               (int)productionOrCapValue);
   }
-  cachedStyleAt66 = 0x3a;
+  auxValueB = 0x3a;
   this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
+void TRailAmtBarState::DrawAmt() {
+  QuickDrawSurfaceGuard surface;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      ApplyRectClipRegion(boundsRect);
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      if (styleValueAt60 > 0) {
+        SetQuickDrawTextOrigin(0, 1);
+        ApplyQuickDrawStyleFromRuntime(0);
+        SetQuickDrawStylePair(1, 4);
+        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
+
+      short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
+      short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      SetQuickDrawTextOrigin(overlayOffsetX, 0);
+      SetQuickDrawFillColor(0);
+      reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
+
+}
+
+// FUNCTION: IMPERIALISM 0x0058a3b0
+void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TradeControl* control, int unusedEdx,
+                                                             short selectedValue) {
+  (void)unusedEdx;
+  QuickDrawSurfaceGuard surface;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      RECT invalidRect;
+      invalidRect.left = boundsRect[0];
+      invalidRect.top = boundsRect[1];
+      invalidRect.right =
+          boundsRect[0] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
+      invalidRect.bottom =
+          boundsRect[1] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
+          &invalidRect, 1);
+    }
+  }
+
+}
+

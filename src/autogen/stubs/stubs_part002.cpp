@@ -1924,9 +1924,9 @@ undefined4 THotspotBehavior_VtblSlot000(void)
 }
 
 // ghidra_name TArmyPlacard::thunk_ConstructTArmyPlacardBaseState
-// ghidra_proto TArmyPlacard * __thiscall thunk_ConstructTArmyPlacardBaseState(void)
+// ghidra_proto TArmyPlacard * __thiscall thunk_TArmyPlacard(void)
 // FUNCTION: IMPERIALISM 0x0040285b
-undefined4 thunk_ConstructTArmyPlacardBaseState(void)
+undefined4 thunk_TArmyPlacard(void)
 {
   return 0;
 }

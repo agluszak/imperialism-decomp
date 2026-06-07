@@ -2,29 +2,22 @@
 
 #include "game/TView.h"
 
-// VTABLE: IMPERIALISM 0x00665cc8
-struct TradeAmountBarLayout : public TView {
+// VTABLE: IMPERIALISM 0x665cc8
+class TAmtBar : public TView {
+public:
   short rangeOrMaxValue;
   short stepOrCurrentValue;
   short auxValueA;
   short auxValueB;
 
-  TradeAmountBarLayout();
-  void UpdateNationStateGaugeValuesFromScenarioRecordCode();
+  TAmtBar();
+  virtual ~TAmtBar();
+
   void RenderPrimarySurfaceOverlayPanelWithClipCache();
-};
-
-__inline TradeAmountBarLayout::TradeAmountBarLayout()
-    : rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
-
-struct TradeMoveControlState {
-  void* vftable;
-  char pad_04[0x1c];
-  void* ownerContext;
-  char pad_24[0x10];
-  int barRangeRaw;
-  char pad_38[0x2c];
-  short barStepsRaw;
-
-  void ClampAndApplyTradeMoveValue(int* requestedValuePtr);
+  void ClampAndApplyTradeMoveValue(int* requestedMovePtr);
+  void SyncTradeCommoditySelectionWithActiveNationAndInitControls();
+  void ApplyMoveValueSlot1D4NoCommit(int value);
+  void UpdateTradeMoveControlsFromDrag(int arg1, int arg2);
+  void UpdateTradeBarFromSelectedMetricRatio_B();
+  void HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra);
 };

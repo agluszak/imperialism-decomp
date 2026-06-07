@@ -22595,3 +22595,13 @@ address|name|size|type|prototype
 6a992c|g_pCrtExitHandlerVectorNext||global|
 6a993c|g_pCrtExitHandlerVectorBase||global|
 6a9940|g_pszProcessCommandLine||global|
+0x00588580,TAmtBar::TAmtBar
+0x005885c0,TAmtBar::~TAmtBar
+0x0058aef0,TTraderAmtBar::TTraderAmtBar
+0x0058af30,TTraderAmtBar::~TTraderAmtBar
+0x005891d0,TIndustryAmtBar::TIndustryAmtBar
+0x00589210,TIndustryAmtBar::~TIndustryAmtBar
+0x00589f90,TRailAmtBar::TRailAmtBar
+0x00589fd0,TRailAmtBar::~TRailAmtBar
+0x0058ab60,TShipAmtBar::TShipAmtBar
+0x0058aba0,TShipAmtBar::~TShipAmtBar

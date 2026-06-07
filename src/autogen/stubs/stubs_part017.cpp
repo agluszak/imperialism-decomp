@@ -2827,7 +2827,7 @@ undefined4 ConstructUiTabCursorPictureEntry(void)
   return 0;
 }
 
-// ghidra_name TPictureButton::DestructTPictureButtonAndMaybeFree
+// ghidra_name TPictureButton::scalar deleting destructor
 // ghidra_proto void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00570820
 undefined4 DestructTPictureButtonAndMaybeFree(void)
@@ -3187,15 +3187,7 @@ undefined4 GetTRadioPictureButtonClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TCivilianButton::ConstructUiClickablePictureResourceEntry
-// ghidra_proto void __thiscall ConstructUiClickablePictureResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x005717c0
-undefined4 ConstructUiClickablePictureResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
+// ghidra_name TRadioPictureButton::scalar deleting destructor
 // ghidra_proto void * __thiscall DestructTRadioPictureButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00571800
 undefined4 DestructTRadioPictureButtonAndMaybeFree(void)

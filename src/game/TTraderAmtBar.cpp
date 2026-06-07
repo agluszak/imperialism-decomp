@@ -1,11 +1,15 @@
-#include "decomp_types.h"
-#include <new>
+#pragma once
 
+#include "decomp_types.h"
 #include "game/NationState.h"
-#include "game/quickdraw_guards.h"
 #include "game/TTraderAmtBar.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/trade_quickdraw.h"
+#include "game/ui_widget_thunks.h"
+#include "game/win_rect.h"
+#include <new>
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 ResetQuickDrawStrokeState(void);
@@ -118,7 +122,7 @@ const int kScenarioRecordTags[] = {
 
 } // namespace
 
-TTraderAmtBar::TTraderAmtBar() {}
+TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058ae30
 TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
@@ -135,29 +139,8 @@ void* __cdecl GetTTraderAmtBarClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTTraderAmtBar);
 }
 
-// FUNCTION: IMPERIALISM 0x0058aef0
-TTraderAmtBar* __fastcall ConstructTTraderAmtBarBaseState(TTraderAmtBar* amountBar) {
-  new (amountBar) TTraderAmtBar;
-  return amountBar;
-}
-
-void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar);
-
 // FUNCTION: IMPERIALISM 0x0058af30
-TTraderAmtBar* __fastcall DestructTTraderAmtBarMaybeFree(TTraderAmtBar* amountBar,
-                                                         int unusedEdx,
-                                                         unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  thunk_DestructTViewBaseState_0058AF60(amountBar);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)amountBar);
-  }
-  return amountBar;
-}
-
-// FUNCTION: IMPERIALISM 0x004064bf
-void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar) {
-  amountBar->~TView();
+TTraderAmtBar::~TTraderAmtBar() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058af80

@@ -36,13 +36,13 @@ void __fastcall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFall
   (void)unusedEdx;
   TradeControl* control = reinterpret_cast<TradeControl*>(button);
   if (control->IsActionable() != '\0') {
-    if (cursorPoint[1] < button->width38 / 2) {
-      button->hoverTag4e = 0x100;
+    if (cursorPoint[1] < button->field38 / 2) {
+      button->field4e = 0x100;
       reinterpret_cast<void(__fastcall*)(NumberedArrowButtonState*, int*, int)>(
           ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);
       return;
     }
-    button->hoverTag4e = (short)0xffff;
+    button->field4e = (short)0xffff;
   }
   reinterpret_cast<void(__fastcall*)(NumberedArrowButtonState*, int*, int)>(
       ::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(button, cursorPoint, hitArg);

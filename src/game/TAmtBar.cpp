@@ -14,12 +14,20 @@
 /* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
    then initializes move/bar controls baseline. */
 
+#include "game/TAmtBar.h"
+#include "game/TradeControl.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/trade_quickdraw.h"
+#include "game/ui_widget_thunks.h"
+#include "game/win_rect.h"
+
 // FUNCTION: IMPERIALISM 0x005884c0
-TradeAmountBarLayout* __cdecl CreateTAmtBarInstance(void) {
-  TradeAmountBarLayout* amountBar =
-      reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x68));
+TAmtBar* __cdecl CreateTAmtBarInstance(void) {
+  TAmtBar* amountBar =
+      reinterpret_cast<TAmtBar*>(AllocateWithFallbackHandler(0x68));
   if (amountBar != 0) {
-    new (amountBar) TradeAmountBarLayout;
+    new (amountBar) TAmtBar;
   }
   return amountBar;
 }
@@ -30,25 +38,11 @@ void* __cdecl GetTAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588580
-TradeAmountBarLayout* __fastcall ConstructTAmtBarBaseState(TradeAmountBarLayout* amountBar) {
-  // ORIG_CALLCONV: __thiscall
-  new (amountBar) TradeAmountBarLayout;
-  return amountBar;
+TAmtBar::TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {
 }
 
-void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar);
-
 // FUNCTION: IMPERIALISM 0x005885c0
-TradeAmountBarLayout* __fastcall DestructTAmtBarAndMaybeFree(TradeAmountBarLayout* amountBar,
-                                                             int unusedEdx,
-                                                             unsigned char freeSelfFlag) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  thunk_DestructTViewBaseState_005885F0(reinterpret_cast<TView*>(amountBar));
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)amountBar);
-  }
-  return amountBar;
+TAmtBar::~TAmtBar() {
 }
 
 // FUNCTION: IMPERIALISM 0x00401e65
@@ -62,36 +56,41 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
 }
 
 // FUNCTION: IMPERIALISM 0x00588690
-void TradeAmountBarLayout::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   // ORIG_CALLCONV: __thiscall
   QuickDrawSurfaceGuard surface;
   short barRange = rangeOrMaxValue;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  int contentBounds[4];
+  int frameBounds[4];
+  short controlWidth;
+  short controlHeight;
+  RECT panelRect;
+  RECT contentRect;
+  short guideValue = 0;
+  short fillOrigin;
+
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
-  TradeControl* control = reinterpret_cast<TradeControl*>(this);
   if (control->IsActionable() == 0 || control->Refresh() == 0) {
     return;
   }
 
-  int contentBounds[4];
   control->QueryContentBounds(contentBounds);
   ApplyRectClipRegion(contentBounds);
 
-  int frameBounds[4];
   control->QueryBounds(frameBounds);
 
   control->CtrlSlot78();
 
-  short controlWidth = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34);
-  short controlHeight = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38);
+  controlWidth = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34);
+  controlHeight = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38);
 
-  RECT panelRect;
   panelRect.left = frameBounds[0];
   panelRect.top = frameBounds[1];
   panelRect.right = frameBounds[0] + (int)controlWidth;
   panelRect.bottom = frameBounds[1] + (int)controlHeight;
 
-  RECT contentRect;
   contentRect.left = contentBounds[0];
   contentRect.top = contentBounds[1];
   contentRect.right = contentBounds[2];
@@ -103,7 +102,6 @@ void TradeAmountBarLayout::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       reinterpret_cast<void*>(ReadIntAt(kAddrActiveQuickDrawSurfaceContext) + 4), &panelRect,
       &contentRect, 0, 0);
 
-  short guideValue = 0;
   if (barRange > 0) {
     SetQuickDrawTextOrigin(0, 1);
     CallUiRuntimeSlot34(g_pUiRuntimeContext, auxValueB);
@@ -113,7 +111,7 @@ void TradeAmountBarLayout::RenderPrimarySurfaceOverlayPanelWithClipCache() {
     reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
   }
 
-  short fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
+  fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
   SetQuickDrawTextOrigin(fillOrigin, 4);
   SetQuickDrawFillColor(0);
   SetQuickDrawStylePair(1, 1);

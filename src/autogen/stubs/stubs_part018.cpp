@@ -2323,6 +2323,46 @@ undefined4 thunk_DestructTViewBaseState_0058AF60(void)
   return 0;
 }
 
+// ghidra_name TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
+// ghidra_proto void __thiscall WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(void)
+// FUNCTION: IMPERIALISM 0x0058bab0
+undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(void)
+{
+  return 0;
+}
+
+// ghidra_name TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
+// ghidra_proto void __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2)
+// FUNCTION: IMPERIALISM 0x0058bb50
+undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
+{
+  return 0;
+}
+
+// ghidra_name TPlacard::RenderPlacardValueTextWithShadow
+// ghidra_proto void __thiscall RenderPlacardValueTextWithShadow(void)
+// FUNCTION: IMPERIALISM 0x0058bc60
+undefined4 RenderPlacardValueTextWithShadow(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
+// ghidra_proto void __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
+// FUNCTION: IMPERIALISM 0x0058bf50
+undefined4 WrapperFor_GetActiveNationId_At0058bf50(void)
+{
+  return 0;
+}
+
+// ghidra_name TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC
+// ghidra_proto void __thiscall HandlePlusMinusCommandAndInvokeVslot1CC(int * arg1, int * arg2)
+// FUNCTION: IMPERIALISM 0x0058c140
+undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
+{
+  return 0;
+}
+
 // ghidra_name RenderLeftRightIndicatorIconsAndValueText
 // ghidra_proto void __cdecl RenderLeftRightIndicatorIconsAndValueText(void)
 // FUNCTION: IMPERIALISM 0x0058c3d0

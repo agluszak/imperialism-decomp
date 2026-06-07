@@ -124,3 +124,5 @@ src/game/TTextList.cpp|VCall_TextList_OnSelectionConfirmed|void|0x13c / 4||mediu
 src/game/TTextList.cpp|VCall_Parent_DispatchEvent|void|0x40 / 4|int,void*,int|medium|parent event dispatcher|index|thiscall|zero|||TView
 src/game/TFileStream.cpp|VCall_Stream_WriteCountSlot88|void|0x88 / 4|int|medium|stream write count/length prefix|index|thiscall|none||native_migrated|TStream
 src/game/TFileStream.cpp|VCall_Stream_WriteBytesSlot78|void|0x78 / 4|void*,int|medium|stream write raw bytes|index|thiscall|none||native_migrated|TStream
+src/game/TCivilianButton.cpp|VCall_TRadioPictureButton_SlotA4|void|0xA4 / 4|int,int|low|||thiscall|none||provisional|TCivilianButton
+src/game/TCivilianButton.cpp|VCall_TRadioPictureButton_SlotA8|void|0xA8 / 4|int,int|low|||thiscall|none||provisional|TCivilianButton

@@ -36,6 +36,11 @@ add_executable(Imperialism
     src/game/TDiplomacyMapView.cpp
     src/game/diplomacy_state.cpp
     src/game/trade_screen.cpp
+  src/game/TAmtBar.cpp
+  src/game/TTraderAmtBar.cpp
+  src/game/TIndustryAmtBar.cpp
+  src/game/TRailAmtBar.cpp
+  src/game/TShipAmtBar.cpp
     src/game/TTraderAmtBar.cpp
     src/game/ui_widget_wrappers.cpp
     src/game/TCivilianButton.cpp

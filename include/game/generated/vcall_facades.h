@@ -18,6 +18,20 @@ static __inline void VCall_QuickDrawTarget_QueryBoundsSlot12C(void* object, int*
   fn(object, arg0);
 }
 
+// class=TCivilianButton; status=provisional
+static __inline void VCall_TRadioPictureButton_SlotA4(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA4 / 4)));
+  fn(object, arg0, arg1);
+}
+
+// class=TCivilianButton; status=provisional
+static __inline void VCall_TRadioPictureButton_SlotA8(void* object, int arg0, int arg1) {
+  typedef void (__fastcall * Fn)(void*, int, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xA8 / 4)));
+  fn(object, arg0, arg1);
+}
+
 // forward city-dialog param to active diplomacy child control; class=TControl; status=provisional
 static __inline void VCall_DiplomacyChildControl_ForwardParamSlot48(void* object, int arg0) {
   typedef void (__fastcall * Fn)(void*, int);

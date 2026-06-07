@@ -1659,7 +1659,7 @@ undefined4 thunk_QueueMissionOrdersByPriorityForContext(void)
   return 0;
 }
 
-// ghidra_name TPlacard::ConstructTPlacardBaseState_At00403738
+// ghidra_name TPlacard::TPlacard_At00403738
 // ghidra_proto TPlacard * __thiscall ConstructTPlacardBaseState_At00403738(void)
 // FUNCTION: IMPERIALISM 0x00403738
 undefined4 ConstructTPlacardBaseState_At00403738(void)

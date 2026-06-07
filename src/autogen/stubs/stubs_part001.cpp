@@ -227,10 +227,10 @@ undefined4 thunk_InitializeLinkedListCursorFromOwnerHead(void)
   return 0;
 }
 
-// ghidra_name thunk_ConstructPictureResourceEntryBase
-// ghidra_proto void __cdecl thunk_ConstructPictureResourceEntryBase(void)
+// ghidra_name thunk_TPictureButton::TPictureButton
+// ghidra_proto void __cdecl thunk_TPictureButton(void)
 // FUNCTION: IMPERIALISM 0x00401122
-undefined4 thunk_ConstructPictureResourceEntryBase(void)
+undefined4 thunk_TPictureButton(void)
 {
   return 0;
 }
