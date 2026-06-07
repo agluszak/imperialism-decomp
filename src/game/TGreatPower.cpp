@@ -1,3 +1,5 @@
+#include "game/TNationState.h"
+#include "game/TUiRuntimeContext.h"
 #include "game/TRelationManager.h"
 #include "game/TMinister.h"
 #include "game/TGlobalMapState.h"
@@ -82,51 +84,6 @@ public:
 };
 
 
-class TUiRuntimeContextView {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void dummy6() = 0;
-  virtual void dummy7() = 0;
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
-  virtual void DispatchEventSlot4C(int eventCode, int nationSlot) = 0;
-  virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
-  virtual void dummy23() = 0;
-  virtual void dummy24() = 0;
-  virtual void dummy25() = 0;
-  virtual void dummy26() = 0;
-  virtual void dummy27() = 0;
-  virtual void dummy28() = 0;
-  virtual void dummy29() = 0;
-  virtual void dummy30() = 0;
-  virtual void dummy31() = 0;
-  virtual void dummy32() = 0;
-  virtual void dummy33() = 0;
-  virtual void dummy34() = 0;
-  virtual void dummy35() = 0;
-  virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
-                                              int proposalCode) = 0; // slot 90
-  virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2,
-                                     int promptCode) = 0; // slot 94
-  virtual void DispatchDecisionSlot98(int sourceNation, int arg2, int arg3,
-                                      int targetNation) = 0; // slot 98
-};
 
 class TTerrainDescriptorView {
 public:
@@ -377,176 +334,6 @@ struct TTerrainDescriptorNationSlotView {
   short encodedNationSlot;
 };
 
-struct TSecondaryNationStateOwnerView {
-  unsigned char pad00[0x0C];
-  short fallbackNationSlot;
-  short encodedOwnerNationSlot;
-};
-
-struct TNationStateFlagsView {
-  unsigned char pad00[0xA0];
-  char busyFlagA0;
-};
-
-#define TNATIONSTATE_VTABLE_SLOT(n) virtual void NationStateDummy##n(void) = 0
-
-class TNationStateView {
-public:
-  TNATIONSTATE_VTABLE_SLOT(00);
-  TNATIONSTATE_VTABLE_SLOT(01);
-  TNATIONSTATE_VTABLE_SLOT(02);
-  TNATIONSTATE_VTABLE_SLOT(03);
-  TNATIONSTATE_VTABLE_SLOT(04);
-  TNATIONSTATE_VTABLE_SLOT(05);
-  TNATIONSTATE_VTABLE_SLOT(06);
-  TNATIONSTATE_VTABLE_SLOT(07);
-  TNATIONSTATE_VTABLE_SLOT(08);
-  TNATIONSTATE_VTABLE_SLOT(09);
-  TNATIONSTATE_VTABLE_SLOT(10);
-  TNATIONSTATE_VTABLE_SLOT(11);
-  TNATIONSTATE_VTABLE_SLOT(12);
-  TNATIONSTATE_VTABLE_SLOT(13);
-  TNATIONSTATE_VTABLE_SLOT(14);
-  TNATIONSTATE_VTABLE_SLOT(15);
-  TNATIONSTATE_VTABLE_SLOT(16);
-  TNATIONSTATE_VTABLE_SLOT(17);
-  TNATIONSTATE_VTABLE_SLOT(18);
-  TNATIONSTATE_VTABLE_SLOT(19);
-  TNATIONSTATE_VTABLE_SLOT(20);
-  TNATIONSTATE_VTABLE_SLOT(21);
-  TNATIONSTATE_VTABLE_SLOT(22);
-  TNATIONSTATE_VTABLE_SLOT(23);
-  TNATIONSTATE_VTABLE_SLOT(24);
-  TNATIONSTATE_VTABLE_SLOT(25);
-  TNATIONSTATE_VTABLE_SLOT(26);
-  TNATIONSTATE_VTABLE_SLOT(27);
-  TNATIONSTATE_VTABLE_SLOT(28);
-  TNATIONSTATE_VTABLE_SLOT(29);
-  TNATIONSTATE_VTABLE_SLOT(30);
-  TNATIONSTATE_VTABLE_SLOT(31);
-  TNATIONSTATE_VTABLE_SLOT(32);
-  TNATIONSTATE_VTABLE_SLOT(33);
-  TNATIONSTATE_VTABLE_SLOT(34);
-  TNATIONSTATE_VTABLE_SLOT(35);
-  TNATIONSTATE_VTABLE_SLOT(36);
-  virtual void NotifyActionSlot94(int sourceNation, int actionCode) = 0;
-  TNATIONSTATE_VTABLE_SLOT(38);
-  TNATIONSTATE_VTABLE_SLOT(39);
-  TNATIONSTATE_VTABLE_SLOT(40);
-  TNATIONSTATE_VTABLE_SLOT(41);
-  TNATIONSTATE_VTABLE_SLOT(42);
-  TNATIONSTATE_VTABLE_SLOT(43);
-  TNATIONSTATE_VTABLE_SLOT(44);
-  TNATIONSTATE_VTABLE_SLOT(45);
-  TNATIONSTATE_VTABLE_SLOT(46);
-  TNATIONSTATE_VTABLE_SLOT(47);
-  TNATIONSTATE_VTABLE_SLOT(48);
-  TNATIONSTATE_VTABLE_SLOT(49);
-  TNATIONSTATE_VTABLE_SLOT(50);
-  TNATIONSTATE_VTABLE_SLOT(51);
-  TNATIONSTATE_VTABLE_SLOT(52);
-  TNATIONSTATE_VTABLE_SLOT(53);
-  TNATIONSTATE_VTABLE_SLOT(54);
-  TNATIONSTATE_VTABLE_SLOT(55);
-  TNATIONSTATE_VTABLE_SLOT(56);
-  TNATIONSTATE_VTABLE_SLOT(57);
-  TNATIONSTATE_VTABLE_SLOT(58);
-  TNATIONSTATE_VTABLE_SLOT(59);
-  TNATIONSTATE_VTABLE_SLOT(60);
-  TNATIONSTATE_VTABLE_SLOT(61);
-  TNATIONSTATE_VTABLE_SLOT(62);
-  TNATIONSTATE_VTABLE_SLOT(63);
-  TNATIONSTATE_VTABLE_SLOT(64);
-  TNATIONSTATE_VTABLE_SLOT(65);
-  TNATIONSTATE_VTABLE_SLOT(66);
-  TNATIONSTATE_VTABLE_SLOT(67);
-  TNATIONSTATE_VTABLE_SLOT(68);
-  TNATIONSTATE_VTABLE_SLOT(69);
-  TNATIONSTATE_VTABLE_SLOT(70);
-  TNATIONSTATE_VTABLE_SLOT(71);
-  TNATIONSTATE_VTABLE_SLOT(72);
-  TNATIONSTATE_VTABLE_SLOT(73);
-  TNATIONSTATE_VTABLE_SLOT(74);
-  TNATIONSTATE_VTABLE_SLOT(75);
-  TNATIONSTATE_VTABLE_SLOT(76);
-  TNATIONSTATE_VTABLE_SLOT(77);
-  TNATIONSTATE_VTABLE_SLOT(78);
-  TNATIONSTATE_VTABLE_SLOT(79);
-  TNATIONSTATE_VTABLE_SLOT(80);
-  TNATIONSTATE_VTABLE_SLOT(81);
-  TNATIONSTATE_VTABLE_SLOT(82);
-  TNATIONSTATE_VTABLE_SLOT(83);
-  TNATIONSTATE_VTABLE_SLOT(84);
-  TNATIONSTATE_VTABLE_SLOT(85);
-  TNATIONSTATE_VTABLE_SLOT(86);
-  TNATIONSTATE_VTABLE_SLOT(87);
-  TNATIONSTATE_VTABLE_SLOT(88);
-  TNATIONSTATE_VTABLE_SLOT(89);
-  TNATIONSTATE_VTABLE_SLOT(90);
-  TNATIONSTATE_VTABLE_SLOT(91);
-  TNATIONSTATE_VTABLE_SLOT(92);
-  TNATIONSTATE_VTABLE_SLOT(93);
-  TNATIONSTATE_VTABLE_SLOT(94);
-  TNATIONSTATE_VTABLE_SLOT(95);
-  TNATIONSTATE_VTABLE_SLOT(96);
-  TNATIONSTATE_VTABLE_SLOT(97);
-  TNATIONSTATE_VTABLE_SLOT(98);
-  TNATIONSTATE_VTABLE_SLOT(99);
-  TNATIONSTATE_VTABLE_SLOT(100);
-  TNATIONSTATE_VTABLE_SLOT(101);
-  TNATIONSTATE_VTABLE_SLOT(102);
-  virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) = 0;
-  TNATIONSTATE_VTABLE_SLOT(104);
-  TNATIONSTATE_VTABLE_SLOT(105);
-  TNATIONSTATE_VTABLE_SLOT(106);
-  TNATIONSTATE_VTABLE_SLOT(107);
-  TNATIONSTATE_VTABLE_SLOT(108);
-  TNATIONSTATE_VTABLE_SLOT(109);
-  TNATIONSTATE_VTABLE_SLOT(110);
-  TNATIONSTATE_VTABLE_SLOT(111);
-  TNATIONSTATE_VTABLE_SLOT(112);
-  TNATIONSTATE_VTABLE_SLOT(113);
-  TNATIONSTATE_VTABLE_SLOT(114);
-  TNATIONSTATE_VTABLE_SLOT(115);
-  TNATIONSTATE_VTABLE_SLOT(116);
-  TNATIONSTATE_VTABLE_SLOT(117);
-  TNATIONSTATE_VTABLE_SLOT(118);
-  TNATIONSTATE_VTABLE_SLOT(119);
-  TNATIONSTATE_VTABLE_SLOT(120);
-  TNATIONSTATE_VTABLE_SLOT(121);
-  TNATIONSTATE_VTABLE_SLOT(122);
-  TNATIONSTATE_VTABLE_SLOT(123);
-  TNATIONSTATE_VTABLE_SLOT(124);
-  TNATIONSTATE_VTABLE_SLOT(125);
-  TNATIONSTATE_VTABLE_SLOT(126);
-  TNATIONSTATE_VTABLE_SLOT(127);
-  TNATIONSTATE_VTABLE_SLOT(128);
-  TNATIONSTATE_VTABLE_SLOT(129);
-  TNATIONSTATE_VTABLE_SLOT(130);
-  TNATIONSTATE_VTABLE_SLOT(131);
-  TNATIONSTATE_VTABLE_SLOT(132);
-  TNATIONSTATE_VTABLE_SLOT(133);
-  TNATIONSTATE_VTABLE_SLOT(134);
-  virtual int GetMultiplierSlot21C(void) = 0;
-  TNATIONSTATE_VTABLE_SLOT(136);
-  TNATIONSTATE_VTABLE_SLOT(137);
-  TNATIONSTATE_VTABLE_SLOT(138);
-  TNATIONSTATE_VTABLE_SLOT(139);
-  TNATIONSTATE_VTABLE_SLOT(140);
-  TNATIONSTATE_VTABLE_SLOT(141);
-  TNATIONSTATE_VTABLE_SLOT(142);
-  virtual float GetScoreFactorSlot23C(void) = 0;
-  virtual float GetScoreFactorSlot240(void) = 0;
-
-  unsigned char pad04[0xA0 - 4];
-  char busyFlagA0;
-};
-
-struct TNationStateEventMessageFlagsView {
-  unsigned char pad00[0x4C];
-  unsigned char suppressEventMessage4C;
-  unsigned char allowEventMessage4D;
-};
 
 #define TLOCALIZATION_VTABLE_SLOT(n) virtual void LocalizationDummy##n(void) = 0
 
@@ -927,7 +714,7 @@ static __inline short ObArray_GetShortValueByOrdinal1Based(void* list, int ordin
 
 static __inline char UiRuntime_RequestDiplomacyDecision(void* uiRuntimeContext, int sourceNation,
                                                         int targetNation, int proposalCode) {
-  return static_cast<TUiRuntimeContextView*>(uiRuntimeContext)
+  return static_cast<TUiRuntimeContext*>(uiRuntimeContext)
       ->RequestDiplomacyDecisionSlot90(sourceNation, targetNation, proposalCode);
 }
 
@@ -985,23 +772,23 @@ static __inline void TerrainDescriptor_SetResetLevel(void* terrainDescriptor, in
 }
 
 static __inline void NationState_NotifyAction131(void* nationState, int sourceNation) {
-  static_cast<TNationStateView*>(nationState)->NotifyActionSlot94(sourceNation, 0x131);
+  static_cast<TNationState*>(nationState)->NotifyActionSlot94(sourceNation, 0x131);
 }
 
 static __inline void NationState_NotifyActionCode(void* nationState, int sourceNation,
                                                   int actionCode) {
-  static_cast<TNationStateView*>(nationState)->NotifyActionSlot94(sourceNation, actionCode);
+  static_cast<TNationState*>(nationState)->NotifyActionSlot94(sourceNation, actionCode);
 }
 
 static __inline void NationState_AssignNeedSlotFromSource(void* nationState, int needSlot,
                                                           int sourceNation) {
-  static_cast<TNationStateView*>(nationState)
+  static_cast<TNationState*>(nationState)
       ->AssignNeedSlotFromSourceSlot19C(needSlot, sourceNation);
 }
 
 static __inline char NationState_IsBusyA0(void* nationState) {
-  const TNationStateFlagsView* nationStateView =
-      static_cast<const TNationStateFlagsView*>(nationState);
+  const TNationStateFlags* nationStateView =
+      static_cast<const TNationStateFlags*>(nationState);
   return nationStateView->busyFlagA0;
 }
 
@@ -1062,7 +849,7 @@ static __inline int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
 }
 
 static __inline short
-DecodeSecondaryNationOwnerSlot(const TSecondaryNationStateOwnerView* secondaryNationStateView) {
+DecodeSecondaryNationOwnerSlot(const TSecondaryNationStateOwner* secondaryNationStateView) {
   short ownerNationSlot = secondaryNationStateView->encodedOwnerNationSlot;
   if (ownerNationSlot < 200) {
     if (ownerNationSlot < 100) {
@@ -2733,8 +2520,8 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
       continue;
     }
 
-    TNationStateEventMessageFlagsView* messageFlags =
-        static_cast<TNationStateEventMessageFlagsView*>(nationState);
+    TNationStateEventMessageFlags* messageFlags =
+        static_cast<TNationStateEventMessageFlags*>(nationState);
     if (messageFlags->allowEventMessage4D != 0 && messageFlags->suppressEventMessage4C == 0) {
       CString messageRef;
       CString scratchRef;
@@ -3366,8 +3153,8 @@ short TGreatPower::GetDiplomacyState1C6ByTarget(short targetNationSlot) {
 char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                 int arg4) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
-    TUiRuntimeContextView* uiRuntimeContext =
-        static_cast<TUiRuntimeContextView*>(ReadGlobalPointer(kAddrUiRuntimeContextPtr));
+    TUiRuntimeContext* uiRuntimeContext =
+        static_cast<TUiRuntimeContext*>(ReadGlobalPointer(kAddrUiRuntimeContextPtr));
     uiRuntimeContext->DispatchDecisionSlot98(this->nationSlot, arg2, arg3, arg4);
     return 1;
   }
@@ -3758,8 +3545,8 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   for (secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
     void* secondaryState = ReadSecondaryNationStateSlot(secondarySlot);
     bool directReset = true;
-    const TSecondaryNationStateOwnerView* secondaryStateView =
-        static_cast<const TSecondaryNationStateOwnerView*>(secondaryState);
+    const TSecondaryNationStateOwner* secondaryStateView =
+        static_cast<const TSecondaryNationStateOwner*>(secondaryState);
     short encodedOwnerNation = secondaryStateView->encodedOwnerNationSlot;
     if (encodedOwnerNation >= 200) {
       short ownerNation = DecodeSecondaryNationOwnerSlot(secondaryStateView);
@@ -4170,7 +3957,7 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
     return;
   }
 
-  static_cast<TUiRuntimeContextView*>(uiRuntimeContext)
+  static_cast<TUiRuntimeContext*>(uiRuntimeContext)
       ->DispatchEventSlot4C(0x2103, this->nationSlot);
 }
 
@@ -4350,8 +4137,8 @@ bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
     if (result != 0) {
       void* secondaryNationState = ReadSecondaryNationStateSlot(arg1);
       if (secondaryNationState != 0) {
-        const TSecondaryNationStateOwnerView* secondaryNationStateView =
-            static_cast<const TSecondaryNationStateOwnerView*>(secondaryNationState);
+        const TSecondaryNationStateOwner* secondaryNationStateView =
+            static_cast<const TSecondaryNationStateOwner*>(secondaryNationState);
         short stateValue = DecodeSecondaryNationOwnerSlot(secondaryNationStateView);
         if (stateValue != this->nationSlot) {
           SecondaryState_CallSlot4C(secondaryNationState, this->nationSlot, 1);
@@ -4476,8 +4263,8 @@ void TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNation
     return;
   }
 
-  const TSecondaryNationStateOwnerView* secondaryNationStateView =
-      static_cast<const TSecondaryNationStateOwnerView*>(secondaryNationState);
+  const TSecondaryNationStateOwner* secondaryNationStateView =
+      static_cast<const TSecondaryNationStateOwner*>(secondaryNationState);
   short selectedSlot = DecodeSecondaryNationOwnerSlot(secondaryNationStateView);
 
   if (selectedSlot == this->nationSlot) {
@@ -4752,7 +4539,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       if (!CallEligibilityThunkWithManager(slot)) {
         continue;
       }
-      TNationStateView* nationObj = static_cast<TNationStateView*>(nationObjects[slot]);
+      TNationState* nationObj = static_cast<TNationState*>(nationObjects[slot]);
       float slotValue = nationObj->GetScoreFactorSlot23C();
       sum += slotValue;
       if (slot == selectedNationSlot) {
@@ -4778,7 +4565,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       if (!CallEligibilityThunkWithManager(slot)) {
         continue;
       }
-      TNationStateView* nationObj = static_cast<TNationStateView*>(nationObjects[slot]);
+      TNationState* nationObj = static_cast<TNationState*>(nationObjects[slot]);
       float slotValue = nationObj->GetScoreFactorSlot240();
       sum += slotValue;
       if (slot == selectedNationSlot) {
@@ -4822,8 +4609,8 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       return 0.0f;
     }
 
-    TNationStateView* nationObj =
-        static_cast<TNationStateView*>(ReadNationStateSlot(selectedNationSlot));
+    TNationState* nationObj =
+        static_cast<TNationState*>(ReadNationStateSlot(selectedNationSlot));
     if (nationObj == 0) {
       return 0.0f;
     }
@@ -5155,7 +4942,7 @@ void TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A(void) {
   } while (reinterpret_cast<unsigned int>(nationStateCursor) < kAddrNationStatesMajorEnd);
 
   void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
-  static_cast<TUiRuntimeContextView*>(uiRuntimeContext)
+  static_cast<TUiRuntimeContext*>(uiRuntimeContext)
       ->RequestDiplomacyDecisionSlot90(this->nationSlot, this->nationSlot, 0x29A);
 }
 
