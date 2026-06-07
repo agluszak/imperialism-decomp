@@ -7,7 +7,6 @@
 
 #pragma optimize("y", on)
 
-
 // GHIDRA_NAME InitializeTradeSellControlState
 // GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
 // GHIDRA_COMMENT_BEGIN
@@ -26,8 +25,7 @@
 
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
-  TAmtBar* amountBar =
-      reinterpret_cast<TAmtBar*>(AllocateWithFallbackHandler(0x68));
+  TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(AllocateWithFallbackHandler(0x68));
   if (amountBar != 0) {
     new (amountBar) TAmtBar;
   }
@@ -40,12 +38,11 @@ void* __cdecl GetTAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588580
-TAmtBar::TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {
-}
+TAmtBar::TAmtBar()
+    : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
 
 // FUNCTION: IMPERIALISM 0x005885c0
-TAmtBar::~TAmtBar() {
-}
+TAmtBar::~TAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x00401e65
 void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar) {
@@ -131,9 +128,34 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
 
+// FUNCTION: IMPERIALISM 0x00588630
+void __fastcall OrphanCallChain_C2_I15_00588630(TradeControl* control, int unusedEdx,
+                                                short valueAt60, short valueAt62) {
+  (void)unusedEdx;
+  TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(control);
+  amountBar->stepOrCurrentValue = valueAt60;
+  amountBar->rangeOrMaxValue = valueAt62;
+  control->InvokeSlotE4();
+  control->InvokeSlot13C();
+}
+
+// GHIDRA_NAME OrphanCallChain_C1_I03_00588670
+// GHIDRA_PROTO undefined OrphanCallChain_C1_I03_00588670()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=3
+// GHIDRA_COMMENT_END
+/* [OrphanCallChain] no incoming code refs; calls=1; instructions=3 */
+
+// FUNCTION: IMPERIALISM 0x00588670
+void __fastcall OrphanCallChain_C1_I03_00588670(TradeControl* control, int unusedEdx,
+                                                int unusedStackArg) {
+  (void)unusedEdx;
+  (void)unusedStackArg;
+  control->InvokeSlot1A8();
+}
+
 // FUNCTION: IMPERIALISM 0x00588ff0
-void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg,
-                                                       int eventExtra) {
+void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   void* owner = this;
   if (commandId == 100) {
