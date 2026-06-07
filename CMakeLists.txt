@@ -47,6 +47,7 @@ add_executable(Imperialism
     src/game/THQButton.cpp
     src/game/TPictureResourceEntryBase.cpp
     src/game/TPictureButton.cpp
+    src/game/T2PictureButton.cpp
     src/game/TRadioPictureButton.cpp
     src/game/TButton.cpp
     src/game/TStatusButton.cpp
@@ -66,6 +67,7 @@ add_executable(Imperialism
     src/game/TSoundPlayer.cpp
     src/game/TView.cpp
     src/game/TControl.cpp
+    src/game/ui_linker_artifacts.cpp
     src/game/TCapacityOrder.cpp
     src/game/TGreatPower.cpp
     src/game/TUnitOrderState.cpp

@@ -2899,38 +2899,6 @@ undefined4 WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(v
   return 0;
 }
 
-// ghidra_name T2PictureButton::CreateT2PictureButtonInstance
-// ghidra_proto void * __cdecl CreateT2PictureButtonInstance(void)
-// FUNCTION: IMPERIALISM 0x00570b10
-undefined4 CreateT2PictureButtonInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::GetT2PictureButtonClassNamePointer
-// ghidra_proto void * __cdecl GetT2PictureButtonClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00570b90
-undefined4 GetT2PictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::ConstructUiBattleTabPictureEntry
-// ghidra_proto void __thiscall ConstructUiBattleTabPictureEntry(void)
-// FUNCTION: IMPERIALISM 0x00570bb0
-undefined4 ConstructUiBattleTabPictureEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name T2PictureButton::DestructT2PictureButtonAndMaybeFree
-// ghidra_proto void * __thiscall DestructT2PictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570be0
-undefined4 DestructT2PictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C3_I43_00570c30
 // ghidra_proto void __cdecl OrphanCallChain_C3_I43_00570c30(void)
 // FUNCTION: IMPERIALISM 0x00570c30

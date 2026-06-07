@@ -6,7 +6,6 @@
 #include "game/NationState.h"
 #include "game/TTraderAmtBar.h"
 #include "game/TradeControl.h"
-#include "game/TradeNationMetricView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/trade_quickdraw.h"
@@ -25,16 +24,6 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 namespace {
 
 extern "C" char g_pClassDescTTraderAmtBar;
-
-static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
-  return reinterpret_cast<TradeNationMetricView*>(nationState)
-      ->QueryNationMetricBySlot78(metricSlot);
-}
-
-static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, short metricSlot) {
-  return reinterpret_cast<TradeNationMetricView*>(nationState)
-      ->QueryNationMetricBySlot7C(metricSlot);
-}
 
 const int kScenarioRecordTags[] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
@@ -80,14 +69,14 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
   if (tradeCapacity == 0) {
     stepOrCurrentValue = 0;
   } else {
-    short currentValue = CallQueryNationMetricBySlot78(nationState, recordIndex);
+    short currentValue = nationState->QueryNationMetricBySlot78(recordIndex);
     stepOrCurrentValue =
         (short)((((int)tradeCapacity - (int)currentValue) * this->field34) / (int)tradeCapacity);
   }
 
   short gaugeValue = 0;
   if (nationState != 0) {
-    gaugeValue = CallQueryNationMetricBySlot7C(nationState, recordIndex);
+    gaugeValue = nationState->QueryNationMetricBySlot7C(recordIndex);
   }
   if (tradeCapacity == 0) {
     rangeOrMaxValue = 0;

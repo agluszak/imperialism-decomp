@@ -3,7 +3,6 @@
 #include "game/generated/vcall_facades.h"
 #include "game/TTextList_Virtuals.h"
 #include "game/UiRuntimeContext.h"
-#include "game/UiRuntimeContext_Virtuals.h"
 #include "game/win_rect.h"
 
 #if defined(_MSC_VER)
@@ -55,8 +54,7 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
       CString tempString(pItem->text);
 
       if (idx == selectedIndex) {
-        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)
-            ->ApplyLegendSplitSlot34(5);
+        g_pUiRuntimeContext->ApplyLegendSplitSlot34(5);
 
         RECT rect;
         rect.left = 0;

@@ -1,5 +1,5 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
-include/game/trade_quickdraw.h|4|0|0|0|4
+include/game/trade_quickdraw.h|3|0|0|0|3
 src/game/TCapacityOrder.cpp|0|1|0|0|1
 src/game/TCityProductionView.cpp|0|0|0|3|3
 src/game/TCivDescription.cpp|0|2|0|0|2

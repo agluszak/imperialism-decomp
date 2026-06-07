@@ -60,7 +60,7 @@ address|target_cpp|ownership|note
 405de4|src/game/TGreatPower.cpp|manual|marker_sync
 405ee3|src/game/diplomacy_state.cpp|manual|marker_sync
 4064bf|src/game/TTraderAmtBar.cpp|manual|marker_sync
-4064e2|src/game/TView.cpp|manual|marker_sync
+4064e2|src/game/ui_linker_artifacts.cpp|manual|marker_sync
 406758|src/game/diplomacy_state.cpp|manual|marker_sync
 406915|src/game/TGreatPower.cpp|manual|marker_sync
 406965|src/game/TShipyardCluster.cpp|manual|marker_sync
@@ -86,7 +86,7 @@ address|target_cpp|ownership|note
 4085ee|src/game/TGreatPower.cpp|manual|marker_sync
 408620|src/game/TGreatPower.cpp|manual|marker_sync
 40862a|src/game/TGreatPower.cpp|manual|marker_sync
-4087fb|src/game/TControl.cpp|manual|marker_sync
+4087fb|src/game/ui_linker_artifacts.cpp|manual|marker_sync
 4090b1|src/game/TGreatPower.cpp|manual|marker_sync
 409205|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 409291|src/game/TGreatPower.cpp|manual|marker_sync
@@ -545,6 +545,10 @@ address|target_cpp|ownership|note
 56f460|src/game/noop_slots.cpp|manual|marker_sync
 56f480|src/game/noop_slots.cpp|manual|marker_sync
 5707f0|src/game/TPictureButton.cpp|manual|marker_sync
+570b10|src/game/T2PictureButton.cpp|manual|marker_sync
+570b90|src/game/T2PictureButton.cpp|manual|marker_sync
+570bb0|src/game/T2PictureButton.cpp|manual|marker_sync
+570be0|src/game/T2PictureButton.cpp|manual|marker_sync
 5717c0|src/game/TRadioPictureButton.cpp|manual|marker_sync
 5723d0|src/game/noop_slots.cpp|manual|marker_sync
 572bb0|src/game/noop_slots.cpp|manual|marker_sync

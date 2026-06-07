@@ -38,8 +38,8 @@ struct NationState {
   virtual void ns_slot27() = 0;
   virtual void ns_slot28() = 0;
   virtual void ns_slot29() = 0;
-  virtual void ns_slot30() = 0;
-  virtual void ns_slot31() = 0;
+  virtual short QueryNationMetricBySlot78(short metricSlot) = 0; // 30 (0x78)
+  virtual short QueryNationMetricBySlot7C(short metricSlot) = 0; // 31 (0x7c)
   virtual void ns_slot32() = 0;
   virtual void ns_slot33() = 0;
   virtual void ns_slot34() = 0;

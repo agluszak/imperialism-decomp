@@ -4,9 +4,6 @@
 #include "game/TEventHandler.h"
 #include "game/CString.h"
 
-// Runtime thunk exported from the binary for the base UI resource constructor.
-undefined4 thunk_ConstructUiResourceEntryBase(void);
-
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
 public:
@@ -34,7 +31,6 @@ public:
   int field5c;
 
   TView();
-  void thunk_ConstructUiResourceEntryBase();
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
   virtual ~TView();
 };

@@ -9,18 +9,6 @@ extern int g_nUiResourceEntryDefaultParam1;
 extern unsigned short g_wUiResourceEntryDefaultParam2;
 }
 
-#include <new>
-
-// KNOWN LINKER ARTIFACT (heuristic 93): 0x004087fb is a 5-byte incremental-link
-// `jmp TControl::TControl` thunk with no clean C++ source equivalent here — not expected
-// to match, and the same-TU placement-new inlines the (light, non-EH) ctor so the
-// standalone TControl::TControl is not emitted. Both are fixed by converting TControl's
-// derived classes to real inheritance (symbolic base-ctor ref). Do NOT chase this thunk.
-// FUNCTION: IMPERIALISM 0x004087fb
-void TControl::thunk_ConstructUiCommandTagResourceEntryBase() {
-  new (this) TControl();
-}
-
 // Real ctor: the TView base ctor runs first (constructs the TView subobject +
 // its CString member), then MSVC writes this class's vptr (0x0064a098). Fields
 // are member-initializers so they emit in declaration order. No manual vtable

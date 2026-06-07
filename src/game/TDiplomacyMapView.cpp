@@ -2,7 +2,6 @@
 
 #include "decomp_types.h"
 #include "game/Point32.h"
-#include "game/UiRuntimeContext_Virtuals.h"
 #include "game/generated/vcall_facades.h"
 #include "game/ui_widget_shared.h"
 #include "game/TDiplomacyTurnStateManager.h"
@@ -155,7 +154,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
       terrainDescriptors = terrainDescriptors + 1;
     } while (terrainIndex < 7);
 
-    reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)->ApplyLegendSplitSlot34(0x3f);
+    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
 
     terrainIndex = 7;
     terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable) + 7;
@@ -728,8 +727,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
       destRect.right = iconRect->right + 1;
       destRect.bottom = iconRect->bottom + 1;
       if (tierValue == selectedTier) {
-        reinterpret_cast<UiRuntimeContext_Virtuals*>(g_pUiRuntimeContext)
-            ->ApplyLegendSplitSlot34(6);
+        g_pUiRuntimeContext->ApplyLegendSplitSlot34(6);
       } else {
         SetQuickDrawFillColor(0xffffff);
       }

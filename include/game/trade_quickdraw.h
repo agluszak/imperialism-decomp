@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
 
 undefined4 ApplyHitRegionToClipState(void);
 void SnapshotHitRegionToClipCache(int* clipDescriptor);
@@ -34,12 +35,11 @@ static __inline void ApplyRectClipRegion(int* rectBuffer) {
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(rectBuffer);
 }
 
-static __inline void SetQuickDrawFillColor(short color) {
-  // This was missing! Let me check what thunk SetQuickDrawFillColor uses!
-}
+// SetQuickDrawFillColor(int) is the real global at 0x495000, declared in
+// quickdraw_guards.h (included above).
+
 static __inline void CallUiRuntimeSlot34(UiRuntimeContext* runtimeContext, int styleIndex) {
-  reinterpret_cast<void(__fastcall*)(UiRuntimeContext*, int)>(
-      (*reinterpret_cast<void***>(runtimeContext))[0x34 / 4])(runtimeContext, styleIndex);
+  runtimeContext->ApplyLegendSplitSlot34(styleIndex);
 }
 void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
                                                  int eventExtra);
