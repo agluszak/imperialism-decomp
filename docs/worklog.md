@@ -2868,3 +2868,9 @@ below_floor=0; civ 0x5c28c0 100%, military 0x5c2df0 85.7%, navy 0x551430 82.6%.
 - Overrode slot 1 in `TList` and `TSortedList` and removed their manual vtable assignment and `g_vtbl` globals.
 - Overrode slots 1, 5, 6, and 7 in `TAdmiral` which allowed the compiler to perfectly emit `TAdmiral`'s EH constructor vtable writes, retaining 100% alignment for `TAdmiral::TAdmiral`.
 - Removed `g_vtblRefCountedObjectBase`, `g_vtblTList`, and `g_vtblTSortedList` from `symbols.csv` to allow `reccmp` to track them via `// VTABLE` annotations.
+
+2026-06-07 19:30:00
+- Migrated `TAmtBar` and its subclasses (`TTraderAmtBar`, `TIndustryAmtBar`, `TRailAmtBar`, `TShipAmtBar`) from legacy manual structs to a real C++ inheritance hierarchy extending `TView`.
+- Eliminated fake struct bridges (`TradeAmountBarLayout`, `TTraderAmtBarState`, etc.) inside `trade_screen.cpp`.
+- Cleaned up inline QuickDraw wrapper functions in `trade_screen.cpp` by extracting them into a shared header `include/game/trade_quickdraw.h`.
+- Separated `TAmtBar` subclasses into their own translation units and added them to `CMakeLists.txt` for independent compilation.
