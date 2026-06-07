@@ -776,6 +776,7 @@ address|target_cpp|ownership|note
 5c2470|src/game/noop_slots.cpp|manual|marker_sync
 5c2530|src/game/TUnitOrderState.cpp|manual|marker_sync
 5c2610|src/game/noop_slots.cpp|manual|marker_sync
+5c28c0|src/game/TCivWorkOrderState.cpp|manual|marker_sync
 5c2940|src/game/TCivWorkOrderState.cpp|manual|marker_sync
 5d7190|src/game/noop_slots.cpp|manual|marker_sync
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync

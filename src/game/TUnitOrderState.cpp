@@ -30,6 +30,9 @@ void TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(short nOrderType, 
   this->RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, arg3);
 }
 
+// Original is FPO (frame-pointer omitted); force /Oy to match the esp-relative
+// argument loads (heuristic 88).
+#pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x005c2530
 void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                                         short nOrderOwnerNationId, short arg3) {
@@ -66,3 +69,4 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   pLoc[25] = uniqueId;
   this->field_20 = uniqueId;
 }
+#pragma optimize("", on)

@@ -2758,3 +2758,28 @@ chase 100%".
 Validation: `just build` clean; `just vtable-gate` passed; `just compare-canaries` below_floor=2
 (0x005c2530 77.89%, 0x005c2940 72.73% — both pre-existing FPO partials, verified identical at
 baseline via stash, NOT regressions from this change).
+
+### Order-class recovery #1: TCivWorkOrderState as a real class (2026-06-07)
+
+First slice of the slot-0x32 order-object recovery (the "substantive next lever"). Made the
+civilian work-order object a real instantiable C++ class instead of a `reinterpret_cast` bridge:
+- Promoted `TUnitOrderState` (base) from an abstract view to a concrete class with
+  `// VTABLE: IMPERIALISM 0x0066ee18`, exact field layout (split the old `pad0e` into
+  `field_E/field_10/field_14`), and an inline base ctor that open-codes the inlined base init
+  (`field_10/14=0`, `field_6=0xffff`, `field_8=0`, `field_1C=0`). Slot indices preserved
+  (`VTableSlot10` stays slot 10). Base slot bodies are temporary structural placeholders
+  (heuristic 44) until each slot fn is migrated onto the class.
+- `TCivWorkOrderState : TUnitOrderState` gained `// VTABLE: IMPERIALISM 0x0066ee60`, inline
+  `operator new/delete` (→ `AllocateWithFallbackHandler`), and a real ctor owning `0x005c28c0`.
+- Deleted the `66ee60|g_vtblCivUnitOrderState` DATA row from `symbols.csv` (heuristic 86 step 4)
+  so the `// VTABLE:` annotation owns the address; the only build references are in non-compiled
+  `src/ghidra_autogen/`. Updated the `5c28c0` symbol to `TCivWorkOrderState::TCivWorkOrderState`.
+- Slot 0x32 (`ExecuteNationPendingActionStateMachine`) now does `new TCivWorkOrderState()` instead
+  of the `AllocateCivUnitOrderObject` bridge (helper removed).
+- Applied `#pragma optimize("y", on)` FPO wraps to the two below-floor canaries
+  `RegisterUnitOrderWithOwnerManager` (0x5c2530) and `InitializeCivWorkOrderState` (0x5c2940) —
+  their only diff was the `push ebp` frame; bodies + virtual-call slots already matched.
+
+Scores: ctor `0x5c28c0` 18.18% -> 100% (effective). Canaries: `0x5c2940` 72.73% -> 100%,
+`0x5c2530` 77.89% -> 89.13% — **below_floor 2 -> 0**. Slot 0x32 38.04% -> 42.22%.
+Validation: `just build` clean; `just vtable-gate` passed.

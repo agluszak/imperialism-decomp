@@ -147,14 +147,6 @@ undefined4 GetTCivUnitClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name InitializeCivUnitOrderObject
-// ghidra_proto void __cdecl InitializeCivUnitOrderObject(void)
-// FUNCTION: IMPERIALISM 0x005c28c0
-undefined4 InitializeCivUnitOrderObject(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyCivUnitOrderObject
 // ghidra_proto void __cdecl DestroyCivUnitOrderObject(void)
 // FUNCTION: IMPERIALISM 0x005c28f0

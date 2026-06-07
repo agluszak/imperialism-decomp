@@ -1826,15 +1826,6 @@ static __inline void* AllocateNavySecondaryOrderNode(short nationSlot) {
   return obj;
 }
 
-// new(0x28) + civilian unit order ctor (0x005c28c0).
-static __inline void* AllocateCivUnitOrderObject(void) {
-  void* obj = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x28));
-  if (obj != 0) {
-    obj = reinterpret_cast<void*(__fastcall*)(void*)>(thunk_InitializeCivUnitOrderObject)(obj);
-  }
-  return obj;
-}
-
 // g_pCityOrderCapabilityState accessors (read-only data table, not a class region).
 static __inline short CityOrderCapForNation(short nationSlot) {
   return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pCityOrderCapabilityState) +
@@ -1924,7 +1915,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     } while (minorNationEntry <= &g_apMinorNationCapabilityObjects[15]);
 
     if (needsCivOrder) {
-      TCivWorkOrderState* civOrder = static_cast<TCivWorkOrderState*>(AllocateCivUnitOrderObject());
+      TCivWorkOrderState* civOrder = new TCivWorkOrderState();
       int spawnTile = reinterpret_cast<int(__fastcall*)(void*, int, int, int)>(
           thunk_FindReachableRecruitSpawnTileWithVisitedReset)(
           g_pGlobalMapState, this->ownerNationSlot, 0, nationSlot);
