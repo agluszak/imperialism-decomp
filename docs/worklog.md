@@ -1,5 +1,36 @@
 # Worklog
 
+## 2026-06-07
+
+### TTraderAmtBar standalone source split
+
+1. Scope:
+   - `src/game/TTraderAmtBar.cpp`
+   - `include/game/TTraderAmtBar.h`
+   - `include/game/TAmtBar.h`
+   - `src/game/trade_screen.cpp`
+   - `config/function_ownership.csv`
+2. Changes:
+   - Added `src/game/TTraderAmtBar.cpp` to the build as a standalone translation unit instead of including it from `trade_screen.cpp`.
+   - Moved `TTraderAmtBar::DrawAmt` ownership (`0x0058b0f0`) from `trade_screen.cpp` to `TTraderAmtBar.cpp`.
+   - Added shared `TAmtBar` / `TTraderAmtBar` headers for the standalone source path while keeping `trade_screen.cpp`'s local amount-bar views for the still-included sibling files.
+   - Replaced the `amountBar` manual vptr writes in the `TAmtBar` and `TTraderAmtBar` create/construct helpers with placement `new` on typed `TradeAmountBarLayout` / `TTraderAmtBar` objects.
+   - Removed the duplicate `GLOBAL` ownership annotation for `g_vtblTTraderAmtBar` in `trade_screen.cpp`; the symbol definition remains there for current data-symbol pairing.
+   - Replaced the `TTraderAmtBar` raw vtable-slot helper casts with local typed abstract views for owner-control, nation-metric, and UI-runtime virtual dispatch.
+3. Validation:
+   - `just sync-ownership`
+   - `just regen-stubs`
+   - `just build`: passed.
+   - `just detect`: passed.
+   - `just compare 0x005884c0 0x00588580`: `TAmtBar::CreateTAmtBarInstance` `16.33%`, `TAmtBar::ConstructBaseState` `9.52%`.
+   - `just compare 0x0058ae30`: `36.00%`.
+   - `just compare 0x0058aef0 0x0058af30 0x004064bf 0x0058af80 0x0058b070 0x0058b0f0`: `50.00%`, `80.00%`, `0.00%`, `51.47%`, `73.53%`, `39.46%`.
+   - `just compare 0x0058b0f0`: `39.46%`.
+   - `just compare-canaries`: ran with `parse_error=0`, but `0x005C2530` and `0x005C2940` remain below floor.
+4. Residuals:
+   - The constructor/helper scores are expected to change while this slice prioritizes typed construction over manual vptr stores. A later vtable cleanup pass should reconcile the remaining `g_vtblTTraderAmtBar` / `g_vtblTAmtBar` data-symbol rows with the real C++ vtable model.
+   - `0x004064bf` is now a typed destructor helper body instead of the previous jump-thunk shape; revisit it separately if preserving the thunk score becomes important.
+
 ## 2026-06-06
 
 ### TGreatPower/TAutoGreatPower class split and vtable-grounded slot 0x20 pass
