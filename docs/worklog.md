@@ -2701,3 +2701,29 @@ Validation:
 - `just sync-ownership && just regen-stubs` correctly orphaned the old `0x00489030` stub.
 - `just gen-vcall-facades` stripped the stream and diplomacy wrappers from `vcall_facades.h`.
 - `just build && just compare 0x00489070 0x00489030`: Build succeeds, vtable gate passed, both targets are 100%.
+
+### TGreatPower slot 0x32 promotion + EH-body data globals (2026-06-07)
+
+Promoted `ExecuteNationPendingActionStateMachine` (vtable slot 0x32, body 0x004dab20, 661B EH)
+from stub into `TGreatPower.cpp` as a real virtual. Architecture landed:
+- Wired sibling dispatches to real virtuals instead of stubs: relation-manager slot 0x0c
+  (`TRelationManager::RefreshOrderStateSlot0C`, renamed from `dummy12`), TGreatPower slot 0xb0
+  (`DispatchTurnOrderActionSlotB0(short,short,short)`, real pure virtual at decimal index 176 —
+  fixed an initial mis-placement at index 178/offset 0x2c8), and the existing slot 0x2e / slot 0x10.
+- Civ work order now calls the real `TCivWorkOrderState::thunk_InitializeCivWorkOrderState` method
+  (the allocated object is a real `TCivWorkOrderState`), not a cast bridge.
+- Order-object new+ctor factories (land military, navy primary/secondary, civ) kept in isolated
+  `static __inline __fastcall` bridge helpers out of the method body (Hard-Rule allowance; no class
+  modeled yet). Path to higher % is recovering those order classes with real ctors/non-trivial dtors
+  so MSVC emits the matching SEH frame + uStack state markers (EH-new-factory pattern).
+- Defined the EH-body data globals in `global_data_tables.cpp` (the planned follow-up to heuristic
+  note 45): `g_pCityOrderCapabilityState`, `g_pActiveMapOrderContext`, `g_pGlobalMapState`, and the
+  16-entry `g_apMinorNationCapabilityObjects[]` table. Direct loads now pair as DATA symbols.
+
+Score: 2.03% -> 38.04% (shape correct; residual is the un-modeled SEH/new-factory frame + FPO arg
+shapes on the mislabeled-convention helper thunks). Stopped here per "focus on architecture, don't
+chase 100%".
+
+Validation: `just build` clean; `just vtable-gate` passed; `just compare-canaries` below_floor=2
+(0x005c2530 77.89%, 0x005c2940 72.73% — both pre-existing FPO partials, verified identical at
+baseline via stash, NOT regressions from this change).

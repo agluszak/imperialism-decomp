@@ -14,7 +14,7 @@ public:
   virtual void dummy9() = 0;
   virtual void Call28() = 0; // slot 28
   virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
+  virtual void RefreshOrderStateSlot0C() = 0; // slot 0x0c (offset 0x30)
   virtual void dummy13() = 0;
   virtual void dummy14() = 0;
   virtual void dummy15() = 0;

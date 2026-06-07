@@ -70,7 +70,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(47);
   TGREATPOWER_VTABLE_SLOT(48);
   TGREATPOWER_VTABLE_SLOT(49);
-  TGREATPOWER_VTABLE_SLOT(50);
+  // index 0x32 / vtable+0x0c8. Per-nation pending-action state machine that
+  // constructs queued land/navy/civ order objects (body 0x004dab20).
+  virtual void ExecuteNationPendingActionStateMachine(void);
   TGREATPOWER_VTABLE_SLOT(51);
   TGREATPOWER_VTABLE_SLOT(52);
   TGREATPOWER_VTABLE_SLOT(53);
@@ -207,7 +209,10 @@ public:
   TGREATPOWER_VTABLE_SLOT(173);
   TGREATPOWER_VTABLE_SLOT(174);
   TGREATPOWER_VTABLE_SLOT(175);
-  TGREATPOWER_VTABLE_SLOT(176);
+  // index 0xb0 / vtable+0x2c0. Dispatches a queued turn-order action via the active
+  // map order context (body 0x004e2b00, RET 0xc -> three short args). Called from
+  // slot 0x32 to enqueue land/navy/civ orders.
+  virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) = 0;
   TGREATPOWER_VTABLE_SLOT(177);
   TGREATPOWER_VTABLE_SLOT(178);
   virtual void CallSlotB3_Provisional(void) = 0;

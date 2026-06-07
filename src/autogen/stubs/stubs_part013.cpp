@@ -2675,14 +2675,6 @@ undefined4 ClearQueuedNationOrdersAndResetOrderManager(void)
   return 0;
 }
 
-// ghidra_name ExecuteNationPendingActionStateMachine
-// ghidra_proto void __cdecl ExecuteNationPendingActionStateMachine(void)
-// FUNCTION: IMPERIALISM 0x004dab20
-undefined4 ExecuteNationPendingActionStateMachine(void)
-{
-  return 0;
-}
-
 // ghidra_name HasQueuedCivWorkOrderType7
 // ghidra_proto void __cdecl HasQueuedCivWorkOrderType7(void)
 // FUNCTION: IMPERIALISM 0x004dae70
