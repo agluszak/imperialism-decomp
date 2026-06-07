@@ -71,7 +71,6 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unused
 extern "C" char g_vtblTShipAmtBar = 0;
 // GLOBAL: IMPERIALISM 0x663010
 extern "C" char g_pClassDescTShipAmtBar = 0;
-// GLOBAL: IMPERIALISM 0x666ba0
 extern "C" char g_vtblTTraderAmtBar = 0;
 // GLOBAL: IMPERIALISM 0x663028
 extern "C" char g_pClassDescTTraderAmtBar = 0;
@@ -215,6 +214,8 @@ struct TradeAmountBarLayout {
   short auxValueA;
   short auxValueB;
 
+  TradeAmountBarLayout()
+      : rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
   void UpdateNationStateGaugeValuesFromScenarioRecordCode();
   void RenderPrimarySurfaceOverlayPanelWithClipCache();
 };
@@ -348,7 +349,6 @@ struct TradeSummarySelectionMap {
   int summaryTags[32];
 };
 
-struct TradeMoveControlState;
 struct TradeMovePanelContext;
 
 struct TradeScreenContext {
@@ -579,7 +579,7 @@ static __inline void FailNilPointerInUSmallViews(int line) {
 }
 
 static __inline short QueryUiScreenMode(UiRuntimeContext* runtimeContext) {
-  if (runtimeContext == 0 || runtimeContext->vftable == 0) {
+  if (runtimeContext == 0 || *reinterpret_cast<void**>(runtimeContext) == 0) {
     return 4;
   }
   return CallQueryUiScreenModeSlot54(runtimeContext);
@@ -2311,7 +2311,6 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
 #include "TRailAmtBar.cpp"
 #include "TShipyardCluster.cpp"
 #include "TShipAmtBar.cpp"
-#include "TTraderAmtBar.cpp"
 
 // FUNCTION: IMPERIALISM 0x0058a1b0
 void TRailAmtBarState::DrawAmt() {
@@ -2405,41 +2404,6 @@ void TShipAmtBarState::DrawAmt() {
         ApplyQuickDrawStyleFromRuntime(styleValueAt66);
         SetQuickDrawStylePair(1, 4);
         DrawCenteredGuideLine(styleValueAt60, 1);
-        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
-      }
-
-      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
-      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
-      if (owner != 0) {
-        owner->InvokeSlot13C();
-      }
-    }
-  }
-
-}
-
-// FUNCTION: IMPERIALISM 0x0058b0f0
-void TTraderAmtBarState::DrawAmt() {
-  QuickDrawSurfaceGuard surface;
-  TradeControl* control = reinterpret_cast<TradeControl*>(this);
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
-
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
-      int boundsRect[4] = {0, 0, 0, 0};
-      control->QueryBounds(boundsRect);
-      control->ApplyBounds(boundsRect, 1);
-      control->QueryBounds(boundsRect);
-      control->CtrlSlot78();
-
-      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
-      if (styleValueAt60 > 0) {
-        short styleValueAt66 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x66);
-        SetQuickDrawTextOrigin(0, 0);
-        ApplyQuickDrawStyleFromRuntime(styleValueAt66);
-        SetQuickDrawStylePair(1, 5);
-        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 0);
         reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
       }
 

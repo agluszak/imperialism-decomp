@@ -1,6 +1,8 @@
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
 
+#include <new>
+
 #pragma optimize("y", on)
 
 
@@ -17,12 +19,7 @@ TradeAmountBarLayout* __cdecl CreateTAmtBarInstance(void) {
   TradeAmountBarLayout* amountBar =
       reinterpret_cast<TradeAmountBarLayout*>(AllocateWithFallbackHandler(0x68));
   if (amountBar != 0) {
-    TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->vftable = reinterpret_cast<void*>(kVtableTAmtBar);
-    amountBar->rangeOrMaxValue = 0;
-    amountBar->stepOrCurrentValue = 0;
-    amountBar->auxValueA = 0;
-    amountBar->auxValueB = 0;
+    new (amountBar) TradeAmountBarLayout;
   }
   return amountBar;
 }
@@ -35,12 +32,7 @@ void* __cdecl GetTAmtBarClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00588580
 TradeAmountBarLayout* __fastcall ConstructTAmtBarBaseState(TradeAmountBarLayout* amountBar) {
   // ORIG_CALLCONV: __thiscall
-  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-  amountBar->vftable = reinterpret_cast<void*>(kVtableTAmtBar);
-  amountBar->rangeOrMaxValue = 0;
-  amountBar->stepOrCurrentValue = 0;
-  amountBar->auxValueA = 0;
-  amountBar->auxValueB = 0;
+  new (amountBar) TradeAmountBarLayout;
   return amountBar;
 }
 

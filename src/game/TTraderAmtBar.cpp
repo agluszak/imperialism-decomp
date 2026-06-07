@@ -1,20 +1,131 @@
-// Included by src/game/trade_screen.cpp.
-// Contains trade amount-bar class wrappers (address-ordered).
+#include "decomp_types.h"
+#include <new>
 
-#pragma optimize("y", on)
+#include "game/NationState.h"
+#include "game/quickdraw_guards.h"
+#include "game/TTraderAmtBar.h"
+#include "game/TradeControl.h"
+#include "game/UiRuntimeContext.h"
 
+undefined4 ApplyHitRegionToClipState(void);
+undefined4 ResetQuickDrawStrokeState(void);
+void SnapshotHitRegionToClipCache(int* clipDescriptor);
+undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
+undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
+undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
+int AllocateWithFallbackHandler(undefined4 size_bytes);
+void FreeHeapBufferIfNotNull(undefined4 ptr_value);
+
+namespace {
+
+const int kControlTagSell = 0x53656c6c;
+const unsigned int kAddrGlobalNationStates = 0x006A4370;
+
+struct TradeControlOwnerSlotView {
+  virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
+  virtual void Slot0C(void) = 0; virtual void Slot10(void) = 0; virtual void Slot14(void) = 0;
+  virtual void Slot18(void) = 0; virtual void Slot1C(void) = 0; virtual void Slot20(void) = 0;
+  virtual void Slot24(void) = 0; virtual void Slot28(void) = 0; virtual void Slot2C(void) = 0;
+  virtual void Slot30(void) = 0; virtual void Slot34(void) = 0; virtual void Slot38(void) = 0;
+  virtual void Slot3C(void) = 0; virtual void Slot40(void) = 0; virtual void Slot44(void) = 0;
+  virtual void Slot48(void) = 0; virtual void Slot4C(void) = 0; virtual void Slot50(void) = 0;
+  virtual void Slot54(void) = 0;
+  virtual void* OwnerPanelSlot58(void) = 0;
+};
+
+struct TradeControlResolverView : public TradeControlOwnerSlotView {
+  virtual void Slot5C(void) = 0; virtual void Slot60(void) = 0; virtual void Slot64(void) = 0;
+  virtual void Slot68(void) = 0; virtual void Slot6C(void) = 0; virtual void Slot70(void) = 0;
+  virtual void Slot74(void) = 0; virtual void Slot78(void) = 0; virtual void Slot7C(void) = 0;
+  virtual void Slot80(void) = 0; virtual void Slot84(void) = 0; virtual void Slot88(void) = 0;
+  virtual void Slot8C(void) = 0; virtual void Slot90(void) = 0;
+  virtual TradeControl* ResolveControlByTagSlot94(int controlTag) = 0;
+};
+
+struct TradeNationMetricView {
+  virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
+  virtual void Slot0C(void) = 0; virtual void Slot10(void) = 0; virtual void Slot14(void) = 0;
+  virtual void Slot18(void) = 0; virtual void Slot1C(void) = 0; virtual void Slot20(void) = 0;
+  virtual void Slot24(void) = 0; virtual void Slot28(void) = 0; virtual void Slot2C(void) = 0;
+  virtual void Slot30(void) = 0; virtual void Slot34(void) = 0; virtual void Slot38(void) = 0;
+  virtual void Slot3C(void) = 0; virtual void Slot40(void) = 0; virtual void Slot44(void) = 0;
+  virtual void Slot48(void) = 0; virtual void Slot4C(void) = 0; virtual void Slot50(void) = 0;
+  virtual void Slot54(void) = 0; virtual void Slot58(void) = 0; virtual void Slot5C(void) = 0;
+  virtual void Slot60(void) = 0; virtual void Slot64(void) = 0; virtual void Slot68(void) = 0;
+  virtual void Slot6C(void) = 0; virtual void Slot70(void) = 0; virtual void Slot74(void) = 0;
+  virtual short QueryNationMetricBySlot78(short metricSlot) = 0;
+  virtual short QueryNationMetricBySlot7C(short metricSlot) = 0;
+};
+
+struct UiRuntimeStyleView {
+  virtual void Slot00(void) = 0; virtual void Slot04(void) = 0; virtual void Slot08(void) = 0;
+  virtual void Slot0C(void) = 0; virtual void Slot10(void) = 0; virtual void Slot14(void) = 0;
+  virtual void Slot18(void) = 0; virtual void Slot1C(void) = 0; virtual void Slot20(void) = 0;
+  virtual void Slot24(void) = 0; virtual void Slot28(void) = 0; virtual void Slot2C(void) = 0;
+  virtual void Slot30(void) = 0;
+  virtual void ApplyQuickDrawStyleSlot34(int styleIndex) = 0;
+};
+
+static __inline NationState* GetActiveNationState(void) {
+  return reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+}
+
+static __inline TradeControl* ResolveOwnerControl(void* owner, int controlTag) {
+  return reinterpret_cast<TradeControlResolverView*>(owner)->ResolveControlByTagSlot94(controlTag);
+}
+
+static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
+  return reinterpret_cast<TradeNationMetricView*>(nationState)->QueryNationMetricBySlot78(
+      metricSlot);
+}
+
+static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, short metricSlot) {
+  return reinterpret_cast<TradeNationMetricView*>(nationState)->QueryNationMetricBySlot7C(
+      metricSlot);
+}
+
+static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {
+  if (g_pUiRuntimeContext == 0) {
+    return;
+  }
+  reinterpret_cast<UiRuntimeStyleView*>(g_pUiRuntimeContext)->ApplyQuickDrawStyleSlot34(
+      styleIndex);
+}
+
+static __inline void SetQuickDrawTextOrigin(short x, short y) {
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(x,
+                                                                                                y);
+}
+
+static __inline void DrawCenteredGuideLine(short x, short y) {
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(x, y);
+}
+
+static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
+  reinterpret_cast<void(__cdecl*)(short, short)>(
+      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty)(styleA, styleB);
+}
+
+static __inline void* CallOwnerPanelSlot58(void* self) {
+  return reinterpret_cast<TradeControlOwnerSlotView*>(self)->OwnerPanelSlot58();
+}
+
+const int kScenarioRecordTags[] = {
+    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
+    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
+    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
+};
+
+} // namespace
+
+TTraderAmtBar::TTraderAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058ae30
-TTraderAmtBarState* __cdecl CreateTTraderAmtBarInstance(void) {
-  TTraderAmtBarState* amountBar =
-      reinterpret_cast<TTraderAmtBarState*>(AllocateWithFallbackHandler(0x68));
+TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
+  TTraderAmtBar* amountBar =
+      reinterpret_cast<TTraderAmtBar*>(AllocateWithFallbackHandler(0x68));
   if (amountBar != 0) {
-    TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-    amountBar->rangeOrMaxValue = 0;
-    amountBar->stepOrCurrentValue = 0;
-    amountBar->auxValueA = 0;
-    amountBar->auxValueB = 0;
-    amountBar->vftable = reinterpret_cast<void*>(&g_vtblTTraderAmtBar);
+    new (amountBar) TTraderAmtBar;
   }
   return amountBar;
 }
@@ -25,24 +136,19 @@ void* __cdecl GetTTraderAmtBarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058aef0
-TTraderAmtBarState* __fastcall ConstructTTraderAmtBarBaseState(TTraderAmtBarState* amountBar) {
-  TradeScreenRuntimeBridge::ConstructUiResourceEntryBase(amountBar);
-  amountBar->vftable = reinterpret_cast<void*>(&g_vtblTTraderAmtBar);
-  amountBar->rangeOrMaxValue = 0;
-  amountBar->stepOrCurrentValue = 0;
-  amountBar->auxValueA = 0;
-  amountBar->auxValueB = 0;
+TTraderAmtBar* __fastcall ConstructTTraderAmtBarBaseState(TTraderAmtBar* amountBar) {
+  new (amountBar) TTraderAmtBar;
   return amountBar;
 }
 
 void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar);
 
 // FUNCTION: IMPERIALISM 0x0058af30
-TTraderAmtBarState* __fastcall DestructTTraderAmtBarMaybeFree(TTraderAmtBarState* amountBar,
-                                                              int unusedEdx,
-                                                              unsigned char freeSelfFlag) {
+TTraderAmtBar* __fastcall DestructTTraderAmtBarMaybeFree(TTraderAmtBar* amountBar,
+                                                         int unusedEdx,
+                                                         unsigned char freeSelfFlag) {
   (void)unusedEdx;
-  thunk_DestructTViewBaseState_0058AF60(reinterpret_cast<TView*>(amountBar));
+  thunk_DestructTViewBaseState_0058AF60(amountBar);
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)amountBar);
   }
@@ -54,21 +160,10 @@ void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar) {
   amountBar->~TView();
 }
 
-namespace {
-
-const int kScenarioRecordTags[] = {
-    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
-    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
-    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
-};
-
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x0058af80
-void TTraderAmtBarState::DoPostCreate(TDocument* document) {
+void TTraderAmtBar::DoPostCreate(TDocument* document) {
   TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
-  NationState* nationState =
-      reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+  NationState* nationState = GetActiveNationState();
   int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(state->ownerContext) + 0x1c);
 
   short recordIndex = 0;
@@ -103,11 +198,10 @@ void TTraderAmtBarState::DoPostCreate(TDocument* document) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
-short TTraderAmtBarState::AdjustForZero(short priorResult, short requestedValue) {
+short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
   short result = priorResult;
   if (requestedValue > 0) {
-    NationState* nationState =
-        reinterpret_cast<NationState**>(kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+    NationState* nationState = GetActiveNationState();
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
       TradeMoveControlState* state = reinterpret_cast<TradeMoveControlState*>(this);
@@ -120,4 +214,38 @@ short TTraderAmtBarState::AdjustForZero(short priorResult, short requestedValue)
     }
   }
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x0058b0f0
+void TTraderAmtBar::DrawAmt() {
+  QuickDrawSurfaceGuard surface;
+  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      control->ApplyBounds(boundsRect, 1);
+      control->QueryBounds(boundsRect);
+      control->CtrlSlot78();
+
+      short styleValueAt60 = rangeOrMaxValue;
+      if (styleValueAt60 > 0) {
+        short styleValueAt66 = auxValueB;
+        SetQuickDrawTextOrigin(0, 0);
+        ApplyQuickDrawStyleFromRuntime(styleValueAt66);
+        SetQuickDrawStylePair(1, 5);
+        DrawCenteredGuideLine((short)(styleValueAt60 - 1), 0);
+        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      }
+
+      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
 }

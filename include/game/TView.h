@@ -33,6 +33,7 @@ public:
   CString sharedStringRef;
   int field5c;
 
+  TView();
   void thunk_ConstructUiResourceEntryBase();
   TView* ConstructUiResourceEntryBase();
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);

@@ -661,7 +661,7 @@ address|target_cpp|ownership|note
 58af30|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58af80|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58b070|src/game/TTraderAmtBar.cpp|manual|marker_sync
-58b0f0|src/game/trade_screen.cpp|manual|marker_sync
+58b0f0|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58b340|src/game/TCivilianButton.cpp|manual|marker_sync
 58b3c0|src/game/TCivilianButton.cpp|manual|marker_sync
 58b3e0|src/game/TCivilianButton.cpp|manual|marker_sync

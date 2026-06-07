@@ -19,6 +19,9 @@ const unsigned int kAddrVtblGetTEventHandlerClassThunk = 0x006497A0;
 
 } // namespace
 
+TView::TView() {
+  ConstructUiResourceEntryBase();
+}
 
 // FUNCTION: IMPERIALISM 0x004064e2
 void TView::thunk_ConstructUiResourceEntryBase() {
@@ -62,4 +65,3 @@ TView::~TView() {
 void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {
   (void)passthroughArg;
 }
-
