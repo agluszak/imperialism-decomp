@@ -1793,14 +1793,17 @@ void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload
 
 // --- ExecuteNationPendingActionStateMachine (slot 0x32) order-object factories ---
 //
-// The land/navy/civ order objects these construct are not yet recovered as real
-// classes, so each new+ctor is driven through an isolated __fastcall bridge (Hard
-// Rule allowance: unavoidable free-function bridge with no class modeled yet, kept
-// out of the primary method body). When these order classes are recovered the
-// bridges should become real new T()/ctor expressions so the EH-frame state markers
-// (uStack_4 = 0/1/2) match.
+// The civ order is now a real class (see new TCivWorkOrderState() below). The
+// land/navy order objects stay on isolated __fastcall bridges (Hard Rule allowance)
+// because their ctors embed a CString member whose non-trivial ~CString is what
+// emits the EH frame + uStack_4 state markers — matching that requires CString to
+// have a real C++ default ctor at 0x605797, but CString models its ctors as named
+// methods (InitFromEmpty etc.) called explicitly at ~781 sites, so one address
+// cannot be both. The military/navy EH ctors are therefore blocked behind a
+// CString real-ctor refactor (heuristic 91); keep the bridges until then.
 
-// new(0x44) + military land-unit recruit-order ctor (0x005c2df0).
+// new(0x44) + military land-unit recruit-order ctor (0x005c2df0). Embeds a CString
+// member at +0x24 -> EH-framed ctor; blocked on the CString real-ctor lever.
 static __inline void* AllocateMilitaryUnitOrderObject(void) {
   void* obj = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
   if (obj != 0) {
@@ -1816,7 +1819,10 @@ static __inline void InitializeMilitaryRecruitOrder(void* obj, short capValue, i
       thunk_InitializeMilitaryRecruitOrderState)(obj, capValue, nodeContext, nationSlot, 0);
 }
 
-// new(0x1c) + navy task-force secondary order node ctor (TAdmiral, 0x00551430).
+// new(0x1c) + navy task-force secondary order node ctor (0x00551430). Derives from
+// RefCountedObjectBase (vtable 0x006485c0), derived vtable 0x0065c498, with a CString
+// member at +0xc -> EH-framed ctor; blocked on the same CString real-ctor lever (NOT
+// TAdmiral — that was a guess in heuristic 47, corrected in 91).
 static __inline void* AllocateNavySecondaryOrderNode(short nationSlot) {
   void* obj = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x1c));
   if (obj != 0) {
