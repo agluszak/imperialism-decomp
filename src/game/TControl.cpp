@@ -1,4 +1,4 @@
-// Manual decompilation file.
+// Manual decompilation file. 
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "game/TControl.h"

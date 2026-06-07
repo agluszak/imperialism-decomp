@@ -1,7 +1,9 @@
 #include "game/TBoycottButton.h"
 #include "game/generated/vcall_facades.h"
 
-void FreeHeapBufferIfNotNull(void* ptr_value);
+void FreeHeapBufferIfNotNull(unsigned int ptr_value);
+
+extern "C" void __stdcall MessageBoxA(void*, const char*, const char*, unsigned int);
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x662e60
@@ -25,7 +27,7 @@ TBoycottButton::TBoycottButton() : TToggleButton() {}
 TBoycottButton* __fastcall DestructTBoycottButtonAndMaybeFree(TBoycottButton* button, int unusedEdx, unsigned char freeSelfFlag) {
   button->~TBoycottButton();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(button);
+    FreeHeapBufferIfNotNull(reinterpret_cast<unsigned int>(button));
   }
   return button;
 }
@@ -40,9 +42,8 @@ void TBoycottButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) 
         *reinterpret_cast<void**>(reinterpret_cast<char*>(result1) + 0x94)
     )(result1, 0, 0x636c7573);
 
-    if (result2 == nullptr) {
-      extern void __stdcall MessageBoxA(void*, const char*, const char*, unsigned int);
-      MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);
+    if (result2 == 0) {
+      MessageBoxA(0, "Nil Pointer", "Failure", 0x30);
     }
     reinterpret_cast<void(__fastcall*)(void*, int, int)>(
         *reinterpret_cast<void**>(reinterpret_cast<char*>(result2) + 0x1c8)

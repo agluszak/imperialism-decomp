@@ -51,6 +51,7 @@ add_executable(Imperialism
     src/game/TAlwaysPictureButton.cpp
     src/game/TToggleButton.cpp
     src/game/T2PictToggleButton.cpp
+    src/game/TBoycottButton.cpp
     src/game/TRadioPictureButton.cpp
     src/game/TButton.cpp
     src/game/TStatusButton.cpp

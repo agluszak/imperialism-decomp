@@ -13,7 +13,7 @@
 // installs the shared CObject runtime vtable (0x0066fec4) and the class adds no
 // virtuals of its own. CObject supplies the vptr at offset 0; the animation
 // fields begin at offset 0x4.
-// VTABLE: IMPERIALISM 0x0066fec4
+// Duplicate VTABLE annotation removed
 class TFocusAnimation : public CObject {
 public:
   void* scopedRenderTarget; // 0x04

@@ -14,7 +14,7 @@
 // object, and TOneTimeAnimation adds no virtuals of its own. The CObject base
 // supplies the vptr at offset 0; the animation fields begin at offset 0x4,
 // matching the constructor at 0x0049fd60.
-// VTABLE: IMPERIALISM 0x0066fec4
+// Duplicate VTABLE annotation removed
 class TOneTimeAnimation : public CObject {
 public:
   void* scopedRenderTarget; // 0x04
