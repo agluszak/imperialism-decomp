@@ -6,15 +6,13 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-extern "C" char g_vtblTList;
 
 // Concrete game list leaf: RefCountedObjectBase vfptr at +0, CPtrList state at
 // +4 through TPtrList, and the TList virtual interface described by TListObject.
 // VTABLE: IMPERIALISM 0x00648f78
 struct TList : public TPtrList {
-  TList() {
-    vftable = reinterpret_cast<void*>(&g_vtblTList);
-  }
+  virtual void VMethod01() {}
+  TList() {}
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }

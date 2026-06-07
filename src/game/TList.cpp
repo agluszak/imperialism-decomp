@@ -6,7 +6,6 @@
 
 extern "C" {
 char g_pClassDescTList = 0;
-char g_vtblTList = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00487e50

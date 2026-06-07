@@ -13247,7 +13247,6 @@ address|name|size|type|prototype
 648380|sAmbitGameWindowClassName||global|
 648560|PTR_GetCObjectRuntimeClass_CViewOwnedBufferRegistryState_00648560||global|
 648578|PTR_GetCObjectRuntimeClass_CViewOwnedBufferChainState_00648578||global|
-6485c0|g_vtblRefCountedObjectBase||global|
 648628|TMacViewMgr_RuntimeClass||global|
 648640|TMacViewMgr_MessageMapDescriptor||global|
 648648|TMacViewMgr_MessageMapEntries||global|
@@ -13332,11 +13331,9 @@ address|name|size|type|prototype
 648e80|g_pClassDescTList||global|
 648e98|g_pClassDescTSortedPtrList||global|
 648eb0|g_pClassDescTPtrList||global|
-648ee0|g_vtblTSortedList||global|
 648f0c|g_vslotTBehavior_Slot01AC_InvokeControlAction||global|
 648f30|g_vslotTBehavior_Slot01D0_NotifyControlStateChange||global|
 648f34|g_vslotTBehavior_Slot01D4_NotifyControlSelectionChange||global|
-648f78|g_vtblTList||global|
 648f7c|g_vslotTDialogBehavior_Slot01D4_NotifyControlSelectionChange||global|
 6490c8|g_pClassDescTStream||global|
 6490e0|g_pClassDescTFileStream||global|

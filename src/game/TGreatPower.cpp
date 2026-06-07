@@ -788,9 +788,9 @@ static __inline void* AllocateBattleListOwnerWithPtrListSentinel(void) {
   void* owner = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (owner != 0) {
     TPtrList* ownerView = static_cast<TPtrList*>(owner);
-    ownerView->vftable = reinterpret_cast<void*>(kAddrVtblRefCountedObjectBase);
+    *reinterpret_cast<void**>(ownerView) = reinterpret_cast<void*>(kAddrVtblRefCountedObjectBase);
     new (&ownerView->listState) CPtrList(0);
-    ownerView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
+    *reinterpret_cast<void**>(ownerView) = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   return owner;
 }
@@ -802,7 +802,7 @@ static __inline void* AllocateBattleListOwnerWithLinkedSentinel(void) {
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640)(
         static_cast<void*>(&ownerView->listState), 0);
-    ownerView->vftable = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
+    *reinterpret_cast<void**>(ownerView) = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
   }
   return owner;
 }

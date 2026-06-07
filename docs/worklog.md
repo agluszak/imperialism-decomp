@@ -2860,3 +2860,11 @@ design"; that was wrong. In progress.
 
 Verification at this commit: build clean; `just vtable-gate` passed; `compare-canaries`
 below_floor=0; civ 0x5c28c0 100%, military 0x5c2df0 85.7%, navy 0x551430 82.6%.
+
+2026-06-07 18:30:50
+- Converted `RefCountedObjectBase` and the list family to use compiler-emitted vtables.
+- Added `virtual ~RefCountedObjectBase()` and placeholder virtual methods `VMethod01` through `VMethod09` based on the memory layout of `g_vtblRefCountedObjectBase` (0x6485c0).
+- Overrode slots 5, 6, and 7 in `TPtrList` and decorated it with `__declspec(novtable)` to suppress the intermediate vtable write during subclass construction.
+- Overrode slot 1 in `TList` and `TSortedList` and removed their manual vtable assignment and `g_vtbl` globals.
+- Overrode slots 1, 5, 6, and 7 in `TAdmiral` which allowed the compiler to perfectly emit `TAdmiral`'s EH constructor vtable writes, retaining 100% alignment for `TAdmiral::TAdmiral`.
+- Removed `g_vtblRefCountedObjectBase`, `g_vtblTList`, and `g_vtblTSortedList` from `symbols.csv` to allow `reccmp` to track them via `// VTABLE` annotations.

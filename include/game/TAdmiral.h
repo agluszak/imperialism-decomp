@@ -15,6 +15,10 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // VTABLE: IMPERIALISM 0x0065c498
 class TAdmiral : public RefCountedObjectBase {
 public:
+  virtual void VMethod01() {}
+  virtual void VMethod05() {}
+  virtual void VMethod06() {}
+  virtual void VMethod07() {}
   short terrainType;      // 0x04 (index into g_apTerrainTypeDescriptorTable; 0xffff = none)
   unsigned char pad06[2]; // 0x06
   int field_8;            // 0x08
