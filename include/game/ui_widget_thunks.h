@@ -18,7 +18,6 @@ undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
-undefined4 thunk_ConstructPictureResourceEntryBase(void);
 void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx = 0,
                                                   unsigned int styleSeed = 0);
 void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,

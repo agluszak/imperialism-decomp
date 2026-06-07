@@ -180,7 +180,8 @@ address|target_cpp|ownership|note
 48ab70|src/game/noop_slots.cpp|manual|marker_sync
 48e520|src/game/TControl.cpp|manual|marker_sync
 48ece0|src/game/TButton.cpp|manual|marker_sync
-48efc0|src/game/TPictureButton.cpp|manual|marker_sync
+48efc0|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
+48f250|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
 48f710|TStaticText|manual|promoted_from_autogen
 48f870|TStaticText|manual|promoted_from_autogen
 48f890|TStaticText|manual|promoted_from_autogen
@@ -543,6 +544,7 @@ address|target_cpp|ownership|note
 56e640|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56f460|src/game/noop_slots.cpp|manual|marker_sync
 56f480|src/game/noop_slots.cpp|manual|marker_sync
+5707f0|src/game/TPictureButton.cpp|manual|marker_sync
 5717c0|src/game/TRadioPictureButton.cpp|manual|marker_sync
 5723d0|src/game/noop_slots.cpp|manual|marker_sync
 572bb0|src/game/noop_slots.cpp|manual|marker_sync

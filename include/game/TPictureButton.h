@@ -1,15 +1,15 @@
 #pragma once
 
-#include "game/TControl.h"
+#include "compat.h"
+#include "game/TPictureResourceEntryBase.h"
 
-// VTABLE: IMPERIALISM 0x65e6f8
-class TPictureButton : public TControl {
+class TPictureButton : public TPictureResourceEntryBase {
 public:
-  short glyphBase84;
-  char pad_TPictureButton_86[0xa];
   short glyph90;
   short timingWord92;
 
   TPictureButton();
   virtual ~TPictureButton();
 };
+
+ASSERT_SIZE(TPictureButton, 0x94);

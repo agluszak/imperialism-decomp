@@ -38,7 +38,6 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
-undefined4 thunk_ConstructPictureResourceEntryBase(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void); // GHIDRA_FUNCTION IMPERIALISM 0x004601B0
 undefined4 thunk_DispatchPictureResourceCommand(void);
@@ -60,8 +59,6 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unused
 /* DECOMPILATION FAILED: Exception while decompiling 004601b0: process: timeout */
 
 // Symbol placeholders to preserve OFFSET-style codegen in ctor/dtor wrappers.
-// GLOBAL: IMPERIALISM 0x666998
-extern "C" char g_vtblTShipAmtBar = 0;
 // GLOBAL: IMPERIALISM 0x663010
 extern "C" char g_pClassDescTShipAmtBar = 0;
 extern "C" char g_vtblTTraderAmtBar = 0;

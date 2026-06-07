@@ -2819,14 +2819,6 @@ undefined4 GetTPictureButtonClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TPictureButton::ConstructUiTabCursorPictureEntry
-// ghidra_proto void __thiscall ConstructUiTabCursorPictureEntry(void)
-// FUNCTION: IMPERIALISM 0x005707f0
-undefined4 ConstructUiTabCursorPictureEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name TPictureButton::scalar deleting destructor
 // ghidra_proto void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00570820

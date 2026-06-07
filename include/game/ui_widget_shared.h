@@ -44,10 +44,6 @@ public:
         self);
   }
 
-  static __inline void ConstructPictureResourceEntryBase(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructPictureResourceEntryBase)(self);
-  }
-
   static __inline void InitializeTradeMoveAndBarControls(void* self) {
     ::InitializeTradeMoveAndBarControls(self);
   }

@@ -45,6 +45,7 @@ add_executable(Imperialism
     src/game/ui_widget_wrappers.cpp
     src/game/TCivilianButton.cpp
     src/game/THQButton.cpp
+    src/game/TPictureResourceEntryBase.cpp
     src/game/TPictureButton.cpp
     src/game/TRadioPictureButton.cpp
     src/game/TButton.cpp

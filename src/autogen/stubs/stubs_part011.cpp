@@ -915,14 +915,6 @@ undefined4 Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0
   return 0;
 }
 
-// ghidra_name DestructCityDialogSharedBaseState
-// ghidra_proto void __cdecl DestructCityDialogSharedBaseState(void)
-// FUNCTION: IMPERIALISM 0x0048f250
-undefined4 DestructCityDialogSharedBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializePictureEntryBaseAndRefresh
 // ghidra_proto void __cdecl InitializePictureEntryBaseAndRefresh(void)
 // FUNCTION: IMPERIALISM 0x0048f330

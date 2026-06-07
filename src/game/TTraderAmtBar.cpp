@@ -1,12 +1,12 @@
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/NationState.h"
-#pragma once
 
 #include "decomp_types.h"
 #include "game/NationState.h"
 #include "game/TTraderAmtBar.h"
 #include "game/TradeControl.h"
+#include "game/TradeNationMetricView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/trade_quickdraw.h"
@@ -25,102 +25,6 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 namespace {
 
 extern "C" char g_pClassDescTTraderAmtBar;
-
-struct TradeControlOwnerSlotView {
-  virtual void Slot00(void) = 0;
-  virtual void Slot04(void) = 0;
-  virtual void Slot08(void) = 0;
-  virtual void Slot0C(void) = 0;
-  virtual void Slot10(void) = 0;
-  virtual void Slot14(void) = 0;
-  virtual void Slot18(void) = 0;
-  virtual void Slot1C(void) = 0;
-  virtual void Slot20(void) = 0;
-  virtual void Slot24(void) = 0;
-  virtual void Slot28(void) = 0;
-  virtual void Slot2C(void) = 0;
-  virtual void Slot30(void) = 0;
-  virtual void Slot34(void) = 0;
-  virtual void Slot38(void) = 0;
-  virtual void Slot3C(void) = 0;
-  virtual void Slot40(void) = 0;
-  virtual void Slot44(void) = 0;
-  virtual void Slot48(void) = 0;
-  virtual void Slot4C(void) = 0;
-  virtual void Slot50(void) = 0;
-  virtual void Slot54(void) = 0;
-  virtual void* OwnerPanelSlot58(void) = 0;
-};
-
-struct TradeControlResolverView : public TradeControlOwnerSlotView {
-  virtual void Slot5C(void) = 0;
-  virtual void Slot60(void) = 0;
-  virtual void Slot64(void) = 0;
-  virtual void Slot68(void) = 0;
-  virtual void Slot6C(void) = 0;
-  virtual void Slot70(void) = 0;
-  virtual void Slot74(void) = 0;
-  virtual void Slot78(void) = 0;
-  virtual void Slot7C(void) = 0;
-  virtual void Slot80(void) = 0;
-  virtual void Slot84(void) = 0;
-  virtual void Slot88(void) = 0;
-  virtual void Slot8C(void) = 0;
-  virtual void Slot90(void) = 0;
-  virtual TradeControl* ResolveControlByTagSlot94(int controlTag) = 0;
-};
-
-struct TradeNationMetricView {
-  virtual void Slot00(void) = 0;
-  virtual void Slot04(void) = 0;
-  virtual void Slot08(void) = 0;
-  virtual void Slot0C(void) = 0;
-  virtual void Slot10(void) = 0;
-  virtual void Slot14(void) = 0;
-  virtual void Slot18(void) = 0;
-  virtual void Slot1C(void) = 0;
-  virtual void Slot20(void) = 0;
-  virtual void Slot24(void) = 0;
-  virtual void Slot28(void) = 0;
-  virtual void Slot2C(void) = 0;
-  virtual void Slot30(void) = 0;
-  virtual void Slot34(void) = 0;
-  virtual void Slot38(void) = 0;
-  virtual void Slot3C(void) = 0;
-  virtual void Slot40(void) = 0;
-  virtual void Slot44(void) = 0;
-  virtual void Slot48(void) = 0;
-  virtual void Slot4C(void) = 0;
-  virtual void Slot50(void) = 0;
-  virtual void Slot54(void) = 0;
-  virtual void Slot58(void) = 0;
-  virtual void Slot5C(void) = 0;
-  virtual void Slot60(void) = 0;
-  virtual void Slot64(void) = 0;
-  virtual void Slot68(void) = 0;
-  virtual void Slot6C(void) = 0;
-  virtual void Slot70(void) = 0;
-  virtual void Slot74(void) = 0;
-  virtual short QueryNationMetricBySlot78(short metricSlot) = 0;
-  virtual short QueryNationMetricBySlot7C(short metricSlot) = 0;
-};
-
-struct UiRuntimeStyleView {
-  virtual void Slot00(void) = 0;
-  virtual void Slot04(void) = 0;
-  virtual void Slot08(void) = 0;
-  virtual void Slot0C(void) = 0;
-  virtual void Slot10(void) = 0;
-  virtual void Slot14(void) = 0;
-  virtual void Slot18(void) = 0;
-  virtual void Slot1C(void) = 0;
-  virtual void Slot20(void) = 0;
-  virtual void Slot24(void) = 0;
-  virtual void Slot28(void) = 0;
-  virtual void Slot2C(void) = 0;
-  virtual void Slot30(void) = 0;
-  virtual void ApplyQuickDrawStyleSlot34(int styleIndex) = 0;
-};
 
 static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
   return reinterpret_cast<TradeNationMetricView*>(nationState)

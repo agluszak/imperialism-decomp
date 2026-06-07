@@ -1,45 +1,17 @@
-// TWarningView wrapper class quad extracted from Ghidra autogen.
+#include "game/TWarningView.h"
 
-#include "decomp_types.h"
-
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_ConstructPictureResourceEntryBase(void);
-undefined4 thunk_DestructCityDialogSharedBaseState(void);
 
 namespace {
 
-// GLOBAL: IMPERIALISM 0x6687b8
-char g_vtblTWarningView;
 // GLOBAL: IMPERIALISM 0x663178
 char g_pClassDescTWarningView;
-
-struct WarningViewState {
-  void* vftable;
-  char pad_04[0x90];
-};
-
-class RuntimeBridge {
-public:
-  static __inline void ConstructPictureResourceEntryBase(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructPictureResourceEntryBase)(self);
-  }
-
-  static __inline void DestructCityDialogSharedBaseState(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_DestructCityDialogSharedBaseState)(self);
-  }
-};
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00592860
-WarningViewState* __cdecl CreateTWarningViewInstance(void) {
-  WarningViewState* view = reinterpret_cast<WarningViewState*>(AllocateWithFallbackHandler(0x94));
-  if (view != 0) {
-    RuntimeBridge::ConstructPictureResourceEntryBase(view);
-    view->vftable = reinterpret_cast<void*>(&g_vtblTWarningView);
-  }
-  return view;
+TWarningView* __cdecl CreateTWarningViewInstance(void) {
+  return new TWarningView();
 }
 
 // FUNCTION: IMPERIALISM 0x005928e0
@@ -48,19 +20,17 @@ void* __cdecl GetTWarningViewClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00592900
-WarningViewState* __fastcall ConstructTWarningViewBaseState(WarningViewState* view) {
-  RuntimeBridge::ConstructPictureResourceEntryBase(view);
-  view->vftable = reinterpret_cast<void*>(&g_vtblTWarningView);
-  return view;
-}
+TWarningView::TWarningView() : TPictureResourceEntryBase() {}
 
 // FUNCTION: IMPERIALISM 0x00592930
-WarningViewState* __fastcall DestructTWarningViewAndMaybeFree(WarningViewState* view, int unusedEdx,
-                                                              unsigned char freeSelfFlag) {
+TWarningView* __fastcall DestructTWarningViewAndMaybeFree(TWarningView* view, int unusedEdx,
+                                                          unsigned char freeSelfFlag) {
   (void)unusedEdx;
-  RuntimeBridge::DestructCityDialogSharedBaseState(view);
+  view->~TWarningView();
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)view);
   }
   return view;
 }
+
+TWarningView::~TWarningView() {}

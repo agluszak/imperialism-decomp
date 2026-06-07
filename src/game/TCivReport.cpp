@@ -1,46 +1,18 @@
-// Civ report wrapper class quad extracted from Ghidra autogen.
+#include "game/TCivReport.h"
 
-#include "decomp_types.h"
-
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_ConstructPictureResourceEntryBase(void);
-undefined4 thunk_DestructCityDialogSharedBaseState(void);
 undefined4 thunk_BuildCivReportNationEntryDetailTextBlock(void);
 
 namespace {
 
-// GLOBAL: IMPERIALISM 0x668128
-char g_vtblTCivReport;
 // GLOBAL: IMPERIALISM 0x663130
 char g_pClassDescTCivReport;
-
-struct CivReportState {
-  void* vftable;
-  char pad_04[0x8c];
-};
-
-class RuntimeBridge {
-public:
-  static __inline void ConstructPictureResourceEntryBase(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructPictureResourceEntryBase)(self);
-  }
-
-  static __inline void DestructCityDialogSharedBaseState(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_DestructCityDialogSharedBaseState)(self);
-  }
-};
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00590b90
-CivReportState* __cdecl CreateTCivReportInstance(void) {
-  CivReportState* report = reinterpret_cast<CivReportState*>(AllocateWithFallbackHandler(0x90));
-  if (report != 0) {
-    RuntimeBridge::ConstructPictureResourceEntryBase(report);
-    report->vftable = reinterpret_cast<void*>(&g_vtblTCivReport);
-  }
-  return report;
+TCivReport* __cdecl CreateTCivReportInstance(void) {
+  return new TCivReport();
 }
 
 // FUNCTION: IMPERIALISM 0x00590c10
@@ -49,25 +21,23 @@ void* __cdecl GetTCivReportClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00590c30
-CivReportState* __fastcall ConstructTCivReportBaseState(CivReportState* report) {
-  RuntimeBridge::ConstructPictureResourceEntryBase(report);
-  report->vftable = reinterpret_cast<void*>(&g_vtblTCivReport);
-  return report;
-}
+TCivReport::TCivReport() : TPictureResourceEntryBase() {}
 
 // FUNCTION: IMPERIALISM 0x00590c60
-CivReportState* __fastcall DestructTCivReportAndMaybeFree(CivReportState* report, int unusedEdx,
-                                                          unsigned char freeSelfFlag) {
+TCivReport* __fastcall DestructTCivReportAndMaybeFree(TCivReport* report, int unusedEdx,
+                                                      unsigned char freeSelfFlag) {
   (void)unusedEdx;
-  RuntimeBridge::DestructCityDialogSharedBaseState(report);
+  report->~TCivReport();
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)report);
   }
   return report;
 }
 
+TCivReport::~TCivReport() {}
+
 // FUNCTION: IMPERIALISM 0x00590cb0
-void __fastcall BuildCivReportNationEntryDetailTextBlock(CivReportState* context, int unusedEdx,
+void __fastcall BuildCivReportNationEntryDetailTextBlock(TCivReport* context, int unusedEdx,
                                                          void* arg1) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
