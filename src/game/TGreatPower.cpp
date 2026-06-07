@@ -1,3 +1,5 @@
+#include "game/TMinister.h"
+#include "game/TGlobalMapState.h"
 // Manual decompilation file.
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
@@ -201,66 +203,6 @@ public:
   virtual void Call30() = 0; // slot 30
 };
 
-class TMinisterObject {
-public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void dummy5() = 0;
-  virtual void Call18(int arg1 = 0) = 0; // slot 18
-  virtual void Call1C() = 0;             // slot 1C
-  virtual void dummy8() = 0;
-  virtual void dummy9() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
-  virtual void Call4C() = 0;
-  virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
-  virtual void dummy23() = 0;
-  virtual void dummy24() = 0;
-  virtual void dummy25() = 0;
-  virtual void dummy26() = 0;
-  virtual void dummy27() = 0;
-  virtual void dummy28() = 0;
-  virtual void dummy29() = 0;
-  virtual void dummy30() = 0;
-  virtual void dummy31() = 0;
-  virtual void dummy32() = 0;
-  virtual void dummy33() = 0;
-  virtual void dummy34() = 0;
-  virtual void Call8C() = 0; // slot 8C
-  virtual void Call90() = 0;
-  virtual void Call94() = 0;
-  virtual void dummy38() = 0;
-  virtual void dummy39() = 0;
-  virtual void dummy40() = 0;
-  virtual void dummy41() = 0;
-  virtual void dummy42() = 0;
-  virtual void dummy43() = 0;
-  virtual void dummy44() = 0;
-  virtual void dummy45() = 0;
-  virtual void dummy46() = 0;
-  virtual void dummy47() = 0;
-  virtual void dummy48() = 0;
-  virtual void dummy49() = 0;
-  virtual void dummy50() = 0;
-  virtual void dummy51() = 0;
-  virtual void dummy52() = 0;
-  virtual void CallD4() = 0;
-
-  unsigned char pad04[0xC - 4];
-  short skillIndexC; // +0xC
-};
 
 class TRelationManagerObject {
 public:
@@ -324,7 +266,7 @@ struct MapActionContextNode {
 };
 
 // Minister-skill-indexed float coefficient table lookup (DAT_0065xxxx tables).
-static __inline double MinisterSkillFloat(const float* table, TMinisterObject* minister) {
+static __inline double MinisterSkillFloat(const float* table, TMinister* minister) {
   return table[minister->skillIndexC];
 }
 
@@ -717,102 +659,6 @@ struct TShortNodeValueView {
   short value;
 };
 
-struct TTerrainStateRecordView {
-  unsigned char pad00[2];
-  unsigned char roadFlag;
-  unsigned char pad03[0x11 - 0x03];
-  signed char resourceTypeByEdge[2];
-  unsigned char gateFlag;
-  short cityRecordIndex;
-  unsigned char pad16[0x24 - 0x16];
-};
-
-struct TGlobalMapCityScoreRecord;
-
-#define TGLOBALMAPSTATE_VTABLE_SLOT(n) virtual void GlobalMapStateDummy##n(void) = 0
-
-class TGlobalMapStateScoreView {
-public:
-  TGLOBALMAPSTATE_VTABLE_SLOT(00);
-  TGLOBALMAPSTATE_VTABLE_SLOT(01);
-  TGLOBALMAPSTATE_VTABLE_SLOT(02);
-  TGLOBALMAPSTATE_VTABLE_SLOT(03);
-  TGLOBALMAPSTATE_VTABLE_SLOT(04);
-  TGLOBALMAPSTATE_VTABLE_SLOT(05);
-  TGLOBALMAPSTATE_VTABLE_SLOT(06);
-  TGLOBALMAPSTATE_VTABLE_SLOT(07);
-  TGLOBALMAPSTATE_VTABLE_SLOT(08);
-  TGLOBALMAPSTATE_VTABLE_SLOT(09);
-  TGLOBALMAPSTATE_VTABLE_SLOT(10);
-  TGLOBALMAPSTATE_VTABLE_SLOT(11);
-  TGLOBALMAPSTATE_VTABLE_SLOT(12);
-  TGLOBALMAPSTATE_VTABLE_SLOT(13);
-  TGLOBALMAPSTATE_VTABLE_SLOT(14);
-  TGLOBALMAPSTATE_VTABLE_SLOT(15);
-  TGLOBALMAPSTATE_VTABLE_SLOT(16);
-  TGLOBALMAPSTATE_VTABLE_SLOT(17);
-  TGLOBALMAPSTATE_VTABLE_SLOT(18);
-  TGLOBALMAPSTATE_VTABLE_SLOT(19);
-  TGLOBALMAPSTATE_VTABLE_SLOT(20);
-  TGLOBALMAPSTATE_VTABLE_SLOT(21);
-  TGLOBALMAPSTATE_VTABLE_SLOT(22);
-  TGLOBALMAPSTATE_VTABLE_SLOT(23);
-  TGLOBALMAPSTATE_VTABLE_SLOT(24);
-  TGLOBALMAPSTATE_VTABLE_SLOT(25);
-  TGLOBALMAPSTATE_VTABLE_SLOT(26);
-  TGLOBALMAPSTATE_VTABLE_SLOT(27);
-  TGLOBALMAPSTATE_VTABLE_SLOT(28);
-  TGLOBALMAPSTATE_VTABLE_SLOT(29);
-  TGLOBALMAPSTATE_VTABLE_SLOT(30);
-  TGLOBALMAPSTATE_VTABLE_SLOT(31);
-  TGLOBALMAPSTATE_VTABLE_SLOT(32);
-  TGLOBALMAPSTATE_VTABLE_SLOT(33);
-  TGLOBALMAPSTATE_VTABLE_SLOT(34);
-  TGLOBALMAPSTATE_VTABLE_SLOT(35);
-  TGLOBALMAPSTATE_VTABLE_SLOT(36);
-  TGLOBALMAPSTATE_VTABLE_SLOT(37);
-  TGLOBALMAPSTATE_VTABLE_SLOT(38);
-  TGLOBALMAPSTATE_VTABLE_SLOT(39);
-  TGLOBALMAPSTATE_VTABLE_SLOT(40);
-  TGLOBALMAPSTATE_VTABLE_SLOT(41);
-  TGLOBALMAPSTATE_VTABLE_SLOT(42);
-  TGLOBALMAPSTATE_VTABLE_SLOT(43);
-  TGLOBALMAPSTATE_VTABLE_SLOT(44);
-  TGLOBALMAPSTATE_VTABLE_SLOT(45);
-  TGLOBALMAPSTATE_VTABLE_SLOT(46);
-  TGLOBALMAPSTATE_VTABLE_SLOT(47);
-  TGLOBALMAPSTATE_VTABLE_SLOT(48);
-  virtual char CallMetricSlotC4(int regionIndex, int edgeIndex) = 0;
-
-  unsigned char pad04[8];
-  TTerrainStateRecordView* terrainStateTable;
-  TGlobalMapCityScoreRecord* cityScoreTable;
-  unsigned char pad14[4];
-  int cityScoreTotal;
-};
-
-struct TGlobalMapCityScoreRecord {
-  unsigned char pad00[2];
-  unsigned char developmentStage;
-  unsigned char pad03;
-  short ownerNationSlot;
-  short lastTurnTick;
-  unsigned char pad08[0x3A - 0x08];
-  signed char linkedRegionCount;
-  unsigned char pad3B[0x42 - 0x3B];
-  short linkedRegionIds[0x21];
-  short stage1CounterA;
-  short stage1CounterB;
-  short pad88;
-  short stage1CounterC;
-  short stage1CounterD;
-  short stage2CounterA;
-  short stage2CounterB;
-  short stage2CounterC;
-  unsigned char pad94[0x9C - 0x94];
-  int cityScoreValue;
-  unsigned char padA0[0xA8 - 0xA0];
-};
 
 struct TTrackedObjectListEntryView {
   void* object;
@@ -959,8 +805,8 @@ static __inline void* ReadTerrainDescriptorSlot(int nationSlot) {
   return ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, nationSlot);
 }
 
-static __inline TGlobalMapStateScoreView* ReadGlobalMapStateScoreView(void) {
-  return static_cast<TGlobalMapStateScoreView*>(ReadGlobalPointer(kAddrGlobalMapStatePtr));
+static __inline TGlobalMapState* ReadGlobalMapStateScoreView(void) {
+  return static_cast<TGlobalMapState*>(ReadGlobalPointer(kAddrGlobalMapStatePtr));
 }
 
 static __inline TLocalizationRuntimeView* ReadLocalizationRuntimeView(void) {
@@ -978,17 +824,17 @@ static __inline void* GreatPower_GetInterNationQueueByEventCode(TGreatPower* sel
 }
 
 static __inline TTerrainStateRecordView*
-GlobalMapState_GetTerrainRecord(const TGlobalMapStateScoreView* globalMapState, int regionIndex) {
+GlobalMapState_GetTerrainRecord(const TGlobalMapState* globalMapState, int regionIndex) {
   return globalMapState->terrainStateTable + regionIndex;
 }
 
 static __inline TGlobalMapCityScoreRecord*
-GlobalMapState_GetCityRecord(const TGlobalMapStateScoreView* globalMapState, int cityIndex) {
+GlobalMapState_GetCityRecord(const TGlobalMapState* globalMapState, int cityIndex) {
   return globalMapState->cityScoreTable + cityIndex;
 }
 
 static __inline int
-GlobalMapState_ReadCityScoreValue(const TGlobalMapStateScoreView* globalMapState, int cityIndex) {
+GlobalMapState_ReadCityScoreValue(const TGlobalMapState* globalMapState, int cityIndex) {
   const TGlobalMapCityScoreRecord* cityRecord =
       GlobalMapState_GetCityRecord(globalMapState, cityIndex);
   return cityRecord->cityScoreValue;
@@ -1200,7 +1046,7 @@ static __inline char NationState_IsBusyA0(void* nationState) {
 
 static __inline void Object_CallSlot8CNoArgs(void* obj) {
   if (obj != 0) {
-    static_cast<TMinisterObject*>(obj)->Call8C();
+    static_cast<TMinister*>(obj)->Call8C();
   }
 }
 
@@ -1213,7 +1059,7 @@ static __inline void SecondaryState_ResetDiplomacyLevel(void* secondaryState, in
 
 static __inline char GlobalMapState_CallMetricC4(void* globalMapState, int regionIndex,
                                                  int edgeIndex) {
-  return static_cast<TGlobalMapStateScoreView*>(globalMapState)
+  return static_cast<TGlobalMapState*>(globalMapState)
       ->CallMetricSlotC4(regionIndex, edgeIndex);
 }
 
@@ -2068,7 +1914,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
           foreignMinister, 0);
     }
     reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeTForeignMinisterStateAndCounters)();
-    this->foreignMinister = static_cast<TMinisterObject*>(foreignMinister);
+    this->foreignMinister = static_cast<TMinister*>(foreignMinister);
 
     void* interiorMinister = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
     if (interiorMinister != 0) {
@@ -2076,7 +1922,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
           thunk_WrapperFor_thunk_ConstructTMinister_At004be840)(interiorMinister, 0);
     }
     reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeCityInteriorMinister)();
-    this->interiorMinister = static_cast<TMinisterObject*>(interiorMinister);
+    this->interiorMinister = static_cast<TMinister*>(interiorMinister);
 
     void* defenseMinister = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
     if (defenseMinister != 0) {
@@ -2084,7 +1930,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
           thunk_ConstructTDefenseMinisterBaseState)(defenseMinister, 0);
     }
     reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeTMinisterBaseOrderArrayMetrics)();
-    this->defenseMinister = static_cast<TMinisterObject*>(defenseMinister);
+    this->defenseMinister = static_cast<TMinister*>(defenseMinister);
   }
 
   int listIndex = 0;
@@ -2222,11 +2068,11 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
           reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructTForeignMinister)(
               foreignMinister, 0);
         }
-        this->foreignMinister = static_cast<TMinisterObject*>(foreignMinister);
+        this->foreignMinister = static_cast<TMinister*>(foreignMinister);
         reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeTForeignMinisterStateAndCounters)();
       }
       if (foreignMinister != 0) {
-        static_cast<TMinisterObject*>(foreignMinister)->Call18();
+        static_cast<TMinister*>(foreignMinister)->Call18();
       }
     }
 
@@ -2241,10 +2087,10 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
               thunk_WrapperFor_thunk_ConstructTMinister_At004be840)(interiorMinister, 0);
         }
         reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeCityInteriorMinister)();
-        this->interiorMinister = static_cast<TMinisterObject*>(interiorMinister);
+        this->interiorMinister = static_cast<TMinister*>(interiorMinister);
       }
       if (interiorMinister != 0) {
-        static_cast<TMinisterObject*>(interiorMinister)->Call18();
+        static_cast<TMinister*>(interiorMinister)->Call18();
       }
     }
 
@@ -2259,10 +2105,10 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
               thunk_ConstructTDefenseMinisterBaseState)(defenseMinister, 0);
         }
         reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeTMinisterBaseOrderArrayMetrics)();
-        this->defenseMinister = static_cast<TMinisterObject*>(defenseMinister);
+        this->defenseMinister = static_cast<TMinister*>(defenseMinister);
       }
       if (defenseMinister != 0) {
-        static_cast<TMinisterObject*>(defenseMinister)->Call18();
+        static_cast<TMinister*>(defenseMinister)->Call18();
       }
     }
 
@@ -2576,7 +2422,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   short* targetNeedByType = this->needTargetByType;
   short& controlledRegionCount = this->needCurrentByType[0x13]; // +0x134
   char* influenceByRegion = thunk_BuildCityInfluenceLevelMap();
-  TGlobalMapStateScoreView* globalMapState = ReadGlobalMapStateScoreView();
+  TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
   int regionIndex = 0;
 
   for (int i = 0; i < kNationSlotCount; ++i) {
@@ -2651,7 +2497,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     unsigned char pendingStage = 0;
     unsigned char needsRedraw = 0;
 
-    TGlobalMapStateScoreView* globalMapState = ReadGlobalMapStateScoreView();
+    TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
     TLocalizationRuntimeView* localizationRuntime = ReadLocalizationRuntimeView();
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
@@ -4614,7 +4460,7 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
 
 // FUNCTION: IMPERIALISM 0x004e2500
 void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass) {
-  TGlobalMapStateScoreView* globalMapState = ReadGlobalMapStateScoreView();
+  TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
   void* filteredList = this->trackedObjectList;
   for (int index = List_GetCountSlot48(filteredList); index != 0; --index) {
     TTrackedObjectListEntryView* entry = List_GetTrackedEntrySlot4C(filteredList, index);
@@ -5046,7 +4892,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     return 100.0f / (float)relationValue;
   }
   case 5: {
-    TGlobalMapStateScoreView* globalMapState = ReadGlobalMapStateScoreView();
+    TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
     if (globalMapState == 0) {
       return kOne;
     }
@@ -5458,7 +5304,7 @@ void TGreatPower::QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int
 
 // FUNCTION: IMPERIALISM 0x0055f140
 unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
-  TGlobalMapStateScoreView* globalMapState = ReadGlobalMapStateScoreView();
+  TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
   if (globalMapState == 0 || globalMapState->cityScoreTable == 0) {
     return 0;
   }

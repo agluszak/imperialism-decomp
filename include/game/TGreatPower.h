@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/TListObject.h"
 
-class TMinisterObject;
+class TMinister;
 class TQueueObject;
 class TRelationManagerObject;
 
@@ -223,9 +223,9 @@ public:
   short ownerNationSlot;
   unsigned char pad_8a[0x90 - 0x8a];
   TListObject* ownedRegionList;
-  TMinisterObject* foreignMinister;
-  TMinisterObject* interiorMinister;
-  TMinisterObject* defenseMinister;
+  TMinister* foreignMinister;
+  TMinister* interiorMinister;
+  TMinister* defenseMinister;
   unsigned char scenarioLoadFlag;
   unsigned char pad_a1;
   short diplomacyCounterA2;
