@@ -1267,22 +1267,6 @@ undefined4 GetTClusterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TCluster::ConstructUiResourceEntryType4B0C0
-// ghidra_proto void __thiscall ConstructUiResourceEntryType4B0C0(void)
-// FUNCTION: IMPERIALISM 0x00491400
-undefined4 ConstructUiResourceEntryType4B0C0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCluster::DestructTClusterAndMaybeFree
-// ghidra_proto void * __thiscall DestructTClusterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00491480
-undefined4 DestructTClusterAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTClusterAndMaybeFree_Impl
 // ghidra_proto void __cdecl DestructTClusterAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x004914b0

@@ -1,6 +1,14 @@
 // TCivToolbar wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
+#include "game/TCivToolbar.h"
+
+struct PanelEventPayload {
+  char pad_00[0x1c];
+  unsigned int controlTag;
+  char pad_20[0x7c];
+  void* selectedEntryContext;
+};
 
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 
@@ -32,18 +40,6 @@ const unsigned int kTagDefend = 0x64666E64;
 const unsigned int kTagLater = 0x6C617472;
 const unsigned int kTagGarrison = 0x67617272;
 
-struct CivToolbarState {
-  void* vftable;
-  char pad_04[0x88];
-};
-
-struct PanelEventPayload {
-  char pad_00[0x1c];
-  unsigned int controlTag;
-  char pad_20[0x7c];
-  void* selectedEntryContext;
-};
-
 struct SelectedCivilianState {
   unsigned char pad_00[0x04];
   void* selectedEntry;
@@ -65,7 +61,7 @@ static __inline void* QuerySelectedCivilianOrderState() {
   return *reinterpret_cast<void**>(kAddrSelectedCivilianOrderState);
 }
 
-static __inline void DispatchPanelControlEvent(CivToolbarState* toolbar, int eventClass,
+static __inline void DispatchPanelControlEvent(TCivToolbar* toolbar, int eventClass,
                                                void* eventPayload, int eventFlags) {
   reinterpret_cast<void(__fastcall*)(void*, int, int, void*, int)>(thunk_DispatchPanelControlEvent)(
       toolbar, 0, eventClass, eventPayload, eventFlags);
@@ -88,9 +84,9 @@ static __inline void ShowDisbandCivilianConfirmationDialog(void* selectedState) 
       selectedState);
 }
 
-static __inline int* ResolveControlByTag(CivToolbarState* toolbar, unsigned int controlTag) {
+static __inline int* ResolveControlByTag(TCivToolbar* toolbar, unsigned int controlTag) {
   return reinterpret_cast<int*(__fastcall*)(void*, int, unsigned int)>(
-      reinterpret_cast<int*>(toolbar->vftable)[0x25])(toolbar, 0, controlTag);
+      reinterpret_cast<int*>(*reinterpret_cast<void**>(toolbar))[0x25])(toolbar, 0, controlTag);
 }
 
 static __inline void SetControlEnabledAndRefresh(int* control, int enabledState, int refreshFlag) {
@@ -121,13 +117,8 @@ static __inline int IsCivilianOrderInIdleSelectionStateBridge(void* civilianOrde
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058ea00
-CivToolbarState* __cdecl CreateTCivToolbarInstance(void) {
-  CivToolbarState* toolbar = reinterpret_cast<CivToolbarState*>(AllocateWithFallbackHandler(0x8c));
-  if (toolbar != 0) {
-    RuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
-    toolbar->vftable = reinterpret_cast<void*>(&g_vtblTCivToolbar);
-  }
-  return toolbar;
+TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
+  return new TCivToolbar();
 }
 
 // FUNCTION: IMPERIALISM 0x0058ea80
@@ -136,22 +127,10 @@ void* __cdecl GetTCivToolbarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058eaa0
-CivToolbarState* __fastcall ConstructTCivToolbarBaseState(CivToolbarState* toolbar) {
-  RuntimeBridge::ConstructUiResourceEntryType4B0C0(toolbar);
-  toolbar->vftable = reinterpret_cast<void*>(&g_vtblTCivToolbar);
-  return toolbar;
-}
+TCivToolbar::TCivToolbar() {}
 
-// FUNCTION: IMPERIALISM 0x0058ead0
-CivToolbarState* __fastcall DestructTCivToolbarAndMaybeFree(CivToolbarState* toolbar, int unusedEdx,
-                                                            unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)toolbar);
-  }
-  return toolbar;
-}
+// SYNTHETIC: IMPERIALISM 0x0058ead0
+// TCivToolbar::`scalar deleting destructor'
 
 /* Handles civilian command-panel actions from map UI button clicks and stack-slot picks.
    Algorithm:
@@ -173,19 +152,17 @@ CivToolbarState* __fastcall DestructTCivToolbarAndMaybeFree(CivToolbarState* too
 /* Refreshes civilian command panel controls for the currently selected civilian entry. */
 
 // FUNCTION: IMPERIALISM 0x0058eb20
-void __fastcall RefreshCivilianCommandPanelForSelection(CivToolbarState* toolbar, int unusedEdx,
-                                                        int* selectedCivilianOrderEntry) {
+void TCivToolbar::RefreshCivilianCommandPanelForSelection(int* selectedCivilianOrderEntry) {
   // ORIG_CALLCONV: __thiscall
   int* backControl;
-  short civilianClassId;
+  short newCivilianClassId;
   int* unitControl;
 
-  (void)unusedEdx;
-  civilianClassId =
+  newCivilianClassId =
       (selectedCivilianOrderEntry == 0) ? (short)-1 : (short)selectedCivilianOrderEntry[1];
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(toolbar) + 0x88) = civilianClassId;
+  this->civilianClassId = newCivilianClassId;
 
-  unitControl = ResolveControlByTag(toolbar, 0x756e6974);
+  unitControl = ResolveControlByTag(this, 0x756e6974);
   if (unitControl == 0) {
     return;
   }
@@ -196,7 +173,7 @@ void __fastcall RefreshCivilianCommandPanelForSelection(CivToolbarState* toolbar
     SetControlEnabledAndRefresh(unitControl, 1, 1);
   }
 
-  backControl = ResolveControlByTag(toolbar, 0x6261636b);
+  backControl = ResolveControlByTag(this, 0x6261636b);
   if (backControl == 0) {
     return;
   }
@@ -204,9 +181,9 @@ void __fastcall RefreshCivilianCommandPanelForSelection(CivToolbarState* toolbar
     *reinterpret_cast<short*>(backControl + 0x18) = (short)-1;
     return;
   }
-  if (civilianClassId != *reinterpret_cast<short*>(backControl + 0x18)) {
-    *reinterpret_cast<short*>(backControl + 0x18) = civilianClassId;
-    switch (civilianClassId) {
+  if (newCivilianClassId != *reinterpret_cast<short*>(backControl + 0x18)) {
+    *reinterpret_cast<short*>(backControl + 0x18) = newCivilianClassId;
+    switch (newCivilianClassId) {
     case 0:
     case 1:
     case 2:
@@ -228,8 +205,7 @@ void __fastcall RefreshCivilianCommandPanelForSelection(CivToolbarState* toolbar
    enable state. */
 
 // FUNCTION: IMPERIALISM 0x0058ec50
-void __fastcall RefreshCivilianStackButtonsForTile(CivToolbarState* toolbar, int unusedEdx,
-                                                   short tileIndex) {
+void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   // ORIG_CALLCONV: __thiscall
   int commandEnabled;
   int selectedSlotTag;
@@ -240,7 +216,6 @@ void __fastcall RefreshCivilianStackButtonsForTile(CivToolbarState* toolbar, int
   SelectedCivilianState* selectedCivilianState;
   int mapState;
 
-  (void)unusedEdx;
   mapState = *reinterpret_cast<int*>(kAddrGlobalMapState);
   selectedTileEntry = *reinterpret_cast<CivilianTileEntry**>(
       *reinterpret_cast<int*>(mapState + 0xc) + 0x20 + tileIndex * 0x24);
@@ -249,7 +224,7 @@ void __fastcall RefreshCivilianStackButtonsForTile(CivToolbarState* toolbar, int
       reinterpret_cast<SelectedCivilianState*>(QuerySelectedCivilianOrderState());
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
-    stackButton = ResolveControlByTag(toolbar, 0x73746b30 + slotIndex);
+    stackButton = ResolveControlByTag(this, 0x73746b30 + slotIndex);
     if (stackButton == 0) {
       return;
     }
@@ -263,7 +238,7 @@ void __fastcall RefreshCivilianStackButtonsForTile(CivToolbarState* toolbar, int
     selectedTileEntry = selectedTileEntry->pNextOnTile;
   }
   while (slotIndex < 6) {
-    stackButton = ResolveControlByTag(toolbar, 0x73746b30 + slotIndex);
+    stackButton = ResolveControlByTag(this, 0x73746b30 + slotIndex);
     if (stackButton == 0) {
       return;
     }
@@ -276,20 +251,20 @@ void __fastcall RefreshCivilianStackButtonsForTile(CivToolbarState* toolbar, int
     selectedSlotTag = selectedStackButton[7];
   }
   reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      reinterpret_cast<int*>(toolbar->vftable)[0x72])(toolbar, 0, selectedSlotTag);
+      reinterpret_cast<int*>(*reinterpret_cast<void**>(this))[0x72])(this, 0, selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
-  stackButton = ResolveControlByTag(toolbar, 0x64666e64);
+  stackButton = ResolveControlByTag(this, 0x64666e64);
   if (stackButton == 0) {
     return;
   }
   SetControlEnabledAndRefresh(stackButton, commandEnabled, 1);
-  stackButton = ResolveControlByTag(toolbar, 0x6c617472);
+  stackButton = ResolveControlByTag(this, 0x6c617472);
   if (stackButton == 0) {
     return;
   }
   SetControlEnabledAndRefresh(stackButton, commandEnabled, 1);
-  stackButton = ResolveControlByTag(toolbar, 0x646f6e65);
+  stackButton = ResolveControlByTag(this, 0x646f6e65);
   if (stackButton == 0) {
     return;
   }
@@ -297,31 +272,29 @@ void __fastcall RefreshCivilianStackButtonsForTile(CivToolbarState* toolbar, int
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0
-void __fastcall HandleCivilianMapCommandPanelAction(CivToolbarState* toolbar, int unusedEdx,
-                                                    int eventClass, PanelEventPayload* eventPayload,
-                                                    int eventFlags) {
+void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass, PanelEventPayload* eventPayload,
+                                                      int eventFlags) {
   // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
 
   void* selectedCivilianOrderState = QuerySelectedCivilianOrderState();
   if (eventClass == 0xc) {
     if ((kTagStackSlotMin <= eventPayload->controlTag) &&
         (eventPayload->controlTag <= kTagStackSlotMax)) {
       SetActiveCivilianSelection(selectedCivilianOrderState, eventPayload->selectedEntryContext, 0);
-      DispatchPanelControlEvent(toolbar, 0xc, eventPayload, eventFlags);
+      DispatchPanelControlEvent(this, 0xc, eventPayload, eventFlags);
       return;
     }
   } else if (eventClass == 10) {
     unsigned int controlTag = eventPayload->controlTag;
-    if (controlTag < 0x646f6e66) {
+    if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
         QueueImmediateCivilianCommandAndCycleSelection(selectedCivilianOrderState, 4);
-        DispatchPanelControlEvent(toolbar, 10, eventPayload, eventFlags);
+        DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
         return;
       }
       if (controlTag == kTagDefend) {
         QueueImmediateCivilianCommandAndCycleSelection(selectedCivilianOrderState, 2);
-        DispatchPanelControlEvent(toolbar, 10, eventPayload, eventFlags);
+        DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
         return;
       }
     } else {
@@ -329,16 +302,16 @@ void __fastcall HandleCivilianMapCommandPanelAction(CivToolbarState* toolbar, in
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           thunk_ShowCivilianLedgerDialogAndSelectUnit();
-          DispatchPanelControlEvent(toolbar, 10, eventPayload, eventFlags);
+          DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
           return;
         }
         ShowDisbandCivilianConfirmationDialog(selectedCivilianOrderState);
       } else if (controlTag == kTagLater) {
         QueueImmediateCivilianCommandAndCycleSelection(selectedCivilianOrderState, 3);
-        DispatchPanelControlEvent(toolbar, 10, eventPayload, eventFlags);
+        DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
         return;
       }
     }
   }
-  DispatchPanelControlEvent(toolbar, eventClass, eventPayload, eventFlags);
+  DispatchPanelControlEvent(this, eventClass, eventPayload, eventFlags);
 }

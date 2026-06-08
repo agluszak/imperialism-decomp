@@ -1763,22 +1763,6 @@ undefined4 GetTEngineerDialogClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name ConstructEngineerDialog
-// ghidra_proto void __cdecl ConstructEngineerDialog(void)
-// FUNCTION: IMPERIALISM 0x004d0560
-undefined4 ConstructEngineerDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructEngineerDialogAndMaybeFree
-// ghidra_proto void __cdecl DestructEngineerDialogAndMaybeFree(void)
-// FUNCTION: IMPERIALISM 0x004d0590
-undefined4 DestructEngineerDialogAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshUniversityAdvancedStatus
 // ghidra_proto void __cdecl RefreshUniversityAdvancedStatus(void)
 // FUNCTION: IMPERIALISM 0x004d05e0

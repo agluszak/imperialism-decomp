@@ -62,6 +62,8 @@ add_executable(Imperialism
     src/game/TCombatReportView.cpp
     src/game/TArmyToolbar.cpp
     src/game/TStratReportView.cpp
+    src/game/TCluster.cpp
+    src/game/TEngineerDialog.cpp
     src/game/TCivToolbar.cpp
     src/game/TCivDescription.cpp
     src/game/TArmyInfoView.cpp

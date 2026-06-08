@@ -186,8 +186,10 @@ address|target_cpp|ownership|note
 48f710|src/game/TStaticText.cpp|manual|marker_sync
 48f870|src/game/TStaticText.cpp|manual|marker_sync
 48f890|src/game/TStaticText.cpp|manual|marker_sync
-48f9a0|TStaticText|manual|promoted_from_autogen
+48f9a0|src/game/TStaticText.cpp|manual|marker_sync
 48fc30|src/game/TStaticText.cpp|manual|marker_sync
+491400|src/game/TCluster.cpp|manual|marker_sync
+491480|src/game/TCluster.cpp|manual|marker_sync
 492d00|src/game/noop_slots.cpp|manual|marker_sync
 492d20|src/game/noop_slots.cpp|manual|marker_sync
 492d40|src/game/noop_slots.cpp|manual|marker_sync
@@ -236,6 +238,8 @@ address|target_cpp|ownership|note
 4c6fb0|src/game/noop_slots.cpp|manual|marker_sync
 4c6fd0|src/game/noop_slots.cpp|manual|marker_sync
 4cc470|src/game/noop_slots.cpp|manual|marker_sync
+4d0560|src/game/TEngineerDialog.cpp|manual|marker_sync
+4d0590|src/game/TEngineerDialog.cpp|manual|marker_sync
 4d20c0|src/game/noop_slots.cpp|manual|marker_sync
 4d4bd0|src/game/noop_slots.cpp|manual|marker_sync
 4d6730|src/game/noop_slots.cpp|manual|marker_sync
@@ -546,6 +550,7 @@ address|target_cpp|ownership|note
 56f460|src/game/noop_slots.cpp|manual|marker_sync
 56f480|src/game/noop_slots.cpp|manual|marker_sync
 5707f0|src/game/TPictureButton.cpp|manual|marker_sync
+570820|src/game/TPictureButton.cpp|manual|marker_sync
 570950|src/game/TAlwaysPictureButton.cpp|manual|marker_sync
 5709d0|src/game/TAlwaysPictureButton.cpp|manual|marker_sync
 5709f0|src/game/TAlwaysPictureButton.cpp|manual|marker_sync
@@ -559,6 +564,7 @@ address|target_cpp|ownership|note
 5710f0|src/game/TToggleButton.cpp|manual|marker_sync
 571120|src/game/TToggleButton.cpp|manual|marker_sync
 5717c0|src/game/TRadioPictureButton.cpp|manual|marker_sync
+571800|src/game/TRadioPictureButton.cpp|manual|marker_sync
 5723d0|src/game/noop_slots.cpp|manual|marker_sync
 572bb0|src/game/noop_slots.cpp|manual|marker_sync
 574fc0|src/game/noop_slots.cpp|manual|marker_sync
