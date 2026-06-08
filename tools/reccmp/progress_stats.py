@@ -427,7 +427,6 @@ def main() -> int:
 
         print(f"Target: {args.target}")
         print(f"Build dir: {build_dir}")
-        print(f"Timestamp (UTC): {entry['timestamp_utc']}")
         if prev:
             prev_branch = prev.get("git_branch", "unknown")
             prev_date = prev.get("git_commit_date", prev.get("timestamp_utc", "unknown"))
