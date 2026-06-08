@@ -65,3 +65,6 @@ void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQ
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+THQButton::~THQButton() {}
+

@@ -46,3 +46,6 @@ void T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(char dir
   reinterpret_cast<void(__cdecl*)()>(ppuVar2[0x3e])();
   reinterpret_cast<void(__cdecl*)(int)>(ppuVar2[0x45])(0);
 }
+
+T2PictToggleButton::~T2PictToggleButton() {}
+

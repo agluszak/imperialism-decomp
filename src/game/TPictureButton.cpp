@@ -6,3 +6,6 @@ TPictureButton::TPictureButton() : TPictureResourceEntryBase(), timingWord92(700
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00570820
 // TPictureButton::`scalar deleting destructor'
+
+TPictureButton::~TPictureButton() {}
+

@@ -27,6 +27,8 @@ TBoycottButton::TBoycottButton() : TToggleButton() {}
 // SYNTHETIC: IMPERIALISM 0x005847b0
 // TBoycottButton::`scalar deleting destructor'
 
+
+
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
@@ -44,5 +46,8 @@ void TBoycottButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) 
   }
   TToggleButton::TToggleButton_VtblSlot116(isPressed, notifyParent);
 }
+
+
+
 
 

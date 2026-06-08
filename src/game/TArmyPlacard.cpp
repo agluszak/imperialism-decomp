@@ -20,3 +20,6 @@ TArmyPlacard::TArmyPlacard() : TPictureButton() {
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0058bf00
 // TArmyPlacard::`scalar deleting destructor'
+
+TArmyPlacard::~TArmyPlacard() {}
+

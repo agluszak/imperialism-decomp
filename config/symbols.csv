@@ -5247,7 +5247,7 @@ address|name|size|type|prototype
 48f710|TStaticText::CreateTStaticTextInstance|268|function|void * __cdecl CreateTStaticTextInstance(void)
 48f870|TStaticText::GetTStaticTextClassNamePointer|6|function|void * __cdecl GetTStaticTextClassNamePointer(void)
 48f890|TStaticText::TStaticText|198|function|void __thiscall ConstructUiTextResourceEntryBase(void)
-48f9a0|TStaticText::scalar deleting destructor|30|function|void * __thiscall DestructTStaticTextAndMaybeFree(byte freeSelfFlag)
+48f9a0|TStaticText::`scalar deleting destructor'|30|function|void * __thiscall DestructTStaticTextAndMaybeFree(byte freeSelfFlag)
 48f9d0|TMyNumberText::CloneCityDialogStateWithSharedStringInit|254|function|void * __thiscall CloneCityDialogStateWithSharedStringInit(void)
 48fb10|CopyExtendedCityDialogControllerState|184|function|void __fastcall CopyExtendedCityDialogControllerState(int ecxArg, int arg1)
 48fc00|DispatchVslot24ThenCopyExtendedCityDialogControllerState|24|function|int __cdecl DispatchVslot24ThenCopyExtendedCityDialogControllerState(void)

@@ -46,3 +46,6 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+TCivilianButton::~TCivilianButton() {}
+

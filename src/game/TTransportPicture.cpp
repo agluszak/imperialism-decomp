@@ -27,3 +27,6 @@ TTransportPicture::TTransportPicture()
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00591ec0
 // TTransportPicture::`scalar deleting destructor'
+
+TTransportPicture::~TTransportPicture() {}
+

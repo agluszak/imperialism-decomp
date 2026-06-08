@@ -2819,14 +2819,6 @@ undefined4 GetTPictureButtonClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TPictureButton::scalar deleting destructor
-// ghidra_proto void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00570820
-undefined4 DestructTPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I24_00570870
 // ghidra_proto void __cdecl OrphanCallChain_C2_I24_00570870(void)
 // FUNCTION: IMPERIALISM 0x00570870
@@ -3079,14 +3071,6 @@ undefined4 CreateTRadioPictureButtonInstance(void)
 // ghidra_proto void * __cdecl GetTRadioPictureButtonClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x005717a0
 undefined4 GetTRadioPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadioPictureButton::scalar deleting destructor
-// ghidra_proto void * __thiscall DestructTRadioPictureButtonAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571800
-undefined4 DestructTRadioPictureButtonAndMaybeFree(void)
 {
   return 0;
 }

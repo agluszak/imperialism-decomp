@@ -17,3 +17,5 @@ TCombatReportView::TCombatReportView() : TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058c900
 TCombatReportView::~TCombatReportView() {}
+
+

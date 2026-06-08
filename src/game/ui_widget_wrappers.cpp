@@ -67,3 +67,9 @@ void __fastcall OrphanTiny_SetDwordEcxOffset_60_0058e440(DwordAtOffset60State* s
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+void operator delete(void* p) {
+  extern void FreeHeapBufferIfNotNull(unsigned int);
+  FreeHeapBufferIfNotNull((unsigned int)p);
+}
+

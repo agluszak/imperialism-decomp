@@ -28,3 +28,6 @@ TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
+
+TNumberedArrowButton::~TNumberedArrowButton() {}
+

@@ -25,3 +25,6 @@ T2PictureButton::T2PictureButton() : TPictureButton() {}
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00570be0
 // T2PictureButton::`scalar deleting destructor'
+
+T2PictureButton::~T2PictureButton() {}
+

@@ -10,3 +10,6 @@ TRadioPictureButton::TRadioPictureButton() : TPictureButton() {
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00571800
 // TRadioPictureButton::`scalar deleting destructor'
+
+TRadioPictureButton::~TRadioPictureButton() {}
+
