@@ -2,8 +2,12 @@
 #include "game/TIndustryAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/win_rect.h"
+#include "game/ui_widget_thunks.h"
+#include <new>
 #include "game/NationState.h"
-#include "game/ui_widget_shared.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"
@@ -46,7 +50,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   }
 
   selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
-  int productionValue = TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
+  int productionValue = (int)reinterpret_cast<int(__fastcall*)(void*, short)>(thunk_GetCityBuildingProductionValueBySlot)(
       cityState, selectedMetricRecord->buildingSlot);
 
   short stepValue = selectedMetricRecord->QueryStepValue();

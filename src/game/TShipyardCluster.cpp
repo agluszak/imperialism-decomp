@@ -53,7 +53,7 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
+    new (cluster) TUberCluster();
     cluster->vftable = reinterpret_cast<void*>(kVtableTShipyardCluster);
     cluster->field_88 = 0;
   }
@@ -68,7 +68,7 @@ void* __cdecl GetTShipyardClusterClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058a590
 TradeMoveStepCluster* __fastcall
 ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
+  new (cluster) TUberCluster();
   cluster->vftable = reinterpret_cast<void*>(kVtableTShipyardCluster);
   cluster->field_88 = 0;
   return cluster;
@@ -87,7 +87,7 @@ void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster,
 // FUNCTION: IMPERIALISM 0x0058a610
 void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls() {
   // ORIG_CALLCONV: __thiscall
-  NationCityTradeState* cityState = GetNationCityStateBySlot(QueryActiveNationId());
+  NationCityTradeState* cityState = GetNationCityStateBySlot(thunk_GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
   TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(

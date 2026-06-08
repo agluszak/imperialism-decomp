@@ -39,7 +39,7 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
+    new (cluster) TUberCluster();
     cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
     cluster->field_88 = 0;
   }
@@ -63,7 +63,7 @@ void* __cdecl GetTIndustryClusterClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x00588af0
 void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
+  new (cluster) TUberCluster();
   cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
   cluster->field_88 = 0;
 }
@@ -87,7 +87,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
                                                            int unusedEdx, int styleSeed) {
   (void)unusedEdx;
   short tagIndex = 0;
-  short activeNationId = QueryActiveNationId();
+  short activeNationId = thunk_GetActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
 
@@ -101,9 +101,8 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
       *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
   context->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
   context->selectedMetricValue =
-      (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
-          cityState,
-          *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52));
+      (short)(int)reinterpret_cast<int(__fastcall*)(void*, short)>(thunk_GetCityBuildingProductionValueBySlot)(
+          cityState, *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52));
 
   reinterpret_cast<void(__fastcall*)(TradeMovePanelContext*, int, unsigned int)>(
       thunk_InitializeTradeMoveAndBarControls)(context, 0, (unsigned int)styleSeed);

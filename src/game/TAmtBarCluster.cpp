@@ -3,8 +3,12 @@
 #include "game/GameAssert.h"
 #include <new>
 #include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/win_rect.h"
+#include "game/ui_widget_thunks.h"
+#include <new>
+#include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
-#include "game/ui_widget_shared.h"
 
 struct NationState;
 
@@ -61,7 +65,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
       }
 
       int sellValue = sellControl->QueryValue();
-      short activeNationSlot = QueryActiveNationId();
+      short activeNationSlot = thunk_GetActiveNationId();
       NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
       short maxByNationMetric = 0;
       if (activeNationState != 0) {
@@ -128,7 +132,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
     }
     break;
   case 0x69: {
-    short activeNationSlot = QueryActiveNationId();
+    short activeNationSlot = thunk_GetActiveNationId();
     NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
     short maxByNationMetric = 0;
     if (activeNationState != 0) {

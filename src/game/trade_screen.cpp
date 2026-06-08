@@ -2,10 +2,22 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
+
+#include "game/TNumberedArrowButton.h"
+#include "game/TPlacard.h"
+#include "game/TCivilianButton.h"
+#include "game/THQButton.h"
+#include "game/TCombatReportView.h"
+#include "game/TPictureResourceEntryBase.h"
+
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/win_rect.h"
+#include "game/ui_widget_thunks.h"
+#include <new>
 #include "game/GameAssert.h"
 #include "game/NationState.h"
 #include "game/CString.h"
-#include "game/ui_widget_shared.h"
 #include "game/TView.h"
 #include "game/TUberCluster.h"
 #include "game/trade_quickdraw.h"
@@ -720,7 +732,7 @@ void __cdecl OrphanRetStub_00586ff0(void) {}
 void* CreateTradeSellControlPanel(void) {
   void* cluster = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x8c));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
+    new (cluster) TUberCluster();
     *reinterpret_cast<void**>(cluster) =
         reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
   }
@@ -736,7 +748,7 @@ void* GetTTradeClusterClassNamePointer(void) {
 void __fastcall ConstructTradeSellControlPanel(void* self)
 
 {
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(self);
+  new (self) TUberCluster();
   *reinterpret_cast<void**>(self) =
       reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
 }
@@ -785,7 +797,7 @@ void TradeScreenContext::InitializeTradeSellControlState(unsigned int styleSeed)
   leftControl->SetState(0, 0);
   rightControl->SetState(0, 0);
 
-  short activeNationSlot = QueryActiveNationId();
+  short activeNationSlot = thunk_GetActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
   if (activeNationState != 0 && QueryNationTradeCapacity(activeNationState) == 0) {
     leftControl->SetEnabled(0, 0);
@@ -1079,12 +1091,12 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void) {
   int layoutCaptureF4[2] = {0x11, 0x14};
   offerControl->CaptureLayout(layoutCaptureF4, 1);
 
-  short activeNationSlot = QueryActiveNationId();
+  short activeNationSlot = thunk_GetActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
   short tradeMetricAvailable = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
 
   if (tradeMetricAvailable != 0) {
-    short activeNationSlotAgain = QueryActiveNationId();
+    short activeNationSlotAgain = thunk_GetActiveNationId();
     NationState* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->SetEnabled(1, 0);
@@ -1135,7 +1147,7 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void) {
 
 // FUNCTION: IMPERIALISM 0x005882f0
 void TradeScreenContext::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax) {
-  short activeNationSlot = QueryActiveNationId();
+  short activeNationSlot = thunk_GetActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
   int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
   if (tradeMetricValue > metricClampMax) {
@@ -1230,7 +1242,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
 
 // FUNCTION: IMPERIALISM 0x00589720
 void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
+  new (cluster) TUberCluster();
   cluster->vftable = reinterpret_cast<void*>(kVtableTRailCluster);
   cluster->field_88 = 0;
   cluster->field_8e = 0;
@@ -1241,7 +1253,7 @@ void __fastcall
 SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* context, int unusedEdx,
                                                       short recordIndex) {
   (void)unusedEdx;
-  short activeNationId = QueryActiveNationId();
+  short activeNationId = thunk_GetActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState =
       activeNationState == 0
@@ -1255,7 +1267,7 @@ SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* con
       recordIndex = 0x3c;
       context->selectedMetricStep = 1;
       context->selectedMetricValue =
-          (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(cityState, 0x0f);
+          (short)(int)reinterpret_cast<int(__fastcall*)(void*, short)>(thunk_GetCityBuildingProductionValueBySlot)(cityState, 0x0f);
     } else if (summaryTag == kSummaryTagFood) {
       context->selectedMetricStep = 2;
       recordIndex = 7;
@@ -1450,7 +1462,7 @@ void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b750
-void __fastcall OrphanCallChain_C3_I43_0058b750(NumberedArrowButtonState* control, int unusedEdx,
+void __fastcall OrphanCallChain_C3_I43_0058b750(TNumberedArrowButton* control, int unusedEdx,
                                                 char mode, char refreshParent) {
   (void)unusedEdx;
   if (mode != *reinterpret_cast<char*>(reinterpret_cast<char*>(control) + 0x64)) {
@@ -1488,7 +1500,7 @@ void __fastcall OrphanCallChain_C2_I16_0058b890(TAmtBar* control, int unusedEdx,
 }
 
 // FUNCTION: IMPERIALISM 0x0058b8d0
-void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* control, int unusedEdx,
+void __fastcall OrphanCallChain_C2_I37_0058b8d0(TNumberedArrowButton* control, int unusedEdx,
                                                 short mode) {
   (void)unusedEdx;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98) = mode;
@@ -1506,7 +1518,7 @@ void __fastcall OrphanCallChain_C2_I37_0058b8d0(NumberedArrowButtonState* contro
 }
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
-void __fastcall RenderRightAlignedNumericOverlayWithShadow(PlacardState* control) {
+void __fastcall RenderRightAlignedNumericOverlayWithShadow(TPlacard* control) {
   CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
 

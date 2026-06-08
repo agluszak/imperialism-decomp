@@ -2,10 +2,14 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #pragma optimize("y", on)
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/win_rect.h"
+#include "game/ui_widget_thunks.h"
+#include <new>
 
 #include "game/TView.h"
 #include "game/CString.h"
-#include "game/ui_widget_shared.h"
 #include "game/generated/vcall_facades.h"
 
 // Real ctor. The scalar fields are member-initializers (not body assignments) so

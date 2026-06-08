@@ -2,8 +2,12 @@
 
 #include "decomp_types.h"
 #include "game/Point32.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/win_rect.h"
+#include "game/ui_widget_thunks.h"
+#include <new>
 #include "game/generated/vcall_facades.h"
-#include "game/ui_widget_shared.h"
 #include "game/TControl.h"
 #include "game/TDiplomacyTurnStateManager.h"
 

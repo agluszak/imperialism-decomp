@@ -1,8 +1,12 @@
 // UI wrapper class quads extracted from trade_screen.
 
-#include "game/ui_widget_shared.h"
 #include "game/TNumberedArrowButton.h"
 int g_pClassDescTNumberedArrowButton;
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/win_rect.h"
+#include "game/ui_widget_thunks.h"
+#include <new>
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)
