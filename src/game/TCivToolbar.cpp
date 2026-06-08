@@ -16,14 +16,12 @@ extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
-undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_SetActiveCivilianSelection(void);
 undefined4 thunk_DispatchPanelControlEvent(void);
 undefined4 thunk_QueueImmediateCivilianCommandAndCycleSelection(void);
-undefined4 thunk_ShowCivilianLedgerDialogAndSelectUnit(void);
 undefined4 thunk_ShowDisbandCivilianConfirmationDialog(void);
 undefined4 thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(void);
+undefined4 thunk_ShowCivilianLedgerDialogAndSelectUnit(void);
 undefined4 thunk_IsCivilianOrderInIdleSelectionState(void);
 
 namespace {
@@ -52,12 +50,6 @@ struct CivilianTileEntry {
   CivilianTileEntry* pNextOnTile;
 };
 
-class RuntimeBridge {
-public:
-  static __inline void ConstructUiResourceEntryType4B0C0(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiResourceEntryType4B0C0)(self);
-  }
-};
 
 static __inline void* QuerySelectedCivilianOrderState() {
   return *reinterpret_cast<void**>(kAddrSelectedCivilianOrderState);
