@@ -5,26 +5,40 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
+struct Rect32 {
+  int left;
+  int top;
+  int right;
+  int bottom;
+};
+
 // VTABLE: IMPERIALISM 0x6431B0
 class TCivDescription : public TView {
 public:
   short selectedCivilianClass;
-  unsigned char pad_62_to_6b[0x0a];
-  unsigned char legendInitialized;
-  unsigned char pad_6d_to_6f[0x03];
-  unsigned char pad_70_to_16f[0x100];
+  short ownerNationId;
+  union {
+    short targetTileCountsBySlot[5];
+    struct {
+      short pad_64[4];
+      unsigned char legendInitialized;
+      unsigned char pad_6d;
+    };
+  };
+  Rect32 legendRects[16];
+  unsigned char pad_170_to_16f[0]; // legends end at 0x170
 
-  TCivDescription() : TView() {
-    selectedCivilianClass = -1;
-    legendInitialized = 0;
-  }
+  TCivDescription();
 
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
+  // ~TCivDescription is compiler-generated (implicit virtual dtor); see
+  // the SYNTHETIC scalar deleting destructor in the .cpp.
+
+  void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivilianOrderState* orderState);
+  void HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, struct Point32* point, int arg4);
+  void RefreshCivilianTargetLegendBySelectedClass();
+  void RenderCivilianTargetLegendVariantA();
+
+  void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivilianOrderState* selectedOrder);
 };
 
 ASSERT_SIZE(TCivDescription, 0x170);

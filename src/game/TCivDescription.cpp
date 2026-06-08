@@ -5,14 +5,27 @@
 #include "decomp_types.h"
 #include "game/Point32.h"
 #include "game/TCivDescription.h"
+#include <string.h>
+#include "game/TCivilianOrderState.h"
+#include "game/TGlobalMapState.h"
 #include "game/TView.h"
 #include "game/CString.h"
 
+extern "C" void* g_apTerrainTypeDescriptorTable[];
+extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
+#include "game/CString.h"
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(void);
+
 undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
 undefined4 thunk_RenderCivilianTargetLegendVariantA(void);
 undefined4 thunk_RenderCivilianTargetLegendVariantB(void);
+undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
+
+extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
+extern "C" unsigned short* g_pActiveCityDialogLegendSelectionOwner;
+
+
 undefined4 InitializeUiTextStyleDescriptorAndApplyQuickDraw(void);
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
@@ -44,29 +57,16 @@ enum ECivilianClassId {
   kCivilianClass_Driller = 8,
 };
 
-struct TCivilianOrderState {
-  void* vftable;
-  short eCivilianClassId;
-  short nCurrentTileIndex;
-};
-
 struct CivilianClassCacheContext {
   void* vftable;
   unsigned char pad_04_to_5f[0x5c];
-  short cachedCivilianClassId;
+  short selectedCivilianClass;
   short ownerNationId;
   short targetTileCountsBySlot[5];
   unsigned char pad_6e_to_6f[0x02];
 };
 
-struct Rect32 {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
-
-extern "C" int __stdcall PtInRect(const Rect32* rect, Point32 point);
+extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct Rect32* rect, struct Point32 point);
 
 class ProvinceCollectionVirtualShape {
 public:
@@ -92,14 +92,23 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 
 } // namespace
 
-void __fastcall
-UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* context, int unusedEdx,
-                                                  TCivilianOrderState* orderState);
+
 
 // FUNCTION: IMPERIALISM 0x0058f050
 CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
   return new TCivDescription();
 }
+
+TCivDescription::TCivDescription() : TView() {
+  selectedCivilianClass = -1;
+  legendInitialized = 0;
+}
+
+// The ordinary destructor and the scalar deleting destructor below are both
+// compiler-generated (implicit) from real inheritance — never hand-written.
+// SYNTHETIC: IMPERIALISM 0x00407f4a
+// TCivDescription::`scalar deleting destructor'
+
 
 // FUNCTION: IMPERIALISM 0x0058f0f0
 void* __cdecl GetTCivDescriptionClassNamePointer(void) {
@@ -109,20 +118,18 @@ void* __cdecl GetTCivDescriptionClassNamePointer(void) {
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */
 
 // FUNCTION: IMPERIALISM 0x0058f110
-void __fastcall UpdateCivilianOrderClassAndRefreshTargetCounts(CivilianClassCacheContext* context,
-                                                               int unusedEdx,
-                                                               TCivilianOrderState* orderState) {
+#pragma optimize("y", on)
+void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivilianOrderState* orderState) {
+  TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short civilianClassId;
-
-  (void)unusedEdx;
   if (orderState == 0) {
-    context->cachedCivilianClassId = (short)-1;
+    context->selectedCivilianClass = (short)-1;
     return;
   }
-  civilianClassId = orderState->eCivilianClassId;
-  if (civilianClassId != context->cachedCivilianClassId) {
-    context->cachedCivilianClassId = civilianClassId;
+  civilianClassId = orderState->civilianClassId;
+  if (civilianClassId != context->selectedCivilianClass) {
+    context->selectedCivilianClass = civilianClassId;
     switch ((ECivilianClassId)civilianClassId) {
     case kCivilianClass_Miner:
     case kCivilianClass_Prospector:
@@ -132,12 +139,10 @@ void __fastcall UpdateCivilianOrderClassAndRefreshTargetCounts(CivilianClassCach
     case kCivilianClass_Developer:
     case kCivilianClass_Driller:
       *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(context) + 0x6c) = 0;
-      reinterpret_cast<void(__fastcall*)(void*, int, TCivilianOrderState*)>(
-          thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation)(context, 0, orderState);
+      context->UpdateCivilianOrderTargetTileCountsForOwnerNation(orderState);
       break;
     }
-    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x39])(
-        context);
+    context->RefreshControl();
   }
 }
 
@@ -161,63 +166,51 @@ void __fastcall UpdateCivilianOrderClassAndRefreshTargetCounts(CivilianClassCach
    ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher,
    7 Developer, 8 Driller.
 
-   Consumes pCivilianOrderState->nCurrentTileIndex and class-indexed target profile table. */
+   Consumes pCivilianOrderState->currentTileIndex and class-indexed target profile table. */
 
 /* Handles civ-description click hit-test and selects matching terrain/entry descriptor. */
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
 #pragma optimize("y", on)
-void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context, int unusedEdx,
-                                                    void* pointArg) {
-  // ORIG_CALLCONV: __thiscall
-  short tileIndex;
-  short ownerNationId;
-  int provinceTileOrdinal;
-  int provinceTileCount;
-  short* provinceTileIndices;
-  unsigned short* legendSelectionCountsBySlot;
-  unsigned short* currentLegendSelectionCounter;
-  int slotIndex;
-  int candidateOrdinal;
-  Rect32* legendRect;
-  int provinceOrdinal;
+void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, Point32* point, int arg4) {
+  int candidateOrdinal = 0;
   int provinceCount;
+  int provinceOrdinal;
   int provinceId;
-  int globalMapState;
-  int tileDataBase;
-  int provinceDataBase;
-  ProvinceCollectionVirtualShape* ownerNationProvinceCollection;
-
-  (void)unusedEdx;
-  legendRect = reinterpret_cast<Rect32*>(reinterpret_cast<char*>(context) + 0x70);
-  legendSelectionCountsBySlot =
-      reinterpret_cast<unsigned short*>(kAddrCivilianLegendSelectionCountsBySlot);
-  candidateOrdinal = 0;
-  ownerNationId = *reinterpret_cast<short*>(reinterpret_cast<char*>(context) + 0x62);
-  currentLegendSelectionCounter = legendSelectionCountsBySlot;
-  slotIndex = 0;
+  int provinceTileCount;
+  int provinceTileOrdinal;
+  short tileIndex;
+  Rect32* legendRect = &this->legendRects[0];
+  unsigned short* currentLegendSelectionCounter = g_awCivilianLegendSelectionCountsBySlot;
+  int slotIndex = 0;
+  
   do {
-    if (PtInRect(legendRect, *reinterpret_cast<Point32*>(pointArg)) != 0) {
-      ownerNationProvinceCollection = *reinterpret_cast<ProvinceCollectionVirtualShape**>(
-          *reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable + ownerNationId * 4) + 0x90);
+    if (PtInRect(legendRect, *point) != 0) {
+      ProvinceCollectionVirtualShape* ownerNationProvinceCollection =
+          *reinterpret_cast<ProvinceCollectionVirtualShape**>(
+              *reinterpret_cast<int*>(reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable) +
+                                      this->ownerNationId * 4) +
+              0x90);
       provinceCount = ownerNationProvinceCollection->GetCount();
       if (0 < provinceCount) {
         provinceOrdinal = 1;
         do {
           provinceId = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
-          globalMapState = *reinterpret_cast<int*>(kAddrGlobalMapState);
-          provinceDataBase = *reinterpret_cast<int*>(globalMapState + 0x10);
-          provinceTileCount = (int)*(char*)(provinceDataBase + provinceId * 0xa8 + 0x3a);
+          provinceTileCount =
+              (int)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
+                            provinceId * 0xa8 + 0x3a);
           if (0 < provinceTileCount) {
-            tileDataBase = *reinterpret_cast<int*>(globalMapState + 0xc);
-            provinceTileIndices =
-                reinterpret_cast<short*>(provinceDataBase + provinceId * 0xa8 + 0x42);
+            short* provinceTileIndices = reinterpret_cast<short*>(
+                reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceId * 0xa8 +
+                0x42);
             provinceTileOrdinal = 0;
             while (provinceTileOrdinal < provinceTileCount) {
               tileIndex = *provinceTileIndices;
-              if ((*(char*)(tileDataBase + tileIndex * 0x24 + 0xe) == '\0') &&
-                  ((unsigned short)(unsigned char)*(char*)(tileDataBase + tileIndex * 0x24 +
-                                                           0x13) == (unsigned short)slotIndex)) {
+              if ((*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
+                            tileIndex * 0x24 + 0xe) == '\0') &&
+                  ((unsigned short)(unsigned char)*(
+                       char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
+                              tileIndex * 0x24 + 0x13) == (unsigned short)slotIndex)) {
                 if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
                   void* uiRootController = *reinterpret_cast<void**>(kAddrGlobalUiRootController);
                   void* legendSelectionOwner =
@@ -245,7 +238,7 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
     currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
     slotIndex = slotIndex + 1;
     legendRect = legendRect + 1;
-    if (0x6a44af < reinterpret_cast<int>(currentLegendSelectionCounter)) {
+    if (g_pActiveCityDialogLegendSelectionOwner <= currentLegendSelectionCounter) {
       return;
     }
   } while (true);
@@ -254,32 +247,31 @@ void __fastcall DestructTCivDescriptionAndMaybeFree(CivDescriptionState* context
 
 #pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x0058f3c0
-void __fastcall
-UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* context, int unusedEdx,
-                                                  TCivilianOrderState* orderState) {
+void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilianOrderState* orderState) {
+  TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short ownerNationId;
   int provinceTileOrdinal;
-  int provinceRecord;
+  char* provinceRecord;
   short* targetCountSlot;
   int classSlotOrdinal;
   int remainingSlots;
   int provinceOrdinal;
   short* provinceTileIndices;
   int provinceTileIndex;
-  int tableBase;
+  char* tableBase;
   short tileProfileId;
   ProvinceCollectionVirtualShape* ownerNationProvinceCollection;
   int provinceCount;
 
-  (void)unusedEdx;
+
   provinceOrdinal = 1;
   ownerNationId =
-      (short)*(char*)(*reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrGlobalMapState) + 0xc) +
-                      4 + orderState->nCurrentTileIndex * 0x24);
+      (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
+                      4 + orderState->currentTileIndex * 0x24);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = *reinterpret_cast<ProvinceCollectionVirtualShape**>(
-      *reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable + ownerNationId * 4) + 0x90);
+      reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[ownerNationId]) + 0x90);
   context->targetTileCountsBySlot[4] = 0;
   context->targetTileCountsBySlot[3] = 0;
   context->targetTileCountsBySlot[2] = 0;
@@ -290,15 +282,15 @@ UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* con
     return;
   }
   do {
-    provinceRecord = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
+    int provinceRecordId = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
     provinceTileOrdinal = 0;
-    provinceRecord = *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrGlobalMapState) + 0x10) +
-                     provinceRecord * 0xa8;
+    provinceRecord = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
+                     provinceRecordId * 0xa8;
     if ('\0' < *(char*)(provinceRecord + 0x3a)) {
       provinceTileIndices = reinterpret_cast<short*>(provinceRecord + 0x42);
       do {
         provinceTileIndex = (short)*provinceTileIndices;
-        tableBase = *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrGlobalMapState) + 0xc) +
+        tableBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
                     (int)(short)provinceTileIndex * 0x24;
         if (*(char*)(tableBase + 0xe) == '\0') {
           tileProfileId = (short)*(char*)(tableBase + 0x13);
@@ -307,8 +299,8 @@ UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* con
           targetCountSlot = &context->targetTileCountsBySlot[0];
           do {
             if (tileProfileId ==
-                reinterpret_cast<short*>(kAddrTargetTileProfileByCivilianClassAndSlot)
-                    [classSlotOrdinal + context->cachedCivilianClassId * 5]) {
+                g_anTargetTileProfileByCivilianClassAndSlot
+                    [classSlotOrdinal + context->selectedCivilianClass * 5]) {
               *targetCountSlot = (short)(*targetCountSlot + 1);
             }
             classSlotOrdinal = classSlotOrdinal + 1;
@@ -327,53 +319,46 @@ UpdateCivilianOrderTargetTileCountsForOwnerNation(CivilianClassCacheContext* con
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x0058f550
-void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* context,
-                                                           int unusedEdx) {
+#pragma optimize("y", on)
+void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
   // ORIG_CALLCONV: __thiscall
   int slotIndex;
   unsigned short* legendSelectionCountsBySlot;
-  Rect32* legendRect;
   int stylePrimary;
   int styleSecondary;
   CString localizedTextRef;
-  int* localizedTextRefPtr = reinterpret_cast<int*>(&localizedTextRef);
   void** localizationTable;
   short selectedClass;
   short textWidth;
   short textOriginX;
 
-  (void)unusedEdx;
-  if (context->legendInitialized == 0) {
-    legendSelectionCountsBySlot =
-        reinterpret_cast<unsigned short*>(kAddrCivilianLegendSelectionCountsBySlot);
-    legendRect = reinterpret_cast<Rect32*>(reinterpret_cast<char*>(context) + 0x70);
-    for (slotIndex = 0; slotIndex < 0x10; slotIndex = slotIndex + 1) {
-      legendRect[slotIndex].left = 0;
-      legendRect[slotIndex].top = 0;
-      legendRect[slotIndex].right = 0;
-      legendRect[slotIndex].bottom = 0;
-      legendSelectionCountsBySlot[slotIndex] = 0;
-    }
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(context) + 4) = 0;
+
+  if (this->legendInitialized == 0) {
+    legendSelectionCountsBySlot = g_awCivilianLegendSelectionCountsBySlot;
+    Rect32* legendRect = &this->legendRects[0];
+    Rect32 zeroRect = {0, 0, 0, 0};
+    do {
+      *legendRect = zeroRect;
+      legendRect++;
+      *legendSelectionCountsBySlot = 0;
+      legendSelectionCountsBySlot++;
+    } while (legendSelectionCountsBySlot < g_pActiveCityDialogLegendSelectionOwner);
+    this->field04 = 0;
   }
 
-  selectedClass = context->selectedCivilianClass;
+  selectedClass = this->selectedCivilianClass;
   if (selectedClass == kCivilianClass_Prospector) {
-    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x68])(
-        context);
+    this->vmethod_0104();
   } else if (selectedClass == kCivilianClass_Engineer) {
-    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x69])(
-        context);
+    this->vmethod_0105();
   } else if (selectedClass != kCivilianClass_Developer) {
-    reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<int**>(context))[0x6a])(
-        context);
+    this->vmethod_0106();
   }
 
-  context->legendInitialized = 1;
+  this->legendInitialized = 1;
   if (selectedClass != (short)-1) {
     stylePrimary = 0;
     styleSecondary = 0;
-    new (&localizedTextRef) CString(); // reset to empty -> 0x00605797
 
     reinterpret_cast<void(__cdecl*)(int, int, int)>(
         InitializeUiTextStyleDescriptorAndApplyQuickDraw)(0, 0xc, 0x2b68);
@@ -383,30 +368,30 @@ void __fastcall RefreshCivilianTargetLegendBySelectedClass(CivDescriptionState* 
         0x2b67, reinterpret_cast<int>(&styleSecondary));
     localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
     reinterpret_cast<LocalizationFormatFn>(localizationTable[0x21])(0x2718, selectedClass,
-                                                                    localizedTextRefPtr);
+                                                                    reinterpret_cast<int*>(&localizedTextRef));
 
     textWidth = static_cast<short>(
         reinterpret_cast<int(__cdecl*)(void)>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
-    textOriginX = static_cast<short>(
-        (*reinterpret_cast<int*>(reinterpret_cast<char*>(context) + 0x34) / 2) - (textWidth / 2));
+    textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals();
     reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
         static_cast<short>(textOriginX + 1), 0x47);
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        localizedTextRefPtr, 0);
+        reinterpret_cast<int*>(&localizedTextRef), 0);
     SetQuickDrawColorAndSyncGlobals();
     reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
         textOriginX, 0x46);
     reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-        localizedTextRefPtr, 0);
+        reinterpret_cast<int*>(&localizedTextRef), 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0058f7b0
-void __fastcall RenderCivilianTargetLegendVariantA(CivDescriptionState* context, int unusedEdx) {
+void TCivDescription::RenderCivilianTargetLegendVariantA() {
+  TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
+
   reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderCivilianTargetLegendVariantA)(context);
 }
 
