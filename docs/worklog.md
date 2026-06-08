@@ -2954,3 +2954,31 @@ user). The no-op `operator delete` was suppressing the free in the scalar deleti
 destructor; removing both took 0x534740 from 58.8% -> 81.8% (ctor stays 100%, overall
 accuracy 11.92->11.93%). Lesson: a no-op custom `operator delete` lowers `??_G` match —
 prefer the real global delete unless evidence shows a class-specific allocator.
+
+## 2026-06-08 — diplomacy_state.cpp: unify TerrainDescriptor into NationState, type nation arrays
+
+Goal pass (extract real classes / kill reinterpret_casts). Found the local
+`TerrainDescriptor` virtual-dispatch interface was a redundant partial duplicate of
+`NationState`'s vtable: its slots 0x48/0x5c/0x8c/0x90/0x94 are the *same* native vtable
+(slot 0x94 == `NationState::NotifyActionSlot94` in both; verified via the diplomacy
+turn logic calling `NotifyActionSlot94` on entries of *both* `g_apNationStates` and
+`g_apTerrainTypeDescriptorTable`).
+
+- Named the four anonymous NationState slots the terrain path used:
+  `SetDiplomacyStandingSlot48` (0x48), `HasMinorStandingLinkSlot5C` (0x5c),
+  `ApplyTerrainDiplomacyRelationFlagSlot8c` (0x8c), `HasStandingPropagationBridgeSlot90`
+  (0x90). `NotifyActionSlot94` already existed.
+- Deleted the `TerrainDescriptor` struct from diplomacy_state.cpp.
+- Typed the two globals as `NationState*[]` (`g_apTerrainTypeDescriptorTable[23]`,
+  `g_apNationStates[7]`) — both `extern "C"`, identical 4-byte-pointer layout, so the
+  decl change is local to this TU and links against the existing `void*[]` definitions
+  in the other TUs. Cursors retyped `void**`→`NationState**`.
+- Dissolved all `reinterpret_cast<NationState*>`/`<TerrainDescriptor*>` virtual-call
+  sites into direct typed `->Method()` calls. reinterpret_cast count 73 -> 47.
+  Raw field pokes (e.g. `+0xe` owner short, `[0x28]` eligibility byte, the
+  `(&array)[target]` ×92 addressing artifact at 0x004ef700) kept verbatim — pure
+  address arithmetic, no virtual dispatch, codegen unchanged.
+- Codegen-identical (typed member call == reinterpret_cast member call). Verified:
+  `just build`, `just detect`, targeted compares (ApplyRelationCode4… 92.31%,
+  ProcessQueuedWarTransitions 89.85%, others unchanged), `just vtable-gate` (77
+  matches), `just compare-canaries` (below_floor=0).
