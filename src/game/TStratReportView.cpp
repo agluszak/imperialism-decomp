@@ -49,14 +49,6 @@ void* __cdecl GetTStratReportViewClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058e3c0
 TStratReportView::TStratReportView() : TView() {}
 
-// FUNCTION: IMPERIALISM 0x0058e3f0
-TStratReportView* __fastcall DestructTStratReportViewAndMaybeFree(TStratReportView* view,
-                                                                  int unusedEdx,
-                                                                  unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)view);
-  }
-  return view;
-}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058e3f0
+// TStratReportView::`scalar deleting destructor'

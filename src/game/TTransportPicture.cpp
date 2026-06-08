@@ -24,16 +24,6 @@ TTransportPicture::TTransportPicture()
     : TPictureResourceEntryBase(), gaugeMetricId90(0x3a), splitValue94(0), splitValue96(0),
       splitLimit98((short)0xffff) {}
 
-// FUNCTION: IMPERIALISM 0x00591ec0
-TTransportPicture* __fastcall DestructTTransportPictureAndMaybeFree(TTransportPicture* picture,
-                                                                    int unusedEdx,
-                                                                    unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  picture->~TTransportPicture();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)picture);
-  }
-  return picture;
-}
-
-TTransportPicture::~TTransportPicture() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00591ec0
+// TTransportPicture::`scalar deleting destructor'

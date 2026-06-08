@@ -22,19 +22,9 @@ void* __cdecl GetT2PictToggleButtonClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00584930
 T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
-// FUNCTION: IMPERIALISM 0x00584960
-T2PictToggleButton* __fastcall DestructT2PictToggleButtonAndMaybeFree(T2PictToggleButton* button,
-                                                                      int unusedEdx,
-                                                                      unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  button->~T2PictToggleButton();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)button);
-  }
-  return button;
-}
-
-T2PictToggleButton::~T2PictToggleButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00584960
+// T2PictToggleButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005849b0
 void T2PictToggleButton::IsField3cWithinShortLimit84() {}
