@@ -2,6 +2,7 @@
 // Contains trade-screen core logic functions (address-ordered).
 
 #include <new>
+#include "game/GameAssert.h"
 #include "game/TAmtBar.h"
 #include "game/trade_quickdraw.h"
 
@@ -161,7 +162,7 @@ void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int even
   if (commandId == 100) {
     TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
     if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      GAME_FAIL_NIL_POINTER();
     }
     int moveValue = moveControl->QueryValue();
     CallApplyMoveValueSlot1D0(owner, moveValue + 1);
@@ -173,7 +174,7 @@ void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int even
   }
   TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
   if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
   }
   int moveValue = moveControl->QueryValue();
   CallApplyMoveValueSlot1D0(owner, moveValue - 1);

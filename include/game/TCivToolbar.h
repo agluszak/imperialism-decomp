@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TCluster.h"
+#include "game/TPanelEventPayload.h"
 
 // VTABLE: IMPERIALISM 0x667f00
 class TCivToolbar : public TCluster {
@@ -10,7 +11,7 @@ public:
 
   TCivToolbar();
 
-  void RefreshCivilianCommandPanelForSelection(int* selectedCivilianOrderEntry);
+  void RefreshCivilianCommandPanelForSelection(class TCivilianOrderState* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
-  void HandleCivilianMapCommandPanelAction(int eventClass, struct PanelEventPayload* eventPayload, int eventFlags);
+  void HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload, int eventFlags);
 };

@@ -2,6 +2,11 @@
 
 #define TGLOBALMAPSTATE_VTABLE_SLOT(n) virtual void GlobalMapStateDummy##n(void) = 0
 
+struct GlobalMapTileRecord {
+  char pad_00_to_1f[0x20];
+  class TCivilianOrderState* firstCivilianOrder; // 0x20
+};
+
 struct TTerrainStateRecordView {
   unsigned char pad00[2];
   unsigned char roadFlag;
@@ -93,4 +98,10 @@ public:
   TGlobalMapCityScoreRecord* cityScoreTable;
   unsigned char pad14[4];
   int cityScoreTotal;
+
+  class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
+    return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex].firstCivilianOrder;
+  }
 };
+
+extern "C" TGlobalMapState* g_pGlobalMapState;

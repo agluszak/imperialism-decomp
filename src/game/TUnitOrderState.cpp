@@ -1,6 +1,7 @@
 #include "game/TUnitOrderState.h"
 #include <windows.h>
 #include "decomp_types.h"
+#include "game/GameAssert.h"
 
 extern "C" void* g_apNationStates[];
 extern "C" void* g_apTerrainTypeDescriptorTable[];
@@ -52,7 +53,7 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   }
 
   if (ownerManager == 0) {
-    MessageBoxA(0, "Nil Pointer", "Failure", 0x30);
+    GAME_FAIL_NIL_POINTER();
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\UUnit.cpp", 287);
   }

@@ -2,6 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "decomp_types.h"
+#include "game/GameAssert.h"
 #include "game/NationState.h"
 #include "game/CString.h"
 #include "game/ui_widget_shared.h"
@@ -366,7 +367,7 @@ __inline TradeControl* TradeScreenContext::ResolveControlByTag(int controlTag) {
 __inline TradeControl* TradeScreenContext::RequireControlByTag(int controlTag) {
   TradeControl* control = ResolveControlByTag(controlTag);
   if (control == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
     return 0;
   }
   return control;
@@ -395,7 +396,7 @@ void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TradeScreenContex
 }
 
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
-  MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+  GAME_FAIL_NIL_POINTER();
   reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath,
                                                                                         line);
 }
@@ -458,7 +459,7 @@ QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
   }
   surfaceWrapper = (int)CreateClipStateRegionWrapperObject();
   if (surfaceWrapper == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
     reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(
         kQuickDrawCppPath, 0x7f6);
   }
@@ -620,7 +621,7 @@ void __fastcall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(
       (*reinterpret_cast<void***>(cluster))[0x58 / 4])(cluster);
   TradeControl* mainControl = CallResolveControlByTagSlot94(ownerPanel, 0x6d61696e);
   if (mainControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
     return;
   }
   reinterpret_cast<void(__fastcall*)(TradeControl*)>(
@@ -651,7 +652,7 @@ void UpdateTradeResourceSelectionByIndex(void* self, int nResourceIndex)
   control = reinterpret_cast<int*>(reinterpret_cast<void*(__fastcall*)(void*, int)>(
       (*reinterpret_cast<void***>(panel))[0x94 / 4])(panel, 0x444c4f47));
   if (control == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
     return;
   }
 
@@ -841,7 +842,7 @@ void __fastcall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForwa
   // ORIG_CALLCONV: __thiscall
   TradeControl* valueControl = ResolveOwnerControl(cluster, 0x76616c75);
   if (valueControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
   }
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
       cluster, commandId, eventArg, eventExtra);
@@ -1178,7 +1179,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
   case 0x65: {
     TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
     if (sellControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      GAME_FAIL_NIL_POINTER();
       break;
     }
     int sellValue = sellControl->QueryValue();
@@ -1226,7 +1227,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
 
     TradeControl* capacityControl = ResolveOwnerControl(ownerPanel, 0x6d436170);
     if (capacityControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      GAME_FAIL_NIL_POINTER();
     }
     short cappedValue = (short)capacityControl->QueryValue();
     int applyValue = (int)maxByNationMetric;
@@ -1239,7 +1240,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
 
     TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
     if (barControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      GAME_FAIL_NIL_POINTER();
     }
     barControl->SetStatePair(1, 0);
     CallApplyMoveValueSlot1D0(this, applyValue);
@@ -1251,7 +1252,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
 
     TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
     if (barControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      GAME_FAIL_NIL_POINTER();
     }
     barControl->SetStatePair(0, 1);
     CallApplyMoveValueSlot1D0(this, 0);

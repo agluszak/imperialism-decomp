@@ -1,4 +1,5 @@
 #include "game/TFileStream.h"
+#include "game/GameAssert.h"
 #include "game/CString.h"
 
 #include "game/generated/vcall_facades.h"
@@ -10,8 +11,7 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 #endif
 
 typedef void* hwnd_t;
-extern "C" __declspec(dllimport) int __stdcall MessageBoxA(hwnd_t hWnd, const char* text,
-                                                           const char* caption, unsigned int type);
+
 
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
@@ -22,7 +22,7 @@ char g_pClassDescTFileStream = 0;
 // Nil-pointer assert: pop a message box, then forward to the game's assert
 // reporter with the source path and line.
 static __inline void FailNilPointer(int line) {
-  MessageBoxA(0, "Nil Pointer", "Failure", 0x30);
+  GAME_FAIL_NIL_POINTER();
   reinterpret_cast<void(__cdecl*)(const char*, int)>(
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\McAppStream.cpp", line);
 }

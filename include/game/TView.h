@@ -10,7 +10,7 @@ public:
   int field10;
   int field14;
   int field18;
-  unsigned char padding_1c_to_1f[0x04];
+  int selectedControlTagOrState1c; // 0x1c
   int field20;
   unsigned char padding_24_to_2b[0x08];
   int field2c;

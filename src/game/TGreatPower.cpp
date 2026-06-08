@@ -14,9 +14,11 @@
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
 #include "decomp_types.h"
+#include "game/GameAssert.h"
 #include "game/generated/vcall_facades.h"
 #include "game/CString.h"
 #include "game/TGreatPower.h"
+#include "game/TGlobalMapState.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include <stddef.h>
 #include <new>
@@ -67,8 +69,7 @@ static __inline double MinisterSkillFloat(const float* table, TMinister* ministe
 }
 
 typedef void* hwnd_t;
-extern "C" __declspec(dllimport) int __stdcall MessageBoxA(hwnd_t hWnd, const char* text,
-                                                           const char* caption, unsigned int type);
+
 undefined4 ComputeMapActionContextNodeValueAverage(void);
 undefined4 BuildCityInfluenceLevelMap(void);
 undefined4 OrphanCallChain_C2_I10_004e03a0(void);
@@ -191,7 +192,7 @@ undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void);
 extern "C" {
 extern void* g_pCityOrderCapabilityState;
 extern void* g_pActiveMapOrderContext;
-extern void* g_pGlobalMapState;
+
 extern void* g_apMinorNationCapabilityObjects[];
 }
 
@@ -331,8 +332,6 @@ static const unsigned int kAddrVtblRefCountedObjectBase = 0x006485C0;
 static const unsigned int kAddrVtblTArmyBattle = 0x00648F78;
 static const unsigned int kAddrClassDescTGreatPower = 0x00653688;
 static const unsigned int kAddrCPtrListRuntimeClassVtable = 0x00672EEC;
-static const char kNilPointerText[] = "Nil Pointer";
-static const char kFailureCaption[] = "Failure";
 static const char kUCountryAutoCppPath[] = "D:\\Ambit\\Cross\\UCountryAuto.cpp";
 static const int kAssertLineQueueMapAction = 0x5ED;
 
@@ -4401,7 +4400,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
   void* missionObj =
       CreateMissionObjectByKindAndNodeContext(this->nationSlot, missionKind, arg2, arg3, arg4);
   if (missionObj == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryAutoCppPath, kAssertLineQueueMapAction);
   }
 

@@ -1,4 +1,5 @@
 #include "game/trade_quickdraw.h"
+#include "game/GameAssert.h"
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
 
@@ -99,7 +100,7 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(this);
   TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
   if (moveControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
   }
 
   moveControl->SetControlValue(0, 0);
@@ -114,7 +115,7 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
 
   TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
   if (barControl == 0) {
-    MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+    GAME_FAIL_NIL_POINTER();
   }
 
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
@@ -148,7 +149,7 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
     if (sourceControl->controlTag == kControlTagRght) {
       TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
       if (moveControl == 0) {
-        MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+        GAME_FAIL_NIL_POINTER();
       }
       int moveValue = moveControl->QueryValue();
       CallApplyMoveValueSlot1D0(this, moveValue + 1);
@@ -160,7 +161,7 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
     }
     TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
     if (moveControl == 0) {
-      MessageBoxA(0, kNilPointerText, kFailureCaption, 0x30);
+      GAME_FAIL_NIL_POINTER();
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/GameAssert.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -45,11 +46,7 @@ void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, v
                                                  int eventExtra);
 
 typedef void* hwnd_t;
-extern "C" int __stdcall MessageBoxA(hwnd_t hWnd, const char* text, const char* caption,
-                                     unsigned int type);
 
-const char kNilPointerText[] = "Nil Pointer";
-const char kFailureCaption[] = "Failure";
 const int kControlTagMove = 0x6d6f7665;
 const int kControlTagSell = 0x53656c6c;
 const int kSummaryTagFood = 0x666f6f64;

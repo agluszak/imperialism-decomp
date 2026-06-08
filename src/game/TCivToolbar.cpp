@@ -3,26 +3,25 @@
 
 #include "decomp_types.h"
 #include "game/TCivToolbar.h"
-#include "game/TControl.h"
+#include "game/TCivDescription.h"
+#include "game/TCivilianOrderState.h"
+#include "game/TSelectedCivilianOrderState.h"
+#include "game/TGlobalMapState.h"
+#include "game/TPanelEventPayload.h"
 
-struct PanelEventPayload {
-  char pad_00[0x1c];
-  unsigned int controlTag;
-  char pad_20[0x7c];
-  void* selectedEntryContext;
-};
+#include "game/TControl.h"
+#include "game/GameAssert.h"
 
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
+undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_SetActiveCivilianSelection(void);
-undefined4 thunk_DispatchPanelControlEvent(void);
-undefined4 thunk_QueueImmediateCivilianCommandAndCycleSelection(void);
-undefined4 thunk_ShowDisbandCivilianConfirmationDialog(void);
-undefined4 thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(void);
+#define GAME_ASSERT(cond, line) \
+  if (!(cond)) { \
+    GAME_FAIL_NIL_POINTER(); \
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp", line); \
+  }
+
 undefined4 thunk_ShowCivilianLedgerDialogAndSelectUnit(void);
-undefined4 thunk_IsCivilianOrderInIdleSelectionState(void);
 
 namespace {
 
@@ -31,46 +30,12 @@ char g_vtblTCivToolbar;
 // GLOBAL: IMPERIALISM 0x663100
 char g_pClassDescTCivToolbar;
 
-const unsigned int kAddrSelectedCivilianOrderState = 0x006A43DC;
-const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kTagStackSlotMin = 0x73746B30;
 const unsigned int kTagStackSlotMax = 0x73746B35;
 const unsigned int kTagDone = 0x646F6E65;
 const unsigned int kTagDefend = 0x64666E64;
 const unsigned int kTagLater = 0x6C617472;
 const unsigned int kTagGarrison = 0x67617272;
-
-struct SelectedCivilianState {
-  unsigned char pad_00[0x04];
-  void* selectedEntry;
-
-  void SetActiveCivilianSelection(void* entryContext, int refreshCommandPanel) {
-    reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_SetActiveCivilianSelection)(
-        this, 0, entryContext, refreshCommandPanel);
-  }
-
-  void QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
-    reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-        thunk_QueueImmediateCivilianCommandAndCycleSelection)(this, 0, commandType);
-  }
-
-  void ShowDisbandCivilianConfirmationDialog() {
-    reinterpret_cast<void(__fastcall*)(void*)>(thunk_ShowDisbandCivilianConfirmationDialog)(
-        this);
-  }
-};
-
-struct CivilianOrderEntry {
-  int IsInIdleSelectionState() {
-    return reinterpret_cast<int(__fastcall*)(void*)>(thunk_IsCivilianOrderInIdleSelectionState)(
-        this);
-  }
-};
-
-struct CivilianTileEntry {
-  unsigned char pad_00_to_13[0x14];
-  CivilianTileEntry* pNextOnTile;
-};
 
 
 
@@ -122,36 +87,36 @@ TCivToolbar::TCivToolbar() {}
 /* Refreshes civilian command panel controls for the currently selected civilian entry. */
 
 // FUNCTION: IMPERIALISM 0x0058eb20
-void TCivToolbar::RefreshCivilianCommandPanelForSelection(int* selectedCivilianOrderEntry) {
-  TControl* backControl;
-  short newCivilianClassId;
-  TControl* unitControl;
+void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivilianOrderState* selectedOrder) {
+  this->civilianClassId = selectedOrder ? selectedOrder->civilianClassId : -1;
 
-  newCivilianClassId = (short)selectedCivilianOrderEntry[1];
-  this->civilianClassId = newCivilianClassId;
-
-  unitControl = this->ResolveControlByTag(0x756e6974);
+  TControl* unitControl = this->ResolveControlByTag(0x756e6974);
   if (unitControl == 0) {
     return;
   }
-  if (selectedCivilianOrderEntry == 0) {
+
+  if (selectedOrder == 0) {
     unitControl->SetEnabled(0, 1);
   } else {
-    unitControl->SetControlClassAndRefresh(civilianClassId + 0x438, 1);
+    unitControl->SetControlClassAndRefresh(this->civilianClassId + 0x438, 1);
     unitControl->SetEnabled(1, 1);
   }
 
-  backControl = this->ResolveControlByTag(0x6261636b);
+  TCivDescription* backControl =
+      static_cast<TCivDescription*>(static_cast<TView*>(this->ResolveControlByTag(0x6261636b)));
   if (backControl == 0) {
     return;
   }
-  if (selectedCivilianOrderEntry == 0) {
-    *reinterpret_cast<short*>(reinterpret_cast<char*>(backControl) + 0x18) = (short)-1;
+
+  if (selectedOrder == 0) {
+    backControl->selectedCivilianClass = -1;
     return;
   }
-  if (newCivilianClassId != *reinterpret_cast<short*>(reinterpret_cast<char*>(backControl) + 0x18)) {
-    *reinterpret_cast<short*>(reinterpret_cast<char*>(backControl) + 0x18) = newCivilianClassId;
-    switch (newCivilianClassId) {
+
+  if (this->civilianClassId != backControl->selectedCivilianClass) {
+    backControl->selectedCivilianClass = this->civilianClassId;
+
+    switch (this->civilianClassId) {
     case 0:
     case 1:
     case 2:
@@ -159,12 +124,11 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(int* selectedCivilianO
     case 5:
     case 7:
     case 8:
-      *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(backControl) + 0x6c) = 0;
-      reinterpret_cast<void(__fastcall*)(void*, int, int*)>(
-          thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation)(backControl, 0,
-                                                                   selectedCivilianOrderEntry);
+      backControl->legendInitialized = 0;
+      backControl->UpdateCivilianOrderTargetTileCountsForOwnerNation(selectedOrder);
       break;
     }
+
     backControl->RefreshControl();
   }
 }
@@ -178,43 +142,37 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   int selectedSlotTag;
   int slotIndex;
   TControl* selectedStackButton;
-  CivilianTileEntry* selectedTileEntry;
+  TCivilianOrderState* selectedTileEntry;
   TControl* stackButton;
-  SelectedCivilianState* selectedCivilianState;
+  TSelectedCivilianOrderState* selectedCivilianState;
   int mapState;
 
-  mapState = *reinterpret_cast<int*>(kAddrGlobalMapState);
-  selectedTileEntry = *reinterpret_cast<CivilianTileEntry**>(
-      *reinterpret_cast<int*>(mapState + 0xc) + 0x20 + tileIndex * 0x24);
+  selectedTileEntry = g_pGlobalMapState->GetFirstCivilianOrderOnTile(tileIndex);
   selectedStackButton = 0;
   selectedCivilianState =
-      reinterpret_cast<SelectedCivilianState*>((*reinterpret_cast<SelectedCivilianState**>(kAddrSelectedCivilianOrderState)));
+      reinterpret_cast<TSelectedCivilianOrderState*>(g_pSelectedCivilianOrderState);
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
-    if (stackButton == 0) {
-      return;
-    }
+    GAME_ASSERT(stackButton != 0, 5585);
     stackButton->NotifyControlSelectionChange(selectedTileEntry);
-    stackButton->SetEnabled(reinterpret_cast<CivilianOrderEntry*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
+    stackButton->SetEnabled(reinterpret_cast<TCivilianOrderState*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
     }
-    selectedTileEntry = selectedTileEntry->pNextOnTile;
+    selectedTileEntry = selectedTileEntry->nextOnTile;
   }
   while (slotIndex < 6) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
-    if (stackButton == 0) {
-      return;
-    }
+    GAME_ASSERT(stackButton != 0, 5585);
     stackButton->NotifyControlSelectionChange(0);
     slotIndex = slotIndex + 1;
   }
 
   selectedSlotTag = 0x6e616461;
   if (selectedStackButton != 0) {
-    selectedSlotTag = reinterpret_cast<int*>(selectedStackButton)[7];
+    selectedSlotTag = selectedStackButton->selectedControlTagOrState1c;
   }
   this->SetControlClassAndRefresh(selectedSlotTag, 0);
 
@@ -237,11 +195,11 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0
-void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass, PanelEventPayload* eventPayload,
+void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload,
                                                       int eventFlags) {
   // ORIG_CALLCONV: __thiscall
 
-  SelectedCivilianState* selectedCivilianOrderState = (*reinterpret_cast<SelectedCivilianState**>(kAddrSelectedCivilianOrderState));
+  TSelectedCivilianOrderState* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
   if (eventClass == 0xc) {
     if ((kTagStackSlotMin <= eventPayload->controlTag) &&
         (eventPayload->controlTag <= kTagStackSlotMax)) {
