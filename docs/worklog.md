@@ -3006,3 +3006,20 @@ Remaining diplomacy_state.cpp reinterpret_cast inventory (deferred, not rushed):
   the deferred TradeControl 184-slot job). Current quarantined manual-vptr stand-in
   stays until then.
 - Raw char*/short*/int* matrix-field pokes at known byte offsets — legitimately raw.
+
+Attempt + revert (same session) — list-family real-virtual promotion:
+Tried dissolving the TListObject/TQueueObject/WarTransitionQueue casts by appending real
+virtuals (GetEntrySlot2C/RemoveFirstPairSlot30/PeekFirstPairSlot34/AddEntrySlot38/slot3c/
+PushPairSlot40 at slots 0x2c..0x40) to TSortedPtrList + renaming TIndexAndRankList base
+slot24->ReleaseSlot24, typing pendingWarTransitionQueue18d4 as TSortedPtrList*. Built
+clean but the reccmp diff of 0x004f2100 showed the calls emitted 3 slots too high
+(`call [edi+0x38]` vs original `[edi+0x2c]`; ReleaseSlot24 `[edi+0x30]` vs `[edi+0x24]`)
+— a REGRESSION — so it was fully reverted (git checkout HEAD). Root cause + lesson
+captured as heuristics.md #96 and in memory [[diplomacy-state-cleanup-progress]]: the
+TIndexAndRankList vtable model is +3 misaligned (CObject's 5 base virtuals minus the lone
+real GetRuntimeClass override), so its SlotXX names don't match emitted byte offsets and
+appended virtuals land wrong. The standalone provisional interfaces dispatch at the
+intended offsets and must stay until the CObject->TIndexAndRankList override alignment is
+fixed (high blast radius). Net committed deltas this session unchanged: diplomacy_state
+reinterpret_cast 73 -> 45, TerrainDescriptor deleted, g_pInterNationEventQueueManager
+typed.
