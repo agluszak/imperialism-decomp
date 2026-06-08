@@ -16,12 +16,17 @@
 #pragma optimize("y", on)
 #endif
 
+// The inter-nation event queue manager is a TCountry-family object (it receives
+// QueueInterNationEventRecordDeduped). Forward-declared so the global below can be
+// typed; the full definition follows in this file.
+struct TCountry;
+
 extern "C" {
 NationState* g_apTerrainTypeDescriptorTable[23] = {0};
 extern NationState* g_apNationStates[7];
 void* g_apNationStates_End = 0;
 void* g_pLocalizationTable = 0;
-void* g_pInterNationEventQueueManager = 0;
+TCountry* g_pInterNationEventQueueManager = 0;
 void* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
 TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager = 0;
@@ -899,13 +904,13 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
               if (relationCode == 0x133) {
                 relationSideEffectMatrix1402[rowBase + col] = 1;
                 relationSideEffectMatrix1402[row + colBase] = 1;
-                reinterpret_cast<TCountry*>(g_pInterNationEventQueueManager)
-                    ->thunk_QueueInterNationEventRecordDeduped(0x12, row, col, 0);
+                g_pInterNationEventQueueManager->thunk_QueueInterNationEventRecordDeduped(0x12, row,
+                                                                                         col, 0);
               } else if (relationCode == 0x134) {
                 relationSideEffectMatrix1402[rowBase + col] = 2;
                 relationSideEffectMatrix1402[row + colBase] = 2;
-                reinterpret_cast<TCountry*>(g_pInterNationEventQueueManager)
-                    ->thunk_QueueInterNationEventRecordDeduped(0x14, row, col, 0);
+                g_pInterNationEventQueueManager->thunk_QueueInterNationEventRecordDeduped(0x14, row,
+                                                                                         col, 0);
               } else if (relationCode == 0x131) {
                 if (HasPolicyWithNationSlot44(row, col) == 0) {
                   g_apNationStates[row]
