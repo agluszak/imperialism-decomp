@@ -3065,3 +3065,31 @@ trade_screen.cpp (2), TIndustryAmtBar.cpp, TRailAmtBar.cpp, TShipAmtBar.cpp into
 typed member access. Codegen-identical (typed pointer load). trade_screen.cpp
 reinterpret_cast 183 -> 181 (5 total across the trade files). No regression: aligned-functions
 420 (delta 0), coverage delta 0.00pp, vtable-gate passes.
+
+2026-06-08 (cont.) — EXTRACT TCommand + TNextTradeCommand into separate files (kill manual vptr)
+Extracted the local diplomacy_state `TurnEventPacket` struct (manual `void* vftable` +
+`vftable = &vtbl_TurnEventNextPacket_00654e50` hand store) into two real classes in their
+own headers/files with real inheritance and // VTABLE: annotations:
+- include/game/TCommand.h + src/game/TCommand.cpp: `class TCommand` // VTABLE 0x00648e28,
+  12 virtual slots (placeholder bodies), 5 payload fields. Owns the real ctor 0x00487820
+  (member-init-list, vptr emitted by annotation -> 88.89%) and InitializeRangePair
+  0x004878a0 (-> 64%, both previously 0% stubs). Verified shallow vtable via ghidra dump
+  (slots 0-0xb then nulls + RTTI classdesc — earlier "~180 slot" read was a mis-windowed
+  dump).
+- include/game/TNextTradeCommand.h + src/game/TNextTradeCommand.cpp:
+  `class TNextTradeCommand : public TCommand` // VTABLE 0x00654e50, overrides slots 0/1/11
+  (verified: 0x654e50 vs 0x648e28 differ only at those three slots), inherits 2-10.
+  operator new -> AllocateWithFallbackHandler. `new TNextTradeCommand()` now emits the
+  two-stage base-then-derived vptr write through real C++ inheritance — no manual store.
+- diplomacy_state.cpp: deleted the TurnEventPacket struct, the vtbl_TurnEventNextPacket
+  placeholder global + kVtableTurnEventNextPacket const, and the two ILT bridge thunks
+  (0x403d5f/0x405ee3, now regenerated as stubs — ILT artifacts per heuristics #93).
+  Removed the stale `654e50|vtbl_TurnEventNextPacket_00654e50||global|` row from
+  config/symbols.csv (the class now emits its vtable via the annotation, per #86).
+- Tradeoff (expected, accepted per "no hacks > similarity"): ProcessQueuedWarTransitions
+  89.85% -> 86.15% because the real base-ctor call replaces the original's inlined
+  ILT-thunk construction (heuristics #93). Net: +2 newly-owned functions, manual vptr hack
+  removed, 2 new vtable classes properly modeled in separate files.
+- Verified: sync-ownership (2 updates), regen-stubs (12060), build, detect, vtable-gate
+  (77), compare-canaries (below_floor=0), no new out-of-sync; aligned-functions 420 (delta
+  0), coverage -0.02pp (the ILT construction tradeoff).
