@@ -2982,3 +2982,27 @@ turn logic calling `NotifyActionSlot94` on entries of *both* `g_apNationStates` 
   `just build`, `just detect`, targeted compares (ApplyRelationCode4… 92.31%,
   ProcessQueuedWarTransitions 89.85%, others unchanged), `just vtable-gate` (77
   matches), `just compare-canaries` (below_floor=0).
+
+Follow-up (same session): typed `g_pInterNationEventQueueManager` (file-local) as
+`TCountry*` via a forward declaration, dissolving the two direct
+`reinterpret_cast<TCountry*>` dispatch sites (the generic `void*`-param
+`QueueInterNationEventRecordDeduped` helper keeps its single internal cast).
+reinterpret_cast 47 -> 45. Codegen identical.
+
+Remaining diplomacy_state.cpp reinterpret_cast inventory (deferred, not rushed):
+- List-family interface casts (TListObject/TQueueObject/WarTransitionQueue, ~8) onto
+  real TSortedPtrList / TSortedByRelationshipList objects. Ghidra ground truth from
+  vtable 0x654d38: slot 9 (0x24)=FUN_00488110 (release), slot 11 (0x2c)=FUN_00488160
+  (=GetPtrListEntryByOneBasedIndex, ILT 0x409868), slot 14 (0x38)=FUN_004881f0 (add).
+  Dissolving needs slots 11-14 promoted to real virtuals on the SHARED TIndexAndRankList
+  base (currently declares only through slot 10/0x28) — base is also consumed by
+  TGreatPower.cpp via TListObject, so this is a foundation change for its own verified
+  pass (must stay non-pure so `new TSortedPtrList()`/`new TSortedByRelationshipList()`
+  still compile).
+- TurnEventPacket (= TNextTradeCommand, base TCommand vtable 0x648e28 / derived 0x654e50)
+  + its function-pointer-to-address bridges: TCommand is a ~180-slot TObject-derived
+  vtable; since TNextTradeCommand is `new`'d it can't be abstract, so real-inheritance
+  vtable emission is blocked on the full TCommand reconstruction (same class of work as
+  the deferred TradeControl 184-slot job). Current quarantined manual-vptr stand-in
+  stays until then.
+- Raw char*/short*/int* matrix-field pokes at known byte offsets — legitimately raw.
