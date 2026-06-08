@@ -2828,7 +2828,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     }
 
     if (relationshipList != 0) {
-      static_cast<TIndexAndRankList*>(relationshipList)->slot24();
+      static_cast<TIndexAndRankList*>(relationshipList)->ReleaseSlot24();
     }
   }
 

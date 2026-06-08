@@ -7,8 +7,6 @@
 #include "game/CString.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/NationState.h"
-#include "game/TQueueObject.h"
-#include "game/TListObject.h"
 #include "game/generated/vcall_facades.h"
 #include <new>
 
@@ -92,26 +90,6 @@ struct LocalizationTable {
   virtual void loc_slot15() = 0;
   virtual void loc_slot16() = 0;
   virtual void CallSlot44() = 0; // 17 (0x44)
-};
-
-struct WarTransitionQueue {
-  virtual void wtq_slot0() = 0;
-  virtual void wtq_slot1() = 0;
-  virtual void wtq_slot2() = 0;
-  virtual void wtq_slot3() = 0;
-  virtual void wtq_slot4() = 0;
-  virtual void wtq_slot5() = 0;
-  virtual void wtq_slot6() = 0;
-  virtual void wtq_slot7() = 0;
-  virtual void wtq_slot8() = 0;
-  virtual void wtq_slot9() = 0;
-  virtual void wtq_slot10() = 0;
-  virtual void wtq_slot11() = 0;
-  virtual void RemoveFirstPairSlot30(int mode) = 0; // 12 (0x30)
-  virtual void* PeekFirstPairSlot34() = 0;          // 13 (0x34)
-  virtual void wtq_slot14() = 0;                    // 14 (0x38)
-  virtual void wtq_slot15() = 0;                    // 15 (0x3c)
-  virtual void PushPairSlot40(void* pair) = 0;      // 16 (0x40)
 };
 
 struct TCountry {
@@ -642,7 +620,7 @@ void TDiplomacyTurnStateManager::QueueNationPairWarTransition(int sourceNationSl
   WarTransitionPair pair;
   pair.sourceNationSlot = static_cast<short>(sourceNationSlot);
   pair.targetNationSlot = static_cast<short>(targetNationSlot);
-  reinterpret_cast<TQueueObject*>(pendingWarTransitionQueue18d4)->PushPairSlot40(&pair);
+  pendingWarTransitionQueue18d4->PushPairSlot40(&pair);
   SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 1);
 }
 
@@ -749,7 +727,10 @@ char TDiplomacyTurnStateManager::IsPrimaryNationSlotIndex(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004f1f70
 void TDiplomacyTurnStateManager::BuildRelationshipListSlot88(int sourceNationSlot,
-                                                             int primaryOnlyFlag, void* list) {
+                                                             int primaryOnlyFlag, void* listHandle) {
+  // The slot signature is the native void* handle; recover the common list base once
+  // (AddEntrySlot38 is a TIndexAndRankList virtual, shared by every sorted-list leaf).
+  TIndexAndRankList* list = static_cast<TIndexAndRankList*>(listHandle);
   short candidateNationSlot;
   short lastNationSlot;
   if (static_cast<short>(primaryOnlyFlag) == 0) {
@@ -775,7 +756,7 @@ void TDiplomacyTurnStateManager::BuildRelationshipListSlot88(int sourceNationSlo
       int source = static_cast<short>(sourceNationSlot);
       entry.standingScore =
           relationStandingScoreMatrix79c[source * kNationSlotCount + candidateIndex];
-      reinterpret_cast<TListObject*>(list)->AddEntrySlot38(&entry);
+      list->AddEntrySlot38(&entry);
     }
     candidateNationSlot++;
     candidateIndex++;
@@ -794,10 +775,10 @@ int TDiplomacyTurnStateManager::SelectNationSlotFromCollectedStandingEntriesSlot
   }
 
   RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
-      reinterpret_cast<TListObject*>(list)->GetEntrySlot2C(list->count));
+      list->GetEntrySlot2C(list->count));
   int nationSlot = entry->nationSlot;
   if (list != 0) {
-    reinterpret_cast<TListObject*>(list)->ReleaseSlot24();
+    list->ReleaseSlot24();
   }
   return nationSlot;
 }
@@ -820,7 +801,7 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
   int matchedNationSlot = -1;
   while (entryIndex > 0 && matchedNationSlot == -1) {
     RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
-        reinterpret_cast<TListObject*>(list)->GetEntrySlot2C(entryIndex));
+        list->GetEntrySlot2C(entryIndex));
     int candidateNationSlot = entry->nationSlot;
     int source = static_cast<short>(sourceNationSlot);
     if (relationSideEffectMatrix1402[source * kNationSlotCount + candidateNationSlot] ==
@@ -831,7 +812,7 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
   }
 
   if (list != 0) {
-    reinterpret_cast<TListObject*>(list)->ReleaseSlot24();
+    list->ReleaseSlot24();
   }
   return matchedNationSlot;
 }
@@ -1030,14 +1011,13 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
 
 // FUNCTION: IMPERIALISM 0x004f0a10
 void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
-  if (reinterpret_cast<int*>(pendingWarTransitionQueue18d4)[2] != 0) {
+  if (pendingWarTransitionQueue18d4->count != 0) {
     char propagatedTransition = 0;
-    WarTransitionPair* pair = static_cast<WarTransitionPair*>(
-        reinterpret_cast<WarTransitionQueue*>(pendingWarTransitionQueue18d4)
-            ->PeekFirstPairSlot34());
+    WarTransitionPair* pair =
+        static_cast<WarTransitionPair*>(pendingWarTransitionQueue18d4->PeekFirstPairSlot34());
     int targetNationSlot = pair->targetNationSlot;
     int sourceNationSlot = pair->sourceNationSlot;
-    reinterpret_cast<WarTransitionQueue*>(pendingWarTransitionQueue18d4)->RemoveFirstPairSlot30(1);
+    pendingWarTransitionQueue18d4->RemoveFirstPairSlot30(1);
 
     if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
       SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 0);

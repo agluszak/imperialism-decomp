@@ -3023,3 +3023,36 @@ intended offsets and must stay until the CObject->TIndexAndRankList override ali
 fixed (high blast radius). Net committed deltas this session unchanged: diplomacy_state
 reinterpret_cast 73 -> 45, TerrainDescriptor deleted, g_pInterNationEventQueueManager
 typed.
+
+2026-06-08 (cont.) — FIX: CObject/TIndexAndRankList vtable alignment + list-family real virtuals
+Fixed the +3 vtable misalignment that blocked the list-family cast removal (heuristics #96).
+Ground truth: CObject vtable 0x66fec4 is 5 slots (0-4); its slots 2-4 (0x404aa7/0x4010a0/
+0x408625) are INHERITED unchanged by TIndexAndRankList (vtable 0x672eac) and every derived
+sorted-list class (TSortByPriceList 0x659ef0, TSortedPtrList 0x649068,
+TSortedByRelationshipList 0x654d38 all share slots 2-16 identically). The list-op virtuals
+are introduced by the common base TIndexAndRankList at slots 5-16.
+- Root-caused: TIndexAndRankList redeclared AssertValidOrSlot08/DumpOrSlot0c/SerializeOrSlot10
+  with names that DON'T match CObject's signatures, so C++ appended them as NEW slots 5-7
+  instead of inheriting CObject's slots 2-4 -> everything below shifted +3 (ShrinkCapacitySlot28
+  was really emitted at index 13/0x34, not 0x28).
+- Fix (TIndexAndRankList.h/.cpp): removed the 3 mis-named redeclarations (slots 2-4 now
+  inherited from CObject); kept GetRuntimeClass (slot 0 override) + implicit dtor (slot 1);
+  the existing slot14/slot18/ResetPtrListRecordsSlot1C/slot20/slot24(->ReleaseSlot24)/
+  ShrinkCapacitySlot28 now correctly land at slots 5-10; added the missing list virtuals
+  GetEntrySlot2C(11/0x2c)/RemoveFirstPairSlot30(12)/PeekFirstPairSlot34(13)/AddEntrySlot38(14)/
+  slot3c(15)/PushPairSlot40(16). Placeholder bodies (vtable-shape, like the existing slots).
+- diplomacy_state.cpp: typed pendingWarTransitionQueue18d4 as TSortedPtrList* (forward-decl in
+  TDiplomacyTurnStateManager.h), dissolved the TQueueObject/WarTransitionQueue/TListObject
+  provisional casts into real virtual calls (PushPairSlot40/RemoveFirstPairSlot30/
+  PeekFirstPairSlot34/count on the queue; AddEntrySlot38/GetEntrySlot2C/ReleaseSlot24 on the
+  relationship list). Deleted the WarTransitionQueue local struct + TQueueObject/TListObject
+  includes. reinterpret_cast 45 -> 36.
+- TGreatPower.cpp: slot24() -> ReleaseSlot24() (its relationship-list release now dispatches at
+  the correct 0x24 instead of the misaligned 0x30). Its OTHER TListObject uses are a different
+  list family (TList/CPtrList vtable 0x648f78) and were correctly left untouched.
+- Verification: reccmp diff of 0x004f2100 confirms the GetEntry/Release calls now emit
+  [edi+0x2c]/[edi+0x24] matching the original (the +0xc-too-high offsets are gone). No
+  regression: aligned-functions 420 (delta 0), all coverage deltas 0.00pp, the three
+  TIndexAndRankList/TSortByPriceList/TSortedByRelationshipList scalar dtors unchanged at 81.82%,
+  vtable-gate passes (77 matches), all 8 TGreatPower canaries below_floor=0. Relationship-list
+  fns ticked up (SelectNationSlot 81->84%, BuildRelationshipList 72->74%).

@@ -2,6 +2,8 @@
 
 #include "decomp_types.h"
 
+class TSortedPtrList;
+
 // MFC-style diplomacy backend. The global TTDiplomacyTurnStateManager (vtable
 // 0x00654d90) holds the per-nation-pair relation / standing / propagation
 // matrices and the per-turn relationship-processing logic. The pure-virtual
@@ -87,7 +89,7 @@ struct TDiplomacyTurnStateManager {
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
   short relationSideEffectMatrix1402[kNationPairMatrixEntries];
   unsigned char pad1824[0x18d4 - 0x1824];
-  void* pendingWarTransitionQueue18d4;
+  TSortedPtrList* pendingWarTransitionQueue18d4;
   short proposalArrayMode18d8;
   unsigned char pad18da[2];
 
