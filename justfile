@@ -145,7 +145,6 @@ compare-canaries:
   uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"
 
 stats:
-  git log -1 --format="%cd | %D"
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled
 
 inventory:
