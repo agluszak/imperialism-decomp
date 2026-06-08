@@ -8,4 +8,6 @@ public:
   int field84;
 
   TCluster();
+
+  void DispatchPanelControlEvent(int eventClass, void* eventPayload, int eventFlags);
 };

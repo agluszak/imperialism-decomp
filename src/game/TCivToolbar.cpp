@@ -43,6 +43,28 @@ const unsigned int kTagGarrison = 0x67617272;
 struct SelectedCivilianState {
   unsigned char pad_00[0x04];
   void* selectedEntry;
+
+  void SetActiveCivilianSelection(void* entryContext, int refreshCommandPanel) {
+    reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_SetActiveCivilianSelection)(
+        this, 0, entryContext, refreshCommandPanel);
+  }
+
+  void QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
+    reinterpret_cast<void(__fastcall*)(void*, int, int)>(
+        thunk_QueueImmediateCivilianCommandAndCycleSelection)(this, 0, commandType);
+  }
+
+  void ShowDisbandCivilianConfirmationDialog() {
+    reinterpret_cast<void(__fastcall*)(void*)>(thunk_ShowDisbandCivilianConfirmationDialog)(
+        this);
+  }
+};
+
+struct CivilianOrderEntry {
+  int IsInIdleSelectionState() {
+    return reinterpret_cast<int(__fastcall*)(void*)>(thunk_IsCivilianOrderInIdleSelectionState)(
+        this);
+  }
 };
 
 struct CivilianTileEntry {
@@ -51,42 +73,16 @@ struct CivilianTileEntry {
 };
 
 
-static __inline void* QuerySelectedCivilianOrderState() {
-  return *reinterpret_cast<void**>(kAddrSelectedCivilianOrderState);
-}
-
-static __inline void DispatchPanelControlEvent(TCivToolbar* toolbar, int eventClass,
-                                               void* eventPayload, int eventFlags) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      toolbar, 0, eventClass, eventPayload, eventFlags);
-}
-
-static __inline void SetActiveCivilianSelection(void* selectedState, void* entryContext,
-                                                int refreshCommandPanel) {
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_SetActiveCivilianSelection)(
-      selectedState, 0, entryContext, refreshCommandPanel);
-}
-
-static __inline void QueueImmediateCivilianCommandAndCycleSelection(void* selectedState,
-                                                                    int commandType) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      thunk_QueueImmediateCivilianCommandAndCycleSelection)(selectedState, 0, commandType);
-}
-
-static __inline void ShowDisbandCivilianConfirmationDialog(void* selectedState) {
-  reinterpret_cast<void(__fastcall*)(void*)>(thunk_ShowDisbandCivilianConfirmationDialog)(
-      selectedState);
-}
 
 
 
 
 
 
-static __inline int IsCivilianOrderInIdleSelectionStateBridge(void* civilianOrderEntry) {
-  return reinterpret_cast<int(__fastcall*)(void*)>(thunk_IsCivilianOrderInIdleSelectionState)(
-      civilianOrderEntry);
-}
+
+
+
+
 
 } // namespace
 
@@ -192,7 +188,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
       *reinterpret_cast<int*>(mapState + 0xc) + 0x20 + tileIndex * 0x24);
   selectedStackButton = 0;
   selectedCivilianState =
-      reinterpret_cast<SelectedCivilianState*>(QuerySelectedCivilianOrderState());
+      reinterpret_cast<SelectedCivilianState*>((*reinterpret_cast<SelectedCivilianState**>(kAddrSelectedCivilianOrderState)));
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
@@ -200,7 +196,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
       return;
     }
     stackButton->NotifyControlSelectionChange(selectedTileEntry);
-    stackButton->SetEnabled(IsCivilianOrderInIdleSelectionStateBridge(selectedTileEntry), 1);
+    stackButton->SetEnabled(reinterpret_cast<CivilianOrderEntry*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
@@ -245,25 +241,25 @@ void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass, PanelEvent
                                                       int eventFlags) {
   // ORIG_CALLCONV: __thiscall
 
-  void* selectedCivilianOrderState = QuerySelectedCivilianOrderState();
+  SelectedCivilianState* selectedCivilianOrderState = (*reinterpret_cast<SelectedCivilianState**>(kAddrSelectedCivilianOrderState));
   if (eventClass == 0xc) {
     if ((kTagStackSlotMin <= eventPayload->controlTag) &&
         (eventPayload->controlTag <= kTagStackSlotMax)) {
-      SetActiveCivilianSelection(selectedCivilianOrderState, eventPayload->selectedEntryContext, 0);
-      DispatchPanelControlEvent(this, 0xc, eventPayload, eventFlags);
+      selectedCivilianOrderState->SetActiveCivilianSelection(eventPayload->selectedEntryContext, 0);
+      this->DispatchPanelControlEvent(0xc, eventPayload, eventFlags);
       return;
     }
   } else if (eventClass == 10) {
     unsigned int controlTag = eventPayload->controlTag;
     if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
-        QueueImmediateCivilianCommandAndCycleSelection(selectedCivilianOrderState, 4);
-        DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
+        selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(4);
+        this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
         return;
       }
       if (controlTag == kTagDefend) {
-        QueueImmediateCivilianCommandAndCycleSelection(selectedCivilianOrderState, 2);
-        DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
+        selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(2);
+        this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
         return;
       }
     } else {
@@ -271,16 +267,16 @@ void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass, PanelEvent
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           thunk_ShowCivilianLedgerDialogAndSelectUnit();
-          DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
+          this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
           return;
         }
-        ShowDisbandCivilianConfirmationDialog(selectedCivilianOrderState);
+        selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
       } else if (controlTag == kTagLater) {
-        QueueImmediateCivilianCommandAndCycleSelection(selectedCivilianOrderState, 3);
-        DispatchPanelControlEvent(this, 10, eventPayload, eventFlags);
+        selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(3);
+        this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
         return;
       }
     }
   }
-  DispatchPanelControlEvent(this, eventClass, eventPayload, eventFlags);
+  this->DispatchPanelControlEvent(eventClass, eventPayload, eventFlags);
 }
