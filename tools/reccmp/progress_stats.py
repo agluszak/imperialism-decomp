@@ -28,6 +28,18 @@ ROW_TYPE_LABELS = {
 }
 
 
+
+def get_git_info() -> dict[str, str]:
+    import subprocess
+    try:
+        branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+        commit_date = subprocess.check_output(["git", "log", "-1", "--format=%cI"], text=True).strip()
+        return {"git_branch": branch, "git_commit": commit, "git_commit_date": commit_date}
+    except Exception:
+        return {}
+
+
 def parse_args() -> argparse.Namespace:
     repo_root = repo_root_from_file(__file__)
     default_build_dir = repo_root / "build-msvc500"
@@ -381,9 +393,11 @@ def main() -> int:
         noise_stats = parse_noise_counts(noise_log)
 
         now = datetime.now(timezone.utc)
+        git_info = get_git_info()
         entry: dict[str, Any] = {
-            "timestamp_utc": now.isoformat(),
+            "timestamp_utc": now.isoformat(timespec='seconds'),
             "target": args.target,
+            **git_info,
             **roadmap_stats,
             **report_stats,
             **noise_stats,
@@ -414,6 +428,10 @@ def main() -> int:
         print(f"Target: {args.target}")
         print(f"Build dir: {build_dir}")
         print(f"Timestamp (UTC): {entry['timestamp_utc']}")
+        if prev:
+            prev_branch = prev.get("git_branch", "unknown")
+            prev_date = prev.get("git_commit_date", prev.get("timestamp_utc", "unknown"))
+            print(f"Baseline: branch {prev_branch}, date {prev_date}")
         print("")
         print("Counts")
         print(
