@@ -42,7 +42,7 @@ void TView::vmethod_0008() {}
 void TView::vmethod_0009() {}
 char TView::GetBoolSlot28() { return 0; }
 void TView::SetControlValue(int value) {}
-void TView::vmethod_0012() {}
+int TView::QueryStepValue() { return 0; }
 void TView::vmethod_0013() {}
 void TView::vmethod_0014() {}
 void TView::vmethod_0015() {}
@@ -89,7 +89,7 @@ void TView::vmethod_0055() {}
 void TView::vmethod_0056() {}
 void TView::RefreshControl() {}
 void TView::vmethod_0058() {}
-void TView::vmethod_0059() {}
+int TView::IsActionable() { return 0; }
 void TView::CaptureLayoutF0(int* buffer, int modeFlag) {}
 void TView::CaptureLayout(int* buffer, int modeFlag) {}
 char TView::Refresh() {
@@ -101,7 +101,7 @@ void TView::vmethod_0065() {}
 void TView::vmethod_0066() {}
 void TView::vmethod_0067() {}
 void TView::vmethod_0068() {}
-void TView::vmethod_0069() {}
+void TView::UpdateAfterBitmapChange(int unknownFlag) {}
 void TView::vmethod_0070() {}
 void TView::vmethod_0071() {}
 void TView::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
@@ -111,12 +111,12 @@ void TView::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
   (void)arg4;
 }
 void TView::vmethod_0073() {}
-void TView::vmethod_0074() {}
-void TView::vmethod_0075() {}
+void TView::QueryContentBounds(int* boundsBuffer) {}
+void TView::QueryBounds(int* boundsBuffer) {}
 void TView::vmethod_0076() {}
 void TView::vmethod_0077() {}
 void TView::vmethod_0078() {}
-void TView::vmethod_0079() {}
+void TView::InvokeSlot13C() {}
 void TView::vmethod_0080() {}
 void TView::vmethod_0081() {}
 void TView::vmethod_0082() {}
@@ -127,8 +127,8 @@ void TView::vmethod_0086() {}
 void TView::vmethod_0087() {}
 void TView::vmethod_0088() {}
 void TView::vmethod_0089() {}
-void TView::vmethod_0090() {}
-void TView::vmethod_0091() {}
+void TView::ApplyBounds(int* boundsBuffer, int modeFlag) {}
+char TView::vmethod_0091(void* arg1) { return 0; }
 void TView::vmethod_0092() {}
 void TView::vmethod_0093() {}
 void TView::vmethod_0094() {}

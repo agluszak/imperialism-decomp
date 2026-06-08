@@ -14,7 +14,7 @@ public:
   static TIndustryCluster* CreateInstance();
   static void* GetClassNamePointer();
 
-  virtual void vmethod_0012();
+  virtual int QueryStepValue();
   virtual void vmethod_0013();
   virtual void DispatchEvent(int arg1, void* arg2, int arg3);
 };

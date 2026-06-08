@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TView.h"
+#include "game/TControl.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
@@ -13,7 +13,7 @@ struct Rect32 {
 };
 
 // VTABLE: IMPERIALISM 0x6431B0
-class TCivDescription : public TView {
+class TCivDescription : public TControl {
 public:
   short selectedCivilianClass;
   short ownerNationId;
@@ -41,4 +41,4 @@ public:
   void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivilianOrderState* selectedOrder);
 };
 
-ASSERT_SIZE(TCivDescription, 0x170);
+ASSERT_SIZE(TCivDescription, 0x194);

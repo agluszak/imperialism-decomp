@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/GameAssert.h"
-#include "game/TradeControl.h"
+#include "game/TControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 
@@ -60,12 +60,12 @@ const unsigned int kAddrClassDescTAmtBarCluster = 0x00662f50;
 const unsigned int kAddrActiveQuickDrawSurfaceContext = 0x006A1D60;
 const unsigned int kAddrPrimaryRenderSurfaceContext = 0x006A30A8;
 
-static __inline TradeControl* CallResolveControlByTagSlot94(void* owner, int tag) {
-  return reinterpret_cast<TradeControl*(__fastcall*)(void*, int, int)>(
+static __inline TControl* CallResolveControlByTagSlot94(void* owner, int tag) {
+  return reinterpret_cast<TControl*(__fastcall*)(void*, int, int)>(
       (*reinterpret_cast<void***>(owner))[0x94 / 4])(owner, 0, tag);
 }
 
-static __inline TradeControl* ResolveOwnerControl(void* owner, int controlTag) {
+static __inline TControl* ResolveOwnerControl(void* owner, int controlTag) {
   return CallResolveControlByTagSlot94(owner, controlTag);
 }
 
@@ -87,8 +87,8 @@ extern const int kControlTagBar;
 extern struct NationState* GetNationStateBySlot(short slot);
 extern short QueryNationMetricBySlot(struct NationState* state, short metricSlot);
 extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
-extern char CallControlFlagSlot1D8(struct TradeControl* control);
-extern void CallControlActionSlot1E0(struct TradeControl* control);
+extern char CallControlFlagSlot1D8(TControl* control);
+extern void CallControlActionSlot1E0(TControl* control);
 extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg, int eventExtra);
 extern char CallBoolSlot1DC(void* self);
 extern void FailNilPointerInUSmallViews(int line);

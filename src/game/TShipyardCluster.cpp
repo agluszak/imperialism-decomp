@@ -1,3 +1,4 @@
+#include "game/TAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/GameAssert.h"
 // Included by src/game/trade_screen.cpp.
@@ -35,7 +36,7 @@ void __fastcall thunk_RefreshTradeMoveBarAndTurnControl(TradeMoveStepCluster* se
 
 // FUNCTION: IMPERIALISM 0x00406965
 void __fastcall thunk_HandleTradeMoveArrowControlEvent(TradeMoveStepCluster* self, int unusedEdx,
-                                                       int commandId, TradeControl* sourceControl,
+                                                       int commandId, TAmtBar* sourceControl,
                                                        int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
@@ -98,7 +99,7 @@ void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls() {
 void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   // ORIG_CALLCONV: __thiscall
   TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(this);
-  TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -113,7 +114,7 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&invalidateRect, 1);
 
-  TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagBar));
   if (barControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -128,7 +129,7 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&invalidateRect, 1);
 
-  TradeControl* turnControl = ResolveOwnerControl(panel->ownerContext, 0x7475726e);
+  TAmtBar* turnControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(panel->ownerContext, 0x7475726e));
   if (turnControl != 0) {
     turnControl->SetControlValue(0, 0);
     turnControl->QueryBounds(reinterpret_cast<int*>(&moveRect));
@@ -142,12 +143,12 @@ void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
 
 // FUNCTION: IMPERIALISM 0x0058a940
 void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
-                                                            TradeControl* sourceControl,
+                                                            TAmtBar* sourceControl,
                                                             int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   if (commandId == 10) {
     if (sourceControl->controlTag == kControlTagRght) {
-      TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+      TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
       if (moveControl == 0) {
         GAME_FAIL_NIL_POINTER();
       }
@@ -159,7 +160,7 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
       HandleTradeMoveControlAdjustment(this, commandId, sourceControl, eventExtra);
       return;
     }
-    TradeControl* moveControl = ResolveOwnerControl(this, kControlTagMove);
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }

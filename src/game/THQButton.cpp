@@ -1,3 +1,4 @@
+#include "game/TAmtBar.h"
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/THQButton.h"
@@ -43,7 +44,7 @@ void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQ
                                                                              int unusedEdx,
                                                                              int commandId) {
   (void)unusedEdx;
-  TradeControl* control = reinterpret_cast<TradeControl*>(button);
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(button);
   if (commandId == 0xc) {
     if (button->commandTagResourceByte == 0) { // toggleStateAt64
       control->InvokeSlot1CC(1, 1);

@@ -1,7 +1,7 @@
+#include "game/TAmtBar.h"
 #include "game/TProductionCluster.h"
 
 #include "game/GameAssert.h"
-#include "game/TradeControl.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"
 
@@ -29,7 +29,7 @@ void TProductionCluster::SetField90AndField94(int value90, int value94) {
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::HandleValuePanelSplitArrowCommand(int commandId, void* eventArg,
                                                            int eventExtra) {
-  TradeControl* valueControl = ResolveOwnerControl(this, 0x76616c75);
+  TAmtBar* valueControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, 0x76616c75));
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

@@ -1,3 +1,4 @@
+#include "game/TAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/NationState.h"
@@ -5,7 +6,6 @@
 #include "decomp_types.h"
 #include "game/NationState.h"
 #include "game/TTraderAmtBar.h"
-#include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/trade_quickdraw.h"
@@ -97,8 +97,8 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
       if ((int)requestedValue < (this->field38 / (int)tradeCapacity)) {
-        TradeControl* sellControl =
-            ResolveOwnerControl(reinterpret_cast<void*>(this->field20), kControlTagSell);
+        TAmtBar* sellControl =
+            reinterpret_cast<TAmtBar*>(ResolveOwnerControl(reinterpret_cast<void*>(this->field20), kControlTagSell));
         if (sellControl != 0) {
           result = 1;
         }
@@ -117,7 +117,7 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
 // FUNCTION: IMPERIALISM 0x0058b0f0
 void TTraderAmtBar::DrawAmt() {
   QuickDrawSurfaceGuard surface;
-  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
@@ -127,7 +127,7 @@ void TTraderAmtBar::DrawAmt() {
       control->QueryBounds(boundsRect);
       control->ApplyBounds(boundsRect, 1);
       control->QueryBounds(boundsRect);
-      control->CtrlSlot78();
+      control->vmethod_0078();
 
       short styleValueAt60 = rangeOrMaxValue;
       if (styleValueAt60 > 0) {
@@ -140,7 +140,7 @@ void TTraderAmtBar::DrawAmt() {
       }
 
       reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
-      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      TAmtBar* owner = reinterpret_cast<TAmtBar*>(CallOwnerPanelSlot58(control));
       if (owner != 0) {
         owner->InvokeSlot13C();
       }

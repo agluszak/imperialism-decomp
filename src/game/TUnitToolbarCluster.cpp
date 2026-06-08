@@ -1,6 +1,6 @@
+#include "game/TAmtBar.h"
 #include "game/TUnitToolbarCluster.h"
 #include "game/GameAssert.h"
-#include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 
 #include <new>

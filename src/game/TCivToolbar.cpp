@@ -155,7 +155,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     GAME_ASSERT(stackButton != 0, 5585);
-    stackButton->NotifyControlSelectionChange(selectedTileEntry);
+    reinterpret_cast<TCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
     stackButton->SetEnabled(reinterpret_cast<TCivilianOrderState*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
@@ -166,7 +166,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   while (slotIndex < 6) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     GAME_ASSERT(stackButton != 0, 5585);
-    stackButton->NotifyControlSelectionChange(0);
+    reinterpret_cast<TCluster*>(stackButton)->NotifyControlSelectionChange(0);
     slotIndex = slotIndex + 1;
   }
 

@@ -9,7 +9,10 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 class TPictureResourceEntryBase : public TControl {
 public:
   short glyphBase84;
-  char pad_86_to_8f[0x0a];
+  short field86;
+  short bitmapId;
+  short field8A;
+  int field8C;
 
   TPictureResourceEntryBase();
   virtual ~TPictureResourceEntryBase();

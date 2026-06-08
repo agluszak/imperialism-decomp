@@ -1,9 +1,9 @@
+#include "game/TAmtBar.h"
 #include "game/TIndustryAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/NationState.h"
 #include "game/ui_widget_shared.h"
-#include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"
@@ -64,7 +64,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
 // FUNCTION: IMPERIALISM 0x00589dd0
 void TIndustryAmtBar::DrawAmt() {
   QuickDrawSurfaceGuard surface;
-  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
   if (control != 0 && control->IsActionable() != 0) {
@@ -74,7 +74,7 @@ void TIndustryAmtBar::DrawAmt() {
       control->QueryBounds(boundsRect);
       ApplyRectClipRegion(boundsRect);
       control->QueryBounds(boundsRect);
-      control->CtrlSlot78();
+      control->vmethod_0078();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {
@@ -93,7 +93,7 @@ void TIndustryAmtBar::DrawAmt() {
       DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
 
       reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
-      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      TAmtBar* owner = reinterpret_cast<TAmtBar*>(CallOwnerPanelSlot58(control));
       if (owner != 0) {
         owner->InvokeSlot13C();
       }

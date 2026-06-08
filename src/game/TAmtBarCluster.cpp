@@ -1,6 +1,6 @@
+#include "game/TAmtBar.h"
 #include "game/TAmtBarCluster.h"
 #include "game/GameAssert.h"
-#include "game/TradeControl.h"
 #include <new>
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
@@ -54,8 +54,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
   switch (commandId) {
   case 100: {
     if (this->GetBoolSlot1DC() != '\0') {
-      TradeControl* sellControl =
-          reinterpret_cast<TradeControl*>(this->ResolveControlByTag(kControlTagSell));
+      TAmtBar* sellControl =
+          reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
       if (sellControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
       }
@@ -68,8 +68,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
         maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
       }
 
-      TradeControl* capacityControl =
-          reinterpret_cast<TradeControl*>(ownerPanel->ResolveControlByTag(0x6d436170));
+      TAmtBar* capacityControl =
+          reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(0x6d436170));
       if (capacityControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
       }
@@ -77,7 +77,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
       if ((int)maxByNationMetric < sellValue) {
         int capacityValue = capacityControl->QueryValue();
         if ((int)maxByNationMetric < capacityValue) {
-          sellControl->SetEnabledPair(maxByNationMetric + 1 != 0, 1);
+          sellControl->SetEnabled(maxByNationMetric + 1 != 0, 1);
           this->ApplyMoveValue(maxByNationMetric + 1);
           return;
         }
@@ -86,8 +86,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
     break;
   }
   case 0x65: {
-    TradeControl* sellControl =
-        reinterpret_cast<TradeControl*>(this->ResolveControlByTag(kControlTagSell));
+    TAmtBar* sellControl =
+        reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
     if (sellControl == 0) {
       GAME_FAIL_NIL_POINTER();
       break;
@@ -106,8 +106,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && rowControl->GetControlFlag() == '\0') {
-          rowControl->DoControlAction();
+        if (rowControl != 0 && reinterpret_cast<TCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TCluster*>(rowControl)->DoControlAction();
         }
       }
       return;
@@ -120,8 +120,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && rowControl->GetControlFlag() == '\0') {
-          rowControl->DoControlAction();
+        if (rowControl != 0 && reinterpret_cast<TCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TCluster*>(rowControl)->DoControlAction();
         }
       }
       return;
@@ -135,8 +135,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
       maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
     }
 
-    TradeControl* capacityControl =
-        reinterpret_cast<TradeControl*>(ownerPanel->ResolveControlByTag(0x6d436170));
+    TAmtBar* capacityControl =
+        reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(0x6d436170));
     if (capacityControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }

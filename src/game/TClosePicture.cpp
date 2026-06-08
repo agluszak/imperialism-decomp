@@ -1,6 +1,6 @@
+#include "game/TAmtBar.h"
 #include "game/TClosePicture.h"
 
-#include "game/TradeControl.h"
 
 undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
@@ -39,7 +39,7 @@ TClosePicture::~TClosePicture() {}
 void TClosePicture::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
   reinterpret_cast<int(__fastcall*)(void*, int, int, int, int)>(
       ::DispatchUiMouseEventToChildrenOrSelf)(this, arg1, arg2, arg3, arg4);
-  TradeControl* control = reinterpret_cast<TradeControl*>(OwnerPanel());
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(OwnerPanel());
   if (control != 0) {
     control->ApplyStyleDescriptor(reinterpret_cast<void*>(selectedControlTagOrState1c), 1);
   }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/TradeControl.h"
+#include "game/TAmtBar.h"
 
 struct TradeCommodityMetricRecord {
   void* vftable;
@@ -10,6 +10,6 @@ struct TradeCommodityMetricRecord {
   short buildingSlot;
 
   short QueryStepValue() {
-    return reinterpret_cast<TradeControl*>(this)->QueryStepValueSlot30();
+    return reinterpret_cast<TAmtBar*>(this)->QueryStepValue();
   }
 };

@@ -4,7 +4,7 @@
 #include "game/TControl.h"
 #include "game/TUberCluster.h"
 #include "game/TView.h"
-#include "game/TradeControl.h"
+#include "game/TControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/win_rect.h"
 #include "game/quickdraw_guards.h"

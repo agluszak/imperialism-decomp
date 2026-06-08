@@ -14,7 +14,7 @@ public:
   static TShipyardCluster* CreateInstance();
   static void* GetClassNamePointer();
 
-  virtual void vmethod_0012(); // SelectTradeSpecialCommodityAndInitializeControls
+  virtual int QueryStepValue(); // SelectTradeSpecialCommodityAndInitializeControls
   virtual void vmethod_0013(); // RefreshTradeMoveBarAndTurnControl
   virtual void DispatchEvent(int arg1, void* arg2, int arg3); // HandleTradeMoveArrowControlEvent
 };

@@ -1,3 +1,4 @@
+#include "game/TAmtBar.h"
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
 
@@ -17,11 +18,11 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) 
     baseValue = requestedValue;
   }
 
-  TradeControl* moveControl = reinterpret_cast<TradeControl*>(this);
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this);
   int appliedValue = moveControl->ApplyMoveClamp(baseValue, (short)requestedValue);
   void* owner = ownerContext;
   if (((short)appliedValue == 0) && requestedValue != 0) {
-    TradeControl* fallbackControl = ResolveOwnerControl(owner, kControlTagMove);
+    TAmtBar* fallbackControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagMove));
     if (fallbackControl == 0) {
       fallbackControl = ResolveOwnerControl(owner, kControlTagSell);
     }
@@ -98,7 +99,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
 
   TradeCommodityMetricRecord* selectedMetricRecord = reinterpret_cast<TradeCommodityMetricRecord*>(
       *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
-  context->selectedMetricControl = reinterpret_cast<TradeControl*>(selectedMetricRecord);
+  context->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
   context->selectedMetricValue =
       (short)TradeScreenRuntimeBridge::GetCityBuildingProductionValueBySlot(
           cityState,
@@ -125,17 +126,17 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_00588c30(int value) {
 // FUNCTION: IMPERIALISM 0x00588c60
 void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int updateFlag) {
   // ORIG_CALLCONV: __thiscall
-  TradeControl* selectedControl = selectedMetricControl;
+  TAmtBar* selectedControl = selectedMetricControl;
   short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
-    selectedControl->SetControlValueRaw(dragValue);
+    selectedControl->SetControlValue(dragValue);
   }
 
   if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
     return;
   }
 
-  TradeControl* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
+  TAmtBar* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xb42);
   }
@@ -150,7 +151,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&moveInvalidRect, 1);
 
-  TradeControl* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
+  TAmtBar* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xb49);
   }

@@ -22,7 +22,7 @@ public:
   // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
   virtual void vmethod_0104();
   virtual void SwitchTab(int arg1 = 0, int arg2 = 0, int arg3 = 0);
-  virtual void vmethod_0106();
+  virtual void InvokeSlot1A8();
   virtual void vmethod_0107();
   virtual void vmethod_0108();
   virtual void vmethod_0109();
@@ -31,11 +31,6 @@ public:
   virtual void vmethod_0112();
   virtual void vmethod_0113();
   virtual void SetControlClassAndRefresh(int classState, int refreshFlag);
-  virtual void vmethod_0115();
-  virtual void ApplyMoveValue(int value);
-  virtual void NotifyControlSelectionChange(void* boundEntry);
-  virtual char GetControlFlag();
-  virtual char GetBoolSlot1DC();
-  virtual void DoControlAction();
+
 
 };

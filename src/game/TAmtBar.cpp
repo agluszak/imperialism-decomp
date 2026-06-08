@@ -17,7 +17,6 @@
    then initializes move/bar controls baseline. */
 
 #include "game/TAmtBar.h"
-#include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/trade_quickdraw.h"
@@ -60,7 +59,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   // ORIG_CALLCONV: __thiscall
   QuickDrawSurfaceGuard surface;
   short barRange = rangeOrMaxValue;
-  TradeControl* control = reinterpret_cast<TradeControl*>(this);
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   int contentBounds[4];
   int frameBounds[4];
   short controlWidth;
@@ -81,7 +80,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   control->QueryBounds(frameBounds);
 
-  control->CtrlSlot78();
+  control->vmethod_0078();
 
   controlWidth = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34);
   controlHeight = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38);
@@ -130,13 +129,13 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
 
 // FUNCTION: IMPERIALISM 0x00588630
-void __fastcall OrphanCallChain_C2_I15_00588630(TradeControl* control, int unusedEdx,
+void __fastcall OrphanCallChain_C2_I15_00588630(TAmtBar* control, int unusedEdx,
                                                 short valueAt60, short valueAt62) {
   (void)unusedEdx;
   TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(control);
   amountBar->stepOrCurrentValue = valueAt60;
   amountBar->rangeOrMaxValue = valueAt62;
-  control->InvokeSlotE4();
+  control->RefreshControl();
   control->InvokeSlot13C();
 }
 
@@ -148,7 +147,7 @@ void __fastcall OrphanCallChain_C2_I15_00588630(TradeControl* control, int unuse
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=3 */
 
 // FUNCTION: IMPERIALISM 0x00588670
-void __fastcall OrphanCallChain_C1_I03_00588670(TradeControl* control, int unusedEdx,
+void __fastcall OrphanCallChain_C1_I03_00588670(TAmtBar* control, int unusedEdx,
                                                 int unusedStackArg) {
   (void)unusedEdx;
   (void)unusedStackArg;
@@ -160,7 +159,7 @@ void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int even
   // ORIG_CALLCONV: __thiscall
   void* owner = this;
   if (commandId == 100) {
-    TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }
@@ -172,7 +171,7 @@ void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int even
     ::HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
     return;
   }
-  TradeControl* moveControl = ResolveOwnerControl(owner, kControlTagMove);
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -186,3 +185,41 @@ void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int even
 // GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=6
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
+
+int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) { return 0; }
+
+void TAmtBar::SetBarMetric(int value, int range) {}
+
+void TAmtBar::InvokeSlot1A8() {}
+
+void TAmtBar::SetBarMetricRatio(int value) {}
+
+void TAmtBar::vmethod_0108() {}
+
+void TAmtBar::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {}
+
+void TAmtBar::vmethod_0110() {}
+
+void TAmtBar::vmethod_0111() {}
+
+void TAmtBar::vmethod_0112() {}
+
+void TAmtBar::SetStyleState(int stateValue, int modeFlag) {}
+
+void TAmtBar::SetBitmap(int bitmapIdValue, int unknownFlag) {}
+
+void TAmtBar::InvokeSlot1CC(int value, int modeFlag) {}
+
+void TAmtBar::vmethod_0116() {}
+
+void TAmtBar::vmethod_0117() {}
+
+void TAmtBar::vmethod_0118() {}
+
+void TAmtBar::vmethod_0119() {}
+
+void TAmtBar::vmethod_0120() {}
+
+void TAmtBar::SetControlValueSlot1E4(int value, int updateFlag) {}
+
+int TAmtBar::QueryValue() { return 0; }

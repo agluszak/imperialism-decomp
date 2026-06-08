@@ -59,7 +59,7 @@ enum ECivilianClassId {
 
 struct CivilianClassCacheContext {
   void* vftable;
-  unsigned char pad_04_to_5f[0x5c];
+  unsigned char pad_04_to_83[0x80];
   short selectedCivilianClass;
   short ownerNationId;
   short targetTileCountsBySlot[5];
@@ -99,7 +99,7 @@ CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
   return new TCivDescription();
 }
 
-TCivDescription::TCivDescription() : TView() {
+TCivDescription::TCivDescription() : TControl() {
   selectedCivilianClass = -1;
   legendInitialized = 0;
 }
@@ -138,7 +138,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivilianOr
     case kCivilianClass_Rancher:
     case kCivilianClass_Developer:
     case kCivilianClass_Driller:
-      *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(context) + 0x6c) = 0;
+      context->legendInitialized = 0;
       context->UpdateCivilianOrderTargetTileCountsForOwnerNation(orderState);
       break;
     }
@@ -352,7 +352,7 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
   } else if (selectedClass == kCivilianClass_Engineer) {
     this->SwitchTab();
   } else if (selectedClass != kCivilianClass_Developer) {
-    this->vmethod_0106();
+    this->InvokeSlot1A8();
   }
 
   this->legendInitialized = 1;

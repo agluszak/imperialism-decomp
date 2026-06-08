@@ -17,3 +17,10 @@ void TCluster::DispatchPanelControlEvent(int eventClass, void* eventPayload, int
   reinterpret_cast<void(__fastcall*)(void*, int, int, void*, int)>(thunk_DispatchPanelControlEvent)(
       this, 0, eventClass, eventPayload, eventFlags);
 }
+
+void TCluster::vmethod_0115() {}
+void TCluster::ApplyMoveValue(int value) {}
+void TCluster::NotifyControlSelectionChange(void* boundEntry) {}
+char TCluster::GetControlFlag() { return 0; }
+char TCluster::GetBoolSlot1DC() { return 0; }
+void TCluster::DoControlAction() {}

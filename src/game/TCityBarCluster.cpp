@@ -1,6 +1,6 @@
+#include "game/TAmtBar.h"
 #include "game/TCityBarCluster.h"
 #include "game/GameAssert.h"
-#include "game/TradeControl.h"
 #include <new>
 
 extern "C" {
