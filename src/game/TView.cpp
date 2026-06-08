@@ -46,9 +46,9 @@ void TView::vmethod_0012() {}
 void TView::vmethod_0013() {}
 void TView::vmethod_0014() {}
 void TView::vmethod_0015() {}
-void TView::vmethod_0016() {}
+void TView::DispatchEvent(int arg1, void* arg2, int arg3) {}
 void TView::vmethod_0017() {}
-void TView::vmethod_0018() {}
+void TView::ForwardParam(int param) {}
 void TView::vmethod_0019() {}
 void TView::vmethod_0020() {}
 void TView::vmethod_0021() {}
@@ -140,7 +140,7 @@ void TView::vmethod_0101() {}
 void TView::vmethod_0102() {}
 void TView::vmethod_0103() {}
 void TView::vmethod_0104() {}
-void TView::vmethod_0105() {}
+void TView::SwitchTab(int arg1, int arg2, int arg3) {}
 void TView::vmethod_0106() {}
 void TView::vmethod_0107() {}
 void TView::vmethod_0108() {}

@@ -91,8 +91,6 @@ src/game/TDiplomacyMapView.cpp|VCall_GlobalMapState_QueryIconStripXSlot110|short
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyMapView_TransformPointToLocalSlot148|void|0x148 / 4|int,int|low|transform screen point to diplomacy view-local coords|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_HitTestPointSlot90|char|0x90 / 4|int,int|low|hit-test view-local point against terrain region index|index|thiscall|none||provisional|StrategicMapViewSystem
 src/game/diplomacy_state.cpp|VCall_DiplomacyTurnState_ValidateActionSlot5C|char|0x5C / 4|int,int,int|medium|validate diplomacy action for selected/hovered target pair and set reject code|index|thiscall|none||provisional|DiplomacyTurnStateManager
-src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_ForwardParamSlot48|void|0x48 / 4|int|low|forward city-dialog param to active diplomacy child control|index|thiscall|none||provisional|TControl
-src/game/TDiplomacyMapView.cpp|VCall_DiplomacyChildControl_SwitchTabSlot1A4|void|0x1A4 / 4|int,int,int|low|forward tab-switch command to active diplomacy child control|index|thiscall|none||provisional|TControl
 src/game/cdocument.cpp|VCall_CDocument_NotifyViewListChangedSlot70|void|0x70 / 4||medium|CDocument slot70 view-list-changed notify|index|thiscall|none||native_migrated|CDocument
 src/game/carchive.cpp|VCall_CFile_WriteBytesSlot40|void|0x40 / 4|void*,int|medium|CFile write bytes to underlying file|index|thiscall|none||native_migrated|CFile
 src/game/carchive.cpp|VCall_CFile_GetBufferPtrSlot58|void|0x58 / 4|int,int,void*,void*|medium|CFile get buffer pointer/refill|index|thiscall|none||native_migrated|CFile
@@ -101,7 +99,6 @@ src/game/carchive.cpp|VCall_CFile_SeekSlot30|void|0x30 / 4|int,int|medium|CFile 
 src/game/TTextList.cpp|VCall_TextList_OnSelectionChange|void|0xe4 / 4||medium|text list selection change callback|index|thiscall|zero|||TTextList
 src/game/TTextList.cpp|VCall_TextList_GetRect|void|0x12c / 4|void*|medium|text list get bounding rect|index|thiscall|zero|||TTextList
 src/game/TTextList.cpp|VCall_TextList_OnSelectionConfirmed|void|0x13c / 4||medium|text list double click/selection confirm callback|index|thiscall|zero|||TTextList
-src/game/TTextList.cpp|VCall_Parent_DispatchEvent|void|0x40 / 4|int,void*,int|medium|parent event dispatcher|index|thiscall|zero|||TView
 src/game/TFileStream.cpp|VCall_Stream_WriteCountSlot88|void|0x88 / 4|int|medium|stream write count/length prefix|index|thiscall|none||native_migrated|TStream
 src/game/TFileStream.cpp|VCall_Stream_WriteBytesSlot78|void|0x78 / 4|void*,int|medium|stream write raw bytes|index|thiscall|none||native_migrated|TStream
 src/game/TCivilianButton.cpp|VCall_TRadioPictureButton_SlotA4|void|0xA4 / 4|int,int|low|||thiscall|none||provisional|TCivilianButton

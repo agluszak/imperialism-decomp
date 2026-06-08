@@ -46,9 +46,9 @@ public:
   virtual void vmethod_0013();
   virtual void vmethod_0014();
   virtual void vmethod_0015();
-  virtual void vmethod_0016();
+  virtual void DispatchEvent(int arg1, void* arg2, int arg3);
   virtual void vmethod_0017();
-  virtual void vmethod_0018();
+  virtual void ForwardParam(int param);
   virtual void vmethod_0019();
   virtual void vmethod_0020();
   virtual void vmethod_0021();
@@ -135,7 +135,7 @@ public:
   virtual void vmethod_0102();
   virtual void vmethod_0103();
   virtual void vmethod_0104();
-  virtual void vmethod_0105();
+  virtual void SwitchTab(int arg1 = 0, int arg2 = 0, int arg3 = 0);
   virtual void vmethod_0106();
   virtual void vmethod_0107();
   virtual void vmethod_0108();

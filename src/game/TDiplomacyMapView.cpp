@@ -4,6 +4,7 @@
 #include "game/Point32.h"
 #include "game/generated/vcall_facades.h"
 #include "game/ui_widget_shared.h"
+#include "game/TControl.h"
 #include "game/TDiplomacyTurnStateManager.h"
 
 #if defined(_MSC_VER)
@@ -514,17 +515,17 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
                                                                    void* arg3) {
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
-  void* child = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0xb4);
-  VCall_DiplomacyChildControl_SwitchTabSlot1A4(
-      child, reinterpret_cast<int>(arg1), reinterpret_cast<int>(arg2), reinterpret_cast<int>(arg3));
+  TControl* child = *reinterpret_cast<TControl**>(reinterpret_cast<char*>(this) + 0xb4);
+  child->SwitchTab(
+      reinterpret_cast<int>(arg1), reinterpret_cast<int>(arg2), reinterpret_cast<int>(arg3));
 }
 
 // FUNCTION: IMPERIALISM 0x004f7130
 void TDiplomacyMapViewLayout::ForwardCityDialogParamToActiveChildOrBase(void* param) {
   char* self = reinterpret_cast<char*>(this);
   if (*reinterpret_cast<int*>(self + 0xb8) == 5) {
-    void* child = *reinterpret_cast<void**>(self + 0xb4);
-    VCall_DiplomacyChildControl_ForwardParamSlot48(child, reinterpret_cast<int>(param));
+    TControl* child = *reinterpret_cast<TControl**>(self + 0xb4);
+    child->ForwardParam(reinterpret_cast<int>(param));
     return;
   }
   reinterpret_cast<void(__fastcall*)(void*, int, void*)>(thunk_ForwardCityDialogParamToChildSlot48)(

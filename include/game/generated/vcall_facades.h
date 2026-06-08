@@ -53,20 +53,6 @@ static __inline void VCall_TRadioPictureButton_SlotA8(void* object, int arg0, in
   fn(object, arg0, arg1);
 }
 
-// forward city-dialog param to active diplomacy child control; class=TControl; status=provisional
-static __inline void VCall_DiplomacyChildControl_ForwardParamSlot48(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  fn(object, arg0);
-}
-
-// forward tab-switch command to active diplomacy child control; class=TControl; status=provisional
-static __inline void VCall_DiplomacyChildControl_SwitchTabSlot1A4(void* object, int arg0, int arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1A4 / 4)));
-  fn(object, arg0, arg1, arg2);
-}
-
 // diplomacy legend terrain/minor draw slot with index and label selector; class=TDiplomacyMapView; status=provisional
 static __inline void VCall_DiplomacyLegend_DrawTerrainSlot1E0(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int);
@@ -436,13 +422,6 @@ static __inline void VCall_FocusAnimationView_ApplyRectSlot110(void* object, int
   typedef void (__fastcall * Fn)(void*, int*);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x110 / 4)));
   fn(object, arg0);
-}
-
-// parent event dispatcher; class=TView; status=provisional
-static __inline void VCall_Parent_DispatchEvent(void* object, int arg0, void* arg1, int arg2) {
-  typedef void (__fastcall * Fn)(void*, int, int, void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x40 / 4)));
-  fn(object, 0, arg0, arg1, arg2);
 }
 
 // text list get bounding rect; class=TTextList; status=provisional
