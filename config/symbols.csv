@@ -14264,10 +14264,6 @@ address|name|size|type|prototype
 654ce8|g_pClassDescTNextDiplomationCommand||global|
 654d3c|g_vslotTDefenderMinister_Slot01AC_InvokeControlAction||global|
 654d64|g_vslotTDefenderMinister_Slot01D4_NotifyControlSelectionChange||global|
-654d90|vtbl_DiplomacyTurnStateManager_00654d90||global|
-654db4|g_vslotTBullyMinister_Slot01AC_InvokeControlAction||global|
-654dd8|g_vslotTBullyMinister_Slot01D0_NotifyControlStateChange||global|
-654ddc|g_vslotTBullyMinister_Slot01D4_NotifyControlSelectionChange||global|
 654ed0|g_pClassDescTMinisterView||global|
 654ee8|g_pClassDescTForeignMinisterView||global|
 654f00|g_pClassDescTDefenseMinisterView||global|
@@ -14642,9 +14638,6 @@ address|name|size|type|prototype
 65f06c|g_vslotTToggleButton_Slot0094_ResolveControlByTag||global|
 65f184|g_vslotTToggleButton_Slot01AC_InvokeControlAction||global|
 65f1a8|g_vslotTToggleButton_Slot01D0_NotifyControlStateChange||global|
-65f210|g_vtblTUberCluster||global|
-65f2a4|g_vslotTUberCluster_Slot0094_ResolveControlByTag||global|
-65f3bc|g_vslotTUberCluster_Slot01AC_InvokeControlAction||global|
 65f440|g_vtblTUpDownPictureButton||global|
 65f448|g_vtblCandidate_0065f448_len30||global|
 65f4d4|g_vslotTUpDownPictureButton_Slot0094_ResolveControlByTag||global|
@@ -15504,13 +15497,7 @@ address|name|size|type|prototype
 665224|g_vslotTCityBarCluster_Slot0094_ResolveControlByTag||global|
 66533c|g_vslotTCityBarCluster_Slot01AC_InvokeControlAction||global|
 665360|g_vslotTCityBarCluster_Slot01D0_NotifyControlStateChange||global|
-6653c8|g_vtblTProductionCluster||global|
-66545c|g_vslotTProductionCluster_Slot0094_ResolveControlByTag||global|
-665574|g_vslotTProductionCluster_Slot01AC_InvokeControlAction||global|
-665608|g_vtblTClosePicture||global|
 665610|g_vtblCandidate_00665610_len30||global|
-66569c|g_vslotTClosePicture_Slot0094_ResolveControlByTag||global|
-6657b4|g_vslotTClosePicture_Slot01AC_InvokeControlAction||global|
 665838|g_vtblTAmtBarCluster||global|
 6658cc|g_vslotTAmtBarCluster_Slot0094_ResolveControlByTag||global|
 6659e4|g_vslotTAmtBarCluster_Slot01AC_InvokeControlAction||global|

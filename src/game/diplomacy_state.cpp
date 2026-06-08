@@ -29,7 +29,6 @@ TCountry* g_pInterNationEventQueueManager = 0;
 void* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
 TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager = 0;
-char vtbl_DiplomacyTurnStateManager_00654d90 = 0;
 char g_vtblTSortedByRelationshipList = 0;
 }
 
@@ -149,19 +148,7 @@ static __inline void EmitTurnEvent3Mode18WithActiveNation(void* controller) {
 }
 
 static __inline TDiplomacyTurnStateManager* ReadGlobalTDiplomacyTurnStateManager() {
-  return reinterpret_cast<TDiplomacyTurnStateManager*>(g_pDiplomacyTurnStateManager);
-}
-
-// FUNCTION: IMPERIALISM 0x004ee6c0
-TDiplomacyTurnStateManager*
-TDiplomacyTurnStateManager::ConstructTDiplomacyTurnStateManager_Vtbl00654d90() {
-  int zero = 0;
-  queuedWarTransitionActive794 = zero;
-  queuedWarTransitionPending798 = zero;
-  *reinterpret_cast<void**>(this) = &vtbl_DiplomacyTurnStateManager_00654d90;
-  proposalDispatchCounter790 = static_cast<short>(zero);
-  lastProcessedNationSlot78e = static_cast<short>(-1);
-  return this;
+  return g_pDiplomacyTurnStateManager;
 }
 
 // FUNCTION: IMPERIALISM 0x00409944

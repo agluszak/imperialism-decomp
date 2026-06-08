@@ -1,12 +1,14 @@
 // TArmyToolbar wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
+#include "game/TUberCluster.h"
+
+#include <new>
 
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
 undefined4 thunk_CycleMapInteractionSelectionAfterHandledClick(void);
@@ -44,9 +46,8 @@ struct ArmyCommandPayload {
 
 class RuntimeBridge {
 public:
-  static __inline void ConstructTUberClusterBaseState(TradeMoveStepCluster* self) {
-    reinterpret_cast<void(__fastcall*)(TradeMoveStepCluster*)>(::ConstructTUberClusterBaseState)(
-        self);
+  static __inline void ConstructTUberClusterObject(TradeMoveStepCluster* self) {
+    new (self) TUberCluster();
   }
 };
 
@@ -107,7 +108,7 @@ ArmyToolbarState* __cdecl CreateTArmyToolbarInstance(void) {
   ArmyToolbarState* toolbar =
       reinterpret_cast<ArmyToolbarState*>(AllocateWithFallbackHandler(0x8c));
   if (toolbar != 0) {
-    RuntimeBridge::ConstructTUberClusterBaseState(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
+    RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
     toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   }
   return toolbar;
@@ -120,7 +121,7 @@ void* __cdecl GetTArmyToolbarClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x0058dee0
 ArmyToolbarState* __fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState* toolbar) {
-  RuntimeBridge::ConstructTUberClusterBaseState(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
+  RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
   toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   return toolbar;
 }

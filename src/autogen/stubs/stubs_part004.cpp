@@ -2851,14 +2851,6 @@ undefined4 THQButton_VtblSlot000(void)
   return 0;
 }
 
-// ghidra_name TCivDescription::thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation
-// ghidra_proto void __thiscall thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilianOrderState * pCivilianOrderState)
-// FUNCTION: IMPERIALISM 0x00404d8b
-undefined4 thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::thunk_DispatchSelectedUnitToGlobalMapStateHandler_At00404d90
 // ghidra_proto void __thiscall thunk_DispatchSelectedUnitToGlobalMapStateHandler_At00404d90(int * pUnitOrderEntry)
 // FUNCTION: IMPERIALISM 0x00404d90

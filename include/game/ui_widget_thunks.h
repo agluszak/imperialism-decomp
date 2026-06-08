@@ -15,7 +15,6 @@ undefined4 thunk_HandleCityDialogToggleCommandOrForward(void);
 undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
-undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx = 0,

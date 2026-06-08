@@ -14,6 +14,7 @@
 #include "game/TRailAmtBar.h"
 #include "game/TShipAmtBar.h"
 #include "game/TStatusButton.h"
+#include "game/TProductionCluster.h"
 #include "game/vcall_runtime.h"
 
 typedef void code(void);
@@ -37,7 +38,6 @@ undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 ConstructTUberClusterBaseState(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);
 undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
@@ -46,7 +46,6 @@ undefined4 thunk_DispatchPictureResourceCommand(void);
 undefined4 thunk_DispatchPanelControlEvent(void);
 undefined4 thunk_GetTickCountDiv16(void);
 undefined4 thunk_InitializeUiTextStyleDescriptor(void);
-undefined4 thunk_ConstructUiTabCursorPictureEntry(void);
 undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
@@ -127,10 +126,6 @@ const unsigned int kAddrClassDescTIndustryCluster = 0x00662f98;
 const unsigned int kVtableTIndustryAmtBar = 0x00666110;
 const unsigned int kVtableTAmtBar = 0x00665cc8;
 const unsigned int kVtableTAmtBarCluster = 0x00665838;
-const unsigned int kVtableTProductionCluster = 0x006653c8;
-const unsigned int kAddrClassDescTProductionCluster = 0x00662f20;
-const unsigned int kVtableTClosePicture = 0x00665608;
-const unsigned int kAddrClassDescTClosePicture = 0x00662f38;
 const unsigned int kVtableTRailCluster = 0x00666318;
 const unsigned int kAddrClassDescTRailCluster = 0x00662fc8;
 const unsigned int kVtableTRailAmtBar = 0x00666558;
@@ -191,16 +186,6 @@ struct TradeMoveStepCluster {
   void OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value);
 };
 
-struct ProductionClusterState {
-  void* vftable;
-  char pad_04[0x84];
-  int field_88;
-  short field_8c;
-  short field_8e;
-  int field_90;
-  int field_94;
-};
-
 struct TAmtBarClusterContext {
   void* vftable;
   char pad_04[0x84];
@@ -210,13 +195,6 @@ struct TAmtBarClusterContext {
   short valueAt8e;
 
   void HandleTradeSellControlCommand(int commandId, void* eventArg, int eventExtra);
-};
-
-struct ClosePictureState {
-  void* vftable;
-  char pad_04[0x18];
-  int ownerDescriptorAt1c;
-  char pad_20[0x74];
 };
 
 struct TradeMovePanelContext;
@@ -572,7 +550,7 @@ UnitToolbarClusterState* __cdecl CreateTUnitToolbarClusterInstance(void) {
   UnitToolbarClusterState* cluster =
       reinterpret_cast<UnitToolbarClusterState*>(AllocateWithFallbackHandler(0x88));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
     cluster->vftable = reinterpret_cast<void*>(kVtableTUnitToolbarCluster);
   }
   return cluster;
@@ -587,7 +565,7 @@ void* __cdecl GetTUnitToolbarClusterClassNamePointer(void) {
 UnitToolbarClusterState* __fastcall
 ConstructTUnitToolbarClusterBaseState(UnitToolbarClusterState* cluster) {
   // ORIG_CALLCONV: __thiscall
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
   cluster->vftable = reinterpret_cast<void*>(kVtableTUnitToolbarCluster);
   return cluster;
 }
@@ -717,7 +695,7 @@ CityBarClusterState* __cdecl CreateTCityBarClusterInstance(void) {
   CityBarClusterState* cluster =
       reinterpret_cast<CityBarClusterState*>(AllocateWithFallbackHandler(0x88));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
     cluster->vftable = reinterpret_cast<void*>(kVtableTCityBarCluster);
   }
   return cluster;
@@ -733,7 +711,7 @@ CityBarClusterState* __fastcall ConstructTCityBarClusterBaseState(CityBarCluster
                                                                   int unusedEdx) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
   cluster->vftable = reinterpret_cast<void*>(kVtableTCityBarCluster);
   return cluster;
 }
@@ -788,66 +766,6 @@ void __fastcall UpdateTradeSummaryMetricControlsFromRecord(void* self, int unuse
   profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8), 1);
 }
 
-// FUNCTION: IMPERIALISM 0x00586840
-ProductionClusterState* __cdecl CreateTProductionClusterInstance(void) {
-  ProductionClusterState* cluster =
-      reinterpret_cast<ProductionClusterState*>(AllocateWithFallbackHandler(0x98));
-  if (cluster != 0) {
-    reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(cluster);
-    cluster->vftable = reinterpret_cast<void*>(kVtableTProductionCluster);
-    cluster->field_90 = 0;
-    cluster->field_94 = 0;
-    cluster->field_88 = 0;
-    cluster->field_8c = 0;
-    cluster->field_8e = 0;
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00586900
-void* __cdecl GetTProductionClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTProductionCluster);
-}
-
-// FUNCTION: IMPERIALISM 0x00586920
-ProductionClusterState* __fastcall
-ConstructTProductionClusterBaseState(ProductionClusterState* cluster) {
-  // ORIG_CALLCONV: __thiscall
-  reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(cluster);
-  cluster->vftable = reinterpret_cast<void*>(kVtableTProductionCluster);
-  cluster->field_90 = 0;
-  cluster->field_94 = 0;
-  cluster->field_88 = 0;
-  cluster->field_8c = 0;
-  cluster->field_8e = 0;
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00586970
-ProductionClusterState* __fastcall
-DestructTProductionClusterAndMaybeFree(ProductionClusterState* cluster, int unusedEdx,
-                                       unsigned char freeSelfFlag) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x005869c0
-void __fastcall HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(
-    ProductionClusterState* cluster, int commandId, void* eventArg, int eventExtra) {
-  // ORIG_CALLCONV: __thiscall
-  TradeControl* valueControl = ResolveOwnerControl(cluster, 0x76616c75);
-  if (valueControl == 0) {
-    GAME_FAIL_NIL_POINTER();
-  }
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      cluster, commandId, eventArg, eventExtra);
-}
-
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
@@ -875,64 +793,12 @@ void TradeMoveStepCluster::OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value) 
 #pragma optimize("y", off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00586ad0
-ClosePictureState* __cdecl CreateTClosePictureInstance(void) {
-  ClosePictureState* picture =
-      reinterpret_cast<ClosePictureState*>(AllocateWithFallbackHandler(0x94));
-  if (picture != 0) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiTabCursorPictureEntry)(picture);
-    picture->vftable = reinterpret_cast<void*>(kVtableTClosePicture);
-  }
-  return picture;
-}
-
-// FUNCTION: IMPERIALISM 0x00586b50
-void* __cdecl GetTClosePictureClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTClosePicture);
-}
-
-// FUNCTION: IMPERIALISM 0x00586b70
-ClosePictureState* __fastcall ConstructTClosePictureBaseState(ClosePictureState* picture) {
-  // ORIG_CALLCONV: __thiscall
-  reinterpret_cast<void(__fastcall*)(void*)>(::thunk_ConstructUiTabCursorPictureEntry)(picture);
-  picture->vftable = reinterpret_cast<void*>(kVtableTClosePicture);
-  return picture;
-}
-
-// FUNCTION: IMPERIALISM 0x00586ba0
-ClosePictureState* __fastcall DestructTClosePictureAndMaybeFree(ClosePictureState* picture,
-                                                                int unusedEdx,
-                                                                unsigned char freeSelfFlag) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)picture);
-  }
-  return picture;
-}
-
-// FUNCTION: IMPERIALISM 0x00586bf0
-void __fastcall
-WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0(ClosePictureState* picture, int arg1,
-                                                           int arg2, int arg3, int arg4) {
-  // ORIG_CALLCONV: __thiscall
-  reinterpret_cast<int(__fastcall*)(void*, int, int, int, int)>(
-      ::DispatchUiMouseEventToChildrenOrSelf)(picture, arg1, arg2, arg3, arg4);
-  TradeControl* control =
-      reinterpret_cast<TradeControl*>(reinterpret_cast<void*(__fastcall*)(ClosePictureState*)>(
-          (*reinterpret_cast<void***>(picture))[0x58 / 4])(picture));
-  if (control != 0) {
-    control->ApplyStyleDescriptor(reinterpret_cast<void*>(picture->ownerDescriptorAt1c), 1);
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x00586c40
 TradeMovePanelContext* __cdecl CreateTradeMoveControlPanelBasic(void) {
   TradeMovePanelContext* panel =
       reinterpret_cast<TradeMovePanelContext*>(AllocateWithFallbackHandler(0x88));
   if (panel != 0) {
-    reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(panel);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(panel);
     *reinterpret_cast<void**>(panel) = reinterpret_cast<void*>(kVtableTAmtBarCluster);
   }
   return panel;
@@ -946,7 +812,7 @@ void* __cdecl GetTAmtBarClusterClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00586ce0
 TradeMovePanelContext* __fastcall
 ConstructTradeMoveControlPanelBasic(TradeMovePanelContext* panel) {
-  reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(panel);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(panel);
   *reinterpret_cast<void**>(panel) = reinterpret_cast<void*>(kVtableTAmtBarCluster);
   return panel;
 }
@@ -1055,7 +921,7 @@ void __cdecl OrphanRetStub_00586ff0(void) {}
 void* CreateTradeSellControlPanel(void) {
   void* cluster = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x8c));
   if (cluster != 0) {
-    reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(cluster);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
     *reinterpret_cast<void**>(cluster) =
         reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
   }
@@ -1071,7 +937,7 @@ void* GetTTradeClusterClassNamePointer(void) {
 void __fastcall ConstructTradeSellControlPanel(void* self)
 
 {
-  reinterpret_cast<void(__fastcall*)(void*)>(ConstructTUberClusterBaseState)(self);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(self);
   *reinterpret_cast<void**>(self) =
       reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
 }
@@ -1693,7 +1559,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TradeControl* contr
 
 // FUNCTION: IMPERIALISM 0x00589720
 void __fastcall ConstructTradeMoveScaledControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
   cluster->vftable = reinterpret_cast<void*>(kVtableTRailCluster);
   cluster->field_88 = 0;
   cluster->field_8e = 0;

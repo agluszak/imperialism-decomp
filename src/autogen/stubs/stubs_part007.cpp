@@ -2811,14 +2811,6 @@ undefined4 thunk_InitializeStrategicMapCityInfluenceBuffers(void)
   return 0;
 }
 
-// ghidra_name TCivDescription::TCivDescription_thunk_scalar_deleting_destructor
-// ghidra_proto void * __thiscall TCivDescription_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00407f4a
-undefined4 TCivDescription_thunk_scalar_deleting_destructor(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InitializeTMadnessButtonFromCurrentBitmapAndEnable
 // ghidra_proto void __cdecl thunk_InitializeTMadnessButtonFromCurrentBitmapAndEnable(void)
 // FUNCTION: IMPERIALISM 0x00407f4f

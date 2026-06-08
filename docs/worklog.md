@@ -3093,3 +3093,107 @@ own headers/files with real inheritance and // VTABLE: annotations:
 - Verified: sync-ownership (2 updates), regen-stubs (12060), build, detect, vtable-gate
   (77), compare-canaries (below_floor=0), no new out-of-sync; aligned-functions 420 (delta
   0), coverage -0.02pp (the ILT construction tradeoff).
+
+2026-06-08 17:51 CEST — TDiplomacyTurnStateManager vtable ownership pass
+Moved `TDiplomacyTurnStateManager` toward the real vtable-class model:
+- Added `// VTABLE: IMPERIALISM 0x00654d90` to `include/game/TDiplomacyTurnStateManager.h`
+  and gave its vtable slots concrete, non-pure declarations. Added the missing final slot
+  0x9c after a slot-0 `just ghidra-vtable-dump TDiplomacyTurnStateManager 0x00654d90`
+  showed the class-owned table runs through 0x654e2c before padding / TNextTradeCommand
+  data.
+- Added `src/game/TDiplomacyTurnStateManager.cpp` and moved the owned native construction
+  entry point `0x004ee6c0` there. Removed the manual
+  `*reinterpret_cast<void**>(this) = &vtbl_DiplomacyTurnStateManager_00654d90` write; the
+  remaining construction routine only initializes the scalar fields. Kept the low-address
+  thunk `0x00409944` in diplomacy_state.cpp, now calling the construction entry point.
+- Deleted the stale `654d90|vtbl_DiplomacyTurnStateManager_00654d90||global|` row plus
+  three stale in-vtable `654db4/654dd8/654ddc` global slot rows from config/symbols.csv so
+  the `// VTABLE` annotation owns the table. Before removing the in-range rows reccmp
+  incorrectly truncated the original vtable and warned that the rebuilt
+  TDiplomacyTurnStateManager vtable was too large; after cleanup that warning disappeared.
+- Added the new `.cpp` to CMakeLists. `just sync-ownership` moved 0x004ee6c0 to the new
+  file and also synced two pre-existing TCivDescription manual markers already present in
+  the tree, which regenerated two fewer stubs.
+- Verification: `just sync-ownership`, `just regen-stubs`, `just build`, `just detect`,
+  targeted `just compare 0x004ee6c0` -> 93.33% (the only diff is the removed manual vptr
+ write), targeted `just compare 0x00409944` -> 100%, `just vtable-gate` passed, and
+  `just compare-canaries` stayed green (`below_floor=0`, `parse_error=0`). Existing
+  unrelated compare warnings remain for duplicate globals 0x667f00/0x6a44b0/0x668a60 and
+  TControl debug-data sync.
+
+2026-06-08 18:04 CEST — TUberCluster/TProductionCluster real constructors
+Extracted the production trade cluster chain into real vtable classes instead of keeping a
+flat `ProductionClusterState` plus manual vptr writes:
+- Added `include/game/TUberCluster.h` / `src/game/TUberCluster.cpp` with
+  `class TUberCluster : public TCluster` and `// VTABLE: IMPERIALISM 0x0065f210`. The
+  owned `0x00571460` entry is now the normal `TUberCluster::TUberCluster()` constructor.
+  Removed the bad global `void __fastcall ConstructTUberClusterBaseState(void*)` bridge;
+  existing temporary construction helpers now placement-call the real constructor directly.
+- Added `include/game/TProductionCluster.h` / `src/game/TProductionCluster.cpp` with
+  `class TProductionCluster : public TUberCluster`, `ASSERT_SIZE(..., 0x98)`, real fields
+  at 0x88/0x8c/0x8e/0x90/0x94, and `// VTABLE: IMPERIALISM 0x006653c8`. Removed
+  `ProductionClusterState`, `kVtableTProductionCluster`, and the manual
+  `cluster->vftable = ...` stores from trade_screen.cpp.
+- Removed stale global rows for the two new annotated vtables and their in-table slot
+  aliases (`65f210/65f2a4/65f3bc`, `6653c8/66545c/665574`) using `uv run python`.
+- Verification: `just build`, `just detect`, `just vtable-gate`, `just compare-canaries`.
+  Targeted compares: `0x00571460` -> 85.71% (real constructor; only call-target naming
+  differs), `0x00586920` -> 76.92% (real base constructor; field-init order tradeoff),
+  `0x00586840` -> 35.29% (EH/inlining tradeoff from real `new TProductionCluster()`),
+  `0x00586970` currently pairs to compiler destructor shape at 0.00%; do not "fix" this
+  with a fastcall/convention bridge. Existing unrelated duplicate-global and TControl
+  debug-sync warnings remain.
+
+2026-06-08 18:11 CEST — cleanup: remove TUberCluster bridge naming and synthetic ownership
+Follow-up correction after the TUber/TProduction extraction:
+- Removed the remaining `ConstructTUberClusterBaseState` helper name from source. The shared
+  bridge helper is now `ConstructTUberClusterObject()` and directly placement-calls the real
+  `TUberCluster()` constructor. No global `__fastcall ConstructTUberClusterBaseState` symbol
+  or cast remains.
+- Demoted TProductionCluster vtable single-jmp entries
+  `0x00402e55/0x0040324c/0x0040579f/0x00406118/0x004085a3/0x004096e2` and scalar deleting
+  destructor `0x00586970` from manual ownership. They remain named in symbols.csv for stubgen
+  but are no longer treated as semantic manual implementations in function_ownership.csv.
+- Verification: `just regen-stubs`, `just build`, `just detect`, targeted compares
+  `0x00571460` -> 85.71%, `0x00586920` -> 76.92%, `0x005869c0` -> 36.67% (still needs the
+ broader TView/TControl virtual-slot cleanup), `just vtable-gate`, `just compare-canaries`
+  (`below_floor=0`), and `git diff --check`.
+
+2026-06-08 18:18 CEST — TClosePicture real class extraction
+Moved another trade-screen flat vtable model into a real class:
+- Added `include/game/TClosePicture.h` / `src/game/TClosePicture.cpp` with
+  `class TClosePicture : public TPictureButton` and `// VTABLE: IMPERIALISM 0x00665608`.
+  The constructor entry `0x00586b70` is now normal `TClosePicture::TClosePicture()` and
+  calls the real `TPictureButton` base constructor. Removed the flat `ClosePictureState`,
+  `kVtableTClosePicture`, and manual vptr stores from trade_screen.cpp.
+- Typed TView slot 0x58 as `OwnerPanel()` and TView slot 0x120 as the four-argument mouse
+  dispatch virtual used by TClosePicture. `TClosePicture::vmethod_0072` now dispatches the
+  mouse event and then calls `OwnerPanel()` through the real vtable surface instead of a
+  raw `(*vtable)[0x58/4]` cast.
+- Removed stale TClosePicture vtable/global slot aliases
+  `665608/66569c/6657b4` from config/symbols.csv using `uv run python`.
+- Verification: `just sync-ownership` (6 updates), `just regen-stubs`, `just build`,
+  `just detect`, targeted compares `0x00586b70` -> 85.71%, `0x00586bf0` -> 59.26%,
+  `0x00586ad0` -> 45.28%, `just vtable-gate`, `just compare-canaries`
+  (`below_floor=0`, `parse_error=0`), and `git diff --check`. The lower scores are
+  accepted source-model tradeoffs from real constructor/virtual dispatch and normal
+  EH/frame emission; do not reintroduce fastcall constructor bridges or manual vptr stores
+  for these.
+
+2026-06-08 18:24 CEST — trade cleanup continuation: slot evidence and narrow typing
+Follow-up scan after the TClosePicture extraction:
+- Dumped `TUnitToolbarCluster` from slot 0 at `0x00664d38` and compared it with
+  `TUberCluster` at `0x0065f210`. The table depth matches the 0x73-slot TUber/TView shape,
+  and TUnitToolbarCluster overrides class/dtor plus slot 0x3c, slot 0x1c8, and slot 0x1cc.
+  Do not extract it yet as a normal C++ class: slot 0x1c8 is already modeled for
+  TClosePicture as a four-argument mouse handler, while TUnitToolbarCluster's target
+  `0x00407a36` is a one-argument resource-selection method. Forcing both through one
+  C++ virtual signature would corrupt one call ABI.
+- Attempted the warm-up field-typing path for trade metric/scenario records. The full
+  `CityTradeScenarioDescriptor` / `CityTradeProductionSlots` rewrite built but changed the
+  arithmetic/register shape in `0x005897b0`, so it was backed out. Kept only the safe local
+  `NationCityTradeState*` typing in `TIndustryCluster.cpp`; the metric array load remains in
+  its previous raw-offset form to avoid score churn.
+- Verification: `just build`, `just detect`, targeted `just compare 0x00588b70` (still
+  42.86%, same broad pre-existing mismatch pattern), `just vtable-gate`,
+  `just compare-canaries` (`below_floor=0`, `parse_error=0`), and `git diff --check`.

@@ -2963,38 +2963,6 @@ undefined4 HandleToggleButtonStateChangeAndRefresh(void)
   return 0;
 }
 
-// ghidra_name TUberCluster::CreateTUberClusterInstance
-// ghidra_proto void * __cdecl CreateTUberClusterInstance(void)
-// FUNCTION: IMPERIALISM 0x005713c0
-undefined4 CreateTUberClusterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::GetTUberClusterClassNamePointer
-// ghidra_proto void * __cdecl GetTUberClusterClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00571440
-undefined4 GetTUberClusterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::ConstructTUberClusterBaseState
-// ghidra_proto void * __thiscall ConstructTUberClusterBaseState(void)
-// FUNCTION: IMPERIALISM 0x00571460
-undefined4 ConstructTUberClusterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TUberCluster::DestructTUberClusterAndMaybeFree
-// ghidra_proto void * __thiscall DestructTUberClusterAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00571490
-undefined4 DestructTUberClusterAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_005714e0
 // ghidra_proto void __thiscall OrphanVtableAssignStub_005714e0(void)
 // FUNCTION: IMPERIALISM 0x005714e0

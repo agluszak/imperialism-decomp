@@ -52,7 +52,7 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
     cluster->vftable = reinterpret_cast<void*>(kVtableTShipyardCluster);
     cluster->field_88 = 0;
   }
@@ -67,7 +67,7 @@ void* __cdecl GetTShipyardClusterClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058a590
 TradeMoveStepCluster* __fastcall
 ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
   cluster->vftable = reinterpret_cast<void*>(kVtableTShipyardCluster);
   cluster->field_88 = 0;
   return cluster;

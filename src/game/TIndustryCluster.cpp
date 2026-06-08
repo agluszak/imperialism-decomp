@@ -38,7 +38,7 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
     cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
     cluster->field_88 = 0;
   }
@@ -62,7 +62,7 @@ void* __cdecl GetTIndustryClusterClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x00588af0
 void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
   cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
   cluster->field_88 = 0;
 }
@@ -88,7 +88,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
   short tagIndex = 0;
   short activeNationId = QueryActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationId);
-  void* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
+  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
 
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != context->summaryTag) {

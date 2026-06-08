@@ -52,7 +52,7 @@ public:
   virtual void vmethod_0019();
   virtual void vmethod_0020();
   virtual void vmethod_0021();
-  virtual void vmethod_0022();
+  virtual void* OwnerPanel();
   virtual void vmethod_0023();
   virtual void vmethod_0024();
   virtual void vmethod_0025();
@@ -102,7 +102,7 @@ public:
   virtual void vmethod_0069();
   virtual void vmethod_0070();
   virtual void vmethod_0071();
-  virtual void vmethod_0072();
+  virtual void vmethod_0072(int arg1, int arg2, int arg3, int arg4);
   virtual void vmethod_0073();
   virtual void vmethod_0074();
   virtual void vmethod_0075();

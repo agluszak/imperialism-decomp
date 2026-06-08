@@ -14,7 +14,7 @@ TradeMoveStepCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
   TradeMoveStepCluster* cluster =
       reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterBaseState(cluster);
+    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
     cluster->vftable = reinterpret_cast<void*>(kVtableTRailCluster);
     cluster->field_88 = 0;
     cluster->field_8e = 0;

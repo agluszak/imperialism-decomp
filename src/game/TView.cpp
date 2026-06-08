@@ -52,7 +52,7 @@ void TView::vmethod_0018() {}
 void TView::vmethod_0019() {}
 void TView::vmethod_0020() {}
 void TView::vmethod_0021() {}
-void TView::vmethod_0022() {}
+void* TView::OwnerPanel() { return 0; }
 void TView::vmethod_0023() {}
 void TView::vmethod_0024() {}
 void TView::vmethod_0025() {}
@@ -102,7 +102,12 @@ void TView::vmethod_0068() {}
 void TView::vmethod_0069() {}
 void TView::vmethod_0070() {}
 void TView::vmethod_0071() {}
-void TView::vmethod_0072() {}
+void TView::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
+  (void)arg1;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+}
 void TView::vmethod_0073() {}
 void TView::vmethod_0074() {}
 void TView::vmethod_0075() {}

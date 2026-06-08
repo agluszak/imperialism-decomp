@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/TControl.h"
+#include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TradeControl.h"
 #include "game/UiRuntimeContext.h"
@@ -17,6 +18,8 @@
 #include "game/TCombatReportView.h"
 #include "game/TNumberedArrowButton.h"
 
+#include <new>
+
 typedef TCivilianButton CivilianButtonState;
 typedef THQButton HQButtonState;
 typedef TPlacard PlacardState;
@@ -31,8 +34,8 @@ static const unsigned int kAddrCityOrderCapabilityState = 0x006A43D8;
 
 class TradeScreenRuntimeBridge {
 public:
-  static __inline void ConstructTUberClusterBaseState(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::ConstructTUberClusterBaseState)(self);
+  static __inline void ConstructTUberClusterObject(void* self) {
+    new (self) TUberCluster();
   }
 
   static __inline void ConstructUiResourceEntryType4B0C0(void* self) {

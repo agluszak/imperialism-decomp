@@ -34,6 +34,7 @@ add_executable(Imperialism
     src/game/TTwoPicSlider.cpp
     src/game/TCityProductionView.cpp
     src/game/TDiplomacyMapView.cpp
+    src/game/TDiplomacyTurnStateManager.cpp
     src/game/diplomacy_state.cpp
     src/game/trade_screen.cpp
   src/game/TAmtBar.cpp
@@ -47,6 +48,7 @@ add_executable(Imperialism
     src/game/THQButton.cpp
     src/game/TPictureResourceEntryBase.cpp
     src/game/TPictureButton.cpp
+    src/game/TClosePicture.cpp
     src/game/T2PictureButton.cpp
     src/game/TAlwaysPictureButton.cpp
     src/game/TToggleButton.cpp
@@ -63,6 +65,8 @@ add_executable(Imperialism
     src/game/TArmyToolbar.cpp
     src/game/TStratReportView.cpp
     src/game/TCluster.cpp
+    src/game/TUberCluster.cpp
+    src/game/TProductionCluster.cpp
     src/game/TEngineerDialog.cpp
     src/game/TCivToolbar.cpp
     src/game/TCivilianOrderState.cpp
