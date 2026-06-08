@@ -15498,7 +15498,6 @@ address|name|size|type|prototype
 66533c|g_vslotTCityBarCluster_Slot01AC_InvokeControlAction||global|
 665360|g_vslotTCityBarCluster_Slot01D0_NotifyControlStateChange||global|
 665610|g_vtblCandidate_00665610_len30||global|
-665838|g_vtblTAmtBarCluster||global|
 6658cc|g_vslotTAmtBarCluster_Slot0094_ResolveControlByTag||global|
 6659e4|g_vslotTAmtBarCluster_Slot01AC_InvokeControlAction||global|
 665cc8|g_vtblTAmtBar||global|

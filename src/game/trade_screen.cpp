@@ -7,6 +7,7 @@
 #include "game/CString.h"
 #include "game/ui_widget_shared.h"
 #include "game/TView.h"
+#include "game/TUberCluster.h"
 #include "game/trade_quickdraw.h"
 #include "game/TAmtBar.h"
 #include "game/TTraderAmtBar.h"
@@ -186,12 +187,13 @@ struct TradeMoveStepCluster {
 
 struct TradeMovePanelContext;
 
-struct TradeScreenContext {
-  void* vftable;
-  char pad_04[0x18];
-  int rowStateTag;
-  char pad_20[0x68];
-  short tradeMetricSlot;
+// The trade-screen UI object is a cluster-family view: it dispatches through the
+// TView vtable (ResolveControlByTag @0x94), reads TView::selectedControlTagOrState1c
+// (0x1c), and carries a cluster field at 0x88. Model it as real TUberCluster
+// inheritance instead of a standalone vftable struct, so member access and slot
+// dispatch need no reinterpret_cast over the native object.
+struct TradeScreenContext : public TUberCluster {
+  short tradeMetricSlot;  // 0x88, first field past TUberCluster
 
   __inline TradeControl* ResolveControlByTag(int controlTag);
   __inline TradeControl* RequireControlByTag(int controlTag);
@@ -322,7 +324,10 @@ struct TradeMovePanelContext {
 };
 
 __inline TradeControl* TradeScreenContext::ResolveControlByTag(int controlTag) {
-  return reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(controlTag));
+  // Shadows TView::ResolveControlByTag; call the base explicitly to avoid recursion.
+  // The remaining cast is the TControl*->TradeControl* dispatch-view bridge for the
+  // trade-specific control slots (e.g. QueryValue @0x1E8), not a this-pointer cast.
+  return reinterpret_cast<TradeControl*>(TView::ResolveControlByTag(controlTag));
 }
 
 __inline TradeControl* TradeScreenContext::RequireControlByTag(int controlTag) {
@@ -558,8 +563,8 @@ void __fastcall HandleCityDialogSelectionAndBackControlReset(TStatusButton* butt
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
 
-  if (selectedIndex == reinterpret_cast<TView*>(button)->QuerySelectedIndexSlotBC() && reinterpret_cast<TView*>(button)->GetBoolSlot28() != '\0') {
-    if (reinterpret_cast<TView*>(button)->GetBoolSlot1BC() == '\0') {
+  if (selectedIndex == button->QuerySelectedIndexSlotBC() && button->GetBoolSlot28() != '\0') {
+    if (button->GetBoolSlot1BC() == '\0') {
       if (g_pActiveCityDialogLegendSelectionOwner != 0) {
         reinterpret_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
         g_pActiveCityDialogLegendSelectionOwner = 0;
@@ -579,9 +584,9 @@ void __fastcall HandleCityDialogSelectionAndBackControlReset(TStatusButton* butt
           g_pActiveCityDialogLegendSelectionOwner = 0;
         }
         g_bCityDialogLegendSelectionInitialized = 0;
-        void* ownerPanel = reinterpret_cast<TView*>(button)->OwnerPanel();
+        TView* ownerPanel = reinterpret_cast<TView*>(button)->OwnerPanel();
         if (ownerPanel != 0) {
-          reinterpret_cast<TView*>(ownerPanel)->CallVoidSlotA0();
+          ownerPanel->CallVoidSlotA0();
         }
       }
     }
@@ -814,7 +819,7 @@ char __fastcall IsTradeSellControlAtMinimum(TradeScreenContext* context, int unu
   if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
     return 0;
   }
-  TradeControl* sellControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(context)->ResolveControlByTag(kControlTagSell));
+  TradeControl* sellControl = context->ResolveControlByTag(kControlTagSell);
   return sellControl->QueryValue() <= 0 ? 1 : 0;
 }
 
@@ -827,7 +832,7 @@ char __fastcall IsTradeSellControlAtMinimum(TradeScreenContext* context, int unu
 
 // FUNCTION: IMPERIALISM 0x00587950
 short TradeScreenContext::QueryTradeSellControlQuantity(void) {
-  TradeControl* sellControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagSell));
+  TradeControl* sellControl = this->ResolveControlByTag(kControlTagSell);
   return sellControl->QueryValue();
 }
 
@@ -844,7 +849,7 @@ short TradeScreenContext::QueryTradeSellControlQuantity(void) {
 
 // FUNCTION: IMPERIALISM 0x00587980
 char TradeScreenContext::IsTradeBidControlActionable(void) {
-  TradeControl* bidControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagCard));
+  TradeControl* bidControl = this->ResolveControlByTag(kControlTagCard);
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -874,7 +879,7 @@ char TradeScreenContext::IsTradeBidControlActionable(void) {
 
 // FUNCTION: IMPERIALISM 0x00587a10
 char TradeScreenContext::IsTradeOfferControlActionable(void) {
-  TradeControl* offerControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagOffr));
+  TradeControl* offerControl = this->ResolveControlByTag(kControlTagOffr);
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
@@ -921,7 +926,7 @@ void TradeScreenContext::SetTradeBidSecondaryBitmapState(void) {
 
   if (QueryUiScreenModeRaw(g_pUiRuntimeContext) < 4) {
     bidControl->SetEnabledPair(1, 1);
-    if (rowStateTag == kTradeRowStateTag_67643020) {
+    if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateB, 0);
     } else {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
@@ -957,7 +962,7 @@ void TradeScreenContext::SetTradeBidControlBitmapState(void) {
   }
 
   bidControl->SetEnabledPair(1, 0);
-  if (rowStateTag == kTradeRowStateTag_67643020) {
+  if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
     bidControl->SetBitmap(kTradeBitmapBidStateB, 0);
   } else {
     bidControl->SetBitmap(kTradeBitmapBidStateA, 0);
@@ -1017,7 +1022,7 @@ void TradeScreenContext::SetTradeOfferControlBitmapState(void) {
   }
 
   offerControl->SetEnabledPair(1, 0);
-  if (rowStateTag == kTradeRowStateTag_67643020) {
+  if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
     offerControl->SetBitmap(kTradeBitmapOfferStateB, 0);
   } else {
     offerControl->SetBitmap(kTradeBitmapOfferStateA, 0);
@@ -1083,7 +1088,7 @@ void TradeScreenContext::SetTradeOfferSecondaryBitmapState(void) {
     NationState* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->SetEnabledPair(1, 0);
-      if (rowStateTag == kTradeRowStateTag_67643020) {
+      if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
         offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateB, 0);
       } else {
         offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateA, 0);

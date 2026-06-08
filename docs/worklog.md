@@ -1,5 +1,31 @@
 # Worklog
 
+## 2026-06-08 (later) — cast cleanup, TradeScreenContext inheritance, UI vtable ground truth
+
+1. Scope: `src/game/trade_screen.cpp`, `src/game/TAmtBarCluster.cpp`, `config/symbols.csv`,
+   `tools/ghidra/vtable_sig_compare.py` (new).
+2. Changes:
+   - Removed dead `g_vtblTAmtBarCluster` scaffolding (char def + symbols.csv entry); the
+     `// VTABLE:` annotation owns 0x665838 like canonical real-inheritance classes. This
+     bumped `ConstructTradeMoveControlPanelBasic` (0x586ce0) 71.43%→85.71%.
+   - Dropped redundant `reinterpret_cast<TView*>(button)` (TStatusButton IS-A TView).
+   - Modeled `TradeScreenContext` as real `: public TUberCluster` inheritance (was a
+     standalone `void* vftable` struct); `rowStateTag`→inherited
+     `selectedControlTagOrState1c`; inline double-casts now use the member helper.
+   - Added `tools/ghidra/vtable_sig_compare.py`: compares vtables by RET-imm arg bytes
+     across classes to find true signature divergence (vs pointer equality).
+3. Ground-truth UI hierarchy investigation (saved to memory
+   `ui-vtable-hierarchy-ground-truth.md`): TView's real vtable is 104 slots (0x00-0x19c);
+   TEventHandler owns slot1 = scalar-deleting dtor; reccmp warns "Recomp vtable is larger
+   than orig vtable for TView". **TAmtBar is a TView-SIBLING of TControl, not a subclass**
+   (proven: TButton/TStaticText/TCluster share TControl's 0x1A0-0x1C0 byte-for-byte,
+   TAmtBar's are entirely different; slot 0x1A4 is 1-arg in TControl vs 2-arg SetBarMetric
+   in TAmtBar). TView/TControl are over-declared with virtuals that belong to lower
+   classes. Dissolving TradeControl + fixing this is a staged per-class reconstruction
+   (TCivDescription is mis-parented `:TView` but uses TControl slots — first target).
+4. Validation: `just build` passed; `just compare` neutral on touched cluster fns;
+   `just vtable-gate` passed; no duplicate markers.
+
 ## 2026-06-08
 
 ### TAmtBarCluster duplicate-ownership fix + synthetic destructor + real types

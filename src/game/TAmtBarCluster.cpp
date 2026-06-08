@@ -21,7 +21,6 @@ const int kAssertLineTradeSellIncCap = 0x81d;
 
 extern "C" {
 char g_pClassDescTAmtBarCluster = 0;
-char g_vtblTAmtBarCluster = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00586c40
