@@ -19,6 +19,12 @@ void* __fastcall thunk_GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int 
   return GetPtrListEntryByOneBasedIndex(self, unusedEdx, oneBasedIndex);
 }
 
+// FUNCTION: IMPERIALISM TODO
+TSortedPtrList::TSortedPtrList(): TIndexAndRankList() {}
+
+// FUNCTION: IMPERIALISM TODO
+TSortedPtrList::~TSortedPtrList() {}
+
 // FUNCTION: IMPERIALISM 0x004883e0
 void* TSortedPtrList::GetTSortedPtrListClassNamePointer() {
   return &g_pClassDescTSortedPtrList;

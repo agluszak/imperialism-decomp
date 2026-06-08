@@ -10,7 +10,7 @@ undefined4 DestructCObArray(void);
 // FUNCTION: IMPERIALISM 0x00601baa
 TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
 
-// FUNCTION: IMPERIALISM 0x00601bc1
+
 void* TIndexAndRankList::DestructCObArrayAndMaybeFree(byte freeSelfFlag) {
   TIndexAndRankList* self = this;
   reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);
@@ -20,6 +20,7 @@ void* TIndexAndRankList::DestructCObArrayAndMaybeFree(byte freeSelfFlag) {
   return self;
 }
 
+// FUNCTION: IMPERIALISM 0x00601bc1
 TIndexAndRankList::~TIndexAndRankList() {}
 
 void* TIndexAndRankList::GetRuntimeClass() {

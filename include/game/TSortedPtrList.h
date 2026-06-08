@@ -12,13 +12,8 @@ public:
   short pad16;
 
   // Compiler emits the 0x649068 vtable write.
-  TSortedPtrList() : TIndexAndRankList() {}
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
+  TSortedPtrList();
+  virtual ~TSortedPtrList();
 
   static void* GetTSortedPtrListClassNamePointer();
   static TSortedPtrList* ConstructTSortedPtrListBaseState();

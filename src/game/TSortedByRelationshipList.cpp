@@ -18,21 +18,19 @@ void* TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer() 
 }
 
 // FUNCTION: IMPERIALISM 0x004ee540
-TSortedByRelationshipList* TSortedByRelationshipList::ConstructObArrayWithVtable654D38() {
-  this->TIndexAndRankList::TIndexAndRankList();
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(&g_vtblTSortedByRelationshipList);
-  return this;
-}
+TSortedByRelationshipList::TSortedByRelationshipList()
+    : TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x004ee570
-void* TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag) {
-  TSortedByRelationshipList* self = this;
-  reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(self)));
-  }
-  return self;
-}
+TSortedByRelationshipList::~TSortedByRelationshipList() {};
+// void* TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag) {
+//   TSortedByRelationshipList* self = this;
+//   reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);
+//   if ((freeSelfFlag & 1) != 0) {
+//     FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(self)));
+//   }
+//   return self;
+// }
 
 // FUNCTION: IMPERIALISM 0x004ee4b0
 TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {

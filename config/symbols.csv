@@ -14263,7 +14263,6 @@ address|name|size|type|prototype
 654cb8|g_pClassDescTSortedByRelationshipList||global|
 654cd0|g_pClassDescTDiplomacyMgr||global|
 654ce8|g_pClassDescTNextDiplomationCommand||global|
-654d38|g_vtblTSortedByRelationshipList||global|
 654d3c|g_vslotTDefenderMinister_Slot01AC_InvokeControlAction||global|
 654d64|g_vslotTDefenderMinister_Slot01D4_NotifyControlSelectionChange||global|
 654d90|vtbl_DiplomacyTurnStateManager_00654d90||global|
