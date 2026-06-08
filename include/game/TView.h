@@ -134,13 +134,10 @@ public:
   virtual void vmethod_0101();
   virtual void vmethod_0102();
   virtual void vmethod_0103();
-  virtual void vmethod_0104();
-  virtual void SwitchTab(int arg1 = 0, int arg2 = 0, int arg3 = 0);
-  virtual void vmethod_0106();
-  virtual void vmethod_0107();
-  virtual void vmethod_0108();
-  virtual void vmethod_0109();
-  virtual void vmethod_0110();
-  virtual char GetBoolSlot1BC();
+  // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ (formerly declared here
+  // as vmethod_0104..0110, SwitchTab, GetBoolSlot1BC) belong to the sibling branches
+  // (TControl, TCivDescription, TAmtBar, ...) that each introduce their own virtuals
+  // there. See memory ui-vtable-hierarchy-ground-truth. The destructor is slot 1
+  // (TEventHandler override), so its declaration position is irrelevant.
   virtual ~TView();
 };

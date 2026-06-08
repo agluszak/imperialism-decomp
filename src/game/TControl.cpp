@@ -28,6 +28,14 @@ void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
 }
 
 // Dummy methods
+void TControl::vmethod_0104() {}
+void TControl::SwitchTab(int arg1, int arg2, int arg3) {}
+void TControl::vmethod_0106() {}
+void TControl::vmethod_0107() {}
+void TControl::vmethod_0108() {}
+void TControl::vmethod_0109() {}
+void TControl::vmethod_0110() {}
+char TControl::GetBoolSlot1BC() { return 0; }
 void TControl::vmethod_0112() {}
 void TControl::vmethod_0113() {}
 void TControl::SetControlClassAndRefresh(int classState, int refreshFlag) {}

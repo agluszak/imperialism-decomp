@@ -141,11 +141,3 @@ void TView::vmethod_0100() {}
 void TView::vmethod_0101() {}
 void TView::vmethod_0102() {}
 void TView::vmethod_0103() {}
-void TView::vmethod_0104() {}
-void TView::SwitchTab(int arg1, int arg2, int arg3) {}
-void TView::vmethod_0106() {}
-void TView::vmethod_0107() {}
-void TView::vmethod_0108() {}
-void TView::vmethod_0109() {}
-void TView::vmethod_0110() {}
-char TView::GetBoolSlot1BC() { return 0; }
