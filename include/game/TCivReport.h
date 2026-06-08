@@ -7,7 +7,7 @@
 class TCivReport : public TPictureResourceEntryBase {
 public:
   TCivReport();
-  virtual ~TCivReport();
+  // ~TCivReport is compiler-generated (implicit virtual dtor).
 };
 
 ASSERT_SIZE(TCivReport, 0x90);

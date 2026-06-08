@@ -1,5 +1,4 @@
 #include "game/TSortedByRelationshipList.h"
-#include <new>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -9,8 +8,10 @@ extern "C" {
 char g_pClassDescTSortedByRelationshipList = 0;
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
-undefined4 DestructCObArray(void);
+// FUNCTION: IMPERIALISM 0x004ee4b0
+TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
+  return new TSortedByRelationshipList();
+}
 
 // FUNCTION: IMPERIALISM 0x004ee520
 void* TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer() {
@@ -21,18 +22,6 @@ void* TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer() 
 TSortedByRelationshipList::TSortedByRelationshipList()
     : TSortedPtrList() {}
 
-// FUNCTION: IMPERIALISM 0x004ee570
-TSortedByRelationshipList::~TSortedByRelationshipList() {};
-// void* TSortedByRelationshipList::DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag) {
-//   TSortedByRelationshipList* self = this;
-//   reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);
-//   if ((freeSelfFlag & 1) != 0) {
-//     FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(self)));
-//   }
-//   return self;
-// }
-
-// FUNCTION: IMPERIALISM 0x004ee4b0
-TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
-  return new TSortedByRelationshipList();
-}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x004ee570
+// TSortedByRelationshipList::`scalar deleting destructor'

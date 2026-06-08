@@ -4,11 +4,6 @@
 #pragma optimize("y", on)
 #endif
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
-
-// Shared CObject runtime-class vtable (defined in TCapacityOrder.cpp).
-extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-
 extern "C" {
 char g_pClassDescTHandleStream = 0;
 }
@@ -36,17 +31,9 @@ void THandleStream::AdvanceExtent(int handle, int delta) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00489640
-void THandleStream::DestructTHandleStreamBaseState() {
-  *reinterpret_cast<void**>(this) =
-      reinterpret_cast<void*>(&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4);
-}
+// Destructors are compiler-generated (implicit) from real TStream inheritance.
+// SYNTHETIC: IMPERIALISM 0x00489640
+// THandleStream::~THandleStream
 
-// FUNCTION: IMPERIALISM 0x00489610
-void* THandleStream::DestructTHandleStreamAndMaybeFree(byte freeSelfFlag) {
-  this->DestructTHandleStreamBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
-  }
-  return this;
-}
+// SYNTHETIC: IMPERIALISM 0x00489610
+// THandleStream::`scalar deleting destructor'

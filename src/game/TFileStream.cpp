@@ -13,8 +13,6 @@ typedef void* hwnd_t;
 extern "C" __declspec(dllimport) int __stdcall MessageBoxA(hwnd_t hWnd, const char* text,
                                                            const char* caption, unsigned int type);
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
-undefined4 thunk_DestructTObjectAndMaybeFree(void);
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 extern "C" {
@@ -45,14 +43,9 @@ TFileStream::TFileStream() {
   backingArchiveOrStream = 0;
 }
 
+// Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489130
-void* TFileStream::DestructTFileStreamAndMaybeFree(unsigned int flags) {
-  ::thunk_DestructTObjectAndMaybeFree(); // or whatever the real complete teardown is
-  if ((flags & 1) != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(this));
-  }
-  return this;
-}
+// TFileStream::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00489220
 int TFileStream::ReadBytesFromBackingArchive(void* destination, unsigned int requestedCount) {

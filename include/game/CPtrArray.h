@@ -21,8 +21,6 @@ public:
   }
   virtual ~CPtrArray();
 
-  void* DestructCObArrayAndMaybeFree(byte freeSelfFlag);
-
   void SetSize(int nNewSize, int nGrowBy = -1);
   void SetAtGrow(int nIndex, void* newElement);
   void InsertAt(int nIndex, void* newElement, int nCount = 1);

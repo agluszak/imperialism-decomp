@@ -669,17 +669,9 @@ void* __cdecl GetTStatusButtonClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTStatusButton);
 }
 
-// FUNCTION: IMPERIALISM 0x005863b0
-TStatusButton* __fastcall DestructTStatusButtonAndMaybeFree(TStatusButton* button, int unusedEdx,
-                                                            unsigned char freeSelfFlag) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)button);
-  }
-  return button;
-}
+// Destructor is compiler-generated (implicit) from real TButton inheritance.
+// SYNTHETIC: IMPERIALISM 0x005863b0
+// TStatusButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586400
 void __fastcall HandleCityDialogSelectionAndBackControlReset(TStatusButton* button, int unusedEdx,

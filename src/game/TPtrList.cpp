@@ -23,7 +23,7 @@ void TPtrList::ConstructTPtrListBaseState(int ownerContext) {
   new (&this->listState) CPtrList(ownerContext);
 }
 
-// FUNCTION: IMPERIALISM 0x004885f0
-void* TPtrList::DestructTPtrListAndMaybeFree(byte freeSelfFlag, int, int) {
-  return this->listState.DestructCPtrListAndMaybeFree(freeSelfFlag);
-}
+// Destructor is compiler-generated; the implicit ~TPtrList destroys the embedded
+// listState (CPtrList), which is what the scalar deleting destructor does.
+// SYNTHETIC: IMPERIALISM 0x004885f0
+// TPtrList::`scalar deleting destructor'

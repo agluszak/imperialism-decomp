@@ -7,9 +7,8 @@
 class TIndexAndRankList : public CPtrArray {
 public:
   TIndexAndRankList();
-  virtual ~TIndexAndRankList();
-
-  void* DestructCObArrayAndMaybeFree(byte freeSelfFlag);
+  // ~TIndexAndRankList is compiler-generated (implicit virtual dtor); see
+  // the SYNTHETIC scalar deleting destructor in the .cpp.
 
   virtual void* GetRuntimeClass();
   virtual int AssertValidOrSlot08();

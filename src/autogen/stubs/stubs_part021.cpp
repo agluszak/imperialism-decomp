@@ -3019,14 +3019,6 @@ undefined4 AssignSharedStringFromLoadedResourceAlt(void)
   return 0;
 }
 
-// ghidra_name CObArray::DestructCObArray
-// ghidra_proto void __cdecl DestructCObArray(TIndexAndRankList * pThis)
-// FUNCTION: IMPERIALISM 0x00601bdd
-undefined4 DestructCObArray(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::CMapPtrToPtr_ctor
 // ghidra_proto void __thiscall CMapPtrToPtr_ctor(int nBlockSize)
 // FUNCTION: IMPERIALISM 0x0060339a

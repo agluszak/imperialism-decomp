@@ -12,6 +12,5 @@ public:
 
   void* GetRuntimeClass() override;
   TCountingStream();
-  void DestructTCountingStreamBaseState();
-  void* DestructTCountingStreamAndMaybeFree(byte freeSelfFlag);
+  // Destructors are compiler-generated (implicit virtual dtor from TStream).
 };

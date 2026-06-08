@@ -22,15 +22,6 @@ void* __cdecl GetTArmyInfoViewClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x005915a0
 TArmyInfoView::TArmyInfoView() : TPictureResourceEntryBase() {}
 
-// FUNCTION: IMPERIALISM 0x005915d0
-TArmyInfoView* __fastcall DestructTArmyInfoViewAndMaybeFree(TArmyInfoView* view, int unusedEdx,
-                                                            unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  view->~TArmyInfoView();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)view);
-  }
-  return view;
-}
-
-TArmyInfoView::~TArmyInfoView() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x005915d0
+// TArmyInfoView::`scalar deleting destructor'

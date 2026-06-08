@@ -839,6 +839,7 @@ address|target_cpp|ownership|note
 601b94|src/game/CPtrList.cpp|manual|marker_sync
 601baa|src/game/TIndexAndRankList.cpp|manual|marker_sync
 601bc1|src/game/TIndexAndRankList.cpp|manual|marker_sync
+601bdd|src/game/CPtrArray.cpp|manual|marker_sync
 601c14|src/game/CPtrArray.cpp|manual|marker_sync
 601de3|src/game/CPtrArray.cpp|manual|marker_sync
 601e0a|src/game/CPtrArray.cpp|manual|marker_sync

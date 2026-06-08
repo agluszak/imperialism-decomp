@@ -7,7 +7,7 @@
 class TArmyInfoView : public TPictureResourceEntryBase {
 public:
   TArmyInfoView();
-  virtual ~TArmyInfoView();
+  // ~TArmyInfoView is compiler-generated (implicit virtual dtor).
 };
 
 ASSERT_SIZE(TArmyInfoView, 0x90);

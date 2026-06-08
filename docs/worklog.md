@@ -2917,3 +2917,40 @@ below_floor=0; civ 0x5c28c0 100%, military 0x5c2df0 85.7%, navy 0x551430 82.6%.
 - Scope: lifetime-only promotion. Left the two real methods `IsField3cWithinShortLimit84` (0x5849b0) and `SyncField0fTowardsField21ByDirectionAndRefresh` (0x5849d0) as generated stubs — the latter has raw `field0_0x0[0x72]/[0x3e]/[0x45]` slot calls that would violate the raw-vtable gate in a non-baselined file; moving them needs a confirmed control-vtable slot model first.
 - Scores mirror the established TWarningView/TToggleButton pattern (all up from 0% stubs): factory 45.28%, classname 50.00%, ctor 71.43%, dtor 66.67%.
 - Verification: sync-ownership, regen-stubs, build, detect, targeted compares, vtable-gate (passed, 80 matches), compare-canaries (below_floor=0).
+
+## 2026-06-08 — SYNTHETIC scalar deleting destructors (mechanism + rollout)
+
+Discovered how reccmp pairs compiler-generated scalar deleting destructors: by EXACT
+demangled name in config/symbols.csv (`Class::`scalar deleting destructor'`) matched to
+the recomp PDB `??_G`/`??_E` symbol (match_functions). FUNCTION markers pair by source
+LINE; SYNTHETIC (bodyless) can only pair by name. Hand-written empty `~Class(){}` bodies
+COMDAT-fold → reccmp "Debug data out of sync" → collateral unpairing of adjacent funcs;
+fix = make the dtor implicit (compiler-generated), not hand-written.
+
+Converted (real inheritance + implicit dtors + SYNTHETIC markers; killed __fastcall
+bridges and DestructXAndMaybeFree/BaseState helpers):
+- CPtrArray chain: TIndexAndRankList 0x601bc1 (81.8%), TSortByPriceList 0x534740 (58.8%)
+  + ~ 0x534770 (100%), TSortedByRelationshipList 0x4ee570 (81.8%); CPtrArray ~ 0x601bdd.
+- Buttons/views: TBoycottButton 0x5847b0, TToggleButton 0x571120, TAlwaysPictureButton
+  0x570a20, TArmyInfoView 0x5915d0, TWarningView 0x592930 (all 50%), TCivReport 0x590c60
+  (50%), TStatusButton 0x5863b0 (64%).
+- Streams: TCountingStream 0x489440, THandleStream 0x489610, TFileStream 0x489130 (all
+  81.8%); ordinary ~ 0x489470/0x489640 SYNTHETIC (0%, refine later).
+- Lists: CPtrList 0x601f40 (90.9%) + ~ 0x601f7c (75%); TPtrList 0x4885f0 SYNTHETIC but
+  ABSENT (MSVC doesn't emit ??_GTPtrList — TPtrList never deleted directly here).
+
+False positives skipped (name says Destruct*AndMaybeFree but body is NOT a destructor):
+TCivDescription 0x58f1a0 (click hit-test), TFocusAnimation 0x4a0190 (render/tick).
+
+Still need class recovery (non-polymorphic; no recomp ??_G yet) before conversion:
+CDocument, TCapacityOrder, TCivToolbar, trade clusters (TIndustryCluster, TRailCluster,
+TShipyardCluster, TUnitToolbarCluster, TCityBarCluster, TProductionCluster), TObject.
+
+Verified: raw-vtable gate passes; all 8 TGreatPower canaries at/above floor; no new
+out-of-sync beyond pre-existing TControl.cpp:17. Implemented 9622/9634, accuracy ~11.9%.
+
+Follow-up: removed custom `operator new`/`operator delete` from TSortByPriceList (per
+user). The no-op `operator delete` was suppressing the free in the scalar deleting
+destructor; removing both took 0x534740 from 58.8% -> 81.8% (ctor stays 100%, overall
+accuracy 11.92->11.93%). Lesson: a no-op custom `operator delete` lowers `??_G` match —
+prefer the real global delete unless evidence shows a class-specific allocator.

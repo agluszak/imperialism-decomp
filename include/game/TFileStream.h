@@ -16,7 +16,7 @@ public:
 
   void* GetRuntimeClass() override;
   TFileStream();
-  void* DestructTFileStreamAndMaybeFree(unsigned int flags);
+  // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing
   // CArchive, asserting the backing pointer is non-null first.

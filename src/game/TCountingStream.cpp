@@ -4,9 +4,6 @@
 #pragma optimize("y", on)
 #endif
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
-undefined4 thunk_DestructTObjectAndMaybeFree(void);
-
 extern "C" {
 char g_pClassDescTCountingStream = 0;
 }
@@ -22,16 +19,9 @@ TCountingStream::TCountingStream() {
   this->positionOrByteCount = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00489470
-void TCountingStream::DestructTCountingStreamBaseState() {
-  ::thunk_DestructTObjectAndMaybeFree();
-}
+// Destructors are compiler-generated (implicit) from real TStream inheritance.
+// SYNTHETIC: IMPERIALISM 0x00489470
+// TCountingStream::~TCountingStream
 
-// FUNCTION: IMPERIALISM 0x00489440
-void* TCountingStream::DestructTCountingStreamAndMaybeFree(byte freeSelfFlag) {
-  this->DestructTCountingStreamBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
-  }
-  return this;
-}
+// SYNTHETIC: IMPERIALISM 0x00489440
+// TCountingStream::`scalar deleting destructor'

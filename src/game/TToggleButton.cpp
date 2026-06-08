@@ -23,18 +23,9 @@ void* __cdecl GetTToggleButtonClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x005710f0
 TToggleButton::TToggleButton() : TPictureResourceEntryBase() {}
 
-// FUNCTION: IMPERIALISM 0x00571120
-TToggleButton* __fastcall DestructTToggleButtonAndMaybeFree(TToggleButton* button, int unusedEdx,
-                                                            unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  button->~TToggleButton();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)button);
-  }
-  return button;
-}
-
-TToggleButton::~TToggleButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00571120
+// TToggleButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00405f8d
 void TToggleButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) {

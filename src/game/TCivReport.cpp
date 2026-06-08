@@ -1,6 +1,5 @@
 #include "game/TCivReport.h"
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 thunk_BuildCivReportNationEntryDetailTextBlock(void);
 
 namespace {
@@ -23,18 +22,9 @@ void* __cdecl GetTCivReportClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00590c30
 TCivReport::TCivReport() : TPictureResourceEntryBase() {}
 
-// FUNCTION: IMPERIALISM 0x00590c60
-TCivReport* __fastcall DestructTCivReportAndMaybeFree(TCivReport* report, int unusedEdx,
-                                                      unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  report->~TCivReport();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)report);
-  }
-  return report;
-}
-
-TCivReport::~TCivReport() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00590c60
+// TCivReport::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00590cb0
 void __fastcall BuildCivReportNationEntryDetailTextBlock(TCivReport* context, int unusedEdx,

@@ -28,8 +28,6 @@ public:
   CPtrList(int blockSize = 10);
   virtual ~CPtrList();
 
-  void* DestructCPtrListAndMaybeFree(byte freeSelfFlag);
-
   void RemoveAll();
   CPtrListNode* NewNode(CPtrListNode* prev, CPtrListNode* next);
   void FreeNode(CPtrListNode* node);

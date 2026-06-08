@@ -22,16 +22,6 @@ void* __cdecl GetTAlwaysPictureButtonClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x005709f0
 TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 
-// FUNCTION: IMPERIALISM 0x00570a20
-TAlwaysPictureButton* __fastcall
-DestructTAlwaysPictureButtonAndMaybeFree(TAlwaysPictureButton* button, int unusedEdx,
-                                         unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  button->~TAlwaysPictureButton();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)button);
-  }
-  return button;
-}
-
-TAlwaysPictureButton::~TAlwaysPictureButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00570a20
+// TAlwaysPictureButton::`scalar deleting destructor'

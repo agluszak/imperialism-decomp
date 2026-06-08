@@ -4,24 +4,13 @@
 #pragma optimize("ys", on)
 #endif
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
-undefined4 DestructCObArray(void);
-
 // FUNCTION: IMPERIALISM 0x00601baa
 TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
 
-
-void* TIndexAndRankList::DestructCObArrayAndMaybeFree(byte freeSelfFlag) {
-  TIndexAndRankList* self = this;
-  reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(self);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(self)));
-  }
-  return self;
-}
-
-// FUNCTION: IMPERIALISM 0x00601bc1
-TIndexAndRankList::~TIndexAndRankList() {}
+// The ordinary destructor and the scalar deleting destructor below are both
+// compiler-generated (implicit) from real inheritance — never hand-written.
+// SYNTHETIC: IMPERIALISM 0x00601bc1
+// TIndexAndRankList::`scalar deleting destructor'
 
 void* TIndexAndRankList::GetRuntimeClass() {
   return 0;

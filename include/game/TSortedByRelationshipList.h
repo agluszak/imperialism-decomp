@@ -7,12 +7,10 @@
 class TSortedByRelationshipList : public TSortedPtrList {
 public:
   TSortedByRelationshipList();
-  virtual ~TSortedByRelationshipList();
+  // Destructor is compiler-generated (implicit virtual dtor).
 
   static void* GetTSortedByRelationshipListClassNamePointer();
   static TSortedByRelationshipList* CreateTSortedByRelationshipListInstance();
-  TSortedByRelationshipList* ConstructObArrayWithVtable654D38();
-  void* DestructTSortedByRelationshipListAndMaybeFree(byte freeSelfFlag);
 };
 
 ASSERT_SIZE(TSortedByRelationshipList, 0x18);

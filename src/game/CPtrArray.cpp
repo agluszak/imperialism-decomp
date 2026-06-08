@@ -28,6 +28,7 @@ inline void MoveMemory(void* dst, const void* src, int size) {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00601bdd
 CPtrArray::~CPtrArray() {
   if (this->entries != 0) {
     FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this->entries)));

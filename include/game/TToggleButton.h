@@ -7,7 +7,7 @@
 class TToggleButton : public TPictureResourceEntryBase {
 public:
   TToggleButton();
-  virtual ~TToggleButton();
+  // ~TToggleButton is compiler-generated (implicit virtual dtor).
 
   virtual void TToggleButton_VtblSlot116(int isPressed, int notifyParent);
 };

@@ -7,7 +7,7 @@
 class TAlwaysPictureButton : public TPictureButton {
 public:
   TAlwaysPictureButton();
-  virtual ~TAlwaysPictureButton();
+  // ~TAlwaysPictureButton is compiler-generated (implicit virtual dtor).
 };
 
 ASSERT_SIZE(TAlwaysPictureButton, 0x94);

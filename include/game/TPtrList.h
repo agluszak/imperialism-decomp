@@ -17,7 +17,6 @@ struct TPtrList : public RefCountedObjectBase {
 
   static void* GetTPtrListClassNamePointer();
   void ConstructTPtrListBaseState(int ownerContext);
-  void* DestructTPtrListAndMaybeFree(byte freeSelfFlag, int unused1, int unused2);
 };
 
 ASSERT_SIZE(TPtrList, 0x20);

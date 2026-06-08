@@ -23,16 +23,9 @@ void* __cdecl GetTBoycottButtonClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00584780
 TBoycottButton::TBoycottButton() : TToggleButton() {}
 
-// FUNCTION: IMPERIALISM 0x005847b0
-TBoycottButton* __fastcall DestructTBoycottButtonAndMaybeFree(TBoycottButton* button, int unusedEdx, unsigned char freeSelfFlag) {
-  button->~TBoycottButton();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<unsigned int>(button));
-  }
-  return button;
-}
-
-TBoycottButton::~TBoycottButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x005847b0
+// TBoycottButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) {

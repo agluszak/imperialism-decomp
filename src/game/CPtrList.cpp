@@ -41,14 +41,9 @@ CPtrList::~CPtrList() {
   RemoveAll();
 }
 
-// FUNCTION: IMPERIALISM 0x00601f40
-void* CPtrList::DestructCPtrListAndMaybeFree(byte freeSelfFlag) {
-  this->CPtrList::~CPtrList();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
-  }
-  return this;
-}
+// The scalar deleting destructor is compiler-generated from the virtual dtor.
+// SYNTHETIC: IMPERIALISM 0x00601f40
+// CPtrList::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00601f5c
 void CPtrList::RemoveAll() {

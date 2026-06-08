@@ -9,7 +9,7 @@ public:
   char pad_90_to_93[0x04];
 
   TWarningView();
-  virtual ~TWarningView();
+  // ~TWarningView is compiler-generated (implicit virtual dtor).
 };
 
 ASSERT_SIZE(TWarningView, 0x94);

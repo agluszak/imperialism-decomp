@@ -1,5 +1,4 @@
 #include "game/TSortByPriceList.h"
-#include <new>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -9,8 +8,10 @@ extern "C" {
 char g_pClassDescTSortByPriceList = 0;
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
-undefined4 DestructCObArray(void);
+// FUNCTION: IMPERIALISM 0x00534680
+TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
+  return new TSortByPriceList();
+}
 
 // FUNCTION: IMPERIALISM 0x005346f0
 void* TSortByPriceList::GetTSortByPriceListClassNamePointer() {
@@ -20,25 +21,12 @@ void* TSortByPriceList::GetTSortByPriceListClassNamePointer() {
 // FUNCTION: IMPERIALISM 0x00534710
 TSortByPriceList::TSortByPriceList() : TIndexAndRankList() {}
 
-// FUNCTION: IMPERIALISM 0x00534740
-void* TSortByPriceList::DeletingDestructTSortByPriceList(byte freeSelfFlag) {
-  TSortByPriceList* self = this;
-  self->DestructTSortByPriceList();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(self)));
-  }
-  return self;
-}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00534740
+// TSortByPriceList::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x00534770
-void TSortByPriceList::DestructTSortByPriceList() {
-  reinterpret_cast<void(__fastcall*)(TIndexAndRankList*)>(::DestructCObArray)(this);
-}
-
-// FUNCTION: IMPERIALISM 0x00534680
-TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
-  return new TSortByPriceList();
-}
+// SYNTHETIC: IMPERIALISM 0x00534770
+// TSortByPriceList::~TSortByPriceList
 
 // FUNCTION: IMPERIALISM 0x005347b0
 extern "C" int __stdcall CompareSortByPriceListEntriesByField2Ascending(void* a, void* b) {

@@ -22,15 +22,6 @@ void* __cdecl GetTWarningViewClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x00592900
 TWarningView::TWarningView() : TPictureResourceEntryBase() {}
 
-// FUNCTION: IMPERIALISM 0x00592930
-TWarningView* __fastcall DestructTWarningViewAndMaybeFree(TWarningView* view, int unusedEdx,
-                                                          unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  view->~TWarningView();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)view);
-  }
-  return view;
-}
-
-TWarningView::~TWarningView() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00592930
+// TWarningView::`scalar deleting destructor'

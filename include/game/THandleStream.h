@@ -17,8 +17,7 @@ public:
 
   void* GetRuntimeClass() override;
   THandleStream();
-  void DestructTHandleStreamBaseState();
-  void* DestructTHandleStreamAndMaybeFree(byte freeSelfFlag);
+  // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   // 0x00489550: advance currentExtent by delta, raising highWatermark to match.
   void AdvanceExtent(int handle, int delta);
