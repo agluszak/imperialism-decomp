@@ -113,9 +113,7 @@ const int kAssertLineMoveBarInitNil = 0x725;
 const int kAssertLineMoveAdjustMove = 0x749;
 const int kAssertLineMoveAdjustAvai = 0x74d;
 const int kAssertLineMoveAdjustMoveMinus = 0x759;
-const int kAssertLineTradeSummaryRtnu = 0x67d;
-const int kAssertLineTradeSummaryIart = 0x682;
-const int kAssertLineTradeSummaryProf = 0x687;
+// Asserts moved
 const int kAssertLineTradeSellIncSell = 0x816;
 const int kAssertLineTradeSellIncCap = 0x81d;
 const int kAssertLineMovePageMinus = 0xd34;
@@ -132,8 +130,7 @@ const unsigned int kVtableTRailAmtBar = 0x00666558;
 const unsigned int kVtableTShipyardCluster = 0x00666760;
 const unsigned int kAddrClassDescTShipyardCluster = 0x00662ff8;
 // Removed TUnitToolbarCluster constants
-const unsigned int kVtableTCityBarCluster = 0x00665190;
-const unsigned int kAddrClassDescTCityBarCluster = 0x00662f08;
+// Constants moved
 const unsigned int kAddrDecimalFormat = 0x0069430C;
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
@@ -602,81 +599,7 @@ void __fastcall HandleCityDialogSelectionAndBackControlReset(TStatusButton* butt
   thunk_HandleCityDialogToggleCommandOrForward();
 }
 
-// FUNCTION: IMPERIALISM 0x00586590
-CityBarClusterState* __cdecl CreateTCityBarClusterInstance(void) {
-  CityBarClusterState* cluster =
-      reinterpret_cast<CityBarClusterState*>(AllocateWithFallbackHandler(0x88));
-  if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
-    cluster->vftable = reinterpret_cast<void*>(kVtableTCityBarCluster);
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00586610
-void* __cdecl GetTCityBarClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTCityBarCluster);
-}
-
-// FUNCTION: IMPERIALISM 0x00586630
-CityBarClusterState* __fastcall ConstructTCityBarClusterBaseState(CityBarClusterState* cluster,
-                                                                  int unusedEdx) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
-  cluster->vftable = reinterpret_cast<void*>(kVtableTCityBarCluster);
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00586660
-void* __fastcall DestructTCityBarClusterAndMaybeFree(void* cluster, int unusedEdx,
-                                                     unsigned char freeSelfFlag) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x005866b0
-void __fastcall UpdateTradeSummaryMetricControlsFromRecord(void* self, int unusedEdx,
-                                                           int recordContext)
-
-{
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  int recordNode = *reinterpret_cast<int*>(recordContext + 0xac);
-  int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
-  int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
-  void*(__fastcall * resolveByTag)(void*, int) = reinterpret_cast<void*(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(self))[0x94 / 4]);
-
-  TradeControl* areaControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x74726561));
-  if (areaControl != 0) {
-    areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10), 1);
-    areaControl->SetEnabledPair(0, 1);
-  }
-
-  TradeControl* returnControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x756e7472));
-  if (returnControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
-  }
-  returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4), 1);
-
-  TradeControl* airControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x74726169));
-  if (airControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
-  }
-  airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6), 1);
-
-  TradeControl* profControl = reinterpret_cast<TradeControl*>(resolveByTag(self, 0x70726f66));
-  if (profControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
-  }
-  profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8), 1);
-}
+// TCityBarCluster moved
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

@@ -1,0 +1,79 @@
+#include "game/TCityBarCluster.h"
+#include "game/GameAssert.h"
+#include "game/TradeControl.h"
+#include <new>
+
+extern "C" {
+char g_pClassDescTCityBarCluster = 0;
+char g_vtblTCityBarCluster = 0;
+}
+
+undefined4 thunk_DestructTShipAndFreeIfOwned(void);
+
+static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath, line);
+}
+
+static __inline void FailNilPointerInUSmallViews(int line) {
+  FailNilPointerWithAssert("Z:\\src\\USmallViews.cpp", line);
+}
+
+undefined4 thunk_DestructEngineerDialogBaseState(void);
+
+// FUNCTION: IMPERIALISM 0x00586590
+TCityBarCluster* TCityBarCluster::CreateInstance() {
+  return new TCityBarCluster();
+}
+
+// FUNCTION: IMPERIALISM 0x00586610
+void* TCityBarCluster::GetClassNamePointer() {
+  return reinterpret_cast<void*>(&g_pClassDescTCityBarCluster);
+}
+
+// FUNCTION: IMPERIALISM 0x00586630
+TCityBarCluster::TCityBarCluster() : TUberCluster() {
+}
+
+// FUNCTION: IMPERIALISM 0x00586660
+void* TCityBarCluster::DestructAndMaybeFree(int freeSelfFlag) {
+  thunk_DestructEngineerDialogBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    // Let the compiler emit delete this.
+  }
+  return this;
+}
+
+const int kAssertLineTradeSummaryRtnu = 0x67d;
+const int kAssertLineTradeSummaryIart = 0x682;
+const int kAssertLineTradeSummaryProf = 0x687;
+
+// FUNCTION: IMPERIALISM 0x005866b0
+void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordContext) {
+  int recordNode = *reinterpret_cast<int*>(recordContext + 0xac);
+  int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
+  int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
+
+  TradeControl* areaControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x74726561));
+  if (areaControl != 0) {
+    areaControl->SetControlValueSlot2C(*reinterpret_cast<int*>(recordNode + 0x10));
+    areaControl->SetEnabledSlotA4(0, 1);
+  }
+
+  TradeControl* returnControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x756e7472));
+  if (returnControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
+  }
+  returnControl->SetControlValueSlot2C((int)*reinterpret_cast<short*>(metrics + 4));
+
+  TradeControl* airControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x74726169));
+  if (airControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
+  }
+  airControl->SetControlValueSlot2C((int)*reinterpret_cast<short*>(metrics + 6));
+
+  TradeControl* profControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x70726f66));
+  if (profControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
+  }
+  profControl->SetControlValueSlot2C((int)*reinterpret_cast<short*>(metrics + 8));
+}
