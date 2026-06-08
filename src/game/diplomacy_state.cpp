@@ -7,6 +7,7 @@
 #include "game/CString.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/NationState.h"
+#include "game/TNextTradeCommand.h"
 #include "game/generated/vcall_facades.h"
 #include <new>
 
@@ -29,12 +30,10 @@ void* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
 TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager = 0;
 char vtbl_DiplomacyTurnStateManager_00654d90 = 0;
-char vtbl_TurnEventNextPacket_00654e50 = 0;
 char g_vtblTSortedByRelationshipList = 0;
 }
 
 namespace {
-const unsigned int kVtableTurnEventNextPacket = 0x00654E50;
 const unsigned int kTurnEventTagNext = 0x4E655854; // 'NeXT'
 // Scratch shared-string RAII local: ctor installs the empty shared-string ref,
 // dtor releases it. ApplyDiplomacyInterNationStatesForTurn declares four of these,
@@ -47,7 +46,6 @@ struct ScratchSharedString {
 
 } // namespace
 
-undefined4 thunk_InitializeRangePairAndResetCursor(void);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
@@ -117,31 +115,6 @@ struct RelationshipRankEntry {
 // Evidence: identical field layout (CPtrArray entries/count/capacity/growBy +
 // short relationType/pad16) and the exact vtable each ctor installs.
 
-struct TurnEventPacket {
-  void* vftable;
-  int rangeStart;
-  int rangeEnd;
-  int cursor;
-  int rangeEndCopy;
-  int field14;
-
-  void thunk_ConstructTurnEventPacketBase();
-  void thunk_InitializeRangePairAndResetCursor(int rangeStart, int rangeEnd, int arg3, int arg4,
-                                               int arg5);
-
-  TurnEventPacket() {
-    thunk_ConstructTurnEventPacketBase();
-    vftable = &vtbl_TurnEventNextPacket_00654e50;
-  }
-
-  void* operator new(size_t size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    // Empty
-  }
-};
-
 static __inline void QueueInterNationEventRecordDeduped(void* countryState, int eventCode,
                                                         int nationA, int nationB,
                                                         char isReplayBypass) {
@@ -161,9 +134,9 @@ void TCountry::thunk_QueueInterNationEventRecordDeduped(int eventCode, int natio
       this, 0, eventCode, nationA, nationB, isReplayBypass);
 }
 
-static __inline void InitializeRangePairAndResetCursor(TurnEventPacket* packet, int rangeStart,
+static __inline void InitializeRangePairAndResetCursor(TNextTradeCommand* packet, int rangeStart,
                                                        int rangeEnd) {
-  packet->thunk_InitializeRangePairAndResetCursor(rangeStart, rangeEnd, 0, 0, 0);
+  packet->InitializeRangePair(rangeStart, rangeEnd, 0, 0, 0);
 }
 
 static __inline void EmitTurnEvent3Mode18WithActiveNation(void) {
@@ -1090,7 +1063,7 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
     }
 
     if (propagatedTransition == 0) {
-      TurnEventPacket* packet = new TurnEventPacket();
+      TNextTradeCommand* packet = new TNextTradeCommand();
       InitializeRangePairAndResetCursor(packet, kTurnEventTagNext,
                                         reinterpret_cast<int>(g_pGlobalUiRootController));
       reinterpret_cast<TurnEventQueue*>(g_pGlobalUiRootController)->EnqueueSlot38(packet);
@@ -1117,16 +1090,4 @@ void DispatchProcessQueuedWarTransitions() {
 
 undefined4 thunk_QueueInterNationEventRecordDeduped(void) {
   return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00403d5f
-void TurnEventPacket::thunk_ConstructTurnEventPacketBase() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x00487820)(this, 0);
-}
-
-// FUNCTION: IMPERIALISM 0x00405ee3
-void TurnEventPacket::thunk_InitializeRangePairAndResetCursor(int rangeStart, int rangeEnd,
-                                                              int arg3, int arg4, int arg5) {
-  reinterpret_cast<void(__fastcall*)(TurnEventPacket*, int, int, int, int, int, int)>(0x004878a0)(
-      this, 0, rangeStart, rangeEnd, arg3, arg4, arg5);
 }

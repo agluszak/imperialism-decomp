@@ -2163,14 +2163,6 @@ undefined4 GetTCommandClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TCommand::ConstructTurnEventPacketBase
-// ghidra_proto void __thiscall ConstructTurnEventPacketBase(void)
-// FUNCTION: IMPERIALISM 0x00487820
-undefined4 ConstructTurnEventPacketBase(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommand::DestructTCommandAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCommandAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00487850
@@ -2183,14 +2175,6 @@ undefined4 DestructTCommandAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTCommandAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x00487880
 undefined4 DestructTCommandAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRangePairAndResetCursor
-// ghidra_proto void __thiscall InitializeRangePairAndResetCursor(int rangeStart, int rangeEnd)
-// FUNCTION: IMPERIALISM 0x004878a0
-undefined4 InitializeRangePairAndResetCursor(void)
 {
   return 0;
 }

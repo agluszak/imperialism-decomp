@@ -14269,7 +14269,6 @@ address|name|size|type|prototype
 654db4|g_vslotTBullyMinister_Slot01AC_InvokeControlAction||global|
 654dd8|g_vslotTBullyMinister_Slot01D0_NotifyControlStateChange||global|
 654ddc|g_vslotTBullyMinister_Slot01D4_NotifyControlSelectionChange||global|
-654e50|vtbl_TurnEventNextPacket_00654e50||global|
 654ed0|g_pClassDescTMinisterView||global|
 654ee8|g_pClassDescTForeignMinisterView||global|
 654f00|g_pClassDescTDefenseMinisterView||global|
