@@ -36,7 +36,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   NationState* nationState = reinterpret_cast<NationState**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
   NationCityTradeState* cityState =
-      nationState != 0 ? reinterpret_cast<NationCityTradeState*>(nationState->cityState) : 0;
+      nationState != 0 ? nationState->cityState : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);

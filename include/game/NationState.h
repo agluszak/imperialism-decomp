@@ -1,5 +1,7 @@
 #pragma once
 
+struct NationCityTradeState; // defined in trade_quickdraw.h (trade-screen data layout)
+
 // Unified game NationState. Two translation units previously defined their own
 // local NationState (a virtual-dispatch view in diplomacy_state.cpp and a data
 // layout in trade_screen.cpp) inside anonymous namespaces to avoid an ODR
@@ -190,5 +192,5 @@ struct NationState {
   char pad_04[0xa0];
   short tradeCapacity; // 0xa4
   char pad_a6[0x7ee];
-  void* cityState; // 0x894 (NationCityTradeState* in trade screen)
+  NationCityTradeState* cityState; // 0x894
 };

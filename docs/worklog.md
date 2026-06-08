@@ -3056,3 +3056,12 @@ are introduced by the common base TIndexAndRankList at slots 5-16.
   TIndexAndRankList/TSortByPriceList/TSortedByRelationshipList scalar dtors unchanged at 81.82%,
   vtable-gate passes (77 matches), all 8 TGreatPower canaries below_floor=0. Relationship-list
   fns ticked up (SelectNationSlot 81->84%, BuildRelationshipList 72->74%).
+
+2026-06-08 (cont.) — trade_screen + amt-bars: type NationState::cityState
+Typed `NationState::cityState` from `void*` to `NationCityTradeState*` (forward-declared in
+NationState.h; full def stays in trade_quickdraw.h). Dissolved the 5
+`reinterpret_cast<NationCityTradeState*>(nationState->cityState)` sites across
+trade_screen.cpp (2), TIndustryAmtBar.cpp, TRailAmtBar.cpp, TShipAmtBar.cpp into direct
+typed member access. Codegen-identical (typed pointer load). trade_screen.cpp
+reinterpret_cast 183 -> 181 (5 total across the trade files). No regression: aligned-functions
+420 (delta 0), coverage delta 0.00pp, vtable-gate passes.
