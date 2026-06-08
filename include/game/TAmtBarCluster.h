@@ -10,10 +10,10 @@ public:
   short valueAt8c;
   short valueAt8e;
   TAmtBarCluster();
+  // Destructor is compiler-generated (implicit virtual dtor) from TUberCluster.
 
   static TAmtBarCluster* CreateInstance();
   static void* GetClassNamePointer();
-  void* DestructAndMaybeFree(int freeSelfFlag);
 
   // We use the original struct name for parameters until we verify the method signature.
   void HandleTradeSellControlCommand(int commandId, void* eventArg, int eventExtra);

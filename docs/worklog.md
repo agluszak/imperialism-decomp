@@ -1,5 +1,46 @@
 # Worklog
 
+## 2026-06-08
+
+### TAmtBarCluster duplicate-ownership fix + synthetic destructor + real types
+
+1. Scope:
+   - `src/game/TAmtBarCluster.cpp`, `include/game/TAmtBarCluster.h`
+   - `src/game/trade_screen.cpp`
+   - `include/game/TView.h`, `src/game/TView.cpp`
+   - `config/symbols.csv`, `config/function_ownership.csv`
+   - `AGENTS.md` (new Hard Rule #16)
+2. Problem (review of commit 9618941): the new `TAmtBarCluster.cpp` re-implemented
+   `0x586c40/cc0/ce0/d10` as real-class methods but left the old free-function copies in
+   `trade_screen.cpp` (still owned in `function_ownership.csv`) → duplicate `// FUNCTION`
+   markers (Hard Rule #4 violation). Also: its `HandleTradeSellControlCommand` carried a
+   bogus address `0x586e30` (no such function in the binary; symbols.csv jumps
+   `586d60`→`586e50`). The real function is `0x5873e0`, still living in `trade_screen.cpp`
+   as `TAmtBarClusterContext::HandleTradeSellControlCommand`.
+3. Changes:
+   - Deleted the 4 free-functions + `TAmtBarClusterContext` struct + the `0x5873e0` method
+     body from `trade_screen.cpp`; removed dead `kVtableTAmtBarCluster`.
+   - Retagged the new method to `0x5873e0` and kept the established (already-compared) body
+     shape (`SetEnabledPair`/`SetStatePair` in cases 100/0x69/0x6a).
+   - Converted the destructor (`0x586d10`) to a compiler-generated scalar deleting
+     destructor: SYNTHETIC marker + backtick name in `symbols.csv`, implicit dtor via
+     `TUberCluster`'s virtual dtor (per `[[synthetic-scalar-deleting-dtor]]`).
+   - Removed `reinterpret_cast`s: changed `TView::OwnerPanel()` return type `void*`→`TView*`
+     (safe — return-type-only, `TStatusButton::OwnerPanel() const` is a separate non-virtual
+     shadow). `SetEnabled`(0xA4)/`SetState`(0xA8)/`GetControlFlag`/`DoControlAction` controls
+     are now plain `TControl*` real virtuals. The only remaining casts are the `TradeControl`
+     dispatch-view bridges for `QueryValue` (slot `0x1E8`), which the vtable dump proves is
+     NULL on `TAmtBarCluster` and therefore is not a uniform `TControl` virtual.
+   - Added AGENTS.md Hard Rule #16: scalar deleting destructors must be SYNTHETIC, never
+     hand-written.
+4. Validation:
+   - `just sync-ownership` (10 updates) → `just regen-stubs` → `just build`: passed.
+   - `just vtable-gate`: passed. No duplicate `// FUNCTION`/`// SYNTHETIC` markers remain.
+   - `just compare`: `0x586c40` 37.74%, `0x586cc0` 100%, `0x586ce0` 71.43%,
+     `0x586d10` (scalar deleting dtor) **64% — now pairs**, `0x5873e0` 22.70%. Type cleanup
+     was score-neutral (same vtable slots). `0x5873e0` body-shape divergence remains a
+     separate matching-improvement opportunity.
+
 ## 2026-06-07
 
 ### TTraderAmtBar standalone source split

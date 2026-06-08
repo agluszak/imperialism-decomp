@@ -52,7 +52,7 @@ public:
   virtual void vmethod_0019();
   virtual void vmethod_0020();
   virtual void vmethod_0021();
-  virtual void* OwnerPanel();
+  virtual class TView* OwnerPanel();
   virtual void vmethod_0023();
   virtual void vmethod_0024();
   virtual void vmethod_0025();

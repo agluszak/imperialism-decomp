@@ -52,7 +52,7 @@ void TView::ForwardParam(int param) {}
 void TView::vmethod_0019() {}
 void TView::vmethod_0020() {}
 void TView::vmethod_0021() {}
-void* TView::OwnerPanel() { return 0; }
+TView* TView::OwnerPanel() { return 0; }
 void TView::vmethod_0023() {}
 void TView::vmethod_0024() {}
 void TView::vmethod_0025() {}

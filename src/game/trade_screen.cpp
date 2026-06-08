@@ -126,7 +126,6 @@ const unsigned int kVtableTIndustryCluster = 0x00665ed0;
 const unsigned int kAddrClassDescTIndustryCluster = 0x00662f98;
 const unsigned int kVtableTIndustryAmtBar = 0x00666110;
 const unsigned int kVtableTAmtBar = 0x00665cc8;
-const unsigned int kVtableTAmtBarCluster = 0x00665838;
 const unsigned int kVtableTRailCluster = 0x00666318;
 const unsigned int kAddrClassDescTRailCluster = 0x00662fc8;
 const unsigned int kVtableTRailAmtBar = 0x00666558;
@@ -183,17 +182,6 @@ struct TradeMoveStepCluster {
   void OrphanTiny_SetWordEcxOffset_8c_00586a60(short value);
   void OrphanLeaf_NoCall_Ins05_00586a80(int value90, int value94);
   void OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value);
-};
-
-struct TAmtBarClusterContext {
-  void* vftable;
-  char pad_04[0x84];
-  short metricSlotAt88;
-  short pad_8a;
-  short valueAt8c;
-  short valueAt8e;
-
-  void HandleTradeSellControlCommand(int commandId, void* eventArg, int eventExtra);
 };
 
 struct TradeMovePanelContext;
@@ -631,41 +619,9 @@ void TradeMoveStepCluster::OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value) 
 #pragma optimize("y", off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00586c40
-TradeMovePanelContext* __cdecl CreateTradeMoveControlPanelBasic(void) {
-  TradeMovePanelContext* panel =
-      reinterpret_cast<TradeMovePanelContext*>(AllocateWithFallbackHandler(0x88));
-  if (panel != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterObject(panel);
-    *reinterpret_cast<void**>(panel) = reinterpret_cast<void*>(kVtableTAmtBarCluster);
-  }
-  return panel;
-}
-
-// FUNCTION: IMPERIALISM 0x00586cc0
-void* __cdecl GetTAmtBarClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTAmtBarCluster);
-}
-
-// FUNCTION: IMPERIALISM 0x00586ce0
-TradeMovePanelContext* __fastcall
-ConstructTradeMoveControlPanelBasic(TradeMovePanelContext* panel) {
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(panel);
-  *reinterpret_cast<void**>(panel) = reinterpret_cast<void*>(kVtableTAmtBarCluster);
-  return panel;
-}
-
-// FUNCTION: IMPERIALISM 0x00586d10
-TradeMovePanelContext* __fastcall DestructTAmtBarClusterMaybeFree(TradeMovePanelContext* panel,
-                                                                  int unusedEdx,
-                                                                  unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)panel);
-  }
-  return panel;
-}
+// 0x00586c40 CreateInstance, 0x00586cc0 GetClassNamePointer, 0x00586ce0 ctor and
+// 0x00586d10 (scalar deleting destructor) are owned by src/game/TAmtBarCluster.cpp
+// as real C++ construction/inheritance.
 
 // FUNCTION: IMPERIALISM 0x00586d60
 void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
@@ -840,134 +796,6 @@ void TradeScreenContext::InitializeTradeSellControlState(unsigned int styleSeed)
   }
 
   InitializeTradeMoveAndBarControls(this, 0, styleSeed);
-}
-
-// FUNCTION: IMPERIALISM 0x005873e0
-void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* eventArg,
-                                                          int eventExtra) {
-  // ORIG_CALLCONV: __thiscall
-  void* ownerPanel = reinterpret_cast<TView*>(this)->OwnerPanel();
-
-  switch (commandId) {
-  case 100: {
-    if (reinterpret_cast<TControl*>(this)->GetBoolSlot1DC() != '\0') {
-      TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
-      if (sellControl == 0) {
-        FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
-      }
-
-      int sellValue = sellControl->QueryValue();
-      short activeNationSlot = QueryActiveNationId();
-      NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
-      short maxByNationMetric = 0;
-      if (activeNationState != 0) {
-        maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
-      }
-
-      TradeControl* capacityControl = ResolveOwnerControl(ownerPanel, 0x6d436170);
-      if (capacityControl == 0) {
-        FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
-      }
-
-      if ((int)maxByNationMetric < sellValue) {
-        int capacityValue = capacityControl->QueryValue();
-        if ((int)maxByNationMetric < capacityValue) {
-          sellControl->SetEnabledPair(maxByNationMetric + 1 != 0, 1);
-          reinterpret_cast<TControl*>(this)->ApplyMoveValue(maxByNationMetric + 1);
-          return;
-        }
-      }
-    }
-    break;
-  }
-  case 0x65: {
-    TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
-    if (sellControl == 0) {
-      GAME_FAIL_NIL_POINTER();
-      break;
-    }
-    int sellValue = sellControl->QueryValue();
-    if (1 < sellValue) {
-      reinterpret_cast<TControl*>(this)->ApplyMoveValue(sellValue - 1);
-      return;
-    }
-    break;
-  }
-  case 0x67:
-    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(-1);
-    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 3) {
-      for (int i = 0;
-           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
-           ++i) {
-        TradeControl* rowControl = ResolveOwnerControl(ownerPanel, kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && reinterpret_cast<TControl*>(rowControl)->GetControlFlag() == '\0') {
-          reinterpret_cast<TControl*>(rowControl)->DoControlAction();
-        }
-      }
-      return;
-    }
-    break;
-  case 0x68:
-    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(1);
-    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 4) {
-      for (int i = 0;
-           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
-           ++i) {
-        TradeControl* rowControl = ResolveOwnerControl(ownerPanel, kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && reinterpret_cast<TControl*>(rowControl)->GetControlFlag() == '\0') {
-          reinterpret_cast<TControl*>(rowControl)->DoControlAction();
-        }
-      }
-      return;
-    }
-    break;
-  case 0x69: {
-    short activeNationSlot = QueryActiveNationId();
-    NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
-    short maxByNationMetric = 0;
-    if (activeNationState != 0) {
-      maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
-    }
-
-    TradeControl* capacityControl = ResolveOwnerControl(ownerPanel, 0x6d436170);
-    if (capacityControl == 0) {
-      GAME_FAIL_NIL_POINTER();
-    }
-    short cappedValue = (short)capacityControl->QueryValue();
-    int applyValue = (int)maxByNationMetric;
-    if ((int)cappedValue <= (int)maxByNationMetric) {
-      applyValue = (int)cappedValue;
-    }
-
-    TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
-    sellControl->SetEnabledPair(1, 1);
-
-    TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
-    if (barControl == 0) {
-      GAME_FAIL_NIL_POINTER();
-    }
-    barControl->SetStatePair(1, 0);
-    reinterpret_cast<TControl*>(this)->ApplyMoveValue(applyValue);
-    return;
-  }
-  case 0x6a: {
-    TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
-    sellControl->SetEnabledPair(0, 1);
-
-    TradeControl* barControl = ResolveOwnerControl(this, kControlTagBar);
-    if (barControl == 0) {
-      GAME_FAIL_NIL_POINTER();
-    }
-    barControl->SetStatePair(0, 1);
-    reinterpret_cast<TControl*>(this)->ApplyMoveValue(0);
-    return;
-  }
-  default:
-    HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
-    return;
-  }
-
-  HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
 }
 
 // GHIDRA_NAME IsTradeSellControlAtMinimum

@@ -348,6 +348,50 @@ void ConstructTTradePanelControlPrefix(TTradePanel* self);
 
 Do not give temporary scaffolding clean final names that make it look architectural.
 
+### 16. Scalar deleting destructors must be compiler-generated (SYNTHETIC), never hand-written
+
+A scalar deleting destructor (`??_G<Class>` / `??_E<Class>`) is code the compiler emits
+into the vtable. It must NEVER be hand-written as source.
+
+Forbidden — a hand-written destruct-and-maybe-free bridge:
+
+```cpp
+// FUNCTION: IMPERIALISM 0x00586d10
+void* TAmtBarCluster::DestructAndMaybeFree(int freeSelfFlag) {
+  thunk_DestructBaseState();
+  if ((freeSelfFlag & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+```
+
+```cpp
+// also forbidden: the __fastcall bridge shape
+X* __fastcall DestructXAndMaybeFree(X* self, int unusedEdx, unsigned char freeSelfFlag);
+```
+
+Required — model the class with real inheritance from a polymorphic base, make the
+ordinary destructor IMPLICIT, and claim the scalar-deleting address with a `SYNTHETIC`
+marker plus an exact backtick name in `config/symbols.csv` so reccmp pairs it:
+
+1. `config/symbols.csv`: set the scalar-deleting address's name to
+   `` Class::`scalar deleting destructor' `` (backtick + trailing apostrophe). This is the
+   ONLY way it pairs — a compiler-generated body has no source line for marker matching.
+2. Source: delete the hand-written body/bridge; replace with
+   `// SYNTHETIC: IMPERIALISM 0x<addr>` then `` // Class::`scalar deleting destructor' ``.
+3. Header: remove any `virtual ~Class();` declaration AND any `~Class() {}` body; rely on
+   the base's virtual destructor. A hand-written empty `~Class(){}` COMDAT-folds with
+   sibling empty dtors and triggers reccmp "Debug data out of sync", collaterally dropping
+   the adjacent ctor.
+4. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
+
+Canonical example: `src/game/TSortedByRelationshipList.cpp` (+ its header). This only
+works once the class is genuinely polymorphic (its base has a virtual destructor); if it
+is not, recover the real inheritance first rather than hand-writing the destructor.
+Watch for false positives: a `Destruct*AndMaybeFree` NAME is not proof — read the body
+before converting.
+
 
 ## MSVC500 calling-convention guardrail
 
