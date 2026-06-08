@@ -18,4 +18,12 @@ public:
 
   TControl();
   void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
+
+  virtual void vmethod_0112();
+  virtual void vmethod_0113();
+  virtual void SetControlClassAndRefresh(int classState, int refreshFlag);
+  virtual void vmethod_0115();
+  virtual void vmethod_0116();
+  virtual void NotifyControlSelectionChange(void* boundEntry);
+
 };

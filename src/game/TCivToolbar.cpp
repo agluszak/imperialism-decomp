@@ -1,7 +1,9 @@
+#pragma optimize("y", on)
 // TCivToolbar wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
 #include "game/TCivToolbar.h"
+#include "game/TControl.h"
 
 struct PanelEventPayload {
   char pad_00[0x1c];
@@ -84,30 +86,10 @@ static __inline void ShowDisbandCivilianConfirmationDialog(void* selectedState) 
       selectedState);
 }
 
-static __inline int* ResolveControlByTag(TCivToolbar* toolbar, unsigned int controlTag) {
-  return reinterpret_cast<int*(__fastcall*)(void*, int, unsigned int)>(
-      reinterpret_cast<int*>(*reinterpret_cast<void**>(toolbar))[0x25])(toolbar, 0, controlTag);
-}
 
-static __inline void SetControlEnabledAndRefresh(int* control, int enabledState, int refreshFlag) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(reinterpret_cast<int*>(
-      *reinterpret_cast<void**>(control))[0x2a])(control, 0, enabledState, refreshFlag);
-}
 
-static __inline void SetControlClassAndRefresh(int* control, int classState, int refreshFlag) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(reinterpret_cast<int*>(
-      *reinterpret_cast<void**>(control))[0x72])(control, 0, classState, refreshFlag);
-}
 
-static __inline void SetControlBoundEntry(int* control, void* boundEntry) {
-  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(
-      reinterpret_cast<int*>(*reinterpret_cast<void**>(control))[0x75])(control, 0, boundEntry);
-}
 
-static __inline void RefreshControl(int* control) {
-  reinterpret_cast<void(__fastcall*)(void*)>(
-      reinterpret_cast<int*>(*reinterpret_cast<void**>(control))[0x39])(control);
-}
 
 static __inline int IsCivilianOrderInIdleSelectionStateBridge(void* civilianOrderEntry) {
   return reinterpret_cast<int(__fastcall*)(void*)>(thunk_IsCivilianOrderInIdleSelectionState)(
@@ -153,36 +135,34 @@ TCivToolbar::TCivToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058eb20
 void TCivToolbar::RefreshCivilianCommandPanelForSelection(int* selectedCivilianOrderEntry) {
-  // ORIG_CALLCONV: __thiscall
-  int* backControl;
+  TControl* backControl;
   short newCivilianClassId;
-  int* unitControl;
+  TControl* unitControl;
 
-  newCivilianClassId =
-      (selectedCivilianOrderEntry == 0) ? (short)-1 : (short)selectedCivilianOrderEntry[1];
+  newCivilianClassId = (short)selectedCivilianOrderEntry[1];
   this->civilianClassId = newCivilianClassId;
 
-  unitControl = ResolveControlByTag(this, 0x756e6974);
+  unitControl = this->ResolveControlByTag(0x756e6974);
   if (unitControl == 0) {
     return;
   }
   if (selectedCivilianOrderEntry == 0) {
-    SetControlEnabledAndRefresh(unitControl, 0, 1);
+    unitControl->SetEnabled(0, 1);
   } else {
-    SetControlClassAndRefresh(unitControl, civilianClassId + 0x438, 1);
-    SetControlEnabledAndRefresh(unitControl, 1, 1);
+    unitControl->SetControlClassAndRefresh(civilianClassId + 0x438, 1);
+    unitControl->SetEnabled(1, 1);
   }
 
-  backControl = ResolveControlByTag(this, 0x6261636b);
+  backControl = this->ResolveControlByTag(0x6261636b);
   if (backControl == 0) {
     return;
   }
   if (selectedCivilianOrderEntry == 0) {
-    *reinterpret_cast<short*>(backControl + 0x18) = (short)-1;
+    *reinterpret_cast<short*>(reinterpret_cast<char*>(backControl) + 0x18) = (short)-1;
     return;
   }
-  if (newCivilianClassId != *reinterpret_cast<short*>(backControl + 0x18)) {
-    *reinterpret_cast<short*>(backControl + 0x18) = newCivilianClassId;
+  if (newCivilianClassId != *reinterpret_cast<short*>(reinterpret_cast<char*>(backControl) + 0x18)) {
+    *reinterpret_cast<short*>(reinterpret_cast<char*>(backControl) + 0x18) = newCivilianClassId;
     switch (newCivilianClassId) {
     case 0:
     case 1:
@@ -197,7 +177,7 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(int* selectedCivilianO
                                                                    selectedCivilianOrderEntry);
       break;
     }
-    RefreshControl(backControl);
+    backControl->RefreshControl();
   }
 }
 
@@ -206,13 +186,12 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(int* selectedCivilianO
 
 // FUNCTION: IMPERIALISM 0x0058ec50
 void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
-  // ORIG_CALLCONV: __thiscall
   int commandEnabled;
   int selectedSlotTag;
   int slotIndex;
-  int* selectedStackButton;
+  TControl* selectedStackButton;
   CivilianTileEntry* selectedTileEntry;
-  int* stackButton;
+  TControl* stackButton;
   SelectedCivilianState* selectedCivilianState;
   int mapState;
 
@@ -224,13 +203,12 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
       reinterpret_cast<SelectedCivilianState*>(QuerySelectedCivilianOrderState());
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
-    stackButton = ResolveControlByTag(this, 0x73746b30 + slotIndex);
+    stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     if (stackButton == 0) {
       return;
     }
-    SetControlBoundEntry(stackButton, selectedTileEntry);
-    SetControlEnabledAndRefresh(stackButton,
-                                IsCivilianOrderInIdleSelectionStateBridge(selectedTileEntry), 1);
+    stackButton->NotifyControlSelectionChange(selectedTileEntry);
+    stackButton->SetEnabled(IsCivilianOrderInIdleSelectionStateBridge(selectedTileEntry), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
@@ -238,37 +216,36 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     selectedTileEntry = selectedTileEntry->pNextOnTile;
   }
   while (slotIndex < 6) {
-    stackButton = ResolveControlByTag(this, 0x73746b30 + slotIndex);
+    stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     if (stackButton == 0) {
       return;
     }
-    SetControlBoundEntry(stackButton, 0);
+    stackButton->NotifyControlSelectionChange(0);
     slotIndex = slotIndex + 1;
   }
 
   selectedSlotTag = 0x6e616461;
   if (selectedStackButton != 0) {
-    selectedSlotTag = selectedStackButton[7];
+    selectedSlotTag = reinterpret_cast<int*>(selectedStackButton)[7];
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      reinterpret_cast<int*>(*reinterpret_cast<void**>(this))[0x72])(this, 0, selectedSlotTag);
+  this->SetControlClassAndRefresh(selectedSlotTag, 0);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
-  stackButton = ResolveControlByTag(this, 0x64666e64);
+  stackButton = this->ResolveControlByTag(0x64666e64);
   if (stackButton == 0) {
     return;
   }
-  SetControlEnabledAndRefresh(stackButton, commandEnabled, 1);
-  stackButton = ResolveControlByTag(this, 0x6c617472);
+  stackButton->SetEnabled(commandEnabled, 1);
+  stackButton = this->ResolveControlByTag(0x6c617472);
   if (stackButton == 0) {
     return;
   }
-  SetControlEnabledAndRefresh(stackButton, commandEnabled, 1);
-  stackButton = ResolveControlByTag(this, 0x646f6e65);
+  stackButton->SetEnabled(commandEnabled, 1);
+  stackButton = this->ResolveControlByTag(0x646f6e65);
   if (stackButton == 0) {
     return;
   }
-  SetControlEnabledAndRefresh(stackButton, commandEnabled, 1);
+  stackButton->SetEnabled(commandEnabled, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0

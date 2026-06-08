@@ -26,3 +26,11 @@ void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
   reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(rect,
                                                                                               flag);
 }
+
+// Dummy methods
+void TControl::vmethod_0112() {}
+void TControl::vmethod_0113() {}
+void TControl::SetControlClassAndRefresh(int classState, int refreshFlag) {}
+void TControl::vmethod_0115() {}
+void TControl::vmethod_0116() {}
+void TControl::NotifyControlSelectionChange(void* boundEntry) {}

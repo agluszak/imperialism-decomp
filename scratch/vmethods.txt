@@ -1,37 +1,3 @@
-#pragma once
-
-#include "decomp_types.h"
-#include "game/TEventHandler.h"
-#include "game/CString.h"
-
-// VTABLE: IMPERIALISM 0x649858
-class TView : public TEventHandler {
-public:
-  int field10;
-  int field14;
-  int field18;
-  unsigned char padding_1c_to_1f[0x04];
-  int field20;
-  unsigned char padding_24_to_2b[0x08];
-  int field2c;
-  int field30;
-  int field34;
-  int field38;
-  int field3c;
-  unsigned char padding_40_to_43[0x04];
-  int field44;
-  int field48;
-  unsigned char flag4c;
-  unsigned char flag4d;
-  unsigned short field4e;
-  int field50;
-  unsigned short field54;
-  unsigned char padding_56_to_57[0x02];
-  CString sharedStringRef;
-  int field5c;
-
-  TView();
-  void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
   virtual void vmethod_0002();
   virtual void vmethod_0003();
   virtual void vmethod_0004();
@@ -67,12 +33,12 @@ public:
   virtual void vmethod_0034();
   virtual void vmethod_0035();
   virtual void vmethod_0036();
-  virtual class TControl* ResolveControlByTag(unsigned int controlTag);
+  virtual TControl* ResolveControlByTag(unsigned int controlTag);
   virtual void vmethod_0038();
   virtual void vmethod_0039();
   virtual void vmethod_0040();
-  virtual void SetEnabled(int enabledState, int refreshFlag);
-  virtual void SetState(int state, int refreshFlag);
+  virtual void vmethod_0041();
+  virtual void SetControlEnabledAndRefresh(int enabledState, int refreshFlag);
   virtual void vmethod_0043();
   virtual void vmethod_0044();
   virtual void vmethod_0045();
@@ -142,5 +108,9 @@ public:
   virtual void vmethod_0109();
   virtual void vmethod_0110();
   virtual void vmethod_0111();
-  virtual ~TView();
-};
+  virtual void vmethod_0112();
+  virtual void vmethod_0113();
+  virtual void SetControlClassAndRefresh(int classState, int refreshFlag);
+  virtual void vmethod_0115();
+  virtual void vmethod_0116();
+  virtual void SetControlBoundEntry(void* boundEntry);
