@@ -18,8 +18,9 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
   this->hasCommandTagResource = 0xc;
 }
 
-// FUNCTION: IMPERIALISM 0x0058b410
-TCivilianButton::~TCivilianButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058b410
+// TCivilianButton::`scalar deleting destructor'
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)

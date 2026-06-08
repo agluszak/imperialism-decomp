@@ -7,4 +7,6 @@ TRadioPictureButton::TRadioPictureButton() : TPictureButton() {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x94) = 0;
 }
 
-TRadioPictureButton::~TRadioPictureButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00571800
+// TRadioPictureButton::`scalar deleting destructor'

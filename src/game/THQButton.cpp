@@ -18,8 +18,9 @@ void* __cdecl GetTHQButtonClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058b660
 THQButton::THQButton() : TPictureButton() {}
 
-// FUNCTION: IMPERIALISM 0x0058b690
-THQButton::~THQButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058b690
+// THQButton::`scalar deleting destructor'
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)

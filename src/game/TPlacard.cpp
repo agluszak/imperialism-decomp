@@ -17,5 +17,6 @@ TPlacard::TPlacard() : TPictureButton() {
   this->glyph90 = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0058ba40
-TPlacard::~TPlacard() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058ba40
+// TPlacard::`scalar deleting destructor'

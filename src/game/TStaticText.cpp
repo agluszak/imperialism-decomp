@@ -25,5 +25,6 @@ TStaticText::TStaticText()
   hasCommandTagResource = 13;
 }
 
-// FUNCTION: IMPERIALISM 0x0048FC30
-TStaticText::~TStaticText() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0048f9a0
+// TStaticText::`scalar deleting destructor'

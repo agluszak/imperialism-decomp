@@ -21,8 +21,9 @@ void* __cdecl GetTNumberedArrowButtonClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058c2a0
 TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
 
-// FUNCTION: IMPERIALISM 0x0058c2e0
-TNumberedArrowButton::~TNumberedArrowButton() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058c2e0
+// TNumberedArrowButton::`scalar deleting destructor'
 
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
