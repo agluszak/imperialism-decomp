@@ -1,5 +1,7 @@
 #pragma once
 
+struct NationCityTradeState; // defined in trade_quickdraw.h (trade-screen data layout)
+
 // Unified game NationState. Two translation units previously defined their own
 // local NationState (a virtual-dispatch view in diplomacy_state.cpp and a data
 // layout in trade_screen.cpp) inside anonymous namespaces to avoid an ODR
@@ -26,12 +28,12 @@ struct NationState {
   virtual void ns_slot15() = 0;
   virtual void ns_slot16() = 0;
   virtual void ns_slot17() = 0;
-  virtual void ns_slot18() = 0;
+  virtual void SetDiplomacyStandingSlot48(int targetNation, int standing) = 0; // 18 (0x48)
   virtual void ns_slot19() = 0;
   virtual void ns_slot20() = 0;
   virtual void ns_slot21() = 0;
   virtual void ns_slot22() = 0;
-  virtual void ns_slot23() = 0;
+  virtual char HasMinorStandingLinkSlot5C(int sourceNation) = 0; // 23 (0x5c)
   virtual void ns_slot24() = 0;
   virtual void ns_slot25() = 0;
   virtual void ns_slot26() = 0;
@@ -43,9 +45,10 @@ struct NationState {
   virtual void ns_slot32() = 0;
   virtual void ns_slot33() = 0;
   virtual void ns_slot34() = 0;
-  virtual void ns_slot35() = 0;
-  virtual void ns_slot36() = 0;
-  virtual void NotifyActionSlot94(int targetNation, int action) = 0; // 37 (0x94)
+  virtual void ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation,
+                                                       int packedRelationCode) = 0; // 35 (0x8c)
+  virtual char HasStandingPropagationBridgeSlot90(int targetNation) = 0;            // 36 (0x90)
+  virtual void NotifyActionSlot94(int targetNation, int action) = 0;                // 37 (0x94)
   virtual void ns_slot38() = 0;
   virtual void ns_slot39() = 0;
   virtual void ns_slot40() = 0;
@@ -189,5 +192,5 @@ struct NationState {
   char pad_04[0xa0];
   short tradeCapacity; // 0xa4
   char pad_a6[0x7ee];
-  void* cityState; // 0x894 (NationCityTradeState* in trade screen)
+  NationCityTradeState* cityState; // 0x894
 };

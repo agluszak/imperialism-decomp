@@ -15,15 +15,24 @@ TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
 void* TIndexAndRankList::GetRuntimeClass() {
   return 0;
 }
-int TIndexAndRankList::AssertValidOrSlot08() {
-  return 0;
-}
-void TIndexAndRankList::DumpOrSlot0c() {}
-void TIndexAndRankList::SerializeOrSlot10() {}
 
+// List-operation virtuals (slots 5-16). Vtable-shape placeholders — the real
+// implementations are at FUN_00488110/00488160/004881f0; these exist so callers
+// dispatch through the native vtable rather than reinterpret_cast to a provisional
+// interface.
 void TIndexAndRankList::slot14() {}
 void TIndexAndRankList::slot18() {}
 void TIndexAndRankList::ResetPtrListRecordsSlot1C() {}
 void TIndexAndRankList::slot20() {}
-void TIndexAndRankList::slot24() {}
+void TIndexAndRankList::ReleaseSlot24() {}
 void TIndexAndRankList::ShrinkCapacitySlot28() {}
+void* TIndexAndRankList::GetEntrySlot2C(int oneBasedIndex) {
+  return 0;
+}
+void TIndexAndRankList::RemoveFirstPairSlot30(int mode) {}
+void* TIndexAndRankList::PeekFirstPairSlot34() {
+  return 0;
+}
+void TIndexAndRankList::AddEntrySlot38(void* entry) {}
+void TIndexAndRankList::slot3c() {}
+void TIndexAndRankList::PushPairSlot40(void* pair) {}

@@ -426,7 +426,7 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   if (nationState == 0) {
     return 0;
   }
-  return reinterpret_cast<NationCityTradeState*>(nationState->cityState);
+  return nationState->cityState;
 }
 
 static __inline short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
@@ -1709,7 +1709,7 @@ SelectTradeCommodityPresetBySummaryTagAndInitControls(TradeMovePanelContext* con
   NationCityTradeState* cityState =
       activeNationState == 0
           ? 0
-          : reinterpret_cast<NationCityTradeState*>(activeNationState->cityState);
+          : activeNationState->cityState;
 
   unsigned int summaryTag = (unsigned int)context->summaryTag;
   int scenarioDescriptor = *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8);

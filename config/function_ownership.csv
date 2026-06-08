@@ -133,6 +133,8 @@ address|target_cpp|ownership|note
 486550|src/game/noop_slots.cpp|manual|marker_sync
 486990|src/game/noop_slots.cpp|manual|marker_sync
 4872e0|src/game/noop_slots.cpp|manual|marker_sync
+487820|src/game/TCommand.cpp|manual|marker_sync
+4878a0|src/game/TCommand.cpp|manual|marker_sync
 487a00|src/game/noop_slots.cpp|manual|marker_sync
 487a90|src/game/TSortedList.cpp|manual|marker_sync
 487b10|src/game/TSortedList.cpp|manual|marker_sync

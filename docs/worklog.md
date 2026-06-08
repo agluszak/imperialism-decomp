@@ -2954,3 +2954,142 @@ user). The no-op `operator delete` was suppressing the free in the scalar deleti
 destructor; removing both took 0x534740 from 58.8% -> 81.8% (ctor stays 100%, overall
 accuracy 11.92->11.93%). Lesson: a no-op custom `operator delete` lowers `??_G` match —
 prefer the real global delete unless evidence shows a class-specific allocator.
+
+## 2026-06-08 — diplomacy_state.cpp: unify TerrainDescriptor into NationState, type nation arrays
+
+Goal pass (extract real classes / kill reinterpret_casts). Found the local
+`TerrainDescriptor` virtual-dispatch interface was a redundant partial duplicate of
+`NationState`'s vtable: its slots 0x48/0x5c/0x8c/0x90/0x94 are the *same* native vtable
+(slot 0x94 == `NationState::NotifyActionSlot94` in both; verified via the diplomacy
+turn logic calling `NotifyActionSlot94` on entries of *both* `g_apNationStates` and
+`g_apTerrainTypeDescriptorTable`).
+
+- Named the four anonymous NationState slots the terrain path used:
+  `SetDiplomacyStandingSlot48` (0x48), `HasMinorStandingLinkSlot5C` (0x5c),
+  `ApplyTerrainDiplomacyRelationFlagSlot8c` (0x8c), `HasStandingPropagationBridgeSlot90`
+  (0x90). `NotifyActionSlot94` already existed.
+- Deleted the `TerrainDescriptor` struct from diplomacy_state.cpp.
+- Typed the two globals as `NationState*[]` (`g_apTerrainTypeDescriptorTable[23]`,
+  `g_apNationStates[7]`) — both `extern "C"`, identical 4-byte-pointer layout, so the
+  decl change is local to this TU and links against the existing `void*[]` definitions
+  in the other TUs. Cursors retyped `void**`→`NationState**`.
+- Dissolved all `reinterpret_cast<NationState*>`/`<TerrainDescriptor*>` virtual-call
+  sites into direct typed `->Method()` calls. reinterpret_cast count 73 -> 47.
+  Raw field pokes (e.g. `+0xe` owner short, `[0x28]` eligibility byte, the
+  `(&array)[target]` ×92 addressing artifact at 0x004ef700) kept verbatim — pure
+  address arithmetic, no virtual dispatch, codegen unchanged.
+- Codegen-identical (typed member call == reinterpret_cast member call). Verified:
+  `just build`, `just detect`, targeted compares (ApplyRelationCode4… 92.31%,
+  ProcessQueuedWarTransitions 89.85%, others unchanged), `just vtable-gate` (77
+  matches), `just compare-canaries` (below_floor=0).
+
+Follow-up (same session): typed `g_pInterNationEventQueueManager` (file-local) as
+`TCountry*` via a forward declaration, dissolving the two direct
+`reinterpret_cast<TCountry*>` dispatch sites (the generic `void*`-param
+`QueueInterNationEventRecordDeduped` helper keeps its single internal cast).
+reinterpret_cast 47 -> 45. Codegen identical.
+
+Remaining diplomacy_state.cpp reinterpret_cast inventory (deferred, not rushed):
+- List-family interface casts (TListObject/TQueueObject/WarTransitionQueue, ~8) onto
+  real TSortedPtrList / TSortedByRelationshipList objects. Ghidra ground truth from
+  vtable 0x654d38: slot 9 (0x24)=FUN_00488110 (release), slot 11 (0x2c)=FUN_00488160
+  (=GetPtrListEntryByOneBasedIndex, ILT 0x409868), slot 14 (0x38)=FUN_004881f0 (add).
+  Dissolving needs slots 11-14 promoted to real virtuals on the SHARED TIndexAndRankList
+  base (currently declares only through slot 10/0x28) — base is also consumed by
+  TGreatPower.cpp via TListObject, so this is a foundation change for its own verified
+  pass (must stay non-pure so `new TSortedPtrList()`/`new TSortedByRelationshipList()`
+  still compile).
+- TurnEventPacket (= TNextTradeCommand, base TCommand vtable 0x648e28 / derived 0x654e50)
+  + its function-pointer-to-address bridges: TCommand is a ~180-slot TObject-derived
+  vtable; since TNextTradeCommand is `new`'d it can't be abstract, so real-inheritance
+  vtable emission is blocked on the full TCommand reconstruction (same class of work as
+  the deferred TradeControl 184-slot job). Current quarantined manual-vptr stand-in
+  stays until then.
+- Raw char*/short*/int* matrix-field pokes at known byte offsets — legitimately raw.
+
+Attempt + revert (same session) — list-family real-virtual promotion:
+Tried dissolving the TListObject/TQueueObject/WarTransitionQueue casts by appending real
+virtuals (GetEntrySlot2C/RemoveFirstPairSlot30/PeekFirstPairSlot34/AddEntrySlot38/slot3c/
+PushPairSlot40 at slots 0x2c..0x40) to TSortedPtrList + renaming TIndexAndRankList base
+slot24->ReleaseSlot24, typing pendingWarTransitionQueue18d4 as TSortedPtrList*. Built
+clean but the reccmp diff of 0x004f2100 showed the calls emitted 3 slots too high
+(`call [edi+0x38]` vs original `[edi+0x2c]`; ReleaseSlot24 `[edi+0x30]` vs `[edi+0x24]`)
+— a REGRESSION — so it was fully reverted (git checkout HEAD). Root cause + lesson
+captured as heuristics.md #96 and in memory [[diplomacy-state-cleanup-progress]]: the
+TIndexAndRankList vtable model is +3 misaligned (CObject's 5 base virtuals minus the lone
+real GetRuntimeClass override), so its SlotXX names don't match emitted byte offsets and
+appended virtuals land wrong. The standalone provisional interfaces dispatch at the
+intended offsets and must stay until the CObject->TIndexAndRankList override alignment is
+fixed (high blast radius). Net committed deltas this session unchanged: diplomacy_state
+reinterpret_cast 73 -> 45, TerrainDescriptor deleted, g_pInterNationEventQueueManager
+typed.
+
+2026-06-08 (cont.) — FIX: CObject/TIndexAndRankList vtable alignment + list-family real virtuals
+Fixed the +3 vtable misalignment that blocked the list-family cast removal (heuristics #96).
+Ground truth: CObject vtable 0x66fec4 is 5 slots (0-4); its slots 2-4 (0x404aa7/0x4010a0/
+0x408625) are INHERITED unchanged by TIndexAndRankList (vtable 0x672eac) and every derived
+sorted-list class (TSortByPriceList 0x659ef0, TSortedPtrList 0x649068,
+TSortedByRelationshipList 0x654d38 all share slots 2-16 identically). The list-op virtuals
+are introduced by the common base TIndexAndRankList at slots 5-16.
+- Root-caused: TIndexAndRankList redeclared AssertValidOrSlot08/DumpOrSlot0c/SerializeOrSlot10
+  with names that DON'T match CObject's signatures, so C++ appended them as NEW slots 5-7
+  instead of inheriting CObject's slots 2-4 -> everything below shifted +3 (ShrinkCapacitySlot28
+  was really emitted at index 13/0x34, not 0x28).
+- Fix (TIndexAndRankList.h/.cpp): removed the 3 mis-named redeclarations (slots 2-4 now
+  inherited from CObject); kept GetRuntimeClass (slot 0 override) + implicit dtor (slot 1);
+  the existing slot14/slot18/ResetPtrListRecordsSlot1C/slot20/slot24(->ReleaseSlot24)/
+  ShrinkCapacitySlot28 now correctly land at slots 5-10; added the missing list virtuals
+  GetEntrySlot2C(11/0x2c)/RemoveFirstPairSlot30(12)/PeekFirstPairSlot34(13)/AddEntrySlot38(14)/
+  slot3c(15)/PushPairSlot40(16). Placeholder bodies (vtable-shape, like the existing slots).
+- diplomacy_state.cpp: typed pendingWarTransitionQueue18d4 as TSortedPtrList* (forward-decl in
+  TDiplomacyTurnStateManager.h), dissolved the TQueueObject/WarTransitionQueue/TListObject
+  provisional casts into real virtual calls (PushPairSlot40/RemoveFirstPairSlot30/
+  PeekFirstPairSlot34/count on the queue; AddEntrySlot38/GetEntrySlot2C/ReleaseSlot24 on the
+  relationship list). Deleted the WarTransitionQueue local struct + TQueueObject/TListObject
+  includes. reinterpret_cast 45 -> 36.
+- TGreatPower.cpp: slot24() -> ReleaseSlot24() (its relationship-list release now dispatches at
+  the correct 0x24 instead of the misaligned 0x30). Its OTHER TListObject uses are a different
+  list family (TList/CPtrList vtable 0x648f78) and were correctly left untouched.
+- Verification: reccmp diff of 0x004f2100 confirms the GetEntry/Release calls now emit
+  [edi+0x2c]/[edi+0x24] matching the original (the +0xc-too-high offsets are gone). No
+  regression: aligned-functions 420 (delta 0), all coverage deltas 0.00pp, the three
+  TIndexAndRankList/TSortByPriceList/TSortedByRelationshipList scalar dtors unchanged at 81.82%,
+  vtable-gate passes (77 matches), all 8 TGreatPower canaries below_floor=0. Relationship-list
+  fns ticked up (SelectNationSlot 81->84%, BuildRelationshipList 72->74%).
+
+2026-06-08 (cont.) — trade_screen + amt-bars: type NationState::cityState
+Typed `NationState::cityState` from `void*` to `NationCityTradeState*` (forward-declared in
+NationState.h; full def stays in trade_quickdraw.h). Dissolved the 5
+`reinterpret_cast<NationCityTradeState*>(nationState->cityState)` sites across
+trade_screen.cpp (2), TIndustryAmtBar.cpp, TRailAmtBar.cpp, TShipAmtBar.cpp into direct
+typed member access. Codegen-identical (typed pointer load). trade_screen.cpp
+reinterpret_cast 183 -> 181 (5 total across the trade files). No regression: aligned-functions
+420 (delta 0), coverage delta 0.00pp, vtable-gate passes.
+
+2026-06-08 (cont.) — EXTRACT TCommand + TNextTradeCommand into separate files (kill manual vptr)
+Extracted the local diplomacy_state `TurnEventPacket` struct (manual `void* vftable` +
+`vftable = &vtbl_TurnEventNextPacket_00654e50` hand store) into two real classes in their
+own headers/files with real inheritance and // VTABLE: annotations:
+- include/game/TCommand.h + src/game/TCommand.cpp: `class TCommand` // VTABLE 0x00648e28,
+  12 virtual slots (placeholder bodies), 5 payload fields. Owns the real ctor 0x00487820
+  (member-init-list, vptr emitted by annotation -> 88.89%) and InitializeRangePair
+  0x004878a0 (-> 64%, both previously 0% stubs). Verified shallow vtable via ghidra dump
+  (slots 0-0xb then nulls + RTTI classdesc — earlier "~180 slot" read was a mis-windowed
+  dump).
+- include/game/TNextTradeCommand.h + src/game/TNextTradeCommand.cpp:
+  `class TNextTradeCommand : public TCommand` // VTABLE 0x00654e50, overrides slots 0/1/11
+  (verified: 0x654e50 vs 0x648e28 differ only at those three slots), inherits 2-10.
+  operator new -> AllocateWithFallbackHandler. `new TNextTradeCommand()` now emits the
+  two-stage base-then-derived vptr write through real C++ inheritance — no manual store.
+- diplomacy_state.cpp: deleted the TurnEventPacket struct, the vtbl_TurnEventNextPacket
+  placeholder global + kVtableTurnEventNextPacket const, and the two ILT bridge thunks
+  (0x403d5f/0x405ee3, now regenerated as stubs — ILT artifacts per heuristics #93).
+  Removed the stale `654e50|vtbl_TurnEventNextPacket_00654e50||global|` row from
+  config/symbols.csv (the class now emits its vtable via the annotation, per #86).
+- Tradeoff (expected, accepted per "no hacks > similarity"): ProcessQueuedWarTransitions
+  89.85% -> 86.15% because the real base-ctor call replaces the original's inlined
+  ILT-thunk construction (heuristics #93). Net: +2 newly-owned functions, manual vptr hack
+  removed, 2 new vtable classes properly modeled in separate files.
+- Verified: sync-ownership (2 updates), regen-stubs (12060), build, detect, vtable-gate
+  (77), compare-canaries (below_floor=0), no new out-of-sync; aligned-functions 420 (delta
+  0), coverage -0.02pp (the ILT construction tradeoff).
