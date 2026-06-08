@@ -78,9 +78,20 @@ static __inline void* ReadPointerAt(unsigned int address) {
 }
 
 static __inline void CallApplyMoveValueSlot1D0(void* context, int value) {
-  reinterpret_cast<void(__fastcall*)(void*, int)>((*reinterpret_cast<void***>(context))[0x1d0 / 4])(
-      context, value);
+  reinterpret_cast<void(__fastcall*)(void*, int)>(
+      (*reinterpret_cast<void***>(context))[0x1d0 / 4])(context, value);
 }
+
+extern const int kTradeSellPropagationTags[17];
+extern const int kControlTagBar;
+extern struct NationState* GetNationStateBySlot(short slot);
+extern short QueryNationMetricBySlot(struct NationState* state, short metricSlot);
+extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
+extern char CallControlFlagSlot1D8(struct TradeControl* control);
+extern void CallControlActionSlot1E0(struct TradeControl* control);
+extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg, int eventExtra);
+extern char CallBoolSlot1DC(void* self);
+extern void FailNilPointerInUSmallViews(int line);
 
 struct CityTradeProductionSlots {
   char pad_00[4];

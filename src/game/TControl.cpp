@@ -32,5 +32,8 @@ void TControl::vmethod_0112() {}
 void TControl::vmethod_0113() {}
 void TControl::SetControlClassAndRefresh(int classState, int refreshFlag) {}
 void TControl::vmethod_0115() {}
-void TControl::vmethod_0116() {}
+void TControl::ApplyMoveValue(int value) {}
 void TControl::NotifyControlSelectionChange(void* boundEntry) {}
+char TControl::GetControlFlag() { return 0; }
+char TControl::GetBoolSlot1DC() { return 0; }
+void TControl::DoControlAction() {}

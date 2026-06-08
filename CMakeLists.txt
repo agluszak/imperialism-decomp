@@ -69,6 +69,7 @@ add_executable(Imperialism
     src/game/TProductionCluster.cpp
   src/game/TUnitToolbarCluster.cpp
   src/game/TCityBarCluster.cpp
+  src/game/TAmtBarCluster.cpp
     src/game/TEngineerDialog.cpp
     src/game/TCivToolbar.cpp
     src/game/TCivilianOrderState.cpp

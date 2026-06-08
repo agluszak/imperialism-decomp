@@ -57,18 +57,13 @@ void TUnitToolbarCluster::DispatchEvent(int eventClass, void* eventPayload, int 
   }
 
   void* ownerPanel = this->OwnerPanel();
-  TradeControl* mainControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(ownerPanel)->ResolveControlByTag(0x6d61696e));
+  TControl* mainControl = reinterpret_cast<TView*>(ownerPanel)->ResolveControlByTag(0x6d61696e);
   if (mainControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
   }
   
-  // 0x3c / 4 is slot 15. TView has RefreshControl at some slot...
-  // wait, 0x3C is slot 15? In TView.h:
-  // slot 15 is vmethod_0015
-  // But wait! Is slot 15 RefreshControl? No, slot 15 is just vmethod_0015.
-  // We'll use the raw call for now to preserve matching.
-  mainControl->CtrlSlot15();
+  mainControl->vmethod_0015();
 }
 
 // FUNCTION: IMPERIALISM 0x00586150
@@ -85,11 +80,11 @@ void TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex(int nResourceIndex
     return;
   }
 
-  TradeControl* control = reinterpret_cast<TradeControl*>(panel->ResolveControlByTag(0x444c4f47));
+  TControl* control = panel->ResolveControlByTag(0x444c4f47);
   if (control == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
   }
 
-  control->CtrlSlot15(0x0c, 0, 0);
+  control->DispatchEvent(0x0c, 0, 0);
 }

@@ -23,7 +23,10 @@ public:
   virtual void vmethod_0113();
   virtual void SetControlClassAndRefresh(int classState, int refreshFlag);
   virtual void vmethod_0115();
-  virtual void vmethod_0116();
+  virtual void ApplyMoveValue(int value);
   virtual void NotifyControlSelectionChange(void* boundEntry);
+  virtual char GetControlFlag();
+  virtual char GetBoolSlot1DC();
+  virtual void DoControlAction();
 
 };

@@ -53,27 +53,27 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordConte
   int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
   int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
 
-  TradeControl* areaControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x74726561));
+  TControl* areaControl = this->ResolveControlByTag(0x74726561);
   if (areaControl != 0) {
-    areaControl->SetControlValueSlot2C(*reinterpret_cast<int*>(recordNode + 0x10));
-    areaControl->SetEnabledSlotA4(0, 1);
+    areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10));
+    areaControl->SetEnabled(0, 1);
   }
 
-  TradeControl* returnControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x756e7472));
+  TControl* returnControl = this->ResolveControlByTag(0x756e7472);
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
-  returnControl->SetControlValueSlot2C((int)*reinterpret_cast<short*>(metrics + 4));
+  returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4));
 
-  TradeControl* airControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x74726169));
+  TControl* airControl = this->ResolveControlByTag(0x74726169);
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
-  airControl->SetControlValueSlot2C((int)*reinterpret_cast<short*>(metrics + 6));
+  airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6));
 
-  TradeControl* profControl = reinterpret_cast<TradeControl*>(this->ResolveControlByTag(0x70726f66));
+  TControl* profControl = this->ResolveControlByTag(0x70726f66);
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }
-  profControl->SetControlValueSlot2C((int)*reinterpret_cast<short*>(metrics + 8));
+  profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8));
 }

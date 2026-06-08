@@ -16,6 +16,9 @@
 #include "game/TStatusButton.h"
 #include "game/TProductionCluster.h"
 #include "game/vcall_runtime.h"
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
 
 typedef void code(void);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
@@ -69,13 +72,13 @@ extern "C" char g_pClassDescTTraderAmtBar = 0;
 extern "C" char g_pClassDescTTradeCluster = 0;
 extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 
-namespace {
+
 
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
-const int kControlTagBar = 0x62617220;
+extern const int kControlTagBar = 0x62617220;
 const int kControlTagAvai = 0x61766169;
 const int kControlTagCard = 0x63617264;
 const int kControlTagBack = 0x6261636b;
@@ -294,7 +297,7 @@ static __inline void CallVoidSlotE4(void* self) {
 }
 
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line);
-static __inline void FailNilPointerInUSmallViews(int line);
+void FailNilPointerInUSmallViews(int line);
 
 struct TradeMoveControlState {
   void* vftable;
@@ -331,7 +334,7 @@ struct TradeMovePanelContext {
 };
 
 __inline TradeControl* TradeScreenContext::ResolveControlByTag(int controlTag) {
-  return CallResolveControlByTagSlot94(this, controlTag);
+  return reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(controlTag));
 }
 
 __inline TradeControl* TradeScreenContext::RequireControlByTag(int controlTag) {
@@ -371,7 +374,7 @@ static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) 
                                                                                         line);
 }
 
-static __inline void FailNilPointerInUSmallViews(int line) {
+void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert(kUSmallViewsCppPath, line);
 }
 
@@ -382,11 +385,11 @@ static __inline short QueryUiScreenModeSafe(UiRuntimeContext* runtimeContext) {
   return runtimeContext->QueryUiScreenModeSlot54();
 }
 
-static __inline short QueryUiScreenModeRaw(UiRuntimeContext* runtimeContext) {
+int QueryUiScreenModeRaw(UiRuntimeContext* runtimeContext) {
   return runtimeContext->QueryUiScreenModeSlot54();
 }
 
-static __inline NationState* GetNationStateBySlot(short slotId) {
+NationState* GetNationStateBySlot(short slotId) {
   NationState** ppNationStates = reinterpret_cast<NationState**>(kAddrGlobalNationStates);
   return ppNationStates[slotId];
 }
@@ -399,7 +402,7 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   return nationState->cityState;
 }
 
-static __inline short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
+short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
   return CallQueryNationMetricBySlot78(nationState, metricSlot);
 }
 
@@ -414,7 +417,7 @@ void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // GLOBAL: IMPERIALISM 0x6a44b4
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
-} // namespace
+
 
 struct ApplicationUiRootControllerState {
   void* vftable;
@@ -567,30 +570,30 @@ void __fastcall HandleCityDialogSelectionAndBackControlReset(TStatusButton* butt
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
 
-  if (selectedIndex == CallQuerySelectedIndexSlotBC(button) && CallBoolSlot28(button) != '\0') {
-    if (CallBoolSlot1BC(button) == '\0') {
+  if (selectedIndex == reinterpret_cast<TView*>(button)->QuerySelectedIndexSlotBC() && reinterpret_cast<TView*>(button)->GetBoolSlot28() != '\0') {
+    if (reinterpret_cast<TView*>(button)->GetBoolSlot1BC() == '\0') {
       if (g_pActiveCityDialogLegendSelectionOwner != 0) {
-        CallVoidSlotA0(g_pActiveCityDialogLegendSelectionOwner);
+        reinterpret_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
         g_pActiveCityDialogLegendSelectionOwner = 0;
         g_bCityDialogLegendSelectionInitialized = 0;
       }
 
       TradeControl* backControl =
-          CallResolveControlByTagSlot94(button->OwnerPanel(), kControlTagBack);
+          reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(button->OwnerPanel())->ResolveControlByTag(kControlTagBack));
       if (backControl != 0) {
-        CallVoidSlot1C(backControl);
-        CallVoidSlotE4(button->OwnerPanel());
+        reinterpret_cast<TView*>(backControl)->CallVoidSlot1C();
+        reinterpret_cast<TView*>(button->OwnerPanel())->RefreshControl();
       }
 
       if (button->ControlTag() != kControlTagArms && button->ControlTag() == kControlTagClos) {
         if (g_pActiveCityDialogLegendSelectionOwner != 0) {
-          CallVoidSlotA0(g_pActiveCityDialogLegendSelectionOwner);
+          reinterpret_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
           g_pActiveCityDialogLegendSelectionOwner = 0;
         }
         g_bCityDialogLegendSelectionInitialized = 0;
-        void* ownerPanel = CallOwnerPanelSlot58(button);
+        void* ownerPanel = reinterpret_cast<TView*>(button)->OwnerPanel();
         if (ownerPanel != 0) {
-          CallVoidSlotA0(ownerPanel);
+          reinterpret_cast<TView*>(ownerPanel)->CallVoidSlotA0();
         }
       }
     }
@@ -722,7 +725,7 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
     }
     short availableValue = (short)availableControl->QueryValue();
     if (moveValue < availableValue) {
-      CallApplyMoveValueSlot1D0(this, moveValue + 1);
+      reinterpret_cast<TControl*>(this)->ApplyMoveValue(moveValue + 1);
     }
   } else if (normalizedCommand == 1) {
     TradeControl* moveControl =
@@ -732,7 +735,7 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
-      CallApplyMoveValueSlot1D0(this, moveValue - 1);
+      reinterpret_cast<TControl*>(this)->ApplyMoveValue(moveValue - 1);
     }
   }
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
@@ -843,11 +846,11 @@ void TradeScreenContext::InitializeTradeSellControlState(unsigned int styleSeed)
 void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* eventArg,
                                                           int eventExtra) {
   // ORIG_CALLCONV: __thiscall
-  void* ownerPanel = CallOwnerPanelSlot58(this);
+  void* ownerPanel = reinterpret_cast<TView*>(this)->OwnerPanel();
 
   switch (commandId) {
   case 100: {
-    if (CallBoolSlot1DC(this) != '\0') {
+    if (reinterpret_cast<TControl*>(this)->GetBoolSlot1DC() != '\0') {
       TradeControl* sellControl = ResolveOwnerControl(this, kControlTagSell);
       if (sellControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
@@ -870,7 +873,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
         int capacityValue = capacityControl->QueryValue();
         if ((int)maxByNationMetric < capacityValue) {
           sellControl->SetEnabledPair(maxByNationMetric + 1 != 0, 1);
-          CallApplyMoveValueSlot1D0(this, maxByNationMetric + 1);
+          reinterpret_cast<TControl*>(this)->ApplyMoveValue(maxByNationMetric + 1);
           return;
         }
       }
@@ -885,7 +888,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
     }
     int sellValue = sellControl->QueryValue();
     if (1 < sellValue) {
-      CallApplyMoveValueSlot1D0(this, sellValue - 1);
+      reinterpret_cast<TControl*>(this)->ApplyMoveValue(sellValue - 1);
       return;
     }
     break;
@@ -897,8 +900,8 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TradeControl* rowControl = ResolveOwnerControl(ownerPanel, kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && CallControlFlagSlot1D8(rowControl) == '\0') {
-          CallControlActionSlot1E0(rowControl);
+        if (rowControl != 0 && reinterpret_cast<TControl*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TControl*>(rowControl)->DoControlAction();
         }
       }
       return;
@@ -911,8 +914,8 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TradeControl* rowControl = ResolveOwnerControl(ownerPanel, kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && CallControlFlagSlot1D8(rowControl) == '\0') {
-          CallControlActionSlot1E0(rowControl);
+        if (rowControl != 0 && reinterpret_cast<TControl*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TControl*>(rowControl)->DoControlAction();
         }
       }
       return;
@@ -944,7 +947,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
       GAME_FAIL_NIL_POINTER();
     }
     barControl->SetStatePair(1, 0);
-    CallApplyMoveValueSlot1D0(this, applyValue);
+    reinterpret_cast<TControl*>(this)->ApplyMoveValue(applyValue);
     return;
   }
   case 0x6a: {
@@ -956,7 +959,7 @@ void TAmtBarClusterContext::HandleTradeSellControlCommand(int commandId, void* e
       GAME_FAIL_NIL_POINTER();
     }
     barControl->SetStatePair(0, 1);
-    CallApplyMoveValueSlot1D0(this, 0);
+    reinterpret_cast<TControl*>(this)->ApplyMoveValue(0);
     return;
   }
   default:
@@ -983,7 +986,7 @@ char __fastcall IsTradeSellControlAtMinimum(TradeScreenContext* context, int unu
   if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
     return 0;
   }
-  TradeControl* sellControl = CallResolveControlByTagSlot94(context, kControlTagSell);
+  TradeControl* sellControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(context)->ResolveControlByTag(kControlTagSell));
   return sellControl->QueryValue() <= 0 ? 1 : 0;
 }
 
@@ -996,7 +999,7 @@ char __fastcall IsTradeSellControlAtMinimum(TradeScreenContext* context, int unu
 
 // FUNCTION: IMPERIALISM 0x00587950
 short TradeScreenContext::QueryTradeSellControlQuantity(void) {
-  TradeControl* sellControl = CallResolveControlByTagSlot94(this, kControlTagSell);
+  TradeControl* sellControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagSell));
   return sellControl->QueryValue();
 }
 
@@ -1013,7 +1016,7 @@ short TradeScreenContext::QueryTradeSellControlQuantity(void) {
 
 // FUNCTION: IMPERIALISM 0x00587980
 char TradeScreenContext::IsTradeBidControlActionable(void) {
-  TradeControl* bidControl = CallResolveControlByTagSlot94(this, kControlTagCard);
+  TradeControl* bidControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -1043,7 +1046,7 @@ char TradeScreenContext::IsTradeBidControlActionable(void) {
 
 // FUNCTION: IMPERIALISM 0x00587a10
 char TradeScreenContext::IsTradeOfferControlActionable(void) {
-  TradeControl* offerControl = CallResolveControlByTagSlot94(this, kControlTagOffr);
+  TradeControl* offerControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
@@ -1502,7 +1505,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
     return;
   }
 
-  TradeControl* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
+  TradeControl* moveControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
@@ -1517,7 +1520,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&moveInvalidRect, 1);
 
-  TradeControl* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
+  TradeControl* barControl = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xcf9);
   }
@@ -1551,11 +1554,8 @@ void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
 #endif
 
 #include "game/TAmtBar.h"
-#include "TIndustryCluster.cpp"
 #include "game/TIndustryAmtBar.h"
-#include "TRailCluster.cpp"
 #include "game/TRailAmtBar.h"
-#include "TShipyardCluster.cpp"
 #include "game/TShipAmtBar.h"
 
 // FUNCTION: IMPERIALISM 0x0058a3b0
@@ -1637,7 +1637,7 @@ void __fastcall OrphanCallChain_C3_I43_0058b750(NumberedArrowButtonState* contro
     }
     reinterpret_cast<TradeControl*>(control)->SetBitmap(bitmapId, 1);
     if (refreshParent != 0) {
-      TradeControl* owner = reinterpret_cast<TradeControl*>(CallOwnerPanelSlot58(control));
+      TradeControl* owner = reinterpret_cast<TradeControl*>(reinterpret_cast<TView*>(control)->OwnerPanel());
       if (owner != 0) {
         owner->InvokeSlot13C();
       }
@@ -1649,7 +1649,7 @@ void __fastcall OrphanCallChain_C3_I43_0058b750(NumberedArrowButtonState* contro
 void __fastcall OrphanCallChain_C2_I16_0058b890(TradeControl* control, int unusedEdx, int arg2,
                                                 int arg3) {
   (void)unusedEdx;
-  if (CallBoolSlot28(control) != 0) {
+  if (reinterpret_cast<TView*>(control)->GetBoolSlot28() != 0) {
     control->InvokeSlot1CC(arg2, arg3);
   }
 }

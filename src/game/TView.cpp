@@ -37,11 +37,11 @@ void TView::vmethod_0003() {}
 void TView::vmethod_0004() {}
 void TView::vmethod_0005() {}
 void TView::vmethod_0006() {}
-void TView::vmethod_0007() {}
+void TView::CallVoidSlot1C() {}
 void TView::vmethod_0008() {}
 void TView::vmethod_0009() {}
-void TView::vmethod_0010() {}
-void TView::vmethod_0011() {}
+char TView::GetBoolSlot28() { return 0; }
+void TView::SetControlValue(int value) {}
 void TView::vmethod_0012() {}
 void TView::vmethod_0013() {}
 void TView::vmethod_0014() {}
@@ -70,14 +70,14 @@ void TView::vmethod_0036() {}
 class TControl* TView::ResolveControlByTag(unsigned int controlTag) { return 0; }
 void TView::vmethod_0038() {}
 void TView::vmethod_0039() {}
-void TView::vmethod_0040() {}
+void TView::CallVoidSlotA0() {}
 void TView::SetEnabled(int enabledState, int refreshFlag) {}
 void TView::SetState(int state, int refreshFlag) {}
 void TView::vmethod_0043() {}
 void TView::vmethod_0044() {}
 void TView::vmethod_0045() {}
 void TView::vmethod_0046() {}
-void TView::vmethod_0047() {}
+int TView::QuerySelectedIndexSlotBC() { return 0; }
 void TView::vmethod_0048() {}
 void TView::vmethod_0049() {}
 void TView::vmethod_0050() {}
@@ -90,9 +90,11 @@ void TView::vmethod_0056() {}
 void TView::RefreshControl() {}
 void TView::vmethod_0058() {}
 void TView::vmethod_0059() {}
-void TView::vmethod_0060() {}
-void TView::vmethod_0061() {}
-void TView::vmethod_0062() {}
+void TView::CaptureLayoutF0(int* buffer, int modeFlag) {}
+void TView::CaptureLayout(int* buffer, int modeFlag) {}
+char TView::Refresh() {
+  return 0;
+}
 void TView::vmethod_0063() {}
 void TView::vmethod_0064() {}
 void TView::vmethod_0065() {}
@@ -146,4 +148,4 @@ void TView::vmethod_0107() {}
 void TView::vmethod_0108() {}
 void TView::vmethod_0109() {}
 void TView::vmethod_0110() {}
-void TView::vmethod_0111() {}
+char TView::GetBoolSlot1BC() { return 0; }
