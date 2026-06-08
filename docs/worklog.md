@@ -3264,3 +3264,6 @@ Follow-up scan after the TClosePicture extraction:
 - Verification: `just build`, `just detect`, targeted `just compare 0x00588b70` (still
   42.86%, same broad pre-existing mismatch pattern), `just vtable-gate`,
   `just compare-canaries` (`below_floor=0`, `parse_error=0`), and `git diff --check`.
+   - Removed `TTradeCluster::ResolveControlByTag` and `RequireControlByTag`, switching to `TView::ResolveControlByTag` base class calls with correct casts.
+   - Added `// VTABLE: IMPERIALISM 0x665a70` to `TTradeCluster`.
+   - Verified `0x00497390` is `QuickDrawSurfaceGuard::~QuickDrawSurfaceGuard()` (custom caching RAII destructor) and not a true compiler-emitted scalar deleting destructor.

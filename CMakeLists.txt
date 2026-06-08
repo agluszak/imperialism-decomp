@@ -44,6 +44,7 @@ add_executable(Imperialism
   src/game/TShipAmtBar.cpp
     src/game/TTraderAmtBar.cpp
     src/game/ui_widget_wrappers.cpp
+    src/game/quickdraw_guards.cpp
     src/game/TCivilianButton.cpp
     src/game/THQButton.cpp
     src/game/TPictureResourceEntryBase.cpp

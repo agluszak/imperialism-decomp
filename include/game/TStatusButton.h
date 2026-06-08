@@ -11,4 +11,9 @@ public:
 
   int ControlTag() const;
   void* OwnerPanel() const;
+
+  void HandleCityDialogSelectionAndBackControlReset(int selectedIndex);
 };
+
+TStatusButton* __cdecl CreateTStatusButtonInstance(void);
+void* __cdecl GetTStatusButtonClassNamePointer(void);

@@ -11,6 +11,8 @@ public:
   TPlacard();
   virtual ~TPlacard();
 
+  void RenderRightAlignedNumericOverlayWithShadow();
+
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0();
   void WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2);
   void RenderPlacardValueTextWithShadow();

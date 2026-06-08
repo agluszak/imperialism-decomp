@@ -4,9 +4,9 @@
 
 class TRailCluster : public TUberCluster {
 public:
-  int field_88;
-  short field_8c;
-  short field_8e;
+  struct TAmtBar* selectedMetricControl; // 0x88
+  short selectedMetricValue;             // 0x8c
+  short selectedMetricStep;              // 0x8e
 
   TRailCluster();
   virtual ~TRailCluster();
@@ -17,6 +17,8 @@ public:
   virtual int QueryStepValue();
   virtual void vmethod_0013();
   virtual void DispatchEvent(int arg1, void* arg2, int arg3);
+
+  void SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex);
 };
 
 ASSERT_SIZE(TRailCluster, 0x90);
