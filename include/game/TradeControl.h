@@ -38,7 +38,7 @@ struct TradeControl {
   virtual short QueryStepValueSlot30(void) = 0;
   virtual void CtrlSlot13(void) = 0;
   virtual void CtrlSlot14(void) = 0;
-  virtual void CtrlSlot15(void) = 0;
+  virtual void CtrlSlot15(int arg1 = 0, void* arg2 = 0, int arg3 = 0) = 0;
   virtual void CtrlSlot16(int commandId, void* eventArg, int eventExtra) = 0;
   virtual void CtrlSlot17(void) = 0;
   virtual void CtrlSlot18(void) = 0;

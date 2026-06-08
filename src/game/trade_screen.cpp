@@ -131,8 +131,7 @@ const unsigned int kAddrClassDescTRailCluster = 0x00662fc8;
 const unsigned int kVtableTRailAmtBar = 0x00666558;
 const unsigned int kVtableTShipyardCluster = 0x00666760;
 const unsigned int kAddrClassDescTShipyardCluster = 0x00662ff8;
-const unsigned int kVtableTUnitToolbarCluster = 0x00664d38;
-const unsigned int kAddrClassDescTUnitToolbarCluster = 0x00662ed8;
+// Removed TUnitToolbarCluster constants
 const unsigned int kVtableTCityBarCluster = 0x00665190;
 const unsigned int kAddrClassDescTCityBarCluster = 0x00662f08;
 const unsigned int kAddrDecimalFormat = 0x0069430C;
@@ -220,11 +219,7 @@ struct TradeScreenContext {
   void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
 };
 
-struct ApplicationUiRootControllerState {
-  void* vftable;
-  char pad_04[0x20];
-  int screenModeAt24;
-};
+// ApplicationUiRootControllerState moved to global scope
 
 struct UnitToolbarClusterState {
   void* vftable;
@@ -416,13 +411,21 @@ static __inline short QueryNationTradeCapacity(NationState* nationState) {
 }
 
 // GLOBAL: IMPERIALISM 0x6a18e0
-ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
+// g_pApplicationUiRootController moved to global scope
 // GLOBAL: IMPERIALISM 0x6a44b0
 void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // GLOBAL: IMPERIALISM 0x6a44b4
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
 } // namespace
+
+struct ApplicationUiRootControllerState {
+  void* vftable;
+  char pad_04[0x20];
+  int screenModeAt24;
+};
+
+ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
 
 // GLOBAL: IMPERIALISM 0x6a1c98
 void* g_pReusableQuickDrawSurfaceListHead = 0;
@@ -545,98 +548,7 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unused
 #pragma optimize("y", off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00585f70
-UnitToolbarClusterState* __cdecl CreateTUnitToolbarClusterInstance(void) {
-  UnitToolbarClusterState* cluster =
-      reinterpret_cast<UnitToolbarClusterState*>(AllocateWithFallbackHandler(0x88));
-  if (cluster != 0) {
-    TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
-    cluster->vftable = reinterpret_cast<void*>(kVtableTUnitToolbarCluster);
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00585ff0
-void* __cdecl GetTUnitToolbarClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTUnitToolbarCluster);
-}
-
-// FUNCTION: IMPERIALISM 0x00586010
-UnitToolbarClusterState* __fastcall
-ConstructTUnitToolbarClusterBaseState(UnitToolbarClusterState* cluster) {
-  // ORIG_CALLCONV: __thiscall
-  TradeScreenRuntimeBridge::ConstructTUberClusterObject(cluster);
-  cluster->vftable = reinterpret_cast<void*>(kVtableTUnitToolbarCluster);
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00586040
-UnitToolbarClusterState* __fastcall
-DestructTUnitToolbarClusterAndMaybeFree(UnitToolbarClusterState* cluster, int unusedEdx,
-                                        unsigned char freeSelfFlag) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00586090
-void __fastcall WrapperFor_thunk_DispatchPanelControlEvent_At00586090(
-    UnitToolbarClusterState* cluster, int eventClass, void* eventPayload, int eventFlags) {
-  // ORIG_CALLCONV: __thiscall
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      cluster, eventClass, eventPayload, eventFlags);
-
-  if (!(((g_pApplicationUiRootController->screenModeAt24 == 1) && (eventClass == 0x68)) ||
-        (eventClass == 0x67) || (eventClass == 10) || (eventClass == 0x0c))) {
-    return;
-  }
-
-  void* ownerPanel = reinterpret_cast<void*(__fastcall*)(UnitToolbarClusterState*)>(
-      (*reinterpret_cast<void***>(cluster))[0x58 / 4])(cluster);
-  TradeControl* mainControl = CallResolveControlByTagSlot94(ownerPanel, 0x6d61696e);
-  if (mainControl == 0) {
-    GAME_FAIL_NIL_POINTER();
-    return;
-  }
-  reinterpret_cast<void(__fastcall*)(TradeControl*)>(
-      (*reinterpret_cast<void***>(mainControl))[0x3c / 4])(mainControl);
-}
-
-// FUNCTION: IMPERIALISM 0x00586150
-unsigned char OrphanVtableAssignStub_00586150(void) {
-  return 1;
-}
-
-// FUNCTION: IMPERIALISM 0x00586170
-void UpdateTradeResourceSelectionByIndex(void* self, int nResourceIndex)
-
-{
-  // ORIG_CALLCONV: __thiscall
-  int* panel = 0;
-  int* control = 0;
-
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x84) = nResourceIndex;
-
-  panel = reinterpret_cast<int*>(reinterpret_cast<void*(__fastcall*)(void*)>(
-      (*reinterpret_cast<void***>(self))[0x58 / 4])(self));
-  if (panel == 0) {
-    return;
-  }
-
-  control = reinterpret_cast<int*>(reinterpret_cast<void*(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(panel))[0x94 / 4])(panel, 0x444c4f47));
-  if (control == 0) {
-    GAME_FAIL_NIL_POINTER();
-    return;
-  }
-
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(
-      (*reinterpret_cast<void***>(control))[0x3c / 4])(control, 0x0c, 0, 0);
-}
+// TUnitToolbarCluster moved to its own file
 
 // FUNCTION: IMPERIALISM 0x00586280
 TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
