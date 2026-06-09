@@ -3035,22 +3035,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
   return 0;
 }
 
-// ghidra_name RemoveAll_603423
-// ghidra_proto void __fastcall RemoveAll_603423(void)
-// FUNCTION: IMPERIALISM 0x00603423
-undefined4 RemoveAll_603423(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeAssoc
-// ghidra_proto void __cdecl FreeAssoc(void)
-// FUNCTION: IMPERIALISM 0x006034cb
-undefined4 FreeAssoc(void)
-{
-  return 0;
-}
-
 // ghidra_name CWnd::GetValueAt
 // ghidra_proto int __thiscall GetValueAt(void)
 // FUNCTION: IMPERIALISM 0x00603516
@@ -3063,14 +3047,6 @@ undefined4 GetValueAt(void)
 // ghidra_proto void __stdcall TryGetHandleMapEntryValueByKey(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00603549
 undefined4 TryGetHandleMapEntryValueByKey(void)
-{
-  return 0;
-}
-
-// ghidra_name TTooltipRelayWindowState::RemoveKey
-// ghidra_proto int __thiscall RemoveKey(void)
-// FUNCTION: IMPERIALISM 0x006035bb
-undefined4 RemoveKey(void)
 {
   return 0;
 }

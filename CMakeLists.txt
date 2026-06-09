@@ -35,6 +35,7 @@ endif()
 
 if(WIN32)
     set_target_properties(Imperialism PROPERTIES WIN32_EXECUTABLE YES)
+    target_link_libraries(Imperialism PRIVATE gdi32 user32)
 endif()
 
 target_include_directories(Imperialism PRIVATE include)

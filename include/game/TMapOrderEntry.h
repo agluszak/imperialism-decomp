@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 #include "game/MfcRuntime.h"
 
@@ -23,10 +24,20 @@ struct ObjectPoolOwner {
 // Map-order queue entry (Ghidra mislabels this slice as ObjectPool).
 class TMapOrderEntry {
 public:
-  char pad_00[0x04];
+  int field_00;
   s16 order_type;
-  char pad_06[0x06];
+  s16 order_strength;
+  int attachment;
   ObjectPoolOwner* owner;
+  char pad_10[0x0c];
+  s16 required_count;
+  char pad_1e[0x02];
+  int attached_entity;
+  char pad_24[0x04];
+  TMapOrderEntry* queue_prev;
+  TMapOrderEntry* queue_next;
+  s16 tiebreak_strength;
+  char pad_32[0x02];
 
   static ObjectPoolListNode* FindMissionOrderNodeById(ObjectPoolListNode* node, int child_node_id);
   static ObjectPoolListNode* DeleteMapOrderChildLinkAndReturnNext(
@@ -44,3 +55,5 @@ public:
 
 // TEMP: Ghidra name until call sites are renamed.
 typedef TMapOrderEntry ObjectPool;
+
+ASSERT_SIZE(TMapOrderEntry, 0x34);

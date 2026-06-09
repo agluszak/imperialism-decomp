@@ -1803,14 +1803,6 @@ undefined4 ReadClass(void)
   return 0;
 }
 
-// ghidra_name CDC::CDC
-// ghidra_proto void __fastcall CDC(CDC * pThis)
-// FUNCTION: IMPERIALISM 0x00612682
-undefined4 CDC(void)
-{
-  return 0;
-}
-
 // ghidra_name ScalarDeleteCDC
 // ghidra_proto int __thiscall ScalarDeleteCDC(void)
 // FUNCTION: IMPERIALISM 0x00612696
@@ -1839,30 +1831,6 @@ undefined4 afxMapHDC(void)
 // ghidra_proto void __cdecl FromHandle_612736(void)
 // FUNCTION: IMPERIALISM 0x00612736
 undefined4 FromHandle_612736(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivDescription::AttachHdcToDcWrapper
-// ghidra_proto bool __thiscall AttachHdcToDcWrapper(void)
-// FUNCTION: IMPERIALISM 0x0061274c
-undefined4 AttachHdcToDcWrapper(void)
-{
-  return 0;
-}
-
-// ghidra_name DetachHdcFromDcWrapper
-// ghidra_proto void __cdecl DetachHdcFromDcWrapper(void)
-// FUNCTION: IMPERIALISM 0x00612783
-undefined4 DetachHdcFromDcWrapper(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyCDCAndDeleteOwnedHdc
-// ghidra_proto void __cdecl DestroyCDCAndDeleteOwnedHdc(void)
-// FUNCTION: IMPERIALISM 0x006127ca
-undefined4 DestroyCDCAndDeleteOwnedHdc(void)
 {
   return 0;
 }
@@ -1971,14 +1939,6 @@ undefined4 SelectClipRegionOnPrimaryAndSecondaryDc(void)
   return 0;
 }
 
-// ghidra_name IntersectClipRectOnPrimaryAndSecondaryDc
-// ghidra_proto int * __thiscall IntersectClipRectOnPrimaryAndSecondaryDc(void)
-// FUNCTION: IMPERIALISM 0x00612fd8
-undefined4 IntersectClipRectOnPrimaryAndSecondaryDc(void)
-{
-  return 0;
-}
-
 // ghidra_name LineTo
 // ghidra_proto int __thiscall LineTo(int x, int y)
 // FUNCTION: IMPERIALISM 0x006130ec
@@ -2007,22 +1967,6 @@ undefined4 AfxEnumMetaFileProc(void)
 // ghidra_proto int __thiscall PlayMetaFile(void * hMetaFile)
 // FUNCTION: IMPERIALISM 0x00613686
 undefined4 PlayMetaFile(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructCClientDCFromViewHandle
-// ghidra_proto void * __cdecl ConstructCClientDCFromViewHandle(void)
-// FUNCTION: IMPERIALISM 0x00613791
-undefined4 ConstructCClientDCFromViewHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyCClientDCAndReleaseHandle
-// ghidra_proto void __cdecl DestroyCClientDCAndReleaseHandle(void)
-// FUNCTION: IMPERIALISM 0x00613803
-undefined4 DestroyCClientDCAndReleaseHandle(void)
 {
   return 0;
 }

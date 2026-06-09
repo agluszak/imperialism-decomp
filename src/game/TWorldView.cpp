@@ -1,12 +1,40 @@
 #include "game/TWorldView.h"
 #include "game/MfcRuntime.h"
+#include "game/QuickDrawSurfaceGuard.h"
+#include "game/TGlobalMapState.h"
+#include "game/TSelectedCivilianOrderState.h"
+#include "game/diplomacy_globals.h"
+#include "game/quickdraw_globals.h"
+#include "game/trade_quickdraw.h"
 
 undefined4 thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(void);
 undefined4 thunk_HandleMapClickByInteractionMode(void);
+undefined4 thunk_GetMapActionContextByTileIndex(void);
+undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
+undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
+undefined4 ApplyHitRegionToClipState(void);
+undefined4 thunk_SetGlobalQuickDrawOrigin(void);
+undefined4 IntersectRectWrapper(void);
+undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
+undefined4 ReplaceClipStateRegionHandleFromRect(void);
+undefined4 GetRegionBoxToRectIfPresent(void);
+undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
+undefined4 thunk_SetMapInteractionMode(void);
+undefined4 thunk_RefreshMapOrderEntryPanel(void);
+
+extern "C" int __stdcall OffsetRect(void* rect, int dx, int dy);
 
 namespace {
 
 #define kAddrTEventClassVtable 0x00649770
+#define kAddrActiveMapTileIndexStorage 0x006a45ec
+
+struct TToolBarClusterFields {
+  char pad[0x94];
+  unsigned char field94;
+  char pad95[3];
+  void* field98;
+};
 
 void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
   undefined4* eventBlock = reinterpret_cast<undefined4*>(AllocateWithFallbackHandler(0));
@@ -40,7 +68,123 @@ void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
 }
 
 // FUNCTION: IMPERIALISM 0x00595c70
-void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {}
+void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
+  QuickDrawSurfaceGuard reusableSurfaceA;
+  QuickDrawSurfaceGuard reusableSurfaceB;
+
+  void* childMapView = ownerContext;
+  short interactionMode = *reinterpret_cast<short*>(reinterpret_cast<char*>(childMapView) + 0x96);
+  int previewTileIndex = -1;
+  short previewBand = -1;
+
+  if (interactionMode == 0) {
+    int selectedOrder = *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSelectedCivilianOrderState) + 4);
+    if (selectedOrder != 0) {
+      previewTileIndex = -1;
+      previewBand = *reinterpret_cast<short*>(selectedOrder + 6);
+    }
+  } else if (interactionMode == 1) {
+    short actionIndex =
+        *reinterpret_cast<short*>(reinterpret_cast<char*>(0x006a3338) + 0x31c);
+    if (actionIndex != -1) {
+      previewBand = -1;
+      previewTileIndex = *reinterpret_cast<short*>(
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10) + 4 +
+          actionIndex * 0xa8);
+    }
+  } else if (interactionMode == 2) {
+    int attachedEntity = 0;
+    if (*reinterpret_cast<short*>(reinterpret_cast<char*>(childMapView) + 0x96) == 2) {
+      attachedEntity = *reinterpret_cast<int*>(reinterpret_cast<char*>(childMapView) + 0x98);
+    }
+    if (attachedEntity != 0) {
+      previewBand = -1;
+      previewTileIndex = *reinterpret_cast<short*>(attachedEntity + 0x20);
+    }
+  }
+
+  if (static_cast<short>(previewTileIndex) == -1) {
+    return;
+  }
+
+  short outX = 0;
+  short outY = 0;
+  short outExtra = 0;
+  short packedBand = previewBand;
+  ForwardProjectTileIndexToWrappedScreenOffsetByScale(
+      previewTileIndex, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
+      reinterpret_cast<int>(&outY), packedBand);
+
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
+  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetGlobalQuickDrawOrigin)(
+      static_cast<short>(field2c), static_cast<short>(field30));
+
+  short rectWidth = field76;
+  short rectHeight = field78;
+  short originX = outX;
+  short originY = outY;
+  short rectRight = originX + rectWidth;
+  short rectBottom = originY + rectHeight;
+
+  struct MapOverlayRect {
+    long left;
+    long top;
+    long right;
+    long bottom;
+  } clipRect;
+  int childVtable = *reinterpret_cast<int*>(childMapView);
+  typedef void(__fastcall * ChildSlot128Fn)(void* self, int unusedEdx, long* bottomOut);
+  reinterpret_cast<ChildSlot128Fn>(*reinterpret_cast<int*>(childVtable + 0x128))(childMapView, 0,
+                                                                               &clipRect.bottom);
+
+  char intersectScratch[16];
+  char intersectPair[16];
+  reinterpret_cast<void(__cdecl*)(int, int, int)>(IntersectRectWrapper)(
+      reinterpret_cast<int>(&clipRect.left), reinterpret_cast<int>(intersectScratch),
+      reinterpret_cast<int>(intersectPair));
+  OffsetRect(&clipRect, field2c, field30);
+
+  char scopedContextStorage[24];
+  reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
+      ConstructScopedMapQuickDrawContextWithPaletteToken)(scopedContextStorage, this, &clipRect);
+  reinterpret_cast<void(__cdecl*)(int, int)>(ReplaceClipStateRegionHandleFromRect)(
+      rectHeight, reinterpret_cast<int>(&clipRect.left));
+  SnapshotHitRegionToClipCache(0);
+
+  char regionPresent = 0;
+  reinterpret_cast<void(__cdecl*)(int, char*)>(GetRegionBoxToRectIfPresent)(rectHeight,
+                                                                            &regionPresent);
+  if (regionPresent == 0) {
+    if (interactionMode == 0) {
+      int selectedOrder =
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSelectedCivilianOrderState) + 4);
+      RenderMapOrderEntryTilePreview(selectedOrder, originX, outExtra);
+    } else if (interactionMode == 1) {
+      int previewArgs[4];
+      previewArgs[0] = outExtra;
+      previewArgs[1] = rectHeight;
+      previewArgs[2] = originX;
+      previewArgs[3] = rectRight;
+      typedef void(__fastcall * ChildSlot1acFn)(void* self, int unusedEdx, int tile, void* rectArgs,
+                                                int flag);
+      reinterpret_cast<ChildSlot1acFn>(*reinterpret_cast<int*>(childVtable + 0x1ac))(
+          childMapView, 0, previewTileIndex, previewArgs, 1);
+    } else if (interactionMode == 2) {
+      int previewArgs[4];
+      previewArgs[0] = outExtra;
+      previewArgs[1] = rectHeight;
+      previewArgs[2] = originX;
+      previewArgs[3] = rectBottom;
+      typedef void(__fastcall * ChildSlot1b0Fn)(void* self, int unusedEdx, int tile, void* rectArgs,
+                                                int flag);
+      reinterpret_cast<ChildSlot1b0Fn>(*reinterpret_cast<int*>(childVtable + 0x1b0))(
+          childMapView, 0, previewTileIndex, previewArgs, 1);
+    }
+  }
+
+  SnapshotHitRegionToClipCache(0);
+  reinterpret_cast<void(__cdecl*)()>(thunk_DestroyScopedMapQuickDrawContext)();
+}
 
 // FUNCTION: IMPERIALISM 0x00596020
 void TWorldView::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
@@ -99,8 +243,56 @@ void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchConte
 
 // FUNCTION: IMPERIALISM 0x005962a0
 void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+  undefined4* eventBlock = reinterpret_cast<undefined4*>(AllocateWithFallbackHandler(0));
+  undefined4* eventPtr = 0;
+  if (eventBlock != 0) {
+    eventBlock[1] = 0;
+    eventBlock[2] = 0;
+    eventBlock[3] = 0;
+    eventBlock[4] = 0;
+    eventBlock[0] = kAddrTEventClassVtable;
+    eventPtr = eventBlock;
+  }
+
+  short tileIndex = static_cast<short>(arg1);
+  char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
+  if (terrainTable[tileIndex * 0x24] == '\x05') {
+    void* orderContext = reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(
+        tileIndex);
+    TToolBarClusterFields* toolbar =
+        reinterpret_cast<TToolBarClusterFields*>(ownerContext);
+    typedef void(__fastcall * SetMapInteractionModeFn)(void* self, int unusedEdx, int mode);
+    reinterpret_cast<SetMapInteractionModeFn>(thunk_SetMapInteractionMode)(toolbar, 0, 2);
+    if (toolbar->field94 == 0) {
+      reinterpret_cast<void(__cdecl*)(int)>(thunk_InvalidateMapRegionForOrderEntry)(
+          reinterpret_cast<int>(toolbar->field98));
+    }
+    toolbar->field98 = orderContext;
+    if (toolbar->field94 == 0) {
+      reinterpret_cast<void(__cdecl*)(int)>(thunk_InvalidateMapRegionForOrderEntry)(
+          reinterpret_cast<int>(orderContext));
+    }
+    if (orderContext == 0) {
+      orderContext = 0;
+    } else {
+      orderContext =
+          reinterpret_cast<void*>(reinterpret_cast<int(__cdecl*)()>(
+              thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh)());
+    }
+    typedef void(__fastcall * RefreshMapOrderEntryPanelFn)(void* self, int unusedEdx, void* entry);
+    reinterpret_cast<RefreshMapOrderEntryPanelFn>(thunk_RefreshMapOrderEntryPanel)(toolbar, 0,
+                                                                                 orderContext);
+  }
+
+  *reinterpret_cast<int*>(kAddrActiveMapTileIndexStorage + 0x28) = tileIndex;
+  if (eventPtr == 0) {
+    return;
+  }
+  eventPtr[2] = 0x79;
+  eventPtr[1] = 0x79;
+  eventPtr[3] = reinterpret_cast<undefined4>(this);
+  eventPtr[4] = reinterpret_cast<undefined4>(this);
+  DispatchEvent(reinterpret_cast<int>(eventPtr), eventPtr, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005963d0

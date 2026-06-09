@@ -107,14 +107,6 @@ undefined4 RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_DeleteRegionHandleFromClipState_At0047d960
-// ghidra_proto void __cdecl WrapperFor_DeleteRegionHandleFromClipState_At0047d960(void)
-// FUNCTION: IMPERIALISM 0x0047d960
-undefined4 WrapperFor_DeleteRegionHandleFromClipState_At0047d960(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0
 // ghidra_proto void __cdecl WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0(void)
 // FUNCTION: IMPERIALISM 0x0047d9d0

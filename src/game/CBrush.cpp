@@ -1,10 +1,20 @@
 #include "game/CBrush.h"
 
+extern "C" int __stdcall DeleteObject(void*);
+
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
 CGdiObject::CGdiObject() : CObject(), gdiHandle(0) {}
+
+// FUNCTION: IMPERIALISM 0x0047d960
+CGdiObject::~CGdiObject() {
+  if (gdiHandle != 0) {
+    DeleteObject(reinterpret_cast<void*>(gdiHandle));
+    gdiHandle = 0;
+  }
+}
 
 CBrush::CBrush() : CGdiObject() {}
 

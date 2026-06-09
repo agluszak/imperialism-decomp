@@ -7,6 +7,8 @@ class CGdiObject : public CObject {
 public:
   int gdiHandle;
 
+  virtual ~CGdiObject();
+
 protected:
   CGdiObject();
 };

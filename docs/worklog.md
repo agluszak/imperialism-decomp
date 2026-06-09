@@ -1,5 +1,23 @@
 # Worklog
 
+## 2026-06-09 — ScopedMapQuickDrawContext class recovery; CDC/CClientDC
+
+1. **Layout**: `ScopedMapQuickDrawContext` is now `{ CClientDC clientDc; TView* renderTarget; }` (`ASSERT_SIZE 0x18`) — replaces opaque `storage[6]`.
+2. **CDC/CClientDC** (`CDC.h/.cpp`, `CClientDC.h/.cpp`): real `CObject`→`CDC`→`CClientDC` inheritance with `// VTABLE:` `0x67241c` / `0x67249c`; owned `0x612682` ctor, `0x61274c` `AttachOutput`, `0x612783`/`0x6127ca` detach/dtor, `0x613791`/`0x613803` client ctor/dtor. Removed `g_vtblCDC`/`g_vtblCClientDC` DATA rows from `symbols.csv`.
+3. **ScopedMapQuickDrawContext** (`0x494700`/`0x4948b0`): dropped all `__fastcall`/`reinterpret_cast` bridges; ctor calls `renderTarget->Refresh()` (slot `0xf8`) and `ApplyBounds` (slot `0x160`), then `IntersectClipRectOnPrimaryAndSecondaryDc` (`0x612fd8`) as a real member. `CClientDC` lifetime via embedded member ctor/dtor.
+4. **CMapPtrToPtr**: added `RemoveKey` (`0x6035bb`), `FreeAssoc` (`0x6034cb`), `RemoveAll` (`0x603423`) for HDC handle-map detach path.
+5. **CMakeLists**: link `gdi32`/`user32` for `IntersectClipRect`/`GetDC`.
+6. Scores: `0x494700` 55.74%, `0x4948b0` 45.83%, `0x613791` 56.67%, `0x613803` 42.55%, `0x612fd8` 12.12%; `just compare-canaries` below_floor=0. SEH frames on ctor/dtor remain the main delta.
+
+## 2026-06-09 — TMapDialog/TWorldView shape passes; CGdiObject dtor; TMapOrderEntry layout
+
+1. **TMapDialog** (`0x523ff0` 28%, `0x51adc0` 94%): terrain overlay blit shape pass; `ForwardMapDialogTileCoordUpdateToDerivedHandler` dispatches TView slot `+0x28c`.
+2. **TWorldView** (`0x595c70` 25%, `0x5962a0` 40%): `RenderMapContextOverlayWithScopedClipAndSurface` uses `QuickDrawSurfaceGuard` RAII + child-view vtable calls; map-click handler allocates event `0x79` and updates toolbar order context.
+3. **CGdiObject** (`0x47d960` 26%): claimed ordinary dtor with `DeleteObject` on `gdiHandle`; `symbols.csv` renamed from wrapper.
+4. **TMapOrderEntry**: recovered fields through `+0x30` (`attachment`, `attached_entity`, `queue_prev/next`, `tiebreak_strength`, `required_count`); `ASSERT_SIZE` 0x34; typed `Relink`/`SelectPreferred`.
+5. Still stub-owned / SEH-blocked: `0x519e00`, `0x523640` (900+ insn bodies); `ClipStateRegion`/`ScopedMapQuickDrawContext` ctor SEH until `CClientDC` is modeled.
+6. Gates: `just build` OK, `just compare-canaries` below_floor=0.
+
 ## 2026-06-09 — CBrush SYNTHETIC; TMapOrderEntry hierarchy; ScopedMapQuickDraw shape pass
 
 1. **CBrush** (`CBrush.h/.cpp`, `// VTABLE: 0x67106c`): real `CGdiObject`/`CBrush` inheritance replaces manual vptr write in clip inner object; `// SYNTHETIC: 0x005e6ea2` (`CBrush::`scalar deleting destructor'`) + `symbols.csv` backtick name; removed from `reccmp-project.yml` ignore list.

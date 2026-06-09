@@ -1,6 +1,10 @@
 #include "game/TMapDialog.h"
 #include "game/QuickDrawSurfaceGuard.h"
+#include "game/TGlobalMapState.h"
+#include "game/TView.h"
 #include "game/diplomacy_globals.h"
+#include "game/quickdraw_globals.h"
+#include "game/trade_quickdraw.h"
 
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 extern "C" long _ftol(void);
@@ -112,9 +116,66 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge() {}
 // FUNCTION: IMPERIALISM 0x00523ff0
 void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
                                                                unsigned char altOverlay) {
-  (void)tileIndex;
-  (void)dstRect;
-  (void)altOverlay;
+  void* surfaceContext = reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext);
+  char* tileRecord =
+      reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileIndex * 0x24;
+  char ownerPaletteIndex = tileRecord[0x16];
+  if ((ownerPaletteIndex < 0) || ('\x13' <= ownerPaletteIndex)) {
+    return;
+  }
+
+  struct {
+    long left;
+    long top;
+    long right;
+    long bottom;
+  } srcRect;
+
+  if (altOverlay == 0) {
+    void* quickDrawSurface = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x350);
+    surfaceContext = quickDrawSurface;
+    srcRect.left = static_cast<long>(static_cast<short>(ownerPaletteIndex * 0x40));
+    srcRect.right = srcRect.left + 0x40;
+    srcRect.top = 0;
+    srcRect.bottom = 0x40;
+    reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+    int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
+    reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
+        BlitRectWithOptionalTransparency)(
+        reinterpret_cast<void*>(strategicBlitSource + 4),
+        reinterpret_cast<char*>(surfaceContext) + 4, &srcRect, dstRect, 0x24, 0);
+    reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+    return;
+  }
+
+  if (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x74) == 0) {
+    short terrainFrameIndex = static_cast<short>(tileRecord[0x10]);
+    if (terrainFrameIndex == -1) {
+      return;
+    }
+    srcRect.left = static_cast<long>(terrainFrameIndex) << 6;
+    srcRect.right = (terrainFrameIndex + 1) * 0x40;
+    srcRect.top = 0;
+    srcRect.bottom = 0x40;
+    void* quickDrawSurface = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x350);
+    reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
+        BlitRectWithOptionalTransparency)(
+        reinterpret_cast<char*>(quickDrawSurface) + 4,
+        reinterpret_cast<char*>(g_pActiveQuickDrawSurfaceContext) + 4, &srcRect, dstRect, 0, 0);
+    return;
+  }
+
+  srcRect.left = static_cast<long>(static_cast<short>(ownerPaletteIndex * 0x40 + 0x40));
+  srcRect.right = srcRect.left + 0x40;
+  srcRect.top = 0;
+  srcRect.bottom = 0x40;
+  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+  int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
+  reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
+      BlitRectWithOptionalTransparency)(
+      reinterpret_cast<void*>(strategicBlitSource + 4),
+      reinterpret_cast<char*>(surfaceContext) + 4, &srcRect, dstRect, 0x24, 0);
+  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x00519e00
@@ -130,8 +191,10 @@ void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, i
 
 // FUNCTION: IMPERIALISM 0x0051adc0
 void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY) {
-  (void)tileX;
-  (void)tileY;
+  typedef void(__fastcall * TileCoordHandlerFn)(TView* self, int unusedEdx, int x, int y, int mode);
+  TView* view = this;
+  int* vtable = *reinterpret_cast<int**>(view);
+  reinterpret_cast<TileCoordHandlerFn>(vtable[0x28c / 4])(view, 0, tileX, tileY, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0051ac40

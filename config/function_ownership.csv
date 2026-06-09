@@ -114,6 +114,7 @@ address|target_cpp|ownership|note
 45d2a0|src/game/noop_slots.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d5b0|src/game/noop_slots.cpp|manual|marker_sync
+47d960|src/game/CBrush.cpp|manual|marker_sync
 47df90|src/game/noop_slots.cpp|manual|marker_sync
 47f2b0|src/game/noop_slots.cpp|manual|marker_sync
 47f320|src/game/noop_slots.cpp|manual|marker_sync
@@ -898,9 +899,12 @@ address|target_cpp|ownership|note
 60217d|src/game/CPtrList.cpp|manual|marker_sync
 6021d6|src/game/CPtrList.cpp|manual|marker_sync
 6033dd|src/game/CMapPtrToPtr.cpp|manual|marker_sync
+603423|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 603481|src/game/CMapPtrToPtr.cpp|manual|marker_sync
+6034cb|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 6034e4|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 60356b|src/game/CMapPtrToPtr.cpp|manual|marker_sync
+6035bb|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 605791|src/game/CString.cpp|manual|marker_sync
 605797|src/game/CString.cpp|manual|marker_sync
 6057a7|src/game/CString.cpp|manual|marker_sync
@@ -949,6 +953,13 @@ address|target_cpp|ownership|note
 61225e|src/game/CArchive.cpp|manual|marker_sync
 612315|src/game/CArchive.cpp|manual|marker_sync
 61240d|src/game/CArchive.cpp|manual|marker_sync
+612682|src/game/CDC.cpp|manual|marker_sync
+61274c|src/game/CDC.cpp|manual|marker_sync
+612783|src/game/CDC.cpp|manual|marker_sync
+6127ca|src/game/CDC.cpp|manual|marker_sync
+612fd8|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
+613791|src/game/CClientDC.cpp|manual|marker_sync
+613803|src/game/CClientDC.cpp|manual|marker_sync
 618753|src/game/noop_slots.cpp|manual|marker_sync
 618df2|src/game/list_box.cpp|manual|marker_sync
 618e72|src/game/list_box.cpp|manual|marker_sync

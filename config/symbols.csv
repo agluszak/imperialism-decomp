@@ -4609,7 +4609,7 @@ address|name|size|type|prototype
 47d5b0|OrphanRetStub_0047d5b0|3|function|void __cdecl OrphanRetStub_0047d5b0(void)
 47d5d0|OrphanVtableAssignStub_0047d5d0|6|function|void __thiscall OrphanVtableAssignStub_0047d5d0(void)
 47d5f0|RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives|699|function|void __cdecl RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(void)
-47d960|WrapperFor_DeleteRegionHandleFromClipState_At0047d960|70|function|void __cdecl WrapperFor_DeleteRegionHandleFromClipState_At0047d960(void)
+47d960|CGdiObject::~CGdiObject|70|function|void __thiscall ~CGdiObject(void)
 47d9d0|WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0|70|function|void __cdecl WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0(void)
 47da70|WrapperFor_DeleteRegionHandleFromClipState_At0047da70|70|function|void __cdecl WrapperFor_DeleteRegionHandleFromClipState_At0047da70(void)
 47dae0|UpdateCursorHelperWindowLayoutAndMask|128|function|int __fastcall UpdateCursorHelperWindowLayoutAndMask(void * pThis)
@@ -18016,8 +18016,6 @@ address|name|size|type|prototype
 6721cc|g_Copy_File_Preserve_Value_006721CC||global|
 672280|g_pDcHandleMap||global|
 6723ec|g_ind_GetOrCreateDcHandleMapForThreadState_006723ec||global|
-67241c|g_vtblCDC||global|
-67249c|g_vtblCClientDC||global|
 67251c|g_vtblCWindowDC||global|
 67259c|g_vtblCPaintDC||global|
 672768|g_DDX_Text_618a40_LookupTable_00672768||global|

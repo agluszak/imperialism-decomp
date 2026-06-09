@@ -104,12 +104,13 @@ ObjectPoolListNode* TMapOrderEntry::PruneDefeatedMapOrderChildrenAndReturnHead(
       return 0;
     }
 
-    int child_node = child_link_head->object_ptr;
-    if (0 < *reinterpret_cast<short*>(child_node + 0x1c)) {
+    TMapOrderEntry* child_node =
+        reinterpret_cast<TMapOrderEntry*>(child_link_head->object_ptr);
+    if (0 < child_node->required_count) {
       break;
     }
 
-    *reinterpret_cast<int*>(child_node + 0xc) = 0;
+    child_node->owner = 0;
     reinterpret_cast<TaskForceOrderVirtual*>(child_node)->Slot1C();
     child_link_head = DeleteMapOrderChildLinkAndReturnNext(child_link_head);
   }
@@ -126,53 +127,43 @@ void __cdecl NoOpTaskForceVtableSlot(void) {
 // FUNCTION: IMPERIALISM 0x005528e0
 void TMapOrderEntry::RelinkMapOrderQueueNodeBetween(TMapOrderEntry* prev_node,
                                                       TMapOrderEntry* next_node) {
-  TMapOrderEntry* old_prev_node =
-      *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x28);
-  TMapOrderEntry* old_next_node =
-      *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x2c);
+  TMapOrderEntry* old_prev_node = queue_prev;
+  TMapOrderEntry* old_next_node = queue_next;
 
   if (old_prev_node != 0) {
-    *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(old_prev_node) + 0x2c) =
-        old_next_node;
+    old_prev_node->queue_next = old_next_node;
   }
   if (old_next_node != 0) {
-    *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(old_next_node) + 0x28) =
-        old_prev_node;
+    old_next_node->queue_prev = old_prev_node;
   }
 
-  *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x28) = prev_node;
-  *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x2c) = next_node;
+  queue_prev = prev_node;
+  queue_next = next_node;
 
   if (prev_node != 0) {
-    *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(prev_node) + 0x2c) = this;
+    prev_node->queue_next = this;
   }
-  if (*reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x2c) != 0) {
-    *reinterpret_cast<TMapOrderEntry**>(
-        reinterpret_cast<char*>(*reinterpret_cast<TMapOrderEntry**>(
-            reinterpret_cast<char*>(this) + 0x2c)) +
-        0x28) = this;
+  if (queue_next != 0) {
+    queue_next->queue_prev = this;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80
 void TMapOrderEntry::DecrementRequiredCount(short decrement) {
-  short* required_count = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1c);
-  *required_count = static_cast<short>(*required_count - decrement);
+  required_count = static_cast<s16>(required_count - decrement);
 }
 
 // FUNCTION: IMPERIALISM 0x00550670
 int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
                                                                  int compareAttachedFlag) {
-  char* selfBytes = reinterpret_cast<char*>(this);
-  int candidateBytes = reinterpret_cast<int>(candidate);
   if ((char)compareAttachedFlag != '\0') {
-    if (*reinterpret_cast<int*>(selfBytes + 8) != 0) {
-      return candidateBytes;
+    if (attachment != 0) {
+      return reinterpret_cast<int>(candidate);
     }
     if (candidate == 0) {
       return reinterpret_cast<int>(this);
     }
-    if (*reinterpret_cast<int*>(candidateBytes + 0x20) != 0) {
+    if (candidate->attached_entity != 0) {
       return reinterpret_cast<int>(this);
     }
   }
@@ -180,17 +171,16 @@ int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* 
     return reinterpret_cast<int>(this);
   }
   if (this != 0) {
-    int selfAttachment = *reinterpret_cast<int*>(selfBytes + 8);
-    int candidateAttachment = *reinterpret_cast<int*>(candidateBytes + 0x20);
+    int selfAttachment = attachment;
+    int candidateAttachment = candidate->attached_entity;
     bool preferSelf = false;
     if (selfAttachment == 0) {
       preferSelf = false;
     } else if (candidateAttachment == 0) {
       preferSelf = true;
     } else {
-      preferSelf =
-          *reinterpret_cast<short*>(candidateAttachment + 0x10) <
-          *reinterpret_cast<short*>(selfAttachment + 0x10);
+      preferSelf = *reinterpret_cast<short*>(candidateAttachment + 0x10) <
+                   *reinterpret_cast<short*>(selfAttachment + 0x10);
     }
     if (preferSelf) {
       return reinterpret_cast<int>(this);
@@ -202,41 +192,37 @@ int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* 
     } else if (selfAttachment == 0) {
       preferCandidate = true;
     } else {
-      preferCandidate =
-          *reinterpret_cast<short*>(selfAttachment + 0x10) <
-          *reinterpret_cast<short*>(candidateAttachment + 0x10);
+      preferCandidate = *reinterpret_cast<short*>(selfAttachment + 0x10) <
+                        *reinterpret_cast<short*>(candidateAttachment + 0x10);
     }
     if (!preferCandidate) {
-      if (order_type != *reinterpret_cast<short*>(candidateBytes + 4)) {
-        if (*reinterpret_cast<short*>(candidateBytes + 4) <= order_type) {
+      if (order_type != candidate->order_type) {
+        if (candidate->order_type <= order_type) {
           return reinterpret_cast<int>(this);
         }
-        return candidateBytes;
+        return reinterpret_cast<int>(candidate);
       }
-      short selfStrength = *reinterpret_cast<short*>(selfBytes + 6);
-      short selfBucket = (selfStrength / 100 + (selfStrength >> 15)) -
-                         static_cast<short>((static_cast<__int64>(static_cast<int>(selfStrength)) *
+      short selfBucket = (order_strength / 100 + (order_strength >> 15)) -
+                         static_cast<short>((static_cast<__int64>(static_cast<int>(order_strength)) *
                                              0x51eb851f) >>
                                             63);
-      short candidateStrength = *reinterpret_cast<short*>(candidateBytes + 0x30);
       short candidateBucket =
-          (candidateStrength / 100 + (candidateStrength >> 15)) -
-          static_cast<short>((static_cast<__int64>(static_cast<int>(candidateStrength)) *
+          (candidate->tiebreak_strength / 100 + (candidate->tiebreak_strength >> 15)) -
+          static_cast<short>((static_cast<__int64>(static_cast<int>(candidate->tiebreak_strength)) *
                               0x51eb851f) >>
                              63);
       if (selfBucket != candidateBucket) {
         if (candidateBucket <= selfBucket) {
           return reinterpret_cast<int>(this);
         }
-        return candidateBytes;
+        return reinterpret_cast<int>(candidate);
       }
-      if (*reinterpret_cast<short*>(candidateBytes + 0x1c) <
-          *reinterpret_cast<short*>(selfBytes + 0x1c)) {
+      if (candidate->required_count < required_count) {
         return reinterpret_cast<int>(this);
       }
     }
   }
-  return candidateBytes;
+  return reinterpret_cast<int>(candidate);
 }
 
 // FUNCTION: IMPERIALISM 0x00550ff0
@@ -245,14 +231,14 @@ void TMapOrderEntry::RemoveNode(int self) {
   if (owner_ctx != 0) {
     ObjectPoolListNode* list_head = owner_ctx->head;
 
-    if ((list_head != 0) && (this != reinterpret_cast<void*>(list_head->object_ptr))) {
+    if ((list_head != 0) && (this != reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr))) {
       list_head = FindMissionOrderNodeById(list_head->next, reinterpret_cast<int>(this));
     }
 
     if (list_head != 0) {
       list_head = owner_ctx->head;
       if (list_head != 0) {
-        if (this == reinterpret_cast<void*>(list_head->object_ptr)) {
+        if (this == reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)) {
           list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
         } else {
           RemoveLinkedOrderNodeByValueRecursive(list_head->next, reinterpret_cast<int>(this));
@@ -269,7 +255,7 @@ void TMapOrderEntry::RemoveNode(int self) {
       *bucket_counter = *bucket_counter - 1;
     }
 
-    if (this == reinterpret_cast<void*>(owner_ctx->active_node)) {
+    if (this == reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node)) {
       list_head = owner_ctx->head;
       owner_ctx->active_node = 0;
       for (; list_head != 0; list_head = list_head->next) {

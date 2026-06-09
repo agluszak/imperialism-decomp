@@ -13,6 +13,7 @@ undefined4 memset(void);
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, int elementSize);
+void __fastcall FreeLinkedBlockChain(void* blockChainHead);
 
 // FUNCTION: IMPERIALISM 0x006033dd
 void CMapPtrToPtr::InitHashTable(unsigned int nHashSize, int bAllocNow) {
@@ -75,4 +76,44 @@ void** CMapPtrToPtr::GetOrCreateValueSlot(void* key) {
     m_pHashTable[hash] = p;
   }
   return &p->value;
+}
+
+// FUNCTION: IMPERIALISM 0x00603423
+void CMapPtrToPtr::RemoveAll() {
+  if (m_pHashTable != 0) {
+    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(m_pHashTable));
+    m_pHashTable = 0;
+  }
+  m_nCount = 0;
+  m_pFreeList = 0;
+  FreeLinkedBlockChain(m_pBlocks);
+  m_pBlocks = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x006034cb
+void CMapPtrToPtr::FreeAssoc(CAssoc* p) {
+  p->pNext = m_pFreeList;
+  m_pFreeList = p;
+  --m_nCount;
+  if (m_nCount == 0) {
+    RemoveAll();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x006035bb
+int CMapPtrToPtr::RemoveKey(void* key) {
+  if (m_pHashTable == 0) {
+    return 0;
+  }
+  unsigned int hash = (reinterpret_cast<unsigned int>(key) >> 4) % m_nHashTableSize;
+  CAssoc** link = &m_pHashTable[hash];
+  for (CAssoc* p = *link; p != 0; p = p->pNext) {
+    if (p->key == key) {
+      *link = p->pNext;
+      FreeAssoc(p);
+      return 1;
+    }
+    link = &p->pNext;
+  }
+  return 0;
 }

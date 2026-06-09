@@ -38,4 +38,13 @@ struct CMapPtrToPtr {
   // (0x0060356b) Return a pointer to the value slot for key, inserting a new
   // (zeroed) association when the key is not yet present.
   void** GetOrCreateValueSlot(void* key);
+
+  // (0x006035bb) Remove hash-bucket entry by key and return the node to the free list.
+  int RemoveKey(void* key);
+
+  // (0x006034cb) Return an association node to the free list.
+  void FreeAssoc(CAssoc* p);
+
+  // (0x00603423) Release all associations and hash buckets when the map empties.
+  void RemoveAll();
 };
