@@ -6,10 +6,10 @@
 #include "game/TAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
-#include "game/NationState.h"
+#include "game/TGreatPower.h"
 
 #include "decomp_types.h"
-#include "game/NationState.h"
+#include "game/TGreatPower.h"
 #include "game/TTraderAmtBar.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"

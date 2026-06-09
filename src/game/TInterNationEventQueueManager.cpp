@@ -1,16 +1,17 @@
-#include "game/TCountry.h"
+#include "game/TInterNationEventQueueManager.h"
 #include "game/diplomacy_globals.h"
 #include "game/TLocalizationRuntime.h"
 
 // FUNCTION: IMPERIALISM 0x00406758
-void TCountry::thunk_QueueInterNationEventRecordDeduped(int eventCode, int nationA, int nationB,
-                                                        char isReplayBypass) {
+void TInterNationEventQueueManager::thunk_QueueInterNationEventRecordDeduped(
+    int eventCode, int nationA, int nationB, char isReplayBypass) {
   QueueInterNationEventRecordDeduped(eventCode, nationA, nationB, isReplayBypass);
 }
 
 // FUNCTION: IMPERIALISM 0x0055c9f0
-void TCountry::QueueInterNationEventRecordDeduped(int eventCode, int nationA, int nationB,
-                                                    char isReplayBypass) {
+void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int eventCode, int nationA,
+                                                                       int nationB,
+                                                                       char isReplayBypass) {
   TLocalizationRuntime* localization = reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable);
   if (reinterpret_cast<char*>(localization)[0x7a] != 0) {
     return;

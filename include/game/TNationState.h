@@ -1,7 +1,7 @@
 #pragma once
 
 // Legacy view structs retained for field-offset casts in TGreatPower.cpp.
-// The polymorphic TNationState shim is retired — use TGreatPower / TSecondaryNationState.
+// The polymorphic TNationState shim is retired — use TGreatPower / TMinor.
 
 struct TSecondaryNationStateOwner {
   unsigned char pad00[0x0C];

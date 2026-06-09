@@ -1,4 +1,4 @@
-#include "game/NationState.h"
+#include "game/TGreatPower.h"
 #include "game/TAmtBar.h"
 #include "game/TAmtBarCluster.h"
 #include "game/GameAssert.h"

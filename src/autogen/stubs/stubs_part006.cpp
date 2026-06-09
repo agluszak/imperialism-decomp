@@ -1691,14 +1691,6 @@ undefined4 thunk_WrapperFor_CopyCityDialogStateFromSource_At004918a0(void)
   return 0;
 }
 
-// ghidra_name TMinor::thunk_DestructTMinorAndMaybeFree_At00406988
-// ghidra_proto void * __thiscall thunk_DestructTMinorAndMaybeFree_At00406988(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x00406988
-undefined4 thunk_DestructTMinorAndMaybeFree_At00406988(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_RebuildMapOrderEntryChildren
 // ghidra_proto void __cdecl thunk_RebuildMapOrderEntryChildren(void)
 // FUNCTION: IMPERIALISM 0x0040699c
@@ -2823,14 +2815,6 @@ undefined4 thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(void)
 // ghidra_proto void __cdecl thunk_DestroyTTaskForce_At00406ee2(void)
 // FUNCTION: IMPERIALISM 0x00406ee2
 undefined4 thunk_DestroyTTaskForce_At00406ee2(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::thunk_GetTMinorClassNamePointer_At00406ee7
-// ghidra_proto void * __cdecl thunk_GetTMinorClassNamePointer_At00406ee7(void)
-// FUNCTION: IMPERIALISM 0x00406ee7
-undefined4 thunk_GetTMinorClassNamePointer_At00406ee7(void)
 {
   return 0;
 }

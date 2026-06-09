@@ -7,9 +7,9 @@ struct TDiplomacyTurnStateManager;
 
 extern "C" {
 class TGreatPower;
-class TSecondaryNationState;
+class TMinor;
 
-extern TSecondaryNationState* g_apTerrainTypeDescriptorTable[23];
+extern TMinor* g_apTerrainTypeDescriptorTable[23];
 extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern void* g_pLocalizationTable;

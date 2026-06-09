@@ -7,6 +7,7 @@ class TAutoGreatPower : public TGreatPower {
 public:
   TListObject* autoTrackedListB60;
 
+  TAutoGreatPower();
   static void* GetTAutoGreatPowerClassNamePointer(void);
   void* ConstructTAutoGreatPowerBaseState(void);
   void RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void);

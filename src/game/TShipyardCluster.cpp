@@ -3,7 +3,7 @@
 #include "game/TAmtBar.h"
 #include "game/TUberCluster.h"
 #include "game/TView.h"
-#include "game/NationState.h"
+#include "game/TGreatPower.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"
 #include "game/win_rect.h"

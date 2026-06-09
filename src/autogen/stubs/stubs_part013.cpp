@@ -2435,14 +2435,6 @@ undefined4 LoadNationDisplayNameSharedRefFromField8(void)
   return 0;
 }
 
-// ghidra_name TView::ApplyJoinEmpireModeForTargetNation
-// ghidra_proto void __thiscall ApplyJoinEmpireModeForTargetNation(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004d7b20
-undefined4 ApplyJoinEmpireModeForTargetNation(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers
 // ghidra_proto void __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1)
 // FUNCTION: IMPERIALISM 0x004d7c00
@@ -2451,26 +2443,10 @@ undefined4 SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
   return 0;
 }
 
-// ghidra_name ApplyJoinEmpireMode1TargetTransition
-// ghidra_proto void __cdecl ApplyJoinEmpireMode1TargetTransition(void)
-// FUNCTION: IMPERIALISM 0x004d7c90
-undefined4 ApplyJoinEmpireMode1TargetTransition(void)
-{
-  return 0;
-}
-
 // ghidra_name IsDiplomacyTargetClassCode200Match
 // ghidra_proto void __cdecl IsDiplomacyTargetClassCode200Match(void)
 // FUNCTION: IMPERIALISM 0x004d7d20
 undefined4 IsDiplomacyTargetClassCode200Match(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyJoinEmpireMode2FinalizeNationNameState
-// ghidra_proto void __cdecl ApplyJoinEmpireMode2FinalizeNationNameState(void)
-// FUNCTION: IMPERIALISM 0x004d7d50
-undefined4 ApplyJoinEmpireMode2FinalizeNationNameState(void)
 {
   return 0;
 }
@@ -2719,14 +2695,6 @@ undefined4 OrphanLeaf_NoCall_Ins06_004dca60(void)
 // ghidra_proto uint __cdecl OrphanCallChain_C6_I98_004dcaa0(void)
 // FUNCTION: IMPERIALISM 0x004dcaa0
 undefined4 OrphanCallChain_C6_I98_004dcaa0(void)
-{
-  return 0;
-}
-
-// ghidra_name SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant
-// ghidra_proto void __thiscall SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant(int targetNationSlot, short policyValue)
-// FUNCTION: IMPERIALISM 0x004dd040
-undefined4 SetDiplomacyTradePolicyValueForTargetAndMaybeClearGrant(void)
 {
   return 0;
 }
@@ -3147,14 +3115,6 @@ undefined4 NoOpDiplomacyWarTransitionCallback(void)
   return 0;
 }
 
-// ghidra_name ApplyJoinEmpireAcceptanceSideEffectsForTargetNation
-// ghidra_proto void __cdecl ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(void)
-// FUNCTION: IMPERIALISM 0x004e21b0
-undefined4 ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveRegionIdAndRunTrackedObjectCleanup
 // ghidra_proto void __thiscall RemoveRegionIdAndRunTrackedObjectCleanup(void)
 // FUNCTION: IMPERIALISM 0x004e2270
@@ -3239,30 +3199,6 @@ undefined4 RefreshMapSystemsAndPrepareOrderExecution_Impl(void)
 // ghidra_proto void __cdecl SumDiplomacyGrantEntriesMaskedToValueBits(void)
 // FUNCTION: IMPERIALISM 0x004e3620
 undefined4 SumDiplomacyGrantEntriesMaskedToValueBits(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::CreateTMinorInstance
-// ghidra_proto void * __cdecl CreateTMinorInstance(void)
-// FUNCTION: IMPERIALISM 0x004e3660
-undefined4 CreateTMinorInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::GetTMinorClassNamePointer
-// ghidra_proto void * __cdecl GetTMinorClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004e36f0
-undefined4 GetTMinorClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinor::DestructTMinorAndMaybeFree
-// ghidra_proto void * __thiscall DestructTMinorAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004e3790
-undefined4 DestructTMinorAndMaybeFree(void)
 {
   return 0;
 }

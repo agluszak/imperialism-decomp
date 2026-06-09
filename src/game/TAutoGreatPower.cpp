@@ -1,15 +1,14 @@
 #include "decomp_types.h"
 #include "game/TAutoGreatPower.h"
+#include <new>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
-undefined4 thunk_ConstructNationStateBase_Vtbl653938(void);
 undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void);
 
 static const unsigned int kAddrClassDescTAutoGreatPower = 0x00653F90;
-static const unsigned int kAddrVtblTAutoGreatPower = 0x00654088;
 static const int kNationSlotCount = 0x17;
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
@@ -64,13 +63,12 @@ void* __cdecl TAutoGreatPower::GetTAutoGreatPowerClassNamePointer(void) {
   return reinterpret_cast<void*>(kAddrClassDescTAutoGreatPower);
 }
 
+TAutoGreatPower::TAutoGreatPower() : TGreatPower(), autoTrackedListB60(0) {
+}
+
 // FUNCTION: IMPERIALISM 0x004e6b50
 void* TAutoGreatPower::ConstructTAutoGreatPowerBaseState(void) {
-  void(__fastcall * constructBase)(void*, int) =
-      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructNationStateBase_Vtbl653938);
-  constructBase(this, 0);
-  this->autoTrackedListB60 = 0;
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(kAddrVtblTAutoGreatPower);
+  new (this) TAutoGreatPower();
   return this;
 }
 

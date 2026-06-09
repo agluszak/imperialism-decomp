@@ -9,13 +9,13 @@ class NationCityTradeState;
 class TQueueObject;
 class TRelationManager;
 
-#define TGREATPOWER_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) = 0
+#define TGREATPOWER_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) {}
 
 // VTABLE: IMPERIALISM 0x00653938
 class TGreatPower {
 public:
   TGREATPOWER_VTABLE_SLOT(00);
-  virtual void DeleteSelfSlot01_Provisional(int freeFlag) = 0;
+  virtual void DeleteSelfSlot01_Provisional(int freeFlag);
   TGREATPOWER_VTABLE_SLOT(02);
   TGREATPOWER_VTABLE_SLOT(03);
   TGREATPOWER_VTABLE_SLOT(04);
@@ -30,15 +30,15 @@ public:
   TGREATPOWER_VTABLE_SLOT(13);
   virtual void AddToNationMetricAtField10(int amount); // slot 0x0e
   TGREATPOWER_VTABLE_SLOT(15);
-  virtual int GetNodeContextSlot10_Provisional(void) = 0;
+  virtual int GetNodeContextSlot10_Provisional(void) { return 0; }
   TGREATPOWER_VTABLE_SLOT(17);
-  virtual void ResetDiplomacyLevelForNationSlot12_Provisional(int nationSlot, int resetLevel) = 0;
+  virtual void ResetDiplomacyLevelForNationSlot12_Provisional(int nationSlot, int resetLevel);
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
-  virtual void VTableSlot13_Provisional(int targetNationSlot, int mode) = 0;
-  TGREATPOWER_VTABLE_SLOT(20);
-  TGREATPOWER_VTABLE_SLOT(21);
-  TGREATPOWER_VTABLE_SLOT(22);
+  virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
+  virtual void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot); // slot 0x14
+  virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);     // slot 0x15
+  virtual CString* GetIdentitySharedString1Slot58(void);                        // slot 0x16
   TGREATPOWER_VTABLE_SLOT(23);
   TGREATPOWER_VTABLE_SLOT(24);
   TGREATPOWER_VTABLE_SLOT(25);
@@ -62,9 +62,9 @@ public:
   virtual void NotifyActionSlot94(int sourceNation, int actionCode); // slot 0x94
   TGREATPOWER_VTABLE_SLOT(38);
   TGREATPOWER_VTABLE_SLOT(39);
-  virtual char ShouldDispatchImmediatelySlot28_Provisional(void) = 0;
+  virtual char ShouldDispatchImmediatelySlot28_Provisional(void);
   TGREATPOWER_VTABLE_SLOT(41);
-  virtual void VTableIndex42_Provisional(void) = 0; // slot 0x2a
+  virtual void VTableIndex42_Provisional(void) {} // slot 0x2a
   TGREATPOWER_VTABLE_SLOT(43);
   TGREATPOWER_VTABLE_SLOT(44);
   TGREATPOWER_VTABLE_SLOT(45);
@@ -91,7 +91,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(64);
   virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);      // slot 0x41
   virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void); // slot 0x42
-  virtual void VTableIndex67_Provisional(void) = 0;                        // slot 0x43
+  virtual void VTableIndex67_Provisional(void) {}                        // slot 0x43
   TGREATPOWER_VTABLE_SLOT(68);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
   virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
@@ -100,9 +100,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(73);
   virtual short TryDecayRelationNeedScores9AndB(void);           // slot 0x4a
   virtual short TryDecayRelationNeedScores9And8(void);           // slot 0x4b
-  virtual void VTableIndex76_Provisional(void) = 0;              // slot 0x4c
-  virtual void VTableIndex77_Provisional(void) = 0;              // slot 0x4d
-  virtual void VTableIndex78_Provisional(void) = 0;              // slot 0x4e
+  virtual void VTableIndex76_Provisional(void) {}              // slot 0x4c
+  virtual void VTableIndex77_Provisional(void) {}              // slot 0x4d
+  virtual void VTableIndex78_Provisional(void) {}              // slot 0x4e
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
   TGREATPOWER_VTABLE_SLOT(80);
   TGREATPOWER_VTABLE_SLOT(81);
@@ -129,38 +129,31 @@ public:
   virtual void AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
   TGREATPOWER_VTABLE_SLOT(101);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta); // slot 0x66
-  virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) = 0; // slot 0x19c
+  virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {} // slot 0x19c
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
   TGREATPOWER_VTABLE_SLOT(107);
   virtual void DispatchFallbackActionSlot6C_Provisional(int mode, int actionArg, int payload,
-                                                        int targetNation, int flags) = 0;
+                                                        int targetNation, int flags) {}
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   TGREATPOWER_VTABLE_SLOT(111);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload); // slot 0x70
-  virtual void ClearDiplomacyState1c6Block(void);                          // slot 0x71
-  virtual void BeginTurnDiplomacyPrePassSlot1c8() = 0;                               // slot 0x1c8
-  virtual void RefreshTurnDiplomacyStateSlot1cc() = 0;                             // slot 0x1cc
-  TGREATPOWER_VTABLE_SLOT(116);
-  TGREATPOWER_VTABLE_SLOT(117);
-  TGREATPOWER_VTABLE_SLOT(118);
-  virtual void ApplyTurnDiplomacyStateSlot1e0() = 0;                               // slot 0x1e0
-  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // slot 0x73
-  virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // slot 0x74
-  virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // slot 0x75
-  virtual void RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation) = 0; // 0x1d8
-  virtual bool
-  CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
-                                        unsigned short proposedGrantEntry); // slot 0x77
-  TGREATPOWER_VTABLE_SLOT(120);
-  virtual void DecrementNeedLevelByNationStep(short nationSlot);                       // slot 0x79
-  virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // slot 0x7a
-  virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // slot 0x7b
-  virtual void
-  QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // slot 0x7c
+  virtual void ClearDiplomacyState1c6Block(void);                                     // index 113
+  virtual void BeginTurnDiplomacyPrePassSlot1c8() {}                                 // index 114
+  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);       // index 115
+  virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);     // index 116
+  virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);   // index 117
+  virtual void RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation) {} // index 118
+  virtual bool CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+                                                     unsigned short proposedGrantEntry); // index 119
+  virtual void ApplyTurnDiplomacyStateSlot1e0() {}                                   // index 120
+  virtual void DecrementNeedLevelByNationStep(short nationSlot);                       // index 121
+  virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
+  virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // index 123
+  virtual void QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // index 124
   TGREATPOWER_VTABLE_SLOT(125);
   TGREATPOWER_VTABLE_SLOT(126);
   TGREATPOWER_VTABLE_SLOT(127);
@@ -168,10 +161,10 @@ public:
   TGREATPOWER_VTABLE_SLOT(129);
   TGREATPOWER_VTABLE_SLOT(130);
   TGREATPOWER_VTABLE_SLOT(131);
-  // index 0x84 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
+  // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
-  virtual void VTableSlot84_Provisional(int targetNation) = 0;
-  virtual void NotifyAllianceSlot214(int targetNation) = 0; // slot 0x214
+  virtual void VTableSlot84_Provisional(int targetNation) {}
+  virtual void NotifyAllianceSlot214(int targetNation) {} // index 133
   TGREATPOWER_VTABLE_SLOT(134);
   virtual int CountMapActionContextNodesWithNationBit(void);                         // slot 0x87
   virtual double ComputeMinisterSkillFloatSlot88(void);                              // slot 0x88
@@ -197,9 +190,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(156);
   TGREATPOWER_VTABLE_SLOT(157);
   TGREATPOWER_VTABLE_SLOT(158);
-  virtual int CheckTransitionSlot27C(int targetNation, int sourceNation) = 0; // slot 0x27c
+  virtual int CheckTransitionSlot27C(int targetNation, int sourceNation) { return 0; } // slot 0x27c
   virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation,
-                                            int mode) = 0; // slot 0x280
+                                            int mode) { return 0; } // slot 0x280
   // index 0xa1 / vtable+0x284. Evidence: 0x004df010 calls this on `this`
   // with (nationSlot, 2, targetNation); entry 0x00406fe1 thunks to 0x004e27f0.
   virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNation,
@@ -207,14 +200,14 @@ public:
                                                                     int mode);
   TGREATPOWER_VTABLE_SLOT(162);
   TGREATPOWER_VTABLE_SLOT(163);
-  virtual void NotifyWarResetSlot290() = 0; // slot 0x290
-  virtual void CallSlotA5_Provisional(void) = 0;
+  virtual void NotifyWarResetSlot290() {} // slot 0x290
+  virtual void CallSlotA5_Provisional(void) {}
   TGREATPOWER_VTABLE_SLOT(166);
   TGREATPOWER_VTABLE_SLOT(167);
-  virtual void CallSlotA8_Provisional(int targetNation) = 0;
-  virtual void CallSlotA9_Provisional(int targetNation) = 0;
+  virtual void CallSlotA8_Provisional(int targetNation) {}
+  virtual void CallSlotA9_Provisional(int targetNation) {}
   TGREATPOWER_VTABLE_SLOT(170);
-  virtual void NotifyRelationCodeSlot2A8(int targetNation, int relationCode) = 0; // slot 0x2a8
+  virtual void NotifyRelationCodeSlot2A8(int targetNation, int relationCode) {} // slot 0x2a8
   TGREATPOWER_VTABLE_SLOT(172);
   TGREATPOWER_VTABLE_SLOT(173);
   TGREATPOWER_VTABLE_SLOT(174);
@@ -222,10 +215,10 @@ public:
   // index 0xb0 / vtable+0x2c0. Dispatches a queued turn-order action via the active
   // map order context (body 0x004e2b00, RET 0xc -> three short args). Called from
   // slot 0x32 to enqueue land/navy/civ orders.
-  virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) = 0;
+  virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {}
   TGREATPOWER_VTABLE_SLOT(177);
   TGREATPOWER_VTABLE_SLOT(178);
-  virtual void CallSlotB3_Provisional(void) = 0;
+  virtual void CallSlotB3_Provisional(void) {}
 
   CString identitySharedString0;
   CString identitySharedString1;
@@ -343,7 +336,6 @@ public:
   void thunk_HandleCityDialogHintClusterUpdate_At00408143(void* pMessage);
   void thunk_QueueDiplomacyProposalCodeForTargetNation_At004083f5(int proposalCode,
                                                                   int targetNationId);
-  void thunk_WrapperFor_FreeHeapBufferIfNotNull_At004d8c20_At004085ee(void);
   void thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
   void thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a(int arg1, int arg2);
   void thunk_NoOpNationDiplomacyCallback_At004090b1(void);
@@ -389,7 +381,7 @@ public:
   void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex, short rowIndex);
   int SumAidAllocationMatrixColumnForTarget(short targetNationId);
   int ComputeRemainingDiplomacyAidBudget(void);
-  int GetDiplomacyExternalStateB6ByTarget(int targetNationSlot);
+  short GetDiplomacyExternalStateB6ByTarget(short targetNationSlot);
   void DecrementDiplomacyCounterA2ByValue(int delta);
   void ResetNationDiplomacyProposalQueue(void);
   void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
@@ -411,7 +403,7 @@ public:
   void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
   void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
   void DispatchTurnEvent2103WithNationFromRecord(void);
-  void ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1);
+  void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
   void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
   void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   void WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage);

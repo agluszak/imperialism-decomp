@@ -8,7 +8,7 @@
 #include "game/TShipAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
-#include "game/NationState.h"
+#include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"

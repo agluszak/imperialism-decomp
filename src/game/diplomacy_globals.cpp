@@ -1,10 +1,10 @@
 #include "decomp_types.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/TGreatPower.h"
-#include "game/TSecondaryNationState.h"
+#include "game/TMinor.h"
 
 extern "C" {
-TSecondaryNationState* g_apTerrainTypeDescriptorTable[23] = {0};
+TMinor* g_apTerrainTypeDescriptorTable[23] = {0};
 TGreatPower* g_apNationStates[7] = {0};
 void* g_apNationStates_End = 0;
 void* g_pLocalizationTable = 0;

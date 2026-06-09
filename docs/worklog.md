@@ -1,5 +1,21 @@
 # Worklog
 
+## 2026-06-09 — TGreatPower 0x4d9160 fix + batch virtual porting (waves A–D)
+
+1. **0x004d9160** `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`: removed from `reccmp-project.yml` ignore list; decoupled from `~TGreatPower()` macro (inlined cleanup + do-while `0x11` tracked-slot loop); tail uses `DeleteSelfSlot01_Provisional` with CString release + `FreeHeapBufferIfNotNull`; fixed `0x908`/`0x90c` field offsets via layout view. **Score: 63.64%** (was missing / 35.51%).
+2. **0x004085ee** `DeleteSelfSlot01_Provisional`: out-of-line virtual (was empty stub + ignored thunk); pairs at 0% (original is shared JMP table — functional tail only).
+3. **0x00405de4** `TGreatPower_VtblSlot07`: **100%** (unchanged).
+4. **Wave B**: wired slot `0x13` → `ApplyJoinEmpireAcceptanceSideEffectsForTargetNation` (`0x4e21b0`, 29.03%); canaries all pass (`0x4df010` 46.70% floor 44).
+5. **Wave C/D**: promoted `0x4dd040` `ResetDiplomacyLevelForNationSlot12` (**86.67%**); fixed `GetDiplomacyExternalStateB6ByTarget` (`0x4dd740`); wired `ShouldDispatchImmediatelySlot28` → `diplomacyEligibilityA0`.
+6. Commands: `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just compare-canaries`; `just vtable-gate` pass.
+
+## 2026-06-09 — NationState follow-ups: retire shim, vtable repair, real TAutoGreatPower ctor
+
+1. **Deleted** `include/game/NationState.h`; trade/UI TUs include `TGreatPower.h` directly.
+2. **Vtable indices 114–124** repaired in `TGreatPower.h` (byte-offset comments were conflated with slot indices); `TDiplomacyTurnStateManager` slot `0x1cc` call retargeted to `ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants`.
+3. **Concrete factories**: provisional/pure virtuals given empty inline bodies so `TGreatPower`/`TAutoGreatPower` placement-new ctors compile; `CreateTGreatPowerInstance` and `ConstructTAutoGreatPowerBaseState` use `new (this) T*()` (no manual vptr writes).
+4. **Scores** (`just compare`): `0x4e6b50` 62.50% (was thunk+manual-vptr path); `0x4d89f0` 42.57%; `0x4e3710` 66.67%; `0x4d9160` still unpaired. `just vtable-gate` pass.
+
 ## 2026-06-09 — NationState / TGreatPower class recovery (Model B)
 
 1. **Evidence** (`tmp_decomp/class_discovery/nationstate/`): vtable dumps for `0x653938`/`0x654088`/`0x653c90`; prefix comparison shows early divergence → **Model B** (separate `TGreatPower` + `TSecondaryNationState`, no shared `NationState` base).
@@ -3378,6 +3394,18 @@ Follow-up scan after the TClosePicture extraction:
   - `VCall_LocalizationRuntime_CallSlot84` mapped to `TLocalizationRuntime::CallSlot84()` (slot 33 / 0x84).
   - `VCall_LocalizationRuntime_GetTurnTick` mapped to `TLocalizationRuntime::GetTurnTickSlot3C()` (slot 15 / 0x3C).
   Refactored all calls across `TCityProductionView`, `TDiplomacyMapView`, `TFocusAnimation`, `TTwoPicSlider`, `TOneTimeAnimation`, `TTransFocusAnimation`, `TGreatPower`, and `diplomacy_state` to use native object-oriented `->` calls instead of the global `__fastcall` thunks. The changes improved the assembly alignment and eliminated many ugly memory casts.
+- **Timestamp:** 2026-06-09 (evening, cont.)
+- **Command:** Consolidate `TSecondaryNationState` into single `TMinor` class; delete fake inheritance + `TSecondaryNationState.h/.cpp`
+- **Score Delta:** build pass; `0x4e3710` pairs as `TMinor::TMinor`
+- **Description:** One Windows class: vtable `0x653c90`, RTTI `TMinor`. `g_apTerrainTypeDescriptorTable` is now `TMinor*`. Kept `TSecondaryNationStateOwner` view struct in `TNationState.h` for offset casts only.
+- **Timestamp:** 2026-06-09 (evening)
+- **Command:** Port `TMinor` lifecycle (`0x4e3660`/`0x4e36f0`/`0x4e3790`/`0x406988`/`0x406ee7`); wire join-empire virtual cluster (`0x4d7b20`/`0x4d7c90`/`0x4d7d50`, slots `0x14`–`0x16`); reshape `0x4e21b0`
+- **Score Delta:** `0x4e3660` 12.50→36.36%; `0x4e21b0` 29.03→46.91%; `0x4d7b20` 0→41.18%; `0x4d7c90`/`0x4d7d50` new bodies ~42%/57%; canaries 8/8 pass
+- **Description:** `TMinor : TSecondaryNationState` (Windows uses `g_vtblSecondaryNationState`); `TSecondaryNationState` header made concrete (non-pure vtable slots). `ApplyJoinEmpireAcceptanceSideEffectsForTargetNation` now CString-EH + `ApplyJoinEmpireModeForTargetNation` dispatch instead of inlined mode logic. `0x4e3790` still unpaired (scalar-delete / emit issue).
+- **Timestamp:** 2026-06-09
+- **Command:** RTTI/vtable probe (`pyghidra` COL scan, `TGreatPower` ctor `0x4d89f0` listing, vtable prefix compare); rename manual `TCountry` slice → `TInterNationEventQueueManager`
+- **Score Delta:** n/a (rename + documentation)
+- **Description:** Confirmed no `vfptr[-1]` COL on nation vtables; `TGreatPower` ctor transiently writes `g_vtblRefCountedObjectBase` then `g_vtblTGreatPower` (never `g_vtblTCountry`); slot 0 already diverges vs `TCountry`/`TSecondaryNationState`. Only `TAutoGreatPower` shows real derived overrides. Renamed manual queue-manager files (`TCountry.h/.cpp` → `TInterNationEventQueueManager.h/.cpp`); Ghidra `TCountry` autogen bucket unchanged. Evidence: `tmp_decomp/class_discovery/nationstate/rtti_probe_results.md`.
 - **Timestamp:** 2024-06-09 (Afternoon)
 - **Command:** Replaced `TTwoPicSliderLayout` struct with real `TTwoPicSlider` class
 - **Score Delta:** 0.00% (Stalled)
