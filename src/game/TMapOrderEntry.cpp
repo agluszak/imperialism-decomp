@@ -1,0 +1,292 @@
+#include "game/TMapOrderEntry.h"
+
+namespace {
+
+static const unsigned int kOrderTypeToBucketOffsetTableAddr = 0x00698120;
+static const int kOwnerBucketCountsBaseOffset = 0x18;
+
+typedef void(__cdecl* DestroyOrderNodeFn)(void*);
+
+class TaskForceOrderVirtual {
+public:
+  virtual void Slot00(void);
+  virtual void Slot04(void);
+  virtual void Slot08(void);
+  virtual void Slot0C(void);
+  virtual void Slot10(void);
+  virtual void Slot14(void);
+  virtual void Slot18(void);
+  virtual void Slot1C(void);
+};
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00552510
+ObjectPoolListNode* TMapOrderEntry::FindMissionOrderNodeById(ObjectPoolListNode* node,
+                                                               int child_node_id) {
+  while (node != 0) {
+    if (node->object_ptr == child_node_id) {
+      return node;
+    }
+    node = node->next;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00552590
+ObjectPoolListNode* TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(
+    ObjectPoolListNode* child_link_node) {
+  ObjectPoolListNode* next_node = child_link_node->next;
+  if (next_node != 0) {
+    next_node->prev_node_ptr = child_link_node->prev_node_ptr;
+  }
+  if (child_link_node->prev_node_ptr != 0) {
+    *reinterpret_cast<int*>(child_link_node->prev_node_ptr + 4) =
+        reinterpret_cast<int>(child_link_node->next);
+  }
+
+  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(child_link_node));
+  return next_node;
+}
+
+// FUNCTION: IMPERIALISM 0x005525d0
+void TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(ObjectPoolListNode* node,
+                                                             int child_node_id) {
+  if (node == 0) {
+    return;
+  }
+
+  if (node->object_ptr == child_node_id) {
+    if (node->next != 0) {
+      node->next->prev_node_ptr = node->prev_node_ptr;
+    }
+    if (node->prev_node_ptr != 0) {
+      *reinterpret_cast<int*>(node->prev_node_ptr + 4) = reinterpret_cast<int>(node->next);
+    }
+    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(node));
+    return;
+  }
+
+  RemoveLinkedOrderNodeByValueRecursive(node->next, child_node_id);
+}
+
+// FUNCTION: IMPERIALISM 0x00552650
+ObjectPoolListNode* TMapOrderEntry::CreateLinkedOrderNode(ObjectPoolListNode* next_node,
+                                                            int child_node_id) {
+  ObjectPoolListNode* new_node = reinterpret_cast<ObjectPoolListNode*>(
+      AllocateWithFallbackHandler(static_cast<undefined4>(0x10)));
+  if (new_node == 0) {
+    return 0;
+  }
+
+  new_node->object_ptr = child_node_id;
+  new_node->next = next_node;
+  new_node->prev_node_ptr = 0;
+  new_node->active_flag = 1;
+  new_node->pad_0d = 0;
+  new_node->pad_0e = 0;
+  new_node->pad_0f = 0;
+
+  if (next_node != 0) {
+    next_node->prev_node_ptr = reinterpret_cast<int>(new_node);
+  }
+  if (new_node->prev_node_ptr != 0) {
+    *reinterpret_cast<ObjectPoolListNode**>(new_node->prev_node_ptr + 4) = new_node;
+  }
+  return new_node;
+}
+
+// FUNCTION: IMPERIALISM 0x005526e0
+ObjectPoolListNode* TMapOrderEntry::PruneDefeatedMapOrderChildrenAndReturnHead(
+    ObjectPoolListNode* child_link_head) {
+  while (true) {
+    if (child_link_head == 0) {
+      return 0;
+    }
+
+    int child_node = child_link_head->object_ptr;
+    if (0 < *reinterpret_cast<short*>(child_node + 0x1c)) {
+      break;
+    }
+
+    *reinterpret_cast<int*>(child_node + 0xc) = 0;
+    reinterpret_cast<TaskForceOrderVirtual*>(child_node)->Slot1C();
+    child_link_head = DeleteMapOrderChildLinkAndReturnNext(child_link_head);
+  }
+
+  PruneDefeatedMapOrderChildrenAndReturnHead(child_link_head->next);
+  return child_link_head;
+}
+
+// FUNCTION: IMPERIALISM 0x005528c0
+void __cdecl NoOpTaskForceVtableSlot(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005528e0
+void TMapOrderEntry::RelinkMapOrderQueueNodeBetween(TMapOrderEntry* prev_node,
+                                                      TMapOrderEntry* next_node) {
+  TMapOrderEntry* old_prev_node =
+      *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x28);
+  TMapOrderEntry* old_next_node =
+      *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x2c);
+
+  if (old_prev_node != 0) {
+    *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(old_prev_node) + 0x2c) =
+        old_next_node;
+  }
+  if (old_next_node != 0) {
+    *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(old_next_node) + 0x28) =
+        old_prev_node;
+  }
+
+  *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x28) = prev_node;
+  *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x2c) = next_node;
+
+  if (prev_node != 0) {
+    *reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(prev_node) + 0x2c) = this;
+  }
+  if (*reinterpret_cast<TMapOrderEntry**>(reinterpret_cast<char*>(this) + 0x2c) != 0) {
+    *reinterpret_cast<TMapOrderEntry**>(
+        reinterpret_cast<char*>(*reinterpret_cast<TMapOrderEntry**>(
+            reinterpret_cast<char*>(this) + 0x2c)) +
+        0x28) = this;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00550f80
+void TMapOrderEntry::DecrementRequiredCount(short decrement) {
+  short* required_count = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1c);
+  *required_count = static_cast<short>(*required_count - decrement);
+}
+
+// FUNCTION: IMPERIALISM 0x00550670
+int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
+                                                                 int compareAttachedFlag) {
+  char* selfBytes = reinterpret_cast<char*>(this);
+  int candidateBytes = reinterpret_cast<int>(candidate);
+  if ((char)compareAttachedFlag != '\0') {
+    if (*reinterpret_cast<int*>(selfBytes + 8) != 0) {
+      return candidateBytes;
+    }
+    if (candidate == 0) {
+      return reinterpret_cast<int>(this);
+    }
+    if (*reinterpret_cast<int*>(candidateBytes + 0x20) != 0) {
+      return reinterpret_cast<int>(this);
+    }
+  }
+  if (candidate == 0) {
+    return reinterpret_cast<int>(this);
+  }
+  if (this != 0) {
+    int selfAttachment = *reinterpret_cast<int*>(selfBytes + 8);
+    int candidateAttachment = *reinterpret_cast<int*>(candidateBytes + 0x20);
+    bool preferSelf = false;
+    if (selfAttachment == 0) {
+      preferSelf = false;
+    } else if (candidateAttachment == 0) {
+      preferSelf = true;
+    } else {
+      preferSelf =
+          *reinterpret_cast<short*>(candidateAttachment + 0x10) <
+          *reinterpret_cast<short*>(selfAttachment + 0x10);
+    }
+    if (preferSelf) {
+      return reinterpret_cast<int>(this);
+    }
+
+    bool preferCandidate = false;
+    if (candidateAttachment == 0) {
+      preferCandidate = false;
+    } else if (selfAttachment == 0) {
+      preferCandidate = true;
+    } else {
+      preferCandidate =
+          *reinterpret_cast<short*>(selfAttachment + 0x10) <
+          *reinterpret_cast<short*>(candidateAttachment + 0x10);
+    }
+    if (!preferCandidate) {
+      if (order_type != *reinterpret_cast<short*>(candidateBytes + 4)) {
+        if (*reinterpret_cast<short*>(candidateBytes + 4) <= order_type) {
+          return reinterpret_cast<int>(this);
+        }
+        return candidateBytes;
+      }
+      short selfStrength = *reinterpret_cast<short*>(selfBytes + 6);
+      short selfBucket = (selfStrength / 100 + (selfStrength >> 15)) -
+                         static_cast<short>((static_cast<__int64>(static_cast<int>(selfStrength)) *
+                                             0x51eb851f) >>
+                                            63);
+      short candidateStrength = *reinterpret_cast<short*>(candidateBytes + 0x30);
+      short candidateBucket =
+          (candidateStrength / 100 + (candidateStrength >> 15)) -
+          static_cast<short>((static_cast<__int64>(static_cast<int>(candidateStrength)) *
+                              0x51eb851f) >>
+                             63);
+      if (selfBucket != candidateBucket) {
+        if (candidateBucket <= selfBucket) {
+          return reinterpret_cast<int>(this);
+        }
+        return candidateBytes;
+      }
+      if (*reinterpret_cast<short*>(candidateBytes + 0x1c) <
+          *reinterpret_cast<short*>(selfBytes + 0x1c)) {
+        return reinterpret_cast<int>(this);
+      }
+    }
+  }
+  return candidateBytes;
+}
+
+// FUNCTION: IMPERIALISM 0x00550ff0
+void TMapOrderEntry::RemoveNode(int self) {
+  ObjectPoolOwner* owner_ctx = owner;
+  if (owner_ctx != 0) {
+    ObjectPoolListNode* list_head = owner_ctx->head;
+
+    if ((list_head != 0) && (this != reinterpret_cast<void*>(list_head->object_ptr))) {
+      list_head = FindMissionOrderNodeById(list_head->next, reinterpret_cast<int>(this));
+    }
+
+    if (list_head != 0) {
+      list_head = owner_ctx->head;
+      if (list_head != 0) {
+        if (this == reinterpret_cast<void*>(list_head->object_ptr)) {
+          list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
+        } else {
+          RemoveLinkedOrderNodeByValueRecursive(list_head->next, reinterpret_cast<int>(this));
+        }
+      }
+
+      owner_ctx->head = list_head;
+
+      const short* order_type_to_bucket_offset =
+          reinterpret_cast<const short*>(kOrderTypeToBucketOffsetTableAddr + order_type * 0x24);
+      short bucket_offset = *order_type_to_bucket_offset;
+      short* bucket_counter = reinterpret_cast<short*>(
+          reinterpret_cast<char*>(owner_ctx) + kOwnerBucketCountsBaseOffset + bucket_offset * 2);
+      *bucket_counter = *bucket_counter - 1;
+    }
+
+    if (this == reinterpret_cast<void*>(owner_ctx->active_node)) {
+      list_head = owner_ctx->head;
+      owner_ctx->active_node = 0;
+      for (; list_head != 0; list_head = list_head->next) {
+        int new_head =
+            reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)
+                ->SelectPreferredMapOrderEntryByPriorityRules(
+                    reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node), 0);
+        owner_ctx->active_node = new_head;
+      }
+    }
+
+    owner = 0;
+  }
+
+  if (self != 0) {
+    DestroyOrderNodeFn destroy_node =
+        reinterpret_cast<DestroyOrderNodeFn>(static_cast<unsigned int>(0x00553bc0));
+    destroy_node(this);
+  }
+}

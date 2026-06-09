@@ -3395,14 +3395,6 @@ undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_VariantB(void)
   return 0;
 }
 
-// ghidra_name DestructClipStateRegionAndMaybeFreeSelf
-// ghidra_proto void __cdecl DestructClipStateRegionAndMaybeFreeSelf(void)
-// FUNCTION: IMPERIALISM 0x005e6ea2
-undefined4 DestructClipStateRegionAndMaybeFreeSelf(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_PtVisible_FromDcField04_At005e6ebe
 // ghidra_proto void __thiscall WrapperFor_PtVisible_FromDcField04_At005e6ebe(void)
 // FUNCTION: IMPERIALISM 0x005e6ebe

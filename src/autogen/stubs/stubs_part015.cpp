@@ -1315,14 +1315,6 @@ undefined4 InitializeMapInteractionMode4BaseState(void)
   return 0;
 }
 
-// ghidra_name TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights
-// ghidra_proto void __thiscall RenderStrategicTileSelectionAndNeighborHighlights(void)
-// FUNCTION: IMPERIALISM 0x00519e00
-undefined4 RenderStrategicTileSelectionAndNeighborHighlights(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapDialog::DrawHexNeighborOutlineFromTileArray
 // ghidra_proto void __thiscall DrawHexNeighborOutlineFromTileArray(void)
 // FUNCTION: IMPERIALISM 0x0051a2a0
@@ -1335,14 +1327,6 @@ undefined4 DrawHexNeighborOutlineFromTileArray(void)
 // ghidra_proto void __thiscall UpdateMapDialogProjectedTileMarkerAndInvalidate(int arg1)
 // FUNCTION: IMPERIALISM 0x0051a900
 undefined4 UpdateMapDialogProjectedTileMarkerAndInvalidate(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord
-// ghidra_proto void __thiscall ComputeWrappedMapCellAndRegionBandFromScreenCoord(int * pTileOffset, short * pOutRow, ushort * pOutCol, short * pOutBand)
-// FUNCTION: IMPERIALISM 0x0051a990
-undefined4 ComputeWrappedMapCellAndRegionBandFromScreenCoord(void)
 {
   return 0;
 }
@@ -1363,14 +1347,6 @@ undefined4 ComputeMapDialogProjectedTileClipIntersection(void)
   return 0;
 }
 
-// ghidra_name TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate
-// ghidra_proto void __thiscall UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1)
-// FUNCTION: IMPERIALISM 0x0051ac40
-undefined4 UpdateMapDialogTileRowColumnMarkerAndInvalidate(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_NormalizeWrappedMapCoord108x60_At0051ace0
 // ghidra_proto int __cdecl WrapperFor_thunk_NormalizeWrappedMapCoord108x60_At0051ace0(void)
 // FUNCTION: IMPERIALISM 0x0051ace0
@@ -1383,14 +1359,6 @@ undefined4 WrapperFor_thunk_NormalizeWrappedMapCoord108x60_At0051ace0(void)
 // ghidra_proto void __thiscall WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x0051ad70
 undefined4 WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051ad70(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler
-// ghidra_proto void __thiscall ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY)
-// FUNCTION: IMPERIALISM 0x0051adc0
-undefined4 ForwardMapDialogTileCoordUpdateToDerivedHandler(void)
 {
   return 0;
 }
@@ -1923,30 +1891,6 @@ undefined4 UpdateMapOrderEntryTilePreviewSlot(void)
   return 0;
 }
 
-// ghidra_name TCivAnimation2::RenderMapOrderEntryTilePreview
-// ghidra_proto void __thiscall RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3)
-// FUNCTION: IMPERIALISM 0x00523640
-undefined4 RenderMapOrderEntryTilePreview(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderTacticalStackCountIndicatorAndUnitBadge
-// ghidra_proto void __cdecl RenderTacticalStackCountIndicatorAndUnitBadge(void)
-// FUNCTION: IMPERIALISM 0x00523b70
-undefined4 RenderTacticalStackCountIndicatorAndUnitBadge(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner_00523ff0
-// ghidra_proto void __thiscall RenderMapDialogTerrainOverlayFrameByTileOwner_00523ff0(short nTileIndex, void * pDstRect, byte bAltOverlay)
-// FUNCTION: IMPERIALISM 0x00523ff0
-undefined4 RenderMapDialogTerrainOverlayFrameByTileOwner_00523ff0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins100_005241b0
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins100_005241b0(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x005241b0
@@ -2047,14 +1991,6 @@ undefined4 CopyDiagonalMaskWideningBlockKernel(void)
 // ghidra_proto void __thiscall Copy64x64TileBlockWithStrideAdjustment(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x00525670
 undefined4 Copy64x64TileBlockWithStrideAdjustment(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale
-// ghidra_proto void __thiscall ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3, int arg4, int arg5)
-// FUNCTION: IMPERIALISM 0x00525730
-undefined4 ForwardProjectTileIndexToWrappedScreenOffsetByScale(void)
 {
   return 0;
 }

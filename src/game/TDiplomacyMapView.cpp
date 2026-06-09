@@ -77,7 +77,7 @@ undefined4 thunk_LoadBmpResourceByIdCached(void);
 undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
-undefined4 DestroyClipStateRegionWrapperObject(void);
+undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
 undefined4 ResetQuickDrawStrokeState(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 DrawFrameRectOrUpdateClipRegion(void);

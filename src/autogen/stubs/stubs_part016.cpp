@@ -3123,14 +3123,6 @@ undefined4 GetNavyPrimaryOrderNodeByIndex(void)
   return 0;
 }
 
-// ghidra_name ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
-// ghidra_proto int __thiscall SelectPreferredMapOrderEntryByPriorityRules(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00550670
-undefined4 SelectPreferredMapOrderEntryByPriorityRules(void)
-{
-  return 0;
-}
-
 // ghidra_name GetOrderNodeDescriptorWord0CByResourceType
 // ghidra_proto short __cdecl GetOrderNodeDescriptorWord0CByResourceType(void)
 // FUNCTION: IMPERIALISM 0x00550820
@@ -3407,14 +3399,6 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
 // ghidra_proto void __cdecl RemoveDuplicateNavySecondaryOrdersByDisplayName(void)
 // FUNCTION: IMPERIALISM 0x00552450
 undefined4 RemoveDuplicateNavySecondaryOrdersByDisplayName(void)
-{
-  return 0;
-}
-
-// ghidra_name DeleteMapOrderChildLinkAndReturnNext
-// ghidra_proto int * __fastcall DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
-// FUNCTION: IMPERIALISM 0x00552590
-undefined4 DeleteMapOrderChildLinkAndReturnNext(void)
 {
   return 0;
 }

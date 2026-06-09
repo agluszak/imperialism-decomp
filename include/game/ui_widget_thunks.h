@@ -6,9 +6,7 @@
 // ui_widget_shared.h.
 
 #include "decomp_types.h"
-
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
+#include "game/MfcRuntime.h"
 unsigned int __cdecl thunk_GetActiveNationId(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 thunk_HandleCityDialogToggleCommandOrForward(void);

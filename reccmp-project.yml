@@ -223,7 +223,6 @@ targets:
       - DestructBuildingExpansionViewAndMaybeFree
       - DestructCDocumentBaseStateAndMaybeFree
       - DestructCPtrListAndMaybeFree
-      - DestructClipStateRegionAndMaybeFreeSelf
       - DestructEngineerDialogAndMaybeFree
       - DestructLinkedValueListMaybeFree
       - DestructTAmbitFileBasedDocumentAndMaybeFree_Impl

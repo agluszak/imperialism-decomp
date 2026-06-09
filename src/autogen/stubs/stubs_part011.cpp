@@ -2019,26 +2019,10 @@ undefined4 ReleaseScopedMapQuickDrawDcHandle(void)
   return 0;
 }
 
-// ghidra_name ConstructScopedMapQuickDrawContext
-// ghidra_proto void __thiscall ConstructScopedMapQuickDrawContext(int arg1)
-// FUNCTION: IMPERIALISM 0x00494700
-undefined4 ConstructScopedMapQuickDrawContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructScopedMapQuickDrawContextWithPaletteToken
 // ghidra_proto void __thiscall ConstructScopedMapQuickDrawContextWithPaletteToken(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004947e0
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyScopedMapQuickDrawContext
-// ghidra_proto void __cdecl DestroyScopedMapQuickDrawContext(void)
-// FUNCTION: IMPERIALISM 0x004948b0
-undefined4 DestroyScopedMapQuickDrawContext(void)
 {
   return 0;
 }
@@ -2219,14 +2203,6 @@ undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl(void)
   return 0;
 }
 
-// ghidra_name DestroyClipStateRegionWrapperObject
-// ghidra_proto void __cdecl DestroyClipStateRegionWrapperObject(void)
-// FUNCTION: IMPERIALISM 0x00495610
-undefined4 DestroyClipStateRegionWrapperObject(void)
-{
-  return 0;
-}
-
 // ghidra_name IsPointInsideHitRegion
 // ghidra_proto bool __cdecl IsPointInsideHitRegion(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00495650
@@ -2247,14 +2223,6 @@ undefined4 OrphanCallChain_C4_I50_004956e0(void)
 // ghidra_proto void __cdecl OrphanCallChain_C4_I50_00495780(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x00495780
 undefined4 OrphanCallChain_C4_I50_00495780(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateClipStateRegionWrapperObject
-// ghidra_proto void __cdecl CreateClipStateRegionWrapperObject(void)
-// FUNCTION: IMPERIALISM 0x00495820
-undefined4 CreateClipStateRegionWrapperObject(void)
 {
   return 0;
 }

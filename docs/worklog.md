@@ -1,5 +1,31 @@
 # Worklog
 
+## 2026-06-09 — CBrush SYNTHETIC; TMapOrderEntry hierarchy; ScopedMapQuickDraw shape pass
+
+1. **CBrush** (`CBrush.h/.cpp`, `// VTABLE: 0x67106c`): real `CGdiObject`/`CBrush` inheritance replaces manual vptr write in clip inner object; `// SYNTHETIC: 0x005e6ea2` (`CBrush::`scalar deleting destructor'`) + `symbols.csv` backtick name; removed from `reccmp-project.yml` ignore list.
+2. **ClipStateRegion**: `ClipStateRegionInner` embeds `CBrush` at `+0x14` (`ASSERT_SIZE 0x1c`); `CreateClipStateRegionWrapperObject` uses placement-new + `AttachRegionHandleToClipStateAndRegister`.
+3. **TMapOrderEntry** (`TMapOrderEntry.h/.cpp`): recovered map-order entry class (replaces misnamed `ObjectPool`); `RelinkMapOrderQueueNodeBetween` (`0x5528e0`) and `DecrementRequiredCount` are instance methods; `typedef TMapOrderEntry ObjectPool` retained for Ghidra naming.
+4. **ScopedMapQuickDrawContext**: fixed inverted `this==0` branches; `ConstructCClientDCFromViewHandle`/`DestroyCClientDCAndReleaseHandle` called as `__fastcall` with `this` + parent-at-`+0x50` arg per listing `0x494700`.
+5. Removed duplicate `noop_slots` markers for `0x594fc0`/`0x5960xx` (owned by `TWorldView.cpp`).
+6. Scores: `0x5e6ea2` 63.64%, `0x5528e0` 57.78%, `0x494700` 25.49%, `0x4948b0` 44.90%, `0x495820` 29.27%; `just compare-canaries` below_floor=0.
+
+## 2026-06-09 — TWorldView/TMapDialog vtables; drop MapOverlay vcall facades
+
+1. PE vtable dump (`g_vtblTWorldView` `0x668cb0`, `g_vtblTMapDialog` `0x658a58`): slots `0x1A0`–`0x1D8` mapped; TMapDialog overrides `0x1A8`–`0x1B8`, `0x1C0`, `0x1D8`.
+2. Added `TWorldView.h/.cpp` (`// VTABLE: 0x668cb0`) and expanded `TMapDialog` (`// VTABLE: 0x658a58`, `public TWorldView`).
+3. `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (`0x596100`) now uses real virtuals (`ComputeWrappedMapCell…`, `InvokeDialogHooks1D8ThenE4`, overlay dispatch slots) — removed five `VCall_MapOverlay_*` rows from `vtable_slots.csv`.
+4. Repointed orphan slot owners `0x594fc0`/`0x5960xx` from `noop_slots.cpp` → `TWorldView.cpp`; overlay cluster `0x596270`–`0x5964b0` owned there.
+5. Gates: `just build` OK, `just vtable-gate` OK, `just compare-canaries` below_floor=0; `just compare 0x596100` ≈43% (virtual dispatch shape, SEH/quickdraw delta remains).
+
+## 2026-06-09 — eliminate quickdraw/MFC/object-pool/map-overlay dump files
+
+1. Deleted `quickdraw_guards.cpp`, `quickdraw_surface.cpp`, `mfc_helpers.cpp`, `object_pool.cpp`, `map_quickdraw_overlay.cpp`.
+2. QuickDraw slice: `QuickDrawSurfaceGuard.cpp`, `ClipStateRegion.cpp`, `ScopedMapQuickDrawContext.cpp`, `quickdraw_globals.cpp` + headers; `quickdraw_guards.h` now forwards to new headers.
+3. MFC slice: `MfcRuntime.cpp` (`BeginWaitCursor`/`EndWaitCursor`/alloc/free), `CCmdUI::SetCheck` in `CCmdUI.cpp`.
+4. ObjectPool slice: `ObjectPool.cpp` + `ObjectPool.h` — list helpers as static methods, promoted `SelectPreferredMapOrderEntryByPriorityRules` (`0x550670`) and `DeleteMapOrderChildLinkAndReturnNext` (`0x552590`).
+5. Map overlay: `TMapDialog.cpp` owns `RenderWrappedMapQuickDrawOverlayFromStridedRecords` (`0x596100`); duplicate `g_pGlobalUiRootController` removed; `vtable_slots.csv` facade owner → `TMapDialog.cpp`.
+6. Gates: `just sync-ownership` → `just regen-stubs` → `just build` OK, `just vtable-gate` OK, `just compare-canaries` below_floor=0.
+
 ## 2026-06-09 — ctor/dtor/SYNTHETIC pass on UI class TUs
 
 1. Removed global `operator delete` from `TPictureResourceEntryBase.cpp` (destructor + compiler scalar-deleting dtor suffice).

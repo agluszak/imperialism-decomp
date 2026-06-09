@@ -867,41 +867,6 @@ void OrphanRetStub_0057b760(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00594fc0
-void __stdcall OrphanRetStub_00594fc0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00596020
-void __stdcall OrphanRetStub_00596020(int, int, int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00596040
-void __stdcall OrphanRetStub_00596040(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00596060
-void __stdcall OrphanRetStub_00596060(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00596080
-void OrphanRetStub_00596080(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005960c0
-void __stdcall OrphanRetStub_005960c0(int, int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005960e0
-void __stdcall OrphanRetStub_005960e0(int, int, int, int, int) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x00596680
 void __stdcall OrphanRetStub_00596680(int, int) {
   return;

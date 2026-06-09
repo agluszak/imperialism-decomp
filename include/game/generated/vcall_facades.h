@@ -696,38 +696,3 @@ static __inline void VCall_TView_DeleteSelfSlot01(void* object, int arg0) {
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(1)));
   fn(object, 0, arg0);
 }
-
-// wrapped map overlay ctrl-modified draw; class=WrappedMapOverlayView; status=provisional
-static __inline void VCall_MapOverlay_DrawCtrlModifiedSlot1C4(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1C4 / 4)));
-  fn(object, arg0, arg1);
-}
-
-// wrapped map overlay forced/shift draw; class=WrappedMapOverlayView; status=provisional
-static __inline void VCall_MapOverlay_DrawForcedSlot1CC(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1CC / 4)));
-  fn(object, arg0, arg1);
-}
-
-// wrapped map overlay root mode high draw; class=WrappedMapOverlayView; status=provisional
-static __inline void VCall_MapOverlay_DrawRootModeHighSlot1D0(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1D0 / 4)));
-  fn(object, arg0, arg1);
-}
-
-// wrapped map overlay root mode low draw; class=WrappedMapOverlayView; status=provisional
-static __inline void VCall_MapOverlay_DrawRootModeLowSlot1D4(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1D4 / 4)));
-  fn(object, arg0, arg1);
-}
-
-// wrapped map overlay tile query; class=WrappedMapOverlayView; status=provisional
-static __inline void VCall_MapOverlay_QueryWrappedTileSlot1C0(void* object, int arg0, short* arg1, short* arg2, int* arg3) {
-  typedef void (__fastcall * Fn)(void*, int, short*, short*, int*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x1C0 / 4)));
-  fn(object, arg0, arg1, arg2, arg3);
-}
