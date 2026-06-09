@@ -17,13 +17,17 @@ TProductionCluster::TProductionCluster()
 // TProductionCluster::`scalar deleting destructor'
 TProductionCluster::~TProductionCluster() {}
 
-void TProductionCluster::SetWordField8c(short value) { field8c = value; }
+void TProductionCluster::ApplyMoveValue(int value) { field8c = value; }
 
-void TProductionCluster::SetWordField8e(short value) { field8e = value; }
+int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) { 
+  field8e = (int)boundEntry; 
+  return 0; 
+}
 
-void TProductionCluster::SetField90AndField94(int value90, int value94) {
+int TProductionCluster::GetControlFlag(int value90, int value94) {
   field90 = value90;
   field94 = value94;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005869c0

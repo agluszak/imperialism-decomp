@@ -14,9 +14,7 @@ public:
   static TShipyardCluster* CreateInstance();
   static void* GetClassNamePointer();
 
-  virtual int QueryStepValue(); // SelectTradeSpecialCommodityAndInitializeControls
-  virtual void vmethod_0013(); // RefreshTradeMoveBarAndTurnControl
-  virtual void DispatchEvent(int arg1, void* arg2, int arg3); // HandleTradeMoveArrowControlEvent
+  virtual void ApplyMoveValue(int value);
 };
 
 ASSERT_SIZE(TShipyardCluster, 0x90);

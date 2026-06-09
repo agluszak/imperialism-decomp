@@ -128,7 +128,7 @@ void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
 // Returns early if UI mode is outside trade range (>3); otherwise reports
 // whether the current Sell control quantity is at its minimum.
 // FUNCTION: IMPERIALISM 0x00587900
-char TTradeCluster::IsTradeSellControlAtMinimum() {
+int TTradeCluster::vmethod_0115() {
   if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
     return 0;
   }
@@ -138,7 +138,7 @@ char TTradeCluster::IsTradeSellControlAtMinimum() {
 
 // Returns the current Sell control quantity.
 // FUNCTION: IMPERIALISM 0x00587950
-short TTradeCluster::QueryTradeSellControlQuantity(void) {
+int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
   TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
   return sellControl->QueryValue();
 }
@@ -146,7 +146,7 @@ short TTradeCluster::QueryTradeSellControlQuantity(void) {
 // Bid control is actionable when its 'card' bitmap is in a Bid state and the
 // control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587980
-char TTradeCluster::IsTradeBidControlActionable(void) {
+int TTradeCluster::GetControlFlag(int arg1, int arg2) {
   TPictureResourceEntryBase* bidControl =
       reinterpret_cast<TPictureResourceEntryBase*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
@@ -168,7 +168,7 @@ char TTradeCluster::IsTradeBidControlActionable(void) {
 // Offer control is actionable when its 'offr' bitmap is in an Offer state and
 // the control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587a10
-char TTradeCluster::IsTradeOfferControlActionable(void) {
+int TTradeCluster::GetBoolSlot1DC() {
   TPictureResourceEntryBase* offerControl =
       reinterpret_cast<TPictureResourceEntryBase*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
@@ -190,7 +190,7 @@ char TTradeCluster::IsTradeOfferControlActionable(void) {
 // Bid secondary-state updater: assigns the secondary 'card' bitmap (row-state
 // dependent) when the screen mode gate passes, else disables the control.
 // FUNCTION: IMPERIALISM 0x00587aa0
-void TTradeCluster::SetTradeBidSecondaryBitmapState(void) {
+void TTradeCluster::DoControlAction() {
   TAmtBar* bidControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidSecondary);
@@ -219,7 +219,7 @@ void TTradeCluster::SetTradeBidSecondaryBitmapState(void) {
 // Bid-state updater: assigns the 'card' bitmap (row-state dependent) and clears
 // the gree/left/rght companion controls.
 // FUNCTION: IMPERIALISM 0x00587bb0
-void TTradeCluster::SetTradeBidControlBitmapState(void) {
+void TTradeCluster::SetTradeBidControlBitmap() {
   TAmtBar* bidControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidControl);
@@ -262,7 +262,7 @@ void TTradeCluster::SetTradeBidControlBitmapState(void) {
 // Offer-state updater: assigns the 'offr' bitmap (row-state dependent) and
 // enables the gree/left/rght companion controls.
 // FUNCTION: IMPERIALISM 0x00587dd0
-void TTradeCluster::SetTradeOfferControlBitmapState(void) {
+void TTradeCluster::SetTradeOfferControlBitmap() {
   TAmtBar* offerControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferControl);
@@ -307,7 +307,7 @@ void TTradeCluster::SetTradeOfferControlBitmapState(void) {
 // Offer secondary-state updater: assigns the secondary 'offr' bitmap when the
 // nation availability/capacity gates pass, else disables the control.
 // FUNCTION: IMPERIALISM 0x00588030
-void TTradeCluster::SetTradeOfferSecondaryBitmapState(void) {
+void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   TAmtBar* offerControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryOffr);
@@ -366,7 +366,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmapState(void) {
 // Updates the Sell control quantity and the Bar fill from the nation's current
 // trade metric, clamped to metricClampMax.
 // FUNCTION: IMPERIALISM 0x005882f0
-void TTradeCluster::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax) {
+void TTradeCluster::ApplyMoveValue(int metricClampMax) {
   short activeNationSlot = thunk_GetActiveNationId();
   NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
   int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);

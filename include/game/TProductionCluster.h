@@ -19,9 +19,9 @@ public:
   TProductionCluster();
   virtual ~TProductionCluster();
 
-  void SetWordField8c(short value);
-  void SetWordField8e(short value);
-  void SetField90AndField94(int value90, int value94);
+  virtual void ApplyMoveValue(int value);
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
+  virtual int GetControlFlag(int value90 = 0, int value94 = 0);
   void HandleValuePanelSplitArrowCommand(int commandId, void* eventArg, int eventExtra);
 };
 

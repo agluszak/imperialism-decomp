@@ -118,24 +118,25 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
 
 // FUNCTION: IMPERIALISM 0x00588c30
-void TradeMovePanelContext::OrphanCallChain_C1_I06_00588c30(int value) {
-  CallPostMoveValueSlot1D4(this, value, 0);
+void TIndustryCluster::ApplyMoveValue(int value) {
+  CallPostMoveValueSlot1D4(reinterpret_cast<TradeMovePanelContext*>(this), value, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c60
-void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int updateFlag) {
+int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
+  int dragValue = (int)dragValuePtr;
   // ORIG_CALLCONV: __thiscall
-  TAmtBar* selectedControl = selectedMetricControl;
+  TAmtBar* selectedControl = reinterpret_cast<TradeMovePanelContext*>(this)->selectedMetricControl;
   short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
     selectedControl->SetControlValue(dragValue);
   }
 
   if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
-    return;
+    return 0;
   }
 
-  TAmtBar* moveControl = CallResolveControlByTagSlot94(this, kControlTagMove);
+  TAmtBar* moveControl = CallResolveControlByTagSlot94(reinterpret_cast<TradeMovePanelContext*>(this), kControlTagMove);
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xb42);
   }
@@ -150,7 +151,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&moveInvalidRect, 1);
 
-  TAmtBar* barControl = CallResolveControlByTagSlot94(this, kControlTagBar);
+  TAmtBar* barControl = CallResolveControlByTagSlot94(reinterpret_cast<TradeMovePanelContext*>(this), kControlTagBar);
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xb49);
   }
@@ -171,7 +172,8 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  CallNotifyMoveUpdatedSlot1D8(ownerContext);
+  CallNotifyMoveUpdatedSlot1D8(reinterpret_cast<TradeMovePanelContext*>(this)->ownerContext);
+  return 0;
 }
 
 // GHIDRA_NAME UpdateTradeBarFromSelectedMetricRatio_B
@@ -182,6 +184,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromDrag(int dragValue, int u
 /* Computes bar position from selected metric ratio and applies it to bar control. */
 
 // FUNCTION: IMPERIALISM 0x00588f60
-void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_B(void) {
-  UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
+int TIndustryCluster::GetControlFlag(int arg1, int arg2) {
+  UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TradeMovePanelContext*>(this), kAssertLineRatioB);
+  return 0;
 }

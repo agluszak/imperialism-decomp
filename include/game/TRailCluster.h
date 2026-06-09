@@ -14,9 +14,9 @@ public:
   static TRailCluster* CreateInstance();
   static void* GetClassNamePointer();
 
-  virtual int QueryStepValue();
-  virtual void vmethod_0013();
-  virtual void DispatchEvent(int arg1, void* arg2, int arg3);
+  virtual void ApplyMoveValue(int value);
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
 
   void SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex);
 };

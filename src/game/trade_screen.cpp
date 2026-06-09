@@ -625,8 +625,8 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
 
 
 // FUNCTION: IMPERIALISM 0x005899c0
-void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value) {
-  CallPostMoveValueSlot1D4(this, value, 0);
+void TRailCluster::ApplyMoveValue(int value) {
+  CallPostMoveValueSlot1D4(reinterpret_cast<TradeMovePanelContext*>(this), value, 0);
 }
 
 // GHIDRA_NAME UpdateTradeBarFromSelectedMetricRatio_A
@@ -637,18 +637,20 @@ void TradeMovePanelContext::OrphanCallChain_C1_I06_005899c0(int value) {
 /* Computes bar position from selected metric ratio and applies it to bar control. */
 
 // FUNCTION: IMPERIALISM 0x005899f0
-void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag) {
+int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
+  int dragValue = (int)dragValuePtr;
+  TradeMovePanelContext* ctx = reinterpret_cast<TradeMovePanelContext*>(this);
   // ORIG_CALLCONV: __thiscall
-  short step = selectedMetricStep;
+  short step = ctx->selectedMetricStep;
   int quantizedDragValue = ((((int)step / 2) + (int)(short)dragValue) / (int)step) * (int)step;
-  TAmtBar* selectedControl = selectedMetricControl;
+  TAmtBar* selectedControl = ctx->selectedMetricControl;
   short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
     selectedControl->SetControlValue(quantizedDragValue);
   }
 
   if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
-    return;
+    return 0;
   }
 
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagMove));
@@ -661,7 +663,7 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
   RECT moveBoundsRect;
   RECT moveInvalidRect;
   moveControl->QueryBounds(reinterpret_cast<int*>(&moveBoundsRect));
-  OffsetRect(&moveBoundsRect, ownerOffsetX, ownerOffsetY);
+  OffsetRect(&moveBoundsRect, ctx->ownerOffsetX, ctx->ownerOffsetY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&moveInvalidRect, 1);
@@ -687,12 +689,14 @@ void TradeMovePanelContext::UpdateTradeMoveControlsFromScaledDrag(int dragValue,
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  CallNotifyMoveUpdatedSlot1D8(ownerContext);
+  CallNotifyMoveUpdatedSlot1D8(ctx->ownerContext);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00589d10
-void TradeMovePanelContext::UpdateTradeBarFromSelectedMetricRatio_A(void) {
-  UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioA);
+int TRailCluster::GetControlFlag(int arg1, int arg2) {
+  UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TradeMovePanelContext*>(this), kAssertLineRatioA);
+  return 0;
 }
 
 #if defined(_MSC_VER)

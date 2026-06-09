@@ -96,7 +96,7 @@ void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a690
-void TradeMoveStepCluster::RefreshTradeMoveBarAndTurnControl() {
+void TShipyardCluster::ApplyMoveValue(int value) {
   // ORIG_CALLCONV: __thiscall
   TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(this);
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));

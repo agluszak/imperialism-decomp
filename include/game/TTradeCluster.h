@@ -14,14 +14,14 @@ public:
   TTradeCluster();
 
   void InitializeTradeSellControlState(unsigned int styleSeed);
-  short QueryTradeSellControlQuantity();
-  char IsTradeBidControlActionable();
-  char IsTradeOfferControlActionable();
-  void SetTradeBidSecondaryBitmapState();
-  void SetTradeBidControlBitmapState();
-  void SetTradeOfferControlBitmapState();
-  void SetTradeOfferSecondaryBitmapState();
-  char IsTradeSellControlAtMinimum();
-  void UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax);
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
+  virtual int GetBoolSlot1DC();
+  virtual void DoControlAction();
+  virtual void SetTradeBidControlBitmap();
+  virtual void SetTradeOfferControlBitmap();
+  virtual void SetTradeOfferSecondaryBitmap();
+  virtual int vmethod_0115();
+  virtual void ApplyMoveValue(int value);
   void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
 };
