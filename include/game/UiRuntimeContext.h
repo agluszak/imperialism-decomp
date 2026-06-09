@@ -44,3 +44,5 @@ struct UiRuntimeContext {
 };
 
 extern "C" UiRuntimeContext* g_pUiRuntimeContext;
+
+unsigned int __cdecl thunk_GetActiveNationId(void);

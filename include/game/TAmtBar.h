@@ -14,6 +14,8 @@ public:
   virtual ~TAmtBar();
 
   void RenderPrimarySurfaceOverlayPanelWithClipCache();
+  void OrphanCallChain_C2_I15_00588630(short valueAt60, short valueAt62);
+  void OrphanCallChain_C1_I03_00588670();
   void ClampAndApplyTradeMoveValue(int* requestedMovePtr);
   void SyncTradeCommoditySelectionWithActiveNationAndInitControls();
   void ApplyMoveValueSlot1D4NoCommit(int value);

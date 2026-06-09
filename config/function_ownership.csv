@@ -38,7 +38,7 @@ address|target_cpp|ownership|note
 40376a|src/game/TGreatPower.cpp|manual|marker_sync
 403837|src/game/diplomacy_state.cpp|manual|marker_sync
 40389b|src/game/TGreatPower.cpp|manual|marker_sync
-403b16|src/game/trade_screen.cpp|manual|marker_sync
+403b16|src/game/UiRuntimeContext.cpp|manual|marker_sync
 403c15|src/game/TGreatPower.cpp|manual|marker_sync
 403d5f|src/game/diplomacy_state.cpp|manual|marker_sync
 403e04|src/game/TGreatPower.cpp|manual|marker_sync

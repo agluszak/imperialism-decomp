@@ -219,3 +219,7 @@ format *paths:
 
 format-check *paths:
   uv run python -m tools.workflow.format_cpp --check {{paths}}
+
+class-owner-probe address *args:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  uv run python -m tools.ghidra.class_owner_probe "{{address}}" {{args}}

@@ -1,33 +1,13 @@
-#include "game/TIndustryCluster.h"
-#include "game/TRailCluster.h"
-#include "game/TShipyardCluster.h"
-#include "game/TTradeCluster.h"
-#include "game/NationState.h"
-
-// Included by src/game/trade_screen.cpp.
-// Contains trade-screen core logic functions (address-ordered).
-
 #include <new>
 #include "game/GameAssert.h"
 #include "game/TAmtBar.h"
 #include "game/trade_quickdraw.h"
-
-#pragma optimize("y", on)
-
-// GHIDRA_NAME InitializeTradeSellControlState
-// GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
-// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
-/* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
-   then initializes move/bar controls baseline. */
-
-#include "game/TAmtBar.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"
 #include "game/win_rect.h"
+
+#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
@@ -60,12 +40,51 @@ void __stdcall WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(int passthroughAr
   ((void(__cdecl*)(int))thunk_NoOpUiLifecycleHook)(passthroughArg);
 }
 
+undefined4 thunk_DispatchPictureResourceCommand(int repeatState, void* arg8, void* argC,
+                                                void* dispatchArg, void* arg14) {
+  return 0;
+};
+undefined4 thunk_GetTickCountDiv16(void);
+
+// FUNCTION: IMPERIALISM 0x00583bd0
+void TAmtBar::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8, void* argC,
+                                                        void* dispatchArg, void* arg14) {
+  thunk_DispatchPictureResourceCommand(repeatState, arg8, argC, dispatchArg, arg14);
+
+  if (repeatState == 2) {
+    return;
+  }
+
+  unsigned int tick = (unsigned int)thunk_GetTickCountDiv16();
+  int* repeatDeadline = reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x94);
+  if (tick < (unsigned int)(*repeatDeadline + 5)) {
+    return;
+  }
+
+  tick = (unsigned int)thunk_GetTickCountDiv16();
+  *repeatDeadline = (int)tick;
+  if (repeatState == 0) {
+    *repeatDeadline = (int)tick + 10;
+  }
+
+  char isActive = this->vmethod_0091(dispatchArg);
+  if (isActive == '\0') {
+    return;
+  }
+
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x1c) == kControlTagRght) {
+    this->DispatchEvent(100, 0, 0);
+    return;
+  }
+
+  this->DispatchEvent(0x65, this, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x00588690
 void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   // ORIG_CALLCONV: __thiscall
   QuickDrawSurfaceGuard surface;
   short barRange = rangeOrMaxValue;
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   int contentBounds[4];
   int frameBounds[4];
   short controlWidth;
@@ -77,16 +96,16 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
 
-  if (control->IsActionable() == 0 || control->Refresh() == 0) {
+  if (this->IsActionable() == 0 || this->Refresh() == 0) {
     return;
   }
 
-  control->QueryContentBounds(contentBounds);
+  this->QueryContentBounds(contentBounds);
   ApplyRectClipRegion(contentBounds);
 
-  control->QueryBounds(frameBounds);
+  this->QueryBounds(frameBounds);
 
-  control->vmethod_0078();
+  this->vmethod_0078();
 
   controlWidth = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34);
   controlHeight = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38);
@@ -127,37 +146,17 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(0);
 }
 
-// GHIDRA_NAME OrphanCallChain_C2_I15_00588630
-// GHIDRA_PROTO undefined OrphanCallChain_C2_I15_00588630()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=2; instructions=15
-// GHIDRA_COMMENT_END
-/* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
-
 // FUNCTION: IMPERIALISM 0x00588630
-void __fastcall OrphanCallChain_C2_I15_00588630(TAmtBar* control, int unusedEdx, short valueAt60,
-                                                short valueAt62) {
-  (void)unusedEdx;
-  TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(control);
-  amountBar->stepOrCurrentValue = valueAt60;
-  amountBar->rangeOrMaxValue = valueAt62;
-  control->RefreshControl();
-  control->InvokeSlot13C();
+void TAmtBar::OrphanCallChain_C2_I15_00588630(short valueAt60, short valueAt62) {
+  this->stepOrCurrentValue = valueAt60;
+  this->rangeOrMaxValue = valueAt62;
+  this->RefreshControl();
+  this->InvokeSlot13C();
 }
 
-// GHIDRA_NAME OrphanCallChain_C1_I03_00588670
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I03_00588670()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=1; instructions=3
-// GHIDRA_COMMENT_END
-/* [OrphanCallChain] no incoming code refs; calls=1; instructions=3 */
-
 // FUNCTION: IMPERIALISM 0x00588670
-void __fastcall OrphanCallChain_C1_I03_00588670(TAmtBar* control, int unusedEdx,
-                                                int unusedStackArg) {
-  (void)unusedEdx;
-  (void)unusedStackArg;
-  control->InvokeSlot1A8();
+void TAmtBar::OrphanCallChain_C1_I03_00588670() {
+  this->InvokeSlot1A8();
 }
 
 // GHIDRA_NAME OrphanCallChain_C1_I06_005899c0

@@ -38,7 +38,6 @@
 typedef void code(void);
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
-unsigned int __cdecl thunk_GetActiveNationId(void);
 void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
                                                   unsigned int styleSeed);
 undefined4 thunk_InitializeTradeMoveAndBarControls(void);
@@ -57,7 +56,6 @@ undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void); // GHIDRA_FUNCTION IMPERIALISM 0x004601B0
 undefined4 thunk_DispatchPictureResourceCommand(void);
 undefined4 thunk_DispatchPanelControlEvent(void);
-undefined4 thunk_GetTickCountDiv16(void);
 undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
@@ -141,16 +139,6 @@ void FailNilPointerInUSmallViews(int line);
 #pragma auto_inline(off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00401b3b
-void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TAmtBar* self, int unusedEdx,
-                                                                int repeatState, void* arg8,
-                                                                void* argC, void* dispatchArg,
-                                                                void* arg14) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  HandleTradeArrowAutoRepeatTickAndDispatch(self, 0, repeatState, arg8, argC, dispatchArg, arg14);
-}
-
 void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert(kUSmallViewsCppPath, line);
 }
@@ -200,18 +188,6 @@ ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
 
 // GLOBAL: IMPERIALISM 0x6a1c98
 
-// GLOBAL: IMPERIALISM 0x6a21bc
-extern "C" UiRuntimeContext* g_pUiRuntimeContext = 0;
-
-// FUNCTION: IMPERIALISM 0x00403b16
-short UiRuntimeContext::GetActiveNationId(void) {
-  return activeNationIdAt2E;
-}
-
-unsigned int __cdecl thunk_GetActiveNationId(void) {
-  return g_pUiRuntimeContext->GetActiveNationId();
-}
-
 undefined4 thunk_NoOpUiLifecycleHook(void) {
   return 0;
 }
@@ -223,59 +199,6 @@ undefined4 thunk_NoOpUiLifecycleHook(void) {
 // gates. GHIDRA_COMMENT_END
 /* [Enum] Auto-repeat tick emits EArrowSplitCommandId::LEFT/RIGHT based on hit side/tag and repeat
    timing gates. */
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x00583bd0
-void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unusedEdx,
-                                                          int repeatState, void* arg8, void* argC,
-                                                          void* dispatchArg, void* arg14) {
-  // ORIG_CALLCONV: __thiscall
-  (void)unusedEdx;
-  reinterpret_cast<void(__fastcall*)(void*, int, int, void*, void*, void*, void*)>(
-      ::thunk_DispatchPictureResourceCommand)(self, 0, repeatState, arg8, argC, dispatchArg, arg14);
-
-  if (repeatState == 2) {
-    return;
-  }
-
-  unsigned int tick = (unsigned int)thunk_GetTickCountDiv16();
-  int* repeatDeadline = reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x94);
-  if (tick < (unsigned int)(*repeatDeadline + 5)) {
-    return;
-  }
-
-  tick = (unsigned int)thunk_GetTickCountDiv16();
-  *repeatDeadline = (int)tick;
-  if (repeatState == 0) {
-    *repeatDeadline = (int)tick + 10;
-  }
-
-  TAmtBar* selfControl = reinterpret_cast<TAmtBar*>(self);
-  char isActive = selfControl->vmethod_0091(dispatchArg);
-  if (isActive == '\0') {
-    return;
-  }
-
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(self) + 0x1c) == kControlTagRght) {
-    selfControl->DispatchEvent(100, 0, 0);
-    return;
-  }
-
-  selfControl->DispatchEvent(0x65, self, 0);
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("y", off)
-#endif
-
-// TUnitToolbarCluster moved to its own file
-
-// TStatusButton functions moved to TStatusButton.cpp
-
-// TCityBarCluster moved
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -322,19 +245,5 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
   return value;
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
 // FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}
-
-#if defined(_MSC_VER)
-#pragma auto_inline(on)
-#endif
-
-// 0x00589340 (TIndustryAmtBar::DrawAmt) is unowned here; stub-generated.
-// RenderQuickDrawOverlayWithHitRegion variants moved to TIndustryAmtBar.cpp /
-// TRailAmtBar.cpp; BlitHintOverlayRectWithCtrlModifierPalette -> TTraderAmtBar.cpp.
-// TNumberedArrowButton functions moved to TNumberedArrowButton.cpp
-// TPlacard functions moved to TPlacard.cpp
