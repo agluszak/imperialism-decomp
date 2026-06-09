@@ -3419,14 +3419,6 @@ undefined4 GetTViewClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TView::DestructTViewAndMaybeFree
-// ghidra_proto TView * __thiscall DestructTViewAndMaybeFree(byte arg1)
-// FUNCTION: IMPERIALISM 0x0048a9a0
-undefined4 DestructTViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeUiResourceEntryFrameAndParent
 // ghidra_proto void __cdecl InitializeUiResourceEntryFrameAndParent(void)
 // FUNCTION: IMPERIALISM 0x0048aa60

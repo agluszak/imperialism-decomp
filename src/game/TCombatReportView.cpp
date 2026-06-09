@@ -15,5 +15,6 @@ void* __cdecl GetTCombatReportViewClassNamePointer(void) {
 // FUNCTION: IMPERIALISM 0x0058c8d0
 TCombatReportView::TCombatReportView() : TPictureButton() {}
 
-// FUNCTION: IMPERIALISM 0x0058c900
-TCombatReportView::~TCombatReportView() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058c900
+// TCombatReportView::`scalar deleting destructor'

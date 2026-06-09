@@ -11,7 +11,7 @@ public:
   short reportValue;
 
   TCombatReportView();
-  virtual ~TCombatReportView();
+  // Destructor is compiler-generated (implicit virtual dtor).
 
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bcf0();
   void RenderCombatReportViewTextWithShadow();

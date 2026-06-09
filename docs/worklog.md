@@ -1,5 +1,23 @@
 # Worklog
 
+## 2026-06-09 — ctor/dtor/SYNTHETIC pass on UI class TUs
+
+1. Removed global `operator delete` from `TPictureResourceEntryBase.cpp` (destructor + compiler scalar-deleting dtor suffice).
+2. `TNumberedArrowButton`, `TCombatReportView`: dropped hand-written empty `~Class()` / header `virtual ~`; kept `// SYNTHETIC` scalar-deleting markers.
+3. `TView`: added `// SYNTHETIC: 0x0048a9a0` (`TView::`scalar deleting destructor'`); ordinary dtor `0x48a9d0` unchanged.
+4. `TControl`: added `// SYNTHETIC: 0x0048e590` (`TControl::`scalar deleting destructor'`).
+5. `config/symbols.csv` + `function_ownership.csv` updated for `48a9a0`, `48e590`, `58c2e0`, `58c900` backtick names.
+6. Gates: `just build` OK, `just compare-canaries` below_floor=0; synthetic dtors pair (TView 81.82%, TControl/TNumberedArrowButton 64%).
+
+## 2026-06-09 — eliminate ui_linker_artifacts.cpp and ui_widget_wrappers.cpp
+
+1. Deleted `src/game/ui_linker_artifacts.cpp` and `src/game/ui_widget_wrappers.cpp`.
+2. ILT ctor jmp-thunks `0x004064e2` / `0x004087fb` → `TView.cpp` / `TControl.cpp` (placement-new quarantine retained at class TU bottoms).
+3. `TNumberedArrowButton::OrphanCallChain_C1_I08_0058c330` / `OrphanCallChain_C2_I23_0058c360` (`0x58c330`/`0x58c360`) → `TNumberedArrowButton.cpp` as real methods; `RefreshControl`/`QueryBounds` via inheritance.
+4. `TControl::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0` (`0x58c7c0`) and `OrphanTiny_SetDwordEcxOffset_60_0058e440` (`0x58e440`, `hasCommandTagResource` setter) → `TControl.cpp`.
+5. Global `operator delete` pairing for `TPictureResourceEntryBase::operator new` → `TPictureResourceEntryBase.cpp`.
+6. Gates: `just build` OK, `just vtable-gate` OK, `just compare-canaries` below_floor=0.
+
 ## 2026-06-09 — eliminate trade_screen.cpp and diplomacy_state.cpp
 
 1. Deleted `src/game/trade_screen.cpp` and `src/game/diplomacy_state.cpp`.

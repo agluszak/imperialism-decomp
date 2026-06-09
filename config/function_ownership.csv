@@ -61,7 +61,7 @@ address|target_cpp|ownership|note
 405ee3|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 405f8d|src/game/TToggleButton.cpp|manual|marker_sync
 4064bf|src/game/TTraderAmtBar.cpp|manual|marker_sync
-4064e2|src/game/ui_linker_artifacts.cpp|manual|marker_sync
+4064e2|src/game/TView.cpp|manual|marker_sync
 406758|src/game/TCountry.cpp|manual|marker_sync
 406915|src/game/TGreatPower.cpp|manual|marker_sync
 406965|src/game/TShipyardCluster.cpp|manual|marker_sync
@@ -88,7 +88,7 @@ address|target_cpp|ownership|note
 4085ee|src/game/TGreatPower.cpp|manual|marker_sync
 408620|src/game/TGreatPower.cpp|manual|marker_sync
 40862a|src/game/TGreatPower.cpp|manual|marker_sync
-4087fb|src/game/ui_linker_artifacts.cpp|manual|marker_sync
+4087fb|src/game/TControl.cpp|manual|marker_sync
 4090b1|src/game/TGreatPower.cpp|manual|marker_sync
 409205|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 409291|src/game/TGreatPower.cpp|manual|marker_sync
@@ -180,9 +180,11 @@ address|target_cpp|ownership|note
 48a650|src/game/noop_slots.cpp|manual|marker_sync
 48a690|src/game/noop_slots.cpp|manual|marker_sync
 48a8e0|src/game/TView.cpp|manual|marker_sync
+48a9a0|src/game/TView.cpp|manual|marker_sync
 48a9d0|src/game/TView.cpp|manual|marker_sync
 48ab70|src/game/noop_slots.cpp|manual|marker_sync
 48e520|src/game/TControl.cpp|manual|marker_sync
+48e590|src/game/TControl.cpp|manual|marker_sync
 48ece0|src/game/TButton.cpp|manual|marker_sync
 48efc0|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
 48f250|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
@@ -742,9 +744,9 @@ address|target_cpp|ownership|note
 58c280|src/game/TNumberedArrowButton.cpp|manual|marker_sync
 58c2a0|src/game/TNumberedArrowButton.cpp|manual|marker_sync
 58c2e0|src/game/TNumberedArrowButton.cpp|manual|marker_sync
-58c330|src/game/ui_widget_wrappers.cpp|manual|marker_sync
-58c360|src/game/ui_widget_wrappers.cpp|manual|marker_sync
-58c7c0|src/game/ui_widget_wrappers.cpp|manual|marker_sync
+58c330|src/game/TNumberedArrowButton.cpp|manual|marker_sync
+58c360|src/game/TNumberedArrowButton.cpp|manual|marker_sync
+58c7c0|src/game/TControl.cpp|manual|marker_sync
 58c830|src/game/TCombatReportView.cpp|manual|marker_sync
 58c8b0|src/game/TCombatReportView.cpp|manual|marker_sync
 58c8d0|src/game/TCombatReportView.cpp|manual|marker_sync
@@ -758,7 +760,7 @@ address|target_cpp|ownership|note
 58e3a0|src/game/TStratReportView.cpp|manual|marker_sync
 58e3c0|src/game/TStratReportView.cpp|manual|marker_sync
 58e3f0|src/game/TStratReportView.cpp|manual|marker_sync
-58e440|src/game/ui_widget_wrappers.cpp|manual|marker_sync
+58e440|src/game/TControl.cpp|manual|marker_sync
 58ea00|src/game/TCivToolbar.cpp|manual|marker_sync
 58ea80|src/game/TCivToolbar.cpp|manual|marker_sync
 58eaa0|src/game/TCivToolbar.cpp|manual|marker_sync

@@ -18,6 +18,9 @@ public:
 
   TControl();
   void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
+  void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
+  void WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
+      int* cursorPoint, int hitArg);
 
   // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
   virtual void vmethod_0104();

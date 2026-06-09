@@ -30,6 +30,9 @@ TView::~TView() {
   FreeHeapBufferIfNotNull(field48);
 }
 
+// SYNTHETIC: IMPERIALISM 0x0048a9a0
+// TView::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x00406ba9
 void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {
   (void)passthroughArg;
@@ -161,3 +164,9 @@ void TView::vmethod_0100() {}
 void TView::vmethod_0101() {}
 void TView::vmethod_0102() {}
 void TView::vmethod_0103() {}
+
+// KNOWN LINKER ARTIFACT: 0x004064e2 is `jmp TView::TView`.
+// FUNCTION: IMPERIALISM 0x004064e2
+void __fastcall ConstructTViewBaseStateThunk(TView* self) {
+  new (self) TView();
+}

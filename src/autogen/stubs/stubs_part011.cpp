@@ -723,14 +723,6 @@ undefined4 GetTControlClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TControl::DestructTControlAndMaybeFree
-// ghidra_proto TControl * __thiscall DestructTControlAndMaybeFree(byte arg1)
-// FUNCTION: IMPERIALISM 0x0048e590
-undefined4 DestructTControlAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::BeginMouseCaptureAndStartRepeatTimer
 // ghidra_proto void __thiscall BeginMouseCaptureAndStartRepeatTimer(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x0048e640

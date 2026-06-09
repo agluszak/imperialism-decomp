@@ -33,8 +33,6 @@ TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0
 #pragma auto_inline(on)
 #endif
 
-TNumberedArrowButton::~TNumberedArrowButton() {}
-
 #include "game/TAmtBar.h"
 
 // FUNCTION: IMPERIALISM 0x0058b750
@@ -78,4 +76,24 @@ void TNumberedArrowButton::OrphanCallChain_C2_I37_0058b8d0(short mode) {
   }
   reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
   reinterpret_cast<TAmtBar*>(this)->SetState(mode != 2, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0058c330
+void TNumberedArrowButton::OrphanCallChain_C1_I08_0058c330(short value84Arg, char refreshFlag) {
+  value84 = value84Arg;
+  if (refreshFlag != '\0') {
+    RefreshControl();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0058c360
+void TNumberedArrowButton::OrphanCallChain_C2_I23_0058c360(short value86Arg, char refreshFlag) {
+  int bounds[4];
+  if (value86 != value86Arg) {
+    if (refreshFlag != '\0') {
+      RefreshControl();
+      QueryBounds(bounds);
+    }
+    value86 = value86Arg;
+  }
 }
