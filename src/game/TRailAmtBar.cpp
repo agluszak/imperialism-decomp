@@ -117,7 +117,7 @@ void TRailAmtBar::DrawAmt() {
       DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
 
       reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
-      TAmtBar* owner = reinterpret_cast<TAmtBar*>(CallOwnerPanelSlot58(control));
+      TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
       if (owner != 0) {
         owner->InvokeSlot13C();
       }

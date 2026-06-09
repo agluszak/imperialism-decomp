@@ -1,6 +1,7 @@
 // Diplomacy turn-state backend reconstruction.
 
 #include "decomp_types.h"
+#include "game/TLocalizationRuntime.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
@@ -229,7 +230,7 @@ char TDiplomacyTurnStateManager::IsNationPairRelationTurnStampOutOfDate(int sour
   if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
     return 0;
   }
-  short currentTurn = VCall_LocalizationRuntime_GetTurnTick(g_pLocalizationTable);
+  short currentTurn = reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
@@ -896,9 +897,9 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
   int reverseIndex = target * kNationSlotCount + source;
   relationPropagationMatrixBbe[reverseIndex] = newRelationCode;
   relationTurnStampMatrixFe0[forwardIndex] =
-      VCall_LocalizationRuntime_GetTurnTick(g_pLocalizationTable);
+      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
   relationTurnStampMatrixFe0[reverseIndex] =
-      VCall_LocalizationRuntime_GetTurnTick(g_pLocalizationTable);
+      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
     g_apNationStates[source]

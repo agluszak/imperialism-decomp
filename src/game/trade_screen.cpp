@@ -138,70 +138,10 @@ struct TDocument;
 
 
 
-static __inline void CallPostMoveValueSlot1D4(void* context, int value, int commitFlag) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      (*reinterpret_cast<void***>(context))[0x1d4 / 4])(context, value, commitFlag);
-}
-
-static __inline void CallNotifyMoveUpdatedSlot1D8(void* context) {
-  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(context))[0x1d8 / 4])(
-      context);
-}
-
 static __inline short ReadControlValueFieldPlus4(TAmtBar* control) {
   return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
 }
 
-
-static __inline char CallControlFlagSlot1D8(TAmtBar* control) {
-  return reinterpret_cast<char(__fastcall*)(TAmtBar*)>(
-      (*reinterpret_cast<void***>(control))[0x1d8 / 4])(control);
-}
-
-static __inline void CallControlActionSlot1E0(TAmtBar* control) {
-  reinterpret_cast<void(__fastcall*)(TAmtBar*)>(
-      (*reinterpret_cast<void***>(control))[0x1e0 / 4])(control);
-}
-
-static __inline short CallQueryNationMetricBySlot78(NationState* nationState, short metricSlot) {
-  return nationState->QueryNationMetricBySlot78(metricSlot);
-}
-
-static __inline short CallQueryNationMetricBySlot7C(NationState* nationState, short metricSlot) {
-  return nationState->QueryNationMetricBySlot7C(metricSlot);
-}
-
-static __inline int CallQuerySelectedIndexSlotBC(void* self) {
-  return reinterpret_cast<int(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xbc / 4])(
-      self);
-}
-
-static __inline char CallBoolSlot28(void* self) {
-  return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x28 / 4])(
-      self);
-}
-
-static __inline char CallBoolSlot1BC(void* self) {
-  return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1bc / 4])(
-      self);
-}
-
-static __inline char CallBoolSlot1DC(void* self) {
-  return reinterpret_cast<char(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1dc / 4])(
-      self);
-}
-
-static __inline void CallVoidSlotA0(void* self) {
-  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xa0 / 4])(self);
-}
-
-static __inline void CallVoidSlot1C(void* self) {
-  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x1c / 4])(self);
-}
-
-static __inline void CallVoidSlotE4(void* self) {
-  reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xe4 / 4])(self);
-}
 
 void FailNilPointerInUSmallViews(int line);
 
@@ -261,7 +201,7 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
 }
 
 short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
-  return CallQueryNationMetricBySlot78(nationState, metricSlot);
+  return nationState->QueryNationMetricBySlot78(metricSlot);
 }
 
 
@@ -499,7 +439,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
 
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::ApplyMoveValue(int value) {
-  CallPostMoveValueSlot1D4(reinterpret_cast<TRailCluster*>(this), value, 0);
+  reinterpret_cast<TUberCluster*>(reinterpret_cast<TRailCluster*>(this))->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
 
 // GHIDRA_NAME UpdateTradeBarFromSelectedMetricRatio_A
@@ -562,7 +502,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  CallNotifyMoveUpdatedSlot1D8(ctx->ownerContext);
+  reinterpret_cast<TUberCluster*>(ctx->ownerContext)->GetControlFlag(0, 0);
   return 0;
 }
 

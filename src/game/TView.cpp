@@ -99,12 +99,12 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {}
 char TView::Refresh() {
   return 0;
 }
-void TView::vmethod_0063() {}
+void TView::PostRenderSlotFC() {}
 void TView::vmethod_0064() {}
 void TView::vmethod_0065() {}
 void TView::vmethod_0066() {}
 void TView::vmethod_0067() {}
-void TView::vmethod_0068() {}
+void TView::ApplyRectSlot110(int* rectBuffer) {}
 void TView::UpdateAfterBitmapChange(int unknownFlag) {}
 void TView::vmethod_0070() {}
 void TView::vmethod_0071() {}

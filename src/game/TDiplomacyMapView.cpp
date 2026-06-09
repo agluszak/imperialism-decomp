@@ -1,6 +1,7 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
 #include "decomp_types.h"
+#include "game/TView.h"
 #include "game/Point32.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -139,8 +140,7 @@ void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColo
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
   QuickDrawSurfaceGuard surface;
-  VCall_QuickDrawTarget_QueryBoundsSlot12C(this,
-                                           reinterpret_cast<int*>(const_cast<RECT*>(presentRect)));
+  reinterpret_cast<TView*>(this)->QueryBounds(reinterpret_cast<int*>(const_cast<RECT*>(presentRect)));
 
   if (legendSurfaceModeAt524 != 0) {
     int savedTransparentColor = *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x2c);

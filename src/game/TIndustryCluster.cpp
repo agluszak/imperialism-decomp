@@ -31,7 +31,7 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) 
     }
   }
 
-  CallApplyMoveValueSlot1D0(owner, appliedValue);
+  reinterpret_cast<TUberCluster*>(owner)->ApplyMoveValue(appliedValue);
 }
 
 // FUNCTION: IMPERIALISM 0x00588a30
@@ -106,8 +106,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
 
   reinterpret_cast<void(__fastcall*)(TradeMovePanelContext*, int, unsigned int)>(
       thunk_InitializeTradeMoveAndBarControls)(context, 0, (unsigned int)styleSeed);
-  CallPostMoveValueSlot1D4(
-      context, *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 4), 1);
+  reinterpret_cast<TUberCluster*>(context)->NotifyControlSelectionChange(reinterpret_cast<void*>(*reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 4)), 1);
 }
 
 // GHIDRA_NAME OrphanCallChain_C1_I06_00588c30
@@ -119,7 +118,7 @@ SyncTradeCommoditySelectionWithActiveNationAndInitControls(TradeMovePanelContext
 
 // FUNCTION: IMPERIALISM 0x00588c30
 void TIndustryCluster::ApplyMoveValue(int value) {
-  CallPostMoveValueSlot1D4(reinterpret_cast<TradeMovePanelContext*>(this), value, 0);
+  reinterpret_cast<TUberCluster*>(reinterpret_cast<TradeMovePanelContext*>(this))->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c60
@@ -172,7 +171,7 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  CallNotifyMoveUpdatedSlot1D8(reinterpret_cast<TradeMovePanelContext*>(this)->ownerContext);
+  reinterpret_cast<TUberCluster*>(reinterpret_cast<TradeMovePanelContext*>(this)->GetControlFlag(0, 0)->ownerContext);
   return 0;
 }
 

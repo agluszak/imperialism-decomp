@@ -92,7 +92,7 @@ void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
   field_8c = 999;
   TradeScreenRuntimeBridge::InitializeTradeMoveAndBarControls(
       reinterpret_cast<TradeMovePanelContext*>(this));
-  CallApplyMoveValueSlot1D0(this, 0);
+  reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a690
@@ -138,7 +138,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
         (int)&invalidateRect, 1);
   }
 
-  CallNotifyMoveUpdatedSlot1D8(panel->ownerContext);
+  reinterpret_cast<TUberCluster*>(panel->ownerContext)->GetControlFlag(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a940
@@ -153,7 +153,7 @@ void TShipyardCluster::HandleTradeMoveArrowControlEvent(int commandId,
         GAME_FAIL_NIL_POINTER();
       }
       int moveValue = moveControl->QueryValue();
-      CallApplyMoveValueSlot1D0(this, moveValue + 1);
+      reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(moveValue + 1);
       return;
     }
     if (sourceControl->controlTag != kControlTagLeft) {
@@ -166,7 +166,7 @@ void TShipyardCluster::HandleTradeMoveArrowControlEvent(int commandId,
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
-      CallApplyMoveValueSlot1D0(this, moveValue - 1);
+      reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(moveValue - 1);
       return;
     }
   } else {

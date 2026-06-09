@@ -1,6 +1,7 @@
 // TOneTimeAnimation scoped QuickDraw render/tick slice.
 
 #include "decomp_types.h"
+#include "game/TView.h"
 #include "game/CObject.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -48,11 +49,11 @@ void TOneTimeAnimation::AdvanceOneTimeAnimationFrameAndInvalidateTargetRect() {
           reinterpret_cast<int>(&targetRect), 1);
 
       ScopedMapQuickDrawContextGuard quickDrawContext(scopedRenderTarget);
-      VCall_FocusAnimationView_RenderSlotF8(scopedRenderTarget);
+      reinterpret_cast<TView*>(scopedRenderTarget)->Refresh();
 
       RECT renderRect;
       CopyRect(&renderRect, &targetRect);
-      VCall_FocusAnimationView_ApplyRectSlot110(scopedRenderTarget, &renderRect.left);
+      reinterpret_cast<TView*>(scopedRenderTarget)->ApplyRectSlot110(&renderRect.left);
 
       frameTick = 0;
       if (currentFrame < frameCount - 1) {

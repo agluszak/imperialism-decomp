@@ -1359,8 +1359,7 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
 
   TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
   if (localization != 0) {
-    VCall_LocalizationRuntime_CallSlot84WithId(localization,
-                                               (ctx->specialistMode == 0) ? 0x2718 : 0x2717);
+    localization->CallSlot84((ctx->specialistMode == 0) ? 0x2718 : 0x2717);
   }
 
   short* cityQueueBase =
@@ -1980,8 +1979,8 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   if (interactionScore > 0) {
     SharedRefPairScope localizedRefs;
     if (localizationRuntime != 0) {
-      VCall_LocalizationRuntime_CallSlot84(localizationRuntime);
-      VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, interactionScore);
+      localizationRuntime->CallSlot84();
+      localizationRuntime->CallSlot84(interactionScore);
     }
     thunk_AssignStringSharedRefAndReturnThis();
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
@@ -2051,7 +2050,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
       if (hardThreshold <= pressureTier) {
         if (localizationRuntime != 0) {
-          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, 4);
+          localizationRuntime->CallSlot84(4);
         }
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
@@ -2061,12 +2060,12 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       if (pressureTier < compileThreshold) {
         if (localizationRuntime != 0) {
           int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
-          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, statusId);
+          localizationRuntime->CallSlot84(statusId);
         }
         DispatchQuarterlyGreatPowerPressureMessage(1);
       } else {
         if (localizationRuntime != 0) {
-          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, 1);
+          localizationRuntime->CallSlot84(1);
         }
         DispatchQuarterlyGreatPowerPressureMessage(2);
       }
@@ -3245,10 +3244,10 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 
       if (shouldDispatchAlert) {
         SharedRefPairScope sharedRefs;
-        void* localizationRuntime = ReadLocalizationRuntimeView();
+        TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
         if (localizationRuntime != 0) {
-          VCall_LocalizationRuntime_CallSlot84(localizationRuntime);
-          VCall_LocalizationRuntime_CallSlot84WithId(localizationRuntime, 0x2753);
+          localizationRuntime->CallSlot84();
+          localizationRuntime->CallSlot84(0x2753);
         }
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_AssignStringSharedRefAndReturnThis();

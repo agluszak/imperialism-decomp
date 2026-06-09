@@ -1,6 +1,7 @@
 // TTwoPicSlider draw/input vertical slice.
 
 #include "decomp_types.h"
+#include "game/TTwoPicSlider.h"
 #include "game/generated/vcall_facades.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -13,19 +14,6 @@
 #pragma optimize("y", on)
 #endif
 
-struct TTwoPicSliderLayout {
-  void* vftable;
-  char pad_04[0x30];
-  int widthAt34;
-  int heightAt38;
-  char pad_3c[0x48];
-  int lowerSurfaceAt84;
-  int upperSurfaceAt88;
-  int compositeSurfaceAt8c;
-  short splitPositionAt90;
-  char pad_92[2];
-  int modeAt94;
-};
 
 undefined4 ResetQuickDrawStrokeState(void);
 undefined4 BlitRectWithOptionalTransparency(void);
@@ -61,53 +49,52 @@ static __inline short ClampSliderInputToHeight(int height, int pointRecord) {
   return static_cast<short>(height - requested);
 }
 
-static __inline int SliderScaledValue(TTwoPicSliderLayout* slider, int scale) {
+static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
   short adjustedSplit = 0;
-  if (slider->splitPositionAt90 >= 0x0c) {
-    adjustedSplit = static_cast<short>(slider->splitPositionAt90 - 0x0c);
+  if (slider->splitPosition >= 0x0c) {
+    adjustedSplit = static_cast<short>(slider->splitPosition - 0x0c);
   }
-  return (adjustedSplit * scale) / static_cast<int>(static_cast<short>(slider->heightAt38 - 0x0c));
+  return (adjustedSplit * scale) / static_cast<int>(static_cast<short>(slider->field38 - 0x0c));
 }
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0056e370
-void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(TTwoPicSliderLayout* slider,
-                                                                  int unusedEdx) {
+void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
+  TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::Draw.
-  (void)unusedEdx;
-  if ((slider->lowerSurfaceAt84 != 0) && (slider->upperSurfaceAt88 != 0) &&
-      (slider->compositeSurfaceAt8c != 0)) {
-    short splitPosition = ClampSliderSplitForFill(slider->splitPositionAt90);
+  if ((slider->lowerSurface != 0) && (slider->upperSurface != 0) &&
+      (slider->compositeSurface != 0)) {
+    short splitPosition = ClampSliderSplitForFill(slider->splitPosition);
 
     RECT blitRect;
-    blitRect.bottom = slider->heightAt38;
+    blitRect.bottom = slider->field38;
     blitRect.left = 0;
     blitRect.top = blitRect.bottom - splitPosition;
-    blitRect.right = slider->widthAt34;
+    blitRect.right = slider->field34;
 
     reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->lowerSurfaceAt84 + 4),
-                                          reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4),
+        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->lowerSurface + 4),
+                                          reinterpret_cast<void*>(slider->compositeSurface + 4),
                                           &blitRect, &blitRect, 0, 0);
 
     blitRect.bottom = blitRect.top;
     blitRect.top = 0;
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->upperSurfaceAt88 + 4),
-                                          reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4),
+        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->upperSurface + 4),
+                                          reinterpret_cast<void*>(slider->compositeSurface + 4),
                                           &blitRect, &blitRect, 0, 0);
 
-    blitRect.right = slider->widthAt34;
-    blitRect.bottom = slider->heightAt38;
+    blitRect.right = slider->field34;
+    blitRect.bottom = slider->field38;
     blitRect.left = 0;
     blitRect.top = 0;
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
         BlitRectWithOptionalTransparency)(
-        reinterpret_cast<void*>(slider->compositeSurfaceAt8c + 4),
+        reinterpret_cast<void*>(slider->compositeSurface + 4),
         reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
 
-    if (slider->splitPositionAt90 < 0x0c) {
+    if (slider->splitPosition < 0x0c) {
       CString statusText;
       int* statusTextRef = reinterpret_cast<int*>(&statusText);
       int textShadowColor = 0;
@@ -122,10 +109,10 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(TTwoPicSliderL
       reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
           0x2b67, reinterpret_cast<int>(&textMainColor));
 
-      short textCenterY = static_cast<short>(slider->heightAt38 / 2);
+      short textCenterY = static_cast<short>(slider->field38 / 2);
       short textWidth = static_cast<short>(
           reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
-      short textLeft = static_cast<short>((slider->widthAt34 / 2) - (textWidth / 2));
+      short textLeft = static_cast<short>((slider->field34 / 2) - (textWidth / 2));
 
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(textMainColor);
       reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
@@ -143,31 +130,30 @@ void __fastcall DrawTwoPicSliderSplitOverlayAndCenteredStatusText(TTwoPicSliderL
 }
 
 // FUNCTION: IMPERIALISM 0x0056e640
-void __fastcall TrackTwoPicSliderMouseAndRefresh(TTwoPicSliderLayout* slider, int unusedEdx,
-                                                 int inputPhase, void* param2, int pointRecord) {
+void TTwoPicSlider::TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param2, int pointRecord) {
+  TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
-  (void)unusedEdx;
   (void)param2;
   if (0 < inputPhase) {
     if (2 < inputPhase) {
       return;
     }
 
-    short nextSplit = ClampSliderInputToHeight(slider->heightAt38, pointRecord);
-    if (slider->splitPositionAt90 != nextSplit) {
-      slider->splitPositionAt90 = nextSplit;
+    short nextSplit = ClampSliderInputToHeight(slider->field38, pointRecord);
+    if (slider->splitPosition != nextSplit) {
+      slider->splitPosition = nextSplit;
 
       ScopedMapQuickDrawContextGuard quickDrawContext(slider);
-      VCall_FocusAnimationView_RenderSlotF8(slider);
+      slider->Refresh();
 
       RECT sliderRect;
       sliderRect.left = 0;
       sliderRect.top = 0;
-      sliderRect.right = slider->widthAt34;
-      sliderRect.bottom = slider->heightAt38;
-      VCall_FocusAnimationView_ApplyRectSlot110(slider, &sliderRect.left);
+      sliderRect.right = slider->field34;
+      sliderRect.bottom = slider->field38;
+      slider->ApplyRectSlot110(&sliderRect.left);
 
-      if (slider->modeAt94 == 1) {
+      if (slider->mode == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);
         reinterpret_cast<void(__cdecl*)(int)>(
             WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0)(volumeScalar);
@@ -176,7 +162,7 @@ void __fastcall TrackTwoPicSliderMouseAndRefresh(TTwoPicSliderLayout* slider, in
     }
   }
 
-  if ((inputPhase == 2) && (slider->modeAt94 == 2)) {
+  if ((inputPhase == 2) && (slider->mode == 2)) {
     int percent = SliderScaledValue(slider, 100);
     void** sfxPlaybackSystem = *reinterpret_cast<void***>(kAddrSfxPlaybackSystem);
     reinterpret_cast<void(__cdecl*)(int)>(sfxPlaybackSystem[0x2b])(percent);

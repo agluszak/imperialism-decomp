@@ -1,6 +1,7 @@
 // TTransFocusAnimation vertical-slice implementations.
 
 #include "decomp_types.h"
+#include "game/TView.h"
 #include "game/CObject.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -107,7 +108,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 // FUNCTION: IMPERIALISM 0x004a0770
 void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw() {
   ScopedMapQuickDrawContextGuard quickDrawContext(scopedRenderTarget);
-  VCall_FocusAnimationView_RenderSlotF8(scopedRenderTarget);
+  reinterpret_cast<TView*>(scopedRenderTarget)->Refresh();
 
   int completionRecord[2];
   completionRecord[0] = 0;

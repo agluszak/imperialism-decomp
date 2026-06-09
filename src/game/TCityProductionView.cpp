@@ -1,6 +1,7 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
 #include "game/UiRuntimeContext.h"
+#include "game/TView.h"
 #include "game/generated/vcall_facades.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -60,7 +61,7 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
   QuickDrawSurfaceGuard surface;
 
   int boundsRecord[4];
-  VCall_QuickDrawTarget_QueryBoundsSlot12C(this, boundsRecord);
+  reinterpret_cast<TView*>(this)->QueryBounds(boundsRecord);
 
   int clipRect[4];
   clipRect[0] = boundsRecord[0];
@@ -80,7 +81,7 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(clipRect);
 
   needsRefreshAtA6 = 1;
-  VCall_QuickDrawTarget_ApplyRectSlot110(this, &boundsRecord[1]);
+  reinterpret_cast<TView*>(this)->ApplyRectSlot110(&boundsRecord[1]);
 
   reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
       previousSurface, contextFlags);

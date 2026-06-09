@@ -3267,3 +3267,32 @@ Follow-up scan after the TClosePicture extraction:
    - Removed `TTradeCluster::ResolveControlByTag` and `RequireControlByTag`, switching to `TView::ResolveControlByTag` base class calls with correct casts.
    - Added `// VTABLE: IMPERIALISM 0x665a70` to `TTradeCluster`.
    - Verified `0x00497390` is `QuickDrawSurfaceGuard::~QuickDrawSurfaceGuard()` (custom caching RAII destructor) and not a true compiler-emitted scalar deleting destructor.
+- **Timestamp:** 2024-06-09
+- **Command:** `python3 tools/refactor_call_slots.py`, `just build`, `just detect`
+- **Score Delta:** 0.00% (Stalled/No change)
+- **Description:** Systematically investigated and refactored all remaining legacy `Call*Slot*` thunks from `trade_quickdraw.h` and `trade_screen.cpp`. These functions were manual `__fastcall` wrappers created by decompilers to handle virtual dispatch incorrectly. Mapped the vtable slots to their actual virtual methods:
+  - `CallApplyMoveValueSlot1D0` (slot 0x1D0) -> `TUberCluster::ApplyMoveValue(int)`
+  - `CallPostMoveValueSlot1D4` (slot 0x1D4) -> `TUberCluster::NotifyControlSelectionChange(void*, int)` (This slot acts as `PostMoveValue(int, int)` for `TIndustryCluster`/`TRailCluster` but as `NotifyControlSelectionChange(void*)` for `TCivToolbar`)
+  - `CallNotifyMoveUpdatedSlot1D8` (slot 0x1D8) -> `TUberCluster::GetControlFlag(int, int)` (This acts as `NotifyMoveUpdated` without arguments for Trade clusters, but `GetControlFlag` with arguments for `TProductionCluster`)
+  - `CallControlFlagSlot1D8` (slot 0x1D8) -> `TAmtBar::vmethod_0118()`
+  - `CallBoolSlot1DC` (slot 0x1DC) -> `TUberCluster::GetBoolSlot1DC()`
+  - `CallControlActionSlot1E0` (slot 0x1E0) -> `TUberCluster::DoControlAction()`
+  - `CallOwnerPanelSlot58` (slot 0x58) -> `TView::OwnerPanel()`
+  - `CallUiRuntimeSlot34` -> `UiRuntimeContext::ApplyLegendSplitSlot34(int)`
+  - `CallQueryNationMetricBySlot78` / `7C` -> `NationState::QueryNationMetricBySlot78()` / `7C`
+  Replaced all thunk calls with native C++ method invocations, successfully resolving user request to remove free-function thunks and restore real object-oriented vtable dispatch. Codebase builds correctly and match rate remains stable.
+- **Timestamp:** 2024-06-09 (Afternoon)
+- **Command:** Add `TView` missing virtuals, `TLocalizationRuntime` missing virtuals, `just build`, `just detect`, `just stats`
+- **Score Delta:** Good: aligned count increased
+- **Description:** Identified more legacy `VCall_` facades and converted them to native virtual calls:
+  - `VCall_FocusAnimationView_RenderSlotF8(obj)` mapped to `TView::Refresh()` (slot 62 / 0xF8).
+  - `VCall_FocusAnimationView_ApplyRectSlot110(obj, rect)` and `VCall_QuickDrawTarget_ApplyRectSlot110` mapped to `TView::ApplyRectSlot110()` (slot 68 / 0x110) which was previously an unnamed `vmethod_0068`.
+  - `VCall_FocusAnimationView_PostRenderSlotFC(obj)` mapped to `TView::PostRenderSlotFC()` (slot 63 / 0xFC) which was previously an unnamed `vmethod_0063`.
+  - `VCall_QuickDrawTarget_QueryBoundsSlot12C(obj, rect)` mapped to `TView::QueryBounds()` (slot 75 / 0x12C).
+  - `VCall_LocalizationRuntime_CallSlot84` mapped to `TLocalizationRuntime::CallSlot84()` (slot 33 / 0x84).
+  - `VCall_LocalizationRuntime_GetTurnTick` mapped to `TLocalizationRuntime::GetTurnTickSlot3C()` (slot 15 / 0x3C).
+  Refactored all calls across `TCityProductionView`, `TDiplomacyMapView`, `TFocusAnimation`, `TTwoPicSlider`, `TOneTimeAnimation`, `TTransFocusAnimation`, `TGreatPower`, and `diplomacy_state` to use native object-oriented `->` calls instead of the global `__fastcall` thunks. The changes improved the assembly alignment and eliminated many ugly memory casts.
+- **Timestamp:** 2024-06-09 (Afternoon)
+- **Command:** Replaced `TTwoPicSliderLayout` struct with real `TTwoPicSlider` class
+- **Score Delta:** 0.00% (Stalled)
+- **Description:** Recovered the `TTwoPicSlider` class hierarchy. It inherits from `TControl` (and thus `TView`), making its `widthAt34` and `heightAt38` simply `field34` and `field38` (the `right` and `bottom` members of `TView::bounds` which starts at `0x2C`). Replaced the `TTwoPicSliderLayout` temporary struct with a true C++ class in `TTwoPicSlider.h`, mapping fields correctly (`lowerSurface`, `upperSurface`, `compositeSurface`, `splitPosition`, `mode`). Converted the `__fastcall` free functions `DrawTwoPicSliderSplitOverlayAndCenteredStatusText` and `TrackTwoPicSliderMouseAndRefresh` into true C++ class methods on `TTwoPicSlider`.

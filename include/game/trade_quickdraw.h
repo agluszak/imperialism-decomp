@@ -40,9 +40,6 @@ static __inline void ApplyRectClipRegion(int* rectBuffer) {
 // SetQuickDrawFillColor(int) is the real global at 0x495000, declared in
 // quickdraw_guards.h (included above).
 
-static __inline void CallUiRuntimeSlot34(UiRuntimeContext* runtimeContext, int styleIndex) {
-  runtimeContext->ApplyLegendSplitSlot34(styleIndex);
-}
 typedef void* hwnd_t;
 
 const int kControlTagMove = 0x6d6f7665;
@@ -72,19 +69,12 @@ static __inline void* ReadPointerAt(unsigned int address) {
   return *reinterpret_cast<void**>(address);
 }
 
-static __inline void CallApplyMoveValueSlot1D0(void* context, int value) {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(context))[0x1d0 / 4])(context, value);
-}
 
 extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
 extern struct NationState* GetNationStateBySlot(short slot);
 extern short QueryNationMetricBySlot(struct NationState* state, short metricSlot);
 extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
-extern char CallControlFlagSlot1D8(TControl* control);
-extern void CallControlActionSlot1E0(TControl* control);
-extern char CallBoolSlot1DC(void* self);
 extern void FailNilPointerInUSmallViews(int line);
 
 // Underlying nil-pointer assert: report the (sourcePath, line) and bail. The
@@ -140,14 +130,9 @@ static __inline int GetTradeSummarySelectionTagByIndex(short index) {
   return selectionMap->summaryTags[index];
 }
 
-static __inline void* CallOwnerPanelSlot58(void* self) {
-  return reinterpret_cast<void*(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0x58 / 4])(
-      self);
-}
-
 static __inline void ApplyQuickDrawStyleFromRuntime(short styleIndex) {
   if (g_pUiRuntimeContext == 0) {
     return;
   }
-  CallUiRuntimeSlot34(g_pUiRuntimeContext, styleIndex);
+  g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleIndex);
 }

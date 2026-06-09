@@ -94,12 +94,12 @@ public:
   virtual void CaptureLayoutF0(int* buffer, int modeFlag);
   virtual void CaptureLayout(int* buffer, int modeFlag);
   virtual char Refresh();
-  virtual void vmethod_0063();
+  virtual void PostRenderSlotFC();
   virtual void vmethod_0064();
   virtual void vmethod_0065();
   virtual void vmethod_0066();
   virtual void vmethod_0067();
-  virtual void vmethod_0068();
+  virtual void ApplyRectSlot110(int* rectBuffer);
   virtual void UpdateAfterBitmapChange(int unknownFlag);
   virtual void vmethod_0070();
   virtual void vmethod_0071();

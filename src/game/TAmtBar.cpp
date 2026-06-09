@@ -103,7 +103,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   if (barRange > 0) {
     SetQuickDrawTextOrigin(0, 1);
-    CallUiRuntimeSlot34(g_pUiRuntimeContext, auxValueB);
+    g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
     SetQuickDrawStylePair(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLine((short)(guideValue - 1), 1);
