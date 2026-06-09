@@ -126,30 +126,11 @@ const int kTradeSellPropagationTags[] = {
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
 };
 
-struct TradeMovePanelContext;
 struct CityTradeScenarioDescriptor;
 struct TDocument;
 
 
-struct TradeMoveStepCluster {
-  void* vftable;
-  char pad_04[0x84];
-  int field_88;
-  short field_8c;
-  short field_8e;
-  int field_90;
-  int field_94;
 
-  void HandleTradeMovePageStepCommand(int commandId, void* eventArg, int eventExtra);
-  void SelectTradeSpecialCommodityAndInitializeControls();
-  void RefreshTradeMoveBarAndTurnControl();
-  void HandleTradeMoveArrowControlEvent(int commandId, TAmtBar* sourceControl, int eventExtra);
-  void OrphanTiny_SetWordEcxOffset_8c_00586a60(short value);
-  void OrphanLeaf_NoCall_Ins05_00586a80(int value90, int value94);
-  void OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value);
-};
-
-struct TradeMovePanelContext;
 
 // The trade-screen UI object is a cluster-family view: it dispatches through the
 // TView vtable (ResolveControlByTag @0x94), reads TView::selectedControlTagOrState1c
@@ -159,15 +140,7 @@ struct TradeMovePanelContext;
 
 // ApplicationUiRootControllerState moved to global scope
 
-struct UnitToolbarClusterState {
-  void* vftable;
-  char pad_04[0x84];
-};
 
-struct CityBarClusterState {
-  void* vftable;
-  char pad_04[0x84];
-};
 
 static __inline void CallPostMoveValueSlot1D4(void* context, int value, int commitFlag) {
   reinterpret_cast<void(__fastcall*)(void*, int, int)>(
@@ -236,39 +209,7 @@ static __inline void CallVoidSlotE4(void* self) {
 
 void FailNilPointerInUSmallViews(int line);
 
-struct TradeMoveControlState {
-  void* vftable;
-  char pad_04[0x1c];
-  void* ownerContext;
-  char pad_24[0x10];
-  int barRangeRaw;
-  char pad_38[0x2c];
-  short barStepsRaw;
 
-  void ClampAndApplyTradeMoveValue(int* requestedValuePtr);
-};
-
-struct TradeMovePanelContext {
-  void* vftable;
-  char pad_04[0x18];
-  int summaryTag;
-  void* ownerContext;
-  int ownerOffsetX;
-  int ownerOffsetY;
-  char pad_2c[0x5c];
-  TAmtBar* selectedMetricControl;
-  short selectedMetricValue;
-  short selectedMetricStep;
-
-  void OrphanCallChain_C1_I06_00588c30(int value);
-  void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
-  void UpdateTradeMoveControlsFromDrag(int dragValue, int updateFlag);
-  void UpdateTradeBarFromSelectedMetricRatio_B(void);
-  void HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra);
-  void OrphanCallChain_C1_I06_005899c0(int value);
-  void UpdateTradeMoveControlsFromScaledDrag(int dragValue, int updateFlag);
-  void UpdateTradeBarFromSelectedMetricRatio_A(void);
-};
 
 
 
@@ -429,24 +370,8 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unused
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00586a60
-void TradeMoveStepCluster::OrphanTiny_SetWordEcxOffset_8c_00586a60(short value) {
-  // ORIG_CALLCONV: __thiscall
-  field_8c = value;
-}
 
-// FUNCTION: IMPERIALISM 0x00586a80
-void TradeMoveStepCluster::OrphanLeaf_NoCall_Ins05_00586a80(int value90, int value94) {
-  // ORIG_CALLCONV: __thiscall
-  field_90 = value90;
-  field_94 = value94;
-}
 
-// FUNCTION: IMPERIALISM 0x00586ab0
-void TradeMoveStepCluster::OrphanTiny_SetWordEcxOffset_8e_00586ab0(short value) {
-  // ORIG_CALLCONV: __thiscall
-  field_8e = value;
-}
 
 #if defined(_MSC_VER)
 #pragma optimize("y", off)
@@ -461,7 +386,7 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
                                                   unsigned int styleSeed) {
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
-  TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(context);
+  TRailCluster* panel = reinterpret_cast<TRailCluster*>(context);
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(panel, kControlTagMove));
   unsigned int styleDescriptor = styleSeed & 0xffff0000;
   if (moveControl != 0) {
@@ -492,43 +417,43 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
 #endif
 
 // FUNCTION: IMPERIALISM 0x00586e70
-void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
+void HandleTradeMoveControlAdjustment(TRailCluster* ctx, int commandId, void* eventArg,
                                                              int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   int normalizedCommand = commandId - 100;
   void*(__fastcall * resolveByTag)(void*, int) = reinterpret_cast<void*(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(this))[0x94 / 4]);
+      (*reinterpret_cast<void***>(ctx))[0x94 / 4]);
 
   if (normalizedCommand == 0) {
     TAmtBar* moveControl =
-        reinterpret_cast<TAmtBar*>(resolveByTag(this, kControlTagMove));
+        reinterpret_cast<TAmtBar*>(resolveByTag(ctx, kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMove);
     }
     short moveValue = moveControl->QueryValue();
 
     TAmtBar* availableControl =
-        reinterpret_cast<TAmtBar*>(resolveByTag(this, kControlTagAvai));
+        reinterpret_cast<TAmtBar*>(resolveByTag(ctx, kControlTagAvai));
     if (availableControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustAvai);
     }
     short availableValue = (short)availableControl->QueryValue();
     if (moveValue < availableValue) {
-      reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(moveValue + 1);
+      reinterpret_cast<TUberCluster*>(ctx)->ApplyMoveValue(moveValue + 1);
     }
   } else if (normalizedCommand == 1) {
     TAmtBar* moveControl =
-        reinterpret_cast<TAmtBar*>(resolveByTag(this, kControlTagMove));
+        reinterpret_cast<TAmtBar*>(resolveByTag(ctx, kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMoveMinus);
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
-      reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(moveValue - 1);
+      reinterpret_cast<TUberCluster*>(ctx)->ApplyMoveValue(moveValue - 1);
     }
   }
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      this, commandId, eventArg, eventExtra);
+      ctx, commandId, eventArg, eventExtra);
 }
 
 #if defined(_MSC_VER)
@@ -537,7 +462,7 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
 
 void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
                                                  int eventExtra) {
-  reinterpret_cast<TradeMovePanelContext*>(context)->HandleTradeMoveControlAdjustment(
+  HandleTradeMoveControlAdjustment(reinterpret_cast<TRailCluster*>(context),
       commandId, eventArg, eventExtra);
 }
 
@@ -576,7 +501,7 @@ void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
 }
 
 
-static __inline void UpdateTradeBarFromSelectedMetricRatio(TradeMovePanelContext* context,
+static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context,
                                                            int assertLine) {
   void* owner = context;
   TAmtBar* barControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagBar));
@@ -584,11 +509,11 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TradeMovePanelContext
     FailNilPointerInUSmallViews(assertLine);
   }
 
-  TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
-  if (barLayout->barStepsRaw != 0) {
+  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
+  if (barLayout->auxValueA != 0) {
     int ratioValue =
-        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->barRangeRaw) /
-        (int)barLayout->barStepsRaw;
+        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->field34) /
+        (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -626,7 +551,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
 
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::ApplyMoveValue(int value) {
-  CallPostMoveValueSlot1D4(reinterpret_cast<TradeMovePanelContext*>(this), value, 0);
+  CallPostMoveValueSlot1D4(reinterpret_cast<TRailCluster*>(this), value, 0);
 }
 
 // GHIDRA_NAME UpdateTradeBarFromSelectedMetricRatio_A
@@ -639,7 +564,7 @@ void TRailCluster::ApplyMoveValue(int value) {
 // FUNCTION: IMPERIALISM 0x005899f0
 int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
   int dragValue = (int)dragValuePtr;
-  TradeMovePanelContext* ctx = reinterpret_cast<TradeMovePanelContext*>(this);
+  TRailCluster* ctx = reinterpret_cast<TRailCluster*>(this);
   // ORIG_CALLCONV: __thiscall
   short step = ctx->selectedMetricStep;
   int quantizedDragValue = ((((int)step / 2) + (int)(short)dragValue) / (int)step) * (int)step;
@@ -673,11 +598,11 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
     FailNilPointerInUSmallViews(0xcf9);
   }
 
-  TradeMoveControlState* barLayout = reinterpret_cast<TradeMoveControlState*>(barControl);
+  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   TAmtBar* barAmount = reinterpret_cast<TAmtBar*>(barControl);
   float barScale = 9999.0f;
-  if (barLayout->barStepsRaw != 0) {
-    barScale = (float)barLayout->barRangeRaw / (float)barLayout->barStepsRaw;
+  if (barLayout->auxValueA != 0) {
+    barScale = (float)barLayout->field34 / (float)barLayout->auxValueA;
   }
 
   if (ReadControlValueFieldPlus4(selectedControl) == selectedMetricValue) {
@@ -695,7 +620,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
 
 // FUNCTION: IMPERIALISM 0x00589d10
 int TRailCluster::GetControlFlag(int arg1, int arg2) {
-  UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TradeMovePanelContext*>(this), kAssertLineRatioA);
+  UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
   return 0;
 }
 

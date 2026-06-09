@@ -43,7 +43,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
       nationState != 0 ? nationState->cityState : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
+  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
   while (mappedTag != summaryTag) {
     summaryTagIndex = (short)(summaryTagIndex + 1);
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);

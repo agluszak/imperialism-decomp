@@ -11,8 +11,9 @@ public:
   int field14;
   int field18;
   int selectedControlTagOrState1c; // 0x1c
-  int field20;
-  unsigned char padding_24_to_2b[0x08];
+  class TView* ownerContext; // 0x20
+  int ownerOffsetX; // 0x24
+  int ownerOffsetY; // 0x28
   int field2c;
   int field30;
   int field34;

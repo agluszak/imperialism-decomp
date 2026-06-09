@@ -109,9 +109,9 @@ void TTextList::HandleTextListScrollSelectionChange(int* pScrollData) {
     RECT localRect;
     CopyRect(&localRect, &rect);
 
-    reinterpret_cast<TControl*>(this->field20)->InvalidateCityDialogRectRegion(&localRect, 1);
+    reinterpret_cast<TControl*>(this->ownerContext)->InvalidateCityDialogRectRegion(&localRect, 1);
     reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionConfirmedSlot13C();
 
-    reinterpret_cast<TView*>(this->field20)->DispatchEvent(4, this, 0);
+    reinterpret_cast<TView*>(this->ownerContext)->DispatchEvent(4, this, 0);
   }
 }

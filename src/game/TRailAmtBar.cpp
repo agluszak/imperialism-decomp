@@ -34,7 +34,7 @@ void TRailAmtBar::DoPostCreate(TDocument* document) {
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
   NationCityTradeState* cityState =
       nationState != 0 ? nationState->cityState : 0;
-  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->field20) + 0x1c);
+  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;
   if ((unsigned int)summaryTag < 0x706f7076) {

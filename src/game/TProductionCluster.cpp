@@ -17,13 +17,16 @@ TProductionCluster::TProductionCluster()
 // TProductionCluster::`scalar deleting destructor'
 TProductionCluster::~TProductionCluster() {}
 
+// FUNCTION: IMPERIALISM 0x00586a60
 void TProductionCluster::ApplyMoveValue(int value) { field8c = value; }
 
+// FUNCTION: IMPERIALISM 0x00586ab0
 int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) { 
   field8e = (int)boundEntry; 
   return 0; 
 }
 
+// FUNCTION: IMPERIALISM 0x00586a80
 int TProductionCluster::GetControlFlag(int value90, int value94) {
   field90 = value90;
   field94 = value94;
