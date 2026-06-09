@@ -44,7 +44,6 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
 undefined4 thunk_InitializeTradeMoveAndBarControls(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
-undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
                                                  int eventExtra);
@@ -63,7 +62,6 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void); // GHIDRA_FUNCTION IMP
 undefined4 thunk_DispatchPictureResourceCommand(void);
 undefined4 thunk_DispatchPanelControlEvent(void);
 undefined4 thunk_GetTickCountDiv16(void);
-undefined4 thunk_InitializeUiTextStyleDescriptor(void);
 undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
@@ -90,40 +88,10 @@ extern "C" char g_pClassDescTTradeCluster = 0;
 
 
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
-const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
 extern const int kControlTagBar = 0x62617220;
-const int kControlTagAvai = 0x61766169;
-const int kControlTagCard = 0x63617264;
 
-const int kControlTagOffr = 0x6f666672;
-const int kControlTagGree = 0x67726565;
-const int kControlTagLeft = 0x6c656674;
-const int kControlTagRght = 0x72676874;
-
-const int kAssertLineBidSecondary = 0x907;
-const int kAssertLineBidActionable = 0x8de;
-const int kAssertLineOfferActionable = 0x8f2;
-const int kAssertLineBidControl = 0x92e;
-const int kAssertLineBidGree = 0x93f;
-const int kAssertLineBidLeft = 0x941;
-const int kAssertLineBidRight = 0x943;
-const int kAssertLineOfferControl = 0x95c;
-const int kAssertLineOfferGree = 0x970;
-const int kAssertLineOfferLeft = 0x972;
-const int kAssertLineOfferRight = 0x974;
-const int kAssertLineOfferSecondaryOffr = 0x98f;
-const int kAssertLineOfferSecondaryGree = 0x9ad;
-const int kAssertLineOfferSecondaryLeft = 0x9af;
-const int kAssertLineOfferSecondaryRight = 0x9b1;
-const int kAssertLineInitBar = 0x7a2;
-const int kAssertLineInitLeft = 0x7a6;
-const int kAssertLineInitRight = 0x7a8;
-const int kAssertLineInitGree = 0x7b8;
-const int kAssertLineUpdateSell = 0x9e0;
-const int kAssertLineUpdateBar = 0x9e4;
-const int kAssertLineUpdateGree = 0x9e7;
 const int kAssertLineRatioB = 0xb73;
 const int kAssertLineRatioA = 0xd1d;
 const int kAssertLineMoveBarInitNil = 0x725;
@@ -135,7 +103,6 @@ const int kAssertLineTradeSellIncSell = 0x816;
 const int kAssertLineTradeSellIncCap = 0x81d;
 const int kAssertLineMovePageMinus = 0xd34;
 const int kAssertLineMovePagePlus = 0xd3c;
-const int kAssertLineToolSubcontrolToggle = 0xac7;
 const unsigned int kVtableTIndustryCluster = 0x00665ed0;
 const unsigned int kAddrClassDescTIndustryCluster = 0x00662f98;
 const unsigned int kVtableTIndustryAmtBar = 0x00666110;
@@ -153,15 +120,6 @@ const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
 const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
 
-const short kTradeBitmapBidStateA = 0x083f;
-const short kTradeBitmapBidStateB = 0x084d;
-const short kTradeBitmapBidSecondaryStateA = 0x0840;
-const short kTradeBitmapBidSecondaryStateB = 0x084e;
-const short kTradeBitmapOfferStateA = 0x0841;
-const short kTradeBitmapOfferStateB = 0x084f;
-const short kTradeBitmapOfferSecondaryStateA = 0x0842;
-const short kTradeBitmapOfferSecondaryStateB = 0x0850;
-const int kTradeRowStateTag_67643020 = 0x67643020;
 const int kTradeSellPropagationTags[] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
     0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
@@ -172,13 +130,6 @@ struct TradeMovePanelContext;
 struct CityTradeScenarioDescriptor;
 struct TDocument;
 
-struct TradeBarControlLayout {
-  void* vftable;
-  char pad_04[0x30];
-  short barRange;
-  char pad_36[0x2e];
-  short barSteps;
-};
 
 struct TradeMoveStepCluster {
   void* vftable;
@@ -283,7 +234,6 @@ static __inline void CallVoidSlotE4(void* self) {
   reinterpret_cast<void(__fastcall*)(void*)>((*reinterpret_cast<void***>(self))[0xe4 / 4])(self);
 }
 
-static __inline void FailNilPointerWithAssert(const char* sourcePath, int line);
 void FailNilPointerInUSmallViews(int line);
 
 struct TradeMoveControlState {
@@ -344,11 +294,6 @@ void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TTradeCluster* se
   self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
 }
 
-static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
-  GAME_FAIL_NIL_POINTER();
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath,
-                                                                                        line);
-}
 
 void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert(kUSmallViewsCppPath, line);
@@ -382,9 +327,6 @@ short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
   return CallQueryNationMetricBySlot78(nationState, metricSlot);
 }
 
-static __inline short QueryNationTradeCapacity(NationState* nationState) {
-  return nationState->tradeCapacity;
-}
 
 // GLOBAL: IMPERIALISM 0x6a18e0
 // g_pApplicationUiRootController moved to global scope
@@ -421,16 +363,6 @@ undefined4 thunk_NoOpUiLifecycleHook(void) {
   return 0;
 }
 
-// Included by src/game/trade_screen.cpp.
-// Contains trade-screen core logic functions (address-ordered).
-
-// GHIDRA_NAME InitializeTradeSellControlState
-// GHIDRA_PROTO void __cdecl InitializeTradeSellControlState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes Sell/Bar/Arrow control style and enabled state for current
-// nation/resource context; then initializes move/bar controls baseline. GHIDRA_COMMENT_END
-/* Initializes Sell/Bar/Arrow control style and enabled state for current nation/resource context;
-   then initializes move/bar controls baseline. */
 
 // GHIDRA_NAME HandleTradeArrowAutoRepeatTickAndDispatch
 // GHIDRA_PROTO void __thiscall HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void *
@@ -623,11 +555,6 @@ void* CreateTradeSellControlPanel(void) {
   return cluster;
 }
 
-// FUNCTION: IMPERIALISM 0x00587090
-void* GetTTradeClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTTradeCluster);
-}
-
 // FUNCTION: IMPERIALISM 0x005870b0
 void __fastcall ConstructTradeSellControlPanel(void* self)
 
@@ -648,433 +575,6 @@ void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
   return self;
 }
 
-// FUNCTION: IMPERIALISM 0x00587130
-void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  if (sellControl != 0) {
-    int styleDescriptor[5];
-    int boundsBuffer[2] = {0, 0};
-    reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
-        thunk_InitializeUiTextStyleDescriptor)(0, styleDescriptor, 0xe, 0x2b68, 2);
-    sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
-    sellControl->SetStyleState(-1, 0);
-    sellControl->QueryBounds(boundsBuffer);
-    boundsBuffer[1] = boundsBuffer[1] - 2;
-    sellControl->ApplyBounds(boundsBuffer, 1);
-    sellControl->SetState(-1, 0);
-  }
-
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
-  if (barControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineInitBar);
-  }
-  barControl->SetState(0, 0);
-
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
-  if (leftControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineInitLeft);
-  }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
-  if (rightControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineInitRight);
-  }
-  leftControl->SetState(0, 0);
-  rightControl->SetState(0, 0);
-
-  short activeNationSlot = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
-  if (activeNationState != 0 && QueryNationTradeCapacity(activeNationState) == 0) {
-    leftControl->SetEnabled(0, 0);
-    rightControl->SetEnabled(0, 0);
-    barControl->SetEnabled(0, 0);
-    TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
-    if (greenControl == 0) {
-      FailNilPointerInUSmallViews(kAssertLineInitGree);
-    }
-    if (greenControl != 0) {
-      greenControl->SetEnabled(0, 0);
-    }
-  }
-
-  InitializeTradeMoveAndBarControls(this, 0, styleSeed);
-}
-
-// GHIDRA_NAME IsTradeSellControlAtMinimum
-// GHIDRA_PROTO void __cdecl IsTradeSellControlAtMinimum(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns early if UI mode is outside trade range (>3). Otherwise queries current
-// Sell control quantity. GHIDRA_COMMENT_END
-//
-// NOTE:
-// GHIDRA showed `g_pUiRuntimeContext` as a global here; this reconstruction passes it explicitly.
-//
-
-// FUNCTION: IMPERIALISM 0x00587900
-char TTradeCluster::IsTradeSellControlAtMinimum() {
-  if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
-    return 0;
-  }
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  return sellControl->QueryValue() <= 0 ? 1 : 0;
-}
-
-// GHIDRA_NAME QueryTradeSellControlQuantity
-// GHIDRA_PROTO void __cdecl QueryTradeSellControlQuantity(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns current Sell control quantity via child control tag "Sell" and vfunc
-// +0x1E8. GHIDRA_COMMENT_END
-/* Returns current Sell control quantity via child control tag "Sell" and vfunc +0x1E8. */
-
-// FUNCTION: IMPERIALISM 0x00587950
-short TTradeCluster::QueryTradeSellControlQuantity(void) {
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  return sellControl->QueryValue();
-}
-
-// GHIDRA_NAME IsTradeBidControlActionable
-// GHIDRA_PROTO void __cdecl IsTradeBidControlActionable(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI predicate for Bid control interactivity.
-// GHIDRA_COMMENT Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F)
-// or 2125 (0x84D) and control reports actionable state via vtable+0xEC. GHIDRA_COMMENT_END
-
-/* Trade UI predicate for Bid control interactivity.
-   Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F) or 2125 (0x84D)
-   and control reports actionable state via vtable+0xEC. */
-
-// FUNCTION: IMPERIALISM 0x00587980
-char TTradeCluster::IsTradeBidControlActionable(void) {
-  TPictureResourceEntryBase* bidControl = reinterpret_cast<TPictureResourceEntryBase*>(this->ResolveControlByTag(kControlTagCard));
-  if (bidControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineBidActionable);
-  }
-
-  if (bidControl->bitmapId != kTradeBitmapBidStateA &&
-      bidControl->bitmapId != kTradeBitmapBidStateB) {
-    return 0;
-  }
-
-  char actionable = bidControl->IsActionable();
-  if (actionable == 0) {
-    return 0;
-  }
-  return 1;
-}
-
-// GHIDRA_NAME IsTradeOfferControlActionable
-// GHIDRA_PROTO void __cdecl IsTradeOfferControlActionable(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI predicate for Offer control interactivity.
-// GHIDRA_COMMENT Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841)
-// or 2127 (0x84F) and control reports actionable state via vtable+0xEC. GHIDRA_COMMENT_END
-
-/* Trade UI predicate for Offer control interactivity.
-   Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
-   and control reports actionable state via vtable+0xEC. */
-
-// FUNCTION: IMPERIALISM 0x00587a10
-char TTradeCluster::IsTradeOfferControlActionable(void) {
-  TPictureResourceEntryBase* offerControl = reinterpret_cast<TPictureResourceEntryBase*>(this->ResolveControlByTag(kControlTagOffr));
-  if (offerControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferActionable);
-  }
-
-  if (offerControl->bitmapId != kTradeBitmapOfferStateA &&
-      offerControl->bitmapId != kTradeBitmapOfferStateB) {
-    return 0;
-  }
-
-  char actionable = offerControl->IsActionable();
-  if (actionable == 0) {
-    return 0;
-  }
-  return 1;
-}
-
-// GHIDRA_NAME SetTradeBidSecondaryBitmapState
-// GHIDRA_PROTO void __cdecl SetTradeBidSecondaryBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Bid secondary-state updater.
-// GHIDRA_COMMENT Resolves 'card' control and assigns 2112 (0x840) or 2126 (0x84E) through
-// vtable+0x1C8 based on row state field (+0x1C == 0x67643020) when nation availability gate passes.
-// GHIDRA_COMMENT_END
-
-/* Trade UI Bid secondary-state updater.
-   Resolves 'card' control and assigns 2112 (0x840) or 2126 (0x84E) through vtable+0x1C8 based on
-   row state field (+0x1C == 0x67643020) when nation availability gate passes. */
-
-// NOTE:
-// GHIDRA showed `g_pUiRuntimeContext` as a global here; this reconstruction passes it explicitly.
-//
-
-// FUNCTION: IMPERIALISM 0x00587aa0
-void TTradeCluster::SetTradeBidSecondaryBitmapState(void) {
-  TAmtBar* bidControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagCard));
-  if (bidControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineBidSecondary);
-  }
-
-  int layoutCapture[2];
-  layoutCapture[0] = 0x11;
-  layoutCapture[1] = 0x14;
-  bidControl->CaptureLayout(layoutCapture, 1);
-
-  if (QueryUiScreenModeRaw(g_pUiRuntimeContext) < 4) {
-    bidControl->SetEnabled(1, 1);
-    if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
-      bidControl->SetBitmap(kTradeBitmapBidSecondaryStateB, 0);
-    } else {
-      bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
-    }
-    bidControl->Refresh();
-    bidControl->UpdateAfterBitmapChange(0);
-    return;
-  }
-
-  bidControl->SetEnabled(0, 1);
-}
-
-// GHIDRA_NAME SetTradeBidControlBitmapState
-// GHIDRA_PROTO void __cdecl SetTradeBidControlBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Bid-state updater.
-// GHIDRA_COMMENT Resolves control tag 'card' from current row context.
-// GHIDRA_COMMENT If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D);
-// otherwise assigns bitmap 2111 (0x83F). GHIDRA_COMMENT Then refreshes related controls 'gree',
-// 'left', 'rght' visibility/active flags. GHIDRA_COMMENT_END
-
-/* Trade UI Bid-state updater.
-   Resolves control tag 'card' from current row context.
-   If row state field (+0x1C) equals 0x67643020, assigns bitmap 2125 (0x84D); otherwise assigns
-   bitmap 2111 (0x83F).
-   Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
-
-// FUNCTION: IMPERIALISM 0x00587bb0
-void TTradeCluster::SetTradeBidControlBitmapState(void) {
-  TAmtBar* bidControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagCard));
-  if (bidControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineBidControl);
-  }
-
-  bidControl->SetEnabled(1, 0);
-  if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
-    bidControl->SetBitmap(kTradeBitmapBidStateB, 0);
-  } else {
-    bidControl->SetBitmap(kTradeBitmapBidStateA, 0);
-  }
-
-  int layoutCapture[2] = {0x41, 0x14};
-  bidControl->CaptureLayout(layoutCapture, 1);
-
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
-  if (greenControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineBidGree);
-  }
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
-  if (leftControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineBidLeft);
-  }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
-  if (rightControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineBidRight);
-  }
-
-  greenControl->SetEnabled(0, 1);
-  leftControl->SetEnabled(0, 1);
-  rightControl->SetEnabled(0, 1);
-  greenControl->SetState(0, 1);
-  leftControl->SetState(0, 1);
-  rightControl->SetState(0, 1);
-
-  bidControl->Refresh();
-  bidControl->UpdateAfterBitmapChange(0);
-}
-
-// GHIDRA_NAME SetTradeOfferControlBitmapState
-// GHIDRA_PROTO void __cdecl SetTradeOfferControlBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Offer-state updater.
-// GHIDRA_COMMENT Resolves control tag 'offr' from current row context.
-// GHIDRA_COMMENT If row state field (+0x1C) equals 0x67643020, assigns bitmap 2127 (0x84F);
-// otherwise assigns bitmap 2113 (0x841). GHIDRA_COMMENT Then refreshes related controls 'gree',
-// 'left', 'rght' visibility/active flags. GHIDRA_COMMENT_END
-
-/* Trade UI Offer-state updater.
-   Resolves control tag 'offr' from current row context.
-   If row state field (+0x1C) equals 0x67643020, assigns bitmap 2127 (0x84F); otherwise assigns
-   bitmap 2113 (0x841).
-   Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
-
-// FUNCTION: IMPERIALISM 0x00587dd0
-void TTradeCluster::SetTradeOfferControlBitmapState(void) {
-  TAmtBar*(__fastcall * resolveControl)(TTradeCluster*, int) =
-      reinterpret_cast<TAmtBar*(__fastcall*)(TTradeCluster*, int)>(
-          (*reinterpret_cast<void***>(this))[0x94 / 4]);
-
-  TAmtBar* offerControl = resolveControl(this, kControlTagOffr);
-  if (offerControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferControl);
-  }
-
-  offerControl->SetEnabled(1, 0);
-  if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
-    offerControl->SetBitmap(kTradeBitmapOfferStateB, 0);
-  } else {
-    offerControl->SetBitmap(kTradeBitmapOfferStateA, 0);
-  }
-
-  int layoutCaptureF4[2] = {0x41, 0x14};
-  offerControl->CaptureLayout(layoutCaptureF4, 1);
-  int layoutCaptureF0[2] = {0x73, 0};
-  offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
-
-  TAmtBar* greenControl = resolveControl(this, kControlTagGree);
-  if (greenControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferGree);
-  }
-  TAmtBar* leftControl = resolveControl(this, kControlTagLeft);
-  if (leftControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferLeft);
-  }
-  TAmtBar* rightControl = resolveControl(this, kControlTagRght);
-  if (rightControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferRight);
-  }
-
-  greenControl->SetEnabled(1, 1);
-  leftControl->SetEnabled(1, 1);
-  rightControl->SetEnabled(1, 1);
-  greenControl->SetState(1, 1);
-  leftControl->SetState(1, 1);
-  rightControl->SetState(1, 1);
-
-  offerControl->Refresh();
-  offerControl->UpdateAfterBitmapChange(0);
-}
-
-// GHIDRA_NAME SetTradeOfferSecondaryBitmapState
-// GHIDRA_PROTO void __cdecl SetTradeOfferSecondaryBitmapState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade UI Offer secondary-state updater.
-// GHIDRA_COMMENT Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through
-// vtable+0x1C8 based on row state field (+0x1C == 0x67643020) when nation availability gate passes.
-// GHIDRA_COMMENT_END
-
-/* Trade UI Offer secondary-state updater.
-   Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
-   row state field (+0x1C == 0x67643020) when nation availability gate passes. */
-
-// FUNCTION: IMPERIALISM 0x00588030
-void TTradeCluster::SetTradeOfferSecondaryBitmapState(void) {
-  TAmtBar* offerControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagOffr));
-  if (offerControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferSecondaryOffr);
-  }
-
-  int layoutCaptureF4[2] = {0x11, 0x14};
-  offerControl->CaptureLayout(layoutCaptureF4, 1);
-
-  short activeNationSlot = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
-  short tradeMetricAvailable = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
-
-  if (tradeMetricAvailable != 0) {
-    short activeNationSlotAgain = thunk_GetActiveNationId();
-    NationState* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
-    if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
-      offerControl->SetEnabled(1, 0);
-      if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
-        offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateB, 0);
-      } else {
-        offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateA, 0);
-      }
-      int layoutCaptureF0[2] = {0xa3, 0};
-      offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
-    } else {
-      offerControl->SetEnabled(0, 1);
-    }
-  } else {
-    offerControl->SetEnabled(0, 1);
-  }
-
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
-  if (greenControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferSecondaryGree);
-  }
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
-  if (leftControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferSecondaryLeft);
-  }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
-  if (rightControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineOfferSecondaryRight);
-  }
-
-  greenControl->SetEnabled(0, 1);
-  leftControl->SetEnabled(0, 1);
-  rightControl->SetEnabled(0, 1);
-  greenControl->SetState(0, 1);
-  leftControl->SetState(0, 1);
-  rightControl->SetState(0, 1);
-
-  offerControl->Refresh();
-  offerControl->UpdateAfterBitmapChange(0);
-}
-
-// GHIDRA_NAME UpdateTradeSellControlAndBarFromNationMetric
-// GHIDRA_PROTO void __fastcall UpdateTradeSellControlAndBarFromNationMetric(int * this)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates Sell control quantity
-// GHIDRA_COMMENT_END
-/* Updates Sell control quantity */
-
-// FUNCTION: IMPERIALISM 0x005882f0
-void TTradeCluster::UpdateTradeSellControlAndBarFromNationMetric(int metricClampMax) {
-  short activeNationSlot = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
-  int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
-  if (tradeMetricValue > metricClampMax) {
-    tradeMetricValue = metricClampMax;
-  }
-
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  if (sellControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineUpdateSell);
-  }
-  if (sellControl != 0) {
-    sellControl->SetControlValueSlot1E4(tradeMetricValue, 1);
-  }
-
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
-  if (barControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineUpdateBar);
-  }
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
-  if (greenControl == 0) {
-    FailNilPointerInUSmallViews(kAssertLineUpdateGree);
-  }
-
-  if (barControl != 0) {
-    TradeBarControlLayout* barLayout = reinterpret_cast<TradeBarControlLayout*>(barControl);
-    int barRange = (int)barLayout->barRange;
-    if (tradeMetricValue != 0) {
-      int barSteps = (int)barLayout->barSteps;
-      float barScale = 9999.0f;
-      if (barSteps != 0) {
-        barScale = (float)barRange / (float)barSteps;
-      }
-      int scaledMetricValue = (int)((float)tradeMetricValue * barScale);
-      barControl->SetBarMetric(scaledMetricValue, barRange);
-      return;
-    }
-
-    barControl->SetBarMetric(0, barRange);
-  }
-
-  if (greenControl != 0) {
-    greenControl->SetEnabled(0, 1);
-  }
-}
 
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TradeMovePanelContext* context,
                                                            int assertLine) {
@@ -1265,27 +765,3 @@ void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
 // TNumberedArrowButton functions moved to TNumberedArrowButton.cpp
 // TPlacard functions moved to TPlacard.cpp
 
-// FUNCTION: IMPERIALISM 0x0059a180
-void TTradeCluster::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag) {
-  TAmtBar* toolControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(0x746f6f6c));
-  if (toolControl == 0) {
-    FailNilPointerWithAssert(kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
-  }
-
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x73656173));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-  control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x79656172));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-  control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x74726561));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-  control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x74726565));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-}

@@ -24,3 +24,5 @@ void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, v
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void);
+undefined4 thunk_DestructTShipAndFreeIfOwned(void);
+undefined4 thunk_InitializeUiTextStyleDescriptor(void);

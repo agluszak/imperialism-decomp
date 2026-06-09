@@ -5,6 +5,7 @@
 #include "game/TControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/ui_widget_thunks.h"
 
 undefined4 ApplyHitRegionToClipState(void);
 void SnapshotHitRegionToClipCache(int* clipDescriptor);
@@ -49,6 +50,12 @@ typedef void* hwnd_t;
 
 const int kControlTagMove = 0x6d6f7665;
 const int kControlTagSell = 0x53656c6c;
+const int kControlTagAvai = 0x61766169;
+const int kControlTagCard = 0x63617264;
+const int kControlTagOffr = 0x6f666672;
+const int kControlTagGree = 0x67726565;
+const int kControlTagLeft = 0x6c656674;
+const int kControlTagRght = 0x72676874;
 const int kSummaryTagFood = 0x666f6f64;
 const int kSummaryTagPopu = 0x706f7075;
 const int kSummaryTagProf = 0x70726f66;
@@ -92,6 +99,14 @@ extern void CallControlActionSlot1E0(TControl* control);
 extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg, int eventExtra);
 extern char CallBoolSlot1DC(void* self);
 extern void FailNilPointerInUSmallViews(int line);
+
+// Underlying nil-pointer assert: report the (sourcePath, line) and bail. The
+// per-file wrappers (e.g. FailNilPointerInUSmallViews) forward through here.
+static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
+  GAME_FAIL_NIL_POINTER();
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath,
+                                                                                        line);
+}
 
 struct CityTradeProductionSlots {
   char pad_00[4];
