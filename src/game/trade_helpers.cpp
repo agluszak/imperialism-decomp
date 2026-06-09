@@ -1,6 +1,5 @@
 #include "game/trade_quickdraw.h"
 #include "game/GameAssert.h"
-#include "game/NationState.h"
 #include "game/UiRuntimeContext.h"
 
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
@@ -20,13 +19,4 @@ void FailNilPointerInUSmallViews(int line) {
 
 int QueryUiScreenModeRaw(UiRuntimeContext* runtimeContext) {
   return runtimeContext->QueryUiScreenModeSlot54();
-}
-
-NationState* GetNationStateBySlot(short slotId) {
-  NationState** ppNationStates = reinterpret_cast<NationState**>(kAddrGlobalNationStates);
-  return ppNationStates[slotId];
-}
-
-short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
-  return nationState->QueryNationMetricBySlot78(metricSlot);
 }

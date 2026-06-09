@@ -41,3 +41,6 @@ TGreatPower,0x00653938,0xa5,0x294,0x00402b0d,ReleaseAllTrackedObjectsFromList89C
 TGreatPower,0x00653938,0xa8,0x2a0,0x00403706,ApplyMinorNationCapabilityActionType6 (free fn),void,int,0x00403706,shared,body_unowned,entry 0x00403706 -> 0x004e2630; free function
 TGreatPower,0x00653938,0xa9,0x2a4,0x00406e3d,ApplyMinorNationCapabilityActionType4 (free fn),void,int,0x00406e3d,shared,body_unowned,entry 0x00406e3d -> 0x004e2720; free function
 TGreatPower,0x00653938,0xb3,0x2cc,0x00000000,CallSlotB3_Provisional,void,,0x0040360c,gp_null_autogp_impl,provisional,"slotB3 no-arg; TGreatPower slot is NULL, TAutoGreatPower entry 0x0040360c (autogp-only or tail-of-table)"
+TSecondaryNationState,0x00653c90,0x12,0x048,0x004071f3,SetDiplomacyStandingSlot48,void,"int,int",,,divergent,provisional,"Model B: secondary entry differs from TGreatPower 0x00406be0 at same offset"
+TSecondaryNationState,0x00653c90,0x17,0x05c,0x00407e3c,HasMinorStandingLinkSlot5C,char,int,,,shared,wired,"same entry as TGreatPower slot 0x5c (ReleaseDiplomacyTracked on GP — parallel offset, class-specific semantics)"
+TSecondaryNationState,0x00653c90,0x25,0x094,0x00405b0f,NotifyActionSlot94,void,"int,int",,,divergent,provisional,"Model B: secondary notify entry differs from TGreatPower 0x0040862a"

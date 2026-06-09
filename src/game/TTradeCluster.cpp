@@ -70,7 +70,7 @@ struct TradeBarControlLayout {
   short barSteps;
 };
 
-static __inline short QueryNationTradeCapacity(NationState* nationState) {
+static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
   return nationState->tradeCapacity;
 }
 
@@ -120,7 +120,7 @@ void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
   rightControl->SetState(0, 0);
 
   short activeNationSlot = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+  TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   if (activeNationState != 0 && QueryNationTradeCapacity(activeNationState) == 0) {
     leftControl->SetEnabled(0, 0);
     rightControl->SetEnabled(0, 0);
@@ -329,12 +329,12 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   offerControl->CaptureLayout(layoutCaptureF4, 1);
 
   short activeNationSlot = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+  TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   short tradeMetricAvailable = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
 
   if (tradeMetricAvailable != 0) {
     short activeNationSlotAgain = thunk_GetActiveNationId();
-    NationState* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
+    TGreatPower* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->SetEnabled(1, 0);
       if (controlTag == kTradeRowStateTag_67643020) {
@@ -380,7 +380,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
 // FUNCTION: IMPERIALISM 0x005882f0
 void TTradeCluster::ApplyMoveValue(int metricClampMax) {
   short activeNationSlot = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+  TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
   if (tradeMetricValue > metricClampMax) {
     tradeMetricValue = metricClampMax;

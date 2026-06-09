@@ -42,9 +42,9 @@ TIndustryAmtBar::~TIndustryAmtBar() {}
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   // ORIG_CALLCONV: __thiscall
-  NationState* nationState = reinterpret_cast<NationState**>(
+  TGreatPower* nationState = reinterpret_cast<TGreatPower**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
+  NationCityTradeState* cityState = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);

@@ -2571,14 +2571,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::ConstructNationStateBase_Vtbl653938
-// ghidra_proto void __thiscall ConstructNationStateBase_Vtbl653938(void)
-// FUNCTION: IMPERIALISM 0x004d89f0
-undefined4 ConstructNationStateBase_Vtbl653938(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004d8c20
 // ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At004d8c20(void)
 // FUNCTION: IMPERIALISM 0x004d8c20
@@ -3263,14 +3255,6 @@ undefined4 CreateTMinorInstance(void)
 // ghidra_proto void * __cdecl GetTMinorClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004e36f0
 undefined4 GetTMinorClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructSecondaryNationState
-// ghidra_proto void __cdecl ConstructSecondaryNationState(void)
-// FUNCTION: IMPERIALISM 0x004e3710
-undefined4 ConstructSecondaryNationState(void)
 {
   return 0;
 }

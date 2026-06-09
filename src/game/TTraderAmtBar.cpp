@@ -60,7 +60,7 @@ TTraderAmtBar::~TTraderAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(TDocument* document) {
-  NationState* nationState = GetActiveNationState();
+  TGreatPower* nationState = GetActiveNationState();
   int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;
@@ -99,7 +99,7 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
 short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
   short result = priorResult;
   if (requestedValue > 0) {
-    NationState* nationState = GetActiveNationState();
+    TGreatPower* nationState = GetActiveNationState();
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
       if ((int)requestedValue < (this->field38 / (int)tradeCapacity)) {

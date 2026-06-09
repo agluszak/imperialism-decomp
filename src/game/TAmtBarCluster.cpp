@@ -5,12 +5,12 @@
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
 
-struct NationState;
+struct TGreatPower;
 
 extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
-extern NationState* GetNationStateBySlot(short slot);
-extern short QueryNationMetricBySlot(NationState* state, short metricSlot);
+extern TGreatPower* GetNationStateBySlot(short slot);
+extern short QueryNationMetricBySlot(TGreatPower* state, short metricSlot);
 extern int QueryUiScreenModeRaw(UiRuntimeContext* context);
 extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId,
                                                         void* eventArg, int eventExtra);
@@ -60,7 +60,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
 
       int sellValue = sellControl->QueryValue();
       short activeNationSlot = thunk_GetActiveNationId();
-      NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+      TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
       short maxByNationMetric = 0;
       if (activeNationState != 0) {
         maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);
@@ -128,7 +128,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
     break;
   case 0x69: {
     short activeNationSlot = thunk_GetActiveNationId();
-    NationState* activeNationState = GetNationStateBySlot(activeNationSlot);
+    TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
     short maxByNationMetric = 0;
     if (activeNationState != 0) {
       maxByNationMetric = QueryNationMetricBySlot(activeNationState, metricSlotAt88);

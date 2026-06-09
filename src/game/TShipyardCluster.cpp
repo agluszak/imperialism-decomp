@@ -15,11 +15,11 @@
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
-  NationState* nationState = GetNationStateBySlot(slotId);
+  TGreatPower* nationState = GetNationStateBySlot(slotId);
   if (nationState == 0) {
     return 0;
   }
-  return nationState->cityState;
+  return nationState->GetCityState();
 }
 
 // FUNCTION: IMPERIALISM 0x0058a4d0

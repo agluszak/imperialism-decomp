@@ -200,41 +200,6 @@ static __inline void VCall_LocalizationTable_CallSlot44(void* object) {
   fn(object, 0);
 }
 
-// nation-state transition compatibility check; class=NationState; status=provisional
-static __inline int VCall_NationState_CheckTransitionSlot27C(void* object, int arg0, int arg1) {
-  typedef int (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x27C / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
-// notify nation-state alliance relation; class=NationState; status=provisional
-static __inline void VCall_NationState_NotifyAllianceSlot214(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x214 / 4)));
-  fn(object, 0, arg0);
-}
-
-// notify nation-state relation-code change; class=NationState; status=provisional
-static __inline void VCall_NationState_NotifyRelationCodeSlot2A8(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2A8 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// notify nation-state war relation reset; class=NationState; status=provisional
-static __inline void VCall_NationState_NotifyWarResetSlot290(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x290 / 4)));
-  fn(object, 0);
-}
-
-// nation-state propagate war transition; class=NationState; status=provisional
-static __inline int VCall_NationState_PropagateWarTransitionSlot280(void* object, int arg0, int arg1, int arg2) {
-  typedef int (__fastcall * Fn)(void*, int, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x280 / 4)));
-  return fn(object, 0, arg0, arg1, arg2);
-}
-
 // append/sort relationship candidate entry; class=TSortedByRelationshipList; status=provisional
 static __inline void VCall_RelationshipList_AddEntrySlot38(void* object, void* arg0) {
   typedef void (__fastcall * Fn)(void*, int, void*);
@@ -463,20 +428,6 @@ static __inline void VCall_Message_AppendWordSlot78(void* object, const void* ar
 static __inline void VCall_Message_WriteEntrySlotB4(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xB4 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// need slot assign; status=provisional
-static __inline void VCall_NationState_AssignNeedSlotFromSourceSlot19C(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x19C / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// nation state notify; status=provisional
-static __inline void VCall_NationState_NotifyActionSlot94(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
   fn(object, 0, arg0, arg1);
 }
 

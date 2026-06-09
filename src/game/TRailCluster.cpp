@@ -66,8 +66,9 @@ TRailCluster::TRailCluster() : TUberCluster() {
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex) {
   short activeNationId = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationId);
-  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
+  TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
+  NationCityTradeState* cityState =
+      activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
   int scenarioDescriptor = *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8);

@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-09 — NationState / TGreatPower class recovery (Model B)
+
+1. **Evidence** (`tmp_decomp/class_discovery/nationstate/`): vtable dumps for `0x653938`/`0x654088`/`0x653c90`; prefix comparison shows early divergence → **Model B** (separate `TGreatPower` + `TSecondaryNationState`, no shared `NationState` base).
+2. **Headers**: `NationState.h` → thin include shim; `TNationState.h` retains view structs only; `TGreatPower.h` gets diplomacy virtual names + field renames (`treasuryValue10`, `tradeCapacity`, `relationManager` at `0x894`); `TSecondaryNationState.h` gets `// VTABLE: 0x00653c90`.
+3. **Globals** (`diplomacy_globals.cpp/.h`): `g_apNationStates` → `TGreatPower*`; `g_apTerrainTypeDescriptorTable` → `TSecondaryNationState*`; `GetNationStateBySlot` / `QueryNationMetricBySlot` helpers.
+4. **Ctors**: promoted `0x004d89f0` `TGreatPower::TGreatPower` (EH + matrix zero-init); `0x004e3710` `TSecondaryNationState::TSecondaryNationState`; factory `0x004d8950` still invokes ctor via `thunk_ConstructNationStateBase_Vtbl653938` (abstract vtable slots). No `RefCountedObjectBase` inheritance — ctor uses transient ref vptr replacement, not extended prefix.
+5. **Trade/UI**: ~10 TUs migrated `NationState*` → `TGreatPower*`; city access via `GetCityState()` (`relationManager` at `0x894`). Removed 6 `VCall_NationState_*` facade rows (`99` wrappers).
+6. **Scores** (`just compare`): `0x4d89f0` 42.57%, `0x4d8cc0` 36.04%, `0x4e3710` 66.67%, `0x4d9160` missing (pairing). `just vtable-gate` pass; canaries below_floor=1 (`0x4e9ed0` 94.12%).
+
 ## 2026-06-09 — ScopedMapQuickDrawContext class recovery; CDC/CClientDC
 
 1. **Layout**: `ScopedMapQuickDrawContext` is now `{ CClientDC clientDc; TView* renderTarget; }` (`ASSERT_SIZE 0x18`) — replaces opaque `storage[6]`.

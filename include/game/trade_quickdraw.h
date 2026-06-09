@@ -72,8 +72,9 @@ static __inline void* ReadPointerAt(unsigned int address) {
 extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
 extern const int kAssertLineMoveBarInitNil;
-extern struct NationState* GetNationStateBySlot(short slot);
-extern short QueryNationMetricBySlot(struct NationState* state, short metricSlot);
+class TGreatPower;
+extern TGreatPower* GetNationStateBySlot(short slot);
+extern short QueryNationMetricBySlot(TGreatPower* state, short metricSlot);
 extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
 extern void FailNilPointerInUSmallViews(int line);
 
@@ -135,8 +136,8 @@ const unsigned int kAddrClassDescTRailAmtBar = 0x00662fe0;
 const unsigned int kAddrClassDescTShipAmtBar = 0x00663010; // Guessed based on pattern
 const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
-static __inline struct NationState* GetActiveNationState(void) {
-  return reinterpret_cast<struct NationState**>(
+static __inline TGreatPower* GetActiveNationState(void) {
+  return reinterpret_cast<TGreatPower**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
 }
 

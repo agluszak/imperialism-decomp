@@ -88,8 +88,9 @@ TIndustryCluster::TIndustryCluster()
 void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControls(int styleSeed) {
   short tagIndex = 0;
   short activeNationId = thunk_GetActiveNationId();
-  NationState* activeNationState = GetNationStateBySlot(activeNationId);
-  NationCityTradeState* cityState = activeNationState == 0 ? 0 : activeNationState->cityState;
+  TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
+  NationCityTradeState* cityState =
+      activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != this->controlTag) {

@@ -85,7 +85,7 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
     total += static_cast<short>(resourceWeight * relationWeight);
   }
 
-  this->diplomacyCounterA4 = static_cast<short>(total);
+  this->tradeCapacity = static_cast<short>(total);
   this->diplomacyCounterA2 = static_cast<short>(total);
   this->diplomacyCounterB0 = 0;
   this->budgetPoolDelta = 0;

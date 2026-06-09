@@ -1,5 +1,7 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
+#include "game/diplomacy_globals.h"
+#include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TView.h"
 #include "game/generated/vcall_facades.h"
@@ -90,7 +92,7 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
 
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh() {
-  NationState* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
   void* subObject = 0;
   if (nationState != 0) {
     subObject = *reinterpret_cast<void**>(reinterpret_cast<char*>(nationState) + 0x894);
