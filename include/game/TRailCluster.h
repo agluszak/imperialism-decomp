@@ -13,7 +13,7 @@ public:
   short selectedMetricStep;       // 0x8e
 
   TRailCluster();
-  virtual ~TRailCluster();
+  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value);
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);

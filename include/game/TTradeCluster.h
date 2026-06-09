@@ -13,6 +13,7 @@ public:
   short tradeMetricSlot; // 0x88
 
   TTradeCluster();
+  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   void InitializeTradeSellControlState(unsigned int styleSeed);
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);

@@ -163,15 +163,6 @@ void __fastcall thunk_HandleTradeArrowAutoRepeatTickAndDispatch(TAmtBar* self, i
   HandleTradeArrowAutoRepeatTickAndDispatch(self, 0, repeatState, arg8, argC, dispatchArg, arg14);
 }
 
-// FUNCTION: IMPERIALISM 0x004032fb
-void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TTradeCluster* self,
-                                                               int unusedEdx,
-                                                               unsigned char enabledFlag) {
-  (void)unusedEdx;
-  self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
-}
-
-
 void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert(kUSmallViewsCppPath, line);
 }
@@ -357,55 +348,6 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
 // FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}
 
-// FUNCTION: IMPERIALISM 0x00587010
-void* CreateTradeSellControlPanel(void) {
-  void* cluster = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x8c));
-  if (cluster != 0) {
-    new (cluster) TUberCluster();
-    *reinterpret_cast<void**>(cluster) =
-        reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x005870b0
-void __fastcall ConstructTradeSellControlPanel(void* self)
-
-{
-  new (self) TUberCluster();
-  *reinterpret_cast<void**>(self) =
-      reinterpret_cast<void*>(&PTR_thunk_GetTTradeClusterClassNamePointer_00665a70);
-}
-
-// FUNCTION: IMPERIALISM 0x005870e0
-void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
-                                              unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  reinterpret_cast<void(__fastcall*)(void*)>(thunk_DestructEngineerDialogBaseState)(self);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)self);
-  }
-  return self;
-}
-
-
-static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context,
-                                                           int assertLine) {
-  void* owner = context;
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagBar));
-  if (barControl == 0) {
-    FailNilPointerInUSmallViews(assertLine);
-  }
-
-  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
-  if (barLayout->auxValueA != 0) {
-    int ratioValue =
-        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->field34) /
-        (int)barLayout->auxValueA;
-    barControl->SetBarMetricRatio(ratioValue);
-  }
-}
-
 // GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
 // GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
 
@@ -436,81 +378,6 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
   }
 }
 
-
-// FUNCTION: IMPERIALISM 0x005899c0
-void TRailCluster::ApplyMoveValue(int value) {
-  reinterpret_cast<TUberCluster*>(reinterpret_cast<TRailCluster*>(this))->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
-}
-
-// GHIDRA_NAME UpdateTradeBarFromSelectedMetricRatio_A
-// GHIDRA_PROTO void __fastcall UpdateTradeBarFromSelectedMetricRatio_A(int * this)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes bar position from selected metric ratio and applies it to bar control.
-// GHIDRA_COMMENT_END
-/* Computes bar position from selected metric ratio and applies it to bar control. */
-
-// FUNCTION: IMPERIALISM 0x005899f0
-int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
-  int dragValue = (int)dragValuePtr;
-  TRailCluster* ctx = reinterpret_cast<TRailCluster*>(this);
-  // ORIG_CALLCONV: __thiscall
-  short step = ctx->selectedMetricStep;
-  int quantizedDragValue = ((((int)step / 2) + (int)(short)dragValue) / (int)step) * (int)step;
-  TAmtBar* selectedControl = ctx->selectedMetricControl;
-  short previousValue = ReadControlValueFieldPlus4(selectedControl);
-  if (selectedControl != 0) {
-    selectedControl->SetControlValue(quantizedDragValue);
-  }
-
-  if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
-    return 0;
-  }
-
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagMove));
-  if (moveControl == 0) {
-    FailNilPointerInUSmallViews(0xcf2);
-  }
-
-  moveControl->SetControlValueSlot1E4((int)ReadControlValueFieldPlus4(selectedControl), 0);
-
-  RECT moveBoundsRect;
-  RECT moveInvalidRect;
-  moveControl->QueryBounds(reinterpret_cast<int*>(&moveBoundsRect));
-  OffsetRect(&moveBoundsRect, ctx->ownerOffsetX, ctx->ownerOffsetY);
-  CopyRect(&moveInvalidRect, &moveBoundsRect);
-  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-      (int)&moveInvalidRect, 1);
-
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagBar));
-  if (barControl == 0) {
-    FailNilPointerInUSmallViews(0xcf9);
-  }
-
-  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
-  TAmtBar* barAmount = reinterpret_cast<TAmtBar*>(barControl);
-  float barScale = 9999.0f;
-  if (barLayout->auxValueA != 0) {
-    barScale = (float)barLayout->field34 / (float)barLayout->auxValueA;
-  }
-
-  if (ReadControlValueFieldPlus4(selectedControl) == selectedMetricValue) {
-    barAmount->auxValueB = 0x34;
-  } else {
-    barAmount->auxValueB = 0x3a;
-  }
-
-  int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
-  int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
-  barControl->SetBarMetric(scaledMetric, scaledRange);
-  reinterpret_cast<TUberCluster*>(ctx->ownerContext)->GetControlFlag(0, 0);
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00589d10
-int TRailCluster::GetControlFlag(int arg1, int arg2) {
-  UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
-  return 0;
-}
 
 #if defined(_MSC_VER)
 #pragma auto_inline(on)

@@ -42,7 +42,6 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 
 // SYNTHETIC: IMPERIALISM 0x0058a5c0
 // TShipyardCluster::`scalar deleting destructor'
-TShipyardCluster::~TShipyardCluster() {}
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {

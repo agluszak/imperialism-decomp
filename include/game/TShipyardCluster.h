@@ -13,7 +13,7 @@ public:
   short field_8e;
 
   TShipyardCluster();
-  virtual ~TShipyardCluster();
+  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value);
 

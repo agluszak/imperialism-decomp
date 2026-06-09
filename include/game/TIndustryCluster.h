@@ -13,8 +13,7 @@ public:
   short selectedMetricStep;       // 0x8e
 
   TIndustryCluster();
-  virtual ~TIndustryCluster();
-  // Scalar deleting destructor is compiler-generated (SYNTHETIC); see .cpp.
+  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value);
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
