@@ -587,14 +587,6 @@ undefined4 BuildNationActionOptionCardsFromRelationTable(void)
   return 0;
 }
 
-// ghidra_name TCountry::QueueInterNationEventRecordDeduped
-// ghidra_proto void __thiscall QueueInterNationEventRecordDeduped(InterNationEventCode eventCode, sdword nationA, sdword nationB, char isReplayBypass)
-// FUNCTION: IMPERIALISM 0x0055c9f0
-undefined4 QueueInterNationEventRecordDeduped(void)
-{
-  return 0;
-}
-
 // ghidra_name TSimMgr::QueueInterNationEventType11
 // ghidra_proto void __thiscall QueueInterNationEventType11(sdword arg1, sdword arg2, char isReplayBypass)
 // FUNCTION: IMPERIALISM 0x0055cd00

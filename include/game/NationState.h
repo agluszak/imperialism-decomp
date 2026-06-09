@@ -2,12 +2,8 @@
 
 struct NationCityTradeState; // defined in trade_quickdraw.h (trade-screen data layout)
 
-// Unified game NationState. Two translation units previously defined their own
-// local NationState (a virtual-dispatch view in diplomacy_state.cpp and a data
-// layout in trade_screen.cpp) inside anonymous namespaces to avoid an ODR
-// clash. They are the same game object, so model it once: the virtual slots
-// define the native vtable used by the diplomacy turn logic, and the data
-// fields (after the vptr at offset 0) carry the trade-screen state.
+// Unified game NationState: virtual slots for diplomacy dispatch and data fields
+// for trade-screen state share one layout in this header.
 
 struct NationState {
   virtual void ns_slot0() = 0;
@@ -187,9 +183,13 @@ struct NationState {
   virtual void ns_slot169() = 0;
   virtual void NotifyRelationCodeSlot2A8(int targetNation, int relationCode) = 0; // 170 (0x2A8)
 
-  // Data layout (trade screen). The C++ vptr occupies offset 0, matching the
-  // game object's vtable pointer; explicit fields follow.
-  char pad_04[0xa0];
+  // Data layout. The C++ vptr occupies offset 0; explicit fields follow.
+  char pad_04[0x0a];
+  short ownerNationSlot0e; // 0x0e — terrain owner; -1 unowned
+  int treasuryValue10;     // 0x10
+  char pad_14[0x8c];
+  unsigned char diplomacyEligibilityA0; // 0xa0
+  char pad_a1[3];
   short tradeCapacity; // 0xa4
   char pad_a6[0x7ee];
   NationCityTradeState* cityState; // 0x894

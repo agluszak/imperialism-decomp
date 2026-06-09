@@ -20,13 +20,7 @@ char g_pClassDescTUnitToolbarCluster = 0;
 char g_vtblTUnitToolbarCluster = 0;
 }
 
-struct ApplicationUiRootControllerState {
-  void* vftable;
-  char pad_04[0x20];
-  int screenModeAt24;
-};
-
-extern ApplicationUiRootControllerState* g_pApplicationUiRootController;
+#include "game/ApplicationUiRootController.h"
 
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DispatchPanelControlEvent(void);

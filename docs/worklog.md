@@ -1,5 +1,20 @@
 # Worklog
 
+## 2026-06-09 — eliminate trade_screen.cpp and diplomacy_state.cpp
+
+1. Deleted `src/game/trade_screen.cpp` and `src/game/diplomacy_state.cpp`.
+2. Trade migration:
+   - `src/game/trade_helpers.cpp` — `GetNationStateBySlot`, `FailNilPointerInUSmallViews`, `kTradeSellPropagationTags`, `kControlTagBar`.
+   - `TUberCluster::InitializeTradeMoveAndBarControls` (`0x00586d60`) with real `ApplyStyleDescriptor` / `SetStyleState` / `TView::vmethod_0055` dispatch.
+   - Orphan leaves `0x00586e50`/`0x00586ff0` → `TAmtBarCluster.cpp`; UI globals → `global_data_tables.cpp`.
+3. Diplomacy migration:
+   - All `TDiplomacyTurnStateManager` bodies → `src/game/TDiplomacyTurnStateManager.cpp` (~1056 lines).
+   - `src/game/diplomacy_globals.cpp` + `include/game/diplomacy_globals.h` for nation/diplomacy globals.
+   - `src/game/TCountry.cpp` + `include/game/TCountry.h` for event-queue thunk (`0x00406758`) and `QueueInterNationEventRecordDeduped` (`0x0055c9f0`).
+   - `include/game/TTurnEventQueue.h`, `TLocalizationRuntime::CallSlot44`, `NationState` fields `ownerNationSlot0e` / `treasuryValue10` / `diplomacyEligibilityA0`.
+4. Config: `function_ownership.csv` and `vtable_slots.csv` owner paths updated; `vtable_gate_baseline.csv` rows for both dump files removed.
+5. Gates: `just build` OK, `just vtable-gate` OK (10 files / 30 matches), `just compare-canaries` below_floor=0.
+
 ## 2026-06-08 (later) — cast cleanup, TradeScreenContext inheritance, UI vtable ground truth
 
 1. Scope: `src/game/trade_screen.cpp`, `src/game/TAmtBarCluster.cpp`, `config/symbols.csv`,

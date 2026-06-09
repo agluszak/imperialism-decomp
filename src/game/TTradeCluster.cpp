@@ -7,6 +7,9 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
+extern "C" char g_pClassDescTTradeCluster = 0;
+extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
+
 // TTradeCluster (VTABLE 0x665a70): the trade-screen sell/bid/offer cluster.
 // Owns the Sell/Bar/Bid/Offer child-control state machine for one trade row.
 
@@ -131,7 +134,7 @@ void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
     }
   }
 
-  InitializeTradeMoveAndBarControls(this, 0, styleSeed);
+  this->InitializeTradeMoveAndBarControls(styleSeed);
 }
 
 // Returns early if UI mode is outside trade range (>3); otherwise reports

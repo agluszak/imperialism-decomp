@@ -29,7 +29,7 @@ void* __cdecl GetTStatusButtonClassNamePointer(void) {
 // SYNTHETIC: IMPERIALISM 0x005863b0
 // TStatusButton::`scalar deleting destructor'
 
-extern void* g_pActiveCityDialogLegendSelectionOwner;
+extern "C" void* g_pActiveCityDialogLegendSelectionOwner;
 extern unsigned char g_bCityDialogLegendSelectionInitialized;
 
 const int kControlTagBack = 0x6261636b;

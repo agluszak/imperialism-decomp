@@ -10,7 +10,5 @@ src/game/TGreatPower.cpp|0|0|0|9|9
 src/game/TOneTimeAnimation.cpp|0|0|0|2|2
 src/game/TTransFocusAnimation.cpp|0|0|0|2|2
 src/game/TTwoPicSlider.cpp|0|0|0|2|2
-src/game/diplomacy_state.cpp|0|0|0|3|3
 src/game/map_quickdraw_overlay.cpp|0|0|0|6|6
 src/game/object_pool.cpp|0|5|0|0|5
-src/game/trade_screen.cpp|26|0|0|0|26

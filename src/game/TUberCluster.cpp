@@ -10,6 +10,8 @@
 
 #include "game/ui_widget_thunks.h"
 extern void FailNilPointerInUSmallViews(int line);
+extern const int kAssertLineMoveBarInitNil;
+undefined4 thunk_BuildUiTextStyleDescriptor(void);
 undefined4 thunk_DispatchPanelControlEvent(void);
 #include "game/TAmtBar.h"
 #include "game/ui_widget_thunks.h"
@@ -41,6 +43,26 @@ void TUberCluster::DoControlAction() {}
 void TUberCluster::SetTradeBidControlBitmap() {}
 void TUberCluster::SetTradeOfferControlBitmap() {}
 void TUberCluster::SetTradeOfferSecondaryBitmap() {}
+
+// FUNCTION: IMPERIALISM 0x00586d60
+void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
+  TAmtBar* moveControl =
+      reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  unsigned int styleDescriptor = styleSeed & 0xffff0000U;
+  if (moveControl != 0) {
+    reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(thunk_BuildUiTextStyleDescriptor)(
+        0, &styleDescriptor, 0xa, 0x2b67);
+    moveControl->ApplyStyleDescriptor(&styleDescriptor, 0);
+    moveControl->SetStyleState(-2, 0);
+  }
+
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  if (barControl == 0) {
+    FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
+  }
+  barControl->vmethod_0055(styleDescriptor);
+  this->thunk_NoOpUiLifecycleHook();
+}
 
 // FUNCTION: IMPERIALISM 0x005713c0
 TUberCluster* __cdecl CreateTUberClusterInstance(void) {

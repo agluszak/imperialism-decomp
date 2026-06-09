@@ -16,7 +16,7 @@
 
 #pragma optimize("y", on)
 
-extern "C" char g_pClassDescTShipAmtBar;
+extern "C" char g_pClassDescTShipAmtBar = 0;
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {

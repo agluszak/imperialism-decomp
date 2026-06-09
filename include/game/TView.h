@@ -86,7 +86,7 @@ public:
   virtual void vmethod_0052();
   virtual void vmethod_0053();
   virtual void vmethod_0054();
-  virtual void vmethod_0055();
+  virtual void vmethod_0055(unsigned int styleSeed = 0);
   virtual void vmethod_0056();
   virtual void RefreshControl();
   virtual void vmethod_0058();

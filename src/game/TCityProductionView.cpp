@@ -31,7 +31,7 @@ undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
 void __cdecl SnapshotHitRegionToClipCache(int* clipDescriptor);
 
-extern "C" void* g_apNationStates[7] = {0};
+#include "game/diplomacy_globals.h"
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};
@@ -90,7 +90,7 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
 
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh() {
-  void* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
+  NationState* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
   void* subObject = 0;
   if (nationState != 0) {
     subObject = *reinterpret_cast<void**>(reinterpret_cast<char*>(nationState) + 0x894);

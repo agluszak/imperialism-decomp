@@ -71,6 +71,7 @@ static __inline void* ReadPointerAt(unsigned int address) {
 
 extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
+extern const int kAssertLineMoveBarInitNil;
 extern struct NationState* GetNationStateBySlot(short slot);
 extern short QueryNationMetricBySlot(struct NationState* state, short metricSlot);
 extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);

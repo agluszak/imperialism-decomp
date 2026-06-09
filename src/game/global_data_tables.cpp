@@ -6,7 +6,7 @@
 // symbol by name (the C-linkage leading underscore is stripped), so the *values* here
 // are irrelevant to matching — only the symbol identity and its use site matter.
 //
-// Same mechanism as the g_p* pointer globals defined in diplomacy_state.cpp.
+// Same mechanism as the g_p* pointer globals in diplomacy_globals.cpp.
 // Symbol names below are taken verbatim from config/symbols.csv (including the few
 // historically double-named float tables) so the address mapping resolves.
 
@@ -47,9 +47,6 @@ class TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
 // GLOBAL: IMPERIALISM 0x006a4490
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 
-// GLOBAL: IMPERIALISM 0x006a44b0
-extern "C" unsigned short* g_pActiveCityDialogLegendSelectionOwner = 0;
-
 // GLOBAL: IMPERIALISM 0x698f58
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {0};
 
@@ -65,3 +62,14 @@ int g_nUiResourceEntryDefaultParam1 = 0;
 unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 } // extern "C"
+
+#include "game/ApplicationUiRootController.h"
+
+// GLOBAL: IMPERIALISM 0x006a18e0
+ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
+
+// GLOBAL: IMPERIALISM 0x006a44b0
+extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
+
+// GLOBAL: IMPERIALISM 0x006a44b4
+unsigned char g_bCityDialogLegendSelectionInitialized = 0;

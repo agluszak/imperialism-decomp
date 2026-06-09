@@ -99,7 +99,9 @@ void TView::vmethod_0051() {}
 void TView::vmethod_0052() {}
 void TView::vmethod_0053() {}
 void TView::vmethod_0054() {}
-void TView::vmethod_0055() {}
+void TView::vmethod_0055(unsigned int styleSeed) {
+  (void)styleSeed;
+}
 void TView::vmethod_0056() {}
 void TView::RefreshControl() {}
 void TView::vmethod_0058() {}

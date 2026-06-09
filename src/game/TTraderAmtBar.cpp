@@ -28,7 +28,8 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
 
-extern "C" char g_pClassDescTTraderAmtBar;
+extern "C" char g_pClassDescTTraderAmtBar = 0;
+extern "C" char g_vtblTTraderAmtBar = 0;
 
 const int kScenarioRecordTags[] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,

@@ -43,8 +43,9 @@ starting that kind of task.
    `just build`.
 6. Keep naming from Ghidra unless there is a concrete semantic reason to rename; never
    rename for style only.
-7. Keep class-owned functions in `src/game/<ClassName>.cpp`; non-class/global trade
-   code in `src/game/trade_screen.cpp`. Do not hand-edit generated files under
+7. Keep class-owned functions in `src/game/<ClassName>.cpp`; shared trade helpers in
+   `src/game/trade_helpers.cpp` and `include/game/trade_quickdraw.h`. Do not hand-edit
+   generated files under
    `src/ghidra_autogen/`, `src/autogen/stubs/`, or `include/ghidra_autogen/`.
 8. Promote repeated `this + offset` / `reinterpret_cast` access that maps to a stable
    class region into a typed class field (or typed view struct) instead of cast-helper

@@ -104,7 +104,7 @@ void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControl
       thunk_GetCityBuildingProductionValueBySlot)(
       cityState, *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52));
 
-  InitializeTradeMoveAndBarControls(this, 0, (unsigned int)styleSeed);
+  this->InitializeTradeMoveAndBarControls(styleSeed);
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(*reinterpret_cast<short*>(
                                          reinterpret_cast<char*>(selectedMetricRecord) + 4)),
                                      1);

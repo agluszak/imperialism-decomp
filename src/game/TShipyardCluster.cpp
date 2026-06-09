@@ -48,7 +48,7 @@ void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
   NationCityTradeState* cityState = GetNationCityStateBySlot(thunk_GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
-  InitializeTradeMoveAndBarControls(this);
+  this->InitializeTradeMoveAndBarControls();
   this->ApplyMoveValue(0);
 }
 

@@ -23,7 +23,7 @@ undefined4 thunk_RenderCivilianTargetLegendVariantB(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
-extern "C" unsigned short* g_pActiveCityDialogLegendSelectionOwner;
+extern "C" void* g_pActiveCityDialogLegendSelectionOwner;
 
 undefined4 InitializeUiTextStyleDescriptorAndApplyQuickDraw(void);
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);

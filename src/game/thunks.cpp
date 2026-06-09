@@ -134,6 +134,14 @@ undefined4 thunk_InitializeTradeMoveAndBarControls(void) {
   return 0;
 }
 
+undefined4 thunk_NoOpUiLifecycleHook(void) {
+  return 0;
+}
+
+undefined4 thunk_QueueInterNationEventRecordDeduped(void) {
+  return 0;
+}
+
 undefined4 thunk_RenderCivilianTargetLegendVariantA(void) {
   return 0;
 }

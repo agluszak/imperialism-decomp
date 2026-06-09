@@ -122,4 +122,4 @@ struct TDiplomacyTurnStateManager {
   void thunk_ApplyDiplomacyInterNationStatesForTurn();
 };
 
-extern "C" TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager;
+extern TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager;

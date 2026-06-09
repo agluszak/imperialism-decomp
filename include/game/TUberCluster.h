@@ -19,4 +19,6 @@ public:
   virtual void SetTradeBidControlBitmap();
   virtual void SetTradeOfferControlBitmap();
   virtual void SetTradeOfferSecondaryBitmap();
+
+  void InitializeTradeMoveAndBarControls(unsigned int styleSeed = 0);
 };
