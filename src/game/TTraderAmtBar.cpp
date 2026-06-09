@@ -152,3 +152,35 @@ void TTraderAmtBar::DrawAmt() {
     }
   }
 }
+
+const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
+
+// FUNCTION: IMPERIALISM 0x0058b4f0
+void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 4) != 0) {
+    reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
+        control);
+  }
+  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+
+  RECT srcRect;
+  srcRect.left = (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98);
+  srcRect.top = 0;
+  srcRect.right = srcRect.left + 0x40;
+  srcRect.bottom = 0x40;
+
+  RECT dstRect;
+  dstRect.left = 0;
+  dstRect.top = 2;
+  dstRect.right = 0x40;
+  dstRect.bottom = 0x42;
+
+  int strategicMapViewSystem = (int)ReadPointerAt(kAddrStrategicMapViewSystem);
+  int activeQuickDrawSurfaceContext = (int)ReadPointerAt(kAddrActiveQuickDrawSurfaceContext);
+  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, unsigned char, void*)>(
+      BlitRectWithOptionalTransparency)(
+      reinterpret_cast<void*>(*reinterpret_cast<int*>(strategicMapViewSystem + 0x66c) + 4),
+      reinterpret_cast<void*>(activeQuickDrawSurfaceContext + 4), &srcRect, &dstRect, 0x24, 0);
+
+  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+}

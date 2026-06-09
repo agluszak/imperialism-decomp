@@ -130,3 +130,33 @@ void TRailAmtBar::DrawAmt() {
     }
   }
 }
+
+undefined4 thunk_InvalidateCityDialogRectRegion(void);
+
+// FUNCTION: IMPERIALISM 0x0058a3b0
+void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, int unusedEdx,
+                                                             short selectedValue) {
+  (void)unusedEdx;
+  QuickDrawSurfaceGuard surface;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int boundsRect[4] = {0, 0, 0, 0};
+      control->QueryBounds(boundsRect);
+      control->vmethod_0078();
+
+      RECT invalidRect;
+      invalidRect.left = boundsRect[0];
+      invalidRect.top = boundsRect[1];
+      invalidRect.right =
+          boundsRect[0] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
+      invalidRect.bottom =
+          boundsRect[1] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
+          &invalidRect, 1);
+    }
+  }
+}

@@ -348,104 +348,13 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
 // FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}
 
-// GHIDRA_NAME TAmtBar::HandleTradeMoveStepCommand
-// GHIDRA_PROTO void __thiscall HandleTradeMoveStepCommand(void)
-
-// FUNCTION: IMPERIALISM 0x00589340
-
-// FUNCTION: IMPERIALISM 0x00589540
-void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
-  QuickDrawSurfaceGuard surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
-
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
-      int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
-      int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
-      int invalidRect[4] = {cachedX, cachedY, 0, 0};
-      control->vmethod_0078();
-      invalidRect[2] =
-          cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect[3] =
-          cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-          (int)invalidRect, 1);
-    }
-  }
-}
-
-
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
 
-#include "game/TAmtBar.h"
-#include "game/TIndustryAmtBar.h"
-#include "game/TRailAmtBar.h"
-#include "game/TShipAmtBar.h"
-
-// FUNCTION: IMPERIALISM 0x0058a3b0
-void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
-  QuickDrawSurfaceGuard surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
-
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
-      int boundsRect[4] = {0, 0, 0, 0};
-      control->QueryBounds(boundsRect);
-      control->vmethod_0078();
-
-      RECT invalidRect;
-      invalidRect.left = boundsRect[0];
-      invalidRect.top = boundsRect[1];
-      invalidRect.right =
-          boundsRect[0] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect.bottom =
-          boundsRect[1] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
-          &invalidRect, 1);
-    }
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x0058b4f0
-void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 4) != 0) {
-    reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
-        control);
-  }
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
-
-  RECT srcRect;
-  srcRect.left = (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98);
-  srcRect.top = 0;
-  srcRect.right = srcRect.left + 0x40;
-  srcRect.bottom = 0x40;
-
-  RECT dstRect;
-  dstRect.left = 0;
-  dstRect.top = 2;
-  dstRect.right = 0x40;
-  dstRect.bottom = 0x42;
-
-  int strategicMapViewSystem = (int)ReadPointerAt(kAddrStrategicMapViewSystem);
-  int activeQuickDrawSurfaceContext = (int)ReadPointerAt(kAddrActiveQuickDrawSurfaceContext);
-  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, unsigned char, void*)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(*reinterpret_cast<int*>(strategicMapViewSystem + 0x66c) + 4),
-      reinterpret_cast<void*>(activeQuickDrawSurfaceContext + 4), &srcRect, &dstRect, 0x24, 0);
-
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
-}
-
+// 0x00589340 (TIndustryAmtBar::DrawAmt) is unowned here; stub-generated.
+// RenderQuickDrawOverlayWithHitRegion variants moved to TIndustryAmtBar.cpp /
+// TRailAmtBar.cpp; BlitHintOverlayRectWithCtrlModifierPalette -> TTraderAmtBar.cpp.
 // TNumberedArrowButton functions moved to TNumberedArrowButton.cpp
 // TPlacard functions moved to TPlacard.cpp
 
