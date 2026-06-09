@@ -15,7 +15,7 @@ undefined4 thunk_CycleMapInteractionSelectionAfterHandledClick(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 
-struct TradeMoveStepCluster;
+struct TShipyardCluster;
 
 namespace {
 
@@ -46,7 +46,7 @@ struct ArmyCommandPayload {
 
 class RuntimeBridge {
 public:
-  static __inline void ConstructTUberClusterObject(TradeMoveStepCluster* self) {
+  static __inline void ConstructTUberClusterObject(TShipyardCluster* self) {
     new (self) TUberCluster();
   }
 };
@@ -108,7 +108,7 @@ ArmyToolbarState* __cdecl CreateTArmyToolbarInstance(void) {
   ArmyToolbarState* toolbar =
       reinterpret_cast<ArmyToolbarState*>(AllocateWithFallbackHandler(0x8c));
   if (toolbar != 0) {
-    RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
+    RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TShipyardCluster*>(toolbar));
     toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   }
   return toolbar;
@@ -121,7 +121,7 @@ void* __cdecl GetTArmyToolbarClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x0058dee0
 ArmyToolbarState* __fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState* toolbar) {
-  RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TradeMoveStepCluster*>(toolbar));
+  RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TShipyardCluster*>(toolbar));
   toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
   return toolbar;
 }

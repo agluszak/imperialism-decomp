@@ -154,31 +154,6 @@ void __fastcall OrphanCallChain_C1_I03_00588670(TAmtBar* control, int unusedEdx,
   control->InvokeSlot1A8();
 }
 
-// FUNCTION: IMPERIALISM 0x00588ff0
-void TAmtBar::HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra) {
-  // ORIG_CALLCONV: __thiscall
-  void* owner = this;
-  if (commandId == 100) {
-    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagMove));
-    if (moveControl == 0) {
-      GAME_FAIL_NIL_POINTER();
-    }
-    int moveValue = moveControl->QueryValue();
-    CallApplyMoveValueSlot1D0(owner, moveValue + 1);
-    return;
-  }
-  if (commandId != 0x65) {
-    ::HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
-    return;
-  }
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagMove));
-  if (moveControl == 0) {
-    GAME_FAIL_NIL_POINTER();
-  }
-  int moveValue = moveControl->QueryValue();
-  CallApplyMoveValueSlot1D0(owner, moveValue - 1);
-}
-
 // GHIDRA_NAME OrphanCallChain_C1_I06_005899c0
 // GHIDRA_PROTO undefined OrphanCallChain_C1_I06_005899c0()
 // GHIDRA_COMMENT_BEGIN

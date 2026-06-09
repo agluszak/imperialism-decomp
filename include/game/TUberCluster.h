@@ -5,6 +5,7 @@
 // VTABLE: IMPERIALISM 0x65f210
 class TUberCluster : public TCluster {
 public:
+  void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   TUberCluster();
   virtual ~TUberCluster();
 

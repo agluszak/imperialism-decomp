@@ -43,9 +43,6 @@ static __inline void ApplyRectClipRegion(int* rectBuffer) {
 static __inline void CallUiRuntimeSlot34(UiRuntimeContext* runtimeContext, int styleIndex) {
   runtimeContext->ApplyLegendSplitSlot34(styleIndex);
 }
-void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
-                                                 int eventExtra);
-
 typedef void* hwnd_t;
 
 const int kControlTagMove = 0x6d6f7665;
@@ -96,7 +93,6 @@ extern short QueryNationMetricBySlot(struct NationState* state, short metricSlot
 extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
 extern char CallControlFlagSlot1D8(TControl* control);
 extern void CallControlActionSlot1E0(TControl* control);
-extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg, int eventExtra);
 extern char CallBoolSlot1DC(void* self);
 extern void FailNilPointerInUSmallViews(int line);
 

@@ -1,3 +1,8 @@
+#include "game/ui_widget_thunks.h"
+extern void FailNilPointerInUSmallViews(int line);
+undefined4 thunk_DispatchPanelControlEvent(void);
+#include "game/TAmtBar.h"
+#include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
 #include "game/ui_widget_thunks.h"
 
@@ -32,4 +37,39 @@ TUberCluster* __cdecl CreateTUberClusterInstance(void) {
 // FUNCTION: IMPERIALISM 0x00571440
 void* __cdecl GetTUberClusterClassNamePointer(void) {
   return reinterpret_cast<void*>(0x0065e5b0);
+}
+
+// FUNCTION: IMPERIALISM 0x00586e70
+void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
+                                                             int eventExtra) {
+  // ORIG_CALLCONV: __thiscall
+  int normalizedCommand = commandId - 100;
+
+  if (normalizedCommand == 0) {
+    TControl* moveControl = this->ResolveControlByTag(0x6d6f7665); // kControlTagMove
+    if (moveControl == 0) {
+      FailNilPointerInUSmallViews(0x749); // kAssertLineMoveAdjustMove
+    }
+    short moveValue = reinterpret_cast<TAmtBar*>(moveControl)->QueryValue();
+
+    TControl* availableControl = this->ResolveControlByTag(0x61766169); // kControlTagAvai
+    if (availableControl == 0) {
+      FailNilPointerInUSmallViews(0x74d); // kAssertLineMoveAdjustAvai
+    }
+    short availableValue = (short)(reinterpret_cast<TAmtBar*>(availableControl)->QueryValue());
+    if (moveValue < availableValue) {
+      this->ApplyMoveValue(moveValue + 1);
+    }
+  } else if (normalizedCommand == 1) {
+    TControl* moveControl = this->ResolveControlByTag(0x6d6f7665); // kControlTagMove
+    if (moveControl == 0) {
+      FailNilPointerInUSmallViews(0x759); // kAssertLineMoveAdjustMoveMinus
+    }
+    int moveValue = reinterpret_cast<TAmtBar*>(moveControl)->QueryValue();
+    if ((short)moveValue != 0) {
+      this->ApplyMoveValue(moveValue - 1);
+    }
+  }
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
+      this, commandId, eventArg, eventExtra);
 }

@@ -13,29 +13,29 @@
    then initializes move/bar controls baseline. */
 
 void* __cdecl GetTShipyardClusterClassNamePointer(void);
-void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster, int unusedEdx,
+void __fastcall DestructTShipyardClusterMaybeFree(TShipyardCluster* cluster, int unusedEdx,
                                                   unsigned char freeSelfFlag);
 
 // FUNCTION: IMPERIALISM 0x0040153c
-void __cdecl thunk_DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* self,
+void __cdecl thunk_DestructTShipyardClusterMaybeFree(TShipyardCluster* self,
                                                      unsigned char freeSelfFlag) {
   DestructTShipyardClusterMaybeFree(self, 0, freeSelfFlag);
 }
 
 // FUNCTION: IMPERIALISM 0x00402c11
-void __fastcall thunk_SelectTradeSpecialCommodityAndInitializeControls(TradeMoveStepCluster* self) {
+void __fastcall thunk_SelectTradeSpecialCommodityAndInitializeControls(TShipyardCluster* self) {
   // ORIG_CALLCONV: __thiscall
   self->SelectTradeSpecialCommodityAndInitializeControls();
 }
 
 // FUNCTION: IMPERIALISM 0x004058a8
-void __fastcall thunk_RefreshTradeMoveBarAndTurnControl(TradeMoveStepCluster* self) {
+void __fastcall thunk_RefreshTradeMoveBarAndTurnControl(TShipyardCluster* self) {
   // ORIG_CALLCONV: __thiscall
   self->RefreshTradeMoveBarAndTurnControl();
 }
 
 // FUNCTION: IMPERIALISM 0x00406965
-void __fastcall thunk_HandleTradeMoveArrowControlEvent(TradeMoveStepCluster* self, int unusedEdx,
+void __fastcall thunk_HandleTradeMoveArrowControlEvent(TShipyardCluster* self, int unusedEdx,
                                                        int commandId, TAmtBar* sourceControl,
                                                        int eventExtra) {
   // ORIG_CALLCONV: __thiscall
@@ -49,9 +49,9 @@ void* __cdecl thunk_GetTShipyardClusterClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a4d0
-TradeMoveStepCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
-  TradeMoveStepCluster* cluster =
-      reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
+TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
+  TShipyardCluster* cluster =
+      reinterpret_cast<TShipyardCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
     new (cluster) TUberCluster();
     cluster->vftable = reinterpret_cast<void*>(kVtableTShipyardCluster);
@@ -66,8 +66,8 @@ void* __cdecl GetTShipyardClusterClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a590
-TradeMoveStepCluster* __fastcall
-ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster* cluster) {
+TShipyardCluster* __fastcall
+ConstructTradeMoveArrowControlPanel(TShipyardCluster* cluster) {
   new (cluster) TUberCluster();
   cluster->vftable = reinterpret_cast<void*>(kVtableTShipyardCluster);
   cluster->field_88 = 0;
@@ -75,7 +75,7 @@ ConstructTradeMoveArrowControlPanel(TradeMoveStepCluster* cluster) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a5c0
-void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster, int unusedEdx,
+void __fastcall DestructTShipyardClusterMaybeFree(TShipyardCluster* cluster, int unusedEdx,
                                                   unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
@@ -85,7 +85,7 @@ void __fastcall DestructTShipyardClusterMaybeFree(TradeMoveStepCluster* cluster,
 }
 
 // FUNCTION: IMPERIALISM 0x0058a610
-void TradeMoveStepCluster::SelectTradeSpecialCommodityAndInitializeControls() {
+void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
   // ORIG_CALLCONV: __thiscall
   NationCityTradeState* cityState = GetNationCityStateBySlot(thunk_GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
@@ -142,7 +142,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a940
-void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
+void TShipyardCluster::HandleTradeMoveArrowControlEvent(int commandId,
                                                             TAmtBar* sourceControl,
                                                             int eventExtra) {
   // ORIG_CALLCONV: __thiscall
@@ -157,7 +157,7 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
       return;
     }
     if (sourceControl->controlTag != kControlTagLeft) {
-      HandleTradeMoveControlAdjustment(this, commandId, sourceControl, eventExtra);
+      this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
       return;
     }
     TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
@@ -170,6 +170,6 @@ void TradeMoveStepCluster::HandleTradeMoveArrowControlEvent(int commandId,
       return;
     }
   } else {
-    HandleTradeMoveControlAdjustment(this, commandId, sourceControl, eventExtra);
+    this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
   }
 }

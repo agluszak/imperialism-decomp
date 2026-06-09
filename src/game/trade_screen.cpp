@@ -45,10 +45,6 @@ undefined4 thunk_InitializeTradeMoveAndBarControls(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
-void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
-                                                 int eventExtra);
-void __fastcall thunk_HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
-                                                       int eventExtra);
 undefined4 thunk_HandleCityDialogToggleCommandOrForward(void);
 undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
@@ -416,55 +412,7 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00586e70
-void HandleTradeMoveControlAdjustment(TRailCluster* ctx, int commandId, void* eventArg,
-                                                             int eventExtra) {
-  // ORIG_CALLCONV: __thiscall
-  int normalizedCommand = commandId - 100;
-  void*(__fastcall * resolveByTag)(void*, int) = reinterpret_cast<void*(__fastcall*)(void*, int)>(
-      (*reinterpret_cast<void***>(ctx))[0x94 / 4]);
 
-  if (normalizedCommand == 0) {
-    TAmtBar* moveControl =
-        reinterpret_cast<TAmtBar*>(resolveByTag(ctx, kControlTagMove));
-    if (moveControl == 0) {
-      FailNilPointerInUSmallViews(kAssertLineMoveAdjustMove);
-    }
-    short moveValue = moveControl->QueryValue();
-
-    TAmtBar* availableControl =
-        reinterpret_cast<TAmtBar*>(resolveByTag(ctx, kControlTagAvai));
-    if (availableControl == 0) {
-      FailNilPointerInUSmallViews(kAssertLineMoveAdjustAvai);
-    }
-    short availableValue = (short)availableControl->QueryValue();
-    if (moveValue < availableValue) {
-      reinterpret_cast<TUberCluster*>(ctx)->ApplyMoveValue(moveValue + 1);
-    }
-  } else if (normalizedCommand == 1) {
-    TAmtBar* moveControl =
-        reinterpret_cast<TAmtBar*>(resolveByTag(ctx, kControlTagMove));
-    if (moveControl == 0) {
-      FailNilPointerInUSmallViews(kAssertLineMoveAdjustMoveMinus);
-    }
-    int moveValue = moveControl->QueryValue();
-    if ((short)moveValue != 0) {
-      reinterpret_cast<TUberCluster*>(ctx)->ApplyMoveValue(moveValue - 1);
-    }
-  }
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      ctx, commandId, eventArg, eventExtra);
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("y", off)
-#endif
-
-void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg,
-                                                 int eventExtra) {
-  HandleTradeMoveControlAdjustment(reinterpret_cast<TRailCluster*>(context),
-      commandId, eventArg, eventExtra);
-}
 
 // FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}

@@ -174,9 +174,33 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
     return;
   }
   default:
-    HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
+    this->HandleTradeMoveControlAdjustment(commandId, eventArg, eventExtra);
     return;
   }
 
-  HandleTradeMoveControlAdjustment(this, commandId, eventArg, eventExtra);
+  this->HandleTradeMoveControlAdjustment(commandId, eventArg, eventExtra);
+}
+
+// FUNCTION: IMPERIALISM 0x00588ff0
+void TAmtBarCluster::HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra) {
+  // ORIG_CALLCONV: __thiscall
+  
+  if (commandId == 100) {
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+    if (moveControl == 0) {
+      GAME_FAIL_NIL_POINTER();
+    }    int moveValue = moveControl->QueryValue();
+    this->ApplyMoveValue(moveValue + 1);
+    return;
+  }
+  if (commandId != 0x65) {
+    this->HandleTradeMoveControlAdjustment(commandId, eventArg, eventExtra);
+    return;
+  }
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+  if (moveControl == 0) {
+    GAME_FAIL_NIL_POINTER();
+  }
+  int moveValue = moveControl->QueryValue();
+  this->ApplyMoveValue(moveValue - 1);
 }

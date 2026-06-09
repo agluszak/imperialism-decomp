@@ -19,7 +19,6 @@ public:
   void ApplyMoveValueSlot1D4NoCommit(int value);
   void UpdateTradeMoveControlsFromDrag(int arg1, int arg2);
   void UpdateTradeBarFromSelectedMetricRatio_B();
-  void HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra);
   void HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8, void* argC, void* dispatchArg, void* arg14);
 
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);

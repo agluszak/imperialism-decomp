@@ -35,9 +35,9 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) 
 }
 
 // FUNCTION: IMPERIALISM 0x00588a30
-TradeMoveStepCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
-  TradeMoveStepCluster* cluster =
-      reinterpret_cast<TradeMoveStepCluster*>(AllocateWithFallbackHandler(0x90));
+TShipyardCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
+  TShipyardCluster* cluster =
+      reinterpret_cast<TShipyardCluster*>(AllocateWithFallbackHandler(0x90));
   if (cluster != 0) {
     new (cluster) TUberCluster();
     cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
@@ -62,7 +62,7 @@ void* __cdecl GetTIndustryClusterClassNamePointer(void) {
 // GHIDRA_PROTO void __cdecl ConstructTradeMoveStepControlPanel(void)
 
 // FUNCTION: IMPERIALISM 0x00588af0
-void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster) {
+void __fastcall ConstructTradeMoveStepControlPanel(TShipyardCluster* cluster) {
   new (cluster) TUberCluster();
   cluster->vftable = reinterpret_cast<void*>(kVtableTIndustryCluster);
   cluster->field_88 = 0;
@@ -72,7 +72,7 @@ void __fastcall ConstructTradeMoveStepControlPanel(TradeMoveStepCluster* cluster
 // GHIDRA_PROTO void __cdecl DestructTIndustryClusterMaybeFree(void)
 
 // FUNCTION: IMPERIALISM 0x00588b20
-void __fastcall DestructTIndustryClusterMaybeFree(TradeMoveStepCluster* cluster, int unusedEdx,
+void __fastcall DestructTIndustryClusterMaybeFree(TShipyardCluster* cluster, int unusedEdx,
                                                   unsigned char freeSelfFlag) {
   (void)unusedEdx;
   thunk_DestructEngineerDialogBaseState();
