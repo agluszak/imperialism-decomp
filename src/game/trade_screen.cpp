@@ -514,7 +514,7 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
     }
     short availableValue = (short)availableControl->QueryValue();
     if (moveValue < availableValue) {
-      reinterpret_cast<TCluster*>(this)->ApplyMoveValue(moveValue + 1);
+      reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(moveValue + 1);
     }
   } else if (normalizedCommand == 1) {
     TAmtBar* moveControl =
@@ -524,7 +524,7 @@ void TradeMovePanelContext::HandleTradeMoveControlAdjustment(int commandId, void
     }
     int moveValue = moveControl->QueryValue();
     if ((short)moveValue != 0) {
-      reinterpret_cast<TCluster*>(this)->ApplyMoveValue(moveValue - 1);
+      reinterpret_cast<TUberCluster*>(this)->ApplyMoveValue(moveValue - 1);
     }
   }
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(

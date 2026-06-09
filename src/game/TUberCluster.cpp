@@ -9,6 +9,16 @@ TUberCluster::TUberCluster() : TCluster() {}
 // FUNCTION: IMPERIALISM 0x00571490
 TUberCluster::~TUberCluster() {}
 
+void TUberCluster::vmethod_0115() {}
+void TUberCluster::ApplyMoveValue(int value) {}
+void TUberCluster::NotifyControlSelectionChange(void* boundEntry) {}
+char TUberCluster::GetControlFlag() { return 0; }
+char TUberCluster::GetBoolSlot1DC() { return 0; }
+void TUberCluster::DoControlAction() {}
+void TUberCluster::SetTradeBidControlBitmap() {}
+void TUberCluster::SetTradeOfferControlBitmap() {}
+void TUberCluster::SetTradeOfferSecondaryBitmap() {}
+
 // FUNCTION: IMPERIALISM 0x005713c0
 TUberCluster* __cdecl CreateTUberClusterInstance(void) {
   TUberCluster* cluster =

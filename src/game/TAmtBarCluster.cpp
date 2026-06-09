@@ -110,8 +110,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && reinterpret_cast<TCluster*>(rowControl)->GetControlFlag() == '\0') {
-          reinterpret_cast<TCluster*>(rowControl)->DoControlAction();
+        if (rowControl != 0 && reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
         }
       }
       return;
@@ -124,8 +124,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && reinterpret_cast<TCluster*>(rowControl)->GetControlFlag() == '\0') {
-          reinterpret_cast<TCluster*>(rowControl)->DoControlAction();
+        if (rowControl != 0 && reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
         }
       }
       return;

@@ -18,9 +18,5 @@ void TCluster::DispatchPanelControlEvent(int eventClass, void* eventPayload, int
       this, 0, eventClass, eventPayload, eventFlags);
 }
 
-void TCluster::vmethod_0115() {}
-void TCluster::ApplyMoveValue(int value) {}
-void TCluster::NotifyControlSelectionChange(void* boundEntry) {}
-char TCluster::GetControlFlag() { return 0; }
-char TCluster::GetBoolSlot1DC() { return 0; }
-void TCluster::DoControlAction() {}
+int TCluster::GetField84() { return this->field84; }
+void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {}

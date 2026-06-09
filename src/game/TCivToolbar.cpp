@@ -3,6 +3,7 @@
 
 #include "decomp_types.h"
 #include "game/TCivToolbar.h"
+#include "game/TUberCluster.h"
 #include "game/TCivDescription.h"
 #include "game/TCivilianOrderState.h"
 #include "game/TSelectedCivilianOrderState.h"
@@ -98,7 +99,7 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivilianOrderState* s
   if (selectedOrder == 0) {
     unitControl->SetEnabled(0, 1);
   } else {
-    unitControl->SetControlClassAndRefresh(this->civilianClassId + 0x438, 1);
+    reinterpret_cast<TCluster*>(unitControl)->SetControlClassAndRefresh(this->civilianClassId + 0x438, 1);
     unitControl->SetEnabled(1, 1);
   }
 
@@ -155,7 +156,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     GAME_ASSERT(stackButton != 0, 5585);
-    reinterpret_cast<TCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
+    reinterpret_cast<TUberCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
     stackButton->SetEnabled(reinterpret_cast<TCivilianOrderState*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
@@ -166,7 +167,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   while (slotIndex < 6) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     GAME_ASSERT(stackButton != 0, 5585);
-    reinterpret_cast<TCluster*>(stackButton)->NotifyControlSelectionChange(0);
+    reinterpret_cast<TUberCluster*>(stackButton)->NotifyControlSelectionChange(0);
     slotIndex = slotIndex + 1;
   }
 
@@ -174,7 +175,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   if (selectedStackButton != 0) {
     selectedSlotTag = selectedStackButton->selectedControlTagOrState1c;
   }
-  this->SetControlClassAndRefresh(selectedSlotTag, 0);
+  reinterpret_cast<TCluster*>(this)->SetControlClassAndRefresh(selectedSlotTag, 0);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
   stackButton = this->ResolveControlByTag(0x64666e64);

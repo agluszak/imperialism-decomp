@@ -11,11 +11,7 @@ public:
 
   void DispatchPanelControlEvent(int eventClass, void* eventPayload, int eventFlags);
 
-  // Slots 0x1CC - 0x1E0
-  virtual void vmethod_0115();
-  virtual void ApplyMoveValue(int value);
-  virtual void NotifyControlSelectionChange(void* boundEntry);
-  virtual char GetControlFlag();
-  virtual char GetBoolSlot1DC();
-  virtual void DoControlAction();
+  // Slots 0x1C4 - 0x1C8 (0x71, 0x72)
+  virtual int GetField84();
+  virtual void SetControlClassAndRefresh(int classState, int refreshFlag);
 };

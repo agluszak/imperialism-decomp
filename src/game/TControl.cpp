@@ -36,7 +36,4 @@ void TControl::vmethod_0108() {}
 void TControl::vmethod_0109() {}
 void TControl::vmethod_0110() {}
 char TControl::GetBoolSlot1BC() { return 0; }
-void TControl::vmethod_0112() {}
-void TControl::vmethod_0113() {}
-void TControl::SetControlClassAndRefresh(int classState, int refreshFlag) {}
-
+  void TControl::vmethod_0112() {}
