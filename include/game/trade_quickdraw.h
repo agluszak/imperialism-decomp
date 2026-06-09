@@ -99,6 +99,30 @@ struct CityTradeScenarioDescriptor {
   short extraAt1E;
 };
 
+
+struct TradeMoveControlState {
+  void *vftable;
+  char pad_04[0x1c];
+  void *ownerContext;
+  char pad_24[0x10];
+  int barStepsRaw;
+  int barRangeRaw;
+
+  void ClampAndApplyTradeMoveValue(int* requestedValuePtr);
+};
+
+struct TradeAmountBarLayout {
+  void *vftable;
+  char pad_04[0x1c];
+  void *ownerContext;
+};
+
+struct TradeMovePanelContext {
+  char pad_00[0x10];
+  class TAmtBar* selectedMetricControl;
+};
+
+
 struct NationCityTradeState {
   char pad_00[0xe4];
   struct TradeCommodityMetricRecord* tradeCommodityRecordPtrs[32];

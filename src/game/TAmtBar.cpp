@@ -1,3 +1,9 @@
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
+#include "game/TTradeCluster.h"
+#include "game/NationState.h"
+
 // Included by src/game/trade_screen.cpp.
 // Contains trade-screen core logic functions (address-ordered).
 

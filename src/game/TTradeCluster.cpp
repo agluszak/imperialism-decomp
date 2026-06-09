@@ -1,3 +1,12 @@
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
+#include "game/ui_widget_thunks.h"
+#include "game/win_rect.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include <new>
+
 // TTradeCluster (VTABLE 0x665a70): the trade-screen sell/bid/offer cluster.
 // Owns the Sell/Bar/Bid/Offer child-control state machine for one trade row.
 

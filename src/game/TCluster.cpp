@@ -1,3 +1,16 @@
+#include "game/TAmtBar.h"
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
+#include "game/TTradeCluster.h"
+#include "game/trade_quickdraw.h"
+#include "game/NationState.h"
+#include "game/ui_widget_thunks.h"
+#include "game/win_rect.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+#include <new>
+
 #include "game/TCluster.h"
 
 // FUNCTION: IMPERIALISM 0x00491400

@@ -1,3 +1,13 @@
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
+#include "game/TTradeCluster.h"
+#include "game/trade_quickdraw.h"
+#include "game/NationState.h"
+#include "game/win_rect.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+
 #include "game/ui_widget_thunks.h"
 extern void FailNilPointerInUSmallViews(int line);
 undefined4 thunk_DispatchPanelControlEvent(void);

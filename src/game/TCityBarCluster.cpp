@@ -1,3 +1,14 @@
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
+#include "game/TTradeCluster.h"
+#include "game/trade_quickdraw.h"
+#include "game/NationState.h"
+#include "game/ui_widget_thunks.h"
+#include "game/win_rect.h"
+#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_guards.h"
+
 #include "game/TAmtBar.h"
 #include "game/TCityBarCluster.h"
 #include "game/GameAssert.h"
@@ -10,9 +21,6 @@ char g_vtblTCityBarCluster = 0;
 
 undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 
-static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath, line);
-}
 
 static __inline void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert("Z:\\src\\USmallViews.cpp", line);

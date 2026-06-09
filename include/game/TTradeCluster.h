@@ -1,3 +1,4 @@
+#include "compat.h"
 #pragma once
 
 #include "game/TUberCluster.h"

@@ -6,7 +6,9 @@
 struct TradeCommodityMetricRecord {
   void* vftable;
   short controlValue;
-  char pad_06[0x4c];
+  short shortAt6;
+  short buyQuantityStepRaw;
+  char pad_0a[0x48];
   short buildingSlot;
 
   short QueryStepValue() {

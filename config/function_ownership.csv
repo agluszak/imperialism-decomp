@@ -616,9 +616,9 @@ address|target_cpp|ownership|note
 586920|src/game/TProductionCluster.cpp|manual|marker_sync
 586970|src/game/TProductionCluster.cpp|manual|marker_sync
 5869c0|src/game/TProductionCluster.cpp|manual|marker_sync
-586a60|src/game/trade_screen.cpp|manual|marker_sync
-586a80|src/game/trade_screen.cpp|manual|marker_sync
-586ab0|src/game/trade_screen.cpp|manual|marker_sync
+586a60|src/game/TProductionCluster.cpp|manual|marker_sync
+586a80|src/game/TProductionCluster.cpp|manual|marker_sync
+586ab0|src/game/TProductionCluster.cpp|manual|marker_sync
 586ad0|src/game/TClosePicture.cpp|manual|marker_sync
 586b50|src/game/TClosePicture.cpp|manual|marker_sync
 586b70|src/game/TClosePicture.cpp|manual|marker_sync
@@ -630,7 +630,7 @@ address|target_cpp|ownership|note
 586d10|src/game/TAmtBarCluster.cpp|manual|marker_sync
 586d60|src/game/trade_screen.cpp|manual|marker_sync
 586e50|src/game/trade_screen.cpp|manual|marker_sync
-586e70|src/game/trade_screen.cpp|manual|marker_sync
+586e70|src/game/TUberCluster.cpp|manual|marker_sync
 586ff0|src/game/trade_screen.cpp|manual|marker_sync
 587010|src/game/trade_screen.cpp|manual|marker_sync
 587090|src/game/TTradeCluster.cpp|manual|marker_sync
@@ -664,7 +664,7 @@ address|target_cpp|ownership|note
 588c30|src/game/TIndustryCluster.cpp|manual|marker_sync
 588c60|src/game/TIndustryCluster.cpp|manual|marker_sync
 588f60|src/game/TIndustryCluster.cpp|manual|marker_sync
-588ff0|src/game/TAmtBar.cpp|manual|marker_sync
+588ff0|src/game/TAmtBarCluster.cpp|manual|marker_sync
 589110|src/game/TIndustryAmtBar.cpp|manual|marker_sync
 5891b0|src/game/TIndustryAmtBar.cpp|manual|marker_sync
 5891d0|src/game/TIndustryAmtBar.cpp|manual|marker_sync

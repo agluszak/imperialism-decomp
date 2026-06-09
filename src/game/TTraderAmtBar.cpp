@@ -1,3 +1,8 @@
+#include "game/TIndustryCluster.h"
+#include "game/TRailCluster.h"
+#include "game/TShipyardCluster.h"
+#include "game/TTradeCluster.h"
+
 #include "game/TAmtBar.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"

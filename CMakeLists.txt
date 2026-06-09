@@ -15,106 +15,13 @@ set(
     "Comma-separated extra MSVC linker flags for RelWithDebInfo matching experiments"
 )
 
+file(GLOB IMPERIALISM_GAME_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game/*.cpp"
+)
+
 add_executable(Imperialism
     src/main.cpp
-    src/game/global_data_tables.cpp
-    src/game/config.cpp
-    src/game/list_utils.cpp
-    src/game/input_state.cpp
-    src/game/list_box.cpp
-    src/game/mfc_helpers.cpp
-    src/game/object_pool.cpp
-    src/game/CString.cpp
-    src/game/sprite.cpp
-    src/game/quickdraw_surface.cpp
-    src/game/map_quickdraw_overlay.cpp
-    src/game/TFocusAnimation.cpp
-    src/game/TOneTimeAnimation.cpp
-    src/game/TTransFocusAnimation.cpp
-    src/game/TTwoPicSlider.cpp
-    src/game/TCityProductionView.cpp
-    src/game/TDiplomacyMapView.cpp
-    src/game/TDiplomacyTurnStateManager.cpp
-    src/game/diplomacy_state.cpp
-    src/game/trade_screen.cpp
-    src/game/TTradeCluster.cpp
-  src/game/TAmtBar.cpp
-  src/game/TTraderAmtBar.cpp
-  src/game/TIndustryAmtBar.cpp
-  src/game/TRailAmtBar.cpp
-  src/game/TShipAmtBar.cpp
-    src/game/TTraderAmtBar.cpp
-    src/game/ui_widget_wrappers.cpp
-    src/game/quickdraw_guards.cpp
-    src/game/TCivilianButton.cpp
-    src/game/THQButton.cpp
-    src/game/TPictureResourceEntryBase.cpp
-    src/game/TPictureButton.cpp
-    src/game/TClosePicture.cpp
-    src/game/T2PictureButton.cpp
-    src/game/TAlwaysPictureButton.cpp
-    src/game/TToggleButton.cpp
-    src/game/T2PictToggleButton.cpp
-    src/game/TBoycottButton.cpp
-    src/game/TRadioPictureButton.cpp
-    src/game/TButton.cpp
-    src/game/TStatusButton.cpp
-    src/game/TPlacard.cpp
-    src/game/TArmyPlacard.cpp
-    src/game/TNumberedArrowButton.cpp
-  src/game/TStaticText.cpp
-    src/game/TCombatReportView.cpp
-    src/game/TArmyToolbar.cpp
-    src/game/TStratReportView.cpp
-    src/game/TCluster.cpp
-    src/game/TUberCluster.cpp
-    src/game/TProductionCluster.cpp
-  src/game/TUnitToolbarCluster.cpp
-  src/game/TCityBarCluster.cpp
-  src/game/TAmtBarCluster.cpp
-    src/game/TEngineerDialog.cpp
-    src/game/TCivToolbar.cpp
-    src/game/TCivilianOrderState.cpp
-    src/game/TCivDescription.cpp
-    src/game/TArmyInfoView.cpp
-    src/game/TCivReport.cpp
-    src/game/TTransportPicture.cpp
-    src/game/TWarningView.cpp
-    src/game/TSoundPlayer.cpp
-    src/game/TView.cpp
-    src/game/TControl.cpp
-    src/game/ui_linker_artifacts.cpp
-    src/game/TCapacityOrder.cpp
-    src/game/TGreatPower.cpp
-    src/game/TUnitOrderState.cpp
-    src/game/TCivWorkOrderState.cpp
-    src/game/TMilitaryUnitOrderState.cpp
-    src/game/TAdmiral.cpp
-    src/game/TAutoGreatPower.cpp
-    src/game/TIndexAndRankList.cpp
-    src/game/RefCountedObjectBase.cpp
-    src/game/TPtrList.cpp
-    src/game/TList.cpp
-    src/game/TTextList.cpp
-    src/game/TSortedList.cpp
-    src/game/TSortedPtrList.cpp
-    src/game/TSortedByRelationshipList.cpp
-    src/game/TSortByPriceList.cpp
-    src/game/TCommand.cpp
-    src/game/TNextTradeCommand.cpp
-    src/game/TFileStream.cpp
-    src/game/TMinister.cpp
-    src/game/TCountingStream.cpp
-    src/game/THandleStream.cpp
-    src/game/CDocument.cpp
-    src/game/CArchive.cpp
-    src/game/CMapPtrToPtr.cpp
-    src/game/CObject.cpp
-    src/game/CRuntimeClass.cpp
-    src/game/CPtrArray.cpp
-    src/game/CPtrList.cpp
-    src/game/thunks.cpp
-    src/game/noop_slots.cpp
+    ${IMPERIALISM_GAME_SOURCES}
 )
 
 file(
