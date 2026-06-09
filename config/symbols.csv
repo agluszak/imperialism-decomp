@@ -6671,7 +6671,7 @@ address|name|size|type|prototype
 4e3660|TMinor::CreateTMinorInstance|108|function|void * __cdecl CreateTMinorInstance(void)
 4e36f0|TMinor::GetTMinorClassNamePointer|6|function|void * __cdecl GetTMinorClassNamePointer(void)
 4e3710|TMinor::TMinor|88|function|void __thiscall TMinor::TMinor(void)
-4e3790|TMinor::DestructTMinorAndMaybeFree|30|function|void * __thiscall DestructTMinorAndMaybeFree(byte freeSelfFlag)
+4e3790|TMinor::`scalar deleting destructor'|30|function|void * __thiscall `scalar deleting destructor'(byte freeSelfFlag)
 4e37c0|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0|80|function|void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0(void)
 4e3830|InitializeSecondaryNationStateAndSelectHomeTile|1888|function|void __fastcall InitializeSecondaryNationStateAndSelectHomeTile(int ecxArg, int arg1)
 4e41c0|TCountry::DeserializeDiplomacyNationStateFromStream|360|function|void __thiscall DeserializeDiplomacyNationStateFromStream(int arg1)

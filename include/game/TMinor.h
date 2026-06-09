@@ -16,9 +16,6 @@ public:
   static void* GetTMinorClassNamePointer();
   static void* thunk_GetTMinorClassNamePointer_At00406ee7(void);
 
-  void* DestructTMinorAndMaybeFree(unsigned char freeSelfFlag);
-  void* thunk_DestructTMinorAndMaybeFree_At00406988(unsigned char freeSelfFlag);
-
   virtual void* GetClassDescPointerSlot00(void);
   TMINOR_VTABLE_SLOT(01);
   TMINOR_VTABLE_SLOT(02);

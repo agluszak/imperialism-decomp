@@ -1691,6 +1691,14 @@ undefined4 thunk_WrapperFor_CopyCityDialogStateFromSource_At004918a0(void)
   return 0;
 }
 
+// ghidra_name TMinor::thunk_DestructTMinorAndMaybeFree_At00406988
+// ghidra_proto void * __thiscall thunk_DestructTMinorAndMaybeFree_At00406988(byte freeSelfFlag)
+// FUNCTION: IMPERIALISM 0x00406988
+undefined4 thunk_DestructTMinorAndMaybeFree_At00406988(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_RebuildMapOrderEntryChildren
 // ghidra_proto void __cdecl thunk_RebuildMapOrderEntryChildren(void)
 // FUNCTION: IMPERIALISM 0x0040699c

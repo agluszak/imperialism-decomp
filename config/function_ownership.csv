@@ -65,7 +65,6 @@ address|target_cpp|ownership|note
 406758|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 406915|src/game/TGreatPower.cpp|manual|marker_sync
 406965|src/game/TShipyardCluster.cpp|manual|marker_sync
-406988|src/game/TMinor.cpp|manual|marker_sync
 406a46|src/game/TGreatPower.cpp|manual|marker_sync
 406aaf|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 406b2c|src/game/TGreatPower.cpp|manual|marker_sync

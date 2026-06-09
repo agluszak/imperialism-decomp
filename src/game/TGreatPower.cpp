@@ -3401,9 +3401,8 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         int majorNation = 0;
         while (majorNation < 7) {
           if (majorNation != this->nationSlot) {
-            short relationValue =
-                g_pDiplomacyTurnStateManager
-                    ->relationStandingScoreMatrix79c[(targetIndex) * 0x17 + (majorNation)];
+            short relationValue = g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c
+                                                          [majorNation * 0x17 + targetIndex];
             if (relationValue > kInfluenceAlertThreshold) {
               shouldDispatchAlert = true;
               break;
