@@ -9,7 +9,6 @@
 
 // UI wrapper class quads extracted from trade_screen.
 
-
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/win_rect.h"
@@ -85,4 +84,3 @@ void operator delete(void* p) {
   extern void FreeHeapBufferIfNotNull(unsigned int);
   FreeHeapBufferIfNotNull((unsigned int)p);
 }
-

@@ -27,12 +27,14 @@ TProductionCluster::TProductionCluster()
 TProductionCluster::~TProductionCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586a60
-void TProductionCluster::ApplyMoveValue(int value) { field8c = value; }
+void TProductionCluster::ApplyMoveValue(int value) {
+  field8c = value;
+}
 
 // FUNCTION: IMPERIALISM 0x00586ab0
-int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) { 
-  field8e = (int)boundEntry; 
-  return 0; 
+int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
+  field8e = (int)boundEntry;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00586a80
@@ -55,8 +57,8 @@ void TProductionCluster::HandleValuePanelSplitArrowCommand(int commandId, void* 
 
 // FUNCTION: IMPERIALISM 0x00586840
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
-  TProductionCluster* cluster =
-      reinterpret_cast<TProductionCluster*>(AllocateWithFallbackHandler(sizeof(TProductionCluster)));
+  TProductionCluster* cluster = reinterpret_cast<TProductionCluster*>(
+      AllocateWithFallbackHandler(sizeof(TProductionCluster)));
   if (cluster != 0) {
     new (cluster) TProductionCluster();
   }

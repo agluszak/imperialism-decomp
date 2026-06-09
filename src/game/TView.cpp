@@ -20,9 +20,9 @@
 // annotation owns it.
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : field10(0x7fffffff), field14(0), field18(0), ownerContext(0), field2c(0), field30(0), field3c(0),
-      field44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), field50(0), field54(1),
-      sharedStringRef(), field5c(0) {}
+    : field10(0x7fffffff), field14(0), field18(0), ownerContext(0), field2c(0), field30(0),
+      field3c(0), field44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), field50(0),
+      field54(1), sharedStringRef(), field5c(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
@@ -44,9 +44,13 @@ void TView::vmethod_0006() {}
 void TView::CallVoidSlot1C() {}
 void TView::vmethod_0008() {}
 void TView::vmethod_0009() {}
-char TView::GetBoolSlot28() { return 0; }
+char TView::GetBoolSlot28() {
+  return 0;
+}
 void TView::SetControlValue(int value) {}
-int TView::QueryStepValue() { return 0; }
+int TView::QueryStepValue() {
+  return 0;
+}
 void TView::vmethod_0013() {}
 void TView::vmethod_0014() {}
 void TView::vmethod_0015() {}
@@ -56,7 +60,9 @@ void TView::ForwardParam(int param) {}
 void TView::vmethod_0019() {}
 void TView::vmethod_0020() {}
 void TView::vmethod_0021() {}
-TView* TView::OwnerPanel() { return 0; }
+TView* TView::OwnerPanel() {
+  return 0;
+}
 void TView::vmethod_0023() {}
 void TView::vmethod_0024() {}
 void TView::vmethod_0025() {}
@@ -71,7 +77,9 @@ void TView::vmethod_0033() {}
 void TView::vmethod_0034() {}
 void TView::vmethod_0035() {}
 void TView::vmethod_0036() {}
-class TControl* TView::ResolveControlByTag(unsigned int controlTag) { return 0; }
+class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
+  return 0;
+}
 void TView::vmethod_0038() {}
 void TView::vmethod_0039() {}
 void TView::CallVoidSlotA0() {}
@@ -81,7 +89,9 @@ void TView::vmethod_0043() {}
 void TView::vmethod_0044() {}
 void TView::vmethod_0045() {}
 void TView::vmethod_0046() {}
-int TView::QuerySelectedIndexSlotBC() { return 0; }
+int TView::QuerySelectedIndexSlotBC() {
+  return 0;
+}
 void TView::vmethod_0048() {}
 void TView::vmethod_0049() {}
 void TView::vmethod_0050() {}
@@ -93,7 +103,9 @@ void TView::vmethod_0055() {}
 void TView::vmethod_0056() {}
 void TView::RefreshControl() {}
 void TView::vmethod_0058() {}
-int TView::IsActionable() { return 0; }
+int TView::IsActionable() {
+  return 0;
+}
 void TView::CaptureLayoutF0(int* buffer, int modeFlag) {}
 void TView::CaptureLayout(int* buffer, int modeFlag) {}
 char TView::Refresh() {
@@ -132,7 +144,9 @@ void TView::vmethod_0087() {}
 void TView::vmethod_0088() {}
 void TView::vmethod_0089() {}
 void TView::ApplyBounds(int* boundsBuffer, int modeFlag) {}
-char TView::vmethod_0091(void* arg1) { return 0; }
+char TView::vmethod_0091(void* arg1) {
+  return 0;
+}
 void TView::vmethod_0092() {}
 void TView::vmethod_0093() {}
 void TView::vmethod_0094() {}

@@ -19,8 +19,7 @@ void* TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer() 
 }
 
 // FUNCTION: IMPERIALISM 0x004ee540
-TSortedByRelationshipList::TSortedByRelationshipList()
-    : TSortedPtrList() {}
+TSortedByRelationshipList::TSortedByRelationshipList() : TSortedPtrList() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x004ee570

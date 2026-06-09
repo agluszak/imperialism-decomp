@@ -22,17 +22,21 @@ extern "C" void* __stdcall SetCursor(void* hCursor);
 #define DUMMY_VIRTUAL(n) virtual void Dummy##n() = 0;
 
 struct TDiplomacyMapViewLayout {
-  DUMMY_VIRTUAL(0) DUMMY_VIRTUAL(1) DUMMY_VIRTUAL(2) DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4)
-  DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9)
-  DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12) DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14)
-  DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17) DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19)
-  DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22) DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24)
-  DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26) DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29)
-  DUMMY_VIRTUAL(30) DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34)
-  DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38) DUMMY_VIRTUAL(39)
-  DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41) DUMMY_VIRTUAL(42) DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44)
-  DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47) DUMMY_VIRTUAL(48)
-  virtual void ApplyClipRegionSlotC4(int region) = 0; // slot 49 (0xC4)
+  DUMMY_VIRTUAL(0)
+  DUMMY_VIRTUAL(1) DUMMY_VIRTUAL(2) DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4) DUMMY_VIRTUAL(
+      5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9) DUMMY_VIRTUAL(10)
+      DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12) DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14) DUMMY_VIRTUAL(15)
+          DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17) DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19) DUMMY_VIRTUAL(20)
+              DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22) DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24)
+                  DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26) DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28)
+                      DUMMY_VIRTUAL(29) DUMMY_VIRTUAL(30) DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32)
+                          DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34) DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36)
+                              DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38) DUMMY_VIRTUAL(39)
+                                  DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41) DUMMY_VIRTUAL(42)
+                                      DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44) DUMMY_VIRTUAL(45)
+                                          DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47)
+                                              DUMMY_VIRTUAL(48) virtual void ApplyClipRegionSlotC4(
+                                                  int region) = 0; // slot 49 (0xC4)
 
   char pad_04[0x94];
   short frameRegionSelectorAt98;
@@ -140,7 +144,8 @@ void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColo
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
   QuickDrawSurfaceGuard surface;
-  reinterpret_cast<TView*>(this)->QueryBounds(reinterpret_cast<int*>(const_cast<RECT*>(presentRect)));
+  reinterpret_cast<TView*>(this)->QueryBounds(
+      reinterpret_cast<int*>(const_cast<RECT*>(presentRect)));
 
   if (legendSurfaceModeAt524 != 0) {
     int savedTransparentColor = *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x2c);
@@ -520,8 +525,8 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
   TControl* child = *reinterpret_cast<TControl**>(reinterpret_cast<char*>(this) + 0xb4);
-  child->SwitchTab(
-      reinterpret_cast<int>(arg1), reinterpret_cast<int>(arg2), reinterpret_cast<int>(arg3));
+  child->SwitchTab(reinterpret_cast<int>(arg1), reinterpret_cast<int>(arg2),
+                   reinterpret_cast<int>(arg3));
 }
 
 // FUNCTION: IMPERIALISM 0x004f7130

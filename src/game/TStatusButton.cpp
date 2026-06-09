@@ -32,7 +32,6 @@ void* __cdecl GetTStatusButtonClassNamePointer(void) {
 extern void* g_pActiveCityDialogLegendSelectionOwner;
 extern unsigned char g_bCityDialogLegendSelectionInitialized;
 
-
 const int kControlTagBack = 0x6261636b;
 const int kControlTagArms = 0x41726d73;
 const int kControlTagClos = 0x436c6f73;
@@ -47,8 +46,8 @@ void TStatusButton::HandleCityDialogSelectionAndBackControlReset(int selectedInd
         g_bCityDialogLegendSelectionInitialized = 0;
       }
 
-      TAmtBar* backControl =
-          reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(OwnerPanel())->ResolveControlByTag(kControlTagBack));
+      TAmtBar* backControl = reinterpret_cast<TAmtBar*>(
+          reinterpret_cast<TView*>(OwnerPanel())->ResolveControlByTag(kControlTagBack));
       if (backControl != 0) {
         reinterpret_cast<TView*>(backControl)->CallVoidSlot1C();
         reinterpret_cast<TView*>(OwnerPanel())->RefreshControl();

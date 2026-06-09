@@ -22,4 +22,3 @@ TArmyPlacard::TArmyPlacard() : TPictureButton() {
 // TArmyPlacard::`scalar deleting destructor'
 
 TArmyPlacard::~TArmyPlacard() {}
-

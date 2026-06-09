@@ -38,8 +38,7 @@ TRailAmtBar::~TRailAmtBar() {}
 void TRailAmtBar::DoPostCreate(TDocument* document) {
   NationState* nationState = reinterpret_cast<NationState**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState =
-      nationState != 0 ? nationState->cityState : 0;
+  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;

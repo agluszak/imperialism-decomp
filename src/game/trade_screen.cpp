@@ -81,8 +81,6 @@ extern "C" char g_pClassDescTTraderAmtBar = 0;
 extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 extern "C" char g_pClassDescTTradeCluster = 0;
 
-
-
 const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
 
@@ -125,9 +123,6 @@ const int kTradeSellPropagationTags[] = {
 struct CityTradeScenarioDescriptor;
 struct TDocument;
 
-
-
-
 // The trade-screen UI object is a cluster-family view: it dispatches through the
 // TView vtable (ResolveControlByTag @0x94), reads TView::controlTag
 // (0x1c), and carries a cluster field at 0x88. Model it as real TUberCluster
@@ -136,18 +131,11 @@ struct TDocument;
 
 // ApplicationUiRootControllerState moved to global scope
 
-
-
 static __inline short ReadControlValueFieldPlus4(TAmtBar* control) {
   return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
 }
 
-
 void FailNilPointerInUSmallViews(int line);
-
-
-
-
 
 #if defined(_MSC_VER)
 #pragma auto_inline(off)
@@ -195,15 +183,12 @@ short QueryNationMetricBySlot(NationState* nationState, short metricSlot) {
   return nationState->QueryNationMetricBySlot78(metricSlot);
 }
 
-
 // GLOBAL: IMPERIALISM 0x6a18e0
 // g_pApplicationUiRootController moved to global scope
 // GLOBAL: IMPERIALISM 0x6a44b0
 void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // GLOBAL: IMPERIALISM 0x6a44b4
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
-
-
 
 struct ApplicationUiRootControllerState {
   void* vftable;
@@ -230,7 +215,6 @@ unsigned int __cdecl thunk_GetActiveNationId(void) {
 undefined4 thunk_NoOpUiLifecycleHook(void) {
   return 0;
 }
-
 
 // GHIDRA_NAME HandleTradeArrowAutoRepeatTickAndDispatch
 // GHIDRA_PROTO void __thiscall HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void *
@@ -297,9 +281,6 @@ void __fastcall HandleTradeArrowAutoRepeatTickAndDispatch(void* self, int unused
 #pragma optimize("y", on)
 #endif
 
-
-
-
 #if defined(_MSC_VER)
 #pragma optimize("y", off)
 #endif
@@ -314,7 +295,8 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   TRailCluster* panel = reinterpret_cast<TRailCluster*>(context);
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(panel)->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(panel)->ResolveControlByTag(kControlTagMove));
   unsigned int styleDescriptor = styleSeed & 0xffff0000;
   if (moveControl != 0) {
     reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(
@@ -323,7 +305,8 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
     moveControl->SetStyleState(-2, 0);
   }
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(panel)->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(panel)->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
@@ -343,8 +326,6 @@ short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
 #pragma optimize("y", on)
 #endif
 
-
-
 // FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}
 
@@ -357,4 +338,3 @@ void __cdecl OrphanRetStub_00586ff0(void) {}
 // TRailAmtBar.cpp; BlitHintOverlayRectWithCtrlModifierPalette -> TTraderAmtBar.cpp.
 // TNumberedArrowButton functions moved to TNumberedArrowButton.cpp
 // TPlacard functions moved to TPlacard.cpp
-

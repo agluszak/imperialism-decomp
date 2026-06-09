@@ -24,11 +24,19 @@ TUberCluster::TUberCluster() : TCluster() {}
 // FUNCTION: IMPERIALISM 0x00571490
 TUberCluster::~TUberCluster() {}
 
-int TUberCluster::vmethod_0115() { return 0; }
+int TUberCluster::vmethod_0115() {
+  return 0;
+}
 void TUberCluster::ApplyMoveValue(int value) {}
-int TUberCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) { return 0; }
-int TUberCluster::GetControlFlag(int arg1, int arg2) { return 0; }
-int TUberCluster::GetBoolSlot1DC() { return 0; }
+int TUberCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
+  return 0;
+}
+int TUberCluster::GetControlFlag(int arg1, int arg2) {
+  return 0;
+}
+int TUberCluster::GetBoolSlot1DC() {
+  return 0;
+}
 void TUberCluster::DoControlAction() {}
 void TUberCluster::SetTradeBidControlBitmap() {}
 void TUberCluster::SetTradeOfferControlBitmap() {}
@@ -50,8 +58,7 @@ void* __cdecl GetTUberClusterClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00586e70
-void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventArg,
-                                                             int eventExtra) {
+void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   int normalizedCommand = commandId - 100;
 

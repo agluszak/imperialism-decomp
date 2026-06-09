@@ -35,7 +35,6 @@ TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0
 
 TNumberedArrowButton::~TNumberedArrowButton() {}
 
-
 #include "game/TAmtBar.h"
 
 // FUNCTION: IMPERIALISM 0x0058b750

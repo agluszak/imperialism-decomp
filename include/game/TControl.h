@@ -29,6 +29,4 @@ public:
   virtual void vmethod_0110();
   virtual char GetBoolSlot1BC();
   virtual void vmethod_0112();
-
-
 };

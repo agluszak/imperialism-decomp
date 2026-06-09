@@ -14,7 +14,6 @@
 #pragma optimize("y", on)
 #endif
 
-
 undefined4 ResetQuickDrawStrokeState(void);
 undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
@@ -130,7 +129,8 @@ void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
 }
 
 // FUNCTION: IMPERIALISM 0x0056e640
-void TTwoPicSlider::TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param2, int pointRecord) {
+void TTwoPicSlider::TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param2,
+                                                     int pointRecord) {
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
   (void)param2;

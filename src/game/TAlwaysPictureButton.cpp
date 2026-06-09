@@ -25,6 +25,3 @@ TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00570a20
 // TAlwaysPictureButton::`scalar deleting destructor'
-
-
-

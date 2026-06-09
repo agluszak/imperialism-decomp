@@ -69,7 +69,6 @@ static __inline void* ReadPointerAt(unsigned int address) {
   return *reinterpret_cast<void**>(address);
 }
 
-
 extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
 extern struct NationState* GetNationStateBySlot(short slot);
@@ -99,11 +98,10 @@ struct CityTradeScenarioDescriptor {
   short extraAt1E;
 };
 
-
 struct TradeMoveControlState {
-  void *vftable;
+  void* vftable;
   char pad_04[0x1c];
-  void *ownerContext;
+  void* ownerContext;
   char pad_24[0x10];
   int barStepsRaw;
   int barRangeRaw;
@@ -112,16 +110,15 @@ struct TradeMoveControlState {
 };
 
 struct TradeAmountBarLayout {
-  void *vftable;
+  void* vftable;
   char pad_04[0x1c];
-  void *ownerContext;
+  void* ownerContext;
 };
 
 struct TradeMovePanelContext {
   char pad_00[0x10];
   class TAmtBar* selectedMetricControl;
 };
-
 
 struct NationCityTradeState {
   char pad_00[0xe4];

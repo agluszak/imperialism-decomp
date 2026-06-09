@@ -19,7 +19,8 @@ public:
   void ApplyMoveValueSlot1D4NoCommit(int value);
   void UpdateTradeMoveControlsFromDrag(int arg1, int arg2);
   void UpdateTradeBarFromSelectedMetricRatio_B();
-  void HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8, void* argC, void* dispatchArg, void* arg14);
+  void HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8, void* argC,
+                                                 void* dispatchArg, void* arg14);
 
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);
   virtual void SetBarMetric(int value, int range);
@@ -40,5 +41,4 @@ public:
   virtual void vmethod_0120();
   virtual void SetControlValueSlot1E4(int value, int updateFlag);
   virtual int QueryValue();
-
 };

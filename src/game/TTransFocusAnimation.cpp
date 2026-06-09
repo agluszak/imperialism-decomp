@@ -28,13 +28,13 @@ public:
   short field0a;            // 0x0a
   short field0c;            // 0x0c
   char pad_0e[2];
-  int field10;              // 0x10
-  int field14;              // 0x14
-  int field18;              // 0x18
-  int sourceLeft;           // 0x1c
-  int sourceTop;            // 0x20
-  int sourceRight;          // 0x24
-  int sourceBottom;         // 0x28
+  int field10;      // 0x10
+  int field14;      // 0x14
+  int field18;      // 0x18
+  int sourceLeft;   // 0x1c
+  int sourceTop;    // 0x20
+  int sourceRight;  // 0x24
+  int sourceBottom; // 0x28
   char pad_2c[4];
   int transientSurfaceContext; // 0x30
 

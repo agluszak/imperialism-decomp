@@ -21,7 +21,6 @@ char g_vtblTCityBarCluster = 0;
 
 undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 
-
 static __inline void FailNilPointerInUSmallViews(int line) {
   FailNilPointerWithAssert("Z:\\src\\USmallViews.cpp", line);
 }
@@ -39,8 +38,7 @@ void* TCityBarCluster::GetClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586630
-TCityBarCluster::TCityBarCluster() : TUberCluster() {
-}
+TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586660
 void* TCityBarCluster::DestructAndMaybeFree(int freeSelfFlag) {

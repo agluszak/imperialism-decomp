@@ -42,8 +42,7 @@ void* TUnitToolbarCluster::GetClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586010
-TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {
-}
+TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586040
 void* TUnitToolbarCluster::DestructAndMaybeFree(int freeSelfFlag) {
@@ -72,7 +71,7 @@ void TUnitToolbarCluster::DispatchEvent(int eventClass, void* eventPayload, int 
     GAME_FAIL_NIL_POINTER();
     return;
   }
-  
+
   mainControl->vmethod_0015();
 }
 

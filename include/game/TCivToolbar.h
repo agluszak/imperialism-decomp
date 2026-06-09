@@ -11,7 +11,9 @@ public:
 
   TCivToolbar();
 
-  void RefreshCivilianCommandPanelForSelection(class TCivilianOrderState* selectedCivilianOrderEntry);
+  void
+  RefreshCivilianCommandPanelForSelection(class TCivilianOrderState* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
-  void HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload, int eventFlags);
+  void HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload,
+                                           int eventFlags);
 };

@@ -100,7 +100,8 @@ public:
   int cityScoreTotal;
 
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
-    return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex].firstCivilianOrder;
+    return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex]
+        .firstCivilianOrder;
   }
 };
 

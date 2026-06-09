@@ -20,7 +20,7 @@ void* __fastcall thunk_GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int 
 }
 
 // FUNCTION: IMPERIALISM TODO
-TSortedPtrList::TSortedPtrList(): TIndexAndRankList() {}
+TSortedPtrList::TSortedPtrList() : TIndexAndRankList() {}
 
 // FUNCTION: IMPERIALISM TODO
 TSortedPtrList::~TSortedPtrList() {}

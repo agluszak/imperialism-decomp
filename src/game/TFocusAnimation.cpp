@@ -27,14 +27,14 @@ public:
   short frameCount;         // 0x0a
   short field0c;            // 0x0c
   char pad_0e[2];
-  int frameTick;            // 0x10
-  int frameTickLimit;       // 0x14
-  int field18;              // 0x18
-  int field1c;              // 0x1c
-  int field20;              // 0x20
-  int field24;              // 0x24
-  int field28;              // 0x28
-  char enabledFlag;         // 0x2c
+  int frameTick;      // 0x10
+  int frameTickLimit; // 0x14
+  int field18;        // 0x18
+  int field1c;        // 0x1c
+  int field20;        // 0x20
+  int field24;        // 0x24
+  int field28;        // 0x28
+  char enabledFlag;   // 0x2c
 
   void DestructTFocusAnimationAndMaybeFree();
 };

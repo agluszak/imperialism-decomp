@@ -23,12 +23,10 @@ void TDiplomacyTurnStateManager::slot_18() {}
 void TDiplomacyTurnStateManager::slot_1c() {}
 void TDiplomacyTurnStateManager::slot_20() {}
 void TDiplomacyTurnStateManager::slot_24() {}
-char TDiplomacyTurnStateManager::HasPolicyWithNationSlot44(int sourceNation,
-                                                           int targetNation) {
+char TDiplomacyTurnStateManager::HasPolicyWithNationSlot44(int sourceNation, int targetNation) {
   return 0;
 }
-char TDiplomacyTurnStateManager::HasOutdatedWarRelationSlot48(int sourceNation,
-                                                              int targetNation) {
+char TDiplomacyTurnStateManager::HasOutdatedWarRelationSlot48(int sourceNation, int targetNation) {
   return 0;
 }
 void TDiplomacyTurnStateManager::slot_30() {}
@@ -39,8 +37,7 @@ void TDiplomacyTurnStateManager::slot_40() {}
 void TDiplomacyTurnStateManager::slot_50() {}
 void TDiplomacyTurnStateManager::slot_54() {}
 void TDiplomacyTurnStateManager::slot_58() {}
-char TDiplomacyTurnStateManager::ValidateDiplomacyActionSlot5c(int sourceNation,
-                                                               int targetNation,
+char TDiplomacyTurnStateManager::ValidateDiplomacyActionSlot5c(int sourceNation, int targetNation,
                                                                int actionCode) {
   return 0;
 }
@@ -52,15 +49,11 @@ void TDiplomacyTurnStateManager::slot_6c() {}
 short TDiplomacyTurnStateManager::GetRelationTierSlot70(int sourceNation, int targetNation) {
   return 0;
 }
-void TDiplomacyTurnStateManager::SetRelationCodeSlot74WithMode(int sourceNation,
-                                                               int targetNation,
-                                                               int relationCode,
-                                                               int updateMode) {}
-void TDiplomacyTurnStateManager::SetRelationCodeSlot78Final(int sourceNation,
-                                                            int targetNation,
+void TDiplomacyTurnStateManager::SetRelationCodeSlot74WithMode(int sourceNation, int targetNation,
+                                                               int relationCode, int updateMode) {}
+void TDiplomacyTurnStateManager::SetRelationCodeSlot78Final(int sourceNation, int targetNation,
                                                             int relationCode) {}
-void TDiplomacyTurnStateManager::ApplyRelationCode4Slot7c(int sourceNation,
-                                                          int targetNation,
+void TDiplomacyTurnStateManager::ApplyRelationCode4Slot7c(int sourceNation, int targetNation,
                                                           int updateMode) {}
 char TDiplomacyTurnStateManager::HasFlag84ForNationSlot84(int nation) {
   return 0;

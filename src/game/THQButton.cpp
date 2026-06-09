@@ -72,4 +72,3 @@ void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQ
 #endif
 
 THQButton::~THQButton() {}
-

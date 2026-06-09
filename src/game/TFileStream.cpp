@@ -12,7 +12,6 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 
 typedef void* hwnd_t;
 
-
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 extern "C" {

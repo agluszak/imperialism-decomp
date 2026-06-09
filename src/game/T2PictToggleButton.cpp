@@ -32,14 +32,15 @@ void T2PictToggleButton::IsField3cWithinShortLimit84() {}
 // FUNCTION: IMPERIALISM 0x005849d0
 void T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(char direction) {
   short sVar1;
-  void **ppuVar2;
+  void** ppuVar2;
 
   sVar1 = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x84);
   int field3c = *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x3c);
 
   if (((direction == '\0') && (field3c < (int)sVar1)) ||
       ((direction == '\x01' && ((int)sVar1 < field3c)))) {
-    reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void***>(this)[0][0x72])((short)field3c, 0);
+    reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void***>(this)[0][0x72])(
+        (short)field3c, 0);
     *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x3c) = (int)sVar1;
   }
   ppuVar2 = reinterpret_cast<void***>(this)[0];
@@ -48,4 +49,3 @@ void T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(char dir
 }
 
 T2PictToggleButton::~T2PictToggleButton() {}
-

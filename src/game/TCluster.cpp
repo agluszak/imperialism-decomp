@@ -31,5 +31,7 @@ void TCluster::DispatchPanelControlEvent(int eventClass, void* eventPayload, int
       this, 0, eventClass, eventPayload, eventFlags);
 }
 
-int TCluster::GetField84() { return this->field84; }
+int TCluster::GetField84() {
+  return this->field84;
+}
 void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {}

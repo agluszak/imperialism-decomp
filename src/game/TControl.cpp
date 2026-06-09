@@ -1,4 +1,4 @@
-// Manual decompilation file. 
+// Manual decompilation file.
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "game/TControl.h"
@@ -35,5 +35,7 @@ void TControl::vmethod_0107() {}
 void TControl::vmethod_0108() {}
 void TControl::vmethod_0109() {}
 void TControl::vmethod_0110() {}
-char TControl::GetBoolSlot1BC() { return 0; }
-  void TControl::vmethod_0112() {}
+char TControl::GetBoolSlot1BC() {
+  return 0;
+}
+void TControl::vmethod_0112() {}

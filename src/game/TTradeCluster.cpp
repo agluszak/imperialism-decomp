@@ -430,19 +430,23 @@ void TTradeCluster::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabl
     FailNilPointerWithAssert(kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
   }
 
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x73656173));
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x73656173));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }
-  control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x79656172));
+  control = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x79656172));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }
-  control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726561));
+  control = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726561));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }
-  control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726565));
+  control = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726565));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }

@@ -230,7 +230,8 @@ char TDiplomacyTurnStateManager::IsNationPairRelationTurnStampOutOfDate(int sour
   if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
     return 0;
   }
-  short currentTurn = reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+  short currentTurn =
+      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
@@ -638,8 +639,7 @@ void TDiplomacyTurnStateManager::ApplyRelationCode4AndQueueEvent18ForTargetNatio
     PropagateRelationSideEffectSlot80(sourceNationSlot, targetNationSlot, 0);
   }
 
-  NationState* targetTerrain =
-      g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)];
+  NationState* targetTerrain = g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)];
   if (targetTerrain != 0) {
     targetTerrain->NotifyActionSlot94(sourceNationSlot, 0x139);
     QueueInterNationEventRecordDeduped(g_pInterNationEventQueueManager, 0x18,
@@ -688,7 +688,8 @@ char TDiplomacyTurnStateManager::IsPrimaryNationSlotIndex(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004f1f70
 void TDiplomacyTurnStateManager::BuildRelationshipListSlot88(int sourceNationSlot,
-                                                             int primaryOnlyFlag, void* listHandle) {
+                                                             int primaryOnlyFlag,
+                                                             void* listHandle) {
   // The slot signature is the native void* handle; recover the common list base once
   // (AddEntrySlot38 is a TIndexAndRankList virtual, shared by every sorted-list leaf).
   TIndexAndRankList* list = static_cast<TIndexAndRankList*>(listHandle);
@@ -735,8 +736,8 @@ int TDiplomacyTurnStateManager::SelectNationSlotFromCollectedStandingEntriesSlot
     return -1;
   }
 
-  RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
-      list->GetEntrySlot2C(list->count));
+  RelationshipRankEntry* entry =
+      static_cast<RelationshipRankEntry*>(list->GetEntrySlot2C(list->count));
   int nationSlot = entry->nationSlot;
   if (list != 0) {
     list->ReleaseSlot24();
@@ -761,8 +762,8 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
 
   int matchedNationSlot = -1;
   while (entryIndex > 0 && matchedNationSlot == -1) {
-    RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
-        list->GetEntrySlot2C(entryIndex));
+    RelationshipRankEntry* entry =
+        static_cast<RelationshipRankEntry*>(list->GetEntrySlot2C(entryIndex));
     int candidateNationSlot = entry->nationSlot;
     int source = static_cast<short>(sourceNationSlot);
     if (relationSideEffectMatrix1402[source * kNationSlotCount + candidateNationSlot] ==
@@ -838,8 +839,7 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
                 // arg0 is the constant 0 (held in [esp+0x10] across the loop in the original).
                 g_apNationStates[col]->NotifyActionSlot94(0, flag);
               }
-              g_apNationStates[row]
-                  ->RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(row);
+              g_apNationStates[row]->RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(row);
             }
             short relationCode = *reinterpret_cast<short*>(rowNation + fieldOffset);
             if (relationCode != -1) {
@@ -847,20 +847,20 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
                 relationSideEffectMatrix1402[rowBase + col] = 1;
                 relationSideEffectMatrix1402[row + colBase] = 1;
                 g_pInterNationEventQueueManager->thunk_QueueInterNationEventRecordDeduped(0x12, row,
-                                                                                         col, 0);
+                                                                                          col, 0);
               } else if (relationCode == 0x134) {
                 relationSideEffectMatrix1402[rowBase + col] = 2;
                 relationSideEffectMatrix1402[row + colBase] = 2;
                 g_pInterNationEventQueueManager->thunk_QueueInterNationEventRecordDeduped(0x14, row,
-                                                                                         col, 0);
+                                                                                          col, 0);
               } else if (relationCode == 0x131) {
                 if (HasPolicyWithNationSlot44(row, col) == 0) {
-                  g_apNationStates[row]
-                      ->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(col, 4, -1);
+                  g_apNationStates[row]->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(
+                      col, 4, -1);
                 }
               } else {
-                g_apTerrainTypeDescriptorTable[col]
-                    ->ApplyTerrainDiplomacyRelationFlagSlot8c(row, relationCode);
+                g_apTerrainTypeDescriptorTable[col]->ApplyTerrainDiplomacyRelationFlagSlot8c(
+                    row, relationCode);
               }
             }
           }
@@ -902,12 +902,10 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
       reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
-    g_apNationStates[source]
-        ->NotifyRelationCodeSlot2A8(target, relationCode);
+    g_apNationStates[source]->NotifyRelationCodeSlot2A8(target, relationCode);
   }
   if (HasFlag84ForNationSlot84(targetNationSlot) != 0) {
-    g_apNationStates[target]
-        ->NotifyRelationCodeSlot2A8(source, relationCode);
+    g_apNationStates[target]->NotifyRelationCodeSlot2A8(source, relationCode);
   }
 
   switch (newRelationCode) {
@@ -935,10 +933,8 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
         (HasFlag84ForNationSlot84(targetNationSlot) != 0)) {
       relationSideEffectMatrix1402[forwardIndex] = 2;
       relationSideEffectMatrix1402[reverseIndex] = 2;
-      g_apTerrainTypeDescriptorTable[source]
-          ->SetDiplomacyStandingSlot48(targetNationSlot, 100);
-      g_apTerrainTypeDescriptorTable[target]
-          ->SetDiplomacyStandingSlot48(sourceNationSlot, 100);
+      g_apTerrainTypeDescriptorTable[source]->SetDiplomacyStandingSlot48(targetNationSlot, 100);
+      g_apTerrainTypeDescriptorTable[target]->SetDiplomacyStandingSlot48(sourceNationSlot, 100);
       return;
     }
     break;
@@ -984,8 +980,7 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
       SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 0);
     }
 
-    g_apTerrainTypeDescriptorTable[targetNationSlot]
-        ->NotifyActionSlot94(sourceNationSlot, 0x131);
+    g_apTerrainTypeDescriptorTable[targetNationSlot]->NotifyActionSlot94(sourceNationSlot, 0x131);
 
     QueueInterNationEventRecordDeduped(g_pInterNationEventQueueManager, 1, targetNationSlot,
                                        sourceNationSlot, 0);
@@ -993,8 +988,7 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
                                        targetNationSlot, 0);
 
     if (targetNationSlot < 7) {
-      g_apNationStates[sourceNationSlot]
-          ->NotifyActionSlot94(targetNationSlot, 0xc8);
+      g_apNationStates[sourceNationSlot]->NotifyActionSlot94(targetNationSlot, 0xc8);
     }
 
     if (HasFlag84ForNationSlot84(targetNationSlot) == 0) {
@@ -1007,8 +1001,8 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
       }
 
       if (ownerNationSlot > -1) {
-        int transitionResult = g_apNationStates[ownerNationSlot]
-                                   ->CheckTransitionSlot27C(targetNationSlot, sourceNationSlot);
+        int transitionResult = g_apNationStates[ownerNationSlot]->CheckTransitionSlot27C(
+            targetNationSlot, sourceNationSlot);
         propagatedTransition = (transitionResult == 2);
       }
     } else {

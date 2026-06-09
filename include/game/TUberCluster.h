@@ -20,4 +20,3 @@ public:
   virtual void SetTradeOfferControlBitmap();
   virtual void SetTradeOfferSecondaryBitmap();
 };
-

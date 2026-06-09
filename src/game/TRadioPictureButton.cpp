@@ -12,4 +12,3 @@ TRadioPictureButton::TRadioPictureButton() : TPictureButton() {
 // TRadioPictureButton::`scalar deleting destructor'
 
 TRadioPictureButton::~TRadioPictureButton() {}
-

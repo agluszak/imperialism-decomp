@@ -25,7 +25,6 @@ undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
 extern "C" unsigned short* g_pActiveCityDialogLegendSelectionOwner;
 
-
 undefined4 InitializeUiTextStyleDescriptorAndApplyQuickDraw(void);
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
@@ -66,7 +65,8 @@ struct CivilianClassCacheContext {
   unsigned char pad_6e_to_6f[0x02];
 };
 
-extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct Rect32* rect, struct Point32 point);
+extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct Rect32* rect,
+                                                        struct Point32 point);
 
 class ProvinceCollectionVirtualShape {
 public:
@@ -92,8 +92,6 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 
 } // namespace
 
-
-
 // FUNCTION: IMPERIALISM 0x0058f050
 CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
   return new TCivDescription();
@@ -109,7 +107,6 @@ TCivDescription::TCivDescription() : TControl() {
 // SYNTHETIC: IMPERIALISM 0x00407f4a
 // TCivDescription::`scalar deleting destructor'
 
-
 // FUNCTION: IMPERIALISM 0x0058f0f0
 void* __cdecl GetTCivDescriptionClassNamePointer(void) {
   return reinterpret_cast<void*>(&g_pClassDescTCivDescription);
@@ -119,7 +116,8 @@ void* __cdecl GetTCivDescriptionClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x0058f110
 #pragma optimize("y", on)
-void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivilianOrderState* orderState) {
+void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
+    TCivilianOrderState* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short civilianClassId;
@@ -172,7 +170,8 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivilianOr
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
 #pragma optimize("y", on)
-void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, Point32* point, int arg4) {
+void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, Point32* point,
+                                                                int arg4) {
   int candidateOrdinal = 0;
   int provinceCount;
   int provinceOrdinal;
@@ -183,7 +182,7 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
   Rect32* legendRect = &this->legendRects[0];
   unsigned short* currentLegendSelectionCounter = g_awCivilianLegendSelectionCountsBySlot;
   int slotIndex = 0;
-  
+
   do {
     if (PtInRect(legendRect, *point) != 0) {
       ProvinceCollectionVirtualShape* ownerNationProvinceCollection =
@@ -247,7 +246,8 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
 
 #pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x0058f3c0
-void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilianOrderState* orderState) {
+void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
+    TCivilianOrderState* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short ownerNationId;
@@ -264,11 +264,9 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilia
   ProvinceCollectionVirtualShape* ownerNationProvinceCollection;
   int provinceCount;
 
-
   provinceOrdinal = 1;
-  ownerNationId =
-      (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                      4 + orderState->currentTileIndex * 0x24);
+  ownerNationId = (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
+                                  4 + orderState->currentTileIndex * 0x24);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = *reinterpret_cast<ProvinceCollectionVirtualShape**>(
       reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[ownerNationId]) + 0x90);
@@ -284,8 +282,8 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilia
   do {
     int provinceRecordId = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
     provinceTileOrdinal = 0;
-    provinceRecord = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
-                     provinceRecordId * 0xa8;
+    provinceRecord =
+        reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceRecordId * 0xa8;
     if ('\0' < *(char*)(provinceRecord + 0x3a)) {
       provinceTileIndices = reinterpret_cast<short*>(provinceRecord + 0x42);
       do {
@@ -299,8 +297,8 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilia
           targetCountSlot = &context->targetTileCountsBySlot[0];
           do {
             if (tileProfileId ==
-                g_anTargetTileProfileByCivilianClassAndSlot
-                    [classSlotOrdinal + context->selectedCivilianClass * 5]) {
+                g_anTargetTileProfileByCivilianClassAndSlot[classSlotOrdinal +
+                                                            context->selectedCivilianClass * 5]) {
               *targetCountSlot = (short)(*targetCountSlot + 1);
             }
             classSlotOrdinal = classSlotOrdinal + 1;
@@ -331,7 +329,6 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
   short selectedClass;
   short textWidth;
   short textOriginX;
-
 
   if (this->legendInitialized == 0) {
     legendSelectionCountsBySlot = g_awCivilianLegendSelectionCountsBySlot;
@@ -367,8 +364,8 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
     reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
         0x2b67, reinterpret_cast<int>(&styleSecondary));
     localizationTable = *reinterpret_cast<void***>(kAddrLocalizationTable);
-    reinterpret_cast<LocalizationFormatFn>(localizationTable[0x21])(0x2718, selectedClass,
-                                                                    reinterpret_cast<int*>(&localizedTextRef));
+    reinterpret_cast<LocalizationFormatFn>(localizationTable[0x21])(
+        0x2718, selectedClass, reinterpret_cast<int*>(&localizedTextRef));
 
     textWidth = static_cast<short>(
         reinterpret_cast<int(__cdecl*)(void)>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());

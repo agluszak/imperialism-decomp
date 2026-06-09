@@ -33,9 +33,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
 
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
-    int ratioValue =
-        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->field34) /
-        (int)barLayout->auxValueA;
+    int ratioValue = ((int)context->selectedMetricControl->QueryStepValue() * barLayout->field34) /
+                     (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -158,8 +157,8 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
     return 0;
   }
 
-  TAmtBar* moveControl =
-      reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
@@ -174,8 +173,8 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&moveInvalidRect, 1);
 
-  TAmtBar* barControl =
-      reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
+      reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xcf9);
   }

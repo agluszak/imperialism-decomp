@@ -27,4 +27,3 @@ T2PictureButton::T2PictureButton() : TPictureButton() {}
 // T2PictureButton::`scalar deleting destructor'
 
 T2PictureButton::~T2PictureButton() {}
-

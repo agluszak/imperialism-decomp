@@ -48,4 +48,3 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
 #endif
 
 TCivilianButton::~TCivilianButton() {}
-

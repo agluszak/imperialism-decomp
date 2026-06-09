@@ -10,10 +10,10 @@ public:
   int field10;
   int field14;
   int field18;
-  int controlTag; // 0x1c
+  int controlTag;            // 0x1c
   class TView* ownerContext; // 0x20
-  int ownerOffsetX; // 0x24
-  int ownerOffsetY; // 0x28
+  int ownerOffsetX;          // 0x24
+  int ownerOffsetY;          // 0x28
   int field2c;
   int field30;
   int field34;

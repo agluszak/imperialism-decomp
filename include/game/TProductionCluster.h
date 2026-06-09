@@ -32,5 +32,7 @@ void* __cdecl GetTProductionClusterClassNamePointer(void);
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster);
 TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* cluster,
                                                            unsigned char freeSelfFlag);
-void HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(
-    TProductionCluster* cluster, int commandId, void* eventArg, int eventExtra);
+void HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward(TProductionCluster* cluster,
+                                                                        int commandId,
+                                                                        void* eventArg,
+                                                                        int eventExtra);

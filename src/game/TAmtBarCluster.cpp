@@ -23,7 +23,8 @@ extern const int kControlTagBar;
 extern NationState* GetNationStateBySlot(short slot);
 extern short QueryNationMetricBySlot(NationState* state, short metricSlot);
 extern int QueryUiScreenModeRaw(UiRuntimeContext* context);
-extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId, void* eventArg, int eventExtra);
+extern void __fastcall HandleTradeMoveControlAdjustment(void* context, int commandId,
+                                                        void* eventArg, int eventExtra);
 extern void FailNilPointerInUSmallViews(int line);
 
 const int kAssertLineTradeSellIncSell = 0x816;
@@ -44,8 +45,7 @@ void* TAmtBarCluster::GetClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586ce0
-TAmtBarCluster::TAmtBarCluster() : TUberCluster() {
-}
+TAmtBarCluster::TAmtBarCluster() : TUberCluster() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00586d10
@@ -64,8 +64,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
   switch (commandId) {
   case 100: {
     if (this->GetBoolSlot1DC() != '\0') {
-      TAmtBar* sellControl =
-          reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+      TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
       if (sellControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
       }
@@ -96,8 +95,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
     break;
   }
   case 0x65: {
-    TAmtBar* sellControl =
-        reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+    TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
     if (sellControl == 0) {
       GAME_FAIL_NIL_POINTER();
       break;
@@ -116,7 +114,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
+        if (rowControl != 0 &&
+            reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
           reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
         }
       }
@@ -130,7 +129,8 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
-        if (rowControl != 0 && reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
+        if (rowControl != 0 &&
+            reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
           reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
         }
       }
@@ -190,12 +190,13 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
 // FUNCTION: IMPERIALISM 0x00588ff0
 void TAmtBarCluster::HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra) {
   // ORIG_CALLCONV: __thiscall
-  
+
   if (commandId == 100) {
     TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
-    }    int moveValue = moveControl->QueryValue();
+    }
+    int moveValue = moveControl->QueryValue();
     this->ApplyMoveValue(moveValue + 1);
     return;
   }

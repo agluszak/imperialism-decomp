@@ -11,7 +11,8 @@ int TCivilianOrderState::IsInIdleSelectionState() {
   return reinterpret_cast<int(__fastcall*)(void*)>(thunk_IsCivilianOrderInIdleSelectionState)(this);
 }
 
-void TSelectedCivilianOrderState::SetActiveCivilianSelection(TCivilianOrderState* entryContext, int refreshCommandPanel) {
+void TSelectedCivilianOrderState::SetActiveCivilianSelection(TCivilianOrderState* entryContext,
+                                                             int refreshCommandPanel) {
   reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_SetActiveCivilianSelection)(
       this, 0, entryContext, refreshCommandPanel);
 }

@@ -23,7 +23,6 @@ TPlacard::TPlacard() : TPictureButton() {
 
 TPlacard::~TPlacard() {}
 
-
 #include "game/CString.h"
 
 #include "game/trade_quickdraw.h"
@@ -39,8 +38,7 @@ void TPlacard::RenderRightAlignedNumericOverlayWithShadow() {
   CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
 
-  reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
-      this);
+  reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(this);
 
   if (this->glyph90 != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();

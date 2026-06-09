@@ -1,7 +1,6 @@
 #include "game/TAmtBar.h"
 #include "game/TClosePicture.h"
 
-
 undefined4 DispatchUiMouseEventToChildrenOrSelf(void);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 

@@ -29,4 +29,3 @@ TTransportPicture::TTransportPicture()
 // TTransportPicture::`scalar deleting destructor'
 
 TTransportPicture::~TTransportPicture() {}
-

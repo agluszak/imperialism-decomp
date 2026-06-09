@@ -10,7 +10,7 @@ public:
   int compositeSurface; // 0x8C
   short splitPosition;  // 0x90
   unsigned char pad92[2];
-  int mode;             // 0x94
+  int mode; // 0x94
 
   TTwoPicSlider();
   virtual ~TTwoPicSlider();

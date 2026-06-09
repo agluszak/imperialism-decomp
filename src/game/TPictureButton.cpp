@@ -8,4 +8,3 @@ TPictureButton::TPictureButton() : TPictureResourceEntryBase(), timingWord92(700
 // TPictureButton::`scalar deleting destructor'
 
 TPictureButton::~TPictureButton() {}
-

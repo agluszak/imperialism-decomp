@@ -42,8 +42,7 @@ TShipAmtBar::~TShipAmtBar() {}
 void TShipAmtBar::DoPostCreate(TDocument* document) {
   NationState* nationState = reinterpret_cast<NationState**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState =
-      nationState != 0 ? nationState->cityState : 0;
+  NationCityTradeState* cityState = nationState != 0 ? nationState->cityState : 0;
   selectedMetricRecord = cityState->specialCommodityRecordAt190;
   short productionCap =
       *(short*)(reinterpret_cast<char*>(cityState->scenarioTradeDescriptor) + 0x1c);

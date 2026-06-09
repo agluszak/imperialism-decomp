@@ -135,8 +135,8 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 /* [OrphanCallChain] no incoming code refs; calls=2; instructions=15 */
 
 // FUNCTION: IMPERIALISM 0x00588630
-void __fastcall OrphanCallChain_C2_I15_00588630(TAmtBar* control, int unusedEdx,
-                                                short valueAt60, short valueAt62) {
+void __fastcall OrphanCallChain_C2_I15_00588630(TAmtBar* control, int unusedEdx, short valueAt60,
+                                                short valueAt62) {
   (void)unusedEdx;
   TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(control);
   amountBar->stepOrCurrentValue = valueAt60;
@@ -167,7 +167,9 @@ void __fastcall OrphanCallChain_C1_I03_00588670(TAmtBar* control, int unusedEdx,
 // GHIDRA_COMMENT_END
 /* [OrphanCallChain] no incoming code refs; calls=1; instructions=6 */
 
-int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) { return 0; }
+int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
+  return 0;
+}
 
 void TAmtBar::SetBarMetric(int value, int range) {}
 
@@ -203,4 +205,6 @@ void TAmtBar::vmethod_0120() {}
 
 void TAmtBar::SetControlValueSlot1E4(int value, int updateFlag) {}
 
-int TAmtBar::QueryValue() { return 0; }
+int TAmtBar::QueryValue() {
+  return 0;
+}

@@ -16,10 +16,12 @@
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
-#define GAME_ASSERT(cond, line) \
-  if (!(cond)) { \
-    GAME_FAIL_NIL_POINTER(); \
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp", line); \
+#define GAME_ASSERT(cond, line)                                                                    \
+  if (!(cond)) {                                                                                   \
+    GAME_FAIL_NIL_POINTER();                                                                       \
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp",   \
+                                                            line);                                 \
   }
 
 undefined4 thunk_ShowCivilianLedgerDialogAndSelectUnit(void);
@@ -37,18 +39,6 @@ const unsigned int kTagDone = 0x646F6E65;
 const unsigned int kTagDefend = 0x64666E64;
 const unsigned int kTagLater = 0x6C617472;
 const unsigned int kTagGarrison = 0x67617272;
-
-
-
-
-
-
-
-
-
-
-
-
 
 } // namespace
 
@@ -99,7 +89,8 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivilianOrderState* s
   if (selectedOrder == 0) {
     unitControl->SetEnabled(0, 1);
   } else {
-    reinterpret_cast<TCluster*>(unitControl)->SetControlClassAndRefresh(this->civilianClassId + 0x438, 1);
+    reinterpret_cast<TCluster*>(unitControl)
+        ->SetControlClassAndRefresh(this->civilianClassId + 0x438, 1);
     unitControl->SetEnabled(1, 1);
   }
 
@@ -157,7 +148,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
     GAME_ASSERT(stackButton != 0, 5585);
     reinterpret_cast<TUberCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
-    stackButton->SetEnabled(reinterpret_cast<TCivilianOrderState*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
+    stackButton->SetEnabled(
+        reinterpret_cast<TCivilianOrderState*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
@@ -196,7 +188,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0
-void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload,
+void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass,
+                                                      TPanelEventPayload* eventPayload,
                                                       int eventFlags) {
   // ORIG_CALLCONV: __thiscall
 
