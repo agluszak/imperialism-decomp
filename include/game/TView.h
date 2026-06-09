@@ -10,7 +10,7 @@ public:
   int field10;
   int field14;
   int field18;
-  int selectedControlTagOrState1c; // 0x1c
+  int controlTag; // 0x1c
   class TView* ownerContext; // 0x20
   int ownerOffsetX; // 0x24
   int ownerOffsetY; // 0x28

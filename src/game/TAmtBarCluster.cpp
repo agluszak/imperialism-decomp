@@ -186,7 +186,7 @@ void TAmtBarCluster::HandleTradeMoveStepCommand(int commandId, void* eventArg, i
   // ORIG_CALLCONV: __thiscall
   
   if (commandId == 100) {
-    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }    int moveValue = moveControl->QueryValue();
@@ -197,7 +197,7 @@ void TAmtBarCluster::HandleTradeMoveStepCommand(int commandId, void* eventArg, i
     this->HandleTradeMoveControlAdjustment(commandId, eventArg, eventExtra);
     return;
   }
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

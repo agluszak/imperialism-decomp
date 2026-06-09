@@ -41,6 +41,6 @@ void TClosePicture::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
       ::DispatchUiMouseEventToChildrenOrSelf)(this, arg1, arg2, arg3, arg4);
   TAmtBar* control = reinterpret_cast<TAmtBar*>(OwnerPanel());
   if (control != 0) {
-    control->ApplyStyleDescriptor(reinterpret_cast<void*>(selectedControlTagOrState1c), 1);
+    control->ApplyStyleDescriptor(reinterpret_cast<void*>(controlTag), 1);
   }
 }

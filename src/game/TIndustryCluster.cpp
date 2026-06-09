@@ -22,9 +22,9 @@ void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) 
   int appliedValue = moveControl->ApplyMoveClamp(baseValue, (short)requestedValue);
   void* owner = ownerContext;
   if (((short)appliedValue == 0) && requestedValue != 0) {
-    TAmtBar* fallbackControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagMove));
+    TAmtBar* fallbackControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {
-      fallbackControl = ResolveOwnerControl(owner, kControlTagSell);
+      fallbackControl = reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagSell);
     }
     if (fallbackControl != 0 && fallbackControl->QueryValue() == 0) {
       appliedValue = 1;
@@ -136,7 +136,7 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
     return 0;
   }
 
-  TAmtBar* moveControl = CallResolveControlByTagSlot94(reinterpret_cast<TradeMovePanelContext*>(this), kControlTagMove);
+  TAmtBar* moveControl = reinterpret_cast<TView*>(reinterpret_cast<TradeMovePanelContext*>(this))->ResolveControlByTag(kControlTagMove);
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xb42);
   }
@@ -151,7 +151,7 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&moveInvalidRect, 1);
 
-  TAmtBar* barControl = CallResolveControlByTagSlot94(reinterpret_cast<TradeMovePanelContext*>(this), kControlTagBar);
+  TAmtBar* barControl = reinterpret_cast<TView*>(reinterpret_cast<TradeMovePanelContext*>(this))->ResolveControlByTag(kControlTagBar);
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xb49);
   }

@@ -36,7 +36,7 @@ int TProductionCluster::GetControlFlag(int value90, int value94) {
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::HandleValuePanelSplitArrowCommand(int commandId, void* eventArg,
                                                            int eventExtra) {
-  TAmtBar* valueControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, 0x76616c75));
+  TAmtBar* valueControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(0x76616c75));
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

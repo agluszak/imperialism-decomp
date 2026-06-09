@@ -64,15 +64,6 @@ const unsigned int kAddrClassDescTAmtBarCluster = 0x00662f50;
 const unsigned int kAddrActiveQuickDrawSurfaceContext = 0x006A1D60;
 const unsigned int kAddrPrimaryRenderSurfaceContext = 0x006A30A8;
 
-static __inline TControl* CallResolveControlByTagSlot94(void* owner, int tag) {
-  return reinterpret_cast<TControl*(__fastcall*)(void*, int, int)>(
-      (*reinterpret_cast<void***>(owner))[0x94 / 4])(owner, 0, tag);
-}
-
-static __inline TControl* ResolveOwnerControl(void* owner, int controlTag) {
-  return CallResolveControlByTagSlot94(owner, controlTag);
-}
-
 static __inline int ReadIntAt(unsigned int address) {
   return *reinterpret_cast<int*>(address);
 }

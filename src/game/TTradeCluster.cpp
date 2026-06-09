@@ -203,7 +203,7 @@ void TTradeCluster::DoControlAction() {
 
   if (QueryUiScreenModeRaw(g_pUiRuntimeContext) < 4) {
     bidControl->SetEnabled(1, 1);
-    if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
+    if (controlTag == kTradeRowStateTag_67643020) {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateB, 0);
     } else {
       bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
@@ -226,7 +226,7 @@ void TTradeCluster::SetTradeBidControlBitmap() {
   }
 
   bidControl->SetEnabled(1, 0);
-  if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
+  if (controlTag == kTradeRowStateTag_67643020) {
     bidControl->SetBitmap(kTradeBitmapBidStateB, 0);
   } else {
     bidControl->SetBitmap(kTradeBitmapBidStateA, 0);
@@ -269,7 +269,7 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
   }
 
   offerControl->SetEnabled(1, 0);
-  if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
+  if (controlTag == kTradeRowStateTag_67643020) {
     offerControl->SetBitmap(kTradeBitmapOfferStateB, 0);
   } else {
     offerControl->SetBitmap(kTradeBitmapOfferStateA, 0);
@@ -325,7 +325,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     NationState* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->SetEnabled(1, 0);
-      if (selectedControlTagOrState1c == kTradeRowStateTag_67643020) {
+      if (controlTag == kTradeRowStateTag_67643020) {
         offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateB, 0);
       } else {
         offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateA, 0);
@@ -421,19 +421,19 @@ void TTradeCluster::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabl
     FailNilPointerWithAssert(kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
   }
 
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x73656173));
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x73656173));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }
-  control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x79656172));
+  control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x79656172));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }
-  control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x74726561));
+  control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726561));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }
-  control = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(toolControl, 0x74726565));
+  control = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726565));
   if (control != 0) {
     control->SetEnabled((int)enabledFlag, 1);
   }

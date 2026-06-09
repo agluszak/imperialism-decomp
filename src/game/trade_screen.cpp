@@ -129,7 +129,7 @@ struct TDocument;
 
 
 // The trade-screen UI object is a cluster-family view: it dispatches through the
-// TView vtable (ResolveControlByTag @0x94), reads TView::selectedControlTagOrState1c
+// TView vtable (ResolveControlByTag @0x94), reads TView::controlTag
 // (0x1c), and carries a cluster field at 0x88. Model it as real TUberCluster
 // inheritance instead of a standalone vftable struct, so member access and slot
 // dispatch need no reinterpret_cast over the native object.
@@ -383,7 +383,7 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
   // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
   TRailCluster* panel = reinterpret_cast<TRailCluster*>(context);
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(panel, kControlTagMove));
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(panel)->ResolveControlByTag(kControlTagMove));
   unsigned int styleDescriptor = styleSeed & 0xffff0000;
   if (moveControl != 0) {
     reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(
@@ -392,7 +392,7 @@ void __fastcall InitializeTradeMoveAndBarControls(void* context, int unusedEdx,
     moveControl->SetStyleState(-2, 0);
   }
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(panel, kControlTagBar));
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(panel)->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
@@ -452,7 +452,7 @@ void* __fastcall DestroyTradeSellControlPanel(void* self, int unusedEdx,
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context,
                                                            int assertLine) {
   void* owner = context;
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(owner, kControlTagBar));
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(assertLine);
   }

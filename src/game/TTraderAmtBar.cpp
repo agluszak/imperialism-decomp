@@ -98,7 +98,7 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
     if (tradeCapacity != 0) {
       if ((int)requestedValue < (this->field38 / (int)tradeCapacity)) {
         TAmtBar* sellControl =
-            reinterpret_cast<TAmtBar*>(ResolveOwnerControl(reinterpret_cast<void*>(this->ownerContext), kControlTagSell));
+            reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(reinterpret_cast<void*>(this->ownerContext))->ResolveControlByTag(kControlTagSell));
         if (sellControl != 0) {
           result = 1;
         }

@@ -99,7 +99,7 @@ void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
 void TShipyardCluster::ApplyMoveValue(int value) {
   // ORIG_CALLCONV: __thiscall
   TradeMovePanelContext* panel = reinterpret_cast<TradeMovePanelContext*>(this);
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -114,7 +114,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&invalidateRect, 1);
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagBar));
+  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -129,7 +129,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
       (int)&invalidateRect, 1);
 
-  TAmtBar* turnControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(panel->ownerContext, 0x7475726e));
+  TAmtBar* turnControl = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(panel->ownerContext)->ResolveControlByTag(0x7475726e));
   if (turnControl != 0) {
     turnControl->SetControlValue(0, 0);
     turnControl->QueryBounds(reinterpret_cast<int*>(&moveRect));
@@ -148,7 +148,7 @@ void TShipyardCluster::HandleTradeMoveArrowControlEvent(int commandId,
   // ORIG_CALLCONV: __thiscall
   if (commandId == 10) {
     if (sourceControl->controlTag == kControlTagRght) {
-      TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+      TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
       if (moveControl == 0) {
         GAME_FAIL_NIL_POINTER();
       }
@@ -160,7 +160,7 @@ void TShipyardCluster::HandleTradeMoveArrowControlEvent(int commandId,
       this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
       return;
     }
-    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(ResolveOwnerControl(this, kControlTagMove));
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }

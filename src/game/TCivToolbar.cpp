@@ -173,7 +173,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
 
   selectedSlotTag = 0x6e616461;
   if (selectedStackButton != 0) {
-    selectedSlotTag = selectedStackButton->selectedControlTagOrState1c;
+    selectedSlotTag = selectedStackButton->controlTag;
   }
   reinterpret_cast<TCluster*>(this)->SetControlClassAndRefresh(selectedSlotTag, 0);
 
