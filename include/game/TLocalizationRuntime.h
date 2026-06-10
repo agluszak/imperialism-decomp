@@ -43,11 +43,15 @@ public:
   TLOCALIZATION_VTABLE_SLOT(32);
   virtual void GetString(short codeGroup, short offset, void* destString) = 0; // 33 (0x84)
 
+  void DecrementField30Value();
+
   unsigned char pad04[4];
   int mode;
   unsigned char pad0c[0x2C - 0x0C];
   short quarterGateTick2c;
-  unsigned char pad2e[0x40 - 0x2E];
+  short pad2e;
+  int field30;
+  unsigned char pad34[0x40 - 0x34];
   int runtimeSubsystemIndex;
   int redrawEnabled;
   unsigned char pad48[0x64 - 0x48];

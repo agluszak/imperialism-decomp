@@ -1,32 +1,29 @@
 #pragma once
 
-#include "decomp_types.h"
+#include "game/TIndexAndRankList.h"
+#include "game/CPtrArray.h"
 
-// VTABLE: Provisional queue object
-class TQueueObject {
+// Recovered: nation turn/proposal/diplomacy queues are TSortedByRelationshipList
+// instances (TIndexAndRankList vtable 0x00654d38). Provisional slot names map to
+// the real TIndexAndRankList virtuals in TIndexAndRankList.h.
+// VTABLE: inherited from TIndexAndRankList (0x00672eac base / 0x00654d38 leaf)
+class TQueueObject : public TIndexAndRankList {
 public:
-  virtual void dummy0() = 0;
-  virtual void dummy1() = 0;
-  virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
-  virtual void dummy4() = 0;
-  virtual void ApplyMessageSlot14(void* message) = 0; // slot 14
-  virtual void Call18() = 0;                          // slot 18
-  virtual void Release1C() = 0;                       // slot 1C
-  virtual void Call20() = 0; // slot 20 (TCity slot 0x14 tail-calls it, 0x004b46c0)
-  virtual void Call24() = 0; // slot 24 (destructor)
-  virtual void dummy10() = 0;
-  virtual void* GetEntryAt1BasedSlot2C(int index) = 0; // slot 2C
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void WritePackedIntSlot38(int* packedValue) = 0; // slot 38
-  virtual void dummy15() = 0;                              // 3c
-  virtual void dummy16() = 0;                              // 40
-  virtual void PushPairSlot40(void* pair) = 0;             // slot 40 overload
-  virtual void dummy17() = 0;                              // 44
-  virtual void RefreshSlot48() = 0;                        // slot 48
-  virtual int ReadIndexSlot4C(int mode, int index) = 0;    // slot 4C
+  void WritePackedIntSlot38(int* packedValue) { AddEntrySlot38(packedValue); }
+  void* GetEntryAt1BasedSlot2C(int index) { return GetEntrySlot2C(index); }
+  void ApplyMessageSlot14(void* message) {
+    (void)message;
+    slot14();
+  }
+  void Call18(int arg1 = 0) {
+    (void)arg1;
+    slot18();
+  }
+  void Call1C() { ResetPtrListRecordsSlot1C(); }
+  void Release1C() { ResetPtrListRecordsSlot1C(); }
+  void Call20() { slot20(); }
+  void Call24() { ReleaseSlot24(); }
 
-  unsigned char pad04[8 - 4];
-  int entryCount; // +8
+  // Legacy name for CPtrArray::count at +0x8 on list-backed queues.
+  int GetEntryCount() const { return static_cast<const CPtrArray*>(this)->count; }
 };

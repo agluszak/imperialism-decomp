@@ -410,34 +410,6 @@ static __inline void* VCall_ProposalQueue_GetEntryAt1Based(void* object, int arg
   return fn(object, 0, arg0);
 }
 
-// queue packed int write; status=provisional
-static __inline void VCall_QueueObject_WritePackedIntAtSlot38(void* object, int* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
-  fn(object, 0, arg0);
-}
-
-// queue apply message; status=provisional
-static __inline void VCall_Queue_ApplyMessageSlot14(void* object, void* arg0) {
-  typedef void (__fastcall * Fn)(void*, int, void*);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x14 / 4)));
-  fn(object, 0, arg0);
-}
-
-// queue read index; status=provisional
-static __inline int VCall_Queue_ReadIndexSlot4C(void* object, int arg0, int arg1) {
-  typedef int (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x4C / 4)));
-  return fn(object, 0, arg0, arg1);
-}
-
-// queue refresh; status=provisional
-static __inline void VCall_Queue_RefreshSlot48(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  fn(object, 0);
-}
-
 // relation refresh; status=provisional
 static __inline void VCall_RelationManager_RefreshSlot80(void* object) {
   typedef void (__fastcall * Fn)(void*, int);

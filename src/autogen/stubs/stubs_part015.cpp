@@ -2579,14 +2579,6 @@ undefined4 GetTMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TMinister::ConstructTMinister
-// ghidra_proto void __thiscall ConstructTMinister(void)
-// FUNCTION: IMPERIALISM 0x0052eb80
-undefined4 ConstructTMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TMinister::DeletingDestructTMinister
 // ghidra_proto void __thiscall DeletingDestructTMinister(void)
 // FUNCTION: IMPERIALISM 0x0052eba0
@@ -2699,14 +2691,6 @@ undefined4 GetTForeignMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TForeignMinister::ConstructTForeignMinister
-// ghidra_proto void __thiscall ConstructTForeignMinister(void)
-// FUNCTION: IMPERIALISM 0x0052f070
-undefined4 ConstructTForeignMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TForeignMinister::DeletingDestructTForeignMinister
 // ghidra_proto void __thiscall DeletingDestructTForeignMinister(void)
 // FUNCTION: IMPERIALISM 0x0052f0e0
@@ -2719,14 +2703,6 @@ undefined4 DeletingDestructTForeignMinister(void)
 // ghidra_proto void __thiscall DestructTForeignMinister(void)
 // FUNCTION: IMPERIALISM 0x0052f110
 undefined4 DestructTForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTForeignMinisterStateAndCounters
-// ghidra_proto void __cdecl InitializeTForeignMinisterStateAndCounters(void)
-// FUNCTION: IMPERIALISM 0x0052f130
-undefined4 InitializeTForeignMinisterStateAndCounters(void)
 {
   return 0;
 }

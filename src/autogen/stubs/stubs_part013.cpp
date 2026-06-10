@@ -115,14 +115,6 @@ undefined4 GetTCityInteriorMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
-// ghidra_proto void __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
-// FUNCTION: IMPERIALISM 0x004be840
-undefined4 WrapperFor_thunk_ConstructTMinister_At004be840(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityInteriorMinister::DestructTCityInteriorMinisterAndMaybeFree
 // ghidra_proto void * __thiscall DestructTCityInteriorMinisterAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x004be880

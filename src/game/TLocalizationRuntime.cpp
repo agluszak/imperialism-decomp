@@ -31,3 +31,12 @@ void TLocalizationRuntime::GetString(short codeGroup, short offset, void* destSt
   reinterpret_cast<void(__cdecl*)(short, short, void*)>(LoadUiStringByCodeGroupAndOffset)(
       codeGroup, offset, destString);
 }
+
+// FUNCTION: IMPERIALISM 0x00581200
+#pragma optimize("y", on)
+void TLocalizationRuntime::DecrementField30Value() {
+  --field30;
+}
+#pragma optimize("", on)
+
+#pragma optimize("", on)

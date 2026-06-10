@@ -6458,7 +6458,7 @@ address|name|size|type|prototype
 4d7a40|LoadNationDisplayNameSharedRefFromField8|94|function|void __cdecl LoadNationDisplayNameSharedRefFromField8(void)
 4d7ae0|TGreatPower::AddToNationMetricAtField10|15|function|void __thiscall AddToNationMetricAtField10(int amount)
 4d7b00|ReturnFalseNationStateActionStub|5|function|void __cdecl ReturnFalseNationStateActionStub(void)
-4d7b20|TView::ApplyJoinEmpireModeForTargetNation|161|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int arg1, int arg2)
+4d7b20|TGreatPower::ApplyJoinEmpireModeForTargetNation|161|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)
 4d7c00|TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers|97|function|void __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1)
 4d7c90|ApplyJoinEmpireMode1TargetTransition|111|function|void __cdecl ApplyJoinEmpireMode1TargetTransition(void)
 4d7d20|IsDiplomacyTargetClassCode200Match|21|function|void __cdecl IsDiplomacyTargetClassCode200Match(void)

@@ -2651,14 +2651,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
   return 0;
 }
 
-// ghidra_name DispatchJoinEmpireModeEventPacket24_27
-// ghidra_proto void __cdecl DispatchJoinEmpireModeEventPacket24_27(void)
-// FUNCTION: IMPERIALISM 0x0054c5a0
-undefined4 DispatchJoinEmpireModeEventPacket24_27(void)
-{
-  return 0;
-}
-
 // ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
 // ghidra_proto void __cdecl SetDialogModeTagInitAndInvokeNoOpHook(void)
 // FUNCTION: IMPERIALISM 0x0054c630

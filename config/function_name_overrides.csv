@@ -5,5 +5,8 @@ address|name|prototype
 0x0040173f|thunk_DestructTViewBaseState_0058A000|void __fastcall thunk_DestructTViewBaseState_0058A000(TView* amountBar)
 0x00403b16|UiRuntimeContext::GetActiveNationId|short __thiscall GetActiveNationId(void)
 0x00409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|int __thiscall MapTurnEventCodeToPaletteIndex(int eventCode)
+0x005c2f50|TMilitaryUnitOrderState::InitializeRecruitOrderState|void __thiscall InitializeRecruitOrderState(short capValue,int nodeContext,short nationSlot)
+0x005c3190|TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)
+0x004d7b20|TGreatPower::ApplyJoinEmpireModeForTargetNation|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)
 
 

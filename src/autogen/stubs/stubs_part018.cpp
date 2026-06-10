@@ -1323,14 +1323,6 @@ undefined4 GetInt32Field30(void)
   return 0;
 }
 
-// ghidra_name DecrementField30Value
-// ghidra_proto void __cdecl DecrementField30Value(void)
-// FUNCTION: IMPERIALISM 0x00581200
-undefined4 DecrementField30Value(void)
-{
-  return 0;
-}
-
 // ghidra_name GetSumField34PlusField30
 // ghidra_proto void __cdecl GetSumField34PlusField30(void)
 // FUNCTION: IMPERIALISM 0x00581240

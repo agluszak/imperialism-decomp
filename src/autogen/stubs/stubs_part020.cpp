@@ -267,14 +267,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00(void)
   return 0;
 }
 
-// ghidra_name InitializeMilitaryRecruitOrderState
-// ghidra_proto void __cdecl InitializeMilitaryRecruitOrderState(void)
-// FUNCTION: IMPERIALISM 0x005c2f50
-undefined4 InitializeMilitaryRecruitOrderState(void)
-{
-  return 0;
-}
-
 // ghidra_name DeserializeMilitaryUnitOrderState
 // ghidra_proto void __cdecl DeserializeMilitaryUnitOrderState(void)
 // FUNCTION: IMPERIALISM 0x005c2fd0
@@ -287,14 +279,6 @@ undefined4 DeserializeMilitaryUnitOrderState(void)
 // ghidra_proto void __cdecl SerializeMilitaryUnitOrderState(void)
 // FUNCTION: IMPERIALISM 0x005c30a0
 undefined4 SerializeMilitaryUnitOrderState(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyUnitCurrentTileIntoOrderTargets
-// ghidra_proto void __cdecl CopyUnitCurrentTileIntoOrderTargets(void)
-// FUNCTION: IMPERIALISM 0x005c3190
-undefined4 CopyUnitCurrentTileIntoOrderTargets(void)
 {
   return 0;
 }

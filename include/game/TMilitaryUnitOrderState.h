@@ -6,6 +6,8 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 extern "C" char g_szEmptyString[];
+extern "C" void* g_apTerrainTypeDescriptorTable[];
+undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void);
 
 // Military land-unit recruit order (ctor 0x005c2df0, size 0x44). EH-framed: installs
 // base vtable 0x0066ee18 (via the inlined TUnitOrderState base ctor) then the derived
@@ -27,8 +29,15 @@ public:
 
   TMilitaryUnitOrderState();
 
+  void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot);
+  virtual void CopyUnitCurrentTileIntoOrderTargets();
+
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
+  }
+  void* operator new(unsigned int size, void* ptr) {
+    (void)size;
+    return ptr;
   }
   void operator delete(void* ptr) {
     (void)ptr;

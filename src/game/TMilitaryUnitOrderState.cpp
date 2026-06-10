@@ -20,3 +20,36 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
   name24.AssignFromPtr(empty);    // -> 0x00605a29
 }
+
+// FUNCTION: IMPERIALISM 0x005c3190
+void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets() {
+  short tile = field_6;
+  short* cursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x2e);
+  int remaining = 3;
+  do {
+    cursor[-3] = tile;
+    *cursor = tile;
+    ++cursor;
+    --remaining;
+  } while (remaining != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x005c2f50
+void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int nodeContext,
+                                                            short nationSlot) {
+  field_1C = 1;
+  field_6 = static_cast<short>(-1);
+  RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, 0);
+  field_36 = static_cast<short>(
+      (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
+  if (capValue > 0x1b) {
+    void* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
+    reinterpret_cast<void(__fastcall*)(void*, CString*)>(
+        thunk_GenerateMappedFlavorTextByNationSlotField0C)(terrain, &name24);
+  }
+  CopyUnitCurrentTileIntoOrderTargets();
+}
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

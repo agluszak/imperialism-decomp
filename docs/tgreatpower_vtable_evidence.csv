@@ -1,10 +1,10 @@
-class_name,vtable_addr,index,byte_offset,entry_addr,current_name,return_type,args,autogp_entry_addr,autogp_relation,evidence_status,evidence
+class_name,vtable_addr,index,byte_offset,entry_addr,current_name,return_type,args,autogp_entry_addr,autogp_relation,evidence_status,evidence,bridge_name,blocked_by_class,facade_rows
 TGreatPower,0x00653938,0x01,0x004,0x004085ee,DeleteSelfSlot01_Provisional,void,int,0x0040348b,override,provisional,scalar-deleting destructor slot; callsite passes free-self flag; TAutoGreatPower OVERRIDES (entry 0x0040348b)
 TAutoGreatPower,0x00654088,0x01,0x004,0x0040348b,DeleteSelfSlot01_Provisional,void,int,,override,provisional,override of TGreatPower slot 0x01 (base entry 0x004085ee)
 TGreatPower,0x00653938,0x0e,0x038,0x00403995,TGreatPower::AddToNationMetricAtField10,void,int,0x00403995,shared,wired,decompiled stub + wired; body 0x004d7ae0: this->pressureScore(field0x10) += amount; FPO -> 100%; 11 callsites
 TGreatPower,0x00653938,0x10,0x040,0x004055d8,GetNodeContextSlot10_Provisional,int,,0x004055d8,shared,provisional,"0x004dc540 calls on ecx=this, no stack args; old facade used byte offset 0x40; TAutoGreatPower shares this entry"
-TGreatPower,0x00653938,0x12,0x048,0x00406be0,ResetDiplomacyLevelForNationSlot12_Provisional,void,"int,int",0x00406be0,shared,wired,entry thunks to body 0x004dd040; promoted SetDiplomacyTradePolicy shape
-TGreatPower,0x00653938,0x13,0x04c,0x004015aa,ApplyJoinEmpireAcceptanceSideEffectsForTargetNation,void,"int,int",0x004015aa,shared,wired,"entry thunk 0x004015aa -> body 0x004e21b0; wired from 0x004df010 case 0"
+TGreatPower,0x00653938,0x12,0x048,0x00406be0,ResetDiplomacyLevelForNationSlot12_Provisional,void,"int,int",0x00406be0,shared,wired,entry thunks to body 0x004dd040; promoted SetDiplomacyTradePolicy shape,,,
+TGreatPower,0x00653938,0x13,0x04c,0x004015aa,ApplyJoinEmpireAcceptanceSideEffectsForTargetNation,void,"int,int",0x004015aa,shared,wired,"entry thunk 0x004015aa -> body 0x004e21b0; wired from 0x004df010 case 0",ApplyJoinEmpireMode0GlobalDiplomacyResetImpl,TGreatPower,
 TGreatPower,0x00653938,0x1d,0x074,0x00401708,TGreatPower::GetDiplomacyCounterA2,short,,0x00401708,shared,wired,decompiled from 0% stub + wired; body 0x004d8c00 returns this->diplomacyCounterA2; 100%
 TGreatPower,0x00653938,0x1e,0x078,0x00404b5b,GetDiplomacyNeedScoreSlot1E_Provisional,short,int,0x00404b5b,shared,provisional,"0x004dd1b0 and 0x004dd270 call this for each nation while rebuilding diplomacy need scores; returns AX; TAutoGreatPower shares this entry"
 TGreatPower,0x00653938,0x1f,0x07c,0x0040337d,TGreatPower::GetDiplomacyState1C6ByTarget,short,int,0x0040337d,shared,wired,decompiled + wired; body 0x004ddb20 returns diplomacyState1c6[short idx]; FPO pragma; 100%

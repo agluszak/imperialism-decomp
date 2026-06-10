@@ -287,6 +287,7 @@ address|target_cpp|ownership|note
 4be410|src/game/noop_slots.cpp|manual|marker_sync
 4be430|src/game/noop_slots.cpp|manual|marker_sync
 4be6d0|src/game/noop_slots.cpp|manual|marker_sync
+4be840|src/game/TCityInteriorMinister.cpp|manual|marker_sync
 4bff60|src/game/noop_slots.cpp|manual|marker_sync
 4c6fb0|src/game/noop_slots.cpp|manual|marker_sync
 4c6fd0|src/game/noop_slots.cpp|manual|marker_sync
@@ -304,7 +305,7 @@ address|target_cpp|ownership|note
 4d6770|src/game/noop_slots.cpp|manual|marker_sync
 4d6790|src/game/noop_slots.cpp|manual|marker_sync
 4d71b0|src/game/TGreatPower.cpp|manual|marker_sync
-4d7770|src/game/TGreatPower.cpp|manual|marker_sync
+4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4d7ae0|src/game/TGreatPower.cpp|manual|marker_sync
 4d7b00|src/game/noop_slots.cpp|manual|marker_sync
 4d7b20|src/game/TGreatPower.cpp|manual|marker_sync
@@ -329,7 +330,7 @@ address|target_cpp|ownership|note
 4d89f0|src/game/TGreatPower.cpp|manual|marker_sync
 4d8bc0|src/game/noop_slots.cpp|manual|marker_sync
 4d8be0|src/game/noop_slots.cpp|manual|marker_sync
-4d8c00|src/game/TGreatPower.cpp|manual|marker_sync
+4d8c00|src/game/TGreatPower_ministers.cpp|manual|marker_sync
 4d8c20|src/game/TGreatPower.cpp|manual|marker_sync
 4d8c50|src/game/TGreatPower.cpp|manual|marker_sync
 4d8cc0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -426,7 +427,7 @@ address|target_cpp|ownership|note
 4df370|src/game/TGreatPower.cpp|manual|marker_sync
 4df4b0|src/game/TGreatPower.cpp|manual|marker_sync
 4df580|src/game/TGreatPower.cpp|manual|marker_sync
-4df5a0|src/game/TGreatPower.cpp|manual|marker_sync
+4df5a0|src/game/TGreatPower_diplomacy.cpp|manual|marker_sync
 4df5c0|src/game/TGreatPower.cpp|manual|marker_sync
 4df5f0|src/game/TGreatPower.cpp|manual|marker_sync
 4df810|src/game/TGreatPower.cpp|manual|marker_sync
@@ -440,7 +441,7 @@ address|target_cpp|ownership|note
 4e03a0|src/game/TGreatPower.cpp|manual|marker_sync
 4e03d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0400|src/game/noop_slots.cpp|manual|marker_sync
-4e0420|src/game/TGreatPower.cpp|manual|marker_sync
+4e0420|src/game/TGreatPower_power_score.cpp|manual|marker_sync
 4e0440|src/game/TGreatPower.cpp|manual|marker_sync
 4e0500|src/game/TGreatPower.cpp|manual|marker_sync
 4e0550|src/game/TGreatPower.cpp|manual|marker_sync
@@ -538,6 +539,8 @@ address|target_cpp|ownership|note
 4ea450|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4ea470|src/game/TGreatPower.cpp|manual|marker_sync
 4eb0d0|src/game/TAutoGreatPower.cpp|manual|marker_sync
+4ec0e0|src/game/TDefenseMinister.cpp|manual|marker_sync
+4ec160|src/game/TDefenseMinister.cpp|manual|marker_sync
 4ee4b0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee520|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee540|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
@@ -601,7 +604,10 @@ address|target_cpp|ownership|note
 523b70|src/game/TMapDialog.cpp|manual|marker_sync
 523ff0|src/game/TMapDialog.cpp|manual|marker_sync
 525730|src/game/TMapDialog.cpp|manual|marker_sync
+52eb80|src/game/TMinister.cpp|manual|marker_sync
 52efb0|src/game/noop_slots.cpp|manual|marker_sync
+52f070|src/game/TForeignMinister.cpp|manual|marker_sync
+52f130|src/game/TForeignMinister.cpp|manual|marker_sync
 52fd80|src/game/noop_slots.cpp|manual|marker_sync
 52fda0|src/game/noop_slots.cpp|manual|marker_sync
 531110|src/game/noop_slots.cpp|manual|marker_sync
@@ -682,6 +688,7 @@ address|target_cpp|ownership|note
 541a60|src/game/noop_slots.cpp|manual|marker_sync
 541c90|src/game/noop_slots.cpp|manual|marker_sync
 541cb0|src/game/noop_slots.cpp|manual|marker_sync
+54c5a0|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 54c660|src/game/noop_slots.cpp|manual|marker_sync
 54c680|src/game/noop_slots.cpp|manual|marker_sync
 54c6a0|src/game/noop_slots.cpp|manual|marker_sync
@@ -766,6 +773,7 @@ address|target_cpp|ownership|note
 57af20|src/game/TTextList.cpp|manual|marker_sync
 57b760|src/game/noop_slots.cpp|manual|marker_sync
 57c390|src/game/noop_slots.cpp|manual|marker_sync
+581200|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
 583bd0|src/game/TSidewaysArrow.cpp|manual|marker_sync
 5846e0|src/game/TBoycottButton.cpp|manual|marker_sync
@@ -1020,6 +1028,8 @@ address|target_cpp|ownership|note
 5c28c0|src/game/TCivWorkOrderState.cpp|manual|marker_sync
 5c2940|src/game/TCivWorkOrderState.cpp|manual|marker_sync
 5c2df0|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
+5c2f50|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
+5c3190|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3490|src/game/TGreatPower.cpp|manual|marker_sync
 5d7190|src/game/noop_slots.cpp|manual|marker_sync
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync

@@ -21,10 +21,6 @@ src/game/TDiplomacyTurnStateManager.cpp|VCall_Diplomacy_HasOutdatedWarRelationSl
 src/game/TDiplomacyTurnStateManager.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|char|0x60 / 4|int,int|high|alliance guard/asymmetric war relation predicate|index|thiscall|zero||provisional|DiplomacyTurnStateManager
 src/game/TGreatPower.cpp|VCall_UiRuntime_RequestDiplomacyDecisionSlot90|char|0x90 / 4|int,int,int|high|ui decision request
 src/game/TGreatPower.cpp|VCall_UiRuntime_DispatchEventSlot4C|void|0x4C / 4|int,int|high|ui dispatch event
-src/game/TGreatPower.cpp|VCall_QueueObject_WritePackedIntAtSlot38|void|0x38 / 4|int*|high|queue packed int write|||||
-src/game/TGreatPower.cpp|VCall_Queue_ApplyMessageSlot14|void|0x14 / 4|void*|high|queue apply message|||||
-src/game/TGreatPower.cpp|VCall_Queue_RefreshSlot48|void|0x48 / 4||high|queue refresh|||||
-src/game/TGreatPower.cpp|VCall_Queue_ReadIndexSlot4C|int|0x4C / 4|int,int|high|queue read index|||||
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasFlag84ForNationSlot84|char|0x84 / 4|int|high|diplomacy flag gate
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_SetResetLevelSlot68|void|0x68 / 4|int,int|high|terrain reset
 src/game/TGreatPower.cpp|VCall_SecondaryState_ResetDiplomacyLevelSlot48|void|0x48 / 4|int,int|high|secondary reset

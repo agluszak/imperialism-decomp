@@ -355,14 +355,6 @@ undefined4 GetTDefenseMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TDefenseMinister::ConstructTDefenseMinisterBaseState
-// ghidra_proto void * __thiscall ConstructTDefenseMinisterBaseState(void)
-// FUNCTION: IMPERIALISM 0x004ec0e0
-undefined4 ConstructTDefenseMinisterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDefenseMinister::DestructTDefenseMinisterAndMaybeFree
 // ghidra_proto void * __thiscall DestructTDefenseMinisterAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x004ec110
@@ -375,14 +367,6 @@ undefined4 DestructTDefenseMinisterAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTDefenseMinisterAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x004ec140
 undefined4 DestructTDefenseMinisterAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTMinisterBaseOrderArrayMetrics
-// ghidra_proto void __cdecl InitializeTMinisterBaseOrderArrayMetrics(void)
-// FUNCTION: IMPERIALISM 0x004ec160
-undefined4 InitializeTMinisterBaseOrderArrayMetrics(void)
 {
   return 0;
 }
