@@ -65,8 +65,9 @@ public:
   // slot 0x0b — body 0x004b3de0: refresh the low-stock/low-summary flags and push
   // fieldB6 to the owner (TGreatPower slot 0x3f).
   virtual void Call2C();
-  // slot 0x0c — body 0x004b3e70 (242B, unported): per-turn order state refresh.
-  virtual void RefreshOrderStateSlot0C() {}
+  // slot 0x0c — body 0x004b3e70: dispatch pending build/ship orders to the owner
+  // (slot 0xb0) then tick every owned order object (vt+0x34).
+  virtual void RefreshOrderStateSlot0C();
   // slot 0x0d — body 0x004b3fb0: add a 17-entry need vector into the fieldB6 block
   // (split 7/6/4 across fieldB6/fieldC4/fieldD0).
   virtual void AddNeedVectorSplitSlot34(short* needVector);
@@ -80,8 +81,13 @@ public:
   // slot 0x11 — body 0x004b3b20: adopt the selected order/marker (TGreatPower slots
   // 0x3a/0x3b hand the new Frog City marker through this).
   virtual void AdoptSelectedOrderSlot44(void* order);
-  virtual void Slot48_Provisional() {}
-  virtual void Slot4C_Provisional() {}
+  // slot 0x12 — body 0x004b4540: pack two shorts and write them to eventQueue274
+  // (slot 0x38).
+  virtual void WriteQueuePairSlot48(short low, short high);
+  // slot 0x13 — body 0x004b40e0: allocate up to `amount` of a need from the owner's
+  // current-over-target surplus (capped by needCapA6 - overCap), accumulate into
+  // fieldB6 and push the new target (TGreatPower slot 0x45).
+  virtual short AllocateNeedFromOwnerSlot4C(short needIndex, short amount);
   // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
   virtual void ForwardQueueSlot20Slot50();
   // slot 0x15 — thunk 0x00407464: building display capacity by slot.
@@ -96,7 +102,9 @@ public:
   virtual void Slot5C_Provisional() {}
   // slot 0x18 — thunk 0x0040494e: toggle the power-plant upgrade order.
   virtual void ToggleCityPowerPlantUpgradeOrderSlot60() {}
-  virtual void Slot64_Provisional() {}
+  // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
+  virtual void SetProductionSlotState(short productionSlot, char flag, short current,
+                                      short accum);
   // slot 0x1a — body 0x004b4cc0: read the production flag byte (+0x21c) and the two
   // production shorts (+0x22c/+0x24c) for a slot.
   virtual char ReadProductionSlotState(short productionSlot, short* outCurrent,
@@ -109,7 +117,8 @@ public:
   // summary array and return it (shorts at +0x22/+0x24/+0x28 summed by TGreatPower
   // slot 0x65, body 0x004dd7f0).
   virtual short* GetCitySummaryRecordSlot74();
-  virtual void Slot78_Provisional() {}
+  // slot 0x1e — body 0x004b4d00: true for the basic resource slots 0..6 and 0xb.
+  virtual short IsBasicResourceSlot78(short resourceSlot);
   virtual void Slot7C_Provisional() {}
   // slot 0x20 — body 0x004b4180: clamp negative fieldB6 entries to 0 (asserting via
   // UCity.cpp:0x47f unless replaying).

@@ -2427,22 +2427,6 @@ undefined4 OrphanCallChain_C13_I161_004b3b40(void)
   return 0;
 }
 
-// ghidra_name GetResourceTypeRandomDrawBlockWithSharedStringState
-// ghidra_proto void __cdecl GetResourceTypeRandomDrawBlockWithSharedStringState(void)
-// FUNCTION: IMPERIALISM 0x004b3e70
-undefined4 GetResourceTypeRandomDrawBlockWithSharedStringState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I34_004b40e0
-// ghidra_proto short __cdecl OrphanCallChain_C1_I34_004b40e0(void)
-// FUNCTION: IMPERIALISM 0x004b40e0
-undefined4 OrphanCallChain_C1_I34_004b40e0(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAverageWeightWord1TimesTenFromResourceCounts
 // ghidra_proto int __cdecl ComputeAverageWeightWord1TimesTenFromResourceCounts(void)
 // FUNCTION: IMPERIALISM 0x004b4290
@@ -2467,14 +2451,6 @@ undefined4 AllocateRandomResourceCountsWithinWeightBudget(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I10_004b4540
-// ghidra_proto void __cdecl OrphanCallChain_C1_I10_004b4540(void)
-// FUNCTION: IMPERIALISM 0x004b4540
-undefined4 OrphanCallChain_C1_I10_004b4540(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAltownCityObject
 // ghidra_proto void __cdecl CreateAltownCityObject(void)
 // FUNCTION: IMPERIALISM 0x004b4580
@@ -2495,22 +2471,6 @@ undefined4 GetCityBuildingDisplayCapacityBySlot(void)
 // ghidra_proto void __cdecl WrapperFor_GetActiveNationId_At004b4940(void)
 // FUNCTION: IMPERIALISM 0x004b4940
 undefined4 WrapperFor_GetActiveNationId_At004b4940(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins08_004b4c80
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins08_004b4c80(void)
-// FUNCTION: IMPERIALISM 0x004b4c80
-undefined4 OrphanLeaf_NoCall_Ins08_004b4c80(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins21_004b4d00
-// ghidra_proto short __cdecl OrphanLeaf_NoCall_Ins21_004b4d00(int arg1)
-// FUNCTION: IMPERIALISM 0x004b4d00
-undefined4 OrphanLeaf_NoCall_Ins21_004b4d00(void)
 {
   return 0;
 }
