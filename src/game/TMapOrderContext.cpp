@@ -2,7 +2,7 @@
 
 #include "game/CObject.h"
 #include "game/CRuntimeClass.h"
-#include "game/TRelationManager.h"
+#include "game/TCity.h"
 
 extern "C" {
 extern void* g_pMapActionContextListHead; // 0x6a3fc8
@@ -30,7 +30,7 @@ struct MapActionNodeView : public CObject {
 
 // FUNCTION: IMPERIALISM 0x005634a0
 #pragma optimize("y", on)
-void* TMapOrderContext::FindPortZoneBySelectedTile(TRelationManager* relationManager) {
+void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* relationManager) {
   short selectedTileId;
   if (relationManager->selectedOrderB0 == 0) {
     selectedTileId = 1;

@@ -13,7 +13,7 @@ public:
   virtual void ApplyMessageSlot14(void* message) = 0; // slot 14
   virtual void Call18() = 0;                          // slot 18
   virtual void Release1C() = 0;                       // slot 1C
-  virtual void dummy8() = 0;
+  virtual void Call20() = 0; // slot 20 (TCity slot 0x14 tail-calls it, 0x004b46c0)
   virtual void Call24() = 0; // slot 24 (destructor)
   virtual void dummy10() = 0;
   virtual void* GetEntryAt1BasedSlot2C(int index) = 0; // slot 2C

@@ -8,5 +8,5 @@ public:
   // 0x005634a0 — walks the map-action node chain (g_pMapActionContextListHead) for
   // TPortZone nodes whose tile-id fields match the relation manager's selected order
   // tile (or tile 1 when no order is selected).
-  void* FindPortZoneBySelectedTile(class TRelationManager* relationManager);
+  void* FindPortZoneBySelectedTile(class TCity* relationManager);
 };

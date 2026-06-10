@@ -7,7 +7,7 @@
 #include "game/TLocalizationRuntime.h"
 #include "game/TNationState.h"
 #include "game/TUiRuntimeContext.h"
-#include "game/TRelationManager.h"
+#include "game/TCity.h"
 #include "game/TMinister.h"
 #include "game/TGlobalMapState.h"
 // Manual decompilation file.
@@ -779,7 +779,7 @@ static __inline char IsSpecialNationInteractionResource(short resourceIndex) {
 }
 
 static __inline void RelationManager_RefreshSlot80(void* relationManager) {
-  static_cast<TRelationManager*>(relationManager)->Refresh80();
+  static_cast<TCity*>(relationManager)->Refresh80();
 }
 
 static __inline void RelationManager_ClearNeedSlotE0AndRefresh(void* relationManager) {
@@ -922,7 +922,7 @@ static __inline void SecondaryState_CallSlot4C(void* secondaryState, int sourceN
 }
 
 static __inline int GetCityBuildingProductionValueBySlot(void* cityRecord, int slot) {
-  return static_cast<TRelationManager*>(cityRecord)->GetBuildingProductionValueBySlot(
+  return static_cast<TCity*>(cityRecord)->GetBuildingProductionValueBySlot(
       static_cast<short>(slot));
 }
 
@@ -1505,7 +1505,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
     reinterpret_cast<void(__fastcall*)(int, int)>(thunk_InitializeCityProductionState)(
         reinterpret_cast<int>(cityModel), arg1);
   }
-  this->relationManager = static_cast<TRelationManager*>(cityModel);
+  this->relationManager = static_cast<TCity*>(cityModel);
 
   void* townMarkerListOwner = AllocateBattleListOwnerWithLinkedSentinel();
   this->townMarkerList = static_cast<TListObject*>(townMarkerListOwner);
@@ -1782,7 +1782,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
     } else {
       void* relationManager = this->relationManager;
       if (relationManager != 0) {
-        static_cast<TRelationManager*>(relationManager)->Call18();
+        static_cast<TCity*>(relationManager)->Call18();
       }
     }
   }
@@ -1812,8 +1812,8 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   if (townCount > 0) {
-    static_cast<TListObject*>(townMarkerList)->GetTrackedEntrySlot4C();
-    this->relationManager->Call44();
+    this->relationManager->AdoptSelectedOrderSlot44(
+        static_cast<TListObject*>(townMarkerList)->GetTrackedEntrySlot4C());
   }
 
   void* trackedObjectList = this->trackedObjectList;
@@ -2041,12 +2041,12 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   }
   if (this->serializedStatusFlags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
-      TRelationManager* relationManager = this->relationManager;
+      TCity* relationManager = this->relationManager;
       relationManager->fieldB6[10] = relationManager->fieldB6[10] + 10;
       relationManager->Refresh80();
       UiRuntime_QueueTurnStatusPrompt(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
-      TRelationManager* relationManager = this->relationManager;
+      TCity* relationManager = this->relationManager;
       relationManager->fieldB6[10] = relationManager->fieldB6[10] + 10;
       relationManager->Refresh80();
       UiRuntime_QueueTurnStatusPrompt(7, -1);
@@ -2177,7 +2177,7 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short 
 // FUNCTION: IMPERIALISM 0x004dca60
 #pragma optimize("y", on)
 void TGreatPower::NotifyRelationManagerSlot2C(void) {
-  TRelationManager* relationManager = this->relationManager;
+  TCity* relationManager = this->relationManager;
   if (relationManager != 0) {
     relationManager->Call2C();
   }
@@ -2336,16 +2336,13 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     return production + production;
   }
   case 7: {
-    unsigned char* summary = static_cast<unsigned char*>(
-        static_cast<TRelationManager*>(this->relationManager)->GetCitySummaryRecordSlot74());
-    unsigned char* relationManager = reinterpret_cast<unsigned char*>(this->relationManager);
-    short available = static_cast<short>(
-        ((((*reinterpret_cast<short*>(summary + 0x28) + *reinterpret_cast<short*>(summary + 0x24) +
-            *reinterpret_cast<short*>(summary + 0x22)) -
-           *reinterpret_cast<short*>(relationManager + 0xc4)) -
-          *reinterpret_cast<short*>(relationManager + 0xde)) -
-         *reinterpret_cast<short*>(relationManager + 0xd8)) -
-        *reinterpret_cast<short*>(relationManager + 0xda));
+    short* summary = this->relationManager->GetCitySummaryRecordSlot74();
+    TCity* city = this->relationManager;
+    short available =
+        static_cast<short>(((((summary[0x14] + summary[0x12] + summary[0x11]) - city->fieldB6[7]) -
+                             city->fieldB6[0x14]) -
+                            city->fieldB6[0x11]) -
+                           city->fieldB6[0x12]);
     if (available >= 0) {
       return static_cast<unsigned short>(available);
     }
@@ -2553,7 +2550,7 @@ struct TRelationManagerOrderCountView {
 void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   void* relationManager =
       reinterpret_cast<TGreatPowerDiplomacyExternalStateView*>(this)->diplomacyExternalState894;
-  static_cast<TRelationManager*>(relationManager)->RefreshOrderStateSlot0C();
+  static_cast<TCity*>(relationManager)->RefreshOrderStateSlot0C();
 
   short nationSlot = this->nationSlot;
 
@@ -2885,7 +2882,7 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             static_cast<TUnitOrderState*>(order)->SetOrderModeSlot34(2, -1);
           }
           TGreatPower* nation = static_cast<TGreatPower*>(g_apNationStates[this->nationSlot]);
-          TRelationManager* relationMgr = (nation != 0) ? nation->relationManager : 0;
+          TCity* relationMgr = (nation != 0) ? nation->relationManager : 0;
           void* portZone = ActiveMapOrderContext()->FindPortZoneBySelectedTile(relationMgr);
           reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
               thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(3, portZone, this->nationSlot,
@@ -2895,7 +2892,7 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           TGreatPower* nation = static_cast<TGreatPower*>(g_apNationStates[this->nationSlot]);
           if (nation->diplomacyEligibilityA0 != 0 &&
               ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 0) {
-            TRelationManager* relationMgr = (nation != 0) ? nation->relationManager : 0;
+            TCity* relationMgr = (nation != 0) ? nation->relationManager : 0;
             TPortZoneRefitView* portZone = static_cast<TPortZoneRefitView*>(
                 ActiveMapOrderContext()->FindPortZoneBySelectedTile(relationMgr));
             if (portZone->refitState2c == 0) {
@@ -3078,35 +3075,10 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
 }
 #pragma optimize("", on)
 
-// Collapse-preset view of the relation manager used by slot 0x39 (0x004df810): the
-// notify sink at +0x1d8 and the production current/accumulator tables at +0x1dc/+0x1fc.
-struct TRelationPresetNotifySink {
-  virtual void s00() = 0;
-  virtual void s01() = 0;
-  virtual void s02() = 0;
-  virtual void s03() = 0;
-  virtual void s04() = 0;
-  virtual void s05() = 0;
-  virtual void s06() = 0;
-  virtual void s07() = 0;
-  virtual void s08() = 0;
-  virtual void s09() = 0;
-  virtual void s10() = 0;
-  virtual void NotifyProductionPresetSlot2C(int a, int b, int c) = 0;
-};
-
-struct TRelationManagerPresetView {
-  unsigned char pad00[0x1d8];
-  TRelationPresetNotifySink* notifySink1d8;
-  short productionCurrent1dc[0x10]; // 0x1dc..0x1fc
-  short productionAccum1fc[0x17];   // 0x1fc..0x22a
-};
-
 // FUNCTION: IMPERIALISM 0x004df810
 #pragma optimize("y", on)
-void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TRelationManager* mgr) {
-  TRelationManagerPresetView* presetView = reinterpret_cast<TRelationManagerPresetView*>(mgr);
-  TRelationPresetNotifySink* notifySink = presetView->notifySink1d8;
+void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
+  TCitySummaryObject* notifySink = mgr->productionSummary1d8;
   int presetLevel;
   if (this->diplomacyEligibilityA0 == 0) {
     presetLevel = 2;
@@ -3118,18 +3090,18 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TRelationManager* 
     mgr->fieldB6[static_cast<short>(needIndex)] = presetRow[needIndex];
     mgr->Refresh80();
   }
-  presetView->productionAccum1fc[8] += 999 - presetView->productionCurrent1dc[8];
-  presetView->productionCurrent1dc[8] = 999;
-  presetView->productionAccum1fc[10] += 999 - presetView->productionCurrent1dc[10];
-  presetView->productionCurrent1dc[10] = 999;
-  presetView->productionAccum1fc[9] += 999 - presetView->productionCurrent1dc[9];
-  presetView->productionCurrent1dc[9] = 999;
-  presetView->productionAccum1fc[7] += 999 - presetView->productionCurrent1dc[7];
-  presetView->productionCurrent1dc[7] = 999;
-  presetView->productionAccum1fc[14] += 999 - presetView->productionCurrent1dc[14];
-  presetView->productionCurrent1dc[14] = 999;
-  presetView->productionAccum1fc[13] += 999 - presetView->productionCurrent1dc[13];
-  presetView->productionCurrent1dc[13] = 999;
+  mgr->productionAccum1fc[8] += 999 - mgr->productionOrderTable1dc[8];
+  mgr->productionOrderTable1dc[8] = 999;
+  mgr->productionAccum1fc[10] += 999 - mgr->productionOrderTable1dc[10];
+  mgr->productionOrderTable1dc[10] = 999;
+  mgr->productionAccum1fc[9] += 999 - mgr->productionOrderTable1dc[9];
+  mgr->productionOrderTable1dc[9] = 999;
+  mgr->productionAccum1fc[7] += 999 - mgr->productionOrderTable1dc[7];
+  mgr->productionOrderTable1dc[7] = 999;
+  mgr->productionAccum1fc[14] += 999 - mgr->productionOrderTable1dc[14];
+  mgr->productionOrderTable1dc[14] = 999;
+  mgr->productionAccum1fc[13] += 999 - mgr->productionOrderTable1dc[13];
+  mgr->productionOrderTable1dc[13] = 999;
   if (presetLevel == 0) {
     notifySink->NotifyProductionPresetSlot2C(2, 3, 2);
   } else {
@@ -3262,7 +3234,7 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
   void** nationCursor = g_apNationStates;
   do {
     if (IsNationSlotEligibleForEventProcessingFast(slot) != 0) {
-      TRelationManager* peerMgr =
+      TCity* peerMgr =
           (*nationCursor != 0) ? static_cast<TGreatPower*>(*nationCursor)->relationManager : 0;
       if (peerMgr != 0) {
         int production = 4;
@@ -4290,7 +4262,7 @@ void TGreatPower::ResetDiplomacyLevelForNationSlot12_Provisional(int targetNatio
 
 // FUNCTION: IMPERIALISM 0x004dd740
 short TGreatPower::GetDiplomacyExternalStateB6ByTarget(short targetNationSlot) {
-  TRelationManager* relationManager = this->relationManager;
+  TCity* relationManager = this->relationManager;
   if (relationManager == 0) {
     return 0;
   }
@@ -4299,14 +4271,14 @@ short TGreatPower::GetDiplomacyExternalStateB6ByTarget(short targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004dd770
 void TGreatPower::SetRelationManagerFieldB6AndRefresh(short targetSlot, short value) {
-  TRelationManager* relationManager = this->relationManager;
+  TCity* relationManager = this->relationManager;
   relationManager->fieldB6[targetSlot] = value;
   relationManager->Refresh80();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
 void TGreatPower::AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value) {
-  TRelationManager* relationManager = this->relationManager;
+  TCity* relationManager = this->relationManager;
   relationManager->fieldB6[targetSlot] =
       static_cast<short>(relationManager->fieldB6[targetSlot] + value);
   relationManager->Refresh80();

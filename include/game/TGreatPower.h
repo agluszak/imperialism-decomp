@@ -7,7 +7,7 @@
 class TMinister;
 class NationCityTradeState;
 class TQueueObject;
-class TRelationManager;
+class TCity;
 
 #define TGREATPOWER_VTABLE_SLOT(n)                                                                 \
   virtual void VTableIndex##n##_Provisional(void) {}
@@ -138,7 +138,7 @@ public:
   // into the manager's fieldB6 relation deltas, maxes six production-order entries to
   // 999, notifies the manager's 0x1d8 sink, then spawns the Frog City marker through
   // slot 0x3a or 0x3b.
-  virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TRelationManager* mgr);
+  virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TCity* mgr);
   // slot 0x3a — body 0x004dfa20: creates the "Frog City" town marker, hands it to
   // the receiver's slot 0x44 and appends it to townMarkerList.
   virtual void CreateFrogCityTownMarkerAndAttach(void* receiver);
@@ -150,7 +150,10 @@ public:
   TGREATPOWER_VTABLE_SLOT(60);
   TGREATPOWER_VTABLE_SLOT(61);
   TGREATPOWER_VTABLE_SLOT(62);
-  TGREATPOWER_VTABLE_SLOT(63);
+  // slot 0xfc — TCity::Call2C (0x004b3de0) pushes the city's fieldB6 need vector here.
+  virtual void AbsorbCityNeedVectorSlotFC_Provisional(short* needVector) {
+    (void)needVector;
+  }
   // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
@@ -399,8 +402,8 @@ public:
   TQueueObject* turnEventQueue;
   TQueueObject* proposalQueue;
   TQueueObject* diplomacyTrackedSlots[0x11];
-  // 0x894 — city production state; same object used as TRelationManager in diplomacy paths.
-  TRelationManager* relationManager;
+  // 0x894 — city production state; same object used as TCity in diplomacy paths.
+  TCity* relationManager;
   TListObject* townMarkerList;
   TListObject* trackedObjectList;
   unsigned char candidateNationFlags[0x17];

@@ -8,7 +8,7 @@
 #include "game/TMinister.h"
 #include "game/TMinor.h"
 #include "game/TPtrList.h"
-#include "game/TRelationManager.h"
+#include "game/TCity.h"
 #include "game/TTrackedObject.h"
 #include "game/diplomacy_globals.h"
 #include <new>
@@ -227,7 +227,7 @@ void TAutoGreatPower::VTableIndex56_Provisional(void) {
 // FUNCTION: IMPERIALISM 0x004e7a50
 void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
   if (this->relationManager != 0) {
-    this->relationManager->RecomputeOrderStateSlot9C();
+    this->foreignMinister->RecomputeOrderStateSlot9C();
     short* pendingMetric = this->actionMetricByQuarter;
     for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
       short pending = *pendingMetric;

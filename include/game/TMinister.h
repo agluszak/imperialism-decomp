@@ -52,7 +52,10 @@ public:
   virtual void Call94() = 0;
   // slot 0x98 — foreign-minister proposal dispatch (TAutoGreatPower 0x004e79d0).
   virtual void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) = 0;
-  virtual void dummy39() = 0;
+  // slot 0x9c — order-state recompute fired before the collapse production reset
+  // (TAutoGreatPower::ClearDiplomacyState1c6Block override 0x004e7a50 calls it on the
+  // foreign minister).
+  virtual void RecomputeOrderStateSlot9C() = 0;
   virtual void dummy40() = 0;
   virtual void dummy41() = 0;
   virtual void dummy42() = 0;
