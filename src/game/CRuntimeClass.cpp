@@ -19,3 +19,15 @@ void CRuntimeClass::Store(CArchive* ar) {
       ->WriteWordToSerializedBuffer(static_cast<unsigned short>(len));
   ar->WriteBytesToSerializedBuffer(m_lpszClassName, static_cast<unsigned short>(len));
 }
+
+// FUNCTION: IMPERIALISM 0x00607077
+int CRuntimeClass::IsDerivedFrom(const CRuntimeClass* pBaseClass) const {
+  const CRuntimeClass* cur = this;
+  while (cur != 0) {
+    if (cur == pBaseClass) {
+      return 1;
+    }
+    cur = cur->m_pBaseClass;
+  }
+  return 0;
+}

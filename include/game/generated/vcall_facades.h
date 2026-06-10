@@ -193,13 +193,6 @@ static __inline void VCall_Diplomacy_SetStandingScoreSlot28(void* object, int ar
   fn(object, 0, arg0, arg1, arg2);
 }
 
-// localization/event table fallback dispatch; class=LocalizationTable; status=provisional
-static __inline void VCall_LocalizationTable_CallSlot44(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x44 / 4)));
-  fn(object, 0);
-}
-
 // append/sort relationship candidate entry; class=TSortedByRelationshipList; status=provisional
 static __inline void VCall_RelationshipList_AddEntrySlot38(void* object, void* arg0) {
   typedef void (__fastcall * Fn)(void*, int, void*);
@@ -380,27 +373,6 @@ static __inline void VCall_List_ResetSlot14(void* object) {
   typedef void (__fastcall * Fn)(void*, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x14 / 4)));
   fn(object, 0);
-}
-
-// localization dispatch slot84 no-arg; status=provisional
-static __inline void VCall_LocalizationRuntime_CallSlot84(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x84 / 4)));
-  fn(object, 0);
-}
-
-// localization dispatch slot84 with message id; status=provisional
-static __inline void VCall_LocalizationRuntime_CallSlot84WithId(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x84 / 4)));
-  fn(object, 0, arg0);
-}
-
-// TLocalizationRuntime::slot3C; status=provisional
-static __inline short VCall_LocalizationRuntime_GetTurnTick(void* object) {
-  typedef short (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x3C / 4)));
-  return fn(object, 0);
 }
 
 // context display ref; status=provisional

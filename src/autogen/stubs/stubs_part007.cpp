@@ -2027,14 +2027,6 @@ undefined4 thunk_GetCityDialogValueViaChildSlot58(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b
-// ghidra_proto void __cdecl thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b(void)
-// FUNCTION: IMPERIALISM 0x00407c1b
-undefined4 thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_LookupMapCursorTokenByStateIndex
 // ghidra_proto void __cdecl thunk_LookupMapCursorTokenByStateIndex(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00407c2a

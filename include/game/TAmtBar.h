@@ -1,28 +1,22 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TView.h"
 
 // VTABLE: IMPERIALISM 0x665cc8
 class TAmtBar : public TView {
 public:
-  short rangeOrMaxValue;
-  short stepOrCurrentValue;
-  short auxValueA;
-  short auxValueB;
+  short rangeOrMaxValue;    // 0x60
+  short stepOrCurrentValue; // 0x62
+  short auxValueA;          // 0x64
+  short auxValueB;          // 0x66
 
   TAmtBar();
-  virtual ~TAmtBar();
+  // Destructor is compiler-generated (implicit virtual dtor from TView).
 
   void RenderPrimarySurfaceOverlayPanelWithClipCache();
-  void OrphanCallChain_C2_I15_00588630(short valueAt60, short valueAt62);
-  void OrphanCallChain_C1_I03_00588670();
-  void ClampAndApplyTradeMoveValue(int* requestedMovePtr);
-  void SyncTradeCommoditySelectionWithActiveNationAndInitControls();
-  void ApplyMoveValueSlot1D4NoCommit(int value);
-  void UpdateTradeMoveControlsFromDrag(int arg1, int arg2);
-  void UpdateTradeBarFromSelectedMetricRatio_B();
-  void HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8, void* argC,
-                                                 void* dispatchArg, void* arg14);
+  void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
+  void InvokeSlot1A8NoArg();
 
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);
   virtual void SetBarMetric(int value, int range);
@@ -44,3 +38,5 @@ public:
   virtual void SetControlValueSlot1E4(int value, int updateFlag);
   virtual int QueryValue();
 };
+
+ASSERT_SIZE(TAmtBar, 0x68);

@@ -275,14 +275,6 @@ undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00481e80(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::CreateSimObjects
-// ghidra_proto void * __cdecl CreateSimObjects(void)
-// FUNCTION: IMPERIALISM 0x0040853f
-undefined4 CreateSimObjects(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructLandSaleEventToBase
 // ghidra_proto void __cdecl thunk_DestructLandSaleEventToBase(void)
 // FUNCTION: IMPERIALISM 0x00408544

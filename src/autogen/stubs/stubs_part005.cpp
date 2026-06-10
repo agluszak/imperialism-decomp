@@ -331,14 +331,6 @@ undefined4 thunk_BuildFrogCityTerrainCountsAndOverlayStats(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::thunk_PostMainWindowCommand100ForTurnFlow_At004053d5
-// ghidra_proto void __cdecl thunk_PostMainWindowCommand100ForTurnFlow_At004053d5(void)
-// FUNCTION: IMPERIALISM 0x004053d5
-undefined4 thunk_PostMainWindowCommand100ForTurnFlow_At004053d5(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_PlayControlSoundAndBeginMouseCapture_Field92_B_At004053df
 // ghidra_proto void __thiscall thunk_PlayControlSoundAndBeginMouseCapture_Field92_B_At004053df(int arg1, int arg2, int arg3, int arg4)
 // FUNCTION: IMPERIALISM 0x004053df

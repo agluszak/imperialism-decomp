@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 
 struct CArchive;
+struct CRuntimeClass;
 
 // MFC CObject - the 4-byte (vptr-only) root of the serialized-object hierarchy.
 // VTABLE: IMPERIALISM 0x0066fec4
@@ -15,4 +16,8 @@ public:
   virtual void Serialize(CArchive* ar);
   virtual int AssertValidOrSlot0c();
   virtual void DumpOrSlot10();
+
+  int IsKindOf(const CRuntimeClass* pClass);
 };
+
+CObject* AfxDynamicDownCast(CRuntimeClass* pClass, CObject* pObject);

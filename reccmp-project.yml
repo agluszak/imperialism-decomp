@@ -31,7 +31,6 @@ targets:
       - AfxDeleteObject
       - AfxDeleteRegKey
       - AfxDlgProc
-      - AfxDynamicDownCast
       - AfxEnableWin31Compatibility
       - AfxEnableWin40Compatibility
       - AfxEndDeferRegisterClass

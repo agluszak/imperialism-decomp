@@ -29,9 +29,11 @@ address|target_cpp|ownership|note
 401ed8|src/game/thunks.cpp|manual|marker_sync
 4020b8|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 402185|src/game/TGreatPower.cpp|manual|marker_sync
+4021ee|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 402919|src/game/TGreatPower.cpp|manual|marker_sync
 402bda|src/game/TGreatPower.cpp|manual|marker_sync
 402c11|src/game/TShipyardCluster.cpp|manual|marker_sync
+402d1a|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 402e5f|src/game/TGreatPower.cpp|manual|marker_sync
 402eeb|src/game/TUnitOrderState.cpp|manual|marker_sync
 4032fb|src/game/TTradeCluster.cpp|manual|marker_sync
@@ -50,6 +52,7 @@ address|target_cpp|ownership|note
 404a9d|src/game/TGreatPower.cpp|manual|marker_sync
 404b33|src/game/TCivWorkOrderState.cpp|manual|marker_sync
 404ce1|src/game/TGreatPower.cpp|manual|marker_sync
+4053d5|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 405529|src/game/config.cpp|manual|marker_sync
 405826|src/game/TGreatPower.cpp|manual|marker_sync
 4058a8|src/game/TShipyardCluster.cpp|manual|marker_sync
@@ -77,6 +80,7 @@ address|target_cpp|ownership|note
 406fe1|src/game/TGreatPower.cpp|manual|marker_sync
 4070e5|src/game/TGreatPower.cpp|manual|marker_sync
 407392|src/game/TGreatPower.cpp|manual|marker_sync
+407c1b|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 407da6|src/game/TSortedPtrList.cpp|manual|marker_sync
 407db0|src/game/TGreatPower.cpp|manual|marker_sync
 407e8c|src/game/TGreatPower.cpp|manual|marker_sync
@@ -86,6 +90,7 @@ address|target_cpp|ownership|note
 408107|src/game/TGreatPower.cpp|manual|marker_sync
 408143|src/game/TGreatPower.cpp|manual|marker_sync
 4083f5|src/game/TGreatPower.cpp|manual|marker_sync
+40853f|src/game/TLocalizationRuntime.cpp|manual|marker_sync
 4085ee|src/game/TGreatPower.cpp|manual|marker_sync
 408620|src/game/TGreatPower.cpp|manual|marker_sync
 40862a|src/game/TGreatPower.cpp|manual|marker_sync
@@ -671,7 +676,7 @@ address|target_cpp|ownership|note
 57b760|src/game/noop_slots.cpp|manual|marker_sync
 57c390|src/game/noop_slots.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
-583bd0|src/game/TAmtBar.cpp|manual|marker_sync
+583bd0|src/game/TSidewaysArrow.cpp|manual|marker_sync
 5846e0|src/game/TBoycottButton.cpp|manual|marker_sync
 584760|src/game/TBoycottButton.cpp|manual|marker_sync
 584780|src/game/TBoycottButton.cpp|manual|marker_sync
@@ -1007,9 +1012,9 @@ address|target_cpp|ownership|note
 606ddd|src/game/CCmdUI.cpp|manual|marker_sync
 606f73|src/game/MfcRuntime.cpp|manual|marker_sync
 606faf|src/game/MfcRuntime.cpp|manual|marker_sync
-606fc0|src/game/list_utils.cpp|manual|marker_sync
-606fd2|src/game/list_utils.cpp|manual|marker_sync
-607077|src/game/list_utils.cpp|manual|marker_sync
+606fc0|src/game/CObject.cpp|manual|marker_sync
+606fd2|src/game/CObject.cpp|manual|marker_sync
+607077|src/game/CRuntimeClass.cpp|manual|marker_sync
 607bda|src/game/noop_slots.cpp|manual|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 610a5f|src/game/CDocument.cpp|manual|marker_sync

@@ -2,9 +2,11 @@
 
 #define TLOCALIZATION_VTABLE_SLOT(n) virtual void LocalizationDummy##n(void) = 0
 
+// VTABLE: IMPERIALISM 0x00662a58
+// Ghidra class TSimMgr; global instance g_pLocalizationTable @ 0x6a20f8.
 class TLocalizationRuntime {
 public:
-  TLOCALIZATION_VTABLE_SLOT(00);
+  virtual void* GetClassDescDynamic() = 0;
   TLOCALIZATION_VTABLE_SLOT(01);
   TLOCALIZATION_VTABLE_SLOT(02);
   TLOCALIZATION_VTABLE_SLOT(03);
@@ -20,7 +22,7 @@ public:
   TLOCALIZATION_VTABLE_SLOT(13);
   TLOCALIZATION_VTABLE_SLOT(14);
   virtual short GetTurnTickSlot3C(void) = 0;
-  TLOCALIZATION_VTABLE_SLOT(16);
+  virtual void IncrementQuarterGateTick2C() = 0;
   virtual void CallSlot44() = 0; // 17 (0x44)
   TLOCALIZATION_VTABLE_SLOT(18);
   TLOCALIZATION_VTABLE_SLOT(19);
@@ -37,7 +39,7 @@ public:
   TLOCALIZATION_VTABLE_SLOT(30);
   TLOCALIZATION_VTABLE_SLOT(31);
   TLOCALIZATION_VTABLE_SLOT(32);
-  virtual void CallSlot84(int messageId = 0) = 0;
+  virtual void GetString(short codeGroup, short offset, void* destString) = 0; // 33 (0x84)
 
   unsigned char pad04[4];
   int mode;

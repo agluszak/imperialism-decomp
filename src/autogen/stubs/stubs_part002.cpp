@@ -299,14 +299,6 @@ undefined4 thunk_CreateTArmyStackInstance(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::thunk_GetTurnFlowStateCounter2C_At004021ee
-// ghidra_proto void __cdecl thunk_GetTurnFlowStateCounter2C_At004021ee(void)
-// FUNCTION: IMPERIALISM 0x004021ee
-undefined4 thunk_GetTurnFlowStateCounter2C_At004021ee(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_AllocateBitmapSurfaceHeaderAndPixelBuffer
 // ghidra_proto void __fastcall thunk_AllocateBitmapSurfaceHeaderAndPixelBuffer(int ecxArg, int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x004021f8
@@ -3215,14 +3207,6 @@ undefined4 thunk_OrphanLeaf_NoCall_Ins16_0048d980_At00402d06(void)
 // ghidra_proto TToolBarCluster * __thiscall TToolBarCluster_VtblSlot001(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x00402d15
 undefined4 TToolBarCluster_VtblSlot001(void)
-{
-  return 0;
-}
-
-// ghidra_name TSimMgr::thunk_IncrementTurnFlowStateCounter2C_At00402d1a
-// ghidra_proto void __thiscall thunk_IncrementTurnFlowStateCounter2C_At00402d1a(void)
-// FUNCTION: IMPERIALISM 0x00402d1a
-undefined4 thunk_IncrementTurnFlowStateCounter2C_At00402d1a(void)
 {
   return 0;
 }

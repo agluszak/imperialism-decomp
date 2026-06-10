@@ -205,6 +205,7 @@ undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 // isolated __fastcall bridge helpers below (kept out of the method body).
 undefined4 thunk_InitializeMilitaryUnitOrderObject(void);
 undefined4 thunk_InitializeMilitaryRecruitOrderState(void);
+undefined4 thunk_GetUnitMovementClassId(void); // 0x00407e64 -> 0x005c3490
 undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
 undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
 undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void);
@@ -1452,7 +1453,8 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
 
   TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
   if (localization != 0) {
-    localization->CallSlot84((ctx->specialistMode == 0) ? 0x2718 : 0x2717);
+    localization->GetString(static_cast<short>((ctx->specialistMode == 0) ? 0x2718 : 0x2717),
+                          ctx->entryId, &sharedRefB);
   }
 
   short* cityQueueBase =
@@ -2688,23 +2690,45 @@ short TStationedUnitNode::GetUnitMovementClassId() {
 }
 #pragma optimize("", on)
 
+static __inline bool IsRecruitQuarterTickGate(short tickRaw) {
+  int tick = static_cast<int>(tickRaw);
+  int quarterIndex = (tick + ((tick >> 0x1f) & 3)) >> 2;
+  if ((quarterIndex & 1) == 0) {
+    return false;
+  }
+  int sign = tick >> 0x1f;
+  int mod4 = tick;
+  mod4 ^= sign;
+  mod4 -= sign;
+  mod4 &= 3;
+  mod4 ^= sign;
+  mod4 -= sign;
+  return static_cast<short>(mod4) == 2;
+}
+
 // FUNCTION: IMPERIALISM 0x004d7770
 #pragma optimize("y", on)
 void TGreatPower::CreateMilitaryRecruitOrderForNode(int nodeContext) {
-  unsigned char capabilityBonus;
-  if (this->nationSlot < 7) {
+  int capabilityBonus = 0;
+  if (static_cast<unsigned short>(this->nationSlot) < 7) {
     unsigned char* capabilityRow =
-        reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) + this->nationSlot * 0x1e;
+        reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) +
+        static_cast<int>(static_cast<short>(this->nationSlot)) * 0x1e;
     if (capabilityRow[0x3a5] != 0) {
       capabilityBonus = 0x10;
     } else {
-      capabilityBonus = (capabilityRow[0x39d] != 0) ? 8 : 0;
+      char capabilityFlag = static_cast<char>(capabilityRow[0x39d]);
+      capabilityBonus = (static_cast<int>(-capabilityFlag) >> 0x1f) & 8;
     }
-  } else {
-    capabilityBonus = 0;
   }
-  void* militaryOrder = AllocateMilitaryUnitOrderObject();
-  InitializeMilitaryRecruitOrder(militaryOrder, capabilityBonus, nodeContext, this->nationSlot);
+  void* rawOrder = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
+  void* militaryOrder = 0;
+  if (rawOrder != 0) {
+    militaryOrder =
+        reinterpret_cast<void*(__fastcall*)(void*)>(thunk_InitializeMilitaryUnitOrderObject)(rawOrder);
+  }
+  InitializeMilitaryRecruitOrder(militaryOrder, static_cast<short>(capabilityBonus), nodeContext,
+                                 this->nationSlot);
   static_cast<TUnitOrderState*>(militaryOrder)->SetOrderModeSlot34(2, -1);
 }
 #pragma optimize("", on)
@@ -2719,41 +2743,50 @@ int TGreatPower::GetHomeRegionCityRecordIndex(void) {
 // FUNCTION: IMPERIALISM 0x004d87e0
 #pragma optimize("y", on)
 void TGreatPower::QueueRecruitOrdersForUndergarrisonedRegions(void) {
-  int tick = static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->quarterGateTick2c;
-  if ((((tick + ((tick >> 0x1f) & 3)) >> 2) & 1) != 0 && static_cast<short>(tick % 4) == 2) {
-    int garrisonThreshold = (this->nationSlot < 7) + 3;
-    int ordinal = 1;
-    if (this->ownedRegionList->GetCountOrReleaseSlot28() >= 1) {
-      do {
-        int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
-        int garrisonCount = 0;
-        TStationedUnitNode* unit;
-        if (static_cast<short>(regionId) < 0 || static_cast<short>(regionId) >= 0x180) {
-          unit = 0;
-        } else {
-          unit = static_cast<TStationedUnitNode*>(
-              g_pGlobalMapState->cityScoreTable[static_cast<short>(regionId)]
-                  .stationedUnitChain98);
-        }
-        for (; unit != 0; unit = unit->next14) {
-          if (unit->GetUnitMovementClassId() == 0) {
-            ++garrisonCount;
-          }
-        }
-        if (static_cast<short>(garrisonCount) < garrisonThreshold) {
-          this->CreateMilitaryRecruitOrderForNode(regionId);
-        }
-        ++ordinal;
-      } while (ordinal <= this->ownedRegionList->GetCountOrReleaseSlot28());
-    }
+  short tickRaw = static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->quarterGateTick2c;
+  if (!IsRecruitQuarterTickGate(tickRaw)) {
+    return;
   }
+  int garrisonThreshold = 3;
+  if (static_cast<unsigned short>(this->nationSlot) < 7) {
+    garrisonThreshold = 4;
+  }
+  int regionCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+  int ordinal = 1;
+  if (ordinal > regionCount) {
+    return;
+  }
+  do {
+    int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
+    int garrisonCount = 0;
+    TStationedUnitNode* unit;
+    if (static_cast<short>(regionId) < 0 || static_cast<short>(regionId) >= 0x180) {
+      unit = 0;
+    } else {
+      unit = static_cast<TStationedUnitNode*>(
+          g_pGlobalMapState->cityScoreTable[static_cast<short>(regionId)].stationedUnitChain98);
+    }
+    for (; unit != 0; unit = unit->next14) {
+      if (reinterpret_cast<short(__fastcall*)(void*)>(thunk_GetUnitMovementClassId)(unit) == 0) {
+        ++garrisonCount;
+      }
+    }
+    if (static_cast<short>(garrisonCount) < garrisonThreshold) {
+      this->CreateMilitaryRecruitOrderForNode(regionId);
+    }
+    ++ordinal;
+  } while (ordinal <= regionCount);
 }
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7d20
 #pragma optimize("y", on)
 char TGreatPower::IsEncodedNationSlotMinus200Equal(int nationCode) {
-  return this->encodedNationSlot - 200 == nationCode;
+  int adjusted = static_cast<int>(static_cast<short>(this->encodedNationSlot)) - 0xc8;
+  if (adjusted == nationCode) {
+    return 1;
+  }
+  return 0;
 }
 #pragma optimize("", on)
 
@@ -2860,8 +2893,9 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   if (interactionScore > 0) {
     SharedRefPairScope localizedRefs;
     if (localizationRuntime != 0) {
-      localizationRuntime->CallSlot84();
-      localizationRuntime->CallSlot84(interactionScore);
+      localizationRuntime->GetString(0x274b, 0, &localizedRefs.first);
+      localizationRuntime->GetString(0x274b, static_cast<short>(interactionScore),
+                                   &localizedRefs.second);
     }
     thunk_AssignStringSharedRefAndReturnThis();
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
@@ -2931,7 +2965,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
       if (hardThreshold <= pressureTier) {
         if (localizationRuntime != 0) {
-          localizationRuntime->CallSlot84(4);
+          localizationRuntime->GetString(0x274b, 4, &sharedMessageRef);
         }
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
@@ -2941,12 +2975,14 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       if (pressureTier < compileThreshold) {
         if (localizationRuntime != 0) {
           int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
-          localizationRuntime->CallSlot84(statusId);
+          localizationRuntime->GetString(0x274b, static_cast<short>(statusId),
+                                         reinterpret_cast<void*>(kAddrShGreatPowerPressureMessageRef));
         }
         DispatchQuarterlyGreatPowerPressureMessage(1);
       } else {
         if (localizationRuntime != 0) {
-          localizationRuntime->CallSlot84(1);
+          localizationRuntime->GetString(0x274b, 1,
+                                         reinterpret_cast<void*>(kAddrShGreatPowerPressureMessageRef));
         }
         DispatchQuarterlyGreatPowerPressureMessage(2);
       }
@@ -4160,8 +4196,8 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         SharedRefPairScope sharedRefs;
         TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
         if (localizationRuntime != 0) {
-          localizationRuntime->CallSlot84();
-          localizationRuntime->CallSlot84(0x2753);
+          localizationRuntime->GetString(0x2753, 0, &sharedRefs.first);
+          localizationRuntime->GetString(0x2753, 0, &sharedRefs.second);
         }
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_AssignStringSharedRefAndReturnThis();

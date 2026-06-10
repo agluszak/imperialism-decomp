@@ -1,5 +1,15 @@
 # Worklog
 
+- **Timestamp:** 2026-06-10
+- **Command:** Port `TLocalizationRuntime` vtable slots 0/15/16/17/33 into `src/game/TLocalizationRuntime.cpp`; rename slot 33 `CallSlot84` → Mac-oracle `GetString(short,short,void*)`; fix `TGreatPower` callsites to 3-arg shape; drop migrated `VCall_LocalizationRuntime_*` + `VCall_LocalizationTable_CallSlot44` from `vtable_slots.csv`; collateral `TSidewaysArrow` `__thiscall` typedef → `__fastcall` bridge (MSVC5.0 C4234); `just sync-ownership` → `just regen-stubs` → `just gen-vcall-facades` → `just build` → `just compare` → `just vtable-gate`
+- **Score Delta:** `0x004053d5` **100%** (`CallSlot44` cdecl tail → `PostMainWindowCommand100ForTurnFlow`). `0x004021ee`/`0x00402d1a`/`0x00407c1b`/`0x0040853f` **0%** (orig single-`JMP` vtable thunks vs out-of-line virtual bodies). `just vtable-gate` pass.
+- **Description:** Methods: `GetClassDescDynamic` (→ `g_pClassDescTSimMgr` @ `0x662960`), `GetTurnTickSlot3C` (`quarterGateTick2c`), `IncrementQuarterGateTick2C`, `CallSlot44`, `GetString`. Next: own tail targets `0x57d8b0`/`0x57d950`/`0x57b9c0`/`0x580760` or emit `JMP` thunks at slot addresses; port slot `0x74` `FormatNum` (interaction-score path still approximated); ctor `0x57b9e0` blocked on `g_vtblRefCountedObjectBase` base recovery.
+- **Timestamp:** 2026-06-10
+- **Command:** Refactor `list_utils.cpp` → proper MFC RTTI on `CObject`/`CRuntimeClass`: `IsKindOf`/`AfxDynamicDownCast` (`src/game/CObject.cpp`), `IsDerivedFrom` (`src/game/CRuntimeClass.cpp`); add `m_pfnCreateObject`/`m_pBaseClass` to `CRuntimeClass`; ownership/symbols rename from Ghidra mislabels (`LinkedListQueryOwner`/`NodeScanner`); delete `list_utils.cpp`; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`
+- **Score Delta:** `0x606fc0`/`0x607077`/`0x606fd2` all **100%** (verbose compare for `0x606fd2`; name on `reccmp-project.yml` ignore list so batch summary still reports missing). `just vtable-gate` pass; canaries clean.
+- **Timestamp:** 2026-06-10
+- **Command:** Add `// VTABLE: IMPERIALISM 0x00662a58` to `include/game/TLocalizationRuntime.h`; `just build`
+- **Description:** `g_pLocalizationTable` object installs `g_vtblTSimMgr` (`ConstructTurnFlowStateManagerVtable00662a58` ctor vptr write). Ghidra dump cross-check: slot 0 `GetTSimMgrClassNamePointer` → `g_pClassDescTSimMgr` @ `0x00662960`; slot 15/`0x3C` `GetTurnTickSlot3C`; slot 17/`0x44` `CallSlot44`; slot 33/`0x84` `CallSlot84`.
 - **Timestamp:** 2026-06-10 (cont.)
 - **Command:** Port TGreatPower slots `0x4c`/`0x65`/`0x6c`/`0x6f`/`0x78`/`0x7d`/`0x7f`/`0xac` + trivial tails `0x84`/`0x85`/`0x9d`/`0xa2`/`0xa4` (13 bodies) and `TRelationManager::GetBuildingProductionValueBySlot` (`0x4b4dc0`, was a fake cdecl-cast helper — really `__thiscall`)
 - **Score Delta:** 100%: `0x4e0220`-adjacent slot bodies `0x4ddeb0`, `0x4de7e0`, `0x4e06d0`, `0x4e0420`, `0x4e0440`, `0x4e1c00`, `0x4e1f20`, `0x4e2190`, and `0x4b4dc0`. Partial: `0x4e0220` 83.33%, `0x4ddd90` 84.85%, `0x4df4b0` 69.72%, `0x4df5a0` 66.67% (orig is vtable tail-jmp), `0x4dd7f0` 50.70% (only ILT-thunk call operands differ, heuristic 93). Canaries 8/8.
@@ -3426,3 +3436,18 @@ Follow-up scan after the TClosePicture extraction:
 - **Command:** Port TGreatPower slots `0xa3`/`0xa5`/`0xa8`/`0xa9`/`0xb0` (`0x4e1f40`, `0x4de810`, `0x4e2630`, `0x4e2720`, `0x4e2b00`); diplomacy bool-return + hook stack shape on `0x4ddfc0`/`0x4de340`
 - **Score Delta:** `0x4e1f40` 0→23.49%; `0x4de810` new 26.47%; `0x4e2630` 40.88%; `0x4e2720` 31.11%; `0x4e2b00` 39.22%; canaries 8/8 pass; vtable gate pass
 - **Description:** War-threshold body sums alliance-filtered army/navy score factors with border-linked army-vs-navy path selection. `CallSlotA5` drains `trackedObjectList` (+0x89c). Minor-capability sweeps use new `g_apNationAuxRuntimeStateSlots[16]` + TMinor vcall facades for slots `0xc0`/`0xc4`. Turn-order dispatch enqueues a 4-short packet on `turnSummaryQueue` slot `0x38`.
+
+## 2026-06-10 — TAmtBar modernization and TSidewaysArrow extraction
+
+1. **TAmtBar** (`src/game/TAmtBar.cpp`, `include/game/TAmtBar.h`):
+   - Converted `0x005885c0` to SYNTHETIC scalar deleting destructor; removed hand-written `~TAmtBar()`.
+   - Renamed `OrphanCallChain_C2_I15_00588630` → `UpdateBarValuesAndRefresh`, `OrphanCallChain_C1_I03_00588670` → `InvokeSlot1A8NoArg`.
+   - Modernized `RenderPrimarySurfaceOverlayPanelWithClipCache` to use `field34`/`field38` instead of raw offsets.
+   - Implemented trade-critical virtuals (`SetBarMetric`, `SetBarMetricRatio`, `SetControlValueSlot1E4`, `QueryValue`, `ApplyMoveClamp`) from Ghidra call-site evidence.
+   - Removed mis-attributed cluster-only declarations from the header; added `ASSERT_SIZE(TAmtBar, 0x68)`.
+   - Fixed `WrapperFor_thunk_NoOpUiLifecycleHook_At00588610` to match Ghidra's zero-arg `__cdecl` shape.
+2. **TSidewaysArrow** (new `src/game/TSidewaysArrow.cpp`, `include/game/TSidewaysArrow.h`):
+   - Moved `0x00583bd0` `HandleTradeArrowAutoRepeatTickAndDispatch` out of `TAmtBar.cpp` (class-owner probe: `TSidewaysArrow`, not `TAmtBar`).
+   - Typed `repeatDeadlineTick` at `+0x94` and `controlTag`; TEMP `TPictureButton` base until `TUpDownPictureButton` is recovered.
+3. **Config:** `symbols.csv` backtick name for `0x005885c0`; `function_ownership.csv` `0x00583bd0` → `TSidewaysArrow.cpp`.
+4. **Verification:** shell unavailable this session — run `just sync-ownership` → `just regen-stubs` → `just build` → `just compare 0x005884c0 0x00588580 0x005885c0 0x00588630 0x00588670 0x00588690 0x00583bd0` → `just compare-canaries` → `just vtable-gate`.
