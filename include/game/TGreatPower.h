@@ -95,9 +95,13 @@ public:
   // orderType == 7.
   virtual char HasTrackedOrderOfType7(void);
   TGREATPOWER_VTABLE_SLOT(52);
-  TGREATPOWER_VTABLE_SLOT(53);
+  // slot 0x35 — body 0x004dbac0: marks regionMap[id]=1 for every region connected to
+  // regionId through same-owner neighbors (self-recursive through this slot, with the
+  // first eligible neighbor tail-iterated).
+  virtual void MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId);
   TGREATPOWER_VTABLE_SLOT(54);
-  TGREATPOWER_VTABLE_SLOT(55);
+  // slot 0x37 — body 0x004dca60: forwards to relationManager slot 0x2c when present.
+  virtual void NotifyRelationManagerSlot2C(void);
   TGREATPOWER_VTABLE_SLOT(56);
   TGREATPOWER_VTABLE_SLOT(57);
   TGREATPOWER_VTABLE_SLOT(58);
@@ -122,15 +126,23 @@ public:
   virtual void VTableIndex77_Provisional(void) {}                // slot 0x4d
   virtual void VTableIndex78_Provisional(void) {}                // slot 0x4e
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
-  TGREATPOWER_VTABLE_SLOT(80);
-  TGREATPOWER_VTABLE_SLOT(81);
+  // slot 0x50 — body 0x004dc440: true when any city commodity record 8..0xc has its
+  // control value below the record's step value (gated on scenario cap >= 2).
+  virtual char HasAnyCommodityRecordBelowStepValue(void);
+  // slot 0x51 — body 0x004dc4c0: status prompt code 0x25 (counter 0 at tick 3) or
+  // 0x27 (counter ahead of tick by >4 with treasury >= 10000), else 0.
+  virtual short ComputeTreasuryStatusPromptCode(void);
   // slot 0x52 — 0x004e1c20 dispatches it on the target nation with mode 0/1.
   virtual char CompareMissionScoreVariantsByMode(int mode);
   TGREATPOWER_VTABLE_SLOT(83);
   TGREATPOWER_VTABLE_SLOT(84);
-  TGREATPOWER_VTABLE_SLOT(85);
-  TGREATPOWER_VTABLE_SLOT(86);
-  TGREATPOWER_VTABLE_SLOT(87);
+  // slot 0x55 — body 0x004e0290: selection-sorts trackedObjectList ascending by the
+  // per-order-type priority table at 0x6966d0.
+  virtual void SortTrackedOrdersByTypePriority(void);
+  // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
+  virtual void RunSlot4CThenSortTrackedOrders(void);
+  // slot 0x57 — body 0x004e03d0: field900 = needCapA6 / 5.
+  virtual void ResetField900FromNeedCapA6(void);
   TGREATPOWER_VTABLE_SLOT(88);
   // index 0x59 / vtable+0x164. Evidence: 0x004dd1b0 invokes this before
   // resetting diplomacy aid budget state; implementation at 0x004dd140.
@@ -370,6 +382,7 @@ public:
                                                                         short sourceNationSlot);
   float thunk_ComputeMapActionContextCompositeScoreForNation(int arg1);
   void thunk_OrphanCallChain_C2_I21_004e2b00_At00406a46(void);
+  void thunk_RunSlot4CThenSortTrackedOrders_At004016d1(void);
   void thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c(void);
   void thunk_ClearFieldBlock1c6_At00406c49(void);
   void thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e(void);

@@ -39,6 +39,10 @@ float g_Compute_Advisory_Peer_LookupTable_00653724 = -0.5f;
 // Summed over militaryUnitList44 entries by the slot 0x8e-0x9c score family.
 short g_Classify_Nation_Military_LookupTable_00695CD4[64][7] = {0};
 
+// Per-order-type sort priority (short table at 0x6966d0), used by the TGreatPower
+// slot 0x55 tracked-order selection sort (0x004e0290).
+short g_DAT_006966d0_Value_006966D0[16] = {0};
+
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 void* g_pMapActionContextListHead = 0;

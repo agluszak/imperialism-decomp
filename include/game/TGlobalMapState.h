@@ -10,7 +10,11 @@ struct GlobalMapTileRecord {
 struct TTerrainStateRecordView {
   unsigned char pad00[2];
   unsigned char roadFlag;
-  unsigned char pad03[0x11 - 0x03];
+  unsigned char pad03;
+  signed char ownerNationTag04; // 0x04 — owning nation code (flood fill 0x004dbac0)
+  unsigned char pad05;
+  signed char adjacencyBits06; // 0x06 — 6-direction neighbor-link bitmask
+  unsigned char pad07[0x11 - 0x07];
   signed char resourceTypeByEdge[2];
   unsigned char gateFlag;
   short cityRecordIndex;

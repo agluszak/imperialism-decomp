@@ -2587,42 +2587,10 @@ undefined4 UpdateOrderEntryAvailabilityByConnectedRegionMask(void)
   return 0;
 }
 
-// ghidra_name MarkConnectedOwnedRegionsInMaskRecursive
-// ghidra_proto void __cdecl MarkConnectedOwnedRegionsInMaskRecursive(void)
-// FUNCTION: IMPERIALISM 0x004dbac0
-undefined4 MarkConnectedOwnedRegionsInMaskRecursive(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::BuildCityInfluenceLevelMap
 // ghidra_proto char * __thiscall BuildCityInfluenceLevelMap(void)
 // FUNCTION: IMPERIALISM 0x004dbbb0
 undefined4 BuildCityInfluenceLevelMap(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I35_004dc440
-// ghidra_proto int __cdecl OrphanCallChain_C1_I35_004dc440(void)
-// FUNCTION: IMPERIALISM 0x004dc440
-undefined4 OrphanCallChain_C1_I35_004dc440(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I32_004dc4c0
-// ghidra_proto int __cdecl OrphanCallChain_C1_I32_004dc4c0(void)
-// FUNCTION: IMPERIALISM 0x004dc4c0
-undefined4 OrphanCallChain_C1_I32_004dc4c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins06_004dca60
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins06_004dca60(void)
-// FUNCTION: IMPERIALISM 0x004dca60
-undefined4 OrphanLeaf_NoCall_Ins06_004dca60(void)
 {
   return 0;
 }
@@ -2791,30 +2759,6 @@ undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
 // ghidra_proto void __cdecl IterateLinkedListCursorEntries_004e0220(void)
 // FUNCTION: IMPERIALISM 0x004e0220
 undefined4 IterateLinkedListCursorEntries_004e0220(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C5_I70_004e0290
-// ghidra_proto void __cdecl OrphanCallChain_C5_I70_004e0290(void)
-// FUNCTION: IMPERIALISM 0x004e0290
-undefined4 OrphanCallChain_C5_I70_004e0290(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I10_004e03a0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I10_004e03a0(void)
-// FUNCTION: IMPERIALISM 0x004e03a0
-undefined4 OrphanCallChain_C2_I10_004e03a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins09_004e03d0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_004e03d0(void)
-// FUNCTION: IMPERIALISM 0x004e03d0
-undefined4 OrphanLeaf_NoCall_Ins09_004e03d0(void)
 {
   return 0;
 }

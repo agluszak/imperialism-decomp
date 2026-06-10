@@ -23,6 +23,7 @@
 #include "game/CIterator.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TTurnEventQueue.h"
+#include "game/TradeCommodityMetricRecord.h"
 #include "game/trade_quickdraw.h"
 #include <stddef.h>
 #include <new>
@@ -50,6 +51,8 @@ extern float g_Compute_Advisory_Handler_LookupTable_00653720; // -90.0f
 extern float g_Compute_Advisory_Peer_LookupTable_00653724;    // -0.5f
 // Per-unit-type military power weights (0xe-byte records, weight short at +0).
 extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];
+// Per-order-type sort priority table (slot 0x55 selection sort).
+extern short g_DAT_006966d0_Value_006966D0[];
 extern void* g_pMapActionContextListHead;
 }
 
@@ -85,7 +88,6 @@ typedef void* hwnd_t;
 
 undefined4 ComputeMapActionContextNodeValueAverage(void);
 undefined4 BuildCityInfluenceLevelMap(void);
-undefined4 OrphanCallChain_C2_I10_004e03a0(void);
 void DispatchGreatPowerQuarterlyStatusMessageLevel1(void);
 undefined4 ProcessPendingDiplomacyProposalQueue(void);
 undefined4 CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
@@ -105,6 +107,7 @@ undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
 undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 undefined4 thunk_ContainsPointerArrayEntryMatchingByteKey(void);
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
+undefined4 thunk_GetWrappedHexNeighborTileIndexByDirection(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 thunk_GetInt32Field30(void);
 undefined4 thunk_LookupOrderCompatibilityMatrixValue(void);
@@ -1042,8 +1045,8 @@ void TGreatPower::thunk_QueueMapActionMissionFromCandidateAndMarkState(int arg1,
 }
 
 // FUNCTION: IMPERIALISM 0x004016d1
-void thunk_OrphanCallChain_C2_I10_004e03a0_At004016d1(void) {
-  OrphanCallChain_C2_I10_004e03a0();
+void TGreatPower::thunk_RunSlot4CThenSortTrackedOrders_At004016d1(void) {
+  this->TGreatPower::RunSlot4CThenSortTrackedOrders();
 }
 
 // FUNCTION: IMPERIALISM 0x00401983
@@ -2161,6 +2164,145 @@ char TGreatPower::HasTrackedOrderOfType7(void) {
     found = 1;
   }
   return found;
+}
+#pragma optimize("", on)
+
+// --- Slots 0x35/0x37/0x50/0x51/0x55-0x57 ---
+
+// Wrapped-hex neighbor lookup (0x00512cc0, __cdecl(short regionId, short direction)).
+static __inline short GetWrappedHexNeighborTileIndexByDirection(short regionId, short direction) {
+  return static_cast<short>(reinterpret_cast<int(__cdecl*)(short, short)>(
+      thunk_GetWrappedHexNeighborTileIndexByDirection)(regionId, direction));
+}
+
+// FUNCTION: IMPERIALISM 0x004dbac0
+#pragma optimize("y", on)
+void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId) {
+  short nextRegion;
+  do {
+    regionMap[regionId] = 1;
+    nextRegion = 0;
+    char adjacencyBits = g_pGlobalMapState->terrainStateTable[regionId].adjacencyBits06;
+    for (short direction = 0; direction < 6; ++direction) {
+      if ((adjacencyBits & (1 << direction)) != 0) {
+        short neighbor = GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
+        if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
+                this->nationSlot &&
+            regionMap[neighbor] == 0) {
+          if (nextRegion != 0) {
+            this->MarkConnectedOwnedRegionsFrom(regionMap, neighbor);
+          } else {
+            nextRegion = neighbor;
+          }
+        }
+      }
+    }
+    regionId = nextRegion;
+  } while (nextRegion != 0 && regionMap[nextRegion] == 0);
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dca60
+#pragma optimize("y", on)
+void TGreatPower::NotifyRelationManagerSlot2C(void) {
+  TRelationManager* relationManager = this->relationManager;
+  if (relationManager != 0) {
+    relationManager->Call2C();
+  }
+}
+#pragma optimize("", on)
+
+// View of the city commodity record's step-value virtual (slot 0x30 on the record's
+// own vtable; the records are TAmtBar-shaped, see TradeCommodityMetricRecord).
+struct TCommodityRecordStepView {
+  virtual void s00() = 0;
+  virtual void s01() = 0;
+  virtual void s02() = 0;
+  virtual void s03() = 0;
+  virtual void s04() = 0;
+  virtual void s05() = 0;
+  virtual void s06() = 0;
+  virtual void s07() = 0;
+  virtual void s08() = 0;
+  virtual void s09() = 0;
+  virtual void s10() = 0;
+  virtual void s11() = 0;
+  virtual short GetStepValueSlot30() = 0;
+};
+
+// FUNCTION: IMPERIALISM 0x004dc440
+#pragma optimize("y", on)
+char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
+  if (this->GetCityState()->scenarioTradeDescriptor->valueAt1C <= 1) {
+    return 0;
+  }
+  for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
+    TradeCommodityMetricRecord* record =
+        this->GetCityState()->tradeCommodityRecordPtrs[static_cast<short>(recordIndex)];
+    short controlValue = record->controlValue;
+    if (reinterpret_cast<TCommodityRecordStepView*>(record)->GetStepValueSlot30() > controlValue) {
+      return 1;
+    }
+  }
+  return 0;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dc4c0
+#pragma optimize("y", on)
+short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
+  int dispatchCounter = g_pDiplomacyTurnStateManager->proposalDispatchCounter790;
+  short promptCode = 0;
+  int turnTick = static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+  if (dispatchCounter == 0 && turnTick == 3) {
+    promptCode = 0x25;
+    return promptCode;
+  }
+  if (dispatchCounter - turnTick > 4 && this->treasuryValue10 >= 10000) {
+    promptCode = 0x27;
+  }
+  return promptCode;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e0290
+#pragma optimize("y", on)
+void TGreatPower::SortTrackedOrdersByTypePriority(void) {
+  short orderCount = static_cast<short>(List_GetCountSlot48(this->trackedObjectList));
+  int total = orderCount;
+  for (int outer = 1; outer < total; ++outer) {
+    void* entryOuter = List_GetTrackedEntrySlot4C(this->trackedObjectList, outer);
+    short outerPriority =
+        g_DAT_006966d0_Value_006966D0[static_cast<TUnitOrderState*>(entryOuter)->orderType];
+    for (int inner = outer + 1; inner <= total; ++inner) {
+      void* entryInner = List_GetTrackedEntrySlot4C(this->trackedObjectList, inner);
+      short innerPriority =
+          g_DAT_006966d0_Value_006966D0[static_cast<TUnitOrderState*>(entryInner)->orderType];
+      if (innerPriority < outerPriority) {
+        static_cast<TListObject*>(this->trackedObjectList)
+            ->SetEntryDataAtSlot60(outer, &entryInner, 1);
+        static_cast<TListObject*>(this->trackedObjectList)
+            ->SetEntryDataAtSlot60(inner, &entryOuter, 1);
+        entryOuter = entryInner;
+        outerPriority = innerPriority;
+      }
+    }
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e03a0
+#pragma optimize("y", on)
+void TGreatPower::RunSlot4CThenSortTrackedOrders(void) {
+  this->VTableIndex76_Provisional();
+  this->SortTrackedOrdersByTypePriority();
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e03d0
+#pragma optimize("y", on)
+void TGreatPower::ResetField900FromNeedCapA6(void) {
+  this->field900 = this->needCapA6 / 5;
 }
 #pragma optimize("", on)
 

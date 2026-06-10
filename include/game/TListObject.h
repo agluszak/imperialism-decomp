@@ -40,4 +40,8 @@ public:
   virtual void Call54() = 0;
   // Slot 0x58: Call54 then Release1C on self (concrete body 0x004887b0).
   virtual void Call58() = 0;
+  virtual void VTableSlot5C_Provisional() = 0;
+  // Slot 0x60: store *entryPtr as the data of the node at 1-based ordinal (concrete
+  // body 0x00488840: FindIndex(ordinal-1)->data = *entryPtr; third arg unused).
+  virtual void SetEntryDataAtSlot60(int ordinal, void** entryPtr, int unusedFlag) = 0;
 };
