@@ -262,6 +262,8 @@ address|target_cpp|ownership|note
 4d7fc0|src/game/noop_slots.cpp|manual|marker_sync
 4d7fe0|src/game/noop_slots.cpp|manual|marker_sync
 4d8000|src/game/TGreatPower.cpp|manual|marker_sync
+4d8390|src/game/TGreatPower_power_score.cpp|manual|marker_sync
+4d83c0|src/game/TGreatPower_power_score.cpp|manual|marker_sync
 4d87b0|src/game/TGreatPower.cpp|manual|marker_sync
 4d87e0|src/game/TGreatPower.cpp|manual|marker_sync
 4d8950|src/game/TGreatPower.cpp|manual|marker_sync
@@ -382,6 +384,8 @@ address|target_cpp|ownership|note
 4e0400|src/game/noop_slots.cpp|manual|marker_sync
 4e0420|src/game/TGreatPower_power_score.cpp|manual|marker_sync
 4e0440|src/game/TGreatPower.cpp|manual|marker_sync
+4e0460|src/game/TShip.cpp|manual|marker_sync
+4e04b0|src/game/TShip.cpp|manual|marker_sync
 4e0500|src/game/TGreatPower.cpp|manual|marker_sync
 4e0550|src/game/TGreatPower.cpp|manual|marker_sync
 4e0590|src/game/TGreatPower.cpp|manual|marker_sync
@@ -631,7 +635,11 @@ address|target_cpp|ownership|note
 54c660|src/game/noop_slots.cpp|manual|marker_sync
 54c680|src/game/noop_slots.cpp|manual|marker_sync
 54c6a0|src/game/noop_slots.cpp|manual|marker_sync
+54f500|src/game/TShip.cpp|manual|marker_sync
+5505c0|src/game/TShip.cpp|manual|marker_sync
 550670|src/game/TMapOrderEntry.cpp|manual|marker_sync
+550970|src/game/TShip.cpp|manual|marker_sync
+550b60|src/game/TShip.cpp|manual|marker_sync
 550f80|src/game/TMapOrderEntry.cpp|manual|marker_sync
 550ff0|src/game/TMapOrderEntry.cpp|manual|marker_sync
 551410|src/game/TAdmiral.cpp|manual|marker_sync
@@ -645,9 +653,9 @@ address|target_cpp|ownership|note
 5526e0|src/game/TMapOrderEntry.cpp|manual|marker_sync
 5528c0|src/game/TMapOrderEntry.cpp|manual|marker_sync
 5528e0|src/game/TMapOrderEntry.cpp|manual|marker_sync
-55c970|src/game/TGreatPower.cpp|manual|marker_sync
+55c970|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55c9f0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
-55cbd0|src/game/TGreatPower.cpp|manual|marker_sync
+55cbd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55e6e0|src/game/TZone.cpp|manual|marker_sync
 55e700|src/game/TZone.cpp|manual|marker_sync
 55e820|src/game/TZone.cpp|manual|marker_sync

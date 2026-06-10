@@ -3,10 +3,10 @@
 #include "decomp_types.h"
 #include "game/CString.h"
 #include "game/TUnitOrderState.h"
+#include "game/diplomacy_globals.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 extern "C" char g_szEmptyString[];
-extern "C" void* g_apTerrainTypeDescriptorTable[];
 undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void);
 
 // Military land-unit recruit order (ctor 0x005c2df0, size 0x44). EH-framed: installs

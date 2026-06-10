@@ -2955,14 +2955,6 @@ undefined4 GetTShipClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TShip::ConstructAndLinkNavyPrimaryOrderNode
-// ghidra_proto void * __thiscall ConstructAndLinkNavyPrimaryOrderNode(void)
-// FUNCTION: IMPERIALISM 0x0054f500
-undefined4 ConstructAndLinkNavyPrimaryOrderNode(void)
-{
-  return 0;
-}
-
 // ghidra_name TShip::DestructTShipAndFreeIfOwned
 // ghidra_proto void * __thiscall DestructTShipAndFreeIfOwned(void)
 // FUNCTION: IMPERIALISM 0x0054f5c0
@@ -3099,14 +3091,6 @@ undefined4 GetNavyOrderNormalizationBaseByNationType(void)
   return 0;
 }
 
-// ghidra_name GetNavyPrimaryOrderListHead
-// ghidra_proto void * __cdecl GetNavyPrimaryOrderListHead(void)
-// FUNCTION: IMPERIALISM 0x005505c0
-undefined4 GetNavyPrimaryOrderListHead(void)
-{
-  return 0;
-}
-
 // ghidra_name GetNavyPrimaryOrderListIndexOfNode
 // ghidra_proto int __cdecl GetNavyPrimaryOrderListIndexOfNode(void)
 // FUNCTION: IMPERIALISM 0x00550610
@@ -3139,14 +3123,6 @@ undefined4 ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
   return 0;
 }
 
-// ghidra_name GetIndustryActionCostWeightByResourceType
-// ghidra_proto short __cdecl GetIndustryActionCostWeightByResourceType(void)
-// FUNCTION: IMPERIALISM 0x00550970
-undefined4 GetIndustryActionCostWeightByResourceType(void)
-{
-  return 0;
-}
-
 // ghidra_name PruneOrPromoteOrderNodeWhenChildCostDepleted
 // ghidra_proto void __cdecl PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
 // FUNCTION: IMPERIALISM 0x005509c0
@@ -3159,14 +3135,6 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
 // ghidra_proto short __cdecl ComputeMapOrderEntryHeuristicScore(void)
 // FUNCTION: IMPERIALISM 0x00550aa0
 undefined4 ComputeMapOrderEntryHeuristicScore(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeOrderNodeCompositeEconomicScore
-// ghidra_proto int __cdecl ComputeOrderNodeCompositeEconomicScore(void)
-// FUNCTION: IMPERIALISM 0x00550b60
-undefined4 ComputeOrderNodeCompositeEconomicScore(void)
 {
   return 0;
 }

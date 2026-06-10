@@ -2419,22 +2419,6 @@ undefined4 GenerateMappedFlavorTextByNationSlotField0C(void)
   return 0;
 }
 
-// ghidra_name ComputeWeightedNeighborLinkScoreForNode
-// ghidra_proto int __cdecl ComputeWeightedNeighborLinkScoreForNode(void)
-// FUNCTION: IMPERIALISM 0x004d8390
-undefined4 ComputeWeightedNeighborLinkScoreForNode(void)
-{
-  return 0;
-}
-
-// ghidra_name SumWeightedNeighborLinkScoreForLinkedNodes
-// ghidra_proto int __cdecl SumWeightedNeighborLinkScoreForLinkedNodes(void)
-// FUNCTION: IMPERIALISM 0x004d83c0
-undefined4 SumWeightedNeighborLinkScoreForLinkedNodes(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeSelectedMilitaryPowerScore
 // ghidra_proto int __cdecl ComputeSelectedMilitaryPowerScore(void)
 // FUNCTION: IMPERIALISM 0x004d8430
@@ -2559,22 +2543,6 @@ undefined4 AddShortDeltaToNationCounterAtOffset198(void)
 // ghidra_proto void __cdecl RefreshNationCivilianWorkOrdersForTurn(void)
 // FUNCTION: IMPERIALISM 0x004dfd30
 undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
-{
-  return 0;
-}
-
-// ghidra_name SumNavyOrderPriorityForNationAndNodeType
-// ghidra_proto int __cdecl SumNavyOrderPriorityForNationAndNodeType(void)
-// FUNCTION: IMPERIALISM 0x004e0460
-undefined4 SumNavyOrderPriorityForNationAndNodeType(void)
-{
-  return 0;
-}
-
-// ghidra_name SumNavyOrderPriorityForNation
-// ghidra_proto int __cdecl SumNavyOrderPriorityForNation(void)
-// FUNCTION: IMPERIALISM 0x004e04b0
-undefined4 SumNavyOrderPriorityForNation(void)
 {
   return 0;
 }

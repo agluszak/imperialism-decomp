@@ -3,9 +3,8 @@
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 
-extern "C" void* g_apNationStates[];
-extern "C" void* g_apTerrainTypeDescriptorTable[];
-extern "C" void* g_pLocalizationTable;
+#include "game/diplomacy_globals.h"
+#include "game/TLocalizationRuntime.h"
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 struct TUnitOrderOwnerManagerView {
@@ -64,10 +63,9 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   this->field_1A = arg3;
   this->field_C = static_cast<short>(-1);
 
-  void* const locTable = g_pLocalizationTable;
-  int* pLoc = reinterpret_cast<int*>(locTable);
-  int uniqueId = pLoc[25] + 1;
-  pLoc[25] = uniqueId;
+  TLocalizationRuntime* locTable = g_pLocalizationTable;
+  int uniqueId = locTable->field_64 + 1;
+  locTable->field_64 = uniqueId;
   this->field_20 = uniqueId;
 }
 #pragma optimize("", on)

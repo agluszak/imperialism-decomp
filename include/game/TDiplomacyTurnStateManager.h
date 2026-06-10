@@ -123,4 +123,4 @@ struct TDiplomacyTurnStateManager {
   void thunk_ApplyDiplomacyInterNationStatesForTurn();
 };
 
-extern TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager;
+#include "game/diplomacy_globals.h"

@@ -3,7 +3,7 @@
 #include "game/TLocalizationRuntime.h"
 #include <string.h>
 
-extern "C" void* g_pLocalizationTable;
+#include "game/diplomacy_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005b6c60
 // Bare vptr-write constructor; all field state comes from InitializeTownMarker.
@@ -23,7 +23,7 @@ void TTownMarker::InitializeTownMarker(const char* markerName, short regionId, c
   this->flags16[2] = 0;
   this->flags16[3] = 0;
   this->createdTurnTick1a =
-      static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+      g_pLocalizationTable->GetTurnTickSlot3C();
   this->transportLinkedFlag4c = 0;
   memset(this->payload1e, 0, sizeof(this->payload1e));
 }

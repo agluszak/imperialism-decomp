@@ -5,7 +5,8 @@
 #include "game/TTrackedObject.h"
 #include "game/TNationInteractionStateManager.h"
 #include "game/TLocalizationRuntime.h"
-#include "game/TNationState.h"
+#include "game/CIterator.h"
+#include "game/TTownMarker.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/TCity.h"
 #include "game/TMinister.h"
@@ -28,17 +29,18 @@
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
 #include "game/TGlobalMapState.h"
+#include "game/diplomacy_globals.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/CIterator.h"
 #include "game/TInterNationEventQueueManager.h"
+#include "game/TShip.h"
+#include "game/TTerrainDescriptor.h"
 #include "game/TTurnEventQueue.h"
 #include "game/TTownMarker.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/trade_quickdraw.h"
 #include <stddef.h>
 #include <new>
-
-extern "C" void* g_pLocalizationTable;
 
 // Minister-skill float coefficient tables (defined in global_data_tables.cpp).
 extern "C" {
@@ -101,11 +103,9 @@ undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void);
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
 undefined4 DispatchTurnEvent11F8WithNoPayload(void);
 undefined4 BuildGreatPowerTurnMessageSummaryAndDispatch(void);
-undefined4 QueueInterNationEventIntoNationBucket(void);
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
 undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
 undefined4 InitializeCivWorkOrderState(void);
-undefined4 thunk_QueueInterNationEventType0FWithBitmaskMerge(void);
 undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
 undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 undefined4 thunk_ContainsPointerArrayEntryMatchingByteKey(void);
@@ -113,10 +113,6 @@ undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 thunk_GetWrappedHexNeighborTileIndexByDirection(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 thunk_GetInt32Field30(void);
-undefined4 thunk_ComputeWeightedNeighborLinkScoreForNode(void);
-undefined4 thunk_SumWeightedNeighborLinkScoreForLinkedNodes(void);
-undefined4 thunk_SumNavyOrderPriorityForNationAndNodeType(void);
-undefined4 thunk_SumNavyOrderPriorityForNation(void);
 undefined4 thunk_ComputeDefendProvinceMissionLocalSupportVectorScore(void);
 undefined4 thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore(void);
 undefined4 thunk_FindFirstPortZoneContextByNation(void);
@@ -174,12 +170,6 @@ undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
 undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
 undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void);
 
-// Legacy free-function symbol retained for old callsites that still reference
-// the no-arg form; class-owned event queue methods are implemented below.
-unsigned int QueueInterNationEventIntoNationBucket(void) {
-  return 0;
-}
-
 // Legacy global helper still referenced by thunks/call-through wrappers.
 unsigned int __cdecl GetTGreatPowerClassNamePointer(void) {
   return 0x00653688;
@@ -212,18 +202,9 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TCivWorkOrderState.h"
 #include "game/TAdmiral.h"
 
-extern "C" void* g_apNationStates[];
-extern "C" void* g_apTerrainTypeDescriptorTable[];
-extern "C" void* g_apSecondaryNationStateSlots[];
-extern "C" void* g_pInterNationEventQueueManager;
-
 struct TProposalQueueCountView {
   unsigned char pad00[8];
   short count;
-};
-
-struct TShortNodeValueView {
-  short value;
 };
 
 struct TTrackedObjectListEntryView {
@@ -243,7 +224,6 @@ static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
 static const unsigned int kAddrNationInteractionStateManagerPtr = 0x006A43CC;
 static const unsigned int kAddrSecondaryNationStateSlots = 0x006A4280;
 static const unsigned int kAddrInterNationEventQueueManagerPtr = 0x006A43E8;
-static const unsigned int kAddrEligibilityManagerPtr = 0x006A43E0;
 static const unsigned int kAddrGameFlowStatePtr = 0x006A43C8;
 static const unsigned int kAddrLocalizationTablePtr = 0x006A20F8;
 static const unsigned int kAddrShGreatPowerPressureMessageRef = 0x006A2DF0;
@@ -306,17 +286,15 @@ static __inline void* ReadGlobalPointerArraySlot(unsigned int address, int index
 // Major-nation state slots hold TGreatPower(-derived) objects; secondary slots
 // hold TMinor objects; the terrain table holds TTerrainDescriptor objects.
 static __inline TGreatPower* ReadNationStateSlot(int nationSlot) {
-  return static_cast<TGreatPower*>(ReadGlobalPointerArraySlot(kAddrNationStates, nationSlot));
+  return g_apNationStates[nationSlot];
 }
 
 static __inline TMinor* ReadSecondaryNationStateSlot(int nationSlot) {
-  return static_cast<TMinor*>(
-      ReadGlobalPointerArraySlot(kAddrSecondaryNationStateSlots, nationSlot));
+  return g_apSecondaryNationStateSlots[nationSlot];
 }
 
 static __inline TTerrainDescriptor* ReadTerrainDescriptorSlot(int nationSlot) {
-  return static_cast<TTerrainDescriptor*>(
-      ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, nationSlot));
+  return reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[nationSlot]);
 }
 
 static __inline TGlobalMapState* ReadGlobalMapStateScoreView(void) {
@@ -324,17 +302,7 @@ static __inline TGlobalMapState* ReadGlobalMapStateScoreView(void) {
 }
 
 static __inline TLocalizationRuntime* ReadLocalizationRuntimeView(void) {
-  return static_cast<TLocalizationRuntime*>(ReadGlobalPointer(kAddrLocalizationTablePtr));
-}
-
-static __inline unsigned char
-LocalizationRuntime_ReadGateFlag7A(const TLocalizationRuntime* localizationRuntime) {
-  return *reinterpret_cast<const unsigned char*>(
-      reinterpret_cast<const unsigned char*>(localizationRuntime) + 0x7A);
-}
-
-static __inline void* GreatPower_GetInterNationQueueByEventCode(TGreatPower* self, int eventCode) {
-  return self->diplomacyTrackedSlots[eventCode];
+  return g_pLocalizationTable;
 }
 
 static __inline TTerrainStateRecordView*
@@ -497,34 +465,6 @@ static __inline char IsTurnCooldownCounterActiveOrResetFlagAsChar(void) {
   return isTurnCooldownActive();
 }
 
-// TEMP: bridge until TIndexAndRankList::AddEntrySlot38 (TQueueObject recovered).
-static __inline void QueueObject_WritePackedIntAtSlot38(void* queue, int* packedValue) {
-  static_cast<TIndexAndRankList*>(queue)->AddEntrySlot38(packedValue);
-}
-
-static __inline void QueueInterNationEventWithPayload(int sourceNation, void* payload) {
-  void* queueManager = ReadGlobalPointer(kAddrInterNationEventQueueManagerPtr);
-  void(__fastcall * queueInterNationEvent)(void*, int, int, void*, char) =
-      reinterpret_cast<void(__fastcall*)(void*, int, int, void*, char)>(
-          QueueInterNationEventIntoNationBucket);
-  queueInterNationEvent(queueManager, 0, sourceNation, payload, '\0');
-}
-
-static __inline void SendTurnEvent13WithPayload(int sourceNation, void* payload) {
-  void(__fastcall * sendTurnEvent13)(void*, int, void*) =
-      reinterpret_cast<void(__fastcall*)(void*, int, void*)>(
-          thunk_CreateAndSendTurnEvent13_NationAndNineDwords);
-  sendTurnEvent13(0, sourceNation, payload);
-}
-
-static __inline char IsNationSlotEligibleForEventProcessingFast(int nationSlot) {
-  char(__fastcall * isNationEligible)(void*, int, int) =
-      reinterpret_cast<char(__fastcall*)(void*, int, int)>(
-          thunk_IsNationSlotEligibleForEventProcessing);
-  void* eligibilityManager = ReadGlobalPointer(kAddrEligibilityManagerPtr);
-  return isNationEligible(eligibilityManager, 0, nationSlot);
-}
-
 static __inline void ReleaseObjectAtSlot1C(void* obj) {
   if (obj != 0) {
     static_cast<TTrackedObject*>(obj)->Release1C();
@@ -619,15 +559,6 @@ static __inline short DecodeSecondaryNationOwnerSlot(const TMinor* secondaryNati
     ownerNationSlot = static_cast<short>(ownerNationSlot - 200);
   }
   return ownerNationSlot;
-}
-
-static __inline void QueueInterNationEventRecordDedup(int eventCode, int sourceNation,
-                                                      int targetNation) {
-  void(__fastcall * queueInterNationEventDedup)(void*, int, int, int, int, char) =
-      reinterpret_cast<void(__fastcall*)(void*, int, int, int, int, char)>(
-          thunk_QueueInterNationEventRecordDeduped);
-  queueInterNationEventDedup(ReadGlobalPointer(kAddrInterNationEventQueueManagerPtr), 0, eventCode,
-                             sourceNation, targetNation, '\0');
 }
 
 static __inline void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void* gameFlowState,
@@ -922,7 +853,6 @@ void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
   DispatchTurnEvent11F8WithNoPayload();
 }
 
-static __inline int CallSumNavyOrderPriorityForNationAndNodeType(void* nationObj, int arg);
 // FUNCTION: IMPERIALISM 0x004e2270
 void TGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
   this->ownedRegionList->RemoveIntSlot34(regionId);
@@ -951,8 +881,7 @@ TGreatPower::TGreatPower()
       aidAllocationTotal(0), pendingAidTotal(0), missionQueue(0) {
   int localeIndex = 0;
   if (g_pLocalizationTable != 0) {
-    localeIndex =
-        *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(g_pLocalizationTable) + 0x40);
+    localeIndex = g_pLocalizationTable->runtimeSubsystemIndex;
   }
   this->diplomacyBudgetBase =
       *reinterpret_cast<int*>(kAddrNationBasePressureByLocale + localeIndex * 4) * 100;
@@ -1822,7 +1751,7 @@ char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
 short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
   int dispatchCounter = g_pDiplomacyTurnStateManager->proposalDispatchCounter790;
   short promptCode = 0;
-  int turnTick = static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+  int turnTick = g_pLocalizationTable->GetTurnTickSlot3C();
   if (dispatchCounter == 0 && turnTick == 3) {
     promptCode = 0x25;
     return promptCode;
@@ -2123,7 +2052,7 @@ int TGreatPower::GetHomeRegionCityRecordIndex(void) {
 // FUNCTION: IMPERIALISM 0x004d87e0
 #pragma optimize("y", on)
 void TGreatPower::QueueRecruitOrdersForUndergarrisonedRegions(void) {
-  short tickRaw = static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->quarterGateTick2c;
+  short tickRaw = g_pLocalizationTable->quarterGateTick2c;
   if (!IsRecruitQuarterTickGate(tickRaw)) {
     return;
   }
@@ -2282,7 +2211,7 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
-            static_cast<TGreatPower*>(g_apNationStates[this->nationSlot])->diplomacyEligibilityA0 ==
+            g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 ==
                 0 &&
             ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 4) {
           order = new TMilitaryUnitOrderState();
@@ -2295,7 +2224,7 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
-          TGreatPower* nation = static_cast<TGreatPower*>(g_apNationStates[this->nationSlot]);
+          TGreatPower* nation = g_apNationStates[this->nationSlot];
           TCity* relationMgr = (nation != 0) ? nation->relationManager : 0;
           void* portZone = ActiveMapOrderContext()->FindPortZoneBySelectedTile(relationMgr);
           reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
@@ -2303,7 +2232,7 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
                                                                     0);
         }
         if (this->nationSlot < 7) {
-          TGreatPower* nation = static_cast<TGreatPower*>(g_apNationStates[this->nationSlot]);
+          TGreatPower* nation = g_apNationStates[this->nationSlot];
           if (nation->diplomacyEligibilityA0 != 0 &&
               ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 0) {
             TCity* relationMgr = (nation != 0) ? nation->relationManager : 0;
@@ -2645,16 +2574,14 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
   float productionSum = 0.0f;
   float productionSquares = 0.0f;
   int slot = 0;
-  void** nationCursor = g_apNationStates;
+  TGreatPower** nationCursor = g_apNationStates;
   do {
-    if (IsNationSlotEligibleForEventProcessingFast(slot) != 0) {
-      TCity* peerMgr =
-          (*nationCursor != 0) ? static_cast<TGreatPower*>(*nationCursor)->relationManager : 0;
+    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(slot) != 0) {
+      TCity* peerMgr = (*nationCursor != 0) ? (*nationCursor)->relationManager : 0;
       if (peerMgr != 0) {
         int production = 4;
         for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
-          peerMgr =
-              (*nationCursor != 0) ? static_cast<TGreatPower*>(*nationCursor)->relationManager : 0;
+          peerMgr = (*nationCursor != 0) ? (*nationCursor)->relationManager : 0;
           production += static_cast<short>(
               peerMgr->GetBuildingProductionValueBySlot(static_cast<short>(buildingSlot)));
         }
@@ -3179,7 +3106,7 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
     }
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationSlot, this->nationSlot) !=
             0 &&
-        IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0) {
+        reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0) {
       hasEligibleForeignNation = true;
       break;
     }
@@ -3237,7 +3164,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     }
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationSlot, this->nationSlot) !=
             0 &&
-        IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0) {
+        reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0) {
       hasEligibleForeignNation = true;
       break;
     }
@@ -3246,15 +3173,16 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     return;
   }
 
-  for (int scanSlot = 0; scanSlot < kMajorNationCount; ++scanSlot) {
-    void* nationState = ReadNationStateSlot(scanSlot);
-    if (nationState == 0) {
-      continue;
-    }
+  TPtrList* townMarkerList = this->townMarkerList;
+  if (townMarkerList == 0) {
+    return;
+  }
 
-    TNationStateEventMessageFlags* messageFlags =
-        static_cast<TNationStateEventMessageFlags*>(nationState);
-    if (messageFlags->allowEventMessage4D != 0 && messageFlags->suppressEventMessage4C == 0) {
+  CIterator cursor(townMarkerList);
+  cursor.Reset();
+  while (cursor.More()) {
+    TTownMarker* marker = static_cast<TTownMarker*>(cursor.current);
+    if (marker != 0 && marker->enabledFlag4d != 0 && marker->transportLinkedFlag4c == 0) {
       CString messageRef;
       CString scratchRef;
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
@@ -3262,6 +3190,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
       AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef),
                                 reinterpret_cast<int*>(&messageRef));
     }
+    cursor.Advance();
   }
 }
 
@@ -3554,7 +3483,7 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
   TLocalizationRuntime* localizationTable =
-      static_cast<TLocalizationRuntime*>(g_pLocalizationTable);
+      g_pLocalizationTable;
   if (localizationTable->runtimeSubsystemIndex != 0 || localizationTable->mode != 2) {
     return;
   }
@@ -3634,7 +3563,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     int fallbackNationSlot = -1;
     while (!foundFallbackNation) {
       fallbackNationSlot = static_cast<int>(GenerateThreadLocalRandom15Value() % 7);
-      if (IsNationSlotEligibleForEventProcessingFast(fallbackNationSlot) != 0 &&
+      if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(fallbackNationSlot) != 0 &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(fallbackNationSlot,
                                                                   this->nationSlot) == 0 &&
           fallbackNationSlot != this->nationSlot) {
@@ -3710,11 +3639,12 @@ int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) 
 // FUNCTION: IMPERIALISM 0x004dda90
 void TGreatPower::QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                                   short sourceNationSlot) {
-  void(__fastcall * mergeFn)(void*, int, int, int, int, char) =
-      reinterpret_cast<void(__fastcall*)(void*, int, int, int, int, char)>(
-          thunk_QueueInterNationEventType0FWithBitmaskMerge);
-  mergeFn(ReadGlobalPointer(kAddrInterNationEventQueueManagerPtr), 0, this->nationSlot,
-          sourceNationSlot, targetNationSlot, 0);
+  TInterNationEventQueueManager* queueManager =
+      g_pInterNationEventQueueManager;
+  if (queueManager != 0) {
+    queueManager->QueueInterNationEventType0FWithBitmaskMerge(
+        this->nationSlot, sourceNationSlot, targetNationSlot, '\0');
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004ddad0
@@ -4136,14 +4066,17 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   const int kDipFlagRelation = 6;
   const int kDipFlagPolicy = 0x31;
 
-  QueueInterNationEventRecordDedup(0x1D, this->nationSlot, 7);
+  if (g_pInterNationEventQueueManager != 0) {
+    g_pInterNationEventQueueManager
+        ->QueueInterNationEventRecordDeduped(0x1D, this->nationSlot, 7, '\0');
+  }
   reinterpret_cast<void(__cdecl*)(void)>(thunk_RebuildMinorNationDispositionLookupTables)();
 
   this->encodedNationSlot = static_cast<short>(arg1 + 100);
 
   int nationSlot;
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0 &&
+    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0 &&
         nationSlot != this->nationSlot && nationSlot != arg1) {
       TerrainDescriptor_SetResetLevel(ReadTerrainDescriptorSlot(nationSlot), this->nationSlot,
                                       kResetDiplomacyLevel);
@@ -4211,7 +4144,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   void* diplomacyManager = g_pDiplomacyTurnStateManager;
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (nationSlot != this->nationSlot &&
-        IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0) {
+        reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0) {
       g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(this->nationSlot, nationSlot,
                                                                   kDipFlagRelation, 0);
       g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, nationSlot,
@@ -4301,8 +4234,7 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
   if (this->diplomacyEligibilityA0 != 0) {
     int packedCode = (static_cast<int>(static_cast<unsigned short>(arg1)) << 16) |
                      static_cast<unsigned short>(arg2);
-    void* diplomacyQueue = this->turnEventQueue;
-    QueueObject_WritePackedIntAtSlot38(diplomacyQueue, &packedCode);
+    this->turnEventQueue->AddEntrySlot38(&packedCode);
 
     Event13Payload payload;
     payload.marker0 = 1;
@@ -4312,9 +4244,15 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
 
     char immediateDispatch = this->ShouldDispatchImmediatelySlot28_Provisional();
     if (immediateDispatch == 0) {
-      QueueInterNationEventWithPayload(static_cast<int>(this->nationSlot), &payload);
+      if (g_pInterNationEventQueueManager != 0) {
+        g_pInterNationEventQueueManager
+            ->QueueInterNationEventIntoNationBucket(static_cast<int>(this->nationSlot),
+                                                    reinterpret_cast<int>(&payload), '\0');
+      }
     } else {
-      SendTurnEvent13WithPayload(static_cast<int>(this->nationSlot), &payload);
+      reinterpret_cast<void(__cdecl*)(int, void*)>(
+          thunk_CreateAndSendTurnEvent13_NationAndNineDwords)(static_cast<int>(this->nationSlot),
+                                                              &payload);
     }
   }
 
@@ -4324,7 +4262,7 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
   if (policyCode == kPolicyMutualDefense &&
       g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(arg1) != 0) {
     for (int slot = 0; slot < kMajorNationCount; ++slot) {
-      if (IsNationSlotEligibleForEventProcessingFast(slot) == 0) {
+      if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(slot) == 0) {
         continue;
       }
 
@@ -4344,7 +4282,7 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
   }
 
   for (int slot = 0; slot < kMajorNationCount; ++slot) {
-    if (IsNationSlotEligibleForEventProcessingFast(slot) == 0) {
+    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(slot) == 0) {
       continue;
     }
 
@@ -4373,7 +4311,7 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
   proposalRecord.proposalCode = proposalCode;
   proposalRecord.targetNationId = targetNationId;
 
-  QueueObject_WritePackedIntAtSlot38(this->proposalQueue, reinterpret_cast<int*>(&proposalRecord));
+  this->proposalQueue->AddEntrySlot38(reinterpret_cast<int*>(&proposalRecord));
 }
 
 // Typed vtable views for the diplomacy objects reached by opaque pointer in
@@ -4508,16 +4446,22 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
   case 0:
     this->ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(
         static_cast<int>(proposal->targetNationSlot), 1);
-    QueueInterNationEventRecordDedup(3, this->nationSlot,
-                                     static_cast<int>(proposal->targetNationSlot));
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(3, this->nationSlot,
+                                               static_cast<int>(proposal->targetNationSlot), '\0');
+    }
     break;
 
   case 1: {
     reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
         ->SetRelationCodeSlot78Final(this->nationSlot, static_cast<int>(proposal->targetNationSlot),
                                      2);
-    QueueInterNationEventRecordDedup(4, this->nationSlot,
-                                     static_cast<int>(proposal->targetNationSlot));
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(4, this->nationSlot,
+                                               static_cast<int>(proposal->targetNationSlot), '\0');
+    }
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
                   ->HasPolicyWithNationSlot44(nationSlot,
@@ -4535,20 +4479,26 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
     reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
         ->SetRelationCodeSlot78Final(this->nationSlot, static_cast<int>(proposal->targetNationSlot),
                                      3);
-    QueueInterNationEventRecordDedup(5, this->nationSlot,
-                                     static_cast<int>(proposal->targetNationSlot));
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(5, this->nationSlot,
+                                               static_cast<int>(proposal->targetNationSlot), '\0');
+    }
     break;
 
   case 3: {
     reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
         ->SetRelationCodeSlot78Final(this->nationSlot, static_cast<int>(proposal->targetNationSlot),
                                      4);
-    QueueInterNationEventRecordDedup(2, this->nationSlot,
-                                     static_cast<int>(proposal->targetNationSlot));
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(2, this->nationSlot,
+                                               static_cast<int>(proposal->targetNationSlot), '\0');
+    }
     if (reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
             ->HasFlag84ForNationSlot84(static_cast<int>(proposal->targetNationSlot)) != 0) {
       for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-        if (IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0 &&
+        if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0 &&
             reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
                     ->GetRelationTierSlot70(this->nationSlot, nationSlot) == 2 &&
             reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
@@ -4566,8 +4516,11 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
     reinterpret_cast<TerrainDescriptorVtbl*>(
         ReadTerrainDescriptorSlot(static_cast<int>(proposal->targetNationSlot)))
         ->SetDiplomacyStandingSlot4c(this->nationSlot, 1);
-    QueueInterNationEventRecordDedup(3, static_cast<int>(proposal->targetNationSlot),
-                                     this->nationSlot);
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(3, static_cast<int>(proposal->targetNationSlot),
+                                               this->nationSlot, '\0');
+    }
     break;
   }
 
@@ -4577,7 +4530,7 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
 
   if (reinterpret_cast<DiplomacyManagerVtbl*>(g_pDiplomacyTurnStateManager)
               ->HasFlag84ForNationSlot84(static_cast<int>(proposal->targetNationSlot)) != 0 &&
-      IsNationSlotEligibleForEventProcessingFast(static_cast<int>(proposal->targetNationSlot)) !=
+      reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(static_cast<int>(proposal->targetNationSlot)) !=
           0) {
     reinterpret_cast<NationStateVtbl*>(
         ReadNationStateSlot(static_cast<int>(proposal->targetNationSlot)))
@@ -4624,16 +4577,28 @@ void TGreatPower::QueueInterNationEventForProposalCode12D_130(unsigned short pro
 
   switch (proposalCode) {
   case kProposalCode12D:
-    QueueInterNationEventRecordDedup(kEvent09, targetNation, this->nationSlot);
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(kEvent09, targetNation, this->nationSlot, '\0');
+    }
     return;
   case kProposalCode12E:
-    QueueInterNationEventRecordDedup(kEvent0B, targetNation, this->nationSlot);
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(kEvent0B, targetNation, this->nationSlot, '\0');
+    }
     return;
   case kProposalCode12F:
-    QueueInterNationEventRecordDedup(kEvent0D, targetNation, this->nationSlot);
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(kEvent0D, targetNation, this->nationSlot, '\0');
+    }
     return;
   case kProposalCode130:
-    QueueInterNationEventRecordDedup(kEvent07, targetNation, this->nationSlot);
+    if (g_pInterNationEventQueueManager != 0) {
+      g_pInterNationEventQueueManager
+          ->QueueInterNationEventRecordDeduped(kEvent07, targetNation, this->nationSlot, '\0');
+    }
     return;
   default:
     return;
@@ -4750,40 +4715,23 @@ void DispatchGreatPowerQuarterlyStatusMessageLevel0(void) {
   DispatchQuarterlyGreatPowerPressureMessage(0);
 }
 
-// View of a navy primary-order list node (global list head at 0x005505c0).
-struct NavyPrimaryOrderNodeView {
-  unsigned char pad00[4];
-  short resourceType04;
-  unsigned char pad06[0x14 - 0x06];
-  short ownerNationSlot14;
-  unsigned char pad16[0x24 - 0x16];
-  NavyPrimaryOrderNodeView* next24;
-};
-
-undefined4 thunk_GetNavyPrimaryOrderListHead(void);
-undefined4 thunk_GetIndustryActionCostWeightByResourceType(void);
-
-static __inline NavyPrimaryOrderNodeView* GetNavyPrimaryOrderListHeadFast(void) {
-  return reinterpret_cast<NavyPrimaryOrderNodeView*(__cdecl*)(void)>(
-      thunk_GetNavyPrimaryOrderListHead)();
-}
-
-static __inline short GetIndustryActionCostWeightByResourceTypeFast(short resourceType) {
-  return reinterpret_cast<short(__cdecl*)(short)>(thunk_GetIndustryActionCostWeightByResourceType)(
-      resourceType);
-}
-
 // FUNCTION: IMPERIALISM 0x004e0500
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 int TGreatPower::SumNavyOrderPriorityForNationSlot86(void) {
   int prioritySum = 0;
-  for (NavyPrimaryOrderNodeView* node = GetNavyPrimaryOrderListHeadFast(); node != 0;
-       node = node->next24) {
+  for (TShip* node = static_cast<TShip*>(GetNavyPrimaryOrderListHead()); node != 0;
+       node = node->nextOlder24) {
     if (node->ownerNationSlot14 == this->nationSlot) {
-      prioritySum += GetIndustryActionCostWeightByResourceTypeFast(node->resourceType04);
+      prioritySum += GetIndustryActionCostWeightByResourceType(node->resourceType04);
     }
   }
   return prioritySum;
 }
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x004e0550
 int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
@@ -4870,7 +4818,7 @@ static __inline float SumAlliedArmyScoreFactors(int targetNation) {
       int allyNation =
           g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
       allySum = allySum +
-                static_cast<TGreatPower*>(g_apNationStates[allyNation])->GetScoreFactorSlot23C();
+                g_apNationStates[allyNation]->GetScoreFactorSlot23C();
       ++allyIndex;
     } while (allyIndex <
              g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation));
@@ -4886,7 +4834,7 @@ static __inline float SumAlliedNavyScoreFactors(int targetNation) {
       int allyNation =
           g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
       allySum = allySum +
-                static_cast<TGreatPower*>(g_apNationStates[allyNation])->GetScoreFactorSlot240();
+                g_apNationStates[allyNation]->GetScoreFactorSlot240();
       ++allyIndex;
     } while (allyIndex <
              g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation));
@@ -4901,7 +4849,7 @@ static __inline short* GetRelationStandingRowForNation(short nationSlot) {
 
 // turn tick / 4, clamped to 0x3c — the "elapsed years" term of the standing ratios.
 static __inline int GetClampedQuarterYearTerm(void) {
-  TLocalizationRuntime* localization = static_cast<TLocalizationRuntime*>(g_pLocalizationTable);
+  TLocalizationRuntime* localization = g_pLocalizationTable;
   int yearTerm = static_cast<short>(localization->quarterGateTick2c / 4);
   if (yearTerm >= 0x3c) {
     yearTerm = 0x3c;
@@ -4933,9 +4881,9 @@ float TGreatPower::ComputeWarThresholdSlotA3_Provisional(int targetNation) {
   while (nationIndex < kMajorNationCount) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationIndex, this->nationSlot) !=
             0 &&
-        IsNationSlotEligibleForEventProcessingFast(nationIndex) != 0 &&
+        reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationIndex) != 0 &&
         nationIndex != targetNation) {
-      TGreatPower* allyState = static_cast<TGreatPower*>(g_apNationStates[nationIndex]);
+      TGreatPower* allyState = g_apNationStates[nationIndex];
       alliedArmyForSelf += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot23C());
       alliedNavyForSelf += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot240());
     }
@@ -4945,9 +4893,9 @@ float TGreatPower::ComputeWarThresholdSlotA3_Provisional(int targetNation) {
   nationIndex = 0;
   while (nationIndex < kMajorNationCount) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationIndex, targetNation) != 0 &&
-        IsNationSlotEligibleForEventProcessingFast(nationIndex) != 0 &&
+        reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationIndex) != 0 &&
         nationIndex != this->nationSlot) {
-      TGreatPower* allyState = static_cast<TGreatPower*>(g_apNationStates[nationIndex]);
+      TGreatPower* allyState = g_apNationStates[nationIndex];
       alliedArmyForTarget += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot23C());
       alliedNavyForTarget += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot240());
     }
@@ -4960,7 +4908,7 @@ float TGreatPower::ComputeWarThresholdSlotA3_Provisional(int targetNation) {
         g_pGlobalMapState->AreNationsBorderLinked(targetNation, static_cast<int>(this->nationSlot));
   }
 
-  TGreatPower* targetState = static_cast<TGreatPower*>(g_apNationStates[targetNation]);
+  TGreatPower* targetState = g_apNationStates[targetNation];
   if (borderLinked != 0) {
     float targetArmyScore = TruncatedScoreFactorToFloat(targetState->GetScoreFactorSlot23C());
     float numerator =
@@ -5051,7 +4999,7 @@ float TGreatPower::GetScoreFactorSlot240(void) {
 float TGreatPower::ComputeArmyScoreRatioVsNation(int targetNation) {
   float selfScore = this->GetScoreFactorSlot23C();
   float targetScore =
-      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+      g_apNationStates[targetNation]->GetScoreFactorSlot23C();
   float allySum = SumAlliedArmyScoreFactors(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
@@ -5064,7 +5012,7 @@ float TGreatPower::ComputeArmyScoreRatioVsNation(int targetNation) {
 float TGreatPower::ComputeArmyScoreStandingRatioVsNation(int targetNation) {
   float selfScore = this->GetScoreFactorSlot23C();
   float targetScore =
-      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+      g_apNationStates[targetNation]->GetScoreFactorSlot23C();
   float allySum = SumAlliedArmyScoreFactors(targetNation);
   int yearTerm = GetClampedQuarterYearTerm();
   short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
@@ -5083,7 +5031,7 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNation(int targetNation) {
 float TGreatPower::ComputeNavyScoreRatioVsNation(int targetNation) {
   float selfScore = this->GetScoreFactorSlot240();
   float targetScore =
-      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+      g_apNationStates[targetNation]->GetScoreFactorSlot240();
   float allySum = SumAlliedNavyScoreFactors(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
@@ -5096,7 +5044,7 @@ float TGreatPower::ComputeNavyScoreRatioVsNation(int targetNation) {
 float TGreatPower::ComputeNavyScoreStandingRatioVsNation(int targetNation) {
   float selfScore = this->GetScoreFactorSlot240();
   float targetScore =
-      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+      g_apNationStates[targetNation]->GetScoreFactorSlot240();
   float allySum = SumAlliedNavyScoreFactors(targetNation);
   int yearTerm = GetClampedQuarterYearTerm();
   short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
@@ -5115,16 +5063,16 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNation(int targetNation) {
 float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetScoreFactorSlot23C();
   int secondaryPower = SumMilitaryUnitPowerWeights(
-      static_cast<TMinor*>(g_apSecondaryNationStateSlots[secondarySlot])->militaryUnitList44);
+      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
   char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
   if (borderLinked != 0) {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+        g_apNationStates[targetNation]->GetScoreFactorSlot23C();
   } else {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+        g_apNationStates[targetNation]->GetScoreFactorSlot240();
   }
   float allySum = SumAlliedArmyScoreFactors(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
@@ -5141,10 +5089,10 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
   float targetScore;
   if (borderLinked != 0) {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+        g_apNationStates[targetNation]->GetScoreFactorSlot23C();
   } else {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+        g_apNationStates[targetNation]->GetScoreFactorSlot240();
   }
   float allySum = SumAlliedArmyScoreFactors(targetNation);
   short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
@@ -5162,16 +5110,16 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
 float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetScoreFactorSlot240();
   int secondaryPower = SumMilitaryUnitPowerWeights(
-      static_cast<TMinor*>(g_apSecondaryNationStateSlots[secondarySlot])->militaryUnitList44);
+      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
   char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
   if (borderLinked != 0) {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+        g_apNationStates[targetNation]->GetScoreFactorSlot23C();
   } else {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+        g_apNationStates[targetNation]->GetScoreFactorSlot240();
   }
   float allySum = SumAlliedNavyScoreFactors(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
@@ -5188,10 +5136,10 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, i
   float targetScore;
   if (borderLinked != 0) {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+        g_apNationStates[targetNation]->GetScoreFactorSlot23C();
   } else {
     targetScore =
-        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+        g_apNationStates[targetNation]->GetScoreFactorSlot240();
   }
   float allySum = SumAlliedNavyScoreFactors(targetNation);
   short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
@@ -5215,9 +5163,9 @@ float TGreatPower::ComputeArmyScoreRatioForNationPair(int nationA, int nationB, 
   }
   float selfScore = this->GetScoreFactorSlot23C();
   float opponentScore =
-      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot23C();
+      g_apNationStates[opponentNation]->GetScoreFactorSlot23C();
   float partnerScore =
-      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot23C();
+      g_apNationStates[partnerNation]->GetScoreFactorSlot23C();
   float allySum = SumAlliedArmyScoreFactors(opponentNation);
   float denominator = opponentScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   float numerator;
@@ -5243,9 +5191,9 @@ float TGreatPower::ComputeArmyScoreStandingRatioForNationPair(int nationA, int n
   }
   float selfScore = this->GetScoreFactorSlot23C();
   float opponentScore =
-      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot23C();
+      g_apNationStates[opponentNation]->GetScoreFactorSlot23C();
   float partnerScore =
-      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot23C();
+      g_apNationStates[partnerNation]->GetScoreFactorSlot23C();
   float allySum = SumAlliedArmyScoreFactors(opponentNation);
   short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(opponentNation)]) -
@@ -5277,9 +5225,9 @@ float TGreatPower::ComputeNavyScoreRatioForNationPair(int nationA, int nationB, 
   }
   float selfScore = this->GetScoreFactorSlot240();
   float opponentScore =
-      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot240();
+      g_apNationStates[opponentNation]->GetScoreFactorSlot240();
   float partnerScore =
-      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot240();
+      g_apNationStates[partnerNation]->GetScoreFactorSlot240();
   float allySum = SumAlliedNavyScoreFactors(opponentNation);
   float denominator = opponentScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   float numerator;
@@ -5305,9 +5253,9 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
   }
   float selfScore = this->GetScoreFactorSlot240();
   float opponentScore =
-      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot240();
+      g_apNationStates[opponentNation]->GetScoreFactorSlot240();
   float partnerScore =
-      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot240();
+      g_apNationStates[partnerNation]->GetScoreFactorSlot240();
   float allySum = SumAlliedNavyScoreFactors(opponentNation);
   short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(opponentNation)]) -
@@ -5334,14 +5282,14 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
   // Result intentionally ignored in the original; keep the call for its side effects.
   g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, targetNation);
   char joinsWar = 0;
-  TGreatPower* targetState = static_cast<TGreatPower*>(g_apNationStates[targetNation]);
+  TGreatPower* targetState = g_apNationStates[targetNation];
   if (targetState->CompareMissionScoreVariantsByMode(0) == 0 &&
       targetState->CompareMissionScoreVariantsByMode(1) == 0) {
     float warThreshold = this->ComputeWarThresholdSlotA3_Provisional(targetNation);
     if (this->ComputeMinisterSkillFloatSlot8C() < warThreshold) {
       joinsWar = 1;
       for (int otherNation = 0; otherNation < 7; ++otherNation) {
-        if (IsNationSlotEligibleForEventProcessingFast(otherNation) != 0 &&
+        if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(otherNation) != 0 &&
             g_pDiplomacyTurnStateManager->GetRelationTierSlot70(this->nationSlot, otherNation) ==
                 2 &&
             g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(otherNation, targetNation) !=
@@ -5352,7 +5300,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
     }
   }
   if (joinsWar != 0) {
-    static_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+    g_pInterNationEventQueueManager
         ->QueueInterNationEventRecordDeduped(0x1c, targetNation, this->nationSlot, 0);
   }
   return joinsWar;
@@ -5490,8 +5438,8 @@ void TGreatPower::CallSlotA8_Provisional(int targetNationSlot) {
         g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(kMajorPolicyNation,
                                                                     targetNationSlot, 6, 0);
         if (targetNationSlot < kMajorNationCount &&
-            IsNationSlotEligibleForEventProcessingFast(targetNationSlot) != 0) {
-          TGreatPower* targetState = static_cast<TGreatPower*>(g_apNationStates[targetNationSlot]);
+            reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(targetNationSlot) != 0) {
+          TGreatPower* targetState = g_apNationStates[targetNationSlot];
           if (targetState != 0 && targetState->diplomacyEligibilityA0 == 0) {
             targetState->NotifyActionSlot94(kMajorPolicyNation, 0x131);
           }
@@ -5597,7 +5545,7 @@ void TGreatPower::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 
   int nationSlot = 0;
   do {
-    if (IsNationSlotEligibleForEventProcessingFast(nationSlot) != 0 &&
+    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0 &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       void* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
       if (terrainDescriptor != 0) {
@@ -5624,7 +5572,7 @@ void TGreatPower::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int target
   ApplyJoinEmpireModeForTargetNation(targetNationSlot, mode);
 
   if (targetNationSlot >= 0 && targetNationSlot < kNationSlotCount) {
-    TGreatPower* targetNation = static_cast<TGreatPower*>(g_apNationStates[targetNationSlot]);
+    TGreatPower* targetNation = g_apNationStates[targetNationSlot];
     if (targetNation != 0 && targetNation->field8d1 < 3) {
       targetNation->SetNationPendingActionStateAndPayload(9, this->nationSlot);
     }
@@ -5693,7 +5641,11 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
     return;
   }
 
-  this->QueueInterNationEventIntoNationBucket(0x13A0, mergedNationMask, '\0');
+  TInterNationEventQueueManager* queueManager =
+      g_pInterNationEventQueueManager;
+  if (queueManager != 0) {
+    queueManager->QueueInterNationEventIntoNationBucket(0x13A0, mergedNationMask, '\0');
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004e72c0
@@ -5880,30 +5832,6 @@ static __inline int CallGetField30ThunkWithManager(void) {
   return fn();
 }
 
-static __inline int CallComputeWeightedNeighborLinkScoreForNode(void* nationObj, int arg) {
-  int(__fastcall * fn)(void*, int, int) = reinterpret_cast<int(__fastcall*)(void*, int, int)>(
-      thunk_ComputeWeightedNeighborLinkScoreForNode);
-  return fn(nationObj, 0, arg);
-}
-
-static __inline int CallSumWeightedNeighborLinkScoreForLinkedNodes(void* nationObj) {
-  int(__fastcall * fn)(void*) =
-      reinterpret_cast<int(__fastcall*)(void*)>(thunk_SumWeightedNeighborLinkScoreForLinkedNodes);
-  return fn(nationObj);
-}
-
-static __inline int CallSumNavyOrderPriorityForNationAndNodeType(void* nationObj, int arg) {
-  int(__fastcall * fn)(void*, int, int) = reinterpret_cast<int(__fastcall*)(void*, int, int)>(
-      thunk_SumNavyOrderPriorityForNationAndNodeType);
-  return fn(nationObj, 0, arg);
-}
-
-static __inline int CallSumNavyOrderPriorityForNation(void* nationObj) {
-  int(__fastcall * fn)(void*) =
-      reinterpret_cast<int(__fastcall*)(void*)>(thunk_SumNavyOrderPriorityForNation);
-  return fn(nationObj);
-}
-
 static __inline int CallComputeGlobalMapActionContextNodeValueAverage(void) {
   int(__cdecl * fn)(void) =
       reinterpret_cast<int(__cdecl*)(void)>(thunk_ComputeGlobalMapActionContextNodeValueAverage);
@@ -5922,13 +5850,12 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     float sum = 0.0f;
     float selected = 0.0f;
     int slot = 0;
-    void** nationObjects = ReadGlobalPointerArray(kAddrNationStates);
 
     for (; slot < 0x17; ++slot) {
       if (!CallEligibilityThunkWithManager(slot)) {
         continue;
       }
-      TGreatPower* nationObj = static_cast<TGreatPower*>(nationObjects[slot]);
+      TGreatPower* nationObj = g_apNationStates[slot];
       float slotValue = nationObj->GetScoreFactorSlot23C();
       sum += slotValue;
       if (slot == selectedNationSlot) {
@@ -5948,13 +5875,12 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     float sum = 0.0f;
     float selected = 0.0f;
     int slot = 0;
-    void** nationObjects = ReadGlobalPointerArray(kAddrNationStates);
 
     for (; slot < 0x17; ++slot) {
       if (!CallEligibilityThunkWithManager(slot)) {
         continue;
       }
-      TGreatPower* nationObj = static_cast<TGreatPower*>(nationObjects[slot]);
+      TGreatPower* nationObj = g_apNationStates[slot];
       float slotValue = nationObj->GetScoreFactorSlot240();
       sum += slotValue;
       if (slot == selectedNationSlot) {
@@ -5971,20 +5897,19 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     return numerator / denominator;
   }
   case 2: {
-    void* terrainDescriptor = ReadTerrainDescriptorSlot(selectedNationSlot);
-    if (terrainDescriptor == 0) {
+    TTerrainDescriptor* terrainView =
+        reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[selectedNationSlot]);
+    if (terrainView == 0) {
       return kOne;
     }
 
-    TTerrainDescriptor* terrainView = static_cast<TTerrainDescriptor*>(terrainDescriptor);
     if (terrainView->linkedNodeList90 == 0) {
       return kOne;
     }
 
     int nodeWeight = terrainView->linkedNodeList90->GetCountOrReleaseSlot28();
-    int weightedNeighbor =
-        CallComputeWeightedNeighborLinkScoreForNode(terrainDescriptor, relationTargetNation);
-    int linkedNodeTotal = CallSumWeightedNeighborLinkScoreForLinkedNodes(terrainDescriptor);
+    int weightedNeighbor = ComputeWeightedNeighborLinkScoreForNode(relationTargetNation);
+    int linkedNodeTotal = SumWeightedNeighborLinkScoreForLinkedNodes(terrainView);
 
     float denominator = static_cast<float>(weightedNeighbor * nodeWeight) + 100.0f;
     if (denominator == 0.0f) {
@@ -5997,15 +5922,15 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       return 0.0f;
     }
 
-    TGreatPower* nationObj = static_cast<TGreatPower*>(ReadNationStateSlot(selectedNationSlot));
+    TGreatPower* nationObj = g_apNationStates[selectedNationSlot];
     if (nationObj == 0) {
       return 0.0f;
     }
 
     int priorityForNode =
-        CallSumNavyOrderPriorityForNationAndNodeType(nationObj, relationTargetNation);
+        SumNavyOrderPriorityForNationAndNodeType(nationObj, relationTargetNation);
     int nodeMultiplier = nationObj->GetMultiplierSlot21C();
-    int totalPriority = CallSumNavyOrderPriorityForNation(nationObj);
+    int totalPriority = SumNavyOrderPriorityForNation(nationObj);
 
     float denominator =
         static_cast<float>(priorityForNode * nodeMultiplier) - static_cast<float>(kMinusSix);
@@ -6092,10 +6017,9 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
     }
 
     if (relationshipList != 0) {
-      void* firstEntry = relationshipList->GetEntrySlot2C(1);
+      short* firstEntry = static_cast<short*>(relationshipList->GetEntrySlot2C(1));
       if (firstEntry != 0) {
-        selectedCandidateIndex =
-            static_cast<int>(static_cast<TShortNodeValueView*>(firstEntry)->value);
+        selectedCandidateIndex = static_cast<int>(*firstEntry);
       }
       relationshipList->ReleaseSlot24();
     }
@@ -6112,11 +6036,10 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
       navyPriorities[i] = 0;
     }
 
-    void** nationStates = ReadGlobalPointerArray(kAddrNationStates);
     for (i = 0; i < 7; ++i) {
       if (candidateFlags[i] != 0) {
         navyPriorities[i] = static_cast<short>(
-            CallSumNavyOrderPriorityForNationAndNodeType(nationStates[i], nodeType));
+            SumNavyOrderPriorityForNationAndNodeType(g_apNationStates[i], nodeType));
       }
     }
 
@@ -6288,21 +6211,17 @@ void TGreatPower::TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2, 
 // FUNCTION: IMPERIALISM 0x005410f0
 void TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A(void) {
   this->ProcessPendingDiplomacyProposalQueue();
-  void* gameFlowState = ReadGlobalPointer(kAddrGameFlowStatePtr);
   int nationSlot = 0;
-  void** nationStateCursor = ReadGlobalPointerArray(kAddrNationStates);
 
   do {
-    TGreatPower* nationState = static_cast<TGreatPower*>(*nationStateCursor);
+    TGreatPower* nationState = g_apNationStates[nationSlot];
     if (nationState != 0 && NationState_IsBusyA0(nationState) == 0) {
-      ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(gameFlowState, nationSlot);
+      ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(g_pGameFlowState, nationSlot);
     }
-    ++nationStateCursor;
     ++nationSlot;
-  } while (reinterpret_cast<unsigned int>(nationStateCursor) < kAddrNationStatesMajorEnd);
+  } while (nationSlot < 7);
 
-  void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
-  static_cast<TUiRuntimeContext*>(uiRuntimeContext)
+  static_cast<TUiRuntimeContext*>(g_pGlobalUiRootController)
       ->RequestDiplomacyDecisionSlot90(this->nationSlot, this->nationSlot, 0x29A);
 }
 
@@ -6337,77 +6256,6 @@ void TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int
   packetPayload.commandArgB = static_cast<unsigned char>(arg2);
   reinterpret_cast<void(__cdecl*)(int, int)>(thunk_EnqueueOrSendTurnEventPacketToNation)(
       reinterpret_cast<int>(&packetPayload.eventCode), 0);
-}
-
-// FUNCTION: IMPERIALISM 0x0055c970
-void TGreatPower::QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
-                                                        char isReplayBypass) {
-  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
-  if (localizationTable == 0) {
-    return;
-  }
-
-  if (LocalizationRuntime_ReadGateFlag7A(localizationTable) == 0) {
-    if (isReplayBypass == '\0' && localizationTable->redrawEnabled != 0) {
-      SendTurnEvent13WithPayload(eventCode, reinterpret_cast<void*>(payloadOrNation));
-      return;
-    }
-
-    void* interNationQueue = GreatPower_GetInterNationQueueByEventCode(this, eventCode);
-    if (interNationQueue != 0) {
-      QueueObject_WritePackedIntAtSlot38(interNationQueue, &payloadOrNation);
-    }
-  }
-}
-
-struct TInterNationEventType0FMergePayload {
-  int eventMarker;
-  int eventCode;
-  int nationMask;
-  int nationB;
-};
-
-// FUNCTION: IMPERIALISM 0x0055cbd0
-void TGreatPower::QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA,
-                                                              int nationB, char isReplayBypass) {
-  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
-  if (localizationTable == 0) {
-    return;
-  }
-
-  if (LocalizationRuntime_ReadGateFlag7A(localizationTable) == 0) {
-    if (isReplayBypass == '\0' && localizationTable->redrawEnabled != 0) {
-      reinterpret_cast<void(__cdecl*)(void)>(thunk_CreateAndSendTurnEvent21_ThreeBytes)();
-      return;
-    }
-
-    void* mergeQueue = GreatPower_GetInterNationQueueByEventCode(this, 7);
-    if (mergeQueue == 0) {
-      return;
-    }
-
-    int queueCount = CPtrArray_GetCount(static_cast<const CPtrArray*>(mergeQueue));
-    for (int entryIndex = 1; entryIndex <= queueCount; ++entryIndex) {
-      TInterNationEventType0FMergePayload* existingEntry =
-          reinterpret_cast<TInterNationEventType0FMergePayload*>(
-              static_cast<TQueueObject*>(mergeQueue)->GetEntryAt1BasedSlot2C(entryIndex));
-      if (existingEntry == 0) {
-        continue;
-      }
-      if (existingEntry->eventMarker == 0x0F && existingEntry->nationB == nationB &&
-          existingEntry->eventCode == eventCode) {
-        existingEntry->nationMask |= 1 << (nationA & 0x1F);
-        return;
-      }
-    }
-
-    TInterNationEventType0FMergePayload payload;
-    payload.eventMarker = 0x0F;
-    payload.eventCode = eventCode;
-    payload.nationMask = 1 << (nationA & 0x1F);
-    payload.nationB = nationB;
-    QueueObject_WritePackedIntAtSlot38(mergeQueue, reinterpret_cast<int*>(&payload));
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x0055f140

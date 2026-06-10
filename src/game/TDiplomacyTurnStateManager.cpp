@@ -219,7 +219,7 @@ char TDiplomacyTurnStateManager::IsNationPairRelationTurnStampOutOfDate(int sour
     return 0;
   }
   short currentTurn =
-      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+      g_pLocalizationTable->GetTurnTickSlot3C();
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
@@ -636,7 +636,7 @@ void TDiplomacyTurnStateManager::ApplyRelationCode4AndQueueEvent18ForTargetNatio
   TMinor* targetTerrain = g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)];
   if (targetTerrain != 0) {
     targetTerrain->NotifyActionSlot94(sourceNationSlot, 0x139);
-    reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+    g_pInterNationEventQueueManager
         ->QueueInterNationEventRecordDeduped(0x18, static_cast<short>(targetNationSlot),
                                              static_cast<short>(sourceNationSlot), 0);
   }
@@ -777,7 +777,7 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
 void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
   // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
   // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
-  if (reinterpret_cast<int*>(g_pLocalizationTable)[0x11] != 2) {
+  if (g_pLocalizationTable->redrawEnabled != 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -796,7 +796,7 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
   ScratchSharedString scratch2;
   ScratchSharedString scratch3;
 
-  if (reinterpret_cast<int*>(g_pLocalizationTable)[0x11] == 2) {
+  if (g_pLocalizationTable->redrawEnabled == 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -840,12 +840,12 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
               if (relationCode == 0x133) {
                 relationSideEffectMatrix1402[rowBase + col] = 1;
                 relationSideEffectMatrix1402[row + colBase] = 1;
-                reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+                g_pInterNationEventQueueManager
                     ->QueueInterNationEventRecordDeduped(0x12, row, col, 0);
               } else if (relationCode == 0x134) {
                 relationSideEffectMatrix1402[rowBase + col] = 2;
                 relationSideEffectMatrix1402[row + colBase] = 2;
-                reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+                g_pInterNationEventQueueManager
                     ->QueueInterNationEventRecordDeduped(0x14, row, col, 0);
               } else if (relationCode == 0x131) {
                 if (HasPolicyWithNationSlot44(row, col) == 0) {
@@ -891,9 +891,9 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
   int reverseIndex = target * kNationSlotCount + source;
   relationPropagationMatrixBbe[reverseIndex] = newRelationCode;
   relationTurnStampMatrixFe0[forwardIndex] =
-      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+      g_pLocalizationTable->GetTurnTickSlot3C();
   relationTurnStampMatrixFe0[reverseIndex] =
-      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
+      g_pLocalizationTable->GetTurnTickSlot3C();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
     g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(target, relationCode);
@@ -907,7 +907,7 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
   case 1:
     break;
   case 2:
-    reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+    g_pInterNationEventQueueManager
         ->QueueInterNationEventRecordDeduped(0x1a, source, target, 0);
     return;
   case 3:
@@ -940,7 +940,7 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
     TMinor* sourceTerrain = g_apTerrainTypeDescriptorTable[source];
     TMinor* targetTerrain = g_apTerrainTypeDescriptorTable[target];
     if ((sourceTerrain->ownerNationSlot0e == -1) && (targetTerrain->ownerNationSlot0e < 200)) {
-      reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+      g_pInterNationEventQueueManager
           ->QueueInterNationEventRecordDeduped(0x19, source, target, 0);
     }
     sourceTerrain->SetDiplomacyStandingSlot48(targetNationSlot, 300);
@@ -977,9 +977,9 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
 
     g_apTerrainTypeDescriptorTable[targetNationSlot]->NotifyActionSlot94(sourceNationSlot, 0x131);
 
-    reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+    g_pInterNationEventQueueManager
         ->QueueInterNationEventRecordDeduped(1, targetNationSlot, sourceNationSlot, 0);
-    reinterpret_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+    g_pInterNationEventQueueManager
         ->QueueInterNationEventRecordDeduped(0, sourceNationSlot, targetNationSlot, 0);
 
     if (targetNationSlot < 7) {
@@ -1046,11 +1046,11 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
       reinterpret_cast<TTurnEventQueue*>(g_pGlobalUiRootController)->EnqueueSlot38(packet);
     }
   } else {
-    bool isLocalizationOne = (reinterpret_cast<int*>(g_pLocalizationTable)[17] == 1);
+    bool isLocalizationOne = (g_pLocalizationTable->redrawEnabled == 1);
     if (isLocalizationOne) {
       EmitTurnEvent3Mode18WithActiveNation(g_pGameFlowState);
     } else {
-      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->CallSlot44();
+      g_pLocalizationTable->CallSlot44();
     }
   }
 }

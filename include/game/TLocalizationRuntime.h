@@ -56,7 +56,9 @@ public:
   int redrawEnabled;
   unsigned char pad48[0x64 - 0x48];
   int field_64;
-  unsigned char pad68[0x114 - 0x68];
+  unsigned char pad68[0x7A - 0x68];
+  unsigned char gateFlag7a;
+  unsigned char pad7b[0x114 - 0x7B];
   // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
   // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
   short stateFlag114;

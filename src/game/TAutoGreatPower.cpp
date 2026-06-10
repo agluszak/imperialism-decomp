@@ -130,7 +130,7 @@ void TAutoGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-  if (reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->redrawEnabled != 0) {
+  if (g_pLocalizationTable->redrawEnabled != 0) {
     // TEMP: 0x0054a340 is a thiscall on g_pGameFlowState (0x6a43c8); model it as a
     // real method once the game-flow event sink class is recovered.
     reinterpret_cast<void(__stdcall*)(int, int, int)>(thunk_DispatchTaggedGameStateEvent1F20)(
@@ -453,7 +453,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
     ++peerSlot;
   } while (peerCursor < g_apNationStates + 7);
   int tickQuarter = static_cast<short>(
-      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->quarterGateTick2c / 4);
+      g_pLocalizationTable->quarterGateTick2c / 4);
   if (tickQuarter >= 0x3c) {
     tickQuarter = 0x3c;
   }

@@ -4,6 +4,8 @@
 
 struct NationState;
 struct TDiplomacyTurnStateManager;
+class TLocalizationRuntime;
+class TInterNationEventQueueManager;
 
 extern "C" {
 class TGreatPower;
@@ -17,8 +19,8 @@ extern TMinor* g_apSecondaryNationStateSlots[36];
 extern TMinor* g_apNationAuxRuntimeStateSlots[16];
 extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
-extern void* g_pLocalizationTable;
-extern void* g_pInterNationEventQueueManager;
+extern TLocalizationRuntime* g_pLocalizationTable;
+extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern void* g_pGlobalUiRootController;
 extern void* g_pGameFlowState;
 extern TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager;

@@ -513,13 +513,9 @@ public:
   void TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2, int arg3, int arg4);
   void ProcessPendingDiplomacyThenDispatchTurnEvent29A(void);
   void ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2);
-  void QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
-                                             char isReplayBypass);
   void CommitCityRecruitmentOrderDelta(void);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
-  void QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,
-                                                   char isReplayBypass);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);

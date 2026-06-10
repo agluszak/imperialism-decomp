@@ -38,3 +38,6 @@ public:
   // +0x90 — TPtrList of linked map nodes (region development sweep, 0x004e72c0).
   class TPtrList* linkedNodeList90;
 };
+
+int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
+int SumWeightedNeighborLinkScoreForLinkedNodes(TTerrainDescriptor* terrain);

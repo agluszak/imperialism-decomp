@@ -351,7 +351,7 @@ void TCity::Refresh80() {
     if (*needCursor < 0) {
       char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28_Provisional();
       if ((dispatchGate == 0 ||
-           reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->redrawEnabled != 2) &&
+           g_pLocalizationTable->redrawEnabled != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {
         reinterpret_cast<void(__cdecl*)(const char*, int)>(
             thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(kUCityCppPath, 0x47f);
