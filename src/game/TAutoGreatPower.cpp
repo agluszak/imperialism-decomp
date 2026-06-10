@@ -386,6 +386,143 @@ int TAutoGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceN
 // FUNCTION: IMPERIALISM 0x004e6b10
 void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
 
+extern "C" {
+extern float g_Compute_Advisory_Map_Value_00653FD4;      // -100.0f
+extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
+}
+
+undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+
+// Port-zone refit view (same layout as the TGreatPower.cpp helper): order array at
+// +0x28, refit state at +0x2c, activation flag at +0x30.
+struct TPortZoneRefitView {
+  unsigned char pad00[0x28];
+  void** orderArray28;
+  unsigned int refitState2c;
+  unsigned int activationFlag30;
+};
+
+// FUNCTION: IMPERIALISM 0x004e8040
+char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
+  if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNation, this->nationSlot) != 0) {
+    return 0;
+  }
+  float allyNavyAccum = 0.0f;
+  float allyArmyAccum = 0.0f;
+  float armyScore = this->GetScoreFactorSlot23C();
+  float navyScore = this->GetScoreFactorSlot240();
+  int allyIndex = 0;
+  if (g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(this->nationSlot) > 0) {
+    do {
+      int allyNation =
+          g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, this->nationSlot);
+      allyArmyAccum = g_apNationStates[allyNation]->GetScoreFactorSlot23C() + allyArmyAccum;
+      allyNavyAccum = g_apNationStates[allyNation]->GetScoreFactorSlot240() + allyNavyAccum;
+      ++allyIndex;
+    } while (allyIndex <
+             g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(this->nationSlot));
+  }
+  int ownNavyInt = static_cast<int>(navyScore);
+  int ownStrength = static_cast<int>(armyScore);
+  if (ownStrength <= ownNavyInt) {
+    ownStrength = ownNavyInt;
+  }
+  float ownStrengthScore = static_cast<float>(ownStrength);
+  int allyNavyInt = static_cast<int>(allyNavyAccum);
+  int allyStrength = static_cast<int>(allyArmyAccum);
+  if (allyStrength <= allyNavyInt) {
+    allyStrength = allyNavyInt;
+  }
+  float allyQuarterScore = static_cast<float>(allyStrength / 4);
+  float strongestPeer = 0.0f;
+  int peerSlot = 0;
+  TGreatPower** peerCursor = g_apNationStates;
+  do {
+    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(
+            peerSlot) != 0) {
+      float peerArmy = (*peerCursor)->GetScoreFactorSlot23C();
+      if (strongestPeer < peerArmy) {
+        strongestPeer = peerArmy;
+      }
+      float peerNavy = (*peerCursor)->GetScoreFactorSlot240();
+      if (strongestPeer < peerNavy) {
+        strongestPeer = peerNavy;
+      }
+    }
+    ++peerCursor;
+    ++peerSlot;
+  } while (peerCursor < g_apNationStates + 7);
+  int tickQuarter = static_cast<short>(
+      reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->quarterGateTick2c / 4);
+  if (tickQuarter >= 0x3c) {
+    tickQuarter = 0x3c;
+  }
+  short relationScore =
+      g_pDiplomacyTurnStateManager
+          ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
+                                           static_cast<short>(targetNation)];
+  float combinedStrength = ownStrengthScore + allyQuarterScore;
+  float combinedScore = static_cast<float>(
+      (strongestPeer / combinedStrength +
+       (static_cast<float>(relationScore) + ownStrengthScore) /
+           ((static_cast<float>(tickQuarter) + combinedStrength) -
+            g_Compute_Advisory_Map_Value_00653FD4)) *
+      g_Evaluate_Advisory_Case11_Value_00653FD8);
+  if (this->ComputeMinisterSkillFloatSlot8A() <= combinedScore) {
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004ea300
+void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
+  TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
+  int ordinal = 1;
+  TListObject* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90;
+  if (regionList->GetCountOrReleaseSlot28() > 0) {
+    do {
+      int regionId = regionList->GetIntByOrdinalSlot24(ordinal);
+      this->mapNodeStateFlags[regionId] = 1;
+      this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
+      ++ordinal;
+    } while (ordinal <= regionList->GetCountOrReleaseSlot28());
+  }
+  TPortZoneRefitView* portZone = reinterpret_cast<TPortZoneRefitView*>(
+      reinterpret_cast<void*(__fastcall*)(int)>(thunk_FindFirstPortZoneContextByNation)(
+          targetNation));
+  if (portZone->refitState2c == 0) {
+    void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 8);
+    if (grownArray == 0) {
+      portZone->orderArray28 =
+          static_cast<void**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+              ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 4));
+      portZone->refitState2c = 1;
+    } else {
+      portZone->orderArray28 = static_cast<void**>(grownArray);
+      portZone->refitState2c = 2;
+    }
+  }
+  if (portZone->activationFlag30 == 0) {
+    portZone->activationFlag30 = 1;
+  }
+  void* firstOrder = *portZone->orderArray28;
+  short portZoneId = GetShortAtOffset14OrInvalidValue();
+  this->portZoneStateFlags[portZoneId] = 1;
+  this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, reinterpret_cast<int>(firstOrder),
+                                                       -1);
+}
+
+// FUNCTION: IMPERIALISM 0x004ea430
+void TAutoGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {
+  (void)orderKind;
+  (void)payload;
+  (void)flags;
+}
+
+// FUNCTION: IMPERIALISM 0x004ea450
+void TAutoGreatPower::VTableIndex177_Provisional(void) {}
+
 // FUNCTION: IMPERIALISM 0x004e7cc0
 int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
   char allBeatable = 1;

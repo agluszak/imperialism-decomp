@@ -45,6 +45,15 @@ public:
   int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode);
   // slot 0xaf — 0x004e6b10: pressure update stubbed out for AI nations.
   void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
+  // slot 0x9d — 0x004e8040: alliance-aware strength evaluation against the strongest
+  // peer; true when minister skill (slot 0x8a) clears the combined score.
+  char ReturnZeroSlot9D(int targetNation);
+  // slot 0xa7 — 0x004ea300: base reset plus marking every owned region / the port
+  // zone of targetNation as action candidates.
+  void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation);
+  // slots 0xb0/0xb1 — 0x004ea430/0x004ea450: no-op overrides for AI nations.
+  void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
+  void VTableIndex177_Provisional(void);
 
   static void* GetTAutoGreatPowerClassNamePointer(void);
   void* ConstructTAutoGreatPowerBaseState(void);

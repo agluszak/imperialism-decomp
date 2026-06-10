@@ -163,14 +163,6 @@ undefined4 OrphanCallChain_C4_I28_004e75c0(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics
-// ghidra_proto void __thiscall EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
-// FUNCTION: IMPERIALISM 0x004e8040
-undefined4 EvaluateAdvisoryCase11TriggerByPeerAdjustedNationMetrics(void)
-{
-  return 0;
-}
-
 // ghidra_name QueueMapActionMissionsForPortZoneCandidates
 // ghidra_proto void __cdecl QueueMapActionMissionsForPortZoneCandidates(void)
 // FUNCTION: IMPERIALISM 0x004e83d0

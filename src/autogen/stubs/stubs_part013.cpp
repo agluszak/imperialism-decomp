@@ -2635,14 +2635,6 @@ undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
   return 0;
 }
 
-// ghidra_name ResetNationDiplomacySlotsAndMarkRelatedNations
-// ghidra_proto void __thiscall ResetNationDiplomacySlotsAndMarkRelatedNations(void)
-// FUNCTION: IMPERIALISM 0x004e25c0
-undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNationNavyOrderWeightedMovementScore
 // ghidra_proto int __fastcall ComputeNationNavyOrderWeightedMovementScore(void * pNationCtx)
 // FUNCTION: IMPERIALISM 0x004e3060

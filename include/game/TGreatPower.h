@@ -322,7 +322,9 @@ public:
   virtual void NotifyRegionEventSlot298_Provisional(int regionId) {
     (void)regionId;
   }
-  TGREATPOWER_VTABLE_SLOT(167);
+  // slot 0x29c — body 0x004e25c0: reset diplomacy level/grants for targetNation and
+  // fire slot 0x2a0 for every nation with an active policy link.
+  virtual void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation);
   virtual void CallSlotA8_Provisional(int targetNation);
   virtual void CallSlotA9_Provisional(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
@@ -467,7 +469,6 @@ public:
   char thunk_ReturnZeroSlot9D_At00405826(int targetNation);
   void thunk_VTableSlot84_At00405a9c(int targetNation);
   void thunk_ClearFieldBlock1c6_At00406c49(void);
-  void thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e(void);
   void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
   void thunk_ApplyDiplomacyPolicyStateForTargetWithCostChecks_At004070e5(int arg1, int arg2);
   void thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392(int arg1, int arg2,
@@ -529,7 +530,6 @@ public:
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   void InitializeMapActionCandidateStateAndQueueMission(int arg1);
   void SelectAndQueueAdvisoryMapMissionsCase16(void);
-  void MarkNationPortZoneAndLinkedTilesForActionFlag(int arg1);
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
   float ComputeMapActionContextCompositeScoreForNation(int nodeType);
   unsigned int ComputeMapActionContextNodeValueAverage(void);

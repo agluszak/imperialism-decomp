@@ -139,7 +139,6 @@ undefined4 GetTGreatPowerClassNamePointer(void);
 void* ReplyToDiplomacyOffers(void);
 float ComputeMapActionContextCompositeScoreForNation(void);
 void OrphanCallChain_C2_I21_004e2b00(void);
-undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void);
 undefined4 thunk_QueueNationPairWarTransition(void);
 void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
 void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);
@@ -1194,9 +1193,15 @@ void TGreatPower::thunk_ClearFieldBlock1c6_At00406c49(void) {
   this->TGreatPower::ClearDiplomacyState1c6Block();
 }
 
-// FUNCTION: IMPERIALISM 0x00406c9e
-void TGreatPower::thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e(void) {
-  ResetNationDiplomacySlotsAndMarkRelatedNations();
+// FUNCTION: IMPERIALISM 0x004e25c0
+void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
+  this->ResetDiplomacyLevelForNationSlot12_Provisional(targetNation, 100);
+  this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
+  for (int nation = 0; nation < 0x17; ++nation) {
+    if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nation) != 0) {
+      this->CallSlotA8_Provisional(nation);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00406ca3
@@ -6916,36 +6921,6 @@ void TGreatPower::AddRegionToNationAndQueueMapActionMission(int arg1) {
   if (arg1 >= 0 && arg1 < kMapNodeCount) {
     this->mapNodeStateFlags[arg1] = 1;
     this->thunk_QueueMapActionMissionFromCandidateAndMarkState(3, arg1, 0, -1);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004ea300
-void TGreatPower::MarkNationPortZoneAndLinkedTilesForActionFlag(int arg1) {
-  this->thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e();
-
-  void* terrainDescriptor = ReadTerrainDescriptorSlot(arg1);
-  if (terrainDescriptor != 0) {
-    TTerrainDescriptorLinkedNodesView* terrainView =
-        static_cast<TTerrainDescriptorLinkedNodesView*>(terrainDescriptor);
-    void* linkedNodeList = terrainView->linkedNodeList;
-    if (linkedNodeList != 0) {
-      int linkedCount = List_GetCountSlot28(linkedNodeList);
-      for (int ordinal = 1; ordinal <= linkedCount; ++ordinal) {
-        int nodeIndex = List_GetIntByOrdinalSlot24(linkedNodeList, ordinal);
-        if (nodeIndex >= 0 && nodeIndex < kMapNodeCount) {
-          this->mapNodeStateFlags[nodeIndex] = 1;
-          this->thunk_QueueMapActionMissionFromCandidateAndMarkState(3, nodeIndex, 0, -1);
-        }
-      }
-    }
-  }
-
-  short(__cdecl * getPortNode)(void) =
-      reinterpret_cast<short(__cdecl*)(void)>(thunk_GetShortAtOffset14OrInvalid);
-  short portNode = getPortNode();
-  if (portNode >= 0 && portNode < kPortZoneCount) {
-    this->portZoneStateFlags[portNode] = 1;
-    this->thunk_QueueMapActionMissionFromCandidateAndMarkState(3, -1, portNode, -1);
   }
 }
 

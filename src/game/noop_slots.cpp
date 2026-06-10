@@ -712,16 +712,6 @@ void OrphanRetStub_004e7ca0(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004ea430
-void __stdcall OrphanRetStub_004ea430(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004ea450
-void OrphanRetStub_004ea450(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004f3220
 void OrphanRetStub_004f3220(void) {
   return;

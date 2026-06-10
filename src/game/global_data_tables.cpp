@@ -58,6 +58,10 @@ short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 
+// TAutoGreatPower slot 0x9d / 0xa7 scoring constants: -100.0f and 0.5 (double).
+float g_Compute_Advisory_Map_Value_00653FD4 = -100.0f;
+double g_Evaluate_Advisory_Case11_Value_00653FD8 = 0.5;
+
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
