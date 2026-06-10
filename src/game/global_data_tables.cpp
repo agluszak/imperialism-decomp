@@ -47,6 +47,7 @@ void* g_pMapActionContextListHead = 0;
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
 #include "decomp_types.h"
 #include "game/TGlobalMapState.h"
+#include "game/TMinor.h"
 #include "game/TSelectedCivilianOrderState.h"
 char g_szEmptyString[1] = {0};
 
@@ -68,6 +69,9 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {0};
 // slot-0x32 loop scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing
 // the array to 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
 void* g_apMinorNationCapabilityObjects[16] = {0};
+
+// GLOBAL: IMPERIALISM 0x006a429c — scanned with g_apMinorNationCapabilityObjects[16].
+TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
 
 // UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
 // Named so reccmp pairs the direct absolute loads in the TControl ctor.

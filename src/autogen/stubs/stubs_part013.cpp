@@ -2803,14 +2803,6 @@ undefined4 OrphanLeaf_NoCall_Ins09_004de7e0(void)
   return 0;
 }
 
-// ghidra_name ReleaseAllTrackedObjectsFromList89C
-// ghidra_proto void __cdecl ReleaseAllTrackedObjectsFromList89C(void)
-// FUNCTION: IMPERIALISM 0x004de810
-undefined4 ReleaseAllTrackedObjectsFromList89C(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I52_004df4b0
 // ghidra_proto int __cdecl OrphanCallChain_C1_I52_004df4b0(void)
 // FUNCTION: IMPERIALISM 0x004df4b0
@@ -2963,14 +2955,6 @@ undefined4 NoOpAdvisoryHandlerReturn(void)
   return 0;
 }
 
-// ghidra_name ComputeAdvisoryPeerAdjustedNationMetricRatio
-// ghidra_proto void __cdecl ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
-// FUNCTION: IMPERIALISM 0x004e1f40
-undefined4 ComputeAdvisoryPeerAdjustedNationMetricRatio(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpDiplomacyWarTransitionCallback
 // ghidra_proto void __cdecl NoOpDiplomacyWarTransitionCallback(void)
 // FUNCTION: IMPERIALISM 0x004e2190
@@ -2995,34 +2979,10 @@ undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void)
   return 0;
 }
 
-// ghidra_name ApplyMinorNationCapabilityActionType6
-// ghidra_proto void __cdecl ApplyMinorNationCapabilityActionType6(void)
-// FUNCTION: IMPERIALISM 0x004e2630
-undefined4 ApplyMinorNationCapabilityActionType6(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyMinorNationCapabilityActionType4
-// ghidra_proto void __cdecl ApplyMinorNationCapabilityActionType4(void)
-// FUNCTION: IMPERIALISM 0x004e2720
-undefined4 ApplyMinorNationCapabilityActionType4(void)
-{
-  return 0;
-}
-
 // ghidra_name ClassifyNationProductionTotalAgainstGlobalDistribution
 // ghidra_proto void __cdecl ClassifyNationProductionTotalAgainstGlobalDistribution(void)
 // FUNCTION: IMPERIALISM 0x004e2880
 undefined4 ClassifyNationProductionTotalAgainstGlobalDistribution(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I21_004e2b00
-// ghidra_proto void __cdecl OrphanCallChain_C2_I21_004e2b00(void)
-// FUNCTION: IMPERIALISM 0x004e2b00
-undefined4 OrphanCallChain_C2_I21_004e2b00(void)
 {
   return 0;
 }

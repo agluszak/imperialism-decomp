@@ -22,6 +22,7 @@
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/CIterator.h"
 #include "game/TInterNationEventQueueManager.h"
+#include "game/TTurnEventQueue.h"
 #include "game/trade_quickdraw.h"
 #include <stddef.h>
 #include <new>
@@ -119,6 +120,12 @@ undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(
 undefined4 thunk_AssignStringSharedRefAndReturnThis(void);
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 thunk_NoOpDiplomacyPolicyStateChangedHook(void);
+
+static __inline void InvokeDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
+                                                             char acceptedFlag) {
+  reinterpret_cast<void(__cdecl*)(int, int, int)>(thunk_NoOpDiplomacyPolicyStateChangedHook)(
+      policyOrGrant, targetNation, static_cast<int>(acceptedFlag));
+}
 undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void);
 undefined4 thunk_ComputeGlobalMapActionContextNodeValueAverage(void);
 undefined4 GetTGreatPowerClassNamePointer(void);
@@ -205,6 +212,7 @@ extern void* g_pCityOrderCapabilityState;
 extern void* g_pActiveMapOrderContext;
 
 extern void* g_apMinorNationCapabilityObjects[];
+extern TMinor* g_apNationAuxRuntimeStateSlots[];
 }
 
 struct TTerrainDescriptorNationSlotView {
@@ -2846,6 +2854,22 @@ void TGreatPower::ReleaseDiplomacyTrackedObjectSlots850(void) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004de810
+void TGreatPower::CallSlotA5_Provisional(void) {
+  TListObject* trackedList = this->trackedObjectList;
+  if (trackedList == 0) {
+    return;
+  }
+
+  int remaining = List_GetCountSlot48(trackedList);
+  while (remaining > 0) {
+    TTrackedObjectListEntryView* entry = List_GetTrackedEntrySlot4C(trackedList, remaining);
+    Object_CallSlot30NoArgs(entry);
+    ReleaseObjectAtSlot1C(entry);
+    --remaining;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004dd340
 void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
                                                              short rowIndex) {
@@ -3002,7 +3026,7 @@ void TGreatPower::ResetDiplomacyLevelForNationSlot12_Provisional(int targetNatio
     this->needLevelByNation[nation] = static_cast<short>(resetLevel);
   }
   if (this->diplomacyEligibilityA0 != 0) {
-    thunk_NoOpDiplomacyPolicyStateChangedHook();
+    InvokeDiplomacyPolicyStateChangedHook(-1, targetNationSlot, 1);
   }
   if (resetLevel == 300) {
     this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, -1);
@@ -3224,7 +3248,7 @@ void TGreatPower::ClearDiplomacyState1c6Block(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ddfc0
-void TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
+bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
   const short kPolicyClear = -1;
   const short kPolicyRequiresCompatibilityStart = 0x12D;
   const short kPolicyTreasurySmall = 0x133;
@@ -3317,8 +3341,10 @@ APPLY_POLICY_IF_ALLOWED:
     this->diplomacyPolicyByNation[targetClass] = policyCode;
   }
   if (this->diplomacyEligibilityA0 != 0) {
-    thunk_NoOpDiplomacyPolicyStateChangedHook();
+    InvokeDiplomacyPolicyStateChangedHook(static_cast<int>(policyCode),
+                                          static_cast<int>(targetClass), shouldApply);
   }
+  return shouldApply != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004de2d0
@@ -3342,7 +3368,7 @@ void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(voi
 }
 
 // FUNCTION: IMPERIALISM 0x004de340
-void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2) {
+bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2) {
   const unsigned short kGrantClear = 0xFFFF;
   const unsigned short kGrantMask = 0x3FFF;
   const short kInfluenceAlertThreshold = 0x00FA;
@@ -3376,7 +3402,8 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
   }
 
   if (this->diplomacyEligibilityA0 != 0) {
-    thunk_NoOpDiplomacyPolicyStateChangedHook();
+    InvokeDiplomacyPolicyStateChangedHook(static_cast<int>(static_cast<short>(newGrantRaw)),
+                                          static_cast<int>(targetNation), accepted ? 1 : 0);
 
     if (accepted && newGrantRaw != kGrantClear && targetNation > 6) {
       bool shouldDispatchAlert = false;
@@ -3410,6 +3437,7 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
       }
     }
   }
+  return accepted;
 }
 
 // FUNCTION: IMPERIALISM 0x004de5e0
@@ -4319,6 +4347,78 @@ static __inline int GetClampedQuarterYearTerm(void) {
   return yearTerm;
 }
 
+static __inline float TruncatedScoreFactorToFloat(float score) {
+  int truncated = static_cast<int>(score);
+  if (truncated <= 1) {
+    truncated = 1;
+  }
+  return static_cast<float>(truncated);
+}
+
+// FUNCTION: IMPERIALISM 0x004e1f40
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+float TGreatPower::ComputeWarThresholdSlotA3_Provisional(int targetNation) {
+  float selfArmyScore = TruncatedScoreFactorToFloat(this->GetScoreFactorSlot23C());
+  float selfNavyScore = TruncatedScoreFactorToFloat(this->GetScoreFactorSlot240());
+  float alliedArmyForSelf = 0.0f;
+  float alliedNavyForSelf = 0.0f;
+  float alliedArmyForTarget = 0.0f;
+  float alliedNavyForTarget = 0.0f;
+
+  int nationIndex = 0;
+  while (nationIndex < kMajorNationCount) {
+    if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationIndex, this->nationSlot) !=
+            0 &&
+        IsNationSlotEligibleForEventProcessingFast(nationIndex) != 0 &&
+        nationIndex != targetNation) {
+      TGreatPower* allyState = static_cast<TGreatPower*>(g_apNationStates[nationIndex]);
+      alliedArmyForSelf += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot23C());
+      alliedNavyForSelf += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot240());
+    }
+    ++nationIndex;
+  }
+
+  nationIndex = 0;
+  while (nationIndex < kMajorNationCount) {
+    if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationIndex, targetNation) != 0 &&
+        IsNationSlotEligibleForEventProcessingFast(nationIndex) != 0 &&
+        nationIndex != this->nationSlot) {
+      TGreatPower* allyState = static_cast<TGreatPower*>(g_apNationStates[nationIndex]);
+      alliedArmyForTarget += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot23C());
+      alliedNavyForTarget += TruncatedScoreFactorToFloat(allyState->GetScoreFactorSlot240());
+    }
+    ++nationIndex;
+  }
+
+  char borderLinked = 0;
+  if (g_pGlobalMapState != 0) {
+    borderLinked =
+        g_pGlobalMapState->AreNationsBorderLinked(targetNation, static_cast<int>(this->nationSlot));
+  }
+
+  TGreatPower* targetState = static_cast<TGreatPower*>(g_apNationStates[targetNation]);
+  if (borderLinked != 0) {
+    float targetArmyScore = TruncatedScoreFactorToFloat(targetState->GetScoreFactorSlot23C());
+    float numerator =
+        selfArmyScore + alliedArmyForSelf * (-g_Compute_Advisory_Peer_LookupTable_00653724);
+    float denominator =
+        targetArmyScore + alliedArmyForTarget * (-g_Compute_Advisory_Peer_LookupTable_00653724);
+    return numerator / denominator;
+  }
+
+  float targetNavyScore = TruncatedScoreFactorToFloat(targetState->GetScoreFactorSlot240());
+  float numerator =
+      selfNavyScore + alliedNavyForSelf * (-g_Compute_Advisory_Peer_LookupTable_00653724);
+  float denominator =
+      targetNavyScore + alliedNavyForTarget * (-g_Compute_Advisory_Peer_LookupTable_00653724);
+  return numerator / denominator;
+}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x004e07b0
 int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
   if (this->relationManager == 0) {
@@ -4816,6 +4916,82 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
     if (entry != 0 && entry->regionIndex == -1) {
       ReleaseObjectAtSlot1C(entry->object);
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e2630
+void TGreatPower::CallSlotA8_Provisional(int targetNationSlot) {
+  const int kMajorPolicyNation = 7;
+  int tableIndex = 0;
+  while (tableIndex < 16) {
+    if (g_apMinorNationCapabilityObjects[tableIndex] != 0) {
+      TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
+      if (auxRuntimeState != 0 &&
+          auxRuntimeState->HasMinorStandingLinkSlot5C(this->nationSlot) != 0 &&
+          g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(kMajorPolicyNation,
+                                                                  targetNationSlot) == 0) {
+        g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(
+            kMajorPolicyNation, targetNationSlot, 6, 0);
+        if (targetNationSlot < kMajorNationCount &&
+            IsNationSlotEligibleForEventProcessingFast(targetNationSlot) != 0) {
+          TGreatPower* targetState = static_cast<TGreatPower*>(g_apNationStates[targetNationSlot]);
+          if (targetState != 0 && targetState->diplomacyEligibilityA0 == 0) {
+            targetState->NotifyActionSlot94(kMajorPolicyNation, 0x131);
+          }
+        }
+        VCall_TMinor_NationAuxRuntimeClearGrantSlotC4(auxRuntimeState, -1);
+        VCall_TMinor_NationAuxRuntimeFinalizeSlotC0(auxRuntimeState);
+      }
+    }
+    ++tableIndex;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e2720
+void TGreatPower::CallSlotA9_Provisional(int targetNationSlot) {
+  const int kMajorPolicyNation = 7;
+  int tableIndex = 0;
+  while (tableIndex < 16) {
+    if (g_apMinorNationCapabilityObjects[tableIndex] != 0) {
+      TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
+      if (auxRuntimeState != 0 &&
+          auxRuntimeState->HasMinorStandingLinkSlot5C(this->nationSlot) != 0) {
+        g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(kMajorPolicyNation,
+                                                                 targetNationSlot, 4);
+        if (this->colonyBoycottFlags[targetNationSlot] == 0) {
+          auxRuntimeState->SetDiplomacyStandingSlot48(targetNationSlot, 100);
+        }
+      }
+    }
+    ++tableIndex;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e2b00
+void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {
+  struct TurnOrderDispatchPacket {
+    short turnTick;
+    short orderKind;
+    short payload;
+    short flags;
+  };
+
+  short turnTick = 0;
+  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  if (localizationRuntime != 0) {
+    turnTick = localizationRuntime->GetTurnTickSlot3C();
+  }
+
+  TurnOrderDispatchPacket packet;
+  packet.turnTick = turnTick;
+  packet.orderKind = orderKind;
+  packet.payload = payload;
+  packet.flags = flags;
+
+  TTurnEventQueue* turnSummaryQueue =
+      reinterpret_cast<TTurnEventQueue*>(this->turnSummaryQueue);
+  if (turnSummaryQueue != 0) {
+    turnSummaryQueue->EnqueueSlot38(&packet);
   }
 }
 

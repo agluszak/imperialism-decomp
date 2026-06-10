@@ -148,8 +148,8 @@ public:
   virtual void ClearDiplomacyState1c6Block(void);                                    // index 113
   virtual void BeginTurnDiplomacyPrePassSlot1c8() {}                                 // index 114
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // index 115
-  virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // index 116
-  virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
+  virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // index 116
+  virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
   virtual void RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation) {
   } // index 118
   virtual bool
@@ -225,15 +225,13 @@ public:
   TGREATPOWER_VTABLE_SLOT(162);
   // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
-  virtual float ComputeWarThresholdSlotA3_Provisional(int targetNation) {
-    return 0.0f;
-  }
+  virtual float ComputeWarThresholdSlotA3_Provisional(int targetNation);
   virtual void NotifyWarResetSlot290() {} // slot 0x290
-  virtual void CallSlotA5_Provisional(void) {}
+  virtual void CallSlotA5_Provisional(void);
   TGREATPOWER_VTABLE_SLOT(166);
   TGREATPOWER_VTABLE_SLOT(167);
-  virtual void CallSlotA8_Provisional(int targetNation) {}
-  virtual void CallSlotA9_Provisional(int targetNation) {}
+  virtual void CallSlotA8_Provisional(int targetNation);
+  virtual void CallSlotA9_Provisional(int targetNation);
   TGREATPOWER_VTABLE_SLOT(170);
   virtual void NotifyRelationCodeSlot2A8(int targetNation, int relationCode) {} // slot 0x2a8
   TGREATPOWER_VTABLE_SLOT(172);
@@ -243,7 +241,7 @@ public:
   // index 0xb0 / vtable+0x2c0. Dispatches a queued turn-order action via the active
   // map order context (body 0x004e2b00, RET 0xc -> three short args). Called from
   // slot 0x32 to enqueue land/navy/civ orders.
-  virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {}
+  virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   TGREATPOWER_VTABLE_SLOT(177);
   TGREATPOWER_VTABLE_SLOT(178);
   virtual void CallSlotB3_Provisional(void) {}
