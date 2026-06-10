@@ -167,10 +167,10 @@ public:
   virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
   TGREATPOWER_VTABLE_SLOT(72);
   TGREATPOWER_VTABLE_SLOT(73);
-  virtual short TryDecayRelationNeedScores9AndB(void);           // slot 0x4a
-  virtual short TryDecayRelationNeedScores9And8(void);           // slot 0x4b
+  virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
+  virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
-  virtual void DispatchTrackedOrderSlot2CCallbacks(void); // slot 0x4c
+  virtual void DispatchTrackedOrderSlot2CCallbacks(void);        // slot 0x4c
   virtual void VTableIndex77_Provisional(void) {}                // slot 0x4d
   virtual void VTableIndex78_Provisional(void) {}                // slot 0x4e
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
@@ -225,8 +225,7 @@ public:
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
   virtual void ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
-                                          short* outValue, short* outTargetNation,
-                                          int* outPayload);
+                                          short* outValue, short* outTargetNation, int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload);           // slot 0x70
   virtual void ClearDiplomacyState1c6Block(void);                                    // index 113
@@ -238,9 +237,9 @@ public:
   } // index 118
   virtual bool
   CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
-                                        unsigned short proposedGrantEntry);            // index 119
-  virtual void ApplyTurnDiplomacyStateSlot1e0(); // index 120 — body 0x004de7e0
-  virtual void DecrementNeedLevelByNationStep(short nationSlot);                       // index 121
+                                        unsigned short proposedGrantEntry); // index 119
+  virtual void ApplyTurnDiplomacyStateSlot1e0();                 // index 120 — body 0x004de7e0
+  virtual void DecrementNeedLevelByNationStep(short nationSlot); // index 121
   virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // index 123
   virtual void
@@ -264,7 +263,7 @@ public:
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
   virtual void VTableSlot84_Provisional(int targetNation); // body 0x004e0420
-  virtual void NotifyAllianceSlot214(int targetNation); // index 133 — body 0x004e0440
+  virtual void NotifyAllianceSlot214(int targetNation);    // index 133 — body 0x004e0440
   // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
   virtual int SumNavyOrderPriorityForNationSlot86(void);
   virtual int CountMapActionContextNodesWithNationBit(void);                         // slot 0x87
@@ -301,7 +300,7 @@ public:
                                                    char swapRoles); // slot 0x9b
   virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
                                                            char swapRoles); // slot 0x9c
-  virtual char ReturnZeroSlot9D(int targetNation); // body 0x004e1c00
+  virtual char ReturnZeroSlot9D(int targetNation);                          // body 0x004e1c00
   // slot 0x9e — joins a war against targetNation when minister skill beats the war
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
@@ -311,10 +310,12 @@ public:
   virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
     return 0;
   } // slot 0x280
-  // index 0xa1 / vtable+0x284. Evidence: 0x004df010 calls this on `this`
-  // with (nationSlot, 2, targetNation); entry 0x00406fe1 thunks to 0x004e27f0.
-  virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNation,
-                                                                    int relationCode, int mode);
+  // index 0xa1 / vtable+0x284 — body 0x004e27f0 (vtable holds ILT thunk 0x00406fe1).
+  // Queues a nation-pair war transition and notifies the third-party minor nation
+  // when the policy code is 1 or 0x132.
+  virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
+                                                                    int policyCode,
+                                                                    int sourceNationSlot);
   virtual void NoOpSlotA2(void); // body 0x004e1f20
   // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
@@ -442,55 +443,9 @@ public:
   unsigned char portZoneStateFlags[0x70];
   TPtrList* missionQueue;
 
-  unsigned int thunk_ComputeMapActionContextNodeValueAverage(void);
-  char* thunk_BuildCityInfluenceLevelMap(void);
-  void thunk_QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3, int arg4);
-  float thunk_ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int arg1, int arg2, int arg3, int arg4);
-  void thunk_ProcessPendingDiplomacyProposalQueue_At00401cbc(void);
-  void thunk_UpdateGreatPowerPressureStateAndDispatchEscalationMessage_At00402185(void);
-  bool thunk_ExecuteAdvisoryPromptAndApplyActionType2OrFallback_At00402bda(int arg1, int arg2,
-                                                                           int arg3);
-  void thunk_PopulateCase16AdvisoryMapNodeCandidateState(void);
-  void thunk_InitializeGreatPowerMinisterRosterAndScenarioState(int arg1);
-  bool thunk_ExecuteAdvisoryPromptAndApplyActionType1_At00403c15(int arg1, int arg2);
-  void thunk_BuildGreatPowerTurnMessageSummaryAndDispatch_At00403e04(void);
-  void thunk_QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
-                                                   char isReplayBypass);
-  void
-  thunk_AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet_At00404246(void);
-  // (thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c retired: slot 0x18 is a
-  // real virtual now.)
-  void thunk_ResetDiplomacyNeedScoresAndClearAidAllocationMatrix_At004048f4(void);
-  void* ReplyToDiplomacyOffers(void);
-  char thunk_TryDispatchNationActionViaUiContextOrFallback_At00404ce1(int arg1, int arg2, int arg3,
-                                                                      int arg4);
-  void thunk_QueueInterNationEventType0FForNationPairContext_At00405ac9(short targetNationSlot,
-                                                                        short sourceNationSlot);
-  float thunk_ComputeMapActionContextCompositeScoreForNation(int arg1);
-  void thunk_OrphanCallChain_C2_I21_004e2b00_At00406a46(void);
-  void thunk_RunSlot4CThenSortTrackedOrders_At004016d1(void);
-  char thunk_ReturnZeroSlot9D_At00405826(int targetNation);
-  void thunk_VTableSlot84_At00405a9c(int targetNation);
-  void thunk_ClearFieldBlock1c6_At00406c49(void);
-  void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
-  void thunk_ApplyDiplomacyPolicyStateForTargetWithCostChecks_At004070e5(int arg1, int arg2);
-  void thunk_ApplyIndexedResourceDeltaAndAdjustNationTotals_At00407392(int arg1, int arg2,
-                                                                       int arg3);
-  void thunk_RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary_At00407db0(void);
-  void thunk_NoOpAdvisoryHandlerReturn_At00407e8c(void);
-  void thunk_ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches_At00408017(void);
-  void thunk_DispatchTurnEvent2103WithNationFromRecord_At00408076(void);
-  void thunk_NoOpDiplomacyWarTransitionCallback_At00408107(void);
-  void thunk_HandleCityDialogHintClusterUpdate_At00408143(void* pMessage);
-  void thunk_QueueDiplomacyProposalCodeForTargetNation_At004083f5(int proposalCode,
-                                                                  int targetNationId);
-  void thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
-  void thunk_ApplyImmediateDiplomacyPolicySideEffects_At0040862a(int arg1, int arg2);
-  void thunk_NoOpNationDiplomacyCallback_At004090b1(void);
-  void thunk_InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-  void thunk_DispatchGreatPowerQuarterlyStatusMessageLevel0_At004096c4(void);
-  void thunk_ApplyJoinEmpireMode0GlobalDiplomacyReset_At004097fa(int arg1);
-  void thunk_RebuildNationResourceYieldCountersAndDevelopmentTargets_At004097ff(void);
+  // (All thunk_*_At0040xxxx member wrappers retired: those addresses are pure ILT
+  // `jmp` stubs from incremental linking, not real functions. Callsites now call the
+  // real methods/virtuals directly; reccmp auto-detects the orig-side thunks.)
 
   // Semantic C++ wrappers:
   // - constructor behavior maps to 0x004D8CC0 InitializeNationStateRuntimeSubsystems
@@ -509,8 +464,6 @@ public:
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
   void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
-  void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int policyCode,
-                                                     int sourceNationSlot);
   void ApplyNationResourceNeedTargetsToOrderState(void);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);

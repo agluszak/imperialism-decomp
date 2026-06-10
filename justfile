@@ -45,6 +45,12 @@ sync-ghidra:
     --ghidra-project-name "{{GHIDRA_PROJECT_NAME}}" \
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
     --name-overrides "{{name_overrides}}"
+  just prune-ilt-thunks
+
+# Drop incremental-link `jmp` thunk rows (linker artifacts) from config/symbols.csv.
+# reccmp auto-detects unannotated jmp thunks and excludes them from the report.
+prune-ilt-thunks *args:
+  uv run python -m tools.workflow.prune_ilt_thunks {{args}}
 
 import-ghidra *args:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"

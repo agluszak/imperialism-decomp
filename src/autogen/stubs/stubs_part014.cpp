@@ -963,14 +963,6 @@ undefined4 ShowRelationCodeNoticeForNationPairIfRelevant(void)
   return 0;
 }
 
-// ghidra_name TControl::LookupOrderCompatibilityMatrixValue
-// ghidra_proto short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass)
-// FUNCTION: IMPERIALISM 0x004f1f20
-undefined4 LookupOrderCompatibilityMatrixValue(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildMinorNationDispositionLookupTables
 // ghidra_proto void __cdecl RebuildMinorNationDispositionLookupTables(void)
 // FUNCTION: IMPERIALISM 0x004f24a0

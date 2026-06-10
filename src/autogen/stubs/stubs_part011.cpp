@@ -979,6 +979,14 @@ undefined4 DispatchVslot24ThenCopyExtendedCityDialogControllerState(void)
   return 0;
 }
 
+// ghidra_name TStaticText::~TStaticText
+// ghidra_proto void __thiscall DestroyStaticTextAndReleaseOwnedResources(void)
+// FUNCTION: IMPERIALISM 0x0048fc30
+undefined4 DestroyStaticTextAndReleaseOwnedResources(void)
+{
+  return 0;
+}
+
 // ghidra_name InitializeTextEntryBaseAndOptionalStringResource
 // ghidra_proto void __cdecl InitializeTextEntryBaseAndOptionalStringResource(void)
 // FUNCTION: IMPERIALISM 0x0048fd00
@@ -3054,7 +3062,7 @@ undefined4 PopulateListBoxFromDelimitedText(void)
 // ghidra_name thunk_ReleaseSharedStringRefIfNotEmpty
 // ghidra_proto void __cdecl thunk_ReleaseSharedStringRefIfNotEmpty(void)
 // FUNCTION: IMPERIALISM 0x0049bf45
-undefined4 thunk_ReleaseSharedStringRefIfNotEmpty_0049BF45(void)
+undefined4 thunk_ReleaseSharedStringRefIfNotEmpty(void)
 {
   return 0;
 }
@@ -3206,7 +3214,7 @@ undefined4 ClearDirectSoundInitPendingAndResetState_Impl(void)
 // ghidra_name thunk_InitializeDirectSoundDeviceAndChannels
 // ghidra_proto void __cdecl thunk_InitializeDirectSoundDeviceAndChannels(void)
 // FUNCTION: IMPERIALISM 0x0049c950
-undefined4 thunk_InitializeDirectSoundDeviceAndChannels_0049C950(void)
+undefined4 thunk_InitializeDirectSoundDeviceAndChannels(void)
 {
   return 0;
 }

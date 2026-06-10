@@ -2203,10 +2203,42 @@ undefined4 thunk_DestructTViewBaseState_00589240(void)
   return 0;
 }
 
+// ghidra_name TIndustryAmtBar::DrawAmt
+// ghidra_proto void __thiscall DrawAmt(void)
+// FUNCTION: IMPERIALISM 0x00589340
+undefined4 DrawAmt(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_DestructTViewBaseState
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x00589790
 undefined4 thunk_DestructTViewBaseState_00589790(void)
+{
+  return 0;
+}
+
+// ghidra_name TIndustryAmtBar::HandleTradeMovePageStepCommand
+// ghidra_proto void __thiscall HandleTradeMovePageStepCommand(EArrowSplitCommandId nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
+// FUNCTION: IMPERIALISM 0x00589da0
+undefined4 HandleTradeMovePageStepCommand(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_DestructTViewBaseState
+// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x0058a000
+undefined4 thunk_DestructTViewBaseState_0058A000(void)
+{
+  return 0;
+}
+
+// ghidra_name TRailAmtBar::DrawAmt
+// ghidra_proto void __thiscall DrawAmt(void)
+// FUNCTION: IMPERIALISM 0x0058a1b0
+undefined4 DrawAmt_0058A1B0(void)
 {
   return 0;
 }
@@ -2219,10 +2251,34 @@ undefined4 thunk_DestructTViewBaseState_0058A5F0(void)
   return 0;
 }
 
+// ghidra_name thunk_DestructTViewBaseState
+// ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x0058abd0
+undefined4 thunk_DestructTViewBaseState_0058ABD0(void)
+{
+  return 0;
+}
+
+// ghidra_name TTraderAmtBar::ConstructBaseState
+// ghidra_proto TTraderAmtBar * __thiscall ConstructBaseState(void)
+// FUNCTION: IMPERIALISM 0x0058aef0
+undefined4 ConstructBaseState(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_DestructTViewBaseState_0058AF60
 // ghidra_proto void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)
 // FUNCTION: IMPERIALISM 0x0058af60
 undefined4 thunk_DestructTViewBaseState_0058AF60(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::InvokeSlot1CCIfSlot28Enabled
+// ghidra_proto void __thiscall InvokeSlot1CCIfSlot28Enabled(int arg2, int arg3)
+// FUNCTION: IMPERIALISM 0x0058b890
+undefined4 InvokeSlot1CCIfSlot28Enabled(void)
 {
   return 0;
 }

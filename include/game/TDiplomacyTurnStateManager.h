@@ -107,6 +107,7 @@ struct TDiplomacyTurnStateManager {
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
   int GetNationPairDiplomacyStandingTierCode(int sourceNationSlot, int targetNationSlot);
   short GetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot);
+  short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   char IsPrimaryNationSlotIndex(int nationSlot);
   void SetNationPairDiplomacyRelationCodeFinal(int sourceNationSlot, int targetNationSlot,
                                                int relationCode);

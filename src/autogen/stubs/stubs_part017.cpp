@@ -731,6 +731,22 @@ undefined4 AppendZonePointerToSecondaryArray(void)
   return 0;
 }
 
+// ghidra_name DeserializeZoneFromBinaryStream
+// ghidra_proto void __thiscall DeserializeZoneFromBinaryStream(int arg1)
+// FUNCTION: IMPERIALISM 0x0055ed20
+undefined4 DeserializeZoneFromBinaryStream(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::SerializeZoneToBinaryStream
+// ghidra_proto void __thiscall SerializeZoneToBinaryStream(void)
+// FUNCTION: IMPERIALISM 0x0055eff0
+undefined4 SerializeZoneToBinaryStream(void)
+{
+  return 0;
+}
+
 // ghidra_name GetShortAtOffset14OrInvalid
 // ghidra_proto void __cdecl GetShortAtOffset14OrInvalid(void)
 // FUNCTION: IMPERIALISM 0x0055f0b0
@@ -783,6 +799,14 @@ undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
 // ghidra_proto void __cdecl GenerateZoneStatusCodeIfUnset(void)
 // FUNCTION: IMPERIALISM 0x0055f5c0
 undefined4 GenerateZoneStatusCodeIfUnset(void)
+{
+  return 0;
+}
+
+// ghidra_name TZone::GenerateMapActionContextDisplayNameAndHeadline
+// ghidra_proto void __thiscall GenerateMapActionContextDisplayNameAndHeadline(void)
+// FUNCTION: IMPERIALISM 0x0055f780
+undefined4 GenerateMapActionContextDisplayNameAndHeadline(void)
 {
   return 0;
 }
