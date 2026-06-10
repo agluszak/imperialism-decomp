@@ -35,28 +35,28 @@ public:
   virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState);
   virtual void SetMapOrderUiFlag(int flag);
 
-  short field04;          // +0x04
-  char pad06[6];        // +0x06
-  int field0c;            // +0x0c tile / terrain id storage
-  unsigned short field10; // +0x10 (key mask in nation context slices)
-  short field12;          // +0x12 seed nation id arg
-  short field14;          // +0x14 context ordinal
-  char pad16[2];        // +0x16
-  TZone* prev18;          // +0x18 older in g_pMapActionContextListHead chain
-  TZone* next1c;          // +0x1c newer link
-  short field20;          // +0x20 active tile index
-  char pad22[2];        // +0x22
-  void* field24;          // +0x24 primary array thunk ptr
-  void* field28;          // +0x28
-  int field2c;            // +0x2c
-  int field30;            // +0x30
-  void* field34;          // +0x34 secondary array thunk ptr
-  void* field38;          // +0x38 slot-table pointer in HandleKeyDown paths
-  int field3c;            // +0x3c
-  int field40;            // +0x40 slot-table count in HandleKeyDown paths
-  int field44;            // +0x44
-  int field48;            // +0x48 map tile index (also used as short in some paths)
-  CString displayName;    // EH member; ctor initializes via empty shared-string ref
+  short field04;                  // +0x04
+  char pad06[6];                  // +0x06
+  int field0c;                    // +0x0c tile / terrain id storage
+  unsigned short field10;         // +0x10 (key mask in nation context slices)
+  short field12;                  // +0x12 seed nation id arg
+  short field14;                  // +0x14 context ordinal
+  char pad16[2];                  // +0x16
+  TZone* prev18;                  // +0x18 older in g_pMapActionContextListHead chain
+  TZone* next1c;                  // +0x1c newer link
+  short field20;                  // +0x20 active tile index
+  char pad22[2];                  // +0x22
+  void* field24;                  // +0x24 primary array thunk ptr
+  int* portZoneEntries28;         // +0x28 — per-nation port-zone entry vector (0x004dbf00 path)
+  int portZoneEntryCount2c;       // +0x2c
+  int portZoneActiveEntryCount30; // +0x30
+  void* field34;                  // +0x34 secondary array thunk ptr
+  void* field38;                  // +0x38 slot-table pointer in HandleKeyDown paths
+  int field3c;                    // +0x3c
+  int field40;                    // +0x40 slot-table count in HandleKeyDown paths
+  int field44;                    // +0x44
+  int field48;                    // +0x48 map tile index (also used as short in some paths)
+  CString displayName;            // EH member; ctor initializes via empty shared-string ref
 
   TZone();
   virtual ~TZone();

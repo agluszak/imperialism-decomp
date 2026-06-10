@@ -28,4 +28,13 @@ public:
   virtual void dummy24() = 0;
   virtual void dummy25() = 0;
   virtual void SetResetLevelSlot68(int sourceNation, int resetLevel) = 0; // slot 68
+
+  unsigned char pad04[0x0c - 0x04];
+  // +0x0c/+0x0e — nation-slot pair consumed by the join-empire decode paths
+  // (encoded slot >= 200 -> minor, >= 100 -> major-100, else fall back to +0x0c).
+  short fallbackNationSlot0c;
+  short encodedNationSlot0e;
+  unsigned char pad10[0x90 - 0x10];
+  // +0x90 — TPtrList of linked map nodes (region development sweep, 0x004e72c0).
+  class TPtrList* linkedNodeList90;
 };

@@ -55,9 +55,13 @@ public:
   virtual void NoOpSlot0C_Provisional() {}
   virtual void NoOpSlot10_Provisional() {}
   // slot 0x05 — body 0x004b35d0 (915B, unported): serialize production state.
-  virtual void SerializeCityProductionState(int stream) { (void)stream; }
+  virtual void SerializeCityProductionState(int stream) {
+    (void)stream;
+  }
   // slot 0x06 — body 0x004b30a0 (1044B, unported): deserialize production state.
-  virtual void Call18(int arg1 = 0) { (void)arg1; }
+  virtual void Call18(int arg1 = 0) {
+    (void)arg1;
+  }
   // slot 0x07 — body 0x004b3a60: release every owned order object then `delete this`.
   virtual void Call1C();
   virtual void TurnEventSlot20_Provisional() {}
@@ -105,12 +109,10 @@ public:
   // slot 0x18 — thunk 0x0040494e: toggle the power-plant upgrade order.
   virtual void ToggleCityPowerPlantUpgradeOrderSlot60() {}
   // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
-  virtual void SetProductionSlotState(short productionSlot, char flag, short current,
-                                      short accum);
+  virtual void SetProductionSlotState(short productionSlot, char flag, short current, short accum);
   // slot 0x1a — body 0x004b4cc0: read the production flag byte (+0x21c) and the two
   // production shorts (+0x22c/+0x24c) for a slot.
-  virtual char ReadProductionSlotState(short productionSlot, short* outCurrent,
-                                       short* outAccum);
+  virtual char ReadProductionSlotState(short productionSlot, short* outCurrent, short* outAccum);
   // slot 0x1b — body 0x004b4230: owner needCapA6 (0 when unowned).
   virtual int GetOwnerNeedCapA6();
   // slot 0x1c — body 0x004b4260: set owner needCapA6.
@@ -126,10 +128,14 @@ public:
   // UCity.cpp:0x47f unless replaying).
   virtual void Refresh80();
 
-  short field04;  // +0x04
-  short field06;  // +0x06 — zeroed by the ctor
-  short field08;  // +0x08 — zeroed by the ctor
-  unsigned char pad0a[0x7c - 0x0a];
+  short field04; // +0x04
+  short field06; // +0x06 — zeroed by the ctor
+  short field08; // +0x08 — zeroed by the ctor
+  unsigned char pad0a[0x5c - 0x0a];
+  // 0x5c..0x68 — per-zone recruit order counters (pending-action FSM, 0x004dab20).
+  short recruitZoneCount5c[6];
+  short navySecondaryCount68; // 0x68 — navy secondary-order counter
+  unsigned char pad6a[0x7c - 0x6a];
   unsigned char lowProductionFlag7c; // +0x7c — slot 0x0b
   unsigned char lowStockFlag7d;      // +0x7d — slot 0x0b
   // +0x7e..0xac — per-resource reserved amounts subtracted from the summary
@@ -153,8 +159,8 @@ public:
   short production24c[0x10];              // 0x24C — slot 0x1a outAccum
   short field26c;                         // 0x26C — zeroed by the ctor
   short pad26e;
-  TPtrList* trackedOrderList270; // 0x270 — released via Call58
-  class TQueueObject* eventQueue274;      // 0x274 — released via Call24
+  TPtrList* trackedOrderList270;     // 0x270 — released via Call58
+  class TQueueObject* eventQueue274; // 0x274 — released via Call24
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 

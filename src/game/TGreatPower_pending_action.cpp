@@ -23,13 +23,12 @@ undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
 void TGreatPower::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
-    unsigned char* capabilityRow =
-        reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) +
-        static_cast<int>(static_cast<short>(this->nationSlot)) * 0x1e;
-    if (capabilityRow[0x3a5] != 0) {
+    const TCityOrderCapabilityState::MilitaryCapRow& capabilityRow =
+        CityOrderCapabilityState()->militaryCapRows39d[this->nationSlot];
+    if (capabilityRow.eliteRecruitFlag != 0) {
       capabilityBonus = 0x10;
     } else {
-      char capabilityFlag = static_cast<char>(capabilityRow[0x39d]);
+      char capabilityFlag = static_cast<char>(capabilityRow.recruitTierFlag);
       capabilityBonus = (static_cast<int>(-capabilityFlag) >> 0x1f) & 8;
     }
   }
@@ -43,9 +42,8 @@ void TGreatPower::CreateMilitaryRecruitOrderForNode(int nodeContext) {
 // FUNCTION: IMPERIALISM 0x004dab20
 #pragma optimize("y", on)
 void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
-  void* relationManager =
-      reinterpret_cast<TGreatPowerDiplomacyExternalStateView*>(this)->diplomacyExternalState894;
-  static_cast<TCity*>(relationManager)->RefreshOrderStateSlot0C();
+  TCity* relationManager = this->relationManager;
+  relationManager->RefreshOrderStateSlot0C();
 
   short nationSlot = this->nationSlot;
 
@@ -66,13 +64,12 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   if (this->serializedStatusFlags[0] == 0x32) {
     short zoneIndex = CityOrderActiveZoneIndex();
     void* portZone = reinterpret_cast<void*(__fastcall*)(void*, int, int, int)>(
-        thunk_FindFirstPortZoneContextByNation)(g_pActiveMapOrderContext, nationSlot, nationSlot, 0);
+        thunk_FindFirstPortZoneContextByNation)(g_pActiveMapOrderContext, nationSlot, nationSlot,
+                                                0);
     reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
         thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(zoneIndex, portZone, nationSlot, 0);
 
-    TRelationManagerOrderCountView* orderCounts =
-        static_cast<TRelationManagerOrderCountView*>(relationManager);
-    ++orderCounts->recruitZoneCount5c[CityOrderActiveZoneIndex()];
+    ++relationManager->recruitZoneCount5c[CityOrderActiveZoneIndex()];
 
     void* secondaryNode = new TAdmiral(nationSlot);
     reinterpret_cast<void(__fastcall*)(void*)>(
@@ -127,7 +124,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   // Final pending-action flush (serializedStatusFlags[0x0a] == '2').
   if (this->serializedStatusFlags[0x0a] == 0x32) {
-    static_cast<TRelationManagerOrderCountView*>(relationManager)->navySecondaryCount68 += 2;
+    relationManager->navySecondaryCount68 += 2;
     this->DispatchTurnOrderActionSlotB0(1, 6, 2);
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
