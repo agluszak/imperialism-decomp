@@ -16,7 +16,9 @@ class TRelationManager;
 class TGreatPower {
 public:
   TGREATPOWER_VTABLE_SLOT(00);
-  virtual void DeleteSelfSlot01_Provisional(int freeFlag);
+  // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body
+  // 0x004d8c50 releases the two identity CStrings then restores the base vtable.
+  virtual ~TGreatPower();
   TGREATPOWER_VTABLE_SLOT(02);
   TGREATPOWER_VTABLE_SLOT(03);
   TGREATPOWER_VTABLE_SLOT(04);
@@ -31,12 +33,19 @@ public:
   // slot 0x0b — body 0x004da3e0 (RET 0x8): reads the same scalar block, clears the
   // tracked-order list, then recreates one TCivWorkOrderState per stream count entry.
   virtual void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg);
-  TGREATPOWER_VTABLE_SLOT(12);
+  // slot 0x0c — body 0x004d71b0: scenario-start order seeding. For every owned region
+  // with an active terrain record, queues land recruit orders (kinds 2/2/7, plus 6/5 and
+  // a navy order at scenario level 4), then three slot-0x0d recruit orders per region,
+  // and finally assigns display names via slot 0x0f.
+  virtual void SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void);
   // slot 0x0d — body 0x004d7770: creates a military recruit order for nodeContext
   // with a capability bonus from the city-order table (+0x3a5/+0x39d rows).
   virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
   virtual void AddToNationMetricAtField10(int amount); // slot 0x0e
-  TGREATPOWER_VTABLE_SLOT(15);
+  // slot 0x0f — body 0x004d8000: gives every unnamed military unit (nameTag1a == 0) a
+  // display name: "<ordinal> <unit-type string 0x2717>" for types < 0x1b, or a flavor
+  // name from table 0x2744 for types >= 0x1b.
+  virtual void AssignDisplayNamesToUnnamedMilitaryUnits(void);
   // slot 0x10 — body 0x004d87b0: cityRecordIndex of the nation's home region.
   virtual int GetHomeRegionCityRecordIndex(void);
   // slot 0x11 — body 0x004d87e0: on quarter ticks (tick/4 odd, tick%4 == 2), queue a
@@ -98,7 +107,11 @@ public:
   // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
   // orderType == 7.
   virtual char HasTrackedOrderOfType7(void);
-  TGREATPOWER_VTABLE_SLOT(52);
+  // slot 0x34 — body 0x004db7d0: builds the 0x1950-byte transport-influence region map
+  // (flood-filled from the home region via slot 0x35, extended through transport-linked
+  // town markers), updates each marker's transportLinkedFlag4c, and hands the map to the
+  // caller through outInfluenceMap (or frees it when outInfluenceMap is null).
+  virtual void BuildTransportLinkedInfluenceMap(char** outInfluenceMap);
   // slot 0x35 — body 0x004dbac0: marks regionMap[id]=1 for every region connected to
   // regionId through same-owner neighbors (self-recursive through this slot, with the
   // first eligible neighbor tail-iterated).
@@ -107,16 +120,27 @@ public:
   // slot 0x37 — body 0x004dca60: forwards to relationManager slot 0x2c when present.
   virtual void NotifyRelationManagerSlot2C(void);
   TGREATPOWER_VTABLE_SLOT(56);
-  TGREATPOWER_VTABLE_SLOT(57);
+  // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
+  // into the manager's fieldB6 relation deltas, maxes six production-order entries to
+  // 999, notifies the manager's 0x1d8 sink, then spawns the Frog City marker through
+  // slot 0x3a or 0x3b.
+  virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TRelationManager* mgr);
   // slot 0x3a — body 0x004dfa20: creates the "Frog City" town marker, hands it to
   // the receiver's slot 0x44 and appends it to townMarkerList.
   virtual void CreateFrogCityTownMarkerAndAttach(void* receiver);
-  TGREATPOWER_VTABLE_SLOT(59);
+  // slot 0x3b — body 0x004dfae0: resolves the nation's home region (minister slot 0xc0,
+  // or a terrain-table scan when flag 0x114 is set, reporting "GP#<n> is missing capitol
+  // site" on failure), stores it at +0x88, creates the "FrogCity" marker, attaches it to
+  // the receiver and the global map, and notifies the interior minister.
+  virtual void CreateFrogCityAtHomeRegionAndAttach(void* receiver);
   TGREATPOWER_VTABLE_SLOT(60);
   TGREATPOWER_VTABLE_SLOT(61);
   TGREATPOWER_VTABLE_SLOT(62);
   TGREATPOWER_VTABLE_SLOT(63);
-  TGREATPOWER_VTABLE_SLOT(64);
+  // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
+  // reduced by 2 when the interaction manager maps the code into an active minister
+  // capability category (4/5/3), or by 1 for the code-3 special case.
+  virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
   virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);      // slot 0x41
   virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void); // slot 0x42
   virtual void VTableIndex67_Provisional(void) {}                          // slot 0x43
@@ -212,7 +236,9 @@ public:
   virtual void ReleaseProposalQueueSlot7F(void);
   TGREATPOWER_VTABLE_SLOT(128);
   TGREATPOWER_VTABLE_SLOT(129);
-  TGREATPOWER_VTABLE_SLOT(130);
+  // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
+  // the mean/stddev across all eligible nations; returns tier 0..4.
+  virtual int ClassifyNationProductionTierVsPeers(void);
   TGREATPOWER_VTABLE_SLOT(131);
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
@@ -304,7 +330,11 @@ public:
   // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
   // g_Classify_Nation_Military_LookupTable_00695CD4 power weights.
   TListObject* militaryUnitList44;
-  unsigned char pad_48[0x88 - 0x48];
+  // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
+  // type's entry after assigning "<ordinal> <type name>").
+  short unitNameOrdinalByType[0x1e];
+  short unitNameCounter84; // 0x84 — monotonically increasing name tag (stored at +0x1a)
+  short pad_86;
   short ownerNationSlot;
   short pad_8a;
   // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with the
@@ -434,7 +464,6 @@ public:
   // - deleting destructor behavior maps to 0x004D9160 ReleaseOwnedGreatPowerObjectsAndDeleteSelf
   TGreatPower();
   TGreatPower(int arg1, int arg2);
-  ~TGreatPower();
 
   void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void);
   static void* CreateTGreatPowerInstance(void);

@@ -18,7 +18,9 @@ struct TTerrainStateRecordView {
   signed char resourceTypeByEdge[2];
   unsigned char gateFlag;
   short cityRecordIndex;
-  unsigned char pad16[0x24 - 0x16];
+  unsigned char pad16[0x1c - 0x16];
+  unsigned char activeFlags1c; // bit 0 tested by 0x004d71b0 / 0x004dfae0 region scans
+  unsigned char pad1d[0x24 - 0x1d];
 };
 
 struct TGlobalMapCityScoreRecord {
@@ -100,12 +102,43 @@ public:
   TGLOBALMAPSTATE_VTABLE_SLOT(47);
   TGLOBALMAPSTATE_VTABLE_SLOT(48);
   virtual char CallMetricSlotC4(int regionIndex, int edgeIndex) = 0;
+  TGLOBALMAPSTATE_VTABLE_SLOT(50);
+  TGLOBALMAPSTATE_VTABLE_SLOT(51);
+  TGLOBALMAPSTATE_VTABLE_SLOT(52);
+  TGLOBALMAPSTATE_VTABLE_SLOT(53);
+  TGLOBALMAPSTATE_VTABLE_SLOT(54);
+  TGLOBALMAPSTATE_VTABLE_SLOT(55);
+  TGLOBALMAPSTATE_VTABLE_SLOT(56);
+  TGLOBALMAPSTATE_VTABLE_SLOT(57);
+  TGLOBALMAPSTATE_VTABLE_SLOT(58);
+  TGLOBALMAPSTATE_VTABLE_SLOT(59);
+  TGLOBALMAPSTATE_VTABLE_SLOT(60);
+  TGLOBALMAPSTATE_VTABLE_SLOT(61);
+  TGLOBALMAPSTATE_VTABLE_SLOT(62);
+  TGLOBALMAPSTATE_VTABLE_SLOT(63);
+  TGLOBALMAPSTATE_VTABLE_SLOT(64);
+  TGLOBALMAPSTATE_VTABLE_SLOT(65);
+  TGLOBALMAPSTATE_VTABLE_SLOT(66);
+  TGLOBALMAPSTATE_VTABLE_SLOT(67);
+  TGLOBALMAPSTATE_VTABLE_SLOT(68);
+  TGLOBALMAPSTATE_VTABLE_SLOT(69);
+  TGLOBALMAPSTATE_VTABLE_SLOT(70);
+  TGLOBALMAPSTATE_VTABLE_SLOT(71);
+  TGLOBALMAPSTATE_VTABLE_SLOT(72);
+  TGLOBALMAPSTATE_VTABLE_SLOT(73);
+  TGLOBALMAPSTATE_VTABLE_SLOT(74);
+  // slot 0x12c — notify a city record changed (TGreatPower slot 0x0c, body 0x004d71b0).
+  virtual void NotifyCityRecordSlot12C(int cityRecordIndex) = 0;
+  TGLOBALMAPSTATE_VTABLE_SLOT(76);
+  // slot 0x134 — link a region/marker to a nation (TGreatPower slot 0x3b, 0x004dfae0).
+  virtual void LinkRegionToNationSlot134(int regionId, int nationSlot) = 0;
 
   unsigned char pad04[8];
   TTerrainStateRecordView* terrainStateTable;
   TGlobalMapCityScoreRecord* cityScoreTable;
   unsigned char pad14[4];
   int cityScoreTotal;
+  char* scenarioTagText1c; // 0x1c — first char '+' enables extra seeding in 0x004d71b0
 
   // True when any region owned by nationA has a neighboring region owned by nationB.
   // Walks g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90 against the

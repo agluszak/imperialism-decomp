@@ -40,7 +40,10 @@ public:
 
   unsigned char pad04[0xAC - 4];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
-  unsigned char pad_b0[0xB6 - 0xB0];
+  // 0xB0 — currently selected order; its +0x14 tile id drives the port-zone lookup
+  // (0x005634a0).
+  void* selectedOrderB0;
+  unsigned char pad_b4[0xB6 - 0xB4];
   // 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2 (relationNeedSlotE0/E2).
   short fieldB6[0x17];
   unsigned char pad_e4[0x1DC - 0xE4];

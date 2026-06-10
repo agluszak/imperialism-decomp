@@ -36,7 +36,9 @@ public:
   TLOCALIZATION_VTABLE_SLOT(27);
   TLOCALIZATION_VTABLE_SLOT(28);
   TLOCALIZATION_VTABLE_SLOT(29);
-  TLOCALIZATION_VTABLE_SLOT(30);
+  // slot 0x78 — formats a number as an ordinal display string into destString
+  // (TGreatPower slot 0x0f, body 0x004d8000).
+  virtual void FormatOrdinalString(int value, void* destString) = 0;
   TLOCALIZATION_VTABLE_SLOT(31);
   TLOCALIZATION_VTABLE_SLOT(32);
   virtual void GetString(short codeGroup, short offset, void* destString) = 0; // 33 (0x84)
@@ -50,4 +52,8 @@ public:
   int redrawEnabled;
   unsigned char pad48[0x64 - 0x48];
   int field_64;
+  unsigned char pad68[0x114 - 0x68];
+  // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
+  // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
+  short stateFlag114;
 };

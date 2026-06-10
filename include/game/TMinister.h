@@ -28,7 +28,8 @@ public:
   virtual void dummy14() = 0;
   virtual void dummy15() = 0;
   virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
+  // slot 0x44 — handed the marker receiver after Frog City creation (0x004dfae0).
+  virtual void NotifySlot44(void* receiver) = 0;
   virtual void dummy18() = 0;
   virtual void Call4C() = 0;
   virtual void dummy20() = 0;
@@ -59,7 +60,8 @@ public:
   virtual void dummy45() = 0;
   virtual void dummy46() = 0;
   virtual void dummy47() = 0;
-  virtual void dummy48() = 0;
+  // slot 0xc0 — home city/region record index (interior minister; 0x004dfae0).
+  virtual int GetHomeCityRecordIndexSlotC0() = 0;
   virtual void dummy49() = 0;
   virtual void dummy50() = 0;
   virtual void dummy51() = 0;
@@ -68,4 +70,10 @@ public:
 
   unsigned char pad04[0xC - 4];
   short skillIndexC; // +0xC
+  unsigned char pad0e[0x24 - 0x0E];
+  // +0x24/+0x26/+0x28 — capability flags gating categories 3/4/5 in TGreatPower
+  // slot 0x40 (body 0x004dcaa0).
+  short capabilityFlag24;
+  short capabilityFlag26;
+  short capabilityFlag28;
 };

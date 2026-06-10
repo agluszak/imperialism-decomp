@@ -13,6 +13,9 @@
 // Manual decompilation file.
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
+#include <math.h>
+#include <string.h>
+
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 #include "game/generated/vcall_facades.h"
@@ -1274,15 +1277,6 @@ void TGreatPower::thunk_QueueDiplomacyProposalCodeForTargetNation_At004083f5(int
                                             static_cast<short>(targetNationId));
 }
 
-// FUNCTION: IMPERIALISM 0x004085ee
-void TGreatPower::DeleteSelfSlot01_Provisional(int freeSelfFlag) {
-  this->identitySharedString0.~CString();
-  this->identitySharedString1.~CString();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(this));
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x00408620
 void TGreatPower::thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void) {
   return;
@@ -1379,37 +1373,15 @@ TGreatPower::TGreatPower(int arg1, int arg2) {
   InitializeNationStateRuntimeSubsystems(arg1, arg2);
 }
 
-static void ReleaseOwnedGreatPowerMemberPointers(TGreatPower* self) {
-  ReleaseAndClear1C(&self->relationManager);
-  ReleaseAndClear24(&self->turnEventQueue);
-  ReleaseAndClear24(&self->proposalQueue);
-  ReleaseAndClear1C(&self->foreignMinister);
-  ReleaseAndClear1C(&self->interiorMinister);
-  ReleaseAndClear1C(&self->defenseMinister);
-  TQueueObject** trackedSlots = self->diplomacyTrackedSlots;
-  int trackedSlotCount = 0x11;
-  do {
-    if (*trackedSlots != 0) {
-      (*trackedSlots)->Call24();
-    }
-    *trackedSlots = 0;
-    ++trackedSlots;
-    trackedSlotCount = trackedSlotCount + -1;
-  } while (trackedSlotCount != 0);
-  ReleaseAndClear58(&self->townMarkerList);
-  ReleaseAndClear58(&self->trackedObjectList);
-  ReleaseAndClear24(&self->turnSummaryQueue);
-  ReleaseAndClear58(&self->missionNodeQueue);
-  ReleaseAndClear58(&self->militaryUnitList44);
-  if (self->ownedRegionList != 0) {
-    self->ownedRegionList->Call38();
-    self->ownedRegionList = 0;
-  }
-}
+// Member release lives in ReleaseOwnedGreatPowerObjectsAndDeleteSelf (0x004d9160);
+// the real destructor only tears down the two identity CStrings (implicitly). The
+// original tail also restores the RefCountedObjectBase vtable (0x0066fec4) — that
+// write will come for free once TGreatPower is modeled with its real base class.
+// FUNCTION: IMPERIALISM 0x004d8c50
+TGreatPower::~TGreatPower() {}
 
-TGreatPower::~TGreatPower() {
-  ReleaseOwnedGreatPowerMemberPointers(this);
-}
+// SYNTHETIC: IMPERIALISM 0x004d8c20
+// TGreatPower::`scalar deleting destructor'
 
 struct TRecruitmentDeltaContextView {
   unsigned char pad_00[0x04];
@@ -1672,9 +1644,7 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
     this->ownedRegionList->Call38();
     this->ownedRegionList = 0;
   }
-  if (this != 0) {
-    this->DeleteSelfSlot01_Provisional(1);
-  }
+  delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x004d92e0
@@ -2666,7 +2636,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     static_cast<TRelationManagerOrderCountView*>(relationManager)->navySecondaryCount68 += 2;
     this->DispatchTurnOrderActionSlotB0(1, 6, 2);
   }
-  this->VTableIndex15_Provisional();
+  this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
 #pragma optimize("", on)
 
@@ -2820,6 +2790,524 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTail30(marker);
+}
+#pragma optimize("", on)
+
+// --- Scenario seeding / Frog City / influence-map family (slots 0x0c/0x0f/0x34/0x39/
+// --- 0x3b/0x40/0x82) ---
+
+static const char kUCountryCppPath[] = "D:\\Ambit\\Cross\\UCountry.cpp";
+
+extern "C" {
+extern float g_Classify_Nation_Military_Value_00653704; // -1.0f
+extern float g_Classify_Nation_Military_Value_00653708; // 2.0f
+extern float g_Classify_Nation_Military_Value_0065370C; // 1.0f
+extern float g_Classify_Nation_Military_Value_00653710; // -2.0f
+extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
+extern void* g_pNationInteractionStateManager; // 0x6a43cc
+}
+
+undefined4 thunk_IsOrderEntryTransportLinkedAndEnabled(void); // 0x0040454d -> 0x005b7830
+undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void);   // 0x00405312 -> 0x005d46b0
+// 0x00401730 -> 0x005d5a70 (g_pUiRuntimeContext localized-message dispatch).
+undefined4 thunk_RunControlStringProviderAndDispatchLocalizedMessage(void);
+
+#include "game/TMapOrderContext.h"
+
+// 0x005b7830 — thiscall(marker), no stack args; pending a real TTownMarker method
+// (blocked on the TGlobalMapState sea-tile helper 0x00513ca0 being recovered).
+static __inline char TownMarker_IsTransportLinkedAndEnabled(void* marker) {
+  return reinterpret_cast<char(__fastcall*)(void*)>(thunk_IsOrderEntryTransportLinkedAndEnabled)(
+      marker);
+}
+
+static __inline TMapOrderContext* ActiveMapOrderContext(void) {
+  return static_cast<TMapOrderContext*>(g_pActiveMapOrderContext);
+}
+
+// Port-zone refit view used by the scenario seeding body (0x004d71b0): order array
+// pointer at +0x28, refit state at +0x2c, activation flag at +0x30.
+struct TPortZoneRefitView {
+  unsigned char pad00[0x28];
+  void** orderArray28;
+  unsigned int refitState2c;
+  unsigned int activationFlag30;
+};
+
+// Slot 0x0c / 0x3b store the home region index as a 4-byte block over
+// ownerNationSlot/pad_8a (the original field is an int).
+static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
+  return reinterpret_cast<int*>(&self->ownerNationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x004d71b0
+#pragma optimize("y", on)
+void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
+  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  if (localization->stateFlag114 > 0) {
+    g_pGlobalMapState->NotifyCityRecordSlot12C(
+        g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex);
+    return;
+  }
+  int ordinal = 1;
+  if (this->ownedRegionList->GetCountOrReleaseSlot28() >= 1) {
+    do {
+      int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
+      short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].ownerNationSlot;
+      if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
+        void* order = AllocateMilitaryUnitOrderObject();
+        InitializeMilitaryRecruitOrder(order, 2, regionId, this->nationSlot);
+        if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+          static_cast<TUnitOrderState*>(order)->SetOrderModeSlot34(2, -1);
+        }
+        order = AllocateMilitaryUnitOrderObject();
+        InitializeMilitaryRecruitOrder(order, 2, regionId, this->nationSlot);
+        if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+          static_cast<TUnitOrderState*>(order)->SetOrderModeSlot34(2, -1);
+        }
+        order = AllocateMilitaryUnitOrderObject();
+        InitializeMilitaryRecruitOrder(order, 7, regionId, this->nationSlot);
+        if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+          static_cast<TUnitOrderState*>(order)->SetOrderModeSlot34(2, -1);
+        }
+        g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
+        if (this->nationSlot < 7 &&
+            static_cast<TGreatPower*>(g_apNationStates[this->nationSlot])->diplomacyEligibilityA0 ==
+                0 &&
+            ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 4) {
+          order = AllocateMilitaryUnitOrderObject();
+          InitializeMilitaryRecruitOrder(order, 6, regionId, this->nationSlot);
+          if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+            static_cast<TUnitOrderState*>(order)->SetOrderModeSlot34(2, -1);
+          }
+          order = AllocateMilitaryUnitOrderObject();
+          InitializeMilitaryRecruitOrder(order, 5, regionId, this->nationSlot);
+          if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+            static_cast<TUnitOrderState*>(order)->SetOrderModeSlot34(2, -1);
+          }
+          TGreatPower* nation = static_cast<TGreatPower*>(g_apNationStates[this->nationSlot]);
+          TRelationManager* relationMgr = (nation != 0) ? nation->relationManager : 0;
+          void* portZone = ActiveMapOrderContext()->FindPortZoneBySelectedTile(relationMgr);
+          reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
+              thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(3, portZone, this->nationSlot,
+                                                                    0);
+        }
+        if (this->nationSlot < 7) {
+          TGreatPower* nation = static_cast<TGreatPower*>(g_apNationStates[this->nationSlot]);
+          if (nation->diplomacyEligibilityA0 != 0 &&
+              ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 0) {
+            TRelationManager* relationMgr = (nation != 0) ? nation->relationManager : 0;
+            TPortZoneRefitView* portZone = static_cast<TPortZoneRefitView*>(
+                ActiveMapOrderContext()->FindPortZoneBySelectedTile(relationMgr));
+            if (portZone->refitState2c == 0) {
+              void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                  ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 8);
+              if (grownArray == 0) {
+                portZone->orderArray28 = static_cast<void**>(
+                    reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                        ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 4));
+                portZone->refitState2c = 1;
+              } else {
+                portZone->orderArray28 = static_cast<void**>(grownArray);
+                portZone->refitState2c = 2;
+              }
+            }
+            if (portZone->activationFlag30 == 0) {
+              portZone->activationFlag30 = 1;
+            }
+            reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
+                thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(
+                3, *portZone->orderArray28, this->nationSlot, 0);
+          }
+        }
+      }
+      this->CreateMilitaryRecruitOrderForNode(regionId);
+      this->CreateMilitaryRecruitOrderForNode(regionId);
+      this->CreateMilitaryRecruitOrderForNode(regionId);
+      if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex > 2) {
+        this->CreateMilitaryRecruitOrderForNode(regionId);
+        if (this->nationSlot >= 7) {
+          void* lateOrder = AllocateMilitaryUnitOrderObject();
+          InitializeMilitaryRecruitOrder(lateOrder, 7, regionId, this->nationSlot);
+        }
+      }
+      if (*g_pGlobalMapState->scenarioTagText1c == '+') {
+        void* bonusOrder = AllocateMilitaryUnitOrderObject();
+        InitializeMilitaryRecruitOrder(bonusOrder, 2, regionId, this->nationSlot);
+        static_cast<TUnitOrderState*>(bonusOrder)->SetOrderModeSlot34(2, -1);
+      }
+      ++ordinal;
+    } while (ordinal <= this->ownedRegionList->GetCountOrReleaseSlot28());
+  }
+  this->AssignDisplayNamesToUnnamedMilitaryUnits();
+}
+#pragma optimize("", on)
+
+// Military unit list entry view for the slot 0x0f naming pass (unit type at +4, name
+// tag at +0x1a, display name CString at +0x24).
+struct MilitaryUnitNamingView {
+  unsigned char pad00[4];
+  short unitTypeId04;
+  unsigned char pad06[0x1a - 0x06];
+  short nameTag1a;
+  unsigned char pad1c[0x24 - 0x1c];
+  CString displayName24;
+};
+
+// FUNCTION: IMPERIALISM 0x004d8000
+#pragma optimize("y", on)
+void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
+  int ordinal = 1;
+  if (this->militaryUnitList44->GetCountSlot48() < 1) {
+    return;
+  }
+  do {
+    MilitaryUnitNamingView* unit =
+        static_cast<MilitaryUnitNamingView*>(this->militaryUnitList44->GetTrackedEntrySlot4C(ordinal));
+    if (unit->nameTag1a == 0) {
+      if (unit->unitTypeId04 < 0x1b) {
+        CString ordinalText;
+        CString typeName;
+        CString composedName;
+        short unitType = unit->unitTypeId04;
+        TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+        short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
+        localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
+        localization->GetString(0x2717, unitType, &typeName);
+        CString withSeparator;
+        AssignSharedStringConcatRefAndCStr(reinterpret_cast<int*>(&withSeparator),
+                                           reinterpret_cast<int*>(&ordinalText), " ");
+        CString fullName;
+        AssignSharedStringConcatRefAndRef(reinterpret_cast<int*>(&fullName),
+                                          reinterpret_cast<int*>(&withSeparator),
+                                          reinterpret_cast<int*>(&typeName));
+        composedName.AssignFromPtr(fullName);
+        unit->displayName24.AssignFromPtr(composedName);
+        unit->nameTag1a = this->unitNameCounter84;
+        ++this->unitNameCounter84;
+        ++*nameOrdinalCounter;
+      } else {
+        CString flavorBase;
+        CString flavorName;
+        ReadLocalizationRuntimeView()->GetString(0x2744, 0, &flavorBase);
+        do {
+          reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_GenerateMappedFlavorTextByTableSlot)(
+              &flavorName, this->nationSlot);
+        } while (flavorName.Length() > 0xf - flavorBase.Length());
+        CString withSeparator;
+        AssignSharedStringConcatRefAndCStr(reinterpret_cast<int*>(&withSeparator),
+                                           reinterpret_cast<int*>(&flavorBase), " ");
+        CString fullName;
+        AssignSharedStringConcatRefAndRef(reinterpret_cast<int*>(&fullName),
+                                          reinterpret_cast<int*>(&withSeparator),
+                                          reinterpret_cast<int*>(&flavorName));
+        flavorName.AssignFromPtr(fullName);
+        unit->displayName24.AssignFromPtr(flavorName);
+        unit->nameTag1a = this->unitNameCounter84;
+        ++this->unitNameCounter84;
+      }
+    }
+    ++ordinal;
+    ordinal = static_cast<short>(ordinal);
+  } while (ordinal <= this->militaryUnitList44->GetCountSlot48());
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004db7d0
+#pragma optimize("y", on)
+void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
+  if (this->relationManager == 0) {
+    return;
+  }
+  char* influenceMap = reinterpret_cast<char*>(AllocateWithFallbackHandler(0x1950));
+  if (influenceMap == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryCppPath, 0xa0e);
+  }
+  memset(influenceMap, 0, 0x1950);
+
+  CIterator markerCursor(this->townMarkerList);
+  TTownMarker* marker = static_cast<TTownMarker*>(markerCursor.Reset());
+  while (markerCursor.More() != 0 &&
+         static_cast<int>(marker->regionId14) != *GreatPower_HomeRegionIndex88(this)) {
+    marker = static_cast<TTownMarker*>(markerCursor.Advance());
+  }
+  char homeLinked = TownMarker_IsTransportLinkedAndEnabled(marker);
+  if (homeLinked == 0) {
+    this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
+                                        marker->regionId14);
+    marker = static_cast<TTownMarker*>(markerCursor.Reset());
+    while (markerCursor.More() != 0 && homeLinked == 0) {
+      if (influenceMap[marker->regionId14] != 0 &&
+          TownMarker_IsTransportLinkedAndEnabled(marker) != 0) {
+        homeLinked = 1;
+      }
+      marker = static_cast<TTownMarker*>(markerCursor.Advance());
+    }
+  }
+  marker = static_cast<TTownMarker*>(markerCursor.Reset());
+  while (markerCursor.More() != 0) {
+    if (TownMarker_IsTransportLinkedAndEnabled(marker) != 0 && homeLinked != 0 &&
+        marker->activeFlag4f != 0 && influenceMap[marker->regionId14] == 0) {
+      this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
+                                          marker->regionId14);
+    }
+    marker = static_cast<TTownMarker*>(markerCursor.Advance());
+  }
+  marker = static_cast<TTownMarker*>(markerCursor.Reset());
+  while (markerCursor.More() != 0) {
+    if ((influenceMap[marker->regionId14] == 0 || marker->activeFlag4f == 0) &&
+        (TownMarker_IsTransportLinkedAndEnabled(marker) == 0 || homeLinked == 0)) {
+      marker->transportLinkedFlag4c = 0;
+    } else {
+      marker->transportLinkedFlag4c = 1;
+    }
+    marker = static_cast<TTownMarker*>(markerCursor.Advance());
+  }
+  if (outInfluenceMap != 0) {
+    marker = static_cast<TTownMarker*>(markerCursor.Reset());
+    while (markerCursor.More() != 0) {
+      if (TownMarker_IsTransportLinkedAndEnabled(marker) != 0 && homeLinked != 0) {
+        influenceMap[marker->regionId14] = 1;
+      }
+      marker = static_cast<TTownMarker*>(markerCursor.Advance());
+    }
+    *outInfluenceMap = influenceMap;
+    return;
+  }
+  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(influenceMap));
+}
+#pragma optimize("", on)
+
+// Collapse-preset view of the relation manager used by slot 0x39 (0x004df810): the
+// notify sink at +0x1d8 and the production current/accumulator tables at +0x1dc/+0x1fc.
+struct TRelationPresetNotifySink {
+  virtual void s00() = 0;
+  virtual void s01() = 0;
+  virtual void s02() = 0;
+  virtual void s03() = 0;
+  virtual void s04() = 0;
+  virtual void s05() = 0;
+  virtual void s06() = 0;
+  virtual void s07() = 0;
+  virtual void s08() = 0;
+  virtual void s09() = 0;
+  virtual void s10() = 0;
+  virtual void NotifyProductionPresetSlot2C(int a, int b, int c) = 0;
+};
+
+struct TRelationManagerPresetView {
+  unsigned char pad00[0x1d8];
+  TRelationPresetNotifySink* notifySink1d8;
+  short productionCurrent1dc[0x10]; // 0x1dc..0x1fc
+  short productionAccum1fc[0x17];   // 0x1fc..0x22a
+};
+
+// FUNCTION: IMPERIALISM 0x004df810
+#pragma optimize("y", on)
+void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TRelationManager* mgr) {
+  TRelationManagerPresetView* presetView = reinterpret_cast<TRelationManagerPresetView*>(mgr);
+  TRelationPresetNotifySink* notifySink = presetView->notifySink1d8;
+  int presetLevel;
+  if (this->diplomacyEligibilityA0 == 0) {
+    presetLevel = 2;
+  } else {
+    presetLevel = ReadLocalizationRuntimeView()->runtimeSubsystemIndex;
+  }
+  const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
+  for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
+    mgr->fieldB6[static_cast<short>(needIndex)] = presetRow[needIndex];
+    mgr->Refresh80();
+  }
+  presetView->productionAccum1fc[8] += 999 - presetView->productionCurrent1dc[8];
+  presetView->productionCurrent1dc[8] = 999;
+  presetView->productionAccum1fc[10] += 999 - presetView->productionCurrent1dc[10];
+  presetView->productionCurrent1dc[10] = 999;
+  presetView->productionAccum1fc[9] += 999 - presetView->productionCurrent1dc[9];
+  presetView->productionCurrent1dc[9] = 999;
+  presetView->productionAccum1fc[7] += 999 - presetView->productionCurrent1dc[7];
+  presetView->productionCurrent1dc[7] = 999;
+  presetView->productionAccum1fc[14] += 999 - presetView->productionCurrent1dc[14];
+  presetView->productionCurrent1dc[14] = 999;
+  presetView->productionAccum1fc[13] += 999 - presetView->productionCurrent1dc[13];
+  presetView->productionCurrent1dc[13] = 999;
+  if (presetLevel == 0) {
+    notifySink->NotifyProductionPresetSlot2C(2, 3, 2);
+  } else {
+    notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
+  }
+  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
+      localization->stateFlag114 != 0) {
+    if (this->ShouldDispatchImmediatelySlot28_Provisional() == 0 ||
+        localization->stateFlag114 != 0) {
+      this->CreateFrogCityAtHomeRegionAndAttach(mgr);
+      return;
+    }
+  }
+  this->CreateFrogCityTownMarkerAndAttach(mgr);
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dfae0
+#pragma optimize("y", on)
+void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
+  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  int homeRegionIndex = -1;
+  if (localization->stateFlag114 == 0) {
+    homeRegionIndex = this->interiorMinister->GetHomeCityRecordIndexSlotC0();
+  } else {
+    TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+    for (int regionId = 0; regionId < 0x1950; ++regionId) {
+      if (static_cast<short>(terrainTable[static_cast<short>(regionId)].ownerNationTag04) ==
+              this->nationSlot &&
+          (terrainTable[static_cast<short>(regionId)].activeFlags1c & 1) != 0) {
+        homeRegionIndex = regionId;
+      }
+    }
+    if (static_cast<short>(homeRegionIndex) == -1) {
+      CString message;
+      {
+        CString prefix("GP#");
+        message.AssignFromPtr(prefix);
+      }
+      AppendSingleByteToSharedStringFromArg(reinterpret_cast<int*>(&message), 0,
+                                            '0' + static_cast<char>(this->nationSlot));
+      message.AssignFromCStr(" is missing capitol site");
+      thunk_AssignStringSharedRefAndReturnThis();
+      thunk_RunControlStringProviderAndDispatchLocalizedMessage();
+    }
+  }
+  *GreatPower_HomeRegionIndex88(this) = static_cast<short>(homeRegionIndex);
+  TTownMarker* marker = new TTownMarker();
+  marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
+  static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
+  marker->activeFlag4f = 1;
+  this->townMarkerList->AddTail30(marker);
+  g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
+  if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
+    this->interiorMinister->NotifySlot44(receiver);
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dcaa0
+#pragma optimize("y", on)
+unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode) {
+  if (this->foreignMinister->capabilityFlag26 != 0) {
+    if (static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
+            ->IsCapabilityCategoryActiveSlot3C(4) != 0) {
+      if (static_cast<short>(proposalCode) == 4) {
+        return static_cast<unsigned short>(this->diplomacyCounterA2);
+      }
+      short resolvedCode =
+          static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
+              ->ResolveProposalCodeForCategorySlot84(proposalCode, 4);
+      if (resolvedCode == static_cast<short>(proposalCode)) {
+        int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 2;
+        return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
+      }
+      return static_cast<unsigned short>(this->diplomacyCounterA2);
+    }
+  }
+  if (this->foreignMinister->capabilityFlag28 != 0) {
+    if (static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
+            ->IsCapabilityCategoryActiveSlot3C(5) != 0) {
+      if (static_cast<short>(proposalCode) == 5) {
+        return static_cast<unsigned short>(this->diplomacyCounterA2);
+      }
+      short resolvedCode =
+          static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
+              ->ResolveProposalCodeForCategorySlot84(proposalCode, 5);
+      if (resolvedCode == static_cast<short>(proposalCode)) {
+        int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 2;
+        return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
+      }
+      return static_cast<unsigned short>(this->diplomacyCounterA2);
+    }
+  }
+  if (this->foreignMinister->capabilityFlag24 != 0 &&
+      static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
+          ->IsCapabilityCategoryActiveSlot3C(3) != 0) {
+    if (static_cast<short>(proposalCode) != 3) {
+      short resolvedCode =
+          static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
+              ->ResolveProposalCodeForCategorySlot84(proposalCode, 3);
+      if (resolvedCode == static_cast<short>(proposalCode)) {
+        int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 2;
+        return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
+      }
+      if (static_cast<short>(proposalCode) != 3) {
+        return static_cast<unsigned short>(this->diplomacyCounterA2);
+      }
+    }
+    if (this->foreignMinister->capabilityFlag26 != 0) {
+      int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 1;
+      return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
+    }
+  }
+  return static_cast<unsigned short>(this->diplomacyCounterA2);
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e2880
+#pragma optimize("y", on)
+int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
+  if (this->relationManager == 0) {
+    return 0;
+  }
+  float sampleCount = 0.0f;
+  float productionSum = 0.0f;
+  float productionSquares = 0.0f;
+  int slot = 0;
+  void** nationCursor = g_apNationStates;
+  do {
+    if (IsNationSlotEligibleForEventProcessingFast(slot) != 0) {
+      TRelationManager* peerMgr =
+          (*nationCursor != 0) ? static_cast<TGreatPower*>(*nationCursor)->relationManager : 0;
+      if (peerMgr != 0) {
+        int production = 4;
+        for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
+          peerMgr =
+              (*nationCursor != 0) ? static_cast<TGreatPower*>(*nationCursor)->relationManager : 0;
+          production += static_cast<short>(
+              peerMgr->GetBuildingProductionValueBySlot(static_cast<short>(buildingSlot)));
+        }
+        sampleCount = sampleCount - g_Classify_Nation_Military_Value_00653704;
+        productionSum = static_cast<float>(production) + productionSum;
+        productionSquares = static_cast<float>(production * production) + productionSquares;
+      }
+    }
+    ++nationCursor;
+    ++slot;
+  } while (nationCursor < g_apNationStates + 7);
+  if (sampleCount < g_Classify_Nation_Military_Value_00653708) {
+    return 2;
+  }
+  float mean = productionSum / sampleCount;
+  float deviation = static_cast<float>(
+      sqrt(((mean * mean * sampleCount - (mean * productionSum + mean * productionSum)) +
+            productionSquares) /
+           (sampleCount - g_Classify_Nation_Military_Value_0065370C)));
+  int ownProduction = 4;
+  for (int buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
+    ownProduction += static_cast<short>(
+        this->relationManager->GetBuildingProductionValueBySlot(static_cast<short>(buildingSlot)));
+  }
+  float ownScore = static_cast<float>(ownProduction);
+  if (mean - deviation * g_Classify_Nation_Military_Value_00653710 < ownScore) {
+    return 4;
+  }
+  if (deviation + mean < ownScore) {
+    return 3;
+  }
+  if (mean - deviation <= ownScore) {
+    return 2;
+  }
+  if (mean - (deviation + deviation) <= ownScore) {
+    return 1;
+  }
+  return 0;
 }
 #pragma optimize("", on)
 

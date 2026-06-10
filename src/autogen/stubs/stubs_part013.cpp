@@ -2387,14 +2387,6 @@ undefined4 GetOrComputeOverlayAnchorTileIndex(void)
   return 0;
 }
 
-// ghidra_name SeedRecruitAndNavyOrdersForEligibleCoastalCities
-// ghidra_proto void __cdecl SeedRecruitAndNavyOrdersForEligibleCoastalCities(void)
-// FUNCTION: IMPERIALISM 0x004d71b0
-undefined4 SeedRecruitAndNavyOrdersForEligibleCoastalCities(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatOverlayTerrainLabelText
 // ghidra_proto void __cdecl FormatOverlayTerrainLabelText(void)
 // FUNCTION: IMPERIALISM 0x004d7860
@@ -2467,14 +2459,6 @@ undefined4 GenerateMappedFlavorTextByNationSlotField0C(void)
   return 0;
 }
 
-// ghidra_name PopulateSelectableEntryFlavorTextAndOrdinals
-// ghidra_proto void __cdecl PopulateSelectableEntryFlavorTextAndOrdinals(void)
-// FUNCTION: IMPERIALISM 0x004d8000
-undefined4 PopulateSelectableEntryFlavorTextAndOrdinals(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeWeightedNeighborLinkScoreForNode
 // ghidra_proto int __cdecl ComputeWeightedNeighborLinkScoreForNode(void)
 // FUNCTION: IMPERIALISM 0x004d8390
@@ -2515,22 +2499,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004d8c20
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBufferIfNotNull_At004d8c20(void)
-// FUNCTION: IMPERIALISM 0x004d8c20
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004d8c20(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d8c50
-// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d8c50(void)
-// FUNCTION: IMPERIALISM 0x004d8c50
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d8c50(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::HandleCityDialogHintClusterUpdate
 // ghidra_proto void __thiscall HandleCityDialogHintClusterUpdate(void * pMessage)
 // FUNCTION: IMPERIALISM 0x004d9c70
@@ -2547,26 +2515,10 @@ undefined4 DispatchTurnEvent11F8WithNoPayload(void)
   return 0;
 }
 
-// ghidra_name UpdateOrderEntryAvailabilityByConnectedRegionMask
-// ghidra_proto void __cdecl UpdateOrderEntryAvailabilityByConnectedRegionMask(void)
-// FUNCTION: IMPERIALISM 0x004db7d0
-undefined4 UpdateOrderEntryAvailabilityByConnectedRegionMask(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::BuildCityInfluenceLevelMap
 // ghidra_proto char * __thiscall BuildCityInfluenceLevelMap(void)
 // FUNCTION: IMPERIALISM 0x004dbbb0
 undefined4 BuildCityInfluenceLevelMap(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C6_I98_004dcaa0
-// ghidra_proto uint __cdecl OrphanCallChain_C6_I98_004dcaa0(void)
-// FUNCTION: IMPERIALISM 0x004dcaa0
-undefined4 OrphanCallChain_C6_I98_004dcaa0(void)
 {
   return 0;
 }
@@ -2643,22 +2595,6 @@ undefined4 AddShortDeltaToNationCounterAtOffset198(void)
   return 0;
 }
 
-// ghidra_name RebuildPrimaryNationStateForSlot_Impl
-// ghidra_proto void __cdecl RebuildPrimaryNationStateForSlot_Impl(void)
-// FUNCTION: IMPERIALISM 0x004df810
-undefined4 RebuildPrimaryNationStateForSlot_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndQueueFrogCityMarkerForNationTile
-// ghidra_proto void __cdecl CreateAndQueueFrogCityMarkerForNationTile(void)
-// FUNCTION: IMPERIALISM 0x004dfae0
-undefined4 CreateAndQueueFrogCityMarkerForNationTile(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshNationCivilianWorkOrdersForTurn
 // ghidra_proto void __cdecl RefreshNationCivilianWorkOrdersForTurn(void)
 // FUNCTION: IMPERIALISM 0x004dfd30
@@ -2711,14 +2647,6 @@ undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void)
 // ghidra_proto void __thiscall ResetNationDiplomacySlotsAndMarkRelatedNations(void)
 // FUNCTION: IMPERIALISM 0x004e25c0
 undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void)
-{
-  return 0;
-}
-
-// ghidra_name ClassifyNationProductionTotalAgainstGlobalDistribution
-// ghidra_proto void __cdecl ClassifyNationProductionTotalAgainstGlobalDistribution(void)
-// FUNCTION: IMPERIALISM 0x004e2880
-undefined4 ClassifyNationProductionTotalAgainstGlobalDistribution(void)
 {
   return 0;
 }

@@ -29,6 +29,12 @@ float g_DAT_Value_00653408[8] = {0};
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20). Values in the
 // original image: 0.0f, -0.25f, 0.25f, 0.5f, -90.0f, -0.5f.
 float g_Compute_Advisory_Handler_LookupTable_00653700 = 0.0f;
+// 0x653704-0x653710 — production-tier classification constants (TGreatPower slot
+// 0x82, body 0x004e2880): -1.0, 2.0, 1.0, -2.0.
+float g_Classify_Nation_Military_Value_00653704 = -1.0f;
+float g_Classify_Nation_Military_Value_00653708 = 2.0f;
+float g_Classify_Nation_Military_Value_0065370C = 1.0f;
+float g_Classify_Nation_Military_Value_00653710 = -2.0f;
 float g_Compute_Advisory_Handler_LookupTable_00653714 = -0.25f;
 float g_Iterate_Linked_List_Value_00653718 = 0.25f;
 float g_Compute_City_Order_Value_0065371C = 0.5f;
@@ -47,9 +53,14 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 // as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
 short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
 
+// Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
+// the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
+short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
+
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 void* g_pMapActionContextListHead = 0;
+void* g_pNationInteractionStateManager = 0; // 0x6a43cc
 
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
