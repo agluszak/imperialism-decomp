@@ -2387,14 +2387,6 @@ undefined4 thunk_DestructCObArray_004884F0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AddTail_At00488610
-// ghidra_proto void __cdecl WrapperFor_AddTail_At00488610(void)
-// FUNCTION: IMPERIALISM 0x00488610
-undefined4 WrapperFor_AddTail_At00488610(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AddTail_At00488630
 // ghidra_proto void __cdecl WrapperFor_AddTail_At00488630(void)
 // FUNCTION: IMPERIALISM 0x00488630
@@ -2435,66 +2427,10 @@ undefined4 OrphanTiny_ThisAdjustJump_4_004886b0(void)
   return 0;
 }
 
-// ghidra_name NoOpCallback_004886d0
-// ghidra_proto void __cdecl NoOpCallback_004886d0(void)
-// FUNCTION: IMPERIALISM 0x004886d0
-undefined4 NoOpCallback_004886d0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FindIndex_At004886f0
-// ghidra_proto int __cdecl WrapperFor_FindIndex_At004886f0(void)
-// FUNCTION: IMPERIALISM 0x004886f0
-undefined4 WrapperFor_FindIndex_At004886f0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RemoveListNodeAndRecycle_At00488720
-// ghidra_proto void __cdecl WrapperFor_RemoveListNodeAndRecycle_At00488720(void)
-// FUNCTION: IMPERIALISM 0x00488720
-undefined4 WrapperFor_RemoveListNodeAndRecycle_At00488720(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750
-// ghidra_proto void __cdecl WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750(void)
-// FUNCTION: IMPERIALISM 0x00488750
-undefined4 WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750(void)
-{
-  return 0;
-}
-
-// ghidra_name TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl
-// ghidra_proto void __cdecl TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl(void)
-// FUNCTION: IMPERIALISM 0x00488790
-undefined4 TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I10_004887b0
-// ghidra_proto void __cdecl OrphanCallChain_C2_I10_004887b0(void)
-// FUNCTION: IMPERIALISM 0x004887b0
-undefined4 OrphanCallChain_C2_I10_004887b0(void)
-{
-  return 0;
-}
-
 // ghidra_name TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0
 // ghidra_proto void __cdecl TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0(void)
 // FUNCTION: IMPERIALISM 0x004887e0
 undefined4 TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FindIndex_At00488840
-// ghidra_proto void __cdecl WrapperFor_FindIndex_At00488840(void)
-// FUNCTION: IMPERIALISM 0x00488840
-undefined4 WrapperFor_FindIndex_At00488840(void)
 {
   return 0;
 }

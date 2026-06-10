@@ -875,14 +875,6 @@ undefined4 ClearPerTileByte0FForAllMapTiles(void)
   return 0;
 }
 
-// ghidra_name InputState::SetMapTileStateByteAndNotifyObserver
-// ghidra_proto void __cdecl SetMapTileStateByteAndNotifyObserver(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00515e00
-undefined4 SetMapTileStateByteAndNotifyObserver(void)
-{
-  return 0;
-}
-
 // ghidra_name TileHasMovementClassId
 // ghidra_proto void __cdecl TileHasMovementClassId(void)
 // FUNCTION: IMPERIALISM 0x00515e50

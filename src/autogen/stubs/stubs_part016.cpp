@@ -3283,30 +3283,6 @@ undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
   return 0;
 }
 
-// ghidra_name TAdmiral::GetTAdmiralClassNamePointer
-// ghidra_proto void * __cdecl GetTAdmiralClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x00551410
-undefined4 GetTAdmiralClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::DestructTAdmiralAndFreeIfOwned
-// ghidra_proto void * __thiscall DestructTAdmiralAndFreeIfOwned(void)
-// FUNCTION: IMPERIALISM 0x00551550
-undefined4 DestructTAdmiralAndFreeIfOwned(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::DestructTAdmiral
-// ghidra_proto void __thiscall DestructTAdmiral(void)
-// FUNCTION: IMPERIALISM 0x00551580
-undefined4 DestructTAdmiral(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyAndUnlinkNavySecondaryOrderNode
 // ghidra_proto void __cdecl DestroyAndUnlinkNavySecondaryOrderNode(void)
 // FUNCTION: IMPERIALISM 0x005515d0

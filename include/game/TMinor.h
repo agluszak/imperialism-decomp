@@ -3,6 +3,8 @@
 #include "decomp_types.h"
 #include "game/CString.h"
 
+struct TPtrList;
+
 #define TMINOR_VTABLE_SLOT(n)                                                                      \
   virtual void TMinorDummy##n(void) {}
 
@@ -64,11 +66,11 @@ public:
   unsigned char pad10[0x44 - 0x10];
   // 0x44 — military unit list (same offset/record shape as TGreatPower::militaryUnitList44;
   // summed against g_Classify_Nation_Military_LookupTable_00695CD4 in 0x004e0fe0/0x004e1300).
-  class TListObject* militaryUnitList44;
+  TPtrList* militaryUnitList44;
   unsigned char pad48[0x90 - 0x48];
   // 0x90 — owned region id list (same offset as TGreatPower::ownedRegionList; walked by
   // the border check at 0x00517c30 via list slots 0x28/0x24).
-  class TListObject* ownedRegionList90;
+  TPtrList* ownedRegionList90;
 
 private:
   unsigned char minorObjectTail[0x2cc - (0x94 - 0x10)];

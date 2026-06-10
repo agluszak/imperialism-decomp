@@ -13,7 +13,6 @@ src/game/TGreatPower.cpp|VCall_List_GetCountSlot48|int|0x48 / 4||high|list count
 src/game/TGreatPower.cpp|VCall_List_GetTrackedEntrySlot4C|void*|0x4C / 4|int|high|tracked entry accessor|||||
 src/game/TGreatPower.cpp|VCall_List_GetNodeByOrdinalSlot2C|void*|0x2C / 4|int,int|high|list node accessor with mode|||||
 src/game/TGreatPower.cpp|VCall_List_ReleaseSlot24|void|0x24 / 4||high|list release slot24|||||
-src/game/TGreatPower.cpp|VCall_ObArray_GetShortValueByOrdinalSlot2C|void*|0x2C / 4|int|high|ob array short accessor|||||
 src/game/TGreatPower.cpp|VCall_Diplomacy_BuildRelationshipListSlot88|void|0x88 / 4|int,int,void*|high|build relation list
 src/game/TGreatPower.cpp|VCall_Diplomacy_GetRelationTierSlot70|short|0x70 / 4|int,int|high|relation tier|||||
 src/game/TDiplomacyMapView.cpp|VCall_Diplomacy_GetRelationTypeSlot68|int|0x68 / 4|int,int|high|relation type/status query|||||

@@ -2219,38 +2219,6 @@ undefined4 WrapperFor_ftol_At004d64d0(void)
   return 0;
 }
 
-// ghidra_name TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance
-// ghidra_proto void * __cdecl CreateTProvinceDesirabilityListInstance(void)
-// FUNCTION: IMPERIALISM 0x004d6500
-undefined4 CreateTProvinceDesirabilityListInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer
-// ghidra_proto void * __cdecl GetTProvinceDesirabilityListClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x004d6570
-undefined4 GetTProvinceDesirabilityListClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructObArrayWithVtable653810
-// ghidra_proto void * __cdecl ConstructObArrayWithVtable653810(void)
-// FUNCTION: IMPERIALISM 0x004d6590
-undefined4 ConstructObArrayWithVtable653810(void)
-{
-  return 0;
-}
-
-// ghidra_name TProvinceDesirabilityList::DestructTProvinceDesirabilityListAndMaybeFree
-// ghidra_proto void * __thiscall DestructTProvinceDesirabilityListAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004d65c0
-undefined4 DestructTProvinceDesirabilityListAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructCObArray
 // ghidra_proto void __cdecl thunk_DestructCObArray(TIndexAndRankList * pThis)
 // FUNCTION: IMPERIALISM 0x004d65f0

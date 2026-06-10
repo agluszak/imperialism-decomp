@@ -3,7 +3,7 @@
 #include "game/CIterator.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/TGlobalMapState.h"
-#include "game/TListObject.h"
+#include "game/TPtrList.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TMinister.h"
 #include "game/TMinor.h"
@@ -478,7 +478,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
 void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
   TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
   int ordinal = 1;
-  TListObject* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90;
+  TPtrList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90;
   if (regionList->GetCountOrReleaseSlot28() > 0) {
     do {
       int regionId = regionList->GetIntByOrdinalSlot24(ordinal);

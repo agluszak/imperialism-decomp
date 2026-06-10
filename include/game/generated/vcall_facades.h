@@ -403,13 +403,6 @@ static __inline void VCall_Message_WriteEntrySlotB4(void* object, int arg0, int 
   fn(object, 0, arg0, arg1);
 }
 
-// ob array short accessor; status=provisional
-static __inline void* VCall_ObArray_GetShortValueByOrdinalSlot2C(void* object, int arg0) {
-  typedef void* (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x2C / 4)));
-  return fn(object, 0, arg0);
-}
-
 // proposal queue entry accessor; status=provisional
 static __inline void* VCall_ProposalQueue_GetEntryAt1Based(void* object, int arg0) {
   typedef void* (__fastcall * Fn)(void*, int, int);

@@ -1,12 +1,31 @@
 #pragma once
 
-// Map-order runtime context singleton (g_pActiveMapOrderContext @ 0x6a3fbc). Only the
-// port-zone lookup is recovered so far; the call sites dispatch it as a thiscall
-// method on the context even though the body never reads `this`.
+#include "compat.h"
+#include "decomp_types.h"
+#include "game/TZone.h"
+
+class TCity;
+
+// Map-order runtime singleton (g_pActiveMapOrderContext @ 0x6a3fbc).
+// Ghidra historically labeled this InputState for container-level methods.
+// VTABLE: IMPERIALISM 0x0065c7c8 (stub installed at allocation; full zone family
+// uses TZone vtable 0x0065c6d8 on constructed nodes).
 class TMapOrderContext {
 public:
-  // 0x005634a0 — walks the map-action node chain (g_pMapActionContextListHead) for
-  // TPortZone nodes whose tile-id fields match the relation manager's selected order
-  // tile (or tile 1 when no order is selected).
-  void* FindPortZoneBySelectedTile(class TCity* relationManager);
+  short nationCount;           // +0x04
+  TMapNationActionContext* contextArray; // +0x08
+  short field0c;               // +0x0c
+  char pad0e[2];             // +0x0e
+  unsigned short keyMask;      // +0x10
+  char pad12[0x26];          // +0x12 .. +0x37
+  int* slotTable;              // +0x38
+  unsigned int slotCount;      // +0x40
+  char pad44[0x14];          // +0x44 .. +0x57 (allocation size TBD)
+
+  void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
+
+  // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
+  void* FindPortZoneBySelectedTile(TCity* relationManager);
 };
+
+void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);

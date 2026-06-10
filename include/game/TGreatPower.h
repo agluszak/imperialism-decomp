@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
-#include "game/TListObject.h"
+#include "game/TPtrList.h"
 
 class TMinister;
 class NationCityTradeState;
@@ -362,7 +362,7 @@ public:
   short field42;
   // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
   // g_Classify_Nation_Military_LookupTable_00695CD4 power weights.
-  TListObject* militaryUnitList44;
+  TPtrList* militaryUnitList44;
   // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
   // type's entry after assigning "<ordinal> <type name>").
   short unitNameOrdinalByType[0x1e];
@@ -373,7 +373,7 @@ public:
   // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with the
   // 4 bytes at 0x88 (ownerNationSlot + pad).
   int serializedField8c;
-  TListObject* ownedRegionList;
+  TPtrList* ownedRegionList;
   TMinister* foreignMinister;
   TMinister* interiorMinister;
   TMinister* defenseMinister;
@@ -404,8 +404,8 @@ public:
   TQueueObject* diplomacyTrackedSlots[0x11];
   // 0x894 — city production state; same object used as TCity in diplomacy paths.
   TCity* relationManager;
-  TListObject* townMarkerList;
-  TListObject* trackedObjectList;
+  TPtrList* townMarkerList;
+  TPtrList* trackedObjectList;
   unsigned char candidateNationFlags[0x17];
   unsigned char scenarioInitFlag;
   unsigned char pad_8b8[0x8c8 - 0x8b8];
@@ -430,7 +430,7 @@ public:
   unsigned char field904;
   unsigned char pad_905[3];
   TQueueObject* turnSummaryQueue;
-  TListObject* missionNodeQueue;
+  TPtrList* missionNodeQueue;
   int field910;
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[0x17];
@@ -440,7 +440,7 @@ public:
   short actionMetricByQuarter[6];
   unsigned char mapNodeStateFlags[0x180];
   unsigned char portZoneStateFlags[0x70];
-  TListObject* missionQueue;
+  TPtrList* missionQueue;
 
   unsigned int thunk_ComputeMapActionContextNodeValueAverage(void);
   char* thunk_BuildCityInfluenceLevelMap(void);

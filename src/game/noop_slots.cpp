@@ -1141,46 +1141,6 @@ bool ReturnTrueRemoteMinorCapabilityStub(void) {
   return true;
 }
 
-// FUNCTION: IMPERIALISM 0x0055e820
-bool ReturnTrueForZoneCapabilityFlagA(void) {
-  return true;
-}
-
-// FUNCTION: IMPERIALISM 0x0055e840
-bool ReturnFalseForZoneCapabilityFlagB(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x0055e860
-bool ReturnFalseForZoneCapabilityFlagC(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x0055e880
-bool __stdcall ReturnFalseForZoneCapabilityFlagD(int) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x0055e8a0
-bool __stdcall ReturnFalseForZoneCapabilityFlagE(int) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00561660
-bool ReturnTrueForPortZoneCapabilityFlagA(void) {
-  return true;
-}
-
-// FUNCTION: IMPERIALISM 0x00561680
-bool ReturnTrueForPortZoneCapabilityFlagB(void) {
-  return true;
-}
-
-// FUNCTION: IMPERIALISM 0x005616a0
-bool ReturnFalseForPortZoneCapabilityFlagC(void) {
-  return false;
-}
-
 // FUNCTION: IMPERIALISM 0x005e34b0
 bool ReturnTrueRuntimeCredentialInitStub(void) {
   return true;

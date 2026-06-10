@@ -1,6 +1,6 @@
 #include "game/TGlobalMapState.h"
 
-#include "game/TListObject.h"
+#include "game/TPtrList.h"
 #include "game/TMinor.h"
 #include "game/diplomacy_globals.h"
 
@@ -8,7 +8,7 @@
 
 // FUNCTION: IMPERIALISM 0x00517c30
 char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
-  TListObject* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90;
+  TPtrList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90;
   if (regionList->GetCountOrReleaseSlot28() < 1) {
     return 0;
   }

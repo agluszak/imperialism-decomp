@@ -22,7 +22,7 @@ public:
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00552510
-ObjectPoolListNode* TMapOrderEntry::FindMissionOrderNodeById(ObjectPoolListNode* node,
+TMapOrderChildLinkNode* TMapOrderEntry::FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
                                                                int child_node_id) {
   while (node != 0) {
     if (node->object_ptr == child_node_id) {
@@ -34,9 +34,9 @@ ObjectPoolListNode* TMapOrderEntry::FindMissionOrderNodeById(ObjectPoolListNode*
 }
 
 // FUNCTION: IMPERIALISM 0x00552590
-ObjectPoolListNode* TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(
-    ObjectPoolListNode* child_link_node) {
-  ObjectPoolListNode* next_node = child_link_node->next;
+TMapOrderChildLinkNode* TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(
+    TMapOrderChildLinkNode* child_link_node) {
+  TMapOrderChildLinkNode* next_node = child_link_node->next;
   if (next_node != 0) {
     next_node->prev_node_ptr = child_link_node->prev_node_ptr;
   }
@@ -50,7 +50,7 @@ ObjectPoolListNode* TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(
 }
 
 // FUNCTION: IMPERIALISM 0x005525d0
-void TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(ObjectPoolListNode* node,
+void TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
                                                              int child_node_id) {
   if (node == 0) {
     return;
@@ -71,9 +71,9 @@ void TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(ObjectPoolListNode* n
 }
 
 // FUNCTION: IMPERIALISM 0x00552650
-ObjectPoolListNode* TMapOrderEntry::CreateLinkedOrderNode(ObjectPoolListNode* next_node,
+TMapOrderChildLinkNode* TMapOrderEntry::CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
                                                             int child_node_id) {
-  ObjectPoolListNode* new_node = reinterpret_cast<ObjectPoolListNode*>(
+  TMapOrderChildLinkNode* new_node = reinterpret_cast<TMapOrderChildLinkNode*>(
       AllocateWithFallbackHandler(static_cast<undefined4>(0x10)));
   if (new_node == 0) {
     return 0;
@@ -91,14 +91,14 @@ ObjectPoolListNode* TMapOrderEntry::CreateLinkedOrderNode(ObjectPoolListNode* ne
     next_node->prev_node_ptr = reinterpret_cast<int>(new_node);
   }
   if (new_node->prev_node_ptr != 0) {
-    *reinterpret_cast<ObjectPoolListNode**>(new_node->prev_node_ptr + 4) = new_node;
+    *reinterpret_cast<TMapOrderChildLinkNode**>(new_node->prev_node_ptr + 4) = new_node;
   }
   return new_node;
 }
 
 // FUNCTION: IMPERIALISM 0x005526e0
-ObjectPoolListNode* TMapOrderEntry::PruneDefeatedMapOrderChildrenAndReturnHead(
-    ObjectPoolListNode* child_link_head) {
+TMapOrderChildLinkNode* TMapOrderEntry::PruneDefeatedMapOrderChildrenAndReturnHead(
+    TMapOrderChildLinkNode* child_link_head) {
   while (true) {
     if (child_link_head == 0) {
       return 0;
@@ -227,9 +227,9 @@ int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* 
 
 // FUNCTION: IMPERIALISM 0x00550ff0
 void TMapOrderEntry::RemoveNode(int self) {
-  ObjectPoolOwner* owner_ctx = owner;
+  TMapOrderEntryOwnerContext* owner_ctx = owner;
   if (owner_ctx != 0) {
-    ObjectPoolListNode* list_head = owner_ctx->head;
+    TMapOrderChildLinkNode* list_head = owner_ctx->head;
 
     if ((list_head != 0) && (this != reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr))) {
       list_head = FindMissionOrderNodeById(list_head->next, reinterpret_cast<int>(this));

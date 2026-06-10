@@ -154,8 +154,6 @@ void ApplyJoinEmpireMode0GlobalDiplomacyReset(void);
 void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
 undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 thunk_ConstructObArrayWithVtable654D38(void);
-undefined4 thunk_InitializeObArrayVtable654D38ModeField(void);
 undefined4 thunk_IsTurnCooldownCounterActiveOrResetFlag(void);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
@@ -251,12 +249,6 @@ extern "C" void* g_apTerrainTypeDescriptorTable[];
 extern "C" void* g_apSecondaryNationStateSlots[];
 extern "C" void* g_pInterNationEventQueueManager;
 
-struct TObArrayModeView {
-  void* vftable;
-  unsigned char pad04[0x14 - 0x04];
-  short modeField14;
-};
-
 struct TProposalQueueCountView {
   unsigned char pad00[8];
   short count;
@@ -324,10 +316,10 @@ struct TTerrainDescriptorLinkedNodesView {
 };
 
 #include "game/TMessageObject.h"
-#include "game/TObArray.h"
 #include "game/TQueueObject.h"
 #include "game/TStream.h"
 #include "game/TIndexAndRankList.h"
+#include "game/TSortedByRelationshipList.h"
 #include "game/TPtrList.h"
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
@@ -536,35 +528,44 @@ static __inline short* ProposalQueue_GetEntryAt1Based(void* queue, int queueInde
 }
 
 static __inline void List_ResetSlot14(void* list) {
-  static_cast<TListObject*>(list)->ResetSlot14();
+  static_cast<TPtrList*>(list)->ResetSlot14();
 }
 
 static __inline int List_GetCountSlot28(void* list) {
   // Original callers (e.g. 0x004dbf00) read the count through vtable offset 0x28.
-  return static_cast<TListObject*>(list)->GetCountOrReleaseSlot28();
+  return static_cast<TPtrList*>(list)->GetCountOrReleaseSlot28();
 }
 
 static __inline int List_GetIntByOrdinalSlot24(void* list, int ordinal) {
-  return static_cast<TListObject*>(list)->GetIntByOrdinalSlot24(ordinal);
+  return static_cast<TPtrList*>(list)->GetIntByOrdinalSlot24(ordinal);
 }
 
 static __inline int List_GetCountSlot48(void* list) {
-  return static_cast<TListObject*>(list)->GetCountSlot48();
+  return static_cast<TPtrList*>(list)->GetCountSlot48();
 }
 
 static __inline TTrackedObjectListEntryView* List_GetTrackedEntrySlot4C(void* list, int ordinal) {
   return static_cast<TTrackedObjectListEntryView*>(
-      static_cast<TListObject*>(list)->GetTrackedEntrySlot4C(ordinal));
+      static_cast<TPtrList*>(list)->GetTrackedEntrySlot4C(ordinal));
 }
 
-static __inline int ObArray_GetCountAtOffset8(void* list) {
-  return *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(list) + 8);
+static __inline int CPtrArray_GetCount(const CPtrArray* list) {
+  return list->count;
 }
 
-static __inline short ObArray_GetShortValueByOrdinal1Based(void* list, int ordinal) {
-  short* value =
-      static_cast<short*>(reinterpret_cast<TObArray*>(list)->GetShortValueByOrdinalSlot2C(ordinal));
+static __inline short IndexAndRankList_GetShortValueByOrdinal1Based(TIndexAndRankList* list,
+                                                                    int ordinal) {
+  short* value = static_cast<short*>(list->GetEntrySlot2C(ordinal));
   return (value != 0) ? *value : static_cast<short>(-1);
+}
+
+static __inline TSortedByRelationshipList* AllocateSortedByRelationshipListWithMode(short mode) {
+  TSortedByRelationshipList* list =
+      TSortedByRelationshipList::CreateTSortedByRelationshipListInstance();
+  if (list != 0) {
+    list->relationType = mode;
+  }
+  return list;
 }
 
 static __inline char UiRuntime_RequestDiplomacyDecision(void* uiRuntimeContext, int sourceNation,
@@ -796,21 +797,6 @@ static __inline void RelationManager_ClearNeedSlotE2AndRefresh(void* relationMan
   RelationManager_RefreshSlot80(relationManager);
 }
 
-static __inline void* AllocateObArrayWithMode(short mode) {
-  void* array = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x18));
-  if (array != 0) {
-    void(__fastcall * constructPtrArray)(void*, int) =
-        reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructObArrayWithVtable654D38);
-    void(__fastcall * initializePtrArrayMode)(void*, int) =
-        reinterpret_cast<void(__fastcall*)(void*, int)>(
-            thunk_InitializeObArrayVtable654D38ModeField);
-    constructPtrArray(array, 0);
-    initializePtrArrayMode(array, 0);
-    static_cast<TObArrayModeView*>(array)->modeField14 = mode;
-  }
-  return array;
-}
-
 static __inline void* AllocateBattleListOwnerWithPtrListSentinel(void) {
   void* owner = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (owner != 0) {
@@ -1023,11 +1009,11 @@ static __inline int Queue_ReadIndexSlot4C(void* queue, int mode, int index) {
 }
 
 static __inline void* List_GetNodeByOrdinalSlot2C(void* list, int mode, int ordinal) {
-  return reinterpret_cast<TListObject*>(list)->GetNodeByOrdinalSlot2C(mode, ordinal);
+  return reinterpret_cast<TPtrList*>(list)->GetNodeByOrdinalSlot2C(mode, ordinal);
 }
 
 static __inline void List_ReleaseSlot24(void* list) {
-  reinterpret_cast<TListObject*>(list)->GetCountOrReleaseSlot28();
+  reinterpret_cast<TPtrList*>(list)->GetCountOrReleaseSlot28();
 }
 
 // FUNCTION: IMPERIALISM 0x00401172
@@ -1508,17 +1494,17 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   this->relationManager = static_cast<TCity*>(cityModel);
 
   void* townMarkerListOwner = AllocateBattleListOwnerWithLinkedSentinel();
-  this->townMarkerList = static_cast<TListObject*>(townMarkerListOwner);
+  this->townMarkerList = static_cast<TPtrList*>(townMarkerListOwner);
 
   this->grantTotalCost = 0;
   this->needCapA6 = 0x0F;
   this->field900 = 0x0F;
 
-  void* turnEventQueue = AllocateObArrayWithMode(4);
-  this->turnEventQueue = static_cast<TQueueObject*>(turnEventQueue);
+  this->turnEventQueue = reinterpret_cast<TQueueObject*>(
+      AllocateSortedByRelationshipListWithMode(4));
 
-  void* proposalQueue = AllocateObArrayWithMode(4);
-  this->proposalQueue = static_cast<TQueueObject*>(proposalQueue);
+  this->proposalQueue = reinterpret_cast<TQueueObject*>(
+      AllocateSortedByRelationshipListWithMode(4));
 
   if (this->diplomacyEligibilityA0 != 0) {
     void* foreignMinister = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
@@ -1548,8 +1534,8 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   int listIndex = 0;
   while (listIndex < kDiplomacyTrackedSlotCount) {
-    void* relationList = AllocateObArrayWithMode(0x0C);
-    this->diplomacyTrackedSlots[listIndex] = static_cast<TQueueObject*>(relationList);
+    this->diplomacyTrackedSlots[listIndex] = reinterpret_cast<TQueueObject*>(
+        AllocateSortedByRelationshipListWithMode(0x0C));
     ++listIndex;
   }
 
@@ -1565,7 +1551,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   }
 
   void* trackedObjectList = AllocateBattleListOwnerWithPtrListSentinel();
-  this->trackedObjectList = static_cast<TListObject*>(trackedObjectList);
+  this->trackedObjectList = static_cast<TPtrList*>(trackedObjectList);
 
   int candidateIndex = 0;
   while (candidateIndex < kNationSlotCount) {
@@ -1575,11 +1561,11 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   this->scenarioInitFlag = 0;
   this->field904 = 1;
 
-  void* turnSummaryQueue = AllocateObArrayWithMode(8);
-  this->turnSummaryQueue = static_cast<TQueueObject*>(turnSummaryQueue);
+  this->turnSummaryQueue = reinterpret_cast<TQueueObject*>(
+      AllocateSortedByRelationshipListWithMode(8));
 
   void* missionNodeQueue = AllocateBattleListOwnerWithPtrListSentinel();
-  this->missionNodeQueue = static_cast<TListObject*>(missionNodeQueue);
+  this->missionNodeQueue = static_cast<TPtrList*>(missionNodeQueue);
   this->pendingAidTotal = 0;
 }
 
@@ -1788,11 +1774,11 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   void* townMarkerList = this->townMarkerList;
-  int hasItems = static_cast<TListObject*>(townMarkerList)->GetCountSlot48();
+  int hasItems = static_cast<TPtrList*>(townMarkerList)->GetCountSlot48();
   if (hasItems != 0) {
-    static_cast<TListObject*>(townMarkerList)->Call54();
+    static_cast<TPtrList*>(townMarkerList)->Call54();
   }
-  static_cast<TListObject*>(townMarkerList)->Call18();
+  static_cast<TPtrList*>(townMarkerList)->Call18();
 
   int townCount = 0;
   Stream_ReadAtSlot3C(stream, &townCount, 4);
@@ -1804,8 +1790,8 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       if (townMarker != 0) {
         reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructFrogCityMarker)(townMarker,
                                                                                        0);
-        static_cast<TListObject*>(townMarker)->Call18();
-        static_cast<TListObject*>(townMarkerList)->AddTail30(townMarker);
+        static_cast<TPtrList*>(townMarker)->Call18();
+        static_cast<TPtrList*>(townMarkerList)->AddTail30(townMarker);
       }
       ++townOrdinal;
     }
@@ -1813,15 +1799,15 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
 
   if (townCount > 0) {
     this->relationManager->AdoptSelectedOrderSlot44(
-        static_cast<TListObject*>(townMarkerList)->GetTrackedEntrySlot4C());
+        static_cast<TPtrList*>(townMarkerList)->GetTrackedEntrySlot4C());
   }
 
   void* trackedObjectList = this->trackedObjectList;
-  hasItems = static_cast<TListObject*>(trackedObjectList)->GetCountSlot48();
+  hasItems = static_cast<TPtrList*>(trackedObjectList)->GetCountSlot48();
   if (hasItems != 0) {
-    static_cast<TListObject*>(trackedObjectList)->Call54();
+    static_cast<TPtrList*>(trackedObjectList)->Call54();
   }
-  static_cast<TListObject*>(trackedObjectList)->Call18();
+  static_cast<TPtrList*>(trackedObjectList)->Call18();
 
   int unusedOrderCount = 0;
   Stream_ReadAtSlot3C(stream, &unusedOrderCount, 4);
@@ -1834,7 +1820,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
           civOrderObj, 0);
       static_cast<TCivWorkOrderState*>(civOrderObj)
           ->thunk_InitializeCivWorkOrderState(0, -1, this->nationSlot);
-      static_cast<TListObject*>(civOrderObj)->Call18();
+      static_cast<TPtrList*>(civOrderObj)->Call18();
     }
     ++orderOrdinal;
   }
@@ -1848,7 +1834,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x0E) {
     void* missionNodeQueue = this->missionNodeQueue;
-    static_cast<TListObject*>(missionNodeQueue)->Call18(arg1);
+    static_cast<TPtrList*>(missionNodeQueue)->Call18(arg1);
 
     int nodeCount = 0;
     Stream_ReadRawAtSlot00(stream, &nodeCount, 4);
@@ -1858,7 +1844,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
         unsigned char hasNode = 0;
         char markerOk = Stream_ReadByteAtSlotB0(stream, &hasNode);
         if (markerOk != 0) {
-          static_cast<TListObject*>(missionNodeQueue)->AddTail30(0);
+          static_cast<TPtrList*>(missionNodeQueue)->AddTail30(0);
         }
         ++nodeOrdinal;
       }
@@ -1910,13 +1896,13 @@ static __inline short Stream_ReadShortAtSlot4C(void* stream) {
 }
 
 // Tracked-order list serialization hooks (list-level [vt+0x14](stream) write and
-// [vt+0x18](stream) reset/read; the TListObject view types slot 0x18 as int).
+// [vt+0x18](stream) reset/read; Call18 takes the stream pointer as its int arg).
 static __inline void List_WriteToStreamSlot14(void* list, void* stream) {
   static_cast<TQueueObject*>(list)->ApplyMessageSlot14(stream);
 }
 
 static __inline void List_ReadFromStreamSlot18(void* list, void* stream) {
-  static_cast<TListObject*>(list)->Call18(reinterpret_cast<int>(stream));
+  static_cast<TPtrList*>(list)->Call18(reinterpret_cast<int>(stream));
 }
 
 // FUNCTION: IMPERIALISM 0x004da500
@@ -1948,7 +1934,7 @@ void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int 
   Stream_ReadAtSlot3C(stream, &this->serializedField8c, 4);
 
   if (List_GetCountSlot48(this->trackedObjectList) != 0) {
-    static_cast<TListObject*>(this->trackedObjectList)->Call54();
+    static_cast<TPtrList*>(this->trackedObjectList)->Call54();
   }
   List_ReadFromStreamSlot18(this->trackedObjectList, stream);
 
@@ -2116,7 +2102,7 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
        nodeIter.More(); node = static_cast<TMissionNodeDispatchView*>(nodeIter.Advance())) {
     node->DispatchSlot28();
   }
-  static_cast<TListObject*>(this->missionNodeQueue)->Call54();
+  static_cast<TPtrList*>(this->missionNodeQueue)->Call54();
 }
 #pragma optimize("", on)
 
@@ -2251,9 +2237,9 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
       short innerPriority =
           g_DAT_006966d0_Value_006966D0[static_cast<TUnitOrderState*>(entryInner)->orderType];
       if (innerPriority < outerPriority) {
-        static_cast<TListObject*>(this->trackedObjectList)
+        static_cast<TPtrList*>(this->trackedObjectList)
             ->SetEntryDataAtSlot60(outer, &entryInner, 1);
-        static_cast<TListObject*>(this->trackedObjectList)
+        static_cast<TPtrList*>(this->trackedObjectList)
             ->SetEntryDataAtSlot60(inner, &entryOuter, 1);
         entryOuter = entryInner;
         outerPriority = innerPriority;
@@ -4083,7 +4069,7 @@ void TGreatPower::ReleaseDiplomacyTrackedObjectSlots850(void) {
 
 // FUNCTION: IMPERIALISM 0x004de810
 void TGreatPower::CallSlotA5_Provisional(void) {
-  TListObject* trackedList = this->trackedObjectList;
+  TPtrList* trackedList = this->trackedObjectList;
   if (trackedList == 0) {
     return;
   }
@@ -4186,7 +4172,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 
   if (hasUnfilledNeedSlot) {
     short selectedNation = static_cast<short>(-1);
-    void* relationshipList = AllocateObArrayWithMode(0);
+    TSortedByRelationshipList* relationshipList = AllocateSortedByRelationshipListWithMode(0);
     if (diplomacyManager != 0 && relationshipList != 0) {
       g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(this->nationSlot, 1,
                                                                 relationshipList);
@@ -4194,10 +4180,11 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 
     for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
       if (this->QueryNationMetricBySlot7C(needSlot) < 0) {
-        int listIndex = ObArray_GetCountAtOffset8(relationshipList);
+        int listIndex = CPtrArray_GetCount(relationshipList);
         if (selectedNation < 0) {
           while (listIndex >= 1) {
-            selectedNation = ObArray_GetShortValueByOrdinal1Based(relationshipList, listIndex);
+            selectedNation =
+                IndexAndRankList_GetShortValueByOrdinal1Based(relationshipList, listIndex);
             --listIndex;
             void* candidateState = ReadNationStateSlot(selectedNation);
             if (candidateState != 0 && NationState_IsBusyA0(candidateState) != 0) {
@@ -4219,7 +4206,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     }
 
     if (relationshipList != 0) {
-      static_cast<TIndexAndRankList*>(relationshipList)->ReleaseSlot24();
+      relationshipList->ReleaseSlot24();
     }
   }
 
@@ -5515,7 +5502,7 @@ struct MilitaryUnitEntryView {
   short unitTypeId04;
 };
 
-static __inline int SumMilitaryUnitPowerWeights(TListObject* unitList) {
+static __inline int SumMilitaryUnitPowerWeights(TPtrList* unitList) {
   int powerSum = 0;
   CIterator unitIter(unitList);
   for (MilitaryUnitEntryView* unit = static_cast<MilitaryUnitEntryView*>(unitIter.Reset());
@@ -6378,7 +6365,7 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
   Stream_ReadAtSlot3C(stream, this->mapNodeStateFlags, 0x180);
   Stream_ReadAtSlot3C(stream, this->portZoneStateFlags, 0x70);
 
-  TListObject* missionQueue = this->missionQueue;
+  TPtrList* missionQueue = this->missionQueue;
   if (missionQueue->GetCountSlot48() != 0) {
     missionQueue->Call54();
   }
@@ -6516,7 +6503,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryAutoCppPath, kAssertLineQueueMapAction);
   }
 
-  TListObject* missionQueue = this->missionQueue;
+  TPtrList* missionQueue = this->missionQueue;
   missionQueue->AddTail30(missionObj);
 
   if (arg2 != -1) {
@@ -6650,7 +6637,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     }
 
     int nodeWeight =
-        static_cast<TListObject*>(linkedNodesView->linkedNodeList)->GetCountOrReleaseSlot28();
+        static_cast<TPtrList*>(linkedNodesView->linkedNodeList)->GetCountOrReleaseSlot28();
     int weightedNeighbor =
         CallComputeWeightedNeighborLinkScoreForNode(terrainDescriptor, relationTargetNation);
     int linkedNodeTotal = CallSumWeightedNeighborLinkScoreForLinkedNodes(terrainDescriptor);
@@ -6748,27 +6735,25 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
   }
 
   if (activeCandidateCount == 0) {
-    void* relationshipList = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x18));
+    TSortedByRelationshipList* relationshipList =
+        TSortedByRelationshipList::CreateTSortedByRelationshipListInstance();
     if (relationshipList != 0) {
-      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructObArrayWithVtable654D38)(
-          relationshipList, 0);
-      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeObArrayVtable654D38ModeField)(
-          relationshipList, 0);
+      relationshipList->relationType = 4;
     }
 
     void* diplomacyManager = ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr);
-    if (diplomacyManager != 0) {
+    if (diplomacyManager != 0 && relationshipList != 0) {
       g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(this->nationSlot, 1,
                                                                 relationshipList);
     }
 
     if (relationshipList != 0) {
-      void* firstNode = List_GetNodeByOrdinalSlot2C(relationshipList, 0, 1);
-      if (firstNode != 0) {
+      void* firstEntry = relationshipList->GetEntrySlot2C(1);
+      if (firstEntry != 0) {
         selectedCandidateIndex =
-            static_cast<int>(static_cast<TShortNodeValueView*>(firstNode)->value);
+            static_cast<int>(static_cast<TShortNodeValueView*>(firstEntry)->value);
       }
-      List_ReleaseSlot24(relationshipList);
+      relationshipList->ReleaseSlot24();
     }
   } else if (activeCandidateCount == 1) {
     while (selectedCandidateIndex < 0x17) {
@@ -7054,7 +7039,7 @@ void TGreatPower::QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int
       return;
     }
 
-    int queueCount = ObArray_GetCountAtOffset8(mergeQueue);
+    int queueCount = CPtrArray_GetCount(static_cast<const CPtrArray*>(mergeQueue));
     for (int entryIndex = 1; entryIndex <= queueCount; ++entryIndex) {
       TInterNationEventType0FMergePayload* existingEntry =
           reinterpret_cast<TInterNationEventType0FMergePayload*>(

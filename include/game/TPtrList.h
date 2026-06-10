@@ -8,10 +8,28 @@
 // Common state for the game list wrappers. Concrete leaves such as TList and
 // TSortedList install their own vtables, but this remains a real polymorphic
 // class because it owns storage and concrete virtual bodies.
+//
+// Slots 0x28..0x60 are the list-engine dispatch surface (TList vtable 0x648f78).
 struct TPtrList : public RefCountedObjectBase {
-  virtual void VMethod05() {}
-  virtual void VMethod06() {}
-  virtual void VMethod07() {}
+  virtual void ResetSlot14() {}
+  virtual void Call18(int arg1 = 0) { (void)arg1; }
+  virtual void Release1C();
+
+  virtual int GetCountOrReleaseSlot28();
+  virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal);
+  virtual void AddTail30(void* item);
+  virtual void RemoveIntSlot34(int value) { (void)value; }
+  virtual void Call38() {}
+  virtual void VTableSlot3C_Provisional() {}
+  virtual void VTableSlot40_Provisional() {}
+  virtual void VTableSlot44_Provisional() {}
+  virtual int GetCountSlot48();
+  virtual void* GetTrackedEntrySlot4C(int ordinal = 0);
+  virtual void RemoveEntryAtSlot50(int ordinal);
+  virtual void Call54();
+  virtual void Call58();
+  virtual void VTableSlot5C_Provisional() {}
+  virtual void SetEntryDataAtSlot60(int ordinal, void** entryPtr, int unusedFlag);
 
   CPtrList listState;
 

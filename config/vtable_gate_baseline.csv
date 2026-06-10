@@ -10,9 +10,11 @@ src/game/TGreatPower.cpp|0|0|0|9|9
 src/game/TOneTimeAnimation.cpp|0|0|0|2|2
 src/game/TTransFocusAnimation.cpp|0|0|0|2|2
 src/game/TTwoPicSlider.cpp|0|0|0|2|2
+src/game/TMapOrderContext.cpp|0|0|0|0|0
 src/game/TMapOrderEntry.cpp|0|1|0|0|1
 src/game/TMapDialog.cpp|0|1|0|0|1
 src/game/TWorldView.cpp|0|5|0|0|5
+src/game/TZone.cpp|0|0|0|0|0
 src/game/CBrush.cpp|0|1|0|0|1
 src/game/ScopedMapQuickDrawContext.cpp|0|0|0|0|0
 src/game/CDC.cpp|0|1|0|0|1

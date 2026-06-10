@@ -39,6 +39,8 @@ public:
   CPtrListNode* InsertAfter(CPtrListNode* position, void* value);
   void RemoveAt(CPtrListNode* position);
   CPtrListNode* Find(void* value, CPtrListNode* startAfter = 0);
+  CPtrListNode* GetNodeAtZeroBasedIndex(int zeroBasedIndex);
+  void* GetDataAtOneBasedIndex(int oneBasedIndex);
 };
 
 ASSERT_SIZE(CPtrList, 0x1c);

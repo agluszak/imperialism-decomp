@@ -189,6 +189,28 @@ void CPtrList::RemoveAt(CPtrListNode* pos) {
   this->FreeNode(pos);
 }
 
+// FUNCTION: IMPERIALISM 0x006021b4
+CPtrListNode* CPtrList::GetNodeAtZeroBasedIndex(int zeroBasedIndex) {
+  if (zeroBasedIndex >= this->nodeCount) {
+    return 0;
+  }
+  CPtrListNode* node = this->headNode;
+  int step = zeroBasedIndex;
+  while (step != 0) {
+    node = node->next;
+    step = step - 1;
+  }
+  return node;
+}
+
+void* CPtrList::GetDataAtOneBasedIndex(int oneBasedIndex) {
+  CPtrListNode* node = this->GetNodeAtZeroBasedIndex(oneBasedIndex - 1);
+  if (node == 0) {
+    return 0;
+  }
+  return node->data;
+}
+
 // FUNCTION: IMPERIALISM 0x006021d6
 CPtrListNode* CPtrList::Find(void* searchValue, CPtrListNode* startAfter) {
   CPtrListNode* node;

@@ -2,6 +2,8 @@
 
 #include "decomp_types.h"
 
+struct TPtrList;
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // City production-summary object kept at TCity+0x1d8 (vtable + inline fields).
@@ -151,7 +153,7 @@ public:
   short production24c[0x10];              // 0x24C — slot 0x1a outAccum
   short field26c;                         // 0x26C — zeroed by the ctor
   short pad26e;
-  class TListObject* trackedOrderList270; // 0x270 — released via Call58
+  TPtrList* trackedOrderList270; // 0x270 — released via Call58
   class TQueueObject* eventQueue274;      // 0x274 — released via Call24
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")

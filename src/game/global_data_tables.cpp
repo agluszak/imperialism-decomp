@@ -69,6 +69,8 @@ short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 void* g_pMapActionContextListHead = 0;
+int g_nMapActionContextCount = 0;
+void* g_pMapActionContextDistanceCache = 0;
 void* g_pNationInteractionStateManager = 0; // 0x6a43cc
 
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string

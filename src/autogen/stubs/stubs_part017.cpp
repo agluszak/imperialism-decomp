@@ -699,30 +699,6 @@ undefined4 CreateTZone(void)
   return 0;
 }
 
-// ghidra_name TZone::GetTZoneClassNamePointer
-// ghidra_proto void * __cdecl GetTZoneClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x0055e6e0
-undefined4 GetTZoneClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList
-// ghidra_proto void __thiscall ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
-// FUNCTION: IMPERIALISM 0x0055e700
-undefined4 ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::HasZoneActiveChildCount
-// ghidra_proto bool __thiscall HasZoneActiveChildCount(void)
-// FUNCTION: IMPERIALISM 0x0055e8c0
-undefined4 HasZoneActiveChildCount(void)
-{
-  return 0;
-}
-
 // ghidra_name TZone::GetOrAppendUniqueZonePointerInPrimaryArray
 // ghidra_proto void __thiscall GetOrAppendUniqueZonePointerInPrimaryArray(void)
 // FUNCTION: IMPERIALISM 0x0055e8e0
@@ -751,46 +727,6 @@ undefined4 AppendZonePointerToPrimaryArray(void)
 // ghidra_proto void __thiscall AppendZonePointerToSecondaryArray(void)
 // FUNCTION: IMPERIALISM 0x0055eba0
 undefined4 AppendZonePointerToSecondaryArray(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::RemoveZoneFromGlobalListAndRelease
-// ghidra_proto void __thiscall RemoveZoneFromGlobalListAndRelease(void)
-// FUNCTION: IMPERIALISM 0x0055ec60
-undefined4 RemoveZoneFromGlobalListAndRelease(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeZoneFromBinaryStream
-// ghidra_proto void __thiscall DeserializeZoneFromBinaryStream(int arg1)
-// FUNCTION: IMPERIALISM 0x0055ed20
-undefined4 DeserializeZoneFromBinaryStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::SerializeZoneToBinaryStream
-// ghidra_proto void __thiscall SerializeZoneToBinaryStream(void)
-// FUNCTION: IMPERIALISM 0x0055eff0
-undefined4 SerializeZoneToBinaryStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::AssignZoneDisplayNameToOutputRef
-// ghidra_proto void __thiscall AssignZoneDisplayNameToOutputRef(void)
-// FUNCTION: IMPERIALISM 0x0055f070
-undefined4 AssignZoneDisplayNameToOutputRef(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::AssignZoneDisplayNameAliasToOutputRef
-// ghidra_proto void __thiscall AssignZoneDisplayNameAliasToOutputRef(void)
-// FUNCTION: IMPERIALISM 0x0055f090
-undefined4 AssignZoneDisplayNameAliasToOutputRef(void)
 {
   return 0;
 }
@@ -851,42 +787,10 @@ undefined4 GenerateZoneStatusCodeIfUnset(void)
   return 0;
 }
 
-// ghidra_name TZone::GenerateMapActionContextDisplayNameAndHeadline
-// ghidra_proto void __thiscall GenerateMapActionContextDisplayNameAndHeadline(void)
-// FUNCTION: IMPERIALISM 0x0055f780
-undefined4 GenerateMapActionContextDisplayNameAndHeadline(void)
-{
-  return 0;
-}
-
 // ghidra_name ResizePointerArrayCapacityByRequestedCount
 // ghidra_proto void __cdecl ResizePointerArrayCapacityByRequestedCount(void)
 // FUNCTION: IMPERIALISM 0x0055fae0
 undefined4 ResizePointerArrayCapacityByRequestedCount(void)
-{
-  return 0;
-}
-
-// ghidra_name InputState::SetMapActionContextTargetTileAndRefreshMarkers
-// ghidra_proto void __thiscall SetMapActionContextTargetTileAndRefreshMarkers(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0055fb60
-undefined4 SetMapActionContextTargetTileAndRefreshMarkers(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::FindNearestActiveSeaContextTileFromOffset216
-// ghidra_proto short __thiscall FindNearestActiveSeaContextTileFromOffset216(void)
-// FUNCTION: IMPERIALISM 0x0055fe60
-undefined4 FindNearestActiveSeaContextTileFromOffset216(void)
-{
-  return 0;
-}
-
-// ghidra_name TZone::FindNearestActiveSeaContextTileFromCurrentTile
-// ghidra_proto short __thiscall FindNearestActiveSeaContextTileFromCurrentTile(void)
-// FUNCTION: IMPERIALISM 0x0055fef0
-undefined4 FindNearestActiveSeaContextTileFromCurrentTile(void)
 {
   return 0;
 }
@@ -899,26 +803,10 @@ undefined4 ScoreCoastalTileForContextAndCityStateAffinity(void)
   return 0;
 }
 
-// ghidra_name TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
-// ghidra_proto short __thiscall FindBestCoastalTileForContextAndCityStateByHeuristic(void)
-// FUNCTION: IMPERIALISM 0x00560150
-undefined4 FindBestCoastalTileForContextAndCityStateByHeuristic(void)
-{
-  return 0;
-}
-
 // ghidra_name AdvanceSpiralSearchStateAndStepHexCoordinates
 // ghidra_proto void __cdecl AdvanceSpiralSearchStateAndStepHexCoordinates(void)
 // FUNCTION: IMPERIALISM 0x00560470
 undefined4 AdvanceSpiralSearchStateAndStepHexCoordinates(void)
-{
-  return 0;
-}
-
-// ghidra_name InputState::UpdatePortZoneTileOverlayMarkersForStateToggle
-// ghidra_proto void __thiscall UpdatePortZoneTileOverlayMarkersForStateToggle(void)
-// FUNCTION: IMPERIALISM 0x00560580
-undefined4 UpdatePortZoneTileOverlayMarkersForStateToggle(void)
 {
   return 0;
 }
@@ -1227,14 +1115,6 @@ undefined4 ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(void)
   return 0;
 }
 
-// ghidra_name DestroyTPortZoneArrayWithOptionalElementDestruct
-// ghidra_proto void __cdecl DestroyTPortZoneArrayWithOptionalElementDestruct(void)
-// FUNCTION: IMPERIALISM 0x00562880
-undefined4 DestroyTPortZoneArrayWithOptionalElementDestruct(void)
-{
-  return 0;
-}
-
 // ghidra_name LinkedListQueryOwner::SerializeMapActionContextRuntimeState
 // ghidra_proto void __thiscall SerializeMapActionContextRuntimeState(void)
 // FUNCTION: IMPERIALISM 0x005628f0
@@ -1255,14 +1135,6 @@ undefined4 RelaxMapTileCostFieldByNeighborTerrain(void)
 // ghidra_proto void __cdecl SelectBestSeedTileForNationFromCostField(int arg1, int arg2)
 // FUNCTION: IMPERIALISM 0x00562c00
 undefined4 SelectBestSeedTileForNationFromCostField(void)
-{
-  return 0;
-}
-
-// ghidra_name InputState::InitializeMapActionContextsForNationCountUsingCostField
-// ghidra_proto void __thiscall InitializeMapActionContextsForNationCountUsingCostField(int arg1)
-// FUNCTION: IMPERIALISM 0x00562d90
-undefined4 InitializeMapActionContextsForNationCountUsingCostField(void)
 {
   return 0;
 }
