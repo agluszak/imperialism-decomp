@@ -25,8 +25,12 @@ public:
   virtual void TGreatPower_VtblSlot07(void);
   TGREATPOWER_VTABLE_SLOT(08);
   TGREATPOWER_VTABLE_SLOT(09);
-  TGREATPOWER_VTABLE_SLOT(10);
-  TGREATPOWER_VTABLE_SLOT(11);
+  // slot 0x0a — body 0x004da500: writes core scalars (0x0e/0x10/0x88/0x8c) then the
+  // tracked-order list and each tracked order to the stream.
+  virtual void WriteCoreStateAndTrackedOrdersToStream(void* stream);
+  // slot 0x0b — body 0x004da3e0 (RET 0x8): reads the same scalar block, clears the
+  // tracked-order list, then recreates one TCivWorkOrderState per stream count entry.
+  virtual void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg);
   TGREATPOWER_VTABLE_SLOT(12);
   TGREATPOWER_VTABLE_SLOT(13);
   virtual void AddToNationMetricAtField10(int amount); // slot 0x0e
@@ -68,17 +72,28 @@ public:
   virtual char ShouldDispatchImmediatelySlot28_Provisional(void);
   TGREATPOWER_VTABLE_SLOT(41);
   virtual void VTableIndex42_Provisional(void) {} // slot 0x2a
-  TGREATPOWER_VTABLE_SLOT(43);
-  TGREATPOWER_VTABLE_SLOT(44);
-  TGREATPOWER_VTABLE_SLOT(45);
+  // slot 0x2b — body 0x004da860: marks status flag 5 handled when the city-order
+  // capability byte (+0x277 row) is active.
+  virtual void MarkStatusFlag5HandledIfCapabilityActive(void);
+  // slot 0x2c — body 0x004da8a0: sweeps serializedStatusFlags, advancing every
+  // pending ('2') flag to its handled state.
+  virtual void MarkAllPendingStatusFlagsHandled(void);
+  // slot 0x2d — body 0x004da5e0: dispatches one UI turn-status prompt per pending
+  // flag via g_pUiRuntimeContext slot 0x3c.
+  virtual void DispatchPendingStatusPrompts(void);
   virtual void SetNationPendingActionStateAndPayload(int index, short payload); // slot 0x2e
-  TGREATPOWER_VTABLE_SLOT(47);
-  TGREATPOWER_VTABLE_SLOT(48);
+  // slot 0x2f — body 0x004daa50: appends a node to missionNodeQueue.
+  virtual void AddNodeToMissionNodeQueue(void* node);
+  // slot 0x30 — body 0x004daa80: invokes [vt+0x28] on every mission node, then
+  // clears missionNodeQueue.
+  virtual void DispatchMissionNodeCallbacksAndClearQueue(void);
   TGREATPOWER_VTABLE_SLOT(49);
   // index 0x32 / vtable+0x0c8. Per-nation pending-action state machine that
   // constructs queued land/navy/civ order objects (body 0x004dab20).
   virtual void ExecuteNationPendingActionStateMachine(void);
-  TGREATPOWER_VTABLE_SLOT(51);
+  // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
+  // orderType == 7.
+  virtual char HasTrackedOrderOfType7(void);
   TGREATPOWER_VTABLE_SLOT(52);
   TGREATPOWER_VTABLE_SLOT(53);
   TGREATPOWER_VTABLE_SLOT(54);
@@ -258,7 +273,10 @@ public:
   TListObject* militaryUnitList44;
   unsigned char pad_48[0x88 - 0x48];
   short ownerNationSlot;
-  unsigned char pad_8a[0x90 - 0x8a];
+  short pad_8a;
+  // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with the
+  // 4 bytes at 0x88 (ownerNationSlot + pad).
+  int serializedField8c;
   TListObject* ownedRegionList;
   TMinister* foreignMinister;
   TMinister* interiorMinister;
@@ -295,7 +313,10 @@ public:
   unsigned char candidateNationFlags[0x17];
   unsigned char scenarioInitFlag;
   unsigned char pad_8b8[0x8c8 - 0x8b8];
-  unsigned char serializedStatusFlags[0x0D];
+  // 0x8c8 — pending-action status flag block. The serialization block is 0x0D bytes
+  // (0x8c8..0x8d4) and slot 0x2c/0x2d sweep indices 0..0xc, so indices 8..0xc
+  // address the named bytes that follow (expansionAlertCounter..expansionEventGate).
+  unsigned char serializedStatusFlags[8];
   signed char expansionAlertCounter;
   unsigned char field8d1;
   unsigned char field8d2;

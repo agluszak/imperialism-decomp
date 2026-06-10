@@ -21,7 +21,7 @@ public:
   virtual int ReadInt40() = 0;
   virtual void dummy17() = 0;
   virtual void dummy18() = 0;
-  virtual void dummy19() = 0;
+  virtual short ReadShort4C() = 0;
   virtual void dummy20() = 0;
   virtual void dummy21() = 0;
   virtual void dummy22() = 0;
@@ -32,11 +32,11 @@ public:
   virtual void dummy27() = 0;
   virtual void dummy28() = 0;
   virtual void dummy29() = 0;
-  virtual void dummy30() = 0;
+  virtual void WriteRaw78(void* data, int sizeBytes) = 0;
   virtual void dummy31() = 0;
   virtual void dummy32() = 0;
   virtual void dummy33() = 0;
-  virtual void dummy34() = 0;
+  virtual void WriteCount88(int count) = 0;
   virtual void dummy35() = 0;
   virtual void dummy36() = 0;
   virtual void dummy37() = 0;

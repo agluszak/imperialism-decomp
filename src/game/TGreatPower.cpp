@@ -1650,22 +1650,14 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
     this->trackedObjectList->Call58();
   }
   this->trackedObjectList = 0;
-  {
-    TQueueObject** turnSummarySlot =
-        reinterpret_cast<TQueueObject**>(reinterpret_cast<unsigned char*>(this) + 0x908);
-    if (*turnSummarySlot != 0) {
-      (*turnSummarySlot)->Call24();
-    }
-    *turnSummarySlot = 0;
+  if (this->turnSummaryQueue != 0) {
+    this->turnSummaryQueue->Call24();
   }
-  {
-    TListObject** missionNodeSlot =
-        reinterpret_cast<TListObject**>(reinterpret_cast<unsigned char*>(this) + 0x90c);
-    if (*missionNodeSlot != 0) {
-      (*missionNodeSlot)->Call58();
-    }
-    *missionNodeSlot = 0;
+  this->turnSummaryQueue = 0;
+  if (this->missionNodeQueue != 0) {
+    this->missionNodeQueue->Call58();
   }
+  this->missionNodeQueue = 0;
   if (this->militaryUnitList44 != 0) {
     this->militaryUnitList44->Call58();
   }
@@ -1917,6 +1909,258 @@ void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload
     this->serializedStatusFlags[index] = 0x32;
     this->field8d6[index] = payload;
   }
+}
+#pragma optimize("", on)
+
+// --- Slot 0x0a/0x0b stream serialization pair and status-flag slots 0x2b-0x33 ---
+
+static __inline short CityOrderActiveZoneIndex(void); // defined with the other accessors below
+
+// City-order capability byte per nation (row stride 0x1d, column 0x277).
+static __inline unsigned char CityOrderCapabilityByte277(short nationSlot) {
+  return *(reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) + nationSlot * 0x1d +
+           0x277);
+}
+
+static __inline void Stream_WriteRawAtSlot78(void* stream, void* data, int sizeBytes) {
+  static_cast<TStreamView*>(stream)->WriteRaw78(data, sizeBytes);
+}
+
+static __inline void Stream_WriteCountAtSlot88(void* stream, int count) {
+  static_cast<TStreamView*>(stream)->WriteCount88(count);
+}
+
+static __inline short Stream_ReadShortAtSlot4C(void* stream) {
+  return static_cast<TStreamView*>(stream)->ReadShort4C();
+}
+
+// Tracked-order list serialization hooks (list-level [vt+0x14](stream) write and
+// [vt+0x18](stream) reset/read; the TListObject view types slot 0x18 as int).
+static __inline void List_WriteToStreamSlot14(void* list, void* stream) {
+  static_cast<TQueueObject*>(list)->ApplyMessageSlot14(stream);
+}
+
+static __inline void List_ReadFromStreamSlot18(void* list, void* stream) {
+  static_cast<TListObject*>(list)->Call18(reinterpret_cast<int>(stream));
+}
+
+// FUNCTION: IMPERIALISM 0x004da500
+#pragma optimize("y", on)
+void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* stream) {
+  Stream_WriteRawAtSlot78(stream, &this->encodedNationSlot, 2);
+  Stream_WriteRawAtSlot78(stream, &this->treasuryValue10, 4);
+  Stream_WriteRawAtSlot78(stream, &this->ownerNationSlot, 4);
+  Stream_WriteRawAtSlot78(stream, &this->serializedField8c, 4);
+
+  List_WriteToStreamSlot14(this->trackedObjectList, stream);
+  int orderCount = List_GetCountSlot48(this->trackedObjectList);
+  Stream_WriteCountAtSlot88(stream, orderCount);
+  for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
+    TUnitOrderState* order = reinterpret_cast<TUnitOrderState*>(
+        List_GetTrackedEntrySlot4C(this->trackedObjectList, ordinal));
+    order->WriteToStreamSlot14(stream);
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004da3e0
+#pragma optimize("y", on)
+void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) {
+  (void)unusedArg;
+  Stream_ReadAtSlot3C(stream, &this->encodedNationSlot, 2);
+  Stream_ReadAtSlot3C(stream, &this->treasuryValue10, 4);
+  Stream_ReadAtSlot3C(stream, &this->ownerNationSlot, 4);
+  Stream_ReadAtSlot3C(stream, &this->serializedField8c, 4);
+
+  if (List_GetCountSlot48(this->trackedObjectList) != 0) {
+    static_cast<TListObject*>(this->trackedObjectList)->Call54();
+  }
+  List_ReadFromStreamSlot18(this->trackedObjectList, stream);
+
+  int orderCount = Stream_ReadShortAtSlot4C(stream);
+  for (; orderCount > 0; --orderCount) {
+    TCivWorkOrderState* civOrder = new TCivWorkOrderState();
+    civOrder->InitializeCivWorkOrderState(0, -1, this->nationSlot);
+    civOrder->ReadFromStreamSlot18(stream);
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004da860
+#pragma optimize("y", on)
+void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
+  if (CityOrderCapabilityByte277(this->nationSlot) == 2) {
+    this->serializedStatusFlags[5] = 0x33;
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004da8a0
+#pragma optimize("y", on)
+void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
+  char flag5Handled = static_cast<signed char>(this->serializedStatusFlags[5]) >= 0x33;
+  if (!flag5Handled && CityOrderCapabilityByte277(this->nationSlot) == 2) {
+    this->serializedStatusFlags[5] = 0x33;
+  }
+  if (this->serializedStatusFlags[6] == 0x32) {
+    this->serializedStatusFlags[6] = 0x33;
+  }
+  if (this->serializedStatusFlags[7] == 0x32) {
+    if (this->field8d6[7] == 2) {
+      this->serializedStatusFlags[7] = 0x33;
+    } else if (this->field8d6[7] == 3) {
+      this->serializedStatusFlags[7] = 0x34;
+      this->field8d6[7] = -1;
+    }
+  }
+  if (this->serializedStatusFlags[8] == 0x32) {
+    this->serializedStatusFlags[8] = 0x33;
+  }
+  if (this->serializedStatusFlags[9] == 0x32) {
+    this->serializedStatusFlags[9] = 0x33;
+  }
+  if (this->serializedStatusFlags[10] == 0x32) {
+    this->serializedStatusFlags[10] = 0x33;
+  }
+  if (this->serializedStatusFlags[11] == 0x32) {
+    this->serializedStatusFlags[11] = 0x33;
+  }
+  if (this->serializedStatusFlags[12] == 0x32) {
+    this->serializedStatusFlags[12] = 0x33;
+  }
+  if (this->serializedStatusFlags[0] == 0x32) {
+    this->serializedStatusFlags[0] =
+        static_cast<unsigned char>(*reinterpret_cast<char*>(&this->field8d6[0]) + 0x33);
+  }
+  if (this->serializedStatusFlags[1] == 0x32) {
+    this->serializedStatusFlags[1] =
+        static_cast<unsigned char>(*reinterpret_cast<char*>(&this->field8d6[1]) + 0x33);
+  }
+  if (this->serializedStatusFlags[2] == 0x32) {
+    this->serializedStatusFlags[2] = 0x33;
+  }
+  if (this->serializedStatusFlags[3] == 0x32) {
+    this->serializedStatusFlags[3] = 0;
+  }
+  if (this->serializedStatusFlags[4] == 0x32) {
+    this->serializedStatusFlags[4] = 0;
+  }
+}
+#pragma optimize("", on)
+
+// Each dispatch reloads the UI-context global, as the original does.
+static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
+  reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext)
+      ->QueueTurnStatusPromptSlot3C(promptIndex, payload);
+}
+
+// FUNCTION: IMPERIALISM 0x004da5e0
+#pragma optimize("y", on)
+void TGreatPower::DispatchPendingStatusPrompts(void) {
+  char flag5Handled = static_cast<signed char>(this->serializedStatusFlags[5]) >= 0x33;
+  if (!flag5Handled && CityOrderCapabilityByte277(this->nationSlot) == 2) {
+    UiRuntime_QueueTurnStatusPrompt(5, this->field8d6[5]);
+  }
+  if (this->serializedStatusFlags[6] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(6, this->field8d6[6]);
+  }
+  if (this->serializedStatusFlags[7] == 0x32) {
+    if (this->field8d6[7] == 2) {
+      TRelationManager* relationManager = this->relationManager;
+      relationManager->fieldB6[10] = relationManager->fieldB6[10] + 10;
+      relationManager->Refresh80();
+      UiRuntime_QueueTurnStatusPrompt(7, this->field8d6[7]);
+    } else if (this->field8d6[7] == 3) {
+      TRelationManager* relationManager = this->relationManager;
+      relationManager->fieldB6[10] = relationManager->fieldB6[10] + 10;
+      relationManager->Refresh80();
+      UiRuntime_QueueTurnStatusPrompt(7, -1);
+    }
+  }
+  if (this->serializedStatusFlags[8] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(8, this->field8d6[8]);
+  }
+  if (this->serializedStatusFlags[9] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(9, this->field8d6[9]);
+  }
+  if (this->serializedStatusFlags[10] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(10, this->field8d6[10]);
+  }
+  if (this->serializedStatusFlags[11] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(11, this->field8d6[11]);
+  }
+  if (this->serializedStatusFlags[12] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(12, this->field8d6[12]);
+  }
+  if (this->serializedStatusFlags[0] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(0, CityOrderActiveZoneIndex());
+  }
+  if (this->serializedStatusFlags[1] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(1, this->field8d6[1]);
+  }
+  if (this->serializedStatusFlags[2] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(2, this->field8d6[2]);
+  }
+  if (this->serializedStatusFlags[3] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(3, this->field8d6[3]);
+  }
+  if (this->serializedStatusFlags[4] == 0x32) {
+    UiRuntime_QueueTurnStatusPrompt(4, this->field8d6[4]);
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004daa50
+#pragma optimize("y", on)
+void TGreatPower::AddNodeToMissionNodeQueue(void* node) {
+  this->missionNodeQueue->AddTail30(node);
+}
+#pragma optimize("", on)
+
+// View of a mission node element: slot 0x28 is the per-node dispatch hook invoked
+// when the queue is flushed (0x004daa80).
+struct TMissionNodeDispatchView {
+  virtual void s00() = 0;
+  virtual void s01() = 0;
+  virtual void s02() = 0;
+  virtual void s03() = 0;
+  virtual void s04() = 0;
+  virtual void s05() = 0;
+  virtual void s06() = 0;
+  virtual void s07() = 0;
+  virtual void s08() = 0;
+  virtual void s09() = 0;
+  virtual void DispatchSlot28() = 0;
+};
+
+// FUNCTION: IMPERIALISM 0x004daa80
+#pragma optimize("y", on)
+void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
+  CIterator nodeIter(this->missionNodeQueue);
+  for (TMissionNodeDispatchView* node = static_cast<TMissionNodeDispatchView*>(nodeIter.Reset());
+       nodeIter.More(); node = static_cast<TMissionNodeDispatchView*>(nodeIter.Advance())) {
+    node->DispatchSlot28();
+  }
+  static_cast<TListObject*>(this->missionNodeQueue)->Call54();
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dae70
+#pragma optimize("y", on)
+char TGreatPower::HasTrackedOrderOfType7(void) {
+  char found = 0;
+  CIterator orderIter(this->trackedObjectList);
+  TUnitOrderState* order = static_cast<TUnitOrderState*>(orderIter.Reset());
+  if (orderIter.More()) {
+    while (order->orderType != 7) {
+      order = static_cast<TUnitOrderState*>(orderIter.Advance());
+      if (!orderIter.More()) {
+        return 0;
+      }
+    }
+    found = 1;
+  }
+  return found;
 }
 #pragma optimize("", on)
 
@@ -5422,7 +5666,8 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       return kOne;
     }
 
-    int nodeWeight = static_cast<TListObject*>(linkedNodesView->linkedNodeList)->GetCountSlot28();
+    int nodeWeight =
+        static_cast<TListObject*>(linkedNodesView->linkedNodeList)->GetCountOrReleaseSlot28();
     int weightedNeighbor =
         CallComputeWeightedNeighborLinkScoreForNode(terrainDescriptor, relationTargetNation);
     int linkedNodeTotal = CallSumWeightedNeighborLinkScoreForLinkedNodes(terrainDescriptor);

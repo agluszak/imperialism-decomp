@@ -20,8 +20,14 @@ public:
   virtual void s02() {}
   virtual void s03() {}
   virtual void s04() {}
-  virtual void s05() {}
-  virtual void s06() {}
+  // Slots 0x14/0x18 — stream serialization pair: TGreatPower 0x004da500 writes each
+  // tracked order via [vt+0x14](stream); 0x004da3e0 reads each via [vt+0x18](stream).
+  virtual void WriteToStreamSlot14(void* stream) {
+    (void)stream;
+  }
+  virtual void ReadFromStreamSlot18(void* stream) {
+    (void)stream;
+  }
   virtual void s07() {}
   virtual void s08() {}
   virtual void s09() {}

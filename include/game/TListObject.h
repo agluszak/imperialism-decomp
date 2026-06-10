@@ -4,6 +4,10 @@
 // allocation hierarchy: concrete objects use the TPtrList state layout
 // (RefCountedObjectBase vfptr + embedded CPtrList at +4) and install a concrete
 // TList-like vtable such as 0x00648f78 or 0x00648ee0.
+//
+// Declaration index N emits vtable offset 4*N; every name below matches its
+// emitted offset (verified against concrete vtable 0x00648f78). Do not insert
+// overload decls — they silently shift every later slot (heuristics note 98).
 class TListObject {
 public:
   virtual void GetClassDescDynamicSlot00_Provisional() = 0;
@@ -20,19 +24,20 @@ public:
   // both consume EAX as a count); other call sites use it as a release hook and
   // ignore the return value.
   virtual int GetCountOrReleaseSlot28() = 0;
-  virtual int GetCountSlot28() = 0; // NOTE: emits offset 0x2c (decl index 11)
   virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal) = 0;
-  virtual void* GetEntrySlot2C(int index) = 0; // slot 2C overload
   virtual void AddTail30(void* item) = 0;
   virtual void VTableSlot34_Provisional() = 0;
   virtual void Call38() = 0;
-  virtual void AddEntrySlot38(void* entry) = 0; // slot 38 overload
   virtual void VTableSlot3C_Provisional() = 0;
   virtual void VTableSlot40_Provisional() = 0;
   virtual void VTableSlot44_Provisional() = 0;
+  // Slot 0x48: CPtrList entry count (concrete body 0x004886d0 returns this+0x10).
   virtual int GetCountSlot48() = 0;
+  // Slot 0x4c: 1-based get-by-ordinal (concrete body 0x004886f0, FindIndex->data).
   virtual void* GetTrackedEntrySlot4C(int ordinal = 0) = 0;
   virtual void TPtrListSlot50_Provisional() = 0;
+  // Slot 0x54: pop-and-release every entry (concrete body 0x00488750).
   virtual void Call54() = 0;
+  // Slot 0x58: Call54 then Release1C on self (concrete body 0x004887b0).
   virtual void Call58() = 0;
 };

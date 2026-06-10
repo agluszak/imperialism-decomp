@@ -17,7 +17,9 @@ public:
   virtual void dummy12() = 0;
   virtual void dummy13() = 0;
   virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
+  // 0x3c — queues a per-nation turn status prompt (TGreatPower slot 0x2d body
+  // 0x004da5e0 calls this with (promptIndex 0..0xc, payload short)).
+  virtual void QueueTurnStatusPromptSlot3C(int promptIndex, int payload) = 0;
   virtual void dummy16() = 0;
   virtual void dummy17() = 0;
   virtual void dummy18() = 0;
