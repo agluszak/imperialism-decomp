@@ -18,9 +18,26 @@ public:
   virtual void dummy13() = 0;
   virtual void dummy14() = 0;
   virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
+  // slot 0x40 — per-turn refresh (0x004eae70 sweeps the mission queue with it).
+  virtual void RefreshSlot40() = 0;
   virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
+  // slot 0x48 — replacement mission; returning anything other than `this` makes the
+  // pruner (0x004eb0d0) swap the entry out of the queue.
+  virtual TTrackedObject* GetReplacementSlot48() = 0;
   // slot 0x4C — mission-key match (kind 3 + region id, 0x004ea1c0).
   virtual char MatchesMissionKeySlot4C(int kind, int key, int mode) = 0;
+  virtual void dummy20() = 0;
+  virtual void dummy21() = 0;
+  virtual void dummy22() = 0;
+  virtual void dummy23() = 0;
+  virtual void dummy24() = 0;
+  virtual void dummy25() = 0;
+  virtual void dummy26() = 0;
+  virtual void dummy27() = 0;
+  virtual void dummy28() = 0;
+  virtual void dummy29() = 0;
+  virtual void dummy30() = 0;
+  virtual void dummy31() = 0;
+  // slot 0x80 — adopt an unassigned military unit (0x004eae70).
+  virtual void AdoptUnitSlot80(void* unit, int flag) = 0;
 };

@@ -501,6 +501,7 @@ address|target_cpp|ownership|note
 4ea430|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4ea450|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4ea470|src/game/TGreatPower.cpp|manual|marker_sync
+4eb0d0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4ee4b0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee520|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee540|src/game/TSortedByRelationshipList.cpp|manual|marker_sync

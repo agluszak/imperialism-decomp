@@ -55,6 +55,10 @@ public:
   void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   void VTableIndex177_Provisional(void);
 
+  // 0x004eb0d0 — swap mission entries whose GetReplacementSlot48 differs from
+  // themselves out of missionQueue (called by the slot 0xae turn pipeline).
+  void PruneInvalidTrackedEntriesAndNotifyOwner(void);
+
   static void* GetTAutoGreatPowerClassNamePointer(void);
   void* ConstructTAutoGreatPowerBaseState(void);
   void RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void);

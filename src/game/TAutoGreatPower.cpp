@@ -513,6 +513,34 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
                                                        -1);
 }
 
+// FUNCTION: IMPERIALISM 0x004eb0d0
+void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
+  for (;;) {
+    CIterator missionCursor(this->missionQueue);
+    TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
+    TTrackedObject* replacement;
+    for (;;) {
+      if (missionCursor.More() == 0) {
+        return;
+      }
+      replacement = mission->GetReplacementSlot48();
+      if (replacement != mission) {
+        break;
+      }
+      mission = static_cast<TTrackedObject*>(missionCursor.Advance());
+    }
+    CPtrList* listState = &reinterpret_cast<TPtrList*>(this->missionQueue)->listState;
+    CPtrListNode* node = listState->Find(mission, 0);
+    if (node != 0) {
+      listState->RemoveAt(node);
+    }
+    mission->Release1C();
+    if (replacement != 0) {
+      this->missionQueue->AddTail30(replacement);
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004ea430
 void TAutoGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {
   (void)orderKind;

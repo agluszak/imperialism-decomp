@@ -283,14 +283,6 @@ undefined4 IterateLinkedListCursorEntries_004eb040(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner
-// ghidra_proto void __thiscall PruneInvalidTrackedEntriesAndNotifyOwner(void)
-// FUNCTION: IMPERIALISM 0x004eb0d0
-undefined4 PruneInvalidTrackedEntriesAndNotifyOwner(void)
-{
-  return 0;
-}
-
 // ghidra_name PlanAiDevelopmentActionsFromResourcePools
 // ghidra_proto void __cdecl PlanAiDevelopmentActionsFromResourcePools(void)
 // FUNCTION: IMPERIALISM 0x004eb190
