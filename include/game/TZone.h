@@ -62,6 +62,10 @@ public:
   virtual ~TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
 
+  // 0x0055ff70 — coastal-tile affinity heuristic (cdecl; used by FindBestCoastalTile).
+  static int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
+                                                            int contextCityState);
+
   // 0x0055fc40 — Ghidra labeled InputState::; dispatches through TZone vtable 0x50/0x58.
   void HandleKeyDown(int key_id);
 };

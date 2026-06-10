@@ -721,7 +721,7 @@ address|target_cpp|ownership|note
 55fc40|src/game/TMapOrderContext.cpp|manual|marker_sync
 55fe60|src/game/TZone.cpp|manual|marker_sync
 55fef0|src/game/TZone.cpp|manual|marker_sync
-55ff70|src/game/map_action_helpers.cpp|manual|marker_sync
+55ff70|src/game/TZone.cpp|manual|marker_sync
 560150|src/game/TZone.cpp|manual|marker_sync
 560580|src/game/TZone.cpp|manual|marker_sync
 5615e0|src/game/TPortZone.cpp|manual|marker_sync

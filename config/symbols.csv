@@ -8382,7 +8382,7 @@ address|name|size|type|prototype
 55fc40|InputState::HandleKeyDown|426|function|void __thiscall HandleKeyDown(int key_id)
 55fe60|TZone::FindNearestActiveSeaContextTileFromOffset216|100|function|short __thiscall FindNearestActiveSeaContextTileFromOffset216(void)
 55fef0|TZone::GetActiveNationSlotTile|96|function|short __thiscall GetActiveNationSlotTile(void)
-55ff70|ScoreCoastalTileForContextAndCityStateAffinity|370|function|int __cdecl ScoreCoastalTileForContextAndCityStateAffinity(int arg1, int arg2, int arg3)
+55ff70|TZone::ScoreCoastalTileForContextAndCityStateAffinity|370|function|int __cdecl TZone::ScoreCoastalTileForContextAndCityStateAffinity(int arg1, class TZone * arg2, int arg3)
 560150|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic|638|function|short __thiscall FindBestCoastalTileForContextAndCityStateByHeuristic(void)
 560470|AdvanceSpiralSearchStateAndStepHexCoordinates|79|function|void __cdecl AdvanceSpiralSearchStateAndStepHexCoordinates(void)
 560580|TZone::SetMapOrderUiFlag|276|function|void __thiscall SetMapOrderUiFlag(int arg1)

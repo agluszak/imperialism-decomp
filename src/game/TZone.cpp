@@ -15,6 +15,7 @@ extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;
 extern void* g_pActiveMapOrderContext;
 char g_pClassDescTZone = 0;
+extern char g_pClassDescTPortZone;
 }
 
 void NoOpTurnEventStateVtableSlot0C(void);
@@ -22,7 +23,7 @@ void __stdcall NoOpTurnEventStateVtableSlot10(int unused);
 undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void);
 undefined4 thunk_StepHexTileIndexByDirectionWithWrapRules(void);
 undefined4 thunk_FindPortZoneByTile(void);
-int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, int contextZone, int contextCityState);
+undefined4 GetNextPortZone(void);
 undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void);
 undefined4 thunk_StepHexRowColByDirectionWithWrapRules(void);
 undefined4 CreateObject_606ff2(void);
@@ -247,6 +248,74 @@ short TZone::GetActiveNationSlotTile() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0055ff70
+int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
+                                                          int contextCityState) {
+  char* mapTileBase =
+      reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
+  char* tileRecord = mapTileBase + static_cast<short>(tileIndex) * 0x24;
+  if (tileRecord[0] != static_cast<char>(0x05)) {
+    return 0;
+  }
+  if (tileRecord[0x16] != static_cast<char>(-1)) {
+    return 0;
+  }
+  short nationId = static_cast<short>(tileRecord[4]);
+  int zoneRecord = 0;
+  if (nationId >= 0x17) {
+    zoneRecord = reinterpret_cast<int>(static_cast<TMapOrderContext*>(g_pActiveMapOrderContext)->contextArray) +
+                 (nationId - 0x17) * 0x48;
+  }
+  if (zoneRecord != reinterpret_cast<int>(contextZone)) {
+    return 0x3e8;
+  }
+
+  int score = 0x1388;
+  int neighborDir = 0;
+  do {
+    short neighborTile = reinterpret_cast<short(__cdecl*)(int, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(
+        tileIndex, neighborDir);
+    if (neighborTile != -1) {
+      char* neighborRecord = mapTileBase + neighborTile * 0x24;
+      if (neighborRecord[0] == static_cast<char>(0x05)) {
+        short neighborSubtype = static_cast<short>(neighborRecord[0x16]);
+        if ((neighborSubtype == 3) || (neighborSubtype == 0x0e)) {
+          TZone* portZone = static_cast<TZone*>(g_pMapActionContextListHead);
+          while (portZone != 0 && portZone->GetRuntimeClass() != &g_pClassDescTPortZone) {
+            portZone = portZone->prev18;
+          }
+          while (portZone != 0) {
+            if ((static_cast<short>(portZone->field0c) == neighborTile) || (portZone->field20 == neighborTile) ||
+                (static_cast<short>(portZone->field48) == neighborTile)) {
+              break;
+            }
+            portZone = static_cast<TZone*>(
+                reinterpret_cast<void*(__fastcall*)(void*)>(GetNextPortZone)(portZone));
+          }
+          if (portZone != contextZone) {
+            score = score - 1;
+          }
+        } else {
+          short cityStateLink = *reinterpret_cast<short*>(neighborRecord + 0x14);
+          int cityStateRecord = 0;
+          if (cityStateLink != -1) {
+            cityStateRecord = *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10) +
+                              cityStateLink * 0xa8;
+          }
+          if (cityStateRecord == contextCityState) {
+            score = score + 0x64;
+          } else {
+            score = score - 0xa;
+          }
+        }
+      }
+    }
+    neighborDir = neighborDir + 1;
+  } while (neighborDir < 6);
+
+  return score;
+}
+
 // FUNCTION: IMPERIALISM 0x00560150
 short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState) {
   unsigned int tileCandidate = 0;
@@ -305,8 +374,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
 
   short bestTile = static_cast<short>(tileCandidate);
   int bestTileIndex = static_cast<int>(bestTile);
-  int bestScore = ScoreCoastalTileForContextAndCityStateAffinity(
-      bestTileIndex, reinterpret_cast<int>(this), contextCityState);
+  int bestScore = ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextCityState);
 
   int spiralRow = bestTileIndex / 0x6c;
   int spiralCol = bestTileIndex % 0x6c;
@@ -337,8 +405,8 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
       } else {
         spiralTileIndex = spiralCol + spiralRow * 0x6c;
       }
-      int candidateScore = ScoreCoastalTileForContextAndCityStateAffinity(
-          spiralTileIndex, reinterpret_cast<int>(this), contextCityState);
+      int candidateScore =
+          ScoreCoastalTileForContextAndCityStateAffinity(spiralTileIndex, this, contextCityState);
       if (bestScore < candidateScore) {
         bestScore = candidateScore;
         if (((spiralRow < 0) || (0x3b < spiralRow)) || ((spiralCol < 0) || (0x6b < spiralCol))) {
