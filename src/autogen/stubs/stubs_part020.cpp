@@ -331,14 +331,6 @@ undefined4 GetCityActionGateValueBySlot(void)
   return 0;
 }
 
-// ghidra_name GetUnitMovementClassId
-// ghidra_proto void __cdecl GetUnitMovementClassId(void)
-// FUNCTION: IMPERIALISM 0x005c3490
-undefined4 GetUnitMovementClassId(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCityActionCategoryCodeBySlot
 // ghidra_proto void __cdecl GetCityActionCategoryCodeBySlot(void)
 // FUNCTION: IMPERIALISM 0x005c34b0

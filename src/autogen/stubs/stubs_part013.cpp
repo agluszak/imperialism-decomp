@@ -2395,14 +2395,6 @@ undefined4 SeedRecruitAndNavyOrdersForEligibleCoastalCities(void)
   return 0;
 }
 
-// ghidra_name CreateAndDispatchMilitaryRecruitOrderForNationSlot
-// ghidra_proto void __cdecl CreateAndDispatchMilitaryRecruitOrderForNationSlot(void)
-// FUNCTION: IMPERIALISM 0x004d7770
-undefined4 CreateAndDispatchMilitaryRecruitOrderForNationSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatOverlayTerrainLabelText
 // ghidra_proto void __cdecl FormatOverlayTerrainLabelText(void)
 // FUNCTION: IMPERIALISM 0x004d7860
@@ -2439,14 +2431,6 @@ undefined4 LoadNationDisplayNameSharedRefFromField8(void)
 // ghidra_proto void __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1)
 // FUNCTION: IMPERIALISM 0x004d7c00
 undefined4 SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
-{
-  return 0;
-}
-
-// ghidra_name IsDiplomacyTargetClassCode200Match
-// ghidra_proto void __cdecl IsDiplomacyTargetClassCode200Match(void)
-// FUNCTION: IMPERIALISM 0x004d7d20
-undefined4 IsDiplomacyTargetClassCode200Match(void)
 {
   return 0;
 }
@@ -2519,22 +2503,6 @@ undefined4 ComputeSelectedMilitaryPowerScore(void)
 // ghidra_proto int __cdecl ClassifyNationMilitaryPowerBandAgainstGlobalMean(void)
 // FUNCTION: IMPERIALISM 0x004d84b0
 undefined4 ClassifyNationMilitaryPowerBandAgainstGlobalMean(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins06_004d87b0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins06_004d87b0(void)
-// FUNCTION: IMPERIALISM 0x004d87b0
-undefined4 OrphanLeaf_NoCall_Ins06_004d87b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::SelectCandidateTilesWithLowGroundUnitCount
-// ghidra_proto void __thiscall SelectCandidateTilesWithLowGroundUnitCount(void)
-// FUNCTION: IMPERIALISM 0x004d87e0
-undefined4 SelectCandidateTilesWithLowGroundUnitCount(void)
 {
   return 0;
 }
@@ -2679,14 +2647,6 @@ undefined4 AddShortDeltaToNationCounterAtOffset198(void)
 // ghidra_proto void __cdecl RebuildPrimaryNationStateForSlot_Impl(void)
 // FUNCTION: IMPERIALISM 0x004df810
 undefined4 RebuildPrimaryNationStateForSlot_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name EnqueueFrogCityMarkerAndFlagOverlay
-// ghidra_proto void __cdecl EnqueueFrogCityMarkerAndFlagOverlay(void)
-// FUNCTION: IMPERIALISM 0x004dfa20
-undefined4 EnqueueFrogCityMarkerAndFlagOverlay(void)
 {
   return 0;
 }

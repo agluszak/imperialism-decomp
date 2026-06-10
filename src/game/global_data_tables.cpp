@@ -43,6 +43,10 @@ short g_Classify_Nation_Military_LookupTable_00695CD4[64][7] = {0};
 // slot 0x55 tracked-order selection sort (0x004e0290).
 short g_DAT_006966d0_Value_006966D0[16] = {0};
 
+// Per-unit-type tactical category code (short table at 0x695528); category 0 counts
+// as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
+short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
+
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 void* g_pMapActionContextListHead = 0;

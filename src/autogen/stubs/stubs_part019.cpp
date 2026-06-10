@@ -2827,14 +2827,6 @@ undefined4 GetTTownClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TTown::ConstructFrogCityMarker
-// ghidra_proto void __thiscall ConstructFrogCityMarker(void)
-// FUNCTION: IMPERIALISM 0x005b6c60
-undefined4 ConstructFrogCityMarker(void)
-{
-  return 0;
-}
-
 // ghidra_name TTown::DestructTTownAndMaybeFree
 // ghidra_proto void * __thiscall DestructTTownAndMaybeFree(byte freeSelfFlag)
 // FUNCTION: IMPERIALISM 0x005b6c80
@@ -2847,14 +2839,6 @@ undefined4 DestructTTownAndMaybeFree(void)
 // ghidra_proto void __cdecl DestructTTownAndMaybeFree_Impl(void)
 // FUNCTION: IMPERIALISM 0x005b6cb0
 undefined4 DestructTTownAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeFrogCityMarkerFields
-// ghidra_proto void __cdecl InitializeFrogCityMarkerFields(void)
-// FUNCTION: IMPERIALISM 0x005b6cd0
-undefined4 InitializeFrogCityMarkerFields(void)
 {
   return 0;
 }

@@ -42,7 +42,8 @@ struct TGlobalMapCityScoreRecord {
   short stage2CounterA;
   short stage2CounterB;
   short stage2CounterC;
-  unsigned char pad94[0x9C - 0x94];
+  unsigned char pad94[0x98 - 0x94];
+  void* stationedUnitChain98; // 0x98 — singly-linked unit chain (next at +0x14)
   int cityScoreValue;
   unsigned char padA0[0xA8 - 0xA0];
 };

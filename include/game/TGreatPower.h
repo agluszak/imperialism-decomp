@@ -32,13 +32,16 @@ public:
   // tracked-order list, then recreates one TCivWorkOrderState per stream count entry.
   virtual void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg);
   TGREATPOWER_VTABLE_SLOT(12);
-  TGREATPOWER_VTABLE_SLOT(13);
+  // slot 0x0d — body 0x004d7770: creates a military recruit order for nodeContext
+  // with a capability bonus from the city-order table (+0x3a5/+0x39d rows).
+  virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
   virtual void AddToNationMetricAtField10(int amount); // slot 0x0e
   TGREATPOWER_VTABLE_SLOT(15);
-  virtual int GetNodeContextSlot10_Provisional(void) {
-    return 0;
-  }
-  TGREATPOWER_VTABLE_SLOT(17);
+  // slot 0x10 — body 0x004d87b0: cityRecordIndex of the nation's home region.
+  virtual int GetHomeRegionCityRecordIndex(void);
+  // slot 0x11 — body 0x004d87e0: on quarter ticks (tick/4 odd, tick%4 == 2), queue a
+  // recruit order (slot 0x0d) for each owned region garrisoned below threshold.
+  virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
   virtual void ResetDiplomacyLevelForNationSlot12_Provisional(int nationSlot, int resetLevel);
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
@@ -46,7 +49,8 @@ public:
   virtual void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot); // slot 0x14
   virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);     // slot 0x15
   virtual CString* GetIdentitySharedString1Slot58(void);                       // slot 0x16
-  TGREATPOWER_VTABLE_SLOT(23);
+  // slot 0x17 — body 0x004d7d20: encodedNationSlot - 200 == nationCode.
+  virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
   TGREATPOWER_VTABLE_SLOT(24);
   TGREATPOWER_VTABLE_SLOT(25);
   TGREATPOWER_VTABLE_SLOT(26);
@@ -104,7 +108,9 @@ public:
   virtual void NotifyRelationManagerSlot2C(void);
   TGREATPOWER_VTABLE_SLOT(56);
   TGREATPOWER_VTABLE_SLOT(57);
-  TGREATPOWER_VTABLE_SLOT(58);
+  // slot 0x3a — body 0x004dfa20: creates the "Frog City" town marker, hands it to
+  // the receiver's slot 0x44 and appends it to townMarkerList.
+  virtual void CreateFrogCityTownMarkerAndAttach(void* receiver);
   TGREATPOWER_VTABLE_SLOT(59);
   TGREATPOWER_VTABLE_SLOT(60);
   TGREATPOWER_VTABLE_SLOT(61);

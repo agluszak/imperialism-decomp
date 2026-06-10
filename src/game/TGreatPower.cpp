@@ -23,6 +23,7 @@
 #include "game/CIterator.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TTurnEventQueue.h"
+#include "game/TTownMarker.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/trade_quickdraw.h"
 #include <stddef.h>
@@ -53,6 +54,8 @@ extern float g_Compute_Advisory_Peer_LookupTable_00653724;    // -0.5f
 extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];
 // Per-order-type sort priority table (slot 0x55 selection sort).
 extern short g_DAT_006966d0_Value_006966D0[];
+// Per-unit-type tactical category code (slot 0x11 garrison sweep).
+extern short g_awTacticalUnitCategoryCodeBySlot[];
 extern void* g_pMapActionContextListHead;
 }
 
@@ -2586,7 +2589,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Land recruit order (serializedStatusFlags[1] == '2').
   if (this->serializedStatusFlags[1] == 0x32) {
     void* militaryOrder = AllocateMilitaryUnitOrderObject();
-    int nodeContext = this->GetNodeContextSlot10_Provisional();
+    int nodeContext = this->GetHomeRegionCityRecordIndex();
     InitializeMilitaryRecruitOrder(militaryOrder, CityOrderCapForNation(nationSlot), nodeContext,
                                    nationSlot);
     this->DispatchTurnOrderActionSlotB0(3, CityOrderCapForNation(nationSlot), 1);
@@ -2662,6 +2665,128 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     this->DispatchTurnOrderActionSlotB0(1, 6, 2);
   }
   this->VTableIndex15_Provisional();
+}
+#pragma optimize("", on)
+
+// --- Slots 0x0d/0x10/0x11/0x17/0x3a and the stationed-unit chain ---
+
+// Stationed military unit chain node (region records link them at +0x98, next at
+// +0x14; unit type id short at +4, as in MilitaryUnitEntryView).
+struct TStationedUnitNode {
+  unsigned char pad00[4];
+  short unitTypeId04;
+  unsigned char pad06[0x14 - 0x06];
+  TStationedUnitNode* next14;
+
+  short GetUnitMovementClassId();
+};
+
+// FUNCTION: IMPERIALISM 0x005c3490
+#pragma optimize("y", on)
+short TStationedUnitNode::GetUnitMovementClassId() {
+  return g_awTacticalUnitCategoryCodeBySlot[this->unitTypeId04];
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004d7770
+#pragma optimize("y", on)
+void TGreatPower::CreateMilitaryRecruitOrderForNode(int nodeContext) {
+  unsigned char capabilityBonus;
+  if (this->nationSlot < 7) {
+    unsigned char* capabilityRow =
+        reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) + this->nationSlot * 0x1e;
+    if (capabilityRow[0x3a5] != 0) {
+      capabilityBonus = 0x10;
+    } else {
+      capabilityBonus = (capabilityRow[0x39d] != 0) ? 8 : 0;
+    }
+  } else {
+    capabilityBonus = 0;
+  }
+  void* militaryOrder = AllocateMilitaryUnitOrderObject();
+  InitializeMilitaryRecruitOrder(militaryOrder, capabilityBonus, nodeContext, this->nationSlot);
+  static_cast<TUnitOrderState*>(militaryOrder)->SetOrderModeSlot34(2, -1);
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004d87b0
+#pragma optimize("y", on)
+int TGreatPower::GetHomeRegionCityRecordIndex(void) {
+  return g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004d87e0
+#pragma optimize("y", on)
+void TGreatPower::QueueRecruitOrdersForUndergarrisonedRegions(void) {
+  int tick = static_cast<TLocalizationRuntime*>(g_pLocalizationTable)->quarterGateTick2c;
+  if ((((tick + ((tick >> 0x1f) & 3)) >> 2) & 1) != 0 && static_cast<short>(tick % 4) == 2) {
+    int garrisonThreshold = (this->nationSlot < 7) + 3;
+    int ordinal = 1;
+    if (this->ownedRegionList->GetCountOrReleaseSlot28() >= 1) {
+      do {
+        int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
+        int garrisonCount = 0;
+        TStationedUnitNode* unit;
+        if (static_cast<short>(regionId) < 0 || static_cast<short>(regionId) >= 0x180) {
+          unit = 0;
+        } else {
+          unit = static_cast<TStationedUnitNode*>(
+              g_pGlobalMapState->cityScoreTable[static_cast<short>(regionId)]
+                  .stationedUnitChain98);
+        }
+        for (; unit != 0; unit = unit->next14) {
+          if (unit->GetUnitMovementClassId() == 0) {
+            ++garrisonCount;
+          }
+        }
+        if (static_cast<short>(garrisonCount) < garrisonThreshold) {
+          this->CreateMilitaryRecruitOrderForNode(regionId);
+        }
+        ++ordinal;
+      } while (ordinal <= this->ownedRegionList->GetCountOrReleaseSlot28());
+    }
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004d7d20
+#pragma optimize("y", on)
+char TGreatPower::IsEncodedNationSlotMinus200Equal(int nationCode) {
+  return this->encodedNationSlot - 200 == nationCode;
+}
+#pragma optimize("", on)
+
+// View of the receiver handed to slot 0x3a/0x3b: slot 0x44 adopts the new marker.
+struct TMarkerReceiverView {
+  virtual void r00() = 0;
+  virtual void r01() = 0;
+  virtual void r02() = 0;
+  virtual void r03() = 0;
+  virtual void r04() = 0;
+  virtual void r05() = 0;
+  virtual void r06() = 0;
+  virtual void r07() = 0;
+  virtual void r08() = 0;
+  virtual void r09() = 0;
+  virtual void r10() = 0;
+  virtual void r11() = 0;
+  virtual void r12() = 0;
+  virtual void r13() = 0;
+  virtual void r14() = 0;
+  virtual void r15() = 0;
+  virtual void r16() = 0;
+  virtual void AdoptMarkerSlot44(void* marker) = 0;
+};
+
+// FUNCTION: IMPERIALISM 0x004dfa20
+#pragma optimize("y", on)
+void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
+  TTownMarker* marker = new TTownMarker();
+  marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
+  static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
+  marker->activeFlag4f = 1;
+  this->townMarkerList->AddTail30(marker);
 }
 #pragma optimize("", on)
 
@@ -3099,7 +3224,7 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
 // FUNCTION: IMPERIALISM 0x004dc540
 char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
   if (mode == 0) {
-    int nodeContext = this->GetNodeContextSlot10_Provisional();
+    int nodeContext = this->GetHomeRegionCityRecordIndex();
     float localScore = ComputeDefendProvinceMissionLocalSupportScore(nodeContext);
     float crossNationScore = ComputeDefendProvinceMissionCrossNationSupportScore(nodeContext);
     if (localScore < crossNationScore) {

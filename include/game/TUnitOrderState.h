@@ -36,6 +36,13 @@ public:
   } // slot 10 at 0x28
   // Slot 0x2c — per-order dispatch hook invoked by TGreatPower slot 0x4c (0x004e0220).
   virtual void DispatchSlot2C() {}
+  virtual void VTableSlot30_Provisional() {}
+  // Slot 0x34 — TGreatPower slot 0x0d (0x004d7770) calls this on a fresh military
+  // recruit order with (2, -1).
+  virtual void SetOrderModeSlot34(int mode, int payload) {
+    (void)mode;
+    (void)payload;
+  }
 
   short orderType;        // 0x04
   short field_6;          // 0x06 (init 0xffff)
