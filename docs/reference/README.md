@@ -11,6 +11,10 @@ workflow guides (those are in `.claude/skills/`) and not the execution log
   with confirmed code addresses.
 - `tradecontrol_redecomp_contract.md` — `TradeControl` field layout (0x00–0x94) and
   `TControl` method signatures with addresses/conventions.
+- `tgreatpower-power-score-family.md` — TGreatPower vtable slots 0x86/0x8e-0x9e
+  recovered ground truth: slot map with bodies/semantics, CIterator, the
+  border-link check receiver, named float/data globals, nation-array layout,
+  and the TListObject slot-0x28 drift caveat.
 - `TDiplomacyMapView_layout.md` — discovered offsets for `TDiplomacyMapView`
   (mask-buffer / packed-color runs, frame/legend fields).
 
